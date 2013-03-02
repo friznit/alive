@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma2">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_REQUIRES_ALIVE">
+	<English>Require ALiVE</English>
+	<German>Erfordern ALiVE</German>
+	<Italian>Richiedono ALiVE</Italian>
+	<Spanish>Requieren ALiVE</Spanish>
+	<French>Exiger ALiVE</French>
+	<Czech>Vyžadovat ALiVE</Czech>
+	<Russian>Требовать ALiVE</Russian>
+	<Polish>Wymagaj ALiVE</Polish>
+	<Hungarian>Igénylése ALiVE</Hungarian>
+</Key>
+</Container></Package></Project>
