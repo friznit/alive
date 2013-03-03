@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_REQUIRES_ALIVE">
-	<English>Require ALiVE</English>
+	<English>(ALiVE) Requires ALiVE</English>
 	<German>Erfordern ALiVE</German>
 	<Italian>Richiedono ALiVE</Italian>
 	<Spanish>Requieren ALiVE</Spanish>

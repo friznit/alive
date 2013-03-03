@@ -3,7 +3,7 @@
 class CfgVehicles
 {
 	class Logic;
-	class ALiVE_main_require : Logic
+	class ALIVE_main_require : Logic
 	{
 		displayName = "$STR_ALIVE_REQUIRES_ALIVE";
 		icon = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
