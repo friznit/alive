@@ -6,9 +6,8 @@ class CfgVehicles
 	class ALiVE_main_require : Logic
 	{
 		displayName = "$STR_ALIVE_REQUIRES_ALIVE";
-		icon = "\x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
-		picture = "\x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
+		icon = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
+		picture = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
 		vehicleClass = "Modules";
-// TODO - add MSO module icon
 	};
 };
