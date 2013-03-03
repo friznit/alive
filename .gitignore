@@ -1,5 +1,4 @@
 *.pbo
-*.png
 store/*
 utils/ndocs-project/Data/*
 utils/ndocs-project/Menu_Backup*
