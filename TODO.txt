@@ -1,0 +1,10 @@
+Advanced, Artificial, Ambient
+Living, Live
+Virtual
+Environment
+
+New Feature
+
+- create a new feature branch to push to GIT
+	git checkout -b f_core_adminactions
+

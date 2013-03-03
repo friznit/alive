@@ -1,4 +1,5 @@
-name = "ArmA 3 ALiVE";
+dir = "@ALIVE";
+name = "ArmA 3: ALiVE";
 picture = "x\alive\addons\main\logo_alive.paa";
 actionName = "Website";
 action = "http://dev-heaven.net/projects/alive";
