@@ -12,6 +12,14 @@ class CfgPatches {
 		VERSION_CONFIG;
 		author[] = {"ALiVE Team - Wolffy.au, Tupolov, HighHead, JMan, Friznit"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
+
+	};
+};
+
+class CfgMods
+{
+	class ADDON {
+		#include "\x\alive\mod.cpp"
 	};
 };
 
