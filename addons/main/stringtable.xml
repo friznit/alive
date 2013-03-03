@@ -4,7 +4,7 @@
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_REQUIRES_ALIVE">
 	<English>(ALiVE) Requires ALiVE</English>
-	<German>Erfordern ALiVE</German>
+	<German>Benoetigt ALiVE</German>
 	<Italian>Richiedono ALiVE</Italian>
 	<Spanish>Requieren ALiVE</Spanish>
 	<French>Exiger ALiVE</French>
