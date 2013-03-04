@@ -1,5 +1,5 @@
 // COMPONENT should be defined in the script_component.hpp and included BEFORE this hpp
-#define PREFIX alive
+#define PREFIX ALiVE
 // TODO: Consider Mod-wide or Component-narrow versions (or both, depending on wishes!)
 #define MAJOR 0
 #define MINOR 1

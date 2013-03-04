@@ -1,26 +1,4 @@
 #include "script_component.hpp"
-
-// Simply a package which requires other addons.
-class CfgPatches {
-	class ADDON {
-		units[] = {};
-		weapons[] = {};
-		requiredVersion = REQUIRED_VERSION;
-		requiredAddons[] = {};
-		versionDesc = "ALiVE";
-		versionAct = "['MAIN',_this] execVM '\x\alive\addons\main\about.sqf';";
-		VERSION_CONFIG;
-		author[] = {"ALiVE Team - Wolffy.au, Tupolov, HighHead, JMan, Friznit"};
-		authorUrl = "http://dev-heaven.net/projects/alive";
-
-	};
-};
-
-class CfgMods
-{
-	class ADDON {
-		#include "\x\alive\mod.cpp"
-	};
-};
-
+#include "CfgPatches.hpp"
+#include "CfgMods.hpp"
 #include "CfgVehicles.hpp"
