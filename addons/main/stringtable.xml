@@ -4,13 +4,13 @@
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_REQUIRES_ALIVE">
 	<English>(ALiVE) Requires ALiVE</English>
-	<German>Benoetigt ALiVE</German>
-	<Italian>Richiedono ALiVE</Italian>
-	<Spanish>Requieren ALiVE</Spanish>
-	<French>Exiger ALiVE</French>
-	<Czech>Vyžadovat ALiVE</Czech>
-	<Russian>Требовать ALiVE</Russian>
-	<Polish>Wymagaj ALiVE</Polish>
-	<Hungarian>Igénylése ALiVE</Hungarian>
+	<German>(ALiVE) Erfordern ALiVE</German>
+	<Italian>(ALiVE) Richiedono ALiVE</Italian>
+	<Spanish>(ALiVE) Requieren ALiVE</Spanish>
+	<French>(ALiVE) Exiger ALiVE</French>
+	<Czech>(ALiVE) Vyžadovat ALiVE</Czech>
+	<Russian>(ALiVE) Требовать ALiVE</Russian>
+	<Polish>(ALiVE) Wymagaj ALiVE</Polish>
+	<Hungarian>(ALiVE) Igénylése ALiVE</Hungarian>
 </Key>
 </Container></Package></Project>
