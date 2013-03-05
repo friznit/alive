@@ -1,4 +1,4 @@
-Advanced, Artificial, Ambient
+﻿Advanced, Artificial, Ambient
 Living, Live
 Virtual
 Environment
@@ -6,5 +6,111 @@ Environment
 New Feature
 
 - create a new feature branch to push to GIT
-	git checkout -b f_core_adminactions
+<pre>
+git checkout -b f_sys_modulename
+</pre>
+where:
+f - feature
+sys - the category
+modulename - full name (try to avoid abbreviations and all lowercase)
 
+# In alive\addons\ create a new directory in the current format:
+*f_sys_modulename*
+
+# Create config.cpp file, with the following entries:
+<pre>
+#include "script_component.hpp"
+#include "\x\alive\addons\main\CfgPatches.hpp"
+#include "\x\alive\addons\main\CfgMods.hpp"
+#include "CfgVehicles.hpp"
+#include "CfgFunctions.hpp"
+</pre>
+Add/remove CfgFunctions as required.
+
+- Create script_component.cpp file, with the following:
+<pre>
+#define COMPONENT sys_modulename
+// #define DEBUG_MODE_FULL
+
+#ifdef DEBUG_ENABLED_MAIN
+	#define DEBUG_MODE_FULL
+#endif
+#ifdef DEBUG_SETTINGS_MAIN
+	#define DEBUG_SETTINGS DEBUG_SETTINGS_MAIN
+#endif
+#include "\x\alive\addons\main\script_mod.hpp"
+#include "\x\alive\addons\main\script_macros.hpp"
+</pre>
+Modify the first line (sys_modulename) with the name of your module.
+
+# Add CfgVehicles.hpp to publish your module in the editor
+<pre>
+class CfgVehicles {
+	class Logic;
+	class ADDON : Logic {
+		displayName = "$STR_ALIVE_ADMIN_ACTIONS";
+		icon = "x\alive\addons\sys_modulename\icon_sys_modulename.paa";
+		picture = "x\alive\addons\sys_modulename\icon_sys_modulename.paa";
+		vehicleClass = "Modules";
+		class Eventhandlers {
+			init = "[player] call compile preprocessFile 'x\alive\addons\sys_modulename\main.sqf';";
+		};
+	};
+};
+</pre>
+Modify the displayName, icon, picture and init lines with the correct stringtable reference and paths.
+
+# If you are pre-compiling functions, add the CfgFunctions.hpp file
+<pre>
+class cfgFunctions {
+        class PREFIX {
+                class COMPONENT {
+                        file = "\x\alive\addons\sys_adminactions\functions";
+                        class main {
+                                description = "The main class";
+                        };
+                };
+        };
+};
+</pre>
+
+# Create your StringTable.xml to allow multiple languages
+<pre>
+<Key ID="STR_ALIVE_REQUIRES_ALIVE">
+	<English>(ALiVE) Requires ALiVE</English>
+	<German>(ALiVE) Erfordern ALiVE</German>
+	<Italian>(ALiVE) Richiedono ALiVE</Italian>
+	<Spanish>(ALiVE) Requieren ALiVE</Spanish>
+	<French>(ALiVE) Exiger ALiVE</French>
+	<Czech>(ALiVE) Vyžadovat ALiVE</Czech>
+	<Russian>(ALiVE) Требовать ALiVE</Russian>
+	<Polish>(ALiVE) Wymagaj ALiVE</Polish>
+	<Hungarian>(ALiVE) Igénylése ALiVE</Hungarian>
+</Key>
+</pre>
+
+# Find an existing alive\images\icon_*.png and modify accordingly representing the icon for your module
+
+# Using Tex2View, convert the PNG file to a PAA file, and copy into your alive\addons\sys_modulename directory
+
+# Plan your module into its Model/View/Controller components, where:
+Module - the data for your module including data that will be persisted
+Controller - the process used to coordinate the View component with the Model
+View - the component that controls the visual display for the player
+Example:
+<pre>
+*Model - no visual just reference data*
+- server side object only
+- ghosting enabled
+- teleport enabled
+- ACE spectator enabled
+
+*Controller - coordination*
+- frequent check if player is server admin
+
+*View - purely visual*
+- initialise menu
+- frequent check to modify menu and display status
+</pre>
+
+# 
