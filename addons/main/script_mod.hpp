@@ -15,7 +15,7 @@
 
 // Set a default debug mode for the component here (See documentation on how to default to each of the modes).
 /*
-	#define DEBUG_ENABLED_CORE_ADMINACTIONS
+	#define DEBUG_ENABLED_SYS_ADMINACTIONS
 	#define DEBUG_ENABLED_SYS_DEBUG
 	#define DEBUG_ENABLED_COMMON
 	#define DEBUG_ENABLED_DIAGNOSTIC
