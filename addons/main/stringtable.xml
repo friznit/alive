@@ -2,18 +2,27 @@
 <Project name="Arma3">
 <Package name="ALiVE">
 <Container name="STR_DN">
-<Key ID="STR_ALIVE">
-	<English>ALiVE</English>
+<Key ID="STR_ALIVE_SYS">
+	<English>ALiVE Systems</English>
+</Key>
+<Key ID="STR_ALIVE_SUPPORT">
+	<English>ALiVE Support</English>
+</Key>
+<Key ID="STR_ALIVE_AMBIENT">
+	<English>ALiVE Ambience</English>
+</Key>
+<Key ID="STR_ALIVE_ENEMY">
+	<English>ALiVE Enemy</English>
 </Key>
 <Key ID="STR_ALIVE_REQUIRES_ALIVE">
-	<English>(ALiVE) Requires ALiVE</English>
-	<German>(ALiVE) Erfordern ALiVE</German>
-	<Italian>(ALiVE) Richiedono ALiVE</Italian>
-	<Spanish>(ALiVE) Requieren ALiVE</Spanish>
-	<French>(ALiVE) Exiger ALiVE</French>
-	<Czech>(ALiVE) Vyžadovat ALiVE</Czech>
-	<Russian>(ALiVE) Требовать ALiVE</Russian>
-	<Polish>(ALiVE) Wymagaj ALiVE</Polish>
-	<Hungarian>(ALiVE) Igénylése ALiVE</Hungarian>
+	<English>Requires ALiVE</English>
+	<German>Erfordern ALiVE</German>
+	<Italian>Richiedono ALiVE</Italian>
+	<Spanish>Requieren ALiVE</Spanish>
+	<French>Exiger ALiVE</French>
+	<Czech>Vyžadovat ALiVE</Czech>
+	<Russian>Требовать ALiVE</Russian>
+	<Polish>Wymagaj ALiVE</Polish>
+	<Hungarian>Igénylése ALiVE</Hungarian>
 </Key>
 </Container></Package></Project>
