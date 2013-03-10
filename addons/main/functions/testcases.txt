@@ -1,0 +1,3 @@
+- _this == nil
+- _this select 0 != "OBJECT"
+- 
