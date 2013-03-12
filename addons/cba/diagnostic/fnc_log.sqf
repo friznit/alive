@@ -37,6 +37,7 @@ SCRIPT(log);
 		CBA_LOG_VAR = true;
 		SLX_XEH_STR spawn
 		{
+                        private ["_selected","_fnc_log"];
 			_fnc_log =
 			{
 				PARAMS_6(_file,_lineNum,_message,_frameNo,_tickTime,_gameTime);
