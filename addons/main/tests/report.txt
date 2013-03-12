@@ -1,0 +1,191 @@
+[7710,114.454,6.527,"x\alive\addons\main\tests\test.sqf:9","=== Testing BaseClass ==="]
+[7711,114.5,6.577,"x\alive\addons\main\tests\test_baseClass.sqf:10","Testing BaseClass"]
+[8686,148.782,40.803,"x\alive\addons\main\tests\test.sqf:9","=== Testing BaseClass ==="]
+[8687,148.825,40.848,"x\alive\addons\main\tests\test_baseClass.sqf:10","Testing BaseClass"]
+Some of magazines weren't stored in soldier Vest or Uniform?
+Some of magazines weren't stored in soldier Vest or Uniform?
+Speaker Male01_F not found in CfgVoiceTypes
+[12835,194.466,3.129,"x\alive\addons\main\tests\test.sqf:9","=== Testing BaseClass ==="]
+[12836,194.502,3.172,"x\alive\addons\main\tests\test_baseClass.sqf:10","Testing BaseClass"]
+["TEST(B Alpha 1-1:1 (Wolffy.au): Mission objects: 287"]
+["TEST(B Alpha 1-1:1 (Wolffy.au): Create instance"]
+Error in expression <
+
+
+
+if (isnil "_value") then {
+_value = _default;
+};
+
+
+if (_thisCount > 3) then >
+  Error position: <_default;
+};
+
+
+if (_thisCount > 3) then >
+  Error Undefined variable in expression: _default
+File A3\functions_f\Debug\fn_param.sqf, line 65
+Error in expression <typeDefault = typename _default;
+
+if !({_type == typename _x} count _types > 0) >
+  Error position: <_type == typename _x} count _types > 0) >
+  Error Undefined variable in expression: _type
+File A3\functions_f\Debug\fn_param.sqf, line 75
+Error in expression <name _x} count _types > 0) then {
+
+if ({_typeDefault == typename _x} count _type>
+  Error position: <_typeDefault == typename _x} count _type>
+  Error Undefined variable in expression: _typedefault
+File A3\functions_f\Debug\fn_param.sqf, line 77
+Wrong text element 'Empty'
+Error in expression <ult %2 is type %3, must be %4",_id, str _default, _typeDefault, _textTypes] call>
+  Error position: <_default, _typeDefault, _textTypes] call>
+  Error Undefined variable in expression: _default
+File A3\functions_f\Debug\fn_param.sqf, line 88
+Error in expression <pes = _this select 3;
+
+_type = typename _value;
+_typeDefault = typename _default>
+  Error position: <_value;
+_typeDefault = typename _default>
+  Error Undefined variable in expression: _value
+File A3\functions_f\Debug\fn_param.sqf, line 72
+Error in expression <_this select 1}		else {0};
+if (typename _params != typename [])	then {_params = >
+  Error position: <_params != typename [])	then {_params = >
+  Error Undefined variable in expression: _params
+File A3\functions_f\Debug\fn_param.sqf, line 44
+Error in expression <name _default;
+
+if !({_type == typename _x} count _types > 0) then {
+
+if ({_type>
+  Error position: <_x} count _types > 0) then {
+
+if ({_type>
+  Error Undefined variable in expression: _x
+File A3\functions_f\Debug\fn_param.sqf, line 75
+Error in expression <_this select 1}		else {0};
+if (typename _params != typename [])	then {_params = >
+  Error position: <_params != typename [])	then {_params = >
+  Error Undefined variable in expression: _params
+File A3\functions_f\Debug\fn_param.sqf, line 44
+Error in expression <
+
+
+
+if (isnil "_value") then {
+_value = _default;
+};
+
+
+if (_thisCount > 3) then >
+  Error position: <_default;
+};
+
+
+if (_thisCount > 3) then >
+  Error Undefined variable in expression: _default
+File A3\functions_f\Debug\fn_param.sqf, line 65
+Error in expression <_this select 1}		else {0};
+if (typename _params != typename [])	then {_params = >
+  Error position: <_params != typename [])	then {_params = >
+  Error Undefined variable in expression: _params
+File A3\functions_f\Debug\fn_param.sqf, line 44
+Error in expression <efault {
+private["_class"];
+if(typeName _logic != "OBJECT") then {
+_class = "und>
+  Error position: <_logic != "OBJECT") then {
+_class = "und>
+  Error Undefined variable in expression: _logic
+File x\alive\addons\main\functions\fn_baseClass.sqf, line 46
+Error in expression <ogic","_operation","_args"];
+
+_logic = [_this, 0, nil, [objNull]] call BIS_fnc_p>
+  Error position: <_this, 0, nil, [objNull]] call BIS_fnc_p>
+  Error Undefined variable in expression: _this
+File x\alive\addons\main\functions\fn_baseClass.sqf, line 39
+["TEST(B Alpha 1-1:1 (Wolffy.au): Confirm new instance"]
+String STR_CBA_FORMAT_NUMBER_DECIMAL_POINT not found
+String STR_CBA_FORMAT_NUMBER_THOUSANDS_SEPARATOR not found
+String STR_CBA_FORMAT_NUMBER_DECIMAL_POINT not found
+String STR_CBA_FORMAT_NUMBER_THOUSANDS_SEPARATOR not found
+0:03:22601 (11.266) [x\alive\addons\main\tests\test_baseClass.sqf:63] -ERROR- Assertion failed!
+            Assertion (typeName _logic == "OBJECT") failed!
+            
+            instantiate object
+["TEST(B Alpha 1-1:1 (Wolffy.au): Sleeping before destroy"]
+["TEST(B Alpha 1-1:1 (Wolffy.au): Destroy old instance"]
+Error in expression <name _x} count _types > 0) then {
+
+if ({_typeDefault == typename _x} count _type>
+  Error position: <_typeDefault == typename _x} count _type>
+  Error Undefined variable in expression: _typedefault
+File A3\functions_f\Debug\fn_param.sqf, line 77
+Wrong text element 'Empty'
+Error in expression <ult %2 is type %3, must be %4",_id, str _default, _typeDefault, _textTypes] call>
+  Error position: <_default, _typeDefault, _textTypes] call>
+  Error Undefined variable in expression: _default
+File A3\functions_f\Debug\fn_param.sqf, line 88
+Error in expression <ypename _value;
+_typeDefault = typename _default;
+
+if !({_type == typename _x} c>
+  Error position: <_default;
+
+if !({_type == typename _x} c>
+  Error Undefined variable in expression: _default
+File A3\functions_f\Debug\fn_param.sqf, line 73
+Error in expression <name _default;
+
+if !({_type == typename _x} count _types > 0) then {
+
+if ({_type>
+  Error position: <_x} count _types > 0) then {
+
+if ({_type>
+  Error Undefined variable in expression: _x
+File A3\functions_f\Debug\fn_param.sqf, line 75
+Error in expression <
+
+
+
+if (isnil "_value") then {
+_value = _default;
+};
+
+
+if (_thisCount > 3) then >
+  Error position: <_default;
+};
+
+
+if (_thisCount > 3) then >
+  Error Undefined variable in expression: _default
+File A3\functions_f\Debug\fn_param.sqf, line 65
+Error in expression <value] call bis_fnc_error;
+};
+};
+};
+};
+
+_value>
+  Error position: <_value>
+  Error Undefined variable in expression: _value
+File A3\functions_f\Debug\fn_param.sqf, line 109
+Error in expression <s];
+_logic;
+};
+case "destroy": {
+_logic setDamage 1;
+deleteVehicle _logic;
+};
+};>
+  Error position: <setDamage 1;
+deleteVehicle _logic;
+};
+};>
+  Error setdamage: Type Bool, expected Object
+File x\alive\addons\main\functions\fn_baseClass.sqf, line 61

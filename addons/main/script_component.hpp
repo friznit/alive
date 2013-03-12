@@ -1,8 +1,6 @@
 #define COMPONENT main
 #include "\x\alive\addons\main\script_mod.hpp"
 
-// #define DEBUG_MODE_FULL
-
 #ifdef DEBUG_ENABLED_MAIN
 	#define DEBUG_MODE_FULL
 #endif
