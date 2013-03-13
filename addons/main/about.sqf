@@ -205,6 +205,6 @@ if (_pages > 0) then {
 		waitUntil{uisleep 1; _run = call _input; _faded = time > _time; (_run || _faded)};
 	}; //while RUN
 };
-ALIVE_ABOUT_STP = Nil;
-ALIVE_ABOUT_RUN = Nil;
+ALIVE_ABOUT_STP = nil;
+ALIVE_ABOUT_RUN = nil;
 closeDialog 0;

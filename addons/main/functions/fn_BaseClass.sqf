@@ -36,30 +36,25 @@ nil
 ---------------------------------------------------------------------------- */
 private ["_logic","_operation","_args"];
 
-_logic = [_this, 0, nil, [objNull]] call BIS_fnc_param;
-_operation = [_this, 1, "", ["",nil]] call BIS_fnc_param;
-_args = [_this, 2, nil] call BIS_fnc_param;
-
-switch(_operation) do {
-	default {
-		private["_class"];
-		if(typeName _logic != "OBJECT") then {
-			_class = "undefined logic";
-		} else {
-			_class = _logic getVariable ["class", "unknown Class"];
-		};
-		["%1 does not support %2 operation", _class, _operation] call BIS_fnc_log;
-	};
-	case "init": {
-		// Create a module object for settings and persistence
-		ISNILS(sideLogic,createCenter sideLogic);
-		_logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
-		_logic setVariable ["class", ALIVE_fnc_baseClass];
-		_logic;
-	};
-	case "destroy": {
-		_logic setDamage 1;
-		deleteVehicle _logic;
-	};
+// Constructor - create a new instance
+if(isNil "_this") exitWith {
+	// Create a module object for settings and persistence
+	ISNILS(sideLogic,createCenter sideLogic);
+        _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
+        _logic setVariable ["class", ALIVE_fnc_baseClass];
+        _logic;
 };
 
+PARAMS_1(_logic);
+DEFAULT_PARAM(1,_operation,"");
+DEFAULT_PARAM(2,_args,nil);
+
+switch(_operation) do {
+        default {
+                ["%1 does not support %2 operation", _logic, _operation] call BIS_fnc_log;
+        };
+        case "destroy": {
+                _logic setDamage 1;
+                deleteVehicle _logic;
+        };
+};
