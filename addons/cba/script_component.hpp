@@ -1,7 +1,6 @@
 #define COMPONENT ALIVE
 #include "\x\alive\addons\cba\script_mod.hpp"
 
-//#define DEBUG_MODE_FULL
 SLX_XEH_STR = "";
 
 #ifdef DEBUG_ENABLED_MAIN
