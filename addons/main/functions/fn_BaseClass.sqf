@@ -39,7 +39,7 @@ private ["_logic","_operation","_args"];
 // Constructor - create a new instance
 if(isNil "_this") exitWith {
 	// Create a module object for settings and persistence
-	ISNILS(sideLogic,createCenter sideLogic);
+	[sideLogic] call CBA_fnc_createCenter;
         _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         _logic setVariable ["class", ALIVE_fnc_baseClass];
         _logic;
@@ -47,11 +47,13 @@ if(isNil "_this") exitWith {
 
 PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
-DEFAULT_PARAM(2,_args,nil);
+DEFAULT_PARAM(2,_args,[]);
 
 switch(_operation) do {
         default {
-                ["%1 does not support %2 operation", _logic, _operation] call BIS_fnc_log;
+                private["_err"];
+                _err = format["%1 does not support %2 operation", _logic, _operation];
+                ERROR_WITH_TITLE(str _logic,_err);
         };
         case "destroy": {
                 _logic setDamage 1;
