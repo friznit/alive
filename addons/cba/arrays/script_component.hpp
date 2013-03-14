@@ -12,4 +12,4 @@ SLX_XEH_STR = "";
 	#define DEBUG_SETTINGS DEBUG_SETTINGS_MAIN
 #endif
 
-#include "\x\alive\addons\main\script_macros.hpp"
+#include "\x\alive\addons\cba\script_macros.hpp"
