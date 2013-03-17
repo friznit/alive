@@ -1,1 +1,1 @@
-#include <\x\alive\main\mod.cpp>
+#include <\x\alive\addons\main\mod.cpp>

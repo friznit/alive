@@ -9,4 +9,4 @@
 	#define DEBUG_SETTINGS DEBUG_SETTINGS_MAIN
 #endif
 
-#include "\x\alive\addons\cba\script_macros.hpp"
+#include "\x\cba\addons\main\script_macros.hpp"
