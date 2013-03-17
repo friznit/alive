@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_ADMINACTIONS">
+	<English>Admin Actions</English>
+	<German>Admin Aktionen</German>
+	<Italian>Azioni Admin</Italian>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_GHOST">
+	<English>Allow Ghosting:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_GHOST_COMMENT">
+	<English>Allow server admins to be ignored by AI</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT">
+	<English>Allow Teleporting:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT">
+	<English>Allow server admins to teleport  anywhere on the map</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE">
+	<English>Allow Spectating:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT">
+	<English>Allow server admins to be spectate other players</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CAMERA">
+	<English>Allow Camera:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CAMERA_COMMENT">
+	<English>Allow server admins to use the camera</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_ERROR1">
+	<English>Only one Admin Actions module can be used</English>
+</Key>
+
+</Container></Package></Project>
