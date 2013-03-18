@@ -20,7 +20,7 @@
 | Component |
 #===========#
 
-alive_main
+ALiVE_main
 
 #================#
 | Main author(s) |
