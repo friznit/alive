@@ -51,15 +51,23 @@ Don't Index: Macros
 # --------------------------------------------------------------------------
 
 
-Group: Modules  {
+Group: Main  {
 
-   File: script_macros_common.hpp  (main/script_macros_common.hpp)
-   File: script_macros_mission.hpp  (obsolete/script_macros_mission.hpp)
-   }  # Group: Modules
+   File: ALIVE_fnc_baseClass  (main/fnc_baseClass.sqf)
+   File: ALIVE_fnc_isHC  (main/fnc_isHC.sqf)
+   File: ALIVE_fnc_isServerAdmin  (main/fnc_isServerAdmin.sqf)
+   }  # Group: Main
+
+Group: AdminActions  {
+
+   File: ALIVE_fnc_adminActions  (sys_adminactions/fnc_adminActions.sqf)
+   File: ALIVE_fnc_adminActionsInit  (sys_adminactions/fnc_adminActionsInit.sqf)
+   File: ALIVE_fnc_adminActionsMenuDef  (sys_adminactions/fnc_adminActionsMenuDef.sqf)
+   }  # Group: AdminActions
 
 Group: Index  {
 
    Index: Everything
-   File Index: Files
+   Function Index: Functions
    }  # Group: Index
 

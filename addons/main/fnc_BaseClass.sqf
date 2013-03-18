@@ -2,7 +2,7 @@
 SCRIPT(baseClass);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_BaseClass
+Function: ALIVE_fnc_baseClass
 Description:
 Base class
 
@@ -31,6 +31,7 @@ See Also:
 
 Author:
 Wolffy.au
+
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
