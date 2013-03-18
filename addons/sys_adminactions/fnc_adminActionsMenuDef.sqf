@@ -1,6 +1,40 @@
 #include <\x\alive\addons\sys_adminactions\script_component.hpp>
 #include <\x\cba\addons\ui_helper\script_dikCodes.hpp>
 
+SCRIPT(adminActionsMenuDef);
+
+/* ----------------------------------------------------------------------------
+Function: ALIVE_fnc_adminActionsMenuDef
+Description:
+This function controls the View portion of adminActions.
+
+Parameters:
+Object - The object to attach the menu too
+Array - The menu parameters
+
+Returns:
+Array - Returns the menu definitions for FlexiMenu
+
+Examples:
+(begin example)
+// initialise main menu
+[
+	"player",
+	[221,[false,false,false]],
+	-9500,
+	["call ALIVE_fnc_adminActionsMenuDef","main"]
+] call CBA_fnc_flexiMenu_Add;
+(end)
+
+See Also:
+- <ALIVE_fnc_adminActions>
+- CBA_fnc_flexiMenu_Add
+
+Author:
+Wolffy.au
+Peer reviewed:
+nil
+---------------------------------------------------------------------------- */
 private ["_menuDef", "_target", "_params", "_menuName", "_menuRsc", "_menus"];
 // _this==[_target, _menuNameOrParams]
 

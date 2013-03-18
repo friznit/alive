@@ -38,7 +38,7 @@ Examples:
 
 See Also:
 - <ALIVE_fnc_adminActionsInit>
-- <ALIVE_fnc_baseClass>
+- <ALIVE_fnc_adminActionsMenuDef>
 
 Author:
 Wolffy.au
@@ -94,7 +94,7 @@ switch(_operation) do {
                 - frequent check to modify menu and display status (ALIVE_fnc_adminActoinsmenuDef)
                 */
                 
-//                if(!isDedicated && !isHC) then {
+                if(!isDedicated && !isHC) then {
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
                         // if ACE spectator enabled, seto to allow exit
@@ -111,7 +111,7 @@ switch(_operation) do {
                                         "main"
                                 ]
                         ] call CBA_fnc_flexiMenu_Add;
-//                };
+                };
                 
                 /*
                 CONTROLLER  - coordination
