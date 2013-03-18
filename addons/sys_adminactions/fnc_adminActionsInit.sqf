@@ -22,10 +22,10 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_syncunits"];
+private ["_logic"];
 
 PARAMS_1(_logic);
-DEFAULT_PARAM(1,_syncunits, []);
+//DEFAULT_PARAM(1,_syncunits, []);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_adminActions","Main function missing");

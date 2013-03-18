@@ -7,8 +7,17 @@
 	<German>Admin Aktionen</German>
 	<Italian>Azioni Admin</Italian>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_COMMENT">
+	<English>Server admin functions</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_GHOST">
 	<English>Allow Ghosting:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_GHOST_ENABLE">
+	<English>Enable Ghosting</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_GHOST_DISABLE">
+	<English>Disable Ghosting</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_GHOST_COMMENT">
 	<English>Allow server admins to be ignored by AI</English>
@@ -16,17 +25,29 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT">
 	<English>Allow Teleporting:</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT_ENABLE">
+	<English>Enable Teleporting</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT_DISABLE">
+	<English>Disable Teleporting</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT">
-	<English>Allow server admins to teleport  anywhere on the map</English>
+	<English>Allow server admins to teleport anywhere on the map</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE">
-	<English>Allow Spectating:</English>
+	<English>Allow Spectating (ACE):</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE_ENABLE">
+	<English>Enable Spectating</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT">
-	<English>Allow server admins to be spectate other players</English>
+	<English>Allow server admins to be spectate other players (requires ACE)</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CAMERA">
 	<English>Allow Camera:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CAMERA_ENABLE">
+	<English>Enable Camera</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CAMERA_COMMENT">
 	<English>Allow server admins to use the camera</English>
