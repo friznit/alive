@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_STATISTICS">
+	<English>Statistics</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_COMMENT">
+	<English>MP Statistics recorded to ALiVE web service</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_ENABLED">
+	<English>Enable Statistics:</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_ENABLED_COMMENT">
+	<English>Allows MP Dedicated Server games to record events/statistics in game to the ALiVE web service</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_DISABLED">
+	<English>Disable Statistics:</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_DISABLED_COMMENT">
+	<English>Disable events/statistics being sent to the ALiVE web service</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_ERROR1">
+	<English>Only one statistics module can be used</English>
+</Key>
+
+</Container></Package></Project>
