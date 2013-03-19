@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_RWG">
+	<English>Respawn with Gear</English>
+</Key>
+<Key ID="STR_ALIVE_RWG_COMMENT">
+	<English>Loadout saving</English>
+</Key>
+<Key ID="STR_ALIVE_RWG_ENABLED">
+	<English>Enable RWG:</English>
+</Key>
+<Key ID="STR_ALIVE_RWG_ENABLED_COMMENT">
+	<English>Allows you to respawn with your former loadout</English>
+</Key>
+<Key ID="STR_ALIVE_RWG_DISABLED">
+	<English>Disable RWG:</English>
+</Key>
+<Key ID="STR_ALIVE_RWG_DISABLED_COMMENT">
+	<English>Disable respawn with gear</English>
+</Key>
+<Key ID="STR_ALIVE_RWG_ERROR1">
+	<English>Only one RWG module can be used</English>
+</Key>
+
+</Container></Package></Project>
