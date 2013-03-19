@@ -45,6 +45,7 @@ class RscDisplayMain: RscStandardDisplay
 			y = "9.3 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "7.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "3.75 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			tooltip = "$STR_ALIVE_MAIN_TOOLTIP_LOGO_ABOUT";
 		};
 	};
 };
