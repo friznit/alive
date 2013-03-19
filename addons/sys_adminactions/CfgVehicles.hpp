@@ -10,7 +10,7 @@ class CfgVehicles {
 		picture = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";
                 class Arguments
                 {
-                        class Ghost
+                        class ghost
                         {
                                 displayName = "$STR_ALIVE_ADMINACTIONS_GHOST";
                                 description = "$STR_ALIVE_ADMINACTIONS_GHOST_COMMENT";
@@ -29,7 +29,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class Teleport
+                        class teleport
                         {
                                 displayName = "$STR_ALIVE_ADMINACTIONS_TELEPORT";
                                 description = "$STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT";
@@ -48,7 +48,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class Spectate
+                        class spectate
                         {
                                 displayName = "$STR_ALIVE_ADMINACTIONS_SPECTATE";
                                 description = "$STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT";
@@ -67,10 +67,10 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class Camera
+                        class console
                         {
-                                displayName = "$STR_ALIVE_ADMINACTIONS_CAMERA";
-                                description = "$STR_ALIVE_ADMINACTIONS_CAMERA_COMMENT";
+                                displayName = "$STR_ALIVE_ADMINACTIONS_CONSOLE";
+                                description = "$STR_ALIVE_ADMINACTIONS_CONSOLE_COMMENT";
                                 class Values
                                 {
                                         class Yes

@@ -19,7 +19,7 @@ Boolean - debug - Debug enabled
 Boolean - ghost - Enabled or disable Ghosting function
 Boolean - teleport - Enabled or disable Teleporting function
 Boolean - spectate - Enabled or disable ACE Spectating function
-Boolean - camera - Enabled or disable Camera function
+Boolean - console - Enabled or disable Debug console function
 
 Parameters:
 _this select 0: OBJECT - Skirmish - Init module
@@ -43,6 +43,9 @@ See Also:
 Author:
 Wolffy.au
 JMan
+
+Peer reviewed:
+nil
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS nil
@@ -61,7 +64,7 @@ switch(_operation) do {
                 - ghosting enabled
                 - teleport enabled
                 - ACE spectator enabled
-                - Camera enabled
+                - Debug console enabled
                 */
                 
                 // Ensure only one module is used
