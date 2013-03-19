@@ -1,5 +1,5 @@
 class CfgMods {
 	class ADDON {
-		#include "mod.cpp"
+		#include <\x\alive\addons\main\mod.cpp>
 	};
 };

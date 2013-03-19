@@ -2,5 +2,5 @@
 
 LOG(MSG_INIT);
 
-PREPMAIN(isHC)
+PREPMAIN(isHC);
 call ALIVE_fnc_isHC;
