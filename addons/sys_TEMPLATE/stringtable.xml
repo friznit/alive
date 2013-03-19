@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_TEMPLATE">
+	<English>TEMPLATE</English>
+</Key>
+<Key ID="STR_ALIVE_TEMPLATE_COMMENT">
+	<English>XXXX</English>
+</Key>
+<Key ID="STR_ALIVE_TEMPLATE_ENABLED">
+	<English>Enable TEMPLATE:</English>
+</Key>
+<Key ID="STR_ALIVE_TEMPLATE_ENABLED_COMMENT">
+	<English>XXX</English>
+</Key>
+<Key ID="STR_ALIVE_TEMPLATE_DISABLED">
+	<English>Disable TEMPLATE:</English>
+</Key>
+<Key ID="STR_ALIVE_TEMPLATE_DISABLED_COMMENT">
+	<English>XXXX</English>
+</Key>
+<Key ID="STR_ALIVE_TEMPLATE_ERROR1">
+	<English>Only one TEMPLATE module can be used</English>
+</Key>
+
+</Container></Package></Project>
