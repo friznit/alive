@@ -32,6 +32,7 @@ See Also:
 
 Author:
 Wolffy.au
+
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
@@ -131,13 +132,22 @@ if (_menuName == "adminActions") then {
 					ALIVE_adminActions getVariable ["spectate", 0],
 					!isNil "ace_fnc_startSpectator"
 				],
-				[localize "STR_ALIVE_ADMINACTIONS_CAMERA_ENABLE",
-					{ [player] call BIS_fnc_camera },
+				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
+					{ createDialog "RscDisplayDebugPublic" },
 					"",
-					localize "STR_ALIVE_ADMINACTIONS_CAMERA_COMMENT",
+					localize "STR_ALIVE_ADMINACTIONS_CONSOLE_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["camera", 0],
+					ALIVE_adminActions getVariable ["console", 0],
+					true
+				],
+				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_ENABLE",
+					{ createDialog "RscDisplayDebug" },
+					"",
+					localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_COMMENT",
+					"",
+					-1,
+					ALIVE_adminActions getVariable ["console", 0],
 					true
 				]
 			]
