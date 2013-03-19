@@ -8,16 +8,22 @@
 <Key ID="STR_ALIVE_STATISTICS_COMMENT">
 	<English>MP Statistics recorded to ALiVE web service</English>
 </Key>
-<Key ID="STR_ALIVE_STATISTICS_ENABLED">
+<Key ID="STR_ALIVE_STATISTICS_ALLOW">
 	<English>Enable Statistics:</English>
 </Key>
-<Key ID="STR_ALIVE_STATISTICS_ENABLED_COMMENT">
+<Key ID="STR_ALIVE_STATISTICS_ALLOW_COMMENT">
 	<English>Allows MP Dedicated Server games to record events/statistics in game to the ALiVE web service</English>
 </Key>
-<Key ID="STR_ALIVE_STATISTICS_DISABLED">
-	<English>Disable Statistics:</English>
+<Key ID="STR_ALIVE_STATISTICS_ENABLE">
+	<English>Enable Statistics</English>
 </Key>
-<Key ID="STR_ALIVE_STATISTICS_DISABLED_COMMENT">
+<Key ID="STR_ALIVE_STATISTICS_ENABLE_COMMENT">
+	<English>Enable events/statistics recording to the ALiVE web service</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_DISABLE">
+	<English>Disable Statistics</English>
+</Key>
+<Key ID="STR_ALIVE_STATISTICS_DISABLE_COMMENT">
 	<English>Disable events/statistics being sent to the ALiVE web service</English>
 </Key>
 <Key ID="STR_ALIVE_STATISTICS_ERROR1">

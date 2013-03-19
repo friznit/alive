@@ -12,8 +12,8 @@ class CfgVehicles {
                 {
                         class Enabled
                         {
-                                displayName = "$STR_ALIVE_STATISTICS_ENABLED";
-                                description = "$STR_ALIVE_STATISTICS_ENABLED_COMMENT";
+                                displayName = "$STR_ALIVE_STATISTICS_ALLOW";
+                                description = "$STR_ALIVE_STATISTICS_ALLOW_COMMENT";
                                 class Values
                                 {
                                         class Yes
