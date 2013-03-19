@@ -124,13 +124,13 @@ if (_menuName == "adminActions") then {
 					(ALIVE_adminActions getVariable ["teleport_enabled", false])
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_SPECTATE_ENABLE",
-					{ [] call ace_fnc_startSpectator },
+					{ [] execVM "\x\alive\addons\sys_adminactions\spect\specta_init.sqf"; },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT",
 					"",
 					-1,
 					ALIVE_adminActions getVariable ["spectate", 0],
-					!isNil "ace_fnc_startSpectator"
+					true
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
 					{ createDialog "RscDisplayDebugPublic" },

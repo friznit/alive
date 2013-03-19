@@ -12,3 +12,5 @@ class CfgPatches {
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
+
+#include <\x\alive\addons\sys_adminactions\spect\spectating.hpp>
