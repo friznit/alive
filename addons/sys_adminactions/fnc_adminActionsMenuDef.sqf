@@ -28,7 +28,7 @@ Examples:
 
 See Also:
 - <ALIVE_fnc_adminActions>
-- CBA_fnc_flexiMenu_Add
+- <CBA_fnc_flexiMenu_Add>
 
 Author:
 Wolffy.au

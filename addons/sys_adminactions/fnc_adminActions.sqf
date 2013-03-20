@@ -73,13 +73,14 @@ switch(_operation) do {
                 };
                 
                 if (isServer) then {
-                        // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", ALIVE_fnc_adminActions];
-                        _logic setVariable ["init", true];
                         // and publicVariable to clients
                         ALIVE_adminActions = _logic;
                         publicVariable "ALIVE_adminActions";
+
+                        // if server, initialise module game logic
+                        ALIVE_adminActions setVariable ["super", SUPERCLASS, true];
+                        ALIVE_adminActions setVariable ["class", ALIVE_fnc_adminActions, true];
+                        ALIVE_adminActions setVariable ["init", true, true];
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
