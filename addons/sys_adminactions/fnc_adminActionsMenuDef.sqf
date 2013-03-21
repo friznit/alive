@@ -93,7 +93,7 @@ if (_menuName == "adminActions") then {
 					localize "STR_ALIVE_ADMINACTIONS_GHOST_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["ghost", 0],
+					MOD(adminActions) getVariable ["ghost", 0],
 					!captive player
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_GHOST_DISABLE",
@@ -102,26 +102,26 @@ if (_menuName == "adminActions") then {
 					localize "STR_ALIVE_ADMINACTIONS_GHOST_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["ghost", 0],
+					MOD(adminActions) getVariable ["ghost", 0],
 					captive player
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_TELEPORT_ENABLE",
-					{ ALIVE_adminActions setVariable ["teleport_enabled", true]; onMapSingleClick {player setPos _pos;} },
+					{ MOD(adminActions) setVariable ["teleport_enabled", true]; onMapSingleClick {player setPos _pos;} },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["teleport", 0],
-					!(ALIVE_adminActions getVariable ["teleport_enabled", false])
+					MOD(adminActions) getVariable ["teleport", 0],
+					!(MOD(adminActions) getVariable ["teleport_enabled", false])
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_TELEPORT_DISABLE",
-					{ ALIVE_adminActions setVariable ["teleport_enabled", false]; onMapSingleClick DEFAULT_MAPCLICK; },
+					{ MOD(adminActions) setVariable ["teleport_enabled", false]; onMapSingleClick DEFAULT_MAPCLICK; },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["teleport", 0],
-					(ALIVE_adminActions getVariable ["teleport_enabled", false])
+					MOD(adminActions) getVariable ["teleport", 0],
+					(MOD(adminActions) getVariable ["teleport_enabled", false])
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_SPECTATE_ENABLE",
 					{ [] execVM "\x\alive\addons\sys_adminactions\spect\specta_init.sqf"; },
@@ -129,7 +129,7 @@ if (_menuName == "adminActions") then {
 					localize "STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["spectate", 0],
+					MOD(adminActions) getVariable ["spectate", 0],
 					true
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
@@ -138,7 +138,7 @@ if (_menuName == "adminActions") then {
 					localize "STR_ALIVE_ADMINACTIONS_CONSOLE_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["console", 0],
+					MOD(adminActions) getVariable ["console", 0],
 					true
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_ENABLE",
@@ -147,7 +147,7 @@ if (_menuName == "adminActions") then {
 					localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_COMMENT",
 					"",
 					-1,
-					ALIVE_adminActions getVariable ["console", 0],
+					MOD(adminActions) getVariable ["console", 0],
 					true
 				]
 			]

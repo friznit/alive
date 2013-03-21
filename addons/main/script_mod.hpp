@@ -33,3 +33,6 @@
 	#define DEBUG_ENABLED_STRINGS
 	#define DEBUG_ENABLED_VERSIONING
 */
+
+#define MOD(var1) GVARMAIN(var1)
+#define QMOD(var1) QUOTE(GVARMAIN(var1))
