@@ -9,5 +9,3 @@
 #ifdef DEBUG_SETTINGS_SYS_ADMINACTIONS
 	#define DEBUG_SETTINGS DEBUG_SETTINGS_SYS_ADMINACTIONS
 #endif
-
-#include <\x\cba\addons\main\script_macros.hpp>

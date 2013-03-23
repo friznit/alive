@@ -36,3 +36,5 @@
 
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
+
+#include <\x\cba\addons\main\script_macros.hpp>
