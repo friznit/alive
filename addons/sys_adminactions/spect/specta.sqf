@@ -743,7 +743,7 @@ camDestroy KEGscam_fullmap;
 _debugPlayer groupchat format ["Cleaning up", VM_SpectatorCamerasEnabled];
 deletevehicle _t;
 deletevehicle KEGs_dummy;
-onMapSingleClick "";
+onMapSingleClick DEFAULT_MAPCLICK;
 {deletevehicle (_x select 1)} foreach KEGsTagSources;
 KEGsTagSources = [];
 
@@ -774,7 +774,7 @@ cutText["\n\n\n\n\nLand on ground to return to spectating\nClick at map to jump 
 
 // Wait until landed, delete bird & restart script
 waitUntil{(_bird modelToWorld [0,0,0]) select 2 < 0.05 and speed _bird < 1};
-onMapSingleClick "";
+onMapSingleClick DEFAULT_MAPCLICK;
 
 sleep(0.5);
 

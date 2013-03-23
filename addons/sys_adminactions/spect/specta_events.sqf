@@ -104,7 +104,7 @@ switch (_type) do {
 									_debugPlayer groupchat format ["Cleaning up", VM_SpectatorCamerasEnabled];
 									deletevehicle _t;
 									deletevehicle KEGs_dummy;
-									onMapSingleClick "";
+									onMapSingleClick DEFAULT_MAPCLICK;
 									{deletevehicle (_x select 1)} foreach KEGsTagSources;
 									KEGsTagSources = [];
 									
