@@ -46,6 +46,7 @@ class CfgVehicles {
                 scope = 2;
 		displayName = "$STR_ALIVE_REQUIRES_ALIVE";
                 isGlobal = 1;
+                isPersistent = 1;
 		icon = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
 		picture = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
 	};
