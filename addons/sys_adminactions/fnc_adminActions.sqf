@@ -78,21 +78,19 @@ switch(_operation) do {
                         publicVariable QMOD(adminActions);
 
                         // if server, initialise module game logic
-                        MOD(adminactions) setVariable ["super", SUPERCLASS, true];
-                        MOD(adminactions) setVariable ["class", ALIVE_fnc_adminActions, true];
-                        MOD(adminactions) setVariable ["init", true, true];
+                        MOD(adminActions) setVariable ["super", SUPERCLASS];
+                        MOD(adminActions) setVariable ["class", ALiVE_fnc_adminActions];
+                        MOD(adminActions) setVariable ["init", true, true];
                 } else {
-                        // if client clean up client side game logics as they will transfer
-                        // to servers on client disconnect
-                        deleteVehicle _logic;
+                        // any client side logic
                 };
 
-		TRACE_2("After module init",MOD(adminactions),MOD(adminactions) getVariable "init");
+		TRACE_2("After module init",MOD(adminActions),MOD(adminActions) getVariable "init");
 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(adminactions)};
-                waitUntil {MOD(adminactions) getVariable ["init", false]};        
+                waitUntil {!isNil QMOD(adminActions)};
+                waitUntil {MOD(adminActions) getVariable ["init", false]};        
 
                 /*
                 VIEW - purely visual

@@ -75,12 +75,14 @@ _menus =
 				"",
 				"",
 				localize "STR_ALIVE_ADMINACTIONS_COMMENT",
-                                ["call ALIVE_fnc_adminActionsMenuDef", "adminActions", 1],
+                                ["call ALiVE_fnc_adminActionsMenuDef", "adminActions", 1],
                                 -1, 1, call ALIVE_fnc_isServerAdmin
 			]
 		]
 	]
 ];
+
+TRACE_4("Menu setup",MOD(adminActions),MOD(adminActions) getVariable "ghost",MOD(adminActions) getVariable "teleport",MOD(adminActions) getVariable "spectate");
 
 if (_menuName == "adminActions") then {
 	_menus set [count _menus,

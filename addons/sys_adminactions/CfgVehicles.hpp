@@ -87,12 +87,6 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class Condition
-                        {
-                                displayName = "Condition:";
-                                description = "";
-                                defaultValue = "true";
-                        };                        
                 };
                 
         };
