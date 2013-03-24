@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_VDIST">
+	<English>View Distance</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_COMMENT">
+	<English>View Distance Settings in Game</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_ALLOW">
+	<English>Enable View Distance:</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_ALLOW_COMMENT">
+	<English>Allows players to set view distance in Game</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_ENABLED">
+	<English>Enable View Distance</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_ENABLED_COMMENT">
+	<English>Enable's the ability of players to set view distance in Game</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_DISABLE">
+	<English>Disable View Distance</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_DISABLE_COMMENT">
+	<English>Disable's the ability of players to set view distance in Game</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_ERROR1">
+	<English>Only one View Distance module can be used</English>
+</Key>
+
+</Container></Package></Project>
