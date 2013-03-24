@@ -8,7 +8,13 @@ class CfgPatches {
 		versionDesc = "ALiVE";
 		versionAct = "['SYS_TEMPLATE',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
-		author[] = {"Tupolov"};
+		author[] = {"Wolffy.au, Tupolov"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
+class Extended_PreInit_EventHandlers {
+	class ADDON {
+		init = QUOTE(call COMPILE_FILE(XEH_preInit));
+	};
+};
+

@@ -6,6 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_TEMPLATE";
                 function = "ALIVE_fnc_TEMPLATEInit";
                 isGlobal = 1;
+                isPersistent = 1;
 				icon = "x\alive\addons\sys_TEMPLATE\icon_sys_TEMPLATE.paa";
 				picture = "x\alive\addons\sys_TEMPLATE\icon_sys_TEMPLATE.paa";
                 class Arguments
@@ -29,12 +30,6 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                          class Condition
-                        {
-                                displayName = "Condition:";
-                                description = "";
-                                defaultValue = "true";
-                        };                        
                 };
                 
         };

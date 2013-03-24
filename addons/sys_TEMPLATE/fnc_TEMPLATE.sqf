@@ -53,28 +53,28 @@ switch(_operation) do {
                 */
                 
                 // Ensure only one module is used
-                if (isServer && !(isNil "ALIVE_TEMPLATE")) exitWith {
+                if (isServer && !(isNil QMOD(TEMPLATE))) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_TEMPLATE_ERROR1");
                 };
                 
                 if (isServer) then {
-                        // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", ALIVE_fnc_TEMPLATE];
-                        _logic setVariable ["init", true];
                         // and publicVariable to clients
-                        ALIVE_TEMPLATE = _logic;
-                        publicVariable "ALIVE_TEMPLATE";
+                        MOD(TEMPLATE) = _logic;
+                        publicVariable QMOD(TEMPLATE);
+                        // if server, initialise module game logic
+                        MOD(TEMPLATE) setVariable ["super", SUPERCLASS];
+                        MOD(TEMPLATE) setVariable ["class", ALIVE_fnc_TEMPLATE];
+                        MOD(TEMPLATE) setVariable ["init", true, true];
                 } else {
-                        // if client clean up client side game logics as they will transfer
-                        // to servers on client disconnect
-                        deleteVehicle _logic;
+                        // any client side logic
                 };
                 
+		TRACE_2("After module init",MOD(TEMPLATE),MOD(TEMPLATE) getVariable "init");
+
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil "ALIVE_TEMPLATE"};
-                waitUntil {ALIVE_TEMPLATE getVariable ["init", false]};        
+                waitUntil {!isNil QMOD(TEMPLATE)};
+                waitUntil {MOD(TEMPLATE) getVariable ["init", false]};        
 
                 /*
                 VIEW - purely visual
@@ -82,11 +82,20 @@ switch(_operation) do {
                 - frequent check to modify menu and display status (ALIVE_fnc_TEMPLATEsmenuDef)
                 */
                 
+		TRACE_2("Adding menu",isDedicated,isHC);
+
                 if(!isDedicated && !isHC) then {
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+
                         // if ACE spectator enabled, seto to allow exit
                         if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
+
+                        // Initialise default map click command if undefined
+                        ISNILS(DEFAULT_MAPCLICK,"");
+
+			TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
+
                         // initialise main menu
                         [
                                 "player",
@@ -99,6 +108,10 @@ switch(_operation) do {
                         ] call CBA_fnc_flexiMenu_Add;
                 };
                 
+                /*
+                CONTROLLER  - coordination
+                - frequent check if player is server admin (ALIVE_fnc_adminActoinsmenuDef)
+                */
         };
         case "destroy": {
                 if (isServer) then {
@@ -107,8 +120,8 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        ALIVE_TEMPLATE = _logic;
-                        publicVariable "ALIVE_TEMPLATE";
+                        MOD(TEMPLATE) = _logic;
+                        publicVariable QMOD(TEMPLATE);
                 };
                 
                 if(!isDedicated && !isHC) then {
