@@ -6,8 +6,9 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_VDIST";
                 function = "ALIVE_fnc_vDistInit";
                 isGlobal = 1;
-                icon = "x\alive\addons\sys_RWG\icon_sys_RWG.paa";
-                picture = "x\alive\addons\sys_RWG\icon_sys_RWG.paa";
+                isPersistent = 1;
+                icon = "x\alive\addons\sys_viewdistance\icon_sys_viewdistance.paa";
+                picture = "x\alive\addons\sys_viewdistance\icon_sys_viewdistance.paa";
                 class Arguments
                 {
                         class vdist

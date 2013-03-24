@@ -15,10 +15,10 @@
 	<English>Allows players to set view distance in Game</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_ENABLED">
-	<English>Enable View Distance</English>
+	<English>Set View Distance</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_ENABLED_COMMENT">
-	<English>Enable's the ability of players to set view distance in Game</English>
+	<English>Set you View distance in Game</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_DISABLE">
 	<English>Disable View Distance</English>

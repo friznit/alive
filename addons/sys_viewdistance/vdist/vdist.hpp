@@ -1,5 +1,5 @@
-#include "GUI\commonDefs.hpp"
-#include "GUI\rscCommon.hpp"
+#include "slider\commonDefs.hpp"
+#include "slider\rscCommon.hpp"
 
 class vdist_Slider : RscSlider
 {
