@@ -1,0 +1,5 @@
+x\alive\addons\main
+prefix=x\alive\addons\main
+product=ALiVE
+version=1
+Pbo Type is: Arma
