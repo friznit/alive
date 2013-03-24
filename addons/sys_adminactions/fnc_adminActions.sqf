@@ -21,10 +21,6 @@ Boolean - teleport - Enabled or disable Teleporting function
 Boolean - spectate - Enabled or disable ACE Spectating function
 Boolean - console - Enabled or disable Debug console function
 
-Parameters:
-_this select 0: OBJECT - Skirmish - Init module
-_this select 1: ARRAY - Synchronized units
-
 The popup menu will change to show status as functions are enabled and disabled.
 
 Note: I was going to add a process that checked if the admin had logged out and
