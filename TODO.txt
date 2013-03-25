@@ -1,9 +1,4 @@
-﻿Advanced, Artificial, Ambient
-Living, Live
-Virtual
-Environment
-
-New Feature
+﻿New Feature
 
 - create a new feature branch to push to GIT
 <pre>
