@@ -8,23 +8,35 @@
 <Key ID="STR_ALIVE_VDIST_COMMENT">
 	<English>View Distance Settings in Game</English>
 </Key>
-<Key ID="STR_ALIVE_VDIST_ALLOW">
-	<English>Enable View Distance:</English>
+<Key ID="STR_ALIVE_VDIST_MAX">
+	<English>Max VD:</English>
 </Key>
-<Key ID="STR_ALIVE_VDIST_ALLOW_COMMENT">
-	<English>Allows players to set view distance in Game</English>
+<Key ID="STR_ALIVE_VDIST_MAX_COMMENT">
+	<English>Maximum view distance allowed in Game</English>
 </Key>
-<Key ID="STR_ALIVE_VDIST_ENABLED">
-	<English>Set View Distance</English>
+<Key ID="STR_ALIVE_VDIST_MIN">
+	<English>Min VD:</English>
 </Key>
-<Key ID="STR_ALIVE_VDIST_ENABLED_COMMENT">
-	<English>Set you View distance in Game</English>
+<Key ID="STR_ALIVE_VDIST_MIN_COMMENT">
+	<English>Minimum view distance allowed in Game</English>
 </Key>
-<Key ID="STR_ALIVE_VDIST_DISABLE">
-	<English>Disable View Distance</English>
+<Key ID="STR_ALIVE_TGRID">
+	<English>Terrain Grid</English>
 </Key>
-<Key ID="STR_ALIVE_VDIST_DISABLE_COMMENT">
-	<English>Disable's the ability of players to set view distance in Game</English>
+<Key ID="STR_ALIVE_TGRID_COMMENT">
+	<English>Terrain Grid Settings in Game</English>
+</Key>
+<Key ID="STR_ALIVE_TGRID_MAX">
+	<English>Max TG:</English>
+</Key>
+<Key ID="STR_ALIVE_TGRID_MAX_COMMENT">
+	<English>Maximum Terrain Grid allowed in Game</English>
+</Key>
+<Key ID="STR_ALIVE_TGRID_MIN">
+	<English>Min TG:</English>
+</Key>
+<Key ID="STR_ALIVE_TGRID_MIN_COMMENT">
+	<English>Minimum Terrain Grid allowed in Game</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_ERROR1">
 	<English>Only one View Distance module can be used</English>
