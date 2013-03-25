@@ -30,7 +30,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class CQB_spawn_Class
+                        class CQB_spawn
                         {
                                 displayName = "$STR_ALIVE_CQB_SPAWN";
                                 description = "$STR_ALIVE_CQB_SPAWN_COMMENT";

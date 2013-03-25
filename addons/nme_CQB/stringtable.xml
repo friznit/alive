@@ -21,13 +21,13 @@
 	<English>Enables CQB module</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN">
-	<English>CQB Building Occupation</English>
+	<English>Density</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN_COMMENT">
 	<English>Percentage of occupied houses</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_MAXGROUPS">
-	<English>Max. CQB groups</English>
+	<English>Max. groups</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_MAXGROUPS_COMMENT">
 	<English>Maximum of allowed CQB groups</English>

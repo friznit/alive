@@ -68,6 +68,9 @@ switch(_operation) do {
                     MOD(CQB) = _logic;
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
+
+			CQB_spawn = _logic getvariable ["CQB_spawn",1];
+			CQB_maxgrps = _logic getvariable ["CQBmaxgrps",144];
                         
 				    // Get all enterable houses across the map
 					_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
@@ -84,9 +87,6 @@ switch(_operation) do {
                     _result = [_spawnhouses, _strategicTypes, "BIS_ZORA_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
 					_strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
-                    
-                    diag_log _result;
-                    
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _spawnhouses] call ALiVE_fnc_CQB;
@@ -502,7 +502,7 @@ switch(_operation) do {
 							_spawn = _logic getVariable ["spawnDistance", 800];
 							
 							// Maximum number of groups per client
-							_maxgrps = 144;
+							_maxgrps = CQB_maxgrps;
 							
 							// Check: house doesn't already have AI AND
 							// Check: if any players within spawn distance AND
