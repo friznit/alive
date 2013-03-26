@@ -44,9 +44,7 @@ PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,nil);
 
-//Init further mandatory params on all localities
-CQB_spawn = call compile (_logic getvariable ["CQB_spawn_setting",1]);
-_debug = call compile (_logic getvariable ["CQB_debug_setting",false]);
+
 
 switch(_operation) do {
         default {
@@ -55,6 +53,13 @@ switch(_operation) do {
                 ERROR_WITH_TITLE(str _logic,_err);
         };
         case "init": {
+            	//Init further mandatory params on all localities
+		CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
+		if (typename (CQB_spawn) == "STRING") then {CQB_spawn = call compile CQB_spawn};
+            
+	        CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
+                if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
+
                 /*
                 MODEL - no visual just reference data
                 - server side object only
@@ -103,7 +108,7 @@ switch(_operation) do {
                     
 					_logic setVariable ["debugColor","ColorRed",true];
 					_logic setVariable ["debugPrefix","Strategic",true];
-					[_logic, "debug", _debug] call ALiVE_fnc_CQB;
+					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                     GVAR(strategic) = _logic;
 					
 					// Create nonstrategic CQB instance
@@ -116,7 +121,7 @@ switch(_operation) do {
                     
                     _logic setVariable ["debugColor","ColorGreen",true];
 					_logic setVariable ["debugPrefix","Regular",true];
-					[_logic, "debug", _debug] call ALiVE_fnc_CQB;
+					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
 					GVAR(regular) = _logic;
                     
                     MOD(CQB) setVariable ["instances",[GVAR(regular),GVAR(strategic)],true];
