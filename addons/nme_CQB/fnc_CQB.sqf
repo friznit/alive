@@ -54,10 +54,10 @@ switch(_operation) do {
         };
         case "init": {
             	//Init further mandatory params on all localities
-		CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
-		if (typename (CQB_spawn) == "STRING") then {CQB_spawn = call compile CQB_spawn};
+				CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
+				if (typename (CQB_spawn) == "STRING") then {CQB_spawn = call compile CQB_spawn};
             
-	        CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
+	        	CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
                 if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
 
                 /*
@@ -101,34 +101,33 @@ switch(_operation) do {
                     // Create strategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
-
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", MSO_FACTIONS] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 800] call ALiVE_fnc_CQB;
-                    
 					_logic setVariable ["debugColor","ColorRed",true];
 					_logic setVariable ["debugPrefix","Strategic",true];
 					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-                    GVAR(strategic) = _logic;
+                    CQB_Strategic = _logic;
+                    Publicvariable "CQB_Strategic";
 					
 					// Create nonstrategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
-                    
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", MSO_FACTIONS] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
-                    
                     _logic setVariable ["debugColor","ColorGreen",true];
 					_logic setVariable ["debugPrefix","Regular",true];
-					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-					GVAR(regular) = _logic;
+
+                    CQB_Regular = _logic;
+                    Publicvariable "CQB_Regular";
                     
-                    MOD(CQB) setVariable ["instances",[GVAR(regular),GVAR(strategic)],true];
+                    MOD(CQB) setVariable ["instances",[CQB_Regular,CQB_Strategic],true];
                     MOD(CQB) setVariable ["init", true, true];
                     
                     diag_log format["Regular logic %1, houses %2",_logic,count _spawnhouses];
-                    // and publicVariable to clients
+                    // and publicVariable Main class to clients
+                    
                     publicVariable QMOD(CQB);
                     diag_log "CQB Init finished";
             } else {
@@ -153,11 +152,13 @@ switch(_operation) do {
 
                 if(!isDedicated && !isHC) then {
 					waitUntil {MOD(CQB) getVariable ["init", false]};
-					[GVAR(regular), "active", true] call ALiVE_fnc_CQB;
-					diag_log ([GVAR(regular), "state"] call ALiVE_fnc_CQB);
+					[CQB_Regular, "active", true] call ALiVE_fnc_CQB;
+					diag_log ([CQB_Regular, "state"] call ALiVE_fnc_CQB);
+                    [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                     
-					[GVAR(strategic), "active", true] call ALiVE_fnc_CQB;
-					diag_log ([GVAR(strategic), "state"] call ALiVE_fnc_CQB);
+					[CQB_Strategic, "active", true] call ALiVE_fnc_CQB;
+					diag_log ([CQB_Strategic, "state"] call ALiVE_fnc_CQB);
+                    [CQB_Strategic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                 };
                 
                 /*

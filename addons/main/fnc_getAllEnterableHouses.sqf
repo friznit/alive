@@ -32,7 +32,7 @@ _allhouses = GVAR(getAllEnterableHouses);
 
 if(count _allhouses == 0) then {
 	_center = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-	_allhouses = [_center, (_center select 0) min (_center select 1)] call ALIVE_fnc_getEnterableHouses;
+	_allhouses = [_center, ((_center select 0) min (_center select 1))*2] call ALIVE_fnc_getEnterableHouses;
 	
 	GVAR(getAllEnterableHouses) = _allhouses;
 };
