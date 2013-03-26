@@ -75,7 +75,7 @@ _menus =
 				"",
 				localize "STR_ALIVE_VDIST_COMMENT",
                                 ["call ALIVE_fnc_vdistMenuDef", "vdist", 1],
-                                -1, 1, call ALIVE_fnc_isServerAdmin
+                                -1, 1, true
 			]
 		]
 	]
@@ -92,7 +92,7 @@ if (_menuName == "vdist") then {
 					localize "STR_ALIVE_VDIST_ENABLED_COMMENT",
 					"",
 					-1,
-					ALIVE_vdist getVariable ["vdist", 0],
+					1,
 					true
 				]
 			]

@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_VDIST">
-	<English>View Distance</English>
+	<English>View Settings</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_COMMENT">
 	<English>View Distance Settings in Game</English>
@@ -13,6 +13,12 @@
 </Key>
 <Key ID="STR_ALIVE_VDIST_MAX_COMMENT">
 	<English>Maximum view distance allowed in Game</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_ENABLED">
+	<English>Set View Settings</English>
+</Key>
+<Key ID="STR_ALIVE_VDIST_ENABLED_COMMENT">
+	<English>Set you View distance in Game</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_MIN">
 	<English>Min VD:</English>
