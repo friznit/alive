@@ -8,11 +8,11 @@
 <Key ID="STR_ALIVE_CQB_COMMENT">
 	<English>XXXX</English>
 </Key>
-<Key ID="STR_ALIVE_CQB_ALLOW">
-	<English>Enable CQB:</English>
+<Key ID="STR_ALIVE_CQB_DEBUG">
+	<English>Enable Debug:</English>
 </Key>
-<Key ID="STR_ALIVE_CQB_ALLOW_COMMENT">
-	<English>Enables CQB Module</English>
+<Key ID="STR_ALIVE_CQB_DEBUG_COMMENT">
+	<English>Enables CQB Module Debug</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_ENABLE">
 	<English>Enable CQB</English>
@@ -25,12 +25,6 @@
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN_COMMENT">
 	<English>Percentage of occupied houses</English>
-</Key>
-<Key ID="STR_ALIVE_CQB_MAXGROUPS">
-	<English>Max. groups</English>
-</Key>
-<Key ID="STR_ALIVE_CQB_MAXGROUPS_COMMENT">
-	<English>Maximum of allowed CQB groups</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_DISABLE">
 	<English>Disable CQB</English>

@@ -11,26 +11,26 @@ class CfgVehicles {
 				picture = "x\alive\addons\nme_CQB\icon_nme_CQB.paa";
                 class Arguments
                 {
-                        class Enabled
+                        class CQB_debug_setting
                         {
-                                displayName = "$STR_ALIVE_CQB_ALLOW";
-                                description = "$STR_ALIVE_CQB_ALLOW_COMMENT";
+                                displayName = "$STR_ALIVE_CQB_DEBUG";
+                                description = "$STR_ALIVE_CQB_DEBUG_COMMENT";
                                 class Values
                                 {
                                         class Yes
                                         {
                                                 name = "Yes";
-                                                value = 1;
-												default = 1;
+                                                value = true;
                                         };
                                         class No
                                         {
                                                 name = "No";
-                                                value = 0;
+                                                value = false;
+                                                default = false;
                                         };
                                 };
                         };
-                        class CQB_spawn
+                        class CQB_spawn_setting
                         {
                                 displayName = "$STR_ALIVE_CQB_SPAWN";
                                 description = "$STR_ALIVE_CQB_SPAWN_COMMENT";
@@ -66,36 +66,6 @@ class CfgVehicles {
                                                 name = "50%";
                                                 value = 5;
                                                 CQB_spawn = 5;
-                                        };
-                                };
-                        };
-                        
-                        class CQBmaxgrps
-                        {
-                                displayName = "$STR_ALIVE_CQB_MAXGROUPS";
-                                description = "$STR_ALIVE_CQB_MAXGROUPS_COMMENT";
-                                class Values
-                                {
-                                        class CQB_MAXGROUPS_144
-                                        {
-                                                name = "Off";
-                                                value = 144;
-                                                default = 144;
-                                        };
-                                        class CQB_MAXGROUPS_10
-                                        {
-                                                name = "10";
-                                                value = 10;
-                                        };
-                                        class CQB_MAXGROUPS_25
-                                        {
-                                                name = "25";
-                                                value = 25;
-                                        };
-                                        class CQB_MAXGROUPS_50
-                                        {
-                                                name = "50";
-                                                value = 50;
                                         };
                                 };
                         };

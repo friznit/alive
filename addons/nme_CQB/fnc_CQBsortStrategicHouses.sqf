@@ -63,7 +63,7 @@ _nonstrathouses = [];
 				_strathouses set [count _strathouses, _x];
 			};
 		} else {
-			if ((random 1) < (cqb_spawn / 10)) then {
+			if ((random 1) < (CQB_spawn / 10)) then {
 				_nonstrathouses set [count _nonstrathouses, _x];
 			};
 		};

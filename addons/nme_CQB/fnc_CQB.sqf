@@ -43,7 +43,10 @@ private ["_logic","_operation","_args"];
 PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,nil);
-DEFAULT_PARAM(3,_debug,true);
+
+//Init further mandatory params on all localities
+CQB_spawn = call compile (_logic getvariable ["CQB_spawn_setting",1]);
+_debug = call compile (_logic getvariable ["CQB_debug_setting",false]);
 
 switch(_operation) do {
         default {
@@ -51,7 +54,7 @@ switch(_operation) do {
                 _err = format["%1 does not support %2 operation", _logic, _operation];
                 ERROR_WITH_TITLE(str _logic,_err);
         };
-        case "init": {                
+        case "init": {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
@@ -68,9 +71,6 @@ switch(_operation) do {
                     MOD(CQB) = _logic;
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
-
-			CQB_spawn = _logic getvariable ["CQB_spawn",1];
-			CQB_maxgrps = _logic getvariable ["CQBmaxgrps",144];
                         
 				    // Get all enterable houses across the map
 					_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
@@ -90,7 +90,7 @@ switch(_operation) do {
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _spawnhouses] call ALiVE_fnc_CQB;
-					[MOD(CQB), "factions", ["OPF_F"]] call ALiVE_fnc_CQB;
+					[MOD(CQB), "factions", MSO_FACTIONS] call ALiVE_fnc_CQB;
 					[MOD(CQB), "spawnDistance", 800] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
@@ -500,10 +500,8 @@ switch(_operation) do {
 							_house = _x;
 							_debug = _logic getVariable ["debug",false];
 							_spawn = _logic getVariable ["spawnDistance", 800];
-							
-							// Maximum number of groups per client
-							_maxgrps = CQB_maxgrps;
-							
+                            _CQBmaxgrps = 144;
+						
 							// Check: house doesn't already have AI AND
 							// Check: if any players within spawn distance AND
 							if (
@@ -529,7 +527,7 @@ switch(_operation) do {
 								// Check: that the player isn't already hosting too many groups simultaneously
 								if (
 									(call ALiVE_fnc_isAbleToHost) &&
-									{{local leader _x} count (_logic getVariable ["groups",[]]) < _maxgrps}
+									{{local leader _x} count (_logic getVariable ["groups",[]]) < _CQBmaxgrps}
 								) then {
 									// Action: restore AI
 									_grp = [getPosATL _house, east, _units] call BIS_fnc_spawnGroup;
