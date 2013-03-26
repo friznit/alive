@@ -259,21 +259,21 @@ switch(_operation) do {
 			} forEach _groups;
 			_logic setVariable ["groups",[]];
 			_houses = _logic getVariable ["houses",[]];
-			if (isServer) then {
-				// Restore state
-				[_logic, "spawnDistance", [_args, "spawnDistance"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
-				[_logic, "factions", [_args, "factions"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
-				
-				// houses and groups
-				_data = [];
-				{
-					private["_house"];
-					_house = (_x select 0) nearestObject (_x select 1);
-					_house setVariable ["unittypes", _x select 2, true];
-					_data set [count _data, _house];
-				} forEach ([_args, "houses"] call CBA_fnc_hashGet);
-				[_logic, "houses", _data] call ALiVE_fnc_CQB;
-			};
+
+			// Restore state
+			[_logic, "spawnDistance", [_args, "spawnDistance"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
+			[_logic, "factions", [_args, "factions"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
+			
+			// houses and groups
+			_data = [];
+			{
+				private["_house"];
+				_house = (_x select 0) nearestObject (_x select 1);
+				_house setVariable ["unittypes", _x select 2, true];
+				_data set [count _data, _house];
+			} forEach ([_args, "houses"] call CBA_fnc_hashGet);
+			[_logic, "houses", _data] call ALiVE_fnc_CQB;
+
 		};		
 	};
     
@@ -282,11 +282,9 @@ switch(_operation) do {
 			// if no new faction list was provided return current setting
 			_args = _logic getVariable ["factions", []];
 		} else {
-			if(isServer) then {
-				// if a new faction list was provided set factions settings
-				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-				_logic setVariable ["factions", _args, true];
-			};
+			// if a new faction list was provided set factions settings
+			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+			_logic setVariable ["factions", _args, true];
 		};
 		_args;
 	};
@@ -296,11 +294,9 @@ switch(_operation) do {
 			// if no new distance was provided return spawn distance setting
 			_args = _logic getVariable ["spawnDistance", 800];
 		} else {
-			if(isServer) then {
-				// if a new distance was provided set spawn distance settings
-				ASSERT_TRUE(typeName _args == "SCALAR",str typeName _args);			
-				_logic setVariable ["spawnDistance", _args, true];
-			};
+			// if a new distance was provided set spawn distance settings
+			ASSERT_TRUE(typeName _args == "SCALAR",str typeName _args);			
+			_logic setVariable ["spawnDistance", _args, true];
 		};
 		_args;
 	}; 
@@ -314,16 +310,13 @@ switch(_operation) do {
 			};
 			
 			// Un-initialise any previous settings for
-			if(isServer) then {
-				_logic setVariable ["houses", nil, true];
-			};
+			_logic setVariable ["houses", nil, true];
 			waitUntil{isNil{(_logic getVariable ["houses",nil])}};
+
+			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+			_logic setVariable ["houses", _args, true];
 			
-			if(isServer) then {
-				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-				_logic setVariable ["houses", _args, true];
-			};
-			waitUntil{typeName (_logic getVariable ["houses",[]]) == "ARRAY"};
+            waitUntil{typeName (_logic getVariable ["houses",[]]) == "ARRAY"};
 			
 			if (_logic getVariable ["debug", false]) then {
 				// mark all strategic and non-strategic houses
@@ -355,9 +348,9 @@ switch(_operation) do {
 			ASSERT_TRUE(typeName _args == "OBJECT",str typeName _args);
 			private ["_house","_m"];
 			_house = _args;
-			if(isServer) then {
-				[_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceAdd;
-			};
+
+			[_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceAdd;
+
             if (_logic getVariable ["debug", false]) then {
                 format["CQB Population: Adding house %1...", _house] call ALiVE_fnc_logger;
 				_m = format[MTEMPLATE, _house];
@@ -380,13 +373,13 @@ switch(_operation) do {
 			_house = _args;
 			// delete the group
 			_grp = _house getVariable "group";
-			if(isServer) then {
-				if(!isNil "_grp") then {
-					[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
-				};
-				
-				[_logic,"houses",[_house],true] call BIS_fnc_variableSpaceRemove;
+
+			if(!isNil "_grp") then {
+				[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
 			};
+			
+			[_logic,"houses",[_house],true] call BIS_fnc_variableSpaceRemove;
+
 			if (_logic getVariable ["debug", false]) then {
 				format["CQB Population: Clearing house %1...", _house] call ALiVE_fnc_logger;
 			};
@@ -399,11 +392,9 @@ switch(_operation) do {
 			// if no new groups list was provided return current setting
 			_args = _logic getVariable ["groups", []];
 		} else {
-			if(isServer) then {
 				// if a new groups list was provided set groups list
 				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
 				_logic setVariable ["groups", _args, true];
-			};
 		};
 		_args;
 	};	 
@@ -547,7 +538,9 @@ switch(_operation) do {
 									// position AI
 									_positions = [_house] call ALiVE_fnc_getBuildingPositions;
 									{
-										_x setPosATL (_positions call BIS_fnc_selectRandom);
+                                        _pos = (_positions call BIS_fnc_selectRandom);
+										_x setPosATL _pos;
+                                        _x setvariable ["home",_pos];
 									} forEach units _grp;
 									[_logic, "addGroup", [_house, _grp]] call ALiVE_fnc_CQB;
 									
@@ -557,7 +550,7 @@ switch(_operation) do {
 									{
 										private["_fsm","_hdl"];
 										_fsm = "\x\alive\addons\nme_CQB\HousePatrol.fsm";
-										_hdl = [_x, 20, true, 120] execFSM _fsm;
+										_hdl = [_x, 50, true, 120] execFSM _fsm;
 										_x setVariable ["FSM", [_hdl,_fsm], true];
 									} forEach units _grp;
 								};
@@ -565,12 +558,13 @@ switch(_operation) do {
 						} forEach (_logic getVariable ["houses", []]);
 						{
 							_grp = _x;
+                            _sendHome = _x getvariable ["sendHome",nil];
 							// get house in question
 							_house = _x getVariable "house";
 							
 							// if group are all dead
 							// mark house as cleared
-							if (count (units _grp) == 0 && isServer) then {
+							if ({alive _x} count (units _grp) == 0) then {
 								// update central CQB house listings
 								[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
 							} else {
@@ -578,13 +572,33 @@ switch(_operation) do {
 								// all players are out of range and house is still active
 								// despawn group but house not cleared
 								_leader = leader _grp;
-								if (
-									local _leader &&
-									{([getPosATL _house, _spawn * 1.1] call ALiVE_fnc_anyPlayersInRange) == 0}
-								) then {
+								if ((([getPosATL _house, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) == 0) && {(isnil "_sendHome")}) then {
 									// HH to over-ride to send back to home and delete
 									// default is to delete
-									[_logic,_grp] call (_logic getVariable ["_despawnGroup", _despawnGroup]);
+                                    _x setvariable ["sendHome",true];
+									{
+                                        _pos = _x getvariable ["home", getposATL _x];
+										_hdlOut = (_x getvariable "FSM") select 0;
+										_hdlOut setFSMVariable ["_abort",true];
+										_x domove _pos;
+                                        
+                                        [_x,_pos,_logic,_despawnGroup] spawn {
+                                           
+                                            _unit = _this select 0;
+                                            _grp = group (_this select 0);
+                                            _pos = _this select 1;
+                                            _logic = _this select 2;
+                                            _despawnGroup = _this select 3;
+
+                                            _timenow = time;
+                                            while {((getposATL _unit) distance _pos > 3) || ((time - _timenow) < 300)} do {sleep 10; _unit domove _pos};
+                                            if (count units _grp > 1) then {
+                                                deletevehicle (_this select 0);
+                                            } else {
+                                                [_logic,_grp] call _despawnGroup;
+                                            };
+                                        };
+									} forEach units _grp;
 								};
 							};
 						} forEach (_logic getVariable ["groups",[]]);

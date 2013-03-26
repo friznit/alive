@@ -32,7 +32,8 @@ private ["_pos","_radius","_positions","_nearbldgs"];
 
 PARAMS_2(_pos,_radius);
 _positions = [];
-_nearbldgs = nearestObjects [_pos, ["House"], _radius];
+//_nearbldgs = nearestObjects [_pos, ["House"], _radius];
+_nearbldgs = _pos nearObjects ["House",_radius];
 {
 	_positions = _positions + ([_x] call ALiVE_fnc_getBuildingPositions);
 } forEach _nearbldgs;
