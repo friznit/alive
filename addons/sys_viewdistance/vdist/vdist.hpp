@@ -27,7 +27,7 @@ class vdist_dialog
 		class RscText_1012: RscText
 		{
 			idc = 1012;
-			text = "Viewdistance"; 
+			text = "View Distance"; 
 			x = X_MOD * GUI_GRID_W + GUI_GRID_X;
 			y = (SLIDER_START - SLIDER_TITLE_SPACE)  * GUI_GRID_H + GUI_GRID_Y;
 			w = 14.5 * GUI_GRID_W;
@@ -42,8 +42,23 @@ class vdist_dialog
 			w = 15 * GUI_GRID_W;
 			h = 1 * GUI_GRID_H;
 		};	
+		class RscText_1013: RscText
+		{
+			idc = 1013;
+			text = "Terrain Detail"; 
+			x = X_MOD * GUI_GRID_W + GUI_GRID_X;
+			y = ((SLIDER_START + (SLIDER_INTERVAL * 1))-SLIDER_TITLE_SPACE)  * GUI_GRID_H + GUI_GRID_Y;
+			w = 14.5 * GUI_GRID_W;
+			h = 1.5 * GUI_GRID_H;
+		};
+		
+		class RscSlider_1913: RscSlider // view distance slider
+		{
+			idc = 1913;
+			x = X_MOD * GUI_GRID_W + GUI_GRID_X;
+			y = (SLIDER_START + (SLIDER_INTERVAL * 1)) * GUI_GRID_H + GUI_GRID_Y;
+			w = 15 * GUI_GRID_W;
+			h = 1 * GUI_GRID_H;
+		};	
 	};
 };
-
-
-

@@ -35,6 +35,7 @@ Gunny
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
+
 private ["_menuDef", "_target", "_params", "_menuName", "_menuRsc", "_menus"];
 // _this==[_target, _menuNameOrParams]
 
@@ -70,35 +71,17 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_VDIST" + " >",
-				"",
+			[localize "STR_ALIVE_VDIST",
+				{ [] execVM "\x\alive\addons\sys_viewdistance\vdist\vdist_init.sqf"; },
 				"",
 				localize "STR_ALIVE_VDIST_COMMENT",
-                                ["call ALIVE_fnc_vdistMenuDef", "vdist", 1],
-                                -1, 1, true
+                 "",
+                 -1, 1, true
 			]
 		]
 	]
 ];
 
-if (_menuName == "vdist") then {
-	_menus set [count _menus,
-		[
-			["vdist", localize "STR_ALIVE_VDIST", "popup"],
-			[
-				[localize "STR_ALIVE_VDIST_ENABLED",
-					{ [] execVM "\x\alive\addons\sys_viewdistance\vdist\vdist_init.sqf"; },
-					"",
-					localize "STR_ALIVE_VDIST_ENABLED_COMMENT",
-					"",
-					-1,
-					1,
-					true
-				]
-			]
-		]
-	];
-};
 
 //-----------------------------------------------------------------------------
 _menuDef = [];

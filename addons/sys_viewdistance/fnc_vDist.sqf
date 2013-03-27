@@ -53,28 +53,30 @@ switch(_operation) do {
                 */
                 
                 // Ensure only one module is used
-                if (isServer && !(isNil "ALIVE_vdist")) exitWith {
+                if (isServer && !(isNil QMOD(vdist))) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_VDIST_ERROR1");
                 };
                 
                 if (isServer) then {
+                        MOD(vdist) = _logic;
+                        publicVariable QMOD(vdist);
+
                         // if server, initialise module game logic
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", ALIVE_fnc_vdist];
-                        _logic setVariable ["init", true];
+                        _logic setVariable ["init", true, true];
                         // and publicVariable to clients
-                        ALIVE_vdist = _logic;
-                        publicVariable "ALIVE_vdist";
+                       
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
-                        deleteVehicle _logic;
+                       // deleteVehicle _logic;
                 };
                 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil "ALIVE_vdist"};
-                waitUntil {ALIVE_vdist getVariable ["init", false]};        
+                waitUntil {!isNil QMOD(vdist)};
+                waitUntil {MOD(vdist) getVariable ["init", false]};        
 
                 /*
                 VIEW - purely visual
@@ -107,8 +109,8 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        ALIVE_vdist = _logic;
-                        publicVariable "ALIVE_vdist";
+                        MOD(vdist) = _logic;
+                        publicVariable QMOD(vdist);
                 };
                 
                 if(!isDedicated && !isHC) then {
