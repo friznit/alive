@@ -106,6 +106,22 @@
 ///////////////////////////////////////////////////////////////////////////
 /// Base Classes
 ///////////////////////////////////////////////////////////////////////////
+class IGUIBack
+{
+	type = 0;
+	idc = 124;
+	style = 128;
+	text = "";
+	colorText[] = {0,0,0,0};
+	font = GUI_FONT_NORMAL;
+	sizeEx = 0;
+	shadow = 0;
+	x = 0.1;
+	y = 0.1;
+	w = 0.1;
+	h = 0.1;
+	colorbackground[] = {0,0,0,1};
+};
 class RscText
 {
 	access = 0;
