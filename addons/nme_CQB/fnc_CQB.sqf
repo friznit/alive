@@ -26,6 +26,9 @@ CQB Module! Detailed description to follow
 
 Examples:
 [_logic, "factions", ["OPF_F"] call ALiVE_fnc_CQB;
+[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
+[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
+[_logic, "active", true] call ALiVE_fnc_CQB;
 
 See Also:
 - <ALIVE_fnc_CQBInit>
@@ -123,6 +126,7 @@ switch(_operation) do {
                     Publicvariable "CQB_Regular";
                     
                     MOD(CQB) setVariable ["instances",[CQB_Regular,CQB_Strategic],true];
+                    [MOD(CQB), "GarbageCollecting", true] call ALiVE_fnc_CQB;
                     MOD(CQB) setVariable ["init", true, true];
                     
                     diag_log format["Regular logic %1, houses %2",_logic,count _spawnhouses];
@@ -140,7 +144,7 @@ switch(_operation) do {
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
                 waitUntil {!isNil QMOD(CQB)};
-                waitUntil {MOD(CQB) getVariable ["init", false]};        
+                waitUntil {MOD(CQB) getVariable ["init", false]};
 
                 /*
                 VIEW - purely visual
@@ -386,6 +390,37 @@ switch(_operation) do {
 			deleteMarkerLocal format[MTEMPLATE, _house];
 		};
 	};
+    
+    case "GarbageCollecting": {
+			if(isNil "_args") then {
+				// if no arguments provided return current setting
+				_args = _logic getVariable ["GarbageCollecting", false];
+			} else {
+	            // if a argument is provided execute
+	        	ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+	            _logic setVariable ["GarbageCollecting", _args, true];
+				
+	            // if false then delete GC
+	            if !(_args) exitwith {GC = nil; Publicvariable "GC";};
+	            
+	            //else run a GC for each instance, until it is deleted
+	            GC = _args;
+				{
+		            [_x] spawn {
+		                _logic = _this select 0;
+		                
+		                while {!(isnil "GC")} do {
+		                    sleep 10;
+							{
+			                   _lead = leader _x;
+								if ((local _lead) && (([getPosATL _lead, (_spawn * 2.5)] call ALiVE_fnc_anyPlayersInRange) == 0)) then {[_logic, "delGroup", _x] call ALiVE_fnc_CQB};
+							} forEach (_logic getVariable ["groups",[]]);
+		                };
+					};
+	            } foreach (_logic getVariable ["instances",[]]);
+		};
+        _args;
+    };
 
 	case "groups": {
 		if(isNil "_args") then {
@@ -438,7 +473,6 @@ switch(_operation) do {
 			_grp setVariable ["house", nil, true];
 			[_logic,"groups",[_grp],true] call BIS_fnc_variableSpaceRemove;
 			{
-				_x setDamage 1;
 				deleteVehicle _x;
 			} forEach units _grp;
 			
@@ -503,8 +537,7 @@ switch(_operation) do {
 							// Check: if any players within spawn distance AND
 							if (
 								(isNil {_house getVariable "group"}) &&
-								{([getPosATL _house, _spawn] call ALiVE_fnc_anyPlayersInRange) != 0} &&
-								{!isDedicated}
+								{([getPosATL _house, _spawn] call ALiVE_fnc_anyPlayersInRange) != 0}
 							) then {
 								
 								// Action: spawn AI
@@ -539,7 +572,7 @@ switch(_operation) do {
 									_positions = [_house] call ALiVE_fnc_getBuildingPositions;
 									{
                                         _pos = (_positions call BIS_fnc_selectRandom);
-										_x setPosATL _pos;
+										_x setPosATL [_pos select 0, _pos select 1, (_pos select 2 + 0.4)];
                                         _x setvariable ["home",_pos];
 									} forEach units _grp;
 									[_logic, "addGroup", [_house, _grp]] call ALiVE_fnc_CQB;
@@ -590,8 +623,7 @@ switch(_operation) do {
                                             _logic = _this select 2;
                                             _despawnGroup = _this select 3;
 
-                                            _timenow = time;
-                                            while {((getposATL _unit) distance _pos > 3) || ((time - _timenow) < 300)} do {sleep 10; _unit domove _pos};
+                                            while {(alive _unit) && ((getposATL _unit) distance _pos > 3) && (([getPosATL _unit, (_spawn * 2)] call ALiVE_fnc_anyPlayersInRange) > 0)} do {sleep 10; _unit domove _pos};
                                             if (count units _grp > 1) then {
                                                 deletevehicle (_this select 0);
                                             } else {
