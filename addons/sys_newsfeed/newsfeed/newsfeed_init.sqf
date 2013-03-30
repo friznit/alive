@@ -1,0 +1,3 @@
+
+ createDialog "NewsFeed_dialog";
+

@@ -1,0 +1,5 @@
+x\alive\addons\sys_newsfeed
+prefix=x\alive\addons\sys_newsfeed
+product=ALiVE
+version=1
+Pbo Type is: Arma
