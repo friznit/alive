@@ -120,8 +120,7 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        MOD(TEMPLATE) = _logic;
-                        publicVariable QMOD(TEMPLATE);
+			missionNamespace setVariable [QMOD(TEMPLATE),nil];
                 };
                 
                 if(!isDedicated && !isHC) then {
