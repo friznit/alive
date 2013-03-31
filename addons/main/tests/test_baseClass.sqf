@@ -5,7 +5,7 @@ SCRIPT(test_baseClass);
 
 // ----------------------------------------------------------------------------
 
-private ["_err","_logic"];
+private ["_err","_logic","_amo"];
 
 LOG("Testing BaseClass");
 
@@ -21,10 +21,7 @@ waitUntil{CONT}; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
-#define MISSIONOBJECTCOUNT _err = format["Mission objects: %1", count allMissionObjects ""]; \
-STAT(_err);
-
-MISSIONOBJECTCOUNT
+_amo = allMissionObjects "";
 
 private ["_expected","_returned","_result"];
 STAT("Test No Params");
@@ -66,13 +63,12 @@ sleep 5;
 STAT("Destroy old instance");
 if(isServer) then {
 	[_logic, "destroy"] call ALIVE_fnc_baseClass;
-	TEST_LOGIC = nil;
-	publicVariable "TEST_LOGIC";
+	missionNamespace setVariable ["TEST_LOGIC",nil];
 } else {
 	waitUntil{isNull TEST_LOGIC};
 };
 
-MISSIONOBJECTCOUNT
+diag_log ((allMissionObjects "") - _amo);
 
 STAT("Create  instance");
 if(isServer) then {
@@ -94,13 +90,12 @@ sleep 5;
 if(isServer) then {
 	STAT("Destroy old instance");
 	[_logic, "destroy"] call ALIVE_fnc_baseClass;
-	TEST_LOGIC2 = nil;
-	publicVariable "TEST_LOGIC2";
+	missionNamespace setVariable ["TEST_LOGIC2",nil];
 } else {
 	STAT("Confirm destroy instance 2");
 	waitUntil{isNull TEST_LOGIC2};
 };
 
-MISSIONOBJECTCOUNT
+diag_log (allMissionObjects "") - _amo;
 
 nil;
