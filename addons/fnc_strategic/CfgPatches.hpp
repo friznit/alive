@@ -4,11 +4,11 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = REQUIRED_VERSION;
-		requiredAddons[] = {"ALIVE_main","ALIVE_fnc_strategic"};
+		requiredAddons[] = {"ALIVE_main"};
 		versionDesc = "ALiVE";
-		versionAct = "['nme_CQB',_this] execVM '\x\alive\addons\main\about.sqf';";
+		versionAct = "['FNC_STRATEGIC',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
-		author[] = {"Wolffy.au, Highhead"};
+		author[] = {"Wolffy.au"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };

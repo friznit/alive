@@ -1,8 +1,8 @@
-#include <\x\alive\addons\main\script_component.hpp>
+#include <\x\alive\addons\fnc_strategic\script_component.hpp>
 SCRIPT(isHouseEnterable);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_isHouseEnterable
+Function: ALIVE_fnc_isHouseEnterable
 
 Description:
 Returns true if the house is enterable
@@ -15,15 +15,15 @@ Boolean - True if house has one building position
 
 Examples:
 (begin example)
-if([_house] call MSO_fnc_isHouseEnterable) then{
+if([_house] call ALIVE_fnc_isHouseEnterable) then{
 	hint format["%1 is enterable", _house];
 };
 (end)
 
 See Also:
-- <MSO_fnc_getObjectsByType>
-- <MSO_fnc_getAllEnterableHouses>
-- <MSO_fnc_getEnterableHouses>
+- <ALIVE_fnc_getObjectsByType>
+- <ALIVE_fnc_getAllEnterableHouses>
+- <ALIVE_fnc_getEnterableHouses>
 
 Author:
 Wolffy.au
