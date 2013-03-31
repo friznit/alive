@@ -92,14 +92,30 @@
 #define MB_BUTTON_USER    4
 
 //Procedural colors
-#define ProcTextWhite "#(argb,8,8,3)color(1,1,1,1)"
-#define ProcTextBlack "#(argb,8,8,3)color(0,0,0,1)"
-#define ProcTextGray "#(argb,8,8,3)color(0.3,0.3,0.3,1)"
-#define ProcTextRed "#(argb,8,8,3)color(1,0,0,1)"
-#define ProcTextGreen "#(argb,8,8,3)color(0,1,0,1)"
-#define ProcTextBlue "#(argb,8,8,3)color(0,0,1,1)"
-#define ProcTextOrange "#(argb,8,8,3)color(1,0.5,0,1)"
-#define ProcTextTransparent	"#(argb,8,8,3)color(0,0,0,0)"
+#ifndef ProcTextWhite
+	#define ProcTextWhite "#(argb,8,8,3)color(1,1,1,1)"
+#endif
+#ifndef ProcTextBlack
+	#define ProcTextBlack "#(argb,8,8,3)color(0,0,0,1)"
+#endif
+#ifndef ProcTextGray
+	#define ProcTextGray "#(argb,8,8,3)color(0.3,0.3,0.3,1)"
+#endif
+#ifndef ProcTextRed
+	#define ProcTextRed "#(argb,8,8,3)color(1,0,0,1)"
+#endif
+#ifndef ProcTextGreen
+	#define ProcTextGreen "#(argb,8,8,3)color(0,1,0,1)"
+#endif
+#ifndef ProcTextBlue
+	#define ProcTextBlue "#(argb,8,8,3)color(0,0,1,1)"
+#endif
+#ifndef ProcTextOrange
+	#define ProcTextOrange "#(argb,8,8,3)color(1,0.5,0,1)"
+#endif
+#ifndef ProcTextTransparent
+	#define ProcTextTransparent	"#(argb,8,8,3)color(0,0,0,0)"
+#endif
 
 
 ///////////////////////////////////////////////////////////////////////////
