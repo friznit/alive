@@ -24,34 +24,32 @@ titleText [msg,"PLAIN"]
 #define MISSIONOBJECTCOUNT _err = format["Mission objects: %1", count allMissionObjects ""]; \
 STAT(_err);
 
-sleep 5;
-
 MISSIONOBJECTCOUNT
-/*
+
 private ["_expected","_returned","_result"];
 STAT("Test No Params");
 _expected = objNull;
 _returned = call ALIVE_fnc_baseClass;
-_result = [typeOf _expected, typeOf _returned] call BIS_fnc_areEqual;
+_result = [typeName _expected, typeName _returned] call BIS_fnc_areEqual;
+ASSERT_TRUE(_result,typeOf _expected + " != " + typeOf _returned);
+
+STAT("Test non-OBJECT");
+_expected = objNull;
+_returned = 1234 call ALIVE_fnc_baseClass;
+_result = [typeName _expected, typeName _returned] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,typeOf _expected + " != " + typeOf _returned);
 
 STAT("Test Empty Array");
 _expected = objNull;
 _returned = [] call ALIVE_fnc_baseClass;
-_result = [typeOf _expected, typeOf _returned] call BIS_fnc_areEqual;
+_result = [typeName _expected, typeName _returned] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,typeOf _expected + " != " + typeOf _returned);
 
-STAT("Test non-OBJECT");
-_expected = nil;
-_returned = 1234 call ALIVE_fnc_baseClass;
-_result = [_expected, _returned] call BIS_fnc_areEqual;
-ASSERT_TRUE(_result,_expected + " != " + _returned);
-*/
 _logic = nil;
 
 STAT("Create instance");
 if(isServer) then {
-	_logic = call ALIVE_fnc_baseClass;
+	_logic = [nil, "create"] call ALIVE_fnc_baseClass;
 	TEST_LOGIC = _logic;
 	publicVariable "TEST_LOGIC";
 };
@@ -78,12 +76,12 @@ MISSIONOBJECTCOUNT
 
 STAT("Create  instance");
 if(isServer) then {
-	_logic = call ALIVE_fnc_baseClass;
+	_logic = [nil, "create"] call ALIVE_fnc_baseClass;
 	TEST_LOGIC2 = _logic;
 	publicVariable "TEST_LOGIC2";
 };
 
-STAT("Confirm new CQB instance 2");
+STAT("Confirm second new  instance");
 waitUntil{!isNil "TEST_LOGIC2"};
 _logic = TEST_LOGIC2;
 _err = "instantiate object";
@@ -91,7 +89,7 @@ ASSERT_DEFINED("_logic",_err);
 ASSERT_TRUE(typeName _logic == "OBJECT", _err);
 
 STAT("Sleeping before destroy");
-sleep 15;
+sleep 5;
 
 if(isServer) then {
 	STAT("Destroy old instance");
