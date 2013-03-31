@@ -16,7 +16,6 @@ then
 fi
 
 "$NATURALDOCS" -i "../addons" -o HTML "../store/function_library" -p "ndocs-project" -s Default alive -r
-# --exclude-input "..\mso_ng.utes\CA
 
 echo -e "\n=== Packaging documentation ===\n"
 cd ../store
