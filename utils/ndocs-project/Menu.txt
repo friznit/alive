@@ -46,79 +46,109 @@ Format: 1.52
 # --------------------------------------------------------------------------
 
 
-Group: Main  {
+Index: Index (Everything)
 
-   File: ALIVE_fnc_baseClass  (main/fnc_baseClass.sqf)
-   File: ALIVE_fnc_isHC  (main/fnc_isHC.sqf)
-   File: ALIVE_fnc_isServerAdmin  (main/fnc_isServerAdmin.sqf)
-   File: MSO_fnc_anyPlayersInRange  (main/fnc_anyPlayersInRange.sqf)
-   File: MSO_fnc_chooseRandomUnits  (main/fnc_chooseRandomUnits.sqf)
-   File: MSO_fnc_findNearHousePositions  (main/fnc_findNearHousePositions.sqf)
-   File: MSO_fnc_findVehicleType  (main/fnc_findVehicleType.sqf)
-   File: MSO_fnc_getAllEnterableHouses  (main/fnc_getAllEnterableHouses.sqf)
-   File: MSO_fnc_getBuildingPositions  (main/fnc_getBuildingPositions.sqf)
-   File: MSO_fnc_getEnterableHouses  (main/fnc_getEnterableHouses.sqf)
-   File: MSO_fnc_isAbleToHost  (main/fnc_isAbleToHost.sqf)
-   File: MSO_fnc_isHouseEnterable  (main/fnc_isHouseEnterable.sqf)
-   File: MSO_fnc_logger  (main/fnc_logger.sqf)
-   }  # Group: Main
+Group: ALiVE  {
 
-Group: Nme_CQB  {
+   Group: Project  {
 
-   File: ALIVE_fnc_CQB  (nme_CQB/fnc_CQB.sqf)
-   File: ALIVE_fnc_CQBInit  (nme_CQB/fnc_CQBInit.sqf)
-   File: MSO_fnc_CQBsortStrategicHouses  (nme_CQB/fnc_CQBsortStrategicHouses.sqf)
-   }  # Group: Nme_CQB
+      Link: Wiki  (http://dev-heaven.net/projects/alive/wiki)
+      Link: Issues  (http://dev-heaven.net/projects/alive/issues)
+      Link: Download  (http://dev-heaven.net/projects/alive/files)
+      }  # Group: Project
 
-Group: Sys_adminactions  {
+   Group: Functions  {
 
-   File: ALIVE_fnc_adminActions  (sys_adminactions/fnc_adminActions.sqf)
-   File: ALIVE_fnc_adminActionsInit  (sys_adminactions/fnc_adminActionsInit.sqf)
-   File: ALIVE_fnc_adminActionsMenuDef  (sys_adminactions/fnc_adminActionsMenuDef.sqf)
-   }  # Group: Sys_adminactions
+      Function Index: Index
 
-Group: Sys_newsfeed  {
+      Group: Main  {
 
-   File: ALIVE_fnc_newsfeed  (sys_newsfeed/fnc_newsFeed.sqf)
-   File: ALIVE_fnc_newsfeedInit  (sys_newsfeed/fnc_newsFeedInit.sqf)
-   File: ALIVE_fnc_vdistMenuDef  (sys_newsfeed/fnc_newsFeedMenuDef.sqf)
-   }  # Group: Sys_newsfeed
+         File: ALIVE_fnc_baseClass  (main/fnc_baseClass.sqf)
+         File: ALIVE_fnc_isHC  (main/fnc_isHC.sqf)
+         File: ALIVE_fnc_isServerAdmin  (main/fnc_isServerAdmin.sqf)
+         File: MSO_fnc_anyPlayersInRange  (main/fnc_anyPlayersInRange.sqf)
+         File: MSO_fnc_chooseRandomUnits  (main/fnc_chooseRandomUnits.sqf)
+         File: MSO_fnc_findVehicleType  (main/fnc_findVehicleType.sqf)
+         File: MSO_fnc_isAbleToHost  (main/fnc_isAbleToHost.sqf)
+         File: MSO_fnc_logger  (main/fnc_logger.sqf)
+         }  # Group: Main
 
-Group: Sys_rwg  {
+      Group: Nme_CQB  {
 
-   File: ALIVE_fnc_RWG  (sys_rwg/fnc_RWG.sqf)
-   File: ALIVE_fnc_RWGexec  (sys_rwg/fnc_RWGexec.sqf)
-   File: ALIVE_fnc_RWGInit  (sys_rwg/fnc_RWGInit.sqf)
-   File: ALIVE_fnc_RWGloadgear  (sys_rwg/fnc_RWGloadgear.sqf)
-   File: ALIVE_fnc_RWGsavegear  (sys_rwg/fnc_RWGsavegear.sqf)
-   }  # Group: Sys_rwg
+         File: ALIVE_fnc_CQB  (nme_CQB/fnc_CQB.sqf)
+         File: ALIVE_fnc_CQBInit  (nme_CQB/fnc_CQBInit.sqf)
+         File: ALIVE_fnc_CQBsortStrategicHouses  (nme_CQB/fnc_CQBsortStrategicHouses.sqf)
+         }  # Group: Nme_CQB
 
-Group: Sys_statistics  {
+      Group: Sys_adminactions  {
 
-   File: ALIVE_fnc_statistics  (sys_statistics/fnc_statistics.sqf)
-   File: ALIVE_fnc_statisticsInit  (sys_statistics/fnc_statisticsInit.sqf)
-   File: ALIVE_fnc_statisticsMenuDef  (sys_statistics/fnc_statisticsMenuDef.sqf)
-   }  # Group: Sys_statistics
+         File: ALIVE_fnc_adminActions  (sys_adminactions/fnc_adminActions.sqf)
+         File: ALIVE_fnc_adminActionsInit  (sys_adminactions/fnc_adminActionsInit.sqf)
+         File: ALIVE_fnc_adminActionsMenuDef  (sys_adminactions/fnc_adminActionsMenuDef.sqf)
+         }  # Group: Sys_adminactions
 
-Group: Sys_TEMPLATE  {
+      Group: Sys_newsfeed  {
 
-   File: ALIVE_fnc_TEMPLATE  (sys_TEMPLATE/fnc_TEMPLATE.sqf)
-   File: ALIVE_fnc_TEMPLATEInit  (sys_TEMPLATE/fnc_TEMPLATEInit.sqf)
-   File: ALIVE_fnc_TEMPLATEMenuDef  (sys_TEMPLATE/fnc_TEMPLATEMenuDef.sqf)
-   }  # Group: Sys_TEMPLATE
+         File: ALIVE_fnc_newsfeed  (sys_newsfeed/fnc_newsFeed.sqf)
+         File: ALIVE_fnc_newsfeedInit  (sys_newsfeed/fnc_newsFeedInit.sqf)
+         File: ALIVE_fnc_newsFeedMenuDef  (sys_newsfeed/fnc_newsFeedMenuDef.sqf)
+         }  # Group: Sys_newsfeed
 
-Group: Sys_viewdistance  {
+      Group: Sys_rwg  {
 
-   File: ALIVE_fnc_vdist  (sys_viewdistance/fnc_vDist.sqf)
-   File: ALIVE_fnc_vdistInit  (sys_viewdistance/fnc_vdistInit.sqf)
-   File: ALIVE_fnc_vdistMenuDef  (sys_viewdistance/fnc_vdistMenuDef.sqf)
-   }  # Group: Sys_viewdistance
+         File: ALIVE_fnc_RWG  (sys_rwg/fnc_RWG.sqf)
+         File: ALIVE_fnc_RWGexec  (sys_rwg/fnc_RWGexec.sqf)
+         File: ALIVE_fnc_RWGInit  (sys_rwg/fnc_RWGInit.sqf)
+         File: ALIVE_fnc_RWGloadgear  (sys_rwg/fnc_RWGloadgear.sqf)
+         File: ALIVE_fnc_RWGsavegear  (sys_rwg/fnc_RWGsavegear.sqf)
+         }  # Group: Sys_rwg
 
-File: ALIVE_fnc_adminActions  (sys_strategic/fnc_strategic.sqf)
+      Group: Sys_statistics  {
 
-Group: Index  {
+         File: ALIVE_fnc_statistics  (sys_statistics/fnc_statistics.sqf)
+         File: ALIVE_fnc_statisticsInit  (sys_statistics/fnc_statisticsInit.sqf)
+         File: ALIVE_fnc_statisticsMenuDef  (sys_statistics/fnc_statisticsMenuDef.sqf)
+         }  # Group: Sys_statistics
 
-   Index: Everything
-   Function Index: Functions
-   }  # Group: Index
+      Group: Sys_TEMPLATE  {
+
+         File: ALIVE_fnc_TEMPLATE  (sys_TEMPLATE/fnc_TEMPLATE.sqf)
+         File: ALIVE_fnc_TEMPLATEInit  (sys_TEMPLATE/fnc_TEMPLATEInit.sqf)
+         File: ALIVE_fnc_TEMPLATEMenuDef  (sys_TEMPLATE/fnc_TEMPLATEMenuDef.sqf)
+         }  # Group: Sys_TEMPLATE
+
+      Group: Sys_viewdistance  {
+
+         File: ALIVE_fnc_vdist  (sys_viewdistance/fnc_vDist.sqf)
+         File: ALIVE_fnc_vdistInit  (sys_viewdistance/fnc_vdistInit.sqf)
+         File: ALIVE_fnc_vdistMenuDef  (sys_viewdistance/fnc_vdistMenuDef.sqf)
+         }  # Group: Sys_viewdistance
+
+      Group: Fnc_strategic  {
+
+         File: ALIVE_fnc_assignPointsToClusters  (fnc_strategic/fnc_assignPointsToClusters.sqf)
+         File: ALIVE_fnc_chooseInitialCenters  (fnc_strategic/fnc_chooseInitialCenters.sqf)
+         File: ALIVE_fnc_consolidateClusters  (fnc_strategic/fnc_consolidateClusters.sqf)
+         File: ALIVE_fnc_findClusterCenter  (fnc_strategic/fnc_findClusterCenter.sqf)
+         File: ALIVE_fnc_findClusters  (fnc_strategic/fnc_findClusters.sqf)
+         File: ALIVE_fnc_findIndoorHousePositions  (fnc_strategic/fnc_findIndoorHousePositions.sqf)
+         File: ALIVE_fnc_findNearHousePositions  (fnc_strategic/fnc_findNearHousePositions.sqf)
+         File: ALIVE_fnc_getAllEnterableHouses  (fnc_strategic/fnc_getAllEnterableHouses.sqf)
+         File: ALIVE_fnc_getBuildingPositions  (fnc_strategic/fnc_getBuildingPositions.sqf)
+         File: ALIVE_fnc_getEnterableHouses  (fnc_strategic/fnc_getEnterableHouses.sqf)
+         File: ALIVE_fnc_getMaxBuildingPositions  (fnc_strategic/fnc_getMaxBuildingPositions.sqf)
+         File: ALIVE_fnc_getNearestObjectInCluster  (fnc_strategic/fnc_getNearestObjectInCluster.sqf)
+         File: ALIVE_fnc_getObjectsByType  (fnc_strategic/fnc_getObjectsByType.sqf)
+         File: ALIVE_fnc_isHouseEnterable  (fnc_strategic/fnc_isHouseEnterable.sqf)
+         }  # Group: Fnc_strategic
+
+      }  # Group: Functions
+
+   Group: Index  {
+
+      Index: Everything
+      Function Index: Functions
+      }  # Group: Index
+
+   }  # Group: ALiVE
 

@@ -115,7 +115,7 @@ Format: 1.52
 
 Language: SQF
 
-   Extensions: sqf sqs
+   Extensions: sqf sqs cpp hpp
    Ignore Function Prefix in Index: ALIVE_fnc_
    Line Comment: //
    Block Comment: /* */
