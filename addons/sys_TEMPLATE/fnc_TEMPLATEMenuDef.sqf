@@ -1,12 +1,12 @@
-#include <\x\alive\addons\sys_statistics\script_component.hpp>
+#include <\x\alive\addons\sys_TEMPLATE\script_component.hpp>
 #include <\x\cba\addons\ui_helper\script_dikCodes.hpp>
 
-SCRIPT(statisticsMenuDef);
+SCRIPT(TEMPLATEMenuDef);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_statisticsMenuDef
+Function: ALIVE_fnc_TEMPLATEMenuDef
 Description:
-This function controls the View portion of statistics.
+This function controls the View portion of TEMPLATE.
 
 Parameters:
 Object - The object to attach the menu too
@@ -22,12 +22,12 @@ Examples:
 	"player",
 	[221,[false,false,false]],
 	-9500,
-	["call ALIVE_fnc_statisticsMenuDef","main"]
+	["call ALIVE_fnc_TEMPLATEMenuDef","main"]
 ] call CBA_fnc_flexiMenu_Add;
 (end)
 
 See Also:
-- <ALIVE_fnc_statistics>
+- <ALIVE_fnc_TEMPLATE>
 - CBA_fnc_flexiMenu_Add
 
 Author:
@@ -70,39 +70,39 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_STATISTICS" + " >",
+			[localize "STR_ALIVE_TEMPLATE" + " >",
 				"",
 				"",
-				localize "STR_ALIVE_STATISTICS_COMMENT",
-                                ["call ALIVE_fnc_statisticsMenuDef", "statistics", 1],
+				localize "STR_ALIVE_TEMPLATE_COMMENT",
+                                ["call ALIVE_fnc_TEMPLATEMenuDef", "TEMPLATE", 1],
                                 -1, 1, call ALIVE_fnc_isServerAdmin
 			]
 		]
 	]
 ];
 
-if (_menuName == "statistics") then {
+if (_menuName == "TEMPLATE") then {
 	_menus set [count _menus,
 		[
-			["statistics", localize "STR_ALIVE_STATISTICS", "popup"],
+			["TEMPLATE", localize "STR_ALIVE_TEMPLATE", "popup"],
 			[
-				[localize "STR_ALIVE_STATISTICS_ENABLE",
-					{ ALIVE_statistics setVariable ["statistics_enabled", true]; hint "Sending live data feed...";},
+				[localize "STR_ALIVE_TEMPLATE_ENABLE",
+					{ ALIVE_TEMPLATE setVariable ["enabled", true]; },
 					"",
-					localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
+					localize "STR_ALIVE_TEMPLATE_ENABLE_COMMENT",
 					"",
 					-1,
-					ALIVE_statistics getVariable ["statistics", 0],
-					!(ALIVE_statistics getVariable ["statistics_enabled", false])
+					ALIVE_TEMPLATE getVariable ["enabled", 0],
+					!(ALIVE_TEMPLATE getVariable ["enabled", false])
 				],
-				[localize "STR_ALIVE_STATISTICS_DISABLE",
-					{ ALIVE_statistics setVariable ["statistics_enabled", false]; },
+				[localize "STR_ALIVE_TEMPLATE_DISABLE",
+					{ ALIVE_TEMPLATE setVariable ["enabled", false]; },
 					"",
-					localize "STR_ALIVE_STATISTICS_DISABLE_COMMENT",
+					localize "STR_ALIVE_TEMPLATE_DISABLE_COMMENT",
 					"",
 					-1,
-					ALIVE_statistics getVariable ["statistics", 0],
-					(ALIVE_statistics getVariable ["statistics_enabled", false])
+					ALIVE_TEMPLATE getVariable ["enabled", 0],
+					(ALIVE_TEMPLATE getVariable ["enabled", false])
 				]
 			]
 		]

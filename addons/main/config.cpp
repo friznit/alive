@@ -33,50 +33,6 @@ class RscDisplayStart: RscStandardDisplay
  };
 };
 
-class RscDisplayLoadCustom: RscStandardDisplay
-{
-   class controls
-   {
-	  class LoadingStart: RscControlsGroup
-	  {
-		class controls
-		{
-		  class Logo: RscPictureKeepAspect
-		  {
-		   idc = 1200;
-		   text = "\x\alive\addons\Main\logo_alive.paa";
-			x = "0.25 * safezoneW";
-			y = "0.3125 * safezoneH";
-			w = "0.5 * safezoneW";
-			h = "0.25 * safezoneH";
-		  };
-		};
-	  };
-	};
-};
-
-class RscDisplayLoadMission: RscStandardDisplay
-{
-   class controls
-   {
-	  class LoadingStart: RscControlsGroup
-	  {
-		class controls
-		{
-		  class Logo: RscPictureKeepAspect
-		  {
-		   idc = 1200;
-		   text = "\x\alive\addons\Main\logo_alive.paa";
-			x = "0.25 * safezoneW";
-			y = "0.3125 * safezoneH";
-			w = "0.5 * safezoneW";
-			h = "0.25 * safezoneH";
-		  };
-		};
-	  };
-	};
-};
-
 class RscDisplayMain: RscStandardDisplay
 {
 	class controls
