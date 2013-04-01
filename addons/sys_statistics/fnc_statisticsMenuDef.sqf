@@ -28,10 +28,11 @@ Examples:
 
 See Also:
 - <ALIVE_fnc_statistics>
-- CBA_fnc_flexiMenu_Add
+- <CBA_fnc_flexiMenu_Add>
 
 Author:
-Tupolov
+Wolffy.au
+
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
@@ -74,37 +75,37 @@ _menus =
 				"",
 				"",
 				localize "STR_ALIVE_STATISTICS_COMMENT",
-                                ["call ALIVE_fnc_statisticsMenuDef", "statistics", 1],
+                                ["call ALiVE_fnc_statisticsMenuDef", "statistics", 1],
                                 -1, 1, call ALIVE_fnc_isServerAdmin
 			]
 		]
 	]
 ];
 
+TRACE_4("Menu setup",MOD(statistics),MOD(statistics) getVariable "allow");
+
 if (_menuName == "statistics") then {
 	_menus set [count _menus,
 		[
 			["statistics", localize "STR_ALIVE_STATISTICS", "popup"],
-			[
 				[localize "STR_ALIVE_STATISTICS_ENABLE",
-					{ ALIVE_statistics setVariable ["statistics_enabled", true]; hint "Sending live data feed...";},
+					{ MOD(statistics) setVariable ["enabled", true]; },
 					"",
 					localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
 					"",
 					-1,
-					ALIVE_statistics getVariable ["statistics", 0],
-					!(ALIVE_statistics getVariable ["statistics_enabled", false])
+					MOD(statistics) getVariable ["allow", 0],
+					!(MOD(statistics) getVariable ["enabled", false])
 				],
 				[localize "STR_ALIVE_STATISTICS_DISABLE",
-					{ ALIVE_statistics setVariable ["statistics_enabled", false]; },
+					{ MOD(statistics) setVariable ["enabled", false]; },
 					"",
-					localize "STR_ALIVE_STATISTICS_DISABLE_COMMENT",
+					localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
 					"",
 					-1,
-					ALIVE_statistics getVariable ["statistics", 0],
-					(ALIVE_statistics getVariable ["statistics_enabled", false])
+					MOD(statistics) getVariable ["allow", 0],
+					(MOD(statistics) getVariable ["enabled", false])
 				]
-			]
 		]
 	];
 };

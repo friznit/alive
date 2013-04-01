@@ -1,11 +1,9 @@
 *Model - no visual just reference data*
 - server side object only
-- ghosting enabled
-- teleport enabled
-- ACE spectator enabled
+- enable stats
 
 *Controller - *
-- frequent check if player is server admin
+- set of event handlers to post data to web service
 
 *View - purely visual*
 - initialise menu
