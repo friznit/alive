@@ -1,5 +1,0 @@
-x\alive\addons\sys_TEMPLATE
-prefix=x\alive\addons\sys_TEMPLATE
-product=ALiVE
-version=1
-Pbo Type is: Arma
