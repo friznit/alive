@@ -10,7 +10,7 @@ class CfgVehicles {
 				picture = "x\alive\addons\sys_statistics\icon_sys_statistics.paa";
                 class Arguments
                 {
-                        class Enabled
+                        class Allow
                         {
                                 displayName = "$STR_ALIVE_STATISTICS_ALLOW";
                                 description = "$STR_ALIVE_STATISTICS_ALLOW_COMMENT";
@@ -20,12 +20,12 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = 1;
-												default = 1;
                                         };
                                         class No
                                         {
                                                 name = "No";
                                                 value = 0;
+												default = 0;
                                         };
                                 };
                         };

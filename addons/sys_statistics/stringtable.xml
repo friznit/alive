@@ -15,16 +15,10 @@
 	<English>Allows MP Dedicated Server games to record events/statistics in game to the ALiVE web service</English>
 </Key>
 <Key ID="STR_ALIVE_STATISTICS_ENABLE">
-	<English>Enable Statistics</English>
+	<English>Enable/Disable Statistics</English>
 </Key>
 <Key ID="STR_ALIVE_STATISTICS_ENABLE_COMMENT">
-	<English>Enable events/statistics recording to the ALiVE web service</English>
-</Key>
-<Key ID="STR_ALIVE_STATISTICS_DISABLE">
-	<English>Disable Statistics</English>
-</Key>
-<Key ID="STR_ALIVE_STATISTICS_DISABLE_COMMENT">
-	<English>Disable events/statistics being sent to the ALiVE web service</English>
+	<English>Enable/Disable events/statistics recording to the ALiVE web service</English>
 </Key>
 <Key ID="STR_ALIVE_STATISTICS_ERROR1">
 	<English>Only one statistics module can be used</English>

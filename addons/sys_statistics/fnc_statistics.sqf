@@ -16,16 +16,16 @@ Any - The new instance or the result of the selected function and parameters
 
 Attributes:
 Boolean - debug - Debug enabled
-Boolean - enabled - Enabled or disable module
-
-Parameters:
-none
+Boolean - ghost - Enabled or disable statistics function
 
 The popup menu will change to show status as functions are enabled and disabled.
 
+By default this module will initialize and run. By placing down the Disable Stats module you will remove the feature from your mission.
+
 Examples:
 (begin example)
-// Create instance by placing editor module and specifiying name myModule
+// Will be created without the need for placing a module
+// Disable the feature by placing editor module and specifiying name myModule
 (end)
 
 See Also:
@@ -34,6 +34,9 @@ See Also:
 
 Author:
 Tupolov
+
+Peer reviewed:
+nil
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS nil
@@ -49,44 +52,54 @@ switch(_operation) do {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
-				- enabled/disabled
+                - statistics enabled
                 */
                 
                 // Ensure only one module is used
-                if (isServer && !(isNil "ALIVE_statistics")) exitWith {
-                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_STATISTICS_ERROR1");
+                if (isServer && !(isNil QMOD(statistics))) exitWith {
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_statistics_ERROR1");
                 };
                 
                 if (isServer) then {
-                        // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", ALIVE_fnc_statistics];
-                        _logic setVariable ["init", true];
                         // and publicVariable to clients
-                        ALIVE_statistics = _logic;
-                        publicVariable "ALIVE_statistics";
+                        MOD(statistics) = _logic;
+                        publicVariable QMOD(statistics);
+
+                        // if server, initialise module game logic
+                        MOD(statistics) setVariable ["super", SUPERCLASS];
+                        MOD(statistics) setVariable ["class", ALiVE_fnc_statistics];
+                        MOD(statistics) setVariable ["init", true, true];
                 } else {
-                        // if client clean up client side game logics as they will transfer
-                        // to servers on client disconnect
-                        deleteVehicle _logic;
+                        // any client side logic
                 };
-                
+
+				TRACE_2("After module init",MOD(statistics),MOD(statistics) getVariable "init");
+
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil "ALIVE_statistics"};
-                waitUntil {ALIVE_statistics getVariable ["init", false]};        
+                waitUntil {!isNil QMOD(statistics)};
+                waitUntil {MOD(statistics) getVariable ["init", false]};        
 
                 /*
                 VIEW - purely visual
                 - initialise menu
-                - frequent check to modify menu and display status (ALIVE_fnc_statisticssmenuDef)
+                - frequent check to modify menu and display status (ALIVE_fnc_adminActoinsmenuDef)
                 */
                 
+				TRACE_2("Adding menu",isDedicated,isHC);
+
                 if(!isDedicated && !isHC) then {
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+
                         // if ACE spectator enabled, seto to allow exit
                         if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
+
+                        // Initialise default map click command if undefined
+                        ISNILS(DEFAULT_MAPCLICK,"");
+
+				TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
+
                         // initialise main menu
                         [
                                 "player",
@@ -99,6 +112,10 @@ switch(_operation) do {
                         ] call CBA_fnc_flexiMenu_Add;
                 };
                 
+                /*
+                CONTROLLER  - coordination
+                - frequent check if player is server admin (ALIVE_fnc_statisticsmenuDef)
+                */
         };
         case "destroy": {
                 if (isServer) then {
@@ -107,8 +124,8 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        ALIVE_statistics = _logic;
-                        publicVariable "ALIVE_statistics";
+                        MOD(statistics) = _logic;
+                        publicVariable QMOD(statistics);
                 };
                 
                 if(!isDedicated && !isHC) then {
