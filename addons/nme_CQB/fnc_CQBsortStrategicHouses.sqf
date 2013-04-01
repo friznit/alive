@@ -2,7 +2,7 @@
 SCRIPT(CQBsortStrategicHouses);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_CQBsortStrategicHouses
+Function: ALIVE_fnc_CQBsortStrategicHouses
 
 Description:
 Sort buildings into strategic and non-strategic arrays
@@ -17,15 +17,15 @@ the building.
 
 Examples:
 (begin example)
-_spawnhouses = call MSO_fnc_getAllEnterableHouses;
-_result = [_spawnhouses] call MSO_fnc_CQBsortStrategicHouses;
+_spawnhouses = call ALIVE_fnc_getAllEnterableHouses;
+_result = [_spawnhouses] call ALIVE_fnc_CQBsortStrategicHouses;
 CQBpositionsStrat = _result select 0; // [strathouse1, strathouse2];
 CQBpositionsReg = _result select 1; // [nonstrathouse1, nonstrathouse2];
 (end)
 
 See Also:
-- <MSO_fnc_getEnterableHouses>
-- <MSO_fnc_getAllEnterableHouses>
+- <ALIVE_fnc_getEnterableHouses>
+- <ALIVE_fnc_getAllEnterableHouses>
 
 Author:
 Highhead

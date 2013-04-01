@@ -1,9 +1,4 @@
-- in fnc_baseclass there would be sense in adapting it in the following ways, to be able to create a baseclass for another module, not only the main baseclass. All created sub-Instances of any module could be traced in the main superclass:
------ create center only if there isnt a center existing already.
------ provide an operation "createInstance".
------ provide the function to pass via _args like.
 ----- example: _newInstanceLogic = [_logic,"createInstance",ALiVE_fnc_CQB] call ALiVE_fnc_baseclass.
------ operation "destroy" in fnc_baseclass does not need setdamage 1, only deletevehicle _logic.
 ----- Also setting superclass and class to nil isnt implemented.
 ----- automated tests: i question the sense of only testing the main classes like fnc_baseclass. What about all the common functions added? Would they all need a seperate testcase? Is this efficient?
 

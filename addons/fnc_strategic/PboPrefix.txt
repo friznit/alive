@@ -1,0 +1,5 @@
+x\alive\addons\fnc_strategic
+prefix=x\alive\addons\fnc_strategic
+product=ALiVE
+version=1
+Pbo Type is: Arma

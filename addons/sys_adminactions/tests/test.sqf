@@ -3,18 +3,18 @@
 // DO NOT MANUALLY EDIT THIS FILE!
 // -----------------------------------------------------------------------------
 
-#include "script_macros_core.hpp"
+#include <\x\alive\addons\sys_adminactions\script_component.hpp>
 
-#define TESTS ["server","client"]
+#define TESTS ["adminActions"]
 
-SCRIPT(test-hashes);
+SCRIPT(test-adminActions);
 
 // ----------------------------------------------------------------------------
 
-LOG("=== Testing CQB ===");
+LOG("=== Testing sys_adminActions ===");
 
 {
-	call compile preprocessFileLineNumbers format ["Enemy\modules\MSO_CQBPOP\test_%1.sqf", _x];
+	call compile preprocessFileLineNumbers format ["\x\alive\addons\sys_adminactions\tests\test_%1.sqf", _x];
 } forEach TESTS;
 
 nil;

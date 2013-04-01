@@ -1,8 +1,8 @@
-#include <\x\alive\addons\main\script_component.hpp>
-SCRIPT(getBuildingPosititions);
+#include <\x\alive\addons\fnc_strategic\script_component.hpp>
+SCRIPT(getBuildingPositions);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_getBuildingPositions
+Function: ALIVE_fnc_getBuildingPositions
 
 Description:
 Returns the building positions for a given object.
@@ -17,11 +17,11 @@ the object has no positions, an empty array is returned.
 Examples:
 (begin example)
 // get number of building positions for an object
-_maxpos = [_house] call MSO_fnc_getMaxBuildingPositions;
+_maxpos = [_house] call ALIVE_fnc_getMaxBuildingPositions;
 (end)
 
 See Also:
-- <MSO_fnc_getEnterableHouses>
+- <ALIVE_fnc_getEnterableHouses>
 
 Author:
 Wolffy.au

@@ -8,7 +8,7 @@ class CfgPatches {
 		versionDesc = "ALiVE";
 		versionAct = "['SYS_TEMPLATE',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
-		author[] = {"Wolffy.au", "Tupolov"};
+		author[] = {"Wolffy,au", "Tupolov"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };

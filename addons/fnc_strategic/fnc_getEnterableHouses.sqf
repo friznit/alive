@@ -1,8 +1,8 @@
-#include <\x\alive\addons\main\script_component.hpp>
+#include <\x\alive\addons\fnc_strategic\script_component.hpp>
 SCRIPT(getEnterableHouses);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_getEnterableHouses
+Function: ALIVE_fnc_getEnterableHouses
 
 Description:
 Returns an array of all enterable Houses in a given radius
@@ -18,13 +18,13 @@ Examples:
 (begin example)
 // get array of all enterable houses across the map
 _center = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-_spawnhouses = [_center, (_center select 0) min (_center select 1)] call MSO_fnc_getEnterableHouses;
+_spawnhouses = [_center, (_center select 0) min (_center select 1)] call ALIVE_fnc_getEnterableHouses;
 (end)
 
 See Also:
-- <MSO_fnc_getObjectsByType>
-- <MSO_fnc_getAllEnterableHouses>
-- <MSO_fnc_isHouseEnterable>
+- <ALIVE_fnc_getObjectsByType>
+- <ALIVE_fnc_getAllEnterableHouses>
+- <ALIVE_fnc_isHouseEnterable>
 
 Author:
 Wolffy.au
@@ -41,7 +41,7 @@ ASSERT_TRUE(typeName _radius == "SCALAR",_err);
 
 _enterable = [];
 {
-	if([_x] call ALiVE_fnc_isHouseEnterable) then{
+	if([_x] call ALIVE_fnc_isHouseEnterable) then{
 		_enterable set [count _enterable, _x];
 	};
 } forEach nearestObjects[_position, ["House"], _radius];

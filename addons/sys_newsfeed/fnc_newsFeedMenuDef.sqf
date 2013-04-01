@@ -4,7 +4,7 @@
 SCRIPT(newsFeedMenuDef);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_vdistMenuDef
+Function: ALIVE_fnc_newsFeedMenuDef
 Description:
 This function controls the View portion of vdist.
 

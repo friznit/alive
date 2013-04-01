@@ -35,20 +35,23 @@ Wolffy.au
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
-private ["_logic","_operation","_args"];
+private ["_logic","_operation","_args","_result"];
 
-// Constructor - create a new instance
-if(isNil "_this") exitWith {
-	// Create a module object for settings and persistence
-	[sideLogic] call CBA_fnc_createCenter;
-        _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
-        _logic setVariable ["class", ALIVE_fnc_baseClass];
-        _logic;
+if(
+        isNil "_this" ||
+        {typeName _this != "ARRAY"} ||
+        {count _this == 0} ||
+        {typeName (_this select 0) != "OBJECT"}
+) then {
+        _this = [objNull, "create"];
 };
 
-PARAMS_1(_logic);
-DEFAULT_PARAM(1,_operation,"");
-DEFAULT_PARAM(2,_args,[]);
+TRACE_1("baseClass",_this);
+
+_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_operation = [_this, 1, "", ["nil"]] call BIS_fnc_param;
+_args = [_this, 2, [], [[]]] call BIS_fnc_param;
+_result = objNull;
 
 switch(_operation) do {
         default {
@@ -56,8 +59,17 @@ switch(_operation) do {
                 _err = format["%1 does not support %2 operation", _logic, _operation];
                 ERROR_WITH_TITLE(str _logic,_err);
         };
+        case "create": {
+                // Create a module object for settings and persistence
+                if (isNil "sideLogic") then {createCenter sideLogic;};
+                _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
+                _logic setVariable ["class", ALIVE_fnc_baseClass];
+                _result = _logic;
+        };
         case "destroy": {
-                _logic setDamage 1;
+                _logic setVariable ["class", nil];
                 deleteVehicle _logic;
         };
 };
+TRACE_1("baseClass",_result);
+_result;

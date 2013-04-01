@@ -4,11 +4,11 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = REQUIRED_VERSION;
-		requiredAddons[] = {"ALIVE_main","cba_ui"};
+		requiredAddons[] = {"ALIVE_main"};
 		versionDesc = "ALiVE";
-		versionAct = "['SYS_ADMINACTIONS',_this] execVM '\x\alive\addons\main\about.sqf';";
+		versionAct = "['FNC_STRATEGIC',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
-		author[] = {"Wolffy,au","JMan"};
+		author[] = {"Wolffy,au"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
@@ -17,4 +17,4 @@ class Extended_PreInit_EventHandlers {
 		init = QUOTE(call COMPILE_FILE(XEH_preInit));
 	};
 };
-#include <\x\alive\addons\sys_adminactions\spect\spectating.hpp>
+
