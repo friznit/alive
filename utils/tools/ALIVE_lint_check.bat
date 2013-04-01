@@ -1,6 +1,7 @@
 @echo off
 rem set exe=echo
 set exe=Rapify.exe -A -E -L -K
+rem -N
 set source=P:\x\alive\addons
 
 FOR /F "tokens=1* delims=," %%A in ('dir %source% /ad /b') do (
