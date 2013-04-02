@@ -47,8 +47,6 @@ PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,nil);
 
-
-
 switch(_operation) do {
         default {
                 private["_err"];
@@ -145,7 +143,23 @@ switch(_operation) do {
                 // TODO merge into lazy evaluation
                 waitUntil {!isNil QMOD(CQB)};
                 waitUntil {MOD(CQB) getVariable ["init", false]};
+                
+                /*
+                CONTROLLER  - coordination
+                - Init Servicebus on all localities
+                - Start CQB Controller on Server
+                */
+                [MOD(CQB), "ServiceBusInit"] call ALiVE_fnc_CQB;
 
+				if (isServer) then {
+	                waitUntil {MOD(CQB) getVariable ["init", false]};
+					[CQB_Regular, "active", true] call ALiVE_fnc_CQB;
+					diag_log ([CQB_Regular, "state"] call ALiVE_fnc_CQB);
+	                
+					[CQB_Strategic, "active", true] call ALiVE_fnc_CQB;
+					diag_log ([CQB_Strategic, "state"] call ALiVE_fnc_CQB);
+				};
+                
                 /*
                 VIEW - purely visual
                 - initialise menu
@@ -155,20 +169,9 @@ switch(_operation) do {
 		TRACE_2("Waiting for CQB PV",isDedicated,isHC);
 
                 if(!isDedicated && !isHC) then {
-					waitUntil {MOD(CQB) getVariable ["init", false]};
-					[CQB_Regular, "active", true] call ALiVE_fnc_CQB;
-					diag_log ([CQB_Regular, "state"] call ALiVE_fnc_CQB);
-                    [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-                    
-					[CQB_Strategic, "active", true] call ALiVE_fnc_CQB;
-					diag_log ([CQB_Strategic, "state"] call ALiVE_fnc_CQB);
                     [CQB_Strategic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
+                    [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                 };
-                
-                /*
-                CONTROLLER  - coordination
-                - 
-                */
         };
         
         case "destroy": {
@@ -370,6 +373,151 @@ switch(_operation) do {
 		};
 	};
     
+    case "ServiceBusInit": {
+        //This operation needs to be executed on all localities and has no arguments!
+        //Serverside EH
+        _logic setvariable ["SurfBusActive",true];
+        if (isServer) then {
+            "ClientEvent" addPublicVariableEventHandler {
+                private ["_sender","_params","_operation","_advanced","_return"];
+                _logic = ((_this select 1) select 0);
+                _sender = owner ((_this select 1) select 1);
+	            _params = ((_this select 1) select 2);
+                _operation = _params select 0;
+                _advanced = _params select 1;
+                
+	            //select operation
+	            switch _operation do {
+	                    case "execute": {
+	                        _return = call _advanced;
+	                    };
+                        case "callclass": {
+                            _class = _logic getvariable ["class",ALiVE_fnc_CQB];
+	                        _return = _advanced call _class;
+	                    };
+	                	default {};
+	            };
+	         
+	            //execution
+                //diag_log format["ALIVE Service Bus: ClientEvent message %2 received from %1! Operation %4 with arguments %5 returned %3",_sender,(_this select 1),_return,_operation,_advanced];
+                RETURN = _return;
+                _sender PublicVariableClient "RETURN";
+                RETURN = nil;
+        	};
+            
+            /* TODO: CATCH return value!
+            "RETURN" addPublicVariableEventHandler {
+                diag_log format["ALIVE Service Bus: Message caught on server: %1",(_this select 1)];
+        	};
+            diag_log "SB Server Init";
+            */
+        };
+        
+        //Clientside EH
+        if !(isdedicated) then {
+        	"ServerEvent" addPublicVariableEventHandler {
+                private ["_params","_operation","_advanced","_return"];
+                _logic = ((_this select 1) select 0);
+                _target = ((_this select 1) select 1);
+	            _params = ((_this select 1) select 2);
+                _operation = _params select 0;
+                _advanced = _params select 1;
+                
+	            //select operation
+	            switch _operation do {
+	                    case "execute": {
+	                        _return = call _advanced;
+	                    };
+                        case "callclass": {
+                            _class = _logic getvariable ["class",ALiVE_fnc_CQB];
+	                        _return = _advanced call _class;
+	                    };
+	                	default {};
+	            };
+	         
+	            //execution
+                //diag_log format["ALIVE Service Bus: ServerEvent message %2 activated on %1! Operation %4 with arguments %5 returned %3",_sender,(_this select 1),_return,_operation,_advanced];
+                RETURN = _return; 
+                PublicVariableServer "RETURN";
+                RETURN = nil;
+        	};
+            
+            /* TODO: CATCH return value!
+        	"RETURN" addPublicVariableEventHandler {
+                diag_log format["ALIVE Service Bus: Message caught on client: %1",(_this select 1)];
+        	};
+            diag_log "SB Client Init";
+            */
+		};	 
+    };
+    
+    case "SurfBus_ClientToServerEvent": {
+		if(isNil "_args") then {
+			// if no arg was provided return current active status
+			_args = _logic getVariable ["SurfBusActive", false];
+		} else {
+			// if arguments provided execute
+			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+			
+            _playerid = _args select 0;
+            _args = _args select 1;
+            
+            ClientEvent = [_logic,_playerid,_args];
+            publicVariableServer "ClientEvent";
+		};
+	};
+    
+    case "SurfBus_ServerToClientEvent": {
+		if(isNil "_args") then {
+			// if no arg was provided return current active status
+			_args = _logic getVariable ["SurfBusActive", false];
+		} else {
+			// if arguments provided execute
+			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+            
+            _target = _args select 0;
+            _params = _args select 1;
+            
+            ServerEvent = [_logic,_target,_params];
+            if (typeName _target == "OBJECT") then {_target = (owner _target)};
+            _target publicVariableClient "ServerEvent";
+            
+            //diag_log format ["Sending Server to client - message %2 to %1",_target,ServerEvent];
+		};
+	};
+
+	/*
+	//[CQB_Strategic, "SurfBus_ServerToClientEvent", [playableunits select 0,["callclass",[CQB_Strategic, "debug", true]]]] call ALiVE_fnc_CQB;    
+	[
+		CQB_Strategic, //logic to call the function from (doesnt do much)
+		"SurfBus_ServerToClientEvent", //Event you want to trigger
+		[
+	    	playableunits select 0, //target object
+			[
+				"callclass", //action to trigger (callclass example)
+				[CQB_Strategic, "debug", true] //_args (exp.: target class, operation, _args)
+			]
+		]
+	] call ALiVE_fnc_CQB;
+	
+	
+	//[CQB_Strategic, "SurfBus_ServerToClientEvent", [playableunits select 0,["execute",{hint "Test";}]]] call ALiVE_fnc_CQB;
+	[
+		CQB_Strategic, //logic to call the function from (doesnt do much)
+	    "SurfBus_ServerToClientEvent", //Event you want to trigger
+	    [
+	    	playableunits select 0, //target object
+	        [
+	        	"execute", //action to trigger (execute example)
+	            {hint "Test"} // code
+	        ]
+	    ]
+	] call ALiVE_fnc_CQB;
+	
+	//[CQB_Strategic, "SurfBus_ClientToServerEvent", [player,["execute",{diag_log "Test";}]]] call ALiVE_fnc_CQB;
+	//[CQB_Strategic, "SurfBus_ClientToServerEvent", [player,["callclass",[CQB_Strategic, "debug", true]]]] call ALiVE_fnc_CQB;
+	 */         	    
+
 	case "clearHouse": {
 		if(!isNil "_args") then {
 			ASSERT_TRUE(typeName _args == "OBJECT",str typeName _args);
@@ -396,7 +544,7 @@ switch(_operation) do {
 				// if no arguments provided return current setting
 				_args = _logic getVariable ["GarbageCollecting", false];
 			} else {
-	            // if a argument is provided execute
+	            // if an argument is provided then execute
 	        	ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
 	            _logic setVariable ["GarbageCollecting", _args, true];
 				
@@ -476,12 +624,118 @@ switch(_operation) do {
 				deleteVehicle _x;
 			} forEach units _grp;
 			
-	                        if (_logic getVariable ["debug", false]) then {
-	                                format["CQB Population: Group %1 deleted from %2...", _grp, owner leader _grp] call ALiVE_fnc_logger;
+		if (_logic getVariable ["debug", false]) then {
+			format["CQB Population: Group %1 deleted from %2...", _grp, owner leader _grp] call ALiVE_fnc_logger;
 		};
 		format[MTEMPLATE, _house] setMarkerTypeLocal "mil_Dot";
 		deleteGroup _grp;
 	    };
+	};
+    
+    case "spawnGroup": {
+		if(isNil "_args") then {
+			// if no units and house was provided return false
+			_args = false;
+		} else {
+			// if a house and unit is provided start spawn process
+			ASSERT_TRUE(typeName _args == "OBJECT",str typeName _args);
+            
+            _house = _args;
+            _debug = _logic getVariable ["debug",false];
+            
+        	_createUnitTypes = {
+				private ["_factions"];
+				PARAMS_1(_factions);
+				[_factions, ceil(random 2)] call ALiVE_fnc_chooseRandomUnits;
+			};
+            
+			// Action: spawn AI
+			// this just flags the house as beginning spawning
+			// and will be over-written in addHouse
+			
+			_units = _house getVariable ["unittypes", []];
+			// Check: if no units already defined
+			if(count _units == 0) then {
+				// Action: identify AI unit types
+				_units = [(_logic getVariable ["factions", []])] call (_logic getVariable ["_createUnitTypes", _createUnitTypes]);
+				_house setVariable ["unittypes", _units, true];
+			};
+
+			// Action: restore AI
+			_grp = [getPosATL _house, east, _units] call BIS_fnc_spawnGroup;
+										
+			if (count units _grp == 0) exitWith {
+				if (_debug) then {
+					format["CQB Population: Group %1 deleted on creation - no units...", _grp] call ALiVE_fnc_logger;
+				};
+				[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
+			};
+			// position AI
+			_positions = [_house] call ALiVE_fnc_getBuildingPositions;
+			{
+		        _pos = (_positions call BIS_fnc_selectRandom);
+				_x setPosATL [_pos select 0, _pos select 1, (_pos select 2 + 0.4)];
+		        _x setvariable ["home",_pos,true];
+			} forEach units _grp;
+			[_logic, "addGroup", [_house, _grp]] call ALiVE_fnc_CQB;
+			
+			// TODO Notify controller to start directing
+			// TODO this needs to be refactored
+			//[_house, _grp] spawn ALiVE_fnc_CQBmovegroup;
+			{
+				private["_fsm","_hdl"];
+				_fsm = "\x\alive\addons\nme_CQB\HousePatrol.fsm";
+				_hdl = [_x, 50, true, 120] execFSM _fsm;
+				_x setVariable ["FSM", [_hdl,_fsm], true];
+			} forEach units _grp;
+            _args = _grp;
+		};
+		_args;
+	}; 
+    
+    case "sendGroupHome": {
+    	if(isNil "_args") then {
+			// if no units and house was provided return false
+			_args = false;
+		} else {
+			// if a house and unit is provided start spawn process
+			ASSERT_TRUE(typeName _args == "GROUP",str typeName _args);
+            
+            _despawnGroup = {
+					private["_logic","_grp"];
+					PARAMS_2(_logic,_grp);
+					// update central CQB group listing
+					[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
+			};
+            
+            _grp = _args;
+        	
+			{
+                _pos = _x getvariable ["home", getposATL _x];
+				_hdlOut = (_x getvariable "FSM") select 0;
+				_hdlOut setFSMVariable ["_abort",true];
+				_x domove _pos;
+                
+                [_x,_pos,_logic,_despawnGroup] spawn {
+                   
+                    _unit = _this select 0;
+                    _grp = group (_this select 0);
+                    _pos = _this select 1;
+                    _logic = _this select 2;
+                    _despawnGroup = _this select 3;
+                    _spawn = _logic getVariable ["spawnDistance", 800];
+                    
+                    diag_log "sending unit home";
+
+                    while {(alive _unit) && ((getposATL _unit) distance _pos > 3) && (([getPosATL _unit, (_spawn * 2)] call ALiVE_fnc_anyPlayersInRange) > 0)} do {sleep 10; _unit domove _pos};
+                    if (count units _grp > 1) then {
+                        deletevehicle (_this select 0);
+                    } else {
+                        [_logic,_grp] call _despawnGroup;
+                    };
+                };
+			} forEach units _grp;
+    	};
 	};
 
 	case "active": {
@@ -508,21 +762,6 @@ switch(_operation) do {
 				_logic = _this;
 				
 				// default functions - can be overridden
-				// HH's create random units
-				_createUnitTypes = {
-					private ["_factions"];
-					PARAMS_1(_factions);
-					[_factions, ceil(random 2)] call ALiVE_fnc_chooseRandomUnits;
-				};
-				
-				// default immediate group deletion
-				_despawnGroup = {
-					private["_logic","_grp"];
-					PARAMS_2(_logic,_grp);
-					// update central CQB group listing
-					[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
-				};
-				
 				// over-arching spawning loop
 					waitUntil{
 						sleep (2 + random 1);
@@ -531,63 +770,25 @@ switch(_operation) do {
 							_house = _x;
 							_debug = _logic getVariable ["debug",false];
 							_spawn = _logic getVariable ["spawnDistance", 800];
-                            _CQBmaxgrps = 144;
 						
 							// Check: house doesn't already have AI AND
 							// Check: if any players within spawn distance AND
-							if (
-								(isNil {_house getVariable "group"}) &&
-								{([getPosATL _house, _spawn] call ALiVE_fnc_anyPlayersInRange) != 0}
-							) then {
-								
-								// Action: spawn AI
-								// this just flags the house as beginning spawning
-								// and will be over-written in addHouse
-								_house setVariable ["group", "preinit", true];
-								
-								_units = _house getVariable ["unittypes", []];
-								// Check: if no units already defined
-								if(count _units == 0) then {
-									// Action: identify AI unit types
-									_units = [(_logic getVariable ["factions", []])] call (_logic getVariable ["_createUnitTypes", _createUnitTypes]);
-									_house setVariable ["unittypes", _units, true];
-								};
-								
-								// Check: that the player isn't already hosting too many AI AND
-								// Check: that the player isn't already hosting too many groups simultaneously
-								if (
-									(call ALiVE_fnc_isAbleToHost) &&
-									{{local leader _x} count (_logic getVariable ["groups",[]]) < _CQBmaxgrps}
-								) then {
-									// Action: restore AI
-									_grp = [getPosATL _house, east, _units] call BIS_fnc_spawnGroup;
-									
-									if (count units _grp == 0) exitWith {
-										if (_debug) then {
-											format["CQB Population: Group %1 deleted on creation - no units...", _grp] call ALiVE_fnc_logger;
-										};
-										[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
-									};
-									// position AI
-									_positions = [_house] call ALiVE_fnc_getBuildingPositions;
-									{
-                                        _pos = (_positions call BIS_fnc_selectRandom);
-										_x setPosATL [_pos select 0, _pos select 1, (_pos select 2 + 0.4)];
-                                        _x setvariable ["home",_pos];
-									} forEach units _grp;
-									[_logic, "addGroup", [_house, _grp]] call ALiVE_fnc_CQB;
-									
-									// TODO Notify controller to start directing
-									// TODO this needs to be refactored
-									//[_house, _grp] spawn ALiVE_fnc_CQBmovegroup;
-									{
-										private["_fsm","_hdl"];
-										_fsm = "\x\alive\addons\nme_CQB\HousePatrol.fsm";
-										_hdl = [_x, 50, true, 120] execFSM _fsm;
-										_x setVariable ["FSM", [_hdl,_fsm], true];
-									} forEach units _grp;
-								};
-							};
+							if ((isNil {_house getVariable "group"}) && {([getPosATL _house, _spawn] call ALiVE_fnc_anyPlayersInRange) != 0}) then {
+								_house setvariable ["group","preinit",true];
+                                
+                                _players = [] call BIS_fnc_listPlayers;
+                                _playerhosts = [];
+                                
+                                for "_i" from 0 to (count _players - 1) do {
+                                    _pl = _players select _i; 
+                                	if ((getPosATL _house distance _pl < _spawn) && (({owner _x == owner _pl} count allUnits) <= ceil (count allUnits / count _players))) then {
+                                        _playerhosts set [count _playerhosts,_pl];
+                                    };
+                                };
+                                _host = _playerhosts call BIS_fnc_selectRandom;
+                                
+                                [_logic, "SurfBus_ServerToClientEvent", [_host,["callclass",[_logic, "spawnGroup", _house]]]] call ALiVE_fnc_CQB;
+                            };
 						} forEach (_logic getVariable ["houses", []]);
 						{
 							_grp = _x;
@@ -606,31 +807,9 @@ switch(_operation) do {
 								// despawn group but house not cleared
 								_leader = leader _grp;
 								if ((([getPosATL _house, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) == 0) && {(isnil "_sendHome")}) then {
-									// HH to over-ride to send back to home and delete
-									// default is to delete
+									// sending group home
                                     _x setvariable ["sendHome",true];
-									{
-                                        _pos = _x getvariable ["home", getposATL _x];
-										_hdlOut = (_x getvariable "FSM") select 0;
-										_hdlOut setFSMVariable ["_abort",true];
-										_x domove _pos;
-                                        
-                                        [_x,_pos,_logic,_despawnGroup] spawn {
-                                           
-                                            _unit = _this select 0;
-                                            _grp = group (_this select 0);
-                                            _pos = _this select 1;
-                                            _logic = _this select 2;
-                                            _despawnGroup = _this select 3;
-
-                                            while {(alive _unit) && ((getposATL _unit) distance _pos > 3) && (([getPosATL _unit, (_spawn * 2)] call ALiVE_fnc_anyPlayersInRange) > 0)} do {sleep 10; _unit domove _pos};
-                                            if (count units _grp > 1) then {
-                                                deletevehicle (_this select 0);
-                                            } else {
-                                                [_logic,_grp] call _despawnGroup;
-                                            };
-                                        };
-									} forEach units _grp;
+                                    [_logic, "SurfBus_ServerToClientEvent", [owner _leader,["callclass",[_logic, "sendGroupHome", _grp]]]] call ALiVE_fnc_CQB;
 								};
 							};
 						} forEach (_logic getVariable ["groups",[]]);
