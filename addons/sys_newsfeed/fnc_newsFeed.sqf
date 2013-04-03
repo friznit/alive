@@ -98,7 +98,7 @@ switch(_operation) do {
                                         "call ALIVE_fnc_newsFeedMenuDef",
                                         "main"
                                 ]
-                        ] call ALIVE_fnc_flexiMenu_Add;
+                        ] call CBA_fnc_flexiMenu_Add;
                 };
                 
         };
@@ -123,7 +123,7 @@ switch(_operation) do {
                                         "call ALIVE_fnc_newsFeedMenuDef",
                                         "main"
                                 ]
-                        ] call ALIVE_fnc_flexiMenu_Remove;
+                        ] call CBA_fnc_flexiMenu_Remove;
                 };
         };
         default {
