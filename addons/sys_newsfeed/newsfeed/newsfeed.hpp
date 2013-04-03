@@ -56,7 +56,7 @@ class newsfeed_dialog
 				};
 				class NewsText: RscHTML
 				{	
-					filename = "http://www.kevingunn.co.uk/alive.html";
+					filename = "http://www.kevingunn.co.uk/alive_news.php";
 					shadow = 0;
 					class H1
 					{
