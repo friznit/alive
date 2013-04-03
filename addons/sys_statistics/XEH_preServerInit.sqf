@@ -40,7 +40,7 @@ if (isDedicated) then {
 					_data = format["""realTime"":%1 ,  ""Server"":""%2"" , ""Operation"":""%3"" , ""Map"":""%4"" , ""gameTime"":""%5"" , ", _realtime, GVAR(serverIP), missionName, worldName, _gametime] + _data;
 			
 					// Write event data to DB
-					_post = format ["SendJSON [""https://msostore.iriscouch.com"",""POST"", ""events"", ""{%1}""]", _data];
+					_post = format ["SendJSON [""POST"", ""events"", ""{%1}""]", _data];
 					_result = "Arma2Net.Unmanaged" callExtension _post;
 					
 					diag_log _data;
