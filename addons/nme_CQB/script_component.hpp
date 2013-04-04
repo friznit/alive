@@ -8,3 +8,5 @@
 #ifdef DEBUG_SETTINGS_nme_CQB
 	#define DEBUG_SETTINGS DEBUG_SETTINGS_nme_CQB
 #endif
+
+#include <\x\cba\addons\main\script_macros.hpp>

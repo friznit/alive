@@ -1,4 +1,4 @@
-#include <\x\alive\addons\sys_rwg\script_component.hpp>
+#include <\x\alive\addons\nme_CQB\script_component.hpp>
 SCRIPT(CQBsortStrategicHouses);
 
 /* ----------------------------------------------------------------------------
