@@ -38,7 +38,7 @@
 	<English>Allow Spectate:</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE_ENABLE">
-	<English>Enable Spectating</English>
+	<English>Activate Spectating</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT">
 	<English>Allow server admins to be spectate other players</English>
