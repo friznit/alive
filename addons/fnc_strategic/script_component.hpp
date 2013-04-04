@@ -8,3 +8,5 @@
 #ifdef DEBUG_SETTINGS_FNC_STRATEGIC
 	#define DEBUG_SETTINGS DEBUG_SETTINGS_FNC_STRATEGIC
 #endif
+
+#include <\x\cba\addons\main\script_macros.hpp>

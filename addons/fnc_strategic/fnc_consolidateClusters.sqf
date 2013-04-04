@@ -35,8 +35,10 @@ Wolffy.au
 #define MIN_DISTANCE 250
 
 private ["_master","_redundant","_err"];
-PARAMS_1(_master)
+
+PARAMS_1(_master);
 DEFAULT_PARAM(1,_redundant,_master);
+
 _err = "objects provided not valid";
 ASSERT_DEFINED("_master", _err);
 ASSERT_DEFINED("_redundant", _err);

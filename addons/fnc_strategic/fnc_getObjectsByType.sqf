@@ -43,7 +43,8 @@ ASSERT_TRUE(typeName _types == "ARRAY", _err);
 
 // read raw object data
 _file = format["\x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", worldName];
-_raw_objects = call compile preprocessFileLineNumbers _file;
+call compile preprocessFileLineNumbers _file;
+_raw_objects = wrp_objects;
 _err = "raw object information not read correctly from file";
 ASSERT_DEFINED("_raw_objects",_err);
 ASSERT_TRUE(typeName _raw_objects == "ARRAY", _err);
