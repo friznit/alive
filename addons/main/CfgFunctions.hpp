@@ -33,6 +33,14 @@ class cfgFunctions {
 				description = "Selects vehicletypes of certain factions.";
 	                        file = "\x\alive\addons\main\fnc_findVehicleType.sqf";
 			};
+			class createLink {
+				description = "Used for debugging and drawing lines between two objects on the map";
+	                        file = "\x\alive\addons\main\fnc_createLink.sqf";
+			};
+			class deleteLink {
+				description = "Used for removing debugging lines between two objects on the map";
+	                        file = "\x\alive\addons\main\fnc_deleteLink.sqf";
+			};
                 };
         };
 };

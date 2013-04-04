@@ -22,13 +22,11 @@
 
 // Set a default debug mode for the component here (See documentation on how to default to each of the modes).
 //	#define DEBUG_ENABLED_MAIN
-	#define DEBUG_ENABLED_SYS_ADMINACTIONS
-	#define DEBUG_ENABLED_FNC_STRATEGIC
+//	#define DEBUG_ENABLED_SYS_ADMINACTIONS
+//	#define DEBUG_ENABLED_FNC_STRATEGIC
 	#define DEBUG_ENABLED_NME_CQB
 	#define DEBUG_ENABLED_SYS_NEWSFEED
 	#define DEBUG_ENABLED_SYS_RWG
 
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
-
-#include <\x\cba\addons\main\script_macros.hpp>
