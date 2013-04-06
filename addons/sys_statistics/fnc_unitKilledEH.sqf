@@ -51,10 +51,14 @@ private ["_sideKilled","_sideKiller","_killedtype","_killerweapon","_killertype"
 _killed = _this select 0;
 _killer = _this select 1;
 
+if (isNull _killer) then {
+	_killer = _killed;
+};
+
 // if killed is a player or a vehicle then record, if killer is player or player in a vehicle
 if ( (_killed == player) || !(_killed iskindof "Man") || (isPlayer _killer) ) then {
 	
-	//diag_log format["Unit Killed: vehicle: %1, killed: %2, killer: %3", typeof vehicle _killed, typeof _killed, typeof _killer];
+	//diag_log format["Unit Killed: vehicle: %1, killed: %2, killer: %3, killerunit: %4 (%5)", typeof vehicle _killed, typeof _killed, typeof _killer, _killer, isPlayer _killer];
 
 	_sideKilled = side (group _killed); // group side is more reliable
 	_sideKiller = side _killer;
@@ -121,12 +125,12 @@ if ( (_killed == player) || !(_killed iskindof "Man") || (isPlayer _killer) ) th
 	if (isPlayer _killer && (_killer != _killed) && (_killed iskindof "Man")) then { // Player was killer
 		
 			// Check to see if player is in a vehicle and firing the weapon
-			if (_killer iskindof "Man" || isPlayer (gunner _killer) || isPlayer (commander _killer)) then {
+			//if (_killer iskindof "Man" || isPlayer (gunner _killer) || isPlayer (commander _killer) || isPlayer (driver _killer) ) then {
 				_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _killer, name _killer];
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
 				publicVariableServer QGVAR(UPDATE_EVENTS);		
-			};	
+			//};	
 			
 	};
 				

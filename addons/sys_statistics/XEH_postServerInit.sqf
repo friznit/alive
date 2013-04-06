@@ -15,7 +15,7 @@ if (isDedicated) then {
 	// Setup player disconnection eventhandler
 	onPlayerDisconnected {
 	
-		private ["_name","_class","_puid","_PlayerSide","_PlayerFaction","_startTime","_endTime","_minutesPlayed","_data","_shotsFired","_shotsFiredData","_unit"];
+		private ["_name","_class","_puid","_PlayerSide","_PlayerFaction","_startTime","_endTime","_minutesPlayed","_data","_shotsFired","_shotsFiredData","_unit","_playerType"];
 					
 		_unit = objNull;
 		
@@ -47,6 +47,7 @@ if (isDedicated) then {
 			_class = "Unknown";
 			_PlayerSide = "Unknown";
 			_PlayerFaction = "Unknown";
+			_playerType = "Unknown";
 			_minutesPlayed = ceil(time / 60);
 			_shotsFiredData = "";
 			
@@ -55,7 +56,7 @@ if (isDedicated) then {
 			_class = getText (configFile >> "cfgVehicles" >> (typeof _unit) >> "displayName");	
 			_PlayerSide = side (group _unit); // group side is more reliable
 			_PlayerFaction = faction _unit;			
-
+			_playerType = typeof _unit;
 			// Calculate Minutes Played
 			_minutesPlayed = floor(( (dateToNumber date) - ( dateToNumber (_unit getvariable QGVAR(timeStarted))) ) * 525600);
 			//diag_log _minutesPlayed;
@@ -77,7 +78,7 @@ if (isDedicated) then {
 		};
 				
 		// Format Data
-		_data = format["""Event"":""PlayerFinish"" , ""PlayerSide"":""%1"" , ""PlayerFaction"":""%2"" , ""PlayerName"":""%3"" ,""PlayerType"":""%4"" , ""PlayerClass"":""%5"" , ""Player"":""%6"" , ""shotsFired"": [%7{}] , ""timePlayed"":%8", _PlayerSide, _PlayerFaction, _name, typeof _unit, _class, _uid, _shotsFiredData, _minutesPlayed];
+		_data = format["""Event"":""PlayerFinish"" , ""PlayerSide"":""%1"" , ""PlayerFaction"":""%2"" , ""PlayerName"":""%3"" ,""PlayerType"":""%4"" , ""PlayerClass"":""%5"" , ""Player"":""%6"" , ""shotsFired"": [%7{}] , ""timePlayed"":%8", _PlayerSide, _PlayerFaction, _name, _playerType, _class, _uid, _shotsFiredData, _minutesPlayed];
 
 		// Send Data
 		GVAR(UPDATE_EVENTS) = _data;

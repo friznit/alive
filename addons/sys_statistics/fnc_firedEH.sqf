@@ -27,6 +27,8 @@ if (isPlayer _unit) exitWith {
 		[_unit, _weapon, _muzzle] call GVAR(fnc_playerfiredEH);
 	};
 };
+
+TRACE_5("FiredEH",_unit,_weapon,_muzzle,_projectile, _projSim);
 	
 	//diag_log["unitFired: ", _this];
 

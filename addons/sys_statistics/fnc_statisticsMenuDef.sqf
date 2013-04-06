@@ -97,7 +97,7 @@ if (_menuName == "statistics") then {
 					MOD(statistics) getVariable ["allow", 0],
 					!(MOD(statistics) getVariable ["enabled", false])
 				],
-				[localize "STR_ALIVE_STATISTICS_DISABLE",
+				[localize "STR_ALIVE_STATISTICS_ENABLE",
 					{ MOD(statistics) setVariable ["enabled", false]; },
 					"",
 					localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
