@@ -14,6 +14,7 @@
 #define GUI_GRID_X			(safezoneX)
 #define GUI_GRID_Y			(safezoneY + safezoneH - GUI_GRID_HAbs)
 
+
 class newsfeed_dialog
 {
 	idd = 660002; 
@@ -21,7 +22,7 @@ class newsfeed_dialog
 	enableSimulation = 1;
 	enableDisplay = 1; 
 	
-	onLoad = "newsfeed_dialog = _this; disableSerialization"; 
+	onLoad = "newsfeed_dialog = _this; disableSerialization;"; 
 	
 
 	class controls 
@@ -30,7 +31,7 @@ class newsfeed_dialog
 		class NewsTitle: RscText
 				{
 					colorBackground[] = {0.69,0.75,0.5,0.8};
-					idc = 1003;
+					idc = 10032;
 					x = "0 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 					y = "0 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 					w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -38,7 +39,7 @@ class newsfeed_dialog
 				};
 				class NewsBackgroundDate: RscText
 				{
-					idc = 1002;
+					idc = 10022;
 					x = "0 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 					y = "1.1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 					w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -47,7 +48,7 @@ class newsfeed_dialog
 				};
 				class NewsBackground: RscText
 				{
-					idc = 1005;
+					idc = 10052;
 					x = "0 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 					y = "2.2 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 					w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -56,7 +57,6 @@ class newsfeed_dialog
 				};
 				class NewsText: RscHTML
 				{	
-					filename = "http://www.kevingunn.co.uk/alive_news.php";
 					shadow = 0;
 					class H1
 					{
@@ -77,7 +77,7 @@ class newsfeed_dialog
 					colorBold[] = {0.6,0.6,0.6,1};
 					colorLink[] = {0.69,0.75,0.5,1};
 					colorLinkActive[] = {0.69,0.75,0.5,1};
-					idc = 1004;
+					idc = 10042;
 					x = "0.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 					y = "-0.1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 					w = "14 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
