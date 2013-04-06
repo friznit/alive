@@ -1,5 +1,5 @@
 
-// Modified for MSO A3 adminActions by [KH]Jman
+// Modified for ALiVE A3 adminActions by [KH]Jman
 
 private ["_Source", "_debugPlayer", "_cName", "_cCamera", "_idx", "_found", "_role", "_name", "_ccName", "_disp"];
 _Source = _this select 0;

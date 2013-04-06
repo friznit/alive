@@ -2,7 +2,7 @@
 SCRIPT(findVehicleType);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_findVehicleType
+Function: ALiVE_fnc_findVehicleType
 
 Description:
 Used to find vehicles for specific type, side and free cargo slots
@@ -17,7 +17,7 @@ Array - A list of vehicles matching the parameters supplied.
 
 Examples:
 (begin example)
-_types = [0, MSO_FACTIONS,"Man"] call MSO_fnc_findVehicleType;
+_types = [0, ALiVE_FACTIONS,"Man"] call ALiVE_fnc_findVehicleType;
 _group = [_pos, east, _types] call BIS_fnc_spawnGroup;
 (end)
 

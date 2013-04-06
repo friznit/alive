@@ -66,11 +66,11 @@ Group: ALiVE  {
          File: ALIVE_fnc_baseClass  (main/fnc_baseClass.sqf)
          File: ALIVE_fnc_isHC  (main/fnc_isHC.sqf)
          File: ALIVE_fnc_isServerAdmin  (main/fnc_isServerAdmin.sqf)
-         File: MSO_fnc_anyPlayersInRange  (main/fnc_anyPlayersInRange.sqf)
-         File: MSO_fnc_chooseRandomUnits  (main/fnc_chooseRandomUnits.sqf)
-         File: MSO_fnc_findVehicleType  (main/fnc_findVehicleType.sqf)
-         File: MSO_fnc_isAbleToHost  (main/fnc_isAbleToHost.sqf)
-         File: MSO_fnc_logger  (main/fnc_logger.sqf)
+         File: ALiVE_fnc_anyPlayersInRange  (main/fnc_anyPlayersInRange.sqf)
+         File: ALiVE_fnc_chooseRandomUnits  (main/fnc_chooseRandomUnits.sqf)
+         File: ALiVE_fnc_findVehicleType  (main/fnc_findVehicleType.sqf)
+         File: ALiVE_fnc_isAbleToHost  (main/fnc_isAbleToHost.sqf)
+         File: ALiVE_fnc_logger  (main/fnc_logger.sqf)
          }  # Group: Main
 
       Group: Nme_CQB  {

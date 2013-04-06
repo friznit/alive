@@ -1,4 +1,4 @@
-// Modified for MSO A3 adminActions by [KH]Jman
+// Modified for ALiVE A3 adminActions by [KH]Jman
 
 
 private ["_Source", "_debugPlayer", "_cName", "_cCamera"];

@@ -1,5 +1,5 @@
 
-// Modified for MSO A3 adminActions by [KH]Jman
+// Modified for ALiVE A3 adminActions by [KH]Jman
 
 comment "for Spectating Script";
 comment "Handles events such as keyboard keypresses";

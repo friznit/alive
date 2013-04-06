@@ -2,7 +2,7 @@
 SCRIPT(anyPlayersInRange);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_anyPlayersInRange
+Function: ALiVE_fnc_anyPlayersInRange
 
 Description:
 Return the number of players within range of a position
@@ -17,7 +17,7 @@ Number - Returns number of players within range
 Examples:
 (begin example)
 // No players in range
-([_pos, 2500] call MSO_fnc_anyPlayersInRange == 0)
+([_pos, 2500] call ALiVE_fnc_anyPlayersInRange == 0)
 (end)
 
 Author:

@@ -2,10 +2,10 @@
 SCRIPT(logger);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_logger
+Function: ALiVE_fnc_logger
 
 Description:
-Message logger for MSO.
+Message logger for ALiVE.
 
 Output timestamped messages to RPT.
 
@@ -14,11 +14,11 @@ String - Message to log
 
 Examples:
 (begin example)
-"Initialisation Completed" call mso_fnc_logger;
+"Initialisation Completed" call ALiVE_fnc_logger;
 (end)
 
 See Also:
-- <MSO_fnc_initialising>
+- <ALiVE_fnc_initialising>
 
 Author:
 Wolffy.au
@@ -26,6 +26,6 @@ Wolffy.au
 
 private["_text","_message"];
 PARAMS_1(_text);
-_message = format["MSO-%1 %2", time, _text];
+_message = format["ALiVE-%1 %2", time, _text];
 diag_log text _message;
 

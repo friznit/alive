@@ -1,5 +1,5 @@
 
-// Modified for MSO A3 adminActions by [KH]Jman
+// Modified for ALiVE A3 adminActions by [KH]Jman
 
 private ["_debugplayer", "_idx", "_name", "_unit", "_found", "_i", "_OriginalSide","_vm_refreshNumber"];
 				_debugplayer sidechat format ["Loop# %1 RefreshPlayerList spawn activated",vm_count ];

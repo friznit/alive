@@ -39,7 +39,7 @@ Wolffy, Highhead
 
 #define SUPERCLASS nil
 #define MTEMPLATE "ALiVE_CQB_%1"
-#define MSO_FACTIONS ["OPF_F"]
+#define ALiVE_FACTIONS ["OPF_F"]
 
 private ["_logic","_operation","_args"];
 
@@ -96,14 +96,14 @@ switch(_operation) do {
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _spawnhouses] call ALiVE_fnc_CQB;
-					[MOD(CQB), "factions", MSO_FACTIONS] call ALiVE_fnc_CQB;
+					[MOD(CQB), "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
 					[MOD(CQB), "spawnDistance", 800] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
-					[_logic, "factions", MSO_FACTIONS] call ALiVE_fnc_CQB;
+					[_logic, "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 800] call ALiVE_fnc_CQB;
 					_logic setVariable ["debugColor","ColorRed",true];
 					_logic setVariable ["debugPrefix","Strategic",true];
@@ -115,7 +115,7 @@ switch(_operation) do {
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
-					[_logic, "factions", MSO_FACTIONS] call ALiVE_fnc_CQB;
+					[_logic, "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
                     _logic setVariable ["debugColor","ColorGreen",true];
 					_logic setVariable ["debugPrefix","Regular",true];

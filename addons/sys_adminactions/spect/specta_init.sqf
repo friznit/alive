@@ -11,7 +11,7 @@
 // if (side player == resistance) then {KEGsShownSides = [resistance];};
 // if (side player == civilian) then {KEGsShownSides = [civilian];};
 
-// Modified for MSO A3 adminActions by [KH]Jman
+// Modified for ALiVE A3 adminActions by [KH]Jman
 
 // ====================================================================================
 

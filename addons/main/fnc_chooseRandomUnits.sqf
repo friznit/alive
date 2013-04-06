@@ -2,7 +2,7 @@
 SCRIPT(chooseRandomUnits);
 
 /* ----------------------------------------------------------------------------
-Function: MSO_fnc_chooseRandomUnits
+Function: ALiVE_fnc_chooseRandomUnits
 
 Description:
 Provides up to 4 random infantry unit types
@@ -16,12 +16,12 @@ Array - A list of random unit types
 
 Examples:
 (begin example)
-[["RU","INS"], ceil(random 5)] call MSO_fnc_chooseRandomUnits;
+[["RU","INS"], ceil(random 5)] call ALiVE_fnc_chooseRandomUnits;
 (end)
 
 See Also:
-- <MSO_fnc_findVehicleType>
-- <MSO_fnc_getBuildingPositions>
+- <ALiVE_fnc_findVehicleType>
+- <ALiVE_fnc_getBuildingPositions>
 
 Author:
 Highhead

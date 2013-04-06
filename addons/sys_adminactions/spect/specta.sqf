@@ -4,7 +4,7 @@ private ["_player", "_killer", "_seagull", "_debugPlayer", "_markers", "_name", 
 // Spectating Script for Armed Assault
 // by Kegetys <kegetys [ät] dnainternet.net>
 
-// Modified for MSO A3 adminActions by [KH]Jman
+// Modified for ALiVE A3 adminActions by [KH]Jman
 
 
 
