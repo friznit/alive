@@ -41,16 +41,16 @@ _obj_array = [
 	"runway_beton",
 	"runwayold",
 	"helipad",
-	"hbarrier",
+//	"hbarrier",
 //	"cargo",
-	"razorwire",
-	"mil_wired",
+//	"razorwire",
+//	"mil_wired",
 	"miloffices",
 	"radar",
 	"hangar",
-	"mil_wall",
+//	"mil_wall",
 	"bunker",
-	"small_shed_f"
+	"shed_small_f"
 ] call ALIVE_fnc_getObjectsByType;
 _err = "getObjectsByType";
 ASSERT_DEFINED("_obj_array",_err);
@@ -84,14 +84,27 @@ _err = "finding clusters";
 ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 ASSERT_TRUE(count _clusters == ceil(sqrt(count _obj_array / 2)),_err);
 {
-        _m = createMarker [str _x, getPosATL _x];
+        private["_max","_center"];
+        _max = 0;
+        _center = _x;
+        _m = createMarker [str _x, getPosATL _center];
 	_m setMarkerShape "Icon";
 	_m setMarkerSize [1, 1];
 	_m setMarkerType "mil_dot";
 	_m setMarkerColor "ColorYellow";
-	_m setMarkerText format["Cluster Center #%1", _forEachIndex];
-} forEach _clusters;
+	_m setMarkerText format["Cluster Center #%1", _forEachIndex];
 
+        {
+                if(_x distance _center > _max) then {_max = _x distance _center;};
+        } forEach (_center getVariable "ClusterNodes");
+
+        _m = createMarker [str _center + "_0", getPosATL _center];
+	_m setMarkerShape "Ellipse";
+	_m setMarkerSize [_max, _max];
+	_m setMarkerColor "ColorYellow";
+	_m setMarkerAlpha 0.5; 
+} forEach _clusters;
+/*
 STAT("Clean up markers");
 deleteMarker str _center;
 {
@@ -99,9 +112,10 @@ deleteMarker str _center;
 } forEach _obj_array;
 {
 	deleteMarker str _x;
+	deleteMarker (str _x + "_0");
 } forEach _clusters;
 
 _err = format["Mission objects: %1", count allMissionObjects ""];
 STAT(_err);
-
+*/
 nil;

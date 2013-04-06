@@ -1,6 +1,8 @@
 #include <\x\alive\addons\fnc_strategic\script_component.hpp>
 SCRIPT(findClusters);
 
+#undef DEBUG_MODE_FULL
+
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_findClusters
 
