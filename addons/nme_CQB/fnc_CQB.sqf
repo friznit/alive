@@ -124,7 +124,7 @@ switch(_operation) do {
                     Publicvariable "CQB_Regular";
                     
                     MOD(CQB) setVariable ["instances",[CQB_Regular,CQB_Strategic],true];
-                    //[MOD(CQB), "GarbageCollecting", true] call ALiVE_fnc_CQB;
+                    [MOD(CQB), "GarbageCollecting", true] call ALiVE_fnc_CQB;
                     MOD(CQB) setVariable ["init", true, true];
                     
                     diag_log format["Regular logic %1, houses %2",_logic,count _spawnhouses];
@@ -399,7 +399,6 @@ switch(_operation) do {
 	            };
 	         
 	            //execution
-                //diag_log format["ALIVE Service Bus: ClientEvent message %2 received from %1! Operation %4 with arguments %5 returned %3",_sender,(_this select 1),_return,_operation,_advanced];
                 RETURN = _return;
                 _sender PublicVariableClient "RETURN";
                 RETURN = nil;
@@ -436,7 +435,6 @@ switch(_operation) do {
 	            };
 	         
 	            //execution
-                //diag_log format["ALIVE Service Bus: ServerEvent message %2 activated on %1! Operation %4 with arguments %5 returned %3",_sender,(_this select 1),_return,_operation,_advanced];
                 RETURN = _return; 
                 PublicVariableServer "RETURN";
                 RETURN = nil;
@@ -481,8 +479,6 @@ switch(_operation) do {
             ServerEvent = [_logic,_target,_params];
             if (typeName _target == "OBJECT") then {_target = (owner _target)};
             _target publicVariableClient "ServerEvent";
-            
-            //diag_log format ["Sending Server to client - message %2 to %1",_target,ServerEvent];
 		};
 	};
 
@@ -560,7 +556,7 @@ switch(_operation) do {
 		                _spawn = _this select 1;
                         
 		                while {!(isnil "GC")} do {
-		                    sleep 10;
+		                    sleep 30;
 							{
 			                   _lead = leader _x;
 								if ((local _lead) && (([getPosATL _lead, (_spawn * 2.5)] call ALiVE_fnc_anyPlayersInRange) == 0)) then {[_logic, "delGroup", _x] call ALiVE_fnc_CQB};
@@ -600,7 +596,10 @@ switch(_operation) do {
 			
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceAdd;
 			_house setVariable ["group", _grp, true];
-			{_x setVariable ["house",_house, true]} foreach (units _grp);
+			{_x setVariable ["house",_house]} foreach (units _grp);
+            
+            //Only public flag leader with house to save PVs
+			(leader _grp) setVariable ["house",_house, true];
 			
 	        if (_logic getVariable ["debug", false]) then {
 	        	format["CQB Population: Group %1 created on %2", _grp, owner leader _grp] call ALiVE_fnc_logger;
@@ -786,26 +785,28 @@ switch(_operation) do {
                             _nearplayers = ({((getPosATL _house) distance _x) < _spawn} count _players);
 							if ((isNil {_house getVariable "group"}) && {_nearplayers != 0}) then {
 
-                                //diag_log format ["Looking for hosters on house %1",_house];
                                 _playerhosts = [];
                                 if (count _players > 0) then {
-	                                for "_i" from 1 to (count _players - 1) do {
+	                                for "_i" from 0 to (count _players - 1) do {
 	                                    _pl = _players select _i;
                                         
                                         //Choose players from List
                                         if !(isnull _pl) then {
+                                            
+                                            /* AI distribution not working properly yet
                                             _threshold = 10;
                                             _localunits = ({owner _x == owner _pl} count allUnits);
                                             _unitLimit = (ceil (count allUnits / count _players)) + _threshold;
-	                                        //_canHost = (_localunits <= _unitLimit);
+                                            _canHost = (_localunits <= _unitLimit);
+                                            diag_log format ["Local units %1 on %2 vs. Unitlimit %3 (near players %4) turns canhost %5 for house %6 on logic %7",_localunits,_pl,_unitLimit,_nearplayers,_canhost,_house,_logic];
+                                            */
 		                                	_canhost = true;
-	                                        //diag_log format ["Local units %1 on %2 vs. Unitlimit %3 (near players %4) turns canhost %5 for house %6 on logic %7",_localunits,_pl,_unitLimit,_nearplayers,_canhost,_house,_logic];
 	                                        
 	                                        if ((getPosATL _house distance _pl < _spawn) && _canHost) then {
 		                                        _playerhosts set [count _playerhosts,_pl];
 		                                    };
                                         } else {
-                                            diag_log format ["CQB Warning: Null object on host (%1) not selected",_pl];
+                                            //diag_log format ["CQB Warning: Null object on host (%1) not selected",_pl];
                                         };
 	                                };
                                     
@@ -813,7 +814,6 @@ switch(_operation) do {
                                 		_host = _playerhosts call BIS_fnc_selectRandom;
                                     
 	                                    if !(isnull _host) then {
-	                                        //diag_log format["Server triggering Spawngroup on %1",_host];
 		                                    _house setvariable ["group","preinit",true];
 			                                [_logic, "SurfBus_ServerToClientEvent", [_host,["callclass",[_logic, "spawnGroup", _house]]]] call ALiVE_fnc_CQB;
 			                                sleep 0.1;
@@ -835,6 +835,12 @@ switch(_operation) do {
 							
                             // get house in question
 							_house = _leader getVariable "house";
+                            
+                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
+                            // If not all units are flagged with house then flag them;
+                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
+                                {_x setvariable ["house",_house]} foreach (units _grp);
+                            };
 							
 							// if group are all dead
 							// mark house as cleared
@@ -854,12 +860,15 @@ switch(_operation) do {
 								};
 							};
 						} forEach (_logic getVariable ["groups",[]]);
-                        _remaincount = count (_logic getVariable ["houses", []]);
-                        _housesempty = {(isNil {_x getVariable "group"})} count (_logic getVariable ["houses", []]);
-						_activecount = count (_logic getVariable ["groups", []]);
-                        _groupsempty = {(isNil {(leader _x) getVariable "house"})} count (_logic getVariable ["groups", []]);
                         
-                       format["CQB Population: %1 remaing positions | %2 active positions | inactive houses %3 | groups with no house %4...", _remaincount, _activecount,_housesempty,_groupsempty] call ALiVE_fnc_logger;        
+                        if (_debug) then {
+	                        _remaincount = count (_logic getVariable ["houses", []]);
+	                        _housesempty = {(isNil {_x getVariable "group"})} count (_logic getVariable ["houses", []]);
+							_activecount = count (_logic getVariable ["groups", []]);
+	                        _groupsempty = {(isNil {(leader _x) getVariable "house"})} count (_logic getVariable ["groups", []]);
+	                        
+	                       format["CQB Population: %1 remaing positions | %2 active positions | inactive houses %3 | groups with no house %4...", _remaincount, _activecount,_housesempty,_groupsempty] call ALiVE_fnc_logger; 
+                        };
 
 						!([_logic,"active"] call ALiVE_fnc_CQB);
 					}; // end over-arching spawning loop
