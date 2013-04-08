@@ -41,6 +41,10 @@ class cfgFunctions {
 				description = "Used for removing debugging lines between two objects on the map";
 	                        file = "\x\alive\addons\main\fnc_deleteLink.sqf";
 			};
+			class exMP {
+				description = "Multi-Locality execution with network-optimized commands PublicvariableServer and PublicvariableClient";
+	                        file = "\x\alive\addons\main\fnc_exMP.sqf";
+			};
                 };
         };
 };
