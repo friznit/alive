@@ -42,6 +42,24 @@ class CfgVehicles {
                 displayName = "EditorAliveSystemBase";
                 category = "AliveSystem";
         };
+        class ModuleAliveSupportBase: Module_F
+        {
+                scope = 1;
+                displayName = "EditorAliveSupportBase";
+                category = "AliveSupport";
+        };
+        class ModuleAliveAmbientBase: Module_F
+        {
+                scope = 1;
+                displayName = "EditorAliveAmbientBase";
+                category = "AliveAmbient";
+        };
+        class ModuleAliveEnemyBase: Module_F
+        {
+                scope = 1;
+                displayName = "EditorAliveEnemyBase";
+                category = "AliveEnemy";
+        };
         class ALiVE_require : ModuleAliveSystemBase {
                 scope = 2;
 		displayName = "$STR_ALIVE_REQUIRES_ALIVE";

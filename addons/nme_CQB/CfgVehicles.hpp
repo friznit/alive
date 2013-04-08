@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAliveEnemyBase;
+        class ADDON : ModuleAliveEnemyBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_CQB";
