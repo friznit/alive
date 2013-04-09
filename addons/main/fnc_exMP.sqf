@@ -22,16 +22,7 @@ Object, will execute on the given player-locality (accessible f.e. with bis_fnc_
 Examples:
 
 Intialisation:
-execute // [] call ALiVE_fnc_exMP // on all localities once (fe. init.sqf or initfield of an object in editor)
-
-[
-	(playableunits select 0), 	//target
-	[], 						//params
-	{ 							//Start of Code
-		hint "Hello!";
-		true;
-	} 							//End of Code
-] call ALiVE_fnc_exMP;
+Ensure that // [] call ALiVE_fnc_exMP // was executed on all localities once (fe. init.sqf or initfield of an object in editor)
 
 Sender Gunny (player) transfers the hint to receiver Highhead (playableunits select 0):
 [(playableunits select 0),[player,"Get your high head down!"],{hint format["Here comes %1s hint: %2!",(_this select 0),(_this select 1)]}] call ALiVE_fnc_exMP;
