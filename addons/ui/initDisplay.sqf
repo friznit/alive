@@ -74,7 +74,7 @@ with uinamespace do {
 		};
 	};
 
-	if (_class = "RscDisplayLoadingALIVE") then {
+	if (_class == "RscDisplayLoadingALIVE") then {
 		_path = "alive";
 	};
 	

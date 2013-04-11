@@ -7,6 +7,7 @@ class RscStandardDisplay;
 class RscPicture;
 class RscPictureKeepAspect;
 class RscControlsGroup;
+class RscControlsGroupNoScrollbars;
 
 class cfgScriptPaths
 {
@@ -42,27 +43,18 @@ class RscDisplayStart: RscStandardDisplay
 
 class RscDisplayLoadMission: RscStandardDisplay
 {
-	//onLoad = "[""onLoad"",_this,""RscDisplayLoadingALIVE"",'Loading'] call compile preprocessfilelinenumbers ""\x\alive\addons\UI\initDisplay.sqf""";
+	onLoad = "[""onLoad"",_this,""RscDisplayLoadingALIVE"",'Loading'] call compile preprocessfilelinenumbers ""\x\alive\addons\UI\initDisplay.sqf""";
 	class controls
 	{
-		class LoadingStart: RscControlsGroup
+		class ALIVE_Logo: RscPictureKeepAspect
 		{
-			class controls
-			{
-				class Logo: RscPictureKeepAspect
-				{
-					idc = 1200;
-					text = "\x\alive\addons\UI\logo_alive.paa";
-					x = "0.25 * safezoneW";
-					y = "0.3125 * safezoneH";
-					w = "0.5 * safezoneW";
-					h = "0.25 * safezoneH";
-				};
-				class Noise: RscPicture
-				{
-					text = "\x\alive\addons\UI\alive_bg.paa";
-				};
-			};
+			idc = 1202;
+			text = "\x\alive\addons\UI\logo_alive.paa";
+			x = 0.835156 * safezoneW + safezoneX;
+			y = 0.841 * safezoneH + safezoneY;
+			w = 0.154687 * safezoneW;
+			h = 0.143 * safezoneH;
+			colorText[] = {1,1,1,0.5};
 		};
 	};
 };

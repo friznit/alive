@@ -70,6 +70,9 @@ switch _mode do {
 			_ctrlMissionProgress = _display displayctrl IDC_PROGRESS_TIME;
 			_ctrlMissionDescription = _display displayctrl IDC_LOADING_MISSIONDESCRIPTION;
 			_ctrlMissionDescriptionEngine = _display displayctrl IDC_LOAD_MISSION_NAME;
+			
+			_ctrlALIVELogo = _display displayctrl 1202;
+			_ctrlALIVELogo ctrlsettext "\x\alive\addons\UI\logo_alive.paa";
 
 			_author = gettext (missionconfigfile >> "dev");
 			if (_author == "" || !cheatsEnabled) then {_author = gettext (missionconfigfile >> "author");};
