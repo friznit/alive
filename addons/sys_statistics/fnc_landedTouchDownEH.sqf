@@ -35,43 +35,43 @@ Tupolov
 #define DEBUG_MODE_FULL
 
 #include "script_component.hpp"
+if (GVAR(ENABLED)) then {
+	private ["_ptime","_LandedInterval","_sidevehicle","_vehicletype","_factionvehicle","_data","_vehiclePos","_vehicle","_airport"];
 
-private ["_ptime","_LandedInterval","_sidevehicle","_vehicletype","_factionvehicle","_data","_vehiclePos","_vehicle","_airport"];
+	// Set Data 
+	_vehicle = _this select 0;
+	_airport = _this select 1;
 
-// Set Data 
-_vehicle = _this select 0;
-_airport = _this select 1;
+	diag_log format["LandedTouchDown: %1", _this];
 
-diag_log format["LandedTouchDown: %1", _this];
-
-if (isPlayer (driver _vehicle)) then {
-	// Check to see if vehicle is having a "bumpy" landing
-	_LandedInterval = time - (_vehicle getVariable [QGVAR(LandedTime),31]);
-	
-	diag_log format["Last landed %1 seconds ago (%2)", _LandedInterval, time];
-
-	if (_LandedInterval > 30) then {	
-		_sidevehicle = side (group _vehicle); // group side is more reliable
-
-		_factionvehicle = getText (configFile >> "cfgFactionClasses" >> (faction _vehicle) >> "displayName");  
+	if (isPlayer (driver _vehicle)) then {
+		// Check to see if vehicle is having a "bumpy" landing
+		_LandedInterval = time - (_vehicle getVariable [QGVAR(LandedTime),31]);
 		
-		_vehicletype = getText (configFile >> "cfgVehicles" >> (typeof _vehicle) >> "displayName");
+		diag_log format["Last landed %1 seconds ago (%2)", _LandedInterval, time];
 
-		_vehiclePos = mapgridposition _vehicle;
-		
-		_ptime = time;
-		_vehicle setVariable [QGVAR(LandedTime), _ptime, true];
-		
-		// Log data
-		_data = format["""Event"":""Landed"" , ""vehicleSide"":""%1"" , ""vehiclefaction"":""%2"" , ""vehicleType"":""%3"" , ""vehiclePos"":""%4"" , ""vehicle"":""%5"" , ""Airport"":%6", _sidevehicle, _factionvehicle, _vehicleType, _vehiclePos, _vehicle, _airport];
-		
-		_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _vehicle, name _vehicle];
+		if (_LandedInterval > 30) then {	
+			_sidevehicle = side (group _vehicle); // group side is more reliable
+
+			_factionvehicle = getText (configFile >> "cfgFactionClasses" >> (faction _vehicle) >> "displayName");  
 			
-		// Send data to server to be written to DB
-		GVAR(UPDATE_EVENTS) = _data;
-		publicVariableServer QGVAR(UPDATE_EVENTS);
+			_vehicletype = getText (configFile >> "cfgVehicles" >> (typeof _vehicle) >> "displayName");
 
-	};		
+			_vehiclePos = mapgridposition _vehicle;
+			
+			_ptime = time;
+			_vehicle setVariable [QGVAR(LandedTime), _ptime, true];
+			
+			// Log data
+			_data = format["""Event"":""Landed"" , ""vehicleSide"":""%1"" , ""vehiclefaction"":""%2"" , ""vehicleType"":""%3"" , ""vehiclePos"":""%4"" , ""vehicle"":""%5"" , ""Airport"":%6", _sidevehicle, _factionvehicle, _vehicleType, _vehiclePos, _vehicle, _airport];
+			
+			_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _vehicle, name _vehicle];
+				
+			// Send data to server to be written to DB
+			GVAR(UPDATE_EVENTS) = _data;
+			publicVariableServer QGVAR(UPDATE_EVENTS);
+
+		};		
+	};
 };
-	
 // ====================================================================================

@@ -74,38 +74,40 @@ _menus =
 			[localize "STR_ALIVE_STATISTICS" + " >",
 				"",
 				"",
-				localize "STR_ALIVE_STATISTICS_COMMENT",
+				localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
                                 ["call ALiVE_fnc_statisticsMenuDef", "statistics", 1],
-                                -1, 1, call ALIVE_fnc_isServerAdmin
+                                -1, !(GVAR(DISABLED)), (call ALIVE_fnc_isServerAdmin)
 			]
 		]
 	]
 ];
 
-TRACE_4("Menu setup",MOD(statistics),MOD(statistics) getVariable "allow");
+TRACE_2("Menu setup",GVAR(ENABLED),GVAR(DISABLED));
 
 if (_menuName == "statistics") then {
 	_menus set [count _menus,
 		[
 			["statistics", localize "STR_ALIVE_STATISTICS", "popup"],
+			[
 				[localize "STR_ALIVE_STATISTICS_ENABLE",
-					{ MOD(statistics) setVariable ["enabled", true]; },
+					{ GVAR(ENABLED) = true; PublicVariable QGVAR(ENABLED); },
 					"",
 					localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
 					"",
 					-1,
-					MOD(statistics) getVariable ["allow", 0],
-					!(MOD(statistics) getVariable ["enabled", false])
+					!(GVAR(ENABLED)),
+					!(GVAR(ENABLED))
 				],
-				[localize "STR_ALIVE_STATISTICS_ENABLE",
-					{ MOD(statistics) setVariable ["enabled", false]; },
+				[localize "STR_ALIVE_DISABLE_STATISTICS",
+					{ GVAR(ENABLED) = false; PublicVariable QGVAR(ENABLED); },
 					"",
 					localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
 					"",
 					-1,
-					MOD(statistics) getVariable ["allow", 0],
-					(MOD(statistics) getVariable ["enabled", false])
+					(GVAR(ENABLED)),
+					(GVAR(ENABLED))
 				]
+			]
 		]
 	];
 };

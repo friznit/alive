@@ -15,7 +15,7 @@
 #define DEBUG_MODE_FULL
 
 #include "script_component.hpp"
-
+if (GVAR(ENABLED)) then {
 	private ["_sidepatient","_sidemedic","_patienttype","_medicweapon","_medictype","_distance","_datetime","_factionmedic","_factionpatient","_data","_patientPos","_medicPos","_server","_realtime","_medic","_patient"];
 	
 	diag_log format["handledamage = %1",_this];
@@ -61,4 +61,5 @@
 		};
 					
 	};
+};
 // ====================================================================================

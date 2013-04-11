@@ -37,7 +37,7 @@ Tupolov
 #define DEBUG_MODE_FULL
 
 #include "script_component.hpp"
-
+if (GVAR(ENABLED)) then {
 	private ["_msg","_sidehit","_sidesource","_hittype","_sourceweapon","_sourcetype","_distance","_datetime","_factionsource","_factionhit","_data","_hitPos","_sourcePos","_server","_realtime","_source","_hit","_hitVehicleClass","_sourceVehicleClass"];
 	
 	// Set Data 
@@ -119,5 +119,5 @@ Tupolov
 		};		
 				
 	};
-	
+};
 // ====================================================================================

@@ -6,7 +6,7 @@ ADDON = false;
 
 // Register Client with DB
 
-if (isMultiplayer) then {
+if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
 	_name = name player;
 	_class = getText (configFile >> "cfgVehicles" >> (typeof player) >> "displayName");
@@ -42,5 +42,36 @@ if (isMultiplayer) then {
 
 };
 
+/*
+VIEW - purely visual
+- initialise menu
+- frequent check to modify menu and display status 
+*/
+                
+TRACE_4("Adding menu",isDedicated,isHC,GVAR(ENABLED),GVAR(DISABLED));
+
+if(!isDedicated && !isHC && GVAR(ENABLED)) then {
+		// Initialise interaction key if undefined
+		if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+
+		// if ACE spectator enabled, seto to allow exit
+		if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
+
+		// Initialise default map click command if undefined
+		ISNILS(DEFAULT_MAPCLICK,"");
+
+TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
+
+		// initialise main menu
+		[
+				"player",
+				[SELF_INTERACTION_KEY],
+				-9500,
+				[
+						"call ALIVE_fnc_statisticsMenuDef",
+						"main"
+				]
+		] call CBA_fnc_flexiMenu_Add;
+};
 
 ADDON = true;

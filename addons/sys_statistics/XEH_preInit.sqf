@@ -8,6 +8,10 @@ LOG(MSG_INIT);
 
 ADDON = false;
 
+// Enable the module
+GVAR(ENABLED) = true;
+GVAR(DISABLED) = false;
+
 // PREP any functions required during XEH init process
 //PREP(sendEvent);
 //PREP(convertData);

@@ -15,7 +15,7 @@
 #define DEBUG_MODE_FULL
 
 #include "script_component.hpp"
-
+if (GVAR(ENABLED)) then {
 	private ["_sidewounded","_sidesource","_woundedtype","_sourceweapon","_sourcetype","_distance","_datetime","_factionsource","_factionwounded","_data","_woundedPos","_sourcePos","_server","_realtime","_source","_wounded","_woundedVehicleClass","_sourceVehicleClass"];
 	
 	// Set Data 
@@ -102,6 +102,6 @@
 				
 				
 	};
-	
+};
 	_this select 2;
 // ====================================================================================
