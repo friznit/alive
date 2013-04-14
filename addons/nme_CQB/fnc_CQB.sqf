@@ -146,10 +146,8 @@ switch(_operation) do {
                 
                 /*
                 CONTROLLER  - coordination
-                - Init Servicebus on all localities
                 - Start CQB Controller on Server
                 */
-                [MOD(CQB), "ServiceBusInit"] call ALiVE_fnc_CQB;
 
 				if (isServer) then {
 	                waitUntil {MOD(CQB) getVariable ["init", false]};
@@ -372,147 +370,6 @@ switch(_operation) do {
 			};
 		};
 	};
-    
-    case "ServiceBusInit": {
-        //This operation needs to be executed on all localities and has no arguments!
-        //Serverside EH
-        _logic setvariable ["SurfBusActive",true];
-        if (isServer) then {
-            "ClientEvent" addPublicVariableEventHandler {
-                private ["_sender","_params","_operation","_advanced","_return"];
-                _logic = ((_this select 1) select 0);
-                _sender = owner ((_this select 1) select 1);
-	            _params = ((_this select 1) select 2);
-                _operation = _params select 0;
-                _advanced = _params select 1;
-                
-	            //select operation
-	            switch _operation do {
-	                    case "execute": {
-	                        _return = call _advanced;
-	                    };
-                        case "callclass": {
-                            _class = _logic getvariable ["class",ALiVE_fnc_CQB];
-	                        _return = _advanced call _class;
-	                    };
-	                	default {};
-	            };
-	         
-	            //execution
-                RETURN = _return;
-                _sender PublicVariableClient "RETURN";
-                RETURN = nil;
-        	};
-            
-            /* TODO: CATCH return value!
-            "RETURN" addPublicVariableEventHandler {
-                diag_log format["ALIVE Service Bus: Message caught on server: %1",(_this select 1)];
-        	};
-            diag_log "SB Server Init";
-            */
-        };
-        
-        //Clientside EH
-        if !(isdedicated) then {
-        	"ServerEvent" addPublicVariableEventHandler {
-                private ["_params","_operation","_advanced","_return"];
-                _logic = ((_this select 1) select 0);
-                _target = ((_this select 1) select 1);
-	            _params = ((_this select 1) select 2);
-                _operation = _params select 0;
-                _advanced = _params select 1;
-                
-	            //select operation
-	            switch _operation do {
-	                    case "execute": {
-	                        _return = call _advanced;
-	                    };
-                        case "callclass": {
-                            _class = _logic getvariable ["class",ALiVE_fnc_CQB];
-	                        _return = _advanced call _class;
-	                    };
-	                	default {};
-	            };
-	         
-	            //execution
-                RETURN = _return; 
-                PublicVariableServer "RETURN";
-                RETURN = nil;
-        	};
-            
-            /* TODO: CATCH return value!
-        	"RETURN" addPublicVariableEventHandler {
-                diag_log format["ALIVE Service Bus: Message caught on client: %1",(_this select 1)];
-        	};
-            diag_log "SB Client Init";
-            */
-		};	 
-    };
-    
-    case "SurfBus_ClientToServerEvent": {
-		if(isNil "_args") then {
-			// if no arg was provided return current active status
-			_args = _logic getVariable ["SurfBusActive", false];
-		} else {
-			// if arguments provided execute
-			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-			
-            _playerid = _args select 0;
-            _args = _args select 1;
-            
-            ClientEvent = [_logic,_playerid,_args];
-            publicVariableServer "ClientEvent";
-		};
-	};
-    
-    case "SurfBus_ServerToClientEvent": {
-		if(isNil "_args") then {
-			// if no arg was provided return current active status
-			_args = _logic getVariable ["SurfBusActive", false];
-		} else {
-			// if arguments provided execute
-			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-            
-            _target = _args select 0;
-            _params = _args select 1;
-            
-            ServerEvent = [_logic,_target,_params];
-            if (typeName _target == "OBJECT") then {_target = (owner _target)};
-            _target publicVariableClient "ServerEvent";
-		};
-	};
-
-	/*
-	//[CQB_Strategic, "SurfBus_ServerToClientEvent", [playableunits select 0,["callclass",[CQB_Strategic, "debug", true]]]] call ALiVE_fnc_CQB;    
-	[
-		CQB_Strategic, //logic to call the function from (doesnt do much)
-		"SurfBus_ServerToClientEvent", //Event you want to trigger
-		[
-	    	playableunits select 0, //target object
-			[
-				"callclass", //action to trigger (callclass example)
-				[CQB_Strategic, "debug", true] //_args (exp.: target class, operation, _args)
-			]
-		]
-	] call ALiVE_fnc_CQB;
-	
-	
-	//[CQB_Strategic, "SurfBus_ServerToClientEvent", [playableunits select 0,["execute",{hint "Test";}]]] call ALiVE_fnc_CQB;
-	[
-		CQB_Strategic, //logic to call the function from (doesnt do much)
-	    "SurfBus_ServerToClientEvent", //Event you want to trigger
-	    [
-	    	playableunits select 0, //target object
-	        [
-	        	"execute", //action to trigger (execute example)
-	            {hint "Test"} // code
-	        ]
-	    ]
-	] call ALiVE_fnc_CQB;
-	
-	//[CQB_Strategic, "SurfBus_ClientToServerEvent", [player,["execute",{diag_log "Test";}]]] call ALiVE_fnc_CQB;
-	//[CQB_Strategic, "SurfBus_ClientToServerEvent", [player,["callclass",[CQB_Strategic, "debug", true]]]] call ALiVE_fnc_CQB;
-	 */      
 
 	case "clearHouse": {
 		if(!isNil "_args") then {
@@ -623,7 +480,6 @@ switch(_operation) do {
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceRemove;
 			{
                 _x setVariable ["house", nil, true];
-                _x setVariable ["sendhome", nil, true];
 				deleteVehicle _x;
 			} forEach units _grp;
 			
@@ -686,64 +542,14 @@ switch(_operation) do {
 			{
 				private["_fsm","_hdl"];
 				_fsm = "\x\alive\addons\nme_CQB\HousePatrol.fsm";
-				_hdl = [_x, 50, true, 120] execFSM _fsm;
+				_hdl = [_logic,_x, 50, true, 120] execFSM _fsm;
 				_x setVariable ["FSM", [_hdl,_fsm], true];
 			} forEach units _grp;
             _args = _grp;
 		};
 		_args;
 	}; 
-    
-    case "sendGroupHome": {
-    	if (isNil "_args") then {
-			// if no units and house was provided or units are being sent home already return false
-			_args = false;
-		} else {
-			// if a house and unit is provided start spawn process
-			ASSERT_TRUE(typeName _args == "GROUP",str typeName _args);
-            _grp = _args;
-            _sh = (leader _grp) getvariable ["sendhome",nil]; if !(isnil "_sh") exitwith {_args = false};
-            (leader _grp) setvariable ["sendHome",true,true];
-            
-            _despawnGroup = {
-					private["_logic","_grp"];
-					PARAMS_2(_logic,_grp);
-					// update central CQB group listing
-					[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
-			};
-
-            _house = (leader _grp) getvariable "house";
-            _positions = [_house] call ALiVE_fnc_getBuildingPositions;
-        	
-			{
-                _pos = (_positions call BIS_fnc_selectRandom);
-				_hdlOut = (_x getvariable "FSM") select 0;
-				_hdlOut setFSMVariable ["_abort",true];
-				_x domove _pos;
-                
-                [_x,_pos,_logic,_despawnGroup] spawn {
-                   
-                    _unit = _this select 0;
-                    _grp = group (_this select 0);
-                    _pos = _this select 1;
-                    _logic = _this select 2;
-                    _despawnGroup = _this select 3;
-                    _spawn = _logic getVariable ["spawnDistance", 800];
-
-                    while {(alive _unit) && ((getposATL _unit) distance _pos > 3) && (([getPosATL _unit, (_spawn * 2)] call ALiVE_fnc_anyPlayersInRange) > 0)} do {sleep 10; _unit domove _pos};
-                    if (({alive _x} count (units _grp) > 1)) then {
-                        _unit setVariable ["house", nil, true];
-                		_unit setVariable ["sendhome", nil, true];
-                        deletevehicle _unit;
-                    } else {
-                        [_logic,_grp] call _despawnGroup;
-                    };
-                };
-			} forEach units _grp;
-    	};
-    _args;
-	};
-
+  
 	case "active": {
 	if(isNil "_args") exitWith {
 		_logic getVariable ["active", false];
@@ -815,7 +621,7 @@ switch(_operation) do {
                                     
 	                                    if !(isnull _host) then {
 		                                    _house setvariable ["group","preinit",true];
-			                                [_logic, "SurfBus_ServerToClientEvent", [_host,["callclass",[_logic, "spawnGroup", _house]]]] call ALiVE_fnc_CQB;
+                                            [_host,"CQB",[[_logic, "spawnGroup", _house],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
 			                                sleep 0.1;
 	                                    } else {
 	                                        diag_log format ["CQB ERROR: Null object on host %1",_host];
@@ -831,7 +637,6 @@ switch(_operation) do {
 						{
 							_grp = _x;
                             _leader = leader _grp;
-                            _sendHome = _leader getvariable ["sendHome",nil];
 							
                             // get house in question
 							_house = _leader getVariable "house";
@@ -847,17 +652,6 @@ switch(_operation) do {
 							if ({alive _x} count (units _grp) == 0) then {
 								// update central CQB house listings
 								[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
-							} else {
-								// all players are out of range and house is still active
-								// despawn group but house not cleared
-								if ((([getPosATL _house, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) == 0) && {(isnil "_sendHome")}) then {
-                                    //Default Delete
-                                    //[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
-
-                                    //Send Home
-                                    [_logic, "SurfBus_ServerToClientEvent", [owner _leader,["callclass",[_logic, "sendGroupHome", _grp]]]] call ALiVE_fnc_CQB;
-                                    sleep 0.1;
-								};
 							};
 						} forEach (_logic getVariable ["groups",[]]);
                         

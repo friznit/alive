@@ -19,6 +19,29 @@ item14[] = {"No_Patrol",4,218,-34.398903,128.351761,55.600967,178.351761,9.00000
 item15[] = {"Abort",4,218,-138.296738,126.212921,-48.296669,176.212936,9.000000,"Abort"};
 item16[] = {"End_1",1,250,80.389030,194.239243,170.389069,244.239197,0.000000,"End"};
 item17[] = {"End_2",1,250,-30.944130,192.897903,59.055893,242.897858,0.000000,"End"};
+item18[] = {"Players__out_of",4,218,-239.576004,125.691963,-149.575851,175.691940,0.000000,"Players " \n "out of Range"};
+item19[] = {"Move_home",2,250,-382.479431,124.672127,-292.479431,174.672180,0.000000,"Move home"};
+item20[] = {"Move_Completed__1",4,218,-483.169495,238.787079,-393.169159,288.787048,2.000000,"Move" \n "Completed" \n "&&" \n "group > 1"};
+item21[] = {"Players__in_Rang",4,218,-381.775909,-88.772865,-291.775635,-38.772953,1.000000,"Players " \n "in Range"};
+item22[] = {"Move_Completed_",4,218,-382.350586,238.922394,-292.350250,288.922363,3.000000,"Move" \n "Completed" \n "&&" \n "group == 1"};
+item23[] = {"End_3",1,250,-482.692963,333.413269,-392.692902,383.413330,0.000000,"End"};
+item24[] = {"__1",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
+item25[] = {"End_4",1,250,-381.594757,331.510376,-291.594696,381.510437,0.000000,"End"};
+item26[] = {"Players__far_awa",4,218,-286.061401,236.733459,-196.061234,286.733398,0.000000,"Players " \n "far away"};
+item27[] = {"End_5",1,250,-285.767212,329.623718,-195.767639,379.623779,0.000000,"End"};
+version=1;
+class LayoutItems
+{
+	class Item24
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+};
 link0[] = {0,1};
 link1[] = {1,2};
 link2[] = {2,3};
@@ -35,14 +58,24 @@ link12[] = {8,3};
 link13[] = {8,10};
 link14[] = {8,12};
 link15[] = {8,15};
-link16[] = {9,5};
-link17[] = {10,11};
-link18[] = {11,9};
-link19[] = {12,16};
-link20[] = {14,17};
-link21[] = {15,13};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,18,6316128,1,-276.422089,302.546021,255.799561,-266.436768,1144,929,1};
-window[] = {2,-1,-1,-1,-1,960,110,1090,110,3,1161};
+link16[] = {8,18};
+link17[] = {9,5};
+link18[] = {10,11};
+link19[] = {11,9};
+link20[] = {12,16};
+link21[] = {14,17};
+link22[] = {15,13};
+link23[] = {18,19};
+link24[] = {19,20};
+link25[] = {19,21};
+link26[] = {19,22};
+link27[] = {19,26};
+link28[] = {20,23};
+link29[] = {21,2};
+link30[] = {22,25};
+link31[] = {26,27};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,32,6316128,1,-859.789673,350.281189,649.306274,-296.156952,1189,929,1};
+window[] = {2,-1,-1,-1,-1,938,88,1757,88,3,1206};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -83,23 +116,32 @@ class FSM
        "_wait = 0;" \n
        "_guardpost = 0;" \n
        "" \n
-       "_unit = _this select 0;" \n
+       "_logic = _this select 0;" \n
+       "_unit = _this select 1;" \n
+       "_grp = group _unit;" \n
+       "_spawn = _logic getVariable [""spawnDistance"", 800];" \n
        "" \n
        "_radius = 10;" \n
-       "if(count _this > 1) then {_radius = _this select 1;};" \n
+       "if(count _this > 2) then {_radius = _this select 2;};" \n
        "" \n
        "_patrol = true;" \n
-       "if(count _this > 2) then {_patrol = _this select 2;};" \n
+       "if(count _this > 3) then {_patrol = _this select 3;};" \n
        "" \n
        "_maxwait = 60;" \n
-       "if(count _this > 3) then {_maxwait = _this select 3;};" \n
+       "if(count _this > 4) then {_maxwait = _this select 4;};" \n
        "" \n
-       "if(count _this > 4) then {_debug = _this select 4;};" \n
+       "if(count _this > 5) then {_debug = _this select 5;};" \n
        "" \n
        "_pos = getPosATL _unit;" \n
+       "_posDespawn = _pos;" \n
        "" \n
        "_bldgpos = [_pos,_radius] call ALiVE_fnc_findNearHousePositions;" \n
-       "" \n
+       "if (count _bldgpos == 0) exitwith {" \n
+       "	diag_log format[""CQB error: Group %1 has no buildingpositions! Deleting..."",_grp];" \n
+       "	[_logic, ""delGroup"", _grp] call ALiVE_fnc_CQB;" \n
+       "	_abort = true;" \n
+       "};" \n
+       "		" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -258,13 +300,23 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
+        /*%FSM<LINK "Players__out_of">*/
+        class Players__out_of
+        {
+          priority = 0.000000;
+          to="Move_home";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) == 0)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "Move_Completed">*/
         class Move_Completed
         {
           priority = 0.000000;
           to="Guard_Post_if_Ma";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_unit distance _pos < 3"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_unit distance _pos < 4"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -377,6 +429,126 @@ class FSM
       };
     };
     /*%FSM</STATE>*/
+    /*%FSM<STATE "Move_home">*/
+    class Move_home
+    {
+      name = "Move_home";
+      init = /*%FSM<STATEINIT""">*/"_pos = _bldgpos call BIS_fnc_selectRandom;" \n
+       "_unit setbehaviour ""AWARE"";" \n
+       "_unit setspeedmode ""FULL"";" \n
+       "_unit domove _pos;" \n
+       "" \n
+       "deleteMarkerLocal format[""HP:%1"", _unit];" \n
+       "if(_debug) then {" \n
+       "	createMarkerLocal [format[""HP:%1"", _unit], _pos];" \n
+       "	format[""HP:%1"", _unit] setMarkerShapeLocal ""ICON"";" \n
+       "	format[""HP:%1"", _unit] setMarkerTypeLocal ""mil_box"";" \n
+       "};" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "Move_Completed_">*/
+        class Move_Completed_
+        {
+          priority = 3.000000;
+          to="End_4";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_unit distance _pos < 4) && (({alive _x} count (units (group _unit)) == 1))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "Move_Completed__1">*/
+        class Move_Completed__1
+        {
+          priority = 2.000000;
+          to="End_3";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_unit distance _pos < 4) && (({alive _x} count (units (group _unit)) > 1))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "Players__in_Rang">*/
+        class Players__in_Rang
+        {
+          priority = 1.000000;
+          to="_";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) > 0)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "Players__far_awa">*/
+        class Players__far_awa
+        {
+          priority = 0.000000;
+          to="End_5";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 2.5] call ALiVE_fnc_anyPlayersInRange) == 0) && (({alive _x} count (units (group _unit)) > 0))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "End_3">*/
+    class End_3
+    {
+      name = "End_3";
+      init = /*%FSM<STATEINIT""">*/"_unit setVariable [""house"", nil, true];" \n
+       "_unit setVariable [""sendhome"", nil, true];" \n
+       "deletevehicle _unit;" \n
+       "" \n
+       "_guardpost setFSMVariable [""_abort"", true];" \n
+       "" \n
+       "deleteMarkerLocal format[""HP:%1"", _unit];" \n
+       "if(_debug) then {" \n
+       "	format[""%1 aborting Simple House Patrol FSM"",  _unit] call ALiVE_fnc_logger;" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "End_4">*/
+    class End_4
+    {
+      name = "End_4";
+      init = /*%FSM<STATEINIT""">*/"[_logic, ""delGroup"", _grp] call ALiVE_fnc_CQB;" \n
+       "" \n
+       "_guardpost setFSMVariable [""_abort"", true];" \n
+       "" \n
+       "deleteMarkerLocal format[""HP:%1"", _unit];" \n
+       "if(_debug) then {" \n
+       "	format[""%1 aborting Simple House Patrol FSM"",  _unit] call ALiVE_fnc_logger;" \n
+       "};" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "End_5">*/
+    class End_5
+    {
+      name = "End_5";
+      init = /*%FSM<STATEINIT""">*/"[_logic, ""delGroup"", _grp] call ALiVE_fnc_CQB;" \n
+       "" \n
+       "_guardpost setFSMVariable [""_abort"", true];" \n
+       "" \n
+       "deleteMarkerLocal format[""HP:%1"", _unit];" \n
+       "if(_debug) then {" \n
+       "	format[""%1 aborting Simple House Patrol FSM"",  _unit] call ALiVE_fnc_logger;" \n
+       "};" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
   };
   initState="Start";
   finalStates[] =
@@ -384,6 +556,9 @@ class FSM
     "End",
     "End_1",
     "End_2",
+    "End_3",
+    "End_4",
+    "End_5",
   };
 };
 /*%FSM</COMPILE>*/
