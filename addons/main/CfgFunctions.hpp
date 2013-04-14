@@ -45,6 +45,10 @@ class cfgFunctions {
 				description = "Multi-Locality execution with network-optimized commands PublicvariableServer and PublicvariableClient";
 	                        file = "\x\alive\addons\main\fnc_exMP.sqf";
 			};
+			class BUS {
+				description = "ALiVE Service Bus";
+	                        file = "\x\alive\addons\main\fnc_bus.sqf";
+			};
                 };
         };
 };

@@ -7,3 +7,6 @@ call ALIVE_fnc_isHC;
 
 PREPMAIN(exMP);
 [] call ALiVE_fnc_exMP;
+
+PREPMAIN(BUS);
+[] call ALiVE_fnc_BUS;
