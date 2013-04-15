@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, Simple House Patrol">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"Start",0,4346,-155.232559,-241.279068,-65.232559,-191.279068,0.000000,"Start"};
+item0[] = {"Start",0,250,-155.232559,-241.279068,-65.232559,-191.279068,0.000000,"Start"};
 item1[] = {"Random_Delay",4,218,-154.883728,-168.604660,-64.883736,-118.604660,0.000000,"Random" \n "Delay"};
 item2[] = {"_",2,250,-154.302368,-88.372086,-64.302322,-38.372086,0.000000,""};
 item3[] = {"Enemy_Spotted",4,218,-40.348866,-87.790695,49.651142,-37.790703,5.000000,"Enemy" \n "Spotted"};
@@ -19,16 +19,15 @@ item14[] = {"No_Patrol",4,218,-34.398903,128.351761,55.600967,178.351761,9.00000
 item15[] = {"Abort",4,218,-138.296738,126.212921,-48.296669,176.212936,9.000000,"Abort"};
 item16[] = {"End_1",1,250,80.389030,194.239243,170.389069,244.239197,0.000000,"End"};
 item17[] = {"End_2",1,250,-30.944130,192.897903,59.055893,242.897858,0.000000,"End"};
-item18[] = {"Players__out_of",4,218,-239.576004,125.691963,-149.575851,175.691940,0.000000,"Players " \n "out of Range"};
-item19[] = {"Move_home",2,250,-382.479431,124.672127,-292.479431,174.672180,0.000000,"Move home"};
-item20[] = {"Move_Completed__1",4,218,-483.169495,238.787079,-393.169159,288.787048,2.000000,"Move" \n "Completed" \n "&&" \n "group > 1"};
-item21[] = {"Players__in_Rang",4,218,-381.775909,-88.772865,-291.775635,-38.772953,1.000000,"Players " \n "in Range"};
-item22[] = {"Move_Completed_",4,218,-382.350586,238.922394,-292.350250,288.922363,3.000000,"Move" \n "Completed" \n "&&" \n "group == 1"};
-item23[] = {"End_3",1,250,-482.692963,333.413269,-392.692902,383.413330,0.000000,"End"};
+item18[] = {"Players__out_of",4,218,-262.983612,51.398300,-172.983444,101.398277,0.000000,"Players " \n "out of Range"};
+item19[] = {"Move_home",2,250,-382.479431,49.360733,-292.479431,99.360764,0.000000,"Move home"};
+item20[] = {"At_home__and_not",4,218,-483.169403,130.908661,-393.169159,180.908691,1.000000,"At home " \n "and not " \n "last guy"};
+item21[] = {"Players__in_Rang",4,218,-381.775909,-88.772865,-291.775635,-38.772953,0.000000,"Players " \n "in Range"};
+item22[] = {"At_home_and_last",4,218,-382.350586,131.043976,-292.350250,181.044006,2.000000,"At home" \n "and" \n "last guy"};
+item23[] = {"End_delete_unit",1,250,-481.675110,199.074173,-391.675171,249.074097,0.000000,"End" \n "delete unit"};
 item24[] = {"__1",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
-item25[] = {"End_4",1,250,-381.594757,331.510376,-291.594696,381.510437,0.000000,"End"};
-item26[] = {"Players__far_awa",4,218,-286.061401,236.733459,-196.061234,286.733398,0.000000,"Players " \n "far away"};
-item27[] = {"End_5",1,250,-285.767212,329.623718,-195.767639,379.623779,0.000000,"End"};
+item25[] = {"Players__far_awa",4,4314,-286.061401,128.855042,-196.061249,178.855042,3.000000,"Players " \n "far away"};
+item26[] = {"End_delete_group",1,250,-333.600098,194.266846,-243.600525,244.266830,0.000000,"End" \n "delete group"};
 version=1;
 class LayoutItems
 {
@@ -69,13 +68,13 @@ link23[] = {18,19};
 link24[] = {19,20};
 link25[] = {19,21};
 link26[] = {19,22};
-link27[] = {19,26};
+link27[] = {19,25};
 link28[] = {20,23};
 link29[] = {21,2};
-link30[] = {22,25};
-link31[] = {26,27};
+link30[] = {22,26};
+link31[] = {25,26};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,32,6316128,1,-859.789673,350.281189,649.306274,-296.156952,1189,929,1};
-window[] = {2,-1,-1,-1,-1,938,88,1757,88,3,1206};
+window[] = {2,-1,-1,-1,-1,894,44,1713,44,3,1206};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -448,21 +447,31 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "Move_Completed_">*/
-        class Move_Completed_
+        /*%FSM<LINK "Players__far_awa">*/
+        class Players__far_awa
         {
           priority = 3.000000;
-          to="End_4";
+          to="End_delete_group";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(_unit distance _pos < 4) && (({alive _x} count (units (group _unit)) == 1))"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 2.5] call ALiVE_fnc_anyPlayersInRange) == 0) && (({alive _x} count (units (group _unit)) > 0))"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "Move_Completed__1">*/
-        class Move_Completed__1
+        /*%FSM<LINK "At_home_and_last">*/
+        class At_home_and_last
         {
           priority = 2.000000;
-          to="End_3";
+          to="End_delete_group";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_unit distance _pos < 4) && !(({alive _x} count (units (group _unit)) > 1))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "At_home__and_not">*/
+        class At_home__and_not
+        {
+          priority = 1.000000;
+          to="End_delete_unit";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"(_unit distance _pos < 4) && (({alive _x} count (units (group _unit)) > 1))"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -471,30 +480,20 @@ class FSM
         /*%FSM<LINK "Players__in_Rang">*/
         class Players__in_Rang
         {
-          priority = 1.000000;
+          priority = 0.000000;
           to="_";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) > 0)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "Players__far_awa">*/
-        class Players__far_awa
-        {
-          priority = 0.000000;
-          to="End_5";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 2.5] call ALiVE_fnc_anyPlayersInRange) == 0) && (({alive _x} count (units (group _unit)) > 0))"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn] call ALiVE_fnc_anyPlayersInRange) > 0)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
     };
     /*%FSM</STATE>*/
-    /*%FSM<STATE "End_3">*/
-    class End_3
+    /*%FSM<STATE "End_delete_unit">*/
+    class End_delete_unit
     {
-      name = "End_3";
+      name = "End_delete_unit";
       init = /*%FSM<STATEINIT""">*/"_unit setVariable [""house"", nil, true];" \n
        "_unit setVariable [""sendhome"", nil, true];" \n
        "deletevehicle _unit;" \n
@@ -511,29 +510,10 @@ class FSM
       };
     };
     /*%FSM</STATE>*/
-    /*%FSM<STATE "End_4">*/
-    class End_4
+    /*%FSM<STATE "End_delete_group">*/
+    class End_delete_group
     {
-      name = "End_4";
-      init = /*%FSM<STATEINIT""">*/"[_logic, ""delGroup"", _grp] call ALiVE_fnc_CQB;" \n
-       "" \n
-       "_guardpost setFSMVariable [""_abort"", true];" \n
-       "" \n
-       "deleteMarkerLocal format[""HP:%1"", _unit];" \n
-       "if(_debug) then {" \n
-       "	format[""%1 aborting Simple House Patrol FSM"",  _unit] call ALiVE_fnc_logger;" \n
-       "};" \n
-       ""/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "End_5">*/
-    class End_5
-    {
-      name = "End_5";
+      name = "End_delete_group";
       init = /*%FSM<STATEINIT""">*/"[_logic, ""delGroup"", _grp] call ALiVE_fnc_CQB;" \n
        "" \n
        "_guardpost setFSMVariable [""_abort"", true];" \n
@@ -556,9 +536,8 @@ class FSM
     "End",
     "End_1",
     "End_2",
-    "End_3",
-    "End_4",
-    "End_5",
+    "End_delete_unit",
+    "End_delete_group",
   };
 };
 /*%FSM</COMPILE>*/

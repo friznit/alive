@@ -93,6 +93,15 @@ switch(_operation) do {
                     _result = [_spawnhouses, _strategicTypes, "BIS_ZORA_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
 					_strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
+                    
+                    //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
+                    _UnitsBlackList = [
+                    	//A3
+                        "O_diver_F",
+                        "O_diver_TL_F",
+                        "O_diver_exp_F",
+                        "O_helipilot_F"
+                    ];
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _spawnhouses] call ALiVE_fnc_CQB;
@@ -102,6 +111,7 @@ switch(_operation) do {
                     // Create strategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
+                    _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 800] call ALiVE_fnc_CQB;
@@ -114,6 +124,7 @@ switch(_operation) do {
 					// Create nonstrategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
+                    _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
@@ -503,9 +514,10 @@ switch(_operation) do {
             _debug = _logic getVariable ["debug",false];
             
         	_createUnitTypes = {
-				private ["_factions"];
+				private ["_factions","_units","_blacklist"];
 				PARAMS_1(_factions);
-				[_factions, ceil(random 2)] call ALiVE_fnc_chooseRandomUnits;
+                _blacklist = _logic getVariable ["UnitsBlackList",[]];
+				[_factions, ceil(random 2),_blacklist] call ALiVE_fnc_chooseRandomUnits;
 			};
             
 			// Action: spawn AI
