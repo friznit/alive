@@ -4,7 +4,7 @@ class CfgVehicles {
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_DISABLE_STATISTICS";
-                function = "ALIVE_fnc_statisticsDisable";
+				function = "ALIVE_fnc_statisticsModuleFunction";
                 isGlobal = 1;
 				isPersistent = 1;
 				icon = "x\alive\addons\sys_statistics\icon_sys_statistics.paa";
@@ -18,6 +18,11 @@ class CfgVehicles {
                                 defaultValue = "true";
                         };                        
                 };
+				
+				class Eventhandlers
+				{
+					init = "call ALIVE_fnc_statisticsDisable;";
+				};
                 
         };
 };

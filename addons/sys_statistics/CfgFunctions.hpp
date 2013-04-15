@@ -9,6 +9,10 @@ class cfgFunctions {
                                 description = "The module disable function";
                                 file = "\x\alive\addons\sys_statistics\fnc_statisticsDisable.sqf";
                         };
+						class statisticsModuleFunction {
+                                description = "The module function definition";
+                                file = "\x\alive\addons\sys_statistics\fnc_statisticsModuleFunction.sqf";
+                        };
                 };
         };
 };
