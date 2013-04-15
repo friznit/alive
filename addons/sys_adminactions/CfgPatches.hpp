@@ -8,7 +8,7 @@ class CfgPatches {
 		versionDesc = "ALiVE";
 		versionAct = "['SYS_ADMINACTIONS',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
-		author[] = {"Wolffy,au","JMan"};
+		author[] = {"Wolffy_au","JMan"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
@@ -17,4 +17,3 @@ class Extended_PreInit_EventHandlers {
 		init = QUOTE(call COMPILE_FILE(XEH_preInit));
 	};
 };
-#include <\x\alive\addons\sys_adminactions\spect\spectating.hpp>

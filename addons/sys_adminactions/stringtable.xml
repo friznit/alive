@@ -34,14 +34,14 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT">
 	<English>Allow server admins to teleport anywhere on the map</English>
 </Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE">
-	<English>Allow Spectate:</English>
+<Key ID="STR_ALIVE_ADMINACTIONS_MARK_UNITS">
+	<English>Mark Units:</English>
 </Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE_ENABLE">
-	<English>Activate Spectating</English>
+<Key ID="STR_ALIVE_ADMINACTIONS_MARK_UNITS_ENABLE">
+	<English>Activate Marking Units</English>
 </Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT">
-	<English>Allow server admins to be spectate other players</English>
+<Key ID="STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT">
+	<English>Allow server admins to mark units positions for 15 seconds</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CONSOLE">
 	<English>Allow Debug:</English>
@@ -52,14 +52,7 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_CONSOLE_COMMENT">
 	<English>Open the debug console</English>
 </Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_ENABLE">
-	<English>Advanced Debug Console</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_COMMENT">
-	<English>Open the advanced debug console</English>
-</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_ERROR1">
 	<English>Only one Admin Actions module can be used</English>
 </Key>
-
 </Container></Package></Project>

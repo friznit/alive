@@ -82,7 +82,7 @@ _menus =
 	]
 ];
 
-TRACE_4("Menu setup",MOD(adminActions),MOD(adminActions) getVariable "ghost",MOD(adminActions) getVariable "teleport",MOD(adminActions) getVariable "spectate");
+TRACE_4("Menu setup",MOD(adminActions),MOD(adminActions) getVariable "ghost",MOD(adminActions) getVariable "teleport",MOD(adminActions) getVariable "mark_units");
 
 if (_menuName == "adminActions") then {
 	_menus set [count _menus,
@@ -107,6 +107,7 @@ if (_menuName == "adminActions") then {
 					MOD(adminActions) getVariable ["ghost", 0],
 					captive player
 				],
+
 				[localize "STR_ALIVE_ADMINACTIONS_TELEPORT_ENABLE",
 					{ MOD(adminActions) setVariable ["teleport_enabled", true]; onMapSingleClick {player setPos _pos;} },
 					"",
@@ -125,28 +126,21 @@ if (_menuName == "adminActions") then {
 					MOD(adminActions) getVariable ["teleport", 0],
 					(MOD(adminActions) getVariable ["teleport_enabled", false])
 				],
-				[localize "STR_ALIVE_ADMINACTIONS_SPECTATE_ENABLE",
-					{ [] execVM "\x\alive\addons\sys_adminactions\spect\specta_init.sqf"; },
+
+				[localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_ENABLE",
+					{ [] execVM "\x\alive\addons\sys_adminactions\mark_units.sqf"; },
 					"",
-					localize "STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT",
+					localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["spectate", 0],
+					MOD(adminActions) getVariable ["mark_units", 0],
 					true
 				],
+
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
 					{ createDialog "RscDisplayDebugPublic" },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_CONSOLE_COMMENT",
-					"",
-					-1,
-					MOD(adminActions) getVariable ["console", 0],
-					true
-				],
-				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_ENABLE",
-					{ createDialog "RscDisplayDebug" },
-					"",
-					localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ADVANCED_COMMENT",
 					"",
 					-1,
 					MOD(adminActions) getVariable ["console", 0],

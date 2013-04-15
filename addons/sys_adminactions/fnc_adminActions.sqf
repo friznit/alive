@@ -18,7 +18,7 @@ Attributes:
 Boolean - debug - Debug enabled
 Boolean - ghost - Enabled or disable Ghosting function
 Boolean - teleport - Enabled or disable Teleporting function
-Boolean - spectate - Enabled or disable ACE Spectating function
+Boolean - mark_units - Enabled or disable marking of units on map
 Boolean - console - Enabled or disable Debug console function
 
 The popup menu will change to show status as functions are enabled and disabled.
@@ -59,7 +59,7 @@ switch(_operation) do {
                 - server side object only
                 - ghosting enabled
                 - teleport enabled
-                - ACE spectator enabled
+                - mark units enabled
                 - Debug console enabled
                 */
                 

@@ -49,10 +49,10 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class spectate
+                        class mark_units
                         {
-                                displayName = "$STR_ALIVE_ADMINACTIONS_SPECTATE";
-                                description = "$STR_ALIVE_ADMINACTIONS_SPECTATE_COMMENT";
+                                displayName = "$STR_ALIVE_ADMINACTIONS_MARK_UNITS";
+                                description = "$STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT";
                                 class Values
                                 {
                                         class Yes
