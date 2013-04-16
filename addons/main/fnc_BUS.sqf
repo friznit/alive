@@ -34,43 +34,14 @@ call compile preprocessfilelinenumbers "\x\alive\addons\main\tests\test_bus.sqf"
 Author:
 Highhead
 ---------------------------------------------------------------------------- */
-//Update Queue function (subfunction)
-if (isnil "ALiVE_fnc_BUS_UpdateQueue") then {
-	ALiVE_fnc_BUS_UpdateQueue = {
-		private ["_queue","_id","_idx","_action","_data"];
-		
-		_queue = _this select 0;
-		_id = _this select 1;
-		_action = _this select 2;
-		if (count _this > 3) then {_data = _this select 3};
-		
-		//Get/Set index
-		if !(count _queue == 0) then {
-		    _idx = ([_queue,_id] call BIS_fnc_findNestedElement) select 0; 
-		    	if (isnil "_idx") then {_idx = (count _queue)};
-		} else {
-			_idx = 0
-		};
-		
-		switch (_action) do {
-			case "remove" : {
-		        _queue set [_idx,"X"];
-                _queue = _queue - ["X"];
-		    };
-		    case "update" : {
-		        _queue set [_idx,_data];
-		    };
-		};
-        _queue;
-	};	
-};
-
 //Initialise an Eventhandler the first time this function is run
 if (isnil "ALiVE_BUSEH") then {
     ALiVE_BUSEH = true;
     BUS_pending = [];
     BUS_finished = [];
     BUS_archived = [];
+    BUFFER = 15; //items in finished queue until archiving
+    ARCHIVELIMIT = 100; //Limit items of archive
     
 	"BUSE" addPublicVariableEventHandler {
 	        private ["_from","_to","_subject","_body","_id","_idx","_data","_datastack","_status","_params","_code","_entry","_ret","_exec"];
@@ -145,13 +116,13 @@ if (isnil "ALiVE_BUSEH") then {
 				BUS_pending = [BUS_pending,_id,"update",_entry] call ALiVE_fnc_BUS_UpdateQueue;
             };
             
-            //Delete archived- and finished-queue after 100/20 entries to increase performance
-            if ((count BUS_finished >= 20) || {(count BUS_archived >= 100)}) then {
-                for "_i" from 0 to 9 do {
+            //Delete archived- and finished-queue after 100/40 entries to increase performance
+            if ((count BUS_finished >= (BUFFER * 2)) || {(count BUS_archived >= ARCHIVELIMIT)}) then {
+                for "_i" from 0 to BUFFER do {
                     BUS_archived set [count BUS_archived,BUS_finished select _i];
                     BUS_finished set [_i,"X"];
                     
-                    if (count BUS_archived >= 100) then {
+                    if (count BUS_archived >= ARCHIVELIMIT) then {
                             //dump to log disabled
                             //diag_log BUS_archived;
                             BUS_archived = [];
@@ -162,14 +133,59 @@ if (isnil "ALiVE_BUSEH") then {
 	};
 };
 
-//Exit if no params are given
-if (isnil {_this select 0}) exitwith {diag_log "No params given for ALIVE_fnc_BUS - exiting..."; if (isnil "ALiVE_BUSEH") then {false} else {true}};
-if (!(typeName (_this select 0) == "OBJECT") || !(typeName _to == "STRING")) exitwith {diag_log "Wrong param given for To-Adress - ALIVE_fnc_BUS exiting...";false};
-if !(typeName (_this select 1) == "STRING") exitwith {diag_log "Wrong param given for Subject - ALIVE_fnc_BUS exiting...";false};
-if !(typeName (_this select 2) == "ARRAY") exitwith {diag_log "Wrong param given for Body - ALIVE_fnc_BUS exiting...";false};
+//Update Queue function (subfunction)
+if (isnil "ALiVE_fnc_BUS_UpdateQueue") then {
+	ALiVE_fnc_BUS_UpdateQueue = {
+		private ["_queue","_id","_idx","_action","_data"];
+		
+		_queue = _this select 0;
+		_id = _this select 1;
+		_action = _this select 2;
+		if (count _this > 3) then {_data = _this select 3};
+		
+		//Get/Set index
+		if !(count _queue == 0) then {
+		    _idx = ([_queue,_id] call BIS_fnc_findNestedElement) select 0; 
+		    	if (isnil "_idx") then {_idx = (count _queue)};
+		} else {
+			_idx = 0
+		};
+		
+		switch (_action) do {
+			case "remove" : {
+		        _queue set [_idx,"X"];
+                _queue = _queue - ["X"];
+		    };
+		    case "update" : {
+		        _queue set [_idx,_data];
+		    };
+		};
+        _queue;
+	};	
+};
+
+// Return values over network even with call
+if (isnil "ALiVE_fnc_BUS_RetVal") then {
+	ALiVE_fnc_BUS_RetVal = {
+	    private ["_this","_idxv","_idtmp","_retV","_timeOut"];
+		_idtmp = _this call ALIVE_fnc_BUS;
+        _timeOut = time;
+		while {_idxv = ([BUS_finished,_idtmp] call BIS_fnc_findNestedElement) select 0; (isnil "_idxv") && {(time - _timeOut) < 5}} do {};
+	    while {_retV = nil;_retV = ((BUS_finished select _idxv) select 1) select 2; (isnil "_retV") && {(time - _timeOut) < 5}} do {};
+        
+        BUS_archived set [count BUS_archived,BUS_finished select _idxv];
+        BUS_finished set [_idxv,"X"];
+        BUS_finished = BUS_finished - ["X"];
+	    
+        _retV;
+	};
+};
 
 //Call the Send Function
-private ["_from","_to","_subject","_body","_id","_data","_status","_entry","_ret","_params","_code","_localExec"];
+private ["_this","_from","_to","_subject","_body","_id","_data","_status","_entry","_ret","_params","_code","_localExec"];
+
+//Exit if no params are given
+if (isnil {_this select 0}) exitwith {diag_log "No params given for ALIVE_fnc_BUS - exiting..."; if (isnil "ALiVE_BUSEH") then {false} else {true}};
 
 _from = if !(isDedicated) then {player} else {"server"};
 _to = _this select 0;
@@ -205,6 +221,5 @@ if (_status == "finished") then {
 } else {
 	BUS_pending = [BUS_pending,_id,"update",_entry] call ALiVE_fnc_BUS_UpdateQueue;
 };
-//diag_log format["BUS Start: %3, Id: %1 - Params: %2",_id,_entry,time];
 
 _id;
