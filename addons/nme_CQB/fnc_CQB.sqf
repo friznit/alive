@@ -633,8 +633,8 @@ switch(_operation) do {
                                     
 	                                    if !(isnull _host) then {
 		                                    _house setvariable ["group","preinit",true];
-                                            [_host,"CQB",[[_logic, "spawnGroup", _house],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
-			                                sleep 0.1;
+                                            [_host,"CQB",[[_logic, "spawnGroup", _house],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
+                                            sleep 0.1;
 	                                    } else {
 	                                        diag_log format ["CQB ERROR: Null object on host %1",_host];
 	                                    };
