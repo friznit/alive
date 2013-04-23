@@ -1,0 +1,5 @@
+x\alive\addons\grp_a3
+prefix=x\alive\addons\grp_a3
+product=ALiVE
+version=1
+Pbo Type is: Arma
