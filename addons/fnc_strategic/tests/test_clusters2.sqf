@@ -104,7 +104,7 @@ ASSERT_TRUE(count _clusters == ceil(sqrt(count _obj_array / 2)),_err);
 	_m setMarkerColor "ColorYellow";
 	_m setMarkerAlpha 0.5; 
 } forEach _clusters;
-/*
+
 STAT("Clean up markers");
 deleteMarker str _center;
 {
@@ -117,5 +117,5 @@ deleteMarker str _center;
 
 _err = format["Mission objects: %1", count allMissionObjects ""];
 STAT(_err);
-*/
+
 nil;
