@@ -3,19 +3,19 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_SYS">
-	<English>ALiVE Systems</English>
+	<Original>ALiVE Systems</Original>
 </Key>
 <Key ID="STR_ALIVE_SUPPORT">
-	<English>ALiVE Support</English>
+	<Original>ALiVE Support</Original>
 </Key>
 <Key ID="STR_ALIVE_AMBIENT">
-	<English>ALiVE Ambience</English>
+	<Original>ALiVE Ambience</Original>
 </Key>
 <Key ID="STR_ALIVE_ENEMY">
-	<English>ALiVE Enemy</English>
+	<Original>ALiVE Enemy</Original>
 </Key>
 <Key ID="STR_ALIVE_REQUIRES_ALIVE">
-	<English>Requires ALiVE</English>
+	<Original>Requires ALiVE</Original>
 	<German>Erfordern ALiVE</German>
 	<Italian>Richiedono ALiVE</Italian>
 	<Spanish>Requieren ALiVE</Spanish>

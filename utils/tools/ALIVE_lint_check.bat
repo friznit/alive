@@ -9,5 +9,9 @@ FOR /F "tokens=1* delims=," %%A in ('dir %source% /ad /b') do (
 	if ERRORLEVEL 1 goto err
 )
 
+goto end
+
 :err
 pause
+
+:end
