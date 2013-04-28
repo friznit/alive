@@ -30,9 +30,9 @@ Highhead
 
 private ["_pos","_radius","_positions","_nearbldgs"];
 
-PARAMS_2(_pos,_radius);
+PARAMS_3(_pos,_type,_radius);
 _positions = [];
-_nearbldgs = nearestObjects [_pos, ["House"], _radius];
+_nearbldgs = nearestObjects [_pos, [_type], _radius];
 {
 	_positions = _positions + ([_x] call ALIVE_fnc_getBuildingPositions);
 } forEach _nearbldgs;
