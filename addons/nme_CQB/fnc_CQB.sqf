@@ -83,6 +83,9 @@ switch(_operation) do {
                     _strategicTypes = [
                     	//A3
 						"Land_Cargo_Patrol_V1_F",
+                        "Land_Cargo_HQ_V2_F",
+                        "Land_Cargo_House_V2_F",
+                        "Land_Cargo_Patrol_V2_F",
 						"Land_MilOffices_V1_F",
 						"Land_dp_smallFactory_F",
 						"Land_Cargo_HQ_V1_F",
@@ -551,12 +554,9 @@ switch(_operation) do {
 			
 			// TODO Notify controller to start directing
 			// TODO this needs to be refactored
-			{
-				private["_fsm","_hdl"];
-				_fsm = "\x\alive\addons\nme_CQB\HousePatrol.fsm";
-				_hdl = [_logic,_x, 50, true, 120] execFSM _fsm;
-				_x setVariable ["FSM", [_hdl,_fsm], true];
-			} forEach units _grp;
+			_fsm = "\x\alive\addons\nme_CQB\HousePatrol.fsm";
+			_hdl = [_logic,(leader _grp), 50, true, 60] execFSM _fsm;
+			(leader _grp) setVariable ["FSM", [_hdl,_fsm], true];
             _args = _grp;
 		};
 		_args;
