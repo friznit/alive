@@ -5,16 +5,13 @@ SCRIPT(test_clusters2);
 
 // ----------------------------------------------------------------------------
 
-private ["_err","_obj_array","_center","_clusters"];
+private ["_err","_obj_array","_center","_clusters","_m","_amo"];
+
 
 LOG("Testing Clusters 2");
 
-// UNIT TESTS (initStrings.sqf - stringJoin)
 ASSERT_DEFINED("ALIVE_fnc_getObjectsByType","");
-ASSERT_DEFINED("ALIVE_fnc_getNearestObjectInCluster","");
 ASSERT_DEFINED("ALIVE_fnc_findClusterCenter","");
-ASSERT_DEFINED("ALIVE_fnc_chooseInitialCenters","");
-ASSERT_DEFINED("ALIVE_fnc_assignPointsToClusters","");
 ASSERT_DEFINED("ALIVE_fnc_findClusters","");
 ASSERT_DEFINED("ALIVE_fnc_consolidateClusters","");
 
@@ -27,12 +24,11 @@ waitUntil{CONT}; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
-_err = format["Mission objects: %1", count allMissionObjects ""];
-STAT(_err);
+_amo = allMissionObjects "";
 
 STAT("Get array of id's and positions from object index");
-_obj_array = [
-	"barrack",
+/*
+	"cargo",
 	"_tower",
 	"runway_end",
 	"runway_poj",
@@ -41,16 +37,27 @@ _obj_array = [
 	"runway_beton",
 	"runwayold",
 	"helipad",
-//	"hbarrier",
-//	"cargo",
-//	"razorwire",
-//	"mil_wired",
-	"miloffices",
 	"radar",
 	"hangar",
-//	"mil_wall",
-	"bunker",
 	"shed_small_f"
+*/
+/*
+	"dp_transformer_F",
+	"HighVoltageTower",
+	"PowerCable",
+	"PowerPole",
+	"PowerWire",
+	"PowLines_Transformer_F",
+	"spp_transformer_F"
+*/
+_obj_array = [
+	"hbarrier",
+	"razorwire",
+	"mil_wired",
+	"mil_wall",
+	"barrack",
+	"miloffices",
+	"bunker"
 ] call ALIVE_fnc_getObjectsByType;
 _err = "getObjectsByType";
 ASSERT_DEFINED("_obj_array",_err);
@@ -78,44 +85,26 @@ _m setMarkerType "mil_dot";
 _m setMarkerColor "ColorOrange";
 _m setMarkerText "Cluster Center";
 
-STAT("Run same exercise using the findClusters function");
+STAT("Test using the findClusters function");
 _clusters = [_obj_array] call ALIVE_fnc_findClusters;
 _err = "finding clusters";
 ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
-ASSERT_TRUE(count _clusters == ceil(sqrt(count _obj_array / 2)),_err);
 {
-        private["_max","_center"];
-        _max = 0;
-        _center = _x;
-        _m = createMarker [str _x, getPosATL _center];
-	_m setMarkerShape "Icon";
-	_m setMarkerSize [1, 1];
-	_m setMarkerType "mil_dot";
-	_m setMarkerColor "ColorYellow";
-	_m setMarkerText format["Cluster Center #%1", _forEachIndex];
+	[_x, "debug", true] call ALIVE_fnc_cluster;
+} forEach _clusters;
 
-        {
-                if(_x distance _center > _max) then {_max = _x distance _center;};
-        } forEach (_center getVariable "ClusterNodes");
-
-        _m = createMarker [str _center + "_0", getPosATL _center];
-	_m setMarkerShape "Ellipse";
-	_m setMarkerSize [_max, _max];
-	_m setMarkerColor "ColorYellow";
-	_m setMarkerAlpha 0.5; 
+sleep 5;
+{
+	[_x, "destroy"] call ALIVE_fnc_cluster;
 } forEach _clusters;
 
 STAT("Clean up markers");
 deleteMarker str _center;
 {
 	deleteMarker str _x;
+	deleteVehicle _x;
 } forEach _obj_array;
-{
-	deleteMarker str _x;
-	deleteMarker (str _x + "_0");
-} forEach _clusters;
 
-_err = format["Mission objects: %1", count allMissionObjects ""];
-STAT(_err);
+diag_log (allMissionObjects "") - _amo;
 
 nil;

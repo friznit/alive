@@ -5,7 +5,7 @@ SCRIPT(test_houses);
 
 // ----------------------------------------------------------------------------
 
-private ["_err","_obj_array","_house","_maxpos","_expected","_m","_ms"];
+private ["_err","_obj_array","_house","_maxpos","_expected","_m","_ms","_amo"];
 
 LOG("Testing Strategic Houses");
 _ms = [];
@@ -26,6 +26,8 @@ titleText [msg,"PLAIN"]
 waitUntil{CONT}; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
+
+_amo = allMissionObjects "";
 
 STAT("Find nearest house");
 _house = (getPosATL player) nearestObject "House";
@@ -127,5 +129,7 @@ STAT("Clean up markers");
 {
 	deleteMarker _x;
 } forEach _ms;
+
+diag_log (allMissionObjects "") - _amo;
 
 nil;

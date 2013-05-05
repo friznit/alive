@@ -10,6 +10,7 @@ Provide a list of house positions in the area
 Parameters:
 Array - Position
 Number - Radius to search
+String - Object type to search for (optional)
 
 Returns:
 Array - A list of building positions
@@ -18,6 +19,9 @@ Examples:
 (begin example)
 // find nearby houses
 _bldgpos = [_pos,50] call ALIVE_fnc_findNearHousePositions;
+
+// find nearby Buildings
+_bldgpos = [_pos,150,"Building"] call ALIVE_fnc_findNearHousePositions;
 (end)
 
 See Also:
@@ -30,7 +34,9 @@ Highhead
 
 private ["_pos","_radius","_positions","_nearbldgs"];
 
-PARAMS_3(_pos,_type,_radius);
+PARAMS_2(_pos,_radius);
+DEFAULT_PARAM(2,_type,"House");
+
 _positions = [];
 _nearbldgs = nearestObjects [_pos, [_type], _radius];
 {

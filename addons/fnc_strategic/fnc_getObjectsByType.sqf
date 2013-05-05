@@ -29,7 +29,7 @@ _obj_array = [
 (end)
 
 See Also:
-- <ALIVE_fnc_getNearestObjectInCluster>
+- <ALIVE_fnc_getNearestObjectInArray>
 
 Author:
 Wolffy.au

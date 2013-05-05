@@ -9,8 +9,6 @@ Function: ALIVE_fnc_findClusters
 Description:
 Returns a list of logics representing clusters of objects
 
-K-means++ code inspired from: http://commons.apache.org/math/api-2.1/index.html?org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer.html
-
 Parameters:
 Array - A list of objects to identify clusters
 
@@ -24,37 +22,43 @@ _clusters = [_obj_array] call ALIVE_fnc_findClusters;
 (end)
 
 See Also:
-- <ALIVE_fnc_chooseInitialCenters>
-- <ALIVE_fnc_assignPointsToClusters>
+- <ALIVE_fnc_cluster>
 - <ALIVE_fnc_findClusterCenter>
 
 Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_obj_array","_err","_clusters","_k"];
+private ["_obj_array","_err","_clusters","_points","_result","_cluster","_first","_nodes","_max"];
+
 PARAMS_1(_obj_array);
+DEFAULT_PARAM(1,_maxdist,250);
+
 _err = "objects provided not valid";
 ASSERT_DEFINED("_obj_array", _err);
 ASSERT_OP(typeName _obj_array, == ,"ARRAY", _err);
 ASSERT_OP(count _obj_array,>,0,_err);
 
-_k = ceil(sqrt(count _obj_array / 2));
-
-// create the initial cluster centers
-_clusters = [_obj_array] call ALIVE_fnc_chooseInitialCenters;
-for "_i" from 0 to _k do {
-        [_clusters, _obj_array] call ALIVE_fnc_assignPointsToClusters;
-        {
-                private["_nodes"];
-                _nodes = _x getVariable "ClusterNodes";
-                if(count _nodes > 0) then {
-                        _x setPos ([_nodes] call ALIVE_fnc_findClusterCenter);
-                };
-                
-        } forEach _clusters;
-
-        _clusters = ([_clusters] call ALIVE_fnc_consolidateClusters) select 0;
+_points =+ _obj_array;
+_clusters = [];
+_result = objNull;
+while {count _points > 0} do {
+        _cluster = [nil, "create"] call ALIVE_fnc_cluster;
+        _clusters set [count _clusters, _cluster];
+        _first = _points select 0;
+        _nodes = [_first];
+        _max = 0;
+        _points = _points - [_first];
+        _result = [_first, _points, _maxdist] call ALIVE_fnc_getNearestObjectInArray;
+        
+        while{_result != _first} do {
+                _nodes set [count _nodes,_result];
+                if(_result distance _first > _max) then {_max = _result distance _first;};
+                _points = _points - [_result];
+                _result = [_first, _points, _max] call ALIVE_fnc_getNearestObjectInArray;
+        };
+        
+        [_cluster, "nodes", _nodes] call ALIVE_fnc_cluster;
 };
 
 _clusters;

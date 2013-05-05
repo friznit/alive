@@ -5,16 +5,15 @@ SCRIPT(test_clusters);
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_expected","_err","_obj_array","_point","_center","_clusters","_m"];
+private ["_result","_expected","_err","_obj_array","_point","_center","_clusters","_m","_amo"];
 
 LOG("Testing Clusters");
 
 ASSERT_DEFINED("ALIVE_fnc_getObjectsByType","");
-ASSERT_DEFINED("ALIVE_fnc_getNearestObjectInCluster","");
+ASSERT_DEFINED("ALIVE_fnc_getNearestObjectInArray","");
 ASSERT_DEFINED("ALIVE_fnc_findClusterCenter","");
-ASSERT_DEFINED("ALIVE_fnc_chooseInitialCenters","");
-ASSERT_DEFINED("ALIVE_fnc_assignPointsToClusters","");
 ASSERT_DEFINED("ALIVE_fnc_findClusters","");
+ASSERT_DEFINED("ALIVE_fnc_consolidateClusters","");
 
 #define STAT(msg) sleep 3; \
 diag_log ["TEST("+str player+": "+msg]; \
@@ -25,8 +24,7 @@ waitUntil{CONT}; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
-_err = format["Mission objects: %1", count allMissionObjects ""];
-STAT(_err);
+_amo = allMissionObjects "";
 
 STAT("Create mock objects");
 _obj_array = [];
@@ -41,12 +39,16 @@ createCenter sideLogic;
 	[300,1200],
 	[600,900],
 	[900,600],
-	[900,300]
+	[900,400],
+	[400,1100],
+	[500,800],
+	[800,500],
+	[1000,400]
 ];
 _err = "create mock objects";
 ASSERT_DEFINED("_obj_array",_err);
 ASSERT_TRUE(typeName _obj_array == "ARRAY", _err);
-ASSERT_TRUE(count _obj_array == 8,_err);
+ASSERT_TRUE(count _obj_array == 12,_err);
 {
         _m = createMarker [str _x, getPosATL _x];
         _m setMarkerShape "Icon";
@@ -56,9 +58,9 @@ ASSERT_TRUE(count _obj_array == 8,_err);
 
 STAT("Test finding nearest object from cluster");
 _point = _obj_array select 0;
-_result = [_point, _obj_array] call ALIVE_fnc_getNearestObjectInCluster;
+_result = [_point, _obj_array] call ALIVE_fnc_getNearestObjectInArray;
 _expected = _obj_array select 1;
-_err = "getNearestObjectInCluster #1";
+_err = "getNearestObjectInArray #1";
 ASSERT_TRUE(_result == _expected, _err);
 (str _point) setMarkerColor "ColorBlue";
 (str _result) setMarkerColor "ColorBlue";
@@ -66,13 +68,21 @@ ASSERT_TRUE(_result == _expected, _err);
 
 STAT("Finding nearest object #2 from cluster");
 _point = _obj_array select 6;
-_result = [_point, _obj_array] call ALIVE_fnc_getNearestObjectInCluster;
-_expected = _obj_array select 7;
-_err = "getNearestObjectInCluster #2";
+_result = [_point, _obj_array] call ALIVE_fnc_getNearestObjectInArray;
+_expected = _obj_array select 10;
+_err = "getNearestObjectInArray #2";
 ASSERT_TRUE(_result == _expected, _err);
 (str _point) setMarkerColor "ColorBlue";
 (str _result) setMarkerColor "ColorBlue";
 [_result, _point] call ALIVE_fnc_createLink;
+
+STAT("Reject nearest object #3 as too far awy");
+_point = _obj_array select 8;
+_result = [_point, _obj_array, 50] call ALIVE_fnc_getNearestObjectInArray;
+_expected = _obj_array select 8;
+_err = "getNearestObjectInArray #3";
+ASSERT_TRUE(_result == _expected, _err);
+(str _point) setMarkerColor "ColorBlue";
 
 STAT("Test finding centre of cluster of objects");
 _center = [_obj_array] call ALIVE_fnc_findClusterCenter;
@@ -87,74 +97,35 @@ _m setMarkerType "mil_dot";
 _m setMarkerColor "ColorOrange";
 _m setMarkerText "Cluster Center";
 
-STAT("Find initial cluster seed centres");
-_clusters = [_obj_array] call ALIVE_fnc_chooseInitialCenters;
-_err = "cluster center";
-ASSERT_DEFINED("_clusters",_err);
-ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
-ASSERT_TRUE(count _clusters == ceil(sqrt(count _obj_array / 2)),_err);
-{
-        _m = createMarker [str _x, getPosATL _x];
-	_m setMarkerShape "Icon";
-	_m setMarkerSize [1, 1];
-	_m setMarkerType "mil_dot";
-	_m setMarkerColor "ColorYellow";
-	_m setMarkerText format["Cluster Center #%1", _forEachIndex];
-} forEach _clusters;
-
-STAT("Reassign objects to nearest cluster #1");
-[_clusters, _obj_array] call ALIVE_fnc_assignPointsToClusters;
-_err = "cluster reassignment #1";
-ASSERT_DEFINED("_clusters",_err);
-ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
-ASSERT_TRUE(count _clusters == ceil(sqrt(count _obj_array / 2)),_err);
-{
-	_x setPos ([_x getVariable "ClusterNodes"] call ALIVE_fnc_findClusterCenter);
-	str _x setMarkerPos getPosATL _x;
-} forEach _clusters;
-
-STAT("Reassign objects to nearest cluster #2");
-[_clusters, _obj_array] call ALIVE_fnc_assignPointsToClusters;
-_err = "cluster reassignment #2";
-ASSERT_DEFINED("_clusters",_err);
-ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
-ASSERT_TRUE(count _clusters == ceil(sqrt(count _obj_array / 2)),_err);
-{
-	_x setPos ([_x getVariable "ClusterNodes"] call ALIVE_fnc_findClusterCenter);
-	str _x setMarkerPos getPosATL _x;
-} forEach _clusters;
-
-{
-	deleteMarker str _x;
-} forEach _clusters;
-
-STAT("Run same exercise using the findClusters function");
+STAT("FindClusters function");
 _clusters = [_obj_array] call ALIVE_fnc_findClusters;
 _err = "finding clusters";
 ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
-ASSERT_TRUE(count _clusters == ceil(sqrt(count _obj_array / 2)),_err);
 {
-        _m = createMarker [str _x, getPosATL _x];
-	_m setMarkerShape "Icon";
-	_m setMarkerSize [1, 1];
-	_m setMarkerType "mil_dot";
-	_m setMarkerColor "ColorYellow";
-	_m setMarkerText format["Cluster Center #%1", _forEachIndex];
+	[_x, "debug", true] call ALIVE_fnc_cluster;
 } forEach _clusters;
 
+STAT("ConsolidateClusters function");
+_result = [_clusters] call ALIVE_fnc_consolidateClusters;
+_clusters = _result select 0;
+_err = "consolidating clusters";
+ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
+
+sleep 5;
+
+{
+	[_x, "destroy"] call ALIVE_fnc_cluster;
+} forEach _clusters;
 
 STAT("Clean up markers");
 deleteMarker str _center;
 {
 	deleteMarker str _x;
+	deleteVehicle _x;
 } forEach _obj_array;
 [_obj_array select 1, _obj_array select 0] call ALIVE_fnc_deleteLink;
-[_obj_array select 7, _obj_array select 6] call ALIVE_fnc_deleteLink;
-{
-	deleteMarker str _x;
-} forEach _clusters;
+[_obj_array select 10, _obj_array select 6] call ALIVE_fnc_deleteLink;
 
-_err = format["Mission objects: %1", count allMissionObjects ""];
-STAT(_err);
+diag_log (allMissionObjects "") - _amo;
 
 nil;

@@ -20,26 +20,29 @@ _center = [_obj_array] call ALIVE_fnc_findClusterCenter;
 (end)
 
 See Also:
-- <ALIVE_fnc_getNearestObjectInCluster>
+- <ALIVE_fnc_getNearestObjectInArray>
 - <ALIVE_fnc_findClusters>
 
 Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_nodes","_err","_nodes","_xc","_yc","_count"];
-PARAMS_1(_nodes);
-_err = "cluster nodes array not valid";
+private ["_nodes","_err","_xc","_yc","_count","_result"];
+_nodes = [_this, 0, [], [[]]] call BIS_fnc_param;
+_err = format["cluster nodes array not valid - %1",_nodes];
 ASSERT_DEFINED("_nodes",_err);
 ASSERT_TRUE(typeName _nodes == "ARRAY",_err);
-ASSERT_TRUE(count _nodes > 0,_err);
 
-_xc = 0;
-_yc = 0;
-{
-	_xc = _xc + ((getPosATL _x) select 0);
-	_yc = _yc + ((getPosATL _x) select 1);
-} forEach _nodes;
+_result = [];
+if(count _nodes > 0) then {
+	_xc = 0;
+	_yc = 0;
+	{
+		_xc = _xc + ((getPosATL _x) select 0);
+		_yc = _yc + ((getPosATL _x) select 1);
+	} forEach _nodes;
 
-_count = count _nodes;
-[_xc / _count, _yc / _count];
+	_count = count _nodes;
+	_result = [_xc / _count, _yc / _count];
+};
+_result;
