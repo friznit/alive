@@ -1,33 +1,14 @@
+/*
 class cfgFunctions {
 	class PREFIX {
 		class COMPONENT {
+                        class cluster {
+                                description = "The cluster object class";
+                                file = "\x\alive\addons\fnc_strategic\fnc_cluster.sqf";
+                        };
 			class getObjectsByType {
 				description = "Returns objects by their P3D name for the entire map";
                                 file = "\x\alive\addons\fnc_strategic\fnc_getObjectsByType.sqf";
-			};
-			class getNearestObjectInCluster {
-				description = "Returns the nearest object to the given object from a list of objects";
-                                file = "\x\alive\addons\fnc_strategic\fnc_getNearestObjectInCluster.sqf";
-			};
-			class findClusterCenter {
-				description = "Return the centre position of an object cluster";
-                                file = "\x\alive\addons\fnc_strategic\fnc_findClusterCenter.sqf";
-			};
-			class chooseInitialCenters {
-				description = "Use K-means++ to choose the initial centers";
-                                file = "\x\alive\addons\fnc_strategic\fnc_chooseInitialCenters.sqf";
-			};
-			class assignPointsToClusters {
-				description = "Assign cluster objects to nearest cluster centre";
-                                file = "\x\alive\addons\fnc_strategic\fnc_assignPointsToClusters.sqf";
-			};
-			class consolidateClusters {
-				description = "Merge cluster objects if they are within close proximity";
-                                file = "\x\alive\addons\fnc_strategic\fnc_consolidateClusters.sqf";
-			};
-			class findClusters {
-				description = "Returns a list of object clusters";
-                                file = "\x\alive\addons\fnc_strategic\fnc_findClusters.sqf";
 			};
 			class getEnterableHouses {
 				description = "Returns an array of all enterable Houses in a given radius";
@@ -57,6 +38,23 @@ class cfgFunctions {
 				description = "Returns true if the building is enterable";
                                 file = "\x\alive\addons\fnc_strategic\fnc_isHouseEnterable.sqf";
 			};
+			class getNearestObjectInArray {
+				description = "Returns the nearest object to the given object from a list of objects";
+                                file = "\x\alive\addons\fnc_strategic\fnc_getNearestObjectInArray.sqf";
+			};
+			class findClusterCenter {
+				description = "Return the centre position of an object cluster";
+                                file = "\x\alive\addons\fnc_strategic\fnc_findClusterCenter.sqf";
+			};
+			class consolidateClusters {
+				description = "Merge cluster objects if they are within close proximity";
+                                file = "\x\alive\addons\fnc_strategic\fnc_consolidateClusters.sqf";
+			};
+			class findClusters {
+				description = "Returns a list of object clusters";
+                                file = "\x\alive\addons\fnc_strategic\fnc_findClusters.sqf";
+			};
 		};
 	};
 };
+*/
