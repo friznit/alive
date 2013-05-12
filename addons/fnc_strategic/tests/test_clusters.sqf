@@ -105,7 +105,13 @@ ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 	[_x, "debug", true] call ALIVE_fnc_cluster;
 } forEach _clusters;
 
+sleep 5;
+
 STAT("ConsolidateClusters function");
+[_clusters select 3, "addNode", _obj_array select 8] call ALIVE_fnc_cluster;
+
+sleep 5;
+
 _result = [_clusters] call ALIVE_fnc_consolidateClusters;
 _clusters = _result select 0;
 _err = "consolidating clusters";
@@ -118,13 +124,13 @@ sleep 5;
 } forEach _clusters;
 
 STAT("Clean up markers");
+[_obj_array select 1, _obj_array select 0] call ALIVE_fnc_deleteLink;
+[_obj_array select 10, _obj_array select 6] call ALIVE_fnc_deleteLink;
 deleteMarker str _center;
 {
 	deleteMarker str _x;
 	deleteVehicle _x;
 } forEach _obj_array;
-[_obj_array select 1, _obj_array select 0] call ALIVE_fnc_deleteLink;
-[_obj_array select 10, _obj_array select 6] call ALIVE_fnc_deleteLink;
 
 diag_log (allMissionObjects "") - _amo;
 
