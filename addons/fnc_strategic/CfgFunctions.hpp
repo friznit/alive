@@ -53,6 +53,10 @@ class cfgFunctions {
 				description = "Builds clusters";
                                 file = "\x\alive\addons\fnc_strategic\fnc_cluster.sqf";
 			};
+			class findFlatArea {
+				description = "Finds a flat area within a give radius";
+	        					file = "\x\alive\addons\fnc_strategic\fnc_findFlatArea.sqf";
+			};
 		};
 	};
 };
