@@ -5,7 +5,7 @@ SCRIPT(test_clusters2);
 
 // ----------------------------------------------------------------------------
 
-private ["_err","_obj_array","_center","_clusters","_m","_amo"];
+private ["_err","_obj_array","_center","_clusters","_m","_amo","_result"];
 
 
 LOG("Testing Clusters 2");

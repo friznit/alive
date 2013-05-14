@@ -4,8 +4,8 @@ SCRIPT(test_houses);
 
 
 // ----------------------------------------------------------------------------
-
-private ["_err","_obj_array","_house","_maxpos","_expected","_m","_ms","_amo"];
+
+private ["_err","_obj_array","_house","_maxpos","_expected","_m","_ms","_amo"];
 
 LOG("Testing Strategic Houses");
 _ms = [];
