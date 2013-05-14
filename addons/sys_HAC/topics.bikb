@@ -1,0 +1,178 @@
+    class Sentences
+    { 
+
+        class First
+        {
+            text = "STAND BY FOR NEW ORDERS.";
+            speech[] = {"pause"};
+            class Arguments {};
+            
+        };
+
+        class NewMessage
+        {
+            text = "THIS IS HQ. MESSAGE.";
+            speech[] = {"pause","pause","pause","pause","ThisIs","HQ","pause","pause","Message","pause","pause","Over2"};
+            class Arguments {};
+            
+        };
+
+        class MoveTo
+        {
+            text = "MOVE TO TARGET.";
+            speech[] = {"MoveTo","pause","Target","pause","pause","pause","pause","Over2"};
+            class Arguments {};
+            
+        };
+
+        class MoveToAttack
+        {
+            text = "MOVE TO TARGET AND ATTACK.";
+            speech[] = {"MoveTo","pause","Target","pause","and","pause","Attack","pause","pause","pause","pause","Over2"};
+            class Arguments {};
+            
+        };
+
+        class Take0
+        {
+            text = "TAKE POSITION.";
+            speech[] = {"Take","position","pause","pause","pause","pause","pause","Over2"};
+            class Arguments {};
+            
+        };
+
+        class Take1
+        {
+            text = "TAKE POINT.";
+            speech[] = {"TakePoint","pause","pause","pause","pause","Over2"};
+            class Arguments {};
+            
+        };
+
+        class 0MoveTo
+        {
+            text = "MOVE TO TARGET.";
+            speech[] = {"MoveTo","pause","Target","pause"};
+            class Arguments {};
+            
+        };
+
+        class 0MoveToAttack
+        {
+            text = "MOVE TO TARGET AND ATTACK.";
+            speech[] = {"MoveTo","pause","Target","pause","and","pause","Attack","pause"};
+            class Arguments {};
+            
+        };
+
+        class 0Take0
+        {
+            text = "TAKE POSITION.";
+            speech[] = {"Take","pause","position","pause"};
+            class Arguments {};
+            
+        };
+
+        class 0Take1
+        {
+            text = "TAKE POINT.";
+            speech[] = {"TakePoint","pause"};
+            class Arguments {};
+            
+        };
+
+        class OrderEnemy
+        {
+            text = "BE ADVICED. ENEMY NOT FAR.";
+            speech[] = {"BeAdvised","pause","pause","enemy","pause","pause","NotFar","pause","pause","Over1"};
+            class Arguments {};
+            
+        };
+
+        class Speak0
+        {
+            text = "GO AHEAD.";
+            speech[] = {"GoAhead","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","Over1"};
+            class Arguments {};
+            
+        };
+
+        class Speak1
+        {
+            text = "READY FOR ORDERS.";
+            speech[] = {"ReadyForOrders","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","Over1"};
+            class Arguments {};
+            
+        };
+
+        class Speak2
+        {
+            text = "READY FOR ORDERS. GO AHEAD.";
+            speech[] = {"ReadyForOrders","pause","pause","GoAhead","pause","pause","pause","pause","pause","pause","pause","pause","pause","Over1"};
+            class Arguments {};
+            
+        };
+
+        class Speak3
+        {
+            text = "READY.";
+            speech[] = {"Ready","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","Over1"};
+            class Arguments {};
+            
+        };
+
+        class Speak4
+        {
+            text = "READY. GO AHEAD";
+            speech[] = {"Ready","pause","pause","pause","GoAhead","pause","pause","pause","pause","pause","pause","pause","pause","Over1"};
+            class Arguments {};
+            
+        };
+
+        class OK0
+        {
+            text = "SOLID COPY.";
+            speech[] = {"SolidCopy","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","Out1"};
+            class Arguments {};
+            
+        };
+
+        class OK1
+        {
+            text = "COPY.";
+            speech[] = {"Copy","pause","pause","pause","pause","pause","pause","pause","pause","pause","Out1"};
+            class Arguments {};
+            
+        };
+
+        class OK2
+        {
+            text = "OSCAR MIKE.";
+            speech[] = {"OscarMike","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","pause","Out1"};
+            class Arguments {};
+            
+        };
+
+        class OK3
+        {
+            text = "GOT IT.";
+            speech[] = {"GotIt","pause","pause","pause","pause","pause","pause","pause","Out1"};
+            class Arguments {};
+            
+        };
+
+        class OK4
+        {
+            text = "I'M ON IT.";
+            speech[] = {"ImOnIt","pause","pause","pause","pause","pause","pause","pause","pause","Out1"};
+            class Arguments {};
+            
+        };
+
+    };
+    class Arguments{};
+    class Special{};
+    startWithVocal[] = {hour};
+    startWithConsonant[] = {europe, university};  
+
+ 
