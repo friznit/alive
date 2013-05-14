@@ -63,7 +63,6 @@ Group: ALiVE  {
 
       Group: Main  {
 
-         File: ALIVE_fnc_baseClass  (main/fnc_baseClass.sqf)
          File: ALIVE_fnc_isHC  (main/fnc_isHC.sqf)
          File: ALIVE_fnc_isServerAdmin  (main/fnc_isServerAdmin.sqf)
          File: ALiVE_fnc_anyPlayersInRange  (main/fnc_anyPlayersInRange.sqf)
@@ -71,6 +70,11 @@ Group: ALiVE  {
          File: ALiVE_fnc_findVehicleType  (main/fnc_findVehicleType.sqf)
          File: ALiVE_fnc_isAbleToHost  (main/fnc_isAbleToHost.sqf)
          File: ALiVE_fnc_logger  (main/fnc_logger.sqf)
+         File: ALIVE_fnc_baseClass  (main/fnc_BaseClass.sqf)
+         File: ALIVE_fnc_BUS  (main/fnc_BUS.sqf)
+         File: ALIVE_fnc_createLink  (main/fnc_createLink.sqf)
+         File: ALIVE_fnc_deleteLink  (main/fnc_deleteLink.sqf)
+         File: ALIVE_fnc_exMP  (main/fnc_exMP.sqf)
          }  # Group: Main
 
       Group: Nme_CQB  {
@@ -106,16 +110,16 @@ Group: ALiVE  {
       Group: Sys_statistics  {
 
          File: ALIVE_fnc_statistics  (sys_statistics/fnc_statistics.sqf)
+         File: ALIVE_fnc_statisticsDisable  (sys_statistics/fnc_statisticsModuleFunction.sqf)
+         File: ALIVE_fnc_statisticsDisable  (sys_statistics/fnc_statisticsDisable.sqf)
          File: ALIVE_fnc_statisticsInit  (sys_statistics/fnc_statisticsInit.sqf)
          File: ALIVE_fnc_statisticsMenuDef  (sys_statistics/fnc_statisticsMenuDef.sqf)
+         File: ALIVE_sys_stat_fnc_getInEH  (sys_statistics/fnc_getInEH.sqf)
+         File: ALIVE_sys_stat_fnc_getOutEH  (sys_statistics/fnc_getOutEH.sqf)
+         File: ALIVE_sys_stat_fnc_hitEH  (sys_statistics/fnc_hitEH.sqf)
+         File: ALIVE_sys_stat_fnc_landedTouchDownEH  (sys_statistics/fnc_landedTouchDownEH.sqf)
+         File: ALIVE_sys_stat_fnc_unitKilledEH  (sys_statistics/fnc_unitKilledEH.sqf)
          }  # Group: Sys_statistics
-
-      Group: Sys_TEMPLATE  {
-
-         File: ALIVE_fnc_TEMPLATE  (sys_TEMPLATE/fnc_TEMPLATE.sqf)
-         File: ALIVE_fnc_TEMPLATEInit  (sys_TEMPLATE/fnc_TEMPLATEInit.sqf)
-         File: ALIVE_fnc_TEMPLATEMenuDef  (sys_TEMPLATE/fnc_TEMPLATEMenuDef.sqf)
-         }  # Group: Sys_TEMPLATE
 
       Group: Sys_viewdistance  {
 
@@ -126,18 +130,18 @@ Group: ALiVE  {
 
       Group: Fnc_strategic  {
 
-         File: ALIVE_fnc_assignPointsToClusters  (fnc_strategic/fnc_assignPointsToClusters.sqf)
-         File: ALIVE_fnc_chooseInitialCenters  (fnc_strategic/fnc_chooseInitialCenters.sqf)
+         File: ALIVE_fnc_cluster  (fnc_strategic/fnc_cluster.sqf)
          File: ALIVE_fnc_consolidateClusters  (fnc_strategic/fnc_consolidateClusters.sqf)
          File: ALIVE_fnc_findClusterCenter  (fnc_strategic/fnc_findClusterCenter.sqf)
          File: ALIVE_fnc_findClusters  (fnc_strategic/fnc_findClusters.sqf)
+         File: ALIVE_fnc_findFlatArea  (fnc_strategic/fnc_findFlatArea.sqf)
          File: ALIVE_fnc_findIndoorHousePositions  (fnc_strategic/fnc_findIndoorHousePositions.sqf)
          File: ALIVE_fnc_findNearHousePositions  (fnc_strategic/fnc_findNearHousePositions.sqf)
          File: ALIVE_fnc_getAllEnterableHouses  (fnc_strategic/fnc_getAllEnterableHouses.sqf)
          File: ALIVE_fnc_getBuildingPositions  (fnc_strategic/fnc_getBuildingPositions.sqf)
          File: ALIVE_fnc_getEnterableHouses  (fnc_strategic/fnc_getEnterableHouses.sqf)
          File: ALIVE_fnc_getMaxBuildingPositions  (fnc_strategic/fnc_getMaxBuildingPositions.sqf)
-         File: ALIVE_fnc_getNearestObjectInCluster  (fnc_strategic/fnc_getNearestObjectInCluster.sqf)
+         File: ALIVE_fnc_getNearestObjectInArray  (fnc_strategic/fnc_getNearestObjectInArray.sqf)
          File: ALIVE_fnc_getObjectsByType  (fnc_strategic/fnc_getObjectsByType.sqf)
          File: ALIVE_fnc_isHouseEnterable  (fnc_strategic/fnc_isHouseEnterable.sqf)
          }  # Group: Fnc_strategic
@@ -151,4 +155,20 @@ Group: ALiVE  {
       }  # Group: Index
 
    }  # Group: ALiVE
+
+File: ALIVE_fnc_multispawn  (sup_multispawn/fnc_multispawn.sqf)
+File: ALIVE_fnc_multispawnInit  (sup_multispawn/fnc_multispawnInit.sqf)
+File: ALIVE_fnc_multispawnMenuDef  (sup_multispawn/fnc_multispawnMenuDef.sqf)
+
+Group: Functions  {
+
+   File: ALIVE_fnc_multispawnAddAction  (sup_multispawn/functions/fnc_multispawnAddAction.sqf)
+   File: ALIVE_fnc_multispawnConvert  (sup_multispawn/functions/fnc_multispawnConvert.sqf)
+   File: ALIVE_fnc_multispawnDeploy  (sup_multispawn/functions/fnc_multispawnDeploy.sqf)
+   File: ALIVE_fnc_multispawnMHQType  (sup_multispawn/functions/fnc_multispawnMHQType.sqf)
+   File: ALIVE_fnc_multispawnPlayerSetSpawn  (sup_multispawn/functions/fnc_multispawnPlayerSetSpawn.sqf)
+   File: ALIVE_fnc_multispawnRelocatePlayer  (sup_multispawn/functions/fnc_multispawnRelocatePlayer.sqf)
+   File: ALIVE_fnc_multispawnSyncState  (sup_multispawn/functions/fnc_multispawnSyncState.sqf)
+   File: ALIVE_fnc_multispawnUndeploy  (sup_multispawn/functions/fnc_multispawnUndeploy.sqf)
+   }  # Group: Functions
 
