@@ -74,7 +74,7 @@ switch(_operation) do {
                     //Set default variables
                     _logic setvariable ["HAC_HQ_Debug", false];
 					_logic setvariable ["HAC_HQ_DebugII",false];
-					_logic setvariable ["HAC_HQ_IdleOrd", false];
+					_logic setvariable ["HAC_HQ_IdleOrd", true];
 					_logic setvariable ["HAC_BB_Debug", false];                            
 					_logic setvariable ["HAC_HQ_CargoFind", 200];
 					_logic setvariable ["HAC_HQ_Rush", true];
@@ -90,10 +90,9 @@ switch(_operation) do {
                     
                     //Enable Debug
                     if (call compile (MOD(HAC) getvariable "HAC_HQ_Debug")) then {
-	                    _logic setvariable ["HAC_HQ_Debug", true];
+	                    _logic setvariable ["HAC_BB_Debug", true];   
+                        _logic setvariable ["HAC_HQ_Debug", true];
 						_logic setvariable ["HAC_HQ_DebugII",true];
-						_logic setvariable ["HAC_HQ_IdleOrd", true];
-						_logic setvariable ["HAC_BB_Debug", true];                        
                     };
                     
                     //Add synchronized units from map
@@ -107,7 +106,7 @@ switch(_operation) do {
                     Publicvariable "HAC_TACOM";
                     
                     MOD(HAC) setVariable ["instances",[HAC_TACOM],true];
-                    MOD(HAC) setVariable ["moduleinit", true, true];
+                    MOD(HAC) setVariable ["init", true, true];
 
                     // and publicVariable Main class to clients
                     publicVariable QMOD(HAC);
@@ -117,12 +116,12 @@ switch(_operation) do {
                     // to servers on client disconnect
             };
                 
-		TRACE_2("After module init",MOD(HAC),MOD(HAC) getVariable "moduleinit");
+		TRACE_2("After module init",MOD(HAC),MOD(HAC) getVariable "init");
 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
                 waitUntil {!isNil QMOD(HAC)};
-                waitUntil {MOD(HAC) getVariable ["moduleinit", false]};
+                waitUntil {MOD(HAC) getVariable ["init", false]};
                 
                 /*
                 CONTROLLER  - coordination
@@ -130,7 +129,7 @@ switch(_operation) do {
                 */
 
 				if (isServer) then {
-	                waitUntil {MOD(HAC) getVariable ["moduleinit", false]};
+	                waitUntil {MOD(HAC) getVariable ["init", false]};
 					[HAC_TACOM, "active", true] call ALiVE_fnc_HAC;
                     format["HAC activated on logic %1...", HAC_TACOM] call ALiVE_fnc_logger;
 				};
@@ -145,7 +144,7 @@ switch(_operation) do {
                         // if server
                         _logic setVariable ["super", nil];
                         _logic setVariable ["class", nil];
-                        _logic setVariable ["moduleinit", nil];
+                        _logic setVariable ["init", nil];
                         // and publicVariable to clients
                         MOD(HAC) = _logic;
                         publicVariable QMOD(HAC);
@@ -156,18 +155,64 @@ switch(_operation) do {
                 };
         };
         
-	    case "factions": {
+	    case "personality": {
 			if(isNil "_args") then {
-				// if no new faction list was provided return current setting
-				_args = _logic getVariable ["factions", []];
+				// if no new personality was provided return current setting
+				_args = _logic getVariable ["HAC_HQ_Personality", "GENIUS"];
 			} else {
-				// if a new faction list was provided set factions settings
-				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-				_logic setVariable ["factions", _args, true];
+				// if a new personality setting was provided set personality
+				ASSERT_TRUE(typeName _args == "STRING",str typeName _args);
+				_logic setVariable ["HAC_HQ_Personality", _args, true];
+                [_logic] call A_Personality;
 			};
 			_args;
 		};
+        
+        case "addGroups": {
+			if(isNil "_args") then {
+				// if no list was provided return current setting
+				_args = synchronizedObjects _logic;
+			} else {
+				// if a list was provided add groups
+				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+				
+                {
+                    _grpL = leader (group _x);
+                    if !(_grpL in (synchronizedObjects _logic)) then {
+                        _logic synchronizeObjectsAdd [_grpL];
+                    };
+                    
+                } foreach _args;
+                _args = synchronizedObjects _logic;
+			};
+			_args;
+		};
+        
+        case "delGroups": {
+			if(isNil "_args") then {
+				// if no new list was provided return current setting
+				_args = synchronizedObjects _logic;
+			} else {
+				// if a new list was provided remove groups
+				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+				
+                {
+                    _grp = _x;
+                    _grpL = _x;
+                    if (_grpL in (synchronizedObjects _logic)) then {
+                        _logic synchronizeObjectsRemove [_grpL];
+                    };
 
+                    if (_grp in (_logic getvariable "HAC_HQ_Subordinated")) then {
+                        _logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") - [_grp]];
+                    };
+                } foreach _args;
+                _args = synchronizedObjects _logic;
+                _logic setvariable ["HAC_HQ_Friends",_args];
+			};
+			_args;
+		};
+        
 		case "active": {
 			if(isNil "_args") exitWith {
 				_logic getVariable ["active", false];

@@ -1,6 +1,7 @@
 _ne = objNull;
 _is = false;
 _count = 0;
+_markers = [];
 _logic = _this select ((count _this)-1);
 
 if (_logic getvariable "HAC_HQ_DebugII") then
@@ -11,27 +12,32 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 		not (isNil {_logic getvariable "HAC_HQ_KnEnemiesG"})	
 		};
 
-		{
-		_dngr = _x getVariable "NearE";
-		if (isNil "_dngr") then {_dngr = 0};
-		_i = [(position (vehicle (leader _x))),_x,"markDanger","ColorGreen","ICON","mil_dot",(str _dngr),"",_logic] call ALiVE_fnc_HAC_Mark;
-		}
-	foreach (_logic getvariable "HAC_HQ_Friends");
-
 	[_logic] spawn
 		{
 		_logic = _this select 0;
 		while {not (isNull (_logic getvariable "HAC_HQ"))} do
 			{
+				if !((count _markers) == (count (_logic getvariable "HAC_HQ_Friends"))) then {
+					{deletemarker _x} foreach _markers;
+					_markers = [];
+				};
+
 				{
 				_alive = true;
+				if (isNil "_dngr") then {_dngr = 0};
 				if (isNull _x) then {_alive = false};
+				_mark = "MarkDanger" + (str _x);
+
 				if not (alive (leader _x)) then {_alive = false};
 				if (_alive) then
 					{
-					_mark = "MarkDanger" + (str _x);
-					_dngr = _x getVariable "NearE";
-					if (isNil "_dngr") then {_dngr = 0};
+					
+					_dngr = _x getVariable ["NearE",0];
+					
+					if (str(markerpos _mark) == "[0,0,0]") then {
+						_i = [(position (vehicle (leader _x))),_x,"markDanger","ColorGreen","ICON","mil_dot",(str _dngr),"",_logic] call ALiVE_fnc_HAC_Mark;
+						_markers set [count _markers,_mark];
+					};
 
 					_mark setMarkerPos (position (vehicle (leader _x)));
 					_cl = "ColorGreen";
@@ -43,7 +49,8 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 					}
 				else
 					{
-					deleteMarker ("MarkDanger" + (str _x))
+					deleteMarker _mark;
+					_markers = _markers - [_mark];
 					}
 				}
 			foreach (_logic getvariable "HAC_HQ_Friends");

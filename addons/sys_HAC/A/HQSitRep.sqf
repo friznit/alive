@@ -10,7 +10,7 @@ _logic setvariable ["HAC_HQ_Cyclecount", 0];
 waituntil {not (isNull (_logic getvariable "HAC_HQ"))};
 
 _logic setvariable ["HAC_HQ_PersDone", false];
-[_logic] spawn A_Personality;
+[_logic,"personality",(_logic getvariable ["HAC_HQ_Personality","GENIUS"])] call ALiVE_fnc_HAC;
 waituntil {_logic getvariable "HAC_HQ_PersDone"};
 
 _logic setvariable ["HAC_HQ_LHQInit", false];
