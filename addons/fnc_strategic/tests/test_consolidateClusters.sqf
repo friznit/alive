@@ -4,8 +4,8 @@
 SCRIPT(test_consolidateClusters);
 
 // ----------------------------------------------------------------------------
-
-private ["_result","_expected","_err","_obj_array","_point","_center","_clusters","_m","_amo"];
+
+private ["_result","_err","_obj_array","_m","_amo","_logic","_master","_redundant"];
 
 LOG("Testing Consolidate Clusters");
 
@@ -96,9 +96,16 @@ CREATE_TEST_LOGIC2
 sleep 5;
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
-_clusters = _result select 0;
 _err = "consolidating clusters";
-ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
+ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);
+_master = (_result select 0) select 0;
+ASSERT_TRUE(typeName _master == "OBJECT", typeName _master);
+_nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 3,_err);
+_redundant = (_result select 1) select 0;
+ASSERT_TRUE(typeName _redundant == "OBJECT", typeName _redundant);
+_nodes = [_redundant,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 3,_err);
 sleep 5;
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
@@ -119,13 +126,80 @@ CREATE_TEST_LOGIC2
 sleep 5;
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
-_clusters = _result select 0;
 _err = "consolidating clusters";
-ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
+ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);
+_master = (_result select 0) select 0;
+ASSERT_TRUE(typeName _master == "OBJECT", typeName _master);
+_nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 6,_err);
+_redundant = (_result select 1) select 0;
+ASSERT_TRUE(typeName _redundant == "OBJECT", typeName _redundant);
+_nodes = [_redundant,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 0,_err);
+sleep 5;
+DELETE_TEST_LOGIC
+DELETE_TEST_LOGIC2
+/*
+STAT("Create Partial Overlapped Clusters");
+CREATE_TEST_LOGIC
+CREATE_TEST_LOGIC2
+[TEST_LOGIC, "nodes", [
+	_obj_array select 0,
+	_obj_array select 1,
+	_obj_array select 3
+]] call ALIVE_fnc_cluster;
+[TEST_LOGIC2, "nodes", [
+	_obj_array select 2,
+	_obj_array select 4,
+	_obj_array select 5
+]] call ALIVE_fnc_cluster;
+sleep 5;
+STAT("ConsolidateClusters function");
+_result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
+_err = "consolidating clusters";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+_master = (_result select 0) select 0;
+ASSERT_TRUE(typeName _master == "ARRAY", _err);
+_nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 3,_err);
+_redundant = (_result select 1) select 0;
+ASSERT_TRUE(typeName _redundant == "ARRAY", _err);
+_nodes = [_redundant,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 3,_err);
 sleep 5;
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
+STAT("Create Majority Overlapped Clusters");
+CREATE_TEST_LOGIC
+CREATE_TEST_LOGIC2
+[TEST_LOGIC, "nodes", [
+	_obj_array select 0,
+	_obj_array select 1,
+	_obj_array select 4
+]] call ALIVE_fnc_cluster;
+[TEST_LOGIC2, "nodes", [
+	_obj_array select 2,
+	_obj_array select 3,
+	_obj_array select 5
+]] call ALIVE_fnc_cluster;
+sleep 5;
+STAT("ConsolidateClusters function");
+_result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
+_err = "consolidating clusters";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+_master = (_result select 0) select 0;
+ASSERT_TRUE(typeName _master == "ARRAY", _err);
+_nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 6,_err);
+_redundant = (_result select 1) select 0;
+ASSERT_TRUE(typeName _redundant == "ARRAY", _err);
+_nodes = [_redundant,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 0,_err);
+sleep 5;
+DELETE_TEST_LOGIC
+DELETE_TEST_LOGIC2
+*/
 STAT("Clean up markers");
 {
 	deleteMarker str _x;
