@@ -4,7 +4,7 @@ if not exist extractpbo.exe (goto installpbo)
 
 rem For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Wow6432Node\Bohemia Interactive Studio\Oxygen 2 rem Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
 rem IF DEFINED _ARMA2PATH (GOTO found)
-REM For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Bohemia Interactive Studio\Oxygen 2 Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
+rem For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Bohemia Interactive Studio\Oxygen 2 Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
 rem IF DEFINED _ARMA2PATH (GOTO found)
 rem echo you must install BI's personal tools
 rem pause
