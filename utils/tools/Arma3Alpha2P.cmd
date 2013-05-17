@@ -2,32 +2,32 @@
 if not exist p:\ (goto installP)
 if not exist extractpbo.exe (goto installpbo)
 
-rem For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Wow6432Node\Bohemia Interactive Studio\Oxygen 2 rem Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
-rem IF DEFINED _ARMA2PATH (GOTO found)
-rem For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Bohemia Interactive Studio\Oxygen 2 Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
-rem IF DEFINED _ARMA2PATH (GOTO found)
-rem echo you must install BI's personal tools
-rem pause
-rem @exit /B 1
-rem :installpbo
-rem echo extractpbo is required
-rem pause
-rem @exit /B 1
-rem :installP
-rem echo P: drive must be set
-rem pause
-rem @exit /B 1
-rem :found
-rem Dta\bin.pbo
-rem Dta\core.pbo
-rem Dta\languagecore.pbo
-rem Dta\languagecore_f.pbo
-rem Dta\languagecore_h.pbo
-rem Dta\product.bin
+REM For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Wow6432Node\Bohemia Interactive Studio\Oxygen 2 rem Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
+REM IF DEFINED _ARMA2PATH (GOTO found)
+REM For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Bohemia Interactive Studio\Oxygen 2 Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
+REM IF DEFINED _ARMA2PATH (GOTO found)
+REM echo you must install BI's personal tools
+REM pause
+REM @exit /B 1
+REM :installpbo
+REM echo extractpbo is required
+REM pause
+REM @exit /B 1
+REM :installP
+REM echo P: drive must be set
+REM pause
+REM @exit /B 1
+REM :found
+REM Dta\bin.pbo
+REM Dta\core.pbo
+REM Dta\languagecore.pbo
+REM Dta\languagecore_f.pbo
+REM Dta\languagecore_h.pbo
+REM Dta\product.bin
 
-rem TODO: some sort of error with windows 7 and the slash in p:\ ???
+REM TODO: some sort of error with windows 7 and the slash in p:\ ???
 
-rem unpacks all A2/OA/CO pbo's to the p: tree
+REM unpacks all A2/OA/CO pbo's to the p: tree
 
 rem ***************************************************
 rem ********** YOU MUST HAVE P: set *******************
