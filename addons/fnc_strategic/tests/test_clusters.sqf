@@ -104,20 +104,17 @@ ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 {
 	[_x, "debug", true] call ALIVE_fnc_cluster;
 } forEach _clusters;
-
+STAT("FindClusters completed");
 sleep 5;
 
 STAT("ConsolidateClusters function");
 [_clusters select 3, "addNode", _obj_array select 8] call ALIVE_fnc_cluster;
-
-sleep 5;
-
 _result = [_clusters] call ALIVE_fnc_consolidateClusters;
 _clusters = _result select 0;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
-
-sleep 5;
+STAT("ConsolidateClusters completed");
+sleep 15;
 
 {
 	[_x, "destroy"] call ALIVE_fnc_cluster;

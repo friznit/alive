@@ -29,7 +29,7 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_obj_array","_err","_clusters","_points","_result","_cluster","_first","_nodes","_max"];
+private ["_obj_array","_err","_clusters","_points","_result","_cluster","_first","_nodes"];
 
 PARAMS_1(_obj_array);
 DEFAULT_PARAM(1,_maxdist,175);
@@ -49,8 +49,8 @@ while {count _points > 0} do {
 	// Get first unclustered point
         _first = _points select 0;
         _nodes = [_first];
-        _max = 0;
-	// Remove first point from unclustered points array
+
+        // Remove first point from unclustered points array
         _points = _points - [_first];
         _result = [_first, _points, _maxdist] call ALIVE_fnc_getNearestObjectInArray;
         

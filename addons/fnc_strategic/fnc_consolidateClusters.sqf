@@ -1,3 +1,4 @@
+//#define DEBUG_MODE_FULL
 #include <\x\alive\addons\fnc_strategic\script_component.hpp>
 SCRIPT(consolidateClusters);
 
@@ -30,11 +31,12 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_master","_redundant","_err","_remove"];
+private ["_master","_redundant","_err","_result"];
 
+TRACE_1("consolidateClusters - input",_this);
 
-PARAMS_1(_master);
-DEFAULT_PARAM(1,_redundant,+_master);
+_master = [_this, 0, [], [[]]] call BIS_fnc_param;
+_redundant = [_this, 1, _master, [[]]] call BIS_fnc_param;
 
 _err = "objects provided not valid";
 ASSERT_DEFINED("_master", _err);
@@ -43,7 +45,7 @@ ASSERT_OP(typeName _master, == ,"ARRAY", _err);
 ASSERT_OP(typeName _redundant, == ,"ARRAY", _err);
 ASSERT_OP(count _master,>,0,_err);
 ASSERT_OP(count _redundant,>,0,_err);
-_remove = [];
+_result = [];
 
 // iterate through master list of clusters
 {
@@ -52,25 +54,34 @@ _remove = [];
         // for each redundant cluster
         {
                 // if duplicate of master list - remove
-                if(_out == _x) exitWith {
+                if(str _out == str _x) then {
                         _redundant = _redundant - [_x];
-                };
-                // check for cluster within master cluster
-                private ["_out_nodes","_nodes"];
-                _max = ([_out, "size"] call ALIVE_fnc_cluster);
-                _dist = ([_x, "center"] call ALiVE_fnc_cluster) distance ([_out, "center"] call ALiVE_fnc_cluster);
-                
-                // if cluster is within master cluster
-                if(_dist < _max) then {
-                        // move nodes between clusters as required
-                        _nodes = ([_out, "nodes"] call ALIVE_fnc_cluster) + ([_x, "nodes"] call ALIVE_fnc_cluster);
-                        [_out, "nodes", _nodes] call ALIVE_fnc_cluster;
-                        // and remove cluster from list
-                        _redundant = _redundant - [_x];
-                        [_x, "destroy"] call ALIVE_fnc_cluster;
-                };
-        } forEach +_redundant;
+                } else {
+	                // check for cluster within master cluster
+        	        private ["_out_nodes","_nodes","_out_center","_x_center"];
+                	_max = ([_out, "size"] call ALIVE_fnc_cluster);
+	                _out_center = [_out, "center"] call ALiVE_fnc_cluster;
+			if(count _out_center != 0) then {
+		                _x_center = [_x, "center"] call ALiVE_fnc_cluster;
+
+		                // if cluster is within master cluster
+        		        if((_x_center distance _out_center) < _max) then {
+
+		                        // move nodes between clusters as required
+        		                _nodes = ([_out, "nodes"] call ALIVE_fnc_cluster) + ([_x, "nodes"] call ALIVE_fnc_cluster);
+                		        [_out, "nodes", _nodes] call ALIVE_fnc_cluster;
+
+		                        // and remove cluster from list
+        		                _redundant = _redundant - [_x];
+                		        [_x, "destroy"] call ALIVE_fnc_cluster;
+	                	};
+			};
+		};
+        } forEach _redundant;
 } forEach _master;
 
 // return master list and remainder of redundant list
-[_master, _redundant];
+_result = [_master, _redundant];
+
+TRACE_1("consolidateClusters - output",_result);
+_result;
