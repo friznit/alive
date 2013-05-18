@@ -1,0 +1,8 @@
+*Model - no visual just reference data*
+- server side object only
+
+*Controller - *
+- set of event handlers to post data to backend
+
+*View - purely visual*
+- none
