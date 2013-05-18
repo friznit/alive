@@ -11,6 +11,7 @@ ADDON = false;
 if (isDedicated && GVAR(ENABLED)) then {
 	// Add stuff here
 	GVAR(serverIP) = "Arma2Net.Unmanaged" callExtension "ServerAddress";
+	// GVAR(MISSIONNAME_UI) = ; Not sure how BIS grab the Mission Name from the UI
 
 	// Server side handler to write data to DB
 	QGVAR(UPDATE_EVENTS) addPublicVariableEventHandler { 

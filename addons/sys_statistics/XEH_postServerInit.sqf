@@ -3,11 +3,14 @@
 // Set Operation name
 GVAR(operation) = getText (missionConfigFile >> "OnLoadName");
 
-diag_log format["Operation: %1",GVAR(operation)];
-
 if (GVAR(operation) == "") then {
-	GVAR(operation) = missionName;
+	//GVAR(operation) = GVAR(MISSIONNAME_UI);
+	//if (GVAR(operation) == "") then {
+		GVAR(operation) = missionName;
+	//};
 };
+
+diag_log format["Operation: %1",GVAR(operation)];
 
 // Register Operation with DB and setup OPD
 if (isDedicated && GVAR(ENABLED)) then {
