@@ -63,40 +63,20 @@ switch(_operation) do {
                     MOD(HAC) setVariable ["super", SUPERCLASS];
                     MOD(HAC) setVariable ["class", ALIVE_fnc_HAC];
 
-					//create HAC logic if needed & evaluates whether the Leader Marker is on the map (true/false)
-					MarkerExists = {
-						_markername = "HAC_LStart";
-						_markerpos = str(markerpos _markername);
-						switch _markerpos do {
-							case ("[0,0,0]"): {false}; default {true};
-						};
-					};  
-
-					// determin if the logic is created, look for leader marker to setpos on else is deaults to map center
-					if ([] call MarkerExists) then {
-						_HAC_Mkr = "HAC_LStart";
-						_HAC_LPos = getMarkerPos _HAC_Mkr;
-						_group = createGroup EAST;
-						_logic = _group createUnit ["LOGIC", _HAC_LPos, [], 0, "NONE"];
-						[_logic] joinsilent _group;
-						_logic setVariable ["class", ALiVE_fnc_HAC];
-					} else {
-						_Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-						_Mcenter set [2,0];
-						_group = createGroup EAST;
-						_logic = _group createUnit ["LOGIC", _Mcenter, [], 0, "NONE"];
-						[_logic] joinsilent _group;
-						_logic setVariable ["class", ALiVE_fnc_HAC];
+                    //create HAC logic & evaluate whether the Leader marker ("HAC_LStart") is on the map to set the startpos accordingly (default is map center)
+                    _Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+					_Mcenter set [2,0];
+                    _StartPos = _Mcenter;
+                    
+					if (["HAC_LStart"] call ALiVE_fnc_MarkerExists) then {
+						_StartPos = getMarkerPos "HAC_LStart";
 					};
+                    
+                    _group = createGroup EAST;
+                	_logic = _group createUnit ["LOGIC", _StartPos, [], 0, "NONE"];
+					[_logic] joinsilent _group;
+					_logic setVariable ["class", ALiVE_fnc_HAC];
 			
-                    // Create strategic HAC instance
-					// _Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-					// _Mcenter set [2,0];
-					// _group = createGroup EAST;
-					// _logic = _group createUnit ["LOGIC", _Mcenter, [], 0, "NONE"];
-					// [_logic] joinsilent _group;
-					// _logic setVariable ["class", ALiVE_fnc_HAC];
-
                     //Set default variables
                     _logic setvariable ["HAC_HQ_Debug", false];
 					_logic setvariable ["HAC_HQ_DebugII",false];
@@ -221,20 +201,22 @@ switch(_operation) do {
 			} else {
 				// if a new list was provided remove groups
 				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-				
+			
                 {
-                    _grp = _x;
-                    _grpL = _x;
+                    private ["_grp","_grpL"];
+                    
+                    if (typename _x == "GROUP") then {
+                        _grp = _x;
+                        _grpL = leader _x;
+                    } else {
+                        _grp = group _x;
+                        _grpL = leader (group _x);
+                    };
+
                     if (_grpL in (synchronizedObjects _logic)) then {
                         _logic synchronizeObjectsRemove [_grpL];
                     };
-
-                    if (_grp in (_logic getvariable "HAC_HQ_Subordinated")) then {
-                        _logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") - [_grp]];
-                    };
                 } foreach _args;
-                _args = synchronizedObjects _logic;
-                _logic setvariable ["HAC_HQ_Friends",_args];
 			};
 			_args;
 		};

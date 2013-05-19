@@ -1,7 +1,6 @@
 _ne = objNull;
 _is = false;
 _count = 0;
-_markers = [];
 _logic = _this select ((count _this)-1);
 
 if (_logic getvariable "HAC_HQ_DebugII") then
@@ -15,23 +14,19 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 	[_logic] spawn
 		{
 		_logic = _this select 0;
+		_markers = [];
 		while {not (isNull (_logic getvariable "HAC_HQ"))} do
 			{
-				if !((count _markers) == (count (_logic getvariable "HAC_HQ_Friends"))) then {
+				if !((count _markers) == ({({alive _x} count units _x) > 0} count (_logic getvariable "HAC_HQ_Friends"))) then {
 					{deletemarker _x} foreach _markers;
 					_markers = [];
 				};
 
 				{
-				_alive = true;
-				if (isNil "_dngr") then {_dngr = 0};
-				if (isNull _x) then {_alive = false};
-				_mark = "MarkDanger" + (str _x);
+				_mark = "markDanger" + (str _x);
 
-				if not (alive (leader _x)) then {_alive = false};
-				if (_alive) then
+				if (({alive _x} count units _x) > 0) then
 					{
-					
 					_dngr = _x getVariable ["NearE",0];
 					
 					if (str(markerpos _mark) == "[0,0,0]") then {

@@ -355,6 +355,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 			{
 			if ((_x in (_logic getvariable "HAC_HQ_LastSub")) and not ((leader _x) in (synchronizedObjects _logic)) and ((_logic getvariable "HAC_HQ_ReSynchro"))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]};
 			if (not (_x in (_logic getvariable "HAC_HQ_Subordinated")) and ((leader _x) in (synchronizedObjects _logic))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]};
+            if ((_x in (_logic getvariable "HAC_HQ_Subordinated")) && !((leader _x) in (synchronizedObjects _logic))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") - [_x]]; _logic setvariable ["HAC_HQ_Friends",(_logic getvariable "HAC_HQ_Friends") - [_x]]};
 			}
 		foreach allGroups;
 		};
@@ -378,7 +379,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 		foreach allGroups;
 		};
 
-        _logic setvariable ["HAC_HQ_Friends", (_logic getvariable "HAC_HQ_Friends") + (_logic getvariable "HAC_HQ_Subordinated") + (_logic getvariable "HAC_HQ_Included") - ((_logic getvariable "HAC_HQ_ExcludedG") + (_logic getvariable "HAC_HQ_Excl"))];
+    _logic setvariable ["HAC_HQ_Friends", (_logic getvariable "HAC_HQ_Friends") + (_logic getvariable "HAC_HQ_Subordinated") + (_logic getvariable "HAC_HQ_Included") - ((_logic getvariable "HAC_HQ_ExcludedG") + (_logic getvariable "HAC_HQ_Excl"))];
 	_logic setvariable ["HAC_HQ_Friends", (_logic getvariable "HAC_HQ_Friends") - [(_logic getvariable "HAC_HQ")]];
 	_logic setvariable ["HAC_HQ_NoWayD", allGroups - (_logic getvariable "HAC_HQ_LastFriends")];
 
@@ -798,7 +799,7 @@ if (_NCCargocheck) then {if not (_vh in (_logic getvariable "HAC_HQ_EnNCCargo"))
 				[_x,_logic] call ALiVE_fnc_HAC_WPdel;
 				_x setVariable [("inPanic" + (str _x)), true];
 				if ((_logic getvariable "HAC_HQ_DebugII")) then {_i = [(getPosATL (vehicle (leader _x))),_x,"markPanic","ColorYellow","ICON","mil_dot","SitRep","A!",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
-				_x setVariable [("Busy" + (str _x)), true];
+                _x setVariable [("Busy" + (str _x)), true];
 
 				_UL = leader _x;
 				if not (isPlayer _UL) then 
