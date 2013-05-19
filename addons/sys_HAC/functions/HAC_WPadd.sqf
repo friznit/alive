@@ -215,7 +215,7 @@
 						{
 						_wpn = 0;
 							{
-							//if (HAC_BB_Debug) then {_j = [_x,_gp,(str (random 1000)),"ColorPink","ICON","mil_dot",(str _wpn),"",[0.25,0.25],_logic] call ALiVE_fnc_HAC_Mark};
+							//if (HAC_BB_Debug) then {_j = [_x,_gp,(str (random 1000)),"ColorPink","ICON","waypoint",(str _wpn),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
 							_wpn = _wpn + 1;
 							_wp = _gp addWaypoint [_x, 0];
 							_wp setWaypointType "MOVE";

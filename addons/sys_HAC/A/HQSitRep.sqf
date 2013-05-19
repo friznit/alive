@@ -797,7 +797,7 @@ if (_NCCargocheck) then {if not (_vh in (_logic getvariable "HAC_HQ_EnNCCargo"))
 				{
 				[_x,_logic] call ALiVE_fnc_HAC_WPdel;
 				_x setVariable [("inPanic" + (str _x)), true];
-				if ((_logic getvariable "HAC_HQ_DebugII")) then {_i = [(getPosATL (vehicle (leader _x))),_x,"markPanic","ColorYellow","ICON","mil_dot","A!","A!",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
+				if ((_logic getvariable "HAC_HQ_DebugII")) then {_i = [(getPosATL (vehicle (leader _x))),_x,"markPanic","ColorYellow","ICON","mil_dot","SitRep","A!",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
 				_x setVariable [("Busy" + (str _x)), true];
 
 				_UL = leader _x;

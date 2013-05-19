@@ -63,13 +63,39 @@ switch(_operation) do {
                     MOD(HAC) setVariable ["super", SUPERCLASS];
                     MOD(HAC) setVariable ["class", ALIVE_fnc_HAC];
 
+					//create HAC logic if needed & evaluates whether the Leader Marker is on the map (true/false)
+					MarkerExists = {
+						_markername = "HAC_LStart";
+						_markerpos = str(markerpos _markername);
+						switch _markerpos do {
+							case ("[0,0,0]"): {false}; default {true};
+						};
+					};  
+
+					// determin if the logic is created, look for leader marker to setpos on else is deaults to map center
+					if ([] call MarkerExists) then {
+						_HAC_Mkr = "HAC_LStart";
+						_HAC_LPos = getMarkerPos _HAC_Mkr;
+						_group = createGroup EAST;
+						_logic = _group createUnit ["LOGIC", _HAC_LPos, [], 0, "NONE"];
+						[_logic] joinsilent _group;
+						_logic setVariable ["class", ALiVE_fnc_HAC];
+					} else {
+						_Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+						_Mcenter set [2,0];
+						_group = createGroup EAST;
+						_logic = _group createUnit ["LOGIC", _Mcenter, [], 0, "NONE"];
+						[_logic] joinsilent _group;
+						_logic setVariable ["class", ALiVE_fnc_HAC];
+					};
+			
                     // Create strategic HAC instance
-                    _Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-					_Mcenter set [2,0];
-                    _group = createGroup EAST;
-                    _logic = _group createUnit ["LOGIC", _Mcenter, [], 0, "NONE"];
-                    [_logic] joinsilent _group;
-        			_logic setVariable ["class", ALiVE_fnc_HAC];
+					// _Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+					// _Mcenter set [2,0];
+					// _group = createGroup EAST;
+					// _logic = _group createUnit ["LOGIC", _Mcenter, [], 0, "NONE"];
+					// [_logic] joinsilent _group;
+					// _logic setVariable ["class", ALiVE_fnc_HAC];
 
                     //Set default variables
                     _logic setvariable ["HAC_HQ_Debug", false];

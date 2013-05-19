@@ -98,7 +98,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [_DefPos,_unitG,"markDef","ColorRed","ICON","mil_dot","DRes A"," - DEFEND POSITION",_logic] call ALiVE_fnc_HAC_Mark
+	_i = [_DefPos,_unitG,"markDef","ColorRed","ICON","mil_dot"," | DRes"," - DEFEND POSITION",_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _AV = assignedVehicle _UL;
@@ -139,7 +139,7 @@ _TED = [_posX,_posY];
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [_TED,_unitG,"markWatch","ColorGreen","ICON","mil_dot","A","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [_TED,_unitG,"markWatch","ColorGreen","ICON","mil_dot"," | Def","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _dir = [(getPosATL (vehicle (leader _unitG))),_TED,10,_logic] call ALiVE_fnc_HAC_AngTowards;
@@ -320,7 +320,7 @@ waituntil
 
 		if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 			{
-			_i = [_RnfP,_unitG,"markReinf","ColorRed","ICON","mil_dot","Reinf A"," - REINFORCE POSITION",[0.3,0.3],_logic] call ALiVE_fnc_HAC_Mark
+			_i = [_RnfP,_unitG,"markReinf","ColorRed","ICON","mil_dot"," | Reinf"," - REINFORCE POSITION",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
 			}
 		};
 

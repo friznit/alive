@@ -123,7 +123,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markAttack","ColorRed","ICON","mil_dot","Snp A"," - ATTACK",_logic] call ALiVE_fnc_HAC_Mark
+	_i = [[_posX,_posY],_unitG,"markAttack","ColorRed","ICON","o_recon"," | Snp"," - ATTACK",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _AV = assignedVehicle _UL;

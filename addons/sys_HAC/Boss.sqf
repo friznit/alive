@@ -76,7 +76,7 @@ if (_BBSide == "A") then
 	//if ((_cntr select 0) < 1000) then {_cntr = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")};
 
 	//_mark = "center" + str (random 1000);
-	//_mark = [_mark,_cntr,"ColorBlue","ICON",[1.5,1.5],0,1,"mil_dot",(str _cntr),_logic] call ALiVE_fnc_HAC_Marker;
+	//_mark = [_mark,_cntr,"ColorBlue","ICON",[1.5,1.5],0,1,"o_hq",(str _cntr),_logic] call ALiVE_fnc_HAC_Marker;
 
 	_lng = (_cntr select 0)*2;
 	if not (isNil "HAC_BB_MC") then

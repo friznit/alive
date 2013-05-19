@@ -87,7 +87,7 @@
 				_HQPosMark = (group _x) getVariable ["HQPosMark",""];
 				if (_HQPosMark == "") then
 					{
-					_HQPosMark = [(getPosATL (vehicle _x)),(group _x),"HQMark",_colorArr,"ICON","mil_box","Position of " + (str _x),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
+					_HQPosMark = [(getPosATL (vehicle _x)),(group _x),"HQMark",_colorArr,"ICON","mil_box"," | Position of " + (str _x),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
 					(group _x) setVariable ["HQPosMark",_HQPosMark]
 					}
 				else

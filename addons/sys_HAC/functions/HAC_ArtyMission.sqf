@@ -124,8 +124,8 @@
 					_angle = [_FO,_pos,10,_logic] call ALiVE_fnc_HAC_AngTowards;
 					_pos2 = [_pos,_angle + 110,200 + (random 100) - 50,_logic] call ALiVE_fnc_HAC_PosTowards2D;
 					_pos3 = [_pos,_angle - 110,200 + (random 100) - 50,_logic] call ALiVE_fnc_HAC_PosTowards2D;
-					//_i2 = [_pos2,(random 1000),"markArty","ColorRed","ICON","mil_dot",_ammo,"",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
-					//_i3 = [_pos3,(random 1000),"markArty","ColorRed","ICON","mil_dot",_ammo,"",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
+					//_i2 = [_pos2,(random 1000),"markArty","ColorRed","ICON","o_art",_ammo,"",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
+					//_i3 = [_pos3,(random 1000),"markArty","ColorRed","ICON","o_art",_ammo,"",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
 
 					_template = ["IMMEDIATE",_ammo,0,ceil (_amount/3)];
 

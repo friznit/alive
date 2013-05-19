@@ -181,7 +181,7 @@ if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then
 	{
 	_pltxt = " - HOLD POSITION";
 	if (_patrol) then {_pltxt = " - PATROL AREA"};
-	_i = [[_posX,_posY],_unitG,"markIdle","ColorRed","ICON","mil_dot","Res A",_pltxt,[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
+	_i = [[_posX,_posY],_unitG,"markIdle","ColorRed","ICON","mil_dot"," | Res",_pltxt,[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
 	};
 
 _task = taskNull;

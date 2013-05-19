@@ -7,7 +7,7 @@ private ["_logic","_unit","_pos","_timer","_alive","_dst","_taken","_gar","_i","
 
 	_unit doMove _pos;
 
-	//_i = [_pos,_unit,"markPos","ColorBrown","ICON","mil_box","Pos","",[0.3,0.3],_logic] call ALiVE_fnc_HAC_Mark;
+	//_i = [_pos,_unit,"markPos","ColorBrown","ICON","o_inf","Pos","",[0.3,0.3],_logic] call ALiVE_fnc_HAC_Mark;
 
 	_timer = 0;
 	_alive = true;

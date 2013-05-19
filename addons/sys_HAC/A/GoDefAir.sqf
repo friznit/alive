@@ -40,7 +40,7 @@ while {not (_endThis)} do
 	_DefPos = [((position _Spot) select 0) + (random 1000) - 500,((position _Spot) select 1) + (random 1000) - 500];
 	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 		{
-		_i = [_DefPos,_unitG,"markDef","ColorBrown","ICON","mil_dot","Air A"," - DEFEND AREA",_logic] call ALiVE_fnc_HAC_Mark
+		_i = [_DefPos,_unitG,"markDef","ColorBrown","ICON","o_air","Air"," - DEFEND AREA",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
 		};
 
 	_task = [(leader _unitG),["Provide air cover.", "S&D", ""],_DefPos,_logic] call ALiVE_fnc_HAC_AddTask;

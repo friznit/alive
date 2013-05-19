@@ -48,7 +48,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markFuelSupp","ColorKhaki","ICON","End"," Refuel A"," - FUEL SUPPORT",[0.6,0.6],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [[_posX,_posY],_unitG,"markFuelSupp","ColorKhaki","ICON","o_service"," | Refuel"," - FUEL SUPPORT",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _task = [(leader _unitG),["Deliver Fuel.", "Support", ""],(position _Trg),_logic] call ALiVE_fnc_HAC_AddTask;

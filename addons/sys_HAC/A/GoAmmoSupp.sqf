@@ -50,7 +50,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 _alive = false;
 if (((_logic getvariable "HAC_HQ_Debug")) or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markAmmoSupp","ColorKhaki","ICON","End"," Reammo A"," - AMMO SUPPORT",[0.6,0.6],270,_logic] call ALiVE_fnc_HAC_Mark
+	_i = [[_posX,_posY],_unitG,"markAmmoSupp","ColorKhaki","ICON","o_support"," | Reammo"," - AMMO SUPPORT",[0.6,0.6],270,_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _task = [(leader _unitG),["Deliver ammunition.", "Support", ""],(position _Trg),_logic] call ALiVE_fnc_HAC_AddTask;

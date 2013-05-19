@@ -35,7 +35,7 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 					_dngr = _x getVariable ["NearE",0];
 					
 					if (str(markerpos _mark) == "[0,0,0]") then {
-						_i = [(position (vehicle (leader _x))),_x,"markDanger","ColorGreen","ICON","mil_dot",(str _dngr),"",_logic] call ALiVE_fnc_HAC_Mark;
+						_i = [(position (vehicle (leader _x))),_x,"markDanger","ColorGreen","ICON","o_unknown",(" | " + str _dngr),"",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
 						_markers set [count _markers,_mark];
 					};
 
