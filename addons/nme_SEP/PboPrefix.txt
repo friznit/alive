@@ -1,0 +1,5 @@
+x\alive\addons\nme_SEP
+prefix=x\alive\addons\nme_SEP
+product=ALiVE
+version=1
+Pbo Type is: Arma
