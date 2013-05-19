@@ -79,7 +79,7 @@ _createMarkers = {
                         } else {
                                 _m setMarkerPosLocal (getPosATL _x);
                         };
-                        _m setMarkerColorLocal (_logic getVariable ["debugNodeColor","ColorYellow"]);
+                        _m setMarkerColorLocal (_logic getVariable ["debugColor","ColorYellow"]);
                 } forEach _nodes;
                 
                 _center = [_logic, "center"] call ALiVE_fnc_cluster;

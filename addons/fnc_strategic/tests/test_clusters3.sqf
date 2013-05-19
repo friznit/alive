@@ -26,52 +26,23 @@ titleText [msg,"PLAIN"]
 _amo = allMissionObjects "";
 
 STAT("Get array of id's and positions from object index");
-/*
-	"cargo",
-	"_tower",
-	"runway_end",
-	"runway_poj",
-	"runway_dirt",
-	"runway_main",
-	"runway_beton",
-	"runwayold",
-	"helipad",
-	"radar",
-	"hangar",
-	"shed_small_f"
-*/
-/*
-	"dp_transformer_F",
-	"HighVoltageTower",
-	"PowerCable",
-	"PowerPole",
-	"PowerWire",
-	"PowLines_Transformer_F",
-	"spp_transformer_F"
-*/
 _obj_array = [
-	"hbarrier",
-	"razorwire",
-	"mil_wired",
-	"mil_wall",
 	"barrack",
+	"bunker",
+	"cargo_house_",
+	"cargo_hq_",
+	"cargo_patrol_",
+	"hbarrier",
+	"mil_wall",
+	"mil_wired",
 	"miloffices",
-	"bunker"
+	"tenthangar",
+	"razorwire"
 ] call ALIVE_fnc_getObjectsByType;
 _err = "getObjectsByType";
 ASSERT_DEFINED("_obj_array",_err);
 ASSERT_TRUE(typeName _obj_array == "ARRAY", _err);
 ASSERT_TRUE(count _obj_array > 0,_err);
-/*
-{
-	LOG(_x);
-        _m = createMarker [str _x, getPosATL _x];
-	_m setMarkerShape "Icon";
-	_m setMarkerSize [1, 1];
-	_m setMarkerType "mil_dot";
-	_m setMarkerColor "ColorGreen";
-} forEach _obj_array;
-*/
 
 STAT("findClusters function (Military)");
 _clusters_mil = [_obj_array] call ALIVE_fnc_findClusters;
@@ -90,20 +61,23 @@ ASSERT_TRUE(typeName _clusters_mil == "ARRAY", _err);
 STAT("ConsolidateClusters completed");
 
 _obj_array = [
-	"dp_transformer_F",
-	"spp_transformer_F",
-//	"cargo",
-//	"shed_small_f"
-	"_tower",
-	"runway_end",
-	"runway_poj",
-	"runway_dirt",
-	"runway_main",
-	"runway_beton",
-	"runwayold",
+	"airport_tower",
+	"communication_f",
+	"dp_",
+	"fuel",
 	"helipad",
+	"lighthouse_",
+	"pier_f",
 	"radar",
-	"hangar"
+ 	"runway_beton",
+ 	"runway_end",
+ 	"runway_main",
+ 	"runwayold",
+	"shed_big_",
+	"shed_small_",
+	"spp_",
+	"ttowerbig_",
+	"valve"
 ] call ALIVE_fnc_getObjectsByType;
 
 STAT("findClusters function (Civilian)");
@@ -114,6 +88,14 @@ ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
 	_x setVariable ["debugColor", "ColorGreen"];
 	[_x, "debug", true] call ALIVE_fnc_cluster;
 } forEach _clusters_civ;
+
+STAT("ConsolidateClusters function");
+_result = [_clusters_civ] call ALIVE_fnc_consolidateClusters;
+_clusters_civ = _result select 0;
+_err = "consolidating clusters";
+ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
+
+STAT("ConsolidateClusters completed");
 
 sleep 15;
 
@@ -126,7 +108,7 @@ ASSERT_TRUE(typeName _clusters_mil == "ARRAY", _err);
 ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
 
 STAT("ConsolidateClusters completed");
-/*
+
 sleep 15;
 
 {
@@ -135,7 +117,7 @@ sleep 15;
 {
 	[_x, "destroy"] call ALIVE_fnc_cluster;
 } forEach _clusters_mil;
-*/
+
 diag_log (allMissionObjects "") - _amo;
 
 nil;
