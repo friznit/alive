@@ -20,13 +20,13 @@ _enemyMatters = true;
 _roadG = false;
 _patrol = false;
 
-if (not (isNil "HAC_HQ_IdleDecoy") and not (_unitG in (_logic getvariable "HAC_HQ_SupportG"))) then
+if (not (isNil {_logic getvariable "HAC_HQ_IdleDecoy"}) and not (_unitG in (_logic getvariable "HAC_HQ_SupportG"))) then
 	{
 	_isDecoy = true;
 
-	_tRadius = (triggerArea (_logic getvariable "HAC_HQ_IdleDecoy")) select 0;
+	_tRadius = triggerArea ((_logic getvariable "HAC_HQ_IdleDecoy") select 0);
 
-	if ((random 100) >= HAC_HQ_IDChance) exitWith {_isDecoy = false};
+	if ((random 100) >= (_logic getvariable "HAC_HQ_IDChance")) exitWith {_isDecoy = false};
 
 	_tPos = position (_logic getvariable "HAC_HQ_IdleDecoy");
 	_enemyMatters = (triggerArea (_logic getvariable "HAC_HQ_IdleDecoy")) select 3;
@@ -35,7 +35,7 @@ if (not (isNil "HAC_HQ_IdleDecoy") and not (_unitG in (_logic getvariable "HAC_H
 	_posY = (_tPos select 1) + (random (2 * _tRadius)) - (_tRadius);
 	};
 
-if (not (isNil "HAC_HQ_SupportDecoy") and (_unitG in (_logic getvariable "HAC_HQ_SupportG"))) then
+if (not (isNil {_logic getvariable "HAC_HQ_SupportDecoy"}) and (_unitG in (_logic getvariable "HAC_HQ_SupportG"))) then
 	{
 	_tRadius = (triggerArea (_logic getvariable "HAC_HQ_SupportDecoy")) select 0;
 
@@ -59,9 +59,9 @@ if not (_isDecoy) then
 		{
 		_VL = vehicle (leader _x);
 		if (((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ([_Xpos,_Ypos] distance (_logic getvariable "HAC_HQ_Obj"))) or (((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ([_Xpos,_Ypos] distance _VL)) and ((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ((_logic getvariable "HAC_HQ_Obj") distance _VLU)))) then {_counterU = _counterU + 1};
-		if ((_counterU >= (round (2/(0.5 + (HAC_HQ_Recklessness/2))))) or (_counterU >= ((count HAC_HQ_Friends)/(4*(0.5 + (HAC_HQ_Recklessness/2)))))) exitwith {_behind = true}
+		if ((_counterU >= (round (2/(0.5 + ((_logic getvariable "HAC_HQ_Recklessness")/2))))) or (_counterU >= ((count (_logic getvariable "HAC_HQ_Friends"))/(4*(0.5 + ((_logic getvariable "HAC_HQ_Recklessness"))/2))))) exitwith {_behind = true}
 		}
-	foreach HAC_HQ_Friends;
+	foreach (_logic getvariable "HAC_HQ_Friends");
 
 	_Xpos2 = _Xpos;
 	_Ypos2 = _Ypos;
@@ -79,9 +79,9 @@ if not (_isDecoy) then
 			{
 			_VL = vehicle (leader _x);
 			if (((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ([_Xpos2,_Ypos2] distance (_logic getvariable "HAC_HQ_Obj"))) or (((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ([_Xpos2,_Ypos2] distance _VL)) and ((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ((_logic getvariable "HAC_HQ_Obj") distance _VLU)))) then {_counterU = _counterU + 1};
-			if ((_counterU >= (round (2/(0.5 + (HAC_HQ_Recklessness/2))))) or (_counterU >= ((count HAC_HQ_Friends)/(4*(0.5 + (HAC_HQ_Recklessness/2)))))) exitwith {_behind2 = true}
+			if ((_counterU >= (round (2/(0.5 + ((_logic getvariable "HAC_HQ_Recklessness")/2))))) or (_counterU >= ((count (_logic getvariable "HAC_HQ_Friends"))/(4*(0.5 + ((_logic getvariable "HAC_HQ_Recklessness")/2)))))) exitwith {_behind2 = true}
 			}
-		foreach HAC_HQ_Friends;
+		foreach (_logic getvariable "HAC_HQ_Friends");
 		if not (_behind2) exitwith {_Xpos = _Xpos3;_Ypos = _Ypos3};
 		if (_behind2) then {_Xpos = _Xpos2;_Ypos = _Ypos2};
 		};
@@ -89,7 +89,7 @@ if not (_isDecoy) then
 	_position = [_Xpos,_Ypos];
 	_allowed = false;
 
-	HAC_HQ_Bpoint = _position;
+	_logic setvariable ["HAC_HQ_Bpoint", _position];
 
 	if (not (_unitG in ((_logic getvariable "HAC_HQ_SupportG") + (_logic getvariable "HAC_HQ_NCCargoG"))) and ((random 100) >= 50) and ((_VLU distance [_Xpos,_Ypos]) > (_VLU distance _logic))) then 
 		{
