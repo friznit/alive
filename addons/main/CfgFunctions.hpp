@@ -49,6 +49,10 @@ class cfgFunctions {
 				description = "ALiVE Service Bus";
 	                        file = "\x\alive\addons\main\fnc_bus.sqf";
 			};
+			class MarkerExists {
+				description = "Checks if there is the marker given on map";
+	                        file = "\x\alive\addons\main\fnc_MarkerExists.sqf";
+			};
                 };
         };
 };
