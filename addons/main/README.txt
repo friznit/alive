@@ -4,7 +4,7 @@
 #                                                                               #
 /////////////////////////////////////////////////////////////////////////////////
 //                                                                             //
-//               Copyright 2013 ALiVE MOD, ALL RIGHTS RESERVED                 //                                                                             //
+//               Copyright 2013 ALiVE MOD, ALL RIGHTS RESERVED                 //
 //                                                                             //
 //  This product is licensed for personal use only.  Commercial distribution   //
 //  prohibited.  Military use prohibited.  Use prohibited if any component     //
