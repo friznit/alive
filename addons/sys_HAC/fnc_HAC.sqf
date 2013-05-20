@@ -2,7 +2,7 @@
 SCRIPT(HAC);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_
+Function: ALIVE_fnc_HAC
 Description:
 XXXXXXXXXX
 
@@ -57,22 +57,10 @@ switch(_operation) do {
                     _logic setVariable ["super", SUPERCLASS];
                     _logic setVariable ["class", ALIVE_fnc_HAC];
                     
-                    //Add synchronized units from map
+                    //Add synchronized units from map and detect side
                     _LogicSide = side ((synchronizedObjects _logic) select 0);
-                    
                     _group = createGroup _LogicSide;
 					[_logic] joinsilent _group;
-
-                    //create HAC logic & evaluate whether the Leader marker ("HAC_LStart") is on the map to set the startpos accordingly (default is map center)
-                    _Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-					_Mcenter set [2,0];
-                    _StartPos = _Mcenter;
-                    
-					if (["HAC_LStart"] call ALiVE_fnc_MarkerExists) then {
-						_StartPos = getMarkerPos "HAC_LStart";
-					};
-                    
-                    //_logic setpos _StartPos;
 
                     //Set default variables
                     switch (_logicSide) do {
@@ -83,7 +71,7 @@ switch(_operation) do {
                         default {_LogicSide = "ColorRed"};
                     };
                     
-	                _logic setvariable ["HAC_HQ_Color",_LogicSide];
+	                _logic setvariable ["HAC_HQ_Color",_LogicSide]; //Comment this line to have old debug colors
 					_logic setvariable ["HAC_HQ_IdleOrd", true];
 					_logic setvariable ["HAC_HQ_CargoFind", 200];
 					_logic setvariable ["HAC_HQ_Rush", true];
@@ -113,7 +101,7 @@ switch(_operation) do {
                     _mod = call compile format["HAC_TACOM_%1",_id]; call compile format["HAC_TACOM_%1 = _logic",_id];
                     missionNameSpace setVariable ["HAC_instances",(missionNameSpace getvariable ["HAC_instances",[]]) + [_logic]];
                     
-                    Publicvariable str(_mod);
+                    Publicvariable (format["HAC_TACOM_%1",_id]);
                     _logic setVariable ["init", true, true];
 
                     format["HAC Module init finished: Logic %1...", _logic] call ALiVE_fnc_logger;
@@ -152,8 +140,14 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        _logic = _logic;
-                        publicVariable _logic;
+                        
+                        for "_i" from 0 to ((count (missionNameSpace getvariable ["HAC_instances",[]])) - 1) do {
+                           	_id = _i;
+                            _instance = (missionNameSpace getvariable ["HAC_instances",[]]) select _i;
+                            if (_instance == _logic) exitwith {
+                                Publicvariable (format["HAC_TACOM_%1",_id]);
+                            };
+                        };
                 };
                 
                 if(!isDedicated && !isHC) then {
