@@ -12,11 +12,11 @@
 		_pos = [_pos select 0,_pos select 1,0];
 
 		_taken = _obj select 2;
-		_color = "ColorYellow";
+		_color = (_logic getvariable ["HAC_HQ_Color","ColorYellow"]);
 		_alpha = 0.1;
 
-		if ((_taken) and (_side == "A")) then {_color = "ColorBlue";_alpha = 0.5};
-		if ((_taken) and (_side == "B")) then {_color = "ColorRed";_alpha = 0.5};
+		if ((_taken) and (_side == "A")) then {_color = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);_alpha = 0.5};
+		if ((_taken) and (_side == "B")) then {_color = (_logic getvariable ["HAC_HQ_Color","ColorRed"]);_alpha = 0.5};
 //_AllV = _pos nearEntities [["AllVehicles"],300];
 //diag_log format ["obj: %1 col: %2",_obj,_color];
 		//_txt = format [" status: %1",count _AllV];

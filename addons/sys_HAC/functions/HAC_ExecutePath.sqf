@@ -40,7 +40,7 @@
 		{
 			{
 			_pCnt = _pCnt + 1;
-			_j = [(_x select 0),(random 1000),"markBBPath","ColorBlack","ICON","mil_box",(str _pCnt),"",[0.35,0.35],_logic] call ALiVE_fnc_HAC_Mark;
+			_j = [(_x select 0),(random 1000),"markBBPath",(_logic getvariable ["HAC_HQ_Color","ColorBlack"]),"ICON","mil_box",(str _pCnt),"",[0.35,0.35],_logic] call ALiVE_fnc_HAC_Mark;
 			_marksT set [(count _marksT),_j]
 			}
 		foreach _sortedA;
@@ -82,8 +82,8 @@
 		foreach (_actO select 0);
 
 		_actOPos = [(_actO select 0) select 0,(_actO select 0) select 1,0];
-		_lColor = "ColorBlue";
-		if (_Side == "B") then {_lColor = "ColorRed"};
+		_lColor = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+		if (_Side == "B") then {_lColor = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 
 		if ((_logic getvariable "HAC_BB_Debug") or ((_logic getvariable "HAC_BBa_SimpleDebug") and (_Side == "A")) or ((_logic getvariable "HAC_BBb_SimpleDebug") and (_Side == "B"))) then
 			{

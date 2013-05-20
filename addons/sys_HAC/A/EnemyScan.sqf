@@ -30,14 +30,14 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 					_dngr = _x getVariable ["NearE",0];
 					
 					if (str(markerpos _mark) == "[0,0,0]") then {
-						_i = [(position (vehicle (leader _x))),_x,"markDanger","ColorGreen","ICON","o_unknown",(" | " + str _dngr),"",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
+						_i = [(position (vehicle (leader _x))),_x,"markDanger",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","o_unknown",(" | " + str _dngr),"",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
 						_markers set [count _markers,_mark];
 					};
 
 					_mark setMarkerPos (position (vehicle (leader _x)));
-					_cl = "ColorGreen";
-					if (_dngr > 0.1) then {_cl = "ColorOrange"};
-					if (_dngr > 0.5) then {_cl = "ColorRed"};
+					_cl = (_logic getvariable ["HAC_HQ_Color","ColorGreen"]);
+					if (_dngr > 0.1) then {_cl = (_logic getvariable ["HAC_HQ_Color","ColorOrange"])};
+					if (_dngr > 0.5) then {_cl = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 					
 					_mark setMarkerColor _cl;
 					_mark setmarkerText (str _dngr)
@@ -81,7 +81,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					{
 					_dst = (vehicle _UL) distance (vehicle (leader _x));
 					_eCount = ({alive _x} count (units _x));
-					if (_dst < 1000) then {_danger = _danger + ((_eCount * _eCount / _fCount)/(_dst/3))}
+					if ((_dst < 1000) && {_dst > 0}) then {_danger = _danger + ((_eCount * _eCount / _fCount)/(_dst/3))}
 					}
 				}
 			}

@@ -104,7 +104,7 @@ for [{_steepnessInitial = 1},{(_steepnessInitial >= 1) and not (_isdone)},{_stee
 				if (_logic getvariable "HAC_HQ_Debug") then 
 					{
 					_goodmark = createMarker[(str _X)+(str _Y),_scannedSpot];
-					_goodmark setMarkerColor "ColorBlack";
+					_goodmark setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlack"]);
 					_goodmark setMarkerShape "ICON";
 					_goodmark setMarkerSize [0.2,0.2];
 					((str _X)+(str _Y)) setMarkerType "mil_dot"

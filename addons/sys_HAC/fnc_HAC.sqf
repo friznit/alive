@@ -52,16 +52,16 @@ switch(_operation) do {
 				- enabled/disabled
                 */
                 
-                // Ensure only one module is used
-                if (isServer && !(isNil QMOD(HAC))) exitWith {
-                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_HAC_ERROR1");
-                };
-                
                 if (isServer) then {
                     // if server, initialise module game logic
-                    MOD(HAC) = _logic;
-                    MOD(HAC) setVariable ["super", SUPERCLASS];
-                    MOD(HAC) setVariable ["class", ALIVE_fnc_HAC];
+                    _logic setVariable ["super", SUPERCLASS];
+                    _logic setVariable ["class", ALIVE_fnc_HAC];
+                    
+                    //Add synchronized units from map
+                    _LogicSide = side ((synchronizedObjects _logic) select 0);
+                    
+                    _group = createGroup _LogicSide;
+					[_logic] joinsilent _group;
 
                     //create HAC logic & evaluate whether the Leader marker ("HAC_LStart") is on the map to set the startpos accordingly (default is map center)
                     _Mcenter = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
@@ -72,20 +72,23 @@ switch(_operation) do {
 						_StartPos = getMarkerPos "HAC_LStart";
 					};
                     
-                    _group = createGroup EAST;
-                	_logic = _group createUnit ["LOGIC", _StartPos, [], 0, "NONE"];
-					[_logic] joinsilent _group;
-					_logic setVariable ["class", ALiVE_fnc_HAC];
-			
+                    //_logic setpos _StartPos;
+
                     //Set default variables
-                    _logic setvariable ["HAC_HQ_Debug", false];
-					_logic setvariable ["HAC_HQ_DebugII",false];
+                    switch (_logicSide) do {
+                        case (EAST): {_LogicSide = "ColorRed"};
+                        case (WEST): {_LogicSide = "ColorBlue"};
+                        case (RESISTANCE): {_LogicSide = "ColorGreen"};
+                        case (CIVILIAN): {_LogicSide = "ColorYellow"};
+                        default {_LogicSide = "ColorRed"};
+                    };
+                    
+	                _logic setvariable ["HAC_HQ_Color",_LogicSide];
 					_logic setvariable ["HAC_HQ_IdleOrd", true];
-					_logic setvariable ["HAC_BB_Debug", false];                            
 					_logic setvariable ["HAC_HQ_CargoFind", 200];
 					_logic setvariable ["HAC_HQ_Rush", true];
 					_logic setvariable ["HAC_HQ_MAtt", true];
-					_logic setvariable ["HAC_HQ_Personality", (MOD(HAC) getvariable ["HAC_HQ_Personality", "GENIUS"])];
+					_logic setvariable ["HAC_HQ_Personality", (_logic getvariable ["HAC_HQ_Personality", "GENIUS"])];
 					_logic setvariable ["HAC_HQ_SubAll", false];
 					_logic setvariable ["HAC_HQ_SubSynchro", true];
 					_logic setvariable ["HAC_HQ_ReSynchro", true];
@@ -95,39 +98,36 @@ switch(_operation) do {
                     _logic setvariable ["HAC_HQ_Wait", 15];
                     
                     //Enable Debug
-                    if (call compile (MOD(HAC) getvariable "HAC_HQ_Debug")) then {
+                    if (call compile (_logic getvariable "HAC_HQ_Debug")) then {
 	                    _logic setvariable ["HAC_BB_Debug", true];   
                         _logic setvariable ["HAC_HQ_Debug", true];
 						_logic setvariable ["HAC_HQ_DebugII",true];
                     };
-                    
-                    //Add synchronized units from map
-                    _logic synchronizeObjectsAdd (synchronizedObjects MOD(HAC));
-                    
+
                     //Initialize Libraries
                     [_logic] call (compile preprocessfile "\x\alive\addons\sys_HAC\HAC_Library.sqf");
                     [_logic] call (compile preprocessfile "\x\alive\addons\sys_HAC\HAC_Vars.sqf");
-                    
-                    HAC_TACOM = _logic;
-                    Publicvariable "HAC_TACOM";
-                    
-                    MOD(HAC) setVariable ["instances",[HAC_TACOM],true];
-                    MOD(HAC) setVariable ["init", true, true];
 
                     // and publicVariable Main class to clients
-                    publicVariable QMOD(HAC);
-                    format["HAC Module init finished: Logic %1...", HAC_TACOM] call ALiVE_fnc_logger;
+                    _id = count (missionNameSpace getvariable ["HAC_instances",[]]);
+                    _mod = call compile format["HAC_TACOM_%1",_id]; call compile format["HAC_TACOM_%1 = _logic",_id];
+                    missionNameSpace setVariable ["HAC_instances",(missionNameSpace getvariable ["HAC_instances",[]]) + [_logic]];
+                    
+                    Publicvariable str(_mod);
+                    _logic setVariable ["init", true, true];
+
+                    format["HAC Module init finished: Logic %1...", _logic] call ALiVE_fnc_logger;
             } else {
                     // if client clean up client side game logics as they will transfer
                     // to servers on client disconnect
             };
                 
-		TRACE_2("After module init",MOD(HAC),MOD(HAC) getVariable "init");
+		TRACE_2("After module init",_logic,_logic getVariable "init");
 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(HAC)};
-                waitUntil {MOD(HAC) getVariable ["init", false]};
+                waitUntil {!isNil "_logic"};
+                waitUntil {_logic getVariable ["init", false]};
                 
                 /*
                 CONTROLLER  - coordination
@@ -135,9 +135,9 @@ switch(_operation) do {
                 */
 
 				if (isServer) then {
-	                waitUntil {MOD(HAC) getVariable ["init", false]};
-					[HAC_TACOM, "active", true] call ALiVE_fnc_HAC;
-                    format["HAC activated on logic %1...", HAC_TACOM] call ALiVE_fnc_logger;
+	                waitUntil {_logic getVariable ["init", false]};
+					[_logic, "active", true] call ALiVE_fnc_HAC;
+                    format["HAC activated on logic %1...", _logic] call ALiVE_fnc_logger;
 				};
                 
                 /*
@@ -152,8 +152,8 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        MOD(HAC) = _logic;
-                        publicVariable QMOD(HAC);
+                        _logic = _logic;
+                        publicVariable _logic;
                 };
                 
                 if(!isDedicated && !isHC) then {

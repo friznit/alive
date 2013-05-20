@@ -55,8 +55,8 @@
 
 			_frCenters set [(count _frCenters),_frCenter];
 
-			_colorArr = "ColorBlue";
-			if (_BBSide == "B") then {_colorArr = "ColorRed"};
+			_colorArr = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+			if (_BBSide == "B") then {_colorArr = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 
 			if not (isNil "_lPos") then
 				{
@@ -160,8 +160,8 @@
 					}
 				foreach _battles;
 
-				_colorBatt = "ColorBlue";
-				if (_BBSide == "B") then {_colorBatt = "ColorRed"};
+				_colorBatt = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+				if (_BBSide == "B") then {_colorBatt = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 				_sizeBatt = (_amounts select _foreachIndex)/6;
 				if (_sizeBatt > 5) then {_sizeBatt = 5};
 

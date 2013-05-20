@@ -47,7 +47,7 @@
 
 		_wp = [_logic,[_gp],_x,"MOVE","AWARE","YELLOW","LIMITED",["true",""],false,0.01,[10,15,20],_frm] call ALiVE_fnc_HAC_WPadd;
 
-		//_i = [_x,(random 1000),"markPatrol","ColorOrange","ICON","o_inf"," | Patrol","",[0.3,0.3],_logic] call ALiVE_fnc_HAC_Mark;
+		//_i = [_x,(random 1000),"markPatrol",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","o_inf"," | Patrol","",[0.3,0.3],_logic] call ALiVE_fnc_HAC_Mark;
 
 		if ((count _posAll) > 0) then
 			{

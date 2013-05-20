@@ -219,8 +219,8 @@
 		_m = (group _HQ) getVariable "ResMark";
 		if (isNil "_m") then 
 			{
-			_rColor = "ColorBlue";
-			if (_side == "B") then {_rColor = "ColorRed"};
+			_rColor = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+			if (_side == "B") then {_rColor = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 			_m = [_StancePos,_HQ,"markBBCurrent",_rColor,"ICON","o_unknown"," | Reserve area for " + (str _HQ),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
 			(group _HQ) setVariable ["ResMark",_m]
 			}

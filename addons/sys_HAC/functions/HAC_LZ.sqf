@@ -27,7 +27,7 @@
 	if (_posX > 0) then
 		{
 		_lz = createVehicle ["Land_HelipadEmpty_F", [_posX,_posY,0], [], 0, "NONE"];
-		//_i01 = [[_posX,_posY],str (random 100),"markLZ","ColorRed","ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark
+		//_i01 = [[_posX,_posY],str (random 100),"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark
 		};
 
 	_lz;

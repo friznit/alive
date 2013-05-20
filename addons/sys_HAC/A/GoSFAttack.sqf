@@ -264,10 +264,10 @@ if ((_ammo > 0) and not (_busy)) then
 	
 	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 		{
-		_i1 = [[_posXWP1,_posYWP1],_unitG,"markSFFlank1","ColorOrange","ICON","mil_dot"," | SF 1"," - SF FLANK 1",_logic] call ALiVE_fnc_HAC_Mark;
-		_i2 = [[_posXWP2,_posYWP2],_unitG,"markSFFlank2","ColorOrange","ICON","mil_dot"," | SF 2"," - SF FLANK 2",_logic] call ALiVE_fnc_HAC_Mark;
-		_i3 = [[_posXWP3,_posYWP3],_unitG,"markSFFlank3","ColorOrange","ICON","mil_dot"," | SF 3"," - SF FLANK 3",_logic] call ALiVE_fnc_HAC_Mark;
-		_i4 = [[_posXWP4,_posYWP4],_unitG,"markSFFlank4","ColorOrange","ICON","mil_dot"," | SF 4"," - SF ATTACK",_logic] call ALiVE_fnc_HAC_Mark
+		_i1 = [[_posXWP1,_posYWP1],_unitG,"markSFFlank1",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 1"," - SF FLANK 1",_logic] call ALiVE_fnc_HAC_Mark;
+		_i2 = [[_posXWP2,_posYWP2],_unitG,"markSFFlank2",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 2"," - SF FLANK 2",_logic] call ALiVE_fnc_HAC_Mark;
+		_i3 = [[_posXWP3,_posYWP3],_unitG,"markSFFlank3",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 3"," - SF FLANK 3",_logic] call ALiVE_fnc_HAC_Mark;
+		_i4 = [[_posXWP4,_posYWP4],_unitG,"markSFFlank4",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 4"," - SF ATTACK",_logic] call ALiVE_fnc_HAC_Mark
 		};
 
 	_CargoCheck = _unitG getvariable ("CC" + _unitvar);
@@ -385,7 +385,7 @@ if ((_ammo > 0) and not (_busy)) then
 
 	[_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
-	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i1 setMarkerColor "ColorBlue"};
+	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i1 setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"])};
 
 	_grp = _unitG;
 	if not (isNull _AV) then {_grp = _GDV};
@@ -456,7 +456,7 @@ if ((_ammo > 0) and not (_busy)) then
 
 	[_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
-	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i2 setMarkerColor "ColorBlue"};
+	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i2 setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"])};
 
 	_tp = "MOVE";
 	//if (not (isNull _AV) and (_unitG in _logic getvariable "HAC_HQ_NCrewInfG") and not ((_GDV == _unitG) or (_GDV in (_logic getvariable "HAC_HQ_AirG")))) then {_tp = "UNLOAD"};
@@ -581,7 +581,7 @@ if ((_ammo > 0) and not (_busy)) then
 
 	[_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
-	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i3 setMarkerColor "ColorBlue"};
+	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i3 setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"])};
 
 	if not (isPlayer (leader _unitG)) then 
 		{

@@ -752,7 +752,7 @@ HAC_ExecutePath =
 		{
 			{
 			_pCnt = _pCnt + 1;
-			_j = [(_x select 0),(random 1000),"markBBPath","ColorBlack","ICON","mil_box",(str _pCnt),"",[0.35,0.35],_logic] call ALiVE_fnc_HAC_Mark;
+			_j = [(_x select 0),(random 1000),"markBBPath",(_logic getvariable ["HAC_HQ_Color","ColorBlack"]),"ICON","mil_box",(str _pCnt),"",[0.35,0.35],_logic] call ALiVE_fnc_HAC_Mark;
 			_marksT set [(count _marksT),_j]
 			}
 		foreach _sortedA;
@@ -794,8 +794,8 @@ HAC_ExecutePath =
 		foreach (_actO select 0);
 
 		_actOPos = [(_actO select 0) select 0,(_actO select 0) select 1,0];
-		_lColor = "ColorBlue";
-		if (_Side == "B") then {_lColor = "ColorRed"};
+		_lColor = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+		if (_Side == "B") then {_lColor = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 
 		if ((_logic getvariable "HAC_BB_Debug") or ((_logic getvariable "HAC_BBa_SimpleDebug") and (_Side == "A")) or ((_logic getvariable "HAC_BBb_SimpleDebug") and (_Side == "B"))) then
 			{
@@ -1297,8 +1297,8 @@ HAC_ReserveExecuting =
 		_m = (group _HQ) getVariable "ResMark";
 		if (isNil "_m") then 
 			{
-			_rColor = "ColorBlue";
-			if (_side == "B") then {_rColor = "ColorRed"};
+			_rColor = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+			if (_side == "B") then {_rColor = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 			_m = [_StancePos,_HQ,"markBBCurrent",_rColor,"ICON","mil_triangle","Reserve area for " + (str _HQ),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
 			(group _HQ) setVariable ["ResMark",_m]
 			}
@@ -1459,11 +1459,11 @@ HAC_ObjMark =
 		_pos = [_pos select 0,_pos select 1,0];
 
 		_taken = _obj select 2;
-		_color = "ColorYellow";
+		_color = (_logic getvariable ["HAC_HQ_Color","ColorYellow"]);
 		_alpha = 0.1;
 
-		if ((_taken) and (_side == "A")) then {_color = "ColorBlue";_alpha = 0.5};
-		if ((_taken) and (_side == "B")) then {_color = "ColorRed";_alpha = 0.5};
+		if ((_taken) and (_side == "A")) then {_color = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);_alpha = 0.5};
+		if ((_taken) and (_side == "B")) then {_color = (_logic getvariable ["HAC_HQ_Color","ColorRed"]);_alpha = 0.5};
 //_AllV = _pos nearEntities [["AllVehicles"],300];
 //diag_log format ["obj: %1 col: %2",_obj,_color];
 		//_txt = format [" status: %1",count _AllV];
@@ -1764,8 +1764,8 @@ HAC_BBSimpleD =
 
 			_frCenters set [(count _frCenters),_frCenter];
 
-			_colorArr = "ColorBlue";
-			if (_BBSide == "B") then {_colorArr = "ColorRed"};
+			_colorArr = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+			if (_BBSide == "B") then {_colorArr = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 
 			if not (isNil "_lPos") then
 				{
@@ -1869,8 +1869,8 @@ HAC_BBSimpleD =
 					}
 				foreach _battles;
 
-				_colorBatt = "ColorBlue";
-				if (_BBSide == "B") then {_colorBatt = "ColorRed"};
+				_colorBatt = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
+				if (_BBSide == "B") then {_colorBatt = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 				_sizeBatt = (_amounts select _foreachIndex)/6;
 				if (_sizeBatt > 5) then {_sizeBatt = 5};
 

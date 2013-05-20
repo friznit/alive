@@ -501,7 +501,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 	if ((_logic getvariable "HAC_HQ_Morale") > 0) then {_logic setvariable ["HAC_HQ_Morale", 0]};
 	if (_logic getvariable "HAC_HQ_Debug") then 
 		{
-		_mdbg = format ["Morale A (%2): %1 - losses: %3 percent (%4)",(_logic getvariable "HAC_HQ_Morale"),(_logic getvariable "HAC_HQ_Personality"),(round (((_lossFinal/(_logic getvariable "HAC_HQ_CInitial")) * 100) * 10)/10),_lossFinal];
+		_mdbg = format ["Morale %5 (%2): %1 - losses: %3 percent (%4)",(_logic getvariable "HAC_HQ_Morale"),(_logic getvariable "HAC_HQ_Personality"),(round (((_lossFinal/(_logic getvariable "HAC_HQ_CInitial")) * 100) * 10)/10),_lossFinal,_logic];
 		diag_log _mdbg;
 		_logic globalChat _mdbg;
 
@@ -798,7 +798,7 @@ if (_NCCargocheck) then {if not (_vh in (_logic getvariable "HAC_HQ_EnNCCargo"))
 				{
 				[_x,_logic] call ALiVE_fnc_HAC_WPdel;
 				_x setVariable [("inPanic" + (str _x)), true];
-				if ((_logic getvariable "HAC_HQ_DebugII")) then {_i = [(getPosATL (vehicle (leader _x))),_x,"markPanic","ColorYellow","ICON","mil_dot","SitRep","A!",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
+				if ((_logic getvariable "HAC_HQ_DebugII")) then {_i = [(getPosATL (vehicle (leader _x))),_x,"markPanic",(_logic getvariable ["HAC_HQ_Color","ColorYellow"]),"ICON","mil_dot","SitRep","A!",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
                 _x setVariable [("Busy" + (str _x)), true];
 
 				_UL = leader _x;

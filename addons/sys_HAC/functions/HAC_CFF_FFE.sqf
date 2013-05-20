@@ -349,7 +349,7 @@
 			_distance2 = _impactPos distance (getposATL (vehicle _batlead));
 			_i = "mark0" + str (_battery);
 			_i = createMarker [_i,_impactPos];
-			_i setMarkerColor "ColorBlue";
+			_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
 			_i setMarkerShape "ELLIPSE";
 			_i setMarkerSize [_distance, _distance];
 			_i setMarkerBrush "Border";
@@ -365,7 +365,7 @@
 
 			_i = "mark1" + str (_battery);
 			_i = createMarker [_i,[_posX,_posY]];
-			_i setMarkerColor "ColorBlack";
+			_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlack"]);
 			_i setMarkerShape "RECTANGLE";
 			_i setMarkerSize [0.5,_distance2/2];
 			_i setMarkerBrush "Solid";
@@ -382,7 +382,7 @@
 
 			_i = "mark2" + str (_battery);
 			_i = createMarker [_i,[_posX2,_posY2]];
-			_i setMarkerColor "ColorBlack";
+			_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlack"]);
 			_i setMarkerShape "RECTANGLE";
 			_i setMarkerSize [0.5,_distance/2];
 			_i setMarkerBrush "Solid";
@@ -390,13 +390,13 @@
 
 			_i = "mark3" + str (_battery);
 			_i = createMarker [_i,_impactPos];
-			_i setMarkerColor "ColorBlack";
+			_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlack"]);
 			_i setMarkerShape "ICON";
 			_i setMarkerType "mil_dot";
 
 			_i = "mark4" + str (_battery);
 			_i = createMarker [_i,_finalimpact];
-			_i setMarkerColor "ColorRed";
+			_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorRed"]);
 			_i setMarkerShape "ICON";
 			_i setMarkerType "mil_dot";
 			_i setMarkerText (str (round (_distance)) + "m" + "/" + str (round (_spawndisp)) + "m" + " - " + _Ammo);
@@ -442,7 +442,7 @@
 
 			_i = "mark5" + str (_battery);
 			_i = createMarker [_i,_finalimpact];
-			_i setMarkerColor "ColorRed";
+			_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorRed"]);
 			_i setMarkerShape "ELLIPSE";
 			_i setMarkerSize [_spawndisp,_spawndisp];
 
@@ -450,7 +450,7 @@
 			if (_first == 1) then 
 				{
 				_i = createMarker [_i,getpos (vehicle _batlead)];
-				_i setMarkerColor "ColorBlack";
+				_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlack"]);
 				_i setMarkerShape "ICON";
 				_i setMarkerType "n_empty";
 				_i setMarkerText (_i + " - " + str (typeof (vehicle _batlead)))

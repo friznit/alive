@@ -158,7 +158,7 @@ _TED = [_posX,_posY];
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [_TED,_unitG,"markWatch","ColorGreen","ICON","mil_dot","Def","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [_TED,_unitG,"markWatch",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_dot","Def","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _dir = [(getPosATL (vehicle (leader _unitG))),_TED,10,_logic] call ALiVE_fnc_HAC_AngTowards;

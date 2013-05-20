@@ -71,7 +71,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if (((_logic getvariable "HAC_HQ_Debug")) or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markAttack","ColorRed","ICON","o_armor"," | Armor"," - ATTACK",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
+	_i = [[_posX,_posY],_unitG,"markAttack",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","o_armor"," | Armor"," - ATTACK",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
 	};
 
 _task = [(leader _unitG),["Search and destroy enemy.", "S&D", ""],[_posX,_posY],_logic] call ALiVE_fnc_HAC_AddTask;
@@ -136,7 +136,7 @@ if not (_alive) exitwith
 
 if (_timer > 24) then {deleteWaypoint _wp};
 
-if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i setMarkerColor "ColorBlue"};
+if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"])};
 
 	if (isPlayer (leader _unitG)) then
 		{

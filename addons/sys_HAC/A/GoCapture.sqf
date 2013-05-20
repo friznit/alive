@@ -80,7 +80,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markCapture","ColorRed","ICON","selector_selectable"," | Cap"," - SECURE AREA",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [[_posX,_posY],_unitG,"markCapture",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","selector_selectable"," | Cap"," - SECURE AREA",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _CargoCheck = _unitG getvariable ("CC" + _unitvar);
@@ -465,7 +465,7 @@ if not (_alive) exitwith
 
 if (_timer > 30) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [position (vehicle _UL), 0]};
 
-if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i setMarkerColor "ColorBlue"};
+if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"])};
 
 _isTaken = false;
 _waitTime = _logic getvariable "HAC_HQ_ObjHoldTime";

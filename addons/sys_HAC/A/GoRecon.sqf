@@ -84,7 +84,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markRecon","ColorRed","ICON","o_recon"," | Rec"," - NON-COMBAT RECON",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
+	_i = [[_posX,_posY],_unitG,"markRecon",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","o_recon"," | Rec"," - NON-COMBAT RECON",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
 	};
 
 _AV = assignedVehicle _UL;
@@ -226,7 +226,7 @@ if (_unitG in (_logic getvariable "HAC_HQ_FOG")) then
 	};
 
 if not (_alive) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {deleteMarker ("markRecon" + str (_unitG))}};
-if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i setMarkerColor "ColorBlue"};
+if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"])};
 
 [_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 

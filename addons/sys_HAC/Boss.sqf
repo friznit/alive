@@ -40,8 +40,8 @@ if ((_BBSide == "B") and (count (_logic getvariable "HAC_BBa_HQs") > 0)) then
 
 if (_logic getvariable "HAC_BB_Debug") then
 	{
-	_logic globalChat format ["Big Boss %1 awakes (time: %2)",_BBSide,time];
-	diag_log format ["Big Boss %1 awakes (time: %2)",_BBSide,time]
+	_logic globalChat format ["Big Boss %1 awakes (time: %2)",_logic,time];
+	diag_log format ["Big Boss %1 awakes (time: %2)",_logic,time]
 	};
 
 _BBHQGrps = [];
@@ -76,7 +76,7 @@ if (_BBSide == "A") then
 	//if ((_cntr select 0) < 1000) then {_cntr = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")};
 
 	//_mark = "center" + str (random 1000);
-	//_mark = [_mark,_cntr,"ColorBlue","ICON",[1.5,1.5],0,1,"o_hq",(str _cntr),_logic] call ALiVE_fnc_HAC_Marker;
+	//_mark = [_mark,_cntr,(_logic getvariable ["HAC_HQ_Color","ColorBlue"]),"ICON",[1.5,1.5],0,1,"o_hq",(str _cntr),_logic] call ALiVE_fnc_HAC_Marker;
 
 	_lng = (_cntr select 0)*2;
 	if not (isNil "HAC_BB_MC") then
@@ -105,7 +105,7 @@ if (_BBSide == "A") then
 	
 		{
 		_mark = "sector" + str (random 1000);
-		_mark = [_mark,position _x,"ColorBlue","RECTANGLE",size _x,direction _x,1,"Border","",_logic] call ALiVE_fnc_HAC_Marker;
+		_mark = [_mark,position _x,(_logic getvariable ["HAC_HQ_Color","ColorBlue"]),"RECTANGLE",size _x,direction _x,1,"Border","",_logic] call ALiVE_fnc_HAC_Marker;
 		_markers set [(count _markers),_mark];
 		_x setVariable ["Over_Mark",_mark];
 		}
@@ -187,8 +187,8 @@ _strArea = [];
 
 if (_logic getvariable "HAC_BB_Debug") then
 	{
-	_logic globalChat format ["Big Boss %1 is looking for strategic objectives.",_BBSide];
-	diag_log format ["Big Boss %1 is looking for strategic objectives.",_BBSide]
+	_logic globalChat format ["Big Boss %1 is looking for strategic objectives.",_logic];
+	diag_log format ["Big Boss %1 is looking for strategic objectives.",_logic]
 	};
 
 _objRad = 25000;
@@ -356,8 +356,8 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 has no army!",_BBSide];
-			diag_log format ["Big Boss %1 has no army!",_BBSide]
+			_logic globalChat format ["Big Boss %1 has no army!",_logic];
+			diag_log format ["Big Boss %1 has no army!",_logic]
 			};
 		};
 /*
@@ -436,15 +436,15 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 has no army!",_BBSide];
-			diag_log format ["Big Boss %1 has no army!",_BBSide]
+			_logic globalChat format ["Big Boss %1 has no army!",_logic];
+			diag_log format ["Big Boss %1 has no army!",_logic]
 			};
 		};
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
-		_logic globalChat format ["Big Boss %1 is analyzing forces...",_BBSide];
-		diag_log format ["Big Boss %1 is analyzing forces...",_BBSide]
+		_logic globalChat format ["Big Boss %1 is analyzing forces...",_logic];
+		diag_log format ["Big Boss %1 is analyzing forces...",_logic]
 		};
 
 	_ForcesRep = [_BBHQs,_logic] call ALiVE_fnc_HAC_ForceAnalyze;
@@ -456,8 +456,8 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 is checking own forces placement...",_BBSide];
-			diag_log format ["Big Boss %1 is checking own forces placement...",_BBSide]
+			_logic globalChat format ["Big Boss %1 is checking own forces placement...",_logic];
+			diag_log format ["Big Boss %1 is checking own forces placement...",_logic]
 			};
 
 		_nmbr = 0;
@@ -469,7 +469,7 @@ while {(_logic getvariable "HAC_BB_Active")} do
 			_valGrp = count (units _x);
 
 			//_mark = "GrpPos" + (str (random 1000));
-			//_mark = [_mark,_posGrp,"ColorGreen","ICON",[_valGrp/10,_valGrp/10],0,0.5,"mil_dot",(str _valGrp),_logic] call ALiVE_fnc_HAC_Marker;
+			//_mark = [_mark,_posGrp,(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON",[_valGrp/10,_valGrp/10],0,0.5,"mil_dot",(str _valGrp),_logic] call ALiVE_fnc_HAC_Marker;
 
 			for "_j" from 1 to _valGrp do
 				{
@@ -486,7 +486,7 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		if (_nmbr > 0) then {_armyPos = [_posGrpX/_nmbr,_posGrpY/_nmbr,0]};
 
 		//_mark = "Army" + (str (random 1000));
-		//_mark = [_mark,_ArmyPos,"ColorGreen","ICON",[1,1],0,1,"mil_triangle","",_logic] call ALiVE_fnc_HAC_Marker;
+		//_mark = [_mark,_ArmyPos,(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON",[1,1],0,1,"mil_triangle","",_logic] call ALiVE_fnc_HAC_Marker;
 
 
 		_ct = 0;
@@ -610,7 +610,7 @@ while {(_logic getvariable "HAC_BB_Active")} do
 
 
 		//_mark = "Main" + (str (random 1000));
-		//_mark = [_mark,_mainPos,"ColorRed","ICON",[1,1],0,1,"mil_triangle","",_logic] call ALiVE_fnc_HAC_Marker;
+		//_mark = [_mark,_mainPos,(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON",[1,1],0,1,"mil_triangle","",_logic] call ALiVE_fnc_HAC_Marker;
 
 		_attackAxis = [_ArmyPos,_mainPos,10,_logic] call ALiVE_fnc_HAC_AngTowards;
 if ((true) and (true)) then
@@ -622,10 +622,10 @@ if ((true) and (true)) then
 				_valStr = _x select 1;
 				_taken = _x select 2;
 				_mark = "StrArea" + (str (random 1000));
-				_color = "ColorYellow";
+				_color = (_logic getvariable ["HAC_HQ_Color","ColorYellow"]);
 				_alpha = 0.1;
-				if ((_taken) and (_BBSide == "A")) then {_color = "ColorBlue";_alpha = 0.5};
-				if ((_taken) and (_BBSide == "B")) then {_color = "ColorRed";_alpha = 0.5};
+				if ((_taken) and (_BBSide == "A")) then {_color = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);_alpha = 0.5};
+				if ((_taken) and (_BBSide == "B")) then {_color = (_logic getvariable ["HAC_HQ_Color","ColorRed"]);_alpha = 0.5};
 				_mark = [_mark,_posStr,_color,"ICON",[_valStr/2,_valStr/2],0,_alpha,"mil_dot",(str _valStr),_logic] call ALiVE_fnc_HAC_Marker;
 
 				[_x,_mark,_BBSide,_logic] spawn ALiVE_fnc_HAC_ObjMark
@@ -635,8 +635,8 @@ if ((true) and (true)) then
 };
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 orients the flanks.",_BBSide];
-			diag_log format ["Big Boss %1 orients the flanks.",_BBSide]
+			_logic globalChat format ["Big Boss %1 orients the flanks.",_logic];
+			diag_log format ["Big Boss %1 orients the flanks.",_logic]
 			};
 
 			{
@@ -685,8 +685,8 @@ if ((true) and (true)) then
 
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 assigns front sections to divisions.",_BBSide];
-			diag_log format ["Big Boss %1 assigns front sections to divisions.",_BBSide]
+			_logic globalChat format ["Big Boss %1 assigns front sections to divisions.",_logic];
+			diag_log format ["Big Boss %1 assigns front sections to divisions.",_logic]
 			};
 
 		_leftAn = [_leftSectors,_logic] call ALiVE_fnc_HAC_TopoAnalize;
@@ -1309,8 +1309,8 @@ if ((true) and (true)) then
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
-		_logic globalChat format ["Big Boss %1 issues orders.",_BBSide];
-		diag_log format ["Big Boss %1 issues orders.",_BBSide];
+		_logic globalChat format ["Big Boss %1 issues orders.",_logic];
+		diag_log format ["Big Boss %1 issues orders.",_logic];
 		};
 
 	_goingReserve0 = _goingReserve;
@@ -1837,7 +1837,7 @@ if ((true) and (true)) then
 			_points = _points + _HQpoints;
 	/*
 				{
-				_mark = [(str (random 1000)),_x,"ColorOrange","ICON",[0.5,0.5],0,1,"mil_dot","R",_logic] call ALiVE_fnc_HAC_Marker;
+				_mark = [(str (random 1000)),_x,(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON",[0.5,0.5],0,1,"mil_dot","R",_logic] call ALiVE_fnc_HAC_Marker;
 				}
 			foreach _points;
 	*/
@@ -1879,8 +1879,8 @@ if ((true) and (true)) then
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
-		_logic globalChat format ["Big Boss %1 will now take a moment to ash his cigar.",_BBSide];
-		diag_log format ["Big Boss %1 will now take a moment to ash his cigar.",_BBSide];
+		_logic globalChat format ["Big Boss %1 will now take a moment to ash his cigar.",_logic];
+		diag_log format ["Big Boss %1 will now take a moment to ash his cigar.",_logic];
 		};
 	waitUntil
 		{
@@ -1913,13 +1913,13 @@ if ((true) and (true)) then
 		{
 		if (_urgent) then
 			{
-			_logic globalChat format ["Situation on the frontline forces Big Boss %1 to react quickly.",_BBSide];
-			diag_log format ["Situation on the frontline forces Big Boss %1 to react quickly.",_BBSide];
+			_logic globalChat format ["Situation on the frontline forces Big Boss %1 to react quickly.",_logic];
+			diag_log format ["Situation on the frontline forces Big Boss %1 to react quickly.",_logic];
 			}
 		else
 			{
-			_logic globalChat format ["For Big Boss %1 it is time to a routine review the situation.",_BBSide];
-			diag_log format ["For Big Boss %1 it is time to a routine review the situation.",_BBSide];
+			_logic globalChat format ["For Big Boss %1 it is time to a routine review the situation.",_logic];
+			diag_log format ["For Big Boss %1 it is time to a routine review the situation.",_logic];
 			}
 		};
 
@@ -1952,8 +1952,8 @@ if ((true) and (true)) then
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 is dead!",_BBSide];
-			diag_log format ["Big Boss %1 is dead!",_BBSide];
+			_logic globalChat format ["Big Boss %1 is dead!",_logic];
+			diag_log format ["Big Boss %1 is dead!",_logic];
 			}
 		};
 	};

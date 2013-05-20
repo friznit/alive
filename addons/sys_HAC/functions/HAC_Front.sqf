@@ -23,7 +23,7 @@ if not (isNil ("HET_FA")) then
 		_FrontA setText "FrontA";
 		_ia = "markFront" + str (_FrontA);
 		_ia = createMarker [_ia,_pos];
-		_ia setMarkerColor "ColorRed";
+		_ia setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorRed"]);
 		_ia setMarkerShape _shape;
 		_ia setMarkerSize [_XAxis, _YAxis];
 		_ia setMarkerDir _dir;
