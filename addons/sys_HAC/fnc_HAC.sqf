@@ -207,8 +207,11 @@ switch(_operation) do {
                         _grpL = leader (group _x);
                     };
 
-                    if (_grpL in (synchronizedObjects _logic)) then {
+                    if (({(group _x) == _grp} count (synchronizedObjects _logic)) > 0) then {
                         _logic synchronizeObjectsRemove [_grpL];
+                        _logic setvariable ["HAC_HQ_Subordinated",((_logic getvariable "HAC_HQ_Subordinated") - [_grp])];
+                        _logic setvariable ["HAC_HQ_Friends",((_logic getvariable "HAC_HQ_Friends") - [_grp])];
+                        _logic setvariable ["HAC_HQ_LastSub",((_logic getvariable "HAC_HQ_LastSub") - [_grp])];
                     };
                 } foreach _args;
 			};

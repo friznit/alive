@@ -355,7 +355,6 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 			{
 			if ((_x in (_logic getvariable "HAC_HQ_LastSub")) and not ((leader _x) in (synchronizedObjects _logic)) and ((_logic getvariable "HAC_HQ_ReSynchro"))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]};
 			if (not (_x in (_logic getvariable "HAC_HQ_Subordinated")) and ((leader _x) in (synchronizedObjects _logic))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]};
-            if ((_x in (_logic getvariable "HAC_HQ_Subordinated")) && !((leader _x) in (synchronizedObjects _logic))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") - [_x]]; _logic setvariable ["HAC_HQ_Friends",(_logic getvariable "HAC_HQ_Friends") - [_x]]};
 			}
 		foreach allGroups;
 		};
