@@ -1,0 +1,21 @@
+//http://community.bistudio.com/wiki/description.ext#Header_Class
+class header {
+	gametype = COOP;
+	minplayers = 1;
+	maxplayers = 5;
+	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
+};
+
+author = Highhead;
+onLoadMission = "An ALiVE Team Development";
+onLoadIntroTime = true;
+onLoadMissionTime = true;
+onLoadName = ALiVE Just Pure Death;
+loadScreen = "rsc\msoimg.paa";
+
+aiKills = 0;
+briefing = 1;
+debriefing = 1;
+respawn = 3;
+enableDebugConsole = 1;
+allowFunctionsRecompile = 1;
