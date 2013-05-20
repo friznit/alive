@@ -86,8 +86,15 @@ if (isServer) then {
 	        BIS_persistent = BIS_persistent + units (group _leader);
 		};
 	} foreach _units;
-	player sidechat format["Adding units to HAC %1...",HAC_TACOM];
-	HAC_TACOM synchronizeObjectsAdd HAC_leaders;
+    
+    _instance = (missionNameSpace getvariable ["HAC_instances",[]]) select 0;
+    for "_i" from 0 to (count (missionNameSpace getvariable ["HAC_instances",[]]) - 1) do {
+        _instance = (missionNameSpace getvariable ["HAC_instances",[]]) select _i;
+        if (side _instance == EAST) exitwith {};
+    };
+    
+	player sidechat format["Adding units to HAC %1...",_instance];
+	_instance synchronizeObjectsAdd HAC_leaders;
 	
 	initAllSitesFinished = true; Publicvariable "initAllSitesFinished";
 	diag_log format ["Sites finished: %1...",BIS_missionScope getVariable "sites"];
