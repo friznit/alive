@@ -39,8 +39,40 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	
 	// Set up handleHeal
 	player addEventHandler ["handleHeal", {_this call GVAR(fnc_handleHealEH);}];
+	
+	// Set up non eventhandler checks
+	
+	// Combat Dive - checks every 30 seconds for diving
+	[] spawn {
+		private ["_diving", "_diveStartTime", "_diveTime"];
+		while {true} do { 
+			if (underwater player && isAbleToBreathe player) then {
+				_diving = player getVariable [QGVAR(isDiving),false];
+				if !(_diving) then {
+					// record dive start time
+					player setVariable [QGVAR(isDiving),true,false];
+					player setVariable [QGVAR(diveStartTime),time,false];
+				};
+			} else {
+				_diving = player getVariable [QGVAR(isDiving),false];
+				if (_diving) then {
+					// Player has exited from dive - they may have surfaced also?
+					_diveStartTime = player getVariable [QGVAR(diveStartTime),time];
+					_diveTime = ceil((time - _diveStartTime) / 60); // in minutes
+					
+					// Record Combat Dive
+					[player,_diveTime] call GVAR(fnc_divingEH);
+					
+					// Clear dive flag
+					player setVariable [QGVAR(isDiving),false,false];
+				};
+			};
+			sleep 30;
+		};
+	};
 
 };
+
 
 /*
 VIEW - purely visual

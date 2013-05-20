@@ -38,4 +38,7 @@ PREP(unitKilledEH);
 PREP(getInEH);
 PREP(getOutEH);
 
+// Handling Combat Dives
+PREP(divingEH);
+
 ADDON = true;
