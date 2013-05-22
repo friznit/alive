@@ -78,7 +78,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markAttack",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","o_inf"," | Inf"," - ATTACK",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [[_posX,_posY],_unitG,"markAttack",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","waypoint"," | Inf"," - ATTACK",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _CargoCheck = _unitG getvariable ("CC" + _unitvar);

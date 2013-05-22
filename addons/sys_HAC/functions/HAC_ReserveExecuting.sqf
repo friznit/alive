@@ -221,7 +221,7 @@
 			{
 			_rColor = (_logic getvariable ["HAC_HQ_Color","ColorBlue"]);
 			if (_side == "B") then {_rColor = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
-			_m = [_StancePos,_HQ,"markBBCurrent",_rColor,"ICON","o_unknown"," | Reserve area for " + (str _HQ),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
+			_m = [_StancePos,_HQ,"markBBCurrent",_rColor,"ICON","mil_circle"," | Reserve area for " + (str _HQ),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
 			(group _HQ) setVariable ["ResMark",_m]
 			}
 		else

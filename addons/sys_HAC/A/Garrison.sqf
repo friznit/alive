@@ -31,7 +31,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 
 			if (((_logic getvariable "HAC_HQ_Debug")) or (isPlayer (leader _unitG))) then 
 				{
-				_i = [_pos,_unitG,"markGarrison","ColorBrown","ICON","o_unknown"," | Garr"," - GARRISON",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
+				_i = [_pos,_unitG,"markGarrison","ColorBrown","ICON","mil_dot"," | Garr"," - GARRISON",[0.25,0.25],_logic] call ALiVE_fnc_HAC_Mark;
 				};
 
 			if (((_logic getvariable "HAC_HQ_GarrVehAb")) and not (isPlayer (leader _unitG))) then

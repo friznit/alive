@@ -286,7 +286,7 @@ _DN = false;
 
 	if (_logic getvariable "HAC_HQ_Debug") then 
 		{
-		_goodmark = [_Center,_defPoint,"Center",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_dot"," | Def Center","Def Center",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
+		_goodmark = [_Center,_defPoint,"Center",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_circle"," | Def Center","Def Center",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
 		};
 
 	//_o = [_Center,(random 1000),"markDef","ColorKhaki","RECTANGLE","Border","","",[_lng,_wdt],(_logic getvariable "HAC_HQ_Angle"),_logic] call ALiVE_fnc_HAC_Mark;

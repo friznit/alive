@@ -92,7 +92,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [_DefPos,_unitG,"markDef","ColorBrown","ICON","o_recon"," | Rec"," - WATCH FOREGROUND",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [_DefPos,_unitG,"markDef","ColorBrown","ICON","mil_triangle"," | Rec"," - WATCH FOREGROUND",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _task = [(leader _unitG),["Take a defensive, elevated position as fast, as possible. Then observe foreground and search for enemy targets.", "Sentry", ""],_DefPos,_logic] call ALiVE_fnc_HAC_AddTask;
@@ -124,7 +124,7 @@ _TED = [_posX,_posY];
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [_TED,_unitG,"markWatch",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","o_rec"," | Rec","A",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [_TED,_unitG,"markWatch",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_triangle"," | Rec Eng","A",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _dir = [(getPosATL (vehicle (leader _unitG))),_TED,10,_logic] call ALiVE_fnc_HAC_AngTowards;

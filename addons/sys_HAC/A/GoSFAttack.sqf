@@ -264,10 +264,10 @@ if ((_ammo > 0) and not (_busy)) then
 	
 	if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 		{
-		_i1 = [[_posXWP1,_posYWP1],_unitG,"markSFFlank1",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 1"," - SF FLANK 1",_logic] call ALiVE_fnc_HAC_Mark;
-		_i2 = [[_posXWP2,_posYWP2],_unitG,"markSFFlank2",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 2"," - SF FLANK 2",_logic] call ALiVE_fnc_HAC_Mark;
-		_i3 = [[_posXWP3,_posYWP3],_unitG,"markSFFlank3",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 3"," - SF FLANK 3",_logic] call ALiVE_fnc_HAC_Mark;
-		_i4 = [[_posXWP4,_posYWP4],_unitG,"markSFFlank4",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","mil_dot"," | SF 4"," - SF ATTACK",_logic] call ALiVE_fnc_HAC_Mark
+		_i1 = [[_posXWP1,_posYWP1],_unitG,"markSFFlank1",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","square"," | SF Flk 1"," - SF FLANK 1",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
+		_i2 = [[_posXWP2,_posYWP2],_unitG,"markSFFlank2",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","square"," | SF Flk 2"," - SF FLANK 2",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
+		_i3 = [[_posXWP3,_posYWP3],_unitG,"markSFFlank3",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","square"," | SF Flk 3"," - SF FLANK 3",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
+		_i4 = [[_posXWP4,_posYWP4],_unitG,"markSFFlank4",(_logic getvariable ["HAC_HQ_Color","ColorOrange"]),"ICON","square"," | SF Flk 4"," - SF ATTACK",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark
 		};
 
 	_CargoCheck = _unitG getvariable ("CC" + _unitvar);

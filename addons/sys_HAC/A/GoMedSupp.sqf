@@ -46,7 +46,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markMedSupp","ColorKhaki","ICON","o_med"," | Medic"," - MEDICAL SUPPORT",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [[_posX,_posY],_unitG,"markMedSupp","ColorKhaki","ICON","waypoint"," | Medic"," - MEDICAL SUPPORT",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _task = [(leader _unitG),["Give medical aid nearby troops. Stay in this area.", "Support", ""],[_posX,_posY],_logic] call ALiVE_fnc_HAC_AddTask;

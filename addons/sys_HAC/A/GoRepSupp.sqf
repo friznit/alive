@@ -46,7 +46,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markRepSupp","ColorKhaki","ICON","o_repair"," | Repair"," - REPAIR SUPPORT",[0.65,0.65],180,_logic] call ALiVE_fnc_HAC_Mark
+	_i = [[_posX,_posY],_unitG,"markRepSupp","ColorKhaki","ICON","mil_dot"," | Repair"," - REPAIR SUPPORT",[0.2,0.2],180,_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _task = [(leader _unitG),["Provide a field repair of damaged equipment.", "Support", ""],(position _Trg),_logic] call ALiVE_fnc_HAC_AddTask;
