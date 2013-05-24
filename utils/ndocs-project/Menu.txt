@@ -75,6 +75,7 @@ Group: ALiVE  {
          File: ALIVE_fnc_createLink  (main/fnc_createLink.sqf)
          File: ALIVE_fnc_deleteLink  (main/fnc_deleteLink.sqf)
          File: ALIVE_fnc_exMP  (main/fnc_exMP.sqf)
+         File: ALIVE_fnc_isHC  (main/fnc_MarkerExists.sqf)
          }  # Group: Main
 
       Group: Nme_CQB  {
@@ -114,6 +115,7 @@ Group: ALiVE  {
          File: ALIVE_fnc_statisticsDisable  (sys_statistics/fnc_statisticsDisable.sqf)
          File: ALIVE_fnc_statisticsInit  (sys_statistics/fnc_statisticsInit.sqf)
          File: ALIVE_fnc_statisticsMenuDef  (sys_statistics/fnc_statisticsMenuDef.sqf)
+         File: ALIVE_sys_stat_fnc_divingEH  (sys_statistics/fnc_divingEH.sqf)
          File: ALIVE_sys_stat_fnc_getInEH  (sys_statistics/fnc_getInEH.sqf)
          File: ALIVE_sys_stat_fnc_getOutEH  (sys_statistics/fnc_getOutEH.sqf)
          File: ALIVE_sys_stat_fnc_hitEH  (sys_statistics/fnc_hitEH.sqf)
@@ -156,19 +158,37 @@ Group: ALiVE  {
 
    }  # Group: ALiVE
 
-File: ALIVE_fnc_multispawn  (sup_multispawn/fnc_multispawn.sqf)
-File: ALIVE_fnc_multispawnInit  (sup_multispawn/fnc_multispawnInit.sqf)
-File: ALIVE_fnc_multispawnMenuDef  (sup_multispawn/fnc_multispawnMenuDef.sqf)
+File: ALIVE_fnc_CQB  (nme_SEP/fnc_SEP.sqf)
+File: ALIVE_fnc_CQBInit  (nme_SEP/fnc_SEPInit.sqf)
+File: ALIVE_fnc_HAC  (sys_HAC/fnc_HAC.sqf)
+File: ALIVE_fnc_HAC_Init  (sys_HAC/fnc_HAC_Init.sqf)
 
-Group: Functions  {
+Group: Sup_multispawn  {
 
-   File: ALIVE_fnc_multispawnAddAction  (sup_multispawn/functions/fnc_multispawnAddAction.sqf)
-   File: ALIVE_fnc_multispawnConvert  (sup_multispawn/functions/fnc_multispawnConvert.sqf)
-   File: ALIVE_fnc_multispawnDeploy  (sup_multispawn/functions/fnc_multispawnDeploy.sqf)
-   File: ALIVE_fnc_multispawnMHQType  (sup_multispawn/functions/fnc_multispawnMHQType.sqf)
-   File: ALIVE_fnc_multispawnPlayerSetSpawn  (sup_multispawn/functions/fnc_multispawnPlayerSetSpawn.sqf)
-   File: ALIVE_fnc_multispawnRelocatePlayer  (sup_multispawn/functions/fnc_multispawnRelocatePlayer.sqf)
-   File: ALIVE_fnc_multispawnSyncState  (sup_multispawn/functions/fnc_multispawnSyncState.sqf)
-   File: ALIVE_fnc_multispawnUndeploy  (sup_multispawn/functions/fnc_multispawnUndeploy.sqf)
-   }  # Group: Functions
+   File: ALIVE_fnc_multispawn  (sup_multispawn/fnc_multispawn.sqf)
+   File: ALIVE_fnc_multispawnInit  (sup_multispawn/fnc_multispawnInit.sqf)
+   File: ALIVE_fnc_multispawnMenuDef  (sup_multispawn/fnc_multispawnMenuDef.sqf)
+
+   Group: Functions  {
+
+      File: ALIVE_fnc_multispawnAddAction  (sup_multispawn/functions/fnc_multispawnAddAction.sqf)
+      File: ALIVE_fnc_multispawnConvert  (sup_multispawn/functions/fnc_multispawnConvert.sqf)
+      File: ALIVE_fnc_multispawnDeploy  (sup_multispawn/functions/fnc_multispawnDeploy.sqf)
+      File: ALIVE_fnc_multispawnMHQType  (sup_multispawn/functions/fnc_multispawnMHQType.sqf)
+      File: ALIVE_fnc_multispawnPlayerSetSpawn  (sup_multispawn/functions/fnc_multispawnPlayerSetSpawn.sqf)
+      File: ALIVE_fnc_multispawnRelocatePlayer  (sup_multispawn/functions/fnc_multispawnRelocatePlayer.sqf)
+      File: ALIVE_fnc_multispawnSyncState  (sup_multispawn/functions/fnc_multispawnSyncState.sqf)
+      File: ALIVE_fnc_multispawnUndeploy  (sup_multispawn/functions/fnc_multispawnUndeploy.sqf)
+      }  # Group: Functions
+
+   }  # Group: Sup_multispawn
+
+Group: Sys_data  {
+
+   File: ALIVE_fnc_convertData  (sys_data/fnc_convertData.sqf)
+   File: ALIVE_fnc_readData  (sys_data/fnc_readData.sqf)
+   File: ALIVE_fnc_restoreData  (sys_data/fnc_restoreData.sqf)
+   File: ALIVE_fnc_sendToPlugIn  (sys_data/fnc_sendToPlugIn.sqf)
+   File: ALIVE_fnc_writeData  (sys_data/fnc_writeData.sqf)
+   }  # Group: Sys_data
 
