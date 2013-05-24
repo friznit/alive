@@ -9,25 +9,27 @@ REM IF DEFINED _ARMA2PATH (GOTO found)
 REM echo you must install BI's personal tools
 REM pause
 REM @exit /B 1
-REM :installpbo
-REM echo extractpbo is required
-REM pause
-REM @exit /B 1
-REM :installP
-REM echo P: drive must be set
-REM pause
-REM @exit /B 1
-REM :found
-REM Dta\bin.pbo
-REM Dta\core.pbo
-REM Dta\languagecore.pbo
-REM Dta\languagecore_f.pbo
-REM Dta\languagecore_h.pbo
-REM Dta\product.bin
 
-REM TODO: some sort of error with windows 7 and the slash in p:\ ???
+GOTO found
+:installpbo
+echo extractpbo is required
+pause
+@exit /B 1
+:installP
+echo P: drive must be set
+pause
+@exit /B 1
+:found
+rem Dta\bin.pbo
+rem Dta\core.pbo
+rem Dta\languagecore.pbo
+rem Dta\languagecore_f.pbo
+rem Dta\languagecore_h.pbo
+rem Dta\product.bin
 
-REM unpacks all A2/OA/CO pbo's to the p: tree
+rem TODO: some sort of error with windows 7 and the slash in p:\ ???
+
+rem unpacks all A2/OA/CO pbo's to the p: tree
 
 rem ***************************************************
 rem ********** YOU MUST HAVE P: set *******************
