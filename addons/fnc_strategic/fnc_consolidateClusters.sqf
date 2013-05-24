@@ -61,8 +61,8 @@ _result = [];
         	        private ["_out_nodes","_nodes","_out_center","_x_center"];
                 	_max = ([_out, "size"] call ALIVE_fnc_cluster);
 	                _out_center = [_out, "center"] call ALiVE_fnc_cluster;
-			if(count _out_center != 0) then {
-		                _x_center = [_x, "center"] call ALiVE_fnc_cluster;
+	                _x_center = [_x, "center"] call ALiVE_fnc_cluster;
+			if(count _out_center != 0 && count _x_center != 0) then {
 
 		                // if cluster is within master cluster
         		        if((_x_center distance _out_center) < _max) then {
