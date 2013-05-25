@@ -2,7 +2,7 @@
 SCRIPT(cluster);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_cluster
+Function: MAINCLASS
 Description:
 Creates the server side object to cluster information
 
@@ -40,6 +40,7 @@ nil
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_cluster
 
 private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_nodes","_center","_result","_findObjectID"];
 
@@ -82,7 +83,7 @@ _createMarkers = {
                         _m setMarkerColorLocal (_logic getVariable ["debugColor","ColorYellow"]);
                 } forEach _nodes;
                 
-                _center = [_logic, "center"] call ALiVE_fnc_cluster;
+                _center = [_logic, "center"] call MAINCLASS;
                 _m = createMarkerLocal [format[MTEMPLATE, _logic], _center];
                 _m setMarkerShapeLocal "Icon";
                 _m setMarkerSizeLocal [1, 1];
@@ -92,7 +93,7 @@ _createMarkers = {
                 _markers set [count _markers, _m];
                 
                 _m = createMarkerLocal [(format[MTEMPLATE, _logic] + "_size"), _center];
-                _max = [_logic, "size"] call ALiVE_fnc_cluster;
+                _max = [_logic, "size"] call MAINCLASS;
                 _m setMarkerShapeLocal "Ellipse";
                 _m setMarkerSizeLocal [_max, _max];
                 _m setMarkerColorLocal (_logic getVariable ["debugColor","ColorYellow"]);
@@ -129,7 +130,7 @@ switch(_operation) do {
                 if (isServer) then {
                         // if server, initialise module game logic
                         _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", ALiVE_fnc_cluster];
+                        _logic setVariable ["class", MAINCLASS];
                         TRACE_1("After module init",_logic);
                 };
                 
@@ -144,7 +145,7 @@ switch(_operation) do {
         };
         case "destroy": {
                 
-                [_logic, "debug", false] call ALIVE_fnc_cluster;
+                [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
                         // if server
                         _logic setVariable ["super", nil];
@@ -198,7 +199,7 @@ switch(_operation) do {
                                 _node = (_x select 1) nearestObject (_x select 0);
                                 _data set [count _data, _node];
                         } forEach _nodes;
-                        [_logic, "nodes", _data] call ALiVE_fnc_cluster;
+                        [_logic, "nodes", _data] call MAINCLASS;
                 };		
         };
         case "center": {
@@ -212,7 +213,7 @@ switch(_operation) do {
                 private ["_max"];
                 _nodes = _logic getVariable ["nodes",[]];
                 _result = 0;
-                _center = [_logic, "center"] call ALiVE_fnc_cluster;
+                _center = [_logic, "center"] call MAINCLASS;
 		if(count _center > 0) then {
 	       	        {
         	       	        if(_x distance _center > _result) then {_result = _x distance _center;};
@@ -225,7 +226,7 @@ switch(_operation) do {
                 };
                 
                 if (_logic getVariable ["debug", false]) then {
-                        [_logic, "debug"] call ALiVE_fnc_cluster;
+                        [_logic, "debug"] call MAINCLASS;
                 };
                 _result = _logic getVariable ["nodes", []];
         };
@@ -234,7 +235,7 @@ switch(_operation) do {
                         [_logic,"nodes",[_args],true,true] call BIS_fnc_variableSpaceAdd;
                         
                         if (_logic getVariable ["debug", false]) then {
-                                [_logic, "debug"] call ALiVE_fnc_cluster;
+                                [_logic, "debug"] call MAINCLASS;
                         };
                 };
                 _result = _logic getVariable ["nodes", []];
@@ -244,7 +245,7 @@ switch(_operation) do {
                         [_logic,"nodes",[_args],true] call BIS_fnc_variableSpaceRemove;
                         
                         if (_logic getVariable ["debug", false]) then {
-                                [_logic, "debug"] call ALiVE_fnc_cluster;
+                                [_logic, "debug"] call MAINCLASS;
                         };
                 };
                 _result = _logic getVariable ["nodes", []];
