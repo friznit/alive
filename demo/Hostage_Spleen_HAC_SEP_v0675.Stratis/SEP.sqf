@@ -1,8 +1,4 @@
-initCore = compile preprocessfilelinenumbers "\A3\modules_f\sites\init_core.sqf";
-initSite = compile preprocessfilelinenumbers "\A3\modules_f\sites\site_inits\military_base.sqf";
 _debug = false;
-
-[] call initcore;
 
 if (isServer) then {
 	
@@ -21,7 +17,6 @@ if (isServer) then {
 	_clusters = [_obj_array,175] call ALIVE_fnc_findClusters;
 
 	_sites = [];
-    BIS_Sites = (createGroup Sidelogic);
 	{
         private["_max","_center","_pos"];
         _max = 0;
@@ -34,7 +29,7 @@ if (isServer) then {
                 _pos = [_pos,100] call ALiVE_fnc_findFlatArea;
 		player sidechat format["Placing site %1...",_pos];
 
-				_site = BIS_Sites createUnit ["Site_OPFOR", _pos, [], 0, "NONE"];
+				_site = createAgent ["Site_OPFOR", _pos, [], 0, "NONE"];
 				_site setvariable ["buildingOccupationIndex","0.3"];
 				_site setVariable ["faction","Red"];
 				_site setvariable ["axisA",str(_max)];
