@@ -1,9 +1,9 @@
 _logic = _this select ((count _this)-1);
-waitUntil {sleep 1; not (isNil "HAC_HQ_SpecForG")};
+waitUntil {sleep 1; not (isNil {_logic getvariable "HAC_HQ_SpecForG"})};
 
 while {not (isNull (_logic getvariable "HAC_HQ"))} do
 	{
-	_pos = getPosATL (vehicle _logic);
+	_pos = getposATL (vehicle _logic);
 
 		{
 		_isBad = false;
@@ -32,7 +32,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 			_unitG = _x;
 			[_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
-			_pos = getPosATL (vehicle _logic);
+			_pos = getposATL (vehicle _logic);
 			_posX = (_pos select 0) + (random 200) - 100;
 			_posY = (_pos select 1) + (random 200) - 100;
 
@@ -73,7 +73,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 		{
 		sleep 30;
 
-		_nPos = getPosATL (vehicle _logic);
+		_nPos = getposATL (vehicle _logic);
 
 		((_nPos distance _pos) > 10)
 		}

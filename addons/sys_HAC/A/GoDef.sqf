@@ -73,8 +73,8 @@ if not (isNull _nE) then
 	{
 	if (((_logic getvariable "HAC_HQ_Smoke")) and ((_nE distance (vehicle _UL)) <= 500) and not (isPlayer _UL)) then
 		{
-		_posSL = getPosASL _UL;
-		_posSL2 = getPosASL _nE;
+		_posSL = getposASL _UL;
+		_posSL2 = getposASL _nE;
 
 		_angle = [_posSL,_posSL2,15,_logic] call ALiVE_fnc_HAC_AngTowards;
 
@@ -85,7 +85,7 @@ if not (isNull _nE) then
 
 		if ((_logic getvariable "HAC_HQ_ArtyShells") > 0) then 
 			{
-			_CFF = ([_pos,HAC_HQ_ArtG,"SMOKE",9,_UL,_logic] call ALiVE_fnc_HAC_ArtyMission) select 0;
+			_CFF = ([_pos,(_logic getvariable "HAC_HQ_ArtG"),"SMOKE",9,_UL,_logic] call ALiVE_fnc_HAC_ArtyMission) select 0;
 			if not (isPlayer _UL) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_SmokeReq"),"SmokeReq",_logic] call ALiVE_fnc_HAC_AIChatter}};
 			};
 
@@ -130,7 +130,7 @@ if not (isPlayer (leader _unitG)) then {_frm = "FILE"};
 
 _wp = [_logic,_unitG,_DefPos,_tp,"AWARE","GREEN","FULL",["true","deletewaypoint [(group this), 0];"],true,0.001,[0,0,0],_frm] call ALiVE_fnc_HAC_WPadd;
 
-if not (HAC_HQ_Order == "DEFEND") then {_unitG setVariable [("Busy" + _unitvar), false]};
+if not ((_logic getvariable "HAC_HQ_Order") == "DEFEND") then {_unitG setVariable [("Busy" + _unitvar), false]};
 
 _cause = [_logic,_unitG,6,true,0,24,[],false] call ALiVE_fnc_HAC_Wait;
 _alive = _cause select 1;
@@ -151,17 +151,17 @@ _TED = position _logic;
 _dX = 2000 * (sin _angleV);
 _dY = 2000 * (cos _angleV);
 
-_posX = ((getPos _logic) select 0) + _dX + (random 2000) - 1000;
-_posY = ((getPos _logic) select 1) + _dY + (random 2000) - 1000;
+_posX = ((getposATL _logic) select 0) + _dX + (random 2000) - 1000;
+_posY = ((getposATL _logic) select 1) + _dY + (random 2000) - 1000;
 
 _TED = [_posX,_posY];
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [_TED,_unitG,"markWatch",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_dot"," | Def","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [_TED,_unitG,"markWatch",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_dot"," | Observe","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
-_dir = [(getPosATL (vehicle (leader _unitG))),_TED,10,_logic] call ALiVE_fnc_HAC_AngTowards;
+_dir = [(getposATL (vehicle (leader _unitG))),_TED,10,_logic] call ALiVE_fnc_HAC_AngTowards;
 if (_dir < 0) then {_dir = _dir + 360};
 
 _unitG setFormDir _dir;

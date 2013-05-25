@@ -67,8 +67,8 @@ if not (isNull _nE) then
 	{
 	if (((_logic getvariable "HAC_HQ_Smoke")) and ((_nE distance (vehicle _UL)) <= 500) and not (isPlayer _UL)) then
 		{
-		_posSL = getPosASL _UL;
-		_posSL2 = getPosASL _nE;
+		_posSL = getposASL _UL;
+		_posSL2 = getposASL _nE;
 
 		_angle = [_posSL,_posSL2,15,_logic] call ALiVE_fnc_HAC_AngTowards;
 
@@ -127,12 +127,12 @@ if not (_isDecoy) then
 	_safedist = 1000/(0.75 + ((_logic getvariable "HAC_HQ_Recklessness")/2));
 	_behind = false;
 	_behind2 = false;
-	if (HAC_HQ_Cyclecount > (4 + ((_logic distance (_logic getvariable "HAC_HQ_Obj"))/1000))) then {_behind2 = true};
+	if ((_logic getvariable "HAC_HQ_Cyclecount") > (4 + ((_logic distance (_logic getvariable "HAC_HQ_Obj"))/1000))) then {_behind2 = true};
 	_counterU = 0;
 
 		{
 		_VL = vehicle (leader _x);
-		if (((_VL distance HAC_HQ_Obj) < ([_Xpos,_Ypos] distance (_logic getvariable "HAC_HQ_Obj"))) or (((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ([_Xpos,_Ypos] distance _VL)) and ((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ((_logic getvariable "HAC_HQ_Obj") distance _VLU)))) then {_counterU = _counterU + 1};
+		if (((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ([_Xpos,_Ypos] distance (_logic getvariable "HAC_HQ_Obj"))) or (((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ([_Xpos,_Ypos] distance _VL)) and ((_VL distance (_logic getvariable "HAC_HQ_Obj")) < ((_logic getvariable "HAC_HQ_Obj") distance _VLU)))) then {_counterU = _counterU + 1};
 		if ((_counterU >= (round (2/(0.5 + ((_logic getvariable "HAC_HQ_Recklessness")/2))))) or (_counterU >= ((count (_logic getvariable "HAC_HQ_Friends"))/(4*(0.5 + ((_logic getvariable "HAC_HQ_Recklessness")/2)))))) exitwith {_behind = true}
 		}
 	foreach (_logic getvariable "HAC_HQ_Friends");
@@ -146,8 +146,8 @@ if not (_isDecoy) then
 		_Ypos3 = _Ypos2;
 		_behind2 = false;
 		_counterU = 0;
-		_Xpos2 = (_Xpos2 + ((position HAC_HQ_Obj) select 0))/2;
-		_Ypos2 = (_Ypos2 + ((position HAC_HQ_Obj) select 1))/2;
+		_Xpos2 = (_Xpos2 + ((position (_logic getvariable "HAC_HQ_Obj")) select 0))/2;
+		_Ypos2 = (_Ypos2 + ((position (_logic getvariable "HAC_HQ_Obj")) select 1))/2;
 		if not ((HAC_HQ_Obj distance [_Xpos2,_Ypos2]) > _safedist) exitWith {_Xpos = _Xpos3;_Ypos = _Ypos3};
 
 			{

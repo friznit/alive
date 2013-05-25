@@ -52,6 +52,9 @@ switch(_operation) do {
 				- enabled/disabled
                 */
                 
+                //Waiting for missionnamespace
+                waituntil {!(isnil "BIS_fnc_init")};
+                
                 if (isServer) then {
                     // if server, initialise module game logic
                     _logic setVariable ["super", SUPERCLASS];
@@ -91,7 +94,7 @@ switch(_operation) do {
                         _logic setvariable ["HAC_HQ_Debug", true];
 						_logic setvariable ["HAC_HQ_DebugII",true];
                     };
-
+                    
                     //Initialize Libraries
                     [_logic] call (compile preprocessfile "\x\alive\addons\sys_HAC\HAC_Library.sqf");
                     [_logic] call (compile preprocessfile "\x\alive\addons\sys_HAC\HAC_Vars.sqf");

@@ -19,7 +19,7 @@
 			if ((random 100) > 75) then {_ammo = "WP"};
 			if (_tgt in _enArmor) then {_ammo = "SADARM"};	
 
-			_bArr = [(getPosATL _tgt),_artG,_ammo,6,objNull,_logic] call ALiVE_fnc_HAC_ArtyMission;
+			_bArr = [(getposATL _tgt),_artG,_ammo,6,objNull,_logic] call ALiVE_fnc_HAC_ArtyMission;
 			_possible = _bArr select 0;
 
 			_UL = leader (_friends select (floor (random (count _friends))));
@@ -39,7 +39,7 @@
 					case (_ammo in ["HE"]) : {_ammo = "WP"};
 					};
 
-				_bArr = [(getPosATL _tgt),_artG,_ammo,6,objNull,_logic] call ALiVE_fnc_HAC_ArtyMission;
+				_bArr = [(getposATL _tgt),_artG,_ammo,6,objNull,_logic] call ALiVE_fnc_HAC_ArtyMission;
 
 				_possible = _bArr select 0;
 				if (_possible) then

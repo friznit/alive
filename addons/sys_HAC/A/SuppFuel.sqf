@@ -72,7 +72,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 
 	_logic setvariable ["HAC_HQ_Dried", _dried];
 	_cisterns = [];
-	if (isNil ("HAC_HQ_FSupportedG")) then {_logic setvariable ["HAC_HQ_FSupportedG", []]};
+	if (isNil {_logic getvariable "HAC_HQ_FSupportedG"}) then {_logic setvariable ["HAC_HQ_FSupportedG", []]};
 
 		{
 		_cis = assignedVehicle (leader _x);

@@ -47,8 +47,8 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 	if ((_logic getvariable "HAC_HQ_NObj") == 3) then {_trg = (_logic getvariable "HAC_HQ_Obj3")};
 	if ((_logic getvariable "HAC_HQ_NObj") >= 4) then {_trg = (_logic getvariable "HAC_HQ_Obj4")};
 
-	if (isNil ("HAC_HQ_ObjRadius1")) then {_logic setvariable ["HAC_HQ_ObjRadius1", 300]};
-	if (isNil ("HAC_HQ_ObjRadius2")) then {_logic setvariable ["HAC_HQ_ObjRadius2", 500]};
+	if (isNil {_logic getvariable "HAC_HQ_ObjRadius1"}) then {_logic setvariable ["HAC_HQ_ObjRadius1", 300]};
+	if (isNil {_logic getvariable "HAC_HQ_ObjRadius2"}) then {_logic setvariable ["HAC_HQ_ObjRadius2", 500]};
 
 	_mLoss = 10;
 	if (_logic in ((_logic getvariable "HAC_BBa_HQs") + (_logic getvariable "HAC_BBb_HQs"))) then {_mLoss = 0};

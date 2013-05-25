@@ -64,7 +64,7 @@ if (_BBSide == "A") then
 	{
 	if not (isNil "HAC_BB_MC") then
 		{
-		if ((typeName HAC_BB_MC) == "OBJECT") then {_cntr = getPosATL HAC_BB_MC} else {_cntr = HAC_BB_MC};
+		if ((typeName HAC_BB_MC) == "OBJECT") then {_cntr = getposATL HAC_BB_MC} else {_cntr = HAC_BB_MC};
 		}
 	else
 		{
@@ -640,7 +640,7 @@ if ((true) and (true)) then
 			};
 
 			{
-			_isLeft = ([(getPosATL _x),_ArmyPos,_attackAxis,_logic] call ALiVE_fnc_HAC_WhereIs) select 0;
+			_isLeft = ([(getposATL _x),_ArmyPos,_attackAxis,_logic] call ALiVE_fnc_HAC_WhereIs) select 0;
 			(group _x) setVariable ["isLeft",_isLeft]
 			}
 		foreach _BBHQs;
@@ -1483,7 +1483,7 @@ if ((true) and (true)) then
 
 				_HQ = _x;
 
-				_HQPos = getPosATL (vehicle _HQ);
+				_HQPos = getposATL (vehicle _HQ);
 
 				_dirAdd = -60;
 
@@ -1541,7 +1541,7 @@ if ((true) and (true)) then
 			if ((count _notTaken) == 0) then {_notTaken = _frontNotTaken};
 			if ((count _notTaken) == 0) then {_notTaken = _rightNotTaken};
 
-			_fPos = getPosATL (vehicle _x);
+			_fPos = getposATL (vehicle _x);
 
 			if ((count _notTaken) == 0) exitWith {(group _x) setVariable ["ActualTarget",[_fPos,1,false,"Zero"]]};
 
@@ -1599,7 +1599,7 @@ if ((true) and (true)) then
 			if ((count _notTaken) == 0) then {_notTaken = _frontNotTaken};
 			if ((count _notTaken) == 0) then {_notTaken = _leftNotTaken};
 
-			_fPos = getPosATL (vehicle _x);
+			_fPos = getposATL (vehicle _x);
 
 			if ((count _notTaken) == 0) exitWith {(group _x) setVariable ["ActualTarget",[_fPos,1,false,"Zero"]]};
 
@@ -1656,7 +1656,7 @@ if ((true) and (true)) then
 			_notTaken = _frontNotTaken;
 			if ((count _notTaken) == 0) then {_notTaken = _leftNotTaken};
 			if ((count _notTaken) == 0) then {_notTaken = _rightNotTaken};
-			_fPos = getPosATL (vehicle _x);
+			_fPos = getposATL (vehicle _x);
 
 			if ((count _notTaken) == 0) exitWith {(group _x) setVariable ["ActualTarget",[_fPos,1,false,"Zero"]]};
 
@@ -1760,7 +1760,7 @@ if ((true) and (true)) then
 
 						_acT = _acT select 0;
 
-						_HQpos = getPosATL (vehicle _x);
+						_HQpos = getposATL (vehicle _x);
 
 						_pathRep = [_sctrs,_areas,_HQpos,_acT,_BBSide,_logic] call ALiVE_fnc_HAC_Itinerary;
 
@@ -1808,7 +1808,7 @@ if ((true) and (true)) then
 	_HQpoints = [];
 
 		{
-		_HQpoints set [(count _HQpoints),getPosATL (vehicle _x)]
+		_HQpoints set [(count _HQpoints),getposATL (vehicle _x)]
 		}
 	foreach _BBHQs;
 
@@ -1874,8 +1874,6 @@ if ((true) and (true)) then
 		};
 
 	_ctWait = 0;
-	_ctVal = 20;
-	if not (isNil "HAC_BB_MainInterval") then {_ctVal = _logic getvariable "HAC_BB_MainInterval"};
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
@@ -1885,6 +1883,7 @@ if ((true) and (true)) then
 	waitUntil
 		{
 		sleep 60;
+        _ctVal = _logic getvariable ["HAC_BB_MainInterval",20];
 		_ctWait = _ctWait + 1;
 		if (_BBSide == "A") then 
 			{

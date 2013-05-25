@@ -11,10 +11,10 @@
 	if ((count _roads) > 0) then
 		{
 		_chosen = _roads select 0;
-		_distC = (getPosATL _chosen) distance _pos;
+		_distC = (getposATL _chosen) distance _pos;
 
 			{
-			_dist = (getPosATL _x) distance _pos;
+			_dist = (getposATL _x) distance _pos;
 			if (_dist <_distC) then {_chosen = _x;_distC = _dist} 
 			}
 		foreach _roads

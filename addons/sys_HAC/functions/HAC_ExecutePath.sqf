@@ -156,7 +156,7 @@
 								_enX = 0;
 								_enY = 0;				
 
-								_VLpos = getPosATL (vehicle (leader _x));
+								_VLpos = getposATL (vehicle (leader _x));
 								if (_VLpos in _afront) then 
 									{
 									_ct = _ct + 1;
@@ -184,7 +184,7 @@
 						_maxTempt = 0;			
 
 							{
-							_VHQpos = getPosATL (vehicle (leader _HQ));
+							_VHQpos = getposATL (vehicle (leader _HQ));
 							_enPos = _x select 0;
 							_dst = _VHQpos distance _enPos;
 							_val = _x select 1;

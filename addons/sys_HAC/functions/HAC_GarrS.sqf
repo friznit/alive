@@ -12,7 +12,7 @@ private ["_logic","_unit","_pos","_timer","_alive","_dst","_taken","_gar","_i","
 	_timer = 0;
 	_alive = true;
 
-	_posLast = getPosASL _unit;
+	_posLast = getposASL _unit;
 
 	waitUntil 
 		{

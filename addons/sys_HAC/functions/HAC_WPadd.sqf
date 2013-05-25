@@ -107,7 +107,7 @@
 
 		if not (_isAir) then
 			{
-			_sPoint = getPosATL (vehicle (leader _gp));
+			_sPoint = getposATL (vehicle (leader _gp));
 
 			_wps = waypoints _gp;
 

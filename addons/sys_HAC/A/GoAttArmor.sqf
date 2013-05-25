@@ -23,8 +23,8 @@ _logic setvariable ["HAC_HQ_AttackAv",_HAC_HQ_AttackAv];
 _UL = leader _unitG;
 _nothing = true;
 
-_dX = (_PosObj1 select 0) - ((getPos _logic) select 0);
-_dY = (_PosObj1 select 1) - ((getPos _logic) select 1);
+_dX = (_PosObj1 select 0) - ((getposATL _logic) select 0);
+_dY = (_PosObj1 select 1) - ((getposATL _logic) select 1);
 
 _angle = _dX atan2 _dY;
 
@@ -41,8 +41,8 @@ if (_isAttacked > 1) then {_distance = _distance - _distance2;_dXc = 0;_dYc = 0}
 _dXb = _distance * (sin _angle);
 _dYb = _distance * (cos _angle);
 
-_posX = ((getPos _logic) select 0) + _dXb + _dXc + (random 200) - 100;
-_posY = ((getPos _logic) select 1) + _dYb + _dYc + (random 200) - 100;
+_posX = ((getposATL _logic) select 0) + _dXb + _dXc + (random 200) - 100;
+_posY = ((getposATL _logic) select 1) + _dYb + _dYc + (random 200) - 100;
 
 _isWater = surfaceIsWater [_posX,_posY];
 
@@ -115,7 +115,7 @@ if not (isPlayer (leader _unitG)) then {_frm = "WEDGE"};
 
 _UL = leader _unitG;if not (isPlayer _UL) then {if (_timer <= 24) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,HAC_xHQ_AIC_OrdFinal,"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
 
-_tPos = getPosATL _Trg;
+_tPos = getposATL _Trg;
 _tPosX = _tPos select 0;
 _tPosY = _tPos select 1;
 

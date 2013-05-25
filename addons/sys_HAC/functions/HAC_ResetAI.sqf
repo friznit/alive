@@ -6,7 +6,7 @@
 
 		{
 		_unit = _x;
-		_pos = getPosATL _unit;
+		_pos = getposATL _unit;
 
 		_posX = _pos select 0;
 		_posY = _pos select 1;

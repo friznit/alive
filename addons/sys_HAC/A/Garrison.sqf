@@ -20,7 +20,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 
 			_unitG setVariable ["Garrisoned" + (str _unitG),true];
 
-			_pos = getPosATL (vehicle (leader _unitG));
+			_pos = getposATL (vehicle (leader _unitG));
 			_units = [];
 
 			_UL = leader _unitG;

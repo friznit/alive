@@ -1,5 +1,5 @@
 _logic = _this select ((count _this)-1);
-waitUntil {sleep 10;(not (isNil "HAC_HQ_Support") and not (isNil "HAC_HQ_AmmoDrop"))};
+waitUntil {sleep 10;(!(isNil {_logic getvariable "HAC_HQ_Support"}) && !(isNil {_logic getvariable "HAC_HQ_AmmoDrop"}))};
 waituntil {sleep 10;(((count ((_logic getvariable "HAC_HQ_Support") + (_logic getvariable "HAC_HQ_AmmoDrop"))) > 0) and ((_logic getvariable "HAC_HQ_Cyclecount") > 2))};
 
 if (isNil {_logic getvariable "RHQ_Ammo"}) then {_logic setvariable ["RHQ_Ammo", []]};
@@ -98,7 +98,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 	//_Hollow = _Hollow + _ZeroA;
 	_logic setvariable ["HAC_HQ_Hollow", _Hollow + _ZeroA];
 	_MTrucks = [];
-	if (isNil ("HAC_HQ_ASupportedG")) then {_logic setvariable ["HAC_HQ_ASupportedG", []]};
+	if (isNil {_logic getvariable "HAC_HQ_ASupportedG"}) then {_logic setvariable ["HAC_HQ_ASupportedG", []]};
 
 		{
 		_mtr = assignedVehicle (leader _x);

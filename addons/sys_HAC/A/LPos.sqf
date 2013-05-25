@@ -8,7 +8,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 	sleep 61;
 		{
 		_veh = vehicle (leader _x);
-		_pos = getPosATL _veh;
+		_pos = getposATL _veh;
 		_start = _x getvariable ("START" + str (_x));
 		if (isNil ("_start")) then {_x setVariable [("START" + str (_x)),_pos];sleep 0.05;_start = _x getvariable ("START" + str (_x))};
 		_ammo = count (magazines _veh);
@@ -36,11 +36,11 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 							_dst = (leader (_logic getvariable "HAC_HQ")) distance _start;
 							if (_dst > (_logic getvariable "HAC_HQ_AirDist")) then
 								{
-								_newPos = [getPosATL (leader (_logic getvariable "HAC_HQ")),300,_logic] call ALiVE_fnc_HAC_RandomAround;
+								_newPos = [getposATL (leader (_logic getvariable "HAC_HQ")),300,_logic] call ALiVE_fnc_HAC_RandomAround;
 								_lz = [_newPos,_logic] call ALiVE_fnc_HAC_LZ;
 								if not (isNull _lz) then
 									{
-									_start = getPosATL _lz;
+									_start = getposATL _lz;
 									_x setVariable [("START" + str (_x)),_start];
 									_x getVariable [("Busy" + (str _x)),true];
 									_wp = [_logic,_x,_start,"MOVE","CARELESS","GREEN","NORMAL",["true", "{(vehicle _x) land 'LAND'} foreach (units (group this)); deletewaypoint [(group this), 0]"]] call ALiVE_fnc_HAC_WPadd;
@@ -90,10 +90,10 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 				_dst = (leader (_logic getvariable "HAC_HQ")) distance _start;
 				if (_dst > (_logic getvariable "HAC_HQ_AirDist")) then
 					{
-					_lz = [getPosATL (leader (_logic getvariable "HAC_HQ")),_logic] call ALiVE_fnc_HAC_LZ;
+					_lz = [getposATL (leader (_logic getvariable "HAC_HQ")),_logic] call ALiVE_fnc_HAC_LZ;
 					if not (isNull _lz) then
 						{
-						_start = getPosATL _lz;
+						_start = getposATL _lz;
 						_x setVariable [("START" + str (_x)),_start]
 						}
 					}

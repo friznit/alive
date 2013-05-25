@@ -67,7 +67,7 @@
 			if (typeOf _veh in ((_logic getvariable "HAC_HQ_Howitzer") + (_logic getvariable "HAC_HQ_Mortar") + (_logic getvariable "HAC_HQ_Rocket"))) then {_artFactor = 10} else {_vehFactor = 500 + (rating _veh)};
 			};
 
-		_nearImp = (getPosATL _CL) nearEntities [["CAManBase","AllVehicles","Strategic","WarfareBBaseStructure","Fortress"],100];
+		_nearImp = (getposATL _CL) nearEntities [["CAManBase","AllVehicles","Strategic","WarfareBBaseStructure","Fortress"],100];
 
 			{
 			if (((side _x) getFriend (side _CL) >= 0.6) and not (_x isKindOf "civilian")) then 

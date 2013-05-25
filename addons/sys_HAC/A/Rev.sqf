@@ -1,9 +1,9 @@
 _logic = _this select ((count _this)-1);
-if (isNil ("HAC_HQ_KnowTL")) then {_logic setvariable ["HAC_HQ_KnowTL", true]};
+if (isNil {_logic getvariable "HAC_HQ_KnowTL"}) then {_logic setvariable ["HAC_HQ_KnowTL", true]};
 	
 while {not (isNull (_logic getvariable "HAC_HQ"))} do
 	{
-	waituntil {sleep 1; not (isNil ("HAC_HQ_KnEnemies"))};
+	waituntil {sleep 1; not (isNil {_logic getvariable "HAC_HQ_KnEnemies"})};
 	sleep 20;
 	_players = [];
 	if ((_logic getvariable "HAC_HQ_KnowTL")) then 

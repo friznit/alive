@@ -1,5 +1,5 @@
 	private ["_logic","_battery","_target","_batlead","_Ammo","_friends","_Debug","_batname","_first","_phaseF","_targlead","_againF","_dispF","_accF","_Amount","_Rate","_FMType","_againcheck","_Aunit",
-	"_HAC_AccF","_TTI","_amount1","_amount2","_template","_targetPos","_X0","_Y0","_X1","_Y1","_X2","_Y2","_Xav","_Yav","_transspeed","_transdir","_Xhd","_Yhd","_impactpos","_safebase","_distance",
+	"_HAC_AccF","_TTI","_amount1","_amount2","_template","_targetposATL","_X0","_Y0","_X1","_Y1","_X2","_Y2","_Xav","_Yav","_transspeed","_transdir","_Xhd","_Yhd","_impactpos","_safebase","_distance",
 	"_safe","_safecheck","_gauss1","_gauss09","_gauss04","_gauss2","_distance2","_DdistF","_DdamageF","_DweatherF","_DskillF","_anotherD","_Dreduct","_spawndisp","_dispersion","_disp","_HAC_AccF",
 	"_gauss1b","_gauss2b","_AdistF","_AweatherF","_AdamageF","_AskillF","_Areduct","_spotterF","_anotherA","_acc","_finalimpact","_posX","_posY","_i","_dX","_dY","_angle","_dXb","_dYb","_posX2",
 	"_posY2","_AmmoN","_exDst","_exPX","_exPY","_onRoad","_exPos","_nR","_stRS","_dMin","_dAct","_dSum","_checkedRS","_RSArr","_angle","_rPos","_actRS","_ammocheck","_artyGp","_ammoCount","_dstAct",
@@ -94,12 +94,12 @@
 			default {_HAC_Accf = 1;_TTI = 25};
 			};
 
-		if (isNil ("HAC_ART_FMType")) then {_FMType = "IMMEDIATE"} else {_FMType = (_logic getvariable "HAC_ART_FMType")};
+		if (isNil {_logic getvariable "HAC_ART_FMType"}) then {_FMType = "IMMEDIATE"} else {_FMType = (_logic getvariable "HAC_ART_FMType")};
 		//if (isNil ("HAC_ART_Ammo")) then {_Ammo = "HE"} else {_Ammo = HAC_ART_Ammo};
-		if (isNil ("HAC_ART_Rate")) then {_Rate = 0} else {_Rate = (_logic getvariable "HAC_ART_Rate")};
-		if (isNil ("HAC_ART_Amount")) then {_Amount = 6} else {_Amount = (_logic getvariable "HAC_ART_Amount")};
-		if (isNil ("HAC_ART_Disp")) then {_dispF = 0.4} else {_dispF = (_logic getvariable "HAC_ART_Disp")};
-		if (isNil ("HAC_ART_Acc")) then {_accF = 2} else {_accF = (_logic getvariable "HAC_ART_Acc")};
+		if (isNil {_logic getvariable "HAC_ART_Rate"}) then {_Rate = 0} else {_Rate = (_logic getvariable "HAC_ART_Rate")};
+		if (isNil {_logic getvariable "HAC_ART_Amount"}) then {_Amount = 6} else {_Amount = (_logic getvariable "HAC_ART_Amount")};
+		if (isNil {_logic getvariable "HAC_ART_Disp"}) then {_dispF = 0.4} else {_dispF = (_logic getvariable "HAC_ART_Disp")};
+		if (isNil {_logic getvariable "HAC_ART_Acc"}) then {_accF = 2} else {_accF = (_logic getvariable "HAC_ART_Acc")};
 
 		if (_Ammo == "SADARM") then {_amount = ceil (_amount/3)};
 
@@ -120,18 +120,18 @@
 
 		if (_amount == 0) exitwith {_waitFor = false};
 		_template = [_FMType,_Ammo,_Rate,_Amount];
-		_targetPos = getPosASL _targlead;
+		_targetposATL = getposASL _targlead;
 
-		_X0 = (_targetpos select 0);
-		_Y0 = (_targetpos select 1);
+		_X0 = (_targetposATL select 0);
+		_Y0 = (_targetposATL select 1);
 		sleep 10;
 
 		if (isNull _targlead) exitWith {_waitFor = false};
 		if not (alive _targlead) exitWith {_waitFor = false};
 
-		_targetPos = getPosASL _targlead;
-		_X1 = (_targetpos select 0);
-		_Y1 = (_targetpos select 1);
+		_targetposATL = getposASL _targlead;
+		_X1 = (_targetposATL select 0);
+		_Y1 = (_targetposATL select 1);
 		sleep 10;
 
 		if (isNull _targlead) exitWith {_waitFor = false};
@@ -140,9 +140,9 @@
 		if (isNull _batlead) exitwith {_waitFor = false};
 		if not (alive _batlead) exitwith {_waitFor = false};
 
-		_targetPos = getPosASL _targlead;
-		_X2 = (_targetpos select 0);
-		_Y2 = (_targetpos select 1);
+		_targetposATL = getposASL _targlead;
+		_X2 = (_targetposATL select 0);
+		_Y2 = (_targetposATL select 1);
 
 		_onRoad = isOnRoad _targlead;
 
@@ -154,17 +154,17 @@
 
 		_Xhd = _transspeed * sin _transdir * 2.7 * _TTI;
 		_Yhd = _transspeed * cos _transdir * 2.7 * _TTI;
-		_impactpos = _targetpos;
+		_impactpos = _targetposATL;
 		_safebase = 100;
 
-		_exPX = (_targetPos select 0) + _Xhd;
-		_exPY = (_targetPos select 1) + _Yhd;
+		_exPX = (_targetposATL select 0) + _Xhd;
+		_exPY = (_targetposATL select 1) + _Yhd;
 
 		_exPos = [_exPX,_exPY,getTerrainHeightASL [_exPX,_exPY]];
 
-		_exDst = _targetPos distance _exPos;
+		_exDst = _targetposATL distance _exPos;
 
-		if (isNil ("HAC_ART_Safe")) then {_safebase = 100} else {_safebase = (_logic getvariable "HAC_ART_Safe")};
+		if (isNil {_logic getvariable "HAC_ART_Safe"}) then {_safebase = 100} else {_safebase = (_logic getvariable "HAC_ART_Safe")};
 
 		_safe = _safebase * _HAC_Accf * (1 + overcast);
 
@@ -207,7 +207,7 @@
 					}
 				};
 
-			_impactpos = [(_targetpos select 0) + _Xhd, (_targetpos select 1) + _Yhd];
+			_impactpos = [(_targetposATL select 0) + _Xhd, (_targetposATL select 1) + _Yhd];
 			}
 		else
 			{
@@ -249,12 +249,12 @@
 			if (_dSum < _exDst) then
 				{
 				//if (_transdir < 0) then {_transdir = _transdir + 360};
-				_angle = [_targetPos,(getPosASL _stRS),1,_logic] call ALiVE_fnc_HAC_AngTowards;
-				_impactPos = [(getPosASL _stRS),_angle,(_exDst - _dSum),_logic] call ALiVE_fnc_HAC_PosTowards2D
+				_angle = [_targetposATL,(getposASL _stRS),1,_logic] call ALiVE_fnc_HAC_AngTowards;
+				_impactPos = [(getposASL _stRS),_angle,(_exDst - _dSum),_logic] call ALiVE_fnc_HAC_PosTowards2D
 				}
 			else
 				{
-				_rPos = getPosASL _stRS;
+				_rPos = getposASL _stRS;
 				_impactPos = [_rPos select 0,_rPos select 1]
 				};
 			
@@ -262,7 +262,7 @@
 				if ((_impactpos distance (vehicle (leader _x))) < _safe) exitwith 
 					{
 					_safeCheck = false;
-					_impactpos = [((_impactpos select 0) + (_targetPos select 0))/2,((_impactpos select 1) + (_targetPos select 1))/2]
+					_impactpos = [((_impactpos select 0) + (_targetposATL select 0))/2,((_impactpos select 1) + (_targetposATL select 1))/2]
 					}
 				}
 			foreach _friends
@@ -289,7 +289,7 @@
 		_gauss09 = (random 0.09) + (random 0.09) + (random 0.09) + (random 0.09) + (random 0.09) + (random 0.09) + (random 0.09) + (random 0.09) +  (random 0.09) + (random 0.09);
 		_gauss04 = (random 0.04) + (random 0.04) + (random 0.04) + (random 0.04) + (random 0.04) + (random 0.04) + (random 0.04) + (random 0.04) +  (random 0.04) + (random 0.04);
 		_gauss2 = (random 0.2) + (random 0.2) + (random 0.2) + (random 0.2) + (random 0.2) + (random 0.2) + (random 0.2) + (random 0.2) +  (random 0.2) + (random 0.2);
-		_distance2 = _impactPos distance (getPosATL (vehicle _batlead));
+		_distance2 = _impactPos distance (getposATL (vehicle _batlead));
 		_DdistF = (_distance2/10) * (0.1 + _gauss04);
 		_DdamageF = 1 + 0.5 * (damage _batlead);
 		_DweatherF = 1 + overcast;
@@ -449,7 +449,7 @@
 			_i = str _battery;
 			if (_first == 1) then 
 				{
-				_i = createMarker [_i,getpos (vehicle _batlead)];
+				_i = createMarker [_i,getposATL (vehicle _batlead)];
 				_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlack"]);
 				_i setMarkerShape "ICON";
 				_i setMarkerType "n_empty";
@@ -457,7 +457,7 @@
 				}
 			else
 				{
-				(str _battery) setMarkerPos getpos (vehicle _batlead)
+				(str _battery) setMarkerPos getposATL (vehicle _batlead)
 				}
 
 			};

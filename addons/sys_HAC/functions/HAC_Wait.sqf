@@ -146,7 +146,7 @@
 
 		if ((_ammoF) and not (isNil "_boxed")) then
 			{
-			_boxed = getPosATL _boxed;
+			_boxed = getposATL _boxed;
 			_boxed = [_boxed,20,_logic] call ALiVE_fnc_HAC_RandomAround;
 			_wp = [_logic,_gp,[_boxed select 0,_boxed select 1],"MOVE","AWARE","GREEN","FULL",["true","deletewaypoint [(group this), 0]"]] call ALiVE_fnc_HAC_WPadd;
 			_boxed = nil;

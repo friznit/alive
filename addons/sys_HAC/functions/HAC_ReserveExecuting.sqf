@@ -10,7 +10,7 @@
 	_o4 = _this select 5;
 	_allied = _this select 6;//leader units
 
-	_HQpos = getPosATL (vehicle _HQ);
+	_HQpos = getposATL (vehicle _HQ);
 	_front = _this select 7;
 	_taken = _this select 8;
 	_hostileG = _this select 9;
@@ -27,7 +27,7 @@
 
 		if (_aliveHQ) then
 			{
-			_frontPos = getPosATL (vehicle _aheadL)
+			_frontPos = getposATL (vehicle _aheadL)
 			}
 		};
 
@@ -165,7 +165,7 @@
 
 					if ((_enV distance _enV2) < 600) then 
 						{
-						_posArr set [(count _posArr),getPosATL _enV2];
+						_posArr set [(count _posArr),getposATL _enV2];
 						_assg set [(count _assg),_x];			
 						}
 					}

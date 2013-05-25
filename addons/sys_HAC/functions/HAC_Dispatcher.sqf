@@ -147,7 +147,7 @@
 		if (_sum > 0) then
 			{
 			_trg = vehicle (leader _x);
-			_tPos = getPosATL _trg;	
+			_tPos = getposATL _trg;	
 
 			_topo = [_trg,5,_logic] call ALiVE_fnc_HAC_TerraCognita;
 
@@ -182,7 +182,7 @@
 					while {((_limit > 0) and ((count _avF) > 0) and (_ix < (count _SortedForce)))} do
 						{
 						_chosen = _SortedForce select _ix;
-						_chVP = getPosATL (vehicle (leader _chosen));
+						_chVP = getposATL (vehicle (leader _chosen));
 						_ix = _ix + 1;
 
 						_positive = true;
@@ -263,7 +263,7 @@
 															{
 															_thRep = [_chVP,_AAthreat,25000,_logic] call ALiVE_fnc_HAC_CloseEnemyB;
 															_isClose = _thRep select 0;
-															_clstE = getPosATL (vehicle (leader (_thRep select 2)));
+															_clstE = getposATL (vehicle (leader (_thRep select 2)));
 															_enDst = [_chVP,_tPos,_clstE,_logic] call ALiVE_fnc_HAC_PointToSecDst;
 
 															if ((_isClose) and (_enDst > 0) and (_enDst < 1500)) then
@@ -281,7 +281,7 @@
 																{
 																_thRep = [_chVP,_ATthreat,25000,_logic] call ALiVE_fnc_HAC_CloseEnemyB;
 																_isClose = _thRep select 0;
-																_clstE = getPosATL (vehicle (leader (_thRep select 2)));
+																_clstE = getposATL (vehicle (leader (_thRep select 2)));
 																_enDst = [_chVP,_tPos,_clstE,_logic] call ALiVE_fnc_HAC_PointToSecDst;
 
 																if ((_isClose) and (_enDst > 0) and (_enDst < 1500)) then
@@ -319,7 +319,7 @@
 									{
 									_thRep = [_chVP,_ATthreat,25000,_logic] call ALiVE_fnc_HAC_CloseEnemyB;
 									_isClose = _thRep select 0;
-									_clstE = getPosATL (vehicle (leader (_thRep select 2)));
+									_clstE = getposATL (vehicle (leader (_thRep select 2)));
 									_enDst = [_chVP,_tPos,_clstE,_logic] call ALiVE_fnc_HAC_PointToSecDst;
 
 									if ((_isClose) and (_enDst > 0) and (_enDst < 1500)) then
@@ -337,7 +337,7 @@
 										{
 										_thRep = [_chVP,_ATthreat,25000,_logic] call ALiVE_fnc_HAC_CloseEnemyB;
 										_isClose = _thRep select 0;
-										_clstE = getPosATL (vehicle (leader (_thRep select 2)));
+										_clstE = getposATL (vehicle (leader (_thRep select 2)));
 										_enDst = [_chVP,_tPos,_clstE,_logic] call ALiVE_fnc_HAC_PointToSecDst;
 
 										if ((_isClose) and (_enDst > 0) and (_enDst < 1500)) then
@@ -358,7 +358,7 @@
 									{
 									_thRep = [_chVP,_ATthreat,25000,_logic] call ALiVE_fnc_HAC_CloseEnemyB;
 									_isClose = _thRep select 0;
-									_clstE = getPosATL (vehicle (leader (_thRep select 2)));
+									_clstE = getposATL (vehicle (leader (_thRep select 2)));
 									_enDst = [_chVP,_tPos,_clstE,_logic] call ALiVE_fnc_HAC_PointToSecDst;
 
 									if ((_isClose) and (_enDst > 0) and (_enDst < 1500)) then

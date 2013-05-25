@@ -111,7 +111,7 @@
 				_battery = _this select 0;
 				_pos = _this select 1;
 				_template = _this select 2;
-				_FO = getPosASL (_this select 3);
+				_FO = getposASL (_this select 3);
 				_ammo = _template select 1;
 				_amount = _template select 3;
 

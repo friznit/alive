@@ -15,8 +15,8 @@ sleep (60 * (1 + (_logic distance _default)/1000));
 if not ((count (_logic getvariable "HAC_HQ_KnEnemies")) == 0) then 
 	{
 		{
-		_Epos0 = _Epos0 + [((getPosATL _x) select 0)];
-		_Epos1 = _Epos1 + [((getPosATL _x) select 1)]
+		_Epos0 = _Epos0 + [((getposATL _x) select 0)];
+		_Epos1 = _Epos1 + [((getposATL _x) select 1)]
 		}
 	foreach (_logic getvariable "HAC_HQ_KnEnemies")
 	};
@@ -76,8 +76,8 @@ if not ((count (_logic getvariable "HAC_HQ_KnEnemies")) == 0) then
 _PosMid0 = (_Epos0Min + _Epos0Max)/2;
 _PosMid1 = (_Epos1Min + _Epos1Max)/2;
 
-_dX = (_PosMid0) - ((getPosATL _logic) select 0);
-_dY = (_Posmid1) - ((getPosATL _logic) select 1);
+_dX = (_PosMid0) - ((getposATL _logic) select 0);
+_dY = (_Posmid1) - ((getposATL _logic) select 1);
 
 _angle0 = _dX atan2 _dY;
 

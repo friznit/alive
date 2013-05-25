@@ -393,7 +393,7 @@ HAC_TerraCognita =
 	_rds = 100;
 	if ((count _this) > 2) then {_rds = _this select 2};
 
-	if not ((typeName _position) == "ARRAY") then {_position = getPosATL _position};
+	if not ((typeName _position) == "ARRAY") then {_position = getposATL _position};
 
 	_posX = _position select 0;
 	_posY = _position select 1;
@@ -868,7 +868,7 @@ HAC_ExecutePath =
 								_enX = 0;
 								_enY = 0;				
 
-								_VLpos = getPosATL (vehicle (leader _x));
+								_VLpos = getposATL (vehicle (leader _x));
 								if (_VLpos in _afront) then 
 									{
 									_ct = _ct + 1;
@@ -896,7 +896,7 @@ HAC_ExecutePath =
 						_maxTempt = 0;			
 
 							{
-							_VHQpos = getPosATL (vehicle (leader _HQ));
+							_VHQpos = getposATL (vehicle (leader _HQ));
 							_enPos = _x select 0;
 							_dst = _VHQpos distance _enPos;
 							_val = _x select 1;
@@ -1089,7 +1089,7 @@ HAC_ReserveExecuting =
 	_o4 = _this select 5;
 	_allied = _this select 6;//leader units
 
-	_HQpos = getPosATL (vehicle _HQ);
+	_HQpos = getposATL (vehicle _HQ);
 	_front = _this select 7;
 	_taken = _this select 8;
 	_hostileG = _this select 9;
@@ -1105,7 +1105,7 @@ HAC_ReserveExecuting =
 
 		if (_aliveHQ) then
 			{
-			_frontPos = getPosATL (vehicle _aheadL)
+			_frontPos = getposATL (vehicle _aheadL)
 			}
 		};
 
@@ -1243,7 +1243,7 @@ HAC_ReserveExecuting =
 
 					if ((_enV distance _enV2) < 600) then 
 						{
-						_posArr set [(count _posArr),getPosATL _enV2];
+						_posArr set [(count _posArr),getposATL _enV2];
 						_assg set [(count _assg),_x];			
 						}
 					}
@@ -1740,8 +1740,8 @@ HAC_BBSimpleD =
 			_midY = 0;
 
 				{
-				_midX = _midX + ((getPosATL (vehicle (leader _x))) select 0);
-				_midY = _midY + ((getPosATL (vehicle (leader _x))) select 1);
+				_midX = _midX + ((getposATL (vehicle (leader _x))) select 0);
+				_midY = _midY + ((getposATL (vehicle (leader _x))) select 1);
 				}
 			foreach _frs;
 
@@ -1755,7 +1755,7 @@ HAC_BBSimpleD =
 					{
 					if (isNil "_lPos") then
 						{
-						_frCenter = getPosATL (vehicle _x);
+						_frCenter = getposATL (vehicle _x);
 						}
 					}
 				};
@@ -1796,12 +1796,12 @@ HAC_BBSimpleD =
 				_HQPosMark = (group _x) getVariable ["HQPosMark",""];
 				if (_HQPosMark == "") then
 					{
-					_HQPosMark = [(getPosATL (vehicle _x)),(group _x),"HQMark",_colorArr,"ICON","mil_box","Position of " + (str _x),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
+					_HQPosMark = [(getposATL (vehicle _x)),(group _x),"HQMark",_colorArr,"ICON","mil_box","Position of " + (str _x),"",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
 					(group _x) setVariable ["HQPosMark",_HQPosMark]
 					}
 				else
 					{
-					_HQPosMark setMarkerPos (getPosATL (vehicle _x));
+					_HQPosMark setMarkerPos (getposATL (vehicle _x));
 					}
 				}
 			else

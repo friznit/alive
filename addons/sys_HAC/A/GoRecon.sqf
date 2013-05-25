@@ -19,8 +19,8 @@ _nothing = true;
 _End = [((position _logic) select 0) + (random 400) - 200,((position _logic) select 1) + (random 400) - 200];
 _rd = 200;
 
-_dX = (_PosObj1 select 0) - ((getPos _logic) select 0);
-_dY = (_PosObj1 select 1) - ((getPos _logic) select 1);
+_dX = (_PosObj1 select 0) - ((getposATL _logic) select 0);
+_dY = (_PosObj1 select 1) - ((getposATL _logic) select 1);
 
 _angle = _dX atan2 _dY;
 
@@ -43,11 +43,11 @@ switch (_stage) do
 _dXb = _distance * (sin _angle);
 _dYb = _distance * (cos _angle);
 
-_posX = ((getPos _logic) select 0) + _dXb + _dXc + (random 200) - 100;
-_posY = ((getPos _logic) select 1) + _dYb + _dYc + (random 200) - 100;
+_posX = ((getposATL _logic) select 0) + _dXb + _dXc + (random 200) - 100;
+_posY = ((getposATL _logic) select 1) + _dYb + _dYc + (random 200) - 100;
 
 _MElevated = [_posX,_posY];
-_MElev = (getPosATL (nearestObject [_posX,_posY,10])) select 2;
+_MElev = (getposATL (nearestObject [_posX,_posY,10])) select 2;
 
 if (_unitG in HAC_HQ_FOG) then 
 	{

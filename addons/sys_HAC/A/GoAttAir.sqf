@@ -20,8 +20,8 @@ _logic setvariable ["HAC_HQ_AttackAv",_HAC_HQ_AttackAv];
 
 _nothing = true;
 
-_dX = (_PosObj1 select 0) - ((getPos _logic) select 0);
-_dY = (_PosObj1 select 1) - ((getPos _logic) select 1);
+_dX = (_PosObj1 select 0) - ((getposATL _logic) select 0);
+_dY = (_PosObj1 select 1) - ((getposATL _logic) select 1);
 
 _angle = _dX atan2 _dY;
 
@@ -34,8 +34,8 @@ _dYc = _distance2 * (sin _angle);
 _dXb = _distance * (sin _angle);
 _dYb = _distance * (cos _angle);
 
-_posX = ((getPos _logic) select 0) + _dXb;
-_posY = ((getPos _logic) select 1) + _dYb;
+_posX = ((getposATL _logic) select 0) + _dXb;
+_posY = ((getposATL _logic) select 1) + _dYb;
 
 if ((isPlayer (leader _unitG)) and ((_logic getvariable "HAC_xHQ_GPauseActive"))) then {hintC "New orders from HQ!";setAccTime 1};
 
@@ -62,7 +62,7 @@ if (_unitG in (_logic getvariable "HAC_HQ_BAirG")) then
 	_tgt = "LaserTargetWStatic";
 	if (_eSide == east) then {_tgt = "LaserTargetEStatic"};
 
-	_tPos = getPosATL _Trg;
+	_tPos = getposATL _Trg;
 	_tX = (_tPos select 0) + (random 60) - 30;
 	_tY = (_tPos select 1) + (random 60) - 30;
 
@@ -82,7 +82,7 @@ if (_unitG in (_logic getvariable "HAC_HQ_BAirG")) then
 			if not (alive _Trg) exitWith {};
 			if not (alive _VL) exitWith {};
 
-			_tPos = getPosATL _Trg;
+			_tPos = getposATL _Trg;
 			_tX = (_tPos select 0) + (random 60) - 30;
 			_tY = (_tPos select 1) + (random 60) - 30;
 

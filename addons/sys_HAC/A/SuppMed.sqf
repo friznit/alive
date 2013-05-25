@@ -1,10 +1,10 @@
 _logic = _this select ((count _this)-1);
 waituntil {sleep 10;(not (isNil {_logic getvariable "HAC_HQ_Support"}) and ((count (_logic getvariable "HAC_HQ_Support")) > 0) and (_logic getvariable "HAC_HQ_Cyclecount") > 2)};
 
-if (isNil ("RHQ_Med")) then {_logic setvariable ["RHQ_Med", []]};
-if (isNil ("HAC_HQ_SMed")) then {_logic setvariable ["HAC_HQ_SMed", true]};
-if (isNil ("HAC_HQ_ExMedic")) then {_logic setvariable ["HAC_HQ_ExMedic", []]};
-if (isNil ("HAC_HQ_MedPoints")) then {_logic setvariable ["HAC_HQ_MedPoints", []]};
+if (isNil {_logic getvariable "RHQ_Med"}) then {_logic setvariable ["RHQ_Med", []]};
+if (isNil {_logic getvariable "HAC_HQ_SMed"}) then {_logic setvariable ["HAC_HQ_SMed", true]};
+if (isNil {_logic getvariable "HAC_HQ_ExMedic"}) then {_logic setvariable ["HAC_HQ_ExMedic", []]};
+if (isNil {_logic getvariable "HAC_HQ_MedPoints"}) then {_logic setvariable ["HAC_HQ_MedPoints", []]};
 
 _med = (_logic getvariable "RHQ_Med") + ["LandRover_Ambulance_ACR","M113Ambul_UN_EP1","M113Ambul_TK_EP1","UH60M_MEV_EP1","M1133_MEV_EP1","HMMWV_Ambulance_CZ_DES_EP1","HMMWV_Ambulance_DES_EP1","Mi17_medevac_Ins","BMP2_Ambul_INS","GAZ_Vodnik_MedEvac","Mi17_medevac_RU","Mi17_medevac_CDF","BMP2_Ambul_CDF","HMMWV_Ambulance","MH60S"] - (_logic getvariable "RHQs_Med");
 _noenemy = true;
@@ -88,7 +88,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 	_Lwounded = _wounded - _Swounded;
 	_logic setvariable ["HAC_HQ_Wounded", _wounded];
 	_ambulances = [];
-	if (isNil ("HAC_HQ_SupportedG")) then {_logic setvariable ["HAC_HQ_SupportedG", []]};
+	if (isNil {_logic getvariable "HAC_HQ_SupportedG"}) then {_logic setvariable ["HAC_HQ_SupportedG", []]};
 
 		{
 		_amb = assignedVehicle (leader _x);

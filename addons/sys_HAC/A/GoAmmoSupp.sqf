@@ -63,11 +63,11 @@ if (_drop) then
 		if (_unit isKindOf "Air") then
 			{
 			_ammoBox = _this select 5;
-			_abPos = getPosATL _ammoBox;
+			_abPos = getposATL _ammoBox;
 			_ammoBox setPos [0,0,2000];
 			_pos = _Trg;
-			_ang = [(getPosATL _unit),(getPosATL _Trg),5,_logic] call ALiVE_fnc_HAC_AngTowards;
-			_nextPos1 = [(getPosATL _unit),_ang,(_unit distance _Trg) + 200,_logic] call ALiVE_fnc_HAC_PosTowards2D;
+			_ang = [(getposATL _unit),(getposATL _Trg),5,_logic] call ALiVE_fnc_HAC_AngTowards;
+			_nextPos1 = [(getposATL _unit),_ang,(_unit distance _Trg) + 200,_logic] call ALiVE_fnc_HAC_PosTowards2D;
 
 			_tp = "MOVE";
 

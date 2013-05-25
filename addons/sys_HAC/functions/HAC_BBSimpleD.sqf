@@ -31,8 +31,8 @@
 			_midY = 0;
 
 				{
-				_midX = _midX + ((getPosATL (vehicle (leader _x))) select 0);
-				_midY = _midY + ((getPosATL (vehicle (leader _x))) select 1);
+				_midX = _midX + ((getposATL (vehicle (leader _x))) select 0);
+				_midY = _midY + ((getposATL (vehicle (leader _x))) select 1);
 				}
 			foreach _frs;
 
@@ -46,7 +46,7 @@
 					{
 					if (isNil "_lPos") then
 						{
-						_frCenter = getPosATL (vehicle _x);
+						_frCenter = getposATL (vehicle _x);
 						}
 					}
 				};
@@ -87,12 +87,12 @@
 				_HQPosMark = (group _x) getVariable ["HQPosMark",""];
 				if (_HQPosMark == "") then
 					{
-					_HQPosMark = [(getPosATL (vehicle _x)),(group _x),"HQMark",_colorArr,"ICON","mil_box"," | Position of " + (str _x),"",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
+					_HQPosMark = [(getposATL (vehicle _x)),(group _x),"HQMark",_colorArr,"ICON","mil_box"," | Position of " + (str _x),"",[0.75,0.75],_logic] call ALiVE_fnc_HAC_Mark;
 					(group _x) setVariable ["HQPosMark",_HQPosMark]
 					}
 				else
 					{
-					_HQPosMark setMarkerPos (getPosATL (vehicle _x));
+					_HQPosMark setMarkerPos (getposATL (vehicle _x));
 					}
 				}
 			else

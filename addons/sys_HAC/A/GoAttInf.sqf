@@ -25,8 +25,8 @@ _HAC_HQ_AttackAv = (_logic getvariable ["HAC_HQ_AttackAv",[]]) -  [_unitG];_logi
 _UL = leader _unitG;
 _nothing = true;
 
-_dX = (_PosObj1 select 0) - ((getPos _logic) select 0);
-_dY = (_PosObj1 select 1) - ((getPos _logic) select 1);
+_dX = (_PosObj1 select 0) - ((getposATL _logic) select 0);
+_dY = (_PosObj1 select 1) - ((getposATL _logic) select 1);
 
 _angle = _dX atan2 _dY;
 
@@ -49,8 +49,8 @@ if (_isAttacked > 2) then {_distance = _distance - _distance2;_dXc = 0;_dYc = 0}
 _dXb = _distance * (sin _angle);
 _dYb = _distance * (cos _angle);
 
-_posX = ((getPos _logic) select 0) + _dXb + _dXc + (random 200) - 100;
-_posY = ((getPos _logic) select 1) + _dYb + _dYc + (random 200) - 100;
+_posX = ((getposATL _logic) select 0) + _dXb + _dXc + (random 200) - 100;
+_posY = ((getposATL _logic) select 1) + _dYb + _dYc + (random 200) - 100;
 
 _isWater = surfaceIsWater [_posX,_posY];
 
@@ -178,7 +178,7 @@ if (not (isNull _AV) and (_GDV in (_logic getvariable "HAC_HQ_AirG"))) then
 		_lz = [[_posX,_posY],_logic] call ALiVE_fnc_HAC_LZ;
 		if not (isNull _lz) then
 			{
-			_pos = getPosATL _lz;
+			_pos = getposATL _lz;
 			_posX = _pos select 0;
 			_posY = _pos select 1
 			}

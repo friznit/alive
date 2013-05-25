@@ -27,7 +27,7 @@
 						{
 						if ((_nE distance (vehicle _UL)) <= 400) then
 							{
-							_pos = getPosASL _nE;
+							_pos = getposASL _nE;
 
 							_CFF = false;
 

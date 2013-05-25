@@ -1,6 +1,6 @@
-_unitG = _this select 0;_Spos = _unitG getvariable ("START" + (str _unitG));if (isNil ("_Spos")) then {_unitG setVariable [("START" + (str _unitG)),(getPosATL (vehicle (leader _unitG))),true]}; 
+_unitG = _this select 0;_Spos = _unitG getvariable ("START" + (str _unitG));if (isNil ("_Spos")) then {_unitG setVariable [("START" + (str _unitG)),(getposATL (vehicle (leader _unitG))),true]}; 
 _Trg = _this select 1;
-_trgPos = getPosATL _Trg;
+_trgPos = getposATL _Trg;
 _trgG = _this select 2;
 _logic = _this select ((count _this)-1);
 
@@ -20,13 +20,13 @@ _default = [];
 _Epos0 = [];
 _Epos1 = [];
 
-if (isNil ("HAC_HQ_Obj")) then {_default = position _logic} else {_default = position HAC_HQ_Obj};
+if (isNil {_logic getvariable "HAC_HQ_Obj"}) then {_default = position _logic} else {_default = position HAC_HQ_Obj};
 
 if not ((count (_logic getvariable "HAC_HQ_KnEnemies")) == 0) then 
 	{
 		{
-		_Epos0 = _Epos0 + [((getPosATL _x) select 0)];
-		_Epos1 = _Epos1 + [((getPosATL _x) select 1)]
+		_Epos0 = _Epos0 + [((getposATL _x) select 0)];
+		_Epos1 = _Epos1 + [((getposATL _x) select 1)]
 		}
 	foreach (_logic getvariable "HAC_HQ_KnEnemies")
 	};
@@ -65,7 +65,7 @@ _min0Enemy = _logic;
 _max1Enemy = _logic;
 _min1Enemy = _logic;
 
-if not (isNil ("HAC_HQ_Obj")) then 
+if not (isNil {_logic getvariable "HAC_HQ_Obj"}) then 
 	{
 	_max0Enemy = (_logic getvariable "HAC_HQ_Obj");
 	_min0Enemy = (_logic getvariable "HAC_HQ_Obj");
@@ -86,8 +86,8 @@ if not ((count (_logic getvariable "HAC_HQ_KnEnemies")) == 0) then
 _PosMid0 = (_Epos0Min + _Epos0Max)/2;
 _PosMid1 = (_Epos1Min + _Epos1Max)/2;
 
-_dX = (_PosMid0) - ((getPosATL _logic) select 0);
-_dY = (_Posmid1) - ((getPosATL _logic) select 1);
+_dX = (_PosMid0) - ((getposATL _logic) select 0);
+_dY = (_Posmid1) - ((getposATL _logic) select 1);
 
 _angle0 = _dX atan2 _dY;
 
@@ -129,14 +129,14 @@ _safeY1 = 0;
 _safeX2 = 0;
 _safeY2 = 0;
 
-_GposX = (getPosATL (leader _unitG)) select 0;
-_GposY = (getPosATL (leader _unitG)) select 1;
+_GposX = (getposATL (leader _unitG)) select 0;
+_GposY = (getposATL (leader _unitG)) select 1;
 
 _BEposX = _BEnemyPos select 0;
 _BEposY = _BEnemyPos select 1;
 
-_dX = _BEposX - ((getPosATL _logic) select 0);
-_dY = _BEposY - ((getPosATL _logic) select 1);
+_dX = _BEposX - ((getposATL _logic) select 0);
+_dY = _BEposY - ((getposATL _logic) select 1);
 
 _angle = _dX atan2 _dY;
 
@@ -159,8 +159,8 @@ if (_MinSide) then {_safeX1 = - _safeX1} else {_safeY1 = - _safeY1};
 _FlankPosX = _BorHQD * (sin _angle);
 _FlankPosY = _BorHQD * (cos _angle);
 
-_posXWP1 = ((getPosATL _logic) select 0) + _FlankPosX + _safeX1 + (random 200) - 100;
-_posYWP1 = ((getPosATL _logic) select 1) + _FlankPosY + _safeY1 + (random 200) - 100;
+_posXWP1 = ((getposATL _logic) select 0) + _FlankPosX + _safeX1 + (random 200) - 100;
+_posYWP1 = ((getposATL _logic) select 1) + _FlankPosY + _safeY1 + (random 200) - 100;
 
 _isWater = surfaceIsWater [_posXWP1,_posYWP1];
 
@@ -288,7 +288,7 @@ if ((_ammo > 0) and not (_busy)) then
 
 	if (not (isNull _AV) and ((_logic getvariable "HAC_HQ_CargoFind") > 0)) then
 		{
-		_task = [(leader _unitG),["Wait and get into vehicle.", "GET IN", ""],(getPosATL (leader _unitG)),_logic] call ALiVE_fnc_HAC_AddTask;
+		_task = [(leader _unitG),["Wait and get into vehicle.", "GET IN", ""],(getposATL (leader _unitG)),_logic] call ALiVE_fnc_HAC_AddTask;
 
 		_wp = [_logic,_unitG,_AV,"GETIN"] call ALiVE_fnc_HAC_WPadd;
 		_wp waypointAttachVehicle _AV;
@@ -298,7 +298,7 @@ if ((_ammo > 0) and not (_busy)) then
 		};
 
 	if ((isPlayer (leader _unitG)) and not (isMultiplayer)) then {(leader _unitG) removeSimpleTask _task};
-	if ((isNull (leader (_this select 0))) or (_timer > 900)) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
+	if ((isNull (leader (_this select 0))) or (_timer > 900)) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
 
 	_AV = assignedVehicle _UL;
 	_DAV = assigneddriver _AV;
@@ -350,10 +350,10 @@ if ((_ammo > 0) and not (_busy)) then
 		_enemy = _cause select 2
 		};
 
-	if (((_timer > 30) or (_enemy)) and (_OtherGroup)) then {if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle _UL), 1]}};
-	if (((_timer > 30) or (_enemy)) and not (_OtherGroup)) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [getPosATL (vehicle _UL), 1]};
+	if (((_timer > 30) or (_enemy)) and (_OtherGroup)) then {if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle _UL), 1]}};
+	if (((_timer > 30) or (_enemy)) and not (_OtherGroup)) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [getposATL (vehicle _UL), 1]};
 	if (not (_alive) and not (_OtherGroup)) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]}};
-	if (isNull (leader (_this select 0))) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
+	if (isNull (leader (_this select 0))) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
 
 	if (isPlayer (leader _unitG)) then
 		{
@@ -421,10 +421,10 @@ if ((_ammo > 0) and not (_busy)) then
 		};
 
 	_DAV = assigneddriver _AV;
-	if (((_timer > 30) or (_enemy)) and (_OtherGroup)) then {if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle _UL), 1]}};
-	if (((_timer > 30) or (_enemy)) and not (_OtherGroup)) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [getPosATL (vehicle _UL), 1]};
+	if (((_timer > 30) or (_enemy)) and (_OtherGroup)) then {if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle _UL), 1]}};
+	if (((_timer > 30) or (_enemy)) and not (_OtherGroup)) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [getposATL (vehicle _UL), 1]};
 	if (not (_alive) and not (_OtherGroup)) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]}};
-	if (isNull (leader (_this select 0))) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
+	if (isNull (leader (_this select 0))) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
 
 	if (isPlayer (leader _unitG)) then
 		{
@@ -472,7 +472,7 @@ if ((_ammo > 0) and not (_busy)) then
 			_lz = [[_posXWP3,_posYWP3],_logic] call ALiVE_fnc_HAC_LZ;
 			if not (isNull _lz) then
 				{
-				_lzPos = getPosATL _lz;
+				_lzPos = getposATL _lz;
 				_posXWP3 = _lzPos select 0;
 				_posYWP3 = _lzPos select 1
 				}
@@ -510,10 +510,10 @@ if ((_ammo > 0) and not (_busy)) then
 		_enemy = _cause select 2
 		};
 
-	if (((_timer > 30) or (_enemy)) and (_OtherGroup)) then {if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle (leader _GDV)), 1]}};
-	if (((_timer > 30) or (_enemy)) and not (_OtherGroup)) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [getPosATL (vehicle _UL), 1]};
+	if (((_timer > 30) or (_enemy)) and (_OtherGroup)) then {if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle (leader _GDV)), 1]}};
+	if (((_timer > 30) or (_enemy)) and not (_OtherGroup)) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [getposATL (vehicle _UL), 1]};
 	if (not (_alive) and not (_OtherGroup)) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]}};
-	if (isNull (leader (_this select 0))) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
+	if (isNull (leader (_this select 0))) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];}};
 
 	_AV = assignedVehicle _UL;
 	_pass = assignedCargo _AV;
@@ -549,7 +549,7 @@ if ((_ammo > 0) and not (_busy)) then
 		};
 
 	if ((isPlayer (leader _GDV)) and not (isMultiplayer)) then {(leader _GDV) removeSimpleTask _Ctask};
-	if ((isNull (leader (_this select 0))) or (_timer > 240)) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];_pass orderGetIn true}};
+	if ((isNull (leader (_this select 0))) or (_timer > 240)) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {{deleteMarker _x} foreach [_i1,_i2,_i3,_i4]};if not (isNull _GDV) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle (leader _GDV)), 1];_GDV setVariable [("Busy" + _unitvar), false];_pass orderGetIn true}};
 
 	_unitvar = str _GDV;
 	_timer = 0;
@@ -560,7 +560,7 @@ if ((_ammo > 0) and not (_busy)) then
 		_cause = [_logic,_GDV,3,true,0,8,[],false] call ALiVE_fnc_HAC_Wait;
 		_timer = _cause select 0;
 
-		if (_timer > 8) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getPosATL (vehicle (leader _GDV)), 1]};
+		if (_timer > 8) then {[_GDV, (currentWaypoint _GDV)] setWaypointPosition [getposATL (vehicle (leader _GDV)), 1]};
 		};
 
 	_GDV setVariable [("CargoM" + _unitvar), false];

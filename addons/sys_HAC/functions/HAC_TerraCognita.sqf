@@ -7,7 +7,7 @@
     _thisTMP = _this - [_logic];
 	if ((count _this) > 2) then {_rds = _thisTMP select 2};
 
-	if not ((typeName _position) == "ARRAY") then {_position = getPosATL _position};
+	if not ((typeName _position) == "ARRAY") then {_position = getposATL _position};
 
 	_posX = _position select 0;
 	_posY = _position select 1;

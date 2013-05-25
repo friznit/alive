@@ -187,8 +187,8 @@ _DN = false;
 	_PrimDir = "";
 	_SecDir = "";
 	_defPoint = _x;
-	_dX = (_PosMid0) - ((getPos _defPoint) select 0);
-	_dY = (_Posmid1) - ((getPos _defPoint) select 1);
+	_dX = (_PosMid0) - ((getposATL _defPoint) select 0);
+	_dY = (_Posmid1) - ((getposATL _defPoint) select 1);
 	_logic setvariable ["HAC_HQ_Angle", 0];
 	_logic setvariable ["HAC_HQ_Angle", _dX atan2 _dY];
 
@@ -196,9 +196,9 @@ _DN = false;
 
 	_dXb = 400 * (sin (_logic getvariable "HAC_HQ_Angle"));
 	_dYb = 400 * (cos (_logic getvariable "HAC_HQ_Angle"));
-	_posX = ((getPos _defPoint) select 0) + _dXb;
+	_posX = ((getposATL _defPoint) select 0) + _dXb;
 
-	_posY = ((getPos _defPoint) select 1) + _dYb;
+	_posY = ((getposATL _defPoint) select 1) + _dYb;
 
 	switch (true) do
 		{
@@ -376,7 +376,7 @@ _GS = [];
 foreach _recDef;
 
 
-if (isNil ("HAC_HQ_Def")) then {_logic setvariable ["HAC_HQ_Def", []]};
+if (isNil {_logic getvariable "HAC_HQ_Def"}) then {_logic setvariable ["HAC_HQ_Def", []]};
 
 switch ((random 100) >= (50/(0.5 + (_logic getvariable "HAC_HQ_Fineness")))) do
 	{

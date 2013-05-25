@@ -62,7 +62,7 @@ while {not (_endThis)} do
 			_tgt = "LaserTargetWStatic";
 			if (_eSide == east) then {_tgt = "LaserTargetEStatic"};
 
-			_tPos = getPosATL _Trg;
+			_tPos = getposATL _Trg;
 			_tX = (_tPos select 0) + (random 60) - 30;
 			_tY = (_tPos select 1) + (random 60) - 30;
 			_tZ = (_tPos select 2) + (random 10) - 5;

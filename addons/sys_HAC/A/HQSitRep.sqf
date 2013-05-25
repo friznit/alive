@@ -25,7 +25,7 @@ if (isNil {_logic getvariable "HAC_HQ_AmmoBoxes"}) then
 	if not (isNil {_logic getvariable "HAC_HQ_AmmoDepot"}) then 
 		{
 		_rds = (triggerArea (_logic getvariable "HAC_HQ_AmmoDepot")) select 0;
-		_logic setvariable ["HAC_HQ_AmmoBoxes",(getPosATL (_logic getvariable "HAC_HQ_AmmoDepot")) nearObjects ["ReammoBox",_rds]];
+		_logic setvariable ["HAC_HQ_AmmoBoxes",(getposATL (_logic getvariable "HAC_HQ_AmmoDepot")) nearObjects ["ReammoBox",_rds]];
 		}
 	};
 
@@ -108,11 +108,11 @@ _cycleCap = 0;
 _firstMC = 0; 
 _wp = [];
 
-diag_log format ["Init HQSITREP Part 1 ended %1",time];
+//diag_log format ["Init HQSITREP Part 1 ended %1",time];
 
 while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_HQ_Surrender")))} do
 	{
-    diag_log format ["Init HQSITREP Part 2 started %1",time];
+    //diag_log format ["Init HQSITREP Part 2 started %1",time];
 	if not ((_logic getvariable "HAC_HQ_Fast")) then {waituntil {sleep 0.1;(_logic getvariable "HAC_xHQ_Done")};
 	if (isNil {_logic getvariable "HAC_HQ_SupportWP"}) then {_logic setvariable ["HAC_HQ_SupportWP", false]};
 
@@ -331,7 +331,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 		if not ((isNull (_logic)) and not (isNull _x) and (alive (_logic)) and (alive (leader _x)) and not (_isCaptive)) then
 			{
 			if (not ((_logic getvariable "HAC_HQ_Front")) and ((side _x) getFriend (side (_logic getvariable "HAC_HQ")) < 0.6) and not (_isCiv)) then {if not (_x in (_logic getvariable "HAC_HQ_Enemies")) then {_logic setvariable ["HAC_HQ_Enemies",(_logic getvariable "HAC_HQ_Enemies") + [_x]]}};
-			if (((_logic getvariable "HAC_HQ_Front")) and ((side _x) getFriend (side (_logic getvariable "HAC_HQ")) < 0.6) and ((getPosATL (vehicle (leader _x))) in (_logic getvariable "FrontA")) and not (_isCiv)) then {if not (_x in (_logic getvariable "HAC_HQ_Enemies")) then {_logic setvariable ["HAC_HQ_Enemies",(_logic getvariable "HAC_HQ_Enemies") + [_x]]}};
+			if (((_logic getvariable "HAC_HQ_Front")) and ((side _x) getFriend (side (_logic getvariable "HAC_HQ")) < 0.6) and ((getposATL (vehicle (leader _x))) in (_logic getvariable "FrontA")) and not (_isCiv)) then {if not (_x in (_logic getvariable "HAC_HQ_Enemies")) then {_logic setvariable ["HAC_HQ_Enemies",(_logic getvariable "HAC_HQ_Enemies") + [_x]]}};
 			if ((_logic getvariable "HAC_HQ_SubAll")) then 
 				{
 				if not ((side _x) getFriend (side (_logic getvariable "HAC_HQ")) < 0.6) then 
@@ -797,7 +797,7 @@ if (_NCCargocheck) then {if not (_vh in (_logic getvariable "HAC_HQ_EnNCCargo"))
 				{
 				[_x,_logic] call ALiVE_fnc_HAC_WPdel;
 				_x setVariable [("inPanic" + (str _x)), true];
-				if ((_logic getvariable "HAC_HQ_DebugII")) then {_i = [(getPosATL (vehicle (leader _x))),_x,"markPanic",(_logic getvariable ["HAC_HQ_Color","ColorYellow"]),"ICON","mil_dot","SitRep","A!",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
+				if ((_logic getvariable "HAC_HQ_DebugII")) then {_i = [(getposATL (vehicle (leader _x))),_x,"markPanic",(_logic getvariable ["HAC_HQ_Color","ColorYellow"]),"ICON","mil_dot","SitRep","A!",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark};
                 _x setVariable [("Busy" + (str _x)), true];
 
 				_UL = leader _x;
@@ -876,7 +876,7 @@ if (_NCCargocheck) then {if not (_vh in (_logic getvariable "HAC_HQ_EnNCCargo"))
 		};
 
 		{
-		_logic setvariable ["HAC_HQ_KnEnPos", (_logic getvariable "HAC_HQ_KnEnPos") + [getPosATL (vehicle (leader _x))]];
+		_logic setvariable ["HAC_HQ_KnEnPos", (_logic getvariable "HAC_HQ_KnEnPos") + [getposATL (vehicle (leader _x))]];
 		if ((count (_logic getvariable "HAC_HQ_KnEnPos")) >= 100) then {_logic setvariable ["HAC_HQ_KnEnPos", (_logic getvariable "HAC_HQ_KnEnPos") - [(_logic getvariable "HAC_HQ_KnEnPos") select 0]]};
 		}
 	foreach (_logic getvariable "HAC_HQ_KnEnemiesG");
@@ -1117,7 +1117,7 @@ if (_NCCargocheck) then {if not (_vh in (_logic getvariable "HAC_HQ_EnNCCargo"))
 							if not (_onPlace) then
 								{
 								_rds = 30;
-								if ((_logic getvariable "HAC_HQ_NObj") <= 2) then {_Lpos = getPosATL (vehicle _logic);_rds = 0};
+								if ((_logic getvariable "HAC_HQ_NObj") <= 2) then {_Lpos = getposATL (vehicle _logic);_rds = 0};
 								if ((_logic getvariable "HAC_HQ_NObj") == 3) then {_Lpos = position (_logic getvariable "HAC_HQ_Obj1")};
 								if ((_logic getvariable "HAC_HQ_NObj") >= 4) then {_Lpos = position (_logic getvariable "HAC_HQ_Obj2")};
 
@@ -1131,7 +1131,7 @@ if (_NCCargocheck) then {if not (_vh in (_logic getvariable "HAC_HQ_EnNCCargo"))
 									}
 								foreach (_logic getvariable "HAC_HQ_KnEnemiesG");
 
-								if (_getBack) then {_Lpos = getPosATL (vehicle _logic);_rds = 0};
+								if (_getBack) then {_Lpos = getposATL (vehicle _logic);_rds = 0};
 
 								[(_logic getvariable "HAC_HQ"),_logic] call ALiVE_fnc_HAC_WPdel;	
 

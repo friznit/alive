@@ -26,8 +26,8 @@ _HAC_HQ_AttackAv = (_logic getvariable ["HAC_HQ_AttackAv",[]]) -  [_unitG];_logi
 _UL = leader _unitG;
 _nothing = true;
 
-_dX = (_PosObj1 select 0) - ((getPosATL _logic) select 0);
-_dY = (_PosObj1 select 1) - ((getPosATL _logic) select 1);
+_dX = (_PosObj1 select 0) - ((getposATL _logic) select 0);
+_dY = (_PosObj1 select 1) - ((getposATL _logic) select 1);
 
 _angle = _dX atan2 _dY;
 
@@ -48,13 +48,13 @@ _distance = _distance - _distance2;
 _dXb = _distance * (sin _angle);
 _dYb = _distance * (cos _angle);
 
-_posX = ((getPosATL _logic) select 0) + _dXb + (random 200) - 100;
-_posY = ((getPosATL _logic) select 1) + _dYb + (random 200) - 100;
+_posX = ((getposATL _logic) select 0) + _dXb + (random 200) - 100;
+_posY = ((getposATL _logic) select 1) + _dYb + (random 200) - 100;
 
 _isWater = surfaceIsWater [_posX,_posY];
 
-_tposX = (getPosATL _Trg) select 0;
-_tposY = (getPosATL _Trg) select 1;
+_tposX = (getposATL _Trg) select 0;
+_tposY = (getposATL _Trg) select 1;
 
 while {((_isWater) and (([_posX,_posY] distance _PosObj1) >= 50))} do
 	{
@@ -72,7 +72,7 @@ if (_isWater) exitwith
 	[_Trg,"SnpAttacked",_logic] call ALiVE_fnc_HAC_VarReductor
 	};
 
-_positions = [[_posX,_posY,1],(getPosATL _Trg),200,1,1,_unitG,_logic] call ALiVE_fnc_HAC_FindOverwatchPos;
+_positions = [[_posX,_posY,1],(getposATL _Trg),200,1,1,_unitG,_logic] call ALiVE_fnc_HAC_FindOverwatchPos;
 
 _cnt = count _positions;
 
@@ -266,7 +266,7 @@ if (_logic getvariable "HAC_xHQ_SynchroAttack") then {_cur = false};
 
 _UL = leader _unitG;if not (isPlayer _UL) then {if (_timer <= 300) then {if ((random 100) < HAC_xHQ_AIChatDensity) then {[_UL,HAC_xHQ_AIC_OrdFinal,"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
 
-_wp = [_logic,_unitG,getPosATL (vehicle (leader _unitG)),"SENTRY","STEALTH","RED","NORMAL",["true",""],_cur,0.001,[0,0,0],_frm] call ALiVE_fnc_HAC_WPadd;
+_wp = [_logic,_unitG,getposATL (vehicle (leader _unitG)),"SENTRY","STEALTH","RED","NORMAL",["true",""],_cur,0.001,[0,0,0],_frm] call ALiVE_fnc_HAC_WPadd;
 
 _fEH = (leader _unitG) addEventHandler ["Fired",{_this spawn ALiVE_fnc_HAC_FireCount}];
 (leader _unitG) setVariable ["HAC_FEH",_fEH];

@@ -26,20 +26,20 @@
 
 	waitUntil
 		{
-		_height1 = (getPosATL _ammoBox) select 2;
+		_height1 = (getposATL _ammoBox) select 2;
 		sleep 0.005;
-		_height2 = (getPosATL _ammoBox) select 2;
+		_height2 = (getposATL _ammoBox) select 2;
 		_speed = abs ((velocity _ammoBox) select 2);
 		if (_height2 > _height1) then {_parachute setVelocity [0,0,-20]};
 		sleep 0.005;
-		_height3 = (getPosATL _ammoBox) select 2;
+		_height3 = (getposATL _ammoBox) select 2;
 
 		((_height2 < 0.05) or (_height3 > _height2) or (_speed < 0.001) or (isNull _parachute))
 		};
 
 	detach _ammoBox;
 
-	_pos = getPosATL _ammoBox;
+	_pos = getposATL _ammoBox;
 
 	deleteVehicle _ammoBox;
 
@@ -52,7 +52,7 @@
 		} 
 	else 
 		{
-		_off = getPos _ammoBox select 2;
+		_off = getposATL _ammoBox select 2;
 		_ammoBox setPosATL [_pos select 0,_pos select 1,(_pos select 2)-_off];
 		};
 
