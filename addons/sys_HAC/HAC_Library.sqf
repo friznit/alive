@@ -1082,6 +1082,7 @@ _logic setvariable ["HAC_HQ_Rocket", []];
 
 _logic setvariable ["HAC_xHQ_AIC_OrdConf", 
 	[
+    /*
 	"HAC_OrdConf1",
 	"HAC_OrdConf2",
 	"HAC_OrdConf3",
@@ -1097,10 +1098,12 @@ _logic setvariable ["HAC_xHQ_AIC_OrdConf",
 	"v3HAC_OrdConf3",
 	"v3HAC_OrdConf4",
 	"v3HAC_OrdConf5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_OrdDen", 
 	[
+    /*
 	"HAC_OrdDen1",
 	"HAC_OrdDen2",
 	"HAC_OrdDen3",
@@ -1116,10 +1119,12 @@ _logic setvariable ["HAC_xHQ_AIC_OrdDen",
 	"v3HAC_OrdDen3",
 	"v3HAC_OrdDen4",
 	"v3HAC_OrdDen5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_OrdFinal", 
 	[
+    /*
 	"HAC_OrdFinal1",
 	"HAC_OrdFinal2",
 	"HAC_OrdFinal3",
@@ -1132,10 +1137,12 @@ _logic setvariable ["HAC_xHQ_AIC_OrdFinal",
 	"v3HAC_OrdFinal2",
 	"v3HAC_OrdFinal3",
 	"v3HAC_OrdFinal4"
-	]];
+    */
+    ]];
 
 _logic setvariable ["HAC_xHQ_AIC_OrdEnd", 
 	[
+    /*
 	"HAC_OrdEnd1",
 	"HAC_OrdEnd2",
 	"HAC_OrdEnd3",
@@ -1148,10 +1155,12 @@ _logic setvariable ["HAC_xHQ_AIC_OrdEnd",
 	"v3HAC_OrdEnd2",
 	"v3HAC_OrdEnd3",
 	"v3HAC_OrdEnd4"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_SuppReq", 
 	[
+    /*
 	"HAC_SuppReq1",
 	"HAC_SuppReq2",
 	"HAC_SuppReq3",
@@ -1167,10 +1176,12 @@ _logic setvariable ["HAC_xHQ_AIC_SuppReq",
 	"v3HAC_SuppReq3",
 	"v3HAC_SuppReq4",
 	"v3HAC_SuppReq5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_MedReq", 
 	[
+    /*
 	"HAC_MedReq1",
 	"HAC_MedReq2",
 	"HAC_MedReq3",
@@ -1186,10 +1197,12 @@ _logic setvariable ["HAC_xHQ_AIC_MedReq",
 	"v3HAC_MedReq3",
 	"v3HAC_MedReq4",
 	"v3HAC_MedReq5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_ArtyReq", 
 	[
+    /*
 	"HAC_ArtyReq1",
 	"HAC_ArtyReq2",
 	"HAC_ArtyReq3",
@@ -1205,10 +1218,12 @@ _logic setvariable ["HAC_xHQ_AIC_ArtyReq",
 	"v3HAC_ArtyReq3",
 	"v3HAC_ArtyReq4",
 	"v3HAC_ArtyReq5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_SmokeReq", 
 	[
+    /*
 	"HAC_SmokeReq1",
 	"HAC_SmokeReq2",
 	"HAC_SmokeReq3",
@@ -1221,10 +1236,12 @@ _logic setvariable ["HAC_xHQ_AIC_SmokeReq",
 	"v3HAC_SmokeReq2",
 	"v3HAC_SmokeReq3",
 	"v3HAC_SmokeReq4"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_IllumReq", 
 	[
+    /*
 	"HAC_IllumReq1",
 	"HAC_IllumReq2",
 	"HAC_IllumReq3",
@@ -1237,10 +1254,12 @@ _logic setvariable ["HAC_xHQ_AIC_IllumReq",
 	"v3HAC_IllumReq2",
 	"v3HAC_IllumReq3",
 	"v3HAC_IllumReq4"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_InDanger", 
 	[
+    /*
 	"HAC_InDanger1",
 	"HAC_InDanger2",
 	"HAC_InDanger3",
@@ -1280,10 +1299,12 @@ _logic setvariable ["HAC_xHQ_AIC_InDanger",
 	"v3HAC_InDanger11",
 	"v3HAC_InDanger12",
 	"v3HAC_InDanger13"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_EnemySpot", 
 	[
+    /*
 	"HAC_EnemySpot1",
 	"HAC_EnemySpot2",
 	"HAC_EnemySpot3",
@@ -1299,10 +1320,12 @@ _logic setvariable ["HAC_xHQ_AIC_EnemySpot",
 	"v3HAC_EnemySpot3",
 	"v3HAC_EnemySpot4",
 	"v3HAC_EnemySpot5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_InFear", 
 	[
+    /*
 	"HAC_InFear1",
 	"HAC_InFear2",
 	"HAC_InFear3",
@@ -1327,10 +1350,12 @@ _logic setvariable ["HAC_xHQ_AIC_InFear",
 	"v3HAC_InFear6",
 	"v3HAC_InFear7",
 	"v3HAC_InFear8"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_InPanic", 
 	[
+    /*
 	"HAC_InPanic1",
 	"HAC_InPanic2",
 	"HAC_InPanic3",
@@ -1355,61 +1380,76 @@ _logic setvariable ["HAC_xHQ_AIC_InPanic",
 	"v3HAC_InPanic6",
 	"v3HAC_InPanic7",
 	"v3HAC_InPanic8"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_SuppAss", 
 	[
+    /*
 	"v2HAC_SuppAss1",
 	"v2HAC_SuppAss2",
 	"v2HAC_SuppAss3",
 	"v2HAC_SuppAss4",
 	"v2HAC_SuppAss5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_SuppDen", 
 	[
+    /*
 	"v2HAC_SuppDen1",
 	"v2HAC_SuppDen2",
 	"v2HAC_SuppDen3",
 	"v2HAC_SuppDen4",
 	"v2HAC_SuppDen5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_ArtAss", 
 	[
+    /*
 	"v2HAC_ArtAss1",
 	"v2HAC_ArtAss2",
 	"v2HAC_ArtAss3",
 	"v2HAC_ArtAss4",
 	"v2HAC_ArtAss5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_ArtDen", 
 	[
+    /*
 	"v2HAC_ArtDen1",
 	"v2HAC_ArtDen2",
 	"v2HAC_ArtDen3",
 	"v2HAC_ArtDen4",
 	"v2HAC_ArtDen5"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_DefStance", 
 	[
+    /*
 	"v2HAC_DefStance1"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_OffStance", 
 	[
+    /*
 	"v2HAC_OffStance1"
+    */
 	]];
 
 _logic setvariable ["HAC_xHQ_AIC_ArtFire", 
 	[
+    /*
 	"HAC_ArtFire1",
 	"HAC_ArtFire2",
 	"HAC_ArtFire3",
 	"HAC_ArtFire4",
 	"HAC_ArtFire5"
+    */
 	]];
 
 //Dont touch this
