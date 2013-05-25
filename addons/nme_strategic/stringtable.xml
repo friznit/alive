@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_SEP">
+	<English>SEP</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_COMMENT">
+	<English>Strategic Enemy Placement</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_DEBUG_COMMENT">
+	<English>Enables SEP Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_STYLE">
+	<English>Strategy:</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_STYLE_COMMENT">
+	<English>What strategy will this force utilise</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_STYLE_SYM">
+	<English>Symmetric (Regular forces)</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_STYLE_ASYM">
+	<English>Asymmetric (Insurgency)</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_SIZE">
+	<English>Force Size:</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_SIZE_COMMENT">
+	<English>Number of units to be placed</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_SIZE_BN">
+	<English>Battalion (300-1200)</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_SIZE_COY">
+	<English>Company (90-250)</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_SIZE_PL">
+	<English>Platoon (30-50)</English>
+</Key>
+</Container></Package></Project>

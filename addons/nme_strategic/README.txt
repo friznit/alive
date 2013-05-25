@@ -20,7 +20,7 @@
 | Component |
 #===========#
 
-ALiVE_nme_SEP
+ALiVE_nme_strategic
 
 #================#
 | Main author(s) |

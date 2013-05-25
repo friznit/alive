@@ -7,11 +7,11 @@ class CfgVehicles {
                 function = "ALIVE_fnc_SEPInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\nme_SEP\icon_nme_SEP.paa";
-				picture = "x\alive\addons\nme_SEP\icon_nme_SEP.paa";
+				icon = "x\alive\addons\nme_strategic\icon_nme_SEP.paa";
+				picture = "x\alive\addons\nme_strategic\icon_nme_SEP.paa";
                 class Arguments
                 {
-                        class SEP_debug_setting
+                        class debug
                         {
                                 displayName = "$STR_ALIVE_SEP_DEBUG";
                                 description = "$STR_ALIVE_SEP_DEBUG_COMMENT";
@@ -30,42 +30,46 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class SEP_spawn_setting
+                        class style
                         {
-                                displayName = "$STR_ALIVE_SEP_SPAWN";
-                                description = "$STR_ALIVE_SEP_SPAWN_COMMENT";
+                                displayName = "$STR_ALIVE_SEP_STYLE";
+                                description = "$STR_ALIVE_SEP_STYLE_COMMENT";
                                 class Values
                                 {
-                                        class SEP_spawn_10
+                                        class SYMMETRIC
                                         {
-                                                name = "10%";
-                                                value = 1;
+                                                name = "$STR_ALIVE_SEP_STYLE_SYM";
+                                                value = "SYM";
 						default = 1;
-						SEP_spawn = 1;
                                         };
-                                        class SEP_spawn_20
+                                        class ASYMMETRIC
                                         {
-                                                name = "20%";
-                                                value = 2;
-                                                SEP_spawn = 2;
+                                                name = "$STR_ALIVE_SEP_STYLE_ASYM";
+                                                value = "ASYM";
                                         };
-                                        class SEP_spawn_30
+                                };
+                        };
+                        class size
+                        {
+                                displayName = "$STR_ALIVE_SEP_SIZE";
+                                description = "$STR_ALIVE_SEP_SIZE_COMMENT";
+                                class Values
+                                {
+                                        class BN
                                         {
-                                                name = "30%";
-                                                value = 3;
-                                                SEP_spawn = 3;
+                                                name = "$STR_ALIVE_SEP_SIZE_BN";
+                                                value = "BN";
                                         };
-                                        class SEP_spawn_40
+                                        class COY
                                         {
-                                                name = "40%";
-                                                value = 4;
-                                                SEP_spawn = 4;
+                                                name = "$STR_ALIVE_SEP_SIZE_COY";
+                                                value = "COY";
+						default = 1;
                                         };
-                                        class SEP_spawn_50
+                                        class PL
                                         {
-                                                name = "50%";
-                                                value = 5;
-                                                SEP_spawn = 5;
+                                                name = "$STR_ALIVE_SEP_SIZE_PL";
+                                                value = "PL";
                                         };
                                 };
                         };
