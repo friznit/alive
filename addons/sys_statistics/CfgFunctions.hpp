@@ -4,14 +4,17 @@ class cfgFunctions {
                         class statisticsMenuDef {
                                 description = "The module menu definition";
                                 file = "\x\alive\addons\sys_statistics\fnc_statisticsMenuDef.sqf";
+				recompile = 1;
                         };
-						class statisticsDisable {
+			class statisticsDisable {
                                 description = "The module disable function";
                                 file = "\x\alive\addons\sys_statistics\fnc_statisticsDisable.sqf";
+				recompile = 1;
                         };
-						class statisticsModuleFunction {
+			class statisticsModuleFunction {
                                 description = "The module function definition";
                                 file = "\x\alive\addons\sys_statistics\fnc_statisticsModuleFunction.sqf";
+				recompile = 1;
                         };
                 };
         };

@@ -4,14 +4,17 @@ class cfgFunctions {
                         class vDist {
                                 description = "The main class";
                                 file = "\x\alive\addons\sys_viewdistance\fnc_vDist.sqf";
+				recompile = 1;
                         };
                         class vDistInit {
                                 description = "The module initialisation function";
                                 file = "\x\alive\addons\sys_viewdistance\fnc_vDistInit.sqf";
+				recompile = 1;
                         };
                         class vDistMenuDef {
                                 description = "The module menu definition";
                                 file = "\x\alive\addons\sys_viewdistance\fnc_vDistMenuDef.sqf";
+				recompile = 1;
                         };
                 };
         };
