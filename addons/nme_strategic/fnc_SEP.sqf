@@ -44,7 +44,7 @@ Wolffy
 #define MAINCLASS ALIVE_fnc_SEP
 #define MTEMPLATE "ALiVE_SEP_%1"
 
-private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_result","_findObjectID"];
+private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_result"];
 
 TRACE_1("SEP - input",_this);
 
@@ -157,12 +157,17 @@ switch(_operation) do {
                 _result = _args;
         };        
         case "state": {
-                private["_state","_data","_nodes"];
+                private["_state","_data","_nodes","_simple_operations"];
+                _simple_operations = ["style", "size","factions"];
                 
                 if(typeName _args != "ARRAY") then {
                         _state = [] call CBA_fnc_hashCreate;
                         // Save state
+                        {
+                                [_state, _x, _logic getVariable _x] call CBA_fnc_hashSet;
+                        } forEach _simple_operations;
                         
+                        /*
                         // nodes
                         _data = [];
                         {
@@ -173,11 +178,16 @@ switch(_operation) do {
                         } forEach (_logic getVariable ["nodes",[]]);
                         
                         _result = [_state, "nodes", _data] call CBA_fnc_hashSet;
+                        */
                 } else {
                         ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
                         
                         // Restore state
+                        {
+                                [_logic, _x, [_args, _x] call CBA_fnc_hashGet] call MAINCLASS;
+                        } forEach _simple_operations;
                         
+                        /*
                         // nodes
                         _data = [];
                         _nodes = [_args, "nodes"] call CBA_fnc_hashGet;
@@ -187,18 +197,51 @@ switch(_operation) do {
                                 _data set [count _data, _node];
                         } forEach _nodes;
                         [_logic, "nodes", _data] call MAINCLASS;
+                        */
                 };		
         };        
-        case "factions": {
+        case "style": {
                 if(isNil "_args") then {
                         // if no new faction list was provided return current setting
-                        _args = _logic getVariable ["factions", []];
+                        _result = _logic getVariable ["style", ["SYM"]];
+                } else {
+                        // if a new faction list was provided set factions settings
+                        ASSERT_TRUE(typeName _args == "STRING",str typeName _args);
+                        _result = switch(_args)  do {
+                                case "ASYM": { "ASYM" };
+                                default { "SYM" };
+                        };
+                        _logic setVariable ["style", _result];
+                };
+        };        
+        case "style": {
+                // Symmetric or Asymmetric modelling - valid values are: SYM and ASYM
+                if(typeName _args != "STRING") then {
+                        _result = _logic getVariable ["style", ["SYM"]];
+                };
+                if(!(_args in ["ASYM","SYM"])) then {_args = "SYM";};
+                _logic setVariable ["style", _result];
+                _result = _args;
+        };        
+        case "size": {
+                // Size of enemy force - valid values are: BN, COY and PL
+                if(typeName _args != "STRING") then {
+                        _args = _logic getVariable ["size", ["COY"]];
+                };
+                if(!(_args in ["BN","PL","COY"])) then {_args = "COY";};
+                _logic setVariable ["size", _args];
+                _result = _args;
+        };        
+        case "factions": {
+                if(typeName _args != "STRING") then {
+                        // if no new faction list was provided return current setting
+                        _result = _logic getVariable ["factions", []];
                 } else {
                         // if a new faction list was provided set factions settings
                         ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-                        _logic setVariable ["factions", _args, true];
+                        _result = _args;
+                        _logic setVariable ["factions", _result, true];
                 };
-                _args;
         };        
 };
 TRACE_1("SEP - output",_result);
