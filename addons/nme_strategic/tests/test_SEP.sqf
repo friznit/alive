@@ -5,14 +5,13 @@ SCRIPT(test_SEP);
 
 // ----------------------------------------------------------------------------
 
-
-private ["_result","_err","_logic","_amo"];
+private ["_result","_err","_logic","_amo","_state","_result2"];
 
 LOG("Testing SEP");
 
 ASSERT_DEFINED("ALIVE_fnc_SEP","");
 
-#define STAT(msg) sleep 3; \
+#define STAT(msg) sleep 0.5; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
@@ -48,80 +47,67 @@ if(isServer) then {
 STAT("Confirm new SEP instance");
 waitUntil{!isNil "TEST_LOGIC"};
 _logic = TEST_LOGIC;
-_err = "instantiate object";
-ASSERT_DEFINED("_logic",_err);
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+ASSERT_DEFINED("_logic",_logic);
+ASSERT_TRUE(typeName _logic == "OBJECT", typeName _logic);
 
 DEBUGON
 
 STAT("style - Test default");
 _result = [_logic, "style"] call ALIVE_fnc_SEP;
-_err = "style - default";
-ASSERT_TRUE(typeName _result == "STRING", _err);
-ASSERT_TRUE(_result == "SYM", _err);
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "SYM", _result);
+STAT("style - Test bad value");
+_result = [_logic, "style", "xxx"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "SYM", _result);
+STAT("style - Test good value");
+_result = [_logic, "style", "ASYM"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "ASYM", _result);
 
 STAT("size - Test default");
 _result = [_logic, "size"] call ALIVE_fnc_SEP;
-_err = "size - default";
-ASSERT_TRUE(typeName _result == "STRING", _err);
-ASSERT_TRUE(_result == "COY", _err);
-/*
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "COY", _result);
+STAT("size - Test bad value");
+_result = [_logic, "size", "xxx"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "COY", _result);
+STAT("size - Test good value");
+_result = [_logic, "size", "BN"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "BN", _result);
+
 STAT("factions - Test default");
 _result = [_logic, "factions"] call ALIVE_fnc_SEP;
-_err = "factions - default";
-ASSERT_TRUE(typeName _result == "STRING", _err);
-ASSERT_TRUE(_result == "Red", _err);
-*/
-/*
-// Manipulate nodes - remove last object
-_newnode = _obj_array select 11;
-_new_array = _obj_array - [_newnode];
-
-STAT("Assign nodes");
-_result = [_logic, "nodes", _new_array] call ALIVE_fnc_cluster;
-_err = "set nodes";
-ASSERT_TRUE(typeName _result == "ARRAY", _err);
-waitUntil{count ([_logic, "nodes"] call ALIVE_fnc_cluster) == 11};
-
-_oldnodecount = count ([_logic, "nodes"] call ALIVE_fnc_cluster);
-
-STAT("Add new node");
-[_logic, "addNode", _newnode] call ALIVE_fnc_cluster;
-_result = [_logic, "nodes"] call ALIVE_fnc_cluster;
-_err = "add node";
-ASSERT_TRUE(typeName _result == "ARRAY", _err);
-STAT("Confirm new node");
-waitUntil{count ([_logic, "nodes"] call ALIVE_fnc_cluster) == _oldnodecount + 1};
-
-_newnode = ([_logic, "nodes"] call ALIVE_fnc_cluster) select 0;
-
-STAT("Remove a nodes");
-[_logic, "delNode", _newnode] call ALIVE_fnc_cluster;
-_result = [_logic, "nodes"] call ALIVE_fnc_cluster;
-_err = "remove node";
-ASSERT_TRUE(typeName _result == "ARRAY", _err);
-STAT("Confirm remove a node");
-waitUntil{count ([_logic, "nodes"] call ALIVE_fnc_cluster) == _oldnodecount};
-_test = _result;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "OPF_F", _result);
+STAT("factions - Test bad value");
+_result = [_logic, "factions", "xxx"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "OPF_F", _result);
+STAT("factions - Test good value");
+_result = [_logic, "factions", "IND_F"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "IND_F", _result);
 
 STAT("Save state");
-_result = [_logic, "state"] call ALIVE_fnc_cluster;
-_err = "check state";
-ASSERT_TRUE(typeName _result == "ARRAY", _err);
-ASSERT_TRUE(count _result > 0, _err);
+_result = [_logic, "state"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);
+ASSERT_TRUE(count _result > 0, _result);
 _state = _result;
 
 STAT("Reset debug");
 DEBUGOFF
-sleep 5;
+sleep 1;
 DEBUGON
 
 STAT("Sleeping before destroy");
-sleep 10;
+sleep 1;
 
 STAT("Destroy old instance");
 if(isServer) then {
-	[_logic, "destroy"] call ALIVE_fnc_cluster;
+	[_logic, "destroy"] call ALIVE_fnc_SEP;
 	TEST_LOGIC = nil;
 	publicVariable "TEST_LOGIC";
 } else {
@@ -130,7 +116,7 @@ if(isServer) then {
 
 STAT("Create Cluster instance");
 if(isServer) then {
-	_logic = [nil, "create"] call ALIVE_fnc_cluster;
+	_logic = [nil, "create"] call ALIVE_fnc_SEP;
 	TEST_LOGIC2 = _logic;
 	publicVariable "TEST_LOGIC2";
 };
@@ -145,30 +131,30 @@ DEBUGON
 
 STAT("Restore state on new instance");
 if(isServer) then {
-	[_logic, "state", _state] call ALIVE_fnc_cluster;
+	[_logic, "state", _state] call ALIVE_fnc_SEP;
 };
 
 STAT("Confirm restored state is still the same");
-_result = [_logic, "state"] call ALIVE_fnc_cluster;
+_result = [_logic, "state"] call ALIVE_fnc_SEP;
 _err = "confirming restored state";
 ASSERT_TRUE(typeName _result == "ARRAY", _err);
 ASSERT_TRUE(count _result > 0, _err);
-_result2 = [_test, ([_logic, "nodes"] call ALIVE_fnc_cluster)] call BIS_fnc_areEqual;
+_result2 = [_state, ([_logic, "state"] call ALIVE_fnc_SEP)] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result2,_err);
 
 STAT("Sleeping before destroy");
-sleep 10;
+sleep 1;
 
 if(isServer) then {
 	STAT("Destroy old instance");
-	[_logic, "destroy"] call ALIVE_fnc_cluster;
+	[_logic, "destroy"] call ALIVE_fnc_SEP;
 	TEST_LOGIC2 = nil;
 	publicVariable "TEST_LOGIC2";
 } else {
 	STAT("Confirm destroy instance 2");
 	waitUntil{isNull TEST_LOGIC2};
 };
-
+/*
 sleep 5;
 
 STAT("Clean up markers");

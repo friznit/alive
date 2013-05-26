@@ -50,7 +50,7 @@ TRACE_1("SEP - input",_this);
 
 _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],true,false]] call BIS_fnc_param;
+_args = [_this, 2, objNull, [objNull,[],"",true,false]] call BIS_fnc_param;
 _result = true;
 
 _deleteMarkers = {
@@ -149,10 +149,10 @@ switch(_operation) do {
                         _logic setVariable ["debug", _args];
                 };                
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
-                _logic call _deleteMarkers;
+                //_logic call _deleteMarkers;
                 
                 if(_args) then {
-                        _logic call _createMarkers;
+                        //_logic call _createMarkers;
                 };
                 _result = _args;
         };        
@@ -176,9 +176,12 @@ switch(_operation) do {
                                         position _x
                                 ]];
                         } forEach (_logic getVariable ["nodes",[]]);
-                        
                         _result = [_state, "nodes", _data] call CBA_fnc_hashSet;
                         */
+                        if (_logic getVariable ["debug", false]) then {
+                                diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_state);
+                        };
+                        _result = _state;
                 } else {
                         ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
                         
@@ -201,47 +204,40 @@ switch(_operation) do {
                 };		
         };        
         case "style": {
-                if(isNil "_args") then {
-                        // if no new faction list was provided return current setting
-                        _result = _logic getVariable ["style", ["SYM"]];
-                } else {
-                        // if a new faction list was provided set factions settings
-                        ASSERT_TRUE(typeName _args == "STRING",str typeName _args);
-                        _result = switch(_args)  do {
-                                case "ASYM": { "ASYM" };
-                                default { "SYM" };
-                        };
-                        _logic setVariable ["style", _result];
-                };
-        };        
-        case "style": {
                 // Symmetric or Asymmetric modelling - valid values are: SYM and ASYM
                 if(typeName _args != "STRING") then {
-                        _result = _logic getVariable ["style", ["SYM"]];
-                };
-                if(!(_args in ["ASYM","SYM"])) then {_args = "SYM";};
-                _logic setVariable ["style", _result];
-                _result = _args;
+                        _args = _logic getVariable ["style", "SYM"];
+                };
+                if(!(_args in ["ASYM","SYM"])) then {_args = "SYM";};
+                _logic setVariable ["style", _args];
+                if (_logic getVariable ["debug", false]) then {
+                        diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
+                };
+                _result = _args;
         };        
         case "size": {
                 // Size of enemy force - valid values are: BN, COY and PL
                 if(typeName _args != "STRING") then {
-                        _args = _logic getVariable ["size", ["COY"]];
+                        _args = _logic getVariable ["size", "COY"];
                 };
                 if(!(_args in ["BN","PL","COY"])) then {_args = "COY";};
                 _logic setVariable ["size", _args];
+                if (_logic getVariable ["debug", false]) then {
+                        diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
+                };
                 _result = _args;
         };        
         case "factions": {
+                // Force faction
                 if(typeName _args != "STRING") then {
-                        // if no new faction list was provided return current setting
-                        _result = _logic getVariable ["factions", []];
-                } else {
-                        // if a new faction list was provided set factions settings
-                        ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-                        _result = _args;
-                        _logic setVariable ["factions", _result, true];
+                        _args = _logic getVariable ["factions", "OPF_F"];
                 };
+                if(!(_args in ([] call BIS_fnc_getFactions))) then {_args = "OPF_F";};
+                _logic setVariable ["factions", _args];
+                if (_logic getVariable ["debug", false]) then {
+                        diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
+                };
+                _result = _args;
         };        
 };
 TRACE_1("SEP - output",_result);
