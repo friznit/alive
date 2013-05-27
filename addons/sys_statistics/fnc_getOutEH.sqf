@@ -79,12 +79,22 @@ if (GVAR(ENABLED)) then {
 		// Log data
 		_data = format["""Event"":""GetOut"" , ""unitSide"":""%1"" , ""unitfaction"":""%2"" , ""unitType"":""%3"" , ""unitClass"":""%11"" ,""unitPos"":""%4"" , ""vehicleSide"":""%5"" , ""vehiclefaction"":""%6"" , ""vehicleType"":""%7"" , ""vehicleClass"":""%12"" , ""vehiclePos"":""%8"" , ""unit"":""%9"" , ""vehicle"":""%10"" , ""vehiclePosition"":""%13"" , ""vehicleMinutes"":%14", _sideunit, _factionunit, _unitType, _unitPos, _sidevehicle, _factionvehicle, _vehicleType, _vehiclePos, _unit, _vehicle, _unitVehicleClass, _vehicleVehicleClass, _position, _vehMinutes];
 		
-
+		_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _unit, name _unit];
+		
+		// Send data to server to be written to DB
+		GVAR(UPDATE_EVENTS) = _data;
+		publicVariableServer QGVAR(UPDATE_EVENTS);
+		
+		// Check to see if this is a para jump
+		_height = (getposATL _unit) select 2;
+		if ( (_vehicle isKindof "Air") && (_height > 100) ) then {
+			_data = format["""Event"":""ParaJump"" , ""unitSide"":""%1"" , ""unitfaction"":""%2"" , ""unitType"":""%3"" , ""unitClass"":""%11"" ,""unitPos"":""%4"" , ""vehicleSide"":""%5"" , ""vehiclefaction"":""%6"" , ""vehicleType"":""%7"" , ""vehicleClass"":""%12"" , ""vehiclePos"":""%8"" , ""unit"":""%9"" , ""vehicle"":""%10"" , ""vehiclePosition"":""%13"" , ""jumpHeight"":%14", _sideunit, _factionunit, _unitType, _unitPos, _sidevehicle, _factionvehicle, _vehicleType, _vehiclePos, _unit, _vehicle, _unitVehicleClass, _vehicleVehicleClass, _position, _height];
 			_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _unit, name _unit];
 			
 			// Send data to server to be written to DB
 			GVAR(UPDATE_EVENTS) = _data;
 			publicVariableServer QGVAR(UPDATE_EVENTS);
+		};
 
 	};		
 };

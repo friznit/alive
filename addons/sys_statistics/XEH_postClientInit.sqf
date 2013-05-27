@@ -70,7 +70,6 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 			sleep 30;
 		};
 	};
-
 };
 
 

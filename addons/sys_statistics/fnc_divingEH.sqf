@@ -56,7 +56,7 @@ if (GVAR(ENABLED)) then {
 		_unitPos = mapgridposition _unit;
 		
 		// Log data
-		_data = format["""Event"":""CombatDive"" , ""unitSide"":""%1"" , ""unitfaction"":""%2"" , ""unitType"":""%3"" , ""unitPos"":""%4"" , ""unit"":""%5"" , ""diveTime"":""%6""", _sideunit, _factionunit, _unitType, _unitPos, _unit, _diveTime];
+		_data = format["""Event"":""CombatDive"" , ""unitSide"":""%1"" , ""unitfaction"":""%2"" , ""unitType"":""%3"" , ""unitPos"":""%4"" , ""unit"":""%5"" , ""diveTime"":%6", _sideunit, _factionunit, _unitType, _unitPos, _unit, _diveTime];
 			
 		_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _unit, name _unit];
 		
