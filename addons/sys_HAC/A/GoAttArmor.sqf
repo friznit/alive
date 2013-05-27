@@ -113,7 +113,7 @@ if (_logic getvariable "HAC_xHQ_SynchroAttack") then {_cur = false};
 _frm = formation _unitG;
 if not (isPlayer (leader _unitG)) then {_frm = "WEDGE"};
 
-_UL = leader _unitG;if not (isPlayer _UL) then {if (_timer <= 24) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,HAC_xHQ_AIC_OrdFinal,"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
+_UL = leader _unitG;if not (isPlayer _UL) then {if (_timer <= 24) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_OrdFinal"),"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
 
 _tPos = getposATL _Trg;
 _tPosX = _tPos select 0;

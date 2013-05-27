@@ -264,7 +264,7 @@ _unitG enableAttack false;
 _cur = true;
 if (_logic getvariable "HAC_xHQ_SynchroAttack") then {_cur = false};
 
-_UL = leader _unitG;if not (isPlayer _UL) then {if (_timer <= 300) then {if ((random 100) < HAC_xHQ_AIChatDensity) then {[_UL,HAC_xHQ_AIC_OrdFinal,"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
+_UL = leader _unitG;if not (isPlayer _UL) then {if (_timer <= 300) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_OrdFinal"),"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
 
 _wp = [_logic,_unitG,getposATL (vehicle (leader _unitG)),"SENTRY","STEALTH","RED","NORMAL",["true",""],_cur,0.001,[0,0,0],_frm] call ALiVE_fnc_HAC_WPadd;
 

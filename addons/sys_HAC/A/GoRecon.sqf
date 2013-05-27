@@ -280,7 +280,7 @@ while {(_nothing)} do
 		};
 
 	sleep 15;
-	if (isNull _unitG) then {_alive = false};
+	if ((isNull _unitG) || ((({alive _x} count (units _unitG)) < 1))) then {_alive = false};
 	if not (_alive) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {deleteMarker ("markRecon" + str (_unitG))}};
 	_timer2 = _timer2 + 1;
 	};

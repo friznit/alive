@@ -19,7 +19,7 @@ if ((_busy) and ((_unitG in (_logic getvariable "HAC_HQ_DefSpot")) or (_unitG in
 [_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
 _attackAllowed = attackEnabled _unitG;
-_unitG enableAttack false; 
+//_unitG enableAttack false; 
 
 _unitG setVariable [("Deployed" + (str _unitG)),false];_unitG setVariable [("Capt" + (str _unitG)),false];
 _unitG setVariable [("Busy" + _unitvar), true];
@@ -139,7 +139,7 @@ _TED = [_posX,_posY];
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [_TED,_unitG,"markWatch",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_dot"," | Def","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
+	_i = [_TED,_unitG,"markWatch",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_dot"," | Observe","A",[0.2,0.2],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
 _dir = [(getposATL (vehicle (leader _unitG))),_TED,10,_logic] call ALiVE_fnc_HAC_AngTowards;
@@ -326,7 +326,7 @@ waituntil
 
 	
 	if not (_unitG getVariable "Defending") then {_endThis = true};
-	if ((isNull _unitG) or (isNull (_logic getvariable "HAC_HQ"))) then {_endThis = true;_alive = false};
+	if ((isNull _unitG) || ((({alive _x} count (units _unitG)) < 1)) or (isNull (_logic getvariable "HAC_HQ"))) then {_endThis = true;_alive = false};
 	if not (alive (leader _unitG)) then {_endThis = true;_alive = false};
 
 	(_endThis)

@@ -281,7 +281,7 @@ if (isNull (leader (_this select 0))) exitwith
 		}
 	};
 
-_UL = leader _unitG;if not (isPlayer _UL) then {if (not (_halfway) and (_timer <= 30) and not (_enemy)) then {if ((random 100) < HAC_xHQ_AIChatDensity) then {[_UL,HAC_xHQ_AIC_OrdFinal,"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
+_UL = leader _unitG;if not (isPlayer _UL) then {if (not (_halfway) and (_timer <= 30) and not (_enemy)) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_OrdFinal"),"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
 
 _AV = assignedVehicle _UL;
 _pass = assignedCargo _AV;
@@ -421,7 +421,7 @@ if (not (_alive) or (_BBProgN > _BBProg)) exitWith
 		}
 	};
 
-_UL = leader _unitG;if not (isPlayer _UL) then {if ((_halfway) and (_timer <= 30)) then {if ((random 100) < HAC_xHQ_AIChatDensity) then {[_UL,HAC_xHQ_AIC_OrdFinal,"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
+_UL = leader _unitG;if not (isPlayer _UL) then {if ((_halfway) and (_timer <= 30)) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_OrdFinal"),"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
 
 if (isPlayer (leader _unitG)) then
 	{
@@ -586,7 +586,7 @@ waitUntil
 			}
 		};
 
-	((_isTaken) or (_waitTime <= 0))
+	((_isTaken) or (_waitTime <= 0)) or (({alive _x} count (units _unitG)) < 1)
 	};
 
 if ((_logic getvariable "HAC_HQ_UnlimitedCapt") or not (_isTaken)) then {_Trg setvariable [("Capturing" + str _Trg),[0,0]]};
