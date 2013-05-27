@@ -13,6 +13,7 @@ if (isDedicated && GVAR(ENABLED)) then {
 	GVAR(serverIP) = "Arma2Net.Unmanaged" callExtension "ServerAddress";
 	// GVAR(MISSIONNAME_UI) = ; Not sure how BIS grab the Mission Name from the UI
 
+	// Setup Module Data Listener
 	// Server side handler to write data to DB
 	QGVAR(UPDATE_EVENTS) addPublicVariableEventHandler { 
 
@@ -35,9 +36,7 @@ if (isDedicated && GVAR(ENABLED)) then {
 						};
 
 						_gametime = format["%1%2", _hours, _minutes];
-						
-
-						
+											
 						_realtime = "Arma2Net.Unmanaged" callExtension "DateTime ['utcnow','dd/MM/yyyy HH:mm:ss']";
 						
 						_data = format["""realTime"":%1 ,  ""Server"":""%2"" , ""Operation"":""%3"" , ""Map"":""%4"" , ""gameTime"":""%5"" , ", _realtime, GVAR(serverIP), GVAR(operation), worldName, _gametime] + _data;

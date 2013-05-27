@@ -13,8 +13,7 @@ GVAR(ENABLED) = true;
 GVAR(DISABLED) = false;
 
 // PREP any functions required during XEH init process
-//PREP(sendEvent);
-//PREP(convertData);
+
 
 // Handling units firing (for recording player shots)
 PREP(firedEH);

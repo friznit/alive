@@ -35,16 +35,15 @@ _debug = false;
 // Outgoing calls to callExtension have a check to ensure they do not exceed 16kb
 // Avoided using the format command as it has a 2kb limt
 
-PARAMS_2(_module,_params);
+PARAMS_2(_datasource, _module, _params);
 
 if (_debug) then {
     format["ReadData - Len:%1 Params:(%3)  Type:%2", [_params] call CBA_fnc_strLen, _params, typeName _params] call ALIVE_fnc_logger;
 };
 
-// DATASOURCE = SQL|JSON|TEXT|MEMORY
-// Somewhere we set global variables DATASOURCE, SQL_DATABASE_NAME etc
+// _datasource = SQL|JSON|TEXT|MEMORY
 
-switch(DATASOURCE) do {
+switch(_datasource) do {
         case "SQL": {
 			private ["_uid","_cmd","_sql"];
 			
@@ -68,8 +67,10 @@ switch(DATASOURCE) do {
 			private ["_pairs","_cmd","_json"];
 		
 			_pairs = "";
-			// Build the JSON command (http://msostore.iriscouch.com)
-			_cmd = format ["GetJSON ['%1', '%2'", JSON_URL, _module];
+			// Build the JSON command
+			//_cmd = format ["GetJSON ['%1', '%2'", JSON_URL, _module];
+			
+			_cmd = format ["SendJSON [""POST"", ""%1""", _module];
 			{
 				_pairs = _pairs + "'" + (_x select 0) + "'" + ":" + "'" + (_x select 1) + "'" + ","; // each key/value needs to be wrapped in quotes, not sure how to do this
 			} foreach _params;
