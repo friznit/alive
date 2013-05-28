@@ -87,7 +87,7 @@
 
 		if ((_logic getvariable "HAC_BB_Debug") or ((_logic getvariable "HAC_BBa_SimpleDebug") and (_Side == "A")) or ((_logic getvariable "HAC_BBb_SimpleDebug") and (_Side == "B"))) then
 			{
-			if (_i == 0) then {_m = [(_actO select 0),_HQ,"markBBCurrent",_lColor,"ICON","loc_Bunker"," | Current target for " + (str _HQ),"",[2,2],_logic] call ALiVE_fnc_HAC_Mark} else {_m setMarkerPos (_actO select 0)};
+			if (_i == 0) then {_m = [(_actO select 0),_HQ,"markBBCurrent",_lColor,"ICON","loc_Bunker"," | Current target for","",[2,2],_logic] call ALiVE_fnc_HAC_Mark} else {_m setMarkerPos (_actO select 0)};
 			};
 
 			{

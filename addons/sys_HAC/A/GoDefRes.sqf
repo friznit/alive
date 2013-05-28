@@ -19,7 +19,7 @@ if ((_busy) and ((_unitG in (_logic getvariable "HAC_HQ_DefSpot")) or (_unitG in
 [_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
 _attackAllowed = attackEnabled _unitG;
-//_unitG enableAttack false; 
+_unitG enableAttack false; 
 
 _unitG setVariable [("Deployed" + (str _unitG)),false];_unitG setVariable [("Capt" + (str _unitG)),false];
 _unitG setVariable [("Busy" + _unitvar), true];
@@ -73,7 +73,7 @@ if not (isNull _nE) then
 
 		if ((_logic getvariable "HAC_HQ_ArtyShells") > 0) then 
 			{
-			_CFF = ([_pos,HAC_HQ_ArtG,"SMOKE",9,_UL,_logic] call ALiVE_fnc_HAC_ArtyMission) select 0;
+			_CFF = ([_pos,(_logic getvariable "HAC_HQ_ArtG"),"SMOKE",9,_UL,_logic] call ALiVE_fnc_HAC_ArtyMission) select 0;
 			if not (isPlayer _UL) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_SmokeReq"),"SmokeReq",_logic] call ALiVE_fnc_HAC_AIChatter}};
 			};
 
@@ -179,7 +179,7 @@ waituntil
 		_dstAct = _VLdr distance _HQpos;
 		_sumD = _sumD + _dstAct
 		}
-	foreach HAC_HQ_Friends;
+	foreach (_logic getvariable "HAC_HQ_Friends");
 
 	if (_sumD > 0) then {_dstAv = _sumD/(count (_logic getvariable "HAC_HQ_Friends"))};
 

@@ -84,7 +84,7 @@ if (isPlayer _UL) then {[_UL,_logic,_logic] spawn ALiVE_fnc_HAC_VoiceComm;sleep 
 
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then 
 	{
-	_i = [[_posX,_posY],_unitG,"markRecon",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_triangle"," | Rec Hold"," - NON-COMBAT RECON",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
+	_i = [[_posX,_posY],_unitG,"markRecon",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_triangle"," | Rec"," - NON-COMBAT RECON",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark;
 	};
 
 _AV = assignedVehicle _UL;

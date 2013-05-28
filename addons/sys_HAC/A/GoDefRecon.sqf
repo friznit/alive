@@ -21,7 +21,7 @@ if ((_busy) and (_unitG in (_logic getvariable "HAC_HQ_RecDefSpot"))) exitwith {
 [_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
 _attackAllowed = attackEnabled _unitG;
-//_unitG enableAttack false; 
+_unitG enableAttack false; 
 
 _unitG setVariable [("Deployed" + (str _unitG)),false];_unitG setVariable [("Capt" + (str _unitG)),false];
 _unitG setVariable [("Busy" + _unitvar), true];
