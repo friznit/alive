@@ -154,15 +154,7 @@ if(isServer) then {
 	STAT("Confirm destroy instance 2");
 	waitUntil{isNull TEST_LOGIC2};
 };
-/*
-sleep 5;
 
-STAT("Clean up markers");
-{
-	deleteMarker str _x;
-	deleteVehicle _x;
-} forEach _obj_array;
-*/
 diag_log (allMissionObjects "") - _amo;
 
 nil;

@@ -22,7 +22,7 @@ Nil - init - Intiate instance
 Nil - destroy - Destroy instance
 Boolean - debug - Debug enabled
 Array - state - Save and restore module state
-Array - factions - Factions associated with module
+Array - faction - Faction associated with module
 
 Parameters:
 none
@@ -31,7 +31,7 @@ Description:
 xxx
 
 Examples:
-[_logic, "factions", ["OPF_F"] call ALiVE_fnc_SEP;
+[_logic, "faction", "OPF_F"] call ALiVE_fnc_SEP;
 
 See Also:
 - <ALIVE_fnc_SEPInit>
@@ -43,6 +43,9 @@ Wolffy
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_SEP
 #define MTEMPLATE "ALiVE_SEP_%1"
+#define DEFAULT_STYLE QUOTE(SYM)
+#define DEFAULT_SIZE QUOTE(COY)
+#define DEFAULT_FACTION QUOTE(OPF_F)
 
 private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_result"];
 
@@ -104,6 +107,19 @@ _createMarkers = {
         };
 };
 
+_simpleOperation = {
+	PARAMS_5(_logic,_operation,_args,_default,_choices);
+	if(typeName _args != "STRING") then {
+		_args = _logic getVariable [_operation, _default];
+	};
+	if(!(_args in _choices)) then {_args = _default;};
+	_logic setVariable [_operation, _args];
+	if (_logic getVariable ["debug", false]) then {
+		diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
+	};
+	_result = _args;
+};
+
 switch(_operation) do {
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
@@ -158,7 +174,7 @@ switch(_operation) do {
         };        
         case "state": {
                 private["_state","_data","_nodes","_simple_operations"];
-                _simple_operations = ["style", "size","factions"];
+                _simple_operations = ["style", "size","faction"];
                 
                 if(typeName _args != "ARRAY") then {
                         _state = [] call CBA_fnc_hashCreate;
@@ -205,39 +221,15 @@ switch(_operation) do {
         };        
         case "style": {
                 // Symmetric or Asymmetric modelling - valid values are: SYM and ASYM
-                if(typeName _args != "STRING") then {
-                        _args = _logic getVariable ["style", "SYM"];
-                };
-                if(!(_args in ["ASYM","SYM"])) then {_args = "SYM";};
-                _logic setVariable ["style", _args];
-                if (_logic getVariable ["debug", false]) then {
-                        diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
-                };
-                _result = _args;
+                _result = [_logic,_operation,_args,DEFAULT_STYLE,["ASYM","SYM"]] call _simpleOperation;
         };        
         case "size": {
                 // Size of enemy force - valid values are: BN, COY and PL
-                if(typeName _args != "STRING") then {
-                        _args = _logic getVariable ["size", "COY"];
-                };
-                if(!(_args in ["BN","PL","COY"])) then {_args = "COY";};
-                _logic setVariable ["size", _args];
-                if (_logic getVariable ["debug", false]) then {
-                        diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
-                };
-                _result = _args;
+                _result = [_logic,_operation,_args,DEFAULT_SIZE,["BN","PL","COY"]] call _simpleOperation;
         };        
-        case "factions": {
+        case "faction": {
                 // Force faction
-                if(typeName _args != "STRING") then {
-                        _args = _logic getVariable ["factions", "OPF_F"];
-                };
-                if(!(_args in ([] call BIS_fnc_getFactions))) then {_args = "OPF_F";};
-                _logic setVariable ["factions", _args];
-                if (_logic getVariable ["debug", false]) then {
-                        diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
-                };
-                _result = _args;
+                _result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call _simpleOperation;
         };        
 };
 TRACE_1("SEP - output",_result);

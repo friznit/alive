@@ -41,4 +41,22 @@
 <Key ID="STR_ALIVE_SEP_SIZE_PL">
 	<English>Platoon (30-50)</English>
 </Key>
+<Key ID="STR_ALIVE_SEP_FACTION">
+	<English>Force Faction:</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_FACTION_COMMENT">
+	<English>Faction of the units to be placed</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_TAOR">
+	<English>TAOR Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_TAOR_COMMENT">
+	<English>Tactical Area Operation Responsibility Marker</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_BLACKLIST">
+	<English>Blacklist Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_SEP_BLACKLIST_COMMENT">
+	<English>Exclusion Marker</English>
+</Key>
 </Container></Package></Project>

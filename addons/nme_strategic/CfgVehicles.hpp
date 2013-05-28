@@ -73,6 +73,24 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class faction
+                        {
+                                displayName = "$STR_ALIVE_SEP_FACTION";
+                                description = "$STR_ALIVE_SEP_FACTION_COMMENT";
+                                defaultValue = "OPF_F";
+                        };
+                        class taor
+                        {
+                                displayName = "$STR_ALIVE_SEP_TAOR";
+                                description = "$STR_ALIVE_SEP_TAOR_COMMENT";
+                                defaultValue = "";
+                        };
+                        class blacklist
+                        {
+                                displayName = "$STR_ALIVE_SEP_BLACKLIST";
+                                description = "$STR_ALIVE_SEP_BLACKLST_COMMENT";
+                                defaultValue = "";
+                        };
                 };
                 
         };
