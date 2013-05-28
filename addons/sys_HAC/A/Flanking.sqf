@@ -1,9 +1,7 @@
 _logic = _this select ((count _this)-1);
 _logic setvariable ["HAC_HQ_FlankingInit", true];
 sleep 10;
-
 waituntil {sleep 5;((_logic getvariable "HAC_HQ_FlankReady") and ((count (_logic getvariable "HAC_HQ_KnEnemies")) > 0) and not ((_logic getvariable "HAC_HQ_DefDone")))};
-
 _default = [];
 _Epos0 = [];
 _Epos1 = [];
@@ -94,7 +92,7 @@ _rnd1 = random 100;
 _minF = false;
 _maxF = false;
 _bothF = false;
-_HAC_HQ_Fineness = (_logic getvariable "HAC_HQ_Fineness");
+_HAC_HQ_Fineness = (_logic getvariable ["HAC_HQ_Fineness",1]);
 
 switch (true) do
 	{

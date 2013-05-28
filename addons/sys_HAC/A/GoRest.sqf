@@ -54,7 +54,7 @@ if (_unitG in (_logic getvariable "HAC_HQ_Garrison")) exitwith {_logic setvariab
 [_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
 _attackAllowed = attackEnabled _unitG;
-_unitG enableAttack false; 
+//_unitG enableAttack false; 
 
 _unitG setVariable [("Resting" + (str _unitG)),true];
 _unitG setVariable [("Busy" + (str _unitG)), true];
@@ -116,7 +116,7 @@ if not (isNil "HAC_HQ_RestDecoy") then
 	if ((random 100) >= (_logic getvariable "HAC_HQ_RDChance")) exitWith {_isDecoy = false};
 
 	_tPos = position (_logic getvariable "HAC_HQ_RestDecoy");
-	_enemyMatters = (triggerArea HAC_HQ_RestDecoy) select 3;
+	_enemyMatters = (triggerArea (_logic getvariable "HAC_HQ_RestDecoy")) select 3;
 
 	_posX = (_tPos select 0) + (random (2 * _tRadius)) - (_tRadius);
 	_posY = (_tPos select 1) + (random (2 * _tRadius)) - (_tRadius);
@@ -140,7 +140,7 @@ if not (_isDecoy) then
 	_Xpos2 = _Xpos;
 	_Ypos2 = _Ypos;
 
-	while {(((HAC_HQ_Obj distance [_Xpos,_Ypos]) > _safedist) and (_behind2) and (_behind))} do
+	while {((((_logic getvariable "HAC_HQ_Obj") distance [_Xpos,_Ypos]) > _safedist) and (_behind2) and (_behind))} do
 		{
 		_Xpos3 = _Xpos2;
 		_Ypos3 = _Ypos2;
@@ -148,7 +148,7 @@ if not (_isDecoy) then
 		_counterU = 0;
 		_Xpos2 = (_Xpos2 + ((position (_logic getvariable "HAC_HQ_Obj")) select 0))/2;
 		_Ypos2 = (_Ypos2 + ((position (_logic getvariable "HAC_HQ_Obj")) select 1))/2;
-		if not ((HAC_HQ_Obj distance [_Xpos2,_Ypos2]) > _safedist) exitWith {_Xpos = _Xpos3;_Ypos = _Ypos3};
+		if not (((_logic getvariable "HAC_HQ_Obj") distance [_Xpos2,_Ypos2]) > _safedist) exitWith {_Xpos = _Xpos3;_Ypos = _Ypos3};
 
 			{
 			_VL = vehicle (leader _x);
@@ -214,7 +214,7 @@ _cause = [_logic,_unitG,_counts,true,0,60,[],false] call ALiVE_fnc_HAC_Wait;
 _timer = _cause select 0;
 _alive = _cause select 1;
 
-if not (_alive) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {deleteMarker ("markRest" + str (_unitG))};HAC_HQ_Exhausted = HAC_HQ_Exhausted - [_unitG]};
+if not (_alive) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {deleteMarker ("markRest" + str (_unitG))};(_logic setvariable ["HAC_HQ_Exhausted",(_logic getvariable "HAC_HQ_Exhausted") - [_unitG]])};
 if (_timer > 60) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [position (vehicle _UL), 0]};
 
 _UL = leader _unitG;if not (isPlayer _UL) then {if (_timer <= 60) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_OrdFinal"),"OrdFinal",_logic] call ALiVE_fnc_HAC_AIChatter}}};
@@ -244,7 +244,7 @@ waituntil
 		if (not (isNull _veh) and (not (canMove _veh) or ((fuel _veh) <= 0.1) or ((damage _veh) > 0.5) or (((group _x) in (((_logic getvariable "HAC_HQ_AirG") - (_logic getvariable "HAC_HQ_NCAirG")) + ((_logic getvariable "HAC_HQ_HArmorG") + (_logic getvariable "HAC_HQ_LArmorG") + ((_logic getvariable "HAC_HQ_CarsG") - ((_logic getvariable "HAC_HQ_NCCargoG") + (_logic getvariable "HAC_HQ_SupportG")))))) and ((count (magazines _veh)) == 0)) and not ((group _x) in (_logic getvariable "HAC_HQ_RAirG")))) exitwith {_vehready = false};
 		}
 	foreach (units _unitG);
-	((_vehready) and (_solready))
+	(((_vehready) and (_solready)) || (({alive _x} count (units _unitG)) < 1));
 	};
 
 if ((isPlayer (leader _unitG)) and not (isMultiplayer)) then {(leader _unitG) removeSimpleTask _task};
@@ -252,7 +252,7 @@ if ((isPlayer (leader _unitG)) and not (isMultiplayer)) then {(leader _unitG) re
 if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {deleteMarker ("markRest" + str (_unitG))};
 _logic setvariable ["HAC_HQ_Exhausted",(_logic getvariable "HAC_HQ_Exhausted") - [_unitG]];
 
-if (_attackAllowed) then {_unitG enableAttack true}; 
+if (_attackAllowed) then {_unitG enableAttack true};
 
 _unitG setVariable [("Resting" + (str _unitG)),false];
 _unitG setVariable [("Busy" + (str _unitG)), false];

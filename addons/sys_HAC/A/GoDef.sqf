@@ -38,7 +38,7 @@ if ((_busy) and ((_unitG in (_logic getvariable "HAC_HQ_DefSpot")) or (_unitG in
 [_unitG,_logic] call ALiVE_fnc_HAC_WPdel;
 
 _attackAllowed = attackEnabled _unitG;
-_unitG enableAttack false; 
+//_unitG enableAttack false; 
 
 _unitG setVariable [("Deployed" + (str _unitG)),false];_unitG setVariable [("Capt" + (str _unitG)),false];
 _unitG setVariable [("Busy" + _unitvar), true];
@@ -179,7 +179,7 @@ waituntil
 	sleep 10;
 	_endThis = false;
 	if not (_unitG getVariable "Defending") then {_endThis = true};
-	if (isNull _unitG) then {_endThis = true;_alive = false};
+	if ((isNull _unitG) || ((({alive _x} count (units _unitG)) < 1))) then {_endThis = true;_alive = false};
 	if not (alive (leader _unitG)) then {_endThis = true;_alive = false};
 	(_endThis)
 	};

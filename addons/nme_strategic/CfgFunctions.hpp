@@ -11,6 +11,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\nme_strategic\fnc_SEPInit.sqf";
                                 recompile = 1;
                         };
+                        class findHQ {
+                                description = "Identify potential HQ locations within a radius";
+                                file = "\x\alive\addons\nme_strategic\fnc_findHQ.sqf";
+                                recompile = 1;
+                        };
                 };
         };
 };

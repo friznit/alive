@@ -110,7 +110,7 @@ _logic setvariable ["HAC_HQ_FlankAv", []];
 if (isNil {_logic getvariable "HAC_HQ_Exhausted"}) then {_logic setvariable ["HAC_HQ_Exhausted", []]};
 //if (isNil ("HAC_HQ_FlankAv")) then {HAC_HQ_FlankAv = []};
 
-if (isNil {_logic getvariable "HAC_HQ_AttackReserve"}) then {_logic setvariable ["HAC_HQ_AttackReserve",(0.5 * (0.5 + (HAC_HQ_Circumspection/1.5)))]};
+if (isNil {_logic getvariable "HAC_HQ_AttackReserve"}) then {_logic setvariable ["HAC_HQ_AttackReserve",(0.5 * (0.5 + ((_logic getvariable "HAC_HQ_Circumspection")/1.5)))]};
 
 	{
 	_unitvar = str _x;
@@ -363,7 +363,7 @@ _Otherthreat = [];
 	if ((_x in (_logic getvariable "HAC_HQ_EnSupport")) and not (_GE in _Supportthreat) and not (_checked)) then {_Supportthreat set [(count _Supportthreat),_GE]};
 	if ((_x in (_logic getvariable "HAC_HQ_EnCargo")) and not (_GE in _Cargothreat) and not (_checked)) then {_Cargothreat set [(count _Cargothreat),_GE]};
 
-	if ((_x in HAC_HQ_EnInf) and ((vehicle _x) in (_logic getvariable "HAC_HQ_EnCargo")) and not (_x in (_logic getvariable "HAC_HQ_EnCrew")) and not (_GE in _Infthreat) and not (_checked)) then {_Infthreat set [(count _Infthreat),_GE]};
+	if ((_x in (_logic getvariable "HAC_HQ_EnInf")) and ((vehicle _x) in (_logic getvariable "HAC_HQ_EnCargo")) and not (_x in (_logic getvariable "HAC_HQ_EnCrew")) and not (_GE in _Infthreat) and not (_checked)) then {_Infthreat set [(count _Infthreat),_GE]};
 
 	if ((isNil ("_checked")) or not (_checked)) then {_GE setVariable [("Checked" + _GEvar), true]};
 	}
