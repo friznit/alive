@@ -107,19 +107,6 @@ _createMarkers = {
         };
 };
 
-_simpleOperation = {
-	PARAMS_5(_logic,_operation,_args,_default,_choices);
-	if(typeName _args != "STRING") then {
-		_args = _logic getVariable [_operation, _default];
-	};
-	if(!(_args in _choices)) then {_args = _default;};
-	_logic setVariable [_operation, _args];
-	if (_logic getVariable ["debug", false]) then {
-		diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_args);
-	};
-	_result = _args;
-};
-
 switch(_operation) do {
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
@@ -219,18 +206,31 @@ switch(_operation) do {
                         */
                 };		
         };        
+        // Determine Symmetric or Asymmetric modelling - valid values are: SYM and ASYM
         case "style": {
-                // Symmetric or Asymmetric modelling - valid values are: SYM and ASYM
-                _result = [_logic,_operation,_args,DEFAULT_STYLE,["ASYM","SYM"]] call _simpleOperation;
+                _result = [_logic,_operation,_args,DEFAULT_STYLE,["ASYM","SYM"]] call ALIVE_fnc_OOsimpleOperation;
         };        
+        // Determine size of enemy force - valid values are: BN, COY and PL
         case "size": {
-                // Size of enemy force - valid values are: BN, COY and PL
-                _result = [_logic,_operation,_args,DEFAULT_SIZE,["BN","PL","COY"]] call _simpleOperation;
-        };        
+                _result = [_logic,_operation,_args,DEFAULT_SIZE,["BN","PL","COY"]] call ALIVE_fnc_OOsimpleOperation;
+        };
+        // Determine force faction
         case "faction": {
-                // Force faction
-                _result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call _simpleOperation;
-        };        
+                _result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call ALIVE_fnc_OOsimpleOperation;
+        };
+        // Collate objectives and their priorities
+        // Exclude objectives outside TAOR or inside Blacklist
+        // Idenitfy objectives with runways for military fixed wing air
+        // Idenitfy objectives with helipads for military rotary wing air
+        // Identify objectives with sheds for military vehicles
+
+        // Find HQ location
+        // Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
+        // Place BN/Coy HQ at location
+        // Consolidate HQ loc with objectives
+        // Set HQ Objectives with the highest priority
+
+        // If 
 };
 TRACE_1("SEP - output",_result);
 _result;
