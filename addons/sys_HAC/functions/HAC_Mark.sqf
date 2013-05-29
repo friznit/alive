@@ -17,7 +17,7 @@
 	_dir = 0;
 	if ((count _thisTMP) > 9) then {_dir = _thisTMP select 9};
 
-	_txt = _dTxt;
+	_txt = _dTxt + (" " + str(_ref));
 
 	if (typeName _ref == "GROUP") then
 		{

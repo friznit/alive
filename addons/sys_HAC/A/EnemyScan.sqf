@@ -15,6 +15,9 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 		{
 		_logic = _this select 0;
 		_markers = [];
+		_switch = 0;
+		_txt = "";
+
 		while {not (isNull (_logic getvariable "HAC_HQ"))} do
 			{
 				if !((count _markers) == ({({alive _x} count units _x) > 0} count (_logic getvariable "HAC_HQ_Friends"))) then {
@@ -28,10 +31,15 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 				if (({alive _x} count units _x) > 0) then
 					{
 					_dngr = _x getVariable ["NearE",0];
-					
+
 					if (str(markerpos _mark) == "[0,0,0]") then {
-						_i = [(position (vehicle (leader _x))),_x,"markDanger",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","o_unknown",(" | " + str _dngr),"",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
+						_i = [(position (vehicle (leader _x))),_x,"markDanger",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","o_unknown",(" | "),"",[0.65,0.65],_logic] call ALiVE_fnc_HAC_Mark;
 						_markers set [count _markers,_mark];
+					};
+
+					switch (_switch) do {
+						case (0) : {_txt = str(_dngr)};
+						case (1) : {_txt = str(_x)};
 					};
 
 					_mark setMarkerPos (position (vehicle (leader _x)));
@@ -40,7 +48,7 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 					if (_dngr > 0.5) then {_cl = (_logic getvariable ["HAC_HQ_Color","ColorRed"])};
 					
 					_mark setMarkerColor _cl;
-					_mark setmarkerText (str _dngr)
+					_mark setmarkerText _txt;
 					}
 				else
 					{
@@ -49,6 +57,12 @@ if (_logic getvariable "HAC_HQ_DebugII") then
 					}
 				}
 			foreach (_logic getvariable "HAC_HQ_Friends");
+
+			switch (_switch) do {
+					case (0) : {_switch = 1};
+					case (1) : {_switch = 0};
+			};
+
 			sleep 5;
 			}
 		}
