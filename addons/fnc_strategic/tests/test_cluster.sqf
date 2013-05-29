@@ -114,6 +114,32 @@ STAT("Confirm remove a node");
 waitUntil{count ([_logic, "nodes"] call ALIVE_fnc_cluster) == _oldnodecount};
 _test = _result;
 
+STAT("type - Test default");
+_result = [_logic, "type"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "civilian", _result);
+STAT("type - Test bad value");
+_result = [_logic, "type", "xxx"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "civilian", _result);
+STAT("type - Test good value");
+_result = [_logic, "type", "military"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "military", _result);
+
+STAT("priority - Test default");
+_result = [_logic, "priority"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(typeName _result == "SCALAR", typeName _result);
+ASSERT_TRUE(_result == 0, _result);
+STAT("priority - Test bad value");
+_result = [_logic, "priority", "xxx"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(typeName _result == "SCALAR", typeName _result);
+ASSERT_TRUE(_result == 0, _result);
+STAT("priority - Test good value");
+_result = [_logic, "priority", 99] call ALIVE_fnc_cluster;
+ASSERT_TRUE(typeName _result == "SCALAR", typeName _result);
+ASSERT_TRUE(_result == 99, _result);
+
 STAT("Save state");
 _result = [_logic, "state"] call ALIVE_fnc_cluster;
 _err = "check state";

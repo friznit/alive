@@ -250,6 +250,18 @@ switch(_operation) do {
                 };
                 _result = _logic getVariable ["nodes", []];
         };        
+        // Determine cluster type - valid values are: military, infrastructure and civilian
+        case "type": {
+                _result = [
+			_logic,_operation,_args,
+			"civilian",
+			["military","infrastructure","civilian"]
+		] call ALIVE_fnc_OOsimpleOperation;
+        };        
+        // Determine cluster priority - valid values are any integer, higher numbers higher priority
+        case "priority": {
+                _result = [_logic,_operation,_args,0] call ALIVE_fnc_OOsimpleOperation;
+        };        
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
         };
