@@ -61,9 +61,14 @@ class cfgFunctions {
 	                        file = "\x\alive\addons\main\fnc_bus.sqf";
 				recompile = 1;
 			};
-			class MarkerExists {
+			class markerExists {
 				description = "Checks if there is the marker given on map";
 	                        file = "\x\alive\addons\main\fnc_MarkerExists.sqf";
+				recompile = 1;
+			};
+			class OOsimpleOperation {
+				description = "Provides simple set/get code for objects";
+	                        file = "\x\alive\addons\main\fnc_OOsimpleOperation.sqf";
 				recompile = 1;
 			};
                 };
