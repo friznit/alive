@@ -1,6 +1,6 @@
 #include <\x\alive\addons\main\script_component.hpp>
 
-#define TESTS ["baseClass"]
+#define TESTS ["baseClass","bus","OOsimpleOperation"]
 
 SCRIPT(test-main);
 

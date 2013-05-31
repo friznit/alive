@@ -30,17 +30,26 @@ _returned = call ALIVE_fnc_baseClass;
 _result = [typeName _expected, typeName _returned] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,typeOf _expected + " != " + typeOf _returned);
 
+STAT("Destroy old instance");
+[_returned, "destroy"] call ALIVE_fnc_baseClass;
+
 STAT("Test non-OBJECT");
 _expected = objNull;
 _returned = 1234 call ALIVE_fnc_baseClass;
 _result = [typeName _expected, typeName _returned] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,typeOf _expected + " != " + typeOf _returned);
 
+STAT("Destroy old instance");
+[_returned, "destroy"] call ALIVE_fnc_baseClass;
+
 STAT("Test Empty Array");
 _expected = objNull;
 _returned = [] call ALIVE_fnc_baseClass;
 _result = [typeName _expected, typeName _returned] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,typeOf _expected + " != " + typeOf _returned);
+
+STAT("Destroy old instance");
+[_returned, "destroy"] call ALIVE_fnc_baseClass;
 
 _logic = nil;
 
@@ -62,7 +71,7 @@ sleep 5;
 
 STAT("Destroy old instance");
 if(isServer) then {
-	[_logic, "destroy"] call ALIVE_fnc_baseClass;
+	[TEST_LOGIC, "destroy"] call ALIVE_fnc_baseClass;
 	missionNamespace setVariable ["TEST_LOGIC",nil];
 } else {
 	waitUntil{isNull TEST_LOGIC};
@@ -89,7 +98,7 @@ sleep 5;
 
 if(isServer) then {
 	STAT("Destroy old instance");
-	[_logic, "destroy"] call ALIVE_fnc_baseClass;
+	[TEST_LOGIC2, "destroy"] call ALIVE_fnc_baseClass;
 	missionNamespace setVariable ["TEST_LOGIC2",nil];
 } else {
 	STAT("Confirm destroy instance 2");

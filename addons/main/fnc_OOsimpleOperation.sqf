@@ -46,10 +46,12 @@ if(typeName _choices == "ARRAY" &&
 	_limited = true;
 };
 
-// is _args the right typeName?
 // is _args objNull (default)?
-if(typeName _args != typeName (_choices select 0) ||
-	(typeName _args == "OBJECT" && {isNull _args})) then {
+// is _args the right typeName?
+if(
+	(typeName _args == "OBJECT" && {isNull _args}) ||
+	{typeName _args != typeName _default}
+) then {
 	// if so, grab the default value
 	_args = _logic getVariable [_operation, _default];
 };
