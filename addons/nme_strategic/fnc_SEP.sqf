@@ -219,18 +219,41 @@ switch(_operation) do {
                 _result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call ALIVE_fnc_OOsimpleOperation;
         };
         // Collate objectives and their priorities
-        // Exclude objectives outside TAOR or inside Blacklist
-        // Idenitfy objectives with runways for military fixed wing air
+        // - Exclude objectives outside TAOR or inside Blacklist
+        // Idenitfy objectives with hangers for military fixed wing air
+        // - Optionally use hangers for military vehicle assets
+        // - Calculate number of fixed wing air assets
         // Idenitfy objectives with helipads for military rotary wing air
-        // Identify objectives with sheds for military vehicles
+        // - Calculate number of rotary wing air assets
+        // Identify objectives with sheds for military vehicles assets
+        // - Calculate number of military vehicles assets
 
-        // Find HQ location
-        // Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
-        // Place BN/Coy HQ at location
-        // Consolidate HQ loc with objectives
-        // Set HQ Objectives with the highest priority
+        // Find BN HQ location
+        // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
+        // - Place clutter objects
+        // - Place BN HQ at location
+        // - Consolidate HQ loc with objectives
+        // - Set HQ Objectives with the highest priority
 
-        // If 
+        // Continue to find Coy HQ location
+        // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
+        // - Place clutter objects
+        // - Place Coy HQ at location
+        // - Consolidate HQ loc with objectives
+        // - Set HQ Objectives with the next highest priority
+        // Repeat as required
+
+        // If fixed wing assets available
+        // - Create squadron (offensive or transport)
+        // - Place near hangers
+        // If rotary wing assets available
+        // - Create squadron (offensive or transport)
+        // - Place on helipads
+        // If military vehicles available
+        // - Create platoons (offensive or transport)
+        // - Place near sheds
+        
+        // Calculate remaining infantry for company
 };
 TRACE_1("SEP - output",_result);
 _result;

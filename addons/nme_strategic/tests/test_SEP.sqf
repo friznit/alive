@@ -78,16 +78,16 @@ _result = [_logic, "size", "BN"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
 ASSERT_TRUE(_result == "BN", _result);
 
-STAT("factions - Test default");
-_result = [_logic, "factions"] call ALIVE_fnc_SEP;
+STAT("faction - Test default");
+_result = [_logic, "faction"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
 ASSERT_TRUE(_result == "OPF_F", _result);
-STAT("factions - Test bad value");
-_result = [_logic, "factions", "xxx"] call ALIVE_fnc_SEP;
+STAT("faction - Test bad value");
+_result = [_logic, "faction", "xxx"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
 ASSERT_TRUE(_result == "OPF_F", _result);
-STAT("factions - Test good value");
-_result = [_logic, "factions", "IND_F"] call ALIVE_fnc_SEP;
+STAT("faction - Test good value");
+_result = [_logic, "faction", "IND_F"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
 ASSERT_TRUE(_result == "IND_F", _result);
 
