@@ -91,6 +91,10 @@ if (GVAR(ENABLED)) then {
 				_killerweapon = _killerweapon + format[" (%1)", getText (configFile >> "cfgVehicles" >> (typeof (vehicle _killer)) >> "displayName")];
 		};
 		
+		if (_killerweapon == "") then {
+			_killerweapon = "UNKNOWN";
+		};
+		
 		_distance = ceil(_killed distance _killer);
 		
 		_killedPos = mapgridposition _killed;
