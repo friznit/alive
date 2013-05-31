@@ -273,7 +273,7 @@ if ((_ammo > 0) and not (_busy)) then
 	_CargoCheck = _unitG getvariable ("CC" + _unitvar);
 	if (isNil ("_CargoCheck")) then {_unitG setVariable [("CC" + _unitvar), false]};
 	_AV = assignedVehicle _UL;
-	if (((_logic getvariable "HAC_HQ_CargoFind") > 0) and (isNull _AV) and (([_posXWP4,_posYWP4] distance (vehicle _UL)) > 1000)) then {[_unitG,_logic] spawn A_SCargo } else {_unitG setVariable [("CC" + _unitvar), true]};
+	if (((_logic getvariable "HAC_HQ_CargoFind") > 0) and (isNull _AV) and (([_posXWP4,_posYWP4] distance (vehicle _UL)) > 1000)) then {[_unitG,_logic] spawn ALiVE_fnc_HAC_SCargo } else {_unitG setVariable [("CC" + _unitvar), true]};
 	if ((_logic getvariable "HAC_HQ_CargoFind") > 0) then 
 		{
 		waituntil {sleep 0.05;(_unitG getvariable ("CC" + _unitvar))};

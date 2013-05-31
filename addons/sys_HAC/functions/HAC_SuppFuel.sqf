@@ -143,7 +143,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					_cisterns = _cisterns - [_x];
 					_Zunits = _Zunits - [_Zunit];
 					_logic setvariable ["HAC_HQ_FSupportedG",(_logic getvariable "HAC_HQ_FSupportedG") + [group _Zunit]];
-					[_cistern,_Zunit,_dried,_logic] spawn A_GoFuelSupp; 
+					[_cistern,_Zunit,_dried,_logic] spawn ALiVE_fnc_HAC_GoFuelSupp; 
 					}
 				else
 					{
@@ -201,7 +201,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					_cisterns = _cisterns - [_x];
 					_Dunits = _Dunits - [_Dunit];
 					_logic setvariable ["HAC_HQ_FSupportedG",(_logic getvariable "HAC_HQ_FSupportedG") + [group _Dunit]];
-					[_cistern,_Dunit,_dried,_logic] spawn A_GoFuelSupp; 
+					[_cistern,_Dunit,_dried,_logic] spawn ALiVE_fnc_HAC_GoFuelSupp; 
 					}
 				else
 					{

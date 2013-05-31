@@ -40,8 +40,8 @@ if ((_BBSide == "B") and (count (_logic getvariable "HAC_BBa_HQs") > 0)) then
 
 if (_logic getvariable "HAC_BB_Debug") then
 	{
-	_logic globalChat format ["Big Boss %1 awakes (time: %2)",_logic,time];
-	diag_log format ["Big Boss %1 awakes (time: %2)",_logic,time]
+	_logic globalChat format ["OPCOM %1 awakes (time: %2)",_logic,time];
+	diag_log format ["OPCOM %1 awakes (time: %2)",_logic,time]
 	};
 
 _BBHQGrps = [];
@@ -114,8 +114,8 @@ if (_BBSide == "A") then
 
 	_nbr = 0;
 
-//	startloadingscreen ["Big Boss studies the map","RscDisplayLoadCustom"];
-	if (_logic getvariable "HAC_BB_Debug") then {diag_log "Big Boss studies the map."};
+//	startloadingscreen ["OPCOM studies the map","RscDisplayLoadCustom"];
+	if (_logic getvariable "HAC_BB_Debug") then {diag_log "OPCOM studies the map."};
 
 		{
 		_x setVariable ["BBSec",true];		
@@ -187,8 +187,8 @@ _strArea = [];
 
 if (_logic getvariable "HAC_BB_Debug") then
 	{
-	_logic globalChat format ["Big Boss %1 is looking for strategic objectives.",_logic];
-	diag_log format ["Big Boss %1 is looking for strategic objectives.",_logic]
+	_logic globalChat format ["OPCOM %1 is looking for strategic objectives.",_logic];
+	diag_log format ["OPCOM %1 is looking for strategic objectives.",_logic]
 	};
 
 _objRad = 25000;
@@ -356,8 +356,8 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 has no army!",_logic];
-			diag_log format ["Big Boss %1 has no army!",_logic]
+			_logic globalChat format ["OPCOM %1 has no army!",_logic];
+			diag_log format ["OPCOM %1 has no army!",_logic]
 			};
 		};
 /*
@@ -409,8 +409,8 @@ while {(_logic getvariable "HAC_BB_Active")} do
 					{
 					if (_logic getvariable "HAC_BB_Debug") then
 						{
-						_logic globalChat format ["Big Boss %1 has no army!",_side];
-						diag_log format ["Big Boss %1 has no army!",_side]
+						_logic globalChat format ["OPCOM %1 has no army!",_side];
+						diag_log format ["OPCOM %1 has no army!",_side]
 						};
 					};
 
@@ -436,15 +436,15 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 has no army!",_logic];
-			diag_log format ["Big Boss %1 has no army!",_logic]
+			_logic globalChat format ["OPCOM %1 has no army!",_logic];
+			diag_log format ["OPCOM %1 has no army!",_logic]
 			};
 		};
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
-		_logic globalChat format ["Big Boss %1 is analyzing forces...",_logic];
-		diag_log format ["Big Boss %1 is analyzing forces...",_logic]
+		_logic globalChat format ["OPCOM %1 is analyzing forces...",_logic];
+		diag_log format ["OPCOM %1 is analyzing forces...",_logic]
 		};
 
 	_ForcesRep = [_BBHQs,_logic] call ALiVE_fnc_HAC_ForceAnalyze;
@@ -456,8 +456,8 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 is checking own forces placement...",_logic];
-			diag_log format ["Big Boss %1 is checking own forces placement...",_logic]
+			_logic globalChat format ["OPCOM %1 is checking own forces placement...",_logic];
+			diag_log format ["OPCOM %1 is checking own forces placement...",_logic]
 			};
 
 		_nmbr = 0;
@@ -635,8 +635,8 @@ if ((true) and (true)) then
 };
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 orients the flanks.",_logic];
-			diag_log format ["Big Boss %1 orients the flanks.",_logic]
+			_logic globalChat format ["OPCOM %1 orients the flanks.",_logic];
+			diag_log format ["OPCOM %1 orients the flanks.",_logic]
 			};
 
 			{
@@ -685,8 +685,8 @@ if ((true) and (true)) then
 
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 assigns front sections to divisions.",_logic];
-			diag_log format ["Big Boss %1 assigns front sections to divisions.",_logic]
+			_logic globalChat format ["OPCOM %1 assigns front sections to divisions.",_logic];
+			diag_log format ["OPCOM %1 assigns front sections to divisions.",_logic]
 			};
 
 		_leftAn = [_leftSectors,_logic] call ALiVE_fnc_HAC_TopoAnalize;
@@ -1300,8 +1300,8 @@ if ((true) and (true)) then
 
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Assignment of Big Boss %5 : Left: %1 Right: %2 Front: %3 Reserve: %4",_goingLeft,_goingRight,_goingAhead,_goingReserve,_BBSide];
-			diag_log format ["Assignment of Big Boss %5 : Left: %1 Right: %2 Front: %3 Reserve: %4",_goingLeft,_goingRight,_goingAhead,_goingReserve,_BBSide];
+			_logic globalChat format ["Assignment of OPCOM %5 : Left: %1 Right: %2 Front: %3 Reserve: %4",_goingLeft,_goingRight,_goingAhead,_goingReserve,_BBSide];
+			diag_log format ["Assignment of OPCOM %5 : Left: %1 Right: %2 Front: %3 Reserve: %4",_goingLeft,_goingRight,_goingAhead,_goingReserve,_BBSide];
 			};
 
 		if (((_logic getvariable "HAC_BBa_SimpleDebug") and (_BBSide == "A")) or ((_logic getvariable "HAC_BBb_SimpleDebug") and (_BBSide == "B"))) then {[_BBHQs,_BBSide,_logic] spawn ALiVE_fnc_HAC_BBSimpleD};
@@ -1309,8 +1309,8 @@ if ((true) and (true)) then
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
-		_logic globalChat format ["Big Boss %1 issues orders.",_logic];
-		diag_log format ["Big Boss %1 issues orders.",_logic];
+		_logic globalChat format ["OPCOM %1 issues orders.",_logic];
+		diag_log format ["OPCOM %1 issues orders.",_logic];
 		};
 
 	_goingReserve0 = _goingReserve;
@@ -1869,16 +1869,16 @@ if ((true) and (true)) then
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
-		_logic globalChat format ["For Big Boss %3 cycle is completed: %1 (mission time: %2)",_BBCycle,time,_BBSide];
-		diag_log format ["For Big Boss %3 cycle is completed: %1 (mission time: %2)",_BBCycle,time,_BBSide]
+		_logic globalChat format ["For OPCOM %3 cycle is completed: %1 (mission time: %2)",_BBCycle,time,_BBSide];
+		diag_log format ["For OPCOM %3 cycle is completed: %1 (mission time: %2)",_BBCycle,time,_BBSide]
 		};
 
 	_ctWait = 0;
 
 	if (_logic getvariable "HAC_BB_Debug") then
 		{
-		_logic globalChat format ["Big Boss %1 will now take a moment to ash his cigar.",_logic];
-		diag_log format ["Big Boss %1 will now take a moment to ash his cigar.",_logic];
+		_logic globalChat format ["OPCOM %1 will now take a moment to ash his cigar.",_logic];
+		diag_log format ["OPCOM %1 will now take a moment to ash his cigar.",_logic];
 		};
 	waitUntil
 		{
@@ -1912,13 +1912,13 @@ if ((true) and (true)) then
 		{
 		if (_urgent) then
 			{
-			_logic globalChat format ["Situation on the frontline forces Big Boss %1 to react quickly.",_logic];
-			diag_log format ["Situation on the frontline forces Big Boss %1 to react quickly.",_logic];
+			_logic globalChat format ["Situation on the frontline forces OPCOM %1 to react quickly.",_logic];
+			diag_log format ["Situation on the frontline forces OPCOM %1 to react quickly.",_logic];
 			}
 		else
 			{
-			_logic globalChat format ["For Big Boss %1 it is time to a routine review the situation.",_logic];
-			diag_log format ["For Big Boss %1 it is time to a routine review the situation.",_logic];
+			_logic globalChat format ["For OPCOM %1 it is time to a routine review the situation.",_logic];
+			diag_log format ["For OPCOM %1 it is time to a routine review the situation.",_logic];
 			}
 		};
 
@@ -1951,8 +1951,8 @@ if ((true) and (true)) then
 		{
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
-			_logic globalChat format ["Big Boss %1 is dead!",_logic];
-			diag_log format ["Big Boss %1 is dead!",_logic];
+			_logic globalChat format ["OPCOM %1 is dead!",_logic];
+			diag_log format ["OPCOM %1 is dead!",_logic];
 			}
 		};
 	};

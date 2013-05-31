@@ -1,0 +1,5 @@
+x\alive\addons\fnc_analysis
+prefix=x\alive\addons\fnc_analysis
+product=ALiVE
+version=1
+Pbo Type is: Arma

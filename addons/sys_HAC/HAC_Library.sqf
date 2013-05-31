@@ -1544,6 +1544,11 @@ if (isNil {_logic getvariable "HAC_xHQ_AIChatDensity"}) then {_logic setvariable
 if (isNil {_logic getvariable "HAC_xHQ_NEAware"}) then {_logic setvariable ["HAC_xHQ_NEAware",0]};
 if (isNil {_logic getvariable "HAC_xHQ_MARatio"}) then {_logic setvariable ["HAC_xHQ_MARatio",[-1,-1,-1,-1]]};
 
+if (isNil {_logic getvariable ["HAC_HQ_Obj1",nil]}) then {_logic setvariable ["HAC_HQ_Obj1", vehicle _logic]};
+if (isNil {_logic getvariable ["HAC_HQ_Obj2",nil]}) then {_logic setvariable ["HAC_HQ_Obj2", (_logic getvariable "HAC_HQ_Obj1")]};
+if (isNil {_logic getvariable ["HAC_HQ_Obj3",nil]}) then {_logic setvariable ["HAC_HQ_Obj3", (_logic getvariable "HAC_HQ_Obj2")]};
+if (isNil {_logic getvariable ["HAC_HQ_Obj4",nil]}) then {_logic setvariable ["HAC_HQ_Obj4", (_logic getvariable "HAC_HQ_Obj3")]};
+
 if (_logic getvariable ["HAC_HQ_OALib",false]) then
 	{
 		_logic setvariable ["RHQ_SpecFor",(_logic getvariable "RHQ_SpecFor") + (_logic getvariable "RHQ_SpecFor_OA")];
@@ -1660,3 +1665,4 @@ if (_logic getvariable ["HAC_HQ_PMCLib",false]) then
 		_logic setvariable ["RHQ_Crew",(_logic getvariable "RHQ_Crew") + (_logic getvariable "RHQ_Crew_PMC")];
 	};
 
+_logic setvariable ["HAC_xHQ_Done", true];

@@ -11,10 +11,10 @@
 			{
 			switch (_kind) do
 				{
-				case ("INF") : {_code = A_GoAttInf};
-				case ("ARM") : {_code = A_GoAttArmor};
-				case ("SNP") : {_code = A_GoAttSniper};
-				case ("AIR") : {_code = A_GoAttAir};
+				case ("INF") : {_code = ALiVE_fnc_HAC_GoAttInf};
+				case ("ARM") : {_code = ALiVE_fnc_HAC_GoAttArmor};
+				case ("SNP") : {_code = ALiVE_fnc_HAC_GoAttSniper};
+				case ("AIR") : {_code = ALiVE_fnc_HAC_GoAttAir};
 				};
 			};
 		};

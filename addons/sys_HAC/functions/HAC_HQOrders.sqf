@@ -171,7 +171,7 @@ if ((_logic getvariable "HAC_HQ_AttackReserve") > 0) then
 
 _logic setvariable ["HAC_HQ_FlankAv",(_logic getvariable "HAC_HQ_FlankAv") - (_logic getvariable "HAC_HQ_NoFlank")];
 
-if (!(_logic getvariable "HAC_HQ_FlankingInit") and !((_logic getvariable "HAC_HQ_Order") == "DEFEND")) then {[_logic] spawn A_Flanking};
+if (!(_logic getvariable "HAC_HQ_FlankingInit") and !((_logic getvariable "HAC_HQ_Order") == "DEFEND")) then {[_logic] spawn ALiVE_fnc_HAC_Flanking};
 
 _stages = 3;
 if ([_logic] call ALiVE_fnc_HAC_isNight) then {_stages = 5};
@@ -189,7 +189,7 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 				{
 				if ((_logic getvariable "HAC_HQ_ReconStage") > _stages) exitWith {};
 				_logic setvariable ["HAC_HQ_ReconStage",(_logic getvariable "HAC_HQ_ReconStage") + 1];_x setVariable ["Busy" + (str _x),true];
-				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn A_GoRecon;
+				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn ALiVE_fnc_HAC_GoRecon;
 				}
 			foreach _gps
 			};
@@ -201,7 +201,7 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 				{
 				if ((_logic getvariable "HAC_HQ_ReconStage") > _stages) exitWith {};
 				_logic setvariable ["HAC_HQ_ReconStage",(_logic getvariable "HAC_HQ_ReconStage") + 1];_x setVariable ["Busy" + (str _x),true];
-				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn A_GoRecon;
+				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn ALiVE_fnc_HAC_GoRecon;
 				}
 			foreach _gps
 			};
@@ -213,7 +213,7 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 				{
 				if ((_logic getvariable "HAC_HQ_ReconStage") > _stages) exitWith {};
 				_logic setvariable ["HAC_HQ_ReconStage",(_logic getvariable "HAC_HQ_ReconStage") + 1];_x setVariable ["Busy" + (str _x),true];
-				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn A_GoRecon;
+				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn ALiVE_fnc_HAC_GoRecon;
 				}
 			foreach _gps
 			};
@@ -225,7 +225,7 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 				{
 				if ((_logic getvariable "HAC_HQ_ReconStage") > _stages) exitWith {};
 				_logic setvariable ["HAC_HQ_ReconStage",(_logic getvariable "HAC_HQ_ReconStage") + 1];_x setVariable ["Busy" + (str _x),true];
-				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn A_GoRecon;
+				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn ALiVE_fnc_HAC_GoRecon;
 				}
 			foreach _gps
 			};
@@ -238,7 +238,7 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 				{
 				if ((_logic getvariable "HAC_HQ_ReconStage") > _stages) exitWith {};
 				_logic setvariable ["HAC_HQ_ReconStage",(_logic getvariable "HAC_HQ_ReconStage") + 1];_x setVariable ["Busy" + (str _x),true];
-				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn A_GoRecon;
+				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn ALiVE_fnc_HAC_GoRecon;
 				}
 			foreach _gps
 			};
@@ -250,7 +250,7 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 				{
 				if ((_logic getvariable "HAC_HQ_ReconStage") > _stages) exitWith {};
 				_logic setvariable ["HAC_HQ_ReconStage",(_logic getvariable "HAC_HQ_ReconStage") + 1];_x setVariable ["Busy" + (str _x),true];
-				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn A_GoRecon;
+				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn ALiVE_fnc_HAC_GoRecon;
 				}
 			foreach _gps
 			};
@@ -263,7 +263,7 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 				{
 				if ((_logic getvariable "HAC_HQ_ReconStage") > _stages) exitWith {};
 				_logic setvariable ["HAC_HQ_ReconStage",(_logic getvariable "HAC_HQ_ReconStage") + 1];_x setVariable ["Busy" + (str _x),true];
-				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn A_GoRecon;
+				[_x,_PosObj1,(_logic getvariable "HAC_HQ_ReconStage"),_logic] spawn ALiVE_fnc_HAC_GoRecon;
 				}
 			foreach _gps
 			}
@@ -289,7 +289,7 @@ if (not(_logic getvariable "HAC_HQ_ReconDone") and ((count (_logic getvariable "
 		_resting = false;
 		_resting = _x getvariable ("Resting" + _recvar);
 		if (isNil ("_resting")) then {_resting = false};
-		if not (_resting) then {[_x,_logic] spawn A_GoRest }
+		if not (_resting) then {[_x,_logic] spawn ALiVE_fnc_HAC_GoRest }
 		}
 	foreach ((_logic getvariable "HAC_HQ_Exhausted") - ((_logic getvariable "HAC_HQ_AirG") + (_logic getvariable "HAC_HQ_StaticG") + (_logic getvariable "HAC_HQ_ArtG") + (_logic getvariable "HAC_HQ_NavalG")));
 
@@ -306,7 +306,7 @@ if (not(_logic getvariable "HAC_HQ_ReconDone") and ((count (_logic getvariable "
 			_busy = _x getvariable ("Busy" + _recvar);
 			if (isNil ("_busy")) then {_busy = false};
 			if (isNil ("_deployed")) then {_deployed = false};
-			if (not (_busy) and ((count (waypoints _x)) <= 1) and not (_deployed) and not (_capturing) and (not (_x in (_logic getvariable "HAC_HQ_NCCargoG")) or ((count (units _x)) > 1))) then {deleteWaypoint ((waypoints _x) select 0);[_x,_logic] spawn A_GoIdle }
+			if (not (_busy) and ((count (waypoints _x)) <= 1) and not (_deployed) and not (_capturing) and (not (_x in (_logic getvariable "HAC_HQ_NCCargoG")) or ((count (units _x)) > 1))) then {deleteWaypoint ((waypoints _x) select 0);[_x,_logic] spawn ALiVE_fnc_HAC_GoIdle }
 			}
 		foreach _reserve;
 		};
@@ -508,7 +508,7 @@ if ((_isAttacked <= 3) or (_captCount < _captLimit)) then
 											case (0) : {_Trg setVariable [("Capturing" + (str  _Trg)),[1,_captCount + _groupCount]]};
 											};
 
-										[_x,_isAttacked,_logic] spawn A_GoCapture;
+										[_x,_isAttacked,_logic] spawn ALiVE_fnc_HAC_GoCapture;
 										}
 									}
 								}
@@ -564,7 +564,7 @@ if ((_isAttacked <= 3) or (_captCount < _captLimit)) then
 										case (0) : {_Trg setVariable [("Capturing" + (str  _Trg)),[1,_captCount + _groupCount]]};
 										};
 
-									[_x,_isAttacked,_logic] spawn A_GoCapture;
+									[_x,_isAttacked,_logic] spawn ALiVE_fnc_HAC_GoCapture;
 									}
 								}
 							}
@@ -592,7 +592,7 @@ if ((_isAttacked <= 3) or (_captCount < _captLimit)) then
 		_busy = _x getvariable ("Busy" + _recvar);
 		if (isNil ("_busy")) then {_busy = false};
 		if (isNil ("_deployed")) then {_deployed = false};
-		if (not (_busy) and ((count (waypoints _x)) <= 1) and not (_deployed) and not (_capturing) and (not (_x in (_logic getvariable "HAC_HQ_NCCargoG")) or ((count (units _x)) > 1))) then {deleteWaypoint ((waypoints _x) select 0);[_x,_logic] spawn A_GoIdle};
+		if (not (_busy) and ((count (waypoints _x)) <= 1) and not (_deployed) and not (_capturing) and (not (_x in (_logic getvariable "HAC_HQ_NCCargoG")) or ((count (units _x)) > 1))) then {deleteWaypoint ((waypoints _x) select 0);[_x,_logic] spawn ALiVE_fnc_HAC_GoIdle};
 		}
 	foreach _reserve
 	};
@@ -602,7 +602,7 @@ if ((_isAttacked <= 3) or (_captCount < _captLimit)) then
 	_resting = false;
 	_resting = _x getvariable ("Resting" + _recvar);
 	if (isNil ("_resting")) then {_resting = false};
-	if not (_resting) then {[_x,_logic] spawn A_GoRest }
+	if not (_resting) then {[_x,_logic] spawn ALiVE_fnc_HAC_GoRest }
 	}
 foreach ((_logic getvariable "HAC_HQ_Exhausted") - ((_logic getvariable "HAC_HQ_AirG") + (_logic getvariable "HAC_HQ_StaticG") + (_logic getvariable "HAC_HQ_ArtG") + (_logic getvariable "HAC_HQ_NavalG")));
 

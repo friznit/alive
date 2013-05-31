@@ -162,7 +162,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					_ambulances = _ambulances - [_x];
 					_SWunits = _SWunits - [_SWunit];
 					_logic setvariable ["HAC_HQ_SupportedG",(_logic getvariable "HAC_HQ_SupportedG") + [group _SWunit]];
-					[_ambulance,_SWunit,_wounded,_logic] spawn A_GoMedSupp; 
+					[_ambulance,_SWunit,_wounded,_logic] spawn ALiVE_fnc_HAC_GoMedSupp; 
 					}
 				else
 					{
@@ -223,7 +223,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					_ambulances = _ambulances - [_x];
 					_Wunits = _Wunits - [_Wunit];
 					_logic setvariable ["HAC_HQ_SupportedG",(_logic getvariable "HAC_HQ_SupportedG") + [group _Wunit]];
-					[_ambulance,_Wunit,_wounded,_logic] spawn A_GoMedSupp; 
+					[_ambulance,_Wunit,_wounded,_logic] spawn ALiVE_fnc_HAC_GoMedSupp; 
 					}
 				else
 					{

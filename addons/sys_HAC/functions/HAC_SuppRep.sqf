@@ -134,7 +134,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					_rtrs = _rtrs - [_x];
 					_SDunits = _SDunits - [_SDunit];
 					_logic setvariable ["HAC_HQ_RSupportedG",(_logic getvariable "HAC_HQ_RSupportedG") + [group _SDunit]];
-					[_rtr,_SDunit,_damaged,_logic] spawn A_GoRepSupp; 
+					[_rtr,_SDunit,_damaged,_logic] spawn ALiVE_fnc_HAC_GoRepSupp; 
 					}
 				else
 					{
@@ -192,7 +192,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					_rtrs = _rtrs - [_x];
 					_Dunits = _Dunits - [_Dunit];
 					_logic setvariable ["HAC_HQ_RSupportedG",(_logic getvariable "HAC_HQ_RSupportedG") + [group _Dunit]];
-					[_rtr,_Dunit,_damaged,_logic] spawn A_GoRepSupp; 
+					[_rtr,_Dunit,_damaged,_logic] spawn ALiVE_fnc_HAC_GoRepSupp; 
 					}
 				else
 					{

@@ -67,6 +67,7 @@ switch(_operation) do {
                 //_logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
                 _logic = createAgent ["LOGIC", [0,0], [], 0, "NONE"];
                 _logic setVariable ["class", ALIVE_fnc_baseClass];
+				_logic enableSimulation false;
                 _result = _logic;
         };
         case "destroy": {

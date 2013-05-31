@@ -106,7 +106,7 @@ switch true do
 	case (_minF or _maxF) : 
 		{
 			{
-			if (_minF) then {[_x,_BEnemyPosA,_PosMid0,_PosMid1,_angle0,true,_logic] spawn A_GoFlank } else {[_x,_BEnemyPosB,_PosMid0,_PosMid1,_angle0,false,_logic] spawn A_GoFlank };
+			if (_minF) then {[_x,_BEnemyPosA,_PosMid0,_PosMid1,_angle0,true,_logic] spawn ALiVE_fnc_HAC_GoFlank } else {[_x,_BEnemyPosB,_PosMid0,_PosMid1,_angle0,false,_logic] spawn ALiVE_fnc_HAC_GoFlank };
 			}
 		foreach (_logic getvariable "HAC_HQ_FlankAv");
 		
@@ -119,11 +119,11 @@ switch true do
 			_FlankU = (_logic getvariable "HAC_HQ_FlankAv") select _b;
 			if ((_b/2 - floor (_b/2)) == 0) then 
 				{
-				[_FlankU,_BEnemyPosA,_PosMid0,_PosMid1,_angle0,true,_logic] spawn A_GoFlank;
+				[_FlankU,_BEnemyPosA,_PosMid0,_PosMid1,_angle0,true,_logic] spawn ALiVE_fnc_HAC_GoFlank;
 				} 
 			else 
 				{
-				[_FlankU,_BEnemyPosB,_PosMid0,_PosMid1,_angle0,false,_logic] spawn A_GoFlank 
+				[_FlankU,_BEnemyPosB,_PosMid0,_PosMid1,_angle0,false,_logic] spawn ALiVE_fnc_HAC_GoFlank 
 				}
 			}		
 		}

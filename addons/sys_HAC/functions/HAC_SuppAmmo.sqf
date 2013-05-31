@@ -186,7 +186,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					_MTrucks2 = _MTrucks2 - [_x];
 					_Zunits = _Zunits - [_Zunit];
 					_logic setvariable ["HAC_HQ_ASupportedG", (_logic getvariable "HAC_HQ_ASupportedG") + [group _Zunit]];
-					[_MTruck,_Zunit,_Hollow,_soldiers,false,objNull,_logic] spawn A_GoAmmoSupp
+					[_MTruck,_Zunit,_Hollow,_soldiers,false,objNull,_logic] spawn ALiVE_fnc_HAC_GoAmmoSupp
 					}
 				else
 					{
@@ -248,7 +248,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 						_logic setvariable ["HAC_HQ_ASupportedG", (_logic getvariable "HAC_HQ_ASupportedG") + [group _Hunit]];
 						_ammoBox = (_logic getvariable "HAC_HQ_AmmoBoxes") select 0;
 						_logic setvariable ["HAC_HQ_AmmoBoxes", (_logic getvariable "HAC_HQ_AmmoBoxes") - [_ammoBox]];
-						[_MTruck,_Hunit,_Hollow,_soldiers,true,_ammoBox,_logic] spawn A_GoAmmoSupp; 
+						[_MTruck,_Hunit,_Hollow,_soldiers,true,_ammoBox,_logic] spawn ALiVE_fnc_HAC_GoAmmoSupp; 
 						}
 					else
 						{
