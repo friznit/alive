@@ -44,7 +44,7 @@ TRACE_1("sectorPlot - input",_this);
 
 _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",true,false]] call BIS_fnc_param;
+_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
 
 #define MTEMPLATE "ALiVE_SECTORPLOT_%1"
