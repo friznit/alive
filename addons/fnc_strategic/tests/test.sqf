@@ -1,6 +1,6 @@
 #include <\x\alive\addons\fnc_strategic\script_component.hpp>
 
-#define TESTS [/*"houses","cluster","consolidateClusters","clusters","clusters2",*/"clusters3"]
+#define TESTS ["houses","cluster","consolidateClusters","clusters","clusters2","clusters3"]
 
 SCRIPT(test-strategic);
 

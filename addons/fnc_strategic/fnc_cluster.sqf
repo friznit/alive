@@ -260,7 +260,10 @@ switch(_operation) do {
         };        
         // Determine cluster priority - valid values are any integer, higher numbers higher priority
         case "priority": {
-                _result = [_logic,_operation,_args,0] call ALIVE_fnc_OOsimpleOperation;
+                _result = [
+			_logic,_operation,_args,
+			0
+		] call ALIVE_fnc_OOsimpleOperation;
         };        
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
