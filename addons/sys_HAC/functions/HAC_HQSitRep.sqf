@@ -14,7 +14,7 @@ _logic setvariable ["HAC_HQ_PersDone", false];
 waituntil {_logic getvariable "HAC_HQ_PersDone"};
 
 _logic setvariable ["HAC_HQ_LHQInit", false];
-[_logic] spawn A_LHQ;
+[_logic] spawn ALiVE_fnc_HAC_LHQ;
 waituntil {_logic getvariable "HAC_HQ_LHQInit"};
 
 if (isNil {_logic getvariable "HAC_HQ_Boxed"}) then {_logic setvariable ["HAC_HQ_Boxed", []]};
@@ -29,15 +29,15 @@ if (isNil {_logic getvariable "HAC_HQ_AmmoBoxes"}) then
 		}
 	};
 
-[_logic] spawn A_HQReset;
-[_logic] spawn A_Rev;
-[_logic] spawn A_SuppMed;
-[_logic] spawn A_SuppFuel;
-[_logic] spawn A_SuppAmmo;
-[_logic] spawn A_SuppRep;
-[_logic] spawn A_SFIdleOrd;
-[_logic] spawn A_Reloc;
-[_logic] spawn A_LPos;
+[_logic] spawn ALiVE_fnc_HAC_HQReset;
+[_logic] spawn ALiVE_fnc_HAC_Rev;
+[_logic] spawn ALiVE_fnc_HAC_SuppMed;
+[_logic] spawn ALiVE_fnc_HAC_SuppFuel;
+[_logic] spawn ALiVE_fnc_HAC_SuppAmmo;
+[_logic] spawn ALiVE_fnc_HAC_SuppRep;
+[_logic] spawn ALiVE_fnc_HAC_SFIdleOrd;
+[_logic] spawn ALiVE_fnc_HAC_Reloc;
+[_logic] spawn ALiVE_fnc_HAC_LPos;
 
 _specFor = (_logic getvariable "RHQ_SpecFor") + ["RUS_Soldier_Sab","RUS_Soldier_GL","RUS_Soldier_Marksman","RUS_Commander","RUS_Soldier1","RUS_Soldier2","RUS_Soldier3","RUS_Soldier_TL"] - (_logic getvariable "RHQs_SpecFor");
 _recon = (_logic getvariable "RHQ_Recon") + ["FR_TL","FR_Sykes","FR_R","FR_Rodriguez","FR_OHara","FR_Miles","FR_Marksman","FR_AR","FR_GL","FR_AC","FR_Sapper","FR_Corpsman","FR_Cooper","FR_Commander","FR_Assault_R","FR_Assault_GL","USMC_SoldierS_Spotter","USMC_SoldierS","MQ9PredatorB","CDF_Soldier_Spotter","RU_Soldier_Spotter","RUS_Soldier3","Pchela1T","GUE_Soldier_Scout"] - (_logic getvariable "RHQs_Recon");
@@ -70,7 +70,7 @@ _Cargo = _Cargo - (_Support - ["MH60S"]);
 
 _logic setvariable ["HAC_HQ_NCVeh",_NCCargo + (_Support - ["MH60S"])];
 
-[(_snipers + _ATinf + _AAinf),_logic] spawn A_Garrison;
+[(_snipers + _ATinf + _AAinf),_logic] spawn ALiVE_fnc_HAC_Garrison;
 
 _logic setvariable ["HAC_HQ_ReconDone", false];
 _logic setvariable ["HAC_HQ_DefDone", false];
@@ -891,7 +891,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 
 	if ((_logic getvariable "HAC_HQ_Cyclecount") == 1) then
 		{
-		[_logic] spawn A_EnemyScan;
+		[_logic] spawn ALiVE_fnc_HAC_EnemyScan;
 		if ((_logic getvariable "HAC_HQ_ArtyShells") > 0) then
 			{
 			[(_logic getvariable "HAC_HQ_ArtG"),(_logic getvariable "HAC_HQ_ArtyShells"),_logic] call ALiVE_fnc_HAC_ArtyPrep;
@@ -927,7 +927,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 
 		(_logic getvariable "HAC_HQ") setVariable ["LastStance","At"];
 		_logic setvariable ["HAC_HQ_Inertia", 30 * (0.5 + (_logic getvariable "HAC_HQ_Consistency"))*(0.5 + (_logic getvariable "HAC_HQ_Activity"))];
-		[_logic] spawn A_HQOrders 
+		[_logic] spawn ALiVE_fnc_HAC_HQOrders 
 		} 
 	else 
 		{
@@ -939,7 +939,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 
 		(_logic getvariable "HAC_HQ") setVariable ["LastStance","De"];
 		_logic setvariable ["HAC_HQ_Inertia", - (30  * (0.5 + (_logic getvariable "HAC_HQ_Consistency")))/(0.5 + (_logic getvariable "HAC_HQ_Activity"))];
-		[_logic] spawn A_HQOrdersDef 
+		[_logic] spawn ALiVE_fnc_HAC_HQOrdersDef 
 		};
 
 
@@ -1021,7 +1021,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 
 					_team = _SFAv select (floor (random (count _SFAv)));
 					_trg = vehicle (leader _trgG);
-					if (not ((typeOf _trg) in (_HArmor + _LArmor)) or ((random 100) > (90 - ((_logic getvariable "HAC_HQ_Recklessness") * 10)))) then {[_team,_trg,_trgG,_logic] spawn A_GoSFAttack}
+					if (not ((typeOf _trg) in (_HArmor + _LArmor)) or ((random 100) > (90 - ((_logic getvariable "HAC_HQ_Recklessness") * 10)))) then {[_team,_trg,_trgG,_logic] spawn ALiVE_fnc_HAC_GoSFAttack}
 					}
 				}
 			}

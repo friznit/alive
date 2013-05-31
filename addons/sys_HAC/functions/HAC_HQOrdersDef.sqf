@@ -292,7 +292,7 @@ _DN = false;
 	//_o = [_Center,(random 1000),"markDef","ColorKhaki","RECTANGLE","Border","","",[_lng,_wdt],(_logic getvariable "HAC_HQ_Angle"),_logic] call ALiVE_fnc_HAC_Mark;
 
 	_spotsN = _clr * 2;
-	[_spotsN,_PrimDir,_SecDir,_FreeLOS,_Lenght1,_Width1,_Center,_logic] spawn A_Spotscan;
+	[_spotsN,_PrimDir,_SecDir,_FreeLOS,_Lenght1,_Width1,_Center,_logic] spawn ALiVE_fnc_HAC_Spotscan;
 
 	waituntil {sleep 1;_logic getvariable "HAC_HQ_SpotsScan"};
 
@@ -313,7 +313,7 @@ _DN = false;
 		};
 
 	_spotsN = round (_cl * 1.5);
-	[_spotsN,_PrimDir,_SecDir,_FreeLOS,_Lenght2,_Width2,_Center,_logic] spawn A_Spotscan;
+	[_spotsN,_PrimDir,_SecDir,_FreeLOS,_Lenght2,_Width2,_Center,_logic] spawn ALiVE_fnc_HAC_Spotscan;
 
 	waituntil {sleep 1;(_logic getvariable "HAC_HQ_SpotsScan")};
 
@@ -365,7 +365,7 @@ _GS = [];
 			_goodSpots set [_aa,0]; 
 			_goodSpots = _goodSpots - [0];
 			_closestArr set [1,_goodSpots];
-			[_x,_Spot,_angleV,_logic] spawn A_GoDefRecon;
+			[_x,_Spot,_angleV,_logic] spawn ALiVE_fnc_HAC_GoDefRecon;
 			waituntil {sleep 0.05;(_logic getvariable "HAC_HQ_Roger")};
 			_logic setvariable ["HAC_HQ_RecDefSpot",(_logic getvariable "HAC_HQ_RecDefSpot") + [_x]];
 			};
@@ -417,7 +417,7 @@ switch ((random 100) >= (50/(0.5 + (_logic getvariable "HAC_HQ_Fineness")))) do
 					_goodSpots set [_bb,0]; 
 					_goodSpots = _goodSpots - [0];
 					_closestArr set [2,_goodSpots];
-					[_x,_Spot,_dXb,_dYb,_DN,_angleV,_logic] spawn A_GoDef;
+					[_x,_Spot,_dXb,_dYb,_DN,_angleV,_logic] spawn ALiVE_fnc_HAC_GoDef;
 					waituntil {sleep 0.05;(_logic getvariable "HAC_HQ_Roger")};
 					_logic setvariable ["HAC_HQ_RecDefSpot",(_logic getvariable "HAC_HQ_RecDefSpot") + [_x]];
 					};
@@ -454,7 +454,7 @@ switch ((random 100) >= (50/(0.5 + (_logic getvariable "HAC_HQ_Fineness")))) do
 
 					_logic setvariable ["HAC_HQ_Roger", false];
 					_x setVariable [("Busy" + (str _x)), false];
-					[_x,_Spot,_logic] spawn A_GoDefAir;
+					[_x,_Spot,_logic] spawn ALiVE_fnc_HAC_GoDefAir;
 					waituntil {sleep 0.1;(_logic getvariable "HAC_HQ_Roger")}
 					}
 				}
@@ -523,7 +523,7 @@ switch ((random 100) >= (50/(0.5 + (_logic getvariable "HAC_HQ_Fineness")))) do
 						};
 					
 					_logic setvariable ["HAC_HQ_Roger", false];
-					[_x,_Spot,_dXb,_dYb,_DN,_angleV,_logic] spawn A_GoDef;
+					[_x,_Spot,_dXb,_dYb,_DN,_angleV,_logic] spawn ALiVE_fnc_HAC_GoDef;
 					waituntil {sleep 0.1;(_logic getvariable "HAC_HQ_Roger")};
 					_logic setvariable ["HAC_HQ_Def",(_logic getvariable "HAC_HQ_Def") + [_x]];
 					}
@@ -591,7 +591,7 @@ switch ((random 100) >= (50/(0.5 + (_logic getvariable "HAC_HQ_Fineness")))) do
 						};
 					
 					_logic setvariable ["HAC_HQ_Roger", false];
-					[_x,_Spot,_dXb,_dYb,_DN,_angleV,_logic] spawn A_GoDef;
+					[_x,_Spot,_dXb,_dYb,_DN,_angleV,_logic] spawn ALiVE_fnc_HAC_GoDef;
 					waituntil {sleep 0.1;(_logic getvariable "HAC_HQ_Roger")};
 					_logic setvariable ["HAC_HQ_Def",(_logic getvariable "HAC_HQ_Def") + [_x]];
 					}
@@ -622,7 +622,7 @@ switch ((random 100) >= (50/(0.5 + (_logic getvariable "HAC_HQ_Fineness")))) do
 
 					_logic setvariable ["HAC_HQ_Roger", false];
 					_x setVariable [("Busy" + (str _x)), false];
-					[_x,_Spot,_logic] spawn A_GoDefAir;
+					[_x,_Spot,_logic] spawn ALiVE_fnc_HAC_GoDefAir;
 					waituntil {sleep 0.1;(_logic getvariable "HAC_HQ_Roger")};
 					}
 				}
@@ -643,7 +643,7 @@ switch ((random 100) >= (50/(0.5 + (_logic getvariable "HAC_HQ_Fineness")))) do
 			_posY = ((position _logic) select 1) + (random 400) - 200;
 			_Spot = [_posX,_posY];
 			_logic setvariable ["HAC_HQ_Roger", false];
-			[_x,_Spot,_logic] spawn A_GoDefRes;
+			[_x,_Spot,_logic] spawn ALiVE_fnc_HAC_GoDefRes;
 			waituntil {sleep 0.1;(_logic getvariable "HAC_HQ_Roger")};
 			_logic setvariable ["HAC_HQ_Def",(_logic getvariable "HAC_HQ_Def") + [_x]];
 			}

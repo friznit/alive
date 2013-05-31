@@ -97,7 +97,6 @@ switch(_operation) do {
                     
                     //Initialize Libraries
                     [_logic] call (compile preprocessfile "\x\alive\addons\sys_HAC\HAC_Library.sqf");
-                    [_logic] call (compile preprocessfile "\x\alive\addons\sys_HAC\HAC_Vars.sqf");
 
                     // and publicVariable Main class to clients
                     _id = count (missionNameSpace getvariable ["HAC_instances",[]]);
@@ -166,7 +165,7 @@ switch(_operation) do {
 				// if a new personality setting was provided set personality
 				ASSERT_TRUE(typeName _args == "STRING",str typeName _args);
 				_logic setVariable ["HAC_HQ_Personality", _args, true];
-                [_logic] call A_Personality;
+                [_logic] call ALiVE_fnc_HAC_Personality;
 			};
 			_args;
 		};
@@ -243,8 +242,8 @@ switch(_operation) do {
 	                    _logic setvariable ["HAC_xHQ_AllLeaders", (_logic getvariable ["HAC_xHQ_AllLeaders",[]]) + [_logic]];
 
                         [_logic] call ALiVE_fnc_HAC_Front;
-						[[(_logic getvariable "HAC_BBa_HQs"),"A"],_logic] spawn Boss;
-		                [_logic] spawn A_HQSitRep;
+						[[(_logic getvariable "HAC_BBa_HQs"),"A"],_logic] spawn ALiVE_fnc_HAC_OPCOM;
+		                [_logic] spawn ALiVE_fnc_HAC_HQSitRep;
 				}; // end if active
 			};
 		};
