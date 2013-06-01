@@ -46,6 +46,8 @@
 				_vh = vehicle _x;
 				if not (_vh in _magAdded) then
 					{
+                        
+                    //Artillery needs to be refactored for A3
 					_magAdded set [(count _magAdded),_vh];
 					//{_vh removemagazine _x} foreach (magazines _vh);
 					_SMOKEM119 = "ARTY_30Rnd_105mmSMOKE_M119";
@@ -57,19 +59,25 @@
 					_ILLUMM252 = "ARTY_8Rnd_81mmILLUM_M252";
 					_ILLUMM119 = "ARTY_30Rnd_105mmILLUM_M119";
 					_ILLUMD30 = "ARTY_30Rnd_122mmILLUM_D30";
-					_ILLUMPODNOS = "ARTY_8Rnd_82mmILLUM_2B14";
+					//_ILLUMPODNOS = "ARTY_8Rnd_82mmILLUM_2B14";
+                    //A3
+                    _ILLUMPODNOS = "8Rnd_82mm_Mo_Flare_white";
 
 					_HEM252 = "ARTY_8Rnd_81mmHE_M252";
 					_HEM119 = "ARTY_30Rnd_105mmHE_M119";
 					_HED30 = "ARTY_30Rnd_122mmHE_D30";
-					_HEPODNOS = "ARTY_8Rnd_82mmHE_2B14";
 					_HEMLRS = "ARTY_12Rnd_227mmHE_M270";
 					_HEGRAD = "ARTY_40Rnd_120mmHE_BM21";
-
+                    //_HEPODNOS = "ARTY_8Rnd_82mmHE_2B14";
+                    //A3
+                    _HEPODNOS = "8Rnd_82mm_Mo_guided";
+                    
 					_WPM252 = "ARTY_8Rnd_81mmWP_M252";
 					_WPM119 = "ARTY_30Rnd_105mmWP_M119";
 					_WPD30 = "ARTY_30Rnd_122mmWP_D30";
-					_WPPODNOS = "ARTY_8Rnd_82mmWP_2B14";
+					//_WPPODNOS = "ARTY_8Rnd_82mmWP_2B14";
+                    //A3
+                    _WPPODNOS = "8Rnd_82mm_Mo_LG";
 
 					switch (typeOf _vh) do
 						{

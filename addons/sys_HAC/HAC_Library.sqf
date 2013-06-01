@@ -2,28 +2,30 @@ _logic = _this select ((count _this)-1);
 
 //A3
 _logic setvariable ["RHQ_Recon", [
-"B_Soldier_lite_F",
-"O_Soldier_lite_F",
-"B_Soldier_F",
-"O_Soldier_F",
-"B_sniper_F",
 "B_spotter_F",
+"B_sniper_F",
+"B_soldier_M_F",
+"O_spotter_F",
 "O_sniper_F",
-"O_spotter_F"]];
+"O_soldier_M_F"]];
 
 _logic setvariable ["RHQ_FO", [
-"B_Soldier_SL_F",
-"O_Soldier_SL_F",
-"B_sniper_F",
 "B_spotter_F",
+"B_sniper_F",
+"B_soldier_M_F",
+"O_spotter_F",
 "O_sniper_F",
-"O_spotter_F"]];
+"O_soldier_M_F"]];
 
 _logic setvariable ["RHQ_Snipers", [
-"B_sniper_F",
 "B_spotter_F",
+"B_sniper_F",
+"B_soldier_M_F",
+"O_spotter_F",
 "O_sniper_F",
-"O_spotter_F"]];
+"O_soldier_M_F"]];
+
+_logic setvariable ["RHQ_Art",["O_Mk6","B_Mk6"]];
 
 _logic setvariable ["RHQ_ATInf", [
 "B_soldier_LAT_F",
