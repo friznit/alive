@@ -65,10 +65,7 @@ if(_limited) then {
 // set final value
 _logic setVariable [_operation, _args];
 
-// if debug enabled, log message
-if (_logic getVariable ["debug", false]) then {
-	diag_log PFORMAT_2(_fnc_scriptNameParent,_operation,_args);
-};
+//diag_log PFORMAT_2(_fnc_scriptNameParent,_operation,_args);
 
 // return value
 _args;
