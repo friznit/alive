@@ -11,6 +11,9 @@
 <Key ID="str_a3_cfggroups_east_opf_f_infantry_oia_infhq0">
 	<Original>Infantry HQ</Original>
 </Key>
+<Key ID="str_a3_cfggroups_east_opf_f_infantry_oia_infsniper0">
+	<Original>Sniper Team</Original>
+</Key>
 <Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_MotInfSection0">
 	<Original>Motorized Section</Original>
 </Key>
@@ -19,5 +22,20 @@
 </Key>
 <Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_MotInf_HQ0">
 	<Original>Motorized HQ</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_MotInf_Transport0">
+	<Original>Motorized Transport</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_Ka60_Squadron0">
+	<Original>Ka60 Squadron</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_Ka60_Transport0">
+	<Original>Ka60 Transport</Original>
+</Key>
+<Key ID="str_a3_cfgvehicles_quadbike_light_f0">
+	<Original>Quadbike (Light)</Original>
+</Key>
+<Key ID="str_a3_cfggroups_east_opf_f_air0">
+	<Original>Air</Original>
 </Key>
 </Container></Package></Project>
