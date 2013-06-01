@@ -24,12 +24,6 @@ Boolean - debug - Debug enabled
 Array - state - Save and restore module state
 Array - faction - Faction associated with module
 
-Parameters:
-none
-
-Description:
-xxx
-
 Examples:
 [_logic, "faction", "OPF_F"] call ALiVE_fnc_SEP;
 
@@ -47,7 +41,7 @@ Wolffy
 #define DEFAULT_SIZE QUOTE(COY)
 #define DEFAULT_FACTION QUOTE(OPF_F)
 
-private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_result"];
+private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_result","_validateClusters"];
 
 TRACE_1("SEP - input",_this);
 
@@ -55,6 +49,37 @@ _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
+
+_validateClusters = {
+        private ["_logic","_clusters","_result","_marker"];
+        PARAMS_2(_logic,_clusters);
+
+        _result = [];
+        _marker = _logic getVariable ["taor",""];
+        if(_marker != "" &&
+        {_marker call ALIVE_fnc_markerExists}) then {
+                {
+                        if(([_marker, position _x] call BIS_fnc_inTrigger)) then {
+                                _result set [count _result, _x];
+                        };
+                } forEach _clusters;
+        };
+/*
+        _clusters = +_result;
+
+        _result = [];
+        _marker = _logic getVariable ["blacklist",""];
+        if(_marker != "" &&
+        {_marker call ALIVE_fnc_markerExists}) then {
+                {
+                        if(!([_marker, position _x] call BIS_fnc_inTrigger)) then {
+                                 _result set [count _result, _x];
+                        };
+                } forEach _clusters;
+        };
+*/        
+        _result;
+};
 
 _deleteMarkers = {
         private ["_logic"];
@@ -218,42 +243,99 @@ switch(_operation) do {
         case "faction": {
                 _result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call ALIVE_fnc_OOsimpleOperation;
         };
-        // Collate objectives and their priorities
-        // - Exclude objectives outside TAOR or inside Blacklist
-        // Idenitfy objectives with hangers for military fixed wing air
-        // - Optionally use hangers for military vehicle assets
-        // - Calculate number of fixed wing air assets
-        // Idenitfy objectives with helipads for military rotary wing air
-        // - Calculate number of rotary wing air assets
-        // Identify objectives with sheds for military vehicles assets
-        // - Calculate number of military vehicles assets
+        // Main process
+        case "execute": {
+                private ["_obj_array","_clusters_hq","_clusters","_clusters_air","_clusters_heli","_clusters_veh"];
 
-        // Find BN HQ location
-        // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
-        // - Place clutter objects
-        // - Place BN HQ at location
-        // - Consolidate HQ loc with objectives
-        // - Set HQ Objectives with the highest priority
+                // Find HQ locations
+                _obj_array = [
+                        "barrack",
+                        "cargo_hq_",
+                        "miloffices"
+                ] call ALIVE_fnc_getObjectsByType;
+                _clusters_hq = [_obj_array] call ALIVE_fnc_findClusters;
+                _clusters_hq = [_logic, _clusters_hq] call _validateClusters;
+                {
+                        _x setVariable ["debugColor", "ColorRed"];
+                } forEach _clusters_hq;
+                
+                switch([_logic, "size"] call MAINCLASS) do {
+                        case "BN": {
+                                // Find BN HQ location
+                                // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
+                                // - Place clutter objects
+                                // - Place BN HQ at location
+                                // - Consolidate HQ loc with objectives
+                                // - Set HQ Objectives with the highest priority
+                        };
+                        case "COY": {
+                                // Continue to find Coy HQ location
+                                // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
+                                // - Place clutter objects
+                                // - Place Coy HQ at location
+                                // - Consolidate HQ loc with objectives
+                                // - Set HQ Objectives with the next highest priority
+                                // Repeat as required
+                        };
+                };
+                
+                _clusters = +_clusters_hq;
+/*                
+                // Idenitfy objectives with hangers for military fixed wing air
+                // - Optionally use hangers for military vehicle assets
+                // - Calculate number of fixed wing air assets
+                _obj_array = ["hangar"] call ALIVE_fnc_getObjectsByType;
+                _clusters_air = [_obj_array] call ALIVE_fnc_findClusters;
+                {
+                        _x setVariable ["debugColor", "ColorOrange"];
+                } forEach _clusters_air;
+                
+                // Idenitfy objectives with helipads for military rotary wing air
+                // - Calculate number of rotary wing air assets
+                _obj_array = ["helipadsquare"] call ALIVE_fnc_getObjectsByType;
+                _clusters_heli = [_obj_array] call ALIVE_fnc_findClusters;
+                {
+                        _x setVariable ["debugColor", "ColorYellow"];
+                } forEach _clusters_heli;                
+                
+                // Identify objectives with sheds for military vehicles assets
+                // - Calculate number of military vehicles assets
+                _obj_array = ["shed_big"] call ALIVE_fnc_getObjectsByType;
+                _clusters_veh = [_obj_array] call ALIVE_fnc_findClusters;                
+                {
+                        _x setVariable ["debugColor", "ColorGreen"];
+                } forEach _clusters_veh;
+                
+                _result = [_clusters, _clusters_air] call ALIVE_fnc_consolidateClusters;
+                _clusters = (_result select 0) + (_result select 1);
+                _result = [_clusters, _clusters_heli] call ALIVE_fnc_consolidateClusters;
+                _clusters = (_result select 0) + (_result select 1);
+                _result = [_clusters, _clusters_veh] call ALIVE_fnc_consolidateClusters;
+                _clusters = (_result select 0) + (_result select 1);
+*/                
+                {
+                        [_x, "debug", true] call ALIVE_fnc_cluster;
+                } forEach _clusters;
+                
+                
+                // If fixed wing assets available
+                // - Create squadron (offensive or transport)
+                // - Place near hangers
+                // If rotary wing assets available
+                // - Create squadron (offensive or transport)
+                // - Place on helipads
+                // If military vehicles available
+                // - Create platoons (offensive or transport)
+                // - Place near sheds
+                
+                // Collate objectives and their priorities
+                // - Exclude objectives outside TAOR or inside Blacklist
+                
+                // Calculate remaining infantry for company
+                // Randomly/appropriately choose remaining Platoons and their Squad make up
+                // Place the entire PL somewhere and let them sort themselves out from there using OPCOM
 
-        // Continue to find Coy HQ location
-        // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
-        // - Place clutter objects
-        // - Place Coy HQ at location
-        // - Consolidate HQ loc with objectives
-        // - Set HQ Objectives with the next highest priority
-        // Repeat as required
-
-        // If fixed wing assets available
-        // - Create squadron (offensive or transport)
-        // - Place near hangers
-        // If rotary wing assets available
-        // - Create squadron (offensive or transport)
-        // - Place on helipads
-        // If military vehicles available
-        // - Create platoons (offensive or transport)
-        // - Place near sheds
-        
-        // Calculate remaining infantry for company
+        };
 };
 TRACE_1("SEP - output",_result);
 _result;

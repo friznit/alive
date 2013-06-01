@@ -88,7 +88,7 @@ class CfgVehicles {
                         class blacklist
                         {
                                 displayName = "$STR_ALIVE_SEP_BLACKLIST";
-                                description = "$STR_ALIVE_SEP_BLACKLST_COMMENT";
+                                description = "$STR_ALIVE_SEP_BLACKLIST_COMMENT";
                                 defaultValue = "";
                         };
                 };

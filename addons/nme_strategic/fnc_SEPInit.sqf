@@ -34,3 +34,4 @@ ASSERT_DEFINED("ALIVE_fnc_SEP","Main function missing");
 //[_logic, "syncunits", _syncunits] call ALIVE_fnc_SEP;
 
 
+[_logic, "execute"] call ALIVE_fnc_SEP;
