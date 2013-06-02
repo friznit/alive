@@ -228,6 +228,7 @@ switch(_operation) do {
                 if (_logic getVariable ["debug", false]) then {
                         [_logic, "debug"] call MAINCLASS;
                 };
+                [_logic, "center"] call MAINCLASS;
                 _result = _logic getVariable ["nodes", []];
         };
         case "addNode": {
@@ -238,6 +239,7 @@ switch(_operation) do {
                                 [_logic, "debug"] call MAINCLASS;
                         };
                 };
+                [_logic, "center"] call MAINCLASS;
                 _result = _logic getVariable ["nodes", []];
         };
         case "delNode": {
@@ -248,6 +250,7 @@ switch(_operation) do {
                                 [_logic, "debug"] call MAINCLASS;
                         };
                 };
+                [_logic, "center"] call MAINCLASS;
                 _result = _logic getVariable ["nodes", []];
         };        
         // Determine cluster type - valid values are: military, infrastructure and civilian
