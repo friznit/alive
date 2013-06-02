@@ -91,6 +91,8 @@ _result = [_logic, "faction", "IND_F"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
 ASSERT_TRUE(_result == "IND_F", _result);
 
+
+
 STAT("Save state");
 _result = [_logic, "state"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);

@@ -12,9 +12,9 @@ class CfgPatches {
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
-class Extended_PreInit_EventHandlers {
+class Extended_InitPost_EventHandlers {
 	class ADDON {
-		init = QUOTE(call COMPILE_FILE(XEH_preInit));
+		init = QUOTE(call COMPILE_FILE(XEH_postInit));
 	};
 };
 

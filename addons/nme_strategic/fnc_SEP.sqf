@@ -41,7 +41,7 @@ Wolffy
 #define DEFAULT_SIZE QUOTE(COY)
 #define DEFAULT_FACTION QUOTE(OPF_F)
 
-private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_result","_validateClusters"];
+private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_result","_validateLocations","_hq_loc"];
 
 TRACE_1("SEP - input",_this);
 
@@ -50,34 +50,25 @@ _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
 
-_validateClusters = {
-        private ["_logic","_clusters","_result","_marker"];
-        PARAMS_2(_logic,_clusters);
-
-        _result = [];
-        _marker = _logic getVariable ["taor",""];
-        if(_marker != "" &&
-        {_marker call ALIVE_fnc_markerExists}) then {
-                {
-                        if(([_marker, position _x] call BIS_fnc_inTrigger)) then {
-                                _result set [count _result, _x];
-                        };
-                } forEach _clusters;
+_validateLocations = {
+        private ["_marker","_obj_array","_result","_marker","_insideOnly"];
+        PARAMS_3(_marker,_obj_array,_insideOnly);
+        _result = _obj_array;
+        if(_marker != "") then {
+                if(!(_marker call ALIVE_fnc_markerExists)) then {
+                        [format["Validate locations marker (""%1"") does not exist",_marker]] call BIS_fnc_errorMsg;
+                } else {
+                        _marker setMarkerAlpha 0;
+                        _result = [];
+                        {
+                                private["_in"];
+                                _in =[_marker, _x] call BIS_fnc_inTrigger;
+                                if((!_insideOnly || _in) && !(!_insideOnly && _in)) then {
+                                        _result set [count _result, _x];
+                                };
+                        } forEach _obj_array;
+                };
         };
-/*
-        _clusters = +_result;
-
-        _result = [];
-        _marker = _logic getVariable ["blacklist",""];
-        if(_marker != "" &&
-        {_marker call ALIVE_fnc_markerExists}) then {
-                {
-                        if(!([_marker, position _x] call BIS_fnc_inTrigger)) then {
-                                 _result set [count _result, _x];
-                        };
-                } forEach _clusters;
-        };
-*/        
         _result;
 };
 
@@ -246,21 +237,23 @@ switch(_operation) do {
         // Main process
         case "execute": {
                 private ["_obj_array","_clusters_hq","_clusters","_clusters_air","_clusters_heli","_clusters_veh"];
-
+                
                 // Find HQ locations
                 _obj_array = [
                         "barrack",
                         "cargo_hq_",
                         "miloffices"
                 ] call ALIVE_fnc_getObjectsByType;
+                _obj_array = [_logic getVariable ["taor",""], _obj_array, true] call _validateLocations;
+                _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
                 _clusters_hq = [_obj_array] call ALIVE_fnc_findClusters;
-                _clusters_hq = [_logic, _clusters_hq] call _validateClusters;
                 {
                         _x setVariable ["debugColor", "ColorRed"];
                 } forEach _clusters_hq;
                 
                 switch([_logic, "size"] call MAINCLASS) do {
                         case "BN": {
+                                // TODO
                                 // Find BN HQ location
                                 // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
                                 // - Place clutter objects
@@ -271,16 +264,22 @@ switch(_operation) do {
                         case "COY": {
                                 // Continue to find Coy HQ location
                                 // - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
-                                // - Place clutter objects
-                                // - Place Coy HQ at location
-                                // - Consolidate HQ loc with objectives
+                                _hq_loc = [_clusters_hq, position _logic, 2500] call ALIVE_fnc_findHQ;
                                 // - Set HQ Objectives with the next highest priority
+                                [_hq_loc, "type", "military"] call ALIVE_fnc_cluster;
+                                [_hq_loc, "priority", 99] call ALIVE_fnc_cluster;
+                                
+                                // - Place clutter objects
+                                // - Choose HQ squad
+                                // - Place Coy HQ at location
+                                ["hq_loc", position _hq_loc, "ICON", [2, 2], "TYPE:", "o_hq"] call CBA_fnc_createMarker;
+                                // - Consolidate HQ loc with objectives
                                 // Repeat as required
                         };
                 };
                 
                 _clusters = +_clusters_hq;
-/*                
+                /*                
                 // Idenitfy objectives with hangers for military fixed wing air
                 // - Optionally use hangers for military vehicle assets
                 // - Calculate number of fixed wing air assets
@@ -312,7 +311,7 @@ switch(_operation) do {
                 _clusters = (_result select 0) + (_result select 1);
                 _result = [_clusters, _clusters_veh] call ALIVE_fnc_consolidateClusters;
                 _clusters = (_result select 0) + (_result select 1);
-*/                
+                */                
                 {
                         [_x, "debug", true] call ALIVE_fnc_cluster;
                 } forEach _clusters;
@@ -334,7 +333,7 @@ switch(_operation) do {
                 // Calculate remaining infantry for company
                 // Randomly/appropriately choose remaining Platoons and their Squad make up
                 // Place the entire PL somewhere and let them sort themselves out from there using OPCOM
-
+                
         };
 };
 TRACE_1("SEP - output",_result);
