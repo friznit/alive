@@ -1,8 +1,8 @@
 #include <\x\alive\addons\main\script_component.hpp>
-SCRIPT(MarkerExists);
+SCRIPT(markerExists);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_isHC
+Function: ALIVE_fnc_markerExists
 Description:
 Checks if the marker given exists on map
 
@@ -10,11 +10,11 @@ Parameters:
 Markername
 
 Returns:
-Bool - Returns true if player is a headless client
+Bool - Returns true if marker exists
 
 Examples:
 (begin example)
-_Exists = ["respawn_west"] call MarkerExists;
+_Exists = ["respawn_west"] call ALIVE_fnc_markerExists;
 (end)
 
 See Also:
@@ -22,16 +22,13 @@ See Also:
 
 Author:
 Highhead
+Wolffy
 
 Peer reviewed:
-nil
+Wolffy 20130602
 ---------------------------------------------------------------------------- */
-private ["_markername","_markerpos"];
+private ["_markername"];
 
-_markername = _this select 0;
-_markerpos = str(markerpos _markername);
+PARAMS_1(_markername);
 
-switch (_markerpos) do {
-	case ("[0,0,0]"): {false};
-	default {true};
-};
+!(str markerPos _markername == "[0,0,0]");
