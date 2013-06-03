@@ -2,3 +2,4 @@
 #include <\x\alive\addons\main\CfgMods.hpp>
 #include <CfgPatches.hpp>
 #include <CfgFunctions.hpp>
+#include <CfgVehicles.hpp>

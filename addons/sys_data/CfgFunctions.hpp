@@ -1,31 +1,31 @@
 class cfgFunctions {
         class PREFIX {
-                class COMPONENT {
-			class convertData {
-				description = "Decomposes objects and data to a text string";
-				file = "\x\alive\addons\sys_data\fnc_convertData.sqf";
-				recompile = 1;
-			};
-			class restoreData {
-				description = "Composes objects and data from a text string";
-				file = "\x\alive\addons\sys_data\fnc_restoreData.sqf";
-				recompile = 1;
-			};
-			class sendToPlugIn {
-				description = "Sends data to an external plugin via arma2net";
-				file = "\x\alive\addons\sys_data\fnc_sendToPlugIn.sqf";
-				recompile = 1;
-			};
-			class writeData {
-				description = "Writes data to a data source";
-				file = "\x\alive\addons\sys_data\fnc_writeData.sqf";
-				recompile = 1;
-			};
-			class readData {
-				description = "Reads data from a data source";
-				file = "\x\alive\addons\sys_data\fnc_readData.sqf";
-				recompile = 1;
-			};
-                };
+			class COMPONENT {
+				class convertObjectToJSON {
+					description = "Decomposes objects to a JSON formatted text string";
+					file = "\x\alive\addons\sys_data\fnc_convertObjectToJSON.sqf";
+					recompile = 1;
+				};
+				class convertArrayToJSON {
+					description = "Decomposes an array to a JSON formatted text string";
+					file = "\x\alive\addons\sys_data\fnc_convertArrayToJSON.sqf";
+					recompile = 1;
+				};
+				class restoreJSONToObject {
+					description = "Composes objects from a JSON formatted text string";
+					file = "\x\alive\addons\sys_data\fnc_restoreJSONToObject.sqf";
+					recompile = 1;
+				};
+				class restoreJSONToArray {
+					description = "Composes an array from a JSON formatted text string";
+					file = "\x\alive\addons\sys_data\fnc_restoreJSONToArray.sqf";
+					recompile = 1;
+				};
+				class sendToPlugIn {
+					description = "Sends data to an external plugin via arma2net";
+					file = "\x\alive\addons\sys_data\fnc_sendToPlugIn.sqf";
+					recompile = 1;
+				};
+            };
         };
 };

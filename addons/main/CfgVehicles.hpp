@@ -62,10 +62,10 @@ class CfgVehicles {
         };
         class ALiVE_require : ModuleAliveSystemBase {
                 scope = 2;
-		displayName = "$STR_ALIVE_REQUIRES_ALIVE";
+				displayName = "$STR_ALIVE_REQUIRES_ALIVE";
                 isGlobal = 1;
                 isPersistent = 1;
-		icon = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
-		picture = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
+				icon = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
+				picture = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
 	};
 };

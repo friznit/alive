@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_Data">
+	<English>Data</English>
+</Key>
+<Key ID="STR_ALIVE_Data_COMMENT">
+	<English>Data module for persistence</English>
+</Key>
+<Key ID="STR_ALIVE_Data_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_Data_DEBUG_COMMENT">
+	<English>Enables Data Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_Data_ENABLE">
+	<English>Enable Data</English>
+</Key>
+<Key ID="STR_ALIVE_Data_ENABLE_COMMENT">
+	<English>Enables Data module</English>
+</Key>
+<Key ID="STR_ALIVE_Data_DISABLE">
+	<English>Disable Data</English>
+</Key>
+<Key ID="STR_ALIVE_Data_DISABLE_COMMENT">
+	<English>Disables Data module</English>
+</Key>
+<Key ID="STR_ALIVE_Data_Source">
+	<English>Data Source</English>
+</Key>
+<Key ID="STR_ALIVE_Data_Source_COMMENT">
+	<English>Choose an available Data Source</English>
+</Key>
+<Key ID="STR_ALIVE_Data_ERROR1">
+	<English>Only one Data module can be used</English>
+</Key>
+
+</Container></Package></Project>
