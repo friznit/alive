@@ -39,6 +39,7 @@ private ["_logic","_operation","_args"];
 
 #define DATAOPERATIONS ["read","write","update","delete","load","save"]
 #define DEFAULT_NAME QUOTE(alivedb)
+#define DEFAULT_SOURCE QUOTE(SQL)
 
 private ["_logic","_operation","_args","_result"];
 
@@ -58,7 +59,6 @@ switch(_operation) do {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
-                - statistics enabled
                 */
                 
                 if (isServer) then {
@@ -96,10 +96,22 @@ switch(_operation) do {
                 - frequent check if player is server admin (ALIVE_fnc_statisticsmenuDef)
                 */
         };
-		case "DatabaseName": {
+		
+		case "databaseName": {
 			ASSERT_TRUE(typeName _args == "STRING", _args);
 			if(typeName _args == "STRING") then { 
 				_result = [_logic,_operation,_args,DEFAULT_NAME,[]] call ALIVE_fnc_OOsimpleOperation;
+			} else {
+				private["_err"];
+                _err = format["%1 %2 operation requires a STRING as an argument not %3.", _logic, _operation, typeName _args];
+                ERROR_WITH_TITLE(str _logic,_err);
+			};
+		};
+		
+		case "source": {
+			ASSERT_TRUE(typeName _args == "STRING", _args);
+			if(typeName _args == "STRING") then { 
+				_result = [_logic,_operation,_args,DEFAULT_SOURCE,[]] call ALIVE_fnc_OOsimpleOperation;
 			} else {
 				private["_err"];
                 _err = format["%1 %2 operation requires a STRING as an argument not %3.", _logic, _operation, typeName _args];

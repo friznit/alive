@@ -42,11 +42,6 @@ class CfgVehicles {
                                                 value = SQL;
                                                 default = true;
                                         };
-                                        class CouchDB
-                                        {
-                                                name = "CouchDB";
-                                                value = CouchDB;
-                                        };
                                 };
                         };
                 };
