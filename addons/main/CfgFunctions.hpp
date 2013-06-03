@@ -6,6 +6,11 @@ class cfgFunctions {
 	                        file = "\x\alive\addons\main\fnc_baseClass.sqf";
 				recompile = 1;
 			};
+			class baseClassHash {
+				description = "Base class Has";
+	                        file = "\x\alive\addons\main\fnc_baseClassHash.sqf";
+				recompile = 1;
+			};
 			class isHC {
 				description = "Initialises isHC to indicate a player is a headless client.";
 	                        file = "\x\alive\addons\main\fnc_isHC.sqf";

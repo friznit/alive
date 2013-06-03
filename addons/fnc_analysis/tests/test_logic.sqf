@@ -55,7 +55,7 @@ TIMERSTART
 } forEach _logics;
 TIMEREND
 
-
+/*
 _logics = [];
 STAT("CREATE LOGICS NO SIMULATION");
 TIMERSTART
@@ -151,6 +151,6 @@ TIMERSTART
 	deleteVehicle _x;
 } forEach _logics;
 TIMEREND
-
+*/
 
 nil;
