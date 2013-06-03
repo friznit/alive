@@ -11,7 +11,7 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data_sql\fnc_readData.sqf";
 					recompile = 1;
 				};
-				class loadData_sql {
+/*				class loadData_sql {
 					description = "Loads all records/documents from a table/document set stored in a data source";
 					file = "\x\alive\addons\sys_data_sql\fnc_loadData.sqf";
 					recompile = 1;
@@ -31,6 +31,16 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data_sql\fnc_deleteData.sqf";
 					recompile = 1;
 				};
+				class convertData_sql {
+					description = "Decomposes objects/data to a suitable formatted text string for SQL";
+					file = "\x\alive\addons\sys_data_sql\fnc_convertData_sql.sqf";
+					recompile = 1;
+				};
+				class restoreData_sql {
+					description = "Composes objects/data from a SQL formatted text string";
+					file = "\x\alive\addons\sys_data_sql\fnc_restoreData_sql.sqf";
+					recompile = 1;
+};*/
             };
         };
 };
