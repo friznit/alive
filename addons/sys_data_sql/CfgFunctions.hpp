@@ -3,12 +3,12 @@ class cfgFunctions {
 			class COMPONENT {
 				class writeData_sql {
 					description = "Writes a record/document to a data source";
-					file = "\x\alive\addons\sys_data_sql\fnc_writeData.sqf";
+					file = "\x\alive\addons\sys_data_sql\fnc_writeData_sql.sqf";
 					recompile = 1;
 				};
 				class readData_sql {
 					description = "Reads a record/document from a data source";
-					file = "\x\alive\addons\sys_data_sql\fnc_readData.sqf";
+					file = "\x\alive\addons\sys_data_sql\fnc_readData_sql.sqf";
 					recompile = 1;
 				};
 /*				class loadData_sql {
