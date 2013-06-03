@@ -62,14 +62,16 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS ALIVE_fnc_baseClass
+//#define SUPERCLASS ALIVE_fnc_baseClass BaseClassHash CHANGE
+#define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_sector
 
 private ["_logic","_operation","_args","_result"];
 
 TRACE_1("sector - input",_this);
 
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+// _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param; BaseClassHash CHANGE
+_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
@@ -81,24 +83,32 @@ _deleteMarkers = {
         _logic = _this;
         {
                 deleteMarkerLocal _x;
-        } forEach (_logic getVariable ["debugMarkers", []]);
+        //} forEach (_logic getVariable ["debugMarkers", []]); BaseClassHash CHANGE
+		} forEach ([_logic,"debugMarkers"] call CBA_fnc_hashGet);
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions"];
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_id"];
         _logic = _this;
         _markers = [];
-        _position = _logic getVariable ["position", []];
-		_dimensions = _logic getVariable ["dimensions", []];
-		_id = _logic getVariable ["id", ""];
+        //_position = _logic getVariable ["position", []]; BaseClassHash CHANGE
+		//_dimensions = _logic getVariable ["dimensions", []]; BaseClassHash CHANGE
+		//_id = _logic getVariable ["id", ""]; BaseClassHash CHANGE
 		
-        if((count _position > 0) && (count _dimensions > 0)) then {                                
+		_position = [_logic,"position"] call CBA_fnc_hashGet;
+		_dimensions = [_logic,"dimensions"] call CBA_fnc_hashGet;
+		_debugColor = [_logic,"debugColor"] call CBA_fnc_hashGet;
+		_id = [_logic,"id"] call CBA_fnc_hashGet;
+		
+        if((count _position > 0) && (count _dimensions > 0)) then {   
                 
-				_m = createMarkerLocal [format[MTEMPLATE, _logic], _position];
+				//_m = createMarkerLocal [format[MTEMPLATE, _logic], _position]; BaseClassHash CHANGE
+				_m = createMarkerLocal [format[MTEMPLATE, _logic], _position]; // NOT SURE ABOUT THIS!!!!
 				_m setMarkerShapeLocal "RECTANGLE";
                 _m setMarkerSizeLocal _dimensions;
                 _m setMarkerTypeLocal "Solid";				
-                _m setMarkerColorLocal (_logic getVariable ["debugColor","ColorGreen"]);	
+                //_m setMarkerColorLocal (_logic getVariable ["debugColor","ColorGreen"]); BaseClassHash CHANGE
+				_m setMarkerColorLocal _debugColor;
 							
                 _markers set [count _markers, _m];				
 				
@@ -106,12 +116,14 @@ _createMarkers = {
 				_m setMarkerShapeLocal "ICON";
 				_m setMarkerSizeLocal [1, 1];
 				_m setMarkerTypeLocal "mil_dot";
-				_m setMarkerColorLocal (_logic getVariable ["debugColor","ColorGreen"]);
+				//_m setMarkerColorLocal (_logic getVariable ["debugColor","ColorGreen"]); BaseClassHash CHANGE
+				_m setMarkerColorLocal _debugColor;
                 _m setMarkerTextLocal _id;	
 				
 				_markers set [count _markers, _m];
 				
-                _logic setVariable ["debugMarkers", _markers];
+				//_logic setVariable ["debugMarkers", _markers]; BaseClassHash CHANGE
+				[_logic,"debugMarkers",_markers] call CBA_fnc_hashSet;
         };
 };
 
@@ -126,9 +138,15 @@ switch(_operation) do {
                 
                 if (isServer) then {
                         // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", MAINCLASS];
-                        TRACE_1("After module init",_logic);			
+                        //_logic setVariable ["super", SUPERCLASS]; BaseClassHash CHANGE
+                        //_logic setVariable ["class", MAINCLASS]; BaseClassHash CHANGE
+						[_logic,"super",SUPERCLASS] call CBA_fnc_hashSet;
+						[_logic,"class",MAINCLASS] call CBA_fnc_hashSet;
+                        TRACE_1("After module init",_logic);
+
+						// set defaults
+						[_logic,"debugColor","ColorGreen"] call CBA_fnc_hashSet;
+						[_logic,"data",[] call CBA_fnc_hashCreate] call CBA_fnc_hashSet;
                 };
                 
                 /*
@@ -144,8 +162,10 @@ switch(_operation) do {
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
                         // if server
-                        _logic setVariable ["super", nil];
-                        _logic setVariable ["class", nil];
+                        //_logic setVariable ["super", nil]; BaseClassHash CHANGE
+                        //_logic setVariable ["class", nil]; BaseClassHash CHANGE				
+						[_logic,"super",nil] call CBA_fnc_hashSet;
+						[_logic,"class",nil] call CBA_fnc_hashSet;
                         
                         [_logic, "destroy"] call SUPERCLASS;
                 };
@@ -153,9 +173,11 @@ switch(_operation) do {
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {
-                        _args = _logic getVariable ["debug", false];
+                        //_args = _logic getVariable ["debug", false]; BaseClassHash CHANGE
+						_args = [_logic,"debug"] call CBA_fnc_hashGet;
                 } else {
-                        _logic setVariable ["debug", _args];
+                        //_logic setVariable ["debug", _args]; BaseClassHash CHANGE
+						[_logic,"debug",_args] call CBA_fnc_hashSet;
                 };                
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
                 _logic call _deleteMarkers;
@@ -167,74 +189,84 @@ switch(_operation) do {
                 _result = _args;
         };
 		case "state": {
-				private["_state","_dimensions","_position","_id"];
+				private["_state"];
                 
-                if(typeName _args != "ARRAY") then {
+				if(typeName _args != "ARRAY") then {
+						
+						// Save state
+				
                         _state = [] call CBA_fnc_hashCreate;
-                        // Save state
-
-                        // dimensions                   
-                        _result = [_state, "dimensions", _logic getVariable ["dimensions",[]]] call CBA_fnc_hashSet;
 						
-						// position                        
-                        _result = [_state, "position", _logic getVariable ["position",[]]] call CBA_fnc_hashSet;
-						
-						// id
-                        _result = [_state, "id", _logic getVariable ["id",""]] call CBA_fnc_hashSet;
+						// BaseClassHash CHANGE 
+						// loop the class hash and set vars on the state hash
+						{
+							if(!(_x == "super") || !(_x == "class")) then {
+								[_state,_x,[_logic,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
+							};
+						} forEach (_logic select 1);
+                       
+                        _result = _state;
 						
                 } else {
 						ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
 
                         // Restore state
-
-                        // dimensions
-                        _dimensions = [_args, "dimensions"] call CBA_fnc_hashGet;
-                        [_logic, "dimensions", _dimensions] call MAINCLASS;
 						
-						// position
-                        _position = [_args, "position"] call CBA_fnc_hashGet;
-                        [_logic, "position", _position] call MAINCLASS;
-						
-						// id
-                        _id = [_args, "id"] call CBA_fnc_hashGet;
-                        [_logic, "id", _id] call MAINCLASS;
-                };		
+						// BaseClassHash CHANGE 
+						// loop the passed hash and set vars on the class hash
+                        {
+							[_logic,_x,[_args,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
+						} forEach (_args select 1);
+                };
         };
 		case "dimensions": {
 				if(typeName _args == "ARRAY") then {
-                        _logic setVariable ["dimensions", _args];                        
+                        //_logic setVariable ["dimensions", _args]; BaseClassHash CHANGE 
+						[_logic,"dimensions",_args] call CBA_fnc_hashSet;
                 };
-                _result = _logic getVariable ["dimensions", []];
+                //_result = _logic getVariable ["dimensions", []]; BaseClassHash CHANGE
+				_result = [_logic,"dimensions"] call CBA_fnc_hashGet;
         };
 		case "position": {
 				if(typeName _args == "ARRAY") then {
-                        _logic setVariable ["position", _args];              
+                        //_logic setVariable ["position", _args]; BaseClassHash CHANGE
+						[_logic,"position",_args] call CBA_fnc_hashSet;
                 };
-                _result = _logic getVariable ["position", []];
+                //_result = _logic getVariable ["position", []]; BaseClassHash CHANGE
+				_result = [_logic,"position"] call CBA_fnc_hashGet;
         };
 		case "id": {
 				if(typeName _args == "STRING") then {
-                        _logic setVariable ["id", _args];              
+                        //_logic setVariable ["id", _args]; BaseClassHash CHANGE
+						[_logic,"id",_args] call CBA_fnc_hashSet;
                 };
-                _result = _logic getVariable ["id", ""];
+                //_result = _logic getVariable ["id", ""]; BaseClassHash CHANGE
+				_result = [_logic,"id"] call CBA_fnc_hashGet;
         };
 		case "data": {
 				if(typeName _args == "ARRAY") then {
 					_key = _args select 0;
 					_value = _args select 1;		
-					_data = _logic getVariable ["data", [] call CBA_fnc_hashCreate];
+					//_data = _logic getVariable ["data", [] call CBA_fnc_hashCreate]; BaseClassHash CHANGE 
+					_data = [_logic,"data"] call CBA_fnc_hashGet;
+					
 					_result = [_data, _key, _value] call CBA_fnc_hashSet;
-					_logic setVariable ["data", _result];
+					//_logic setVariable ["data", _result]; BaseClassHash CHANGE
+					[_logic,"data",_result] call CBA_fnc_hashSet;
 				};					
-				_result = _logic getVariable ["data", [] call CBA_fnc_hashCreate];
+				//_result = _logic getVariable ["data", [] call CBA_fnc_hashCreate]; BaseClassHash CHANGE
+				_result = [_logic,"data"] call CBA_fnc_hashGet;
         };
 		case "center": {
-				_result = _logic getVariable ["position", []];
+				//_result = _logic getVariable ["position", []]; BaseClassHash CHANGE
+				_result = [_logic,"position"] call CBA_fnc_hashGet;
         };
 		case "bounds": {
 				private["_position","_dimensions","_positionX","_positionY","_sectorWidth","_sectorHeight","_positionBL","_positionTL","_positionTR","_positionBR"];
-				_position = _logic getVariable ["position", []];
-				_dimensions = _logic getVariable ["dimensions", []];
+				//_position = _logic getVariable ["position", []]; BaseClassHash CHANGE
+				//_dimensions = _logic getVariable ["dimensions", []]; BaseClassHash CHANGE
+				_position = [_logic,"position"] call CBA_fnc_hashGet;
+				_dimensions = [_logic,"dimensions"] call CBA_fnc_hashGet;
 				
 				_positionX = _position select 0;
 				_positionY = _position select 1;

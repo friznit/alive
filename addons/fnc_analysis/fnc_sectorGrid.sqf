@@ -71,14 +71,14 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS ALIVE_fnc_baseClass
+#define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_sectorGrid
 
 private ["_logic","_operation","_args","_result"];
 
 TRACE_1("sectorGrid - input",_this);
 
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
@@ -96,9 +96,15 @@ switch(_operation) do {
                 
                 if (isServer) then {
                         // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", MAINCLASS];
-                        TRACE_1("After module init",_logic);			
+                        [_logic,"super",SUPERCLASS] call CBA_fnc_hashSet;
+						[_logic,"class",MAINCLASS] call CBA_fnc_hashSet;
+                        TRACE_1("After module init",_logic);		
+
+						// set defaults
+						[_logic,"gridPosition",[0,0]] call CBA_fnc_hashSet;
+						[_logic,"gridSize",[] call ALIVE_fnc_getMapBounds] call CBA_fnc_hashSet;
+						[_logic,"sectorDimensions",[500,500]] call CBA_fnc_hashSet;
+						[_logic,"sectorType","SECTOR"] call CBA_fnc_hashSet;
                 };                
                 
                 /*
@@ -115,7 +121,8 @@ switch(_operation) do {
                 if (isServer) then {
                         // if server
                         
-						_allSectors = _logic getVariable ["sectors", []];
+						//_allSectors = _logic getVariable ["sectors", []];
+						_allSectors = [_logic,"sectors"] call CBA_fnc_hashGet;
 						
 						if(count _allSectors > 0) then {
 							// switch off debug on all grid sectors
@@ -124,22 +131,27 @@ switch(_operation) do {
 							} forEach _allSectors;
 						};				
 						
-						_logic setVariable ["super", nil];
-                        _logic setVariable ["class", nil];						
-						 [_logic, "destroy"] call SUPERCLASS;						
+						//_logic setVariable ["super", nil];
+                        //_logic setVariable ["class", nil];
+						[_logic,"super",nil] call CBA_fnc_hashSet;
+						[_logic,"class",nil] call CBA_fnc_hashSet;
+						[_logic, "destroy"] call SUPERCLASS;						
                 };
                 
         };
         case "debug": {
 				private["_allSectors"];
                 if(typeName _args != "BOOL") then {
-                        _args = _logic getVariable ["debug", false];
+                        //_args = _logic getVariable ["debug", false];
+						_args = [_logic,"debug"] call CBA_fnc_hashGet;
                 } else {
-                        _logic setVariable ["debug", _args];
+                        //_logic setVariable ["debug", _args];
+						[_logic,"debug",_args] call CBA_fnc_hashSet;
                 };                
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
 				
-				_allSectors = _logic getVariable ["sectors", []];
+				//_allSectors = _logic getVariable ["sectors", []];
+				_allSectors = [_logic,"sectors"] call CBA_fnc_hashGet;
 				
 				if(count _allSectors > 0) then {
 					// switch off debug on all grid sectors
@@ -158,81 +170,84 @@ switch(_operation) do {
                 _result = _args;
         };        
         case "state": {
-               private["_state","_position","_size","_dimensions","_type"];
+				private["_state"];
                 
-                if(typeName _args != "ARRAY") then {
+				if(typeName _args != "ARRAY") then {
+						
+						// Save state
+				
                         _state = [] call CBA_fnc_hashCreate;
-                        // Save state
 						
-						// gridPosition                   
-                        _result = [_state, "gridPosition", _logic getVariable ["gridPosition",[0,0]]] call CBA_fnc_hashSet;
-						
-						// gridSize                   
-                        _result = [_state, "gridSize", _logic getVariable ["gridSize",[] call ALIVE_fnc_getMapBounds]] call CBA_fnc_hashSet;
-
-                        // sectorDimensions                   
-                        _result = [_state, "sectorDimensions", _logic getVariable ["sectorDimensions",[500,500]]] call CBA_fnc_hashSet;
-						
-						// sectorType
-                        _result = [_state, "sectorType", _logic getVariable ["sectorType","SECTOR"]] call CBA_fnc_hashSet;
+						// BaseClassHash CHANGE 
+						// loop the class hash and set vars on the state hash
+						{
+							if(!(_x == "super") || !(_x == "class")) then {
+								[_state,_x,[_logic,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
+							};
+						} forEach (_logic select 1);
+                       
+                        _result = _state;
 						
                 } else {
 						ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
 
                         // Restore state
 						
-						// gridPosition
-                        _position = [_args, "gridPosition"] call CBA_fnc_hashGet;
-                        [_logic, "gridPosition", _position] call MAINCLASS;
-						
-						// gridSize
-                        _size = [_args, "gridSize"] call CBA_fnc_hashGet;
-                        [_logic, "gridSize", _size] call MAINCLASS;
-
-                        // sectorDimensions
-                        _dimensions = [_args, "sectorDimensions"] call CBA_fnc_hashGet;
-                        [_logic, "sectorDimensions", _dimensions] call MAINCLASS;
-						
-						// sectorType
-                        _type = [_args, "sectorType"] call CBA_fnc_hashGet;
-                        [_logic, "sectorType", _type] call MAINCLASS;
-                };		
+						// BaseClassHash CHANGE 
+						// loop the passed hash and set vars on the class hash
+                        {
+							[_logic,_x,[_args,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
+						} forEach (_args select 1);
+                };
         };
 		case "gridPosition": {
 				if(typeName _args == "ARRAY") then {
-                        _logic setVariable ["gridPosition", _args];    
+                        //_logic setVariable ["gridPosition", _args];
+						[_logic,"gridPosition",_args] call CBA_fnc_hashSet;
                 };
 				
-                _result = _logic getVariable ["gridPosition", []];
+                //_result = _logic getVariable ["gridPosition", []];
+				_result = [_logic,"gridPosition"] call CBA_fnc_hashGet;
         };
 		case "gridSize": {
-				if(typeName _args == "ARRAY") then {
-						_logic setVariable ["gridSize", _args select 0];                   
+				if(typeName _args == "SCALAR") then {
+						//_logic setVariable ["gridSize", _args select 0];
+						[_logic,"gridSize",_args] call CBA_fnc_hashSet;
                 };
 				
-                _result = _logic getVariable ["gridSize", [] call ALIVE_fnc_getMapBounds];
+                //_result = _logic getVariable ["gridSize", [] call ALIVE_fnc_getMapBounds];
+				_result = [_logic,"gridSize"] call CBA_fnc_hashGet;
         };
 		case "sectorDimensions": {
 				if(typeName _args == "ARRAY") then {
-                        _logic setVariable ["sectorDimensions", _args];                        
+                        //_logic setVariable ["sectorDimensions", _args];
+						[_logic,"sectorDimensions",_args] call CBA_fnc_hashSet;
                 };
 				
-                _result = _logic getVariable ["sectorDimensions", []];
+                //_result = _logic getVariable ["sectorDimensions", []];
+				_result = [_logic,"sectorDimensions"] call CBA_fnc_hashGet;
         };
 		case "sectorType": {
 				if(typeName _args == "STRING") then {
-                        _logic setVariable ["sectorType", _args];                        
+                        //_logic setVariable ["sectorType", _args];
+						[_logic,"sectorType",_args] call CBA_fnc_hashSet;
                 };
 				
-                _result = _logic getVariable ["sectorType", "SECTOR"];
+                //_result = _logic getVariable ["sectorType", "SECTOR"];
+				_result = [_logic,"sectorType"] call CBA_fnc_hashGet;
         };
 		case "createGrid": {
 				private["_gridPosition","_gridSize","_sectorDimensions","_sectorType","_grid","_allSectors","_gridPositionX","_gridPositionY","_sectorWidth","_sectorHeight","_rows","_columns","_sectors","_row","_column","_sector","_position"];
 				
-				_gridPosition = _logic getVariable ["gridPosition",[0,0]];
-				_gridSize = _logic getVariable ["gridSize",[] call ALIVE_fnc_getMapBounds];
-				_sectorDimensions = _logic getVariable ["sectorDimensions",[500,500]];
-				_sectorType = _logic getVariable ["sectorType","SECTOR"];
+				//_gridPosition = _logic getVariable ["gridPosition",[0,0]];
+				//_gridSize = _logic getVariable ["gridSize",[] call ALIVE_fnc_getMapBounds];
+				//_sectorDimensions = _logic getVariable ["sectorDimensions",[500,500]];
+				//_sectorType = _logic getVariable ["sectorType","SECTOR"];
+				
+				_gridPosition = [_logic,"gridPosition"] call CBA_fnc_hashGet;
+				_gridSize = [_logic,"gridSize"] call CBA_fnc_hashGet;
+				_sectorDimensions = [_logic,"sectorDimensions"] call CBA_fnc_hashGet;
+				_sectorType = [_logic,"sectorType"] call CBA_fnc_hashGet;
 				
 				_grid = [];
 				_allSectors = [];
@@ -259,6 +274,7 @@ switch(_operation) do {
 						{
 							case "SECTOR": {							
 								_sector = [nil, "create"] call ALIVE_fnc_sector;
+								[_sector, "init"] call ALIVE_fnc_sector;
 								[_sector, "dimensions", [(_sectorWidth / 2), (_sectorHeight / 2)]] call ALIVE_fnc_sector;
 								_result = [_sector, "position", _position] call ALIVE_fnc_sector;
 								_result = [_sector, "id", format["%1_%2",_row,_column]] call ALIVE_fnc_sector;
@@ -272,13 +288,16 @@ switch(_operation) do {
 					_grid set [count _grid, _sectors];
 				};
 				
-				_logic setVariable ["sectors", _allSectors];
-				_logic setVariable ["grid", _grid];
+				[_logic,"sectors",_allSectors] call CBA_fnc_hashSet;
+				[_logic,"grid",_grid] call CBA_fnc_hashSet;
+				//_logic setVariable ["sectors", _allSectors];
+				//_logic setVariable ["grid", _grid];
 								
 				_result = _grid;
         };
 		case "sectors": {
-               _result = _logic getVariable ["sectors", []];
+               //_result = _logic getVariable ["sectors", []];
+			   _result = [_logic,"sectors"] call CBA_fnc_hashGet;
         };
 		case "positionToGridIndex": {
 				private["_position","_positionX","_positionY","_gridPosition","_gridPositionX","_gridPositionY","_gridSize","_sectorDimensions","_sectorWidth","_sectorHeight","_relativePositionX","_relativePositionY","_column","_row"];
@@ -288,11 +307,14 @@ switch(_operation) do {
 				_position = _args;
 				_positionX = _position select 0;
 				_positionY = _position select 1;
-				_gridPosition = _logic getVariable ["gridPosition",[0,0]];
+				//_gridPosition = _logic getVariable ["gridPosition",[0,0]];
+				_gridPosition = [_logic,"gridPosition"] call CBA_fnc_hashGet;				
 				_gridPositionX = _gridPosition select 0;
 				_gridPositionY = _gridPosition select 1;
-				_gridSize = _logic getVariable ["gridSize",[] call ALIVE_fnc_getMapBounds];				
-				_sectorDimensions = _logic getVariable ["sectorDimensions",[500,500]];
+				//_gridSize = _logic getVariable ["gridSize",[] call ALIVE_fnc_getMapBounds];				
+				_gridSize = [_logic,"gridSize"] call CBA_fnc_hashGet;
+				//_sectorDimensions = _logic getVariable ["sectorDimensions",[500,500]];
+				_sectorDimensions = [_logic,"sectorDimensions"] call CBA_fnc_hashGet;
 				_sectorWidth = _sectorDimensions select 0;
 				_sectorHeight = _sectorDimensions select 1;
 				
@@ -322,9 +344,10 @@ switch(_operation) do {
 				_rowIndex = _args select 0;
 				_columnIndex = _args select 1;
 				
-				_grid = _logic getVariable ["grid",[]];
+				//_grid = _logic getVariable ["grid",[]];
+				_grid = [_logic,"grid"] call CBA_fnc_hashGet;
 				
-				_result = objNull;
+				_result = [];
 				
 				if((count _grid > 0 && count _grid > _columnIndex && _columnIndex >= 0)) then {
 					_column = _grid select _columnIndex;

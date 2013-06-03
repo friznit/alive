@@ -51,18 +51,28 @@ if(isServer) then {
 	publicVariable "TEST_LOGIC";
 };
 
+
+STAT("Init Grid");
+_result = [_logic, "init"] call ALIVE_fnc_sectorGrid;
+_err = "set initGrid";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
 STAT("Confirm new SectorGrid instance");
 waitUntil{!isNil "TEST_LOGIC"};
 _logic = TEST_LOGIC;
 _err = "instantiate object";
 ASSERT_DEFINED("_logic",_err);
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+ASSERT_TRUE(typeName _logic == "ARRAY", _err);
 
 
 STAT("Create Grid");
 _grid = [_logic, "createGrid"] call ALIVE_fnc_sectorGrid;
 _err = "set createGrid";
 ASSERT_TRUE(typeName _grid == "ARRAY", _err);
+
+
+
 
 
 DEBUGON
@@ -79,7 +89,7 @@ diag_log format["Player position to sector: %1",_result];
 STAT("Grid Index To Sector");
 _result = [_logic, "gridIndexToSector", _result] call ALIVE_fnc_sectorGrid;
 _err = "set gridIndexToSector";
-ASSERT_TRUE(typeName _result == "OBJECT", _err);
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
 
 _result = [_result, "debug", false] call ALIVE_fnc_sector;
 
@@ -87,7 +97,7 @@ _result = [_result, "debug", false] call ALIVE_fnc_sector;
 STAT("Position To Sector");
 _result = [_logic, "positionToSector", getPos player] call ALIVE_fnc_sectorGrid;
 _err = "set positionToSector";
-ASSERT_TRUE(typeName _result == "OBJECT", _err);
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
 
 _result = [_result, "debug", true] call ALIVE_fnc_sector;
 
@@ -98,7 +108,7 @@ _err = "set surroundingSectors";
 ASSERT_TRUE(typeName _result == "ARRAY", _err);
 
 {
-	if!(isNull _x) then
+	if!(count _x == 0) then
 	{
 		_nil = [_x, "debug", false] call ALIVE_fnc_sector;
 	}
@@ -108,7 +118,7 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 sleep 5;
 
 {
-	if!(isNull _x) then
+	if!(count _x == 0) then
 	{
 		_nil = [_x, "debug", true] call ALIVE_fnc_sector;
 	}
@@ -153,7 +163,7 @@ waitUntil{!isNil "TEST_LOGIC2"};
 _logic = TEST_LOGIC2;
 _err = "instantiate object";
 ASSERT_DEFINED("_logic",_err);
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+ASSERT_TRUE(typeName _logic == "ARRAY", _err);
 
 
 STAT("Restore state on new instance");
@@ -178,7 +188,7 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 
 
 STAT("Set gridSize");
-_result = [_logic, "gridSize", [1000]] call ALIVE_fnc_sectorGrid;
+_result = [_logic, "gridSize", 1000] call ALIVE_fnc_sectorGrid;
 _err = "set gridSize";
 ASSERT_TRUE(typeName _result == "SCALAR", _err);
 

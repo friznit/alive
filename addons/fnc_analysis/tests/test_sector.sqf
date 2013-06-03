@@ -52,12 +52,18 @@ if(isServer) then {
 };
 
 
+STAT("Init Sector");
+_result = [_logic, "init"] call ALIVE_fnc_sector;
+_err = "set init";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
 STAT("Confirm new Sector instance");
 waitUntil{!isNil "TEST_LOGIC"};
 _logic = TEST_LOGIC;
 _err = "instantiate object";
 ASSERT_DEFINED("_logic",_err);
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+ASSERT_TRUE(typeName _logic == "ARRAY", _err);
 
 
 STAT("Set dimensions");
@@ -108,7 +114,7 @@ _count = 0;
 	_m setMarkerShapeLocal "ICON";
 	_m setMarkerSizeLocal [1, 1];
 	_m setMarkerTypeLocal "mil_dot";
-	_m setMarkerColorLocal (_logic getVariable ["debugColor","ColorGreen"]);	
+	_m setMarkerColorLocal ([_logic,"debugColor"] call CBA_fnc_hashGet);
 	_count = _count + 1;
 	
 	_markers set [count _markers, _m];
@@ -173,10 +179,7 @@ waitUntil{!isNil "TEST_LOGIC2"};
 _logic = TEST_LOGIC2;
 _err = "instantiate object";
 ASSERT_DEFINED("_logic",_err);
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
-
-
-DEBUGON
+ASSERT_TRUE(typeName _logic == "ARRAY", _err);
 
 
 STAT("Restore state on new instance");
@@ -192,6 +195,9 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 ASSERT_TRUE(count _result > 0, _err);
 _result2 = [_state, _result] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result2,_err);
+
+
+DEBUGON
 
 
 STAT("Sleeping before destroy");

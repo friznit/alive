@@ -35,14 +35,14 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS ALIVE_fnc_baseClass
+#define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_sectorPlot
 
 private ["_logic","_operation","_args","_result"];
 
 TRACE_1("sectorPlot - input",_this);
 
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
@@ -59,10 +59,10 @@ switch(_operation) do {
                 */
                 
                 if (isServer) then {
-                        // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", MAINCLASS];
-                        TRACE_1("After module init",_logic);			
+						// if server, initialise module game logic
+                        [_logic,"super",SUPERCLASS] call CBA_fnc_hashSet;
+						[_logic,"class",MAINCLASS] call CBA_fnc_hashSet;
+                        TRACE_1("After module init",_logic);		
                 };
                 
                 /*
@@ -81,8 +81,8 @@ switch(_operation) do {
 						[_logic, "clear"] call MAINCLASS;						
 						
                         // if server
-                        _logic setVariable ["super", nil];
-                        _logic setVariable ["class", nil];
+                        [_logic,"super",nil] call CBA_fnc_hashSet;
+						[_logic,"class",nil] call CBA_fnc_hashSet;
 											                      
                         [_logic, "destroy"] call SUPERCLASS;					
                 };
@@ -252,13 +252,13 @@ switch(_operation) do {
 							_markers set [count _markers, _m];
 						};
 				};	
-
-				_logic setVariable ["markers", _markers];				
+		
+				[_logic,"markers",_markers] call CBA_fnc_hashSet;
         };
 		case "clear": {
 				private["_markers"];
-				
-				_markers = _logic getVariable ["markers", []];
+			
+				_markers = [_logic,"markers"] call CBA_fnc_hashGet;
 				
 				{
 					deleteMarkerLocal _x;

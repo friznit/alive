@@ -49,6 +49,7 @@ diag_log format["Timer End %1",_timeEnd];
 STAT("Create SectorGrid instance");
 TIMERSTART
 _grid = [nil, "create"] call ALIVE_fnc_sectorGrid;
+[_grid, "init"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
 

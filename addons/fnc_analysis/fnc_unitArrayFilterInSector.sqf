@@ -35,7 +35,7 @@ _sector = _this select 1;
 _err = format["unit array filter in sector requires an array of units - %1",_units];
 ASSERT_TRUE(typeName _units == "ARRAY",_err);
 _err = format["unit array filter in sector requires a sector - %1",_sector];
-ASSERT_TRUE(typeName _sector == "OBJECT",_err);
+ASSERT_TRUE(typeName _sector == "ARRAY",_err);
 
 _inSectorUnits = [];
 
