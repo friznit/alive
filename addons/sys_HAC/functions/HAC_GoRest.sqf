@@ -199,7 +199,11 @@ if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then
 	_i = [[_posX,_posY],_unitG,"markRest",(_logic getvariable ["HAC_HQ_Color","ColorGreen"]),"ICON","mil_dot"," | ReGrp"," - REST & REGROUP",[0.5,0.5],_logic] call ALiVE_fnc_HAC_Mark
 	};
 
-_task = [(leader _unitG),["Take a rest, take care of wounded, replenish ammo and wait for orders.", "Move", ""],[_posX,_posY],_logic] call ALiVE_fnc_HAC_AddTask;
+if ({alive _x} count (units _unitG) < 1) then {
+    	deleteMarker ("markRest" + str (_unitG));
+    } else {
+    	_task = [(leader _unitG),["Take a rest, take care of wounded, replenish ammo and wait for orders.", "Move", ""],[_posX,_posY],_logic] call ALiVE_fnc_HAC_AddTask;
+};
 
 _lackAmmo = _unitG getVariable ["LackAmmo",false];
 _counts = 6;

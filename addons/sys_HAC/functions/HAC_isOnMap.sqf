@@ -34,7 +34,7 @@
 				}
 			else
 				{
-				if (_pY > _logic getvariable" HAC_BB_MapYMax") then
+				if (_pY > _logic getvariable"HAC_BB_MapYMax") then
 					{
 					_onMap = false
 					}

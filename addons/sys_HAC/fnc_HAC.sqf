@@ -87,6 +87,8 @@ switch(_operation) do {
 					_logic setvariable ["HAC_BB_Active", true];
 					_logic setvariable ["HAC_BB_BBOnMap", false];
                     _logic setvariable ["HAC_HQ_Wait", 15];
+                    _logic setvariable ["HAC_HQ_LZ",true];
+                    //_logic setvariable ["HAC_HQ_PathFinding",500];
                     
                     //Enable Debug
                     if (call compile (_logic getvariable "HAC_HQ_Debug")) then {

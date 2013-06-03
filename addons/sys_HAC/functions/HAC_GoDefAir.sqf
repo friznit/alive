@@ -100,7 +100,7 @@ while {not (_endThis)} do
 	if ((isPlayer (leader _unitG)) and not (isMultiplayer)) then {(leader _unitG) removeSimpleTask _task};
 
 	if not (_unitG getVariable "Defending") then {_endThis = true};
-	if ((isNull _unitG) || ((({alive _x} count (units _unitG)) < 1)) or (isNull HAC_HQ)) then {_endThis = true;_alive = false};
+	if ((isNull _unitG) || ((({alive _x} count (units _unitG)) < 1)) or (isNull (_logic getvariable "HAC_HQ"))) then {_endThis = true;_alive = false};
 	if not (alive (leader _unitG)) then {_endThis = true;_alive = false};
 	};
 

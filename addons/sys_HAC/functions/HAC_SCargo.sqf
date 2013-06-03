@@ -107,6 +107,7 @@ if not (_emptyV) then
 		if ((_logic getvariable "HAC_HQ_LZ")) then 
 			{
 			_lz = [_Lpos,_logic] call ALiVE_fnc_HAC_LZ;
+            _i01 = [_Lpos,group _ChosenOne,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 			_ChosenOne setVariable ["TempLZ",_lz]
 			}
 		};
@@ -140,7 +141,7 @@ if not (_emptyV) then
 	_ct = 0;
 	waituntil 
 		{
-		sleep 0.1;
+		sleep 1;
 		_ct = _ct + 1;
 
 		_assigned = true;
@@ -150,10 +151,10 @@ if not (_emptyV) then
 			}
 		foreach (units _unitG);
 
-		((_assigned) or (_ct > 3000))
+		((_assigned) or (_ct > 300))
 		};
 
-	if (_ct > 2400) then {_alive = false;_unitG leaveVehicle _ChosenOne;_unitG setVariable [("CC" + _unitvar), true]};
+	if (_ct > 240) then {_alive = false;_unitG leaveVehicle _ChosenOne;_unitG setVariable [("CC" + _unitvar), true]};
 	};
 
 if not (_alive) exitWith {};
@@ -198,7 +199,8 @@ if not (_GD == _unitG) then
 			{
 			if ((_logic getvariable "HAC_HQ_LZ")) then 
 				{
-				_lz = [position _ChosenOne,_logic] call ALiVE_fnc_HAC_LZ
+				_lz = [position _ChosenOne,_logic] call ALiVE_fnc_HAC_LZ;
+                _i01 = [position _lz,group _ChosenOne,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 				}
 			};
 

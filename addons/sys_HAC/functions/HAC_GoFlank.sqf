@@ -370,7 +370,8 @@ if ((_ammo > 0) and not (_busy)) then
 				_posXWP3 = _lzPos select 0;
 				_posYWP3 = _lzPos select 1
 				}
-			}
+			};
+            _i01 = [[_posXWP3,_posYWP3],_unitG,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 		};
 
 	_sts = ["true","deletewaypoint [(group this), 0];"];

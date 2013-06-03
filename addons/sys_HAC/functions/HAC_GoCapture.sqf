@@ -201,7 +201,8 @@ if (not (isNull _AV) and (_GDV in (_logic getvariable "HAC_HQ_AirG"))) then
 			_posX = _pos select 0;
 			_posY = _pos select 1
 			}
-		}
+		};
+        _i01 = [[_posX,_posY],_unitG,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 	};
 
 _spd = "NORMAL";

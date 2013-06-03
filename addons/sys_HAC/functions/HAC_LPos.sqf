@@ -44,6 +44,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 									_x setVariable [("START" + str (_x)),_start];
 									_x getVariable [("Busy" + (str _x)),true];
 									_wp = [_logic,_x,_start,"MOVE","CARELESS","GREEN","NORMAL",["true", "{(vehicle _x) land 'LAND'} foreach (units (group this)); deletewaypoint [(group this), 0]"]] call ALiVE_fnc_HAC_WPadd;
+                                    _i01 = [_start,_x,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 
 									[(vehicle (leader _x)),_lz,_x] spawn
 										{
@@ -94,6 +95,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 					if not (isNull _lz) then
 						{
 						_start = getposATL _lz;
+						_i01 = [_start,_x,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 						_x setVariable [("START" + str (_x)),_start]
 						}
 					}

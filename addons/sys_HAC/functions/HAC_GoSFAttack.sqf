@@ -20,7 +20,7 @@ _default = [];
 _Epos0 = [];
 _Epos1 = [];
 
-if (isNil {_logic getvariable "HAC_HQ_Obj"}) then {_default = position _logic} else {_default = position HAC_HQ_Obj};
+if (isNil {_logic getvariable "HAC_HQ_Obj"}) then {_default = position _logic} else {_default = position (_logic getvariable "HAC_HQ_Obj")};
 
 if not ((count (_logic getvariable "HAC_HQ_KnEnemies")) == 0) then 
 	{
@@ -344,7 +344,7 @@ if ((_ammo > 0) and not (_busy)) then
 		}
 	else 
 		{
-		_cause = [_logic,_unitG,6,true,300,30,[(_logic getvariable "HAC_HQ_AirG,HAC_HQ_KnEnemiesG")],false] call ALiVE_fnc_HAC_Wait;
+		_cause = [_logic,_unitG,6,true,300,30,[(_logic getvariable "HAC_HQ_AirG"),(_logic getvariable "HAC_HQ_KnEnemiesG")],false] call ALiVE_fnc_HAC_Wait;
 		_timer = _cause select 0;
 		_alive = _cause select 1;
 		_enemy = _cause select 2
@@ -414,7 +414,7 @@ if ((_ammo > 0) and not (_busy)) then
 		}
 	else 
 		{
-		_cause = [_logic,_unitG,6,true,300,30,[(_logic getvariable "HAC_HQ_AirG,HAC_HQ_KnEnemiesG")],false] call ALiVE_fnc_HAC_Wait;
+		_cause = [_logic,_unitG,6,true,300,30,[(_logic getvariable "HAC_HQ_AirG"),(_logic getvariable "HAC_HQ_KnEnemiesG")],false] call ALiVE_fnc_HAC_Wait;
 		_timer = _cause select 0;
 		_alive = _cause select 1;
 		_enemy = _cause select 2
@@ -476,7 +476,8 @@ if ((_ammo > 0) and not (_busy)) then
 				_posXWP3 = _lzPos select 0;
 				_posYWP3 = _lzPos select 1
 				}
-			}
+			};
+            _i01 = [[_posXWP3,_posYWP3],_unitG,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 		};
 
 	_sts = ["true","deletewaypoint [(group this), 0];"];
@@ -504,7 +505,7 @@ if ((_ammo > 0) and not (_busy)) then
 		}
 	else 
 		{
-		_cause = [_logic,_unitG,6,true,300,30,[(_logic getvariable "HAC_HQ_AirG,HAC_HQ_KnEnemiesG")],false] call ALiVE_fnc_HAC_Wait;
+		_cause = [_logic,_unitG,6,true,300,30,[(_logic getvariable "HAC_HQ_AirG"),(_logic getvariable "HAC_HQ_KnEnemiesG")],false] call ALiVE_fnc_HAC_Wait;
 		_timer = _cause select 0;
 		_alive = _cause select 1;
 		_enemy = _cause select 2

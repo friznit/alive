@@ -5,7 +5,9 @@
 	_dstn = _this select 2;
     _logic = _this select ((count _this)-1);
 	
-	_tasks = _unit getVariable ["HACAddedTasks",[]];	
+	_tasks = _unit getVariable ["HACAddedTasks",[]];
+    //player sidechat format["Group: %1 Task: %2 Dest: %3",group _unit,_descr,_dstn];
+    diag_log format["Group: %1 Task: %2 Dest: %3",group _unit,_descr,_dstn];
 
 	if (isPlayer _unit) then
 		{

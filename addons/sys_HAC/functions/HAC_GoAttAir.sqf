@@ -136,7 +136,7 @@ if (isPlayer (leader _unitG)) then
 	};
 
 if (_logic getvariable "HAC_HQ_Debug" or (isPlayer (leader _unitG))) then {_i setMarkerColor (_logic getvariable ["HAC_HQ_Color","ColorBlue"])};
-if (_unitG in HAC_HQ_BAirG) then {deleteVehicle _lasT};
+if (_unitG in (_logic getvariable "HAC_HQ_BAirG")) then {deleteVehicle _lasT};
 
 _wp = [_logic,_unitG,_Posland,"MOVE","AWARE","GREEN","NORMAL",["true", "{(vehicle _x) land 'LAND'} foreach (units (group this)); deletewaypoint [(group this), 0]"],true,0.001] call ALiVE_fnc_HAC_WPadd;
 

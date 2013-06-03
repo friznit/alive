@@ -98,10 +98,10 @@ _GDV = group _DAV;
 _task = taskNull;
 _timer = 0;
 
-if (not (isNull _AV) and ((_logic getvariable "HAC_HQ_CargoFind") > 0)) then
+if (!(isNull _AV) && (vehicle _UL == _UL) && ((_logic getvariable "HAC_HQ_CargoFind") > 0)) then
 	{
 	_task = [(leader _unitG),["Wait and get into vehicle.", "GET IN", ""],(position (leader _unitG)),_logic] call ALiVE_fnc_HAC_AddTask;
-
+	
 	_wp = [_logic,_unitG,_AV,"GETIN"] call ALiVE_fnc_HAC_WPadd;
 	_wp waypointAttachVehicle _AV;
 
@@ -154,17 +154,22 @@ if ((isNull _AV) and (([_posX,_posY] distance _UL) > 1500) and not (isPlayer (le
 	_spd = "LIMITED";
 	_TO = [0,0,0];
 	if (_NeNMode) then {_spd = "NORMAL";_TO = [40, 45, 50]};
-
 	_wp0 = [_logic,_unitG,[(_posX + _LX)/2,(_posY + _LY)/2],"MOVE","SAFE","YELLOW",_spd,["true","deletewaypoint [(group this), 0];"],true,0,_TO] call ALiVE_fnc_HAC_WPadd;
 	_nW = 2;
-	};
+	} else {
+        if !(isnull _GDV) then {
+        	_Ctask = [(leader _GDV),["Disembark group at designated position.", "Move", ""],[(_posX + _LX1)/2,(_posY + _LY1)/2],_logic] call ALiVE_fnc_HAC_AddTask;
+    	};
+    };
 
 _task = [(leader _unitG),["Search and destroy enemy.", "S&D", ""],[_posX,_posY],_logic] call ALiVE_fnc_HAC_AddTask;
 
-_Ctask = [(leader _GDV),["Disembark group at designated position.", "Move", ""],[(_posX + _LX1)/2,(_posY + _LY1)/2],_logic] call ALiVE_fnc_HAC_AddTask;
-
 _gp = _unitG;
-if not (isNull _AV) then {_gp = _GDV;_posX = (_posX + _LX1)/2;_posY = (_posY + _LY1)/2};
+if not (isNull _AV) then {
+    _gp = _GDV;
+    _posX = (_posX + _LX1)/2;
+    _posY = (_posY + _LY1)/2;
+};
 _pos = [_posX,_posY];
 _tp = "MOVE";
 //if (not (isNull _AV) and (_unitG in _logic getvariable "HAC_HQ_NCrewInfG") and not ((_GDV == _unitG) or (_GDV in (_logic getvariable "HAC_HQ_AirG")))) then {_tp = "UNLOAD"};
@@ -182,7 +187,8 @@ if (not (isNull _AV) and (_GDV in (_logic getvariable "HAC_HQ_AirG"))) then
 			_posX = _pos select 0;
 			_posY = _pos select 1
 			}
-		}
+		};
+        _i01 = [[_posX,_posY],_unitG,"markLZ",(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON","mil_dot","LZ","",_logic] call ALiVE_fnc_HAC_Mark;
 	};
 
 _spd = "NORMAL";
@@ -200,8 +206,6 @@ _wp = [_logic,_gp,_pos,_tp,_beh,"YELLOW",_spd,_sts,_crr,0,_TO] call ALiVE_fnc_HA
 if ((_logic getvariable "HAC_xHQ_SynchroAttack") and not (_halfway)) then
 	{
 	[_wp,_Trg,_logic] call ALiVE_fnc_HAC_WPSync;
-	 
-	 
 	};
 
 _DAV = assigneddriver _AV;
@@ -265,7 +269,7 @@ _GDV = group _DAV;
 
 if (not (isNull _AV) and ((_logic getvariable "HAC_HQ_CargoFind") > 0) and (_unitG in ((_logic getvariable "HAC_HQ_NCrewInfG")))) then
 	{
-	_cause = [_logic,_unitG,1,false,[(_logic getvariable "HAC_HQ_NCrewInfG")],true,false,false,false,false] call ALiVE_fnc_HAC_Wait;
+	_cause = [_logic,_unitG,1,false,0,240,[],true,true,false,false,false,false] call ALiVE_fnc_HAC_Wait;
 	_timer = _cause select 0
 	};
 

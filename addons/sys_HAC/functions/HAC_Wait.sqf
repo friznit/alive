@@ -15,7 +15,7 @@
 	_arr = _this select 6;
 	_air = [];
 	_enG = [];
-
+    
 	if ((count _arr) > 0) then 
 		{
 		_enG = _arr select 1;

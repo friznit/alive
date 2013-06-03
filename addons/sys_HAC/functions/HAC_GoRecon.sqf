@@ -49,7 +49,7 @@ _posY = ((getposATL _logic) select 1) + _dYb + _dYc + (random 200) - 100;
 _MElevated = [_posX,_posY];
 _MElev = (getposATL (nearestObject [_posX,_posY,10])) select 2;
 
-if (_unitG in HAC_HQ_FOG) then 
+if (_unitG in (_logic getvariable "HAC_HQ_FOG")) then 
 	{
 	for [{_a = 0},{_a <= 50},{_a = _a + 1}] do
 		{

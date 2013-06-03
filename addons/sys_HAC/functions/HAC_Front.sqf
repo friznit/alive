@@ -1,7 +1,6 @@
 _ia = "";_ib = "";_ic = "";_id = "";_ie = "";_if = "";_ig = "";_ih = "";
 
 _logic = _this select ((count _this)-1);
-player sidechat format["%1",_logic];
 
 if not (isNil ("HET_FA")) then 
 	{

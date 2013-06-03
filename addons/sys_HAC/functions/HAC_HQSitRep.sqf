@@ -373,7 +373,7 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 	if ((_logic getvariable "HAC_HQ_SubZero")) then 
 		{
 			{
-			if (((random 100) >= 50) and not (_x in (_logic getvariable "HAC_HQ_Subordinated"))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]} else {if (not (_x in HAC_HQB_Subordinated)) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]}};
+			if (((random 100) >= 50) and not (_x in (_logic getvariable "HAC_HQ_Subordinated"))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]} else {if (not (_x in (_logic getvariable "HAC_HQB_Subordinated"))) then {_logic setvariable ["HAC_HQ_Subordinated",(_logic getvariable "HAC_HQ_Subordinated") + [_x]]}};
 			}
 		foreach allGroups;
 		};

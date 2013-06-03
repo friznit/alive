@@ -123,7 +123,7 @@ _timer = _cause select 0;
 _alive = _cause select 1;
 
 if (((_cis distance _Trg) < 50) and ((fuel _Trg) == 0)) then {_Trg setfuel 0.09};
-if not (_alive) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {deleteMarker ("markFuelSupp" + str (_unitG))};HAC_HQ_FuelPoints = HAC_HQ_FuelPoints - [_Trg];_unitG setVariable [("Busy" + _unitvar), false];};
+if not (_alive) exitwith {if ((_logic getvariable "HAC_HQ_Debug") or (isPlayer (leader _unitG))) then {deleteMarker ("markFuelSupp" + str (_unitG))};_logic setvariable ["HAC_HQ_FuelPoints",((_logic getvariable "HAC_HQ_FuelPoints") - [_Trg])];_unitG setVariable [("Busy" + _unitvar), false];};
 if (_timer > 24) then {[_unitG, (currentWaypoint _unitG)] setWaypointPosition [position (vehicle _UL), 0]}; 
 
 _logic setvariable ["HAC_HQ_FuelPoints",(_logic getvariable "HAC_HQ_FuelPoints") - [_Trg]];
@@ -141,6 +141,6 @@ _lastOne = true;
 	}
 foreach _dried;
 
-if (_lastOne) then {HAC_HQ_FSupportedG = HAC_HQ_FSupportedG - [(group _Trg)]};
+if (_lastOne) then {_logic setvariable ["HAC_HQ_FSupportedG",((_logic getvariable "HAC_HQ_FSupportedG") - [group _Trg])]};
 
 _UL = leader _unitG;if not (isPlayer _UL) then {if ((random 100) < (_logic getvariable "HAC_xHQ_AIChatDensity")) then {[_UL,(_logic getvariable "HAC_xHQ_AIC_OrdEnd"),"OrdEnd",_logic] call ALiVE_fnc_HAC_AIChatter}};
