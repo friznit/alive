@@ -76,7 +76,7 @@ if (isServer) then {
 	{
 		_leader = leader group _x;
 	
-		if (!(_leader in HAC_leaders) && {random 1 < 0.5}) then {
+		if (!(_leader in HAC_leaders) && {((count (units (group _leader)) > 1) && (_leader distance ((getposATL _leader) nearestobject "house") > 10) || !(_leader == vehicle _leader))}) then {
 			HAC_leaders set [count HAC_leaders, _leader];
 	        BIS_persistent = BIS_persistent + units (group _leader);
 		};
