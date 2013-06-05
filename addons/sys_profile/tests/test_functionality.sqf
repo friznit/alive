@@ -100,7 +100,7 @@ STAT("De-Spawn the unit via the profile");
 
 STAT("Add waypoint");
 _position = [getPos player, 200, random 360] call BIS_fnc_relPos;
-_profileWaypoint = [_position, 50] call ALIVE_fnc_createProfileWaypoint;
+_profileWaypoint = [_position, 0] call ALIVE_fnc_createProfileWaypoint;
 [_unitProfile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_agentProfile;
 
 
@@ -114,7 +114,7 @@ _m setMarkerTextLocal "destination";
 
 STAT("Add waypoint");
 _position = [_position, 200, random 360] call BIS_fnc_relPos;
-_profileWaypoint = [_position, 50] call ALIVE_fnc_createProfileWaypoint;
+_profileWaypoint = [_position, 0] call ALIVE_fnc_createProfileWaypoint;
 [_unitProfile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_agentProfile;
 
 
