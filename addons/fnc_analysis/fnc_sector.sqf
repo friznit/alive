@@ -103,7 +103,8 @@ _createMarkers = {
         if((count _position > 0) && (count _dimensions > 0)) then {   
                 
 				//_m = createMarkerLocal [format[MTEMPLATE, _logic], _position]; BaseClassHash CHANGE
-				_m = createMarkerLocal [format[MTEMPLATE, _logic], _position]; // NOT SURE ABOUT THIS!!!!
+				//_m = createMarkerLocal [format[MTEMPLATE, _logic], _position]; // NOT SURE ABOUT THIS!!!!
+				_m = createMarkerLocal [format[MTEMPLATE, format["d%1",_id]], _position]; // NOT SURE ABOUT THIS!!!!
 				_m setMarkerShapeLocal "RECTANGLE";
                 _m setMarkerSizeLocal _dimensions;
                 _m setMarkerTypeLocal "Solid";				
@@ -200,7 +201,7 @@ switch(_operation) do {
 						// BaseClassHash CHANGE 
 						// loop the class hash and set vars on the state hash
 						{
-							if(!(_x == "super") || !(_x == "class")) then {
+							if(!(_x == "super") && !(_x == "class")) then {
 								[_state,_x,[_logic,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
 							};
 						} forEach (_logic select 1);

@@ -1,0 +1,76 @@
+#include <\x\alive\addons\sys_profile\script_component.hpp>
+SCRIPT(profileWaypointToWaypoint);
+
+/* ----------------------------------------------------------------------------
+Function: ALIVE_fnc_profileWaypointToWaypoint
+
+Description:
+Takes a profile waypoint and creates a real waypoint
+
+Parameters:
+
+"profileWaypoint"
+
+"group"
+
+Returns:
+A waypoint
+
+Examples:
+(begin example)
+_result = [_profileWaypoint, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+(end)
+
+See Also:
+
+
+Author:
+ARJay
+---------------------------------------------------------------------------- */
+
+private ["_profileWaypoint", "_group","_setCurrent","_position","_radius","_type","_formation","_behaviour","_combatMode","_speed","_completionRadius","_timeout","_description","_attachVehicle","_attachObject","_waypoint"];
+	
+_profileWaypoint = _this select 0;
+_group = _this select 1;
+_setCurrent = if(count _this > 2) then {_this select 2} else {false};
+
+_position = [_profileWaypoint,"position"] call CBA_fnc_hashGet;
+_radius = [_profileWaypoint,"radius"] call CBA_fnc_hashGet;
+_type = [_profileWaypoint,"type"] call CBA_fnc_hashGet;
+_speed = [_profileWaypoint,"speed"] call CBA_fnc_hashGet;
+_completionRadius = [_profileWaypoint,"completionRadius"] call CBA_fnc_hashGet;
+_timeout = [_profileWaypoint,"timeout"] call CBA_fnc_hashGet;
+_formation = [_profileWaypoint,"formation"] call CBA_fnc_hashGet;
+_combatMode = [_profileWaypoint,"combatMode"] call CBA_fnc_hashGet;
+_behaviour = [_profileWaypoint,"behaviour"] call CBA_fnc_hashGet;
+_description = [_profileWaypoint,"description"] call CBA_fnc_hashGet;
+_attachVehicle = [_profileWaypoint,"attachVehicle"] call CBA_fnc_hashGet;
+
+_waypoint = _group addWaypoint [_position, _radius];
+_waypoint setWaypointDescription _description;
+_waypoint setWaypointType _type;
+_waypoint setWaypointFormation _formation;
+_waypoint setWaypointBehaviour _behaviour;
+_waypoint setWaypointCombatMode _combatMode;
+_waypoint setWaypointSpeed _speed;
+
+if (_completionRadius >= 0) then
+{
+	_waypoint setWaypointCompletionRadius _completionRadius;
+};
+
+if ((count _timeout) == 3) then
+{
+	_waypoint setWaypointTimeout _timeout;
+};
+
+if !(_attachVehicle == "") then
+{
+	_waypoint waypointAttachVehicle _attachVehicle;
+};
+
+if(_setCurrent) then {
+	_group setCurrentWaypoint _waypoint;
+};
+
+_waypoint

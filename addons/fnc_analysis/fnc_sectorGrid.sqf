@@ -181,7 +181,7 @@ switch(_operation) do {
 						// BaseClassHash CHANGE 
 						// loop the class hash and set vars on the state hash
 						{
-							if(!(_x == "super") || !(_x == "class")) then {
+							if(!(_x == "super") && !(_x == "class")) then {
 								[_state,_x,[_logic,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
 							};
 						} forEach (_logic select 1);

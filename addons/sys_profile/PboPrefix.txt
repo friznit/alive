@@ -1,0 +1,5 @@
+x\alive\addons\sys_profile
+prefix=x\alive\addons\sys_profile
+product=ALiVE
+version=1
+Pbo Type is: Arma
