@@ -10,7 +10,7 @@ FOR /F "tokens=1* delims=," %%A in ('dir %source% /ad /b') do (
 	if ERRORLEVEL 1 goto err
 )
 
-del /Y %target%\*.pbo
+del /Q %target%\*.pbo
 move /Y %source%\*.pbo %target%\
 
 goto end
