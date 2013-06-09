@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 
-#include <\x\alive\addons\nme_strategic\script_component.hpp>
+#include <\x\alive\addons\mil_strategic\script_component.hpp>
 SCRIPT(test_findHQ);
 
 // ----------------------------------------------------------------------------
@@ -28,7 +28,7 @@ ASSERT_TRUE(!_result, _err);
 
 //========================================
 
-private ["_amo","_pos","_types","_result","_err","_m"];
+private ["_amo","_pos","_types","_result","_err","_m","_markers"];
 
 LOG("Testing Find HQ");
 
@@ -36,8 +36,8 @@ ASSERT_DEFINED("ALIVE_fnc_findHQ","");
 ASSERT_DEFINED("ALIVE_fnc_getObjectsByType","");
 
 _amo = allMissionObjects "";
-
 _pos = position player;
+_markers = [];
 
 _types = [
 	"barrack",

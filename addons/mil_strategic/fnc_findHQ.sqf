@@ -1,4 +1,4 @@
-#include <\x\alive\addons\nme_strategic\script_component.hpp>
+#include <\x\alive\addons\mil_strategic\script_component.hpp>
 SCRIPT(findHQ);
 
 /* ----------------------------------------------------------------------------
@@ -12,7 +12,7 @@ Array - Position identifying Centre of Mass
 Scalar - Max Radius from CoM (optional)
 
 Returns:
-Array - The list objects within the radius from position
+Object - A random object from the list within the radius of the position
 
 Examples:
 (begin example)
@@ -46,7 +46,7 @@ _result = [];
         };
 } forEach _obj_array;
 
-// If no objects are left, randomly pick a loc and place a camp
+// TODO: If no objects are left, randomly pick a loc and place a camp
 if(count _result == 0) then {};
 
 // Randomly pick an object

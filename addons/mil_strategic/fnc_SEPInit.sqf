@@ -1,4 +1,4 @@
-#include <\x\alive\addons\nme_strategic\script_component.hpp>
+#include <\x\alive\addons\mil_strategic\script_component.hpp>
 SCRIPT(SEPInit);
 
 /* ----------------------------------------------------------------------------

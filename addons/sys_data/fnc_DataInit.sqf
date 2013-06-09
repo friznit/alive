@@ -1,4 +1,4 @@
-#include <\x\alive\addons\nme_strategic\script_component.hpp>
+#include <\x\alive\addons\sys_data\script_component.hpp>
 SCRIPT(DataInit);
 
 /* ----------------------------------------------------------------------------
