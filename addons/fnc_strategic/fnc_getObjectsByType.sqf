@@ -49,7 +49,7 @@ _err = "raw object information not read correctly from file";
 ASSERT_DEFINED("_raw_objects",_err);
 ASSERT_TRUE(typeName _raw_objects == "ARRAY", _err);
 
-_object_hash = [_raw_objects] call CBA_fnc_hashCreate;
+_object_hash = [_raw_objects] call ALIVE_fnc_hashCreate;
 ASSERT_DEFINED("_object_hash",_err);
 ASSERT_TRUE(typeName _object_hash == "ARRAY", "_object_hash invalid");
 
@@ -69,7 +69,7 @@ _data_array = [];
 {
 	private["_name","_data"];
 	_name = _x;
-	_data = [_object_hash, _name] call CBA_fnc_hashGet;
+	_data = [_object_hash, _name] call ALIVE_fnc_hashGet;
 	if(!isNil "_data") then {
 		_data_array = _data_array + _data;
 	};

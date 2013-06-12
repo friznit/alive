@@ -59,14 +59,14 @@ _deleteMarkers = {
         _logic = _this;
         {
                 deleteMarkerLocal _x;
-        } forEach ([_logic, "debugMarkers", []] call CBA_fnc_hashGet);
+        } forEach ([_logic, "debugMarkers", []] call ALIVE_fnc_hashGet);
 };
 
 _createMarkers = {
         private ["_logic","_markers","_m","_max","_nodes","_center"];
         _logic = _this;
         _markers = [];
-        _nodes = [_logic, "nodes", []] call CBA_fnc_hashGet;
+        _nodes = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
         
         if(count _nodes > 0) then {
                 // mark all nodes
@@ -81,7 +81,7 @@ _createMarkers = {
                         } else {
                                 _m setMarkerPosLocal (getPosATL _x);
                         };
-                        _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call CBA_fnc_hashGet);
+                        _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
                 } forEach _nodes;
                 
                 _center = [_logic, "center"] call MAINCLASS;
@@ -89,7 +89,7 @@ _createMarkers = {
                 _m setMarkerShapeLocal "Icon";
                 _m setMarkerSizeLocal [1, 1];
                 _m setMarkerTypeLocal "mil_dot";
-                _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call CBA_fnc_hashGet);
+                _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
                 _m setMarkerTextLocal format[MTEMPLATE, _logic];
                 _markers set [count _markers, _m];
                 
@@ -97,11 +97,11 @@ _createMarkers = {
                 _max = [_logic, "size"] call MAINCLASS;
                 _m setMarkerShapeLocal "Ellipse";
                 _m setMarkerSizeLocal [_max, _max];
-                _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call CBA_fnc_hashGet);
+                _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
                 _m setMarkerAlphaLocal 0.5;
                 _markers set [count _markers, _m];
                 
-                [_logic, "debugMarkers", _markers] call CBA_fnc_hashSet;
+                [_logic, "debugMarkers", _markers] call ALIVE_fnc_hashSet;
         };
 };
 
@@ -130,8 +130,8 @@ switch(_operation) do {
                 
                 if (isServer) then {
                         // if server, initialise module game logic
-                        [_logic, "super", SUPERCLASS] call CBA_fnc_hashSet;
-                        [_logic, "class", MAINCLASS] call CBA_fnc_hashSet;
+                        [_logic, "super", SUPERCLASS] call ALIVE_fnc_hashSet;
+                        [_logic, "class", MAINCLASS] call ALIVE_fnc_hashSet;
                         TRACE_1("After module init",_logic);
                 };
                 
@@ -155,9 +155,9 @@ switch(_operation) do {
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {
-                        _args = [_logic, "debug", false] call CBA_fnc_hashGet;
+                        _args = [_logic, "debug", false] call ALIVE_fnc_hashGet;
                 } else {
-                        [_logic, "debug", _args] call CBA_fnc_hashSet;
+                        [_logic, "debug", _args] call ALIVE_fnc_hashSet;
                 };                
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
                 _logic call _deleteMarkers;
@@ -171,7 +171,7 @@ switch(_operation) do {
                 private["_state","_data","_nodes"];
                 
                 if(typeName _args != "ARRAY") then {
-                        _state = [] call CBA_fnc_hashCreate;
+                        _state = [] call ALIVE_fnc_hashCreate;
                         // Save state
                         
                         // nodes
@@ -181,9 +181,9 @@ switch(_operation) do {
                                         _x call _findObjectID,
                                         position _x
                                 ]];
-                        } forEach ([_logic, "nodes",[]] call CBA_fnc_hashGet);
+                        } forEach ([_logic, "nodes",[]] call ALIVE_fnc_hashGet);
                         
-                        _result = [_state, "nodes", _data] call CBA_fnc_hashSet;
+                        _result = [_state, "nodes", _data] call ALIVE_fnc_hashSet;
                 } else {
                         ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
                         
@@ -191,7 +191,7 @@ switch(_operation) do {
                         
                         // nodes
                         _data = [];
-                        _nodes = [_args, "nodes"] call CBA_fnc_hashGet;
+                        _nodes = [_args, "nodes"] call ALIVE_fnc_hashGet;
                         {
                                 private["_node"];
                                 _node = (_x select 1) nearestObject (_x select 0);
@@ -202,14 +202,14 @@ switch(_operation) do {
         };
         case "center": {
                 // Read Only - return centre of clustered nodes
-                _result = [[_logic, "nodes",[]] call CBA_fnc_hashGet] call ALIVE_fnc_findClusterCenter;
+                _result = [[_logic, "nodes",[]] call ALIVE_fnc_hashGet] call ALIVE_fnc_findClusterCenter;
                 if(count _result > 0) then {_logic setPos _result;};
         };
         
         case "size": {
                 // Read Only - return distance from centre to furthest node
                 private ["_max"];
-                _nodes = [_logic, "nodes",[]] call CBA_fnc_hashGet;
+                _nodes = [_logic, "nodes",[]] call ALIVE_fnc_hashGet;
                 _result = 0;
                 _center = [_logic, "center"] call MAINCLASS;
                 if(count _center > 0) then {
@@ -220,38 +220,38 @@ switch(_operation) do {
         };        
         case "nodes": {
                 if(typeName _args == "ARRAY") then {
-                        [_logic, "nodes", _args] call CBA_fnc_hashSet;
+                        [_logic, "nodes", _args] call ALIVE_fnc_hashSet;
                 };
                 
-                if ([_logic, "debug", false] call CBA_fnc_hashGet) then {
+                if ([_logic, "debug", false] call ALIVE_fnc_hashGet) then {
                         [_logic, "debug"] call MAINCLASS;
                 };
                 [_logic, "center"] call MAINCLASS;
-                _result = [_logic, "nodes", []] call CBA_fnc_hashGet;
+                _result = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
         };
         case "addNode": {
                 if(typeName _args == "OBJECT") then {
-                        _result = [_logic, "nodes", []] call CBA_fnc_hashGet;
-                        [_logic, "nodes", _result + [_args]] call CBA_fnc_hashSet;
+                        _result = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
+                        [_logic, "nodes", _result + [_args]] call ALIVE_fnc_hashSet;
                         
-                        if ([_logic, "debug", false] call CBA_fnc_hashGet) then {
+                        if ([_logic, "debug", false] call ALIVE_fnc_hashGet) then {
                                 [_logic, "debug"] call MAINCLASS;
                         };
                 };
                 [_logic, "center"] call MAINCLASS;
-                _result = [_logic, "nodes", []] call CBA_fnc_hashGet;
+                _result = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
         };
         case "delNode": {
                 if(typeName _args == "OBJECT") then {
-                        _result = [_logic, "nodes", []] call CBA_fnc_hashGet;
-                        [_logic, "nodes", _result - [_args]] call CBA_fnc_hashSet;
+                        _result = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
+                        [_logic, "nodes", _result - [_args]] call ALIVE_fnc_hashSet;
                         
-                        if ([_logic, "debug", false] call CBA_fnc_hashGet) then {
+                        if ([_logic, "debug", false] call ALIVE_fnc_hashGet) then {
                                 [_logic, "debug"] call MAINCLASS;
                         };
                 };
                 [_logic, "center"] call MAINCLASS;
-                _result = [_logic, "nodes", []] call CBA_fnc_hashGet;
+                _result = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
         };        
         // Determine cluster type - valid values are: military, infrastructure and civilian
         case "type": {
