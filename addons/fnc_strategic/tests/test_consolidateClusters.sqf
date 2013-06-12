@@ -11,7 +11,7 @@ LOG("Testing Consolidate Clusters");
 
 ASSERT_DEFINED("ALIVE_fnc_cluster","");
 
-#define STAT(msg) sleep 3; \
+#define STAT(msg) sleep 1; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
@@ -93,7 +93,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 4,
 	_obj_array select 5
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -106,7 +106,7 @@ _redundant = (_result select 1) select 0;
 ASSERT_TRUE(typeName _redundant == "OBJECT", typeName _redundant);
 _nodes = [_redundant,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 3,_err);
-sleep 5;
+STAT("Deleting logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
@@ -123,7 +123,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 2,
 	_obj_array select 3
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -134,7 +134,7 @@ _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
 ASSERT_TRUE(count _redundant == 0, _err);
-sleep 5;
+STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
@@ -151,7 +151,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 4,
 	_obj_array select 5
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -159,12 +159,10 @@ ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);
 _master = (_result select 0) select 0;
 ASSERT_TRUE(typeName _master == "OBJECT", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
-ASSERT_TRUE(count _nodes == 3,_err);
-_redundant = (_result select 1) select 0;
-ASSERT_TRUE(typeName _redundant == "OBJECT", typeName _redundant);
-_nodes = [_redundant,"nodes"] call ALIVE_fnc_cluster;
-ASSERT_TRUE(count _nodes == 3,_err);
-sleep 5;
+ASSERT_TRUE(count _nodes == 6,_err);
+_redundant = (_result select 1);
+ASSERT_TRUE(count _redundant == 0, _err);
+STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
@@ -181,7 +179,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 3,
 	_obj_array select 4
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC],[TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -192,7 +190,7 @@ _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
 ASSERT_TRUE(count _redundant == 0, _err);
-sleep 5;
+STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
@@ -209,7 +207,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 4,
 	_obj_array select 5
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC,TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -218,9 +216,11 @@ _master = (_result select 0) select 0;
 ASSERT_TRUE(typeName _master == "OBJECT", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 3,_err);
-_redundant = (_result select 1);
-ASSERT_TRUE(count _redundant == 0, _err);
-sleep 5;
+_redundant = (_result select 1) select 0;
+ASSERT_TRUE(typeName _redundant == "OBJECT", typeName _redundant);
+_nodes = [_redundant,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 3,_err);
+STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
@@ -237,7 +237,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 2,
 	_obj_array select 3
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC,TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -248,7 +248,7 @@ _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
 ASSERT_TRUE(count _redundant == 0, _err);
-sleep 5;
+STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
@@ -265,7 +265,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 4,
 	_obj_array select 5
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC,TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -273,11 +273,10 @@ ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);
 _master = (_result select 0) select 0;
 ASSERT_TRUE(typeName _master == "OBJECT", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
-ASSERT_TRUE(count _nodes == 3,_err);
-ASSERT_TRUE(typeName _redundant == "ARRAY", _err);
+ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
 ASSERT_TRUE(count _redundant == 0, _err);
-sleep 5;
+STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 
@@ -294,7 +293,7 @@ CREATE_TEST_LOGIC2
 	_obj_array select 3,
 	_obj_array select 4
 ]] call ALIVE_fnc_cluster;
-sleep 5;
+
 STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC,TEST_LOGIC2]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
@@ -305,7 +304,7 @@ _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
 ASSERT_TRUE(count _redundant == 0, _err);
-sleep 5;
+STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
 

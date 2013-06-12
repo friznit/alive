@@ -2,7 +2,7 @@
 SCRIPT(baseClassHash);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_baseClass
+Function: ALIVE_fnc_baseClassHash
 Description:
 Base class
 
@@ -21,10 +21,10 @@ Nil - destroy - Destroy instance
 Examples:
 (begin example)
 // Create instance
-_logic = [nil, "create"] call ALIVE_fnc_BaseClass;
+_logic = [nil, "create"] call ALIVE_fnc_baseClassHash;
 
 // Destroy instance
-[_logic, "destroy"] call ALIVE_fnc_BaseClass;
+[_logic, "destroy"] call ALIVE_fnc_baseClassHash;
 (end)
 
 See Also:

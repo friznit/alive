@@ -79,10 +79,10 @@ waitUntil{!isNil "TEST_LOGIC"};
 _logic = TEST_LOGIC;
 _err = "instantiate object";
 ASSERT_DEFINED("_logic",_err);
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+ASSERT_TRUE(typeName _logic == "ARRAY", _err);
 
 DEBUGON
-
+/*
 // Manipulate nodes - remove last object
 _newnode = _obj_array select 11;
 _new_array = _obj_array - [_newnode];
@@ -175,7 +175,7 @@ waitUntil{!isNil "TEST_LOGIC2"};
 _logic = TEST_LOGIC2;
 _err = "instantiate object";
 ASSERT_DEFINED("_logic",_err);
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+ASSERT_TRUE(typeName _logic == "ARRAY", _err);
 
 DEBUGON
 
@@ -191,7 +191,7 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 ASSERT_TRUE(count _result > 0, _err);
 _result2 = [_test, ([_logic, "nodes"] call ALIVE_fnc_cluster)] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result2,_err);
-
+*/
 STAT("Sleeping before destroy");
 sleep 10;
 
