@@ -76,6 +76,26 @@ class cfgFunctions {
 	                        file = "\x\alive\addons\main\fnc_OOsimpleOperation.sqf";
 				recompile = 1;
 			};
+			class hashCreate {
+				description = "Wrapper for CBA hash create";
+	                        file = "\x\alive\addons\main\fnc_hashCreate.sqf";
+				recompile = 1;
+			};
+			class hashGet {
+				description = "Wrapper for CBA hash get";
+	                        file = "\x\alive\addons\main\fnc_hashGet.sqf";
+				recompile = 1;
+			};
+			class hashSet {
+				description = "Wrapper for CBA hash set";
+	                        file = "\x\alive\addons\main\fnc_hashSet.sqf";
+				recompile = 1;
+			};
+			class hashRem {
+				description = "Wrapper for CBA hash remove";
+	                        file = "\x\alive\addons\main\fnc_hashRem.sqf";
+				recompile = 1;
+			};
                 };
         };
 };
