@@ -81,11 +81,6 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_getMapBounds.sqf";
 				recompile = 1;
 			};
-			class spawnDebugMarker {
-				description = "spawnDebugMarker";
-				file = "\x\alive\addons\fnc_analysis\fnc_spawnDebugMarker.sqf";
-				recompile = 1;
-			};
 			class shellSort {
 				description = "shellSort";
 				file = "\x\alive\addons\fnc_analysis\fnc_shellSort.sqf";
