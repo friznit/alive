@@ -35,7 +35,7 @@ _hash = _this select 0;
 _key = _this select 1;
 
 // check for default value
-if(count _this > 1) then {
+if(count _this > 2) then {
 	_default = _this select 2;
 	if([_hash, _key] call CBA_fnc_hashHasKey) then {
 		_result = [_hash, _key] call CBA_fnc_hashGet;
