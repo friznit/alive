@@ -327,11 +327,11 @@ class CfgGroups
                                         name = "$STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_MotInf_Transport0";
                                         side = 0;
                                         faction = "OPF_F";
-                                        rarityGroup = 0.2;
+                                        rarityGroup = 0.5;
                                         class Unit0
                                         {
                                                 side = 0;
-                                                vehicle="O_Ifrit_MG_F";
+                                                vehicle="O_Ifrit_F";
                                                 rank = "SERGEANT";
                                                 position[] = {-5,7,0};
                                         };
@@ -359,7 +359,7 @@ class CfgGroups
                                         name = "$STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_Ka60_Squadron0";
                                         side = 0;
                                         faction = "OPF_F";
-					rarityGroup = 0.3;
+					rarityGroup = 0.1;
 					minAltitude = 40;
 					maxAltitude = 100;
                                         class Unit0

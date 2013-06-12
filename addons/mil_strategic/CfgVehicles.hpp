@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_SEPInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\nme_strategic\icon_nme_SEP.paa";
-				picture = "x\alive\addons\nme_strategic\icon_nme_SEP.paa";
+				icon = "x\alive\addons\mil_strategic\icon_nme_SEP.paa";
+				picture = "x\alive\addons\mil_strategic\icon_nme_SEP.paa";
                 class Arguments
                 {
                         class debug
@@ -30,22 +30,27 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class style
+                        class objectives
                         {
-                                displayName = "$STR_ALIVE_SEP_STYLE";
-                                description = "$STR_ALIVE_SEP_STYLE_COMMENT";
+                                displayName = "$STR_ALIVE_SEP_OBJECTIVES";
+                                description = "$STR_ALIVE_SEP_OBJECTIVES_COMMENT";
                                 class Values
                                 {
-                                        class SYMMETRIC
+                                        class MILITARY
                                         {
-                                                name = "$STR_ALIVE_SEP_STYLE_SYM";
-                                                value = "SYM";
-						default = 1;
+                                                name = "$STR_ALIVE_SEP_OBJECTIVES_MIL";
+                                                value = "MIL";
                                         };
-                                        class ASYMMETRIC
+                                        class CIVILIAN
                                         {
-                                                name = "$STR_ALIVE_SEP_STYLE_ASYM";
-                                                value = "ASYM";
+                                                name = "$STR_ALIVE_SEP_OBJECTIVES_CIV";
+                                                value = "CIV";
+                                        };
+                                        class ALL
+                                        {
+                                                name = "$STR_ALIVE_SEP_OBJECTIVES_ALL";
+                                                value = "ALL";
+                                                default = 1;
                                         };
                                 };
                         };
@@ -70,6 +75,50 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_SEP_SIZE_PL";
                                                 value = "PL";
+                                        };
+                                };
+                        };
+                        class type
+                        {
+                                displayName = "$STR_ALIVE_SEP_TYPE";
+                                description = "$STR_ALIVE_SEP_TYPE_COMMENT";
+                                class Values
+                                {
+                                        class RANDOM
+                                        {
+                                                name = "$STR_ALIVE_SEP_TYPE_RANDOM";
+                                                value = "RANDOM";
+						default = 1;
+                                        };
+                                        class ARMOR
+                                        {
+                                                name = "$STR_ALIVE_SEP_TYPE_ARMOR";
+                                                value = "ARMOR";
+                                        };
+                                        class MECH
+                                        {
+                                                name = "$STR_ALIVE_SEP_TYPE_MECH";
+                                                value = "MECH";
+                                        };
+                                        class MOTOR
+                                        {
+                                                name = "$STR_ALIVE_SEP_TYPE_MOTOR";
+                                                value = "MOTOR";
+                                        };
+                                        class LIGHT
+                                        {
+                                                name = "$STR_ALIVE_SEP_TYPE_LIGHT";
+                                                value = "LIGHT";
+                                        };
+                                        class AIRBORNE
+                                        {
+                                                name = "$STR_ALIVE_SEP_TYPE_AIRBORNE";
+                                                value = "AIRBORNE";
+                                        };
+                                        class MARINE
+                                        {
+                                                name = "$STR_ALIVE_SEP_TYPE_MARINE";
+                                                value = "MARINE";
                                         };
                                 };
                         };

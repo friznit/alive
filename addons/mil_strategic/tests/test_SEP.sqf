@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 
-#include <\x\alive\addons\nme_strategic\script_component.hpp>
+#include <\x\alive\addons\mil_strategic\script_component.hpp>
 SCRIPT(test_SEP);
 
 // ----------------------------------------------------------------------------
@@ -52,18 +52,21 @@ ASSERT_TRUE(typeName _logic == "OBJECT", typeName _logic);
 
 DEBUGON
 
-STAT("style - Test default");
-_result = [_logic, "style"] call ALIVE_fnc_SEP;
+STAT("objectives - Test default");
+_result = [_logic, "objectives"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
-ASSERT_TRUE(_result == "SYM", _result);
-STAT("style - Test bad value");
-_result = [_logic, "style", "xxx"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(_result == "ALL", _result);
+STAT("objectives - Test bad value");
+_result = [_logic, "objectives", "xxx"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
-ASSERT_TRUE(_result == "SYM", _result);
-STAT("style - Test good value");
-_result = [_logic, "style", "ASYM"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(_result == "ALL", _result);
+STAT("objectives - Test good value");
+_result = [_logic, "objectives", "MIL"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
-ASSERT_TRUE(_result == "ASYM", _result);
+ASSERT_TRUE(_result == "MIL", _result);
+_result = [_logic, "objectives"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "MIL", _result);
 
 STAT("size - Test default");
 _result = [_logic, "size"] call ALIVE_fnc_SEP;
@@ -77,6 +80,25 @@ STAT("size - Test good value");
 _result = [_logic, "size", "BN"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
 ASSERT_TRUE(_result == "BN", _result);
+_result = [_logic, "size"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "BN", _result);
+
+STAT("type - Test default");
+_result = [_logic, "type"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "RANDOM", _result);
+STAT("type - Test bad value");
+_result = [_logic, "type", "xxx"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "RANDOM", _result);
+STAT("type - Test good value");
+_result = [_logic, "type", "MECH"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "MECH", _result);
+_result = [_logic, "type"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "MECH", _result);
 
 STAT("faction - Test default");
 _result = [_logic, "faction"] call ALIVE_fnc_SEP;
@@ -90,8 +112,9 @@ STAT("faction - Test good value");
 _result = [_logic, "faction", "IND_F"] call ALIVE_fnc_SEP;
 ASSERT_TRUE(typeName _result == "STRING", typeName _result);
 ASSERT_TRUE(_result == "IND_F", _result);
-
-
+_result = [_logic, "faction"] call ALIVE_fnc_SEP;
+ASSERT_TRUE(typeName _result == "STRING", typeName _result);
+ASSERT_TRUE(_result == "IND_F", _result);
 
 STAT("Save state");
 _result = [_logic, "state"] call ALIVE_fnc_SEP;
