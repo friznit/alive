@@ -46,14 +46,20 @@ if(typeName _choices == "ARRAY" &&
 	_limited = true;
 };
 
-// is _args objNull (default)?
 // is _args the right typeName?
-if(
-	(typeName _args == "OBJECT" && {isNull _args}) ||
-	{typeName _args != typeName _default}
-) then {
+if(typeName _args != typeName _default) then {
+	// if so, grab the default value
+	_args = _default;
+};
+// is _args objNull (default)?
+if(typeName _args == "OBJECT" && {isNull _args}) then {
 	// if so, grab the default value
 	_args = _logic getVariable [_operation, _default];
+};
+// is _args Hash (default)?
+if(typeName _args == "ARRAY" && {isNull _args}) then {
+	// if so, grab the default value
+	_args = [_logic, _operation, _default] call ALIVE_fnc_hashGet;
 };
 
 if(_limited) then {
@@ -63,7 +69,14 @@ if(_limited) then {
 };
 
 // set final value
-_logic setVariable [_operation, _args];
+if(typeName _args == "OBJECT") then {
+	_logic setVariable [_operation, _args];
+};
+// is _args Hash
+if(typeName _args == "ARRAY") then {
+	// if so, grab the default value
+	[_logic, _operation, _args] call ALIVE_fnc_hashSet;
+};
 
 //diag_log PFORMAT_2(_fnc_scriptNameParent,_operation,_args);
 

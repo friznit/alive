@@ -49,7 +49,7 @@ if(
 
 TRACE_1("baseClassHash - input",_this);
 
-_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param; // changed to array as the allowed not sure if this is right..
+_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param; // changed to array as the allowed not sure if this is right..
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
@@ -71,11 +71,9 @@ switch(_operation) do {
 				[_logic, "class"] call CBA_fnc_hashRem;
 				
 				// wolffy - could do a loop to destroy all subclass vars?
-				/*
 				{
 					[_logic, _x] call CBA_fnc_hashRem;
 				} forEach (_logic select 1);
-				*/
 				
 				_logic = nil;
         };

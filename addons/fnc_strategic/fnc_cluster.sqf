@@ -44,7 +44,7 @@ nil
 
 private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_nodes","_center","_result","_findObjectID"];
 
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 
@@ -203,7 +203,6 @@ switch(_operation) do {
         case "center": {
                 // Read Only - return centre of clustered nodes
                 _result = [[_logic, "nodes",[]] call ALIVE_fnc_hashGet] call ALIVE_fnc_findClusterCenter;
-                if(count _result > 0) then {_logic setPos _result;};
         };
         
         case "size": {
