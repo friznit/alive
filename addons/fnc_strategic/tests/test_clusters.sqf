@@ -15,7 +15,7 @@ ASSERT_DEFINED("ALIVE_fnc_findClusterCenter","");
 ASSERT_DEFINED("ALIVE_fnc_findClusters","");
 ASSERT_DEFINED("ALIVE_fnc_consolidateClusters","");
 
-#define STAT(msg) sleep 3; \
+#define STAT(msg) sleep 1; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
@@ -114,7 +114,7 @@ _clusters = _result select 0;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 STAT("ConsolidateClusters completed");
-sleep 15;
+sleep 5;
 
 {
 	[_x, "destroy"] call ALIVE_fnc_cluster;

@@ -68,14 +68,11 @@ switch(_operation) do {
                 _result = _logic;
         };
         case "destroy": {
-				[_logic, "class"] call CBA_fnc_hashRem;
-				
-				// wolffy - could do a loop to destroy all subclass vars?
-				{
-					[_logic, _x] call CBA_fnc_hashRem;
-				} forEach (_logic select 1);
-				
-				_logic = nil;
+		{
+			[_logic, _x] call CBA_fnc_hashRem;
+		} forEach +(_logic select 1);
+
+		_logic = nil;
         };
 };
 TRACE_1("baseClassHash - output",_result);

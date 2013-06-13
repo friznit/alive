@@ -152,6 +152,7 @@ switch(_operation) do {
                         [_logic, "destroy"] call SUPERCLASS;
                 };
                 
+		_logic = nil;
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {
