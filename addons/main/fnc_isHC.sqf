@@ -38,7 +38,7 @@ if(isNil "headlessClients" && isServer) then {
         publicVariable "headlessClients";
 };
 
-waitUntil{!isNil "headlessClients"};
+while {isNil "headlessClients"} do {};
 
 if (!isDedicated) then {
         private["_hc","_lock","_x"];
