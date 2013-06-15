@@ -85,7 +85,7 @@ _clusters_civ = [_obj_array] call ALIVE_fnc_findClusters;
 _err = "finding clusters";
 ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
 {
-	_x setVariable ["debugColor", "ColorGreen"];
+	[_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
 	[_x, "debug", true] call ALIVE_fnc_cluster;
 } forEach _clusters_civ;
 

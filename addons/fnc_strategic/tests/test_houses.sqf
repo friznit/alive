@@ -4,8 +4,8 @@ SCRIPT(test_houses);
 
 
 // ----------------------------------------------------------------------------
-
-private ["_err","_obj_array","_house","_maxpos","_expected","_m","_ms","_amo"];
+
+private ["_err","_obj_array","_house","_maxpos","_expected","_m","_ms","_amo"];
 
 LOG("Testing Strategic Houses");
 _ms = [];
@@ -18,7 +18,7 @@ ASSERT_DEFINED("ALIVE_fnc_findNearHousePositions","");
 ASSERT_DEFINED("ALIVE_fnc_findIndoorHousePositions","");
 ASSERT_DEFINED("ALIVE_fnc_isHouseEnterable","");
 
-#define STAT(msg) sleep 1; \
+#define STAT(msg) sleep 5; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 

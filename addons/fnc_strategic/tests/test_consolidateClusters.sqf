@@ -4,14 +4,14 @@
 SCRIPT(test_consolidateClusters);
 
 // ----------------------------------------------------------------------------
-
-private ["_result","_err","_obj_array","_m","_amo","_logic","_master","_redundant"];
+
+private ["_result","_err","_obj_array","_m","_amo","_logic","_master","_redundant"];
 
 LOG("Testing Consolidate Clusters");
 
 ASSERT_DEFINED("ALIVE_fnc_cluster","");
 
-#define STAT(msg) sleep 1; \
+#define STAT(msg) sleep 5; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
