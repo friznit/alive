@@ -47,9 +47,16 @@ if (isnil "SEP_INIT_FINISHED") then {
 //[1250] execfsm "fpsmanager.fsm";
 
 /* ----------------- Fog Setup ||  ----------------- */
+[] spawn {	
 	// set fog level 
 	// 0 setfog [0.2,0.02,100];   
 	30 setfog [0.05,0.07,65];
+	sleep 30;
+
+	3600 setfog [0.01,0.04,65];
+	sleep 3600;
+};	
+	
 
 /* ----------------- Temporary Init Parameters ||  ----------------- */
 	waitUntil { !isNull player }; // Wait for player to initialize

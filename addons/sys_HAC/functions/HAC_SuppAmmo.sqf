@@ -78,7 +78,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 
 			if ((vehicle _x) == _x) then
 				{
-				if (((_x ammo ((weapons _x) select 0)) == 0) or ((count (magazines _x)) < 2) or ((_ammoN/(((count (units (group _x))) + 0.1)) < (6/((HAC_HQ_Recklessness*2) + 1))))) then
+				if (((_x ammo ((weapons _x) select 0)) == 0) or ((count (magazines _x)) < 2) or ((_ammoN/(((count (units (group _x))) + 0.1)) < (6/(((_logic getvariable "HAC_HQ_Recklessness")*2) + 1))))) then
 					{
 					if not (_x in _Hollow) then 
 						{

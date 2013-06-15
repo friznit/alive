@@ -53,7 +53,7 @@ if (isNull _ChosenOne) then
 			_halfway = [(((position _actV) select 0) + ((position _GL) select 0))/2,(((position _actV) select 1) + ((position _GL) select 1))/2];
 			_hired = (assignedvehicle _x) getVariable "Hired";
 			if (isNil ("_hired")) then {_hired = false};
-			if (((((_logic findNearestEnemy _GL) distance _GL) <= (500*_mpl)) or (((_logic findNearestEnemy _halfway) distance _halfway) <= (500*_mpl))) and ((random 100) > (20*(0.5 + (2*HAC_HQ_Recklessness))))) then {_noenemy = false};
+			if (((((_logic findNearestEnemy _GL) distance _GL) <= (500*_mpl)) or (((_logic findNearestEnemy _halfway) distance _halfway) <= (500*_mpl))) and ((random 100) > (20*(0.5 + (2*(_logic getvariable "HAC_HQ_Recklessness")))))) then {_noenemy = false};
 			if ((_ESpace >= _NG) and 
 				((count (assignedCargo (assignedvehicle _x))) == 0) and not 
 					((_busy) or (_hired)) and not
