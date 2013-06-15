@@ -66,25 +66,62 @@ ASSERT_DEFINED("_logic",_err);
 ASSERT_TRUE(typeName _logic == "ARRAY", _err);
 
 
-_profile = [nil, "create"] call ALIVE_fnc_agentProfile;
-_result = [_profile, "init"] call ALIVE_fnc_agentProfile;
-_result = [_profile, "objectID", "agent_01"] call ALIVE_fnc_agentProfile;
-_result = [_profile, "unitClass", "B_Soldier_F"] call ALIVE_fnc_agentProfile;
-_result = [_profile, "position", getPos player] call ALIVE_fnc_agentProfile;
-_result = [_profile, "side", "WEST"] call ALIVE_fnc_agentProfile;
-_result = [_profile, "groupID", "group_01"] call ALIVE_fnc_agentProfile;
-_result = [_profile, "vehicleID", "vehicle_01"] call ALIVE_fnc_agentProfile;
-_result = [_profile, "active", true] call ALIVE_fnc_agentProfile;
+STAT("Create Entity Profile");
+_profile1 = [nil, "create"] call ALIVE_fnc_profileEntity;
+[_profile1, "init"] call ALIVE_fnc_profileEntity;
+[_profile1, "profileID", "group_01"] call ALIVE_fnc_profileEntity;
+[_profile1, "companyID", "company_01"] call ALIVE_fnc_profileEntity;
+[_profile1, "unitClasses", ["B_Soldier_TL_F","B_Soldier_SL_F","B_Soldier_F"]] call ALIVE_fnc_profileEntity;
+[_profile1, "position", getPos player] call ALIVE_fnc_profileEntity;
+[_profile1, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
+[_profile1, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
+[_profile1, "side", "WEST"] call ALIVE_fnc_profileEntity;
+
+
+STAT("Create Entity Profile");
+_profile2 = [nil, "create"] call ALIVE_fnc_profileEntity;
+[_profile2, "init"] call ALIVE_fnc_profileEntity;
+[_profile2, "profileID", "group_02"] call ALIVE_fnc_profileEntity;
+[_profile2, "companyID", "company_01"] call ALIVE_fnc_profileEntity;
+[_profile2, "unitClasses", ["B_Soldier_TL_F","B_Soldier_SL_F","B_Soldier_F"]] call ALIVE_fnc_profileEntity;
+[_profile2, "position", getPos player] call ALIVE_fnc_profileEntity;
+[_profile2, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
+[_profile2, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
+[_profile2, "side", "WEST"] call ALIVE_fnc_profileEntity;
+
+
+STAT("Create Vehicle Profile");
+_profile3 = [nil, "create"] call ALIVE_fnc_profileVehicle;
+[_profile3, "init"] call ALIVE_fnc_profileVehicle;
+[_profile3, "profileID", "vehicle_01"] call ALIVE_fnc_profileVehicle;
+[_profile3, "vehicleClass", "B_Hunter_HMG_F"] call ALIVE_fnc_profileVehicle;
+[_profile3, "position", getPos player] call ALIVE_fnc_profileVehicle;
+[_profile3, "direction", 180] call ALIVE_fnc_profileVehicle;
+[_profile3, "damage", 0] call ALIVE_fnc_profileVehicle;
+[_profile3, "fuel", 1] call ALIVE_fnc_profileVehicle;
+[_profile3, "side", "WEST"] call ALIVE_fnc_profileVehicle;
 
 
 STAT("Register Profile");
-_result = [_logic, "registerProfile", _profile] call ALIVE_fnc_profileHandler;
+_result = [_logic, "registerProfile", _profile1] call ALIVE_fnc_profileHandler;
+_err = "register profile";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+STAT("Register Profile");
+_result = [_logic, "registerProfile", _profile2] call ALIVE_fnc_profileHandler;
+_err = "register profile";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+STAT("Register Profile");
+_result = [_logic, "registerProfile", _profile3] call ALIVE_fnc_profileHandler;
 _err = "register profile";
 ASSERT_TRUE(typeName _result == "BOOL", _err);
 
 
 STAT("Get Profile");
-_result = [_logic, "getProfile", "agent_01"] call ALIVE_fnc_profileHandler;
+_result = [_logic, "getProfile", "group_01"] call ALIVE_fnc_profileHandler;
 _err = "get profile";
 ASSERT_TRUE(typeName _result == "ARRAY", _err);
 
@@ -92,8 +129,17 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 diag_log _result;
 
 
-STAT("Get Profiles by type");
-_result = [_logic, "getProfilesByType", "agent"] call ALIVE_fnc_profileHandler;
+STAT("Get Profiles by type entity");
+_result = [_logic, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
+_err = "get Profiles by type";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
+
+STAT("Get Profiles by type vehicle");
+_result = [_logic, "getProfilesByType", "vehicle"] call ALIVE_fnc_profileHandler;
 _err = "get Profiles by type";
 ASSERT_TRUE(typeName _result == "ARRAY", _err);
 
@@ -110,6 +156,15 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 diag_log _result;
 
 
+STAT("Get Profiles by Company");
+_result = [_logic, "getProfilesByCompany", "company_01"] call ALIVE_fnc_profileHandler;
+_err = "get Company by side";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
+
 STAT("Get state");
 _state = [_logic, "state"] call ALIVE_fnc_profileHandler;
 _err = "get state";
@@ -120,9 +175,37 @@ diag_log _state;
 
 
 STAT("UnRegister Profile");
-_result = [_logic, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+_result = [_logic, "unregisterProfile", _profile1] call ALIVE_fnc_profileHandler;
 _err = "unregister profile";
 ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+STAT("Get Profiles by type");
+_result = [_logic, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
+_err = "get Profiles by type";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
+
+STAT("Get Profiles by side");
+_result = [_logic, "getProfilesBySide", "WEST"] call ALIVE_fnc_profileHandler;
+_err = "get Profiles by side";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
+
+STAT("Get Profiles by Company");
+_result = [_logic, "getProfilesByCompany", "company_01"] call ALIVE_fnc_profileHandler;
+_err = "get Company by side";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
 
 
 STAT("Get state");

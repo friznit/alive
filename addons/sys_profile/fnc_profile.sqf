@@ -59,8 +59,8 @@ switch(_operation) do {
                 if (isServer) then {
                         // if server, initialise module game logic
 						// nil these out they add a lot of code to the hash..
-						[_logic,"super",nil] call CBA_fnc_hashSet;
-						[_logic,"class",nil] call CBA_fnc_hashSet;
+						[_logic,"super"] call ALIVE_fnc_hashRem;
+						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
                 };
                 
@@ -72,23 +72,17 @@ switch(_operation) do {
                 CONTROLLER  - coordination
                 */
         };
-        case "destroy": {
-                
+        case "destroy": {                
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
-                        // if server
-						[_logic,"super",nil] call CBA_fnc_hashSet;
-						[_logic,"class",nil] call CBA_fnc_hashSet;
-                        
-                        [_logic, "destroy"] call SUPERCLASS;
-                };
-                
+					[_logic, "destroy"] call SUPERCLASS;
+                };                
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {
-						_args = [_logic,"debug"] call CBA_fnc_hashGet;
+						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
                 } else {
-						[_logic,"debug",_args] call CBA_fnc_hashSet;
+						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
                 };                
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
                 
@@ -101,13 +95,13 @@ switch(_operation) do {
 						
 						// Save state
 				
-                        _state = [] call CBA_fnc_hashCreate;
+                        _state = [] call ALIVE_fnc_hashCreate;
 						
 						// BaseClassHash CHANGE 
 						// loop the class hash and set vars on the state hash
 						{
 							if(!(_x == "super") && !(_x == "class")) then {
-								[_state,_x,[_logic,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
+								[_state,_x,[_logic,_x] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 							};
 						} forEach (_logic select 1);
                        
@@ -121,7 +115,7 @@ switch(_operation) do {
 						// BaseClassHash CHANGE 
 						// loop the passed hash and set vars on the class hash
                         {
-							[_logic,_x,[_args,_x] call CBA_fnc_hashGet] call CBA_fnc_hashSet;
+							[_logic,_x,[_args,_x] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 						} forEach (_args select 1);
                 };
         };

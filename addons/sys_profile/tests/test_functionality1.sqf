@@ -1,11 +1,11 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(test_profileHandler);
+SCRIPT(test_functionality);
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_logic","_state","_result2","_profileHandler","_unitProfile","_groupProfile","_position","_profileWaypoint"];
+private ["_result","_err","_logic","_state","_result2","_profileEntity","_position","_profileWaypoint"];
 
 LOG("Testing Profile Handler Object");
 
@@ -44,64 +44,61 @@ diag_log format["Timer End %1",_timeEnd];
 
 // CREATE PROFILE HANDLER
 STAT("Create Profile Handler");
-_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
-[_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 
 
-STAT("Create Unit Profile");
-_unitProfile = [nil, "create"] call ALIVE_fnc_agentProfile;
-[_unitProfile, "init"] call ALIVE_fnc_agentProfile;
-[_unitProfile, "objectID", "agent_01"] call ALIVE_fnc_agentProfile;
-[_unitProfile, "unitClass", "B_Soldier_F"] call ALIVE_fnc_agentProfile;
-[_unitProfile, "position", getPos player] call ALIVE_fnc_agentProfile;
-[_unitProfile, "side", "WEST"] call ALIVE_fnc_agentProfile;
-[_unitProfile, "groupID", "group_01"] call ALIVE_fnc_agentProfile;
-
-
-STAT("Create Group Profile");
-_groupProfile = [nil, "create"] call ALIVE_fnc_groupProfile;
-[_groupProfile, "init"] call ALIVE_fnc_groupProfile;
-[_groupProfile, "objectID", "group_01"] call ALIVE_fnc_groupProfile;
-[_groupProfile, "unitClasses", ["B_Soldier_F","B_Soldier_F"]] call ALIVE_fnc_groupProfile;
-[_groupProfile, "unitStatus", [true,true]] call ALIVE_fnc_groupProfile;
-[_groupProfile, "side", "WEST"] call ALIVE_fnc_groupProfile;
-[_groupProfile, "leaderID", "agent_01"] call ALIVE_fnc_groupProfile;
+STAT("Create Entity Profile");
+_profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
+[_profileEntity, "init"] call ALIVE_fnc_profileEntity;
+[_profileEntity, "profileID", "group_01"] call ALIVE_fnc_profileEntity;
+[_profileEntity, "unitClasses", ["B_Soldier_TL_F","B_Soldier_SL_F","B_Soldier_F"]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "position", getPos player] call ALIVE_fnc_profileEntity;
+[_profileEntity, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "side", "WEST"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Register Profile");
-[_profileHandler, "registerProfile", _unitProfile] call ALIVE_fnc_profileHandler;
-[_profileHandler, "registerProfile", _groupProfile] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
 
 STAT("Delete local profile references");
-_unitProfile = nil;
-_groupProfile = nil;
+_profileEntity = nil;
 
 
 STAT("Get the unit profile from the profile handler");
-_unitProfile = [_profileHandler, "getProfile", "agent_01"] call ALIVE_fnc_profileHandler;
+_profileEntity = [ALIVE_profileHandler, "getProfile", "group_01"] call ALIVE_fnc_profileHandler;
 
 
 STAT("Set debug on profile handler");
-[_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 
 
 STAT("Spawn the unit via the profile");
-_unit = [_unitProfile, "spawn", _profileHandler] call ALIVE_fnc_agentProfile;
+_unit = [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
+
+
+//_unit setDammage 1;
 
 
 STAT("Sleep for 10");
 SLEEP 10;
 
 
+STAT("Profile state");
+_profileEntity = [ALIVE_profileHandler, "getProfile", "group_01"] call ALIVE_fnc_profileHandler;
+diag_log _profileEntity;
+
+
 STAT("De-Spawn the unit via the profile");
-[_unitProfile, "despawn", _profileHandler] call ALIVE_fnc_agentProfile;
+[_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Add waypoint");
 _position = [getPos player, 200, random 360] call BIS_fnc_relPos;
 _profileWaypoint = [_position, 0] call ALIVE_fnc_createProfileWaypoint;
-[_unitProfile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_agentProfile;
+[_profileEntity, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
 
 _m = createMarkerLocal ["destinationMarker1", _position];
@@ -115,7 +112,7 @@ _m setMarkerTextLocal "destination";
 STAT("Add waypoint");
 _position = [_position, 200, random 360] call BIS_fnc_relPos;
 _profileWaypoint = [_position, 0] call ALIVE_fnc_createProfileWaypoint;
-[_unitProfile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_agentProfile;
+[_profileEntity, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
 
 _m = createMarkerLocal ["destinationMarker2", _position];
@@ -127,9 +124,8 @@ _m setMarkerTextLocal "destination";
 
 
 STAT("Start simulated profile movement");
-[_profileHandler] spawn {
-	_profileHandler = _this select 0;
-	[_profileHandler] call ALIVE_fnc_simulateProfileMovement;	
+[] spawn {
+	[] call ALIVE_fnc_simulateProfileMovement;	
 };
 
 
@@ -138,7 +134,7 @@ SLEEP 20;
 
 
 STAT("Spawn the unit via the profile");
-_unit = [_unitProfile, "spawn", _profileHandler] call ALIVE_fnc_agentProfile;
+_unit = [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Sleep for 10");
@@ -146,37 +142,35 @@ SLEEP 20;
 
 
 STAT("De-Spawn the unit via the profile");
-[_unitProfile, "despawn", _profileHandler] call ALIVE_fnc_agentProfile;
+[_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
 
-/*
 STAT("Sleep for 10");
-SLEEP 10;
+SLEEP 20;
 
 
 STAT("Spawn the unit via the profile");
-_unit = [_unitProfile, "spawn", _profileHandler] call ALIVE_fnc_agentProfile;
+_unit = [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Sleep for 10");
-SLEEP 10;
+SLEEP 20;
 
 
 STAT("De-Spawn the unit via the profile");
-[_unitProfile, "despawn", _profileHandler] call ALIVE_fnc_agentProfile;
+[_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Sleep for 10");
-SLEEP 10;
+SLEEP 20;
 
 
 STAT("Spawn the unit via the profile");
-_unit = [_unitProfile, "spawn", _profileHandler] call ALIVE_fnc_agentProfile;
+_unit = [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Sleep for 10");
-SLEEP 10;
+SLEEP 20;
 
 
 STAT("De-Spawn the unit via the profile");
-[_unitProfile, "despawn", _profileHandler] call ALIVE_fnc_agentProfile;
-*/
+[_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;

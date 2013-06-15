@@ -8,6 +8,17 @@ Description:
 Creates a waypoint hash for storage in agent profiles
 
 Parameters:
+Array - position array
+Scalar - the waypoint creation random placement radius
+String - type of waypoint
+String - speed of waypoint movement
+Scalar - completion radius of waypoint
+Array - timeout array of scalars [min, mid, max]
+String - formation type
+String - combat mode
+String - behaviour type
+String - description
+Vehicle - vehicle object
 
 Returns:
 A hash of waypoint settings for storage in a profile
@@ -45,17 +56,17 @@ _behaviour = if(count _this > 8) then {_this select 8} else {"UNCHANGED"}; // bu
 _description = if(count _this > 9) then {_this select 9} else {""};
 _attachVehicle = if(count _this > 10) then {_this select 10} else {""};
 
-_waypoint = [] call CBA_fnc_hashCreate;
-[_waypoint,"position",_position] call CBA_fnc_hashSet;
-[_waypoint,"radius",_radius] call CBA_fnc_hashSet;
-[_waypoint,"type",_type] call CBA_fnc_hashSet;
-[_waypoint,"speed",_speed] call CBA_fnc_hashSet;
-[_waypoint,"completionRadius",_completionRadius] call CBA_fnc_hashSet;
-[_waypoint,"timeout",_timeout] call CBA_fnc_hashSet;
-[_waypoint,"formation",_formation] call CBA_fnc_hashSet;
-[_waypoint,"combatMode",_combatMode] call CBA_fnc_hashSet;
-[_waypoint,"behaviour",_behaviour] call CBA_fnc_hashSet;
-[_waypoint,"description",_description] call CBA_fnc_hashSet;
-[_waypoint,"attachVehicle",_attachVehicle] call CBA_fnc_hashSet;
+_waypoint = [] call ALIVE_fnc_hashCreate;
+[_waypoint,"position",_position] call ALIVE_fnc_hashSet;
+[_waypoint,"radius",_radius] call ALIVE_fnc_hashSet;
+[_waypoint,"type",_type] call ALIVE_fnc_hashSet;
+[_waypoint,"speed",_speed] call ALIVE_fnc_hashSet;
+[_waypoint,"completionRadius",_completionRadius] call ALIVE_fnc_hashSet;
+[_waypoint,"timeout",_timeout] call ALIVE_fnc_hashSet;
+[_waypoint,"formation",_formation] call ALIVE_fnc_hashSet;
+[_waypoint,"combatMode",_combatMode] call ALIVE_fnc_hashSet;
+[_waypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
+[_waypoint,"description",_description] call ALIVE_fnc_hashSet;
+[_waypoint,"attachVehicle",_attachVehicle] call ALIVE_fnc_hashSet;
 
 _waypoint

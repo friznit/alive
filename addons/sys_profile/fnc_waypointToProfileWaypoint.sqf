@@ -8,8 +8,7 @@ Description:
 Takes a real waypoint and creates a profile waypoint
 
 Parameters:
-
-"waypoint"
+Waypoint - The waypoint
 
 Returns:
 A profile waypoint
@@ -41,18 +40,18 @@ _combatMode = waypointCombatMode _waypoint;
 _behaviour = waypointBehaviour _waypoint;
 _description = waypointDescription _waypoint;
 
-_profileWaypoint = [] call CBA_fnc_hashCreate;
-[_profileWaypoint,"position",_position] call CBA_fnc_hashSet;
-[_profileWaypoint,"radius",_radius] call CBA_fnc_hashSet;
-[_profileWaypoint,"type",_type] call CBA_fnc_hashSet;
-[_profileWaypoint,"speed",_speed] call CBA_fnc_hashSet;
-[_profileWaypoint,"completionRadius",_completionRadius] call CBA_fnc_hashSet;
-[_profileWaypoint,"timeout",_timeout] call CBA_fnc_hashSet;
-[_profileWaypoint,"formation",_formation] call CBA_fnc_hashSet;
-[_profileWaypoint,"combatMode",_combatMode] call CBA_fnc_hashSet;
-[_profileWaypoint,"behaviour",_behaviour] call CBA_fnc_hashSet;
-[_profileWaypoint,"description",_description] call CBA_fnc_hashSet;
-[_profileWaypoint,"attachVehicle",""] call CBA_fnc_hashSet;
+_profileWaypoint = [] call ALIVE_fnc_hashCreate;
+[_profileWaypoint,"position",_position] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"radius",_radius] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"type",_type] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"speed",_speed] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"completionRadius",_completionRadius] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"timeout",_timeout] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"formation",_formation] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"combatMode",_combatMode] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"description",_description] call ALIVE_fnc_hashSet;
+[_profileWaypoint,"attachVehicle",""] call ALIVE_fnc_hashSet;
 
 diag_log _profileWaypoint;
 

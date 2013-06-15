@@ -8,10 +8,8 @@ Description:
 Takes a profile waypoint and creates a real waypoint
 
 Parameters:
-
-"profileWaypoint"
-
-"group"
+Hash - profile waypoint
+Group - The group
 
 Returns:
 A waypoint
@@ -34,17 +32,17 @@ _profileWaypoint = _this select 0;
 _group = _this select 1;
 _setCurrent = if(count _this > 2) then {_this select 2} else {false};
 
-_position = [_profileWaypoint,"position"] call CBA_fnc_hashGet;
-_radius = [_profileWaypoint,"radius"] call CBA_fnc_hashGet;
-_type = [_profileWaypoint,"type"] call CBA_fnc_hashGet;
-_speed = [_profileWaypoint,"speed"] call CBA_fnc_hashGet;
-_completionRadius = [_profileWaypoint,"completionRadius"] call CBA_fnc_hashGet;
-_timeout = [_profileWaypoint,"timeout"] call CBA_fnc_hashGet;
-_formation = [_profileWaypoint,"formation"] call CBA_fnc_hashGet;
-_combatMode = [_profileWaypoint,"combatMode"] call CBA_fnc_hashGet;
-_behaviour = [_profileWaypoint,"behaviour"] call CBA_fnc_hashGet;
-_description = [_profileWaypoint,"description"] call CBA_fnc_hashGet;
-_attachVehicle = [_profileWaypoint,"attachVehicle"] call CBA_fnc_hashGet;
+_position = [_profileWaypoint,"position"] call ALIVE_fnc_hashGet;
+_radius = [_profileWaypoint,"radius"] call ALIVE_fnc_hashGet;
+_type = [_profileWaypoint,"type"] call ALIVE_fnc_hashGet;
+_speed = [_profileWaypoint,"speed"] call ALIVE_fnc_hashGet;
+_completionRadius = [_profileWaypoint,"completionRadius"] call ALIVE_fnc_hashGet;
+_timeout = [_profileWaypoint,"timeout"] call ALIVE_fnc_hashGet;
+_formation = [_profileWaypoint,"formation"] call ALIVE_fnc_hashGet;
+_combatMode = [_profileWaypoint,"combatMode"] call ALIVE_fnc_hashGet;
+_behaviour = [_profileWaypoint,"behaviour"] call ALIVE_fnc_hashGet;
+_description = [_profileWaypoint,"description"] call ALIVE_fnc_hashGet;
+_attachVehicle = [_profileWaypoint,"attachVehicle"] call ALIVE_fnc_hashGet;
 
 _waypoint = _group addWaypoint [_position, _radius];
 _waypoint setWaypointDescription _description;

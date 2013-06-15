@@ -11,10 +11,9 @@ Parameters:
 
 Returns:
 
-
 Examples:
 (begin example)
-_result = [_profileHandler] call ALIVE_fnc_simulateProfileMovement;
+_result = [] call ALIVE_fnc_simulateProfileMovement;
 (end)
 
 See Also:
@@ -24,39 +23,40 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_profileHandler","_cycleTime","_profiles","_unitProfile","_active","_waypoints","_currentPosition","_activeWaypoint","_destination","_distance"];
+private ["_cycleTime","_profiles","_unitProfile","_active","_waypoints","_currentPosition","_activeWaypoint","_destination","_distance","_direction","_newPosition","_leader"];
 
-_profileHandler = _this select 0;
 _cycleTime = 1;
-_profiles = [_profileHandler, "getProfilesByType", "agent"] call ALIVE_fnc_profileHandler;
+_profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
 
 waituntil {
 	{
-			_unitProfile = [_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-			_active = [_unitProfile,"active"] call CBA_fnc_hashGet;
-			_unit = [_unitProfile,"unit"] call CBA_fnc_hashGet;
-			_waypoints = [_unitProfile,"waypoints"] call CBA_fnc_hashGet;
-			_currentPosition = [_unitProfile,"position"] call CBA_fnc_hashGet;
+			_unitProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+			_active = [_unitProfile,"active"] call ALIVE_fnc_hashGet;			
+			_waypoints = [_unitProfile,"waypoints"] call ALIVE_fnc_hashGet;
+			_currentPosition = [_unitProfile,"position"] call ALIVE_fnc_hashGet;
 			if(count _waypoints > 0) then {
 				_activeWaypoint = _waypoints select 0;
-				_destination = [_activeWaypoint,"position"] call CBA_fnc_hashGet;
+				_destination = [_activeWaypoint,"position"] call ALIVE_fnc_hashGet;
 				_distance = _currentPosition distance _destination;
 				if!(_active) then {
 					_direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-					_newPosition = [_currentPosition, 2, _direction] call BIS_fnc_relPos;
-					if(_distance <= 50) then {
+					_newPosition = [_currentPosition, 3, _direction] call BIS_fnc_relPos;
+					if(_distance <= 20) then {
 						_waypoints set [0,objNull];
 						_waypoints = _waypoints - [objNull];
 						diag_log _waypoints;
-						[_unitProfile,"waypoints",_waypoints] call CBA_fnc_hashSet;
+						[_unitProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
 					};
-					[_unitProfile,"position",_newPosition] call CBA_fnc_hashSet;
-					[_unitProfile, "debug", false] call ALIVE_fnc_agentProfile;
-					[_unitProfile, "debug", true] call ALIVE_fnc_agentProfile;
+					[_unitProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
+					[_unitProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+					[_unitProfile, "debug", false] call ALIVE_fnc_profileEntity;
+					[_unitProfile, "debug", true] call ALIVE_fnc_profileEntity;
 				} else {
-					[_unitProfile,"position",getPos _unit] call CBA_fnc_hashSet;
-					[_unitProfile, "debug", false] call ALIVE_fnc_agentProfile;
-					[_unitProfile, "debug", true] call ALIVE_fnc_agentProfile;
+					_leader = [_unitProfile,"leader"] call ALIVE_fnc_hashGet;
+					[_unitProfile,"position",getPos _leader] call ALIVE_fnc_profileEntity;
+					[_unitProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+					[_unitProfile, "debug", false] call ALIVE_fnc_profileEntity;
+					[_unitProfile, "debug", true] call ALIVE_fnc_profileEntity;
 				};
 			}
 			

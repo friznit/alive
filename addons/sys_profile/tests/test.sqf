@@ -1,6 +1,6 @@
 #include <\x\alive\addons\sys_profile\script_component.hpp>
 
-#define TESTS ["profile","agentProfile","groupProfile","profileHandler","functionality"];
+#define TESTS ["profile","profileEntity","profileVehicle","profileHandler","functionality1","functionality2"];
 
 SCRIPT(test-profile);
 
