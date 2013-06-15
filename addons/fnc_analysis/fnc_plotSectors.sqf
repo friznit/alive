@@ -60,8 +60,8 @@ switch(_operation) do {
                 
                 if (isServer) then {
                         // if server, initialise module game logic
-                        [_logic,"super",SUPERCLASS] call CBA_fnc_hashSet;
-						[_logic,"class",MAINCLASS] call CBA_fnc_hashSet;
+                        [_logic,"super",SUPERCLASS] call ALIVE_fnc_hashSet;
+						[_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
                         TRACE_1("After module init",_logic);			
                 };
                 
@@ -81,8 +81,8 @@ switch(_operation) do {
 						[_logic, "clear"] call MAINCLASS;
 												
                         // if server
-                        [_logic,"super",nil] call CBA_fnc_hashSet;
-						[_logic,"class",nil] call CBA_fnc_hashSet;		
+                        //[_logic,"super",nil] call ALIVE_fnc_hashSet;
+						//[_logic,"class",nil] call ALIVE_fnc_hashSet;		
                         
                         [_logic, "destroy"] call SUPERCLASS;					
                 };
@@ -103,12 +103,12 @@ switch(_operation) do {
 					_plots set [count _plots, _plot];
 				} forEach _sectors;
 
-				[_logic,"plots",_plots] call CBA_fnc_hashSet;
+				[_logic,"plots",_plots] call ALIVE_fnc_hashSet;
         };
 		case "clear": {
 				private["_plots"];
 				
-				_plots = [_logic,"plots"] call CBA_fnc_hashGet;
+				_plots = [_logic,"plots"] call ALIVE_fnc_hashGet;
 				
 				{
 					_result = [_x, "destroy", false] call ALIVE_fnc_sectorPlot;

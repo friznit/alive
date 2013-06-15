@@ -34,21 +34,21 @@ diag_log format["TEST ITERATIONS: %1", _testIterations];
 
 STAT("CREATE CBA HASH");
 TIMERSTART
-_hash = call CBA_fnc_hashCreate;
+_hash = call ALIVE_fnc_hashCreate;
 TIMEREND
 
 STAT("POPULATE HASH");
 _value = ["one","two","three","four","five","six","seven","eight","nine","ten"];
 TIMERSTART
 for "_i" from 0 to _testIterations do {	
-	_result = [_hash, format["KEY%1",_i], _value] call CBA_fnc_hashSet;
+	_result = [_hash, format["KEY%1",_i], _value] call ALIVE_fnc_hashSet;
 };
 TIMEREND
 
 STAT("GET FROM HASH");
 TIMERSTART
 for "_i" from 0 to _testIterations do {	
-	_result = [_hash, format["KEY%1",_i]] call CBA_fnc_hashGet;
+	_result = [_hash, format["KEY%1",_i]] call ALIVE_fnc_hashGet;
 };
 TIMEREND
 
@@ -56,14 +56,14 @@ STAT("UPDATE HASH");
 _value = ["one","two","three","four","five","six","seven","eight","nine","ten"];
 TIMERSTART
 for "_i" from 0 to _testIterations do {	
-	_result = [_hash, format["KEY%1",_i], _value] call CBA_fnc_hashSet;
+	_result = [_hash, format["KEY%1",_i], _value] call ALIVE_fnc_hashSet;
 };
 TIMEREND
 
 STAT("REMOVE FROM HASH");
 TIMERSTART
 for "_i" from 0 to _testIterations do {	
-	_result = [_hash, format["KEY%1",_i]] call CBA_fnc_hashRem;
+	_result = [_hash, format["KEY%1",_i]] call ALIVE_fnc_hashRem;
 };
 TIMEREND
 

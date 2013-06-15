@@ -44,7 +44,7 @@ _filteredSectors = [];
 {
 	_sector = _x;
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-	_elevationData = [_sectorData, "elevation"] call CBA_fnc_hashGet;
+	_elevationData = [_sectorData, "elevation"] call ALIVE_fnc_hashGet;
 	
 	if(_elevationData >= _elevationMin && _elevationData <= _elevationMax) then {
 		_filteredSectors set [count _filteredSectors, _sector];

@@ -33,12 +33,12 @@ _units = _this select 0;
 _err = format["unit array sort side requires an array of units - %1",_units];
 ASSERT_TRUE(typeName _units == "ARRAY",_err);
 
-_sideUnits = [] call CBA_fnc_hashCreate;
+_sideUnits = [] call ALIVE_fnc_hashCreate;
 
-[_sideUnits, "EAST", []] call CBA_fnc_hashSet;
-[_sideUnits, "WEST", []] call CBA_fnc_hashSet;
-[_sideUnits, "CIV", []] call CBA_fnc_hashSet;
-[_sideUnits, "GUER", []] call CBA_fnc_hashSet;
+[_sideUnits, "EAST", []] call ALIVE_fnc_hashSet;
+[_sideUnits, "WEST", []] call ALIVE_fnc_hashSet;
+[_sideUnits, "CIV", []] call ALIVE_fnc_hashSet;
+[_sideUnits, "GUER", []] call ALIVE_fnc_hashSet;
 
 {
 	if!(isNull group _x) then {
@@ -47,7 +47,7 @@ _sideUnits = [] call CBA_fnc_hashCreate;
 		_side = side _x;
 	};
 	
-	_sideUnitsArray = [_sideUnits, format["%1",_side]] call CBA_fnc_hashGet;
+	_sideUnitsArray = [_sideUnits, format["%1",_side]] call ALIVE_fnc_hashGet;
 	_sideUnitsArray set [count _sideUnitsArray, _x];
 	
 } forEach _units;

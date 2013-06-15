@@ -40,7 +40,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	_bounds = [_sector, "bounds"] call ALIVE_fnc_sector;
 	_dimensions = [_sector, "dimensions"] call ALIVE_fnc_sector;
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-	_terrainData = [_sectorData, "terrain"] call CBA_fnc_hashGet;
+	_terrainData = [_sectorData, "terrain"] call ALIVE_fnc_hashGet;
 	
 	_elevationData = [];
 	_markers = [];

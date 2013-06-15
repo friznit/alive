@@ -114,7 +114,7 @@ _count = 0;
 	_m setMarkerShapeLocal "ICON";
 	_m setMarkerSizeLocal [1, 1];
 	_m setMarkerTypeLocal "mil_dot";
-	_m setMarkerColorLocal ([_logic,"debugColor"] call CBA_fnc_hashGet);
+	_m setMarkerColorLocal ([_logic,"debugColor"] call ALIVE_fnc_hashGet);
 	_count = _count + 1;
 	
 	_markers set [count _markers, _m];

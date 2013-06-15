@@ -32,7 +32,7 @@ ARJay
 	while {
 		!(isNull cursorTarget) 
 		&& (alive cursorTarget) 
-		&& ((cursorTarget distance player) <= 100)
+		&& ((cursorTarget distance player) <= 200)
 	} do {
 		_instanceName = vehicleVarName cursorTarget;
 		_typeOf = typeOf cursorTarget;
@@ -40,10 +40,13 @@ ARJay
 		if(_name == "Error: No Unit") then {_name = "";};
 		
 		_text = format ["%1 | %3", _instanceName, _name, _typeOf];
-		[_text, 0.3, 1, 0.3, "PLAIN"] call arjay_title;
+				
+		titleText [_text, "PLAIN", 0.3];
+		sleep 1;
+		titleFadeOut 0.3;
 		
-		if(((cursorTarget isKindOf "Man") || (cursorTarget isKindOf "StaticWeapon") || (cursorTarget isKindOf "Car") || (cursorTarget isKindOf "Ship"))) then {
-			if(_hold > 1) then {
+		if(((cursorTarget isKindOf "Man") || (cursorTarget isKindOf "StaticWeapon") || (cursorTarget isKindOf "Air") || (cursorTarget isKindOf "Car") || (cursorTarget isKindOf "Ship"))) then {
+			if(_hold > 2) then {
 				[cursorTarget] call ALIVE_fnc_inspectObject;
 				_hold = 0;
 			};
@@ -52,7 +55,8 @@ ARJay
 		};
 		
 		if(cursorTarget isKindOf "House") then {
-			if(_hold > 1) then {
+			if(_hold > 2) then {
+				[cursorTarget] call ALIVE_fnc_inspectObject;
 				[cursorTarget] call ALIVE_fnc_debugBuildingPositions;
 				_hold = 0;
 			};

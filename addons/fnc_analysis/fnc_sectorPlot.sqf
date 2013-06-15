@@ -60,8 +60,8 @@ switch(_operation) do {
                 
                 if (isServer) then {
 						// if server, initialise module game logic
-                        [_logic,"super",SUPERCLASS] call CBA_fnc_hashSet;
-						[_logic,"class",MAINCLASS] call CBA_fnc_hashSet;
+                        [_logic,"super",SUPERCLASS] call ALIVE_fnc_hashSet;
+						[_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
                         TRACE_1("After module init",_logic);		
                 };
                 
@@ -81,8 +81,8 @@ switch(_operation) do {
 						[_logic, "clear"] call MAINCLASS;						
 						
                         // if server
-                        [_logic,"super",nil] call CBA_fnc_hashSet;
-						[_logic,"class",nil] call CBA_fnc_hashSet;
+						//[_logic,"super",nil] call ALIVE_fnc_hashSet;
+						//[_logic,"class",nil] call ALIVE_fnc_hashSet;
 											                      
                         [_logic, "destroy"] call SUPERCLASS;					
                 };
@@ -104,12 +104,12 @@ switch(_operation) do {
 				switch(_key) do {
 						case "units": {
 							private["_eastUnits","_westUnits","_civUnits","_guerUnits","_eastCount","_westUnits","_civUnits","_guerUnits","_alpha", "_m"];
-							_plotData = [_sectorData, _key] call CBA_fnc_hashGet;
+							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 							
-							_eastUnits = [_plotData, "EAST"] call CBA_fnc_hashGet;
-							_westUnits = [_plotData, "WEST"] call CBA_fnc_hashGet;
-							_civUnits = [_plotData, "CIV"] call CBA_fnc_hashGet;
-							_guerUnits = [_plotData, "GUER"] call CBA_fnc_hashGet;
+							_eastUnits = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
+							_westUnits = [_plotData, "WEST"] call ALIVE_fnc_hashGet;
+							_civUnits = [_plotData, "CIV"] call ALIVE_fnc_hashGet;
+							_guerUnits = [_plotData, "GUER"] call ALIVE_fnc_hashGet;
 							
 							_eastCount = count _eastUnits;
 							_westCount = count _westUnits;
@@ -182,7 +182,7 @@ switch(_operation) do {
 						};
 						case "terrain": {
 							private["_m"];
-							_plotData = [_sectorData, _key] call CBA_fnc_hashGet;
+							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 							
 							switch (_plotData) do {
 								case "LAND": {
@@ -219,7 +219,7 @@ switch(_operation) do {
 						};
 						case "elevation": {
 							private["_m","_colour","_alpha","_value"];							
-							_plotData = [_sectorData, _key] call CBA_fnc_hashGet;
+							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 							
 							_alpha = 0;
 							
@@ -253,12 +253,12 @@ switch(_operation) do {
 						};
 				};	
 		
-				[_logic,"markers",_markers] call CBA_fnc_hashSet;
+				[_logic,"markers",_markers] call ALIVE_fnc_hashSet;
         };
 		case "clear": {
 				private["_markers"];
 			
-				_markers = [_logic,"markers"] call CBA_fnc_hashGet;
+				_markers = [_logic,"markers"] call ALIVE_fnc_hashGet;
 				
 				{
 					deleteMarkerLocal _x;

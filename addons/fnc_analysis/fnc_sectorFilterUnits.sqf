@@ -47,8 +47,8 @@ _filteredSectors = [];
 {
 	_sector = _x;
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-	_unitData = [_sectorData, "units"] call CBA_fnc_hashGet;
-	_units = [_unitData, _side] call CBA_fnc_hashGet;
+	_unitData = [_sectorData, "units"] call ALIVE_fnc_hashGet;
+	_units = [_unitData, _side] call ALIVE_fnc_hashGet;
 	
 	if(count _units > 0 && count _units > _unitCountMin &&  count _units < _unitCountMax) then {
 		_filteredSectors set [count _filteredSectors, _sector];
