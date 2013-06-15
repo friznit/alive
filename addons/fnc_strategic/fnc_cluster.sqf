@@ -90,7 +90,7 @@ _createMarkers = {
                 _m setMarkerSizeLocal [1, 1];
                 _m setMarkerTypeLocal "mil_dot";
                 _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
-                _m setMarkerTextLocal format[MTEMPLATE, _logic];
+                _m setMarkerTextLocal format[MTEMPLATE, floor(random 10000)];
                 _markers set [count _markers, _m];
                 
                 _m = createMarkerLocal [(format[MTEMPLATE, _logic] + "_size"), _center];
@@ -120,7 +120,7 @@ _findObjectID = {
 };
 
 switch(_operation) do {
-        case "init": {                
+        case "create": {                
                 /*
                 MODEL - no visual just reference data
                 - nodes
@@ -130,9 +130,13 @@ switch(_operation) do {
                 
                 if (isServer) then {
                         // if server, initialise module game logic
-                        [_logic, "super", SUPERCLASS] call ALIVE_fnc_hashSet;
-                        [_logic, "class", MAINCLASS] call ALIVE_fnc_hashSet;
+                        _logic = [nil, "create"] call SUPERCLASS;
+                        //[_logic, "super", SUPERCLASS] call ALIVE_fnc_hashSet;
+                        //[_logic, "class", MAINCLASS] call ALIVE_fnc_hashSet;
+                        [_logic, "super", ""] call ALIVE_fnc_hashSet;
+                        [_logic, "class", ""] call ALIVE_fnc_hashSet;
                         TRACE_1("After module init",_logic);
+			_result = _logic;
                 };
                 
                 
