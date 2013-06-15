@@ -274,7 +274,7 @@ switch(_operation) do {
                 _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
                 _clusters_hq = [_obj_array] call ALIVE_fnc_findClusters;
                 {
-                        _x setVariable ["debugColor", "ColorRed"];
+                        [_x, "debugColor", "ColorRed"] call ALIVE_fnc_hashSet;
                 } forEach _clusters_hq;
                 
                 switch([_logic, "size"] call MAINCLASS) do {
@@ -288,7 +288,7 @@ switch(_operation) do {
                                         if(_hq_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
                                                 [_x, "type", "MIL"] call ALIVE_fnc_cluster;
                                                 [_x, "priority", 99] call ALIVE_fnc_cluster;
-                                                _x setVariable ["debugColor", "ColorBlack"];
+                                                [_x, "debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
                                                 [_x, "debug"] call ALIVE_fnc_cluster;
                                         };
                                 } forEach _clusters_hq;
@@ -315,7 +315,7 @@ switch(_operation) do {
                                         if(_hq_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
                                                 [_x, "type", "MIL"] call ALIVE_fnc_cluster;
                                                 [_x, "priority", 99] call ALIVE_fnc_cluster;
-                                                _x setVariable ["debugColor", "ColorBlack"];
+                                                [_x,"debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
                                                 [_x, "debug"] call ALIVE_fnc_cluster;
                                         };
                                 } forEach _clusters_hq;
@@ -336,7 +336,7 @@ switch(_operation) do {
                 };
                 
                 _clusters = +_clusters_hq;
-                
+                /*
                 // Idenitfy objectives with hangers for military fixed wing air
                 // - Optionally use hangers for military vehicle assets
                 // - Calculate number of fixed wing air assets
@@ -345,11 +345,11 @@ switch(_operation) do {
                 _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
                 _clusters_air = [_obj_array] call ALIVE_fnc_findClusters;
                 {
-                        _x setVariable ["debugColor", "ColorOrange"];
+                        [_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
                 } forEach _clusters_air;
                 _result = [_clusters, _clusters_air] call ALIVE_fnc_consolidateClusters;
                 _clusters = (_result select 0) + (_result select 1);
-
+                
                 // Idenitfy objectives with helipads for military rotary wing air
                 // - Calculate number of rotary wing air assets
                 _obj_array = ["helipadsquare"] call ALIVE_fnc_getObjectsByType;
@@ -357,7 +357,7 @@ switch(_operation) do {
                 _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
                 _clusters_heli = [_obj_array] call ALIVE_fnc_findClusters;
                 {
-                        _x setVariable ["debugColor", "ColorYellow"];
+                        [_x, "debugColor", "ColorYellow"] call ALIVE_fnc_hashSet;
                 } forEach _clusters_heli;
                 _result = [_clusters, _clusters_heli] call ALIVE_fnc_consolidateClusters;
                 _clusters = (_result select 0) + (_result select 1);
@@ -365,16 +365,14 @@ switch(_operation) do {
                 // Identify objectives with sheds for military vehicles assets
                 // - Calculate number of military vehicles assets
                 _obj_array = ["shed_big"] call ALIVE_fnc_getObjectsByType;
+                _obj_array = [_logic getVariable ["taor",""], _obj_array, true] call _validateLocations;
+                _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
                 _clusters_veh = [_obj_array] call ALIVE_fnc_findClusters;                
                 {
-                        _x setVariable ["debugColor", "ColorGreen"];
+                        [_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
                 } forEach _clusters_veh;
                 _result = [_clusters, _clusters_veh] call ALIVE_fnc_consolidateClusters;
                 _clusters = (_result select 0) + (_result select 1);
-
-                {
-                        [_x, "debug", true] call ALIVE_fnc_cluster;
-                } forEach _clusters;
                 
                 // If fixed wing assets available
                 // - Create squadron (offensive or transport)
@@ -387,11 +385,68 @@ switch(_operation) do {
                 // - Place near sheds
                 
                 // Collate objectives and their priorities
-                // - Exclude objectives outside TAOR or inside Blacklist
+                if((_logic getVariable ["objectives",DEFAULT_OBJECTIVE]) in ["MIL","ALL"]) then {
+                        // Military Objectives
+                        _obj_array = [
+                                "bunker",
+                                "cargo_house_",
+                                "cargo_patrol_",
+                                "hbarrier",
+                                "mil_wall",
+                                "mil_wired",
+                                "razorwire"
+                        ] call ALIVE_fnc_getObjectsByType;
+                        // - Exclude objectives outside TAOR or inside Blacklist
+                        _obj_array = [_logic getVariable ["taor",""], _obj_array, true] call _validateLocations;
+                        _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
+                        _clusters_tmp = [_obj_array] call ALIVE_fnc_findClusters;                
+                        {
+                                //[_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
+                        } forEach _clusters_tmp;
+                        _result = [_clusters, _clusters_tmp] call ALIVE_fnc_consolidateClusters;
+                        _clusters = (_result select 0) + (_result select 1);
+                };
+                */
+                if((_logic getVariable ["objectives",DEFAULT_OBJECTIVE]) in ["CIV","ALL"]) then {                        
+                        // Civilian Objectives
+                        _obj_array = [
+                                "airport_tower",
+                                "communication_f",
+                                "dp_",
+                                "fuel",
+                                "lighthouse_",
+                                "pier_f",
+                                "radar",
+                                "runway_beton",
+                                "runway_end",
+                                "runway_main",
+                                "runwayold",
+                                "shed_big_",
+                                "shed_small_",
+                                "spp_",
+                                "ttowerbig_",
+                                "valve"
+                        ] call ALIVE_fnc_getObjectsByType;
+                        // - Exclude objectives outside TAOR or inside Blacklist
+                        _obj_array = [_logic getVariable ["taor",""], _obj_array, true] call _validateLocations;
+                        _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
+                        _clusters_tmp = [_obj_array] call ALIVE_fnc_findClusters;                
+                        {
+                                [_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+                        } forEach _clusters_tmp;
+                        _result = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+                        diag_log (_result select 0);
+                        diag_log (_result select 1);
+                        _clusters = (_result select 0) + (_result select 1);                
+                };
                 
                 // Calculate remaining infantry for company
                 // Randomly/appropriately choose remaining Platoons and their Squad make up
                 // Place the entire PL somewhere and let them sort themselves out from there using OPCOM                
+                
+                {
+                        [_x, "debug", true] call ALIVE_fnc_cluster;
+                } forEach _clusters;
         };
 };
 TRACE_1("SEP - output",_result);
