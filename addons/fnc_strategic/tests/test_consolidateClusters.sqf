@@ -11,7 +11,7 @@ LOG("Testing Consolidate Clusters");
 
 ASSERT_DEFINED("ALIVE_fnc_cluster","");
 
-#define STAT(msg) sleep 5; \
+#define STAT(msg) sleep 1; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
@@ -189,7 +189,7 @@ ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
-ASSERT_TRUE(count _redundant == 0, _err);
+ASSERT_TRUE(count _redundant == 0,str _redundant);
 STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
@@ -247,7 +247,7 @@ ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
-ASSERT_TRUE(count _redundant == 0, _err);
+ASSERT_TRUE(count _redundant == 0,str _redundant);
 STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
@@ -275,7 +275,7 @@ ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
-ASSERT_TRUE(count _redundant == 0, _err);
+ASSERT_TRUE(count _redundant == 0,str _redundant);
 STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
@@ -303,7 +303,7 @@ ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
-ASSERT_TRUE(count _redundant == 0, _err);
+ASSERT_TRUE(count _redundant == 0,str _redundant);
 STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2

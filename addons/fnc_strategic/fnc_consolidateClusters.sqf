@@ -38,7 +38,7 @@ private ["_master","_redundant","_err","_result"];
 TRACE_1("consolidateClusters - input",_this);
 
 _master = [_this, 0, [], [[]]] call BIS_fnc_param;
-_redundant = [_this, 1, _master, [[]]] call BIS_fnc_param;
+_redundant = [_this, 1, +_master, [[]]] call BIS_fnc_param;
 
 _err = "objects provided not valid";
 ASSERT_DEFINED("_master", _err);
@@ -61,7 +61,7 @@ _result = [];
                 } else {
 	                // check for cluster within master cluster
         	        private ["_out_nodes","_nodes","_out_center","_x_center"];
-                	_max = ([_out, "size"] call ALIVE_fnc_cluster);
+                	_max = ([_x, "size"] call ALIVE_fnc_cluster) + ([_out, "size"] call ALIVE_fnc_cluster);
 	                _out_center = [_out, "center"] call ALiVE_fnc_cluster;
 	                _x_center = [_x, "center"] call ALiVE_fnc_cluster;
 			if(count _out_center != 0 && count _x_center != 0) then {
@@ -74,8 +74,9 @@ _result = [];
                 		        [_out, "nodes", _nodes] call ALIVE_fnc_cluster;
 
 		                        // and remove cluster from list
-        		                _redundant = _redundant - [_x];
                 		        [_x, "destroy"] call ALIVE_fnc_cluster;
+        		                _redundant set [_forEachIndex, -1];
+        		                _redundant = _redundant - [-1];
 	                	};
 			};
 		};
