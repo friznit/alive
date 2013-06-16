@@ -149,7 +149,6 @@ switch(_operation) do {
                 */
         };
         case "destroy": {
-                
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
                         // if server

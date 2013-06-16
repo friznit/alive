@@ -57,7 +57,7 @@ _result = [];
         {
                 // if duplicate of master list - remove
                 if(str _out == str _x) then {
-                        _redundant = _redundant - [_x];
+                        _redundant set [_forEachIndex, -1];
                 } else {
 	                // check for cluster within master cluster
         	        private ["_out_nodes","_nodes","_out_center","_x_center"];
@@ -72,15 +72,14 @@ _result = [];
 		                        // move nodes between clusters as required
         		                _nodes = ([_out, "nodes"] call ALIVE_fnc_cluster) + ([_x, "nodes"] call ALIVE_fnc_cluster);
                 		        [_out, "nodes", _nodes] call ALIVE_fnc_cluster;
-
 		                        // and remove cluster from list
                 		        [_x, "destroy"] call ALIVE_fnc_cluster;
         		                _redundant set [_forEachIndex, -1];
-        		                _redundant = _redundant - [-1];
 	                	};
 			};
 		};
-        } forEach _redundant;
+        } forEach +_redundant;
+	_redundant = _redundant - [-1];
 } forEach _master;
 
 // return master list and remainder of redundant list
