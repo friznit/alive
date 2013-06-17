@@ -42,7 +42,7 @@ private ["_logic","_operation","_args","_result"];
 
 TRACE_1("plotSectors - input",_this);
 
-_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
@@ -60,8 +60,8 @@ switch(_operation) do {
                 
                 if (isServer) then {
                         // if server, initialise module game logic
-                        [_logic,"super",SUPERCLASS] call ALIVE_fnc_hashSet;
-						[_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
+                        [_logic,"super"] call ALIVE_fnc_hashRem;
+						[_logic,"class"] call ALIVE_fnc_hashRem;
                         TRACE_1("After module init",_logic);			
                 };
                 
@@ -81,8 +81,8 @@ switch(_operation) do {
 						[_logic, "clear"] call MAINCLASS;
 												
                         // if server
-                        //[_logic,"super",nil] call ALIVE_fnc_hashSet;
-						//[_logic,"class",nil] call ALIVE_fnc_hashSet;		
+                        [_logic,"super"] call ALIVE_fnc_hashRem;
+						[_logic,"class"] call ALIVE_fnc_hashRem;
                         
                         [_logic, "destroy"] call SUPERCLASS;					
                 };

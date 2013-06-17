@@ -97,11 +97,20 @@ STAT("Set debug on profile handler");
 
 
 STAT("Spawn the unit via the profile");
-_unit = [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
+[_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Spawn the vehicle via the profile");
-_unit = [_profileVehicle, "spawn"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle, "spawn"] call ALIVE_fnc_profileVehicle;
+
+
+_vehicle = [_profileVehicle,"vehicle"] call ALIVE_fnc_hashGet;
+_leader = [_profileEntity,"leader"] call ALIVE_fnc_hashGet;
+_group = group _leader;
+
+_assignments = [_group,_vehicle] call ALIVE_fnc_vehicleAssignGroup;
+
+diag_log _assignments;
 
 /*
 STAT("Sleep for 10");
