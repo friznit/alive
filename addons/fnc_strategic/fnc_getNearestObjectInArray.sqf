@@ -7,8 +7,6 @@ Function: ALIVE_fnc_getNearestObjectInArray
 Description:
 Returns the nearest object to the given object from a list of objects
 
-K-means++ code inspired from: http://commons.apache.org/math/api-2.1/index.html?org/apache/commons/math/stat/clustering/KMeansPlusPlusClusterer.html
-
 Parameters:
 Object - The object for comparison
 Array - A list of objects to compare
