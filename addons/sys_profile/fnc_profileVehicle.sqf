@@ -22,9 +22,9 @@ Array - vehicleClass - Set the profile class name
 String - side - Set the profile side
 Array - position - Set the profile position
 Scalar - direction - Set the profile direction
-Scalar - damage - Set the profile damage
+Array - damage - Set the profile damage, format is array returned from ALIVE_fnc_vehicleGetDamage
 Scalar - fuel - Set the profile fuel
-Ammo - ammo - Set the profile ammo, format is array returned from ALIVE_fnc_vehicleGetAmmo
+Array - ammo - Set the profile ammo, format is array returned from ALIVE_fnc_vehicleGetAmmo
 Boolean - active - Flag for if the agents are spawned
 Object - vehicle - Reference to the spawned vehicle
 None - spawn - Spawn the vehicle from the profile data
@@ -51,7 +51,7 @@ _result = [_logic, "position", getPos player] call ALIVE_fnc_profileVehicle;
 _result = [_logic, "direction", 180] call ALIVE_fnc_profileVehicle;
 
 // set the unit damage of the profile
-_result = [_logic, "damage", 0] call ALIVE_fnc_profileVehicle;
+_result = [_logic, "damage", _damage] call ALIVE_fnc_profileVehicle;
 
 // set the profile side
 _result = [_logic, "side", "WEST"] call ALIVE_fnc_profileVehicle;
@@ -91,7 +91,7 @@ private ["_logic","_operation","_args","_result"];
 
 TRACE_1("profileVehicle - input",_this);
 
-_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
@@ -118,6 +118,10 @@ switch(_operation) do {
 						[_logic,"damage",0] call ALIVE_fnc_hashSet;
 						[_logic,"fuel",1] call ALIVE_fnc_hashSet;
 						[_logic,"ammo",[]] call ALIVE_fnc_hashSet;
+						[_logic,"damage",[]] call ALIVE_fnc_hashSet;
+						[_logic,"canMove",true] call ALIVE_fnc_hashSet;
+						[_logic,"canFire",true] call ALIVE_fnc_hashSet;
+						[_logic,"needReload",0] call ALIVE_fnc_hashSet;
 						[_logic,"type","vehicle"] call ALIVE_fnc_hashSet;
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
                 };
@@ -155,7 +159,7 @@ switch(_operation) do {
 				_result = [_logic,"direction"] call ALIVE_fnc_hashGet;
         };
 		case "damage": {
-				if(typeName _args == "SCALAR") then {
+				if(typeName _args == "ARRAY") then {
 						[_logic,"damage",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"damage"] call ALIVE_fnc_hashGet;
@@ -177,6 +181,24 @@ switch(_operation) do {
 						[_logic,"ammo",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"ammo"] call ALIVE_fnc_hashGet;
+        };
+		case "canFire": {
+				if(typeName _args == "BOOL") then {
+						[_logic,"canFire",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"canFire"] call ALIVE_fnc_hashGet;
+        };
+		case "canMove": {
+				if(typeName _args == "BOOL") then {
+						[_logic,"canMove",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"canMove"] call ALIVE_fnc_hashGet;
+        };
+		case "needReload": {
+				if(typeName _args == "SCALAR") then {
+						[_logic,"needReload",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"needReload"] call ALIVE_fnc_hashGet;
         };
 		case "active": {
 				if(typeName _args == "BOOL") then {
@@ -209,9 +231,12 @@ switch(_operation) do {
 					_vehicle = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
 					_vehicle setPos _position;
 					_vehicle setDir _direction;
-					_vehicle setDamage _damage;
 					_vehicle setFuel _fuel;
 					_vehicle setVehicleVarName _profileID;
+					
+					if(count _damage > 0) then {
+						[_vehicle, _damage] call ALIVE_fnc_vehicleSetDamage;
+					};
 					
 					if(count _ammo > 0) then {
 						[_vehicle, _ammo] call ALIVE_fnc_vehicleSetAmmo;
@@ -241,9 +266,12 @@ switch(_operation) do {
 					// update profile before despawn
 					[_logic,"position", getPos _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"direction", getDir _vehicle] call ALIVE_fnc_hashSet;
-					[_logic,"damage", getDammage _vehicle] call ALIVE_fnc_hashSet;
+					[_logic,"damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_hashSet;
 					[_logic,"fuel", fuel _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"ammo", _vehicle call ALIVE_fnc_vehicleGetAmmo] call ALIVE_fnc_hashSet;
+					[_logic,"canFire", canFire _vehicle] call ALIVE_fnc_hashSet;
+					[_logic,"canMove", canMove _vehicle] call ALIVE_fnc_hashSet;
+					[_logic,"needReload", needReload _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet;
 					[_logic,"active",false] call ALIVE_fnc_hashSet;
 					

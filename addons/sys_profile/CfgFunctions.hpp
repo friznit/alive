@@ -61,6 +61,21 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleSetAmmo.sqf";
 				recompile = 1;
 			};
+			class vehicleGetDamage {
+				description = "vehicleGetDamage";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleGetDamage.sqf";
+				recompile = 1;
+			};
+			class vehicleSetDamage {
+				description = "vehicleSetDamage";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleSetDamage.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleHitPoints {
+				description = "configGetVehicleHitPoints";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleHitPoints.sqf";
+				recompile = 1;
+			};
 			class configGetVehicleTurrets {
 				description = "configGetVehicleTurrets";
 				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleTurrets.sqf";

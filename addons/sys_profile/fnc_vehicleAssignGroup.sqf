@@ -37,7 +37,7 @@ _group = _this select 0;
 _vehicle = _this select 1;
 _orderIn = if(count _this > 2) then {_this select 2} else {true};
 
-_positionCount = [_vehicle] call ALIVE_vehicleGetEmptyPositions;
+_positionCount = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
 _units = units _group;
 _assignments = [];
 _assignments set [0, []];

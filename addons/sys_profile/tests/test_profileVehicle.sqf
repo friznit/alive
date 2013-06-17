@@ -90,12 +90,6 @@ _err = "set direction";
 ASSERT_TRUE(typeName _result == "SCALAR", _err);
 
 
-STAT("Set vehicle damage");
-_result = [_logic, "damage", 0] call ALIVE_fnc_profileVehicle;
-_err = "set vehicle damage";
-ASSERT_TRUE(typeName _result == "SCALAR", _err);
-
-
 STAT("Get state");
 _state = [_logic, "state"] call ALIVE_fnc_profileVehicle;
 _err = "get state";

@@ -78,7 +78,7 @@ private ["_logic","_operation","_args","_result"];
 
 TRACE_1("sectorGrid - input",_this);
 
-_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
@@ -96,9 +96,8 @@ switch(_operation) do {
                 
                 if (isServer) then {
                         // if server, initialise module game logic
-                        [_logic,"super",SUPERCLASS] call ALIVE_fnc_hashSet;
-						[_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
-                        TRACE_1("After module init",_logic);		
+                        [_logic,"super"] call ALIVE_fnc_hashRem;
+						[_logic,"class"] call ALIVE_fnc_hashRem;
 
 						// set defaults
 						[_logic,"gridPosition",[0,0]] call ALIVE_fnc_hashSet;
@@ -121,7 +120,6 @@ switch(_operation) do {
                 if (isServer) then {
                         // if server
                         
-						//_allSectors = _logic getVariable ["sectors", []];
 						_allSectors = [_logic,"sectors"] call ALIVE_fnc_hashGet;
 						
 						if(count _allSectors > 0) then {
@@ -131,10 +129,8 @@ switch(_operation) do {
 							} forEach _allSectors;
 						};				
 						
-						//_logic setVariable ["super", nil];
-                        //_logic setVariable ["class", nil];
-						//[_logic,"super",nil] call ALIVE_fnc_hashSet;
-						//[_logic,"class",nil] call ALIVE_fnc_hashSet;
+						[_logic,"super"] call ALIVE_fnc_hashRem;
+						[_logic,"class"] call ALIVE_fnc_hashRem;
 						[_logic, "destroy"] call SUPERCLASS;						
                 };
                 
@@ -142,15 +138,12 @@ switch(_operation) do {
         case "debug": {
 				private["_allSectors"];
                 if(typeName _args != "BOOL") then {
-                        //_args = _logic getVariable ["debug", false];
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
                 } else {
-                        //_logic setVariable ["debug", _args];
 						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
                 };                
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
 				
-				//_allSectors = _logic getVariable ["sectors", []];
 				_allSectors = [_logic,"sectors"] call ALIVE_fnc_hashGet;
 				
 				if(count _allSectors > 0) then {
@@ -178,8 +171,6 @@ switch(_operation) do {
 				
                         _state = [] call ALIVE_fnc_hashCreate;
 						
-						// BaseClassHash CHANGE 
-						// loop the class hash and set vars on the state hash
 						{
 							if(!(_x == "super") && !(_x == "class")) then {
 								[_state,_x,[_logic,_x] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
@@ -193,8 +184,6 @@ switch(_operation) do {
 
                         // Restore state
 						
-						// BaseClassHash CHANGE 
-						// loop the passed hash and set vars on the class hash
                         {
 							[_logic,_x,[_args,_x] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 						} forEach (_args select 1);
@@ -202,47 +191,34 @@ switch(_operation) do {
         };
 		case "gridPosition": {
 				if(typeName _args == "ARRAY") then {
-                        //_logic setVariable ["gridPosition", _args];
 						[_logic,"gridPosition",_args] call ALIVE_fnc_hashSet;
                 };
 				
-                //_result = _logic getVariable ["gridPosition", []];
 				_result = [_logic,"gridPosition"] call ALIVE_fnc_hashGet;
         };
 		case "gridSize": {
 				if(typeName _args == "SCALAR") then {
-						//_logic setVariable ["gridSize", _args select 0];
 						[_logic,"gridSize",_args] call ALIVE_fnc_hashSet;
                 };
 				
-                //_result = _logic getVariable ["gridSize", [] call ALIVE_fnc_getMapBounds];
 				_result = [_logic,"gridSize"] call ALIVE_fnc_hashGet;
         };
 		case "sectorDimensions": {
 				if(typeName _args == "ARRAY") then {
-                        //_logic setVariable ["sectorDimensions", _args];
 						[_logic,"sectorDimensions",_args] call ALIVE_fnc_hashSet;
                 };
 				
-                //_result = _logic getVariable ["sectorDimensions", []];
 				_result = [_logic,"sectorDimensions"] call ALIVE_fnc_hashGet;
         };
 		case "sectorType": {
 				if(typeName _args == "STRING") then {
-                        //_logic setVariable ["sectorType", _args];
 						[_logic,"sectorType",_args] call ALIVE_fnc_hashSet;
                 };
 				
-                //_result = _logic getVariable ["sectorType", "SECTOR"];
 				_result = [_logic,"sectorType"] call ALIVE_fnc_hashGet;
         };
 		case "createGrid": {
 				private["_gridPosition","_gridSize","_sectorDimensions","_sectorType","_grid","_allSectors","_gridPositionX","_gridPositionY","_sectorWidth","_sectorHeight","_rows","_columns","_sectors","_row","_column","_sector","_position"];
-				
-				//_gridPosition = _logic getVariable ["gridPosition",[0,0]];
-				//_gridSize = _logic getVariable ["gridSize",[] call ALIVE_fnc_getMapBounds];
-				//_sectorDimensions = _logic getVariable ["sectorDimensions",[500,500]];
-				//_sectorType = _logic getVariable ["sectorType","SECTOR"];
 				
 				_gridPosition = [_logic,"gridPosition"] call ALIVE_fnc_hashGet;
 				_gridSize = [_logic,"gridSize"] call ALIVE_fnc_hashGet;
@@ -290,13 +266,10 @@ switch(_operation) do {
 				
 				[_logic,"sectors",_allSectors] call ALIVE_fnc_hashSet;
 				[_logic,"grid",_grid] call ALIVE_fnc_hashSet;
-				//_logic setVariable ["sectors", _allSectors];
-				//_logic setVariable ["grid", _grid];
 								
 				_result = _grid;
         };
 		case "sectors": {
-               //_result = _logic getVariable ["sectors", []];
 			   _result = [_logic,"sectors"] call ALIVE_fnc_hashGet;
         };
 		case "positionToGridIndex": {
@@ -307,13 +280,12 @@ switch(_operation) do {
 				_position = _args;
 				_positionX = _position select 0;
 				_positionY = _position select 1;
-				//_gridPosition = _logic getVariable ["gridPosition",[0,0]];
+				
 				_gridPosition = [_logic,"gridPosition"] call ALIVE_fnc_hashGet;				
 				_gridPositionX = _gridPosition select 0;
 				_gridPositionY = _gridPosition select 1;
-				//_gridSize = _logic getVariable ["gridSize",[] call ALIVE_fnc_getMapBounds];				
 				_gridSize = [_logic,"gridSize"] call ALIVE_fnc_hashGet;
-				//_sectorDimensions = _logic getVariable ["sectorDimensions",[500,500]];
+				
 				_sectorDimensions = [_logic,"sectorDimensions"] call ALIVE_fnc_hashGet;
 				_sectorWidth = _sectorDimensions select 0;
 				_sectorHeight = _sectorDimensions select 1;
@@ -344,7 +316,6 @@ switch(_operation) do {
 				_rowIndex = _args select 0;
 				_columnIndex = _args select 1;
 				
-				//_grid = _logic getVariable ["grid",[]];
 				_grid = [_logic,"grid"] call ALIVE_fnc_hashGet;
 				
 				_result = [];
