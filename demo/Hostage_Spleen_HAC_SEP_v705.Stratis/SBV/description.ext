@@ -1,0 +1,9 @@
+class CfgMusic
+{
+	#include "SBVMusic.hpp"
+};
+
+class CfgSounds
+{
+	#include "SBVSounds.hpp"
+};
