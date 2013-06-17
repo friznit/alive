@@ -1,3 +1,4 @@
+//#define DEBUG_MODE_FULL
 #include <\x\alive\addons\mil_strategic\script_component.hpp>
 SCRIPT(SEP);
 
@@ -74,11 +75,13 @@ _validateLocations = {
 };
 
 _deleteMarkers = {
+/*
         private ["_logic"];
         _logic = _this;
         {
                 deleteMarkerLocal _x;
         } forEach (_logic getVariable ["debugMarkers", []]);
+*/
 };
 
 _createMarkers = {
@@ -249,7 +252,7 @@ switch(_operation) do {
         // Main process
         case "execute": {
                 private ["_obj_array","_clusters_hq","_clusters","_clusters_air","_clusters_heli","_clusters_veh"];
-                
+                _clusters = [];
                 // Compose force 
                 _size = [_logic, "size"] call MAINCLASS;
                 _type = [_logic, "type"] call MAINCLASS;
@@ -401,7 +404,7 @@ switch(_operation) do {
                         _obj_array = [_logic getVariable ["blacklist",""], _obj_array, false] call _validateLocations;
                         _clusters_tmp = [_obj_array] call ALIVE_fnc_findClusters;                
                         {
-                                //[_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
+                                [_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
                         } forEach _clusters_tmp;
                         _result = [_clusters, _clusters_tmp] call ALIVE_fnc_consolidateClusters;
                         _clusters = (_result select 0) + (_result select 1);
@@ -435,8 +438,6 @@ switch(_operation) do {
                                 [_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
                         } forEach _clusters_tmp;
                         _result = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
-                        diag_log (_result select 0);
-                        diag_log (_result select 1);
                         _clusters = (_result select 0) + (_result select 1);                
                 };
                 
