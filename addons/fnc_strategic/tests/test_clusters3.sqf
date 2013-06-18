@@ -33,6 +33,8 @@ _obj_array = [
 	"cargo_hq_",
 	"cargo_patrol_",
 	"hbarrier",
+	"mil_controltower",
+	"mil_house",
 	"mil_wall",
 	"mil_wired",
 	"miloffices",
@@ -58,6 +60,24 @@ _clusters_mil = _result select 0;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters_mil == "ARRAY", _err);
 
+STAT("ConsolidateClusters testing");
+_result = false;
+{
+	private["_out"];
+	_out = _x;
+	{
+		if(
+		!([_out, _x] call BIS_fnc_areEqual) &&
+		{(([_out, "center"] call ALIVE_fnc_cluster)
+			distance
+		([_x, "center"] call ALIVE_fnc_cluster))
+		 < ([_out, "size"] call ALIVE_fnc_cluster)}
+		) exitWith {_result = true;};
+	} forEach _clusters_mil;
+} forEach _clusters_mil;
+_err = "failed consolidating mil_clusters";
+ASSERT_FALSE(_result, _err);
+
 STAT("ConsolidateClusters completed");
 
 _obj_array = [
@@ -75,6 +95,7 @@ _obj_array = [
  	"runwayold",
 	"shed_big_",
 	"shed_small_",
+	"ss_hangar",
 	"spp_",
 	"ttowerbig_",
 	"valve"
@@ -95,21 +116,58 @@ _clusters_civ = _result select 0;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
 
+STAT("ConsolidateClusters testing");
+_result = false;
+{
+	private["_out"];
+	_out = _x;
+	{
+		if(
+		!([_out, _x] call BIS_fnc_areEqual) &&
+		{(([_out, "center"] call ALIVE_fnc_cluster)
+			distance
+		([_x, "center"] call ALIVE_fnc_cluster))
+		 < ([_out, "size"] call ALIVE_fnc_cluster)}
+		) exitWith {_result = true;};
+	} forEach _clusters_civ;
+} forEach _clusters_civ;
+_err = "failed consolidating civ_clusters";
+ASSERT_FALSE(_result, _err);
+
 STAT("ConsolidateClusters completed");
 
-sleep 15;
+sleep 5;
 
 STAT("ConsolidateClusters function");
 _result = [_clusters_mil,_clusters_civ] call ALIVE_fnc_consolidateClusters;
 _clusters_mil = _result select 0;
 _clusters_civ = _result select 1;
+_clusters = _clusters_mil + _clusters_civ;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters_mil == "ARRAY", _err);
 ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
 
+STAT("ConsolidateClusters testing");
+_result = false;
+{
+	private["_out"];
+	_out = _x;
+	{
+		if(
+		!([_out, _x] call BIS_fnc_areEqual) &&
+		{(([_out, "center"] call ALIVE_fnc_cluster)
+			distance
+		([_x, "center"] call ALIVE_fnc_cluster))
+		 < ([_out, "size"] call ALIVE_fnc_cluster)}
+		) exitWith {_result = true;};
+	} forEach _clusters;
+} forEach _clusters;
+_err = "failed consolidating clusters";
+ASSERT_FALSE(_result, _err);
+
 STAT("ConsolidateClusters completed");
 
-sleep 15;
+sleep 5;
 
 {
 	[_x, "destroy"] call ALIVE_fnc_cluster;
