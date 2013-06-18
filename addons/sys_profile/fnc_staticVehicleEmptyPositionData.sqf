@@ -2,7 +2,7 @@
 SCRIPT(staticVehicleEmptyPositionData);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_vehicleGenerateEmptyPositionData
+Function: ALIVE_fnc_staticVehicleEmptyPositionData
 
 Description:
 Sets global variable for vehicle positions static data, returned from ALIVE_fnc_vehicleGenerateEmptyPositionData

@@ -56,6 +56,7 @@ _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity, "position", getPos player] call ALIVE_fnc_profileEntity;
 [_profileEntity, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
 [_profileEntity, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "ranks", ["CAPTAIN","LIEUTENANT","PRIVATE"]] call ALIVE_fnc_profileEntity;
 [_profileEntity, "side", "WEST"] call ALIVE_fnc_profileEntity;
 
 

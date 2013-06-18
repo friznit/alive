@@ -41,6 +41,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_waypointToProfileWaypoint.sqf";
 				recompile = 1;
 			};
+			class createProfileVehicleAssignment {
+				description = "createProfileVehicleAssignment";
+				file = "\x\alive\addons\sys_profile\fnc_createProfileVehicleAssignment.sqf";
+				recompile = 1;
+			};
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";

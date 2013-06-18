@@ -155,6 +155,7 @@ switch(_operation) do {
 						[_logic,"needReload",0] call ALIVE_fnc_hashSet;
 						[_logic,"type","vehicle"] call ALIVE_fnc_hashSet;
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
+						[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
                 };
                 
                 /*
@@ -259,6 +260,41 @@ switch(_operation) do {
                 };
 				_result = [_logic,"vehicle"] call ALIVE_fnc_hashGet;
         };
+		case "addVehicleAssignment": {
+				private ["_assignments","_units","_unit","_group"];
+				
+				if(typeName _args == "ARRAY") then {
+						_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+						_assignments set [count _assignments, _args];
+						
+						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
+							/*
+							_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+							_unit = _units select 0;
+							_group = group _unit;
+							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+							*/
+						}
+                };
+				_result = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
+		};
+		case "clearVehicleAssignments": {
+				private ["_units","_unit","_group"];
+				
+				[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
+				
+				if([_logic,"active"] call ALIVE_fnc_hashGet) then {
+						/*
+						_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+						_unit = _units select 0;
+						_group = group _unit;
+						while { count (waypoints _group) > 0 } do
+						{
+							deleteWaypoint ((waypoints _group) select 0);
+						};
+						*/
+				}
+		};
 		case "spawn": {
 				private ["_side","_vehicleClass","_position","_direction","_damage","_fuel","_ammo","_profileID","_active","_vehicle","_eventID"];
 			

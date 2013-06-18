@@ -102,6 +102,12 @@ _err = "set unit damages";
 ASSERT_TRUE(typeName _result == "ARRAY", _err);
 
 
+STAT("Set unit ranks");
+_result = [_logic, "ranks", ["PRIVATE","CORPORAL"]] call ALIVE_fnc_profileEntity;
+_err = "set unit ranks";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
 STAT("Set side");
 _result = [_logic, "side", "WEST"] call ALIVE_fnc_profileEntity;
 _err = "set side";
