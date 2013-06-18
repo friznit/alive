@@ -170,14 +170,14 @@ CREATE_TEST_LOGIC3
 	_obj_array select 2
 ]] call ALIVE_fnc_cluster;
 [TEST_LOGIC2, "nodes", [
-	_obj_array select 3,
-	_obj_array select 4,
-	_obj_array select 5
-]] call ALIVE_fnc_cluster;
-[TEST_LOGIC3, "nodes", [
 	_obj_array select 2,
 	_obj_array select 3,
 	_obj_array select 4
+]] call ALIVE_fnc_cluster;
+[TEST_LOGIC3, "nodes", [
+	_obj_array select 3,
+	_obj_array select 4,
+	_obj_array select 5
 ]] call ALIVE_fnc_cluster;
 
 STAT("ConsolidateClusters function");
@@ -191,7 +191,7 @@ ASSERT_TRUE(count _nodes == 3,_err);
 _master = (_result select 0) select 1;
 ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
-ASSERT_TRUE(count _nodes == 3,_err);
+ASSERT_TRUE(count _nodes == 6,_err);
 _redundant = (_result select 1);
 ASSERT_TRUE(typeName _redundant == "ARRAY", typeName _redundant);
 ASSERT_TRUE(count _redundant == 0,_err);
