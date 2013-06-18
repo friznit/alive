@@ -139,7 +139,7 @@ if(_weapon != "") then {
 		_target addWeapon _weapon;                                                                                    
 		{ 
 			if(_x!="") then { 
-				_target removeItemFromPrimaryWeapon _x 
+				_target removePrimaryWeaponItem _x 
 			}; 
 		} forEach (primaryWeaponItems _target);                                 
 		{ 
