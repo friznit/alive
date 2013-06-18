@@ -96,6 +96,7 @@ STAT("Set debug on profile handler");
 [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 
 
+/*
 STAT("Spawn the unit via the profile");
 [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
@@ -111,6 +112,7 @@ _group = group _leader;
 _assignments = [_group,_vehicle] call ALIVE_fnc_vehicleAssignGroup;
 
 diag_log _assignments;
+*/
 
 /*
 STAT("Sleep for 10");

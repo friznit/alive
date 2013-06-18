@@ -30,8 +30,12 @@ private ["_vehicle", "_positions", "_result"];
 	
 _vehicle = _this select 0;
 
-_positions = [_vehicle] call ALIVE_vehicleGetEmptyPositions;
+_result = 0;
 
-_result = count _positions;
+_positions = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
+
+{
+	_result = _result + _x;
+} forEach _positions;
 
 _result

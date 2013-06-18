@@ -98,6 +98,37 @@ _result = true;
 
 #define MTEMPLATE "ALiVE_PROFILEVEHICLE_%1"
 
+_deleteMarkers = {
+		private ["_logic"];
+        _logic = _this;
+        {
+                deleteMarkerLocal _x;
+		} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
+};
+
+_createMarkers = {
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_id"];
+        _logic = _this;
+        _markers = [];
+        
+		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
+		_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
+		
+        if(count _position > 0) then {				
+				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
+				_m setMarkerShapeLocal "ICON";
+				_m setMarkerSizeLocal [1, 1];
+				_m setMarkerTypeLocal "hd_dot";
+				_m setMarkerColorLocal _debugColor;
+                _m setMarkerTextLocal _profileID;	
+				
+				_markers set [count _markers, _m];
+				
+				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+        };
+};
+
 switch(_operation) do {
         case "init": {                
                 /*
@@ -133,6 +164,22 @@ switch(_operation) do {
                 /*
                 CONTROLLER  - coordination
                 */
+        };
+		case "debug": {
+                if(typeName _args != "BOOL") then {
+						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
+                } else {
+						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
+                };                
+                ASSERT_TRUE(typeName _args == "BOOL",str _args);
+				
+				 _logic call _deleteMarkers;
+                
+                if(_args) then {
+                        _logic call _createMarkers;
+                };
+                
+                _result = _args;
         };
 		case "profileID": {
 				if(typeName _args == "STRING") then {
