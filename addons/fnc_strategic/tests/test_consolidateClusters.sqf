@@ -11,7 +11,7 @@ LOG("Testing Consolidate Clusters");
 
 ASSERT_DEFINED("ALIVE_fnc_cluster","");
 
-#define STAT(msg) sleep 1; \
+#define STAT(msg) sleep 5; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
@@ -190,8 +190,9 @@ _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
 ASSERT_TRUE(count _nodes == 3,_err);
 _master = (_result select 0) select 1;
 ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
+//Consolidated cluster has one new node (_obj_array select 5), makes it 4 in total
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
-ASSERT_TRUE(count _nodes == 3,_err);
+ASSERT_TRUE(count _nodes == 4,_err);
 _redundant = (_result select 1);
 ASSERT_TRUE(typeName _redundant == "ARRAY", typeName _redundant);
 ASSERT_TRUE(count _redundant == 0,_err);
