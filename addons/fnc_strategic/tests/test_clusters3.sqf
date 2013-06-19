@@ -72,14 +72,18 @@ _result = false;
 			distance
 		([_x, "center"] call ALIVE_fnc_cluster))
 		 < ([_out, "size"] call ALIVE_fnc_cluster)}
-		) exitWith {_result = true;};
+		) then {
+			[_x, "debugColor", "ColorRed"] call ALIVE_fnc_hashSet;
+			[_x, "debug"] call ALIVE_fnc_cluster;
+			_result = true;
+		};
 	} forEach _clusters_mil;
 } forEach _clusters_mil;
 _err = "failed consolidating mil_clusters";
 ASSERT_FALSE(_result, _err);
 
 STAT("ConsolidateClusters completed");
-
+/*
 _obj_array = [
 	"airport_tower",
 	"communication_f",
@@ -128,7 +132,7 @@ _result = false;
 			distance
 		([_x, "center"] call ALIVE_fnc_cluster))
 		 < ([_out, "size"] call ALIVE_fnc_cluster)}
-		) exitWith {_result = true;};
+		) then {_result = true;};
 	} forEach _clusters_civ;
 } forEach _clusters_civ;
 _err = "failed consolidating civ_clusters";
@@ -177,5 +181,5 @@ sleep 5;
 } forEach _clusters_mil;
 
 diag_log (allMissionObjects "") - _amo;
-
+*/
 nil;
