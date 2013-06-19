@@ -2,7 +2,7 @@
 
 	AUTHOR: aeroson
 	NAME: fnc_set_loadout.sqf
-	VERSION: 3.8
+	VERSION: 3.9
 	
 	DOWNLOAD & PARTICIPATE:
 	https://github.com/aeroson/get-set-loadout
@@ -43,14 +43,14 @@ if(count _this < 4) then {
 	//playSound3D ["A3\Sounds_F\sfx\ZoomIn.wav", _target]; 
 };
 
-_loadMagsAmmo = "ammo" in _options;
-
+if(isNil{_data}) exitWith {
+	systemChat "you are trying to set/load empty loadout";
+};
 if(count _data < 13) exitWith {
-	if(_target == player) exitWith {
-		systemChat "you were trying to set/load corrupted loadout";
-	};
+	systemChat "you are trying to set/load corrupted loadout";
 };
 
+_loadMagsAmmo = "ammo" in _options;
 _loadedMagazines = [];
 if(count _data > 13) then {
 	if(typeName(_data select 13)=="ARRAY") then {
@@ -136,20 +136,18 @@ if(_weapon != "") then {
 		{
 			[_target, _x] call _add;
 		} forEach _magazines; // add magazine for each primary weapon muzzle							
-		_target addWeapon _weapon;                                                                                    
+		_target addWeapon _weapon;                                                                                                                
 		{ 
-			if(_x!="") then { 
-				_target removePrimaryWeaponItem _x 
-			}; 
-		} forEach (primaryWeaponItems _target);                                 
-		{ 
-			if(_x!="") then { 
+			if(_x!="" && !(_x in (primaryWeaponItems _target))) then { 
 				_target addPrimaryWeaponItem _x; 
 			}; 
 		} foreach (_data select 2);
 	} else {
 		systemchat format["primary %1 doesn't exist",_weapon];
-		_currentWeapon = "";
+		if (_currentWeapon == _weapon) then {
+			_currentWeapon = "";
+			_currentMode = "";
+		};
 	};                             											                                                                                               
 };
 
@@ -169,13 +167,16 @@ if(_weapon != "") then {
 		[_target, _magazine] call _add;	
 		_target addWeapon _weapon;
 		{ 
-			if(_x!="") then {
+			if(_x!="" && !(_x in (handgunItems _target))) then {
 				_target addHandgunItem _x; 
 			}; 
 		} foreach (_data select 4);
 	} else {
 		systemchat format["handgun %1 doesn't exist",_weapon];
-		_currentWeapon = "";
+		if (_currentWeapon == _weapon) then {
+			_currentWeapon = "";
+			_currentMode = "";
+		};
 	};
 };
       
@@ -195,33 +196,34 @@ if(_weapon != "") then {
 		[_target, _magazine] call _add;	
 		_target addWeapon _weapon;
 		{ 
-			if(_x!="") then {
+			if(_x!="" && !(_x in (secondaryWeaponItems _target))) then {
 				_target addSecondaryWeaponItem _x;
 			}; 
 		} foreach (_data select 6);
 	} else {
 		systemchat format["secondary %1 doesn't exist",_weapon];
-		_currentWeapon = "";
+		if (_currentWeapon == _weapon) then {
+			_currentWeapon = "";
+			_currentMode = "";
+		};
 	};		
 };
 
 // select weapon and firing mode
-if ( vehicle _target == _target ) then {
-	if ( _currentWeapon != "" && _currentMode != "" ) then {
-		_muzzles = 0;                                                                                                           
-		while { (_currentWeapon != currentMuzzle _target || _currentMode != currentWeaponMode _target ) && _muzzles < 100 } do {
-			_target action ["SWITCHWEAPON", _target, _target, _muzzles];
-			_muzzles = _muzzles + 1;
-		};
-		if(_muzzles >= 100) then {
-			systemchat format["mode %1 for %2 doesn't exist", _currentMode, _currentWeapon];
-			_currentMode = "";		
-		};
+if ( vehicle _target == _target && _currentWeapon != "" && _currentMode != "" ) then {
+	_muzzles = 0;                                                                                                           
+	while { (_currentWeapon != currentMuzzle _target || _currentMode != currentWeaponMode _target ) && _muzzles < 100 } do {
+		_target action ["SWITCHWEAPON", _target, _target, _muzzles];
+		_muzzles = _muzzles + 1;
+	};
+	if(_muzzles >= 100) then {
+		systemchat format["mode %1 for %2 doesn't exist", _currentMode, _currentWeapon];
+		_currentMode = "";		
 	};
 } else {
 	_currentMode = "";
 };
-if (_currentMode == "") then {
+if (_currentMode == "" && _currentWeapon != "") then {
 	_target selectWeapon _currentWeapon;
 };
 
@@ -323,6 +325,6 @@ for "_i" from 1 to _placeholderCount do {
 };
 
 if ( vehicle _target == _target ) then {
-	_target switchMove "";
+	//_target switchMove "";
 	_target setPos (getPos _target);
 };
