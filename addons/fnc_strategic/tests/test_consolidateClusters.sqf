@@ -11,7 +11,7 @@ LOG("Testing Consolidate Clusters");
 
 ASSERT_DEFINED("ALIVE_fnc_cluster","");
 
-#define STAT(msg) sleep 1; \
+#define STAT(msg) sleep 5; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
@@ -36,6 +36,14 @@ waitUntil{!isNil "TEST_LOGIC"}; \
 waitUntil{!isNil "TEST_LOGIC2"}; \
 [TEST_LOGIC2, "debug", true] call ALIVE_fnc_cluster;
 
+#define CREATE_TEST_LOGIC3 if(isServer) then { \
+	_logic = [nil, "create"] call ALIVE_fnc_cluster; \
+	TEST_LOGIC3 = _logic; \
+	publicVariable "TEST_LOGIC3"; \
+}; \
+waitUntil{!isNil "TEST_LOGIC3"}; \
+[TEST_LOGIC3, "debug", true] call ALIVE_fnc_cluster;
+
 #define DELETE_TEST_LOGIC if(isServer) then { \
 	[TEST_LOGIC, "destroy"] call ALIVE_fnc_cluster; \
 	TEST_LOGIC = nil; \
@@ -52,6 +60,15 @@ waitUntil{!isNil "TEST_LOGIC2"}; \
 } else { \
 	STAT("Confirm destroy instance"); \
 	waitUntil{isNull TEST_LOGIC2}; \
+};
+
+#define DELETE_TEST_LOGIC3 if(isServer) then { \
+	[TEST_LOGIC3, "destroy"] call ALIVE_fnc_cluster; \
+	TEST_LOGIC3 = nil; \
+	publicVariable "TEST_LOGIC3"; \
+} else { \
+	STAT("Confirm destroy instance"); \
+	waitUntil{isNull TEST_LOGIC3}; \
 };
 
 _amo = allMissionObjects "";
@@ -79,7 +96,7 @@ ASSERT_TRUE(count _obj_array == 6,_err);
         _m setMarkerSize [1, 1];
         _m setMarkerType "mil_dot";
 } forEach _obj_array;
-
+/*
 STAT("Create Seperated Clusters");
 CREATE_TEST_LOGIC
 CREATE_TEST_LOGIC2
@@ -142,7 +159,48 @@ ASSERT_TRUE(count _redundant == 0,_err);
 STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
+*/
+STAT("Create Seperated Clusters 3");
+CREATE_TEST_LOGIC
+CREATE_TEST_LOGIC2
+CREATE_TEST_LOGIC3
+[TEST_LOGIC, "nodes", [
+	_obj_array select 0,
+	_obj_array select 1,
+	_obj_array select 2
+]] call ALIVE_fnc_cluster;
+[TEST_LOGIC2, "nodes", [
+	_obj_array select 2,
+	_obj_array select 3,
+	_obj_array select 4
+]] call ALIVE_fnc_cluster;
+[TEST_LOGIC3, "nodes", [
+	_obj_array select 3,
+	_obj_array select 4,
+	_obj_array select 5
+]] call ALIVE_fnc_cluster;
 
+STAT("ConsolidateClusters function");
+_result = [[TEST_LOGIC,TEST_LOGIC2],[TEST_LOGIC3]] call ALIVE_fnc_consolidateClusters;
+_err = "consolidating clusters";
+ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);
+_master = (_result select 0) select 0;
+ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
+_nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 3,_err);
+_master = (_result select 0) select 1;
+ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
+//Consolidated cluster has one new node (_obj_array select 5), makes it 4 in total
+_nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
+ASSERT_TRUE(count _nodes == 4,_err);
+_redundant = (_result select 1);
+ASSERT_TRUE(typeName _redundant == "ARRAY", typeName _redundant);
+ASSERT_TRUE(count _redundant == 0,_err);
+STAT("Deleting Logics");
+DELETE_TEST_LOGIC
+DELETE_TEST_LOGIC2
+DELETE_TEST_LOGIC3
+/*
 STAT("Create Engulfed Clusters");
 CREATE_TEST_LOGIC
 CREATE_TEST_LOGIC2
@@ -310,7 +368,7 @@ ASSERT_TRUE(count _redundant == 0,str _redundant);
 STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2
-
+*/
 STAT("Clean up markers");
 {
 	deleteMarker str _x;

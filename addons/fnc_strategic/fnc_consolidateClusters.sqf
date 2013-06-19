@@ -69,12 +69,19 @@ _result = [];
 		                // if cluster is within master cluster
         		        if((_x_center distance _out_center) < _max) then {
 
-		                        // move nodes between clusters as required
-        		                _nodes = ([_out, "nodes"] call ALIVE_fnc_cluster) + ([_x, "nodes"] call ALIVE_fnc_cluster);
-                		        [_out, "nodes", _nodes] call ALIVE_fnc_cluster;
-		                        // and remove cluster from list
-                		        [_x, "destroy"] call ALIVE_fnc_cluster;
-        		                _redundant set [_forEachIndex, -1];
+								// select nodes of both clusters
+								_nodes = ([_out, "nodes"] call ALIVE_fnc_cluster);
+								_nodesIN = ([_x, "nodes"] call ALIVE_fnc_cluster);
+                                
+								// combine them and ensure that old nodes are only added if the master doesnt have them already
+								{if !(_x in _nodes) then {_nodes set [count _nodes,_x]}} foreach _nodesIN;
+								
+                                // set the new nodes
+								[_out, "nodes", _nodes] call ALIVE_fnc_cluster;
+								
+                                // and remove cluster from list
+								[_x, "destroy"] call ALIVE_fnc_cluster;
+								_redundant set [_forEachIndex, -1];
 	                	};
 			};
 		};
