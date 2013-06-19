@@ -46,7 +46,6 @@ ASSERT_DEFINED("_redundant", _err);
 ASSERT_OP(typeName _master, == ,"ARRAY", _err);
 ASSERT_OP(typeName _redundant, == ,"ARRAY", _err);
 ASSERT_OP(count _master,>,0,_err);
-ASSERT_OP(count _redundant,>,0,_err);
 _result = [];
 
 // iterate through master list of clusters
@@ -69,19 +68,23 @@ _result = [];
 		                // if cluster is within master cluster
         		        if((_x_center distance _out_center) < _max) then {
 
-								// select nodes of both clusters
-								_nodes = ([_out, "nodes"] call ALIVE_fnc_cluster);
-								_nodesIN = ([_x, "nodes"] call ALIVE_fnc_cluster);
+					// select nodes of both clusters
+					_nodes_out = ([_out, "nodes"] call ALIVE_fnc_cluster);
+					_nodes_x = ([_x, "nodes"] call ALIVE_fnc_cluster);
                                 
-								// combine them and ensure that old nodes are only added if the master doesnt have them already
-								{if !(_x in _nodes) then {_nodes set [count _nodes,_x]}} foreach _nodesIN;
+					// combine them and ensure that old nodes are only added if the master doesnt have them already
+					{
+						if !(_x in _nodes_out) then {
+							_nodes_out set [count _nodes_out, _x];
+						};
+					} foreach _nodes_x;
 								
-                                // set the new nodes
-								[_out, "nodes", _nodes] call ALIVE_fnc_cluster;
+                                	// set the new nodes
+					[_out, "nodes", _nodes_out] call ALIVE_fnc_cluster;
 								
-                                // and remove cluster from list
-								[_x, "destroy"] call ALIVE_fnc_cluster;
-								_redundant set [_forEachIndex, -1];
+                	                // and remove cluster from list
+					[_x, "destroy"] call ALIVE_fnc_cluster;
+					_redundant set [_forEachIndex, -1];
 	                	};
 			};
 		};
