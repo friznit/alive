@@ -51,6 +51,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_debug\fnc_inspectConfigItem.sqf";
 				recompile = 1;
 			};
+			class inspectHash {
+				description = "inspectHash";
+				file = "\x\alive\addons\sys_debug\fnc_inspectHash.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

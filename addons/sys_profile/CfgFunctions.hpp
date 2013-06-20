@@ -46,6 +46,31 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_createProfileVehicleAssignment.sqf";
 				recompile = 1;
 			};
+			class profileVehicleAssignmentGetUsedIndexes {
+				description = "profileVehicleAssignmentGetUsedIndexes";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentGetUsedIndexes.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentGetEmptyPositions {
+				description = "profileVehicleAssignmentGetEmptyPositions";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentGetEmptyPositions.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentToVehicleAssignment {
+				description = "profileVehicleAssignmentToVehicleAssignment";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentToVehicleAssignment.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentIndexesToUnits {
+				description = "profileVehicleAssignmentIndexesToUnits";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentIndexesToUnits.sqf";
+				recompile = 1;
+			};
+			class vehicleAssignmentToProfileVehicleAssignment {
+				description = "vehicleAssignmentToProfileVehicleAssignment";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentToProfileVehicleAssignment.sqf";
+				recompile = 1;
+			};			
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";

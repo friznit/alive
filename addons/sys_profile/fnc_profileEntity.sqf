@@ -197,6 +197,7 @@ switch(_operation) do {
 						[_logic,"waypoints",[]] call ALIVE_fnc_hashSet;
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
 						[_logic,"unitCount",0] call ALIVE_fnc_hashSet;
+						[_logic,"units",[]] call ALIVE_fnc_hashSet;
 						[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
                 };
                 
@@ -303,12 +304,22 @@ switch(_operation) do {
 				_result = [_logic,"units"] call ALIVE_fnc_hashGet;
         };
 		case "unitCount": {
-				private ["_unitClasses"];
+				private ["_unitClasses","_unitCount"];
 				_unitClasses = [_logic,"unitClasses"] call ALIVE_fnc_hashGet;
 				_unitCount = count _unitClasses;
 				[_logic,"unitCount",_unitCount] call ALIVE_fnc_hashSet;
 				
 				_result = _unitCount;
+        };
+		case "unitIndexes": {
+				private ["_unitIndexes","_unitCount"];
+				_unitCount = [_logic, "unitCount"] call MAINCLASS;
+				_unitIndexes = [];
+				for "_i" from 0 to _unitCount-1 do {
+					_unitIndexes set [_i, _i];
+				};
+				
+				_result = _unitIndexes;
         };
 		case "addVehicleAssignment": {
 				private ["_assignments","_units","_unit","_group"];
@@ -326,7 +337,6 @@ switch(_operation) do {
 							*/
 						}
                 };
-				_result = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
 		};
 		case "clearVehicleAssignments": {
 				private ["_units","_unit","_group"];
@@ -359,7 +369,6 @@ switch(_operation) do {
 							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
 						}
                 };
-				_result = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
 		};
 		case "clearWaypoints": {
 				private ["_units","_unit","_group"];
@@ -442,7 +451,8 @@ switch(_operation) do {
                 };
 		};
 		case "spawn": {
-				private ["_side","_sideObject","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank","_profileID","_active","_waypoints","_group","_eventID","_waypointCount","_unitCount","_units","_unit"];
+				private ["_side","_sideObject","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
+				"_profileID","_active","_waypoints","_vehicleAssignments","_group","_eventID","_waypointCount","_unitCount","_units","_unit"];
 								
 				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 				_side = [_logic, "side"] call MAINCLASS;
@@ -453,6 +463,7 @@ switch(_operation) do {
 				_ranks = [_logic,"ranks"] call ALIVE_fnc_hashGet;
 				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
 				_waypoints = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
+				_vehicleAssignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				_unitCount = 0;
 				_units = [];
 
@@ -504,6 +515,13 @@ switch(_operation) do {
 							};
 							_waypointCount = _waypointCount + 1;
 						} forEach _waypoints;						
+					};
+					
+					// create vehicle assignments from profile vehicle assignments
+					if(count _vehicleAssignments > 0) then {	
+						{
+							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
+						} forEach _vehicleAssignments;						
 					};
 				};
 		};

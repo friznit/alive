@@ -276,7 +276,6 @@ switch(_operation) do {
 							*/
 						}
                 };
-				_result = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
 		};
 		case "clearVehicleAssignments": {
 				private ["_units","_unit","_group"];
@@ -296,7 +295,7 @@ switch(_operation) do {
 				}
 		};
 		case "spawn": {
-				private ["_side","_vehicleClass","_position","_direction","_damage","_fuel","_ammo","_profileID","_active","_vehicle","_eventID"];
+				private ["_side","_vehicleClass","_position","_direction","_damage","_fuel","_ammo","_profileID","_active","_vehicleAssignments","_vehicle","_eventID"];
 			
 				_vehicleClass = [_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
 				_position = [_logic,"position"] call ALIVE_fnc_hashGet;
@@ -306,6 +305,7 @@ switch(_operation) do {
 				_ammo = [_logic,"ammo"] call ALIVE_fnc_hashGet;
 				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
+				_vehicleAssignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				
 				// not already active
 				if!(_active) then {
@@ -334,6 +334,13 @@ switch(_operation) do {
 					// set profile as active and store a reference to the unit on the profile
 					[_logic,"vehicle",_vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"active",true] call ALIVE_fnc_hashSet;
+					
+					// create vehicle assignments from profile vehicle assignments
+					if(count _vehicleAssignments > 0) then {	
+						{
+							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
+						} forEach _vehicleAssignments;						
+					};
 				};
 		};
 		case "despawn": {
