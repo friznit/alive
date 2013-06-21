@@ -16,7 +16,7 @@ Array of turret data
 Examples:
 (begin example)
 // get vehicle turret data
-_result = "O_Ka60_F" call ALIVE_fnc_configGetVehicleTurrets;
+_result = "O_Heli_Attack_02_F" call ALIVE_fnc_configGetVehicleTurrets;
 (end)
 
 See Also:

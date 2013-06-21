@@ -25,7 +25,7 @@ _logic setvariable ["RHQ_Snipers", [
 "O_sniper_F",
 "O_soldier_M_F"]];
 
-_logic setvariable ["RHQ_Art",["O_Mk6","B_Mk6"]];
+_logic setvariable ["RHQ_Art",["O_Mortar_01_F","B_Mortar_01_F"]];
 
 _logic setvariable ["RHQ_ATInf", [
 "B_soldier_LAT_F",
@@ -56,44 +56,44 @@ _logic setvariable ["RHQ_HArmor", []];
 _logic setvariable ["RHQ_MArmor", []];
 
 _logic setvariable ["RHQ_LArmor", [
-"B_Hunter_HMG_F",
-"B_Hunter_RCWS_F",
-"O_Ifrit_GMG_F",
-"O_Ifrit_MG_F"]];  
+"B_MRAP_01_hmg_F",
+"B_MRAP_01_gmg_F",
+"O_MRAP_02_gmg_F",
+"O_MRAP_02_hmg_F"]];  
 
 _logic setvariable ["RHQ_LarmorAT", [
-"O_Ifrit_GMG_F",
-"B_Hunter_RCWS_F"]];  
+"O_MRAP_02_gmg_F",
+"B_MRAP_01_gmg_F"]];  
 
 _logic setvariable ["RHQ_Cars", [
-"B_Hunter_F",
-"B_Hunter_RCWS_F",
-"B_Hunter_HMG_F",
-"O_Ifrit_F",
-"O_Ifrit_GMG_F",
-"O_Ifrit_MG_F",
-"c_offroad",
-"B_Quadbike_F",
-"O_Quadbike_F"]];  
+"B_MRAP_01_F",
+"B_MRAP_01_gmg_F",
+"B_MRAP_01_hmg_F",
+"O_MRAP_02_F",
+"O_MRAP_02_gmg_F",
+"O_MRAP_02_hmg_F",
+"C_Offroad_01_F",
+"B_Quadbike_01_F",
+"O_Quadbike_01_F"]];  
 
 _logic setvariable ["RHQ_Air", [
-"B_AH9_F",
-"O_Ka60_F",
-"O_Ka60_Unarmed_F",
-"B_MH9_F"]];
+"B_Heli_Light_01_armed_F",
+"O_Heli_Attack_02_F",
+"O_Heli_Light_02_unarmed_F",
+"B_Heli_Light_01_F"]];
 
 _logic setvariable ["RHQ_NCAir", [
-"O_Ka60_Unarmed_F",
-"B_MH9_F"]];
+"O_Heli_Light_02_unarmed_F",
+"B_Heli_Light_01_F"]];
 
 _logic setvariable ["RHQ_BAir", []];
 _logic setvariable ["RHQ_RAir", []];
 
 _logic setvariable ["RHQ_Naval", [
-"B_Assaultboat",
-"O_Assaultboat",
-"O_SpeedBoat",
-"B_SpeedBoat"]];
+"B_Boat_Transport_01_F",
+"O_Boat_Transport_01_F",
+"O_Boat_Armed_01_hmg_F",
+"B_Boat_Armed_01_minigun_F"]];
 
 _logic setvariable ["RHQ_Static", []];
 
@@ -112,22 +112,22 @@ _logic setvariable ["RHQ_Fuel", []];
 _logic setvariable ["RHQ_Rep", []];
 
 _logic setvariable ["RHQ_Cargo", [
-"B_Hunter_HMG_F",
-"B_Hunter_RCWS_F",
-"O_Ifrit_GMG_F",
-"O_Ifrit_MG_F",
-"B_AH9_F",
-"B_Hunter_F",
-"O_Ifrit_F",
-"O_Ka60_F",
-"O_Ka60_Unarmed_F",
-"B_MH9_F"]]; 
+"B_MRAP_01_hmg_F",
+"B_MRAP_01_gmg_F",
+"O_MRAP_02_gmg_F",
+"O_MRAP_02_hmg_F",
+"B_Heli_Light_01_armed_F",
+"B_MRAP_01_F",
+"O_MRAP_02_F",
+"O_Heli_Attack_02_F",
+"O_Heli_Light_02_unarmed_F",
+"B_Heli_Light_01_F"]]; 
 
 _logic setvariable ["RHQ_NCCargo", [
-"O_Ka60_Unarmed_F",
-"B_MH9_F",
-"B_Hunter_F",
-"O_Ifrit_F"]];  
+"O_Heli_Light_02_unarmed_F",
+"B_Heli_Light_01_F",
+"B_MRAP_01_F",
+"O_MRAP_02_F"]];  
 
 _logic setvariable ["RHQ_Crew", [
 "B_Helipilot_F",
@@ -1091,7 +1091,7 @@ _logic setvariable ["RHQ_Crew_PMC",
 ]];
 
 _logic setvariable ["HAC_HQ_Howitzer", []];
-_logic setvariable ["HAC_HQ_Mortar", ["O_Mk6","B_Mk6"]];
+_logic setvariable ["HAC_HQ_Mortar", ["O_Mortar_01_F","B_Mortar_01_F"]];
 _logic setvariable ["HAC_HQ_Rocket", []];
 
 _logic setvariable ["HAC_xHQ_AIC_OrdConf", 

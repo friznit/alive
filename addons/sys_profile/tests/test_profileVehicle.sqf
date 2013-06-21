@@ -73,7 +73,7 @@ ASSERT_TRUE(typeName _result == "STRING", _err);
 
 
 STAT("Set vehicle class");
-_result = [_logic, "vehicleClass", "B_Hunter_HMG_F"] call ALIVE_fnc_profileVehicle;
+_result = [_logic, "vehicleClass", "B_MRAP_01_hmg_F"] call ALIVE_fnc_profileVehicle;
 _err = "set vehicle classes";
 ASSERT_TRUE(typeName _result == "STRING", _err);
 

@@ -212,14 +212,14 @@ class CfgGroups
                                         class Unit1
                                         {
                                                 side = 0;
-                                                vehicle="O_Ifrit_MG_F";
+                                                vehicle="O_MRAP_02_hmg_F";
                                                 rank = "SERGEANT";
                                                 position[] = {-5,0,0};
                                         };
                                         class Unit2
                                         {
                                                 side = 0;
-                                                vehicle = "O_Ifrit_GMG_F";
+                                                vehicle = "O_MRAP_02_gmg_F";
                                                 rank = "CORPORAL";
                                                 position[] = {-5,-7,0};
                                         };
@@ -296,7 +296,7 @@ class CfgGroups
                                         class Unit1
                                         {
                                                 side = 0;
-                                                vehicle = "O_Ifrit_F";
+                                                vehicle = "O_MRAP_02_F";
                                                 rank = "SERGEANT";
                                                 position[] = {0,0,0};
                                         };
@@ -331,21 +331,21 @@ class CfgGroups
                                         class Unit0
                                         {
                                                 side = 0;
-                                                vehicle="O_Ifrit_F";
+                                                vehicle="O_MRAP_02_F";
                                                 rank = "SERGEANT";
                                                 position[] = {-5,7,0};
                                         };
                                         class Unit1
                                         {
                                                 side = 0;
-                                                vehicle="O_Ifrit_F";
+                                                vehicle="O_MRAP_02_F";
                                                 rank = "SERGEANT";
                                                 position[] = {-5,0,0};
                                         };
                                         class Unit2
                                         {
                                                 side = 0;
-                                                vehicle = "O_Ifrit_F";
+                                                vehicle = "O_MRAP_02_F";
                                                 rank = "CORPORAL";
                                                 position[] = {-5,-7,0};
                                         };
@@ -365,14 +365,14 @@ class CfgGroups
                                         class Unit0
                                         {
                                                 side = 0;
-                                                vehicle = "O_Ka60_F";
+                                                vehicle = "O_Heli_Attack_02_F";
                                                 rank = "CAPTAIN";
                                                 position[] = {0,15,0};
                                         };
                                         class Unit1
                                         {
                                                 side = 0;
-                                                vehicle = "O_Ka60_F";
+                                                vehicle = "O_Heli_Attack_02_F";
                                                 rank = "LIEUTENANT";
                                                 position[] = {15,0,0};
                                         };
@@ -388,14 +388,14 @@ class CfgGroups
                                         class Unit0
                                         {
                                                 side = 0;
-                                                vehicle = "O_Ka60_Unarmed_F";
+                                                vehicle = "O_Heli_Light_02_unarmed_F";
                                                 rank = "CAPTAIN";
                                                 position[] = {0,15,0};
                                         };
                                         class Unit1
                                         {
                                                 side = 0;
-                                                vehicle = "O_Ka60_Unarmed_F";
+                                                vehicle = "O_Heli_Light_02_unarmed_F";
                                                 rank = "LIEUTENANT";
                                                 position[] = {15,0,0};
                                         };

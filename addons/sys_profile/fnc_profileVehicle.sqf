@@ -42,7 +42,7 @@ _result = [_logic, "init"] call ALIVE_fnc_profileVehicle;
 _result = [_logic, "profileID", "agent_01"] call ALIVE_fnc_profileVehicle;
 
 // set the vehicle class of the profile
-_result = [_logic, "vehicleClass", "B_Hunter_HMG_F"] call ALIVE_fnc_profileVehicle;
+_result = [_logic, "vehicleClass", "B_MRAP_01_hmg_F"] call ALIVE_fnc_profileVehicle;
 
 // set the unit position of the profile
 _result = [_logic, "position", getPos player] call ALIVE_fnc_profileVehicle;

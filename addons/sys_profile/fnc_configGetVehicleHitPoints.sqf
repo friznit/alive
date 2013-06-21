@@ -16,7 +16,7 @@ Array of hit point data
 Examples:
 (begin example)
 // get vehicle hit point data
-_result = "B_AH9_F" call ALIVE_fnc_configGetVehicleHitPoints;
+_result = "B_Heli_Light_01_armed_F" call ALIVE_fnc_configGetVehicleHitPoints;
 (end)
 
 See Also:

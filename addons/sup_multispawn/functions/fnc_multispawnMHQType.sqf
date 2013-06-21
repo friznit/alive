@@ -32,8 +32,8 @@ _mhq = _this select 0;
 switch (typeOf _mhq) do
 {
 	//BLUFOR
-	case "B_Hunter_F":	{_MHQtype = "Land_FieldToilet_F";}; //temporary -  for testing A3
-	case "Land_FieldToilet_F":	{_MHQtype = "B_Hunter_F";}; //temporary -  for testing A3
+	case "B_MRAP_01_F":	{_MHQtype = "Land_FieldToilet_F";}; //temporary -  for testing A3
+	case "Land_FieldToilet_F":	{_MHQtype = "B_MRAP_01_F";}; //temporary -  for testing A3
 	
 	case "LAV25_HQ_unfolded":	{_MHQtype = "LAV25_HQ";};
 	case "LAV25_HQ":	{_MHQtype = "LAV25_HQ_unfolded";};
