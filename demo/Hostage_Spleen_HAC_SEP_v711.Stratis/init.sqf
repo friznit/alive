@@ -12,7 +12,7 @@
 
 	[
 		getmarkerpos "ALIVE_INTRO_CENTER",			// Pos
-			"Iran has taken control of Stratis Island! UAV overflights have been able to assertain the location of a HVT dressed in civilian clothes within the town of Agia Marina. Alpha Company will be pressing forward ot keep the Iranians ditracted. Kill the HVT and return to your extraction point by any means possible!",			// Title
+		"Iran has taken control of Stratis Island! UAV overflights have been able to assertain the location of 2 hostages, guarded by 4 infantry units, on the edge of the town of Agia Marina. Alpha Company will be pressing forward ot keep the Iranians distracted. Free the hostages quickly and return to your extraction point by any means possible!",			// Title
 		1000,							// 500m altitude
 		300,							// 200m radius
 		90,							// 0 degrees viewing angle

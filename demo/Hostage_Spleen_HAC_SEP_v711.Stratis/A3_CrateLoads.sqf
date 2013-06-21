@@ -285,8 +285,8 @@ switch (_strLoadout) do {
 		_crate addItemCargo ["V_HarnessOGL_brn",2];
 
 //Mk6Mortar
-		_crate addBackpackCargo ["B_Mk6Mortar_Wpn",2];
-		_crate addBackpackCargo ["B_Mk6Mortar_Support",2];
+		_crate addBackpackCargo ["B_Mortar_01_FMortar_Wpn",2];
+		_crate addBackpackCargo ["B_Mortar_01_FMortar_Support",2];
 
 //load 240
 		_crate addBackpackCargo ["B_AssaultPack_khk",1];
@@ -592,8 +592,8 @@ switch (_strLoadout) do {
 		_crate addItemCargo ["V_HarnessOGL_brn",1];
 
 //Mk6Mortar
-		_crate addBackpackCargo ["B_Mk6Mortar_Wpn",1];
-		_crate addBackpackCargo ["B_Mk6Mortar_Support",1];
+		_crate addBackpackCargo ["B_Mortar_01_FMortar_Wpn",1];
+		_crate addBackpackCargo ["B_Mortar_01_FMortar_Support",1];
 
 //load 240
 		_crate addBackpackCargo ["B_AssaultPack_khk",1];
