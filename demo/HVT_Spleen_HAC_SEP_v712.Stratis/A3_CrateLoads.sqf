@@ -21,17 +21,13 @@ switch (_strLoadout) do {
 		_crate addWeaponCargo ["srifle_LRR_SOS_F",2];
 		_crate addWeaponCargo ["srifle_LRR_F",2];
 		_crate addWeaponCargo ["srifle_GM6_F",2];
-		_crate addWeaponCargo ["srifle_EBR_Hamr_F",2];
-		_crate addWeaponCargo ["srifle_EBR_ARCO_F",2];
-		_crate addWeaponCargo ["srifle_EBR_ACOg_F",2];
-		_crate addWeaponCargo ["srifle_EBR_Holo_F",2];
+		// _crate addWeaponCargo ["srifle_EBR_ARCO_F",2];
+		// _crate addWeaponCargo ["srifle_EBR_ACOg_F",2];
 		_crate addWeaponCargo ["srifle_EBR_ACO_F",2];
 		_crate addWeaponCargo ["srifle_EBR_F",2];
-		// _crate addWeaponCargo ["srifle_EBR_Hamr_point_F",2];
 		// _crate addWeaponCargo ["srifle_EBR_ARCO_point_F",2];
 		// _crate addWeaponCargo ["srifle_EBR_ACOg_point_F",2];
 		// _crate addWeaponCargo ["srifle_EBR_Holo_point_F",2];
-		// _crate addWeaponCargo ["srifle_EBR_ACO_point_F",2];
 
 // Ammo
 		_crate addMagazineCargo ["5Rnd_127x108_Mag",25];
@@ -83,15 +79,15 @@ switch (_strLoadout) do {
 		_crate addWeaponCargo ["arifle_TRG20_F",2];
 		_crate addWeaponCargo ["arifle_TRG20_Holo_F",2];
 		// _crate addWeaponCargo ["arifle_TRG20_Holo_mzls_F",2];
-		_crate addWeaponCargo ["arifle_TRG20_Holo_point_F",2];
-		_crate addWeaponCargo ["arifle_TRG20_ACOg_point_F",2];
+		// _crate addWeaponCargo ["arifle_TRG20_Holo_point_F",2];
+		// _crate addWeaponCargo ["arifle_TRG20_ACOg_point_F",2];
 		// _crate addWeaponCargo ["arifle_TRG20_ACOg_flash_mzls_F",2];
-		_crate addWeaponCargo ["arifle_TRG20_ACOg_F",2];
+		// _crate addWeaponCargo ["arifle_TRG20_ACOg_F",2];
 		_crate addWeaponCargo ["arifle_TRG21_F",2];
 		_crate addWeaponCargo ["arifle_TRG21_GL_F",2];
-		_crate addWeaponCargo ["arifle_TRG21_ACOg_point_F",2];
-		_crate addWeaponCargo ["arifle_TRG21_ARCO_point_F",2];
-		_crate addWeaponCargo ["arifle_TRG21_GL_ACOg_point_F",2];
+		// _crate addWeaponCargo ["arifle_TRG21_ACOg_point_F",2];
+		// _crate addWeaponCargo ["arifle_TRG21_ARCO_point_F",2];
+		// _crate addWeaponCargo ["arifle_TRG21_GL_ACOg_point_F",2];
 		// _crate addWeaponCargo ["arifle_TRG21_GL_ACOg_point_mzls_F",2];
 		_crate addWeaponCargo ["arifle_MX_F",2];
 		_crate addWeaponCargo ["arifle_MX_GL_F",2];
@@ -100,7 +96,7 @@ switch (_strLoadout) do {
 		_crate addWeaponCargo ["arifle_MXM_F",2];
 		// _crate addWeaponCargo ["arifle_MX_Hamr_point_grip_F",2];
 		// _crate addWeaponCargo ["arifle_MX_ACO_point_grip_F",2];
-		_crate addWeaponCargo ["arifle_MX_GL_ACO_point_F",2];
+		// _crate addWeaponCargo ["arifle_MX_GL_ACO_point_F",2];
 		// _crate addWeaponCargo ["arifle_MX_GL_Hamr_point_mzls_F",2];
 		_crate addWeaponCargo ["arifle_MXC_Holo_F",2];
 		// _crate addWeaponCargo ["arifle_MXC_Holo_point_grip_F",2];
@@ -127,7 +123,7 @@ switch (_strLoadout) do {
 		_crate addMagazineCargo ["30Rnd_556x45_Stanag",10];
 
 //T RG20
-		_crate addMagazineCargo ["30Rnd_65x39_case_mag",10];
+		// _crate addMagazineCargo ["30Rnd_65x39_case_mag",10];
 		// _crate addMagazineCargo ["30Rnd_65x39_case_mag_Tracer",10];
 
 // MX
@@ -172,7 +168,7 @@ switch (_strLoadout) do {
 		_crate addMagazineCargo ["30Rnd_556x45_Stanag",10];
 
 //T RG20
-		_crate addMagazineCargo ["30Rnd_65x39_case_mag",10];
+		// _crate addMagazineCargo ["30Rnd_65x39_case_mag",10];
 		// _crate addMagazineCargo ["30Rnd_65x39_case_mag_Tracer",10];
 
 // MX
@@ -285,8 +281,8 @@ switch (_strLoadout) do {
 		_crate addItemCargo ["V_HarnessOGL_brn",2];
 
 //Mk6Mortar
-		_crate addBackpackCargo ["B_Mortar_01_FMortar_Wpn",2];
-		_crate addBackpackCargo ["B_Mortar_01_FMortar_Support",2];
+		// _crate addBackpackCargo ["B_Mortar_01_FMortar_Wpn",2];
+		// _crate addBackpackCargo ["B_Mortar_01_FMortar_Support",2];
 
 //load 240
 		_crate addBackpackCargo ["B_AssaultPack_khk",1];
@@ -300,7 +296,7 @@ switch (_strLoadout) do {
 		_crate addBackpackCargo ["B_AssaultPack_rgr_Medic",1];
 		_crate addBackpackCargo ["B_AssaultPack_rgr_Repair",1];
 		_crate addBackpackCargo ["B_AssaultPack_blk_DiverExp",1];
-		_crate addBackpackCargo ["B_AssaultPack_blk_DiverTL",1];
+		// _crate addBackpackCargo ["B_AssaultPack_blk_DiverTL",1];
 
 //load 250
 		_crate addBackpackCargo ["B_FieldPack_blk",1];
@@ -310,7 +306,7 @@ switch (_strLoadout) do {
 		_crate addBackpackCargo ["B_FieldPack_ocamo_Medic",1];
 		_crate addBackpackCargo ["B_FieldPack_cbr_AT",1];
 		_crate addBackpackCargo ["B_FieldPack_blk_DiverExp",1];
-		_crate addBackpackCargo ["B_FieldPack_blk_DiverTL",1];
+		// _crate addBackpackCargo ["B_FieldPack_blk_DiverTL",1];
 
 //300 load
 		_crate addBackpackCargo ["B_Kitbag_mcamo",1];
@@ -431,15 +427,15 @@ switch (_strLoadout) do {
 		_crate addWeaponCargo ["arifle_TRG20_F",1];
 		_crate addWeaponCargo ["arifle_TRG20_Holo_F",1];
 		// _crate addWeaponCargo ["arifle_TRG20_Holo_mzls_F",1];
-		_crate addWeaponCargo ["arifle_TRG20_Holo_point_F",1];
-		_crate addWeaponCargo ["arifle_TRG20_ACOg_point_F",1];
+		// _crate addWeaponCargo ["arifle_TRG20_Holo_point_F",1];
+		// _crate addWeaponCargo ["arifle_TRG20_ACOg_point_F",1];
 		// _crate addWeaponCargo ["arifle_TRG20_ACOg_flash_mzls_F",1];
-		_crate addWeaponCargo ["arifle_TRG20_ACOg_F",1];
+		// _crate addWeaponCargo ["arifle_TRG20_ACOg_F",1];
 		_crate addWeaponCargo ["arifle_TRG21_F",1];
 		_crate addWeaponCargo ["arifle_TRG21_GL_F",1];
-		_crate addWeaponCargo ["arifle_TRG21_ACOg_point_F",1];
-		_crate addWeaponCargo ["arifle_TRG21_ARCO_point_F",1];
-		_crate addWeaponCargo ["arifle_TRG21_GL_ACOg_point_F",1];
+		// _crate addWeaponCargo ["arifle_TRG21_ACOg_point_F",1];
+		// _crate addWeaponCargo ["arifle_TRG21_ARCO_point_F",1];
+		// _crate addWeaponCargo ["arifle_TRG21_GL_ACOg_point_F",1];
 		// _crate addWeaponCargo ["arifle_TRG21_GL_ACOg_point_mzls_F",1];
 		_crate addWeaponCargo ["arifle_MX_F",1];
 		_crate addWeaponCargo ["arifle_MX_GL_F",1];
@@ -448,7 +444,7 @@ switch (_strLoadout) do {
 		_crate addWeaponCargo ["arifle_MXM_F",1];
 		// _crate addWeaponCargo ["arifle_MX_Hamr_point_grip_F",1];
 		// _crate addWeaponCargo ["arifle_MX_ACO_point_grip_F",1];
-		_crate addWeaponCargo ["arifle_MX_GL_ACO_point_F",1];
+		// _crate addWeaponCargo ["arifle_MX_GL_ACO_point_F",1];
 		// _crate addWeaponCargo ["arifle_MX_GL_Hamr_point_mzls_F",1];
 		_crate addWeaponCargo ["arifle_MXC_Holo_F",1];
 		// _crate addWeaponCargo ["arifle_MXC_Holo_point_grip_F",1];
@@ -483,7 +479,7 @@ switch (_strLoadout) do {
 		_crate addMagazineCargo ["30Rnd_556x45_Stanag",8];
 
 //T RG20
-		_crate addMagazineCargo ["30Rnd_65x39_case_mag",8];
+		// _crate addMagazineCargo ["30Rnd_65x39_case_mag",8];
 		// _crate addMagazineCargo ["30Rnd_65x39_case_mag_Tracer",4];
 
 // MX
@@ -592,8 +588,8 @@ switch (_strLoadout) do {
 		_crate addItemCargo ["V_HarnessOGL_brn",1];
 
 //Mk6Mortar
-		_crate addBackpackCargo ["B_Mortar_01_FMortar_Wpn",1];
-		_crate addBackpackCargo ["B_Mortar_01_FMortar_Support",1];
+		// _crate addBackpackCargo ["B_Mortar_01_FMortar_Wpn",1];
+		// _crate addBackpackCargo ["B_Mortar_01_FMortar_Support",1];
 
 //load 240
 		_crate addBackpackCargo ["B_AssaultPack_khk",1];
@@ -607,7 +603,7 @@ switch (_strLoadout) do {
 		_crate addBackpackCargo ["B_AssaultPack_rgr_Medic",1];
 		_crate addBackpackCargo ["B_AssaultPack_rgr_Repair",1];
 		_crate addBackpackCargo ["B_AssaultPack_blk_DiverExp",1];
-		_crate addBackpackCargo ["B_AssaultPack_blk_DiverTL",1];
+		// _crate addBackpackCargo ["B_AssaultPack_blk_DiverTL",1];
 
 //load 250
 		_crate addBackpackCargo ["B_FieldPack_blk",1];
@@ -617,7 +613,7 @@ switch (_strLoadout) do {
 		_crate addBackpackCargo ["B_FieldPack_ocamo_Medic",1];
 		_crate addBackpackCargo ["B_FieldPack_cbr_AT",1];
 		_crate addBackpackCargo ["B_FieldPack_blk_DiverExp",1];
-		_crate addBackpackCargo ["B_FieldPack_blk_DiverTL",1];
+		// _crate addBackpackCargo ["B_FieldPack_blk_DiverTL",1];
 
 //300 load
 		_crate addBackpackCargo ["B_Kitbag_mcamo",1];

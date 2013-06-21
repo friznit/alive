@@ -50,7 +50,7 @@ if(!isNil "_this select 2") then
 {
 meleeToggle = _this select 2;
 };
-if(isNil "meleeToggle") then {meleeToggle = 1};
+if(isNil "meleeToggle") then {meleeToggle = 0};
 
 
 
@@ -254,11 +254,11 @@ player addEventHandler ["hit","[_this select 1] spawn fn_bloodSplatter; 'colorCo
 
 
 // Death
-player addEventHandler ["killed","setAccTime 1; titleText ['', 'BLACK OUT', 0.05]; 0 fadeSound 0; 0 fadeMusic 0; [] spawn {sleep 3; 'dynamicBlur' ppEffectAdjust[0];'dynamicBlur' ppEffectCommit 2;};"];
+// player addEventHandler ["killed","setAccTime 1; titleText ['', 'BLACK OUT', 0.05]; 0 fadeSound 0; 0 fadeMusic 0; [] spawn {sleep 3; 'dynamicBlur' ppEffectAdjust[0];'dynamicBlur' ppEffectCommit 2;};"];
+player addEventHandler ["killed","0 fadeSound .25; 0 fadeMusic 0; [] spawn {sleep 3; 'dynamicBlur' ppEffectAdjust[0];'dynamicBlur' ppEffectCommit 2;};"];
 
 // Respawn
-player addEventHandler ["respawn","[0,0,1] execVM 'SBV\SBV.sqf'; 1 fadeSound 1; 1 fadeMusic 1;"];
-
+player addEventHandler ["respawn","[0,0,0] execVM 'Modules\@SUPPORT\Mods\SBV_System\SBV.sqf'; 1 fadeSound 1; 1 fadeMusic 1;"];
 
 if(blinkingToggle == 1) then
 {
