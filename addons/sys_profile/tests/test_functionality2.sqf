@@ -43,7 +43,7 @@ diag_log format["Timer End %1",_timeEnd];
 //========================================
 
 // debug info on cursor target
-[] call ALIVE_fnc_cursorTargetInfo;
+//[] call ALIVE_fnc_cursorTargetInfo;
 
 // CREATE PROFILE HANDLER
 STAT("Create Profile Handler");
@@ -55,11 +55,11 @@ STAT("Create Entity Profile");
 _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity, "init"] call ALIVE_fnc_profileEntity;
 [_profileEntity, "profileID", "group_01"] call ALIVE_fnc_profileEntity;
-[_profileEntity, "unitClasses", ["B_Soldier_TL_F","B_Soldier_SL_F","B_Soldier_F","B_Soldier_F","B_Soldier_F","B_Soldier_F","B_Soldier_F","B_Soldier_F"]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "unitClasses", ["B_Soldier_TL_F","B_Soldier_SL_F","B_Soldier_F","B_Soldier_F","B_Soldier_F","B_Soldier_F","B_Soldier_F"]] call ALIVE_fnc_profileEntity;
 [_profileEntity, "position", getPos player] call ALIVE_fnc_profileEntity;
-[_profileEntity, "positions", [getPos player,getPos player,getPos player,getPos player,getPos player,getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
-[_profileEntity, "damages", [0,0,0,0,0,0,0,0]] call ALIVE_fnc_profileEntity;
-[_profileEntity, "ranks", ["CAPTAIN","LIEUTENANT","PRIVATE","PRIVATE","PRIVATE","PRIVATE","PRIVATE","PRIVATE"]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "positions", [getPos player,getPos player,getPos player,getPos player,getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "damages", [0,0,0,0,0,0,0]] call ALIVE_fnc_profileEntity;
+[_profileEntity, "ranks", ["CAPTAIN","LIEUTENANT","PRIVATE","PRIVATE","PRIVATE","PRIVATE","PRIVATE"]] call ALIVE_fnc_profileEntity;
 [_profileEntity, "side", "WEST"] call ALIVE_fnc_profileEntity;
 
 
@@ -109,7 +109,7 @@ STAT("Register Profile");
 STAT("Set debug on profile handler");
 [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 
-
+/*
 STAT("Assign group 1 to vehicle 1");
 [_profileEntity,_profileVehicle] call ALIVE_fnc_createProfileVehicleAssignment;
 
@@ -118,6 +118,7 @@ STAT("Assign group 2 to vehicle 2");
 
 STAT("Assign group 1 to vehicle 2");
 [_profileEntity,_profileVehicle2] call ALIVE_fnc_createProfileVehicleAssignment;
+*/
 
 
 /*
@@ -138,27 +139,45 @@ _profileVehicleState2 = [_profileVehicle2, "state"] call ALIVE_fnc_profileVehicl
 _profileVehicleState2 call ALIVE_fnc_inspectHash;
 */
 
+
 STAT("Spawn the unit via the profile");
 [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
-
-/*
 STAT("Spawn the unit via the profile");
-[_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
+[_profileEntity2, "spawn"] call ALIVE_fnc_profileEntity;
 
-
-STAT("Spawn the vehicle via the profile");
+STAT("Spawn the unit via the profile");
 [_profileVehicle, "spawn"] call ALIVE_fnc_profileVehicle;
 
+STAT("Spawn the unit via the profile");
+[_profileVehicle2, "spawn"] call ALIVE_fnc_profileVehicle;
 
-_vehicle = [_profileVehicle,"vehicle"] call ALIVE_fnc_hashGet;
-_leader = [_profileEntity,"leader"] call ALIVE_fnc_hashGet;
-_group = group _leader;
 
-_assignments = [_group,_vehicle] call ALIVE_fnc_vehicleAssignGroup;
+_group1 = [_profileEntity, "group"] call ALIVE_fnc_hashGet;
+_vehicle2 = [_profileVehicle2, "vehicle"] call ALIVE_fnc_hashGet;
+[_group1, _vehicle2, true] call ALIVE_fnc_vehicleAssignGroup;
 
-diag_log _assignments;
-*/
+_group2 = [_profileEntity2, "group"] call ALIVE_fnc_hashGet;
+_vehicle1 = [_profileVehicle, "vehicle"] call ALIVE_fnc_hashGet;
+[_group2, _vehicle1, true] call ALIVE_fnc_vehicleAssignGroup;
+
+
+sleep 30;
+
+
+STAT("De-Spawn the unit via the profile");
+[_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
+
+STAT("De-Spawn the unit via the profile");
+[_profileEntity2, "despawn"] call ALIVE_fnc_profileEntity;
+
+STAT("De-Spawn the unit via the profile");
+[_profileVehicle, "despawn"] call ALIVE_fnc_profileVehicle;
+
+STAT("De-Spawn the unit via the profile");
+[_profileVehicle2, "despawn"] call ALIVE_fnc_profileVehicle;
+
+
 
 /*
 STAT("Sleep for 10");

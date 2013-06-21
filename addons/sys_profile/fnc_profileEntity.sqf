@@ -555,6 +555,15 @@ switch(_operation) do {
 					};
 					
 					[_logic, "position", getPos _leader] call ALIVE_fnc_hashSet;
+					
+					{
+						_unit = _x;
+						if!(isNull _unit) then {
+							["Unit: %1",_unit] call ALIVE_fnc_dump;
+							["Assigned Vehicle: %1",assignedVehicle _unit] call ALIVE_fnc_dump;
+							["Assigned Vehicle Role: %1",assignedVehicleRole _unit] call ALIVE_fnc_dump;
+						};
+					} forEach _units;
 				
 					// delete units
 					{
@@ -575,7 +584,7 @@ switch(_operation) do {
 					[_logic,"positions", _positions] call ALIVE_fnc_hashSet;
 					[_logic,"damages", _damages] call ALIVE_fnc_hashSet;
 					[_logic,"group", objNull] call ALIVE_fnc_hashSet;
-					[_logic,"units", []] call ALIVE_fnc_hashSet;					
+					[_logic,"units", []] call ALIVE_fnc_hashSet;		
 				};
 		};
 		case "handleDeath": {
