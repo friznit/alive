@@ -95,3 +95,5 @@
 
 	// Wait for INS_revive initialized
 	waitUntil {!isNil "INS_REV_FNCT_init_completed"};
+
+	player addaction ["Open Debug Console",{createDialog "RscDisplayDebugPublic"}];
