@@ -30,7 +30,7 @@ private ["_indexes","_units","_index","_assignments","_assignment"];
 _indexes = _this select 0;
 _units = _this select 1;
 
-_assignments = [[],[],[],[]];
+_assignments = [[],[],[],[],[]];
 
 for "_i" from 0 to (count _indexes)-1 do {
 	_assignment = _assignments select _i;

@@ -54,7 +54,7 @@ _emptyPositionData = _profileVehicle call ALIVE_fnc_profileVehicleAssignmentGetE
 
 _vehicleAssignments = [] call ALIVE_fnc_hashCreate;
 _unitAssignments = [] call ALIVE_fnc_hashCreate;
-_assignments = [[],[],[],[]];
+_assignments = [[],[],[],[],[]];
 _assignedCount = 0;
 
 scopeName "main";

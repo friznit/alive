@@ -544,7 +544,7 @@ switch(_operation) do {
 
 					// update profile waypoints before despawn					
 					[_logic, "clearWaypoints"] call MAINCLASS;
-					_waypoints = waypoints _group;				
+					_waypoints = waypoints _group;
 					
 					if(currentWaypoint _group < count waypoints _group) then {						
 						for "_i" from (currentWaypoint _group) to (count _waypoints)-1 do
@@ -555,15 +555,6 @@ switch(_operation) do {
 					};
 					
 					[_logic, "position", getPos _leader] call ALIVE_fnc_hashSet;
-					
-					{
-						_unit = _x;
-						if!(isNull _unit) then {
-							["Unit: %1",_unit] call ALIVE_fnc_dump;
-							["Assigned Vehicle: %1",assignedVehicle _unit] call ALIVE_fnc_dump;
-							["Assigned Vehicle Role: %1",assignedVehicleRole _unit] call ALIVE_fnc_dump;
-						};
-					} forEach _units;
 				
 					// delete units
 					{

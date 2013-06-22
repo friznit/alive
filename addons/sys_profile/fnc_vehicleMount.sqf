@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_assignments", "_vehicle", "_driver", "_gunners", "_commander", "_cargo"];
+private ["_assignments","_vehicle","_driver","_gunners","_commander","_cargo","_turret","_turrets","_unit","_turretPath"];
 	
 _assignments = _this select 0;
 _vehicle = _this select 1;
@@ -50,8 +50,22 @@ _commander = _assignments select 2;
 	[_x] orderGetIn true;
 } forEach _commander;
 
+// turrets
+_turret = _assignments select 3;
+
+if(count _turret > 0) then {
+	// get turrets for this class ignoring gunner and commander turrets
+	_turrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+	
+	for "_i" from 0 to (count _turret)-1 do {
+		_unit = _turret select _i;
+		_turretPath = _turrets call BIS_fnc_arrayPop;
+		_unit assignAsTurret [_vehicle, _turretPath];
+	};
+};
+
 // cargo
-_cargo = _assignments select 3;
+_cargo = _assignments select 4;
 
 {
 	[_x] orderGetIn true;

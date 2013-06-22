@@ -35,7 +35,11 @@ _result = 0;
 _positions = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
 
 {
-	_result = _result + _x;
+	if(typeName _x == "ARRAY") then {
+		_result = _result + count _x;
+	} else {
+		_result = _result + _x;
+	};	
 } forEach _positions;
 
 _result

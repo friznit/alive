@@ -31,7 +31,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_group", "_vehicle", "_orderIn", "_positionCount", "_units", "_assignments", "_leader", "_gunners", "_cargos", "_unit"];
+private ["_group","_vehicle","_orderIn","_positionCount","_units","_assignments","_leader","_gunners","_vehicleTurrets","_turrets","_cargos","_unit"];
 	
 _group = _this select 0;
 _vehicle = _this select 1;
@@ -44,7 +44,9 @@ _assignments set [0, []];
 _assignments set [1, []];
 _assignments set [2, []];
 _assignments set [3, []];
+_assignments set [4, []];
 _gunners = [];
+_turrets = [];
 _cargos = [];
 
 if(count _units > 1) then 
@@ -107,6 +109,25 @@ if(count _units > 1) then
 		};			
 	};
 	_assignments set [1, _gunners];
+	
+	// assign turrets
+	if((_positionCount select 3) > 0) then {
+	
+		_vehicleTurrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+		
+		for "_i" from 1 to (_positionCount select 3) do 
+		{
+			if(count _units > 0) then
+			{				
+				_unit = _units call BIS_fnc_arrayPop;				
+				_turretPath = _vehicleTurrets select _i;
+				_unit assignAsTurret [_vehicle, _turretPath];
+				if(_orderIn) then { [_unit] orderGetIn true; };
+				_turrets set [count _turrets, _unit];
+			};			
+		};
+		_assignments set [3, _turrets];
+	};
 	
 	// assign cargo
 	{

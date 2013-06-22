@@ -65,12 +65,7 @@ class cfgFunctions {
 				description = "profileVehicleAssignmentIndexesToUnits";
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentIndexesToUnits.sqf";
 				recompile = 1;
-			};
-			class vehicleAssignmentToProfileVehicleAssignment {
-				description = "vehicleAssignmentToProfileVehicleAssignment";
-				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentToProfileVehicleAssignment.sqf";
-				recompile = 1;
-			};			
+			};		
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";
@@ -109,6 +104,11 @@ class cfgFunctions {
 			class configGetVehicleTurrets {
 				description = "configGetVehicleTurrets";
 				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleTurrets.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleTurretPositions {
+				description = "configGetVehicleTurretPositions";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleTurretPositions.sqf";
 				recompile = 1;
 			};
 			class configGetWeaponMagazines {
