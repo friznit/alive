@@ -74,7 +74,6 @@
 		while{true} do {
 			if(alive player) then {
 				loadout = [player] call getLoadout;
-				player addaction ["Open Debug Console",{createDialog "RscDisplayDebugPublic"}];
 			};
 		sleep 120;  
 		};
