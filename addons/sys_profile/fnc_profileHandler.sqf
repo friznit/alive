@@ -93,8 +93,8 @@ switch(_operation) do {
 						private["_profilesByType","_profilesBySide"];
 						
                         // if server, initialise module game logic
-						[_logic,"super",SUPERCLASS] call ALIVE_fnc_hashSet;
-						[_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
+						[_logic,"super"] call ALIVE_fnc_hashRem;
+						[_logic,"class"] call ALIVE_fnc_hashRem;
                         TRACE_1("After module init",_logic);
 						
 						// set defaults
