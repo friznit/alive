@@ -1,7 +1,7 @@
 @echo off
 rem set exe=echo
 set exe=MakePBO.exe -A -BD -L -G
-rem -Z
+rem -Z "default"
 set source=P:\x\alive\addons
 set target="C:\Program Files (x86)\Steam\SteamApps\common\Arma 3\@ALiVE\addons"
 

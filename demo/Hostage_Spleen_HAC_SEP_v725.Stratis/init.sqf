@@ -58,10 +58,11 @@
 };	
 	
 /* ----------------- Temporary Init Parameters ||  ----------------- */
+
 	waitUntil { !isNull player }; // Wait for player to initialize
 
 	// SBV System - Statistical-Based Visualizations System - player realism
-	[0,0,1] execVM "SBV\SBV.sqf";
+	[0,0,0] execVM "SBV\SBV.sqf";
 
 /* ----------------- Save and Restore Loadout on revive/respawn ||  ----------------- */
 	// Compile scripts - meaning, what you died with is what you revive with
@@ -81,6 +82,7 @@
 	// Loads saved loadout on respawn
 	player addEventHandler ["Respawn", {
 			[player,loadout] spawn setLoadout;
+			player addaction ["Open Debug Console",{createDialog "RscDisplayDebugPublic"}];
 		}
 	]; 
 
@@ -93,3 +95,5 @@
 
 	// Wait for INS_revive initialized
 	waitUntil {!isNil "INS_REV_FNCT_init_completed"};
+
+	player addaction ["Open Debug Console",{createDialog "RscDisplayDebugPublic"}];

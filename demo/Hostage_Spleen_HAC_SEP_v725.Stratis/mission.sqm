@@ -54,8 +54,8 @@ class Mission
 	randomSeed=6076992;
 	class Intel
 	{
-		briefingName="ALiVE Hostage Spleen | v7.11";
-		overviewText="ALiVE Demo Mission | Revive | Created by Highhead -- Raptorized";
+		briefingName="ALiVE Hostage Spleen | v7.25";
+		overviewText="ALiVE Demo Mission | Revive | Created by Highhead - Raptorized";
 		resistanceWest=0;
 		timeOfChanges=7260;
 		startWeather=0;

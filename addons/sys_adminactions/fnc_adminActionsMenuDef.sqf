@@ -109,7 +109,7 @@ if (_menuName == "adminActions") then {
 				],
 
 				[localize "STR_ALIVE_ADMINACTIONS_TELEPORT_ENABLE",
-					{ MOD(adminActions) setVariable ["teleport_enabled", true]; onMapSingleClick {player setPos _pos;} },
+					{ MOD(adminActions) setVariable ["teleport_enabled", true]; onMapSingleClick {vehicle player setPos _pos;} },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT",
 					"",

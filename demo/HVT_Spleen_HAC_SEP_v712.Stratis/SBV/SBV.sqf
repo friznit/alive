@@ -258,7 +258,7 @@ player addEventHandler ["hit","[_this select 1] spawn fn_bloodSplatter; 'colorCo
 player addEventHandler ["killed","0 fadeSound .25; 0 fadeMusic 0; [] spawn {sleep 3; 'dynamicBlur' ppEffectAdjust[0];'dynamicBlur' ppEffectCommit 2;};"];
 
 // Respawn
-player addEventHandler ["respawn","[0,0,0] execVM 'Modules\@SUPPORT\Mods\SBV_System\SBV.sqf'; 1 fadeSound 1; 1 fadeMusic 1;"];
+player addEventHandler ["respawn","[0,0,0] execVM 'SBV.sqf'; 1 fadeSound 1; 1 fadeMusic 1;"];
 
 if(blinkingToggle == 1) then
 {
