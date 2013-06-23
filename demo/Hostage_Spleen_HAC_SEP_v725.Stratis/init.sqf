@@ -57,12 +57,12 @@
 	sleep 3600;
 };	
 	
-/* ----------------- Temporary Init Parameters ||  ----------------- 
+/* ----------------- Temporary Init Parameters ||  ----------------- */
+
 	waitUntil { !isNull player }; // Wait for player to initialize
 
 	// SBV System - Statistical-Based Visualizations System - player realism
-	[0,0,1] execVM "SBV\SBV.sqf";
-*/
+	[0,0,0] execVM "SBV\SBV.sqf";
 
 /* ----------------- Save and Restore Loadout on revive/respawn ||  ----------------- */
 	// Compile scripts - meaning, what you died with is what you revive with
