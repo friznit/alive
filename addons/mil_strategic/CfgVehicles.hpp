@@ -65,10 +65,10 @@ class CfgVehicles {
                                                 name = "$STR_ALIVE_SEP_SIZE_BN";
                                                 value = "BN";
                                         };
-                                        class COY
+                                        class CY
                                         {
-                                                name = "$STR_ALIVE_SEP_SIZE_COY";
-                                                value = "COY";
+                                                name = "$STR_ALIVE_SEP_SIZE_CY";
+                                                value = "CY";
 						default = 1;
                                         };
                                         class PL
