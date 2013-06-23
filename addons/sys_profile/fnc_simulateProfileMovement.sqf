@@ -33,19 +33,29 @@ waituntil {
 			_unitProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 			_active = [_unitProfile,"active"] call ALIVE_fnc_hashGet;			
 			_waypoints = [_unitProfile,"waypoints"] call ALIVE_fnc_hashGet;
+            _waypointsCompleted = [_unitProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
 			_currentPosition = [_unitProfile,"position"] call ALIVE_fnc_hashGet;
 			if(count _waypoints > 0) then {
 				_activeWaypoint = _waypoints select 0;
+                _activeType = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
 				_destination = [_activeWaypoint,"position"] call ALIVE_fnc_hashGet;
 				_distance = _currentPosition distance _destination;
 				if!(_active) then {
 					_direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
 					_newPosition = [_currentPosition, 3, _direction] call BIS_fnc_relPos;
 					if(_distance <= 20) then {
+                        _waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
 						_waypoints set [0,objNull];
 						_waypoints = _waypoints - [objNull];
+                                                
+                        if (_activeType == "CYCLE") then {
+                        	_waypoints = _waypointsCompleted;
+                    		[_unitProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashSet;
+                        };
+
 						diag_log _waypoints;
 						[_unitProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
+                        [_unitProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
 					};
 					[_unitProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
 					[_unitProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
@@ -53,13 +63,12 @@ waituntil {
 					[_unitProfile, "debug", true] call ALIVE_fnc_profileEntity;
 				} else {
 					_leader = [_unitProfile,"leader"] call ALIVE_fnc_hashGet;
-					[_unitProfile,"position",getPos _leader] call ALIVE_fnc_profileEntity;
+					[_unitProfile,"position",getPosATL _leader] call ALIVE_fnc_profileEntity;
 					[_unitProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
 					[_unitProfile, "debug", false] call ALIVE_fnc_profileEntity;
 					[_unitProfile, "debug", true] call ALIVE_fnc_profileEntity;
 				};
-			}
-			
+			};
 	} forEach _profiles;
 	
 	sleep _cycleTime;
