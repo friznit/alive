@@ -95,7 +95,7 @@ ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 
 STAT("ConsolidateClusters function");
 _result = [_clusters] call ALIVE_fnc_consolidateClusters;
-_clusters = _result select 0;
+_clusters = _result;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 

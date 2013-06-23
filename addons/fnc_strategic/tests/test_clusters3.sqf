@@ -56,7 +56,7 @@ ASSERT_TRUE(typeName _clusters_mil == "ARRAY", _err);
 
 STAT("ConsolidateClusters function");
 _result = [_clusters_mil] call ALIVE_fnc_consolidateClusters;
-_clusters_mil = _result select 0;
+_clusters_mil = _result;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters_mil == "ARRAY", _err);
 
@@ -83,7 +83,7 @@ _err = "failed consolidating mil_clusters";
 ASSERT_FALSE(_result, _err);
 
 STAT("ConsolidateClusters completed");
-/*
+
 _obj_array = [
 	"airport_tower",
 	"communication_f",
@@ -116,7 +116,7 @@ ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
 
 STAT("ConsolidateClusters function");
 _result = [_clusters_civ] call ALIVE_fnc_consolidateClusters;
-_clusters_civ = _result select 0;
+_clusters_civ = _result;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
 
@@ -144,12 +144,9 @@ sleep 5;
 
 STAT("ConsolidateClusters function");
 _result = [_clusters_mil,_clusters_civ] call ALIVE_fnc_consolidateClusters;
-_clusters_mil = _result select 0;
-_clusters_civ = _result select 1;
-_clusters = _clusters_mil + _clusters_civ;
+_clusters = _result;
 _err = "consolidating clusters";
-ASSERT_TRUE(typeName _clusters_mil == "ARRAY", _err);
-ASSERT_TRUE(typeName _clusters_civ == "ARRAY", _err);
+ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 
 STAT("ConsolidateClusters testing");
 _result = false;
@@ -181,5 +178,5 @@ sleep 5;
 } forEach _clusters_mil;
 
 diag_log (allMissionObjects "") - _amo;
-*/
+
 nil;

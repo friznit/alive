@@ -27,22 +27,27 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_nodes","_err","_xc","_yc","_count","_result"];
+private ["_nodes","_err","_xmin","_ymin","_xmax","_ymax","_result"];
 _nodes = [_this, 0, [], [[]]] call BIS_fnc_param;
 _err = format["cluster nodes array not valid - %1",_nodes];
 ASSERT_DEFINED("_nodes",_err);
 ASSERT_TRUE(typeName _nodes == "ARRAY",_err);
 
 _result = [];
-if(count _nodes > 0) then {
-	_xc = 0;
-	_yc = 0;
-	{
-		_xc = _xc + ((getPosATL _x) select 0);
-		_yc = _yc + ((getPosATL _x) select 1);
-	} forEach _nodes;
+_xmin = 9999999;
+_ymin = 9999999;
+_xmax = 0;
+_ymax = 0;
+{
+	private["_xp","_yp"];
+	_xp = ((getPosATL _x) select 0);
+	_yp = ((getPosATL _x) select 1);
+	if(_xmin > _xp) then {_xmin = _xp;};
+	if(_ymin > _yp) then {_ymin = _yp;};
+	if(_xmax < _xp) then {_xmax = _xp;};
+	if(_ymax < _yp) then {_ymax = _yp;};
+} forEach _nodes;
 
-	_count = count _nodes;
-	_result = [_xc / _count, _yc / _count];
-};
+_result = [_xmin + ((_xmax - _xmin) / 2), _ymin + ((_ymax - _ymin) / 2)];
+
 _result;

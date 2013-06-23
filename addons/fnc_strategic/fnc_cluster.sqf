@@ -52,7 +52,7 @@ TRACE_2("cluster - input",_operation,_args);
 
 _result = true;
 
-#define MTEMPLATE "ALiVE_CLUSTER_%1"
+#define MTEMPLATE format["ALiVE_CLUSTER_%1_%2", _random, count _markers]
 
 _deleteMarkers = {
         private ["_logic"];
@@ -63,15 +63,16 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_max","_nodes","_center"];
+        private ["_logic","_markers","_m","_max","_nodes","_center","_random"];
         _logic = _this;
         _markers = [];
         _nodes = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
+        _random = floor(random 10000);
         
         if(count _nodes > 0) then {
                 // mark all nodes
                 {
-                        _m = format[MTEMPLATE, _x];
+                        _m = MTEMPLATE;
                         if(str getMarkerPos _m == "[0,0,0]") then {
                                 _m = createMarkerLocal [_m, getPosATL _x];
                                 _m setMarkerShapeLocal "Icon";
@@ -85,15 +86,15 @@ _createMarkers = {
                 } forEach _nodes;
                 
                 _center = [_logic, "center"] call MAINCLASS;
-                _m = createMarkerLocal [format[MTEMPLATE, _logic], _center];
+                _m = createMarkerLocal [MTEMPLATE, _center];
                 _m setMarkerShapeLocal "Icon";
                 _m setMarkerSizeLocal [1, 1];
                 _m setMarkerTypeLocal "mil_dot";
                 _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
-                _m setMarkerTextLocal format[MTEMPLATE, floor(random 10000)];
+                _m setMarkerTextLocal _m;
                 _markers set [count _markers, _m];
                 
-                _m = createMarkerLocal [(format[MTEMPLATE, _logic] + "_size"), _center];
+                _m = createMarkerLocal [_m + "_size", _center];
                 _max = [_logic, "size"] call MAINCLASS;
                 _m setMarkerShapeLocal "Ellipse";
                 _m setMarkerSizeLocal [_max, _max];

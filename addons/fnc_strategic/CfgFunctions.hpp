@@ -11,6 +11,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\fnc_strategic\fnc_getNearestObjectInArray.sqf";
 				recompile = 1;
 			};
+			class getNearestClusterInArray {
+				description = "Returns the nearest cluster to the given cluster from a list of clusters";
+                                file = "\x\alive\addons\fnc_strategic\fnc_getNearestClusterInArray.sqf";
+				recompile = 1;
+			};
 			class findClusterCenter {
 				description = "Return the centre position of an object cluster";
                                 file = "\x\alive\addons\fnc_strategic\fnc_findClusterCenter.sqf";

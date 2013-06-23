@@ -110,7 +110,7 @@ sleep 5;
 STAT("ConsolidateClusters function");
 [_clusters select 3, "addNode", _obj_array select 8] call ALIVE_fnc_cluster;
 _result = [_clusters] call ALIVE_fnc_consolidateClusters;
-_clusters = _result select 0;
+_clusters = _result;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _clusters == "ARRAY", _err);
 STAT("ConsolidateClusters completed");

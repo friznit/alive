@@ -11,7 +11,7 @@ LOG("Testing Cluster Object");
 
 ASSERT_DEFINED("ALIVE_fnc_cluster","");
 
-#define STAT(msg) sleep 3; \
+#define STAT(msg) sleep 1; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
