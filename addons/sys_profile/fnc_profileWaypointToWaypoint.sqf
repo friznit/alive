@@ -68,7 +68,7 @@ if !(_attachVehicle == "") then
 	_waypoint waypointAttachVehicle _attachVehicle;
 };
 
-if !(_waypointStatements == "") then
+if !(str _waypointStatements == "") then
 {
 	_waypoint setWaypointStatements _waypointStatements;
 };
