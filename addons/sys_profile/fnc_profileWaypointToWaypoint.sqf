@@ -43,7 +43,7 @@ _combatMode = [_profileWaypoint,"combatMode"] call ALIVE_fnc_hashGet;
 _behaviour = [_profileWaypoint,"behaviour"] call ALIVE_fnc_hashGet;
 _description = [_profileWaypoint,"description"] call ALIVE_fnc_hashGet;
 _attachVehicle = [_profileWaypoint,"attachVehicle"] call ALIVE_fnc_hashGet;
-_waypointStatements [_profileWaypoint,"statements"] call ALIVE_fnc_hashGet;
+_waypointStatements = [_profileWaypoint,"statements"] call ALIVE_fnc_hashGet;
 
 _waypoint = _group addWaypoint [_position, _radius];
 _waypoint setWaypointDescription _description;
