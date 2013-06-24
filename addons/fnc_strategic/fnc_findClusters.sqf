@@ -37,7 +37,6 @@ DEFAULT_PARAM(1,_maxdist,175);
 _err = "objects provided not valid";
 ASSERT_DEFINED("_obj_array", _err);
 ASSERT_OP(typeName _obj_array, == ,"ARRAY", _err);
-ASSERT_OP(count _obj_array,>,0,_err);
 
 _points =+ _obj_array;
 _clusters = [];

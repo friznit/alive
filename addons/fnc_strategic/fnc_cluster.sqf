@@ -214,7 +214,7 @@ switch(_operation) do {
                 // Read Only - return distance from centre to furthest node
                 private ["_max"];
                 _nodes = [_logic, "nodes",[]] call ALIVE_fnc_hashGet;
-                _result = 0;
+                _result = 25;
                 _center = [_logic, "center"] call MAINCLASS;
                 if(count _center > 0) then {
                         {
