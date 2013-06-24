@@ -42,7 +42,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_position","_radius","_type","_formation","_behaviour","_combatMode","_speed","_completionRadius","_timeout","_description","_attachVehicle","_waypoint"];
+private ["_position","_radius","_type","_formation","_behaviour","_combatMode","_speed","_completionRadius","_timeout","_description","_attachVehicle","_statements","_waypoint"];
 	
 _position = _this select 0;
 _radius = if(count _this > 1) then {_this select 1} else {0};
@@ -55,6 +55,7 @@ _combatMode = if(count _this > 7) then {_this select 7} else {"NO CHANGE"};
 _behaviour = if(count _this > 8) then {_this select 8} else {"UNCHANGED"}; // bugged
 _description = if(count _this > 9) then {_this select 9} else {""};
 _attachVehicle = if(count _this > 10) then {_this select 10} else {""};
+_statements = if(count _this > 11) then {_this select 11} else {""};
 
 _waypoint = [] call ALIVE_fnc_hashCreate;
 [_waypoint,"position",_position] call ALIVE_fnc_hashSet;
@@ -68,5 +69,6 @@ _waypoint = [] call ALIVE_fnc_hashCreate;
 [_waypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
 [_waypoint,"description",_description] call ALIVE_fnc_hashSet;
 [_waypoint,"attachVehicle",_attachVehicle] call ALIVE_fnc_hashSet;
+[_waypoint,"statements",_statements] call ALIVE_fnc_hashSet;
 
 _waypoint

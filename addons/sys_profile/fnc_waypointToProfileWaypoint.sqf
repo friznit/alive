@@ -39,6 +39,7 @@ _formation = waypointFormation _waypoint;
 _combatMode = waypointCombatMode _waypoint;
 _behaviour = waypointBehaviour _waypoint;
 _description = waypointDescription _waypoint;
+_statements = waypointStatements _waypoint;
 
 _profileWaypoint = [] call ALIVE_fnc_hashCreate;
 [_profileWaypoint,"position",_position] call ALIVE_fnc_hashSet;
@@ -52,7 +53,6 @@ _profileWaypoint = [] call ALIVE_fnc_hashCreate;
 [_profileWaypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
 [_profileWaypoint,"description",_description] call ALIVE_fnc_hashSet;
 [_profileWaypoint,"attachVehicle",""] call ALIVE_fnc_hashSet;
-
-diag_log _profileWaypoint;
+[_profileWaypoint,"statements",_statements] call ALIVE_fnc_hashSet;
 
 _profileWaypoint

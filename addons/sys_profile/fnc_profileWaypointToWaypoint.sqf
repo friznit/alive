@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_profileWaypoint", "_group","_setCurrent","_position","_radius","_type","_formation","_behaviour","_combatMode","_speed","_completionRadius","_timeout","_description","_attachVehicle","_attachObject","_waypoint"];
+private ["_profileWaypoint", "_group","_setCurrent","_position","_radius","_type","_formation","_behaviour","_combatMode","_speed","_completionRadius","_timeout","_description","_attachVehicle","_attachObject","_waypointStatements","_waypoint"];
 	
 _profileWaypoint = _this select 0;
 _group = _this select 1;
@@ -43,6 +43,7 @@ _combatMode = [_profileWaypoint,"combatMode"] call ALIVE_fnc_hashGet;
 _behaviour = [_profileWaypoint,"behaviour"] call ALIVE_fnc_hashGet;
 _description = [_profileWaypoint,"description"] call ALIVE_fnc_hashGet;
 _attachVehicle = [_profileWaypoint,"attachVehicle"] call ALIVE_fnc_hashGet;
+_waypointStatements [_profileWaypoint,"statements"] call ALIVE_fnc_hashGet;
 
 _waypoint = _group addWaypoint [_position, _radius];
 _waypoint setWaypointDescription _description;
@@ -65,6 +66,11 @@ if ((count _timeout) == 3) then
 if !(_attachVehicle == "") then
 {
 	_waypoint waypointAttachVehicle _attachVehicle;
+};
+
+if !(_waypointStatements == "") then
+{
+	_waypoint setWaypointStatements _waypointStatements;
 };
 
 if(_setCurrent) then {
