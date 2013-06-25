@@ -40,9 +40,9 @@ _pos = position player;
 _markers = [];
 
 _types = [
-	"barrack",
-	"cargo_hq_",
-	"miloffices"
+        "barrack",
+        "cargo_hq_",
+        "miloffices"
 ];
 
 STAT("Get object for position");
