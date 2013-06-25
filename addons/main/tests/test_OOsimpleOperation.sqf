@@ -5,7 +5,7 @@ SCRIPT(test_OOsimpleOperation);
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_logic","_result2","_state","_m","_amo","_obj_array","_newnode","_oldnodecount","_new_array","_test"];
+private ["_result","_err","_logic"];
 
 LOG("Testing OO Simple Operation");
 
@@ -72,7 +72,7 @@ sleep 3;
 
 if(isServer) then {
 	STAT("Destroy old instance");
-	[_logic, "destroy"] call ALIVE_fnc_cluster;
+	[_logic, "destroy"] call ALIVE_fnc_baseClass;
 	TEST_LOGIC2 = nil;
 	publicVariable "TEST_LOGIC2";
 } else {
