@@ -5,7 +5,7 @@ SCRIPT(test_consolidateClusters);
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_obj_array","_m","_amo","_logic","_master","_redundant"];
+private ["_result","_err","_obj_array","_m","_amo","_logic","_master","_redundant","_nodes"];
 
 LOG("Testing Consolidate Clusters");
 
