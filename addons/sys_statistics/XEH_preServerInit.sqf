@@ -62,7 +62,7 @@ if (GVAR(ENABLED)) then {
 						_realtime = [] call ALIVE_fnc_getServerTime;
 						
 						// _data should be an array of key/value			
-						_data = [ ["realTime",_realtime],["Server",GVAR(serverName)],["Operation",GVAR(operation)],["Map",worldName],["gameTime",_gametime] ] + _data;
+						_data = [ ["realTime",_realtime],["Server",GVAR(serverIP)],["Operation",GVAR(operation)],["Map",worldName],["gameTime",_gametime] ] + _data;
 										
 						// Write event data to DB
 						_result = [GVAR(datahandler), "write", [_module, _data, true] ] call ALIVE_fnc_Data;
