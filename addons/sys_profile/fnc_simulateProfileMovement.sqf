@@ -33,11 +33,11 @@ waituntil {
         private ["_unitProfile","_active","_waypoints","_currentPosition","_activeWaypoint","_destination","_distance","_direction","_newPosition","_leader","_profileID"];
 			_unitProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 			_profileID = [_unitProfile, "profileID"] call ALIVE_fnc_hashGet;
-            _active = [_unitProfile,"active"] call ALIVE_fnc_hashGet;			
+            _active = [_unitProfile,"active"] call ALIVE_fnc_hashGet;
 			_waypoints = [_unitProfile,"waypoints"] call ALIVE_fnc_hashGet;
             _waypointsCompleted = [_unitProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
 			_currentPosition = [_unitProfile,"position"] call ALIVE_fnc_hashGet;
-            
+
 			if(count _waypoints > 0) then {
 				_activeWaypoint = _waypoints select 0;
                 _activeType = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
@@ -50,7 +50,7 @@ waituntil {
                         _waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
 						_waypoints set [0,objNull];
 						_waypoints = _waypoints - [objNull];
-                                                
+
                         if (_activeType == "CYCLE") then {
                         	_waypoints = _waypoints + _waypointsCompleted;
                     		_waypointsCompleted = [];
@@ -69,8 +69,7 @@ waituntil {
 			};
 		[_unitProfile, "debug", true] call ALIVE_fnc_profileEntity;
 	} forEach _profiles;
-	
+
 	sleep _cycleTime;
-	false	
+	false
 };
-	

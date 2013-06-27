@@ -20,6 +20,11 @@ class cfgFunctions {
 				description = "profileVehicle";
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicle.sqf";
 				recompile = 1;
+			};
+			class createProfilesFromUnits {
+				description = "createProfilesFromUnits";
+				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromUnits.sqf";
+				recompile = 1;
 			};			
 			class profileKilledEventHandler {
 				description = "profileKilledEventHandler";
@@ -69,6 +74,11 @@ class cfgFunctions {
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";
+				recompile = 1;
+			};
+			class profileSpawner {
+				description = "profileSpawner";
+				file = "\x\alive\addons\sys_profile\fnc_profileSpawner.sqf";
 				recompile = 1;
 			};
 			class sideTextToObject {

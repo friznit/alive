@@ -1,7 +1,9 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(test_functionality);
+SCRIPT(test_functionality1);
+
+//execVM "\x\alive\addons\sys_profile\tests\test_functionality1.sqf"
 
 // ----------------------------------------------------------------------------
 

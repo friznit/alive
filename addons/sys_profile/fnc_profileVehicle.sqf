@@ -110,41 +110,41 @@ _createMarkers = {
         private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_id"];
         _logic = _this;
         _markers = [];
-        
+
 		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 		_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
-		
-        if(count _position > 0) then {				
+
+        if(count _position > 0) then {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
 				_m setMarkerShapeLocal "ICON";
 				_m setMarkerSizeLocal [1, 1];
 				_m setMarkerTypeLocal "hd_dot";
 				_m setMarkerColorLocal _debugColor;
-                _m setMarkerTextLocal _profileID;	
-				
+                _m setMarkerTextLocal _profileID;
+
 				_markers set [count _markers, _m];
-				
+
 				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
         };
 };
 
 switch(_operation) do {
-        case "init": {                
+        case "init": {
                 /*
                 MODEL - no visual just reference data
                 - nodes
                 - center
                 - size
                 */
-                
+
                 if (isServer) then {
                         // if server, initialise module game logic
 						// nil these out they add a lot of code to the hash..
 						[_logic,"super"] call ALIVE_fnc_hashRem;
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
-						
+
 						// set defaults
 						[_logic,"damage",0] call ALIVE_fnc_hashSet;
 						[_logic,"fuel",1] call ALIVE_fnc_hashSet;
@@ -157,11 +157,11 @@ switch(_operation) do {
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
 						[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
                 };
-                
+
                 /*
                 VIEW - purely visual
                 */
-                
+
                 /*
                 CONTROLLER  - coordination
                 */
@@ -171,15 +171,15 @@ switch(_operation) do {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
                 } else {
 						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
-                };                
+                };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
-				
+
 				 _logic call _deleteMarkers;
-                
+
                 if(_args) then {
                         _logic call _createMarkers;
                 };
-                
+
                 _result = _args;
         };
 		case "profileID": {
@@ -262,11 +262,11 @@ switch(_operation) do {
         };
 		case "addVehicleAssignment": {
 				private ["_assignments","_units","_unit","_group"];
-				
+
 				if(typeName _args == "ARRAY") then {
 						_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 						_assignments set [count _assignments, _args];
-						
+
 						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
 							/*
 							_units = [_logic,"units"] call ALIVE_fnc_hashGet;
@@ -279,9 +279,9 @@ switch(_operation) do {
 		};
 		case "clearVehicleAssignments": {
 				private ["_units","_unit","_group"];
-				
+
 				[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
-				
+
 				if([_logic,"active"] call ALIVE_fnc_hashGet) then {
 						/*
 						_units = [_logic,"units"] call ALIVE_fnc_hashGet;
@@ -296,7 +296,7 @@ switch(_operation) do {
 		};
 		case "spawn": {
 				private ["_side","_vehicleClass","_position","_direction","_damage","_fuel","_ammo","_profileID","_active","_vehicleAssignments","_vehicle","_eventID"];
-			
+
 				_vehicleClass = [_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
 				_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 				_direction = [_logic,"direction"] call ALIVE_fnc_hashGet;
@@ -306,53 +306,53 @@ switch(_operation) do {
 				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
 				_vehicleAssignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-				
+
 				// not already active
 				if!(_active) then {
-				
+
 					// spawn the unit
 					_vehicle = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
 					_vehicle setPos _position;
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
 					_vehicle setVehicleVarName _profileID;
-					
+
 					if(count _damage > 0) then {
 						[_vehicle, _damage] call ALIVE_fnc_vehicleSetDamage;
 					};
-					
+
 					if(count _ammo > 0) then {
 						[_vehicle, _ammo] call ALIVE_fnc_vehicleSetAmmo;
 					};
-					
+
 					// set profile id on the unit
 					_vehicle setVariable ["profileID", _profileID];
-					
+
 					// killed event handler
 					_eventID = _vehicle addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
-					
+
 					// set profile as active and store a reference to the unit on the profile
 					[_logic,"vehicle",_vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"active",true] call ALIVE_fnc_hashSet;
-					
+
 					// create vehicle assignments from profile vehicle assignments
-					if(count _vehicleAssignments > 0) then {	
+					if(count _vehicleAssignments > 0) then {
 						{
 							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
-						} forEach _vehicleAssignments;						
+						} forEach _vehicleAssignments;
 					};
 				};
 		};
 		case "despawn": {
-				private ["_active","_vehicle","_profileID"];			
-			
+				private ["_active","_vehicle","_profileID"];
+
 				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
 				_vehicle = [_logic,"vehicle"] call ALIVE_fnc_hashGet;
 				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
-				
+
 				// not already inactive
 				if(_active) then {
-				
+
 					// update profile before despawn
 					[_logic,"position", getPos _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"direction", getDir _vehicle] call ALIVE_fnc_hashSet;
@@ -364,7 +364,7 @@ switch(_operation) do {
 					[_logic,"needReload", needReload _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet;
 					[_logic,"active",false] call ALIVE_fnc_hashSet;
-					
+
 					// delete
 					deleteVehicle _vehicle;
 				};
