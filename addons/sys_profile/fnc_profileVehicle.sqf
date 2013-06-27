@@ -354,7 +354,7 @@ switch(_operation) do {
 				if(_active) then {
 
 					// update profile before despawn
-					[_logic,"position", getPos _vehicle] call ALIVE_fnc_hashSet;
+					[_logic,"position", getPosATL _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"direction", getDir _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_hashSet;
 					[_logic,"fuel", fuel _vehicle] call ALIVE_fnc_hashSet;

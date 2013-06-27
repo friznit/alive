@@ -555,13 +555,13 @@ switch(_operation) do {
 						};
 					};
 
-					[_logic, "position", getPos _leader] call ALIVE_fnc_hashSet;
+					[_logic, "position", getPosATL _leader] call ALIVE_fnc_hashSet;
 
 					// delete units
 					{
 						_unit = _x;
 						if!(isNull _unit) then {
-							_positions set [_unitCount, getPos _unit];
+							_positions set [_unitCount, getPosATL _unit];
 							_damages set [_unitCount, getDammage _unit];
 							_ranks set [_unitCount, rank _unit];
 							deleteVehicle _unit;

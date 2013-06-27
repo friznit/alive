@@ -23,13 +23,13 @@ diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
 #define DEBUGON STAT("Setup debug parameters"); \
-_result = [_logic, "debug", true] call ALIVE_fnc_profileVehicle; \
+_result = [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler; \
 _err = "enabled debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(_result, _err);
 
 #define DEBUGOFF STAT("Disable debug"); \
-_result = [_logic, "debug", false] call ALIVE_fnc_profileVehicle; \
+_result = [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler; \
 _err = "disable debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(!_result, _err);
@@ -51,11 +51,16 @@ ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 
 
+STAT("Create profiles from editor placed units");
 [] call ALIVE_fnc_createProfilesFromUnits;
 
+
+STAT("Get profile handler state");
 _state = [ALIVE_profileHandler, "state"] call ALIVE_fnc_profileHandler;
 _state call ALIVE_fnc_inspectHash;
 
-[] spawn {[] call ALIVE_fnc_simulateProfileMovement};
+DEBUGON;
+
+//[] spawn {[] call ALIVE_fnc_simulateProfileMovement};
 
 [] spawn {[] call ALIVE_fnc_profileSpawner};

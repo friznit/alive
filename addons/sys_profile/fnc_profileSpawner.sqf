@@ -23,34 +23,66 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_profiles"];
+private ["_entityProfiles","_vehicleProfiles"];
 
 waituntil {
 
 	sleep 3;
-	_profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
+	_profiles = [ALIVE_profileHandler, "getProfiles"] call ALIVE_fnc_profileHandler;
 	sleep 0.1;
 	
 	{
-		private ["_profile", "_position","_active"];
+		private ["_profile","_profileID","_profileType","_position","_active"];
 		
-		_profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+		_profile = _x;
+		_profileID = [_x,"profileID"] call ALIVE_fnc_hashGet;
+		_profileType = [_x,"type"] call ALIVE_fnc_hashGet;
 		_active = [_profile, "active"] call ALIVE_fnc_hashGet;
 		_position = [_profile,"position"] call ALIVE_fnc_hashGet;
 		
-		if ([_position, 1000] call ALiVE_fnc_anyPlayersInRange > 0) then {
+		if ([_position, 20] call ALiVE_fnc_anyPlayersInRange > 0) then {
+			
 			if!(_active) then {
-				[_profile, "spawn"] call ALIVE_fnc_profileEntity;
+			
+				switch(_profileType) do {
+						case "entity": {
+							[_profile, "spawn"] call ALIVE_fnc_profileEntity;
+						};
+						case "mil": {
+							[_profile, "spawn"] call ALIVE_fnc_profileMil;
+						};
+						case "civ": {
+							[_profile, "spawn"] call ALIVE_fnc_profileCiv;
+						};
+						case "vehicle": {
+							[_profile, "spawn"] call ALIVE_fnc_profileVehicle;
+						};
+				};
 			};
 		} else {
+			
 			if(_active) then {
-				[_profile, "despawn"] call ALIVE_fnc_profileEntity;
+			
+				switch(_profileType) do {
+						case "entity": {
+							[_profile, "despawn"] call ALIVE_fnc_profileEntity;
+						};
+						case "mil": {
+							[_profile, "despawn"] call ALIVE_fnc_profileMil;
+						};
+						case "civ": {
+							[_profile, "despawn"] call ALIVE_fnc_profileCiv;
+						};
+						case "vehicle": {
+							[_profile, "despawn"] call ALIVE_fnc_profileVehicle;
+						};
+				};
 			};
 		};
 		
 		sleep 0.03;
 		
-	} forEach _profiles;
+	} forEach (_profiles select 2);
 
 	false;
 };
