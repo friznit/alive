@@ -1,4 +1,4 @@
-#include <script_macros_core.hpp>
+#include "script_component.hpp"	
 SCRIPT(sendToPlugIn);
 
 /* ----------------------------------------------------------------------------
@@ -26,19 +26,21 @@ Tupolov
 Peer Reviewed:
 Wolffy.au 24 Oct 2012
 ---------------------------------------------------------------------------- */
-private ["_cmd","_response"];
+private ["_cmd","_response","_resp"];
 PARAMS_1(_cmd);
 
 if (([_cmd] call CBA_fnc_strLen) < 16000) then {
 	_response = "Arma2Net.Unmanaged" callExtension _cmd;
-	_response = call compile _response;	
+	TRACE_1("SEND TO PLUGIN: ", _response);
 } else{
 	format["SendToPlugIn - Output is greater than 16kb - NOT sending: %1", _cmd] call ALIVE_fnc_logger;
-	_response = [];
+	_response = "String was greater than 16kb";
 };
 
-if (count _response > 0) then {
+if (typeName _response == "ARRAY") then {
 	_response = _response select 0;
 };
+
+// Need to check for errors here
 
 _response;

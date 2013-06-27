@@ -93,11 +93,11 @@ if (GVAR(ENABLED)) then {
 		_sourcePos = mapgridposition _source;
 		
 		// Log data
-		_data = format["""Event"":""Hit"" , ""hitSide"":""%1"" , ""hitfaction"":""%2"" , ""hitType"":""%3"" , ""hitClass"":""%13"" ,""hitPos"":""%4"" , ""sourceSide"":""%5"" , ""sourcefaction"":""%6"" , ""sourceType"":""%7"" , ""sourceClass"":""%14"" , ""sourcePos"":""%8"" , ""Weapon"":""%9"" , ""Distance"":%10 , ""hit"":""%11"" , ""source"":""%12"" , ""damage"":%15", _sidehit, _factionhit, _hitType, _hitPos, _sidesource, _factionsource, _sourceType, _sourcePos, _sourceweapon, _distance, _hit, _source, _hitVehicleClass, _sourceVehicleClass, _damage];
+		_data = [ ["Event","Hit"] , ["hitSide",_sidehit] , ["hitfaction",_factionhit] , ["hitType",_hitType] , ["hitClass",_hitVehicleClass] ,["hitPos",_hitPos] , ["sourceSide",_sidesource] , ["sourcefaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass", _sourceVehicleClass] , ["sourcePos",_sourcePos] , ["Weapon",_sourceweapon] , ["Distance",_distance] , ["hit",_hit] , ["source",_source] , ["damage",_damage] ];
 	
 		if (isPlayer _hit && (getPlayerUID _hit != getPlayerUID _source)) then { // Player was hit
 			
-				_data = _data + format[" , ""PlayerHit"":""true"" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _hit, name _hit];
+				_data = _data + [ ["PlayerHit","true"] , ["Player",getplayeruid _hit] , ["PlayerName",name _hit] ];
 				
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
@@ -108,9 +108,9 @@ if (GVAR(ENABLED)) then {
 		if (isPlayer _source && (getPlayerUID _hit != getPlayerUID _source)) then {
 				
 				if (_damage > 0.5) then {
-					_data = _data + " , ""Disabled"":""true""";
+					_data = _data + [ ["Disabled","true"] ];
 				};
-				_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _source, name _source];
+				_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source] ];
 				
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;

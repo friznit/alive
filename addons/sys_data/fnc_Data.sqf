@@ -1,4 +1,4 @@
-#include <\x\alive\addons\sys_Data\script_component.hpp>
+#include "script_component.hpp"	
 SCRIPT(Data);
 
 /* ----------------------------------------------------------------------------
@@ -24,38 +24,55 @@ Description:
 Data Interface
 
 Examples:
-[_logic, "init"] call ALiVE_fnc_Data;
+[_logic, "create"] call ALiVE_fnc_Data;
 
 See Also:
-- <ALIVE_fnc_Data_init>
+
 
 Author:
 Tupolov
 ---------------------------------------------------------------------------- */
-private ["_logic","_operation","_args"];
 
-#define SUPERCLASS ALIVE_fnc_baseClass
+#define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_Data
 
-#define DATAOPERATIONS ["read","write","update","delete","load","save"]
 #define DEFAULT_NAME QUOTE(alivedb)
 #define DEFAULT_SOURCE QUOTE(SQL)
+#define DEFAULT_STORETYPE true
 
-private ["_logic","_operation","_args","_result"];
+private ["_result", "_operation", "_args", "_logic", "_ops"];
 
-PARAMS_1(_logic);
-DEFAULT_PARAM(1,_operation,"");
-DEFAULT_PARAM(2,_args,nil);
-TRACE_1("Data - input",_this);
-
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",true,false]] call BIS_fnc_param;
+_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+
+TRACE_3("SYS_DATA: ",_logic, _operation, _args);
+
+_ops = ["read","write","update","delete","load","save","convert"];
+		
 _result = true;
 
-switch(_operation) do {
+if (_operation in _ops) then {
 	
-        case "init": {                
+			ASSERT_TRUE(typeName _args == "ARRAY", _args);
+			if(typeName _args == "ARRAY") then {
+				private ["_function","_script"];
+				_source = [_logic, "source", DEFAULT_SOURCE] call ALIVE_fnc_hashGet;
+				_script = format ["ALIVE_fnc_%1Data_%2", _operation, _source];
+				_function = call compile _script;
+				TRACE_2("SYS_DATA: Operation Request - ",_source, _script);
+				_result = [_logic, _args] call _function;
+			} else {
+				private["_err"];
+                _err = format["%1 %2 operation requires an ARRAY as an argument not %3.", _logic, _operation, typeName _args];
+                ERROR_WITH_TITLE(str _logic,_err);
+				_result = false;
+			};
+} else {
+				
+	switch(_operation) do {
+	
+        case "create": {                
                 /*
                 MODEL - no visual just reference data
                 - server side object only
@@ -64,25 +81,19 @@ switch(_operation) do {
                 if (isServer) then {
 
                         // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", MAINCLASS];
-                        _logic setVariable ["init", true, true];
+                        _logic = [nil, "create"] call SUPERCLASS;
+                        [_logic, "super", QUOTE(SUPERCLASS)] call ALIVE_fnc_hashSet;
+                        [_logic, "class", QUOTE(MAINCLASS)] call ALIVE_fnc_hashSet;
+                        //[_logic, "super", ""] call ALIVE_fnc_hashSet;
+                        //[_logic, "class", ""] call ALIVE_fnc_hashSet;
+                        
+						TRACE_1("After module init",_logic);
 						
-						// Initialize debugging if set in the editor module
-						if (_logic setVariable ["debug", false]) then {
-							[_logic, "debug", true] call MAINCLASS;
-						};
-						
+						_result = _logic;
+									
                 } else {
                         // any client side logic
                 };
-
-				TRACE_2("After module init",_logic, _logic getVariable "init");
-
-                // and wait for game logic to initialise
-                // TODO merge into lazy evaluation
-                waitUntil {!isNil _logic};
-                waitUntil {_logic getVariable ["init", false]};        
 
                 /*
                 VIEW - purely visual
@@ -100,10 +111,21 @@ switch(_operation) do {
 		case "databaseName": {
 			ASSERT_TRUE(typeName _args == "STRING", _args);
 			if(typeName _args == "STRING") then { 
-				_result = [_logic,_operation,_args,DEFAULT_NAME,[]] call ALIVE_fnc_OOsimpleOperation;
+				_result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
 			} else {
 				private["_err"];
                 _err = format["%1 %2 operation requires a STRING as an argument not %3.", _logic, _operation, typeName _args];
+                ERROR_WITH_TITLE(str _logic,_err);
+			};
+		};
+		
+		case "storeType": {
+			ASSERT_TRUE(typeName _args == "BOOL", _args);
+			if(typeName _args == "BOOL") then { 
+				_result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
+			} else {
+				private["_err"];
+                _err = format["%1 %2 operation requires a BOOL as an argument not %3.", _logic, _operation, typeName _args];
                 ERROR_WITH_TITLE(str _logic,_err);
 			};
 		};
@@ -111,56 +133,43 @@ switch(_operation) do {
 		case "source": {
 			ASSERT_TRUE(typeName _args == "STRING", _args);
 			if(typeName _args == "STRING") then { 
-				_result = [_logic,_operation,_args,DEFAULT_SOURCE,[]] call ALIVE_fnc_OOsimpleOperation;
+				_result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
 			} else {
 				private["_err"];
                 _err = format["%1 %2 operation requires a STRING as an argument not %3.", _logic, _operation, typeName _args];
                 ERROR_WITH_TITLE(str _logic,_err);
-			};
-		};
-		
-		case (_operation in DATAOPERATIONS): {
-			ASSERT_TRUE(typeName _args == "ARRAY", _args);
-			if(typeName _args == "ARRAY") then {
-				private ["_function"];
-				_function = call compile (format ["ALIVE_fnc_%1Data_%2", _operation, _logic getVariable "source"]);
-				_result = _args call _function;
-			} else {
-				private["_err"];
-                _err = format["%1 %2 operation requires an ARRAY as an argument not %3.", _logic, _operation, typeName _args];
-                ERROR_WITH_TITLE(str _logic,_err);
+				_result = false;
 			};
 		};
 		
 		case "debug": {
-				ASSERT_TRUE(typeName _args == "BOOL",str _args);
                 if(typeName _args != "BOOL") then {
-                        _args = _logic getVariable ["debug", false];
+                        _args = [_logic, "debug", false] call ALIVE_fnc_hashGet;
                 } else {
-                        _logic setVariable ["debug", _args];
+                        _result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
                 };                
-
+                ASSERT_TRUE(typeName _args == "BOOL",str _args);
+                
                 if(_args) then {
-                        // do some debugging
+
                 };
                 _result = _args;
         }; 
 		
         case "destroy": {
-                if (isServer) then {
-					// if server
-					_logic setVariable ["super", nil];
-					_logic setVariable ["class", nil];
-					_logic setVariable ["init", nil];
-					_logic setVariable ["debug", false];
-				};    
+				[_logic, "debug", false] call MAINCLASS;
+				if (isServer) then {
+						// if server
+						[_logic, "destroy"] call SUPERCLASS;
+				};
+				
+				_logic = nil;
         };
 		
         default {
-                private["_err"];
-                _err = format["%1 does not support %2 operation", _logic, _operation];
-                ERROR_WITH_TITLE(str _logic,_err);
+			_result = [_logic, _operation, _args] call SUPERCLASS;
         };
+	};
 };
 TRACE_1("Data - output",_result);
 _result;

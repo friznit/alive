@@ -2,7 +2,7 @@
 Function: ALIVE_fnc_restoreData
 
 Description:
-Converts JSON type strings back into ARMA2 data types, map objects, and created vehicles
+Converts Couchdb type strings back into ARMA2 data types, map objects, and created vehicles
 
 Parameters:
 String - Returns JSON type string in the format "DATATYPE:VALUE"
@@ -23,11 +23,12 @@ Wolffy.au
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-#include <script_macros_core.hpp>
-SCRIPT(restoreData);
+#include "script_component.hpp"	
+SCRIPT(restoreData_couchdb);
 
-private ["_debug","_result","_type","_data","_split"];
-_debug = true;
+PARAMS_1( _string);
+
+private ["_result","_type","_data","_split"];
 
 _split = false;
 _type = [];
@@ -44,7 +45,7 @@ _data = [];
 						_data set [count _data, _x];
 				};
 		};
-} foreach (toArray _this);
+} foreach (toArray _string);
 _type = toString _type;
 _data = toString _data;
 
@@ -86,7 +87,7 @@ switch(_type) do {
 				_tmp = call compile _data;
 				_result = [];
 				{
-						_result set [count _result, _x call ALIVE_fnc_restoreData];
+						_result set [count _result, [_logic, "restore", _x] call ALIVE_fnc_Data];
 				} forEach _tmp;
 		};
 		case "OBJECT": {

@@ -76,11 +76,11 @@ if (GVAR(ENABLED)) then {
 		if (_hitSelection == "") then { _hitSelection = "body"; };
 		
 		// Log data
-		_data = format["""Event"":""Wounded"" , ""woundedSide"":""%1"" , ""woundedfaction"":""%2"" , ""woundedType"":""%3"" , ""woundedClass"":""%13"" ,""woundedPos"":""%4"" , ""sourceSide"":""%5"" , ""sourcefaction"":""%6"" , ""sourceType"":""%7"" , ""sourceClass"":""%14"" , ""sourcePos"":""%8"" , ""Weapon"":""%9"" , ""Distance"":%10 , ""wounded"":""%11"" , ""source"":""%12"" , ""projectile"":""%15"", ""wound"":""%16"", ""damage"":%17", _sidewounded, _factionwounded, _woundedType, _woundedPos, _sidesource, _factionsource, _sourceType, _sourcePos, _sourceweapon, _distance, _wounded, _source, _woundedVehicleClass, _sourceVehicleClass, _projectile, _hitSelection, _damage];
+		_data = [ ["Event","Wounded"] , ["woundedSide","%1"] , ["woundedfaction","%2"] , ["woundedType","%3"] , ["woundedClass","%13"" ,""woundedPos","%4"] , ["sourceSide","%5"] , ["sourcefaction","%6"] , ["sourceType","%7"] , ["sourceClass","%14"] , ["sourcePos","%8"] , ["Weapon","%9"] , ["Distance"":%10 , ""wounded","%11"] , ["source","%12"] , ["projectile","%15"", ""wound","%16"", ""damage"":%17", _sidewounded, _factionwounded, _woundedType, _woundedPos, _sidesource, _factionsource, _sourceType, _sourcePos, _sourceweapon, _distance, _wounded, _source, _woundedVehicleClass, _sourceVehicleClass, _projectile, _hitSelection, _damage];
 	
 		if (isPlayer _wounded) then { // Player was wounded
 			
-				_data = _data + format[" , ""PlayerWounded"":""true"" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _wounded, name _wounded];
+				_data = _data + format[] , ["PlayerWounded","true"] , ["Player","%1"] , ["PlayerName","%2""", getplayeruid _wounded, name _wounded];
 				
 				// Send data to server to be written to DB
 				ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
@@ -90,7 +90,7 @@ if (GVAR(ENABLED)) then {
 		
 		if (isPlayer _source) then {
 			
-				_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _source, name _source];
+				_data = _data + format[] , ["Player","%1"] , ["PlayerName","%2""", getplayeruid _source, name _source];
 				
 				// Send data to server to be written to DB
 				ALIVE_SYS_STAT_UPDATE_EVENTS = _data;

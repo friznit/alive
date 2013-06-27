@@ -8,14 +8,14 @@ ADDON = false;
 
 if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
+	// Get player data
 	_name = name player;
 	_class = getText (configFile >> "cfgVehicles" >> (typeof player) >> "displayName");
 	_puid = getplayeruid player;
-	
 	_PlayerSide = side (group player); // group side is more reliable
 	_PlayerFaction = faction player;
 
-	_data = format["""Event"":""PlayerStart"" , ""PlayerSide"":""%1"" , ""PlayerFaction"":""%2"" , ""PlayerName"":""%3"" ,""PlayerType"":""%4"" , ""PlayerClass"":""%5"" , ""Player"":""%6""", _PlayerSide, _PlayerFaction, _name, typeof player, _class, _puid];
+	_data = [["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["Player",_puid] ];
 
 	GVAR(UPDATE_EVENTS) = _data;
 	publicVariableServer QGVAR(UPDATE_EVENTS);
@@ -41,9 +41,8 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	player addEventHandler ["handleHeal", {_this call GVAR(fnc_handleHealEH);}];
 	
 	// Set up non eventhandler checks
-	
-	// Combat Dive - checks every 30 seconds for diving
 	[] spawn {
+		// Combat Dive - checks every 30 seconds for diving
 		private ["_diving", "_diveStartTime", "_diveTime"];
 		while {true} do { 
 			if (underwater player && isAbleToBreathe player) then {

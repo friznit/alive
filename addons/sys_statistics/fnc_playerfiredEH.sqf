@@ -43,6 +43,11 @@ if (GVAR(ENABLED)) then {
 		} foreach _shotsfired;
 
 		_weaponName = getText (configFile >> "cfgWeapons" >> _weapon >> "displayName");
+		
+		if (_weaponName == "Throw") then {
+			_weaponName = getText (configFile >> "cfgWeapons" >> _weaponName >> _muzzle >> "displayName");
+			_weapon = _muzzle;
+		};
 			
 		// Add weapon count to array
 		if (_idx == 0) then {

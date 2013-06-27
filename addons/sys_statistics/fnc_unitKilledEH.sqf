@@ -101,16 +101,15 @@ if (GVAR(ENABLED)) then {
 		_killerPos = mapgridposition _killer;
 		
 		// Log data
-		_data = format["""Event"":""Kill"" , ""KilledSide"":""%1"" , ""Killedfaction"":""%2"" , ""KilledType"":""%3"" , ""KilledClass"":""%13"" ,""KilledPos"":""%4"" , ""KillerSide"":""%5"" , ""Killerfaction"":""%6"" , ""KillerType"":""%7"" , ""KillerClass"":""%14"" , ""KillerPos"":""%8"" , ""Weapon"":""%9"" , ""Distance"":%10 , ""Killed"":""%11"" , ""Killer"":""%12""", 
-			_sideKilled, _factionKilled, _killedType, _killedPos, _sideKiller, _factionKiller, _killerType, _killerPos, _killerweapon, _distance, _killed, _killer, _killedVehicleClass, _killerVehicleClass];
-		
+		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["Weapon",_killerweapon] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer] ];
+
 		if (player == _killed) exitWith { // Player was killed
 		
 			if (_killer == _killed) then { // Suicide?
-				_data = _data + " , ""suicide"":""true""";
+				_data = _data + [["suicide",true]];
 			};
 			
-				_data = _data + format[" , ""Death"":""true"" , ""Player"":""%1"", ""PlayerName"":""%2""", getplayeruid _killed, name _killed];
+				_data = _data + [ ["Death","true"] , ["Player",getplayeruid _killed], ["PlayerName",name _killed] ];
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
 				publicVariableServer QGVAR(UPDATE_EVENTS);
@@ -119,7 +118,7 @@ if (GVAR(ENABLED)) then {
 		if (!(_killed iskindof "Man")) then { // vehicle was killed
 
 				if (isPlayer _killer || isPlayer (gunner _killer)) then {
-					_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _killer, name _killer];
+					_data = _data + [["Player",getplayeruid _killer] , ["PlayerName",name _killer] ];
 				};
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
@@ -130,7 +129,7 @@ if (GVAR(ENABLED)) then {
 			
 				// Check to see if player is in a vehicle and firing the weapon
 				//if (_killer iskindof "Man" || isPlayer (gunner _killer) || isPlayer (commander _killer) || isPlayer (driver _killer) ) then {
-					_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _killer, name _killer];
+					_data = _data + [ ["Player",getplayeruid _killer] , ["PlayerName",name _killer] ];
 					// Send data to server to be written to DB
 					GVAR(UPDATE_EVENTS) = _data;
 					publicVariableServer QGVAR(UPDATE_EVENTS);		

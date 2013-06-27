@@ -38,25 +38,25 @@ if (GVAR(ENABLED)) then {
 		_medicPos = mapgridposition _medic;
 		
 		// Log data
-		_data = format["""Event"":""Heal"" , ""patientSide"":""%1"" , ""patientfaction"":""%2"" , ""patientType"":""%3"" ,""patientPos"":""%4"" , ""medicSide"":""%5"" , ""medicfaction"":""%6"" , ""medicType"":""%7"" , ""medicPos"":""%8"" , ""patient"":""%9"" , ""medic"":""%10""", _sidepatient, _factionpatient, _patientType, _patientPos, _sidemedic, _factionmedic, _medicType, _medicPos, _patient, _medic];
+		_data = [ ["Event","Heal"] , ["patientSide",_sidepatient] , ["patientfaction",_factionpatient] , ["patientType",_patientType] , ["patientPos",_patientPos] , ["medicSide",_sidemedic] , ["medicfaction",_factionmedic] , ["medicType",_medicType] , ["medicPos",_medicPos] , ["patient", _patient] , ["medic",_medic] ];
 	
 		if (isPlayer _patient) then { // Player was patient
 			
-				_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _patient, name _patient];
+				_data = _data + [ ["Player",getplayeruid _patient] , ["PlayerName",name _patient] ];
 				
 				// Send data to server to be written to DB
-				ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
-				publicVariableServer "ALIVE_SYS_STAT_UPDATE_EVENTS";
+				GVAR(UPDATE_EVENTS) = _data;
+				publicVariableServer QGVAR(UPDATE_EVENTS);
 
 		};
 		
 		if (isPlayer _medic) then {
 			
-				_data = _data + format[" , ""Medic"":""true"" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _medic, name _medic];
+				_data = _data + [ ["Medic","true"] , ["Player",getplayeruid _medic] , ["PlayerName",name _medic] ];
 				
 				// Send data to server to be written to DB
-				ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
-				publicVariableServer "ALIVE_SYS_STAT_UPDATE_EVENTS";
+				GVAR(UPDATE_EVENTS) = _data;
+				publicVariableServer QGVAR(UPDATE_EVENTS);
 
 		};
 					

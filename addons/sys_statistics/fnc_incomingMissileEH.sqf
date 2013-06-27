@@ -84,11 +84,11 @@ if (GVAR(ENABLED)) then {
 			_sourcePos = mapgridposition _source;
 			
 			// Log data
-			_data = format["""Event"":""Missile"" , ""targetSide"":""%1"" , ""targetFaction"":""%2"" , ""targetType"":""%3"" , ""targetClass"":""%13"" ,""targetPos"":""%4"" , ""sourceSide"":""%5"" , ""sourceFaction"":""%6"" , ""sourceType"":""%7"" , ""sourceClass"":""%14"" , ""sourcePos"":""%8"" , ""Weapon"":""%9"" , ""Distance"":%10 , ""target"":""%11"" , ""source"":""%12"" , ""projectile"":""%15""", _sideTarget, _factionTarget, _targetType, _targetPos, _sidesource, _factionsource, _sourceType, _sourcePos, _sourceweapon, _distance, _target, _source, _targetVehicleClass, _sourceVehicleClass, _projectile];
+			_data = [ ["Event","Missile"] , ["targetSide",_sideTarget] , ["targetFaction",_factionTarget] , ["targetType",_targetType] , ["targetClass", _targetVehicleClass] , ["targetPos",_targetPos] , ["sourceSide",_sidesource] , ["sourceFaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass",_sourceVehicleClass] , ["sourcePos", _sourcePos] , ["Weapon",_sourceweapon] , ["Distance",_distance] , ["target",_target] , ["source",_source] , ["projectile", _projectile] ];
 			
 			if (isPlayer _target) then { // Player was Target
 				
-					_data = _data + format[" , ""FiredAt"":""true"" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _target, name _target];
+					_data = _data + [ ["FiredAt","true"] , ["Player", getplayeruid _target] , ["PlayerName", name _target] ];
 					
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
@@ -98,7 +98,7 @@ if (GVAR(ENABLED)) then {
 			
 			if (isPlayer _source) then { // Player was firing
 				
-					_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _source, name _source];
+					_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source] ];
 					
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;

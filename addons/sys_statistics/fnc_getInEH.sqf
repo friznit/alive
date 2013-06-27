@@ -75,9 +75,9 @@ if (GVAR(ENABLED)) then {
 		_vehiclePos = mapgridposition _vehicle;
 		
 		// Log data
-		_data = format["""Event"":""GetIn"" , ""unitSide"":""%1"" , ""unitfaction"":""%2"" , ""unitType"":""%3"" , ""unitClass"":""%11"" ,""unitPos"":""%4"" , ""vehicleSide"":""%5"" , ""vehiclefaction"":""%6"" , ""vehicleType"":""%7"" , ""vehicleClass"":""%12"" , ""vehiclePos"":""%8"" , ""unit"":""%9"" , ""vehicle"":""%10"" , ""vehiclePosition"":""%13""", _sideunit, _factionunit, _unitType, _unitPos, _sidevehicle, _factionvehicle, _vehicleType, _vehiclePos, _unit, _vehicle, _unitVehicleClass, _vehicleVehicleClass, _position];
+		_data = [ ["Event","GetIn"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",str(_unit)] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] ];
 			
-		_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _unit, name _unit];
+		_data = _data + [ ["Player",getplayeruid _unit] , ["PlayerName",name _unit] ];
 		
 		// Set Player GetIn time
 		_unit setVariable [QGVAR(GetInTime), date, true];

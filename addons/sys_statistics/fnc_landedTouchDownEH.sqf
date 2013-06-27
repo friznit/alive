@@ -63,9 +63,9 @@ if (GVAR(ENABLED)) then {
 			_vehicle setVariable [QGVAR(LandedTime), _ptime, true];
 			
 			// Log data
-			_data = format["""Event"":""Landed"" , ""vehicleSide"":""%1"" , ""vehiclefaction"":""%2"" , ""vehicleType"":""%3"" , ""vehiclePos"":""%4"" , ""vehicle"":""%5"" , ""Airport"":%6", _sidevehicle, _factionvehicle, _vehicleType, _vehiclePos, _vehicle, _airport];
+			_data = [ ["Event","Landed"] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehiclePos",_vehiclePos] , ["vehicle",_vehicle] , ["Airport",_airport] ];
 			
-			_data = _data + format[" , ""Player"":""%1"" , ""PlayerName"":""%2""", getplayeruid _vehicle, name _vehicle];
+			_data = _data + [ ["Player",getplayeruid _vehicle] , ["PlayerName",name _vehicle] ];
 				
 			// Send data to server to be written to DB
 			GVAR(UPDATE_EVENTS) = _data;

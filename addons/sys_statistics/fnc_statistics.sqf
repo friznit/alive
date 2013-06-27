@@ -39,7 +39,8 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS nil
+#define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_statistics
 
 private ["_logic","_operation","_args"];
 
@@ -56,29 +57,30 @@ switch(_operation) do {
                 */
                 
                 // Ensure only one module is used
-                if (isServer && !(isNil QMOD(statistics))) exitWith {
+                if (isServer && !(isNil _logic)) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_statistics_ERROR1");
                 };
                 
                 if (isServer) then {
-                        // and publicVariable to clients
-                        MOD(statistics) = _logic;
-                        publicVariable QMOD(statistics);
 
                         // if server, initialise module game logic
-                        MOD(statistics) setVariable ["super", SUPERCLASS];
-                        MOD(statistics) setVariable ["class", ALiVE_fnc_statistics];
-                        MOD(statistics) setVariable ["init", true, true];
+                        _logic setVariable ["super", SUPERCLASS];
+                        _logic setVariable ["class", MAINCLASS];
+                        _logic setVariable ["init", true, true];
+						
+						// and publicVariable to clients
+                        MOD(statistics) = _logic;
+                        publicVariable QMOD(statistics);
                 } else {
                         // any client side logic
                 };
 
-				TRACE_2("After module init",MOD(statistics),MOD(statistics) getVariable "init");
+				TRACE_2("After module init",_logic, _logic getVariable "init");
 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(statistics)};
-                waitUntil {MOD(statistics) getVariable ["init", false]};        
+                waitUntil {!isNil _logic};
+                waitUntil {_logic getVariable ["init", false]};        
 
                 /*
                 VIEW - purely visual
