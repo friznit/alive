@@ -327,7 +327,7 @@ switch(_operation) do {
 				if!(_active) then {
 
 					// spawn the unit
-					if((_position select 2)>5 && _engineOn && (_vehicleType=="Helicoptor" || _vehicleType=="Plane")) then {
+					if((_position select 2)>5 && _engineOn && (_vehicleType=="Helicopter" || _vehicleType=="Plane")) then {
 						_special = "FLY";
 					}else{
 						_special = "NONE";
