@@ -64,12 +64,12 @@ switch(_operation) do {
         case "create": {
                 // Create a module object for settings and persistence
                 _logic = [] call CBA_fnc_hashCreate;
-		[_logic, "class", ALIVE_fnc_baseClassHash] call CBA_fnc_hashSet;
+		[_logic, "class", ALIVE_fnc_baseClassHash] call ALIVE_fnc_hashSet;
                 _result = _logic;
         };
         case "destroy": {
 		{
-			[_logic, _x] call CBA_fnc_hashRem;
+			[_logic, _x] call ALIVE_fnc_hashRem;
 		} forEach +(_logic select 1);
 
 		_logic = nil;
