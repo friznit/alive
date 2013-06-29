@@ -24,6 +24,11 @@ if (GVAR(ENABLED)) then {
 	// Grab Server IP
 	GVAR(serverIP) = [] call ALIVE_fnc_getServerIP;
 	GVAR(serverName) = [] call ALIVE_fnc_getServerName;
+
+	// If the host IP web service is down, just use the serverName
+	if (GVAR(serverIP) == "ERROR") then {
+		GVAR(serverIP) = GVAR(serverName);
+	};
 	
 	// Try getting the actual MP hostname of server
 	//GVAR(serverhostname) = ["ServerHostName"] call ALIVE_fnc_sendToPlugIn;
