@@ -68,7 +68,7 @@ if !(_attachVehicle == "") then
 	_waypoint waypointAttachVehicle _attachVehicle;
 };
 
-if !(str _waypointStatements == "") then
+if (typeName _waypointStatements == "ARRAY") then
 {
 	_waypoint setWaypointStatements _waypointStatements;
 };
