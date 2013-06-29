@@ -352,7 +352,7 @@ switch(_operation) do {
 			//[_x, "debug", true] call ALIVE_fnc_cluster;
 		} forEach _clusters_veh;
 		_clusters = [_clusters, _clusters_veh] call ALIVE_fnc_consolidateClusters;
-/*
+
 		// Collate objectives and their priorities
 		if((_logic getVariable ["objectives",DEFAULT_OBJECTIVE]) in ["MIL","ALL"]) then {
 			// Military Objectives
@@ -406,7 +406,7 @@ switch(_operation) do {
 			} forEach _clusters_tmp;
 			_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
 		};
-*/
+
 		{
 			[_x, "debug", true] call ALIVE_fnc_cluster;
 		} forEach _clusters;
