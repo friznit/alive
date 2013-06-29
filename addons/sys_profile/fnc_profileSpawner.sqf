@@ -23,7 +23,9 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_entityProfiles","_vehicleProfiles"];
+private ["_distance","_entityProfiles","_vehicleProfiles"];
+
+_distance = if(count _this > 0) then {_this select 0} else {1000};
 
 waituntil {
 
@@ -40,7 +42,7 @@ waituntil {
 		_active = [_profile, "active"] call ALIVE_fnc_hashGet;
 		_position = [_profile,"position"] call ALIVE_fnc_hashGet;
 		
-		if ([_position, 20] call ALiVE_fnc_anyPlayersInRange > 0) then {
+		if ([_position, _distance] call ALiVE_fnc_anyPlayersInRange > 0) then {
 			
 			if!(_active) then {
 			

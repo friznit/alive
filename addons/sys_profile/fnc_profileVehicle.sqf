@@ -149,6 +149,7 @@ switch(_operation) do {
 						[_logic,"damage",0] call ALIVE_fnc_hashSet;
 						[_logic,"fuel",1] call ALIVE_fnc_hashSet;
 						[_logic,"ammo",[]] call ALIVE_fnc_hashSet;
+						[_logic,"engineOn",false] call ALIVE_fnc_hashSet;
 						[_logic,"damage",[]] call ALIVE_fnc_hashSet;
 						[_logic,"canMove",true] call ALIVE_fnc_hashSet;
 						[_logic,"canFire",true] call ALIVE_fnc_hashSet;
@@ -190,7 +191,8 @@ switch(_operation) do {
         };
 		case "vehicleClass": {
 				if(typeName _args == "STRING") then {
-						[_logic,"vehicleClass",_args] call ALIVE_fnc_hashSet;
+						[_logic,"vehicleClass",_args] call ALIVE_fnc_hashSet;						
+						[_logic,"vehicleType",_args call ALIVE_fnc_vehicleGetKindOf] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
         };
@@ -230,6 +232,12 @@ switch(_operation) do {
                 };
 				_result = [_logic,"ammo"] call ALIVE_fnc_hashGet;
         };
+		case "engineOn": {
+				if(typeName _args == "BOOL") then {
+						[_logic,"engineOn",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"engineOn"] call ALIVE_fnc_hashGet;
+        };
 		case "canFire": {
 				if(typeName _args == "BOOL") then {
 						[_logic,"canFire",_args] call ALIVE_fnc_hashSet;
@@ -259,6 +267,12 @@ switch(_operation) do {
 						[_logic,"vehicle",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"vehicle"] call ALIVE_fnc_hashGet;
+        };
+		case "vehicleType": {
+				if(typeName _args == "STRING") then {
+						[_logic,"vehicleType",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
         };
 		case "addVehicleAssignment": {
 				private ["_assignments","_units","_unit","_group"];
@@ -295,14 +309,16 @@ switch(_operation) do {
 				}
 		};
 		case "spawn": {
-				private ["_side","_vehicleClass","_position","_direction","_damage","_fuel","_ammo","_profileID","_active","_vehicleAssignments","_vehicle","_eventID"];
+				private ["_side","_vehicleClass","_vehicleType","_position","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID"];
 
 				_vehicleClass = [_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
+				_vehicleType = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
 				_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 				_direction = [_logic,"direction"] call ALIVE_fnc_hashGet;
 				_damage = [_logic,"damage"] call ALIVE_fnc_hashGet;
 				_fuel = [_logic,"fuel"] call ALIVE_fnc_hashGet;
 				_ammo = [_logic,"ammo"] call ALIVE_fnc_hashGet;
+				_engineOn = [_logic,"engineOn"] call ALIVE_fnc_hashGet;
 				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
 				_vehicleAssignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
@@ -311,10 +327,17 @@ switch(_operation) do {
 				if!(_active) then {
 
 					// spawn the unit
-					_vehicle = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
+					if((_position select 2)>5 && _engineOn && (_vehicleType=="Helicoptor" || _vehicleType=="Plane")) then {
+						_special = "FLY";
+					}else{
+						_special = "NONE";
+					};
+					
+					_vehicle = createVehicle [_vehicleClass, _position, [], 0, _special];
 					_vehicle setPos _position;
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
+					_vehicle engineOn _engineOn;
 					_vehicle setVehicleVarName _profileID;
 
 					if(count _damage > 0) then {
@@ -359,6 +382,7 @@ switch(_operation) do {
 					[_logic,"damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_hashSet;
 					[_logic,"fuel", fuel _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"ammo", _vehicle call ALIVE_fnc_vehicleGetAmmo] call ALIVE_fnc_hashSet;
+					[_logic,"engineOn", isEngineOn _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"canFire", canFire _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"canMove", canMove _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"needReload", needReload _vehicle] call ALIVE_fnc_hashSet;

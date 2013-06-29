@@ -191,6 +191,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleMoveIn.sqf";
 				recompile = 1;
 			};
+			class vehicleGetKindOf {
+				description = "vehicleGetKindOf";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleGetKindOf.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };
