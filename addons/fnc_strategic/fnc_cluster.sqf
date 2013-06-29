@@ -41,6 +41,7 @@ nil
 
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_cluster
+#define MTEMPLATE "ALiVE_CLUSTER_%1_%2"
 
 private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_nodes","_center","_result","_findObjectID"];
 
@@ -52,7 +53,7 @@ TRACE_2("cluster - input",_operation,_args);
 
 _result = true;
 
-#define MTEMPLATE format["ALiVE_CLUSTER_%1_%2", _random, count _markers]
+
 
 _deleteMarkers = {
         private ["_logic"];
@@ -72,7 +73,7 @@ _createMarkers = {
         if(count _nodes > 0) then {
                 // mark all nodes
                 {
-                        _m = MTEMPLATE;
+                        _m = format[MTEMPLATE, _random, count _markers];
                         if(str getMarkerPos _m == "[0,0,0]") then {
                                 _m = createMarkerLocal [_m, getPosATL _x];
                                 _m setMarkerShapeLocal "Icon";
@@ -86,7 +87,7 @@ _createMarkers = {
                 } forEach _nodes;
                 
                 _center = [_logic, "center"] call MAINCLASS;
-                _m = createMarkerLocal [MTEMPLATE, _center];
+                _m = createMarkerLocal [format[MTEMPLATE, _random, count _markers], _center];
                 _m setMarkerShapeLocal "Icon";
                 _m setMarkerSizeLocal [1, 1];
                 _m setMarkerTypeLocal "mil_dot";
