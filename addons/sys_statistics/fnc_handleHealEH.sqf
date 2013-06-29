@@ -12,13 +12,14 @@
 
 // ====================================================================================
 // MAIN
-#define DEBUG_MODE_FULL
 
 #include "script_component.hpp"
+
+	TRACE_1("SYS STAT HANDLE HEAL EH ",_this);
+
 if (GVAR(ENABLED)) then {
 	private ["_sidepatient","_sidemedic","_patienttype","_medicweapon","_medictype","_distance","_datetime","_factionmedic","_factionpatient","_data","_patientPos","_medicPos","_server","_realtime","_medic","_patient"];
 	
-	diag_log format["handledamage = %1",_this];
 	// Set Data 
 	_patient = _this select 0;
 	_medic = _this select 1;
@@ -37,9 +38,12 @@ if (GVAR(ENABLED)) then {
 		_patientPos = mapgridposition _patient;
 		_medicPos = mapgridposition _medic;
 		
+
+		
 		// Log data
 		_data = [ ["Event","Heal"] , ["patientSide",_sidepatient] , ["patientfaction",_factionpatient] , ["patientType",_patientType] , ["patientPos",_patientPos] , ["medicSide",_sidemedic] , ["medicfaction",_factionmedic] , ["medicType",_medicType] , ["medicPos",_medicPos] , ["patient", _patient] , ["medic",_medic] ];
-	
+		TRACE_1("SYS STAT HANDLE HEAL EH DETAIL", _data);
+		
 		if (isPlayer _patient) then { // Player was patient
 			
 				_data = _data + [ ["Player",getplayeruid _patient] , ["PlayerName",name _patient] ];
