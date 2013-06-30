@@ -34,8 +34,8 @@ _vehicleCount = 0;
 	_leader = leader _group;
 	_units = units _group;
 	_inVehicle = !(vehicle _leader == _leader);
-	
-	if((_leader getVariable ["profileID",0] == 0) && !(isPlayer _leader)) then {
+		
+	if((_leader getVariable ["profileID",""] == "") && !(isPlayer _leader)) then {
 	
 		_unitClasses = [];
 		_positions = [];
@@ -67,37 +67,38 @@ _vehicleCount = 0;
 		} forEach (waypoints _group);
 		
 		if (_inVehicle) then {
+		
 			_vehicle = (vehicle _leader);
-					
-			_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "profileID", format["vehicle_%1",_vehicleCount]] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "fuel", fuel _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "ammo", _vehicle call ALIVE_fnc_vehicleGetAmmo] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "engineOn", isEngineOn _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "canFire", canFire _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
 			
-			[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
+			if((_vehicle getVariable ["profileID",""]) == "") then {
+			
+				_vehicle setVariable ["profileID",format["vehicle_%1",_vehicleCount]];
+								
+				_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "profileID", format["vehicle_%1",_vehicleCount]] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "fuel", fuel _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "ammo", _vehicle call ALIVE_fnc_vehicleGetAmmo] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "engineOn", isEngineOn _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "canFire", canFire _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
+				[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
+				
+				[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
+				
+			} else {
+				_profileVehicle = [ALIVE_profileHandler, "getProfile", _vehicle getVariable "profileID"] call ALIVE_fnc_profileHandler;
+			};
 			
 			[_profileEntity,_profileVehicle] call ALIVE_fnc_createProfileVehicleAssignment;
 			
 			_vehicleCount = _vehicleCount + 1;
-			
-			deleteVehicle _vehicle; 
-		};
-		
-		{
-			deleteVehicle _x;
-		} forEach (_units);
-
-		deleteGroup _group;
+		};		
 		
 		_entityCount = _entityCount + 1;
 	
@@ -106,13 +107,31 @@ _vehicleCount = 0;
 } forEach _groups;
 
 
+{
+	_group = _x;
+	_leader = leader _group;
+	_units = units _group;
+	_inVehicle = !(vehicle _leader == _leader);
+	
+	if (_inVehicle) then {
+		_vehicle = (vehicle _leader);
+		
+		deleteVehicle _vehicle;
+	};
+	
+	{
+		deleteVehicle _x;
+	} forEach (_units);
+
+	deleteGroup _group;
+} forEach _groups;
 
 _vehicles = vehicles;
 
 {
 	_vehicle = _x;
 	
-	if(_vehicle getVariable ["profileID",0] == 0) then {
+	if((_vehicle getVariable ["profileID",""]) == "") then {
 					
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
