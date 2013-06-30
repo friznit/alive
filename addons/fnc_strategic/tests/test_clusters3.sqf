@@ -4,8 +4,8 @@
 SCRIPT(test_clusters3);
 
 // ----------------------------------------------------------------------------
-
-private ["_err","_obj_array","_center","_clusters_mil","_clusters_civ","_m","_amo","_result"];
+
+private ["_err","_obj_array","_clusters_mil","_clusters_civ","_amo","_result","_clusters"];
 
 
 LOG("Testing Clusters 3");

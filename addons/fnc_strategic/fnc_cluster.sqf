@@ -43,7 +43,7 @@ nil
 #define MAINCLASS ALIVE_fnc_cluster
 #define MTEMPLATE "ALiVE_CLUSTER_%1_%2"
 
-private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_nodes","_center","_result","_findObjectID"];
+private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_nodes","_center","_result"];
 
 _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
@@ -87,16 +87,16 @@ _createMarkers = {
                 } forEach _nodes;
                 
                 _center = [_logic, "center"] call MAINCLASS;
+                _max = [_logic, "size"] call MAINCLASS;
                 _m = createMarkerLocal [format[MTEMPLATE, _random, count _markers], _center];
                 _m setMarkerShapeLocal "Icon";
-                _m setMarkerSizeLocal [1, 1];
+                _m setMarkerSizeLocal [0.75, 0.75];
                 _m setMarkerTypeLocal "mil_dot";
                 _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
-                _m setMarkerTextLocal _m;
+                _m setMarkerTextLocal format["%1 (%2)",_m,_max];
                 _markers set [count _markers, _m];
                 
                 _m = createMarkerLocal [_m + "_size", _center];
-                _max = [_logic, "size"] call MAINCLASS;
                 _m setMarkerShapeLocal "Ellipse";
                 _m setMarkerSizeLocal [_max, _max];
                 _m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
@@ -105,20 +105,6 @@ _createMarkers = {
                 
                 [_logic, "debugMarkers", _markers] call ALIVE_fnc_hashSet;
         };
-};
-
-_findObjectID = {
-        // 388c2080# 88544: helipadsquare_f.p3d
-        private ["_tmp","_result"];
-        PARAMS_1(_tmp);
-        _result = [str _tmp, "# "] call CBA_fnc_split;
-        if(count _result > 1) then {
-                _result = [_result select 1, ": "] call CBA_fnc_split;
-                _result = parseNumber (_result select 0);
-        } else {
-                _result = typeOf _tmp;
-        };
-        _result;
 };
 
 switch(_operation) do {
@@ -184,7 +170,7 @@ switch(_operation) do {
                         _data = [];
                         {
                                 _data set [count _data, [
-                                        _x call _findObjectID,
+                                        _x call ALIVE_fnc_findObjectID,
                                         position _x
                                 ]];
                         } forEach ([_logic, "nodes",[]] call ALIVE_fnc_hashGet);
@@ -215,7 +201,7 @@ switch(_operation) do {
                 // Read Only - return distance from centre to furthest node
                 private ["_max"];
                 _nodes = [_logic, "nodes",[]] call ALIVE_fnc_hashGet;
-                _result = 25;
+                _result = 0;
                 _center = [_logic, "center"] call MAINCLASS;
                 if(count _center > 0) then {
                         {

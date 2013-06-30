@@ -63,14 +63,16 @@ _result = _master;
 		// if already nullified -1 - remove
 		if(str _out != "-1" && str _x != "-1" && str _out != str _x) then {
 			// check for cluster within master cluster
-			private ["_out_nodes","_nodes","_out_center","_x_center"];
+			private ["_out_nodes","_nodes","_out_center","_x_center","_out_prio","_x_prio"];
 			_out_center = [_out, "center"] call ALiVE_fnc_cluster;
 			_x_center = [_x, "center"] call ALiVE_fnc_cluster;
 			// valid cluster centers
 			if(count _out_center != 0 && count _x_center != 0) then {
-				_max = (([_x, "size"] call ALIVE_fnc_cluster) + ([_out, "size"] call ALIVE_fnc_cluster)) min 400;
-				// if cluster is within master cluster
-				if((_x_center distance _out_center) < _max) then {
+				_max = (([_x, "size"] call ALIVE_fnc_cluster) + ([_out, "size"] call ALIVE_fnc_cluster)) max 50;
+				// if cluster is within master cluster and of a lower priority
+				_out_prio = [_out, "priority"] call ALiVE_fnc_cluster;
+				_x_prio = [_x, "priority"] call ALiVE_fnc_cluster;
+				if((_x_center distance _out_center) < _max && _out_prio >= _x_prio) then {
 					// select nodes of both clusters
 					_nodes_out = ([_out, "nodes"] call ALIVE_fnc_cluster);
 					_nodes_x = ([_x, "nodes"] call ALIVE_fnc_cluster);
@@ -92,8 +94,8 @@ _result = _master;
 			};
 		};
 	} forEach _result;
+	_result = _result - [-1];
 } forEach _master;
-_result = _result - [-1];
 
 // return master list
 TRACE_1("consolidateClusters - output",_result);
