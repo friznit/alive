@@ -42,7 +42,7 @@ if(count _this > 2) then {
 	_result = [_hash, _key] call CBA_fnc_hashGet;
 };
 // check for default value
-if(typeName _result == "STRING" && {_result == "UNDEF"} && {count _this > 2}) then {
+if(!(isNil "_result") && {typeName _result == "STRING"} && {_result == "UNDEF"} && {count _this > 2}) then {
 	_default = _this select 2;
 	_result = _default;
 };
