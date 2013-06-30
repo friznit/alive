@@ -521,6 +521,7 @@ switch(_operation) do {
 					// create vehicle assignments from profile vehicle assignments
 					if(count _vehicleAssignments > 0) then {
 						{
+							diag_log _x;
 							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
 						} forEach _vehicleAssignments;
 					};

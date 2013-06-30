@@ -45,8 +45,7 @@ diag_log format["Timer End %1",_timeEnd];
 //========================================
 
 
-[] call ALIVE_fnc_cursorTargetInfo;
-
+//[] call ALIVE_fnc_cursorTargetInfo;
 
 // CREATE PROFILE HANDLER
 STAT("Create Profile Handler");
