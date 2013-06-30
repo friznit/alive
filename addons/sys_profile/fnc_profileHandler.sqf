@@ -23,6 +23,7 @@ String - getProfile - Profile object id to get profile by
 None - getProfiles
 String - getProfilesByType - String profile type to get filtered array of profiles by
 String - getProfilesBySide - String profile side to get filtered array of profiles by
+String - getProfilesByVehicleType - String profile vehicle type to get filtered array of profiles by
 
 Examples:
 (begin example)
@@ -49,6 +50,9 @@ _result = [_logic, "getProfilesByType", "agent"] call ALIVE_fnc_profileHandler;
 
 // get profiles by side
 _result = [_logic, "getProfilesBySide", "WEST"] call ALIVE_fnc_profileHandler;
+
+// get profiles by vehicle type
+_result = [_logic, "getProfilesByVehicleType", "Car"] call ALIVE_fnc_profileHandler;
 
 // get profiles by company
 _result = [_logic, "getProfilesByCompany", "company_01"] call ALIVE_fnc_profileHandler;
@@ -113,6 +117,16 @@ switch(_operation) do {
 						[_profilesBySide, "GUER", []] call ALIVE_fnc_hashSet;
 						[_profilesBySide, "CIV", []] call ALIVE_fnc_hashSet;
 						[_logic,"profilesBySide",_profilesBySide] call ALIVE_fnc_hashSet;
+						
+						_profilesByVehicleType = [] call ALIVE_fnc_hashCreate;
+						[_profilesByVehicleType, "Car", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleType, "Tank", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleType, "Truck", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleType, "Ship", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleType, "Helicopter", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleType, "Plane", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleType, "StaticWeapon", []] call ALIVE_fnc_hashSet;
+						[_logic,"profilesByVehicleType",_profilesByVehicleType] call ALIVE_fnc_hashSet;
 
 						[_logic,"profilesByCompany",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 
@@ -219,8 +233,9 @@ switch(_operation) do {
                 };
         };
 		case "registerProfile": {
-				private["_profile","_profileID","_profiles","_profilesByType","_profilesBySide","_profilesActive","_profilesInActive","_profilesByCompany",
-				"_profileType","_profilesType","_profileSide","_profilesSide","_profileActive","_profileCompany","_profleByCompanyArray"];
+				private["_profile","_profileID","_profiles","_profilesByType","_profilesBySide","_profilesByVehicleType","_profilesActive","_profilesInActive","_profilesByCompany",
+				"_profileType","_profilesType","_profileSide","_profilesSide","_profileActive","_profileCompany","_profleByCompanyArray","_profileVehicleType",
+				"_profilesVehicleType"];
 
 				if(typeName _args == "ARRAY") then {
 						_profile = _args;
@@ -228,6 +243,7 @@ switch(_operation) do {
 						_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
 						_profilesByType = [_logic, "profilesByType"] call ALIVE_fnc_hashGet;
 						_profilesBySide = [_logic, "profilesBySide"] call ALIVE_fnc_hashGet;
+						_profilesByVehicleType = [_logic, "profilesByVehicleType"] call ALIVE_fnc_hashGet;
 						_profilesActive = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
 						_profilesInActive = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
 						_profilesByCompany = [_logic, "profilesByCompany"] call ALIVE_fnc_hashGet;
@@ -268,14 +284,20 @@ switch(_operation) do {
 										_profleByCompanyArray = [_profilesByCompany, _profileCompany] call ALIVE_fnc_hashGet;
 										_profleByCompanyArray set [count _profleByCompanyArray, _profileID];
 									};
-								};
+								};								
+							}else{
+								// vehicle type
+								_profileVehicleType = [_profile, "vehicleType"] call ALIVE_fnc_hashGet;
+								_profilesVehicleType = [_profilesByVehicleType,_profileVehicleType] call ALIVE_fnc_hashGet;
+								_profilesVehicleType set [count _profilesVehicleType, _profileID];
 							};
 						};
                 };
         };
 		case "unregisterProfile": {
-				private["_profile","_profileID","_profiles","_profilesByType","_profilesBySide","_profilesActive","_profilesInActive","_profilesByCompany",
-				"_profileType","_profilesType","_profileSide","_profilesSide","_profileActive","_profleByCompanyArray"];
+				private["_profile","_profileID","_profiles","_profilesByType","_profilesBySide","_profilesByVehicleType","_profilesActive","_profilesInActive","_profilesByCompany",
+				"_profileType","_profilesType","_profileSide","_profilesSide","_profileActive","_profleByCompanyArray","_profileVehicleType",
+				"_profilesVehicleType"];
 
 				if(typeName _args == "ARRAY") then {
 						_profile = _args;
@@ -283,6 +305,7 @@ switch(_operation) do {
 						_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
 						_profilesByType = [_logic, "profilesByType"] call ALIVE_fnc_hashGet;
 						_profilesBySide = [_logic, "profilesBySide"] call ALIVE_fnc_hashGet;
+						_profilesByVehicleType = [_logic, "profilesByVehicleType"] call ALIVE_fnc_hashGet;
 						_profilesActive = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
 						_profilesInActive = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
 						_profilesByCompany = [_logic, "profilesByCompany"] call ALIVE_fnc_hashGet;
@@ -324,6 +347,12 @@ switch(_operation) do {
 									_profleByCompanyArray = _profleByCompanyArray - [_profileID];
 									[_profilesByCompany, _profileCompany, _profleByCompanyArray] call ALIVE_fnc_hashSet;
 								};
+							}else{
+								// vehicle type
+								_profileVehicleType = [_profile, "vehicleType"] call ALIVE_fnc_hashGet;
+								_profilesVehicleType = [_profilesByVehicleType, _profileVehicleType] call ALIVE_fnc_hashGet;
+								_profilesVehicleType = _profilesVehicleType - [_profileID];
+								[_profilesByVehicleType, _profileVehicleType, _profilesVehicleType] call ALIVE_fnc_hashSet;
 							};
 						};
                 };
@@ -362,6 +391,17 @@ switch(_operation) do {
 					_profilesBySide = [_logic, "profilesBySide"] call ALIVE_fnc_hashGet;
 
 					_result = [_profilesBySide, _side] call ALIVE_fnc_hashGet;
+				};
+		};
+		case "getProfilesByVehicleType": {
+				private["_type","_profilesByVehicleType"];
+
+				if(typeName _args == "STRING") then {
+					_type = _args;
+
+					_profilesByVehicleType = [_logic, "profilesByVehicleType"] call ALIVE_fnc_hashGet;
+
+					_result = [_profilesByVehicleType, _type] call ALIVE_fnc_hashGet;
 				};
 		};
 		case "getProfilesByCompany": {

@@ -126,6 +126,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_configGetWeaponMagazines.sqf";
 				recompile = 1;
 			};
+			class configGetVehicleMaxSpeed {
+				description = "configGetVehicleMaxSpeed";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleMaxSpeed.sqf";
+				recompile = 1;
+			};
 			class unitArraySortByRank {
 				description = "unitArraySortByRank";
 				file = "\x\alive\addons\sys_profile\fnc_unitArraySortByRank.sqf";
@@ -194,6 +199,11 @@ class cfgFunctions {
 			class vehicleGetKindOf {
 				description = "vehicleGetKindOf";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetKindOf.sqf";
+				recompile = 1;
+			};
+			class vehicleGetSpeedPerSecond {
+				description = "vehicleGetSpeedPerSecond";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleGetSpeedPerSecond.sqf";
 				recompile = 1;
 			};
 		};

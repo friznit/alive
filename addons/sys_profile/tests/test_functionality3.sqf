@@ -47,7 +47,7 @@ diag_log format["Timer End %1",_timeEnd];
 
 [] call ALIVE_fnc_cursorTargetInfo;
 
-
+/*
 // CREATE PROFILE HANDLER
 STAT("Create Profile Handler");
 ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
@@ -71,3 +71,4 @@ STAT("Run waypoint simulator");
 
 STAT("Run profile spawner");
 [] spawn {[100] call ALIVE_fnc_profileSpawner};
+*/

@@ -3,6 +3,8 @@
 #include <\x\alive\addons\sys_profile\script_component.hpp>
 SCRIPT(test_profileHandler);
 
+//execVM "\x\alive\addons\sys_profile\tests\test_profileHandler.sqf"
+
 // ----------------------------------------------------------------------------
 
 private ["_result","_err","_logic","_state","_result2"];
@@ -156,6 +158,15 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 diag_log _result;
 
 
+STAT("Get Profiles by vehicle type");
+_result = [_logic, "getProfilesByVehicleType", "Car"] call ALIVE_fnc_profileHandler;
+_err = "get Profiles by vehicle type";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
+
 STAT("Get Profiles by Company");
 _result = [_logic, "getProfilesByCompany", "company_01"] call ALIVE_fnc_profileHandler;
 _err = "get Company by side";
@@ -214,7 +225,7 @@ _err = "get state";
 ASSERT_TRUE(typeName _state == "ARRAY", _err);
 
 
-diag_log _state;
+_state call ALIVE_fnc_inspectHash;
 
 
 STAT("Sleeping before destroy");
