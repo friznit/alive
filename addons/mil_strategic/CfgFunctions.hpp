@@ -21,6 +21,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_strategic\fnc_composeForce.sqf";
                                 recompile = 1;
                         };
+                        class findTargets {
+                                description = "Identify targets within the TAOR";
+                                file = "\x\alive\addons\mil_strategic\fnc_findTargets.sqf";
+                                recompile = 1;
+                        };
                 };
         };
 };
