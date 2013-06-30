@@ -14,19 +14,19 @@
 <Key ID="STR_ALIVE_SEP_DEBUG_COMMENT">
 	<English>Enables SEP Module Debug</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_OBJECTIVES">
+<Key ID="STR_ALIVE_SEP_TARGETS">
 	<English>Objective Type:</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_OBJECTIVES_COMMENT">
-	<English>What types of infrastructure are\nthe enemy force targetting</English>
+<Key ID="STR_ALIVE_SEP_TARGETS_COMMENT">
+	<English>What types of infrastructure are the enemy force targetting</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_OBJECTIVES_MIL">
+<Key ID="STR_ALIVE_SEP_TARGETS_MIL">
 	<English>Military Infrastructure</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_OBJECTIVES_CIV">
+<Key ID="STR_ALIVE_SEP_TARGETS_CIV">
 	<English>Civilian Infrastructure</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_OBJECTIVES_ALL">
+<Key ID="STR_ALIVE_SEP_TARGETS_ALL">
 	<English>All Infrastructure</English>
 </Key>
 <Key ID="STR_ALIVE_SEP_SIZE">
