@@ -21,6 +21,7 @@ nothing yet
 
 Author:
 ARJay
+Highhead
 ---------------------------------------------------------------------------- */
 
 private ["_cycleTime","_profiles"];
@@ -30,31 +31,69 @@ _profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc
 
 waituntil {
 	{
-        private ["_unitProfile","_active","_waypoints","_currentPosition","_activeWaypoint","_destination","_distance","_direction","_newPosition","_leader","_profileID","_handleWPcomplete"];
-			_unitProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-			_profileID = [_unitProfile, "profileID"] call ALIVE_fnc_hashGet;
-            _active = [_unitProfile,"active"] call ALIVE_fnc_hashGet;			
-			_waypoints = [_unitProfile,"waypoints"] call ALIVE_fnc_hashGet;
-            _waypointsCompleted = [_unitProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
-			_currentPosition = [_unitProfile,"position"] call ALIVE_fnc_hashGet;
-            
-			if(count _waypoints > 0) then {
+        private ["_entityProfile","_profileID","_active","_waypoints","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo","_vehiclesInCargoOf","_activeWaypoint","_type",
+		"_speed","_destination","_distance","_speedPerSecond","_vehicleProfile","_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete"];
+					
+			_entityProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+			_profileID = [_entityProfile, "profileID"] call ALIVE_fnc_hashGet;
+            _active = [_entityProfile,"active"] call ALIVE_fnc_hashGet;			
+			_waypoints = [_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
+            _waypointsCompleted = [_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
+			_currentPosition = [_entityProfile,"position"] call ALIVE_fnc_hashGet;
+			_vehiclesInCommandOf = [_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
+			_vehiclesInCargoOf = [_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
+			_vehicleCommander = false;
+			_vehicleCargo = false;
+			
+			// if entity is commanding a vehicle/s
+			if(count _vehiclesInCommandOf > 0) then {
+				_vehicleCommander = true;				
+			};
+			
+			// if entity is cargo of vehicle/s
+			if(count _vehiclesInCargoOf > 0) then {
+				_vehicleCargo = true;
+			};
+			
+			["SIM profile: %1 command: %2 cargo: %3",_profileID,_vehicleCommander,_vehicleCargo] call ALIVE_fnc_dump;
+			            
+			// entity has waypoints assigned and entity is not in cargo of a vehicle
+			if(count _waypoints > 0 && !(_vehicleCargo)) then {
+			
+				["SIM profile: %1 count wp: %2",_profileID,count _waypoints] call ALIVE_fnc_dump;
+			
 				_activeWaypoint = _waypoints select 0;
-                _activeType = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
+                _type = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
+				_speed = [_activeWaypoint,"speed"] call ALIVE_fnc_hashGet;
 				_destination = [_activeWaypoint,"position"] call ALIVE_fnc_hashGet;
 				_distance = _currentPosition distance _destination;
-				if!(_active) then {
+				_speedPerSecond = 3;
+
+				// if in command of vehicle get the vehicle profile and set the move speed according to vehicle
+				if(_vehicleCommander) then {
+					// first vehicle
+					_vehicleProfile = [ALIVE_profileHandler, "getProfile", _vehiclesInCommandOf select 0] call ALIVE_fnc_profileHandler;
+					_vehicleClass = [_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;
+					_vehicleAssignments = [_vehicleProfile,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+					_speedArray = _vehicleClass call ALIVE_fnc_vehicleGetSpeedPerSecond;
+					_speedPerSecond = _speedArray select 1;
 					
-                    switch (_activeType) do {
+					["SIM profile: %1 vehClass: %2 speed: %3",_profileID,_vehicleClass,_speedPerSecond] call ALIVE_fnc_dump;
+				};
+				
+				// entity is not spawned, simulate
+				if!(_active) then {					
+					
+                    switch (_type) do {
                         case "MOVE" : {
                              _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-							 _newPosition = [_currentPosition, 3, _direction] call BIS_fnc_relPos;
+							 _newPosition = [_currentPosition, _speedPerSecond, _direction] call BIS_fnc_relPos;
                              _handleWPcomplete = {};
 
                         };
                         case "CYCLE" : {
                              _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-							 _newPosition = [_currentPosition, 3, _direction] call BIS_fnc_relPos;
+							 _newPosition = [_currentPosition, _speedPerSecond, _direction] call BIS_fnc_relPos;
                              _handleWPcomplete = {
                                 _waypoints = _waypoints + _waypointsCompleted;
                                 _waypointsCompleted = [];
@@ -66,6 +105,7 @@ waituntil {
                         };
                     };
                     
+					// distance to wp destination within completion radius
                     if(_distance <= 20) then {
                         _waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
 						_waypoints set [0,objNull];
@@ -73,19 +113,49 @@ waituntil {
                         
                         [] call _handleWPcomplete;
                         
-                        [_unitProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
-                    	[_unitProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
+                        [_entityProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
+                    	[_entityProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
 					};
                     
-					[_unitProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
-					[_unitProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+										
+					if(_vehicleCommander) then {
+						// if in command of vehicle move all entities within the vehicle						
+						// set the vehicle position and merge all assigned entities positions
+						{
+							["SIM profile: %1 move vehicle: %2",_profileID,_x] call ALIVE_fnc_dump;
+							_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+							[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
+							[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+						} forEach _vehiclesInCommandOf;												
+					}else{
+						// set the entity position and merge all unit positions to group position
+						[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
+						[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+					};
+				
+				// entity is spawned, update positions
 				} else {
-					_leader = [_unitProfile,"leader"] call ALIVE_fnc_hashGet;
-					[_unitProfile,"position",getPosATL _leader] call ALIVE_fnc_profileEntity;
-					[_unitProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+				
+					_leader = [_entityProfile,"leader"] call ALIVE_fnc_hashGet;
+					_newPosition = getPosATL _leader;
+				
+					if(_vehicleCommander) then {
+						// if in command of vehicle move all entities within the vehicle						
+						// set the vehicle position and merge all assigned entities positions
+						{
+							_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+							[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
+							[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+						} forEach _vehiclesInCommandOf;												
+					}else{
+						// set the entity position and merge all unit positions to group position
+						_leader = [_entityProfile,"leader"] call ALIVE_fnc_hashGet;
+						[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
+						[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+					};
 				};
 			};
-		[_unitProfile, "debug", true] call ALIVE_fnc_profileEntity;
+			
 	} forEach _profiles;
 	
 	sleep _cycleTime;

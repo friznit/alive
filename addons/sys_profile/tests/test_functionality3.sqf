@@ -61,6 +61,7 @@ STAT("Get profile handler state");
 _state = [ALIVE_profileHandler, "state"] call ALIVE_fnc_profileHandler;
 _state call ALIVE_fnc_inspectHash;
 
+
 DEBUGON;
 
 
@@ -69,4 +70,4 @@ STAT("Run waypoint simulator");
 
 
 STAT("Run profile spawner");
-[] spawn {[100] call ALIVE_fnc_profileSpawner};
+[] spawn {[50] call ALIVE_fnc_profileSpawner};

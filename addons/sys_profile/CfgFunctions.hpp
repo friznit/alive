@@ -70,7 +70,22 @@ class cfgFunctions {
 				description = "profileVehicleAssignmentIndexesToUnits";
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentIndexesToUnits.sqf";
 				recompile = 1;
-			};		
+			};
+			class profileVehicleAssignmentsGetInCommand {
+				description = "profileVehicleAssignmentsGetInCommand";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetInCommand.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsGetInCargo {
+				description = "profileVehicleAssignmentsGetInCargo";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetInCargo.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsSetAllPositions {
+				description = "profileVehicleAssignmentsSetAllPositions";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsSetAllPositions.sqf";
+				recompile = 1;
+			};
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";

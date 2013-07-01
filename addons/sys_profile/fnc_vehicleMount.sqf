@@ -45,7 +45,6 @@ _gunners = _assignments select 1;
 
 // commander
 _commander = _assignments select 2;
-
 {
 	[_x] orderGetIn true;
 } forEach _commander;
@@ -66,7 +65,6 @@ if(count _turret > 0) then {
 
 // cargo
 _cargo = _assignments select 4;
-
 {
 	[_x] orderGetIn true;
 } forEach _cargo;
