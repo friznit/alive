@@ -1,0 +1,394 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"INIT",0,4346,-200.995712,-247.573486,-110.995720,-197.573547,0.000000,"INIT"};
+item1[] = {"INIT_COMPLETE",4,218,-203.761581,-180.146667,-113.761589,-130.146667,0.000000,"INIT" \n "COMPLETE"};
+item2[] = {"ANALYZE",2,250,-398.915222,114.819130,98.822098,162.683716,0.000000,"ANALYZE"};
+item3[] = {"RECEIVE",4,218,-199.110794,8.832397,-109.110786,58.832394,0.000000,"RECEIVE"};
+item4[] = {"ATTACK_Condition",4,218,-411.698029,225.193970,-321.697906,275.193970,3.000000,"ATTACK" \n "Conditions"};
+item5[] = {"",7,210,171.547714,468.898773,179.547714,476.898743,0.000000,""};
+item6[] = {"",7,210,171.743484,135.632568,179.743546,143.632553,0.000000,""};
+item7[] = {"DEFEND_condition",4,218,-274.563141,224.477539,-184.563171,274.477539,2.000000,"DEFEND" \n "conditions"};
+item8[] = {"RESERVE_conditio",4,218,-129.641251,226.457153,-39.641190,276.457153,1.000000,"RESERVE" \n "conditions"};
+item9[] = {"CUSTOM_condition",4,218,10.774553,226.183777,100.774399,276.183777,0.000000,"CUSTOM" \n "conditions"};
+item10[] = {"ISSUE_ORDERS",2,250,-411.931244,333.563416,87.336044,377.766479,0.000000,"ISSUE ORDERS"};
+item11[] = {"GROUP_NOT_CONFIR",4,218,-150.917450,440.980774,-60.917450,490.980957,0.000000,"GROUP" \n "NOT" \n "CONFIRM"};
+item12[] = {"GROUP_CONFIRM",4,218,-255.035446,441.809845,-165.035599,491.809845,0.000000,"GROUP" \n "CONFIRM"};
+item13[] = {"",7,210,-514.292969,461.235718,-506.292969,469.235687,0.000000,""};
+item14[] = {"",7,210,-512.438843,135.777771,-504.438812,143.777756,0.000000,""};
+item15[] = {"_",-1,250,-160.369186,-89.328796,-144.130692,-86.830566,0.000000,""};
+item16[] = {"SEND",2,250,-199.909271,-102.298981,-109.909317,-52.298920,0.000000,"SEND"};
+item17[] = {"__1",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
+item18[] = {"TRANSMIT_TO_OPCO",2,250,-382.604065,440.411285,-292.604065,490.411285,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
+item19[] = {"TRANSMIT_TO_OPCO_1",2,250,-30.464869,437.026642,59.535149,487.026642,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
+item20[] = {"_",4,218,-482.501801,438.275482,-392.501801,488.275482,0.000000,""};
+item21[] = {"_",4,218,68.184074,442.021606,158.184052,492.021606,0.000000,""};
+version=1;
+class LayoutItems
+{
+	class Item15
+	{
+		class ItemInfo
+		{
+			Shape=2;
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+	class Item17
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+};
+link0[] = {0,1};
+link1[] = {1,16};
+link2[] = {2,3};
+link3[] = {2,4};
+link4[] = {2,7};
+link5[] = {2,8};
+link6[] = {2,9};
+link7[] = {3,2};
+link8[] = {4,10};
+link9[] = {5,6};
+link10[] = {6,2};
+link11[] = {7,10};
+link12[] = {8,10};
+link13[] = {9,10};
+link14[] = {10,11};
+link15[] = {10,12};
+link16[] = {11,19};
+link17[] = {12,18};
+link18[] = {13,14};
+link19[] = {14,2};
+link20[] = {16,3};
+link21[] = {18,20};
+link22[] = {19,21};
+link23[] = {20,13};
+link24[] = {21,5};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,67,6316128,1,-559.314697,201.275238,402.208282,-403.310974,711,753,1};
+window[] = {0,-1,-1,-1,-1,950,66,1776,66,1,728};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "tacom";
+  class States
+  {
+    /*%FSM<STATE "INIT">*/
+    class INIT
+    {
+      name = "INIT";
+      init = /*%FSM<STATEINIT""">*/"_busy = false;" \n
+       "_ProfileIDsBusy = [];" \n
+       "_targets_active = [];" \n
+       "_available =[];" \n
+       "_fails = [];" \n
+       "_operation = nil;" \n
+       "_TAC_confirmed = false;" \n
+       "" \n
+       "_TACOM_WPcheck = {" \n
+       "	_data = _this;" \n
+       "	_var =[""_TACOM_DATA"",[""completed"",_data]];" \n
+       "	_code = format[""TACOM setfsmvariable %1; hint 'WP reached'"",_var];" \n
+       "	_code;" \n
+       "};" \n
+       "" \n
+       "player sidechat format[""TACOM initialized, %1!"",true];" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "INIT_COMPLETE">*/
+        class INIT_COMPLETE
+        {
+          priority = 0.000000;
+          to="SEND";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "ANALYZE">*/
+    class ANALYZE
+    {
+      name = "ANALYZE";
+      init = /*%FSM<STATEINIT""">*/"_busy = true;" \n
+       "" \n
+       "_attack = nil;" \n
+       "_defend = nil;" \n
+       "_reserve = nil;" \n
+       "_custom = nil;" \n
+       "_data_value = nil;" \n
+       "_data_operation = nil;" \n
+       "_lastAnalyze = time;" \n
+       "" \n
+       "_section = [];" \n
+       "_sections = [];" \n
+       "" \n
+       "_profileIDs = [ALIVE_profileHandler, ""getProfilesBySide"",""EAST""] call ALIVE_fnc_profileHandler;" \n
+       "_sectionsCnt = floor((count _profileIDs)/3);" \n
+       "_available = _profileIDs - _ProfileIDsBusy;" \n
+       "" \n
+       "{" \n
+       "		private [""_profile"",""_profileID"",""_profileType"",""_position"",""_active""];" \n
+       "		" \n
+       "		_profile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
+       "		_profileID = [_profile,""profileID""] call ALIVE_fnc_hashGet;" \n
+       "		_side = [_profile, ""side""] call ALIVE_fnc_hashGet;" \n
+       "		_active = [_profile, ""active""] call ALIVE_fnc_hashGet;" \n
+       "		_pos = [_profile,""position""] call ALIVE_fnc_hashGet;" \n
+       "" \n
+       "		_sections set [count _sections,[_ProfileID,_pos]];" \n
+       "} forEach _available;" \n
+       "" \n
+       "if !(isnil ""_TACOM_DATA"") then {" \n
+       "	_DATA_OPERATION = _TACOM_DATA select 0;" \n
+       "	_DATA_VALUE = _TACOM_DATA select 1;" \n
+       "	_TACOM_DATA = nil;" \n
+       "" \n
+       "	switch (_DATA_OPERATION) do {" \n
+       "" \n
+       "		case (""completed"") : {" \n
+       "			_ProfileIDCompleted = _DATA_VALUE select 0;" \n
+       "			_posProfile = _DATA_VALUE select 1;" \n
+       "			_section = _DATA_VALUE select 2;" \n
+       "" \n
+       "			_ProfileIDsBusy = _ProfileIDsBusy - [_ProfileIDCompleted];" \n
+       "" \n
+       "			{" \n
+       "				_pos = _x select 0;" \n
+       "				_cnt = _x select 1;" \n
+       "" \n
+       "				if (str(_posProfile) == str(_pos)) then {_cnt = _cnt - 1; _targets_active set [_foreachIndex,[_pos,_cnt]]};" \n
+       "				if (_cnt == 0) exitwith {_targets_active set [_foreachIndex,objNull];_targets_active = _targets_active - [objNull]; OPCOM setFSMVariable [""_OPCOM_DATA"",[""completed"",_pos]]};" \n
+       "			} foreach _targets_active;" \n
+       "" \n
+       "			_busy = false" \n
+       "		};" \n
+       "" \n
+       "		case (""attack"") : {" \n
+       "			_target = _DATA_VALUE;" \n
+       "			_pos = _target select 0;" \n
+       "			" \n
+       "			_sections = [_sections,[],{_pos distance (_x select 1)},""ASCEND""] call BIS_fnc_sortBy;" \n
+       "			{_sections set [_foreachIndex,_x select 0]} foreach _sections;" \n
+       "" \n
+       "			{" \n
+       "				if ((count _section) >= _sectionsCnt) exitwith {};" \n
+       "				_section set [count _section,_x];" \n
+       "			} foreach _sections;" \n
+       "			_attack = [_target,_section];" \n
+       "		};" \n
+       "		case (""defend"") : {_defend = _DATA_VALUE};" \n
+       "		case (""reserve"") : {_reserve = _DATA_VALUE };" \n
+       "		case (""custom"") : {_custom = _DATA_VALUE};" \n
+       "		default {};" \n
+       "	};" \n
+       "} else {" \n
+       "	_busy = false;" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "ATTACK_Condition">*/
+        class ATTACK_Condition
+        {
+          priority = 3.000000;
+          to="ISSUE_ORDERS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_attack"");"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "DEFEND_condition">*/
+        class DEFEND_condition
+        {
+          priority = 2.000000;
+          to="ISSUE_ORDERS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_defend"");"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "RESERVE_conditio">*/
+        class RESERVE_conditio
+        {
+          priority = 1.000000;
+          to="ISSUE_ORDERS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_reserve"");"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "CUSTOM_condition">*/
+        class CUSTOM_condition
+        {
+          priority = 0.000000;
+          to="ISSUE_ORDERS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_custom"");"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "RECEIVE">*/
+        class RECEIVE
+        {
+          priority = 0.000000;
+          to="ANALYZE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"") && !(_busy);"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "ISSUE_ORDERS">*/
+    class ISSUE_ORDERS
+    {
+      name = "ISSUE_ORDERS";
+      init = /*%FSM<STATEINIT""">*/"_pos = nil;" \n
+       "" \n
+       "if !(isnil ""_attack"") then {_operation = ""attack""};" \n
+       "if !(isnil ""_defend"") then {_operation_defend = true};" \n
+       "if !(isnil ""_reserve"") then {_operation_reserve = true};" \n
+       "if !(isnil ""_custom"") then {_operation_custom = true};" \n
+       "" \n
+       "switch (_operation) do {" \n
+       "		case ( ""attack"") : {" \n
+       "			_target = _attack select 0;" \n
+       "			_pos = _target select 0;" \n
+       "			_section = _attack select 1;" \n
+       "			_message = _section;" \n
+       "			if (count _section > 0) then {" \n
+       "				{" \n
+       "					_profileID = _x;" \n
+       "					_profile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
+       "					_profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;" \n
+       "					_statements = [_ProfileID,_pos,_section] call _TACOM_WPcheck;" \n
+       "					[_profileWaypoint,""statements"",[""true"",_statements]] call ALIVE_fnc_hashSet;" \n
+       "" \n
+       "					[_profile, ""addWaypoint"", _profileWaypoint] call ALIVE_fnc_profileEntity;" \n
+       "					_ProfileIDsBusy set [count _ProfileIDsBusy, _profileID];" \n
+       "				} foreach _section;" \n
+       "				_TAC_confirmed = true;" \n
+       "			} else {" \n
+       "				_TAC_confirmed = false;" \n
+       "				_attack = [_target,[""nogroups""]];" \n
+       "			};" \n
+       "		};" \n
+       "		case (_operation_defend) : {};" \n
+       "		case (_operation_reserve) : {};" \n
+       "		case (_operation_custom) : {};" \n
+       "		default {};" \n
+       "};" \n
+       "" \n
+       "" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "GROUP_CONFIRM">*/
+        class GROUP_CONFIRM
+        {
+          priority = 0.000000;
+          to="TRANSMIT_TO_OPCO";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_TAC_confirmed;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "GROUP_NOT_CONFIR">*/
+        class GROUP_NOT_CONFIR
+        {
+          priority = 0.000000;
+          to="TRANSMIT_TO_OPCO_1";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!_TAC_confirmed"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "SEND">*/
+    class SEND
+    {
+      name = "SEND";
+      init = /*%FSM<STATEINIT""">*/"true"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "RECEIVE">*/
+        class RECEIVE
+        {
+          priority = 0.000000;
+          to="ANALYZE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"") && !(_busy);"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "TRANSMIT_TO_OPCO">*/
+    class TRANSMIT_TO_OPCO
+    {
+      name = "TRANSMIT_TO_OPCO";
+      init = /*%FSM<STATEINIT""">*/"_targets_active set [count _targets_active,[_pos, count _section]];" \n
+       "OPCOM setFSMVariable [""_OPCOM_DATA"",[""confirmed"",[true,_attack]]];"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "_">*/
+        class _
+        {
+          priority = 0.000000;
+          to="ANALYZE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "TRANSMIT_TO_OPCO_1">*/
+    class TRANSMIT_TO_OPCO_1
+    {
+      name = "TRANSMIT_TO_OPCO_1";
+      init = /*%FSM<STATEINIT""">*/"_fail = [""_OPCOM_DATA"",[""confirmed"",[false,_attack]]];" \n
+       "_fails set [count _fails, _fail];" \n
+       "OPCOM setFSMVariable _fail;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "_">*/
+        class _
+        {
+          priority = 0.000000;
+          to="ANALYZE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="INIT";
+  finalStates[] =
+  {
+  };
+};
+/*%FSM</COMPILE>*/
