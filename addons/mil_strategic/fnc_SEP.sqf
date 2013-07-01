@@ -319,7 +319,7 @@ switch(_operation) do {
 		// Identify targets with sheds for military vehicles assets
 		// - Calculate number of military vehicles assets
 		"SEP - Searching vehicle locations" call ALiVE_fnc_logger;
-		_types = ["shed_big","shed_small"];
+		_types = ["shed_big_f","shed_small_f"];
 		_clusters_veh = [_logic, _types] call ALIVE_fnc_findTargets;
 		{
 			[_x, "type", "CIV"] call ALIVE_fnc_cluster;
@@ -341,7 +341,8 @@ switch(_operation) do {
 				"hbarrier",
 				"mil_wall",
 				"mil_wired",
-				"razorwire"
+				"razorwire",
+				"vez"
 			];
 			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
 			{
@@ -361,7 +362,8 @@ switch(_operation) do {
 				"dp_",
 				"fuel",
 				"lighthouse_",
-				"pier_f",
+				"nav_lighthouse",
+				"nav_pier",
 				"radar",
 				"runway_beton",
 				"runway_end",
