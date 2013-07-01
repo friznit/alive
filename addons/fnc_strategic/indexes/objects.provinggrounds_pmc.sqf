@@ -1,12 +1,12 @@
 /*=================*/
 /*opening pbo provinggrounds_pmc.pbo
-======HEADER=======
+======<HEADER>=======
 prefix=ca\provinggrounds_pmc
 product=ArmA 2 OA
 registry=ArmA 2 PMC
-Pbo Type is: Arma
-SHA='A9EE66A7921CF3583BA12E9A0B5A6B82E18EB89F'
-======================
+Pbo Type is: Arma Addon
+Sha: '9AEE667A29C13F85B31AE2A9B0A5B6281EE88BF9'
+======</HEADER>============
 wrp= provinggrounds_pmc.wrp
 OPRW Version 24 (binarised)
 LayerSize = 64 x 64

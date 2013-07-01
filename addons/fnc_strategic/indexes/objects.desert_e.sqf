@@ -1,11 +1,11 @@
 /*=================*/
 /*opening pbo desert_e.pbo
-======HEADER=======
+======<HEADER>=======
 prefix=ca\desert_e
 product=ArmA 2 OA
-Pbo Type is: Arma
-SHA='4475B6DD0C13F1186A59DAC76E6EBFF72C1CAB0B'
-======================
+Pbo Type is: Arma Addon
+Sha: '44576BDDC0311F81A695AD7CE6E6FB7FC2C1BAB0'
+======</HEADER>============
 wrp= Desert_E.wrp
 OPRW Version 24 (binarised)
 LayerSize = 64 x 64

@@ -1,10 +1,10 @@
 /*=================*/
 /*opening pbo utes.pbo
-======HEADER=======
+======<HEADER>=======
 prefix=ca\utes
-Pbo Type is: Arma
-SHA='E264C21489737C244398C484365D15A283821EEC'
-======================
+Pbo Type is: Arma Addon
+Sha: '2E462C419837C74234894C4863D5512A3828E1CE'
+======</HEADER>============
 wrp= utes.wrp
 OPRW Version 24 (binarised)
 LayerSize = 128 x 128
