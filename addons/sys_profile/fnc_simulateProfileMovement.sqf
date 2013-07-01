@@ -32,7 +32,7 @@ _profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc
 waituntil {
 	{
         private ["_entityProfile","_profileID","_active","_waypoints","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo","_vehiclesInCargoOf","_activeWaypoint","_type",
-		"_speed","_destination","_distance","_speedPerSecond","_vehicleProfile","_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete"];
+		"_speed","_destination","_distance","_speedPerSecond","_vehicleProfile","_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements"];
 					
 			_entityProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 			_profileID = [_entityProfile, "profileID"] call ALIVE_fnc_hashGet;
@@ -66,6 +66,8 @@ waituntil {
                 _type = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
 				_speed = [_activeWaypoint,"speed"] call ALIVE_fnc_hashGet;
 				_destination = [_activeWaypoint,"position"] call ALIVE_fnc_hashGet;
+                _statements = [_activeWaypoint,"statements"] call ALIVE_fnc_hashGet;
+                
 				_distance = _currentPosition distance _destination;
 				_speedPerSecond = 3;
 
@@ -110,6 +112,7 @@ waituntil {
                         _waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
 						_waypoints set [0,objNull];
 						_waypoints = _waypoints - [objNull];
+                        if (call compile (_statements select 0)) then {call compile (_statements select 1)};
                         
                         [] call _handleWPcomplete;
                         
@@ -147,7 +150,7 @@ waituntil {
 							[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
 							[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
 						} forEach _vehiclesInCommandOf;												
-					}else{
+					} else {
 						// set the entity position and merge all unit positions to group position
 						_leader = [_entityProfile,"leader"] call ALIVE_fnc_hashGet;
 						[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
@@ -155,10 +158,9 @@ waituntil {
 					};
 				};
 			};
-			
+	[_entityProfile, "debug", true] call ALIVE_fnc_profileEntity;		
 	} forEach _profiles;
 	
 	sleep _cycleTime;
 	false	
 };
-	
