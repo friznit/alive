@@ -27,8 +27,6 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-ALIVE_timeStart = 0;
-
 private ["_start","_endTimer"];
 	
 _start = if(count _this > 0) then {_this select 0} else {false};

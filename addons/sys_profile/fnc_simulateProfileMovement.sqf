@@ -24,10 +24,21 @@ ARJay
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_cycleTime","_profiles"];
+private ["_debug","_cycleTime","_profiles"];
+
+_debug = if(count _this > 0) then {_this select 0} else {false};
 
 _cycleTime = 1;
 _profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
+
+
+// DEBUG -------------------------------------------------------------------------------------
+if(_debug) then {
+	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+	["ALIVE Simulated profile movement started cycling at %1 second iterations",_cycleTime] call ALIVE_fnc_dump;
+};
+// DEBUG -------------------------------------------------------------------------------------
+
 
 waituntil {
 	{
@@ -54,13 +65,9 @@ waituntil {
 			if(count _vehiclesInCargoOf > 0) then {
 				_vehicleCargo = true;
 			};
-			
-			["SIM profile: %1 command: %2 cargo: %3",_profileID,_vehicleCommander,_vehicleCargo] call ALIVE_fnc_dump;
 			            
 			// entity has waypoints assigned and entity is not in cargo of a vehicle
 			if(count _waypoints > 0 && !(_vehicleCargo)) then {
-			
-				["SIM profile: %1 count wp: %2",_profileID,count _waypoints] call ALIVE_fnc_dump;
 			
 				_activeWaypoint = _waypoints select 0;
                 _type = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
@@ -79,8 +86,6 @@ waituntil {
 					_vehicleAssignments = [_vehicleProfile,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 					_speedArray = _vehicleClass call ALIVE_fnc_vehicleGetSpeedPerSecond;
 					_speedPerSecond = _speedArray select 1;
-					
-					["SIM profile: %1 vehClass: %2 speed: %3",_profileID,_vehicleClass,_speedPerSecond] call ALIVE_fnc_dump;
 				};
 				
 				// entity is not spawned, simulate
@@ -125,7 +130,6 @@ waituntil {
 						// if in command of vehicle move all entities within the vehicle						
 						// set the vehicle position and merge all assigned entities positions
 						{
-							["SIM profile: %1 move vehicle: %2",_profileID,_x] call ALIVE_fnc_dump;
 							_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 							[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
 							[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
@@ -158,7 +162,6 @@ waituntil {
 					};
 				};
 			};
-	[_entityProfile, "debug", true] call ALIVE_fnc_profileEntity;		
 	} forEach _profiles;
 	
 	sleep _cycleTime;

@@ -53,21 +53,19 @@ ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 
 
+DEBUGON;
+
+
 STAT("Create profiles from editor placed units");
-[] call ALIVE_fnc_createProfilesFromUnits;
-
-
-STAT("Get profile handler state");
-_state = [ALIVE_profileHandler, "state"] call ALIVE_fnc_profileHandler;
-_state call ALIVE_fnc_inspectHash;
+[true] call ALIVE_fnc_createProfilesFromUnits;
 
 
 DEBUGON;
 
 
 STAT("Run waypoint simulator");
-[] spawn {[] call ALIVE_fnc_simulateProfileMovement};
+[] spawn {[true] call ALIVE_fnc_simulateProfileMovement};
 
 
 STAT("Run profile spawner");
-[] spawn {[50] call ALIVE_fnc_profileSpawner};
+[] spawn {[50,true] call ALIVE_fnc_profileSpawner};

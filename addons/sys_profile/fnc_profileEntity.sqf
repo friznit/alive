@@ -151,13 +151,31 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_id"];
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_profileID","_profileSide"];
         _logic = _this;
         _markers = [];
 
 		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
-		_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
+		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
+		
+		switch(_profileSide) do {
+			case "EAST":{
+				_debugColor = "ColorRed";
+			};
+			case "WEST":{
+				_debugColor = "ColorBlue";
+			};
+			case "CIV":{
+				_debugColor = "ColorYellow";
+			};
+			case "GUER":{
+				_debugColor = "ColorGreen";
+			};
+			default {
+				_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+			};
+		};
 
         if(count _position > 0) then {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];

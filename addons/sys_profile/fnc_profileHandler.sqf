@@ -102,6 +102,7 @@ switch(_operation) do {
                         TRACE_1("After module init",_logic);
 
 						// set defaults
+						[_logic,"debug",false] call ALIVE_fnc_hashSet;
 						[_logic,"profiles",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 
 						_profilesByType = [] call ALIVE_fnc_hashCreate;
@@ -200,6 +201,14 @@ switch(_operation) do {
 						} forEach (_profiles select 2);
 					};
 				};
+				
+				// DEBUG -------------------------------------------------------------------------------------
+				if(_args) then {
+					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					["ALIVE Profile Handler State"] call ALIVE_fnc_dump;
+					_state = [ALIVE_profileHandler, "state"] call ALIVE_fnc_profileHandler;
+					_state call ALIVE_fnc_inspectHash;
+				};
 
                 _result = _args;
         };
@@ -256,7 +265,18 @@ switch(_operation) do {
 						_profileType = [_profile, "type"] call ALIVE_fnc_hashGet;
 						_profilesType = [_profilesByType, _profileType] call ALIVE_fnc_hashGet;
 						_profilesType set [count _profilesType, _profileID];
+						
+						
+						// DEBUG -------------------------------------------------------------------------------------
+						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
+							[_profile,"debug",true] call ALIVE_fnc_hashSet;
+							["ALIVE Profile Handler"] call ALIVE_fnc_dump;
+							["Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
+							_profile call ALIVE_fnc_inspectHash;
+						};
+						// DEBUG -------------------------------------------------------------------------------------
 
+						
 						if(_profileType == "entity" || _profileType == "mil" || _profileType == "civ" || _profileType == "vehicle") then {
 
 							// store reference to main profile on by side hash
@@ -319,6 +339,16 @@ switch(_operation) do {
 						_profilesType = [_profilesByType, _profileType] call ALIVE_fnc_hashGet;
 						_profilesType = _profilesType - [_profileID];
 						[_profilesByType, _profileType, _profilesType] call ALIVE_fnc_hashSet;
+						
+						
+						// DEBUG -------------------------------------------------------------------------------------
+						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
+							["ALIVE Profile Handler"] call ALIVE_fnc_dump;
+							["Un-Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
+							_profile call ALIVE_fnc_inspectHash;
+						};
+						// DEBUG -------------------------------------------------------------------------------------
+						
 
 						if(_profileType == "entity" || _profileType == "mil" || _profileType == "civ" || _profileType == "vehicle") then {
 

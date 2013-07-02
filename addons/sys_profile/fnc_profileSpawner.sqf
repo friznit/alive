@@ -23,9 +23,19 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_distance","_entityProfiles","_vehicleProfiles"];
+private ["_distance","_debug","_entityProfiles","_vehicleProfiles"];
 
 _distance = if(count _this > 0) then {_this select 0} else {1000};
+_debug = if(count _this > 1) then {_this select 1} else {false};
+
+
+// DEBUG -------------------------------------------------------------------------------------
+if(_debug) then {
+	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+	["ALIVE Profile spawner started"] call ALIVE_fnc_dump;
+};
+// DEBUG -------------------------------------------------------------------------------------
+
 
 waituntil {
 

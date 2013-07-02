@@ -23,11 +23,23 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_groups","_entityCount","_vehicleCount","_group","_leader","_units","_inVehicle","_unitClasses","_positions","_ranks","_damages","_vehicle"];
+private ["_debug","_groups","_entityCount","_vehicleCount","_group","_leader","_units","_inVehicle","_unitClasses","_positions","_ranks","_damages","_vehicle"];
+
+_debug = if(count _this > 0) then {_this select 0} else {false};
 
 _groups = allGroups;
 _entityCount = 0;
 _vehicleCount = 0;
+
+
+// DEBUG -------------------------------------------------------------------------------------
+if(_debug) then {
+	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+	["ALIVE Create profiles from map groups"] call ALIVE_fnc_dump;
+	[true] call ALIVE_fnc_timer;
+};
+// DEBUG -------------------------------------------------------------------------------------
+
 
 {
 	_group = _x;
@@ -107,26 +119,60 @@ _vehicleCount = 0;
 } forEach _groups;
 
 
+// DEBUG -------------------------------------------------------------------------------------
+if(_debug) then {
+	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+	["ALIVE Create profiles from map groups Complete - entity profiles created: [%1] vehicle profiles created: [%2]",_entityCount,_vehicleCount] call ALIVE_fnc_dump;
+	[] call ALIVE_fnc_timer;
+	[true] call ALIVE_fnc_timer;
+	["ALIVE Deleting existing groups"] call ALIVE_fnc_dump;
+};
+// DEBUG -------------------------------------------------------------------------------------
+
+
+_deleteEntityCount = 0;
+_deleteVehicleCount = 0;
+
 {
 	_group = _x;
 	_leader = leader _group;
 	_units = units _group;
 	_inVehicle = !(vehicle _leader == _leader);
 	
-	if (_inVehicle) then {
-		_vehicle = (vehicle _leader);
-		
-		deleteVehicle _vehicle;
-	};
+	if!(isPlayer _leader) then {
 	
-	{
-		deleteVehicle _x;
-	} forEach (_units);
+		if (_inVehicle) then {
+			_vehicle = (vehicle _leader);
+			
+			deleteVehicle _vehicle;
+			
+			_deleteVehicleCount = _deleteVehicleCount + 1;
+		};
+		
+		{
+			deleteVehicle _x;
+		} forEach (_units);
 
-	deleteGroup _group;
+		deleteGroup _group;
+		
+		_deleteEntityCount = _deleteEntityCount + 1;
+	};
 } forEach _groups;
 
 _vehicles = vehicles;
+
+
+// DEBUG -------------------------------------------------------------------------------------
+if(_debug) then {
+	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+	["ALIVE Deleting existing groups Complete - groups deleted: [%1] vehicles deleted: [%2]",_deleteEntityCount,_deleteVehicleCount] call ALIVE_fnc_dump;
+	[] call ALIVE_fnc_timer;
+	[true] call ALIVE_fnc_timer;
+	["ALIVE Create profiles from map empty vehicles"] call ALIVE_fnc_dump;
+};
+// DEBUG -------------------------------------------------------------------------------------
+
+_vehicleCount = 0;
 
 {
 	_vehicle = _x;
@@ -156,4 +202,13 @@ _vehicles = vehicles;
 		
 	};
 	
-} forEach _vehicles
+} forEach _vehicles;
+
+
+// DEBUG -------------------------------------------------------------------------------------
+if(_debug) then {
+	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+	["ALIVE Create profiles from map empty vehicles Complete - vehicles profiles created: [%1]",_vehicleCount] call ALIVE_fnc_dump;
+	[] call ALIVE_fnc_timer;
+};
+// DEBUG -------------------------------------------------------------------------------------
