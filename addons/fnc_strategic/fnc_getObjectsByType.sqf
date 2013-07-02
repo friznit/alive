@@ -41,9 +41,27 @@ _err = "types provided not valid";
 ASSERT_DEFINED("_types",_err);
 ASSERT_TRUE(typeName _types == "ARRAY", _err);
 
-// read raw object data
-_file = format["\x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", worldName];
-call compile preprocessFileLineNumbers _file;
+if(isNil "wrp_objects") then {
+	// read raw object data
+	_file = format["\x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", worldName];
+	call compile preprocessFileLineNumbers _file;
+	format["Reading raw object data from file - %1 objects", count wrp_objects] call ALIVE_fnc_logger;
+	{
+		if([_x select 0, "\plants"] call CBA_fnc_find != -1) then {
+			wrp_objects set [_forEachIndex, -1];
+		} else {
+			if([_x select 0, "\rocks"] call CBA_fnc_find != -1) then {
+				wrp_objects set [_forEachIndex, -1];
+			} else {
+				if([_x select 0, "\pond"] call CBA_fnc_find != -1) then {
+					wrp_objects set [_forEachIndex, -1];
+				};
+			};
+		};
+	} forEach wrp_objects;
+	wrp_objects = wrp_objects - [-1];
+	format["Removed plants, rocks and pond objects - %1 objects", count wrp_objects] call ALIVE_fnc_logger;
+};
 _raw_objects = wrp_objects;
 _err = "raw object information not read correctly from file";
 ASSERT_DEFINED("_raw_objects",_err);
