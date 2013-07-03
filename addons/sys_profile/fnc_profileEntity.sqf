@@ -229,6 +229,7 @@ switch(_operation) do {
 						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
 						[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
+						[_logic,"speedPerSecond","Man" call ALIVE_fnc_vehicleGetSpeedPerSecond] call ALIVE_fnc_hashSet;
                 };
 
                 /*
