@@ -363,7 +363,7 @@ switch(_operation) do {
 				_result = [_logic,"speedPerSecond"] call ALIVE_fnc_hashGet;
         };
 		case "addVehicleAssignment": {
-				private ["_assignments","_key","_units","_unit","_group"];
+				private ["_assignments","_key"];
 
 				if(typeName _args == "ARRAY") then {
 						_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
@@ -385,8 +385,6 @@ switch(_operation) do {
                 };
 		};
 		case "clearVehicleAssignments": {
-				private ["_units","_unit","_group"];
-
 				[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 				[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
 				[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
@@ -438,7 +436,7 @@ switch(_operation) do {
 				};
 		};
 		case "addUnit": {
-				private ["_class","_position","_damage","_unitIndex","_unitClasses","_positions","_damages","_ranks"];
+				private ["_class","_position","_damage","_rank","_unitIndex","_unitClasses","_positions","_damages","_ranks"];
 
 				if(typeName _args == "ARRAY") then {
 						_class = _args select 0;
@@ -488,10 +486,29 @@ switch(_operation) do {
 							_units = _units - [objNull];
 							[_logic,"units",_units] call ALIVE_fnc_hashSet;
 						};
+						
+						_result = true;
+						if(count(_unitClasses) == 0) then {
+							_result = false;
+						};
                 };
 		};
+		case "removeUnitByObject": {
+				private ["_units","_unitIndex"];
+		
+				if(typeName _args == "OBJECT") then {
+					_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+					_unitIndex = 0;
+					{
+						if(_x == _args) then {
+							_result = [_logic, "removeUnit", _unitIndex] call MAINCLASS;
+						};
+						_unitIndex = _unitIndex + 1;
+					} forEach _units;
+				};
+		};
 		case "spawn": {
-				private ["_side","_sideObject","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
+				private ["_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
 				"_profileID","_active","_waypoints","_vehicleAssignments","_group","_unitPosition","_eventID","_waypointCount","_unitCount","_units","_unit"];
 
 				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
@@ -566,7 +583,7 @@ switch(_operation) do {
 				};
 		};
 		case "despawn": {
-				private ["_group","_leader","_units","_positions","_damages","_active","_unitCount","_waypoints","_profileWaypoint","_unit"];
+				private ["_group","_leader","_units","_positions","_damages","_ranks","_active","_unitCount","_waypoints","_profileWaypoint","_unit"];
 
 				_group = [_logic,"group"] call ALIVE_fnc_hashGet;
 				_leader = [_logic,"leader"] call ALIVE_fnc_hashGet;
@@ -619,10 +636,8 @@ switch(_operation) do {
 				};
 		};
 		case "handleDeath": {
-				private ["_unitIndex"];
-
-				if(typeName _args == "SCALAR") then {
-					[_logic, "removeUnit", _args] call MAINCLASS;
+				if(typeName _args == "OBJECT") then {
+					_result = [_logic, "removeUnitByObject", _args] call MAINCLASS;
 				};
 		};
         default {

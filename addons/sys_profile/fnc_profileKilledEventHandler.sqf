@@ -21,17 +21,20 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_unit","_unitProfileID","_profile","_profileType","_profileIndex"];
+private ["_unit","_profileID","_profile","_profileType"];
 	
 _unit = _this select 0;
 
-_unitProfileID = _unit getVariable "profileID";
-_profile = [ALIVE_profileHandler, "getProfile", _unitProfileID] call ALIVE_fnc_profileHandler;
+_profileID = _unit getVariable "profileID";
+_profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
 _profileType = [_profile, "type"] call ALIVE_fnc_hashGet;
 
 switch(_profileType) do {
 		case "entity": {
-			[_profile, "handleDeath"] call ALIVE_fnc_profileEntity;
+			_result = [_profile,"handleDeath",_unit] call ALIVE_fnc_profileEntity;
+			if!(_result) then {
+				[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+			};
 		};
 		case "mil": {
 			[_profile, "handleDeath"] call ALIVE_fnc_profileMil;
