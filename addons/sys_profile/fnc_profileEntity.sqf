@@ -521,7 +521,7 @@ switch(_operation) do {
 							_rank = _ranks select _unitCount;
 							_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
 							_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
-							_unit setPos _unitPosition;
+							_unit setPosATL _unitPosition;
 							_unit setDamage _damage;
 							_unit setRank _rank;
 

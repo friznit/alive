@@ -350,14 +350,14 @@ switch(_operation) do {
 				if!(_active) then {
 
 					// spawn the unit
-					if((_position select 2)>5 && _engineOn && (_vehicleType=="Helicopter" || _vehicleType=="Plane")) then {
+					if(_engineOn && (_vehicleType=="Helicopter" || _vehicleType=="Plane")) then {
+						_position set [2,50];
 						_special = "FLY";
 					}else{
 						_special = "NONE";
-					};
+					};					
 					
-					_vehicle = createVehicle [_vehicleClass, _position, [], 0, _special];
-					_vehicle setPos _position;
+					_vehicle = createVehicle [_vehicleClass, _position, [], 50, _special];
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
