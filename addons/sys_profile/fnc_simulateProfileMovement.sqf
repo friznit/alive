@@ -35,7 +35,7 @@ _profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
 	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-	["ALIVE Simulated profile movement started cycling at %1 second iterations",_cycleTime] call ALIVE_fnc_dump;
+	["ALIVE Simulated profile movement - started cycling at %1 second iterations",_cycleTime] call ALIVE_fnc_dump;
 };
 // DEBUG -------------------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ if(_debug) then {
 waituntil {
 	{
         private ["_entityProfile","_profileID","_active","_waypoints","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo","_vehiclesInCargoOf","_activeWaypoint","_type",
-		"_speed","_destination","_distance","_speedPerSecond","_vehicleProfile","_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements"];
+		"_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_vehicleProfile","_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements"];
 					
 			_entityProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 			_profileID = [_entityProfile, "profileID"] call ALIVE_fnc_hashGet;
@@ -53,6 +53,7 @@ waituntil {
 			_currentPosition = [_entityProfile,"position"] call ALIVE_fnc_hashGet;
 			_vehiclesInCommandOf = [_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
 			_vehiclesInCargoOf = [_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
+			_speedPerSecondArray = [_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
 			_vehicleCommander = false;
 			_vehicleCargo = false;
 			
@@ -74,19 +75,23 @@ waituntil {
 				_speed = [_activeWaypoint,"speed"] call ALIVE_fnc_hashGet;
 				_destination = [_activeWaypoint,"position"] call ALIVE_fnc_hashGet;
                 _statements = [_activeWaypoint,"statements"] call ALIVE_fnc_hashGet;
-                
-				_distance = _currentPosition distance _destination;
-				_speedPerSecond = 3;
-
-				// if in command of vehicle get the vehicle profile and set the move speed according to vehicle
-				if(_vehicleCommander) then {
-					// first vehicle
-					_vehicleProfile = [ALIVE_profileHandler, "getProfile", _vehiclesInCommandOf select 0] call ALIVE_fnc_profileHandler;
-					_vehicleClass = [_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;
-					_vehicleAssignments = [_vehicleProfile,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-					_speedArray = _vehicleClass call ALIVE_fnc_vehicleGetSpeedPerSecond;
-					_speedPerSecond = _speedArray select 1;
+                _distance = _currentPosition distance _destination;				
+								
+				switch(_speed) do {
+					case "LIMITED": { _speedPerSecond = _speedPerSecondArray select 0; };
+					case "NORMAL": { _speedPerSecond = _speedPerSecondArray select 1; };
+					case "FULL": { _speedPerSecond = _speedPerSecondArray select 2; };
+					case default { _speedPerSecond = _speedPerSecondArray select 1; };
 				};
+				
+				
+				// DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					["ALIVE Simulated profile movement Profile: [%1] WPType: [%2] WPSpeed: [%3] Distance: [%4] MoveSpeed: [%5] SpeedArray: %6",_profileID,_type,_speed,_distance,_speedPerSecond,_speedPerSecondArray] call ALIVE_fnc_dump;
+				};
+				// DEBUG -------------------------------------------------------------------------------------
+				
 				
 				// entity is not spawned, simulate
 				if!(_active) then {					
@@ -113,7 +118,7 @@ waituntil {
                     };
                     
 					// distance to wp destination within completion radius
-                    if(_distance <= 20) then {
+                    if(_distance <= (_speedPerSecond * 2)) then {
                         _waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
 						_waypoints set [0,objNull];
 						_waypoints = _waypoints - [objNull];

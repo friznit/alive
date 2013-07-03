@@ -35,7 +35,7 @@ _profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
 if(_profileType == "vehicle") then {
 
 	_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;	
-	_entityProfileID = (_vehicleAssignment select 1) select 0;
+	_entityProfileID = _vehicleAssignment select 1;
 	_entityProfile = [ALIVE_profileHandler, "getProfile", _entityProfileID] call ALIVE_fnc_profileHandler;
 	_entityProfileActive = [_entityProfile,"active"] call ALIVE_fnc_hashGet;
 	
@@ -58,7 +58,7 @@ if(_profileType == "vehicle") then {
 		["ASS: %1",_vehicleAssignment] call ALIVE_fnc_dump;
 		*/
 		
-		_indexes = (_vehicleAssignment select 2) select 0;
+		_indexes = _vehicleAssignment;
 		
 		_vehicleAssignment = [_indexes,_units] call ALIVE_fnc_profileVehicleAssignmentIndexesToUnits;
 		
@@ -70,7 +70,7 @@ if(_profileType == "vehicle") then {
 } else {
 
 	_units = [_profile,"units"] call ALIVE_fnc_hashGet;
-	_vehicleProfileID = (_vehicleAssignment select 1) select 0;
+	_vehicleProfileID = _vehicleAssignment select 0;
 	_vehicleProfile = [ALIVE_profileHandler, "getProfile", _vehicleProfileID] call ALIVE_fnc_profileHandler;
 	_vehicleProfileActive = [_vehicleProfile,"active"] call ALIVE_fnc_hashGet;
 	
@@ -93,7 +93,7 @@ if(_profileType == "vehicle") then {
 		["ASS: %1",_vehicleAssignment] call ALIVE_fnc_dump;
 		*/
 		
-		_indexes = (_vehicleAssignment select 2) select 0;
+		_indexes = _vehicleAssignment;
 		
 		_vehicleAssignment = [_indexes,_units] call ALIVE_fnc_profileVehicleAssignmentIndexesToUnits;
 		

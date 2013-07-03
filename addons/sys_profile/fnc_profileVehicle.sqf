@@ -174,7 +174,7 @@ switch(_operation) do {
 						[_logic,"needReload",0] call ALIVE_fnc_hashSet;
 						[_logic,"type","vehicle"] call ALIVE_fnc_hashSet;
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
-						[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
+						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"entitiesInCommandOf",[]] call ALIVE_fnc_hashSet;
 						[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet;
                 };
@@ -299,23 +299,24 @@ switch(_operation) do {
 				_result = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
         };
 		case "addVehicleAssignment": {
-				private ["_assignments","_units","_unit","_group"];
+				private ["_assignments","_key","_units","_unit","_group"];
 
 				if(typeName _args == "ARRAY") then {
 						_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-						_assignments set [count _assignments, _args];
+						_key = _args select 1;
+						[_assignments, _key, _args] call ALIVE_fnc_hashSet;
 						
 						// take assignments and determine if this entity is in command of any of them
-						[_logic,"entitiesInCommandOf",_assignments call ALIVE_fnc_profileVehicleAssignmentsGetInCommand] call ALIVE_fnc_hashSet;
+						[_logic,"entitiesInCommandOf",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetInCommand] call ALIVE_fnc_hashSet;
 						
 						// take assignments and determine if this entity is in cargo of any of them
-						[_logic,"entitiesInCargoOf",_assignments call ALIVE_fnc_profileVehicleAssignmentsGetInCargo] call ALIVE_fnc_hashSet;
+						[_logic,"entitiesInCargoOf",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetInCargo] call ALIVE_fnc_hashSet;
                 };
 		};
 		case "clearVehicleAssignments": {
 				private ["_units","_unit","_group"];
 
-				[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
+				[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 				[_logic,"entitiesInCommandOf",[]] call ALIVE_fnc_hashSet;
 				[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet;
 				
@@ -326,7 +327,7 @@ switch(_operation) do {
 				_position = [_logic,"position"] call ALIVE_fnc_hashGet;				
 				_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				
-				if(count _assignments > 0) then {
+				if(count (_assignments select 1) > 0) then {
 					[_assignments,_position] call ALIVE_fnc_profileVehicleAssignmentsSetAllPositions;
 				};
 		};
@@ -381,10 +382,10 @@ switch(_operation) do {
 					[_logic,"active",true] call ALIVE_fnc_hashSet;
 
 					// create vehicle assignments from profile vehicle assignments
-					if(count _vehicleAssignments > 0) then {
+					if(count (_vehicleAssignments select 1) > 0) then {
 						{
 							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
-						} forEach _vehicleAssignments;
+						} forEach (_vehicleAssignments select 2);
 					};
 				};
 		};

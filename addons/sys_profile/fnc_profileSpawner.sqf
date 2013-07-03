@@ -47,14 +47,34 @@ waituntil {
 		private ["_profile","_profileID","_profileType","_position","_active"];
 		
 		_profile = _x;
-		_profileID = [_x,"profileID"] call ALIVE_fnc_hashGet;
-		_profileType = [_x,"type"] call ALIVE_fnc_hashGet;
+		_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
+		_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
 		_active = [_profile, "active"] call ALIVE_fnc_hashGet;
-		_position = [_profile,"position"] call ALIVE_fnc_hashGet;
+		
+		if(_active) then {
+			if(_profileType == "vehicle") then {
+				_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;
+				_position = getPosATL _vehicle;
+			}else{
+				_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+				_position = getPosATL _leader;
+			};
+		}else{
+			_position = [_profile,"position"] call ALIVE_fnc_hashGet;
+		};		
 		
 		if ([_position, _distance] call ALiVE_fnc_anyPlayersInRange > 0) then {
 			
 			if!(_active) then {
+			
+				
+				// DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					["ALIVE Profile spawner - spawn [%1]",_profileID] call ALIVE_fnc_dump;
+				};
+				// DEBUG -------------------------------------------------------------------------------------
+					
 			
 				switch(_profileType) do {
 						case "entity": {
@@ -74,6 +94,15 @@ waituntil {
 		} else {
 			
 			if(_active) then {
+			
+			
+				// DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					["ALIVE Profile spawner - despawn [%1]",_profileID] call ALIVE_fnc_dump;
+				};
+				// DEBUG -------------------------------------------------------------------------------------
+			
 			
 				switch(_profileType) do {
 						case "entity": {

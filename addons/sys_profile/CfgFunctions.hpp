@@ -86,6 +86,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsSetAllPositions.sqf";
 				recompile = 1;
 			};
+			class profileVehicleAssignmentsGetSpeedPerSecond {
+				description = "profileVehicleAssignmentsGetSpeedPerSecond";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetSpeedPerSecond.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsGetCount {
+				description = "profileVehicleAssignmentsGetCount";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetCount.sqf";
+				recompile = 1;
+			};
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";
@@ -189,6 +199,11 @@ class cfgFunctions {
 			class vehicleGetEmptyPositions {
 				description = "vehicleGetEmptyPositions";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetEmptyPositions.sqf";
+				recompile = 1;
+			};
+			class vehicleAssignmentsToProfileVehicleAssignments {
+				description = "vehicleAssignmentsToProfileVehicleAssignments";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentsToProfileVehicleAssignments.sqf";
 				recompile = 1;
 			};
 			class vehicleHasRoomForGroup {

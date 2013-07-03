@@ -24,15 +24,23 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_assignments","_result","_vehicle","_assignment","_drivers","_commander","_inCargoVehicle"];
+private ["_assignments","_profile","_profileType","_result","_entity","_assignment","_drivers","_commander","_inCargoVehicle"];
 
-_assignments = _this;
+_assignments = _this select 0;
+_profile = _this select 1;
+
+_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
 
 _result = [];
 			
 {
-	_entity = (_x select 1) select 0;
-	_assignment = (_x select 2) select 0;
+	if(_profileType == "vehicle") then {
+		_entity = _x select 1;
+	}else{
+		_entity = _x select 0;
+	};
+	
+	_assignment = _x select 2;
 	_drivers = count(_assignment select 0);
 	_commander = count(_assignment select 2);
 	
@@ -50,6 +58,6 @@ _result = [];
 		_result set [count _result, _entity]
 	};				
 	
-} forEach _assignments;
+} forEach (_assignments select 2);
 
 _result

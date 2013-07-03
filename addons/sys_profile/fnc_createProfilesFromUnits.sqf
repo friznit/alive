@@ -23,7 +23,8 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_debug","_groups","_entityCount","_vehicleCount","_group","_leader","_units","_inVehicle","_unitClasses","_positions","_ranks","_damages","_vehicle"];
+private ["_debug","_groups","_entityCount","_vehicleCount","_group","_leader","_units","_inVehicle","_unitClasses","_positions",
+"_ranks","_damages","_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments","_assignments","_vehicleAssignments"];
 
 _debug = if(count _this > 0) then {_this select 0} else {false};
 
@@ -45,7 +46,6 @@ if(_debug) then {
 	_group = _x;
 	_leader = leader _group;
 	_units = units _group;
-	_inVehicle = !(vehicle _leader == _leader);
 		
 	if((_leader getVariable ["profileID",""] == "") && !(isPlayer _leader)) then {
 	
@@ -61,9 +61,11 @@ if(_debug) then {
 			_damages set [count _damages, getDammage _x];
 		} foreach (_units);
 		
+		_entityID = format["entity_%1",_entityCount];
+		
 		_profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "init"] call ALIVE_fnc_profileEntity;
-		[_profileEntity, "profileID", format["entity_%1",_entityCount]] call ALIVE_fnc_profileEntity;
+		[_profileEntity, "profileID", _entityID] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "position", getPosATL _leader] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
@@ -78,39 +80,52 @@ if(_debug) then {
 			[_profileEntity, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 		} forEach (waypoints _group);
 		
-		if (_inVehicle) then {
+		{
+			if (!(vehicle _x == _x)) then {
 		
-			_vehicle = (vehicle _leader);
-			
-			if((_vehicle getVariable ["profileID",""]) == "") then {
-			
-				_vehicle setVariable ["profileID",format["vehicle_%1",_vehicleCount]];
-								
-				_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "profileID", format["vehicle_%1",_vehicleCount]] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "fuel", fuel _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "ammo", _vehicle call ALIVE_fnc_vehicleGetAmmo] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "engineOn", isEngineOn _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "canFire", canFire _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
-				[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
+				_vehicle = (vehicle _x);
 				
-				[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
+				if((_vehicle getVariable ["profileID",""]) == "") then {
 				
-			} else {
-				_profileVehicle = [ALIVE_profileHandler, "getProfile", _vehicle getVariable "profileID"] call ALIVE_fnc_profileHandler;
-			};
-			
-			[_profileEntity,_profileVehicle] call ALIVE_fnc_createProfileVehicleAssignment;
-			
-			_vehicleCount = _vehicleCount + 1;
-		};		
+					_vehicle setVariable ["profileID",format["vehicle_%1",_vehicleCount]];
+					
+					_vehicleID = format["vehicle_%1",_vehicleCount];
+									
+					_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "profileID", _vehicleID] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "fuel", fuel _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "ammo", _vehicle call ALIVE_fnc_vehicleGetAmmo] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "engineOn", isEngineOn _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "canFire", canFire _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
+					
+					[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
+					
+					_vehicleCount = _vehicleCount + 1;					
+				}else{
+					_vehicleID = _vehicle getVariable "profileID";
+					_profileVehicle = [ALIVE_profileHandler, "getProfile", _vehicleID] call ALIVE_fnc_profileHandler;
+				};
+				
+				_profileVehicleAssignments = [_profileVehicle, "vehicleAssignments"] call ALIVE_fnc_hashGet;
+				
+				if!(_entityID in (_profileVehicleAssignments select 1)) then {
+					_assignments = [_vehicle,_group] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
+					
+					_vehicleAssignments = [_vehicleID,_entityID,_assignments];
+					
+					[_profileEntity, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileEntity;
+					[_profileVehicle, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileVehicle;
+				};				
+			};		
+		} foreach (_units);
 		
 		_entityCount = _entityCount + 1;
 	
@@ -137,19 +152,17 @@ _deleteVehicleCount = 0;
 	_group = _x;
 	_leader = leader _group;
 	_units = units _group;
-	_inVehicle = !(vehicle _leader == _leader);
-	
+		
 	if!(isPlayer _leader) then {
-	
-		if (_inVehicle) then {
-			_vehicle = (vehicle _leader);
-			
-			deleteVehicle _vehicle;
-			
-			_deleteVehicleCount = _deleteVehicleCount + 1;
-		};
 		
 		{
+			_inVehicle = !(vehicle _x == _x);
+			
+			if(_inVehicle) then {
+				_vehicle = (vehicle _x);			
+				deleteVehicle _vehicle;
+				_deleteVehicleCount = _deleteVehicleCount + 1;
+			};
 			deleteVehicle _x;
 		} forEach (_units);
 
@@ -171,8 +184,6 @@ if(_debug) then {
 	["ALIVE Create profiles from map empty vehicles"] call ALIVE_fnc_dump;
 };
 // DEBUG -------------------------------------------------------------------------------------
-
-_vehicleCount = 0;
 
 {
 	_vehicle = _x;
@@ -208,7 +219,7 @@ _vehicleCount = 0;
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
 	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-	["ALIVE Create profiles from map empty vehicles Complete - vehicles profiles created: [%1]",_vehicleCount] call ALIVE_fnc_dump;
+	["ALIVE Create profiles from map empty vehicles Complete"] call ALIVE_fnc_dump;
 	[] call ALIVE_fnc_timer;
 };
 // DEBUG -------------------------------------------------------------------------------------

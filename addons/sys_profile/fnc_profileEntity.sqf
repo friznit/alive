@@ -30,6 +30,8 @@ String - vehicleIDs - Set the profile vehicle profile object id
 Boolean - active - Flag for if the agents are spawned
 Object - unit - Reference to the spawned units
 None - unitCount - Returns the count of group units
+None - unitIndexes - Returns the count of group units
+Array - speedPerSecond - Returns the speed per second array
 Hash - addVehicleAssignment - Add a profile vehicle assignment array to the profile waypoint array
 None - clearVehicleAssignments - Clear the profile vehicle assignments array
 Hash - addWaypoint - Add a profile waypoint object to the profile waypoint array
@@ -89,6 +91,12 @@ _result = [_logic, "units", [_unit,_unit]] call ALIVE_fnc_profileEntity;
 
 // get the profile units count
 _result = [_logic, "unitCount"] call ALIVE_fnc_profileEntity;
+
+// get the profile units indexes
+_result = [_logic, "unitIndexes"] call ALIVE_fnc_profileEntity;
+
+// get the profile speed per second
+_result = [_logic, "speedPerSecond"] call ALIVE_fnc_profileEntity;
 
 // add a vehicle assignment to the profile vehicle assignment array
 _result = [_logic, "addVehicleAssignment", _profileVehicleAssignment] call ALIVE_fnc_profileEntity;
@@ -218,7 +226,7 @@ switch(_operation) do {
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
 						[_logic,"unitCount",0] call ALIVE_fnc_hashSet;
 						[_logic,"units",[]] call ALIVE_fnc_hashSet;
-						[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
+						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
 						[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
                 };
@@ -347,18 +355,28 @@ switch(_operation) do {
 
 				_result = _unitIndexes;
         };
+		case "speedPerSecond": {				
+				if(typeName _args == "ARRAY") then {
+						[_logic,"speedPerSecond",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"speedPerSecond"] call ALIVE_fnc_hashGet;
+        };
 		case "addVehicleAssignment": {
-				private ["_assignments","_units","_unit","_group"];
+				private ["_assignments","_key","_units","_unit","_group"];
 
 				if(typeName _args == "ARRAY") then {
 						_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-						_assignments set [count _assignments, _args];
+						_key = _args select 0;
+						[_assignments, _key, _args] call ALIVE_fnc_hashSet;
 						
 						// take assignments and determine if this entity is in command of any of them
-						[_logic,"vehiclesInCommandOf",_assignments call ALIVE_fnc_profileVehicleAssignmentsGetInCommand] call ALIVE_fnc_hashSet;
+						[_logic,"vehiclesInCommandOf",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetInCommand] call ALIVE_fnc_hashSet;
 						
 						// take assignments and determine if this entity is in cargo of any of them
-						[_logic,"vehiclesInCargoOf",_assignments call ALIVE_fnc_profileVehicleAssignmentsGetInCargo] call ALIVE_fnc_hashSet;
+						[_logic,"vehiclesInCargoOf",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetInCargo] call ALIVE_fnc_hashSet;
+						
+						// take assignments and determine the max speed per second for the entire group
+						[_logic,"speedPerSecond",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetSpeedPerSecond] call ALIVE_fnc_hashSet;
 
 						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
 							[_args, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
@@ -368,7 +386,7 @@ switch(_operation) do {
 		case "clearVehicleAssignments": {
 				private ["_units","_unit","_group"];
 
-				[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
+				[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 				[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
 				[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
 
@@ -540,10 +558,10 @@ switch(_operation) do {
 					};
 
 					// create vehicle assignments from profile vehicle assignments
-					if(count _vehicleAssignments > 0) then {
+					if(count (_vehicleAssignments select 1) > 0) then {
 						{
 							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
-						} forEach _vehicleAssignments;
+						} forEach (_vehicleAssignments select 2);
 					};
 				};
 		};

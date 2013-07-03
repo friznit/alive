@@ -25,12 +25,12 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_profileVehicle","_vehicleClass","_currentVehicleAssignments","_emptyPositionData","_indexes","_countCurrentPosition","_emptyPositions","_emptyPositionData"];
+private ["_profileVehicle","_vehicleClass","_vehicleAssignments","_emptyPositionData","_indexes","_countCurrentPosition","_emptyPositions","_emptyPositionData"];
 
 _profileVehicle = _this;
 
 _vehicleClass = [_profileVehicle, "vehicleClass"] call ALIVE_fnc_hashGet;
-_currentVehicleAssignments = [_profileVehicle, "vehicleAssignments"] call ALIVE_fnc_hashGet;
+_vehicleAssignments = [_profileVehicle, "vehicleAssignments"] call ALIVE_fnc_hashGet;
 
 // instantiate static vehicle position data
 if(isNil "ALIVE_vehiclePositions") then {
@@ -41,18 +41,17 @@ if(isNil "ALIVE_vehiclePositions") then {
 _emptyPositionData = [ALIVE_vehiclePositions, _vehicleClass] call ALIVE_fnc_hashGet;
 
 // if the vehicle already has assignments
-if(count _currentVehicleAssignments > 0) then {
+if(count (_vehicleAssignments select 1) > 0) then {
 	{
-		_indexes = (_x select 2) select 0;
+		_indexes = _x select 2;
 		// subtract occupied positions from empty position data
-		for "_i" from 0 to (count _indexes)-1 do {
-		
+		for "_i" from 0 to (count _indexes)-1 do {		
 			_countCurrentPosition = count (_indexes select _i);
 			_emptyPositions = _emptyPositionData select _i;
 			_emptyPositionData set [_i, _emptyPositions - _countCurrentPosition];
 		};
 		
-	} forEach _currentVehicleAssignments;
+	} forEach (_vehicleAssignments select 2);
 };
 
 _emptyPositionData

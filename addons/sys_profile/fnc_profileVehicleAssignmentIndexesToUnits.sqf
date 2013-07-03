@@ -27,8 +27,11 @@ ARJay
 
 private ["_indexes","_units","_index","_assignments","_assignment"];
 
-_indexes = _this select 0;
+_indexes = (_this select 0) select 2;
 _units = _this select 1;
+
+//["indexes:%1",_indexes] call ALIVE_fnc_dump;
+//["units:%1",_units] call ALIVE_fnc_dump;
 
 _assignments = [[],[],[],[],[]];
 

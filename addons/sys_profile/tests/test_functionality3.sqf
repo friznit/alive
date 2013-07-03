@@ -64,8 +64,8 @@ DEBUGON;
 
 
 STAT("Run waypoint simulator");
-[] spawn {[true] call ALIVE_fnc_simulateProfileMovement};
+[] spawn {[false] call ALIVE_fnc_simulateProfileMovement};
 
 
 STAT("Run profile spawner");
-[] spawn {[50,true] call ALIVE_fnc_profileSpawner};
+[] spawn {[200,true] call ALIVE_fnc_profileSpawner};
