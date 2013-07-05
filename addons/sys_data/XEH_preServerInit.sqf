@@ -24,7 +24,7 @@ publicVariable QGVAR(ASYNC_QUEUE);
 			
 			"Arma2Net.Unmanaged" callExtension _cmd;
 			
-			waitUntil {sleep 0.3; _response = ["SendJSON []"] call ALIVE_fnc_sendToPlugIn; ([_response] call CBA_fnc_strLen) > 0};
+			waitUntil {sleep 0.3; _response = ["SendJSONAsync []"] call ALIVE_fnc_sendToPlugIn; ([_response] call CBA_fnc_strLen) > 0};
 			
 			REM(GVAR(ASYNC_QUEUE),_cmd);
 			

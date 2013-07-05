@@ -5,7 +5,7 @@ SCRIPT(sendToPlugIn);
 Function: ALIVE_fnc_sendToPlugInAsync
 
 Description:
-Sends valid commands and data to arma2net plugins using an Async function. Sends the command to the ASYNC_HANDLER PVEH to be handled.
+Sends valid commands and data to arma2net plugins using an Async function. Sends the command to the ASYNC_QUEUE to be handled.
 
 Parameters:
 String - Text to be sent to external source

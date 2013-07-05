@@ -72,8 +72,11 @@ _json = "";
 //_cmd = format ["SendJSON ['POST', '%1', '%2', '%3'", _module, _data, _databaseName];
 // ["SendJSON ['POST', 'events', '{key:value,key:value}', 'arma3live']; 
 
-_cmd = format ["SendJSON [""POST"", ""%1""", _module];
-
+if (_returnUID) then {
+	_cmd = format ["SendJSON [""POST"", ""%1""", _module];
+} else {
+	_cmd = format ["SendJSONAsync [""POST"", ""%1""", _module];
+};
 // Create key/value pairs from data
 {
 	private ["_value","_key","_prefix","_suffix"];
