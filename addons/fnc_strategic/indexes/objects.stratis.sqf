@@ -1,12 +1,12 @@
 /*=================*/
 /*opening pbo map_stratis.pbo
-======HEADER=======
+======<HEADER>=======
 prefix=a3\map_stratis
 product=Arma 3
-version=50057
-Pbo Type is: Arma
-SHA='D990992BFC5DBD442F4FAEFBF59C2D567665414D'
-======================
+version=50560
+Pbo Type is: Arma Addon
+Sha: '5C5CA8000B3F44B464580342D46D1BDAE6125B72'
+======</HEADER>============
 wrp= Stratis.wrp
 OPRW Version 24 (binarised)
 LayerSize = 256 x 256

@@ -1,12 +1,12 @@
 /*=================*/
 /*opening pbo shapur_baf.pbo
-======HEADER=======
+======<HEADER>=======
 prefix=ca\shapur_baf
 product=ArmA 2 OA
 registry=ArmA 2 BAF
-Pbo Type is: Arma
-SHA='9F903ACE59848ADC69C5736CEBF97DB2167BEDD7'
-======================
+Pbo Type is: Arma Addon
+Sha: 'F909A3EC9548A8CD965C37C6BE9FD72B61B7DE7D'
+======</HEADER>============
 wrp= shapur_baf.wrp
 OPRW Version 24 (binarised)
 LayerSize = 64 x 64

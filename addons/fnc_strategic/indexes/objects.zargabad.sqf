@@ -1,11 +1,11 @@
 /*=================*/
 /*opening pbo zargabad.pbo
-======HEADER=======
+======<HEADER>=======
 prefix=ca\zargabad
 product=ArmA 2 OA
-Pbo Type is: Arma
-SHA='9B6A155EC78DF60D8D84B3572E5E0ACB797E062A'
-======================
+Pbo Type is: Arma Addon
+Sha: 'B9A651E57CD86FD0D8483B75E2E5A0BC97E760A2'
+======</HEADER>============
 wrp= zargabad.wrp
 OPRW Version 24 (binarised)
 LayerSize = 256 x 256

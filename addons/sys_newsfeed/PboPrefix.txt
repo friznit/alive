@@ -1,5 +1,8 @@
 x\alive\addons\sys_newsfeed
+======<HEADER>=======
 prefix=x\alive\addons\sys_newsfeed
-product=ALiVE
+product=Arma 3
 version=1
-Pbo Type is: Arma
+Pbo Type is: Arma Addon
+======</HEADER>============
+

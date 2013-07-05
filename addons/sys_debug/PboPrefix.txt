@@ -1,5 +1,8 @@
 x\alive\addons\sys_debug
+======<HEADER>=======
 prefix=x\alive\addons\sys_debug
-product=ALiVE
+product=Arma 3
 version=1
-Pbo Type is: Arma
+Pbo Type is: Arma Addon
+======</HEADER>============
+

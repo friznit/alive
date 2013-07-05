@@ -30,25 +30,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class objectives
+                        class targets
                         {
-                                displayName = "$STR_ALIVE_SEP_OBJECTIVES";
-                                description = "$STR_ALIVE_SEP_OBJECTIVES_COMMENT";
+                                displayName = "$STR_ALIVE_SEP_TARGETS";
+                                description = "$STR_ALIVE_SEP_TARGETS_COMMENT";
                                 class Values
                                 {
                                         class MILITARY
                                         {
-                                                name = "$STR_ALIVE_SEP_OBJECTIVES_MIL";
+                                                name = "$STR_ALIVE_SEP_TARGETS_MIL";
                                                 value = "MIL";
                                         };
                                         class CIVILIAN
                                         {
-                                                name = "$STR_ALIVE_SEP_OBJECTIVES_CIV";
+                                                name = "$STR_ALIVE_SEP_TARGETS_CIV";
                                                 value = "CIV";
                                         };
                                         class ALL
                                         {
-                                                name = "$STR_ALIVE_SEP_OBJECTIVES_ALL";
+                                                name = "$STR_ALIVE_SEP_TARGETS_ALL";
                                                 value = "ALL";
                                                 default = 1;
                                         };

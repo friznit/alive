@@ -52,15 +52,13 @@ _emptyPositionData = _profileVehicle call ALIVE_fnc_profileVehicleAssignmentGetE
 ["empty position data:%1",_emptyPositionData] call ALIVE_fnc_dump;
 */
 
-_vehicleAssignments = [] call ALIVE_fnc_hashCreate;
-_unitAssignments = [] call ALIVE_fnc_hashCreate;
-_assignments = [[],[],[],[],[]];
+_assignments = [_vehicleID,_entityID,[[],[],[],[],[]]];
 _assignedCount = 0;
 
 scopeName "main";
 
 for "_i" from 0 to (count _emptyPositionData)-1 do {
-	_assignment = _assignments select _i;
+	_assignment = (_assignments select 2) select _i;
 	_emptyCount = _emptyPositionData select _i;
 
 	for "_j" from 0 to (_emptyCount)-1 do {
@@ -73,13 +71,5 @@ for "_i" from 0 to (count _emptyPositionData)-1 do {
 	};
 };
 
-[_vehicleAssignments, _vehicleID, _assignments] call ALIVE_fnc_hashSet;
-[_unitAssignments, _entityID, _assignments] call ALIVE_fnc_hashSet;
-
-/*
-["vehicle assignment:%1",_vehicleAssignments] call ALIVE_fnc_dump;
-["vehicle assignment:%1",_unitAssignments] call ALIVE_fnc_dump;
-*/
-
-[_profileEntity, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileEntity;
-[_profileVehicle, "addVehicleAssignment", _unitAssignments] call ALIVE_fnc_profileVehicle;
+[_profileEntity, "addVehicleAssignment", _assignments] call ALIVE_fnc_profileEntity;
+[_profileVehicle, "addVehicleAssignment", _assignments] call ALIVE_fnc_profileVehicle;

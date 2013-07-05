@@ -107,14 +107,32 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_id"];
+        private ["_logic","_markers","_m","_position","_profileID","_debugColor","_profileSide"];
         _logic = _this;
         _markers = [];
 
 		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
-		_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
-
+		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
+		
+		switch(_profileSide) do {
+			case "EAST":{
+				_debugColor = "ColorRed";
+			};
+			case "WEST":{
+				_debugColor = "ColorBlue";
+			};
+			case "CIV":{
+				_debugColor = "ColorYellow";
+			};
+			case "GUER":{
+				_debugColor = "ColorGreen";
+			};
+			default {
+				_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+			};
+		};
+		
         if(count _position > 0) then {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
 				_m setMarkerShapeLocal "ICON";
@@ -146,7 +164,7 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);
 
 						// set defaults
-						[_logic,"damage",0] call ALIVE_fnc_hashSet;
+						[_logic,"debug",false] call ALIVE_fnc_hashSet;
 						[_logic,"fuel",1] call ALIVE_fnc_hashSet;
 						[_logic,"ammo",[]] call ALIVE_fnc_hashSet;
 						[_logic,"engineOn",false] call ALIVE_fnc_hashSet;
@@ -156,7 +174,9 @@ switch(_operation) do {
 						[_logic,"needReload",0] call ALIVE_fnc_hashSet;
 						[_logic,"type","vehicle"] call ALIVE_fnc_hashSet;
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
-						[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
+						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+						[_logic,"entitiesInCommandOf",[]] call ALIVE_fnc_hashSet;
+						[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet;
                 };
 
                 /*
@@ -199,6 +219,10 @@ switch(_operation) do {
 		case "position": {
 				if(typeName _args == "ARRAY") then {
 						[_logic,"position",_args] call ALIVE_fnc_hashSet;
+						
+						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
+							[_logic,"debug",true] call MAINCLASS;
+						};
                 };
 				_result = [_logic,"position"] call ALIVE_fnc_hashGet;
         };
@@ -275,38 +299,37 @@ switch(_operation) do {
 				_result = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
         };
 		case "addVehicleAssignment": {
-				private ["_assignments","_units","_unit","_group"];
+				private ["_assignments","_key","_units","_unit","_group"];
 
 				if(typeName _args == "ARRAY") then {
 						_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-						_assignments set [count _assignments, _args];
-
-						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
-							/*
-							_units = [_logic,"units"] call ALIVE_fnc_hashGet;
-							_unit = _units select 0;
-							_group = group _unit;
-							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
-							*/
-						}
+						_key = _args select 1;
+						[_assignments, _key, _args] call ALIVE_fnc_hashSet;
+						
+						// take assignments and determine if this entity is in command of any of them
+						[_logic,"entitiesInCommandOf",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetInCommand] call ALIVE_fnc_hashSet;
+						
+						// take assignments and determine if this entity is in cargo of any of them
+						[_logic,"entitiesInCargoOf",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetInCargo] call ALIVE_fnc_hashSet;
                 };
 		};
 		case "clearVehicleAssignments": {
 				private ["_units","_unit","_group"];
 
-				[_logic,"vehicleAssignments",[]] call ALIVE_fnc_hashSet;
+				[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+				[_logic,"entitiesInCommandOf",[]] call ALIVE_fnc_hashSet;
+				[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet;
+				
+		};
+		case "mergePositions": {
+				private ["_position","_assignments"];
 
-				if([_logic,"active"] call ALIVE_fnc_hashGet) then {
-						/*
-						_units = [_logic,"units"] call ALIVE_fnc_hashGet;
-						_unit = _units select 0;
-						_group = group _unit;
-						while { count (waypoints _group) > 0 } do
-						{
-							deleteWaypoint ((waypoints _group) select 0);
-						};
-						*/
-				}
+				_position = [_logic,"position"] call ALIVE_fnc_hashGet;				
+				_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				
+				if(count (_assignments select 1) > 0) then {
+					[_assignments,_position] call ALIVE_fnc_profileVehicleAssignmentsSetAllPositions;
+				};
 		};
 		case "spawn": {
 				private ["_side","_vehicleClass","_vehicleType","_position","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID"];
@@ -327,14 +350,14 @@ switch(_operation) do {
 				if!(_active) then {
 
 					// spawn the unit
-					if((_position select 2)>5 && _engineOn && (_vehicleType=="Helicopter" || _vehicleType=="Plane")) then {
+					if(_engineOn && (_vehicleType=="Helicopter" || _vehicleType=="Plane")) then {
+						_position set [2,50];
 						_special = "FLY";
 					}else{
 						_special = "NONE";
-					};
+					};					
 					
-					_vehicle = createVehicle [_vehicleClass, _position, [], 0, _special];
-					_vehicle setPos _position;
+					_vehicle = createVehicle [_vehicleClass, _position, [], 50, _special];
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
@@ -359,10 +382,10 @@ switch(_operation) do {
 					[_logic,"active",true] call ALIVE_fnc_hashSet;
 
 					// create vehicle assignments from profile vehicle assignments
-					if(count _vehicleAssignments > 0) then {
+					if(count (_vehicleAssignments select 1) > 0) then {
 						{
 							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
-						} forEach _vehicleAssignments;
+						} forEach (_vehicleAssignments select 2);
 					};
 				};
 		};
@@ -375,7 +398,13 @@ switch(_operation) do {
 
 				// not already inactive
 				if(_active) then {
-
+					
+					[_logic,"active",false] call ALIVE_fnc_hashSet;
+					
+					// update profile vehicle assignments before despawn
+					[_logic, "clearVehicleAssignments"] call MAINCLASS;					
+					[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
+					
 					// update profile before despawn
 					[_logic,"position", getPosATL _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"direction", getDir _vehicle] call ALIVE_fnc_hashSet;
@@ -387,7 +416,6 @@ switch(_operation) do {
 					[_logic,"canMove", canMove _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"needReload", needReload _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet;
-					[_logic,"active",false] call ALIVE_fnc_hashSet;
 
 					// delete
 					deleteVehicle _vehicle;

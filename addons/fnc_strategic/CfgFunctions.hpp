@@ -76,6 +76,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_strategic\fnc_findFlatArea.sqf";
 				recompile = 1;
 			};
+			class findObjectID {
+				description = "Returns the Visitor object ID of a map placed object";
+				file = "\x\alive\addons\fnc_strategic\fnc_findObjectID.sqf";
+				recompile = 1;
+			};
+			class validateLocations {
+				description = "Ensure locations are in or out of a markers area";
+				file = "\x\alive\addons\fnc_strategic\fnc_validateLocations.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

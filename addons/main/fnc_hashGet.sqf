@@ -28,22 +28,23 @@ See Also:
 
 Author:
 ARJay
+Wolffy
 ---------------------------------------------------------------------------- */
 private ["_hash","_key","_default","_result"];
 
 _hash = _this select 0;
 _key = _this select 1;
 
-// check for default value
 if(count _this > 2) then {
 	_default = _this select 2;
-	if([_hash, _key] call CBA_fnc_hashHasKey) then {
-		_result = [_hash, _key] call CBA_fnc_hashGet;
-	}else{
-		_result = _default;
-	};
-}else{
+	_result = [_hash, _key, _default] call CBA_fnc_hashGet;
+} else {
 	_result = [_hash, _key] call CBA_fnc_hashGet;
+};
+// check for default value
+if(!(isNil "_result") && {typeName _result == "STRING"} && {_result == "UNDEF"} && {count _this > 2}) then {
+	_default = _this select 2;
+	_result = _default;
 };
 
 _result

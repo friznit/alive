@@ -39,12 +39,7 @@ _orderIn = if(count _this > 2) then {_this select 2} else {true};
 
 _positionCount = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
 _units = units _group;
-_assignments = [];
-_assignments set [0, []];
-_assignments set [1, []];
-_assignments set [2, []];
-_assignments set [3, []];
-_assignments set [4, []];
+_assignments = [[],[],[],[],[]];
 _gunners = [];
 _turrets = [];
 _cargos = [];

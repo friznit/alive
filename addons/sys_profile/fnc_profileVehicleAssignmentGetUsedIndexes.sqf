@@ -32,17 +32,16 @@ _vehicleAssignments = _this;
 _usedIndexes = [];
 
 // if the group already has assignments
-if(count _vehicleAssignments > 0) then {
+if(count (_vehicleAssignments select 1) > 0) then {
 	{		
-		_indexes = (_x select 2) select 0;
+		_indexes = _x select 2;
 		// record indexs of units that are already assigned to other vehicles
-		for "_i" from 0 to (count _indexes)-1 do {
-		
+		for "_i" from 0 to (count _indexes)-1 do {		
 			_indexesCurrentPosition = _indexes select _i;
 			_usedIndexes = _usedIndexes + _indexesCurrentPosition;
 		};
 		
-	} forEach _vehicleAssignments;
+	} forEach (_vehicleAssignments select 2);
 };
 
 _usedIndexes

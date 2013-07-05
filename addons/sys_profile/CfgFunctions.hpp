@@ -70,7 +70,32 @@ class cfgFunctions {
 				description = "profileVehicleAssignmentIndexesToUnits";
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentIndexesToUnits.sqf";
 				recompile = 1;
-			};		
+			};
+			class profileVehicleAssignmentsGetInCommand {
+				description = "profileVehicleAssignmentsGetInCommand";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetInCommand.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsGetInCargo {
+				description = "profileVehicleAssignmentsGetInCargo";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetInCargo.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsSetAllPositions {
+				description = "profileVehicleAssignmentsSetAllPositions";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsSetAllPositions.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsGetSpeedPerSecond {
+				description = "profileVehicleAssignmentsGetSpeedPerSecond";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetSpeedPerSecond.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsGetCount {
+				description = "profileVehicleAssignmentsGetCount";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetCount.sqf";
+				recompile = 1;
+			};
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";
@@ -126,9 +151,19 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_configGetWeaponMagazines.sqf";
 				recompile = 1;
 			};
+			class configGetVehicleMaxSpeed {
+				description = "configGetVehicleMaxSpeed";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleMaxSpeed.sqf";
+				recompile = 1;
+			};
 			class unitArraySortByRank {
 				description = "unitArraySortByRank";
 				file = "\x\alive\addons\sys_profile\fnc_unitArraySortByRank.sqf";
+				recompile = 1;
+			};
+			class unitArrayGetVehiclesWithin {
+				description = "unitArrayGetVehiclesWithin";
+				file = "\x\alive\addons\sys_profile\fnc_unitArrayGetVehiclesWithin.sqf";
 				recompile = 1;
 			};
 			class groupCountAlive {
@@ -171,6 +206,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetEmptyPositions.sqf";
 				recompile = 1;
 			};
+			class vehicleAssignmentsToProfileVehicleAssignments {
+				description = "vehicleAssignmentsToProfileVehicleAssignments";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentsToProfileVehicleAssignments.sqf";
+				recompile = 1;
+			};
+			class vehicleAssignmentToProfileVehicleAssignment {
+				description = "vehicleAssignmentToProfileVehicleAssignment";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentToProfileVehicleAssignment.sqf";
+				recompile = 1;
+			};
 			class vehicleHasRoomForGroup {
 				description = "vehicleHasRoomForGroup";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleHasRoomForGroup.sqf";
@@ -179,6 +224,11 @@ class cfgFunctions {
 			class vehicleIsGroupIn {
 				description = "vehicleIsGroupIn";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleIsGroupIn.sqf";
+				recompile = 1;
+			};
+			class vehicleGetGroupsWithin {
+				description = "vehicleGetGroupsWithin";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleGetGroupsWithin.sqf";
 				recompile = 1;
 			};
 			class vehicleMount {
@@ -194,6 +244,11 @@ class cfgFunctions {
 			class vehicleGetKindOf {
 				description = "vehicleGetKindOf";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetKindOf.sqf";
+				recompile = 1;
+			};
+			class vehicleGetSpeedPerSecond {
+				description = "vehicleGetSpeedPerSecond";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleGetSpeedPerSecond.sqf";
 				recompile = 1;
 			};
 		};

@@ -215,13 +215,10 @@ STAT("ConsolidateClusters function");
 _result = [[TEST_LOGIC,TEST_LOGIC2],[TEST_LOGIC3]] call ALIVE_fnc_consolidateClusters;
 _err = "consolidating clusters";
 ASSERT_TRUE(typeName _result == "ARRAY", typeName _result);
-_master = (_result select 0) select 0;
-ASSERT_TRUE(typeName _master == "ARRAY", typeName _master);
+_master = _result select 0;
+ASSERT_TRUE(typeName _master == "ARRAY", _master);
 _nodes = [_master,"nodes"] call ALIVE_fnc_cluster;
-ASSERT_TRUE(count _nodes == 6,_err);
-_redundant = (_result select 1);
-ASSERT_TRUE(typeName _redundant == "ARRAY", typeName _redundant);
-ASSERT_TRUE(count _redundant == 0,_err);
+ASSERT_TRUE(count _nodes == 6,str _nodes);
 STAT("Deleting Logics");
 DELETE_TEST_LOGIC
 DELETE_TEST_LOGIC2

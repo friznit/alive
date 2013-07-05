@@ -1,4 +1,5 @@
 #include <\x\alive\addons\main\script_component.hpp>
+#include <\x\cba\addons\hashes\script_hashes.hpp>
 SCRIPT(hashRem);
 
 /* ----------------------------------------------------------------------------
@@ -28,6 +29,9 @@ private ["_hash","_key","_result"];
 _hash = _this select 0;
 _key = _this select 1;
 
-_result = [_hash, _key] call CBA_fnc_hashRem;
+private ["_defaultValue"];
 
-_result
+_defaultValue = _hash select HASH_DEFAULT_VALUE;
+[_hash, _key, if (isNil "_defaultValue") then { nil } else { _defaultValue }] call ALIVE_fnc_hashSet;
+
+_hash; // Return.

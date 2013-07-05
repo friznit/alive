@@ -28,7 +28,7 @@ ASSERT_TRUE(!_result, _err);
 
 //========================================
 
-private ["_amo","_pos","_types","_result","_err","_m","_markers"];
+private ["_amo","_pos","_types","_result","_err","_m"];
 
 LOG("Testing Find HQ");
 
@@ -37,7 +37,6 @@ ASSERT_DEFINED("ALIVE_fnc_getObjectsByType","");
 
 _amo = allMissionObjects "";
 _pos = position player;
-_markers = [];
 
 _types = [
         "barrack",

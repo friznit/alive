@@ -101,6 +101,7 @@ _grid = mapGridPosition _pos;
 //[" vehicle turret positions: %1", [typeOf _target, true, true] call ALIVE_fnc_configGetVehicleTurretPositions] call ALIVE_fnc_dump;
 [" vehicle empty positions: %1", [_target] call ALIVE_fnc_vehicleGetEmptyPositions] call ALIVE_fnc_dump;
 [" vehicle empty position count: %1", [_target] call ALIVE_fnc_vehicleCountEmptyPositions] call ALIVE_fnc_dump;
+[" vehicle speeds per second: %1", typeOf _target call ALIVE_fnc_vehicleGetSpeedPerSecond] call ALIVE_fnc_dump;
 [" ammo cargo: %1", getAmmoCargo _target] call ALIVE_fnc_dump;
 [" weapon cargo: %1", getWeaponCargo _target] call ALIVE_fnc_dump;
 [" fuel cargo: %1", getFuelCargo _target] call ALIVE_fnc_dump;

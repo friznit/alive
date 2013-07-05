@@ -55,15 +55,26 @@ if(_gunnersDismount) then
 
 // commander
 _commander = _assignments select 2;
-
 {
 	//unassignVehicle _x;
 	[_x] orderGetIn false;
 } forEach _commander;
 
-// cargo
-_cargo = _assignments select 3;
+// turrets
+_turret = _assignments select 3;
 
+if(count _turret > 0) then {
+	// get turrets for this class ignoring gunner and commander turrets
+	_turrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+	
+	for "_i" from 0 to (count _turret)-1 do {
+		_unit = _turret select _i;
+		[_unit] orderGetIn false;
+	};
+};
+
+// cargo
+_cargo = _assignments select 4;
 {
 	//unassignVehicle _x;
 	[_x] orderGetIn false;
