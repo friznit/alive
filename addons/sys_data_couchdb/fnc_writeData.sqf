@@ -5,7 +5,7 @@ SCRIPT(writeData_couchdb);
 Function: ALIVE_fnc_writeData_couchdb
 
 Description:
-Writes data to an external datasource (SQL, JSON, Text File)
+Writes data to an external couchdb (using JSON string)
 
 Parameters:
 Object - Data handler logic 
@@ -83,8 +83,6 @@ _cmd = format ["SendJSON [""POST"", ""%1""", _module];
 	if (isNil "_value") then {
 		_value = "UNKNOWN";
 	};
-		
-	TRACE_2("SYS DATA VALUE", typename _value, _value);
 	
 	// Convert Values
 	
@@ -105,8 +103,6 @@ _cmd = format ["SendJSON [""POST"", ""%1""", _module];
 	_pairs = _pairs + """" +  str(_key) + """:" + _prefix + _value + _suffix + ",";
 } foreach _data;
 
-TRACE_1("COUCH WRITE DATA",_pairs);
-
 // Add UID if passed
 if (count _uid > 0) then {
 	{
@@ -121,19 +117,22 @@ _json = [_json, ",}", "}"] call CBA_fnc_replace;
 _json = [_json, ",]", "]"] call CBA_fnc_replace; 
 
 // Add databaseName
-_db = [_logic, "databaseName", "alivedb"] call ALIVE_fnc_hashGet;
+_db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
 // Append cmd with db
 _json = _json + format[", ""%1""]", _db];
 
-TRACE_2("COUCH WRITE DATA: ", _json);
+TRACE_1("COUCH WRITE DATA", _json);
 
 // Send JSON to plugin
-_response = [_json] call ALIVE_fnc_sendToPlugIn;
+if (_returnUID) then {
+	_response = [_json] call ALIVE_fnc_sendToPlugIn; // if you need a returned UID then you have to go with synchronous op
+} else {
+	_response = [_json] call ALIVE_fnc_sendToPlugInAsync; //SendJSON is an async addin function so does not return a response until asked for a second time.
+};
 
 // Need to send the response to restore function
 // Then handle response for couch
-// 
 
 /*
 // Handle result of write

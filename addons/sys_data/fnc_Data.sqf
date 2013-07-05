@@ -46,7 +46,7 @@ _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 
-TRACE_3("SYS_DATA: ",_logic, _operation, _args);
+TRACE_3("SYS_DATA",_logic, _operation, _args);
 
 _ops = ["read","write","update","delete","load","save","convert"];
 		
@@ -171,5 +171,5 @@ if (_operation in _ops) then {
         };
 	};
 };
-TRACE_1("Data - output",_result);
+TRACE_1("SYS DATA - output",_result);
 _result;
