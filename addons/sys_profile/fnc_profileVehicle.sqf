@@ -398,7 +398,13 @@ switch(_operation) do {
 
 				// not already inactive
 				if(_active) then {
-
+					
+					[_logic,"active",false] call ALIVE_fnc_hashSet;
+					
+					// update profile vehicle assignments before despawn
+					[_logic, "clearVehicleAssignments"] call MAINCLASS;					
+					[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
+					
 					// update profile before despawn
 					[_logic,"position", getPosATL _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"direction", getDir _vehicle] call ALIVE_fnc_hashSet;
@@ -410,7 +416,6 @@ switch(_operation) do {
 					[_logic,"canMove", canMove _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"needReload", needReload _vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet;
-					[_logic,"active",false] call ALIVE_fnc_hashSet;
 
 					// delete
 					deleteVehicle _vehicle;

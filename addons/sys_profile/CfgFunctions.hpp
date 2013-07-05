@@ -161,6 +161,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_unitArraySortByRank.sqf";
 				recompile = 1;
 			};
+			class unitArrayGetVehiclesWithin {
+				description = "unitArrayGetVehiclesWithin";
+				file = "\x\alive\addons\sys_profile\fnc_unitArrayGetVehiclesWithin.sqf";
+				recompile = 1;
+			};
 			class groupCountAlive {
 				description = "groupCountAlive";
 				file = "\x\alive\addons\sys_profile\fnc_groupCountAlive.sqf";
@@ -206,6 +211,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentsToProfileVehicleAssignments.sqf";
 				recompile = 1;
 			};
+			class vehicleAssignmentToProfileVehicleAssignment {
+				description = "vehicleAssignmentToProfileVehicleAssignment";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentToProfileVehicleAssignment.sqf";
+				recompile = 1;
+			};
 			class vehicleHasRoomForGroup {
 				description = "vehicleHasRoomForGroup";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleHasRoomForGroup.sqf";
@@ -214,6 +224,11 @@ class cfgFunctions {
 			class vehicleIsGroupIn {
 				description = "vehicleIsGroupIn";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleIsGroupIn.sqf";
+				recompile = 1;
+			};
+			class vehicleGetGroupsWithin {
+				description = "vehicleGetGroupsWithin";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleGetGroupsWithin.sqf";
 				recompile = 1;
 			};
 			class vehicleMount {

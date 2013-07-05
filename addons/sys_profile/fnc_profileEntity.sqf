@@ -388,10 +388,6 @@ switch(_operation) do {
 				[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 				[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
 				[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
-
-				if([_logic,"active"] call ALIVE_fnc_hashGet) then {
-					//[] call ALIVE_fnc_vehicleDismount;
-				};
 		};
 		case "addWaypoint": {
 				private ["_waypoints","_units","_unit","_group"];
@@ -583,7 +579,8 @@ switch(_operation) do {
 				};
 		};
 		case "despawn": {
-				private ["_group","_leader","_units","_positions","_damages","_ranks","_active","_unitCount","_waypoints","_profileWaypoint","_unit"];
+				private ["_group","_leader","_units","_positions","_damages","_ranks","_active","_profileID","_unitCount","_waypoints",
+				"_profileWaypoint","_unit","_vehicle","_vehicleID","_profileVehicle","_profileVehicleAssignments","_assignments","_vehicleAssignments"];
 
 				_group = [_logic,"group"] call ALIVE_fnc_hashGet;
 				_leader = [_logic,"leader"] call ALIVE_fnc_hashGet;
@@ -592,6 +589,7 @@ switch(_operation) do {
 				_damages = [_logic,"damages"] call ALIVE_fnc_hashGet;
 				_ranks = [_logic,"ranks"] call ALIVE_fnc_hashGet;
 				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
+				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 				_unitCount = 0;
 
 				// not already inactive
@@ -610,7 +608,12 @@ switch(_operation) do {
 							[_logic, "addWaypoint", _profileWaypoint] call MAINCLASS;
 						};
 					};
-
+					
+					// update profile vehicle assignments before despawn
+					[_logic, "clearVehicleAssignments"] call MAINCLASS;					
+					[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
+					
+					// update the profiles position
 					[_logic, "position", getPosATL _leader] call ALIVE_fnc_hashSet;
 
 					// delete units

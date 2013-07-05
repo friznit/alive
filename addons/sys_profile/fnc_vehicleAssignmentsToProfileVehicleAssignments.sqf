@@ -5,19 +5,17 @@ SCRIPT(vehicleAssignmentsToProfileVehicleAssignments);
 Function: ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments
 
 Description:
-Read a real vehicles assignments and return a profileVehicle assignment
+Read a real vehicles assignments and return a profileVehicle assignments
 
 Parameters:
 Vehicle - The vehicle
-Group - The group
 
 Returns:
-assignments array
 
 Examples:
 (begin example)
-// assign group to vehicle
-_result = [_vehicle, _group] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
+// read all real vehicle assignments of a vehicle
+[_vehicle] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
 (end)
 
 See Also:
@@ -26,64 +24,58 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicle","_group","_units","_unitIndex","_assignments","_inVehicle","_assignedRole","_assignedRoleName","_cargo","_turret",
-"_assignedTurret","_turretConfig","_turretIsGunner","_turretIsCommander","_isTurret","_gunner","_commander"];
+private ["_profile","_profileType","_profileID","_profileActive","_vehicle","_groupsInVehicle","_group","_units","_vehiclesUnitsIn","_leader",
+"_entityID","_entityProfile","_entityProfileActive","_assignment","_vehicleAssignments","_vehicleID","_vehicleProfile","_vehicleProfileActive"];
 
-_vehicle = _this select 0;
-_group = _this select 1;
+_profile = _this select 0;
 
-_units = units _group;
-_unitIndex = 0;
+_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
+_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
+_profileActive = [_profile,"active"] call ALIVE_fnc_hashGet;
 
-_assignments = [[],[],[],[],[]];
+if(_profileType == "vehicle") then {
 
-{
-	_inVehicle = (vehicle _x);
+	_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;	
+	_groupsInVehicle = _vehicle call ALIVE_fnc_vehicleGetGroupsWithin;
 	
-	if(_inVehicle == _vehicle) then {
-	
-		_assignedRole = assignedVehicleRole _x;
-		_assignedRoleName = _assignedRole select 0;
+	{
+		_group = _x;
+		_leader = leader _group;
+		_entityID = _leader getVariable "profileID";
+		_entityProfile = [ALIVE_profileHandler, "getProfile", _entityID] call ALIVE_fnc_profileHandler;
+		_entityProfileActive = [_entityProfile,"active"] call ALIVE_fnc_hashGet;
 		
-		switch(_assignedRoleName) do {
-			case "Driver":{
-				_assignments set [0, [_unitIndex]];
-			};
-			case "Cargo":{
-				_cargo = _assignments select 4;
-				_cargo set [count _cargo,_unitIndex];
-				_assignments set [4, _cargo];
-			};
-			case "Turret":{
-				_assignedTurret = _assignedRole select 1;
-				_turretConfig = [_vehicle, _assignedTurret] call CBA_fnc_getTurret;
-				_turretIsGunner = getNumber(_turretConfig >> "primaryGunner");
-				_turretIsCommander = getNumber(_turretConfig >> "primaryObserver");
-				_isTurret = true;
-				
-				if(_turretIsGunner == 1) then {
-					_gunner = _assignments select 1;
-					_gunner set [count _gunner,_unitIndex];
-					_assignments set [1, _gunner];
-					_isTurret = false;
-				};
-				
-				if(_turretIsCommander == 2) then {
-					_commander = _assignments select 1;
-					_commander set [count _commander,_unitIndex];
-					_assignments set [2, _commander];
-					_isTurret = false;
-				};
-				
-				if(_isTurret) then {
-					_turret = _assignments select 3;
-					_turret set [count _turret,_unitIndex];
-					_assignments set [3, _turret];
-				};			
-			};
-		};
-	};	
-	_unitIndex = _unitIndex + 1;
-} forEach _units;
-
-_assignments
+		_assignment = [_vehicle, _group] call ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment;		
+		_vehicleAssignments = [_profileID,_entityID,_assignment];			
+		
+		[_profile, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileVehicle;
+		
+		if(_entityProfileActive) then {
+			[_entityProfile,"despawn"] call ALIVE_fnc_profileEntity;
+		};	
+		
+	} forEach _groupsInVehicle;
+	
+} else {
+	
+	_units = [_profile,"units"] call ALIVE_fnc_hashGet;
+	_group = group (_units select 0);
+	_vehiclesUnitsIn = _units call ALIVE_fnc_unitArrayGetVehiclesWithin;
+	
+	{
+		_vehicle = _x;
+		_vehicleID = _vehicle getVariable "profileID";
+		_vehicleProfile = [ALIVE_profileHandler, "getProfile", _vehicleID] call ALIVE_fnc_profileHandler;
+		_vehicleProfileActive = [_vehicleProfile,"active"] call ALIVE_fnc_hashGet;
+		
+		_assignment = [_vehicle, _group] call ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment;
+		_vehicleAssignments = [_vehicleID,_profileID,_assignment];			
+		
+		[_profile, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileEntity;
+		
+		if(_vehicleProfileActive) then {
+			[_vehicleProfile,"despawn"] call ALIVE_fnc_profileVehicle;
+		};			
+	} forEach _vehiclesUnitsIn;
+		
+};
