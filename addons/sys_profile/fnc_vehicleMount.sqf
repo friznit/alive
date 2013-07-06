@@ -34,18 +34,21 @@ _vehicle = _this select 1;
 // driver
 _driver = _assignments select 0;	
 {
+	_x assignAsDriver _vehicle;
 	[_x] orderGetIn true;
 } forEach _driver;
 
 // gunner
 _gunners = _assignments select 1;
 {
+	_x assignAsGunner _vehicle;
 	[_x] orderGetIn true;
 } forEach _gunners;
 
 // commander
 _commander = _assignments select 2;
 {
+	_x assignAsCommander _vehicle;
 	[_x] orderGetIn true;
 } forEach _commander;
 
@@ -60,11 +63,13 @@ if(count _turret > 0) then {
 		_unit = _turret select _i;
 		_turretPath = _turrets call BIS_fnc_arrayPop;
 		_unit assignAsTurret [_vehicle, _turretPath];
+		_unit orderGetIn true;
 	};
 };
 
 // cargo
 _cargo = _assignments select 4;
 {
+	_x assignAsCargo _vehicle;
 	[_x] orderGetIn true;
 } forEach _cargo;

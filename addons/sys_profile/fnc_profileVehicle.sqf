@@ -314,12 +314,9 @@ switch(_operation) do {
                 };
 		};
 		case "clearVehicleAssignments": {
-				private ["_units","_unit","_group"];
-
 				[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 				[_logic,"entitiesInCommandOf",[]] call ALIVE_fnc_hashSet;
-				[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet;
-				
+				[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet;				
 		};
 		case "mergePositions": {
 				private ["_position","_assignments"];
@@ -357,7 +354,7 @@ switch(_operation) do {
 						_special = "NONE";
 					};					
 					
-					_vehicle = createVehicle [_vehicleClass, _position, [], 50, _special];
+					_vehicle = createVehicle [_vehicleClass, _position, [], 20, _special];
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
@@ -419,6 +416,9 @@ switch(_operation) do {
 		};
 		case "handleDeath": {
 				[_logic,"damage",1] call ALIVE_fnc_hashSet;
+				
+				// remove all assignments for this vehicle
+				[_logic] call ALIVE_fnc_removeProfileVehicleAssignments;
 		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;

@@ -15,8 +15,11 @@ Returns:
 
 Examples:
 (begin example)
-// get empty positions
-_result = _vehicleAssignment call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
+// create real vehicle assignment (move in instantly)
+_result = [_vehicleAssignment, _profile] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
+
+// create real vehicle assignment (order get in)
+_result = [_vehicleAssignment, _profile, true] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
 (end)
 
 See Also:
@@ -25,10 +28,11 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleAssignment","_profile","_profileType","_vehicle","_units","_vehicleProfileID","_vehicleProfile"];
+private ["_vehicleAssignment","_profile","_orderGetIn","_profileType","_vehicle","_units","_vehicleProfileID","_vehicleProfile"];
 
 _vehicleAssignment = _this select 0;
 _profile = _this select 1;
+_orderGetIn = if(count _this > 2) then {_this select 2} else {false};
 
 _profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
 
@@ -45,7 +49,11 @@ if(_profileType == "vehicle") then {
 		_units = [_entityProfile,"units"] call ALIVE_fnc_hashGet;		
 		_indexes = _vehicleAssignment;		
 		_vehicleAssignment = [_indexes,_units] call ALIVE_fnc_profileVehicleAssignmentIndexesToUnits;		
-		[_vehicleAssignment, _vehicle] call ALIVE_fnc_vehicleMoveIn;
+		if(_orderGetIn) then {
+			[_vehicleAssignment, _vehicle] call ALIVE_fnc_vehicleMount;
+		}else{
+			[_vehicleAssignment, _vehicle] call ALIVE_fnc_vehicleMoveIn;
+		};
 	};
 	
 } else {
@@ -60,8 +68,12 @@ if(_profileType == "vehicle") then {
 	} else {
 		_vehicle = [_vehicleProfile,"vehicle"] call ALIVE_fnc_hashGet;
 		_indexes = _vehicleAssignment;		
-		_vehicleAssignment = [_indexes,_units] call ALIVE_fnc_profileVehicleAssignmentIndexesToUnits;		
-		[_vehicleAssignment, _vehicle] call ALIVE_fnc_vehicleMoveIn;
+		_vehicleAssignment = [_indexes,_units] call ALIVE_fnc_profileVehicleAssignmentIndexesToUnits;
+		if(_orderGetIn) then {
+			[_vehicleAssignment, _vehicle] call ALIVE_fnc_vehicleMount;
+		}else{
+			[_vehicleAssignment, _vehicle] call ALIVE_fnc_vehicleMoveIn;
+		};		
 	};
 	
 };

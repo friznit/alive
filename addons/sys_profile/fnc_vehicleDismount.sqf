@@ -39,7 +39,7 @@ _gunnersDismount = if(count _this > 2) then {_this select 2} else {true};
 // driver
 _driver = _assignments select 0;	
 {
-	//unassignVehicle _x;
+	unassignVehicle _x;
 	[_x] orderGetIn false;
 } forEach _driver;
 
@@ -48,7 +48,7 @@ if(_gunnersDismount) then
 {
 	_gunners = _assignments select 1;
 	{
-		//unassignVehicle _x;
+		unassignVehicle _x;
 		[_x] orderGetIn false;
 	} forEach _gunners;
 };
@@ -56,7 +56,7 @@ if(_gunnersDismount) then
 // commander
 _commander = _assignments select 2;
 {
-	//unassignVehicle _x;
+	unassignVehicle _x;
 	[_x] orderGetIn false;
 } forEach _commander;
 
@@ -69,6 +69,7 @@ if(count _turret > 0) then {
 	
 	for "_i" from 0 to (count _turret)-1 do {
 		_unit = _turret select _i;
+		unassignVehicle _unit;	
 		[_unit] orderGetIn false;
 	};
 };
@@ -76,6 +77,6 @@ if(count _turret > 0) then {
 // cargo
 _cargo = _assignments select 4;
 {
-	//unassignVehicle _x;
+	unassignVehicle _x;
 	[_x] orderGetIn false;
 } forEach _cargo;

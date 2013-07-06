@@ -61,6 +61,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_createProfileVehicleAssignment.sqf";
 				recompile = 1;
 			};
+			class removeProfileVehicleAssignments {
+				description = "removeProfileVehicleAssignments";
+				file = "\x\alive\addons\sys_profile\fnc_removeProfileVehicleAssignments.sqf";
+				recompile = 1;
+			};
+			class removeProfileVehicleAssignment {
+				description = "removeProfileVehicleAssignment";
+				file = "\x\alive\addons\sys_profile\fnc_removeProfileVehicleAssignment.sqf";
+				recompile = 1;
+			};
 			class profileVehicleAssignmentGetUsedIndexes {
 				description = "profileVehicleAssignmentGetUsedIndexes";
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentGetUsedIndexes.sqf";
