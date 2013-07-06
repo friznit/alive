@@ -558,24 +558,10 @@ switch(_operation) do {
 					[_logic,"active", true] call ALIVE_fnc_hashSet;
 
 					// create waypoints from profile waypoints
-					if(count _waypoints > 0) then {
-						_waypointCount = 0;
-						{
-							if(_waypointCount == 0) then {
-								[_x, _group, true] call ALIVE_fnc_profileWaypointToWaypoint;
-							} else {
-								[_x, _group] call ALIVE_fnc_profileWaypointToWaypoint;
-							};
-							_waypointCount = _waypointCount + 1;
-						} forEach _waypoints;
-					};
+					[_waypoints, _group] call ALIVE_fnc_profileWaypointsToWaypoints;
 
 					// create vehicle assignments from profile vehicle assignments
-					if(count (_vehicleAssignments select 1) > 0) then {
-						{
-							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
-						} forEach (_vehicleAssignments select 2);
-					};
+					[_vehicleAssignments, _logic] call ALIVE_fnc_profileVehicleAssignmentsToVehicleAssignments;
 				};
 		};
 		case "despawn": {
@@ -599,15 +585,7 @@ switch(_operation) do {
 
 					// update profile waypoints before despawn
 					[_logic, "clearWaypoints"] call MAINCLASS;
-					_waypoints = waypoints _group;
-
-					if(currentWaypoint _group < count waypoints _group) then {
-						for "_i" from (currentWaypoint _group) to (count _waypoints)-1 do
-						{
-							_profileWaypoint = [(_waypoints select _i)] call ALIVE_fnc_waypointToProfileWaypoint;
-							[_logic, "addWaypoint", _profileWaypoint] call MAINCLASS;
-						};
-					};
+					[_logic,_group] call ALIVE_fnc_waypointsToProfileWaypoints;
 					
 					// update profile vehicle assignments before despawn
 					[_logic, "clearVehicleAssignments"] call MAINCLASS;					

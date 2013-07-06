@@ -36,9 +36,19 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_createProfileWaypoint.sqf";
 				recompile = 1;
 			};
+			class profileWaypointsToWaypoints {
+				description = "profileWaypointsToWaypoints";
+				file = "\x\alive\addons\sys_profile\fnc_profileWaypointsToWaypoints.sqf";
+				recompile = 1;
+			};
 			class profileWaypointToWaypoint {
 				description = "profileWaypointToWaypoint";
 				file = "\x\alive\addons\sys_profile\fnc_profileWaypointToWaypoint.sqf";
+				recompile = 1;
+			};
+			class waypointsToProfileWaypoints {
+				description = "waypointsToProfileWaypoints";
+				file = "\x\alive\addons\sys_profile\fnc_waypointsToProfileWaypoints.sqf";
 				recompile = 1;
 			};
 			class waypointToProfileWaypoint {
@@ -59,6 +69,11 @@ class cfgFunctions {
 			class profileVehicleAssignmentGetEmptyPositions {
 				description = "profileVehicleAssignmentGetEmptyPositions";
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentGetEmptyPositions.sqf";
+				recompile = 1;
+			};
+			class profileVehicleAssignmentsToVehicleAssignments {
+				description = "profileVehicleAssignmentsToVehicleAssignments";
+				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsToVehicleAssignments.sqf";
 				recompile = 1;
 			};
 			class profileVehicleAssignmentToVehicleAssignment {

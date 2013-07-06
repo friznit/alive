@@ -382,11 +382,7 @@ switch(_operation) do {
 					[_logic,"active",true] call ALIVE_fnc_hashSet;
 
 					// create vehicle assignments from profile vehicle assignments
-					if(count (_vehicleAssignments select 1) > 0) then {
-						{
-							[_x, _logic] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
-						} forEach (_vehicleAssignments select 2);
-					};
+					[_vehicleAssignments, _logic] call ALIVE_fnc_profileVehicleAssignmentsToVehicleAssignments;
 				};
 		};
 		case "despawn": {
