@@ -38,7 +38,7 @@ if (GVAR(ENABLED)) then {
 	// Server side handler to write data to DB
 	QGVAR(UPDATE_EVENTS) addPublicVariableEventHandler { 
 
-					private ["_data", "_post", "_result", "_gameTime", "_realTime","_hours","_minutes","_currenttime"];
+					private ["_data", "_post", "_gameTime", "_realTime","_hours","_minutes","_currenttime","_returnUID"];
 					if (GVAR(ENABLED)) then {
 						_data = _this select 1;
 						_module = "events";
@@ -70,10 +70,19 @@ if (GVAR(ENABLED)) then {
 						_data = [ ["realTime",_realtime],["Server",GVAR(serverIP)],["Operation",GVAR(operation)],["Map",worldName],["gameTime",_gametime] ] + _data;
 										
 						// Write event data to DB
-						_result = [GVAR(datahandler), "write", [_module, _data, true] ] call ALIVE_fnc_Data;
-						
+						if ((_data select 5) select 1 == "OperationFinish") then {
+							_returnUID = true;
+						} else {
+							_returnUID = false;
+						};
+						_result = [GVAR(datahandler), "write", [_module, _data, _returnUID] ] call ALIVE_fnc_Data;
+						if (_result == "ERROR") then {
+							ERROR("SYS STATISTICS FAILED TO WRITE TO DATABASE");
+						};
 						TRACE_2("UPDATE EVENTS",_data,_result);
+						_result;
 
+						
 					};
 	};
 };
