@@ -67,8 +67,6 @@ _createMarker = {
 	
 	_entityProfile call _deleteMarker;
 
-	_markers call ALIVE_fnc_inspectHash;
-
 	_position = [_waypoint,"position"] call ALIVE_fnc_hashGet;
 	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
 	_profileSide = [_profile,"side"] call ALIVE_fnc_hashGet;
