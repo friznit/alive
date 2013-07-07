@@ -131,6 +131,8 @@ class Extended_Hit_EventHandlers
 	};
 };
 
+
+
 class Extended_GetOut_EventHandlers
 {
 	class LANDVEHICLE

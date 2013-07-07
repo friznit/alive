@@ -2,19 +2,18 @@
 Function: ALIVE_fnc_readData
 
 Description:
-Reads data from an external datasource (SQL, JSON, Text File)
+Reads data from an external datasource (couchdb) and coverts to an array of key/value pairs
 
 Parameters:
-String - Database name
-String - Module name 
-Array - Array of key/value unique identifiers
+Object - data handler object
+Array - Array of module name (string) and then unique identifer (string)
 
 Returns:
-String - Returns a response error or data
+Array - Returns a response error or data in the form of key value pairs
 
 Examples:
 (begin example)
-	
+	[ _logic, [ _module, _uid ] ] call ALIVE_fnc_readData;
 (end)
 
 Author:
@@ -25,30 +24,37 @@ Peer Reviewed:
 #include "script_component.hpp"	
 SCRIPT(readData_couchdb);
 
-private ["_response"];
+private ["_response","_result","_error","_module","_data","_pairs","_cmd","_json","_logic","_args","_convert","_db"];
 
 // Avoided using the format command as it has a 2kb limt
 
-PARAMS_3(_databaseName, _module, _params);
+_logic = _this select 0;
+_args = _this select 1;
 
-TRACE_3("ReadData CouchDB -", [_params] call CBA_fnc_strLen, _params, typeName _params);
+_error = "parameters provided not valid";
+ASSERT_DEFINED("_logic", _err);
+ASSERT_OP(typeName _logic, == ,"ARRAY", _err);
+ASSERT_DEFINED("_args", _err);
+ASSERT_OP(typeName _args, == ,"ARRAY", _err);
 
-//validate params?
+// Validate args
+_module = _args select 0;
+_uid = _args select 1;
 
-private ["_pairs","_cmd","_json"];
+_cmd = format ["SendJSON [""POST"", ""%1/%2""", _module, _uid];
 
-_cmd = format ["SendJSON [""POST"", ""%1""", _module];
-{
-	_pairs = _pairs + "'" + (_x select 0) + "'" + ":" + "'" + (_x select 1) + "'" + ","; 
-} foreach _params;
-_json = _cmd + ", '{" + _pairs + "}']";
+// Add databaseName
+_db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
-// Get rid of any left over commas
-_json = [_json, ",}", "}"] call CBA_fnc_replace;
+// Append cmd with db
+_json = _cmd + format[", ""%1""]", _db];
+
+TRACE_1("COUCH READ DATA", _json);
 
 // Send JSON to plugin
 _response = [_json] call ALIVE_fnc_sendToPlugIn;
 
+// From response create key/value pair arrays	
 _result = [_response] call ALIVE_fnc_restoreData_couchdb;
 
 /*

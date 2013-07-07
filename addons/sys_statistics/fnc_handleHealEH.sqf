@@ -39,7 +39,6 @@ if (GVAR(ENABLED)) then {
 		_medicPos = mapgridposition _medic;
 		
 
-		
 		// Log data
 		_data = [ ["Event","Heal"] , ["patientSide",_sidepatient] , ["patientfaction",_factionpatient] , ["patientType",_patientType] , ["patientPos",_patientPos] , ["medicSide",_sidemedic] , ["medicfaction",_factionmedic] , ["medicType",_medicType] , ["medicPos",_medicPos] , ["patient", _patient] , ["medic",_medic] ];
 		TRACE_1("SYS STAT HANDLE HEAL EH DETAIL", _data);

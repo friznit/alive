@@ -9,14 +9,14 @@ Writes data to an external couchdb (using JSON string)
 
 Parameters:
 Object - Data handler logic 
-Array - Module, Data, returnUID, UID
+Array - Module (string), Data (array), Async (bool), UID (string)
 
 Returns:
-String - Returns a response error or UID
+String - Returns a response error or confirmation of write
 
 Examples:
 (begin example)
-	[ _logic, [ _module, [[key,value],[key,value],[key,value]], _returnUID, _uid ] ] call ALIVE_fnc_writeData;
+	[ _logic, [ _module, [[key,value],[key,value],[key,value]], _async, _uid ] ] call ALIVE_fnc_writeData;
 (end)
 
 Author:
@@ -24,7 +24,7 @@ Tupolov
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-private ["_response","_result","_error","_module","_data","_uid","_returnUID","_pairs","_cmd","_json","_logic","_args","_convert","_db"];
+private ["_response","_result","_error","_module","_data","_uid","_async","_pairs","_cmd","_json","_logic","_args","_convert","_db"];
 
 _logic = _this select 0;
 _args = _this select 1;
@@ -50,16 +50,16 @@ _module = _args select 0;
 _data = _args select 1;
 
 if (count _args > 2) then {
-	_returnUID = _args select 2;
+	_async = _args select 2;
 } else {
-	_returnUID = false;
-	_uid = [];
+	_async = false;
+	_uid = "";
 };
 
 if (count _args > 3) then {
 	_uid = _args select 3;
+	_module = format ["%1/%2", _module, _uid];
 };
-
 	
 // From data passed create couchDB string
 
@@ -67,16 +67,16 @@ _pairs = "";
 _cmd = "";
 _json = "";
 
-
 // Build the JSON command
 //_cmd = format ["SendJSON ['POST', '%1', '%2', '%3'", _module, _data, _databaseName];
 // ["SendJSON ['POST', 'events', '{key:value,key:value}', 'arma3live']; 
 
-if (_returnUID) then {
+if (!_async) then {
 	_cmd = format ["SendJSON [""POST"", ""%1""", _module];
 } else {
 	_cmd = format ["SendJSONAsync [""POST"", ""%1""", _module];
 };
+
 // Create key/value pairs from data
 {
 	private ["_value","_key","_prefix","_suffix"];
@@ -128,7 +128,7 @@ _json = _json + format[", ""%1""]", _db];
 TRACE_1("COUCH WRITE DATA", _json);
 
 // Send JSON to plugin
-if (_returnUID) then {
+if (!_async) then {
 	_response = [_json] call ALIVE_fnc_sendToPlugIn; // if you need a returned UID then you have to go with synchronous op
 } else {
 	_response = [_json] call ALIVE_fnc_sendToPlugInAsync; //SendJSON is an async addin function so does not return a response until asked for a second time.
