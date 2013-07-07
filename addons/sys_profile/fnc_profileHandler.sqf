@@ -148,7 +148,6 @@ switch(_operation) do {
                 if (isServer) then {
 						[_logic, "destroy"] call SUPERCLASS;
                 };
-
         };
         case "debug": {
 				private["_profiles"];
@@ -161,7 +160,7 @@ switch(_operation) do {
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
 				_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
-
+				
 				if(count _profiles > 0) then {
 					{
 						_profileType = [_x, "type"] call ALIVE_fnc_hashGet;
@@ -199,16 +198,17 @@ switch(_operation) do {
 									};
 							};
 						} forEach (_profiles select 2);
+						
+						// DEBUG -------------------------------------------------------------------------------------
+						if(_args) then {
+							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+							["ALIVE Profile Handler State"] call ALIVE_fnc_dump;
+							_state = [_logic, "state"] call MAINCLASS;
+							_state call ALIVE_fnc_inspectHash;
+						};
+						// DEBUG -------------------------------------------------------------------------------------
 					};
-				};
-				
-				// DEBUG -------------------------------------------------------------------------------------
-				if(_args) then {
-					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-					["ALIVE Profile Handler State"] call ALIVE_fnc_dump;
-					_state = [ALIVE_profileHandler, "state"] call ALIVE_fnc_profileHandler;
-					_state call ALIVE_fnc_inspectHash;
-				};
+				};			
 
                 _result = _args;
         };
@@ -340,6 +340,23 @@ switch(_operation) do {
 						_profilesType = _profilesType - [_profileID];
 						[_profilesByType, _profileType, _profilesType] call ALIVE_fnc_hashSet;
 						
+						// disable debugging on the profile
+						if([_profile, "debug"] call ALIVE_fnc_hashGet) then {
+							switch(_profileType) do {
+								case "entity": {
+									_result = [_profile, "debug", false] call ALIVE_fnc_profileEntity;
+								};
+								case "mil": {
+									_result = [_profile, "debug", false] call ALIVE_fnc_profileMil;
+								};
+								case "civ": {
+									_result = [_profile, "debug", false] call ALIVE_fnc_profileCiv;
+								};
+								case "vehicle": {
+									_result = [_profile, "debug", false] call ALIVE_fnc_profileVehicle;
+								};
+							};
+						};						
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {

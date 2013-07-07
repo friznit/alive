@@ -23,13 +23,13 @@ diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
 #define DEBUGON STAT("Setup debug parameters"); \
-_result = [_logic, "debug", true] call ALIVE_fnc_profile; \
+_result = [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler; \
 _err = "enabled debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(_result, _err);
 
 #define DEBUGOFF STAT("Disable debug"); \
-_result = [_logic, "debug", false] call ALIVE_fnc_profile; \
+_result = [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler; \
 _err = "disable debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(!_result, _err);
@@ -91,7 +91,7 @@ SLEEP 10;
 
 STAT("Profile state");
 _profileEntity = [ALIVE_profileHandler, "getProfile", "group_01"] call ALIVE_fnc_profileHandler;
-diag_log _profileEntity;
+_profileEntity call ALIVE_fnc_inspectHash;
 
 
 STAT("De-Spawn the unit via the profile");
@@ -103,32 +103,33 @@ _position = [getPos player, 200, random 360] call BIS_fnc_relPos;
 _profileWaypoint = [_position, 0] call ALIVE_fnc_createProfileWaypoint;
 [_profileEntity, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
-
+/*
 _m = createMarkerLocal ["destinationMarker1", _position];
 _m setMarkerShapeLocal "ICON";
 _m setMarkerSizeLocal [1, 1];
 _m setMarkerTypeLocal "hd_dot";
 _m setMarkerColorLocal "ColorRed";
 _m setMarkerTextLocal "destination";
-
+*/
 
 STAT("Add waypoint");
 _position = [_position, 200, random 360] call BIS_fnc_relPos;
 _profileWaypoint = [_position, 0] call ALIVE_fnc_createProfileWaypoint;
 [_profileEntity, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
-
+/*
 _m = createMarkerLocal ["destinationMarker2", _position];
 _m setMarkerShapeLocal "ICON";
 _m setMarkerSizeLocal [1, 1];
 _m setMarkerTypeLocal "hd_dot";
 _m setMarkerColorLocal "ColorRed";
 _m setMarkerTextLocal "destination";
+*/
 
 
 STAT("Start simulated profile movement");
 [] spawn {
-	[] call ALIVE_fnc_simulateProfileMovement;	
+	[true] call ALIVE_fnc_simulateProfileMovement;	
 };
 
 
@@ -177,3 +178,29 @@ SLEEP 20;
 
 STAT("De-Spawn the unit via the profile");
 [_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
+
+
+STAT("Un-Register Profile");
+_result = [ALIVE_profileHandler, "unregisterProfile", _profileEntity] call ALIVE_fnc_profileHandler;
+_err = "unregister profile";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+STAT("Destroy old Profile instance");
+if(isServer) then {
+	[_profileEntity, "destroy"] call ALIVE_fnc_profileEntity;
+	TEST_LOGIC = nil;
+	publicVariable "TEST_LOGIC";
+} else {
+	waitUntil{isNull TEST_LOGIC};
+};
+
+
+STAT("Destroy old Profile Handler instance");
+if(isServer) then {
+	[ALIVE_profileHandler, "destroy"] call ALIVE_fnc_profileHandler;
+	TEST_LOGIC = nil;
+	publicVariable "TEST_LOGIC";
+} else {
+	waitUntil{isNull TEST_LOGIC};
+};

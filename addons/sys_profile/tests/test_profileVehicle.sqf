@@ -3,6 +3,8 @@
 #include <\x\alive\addons\sys_profile\script_component.hpp>
 SCRIPT(test_profileVehicle);
 
+//execVM "\x\alive\addons\sys_profile\tests\test_profileVehicle.sqf"
+
 // ----------------------------------------------------------------------------
 
 private ["_result","_err","_logic","_state","_result2"];
@@ -96,7 +98,7 @@ _err = "get state";
 ASSERT_TRUE(typeName _state == "ARRAY", _err);
 
 
-diag_log _state;
+_state call ALIVE_fnc_inspectHash;
 
 
 STAT("Spawn");
@@ -121,7 +123,7 @@ _err = "get state";
 ASSERT_TRUE(typeName _state == "ARRAY", _err);
 
 
-diag_log _state;
+_state call ALIVE_fnc_inspectHash;
 
 
 STAT("Sleeping before respawn");
@@ -131,6 +133,16 @@ sleep 10;
 STAT("Spawn");
 _result = [_logic, "spawn"] call ALIVE_fnc_profileVehicle;
 _err = "spawn";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+STAT("Sleeping before despawn");
+sleep 40;
+
+
+STAT("De-Spawn");
+_result = [_logic, "despawn"] call ALIVE_fnc_profileVehicle;
+_err = "despawn";
 ASSERT_TRUE(typeName _result == "BOOL", _err);
 
 

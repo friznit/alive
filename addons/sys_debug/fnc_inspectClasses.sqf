@@ -36,7 +36,8 @@ _text = " ------------------ Inspecting Classes -------------------- ";
 ["CfgMagazines", _detailed] call ALIVE_fnc_inspectConfig;	
 ["CfgAmmo", _detailed] call ALIVE_fnc_inspectConfig;
 ["CfgGlasses", _detailed] call ALIVE_fnc_inspectConfig;	
-["CfgVehicles", _detailed] call ALIVE_fnc_inspectConfig;	
+["CfgVehicles", _detailed] call ALIVE_fnc_inspectConfig;
+["CfgMarkers", _detailed] call ALIVE_fnc_inspectConfig;
 
 _text = " ------------------ Inspection Complete -------------------- ";
 [_text] call ALIVE_fnc_dump;

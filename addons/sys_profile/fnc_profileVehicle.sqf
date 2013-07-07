@@ -107,29 +107,62 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_profileID","_debugColor","_profileSide"];
+        private ["_logic","_markers","_m","_position","_profileID","_debugColor","_debugIcon","_profileSide","_vehicleType","_typePrefix"];
         _logic = _this;
         _markers = [];
 
 		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
+		_vehicleType = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
 		
 		switch(_profileSide) do {
 			case "EAST":{
 				_debugColor = "ColorRed";
+				_typePrefix = "o";
 			};
 			case "WEST":{
 				_debugColor = "ColorBlue";
+				_typePrefix = "b";
 			};
 			case "CIV":{
 				_debugColor = "ColorYellow";
+				_typePrefix = "n";
 			};
 			case "GUER":{
 				_debugColor = "ColorGreen";
+				_typePrefix = "n";
 			};
 			default {
 				_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+				_typePrefix = "n";
+			};
+		};
+		
+		switch(_vehicleType) do {
+			case "Car":{
+				_debugIcon = format["%1_recon",_typePrefix];
+			};
+			case "Tank":{
+				_debugIcon = format["%1_armor",_typePrefix];
+			};
+			case "Truck":{
+				_debugIcon = format["%1_recon",_typePrefix];
+			};
+			case "Ship":{
+				_debugIcon = format["%1_unknown",_typePrefix];
+			};
+			case "Helicopter":{
+				_debugIcon = format["%1_air",_typePrefix];
+			};
+			case "Plane":{
+				_debugIcon = format["%1_plane",_typePrefix];
+			};
+			case "StaticWeapon":{
+				_debugIcon = format["%1_mortar",_typePrefix];
+			};
+			default {
+				_debugIcon = "hd_dot";
 			};
 		};
 		
@@ -137,7 +170,7 @@ _createMarkers = {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
 				_m setMarkerShapeLocal "ICON";
 				_m setMarkerSizeLocal [1, 1];
-				_m setMarkerTypeLocal "hd_dot";
+				_m setMarkerTypeLocal _debugIcon;
 				_m setMarkerColorLocal _debugColor;
                 _m setMarkerTextLocal _profileID;
 

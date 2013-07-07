@@ -159,29 +159,41 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_profileID","_profileSide"];
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_profileID","_profileSide","_typePrefix"];
         _logic = _this;
         _markers = [];
 
 		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
+		_profileType = [_logic,"entityType"] call ALIVE_fnc_hashGet;
 		
 		switch(_profileSide) do {
 			case "EAST":{
 				_debugColor = "ColorRed";
+				_typePrefix = "o";
 			};
 			case "WEST":{
 				_debugColor = "ColorBlue";
+				_typePrefix = "b";
 			};
 			case "CIV":{
 				_debugColor = "ColorYellow";
+				_typePrefix = "n";
 			};
 			case "GUER":{
 				_debugColor = "ColorGreen";
+				_typePrefix = "n";
 			};
 			default {
 				_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+				_typePrefix = "n";
+			};
+		};
+		
+		switch(_profileType) do {
+			default {
+				_debugIcon = format["%1_inf",_typePrefix];
 			};
 		};
 
@@ -189,7 +201,7 @@ _createMarkers = {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
 				_m setMarkerShapeLocal "ICON";
 				_m setMarkerSizeLocal [1, 1];
-				_m setMarkerTypeLocal "hd_dot";
+				_m setMarkerTypeLocal _debugIcon;
 				_m setMarkerColorLocal _debugColor;
                 _m setMarkerTextLocal _profileID;
 
@@ -219,6 +231,7 @@ switch(_operation) do {
 						[_logic,"group",objNull] call ALIVE_fnc_hashSet;
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
 						[_logic,"type","entity"] call ALIVE_fnc_hashSet;
+						[_logic,"entityType","inf"] call ALIVE_fnc_hashSet;
 						[_logic,"companyID",""] call ALIVE_fnc_hashSet;						
 						[_logic,"groupID",""] call ALIVE_fnc_hashSet;
 						[_logic,"waypoints",[]] call ALIVE_fnc_hashSet;
@@ -341,6 +354,12 @@ switch(_operation) do {
 						[_logic,"units",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"units"] call ALIVE_fnc_hashGet;
+        };
+		case "entityType": {
+				if(typeName _args == "STRING") then {
+						[_logic,"entityType",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"entityType"] call ALIVE_fnc_hashGet;
         };
 		case "unitCount": {
 				private ["_unitClasses","_unitCount"];
@@ -533,28 +552,24 @@ switch(_operation) do {
 					_group = createGroup _sideObject;
 
 					{
-						// ignore dead status
-						if(_damages select _unitCount < 1) then {
-							_unitPosition = _positions select _unitCount;
-							_damage = _damages select _unitCount;
-							_rank = _ranks select _unitCount;
-							_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
-							_unit setPos formationPosition _unit;
-							_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
-							_unit setDamage _damage;
-							_unit setRank _rank;
+						_unitPosition = _positions select _unitCount;
+						_damage = _damages select _unitCount;
+						_rank = _ranks select _unitCount;
+						_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
+						_unit setPos formationPosition _unit;
+						_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
+						_unit setDamage _damage;
+						_unit setRank _rank;
 
-							// set profile id on the unit
-							_unit setVariable ["profileID", _profileID];
-							_unit setVariable ["profileIndex", _unitCount];
+						// set profile id on the unit
+						_unit setVariable ["profileID", _profileID];
+						_unit setVariable ["profileIndex", _unitCount];
 
-							// killed event handler
-							_eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+						// killed event handler
+						_eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
 
-							_units set [_unitCount, _unit];
-						} else {
-							_units set [_unitCount, objNull];
-						};
+						_units set [_unitCount, _unit];
+
 						_unitCount = _unitCount + 1;
 					} forEach _unitClasses;
 
@@ -604,12 +619,10 @@ switch(_operation) do {
 					// delete units
 					{
 						_unit = _x;
-						if!(isNull _unit) then {
-							_positions set [_unitCount, getPosATL _unit];
-							_damages set [_unitCount, getDammage _unit];
-							_ranks set [_unitCount, rank _unit];
-							deleteVehicle _unit;
-						};
+						_positions set [_unitCount, getPosATL _unit];
+						_damages set [_unitCount, getDammage _unit];
+						_ranks set [_unitCount, rank _unit];
+						deleteVehicle _unit;
 						_unitCount = _unitCount + 1;
 					} forEach _units;
 

@@ -23,13 +23,13 @@ diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
 #define DEBUGON STAT("Setup debug parameters"); \
-_result = [_logic, "debug", true] call ALIVE_fnc_profile; \
+_result = [_logic, "debug", true] call ALIVE_fnc_profileHandler; \
 _err = "enabled debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(_result, _err);
 
 #define DEBUGOFF STAT("Disable debug"); \
-_result = [_logic, "debug", false] call ALIVE_fnc_profile; \
+_result = [_logic, "debug", true] call ALIVE_fnc_profileHandler; \
 _err = "disable debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(!_result, _err);
@@ -74,7 +74,7 @@ _profile1 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profile1, "profileID", "group_01"] call ALIVE_fnc_profileEntity;
 [_profile1, "companyID", "company_01"] call ALIVE_fnc_profileEntity;
 [_profile1, "unitClasses", ["B_Soldier_TL_F","B_Soldier_SL_F","B_Soldier_F"]] call ALIVE_fnc_profileEntity;
-[_profile1, "position", getPos player] call ALIVE_fnc_profileEntity;
+[_profile1, "position", [getPos player, 20, 45] call BIS_fnc_relPos] call ALIVE_fnc_profileEntity;
 [_profile1, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
 [_profile1, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
 [_profile1, "side", "WEST"] call ALIVE_fnc_profileEntity;
@@ -86,7 +86,7 @@ _profile2 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profile2, "profileID", "group_02"] call ALIVE_fnc_profileEntity;
 [_profile2, "companyID", "company_01"] call ALIVE_fnc_profileEntity;
 [_profile2, "unitClasses", ["B_Soldier_TL_F","B_Soldier_SL_F","B_Soldier_F"]] call ALIVE_fnc_profileEntity;
-[_profile2, "position", getPos player] call ALIVE_fnc_profileEntity;
+[_profile2, "position", [getPos player, 20, 90] call BIS_fnc_relPos] call ALIVE_fnc_profileEntity;
 [_profile2, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
 [_profile2, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
 [_profile2, "side", "WEST"] call ALIVE_fnc_profileEntity;
@@ -97,7 +97,7 @@ _profile3 = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profile3, "init"] call ALIVE_fnc_profileVehicle;
 [_profile3, "profileID", "vehicle_01"] call ALIVE_fnc_profileVehicle;
 [_profile3, "vehicleClass", "B_MRAP_01_hmg_F"] call ALIVE_fnc_profileVehicle;
-[_profile3, "position", getPos player] call ALIVE_fnc_profileVehicle;
+[_profile3, "position", [getPos player, 20, 180] call BIS_fnc_relPos] call ALIVE_fnc_profileVehicle;
 [_profile3, "direction", 180] call ALIVE_fnc_profileVehicle;
 [_profile3, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profile3, "fuel", 1] call ALIVE_fnc_profileVehicle;
@@ -120,6 +120,9 @@ STAT("Register Profile");
 _result = [_logic, "registerProfile", _profile3] call ALIVE_fnc_profileHandler;
 _err = "register profile";
 ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+DEBUGON;
 
 
 STAT("Get Profile");
@@ -185,7 +188,7 @@ ASSERT_TRUE(typeName _state == "ARRAY", _err);
 diag_log _state;
 
 
-STAT("UnRegister Profile");
+STAT("Un-Register Profile 1");
 _result = [_logic, "unregisterProfile", _profile1] call ALIVE_fnc_profileHandler;
 _err = "unregister profile";
 ASSERT_TRUE(typeName _result == "BOOL", _err);
@@ -226,6 +229,24 @@ ASSERT_TRUE(typeName _state == "ARRAY", _err);
 
 
 _state call ALIVE_fnc_inspectHash;
+
+
+STAT("Un-Register Profile 2");
+_result = [_logic, "unregisterProfile", _profile2] call ALIVE_fnc_profileHandler;
+_err = "unregister profile";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+_logic call ALIVE_fnc_inspectHash;
+
+
+STAT("Un-Register Profile 3");
+_result = [_logic, "unregisterProfile", _profile3] call ALIVE_fnc_profileHandler;
+_err = "unregister profile";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+
+
+_logic call ALIVE_fnc_inspectHash;
 
 
 STAT("Sleeping before destroy");
