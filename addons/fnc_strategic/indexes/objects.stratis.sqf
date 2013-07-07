@@ -3,9 +3,9 @@
 ======<HEADER>=======
 prefix=a3\map_stratis
 product=Arma 3
-version=50560
+version=51049
 Pbo Type is: Arma Addon
-Sha: '5C5CA8000B3F44B464580342D46D1BDAE6125B72'
+Sha: 'DBB0B0D74523895682E21CDAC9FED579F50DDA0B'
 ======</HEADER>============
 wrp= Stratis.wrp
 OPRW Version 24 (binarised)

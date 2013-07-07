@@ -32,7 +32,7 @@ Wolffy.au
 private ["_obj_array","_err","_clusters","_points","_result","_cluster","_first","_nodes"];
 
 PARAMS_1(_obj_array);
-DEFAULT_PARAM(1,_maxdist,175);
+DEFAULT_PARAM(1,_maxdist,MIN_CLUSTER_SIZE);
 
 _err = "objects provided not valid";
 ASSERT_DEFINED("_obj_array", _err);

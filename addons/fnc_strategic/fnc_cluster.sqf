@@ -209,7 +209,7 @@ switch(_operation) do {
 		if(_args == 0) then {
 			private ["_max"];
 			_nodes = [_logic, "nodes",[]] call ALIVE_fnc_hashGet;
-			_result = 0;
+			_result = MIN_CLUSTER_SIZE;
 			_center = [_logic, "center"] call MAINCLASS;
 			if(count _center > 0) then {
 				{

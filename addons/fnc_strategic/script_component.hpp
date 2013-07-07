@@ -1,6 +1,8 @@
 #define COMPONENT fnc_strategic
 #include <\x\alive\addons\main\script_mod.hpp>
 
+#define MIN_CLUSTER_SIZE 100
+
 #ifdef DEBUG_ENABLED_FNC_STRATEGIC
 	#define DEBUG_MODE_FULL
 #endif
