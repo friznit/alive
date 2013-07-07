@@ -275,7 +275,15 @@ switch(_operation) do {
 		// Idenitfy targets with hangers for civilian fixed wing air
 		// - Optionally use hangers for military vehicle assets
 		// - Calculate number of fixed wing air assets
-		_types = ["ss_hangar","hangar_2"];
+		_types = [
+				"ss_hangar",
+				"hangar_2",
+				"airport_tower",
+				"runway_beton",
+				"runway_end",
+				"runway_main",
+				"runwayold"
+		];
 		_clusters_air2 = [_logic, _types] call ALIVE_fnc_findTargets;
 		{
 			[_x, "type", "CIV"] call ALIVE_fnc_cluster;
@@ -329,7 +337,7 @@ switch(_operation) do {
 		//_clusters = [_clusters, _clusters_veh] call ALIVE_fnc_consolidateClusters;
 		_clusters = _clusters + _clusters_veh;
 		_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-
+/*
 		// Collate targets and their priorities
 		"SEP - Searching military locations" call ALiVE_fnc_logger;
 		if(([_logic, "targets"] call MAINCLASS) in ["MIL","ALL"]) then {
@@ -338,6 +346,7 @@ switch(_operation) do {
 				"bunker",
 				"cargo_house_",
 				"cargo_patrol_",
+				"deerstand",
 				"hbarrier",
 				"mil_wall",
 				"mil_wired",
@@ -355,23 +364,88 @@ switch(_operation) do {
 
 		"SEP - Searching civilian locations" call ALiVE_fnc_logger;
 		if(([_logic, "targets"] call MAINCLASS) in ["CIV","ALL"]) then {                        
-			// Civilian targets
+			// Civilian targets - radio and power
+			_types = [
+				"communication_f",
+				"_dam_",
+				"dp_",
+				"_pec_",
+				"powerstation",
+				"radar",
+				"spp_",
+				"trafostanica",
+				"ttowerbig_",
+				"vysilac_fm"
+			];
+			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_tmp;
+			//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+			_clusters = _clusters + _clusters_tmp;
+			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+
+			// Civilian targets - naval and water
+			_types = [
+				"crane",
+				"lighthouse",
+				"nav_pier",
+				"wtower"
+			];
+			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_tmp;
+			//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+			_clusters = _clusters + _clusters_tmp;
+			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+
+			// Civilian targets - oil, fuel, rail and construction
+			_types = [
+				"fuelstation",
+				"_oil_",
+				"rail_house",
+				"stationhouse",
+				"valve",
+				"wip"
+			];
+			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_tmp;
+			//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+			_clusters = _clusters + _clusters_tmp;
+			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+*/
+/*			// Civilian targets
 			_types = [
 				"airport_tower",
 				"communication_f",
+				"crane",
+				"_dam_",
 				"dp_",
-				"fuel",
+				"fuelstation",
+				"hospital",
 				"lighthouse_",
 				"nav_lighthouse",
 				"nav_pier",
+				"_oil_",
+				"_pec_",
+				"powerstation",
 				"radar",
+				"rail_house",
 				"runway_beton",
 				"runway_end",
 				"runway_main",
 				"runwayold",
+				"stationhouse",
 				"spp_",
+				"trafostanica",
 				"ttowerbig_",
-				"valve"
+				"valve",
+				"vysilac_fm",
+				"wtower",
+				"wip"
 			];
 			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
 			{
@@ -381,7 +455,7 @@ switch(_operation) do {
 			_clusters = _clusters + _clusters_tmp;
 			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 		};
-
+*/
 		"SEP - Consolidating Clusters" call ALiVE_fnc_logger;
 		_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 		"SEP - Locations Completed" call ALiVE_fnc_logger;
