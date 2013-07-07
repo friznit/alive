@@ -240,6 +240,10 @@ switch(_operation) do {
                 CONTROLLER  - coordination
                 */
         };
+        case "destroy": {                
+                [_logic, "debug", false] call MAINCLASS;
+				[_logic, "destroy"] call SUPERCLASS;
+        };
 		case "debug": {
                 if(typeName _args != "BOOL") then {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -402,7 +406,8 @@ switch(_operation) do {
 							_unit = _units select 0;
 							_group = group _unit;
 							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
-						}
+						};
+						_result = _args;
                 };
 		};
 		case "clearWaypoints": {
@@ -437,9 +442,9 @@ switch(_operation) do {
 
 				if(typeName _args == "ARRAY") then {
 						_class = _args select 0;
-						_position = _args select 1;
-						_damage = _args select 2;
-						_rank = _args select 3;
+						_position = [_args, 1, [0,0,0], [[]]] call BIS_fnc_param;
+						_damage = [_args, 2, 0, [0]] call BIS_fnc_param;
+						_rank = [_args, 3, "PRIVATE", [""]] call BIS_fnc_param;
 						_unitClasses = [_logic,"unitClasses"] call ALIVE_fnc_hashGet;
 						_positions = [_logic,"positions"] call ALIVE_fnc_hashGet;
 						_damages = [_logic,"damages"] call ALIVE_fnc_hashGet;
@@ -534,6 +539,7 @@ switch(_operation) do {
 							_damage = _damages select _unitCount;
 							_rank = _ranks select _unitCount;
 							_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
+							_unit setPos formationPosition _unit;
 							_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
 							_unit setDamage _damage;
 							_unit setRank _rank;

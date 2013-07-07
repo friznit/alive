@@ -11,7 +11,7 @@ LOG("Testing Agent Profile Object");
 
 ASSERT_DEFINED("ALIVE_fnc_profileEntity","");
 
-#define STAT(msg) sleep 3; \
+#define STAT(msg) sleep 1; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
@@ -188,26 +188,44 @@ ASSERT_TRUE(typeName _state == "ARRAY", _err);
 DEBUGON
 diag_log _state;
 
+_ai_count = count allUnits;
 
 STAT("Spawn");
 _result = [_logic, "spawn"] call ALIVE_fnc_profileEntity;
 _err = "spawn";
 ASSERT_TRUE(typeName _result == "BOOL", _err);
-
+ASSERT_TRUE(count allUnits == _ai_count + 2, _err);
 
 STAT("Sleeping before despawn");
-sleep 10;
-
+sleep 5;
 
 STAT("De-Spawn");
 _result = [_logic, "despawn"] call ALIVE_fnc_profileEntity;
 _err = "despawn";
 ASSERT_TRUE(typeName _result == "BOOL", _err);
+ASSERT_TRUE(count allUnits == _ai_count, _err);
 
+STAT("Dead unit Spawn");
+_result = [_logic, "damages"] call ALIVE_fnc_profileEntity;
+_err = "dead unit spawn";
+_result set [1, 1];
+[_logic, "damages", _result] call ALIVE_fnc_profileEntity;
+_result = [_logic, "spawn"] call ALIVE_fnc_profileEntity;
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+ASSERT_TRUE(count allUnits == _ai_count + 1, _err);
+
+STAT("Sleeping before despawn");
+sleep 5;
+
+STAT("Dead unit De-Spawn");
+_result = [_logic, "despawn"] call ALIVE_fnc_profileEntity;
+diag_log _result;
+_err = "dead unit despawn";
+ASSERT_TRUE(typeName _result == "BOOL", _err);
+ASSERT_TRUE(count allUnits == _ai_count, _err);
 
 STAT("Sleeping before destroy");
 sleep 10;
-
 
 STAT("Destroy old Profile instance");
 if(isServer) then {
