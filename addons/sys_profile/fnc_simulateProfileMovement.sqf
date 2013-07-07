@@ -157,8 +157,8 @@ waituntil {
 			
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
-					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-					["ALIVE Simulated profile movement Profile: [%1] WPType: [%2] WPSpeed: [%3] Distance: [%4] MoveSpeed: [%5] SpeedArray: %6",_profileID,_type,_speed,_distance,_speedPerSecond,_speedPerSecondArray] call ALIVE_fnc_dump;
+					//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					//["ALIVE Simulated profile movement Profile: [%1] WPType: [%2] WPSpeed: [%3] Distance: [%4] MoveSpeed: [%5] SpeedArray: %6",_profileID,_type,_speed,_distance,_speedPerSecond,_speedPerSecondArray] call ALIVE_fnc_dump;
 					[_entityProfile,_activeWaypoint] call _createMarker;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
