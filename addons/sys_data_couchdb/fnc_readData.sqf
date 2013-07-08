@@ -39,10 +39,17 @@ ASSERT_OP(typeName _args, == ,"ARRAY", _err);
 
 // Validate args
 _module = _args select 0;
-_uid = _args select 1;
+_keys = _args select 1;
+_uid = _args select 2;
 
-_cmd = format ["SendJSON [""POST"", ""%1/%2""", _module, _uid];
-
+if (_uid != "") then {
+	// use doc id to grab document
+	_cmd = format ["SendJSON [""GET"", ""%1/%2"", """" ", _module, _uid];
+} else {
+	// use keys to grab one or more documents
+	_cmd = format ["SendJSON [""GET"", ""%1/_all_docs?startkey=%2&endkey=%3&include_docs=true"", """" ", _module, str(_keys select 0), str(_keys select 1)];
+};
+	
 // Add databaseName
 _db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
@@ -55,7 +62,11 @@ TRACE_1("COUCH READ DATA", _json);
 _response = [_json] call ALIVE_fnc_sendToPlugIn;
 
 // From response create key/value pair arrays	
-_result = [_response] call ALIVE_fnc_restoreData_couchdb;
+// _result = [_response] call ALIVE_fnc_restoreData_couchdb;
+
+TRACE_1("COUCH READ RESPONSE", _response);
+
+_result = [_response];
 
 /*
 	// Handle data error

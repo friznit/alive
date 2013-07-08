@@ -1,0 +1,59 @@
+/* 
+ * Filename:
+ * fnc_stats_onPlayerConnected.sqf 
+ *
+ * Description:
+ * handled onPlayerConnected event for sys_statistics, reading player stats profile
+ * 
+ * Created by Tupolov
+ * Creation date: 06/07/2013
+ * 
+ * */
+
+// ====================================================================================
+// MAIN
+
+#include "script_component.hpp"
+
+if (GVAR(ENABLED) && isDedicated) then {
+	private ["_owner","_data","_unit","_id","_uid","_name","_module"];
+
+	_unit = objNull;
+	_module = "players";
+	
+	TRACE_1("STATS PLAYER CONNECT", _this);
+	
+	_id = _this select 0;
+	_name = _this select 1;
+	_uid = _this select 2;
+	
+	if (_name == "__SERVER__") exitWith {};
+	
+	{
+		if (getPlayerUID _x == _uid) exitwith {
+			diag_log[format["PLAYER UNIT FOUND IN PLAYABLEUNITS (%1)",_x]];
+			_unit = _x;
+			_owner = owner _unit;
+		};
+	} foreach playableUnits;
+
+	if (isNull _unit) then {
+		diag_log["PLAYER UNIT NOT FOUND IN PLAYABLEUNITS"];
+		
+		/// Hmmmm connecting player isn't found...
+		
+	} else {
+	
+		_data = [GVAR(datahandler), "read", [_module, [], _uid] ] call ALIVE_fnc_data;
+		
+		// Send Data
+		STATS_PLAYER_PROFILE = _data;
+		_owner publicVariableClient "STATS_PLAYER_PROFILE";
+		
+		TRACE_3("SENDING PROFILE DATA TO CLIENT", _owner, _data, _unit);
+	
+	};
+			
+};
+
+// ====================================================================================

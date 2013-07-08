@@ -30,5 +30,10 @@ onPlayerDisconnected {
 		
 };
 
+onPlayerConnected {
+	
+	// Stats module onPlayerConnected call
+	[_id, _name, _uid] call ALIVE_fnc_stats_onPlayerConnected;
 
+}; 
 

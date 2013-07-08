@@ -21,6 +21,16 @@ class cfgFunctions {
 								file = "\x\alive\addons\sys_statistics\fnc_stats_onPlayerDisconnected.sqf";
 								recompile = 1;
 						};
+						class stats_OnPlayerConnected {
+								description = "The module onPlayerConnected handler";
+								file = "\x\alive\addons\sys_statistics\fnc_stats_onPlayerConnected.sqf";
+								recompile = 1;
+						};
+						class stats_createPlayerProfile {
+								description = "The module onPlayerConnected handler";
+								file = "\x\alive\addons\sys_statistics\fnc_stats_createPlayerProfile.sqf";
+								recompile = 1;
+						};
 				};
         };
 };

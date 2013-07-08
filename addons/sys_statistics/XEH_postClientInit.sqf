@@ -8,13 +8,14 @@ ADDON = false;
 
 if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
-	// Get player data
+	// Get player information
 	_name = name player;
 	_class = getText (configFile >> "cfgVehicles" >> (typeof player) >> "displayName");
 	_puid = getplayeruid player;
 	_PlayerSide = side (group player); // group side is more reliable
 	_PlayerFaction = faction player;
 
+	// Setup the event data for player starting
 	_data = [["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["Player",_puid] ];
 
 	GVAR(UPDATE_EVENTS) = _data;
@@ -27,6 +28,24 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	player setVariable [QGVAR(shotsFired), [[primaryweapon player, 0, primaryweapon player, getText (configFile >> "cfgWeapons" >> primaryweapon player >> "displayName")]]];
 	
 	// Player eventhandlers
+	
+	// Set up eventhandler to grab player profile from website
+	"STATS_PLAYER_PROFILE" addPublicVariableEventHandler {
+		if (STATS_PLAYER_PROFILE_DONE) exitWith {}; // If i've loaded my player profile already, then quit
+		private ["_data","_result"];
+		
+		TRACE_1("STATS PLAYER PROFILE",_this);
+		
+		// Read data from server PVEH
+		_data = _this select 1;
+
+		// Create player profile in diary record
+		_result = [_data] call ALIVE_fnc_stats_createPlayerProfile;
+		
+		TRACE_1("STATS PLAYER PROFILE SUCCESS",_result);
+		
+		STATS_PLAYER_PROFILE_DONE = true;
+	};
 	
 	// Set up player fired
 	player addEventHandler ["Fired", {_this call GVAR(fnc_playerfiredEH);}];
