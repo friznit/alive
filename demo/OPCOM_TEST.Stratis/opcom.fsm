@@ -3,7 +3,7 @@
 /*
 item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-920.506470,-757.594971,-422.769257,-709.730469,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-920.506470,-757.594971,-422.769257,-709.730469,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-717.496277,-667.415039,-627.496338,-617.415039,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-929.921753,-650.213623,-839.921631,-600.213623,5.000000,"ATTACK" \n "Conditions"};
 item5[] = {"",7,210,-346.449219,-410.954071,-338.449188,-402.954041,0.000000,""};
@@ -12,7 +12,7 @@ item7[] = {"DEFEND_condition",4,218,-792.786865,-650.930054,-702.786865,-600.930
 item8[] = {"RESERVE_conditio",4,218,-647.864929,-648.950439,-557.864868,-598.950439,3.000000,"RESERVE" \n "conditions"};
 item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.579346,0.000000,"OPCOM" \n "RECEIVER"};
 item10[] = {"CUSTOM_condition",4,218,-507.449158,-649.223816,-417.449249,-599.223816,2.000000,"CUSTOM" \n "conditions"};
-item11[] = {"ORDER_TACOM",2,250,-930.154968,-541.844177,-430.887665,-497.641083,0.000000,"ORDER" \n "TACOM"};
+item11[] = {"ORDER_TACOM",2,4346,-930.154968,-541.844177,-430.887665,-497.641083,0.000000,"ORDER" \n "TACOM"};
 item12[] = {"TACOM_CONFIRM",4,218,-678.719910,-432.511108,-588.719910,-382.511108,0.000000,"TACOM" \n "CONFIRM"};
 item13[] = {"TACOM_NOT_CONFIR",4,218,-773.259155,-433.597778,-683.259277,-383.597778,0.000000,"TACOM" \n "NOT CONFIRM"};
 item14[] = {"",7,210,-1036.552490,-412.424927,-1028.552368,-404.424927,0.000000,""};
@@ -59,8 +59,8 @@ link21[] = {16,9};
 link22[] = {17,9};
 link23[] = {18,14};
 link24[] = {19,5};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,62,6316128,1,-1249.100098,-361.046448,-344.168976,-981.728394,1294,929,1};
-window[] = {2,-1,-1,-1,-1,982,132,1829,132,3,1311};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,62,6316128,1,-1064.429810,-335.287231,-95.713379,-868.948669,678,719,1};
+window[] = {0,-1,-1,-1,-1,916,66,1457,66,1,695};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -73,8 +73,12 @@ class FSM
       name = "INIT";
       init = /*%FSM<STATEINIT""">*/"_busy = false;" \n
        "_targets = [];" \n
-       "_targets_active = [];" \n
-       "_targets_completed = [];" \n
+       "_targets_hash = [];" \n
+       "_targets_attack = [];" \n
+       "_targets_reserve = [];" \n
+       "_targets_defend = [];" \n
+       "_targets_custom = [];" \n
+       "_targets_pending = [];" \n
        "_i = 3;" \n
        "" \n
        "//AnalyzeClustersByObjects;" \n
@@ -91,7 +95,6 @@ class FSM
        "	[[2983.36,1867.7,0],150,""civilian"",25]" \n
        "];" \n
        "_NearestClusters = [_nearestClusters,[],{player distance (_x select 0)},""ASCEND""] call BIS_fnc_sortBy;" \n
-       "" \n
        "_targets = _NearestClusters;" \n
        "" \n
        "    {" \n
@@ -102,8 +105,25 @@ class FSM
        "			_m setMarkerTypeLocal ""hd_dot"";" \n
        "			_m setMarkerColorLocal ""ColorRed"";" \n
        "			_m setMarkerTextLocal format[""Objective Prio %1"",_foreachIndex];" \n
-       "            " \n
-       "    } foreach _targets;"/*%FSM</STATEINIT""">*/;
+       "" \n
+       "			_target = [nil, ""create""] call ALIVE_fnc_profile;" \n
+       "			[_target, ""init""] call ALIVE_fnc_profile;" \n
+       "			[_target, ""target"",_x] call ALIVE_fnc_HashSet;" \n
+       "			[_target, ""opcom_state"",""unassigned""] call ALIVE_fnc_HashSet;" \n
+       "			_targets_hash set [count _targets_hash,_target];" \n
+       "    } foreach _targets;" \n
+       "" \n
+       "_targets = _targets_hash;" \n
+       "_targets_hash = nil;" \n
+       "player sidechat format[""Count targets converted to #Hash#: %1"", {([_x, ""opcom_state""] call ALIVE_fnc_HashGet) == ""unassigned""} count (_targets)];" \n
+       "" \n
+       "FINDTARGET = {" \n
+       "	_pos = _this select 0;" \n
+       "	{" \n
+       "		if (str(([_x, ""target""] call ALIVE_fnc_HashGet) select 0) == str(_pos)) exitwith {_target = _x};" \n
+       "	} foreach _targets;" \n
+       "	_target;" \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -125,7 +145,7 @@ class FSM
     {
       name = "ANALYZE";
       init = /*%FSM<STATEINIT""">*/"_busy = true;" \n
-       "" \n
+       "_target = nil;" \n
        "_attack = nil;" \n
        "_defend = nil;" \n
        "_reserve = nil;" \n
@@ -163,10 +183,19 @@ class FSM
        "			//DrawPath" \n
        "" \n
        "			//AnalyzeResults" \n
-       "			if (count _targets > 0) then {_OPCOM_DATA = [""execute"",[""attack"",_targets select 0]]};" \n
+       "			if ({([_x, ""opcom_state""] call ALIVE_fnc_HashGet) == ""unassigned""} count (_targets) > 0) then {" \n
+       "				" \n
+       "				{" \n
+       "					_state = [_x, ""opcom_state""] call ALIVE_fnc_HashGet;" \n
+       "					if (_state == ""unassigned"") exitwith {_target = _x};" \n
+       "				} foreach _targets;" \n
+       "" \n
+       "				_OPCOM_DATA = [""execute"",[""attack"",_target]];" \n
+       "			};" \n
+       "			//if (count _targets_reserve > 0) then {_OPCOM_DATA = [""execute"",[""reserve"",_targets_reserve select 0]]};" \n
        "" \n
        "			_busy = false;" \n
-       "			player sidechat format[""OPCOM analyzed situation! Total of %1 targets | Targets left: %2 - Targets assigned: %3 - Targets completed: %4"", (count _targets + count _targets_active + count _targets_completed), (count _targets), (count _targets_active), (count _targets_completed)];	" \n
+       "			player sidechat format[""OPCOM analyzed: Total of %1 targets | unassigned: %2 - assigned: %3 - completed: %4"", (count _targets), {([_x, ""opcom_state""] call ALIVE_fnc_HashGet) == ""unassigned""} count (_targets), {([_x, ""opcom_state""] call ALIVE_fnc_HashGet) == ""attack""} count (_targets), {([_x, ""opcom_state""] call ALIVE_fnc_HashGet) == ""reserve""} count (_targets)];	" \n
        "		};" \n
        "" \n
        "		case (""execute"") : {" \n
@@ -175,23 +204,19 @@ class FSM
        "" \n
        "			switch (_operation) do {" \n
        "				case (""attack"") : {" \n
-       "					_attack = _details;" \n
-       "					player sidechat format[""OPCOM orders TACOM to attack target %1!"",_attack];" \n
+       "					_attack = _DATA_VALUE;" \n
+       "					player sidechat format[""OPCOM orders TACOM to %1!"",_attack];" \n
        "				};" \n
+       "" \n
+       "				case (""reserve"") : {" \n
+       "					_reserve = _DATA_VALUE;" \n
+       "					player sidechat format[""OPCOM orders TACOM to %1!"",_reserve];" \n
+       "				};" \n
+       "" \n
+       "				//Defend" \n
+       "				//Custom" \n
        "			};" \n
        "" \n
-       "			//Defend" \n
-       "			//Reserve" \n
-       "			//Custom" \n
-       "		};" \n
-       "" \n
-       "		case (""completed"") : {" \n
-       "			_pos = _DATA_VALUE;" \n
-       "			_idx = ([_targets_active,(_pos select 0)] call BIS_fnc_findNestedElement) select 0;" \n
-       "			_targets_completed set [count _targets_completed,_targets_active select _idx];" \n
-       "			_targets_active set [_idx,""del""]; _targets_active = _targets_active - [""del""];" \n
-       "			player sidechat format[""OPCOM received target at %1 was completed! Completed Total: %2!"",_pos,count _targets_completed];" \n
-       "			_OPCOM_DATA = [""analyze"",nil]; _busy = false;" \n
        "		};" \n
        "" \n
        "		case (""confirmed"") : {" \n
@@ -200,13 +225,23 @@ class FSM
        "			_target = _data select 0;" \n
        "			_return = _data select 1;" \n
        "" \n
-       "			_position = _target select 0;" \n
-       "			_size = _target select 1;" \n
-       "		" \n
+       "			_operation = _target select 0;" \n
+       "			_targetDetails = _target select 1;" \n
+       "" \n
+       "			_pos = _targetDetails select 0;" \n
+       "			_size = _targetDetails select 1;" \n
+       "" \n
        "			if (_confirmed) then {" \n
-       "				_idx = ([_targets,(_position select 0)] call BIS_fnc_findNestedElement) select 0;" \n
-       "				_targets_active set [count _targets_active,_targets select _idx];" \n
-       "				_targets set [_idx,""del""]; _targets = _targets - [""del""];" \n
+       "				switch (_operation) do {" \n
+       "					case (""attack"") : {" \n
+       "						[_targetDetails, ""opcom_state"",""attack""] call ALIVE_fnc_HashSet;" \n
+       "					};" \n
+       "					case (""defend"") : {};" \n
+       "					case (""reserve"") : {" \n
+       "						[_targetDetails, ""opcom_state"",""reserve""] call ALIVE_fnc_HashSet;" \n
+       "					};" \n
+       "					default {};" \n
+       "				};" \n
        "" \n
        "				_OPCOM_DATA = [""analyze"",_return];" \n
        "				player sidechat format[""TACOM confirmed orders! Answer was %1!"",_return];" \n
@@ -214,6 +249,22 @@ class FSM
        "				player sidechat format[""TACOM could not confirm orders! Answer was %1"",_return];" \n
        "			};" \n
        "		_busy = false;" \n
+       "		};" \n
+       "" \n
+       "		case (""completed"") : {" \n
+       "			_pos = _DATA_VALUE;" \n
+       "			_target = [_pos] call FINDTARGET;" \n
+       "			_state = [_target,""opcom_state""] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "			switch (_state) do {" \n
+       "				case (""attack"") do {" \n
+       "					[_target,""opcom_state"",""reserve""] call ALiVE_fnc_HashSet;" \n
+       "				};" \n
+       "				case (""reserve"") do {};" \n
+       "			};" \n
+       "" \n
+       "			player sidechat format[""OPCOM received target at %1 was completed! Completed Total: %2!"",_pos,{([_x, ""opcom_state""] call ALIVE_fnc_HashGet) == ""reserve""} count (_targets)];" \n
+       "			_OPCOM_DATA = [""analyze"",nil]; _busy = false;" \n
        "		};" \n
        "" \n
        "		case (""custom"") : {_custom = _DATA_VALUE};" \n
@@ -293,19 +344,15 @@ class FSM
       init = /*%FSM<STATEINIT""">*/"_operation = nil;" \n
        "" \n
        "if !(isnil ""_attack"") then {_operation = ""attack""};" \n
-       "if !(isnil ""_defend"") then {_operation_defend = true};" \n
-       "if !(isnil ""_reserve"") then {_operation_reserve = true};" \n
-       "if !(isnil ""_custom"") then {_operation_custom = true};" \n
+       "if !(isnil ""_defend"") then {_operation = ""defend""};" \n
+       "if !(isnil ""_reserve"") then {_operation = ""reserve""};" \n
+       "if !(isnil ""_custom"") then {_operation = ""custom""};" \n
        "" \n
        "switch (_operation) do {" \n
-       "		case ( ""attack"") : {" \n
-       "			_pos = _attack select 0;" \n
-       "			_size = _attack select 1;" \n
-       "			TACOM setFSMVariable [""_TACOM_DATA"",[""attack"",_attack]];" \n
-       "		};" \n
-       "		case (_operation_defend) : {};" \n
-       "		case (_operation_reserve) : {};" \n
-       "		case (_operation_custom) : {};" \n
+       "		case ( ""attack"") : {	TACOM setFSMVariable [""_TACOM_DATA"",[""analyze"",_attack]];};" \n
+       "		case (""defend"") : {};" \n
+       "		case (""reserve"") : {TACOM setFSMVariable [""_TACOM_DATA"",[""analyze"",_reserve]];};" \n
+       "		case (""custom"") : {};" \n
        "		default {};" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
