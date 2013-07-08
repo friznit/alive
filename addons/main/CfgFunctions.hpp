@@ -96,6 +96,11 @@ class cfgFunctions {
 	                        file = "\x\alive\addons\main\fnc_hashRem.sqf";
 				recompile = 1;
 			};
+			class sendHint {
+				description = "Displays a hint message on screen";
+				file = "\x\alive\addons\main\fnc_sendHint.sqf";
+				recompile = 1;
+			};
                 };
         };
 };
