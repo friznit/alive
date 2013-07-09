@@ -46,7 +46,7 @@ _result = [_logic, "getProfile", "agent_01"] call ALIVE_fnc_profileHandler;
 _result = [_logic, "getProfiles"] call ALIVE_fnc_profileHandler;
 
 // get profiles by type
-_result = [_logic, "getProfilesByType", "agent"] call ALIVE_fnc_profileHandler;
+_result = [_logic, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
 
 // get profiles by side
 _result = [_logic, "getProfilesBySide", "WEST"] call ALIVE_fnc_profileHandler;

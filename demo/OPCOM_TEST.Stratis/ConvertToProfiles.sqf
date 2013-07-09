@@ -8,7 +8,7 @@
 	[true] call ALIVE_fnc_createProfilesFromUnits;
 	
 	// turn on debug again to see the state of the profile handler, and set debug on all a profiles
-	[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+	//[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 	
 	_profiles = [ALIVE_profileHandler, "getProfiles"] call ALIVE_fnc_profileHandler;
     player sidechat format["Count Profiles %1",count (_profiles select 2)];

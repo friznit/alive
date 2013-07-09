@@ -22,7 +22,7 @@ _result = "O_Heli_Attack_02_F" call ALIVE_fnc_configGetVehicleTurrets;
 See Also:
 
 Author:
-denisko.redisko (denvdmj)
+ARJay
 ---------------------------------------------------------------------------- */
 
 private ["_result","_findRecurse","_class"];

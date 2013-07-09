@@ -238,6 +238,10 @@ switch(_operation) do {
 						[_logic,"waypointsCompleted",[]] call ALIVE_fnc_hashSet;
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
 						[_logic,"unitCount",0] call ALIVE_fnc_hashSet;
+						[_logic,"unitClasses",[]] call ALIVE_fnc_hashSet;
+						[_logic,"positions",[]] call ALIVE_fnc_hashSet;
+						[_logic,"damages",[]] call ALIVE_fnc_hashSet;
+						[_logic,"ranks",[]] call ALIVE_fnc_hashSet;
 						[_logic,"units",[]] call ALIVE_fnc_hashSet;
 						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;

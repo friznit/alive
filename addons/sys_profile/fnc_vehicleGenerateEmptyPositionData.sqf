@@ -54,7 +54,7 @@ ARJay
 				if(_countPositions > 0) then {
 					_positions = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
 					
-					['[_vehiclePositions,"%1",%2] call ALIVE_fnc_hashSet;',_class,_positions] call ALIVE_fnc_dump;	
+					['[ALIVE_vehiclePositions,"%1",%2] call ALIVE_fnc_hashSet;',_class,_positions] call ALIVE_fnc_dump;	
 				};		
 				
 				deleteVehicle _vehicle;

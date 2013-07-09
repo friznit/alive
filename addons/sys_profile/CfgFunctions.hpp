@@ -1,6 +1,46 @@
 class cfgFunctions {
 	class PREFIX {
 		class COMPONENT {
+			class configGetGroup {
+				description = "configGetGroup";
+				file = "\x\alive\addons\sys_profile\fnc_configGetGroup.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleClass {
+				description = "configGetVehicleClass";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleClass.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleCrew {
+				description = "configGetVehicleCrew";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleCrew.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleHitPoints {
+				description = "configGetVehicleHitPoints";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleHitPoints.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleMaxSpeed {
+				description = "configGetVehicleMaxSpeed";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleMaxSpeed.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleTurretPositions {
+				description = "configGetVehicleTurretPositions";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleTurretPositions.sqf";
+				recompile = 1;
+			};
+			class configGetVehicleTurrets {
+				description = "configGetVehicleTurrets";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleTurrets.sqf";
+				recompile = 1;
+			};			
+			class configGetWeaponMagazines {
+				description = "configGetWeaponMagazines";
+				file = "\x\alive\addons\sys_profile\fnc_configGetWeaponMagazines.sqf";
+				recompile = 1;
+			};			
 			class profileHandler {
 				description = "profileHandler";
 				file = "\x\alive\addons\sys_profile\fnc_profileHandler.sqf";
@@ -21,6 +61,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicle.sqf";
 				recompile = 1;
 			};
+			class createProfilesFromGroupConfig {
+				description = "createProfilesFromGroupConfig";
+				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromGroupConfig.sqf";
+				recompile = 1;
+			};	
 			class createProfilesFromUnits {
 				description = "createProfilesFromUnits";
 				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromUnits.sqf";
@@ -136,6 +181,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_sideTextToObject.sqf";
 				recompile = 1;
 			};
+			class sideNumberToText {
+				description = "sideNumberToText";
+				file = "\x\alive\addons\sys_profile\fnc_sideNumberToText.sqf";
+				recompile = 1;
+			};
 			class vehicleGetAmmo {
 				description = "vehicleGetAmmo";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetAmmo.sqf";
@@ -156,31 +206,6 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleSetDamage.sqf";
 				recompile = 1;
 			};
-			class configGetVehicleHitPoints {
-				description = "configGetVehicleHitPoints";
-				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleHitPoints.sqf";
-				recompile = 1;
-			};
-			class configGetVehicleTurrets {
-				description = "configGetVehicleTurrets";
-				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleTurrets.sqf";
-				recompile = 1;
-			};
-			class configGetVehicleTurretPositions {
-				description = "configGetVehicleTurretPositions";
-				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleTurretPositions.sqf";
-				recompile = 1;
-			};
-			class configGetWeaponMagazines {
-				description = "configGetWeaponMagazines";
-				file = "\x\alive\addons\sys_profile\fnc_configGetWeaponMagazines.sqf";
-				recompile = 1;
-			};
-			class configGetVehicleMaxSpeed {
-				description = "configGetVehicleMaxSpeed";
-				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleMaxSpeed.sqf";
-				recompile = 1;
-			};
 			class unitArraySortByRank {
 				description = "unitArraySortByRank";
 				file = "\x\alive\addons\sys_profile\fnc_unitArraySortByRank.sqf";
@@ -199,6 +224,11 @@ class cfgFunctions {
 			class groupIsReady {
 				description = "groupIsReady";
 				file = "\x\alive\addons\sys_profile\fnc_groupIsReady.sqf";
+				recompile = 1;
+			};
+			class groupGenerateConfigData {
+				description = "groupGenerateConfigData";
+				file = "\x\alive\addons\sys_profile\fnc_groupGenerateConfigData.sqf";
 				recompile = 1;
 			};
 			class vehicleGenerateEmptyPositionData {
