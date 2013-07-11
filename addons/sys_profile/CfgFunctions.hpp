@@ -6,6 +6,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_configGetGroup.sqf";
 				recompile = 1;
 			};
+			class configGetRandomGroup {
+				description = "configGetRandomGroup";
+				file = "\x\alive\addons\sys_profile\fnc_configGetRandomGroup.sqf";
+				recompile = 1;
+			};
 			class configGetVehicleClass {
 				description = "configGetVehicleClass";
 				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleClass.sqf";

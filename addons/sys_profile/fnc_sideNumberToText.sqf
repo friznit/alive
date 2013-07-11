@@ -30,12 +30,12 @@ private ["_side", "_result"];
 _side = _this;
 
 switch(_side) do {
-	case 1: {
-		_result = "WEST";
-	};
 	case 0: {
 		_result = "EAST";
 	};
+	case 1: {
+		_result = "WEST";
+	};	
 	case 2: {
 		_result = "GUER";
 	};

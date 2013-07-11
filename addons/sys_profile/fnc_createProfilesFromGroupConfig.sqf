@@ -9,6 +9,7 @@ Create profiles based on definitions found in CfgGroups
 
 Parameters:
 String - Group class name from CfgGroups
+Array - position
 
 Returns:
 Array of created profiles
@@ -16,7 +17,7 @@ Array of created profiles
 Examples:
 (begin example)
 // create profiles from group config
-_result = ["OIA_InfWepTeam"] call ALIVE_fnc_createProfilesFromGroupConfig;
+_result = ["OIA_InfWepTeam",getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
 (end)
 
 See Also:
@@ -133,7 +134,6 @@ private ["_vehicleID","_vehicleClass","_vehicleRank","_crew","_profileVehicle","
 	_countVehicles = _countVehicles + 1;
 
 } forEach _groupVehicles;
-
 
 // create the group units
 

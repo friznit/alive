@@ -37,7 +37,7 @@ switch(_side) do {
 		_result = east;
 	};
 	case "GUER": {
-		_result = guer;
+		_result = resistance;
 	};
 	case "CIV": {
 		_result = civ;
