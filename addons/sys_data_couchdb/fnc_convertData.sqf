@@ -2,7 +2,7 @@
 Function: ALIVE_sys_data_couchdb_fnc_convertData
 
 Description:
-Converts ARMA2 data types into CouchDB key/value strings
+Converts ARMA2 data types into CouchDB key/value (JSON) strings
 
 Parameters:
 Any - String, Bool, Array, Side, Scalar, Object
@@ -52,8 +52,6 @@ TRACE_2("ConvertData ", typeName _data, _data);
 if (typeName _data == "OBJECT") then {
 	_data = str(_data);
 };
-
-_convert = [_logic, "storeType", true] call ALIVE_fnc_hashGet;
 
 switch(typeName _data) do {
 	case "SCALAR": {
@@ -129,7 +127,4 @@ switch(typeName _data) do {
 	};
 };
 
-if (_convert) then {
-	_result = format["{""type"":""%1"",""value"":%2}", typeName _data, _result];
-};
 _result;

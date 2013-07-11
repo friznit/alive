@@ -31,6 +31,11 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data\fnc_getServerTime.sqf";
 					recompile = 1;
 				};
+				class parseJSON {
+					description = "Converts a JSON string into a CBA Hash";
+					file = "\x\alive\addons\sys_data\fnc_parseJSON.sqf";
+					recompile = 1;
+				};
             };
         };
 };

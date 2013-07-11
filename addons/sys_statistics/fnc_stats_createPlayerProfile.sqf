@@ -36,12 +36,14 @@ if ((count _data) > 0) then {
 	player createDiarySubject ["statsPage","ALiVE"];
 	
 	{
-		_profile = _profile + _x;
+		_profile = _profile + (_x select 0) + " : " + (_x select 1) + "<br />";
 	} foreach _data;
 	
 	player createDiaryRecord ["statsPage", ["Profile", _profile]]; 
 	
-	["Player Profile / Stats", "Profile download from ALiVE website completed. Your profile now available in player diary under the entry ALiVE > Profile."] call ALIVE_fnc_sendHint;
+	_msg = format["Welcome %1!", name player];
+	
+	[_msg, "Profile download from ALiVE website completed. Your profile now available in player diary under the entry ALiVE > Profile."] call ALIVE_fnc_sendHint;
 
 	_result = true;
 

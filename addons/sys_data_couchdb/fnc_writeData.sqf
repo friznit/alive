@@ -98,6 +98,10 @@ if (!_async) then {
 		_suffix = " ";
 	};
 	
+	// Add key and value type to data dictionary
+	[ALIVE_DataDictionary, "setDataDictionary", [_key, typeName _value]] call ALIVE_fnc_Data;
+	
+	// Convert value to string
 	_value = [_logic, "convert", [_value]] call ALIVE_fnc_Data;
 	
 	TRACE_2("SYS DATA VALUE CONVERSION", typename _value, _value);
@@ -105,13 +109,6 @@ if (!_async) then {
 	// Create key/value pairs
 	_pairs = _pairs + """" +  str(_key) + """:" + _prefix + _value + _suffix + ",";
 } foreach _data;
-
-// Add UID if passed
-if (count _uid > 0) then {
-	{
-		_pairs = _pairs + """" + (_x select 0) + """:""" + (_x select 1) + """,";
-	} foreach _uid;
-};
 
 _json = _cmd + ", ""{" + _pairs + "}""";
 
