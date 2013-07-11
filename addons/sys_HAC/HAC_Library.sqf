@@ -277,11 +277,13 @@ _logic setvariable ["RHQ_Cargo", [
 "O_MRAP_02_gmg_F",
 "O_MRAP_02_hmg_F",
 "B_Heli_Light_01_armed_F",
+"B_Heli_Transport_01_F",
+"B_Heli_Transport_01_camo_F",
 "B_MRAP_01_F",
 "O_MRAP_02_F",
 "O_Heli_Attack_02_F",
-"O_Heli_Light_02_unarmed_F",
-"B_Heli_Light_01_F"
+"O_Heli_Light_02_unarmed_F"
+"I_Heli_Transport_02_F",
 
 ]]; 
 
@@ -289,12 +291,16 @@ _logic setvariable ["RHQ_NCCargo", [
 "B_Truck_01_transport_F",
 "B_Truck_01_covered_F",
 "B_MRAP_01_F",
+"B_Heli_Light_01_F",
+"B_Heli_Transport_01_F",
+"B_Heli_Transport_01_camo_F",
 "O_MRAP_02_F",
 "O_Truck_02_transport_F",
 "O_Truck_02_covered_F",
 "I_Truck_02_transport_F",
 "I_Truck_02_covered_F",
 "I_MRAP_03_F"
+"I_Heli_Transport_02_F",
 
 ]];  
 
