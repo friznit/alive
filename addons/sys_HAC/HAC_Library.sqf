@@ -282,8 +282,8 @@ _logic setvariable ["RHQ_Cargo", [
 "B_MRAP_01_F",
 "O_MRAP_02_F",
 "O_Heli_Attack_02_F",
-"O_Heli_Light_02_unarmed_F"
-"I_Heli_Transport_02_F",
+"O_Heli_Light_02_unarmed_F",
+"I_Heli_Transport_02_F"
 
 ]]; 
 
@@ -299,8 +299,8 @@ _logic setvariable ["RHQ_NCCargo", [
 "O_Truck_02_covered_F",
 "I_Truck_02_transport_F",
 "I_Truck_02_covered_F",
-"I_MRAP_03_F"
-"I_Heli_Transport_02_F",
+"I_MRAP_03_F",
+"I_Heli_Transport_02_F"
 
 ]];  
 
