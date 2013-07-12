@@ -84,10 +84,6 @@ if (_operation in _ops) then {
                         _logic = [nil, "create"] call SUPERCLASS;
                         [_logic, "super", QUOTE(SUPERCLASS)] call ALIVE_fnc_hashSet;
                         [_logic, "class", QUOTE(MAINCLASS)] call ALIVE_fnc_hashSet;
-						if (isNil "ALIVE_DataDictionary") then {
-							// Load Data Dictionary or create new
-							ALIVE_DataDictionary = [] call ALIVE_fnc_hashCreate;
-						};
                         //[_logic, "super", ""] call ALIVE_fnc_hashSet;
                         //[_logic, "class", ""] call ALIVE_fnc_hashSet;
                         
@@ -136,8 +132,12 @@ if (_operation in _ops) then {
 		
 		case "setDataDictionary": {
 			ASSERT_TRUE(typeName _args == "ARRAY", _args);
-			if(typeName _args == "ARRAY") then { 
-				_result = [ALIVE_DataDictionary, _args select 0, _args select 1] call ALIVE_fnc_hashSet;
+			if(typeName _args == "ARRAY") then {
+				private ["_missing"];
+				_missing = [ALIVE_DataDictionary, _args select 0, "MISSING"] call ALIVE_fnc_hashGet;
+				if (_missing == "MISSING") then {
+					_result = [ALIVE_DataDictionary, _args select 0, _args select 1] call ALIVE_fnc_hashSet;
+				};
 			} else {
 				private["_err"];
                 _err = format["%1 %2 operation requires an ARRAY as an argument not %3.", _logic, _operation, typeName _args];

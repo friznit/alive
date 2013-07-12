@@ -9,7 +9,7 @@ Object - datahandler object
 String - JSON formatted string
 
 Returns:
-Array - key/value pairs
+Hash - Array of key / value pairs
 
 Examples:
 (begin example)
@@ -46,7 +46,7 @@ TRACE_1("RESTORE DATA", _hash);
 _restore = {
 	
 	private ["_type","_data","_tmp"];
-	
+
 	_type = [ALIVE_DataDictionary, "getDataDictionary", [_key]] call ALIVE_fnc_Data;
 	if (isNil "_type") then {
 		_type = "STRING";
@@ -92,11 +92,10 @@ _restore = {
 				_data = _value;
 			};
 	};
-	_tmp = [_key,_data];
-	_result set [count _result, _tmp];
+	[_hash, _key, _data] call ALIVE_fnc_hashSet;
 }; 
 
 [_hash, _restore] call CBA_fnc_hashEachPair;
 
-_result;
+_hash;
 

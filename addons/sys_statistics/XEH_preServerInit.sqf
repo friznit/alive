@@ -38,7 +38,7 @@ if (GVAR(ENABLED)) then {
 	// Server side handler to write data to DB
 	QGVAR(UPDATE_EVENTS) addPublicVariableEventHandler { 
 
-					private ["_data", "_post", "_gameTime", "_realTime","_hours","_minutes","_currenttime","_returnUID"];
+					private ["_data", "_post", "_gameTime", "_realTime","_hours","_minutes","_currenttime","_async"];
 					if (GVAR(ENABLED)) then {
 						_data = _this select 1;
 						_module = "events";
@@ -71,11 +71,11 @@ if (GVAR(ENABLED)) then {
 										
 						// Write event data to DB
 						if ((_data select 5) select 1 == "OperationFinish") then {
-							_returnUID = true;
+							_async = false;
 						} else {
-							_returnUID = false;
+							_async = true;
 						};
-						_result = [GVAR(datahandler), "write", [_module, _data, _returnUID] ] call ALIVE_fnc_Data;
+						_result = [GVAR(datahandler), "write", [_module, _data, _async] ] call ALIVE_fnc_Data;
 						if (_result == "ERROR") then {
 							ERROR("SYS STATISTICS FAILED TO WRITE TO DATABASE");
 						};

@@ -1,11 +1,11 @@
 #include "script_component.hpp"	
-SCRIPT(writeData_couchdb);
+SCRIPT(updateData_couchdb);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_writeData_couchdb
+Function: ALIVE_fnc_updateData_couchdb
 
 Description:
-Writes data to an external couchdb (using JSON string)
+Updates data stored in an external couchdb (using JSON string)
 
 Parameters:
 Object - Data handler logic 
@@ -16,7 +16,7 @@ String - Returns a response error or confirmation of write
 
 Examples:
 (begin example)
-	[ _logic, [ _module, [[key,value],[key,value],[key,value]], _async, _uid ] ] call ALIVE_fnc_writeData;
+	[ _logic, [ _module, [[key,value],[key,value],[key,value]], _async, _uid ] ] call ALIVE_fnc_updateData;
 (end)
 
 Author:
@@ -29,7 +29,7 @@ private ["_response","_result","_error","_module","_data","_uid","_async","_pair
 _logic = _this select 0;
 _args = _this select 1;
 
-// Write data to a data source
+// Update data to a data source
 // Function is expecting the module name (preferably matching table name for db access) and the key/value pairs where the key would be the column id for a DB or the attribute to a JSON object
 // Values should be in string form (use the convertData function)
 // Call to external datasource uses an arma2net plugin call
@@ -48,19 +48,12 @@ ASSERT_OP(typeName _args, == ,"ARRAY", _err);
 // Validate args
 _module = _args select 0;
 _data = _args select 1;
-_method = "POST";
-
-if (count _args > 2) then {
-	_async = _args select 2;
-} else {
-	_async = false;
-	_uid = "";
-};
+_async = _args select 2;
+_method = "PUT";
 
 if (count _args > 3) then {
 	_uid = _args select 3;
 	_module = format ["%1/%2", _module, _uid];
-	_method = "PUT";
 };
 
 // Check to see if CBA HASH has been passed as data

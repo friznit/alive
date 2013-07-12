@@ -56,9 +56,7 @@ if (GVAR(ENABLED)) then {
 		_unitPos = mapgridposition _unit;
 		
 		// Log data
-		_data = [ ["Event","CombatDive"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitPos",_unitPos] , ["unit",_unit] , ["diveTime",_diveTime] ];
-			
-		_data = _data + [ ["Player",getplayeruid _unit] , ["PlayerName",name _unit] ];
+		_data = [ ["Event","CombatDive"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitPos",_unitPos] , ["unit",_unit] , ["diveTime",_diveTime] , ["Player",getplayeruid _unit] , ["PlayerName",name _unit] ];
 		
 		// Send data to server to be written to DB
 		GVAR(UPDATE_EVENTS) = _data;

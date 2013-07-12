@@ -6,6 +6,11 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data_couchdb\fnc_writeData.sqf";
 					recompile = 1;
 				};
+				class updateData_couchdb {
+					description = "Updates a record stored in a data source";
+					file = "\x\alive\addons\sys_data_couchdb\fnc_updateData.sqf";
+					recompile = 1;
+				};
 				class readData_couchdb {
 					description = "Reads a record/document from a data source";
 					file = "\x\alive\addons\sys_data_couchdb\fnc_readData.sqf";
@@ -31,11 +36,7 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data_couchdb\fnc_saveData.sqf";
 					recompile = 1;
 				};
-				class updateData_couchdb {
-					description = "Updates a record stored in a data source";
-					file = "\x\alive\addons\sys_data_couchdb\fnc_updateData.sqf";
-					recompile = 1;
-				};
+
 				class deleteData_couchdb {
 					description = "Deletes a record stored in a data source";
 					file = "\x\alive\addons\sys_data_couchdb\fnc_deleteData.sqf";

@@ -36,6 +36,11 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data\fnc_parseJSON.sqf";
 					recompile = 1;
 				};
+				class data_OnPlayerDisconnected {
+						description = "The module onPlayerDisconnected handler";
+						file = "\x\alive\addons\sys_data\fnc_data_onPlayerDisconnected.sqf";
+						recompile = 1;
+				};
             };
         };
 };

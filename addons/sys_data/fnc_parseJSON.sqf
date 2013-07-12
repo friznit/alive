@@ -25,6 +25,7 @@ Author:
 #define ASCII_RIGHT_CURLY_BRACKET 125
 #define ASCII_COMMA 44
 #define ASCII_COLON 58
+#define ASCII_QUOTES 34
 
 #define JSON_MODE_STRING 0
 #define JSON_MODE_ASSOC_KEY 1
@@ -108,16 +109,11 @@ _parse =
 		_pos = _pos + 1;
 		_char = _JSON select _pos;
 		
-		if (_char == ASCII_JSON_COMMENT) then
+		if (_char == ASCII_QUOTES) then
 		{
-			// Trim comments.
-			while { not (_char in _lineBreaks) } do
-			{
-				_pos = _pos + 1;
-				_char = _JSON select _pos;
-			};
-
-			_pos = _pos - 1; // Parse the newline normally.
+			// Skip quotation marks 
+			// TRACE_1("FOUND QUOTE, SKIPPING",_char);
+			
 		} else {
 			
 			switch (_mode) do

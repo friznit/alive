@@ -27,7 +27,12 @@ onPlayerDisconnected {
 	
 	// Stats module onPlayerDisconnected call
 	[_id, _name, _uid] call ALIVE_fnc_stats_onPlayerDisconnected;
-		
+	
+	TRACE_1("OPD DATA",_this);
+	
+	// Data module onPlayerDisconnected call
+	[_id, _name, _uid] call ALIVE_fnc_data_onPlayerDisconnected;
+
 };
 
 onPlayerConnected {

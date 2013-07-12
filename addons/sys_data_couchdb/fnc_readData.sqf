@@ -61,9 +61,14 @@ TRACE_1("COUCH READ DATA", _json);
 // Send JSON to plugin
 _response = [_json] call ALIVE_fnc_sendToPlugIn;
 
-// From response create key/value pair arrays	
-_result = [_logic, "restore", [_response]] call ALIVE_fnc_Data;
+// From response create key/value pair arrays
+if (_response != "ERROR") then {	
+	
+	_result = [_logic, "restore", [_response]] call ALIVE_fnc_Data;
 
+} else {
+	_result = _response;
+};
 TRACE_1("COUCH READ RESPONSE", _response);
 
 /*

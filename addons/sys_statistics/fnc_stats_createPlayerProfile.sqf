@@ -23,32 +23,34 @@ Peer Reviewed:
 #include "script_component.hpp"	
 SCRIPT(stats_createPlayerProfile);
 
-private ["_result","_profile","_data","_msg"];
+private ["_result","_profile","_data","_msg","_profile"];
 
 TRACE_1("CREATING PLAYER PROFILE", _this);
 
 _data = _this select 0;
 _profile = "";
 
-if ((count _data) > 0) then {
+if ([_data] call CBA_fnc_isHash) then {
 		
 	// Create a Player diary record
 	player createDiarySubject ["statsPage","ALiVE"];
 	
-	{
-		_profile = _profile + (_x select 0) + " : " + (_x select 1) + "<br />";
-	} foreach _data;
+	_prof = {
+		_profile = _profile + _key + " : " + _value + "<br />";
+	};
+	
+	[_data, _prof] call CBA_fnc_hashEachPair;
 	
 	player createDiaryRecord ["statsPage", ["Profile", _profile]]; 
 	
 	_msg = format["Welcome %1!", name player];
 	
-	[_msg, "Profile download from ALiVE website completed. Your profile now available in player diary under the entry ALiVE > Profile."] call ALIVE_fnc_sendHint;
+	[_msg, "Profile download from ALiVE website completed. Your profile is now available in player diary under the entry ALiVE > Profile."] call ALIVE_fnc_sendHint;
 
 	_result = true;
 
 } else {
-	TRACE_1("NOT CREATING PLAYER PROFILE - NO DATA", _data);
+	TRACE_1("NOT CREATING PLAYER PROFILE - NO VALID DATA", _data);
 	_result = false;
 };
 
