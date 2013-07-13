@@ -54,10 +54,12 @@ _deleteMarker = {
 	
 	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
 	
-	_m = [_markers,_profileID] call ALIVE_fnc_hashGet;
-	deleteMarkerLocal _m;
-	
-	[_markers,_profileID] call ALIVE_fnc_hashRem;
+	_profileIndex = _markers select 1;
+	if(_profileID in _profileIndex) then {	
+		_m = [_markers,_profileID] call ALIVE_fnc_hashGet;			
+		deleteMarkerLocal _m;		
+		[_markers,_profileID] call ALIVE_fnc_hashRem;
+	};
 };
 
 _createMarker = {
