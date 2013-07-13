@@ -409,10 +409,13 @@ switch(_operation) do {
 
 				if(typeName _args == "STRING") then {
 					_profileID = _args;
-
 					_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
-
-					_result = [[_logic, "profiles"] call ALIVE_fnc_hashGet, _profileID] call ALIVE_fnc_hashGet;
+					_profileIndex = _profiles select 1;
+					if(_profileID in _profileIndex) then {
+						_result = [_profiles, _profileID] call ALIVE_fnc_hashGet;
+					}else{
+						_result = nil;
+					};					
 				};
 		};
 		case "getProfiles": {
