@@ -405,7 +405,7 @@ switch(_operation) do {
                 };
         };
 		case "getProfile": {
-				private["_profileID","_profiles"];
+				private["_profileID","_profiles","_profileIndex"];
 
 				if(typeName _args == "STRING") then {
 					_profileID = _args;
@@ -415,7 +415,7 @@ switch(_operation) do {
 						_result = [_profiles, _profileID] call ALIVE_fnc_hashGet;
 					}else{
 						_result = nil;
-					};					
+					};		
 				};
 		};
 		case "getProfiles": {
