@@ -198,8 +198,12 @@ waituntil {
 					_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
 					_waypoints set [0,objNull];
 					_waypoints = _waypoints - [objNull];
+                    
+                    //Needs review of any variables in hashes
+                    any = "UNDEF";
 					if (call compile (_statements select 0)) then {call compile (_statements select 1)};
-					
+					any = nil;
+                    
 					[] call _handleWPcomplete;
 					
 					[_entityProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
