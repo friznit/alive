@@ -13,7 +13,7 @@ Returns:
 	Data structure taken from the string, or nil if file had syntax errors.
 
 Author:
-	Tupolov (from Spooner's original parseJSON CBA function)
+	Tupolov (from Spooner's original parseYAML CBA function)
 ---------------------------------------------------------------------------- */
 
 #include "script_component.hpp"
@@ -311,7 +311,7 @@ _parse =
 
 PARAMS_1(_string);
 
-private ["_JSONString", "_JSON", "_outerData", "_lineBreaks"];
+private ["_JSONString", "_JSON","_pos","_error","_retVal","_value"];
 _JSONString = _string;
 _JSON = toArray _JSONString;
 

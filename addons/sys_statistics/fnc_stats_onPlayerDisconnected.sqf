@@ -78,13 +78,13 @@ if (GVAR(ENABLED)) then {
 					
 		_shotsFiredData = [];
 		{
-			private ["_weaponCount","_weapon","_count","_muzzle"];
-			_weaponCount = _x;
-			_muzzle = _weaponCount select 0;
-			_count = _weaponCount select 1;
-			_weapon = _weaponCount select 2;
-			_weaponName = _weaponCount select 3;
-			_shotsFiredData = _shotsFiredData + [ [["weaponMuzzle",_muzzle] , ["count",_count] , ["weaponType", _weapon], ["weaponName",_weaponName]] ] ;
+			private ["_weaponCount","_weapon","_count","_muzzle","_shotsFiredHash"];
+			_shotsFiredHash = [] call CBA_fnc_hashCreate;
+			[_shotsFiredHash, "weaponMuzzle", _x select 0] call CBA_fnc_hashSet;
+			[_shotsFiredHash, "count", _x select 1] call CBA_fnc_hashSet;
+			[_shotsFiredHash, "weaponType", _x select 2] call CBA_fnc_hashSet;
+			[_shotsFiredHash, "weaponName", _x select 3] call CBA_fnc_hashSet;
+			_shotsFiredData = _shotsFiredData + [ _shotsFiredHash ] ;
 		} foreach _shotsFired;	
 	
 	};

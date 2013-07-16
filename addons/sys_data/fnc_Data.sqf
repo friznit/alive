@@ -37,7 +37,7 @@ Tupolov
 #define MAINCLASS ALIVE_fnc_Data
 
 #define DEFAULT_NAME QUOTE(alivedb)
-#define DEFAULT_SOURCE QUOTE(SQL)
+#define DEFAULT_SOURCE QUOTE(couchdb)
 #define DEFAULT_STORETYPE true
 
 private ["_result", "_operation", "_args", "_logic", "_ops"];

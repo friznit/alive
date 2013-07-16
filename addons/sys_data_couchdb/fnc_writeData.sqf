@@ -9,7 +9,7 @@ Writes data to an external couchdb (using JSON string)
 
 Parameters:
 Object - Data handler logic 
-Array - Module (string), Data (array), Async (bool), UID (string)
+Array - Module (string), Data (array), Async (bool) optional, UID (string) optional
 
 Returns:
 String - Returns a response error or confirmation of write
@@ -24,7 +24,7 @@ Tupolov
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-private ["_response","_result","_error","_module","_data","_uid","_async","_pairs","_cmd","_json","_logic","_args","_convert","_db","_method"];
+private ["_response","_result","_error","_module","_data","_uid","_async","_string","_cmd","_json","_logic","_args","_db","_method"];
 
 _logic = _this select 0;
 _args = _this select 1;
@@ -57,28 +57,31 @@ if (count _args > 2) then {
 	_uid = "";
 };
 
+// If the UID is specified then add it to the URL
 if (count _args > 3) then {
 	_uid = _args select 3;
 	_module = format ["%1/%2", _module, _uid];
 	_method = "PUT";
 };
 
-// Check to see if CBA HASH has been passed as data
-if (typeName (_data select 0) == "STRING") then {
-	private ["_convertHash","_tmp"];
-	_tmp = [];
-	_convertHash = {
-		_tmp set [count _tmp, [_key, _value]];
-	};
-	[_data, _convertHash] call CBA_fnc_hashEachPair;
+// Check to see if ARRAY rather than CBA HASH has been passed as data
+if (typeName (_data select 0) != "STRING") then {
+	private ["_tmp"];
+	_tmp = [] call CBA_fnc_hashCreate;
+	{
+		private ["_key","_value"];
+		_key = _x select 0;
+		_value = _x select 1;
+		[_tmp, _key, _value] call CBA_fnc_hashSet;
+	} foreach _data;
 	_data = _tmp;
 };
 	
 // From data passed create couchDB string
 
-_pairs = "";
 _cmd = "";
 _json = "";
+_string = "";
 
 // Build the JSON command
 //_cmd = format ["SendJSON ['POST', '%1', '%2', '%3'", _module, _data, _databaseName];
@@ -90,58 +93,23 @@ if (!_async) then {
 	_cmd = format ["SendJSONAsync [""%2"", ""%1""", _module, _method];
 };
 
-// Create key/value pairs from data
-{
-	private ["_value","_key","_prefix","_suffix"];
-	_key = _x select 0;
-	_value = _x select 1;
-	
-	if (isNil "_value") then {
-		_value = "UNKNOWN";
-	};
-	
-	// Convert Values
-	
-	// Array values need to be nested in array [] brackets
-	if (typeName _value == "ARRAY") then {
-		_prefix = "[";
-		_suffix = "]";
-	} else {
-		_prefix = " ";
-		_suffix = " ";
-	};
-	
-	// Add key and value type to data dictionary
-	[ALIVE_DataDictionary, "setDataDictionary", [_key, typeName _value]] call ALIVE_fnc_Data;
-	
-	// Convert value to string
-	_value = [_logic, "convert", [_value]] call ALIVE_fnc_Data;
-	
-	TRACE_2("SYS DATA VALUE CONVERSION", typename _value, _value);
+_json = [_logic, "convert", [_data]] call ALIVE_fnc_Data;
 
-	// Create key/value pairs
-	_pairs = _pairs + """" +  str(_key) + """:" + _prefix + _value + _suffix + ",";
-} foreach _data;
-
-_json = _cmd + ", ""{" + _pairs + "}""";
-
-// Get rid of any left over commas
-_json = [_json, ",}", "}"] call CBA_fnc_replace; 
-_json = [_json, ",]", "]"] call CBA_fnc_replace; 
+_string = _cmd + ", """ + _json + """";
 
 // Add databaseName
 _db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
 // Append cmd with db
-_json = _json + format[", ""%1""]", _db];
+_string = _string + format[", ""%1""]", _db];
 
-TRACE_1("COUCH WRITE DATA", _json);
+TRACE_1("COUCH WRITE DATA", _string);
 
 // Send JSON to plugin
 if (!_async) then {
-	_response = [_json] call ALIVE_fnc_sendToPlugIn; // if you need a returned UID then you have to go with synchronous op
+	_response = [_string] call ALIVE_fnc_sendToPlugIn; // if you need a returned UID then you have to go with synchronous op
 } else {
-	_response = [_json] call ALIVE_fnc_sendToPlugInAsync; //SendJSON is an async addin function so does not return a response until asked for a second time.
+	_response = [_string] call ALIVE_fnc_sendToPlugInAsync; //SendJSON is an async addin function so does not return a response until asked for a second time.
 };
 
 // Need to send the response to restore function
