@@ -68,7 +68,7 @@ _result = _master;
 			_x_center = [_x, "center"] call ALiVE_fnc_cluster;
 			// valid cluster centers
 			if(count _out_center != 0 && count _x_center != 0) then {
-				_max = (([_x, "size"] call ALIVE_fnc_cluster) + ([_out, "size"] call ALIVE_fnc_cluster)) max MIN_CLUSTER_SIZE;
+				_max = (([_x, "size"] call ALIVE_fnc_cluster) + ([_out, "size"] call ALIVE_fnc_cluster)) max MIN_CLUSTER_SIZE min MAX_CLUSTER_SIZE;
 				// if cluster is within master cluster and of a lower priority
 				_out_prio = [_out, "priority"] call ALiVE_fnc_cluster;
 				_x_prio = [_x, "priority"] call ALiVE_fnc_cluster;

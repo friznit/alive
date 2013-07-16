@@ -119,10 +119,8 @@ switch(_operation) do {
 		if (isServer) then {
 			// if server, initialise module game logic
 			_logic = [nil, "create"] call SUPERCLASS;
-			//[_logic, "super", SUPERCLASS] call ALIVE_fnc_hashSet;
-			//[_logic, "class", MAINCLASS] call ALIVE_fnc_hashSet;
-			[_logic, "super", ""] call ALIVE_fnc_hashSet;
-			[_logic, "class", ""] call ALIVE_fnc_hashSet;
+			[_logic, "super", SUPERCLASS] call ALIVE_fnc_hashSet;
+			[_logic, "class", MAINCLASS] call ALIVE_fnc_hashSet;
 			TRACE_1("After module init",_logic);
 			_result = _logic;
 		};
