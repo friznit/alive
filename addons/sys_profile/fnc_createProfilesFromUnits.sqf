@@ -24,7 +24,8 @@ Highhead
 ---------------------------------------------------------------------------- */
 
 private ["_debug","_groups","_entityCount","_vehicleCount","_group","_leader","_units","_inVehicle","_unitClasses","_positions",
-"_ranks","_damages","_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments","_assignments","_vehicleAssignments"];
+"_ranks","_damages","_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
+"_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind"];
 
 _debug = if(count _this > 0) then {_this select 0} else {false};
 
@@ -187,13 +188,15 @@ if(_debug) then {
 
 {
 	_vehicle = _x;
+	_vehicleClass = typeOf _vehicle;
+	_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 	
-	if((_vehicle getVariable ["profileID",""]) == "") then {
+	if((_vehicle getVariable ["profileID",""]) == "" && _vehicleKind !="") then {
 					
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "profileID", format["vehicle_%1",_vehicleCount]] call ALIVE_fnc_profileVehicle;
-		[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
+		[_profileVehicle, "vehicleClass", _vehicleClass] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
