@@ -2,7 +2,7 @@
 Function: ALIVE_fnc_parseJSON
 
 Description:
-	Parses a JSON string into a nested array/Hash structure.
+	Parses a JSON string into a Hash structure.
 
 	See also: <CBA_fnc_parseJSON>
 
@@ -31,6 +31,7 @@ Author:
 #define JSON_MODE_ASSOC_KEY 1
 #define JSON_MODE_ASSOC_VALUE 2
 #define JSON_MODE_ARRAY 3
+#define JSON_MODE_HASH 4
 
 #define JSON_TYPE_UNKNOWN 0
 #define JSON_TYPE_SCALAR 1

@@ -56,6 +56,9 @@ _restore = {
 
 	// Address each data type accordingly
 	switch(_type) do {
+			case "HASH": {
+					_data = [_logic, "restore", [_x]] call ALIVE_fnc_Data;
+			};
 			case "STRING": {
 					_data = _value;
 			};
@@ -80,12 +83,15 @@ _restore = {
 					};
 			};
 			case "ARRAY": {
-					private["_tmp"];
+					private["_tmp","_i","_tmpKey"];
 					_value = [_value, "any", "nil"] call CBA_fnc_replace;
 					_tmp = call compile _value;
 					_data = [];
+					_i = 0;
+					_tmpKey = _key + str(_i);
 					{
-							_data set [count _data, [_logic, "restore", _x] call ALIVE_fnc_Data];
+							_data set [count _data, [_tmpKey, _x] call _restore];
+							_i = _i + 1;
 					} forEach _tmp;
 			};
 			default {

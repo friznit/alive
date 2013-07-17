@@ -54,7 +54,7 @@ _convert = {
 			_result = format["""""%1""""", _data];
 		};
 		case "TEXT": {
-			_result = str(_data);
+			_result = format["""""%1""""", _data];
 		};
 		case "SCALAR": {
 			_result = str(_data);
@@ -121,7 +121,7 @@ _hash = (_this select 1) select 0;
 
 _string = "";
 
-if(isNil "_data") exitWith {
+if(isNil "_hash") exitWith {
 	"ConvertData <null> type" call ALIVE_fnc_logger;
 };
 

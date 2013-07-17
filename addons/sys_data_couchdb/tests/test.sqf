@@ -1,15 +1,15 @@
-#include <\x\alive\addons\sys_data_sql\script_component.hpp>
+#include <\x\alive\addons\sys_data_couchdb\script_component.hpp>
 
-#define TESTS ["readData"];
+#define TESTS ["convertData"]; //,"parseJSON","restoreData"
 
-SCRIPT(test-sql);
+SCRIPT(test-couchdb);
 
 // ----------------------------------------------------------------------------
 
 LOG("=== Testing Analysis ===");
 
 {
-	call compile preprocessFileLineNumbers format ["\x\alive\addons\sys_data_sql\tests\test_%1.sqf", _x];
+	call compile preprocessFileLineNumbers format ["\x\alive\addons\sys_data_couchdb\tests\test_%1.sqf", _x];
 } forEach TESTS;
 
 nil;
