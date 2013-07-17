@@ -71,14 +71,6 @@ STAT("Load Data Dictionary");
 TIMERSTART
 // Setup Data Dictionary
 ALIVE_DataDictionary = [] call CBA_fnc_hashCreate;
-/*
-// Try loading dictionary from db
-_response = [_logic, "read", ["sys_data", [], "dictionary"]] call ALIVE_fnc_Data;
-if ( typeName _response != "STRING") then {
-	ALIVE_DataDictionary = _response;
-} else {
-	TRACE_1("NO DICTIONARY AVAILABLE" _response);
-}; */
 
 TIMEREND
 ASSERT_DEFINED("ALIVE_DataDictionary",ALIVE_DataDictionary);
@@ -149,12 +141,22 @@ _testData = [_test1, _test2, _test3, _test4];
 	_type = typeName _x;
 	_msg = format["Test %1 - %2",_type, _x];
 	STAT(_msg);
+	sleep 1;
 	TIMERSTART
 		_converted = [_logic, "convert", [_x]] call ALIVE_fnc_Data;
 	TIMEREND
 	ASSERT_TRUE(typeName _converted == "STRING", typeName _converted);
+	STAT(_converted);
+	sleep 1;
 } foreach _testData;
 
+STAT("Saving Data Dictionary");
+// Save Data Dictionary for purposes of restore test
+TIMERSTART
+_result = [_logic, "write", ["sys_data", ALIVE_DataDictionary, false, "dictionary"] ] call ALIVE_fnc_Data;
+TIMEREND
+STAT(_result);
+sleep 5;
 
 STAT("Sleeping before destroy");
 sleep 10;

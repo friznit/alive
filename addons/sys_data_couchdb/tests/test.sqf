@@ -1,6 +1,6 @@
 #include <\x\alive\addons\sys_data_couchdb\script_component.hpp>
 
-#define TESTS ["convertData"]; //,"parseJSON","restoreData"
+#define TESTS ["convertData","parseJSON"]; //,"restoreData","readData","writeData","updateData"
 
 SCRIPT(test-couchdb);
 

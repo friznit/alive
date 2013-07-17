@@ -37,6 +37,7 @@ Author:
 #define JSON_TYPE_SCALAR 1
 #define JSON_TYPE_ARRAY 2
 #define JSON_TYPE_ASSOC 3
+#define JSON_TYPE_HASH 4
 
 #define ASCII_JSON_COMMENT ASCII_HASH
 #define ASCII_JSON_ASSOC ASCII_COLON
@@ -67,7 +68,7 @@ _raiseError =
 	while { _pos < (count _JSON) } do {
 		_char = _JSON select _pos;
 
-		if (_char in [ASCII_JSON_COMMENT, ASCII_CR, ASCII_NEWLINE]) exitWith {};
+		if (_char == ASCII_JSON_COMMENT) exitWith {};
 
 		PUSH(_lastLine,_char);
 
