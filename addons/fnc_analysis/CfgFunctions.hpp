@@ -21,6 +21,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_plotSectors.sqf";
 				recompile = 1;
 			};
+			class sectorAnalysisProfiles {
+				description = "sectorAnalysisProfiles";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisProfiles.sqf";
+				recompile = 1;
+			};
 			class sectorAnalysisUnits {
 				description = "sectorAnalysisUnits";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisUnits.sqf";

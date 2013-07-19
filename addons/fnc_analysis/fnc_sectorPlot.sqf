@@ -103,7 +103,7 @@ switch(_operation) do {
 				
 				switch(_key) do {
 						case "units": {
-							private["_eastUnits","_westUnits","_civUnits","_guerUnits","_eastCount","_westUnits","_civUnits","_guerUnits","_alpha", "_m"];
+							private["_eastUnits","_westUnits","_civUnits","_guerUnits","_eastCount","_westCount","_civCount","_guerCount","_alpha","_m"];
 							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 							
 							_eastUnits = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
@@ -115,6 +115,84 @@ switch(_operation) do {
 							_westCount = count _westUnits;
 							_civCount = count _civUnits;
 							_guerCount = count _guerUnits;
+							
+							if(_eastCount > 0) then {
+								if(_eastCount > 0) then { _alpha = 0.2; };
+								if(_eastCount > 10) then { _alpha = 0.3; };
+								if(_eastCount > 20) then { _alpha = 0.4; };
+								if(_eastCount > 30) then { _alpha = 0.5; };							
+								
+								_m = createMarkerLocal [format[MTEMPLATE, format["e%1",_id]], _centerPosition];
+								_m setMarkerShapeLocal "RECTANGLE";
+								_m setMarkerSizeLocal _dimensions;
+								_m setMarkerTypeLocal "Solid";		
+								_m setMarkerAlphaLocal _alpha;
+								_m setMarkerColorLocal "ColorRed";	
+											
+								_markers set [count _markers, _m];
+							};
+							
+							if(_westCount > 0) then {
+								if(_westCount > 0) then { _alpha = 0.2; };
+								if(_westCount > 10) then { _alpha = 0.3; };
+								if(_westCount > 20) then { _alpha = 0.4; };
+								if(_westCount > 30) then { _alpha = 0.5; };
+							
+								_m = createMarkerLocal [format[MTEMPLATE, format["w%1",_id]], _centerPosition];
+								_m setMarkerShapeLocal "RECTANGLE";
+								_m setMarkerSizeLocal _dimensions;
+								_m setMarkerTypeLocal "Solid";		
+								_m setMarkerAlphaLocal 0.5;
+								_m setMarkerColorLocal "ColorBlue";	
+											
+								_markers set [count _markers, _m];
+							};
+							
+							if(_civCount > 0) then {
+								if(_civCount > 0) then { _alpha = 0.2; };
+								if(_civCount > 10) then { _alpha = 0.3; };
+								if(_civCount > 20) then { _alpha = 0.4; };
+								if(_civCount > 30) then { _alpha = 0.5; };
+							
+								_m = createMarkerLocal [format[MTEMPLATE, format["c%1",_id]], _centerPosition];
+								_m setMarkerShapeLocal "RECTANGLE";
+								_m setMarkerSizeLocal _dimensions;
+								_m setMarkerTypeLocal "Solid";		
+								_m setMarkerAlphaLocal 0.5;
+								_m setMarkerColorLocal "ColorGreen";	
+											
+								_markers set [count _markers, _m];
+							};
+							
+							if(_guerCount > 0) then {
+								if(_guerCount > 0) then { _alpha = 0.2; };
+								if(_guerCount > 10) then { _alpha = 0.3; };
+								if(_guerCount > 20) then { _alpha = 0.4; };
+								if(_guerCount > 30) then { _alpha = 0.5; };
+								
+								_m = createMarkerLocal [format[MTEMPLATE, format["g%1",_id]], _centerPosition];
+								_m setMarkerShapeLocal "RECTANGLE";
+								_m setMarkerSizeLocal _dimensions;
+								_m setMarkerTypeLocal "Solid";		
+								_m setMarkerAlphaLocal 0.5;
+								_m setMarkerColorLocal "ColorYellow";	
+											
+								_markers set [count _markers, _m];
+							};
+						};
+						case "profilesBySide": {
+							private["_eastProfiles","_westProfiles","_civProfiles","_guerProfiles","_eastCount","_westCount","_civCount","_guerCount","_alpha", "_m"];
+							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+							
+							_eastProfiles = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
+							_westProfiles = [_plotData, "WEST"] call ALIVE_fnc_hashGet;
+							_civProfiles = [_plotData, "CIV"] call ALIVE_fnc_hashGet;
+							_guerProfiles = [_plotData, "GUER"] call ALIVE_fnc_hashGet;
+							
+							_eastCount = count _eastProfiles;
+							_westCount = count _westProfiles;
+							_civCount = count _civProfiles;
+							_guerCount = count _guerProfiles;
 							
 							if(_eastCount > 0) then {
 								if(_eastCount > 0) then { _alpha = 0.2; };

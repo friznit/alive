@@ -1,6 +1,6 @@
 #include <\x\alive\addons\fnc_analysis\script_component.hpp>
 
-#define TESTS ["sector","sectorGrid","analysisData","unitAnalysis","terrainAnalysis","elevationAnalysis"];
+#define TESTS ["sector","sectorGrid","analysisData","unitAnalysis","profileAnalysis","terrainAnalysis","elevationAnalysis"];
 
 SCRIPT(test-analysis);
 
