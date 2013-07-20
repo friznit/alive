@@ -2,14 +2,13 @@ private ["_logic","_FrontA"];
 
 _logic = _this select 0;
 
-if not (isNil ("HET_FA")) then {
 	private ["_pos","_att","_XAxis","_YAxis","_dir","_isRec"];
-	_pos = position HET_FA;
-	_att = triggerArea HET_FA;
-	_XAxis = _att select 0;
-	_YAxis = _att select 1;
-	_dir = _att select 2;
-	_isRec = _att select 3;
+	_pos = position _logic;
+	//_att = triggerArea HET_FA;
+	_XAxis = 200;
+	_YAxis = 50;
+	_dir = 0;
+	_isRec = true;
 
 	_FrontA = createLocation ["Name", _pos, _XAxis, _YAxis];
 	_FrontA setDirection _dir;
@@ -51,7 +50,5 @@ if not (isNil ("HET_FA")) then {
 				};
 			}
 	};
-	_logic setvariable ["FrontA",_FrontA];
-	_logic setvariable ["HAC_HQ_Fronts",true];
-};
-
+_logic setvariable ["FrontA",_FrontA];
+_logic setvariable ["HAC_HQ_Fronts",true];

@@ -1,9 +1,9 @@
 private ["_logic","_distances","_Trg","_landE"];
 _logic = _this select 0;
 _logic setvariable ["HAC_HQ_DefDone", false];
+_logic setvariable ["HAC_HQ_Orderfirst",true];
 
 _distances = [];
-
 _Trg = _logic;
 
 _logic setvariable ["HAC_HQ_NearestE", ObjNull];

@@ -75,21 +75,21 @@ switch(_operation) do {
                         default {_LogicSide = "ColorRed"};
                     };
                     
-	                _logic setvariable ["HAC_HQ_Color",_LogicSide]; //Comment this line to have old debug colors
-					_logic setvariable ["HAC_HQ_IdleOrd", true];
-					_logic setvariable ["HAC_HQ_CargoFind", 200];
-					_logic setvariable ["HAC_HQ_Rush", true];
-					_logic setvariable ["HAC_HQ_MAtt", true];
-					_logic setvariable ["HAC_HQ_Personality", (_logic getvariable ["HAC_HQ_Personality", "GENIUS"])];
-					_logic setvariable ["HAC_HQ_SubAll", false];
-					_logic setvariable ["HAC_HQ_SubSynchro", true];
-					_logic setvariable ["HAC_HQ_ReSynchro", true];
-					_logic setvariable ["HAC_BBa_HQs", [_logic]];
-					_logic setvariable ["HAC_BB_Active", true];
-					_logic setvariable ["HAC_BB_BBOnMap", false];
-                    _logic setvariable ["HAC_HQ_Wait", 15];
-                    _logic setvariable ["HAC_HQ_LZ",true];
-                    //_logic setvariable ["HAC_HQ_PathFinding",500];
+			_logic setvariable ["HAC_HQ_Color",_LogicSide]; //Comment this line to have old debug colors
+			_logic setvariable ["HAC_HQ_IdleOrd", true];
+			_logic setvariable ["HAC_HQ_CargoFind", 200];
+			_logic setvariable ["HAC_HQ_Rush", true];
+			_logic setvariable ["HAC_HQ_MAtt", true];
+			_logic setvariable ["HAC_HQ_Personality", (_logic getvariable ["HAC_HQ_Personality", "GENIUS"])];
+			_logic setvariable ["HAC_HQ_SubAll", false];
+			_logic setvariable ["HAC_HQ_SubSynchro", true];
+			_logic setvariable ["HAC_HQ_ReSynchro", true];
+			_logic setvariable ["HAC_BBa_HQs", [_logic]];
+			_logic setvariable ["HAC_BB_Active", true];
+			_logic setvariable ["HAC_BB_BBOnMap", false];
+			_logic setvariable ["HAC_HQ_Wait", 15];
+			_logic setvariable ["HAC_HQ_LZ",true];
+			//_logic setvariable ["HAC_HQ_PathFinding",500];
                     
                     //Enable Debug
                     if (call compile (_logic getvariable "HAC_HQ_Debug")) then {
