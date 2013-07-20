@@ -414,7 +414,7 @@ switch(_operation) do {
 					if(_profileID in _profileIndex) then {
 						_result = [_profiles, _profileID] call ALIVE_fnc_hashGet;
 					}else{
-						_result = nil;
+						_result = [];
 					};		
 				};
 		};

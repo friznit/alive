@@ -47,6 +47,8 @@ diag_log format["Timer End %1",_timeEnd];
 
 //[] call ALIVE_fnc_cursorTargetInfo;
 
+player setCaptive true;
+
 // CREATE PROFILE HANDLER
 STAT("Create Profile Handler");
 ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
