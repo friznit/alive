@@ -174,7 +174,9 @@ _logic setvariable ["RHQ_HArmor", []];
 
 _logic setvariable ["RHQ_MArmor", [
 "O_APC_Wheeled_02_rcws_F",
-"B_APC_Wheeled_01_cannon_F"
+"B_APC_Wheeled_01_cannon_F",
+"B_APC_Tracked_01_rcws_F",
+"O_APC_Tracked_02_cannon_F"
 
 ]];
 
