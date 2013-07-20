@@ -445,10 +445,8 @@ _Trg = (_logic getvariable "HAC_HQ_Obj");
 foreach ([(_logic getvariable "HAC_HQ_Obj1"),(_logic getvariable "HAC_HQ_Obj2"),(_logic getvariable "HAC_HQ_Obj3"),(_logic getvariable "HAC_HQ_Obj4")] - [(_logic getvariable "HAC_HQ_Obj")]);
 
 if (isNil ("_Trg")) then {_Trg = _logic};
-
-_isAttacked = _Trg getvariable ("Capturing" + (str _Trg));
-
-if (isNil ("_isAttacked")) then {_isAttacked = [0,0]};
+private ["_isAttacked"];
+_isAttacked = _Trg getvariable [("Capturing" + (str _Trg)),[0,0]];
 
 _captCount = _isAttacked select 1;
 _isAttacked = _isAttacked select 0;
