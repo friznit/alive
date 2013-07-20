@@ -117,7 +117,7 @@ waituntil {
 
 		_entityProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 		
-		if!(count _entityProfile == 0) then {
+		if(count _entityProfile > 0) then {
 			
 			_profileID = [_entityProfile, "profileID"] call ALIVE_fnc_hashGet;
 			_active = [_entityProfile,"active"] call ALIVE_fnc_hashGet;			
