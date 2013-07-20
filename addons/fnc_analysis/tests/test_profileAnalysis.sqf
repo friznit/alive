@@ -95,7 +95,29 @@ TIMEREND
 
 STAT("Run Profile analysis");
 TIMERSTART
-_result = [_grid] call ALIVE_fnc_sectorAnalysisProfiles;
+_result = [_grid] call ALIVE_fnc_gridAnalysisProfiles;
+TIMEREND
+
+
+STAT("Plot profiles on sectors");
+TIMERSTART
+[_plotter, "plot", [_allSectors, "profilesBySide"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sleeping before clear");
+sleep 10;
+
+
+STAT("Clear plot");
+TIMERSTART
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Run Profile analysis");
+TIMERSTART
+_result = [_grid] call ALIVE_fnc_gridAnalysisProfiles;
 TIMEREND
 
 
@@ -107,5 +129,17 @@ TIMEREND
 
 STAT("Sleeping before destroy");
 sleep 10;
+
+
+STAT("Destroy profile handler instance");
+[ALIVE_profileHandler, "destroy"] call ALIVE_fnc_profileHandler;
+
+
+STAT("Destroy plotter instance");
+[_plotter, "destroy"] call ALIVE_fnc_plotSectors;
+
+
+STAT("Destroy grid instance");
+[_grid, "destroy"] call ALIVE_fnc_sectorGrid;
 
 nil;

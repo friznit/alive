@@ -1,11 +1,11 @@
 #include <\x\alive\addons\fnc_analysis\script_component.hpp>
-SCRIPT(sectorAnalysisProfiles);
+SCRIPT(gridAnalysisProfiles);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_sectorAnalysisProfiles
+Function: ALIVE_fnc_gridAnalysisProfiles
 
 Description:
-Perform analysis of profile positions and applies to a grid object
+Perform analysis of profile positions on passed grid
 
 Parameters:
 None
@@ -16,7 +16,7 @@ Returns:
 Examples:
 (begin example)
 // add profile units to sector data
-_result = [_grid] call ALIVE_fnc_sectorAnalysisProfiles;
+_result = [_grid] call ALIVE_fnc_gridAnalysisProfiles;
 (end)
 
 See Also:
@@ -33,6 +33,8 @@ _grid = _this select 0;
 
 // reset existing analysis data
 
+[true] call ALIVE_fnc_timer;
+
 _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
 {
@@ -40,18 +42,24 @@ _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 	
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
 		
-	_sideProfiles = [] call ALIVE_fnc_hashCreate;
-	[_sideProfiles, "EAST", []] call ALIVE_fnc_hashSet;
-	[_sideProfiles, "WEST", []] call ALIVE_fnc_hashSet;
-	[_sideProfiles, "CIV", []] call ALIVE_fnc_hashSet;
-	[_sideProfiles, "GUER", []] call ALIVE_fnc_hashSet;
-	
-	[_sector, "data", ["profilesBySide",_sideProfiles]] call ALIVE_fnc_sector;	
+	if("profilesBySide" in (_sectorData select 1)) then {
+		_sideProfiles = [_sectorData, "profilesBySide"] call ALIVE_fnc_hashGet;
+		[_sideProfiles, "EAST", []] call ALIVE_fnc_hashSet;
+		[_sideProfiles, "WEST", []] call ALIVE_fnc_hashSet;
+		[_sideProfiles, "CIV", []] call ALIVE_fnc_hashSet;
+		[_sideProfiles, "GUER", []] call ALIVE_fnc_hashSet;
+		
+		[_sector, "data", ["profilesBySide",_sideProfiles]] call ALIVE_fnc_sector;
+	};	
 	
 } forEach _sectors;
 
+[] call ALIVE_fnc_timer;
+
 
 // run analysis on all profiles
+
+[true] call ALIVE_fnc_timer;
 
 _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGet;
 
@@ -73,8 +81,21 @@ _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGe
 		_sector = [_grid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;		
 		_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
 		
-		_sideProfiles = [_sectorData, "profilesBySide"] call ALIVE_fnc_hashGet;
-		_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;
+		if("profilesBySide" in (_sectorData select 1)) then {
+			_sideProfiles = [_sectorData, "profilesBySide"] call ALIVE_fnc_hashGet;
+			_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;
+		}else{
+			_sideProfiles = [] call ALIVE_fnc_hashCreate;
+			[_sideProfiles, "EAST", []] call ALIVE_fnc_hashSet;
+			[_sideProfiles, "WEST", []] call ALIVE_fnc_hashSet;
+			[_sideProfiles, "CIV", []] call ALIVE_fnc_hashSet;
+			[_sideProfiles, "GUER", []] call ALIVE_fnc_hashSet;
+			
+			[_sector, "data", ["profilesBySide",_sideProfiles]] call ALIVE_fnc_sector;
+			
+			_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;			
+		};		
+		
 		_sideProfile set [count _sideProfile, _x];
 		
 		// store the result of the analysis on the sector instance
@@ -83,3 +104,5 @@ _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGe
 	} forEach _profiles;
 	
 } forEach (_profilesBySide select 1);
+
+[] call ALIVE_fnc_timer;

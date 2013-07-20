@@ -21,9 +21,9 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_plotSectors.sqf";
 				recompile = 1;
 			};
-			class sectorAnalysisProfiles {
-				description = "sectorAnalysisProfiles";
-				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisProfiles.sqf";
+			class gridAnalysisProfiles {
+				description = "gridAnalysisProfiles";
+				file = "\x\alive\addons\fnc_analysis\fnc_gridAnalysisProfiles.sqf";
 				recompile = 1;
 			};
 			class sectorAnalysisUnits {

@@ -104,187 +104,44 @@ switch(_operation) do {
 				switch(_key) do {
 						case "units": {
 							private["_eastUnits","_westUnits","_civUnits","_guerUnits","_eastCount","_westCount","_civCount","_guerCount","_alpha","_m"];
-							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 							
-							_eastUnits = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
-							_westUnits = [_plotData, "WEST"] call ALIVE_fnc_hashGet;
-							_civUnits = [_plotData, "CIV"] call ALIVE_fnc_hashGet;
-							_guerUnits = [_plotData, "GUER"] call ALIVE_fnc_hashGet;
+							if(_key in (_sectorData select 1)) then {
 							
-							_eastCount = count _eastUnits;
-							_westCount = count _westUnits;
-							_civCount = count _civUnits;
-							_guerCount = count _guerUnits;
-							
-							if(_eastCount > 0) then {
-								if(_eastCount > 0) then { _alpha = 0.2; };
-								if(_eastCount > 10) then { _alpha = 0.3; };
-								if(_eastCount > 20) then { _alpha = 0.4; };
-								if(_eastCount > 30) then { _alpha = 0.5; };							
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 								
-								_m = createMarkerLocal [format[MTEMPLATE, format["e%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal _alpha;
-								_m setMarkerColorLocal "ColorRed";	
-											
-								_markers set [count _markers, _m];
-							};
-							
-							if(_westCount > 0) then {
-								if(_westCount > 0) then { _alpha = 0.2; };
-								if(_westCount > 10) then { _alpha = 0.3; };
-								if(_westCount > 20) then { _alpha = 0.4; };
-								if(_westCount > 30) then { _alpha = 0.5; };
-							
-								_m = createMarkerLocal [format[MTEMPLATE, format["w%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal 0.5;
-								_m setMarkerColorLocal "ColorBlue";	
-											
-								_markers set [count _markers, _m];
-							};
-							
-							if(_civCount > 0) then {
-								if(_civCount > 0) then { _alpha = 0.2; };
-								if(_civCount > 10) then { _alpha = 0.3; };
-								if(_civCount > 20) then { _alpha = 0.4; };
-								if(_civCount > 30) then { _alpha = 0.5; };
-							
-								_m = createMarkerLocal [format[MTEMPLATE, format["c%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal 0.5;
-								_m setMarkerColorLocal "ColorGreen";	
-											
-								_markers set [count _markers, _m];
-							};
-							
-							if(_guerCount > 0) then {
-								if(_guerCount > 0) then { _alpha = 0.2; };
-								if(_guerCount > 10) then { _alpha = 0.3; };
-								if(_guerCount > 20) then { _alpha = 0.4; };
-								if(_guerCount > 30) then { _alpha = 0.5; };
+								_eastUnits = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
+								_westUnits = [_plotData, "WEST"] call ALIVE_fnc_hashGet;
+								_civUnits = [_plotData, "CIV"] call ALIVE_fnc_hashGet;
+								_guerUnits = [_plotData, "GUER"] call ALIVE_fnc_hashGet;
 								
-								_m = createMarkerLocal [format[MTEMPLATE, format["g%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal 0.5;
-								_m setMarkerColorLocal "ColorYellow";	
-											
-								_markers set [count _markers, _m];
-							};
-						};
-						case "profilesBySide": {
-							private["_eastProfiles","_westProfiles","_civProfiles","_guerProfiles","_eastCount","_westCount","_civCount","_guerCount","_alpha", "_m"];
-							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
-							
-							_eastProfiles = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
-							_westProfiles = [_plotData, "WEST"] call ALIVE_fnc_hashGet;
-							_civProfiles = [_plotData, "CIV"] call ALIVE_fnc_hashGet;
-							_guerProfiles = [_plotData, "GUER"] call ALIVE_fnc_hashGet;
-							
-							_eastCount = count _eastProfiles;
-							_westCount = count _westProfiles;
-							_civCount = count _civProfiles;
-							_guerCount = count _guerProfiles;
-							
-							if(_eastCount > 0) then {
-								if(_eastCount > 0) then { _alpha = 0.2; };
-								if(_eastCount > 10) then { _alpha = 0.3; };
-								if(_eastCount > 20) then { _alpha = 0.4; };
-								if(_eastCount > 30) then { _alpha = 0.5; };							
+								_eastCount = count _eastUnits;
+								_westCount = count _westUnits;
+								_civCount = count _civUnits;
+								_guerCount = count _guerUnits;
 								
-								_m = createMarkerLocal [format[MTEMPLATE, format["e%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal _alpha;
-								_m setMarkerColorLocal "ColorRed";	
-											
-								_markers set [count _markers, _m];
-							};
-							
-							if(_westCount > 0) then {
-								if(_westCount > 0) then { _alpha = 0.2; };
-								if(_westCount > 10) then { _alpha = 0.3; };
-								if(_westCount > 20) then { _alpha = 0.4; };
-								if(_westCount > 30) then { _alpha = 0.5; };
-							
-								_m = createMarkerLocal [format[MTEMPLATE, format["w%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal 0.5;
-								_m setMarkerColorLocal "ColorBlue";	
-											
-								_markers set [count _markers, _m];
-							};
-							
-							if(_civCount > 0) then {
-								if(_civCount > 0) then { _alpha = 0.2; };
-								if(_civCount > 10) then { _alpha = 0.3; };
-								if(_civCount > 20) then { _alpha = 0.4; };
-								if(_civCount > 30) then { _alpha = 0.5; };
-							
-								_m = createMarkerLocal [format[MTEMPLATE, format["c%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal 0.5;
-								_m setMarkerColorLocal "ColorGreen";	
-											
-								_markers set [count _markers, _m];
-							};
-							
-							if(_guerCount > 0) then {
-								if(_guerCount > 0) then { _alpha = 0.2; };
-								if(_guerCount > 10) then { _alpha = 0.3; };
-								if(_guerCount > 20) then { _alpha = 0.4; };
-								if(_guerCount > 30) then { _alpha = 0.5; };
-								
-								_m = createMarkerLocal [format[MTEMPLATE, format["g%1",_id]], _centerPosition];
-								_m setMarkerShapeLocal "RECTANGLE";
-								_m setMarkerSizeLocal _dimensions;
-								_m setMarkerTypeLocal "Solid";		
-								_m setMarkerAlphaLocal 0.5;
-								_m setMarkerColorLocal "ColorYellow";	
-											
-								_markers set [count _markers, _m];
-							};
-						};
-						case "terrain": {
-							private["_m"];
-							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
-							
-							switch (_plotData) do {
-								case "LAND": {
-									_m = createMarkerLocal [format[MTEMPLATE, format["t%1",_id]], _centerPosition];
+								if(_eastCount > 0) then {
+									if(_eastCount > 0) then { _alpha = 0.2; };
+									if(_eastCount > 10) then { _alpha = 0.3; };
+									if(_eastCount > 20) then { _alpha = 0.4; };
+									if(_eastCount > 30) then { _alpha = 0.5; };							
+									
+									_m = createMarkerLocal [format[MTEMPLATE, format["e%1",_id]], _centerPosition];
 									_m setMarkerShapeLocal "RECTANGLE";
 									_m setMarkerSizeLocal _dimensions;
 									_m setMarkerTypeLocal "Solid";		
-									_m setMarkerAlphaLocal 0.5;
-									_m setMarkerColorLocal "ColorBrown";	
+									_m setMarkerAlphaLocal _alpha;
+									_m setMarkerColorLocal "ColorRed";	
 												
 									_markers set [count _markers, _m];
 								};
-								case "SHORE": {
-									_m = createMarkerLocal [format[MTEMPLATE, format["t%1",_id]], _centerPosition];
-									_m setMarkerShapeLocal "RECTANGLE";
-									_m setMarkerSizeLocal _dimensions;
-									_m setMarkerTypeLocal "Solid";		
-									_m setMarkerAlphaLocal 0.5;
-									_m setMarkerColorLocal "ColorKhaki";	
-												
-									_markers set [count _markers, _m];
-								};
-								case "SEA": {
-									_m = createMarkerLocal [format[MTEMPLATE, format["t%1",_id]], _centerPosition];
+								
+								if(_westCount > 0) then {
+									if(_westCount > 0) then { _alpha = 0.2; };
+									if(_westCount > 10) then { _alpha = 0.3; };
+									if(_westCount > 20) then { _alpha = 0.4; };
+									if(_westCount > 30) then { _alpha = 0.5; };
+								
+									_m = createMarkerLocal [format[MTEMPLATE, format["w%1",_id]], _centerPosition];
 									_m setMarkerShapeLocal "RECTANGLE";
 									_m setMarkerSizeLocal _dimensions;
 									_m setMarkerTypeLocal "Solid";		
@@ -293,41 +150,199 @@ switch(_operation) do {
 												
 									_markers set [count _markers, _m];
 								};
+								
+								if(_civCount > 0) then {
+									if(_civCount > 0) then { _alpha = 0.2; };
+									if(_civCount > 10) then { _alpha = 0.3; };
+									if(_civCount > 20) then { _alpha = 0.4; };
+									if(_civCount > 30) then { _alpha = 0.5; };
+								
+									_m = createMarkerLocal [format[MTEMPLATE, format["c%1",_id]], _centerPosition];
+									_m setMarkerShapeLocal "RECTANGLE";
+									_m setMarkerSizeLocal _dimensions;
+									_m setMarkerTypeLocal "Solid";		
+									_m setMarkerAlphaLocal 0.5;
+									_m setMarkerColorLocal "ColorGreen";	
+												
+									_markers set [count _markers, _m];
+								};
+								
+								if(_guerCount > 0) then {
+									if(_guerCount > 0) then { _alpha = 0.2; };
+									if(_guerCount > 10) then { _alpha = 0.3; };
+									if(_guerCount > 20) then { _alpha = 0.4; };
+									if(_guerCount > 30) then { _alpha = 0.5; };
+									
+									_m = createMarkerLocal [format[MTEMPLATE, format["g%1",_id]], _centerPosition];
+									_m setMarkerShapeLocal "RECTANGLE";
+									_m setMarkerSizeLocal _dimensions;
+									_m setMarkerTypeLocal "Solid";		
+									_m setMarkerAlphaLocal 0.5;
+									_m setMarkerColorLocal "ColorYellow";	
+												
+									_markers set [count _markers, _m];
+								};
+							};
+						};
+						case "profilesBySide": {
+							private["_eastProfiles","_westProfiles","_civProfiles","_guerProfiles","_eastCount","_westCount","_civCount","_guerCount","_alpha", "_m"];
+							
+							if(_key in (_sectorData select 1)) then {
+							
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								_eastProfiles = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
+								_westProfiles = [_plotData, "WEST"] call ALIVE_fnc_hashGet;
+								_civProfiles = [_plotData, "CIV"] call ALIVE_fnc_hashGet;
+								_guerProfiles = [_plotData, "GUER"] call ALIVE_fnc_hashGet;
+								
+								_eastCount = count _eastProfiles;
+								_westCount = count _westProfiles;
+								_civCount = count _civProfiles;
+								_guerCount = count _guerProfiles;
+								
+								if(_eastCount > 0) then {
+									if(_eastCount > 0) then { _alpha = 0.2; };
+									if(_eastCount > 10) then { _alpha = 0.3; };
+									if(_eastCount > 20) then { _alpha = 0.4; };
+									if(_eastCount > 30) then { _alpha = 0.5; };							
+									
+									_m = createMarkerLocal [format[MTEMPLATE, format["e%1",_id]], _centerPosition];
+									_m setMarkerShapeLocal "RECTANGLE";
+									_m setMarkerSizeLocal _dimensions;
+									_m setMarkerTypeLocal "Solid";		
+									_m setMarkerAlphaLocal _alpha;
+									_m setMarkerColorLocal "ColorRed";	
+												
+									_markers set [count _markers, _m];
+								};
+								
+								if(_westCount > 0) then {
+									if(_westCount > 0) then { _alpha = 0.2; };
+									if(_westCount > 10) then { _alpha = 0.3; };
+									if(_westCount > 20) then { _alpha = 0.4; };
+									if(_westCount > 30) then { _alpha = 0.5; };
+								
+									_m = createMarkerLocal [format[MTEMPLATE, format["w%1",_id]], _centerPosition];
+									_m setMarkerShapeLocal "RECTANGLE";
+									_m setMarkerSizeLocal _dimensions;
+									_m setMarkerTypeLocal "Solid";		
+									_m setMarkerAlphaLocal 0.5;
+									_m setMarkerColorLocal "ColorBlue";	
+												
+									_markers set [count _markers, _m];
+								};
+								
+								if(_civCount > 0) then {
+									if(_civCount > 0) then { _alpha = 0.2; };
+									if(_civCount > 10) then { _alpha = 0.3; };
+									if(_civCount > 20) then { _alpha = 0.4; };
+									if(_civCount > 30) then { _alpha = 0.5; };
+								
+									_m = createMarkerLocal [format[MTEMPLATE, format["c%1",_id]], _centerPosition];
+									_m setMarkerShapeLocal "RECTANGLE";
+									_m setMarkerSizeLocal _dimensions;
+									_m setMarkerTypeLocal "Solid";		
+									_m setMarkerAlphaLocal 0.5;
+									_m setMarkerColorLocal "ColorGreen";	
+												
+									_markers set [count _markers, _m];
+								};
+								
+								if(_guerCount > 0) then {
+									if(_guerCount > 0) then { _alpha = 0.2; };
+									if(_guerCount > 10) then { _alpha = 0.3; };
+									if(_guerCount > 20) then { _alpha = 0.4; };
+									if(_guerCount > 30) then { _alpha = 0.5; };
+									
+									_m = createMarkerLocal [format[MTEMPLATE, format["g%1",_id]], _centerPosition];
+									_m setMarkerShapeLocal "RECTANGLE";
+									_m setMarkerSizeLocal _dimensions;
+									_m setMarkerTypeLocal "Solid";		
+									_m setMarkerAlphaLocal 0.5;
+									_m setMarkerColorLocal "ColorYellow";	
+												
+									_markers set [count _markers, _m];
+								};
+							};
+						};
+						case "terrain": {
+							private["_m"];
+							
+							if(_key in (_sectorData select 1)) then {
+							
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								switch (_plotData) do {
+									case "LAND": {
+										_m = createMarkerLocal [format[MTEMPLATE, format["t%1",_id]], _centerPosition];
+										_m setMarkerShapeLocal "RECTANGLE";
+										_m setMarkerSizeLocal _dimensions;
+										_m setMarkerTypeLocal "Solid";		
+										_m setMarkerAlphaLocal 0.5;
+										_m setMarkerColorLocal "ColorBrown";	
+													
+										_markers set [count _markers, _m];
+									};
+									case "SHORE": {
+										_m = createMarkerLocal [format[MTEMPLATE, format["t%1",_id]], _centerPosition];
+										_m setMarkerShapeLocal "RECTANGLE";
+										_m setMarkerSizeLocal _dimensions;
+										_m setMarkerTypeLocal "Solid";		
+										_m setMarkerAlphaLocal 0.5;
+										_m setMarkerColorLocal "ColorKhaki";	
+													
+										_markers set [count _markers, _m];
+									};
+									case "SEA": {
+										_m = createMarkerLocal [format[MTEMPLATE, format["t%1",_id]], _centerPosition];
+										_m setMarkerShapeLocal "RECTANGLE";
+										_m setMarkerSizeLocal _dimensions;
+										_m setMarkerTypeLocal "Solid";		
+										_m setMarkerAlphaLocal 0.5;
+										_m setMarkerColorLocal "ColorBlue";	
+													
+										_markers set [count _markers, _m];
+									};
+								};
 							};
 						};
 						case "elevation": {
-							private["_m","_colour","_alpha","_value"];							
-							_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
-							
-							_alpha = 0;
-							
-							_colour = "ColorRed";
-							_value = _plotData;
-							
-							if(_value < 0) then {
-								_colour = "ColorBlue";
-								_value = _plotData - (_plotData * 2);
-							}else {
+							private["_m","_colour","_alpha","_value"];
+
+							if(_key in (_sectorData select 1)) then {
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								_alpha = 0;
+								
+								_colour = "ColorRed";
 								_value = _plotData;
+								
+								if(_value < 0) then {
+									_colour = "ColorBlue";
+									_value = _plotData - (_plotData * 2);
+								}else {
+									_value = _plotData;
+								};
+								
+								if(_value > 0) then { _alpha = 0.1; };
+								if(_value > 20) then { _alpha = 0.2; };
+								if(_value > 40) then { _alpha = 0.3; };
+								if(_value > 60) then { _alpha = 0.4; };
+								if(_value > 80) then { _alpha = 0.5; };
+								if(_value > 100) then { _alpha = 0.6; };
+								if(_value > 120) then { _alpha = 0.7; };
+								if(_value > 140) then { _alpha = 0.8; };
+								
+								_m = createMarkerLocal [format[MTEMPLATE, format["e%1",_id]], _centerPosition];
+								_m setMarkerShapeLocal "RECTANGLE";
+								_m setMarkerSizeLocal _dimensions;
+								_m setMarkerTypeLocal "Solid";		
+								_m setMarkerAlphaLocal _alpha;
+								_m setMarkerColorLocal _colour;	
+											
+								_markers set [count _markers, _m];
 							};
-							
-							if(_value > 0) then { _alpha = 0.1; };
-							if(_value > 20) then { _alpha = 0.2; };
-							if(_value > 40) then { _alpha = 0.3; };
-							if(_value > 60) then { _alpha = 0.4; };
-							if(_value > 80) then { _alpha = 0.5; };
-							if(_value > 100) then { _alpha = 0.6; };
-							if(_value > 120) then { _alpha = 0.7; };
-							if(_value > 140) then { _alpha = 0.8; };
-							
-							_m = createMarkerLocal [format[MTEMPLATE, format["e%1",_id]], _centerPosition];
-							_m setMarkerShapeLocal "RECTANGLE";
-							_m setMarkerSizeLocal _dimensions;
-							_m setMarkerTypeLocal "Solid";		
-							_m setMarkerAlphaLocal _alpha;
-							_m setMarkerColorLocal _colour;	
-										
-							_markers set [count _markers, _m];
 						};
 				};	
 		
