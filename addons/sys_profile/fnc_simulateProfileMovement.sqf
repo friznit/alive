@@ -118,8 +118,6 @@ waituntil {
 		_entityProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 		
 		if!(count _entityProfile == 0) then {
-			["ENTITY PROFILE"] call ALIVE_fnc_dump;
-			//_entityProfile call ALIVE_fnc_inspectHash;
 			
 			_profileID = [_entityProfile, "profileID"] call ALIVE_fnc_hashGet;
 			_active = [_entityProfile,"active"] call ALIVE_fnc_hashGet;			
