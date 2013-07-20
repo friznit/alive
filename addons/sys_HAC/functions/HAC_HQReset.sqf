@@ -1,4 +1,5 @@
-_logic = _this select ((count _this)-1);
+private ["_logic","_Edistance","_trg"];
+_logic = _this select 0;
 waitUntil 
 	{
 	sleep 1;
@@ -139,6 +140,7 @@ while {not (isNull (_logic getvariable "HAC_HQ"))} do
 
 			if (_captDiff > 0) then
 				{	
+				private ["_isC","_amountC"];
 				_isC = _trg getVariable ("Capturing" + (str _trg));
 
 				_amountC = _isC select 1;

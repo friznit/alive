@@ -1,18 +1,17 @@
 	private ["_logic","_loc","_ps","_space","_center","_angle","_r1","_r2","_sx","_sy","_cnt","_dmax","_pf","_dst","_pfMain","_check","_indx","_pfbis","_dmaxbis","_cX","_cY","_allIn","_mpl","_pX","_pY"];
-
+ diag_log format ["LocMultiTransform: %1",_this];
 	_loc = _this select 0;
 	_ps = _this select 1;//array of ATL
 	_space = _this select 2;
-    _logic = _this select ((count _this)-1);
+    _logic = _this select 3;
 
 	_sx = 0;
 	_sy = 0;
 
-		{
+	{
 		_sx = _sx + (_x select 0);
 		_sy = _sy + (_x select 1)
-		}
-	foreach _ps;
+	} foreach _ps;
 
 	_cnt = count _ps;
 
@@ -85,23 +84,22 @@
 
 	_mpl = 10;
 
-	while {(not (_allIn) and (_mpl > 0))} do
-		{
+	while {(not (_allIn) and (_mpl > 0))} do {
+		
 		_allIn = true;
 
 		_r1 = _dmaxbis/_mpl;
 		_loc setSize [_r1,_r2];
 
-			{
+		{
 			_pX = _x select 0;
 			_pY = _x select 1;
-
+			
 			if not ([_pX,_pY,0] in _loc) exitWith {_allIn = false};
-			}
-		foreach (_ps + [_pfMain]);
+		} foreach (_ps + [_pfMain]);
 
 		_mpl = _mpl - 0.1;
-		};
+	};
 
 	_allIn = false;
 

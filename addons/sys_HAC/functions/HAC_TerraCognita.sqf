@@ -2,10 +2,12 @@
 
 	_position = _this select 0;
 	_samples = _this select 1;
-	_rds = 100;
     _logic = _this select ((count _this)-1);
-    _thisTMP = _this - [_logic];
-	if ((count _this) > 2) then {_rds = _thisTMP select 2};
+	if ((count _this) > 3) then {
+		_rds = _this select 2;
+	} else {
+		_rds = 100;
+	};
 
 	if not ((typeName _position) == "ARRAY") then {_position = getposATL _position};
 

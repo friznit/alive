@@ -3,7 +3,7 @@ private
 	"_cntr","_lng","_nmbr","_sectors","_markers","_mark","_secpos","_sPosX","_sPosY","_sUrban","_sForest","_sHills","_sFlat","_sSea","_samplePos","_topArr","_sRoads","_bbCycle",
 	"_text","_nbr","_sum","_alpha","_count","_strArea","_loc10","_loc5","_loc2","_loc1","_locHill","_topArr","_frstV","_nmbr","_posGrpX","_sGr","_BBHQs","_BBSide","_urgent",
 	"_posGrpY","_posGrp","_valGrp","_armyPos","_ct","_change","_mainPos","_taken","_posStr","_valStr","_posStrX","_posStrY","_amDist","_mDist","_aDist","_gDst","_actDist","_BBStr",
-	"_attackAxis","_color","_k","_j","_fAr","_fPnt","_fVal","_fTkn","_fX","_fY","_sAr","_sPnt","_sVal","_sTkn","_sX","_sY","_ForcesRep","_ownGroups","_hostileGroups","_BBHQGrps",
+	"_attackAxis","_color","_ForcesRep","_ownGroups","_hostileGroups","_BBHQGrps",
 	"_isCiv","_civF","_enemyClose","_allCount","_resCount","_actCount","_flankCount","_centerCount","_BBHQs","_resArr","_chsn","_resDst","_dst","_centerArr","_centerDst","_allAreTaken",
 	"_isLeft","_where","_isFlank","_isRear","_leftSectors","_rightSectors","_frontSectors","_leftAn","_leftInf","_leftVeh","_rightAn","_rightInf","_rightVeh","_frontAn","_BBSAL",
 	"_frontInf","_frontVeh","_leftSANmbr","_rightSANmbr","_frontSANmbr","_leftSA","_rightSA","_frontSA","_leftSANmbr","_rightSANmbr","_frontSANmbr","_leftSpace","_rightSpace","_ctWait",
@@ -24,53 +24,43 @@ _logic = _this select ((count _this)-1);
 
 diag_log format ["Init Input %1 | %2 | %3",_BBHQs,_BBHQs,_logic];
 
-	{
+{
 	(group _x) setVariable ["BBProgress",0]
-	}
-foreach _BBHQs;
+} foreach _BBHQs;
 
-if ((_BBSide == "B") and (count (_logic getvariable "HAC_BBa_HQs") > 0)) then 
-	{
-	waitUntil
-		{
-		sleep 5;
-		(_logic getvariable "HAC_BBa_Init")
-		}
-	};
+if ((_BBSide == "B") and (count (_logic getvariable "HAC_BBa_HQs") > 0)) then {
+	
+	waitUntil {sleep 5;	(_logic getvariable "HAC_BBa_Init")}
+	
+};
 
-if (_logic getvariable "HAC_BB_Debug") then
-	{
+if (_logic getvariable "HAC_BB_Debug") then {
 	_logic globalChat format ["OPCOM %1 awakes (time: %2)",_logic,time];
 	diag_log format ["OPCOM %1 awakes (time: %2)",_logic,time]
-	};
+};
 
 _BBHQGrps = [];
 
-	{
+{
 	_BBHQGrps set [(count _BBHQGrps),(group _x)]
-	}
-foreach _BBHQs;
+} foreach _BBHQs;
 
-	{
-	switch (_x) do
-		{
-		case (_logic) : {waitUntil {sleep 0.1;diag_log format ["Waiting for HAC_HQ_readyForBB - Input %1 | %2",_BBHQs,_BBSide]; not (isNil {_logic getvariable "HAC_HQ_readyForBB"})}};
-		}
+{
+	switch (_x) do {
+		case (_logic) : {
+			waitUntil {sleep 0.1; diag_log format ["Waiting for HAC_HQ_readyForBB - Input %1 | %2",_BBHQs,_BBSide]; not (isNil {_logic getvariable "HAC_HQ_readyForBB"})}
+		};
 	}
-foreach _BBHQs;
+} foreach _BBHQs;
 
 _cntr = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-if (_BBSide == "A") then
-	{
-	if not (isNil "HAC_BB_MC") then
-		{
+if (_BBSide == "A") then {
+	if not (isNil "HAC_BB_MC") then {
 		if ((typeName HAC_BB_MC) == "OBJECT") then {_cntr = getposATL HAC_BB_MC} else {_cntr = HAC_BB_MC};
-		}
-	else
-		{
+	} else {
 		HAC_BB_MapC = _cntr;		
 		waitUntil {not (isNil "HAC_BB_MapC")};
-		};
+	};
 	_logic setvariable ["HAC_BB_MapC", _cntr];
 
 	//if ((_cntr select 0) < 1000) then {_cntr = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")};
@@ -79,22 +69,18 @@ if (_BBSide == "A") then
 	//_mark = [_mark,_cntr,(_logic getvariable ["HAC_HQ_Color","ColorBlue"]),"ICON",[1.5,1.5],0,1,"o_hq",(str _cntr),_logic] call ALiVE_fnc_HAC_Marker;
 
 	_lng = (_cntr select 0)*2;
-	if not (isNil "HAC_BB_MC") then
-		{
-		if ((typeName HAC_BB_MC) == "OBJECT") then
-			{
+	if not (isNil "HAC_BB_MC") then {
+		if ((typeName HAC_BB_MC) == "OBJECT") then {
 			_lng = ((triggerArea HAC_BB_MC) select 0)*2
-			}
-		else
-			{
+		} else {
 			_lng = _logic getvariable ["HAC_BB_MapLng",10000];
-			};
+		};
 
 		_logic setvariable ["HAC_BB_MapXMax", ((_logic getvariable "HAC_BB_MapC") select 0) + _lng/2];
 		_logic setvariable ["HAC_BB_MapYMax", ((_logic getvariable "HAC_BB_MapC") select 1) + _lng/2];
 		_logic setvariable ["HAC_BB_MapXMin", ((_logic getvariable "HAC_BB_MapC") select 0) - _lng/2];
 		_logic setvariable ["HAC_BB_MapYMin", ((_logic getvariable "HAC_BB_MapC") select 1) - _lng/2];
-		};
+	};
 
 	_nmbr = round (_lng/500);
 
@@ -117,7 +103,7 @@ if (_BBSide == "A") then
 //	startloadingscreen ["OPCOM studies the map","RscDisplayLoadCustom"];
 	if (_logic getvariable "HAC_BB_Debug") then {diag_log "OPCOM studies the map."};
 
-		{
+	{
 		_x setVariable ["BBSec",true];		
 
 		_secpos = position _x;
@@ -132,8 +118,7 @@ if (_BBSide == "A") then
 		_sGr = 0;
 		_count = 10;
 
-		for "_i" from 1 to _count do
-			{
+		for "_i" from 1 to _count do {
 			_samplePos = [_sPosX + ((random 500) - 250),_sPosY + ((random 500) - 250)];
 
 			_topArr = [_samplePos,1,_logic] call ALiVE_fnc_HAC_TerraCognita;
@@ -144,7 +129,7 @@ if (_BBSide == "A") then
 			_sFlat = _sFlat + (_topArr select 3);
 			_sSea = _sSea + (_topArr select 4);
 			_sGr = _sGr + (_topArr select 5);
-			};
+		};
 
 		_sUrban = round (_sUrban*100/_count);
 		_sForest =  round (_sForest*100/_count);
@@ -169,14 +154,12 @@ if (_BBSide == "A") then
 		_nbr = _nbr + 1;
 		_sum = count (_logic getvariable "HAC_BB_Sectors");
 
-		if not (isMultiplayer) then
-			{
+		if not (isMultiplayer) then {
 			//progressLoadingScreen (_nbr/_sum)
-			}
-		}
-	foreach (_logic getvariable "HAC_BB_Sectors");
+		};
+	} foreach (_logic getvariable "HAC_BB_Sectors");
 	//endLoadingScreen;
-	};
+};
 
 _logic setvariable ["HAC_BB_mapReady", true];
 
@@ -185,8 +168,7 @@ _sectors = (_logic getvariable "HAC_BB_Sectors");
 _strArea = [];
 
 
-if (_logic getvariable "HAC_BB_Debug") then
-	{
+if (_logic getvariable "HAC_BB_Debug") then {
 	_logic globalChat format ["OPCOM %1 is looking for strategic objectives.",_logic];
 	diag_log format ["OPCOM %1 is looking for strategic objectives.",_logic]
 	};
@@ -196,8 +178,7 @@ _objRad = 25000;
 _cntr = (missionNameSpace getVariable "BattleF") select 0;
 _lng = (missionNameSpace getVariable "BattleF") select 1;
 
-if not (isNil "HAC_BB_MC") then
-	{
+if not (isNil "HAC_BB_MC") then {
 	_objRad = _lng/2
 	};
 
@@ -207,28 +188,24 @@ _loc2 = nearestLocations [_cntr, ["NameVillage"], _objRad];
 _loc1 = nearestLocations [_cntr, ["BorderCrossing"], _objRad]; 
 _locHill = nearestLocations [_cntr, ["Hill","ViewPoint"], _objRad]; 
 
-	{
+{
 	_strArea set [(count _strArea),[(position _x),10,false]]
-	}
-foreach _loc10;
+} foreach _loc10;
 
-	{
+{
 	_strArea set [(count _strArea),[(position _x),5,false]]
-	}
-foreach _loc5;
+} foreach _loc5;
 
-	{
+{
 	_strArea set [(count _strArea),[(position _x),2,false]]
-	}
-foreach _loc2;
+} foreach _loc2;
 
-	{
+{
 	_strArea set [(count _strArea),[(position _x),1,false]]
-	}
-foreach _loc1;
+} foreach _loc1;
 
 
-	{
+{
 	_topArr = [(position _x),3,_logic] call ALiVE_fnc_HAC_TerraCognita;
 	_frstV = _topArr select 1;
 	if (_frstV > 0.25) then 
@@ -239,8 +216,7 @@ foreach _loc1;
 		{
 		_strArea set [(count _strArea),[(position _x),2,false]]
 		}
-	}
-foreach _locHill;
+} foreach _locHill;
 
 _BBStr = [];
 
@@ -248,19 +224,17 @@ if (_BBSide == "A") then {if not (isNil {_logic getvariable "HAC_BBa_Str"}) then
 
 _fixedInitStatus = [];
 
-	{
+{
 	_pos = _x select 0;
 	_pos = (_pos select 0) + (_pos select 1);
 
 	_fixedInitStatus set [(count _fixedInitStatus),_pos]
-	}
-foreach _BBStr;
+} foreach _BBStr;
 
 _BBSAL = _logic;
-	{
-	_BBStr set [(count _BBStr),[(position _x),_x getVariable "AreaValue",false]]
-	}
-foreach (synchronizedObjects _BBSAL);
+{
+	_BBStr set [(count _BBStr),[(position _x),_x getVariable ["AreaValue",1],false]]
+} foreach (synchronizedObjects _BBSAL);
 
 _strArea = _strArea + _BBStr;
 
@@ -268,7 +242,10 @@ if (_logic getvariable "HAC_BB_CustomObjOnly") then {_strArea = _BBStr};
 
 _strArea0 = +_strArea;
 
-	{
+diag_log format["StrArea:%1",_strArea0];
+
+{
+	private ["_fVal","_fPnt","_fTkn","_fAr","_k","_fX","_fY"];
 	_fAr = _x;
 	_k = _foreachIndex;
 	_fPnt = _fAr select 0;
@@ -278,7 +255,8 @@ _strArea0 = +_strArea;
 	_fX = _fPnt select 0;
 	_fY = _fPnt select 1;
 
-		{
+	{
+		private ["_sVal","_sPnt","_sTkn","_sAr","_j","_sX","_sY"];
 		_sAr = _x;
 		_j = _foreachIndex;
 		_sPnt = _sAr select 0;
@@ -288,24 +266,19 @@ _strArea0 = +_strArea;
 		_sX = _sPnt select 0;
 		_sY = _sPnt select 1;
 
-		if (((_fPnt distance _sPnt) < 400) and not ((_fPnt select 0) == (_sPnt select 0))) then 
-			{
+		if (((_fPnt distance _sPnt) < 400) and not ((_fPnt select 0) == (_sPnt select 0))) then {
 			
-			if (_fVal > _sVal) then
-				{
+			if (_fVal > _sVal) then {
 				_strArea set [_k,[[(_fX + _sX)/2,(_fY + _sY)/2,0],_fVal + _sVal,_fTkn]];
 				_strArea set [_j,"deleteThis"]
-				}
-			else
-				{
+			} else {
 				_strArea set [_j,[[(_fX + _sX)/2,(_fY + _sY)/2,0],_fVal + _sVal,_sTkn]];
 				_strArea set [_k,"deleteThis"]
-				}
-			}
-		}
-	foreach _strArea0
-	}
-foreach _strArea0;
+			};
+		};
+	} foreach _strArea0;
+	
+} foreach _strArea0;
 
 _strArea = _strArea - ["deleteThis"];
 
@@ -379,13 +352,13 @@ while {(_logic getvariable "HAC_BB_Active")} do
 
 	if (_bbCycle == 1) then
 		{
-		[_BBHQs,_BBSide] spawn
+		[_BBHQs,_BBSide,_logic] spawn
 			{
 			private ["_logic","_HQg","_side","_HQg0"];
-
+			
 			_HQg = _this select 0;
 			_side = _this select 1;	
-
+			_logic = _this select 2;
 			_HQg0 = _HQg;
 
 			while {(_logic getvariable "HAC_BB_Active")} do
@@ -496,29 +469,28 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		if (_BBSide == "B") then {_enAr = missionNameSpace getVariable ["A_SAreas",[]]};
 
 		while {(_change)} do
-			{
+		{
+			private ["_nmbr","_posStrX","_posStrY"];
 			_nmbr = 0;
 			_posStrX = 0;
 			_posStrY = 0;
 
-				{
+			{
 				_taken = _x select 2;
 
-				if not (_taken) then 
-					{
+				if not (_taken) then {
+					private ["_posStr","_valStr","_j"];
 					_posStr = _x select 0;
 					_valStr = _x select 1;
 
-					for "_j" from 1 to _valStr do
-						{
+					for "_j" from 1 to _valStr do {
 						_posStrX = _posStrX + (_posStr select 0);
 						_posStrY = _posStrY + (_posStr select 1);
-						};
+					};
 
 					_nmbr = _nmbr + (_x select 1)
-					}
-				}
-			foreach _strArea;
+				};
+			} foreach _strArea;
 
 			if (_nmbr > 0) then {_mainPos = [_posStrX/_nmbr,_posStrY/_nmbr,0]};
 
@@ -529,7 +501,7 @@ while {(_logic getvariable "HAC_BB_Active")} do
 			_civF = ["CIV","CIV_RU","BIS_TK_CIV","BIS_CIV_special"];
 			if not (isNil {_logic getvariable "HAC_BB_CivF"}) then {_civF = _logic getvariable "HAC_BB_CivF"};
 
-				{
+			{
 				_posStr = _x select 0;
 				_valStr = _x select 1;
 				_taken = _x select 2;
@@ -551,8 +523,7 @@ while {(_logic getvariable "HAC_BB_Active")} do
 						};
 
 					if (_enemyClose) exitwith {}
-					}
-				foreach (Allgroups - _ownGroups);
+			} foreach (Allgroups - _ownGroups);
 
 				_gDst = 1000000;
 				
@@ -576,13 +547,12 @@ while {(_logic getvariable "HAC_BB_Active")} do
 					_pos = (_pos select 0) + (_pos select 1);
 					if not (_pos in _fixedInitStatus) then {_x set [2,false]};
 					}
-				}
-			foreach _strArea;
+				} foreach _strArea;
 
 			_ct = _ct + 1;
 
 			if (_ct > 10) then {_change = false}
-			};
+		};
 		
 		if ((count _enAr) > 0) then
 			{
@@ -613,8 +583,7 @@ while {(_logic getvariable "HAC_BB_Active")} do
 		//_mark = [_mark,_mainPos,(_logic getvariable ["HAC_HQ_Color","ColorRed"]),"ICON",[1,1],0,1,"mil_triangle","",_logic] call ALiVE_fnc_HAC_Marker;
 
 		_attackAxis = [_ArmyPos,_mainPos,10,_logic] call ALiVE_fnc_HAC_AngTowards;
-if ((true) and (true)) then
-	{
+if ((true) and (true)) then {
 		if (_logic getvariable "HAC_BB_Debug") then
 			{
 				{
@@ -1387,10 +1356,8 @@ if ((true) and (true)) then
 				}
 			};
 		};
-
-	_stnc = _stance;
+	_stnc = "N";
 	_nilStance = isNil "_stance";
-	_stance = "N";
 	if (_nilStance) then {_stance = "O"} else {_stance = _stnc};
 
 	_losses = 0;

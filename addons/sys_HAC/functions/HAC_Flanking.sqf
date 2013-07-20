@@ -1,4 +1,5 @@
-_logic = _this select ((count _this)-1);
+private ["_logic","_rnd1","_rnd2","_default","_Epos0","_Epos1","_Epos0Max"];
+_logic = _this select 0;
 _logic setvariable ["HAC_HQ_FlankingInit", true];
 sleep 10;
 waituntil {sleep 5;((_logic getvariable "HAC_HQ_FlankReady") and ((count (_logic getvariable "HAC_HQ_KnEnemies")) > 0) and not ((_logic getvariable "HAC_HQ_DefDone")))};
@@ -88,6 +89,7 @@ _BEnemyPos = [];
 if ((_angle0 <= 45) or ((_angle0 > 135) and (_angle0 <= 225)) or (_angle0 > 315)) then {_BEnemyPosA = position _min0Enemy;_BEnemyPosB = position _max0Enemy} else {_BEnemyPosA = position _min1Enemy;_BEnemyPosB = position _max1Enemy};
 
 _rnd1 = random 100;
+_rnd2 = random 100;
 
 _minF = false;
 _maxF = false;

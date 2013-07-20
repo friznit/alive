@@ -1,4 +1,5 @@
-_logic = _this select ((count _this)-1);
+private ["_logic","_distances","_Trg","_landE"];
+_logic = _this select 0;
 _logic setvariable ["HAC_HQ_DefDone", false];
 
 _distances = [];
@@ -47,7 +48,8 @@ if (isNil {_logic getvariable "HAC_HQ_ReconReserve"}) then {_logic setvariable [
 _logic setvariable ["HAC_HQ_ReconAv", []];
 _onlyL = (_logic getvariable "HAC_HQ_LArmorG") - (_logic getvariable "HAC_HQ_MArmorG");
 
-	{
+{
+	private ["_unitvar","_nominal","_current","_Gdamage","_busy","_vehready","_solready","_effective","_ammo","_veh"];
 	_unitvar = str _x;
 	if (_logic getvariable "HAC_HQ_Orderfirst") then {_x setVariable ["Nominal" + _unitvar,(count (units _x)),true]};
 	_busy = false;
@@ -58,13 +60,12 @@ _onlyL = (_logic getvariable "HAC_HQ_LArmorG") - (_logic getvariable "HAC_HQ_MAr
 	_effective = true;
 	_ammo = true;
 	_Gdamage = 0;
-		{
+	{
 		_Gdamage = _Gdamage + (damage _x);
 		 if ((count (magazines _x)) == 0) exitWith {_ammo = false};
 		//_ammo = _ammo + (count (magazines _x));
 		if (((damage _x) > 0.5) or not (canStand _x)) exitWith {_effective = false};
-		}
-	foreach (units _x);
+	}foreach (units _x);
 	_nominal = _x getVariable ("Nominal" + (str _x));
 	_current = count (units _x);
 	_Gdamage = _Gdamage + (_nominal - _current);
@@ -81,15 +82,13 @@ _onlyL = (_logic getvariable "HAC_HQ_LArmorG") - (_logic getvariable "HAC_HQ_MAr
 	_ammo = 0;
 	_veh = ObjNull;
 
-		{
+	{
 		_veh = assignedvehicle _x;
 		if (not (isNull _veh) and (not (canMove _veh) or ((fuel _veh) <= 0.1) or ((damage _veh) > 0.5) or (((group _x) in ((_logic getvariable "HAC_HQ_AirG") - ((_logic getvariable "HAC_HQ_NCAirG") + (_logic getvariable "HAC_HQ_RAirG")) + ((_logic getvariable "HAC_HQ_HArmorG") + (_logic getvariable "HAC_HQ_LArmorG") + ((_logic getvariable "HAC_HQ_CarsG") - ((_logic getvariable "HAC_HQ_NCCargoG") + (_logic getvariable "HAC_HQ_SupportG")))))) and ((count (magazines _veh)) == 0)))) exitwith {_vehready = false};
-		}
-	foreach (units _x);
+	} foreach (units _x);
 
 	if (not (_x in ((_logic getvariable "HAC_HQ_ReconAv") + (_logic getvariable "HAC_HQ_SpecForG"))) and not (_busy) and (_vehready) and ((_solready) or (_x in (_logic getvariable "HAC_HQ_RAirG")))) then {_logic setvariable ["HAC_HQ_ReconAv",(_logic getvariable "HAC_HQ_ReconAv") + [_x]]};
-	}
-foreach (((_logic getvariable "HAC_HQ_RAirG") + (_logic getvariable "HAC_HQ_ReconG") + (_logic getvariable "HAC_HQ_FOG") + (_logic getvariable "HAC_HQ_SnipersG") + (_logic getvariable "HAC_HQ_NCrewInfG") - ((_logic getvariable "HAC_HQ_SupportG") + (_logic getvariable "HAC_HQ_NCCargoG")) + _onlyL) - ((_logic getvariable "HAC_HQ_AOnly") + (_logic getvariable "HAC_HQ_CargoOnly")));
+} foreach (((_logic getvariable "HAC_HQ_RAirG") + (_logic getvariable "HAC_HQ_ReconG") + (_logic getvariable "HAC_HQ_FOG") + (_logic getvariable "HAC_HQ_SnipersG") + (_logic getvariable "HAC_HQ_NCrewInfG") - ((_logic getvariable "HAC_HQ_SupportG") + (_logic getvariable "HAC_HQ_NCCargoG")) + _onlyL) - ((_logic getvariable "HAC_HQ_AOnly") + (_logic getvariable "HAC_HQ_CargoOnly")));
 
 _HAC_HQ_ReconAv = [(_logic getvariable "HAC_HQ_ReconAv"),_logic] call ALiVE_fnc_HAC_RandomOrd;
     (_logic setvariable ["HAC_HQ_ReconAv",_HAC_HQ_ReconAv]);
@@ -112,7 +111,8 @@ if (isNil {_logic getvariable "HAC_HQ_Exhausted"}) then {_logic setvariable ["HA
 
 if (isNil {_logic getvariable "HAC_HQ_AttackReserve"}) then {_logic setvariable ["HAC_HQ_AttackReserve",(0.5 * (0.5 + ((_logic getvariable "HAC_HQ_Circumspection")/1.5)))]};
 
-	{
+{
+	private ["_unitvar","_nominal","_current","_Gdamage","_busy","_vehready","_solready","_effective","_ammo","_veh"];
 	_unitvar = str _x;
 	if (_logic getvariable "HAC_HQ_Orderfirst") then {_x setVariable [("Nominal" + _unitvar),(count (units _x)),true]};
 	_busy = false;
@@ -150,8 +150,8 @@ if (isNil {_logic getvariable "HAC_HQ_AttackReserve"}) then {_logic setvariable 
 		if (isNil "_inD") then {_inD = 0};
 		if (not (_x in (_logic getvariable "HAC_HQ_Exhausted")) and ((random (2 + (_logic getvariable "HAC_HQ_Recklessness"))) < (_inD * (_logic getvariable "HAC_HQ_Withdraw")))) then {_logic setvariable ["HAC_HQ_Exhausted",(_logic getvariable "HAC_HQ_Exhausted") + [_x]]}; 
 		};
-	}
-foreach (((_logic getvariable "HAC_HQ_Friends") - ((_logic getvariable "HAC_HQ_reconG") + (_logic getvariable "HAC_HQ_FOG") + ((_logic getvariable "HAC_HQ_NCCargoG") - (_logic getvariable "HAC_HQ_NCrewInfG")) + (_logic getvariable "HAC_HQ_SupportG"))) - (_logic getvariable "HAC_HQ_ROnly"));
+} foreach (((_logic getvariable "HAC_HQ_Friends") - ((_logic getvariable "HAC_HQ_reconG") + (_logic getvariable "HAC_HQ_FOG") + ((_logic getvariable "HAC_HQ_NCCargoG") - (_logic getvariable "HAC_HQ_NCrewInfG")) + (_logic getvariable "HAC_HQ_SupportG"))) - (_logic getvariable "HAC_HQ_ROnly"));
+
 _HAC_HQ_AttackAv = (_logic getvariable "HAC_HQ_AttackAv");
 _HAC_HQ_AttackAvtemp = [_HAC_HQ_AttackAv,_logic] call ALiVE_fnc_HAC_RandomOrd;
 _logic setvariable ["HAC_HQ_AttackAv",_HAC_HQ_AttackAvtemp];
@@ -268,11 +268,9 @@ if (((_logic getvariable "HAC_HQ_NoRec") * ((_logic getvariable "HAC_HQ_Reckless
 			foreach _gps
 			}
 		}
-	}
-else
-	{
-	_logic setvariable ["HAC_HQ_ReconDone", true]
-	};
+	} else{
+		_logic setvariable ["HAC_HQ_ReconDone", true]
+};
 
 if (isNil {_logic getvariable "HAC_HQ_IdleOrd"}) then {_logic setvariable ["HAC_HQ_IdleOrd", true]};
 

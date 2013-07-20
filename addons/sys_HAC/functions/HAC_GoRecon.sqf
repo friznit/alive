@@ -1,11 +1,18 @@
+private ["_i","_timer","_unitG","_stage","_logic","_PosObj1","_recvar"];
 _i = "";
 
 _timer = 0;
-_unitG = _this select 0;_Spos = _unitG getvariable ("START" + (str _unitG));if (isNil ("_Spos")) then {_unitG setVariable [("START" + (str _unitG)),(position (vehicle (leader _unitG)))];_Spos = _unitG getVariable ("START" + (str _unitG))}; 
-_stage = _this select 2;
-_logic = _this select ((count _this)-1);
-
+_unitG = _this select 0;
 _PosObj1 = _this select 1;
+_stage = _this select 2;
+_logic = _this select 3;
+
+_Spos = _unitG getvariable ("START" + (str _unitG));
+if (isNil ("_Spos")) then {
+	_unitG setVariable [("START" + (str _unitG)),(position (vehicle (leader _unitG)))];
+	_Spos = _unitG getVariable ("START" + (str _unitG));
+}; 
+
 _recvar = str (_unitG);
 
 [_unitG,_logic] call ALiVE_fnc_HAC_WPdel;

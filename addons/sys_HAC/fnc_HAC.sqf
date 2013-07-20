@@ -56,6 +56,7 @@ switch(_operation) do {
                 waituntil {!(isnil "BIS_fnc_init")};
                 
                 if (isServer) then {
+					private ["_LogicSide","_group"];
                     // if server, initialise module game logic
                     _logic setVariable ["super", SUPERCLASS];
                     _logic setVariable ["class", ALIVE_fnc_HAC];
@@ -101,8 +102,9 @@ switch(_operation) do {
                     [_logic] call (compile preprocessfile "\x\alive\addons\sys_HAC\HAC_Library.sqf");
 
                     // and publicVariable Main class to clients
-                    _id = count (missionNameSpace getvariable ["HAC_instances",[]]);
-                    _mod = call compile format["HAC_TACOM_%1",_id]; call compile format["HAC_TACOM_%1 = _logic",_id];
+					private ["_id"];
+                    _id = count (missionNameSpace getvariable ["HAC_instances",[]]); 
+					call compile format["HAC_TACOM_%1 = _logic",_id];
                     missionNameSpace setVariable ["HAC_instances",(missionNameSpace getvariable ["HAC_instances",[]]) + [_logic]];
                     
                     Publicvariable (format["HAC_TACOM_%1",_id]);
@@ -146,6 +148,7 @@ switch(_operation) do {
                         // and publicVariable to clients
                         
                         for "_i" from 0 to ((count (missionNameSpace getvariable ["HAC_instances",[]])) - 1) do {
+							private ["_id","_instance"];
                            	_id = _i;
                             _instance = (missionNameSpace getvariable ["HAC_instances",[]]) select _i;
                             if (_instance == _logic) exitwith {
@@ -181,6 +184,7 @@ switch(_operation) do {
 				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
 				
                 {
+					private ["_grpL"];
                     _grpL = leader (group _x);
                     if !(_grpL in (synchronizedObjects _logic)) then {
                         _logic synchronizeObjectsAdd [_grpL];

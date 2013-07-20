@@ -1,9 +1,9 @@
-_ia = "";_ib = "";_ic = "";_id = "";_ie = "";_if = "";_ig = "";_ih = "";
+private ["_logic","_FrontA"];
 
-_logic = _this select ((count _this)-1);
+_logic = _this select 0;
 
-if not (isNil ("HET_FA")) then 
-	{
+if not (isNil ("HET_FA")) then {
+	private ["_pos","_att","_XAxis","_YAxis","_dir","_isRec"];
 	_pos = position HET_FA;
 	_att = triggerArea HET_FA;
 	_XAxis = _att select 0;
@@ -15,8 +15,8 @@ if not (isNil ("HET_FA")) then
 	_FrontA setDirection _dir;
 	_FrontA setRectangular _isRec;
 
-	if (_logic getvariable "HAC_HQ_Debug") then 
-		{
+	if (_logic getvariable "HAC_HQ_Debug") then {
+		private ["_shape","_ia"];
 		_shape = "ELLIPSE";
 		if (_isRec) then {_shape = "RECTANGLE"};
 		_FrontA setText "FrontA";
@@ -29,10 +29,12 @@ if not (isNil ("HET_FA")) then
 		_ia setMarkerBrush "Border";
 		_ia setMarkerColor "ColorKhaki";
 
-		[_ia] spawn
+		[_ia, _logic, _FrontA] spawn
 			{
+			private ["_ia","_logic","_FrontA"];
 			_ia = _this select 0;
-
+			_logic = _this select 1;
+			_FrontA = _this select 2;
 			waitUntil
 				{
 				sleep 5;
@@ -48,8 +50,8 @@ if not (isNil ("HET_FA")) then
 				_ia setMarkerSize (size _FrontA)
 				};
 			}
-		};
 	};
+	_logic setvariable ["FrontA",_FrontA];
+	_logic setvariable ["HAC_HQ_Fronts",true];
+};
 
-_logic setvariable ["FrontA",_FrontA];
-_logic setvariable ["HAC_HQ_Fronts",true];
