@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>OPCOM</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>org.friedenhq.armascript.projectNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>alive</name>
+			<type>2</type>
+			<locationURI>PARENT-6-PROJECT_LOC/alive</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
