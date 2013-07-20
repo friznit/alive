@@ -38,8 +38,8 @@ class Mission
 	randomSeed=14323470;
 	class Intel
 	{
-		briefingName="ALiVE OPCOM Spleen v0.14";
-		overviewText="ALiVE OPCOM Spleen v0.14";
+		briefingName="ALiVE OPCOM Spleen v0.15";
+		overviewText="ALiVE OPCOM Spleen v0.15";
 		startWeather=0.19;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -1414,7 +1414,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=2;
+		items=3;
 		class Item0
 		{
 			position[]={2741.1348,38.726532,1376.75};
@@ -1434,6 +1434,12 @@ class Mission
 			colorName="ColorRed";
 			b=2;
 			angle=13.8916;
+		};
+		class Item2
+		{
+			position[]={4365.938,226.39177,3795.8135};
+			name="respawn_west";
+			type="Empty";
 		};
 	};
 };
