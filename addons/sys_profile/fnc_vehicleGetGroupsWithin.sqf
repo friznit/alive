@@ -30,9 +30,11 @@ _vehicle = _this;
 _result = [];
 
 {
-	_group = group _x;
-	if!(_group in _result) then {
-		_result set [count _result, _group];
+	if(alive _x) then {
+		_group = group _x;
+		if!(_group in _result) then {
+			_result set [count _result, _group];
+		};
 	};
 } forEach (crew _vehicle);
 

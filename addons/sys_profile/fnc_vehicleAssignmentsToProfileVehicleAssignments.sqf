@@ -38,6 +38,11 @@ if(_profileType == "vehicle") then {
 	_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;	
 	_groupsInVehicle = _vehicle call ALIVE_fnc_vehicleGetGroupsWithin;
 	
+	/*
+	["VA TO PVA : %1",_profileID] call ALIVE_fnc_dump;	
+	["GROUPS IN VEHICLE: %1",_groupsInVehicle] call ALIVE_fnc_dump;
+	*/
+	
 	{
 		_group = _x;
 		_leader = leader _group;
@@ -45,7 +50,7 @@ if(_profileType == "vehicle") then {
 		_entityProfile = [ALIVE_profileHandler, "getProfile", _entityID] call ALIVE_fnc_profileHandler;
 		_entityProfileActive = [_entityProfile,"active"] call ALIVE_fnc_hashGet;
 		
-		_assignment = [_vehicle, _group] call ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment;		
+		_assignment = [_vehicle, _group] call ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment;
 		_vehicleAssignments = [_profileID,_entityID,_assignment];			
 		
 		[_profile, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileVehicle;
@@ -61,6 +66,13 @@ if(_profileType == "vehicle") then {
 	_units = [_profile,"units"] call ALIVE_fnc_hashGet;
 	_group = group (_units select 0);
 	_vehiclesUnitsIn = _units call ALIVE_fnc_unitArrayGetVehiclesWithin;
+	
+	/*
+	["VA TO PVA : %1",_profileID] call ALIVE_fnc_dump;
+	["UNITS : %1",_units] call ALIVE_fnc_dump;
+	["GROUP : %1",_group] call ALIVE_fnc_dump;
+	["VEHICLES UNITS IN: %1",_vehiclesUnitsIn] call ALIVE_fnc_dump;
+	*/
 	
 	{
 		_vehicle = _x;

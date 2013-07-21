@@ -70,4 +70,4 @@ STAT("Run waypoint simulator");
 
 
 STAT("Run profile spawner");
-[] spawn {[200,true] call ALIVE_fnc_profileSpawner};
+[] spawn {[30,true] call ALIVE_fnc_profileSpawner};
