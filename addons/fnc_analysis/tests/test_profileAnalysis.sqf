@@ -101,7 +101,7 @@ TIMEREND
 
 STAT("Plot profiles on sectors");
 TIMERSTART
-[_plotter, "plot", [_allSectors, "profilesBySide"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_allSectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 
@@ -123,7 +123,7 @@ TIMEREND
 
 STAT("Plot profiles on sectors");
 TIMERSTART
-[_plotter, "plot", [_allSectors, "profilesBySide"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_allSectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 

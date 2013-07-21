@@ -63,6 +63,8 @@ switch(_operation) do {
                         [_logic,"super"] call ALIVE_fnc_hashRem;
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         TRACE_1("After module init",_logic);			
+						
+						[_logic,"plots",[]] call ALIVE_fnc_hashSet;
                 };
                 
                 /*
@@ -112,7 +114,7 @@ switch(_operation) do {
 				
 				{
 					_result = [_x, "destroy", false] call ALIVE_fnc_sectorPlot;
-				} forEach _plots;				
+				} forEach _plots;
 		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
