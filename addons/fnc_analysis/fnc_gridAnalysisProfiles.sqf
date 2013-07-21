@@ -42,15 +42,25 @@ _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 	
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
 		
-	if("profilesBySide" in (_sectorData select 1)) then {
-		_sideProfiles = [_sectorData, "profilesBySide"] call ALIVE_fnc_hashGet;
+	if("entitiesBySide" in (_sectorData select 1)) then {
+		_sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
 		[_sideProfiles, "EAST", []] call ALIVE_fnc_hashSet;
 		[_sideProfiles, "WEST", []] call ALIVE_fnc_hashSet;
 		[_sideProfiles, "CIV", []] call ALIVE_fnc_hashSet;
 		[_sideProfiles, "GUER", []] call ALIVE_fnc_hashSet;
 		
-		[_sector, "data", ["profilesBySide",_sideProfiles]] call ALIVE_fnc_sector;
-	};	
+		[_sector, "data", ["entitiesBySide",_sideProfiles]] call ALIVE_fnc_sector;
+	};
+
+	if("vehiclesBySide" in (_sectorData select 1)) then {
+		_sideProfiles = [_sectorData, "vehiclesBySide"] call ALIVE_fnc_hashGet;
+		[_sideProfiles, "EAST", []] call ALIVE_fnc_hashSet;
+		[_sideProfiles, "WEST", []] call ALIVE_fnc_hashSet;
+		[_sideProfiles, "CIV", []] call ALIVE_fnc_hashSet;
+		[_sideProfiles, "GUER", []] call ALIVE_fnc_hashSet;
+		
+		[_sector, "data", ["vehiclesBySide",_sideProfiles]] call ALIVE_fnc_sector;
+	};
 	
 } forEach _sectors;
 
