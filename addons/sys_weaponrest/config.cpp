@@ -337,7 +337,7 @@ class CfgMissions
 		class Showcase_ALiVE_WeaponRest
 		{
 			briefingName = "ALiVE Weapon Resting and Bipods";
-			directory = "sys_weaponrest\missions\showcases\showcase_weaponrest.stratis";
+			directory = "x\alive\addons\sys_weaponrest\showcases\Showcase_WeaponRest.Stratis";
 		};
 	};
 };
