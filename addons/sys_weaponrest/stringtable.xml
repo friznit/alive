@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALIVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_BIPOD">
+<English>Bipod deployed</English>
+<German>Zweibein aufgestellt</German>
+<Russian>Сошки расправлены</Russian>
+<French>Bipied deployé</French>
+<Spanish>Bipode desplegado</Spanish>
+<Czech>Dvojnožka rozložena</Czech>
+<Italian>Bipode dispiegato</Italian>
+<Hungarian>Állvány letámasztva</Hungarian>
+<Polish>Dwójnóg rozłożony</Polish>
+</Key>
+<Key ID="STR_ALIVE_DEPLOYED">
+<English>Weapon deployed</English>
+<German>Waffe aufgelegt</German>
+<Russian>Оружие установлено на сошки</Russian>
+<French>Arme deployée</French>
+<Spanish>Weapon deployed</Spanish>
+<Czech>Zbraň zapřena</Czech>
+<Italian>Arma appoggiata</Italian>
+<Hungarian>Fegyver letámasztva</Hungarian>
+<Polish>Broń podparta</Polish>
+</Key>
+<Key ID="STR_ALIVE_DEPLOYED_HEAVY">
+<English>Weapon is too heavy</English>
+<German>Waffe zu schwer</German>
+<Russian>Weapon is too heavy</Russian>
+<French>Weapon is too heavy</French>
+<Spanish>Weapon is too heavy</Spanish>
+<Czech>Zbraň je příliš těžká</Czech>
+<Italian>Weapon is too heavy</Italian>
+<Hungarian>Weapon is too heavy</Hungarian>
+<Polish>Weapon is too heavy</Polish>
+</Key>
+</Container>
+<Container name="STR_ALIVE_MENU">
+<Key ID="STR_ALIVE_MENU_RESTWEAPON">
+<German>Waffe auflegen</German>
+<English>Rest weapon</English>
+<Italian>Rest weapon</Italian>
+<Spanish>Rest weapon</Spanish>
+<French>Appui arme</French>
+<Czech>Zapřít zbraň</Czech>
+<Russian>Упереть оружие</Russian>
+<Polish>Podparcie broni</Polish>
+<Hungarian>Fegyver támasztása</Hungarian>
+</Key>
+<Key ID="STR_ALIVE_MENU_RESTWEAPONBIPOD">
+<German>Zweibein/Waffe auflegen</German>
+<English>Bipod/Rest Weapon</English>
+<Italian>Bipod/Rest Weapon</Italian>
+<Spanish>Bipod/Rest Weapon</Spanish>
+<French>Appui/bipied arme</French>
+<Czech>Dvojnožka/Zapřít zbraň</Czech>
+<Russian>Упереть оружие</Russian>
+<Polish>Dwójnóg/Podparcie</Polish>
+<Hungarian>Állvány/Fegyver támasztása</Hungarian>
+</Key>
+</Container>
+</Package>
+</Project>
