@@ -14,11 +14,12 @@ PARAMS_1(_cAnim);
 	
 	_weapon = currentweapon player;
 	
-	_longRifle = ["srifle_EBR_F","srifle_EBR_ACO_F","srifle_EBR_MRCO_pointer_F","srifle_EBR_ARCO_pointer_F","srifle_EBR_SOS_F",
+	_longRifle = ["srifle_EBR_F","srifle_EBR_ACO_F","srifle_EBR_MRCO_pointer_F","srifle_EBR_ARCO_pointer_F","srifle_EBR_SOS_F","srifle_EBR_ARCO_pointer_snds_F",
 				  "srifle_GM6_F","srifle_GM6_SOS_F",
 				  "srifle_LRR_F","srifle_LRR_SOS_F",
-				  "arifle_MXM_F","arifle_MXM_Hamr_pointer_F","arifle_MXM_SOS_pointer_F",
-				  "arifle_MXC_Holo_pointer_snds_F","arifle_MX_RCO_pointer_snds_F","arifle_MXC_SOS_point_snds_F",
+				  "arifle_MXM_F","arifle_MXM_Hamr_pointer_F","arifle_MXM_SOS_pointer_F","arifle_MXM_RCO_pointer_snds_F",
+				  "arifle_MXC_Holo_pointer_snds_F","arifle_MX_RCO_pointer_snds_F","arifle_MXC_SOS_point_snds_F","arifle_MX_GL_Holo_pointer_snds_F",
+				  "arifle_Katiba_ACO_pointer_snds_F","arifle_Katiba_ARCO_pointer_snds_F","arifle_Katiba_GL_ACO_pointer_snds_F",
 				  "LMG_Zafir_F","LMG_Zafir_pointer_F"];
 	_medRifle = ["LMG_Mk200_F","LMG_Mk200_MRCO_F","LMG_Mk200_pointer_F",
 				"arifle_Katiba_F","arifle_Katiba_ACO_F","arifle_Katiba_ACO_pointer_F","arifle_Katiba_ARCO_F","arifle_Katiba_ARCO_pointer_F",
