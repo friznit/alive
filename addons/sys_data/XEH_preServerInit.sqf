@@ -5,6 +5,7 @@
 // https://dev-heaven.net/projects/cca/wiki/Extended_Eventhandlers#New-in-200-Support-for-ArmA-II-serverInit-and-clientInit-entries
 
 LOG(MSG_INIT);
+private ["_response"];
 
 ADDON = false;
 
@@ -21,7 +22,7 @@ if (isDedicated) then {
 	if ( typeName _response != "STRING") then {
 		ALIVE_DataDictionary = _response;
 	} else {
-		TRACE_1("NO DICTIONARY AVAILABLE" _response);
+		TRACE_1("NO DICTIONARY AVAILABLE",_response);
 	};
 	
 	TRACE_2("DATA DICTIONARY", ALIVE_DataDictionary, _response);

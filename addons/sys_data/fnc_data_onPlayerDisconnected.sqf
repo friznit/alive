@@ -20,6 +20,7 @@ private ["_name","_result","_rev"];
 TRACE_1("DATA SERVER DISCONNECT", _this);
 
 _name = _this select 1;
+_result = objNull;
 
 if (_name == "__SERVER__") exitWith {
 
@@ -39,7 +40,7 @@ if (_name == "__SERVER__") exitWith {
 
 };
 	
-			
+_result;		
 
 
 // ====================================================================================
