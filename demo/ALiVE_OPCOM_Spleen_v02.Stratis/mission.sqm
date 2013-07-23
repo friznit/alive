@@ -40,8 +40,8 @@ class Mission
 	randomSeed=14323470;
 	class Intel
 	{
-		briefingName="ALiVE OPCOM Spleen v0.2";
-		overviewText="ALiVE OPCOM Spleen v0.2";
+		briefingName="ALiVE OPCOM Spleen v0.21";
+		overviewText="ALiVE OPCOM Spleen v0.21";
 		startWeather=0.19;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -967,7 +967,7 @@ class Mission
 				items=8;
 				class Item0
 				{
-					position[]={4466.9014,206.74144,3946.7629};
+					position[]={4356.6235,225.68443,3787.2405};
 					azimut=-1.4848825;
 					id=80;
 					side="WEST";
@@ -978,7 +978,7 @@ class Mission
 				};
 				class Item1
 				{
-					position[]={4472.0278,203.38498,3941.897};
+					position[]={4361.75,225.39496,3782.3745};
 					azimut=-1.4848825;
 					id=81;
 					side="WEST";
@@ -988,7 +988,7 @@ class Mission
 				};
 				class Item2
 				{
-					position[]={4462.0317,209.41328,3941.6379};
+					position[]={4351.7539,225.10249,3782.1155};
 					azimut=-1.4848825;
 					id=82;
 					side="WEST";
@@ -998,7 +998,7 @@ class Mission
 				};
 				class Item3
 				{
-					position[]={4477.1558,199.52617,3937.0291};
+					position[]={4366.8779,225.16418,3777.5066};
 					azimut=-1.4848825;
 					id=83;
 					side="WEST";
@@ -1007,7 +1007,7 @@ class Mission
 				};
 				class Item4
 				{
-					position[]={4457.1567,211.68669,3936.5103};
+					position[]={4346.8789,224.67984,3776.9878};
 					azimut=-1.4848825;
 					id=84;
 					side="WEST";
@@ -1016,7 +1016,7 @@ class Mission
 				};
 				class Item5
 				{
-					position[]={4482.2856,196.01329,3932.1594};
+					position[]={4372.0078,225.08714,3772.637};
 					azimut=-1.4848825;
 					id=85;
 					side="WEST";
@@ -1026,7 +1026,7 @@ class Mission
 				};
 				class Item6
 				{
-					position[]={4452.2935,215.11656,3931.3848};
+					position[]={4342.0156,223.9865,3771.8623};
 					azimut=-1.4848825;
 					id=86;
 					side="WEST";
@@ -1035,7 +1035,7 @@ class Mission
 				};
 				class Item7
 				{
-					position[]={4487.4126,193.75583,3927.291};
+					position[]={4377.1348,225.17192,3767.7686};
 					azimut=-1.4848825;
 					id=87;
 					side="WEST";
@@ -1334,10 +1334,10 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={4140.3662,179.61278,3856.5586};
+					position[]={4141.1924,180.73363,3858.8369};
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="true";
@@ -1346,9 +1346,15 @@ class Mission
 						};
 						class Item1
 						{
-							value="OPF_F";
+							value="invasion";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction";
+							typeName="controltype";
+						};
+						class Item2
+						{
+							value="EAST";
+							parentCls="ALiVE_mil_OPCOM";
+							typeName="side";
 						};
 					};
 					id=102;
