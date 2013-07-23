@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_OPCOM">
+	<English>OPCOM</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_COMMENT">
+	<English>Strategic Enemy Placement</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_DEBUG_COMMENT">
+	<English>Enables OPCOM Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TARGETS">
+	<English>Objective Type:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TARGETS_COMMENT">
+	<English>What types of infrastructure are the enemy force targetting</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TARGETS_MIL">
+	<English>Military Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TARGETS_CIV">
+	<English>Civilian Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TARGETS_ALL">
+	<English>All Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_SIZE">
+	<English>Force Size:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_SIZE_COMMENT">
+	<English>Number of units to be placed</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_SIZE_BN">
+	<English>Battalion (300-1200)</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_SIZE_CY">
+	<English>Company (90-250)</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_SIZE_PL">
+	<English>Platoon (30-50)</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE">
+	<English>Force Weighting:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_COMMENT">
+	<English>The preferred type of force deployed</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_RANDOM">
+	<English>Random</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_ARMOR">
+	<English>Armoured</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_MECH">
+	<English>Mechanised</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_MOTOR">
+	<English>Motorised</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_LIGHT">
+	<English>Light Infantry</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_AIRBORNE">
+	<English>Airborne</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TYPE_MARINE">
+	<English>Marines</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_SIDE">
+	<English>Force Side:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_SIDE_COMMENT">
+	<English>Side of the units to be controlled</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TAOR">
+	<English>TAOR Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_TAOR_COMMENT">
+	<English>Tactical Area Operation Responsibility Marker</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_BLACKLIST">
+	<English>Blacklist Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_BLACKLIST_COMMENT">
+	<English>Exclusion Marker</English>
+</Key>
+</Container></Package></Project>
