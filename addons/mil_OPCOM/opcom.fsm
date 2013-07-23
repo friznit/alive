@@ -60,7 +60,7 @@ link22[] = {17,9};
 link23[] = {18,14};
 link24[] = {19,5};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,62,6316128,1,-1137.082031,-420.662628,-512.416504,-1169.401978,539,818,1};
-window[] = {0,-1,-1,-1,-1,1042,1992,3725,93,1,556};
+window[] = {0,-1,-1,-1,-1,1019,91,1824,70,1,556};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -85,7 +85,7 @@ class FSM
        "" \n
        "_OPCOM_HANDLER = _this select 0;" \n
        "" \n
-       "_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",SEP] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectivesbydistance"",SEP] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -143,11 +143,12 @@ class FSM
        "			};" \n
        "" \n
        "			//AnalyzeClusterOccupation" \n
-       "			_objectivesTakenEast = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[""EAST"",300]] call ALiVE_fnc_OPCOM;" \n
-       "			_objectivesTakenWest = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[""WEST"",300]] call ALiVE_fnc_OPCOM;" \n
+       "			_objectivesTakenEast = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[""EAST"",100]] call ALiVE_fnc_OPCOM;" \n
+       "			_objectivesTakenWest = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[""WEST"",100]] call ALiVE_fnc_OPCOM;" \n
        "" \n
-       "			[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_objectivesTakenEast,""reserve"",[""reserve"",""reserving"",""idle""]]] call ALiVE_fnc_OPCOM;" \n
-       "			[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_objectivesTakenWest,""attack"",[""attack"",""attacking""]]] call ALiVE_fnc_OPCOM;" \n
+       "			//to be changed depending on friend or foe" \n
+       "			[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_objectivesTakenEast,""reserve""]] call ALiVE_fnc_OPCOM;" \n
+       "			[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_objectivesTakenWest,""attack""]] call ALiVE_fnc_OPCOM;" \n
        "" \n
        "			//AnalyzeResults - prepare orders" \n
        "				//Case Prio 2: Optional: Attack all unassigned objectives" \n
@@ -174,23 +175,24 @@ class FSM
        "			switch (_operation) do {" \n
        "				case (""attack"") : {" \n
        "					_attack = _DATA_VALUE;" \n
-       "					player sidechat format[""OPCOM orders TACOM to %1 target %2"",([_attack,""opcom_orders""] call AliVE_fnc_HashGet),([_attack,""objectiveID""] call AliVE_fnc_HashGet)];" \n
-       "					diag_log format[""OPCOM orders TACOM to %1 target %2"",([_attack,""opcom_orders""] call AliVE_fnc_HashGet),([_attack,""objectiveID""] call AliVE_fnc_HashGet)];" \n
        "				};" \n
        "" \n
        "				case (""reserve"") : {" \n
        "					_reserve = _DATA_VALUE;" \n
-       "					player sidechat format[""OPCOM orders TACOM to %1 target %2"",([_reserve,""opcom_orders""] call AliVE_fnc_HashGet),([_reserve,""objectiveID""] call AliVE_fnc_HashGet)];" \n
-       "					diag_log format[""OPCOM orders TACOM to %1 target %2"",([_reserve,""opcom_orders""] call AliVE_fnc_HashGet),([_reserve,""objectiveID""] call AliVE_fnc_HashGet)];" \n
+       "				};" \n
+       "" \n
+       "				case (""defend"") : {" \n
+       "					_defend = _DATA_VALUE;" \n
        "				};" \n
        "" \n
        "				//Defend" \n
        "				//Custom" \n
        "			};" \n
-       "" \n
+       "			player sidechat format[""OPCOM orders TACOM to %1 target %2"",([_DATA_VALUE,""opcom_orders""] call AliVE_fnc_HashGet),([_DATA_VALUE,""objectiveID""] call AliVE_fnc_HashGet)];" \n
+       "			diag_log format[""OPCOM orders TACOM to %1 target %2"",([_DATA_VALUE,""opcom_orders""] call AliVE_fnc_HashGet),([_DATA_VALUE,""objectiveID""] call AliVE_fnc_HashGet)];" \n
        "		};" \n
        "" \n
-       "		//Handle TACOM confirmation by operation type" \n
+       "		//Handle TACOM confirmation by state" \n
        "		case (""confirmed"") : {" \n
        "			_confirmed = _DATA_VALUE select 0;" \n
        "			_data = _DATA_VALUE select 1;" \n
@@ -204,25 +206,25 @@ class FSM
        "					case (""attack"") : {" \n
        "						[_target,""opcom_state"",""attacking""] call AliVE_fnc_HashSet;" \n
        "					};" \n
-       "					case (""defend"") : {};" \n
        "					case (""reserve"") : {" \n
        "						[_target,""opcom_state"",""reserving""] call AliVE_fnc_HashSet;" \n
        "					};" \n
+       "					case (""defend"") : {};" \n
        "					default {};" \n
        "				};" \n
        "				" \n
        "				//Trigger new OPCOM analysis after TACOM confirmation including TACOMs answer" \n
        "				_OPCOM_DATA = [""analyze"",_return];" \n
        "" \n
-       "				player sidechat format[""TACOM confirmed - %1 %2! Details were %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return];" \n
-       "				diag_log format[""TACOM confirmed - %1 %2! Details were %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return];" \n
+       "				player sidechat format[""TACOM confirmed - %1 %2! Answer was %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return];" \n
+       "				diag_log format[""TACOM confirmed - %1 %2! Answer was %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return];" \n
        "			}  else {" \n
        "				player sidechat format[""TACOM could not confirm orders! Answer was %1"",_return];" \n
        "			};" \n
        "		_busy = false;" \n
        "		};" \n
        "" \n
-       "		//Handle TACOM order completion by operation type" \n
+       "		//Handle TACOM order completion by state" \n
        "		case (""completed"") : {" \n
        "			_target = _DATA_VALUE;" \n
        "			_state = [_target,""opcom_state""] call AliVE_fnc_HashGet;" \n
@@ -231,12 +233,10 @@ class FSM
        "			switch (_state) do {" \n
        "				case (""attacking"") : {" \n
        "						[_target,""opcom_state"",""reserve""] call AliVE_fnc_HashSet;" \n
-       "						diag_log format[""completed: target: %2 State %3 objectives %4"",([_target,""objectiveID""] call AliVE_fnc_HashGet),_state,count _objectives];" \n
        "				};" \n
        "				case (""reserving"") : {" \n
        "						[_target,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n
        "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal ""ColorRed""};" \n
-       "						diag_log format[""completed target: %1 State %2 objectives %3"",([_target,""objectiveID""] call AliVE_fnc_HashGet),_state,count _objectives];" \n
        "				};" \n
        "			};" \n
        "			" \n

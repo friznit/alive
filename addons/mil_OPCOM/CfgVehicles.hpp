@@ -30,6 +30,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class controltype
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_CONTROLTYPE";
+                                description = "$STR_ALIVE_OPCOM_CONTROLTYPE_COMMENT";
+                                class Values
+                                {
+                                        class invasion
+                                        {
+                                                name = "Invasion";
+                                                value = "invasion";
+                                                default = "invasion";
+                                        };
+                                        class occupation
+                                        {
+                                                name = "Occupation";
+                                                value = "occupation";
+                                        };
+                                };
+                        };
                         class side
                         {
                                 displayName = "$STR_ALIVE_OPCOM_SIDE";

@@ -98,8 +98,9 @@ switch(_operation) do {
 					_logic setVariable ["class", MAINCLASS];
 					TRACE_1("After module init",_logic);
 			        
-                    //Retrieve object variables
+                    //Retrieve module-object variables
                     _debug = _logic getvariable ["debug",true];
+                    _type = _logic getvariable ["controltype","invasion"];
                     _side = _logic getvariable ["side","EAST"];
                     
 			        //Create OPCOM #Hash#Datahandler
@@ -139,7 +140,7 @@ switch(_operation) do {
                 };
         };
                                 
-		case "createobjectives": {
+		case "createobjectivesbydistance": {
                 if(isnil "_args") then {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
@@ -239,7 +240,6 @@ switch(_operation) do {
 				private ["_objectives","_operation","_idleStates","_state","_target"];
 				_objectives = _args select 0;
 				_operation = _args select 1;
-				//_idleStates = ["reserve","reserving","idle"]; if ((count _args) > 2) then {_idleStates = _args select 2};
 
 				switch (_operation) do {
                 	case ("unassigned") : {_idleStates = ["unassigned"]};
@@ -251,7 +251,6 @@ switch(_operation) do {
 				{
 					_id = _x; if (typeName _x == "ARRAY") then {_id = _x select 0};
 					_target = [_logic,"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
-                     //player sidechat format["Target: %1",_target];
 					
                     _pos = [_target,"center"] call AliVE_fnc_HashGet;
 					_state = [_target,"opcom_state"] call AliVE_fnc_HashGet;
