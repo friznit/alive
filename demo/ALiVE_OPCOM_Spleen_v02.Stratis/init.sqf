@@ -9,8 +9,4 @@
     
 if (isServer) then {
 	call compile preprocessFileLinenumbers "convertToProfiles.sqf";
-	waituntil {sleep 5; !(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP})};
-
-	OPCOM = execFSM "opcom.fsm";
-	TACOM = execFSM "tacom.fsm";
 };
