@@ -5,42 +5,11 @@ SCRIPT(OPCOM);
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_OPCOM
 Description:
-Initial placement of enemy based on clustered targets within the AO.
-In a persisted situation, the stance, etc would change during gameplay
-and be persisted as well, restoring if the mission is restarted ie params
-within editor module ignored.
+Virtual AI Controller (WIP) 
 
-Parameters:
-Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
-String - The selected function
-Array - The selected parameters
-
-Returns:
-Any - The new instance or the result of the selected function and parameters
-
-Attributes:
-Nil - init - Intiate instance
-Nil - destroy - Destroy instance
-Boolean - debug - Debug enabled
-Array - state - Save and restore module state
-Array - faction - Faction associated with module
-
-Examples:
-[_logic, "faction", "OPF_F"] call ALiVE_fnc_OPCOM;
-
-See Also:
-- <ALIVE_fnc_OPCOMInit>
-
-Author:
-Wolffy
----------------------------------------------------------------------------- */
-#include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(profile);
-
-/* ----------------------------------------------------------------------------
 Function: MAINCLASS
 Description:
-Base class for profile objects to inherit from
+Base class for OPCOM objects to inherit from
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -52,18 +21,27 @@ Any - The new instance or the result of the selected function and parameters
 
 Attributes:
 Boolean - debug - Debug enable, disable or refresh
-Boolean - state - Store or restore state of analysis
+init
+createhashobject
+createobjectivesbydistance
+objectives
+analyzeclusteroccupation
+setorders
+synchronizeorders
+NearestAvailableSection
+setstatebyclusteroccupation
+selectordersbystate
 
 Examples:
 (begin example)
-// create a profile
-_logic = [nil, "create"] call ALIVE_fnc_profile;
+// create OPCOM objectives of SEP (ingame object for now) objectives and distance
+_objectives = [_logic, "createobjectivesbydistance",SEP] call ALIVE_fnc_OPCOM;
 (end)
 
 See Also:
 
 Author:
-ARJay
+Highhead
 
 Peer reviewed:
 nil
@@ -98,15 +76,19 @@ switch(_operation) do {
 					_logic setVariable ["class", MAINCLASS];
 					TRACE_1("After module init",_logic);
 			        
-                    //Retrieve module-object variables
+			        //Create OPCOM #Hash#Datahandler
+					_handler = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
+                   
+					call compile format["OPCOM_%1 = _handler",count (missionNameSpace getvariable ["OPCOM_instances",[]])];
+                    missionNameSpace setVariable ["OPCOM_instances",(missionNameSpace getvariable ["OPCOM_instances",[]]) + [_handler]];
+
+					//Retrieve module-object variables
                     _debug = _logic getvariable ["debug",true];
                     _type = _logic getvariable ["controltype","invasion"];
                     _side = _logic getvariable ["side","EAST"];
-                    
-			        //Create OPCOM #Hash#Datahandler
-					_handler = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
-					call compile format["OPCOM_%1 = _handler",count (missionNameSpace getvariable ["OPCOM_instances",[]])];
-                    missionNameSpace setVariable ["OPCOM_instances",(missionNameSpace getvariable ["OPCOM_instances",[]]) + [_handler]];
+
+					[_handler, "side",_side] call ALiVE_fnc_HashSet;
+                    [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
 					
 					/*
 					CONTROLLER  - coordination
@@ -119,8 +101,10 @@ switch(_operation) do {
 			        waituntil {sleep 5; !(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP})};
 			
 					"OPCOM and TACOM starting..." call ALiVE_fnc_logger;
-					OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
-					TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
+                    [_handler] spawn {
+						OPCOM = [_this select 0] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+						TACOM = [_this select 0] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
+                    };
                 };
                 
                 /*
@@ -147,6 +131,9 @@ switch(_operation) do {
                     	//Collect objectives from SEP and order by distance from SEP module (for now)
                         _logic = _args;
 						_objectives = [_logic,"objectives"] call ALiVE_fnc_SEP;
+
+						_objectives_unsorted = [];
+						_targets = [];
 						{
 									_target = _x;
 									_pos = [_target,"center"] call ALiVE_fnc_hashGet;
@@ -204,7 +191,7 @@ switch(_operation) do {
 			    private ["_objective","_id"];
 				_id = _args;
 				{
-					if (([_x,"objectiveID"] call ALiVE_fnc_hashGet) == _id) exitwith {_objective = _x; diag_log format["how many count %2 | %1",_objective,_foreachindex]};
+					if (([_x,"objectiveID"] call ALiVE_fnc_hashGet) == _id) exitwith {_objective = _x};
 				} foreach ([_logic, "objectives"] call ALIVE_fnc_HashGet);
 
 				_result = _objective;
@@ -233,6 +220,119 @@ switch(_operation) do {
 				} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
 				_result = _nearForces;
 		};
+        
+        case "setorders": {
+            	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+        
+        		private ["_profile","_profileID","_objectiveID","_pos","_orders"];
+
+				_pos = _args select 0;
+				_profileID = _args select 1;
+				_objectiveID = _args select 2;
+				_orders = _args select 3;
+
+				_profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+
+				[_profile, "clearWaypoints"] call ALIVE_fnc_profileEntity;
+				_profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
+
+				_var = ["_TACOM_DATA",["completed",[_ProfileID,_objectiveID,_orders]]];
+				_statements = format["TACOM setfsmvariable %1",_var];
+				[_profileWaypoint,"statements",["true",_statements]] call ALIVE_fnc_hashSet;
+
+				[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                
+                _ordersFull = [_pos,_ProfileID,_objectiveID,time];
+                [_logic,"pendingorders",([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet) + [_ordersFull]] call ALiVE_fnc_HashSet;
+
+                _result = _profileWaypoint;
+		};
+        
+        case "synchronizeorders": {
+            	ASSERT_TRUE(typeName _args == "STRING",str _args);
+                
+                private ["_ProfileIDInput","_profiles","_orders_pending","_synchronized","_item","_objectiveID"];
+        
+    			_ProfileIDInput = _args;
+				_profiles = ([ALIVE_profileHandler, "getProfiles","entity"] call ALIVE_fnc_profileHandler) select 1;
+				_orders_pending = ([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet);
+				_synchronized = false;
+
+				for "_i" from 0 to ((count _orders_pending)-1) do {
+					if (_i >= (count _orders_pending)) exitwith {};
+			
+					_item = _orders_pending select _i;
+					_pos = _item select 0;
+					_profileID = _item select 1;
+					_objectiveID = _item select 2;
+					_time = _item select 3;
+					_dead = !(_ProfileID in _profiles);
+					_timeout = (time - _time) > 600;
+			
+					if ((_dead) || {_timeout} || {_ProfileID == _ProfileIDInput}) then {
+						_orders_pending set [_i,"x"]; _orders_pending = _orders_pending - ["x"];
+                        [_logic,"pendingorders",_orders_pending] call ALiVE_fnc_HashSet;
+                        if (({_objectiveID == (_x select 2)} count (_orders_pending)) == 0) then {_synchronized = true};
+					};
+				};
+				_result = _synchronized;
+        };
+        
+        case "NearestAvailableSection": {
+            			ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+                        
+                        private ["_profileIDs","_ProfileIDsBusy","_size","_available"];
+        
+        				_position = _args select 0;
+						_typeOp = _args select 1;
+                        _size = _args select 2;
+                        
+                        _side = [_logic,"side","EAST"] call ALiVE_fnc_HashGet;
+                        _ProfileIDsReserve = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
+                        _objectivescount = [_logic,"simultanobjectives",3] call ALiVE_fnc_HashGet;
+                        _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",_side] call ALIVE_fnc_profileHandler;
+                        _sections = [];
+                        _section = [];
+                        
+                        if (_size < 0) then {_size = floor((count _profileIDs)/_objectivescount)};
+                        
+						_ProfileIDsBusy = [];
+						{
+							_ProfileID = _x select 1;
+							_ProfileIDsBusy set [count _ProfileIDsBusy,_ProfileID];
+						} foreach ([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet);
+						[_logic,"ProfileIDsBusy",_ProfileIDsBusy] call ALiVE_fnc_HashSet;
+
+						switch (_typeOp) do {
+							case ("attack") : {_available = _profileIDs - _ProfileIDsBusy - _ProfileIDsReserve};
+							case ("reserve") : {_available = _profileIDs - _ProfileIDsBusy};
+						};
+						
+						{
+								private ["_profile","_profileID","_profileType","_position","_active"];
+								
+								_profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+								_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
+								_side = [_profile, "side"] call ALIVE_fnc_hashGet;
+								_active = [_profile, "active"] call ALIVE_fnc_hashGet;
+								_pos = [_profile,"position"] call ALIVE_fnc_hashGet;
+								_type = [_profile, "type"] call ALIVE_fnc_hashGet;
+
+								if !(_type == "vehicle" ) then {
+									_sections set [count _sections,[_ProfileID,_pos]];
+								};
+						} forEach _available;
+
+						_sections = [_sections,[],{_position distance (_x select 1)},"ASCEND"] call BIS_fnc_sortBy;
+						{_sections set [_foreachIndex,_x select 0]} foreach _sections;
+
+						{
+							if ((count _section) >= _size) exitwith {};
+							_section set [count _section,_x];
+						} foreach _sections;
+						_result = _section;
+        };
+        
         
         case "setstatebyclusteroccupation": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
