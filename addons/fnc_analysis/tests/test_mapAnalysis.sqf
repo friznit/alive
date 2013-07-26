@@ -1,16 +1,17 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\fnc_analysis\script_component.hpp>
-SCRIPT(test_unitAnalysis);
+SCRIPT(test_mapAnalysis);
+
+//execVM "\x\alive\addons\fnc_analysis\tests\test_mapAnalysis.sqf"
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_plotter","_sector","_allSectors","_landSectors"];
+private ["_result","_err","_grid","_timeStart","_timeEnd","_plotter","_allSectors"];
 
-LOG("Testing Unit Analysis Object");
+LOG("Testing Map Analysis");
 
 ASSERT_DEFINED("ALIVE_fnc_sectorGrid","");
-ASSERT_DEFINED("ALIVE_fnc_sectorAnalysisUnits","");
 
 #define STAT(msg) sleep 3; \
 diag_log ["TEST("+str player+": "+msg]; \
@@ -53,75 +54,32 @@ TIMEREND
 
 STAT("Create Grid");
 TIMERSTART
+/*
+[_grid, "gridPosition", [getPos player select 0, getPos player select 1]] call ALIVE_fnc_sectorGrid;
+[_grid, "gridSize", 500] call ALIVE_fnc_sectorGrid;
+[_grid, "sectorDimensions", [500,500]] call ALIVE_fnc_sectorGrid;                                                       
+*/
 _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
+
+
+DEBUGON
 
 
 _allSectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 diag_log format["Sectors created: %1",count _allSectors];
 
 
-STAT("Create Sector Plotter");
-TIMERSTART
-_plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
-[_plotter, "init"] call ALIVE_fnc_plotSectors;
-TIMEREND
+STAT("Start static terrain analysis");
+[_grid, true, false] call ALIVE_fnc_gridMapAnalysis;
 
-
-STAT("Run Terrain Analysis");
-TIMERSTART
-_result = [_allSectors] call ALIVE_fnc_sectorAnalysisTerrain;
-TIMEREND
-
-
-STAT("Filter out sea sectors");
-TIMERSTART
-_landSectors = [_allSectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
-TIMEREND
-
-
-STAT("Run Unit analysis on land sectors");
-TIMERSTART
-_result = [_landSectors] call ALIVE_fnc_sectorAnalysisUnits;
-TIMEREND
-
-
-STAT("Plot units on sectors");
-TIMERSTART
-[_plotter, "plot", [_landSectors, "units"]] call ALIVE_fnc_plotSectors;
-TIMEREND
 
 
 STAT("Sleeping before destroy");
-sleep 10;
-
-
-STAT("Clear plot instances");
-[_plotter, "clear"] call ALIVE_fnc_plotSectors;
-
-
-STAT("Filter land sectors by west with unit presence 0 - 30");
-TIMERSTART
-_westSectors = [_landSectors, "WEST", 0, 30] call ALIVE_fnc_sectorFilterUnits;
-TIMEREND
-
-
-STAT("Plot units on sectors");
-TIMERSTART
-[_plotter, "plot", [_westSectors, "units"]] call ALIVE_fnc_plotSectors;
-TIMEREND
-
-
-STAT("Sleeping before destroy");
-sleep 10;
-
-
-STAT("Destroy plotter instance");
-[_plotter, "destroy"] call ALIVE_fnc_plotSectors;
+sleep 30;
 
 
 STAT("Destroy grid instance");
 [_grid, "destroy"] call ALIVE_fnc_sectorGrid;
-
 
 nil;

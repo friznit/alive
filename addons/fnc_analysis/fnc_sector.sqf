@@ -17,6 +17,7 @@ Any - The new instance or the result of the selected function and parameters
 Attributes:
 Boolean - debug - Debug enable, disable or refresh
 Boolean - state - Store or restore state of analysis
+String - gridID - Id of grid
 Array - dimensions - Array of width, height dimensions for sector creation
 Array - position - Array of width, height dimensions for sector creation
 center - Returns the center point of the sector
@@ -29,6 +30,9 @@ Examples:
 (begin example)
 // create a sector
 _logic = [nil, "create"] call ALIVE_fnc_sector;
+
+// set sector parent grid id
+_result = [_logic, "gridID", "Grid Id"] call ALIVE_fnc_sector;
 
 // set sector dimension
 _result = [_logic, "dimensions", _dimension_array] call ALIVE_fnc_sector;
@@ -92,23 +96,34 @@ _createMarkers = {
 		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 		_dimensions = [_logic,"dimensions"] call ALIVE_fnc_hashGet;
 		_debugColor = [_logic,"debugColor"] call ALIVE_fnc_hashGet;
+		_gridID = [_logic,"gridID"] call ALIVE_fnc_hashGet;
 		_id = [_logic,"id"] call ALIVE_fnc_hashGet;
 		
         if((count _position > 0) && (count _dimensions > 0)) then {
-				_m = createMarkerLocal [format[MTEMPLATE, format["d%1",_id]], _position];
+
+				_m = createMarkerLocal [format[MTEMPLATE, format["b%1_%2",_gridID,_id]], _position];
 				_m setMarkerShapeLocal "RECTANGLE";
                 _m setMarkerSizeLocal _dimensions;
-                _m setMarkerTypeLocal "Solid";				
+				_m setMarkerBrushLocal "Border";
 				_m setMarkerColorLocal _debugColor;
 							
-                _markers set [count _markers, _m];				
+                _markers set [count _markers, _m];
 				
-				_m = createMarkerLocal [format[MTEMPLATE, _id], _position];
+				_m = createMarkerLocal [format[MTEMPLATE, format["g%1_%2",_gridID,_id]], _position];
+				_m setMarkerShapeLocal "RECTANGLE";
+                _m setMarkerSizeLocal _dimensions;
+				_m setMarkerAlphaLocal 0.2;
+				_m setMarkerBrushLocal "Solid";
+				_m setMarkerColorLocal "ColorGreen";
+							
+                _markers set [count _markers, _m];
+				
+				_m = createMarkerLocal [format[MTEMPLATE, format["l%1_%2",_gridID,_id]], _position];
 				_m setMarkerShapeLocal "ICON";
-				_m setMarkerSizeLocal [1, 1];
+				_m setMarkerSizeLocal [0.5, 0.5];
 				_m setMarkerTypeLocal "mil_dot";
 				_m setMarkerColorLocal _debugColor;
-                _m setMarkerTextLocal _id;	
+                _m setMarkerTextLocal _id;
 				
 				_markers set [count _markers, _m];
 				
@@ -132,7 +147,8 @@ switch(_operation) do {
                         TRACE_1("After module init",_logic);
 
 						// set defaults
-						[_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashSet;
+						[_logic,"gridID","grid"] call ALIVE_fnc_hashSet;
+						[_logic,"debugColor","ColorBlack"] call ALIVE_fnc_hashSet;
 						[_logic,"data",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                 };
                 
@@ -196,6 +212,12 @@ switch(_operation) do {
 							[_logic,_x,[_args,_x] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 						} forEach (_args select 1);
                 };
+        };
+		case "gridID": {
+				if(typeName _args == "STRING") then {
+						[_logic,"gridID",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"gridID"] call ALIVE_fnc_hashGet;
         };
 		case "dimensions": {
 				if(typeName _args == "ARRAY") then {

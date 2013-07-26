@@ -17,8 +17,9 @@ Any - The new instance or the result of the selected function and parameters
 Attributes:
 Boolean - debug - Debug enable, disable or refresh
 Boolean - state - Store or restore state of grid
-Scalar - gridPosition - Array of x, y position for grid start
-Array - gridSize - Array max size for grid creation
+String - id - ID name of the grid
+Array - gridPosition - Array of x, y position for grid start
+Scalar - gridSize - Scalar max size for grid creation
 Array - sectorDimensions - Array of width, height dimensions for sector creation
 String - sectorType - String typename of sector object to build the grid with
 Array - positionToGridIndex - Array position gets 2 dimensional grid index reference to sector position is within
@@ -31,11 +32,14 @@ Examples:
 // create a grid
 _logic = [nil, "create"] call ALIVE_fnc_sectorGrid;
 
+// the grid id
+_result = [_logic, "id", "myGrid"] call ALIVE_fnc_sectorGrid;
+
 // the grid origin position
 _result = [_logic, "gridPosition", [0,0]] call ALIVE_fnc_sectorGrid;
 
 // the size of the grid
-_result = [_logic, "gridSize", [1000]] call ALIVE_fnc_sectorGrid;
+_result = [_logic, "gridSize", 1000] call ALIVE_fnc_sectorGrid;
 
 // set sector dimensions 
 _result = [_logic, "sectorDimensions", [500,500]] call ALIVE_fnc_sectorGrid;
@@ -100,6 +104,7 @@ switch(_operation) do {
 						[_logic,"class"] call ALIVE_fnc_hashRem;
 
 						// set defaults
+						[_logic,"id","grid"] call ALIVE_fnc_hashSet;
 						[_logic,"gridPosition",[0,0]] call ALIVE_fnc_hashSet;
 						[_logic,"gridSize",[] call ALIVE_fnc_getMapBounds] call ALIVE_fnc_hashSet;
 						[_logic,"sectorDimensions",[500,500]] call ALIVE_fnc_hashSet;
@@ -189,6 +194,13 @@ switch(_operation) do {
 						} forEach (_args select 1);
                 };
         };
+		case "id": {
+				if(typeName _args == "STRING") then {
+						[_logic,"id",_args] call ALIVE_fnc_hashSet;
+                };
+				
+				_result = [_logic,"id"] call ALIVE_fnc_hashGet;
+        };
 		case "gridPosition": {
 				if(typeName _args == "ARRAY") then {
 						[_logic,"gridPosition",_args] call ALIVE_fnc_hashSet;
@@ -220,6 +232,7 @@ switch(_operation) do {
 		case "createGrid": {
 				private["_gridPosition","_gridSize","_sectorDimensions","_sectorType","_grid","_allSectors","_gridPositionX","_gridPositionY","_sectorWidth","_sectorHeight","_rows","_columns","_sectors","_row","_column","_sector","_position"];
 				
+				_gridID = [_logic,"id"] call ALIVE_fnc_hashGet;
 				_gridPosition = [_logic,"gridPosition"] call ALIVE_fnc_hashGet;
 				_gridSize = [_logic,"gridSize"] call ALIVE_fnc_hashGet;
 				_sectorDimensions = [_logic,"sectorDimensions"] call ALIVE_fnc_hashGet;
@@ -237,11 +250,11 @@ switch(_operation) do {
 
 				// create a grid of sector objects
 				
-				for "_column" from 0 to _columns do {
+				for "_column" from 0 to (_columns-1) do {
 				
 					_sectors = [];
 					
-					for "_row" from 0 to _rows do {					
+					for "_row" from 0 to (_rows-1) do {					
 					
 						_position = [_gridPositionX + ((_row * _sectorWidth)+(_sectorWidth / 2)), _gridPositionY + ((_column * _sectorHeight)+(_sectorHeight / 2))];
 						
@@ -251,6 +264,7 @@ switch(_operation) do {
 							case "SECTOR": {							
 								_sector = [nil, "create"] call ALIVE_fnc_sector;
 								[_sector, "init"] call ALIVE_fnc_sector;
+								[_sector, "gridID", _gridID] call ALIVE_fnc_sector;
 								[_sector, "dimensions", [(_sectorWidth / 2), (_sectorHeight / 2)]] call ALIVE_fnc_sector;
 								_result = [_sector, "position", _position] call ALIVE_fnc_sector;
 								_result = [_sector, "id", format["%1_%2",_row,_column]] call ALIVE_fnc_sector;

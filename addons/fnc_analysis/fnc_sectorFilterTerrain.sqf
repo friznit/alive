@@ -41,10 +41,13 @@ _filteredSectors = [];
 {
 	_sector = _x;
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-	_terrainData = [_sectorData, "terrain"] call ALIVE_fnc_hashGet;
 	
-	if!(_terrainData == _terrainType) then {
-		_filteredSectors set [count _filteredSectors, _sector];
+	if("terrain" in (_sectorData select 1)) then {
+		_terrainData = [_sectorData, "terrain"] call ALIVE_fnc_hashGet;
+		
+		if!(_terrainData == _terrainType) then {
+			_filteredSectors set [count _filteredSectors, _sector];
+		};
 	};
 	
 } forEach _sectors;

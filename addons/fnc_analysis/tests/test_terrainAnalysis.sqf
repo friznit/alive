@@ -3,6 +3,8 @@
 #include <\x\alive\addons\fnc_analysis\script_component.hpp>
 SCRIPT(test_terrainAnalysis);
 
+//execVM "\x\alive\addons\fnc_analysis\tests\test_terrainAnalysis.sqf"
+
 // ----------------------------------------------------------------------------
 
 private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_plotter","_sector","_allSectors","_landSectors"];
@@ -22,13 +24,13 @@ diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
 #define DEBUGON STAT("Setup debug parameters"); \
-_result = [_logic, "debug", true] call ALIVE_fnc_sectorGrid; \
+_result = [_grid, "debug", true] call ALIVE_fnc_sectorGrid; \
 _err = "enabled debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(_result, _err);
 
 #define DEBUGOFF STAT("Disable debug"); \
-_result = [_logic, "debug", false] call ALIVE_fnc_sectorGrid; \
+_result = [_grid, "debug", false] call ALIVE_fnc_sectorGrid; \
 _err = "disable debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(!_result, _err);
@@ -64,6 +66,7 @@ diag_log format["Sectors created: %1",count _allSectors];
 STAT("Create Sector Plotter");
 TIMERSTART
 _plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
+[_plotter, "init"] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 

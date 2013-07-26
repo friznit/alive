@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_terrain","_countIsWater"];
+private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_terrain","_terrainData","_countIsWater"];
 
 _sectors = _this select 0;
 _err = format["sector analysis terrain requires an array of sectors - %1",_sectors];
@@ -43,30 +43,19 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	_countIsWater = 0;
 	
 	_terrain = "";
+	_terrainData = [];
 	
 	if(surfaceIsWater _centerPosition) then {
 		_countIsWater = _countIsWater + 1;
-	};
-	
-	{
-		if(surfaceIsWater _x) then {
-			_countIsWater = _countIsWater + 1;
-		};
-	} forEach _bounds;
-	
-	if(_countIsWater == 5) then {
+		_terrainData set [count _terrainData, [_centerPosition,"SEA"]];
 		_terrain = "SEA";
-	};
-	
-	if(_countIsWater == 0) then {
+	}else{
+		_terrainData set [count _terrainData, [_centerPosition,"LAND"]];
 		_terrain = "LAND";
 	};
 	
-	if(_countIsWater > 0 && _countIsWater < 5) then {
-		_terrain = "SHORE";
-	};
-	
 	// store the result of the analysis on the sector instance
+	[_sector, "data", ["terrainSamples",_terrainData]] call ALIVE_fnc_sector;
 	[_sector, "data", ["terrain",_terrain]] call ALIVE_fnc_sector;
 	
 } forEach _sectors;

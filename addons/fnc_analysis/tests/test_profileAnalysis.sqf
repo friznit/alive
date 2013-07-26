@@ -7,12 +7,12 @@ SCRIPT(test_profileAnalysis);
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_plotter","_sector","_allSectors","_landSectors"];
+private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_plotter","_sector","_allSectors","_landSectors","_eastSectors"];
 
 LOG("Testing Unit Analysis Object");
 
 ASSERT_DEFINED("ALIVE_fnc_sectorGrid","");
-ASSERT_DEFINED("ALIVE_fnc_sectorAnalysisProfile","");
+ASSERT_DEFINED("ALIVE_fnc_gridAnalysisProfile","");
 
 #define STAT(msg) sleep 3; \
 diag_log ["TEST("+str player+": "+msg]; \
@@ -90,6 +90,7 @@ diag_log format["Sectors created: %1",count _allSectors];
 STAT("Create Sector Plotter");
 TIMERSTART
 _plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
+[_plotter, "init"] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 
@@ -115,15 +116,15 @@ TIMERSTART
 TIMEREND
 
 
-STAT("Run Profile analysis");
+STAT("Filter sectors for only those that contain EAST entities");
 TIMERSTART
-_result = [_grid] call ALIVE_fnc_gridAnalysisProfiles;
+_eastSectors = [_allSectors, "entity", "EAST"] call ALIVE_fnc_sectorFilterProfiles;
 TIMEREND
 
 
 STAT("Plot profiles on sectors");
 TIMERSTART
-[_plotter, "plot", [_allSectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_eastSectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 

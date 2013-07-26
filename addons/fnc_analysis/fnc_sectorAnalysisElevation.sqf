@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_elevation","_elevationData","_markers","_m","_elevationTotal","_elevationAverage"];
+private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_elevation","_elevationData","_markers","_m"];
 
 _sectors = _this select 0;
 _err = format["sector analysis elevation requires an array of sectors - %1",_sectors];
@@ -51,44 +51,22 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 		_markers set [count _markers, _m];
 		_elevation = ((getPosATL _m) select 2);
 		_elevation = _elevation - (_elevation * 2);
-		_elevationData set [count _elevationData, _elevation];
+		_elevationData set [count _elevationData, [_centerPosition,_elevation]];
 		
-		{
-			_m = [_x] call ALIVE_fnc_spawnDebugMarker;
-			hideObject _m;
-			_markers set [count _markers, _m];
-			_elevation = ((getPosATL _m) select 2);
-			_elevation = _elevation - (_elevation * 2);
-			_elevationData set [count _elevationData, _elevation];
-		} forEach _bounds;
 	} else {
 		_m = [_centerPosition] call ALIVE_fnc_spawnDebugMarker;
 		hideObject _m;
 		_markers set [count _markers, _m];
 		_elevation = ((getPosASL _m) select 2);
-		_elevationData set [count _elevationData, _elevation];
-		
-		{
-			_m = [_x] call ALIVE_fnc_spawnDebugMarker;
-			hideObject _m;
-			_markers set [count _markers, _m];
-			_elevation = ((getPosASL _m) select 2);
-			_elevationData set [count _elevationData, _elevation];
-		} forEach _bounds;
+		_elevationData set [count _elevationData, [_centerPosition,_elevation]];
 	};
 	
 	{
 		deleteVehicle _x;
 	} forEach _markers;
 	
-	_elevationTotal = 0;
-	{
-		_elevationTotal = _elevationTotal + _x;
-	} forEach _elevationData;
-	
-	_elevationAverage = _elevationTotal / ((count _elevationData)-1);
-	
 	// store the result of the analysis on the sector instance
-	[_sector, "data", ["elevation",_elevationAverage]] call ALIVE_fnc_sector;
+	[_sector, "data", ["elevationSamples",_elevationData]] call ALIVE_fnc_sector;
+	[_sector, "data", ["elevation",_elevation]] call ALIVE_fnc_sector;
 	
 } forEach _sectors;

@@ -11,6 +11,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorGrid.sqf";
 				recompile = 1;
 			};
+			class sectorSubGrid {
+				description = "sectorSubGrid";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorSubGrid.sqf";
+				recompile = 1;
+			};
 			class sectorPlot {
 				description = "sectorPlot";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorPlot.sqf";
@@ -24,6 +29,26 @@ class cfgFunctions {
 			class gridAnalysisProfiles {
 				description = "gridAnalysisProfiles";
 				file = "\x\alive\addons\fnc_analysis\fnc_gridAnalysisProfiles.sqf";
+				recompile = 1;
+			};
+			class sectorFilterProfiles {
+				description = "sectorFilterProfiles";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterProfiles.sqf";
+				recompile = 1;
+			};
+			class gridMapAnalysis {
+				description = "gridMapAnalysis";
+				file = "\x\alive\addons\fnc_analysis\fnc_gridMapAnalysis.sqf";
+				recompile = 1;
+			};			
+			class sectorAnalysisBestPlaces {
+				description = "sectorAnalysisBestPlaces";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisBestPlaces.sqf";
+				recompile = 1;
+			};
+			class sectorFilterBestPlaces {
+				description = "sectorFilterBestPlaces";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterBestPlaces.sqf";
 				recompile = 1;
 			};
 			class sectorAnalysisUnits {
@@ -59,6 +84,16 @@ class cfgFunctions {
 			class sectorSortDistance {
 				description = "sectorSortDistance";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorSortDistance.sqf";
+				recompile = 1;
+			};
+			class staticMapAnalysisStratis {
+				description = "staticMapAnalysisStratis";
+				file = "\x\alive\addons\fnc_analysis\fnc_staticMapAnalysisStratis.sqf";
+				recompile = 1;
+			};
+			class gridImportStaticMapAnalysis {
+				description = "gridImportStaticMapAnalysis";
+				file = "\x\alive\addons\fnc_analysis\fnc_gridImportStaticMapAnalysis.sqf";
 				recompile = 1;
 			};
 			class getNearUnits {

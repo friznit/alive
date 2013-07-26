@@ -3,6 +3,8 @@
 #include <\x\alive\addons\fnc_analysis\script_component.hpp>
 SCRIPT(test_sectorGrid);
 
+//execVM "\x\alive\addons\fnc_analysis\tests\test_sectorGrid.sqf"
+
 // ----------------------------------------------------------------------------
 
 private ["_result","_err","_logic","_bounds","_grid","_sector"];

@@ -1,18 +1,17 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\fnc_analysis\script_component.hpp>
-SCRIPT(test_elevationAnalysis);
+SCRIPT(test_staticMapAnalysis);
 
-//execVM "\x\alive\addons\fnc_analysis\tests\test_elevationAnalysis.sqf"
+//execVM "\x\alive\addons\fnc_analysis\tests\test_staticMapAnalysis.sqf"
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_plotter","_sector","_allSectors","_landSectors"];
+private ["_result","_err","_grid","_timeStart","_timeEnd","_plotter","_allSectors"];
 
-LOG("Testing Elevation Analysis Object");
+LOG("Testing Map Analysis");
 
 ASSERT_DEFINED("ALIVE_fnc_sectorGrid","");
-ASSERT_DEFINED("ALIVE_fnc_sectorAnalysisElevation","");
 
 #define STAT(msg) sleep 3; \
 diag_log ["TEST("+str player+": "+msg]; \
@@ -59,10 +58,6 @@ _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
 
-_allSectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
-diag_log format["Sectors created: %1",count _allSectors];
-
-
 STAT("Create Sector Plotter");
 TIMERSTART
 _plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
@@ -70,56 +65,32 @@ _plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 
-STAT("Run Terrain Analysis");
+DEBUGON
+
+
+_allSectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
+diag_log format["Sectors created: %1",count _allSectors];
+
+
 TIMERSTART
-_result = [_allSectors] call ALIVE_fnc_sectorAnalysisTerrain;
+STAT("Start import static terrain analysis");
+[_grid, "Stratis"] call ALIVE_fnc_gridImportStaticMapAnalysis;
 TIMEREND
 
 
-STAT("Run Elevation Analysis");
+STAT("Filter out sea sectors");
 TIMERSTART
-_result = [_allSectors] call ALIVE_fnc_sectorAnalysisElevation;
+_landSectors = [_allSectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
 TIMEREND
 
 
-STAT("Plot elevation analysis for all sectors");
-TIMERSTART
-[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
-TIMEREND
+//[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_landSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
 
 
 STAT("Sleeping before destroy");
-sleep 10;
-
-
-STAT("Clear plot instances");
-[_plotter, "clear"] call ALIVE_fnc_plotSectors;
-
-
-STAT("Filter elevation analysis for range between 100 and 200");
-TIMERSTART
-_highSectors = [_allSectors, 100, 200] call ALIVE_fnc_sectorFilterElevation;
-TIMEREND
-
-
-STAT("Sort filtered sectors by distance to player");
-TIMERSTART
-_sortedHighSectors = [_highSectors, getPos player] call ALIVE_fnc_sectorSortDistance;
-TIMEREND
-
-
-STAT("Plot elevation analysis for filtered and sorted sectors");
-TIMERSTART
-[_plotter, "plot", [_sortedHighSectors, "elevation"]] call ALIVE_fnc_plotSectors;
-TIMEREND
-
-
-STAT("Sleeping before destroy");
-sleep 10;
-
-
-STAT("Destroy plotter instance");
-[_plotter, "destroy"] call ALIVE_fnc_plotSectors;
+sleep 30;
 
 
 STAT("Destroy grid instance");

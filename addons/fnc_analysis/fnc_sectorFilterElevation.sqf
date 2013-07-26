@@ -44,10 +44,13 @@ _filteredSectors = [];
 {
 	_sector = _x;
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-	_elevationData = [_sectorData, "elevation"] call ALIVE_fnc_hashGet;
 	
-	if(_elevationData >= _elevationMin && _elevationData <= _elevationMax) then {
-		_filteredSectors set [count _filteredSectors, _sector];
+	if("elevation" in (_sectorData select 1)) then {
+		_elevationData = [_sectorData, "elevation"] call ALIVE_fnc_hashGet;
+		
+		if(_elevationData >= _elevationMin && _elevationData <= _elevationMax) then {
+			_filteredSectors set [count _filteredSectors, _sector];
+		};
 	};
 	
 } forEach _sectors;
