@@ -54,11 +54,11 @@ TIMEREND
 
 STAT("Create Grid");
 TIMERSTART
-/*
+///*
 [_grid, "gridPosition", [getPos player select 0, getPos player select 1]] call ALIVE_fnc_sectorGrid;
-[_grid, "gridSize", 500] call ALIVE_fnc_sectorGrid;
+[_grid, "gridSize", 1000] call ALIVE_fnc_sectorGrid;
 [_grid, "sectorDimensions", [500,500]] call ALIVE_fnc_sectorGrid;                                                       
-*/
+//*/
 _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
@@ -66,17 +66,47 @@ TIMEREND
 DEBUGON
 
 
+STAT("Create Sector Plotter");
+TIMERSTART
+_plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
+[_plotter, "init"] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
 _allSectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 diag_log format["Sectors created: %1",count _allSectors];
 
 
-STAT("Start static terrain analysis");
-[_grid, true, false] call ALIVE_fnc_gridMapAnalysis;
+DEBUGOFF
 
+
+STAT("Start static terrain analysis");
+[_grid, true, true] call ALIVE_fnc_gridMapAnalysis;
+
+
+DEBUGON
+
+
+//[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_allSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_allSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
+
+/*
+{
+	_sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
+	_flatEmptyData = [_sectorData,"flatEmpty"] call ALIVE_fnc_hashGet;
+	
+	{
+		_m = [_x] call ALIVE_fnc_spawnDebugMarker;
+	} forEach _flatEmptyData;
+
+} forEach _allSectors;
+*/
 
 
 STAT("Sleeping before destroy");
-sleep 30;
+sleep 60;
 
 
 STAT("Destroy grid instance");

@@ -7,12 +7,12 @@ SCRIPT(test_profileAnalysis);
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_plotter","_sector","_allSectors","_landSectors","_eastSectors"];
+private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_plotter","_sector","_allSectors","_landSectors","_eastSectors","_sortedEastSectors"];
 
 LOG("Testing Unit Analysis Object");
 
 ASSERT_DEFINED("ALIVE_fnc_sectorGrid","");
-ASSERT_DEFINED("ALIVE_fnc_gridAnalysisProfile","");
+ASSERT_DEFINED("ALIVE_fnc_gridAnalysisProfiles","");
 
 #define STAT(msg) sleep 3; \
 diag_log ["TEST("+str player+": "+msg]; \
@@ -83,6 +83,9 @@ _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
 
+G_DEBUGON
+
+
 _allSectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 diag_log format["Sectors created: %1",count _allSectors];
 
@@ -107,7 +110,7 @@ TIMEREND
 
 
 STAT("Sleeping before clear");
-sleep 10;
+sleep 30;
 
 
 STAT("Clear plot");
@@ -128,8 +131,30 @@ TIMERSTART
 TIMEREND
 
 
+STAT("Sleeping before clear");
+sleep 30;
+
+
+STAT("Clear plot");
+TIMERSTART
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sort east sectors by distance to player");
+TIMERSTART
+_sortedEastSectors = [_eastSectors, getPos player] call ALIVE_fnc_sectorSortDistance;
+TIMEREND
+
+
+STAT("Plot the closest east entites");
+TIMERSTART
+[_plotter, "plot", [[_sortedEastSectors select 0], "entitiesBySide"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
 STAT("Sleeping before destroy");
-sleep 10;
+sleep 30;
 
 
 STAT("Destroy profile handler instance");

@@ -28,7 +28,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_grid","_export","_debug","_sectors","_exportString","_landSectors","_sector","_sectorData","_sectorID","_subGrid","_subGridSectors","_plotter"];
+private ["_grid","_export","_debug","_sectors","_exportString","_landSectors","_sector","_sectorData","_sectorID","_subGrid","_subGridSectors"];
 
 _grid = _this select 0;
 _export = if(count _this > 1) then {_this select 1} else {false};
@@ -56,6 +56,8 @@ if(_debug) then {
 	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
 	_sectorID = [_sector, "id"] call ALIVE_fnc_sector;
 	
+	[_sector, "debug", true] call ALIVE_fnc_sector;
+	
 	// DEBUG -------------------------------------------------------------------------------------
 	if(_debug) then {
 		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -68,10 +70,10 @@ if(_debug) then {
 	_subGridSectors = [_subGrid, "sectors"] call ALIVE_fnc_sectorGrid;
 	
 	// DEBUG -------------------------------------------------------------------------------------
-	if(_debug) then {
-		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+	if(_debug) then {		
 		["sub dividing grid created"] call ALIVE_fnc_dump;
 		[] call ALIVE_fnc_timer;
+		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["start terrain analysis"] call ALIVE_fnc_dump;
 		[true] call ALIVE_fnc_timer;
 	};
@@ -81,9 +83,9 @@ if(_debug) then {
 	
 	// DEBUG -------------------------------------------------------------------------------------
 	if(_debug) then {
-		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["terrain analysis completed"] call ALIVE_fnc_dump;
 		[] call ALIVE_fnc_timer;
+		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["start elevation analysis"] call ALIVE_fnc_dump;
 		[true] call ALIVE_fnc_timer;
 	};
@@ -93,9 +95,9 @@ if(_debug) then {
 		
 	// DEBUG -------------------------------------------------------------------------------------
 	if(_debug) then {
-		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["elevation analysis completed"] call ALIVE_fnc_dump;
 		[] call ALIVE_fnc_timer;
+		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["start best places analysis"] call ALIVE_fnc_dump;
 		[true] call ALIVE_fnc_timer;
 	};
@@ -105,15 +107,27 @@ if(_debug) then {
 	
 	// DEBUG -------------------------------------------------------------------------------------
 	if(_debug) then {
-		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["best places analysis completed"] call ALIVE_fnc_dump;
 		[] call ALIVE_fnc_timer;
+		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+		["start flat empty analysis"] call ALIVE_fnc_dump;
+		[true] call ALIVE_fnc_timer;
+	};
+	// DEBUG -------------------------------------------------------------------------------------
+	
+	[_subGridSectors] call ALIVE_fnc_sectorAnalysisFlatEmpty;
+	
+	// DEBUG -------------------------------------------------------------------------------------
+	if(_debug) then {
+		["flat empty analysis completed"] call ALIVE_fnc_dump;
+		[] call ALIVE_fnc_timer;
+		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["start compilation of sub sector data into parent sector"] call ALIVE_fnc_dump;
 		[true] call ALIVE_fnc_timer;
 	};
-	// DEBUG -------------------------------------------------------------------------------------	
+	// DEBUG -------------------------------------------------------------------------------------
 	
-	private ["_elevationSamples","_elevation","_terrainSamples","_terrain","_forestPlaces","_hillPlaces","_meadowPlaces","_treePlaces","_housePlaces","_seaPlaces","_bestPlaces"];
+	private ["_elevationSamples","_elevation","_terrainSamples","_terrain","_forestPlaces","_hillPlaces","_meadowPlaces","_treePlaces","_housePlaces","_seaPlaces","_flatEmptySamples","_bestPlaces"];
 	
 	_elevationSamples = [];
 	_elevation = 0;
@@ -125,16 +139,18 @@ if(_debug) then {
 	_treePlaces = [];
 	_housePlaces = [];
 	_seaPlaces = [];
+	_flatEmptySamples = [];
 	
 	// copy all sub grid sector data into this parent sector data
 	{
-		private ["_subGridSector","_subGridSectorData","_subGridElevationSamples","_subGridTerrainSamples","_subGridBestPlaces",
+		private ["_subGridSector","_subGridSectorData","_subGridElevationSamples","_subGridTerrainSamples","_subGridFlatEmptySamples","_subGridBestPlaces",
 		"_subGridForestPlaces","_subGridHillPlaces","_subGridMeadowPlaces","_subGridTreePlaces","_subGridHousePlaces","_subGridSeaPlaces","_countIsWater"];
 		
 		_subGridSector = _x;
 		_subGridSectorData = [_subGridSector, "data"] call ALIVE_fnc_sector;
 		_subGridElevationSamples = [_subGridSectorData, "elevationSamples"] call ALIVE_fnc_hashGet;
 		_subGridTerrainSamples = [_subGridSectorData, "terrainSamples"] call ALIVE_fnc_hashGet;
+		_subGridFlatEmptySamples = [_subGridSectorData, "flatEmpty"] call ALIVE_fnc_hashGet;
 		_subGridBestPlaces = [_subGridSectorData, "bestPlaces"] call ALIVE_fnc_hashGet;
 		
 		_subGridForestPlaces = [_subGridBestPlaces, "forest"] call ALIVE_fnc_hashGet;
@@ -152,7 +168,11 @@ if(_debug) then {
 		_seaPlaces = _seaPlaces + _subGridSeaPlaces;
 		
 		_elevationSamples = _elevationSamples + _subGridElevationSamples;
-		_terrainSamples = _terrainSamples + _subGridTerrainSamples;		
+		_terrainSamples = _terrainSamples + _subGridTerrainSamples;
+		
+		if(count (_subGridFlatEmptySamples select 0) > 0) then {
+			_flatEmptySamples = _flatEmptySamples + _subGridFlatEmptySamples;
+		};
 		
 	} forEach _subGridSectors;
 	
@@ -197,7 +217,10 @@ if(_debug) then {
 	[_sectorData, "elevation",_elevation] call ALIVE_fnc_hashSet;
 	[_sectorData, "terrainSamples",_terrainSamples] call ALIVE_fnc_hashSet;
 	[_sectorData, "terrain",_terrain] call ALIVE_fnc_hashSet;
+	[_sectorData, "flatEmpty",_flatEmptySamples] call ALIVE_fnc_hashSet;
 	[_sectorData, "bestPlaces",_bestPlaces] call ALIVE_fnc_hashSet;	
+	
+	[_sector, "data", _sectorData] call ALIVE_fnc_hashSet;
 	
 	
 	if(_export) then {
@@ -207,6 +230,8 @@ if(_debug) then {
 		_exportString = _exportString + format['[_sectorData,"elevation",%1] call ALIVE_fnc_hashSet;',_elevation];
 		_exportString = _exportString + format['[_sectorData,"terrainSamples",%1] call ALIVE_fnc_hashSet;',_terrainSamples];
 		_exportString = _exportString + format['[_sectorData,"terrain","%1"] call ALIVE_fnc_hashSet;',_terrain];
+		
+		_exportString = _exportString + format['[_sectorData,"flatEmpty",%1] call ALIVE_fnc_hashSet;',_flatEmptySamples];
 		
 		_exportString = _exportString + '_bestPlaces = [] call ALIVE_fnc_hashCreate;';
 		
@@ -224,24 +249,16 @@ if(_debug) then {
 	
 	// DEBUG -------------------------------------------------------------------------------------
 	if(_debug) then {
-		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 		["compilation of sub sector data into parent sector completed"] call ALIVE_fnc_dump;
 		_sectorData call ALIVE_fnc_inspectHash;
 		[] call ALIVE_fnc_timer;
+		["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 	};
 	// DEBUG -------------------------------------------------------------------------------------
-		
-	/*
-	private ["_plotter"];
-	_plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
-	[_plotter, "init"] call ALIVE_fnc_plotSectors;
-	[_plotter, "id", format["Plotter_%1",_forEachIndex]] call ALIVE_fnc_plotSectors;
-	[_plotter, "plot", [_subGridSectors, "elevation"]] call ALIVE_fnc_plotSectors;
-	[_plotter, "plot", [_subGridSectors, "terrain"]] call ALIVE_fnc_plotSectors;
-	[_plotter, "plot", [_subGridSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
-	*/
 	
 	[_subGrid, "destroy"] call ALIVE_fnc_sectorGrid;
+	
+	[_sector, "debug", false] call ALIVE_fnc_sector;
 	
 	
 } forEach _sectors;

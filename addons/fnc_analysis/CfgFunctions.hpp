@@ -51,6 +51,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterBestPlaces.sqf";
 				recompile = 1;
 			};
+			class sectorAnalysisFlatEmpty {
+				description = "sectorAnalysisFlatEmpty";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisFlatEmpty.sqf";
+				recompile = 1;
+			};
+			class sectorFilterFlatEmpty {
+				description = "sectorFilterFlatEmpty";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterFlatEmpty.sqf";
+				recompile = 1;
+			};
 			class sectorAnalysisUnits {
 				description = "sectorAnalysisUnits";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisUnits.sqf";

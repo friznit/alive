@@ -86,7 +86,8 @@ TIMEREND
 
 //[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
-[_plotter, "plot", [_landSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_landSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_allSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
 
 
 STAT("Sleeping before destroy");

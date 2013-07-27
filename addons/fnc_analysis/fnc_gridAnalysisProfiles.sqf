@@ -113,7 +113,7 @@ _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGe
 						_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;			
 					};		
 					
-					_sideProfile set [count _sideProfile, _x];
+					_sideProfile set [count _sideProfile, [_x,_position]];
 					
 					// store the result of the analysis on the sector instance
 					[_sector, "data", ["entitiesBySide",_sideProfiles]] call ALIVE_fnc_sector;
@@ -146,7 +146,7 @@ _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGe
 						_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;			
 					};		
 					
-					_sideProfile set [count _sideProfile, _x];
+					_sideProfile set [count _sideProfile, [_x,_position]];
 					
 					// store the result of the analysis on the sector instance
 					[_sector, "data", ["vehiclesBySide",_sideProfiles]] call ALIVE_fnc_sector;

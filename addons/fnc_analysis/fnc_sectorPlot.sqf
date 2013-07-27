@@ -53,19 +53,22 @@ _result = true;
 #define MTEMPLATE "ALiVE_SECTORPLOT_%1"
 
 _createMarker = {
-        private ["_markerID","_position","_dimensions","_alpha","_color","_m"];
+        private ["_markerID","_position","_dimensions","_alpha","_color","_shape","_m"];
 				
 		_markerID = _this select 0;
 		_position = _this select 1;
 		_dimensions = _this select 2;
 		_alpha = _this select 3;
 		_color = _this select 4;
+		_shape = if(count _this > 5) then {_this select 5} else {"RECTANGLE"};
+		_brush = if(count _this > 6) then {_this select 6} else {"SOLID"};
 		
-		_m = createMarkerLocal [_markerID, _position];
-		_m setMarkerShapeLocal "RECTANGLE";
+		_m = createMarkerLocal [_markerID, _position];		
 		_m setMarkerSizeLocal _dimensions;
 		_m setMarkerAlphaLocal _alpha;
 		_m setMarkerColorLocal _color;
+		_m setMarkerShapeLocal _shape;
+		_m setMarkerBrushLocal _brush;
 
 		_m
 };
@@ -436,6 +439,26 @@ switch(_operation) do {
 									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlue"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _seaPositions;								
+							};
+						};
+						case "flatEmpty": {
+							private["_m","_colour","_markerID","_alpha","_value"];
+
+							if(_key in (_sectorData select 1)) then {
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;								
+								
+								_dimensions = [5,5];
+								_alpha = 1;
+								
+								{
+									_position = _x;
+									if(count _position > 0) then {
+										_markerID = format["FE_%1_%2",_id,_forEachIndex];
+										_m = [_markerID,_position,_dimensions,_alpha,"ColorRed","ELLIPSE","BORDER"] call _createMarker;
+										_markers set [count _markers, _m];
+									};
+								} forEach _plotData;
+								
 							};
 						};
 				};	

@@ -50,7 +50,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	
 	_forestExpression = "(1 + forest + trees) * (1 - sea) * (1 - houses)";
 	_exposedHillsExpression = "(1 + hills) * (1 - forest) * (1 - sea)";
-	_meadowExpression = "(1 + meadow) * (1 - forest) * (1 - sea)";
+	_meadowExpression = "(1 + meadow) * (1 - forest) * (1 - sea) * (1 - hills)";
 	_exposedTreesExpression = "(1 + trees) * (1 - forest) * (1 - sea)";
 	_housesExpression = "(1 + houses) * (1 - forest) * (1 - trees) * (1 - sea)";
 	_seaExpression = "(1 + sea) * (1 - hills) * (1 - meadow)";
