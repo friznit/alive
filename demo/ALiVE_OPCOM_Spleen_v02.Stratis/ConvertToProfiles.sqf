@@ -15,8 +15,8 @@
 	// get array of all sectors from the grid
 	_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
 	
-	// run terrain analysis on all sectors
-	[_sectors] call ALIVE_fnc_sectorAnalysisTerrain;
+	// import static map analysis to the grid
+	[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;
 	
 	// DEBUG -------------------------------------------------------------------------------------
 	//[] call ALIVE_fnc_timer;
@@ -64,6 +64,10 @@
 			// run profile analysis on all sectors
 			[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfiles;
 			
+			
+			
+			// EXAMPLE CODE ONLY FROM HERE ----------------------------------------------------------------------------------
+			
 			// get array of all sectors from the grid
 			_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
 			
@@ -99,6 +103,13 @@
 			} forEach _sectors;
 			
 			
+			// HH these will probably interest you most position to grid sector 
+			_mySector = [ALIVE_sectorGrid, "positionToSector", getPos player] call ALIVE_fnc_sectorGrid;
+			
+			// Surrounding sectors
+			_mySurroundingSectors = [ALIVE_sectorGrid, "surroundingSectors", getPos player] call ALIVE_fnc_sectorGrid;
+			
+			
 			// DEBUG -------------------------------------------------------------------------------------
 			// display visual representation of sector data
 			
@@ -106,7 +117,7 @@
 			[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
 			
 			// plot the sector data
-			[ALIVE_sectorPlotter, "plot", [_sectors, "vehiclesBySide"]] call ALIVE_fnc_plotSectors;
+			[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
 			// DEBUG -------------------------------------------------------------------------------------
 			
 			false 
