@@ -36,8 +36,6 @@ _debug = if(count _this > 2) then {_this select 2} else {false};
 
 // reset existing analysis data
 
-//[true] call ALIVE_fnc_timer;
-
 _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
 if(_export) then {
@@ -266,6 +264,5 @@ if(_debug) then {
 
 if(_export) then {
 	copyToClipboard _exportString;
+	["Grid map analysis complete, results have been copied to the clipboard"] call ALIVE_fnc_dump;
 };
-
-//[] call ALIVE_fnc_timer;

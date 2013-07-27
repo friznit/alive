@@ -127,13 +127,13 @@ switch(_operation) do {
 				_key = _args select 1;
 				
 				_plotterID = [_logic, "plotterID"] call ALIVE_fnc_hashGet;
+				_markers = [_logic, "markers", []] call ALIVE_fnc_hashGet;
 				
 				_centerPosition = [_sector, "center"] call ALIVE_fnc_sector;
 				_id = [_sector, "id"] call ALIVE_fnc_sector;
 				_bounds = [_sector, "bounds"] call ALIVE_fnc_sector;
 				_dimensions = [_sector, "dimensions"] call ALIVE_fnc_sector;
 				_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-				_markers = [];
 				
 				switch(_key) do {
 						case "units": {
@@ -454,7 +454,7 @@ switch(_operation) do {
 									_position = _x;
 									if(count _position > 0) then {
 										_markerID = format["FE_%1_%2",_id,_forEachIndex];
-										_m = [_markerID,_position,_dimensions,_alpha,"ColorRed","ELLIPSE","BORDER"] call _createMarker;
+										_m = [_markerID,_position,_dimensions,_alpha,"ColorBlack","ELLIPSE"] call _createMarker;
 										_markers set [count _markers, _m];
 									};
 								} forEach _plotData;

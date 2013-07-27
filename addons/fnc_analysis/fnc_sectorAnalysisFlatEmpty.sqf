@@ -51,7 +51,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	
 	if(count _position > 0) then {
 		// minDistance, precicePos, maxGradient, gradientRadius, onWater, onShore
-		_position = _position isFlatEmpty[2,1,0.2,10,0,false];
+		_position = _position isFlatEmpty[1,1,0.5,2,0,false];
 		_emptyPositions = [_position];	
 	};	
 	

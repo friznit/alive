@@ -54,11 +54,11 @@ TIMEREND
 
 STAT("Create Grid");
 TIMERSTART
-///*
+/*
 [_grid, "gridPosition", [getPos player select 0, getPos player select 1]] call ALIVE_fnc_sectorGrid;
-[_grid, "gridSize", 1000] call ALIVE_fnc_sectorGrid;
+[_grid, "gridSize", 500] call ALIVE_fnc_sectorGrid;
 [_grid, "sectorDimensions", [500,500]] call ALIVE_fnc_sectorGrid;                                                       
-//*/
+*/
 _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
@@ -89,8 +89,8 @@ DEBUGON
 
 //[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
-[_plotter, "plot", [_allSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
-[_plotter, "plot", [_allSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_allSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_allSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
 
 /*
 {
@@ -98,7 +98,8 @@ DEBUGON
 	_flatEmptyData = [_sectorData,"flatEmpty"] call ALIVE_fnc_hashGet;
 	
 	{
-		_m = [_x] call ALIVE_fnc_spawnDebugMarker;
+		_vehicle = "B_APC_Tracked_01_rcws_F" createVehicle _x;
+		_vehicle setPos _x;
 	} forEach _flatEmptyData;
 
 } forEach _allSectors;
@@ -107,6 +108,10 @@ DEBUGON
 
 STAT("Sleeping before destroy");
 sleep 60;
+
+
+STAT("Destroy plotter instance");
+[_plotter, "destroy"] call ALIVE_fnc_plotSectors;
 
 
 STAT("Destroy grid instance");
