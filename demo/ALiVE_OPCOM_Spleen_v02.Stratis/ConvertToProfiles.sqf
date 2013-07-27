@@ -11,9 +11,9 @@
 	ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
 	[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
 	[ALIVE_sectorGrid, "createGrid"] call ALIVE_fnc_sectorGrid;
-	
-	// get array of all sectors from the grid
-	_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
+
+	// display the grid
+	[ALIVE_sectorGrid, "debug", true] call ALIVE_fnc_sectorGrid;
 	
 	// import static map analysis to the grid
 	[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;
