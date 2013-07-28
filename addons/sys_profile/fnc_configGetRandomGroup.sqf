@@ -66,7 +66,11 @@ for "_i" from 0 to count _typeConfig -1 do {
 	};
 };
 
-_group = _groups select floor(random count _groups);
-_groupName = configName _group;
+if(count _groups > 0) then {
+	_group = _groups select floor(random count _groups);
+	_groupName = configName _group;
+}else{
+	_groupName = "FALSE";
+};
 
 _groupName

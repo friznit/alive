@@ -84,10 +84,56 @@ _landSectors = [_allSectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
 TIMEREND
 
 
-//[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
-//[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
+STAT("Plot elevation");
+TIMERSTART
+[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+
+
+STAT("Plot terrain");
+TIMERSTART
+[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+
+
+STAT("Plot best places");
+TIMERSTART
 [_plotter, "plot", [_landSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
-//[_plotter, "plot", [_allSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+
+
+STAT("Plot flat empty locations");
+TIMERSTART
+[_plotter, "plot", [_landSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
 
 
 STAT("Sleeping before destroy");

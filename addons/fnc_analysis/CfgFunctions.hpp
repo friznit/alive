@@ -106,6 +106,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_gridImportStaticMapAnalysis.sqf";
 				recompile = 1;
 			};
+			class sectorDataSort {
+				description = "sectorDataSort";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorDataSort.sqf";
+				recompile = 1;
+			};
 			class getNearUnits {
 				description = "getNearUnits";
 				file = "\x\alive\addons\fnc_analysis\fnc_getNearUnits.sqf";
