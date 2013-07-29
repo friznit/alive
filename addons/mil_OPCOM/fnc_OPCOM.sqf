@@ -172,7 +172,7 @@ switch(_operation) do {
                 ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
                 _result = _args;
-        };                                        
+        };                                       
 
 		case "objectives": {
                 if(isnil "_args") then {
@@ -199,37 +199,139 @@ switch(_operation) do {
         case "analyzeclusteroccupation": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
 
-				_side = _args select 0;
-				_distance = _args select 1;
-				_nearForces = [];
-			
-				_forces = [ALIVE_Profilehandler, "getProfilesBySide", _side] call ALIVE_fnc_profileHandler;
-				{
-					_item = _x;
-					_pos = [_item,"center"] call ALiVE_fnc_HashGet;
-					_id = [_item,"objectiveID"] call ALiVE_fnc_HashGet;
-					_nearEntities = [];
-			
+				_sides = _args;
+				//_distance = _args select 1;
+                _result_tmp = [];
+                {
+                    _nearForces = [];
+                    _side = _x;
+	                {
+	                    _item = _x;
+						_pos = [_item,"center"] call ALiVE_fnc_HashGet;
+						_id = [_item,"objectiveID"] call ALiVE_fnc_HashGet;
+	                    _type = "surroundingsectors";
+                        _entArr = [];
+                        _entities = [];
+			            
+			            _sectors = [[ALIVE_sectorGrid, "positionToSector", _pos] call ALIVE_fnc_sectorGrid];
+						//_sectors = ([ALIVE_sectorGrid, "surroundingSectors", _pos] call ALIVE_fnc_sectorGrid);
+
 						{
-							_ProID = _x;
-							_profile = [ALIVE_profileHandler, "getProfile", _ProID] call ALIVE_fnc_profileHandler;
-							_posP = [_profile, "position"] call ALIVE_fnc_profileEntity;
-			            			if (_posP distance _pos < _distance) then {_nearEntities set [count _nearEntities,_ProID]};
-						} foreach _forces;
-						if (count _nearEntities > 0) then {_nearForces set [count _nearForces,[_id,_nearEntities]]};
-				} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
-				_result = _nearForces;
+							_sector = _x;
+							_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
+							_sectorID = [_sector, "id"] call ALIVE_fnc_sector;
+					
+							if("entitiesBySide" in (_sectorData select 1)) then {
+								_sectorEntityData = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+								_ent = [_sectorEntityData,_side] call ALiVE_fnc_HashGet;
+			                    //_check = (({(count _x > 0)} count (_sectorEntityData select 2)) - count _ent) > 0;
+			                    _entArr set [count _entArr,_ent];
+							};
+						} forEach _sectors;
+
+			            {
+			                if (typeName ((_x select 0) select 0) == "STRING") then {
+			                	_entities set [count _entities,(_x select 0) select 0];
+			            	};
+			            } foreach _entArr;
+	                    
+	                    if (count _entities > 0) then {_nearForces set [count _nearForces,[_id,_entities]]};
+	                } foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
+                    
+                    _result_tmp set [count _result_tmp,_nearForces];
+                } foreach _sides;
+            
+	            _targetsTaken1 =  _result_tmp select 0;
+	            _targetsTaken2 =  _result_tmp select 1;
+	            
+	        	_targetsAttacked1 = [];
+                _remover1 = [];
+				{
+					_targetID = _x select 0;
+					_entities = _x select 1;
+					
+					if ({(_x select 0) == _targetID} count _targetsTaken2 > 0) then {
+						_targetsAttacked1 set [count _targetsAttacked1,_x];
+						_remover1 set [count _remover1,_foreachIndex];
+                        //_targetsTaken1 set [_foreachIndex,"x"];
+						//_targetsTaken1 = _targetsTaken1 - ["x"];
+					};
+				} foreach _targetsTaken1;
+	
+				_targetsAttacked2 = [];
+                _remover2 = [];
+				{
+					_targetID = _x select 0;
+					_entities = _x select 1;
+					
+					if ({(_x select 0) == _targetID} count _targetsTaken1 > 0) then {
+						_targetsAttacked2 set [count _targetsAttacked2,_x];
+						_remover2 set [count _remover2,_foreachIndex];
+                        //_targetsTaken2 set [_foreachIndex,"x"];
+						//_targetsTaken2 = _targetsTaken2 - ["x"];
+					};
+				} foreach _targetsTaken2;
+                
+
+                {
+                   _targetsTaken1 set [_x,"x"];
+                   _targetsTaken1 = _targetsTaken1 - ["x"];
+                } foreach _remover1;
+                
+                {
+                   _targetsTaken2 set [_x,"x"];
+                   _targetsTaken2 = _targetsTaken2 - ["x"];
+                } foreach _remover2;
+
+                
+	            _result = [_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2];
+                diag_log format ["East: Taken %1 | Attacked %2 // West: Taken %3 | Attacked %4",_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2];
 		};
+
+        case "entitiesnearsector": {
+            	ASSERT_TRUE(typeName _args == "STRING",str _args);
         
+	            _side = _args;
+                _pos = [_logic,"center"] call ALiVE_fnc_HashGet;
+                _ent = [];
+                _entArr = [];
+
+			    _sectors = [[ALIVE_sectorGrid, "positionToSector", _pos] call ALIVE_fnc_sectorGrid];
+                _sectors = _sectors + ([ALIVE_sectorGrid, "surroundingSectors", _pos] call ALIVE_fnc_sectorGrid);
+
+						{
+							_sector = _x;
+							_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
+							_sectorID = [_sector, "id"] call ALIVE_fnc_sector;
+					
+							if("entitiesBySide" in (_sectorData select 1)) then {
+								_sectorEntityData = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+								_ent = [_sectorEntityData,_side] call ALiVE_fnc_HashGet;
+			                    if (count _ent > 0) then {_entArr set [count _entArr,_ent]};
+							};
+						} forEach _sectors;
+	            _result = _entArr;
+        };
+
         case "setorders": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
         
-        		private ["_profile","_profileID","_objectiveID","_pos","_orders"];
+        		private ["_profile","_profileID","_objectiveID","_pos","_orders","_pending_orders"];
 
 				_pos = _args select 0;
 				_profileID = _args select 1;
 				_objectiveID = _args select 2;
 				_orders = _args select 3;
+                
+                _pending_orders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
+                _pending_orders_tmp = _pending_orders;
+                
+                if (({(_x select 1) == _profileID} count _pending_orders_tmp) > 0) then {
+                    {
+                        if ((_x select 1) == _profileID) then {_pending_orders_tmp set [_foreachIndex,"x"]};
+                    } foreach _pending_orders_tmp;
+                    _pending_orders = _pending_orders_tmp - ["x"];
+                };
 
 				_profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
 
@@ -243,7 +345,7 @@ switch(_operation) do {
 				[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
                 
                 _ordersFull = [_pos,_ProfileID,_objectiveID,time];
-                [_logic,"pendingorders",([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet) + [_ordersFull]] call ALiVE_fnc_HashSet;
+                [_logic,"pendingorders",_pending_orders + [_ordersFull]] call ALiVE_fnc_HashSet;
 
                 _result = _profileWaypoint;
 		};
@@ -251,7 +353,7 @@ switch(_operation) do {
         case "synchronizeorders": {
             	ASSERT_TRUE(typeName _args == "STRING",str _args);
                 
-                private ["_ProfileIDInput","_profiles","_orders_pending","_synchronized","_item","_objectiveID"];
+                private ["_ProfileIDInput","_profiles","_orders_pending","_synchronized","_item","_objectiveID","_profileID"];
         
     			_ProfileIDInput = _args;
 				_profiles = ([ALIVE_profileHandler, "getProfiles","entity"] call ALIVE_fnc_profileHandler) select 1;
@@ -267,7 +369,7 @@ switch(_operation) do {
 					_objectiveID = _item select 2;
 					_time = _item select 3;
 					_dead = !(_ProfileID in _profiles);
-					_timeout = (time - _time) > 600;
+					_timeout = (time - _time) > 1800;
 			
 					if ((_dead) || {_timeout} || {_ProfileID == _ProfileIDInput}) then {
 						_orders_pending set [_i,"x"]; _orders_pending = _orders_pending - ["x"];
@@ -291,6 +393,7 @@ switch(_operation) do {
                         _ProfileIDsReserve = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
                         _objectivescount = [_logic,"simultanobjectives",3] call ALiVE_fnc_HashGet;
                         _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",_side] call ALIVE_fnc_profileHandler;
+                        
                         _sections = [];
                         _section = [];
                         
@@ -306,6 +409,21 @@ switch(_operation) do {
 						switch (_typeOp) do {
 							case ("attack") : {_available = _profileIDs - _ProfileIDsBusy - _ProfileIDsReserve};
 							case ("reserve") : {_available = _profileIDs - _ProfileIDsBusy};
+                            case ("defend") : {
+                                _available = _ProfileIDsReserve;
+                                
+                                //In emergency take nearest troops
+                            	if (count _available < _size) then {
+                                    _sectors = [[ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid];
+                					//_sectors = _sectors + ([ALIVE_sectorGrid, "surroundingSectors", _position] call ALIVE_fnc_sectorGrid);
+									{
+                                    
+                            			_sectorData = [_x, "data"] call ALIVE_fnc_hashGet;
+                                		_sortedProfiles = [_sectorData, "entitiesBySide", [_position,_side]] call ALIVE_fnc_sectorDataSort;
+                                    	{_available set [count _available,_x select 0]} foreach _sortedProfiles;
+                                     } foreach _sectors;
+                                };
+                            };
 						};
 						
 						{
@@ -344,6 +462,7 @@ switch(_operation) do {
 				switch (_operation) do {
                 	case ("unassigned") : {_idleStates = ["unassigned"]};
                     case ("attack") : {_idleStates = ["attack","attacking"]};
+                    case ("defend") : {_idleStates = ["defend","defending"]};
                     case ("reserve") : {_idleStates = ["reserve","reserving","idle"]};
                     default {_idleStates = ["reserve","reserving","idle"]};
                 };
@@ -361,6 +480,7 @@ switch(_operation) do {
 		};
         
         case "selectordersbystate": {
+            	private ["_target","_state","_DATA_TMP"];
             	ASSERT_TRUE(typeName _args == "STRING",str _args);
                 
                 _state = _args;
@@ -374,8 +494,10 @@ switch(_operation) do {
 						} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
 		
 						//Trigger order execution
-						[_target,"opcom_orders","attack"] call AliVE_fnc_HashSet;
-						_DATA_TMP = ["execute",_target];
+                        if !(isnil "_target") then {
+							[_target,"opcom_orders","attack"] call AliVE_fnc_HashSet;
+							_DATA_TMP = ["execute",_target];
+                        };
 					};
 					case ("unassigned") : {
 						{
@@ -384,8 +506,22 @@ switch(_operation) do {
 						} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
 		
 						//Trigger order execution
-						[_target,"opcom_orders","attack"] call AliVE_fnc_HashSet;
-						_DATA_TMP = ["execute",_target];
+                        if !(isnil "_target") then {
+							[_target,"opcom_orders","attack"] call AliVE_fnc_HashSet;
+							_DATA_TMP = ["execute",_target];
+                        };
+					};
+                    case ("defend") : {
+						{
+							_state = [_x,"opcom_state"] call AliVE_fnc_HashGet;
+							if (_state == "defend") exitwith {_target = _x};
+						} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
+		
+						//Trigger order execution
+                        if !(isnil "_target") then {
+							[_target,"opcom_orders","defend"] call AliVE_fnc_HashSet;
+							_DATA_TMP = ["execute",_target];
+                        };
 					};
 					case ("reserve") : {
 						{
@@ -394,11 +530,13 @@ switch(_operation) do {
 						} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);;
 		
 						//Trigger order execution
-						[_target,"opcom_orders","reserve"] call AliVE_fnc_HashSet;
-						_DATA_TMP = ["execute",_target];
+                        if !(isnil "_target") then {
+							[_target,"opcom_orders","reserve"] call AliVE_fnc_HashSet;
+							_DATA_TMP = ["execute",_target];
+                        };
 					};
         		};
-                if !(isnil "_DATA_TMP") then {_result = _DATA_TMP};
+                if !(isnil "_DATA_TMP") then {_result = _DATA_TMP} else {player sidechat "no target was selected"};
 		};
        
         case "destroy": {                
