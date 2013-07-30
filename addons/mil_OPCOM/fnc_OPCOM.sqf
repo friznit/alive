@@ -89,6 +89,7 @@ switch(_operation) do {
 
 					[_handler, "side",_side] call ALiVE_fnc_HashSet;
                     [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
+                    [_handler, "debug",(call compile _debug)] call ALiVE_fnc_HashSet;
 					
 					/*
 					CONTROLLER  - coordination
@@ -99,11 +100,14 @@ switch(_operation) do {
 			        
 			        "OPCOM - Waiting for SEP objectives..." call ALiVE_fnc_logger;
 			        waituntil {sleep 5; !(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP})};
-			
+                    			
 					"OPCOM and TACOM starting..." call ALiVE_fnc_logger;
-                    [_handler] spawn {
-						OPCOM = [_this select 0] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
-						TACOM = [_this select 0] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
+                    [_handler] call {
+                        _handler = _this select 0;
+						_OPCOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+						_TACOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
+						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
+                        [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     };
                 };
                 
@@ -122,6 +126,82 @@ switch(_operation) do {
 						[_result,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
                 };
+        };
+        
+        case "addObjective": {
+                if(isnil "_args") then {
+					_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
+                } else {
+                    ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+                    _pos = _args select 0;
+                    _size = _args select 1;
+                    _opcom_state = "unassigned"; if (count _args > 2) then {_opcom_state = _args select 2};
+                    
+                    _objectives = [_logic, "objectives",[]] call ALIVE_fnc_HashGet;
+                    _debug = [_logic, "debug",false] call ALIVE_fnc_HashGet;
+                    
+                    _type = "unknown";
+                    _priority = 25;
+                    
+    				_target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
+		
+					_id = format["OPCOM_objective_%1",count _objectives];
+                    [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
+					[_target, "center",_pos] call ALIVE_fnc_HashSet;
+					[_target, "size",_size] call ALIVE_fnc_HashSet;
+					[_target, "type",_type] call ALIVE_fnc_HashSet;
+					[_target, "priority",_priority] call ALIVE_fnc_HashSet;
+					[_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
+                    [_target, "opcom_orders","none"] call ALIVE_fnc_HashSet;
+		
+					if (_debug) then {
+		            	_m = createMarkerLocal [_id, _pos];
+						_m setMarkerShapeLocal "RECTANGLE";
+						_m setMarkerSizeLocal [_size, _size];
+						_m setMarkerTypeLocal "hd_dot";
+						_m setMarkerColorLocal "ColorWhite";
+						_m setMarkerTextLocal format["Objective %1",_id];
+					};
+		
+					_objectives set [count _objectives, _target];
+                    _objectives = [_objectives,[],{SEP distance ((_x select 2) select 1)},"ASCEND"] call BIS_fnc_sortBy;
+                    [_logic, "objectives",_objectives] call ALIVE_fnc_HashSet;
+                    _args = _target;
+                };
+                _result = _args;
+        };
+        
+        case "addTask": {
+            
+            _operation = _args select 0;
+            _pos = _args select 1;
+            _section = _args select 2;
+            _TACOM_FSM = [_logic,"TACOM_FSM"] call ALiVE_fnc_HashGet;
+            
+            _objective = [_logic,"addObjective",[_pos,100,"internal"]] call ALiVE_fnc_OPCOM;
+            [_objective,"section",_section] call AliVE_fnc_HashSet;
+            
+            _TACOM_FSM setFSMVariable ["_busy",false];
+            _TACOM_FSM setFSMVariable ["_TACOM_DATA",["true",nil]];
+            
+            switch (_operation) do {
+                case ("recon") : {
+                    _recon = [_objective,_section];
+                    _TACOM_FSM setFSMVariable ["_recon",_recon];
+                };
+                case ("capture") : {
+                    _capture = [_objective,_section];
+                    _TACOM_FSM setFSMVariable ["_capture",_capture];
+                };
+                case ("defend") : {
+                    _defend = [_objective,_section];
+                	_TACOM_FSM setFSMVariable ["_defend",_defend];
+                };
+                case ("reserve") : {
+                    _reserve = [_objective,_section];
+                    _TACOM_FSM setFSMVariable ["_reserve",_reserve];
+                };
+            };
         };
                                 
 		case "createobjectivesbydistance": {
@@ -253,8 +333,6 @@ switch(_operation) do {
 					if ({(_x select 0) == _targetID} count _targetsTaken2 > 0) then {
 						_targetsAttacked1 set [count _targetsAttacked1,_x];
 						_remover1 set [count _remover1,_foreachIndex];
-                        //_targetsTaken1 set [_foreachIndex,"x"];
-						//_targetsTaken1 = _targetsTaken1 - ["x"];
 					};
 				} foreach _targetsTaken1;
 	
@@ -267,8 +345,6 @@ switch(_operation) do {
 					if ({(_x select 0) == _targetID} count _targetsTaken1 > 0) then {
 						_targetsAttacked2 set [count _targetsAttacked2,_x];
 						_remover2 set [count _remover2,_foreachIndex];
-                        //_targetsTaken2 set [_foreachIndex,"x"];
-						//_targetsTaken2 = _targetsTaken2 - ["x"];
 					};
 				} foreach _targetsTaken2;
                 
@@ -316,15 +392,28 @@ switch(_operation) do {
         case "setorders": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
         
-        		private ["_profile","_profileID","_objectiveID","_pos","_orders","_pending_orders"];
+        		private ["_profile","_profileID","_objectiveID","_pos","_orders","_pending_orders","_objectives","_id"];
 
 				_pos = _args select 0;
 				_profileID = _args select 1;
 				_objectiveID = _args select 2;
 				_orders = _args select 3;
+                _TACOM_FSM = [_logic,"TACOM_FSM"] call ALiVE_fnc_HashGet;
+                _objectives = [_logic,"objectives"] call ALiVE_fnc_HashGet;
                 
                 _pending_orders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
                 _pending_orders_tmp = _pending_orders;
+                
+                {
+                    _id = [_x,"objectiveID"] call ALiVE_fnc_HashGet;
+                    _section = [_x,"section",[]] call ALiVE_fnc_HashGet;
+                    
+                    if ((_profileID in _section) && {!(_objectiveID == _id)}) then {
+                        _section = _section - [_profileID];
+                        if (count _section < 1) then {[_x,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_x,"opcom_orders","unassigned"] call ALiVE_fnc_HashSet};
+                        [_x,"section",_section] call ALiVE_fnc_HashSet;
+                    };
+                } foreach _objectives;
                 
                 if (({(_x select 1) == _profileID} count _pending_orders_tmp) > 0) then {
                     {
@@ -339,7 +428,7 @@ switch(_operation) do {
 				_profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
 
 				_var = ["_TACOM_DATA",["completed",[_ProfileID,_objectiveID,_orders]]];
-				_statements = format["TACOM setfsmvariable %1",_var];
+				_statements = format["%1 setfsmvariable %2",_TACOM_FSM,_var];
 				[_profileWaypoint,"statements",["true",_statements]] call ALIVE_fnc_hashSet;
 
 				[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
@@ -460,11 +549,11 @@ switch(_operation) do {
 				_operation = _args select 1;
 
 				switch (_operation) do {
-                	case ("unassigned") : {_idleStates = ["unassigned"]};
-                    case ("attack") : {_idleStates = ["attack","attacking"]};
-                    case ("defend") : {_idleStates = ["defend","defending"]};
-                    case ("reserve") : {_idleStates = ["reserve","reserving","idle"]};
-                    default {_idleStates = ["reserve","reserving","idle"]};
+                	case ("unassigned") : {_idleStates = ["internal","unassigned"]};
+                    case ("attack") : {_idleStates = ["internal","attack","attacking"]};
+                    case ("defend") : {_idleStates = ["internal","defend","defending"]};
+                    case ("reserve") : {_idleStates = ["internal","reserve","reserving","idle"]};
+                    default {_idleStates = ["internal","reserve","reserving","idle"]};
                 };
 
 				{
