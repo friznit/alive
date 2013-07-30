@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_radius","_precision","_sources","_bestPlaces",
+private ["_array","_err","_sector","_result","_centerPosition","_id","_bounds","_dimensions","_radius","_precision","_sources","_bestPlaces",
 "_forestExpression","_exposedHillsExpression","_meadowExpression","_exposedTreesExpression","_housesExpression","_seaExpression",
 "_selectedForestPlaces","_selectedHillsPlaces","_selectedMeadowsPlaces","_selectedTreesPlaces","_selectedHousesPlaces","_selectedSeaPlaces",
 "_forestPositions","_hillsPositions","_meadowsPositions","_treesPositions","_housesPositions","_seaPositions","_pos","_cost"];
@@ -52,7 +52,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	_exposedHillsExpression = "(1 + hills) * (1 - forest) * (1 - sea)";
 	_meadowExpression = "(1 + meadow) * (1 - forest) * (1 - sea) * (1 - hills)";
 	_exposedTreesExpression = "(1 + trees) * (1 - forest) * (1 - sea)";
-	_housesExpression = "(1 + houses) * (1 - forest) * (1 - trees) * (1 - sea)";
+	_housesExpression = "(1 + houses) * (1 - forest) * (1 - sea) * (1 - meadow)";
 	_seaExpression = "(1 + sea) * (1 - hills) * (1 - meadow)";
 	
 	_selectedForestPlaces = selectBestPlaces [_centerPosition,_radius,_forestExpression,_precision,_sources];	
@@ -69,7 +69,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	["S: %1 TREES: %2",_id,_selectedTreesPlaces] call ALIVE_fnc_dump;
 	["S: %1 HOUSES: %2",_id,_selectedHousesPlaces] call ALIVE_fnc_dump;
 	["S: %1 SEA: %2",_id,_selectedSeaPlaces] call ALIVE_fnc_dump;
-	*/	
+	*/
 	
 	_forestPositions = [];
 	_hillsPositions = [];
@@ -99,7 +99,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	{
 		_pos = _x select 0;
 		_cost = _x select 1;
-		if(_cost > 1.4) then {
+		if(_cost > 1.6) then {
 			_meadowsPositions set [count _meadowsPositions, _pos];
 		};
 		
@@ -117,7 +117,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	{
 		_pos = _x select 0;
 		_cost = _x select 1;
-		if(_cost > 1.3) then {
+		if(_cost >= 2) then {
 			_housesPositions set [count _housesPositions, _pos];
 		};
 		

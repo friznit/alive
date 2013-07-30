@@ -91,6 +91,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterElevation.sqf";
 				recompile = 1;
 			};
+			class sectorAnalysisRoads {
+				description = "sectorAnalysisRoads";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisRoads.sqf";
+				recompile = 1;
+			};			
+			class sectorFilterRoads {
+				description = "sectorFilterRoads";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterRoads.sqf";
+				recompile = 1;
+			};
 			class sectorSortDistance {
 				description = "sectorSortDistance";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorSortDistance.sqf";

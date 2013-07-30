@@ -70,6 +70,32 @@ switch (_key) do {
 		
 		_sortedData
 	};
+	case "terrain": {
+		private ["_position","_terrainKey","_order","_terrainData"];
+		
+		_position = _args select 0;
+		_terrainKey = _args select 1;
+		_order = if(count _args > 2) then {_args select 2} else {"ASCEND"};
+		
+		_data = [_sectorData, "terrainSamples"] call ALIVE_fnc_hashGet;		
+		_terrainData = [_data, _terrainKey] call ALIVE_fnc_hashGet;		
+		_sortedData = [_terrainData,[],{_position distance _x},_order] call BIS_fnc_sortBy;
+		
+		_sortedData
+	};
+	case "roads": {
+		private ["_position","_roadKey","_order","_roadData"];
+		
+		_position = _args select 0;
+		_roadKey = _args select 1;
+		_order = if(count _args > 2) then {_args select 2} else {"ASCEND"};
+		
+		_data = [_sectorData, _key] call ALIVE_fnc_hashGet;		
+		_roadData = [_data, _roadKey] call ALIVE_fnc_hashGet;		
+		_sortedData = [_roadData,[],{_position distance (_x select 0)},_order] call BIS_fnc_sortBy;
+		
+		_sortedData
+	};
 	case "bestPlaces": {
 		private ["_position","_placeKey","_order","_placeData"];
 		

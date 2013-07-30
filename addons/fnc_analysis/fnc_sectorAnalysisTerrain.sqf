@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_terrain","_terrainData","_countIsWater"];
+private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_quadrantWidth","_terrain","_terrainData","_countIsWater","_direction","_position"];
 
 _sectors = _this select 0;
 _err = format["sector analysis terrain requires an array of sectors - %1",_sectors];
@@ -40,20 +40,43 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	_bounds = [_sector, "bounds"] call ALIVE_fnc_sector;
 	_dimensions = [_sector, "dimensions"] call ALIVE_fnc_sector;
 	
+	_quadrantWidth = (_dimensions select 0) / 2;
+	
 	_countIsWater = 0;
 	
 	_terrain = "";
-	_terrainData = [];
+	_terrainData = [] call ALIVE_fnc_hashCreate;
+	[_terrainData,"sea",[]] call ALIVE_fnc_hashSet;
+	[_terrainData,"land",[]] call ALIVE_fnc_hashSet;
+	[_terrainData,"shore",[]] call ALIVE_fnc_hashSet;
 	
 	if(surfaceIsWater _centerPosition) then {
 		_countIsWater = _countIsWater + 1;
-		_terrainData set [count _terrainData, [_centerPosition,"SEA"]];
-		_terrain = "SEA";
-	}else{
-		_terrainData set [count _terrainData, [_centerPosition,"LAND"]];
-		_terrain = "LAND";
 	};
 	
+	{
+		_direction = [_x, _centerPosition] call BIS_fnc_dirTo;
+		_position = [_x, _quadrantWidth, _direction] call BIS_fnc_relPos;
+		if(surfaceIsWater _position) then {
+			_countIsWater = _countIsWater + 1;
+		};
+	} forEach _bounds;
+	
+	if(_countIsWater == 5) then {
+		_terrain = "SEA";
+		[_terrainData,"sea",[_centerPosition]] call ALIVE_fnc_hashSet;
+	};
+	
+	if(_countIsWater == 0) then {
+		_terrain = "LAND";
+		[_terrainData,"land",[_centerPosition]] call ALIVE_fnc_hashSet;
+	};
+	
+	if(_countIsWater > 0 && _countIsWater < 5) then {
+		_terrain = "SHORE";
+		[_terrainData,"shore",[_centerPosition]] call ALIVE_fnc_hashSet;
+	};
+		
 	// store the result of the analysis on the sector instance
 	[_sector, "data", ["terrainSamples",_terrainData]] call ALIVE_fnc_sector;
 	[_sector, "data", ["terrain",_terrain]] call ALIVE_fnc_sector;

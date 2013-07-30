@@ -155,6 +155,61 @@ deleteMarkerLocal _m2;
 
 
 
+// Terrain -------------------------------------------------------------------------------
+
+private ["_sortedLandPositions","_nearestLandPosition","_sortedShorePositions","_nearestShorePosition","_sortedSeaPositions","_nearestSeaPosition","_m1","_m2","_m3"];
+
+STAT("Plot terrain data on player sector");
+[_plotter, "plot", [[_playerSector], "terrainSamples"]] call ALIVE_fnc_plotSectors;
+
+
+STAT("Sort land by distance to player");
+_sortedLandPositions = [_playerSectorData, "terrain", [getPos player,"land"]] call ALIVE_fnc_sectorDataSort;
+["Sorted land positions: %1",_sortedLandPositions] call ALIVE_fnc_dump;
+
+if(count _sortedLandPositions > 0) then {
+	_nearestLandPosition = _sortedLandPositions select 0;
+	_m1 = ["Nearest Land",_nearestLandPosition,[1,1],"ColorBrown"] call _createMarker;
+	sleep 20;
+	deleteMarkerLocal _m1;
+};
+
+
+STAT("Sort shore by distance to player");
+_sortedShorePositions = [_playerSectorData, "terrain", [getPos player,"shore"]] call ALIVE_fnc_sectorDataSort;
+["Sorted land positions: %1",_sortedShorePositions] call ALIVE_fnc_dump;
+
+if(count _sortedShorePositions > 0) then {
+	_nearestShorePosition = _sortedShorePositions select 0;
+	_m2 = ["Nearest Shore",_nearestShorePosition,[1,1],"ColorKhaki"] call _createMarker;
+	sleep 20;
+	deleteMarkerLocal _m2;
+};
+
+
+
+STAT("Sort sea by distance to player");
+_sortedSeaPositions = [_playerSectorData, "terrain", [getPos player,"sea"]] call ALIVE_fnc_sectorDataSort;
+["Sorted sea positions: %1",_sortedSeaPositions] call ALIVE_fnc_dump;
+
+if(count _sortedSeaPositions > 0) then {
+	_nearestSeaPosition = _sortedSeaPositions select 0;
+	_m3 = ["Nearest Sea",_nearestSeaPosition,[1,1],"ColorBlue"] call _createMarker;
+	sleep 20;
+	deleteMarkerLocal _m3;
+};
+
+STAT("Sleeping before clear");
+sleep 30;
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+
+
+
+// -------------------------------------------------------------------------------
+
+
+
 // Best Places -------------------------------------------------------------------------------
 
 private ["_sortedForestPositions","_nearestForestPosition","_sortedTreePositions","_nearestTreePosition","_sortedHillPositions","_nearestHillPosition",
@@ -241,6 +296,7 @@ sleep 30;
 
 [_plotter, "clear"] call ALIVE_fnc_plotSectors;
 
+
 // -------------------------------------------------------------------------------
 
 
@@ -260,6 +316,54 @@ _sortedFlatEmptyPositions = [_playerSectorData, "flatEmpty", [getPos player]] ca
 if(count _sortedFlatEmptyPositions > 0) then {
 	_nearestFlatEmptyPosition = _sortedFlatEmptyPositions select 0;
 	_m = ["Nearest Flat Empty",_nearestFlatEmptyPosition,[1,1],"ColorRed"] call _createMarker;
+};
+
+STAT("Sleeping before clear");
+sleep 30;
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+deleteMarkerLocal _m;
+
+
+// -------------------------------------------------------------------------------
+
+
+
+// Roads -------------------------------------------------------------------------------
+
+private ["_sortedRoadPositions","_nearestRoadPosition","_sortedCrossroadPositions","_nearestCrossroadPosition","_sortedTerminusPositions","_nearestTerminusPosition","_m"];
+
+STAT("Plot road data on player sector");
+[_plotter, "plot", [[_playerSector], "roads"]] call ALIVE_fnc_plotSectors;
+
+
+STAT("Sort road data by distance to player");
+_sortedRoadPositions = [_playerSectorData, "roads", [getPos player, "road"]] call ALIVE_fnc_sectorDataSort;
+["Sorted road positions: %1",_sortedRoadPositions] call ALIVE_fnc_dump;
+
+if(count _sortedRoadPositions > 0) then {
+	_nearestRoadPosition = _sortedRoadPositions select 0;
+	_m = ["Nearest Road",(_nearestRoadPosition select 0),[1,1],"ColorGreen"] call _createMarker;
+};
+
+
+STAT("Sort crossroad data by distance to player");
+_sortedCrossroadPositions = [_playerSectorData, "roads", [getPos player, "crossroad"]] call ALIVE_fnc_sectorDataSort;
+["Sorted road positions: %1",_sortedRoadPositions] call ALIVE_fnc_dump;
+
+if(count _sortedCrossroadPositions > 0) then {
+	_nearestCrossroadPosition = _sortedCrossroadPositions select 0;
+	_m = ["Nearest Crossroad",(_nearestCrossroadPosition select 0),[1,1],"ColorOrange"] call _createMarker;
+};
+
+
+STAT("Sort road terminus data by distance to player");
+_sortedTerminusPositions = [_playerSectorData, "roads", [getPos player, "terminus"]] call ALIVE_fnc_sectorDataSort;
+["Sorted road positions: %1",_sortedTerminusPositions] call ALIVE_fnc_dump;
+
+if(count _sortedTerminusPositions > 0) then {
+	_nearestTerminusPosition = _sortedTerminusPositions select 0;
+	_m = ["Nearest Terminus",(_nearestTerminusPosition select 0),[1,1],"ColorRed"] call _createMarker;
 };
 
 STAT("Sleeping before clear");

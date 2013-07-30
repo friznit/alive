@@ -350,6 +350,41 @@ switch(_operation) do {
 								};
 							};
 						};
+						case "terrainSamples": {
+							private["_landPositions","_shorePositions","_seaPositions","_m","_colour","_markerID","_alpha","_value"];
+
+							if(_key in (_sectorData select 1)) then {
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								_landPositions = [_plotData,"land"] call ALIVE_fnc_hashGet;
+								_shorePositions = [_plotData,"shore"] call ALIVE_fnc_hashGet;
+								_seaPositions = [_plotData,"sea"] call ALIVE_fnc_hashGet;
+								
+								_dimensions = [25,25];
+								_alpha = 1;
+								
+								{
+									_position = _x;
+									_markerID = format["TLA_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBrown"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _landPositions;	
+								
+								{
+									_position = _x;
+									_markerID = format["TSH_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorKhaki"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _shorePositions;
+								
+								{
+									_position = _x;
+									_markerID = format["TSE_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlue"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _seaPositions;						
+							};
+						};
 						case "elevation": {
 							private["_m","_colour","_markerID","_alpha","_value"];
 
@@ -459,6 +494,41 @@ switch(_operation) do {
 									};
 								} forEach _plotData;
 								
+							};
+						};
+						case "roads": {
+							private["_roadPositions","_crossroadPositions","_terminusPositions","_m","_colour","_markerID","_alpha","_value"];
+
+							if(_key in (_sectorData select 1)) then {
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								_roadPositions = [_plotData,"road"] call ALIVE_fnc_hashGet;
+								_crossroadPositions = [_plotData,"crossroad"] call ALIVE_fnc_hashGet;
+								_terminusPositions = [_plotData,"terminus"] call ALIVE_fnc_hashGet;
+								
+								_dimensions = [5,5];
+								_alpha = 1;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["RO_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _roadPositions;	
+								
+								{
+									_position = _x select 0;
+									_markerID = format["ROC_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorOrange"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _crossroadPositions;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["ROT_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorRed"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _terminusPositions;						
 							};
 						};
 				};	

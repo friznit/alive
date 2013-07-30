@@ -73,7 +73,7 @@ diag_log format["Sectors created: %1",count _allSectors];
 
 
 TIMERSTART
-STAT("Start import static terrain analysis");
+STAT("Start import static map analysis");
 [_grid, "Stratis"] call ALIVE_fnc_gridImportStaticMapAnalysis;
 TIMEREND
 
@@ -110,6 +110,19 @@ sleep 30;
 [_plotter, "clear"] call ALIVE_fnc_plotSectors;
 
 
+STAT("Plot terrain samples");
+TIMERSTART
+[_plotter, "plot", [_landSectors, "terrainSamples"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+
+
 STAT("Plot best places");
 TIMERSTART
 [_plotter, "plot", [_landSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
@@ -126,6 +139,19 @@ sleep 30;
 STAT("Plot flat empty locations");
 TIMERSTART
 [_plotter, "plot", [_landSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+
+
+STAT("Plot road locations");
+TIMERSTART
+[_plotter, "plot", [_landSectors, "roads"]] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 
