@@ -344,6 +344,8 @@ _sortedRoadPositions = [_playerSectorData, "roads", [getPos player, "road"]] cal
 if(count _sortedRoadPositions > 0) then {
 	_nearestRoadPosition = _sortedRoadPositions select 0;
 	_m = ["Nearest Road",(_nearestRoadPosition select 0),[1,1],"ColorGreen"] call _createMarker;
+	sleep 10;
+	deleteMarkerLocal _m;
 };
 
 
@@ -354,6 +356,8 @@ _sortedCrossroadPositions = [_playerSectorData, "roads", [getPos player, "crossr
 if(count _sortedCrossroadPositions > 0) then {
 	_nearestCrossroadPosition = _sortedCrossroadPositions select 0;
 	_m = ["Nearest Crossroad",(_nearestCrossroadPosition select 0),[1,1],"ColorOrange"] call _createMarker;
+	sleep 10;
+	deleteMarkerLocal _m;
 };
 
 
@@ -364,13 +368,12 @@ _sortedTerminusPositions = [_playerSectorData, "roads", [getPos player, "terminu
 if(count _sortedTerminusPositions > 0) then {
 	_nearestTerminusPosition = _sortedTerminusPositions select 0;
 	_m = ["Nearest Terminus",(_nearestTerminusPosition select 0),[1,1],"ColorRed"] call _createMarker;
+	sleep 10;
+	deleteMarkerLocal _m;
 };
 
 STAT("Sleeping before clear");
-sleep 30;
-
 [_plotter, "clear"] call ALIVE_fnc_plotSectors;
-deleteMarkerLocal _m;
 
 
 // -------------------------------------------------------------------------------
