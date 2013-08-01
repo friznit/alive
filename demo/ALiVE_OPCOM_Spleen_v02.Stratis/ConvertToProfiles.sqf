@@ -31,10 +31,10 @@
 	[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 	
 	// turn on debug on profile handler to see profile registrations in RPT
-	[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+	[ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 	
-	// create profiles for all map units that dont have profiles
-	[true] call ALIVE_fnc_createProfilesFromUnits;
+	// create profiles for all map units that dont have profiles with debug on
+	[] call ALIVE_fnc_createProfilesFromUnits;
 	
 	// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 	[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
@@ -62,13 +62,15 @@
 			// DEBUG -------------------------------------------------------------------------------------
 			
 			// run profile analysis on all sectors
+			
 			[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfiles;
 			
-			sleep 90;
+			
+			sleep 30;
 			
 			
 			// EXAMPLE CODE ONLY FROM HERE ----------------------------------------------------------------------------------
-			
+			/*
 			// get array of all sectors from the grid
 			_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
 			
@@ -120,6 +122,7 @@
 			// plot the sector data
 			[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
 			// DEBUG -------------------------------------------------------------------------------------
+			*/
 			
 			false 
 		};
