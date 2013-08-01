@@ -2110,7 +2110,7 @@ class Mission
 		items=2;
 		class Item0
 		{
-			position[]={2665.0342,58.643494,734.21582};
+			position[]={2724.3657,43.31448,1369.5313};
 			name="Front";
 			markerType="RECTANGLE";
 			type="Empty";
@@ -2121,7 +2121,7 @@ class Mission
 		};
 		class Item1
 		{
-			position[]={2630.074,21.871784,1128.8228};
+			position[]={2666.6235,9.2677631,1177.5562};
 			name="directionE";
 			type="mil_arrow2";
 			colorName="ColorRed";
