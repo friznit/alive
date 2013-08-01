@@ -1,9 +1,9 @@
-/*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-920.506470,-757.594971,-422.769257,-709.730469,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-920.506470,-757.594971,-422.769257,-709.730469,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-717.496277,-667.415039,-627.496338,-617.415039,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-929.921753,-650.213623,-839.921631,-600.213623,5.000000,"ATTACK" \n "Conditions"};
 item5[] = {"",7,210,-346.449219,-410.954071,-338.449188,-402.954041,0.000000,""};
@@ -59,8 +59,8 @@ link21[] = {16,9};
 link22[] = {17,9};
 link23[] = {18,14};
 link24[] = {19,5};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,62,6316128,1,-1019.098206,-296.173706,-166.552231,-1006.305115,922,1071,1};
-window[] = {2,-1,-1,-1,-1,1100,81,1814,151,3,940};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,62,6316128,1,-1019.098206,-296.173706,-166.552231,-1006.305115,923,929,1};
+window[] = {2,-1,-1,-1,-1,1081,132,1865,132,3,940};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -79,6 +79,13 @@ class FSM
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
+       "_sideEnemy = [_OPCOM_HANDLER,""sideenemy"",""EAST""] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "_colorside = ""ColorRed"";" \n
+       "switch (_side) do {" \n
+       "	case (""WEST"") : {_colorside = ""ColorBlue""};" \n
+       "	case (""EAST"") : {_colorside = ""ColorRed""};" \n
+       "};" \n
        "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
@@ -233,28 +240,28 @@ class FSM
        "			_active = _attacking + _defending;" \n
        "" \n
        "			//AnalyzeClusterOccupation" \n
-       "			_targetOccupation = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[""EAST"",""WEST""]] call ALiVE_fnc_OPCOM;" \n
-       "			_targetsTakenEast = _targetOccupation select 0;" \n
-       "			_targetsAttackedEast = _targetOccupation select 1;" \n
-       "			_targetsTakenWest = _targetOccupation select 2;" \n
-       "			_targetsAttackedWest = _targetOccupation select 3;" \n
+       "			_targetOccupation = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[_side,_sideEnemy]] call ALiVE_fnc_OPCOM;" \n
+       "			_targetsTaken = _targetOccupation select 0;" \n
+       "			_targetsAttacked = _targetOccupation select 1;" \n
+       "			_targetsTakenEnemy = _targetOccupation select 2;" \n
+       "			_targetsAttackedEnemy = _targetOccupation select 3;" \n
        "" \n
        "			//AnalyzeResults - prepare orders" \n
        "				//Case Prio 3: Optional: Attack all unassigned objectives" \n
-       "				if (_active <= ([_OPCOM_HANDLER,""simultanobjectives"",2] call ALiVE_fnc_HashGet)) then {" \n
+       "				if (_active < ([_OPCOM_HANDLER,""simultanobjectives"",3] call ALiVE_fnc_HashGet)) then {" \n
        "					if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""unassigned""} count _obj) > 0)) then {_targetsWithState = ""unassigned""};" \n
        "				};" \n
        "" \n
        "				//Case Prio 2: Secondary: Defend all near objectives" \n
-       "				[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsAttackedEast,""defend""]] call ALiVE_fnc_OPCOM;" \n
+       "				[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsAttacked,""defend""]] call ALiVE_fnc_OPCOM;" \n
        "				if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""defend""} count _obj) > 0)) then {_targetsWithState = ""defend""};" \n
        "				" \n
        "				//Case Prio 1: Secondary: Secure all taken objectives" \n
-       "				[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsTakenEast,""reserve""]] call ALiVE_fnc_OPCOM;" \n
+       "				[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsTaken,""reserve""]] call ALiVE_fnc_OPCOM;" \n
        "				if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""reserve""} count _obj) > 0)) then {_targetsWithState = ""reserve""};" \n
        "" \n
        "				//Case Prio 0: Primary: Attack all enemy occupied objectives" \n
-       "				[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsTakenWest,""attack""]] call ALiVE_fnc_OPCOM;" \n
+       "				[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsTakenEnemy,""attack""]] call ALiVE_fnc_OPCOM;" \n
        "				if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""attack""} count _obj) > 0)) then {_targetsWithState = ""attack""};" \n
        "" \n
        "				//Select orders and execute" \n
@@ -263,14 +270,16 @@ class FSM
        "" \n
        "				// debug ---------------------------------------" \n
        "				if(_debug) then {" \n
-       "					 [""OPCOM analyzed: Total of %1 targets | unassigned: %2 | assigned: %3 | completed: %4 | defending: %5 | secured: %6 | internal: %7""," \n
+       "					 [""OPCOM %8 analyzed: Total of %1 targets | unassigned: %2 | assigned: %3 | completed: %4 | defending: %5 | secured: %6 | internal: %7""," \n
        "						 count _obj," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""unassigned""} count _obj), " \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""attacking""} count _obj)," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""reserving""} count _obj)," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""defending""} count _obj)," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""idle""} count _obj)," \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""internal""} count _obj)] call ALIVE_fnc_dumpR; " \n
+       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""internal""} count _obj)," \n
+       "						_side" \n
+       "					] call ALIVE_fnc_dumpR; " \n
        "					//[] call ALIVE_fnc_timer;" \n
        "				};" \n
        "				// debug ---------------------------------------" \n
@@ -366,7 +375,7 @@ class FSM
        "						[_target,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n
        "" \n
        "						// debug ---------------------------------------" \n
-       "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal ""ColorRed""};" \n
+       "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal _colorside};" \n
        "						// debug ---------------------------------------" \n
        "				};" \n
        "			};" \n
