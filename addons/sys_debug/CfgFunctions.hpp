@@ -6,6 +6,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_debug\fnc_dump.sqf";
 				recompile = 1;
 			};
+			class dumpR {
+				description = "dumpR";
+				file = "\x\alive\addons\sys_debug\fnc_dumpR.sqf";
+				recompile = 1;
+			};
 			class timer {
 				description = "timer";
 				file = "\x\alive\addons\sys_debug\fnc_timer.sqf";

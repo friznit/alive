@@ -158,9 +158,15 @@ switch(_operation) do {
 		            	_m = createMarkerLocal [_id, _pos];
 						_m setMarkerShapeLocal "RECTANGLE";
 						_m setMarkerSizeLocal [_size, _size];
-						_m setMarkerTypeLocal "hd_dot";
-						_m setMarkerColorLocal "ColorWhite";
-						_m setMarkerTextLocal format["Objective %1",_id];
+						_m setMarkerBrushLocal "FDiagonal";
+						_m setMarkerColorLocal "ColorYellow";
+						
+						_m = createMarkerLocal [format["%1_label",_id], _pos];
+						_m setMarkerShapeLocal "ICON";
+						_m setMarkerSizeLocal [0.5, 0.5];
+						_m setMarkerTypeLocal "mil_dot";
+						_m setMarkerColorLocal "ColorYellow";
+						_m setMarkerTextLocal _id;
 					};
 		
 					_objectives set [count _objectives, _target];
@@ -237,11 +243,17 @@ switch(_operation) do {
 									_opcom_state = "unassigned"; [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
 						
 									if  (_debug) then {
-						            	_m = createMarkerLocal [_id, _pos];
+										_m = createMarkerLocal [_id, _pos];
 										_m setMarkerShapeLocal "RECTANGLE";
 										_m setMarkerSizeLocal [_size, _size];
-										_m setMarkerTypeLocal "hd_dot";
-										_m setMarkerColorLocal "ColorWhite";
+										_m setMarkerBrushLocal "FDiagonal";
+										_m setMarkerColorLocal "ColorYellow";
+										
+										_m = createMarkerLocal [format["%1_label",_id], _pos];
+										_m setMarkerShapeLocal "ICON";
+										_m setMarkerSizeLocal [0.5, 0.5];
+										_m setMarkerTypeLocal "mil_dot";
+										_m setMarkerColorLocal "ColorYellow";
 										_m setMarkerTextLocal format["Objective Priority %1",_foreachIndex];
 									};
 						

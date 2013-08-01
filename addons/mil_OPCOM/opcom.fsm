@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
+/*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
@@ -59,8 +59,8 @@ link21[] = {16,9};
 link22[] = {17,9};
 link23[] = {18,14};
 link24[] = {19,5};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,62,6316128,1,-1212.014526,-345.731445,-317.436401,-1021.130127,1007,818,1};
-window[] = {0,-1,-1,-1,-1,1036,82,1815,87,1,1024};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,62,6316128,1,-1019.098206,-296.173706,-166.552231,-1006.305115,922,1071,1};
+window[] = {2,-1,-1,-1,-1,1100,81,1814,151,3,940};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -79,7 +79,24 @@ class FSM
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "// debug ---------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[ ""OPCOM INIT""] call ALIVE_fnc_dumpR;" \n
+       "	//[true] call ALIVE_fnc_timer;" \n
+       "};" \n
+       "// debug ---------------------------------------" \n
+       "" \n
        "_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectivesbydistance"",SEP] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "" \n
+       "// debug ---------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[ ""OPCOM INIT COMPLETE ""] call ALIVE_fnc_dumpR;" \n
+       "	[ ""OPCOM Objectives: %1"",_objectives] call ALIVE_fnc_dump;" \n
+       "	//_objectives call ALIVE_fnc_inspectHash; // bugged??" \n
+       "	//[] call ALIVE_fnc_timer;" \n
+       "};" \n
+       "// debug ---------------------------------------" \n
        "" \n
        "_objectives = [];" \n
        "_targets = [];" \n
@@ -173,7 +190,11 @@ class FSM
        "	switch (_DATA_OPERATION) do {" \n
        "		case (""init"") : {" \n
        "			_OPCOM_DATA = [""analyze"",nil]; _busy = false;" \n
-       "			player sidechat format[""OPCOM initialized, %1!"",_DATA_VALUE];" \n
+       "" \n
+       "			// debug ---------------------------------------" \n
+       "			if(_debug) then { [""OPCOM initialized, %1!"",_DATA_VALUE] call ALIVE_fnc_dumpR; };" \n
+       "			// debug ---------------------------------------" \n
+       "" \n
        "		};" \n
        "" \n
        "		case (""analyze"") : {" \n
@@ -186,6 +207,14 @@ class FSM
        "					default {};" \n
        "				};" \n
        "			};" \n
+       "" \n
+       "			// debug ---------------------------------------" \n
+       "			if(_debug) then {" \n
+       "				[""---------------------""] call ALIVE_fnc_dump;" \n
+       "				[""OPCOM analyse""] call ALIVE_fnc_dump;" \n
+       "				//[true] call ALIVE_fnc_timer;" \n
+       "			};" \n
+       "			// debug ---------------------------------------		" \n
        "			" \n
        "			//Intensive calcs, only do on regular timeout analysis" \n
        "			if (_timeout) then {" \n
@@ -232,27 +261,20 @@ class FSM
        "				if !(isnil ""_targetsWithState"") then {_orders = [_OPCOM_HANDLER,""selectordersbystate"",_targetsWithState] call ALiVE_fnc_OPCOM};" \n
        "				if !(isnil ""_orders"") then {_OPCOM_DATA = _orders};" \n
        "" \n
-       "				if (_debug) then {" \n
-       "	        			player sidechat format[""OPCOM analyzed: Total of %1 targets | unassigned: %2 | assigned: %3 | completed: %4 | defending: %5 | secured: %6 | internal: %7""," \n
+       "				// debug ---------------------------------------" \n
+       "				if(_debug) then {" \n
+       "					 [""OPCOM analyzed: Total of %1 targets | unassigned: %2 | assigned: %3 | completed: %4 | defending: %5 | secured: %6 | internal: %7""," \n
        "						 count _obj," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""unassigned""} count _obj), " \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""attacking""} count _obj)," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""reserving""} count _obj)," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""defending""} count _obj)," \n
        "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""idle""} count _obj)," \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""internal""} count _obj)" \n
-       "					];" \n
-       "	" \n
-       "					diag_log format[""OPCOM analyzed: Total of %1 targets | unassigned: %2 | assigned: %3 | completed: %4 | defending: %5 | secured: %6 | internal: %7""," \n
-       "						 count _obj," \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""unassigned""} count _obj), " \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""attacking""} count _obj)," \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""reserving""} count _obj)," \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""defending""} count _obj)," \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""idle""} count _obj)," \n
-       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""internal""} count _obj)" \n
-       "					];" \n
+       "						({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""internal""} count _obj)] call ALIVE_fnc_dumpR; " \n
+       "					//[] call ALIVE_fnc_timer;" \n
        "				};" \n
+       "				// debug ---------------------------------------" \n
+       "" \n
        "				_busy = false;" \n
        "		};" \n
        "" \n
@@ -272,8 +294,11 @@ class FSM
        "				};" \n
        "				//Custom" \n
        "			};" \n
-       "			player sidechat format[""OPCOM orders TACOM to %1 target %2"",([_DATA_VALUE,""opcom_orders""] call AliVE_fnc_HashGet),([_DATA_VALUE,""objectiveID""] call AliVE_fnc_HashGet)];" \n
-       "			diag_log format[""OPCOM orders TACOM to %1 target %2"",([_DATA_VALUE,""opcom_orders""] call AliVE_fnc_HashGet),([_DATA_VALUE,""objectiveID""] call AliVE_fnc_HashGet)];" \n
+       "" \n
+       "			// debug ---------------------------------------" \n
+       "			if(_debug) then { [""OPCOM orders TACOM to %1 target %2"",([_DATA_VALUE,""opcom_orders""] call AliVE_fnc_HashGet),([_DATA_VALUE,""objectiveID""] call AliVE_fnc_HashGet)] call ALIVE_fnc_dumpR; };" \n
+       "			// debug ---------------------------------------" \n
+       ";" \n
        "		};" \n
        "" \n
        "		//Handle TACOM confirmation by state" \n
@@ -302,10 +327,16 @@ class FSM
        "				//Trigger new OPCOM analysis after TACOM confirmation including TACOMs answer" \n
        "				_OPCOM_DATA = [""analyze"",_return];" \n
        "" \n
-       "				player sidechat format[""TACOM confirmed - %1 %2! Answer was %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return];" \n
-       "				diag_log format[""TACOM confirmed - %1 %2! Answer was %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return];" \n
+       "				// debug ---------------------------------------" \n
+       "				if(_debug) then { [""TACOM confirmed - %1 %2! Answer was %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return] call ALIVE_fnc_dumpR; };" \n
+       "				// debug ---------------------------------------" \n
+       "" \n
        "			}  else {" \n
-       "				player sidechat format[""TACOM could not confirm orders! Answer was %1"",_return];" \n
+       "" \n
+       "				// debug ---------------------------------------" \n
+       "				if(_debug) then { [""TACOM could not confirm orders! Answer was %1"",_return] call ALIVE_fnc_dumpR; };" \n
+       "				// debug ---------------------------------------" \n
+       "" \n
        "			};" \n
        "		_busy = false;" \n
        "		};" \n
@@ -319,15 +350,24 @@ class FSM
        "			switch (_state) do {" \n
        "				case (""attacking"") : {" \n
        "						[_target,""opcom_state"",""reserve""] call AliVE_fnc_HashSet;" \n
+       "" \n
+       "						// debug ---------------------------------------" \n
        "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal ""ColorWhite""};" \n
+       "						// debug ---------------------------------------" \n
        "				};" \n
        "				case (""defending"") : {" \n
        "						[_target,""opcom_state"",""reserve""] call AliVE_fnc_HashSet;" \n
+       "			" \n
+       "						// debug ---------------------------------------" \n
        "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal ""ColorOrange""};" \n
+       "						// debug ---------------------------------------" \n
        "				};" \n
        "				case (""reserving"") : {" \n
        "						[_target,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n
+       "" \n
+       "						// debug ---------------------------------------" \n
        "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal ""ColorRed""};" \n
+       "						// debug ---------------------------------------" \n
        "				};" \n
        "			};" \n
        "			" \n
@@ -338,6 +378,7 @@ class FSM
        "		case (""custom"") : {_custom = _DATA_VALUE};" \n
        "		default {};" \n
        "	};" \n
+       "" \n
        "};" \n
        "" \n
        "_lastAnalyze = time;"/*%FSM</STATEINIT""">*/;
