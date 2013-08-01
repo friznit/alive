@@ -220,7 +220,7 @@ class FSM
        "			if (_timeout) then {" \n
        "				" \n
        "				//Update profiles grid analysis" \n
-       "				[] spawn {[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfiles};" \n
+       "				//[] spawn {[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfiles};" \n
        "			};" \n
        "" \n
        "			//Get objectives" \n

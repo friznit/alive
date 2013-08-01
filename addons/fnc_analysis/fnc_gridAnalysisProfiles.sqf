@@ -33,7 +33,8 @@ _grid = _this select 0;
 
 // reset existing analysis data
 
-//[true] call ALIVE_fnc_timer;
+["RESET SECTORS"] call ALIVE_fnc_dump;
+[true] call ALIVE_fnc_timer;
 
 _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
@@ -64,12 +65,13 @@ _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 	
 } forEach _sectors;
 
-//[] call ALIVE_fnc_timer;
+[] call ALIVE_fnc_timer;
 
 
 // run analysis on all profiles
 
-//[true] call ALIVE_fnc_timer;
+["ANALYSE PROFILES"] call ALIVE_fnc_dump;
+[true] call ALIVE_fnc_timer;
 
 _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGet;
 
@@ -158,4 +160,4 @@ _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGe
 	
 } forEach (_profilesBySide select 1);
 
-//[] call ALIVE_fnc_timer;
+[] call ALIVE_fnc_timer;
