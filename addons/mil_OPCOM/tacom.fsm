@@ -1,9 +1,9 @@
-/*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-398.915222,114.819130,98.822098,162.683716,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-398.915222,114.819130,98.822098,162.683716,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,8.832397,-104.508537,58.832394,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383667,193.384125,-206.383591,243.384094,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,171.547714,468.898773,179.547714,476.898743,0.000000,""};
@@ -63,8 +63,8 @@ link23[] = {18,20};
 link24[] = {19,13};
 link25[] = {20,5};
 link26[] = {21,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-592.737976,258.184418,559.545776,-510.099609,852,1071,1};
-window[] = {2,-1,-1,-32000,-32000,1127,198,1821,243,3,870};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-592.737976,258.184418,436.933197,-489.804108,853,929,1};
+window[] = {2,-1,-1,-1,-1,972,88,1711,88,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -81,6 +81,8 @@ class FSM
        "_OPCOM_HANDLER = _this select 0;" \n
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
+       "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
+       "_sideEnemy = [_OPCOM_HANDLER,""sideenemy"",""WEST""] call ALiVE_fnc_HashGet;" \n
        "" \n
        "_OPCOM_FSM =  [_OPCOM_HANDLER,""OPCOM_FSM""] call ALiVE_fnc_HashGet;" \n
        "_TACOM_FSM =  [_OPCOM_HANDLER,""TACOM_FSM""] call ALiVE_fnc_HashGet;"/*%FSM</STATEINIT""">*/;
@@ -160,7 +162,7 @@ class FSM
        "" \n
        "				case (""defend"") : {" \n
        "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
-       "					_nearEnemies = [_objective,""entitiesnearsector"",""WEST""] call AliVE_fnc_OPCOM;" \n
+       "					_nearEnemies = [_objective,""entitiesnearsector"",_sideEnemy] call AliVE_fnc_OPCOM;" \n
        "" \n
        "					if (count _section < 1) then {" \n
        "						_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""defend"",2]] call ALiVE_fnc_OPCOM;" \n

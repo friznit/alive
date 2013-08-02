@@ -86,9 +86,15 @@ switch(_operation) do {
                     _debug = _logic getvariable ["debug",true];
                     _type = _logic getvariable ["controltype","invasion"];
                     _side = _logic getvariable ["side","EAST"];
+                    _position = getposATL _logic;
+                    
+                    _sides = ["EAST","WEST"];
+                    _sideEnemy = (_sides - [_side]) select 0;
 
 					[_handler, "side",_side] call ALiVE_fnc_HashSet;
+                    [_handler, "sideenemy",_sideEnemy] call ALiVE_fnc_HashSet;
                     [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
+                    [_handler, "position",_position] call ALiVE_fnc_HashSet;
                     [_handler, "debug",(call compile _debug)] call ALiVE_fnc_HashSet;
 					
 					/*
@@ -214,9 +220,11 @@ switch(_operation) do {
                 if(isnil "_args") then {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
-                    	//Collect objectives from SEP and order by distance from SEP module (for now)
-                        _logic = _args;
-						_objectives = [_logic,"objectives"] call ALiVE_fnc_SEP;
+                    	//Collect objectives from SEP and order by distance from OPCOM module (for now)
+                        _SEP = _args;
+						_objectives = [_SEP,"objectives"] call ALiVE_fnc_SEP;
+                        _startpos = [_logic,"position"] call ALiVE_fnc_HashGet;
+                        _side = [_logic,"side"] call ALiVE_fnc_HashGet;
 
 						_objectives_unsorted = [];
 						_targets = [];
@@ -228,14 +236,14 @@ switch(_operation) do {
 									_priority = [_target,"priority"] call ALiVE_fnc_hashGet;
 									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority]];
 						} foreach _objectives;
-						_objectives = [_objectives_unsorted,[],{_logic distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
+						_objectives = [_objectives_unsorted,[],{_startpos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
 						
 						//Create objectives for OPCOM and set it on the OPCOM Handler 
 						//GetObjectivesByPriority
 						{
 									_target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
 						
-									_id = format["OPCOM_objective_%1",_foreachIndex]; [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
+									_id = format["OPCOM_objective_%1_%2",_side,_foreachIndex]; [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
 									_pos = _x select 0; [_target, "center",_pos] call ALIVE_fnc_HashSet;
 									_size = _x select 1; [_target, "size",_size] call ALIVE_fnc_HashSet;
 									_type = _x select 2; [_target, "type",_type] call ALIVE_fnc_HashSet;
@@ -254,7 +262,7 @@ switch(_operation) do {
 										_m setMarkerSizeLocal [0.5, 0.5];
 										_m setMarkerTypeLocal "mil_dot";
 										_m setMarkerColorLocal "ColorYellow";
-										_m setMarkerTextLocal format["Objective Priority %1",_foreachIndex];
+										//_m setMarkerTextLocal format["Objective Priority %1",_foreachIndex];
 									};
 						
 									_objectives set [_forEachIndex, _target];
@@ -290,8 +298,13 @@ switch(_operation) do {
 		};
         case "analyzeclusteroccupation": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+                
+                private ["_side","_sides","_id"];
 
 				_sides = _args;
+                _sideF = _sides select 0;
+                _sideE = _sides select 1;
+                
 				//_distance = _args select 1;
                 _result_tmp = [];
                 {
@@ -342,7 +355,7 @@ switch(_operation) do {
 					_targetID = _x select 0;
 					_entities = _x select 1;
 					
-					if ({(_x select 0) == _targetID} count _targetsTaken2 > 0) then {
+					if (({(_x select 0) == _targetID} count _targetsTaken2 > 0) && {(typename _x == "ARRAY")}) then {
 						_targetsAttacked1 set [count _targetsAttacked1,_x];
 						_remover1 set [count _remover1,_foreachIndex];
 					};
@@ -354,7 +367,7 @@ switch(_operation) do {
 					_targetID = _x select 0;
 					_entities = _x select 1;
 					
-					if ({(_x select 0) == _targetID} count _targetsTaken1 > 0) then {
+					if (({(_x select 0) == _targetID} count _targetsTaken1 > 0) && {(typename _x == "ARRAY")}) then {
 						_targetsAttacked2 set [count _targetsAttacked2,_x];
 						_remover2 set [count _remover2,_foreachIndex];
 					};
@@ -373,7 +386,7 @@ switch(_operation) do {
 
                 
 	            _result = [_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2];
-                diag_log format ["East: Taken %1 | Attacked %2 // West: Taken %3 | Attacked %4",_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2];
+                diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,_sideF,_sideE];
 		};
 
         case "entitiesnearsector": {
@@ -422,7 +435,7 @@ switch(_operation) do {
                     
                     if ((_profileID in _section) && {!(_objectiveID == _id)}) then {
                         _section = _section - [_profileID];
-                        if (count _section < 1) then {[_x,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_x,"opcom_orders","unassigned"] call ALiVE_fnc_HashSet};
+                        if (count _section < 1) then {[_x,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_x,"opcom_orders","unassigned"] call ALiVE_fnc_HashSet; [_x,"danger",-1] call ALiVE_fnc_HashSet};
                         [_x,"section",_section] call ALiVE_fnc_HashSet;
                     };
                 } foreach _objectives;
@@ -470,7 +483,7 @@ switch(_operation) do {
 					_objectiveID = _item select 2;
 					_time = _item select 3;
 					_dead = !(_ProfileID in _profiles);
-					_timeout = (time - _time) > 1800;
+					_timeout = (time - _time) > 3600;
 			
 					if ((_dead) || {_timeout} || {_ProfileID == _ProfileIDInput}) then {
 						_orders_pending set [_i,"x"]; _orders_pending = _orders_pending - ["x"];
@@ -562,8 +575,8 @@ switch(_operation) do {
 
 				switch (_operation) do {
                 	case ("unassigned") : {_idleStates = ["internal","unassigned"]};
-                    case ("attack") : {_idleStates = ["internal","attack","attacking"]};
-                    case ("defend") : {_idleStates = ["internal","defend","defending"]};
+                    case ("attack") : {_idleStates = ["internal","attack","attacking","defend","defending"]};
+                    case ("defend") : {_idleStates = ["internal","defend","defending","attack","attacking"]};
                     case ("reserve") : {_idleStates = ["internal","reserve","reserving","idle"]};
                     default {_idleStates = ["internal","reserve","reserving","idle"]};
                 };
