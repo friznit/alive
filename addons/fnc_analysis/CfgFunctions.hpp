@@ -26,9 +26,14 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_plotSectors.sqf";
 				recompile = 1;
 			};
-			class gridAnalysisProfiles {
-				description = "gridAnalysisProfiles";
-				file = "\x\alive\addons\fnc_analysis\fnc_gridAnalysisProfiles.sqf";
+			class gridAnalysisProfileEntity {
+				description = "gridAnalysisProfileEntity";
+				file = "\x\alive\addons\fnc_analysis\fnc_gridAnalysisProfileEntity.sqf";
+				recompile = 1;
+			};
+			class gridAnalysisProfileVehicle {
+				description = "gridAnalysisProfileVehicle";
+				file = "\x\alive\addons\fnc_analysis\fnc_gridAnalysisProfileVehicle.sqf";
 				recompile = 1;
 			};
 			class sectorFilterProfiles {
@@ -119,6 +124,11 @@ class cfgFunctions {
 			class sectorDataSort {
 				description = "sectorDataSort";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorDataSort.sqf";
+				recompile = 1;
+			};
+			class sectorDataMerge {
+				description = "sectorDataMerge";
+				file = "\x\alive\addons\fnc_analysis\fnc_sectorDataMerge.sqf";
 				recompile = 1;
 			};
 			class getNearUnits {

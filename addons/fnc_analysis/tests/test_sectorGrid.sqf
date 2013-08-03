@@ -127,6 +127,52 @@ sleep 5;
 } forEach _result;
 
 
+STAT("Sectors in Radius");
+_result = [_logic, "sectorsInRadius", [getPos player, 500]] call ALIVE_fnc_sectorGrid;
+_err = "set sectorsInRadius";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+{
+	if!(count _x == 0) then
+	{
+		_nil = [_x, "debug", false] call ALIVE_fnc_sector;
+	}
+	
+} forEach _result;
+
+sleep 5;
+
+{
+	if!(count _x == 0) then
+	{
+		_nil = [_x, "debug", true] call ALIVE_fnc_sector;
+	}
+} forEach _result;
+
+
+STAT("Sectors in Radius");
+_result = [_logic, "sectorsInRadius", [getPos player, 1000]] call ALIVE_fnc_sectorGrid;
+_err = "set sectorsInRadius";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+{
+	if!(count _x == 0) then
+	{
+		_nil = [_x, "debug", false] call ALIVE_fnc_sector;
+	}
+	
+} forEach _result;
+
+sleep 5;
+
+{
+	if!(count _x == 0) then
+	{
+		_nil = [_x, "debug", true] call ALIVE_fnc_sector;
+	}
+} forEach _result;
+
+
 STAT("Save state");
 _result = [_logic, "state"] call ALIVE_fnc_sectorGrid;
 _err = "check state";

@@ -64,6 +64,9 @@ _result = [_logic, "positionToSector", getPos Player] call ALIVE_fnc_sectorGrid;
 
 // surrounding sectors
 _result = [_logic, "surroundingSectors", getPos player] call ALIVE_fnc_sectorGrid;
+
+// sectors in radius
+_result = [_logic, "sectorsInRadius", [getPos player, 1000]] call ALIVE_fnc_sectorGrid;
 (end)
 
 See Also:
@@ -404,6 +407,53 @@ switch(_operation) do {
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
 				_result set [count _result, _sector];	
         };
+		case "sectorsInRadius": {
+				private["_position","_radius","_sectorDimensions","_sectorWidth","_sectors","_sector","_allSectors","_centre","_surroundingSectors","_bounds","_within"];
+				
+				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+				
+				_position = _args select 0;
+				_radius = _args select 1;
+				
+				_sectorDimensions = [_logic,"sectorDimensions"] call ALIVE_fnc_hashGet;
+				_sectorWidth = _sectorDimensions select 0;
+				_sectors = [];
+				
+				if(_radius > _sectorWidth) then {
+					_allSectors = [_logic,"sectors"] call ALIVE_fnc_hashGet;
+					
+					{
+						_centre = [_x, "center"] call ALIVE_fnc_sector;
+						
+						if(_centre distance _position <= _radius) then {
+							_sectors set [count _sectors, _x];
+						};
+					} forEach _allSectors;
+					
+					_result = _sectors;
+				}else{
+					_sector = [_logic, "positionToSector", _position] call MAINCLASS;
+					_surroundingSectors = [_logic, "surroundingSectors", _position] call MAINCLASS;
+					_sectors set [0, _sector];
+					
+					{
+						_sector = _x;
+						_bounds = [_sector, "bounds"] call ALIVE_fnc_sector;
+						_within = false;
+						{
+							if(_x distance _position <= _radius) then {
+								_within = true;
+							};
+						} forEach _bounds;
+						
+						if(_within) then {
+							_sectors set [count _sectors, _sector];
+						};
+					} forEach _surroundingSectors;
+					
+					_result = _sectors;
+				}
+		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
         };

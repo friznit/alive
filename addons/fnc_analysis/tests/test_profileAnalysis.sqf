@@ -12,7 +12,7 @@ private ["_result","_err","_logic","_timeStart","_timeEnd","_bounds","_grid","_p
 LOG("Testing Unit Analysis Object");
 
 ASSERT_DEFINED("ALIVE_fnc_sectorGrid","");
-ASSERT_DEFINED("ALIVE_fnc_gridAnalysisProfiles","");
+ASSERT_DEFINED("ALIVE_fnc_gridAnalysisProfileEntity","");
 
 #define STAT(msg) sleep 3; \
 diag_log ["TEST("+str player+": "+msg]; \
@@ -99,7 +99,7 @@ TIMEREND
 
 STAT("Run Profile analysis");
 TIMERSTART
-_result = [_grid] call ALIVE_fnc_gridAnalysisProfiles;
+_result = [_grid] call ALIVE_fnc_gridAnalysisProfileEntity;
 TIMEREND
 
 
