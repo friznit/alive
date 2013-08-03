@@ -12,6 +12,8 @@
 	[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
 	[ALIVE_sectorGrid, "createGrid"] call ALIVE_fnc_sectorGrid;
 	
+	//[ALIVE_sectorGrid, "debug", true] call ALIVE_fnc_sectorGrid;
+	
 	// get array of all sectors from the grid
 	_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
 	
@@ -31,28 +33,27 @@
 	[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 	
 	// turn on debug on profile handler to see profile registrations in RPT
-	[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+	//[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 	
 	// create profiles for all map units that dont have profiles
-	[true] call ALIVE_fnc_createProfilesFromUnits;
+	[false] call ALIVE_fnc_createProfilesFromUnits;
 	
 	// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 	[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 	
-	// get profiles
-	_profiles = [ALIVE_profileHandler, "getProfiles"] call ALIVE_fnc_profileHandler;
-    player sidechat format["Count Profiles %1",count (_profiles select 2)];
+	// run profile analysis
+	[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;	
     
 	// start profile simulation with debug enabled
-    [] spawn {[true] call ALIVE_fnc_simulateProfileMovement};
+    [] spawn {[false] call ALIVE_fnc_simulateProfileMovement};
 	
 	// start profile spawner with activation radius of 1000m and debug enabled
-	[] spawn {[1000,true] call ALIVE_fnc_profileSpawner};
+	[] spawn {[1000,false] call ALIVE_fnc_profileSpawner};
 	
 	// run grid analysis
 	[] spawn { 
 		waituntil {
-			sleep 5;
+			sleep 240;
 			
 			private ["_sectors","_sectorData"];
 			
@@ -62,11 +63,24 @@
 			// DEBUG -------------------------------------------------------------------------------------
 			
 			// run profile analysis on all sectors
-			[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfiles;
+			[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
 			
-			sleep 30;
+			// DEBUG -------------------------------------------------------------------------------------
+			// display visual representation of sector data
 			
+			_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
 			
+			// clear the sector data plot
+			[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+			
+			// plot the sector data
+			[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
+			// DEBUG -------------------------------------------------------------------------------------
+			
+					
+			sleep 5;
+			
+			/*
 			// EXAMPLE CODE ONLY FROM HERE ----------------------------------------------------------------------------------
 			
 			// get array of all sectors from the grid
@@ -103,23 +117,7 @@
 				};
 			} forEach _sectors;
 			
-			
-			// HH these will probably interest you most position to grid sector 
-			_mySector = [ALIVE_sectorGrid, "positionToSector", getPos player] call ALIVE_fnc_sectorGrid;
-			
-			// Surrounding sectors
-			_mySurroundingSectors = [ALIVE_sectorGrid, "surroundingSectors", getPos player] call ALIVE_fnc_sectorGrid;
-			
-			
-			// DEBUG -------------------------------------------------------------------------------------
-			// display visual representation of sector data
-			
-			// clear the sector data plot
-			[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
-			
-			// plot the sector data
-			[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
-			// DEBUG -------------------------------------------------------------------------------------
+			*/			
 			
 			false 
 		};
