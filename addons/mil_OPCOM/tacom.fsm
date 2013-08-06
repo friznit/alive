@@ -1,9 +1,9 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,250,-398.915222,114.819130,98.822098,162.683716,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,4346,-398.915222,114.819130,98.822098,162.683716,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,8.832397,-104.508537,58.832394,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383667,193.384125,-206.383591,243.384094,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,171.547714,468.898773,179.547714,476.898743,0.000000,""};
@@ -63,8 +63,8 @@ link23[] = {18,20};
 link24[] = {19,13};
 link25[] = {20,5};
 link26[] = {21,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-592.737976,258.184418,436.933197,-489.804108,853,929,1};
-window[] = {2,-1,-1,-1,-1,972,88,1711,88,3,870};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-459.189331,124.635040,697.767517,61.925968,853,929,1};
+window[] = {2,-1,-1,-1,-1,1082,198,1821,198,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -83,6 +83,10 @@ class FSM
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
        "_sideEnemy = [_OPCOM_HANDLER,""sideenemy"",""WEST""] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "_sectionsamount_attack = [_OPCOM_HANDLER,""sectionsamount_attack"",3] call ALiVE_fnc_HashGet;" \n
+       "_sectionsamount_reserve = [_OPCOM_HANDLER,""sectionsamount_reserve"",1] call ALiVE_fnc_HashGet;" \n
+       "_sectionsamount_defend = [_OPCOM_HANDLER,""sectionsamount_defend"",2] call ALiVE_fnc_HashGet;" \n
        "" \n
        "_OPCOM_FSM =  [_OPCOM_HANDLER,""OPCOM_FSM""] call ALiVE_fnc_HashGet;" \n
        "_TACOM_FSM =  [_OPCOM_HANDLER,""TACOM_FSM""] call ALiVE_fnc_HashGet;"/*%FSM</STATEINIT""">*/;
@@ -146,11 +150,13 @@ class FSM
        "			switch (_opcom_orders) do {" \n
        "" \n
        "				case (""attack"") : {" \n
+       "					[_OPCOM_HANDLER,""cleanupduplicatesections""] call ALiVE_fnc_OPCOM;" \n
+       "" \n
        "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
        "					_danger = [_objective,""danger"",-1] call AliVE_fnc_HashGet;" \n
        "" \n
-       "					if (count _section < 1) then {" \n
-       "						_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""attack"",3]] call ALiVE_fnc_OPCOM;" \n
+       "					if (count _section < _sectionsamount_attack) then {" \n
+       "						_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""attack"",_sectionsamount_attack,_objective]] call ALiVE_fnc_OPCOM;" \n
        "						[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
        "					};" \n
        "" \n
@@ -161,11 +167,13 @@ class FSM
        "				};" \n
        "" \n
        "				case (""defend"") : {" \n
+       "					[_OPCOM_HANDLER,""cleanupduplicatesections""] call ALiVE_fnc_OPCOM;" \n
+       "" \n
        "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
        "					_nearEnemies = [_objective,""entitiesnearsector"",_sideEnemy] call AliVE_fnc_OPCOM;" \n
        "" \n
-       "					if (count _section < 1) then {" \n
-       "						_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""defend"",2]] call ALiVE_fnc_OPCOM;" \n
+       "					if (count _section < _sectionsamount_defend) then {" \n
+       "						_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""defend"",_sectionsamount_defend,_objective]] call ALiVE_fnc_OPCOM;" \n
        "						[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
        "					};" \n
        "" \n
@@ -176,12 +184,16 @@ class FSM
        "				};" \n
        "		" \n
        "				case (""reserve"") : {" \n
-       "					_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""reserve"",2]] call ALiVE_fnc_OPCOM;" \n
-       "					[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
+       "					[_OPCOM_HANDLER,""cleanupduplicatesections""] call ALiVE_fnc_OPCOM;" \n
+       "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
+       "" \n
+       "					if (count _section < _sectionsamount_reserve) then {" \n
+       "						_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""reserve"",_sectionsamount_reserve,_objective]] call ALiVE_fnc_OPCOM;" \n
+       "						[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
+       "					};" \n
        "" \n
        "					_reserve = [_objective,_section];" \n
        "				};" \n
-       "				case (""defend"") : {};" \n
        "				case (""custom"") : {};" \n
        "				default {};" \n
        "			};" \n
@@ -216,7 +228,7 @@ class FSM
        "			_transmit = !([_objective,""opcom_state""] call AliVE_fnc_HashGet == ""internal"");" \n
        "			_dataset = nil;" \n
        "" \n
-       "			switch (_orders) do {" \n
+       "			switch (_state) do {" \n
        "				case (""recon"") : {" \n
        "					if !([_OPCOM_HANDLER,""synchronizeorders"",_ProfileID] call ALiVE_fnc_OPCOM) exitwith {" \n
        "						// debug ---------------------------------------" \n
@@ -251,7 +263,11 @@ class FSM
        "							_dataset = {_TACOM_DATA = [""analyze"",_objective]};" \n
        "				};" \n
        "				case (""reserve"") : {" \n
-       "					[_OPCOM_HANDLER,""ProfileIDsReserve"",([_OPCOM_HANDLER,""ProfileIDsReserve"",[]] call ALiVE_fnc_HashGet) + [_ProfileID]] call ALiVE_fnc_HashSet;" \n
+       "					_ProfilesReserve = [_OPCOM_HANDLER,""ProfileIDsReserve"",[]] call ALiVE_fnc_HashGet;" \n
+       "					if !(_ProfileID in _ProfilesReserve) then {" \n
+       "						[_OPCOM_HANDLER,""ProfileIDsReserve"",_ProfilesReserve + [_ProfileID]] call ALiVE_fnc_HashSet;" \n
+       "					};" \n
+       "" \n
        "					if !([_OPCOM_HANDLER,""synchronizeorders"",_ProfileID] call ALiVE_fnc_OPCOM) exitwith {" \n
        "						// debug ---------------------------------------" \n
        "						if(_debug) then { [""TACOM %1 regrouping! Waiting for %2 groups!"",_ProfileID,({_objectiveID == (_x select 2)} count ([_OPCOM_HANDLER,""pendingorders"",[]] call ALiVE_fnc_HashGet))] call ALIVE_fnc_dumpR; };" \n
@@ -350,8 +366,9 @@ class FSM
       name = "ISSUE_ORDERS";
       init = /*%FSM<STATEINIT""">*/"private [""_data""];" \n
        "" \n
-       "//Get all profileIDs" \n
+       "//Get all profileIDs and objectives" \n
        "_profiles = ([ALIVE_profileHandler, ""getProfiles"", ""entity""] call ALIVE_fnc_profileHandler) select 1;" \n
+       "_objectives = [_OPCOM_HANDLER,""objectives""] call ALiVE_fnc_HashGet;" \n
        "" \n
        "//prepare orders" \n
        "if !(isnil ""_recon"") then {_operation = ""recon""};" \n
@@ -373,7 +390,7 @@ class FSM
        "			_objectiveID = [_objective,""objectiveID""] call AliVE_fnc_HashGet;" \n
        "			_turn = true;" \n
        "" \n
-       "			if (count _section > 0) then {" \n
+       "			if (count _section >= _sectionsamount_attack) then {" \n
        "				[_objective,""tacom_state"",""recon""] call AliVE_fnc_HashSet;" \n
        "" \n
        "				{" \n
@@ -396,8 +413,37 @@ class FSM
        "				" \n
        "				_TAC_confirmed = true;" \n
        "			} else {" \n
-       "				_TAC_confirmed = false;" \n
-       "				_recon set [1,[""no groups available""]];" \n
+       "				if (count _section == 0) then {" \n
+       "					_TAC_confirmed = false;" \n
+       "					_recon set [1,[""no groups available""]];" \n
+       "				} else {" \n
+       "					{" \n
+       "						_profileID = _x;" \n
+       "" \n
+       "						if (_profileID in _profiles) then {" \n
+       "							_profile = [ALIVE_profileHandler, ""getProfile"", _profileID] call ALIVE_fnc_profileHandler;" \n
+       "" \n
+       "							//Select nearest taken objective to regroup" \n
+       "							_posP = [_profile, ""position""] call ALIVE_fnc_profileEntity;" \n
+       "							_objectives = [_objectives,[],{_posP distance (_x select 2 select 1)},""ASCEND""] call BIS_fnc_sortBy;" \n
+       "							" \n
+       "							{" \n
+       "								_state = [_x,""opcom_state""] call ALivE_fnc_HashGet;" \n
+       "								" \n
+       "								if (_state == ""idle"") exitwith {" \n
+       "									_objectiveID = [_x,""objectiveID""] call ALiVE_fnc_HashGet;" \n
+       "									_posWP = [_x,""center""] call ALiVE_fnc_HashGet;" \n
+       "									[_profile, ""clearWaypoints""] call ALIVE_fnc_profileEntity;" \n
+       "									_profileWaypoint = [_posWP, 50] call ALIVE_fnc_createProfileWaypoint;" \n
+       "									[_profile, ""addWaypoint"", _profileWaypoint] call ALIVE_fnc_profileEntity;" \n
+       "								};" \n
+       "							} foreach _objectives;" \n
+       "						};" \n
+       "					} foreach _section;" \n
+       "" \n
+       "					_TAC_confirmed = false;" \n
+       "					_recon set [1,[""not enough groups to build a section, regrouping...""]];" \n
+       "				};" \n
        "			};" \n
        "			_data = _recon;" \n
        "		};" \n
@@ -458,7 +504,6 @@ class FSM
        "				} foreach _section;" \n
        "" \n
        "				_TAC_confirmed = true;" \n
-       "				_defend set [1,[""Defending...""]];" \n
        "			} else {" \n
        "				_TAC_confirmed = false;" \n
        "				_defend set [1,[""no groups available""]];" \n
