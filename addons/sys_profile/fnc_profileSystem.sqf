@@ -60,8 +60,7 @@ switch(_operation) do {
 						// nil these out they add a lot of code to the hash..
 						[_logic,"super"] call ALIVE_fnc_hashRem;
 						[_logic,"class"] call ALIVE_fnc_hashRem;
-                        //TRACE_1("After module init",_logic);
-						["PROFILE SYSTEM"] call ALIVE_fnc_dump;						
+                        //TRACE_1("After module init",_logic);				
 						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
@@ -89,6 +88,7 @@ switch(_operation) do {
 						
 						// start simulation controller
 						ALIVE_simulationController = [nil, "create"] call ALIVE_fnc_simulationController;
+						[ALIVE_simulationController, "debug", true] call ALIVE_fnc_simulationController;
 						[ALIVE_simulationController, "init"] call ALIVE_fnc_simulationController;
                 };
                 

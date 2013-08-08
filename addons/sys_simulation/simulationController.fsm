@@ -2,9 +2,14 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
-item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"INITIALIZE",2,250,-195.246613,-87.998024,-105.246597,-37.998020,0.000000,"INITIALIZE"};
+item1[] = {"INIT_COMPLETE",4,218,-192.559631,-169.082306,-102.559647,-119.082314,0.000000,"INIT" \n "COMPLETE"};
+item2[] = {"INITIALIZE",2,250,-193.249146,-87.998016,-103.249130,-37.998020,0.000000,"INITIALIZE"};
 item3[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
+item4[] = {"INIT__COMPLETE",4,218,-194.299576,-9.444106,-104.299583,40.555897,0.000000,"INIT " \n "COMPLETE"};
+item5[] = {"SIMULATE",2,250,-194.299561,68.457237,-104.299553,118.457230,0.000000,"SIMULATE"};
+item6[] = {"TIMER",4,218,-56.474129,67.458481,33.525864,117.458458,0.000000,"TIMER"};
+item7[] = {"DESTROY",4,218,-194.299576,201.289017,-104.299583,251.289032,0.000000,"DESTROY"};
+item8[] = {"END",1,4346,-195.298294,276.194153,-105.298264,326.194122,0.000000,"END"};
 version=1;
 class LayoutItems
 {
@@ -20,8 +25,14 @@ class LayoutItems
 };
 link0[] = {0,1};
 link1[] = {1,2};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-592.737976,258.184418,436.933197,-489.804108,852,1071,1};
-window[] = {2,-1,-1,-32000,-32000,1035,167,1790,151,3,870};
+link2[] = {2,4};
+link3[] = {4,5};
+link4[] = {5,6};
+link5[] = {5,7};
+link6[] = {6,5};
+link7[] = {7,8};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,77,6316128,1,-592.737976,258.184418,436.933197,-489.804108,852,1071,1};
+window[] = {2,-1,-1,-1,-1,1055,158,1781,171,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -32,7 +43,9 @@ class FSM
     class INIT
     {
       name = "INIT";
-      init = /*%FSM<STATEINIT""">*/"_simulationController = _this select 0;" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_simulationController"",""_debug""];" \n
+       "" \n
+       "_simulationController = _this select 0;" \n
        "" \n
        "_debug = [_simulationController,""debug"",false] call ALiVE_fnc_HashGet;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -55,10 +68,88 @@ class FSM
     class INITIALIZE
     {
       name = "INITIALIZE";
-      init = /*%FSM<STATEINIT""">*/"// debug ---------------------------------------" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_cycleTime"",""_lastSimulation""];" \n
+       "" \n
+       "_cycleTime = 10;" \n
+       "_lastSimulation = 0;" \n
+       "_destroy = false;" \n
+       "" \n
+       "// debug ---------------------------------------" \n
        "if(_debug) then { [""SIMULATION CONTROLLER initialized""] call ALIVE_fnc_dumpR; };" \n
        "// debug ---------------------------------------" \n
        ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "INIT__COMPLETE">*/
+        class INIT__COMPLETE
+        {
+          priority = 0.000000;
+          to="SIMULATE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "SIMULATE">*/
+    class SIMULATE
+    {
+      name = "SIMULATE";
+      init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Simulated profile movement - started cycling at %1 second iterations"",_cycleTime] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "private [""_profiles"",""_entityProfile""];" \n
+       "" \n
+       "_profiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_profileHandler;" \n
+       "" \n
+       "[""PROFILES %1"",_profiles] call ALIVE_fnc_dump;" \n
+       "" \n
+       "{" \n
+       "	_entityProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
+       "      [_simulationController,""simulateEntitiy"", [_entityProfile]] call ALIVE_fnc_simulationController;" \n
+       "} forEach _profiles;" \n
+       "" \n
+       "_lastSimulation = time;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "DESTROY">*/
+        class DESTROY
+        {
+          priority = 0.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_destroy"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "TIMER">*/
+        class TIMER
+        {
+          priority = 0.000000;
+          to="SIMULATE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"time - _lastSimulation > _cycleTime"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "END">*/
+    class END
+    {
+      name = "END";
+      init = /*%FSM<STATEINIT""">*/"// debug ---------------------------------------" \n
+       "if(_debug) then { [""SIMULATION CONTROLLER destroyed""] call ALIVE_fnc_dumpR; };" \n
+       "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -69,6 +160,7 @@ class FSM
   initState="INIT";
   finalStates[] =
   {
+    "END",
   };
 };
 /*%FSM</COMPILE>*/

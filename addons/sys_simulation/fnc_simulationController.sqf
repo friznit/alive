@@ -53,15 +53,16 @@ _deleteMarkers = {
 	_logic = _this;
 	{
 			deleteMarkerLocal _x;
-	} forEach (([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet) select 2);
+	} forEach (([_logic,"debugMarkers"] call ALIVE_fnc_hashGet) select 2);
 };
 
 _deleteMarker = {
 	private ["_profile","_markers","_m","_profileID","_markerIndex"];
 	
-	_logic = _this;
-	_profile = _this select 0;
-	_markers = [_logic,"debugMarkers", []] call ALIVE_fnc_hashGet;
+	_profile = _this;
+	//_logic = _this select 1;
+	
+	_markers = [_logic,"debugMarkers"] call ALIVE_fnc_hashGet;
 	
 	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
 	
@@ -74,11 +75,15 @@ _deleteMarker = {
 };
 
 _createMarker = {
-	private ["_profile","_waypoint","_m","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
+	private ["_profile","_waypoint","_markers","_m","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
 	_profile = _this select 0;
 	_waypoint = _this select 1;
 	
-	[_entityProfile] call _deleteMarker;
+	_profile call ALIVE_fnc_inspectHash;
+	
+	_profile call _deleteMarker;
+	
+	_markers = [_logic,"debugMarkers"] call ALIVE_fnc_hashGet;
 
 	_position = [_waypoint,"position"] call ALIVE_fnc_hashGet;
 	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
@@ -131,7 +136,7 @@ switch(_operation) do {
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
 						
-						["SIMULATION CONTROLLER"] call ALIVE_fnc_dump;
+						[_logic,"debugMarkers", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						
 						_handle = [_logic] execFSM "\x\alive\addons\sys_simulation\simulationController.fsm";
 						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
@@ -151,7 +156,7 @@ switch(_operation) do {
 				"_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_vehicleProfile",
 				"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements"];
 				
-				_entityProfile = _this select 0;
+				_entityProfile = _args select 0;
 				
 				_debug = [_logic, "debug"] call ALIVE_fnc_hashGet;
 		
@@ -290,6 +295,9 @@ switch(_operation) do {
         case "destroy": {                
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
+					_fsmHandler = [_logic, "controller_FSM"] call ALiVE_fnc_HashGet;					
+					_fsmHandler setFSMVariable ["_destroy",true];
+					
 					[_logic, "destroy"] call SUPERCLASS;
                 };                
         };
