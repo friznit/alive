@@ -77,11 +77,11 @@ class RscDisplayMain: RscStandardDisplay
 		class GameLogo: RscPicture
 		{
 			idc = 1202;
-			text = "\x\alive\addons\UI\logo_alive_crop.paa";
+			text = "\x\alive\addons\UI\logo_alive_white.paa";
 			x = "1 * 			(			((safezoneW / safezoneH) min 1.2) / 40) + 			(safezoneX)";
 			y = "9.3 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
-			w = "7.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
-			h = "3.75 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "7.5 * 		(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			tooltip = "$STR_ALIVE_UI_TOOLTIP_LOGO_ABOUT";
 		};
 	};
