@@ -2,4 +2,25 @@
 <Project name="Arma3">
 <Package name="ALiVE">
 <Container name="STR_DN">
+<Key ID="STR_ALIVE_PROFILE_SYSTEM">
+	<English>Profile System</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_COMMENT">
+	<English>Profile System</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_ENABLED">
+	<English>Enable Profile System:</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_ENABLED_COMMENT">
+	<English>Enable Profile System</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DISABLED">
+	<English>Disable Profile System:</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DISABLED_COMMENT">
+	<English>Disable Profile System</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
+	<English>Only one Profile System module can be used</English>
+</Key>
 </Container></Package></Project>

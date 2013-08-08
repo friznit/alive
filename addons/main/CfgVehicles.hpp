@@ -65,7 +65,7 @@ class CfgVehicles {
 				displayName = "$STR_ALIVE_REQUIRES_ALIVE";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
-				picture = "x\alive\addons\main\icon_REQUIRES_ALIVE.paa";
+				icon = "x\alive\addons\main\icon_requires_alive.paa";
+				picture = "x\alive\addons\main\icon_requires_alive.paa";
 	};
 };

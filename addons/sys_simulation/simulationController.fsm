@@ -1,0 +1,74 @@
+/*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, simulation controller">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
+item2[] = {"INITIALIZE",2,250,-195.246613,-87.998024,-105.246597,-37.998020,0.000000,"INITIALIZE"};
+item3[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
+version=1;
+class LayoutItems
+{
+	class Item3
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+};
+link0[] = {0,1};
+link1[] = {1,2};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-592.737976,258.184418,436.933197,-489.804108,852,1071,1};
+window[] = {2,-1,-1,-32000,-32000,1035,167,1790,151,3,870};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "simulation controller";
+  class States
+  {
+    /*%FSM<STATE "INIT">*/
+    class INIT
+    {
+      name = "INIT";
+      init = /*%FSM<STATEINIT""">*/"_simulationController = _this select 0;" \n
+       "" \n
+       "_debug = [_simulationController,""debug"",false] call ALiVE_fnc_HashGet;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "INIT_COMPLETE">*/
+        class INIT_COMPLETE
+        {
+          priority = 0.000000;
+          to="INITIALIZE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "INITIALIZE">*/
+    class INITIALIZE
+    {
+      name = "INITIALIZE";
+      init = /*%FSM<STATEINIT""">*/"// debug ---------------------------------------" \n
+       "if(_debug) then { [""SIMULATION CONTROLLER initialized""] call ALIVE_fnc_dumpR; };" \n
+       "// debug ---------------------------------------" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="INIT";
+  finalStates[] =
+  {
+  };
+};
+/*%FSM</COMPILE>*/

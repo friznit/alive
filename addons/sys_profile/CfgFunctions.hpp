@@ -1,6 +1,16 @@
 class cfgFunctions {
 	class PREFIX {
 		class COMPONENT {
+			class profileSystemInit {
+				description = "profileSystemInit";
+				file = "\x\alive\addons\sys_profile\fnc_profileSystemInit.sqf";
+				recompile = 1;
+			};
+			class profileSystem {
+				description = "profileSystem";
+				file = "\x\alive\addons\sys_profile\fnc_profileSystem.sqf";
+				recompile = 1;
+			};
 			class configGetGroup {
 				description = "configGetGroup";
 				file = "\x\alive\addons\sys_profile\fnc_configGetGroup.sqf";

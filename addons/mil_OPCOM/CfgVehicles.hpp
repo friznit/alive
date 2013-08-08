@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_OPCOMInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\mil_opcom\icon_mil_OPCOM.paa";
-				picture = "x\alive\addons\mil_opcom\icon_mil_OPCOM.paa";
+				icon = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
+				picture = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
                 class Arguments
                 {
                         class debug

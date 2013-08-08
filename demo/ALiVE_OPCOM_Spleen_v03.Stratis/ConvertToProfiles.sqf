@@ -42,7 +42,7 @@
 	[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 	
 	// run profile analysis
-	[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;	
+	[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
     
 	// start profile simulation with debug enabled
     [] spawn {[false] call ALIVE_fnc_simulateProfileMovement};
