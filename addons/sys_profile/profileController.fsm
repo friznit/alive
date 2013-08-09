@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, profile controller">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item3[] = {"DESTROY",4,218,-66.461502,-168.242981,23.538473,-118.242981,0.000000,"DESTROY"};
@@ -13,6 +13,8 @@ item8[] = {"SIMULATE",2,250,-190.304626,67.458511,-100.304604,117.458504,0.00000
 item9[] = {"COMPLETE",4,218,-373.583862,217.268799,-283.583862,267.268799,0.000000,"COMPLETE"};
 item10[] = {"VIEW",4,218,-69.968399,-11.441580,20.031601,38.558411,3.000000,"VIEW"};
 item11[] = {"VIEW",2,250,-71.455154,66.459785,18.544888,116.459770,0.000000,"VIEW"};
+item12[] = {"PROFILE_ANALYSIS",4,218,47.882359,-12.440315,137.882370,37.559673,3.000000,"PROFILE" \n "ANALYSIS"};
+item13[] = {"VIEW_1",2,4346,47.394333,66.459785,137.394379,116.459770,0.000000,"VIEW"};
 version=1;
 class LayoutItems
 {
@@ -33,13 +35,16 @@ link3[] = {5,3};
 link4[] = {5,6};
 link5[] = {5,7};
 link6[] = {5,10};
-link7[] = {6,5};
-link8[] = {7,8};
-link9[] = {8,9};
-link10[] = {9,5};
-link11[] = {10,11};
-link12[] = {11,9};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,85,6316128,1,-430.454865,420.467499,436.933197,-489.804108,852,1071,1};
+link7[] = {5,12};
+link8[] = {6,5};
+link9[] = {7,8};
+link10[] = {8,9};
+link11[] = {9,5};
+link12[] = {10,11};
+link13[] = {11,9};
+link14[] = {12,13};
+link15[] = {13,9};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,87,6316128,1,-430.454865,420.467499,436.933197,-489.804108,852,1071,1};
 window[] = {2,-1,-1,-1,-1,1054,0,1623,170,3,870};
 *//*%FSM</HEAD>*/
 class FSM
@@ -51,7 +56,11 @@ class FSM
     class INIT
     {
       name = "INIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_timer"",""_simulationCycleTime"",""_lastSimulationTime"",""_doSimulation"",""_destroy"",""_debug""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_timer""," \n
+       """_simulationCycleTime"",""_lastSimulationTime"",""_doSimulation""," \n
+       """_viewCycleTime"",""_lastViewTime"",""_doView""," \n
+       """_profileAnalysisCycleTime"",""_lastProfileAnalysisTime"",""_doProfileAnalysis""," \n
+       """_destroy"",""_debug""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
        "" \n
@@ -64,6 +73,10 @@ class FSM
        "_viewCycleTime = 5;" \n
        "_lastViewTime = 0;" \n
        "_doView = false;" \n
+       "" \n
+       "_profileAnalysisCycleTime = 90;" \n
+       "_lastProfileAnalysisTime = 0;" \n
+       "_doProfileAnalysis = false;" \n
        "" \n
        "_destroy = false;" \n
        "_debug = [_profileSystem,""debug"",false] call ALiVE_fnc_HashGet;" \n
@@ -106,6 +119,10 @@ class FSM
       name = "SWITCH";
       init = /*%FSM<STATEINIT""">*/"_timer = time;" \n
        "" \n
+       "if((_timer - _lastProfileAnalysisTime) > _profileAnalysisCycleTime) then {" \n
+       "	_doProfileAnalysis = true;" \n
+       "};" \n
+       "" \n
        "if((_timer - _lastSimulationTime) > _simulationCycleTime) then {" \n
        "	_doSimulation = true;" \n
        "};" \n
@@ -124,6 +141,16 @@ class FSM
           to="VIEW";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_doView"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "PROFILE_ANALYSIS">*/
+        class PROFILE_ANALYSIS
+        {
+          priority = 3.000000;
+          to="VIEW_1";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_doProfileAnalysis"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -219,6 +246,55 @@ class FSM
        "" \n
        "_doView = false;" \n
        "_lastViewTime = time;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "COMPLETE">*/
+        class COMPLETE
+        {
+          priority = 0.000000;
+          to="SWITCH";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "VIEW_1">*/
+    class VIEW_1
+    {
+      name = "VIEW_1";
+      init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Profile analysis  - started cycling at %1 second iterations"",_profileAnalysisCycleTime] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "// run profile analysis on all sectors" \n
+       "// spawned to avoid lock ups for now" \n
+       "" \n
+       "[_debug] spawn {" \n
+       "" \n
+       "	_debug = _this select 0;" \n
+       "	[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;" \n
+       "			" \n
+       "	// DEBUG -------------------------------------------------------------------------------------" \n
+       "	if(_debug) then {" \n
+       "		_sectors = [ALIVE_sectorGrid, ""sectors""] call ALIVE_fnc_sectorGrid;" \n
+       "			" \n
+       "		// clear the sector data plot" \n
+       "		[ALIVE_sectorPlotter, ""clear""] call ALIVE_fnc_plotSectors;" \n
+       "			" \n
+       "		// plot the sector data" \n
+       "		[ALIVE_sectorPlotter, ""plot"", [_sectors, ""entitiesBySide""]] call ALIVE_fnc_plotSectors;" \n
+       "	};" \n
+       "};" \n
+       "" \n
+       "_doProfileAnalysis = false;" \n
+       "_lastProfileAnalysisTime = time;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
