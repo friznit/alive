@@ -10,30 +10,24 @@ class CfgVehicles {
 				picture = "x\alive\addons\sys_profile\icon_sys_profile.paa";
                 class Arguments
                 {
-                        class Enabled
+                        class debug
                         {
-                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_ENABLED";
-                                description = "$STR_ALIVE_PROFILE_SYSTEM_ENABLED_COMMENT";
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_DEBUG";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT";
                                 class Values
                                 {
                                         class Yes
                                         {
                                                 name = "Yes";
-                                                value = 1;
-												default = 1;
+                                                value = true;
+                                                default = true;
                                         };
                                         class No
                                         {
                                                 name = "No";
-                                                value = 0;
+                                                value = false;
                                         };
                                 };
-                        };
-                        class Condition
-                        {
-                                displayName = "Condition:";
-                                description = "";
-                                defaultValue = "true";
                         };                        
                 };
                 

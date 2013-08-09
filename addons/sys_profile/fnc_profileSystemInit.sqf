@@ -20,12 +20,22 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_profileSystem"];
+private ["_logic","_debug","_profileSystem"];
 
 PARAMS_1(_logic);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
+_debug = _logic getVariable ["debug",false];
+
+if(_debug == "true") then {
+	_debug = true;
+}else{
+	_debug = false;
+};
+
 _profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 [_profileSystem, "init"] call ALIVE_fnc_profileSystem;
+[_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;
+[_profileSystem, "start"] call ALIVE_fnc_profileSystem;

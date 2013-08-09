@@ -60,7 +60,6 @@ _deleteMarker = {
 	private ["_profile","_markers","_m","_profileID","_markerIndex"];
 	
 	_profile = _this;
-	//_logic = _this select 1;
 	
 	_markers = [_logic,"debugMarkers"] call ALIVE_fnc_hashGet;
 	
@@ -78,8 +77,6 @@ _createMarker = {
 	private ["_profile","_waypoint","_markers","_m","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
 	_profile = _this select 0;
 	_waypoint = _this select 1;
-	
-	_profile call ALIVE_fnc_inspectHash;
 	
 	_profile call _deleteMarker;
 	
@@ -137,9 +134,6 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);
 						
 						[_logic,"debugMarkers", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
-						
-						_handle = [_logic] execFSM "\x\alive\addons\sys_simulation\simulationController.fsm";
-						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
                 };
                 
                 /*
@@ -152,11 +146,12 @@ switch(_operation) do {
         };
 		case "simulateEntitiy": {
 		
-				private ["_entityProfile","_debug","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo",
-				"_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_vehicleProfile",
+				private ["_entityProfile","_cycleTime","_debug","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo",
+				"_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_moveDistance","_vehicleProfile",
 				"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements"];
 				
 				_entityProfile = _args select 0;
+				_cycleTime = _args select 1;
 				
 				_debug = [_logic, "debug"] call ALIVE_fnc_hashGet;
 		
@@ -199,7 +194,9 @@ switch(_operation) do {
 							case "NORMAL": { _speedPerSecond = _speedPerSecondArray select 1; };
 							case "FULL": { _speedPerSecond = _speedPerSecondArray select 2; };
 							case default { _speedPerSecond = _speedPerSecondArray select 1; };
-						};				
+						};
+						
+						_moveDistance = floor(_speedPerSecond * _cycleTime);
 					
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
@@ -212,13 +209,13 @@ switch(_operation) do {
 						switch (_type) do {
 							case "MOVE" : {
 								 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-								 _newPosition = [_currentPosition, _speedPerSecond, _direction] call BIS_fnc_relPos;
+								 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
 								 _handleWPcomplete = {};
 
 							};
 							case "CYCLE" : {
 								 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-								 _newPosition = [_currentPosition, _speedPerSecond, _direction] call BIS_fnc_relPos;
+								 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
 								 _handleWPcomplete = {
 									_waypoints = _waypoints + _waypointsCompleted;
 									_waypointsCompleted = [];
@@ -231,7 +228,7 @@ switch(_operation) do {
 						};
 						
 						// distance to wp destination within completion radius
-						if(_distance <= (_speedPerSecond * 2)) then {
+						if(_distance <= (_moveDistance * 2)) then {
 						
 							// DEBUG -------------------------------------------------------------------------------------
 							if(_debug) then {
@@ -295,9 +292,6 @@ switch(_operation) do {
         case "destroy": {                
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
-					_fsmHandler = [_logic, "controller_FSM"] call ALiVE_fnc_HashGet;					
-					_fsmHandler setFSMVariable ["_destroy",true];
-					
 					[_logic, "destroy"] call SUPERCLASS;
                 };                
         };

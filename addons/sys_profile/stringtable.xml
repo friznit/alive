@@ -8,17 +8,11 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_COMMENT">
 	<English>Profile System</English>
 </Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_ENABLED">
-	<English>Enable Profile System:</English>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG">
+	<English>Enable Debug:</English>
 </Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_ENABLED_COMMENT">
-	<English>Enable Profile System</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_DISABLED">
-	<English>Disable Profile System:</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_DISABLED_COMMENT">
-	<English>Disable Profile System</English>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT">
+	<English>Enables OPCOM Module Debug</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
 	<English>Only one Profile System module can be used</English>

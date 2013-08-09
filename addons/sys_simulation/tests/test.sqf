@@ -1,4 +1,4 @@
-#include <\x\alive\addons\sys_profile\script_component.hpp>
+#include <\x\alive\addons\sys_simulation\script_component.hpp>
 
 #define TESTS ["simulation"];
 

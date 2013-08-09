@@ -60,7 +60,32 @@ switch(_operation) do {
 						// nil these out they add a lot of code to the hash..
 						[_logic,"super"] call ALIVE_fnc_hashRem;
 						[_logic,"class"] call ALIVE_fnc_hashRem;
-                        //TRACE_1("After module init",_logic);				
+                        //TRACE_1("After module init",_logic);						
+						
+						[_logic,"debug",false] call ALIVE_fnc_hashSet;
+                };
+                
+                /*
+                VIEW - purely visual
+                */
+                
+                /*
+                CONTROLLER  - coordination
+                */
+        };
+		case "start": {                
+                
+                if (isServer) then {
+						
+						_debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
+						
+						// DEBUG -------------------------------------------------------------------------------------
+						if(_debug) then {
+							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+							["ALIVE Profile system init"] call ALIVE_fnc_dump;
+							[true] call ALIVE_fnc_timer;
+						};
+						// DEBUG -------------------------------------------------------------------------------------
 						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
@@ -78,36 +103,52 @@ switch(_operation) do {
 						[false] call ALIVE_fnc_createProfilesFromUnits;
 						
 						// turn on debug again to see the state of the profile handler, and set debug on all a profiles
-						[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+						[ALIVE_profileHandler, "debug", _debug] call ALIVE_fnc_profileHandler;
 						
-						// run profile analysis
+						// run initial profile analysis
 						[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
 						
-						// start profile spawner with activation radius of 1000m and debug enabled
-						[] spawn {[1000,false] call ALIVE_fnc_profileSpawner};
-						
-						// start simulation controller
+						// create simulation controller
 						ALIVE_simulationController = [nil, "create"] call ALIVE_fnc_simulationController;
-						[ALIVE_simulationController, "debug", true] call ALIVE_fnc_simulationController;
+						[ALIVE_simulationController, "debug", _debug] call ALIVE_fnc_simulationController;
 						[ALIVE_simulationController, "init"] call ALIVE_fnc_simulationController;
+						
+						// create view controller
+						ALIVE_viewController = [nil, "create"] call ALIVE_fnc_viewController;
+						[ALIVE_viewController, "debug", _debug] call ALIVE_fnc_viewController;
+						[ALIVE_viewController, "init"] call ALIVE_fnc_viewController;
+						
+						// DEBUG -------------------------------------------------------------------------------------
+						if(_debug) then {
+							["ALIVE Profile system init complete"] call ALIVE_fnc_dump;
+							["ALIVE Sector grid created"] call ALIVE_fnc_dump;
+							["ALIVE Profile handler created"] call ALIVE_fnc_dump;
+							["ALIVE Map units converted to profiles"] call ALIVE_fnc_dump;
+							["ALIVE Profile initial analysis complete"] call ALIVE_fnc_dump;
+							["ALIVE Simulation controller created"] call ALIVE_fnc_dump;
+							["ALIVE View controller created"] call ALIVE_fnc_dump;
+							[] call ALIVE_fnc_timer;
+							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;					
+						};
+						// DEBUG -------------------------------------------------------------------------------------
+							
+						// start the profile controller FSM
+						_handle = [_logic] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
+						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
                 };
-                
-                /*
-                VIEW - purely visual
-                */
-                
-                /*
-                CONTROLLER  - coordination
-                */
         };
         case "destroy": {                
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
 					[_logic, "destroy"] call SUPERCLASS;
+					
+					_fsmHandler = [_logic, "controller_FSM"] call ALiVE_fnc_HashGet;					
+					_fsmHandler setFSMVariable ["_destroy",true];
+					
                 };                
         };
         case "debug": {
-                if(typeName _args != "BOOL") then {
+				if(typeName _args != "BOOL") then {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
                 } else {
 						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
