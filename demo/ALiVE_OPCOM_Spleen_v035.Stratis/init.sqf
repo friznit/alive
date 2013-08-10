@@ -8,5 +8,5 @@
 };
     
 if (isServer) then {
-	call compile preprocessFileLinenumbers "convertToProfiles.sqf";
+	//call compile preprocessFileLinenumbers "convertToProfiles.sqf";
 };
