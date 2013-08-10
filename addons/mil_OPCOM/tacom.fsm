@@ -3,26 +3,26 @@
 /*
 item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-398.915222,114.819130,98.822098,162.683716,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,4346,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,8.832397,-104.508537,58.832394,0.000000,"RECEIVE"};
-item4[] = {"CAPTURE_Conditio",4,218,-296.383667,193.384125,-206.383591,243.384094,3.000000,"CAPTURE" \n "Conditions"};
-item5[] = {"",7,210,171.547714,468.898773,179.547714,476.898743,0.000000,""};
-item6[] = {"",7,210,171.743484,135.632568,179.743546,143.632553,0.000000,""};
-item7[] = {"DEFEND_condition",4,218,-197.909698,194.460342,-107.909790,244.460342,2.000000,"DEFEND" \n "conditions"};
-item8[] = {"RESERVE_conditio",4,218,-98.860970,193.167236,-8.860947,243.167206,1.000000,"RESERVE" \n "conditions"};
-item9[] = {"CUSTOM_condition",4,218,5.405207,191.819977,95.405060,241.820114,0.000000,"CUSTOM" \n "conditions"};
-item10[] = {"ISSUE_ORDERS",2,250,-410.405151,380.871490,88.862106,425.074554,0.000000,"ISSUE ORDERS"};
-item11[] = {"GROUP_NOT_CONFIR",4,218,-150.917450,440.980774,-60.917450,490.980957,0.000000,"GROUP" \n "NOT" \n "CONFIRM"};
-item12[] = {"GROUP_CONFIRM",4,218,-255.035446,441.809845,-165.035599,491.809845,0.000000,"GROUP" \n "CONFIRM"};
-item13[] = {"",7,210,-514.292969,461.235718,-506.292969,469.235687,0.000000,""};
-item14[] = {"",7,210,-512.438843,135.777771,-504.438812,143.777756,0.000000,""};
+item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
+item5[] = {"",7,210,171.547714,544.715576,179.547714,552.715454,0.000000,""};
+item6[] = {"",7,210,178.895996,31.205742,186.896057,39.205746,0.000000,""};
+item7[] = {"DEFEND_condition",4,218,-197.909698,270.277069,-107.909790,320.277069,2.000000,"DEFEND" \n "conditions"};
+item8[] = {"RESERVE_conditio",4,218,-98.860970,268.983917,-8.860947,318.983917,1.000000,"RESERVE" \n "conditions"};
+item9[] = {"CUSTOM_condition",4,218,5.405207,267.636688,95.405060,317.636871,0.000000,"CUSTOM" \n "conditions"};
+item10[] = {"ISSUE_ORDERS",2,250,-410.405243,456.688202,88.862106,500.891266,0.000000,"ISSUE ORDERS"};
+item11[] = {"GROUP_NOT_CONFIR",4,218,-150.917450,516.797485,-60.917450,566.797729,0.000000,"GROUP" \n "NOT" \n "CONFIRM"};
+item12[] = {"GROUP_CONFIRM",4,218,-255.035431,517.626587,-165.035599,567.626709,0.000000,"GROUP" \n "CONFIRM"};
+item13[] = {"",7,210,-514.293091,537.052490,-506.293060,545.052490,0.000000,""};
+item14[] = {"",7,210,-511.008453,29.920441,-503.008362,37.920422,0.000000,""};
 item15[] = {"INITIALIZE",2,250,-195.246613,-87.998024,-105.246597,-37.998020,0.000000,"INITIALIZE"};
 item16[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
-item17[] = {"TRANSMIT_TO_OPCO",2,250,-382.604065,440.411285,-292.604065,490.411285,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
-item18[] = {"TRANSMIT_TO_OPCO_1",2,250,-30.464869,437.026642,59.535149,487.026642,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
-item19[] = {"_",4,218,-482.501801,438.275482,-392.501801,488.275482,0.000000,""};
-item20[] = {"_",4,218,68.184074,442.021606,158.184052,492.021606,0.000000,""};
-item21[] = {"RECON_Conditions",4,218,-399.338470,195.674927,-309.338470,245.674911,0.000000,"RECON" \n "Conditions"};
+item17[] = {"TRANSMIT_TO_OPCO",2,250,-382.604156,516.228027,-292.604156,566.228149,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
+item18[] = {"TRANSMIT_TO_OPCO_1",2,250,-30.464867,512.843384,59.535149,562.843506,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
+item19[] = {"RECON_Conditions",4,218,-399.338531,271.491608,-309.338531,321.491608,0.000000,"RECON" \n "Conditions"};
+item20[] = {"COLLECT_TO_QUEUE",2,250,-191.535400,70.489761,-101.535316,120.489708,0.000000,"COLLECT" \n "TO QUEUE"};
+item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.571014,0.000000,"ENTRIES" \n "IN QUEUE"};
 version=1;
 class LayoutItems
 {
@@ -43,11 +43,11 @@ link3[] = {2,4};
 link4[] = {2,7};
 link5[] = {2,8};
 link6[] = {2,9};
-link7[] = {2,21};
-link8[] = {3,2};
+link7[] = {2,19};
+link8[] = {3,20};
 link9[] = {4,10};
 link10[] = {5,6};
-link11[] = {6,2};
+link11[] = {6,3};
 link12[] = {7,10};
 link13[] = {8,10};
 link14[] = {9,10};
@@ -56,15 +56,15 @@ link16[] = {10,12};
 link17[] = {11,18};
 link18[] = {12,17};
 link19[] = {13,14};
-link20[] = {14,2};
+link20[] = {14,3};
 link21[] = {15,3};
-link22[] = {17,19};
-link23[] = {18,20};
-link24[] = {19,13};
-link25[] = {20,5};
-link26[] = {21,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-459.189331,124.635040,697.767517,61.925968,853,929,1};
-window[] = {2,-1,-1,-1,-1,1082,198,1821,198,3,870};
+link22[] = {17,13};
+link23[] = {18,5};
+link24[] = {19,10};
+link25[] = {20,21};
+link26[] = {21,2};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,74,6316128,1,-777.387817,442.832489,712.037231,-616.901428,853,929,1};
+window[] = {2,-1,-1,-1,-1,1104,220,1843,220,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -79,6 +79,7 @@ class FSM
        "_TAC_confirmed = false;" \n
        "" \n
        "_OPCOM_HANDLER = _this select 0;" \n
+       "_TACOM_QUEUE = [];" \n
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
@@ -110,7 +111,7 @@ class FSM
     class ANALYZE
     {
       name = "ANALYZE";
-      init = /*%FSM<STATEINIT""">*/"private [""_operation"",""_data_operation"",""_data_value"",""_tacom_data"",""_recon"",""_capture"",""_defend"",""_reserve"",""_custom"",""_dataset"",""_transmit""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_operation"",""_data_operation"",""_data_value"",""_tacom_data"",""_recon"",""_capture"",""_defend"",""_reserve"",""_custom"",""_dataset"",""_transmit"",""_TACOM_ACTION""];" \n
        "" \n
        "_busy = true;" \n
        "_lastAnalyze = time;" \n
@@ -124,11 +125,20 @@ class FSM
        "_section = [];" \n
        "_sections = [];" \n
        "" \n
+       "if (count _TACOM_QUEUE > 0) then {" \n
+       "	_TACOM_ACTION = _TACOM_QUEUE select 0;" \n
+       "	_TACOM_QUEUE set [0,""x""];" \n
+       "	_TACOM_QUEUE = _TACOM_QUEUE - [""x""];" \n
+       "};" \n
+       "" \n
+       "//_timeout = ((isnil ""_TACOM_ACTION"") && {(time - _lastAnalyze) >= 60});" \n
+       "//if (_timeout) then {_TACOM_ACTION = [""analyze"",nil]};" \n
+       "" \n
        "//start operating if data received" \n
-       "if !(isnil ""_TACOM_DATA"") then {" \n
-       "	_DATA_OPERATION = _TACOM_DATA select 0;" \n
-       "	_DATA_VALUE = _TACOM_DATA select 1;" \n
-       "	_TACOM_DATA = nil;" \n
+       "if !(isnil ""_TACOM_ACTION"") then {" \n
+       "	_DATA_OPERATION = _TACOM_ACTION select 0;" \n
+       "	_DATA_VALUE = _TACOM_ACTION select 1;" \n
+       "	_TACOM_ACTION = nil;" \n
        "" \n
        "	//select data operation" \n
        "	switch (_DATA_OPERATION) do {" \n
@@ -170,7 +180,7 @@ class FSM
        "					[_OPCOM_HANDLER,""cleanupduplicatesections""] call ALiVE_fnc_OPCOM;" \n
        "" \n
        "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
-       "					_nearEnemies = [_objective,""entitiesnearsector"",_sideEnemy] call AliVE_fnc_OPCOM;" \n
+       "					_nearEnemies = [_objective,""entitiesnearsector"",[_pos,_sideEnemy,false]] call AliVE_fnc_OPCOM;" \n
        "" \n
        "					if (count _section < _sectionsamount_defend) then {" \n
        "						_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""defend"",_sectionsamount_defend,_objective]] call ALiVE_fnc_OPCOM;" \n
@@ -223,6 +233,8 @@ class FSM
        "			// debug ---------------------------------------	" \n
        "" \n
        "			_objective = [_OPCOM_HANDLER,""getobjectivebyid"",_objectiveID] call ALiVE_fnc_OPCOM;" \n
+       "			_profile = [ALiVE_ProfileHandler,""getProfile"",_profileID] call ALiVE_fnc_ProfileHandler;" \n
+       "			_posP = [_profile,""position""] call ALiVE_fnc_HashGet;" \n
        "			_section = [_objective,""section""] call AliVE_fnc_HashGet;" \n
        "			_state = [_objective,""tacom_state""] call AliVE_fnc_HashGet;" \n
        "			_transmit = !([_objective,""opcom_state""] call AliVE_fnc_HashGet == ""internal"");" \n
@@ -230,6 +242,16 @@ class FSM
        "" \n
        "			switch (_state) do {" \n
        "				case (""recon"") : {" \n
+       "" \n
+       "						_visibleEnemies = [_OPCOM_HANDLER,""scanenemies"",_posP] call ALiVE_fnc_OPCOM;" \n
+       "						if (count _visibleEnemies > 0) then {" \n
+       "" \n
+       "							_direction = [(_visibleEnemies select 0 select 1), _posP] call BIS_fnc_dirTo;" \n
+       "							_newPosition = [(_visibleEnemies select 0 select 1), 100, _direction] call BIS_fnc_relPos;" \n
+       "							_profileWaypoint = [_newPosition, 50] call ALIVE_fnc_createProfileWaypoint;" \n
+       "							_waypoint = [_profile,""insertWaypoint"",_profileWaypoint] call ALIVE_fnc_profileEntity;" \n
+       "						};" \n
+       "" \n
        "					if !([_OPCOM_HANDLER,""synchronizeorders"",_ProfileID] call ALiVE_fnc_OPCOM) exitwith {" \n
        "						// debug ---------------------------------------" \n
        "						if(_debug) then { [""TACOM %1 regrouping! Waiting for %2 groups!"",_ProfileID,({_objectiveID == (_x select 2)} count ([_OPCOM_HANDLER,""pendingorders"",[]] call ALiVE_fnc_HashGet))] call ALIVE_fnc_dumpR; };" \n
@@ -351,9 +373,9 @@ class FSM
         class RECEIVE
         {
           priority = 0.000000;
-          to="ANALYZE";
+          to="COLLECT_TO_QUEUE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"") && !(_busy);"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -584,9 +606,9 @@ class FSM
         class RECEIVE
         {
           priority = 0.000000;
-          to="ANALYZE";
+          to="COLLECT_TO_QUEUE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"") && !(_busy);"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -601,13 +623,13 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "_">*/
-        class _
+        /*%FSM<LINK "RECEIVE">*/
+        class RECEIVE
         {
           priority = 0.000000;
-          to="ANALYZE";
+          to="COLLECT_TO_QUEUE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -622,13 +644,35 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "_">*/
-        class _
+        /*%FSM<LINK "RECEIVE">*/
+        class RECEIVE
+        {
+          priority = 0.000000;
+          to="COLLECT_TO_QUEUE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "COLLECT_TO_QUEUE">*/
+    class COLLECT_TO_QUEUE
+    {
+      name = "COLLECT_TO_QUEUE";
+      init = /*%FSM<STATEINIT""">*/"_TACOM_QUEUE set [count _TACOM_QUEUE,_TACOM_DATA];" \n
+       "_TACOM_DATA = nil;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "ENTRIES_IN_QUEUE">*/
+        class ENTRIES_IN_QUEUE
         {
           priority = 0.000000;
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(count _TACOM_QUEUE > 0) && !(_busy);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
