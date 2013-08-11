@@ -63,6 +63,7 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);						
 						
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
+						[_logic,"spawnRadius",false] call ALIVE_fnc_hashSet;
                 };
                 
                 /*
@@ -78,6 +79,7 @@ switch(_operation) do {
                 if (isServer) then {
 						
 						_debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
+						_spawnRadius = [_logic,"spawnRadius",false] call ALIVE_fnc_hashGet;
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
@@ -137,7 +139,7 @@ switch(_operation) do {
 						// DEBUG -------------------------------------------------------------------------------------
 							
 						// start the profile controller FSM
-						_handle = [_logic] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
+						_handle = [_logic,_spawnRadius] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
 						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
 												
 						
@@ -208,6 +210,13 @@ switch(_operation) do {
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
                 
                 _result = _args;
+        };
+		case "spawnRadius": {
+				if(typeName _args == "SCALAR") then {
+						[_logic,"spawnRadius",_args] call ALIVE_fnc_hashSet;
+						ALIVE_spawnRadius = _args;
+                };
+				_result = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
         };
 		case "state": {
 				private["_state"];

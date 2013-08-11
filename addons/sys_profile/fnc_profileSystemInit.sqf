@@ -28,6 +28,7 @@ PARAMS_1(_logic);
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
 _debug = _logic getVariable ["debug",false];
+_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1000"]);
 
 if(_debug == "true") then {
 	_debug = true;
@@ -38,4 +39,5 @@ if(_debug == "true") then {
 _profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 [_profileSystem, "init"] call ALIVE_fnc_profileSystem;
 [_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;
+[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
 [_profileSystem, "start"] call ALIVE_fnc_profileSystem;

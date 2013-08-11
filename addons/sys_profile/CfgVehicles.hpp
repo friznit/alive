@@ -28,7 +28,13 @@ class CfgVehicles {
                                                 value = false;
                                         };
                                 };
-                        };                        
+                        };
+						 class spawnRadius
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS_COMMENT";
+								defaultvalue = "1000";
+                        };
                 };
                 
         };

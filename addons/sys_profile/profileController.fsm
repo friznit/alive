@@ -6,17 +6,16 @@ item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699
 item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item3[] = {"DESTROY",4,218,-66.461502,-168.242981,23.538473,-118.242981,0.000000,"DESTROY"};
 item4[] = {"END",1,250,68.367783,-167.244247,158.367798,-117.244301,0.000000,"END"};
-item5[] = {"SWITCH",2,4346,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
+item5[] = {"SWITCH",2,250,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
 item6[] = {"SIMULATE",4,218,-189.816605,-11.441578,-99.816620,38.558418,3.000000,"SIMULATE"};
 item7[] = {"SIMULATE",2,250,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
 item8[] = {"COMPLETE",4,218,-373.583862,217.268799,-283.583862,267.268799,0.000000,"COMPLETE"};
-item9[] = {"SPAWN",4,218,-69.968399,-11.441580,20.031601,38.558411,2.000000,"SPAWN"};
-item10[] = {"SPAWN",2,250,-69.641251,67.064430,20.358829,117.064407,0.000000,"SPAWN"};
-item11[] = {"PROFILE_ANALYSIS",4,218,148.156036,-11.945818,238.156052,38.054169,5.000000,"PROFILE" \n "ANALYSIS"};
-item12[] = {"PROFILE_ANALYSIS",2,250,148.272644,66.349632,238.272690,116.349617,0.000000,"PROFILE" \n "ANALYSIS"};
-item13[] = {"DESPAWN",4,218,39.081223,-11.130665,129.081207,38.869316,4.000000,"DESPAWN"};
-item14[] = {"DESPAWN",2,250,39.408409,66.770706,129.408447,116.770691,0.000000,"DESPAWN"};
-item15[] = {"TIMER",4,218,-62.918728,-89.510696,27.081257,-39.510719,1.000000,"TIMER"};
+item9[] = {"SPAWN",4,218,-79.008347,-11.441580,10.991653,38.558411,2.000000,"SPAWN"};
+item10[] = {"SPAWN",2,250,-78.681198,67.064430,11.318882,117.064407,0.000000,"SPAWN"};
+item11[] = {"PROFILE_ANALYSIS",4,218,143.225143,-11.945818,233.225159,38.054165,5.000000,"PROFILE" \n "ANALYSIS"};
+item12[] = {"PROFILE_ANALYSIS",2,250,143.341751,66.349640,233.341797,116.349640,0.000000,"PROFILE" \n "ANALYSIS"};
+item13[] = {"DESPAWN",4,218,33.328533,-11.130665,123.328506,38.869316,4.000000,"DESPAWN"};
+item14[] = {"DESPAWN",2,250,33.655720,66.770706,123.655746,116.770691,0.000000,"DESPAWN"};
 version=1;
 class LayoutItems
 {
@@ -38,19 +37,17 @@ link4[] = {5,6};
 link5[] = {5,9};
 link6[] = {5,11};
 link7[] = {5,13};
-link8[] = {5,15};
-link9[] = {6,7};
-link10[] = {7,8};
-link11[] = {8,5};
-link12[] = {9,10};
-link13[] = {10,8};
-link14[] = {11,12};
-link15[] = {12,8};
-link16[] = {13,14};
-link17[] = {14,8};
-link18[] = {15,5};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,90,6316128,1,-383.138306,363.563751,570.067871,-368.568115,852,1071,1};
-window[] = {2,-1,-1,-1,-1,1066,265,1888,182,3,870};
+link8[] = {6,7};
+link9[] = {7,8};
+link10[] = {8,5};
+link11[] = {9,10};
+link12[] = {10,8};
+link13[] = {11,12};
+link14[] = {12,8};
+link15[] = {13,14};
+link16[] = {14,8};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,90,6316128,1,-359.469330,339.893829,386.122314,-343.862701,851,1071,1};
+window[] = {2,-1,-1,-1,-1,1101,200,1823,203,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -61,7 +58,7 @@ class FSM
     class INIT
     {
       name = "INIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_timer""," \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_timer""," \n
        """_simulationCycleTime"",""_lastSimulationTime"",""_doSimulation""," \n
        """_spawnCycleTime"",""_lastSpawnTime"",""_doSpawn""," \n
        """_despawnCycleTime"",""_lastDespawnTime"",""_doDespawn""," \n
@@ -69,15 +66,14 @@ class FSM
        """_destroy"",""_debug""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
-       "" \n
-       "_timer = 0;" \n
+       "_spawnDistance = _this select 1;" \n
        "" \n
        "_simulationCycleTime = 6;" \n
        "_lastSimulationTime = 0;" \n
        "_doSimulation = false;" \n
        "" \n
        "_spawnCycleTime = 5;" \n
-       "_lastSpawnTime = 0;" \n
+       "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
        "_doSpawn = false;" \n
        "" \n
        "_despawnCycleTime = 30;" \n
@@ -127,9 +123,7 @@ class FSM
     class SWITCH
     {
       name = "SWITCH";
-      init = /*%FSM<STATEINIT""">*/"_timer = time;" \n
-       "" \n
-       "//[""HELLO""] call ALIVE_fnc_dump;" \n
+      init = /*%FSM<STATEINIT""">*/"//[""HELLO""] call ALIVE_fnc_dump;" \n
        "" \n
        "/*" \n
        "" \n
@@ -163,7 +157,7 @@ class FSM
           priority = 5.000000;
           to="PROFILE_ANALYSIS";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(_timer - _lastProfileAnalysisTime) > _profileAnalysisCycleTime"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(time - _lastProfileAnalysisTime) > _profileAnalysisCycleTime"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -173,7 +167,7 @@ class FSM
           priority = 4.000000;
           to="DESPAWN";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((_timer - _lastDespawnTime) > _despawnCycleTime)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((time - _lastDespawnTime) > _despawnCycleTime) && !(_doDespawn)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -183,7 +177,7 @@ class FSM
           priority = 3.000000;
           to="SIMULATE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(_timer - _lastSimulationTime) > _simulationCycleTime"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(time - _lastSimulationTime) > _simulationCycleTime"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -193,17 +187,7 @@ class FSM
           priority = 2.000000;
           to="SPAWN";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((_timer - _lastSpawnTime) > _spawnCycleTime)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "TIMER">*/
-        class TIMER
-        {
-          priority = 1.000000;
-          to="SWITCH";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((time - _lastSpawnTime) > _spawnCycleTime) && !(_doSpawn)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -423,7 +407,6 @@ class FSM
        "[true] call ALIVE_fnc_timer;" \n
        "" \n
        "_profiles = [ALIVE_profileHandler, ""profilesInActive""] call ALIVE_fnc_hashGet;" \n
-       "_distance = 1000;" \n
        "" \n
        "{" \n
        "	private [""_profile"",""_profileID"",""_profileType"",""_position"",""_active""];" \n
@@ -436,12 +419,12 @@ class FSM
        "" \n
        "	if!(_active) then {" \n
        "		" \n
-       "		if ([_position, _distance] call ALiVE_fnc_anyPlayersInRange > 0) then {		" \n
+       "		if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange > 0) then {		" \n
        "				" \n
        "			// DEBUG -------------------------------------------------------------------------------------" \n
        "			if(_debug) then {" \n
        "				[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "				[""ALIVE Profile spawner - spawn [%1]"",_profileID] call ALIVE_fnc_dump;" \n
+       "				[""ALIVE Profile spawner - spawn [%1]"",_profileID] call ALIVE_fnc_dump;			" \n
        "			};" \n
        "			// DEBUG -------------------------------------------------------------------------------------					" \n
        "			" \n
@@ -456,6 +439,7 @@ class FSM
        "		};" \n
        "	}" \n
        "} forEach _profiles;" \n
+       "" \n
        "" \n
        "[""END""] call ALIVE_fnc_dump;" \n
        "[] call ALIVE_fnc_timer;" \n
@@ -544,7 +528,6 @@ class FSM
        "[true] call ALIVE_fnc_timer;" \n
        "" \n
        "_profiles = [ALIVE_profileHandler, ""profilesActive""] call ALIVE_fnc_hashGet;" \n
-       "_distance = 1000;" \n
        "" \n
        "{" \n
        "	private [""_profile"",""_profileID"",""_profileType"",""_position"",""_active"",""_vehicle"",""_leader""];" \n
@@ -565,7 +548,7 @@ class FSM
        "" \n
        "	if(_active) then {" \n
        "		" \n
-       "		if ([_position, _distance] call ALiVE_fnc_anyPlayersInRange > 0) then {		" \n
+       "		if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) then {		" \n
        "				" \n
        "			// DEBUG -------------------------------------------------------------------------------------" \n
        "			if(_debug) then {" \n

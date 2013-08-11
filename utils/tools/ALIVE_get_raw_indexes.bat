@@ -1,17 +1,17 @@
 @echo off
 set exe=DeWrp.exe -O
-set arma=C:\Program Files (x86)\Steam\SteamApps\common\Arma 3\
+set arma=C:\Steam\SteamApps\common\Arma 3\
 set target=P:\x\alive\addons\fnc_strategic\indexes
 
 %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
-%exe% "%arma%\@a2co\Addons\chernarus.pbo" > %target%\objects.chernarus.sqf
-%exe% "%arma%\@a2co\Addons\utes.pbo" > %target%\objects.utes.sqf
-%exe% "%arma%\@a2co\Expansion\Addons\desert_e.pbo" > %target%\objects.desert_e.sqf
-%exe% "%arma%\@a2co\Expansion\Addons\takistan.pbo" > %target%\objects.takistan.sqf
-%exe% "%arma%\@a2co\Expansion\Addons\zargabad.pbo" > %target%\objects.zargabad.sqf
-%exe% "%arma%\@a2co\Common\provinggrounds_pmc.pbo" > %target%\objects.provinggrounds_pmc.sqf
-%exe% "%arma%\@a2co\Common\shapur_baf.pbo" > %target%\objects.shapur_baf.sqf
+rem %exe% "%arma%\@a2co\Addons\chernarus.pbo" > %target%\objects.chernarus.sqf
+rem %exe% "%arma%\@a2co\Addons\utes.pbo" > %target%\objects.utes.sqf
+rem %exe% "%arma%\@a2co\Expansion\Addons\desert_e.pbo" > %target%\objects.desert_e.sqf
+rem %exe% "%arma%\@a2co\Expansion\Addons\takistan.pbo" > %target%\objects.takistan.sqf
+rem %exe% "%arma%\@a2co\Expansion\Addons\zargabad.pbo" > %target%\objects.zargabad.sqf
+rem %exe% "%arma%\@a2co\Common\provinggrounds_pmc.pbo" > %target%\objects.provinggrounds_pmc.sqf
+rem %exe% "%arma%\@a2co\Common\shapur_baf.pbo" > %target%\objects.shapur_baf.sqf
 
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_abel.pbo" > %target%\objects.abel.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_cain.pbo" > %target%\objects.cain.sqf

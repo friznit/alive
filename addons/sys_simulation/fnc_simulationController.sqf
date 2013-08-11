@@ -47,52 +47,6 @@ _result = true;
 
 #define MTEMPLATE "ALiVE_SIMULATION_%1"
 
-
-
-_createMarker = {
-	private ["_profile","_waypoint","_markers","_m","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
-	_profile = _this select 0;
-	_waypoint = _this select 1;
-	
-	_profile call _deleteMarker;
-	
-	_markers = [_logic,"debugMarkers"] call ALIVE_fnc_hashGet;
-
-	_position = [_waypoint,"position"] call ALIVE_fnc_hashGet;
-	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-	_profileSide = [_profile,"side"] call ALIVE_fnc_hashGet;
-	_markerLabel = format["%1 destination", _profileID];
-	
-	switch(_profileSide) do {
-		case "EAST":{
-			_debugColor = "ColorRed";
-		};
-		case "WEST":{
-			_debugColor = "ColorBlue";
-		};
-		case "CIV":{
-			_debugColor = "ColorYellow";
-		};
-		case "GUER":{
-			_debugColor = "ColorGreen";
-		};
-		default {
-			_debugColor = "ColorGreen";
-		};
-	};
-
-	if(count _position > 0) then {
-		_m = createMarkerLocal [format["MARKER_%1",_profileID], _position];
-		_m setMarkerShapeLocal "ICON";
-		_m setMarkerSizeLocal [1, 1];
-		_m setMarkerTypeLocal "waypoint";
-		_m setMarkerColorLocal _debugColor;
-		_m setMarkerTextLocal format["%1 destination",_profileID];
-
-		[_markers,_profileID,_m] call ALIVE_fnc_hashSet;
-	};
-};
-
 switch(_operation) do {
         case "init": {                
                 /*
@@ -145,6 +99,7 @@ switch(_operation) do {
 				
 				_result = _block;
 		};
+		/*
 		case "simulateEntitiy": {
 		
 				private ["_entityProfile","_cycleTime","_debug","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo",
@@ -287,6 +242,7 @@ switch(_operation) do {
 					};
 				};             
         };
+		*/
         case "destroy": {                
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
@@ -355,8 +311,7 @@ switch(_operation) do {
 
 					[_markers,_profileID,_m] call ALIVE_fnc_hashSet;
 				};                
-        };
-		
+        };		
         case "debug": {
                 if(typeName _args != "BOOL") then {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
