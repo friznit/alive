@@ -5,7 +5,7 @@ SCRIPT(staticMapAnalysisStratis);
 /* ----------------------------------------------------------------------------
 Function: MAINCLASS
 Description:
-Static data structures resulting from gridMapAnalysis
+Static data structures resulting from gridMapAnalysiss
 
 Author:
 ARJay
