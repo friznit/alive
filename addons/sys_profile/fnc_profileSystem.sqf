@@ -118,12 +118,7 @@ switch(_operation) do {
 						ALIVE_simulationController = [nil, "create"] call ALIVE_fnc_simulationController;
 						[ALIVE_simulationController, "debug", _debug] call ALIVE_fnc_simulationController;
 						[ALIVE_simulationController, "init"] call ALIVE_fnc_simulationController;
-						
-						// create view controller
-						ALIVE_viewController = [nil, "create"] call ALIVE_fnc_viewController;
-						[ALIVE_viewController, "debug", _debug] call ALIVE_fnc_viewController;
-						[ALIVE_viewController, "init"] call ALIVE_fnc_viewController;
-						
+
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							["ALIVE Profile system init complete"] call ALIVE_fnc_dump;
