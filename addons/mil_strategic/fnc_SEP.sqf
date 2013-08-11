@@ -225,381 +225,382 @@ switch(_operation) do {
 	};
 	// Main process
 	case "init": {
-		private ["_obj_array","_clusters_hq","_clusters","_clusters_air","_clusters_heli","_clusters_veh"];
-		/*
-		MODEL - no visual just reference data
-		- force size and composition
-		- HQ and other forces locations
-		- 
-		*/
-		
-		// if server, initialise module game logic
-		_logic setVariable ["super", SUPERCLASS];
-		_logic setVariable ["class", MAINCLASS];
-		TRACE_1("After module init",_logic);
-		
-		/*
-		CONTROLLER  - coordination
-		*/
-		
-		// Find HQ locations
-		"SEP - Searching HQ locations" call ALiVE_fnc_logger;
-		_types = [];
-		if(([_logic, "targets"] call MAINCLASS) in ["MIL","ALL"]) then {
-			_types = _types + ["barrack","cargo_hq_","miloffices","mil_house","mil_controltower"];
-		};
-		if(([_logic, "targets"] call MAINCLASS) in ["CIV","ALL"]) then {
-			_types = _types + ["barrack","miloffices","mil_controltower","a_municipaloffice","a_office01","a_office02","airport_tower"];
-		};
-		_clusters_hq = [_logic, _types] call ALIVE_fnc_findTargets;
-		{
-			[_x, "type", "MIL"] call ALIVE_fnc_cluster;
-			[_x, "priority", 50] call ALIVE_fnc_cluster;
-			[_x, "debugColor", "ColorRed"] call ALIVE_fnc_hashSet;
-		} forEach _clusters_hq;
-
-		_clusters = +_clusters_hq;
-
-		// Idenitfy targets with hangers for military fixed wing air
-		// - Optionally use hangers for military vehicle assets
-		// - Calculate number of fixed wing air assets
-		"SEP - Searching airfield locations" call ALiVE_fnc_logger;
-		_types = ["tenthangar","mil_hangar"];
-		_clusters_air = [_logic, _types] call ALIVE_fnc_findTargets;
-		{
-			[_x, "type", "MIL"] call ALIVE_fnc_cluster;
-			[_x, "priority", 20] call ALIVE_fnc_cluster;
-			[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
-		} forEach _clusters_air;
-		
-		// Idenitfy targets with hangers for civilian fixed wing air
-		// - Optionally use hangers for military vehicle assets
-		// - Calculate number of fixed wing air assets
-		_types = [
-				"ss_hangar",
-				"hangar_2",
-				"airport_tower",
-				"runway_beton",
-				"runway_end",
-				"runway_main",
-				"runwayold"
-		];
-		_clusters_air2 = [_logic, _types] call ALIVE_fnc_findTargets;
-		{
-			[_x, "type", "CIV"] call ALIVE_fnc_cluster;
-			[_x, "priority", 10] call ALIVE_fnc_cluster;
-			[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
-		} forEach _clusters_air2;
-		// Consolidate all hangar clusters
-		//_clusters_air = [_clusters_air,_clusters_air2] call ALIVE_fnc_consolidateClusters;
-		// Consolidate hangar clusters with main clusters
-		//_clusters = [_clusters, _clusters_air] call ALIVE_fnc_consolidateClusters;
-		_clusters = _clusters + _clusters_air + _clusters_air2;
-		_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-
-		// Idenitfy targets with helipads for military rotary wing air
-		// - Calculate number of rotary wing air assets
-		"SEP - Searching helipad locations" call ALiVE_fnc_logger;
-		_types = ["helipadempty","helipadsquare","heli_h_army"];
-		_clusters_heli = [_logic, _types] call ALIVE_fnc_findTargets;
-		{
-			[_x, "type", "MIL"] call ALIVE_fnc_cluster;
-			[_x, "priority", 20] call ALIVE_fnc_cluster;
-			[_x, "debugColor", "ColorYellow"] call ALIVE_fnc_hashSet;
-		} forEach _clusters_heli;
-		
-		// Idenitfy targets with helipads for civilian rotary wing air
-		// - Calculate number of rotary wing air assets
-		_types = ["helipadempty","heli_h_civil","heli_h_rescue"];
-		_clusters_heli2 = [_logic, _types] call ALIVE_fnc_findTargets;
-		{
-			[_x, "type", "CIV"] call ALIVE_fnc_cluster;
-			[_x, "priority", 10] call ALIVE_fnc_cluster;
-			[_x, "debugColor", "ColorYellow"] call ALIVE_fnc_hashSet;
-		} forEach _clusters_heli2;
-		// Consolidate all helipad clusters
-		//_clusters_heli = [_clusters_heli,_clusters_heli2] call ALIVE_fnc_consolidateClusters;
-		// Consolidate helipad clusters with main clusters
-		//_clusters = [_clusters, _clusters_heli] call ALIVE_fnc_consolidateClusters;
-		_clusters = _clusters + _clusters_heli + _clusters_heli2;
-		_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-
-		// Identify targets with sheds for military vehicles assets
-		// - Calculate number of military vehicles assets
-		"SEP - Searching vehicle locations" call ALiVE_fnc_logger;
-		_types = ["shed_big_f","shed_small_f"];
-		_clusters_veh = [_logic, _types] call ALIVE_fnc_findTargets;
-		{
-			[_x, "type", "CIV"] call ALIVE_fnc_cluster;
-			[_x, "priority", 10] call ALIVE_fnc_cluster;
-			[_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
-		} forEach _clusters_veh;
-		//_clusters = [_clusters, _clusters_veh] call ALIVE_fnc_consolidateClusters;
-		_clusters = _clusters + _clusters_veh;
-		_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-/*
-		// Collate targets and their priorities
-		"SEP - Searching military locations" call ALiVE_fnc_logger;
-		if(([_logic, "targets"] call MAINCLASS) in ["MIL","ALL"]) then {
-			// Military targets
-			_types = [
-				"bunker",
-				"cargo_house_",
-				"cargo_patrol_",
-				"deerstand",
-				"hbarrier",
-				"mil_wall",
-				"mil_wired",
-				"razorwire",
-				"vez"
-			];
-			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
+        if (isServer) then {
+			private ["_obj_array","_clusters_hq","_clusters","_clusters_air","_clusters_heli","_clusters_veh"];
+			/*
+			MODEL - no visual just reference data
+			- force size and composition
+			- HQ and other forces locations
+			- 
+			*/
+			
+			// if server, initialise module game logic
+			_logic setVariable ["super", SUPERCLASS];
+			_logic setVariable ["class", MAINCLASS];
+			TRACE_1("After module init",_logic);
+			
+			/*
+			CONTROLLER  - coordination
+			*/
+			
+			// Find HQ locations
+			"SEP - Searching HQ locations" call ALiVE_fnc_logger;
+			_types = [];
+			if(([_logic, "targets"] call MAINCLASS) in ["MIL","ALL"]) then {
+				_types = _types + ["barrack","cargo_hq_","miloffices","mil_house","mil_controltower"];
+			};
+			if(([_logic, "targets"] call MAINCLASS) in ["CIV","ALL"]) then {
+				_types = _types + ["barrack","miloffices","mil_controltower","a_municipaloffice","a_office01","a_office02","airport_tower"];
+			};
+			_clusters_hq = [_logic, _types] call ALIVE_fnc_findTargets;
 			{
+				[_x, "type", "MIL"] call ALIVE_fnc_cluster;
+				[_x, "priority", 50] call ALIVE_fnc_cluster;
+				[_x, "debugColor", "ColorRed"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_hq;
+	
+			_clusters = +_clusters_hq;
+	
+			// Idenitfy targets with hangers for military fixed wing air
+			// - Optionally use hangers for military vehicle assets
+			// - Calculate number of fixed wing air assets
+			"SEP - Searching airfield locations" call ALiVE_fnc_logger;
+			_types = ["tenthangar","mil_hangar"];
+			_clusters_air = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "type", "MIL"] call ALIVE_fnc_cluster;
+				[_x, "priority", 20] call ALIVE_fnc_cluster;
+				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_air;
+			
+			// Idenitfy targets with hangers for civilian fixed wing air
+			// - Optionally use hangers for military vehicle assets
+			// - Calculate number of fixed wing air assets
+			_types = [
+					"ss_hangar",
+					"hangar_2",
+					"airport_tower",
+					"runway_beton",
+					"runway_end",
+					"runway_main",
+					"runwayold"
+			];
+			_clusters_air2 = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "type", "CIV"] call ALIVE_fnc_cluster;
+				[_x, "priority", 10] call ALIVE_fnc_cluster;
+				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_air2;
+			// Consolidate all hangar clusters
+			//_clusters_air = [_clusters_air,_clusters_air2] call ALIVE_fnc_consolidateClusters;
+			// Consolidate hangar clusters with main clusters
+			//_clusters = [_clusters, _clusters_air] call ALIVE_fnc_consolidateClusters;
+			_clusters = _clusters + _clusters_air + _clusters_air2;
+			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+	
+			// Idenitfy targets with helipads for military rotary wing air
+			// - Calculate number of rotary wing air assets
+			"SEP - Searching helipad locations" call ALiVE_fnc_logger;
+			_types = ["helipadempty","helipadsquare","heli_h_army"];
+			_clusters_heli = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "type", "MIL"] call ALIVE_fnc_cluster;
+				[_x, "priority", 20] call ALIVE_fnc_cluster;
+				[_x, "debugColor", "ColorYellow"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_heli;
+			
+			// Idenitfy targets with helipads for civilian rotary wing air
+			// - Calculate number of rotary wing air assets
+			_types = ["helipadempty","heli_h_civil","heli_h_rescue"];
+			_clusters_heli2 = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "type", "CIV"] call ALIVE_fnc_cluster;
+				[_x, "priority", 10] call ALIVE_fnc_cluster;
+				[_x, "debugColor", "ColorYellow"] call ALIVE_fnc_hashSet;
+			} forEach _clusters_heli2;
+			// Consolidate all helipad clusters
+			//_clusters_heli = [_clusters_heli,_clusters_heli2] call ALIVE_fnc_consolidateClusters;
+			// Consolidate helipad clusters with main clusters
+			//_clusters = [_clusters, _clusters_heli] call ALIVE_fnc_consolidateClusters;
+			_clusters = _clusters + _clusters_heli + _clusters_heli2;
+			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+	
+			// Identify targets with sheds for military vehicles assets
+			// - Calculate number of military vehicles assets
+			"SEP - Searching vehicle locations" call ALiVE_fnc_logger;
+			_types = ["shed_big_f","shed_small_f"];
+			_clusters_veh = [_logic, _types] call ALIVE_fnc_findTargets;
+			{
+				[_x, "type", "CIV"] call ALIVE_fnc_cluster;
+				[_x, "priority", 10] call ALIVE_fnc_cluster;
 				[_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
-			} forEach _clusters_tmp;
-			//_clusters = [_clusters, _clusters_tmp] call ALIVE_fnc_consolidateClusters;
-			_clusters = _clusters + _clusters_tmp;
+			} forEach _clusters_veh;
+			//_clusters = [_clusters, _clusters_veh] call ALIVE_fnc_consolidateClusters;
+			_clusters = _clusters + _clusters_veh;
 			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-		};
-
-		"SEP - Searching civilian locations" call ALiVE_fnc_logger;
-		if(([_logic, "targets"] call MAINCLASS) in ["CIV","ALL"]) then {                        
-			// Civilian targets - radio and power
-			_types = [
-				"communication_f",
-				"_dam_",
-				"dp_",
-				"_pec_",
-				"powerstation",
-				"radar",
-				"spp_",
-				"trafostanica",
-				"ttowerbig_",
-				"vysilac_fm"
-			];
-			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
-			{
-				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
-			} forEach _clusters_tmp;
-			//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
-			_clusters = _clusters + _clusters_tmp;
-			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-
-			// Civilian targets - naval and water
-			_types = [
-				"crane",
-				"lighthouse",
-				"nav_pier",
-				"wtower"
-			];
-			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
-			{
-				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
-			} forEach _clusters_tmp;
-			//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
-			_clusters = _clusters + _clusters_tmp;
-			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-
-			// Civilian targets - oil, fuel, rail and construction
-			_types = [
-				"fuelstation",
-				"_oil_",
-				"rail_house",
-				"stationhouse",
-				"valve",
-				"wip"
-			];
-			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
-			{
-				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
-			} forEach _clusters_tmp;
-			//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
-			_clusters = _clusters + _clusters_tmp;
-			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-*/
-/*			// Civilian targets
-			_types = [
-				"airport_tower",
-				"communication_f",
-				"crane",
-				"_dam_",
-				"dp_",
-				"fuelstation",
-				"hospital",
-				"lighthouse_",
-				"nav_lighthouse",
-				"nav_pier",
-				"_oil_",
-				"_pec_",
-				"powerstation",
-				"radar",
-				"rail_house",
-				"runway_beton",
-				"runway_end",
-				"runway_main",
-				"runwayold",
-				"stationhouse",
-				"spp_",
-				"trafostanica",
-				"ttowerbig_",
-				"valve",
-				"vysilac_fm",
-				"wtower",
-				"wip"
-			];
-			_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
-			{
-				[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
-			} forEach _clusters_tmp;
-			//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
-			_clusters = _clusters + _clusters_tmp;
-			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-		};
-*/
-		"SEP - Consolidating Clusters" call ALiVE_fnc_logger;
-		_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
-		"SEP - Locations Completed" call ALiVE_fnc_logger;
-		{
-			[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-		} forEach _clusters;
-		[_logic, "objectives", _clusters] call MAINCLASS;
-		_result = _clusters;
-/*
-		diag_log _clusters;
-		_force = ["#CBA_HASH#",
-		["size","type","hq","subs"],
-		["CY","MECH", "coy_hq", // "ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"
-		["PL","MECH", "pl_hq", 
-		[],
-		["PL","MECH", "pl_hq",
-		["PL","MECH", "pl_hq",
-		["PL","MECH", "pl_hq", // for MECH, "ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"
-		*/
-		// Compose force 
-		_size = [_logic, "size"] call MAINCLASS;
-		_type = [_logic, "type"] call MAINCLASS;
-		
-		// TODO
-		if(_size == "BN") then {
-			switch(_type) do {
-				//["ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"]
-				case "BN": {
-				};
-			};
-		};
-		
-		// Calculate remaining infantry for company
-		// Randomly/appropriately choose remaining Platoons and their Squad make up
-		// Place the entire PL somewhere and let them sort themselves out from there using OPCOM                
-		
-		switch(_size) do {
-			case "BN": {
-				/*
-				// TODO
-				// Find BN HQ location
-				// - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
-				_hq_loc = [_obj_array, position _logic, 2500] call ALIVE_fnc_findHQ;
-				// - Set HQ targets with the highest priority
+	/*
+			// Collate targets and their priorities
+			"SEP - Searching military locations" call ALiVE_fnc_logger;
+			if(([_logic, "targets"] call MAINCLASS) in ["MIL","ALL"]) then {
+				// Military targets
+				_types = [
+					"bunker",
+					"cargo_house_",
+					"cargo_patrol_",
+					"deerstand",
+					"hbarrier",
+					"mil_wall",
+					"mil_wired",
+					"razorwire",
+					"vez"
+				];
+				_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
 				{
-					if(_hq_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
-						[_x, "type", "MIL"] call ALIVE_fnc_cluster;
-						[_x, "priority", 99] call ALIVE_fnc_cluster;
-						[_x, "debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
-						[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-					};
-				} forEach _clusters_hq;
-				
-				// - Place and persist (TODO) clutter objects
-				[_hq_loc] call ALIVE_fnc_randomFurnishings;
-				
-				// - Place BN HQ at location
-				private["_m"];
-				_m = createMarkerLocal ["hq_loc", position _hq_loc];
-				_m setMarkerShapeLocal "Icon";
-				_m setMarkerSizeLocal [3, 3];
-				_m setMarkerTypeLocal "o_hq";
-				[_logic, "debugMarkers", [_m]] call BIS_fnc_variableSpaceAdd;
-				
-				// - Consolidate HQ loc with targets
-				*/
+					[_x, "debugColor", "ColorGreen"] call ALIVE_fnc_hashSet;
+				} forEach _clusters_tmp;
+				//_clusters = [_clusters, _clusters_tmp] call ALIVE_fnc_consolidateClusters;
+				_clusters = _clusters + _clusters_tmp;
+				_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 			};
-			case "CY": {
-/*
-				// Continue to find Coy HQ location
-				_hq_loc = [_hq_loc_array, position _logic, 2500] call ALIVE_fnc_findHQ;
-				_hq_loc_array = _hq_loc_array - [_hq_loc];
-				
-				// - Place Coy HQ at location
-				private["_m"];
-				_m = createMarkerLocal ["hq_loc", position _hq_loc];
-				_m setMarkerShapeLocal "Icon";
-				_m setMarkerSizeLocal [2, 2];
-				_m setMarkerTypeLocal "o_hq";
-				[_logic, "debugMarkers", [_m]] call BIS_fnc_variableSpaceAdd;
-				
-				// - Set HQ targets with the next highest priority
+	
+			"SEP - Searching civilian locations" call ALiVE_fnc_logger;
+			if(([_logic, "targets"] call MAINCLASS) in ["CIV","ALL"]) then {                        
+				// Civilian targets - radio and power
+				_types = [
+					"communication_f",
+					"_dam_",
+					"dp_",
+					"_pec_",
+					"powerstation",
+					"radar",
+					"spp_",
+					"trafostanica",
+					"ttowerbig_",
+					"vysilac_fm"
+				];
+				_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
 				{
-					if(_hq_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
-						[_x, "priority", 99] call ALIVE_fnc_cluster;
-						[_x,"debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
-						[_x, "debug"] call ALIVE_fnc_cluster;
-					};
-				} forEach _clusters;
-				
-				// - Place clutter objects
-				// - Choose HQ squad
+					[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+				} forEach _clusters_tmp;
+				//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+				_clusters = _clusters + _clusters_tmp;
+				_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+	
+				// Civilian targets - naval and water
+				_types = [
+					"crane",
+					"lighthouse",
+					"nav_pier",
+					"wtower"
+				];
+				_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
+				{
+					[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+				} forEach _clusters_tmp;
+				//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+				_clusters = _clusters + _clusters_tmp;
+				_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+	
+				// Civilian targets - oil, fuel, rail and construction
+				_types = [
+					"fuelstation",
+					"_oil_",
+					"rail_house",
+					"stationhouse",
+					"valve",
+					"wip"
+				];
+				_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
+				{
+					[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+				} forEach _clusters_tmp;
+				//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+				_clusters = _clusters + _clusters_tmp;
+				_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+	*/
+	/*			// Civilian targets
+				_types = [
+					"airport_tower",
+					"communication_f",
+					"crane",
+					"_dam_",
+					"dp_",
+					"fuelstation",
+					"hospital",
+					"lighthouse_",
+					"nav_lighthouse",
+					"nav_pier",
+					"_oil_",
+					"_pec_",
+					"powerstation",
+					"radar",
+					"rail_house",
+					"runway_beton",
+					"runway_end",
+					"runway_main",
+					"runwayold",
+					"stationhouse",
+					"spp_",
+					"trafostanica",
+					"ttowerbig_",
+					"valve",
+					"vysilac_fm",
+					"wtower",
+					"wip"
+				];
+				_clusters_tmp = [_logic, _types] call ALIVE_fnc_findTargets;
+				{
+					[_x, "debugColor", "ColorOrange"] call ALIVE_fnc_hashSet;
+				} forEach _clusters_tmp;
+				//_clusters = [_clusters,_clusters_tmp] call ALIVE_fnc_consolidateClusters;
+				_clusters = _clusters + _clusters_tmp;
+				_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+			};
+	*/
+			"SEP - Consolidating Clusters" call ALiVE_fnc_logger;
+			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+			"SEP - Locations Completed" call ALiVE_fnc_logger;
+			{
+				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+			} forEach _clusters;
+			[_logic, "objectives", _clusters] call MAINCLASS;
+			_result = _clusters;
+	/*
+			diag_log _clusters;
+			_force = ["#CBA_HASH#",
+			["size","type","hq","subs"],
+			["CY","MECH", "coy_hq", // "ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"
+			["PL","MECH", "pl_hq", 
+			[],
+			["PL","MECH", "pl_hq",
+			["PL","MECH", "pl_hq",
+			["PL","MECH", "pl_hq", // for MECH, "ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"
+			*/
+			// Compose force 
+			_size = [_logic, "size"] call MAINCLASS;
+			_type = [_logic, "type"] call MAINCLASS;
+			
+			// TODO
+			if(_size == "BN") then {
 				switch(_type) do {
-					case "ARMOR": {
-					};
-					case "MECH": {
-						_pl1_loc = (_air_obj_array + _veh_obj_array) call BIS_fnc_selectRandom;
-						
-						{
-							if(_pl1_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
-								[_x, "debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
-								[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-							};
-						} forEach _clusters;
-						
-						// - Place PL1 at location
-						private["_m"];
-						_m = createMarkerLocal ["pl1_loc", position _pl1_loc];
-						_m setMarkerShapeLocal "Icon";
-						_m setMarkerSizeLocal [1, 1];
-						_m setMarkerTypeLocal "o_mech_inf";
-						[_logic, "debugMarkers", [_m]] call BIS_fnc_variableSpaceAdd;
-					};
-					case "MOTOR": {
-					};
-					case "LIGHT": {
-					};
-					case "AIRBORNE": {
-					};
-					case "MARINE": {
-					};
+					//["ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"]
 					case "BN": {
 					};
 				};
-*/
-				// - Consolidate HQ loc with targets
-				// Repeat as required
 			};
-		};		
-		// If fixed wing assets available
-		// - Create squadron (offensive or transport)
-		// - Place near hangers
-		// If rotary wing assets available
-		// - Create squadron (offensive or transport)
-		// - Place on helipads
-		// If military vehicles available
-		// - Create platoons (offensive or transport)
-		// - Place near sheds
-		"SEP - Initialisation Completed" call ALiVE_fnc_logger;
-		
-		/*
-		VIEW - purely visual
-		*/
-		
+			
+			// Calculate remaining infantry for company
+			// Randomly/appropriately choose remaining Platoons and their Squad make up
+			// Place the entire PL somewhere and let them sort themselves out from there using OPCOM                
+			
+			switch(_size) do {
+				case "BN": {
+					/*
+					// TODO
+					// Find BN HQ location
+					// - Confirm HQ loc is not outside TAOR or inside Blacklist - otherwise redo
+					_hq_loc = [_obj_array, position _logic, 2500] call ALIVE_fnc_findHQ;
+					// - Set HQ targets with the highest priority
+					{
+						if(_hq_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
+							[_x, "type", "MIL"] call ALIVE_fnc_cluster;
+							[_x, "priority", 99] call ALIVE_fnc_cluster;
+							[_x, "debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
+							[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+						};
+					} forEach _clusters_hq;
+					
+					// - Place and persist (TODO) clutter objects
+					[_hq_loc] call ALIVE_fnc_randomFurnishings;
+					
+					// - Place BN HQ at location
+					private["_m"];
+					_m = createMarkerLocal ["hq_loc", position _hq_loc];
+					_m setMarkerShapeLocal "Icon";
+					_m setMarkerSizeLocal [3, 3];
+					_m setMarkerTypeLocal "o_hq";
+					[_logic, "debugMarkers", [_m]] call BIS_fnc_variableSpaceAdd;
+					
+					// - Consolidate HQ loc with targets
+					*/
+				};
+				case "CY": {
+	/*
+					// Continue to find Coy HQ location
+					_hq_loc = [_hq_loc_array, position _logic, 2500] call ALIVE_fnc_findHQ;
+					_hq_loc_array = _hq_loc_array - [_hq_loc];
+					
+					// - Place Coy HQ at location
+					private["_m"];
+					_m = createMarkerLocal ["hq_loc", position _hq_loc];
+					_m setMarkerShapeLocal "Icon";
+					_m setMarkerSizeLocal [2, 2];
+					_m setMarkerTypeLocal "o_hq";
+					[_logic, "debugMarkers", [_m]] call BIS_fnc_variableSpaceAdd;
+					
+					// - Set HQ targets with the next highest priority
+					{
+						if(_hq_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
+							[_x, "priority", 99] call ALIVE_fnc_cluster;
+							[_x,"debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
+							[_x, "debug"] call ALIVE_fnc_cluster;
+						};
+					} forEach _clusters;
+					
+					// - Place clutter objects
+					// - Choose HQ squad
+					switch(_type) do {
+						case "ARMOR": {
+						};
+						case "MECH": {
+							_pl1_loc = (_air_obj_array + _veh_obj_array) call BIS_fnc_selectRandom;
+							
+							{
+								if(_pl1_loc in ([_x,"nodes"] call ALIVE_fnc_cluster)) then {
+									[_x, "debugColor", "ColorBlack"] call ALIVE_fnc_hashSet;
+									[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+								};
+							} forEach _clusters;
+							
+							// - Place PL1 at location
+							private["_m"];
+							_m = createMarkerLocal ["pl1_loc", position _pl1_loc];
+							_m setMarkerShapeLocal "Icon";
+							_m setMarkerSizeLocal [1, 1];
+							_m setMarkerTypeLocal "o_mech_inf";
+							[_logic, "debugMarkers", [_m]] call BIS_fnc_variableSpaceAdd;
+						};
+						case "MOTOR": {
+						};
+						case "LIGHT": {
+						};
+						case "AIRBORNE": {
+						};
+						case "MARINE": {
+						};
+						case "BN": {
+						};
+					};
+	*/
+					// - Consolidate HQ loc with targets
+					// Repeat as required
+				};
+			};		
+			// If fixed wing assets available
+			// - Create squadron (offensive or transport)
+			// - Place near hangers
+			// If rotary wing assets available
+			// - Create squadron (offensive or transport)
+			// - Place on helipads
+			// If military vehicles available
+			// - Create platoons (offensive or transport)
+			// - Place near sheds
+			"SEP - Initialisation Completed" call ALiVE_fnc_logger;
+			
+			/*
+			VIEW - purely visual
+			*/
+        };
 	};
 };
 
