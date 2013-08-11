@@ -266,9 +266,7 @@ switch(_operation) do {
 							_waypoints = _waypoints - [objNull];
 							
 							//Needs review of any variables in hashes
-							any = "UNDEF";
-							if (call compile (_statements select 0)) then {call compile (_statements select 1)};
-							any = nil;
+							if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};
 							
 							[] call _handleWPcomplete;
 							

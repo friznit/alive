@@ -406,6 +406,23 @@ switch(_operation) do {
 				[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
 				[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
 		};
+        case "insertWaypoint": {
+				private ["_waypoints","_units","_unit","_group"];
+
+				if(typeName _args == "ARRAY") then {
+						_waypoints = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
+						_waypoints = [_waypoints, [_args], 0] call BIS_fnc_arrayInsert;
+                        [_logic,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
+
+						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
+							_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+							_unit = _units select 0;
+							_group = group _unit;
+							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+						};
+						_result = _args;
+                };
+		};
 		case "addWaypoint": {
 				private ["_waypoints","_units","_unit","_group"];
 

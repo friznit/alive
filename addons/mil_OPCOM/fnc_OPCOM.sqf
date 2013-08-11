@@ -446,36 +446,58 @@ switch(_operation) do {
 		};
 
         case "entitiesnearsector": {
-            	ASSERT_TRUE(typeName _args == "STRING",str _args);
+            	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
-                private ["_ent","_entArr","_side","_pos"];
-        
-	            _side = _args;
-                _pos = [_logic,"center"] call ALiVE_fnc_HashGet;
+                private ["_ent","_entArr","_side","_pos","_posP","_id"];
+                
+        		_pos = _args select 0;
+	            _side = _args select 1;
+                _canSee = _args select 2;
+
                 _ent = [];
                 _entArr = [];
+                _seeArr = [];
 
 			    _sectors = [[ALIVE_sectorGrid, "positionToSector", _pos] call ALIVE_fnc_sectorGrid];
                 _sectors = _sectors + ([ALIVE_sectorGrid, "surroundingSectors", _pos] call ALIVE_fnc_sectorGrid);
                 
-						{
-							_sector = _x;
-							_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-							_sectorID = [_sector, "id"] call ALIVE_fnc_sector;
-					
-							if("entitiesBySide" in (_sectorData select 1)) then {
-								_sectorEntityData = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
-								_ent = [_sectorEntityData,_side] call ALiVE_fnc_HashGet;
+				{
+					_sector = _x;
+					_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
+					_sectorID = [_sector, "id"] call ALIVE_fnc_sector;
+			
+					if("entitiesBySide" in (_sectorData select 1)) then {
+						_sectorEntityData = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+						_ent = [_sectorEntityData,_side] call ALiVE_fnc_HashGet;
 
-			                    if (count _ent > 0) then {
-                                    //player sidechat format["Side: %3 Ent: %1 Entarr: %2",_ent,_entARR,_side];
-                					//diag_log format["Side: %3 Ent: %1 Entarr: %2",_ent,_entARR,_side];
+	                    if (count _ent > 0) then {
+                            //player sidechat format["Side: %3 Ent: %1 Entarr: %2",_ent,_entARR,_side];
+        					//diag_log format["Side: %3 Ent: %1 Entarr: %2",_ent,_entARR,_side];
 
-                                    _entArr = _entArr + _ent;
-                                };
-							};
-						} forEach _sectors;
-	            _result = _entArr;
+                            _entArr = _entArr + _ent;
+                        };
+					};
+				} forEach _sectors;
+                _result = _entArr;
+                
+                if (_canSee) then {
+                    
+                    _pos = ATLtoASL _pos;
+                    _pos set [2,(_pos select 2) + 2];
+                    
+                    if ({(_x select 1) distance _pos < 800} count _entArr > 0) then {
+                        {
+                            _id = _x select 0;
+                            _posP = ATLtoASL (_x select 1);
+                            _posP set [2,(_posP select 2) + 2];
+                            
+                            if (((_x select 1) distance _pos < 800) && {!(terrainIntersectASL [_pos, _posP])}) then {
+                                _seeArr set [count _seeArr, _x];
+                            };
+                        } foreach _entArr;
+                    };
+                    _result = _seeArr;
+                };
         };
 
         case "setorders": {
@@ -517,7 +539,7 @@ switch(_operation) do {
 				_profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
 
 				_var = ["_TACOM_DATA",["completed",[_ProfileID,_objectiveID,_orders]]];
-				_statements = format["%1 setfsmvariable %2",_TACOM_FSM,_var];
+				_statements = format["[] spawn {sleep (random 10); %1 setfsmvariable %2}",_TACOM_FSM,_var];
 				[_profileWaypoint,"statements",["true",_statements]] call ALIVE_fnc_hashSet;
 
 				[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
@@ -596,9 +618,32 @@ switch(_operation) do {
                 };
             } foreach _objectives;
             
-            player sidechat format["Reserve: %1 Busy: %2",[_logic,"ProfileIDsReserve"] call ALiVE_fnc_HashGet,[_logic,"ProfileIDsBusy"] call ALiVE_fnc_HashGet];
-            
             _result = true;
+        };
+        
+        case "scanenemies": {
+            ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+            
+            private ["_pos","_posP","_sideEnemy","_visibleEnemies","_id","_knownEntities"];
+            
+            _pos = _args;
+            _sideEnemy = [_logic,"sideenemy","EAST"] call ALiVE_fnc_HashGet;
+            _knownEntities = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
+
+            _visibleEnemies = [_logic,"entitiesnearsector",[_pos,_sideEnemy,true]] call ALiVE_fnc_OPCOM;
+			if (count _visibleEnemies > 0) then {
+                {
+                	_id = _x select 0;
+                    _posP = _x select 1;
+                    
+                    if !({(_x select 0) == _id} count _knownEntities > 0) then {
+                        _knownEntities set [count _knownEntities,_x];
+                    };
+                } foreach _visibleEnemies;
+                [_logic,"knownentities",_knownEntities] call ALiVE_fnc_HashSet;
+			};
+            
+            _result = _knownEntities;
         };
         
         case "NearestAvailableSection": {
