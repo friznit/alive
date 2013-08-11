@@ -39,8 +39,8 @@ class Mission
 	randomSeed=14323470;
 	class Intel
 	{
-		briefingName="ALiVE OPCOM Spleen v0.35";
-		overviewText="ALiVE OPCOM Spleen v0.35";
+		briefingName="ALiVE OPCOM Spleen v0.36";
+		overviewText="ALiVE OPCOM Spleen v0.36";
 		startWeather=0.19;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -1964,15 +1964,21 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={4142.022,178.43045,3852.814};
+					position[]={4133.3955,175.87325,3852.7637};
 					class args
 					{
-						items=1;
+						items=2;
 						class Item0
 						{
 							value="true";
 							parentCls="ALiVE_sys_profile";
 							typeName="debug";
+						};
+						class Item1
+						{
+							value="1000";
+							parentCls="ALiVE_sys_profile";
+							typeName="spawnRadius";
 						};
 					};
 					id=167;
