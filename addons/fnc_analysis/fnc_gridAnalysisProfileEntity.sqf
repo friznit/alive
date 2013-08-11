@@ -33,7 +33,7 @@ _grid = _this select 0;
 
 // reset existing analysis data
 
-["RESET SECTORS"] call ALIVE_fnc_dump;
+//["RESET SECTORS"] call ALIVE_fnc_dump;
 //[true] call ALIVE_fnc_timer;
 
 _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
@@ -60,7 +60,7 @@ _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
 // run analysis on all profiles
 
-["ANALYSE PROFILES"] call ALIVE_fnc_dump;
+//["ANALYSE PROFILES"] call ALIVE_fnc_dump;
 //[true] call ALIVE_fnc_timer;
 
 _profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGet;

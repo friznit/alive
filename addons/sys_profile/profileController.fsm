@@ -1,14 +1,14 @@
 /*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, profile controller">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item3[] = {"DESTROY",4,218,-66.461502,-168.242981,23.538473,-118.242981,0.000000,"DESTROY"};
 item4[] = {"END",1,250,68.367783,-167.244247,158.367798,-117.244301,0.000000,"END"};
 item5[] = {"SWITCH",2,250,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
 item6[] = {"SIMULATE",4,218,-189.816605,-11.441578,-99.816620,38.558418,3.000000,"SIMULATE"};
-item7[] = {"SIMULATE",2,250,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
+item7[] = {"SIMULATE",2,4346,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
 item8[] = {"COMPLETE",4,218,-373.583862,217.268799,-283.583862,267.268799,0.000000,"COMPLETE"};
 item9[] = {"SPAWN",4,218,-79.008347,-11.441580,10.991653,38.558411,2.000000,"SPAWN"};
 item10[] = {"SPAWN",2,250,-78.681198,67.064430,11.318882,117.064407,0.000000,"SPAWN"};
@@ -193,8 +193,7 @@ class FSM
        "" \n
        "private [""_profiles"",""_profile""];" \n
        "" \n
-       "[""START""] call ALIVE_fnc_dump;" \n
-       "[true] call ALIVE_fnc_timer;" \n
+       "//[true] call ALIVE_fnc_timer;" \n
        "" \n
        "//_profiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_profileHandler;" \n
        "" \n
@@ -346,9 +345,7 @@ class FSM
        "				};" \n
        "} forEach _profiles;" \n
        "" \n
-       "[""END""] call ALIVE_fnc_dump;" \n
-       "[] call ALIVE_fnc_timer;" \n
-       "" \n
+       "//[] call ALIVE_fnc_timer;" \n
        "" \n
        "_doSimulation = false;" \n
        "_lastSimulationTime = time;"/*%FSM</STATEINIT""">*/;
@@ -379,8 +376,7 @@ class FSM
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "[""START""] call ALIVE_fnc_dump;" \n
-       "[true] call ALIVE_fnc_timer;" \n
+       "//[true] call ALIVE_fnc_timer;" \n
        "" \n
        "_profiles = [ALIVE_profileHandler, ""profilesInActive""] call ALIVE_fnc_hashGet;" \n
        "" \n
@@ -417,8 +413,7 @@ class FSM
        "} forEach _profiles;" \n
        "" \n
        "" \n
-       "[""END""] call ALIVE_fnc_dump;" \n
-       "[] call ALIVE_fnc_timer;" \n
+       "//[] call ALIVE_fnc_timer;" \n
        "" \n
        "_doSpawn = false;" \n
        "_lastSpawnTime = time;"/*%FSM</STATEINIT""">*/;
@@ -500,8 +495,7 @@ class FSM
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "[""START""] call ALIVE_fnc_dump;" \n
-       "[true] call ALIVE_fnc_timer;" \n
+       "//[true] call ALIVE_fnc_timer;" \n
        "" \n
        "_profiles = [ALIVE_profileHandler, ""profilesActive""] call ALIVE_fnc_hashGet;" \n
        "" \n
@@ -546,8 +540,7 @@ class FSM
        "	}" \n
        "} forEach _profiles;" \n
        "" \n
-       "[""END""] call ALIVE_fnc_dump;" \n
-       "[] call ALIVE_fnc_timer;" \n
+       "//[] call ALIVE_fnc_timer;" \n
        "" \n
        "_doDespawn = false;" \n
        "_lastDespawnTime = time;"/*%FSM</STATEINIT""">*/;
