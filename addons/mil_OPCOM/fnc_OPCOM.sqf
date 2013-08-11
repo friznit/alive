@@ -106,7 +106,7 @@ switch(_operation) do {
 			        waituntil {sleep 5; !(isnil "ALiVE_ProfileHandler")};
 			        
 			        "OPCOM - Waiting for SEP objectives..." call ALiVE_fnc_logger;
-			        waituntil {sleep 5; !(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP})};
+			        waituntil {sleep 5; (!(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP}) && {count ([SEP,"objectives"] call ALiVE_fnc_SEP) > 0})};
                     
                     sleep (random 7);
                     			
