@@ -24,7 +24,7 @@ ARJay
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_debug","_cycleTime","_profiles","_markers"];
+private ["_debug","_cycleTime","_profiles","_markers","_deleteMarkers","_deleteMarker","_createMarker"];
 
 _debug = if(count _this > 0) then {_this select 0} else {false};
 
@@ -207,9 +207,7 @@ waituntil {
 						_waypoints = _waypoints - [objNull];
 						
 						//Needs review of any variables in hashes
-						any = "UNDEF";
-						if (call compile (_statements select 0)) then {call compile (_statements select 1)};
-						any = nil;
+						if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};
 						
 						[] call _handleWPcomplete;
 						

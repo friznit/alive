@@ -144,7 +144,10 @@ switch(_operation) do {
 						
 						///*
 						// start profile simulation with debug enabled
-						[] spawn {[_debug] call ALIVE_fnc_simulateProfileMovement};
+						[_debug] spawn {
+							_debug = _this select 0;
+							[_debug] call ALIVE_fnc_simulateProfileMovement
+						};
 						
 						// start profile spawner with activation radius of 1000m and debug enabled
 						/*
