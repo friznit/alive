@@ -207,6 +207,7 @@ _createMarkers = {
 
 				_markers set [count _markers, _m];
 				
+				/*
 				_m = createMarkerLocal [format["SPAWN_%1",format[MTEMPLATE, _profileID]], _position];
 				_m setMarkerShapeLocal "ELLIPSE";;
 				_m setMarkerSizeLocal [ALIVE_spawnRadius, ALIVE_spawnRadius];
@@ -215,6 +216,7 @@ _createMarkers = {
 				_m setMarkerTextLocal format["%1 destination",_profileID];
 				
 				_markers set [count _markers, _m];
+				*/
 
 				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
         };
