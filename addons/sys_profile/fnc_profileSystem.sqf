@@ -142,11 +142,12 @@ switch(_operation) do {
 						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
 						//*/
 						
-						/*
+						///*
 						// start profile simulation with debug enabled
-						[] spawn {[false] call ALIVE_fnc_simulateProfileMovement};
+						[] spawn {[_debug] call ALIVE_fnc_simulateProfileMovement};
 						
 						// start profile spawner with activation radius of 1000m and debug enabled
+						/*
 						[] spawn {[1000,false] call ALIVE_fnc_profileSpawner};
 						
 						// run grid analysis
@@ -183,6 +184,7 @@ switch(_operation) do {
 							};
 						};
 						*/
+						//*/
                 };
         };
         case "destroy": {                

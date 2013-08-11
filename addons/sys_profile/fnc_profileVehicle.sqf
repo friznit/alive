@@ -201,14 +201,18 @@ switch(_operation) do {
 
 						// set defaults
 						[_logic,"type","vehicle"] call ALIVE_fnc_hashSet;
-						[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet;
-						[_logic,"fuel",1] call ALIVE_fnc_hashSet;
-						[_logic,"ammo",[]] call ALIVE_fnc_hashSet;
-						[_logic,"engineOn",false] call ALIVE_fnc_hashSet;
-						[_logic,"damage",[]] call ALIVE_fnc_hashSet;
-						[_logic,"canMove",true] call ALIVE_fnc_hashSet;
-						[_logic,"canFire",true] call ALIVE_fnc_hashSet;
-						[_logic,"needReload",0] call ALIVE_fnc_hashSet;
+						[_logic,"entitiesInCommandOf",[]] call ALIVE_fnc_hashSet; // select 2 select 8
+						[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet; // select 2 select 9
+						[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet; // select 2 select 10
+						[_logic,"vehicleClass",""] call ALIVE_fnc_hashSet; // select 2 select 11
+						[_logic,"direction",""] call ALIVE_fnc_hashSet; // select 2 select 12
+						[_logic,"fuel",1] call ALIVE_fnc_hashSet; // select 2 select 13
+						[_logic,"ammo",[]] call ALIVE_fnc_hashSet; // select 2 select 14
+						[_logic,"engineOn",false] call ALIVE_fnc_hashSet; // select 2 select 15
+						[_logic,"damage",[]] call ALIVE_fnc_hashSet; // select 2 select 16
+						[_logic,"canMove",true] call ALIVE_fnc_hashSet; // select 2 select 17
+						[_logic,"canFire",true] call ALIVE_fnc_hashSet; // select 2 select 18
+						[_logic,"needReload",0] call ALIVE_fnc_hashSet; // select 2 select 19
                 };
 
                 /*
@@ -363,17 +367,17 @@ switch(_operation) do {
 		case "spawn": {
 				private ["_side","_vehicleClass","_vehicleType","_position","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID"];
 
-				_vehicleClass = [_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
-				_vehicleType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
-				_position = [_logic,"position"] call ALIVE_fnc_hashGet;
-				_direction = [_logic,"direction"] call ALIVE_fnc_hashGet;
-				_damage = [_logic,"damage"] call ALIVE_fnc_hashGet;
-				_fuel = [_logic,"fuel"] call ALIVE_fnc_hashGet;
-				_ammo = [_logic,"ammo"] call ALIVE_fnc_hashGet;
-				_engineOn = [_logic,"engineOn"] call ALIVE_fnc_hashGet;
-				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
-				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
-				_vehicleAssignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				_vehicleClass = _logic select 2 select 11; //[_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
+				_vehicleType = _logic select 2 select 6; //[_logic,"objectType"] call ALIVE_fnc_hashGet;
+				_position = _logic select 2 select 2; //[_logic,"position"] call ALIVE_fnc_hashGet;
+				_direction = _logic select 2 select 12; //[_logic,"direction"] call ALIVE_fnc_hashGet;
+				_damage = _logic select 2 select 16; //[_logic,"damage"] call ALIVE_fnc_hashGet;
+				_fuel = _logic select 2 select 13; //[_logic,"fuel"] call ALIVE_fnc_hashGet;
+				_ammo = _logic select 2 select 14; //[_logic,"ammo"] call ALIVE_fnc_hashGet;
+				_engineOn = _logic select 2 select 15; //[_logic,"engineOn"] call ALIVE_fnc_hashGet;
+				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
+				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 
 				// not already active
 				if!(_active) then {
@@ -412,6 +416,8 @@ switch(_operation) do {
 
 					// create vehicle assignments from profile vehicle assignments
 					[_vehicleAssignments, _logic] call ALIVE_fnc_profileVehicleAssignmentsToVehicleAssignments;
+					
+					[ALIVE_profileHandler,"setActive",_profileID] call ALIVE_fnc_profileHandler;
 				};
 		};
 		case "despawn": {
@@ -420,6 +426,10 @@ switch(_operation) do {
 				_active = [_logic,"active"] call ALIVE_fnc_hashGet;
 				_vehicle = [_logic,"vehicle"] call ALIVE_fnc_hashGet;
 				_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
+				
+				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
+				_vehicle = _logic select 2 select 10; //[_logic,"vehicle"] call ALIVE_fnc_hashGet;
+				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 
 				// not already inactive
 				if(_active) then {
@@ -444,6 +454,8 @@ switch(_operation) do {
 
 					// delete
 					deleteVehicle _vehicle;
+					
+					[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
 				};
 		};
 		case "handleDeath": {

@@ -55,7 +55,7 @@ _inspectRecurse = {
 			for "_i" from 0 to _level-1 do {
 				_indent = format["%1%2",_indent,_indent];
 			};
-			["%1 k: %2 v: %3",_indent,_key,_value] call ALIVE_fnc_dump;
+			["%1 k [%4]: %2 v: %3",_indent,_key,_value,_forEachIndex] call ALIVE_fnc_dump;
 		};		
 	} forEach (_target select 1);
 	

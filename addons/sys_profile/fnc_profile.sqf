@@ -63,16 +63,15 @@ switch(_operation) do {
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
 						
-						[_logic,"debug",false] call ALIVE_fnc_hashSet;
-						[_logic,"active",false] call ALIVE_fnc_hashSet;
-						[_logic,"position",[0,0]] call ALIVE_fnc_hashSet;
-						[_logic,"side","EAST"] call ALIVE_fnc_hashSet;
-						[_logic,"profileID",false] call ALIVE_fnc_hashSet;
-						[_logic,"type","entity"] call ALIVE_fnc_hashSet;
-						[_logic,"objectType","inf"] call ALIVE_fnc_hashSet;		
-						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
-						[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
-						[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
+						[_logic,"debug",false] call ALIVE_fnc_hashSet; // select 2 select 0
+						[_logic,"active",false] call ALIVE_fnc_hashSet; // select 2 select 1
+						[_logic,"position",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 2
+						[_logic,"side","EAST"] call ALIVE_fnc_hashSet; // select 2 select 3
+						[_logic,"profileID",false] call ALIVE_fnc_hashSet; // select 2 select 4
+						[_logic,"type","entity"] call ALIVE_fnc_hashSet; // select 2 select 5
+						[_logic,"objectType","inf"] call ALIVE_fnc_hashSet; // select 2 select 6
+						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet; // select 2 select 7
+						
                 };
                 
                 /*

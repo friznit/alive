@@ -47,31 +47,7 @@ _result = true;
 
 #define MTEMPLATE "ALiVE_SIMULATION_%1"
 
-_deleteMarkers = {
-	private ["_logic"];
-	
-	_logic = _this;
-	{
-			deleteMarkerLocal _x;
-	} forEach (([_logic,"debugMarkers"] call ALIVE_fnc_hashGet) select 2);
-};
 
-_deleteMarker = {
-	private ["_profile","_markers","_m","_profileID","_markerIndex"];
-	
-	_profile = _this;
-	
-	_markers = [_logic,"debugMarkers"] call ALIVE_fnc_hashGet;
-	
-	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-	
-	_markerIndex = _markers select 1;
-	if(_profileID in _markerIndex) then {
-		_m = [_markers,_profileID] call ALIVE_fnc_hashGet;
-		deleteMarkerLocal _m;
-		[_markers,_profileID] call ALIVE_fnc_hashRem;
-	};
-};
 
 _createMarker = {
 	private ["_profile","_waypoint","_markers","_m","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
@@ -179,15 +155,15 @@ switch(_operation) do {
 				_cycleTime = _args select 1;
 				
 				_debug = [_logic, "debug"] call ALIVE_fnc_hashGet;
-		
-				_profileID = [_entityProfile, "profileID"] call ALIVE_fnc_hashGet;
-				_active = [_entityProfile,"active"] call ALIVE_fnc_hashGet;			
-				_waypoints = [_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
-				_waypointsCompleted = [_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
-				_currentPosition = [_entityProfile,"position"] call ALIVE_fnc_hashGet;
-				_vehiclesInCommandOf = [_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
-				_vehiclesInCargoOf = [_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
-				_speedPerSecondArray = [_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+				
+				_profileID = _entityProfile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+				_active = _entityProfile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;	
+				_waypoints = _entityProfile select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
+				_waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
+				_currentPosition = _entityProfile select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
+				_vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
+				_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
+				_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
 				_vehicleCommander = false;
 				_vehicleCargo = false;
 				
@@ -292,7 +268,7 @@ switch(_operation) do {
 					// entity is spawned, update positions
 					} else {
 					
-						_leader = [_entityProfile,"leader"] call ALIVE_fnc_hashGet;
+						_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 						_newPosition = getPosATL _leader;
 					
 						if(_vehicleCommander) then {
@@ -305,7 +281,6 @@ switch(_operation) do {
 							} forEach _vehiclesInCommandOf;												
 						} else {
 							// set the entity position and merge all unit positions to group position
-							_leader = [_entityProfile,"leader"] call ALIVE_fnc_hashGet;
 							[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
 							[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
 						};
@@ -318,6 +293,70 @@ switch(_operation) do {
 					[_logic, "destroy"] call SUPERCLASS;
                 };                
         };
+		 case "deleteMarkers": {                
+                {
+					deleteMarkerLocal _x;
+				} forEach (([_logic,"debugMarkers"] call ALIVE_fnc_hashGet) select 2);               
+        };
+		 case "deleteMarker": {                
+                [_logic, "debug", false] call MAINCLASS;
+                _profile = _args;
+			
+				_markers = [_logic,"debugMarkers"] call ALIVE_fnc_hashGet;
+				
+				_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
+				
+				_markerIndex = _markers select 1;
+				if(_profileID in _markerIndex) then {
+					_m = [_markers,_profileID] call ALIVE_fnc_hashGet;
+					deleteMarkerLocal _m;
+					[_markers,_profileID] call ALIVE_fnc_hashRem;
+				};              
+        };
+		 case "createMarker": {                
+                private ["_profile","_waypoint","_markers","_m","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
+				_profile = _args select 0;
+				_waypoint = _args select 1;
+				
+				[_logic,"deleteMarker",_profile] call MAINCLASS;
+				
+				_markers = [_logic,"debugMarkers"] call ALIVE_fnc_hashGet;
+
+				_position = [_waypoint,"position"] call ALIVE_fnc_hashGet;
+				_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
+				_profileSide = [_profile,"side"] call ALIVE_fnc_hashGet;
+				_markerLabel = format["%1 destination", _profileID];
+				
+				switch(_profileSide) do {
+					case "EAST":{
+						_debugColor = "ColorRed";
+					};
+					case "WEST":{
+						_debugColor = "ColorBlue";
+					};
+					case "CIV":{
+						_debugColor = "ColorYellow";
+					};
+					case "GUER":{
+						_debugColor = "ColorGreen";
+					};
+					default {
+						_debugColor = "ColorGreen";
+					};
+				};
+
+				if(count _position > 0) then {
+					_m = createMarkerLocal [format["MARKER_%1",_profileID], _position];
+					_m setMarkerShapeLocal "ICON";
+					_m setMarkerSizeLocal [1, 1];
+					_m setMarkerTypeLocal "waypoint";
+					_m setMarkerColorLocal _debugColor;
+					_m setMarkerTextLocal format["%1 destination",_profileID];
+
+					[_markers,_profileID,_m] call ALIVE_fnc_hashSet;
+				};                
+        };
+		
         case "debug": {
                 if(typeName _args != "BOOL") then {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;

@@ -28,7 +28,7 @@ private ["_debug","_cycleTime","_profiles","_markers"];
 
 _debug = if(count _this > 0) then {_this select 0} else {false};
 
-_cycleTime = 1;
+_cycleTime = 10;
 //_profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
 _markers = [] call ALIVE_fnc_hashCreate;
 
@@ -112,21 +112,23 @@ waituntil {
 	sleep 0.1;
 
 	{
-        private ["_entityProfile","_profileID","_active","_waypoints","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo","_vehiclesInCargoOf","_activeWaypoint","_type",
-		"_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_vehicleProfile","_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements"];
+        private ["_entityProfile","_profileID","_active","_waypoints","_currentPosition","_vehiclesInCommandOf","_vehicleCommander",
+		"_vehicleCargo","_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray",
+		"_speedPerSecond","_moveDistance","_vehicleProfile","_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader",
+		"_handleWPcomplete","_statements"];
 
 		_entityProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 		
 		if(count _entityProfile > 0) then {
 			
-			_profileID = [_entityProfile, "profileID"] call ALIVE_fnc_hashGet;
-			_active = [_entityProfile,"active"] call ALIVE_fnc_hashGet;			
-			_waypoints = [_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
-			_waypointsCompleted = [_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
-			_currentPosition = [_entityProfile,"position"] call ALIVE_fnc_hashGet;
-			_vehiclesInCommandOf = [_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
-			_vehiclesInCargoOf = [_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
-			_speedPerSecondArray = [_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+			_profileID = _entityProfile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+			_active = _entityProfile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;	
+			_waypoints = _entityProfile select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
+			_waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
+			_currentPosition = _entityProfile select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
+			_vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
+			_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
+			_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
 			_vehicleCommander = false;
 			_vehicleCargo = false;
 			
@@ -158,7 +160,9 @@ waituntil {
 						case "NORMAL": { _speedPerSecond = _speedPerSecondArray select 1; };
 						case "FULL": { _speedPerSecond = _speedPerSecondArray select 2; };
 						case default { _speedPerSecond = _speedPerSecondArray select 1; };
-					};				
+					};		
+
+					_moveDistance = floor(_speedPerSecond * _cycleTime);
 				
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
@@ -171,13 +175,13 @@ waituntil {
 					switch (_type) do {
 						case "MOVE" : {
 							 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-							 _newPosition = [_currentPosition, _speedPerSecond, _direction] call BIS_fnc_relPos;
+							 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
 							 _handleWPcomplete = {};
 
 						};
 						case "CYCLE" : {
 							 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-							 _newPosition = [_currentPosition, _speedPerSecond, _direction] call BIS_fnc_relPos;
+							 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
 							 _handleWPcomplete = {
 								_waypoints = _waypoints + _waypointsCompleted;
 								_waypointsCompleted = [];
@@ -190,7 +194,7 @@ waituntil {
 					};
 					
 					// distance to wp destination within completion radius
-					if(_distance <= (_speedPerSecond * 2)) then {
+					if(_distance <= (_moveDistance * 2)) then {
 					
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {

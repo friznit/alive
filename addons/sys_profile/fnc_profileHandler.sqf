@@ -390,6 +390,38 @@ switch(_operation) do {
 						};
                 };
         };
+		case "setActive": {
+				private["_profileID","_profilesInActive","_profilesActive"];
+				
+				_profileID = _args;
+				_profilesInActive = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
+				_profilesActive = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
+
+				if(_profileID in _profilesInActive) then {
+					_profilesInActive = _profilesInActive - [_profileID];
+				};
+				
+				_profilesActive set [count _profilesActive, _profileID];
+				
+				_profilesInActive = [_logic, "profilesInActive",_profilesInActive] call ALIVE_fnc_hashSet;
+				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
+		};
+		case "setInActive": {
+				private["_profileID","_profiles","_profileIndex"];
+
+				_profileID = _args;
+				_profilesInActive = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
+				_profilesActive = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
+
+				if(_profileID in _profilesActive) then {
+					_profilesActive = _profilesActive - [_profileID];
+				};
+				
+				_profilesInActive set [count _profilesInActive, _profileID];
+				
+				_profilesInActive = [_logic, "profilesInActive",_profilesInActive] call ALIVE_fnc_hashSet;
+				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
+		};
 		case "getProfile": {
 				private["_profileID","_profiles","_profileIndex"];
 
