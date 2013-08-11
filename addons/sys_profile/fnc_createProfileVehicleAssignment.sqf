@@ -42,34 +42,44 @@ _usedIndexes = _currentEntityAssignments call ALIVE_fnc_profileVehicleAssignment
 _unitIndexes = _unitIndexes - _usedIndexes;
 _unitCount = count _unitIndexes;
 
-// get empty position data for the vehicle
-_emptyPositionData = _profileVehicle call ALIVE_fnc_profileVehicleAssignmentGetEmptyPositions;
 
-/*
-["used indexes:%1",_usedIndexes] call ALIVE_fnc_dump;
-["unit indexes:%1",_unitIndexes] call ALIVE_fnc_dump;
-["unit count:%1",_unitCount] call ALIVE_fnc_dump;
-["empty position data:%1",_emptyPositionData] call ALIVE_fnc_dump;
-*/
+if(count(_unitIndexes) > 0) then {
 
-_assignments = [_vehicleID,_entityID,[[],[],[],[],[]]];
-_assignedCount = 0;
+	// get empty position data for the vehicle
+	_emptyPositionData = _profileVehicle call ALIVE_fnc_profileVehicleAssignmentGetEmptyPositions;
 
-scopeName "main";
+	/*
+	["used indexes:%1",_usedIndexes] call ALIVE_fnc_dump;
+	["unit indexes:%1",_unitIndexes] call ALIVE_fnc_dump;
+	["unit count:%1",_unitCount] call ALIVE_fnc_dump;
+	["empty position data:%1",_emptyPositionData] call ALIVE_fnc_dump;
+	*/
 
-for "_i" from 0 to (count _emptyPositionData)-1 do {
-	_assignment = (_assignments select 2) select _i;
-	_emptyCount = _emptyPositionData select _i;
 
-	for "_j" from 0 to (_emptyCount)-1 do {
-	
-		if(_unitCount == _assignedCount && _assignedCount > 0) then {
-			breakTo "main";
-		};			
-		_assignment set [count _assignment, _unitIndexes select _assignedCount];			
-		_assignedCount = _assignedCount + 1;			
+	_assignments = [_vehicleID,_entityID,[[],[],[],[],[]]];
+	_assignedCount = 0;
+
+	scopeName "main";
+
+	for "_i" from 0 to (count _emptyPositionData)-1 do {
+		_assignment = (_assignments select 2) select _i;
+		_emptyCount = _emptyPositionData select _i;
+		
+		/*
+		["empty pos ass: %1",_assignment] call ALIVE_fnc_dump;
+		["empty pos empty count: %1",_emptyCount] call ALIVE_fnc_dump;
+		*/
+
+		for "_j" from 0 to (_emptyCount)-1 do {
+		
+			if(_unitCount == _assignedCount && _assignedCount > 0) then {
+				breakTo "main";
+			};			
+			_assignment set [count _assignment, _unitIndexes select _assignedCount];			
+			_assignedCount = _assignedCount + 1;			
+		};
 	};
-};
 
-[_profileEntity, "addVehicleAssignment", _assignments] call ALIVE_fnc_profileEntity;
-[_profileVehicle, "addVehicleAssignment", _assignments] call ALIVE_fnc_profileVehicle;
+	[_profileEntity, "addVehicleAssignment", _assignments] call ALIVE_fnc_profileEntity;
+	[_profileVehicle, "addVehicleAssignment", _assignments] call ALIVE_fnc_profileVehicle;
+};

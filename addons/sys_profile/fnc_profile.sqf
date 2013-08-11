@@ -36,7 +36,7 @@ nil
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_profile
 
-private ["_logic","_operation","_args","_result"];
+private ["_logic","_operation","_args","_result","_deleteMarkers","_createMarkers"];
 
 TRACE_1("profile - input",_this);
 
@@ -62,6 +62,17 @@ switch(_operation) do {
 						[_logic,"super"] call ALIVE_fnc_hashRem;
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
+						
+						[_logic,"debug",false] call ALIVE_fnc_hashSet;
+						[_logic,"active",false] call ALIVE_fnc_hashSet;
+						[_logic,"position",[0,0]] call ALIVE_fnc_hashSet;
+						[_logic,"side","EAST"] call ALIVE_fnc_hashSet;
+						[_logic,"profileID",false] call ALIVE_fnc_hashSet;
+						[_logic,"type","entity"] call ALIVE_fnc_hashSet;
+						[_logic,"objectType","inf"] call ALIVE_fnc_hashSet;		
+						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+						[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
+						[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
                 };
                 
                 /*
@@ -77,16 +88,6 @@ switch(_operation) do {
                 if (isServer) then {
 					[_logic, "destroy"] call SUPERCLASS;
                 };                
-        };
-        case "debug": {
-                if(typeName _args != "BOOL") then {
-						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
-                } else {
-						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
-                };                
-                ASSERT_TRUE(typeName _args == "BOOL",str _args);
-                
-                _result = _args;
         };
 		case "state": {
 				private["_state"];

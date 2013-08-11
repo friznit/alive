@@ -98,7 +98,7 @@ STAT("Create Vehicle Profile 1");
 _profileVehicle1 = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "init"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "profileID", "vehicle_01"] call ALIVE_fnc_profileVehicle;
-[_profileVehicle1, "vehicleClass", "B_MRAP_01_gmg_F"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "vehicleClass", "B_APC_Wheeled_01_cannon_F"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "position", [getPos player, 20, 180] call BIS_fnc_relPos] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "direction", 180] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "damage", 0] call ALIVE_fnc_profileVehicle;

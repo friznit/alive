@@ -107,8 +107,6 @@ switch(_operation) do {
 
 						_profilesByType = [] call ALIVE_fnc_hashCreate;
 						[_profilesByType, "entity", []] call ALIVE_fnc_hashSet;
-						[_profilesByType, "mil", []] call ALIVE_fnc_hashSet;
-						[_profilesByType, "civ", []] call ALIVE_fnc_hashSet;
 						[_profilesByType, "vehicle", []] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByType",_profilesByType] call ALIVE_fnc_hashSet;
 
@@ -168,12 +166,6 @@ switch(_operation) do {
 								case "entity": {
 									_result = [_x, "debug", false] call ALIVE_fnc_profileEntity;
 								};
-								case "mil": {
-									_result = [_x, "debug", false] call ALIVE_fnc_profileMil;
-								};
-								case "civ": {
-									_result = [_x, "debug", false] call ALIVE_fnc_profileCiv;
-								};
 								case "vehicle": {
 									_result = [_x, "debug", false] call ALIVE_fnc_profileVehicle;
 								};
@@ -186,12 +178,6 @@ switch(_operation) do {
 							switch(_profileType) do {
 									case "entity": {
 										_result = [_x, "debug", true] call ALIVE_fnc_profileEntity;
-									};
-									case "mil": {
-										_result = [_x, "debug", true] call ALIVE_fnc_profileMil;
-									};
-									case "civ": {
-										_result = [_x, "debug", true] call ALIVE_fnc_profileCiv;
 									};
 									case "vehicle": {
 										_result = [_x, "debug", true] call ALIVE_fnc_profileVehicle;
@@ -307,7 +293,7 @@ switch(_operation) do {
 								};								
 							}else{
 								// vehicle type
-								_profileVehicleType = [_profile, "vehicleType"] call ALIVE_fnc_hashGet;
+								_profileVehicleType = [_profile, "objectType"] call ALIVE_fnc_hashGet;
 								_profilesVehicleType = [_profilesByVehicleType,_profileVehicleType] call ALIVE_fnc_hashGet;
 								_profilesVehicleType set [count _profilesVehicleType, _profileID];
 							};
@@ -396,7 +382,7 @@ switch(_operation) do {
 								};
 							}else{
 								// vehicle type
-								_profileVehicleType = [_profile, "vehicleType"] call ALIVE_fnc_hashGet;
+								_profileVehicleType = [_profile, "objectType"] call ALIVE_fnc_hashGet;
 								_profilesVehicleType = [_profilesByVehicleType, _profileVehicleType] call ALIVE_fnc_hashGet;
 								_profilesVehicleType = _profilesVehicleType - [_profileID];
 								[_profilesByVehicleType, _profileVehicleType, _profilesVehicleType] call ALIVE_fnc_hashSet;

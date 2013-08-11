@@ -133,8 +133,6 @@ switch(_operation) do {
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
 						
-						[_logic,"spawnDistance", 1000] call ALIVE_fnc_hashSet;
-						
 						[_logic,"debugMarkers", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                 };
                 
@@ -151,24 +149,24 @@ switch(_operation) do {
 				private ["_profile","_debug","_distance","_profileID","_profileType","_position","_active","_vehicle","_leader"];
 				
 				_profile = _args select 0;
+				_distance = _args select 1;
 								
 				_debug = [_logic, "debug"] call ALIVE_fnc_hashGet;
-				_distance = [_logic, "spawnDistance"] call ALIVE_fnc_hashGet;
-		
-				_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-				_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
-				_active = [_profile, "active"] call ALIVE_fnc_hashGet;
+				
+				_profileID = _profile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+				_profileType = _profile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
+				_active = _profile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
 				
 				if(_active) then {
 					if(_profileType == "vehicle") then {
-						_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;
+						_vehicle = _profile select 2 select 10; //_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;
 						_position = getPosATL _vehicle;
 					}else{
-						_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+						_leader = _profile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 						_position = getPosATL _leader;
 					};
 				}else{
-					_position = [_profile,"position"] call ALIVE_fnc_hashGet;
+					_position = _profile select 2 select 2; //_position = [_profile,"position"] call ALIVE_fnc_hashGet;
 				};		
 				
 				if ([_position, _distance] call ALiVE_fnc_anyPlayersInRange > 0) then {
@@ -187,12 +185,6 @@ switch(_operation) do {
 						switch(_profileType) do {
 								case "entity": {
 									[_profile, "spawn"] call ALIVE_fnc_profileEntity;
-								};
-								case "mil": {
-									[_profile, "spawn"] call ALIVE_fnc_profileMil;
-								};
-								case "civ": {
-									[_profile, "spawn"] call ALIVE_fnc_profileCiv;
 								};
 								case "vehicle": {
 									[_profile, "spawn"] call ALIVE_fnc_profileVehicle;
@@ -215,12 +207,6 @@ switch(_operation) do {
 						switch(_profileType) do {
 								case "entity": {
 									[_profile, "despawn"] call ALIVE_fnc_profileEntity;
-								};
-								case "mil": {
-									[_profile, "despawn"] call ALIVE_fnc_profileMil;
-								};
-								case "civ": {
-									[_profile, "despawn"] call ALIVE_fnc_profileCiv;
 								};
 								case "vehicle": {
 									[_profile, "despawn"] call ALIVE_fnc_profileVehicle;

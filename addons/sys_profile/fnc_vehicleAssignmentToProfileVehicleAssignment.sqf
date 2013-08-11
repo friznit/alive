@@ -59,7 +59,7 @@ _assignments = [[],[],[],[],[]];
 				_turretConfig = [_vehicle, _assignedTurret] call CBA_fnc_getTurret;
 				_turretIsGunner = getNumber(_turretConfig >> "primaryGunner");
 				_turretIsCommander = getNumber(_turretConfig >> "primaryObserver");
-				_isTurret = true;
+				_isTurret = true;				
 				
 				if(_turretIsGunner == 1) then {
 					_gunner = _assignments select 1;
@@ -68,8 +68,8 @@ _assignments = [[],[],[],[],[]];
 					_isTurret = false;
 				};
 				
-				if(_turretIsCommander == 2) then {
-					_commander = _assignments select 1;
+				if(_turretIsCommander == 1) then {
+					_commander = _assignments select 2;
 					_commander set [count _commander,_unitIndex];
 					_assignments set [2, _commander];
 					_isTurret = false;
@@ -79,11 +79,20 @@ _assignments = [[],[],[],[],[]];
 					_turret = _assignments select 3;
 					_turret set [count _turret,_unitIndex];
 					_assignments set [3, _turret];
-				};			
+				};
+
+				/*
+				["ASS TUR: %1",_assignedTurret] call ALIVE_fnc_dump;
+				["ASS TUR GUN: %1",_turretIsGunner] call ALIVE_fnc_dump;
+				["ASS TUR COMMAND: %1",_turretIsCommander] call ALIVE_fnc_dump;
+				["ASS TUR TUR: %1",_isTurret] call ALIVE_fnc_dump;
+				*/
 			};
 		};
 	};	
 	_unitIndex = _unitIndex + 1;
 } forEach _units;
+
+//["ASS: %1",_assignments] call ALIVE_fnc_dump;
 
 _assignments

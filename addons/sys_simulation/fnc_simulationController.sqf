@@ -36,7 +36,7 @@ nil
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_simulationController
 
-private ["_logic","_operation","_args","_result"];
+private ["_logic","_operation","_args","_result","_deleteMarkers","_deleteMarker","_createMarker"];
 
 TRACE_1("simulationController - input",_this);
 
@@ -68,7 +68,7 @@ _deleteMarker = {
 	_markerIndex = _markers select 1;
 	if(_profileID in _markerIndex) then {
 		_m = [_markers,_profileID] call ALIVE_fnc_hashGet;
-		deleteMarkerLocal _m;		
+		deleteMarkerLocal _m;
 		[_markers,_profileID] call ALIVE_fnc_hashRem;
 	};
 };
@@ -133,6 +133,7 @@ switch(_operation) do {
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
 						
+						[_logic,"index", 0] call ALIVE_fnc_hashSet;
 						[_logic,"debugMarkers", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                 };
                 
@@ -144,6 +145,30 @@ switch(_operation) do {
                 CONTROLLER  - coordination
                 */
         };
+		case "getNextBlock": {
+				private ["_blockLimit","_currentIndex","_profiles","_limit","_block"];
+				
+				_blockLimit = _args select 0;
+				
+				_currentIndex = [_logic,"index"] call ALIVE_fnc_hashGet;
+				
+				_profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
+				_limit = count _profiles;
+				
+				if((_currentIndex + _blockLimit) >= _limit) then {
+					[_logic,"index",0] call ALIVE_fnc_hashSet;
+				}else{
+					_limit = _currentIndex + _blockLimit;
+					[_logic,"index",_limit] call ALIVE_fnc_hashSet;
+				};
+				
+				_block = [];
+				for "_i" from _currentIndex to (_limit)-1 do {
+					_block set [count _block, _profiles select _i];
+				};
+				
+				_result = _block;
+		};
 		case "simulateEntitiy": {
 		
 				private ["_entityProfile","_cycleTime","_debug","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo",

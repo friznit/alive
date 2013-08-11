@@ -137,8 +137,52 @@ switch(_operation) do {
 						// DEBUG -------------------------------------------------------------------------------------
 							
 						// start the profile controller FSM
+						///*
 						_handle = [_logic] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
 						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
+						//*/
+						
+						/*
+						// start profile simulation with debug enabled
+						[] spawn {[false] call ALIVE_fnc_simulateProfileMovement};
+						
+						// start profile spawner with activation radius of 1000m and debug enabled
+						[] spawn {[1000,false] call ALIVE_fnc_profileSpawner};
+						
+						// run grid analysis
+						[] spawn { 
+							waituntil {
+								sleep 240;
+								
+								private ["_sectors","_sectorData"];
+								
+								// DEBUG -------------------------------------------------------------------------------------
+								["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+								["ALIVE Grid analysis for profile positions"] call ALIVE_fnc_dump;
+								// DEBUG -------------------------------------------------------------------------------------
+								
+								// run profile analysis on all sectors
+								[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
+								
+								// DEBUG -------------------------------------------------------------------------------------
+								// display visual representation of sector data
+								
+								_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
+								
+								// clear the sector data plot
+								[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+								
+								// plot the sector data
+								[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
+								// DEBUG -------------------------------------------------------------------------------------
+								
+										
+								sleep 5;		
+								
+								false 
+							};
+						};
+						*/
                 };
         };
         case "destroy": {                

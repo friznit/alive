@@ -1,6 +1,7 @@
 #include <\x\alive\addons\sys_profile\script_component.hpp>
 SCRIPT(staticVehicleEmptyPositionData);
 
+
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_staticVehicleEmptyPositionData
 
@@ -13,6 +14,7 @@ ARJay
 ---------------------------------------------------------------------------- */
 
 ALIVE_vehiclePositions = [] call ALIVE_fnc_hashCreate;
+
 [ALIVE_vehiclePositions,"O_Quadbike_01_F",[1,0,0,0,1]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"O_Quadbike_ALIVE",[1,0,0,0,1]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"B_Mortar_01_F",[0,1,0,0,0]] call ALIVE_fnc_hashSet;
@@ -55,8 +57,8 @@ ALIVE_vehiclePositions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_vehiclePositions,"I_MRAP_03_gmg_F",[1,1,1,0,1]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"C_Quadbike_01_F",[1,0,0,0,1]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"I_Quadbike_01_F",[1,0,0,0,1]] call ALIVE_fnc_hashSet;
-[ALIVE_vehiclePositions,"B_Truck_01_transport_F",[1,0,0,1,16]] call ALIVE_fnc_hashSet;
-[ALIVE_vehiclePositions,"B_Truck_01_covered_F",[1,0,0,1,16]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"B_Truck_01_transport_F",[1,0,0,0,17]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"B_Truck_01_covered_F",[1,0,0,0,17]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"O_Truck_02_covered_F",[1,0,0,0,16]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"O_Truck_02_transport_F",[1,0,0,0,16]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"I_Truck_02_covered_F",[1,0,0,0,16]] call ALIVE_fnc_hashSet;

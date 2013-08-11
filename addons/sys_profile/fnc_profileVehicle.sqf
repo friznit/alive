@@ -87,7 +87,7 @@ nil
 #define SUPERCLASS ALIVE_fnc_profile
 #define MAINCLASS ALIVE_fnc_profileVehicle
 
-private ["_logic","_operation","_args","_result"];
+private ["_logic","_operation","_args","_result","_deleteMarkers","_createMarkers"];
 
 TRACE_1("profileVehicle - input",_this);
 
@@ -114,7 +114,7 @@ _createMarkers = {
 		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
-		_vehicleType = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
+		_vehicleType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
 		
 		switch(_profileSide) do {
 			case "EAST":{
@@ -195,9 +195,13 @@ switch(_operation) do {
 						[_logic,"super"] call ALIVE_fnc_hashRem;
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
+						
+						// init the super class
+						[_logic, "init"] call SUPERCLASS;
 
 						// set defaults
-						[_logic,"debug",false] call ALIVE_fnc_hashSet;
+						[_logic,"type","vehicle"] call ALIVE_fnc_hashSet;
+						[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet;
 						[_logic,"fuel",1] call ALIVE_fnc_hashSet;
 						[_logic,"ammo",[]] call ALIVE_fnc_hashSet;
 						[_logic,"engineOn",false] call ALIVE_fnc_hashSet;
@@ -205,11 +209,6 @@ switch(_operation) do {
 						[_logic,"canMove",true] call ALIVE_fnc_hashSet;
 						[_logic,"canFire",true] call ALIVE_fnc_hashSet;
 						[_logic,"needReload",0] call ALIVE_fnc_hashSet;
-						[_logic,"type","vehicle"] call ALIVE_fnc_hashSet;
-						[_logic,"active",false] call ALIVE_fnc_hashSet;
-						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
-						[_logic,"entitiesInCommandOf",[]] call ALIVE_fnc_hashSet;
-						[_logic,"entitiesInCargoOf",[]] call ALIVE_fnc_hashSet;
                 };
 
                 /*
@@ -236,16 +235,34 @@ switch(_operation) do {
 
                 _result = _args;
         };
+		case "active": {
+				if(typeName _args == "BOOL") then {
+						[_logic,"active",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"active"] call ALIVE_fnc_hashGet;
+        };
 		case "profileID": {
 				if(typeName _args == "STRING") then {
 						[_logic,"profileID",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"profileID"] call ALIVE_fnc_hashGet;
         };
+		case "side": {
+				if(typeName _args == "STRING") then {
+						[_logic,"side",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"side"] call ALIVE_fnc_hashGet;
+        };
+		case "objectType": {
+				if(typeName _args == "STRING") then {
+						[_logic,"objectType",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"objectType"] call ALIVE_fnc_hashGet;
+        };
 		case "vehicleClass": {
 				if(typeName _args == "STRING") then {
 						[_logic,"vehicleClass",_args] call ALIVE_fnc_hashSet;						
-						[_logic,"vehicleType",_args call ALIVE_fnc_vehicleGetKindOf] call ALIVE_fnc_hashSet;
+						[_logic,"objectType",_args call ALIVE_fnc_vehicleGetKindOf] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
         };
@@ -270,12 +287,6 @@ switch(_operation) do {
 						[_logic,"damage",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"damage"] call ALIVE_fnc_hashGet;
-        };
-		case "side": {
-				if(typeName _args == "STRING") then {
-						[_logic,"side",_args] call ALIVE_fnc_hashSet;
-                };
-				_result = [_logic,"side"] call ALIVE_fnc_hashGet;
         };
 		case "fuel": {
 				if(typeName _args == "SCALAR") then {
@@ -313,23 +324,11 @@ switch(_operation) do {
                 };
 				_result = [_logic,"needReload"] call ALIVE_fnc_hashGet;
         };
-		case "active": {
-				if(typeName _args == "BOOL") then {
-						[_logic,"active",_args] call ALIVE_fnc_hashSet;
-                };
-				_result = [_logic,"active"] call ALIVE_fnc_hashGet;
-        };
 		case "vehicle": {
 				if(typeName _args == "OBJECT") then {
 						[_logic,"vehicle",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"vehicle"] call ALIVE_fnc_hashGet;
-        };
-		case "vehicleType": {
-				if(typeName _args == "STRING") then {
-						[_logic,"vehicleType",_args] call ALIVE_fnc_hashSet;
-                };
-				_result = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
         };
 		case "addVehicleAssignment": {
 				private ["_assignments","_key","_units","_unit","_group"];
@@ -365,7 +364,7 @@ switch(_operation) do {
 				private ["_side","_vehicleClass","_vehicleType","_position","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID"];
 
 				_vehicleClass = [_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
-				_vehicleType = [_logic,"vehicleType"] call ALIVE_fnc_hashGet;
+				_vehicleType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
 				_position = [_logic,"position"] call ALIVE_fnc_hashGet;
 				_direction = [_logic,"direction"] call ALIVE_fnc_hashGet;
 				_damage = [_logic,"damage"] call ALIVE_fnc_hashGet;

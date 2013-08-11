@@ -27,10 +27,11 @@ ARJay
 
 [] spawn {
 
-	private ["_cfg","_pos","_item","_class","_type","_scope","_vehicle","_countPositions","_positions"];
+	private ["_cfg","_pos","_exportString","_item","_class","_type","_scope","_vehicle","_countPositions","_positions"];
 		
 	_cfg = configFile >> "CfgVehicles";
 	_pos = getPos player;
+	_exportString = "";
 	
 	for "_i" from 0 to (count _cfg)-1 do {
 	
@@ -54,7 +55,7 @@ ARJay
 				if(_countPositions > 0) then {
 					_positions = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
 					
-					['[ALIVE_vehiclePositions,"%1",%2] call ALIVE_fnc_hashSet;',_class,_positions] call ALIVE_fnc_dump;	
+					_exportString = _exportString + format['[ALIVE_vehiclePositions,"%1",%2] call ALIVE_fnc_hashSet;',_class,_positions];
 				};		
 				
 				deleteVehicle _vehicle;
@@ -63,4 +64,7 @@ ARJay
 			};
 		};
 	};	
+	
+	copyToClipboard _exportString;
+	["Generate vehicle empty positions analysis complete, results have been copied to the clipboard"] call ALIVE_fnc_dump;
 };

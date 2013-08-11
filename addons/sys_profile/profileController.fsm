@@ -12,9 +12,9 @@ item7[] = {"SIMULATE",4,218,-189.816605,-11.441578,-99.816620,38.558418,2.000000
 item8[] = {"SIMULATE",2,250,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
 item9[] = {"COMPLETE",4,218,-373.583862,217.268799,-283.583862,267.268799,0.000000,"COMPLETE"};
 item10[] = {"VIEW",4,218,-69.968399,-11.441580,20.031601,38.558411,3.000000,"VIEW"};
-item11[] = {"VIEW",2,250,-71.455154,66.459785,18.544888,116.459770,0.000000,"VIEW"};
+item11[] = {"VIEW",2,4346,-71.455154,66.459785,18.544888,116.459770,0.000000,"VIEW"};
 item12[] = {"PROFILE_ANALYSIS",4,218,47.882359,-12.440315,137.882370,37.559673,3.000000,"PROFILE" \n "ANALYSIS"};
-item13[] = {"VIEW_1",2,4346,47.394333,66.459785,137.394379,116.459770,0.000000,"VIEW"};
+item13[] = {"PROFILE_ANALYSIS",2,250,47.394333,66.459785,137.394379,116.459770,0.000000,"PROFILE" \n "ANALYSIS"};
 version=1;
 class LayoutItems
 {
@@ -44,8 +44,8 @@ link12[] = {10,11};
 link13[] = {11,9};
 link14[] = {12,13};
 link15[] = {13,9};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,87,6316128,1,-430.454865,420.467499,436.933197,-489.804108,852,1071,1};
-window[] = {2,-1,-1,-1,-1,1054,0,1623,170,3,870};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,87,6316128,1,-502.363831,348.558533,414.960999,-511.776306,852,1071,1};
+window[] = {2,-1,-1,-1,-1,1029,77,1700,145,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -66,7 +66,7 @@ class FSM
        "" \n
        "_timer = 0;" \n
        "" \n
-       "_simulationCycleTime = 10;" \n
+       "_simulationCycleTime = 5;" \n
        "_lastSimulationTime = 0;" \n
        "_doSimulation = false;" \n
        "" \n
@@ -119,9 +119,11 @@ class FSM
       name = "SWITCH";
       init = /*%FSM<STATEINIT""">*/"_timer = time;" \n
        "" \n
+       "/*" \n
        "if((_timer - _lastProfileAnalysisTime) > _profileAnalysisCycleTime) then {" \n
        "	_doProfileAnalysis = true;" \n
        "};" \n
+       "*/" \n
        "" \n
        "if((_timer - _lastSimulationTime) > _simulationCycleTime) then {" \n
        "	_doSimulation = true;" \n
@@ -130,7 +132,9 @@ class FSM
        "" \n
        "if(((_timer - _lastViewTime) > _viewCycleTime) && !(_doSimulation)) then {" \n
        "	_doView = true;" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "};" \n
+       "" \n
+       ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -148,7 +152,7 @@ class FSM
         class PROFILE_ANALYSIS
         {
           priority = 3.000000;
-          to="VIEW_1";
+          to="PROFILE_ANALYSIS";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_doProfileAnalysis"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -200,12 +204,19 @@ class FSM
        "" \n
        "private [""_profiles"",""_entityProfile""];" \n
        "" \n
-       "_profiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_profileHandler;" \n
+       "//[""START""] call ALIVE_fnc_dump;" \n
+       "//[true] call ALIVE_fnc_timer;" \n
        "" \n
+       "_profiles = [ALIVE_simulationController,""getNextBlock"",[5]] call ALIVE_fnc_simulationController;" \n
+       "	" \n
        "{" \n
        "	_entityProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
        "      [ALIVE_simulationController,""simulateEntitiy"", [_entityProfile, _simulationCycleTime]] call ALIVE_fnc_simulationController;" \n
        "} forEach _profiles;" \n
+       "" \n
+       "//[""END""] call ALIVE_fnc_dump;" \n
+       "//[] call ALIVE_fnc_timer;" \n
+       "" \n
        "" \n
        "_doSimulation = false;" \n
        "_lastSimulationTime = time;"/*%FSM</STATEINIT""">*/;
@@ -236,13 +247,23 @@ class FSM
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_profiles"",""_entityProfile""];" \n
+       "//[_debug] spawn {" \n
+       "" \n
+       "//private [""_profiles"",""_entityProfile""];" \n
+       "" \n
+       "[""START""] call ALIVE_fnc_dump;" \n
+       "[true] call ALIVE_fnc_timer;" \n
        "" \n
        "_profiles = [ALIVE_profileHandler, ""getProfiles""] call ALIVE_fnc_profileHandler;" \n
        "" \n
        "{" \n
-       "      [ALIVE_viewController,""spawnProfile"", [_x]] call ALIVE_fnc_viewController;" \n
+       "      [ALIVE_viewController,""spawnProfile"", [_x,1000]] call ALIVE_fnc_viewController;" \n
        "} forEach (_profiles select 2);" \n
+       "" \n
+       "[""END""] call ALIVE_fnc_dump;" \n
+       "[] call ALIVE_fnc_timer;" \n
+       "" \n
+       "//};" \n
        "" \n
        "_doView = false;" \n
        "_lastViewTime = time;"/*%FSM</STATEINIT""">*/;
@@ -262,10 +283,10 @@ class FSM
       };
     };
     /*%FSM</STATE>*/
-    /*%FSM<STATE "VIEW_1">*/
-    class VIEW_1
+    /*%FSM<STATE "PROFILE_ANALYSIS">*/
+    class PROFILE_ANALYSIS
     {
-      name = "VIEW_1";
+      name = "PROFILE_ANALYSIS";
       init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
        "if(_debug) then {" \n
        "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
@@ -282,6 +303,7 @@ class FSM
        "	[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;" \n
        "			" \n
        "	// DEBUG -------------------------------------------------------------------------------------" \n
+       "	/*" \n
        "	if(_debug) then {" \n
        "		_sectors = [ALIVE_sectorGrid, ""sectors""] call ALIVE_fnc_sectorGrid;" \n
        "			" \n
@@ -291,6 +313,7 @@ class FSM
        "		// plot the sector data" \n
        "		[ALIVE_sectorPlotter, ""plot"", [_sectors, ""entitiesBySide""]] call ALIVE_fnc_plotSectors;" \n
        "	};" \n
+       "	*/" \n
        "};" \n
        "" \n
        "_doProfileAnalysis = false;" \n
