@@ -6,17 +6,17 @@ item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699
 item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item3[] = {"DESTROY",4,218,-66.461502,-168.242981,23.538473,-118.242981,0.000000,"DESTROY"};
 item4[] = {"END",1,250,68.367783,-167.244247,158.367798,-117.244301,0.000000,"END"};
-item5[] = {"SWITCH",2,250,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
-item6[] = {"TIMER",4,218,-65.462784,-90.341675,24.537275,-40.341705,1.000000,"TIMER"};
-item7[] = {"SIMULATE",4,218,-189.816605,-11.441578,-99.816620,38.558418,3.000000,"SIMULATE"};
-item8[] = {"SIMULATE",2,4346,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
-item9[] = {"COMPLETE",4,218,-373.583862,217.268799,-283.583862,267.268799,0.000000,"COMPLETE"};
-item10[] = {"SPAWN",4,218,-69.968399,-11.441580,20.031601,38.558411,2.000000,"SPAWN"};
-item11[] = {"SPAWN",2,250,-69.641251,67.064430,20.358829,117.064407,0.000000,"SPAWN"};
-item12[] = {"PROFILE_ANALYSIS",4,218,148.156036,-11.945818,238.156052,38.054169,5.000000,"PROFILE" \n "ANALYSIS"};
-item13[] = {"PROFILE_ANALYSIS",2,250,148.272644,66.349632,238.272690,116.349617,0.000000,"PROFILE" \n "ANALYSIS"};
-item14[] = {"DESPAWN",4,218,39.081223,-11.130665,129.081207,38.869316,4.000000,"DESPAWN"};
-item15[] = {"DESPAWN",2,250,39.408409,66.770706,129.408447,116.770691,0.000000,"DESPAWN"};
+item5[] = {"SWITCH",2,4346,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
+item6[] = {"SIMULATE",4,218,-189.816605,-11.441578,-99.816620,38.558418,3.000000,"SIMULATE"};
+item7[] = {"SIMULATE",2,250,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
+item8[] = {"COMPLETE",4,218,-373.583862,217.268799,-283.583862,267.268799,0.000000,"COMPLETE"};
+item9[] = {"SPAWN",4,218,-69.968399,-11.441580,20.031601,38.558411,2.000000,"SPAWN"};
+item10[] = {"SPAWN",2,250,-69.641251,67.064430,20.358829,117.064407,0.000000,"SPAWN"};
+item11[] = {"PROFILE_ANALYSIS",4,218,148.156036,-11.945818,238.156052,38.054169,5.000000,"PROFILE" \n "ANALYSIS"};
+item12[] = {"PROFILE_ANALYSIS",2,250,148.272644,66.349632,238.272690,116.349617,0.000000,"PROFILE" \n "ANALYSIS"};
+item13[] = {"DESPAWN",4,218,39.081223,-11.130665,129.081207,38.869316,4.000000,"DESPAWN"};
+item14[] = {"DESPAWN",2,250,39.408409,66.770706,129.408447,116.770691,0.000000,"DESPAWN"};
+item15[] = {"TIMER",4,218,-62.918728,-89.510696,27.081257,-39.510719,1.000000,"TIMER"};
 version=1;
 class LayoutItems
 {
@@ -35,22 +35,22 @@ link1[] = {1,5};
 link2[] = {3,4};
 link3[] = {5,3};
 link4[] = {5,6};
-link5[] = {5,7};
-link6[] = {5,10};
-link7[] = {5,12};
-link8[] = {5,14};
-link9[] = {6,5};
+link5[] = {5,9};
+link6[] = {5,11};
+link7[] = {5,13};
+link8[] = {5,15};
+link9[] = {6,7};
 link10[] = {7,8};
-link11[] = {8,9};
-link12[] = {9,5};
-link13[] = {10,11};
-link14[] = {11,9};
-link15[] = {12,13};
-link16[] = {13,9};
-link17[] = {14,15};
-link18[] = {15,9};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,89,6316128,1,-267.366852,247.792297,424.538177,-223.038483,852,1071,1};
-window[] = {2,-1,-1,-1,-1,985,22,1645,101,3,870};
+link11[] = {8,5};
+link12[] = {9,10};
+link13[] = {10,8};
+link14[] = {11,12};
+link15[] = {12,8};
+link16[] = {13,14};
+link17[] = {14,8};
+link18[] = {15,5};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,90,6316128,1,-383.138306,363.563751,570.067871,-368.568115,852,1071,1};
+window[] = {2,-1,-1,-1,-1,1066,265,1888,182,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -129,6 +129,11 @@ class FSM
       name = "SWITCH";
       init = /*%FSM<STATEINIT""">*/"_timer = time;" \n
        "" \n
+       "//[""HELLO""] call ALIVE_fnc_dump;" \n
+       "" \n
+       "/*" \n
+       "" \n
+       "" \n
        "if((_timer - _lastProfileAnalysisTime) > _profileAnalysisCycleTime) then {" \n
        "	_doProfileAnalysis = true;" \n
        "};" \n
@@ -142,7 +147,6 @@ class FSM
        "};" \n
        "" \n
        "" \n
-       "/*" \n
        "if((_timer - _lastSimulationTime) > _simulationCycleTime) then {" \n
        "	_doSimulation = true;" \n
        "};" \n
@@ -159,7 +163,7 @@ class FSM
           priority = 5.000000;
           to="PROFILE_ANALYSIS";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_doProfileAnalysis"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_timer - _lastProfileAnalysisTime) > _profileAnalysisCycleTime"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -169,7 +173,7 @@ class FSM
           priority = 4.000000;
           to="DESPAWN";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_doDespawn"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((_timer - _lastDespawnTime) > _despawnCycleTime)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -179,7 +183,7 @@ class FSM
           priority = 3.000000;
           to="SIMULATE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_doSimulation"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_timer - _lastSimulationTime) > _simulationCycleTime"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -189,7 +193,7 @@ class FSM
           priority = 2.000000;
           to="SPAWN";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_doSpawn"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((_timer - _lastSpawnTime) > _spawnCycleTime)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
