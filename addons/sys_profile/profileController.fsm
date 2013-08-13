@@ -46,8 +46,8 @@ link13[] = {11,12};
 link14[] = {12,8};
 link15[] = {13,14};
 link16[] = {14,8};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,90,6316128,1,-359.469330,339.893829,386.122314,-343.862701,851,1071,1};
-window[] = {2,-1,-1,-1,-1,1101,200,1823,203,3,869};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,90,6316128,1,-375.585846,356.010010,556.581970,-364.145660,851,1071,1};
+window[] = {2,-1,-1,-1,-1,1095,159,1782,197,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -63,12 +63,12 @@ class FSM
        """_spawnCycleTime"",""_lastSpawnTime"",""_doSpawn""," \n
        """_despawnCycleTime"",""_lastDespawnTime"",""_doDespawn""," \n
        """_profileAnalysisCycleTime"",""_lastProfileAnalysisTime"",""_doProfileAnalysis""," \n
-       """_destroy"",""_debug""];" \n
+       """_destroy"",""_debug"",""_deleteMarkers"",""_deleteMarker"",""_createMarker""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
        "_spawnDistance = _this select 1;" \n
        "" \n
-       "_simulationCycleTime = 1;" \n
+       "_simulationCycleTime =10;" \n
        "_lastSimulationTime = 0;" \n
        "_doSimulation = false;" \n
        "" \n
@@ -86,10 +86,74 @@ class FSM
        "" \n
        "_destroy = false;" \n
        "_debug = [_profileSystem,""debug"",false] call ALiVE_fnc_HashGet;" \n
+       "_markers = [] call ALIVE_fnc_hashCreate;" \n
        "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then { [""ALIVE Profile controller FSM init""] call ALIVE_fnc_dumpR; };" \n
-       "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
+       "// debug ---------------------------------------" \n
+       "" \n
+       "_deleteMarkers = {" \n
+       "	{" \n
+       "		deleteMarkerLocal _x;" \n
+       "	} forEach (_markers select 2);" \n
+       "	_markers = [] call ALIVE_fnc_hashCreate;" \n
+       "};" \n
+       "" \n
+       "_deleteMarker = {" \n
+       "	private [""_profile"",""_m"",""_profileID""];" \n
+       "	_profile = _this;" \n
+       "	" \n
+       "	_profileID = [_profile,""profileID""] call ALIVE_fnc_hashGet;" \n
+       "	" \n
+       "	_profileIndex = _markers select 1;" \n
+       "	if(_profileID in _profileIndex) then {	" \n
+       "		_m = [_markers,_profileID] call ALIVE_fnc_hashGet;			" \n
+       "		deleteMarkerLocal _m;		" \n
+       "		[_markers,_profileID] call ALIVE_fnc_hashRem;" \n
+       "	};" \n
+       "};" \n
+       "" \n
+       "_createMarker = {" \n
+       "	private [""_profile"",""_waypoint"",""_m"",""_position"",""_profileID"",""_debugColor"",""_profileSide"",""_markerLabel""];" \n
+       "	_profile = _this select 0;" \n
+       "	_waypoint = _this select 1;" \n
+       "	" \n
+       "	_entityProfile call _deleteMarker;" \n
+       "" \n
+       "	_position = [_waypoint,""position""] call ALIVE_fnc_hashGet;" \n
+       "	_profileID = [_profile,""profileID""] call ALIVE_fnc_hashGet;" \n
+       "	_profileSide = [_profile,""side""] call ALIVE_fnc_hashGet;" \n
+       "	_markerLabel = format[""%1 destination"", _profileID];" \n
+       "	" \n
+       "	switch(_profileSide) do {" \n
+       "		case ""EAST"":{" \n
+       "			_debugColor = ""ColorRed"";" \n
+       "		};" \n
+       "		case ""WEST"":{" \n
+       "			_debugColor = ""ColorBlue"";" \n
+       "		};" \n
+       "		case ""CIV"":{" \n
+       "			_debugColor = ""ColorYellow"";" \n
+       "		};" \n
+       "		case ""GUER"":{" \n
+       "			_debugColor = ""ColorGreen"";" \n
+       "		};" \n
+       "		default {" \n
+       "			_debugColor = ""ColorGreen"";" \n
+       "		};" \n
+       "	};" \n
+       "" \n
+       "	if(count _position > 0) then {" \n
+       "		_m = createMarkerLocal [format[""MARKER_%1"",_profileID], _position];" \n
+       "		_m setMarkerShapeLocal ""ICON"";" \n
+       "		_m setMarkerSizeLocal [1, 1];" \n
+       "		_m setMarkerTypeLocal ""waypoint"";" \n
+       "		_m setMarkerColorLocal _debugColor;" \n
+       "		_m setMarkerTextLocal format[""%1 destination"",_profileID];" \n
+       "" \n
+       "		[_markers,_profileID,_m] call ALIVE_fnc_hashSet;" \n
+       "	};" \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -191,161 +255,154 @@ class FSM
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_profiles"",""_profile""];" \n
+       "private [""_profiles"",""_profileBlock"",""_profile"",""_entityProfile"",""_profileID"",""_active"",""_waypoints"",""_waypointsCompleted"",""_currentPosition"",""_vehiclesInCommandOf"",""_vehicleCommander"",""_vehicleCargo""," \n
+       "	""_vehiclesInCargoOf"",""_activeWaypoint"",""_type"",""_speed"",""_destination"",""_distance"",""_speedPerSecondArray"",""_speedPerSecond"",""_moveDistance"",""_vehicleProfile""," \n
+       "	""_vehicleClass"",""_vehicleAssignments"",""_speedArray"",""_direction"",""_newPosition"",""_leader"",""_handleWPcomplete"",""_statements""];" \n
        "" \n
-       "//[true] call ALIVE_fnc_timer;" \n
+       "[true] call ALIVE_fnc_timer;" \n
        "" \n
-       "//_profiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_profileHandler;" \n
+       "_profiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_profileHandler;" \n
        "" \n
-       "_profiles = [ALIVE_simulationController,""getNextBlock"", [2]] call ALIVE_fnc_simulationController;" \n
+       "_profileBlock = [ALIVE_arrayBlockHandler,""getNextBlock"", [""simulation"",_profiles,5]] call ALIVE_fnc_arrayBlockHandler;" \n
        "	" \n
        "{" \n
-       "	/*" \n
-       "	_profile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "      [ALIVE_simulationController,""simulateEntitiy"", [_profile, _simulationCycleTime]] call ALIVE_fnc_simulationController;" \n
-       "	*/" \n
+       "	_entityProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
+       "				" \n
+       "	_profileID = _entityProfile select 2 select 4; //[_profile,""profileID""] call ALIVE_fnc_hashGet;" \n
+       "	_active = _entityProfile select 2 select 1; //[_profile, ""active""] call ALIVE_fnc_hashGet;	" \n
+       "	_waypoints = _entityProfile select 2 select 16; //[_entityProfile,""waypoints""] call ALIVE_fnc_hashGet;" \n
+       "	_waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,""waypointsCompleted"",[]] call ALIVE_fnc_hashGet;" \n
+       "	_currentPosition = _entityProfile select 2 select 2; //[_entityProfile,""position""] call ALIVE_fnc_hashGet;" \n
+       "	_vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,""vehiclesInCommandOf""] call ALIVE_fnc_hashGet;" \n
+       "	_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,""vehiclesInCargoOf""] call ALIVE_fnc_hashGet;" \n
+       "	_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, ""speedPerSecond""] call ALIVE_fnc_hashGet;" \n
+       "	_vehicleCommander = false;" \n
+       "	_vehicleCargo = false;" \n
+       "				" \n
+       "	// if entity is commanding a vehicle/s" \n
+       "	if(count _vehiclesInCommandOf > 0) then {" \n
+       "		_vehicleCommander = true;				" \n
+       "	};" \n
+       "				" \n
+       "	// if entity is cargo of vehicle/s" \n
+       "	if(count _vehiclesInCargoOf > 0) then {	" \n
+       "		_vehicleCargo = true;" \n
+       "	};" \n
+       "							" \n
+       "	// entity has waypoints assigned and entity is not in cargo of a vehicle" \n
+       "	if(count _waypoints > 0 && !(_vehicleCargo)) then {" \n
+       "					" \n
+       "		// entity is not spawned, simulate" \n
+       "		if!(_active) then {					" \n
+       "					" \n
+       "			_activeWaypoint = _waypoints select 0;" \n
+       "			_type = [_activeWaypoint,""type""] call ALIVE_fnc_hashGet;" \n
+       "			_speed = [_activeWaypoint,""speed""] call ALIVE_fnc_hashGet;" \n
+       "			_destination = [_activeWaypoint,""position""] call ALIVE_fnc_hashGet;" \n
+       "			_statements = [_activeWaypoint,""statements""] call ALIVE_fnc_hashGet;" \n
+       "			_distance = _currentPosition distance _destination;" \n
+       "									" \n
+       "			switch(_speed) do {" \n
+       "				case ""LIMITED"": { _speedPerSecond = _speedPerSecondArray select 0; };" \n
+       "				case ""NORMAL"": { _speedPerSecond = _speedPerSecondArray select 1; };" \n
+       "				case ""FULL"": { _speedPerSecond = _speedPerSecondArray select 2; };" \n
+       "				case default { _speedPerSecond = _speedPerSecondArray select 1; };" \n
+       "			};" \n
+       "						" \n
+       "			_moveDistance = floor(_speedPerSecond * _simulationCycleTime);" \n
+       "					" \n
+       "			// DEBUG -------------------------------------------------------------------------------------" \n
+       "			if(_debug) then {" \n
+       "				//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "				//[""ALIVE Simulated profile movement Profile: [%1] WPType: [%2] WPSpeed: [%3] Distance: [%4] MoveSpeed: [%5] SpeedArray: %6"",_profileID,_type,_speed,_distance,_speedPerSecond,_speedPerSecondArray] call ALIVE_fnc_dump;" \n
+       "				//[ALIVE_simulationController,""createMarker"",[_entityProfile,_activeWaypoint]] call ALIVE_fnc_simulationController;" \n
+       "				[_entityProfile,_activeWaypoint] call _createMarker;" \n
+       "			};" \n
+       "			// DEBUG -------------------------------------------------------------------------------------" \n
+       "						" \n
+       "			switch (_type) do {" \n
+       "				case ""MOVE"" : {" \n
+       "					 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;" \n
+       "					 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;" \n
+       "					 _handleWPcomplete = {};" \n
        "" \n
-       "				private [""_entityProfile"",""_profileID"",""_active"",""_waypoints"",""_waypointsCompleted"",""_currentPosition"",""_vehiclesInCommandOf"",""_vehicleCommander"",""_vehicleCargo""," \n
-       "				""_vehiclesInCargoOf"",""_activeWaypoint"",""_type"",""_speed"",""_destination"",""_distance"",""_speedPerSecondArray"",""_speedPerSecond"",""_moveDistance"",""_vehicleProfile""," \n
-       "				""_vehicleClass"",""_vehicleAssignments"",""_speedArray"",""_direction"",""_newPosition"",""_leader"",""_handleWPcomplete"",""_statements""];" \n
-       "				" \n
-       "				_entityProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "				" \n
-       "				_profileID = _entityProfile select 2 select 4; //[_profile,""profileID""] call ALIVE_fnc_hashGet;" \n
-       "				_active = _entityProfile select 2 select 1; //[_profile, ""active""] call ALIVE_fnc_hashGet;	" \n
-       "				_waypoints = _entityProfile select 2 select 16; //[_entityProfile,""waypoints""] call ALIVE_fnc_hashGet;" \n
-       "				_waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,""waypointsCompleted"",[]] call ALIVE_fnc_hashGet;" \n
-       "				_currentPosition = _entityProfile select 2 select 2; //[_entityProfile,""position""] call ALIVE_fnc_hashGet;" \n
-       "				_vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,""vehiclesInCommandOf""] call ALIVE_fnc_hashGet;" \n
-       "				_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,""vehiclesInCargoOf""] call ALIVE_fnc_hashGet;" \n
-       "				_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, ""speedPerSecond""] call ALIVE_fnc_hashGet;" \n
-       "				_vehicleCommander = false;" \n
-       "				_vehicleCargo = false;" \n
-       "				" \n
-       "				// if entity is commanding a vehicle/s" \n
-       "				if(count _vehiclesInCommandOf > 0) then {" \n
-       "					_vehicleCommander = true;				" \n
        "				};" \n
-       "				" \n
-       "				// if entity is cargo of vehicle/s" \n
-       "				if(count _vehiclesInCargoOf > 0) then {" \n
-       "					_vehicleCargo = true;" \n
-       "				};" \n
-       "							" \n
-       "				// entity has waypoints assigned and entity is not in cargo of a vehicle" \n
-       "				if(count _waypoints > 0 && !(_vehicleCargo)) then {" \n
-       "					" \n
-       "					// entity is not spawned, simulate" \n
-       "					if!(_active) then {					" \n
-       "					" \n
-       "						_activeWaypoint = _waypoints select 0;" \n
-       "						_type = [_activeWaypoint,""type""] call ALIVE_fnc_hashGet;" \n
-       "						_speed = [_activeWaypoint,""speed""] call ALIVE_fnc_hashGet;" \n
-       "						_destination = [_activeWaypoint,""position""] call ALIVE_fnc_hashGet;" \n
-       "						_statements = [_activeWaypoint,""statements""] call ALIVE_fnc_hashGet;" \n
-       "						_distance = _currentPosition distance _destination;" \n
-       "										" \n
-       "						switch(_speed) do {" \n
-       "							case ""LIMITED"": { _speedPerSecond = _speedPerSecondArray select 0; };" \n
-       "							case ""NORMAL"": { _speedPerSecond = _speedPerSecondArray select 1; };" \n
-       "							case ""FULL"": { _speedPerSecond = _speedPerSecondArray select 2; };" \n
-       "							case default { _speedPerSecond = _speedPerSecondArray select 1; };" \n
-       "						};" \n
-       "						" \n
-       "						_moveDistance = floor(_speedPerSecond * _simulationCycleTime);" \n
-       "					" \n
-       "						// DEBUG -------------------------------------------------------------------------------------" \n
-       "						if(_debug) then {" \n
-       "							//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "							//[""ALIVE Simulated profile movement Profile: [%1] WPType: [%2] WPSpeed: [%3] Distance: [%4] MoveSpeed: [%5] SpeedArray: %6"",_profileID,_type,_speed,_distance,_speedPerSecond,_speedPerSecondArray] call ALIVE_fnc_dump;" \n
-       "							//[_entityProfile,_activeWaypoint] call _createMarker;" \n
-       "							[ALIVE_simulationController,""createMarker"",[_entityProfile,_activeWaypoint]] call ALIVE_fnc_simulationController;" \n
-       "						};" \n
-       "						// DEBUG -------------------------------------------------------------------------------------" \n
-       "						" \n
-       "						switch (_type) do {" \n
-       "							case ""MOVE"" : {" \n
-       "								 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;" \n
-       "								 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;" \n
-       "								 _handleWPcomplete = {};" \n
-       "" \n
-       "							};" \n
-       "							case ""CYCLE"" : {" \n
-       "								 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;" \n
-       "								 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;" \n
-       "								 _handleWPcomplete = {" \n
-       "									_waypoints = _waypoints + _waypointsCompleted;" \n
-       "									_waypointsCompleted = [];" \n
-       "								};" \n
-       "							};" \n
-       "							default {" \n
-       "								_newPosition = _currentPosition;" \n
-       "								_handleWPcomplete = {};" \n
-       "							};" \n
-       "						};" \n
-       "						" \n
-       "						// distance to wp destination within completion radius" \n
-       "						if(_distance <= (_moveDistance * 2)) then {" \n
-       "						" \n
-       "							// DEBUG -------------------------------------------------------------------------------------" \n
-       "							if(_debug) then {" \n
-       "								//_entityProfile call _deleteMarker;" \n
-       "								[ALIVE_simulationController,""deleteMarker"",_entityProfile] call ALIVE_fnc_simulationController;" \n
-       "							};" \n
-       "							// DEBUG -------------------------------------------------------------------------------------" \n
-       "							" \n
-       "							_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];" \n
-       "							_waypoints set [0,objNull];" \n
-       "							_waypoints = _waypoints - [objNull];" \n
-       "							" \n
-       "							//Needs review of any variables in hashes" \n
-       "							if ((typeName _statements == ""ARRAY"") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};" \n
-       "							" \n
-       "							[] call _handleWPcomplete;" \n
-       "							" \n
-       "							[_entityProfile,""waypoints"",_waypoints] call ALIVE_fnc_hashSet;" \n
-       "							[_entityProfile,""waypointsCompleted"",_waypointsCompleted] call ALIVE_fnc_hashSet;" \n
-       "						};" \n
-       "						" \n
-       "											" \n
-       "						if(_vehicleCommander) then {" \n
-       "							// if in command of vehicle move all entities within the vehicle						" \n
-       "							// set the vehicle position and merge all assigned entities positions" \n
-       "							{" \n
-       "								_vehicleProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "								[_vehicleProfile,""position"",_newPosition] call ALIVE_fnc_profileVehicle;" \n
-       "								[_vehicleProfile,""mergePositions""] call ALIVE_fnc_profileVehicle;" \n
-       "							} forEach _vehiclesInCommandOf;												" \n
-       "						}else{" \n
-       "							// set the entity position and merge all unit positions to group position" \n
-       "							[_entityProfile,""position"",_newPosition] call ALIVE_fnc_profileEntity;" \n
-       "							[_entityProfile,""mergePositions""] call ALIVE_fnc_profileEntity;" \n
-       "						};" \n
-       "					" \n
-       "					// entity is spawned, update positions" \n
-       "					} else {" \n
-       "					" \n
-       "						_leader = _entityProfile select 2 select 10; //_leader = [_profile,""leader""] call ALIVE_fnc_hashGet;" \n
-       "						_newPosition = getPosATL _leader;" \n
-       "					" \n
-       "						if(_vehicleCommander) then {" \n
-       "							// if in command of vehicle move all entities within the vehicle						" \n
-       "							// set the vehicle position and merge all assigned entities positions" \n
-       "							{" \n
-       "								_vehicleProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "								[_vehicleProfile,""position"",_newPosition] call ALIVE_fnc_profileVehicle;" \n
-       "								[_vehicleProfile,""mergePositions""] call ALIVE_fnc_profileVehicle;" \n
-       "							} forEach _vehiclesInCommandOf;												" \n
-       "						} else {" \n
-       "							// set the entity position and merge all unit positions to group position" \n
-       "							[_entityProfile,""position"",_newPosition] call ALIVE_fnc_profileEntity;" \n
-       "							[_entityProfile,""mergePositions""] call ALIVE_fnc_profileEntity;" \n
-       "						};" \n
+       "				case ""CYCLE"" : {" \n
+       "					 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;" \n
+       "					 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;" \n
+       "					 _handleWPcomplete = {" \n
+       "						_waypoints = _waypoints + _waypointsCompleted;" \n
+       "						_waypointsCompleted = [];" \n
        "					};" \n
        "				};" \n
-       "} forEach _profiles;" \n
+       "				default {" \n
+       "					_newPosition = _currentPosition;" \n
+       "					_handleWPcomplete = {};" \n
+       "				};" \n
+       "			};" \n
+       "						" \n
+       "			// distance to wp destination within completion radius" \n
+       "			if(_distance <= (_moveDistance * 2)) then {" \n
+       "						" \n
+       "				// DEBUG -------------------------------------------------------------------------------------" \n
+       "				if(_debug) then {" \n
+       "					//[ALIVE_simulationController,""deleteMarker"",_entityProfile] call ALIVE_fnc_simulationController;" \n
+       "					_entityProfile call _deleteMarker;" \n
+       "				};" \n
+       "				// DEBUG -------------------------------------------------------------------------------------" \n
+       "							" \n
+       "				_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];" \n
+       "				_waypoints set [0,objNull];" \n
+       "				_waypoints = _waypoints - [objNull];" \n
+       "							" \n
+       "				//Needs review of any variables in hashes" \n
+       "				if ((typeName _statements == ""ARRAY"") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};" \n
+       "							" \n
+       "				[] call _handleWPcomplete;" \n
+       "							" \n
+       "				[_entityProfile,""waypoints"",_waypoints] call ALIVE_fnc_hashSet;" \n
+       "				[_entityProfile,""waypointsCompleted"",_waypointsCompleted] call ALIVE_fnc_hashSet;" \n
+       "			};" \n
+       "						" \n
+       "											" \n
+       "			if(_vehicleCommander) then {" \n
+       "				// if in command of vehicle move all entities within the vehicle						" \n
+       "				// set the vehicle position and merge all assigned entities positions" \n
+       "				{" \n
+       "					_vehicleProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
+       "					[_vehicleProfile,""position"",_newPosition] call ALIVE_fnc_profileVehicle;" \n
+       "					[_vehicleProfile,""mergePositions""] call ALIVE_fnc_profileVehicle;" \n
+       "				} forEach _vehiclesInCommandOf;												" \n
+       "			}else{" \n
+       "				// set the entity position and merge all unit positions to group position" \n
+       "				[_entityProfile,""position"",_newPosition] call ALIVE_fnc_profileEntity;" \n
+       "				[_entityProfile,""mergePositions""] call ALIVE_fnc_profileEntity;" \n
+       "			};" \n
+       "					" \n
+       "		// entity is spawned, update positions" \n
+       "		} else {" \n
+       "					" \n
+       "			_leader = _entityProfile select 2 select 10; //_leader = [_profile,""leader""] call ALIVE_fnc_hashGet;" \n
+       "			_newPosition = getPosATL _leader;" \n
+       "		" \n
+       "			if(_vehicleCommander) then {" \n
+       "				// if in command of vehicle move all entities within the vehicle						" \n
+       "				// set the vehicle position and merge all assigned entities positions" \n
+       "				{" \n
+       "					_vehicleProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
+       "					[_vehicleProfile,""position"",_newPosition] call ALIVE_fnc_profileVehicle;" \n
+       "					[_vehicleProfile,""mergePositions""] call ALIVE_fnc_profileVehicle;" \n
+       "				} forEach _vehiclesInCommandOf;												" \n
+       "			} else {" \n
+       "				// set the entity position and merge all unit positions to group position" \n
+       "				[_entityProfile,""position"",_newPosition] call ALIVE_fnc_profileEntity;" \n
+       "				[_entityProfile,""mergePositions""] call ALIVE_fnc_profileEntity;" \n
+       "			};" \n
+       "		};" \n
+       "	};" \n
+       "} forEach _profileBlock;" \n
        "" \n
-       "//[] call ALIVE_fnc_timer;" \n
+       "[] call ALIVE_fnc_timer;" \n
        "" \n
        "_doSimulation = false;" \n
        "_lastSimulationTime = time;"/*%FSM</STATEINIT""">*/;

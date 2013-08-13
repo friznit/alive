@@ -1,10 +1,10 @@
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(profile);
+SCRIPT(arrayBlockHandler);
 
 /* ----------------------------------------------------------------------------
 Function: MAINCLASS
 Description:
-Base class for profile objects to inherit from
+Handles arrays by returning a block, internally stores the current pointer for the block.
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -21,7 +21,10 @@ Boolean - state - Store or restore state of analysis
 Examples:
 (begin example)
 // create a profile
-_logic = [nil, "create"] call ALIVE_fnc_profile;
+_logic = [nil, "create"] call ALIVE_fnc_arrayBlockHandler;
+
+// get the next block of 1 item from the source things array
+_block = [_logic,"getNextBlock", ["thingCounter",_things,1]] call ALIVE_fnc_arrayBlockHandler;
 (end)
 
 See Also:
@@ -34,18 +37,18 @@ nil
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS ALIVE_fnc_baseClassHash
-#define MAINCLASS ALIVE_fnc_profile
+#define MAINCLASS ALIVE_fnc_arrayBlockHandler
 
-private ["_logic","_operation","_args","_result","_deleteMarkers","_createMarkers"];
+private ["_logic","_operation","_args","_result"];
 
-TRACE_1("profile - input",_this);
+TRACE_1("arrayBlockHandler - input",_this);
 
 _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
 
-#define MTEMPLATE "ALiVE_PROFILE_%1"
+#define MTEMPLATE "ALiVE_ARRAY_BLOCK_%1"
 
 switch(_operation) do {
         case "init": {                
@@ -63,14 +66,7 @@ switch(_operation) do {
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         //TRACE_1("After module init",_logic);
 						
-						[_logic,"debug",false] call ALIVE_fnc_hashSet; // select 2 select 0
-						[_logic,"active",false] call ALIVE_fnc_hashSet; // select 2 select 1
-						[_logic,"position",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 2
-						[_logic,"side","EAST"] call ALIVE_fnc_hashSet; // select 2 select 3
-						[_logic,"profileID",""] call ALIVE_fnc_hashSet; // select 2 select 4
-						[_logic,"type","entity"] call ALIVE_fnc_hashSet; // select 2 select 5
-						[_logic,"objectType","inf"] call ALIVE_fnc_hashSet; // select 2 select 6
-						[_logic,"vehicleAssignments",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet; // select 2 select 7
+						[_logic,"pointers",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet; // select 2 select 0
 						
                 };
                 
@@ -82,12 +78,40 @@ switch(_operation) do {
                 CONTROLLER  - coordination
                 */
         };
-        case "destroy": {                
-                [_logic, "debug", false] call MAINCLASS;
-                if (isServer) then {
-					[_logic, "destroy"] call SUPERCLASS;
-                };                
-        };
+		case "getNextBlock": {
+				private ["_blockKey","_sourceArray","_blockLimit","_pointers","_currentPointer","_profiles","_limit","_block"];
+				
+				_blockKey = _args select 0;
+				_sourceArray = _args select 1;
+				_blockLimit = _args select 2;
+				
+				_pointers = [_logic,"pointers"] call ALIVE_fnc_hashGet;
+
+				_pointers call ALIVE_fnc_inspectHash;
+				
+				if(_blockKey in (_pointers select 1)) then {
+					_currentPointer = [_pointers,_blockKey] call ALIVE_fnc_hashGet;
+				}else{
+					_currentPointer = 0;
+					[_pointers,_blockKey,_currentPointer] call ALIVE_fnc_hashSet;
+				};
+				
+				_limit = count _sourceArray;
+				
+				if((_currentPointer + _blockLimit) >= _limit) then {
+					[_pointers,_blockKey,0] call ALIVE_fnc_hashSet;
+				}else{
+					_limit = _currentPointer + _blockLimit;
+					[_pointers,_blockKey,_limit] call ALIVE_fnc_hashSet;
+				};
+				
+				_block = [];
+				for "_i" from _currentPointer to (_limit)-1 do {
+					_block set [count _block, _sourceArray select _i];
+				};
+				
+				_result = _block;
+		};
 		case "state": {
 				private["_state"];
                 
@@ -123,5 +147,5 @@ switch(_operation) do {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
         };
 };
-TRACE_1("profile - output",_result);
+TRACE_1("arrayBlockHandler - output",_result);
 _result;

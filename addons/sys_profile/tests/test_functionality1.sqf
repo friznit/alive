@@ -128,7 +128,7 @@ _m setMarkerTextLocal "destination";
 
 
 STAT("Start simulated profile movement");
-[] spawn {
+_simulate = [] spawn {
 	[true] call ALIVE_fnc_simulateProfileMovement;	
 };
 
@@ -174,6 +174,9 @@ _unit = [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
 STAT("Sleep for 10");
 SLEEP 20;
+
+
+terminate _simulate;
 
 
 STAT("De-Spawn the unit via the profile");

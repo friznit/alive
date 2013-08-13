@@ -321,12 +321,18 @@ switch(_operation) do {
 				_result = [_logic,"unitClasses"] call ALIVE_fnc_hashGet;
         };
 		case "position": {
+				private ["_profileID"];
+				
 				if(typeName _args == "ARRAY") then {
 						[_logic,"position",_args] call ALIVE_fnc_hashSet;
 						
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
 							[_logic,"debug",true] call MAINCLASS;
 						};
+						
+						_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
+						
+						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
                 };
 				_result = [_logic,"position"] call ALIVE_fnc_hashGet;
         };

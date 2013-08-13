@@ -111,13 +111,12 @@ switch(_operation) do {
 						// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 						[ALIVE_profileHandler, "debug", _debug] call ALIVE_fnc_profileHandler;
 						
+						// create array block stepper
+						ALIVE_arrayBlockHandler = [nil, "create"] call ALIVE_fnc_arrayBlockHandler;
+						[ALIVE_arrayBlockHandler, "init"] call ALIVE_fnc_arrayBlockHandler;
+						
 						// run initial profile analysis
 						[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
-						
-						// create simulation controller
-						ALIVE_simulationController = [nil, "create"] call ALIVE_fnc_simulationController;
-						[ALIVE_simulationController, "debug", _debug] call ALIVE_fnc_simulationController;
-						[ALIVE_simulationController, "init"] call ALIVE_fnc_simulationController;
 
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {

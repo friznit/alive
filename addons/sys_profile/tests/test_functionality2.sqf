@@ -265,5 +265,8 @@ STAT("Un-Register Profile");
 [ALIVE_profileHandler, "unregisterProfile", _profileVehicle2] call ALIVE_fnc_profileHandler;
 
 
+DEBUGON
+
+
 _profileEntity = nil;
 _profileVehicle = nil;

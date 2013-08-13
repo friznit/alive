@@ -181,6 +181,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetCount.sqf";
 				recompile = 1;
 			};
+			class arrayBlockHandler {
+				description = "arrayBlockHandler";
+				file = "\x\alive\addons\sys_profile\fnc_arrayBlockHandler.sqf";
+				recompile = 1;
+			};
 			class simulateProfileMovement {
 				description = "simulateProfileMovement";
 				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";
@@ -244,6 +249,11 @@ class cfgFunctions {
 			class groupGenerateConfigData {
 				description = "groupGenerateConfigData";
 				file = "\x\alive\addons\sys_profile\fnc_groupGenerateConfigData.sqf";
+				recompile = 1;
+			};
+			class getNearProfiles {
+				description = "getNearProfiles";
+				file = "\x\alive\addons\sys_profile\fnc_getNearProfiles.sqf";
 				recompile = 1;
 			};
 			class vehicleGenerateEmptyPositionData {

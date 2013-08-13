@@ -179,6 +179,24 @@ ASSERT_TRUE(typeName _result == "ARRAY", _err);
 diag_log _result;
 
 
+STAT("Get Entity Profiles by Category WEST");
+_result = [_logic, "getProfilesByCategory", ["WEST","entity"]] call ALIVE_fnc_profileHandler;
+_err = "get Profiles by Category";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
+
+STAT("Get Car Profiles by Category WEST");
+_result = [_logic, "getProfilesByCategory", ["WEST","vehicle","Car"]] call ALIVE_fnc_profileHandler;
+_err = "get Car by Category";
+ASSERT_TRUE(typeName _result == "ARRAY", _err);
+
+
+diag_log _result;
+
+
 STAT("Get state");
 _state = [_logic, "state"] call ALIVE_fnc_profileHandler;
 _err = "get state";
