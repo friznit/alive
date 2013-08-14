@@ -7,7 +7,7 @@ SCRIPT(test_getNearProfiles);
 
 // ----------------------------------------------------------------------------
 
-private ["_result","_err","_logic","_state","_result2","_unitProfile","_groupProfile","_profileVehicle"];
+private ["_result","_err","_logic","_state","_result2","_unitProfile","_groupProfile","_profileVehicle","_markers"];
 
 LOG("Testing Get Near Profiles Function");
 
@@ -71,24 +71,10 @@ TIMEREND
 
 // Player position to sector and sector data -----------------------------------------------
 
+_sectors = [ALIVE_sectorGrid, "sectorsInRadius", [getPos player, 100]] call ALIVE_fnc_sectorGrid;
+_mergedData = _sectors call ALIVE_fnc_sectorDataMerge;
 
-STAT("Get player sector");
-TIMERSTART
-_playerSector = [ALIVE_sectorGrid, "positionToSector", getPos player] call ALIVE_fnc_sectorGrid;
-TIMEREND
-
-STAT("Get the player sector id");
-_playerSectorID = [_playerSector, "id"] call ALIVE_fnc_hashGet;
-["Sector ID: %1",_playerSectorID] call ALIVE_fnc_dump;
-
-
-STAT("Get the player sector data hash");
-_playerSectorData = [_playerSector, "data"] call ALIVE_fnc_hashGet;
-["Sector Data:"] call ALIVE_fnc_dump;
-_playerSectorData call ALIVE_fnc_inspectHash;
-
-_sortedFlatEmptyPositions = [_playerSectorData, "flatEmpty", [getPos player]] call ALIVE_fnc_sectorDataSort;
-_sortedMeadowPositions = [_playerSectorData, "bestPlaces", [getPos player,"meadow"]] call ALIVE_fnc_sectorDataSort;
+_sortedFlatEmptyPositions = [_mergedData, "flatEmpty", [getPos player]] call ALIVE_fnc_sectorDataSort;
 
 private ["_testFactions","_testTypes","_type","_faction","_group","_positions","_position","_testProfle","_sortedProfilePositions","_nearestProfilePosition","_m"];
 
@@ -100,12 +86,6 @@ STAT("Create Profile Handler");
 ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 
-if(count _sortedFlatEmptyPositions > 0) then {
-	_positions = _sortedFlatEmptyPositions;
-}else{
-	_positions = _sortedMeadowPositions;
-};
-
 {
 	_position = _x;
 	_type = _testTypes call BIS_fnc_selectRandom; 
@@ -114,13 +94,55 @@ if(count _sortedFlatEmptyPositions > 0) then {
 	if!(_group == "FALSE") then {
 		[_group, _position] call ALIVE_fnc_createProfilesFromGroupConfig;
 	};
-} forEach _positions;
-
+} forEach _sortedFlatEmptyPositions;
 
 DEBUGON
 
 STAT("Get Near Profiles");
 TIMERSTART
-_result = [getPos player, 100, ["WEST","entity"]] call ALIVE_fnc_getNearProfiles;
+_profiles = [getPos player, 500, ["WEST","entity"]] call ALIVE_fnc_getNearProfiles;
 TIMEREND
-[_result] call ALIVE_fnc_dump;
+
+_markers = [];
+
+{
+	_position = _x select 2 select 2;		
+	_position = [_position, 5, random 360] call BIS_fnc_relPos;
+
+	if(count _position > 0) then {
+		_m = createMarkerLocal [format["M1_%1", _forEachIndex], _position];
+		_m setMarkerShapeLocal "ICON";
+		_m setMarkerSizeLocal [1, 1];
+		_m setMarkerTypeLocal "hd_dot";
+		_m setMarkerColorLocal "ColorBlue";
+
+		_markers set [count _markers, _m];			
+	};
+} forEach _profiles;
+
+
+STAT("Get Near Profiles");
+TIMERSTART
+_profiles = [getPos player, 500, ["WEST","vehicle","Car"]] call ALIVE_fnc_getNearProfiles;
+TIMEREND
+
+{
+	_position = _x select 2 select 2;		
+	_position = [_position, 5, random 360] call BIS_fnc_relPos;
+
+	if(count _position > 0) then {
+		_m = createMarkerLocal [format["M2_%1", _forEachIndex], _position];
+		_m setMarkerShapeLocal "ICON";
+		_m setMarkerSizeLocal [1, 1];
+		_m setMarkerTypeLocal "hd_dot";
+		_m setMarkerColorLocal "ColorGreen";
+
+		_markers set [count _markers, _m];			
+	};
+} forEach _profiles;
+
+sleep 60;
+
+{
+	 deleteMarkerLocal _x;
+} forEach _markers;

@@ -277,6 +277,10 @@ switch(_operation) do {
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
 							[_logic,"debug",true] call MAINCLASS;
 						};
+						
+						// store position on handler position index
+						_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;						
+						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
                 };
 				_result = [_logic,"position"] call ALIVE_fnc_hashGet;
         };
@@ -417,6 +421,7 @@ switch(_operation) do {
 					// create vehicle assignments from profile vehicle assignments
 					[_vehicleAssignments, _logic] call ALIVE_fnc_profileVehicleAssignmentsToVehicleAssignments;
 					
+					// store the profile id on the active profiles index
 					[ALIVE_profileHandler,"setActive",_profileID] call ALIVE_fnc_profileHandler;
 				};
 		};
@@ -455,6 +460,7 @@ switch(_operation) do {
 					// delete
 					deleteVehicle _vehicle;
 					
+					// store the profile id on the in active profiles index
 					[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
 				};
 		};
