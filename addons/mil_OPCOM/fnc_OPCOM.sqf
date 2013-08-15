@@ -97,7 +97,7 @@ switch(_operation) do {
                     [_handler, "position",_position] call ALiVE_fnc_HashSet;
                     [_handler, "simultanobjectives",10] call ALiVE_fnc_HashSet;
                     [_handler, "debug",(call compile _debug)] call ALiVE_fnc_HashSet;
-                    [_handler, "sectionsamount_attack", 4] call ALiVE_fnc_HashSet;
+                    [_handler, "sectionsamount_attack", 3] call ALiVE_fnc_HashSet;
 					[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
 					[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
 					
@@ -316,7 +316,6 @@ switch(_operation) do {
                				_proID = _x;
                        		if ({_proID in ([_x,"section",[]] call ALiVE_fnc_HashGet)} count _objectives > 1) then {
                                 [_logic,"resetorders",_proID] call ALiVE_fnc_OPCOM;
-                                player sidechat format["reset %1",_proID];
                             };
                             
                             if ((_state == "idle") && {count _section > _size_reserve}) then {
@@ -607,6 +606,80 @@ switch(_operation) do {
 			};
             
             _result = _knownEntities;
+        };
+        
+        case "attackentity": {
+            ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+            
+            private ["_target","_size","_type","_knownE","_attackedE","_pos","_profiles","_profile","_section","_profileID","_i"];
+            
+            _target = _args select 0;
+            _size = _args select 1;
+            _type = _args select 2;
+            
+            _side = [_logic,"side"] call ALiVE_fnc_Hashget;
+            _knownE = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
+            _attackedE = [_logic,"attackedentities",[]] call ALiVE_fnc_HashGet;
+            
+            _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler;
+            _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
+            _section = [];
+            
+            {
+                if ((isnil "_x") || {_x select 0 == _target}) then {
+                    _knownE set [_foreachIndex,"x"];
+                    _knownE = _knownE - ["x"];
+                    
+                    [_logic,"knownentities",_knownE] call ALiVE_fnc_HashSet;
+                };
+            } foreach _knownE;
+            
+            {
+            	if ((isnil "_x") || {time - (_x select 3) > 90}) then {
+                    _attackedE set [_foreachIndex,"x"];
+                    _attackedE = _attackedE - ["x"];
+                    
+                    [_logic,"attackedentities",_attackedE] call ALiVE_fnc_HashSet;
+                };
+            } foreach _attackedE;
+            
+            if ({!(isnil "_x") && {_x select 0 == _target}} count _attackedE < 1) then {
+	            switch (_type) do {
+	                case ("infantry") : {
+	                    _profiles = [_pos, 1000, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
+	                };
+	                case ("mechandized") : {
+	                    _profiles = [_pos, 1500, [_side,"vehicle","Car"]] call ALIVE_fnc_getNearProfiles;
+	                };
+	                case ("armored") : {};
+	                case ("air") : {};
+	            };
+                
+                if (count _profiles > 0) then {
+
+                    _i = 0;
+	                while {count _section < _size} do {
+                        private ["_profileWaypoint","_profileID"];
+                        
+                        if (_i >= count _profiles) exitwith {};
+                        
+                        _profileID = ((_profiles select _i) select 2) select 4;
+                        
+                        if ({!(isnil "_x") && {_profileID in (_x select 2)}} count _attackedE < 1) then {
+                            _profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
+							[(_profiles select _i),"insertWaypoint",_profileWaypoint] call ALIVE_fnc_profileEntity;
+                        	_section set [count _section, ((_profiles select _i) select 2) select 4];
+                        };
+                        
+                        _i = _i + 1;
+            		};
+                    
+                    _attackedE set [count _attackedE,[_target,_pos,_section,time]];
+	                [_logic,"attackedentities",_attackedE] call ALiVE_fnc_HashSet;
+                };
+            };
+            
+            _result = _section;
         };
         
         case "NearestAvailableSection": {

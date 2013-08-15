@@ -1,9 +1,9 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,4346,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,171.547714,544.715576,179.547714,552.715454,0.000000,""};
@@ -67,7 +67,7 @@ link26[] = {20,21};
 link27[] = {21,2};
 link28[] = {22,2};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-777.387817,442.832489,743.862305,-585.076294,853,929,1};
-window[] = {2,-1,-1,-1,-1,1016,132,1755,132,3,870};
+window[] = {2,-1,-1,-1,-1,928,44,1667,44,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -134,8 +134,8 @@ class FSM
        "	_TACOM_QUEUE = _TACOM_QUEUE - [""x""];" \n
        "};" \n
        "" \n
-       "_timeout = ((isnil ""_TACOM_ACTION"") && {(time - _lastAnalyze) >= 30});" \n
-       "if (_timeout) then {_TACOM_ACTION = [""analyze1"",nil]};" \n
+       "_timeout = ((isnil ""_TACOM_ACTION"") && {(time - _lastAnalyze) >= 15});" \n
+       "if (_timeout) then {_TACOM_ACTION = [""analyze_internal"",nil]};" \n
        "" \n
        "//start operating if data received" \n
        "if !(isnil ""_TACOM_ACTION"") then {" \n
@@ -146,8 +146,15 @@ class FSM
        "	//select data operation" \n
        "	switch (_DATA_OPERATION) do {" \n
        "" \n
-       "		case (""analyze1"") : {" \n
-       "			player sidechat format[""known %1"",[_OPCOM_HANDLER,""knownentities"",[]] call ALiVE_fnc_HashGet];" \n
+       "		case (""analyze_internal"") : {" \n
+       "" \n
+       "			_knownE = [_OPCOM_HANDLER,""knownentities"",[]] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "			if (count _knownE > 0) then {" \n
+       "				_grp = _knownE select 0 select 0;" \n
+       "				_attackers = [_OPCOM_HANDLER, ""attackentity"",[_knownE select 0 select 0,2,""infantry""]] call ALIVE_fnc_OPCOM;" \n
+       "				player sidechat format[""Group %1 is attacked by %2"",_grp, _attackers];" \n
+       "			};" \n
        "		};" \n
        "		" \n
        "		//Analyze sent data" \n
@@ -384,7 +391,7 @@ class FSM
           priority = 0.000000;
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"time - _lastanalyze > 30;"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"time - _lastanalyze > 15;"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
