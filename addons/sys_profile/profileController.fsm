@@ -8,11 +8,11 @@ item3[] = {"DESTROY",4,218,-66.461502,-168.242981,23.538473,-118.242981,0.000000
 item4[] = {"END",1,250,68.367783,-167.244247,158.367798,-117.244301,0.000000,"END"};
 item5[] = {"SWITCH",2,250,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
 item6[] = {"SIMULATE",4,218,-189.816605,-11.441578,-99.816620,38.558418,3.000000,"SIMULATE"};
-item7[] = {"SIMULATE",2,250,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
+item7[] = {"SIMULATE",2,4346,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
 item8[] = {"COMPLETE",4,218,-373.583862,217.268799,-283.583862,267.268799,0.000000,"COMPLETE"};
 item9[] = {"SPAWN",4,218,-79.008347,-11.441580,10.991653,38.558411,2.000000,"SPAWN"};
 item10[] = {"SPAWN",2,250,-78.681198,67.064430,11.318882,117.064407,0.000000,"SPAWN"};
-item11[] = {"PROFILE_ANALYSIS",4,4314,143.225143,-11.945818,233.225159,38.054165,5.000000,"PROFILE" \n "ANALYSIS"};
+item11[] = {"PROFILE_ANALYSIS",4,218,143.225143,-11.945818,233.225159,38.054165,5.000000,"PROFILE" \n "ANALYSIS"};
 item12[] = {"PROFILE_ANALYSIS",2,250,143.341751,66.349640,233.341797,116.349640,0.000000,"PROFILE" \n "ANALYSIS"};
 item13[] = {"DESPAWN",4,218,33.328533,-11.130665,123.328506,38.869316,4.000000,"DESPAWN"};
 item14[] = {"DESPAWN",2,250,33.655720,66.770706,123.655746,116.770691,0.000000,"DESPAWN"};
@@ -68,7 +68,7 @@ class FSM
        "_profileSystem = _this select 0;" \n
        "_spawnDistance = _this select 1;" \n
        "" \n
-       "_simulationCycleTime =10;" \n
+       "_simulationCycleTime =5;" \n
        "_lastSimulationTime = 0;" \n
        "_doSimulation = false;" \n
        "" \n
@@ -259,13 +259,15 @@ class FSM
        "	""_vehiclesInCargoOf"",""_activeWaypoint"",""_type"",""_speed"",""_destination"",""_distance"",""_speedPerSecondArray"",""_speedPerSecond"",""_moveDistance"",""_vehicleProfile""," \n
        "	""_vehicleClass"",""_vehicleAssignments"",""_speedArray"",""_direction"",""_newPosition"",""_leader"",""_handleWPcomplete"",""_statements""];" \n
        "" \n
-       "[true] call ALIVE_fnc_timer;" \n
-       "" \n
        "//_profiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_profileHandler;" \n
        "//_profileBlock = [ALIVE_arrayBlockHandler,""getNextBlock"", [""simulation"",_profiles,5]] call ALIVE_fnc_arrayBlockHandler;" \n
        "" \n
+       "[true] call ALIVE_fnc_timer;" \n
        "_profiles = [ALIVE_profileHandler, ""profiles""] call ALIVE_fnc_hashGet;" \n
+       "_profileBlock = [ALIVE_arrayBlockHandler,""getNextBlock"", [""simulation"",_profiles select 2,50]] call ALIVE_fnc_arrayBlockHandler;" \n
+       "[] call ALIVE_fnc_timer;" \n
        "	" \n
+       "[true] call ALIVE_fnc_timer;" \n
        "{" \n
        "	//_entityProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
        "	_entityProfile = _x;" \n
@@ -406,7 +408,7 @@ class FSM
        "		};" \n
        "		};" \n
        "	};" \n
-       "} forEach (_profiles select 2);" \n
+       "} forEach _profileBlock;" \n
        "" \n
        "[] call ALIVE_fnc_timer;" \n
        "" \n

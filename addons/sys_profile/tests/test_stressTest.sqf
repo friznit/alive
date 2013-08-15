@@ -77,7 +77,7 @@ TIMEREND
 
 TIMERSTART
 STAT("Getting sectors in radius");
-_sectors = [ALIVE_sectorGrid, "sectorsInRadius", [getPos player, 500]] call ALIVE_fnc_sectorGrid;
+_sectors = [ALIVE_sectorGrid, "sectorsInRadius", [getPos player, 2000]] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
 

@@ -106,6 +106,7 @@ TIMEREND
 _markers = [];
 
 {
+	//_x call ALIVE_fnc_inspectHash;
 	_position = _x select 2 select 2;		
 	_position = [_position, 5, random 360] call BIS_fnc_relPos;
 

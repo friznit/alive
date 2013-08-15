@@ -87,7 +87,7 @@ switch(_operation) do {
 				
 				_pointers = [_logic,"pointers"] call ALIVE_fnc_hashGet;
 
-				_pointers call ALIVE_fnc_inspectHash;
+				//_pointers call ALIVE_fnc_inspectHash;
 				
 				if(_blockKey in (_pointers select 1)) then {
 					_currentPointer = [_pointers,_blockKey] call ALIVE_fnc_hashGet;

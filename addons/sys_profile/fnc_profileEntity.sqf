@@ -258,6 +258,7 @@ switch(_operation) do {
 						[_logic,"ranks",[]] call ALIVE_fnc_hashSet; // select 2 select 20
 						[_logic,"units",[]] call ALIVE_fnc_hashSet; // select 2 select 21
 						[_logic,"speedPerSecond","Man" call ALIVE_fnc_vehicleGetSpeedPerSecond] call ALIVE_fnc_hashSet; // select 2 select 22
+						[_logic,"spawnType","check"] call ALIVE_fnc_hashSet; // select 2 select 23
                 };
 
                 /*
