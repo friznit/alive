@@ -196,6 +196,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileSpawner.sqf";
 				recompile = 1;
 			};
+			class profileDespawner {
+				description = "profileDespawner";
+				file = "\x\alive\addons\sys_profile\fnc_profileDespawner.sqf";
+				recompile = 1;
+			};
 			class sideTextToObject {
 				description = "sideTextToObject";
 				file = "\x\alive\addons\sys_profile\fnc_sideTextToObject.sqf";
