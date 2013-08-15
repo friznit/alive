@@ -155,9 +155,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 			};
 						
 			_moveDistance = floor(_speedPerSecond * _cycleTime);
-			
-			["CT: %1 MD: %1",_cycleTime,_moveDistance] call ALIVE_fnc_dump;
-					
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
