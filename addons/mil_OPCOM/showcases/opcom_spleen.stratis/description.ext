@@ -11,7 +11,7 @@ onLoadMission = "Iran has landed on Stratis! Only a few BLUFOR troops are statio
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE: Just Pure Death;
-loadScreen = "rsc\logo_alive.paa";
+//loadScreen = "rsc\logo_alive.paa";
 
 aiKills = 0;
 briefing = 1;
