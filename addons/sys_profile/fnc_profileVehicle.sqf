@@ -398,6 +398,7 @@ switch(_operation) do {
 					};					
 					
 					_vehicle = createVehicle [_vehicleClass, _position, [], 20, _special];
+					_vehicle setposATL _position;
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
