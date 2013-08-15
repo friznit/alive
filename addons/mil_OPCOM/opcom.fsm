@@ -63,8 +63,8 @@ link23[] = {18,14};
 link24[] = {19,5};
 link25[] = {20,21};
 link26[] = {21,2};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,68,6316128,1,-1006.330872,-207.511536,-239.548660,-1031.547729,937,929,1};
-window[] = {2,-1,-1,-1,-1,1015,66,1799,66,3,954};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,68,6316128,1,-1062.269165,-388.910248,-134.659622,-802.269470,937,929,1};
+window[] = {2,-1,-1,-1,-1,1191,242,1975,242,3,954};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -174,7 +174,7 @@ class FSM
     class ANALYZE
     {
       name = "ANALYZE";
-      init = /*%FSM<STATEINIT""">*/"private [""_target"",""_attack"",""_defend"",""_reserve"",""_custom"",""_operation"",""_data_operation"",""_data_value"",""_targetsWithState"",""_OPCOM_ACTION""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_target"",""_attack"",""_defend"",""_reserve"",""_custom"",""_operation"",""_data_operation"",""_data_value"",""_targetsWithState"",""_OPCOM_ACTION"",""_targetOccupation""];" \n
        "" \n
        "_busy = true;" \n
        "" \n
@@ -250,6 +250,7 @@ class FSM
        "" \n
        "			//AnalyzeClusterOccupation" \n
        "			_targetOccupation = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[_side,_sideEnemy]] call ALiVE_fnc_OPCOM;" \n
+       "" \n
        "			_targetsTaken = _targetOccupation select 0;" \n
        "			_targetsAttacked = _targetOccupation select 1;" \n
        "			_targetsTakenEnemy = _targetOccupation select 2;" \n
@@ -590,7 +591,7 @@ class FSM
           priority = 0.000000;
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(count _OPCOM_QUEUE > 0) && !(_busy);"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(count _OPCOM_QUEUE > 0) && !(_busy) && (time - _lastAnalyze > 0.5);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/

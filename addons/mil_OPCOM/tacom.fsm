@@ -1,13 +1,13 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
-item3[] = {"RECEIVE",4,218,-194.508545,8.832397,-104.508537,58.832394,0.000000,"RECEIVE"};
+item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
+item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,171.547714,544.715576,179.547714,552.715454,0.000000,""};
-item6[] = {"",7,210,178.895996,31.205742,186.896057,39.205746,0.000000,""};
+item6[] = {"",7,210,174.604492,1.165148,182.604553,9.165155,0.000000,""};
 item7[] = {"DEFEND_condition",4,218,-197.909698,270.277069,-107.909790,320.277069,2.000000,"DEFEND" \n "conditions"};
 item8[] = {"RESERVE_conditio",4,218,-98.860970,268.983917,-8.860947,318.983917,1.000000,"RESERVE" \n "conditions"};
 item9[] = {"CUSTOM_condition",4,218,5.405207,267.636688,95.405060,317.636871,0.000000,"CUSTOM" \n "conditions"};
@@ -15,7 +15,7 @@ item10[] = {"ISSUE_ORDERS",2,250,-410.405243,456.688202,88.862106,500.891266,0.0
 item11[] = {"GROUP_NOT_CONFIR",4,218,-150.917450,516.797485,-60.917450,566.797729,0.000000,"GROUP" \n "NOT" \n "CONFIRM"};
 item12[] = {"GROUP_CONFIRM",4,218,-255.035431,517.626587,-165.035599,567.626709,0.000000,"GROUP" \n "CONFIRM"};
 item13[] = {"",7,210,-514.293091,537.052490,-506.293060,545.052490,0.000000,""};
-item14[] = {"",7,210,-511.008453,29.920441,-503.008362,37.920422,0.000000,""};
+item14[] = {"",7,210,-513.869507,2.740855,-505.869385,10.740835,0.000000,""};
 item15[] = {"INITIALIZE",2,250,-195.246613,-87.998024,-105.246597,-37.998020,0.000000,"INITIALIZE"};
 item16[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item17[] = {"TRANSMIT_TO_OPCO",2,250,-382.604156,516.228027,-292.604156,566.228149,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
@@ -23,6 +23,7 @@ item18[] = {"TRANSMIT_TO_OPCO_1",2,250,-30.464867,512.843384,59.535149,562.84350
 item19[] = {"RECON_Conditions",4,218,-399.338531,271.491608,-309.338531,321.491608,0.000000,"RECON" \n "Conditions"};
 item20[] = {"COLLECT_TO_QUEUE",2,250,-191.535400,70.489761,-101.535316,120.489708,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.571014,0.000000,"ENTRIES" \n "IN QUEUE"};
+item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
 version=1;
 class LayoutItems
 {
@@ -44,27 +45,29 @@ link4[] = {2,7};
 link5[] = {2,8};
 link6[] = {2,9};
 link7[] = {2,19};
-link8[] = {3,20};
-link9[] = {4,10};
-link10[] = {5,6};
-link11[] = {6,3};
-link12[] = {7,10};
-link13[] = {8,10};
-link14[] = {9,10};
-link15[] = {10,11};
-link16[] = {10,12};
-link17[] = {11,18};
-link18[] = {12,17};
-link19[] = {13,14};
-link20[] = {14,3};
-link21[] = {15,3};
-link22[] = {17,13};
-link23[] = {18,5};
-link24[] = {19,10};
-link25[] = {20,21};
-link26[] = {21,2};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,74,6316128,1,-777.387817,442.832489,712.037231,-616.901428,853,929,1};
-window[] = {2,-1,-1,-1,-1,1104,220,1843,220,3,870};
+link8[] = {2,22};
+link9[] = {3,20};
+link10[] = {4,10};
+link11[] = {5,6};
+link12[] = {6,3};
+link13[] = {7,10};
+link14[] = {8,10};
+link15[] = {9,10};
+link16[] = {10,11};
+link17[] = {10,12};
+link18[] = {11,18};
+link19[] = {12,17};
+link20[] = {13,14};
+link21[] = {14,3};
+link22[] = {15,3};
+link23[] = {17,13};
+link24[] = {18,5};
+link25[] = {19,10};
+link26[] = {20,21};
+link27[] = {21,2};
+link28[] = {22,2};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-777.387817,442.832489,743.862305,-585.076294,853,929,1};
+window[] = {2,-1,-1,-1,-1,1016,132,1755,132,3,870};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -80,12 +83,13 @@ class FSM
        "" \n
        "_OPCOM_HANDLER = _this select 0;" \n
        "_TACOM_QUEUE = [];" \n
+       "_lastanalyze = 0;" \n
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
        "_sideEnemy = [_OPCOM_HANDLER,""sideenemy"",""WEST""] call ALiVE_fnc_HashGet;" \n
        "" \n
-       "_sectionsamount_attack = [_OPCOM_HANDLER,""sectionsamount_attack"",3] call ALiVE_fnc_HashGet;" \n
+       "_sectionsamount_attack = [_OPCOM_HANDLER,""sectionsamount_attack"",4] call ALiVE_fnc_HashGet;" \n
        "_sectionsamount_reserve = [_OPCOM_HANDLER,""sectionsamount_reserve"",1] call ALiVE_fnc_HashGet;" \n
        "_sectionsamount_defend = [_OPCOM_HANDLER,""sectionsamount_defend"",2] call ALiVE_fnc_HashGet;" \n
        "" \n
@@ -111,10 +115,9 @@ class FSM
     class ANALYZE
     {
       name = "ANALYZE";
-      init = /*%FSM<STATEINIT""">*/"private [""_operation"",""_data_operation"",""_data_value"",""_tacom_data"",""_recon"",""_capture"",""_defend"",""_reserve"",""_custom"",""_dataset"",""_transmit"",""_TACOM_ACTION""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_operation"",""_data_operation"",""_data_value"",""_tacom_data"",""_recon"",""_capture"",""_defend"",""_reserve"",""_custom"",""_dataset"",""_transmit"",""_TACOM_ACTION"",""_timeout""];" \n
        "" \n
        "_busy = true;" \n
-       "_lastAnalyze = time;" \n
        "" \n
        "_recon = nil;" \n
        "_capture = nil;" \n
@@ -131,8 +134,8 @@ class FSM
        "	_TACOM_QUEUE = _TACOM_QUEUE - [""x""];" \n
        "};" \n
        "" \n
-       "//_timeout = ((isnil ""_TACOM_ACTION"") && {(time - _lastAnalyze) >= 60});" \n
-       "//if (_timeout) then {_TACOM_ACTION = [""analyze"",nil]};" \n
+       "_timeout = ((isnil ""_TACOM_ACTION"") && {(time - _lastAnalyze) >= 30});" \n
+       "if (_timeout) then {_TACOM_ACTION = [""analyze1"",nil]};" \n
        "" \n
        "//start operating if data received" \n
        "if !(isnil ""_TACOM_ACTION"") then {" \n
@@ -142,6 +145,10 @@ class FSM
        "" \n
        "	//select data operation" \n
        "	switch (_DATA_OPERATION) do {" \n
+       "" \n
+       "		case (""analyze1"") : {" \n
+       "			player sidechat format[""known %1"",[_OPCOM_HANDLER,""knownentities"",[]] call ALiVE_fnc_HashGet];" \n
+       "		};" \n
        "		" \n
        "		//Analyze sent data" \n
        "		case (""analyze"") : {" \n
@@ -315,7 +322,9 @@ class FSM
        "	_busy = false" \n
        "} else {" \n
        "	_busy = false;" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "};" \n
+       "" \n
+       "_lastanalyze = time;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -366,6 +375,16 @@ class FSM
           to="ISSUE_ORDERS";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(isnil ""_recon"");"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "Feeder">*/
+        class Feeder
+        {
+          priority = 0.000000;
+          to="ANALYZE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"time - _lastanalyze > 30;"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -672,7 +691,7 @@ class FSM
           priority = 0.000000;
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(count _TACOM_QUEUE > 0) && !(_busy);"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(count _TACOM_QUEUE > 0) && !(_busy) && (time - _lastanalyze > 0.5);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
