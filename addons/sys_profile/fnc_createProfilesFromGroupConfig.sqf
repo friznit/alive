@@ -38,6 +38,8 @@ _groupProfiles = [];
 _groupUnits = [];
 _groupVehicles = [];
 
+//["CGROUP Name: %1",_groupClass] call ALIVE_fnc_dump;
+
 // loop through the config for the group
 for "_i" from 0 to count _config -1 do {
 	_class = (_config select _i);
@@ -46,8 +48,10 @@ for "_i" from 0 to count _config -1 do {
 		_vehicle = getText(_class >> "vehicle");
 		_vehicleType = _vehicle call ALIVE_fnc_configGetVehicleClass;
 		
+		//["CGROUP Name: %1 VehicleType: %2",_groupName,_vehicleType] call ALIVE_fnc_dump;
+		
 		// seperate vehicles and units in the group
-		if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Ship")||(_vehicleType == "Air")) then {
+		if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Armored")||(_vehicleType == "Ship")||(_vehicleType == "Air")) then {
 			_groupVehicles set [count _groupVehicles, [_vehicle,_rank]];			
 		} else {
 			_groupUnits set [count _groupUnits, [_vehicle,_rank]];
@@ -78,6 +82,7 @@ _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity, "profileID", _entityID] call ALIVE_fnc_profileEntity;
 [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
 [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+[_profileEntity, "objectType", _groupClass] call ALIVE_fnc_profileEntity;
 
 _groupProfiles set [count _groupProfiles, _profileEntity];
 [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;

@@ -146,6 +146,9 @@ _createMarkers = {
 			case "Tank":{
 				_debugIcon = format["%1_armor",_typePrefix];
 			};
+			case "Armored":{
+				_debugIcon = format["%1_armor",_typePrefix];
+			};
 			case "Truck":{
 				_debugIcon = format["%1_recon",_typePrefix];
 			};

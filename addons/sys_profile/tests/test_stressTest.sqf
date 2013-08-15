@@ -48,9 +48,37 @@ diag_log format["Timer End %1",_timeEnd];
 player setCaptive true;
 
 
-// Player position to sector and sector data -----------------------------------------------
+TIMERSTART
+STAT("Creating profile system components");
+// create sector grid
+ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
+[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
+[ALIVE_sectorGrid, "createGrid"] call ALIVE_fnc_sectorGrid;
 
+// create sector plotter
+ALIVE_sectorPlotter = [nil, "create"] call ALIVE_fnc_plotSectors;
+[ALIVE_sectorPlotter, "init"] call ALIVE_fnc_plotSectors;
+
+// import static map analysis to the grid
+[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;
+
+// create the profile handler
+ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+
+// turn on debug again to see the state of the profile handler, and set debug on all a profiles
+[ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
+
+// create array block stepper
+ALIVE_arrayBlockHandler = [nil, "create"] call ALIVE_fnc_arrayBlockHandler;
+[ALIVE_arrayBlockHandler, "init"] call ALIVE_fnc_arrayBlockHandler;
+TIMEREND
+
+
+TIMERSTART
+STAT("Getting sectors in radius");
 _sectors = [ALIVE_sectorGrid, "sectorsInRadius", [getPos player, 500]] call ALIVE_fnc_sectorGrid;
+TIMEREND
 
 
 TIMERSTART
@@ -67,7 +95,7 @@ TIMEREND
 
 TIMERSTART
 STAT("Generating random groups for flat empty positions");
-private ["_testFactions","_testTypes","_type","_faction","_group","_positions","_position","_testProfle","_sortedProfilePositions","_nearestProfilePosition","_m"];
+private ["_testFactions","_testTypes","_type","_faction","_group"];
 
 _testFactions  = ["BLU_F"];
 _testTypes = ["Infantry","Motorized","Mechanized","Air"];
@@ -81,9 +109,30 @@ _testTypes = ["Infantry","Motorized","Mechanized","Air"];
 		[_group, _position] call ALIVE_fnc_createProfilesFromGroupConfig;
 	};
 } forEach _flatEmptyPositions;
-
 TIMEREND
 
-[] spawn {[true] call ALIVE_fnc_simulateProfileMovement};
-//[] spawn {[1000,true] call ALIVE_fnc_profileSpawner};
+
+DEBUGON
+
+
+_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
+_maxWaypoints = 200;
+_waypointDestination = getPos player;
+
+{
+	_profileType = _x select 2 select 5; //[_x,"type"] call ALIVE_fnc_hashGet;
+	
+	if(_profileType == "entity") then {
+		if(_forEachIndex < _maxWaypoints) then {
+			_profileWaypoint = [_waypointDestination, 0] call ALIVE_fnc_createProfileWaypoint;
+			[_x, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+		};
+	};
+} forEach (_profiles select 2);
+
+
+_fakeLogic = [] call ALIVE_fnc_hashCreate;
+[_fakeLogic,"debug",true] call ALIVE_fnc_hashSet;
+// start the profile controller FSM
+[_fakeLogic,50] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
 

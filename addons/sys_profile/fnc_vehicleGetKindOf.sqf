@@ -35,7 +35,10 @@ if(_vehicle isKindOf "Car") then {
 };
 if(_vehicle isKindOf "Tank") then {
 	_result = "Tank";
-};		
+};
+if(_vehicle isKindOf "Armored") then {
+	_result = "Armored";
+};
 if(_vehicle isKindOf "Truck") then {
 	_result = "Truck";
 };					

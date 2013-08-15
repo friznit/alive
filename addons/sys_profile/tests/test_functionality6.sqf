@@ -60,6 +60,7 @@ STAT("Get random group names");
 _group1 = [] call ALIVE_fnc_configGetRandomGroup;
 _group2 = ["Air"] call ALIVE_fnc_configGetRandomGroup;
 _group3 = ["Infantry","IND_F"] call ALIVE_fnc_configGetRandomGroup;
+_group4 = ["Mechanized","BLU_F"] call ALIVE_fnc_configGetRandomGroup;
 
 
 STAT("Create profiles for a config group");
@@ -99,6 +100,18 @@ sleep 10;
 
 STAT("Create profiles for a config group");
 _result = ["OIA_MotInf_Transport", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+STAT("Spawn the unit via the profile");
+_profileEntity = _result select 0;
+[_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
+
+
+sleep 10;
+[_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
+
+
+STAT("Create profiles for a config group");
+_result = [_group4, getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
 
 STAT("Spawn the unit via the profile");
 _profileEntity = _result select 0;

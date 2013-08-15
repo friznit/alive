@@ -236,7 +236,7 @@ waituntil {
 					// entity is spawned, update positions
 					} else {
 					
-						_leader = [_entityProfile,"leader"] call ALIVE_fnc_hashGet;
+						_leader = _entityProfile select 2 select 10; //[_entityProfile,"leader"] call ALIVE_fnc_hashGet;
 						_newPosition = getPosATL _leader;
 					
 						if(_vehicleCommander) then {
@@ -249,7 +249,6 @@ waituntil {
 							} forEach _vehiclesInCommandOf;												
 						} else {
 							// set the entity position and merge all unit positions to group position
-							_leader = [_entityProfile,"leader"] call ALIVE_fnc_hashGet;
 							[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
 							[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
 						};

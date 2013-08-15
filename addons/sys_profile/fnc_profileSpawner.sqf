@@ -47,20 +47,20 @@ waituntil {
 		private ["_profile","_profileID","_profileType","_position","_active"];
 		
 		_profile = _x;
-		_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-		_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
-		_active = [_profile, "active"] call ALIVE_fnc_hashGet;
+		_profileID = _entityProfile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+		_profileType = _entityProfile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
+		_active = _entityProfile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
 		
 		if(_active) then {
 			if(_profileType == "vehicle") then {
-				_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;
+				_vehicle = _entityProfile select 2 select 10; //[_profile,"vehicle"] call ALIVE_fnc_hashGet;
 				_position = getPosATL _vehicle;
 			}else{
-				_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+				_leader = _entityProfile select 2 select 10; //[_profile,"leader"] call ALIVE_fnc_hashGet;
 				_position = getPosATL _leader;
 			};
 		}else{
-			_position = [_profile,"position"] call ALIVE_fnc_hashGet;
+			_position = _entityProfile select 2 select 2; //[_profile,"position"] call ALIVE_fnc_hashGet;
 		};		
 		
 		if ([_position, _distance] call ALiVE_fnc_anyPlayersInRange > 0) then {
