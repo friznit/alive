@@ -24,16 +24,11 @@ ARJay
 Highhead
 ---------------------------------------------------------------------------- */
 
-[true] call ALIVE_fnc_timer;
-
 private ["_debug","_cycleTime","_profiles","_markers","_deleteMarkers","_deleteMarker","_createMarker"];
 
 _markers = _this select 0;
 _cycleTime = _this select 1;
 _debug = if(count _this > 2) then {_this select 2} else {false};
-
-//_profiles = [ALIVE_profileHandler, "getProfilesByType", "entity"] call ALIVE_fnc_profileHandler;
-//_markers = [] call ALIVE_fnc_hashCreate;
 
 _deleteMarkers = {
 	{
@@ -107,7 +102,6 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 //_profileBlock = [ALIVE_arrayBlockHandler,"getNextBlock", ["simulation",_profiles select 2,50]] call ALIVE_fnc_arrayBlockHandler;
 	
 {
-	//_entityProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 	_entityProfile = _x;
 
 	_profileType = _entityProfile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
@@ -138,7 +132,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	if(count _waypoints > 0 && !(_vehicleCargo)) then {
 					
 		// entity is not spawned, simulate
-		if!(_active) then {					
+		if!(_active) then {		
 					
 			_activeWaypoint = _waypoints select 0;
 			_type = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
@@ -155,7 +149,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 			};
 						
 			_moveDistance = floor(_speedPerSecond * _cycleTime);
-
+			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -246,7 +240,4 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 		};
 		};
 	};
-//} forEach _profileBlock;
 } forEach (_profiles select 2);
-
-[] call ALIVE_fnc_timer;

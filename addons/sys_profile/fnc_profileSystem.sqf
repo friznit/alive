@@ -133,8 +133,16 @@ switch(_operation) do {
 						// DEBUG -------------------------------------------------------------------------------------
 							
 						// start the profile controller FSM
+						/*
 						_handle = [_logic,_spawnRadius] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
 						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
+						*/
+						
+						_handle = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
+						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;						
+						
+						_handle = [_logic,_spawnRadius] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
 												
 						
 						// start profile simulation with debug enabled
