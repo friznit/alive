@@ -17,6 +17,12 @@
 <Key ID="STR_ALIVE_CQB_ENABLE">
 	<English>Enable CQB</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS">
+	<English>Factions:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS_COMMENT">
+	<English>Chooses the factions of CQB units</English>
+</Key>
 <Key ID="STR_ALIVE_CQB_ENABLE_COMMENT">
 	<English>Enables CQB module</English>
 </Key>

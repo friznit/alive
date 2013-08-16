@@ -37,8 +37,9 @@ private ["_spawnhouses","_BuildingTypeStrategic","_nonstrathouses","_strathouses
 PARAMS_1(_spawnhouses);
 ASSERT_TRUE(typeName _spawnhouses == "ARRAY",str _spawnhouses);
 DEFAULT_PARAM(1,_BuildingTypeStrategic,[]);
-DEFAULT_PARAM(2,_blackzone,"ALIVE_CQB_%1");
-if (isnil "CQB_spawn") then {CQB_spawn = 2};
+DEFAULT_PARAM(2,_blackzone,"ALIVE_CQB_BL_%1");
+
+_CQB_spawn = _logic getVariable ["CQB_spawn", 1];
 
 _triglist = [];
 
@@ -59,11 +60,11 @@ _nonstrathouses = [];
 	// Check if spawn position is NOT within a blacklist trigger
 	if ({[_x, _pos] call BIS_fnc_inTrigger} count _triglist == 0) then {
 		if (typeOf _x in _BuildingTypeStrategic) then {
-			if ((random 1) > 0.3) then {
+			if ((random 1) < (_CQB_spawn / 3)) then {
 				_strathouses set [count _strathouses, _x];
 			};
 		} else {
-			if ((random 1) < (CQB_spawn / 10)) then {
+			if ((random 1) < (_CQB_spawn / 10)) then {
 				_nonstrathouses set [count _nonstrathouses, _x];
 			};
 		};

@@ -69,6 +69,12 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_FACTIONS
+                        {
+                                displayName = "$STR_ALIVE_CQB_FACTIONS";
+                                description = "$STR_ALIVE_CQB_FACTIONS_COMMENT";
+                                defaultValue = ["OPF_F"];
+                        };
                 };
                 
         };

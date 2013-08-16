@@ -39,7 +39,6 @@ Wolffy, Highhead
 
 #define SUPERCLASS nil
 #define MTEMPLATE "ALiVE_CQB_%1"
-#define ALiVE_FACTIONS ["OPF_F"]
 
 private ["_logic","_operation","_args"];
 
@@ -55,8 +54,12 @@ switch(_operation) do {
         };
         case "init": {
             	//Init further mandatory params on all localities
-				CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
-				if (typename (CQB_spawn) == "STRING") then {CQB_spawn = call compile CQB_spawn};
+				_CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
+				if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
+                _logic setVariable ["CQB_spawn", _CQB_spawn];
+                
+                _factions = _logic getvariable ["CQB_FACTIONS",["OPF_F"]];
+				if (typename (_factions) == "STRING") then {_factions = call compile _factions};
             
 	        	CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
                 if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
@@ -93,7 +96,7 @@ switch(_operation) do {
 						"Land_Airport_Tower_F",
 						"Land_TentHangar_V1_F"
 					];
-                    _result = [_spawnhouses, _strategicTypes, "BIS_ZORA_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
+                    _result = [_spawnhouses, _strategicTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
 					_strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
                     
@@ -108,7 +111,7 @@ switch(_operation) do {
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _spawnhouses] call ALiVE_fnc_CQB;
-					[MOD(CQB), "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
+					[MOD(CQB), "factions", _factions] call ALiVE_fnc_CQB;
 					[MOD(CQB), "spawnDistance", 800] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
@@ -116,7 +119,7 @@ switch(_operation) do {
         			_logic setVariable ["class", ALiVE_fnc_CQB];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
-					[_logic, "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
+					[_logic, "factions", _factions] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 800] call ALiVE_fnc_CQB;
 					_logic setVariable ["debugColor","ColorRed",true];
 					_logic setVariable ["debugPrefix","Strategic",true];
@@ -129,7 +132,7 @@ switch(_operation) do {
         			_logic setVariable ["class", ALiVE_fnc_CQB];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
-					[_logic, "factions", ALiVE_FACTIONS] call ALiVE_fnc_CQB;
+					[_logic, "factions", _factions] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
                     _logic setVariable ["debugColor","ColorGreen",true];
 					_logic setVariable ["debugPrefix","Regular",true];
