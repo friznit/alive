@@ -20,7 +20,7 @@
 | Component |
 #===========#
 
-ALiVE_nme_CQB
+ALiVE_mil_cqb
 
 #================#
 | Main author(s) |

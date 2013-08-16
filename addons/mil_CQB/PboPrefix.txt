@@ -1,6 +1,6 @@
-x\alive\addons\nme_CQB
+x\alive\addons\mil_cqb
 ======<HEADER>=======
-prefix=x\alive\addons\nme_CQB
+prefix=x\alive\addons\mil_cqb
 product=Arma 3
 version=1
 Pbo Type is: Arma Addon

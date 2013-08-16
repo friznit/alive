@@ -4,7 +4,7 @@ class Mission
 	addOns[]=
 	{
 		"alive_main",
-		"alive_nme_cqb",
+		"alive_mil_cqb",
 		"alive_sys_adminactions",
 		"alive_sys_viewdistance",
 		"A3_Characters_F_BLUFOR",
@@ -29,7 +29,7 @@ class Mission
 	addOnsAuto[]=
 	{
 		"alive_main",
-		"alive_nme_cqb",
+		"alive_mil_cqb",
 		"alive_sys_adminactions",
 		"alive_sys_viewdistance",
 		"A3_Air_F_Beta_Heli_Attack_02",
@@ -110,19 +110,19 @@ class Mission
 						class Item0
 						{
 							value="false";
-							parentCls="ALiVE_nme_CQB";
+							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_debug_setting";
 						};
 						class Item1
 						{
 							value="1";
-							parentCls="ALiVE_nme_CQB";
+							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_spawn_setting";
 						};
 					};
 					id=1;
 					side="LOGIC";
-					vehicle="ALiVE_nme_CQB";
+					vehicle="ALiVE_mil_cqb";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;

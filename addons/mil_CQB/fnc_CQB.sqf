@@ -1,4 +1,4 @@
-#include <\x\alive\addons\nme_CQB\script_component.hpp>
+#include <\x\alive\addons\mil_cqb\script_component.hpp>
 SCRIPT(CQB);
 
 /* ----------------------------------------------------------------------------
@@ -557,7 +557,7 @@ switch(_operation) do {
 			
 			// TODO Notify controller to start directing
 			// TODO this needs to be refactored
-			_fsm = "\x\alive\addons\nme_CQB\HousePatrol.fsm";
+			_fsm = "\x\alive\addons\mil_cqb\HousePatrol.fsm";
 			_hdl = [_logic,(leader _grp), 50, true, 60] execFSM _fsm;
 			(leader _grp) setVariable ["FSM", [_hdl,_fsm], true];
             _args = _grp;

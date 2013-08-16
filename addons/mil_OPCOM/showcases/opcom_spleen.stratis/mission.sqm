@@ -18,7 +18,7 @@ class Mission
 		"A3_Soft_F_MRAP_01",
 		"alive_mil_opcom",
 		"alive_sys_profile",
-		"alive_nme_cqb"
+		"alive_mil_cqb"
 	};
 	addOnsAuto[]=
 	{
@@ -31,7 +31,7 @@ class Mission
 		"alive_main",
 		"alive_mil_opcom",
 		"alive_sys_profile",
-		"alive_nme_cqb",
+		"alive_mil_cqb",
 		"A3_Weapons_F_Ammoboxes",
 		"a3_weapons_f_beta_ammoboxes",
 		"A3_Air_F_Heli_Light_01",
@@ -4076,25 +4076,25 @@ class Mission
 						class Item0
 						{
 							value="false";
-							parentCls="ALiVE_nme_CQB";
+							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_debug_setting";
 						};
 						class Item1
 						{
 							value="1";
-							parentCls="ALiVE_nme_CQB";
+							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_spawn_setting";
 						};
 						class Item2
 						{
 							value="[""OPF_F""]";
-							parentCls="ALiVE_nme_CQB";
+							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS";
 						};
 					};
 					id=353;
 					side="LOGIC";
-					vehicle="ALiVE_nme_CQB";
+					vehicle="ALiVE_mil_cqb";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;

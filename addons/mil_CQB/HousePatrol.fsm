@@ -472,7 +472,7 @@ class FSM
       name = "Pass_FSM_and_End";
       init = /*%FSM<STATEINIT""">*/"if ({alive _x} count (units _grp) > 0) then {" \n
        "    	_leaderNew = leader _grp;" \n
-       "	_fsm = ""\x\alive\addons\nme_CQB\HousePatrol.fsm"";" \n
+       "	_fsm = ""\x\alive\addons\mil_cqb\HousePatrol.fsm"";" \n
        "	_hdl = [_logic,_leaderNew, 50, true, 60] execFSM _fsm;" \n
        "	_leader setVariable [""FSM"", [_hdl,_fsm], true];" \n
        "" \n

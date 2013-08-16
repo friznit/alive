@@ -78,12 +78,12 @@ Group: ALiVE  {
          File: ALIVE_fnc_isHC  (main/fnc_MarkerExists.sqf)
          }  # Group: Main
 
-      Group: Nme_CQB  {
+      Group: mil_cqb  {
 
-         File: ALIVE_fnc_CQB  (nme_CQB/fnc_CQB.sqf)
-         File: ALIVE_fnc_CQBInit  (nme_CQB/fnc_CQBInit.sqf)
-         File: ALIVE_fnc_CQBsortStrategicHouses  (nme_CQB/fnc_CQBsortStrategicHouses.sqf)
-         }  # Group: Nme_CQB
+         File: ALIVE_fnc_CQB  (mil_cqb/fnc_CQB.sqf)
+         File: ALIVE_fnc_CQBInit  (mil_cqb/fnc_CQBInit.sqf)
+         File: ALIVE_fnc_CQBsortStrategicHouses  (mil_cqb/fnc_CQBsortStrategicHouses.sqf)
+         }  # Group: mil_cqb
 
       Group: Sys_adminactions  {
 

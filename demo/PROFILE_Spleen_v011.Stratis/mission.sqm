@@ -4,7 +4,7 @@ class Mission
 	addOns[]=
 	{
 		"alive_main",
-		"alive_nme_cqb",
+		"alive_mil_cqb",
 		"alive_sys_adminactions",
 		"alive_sys_viewdistance",
 		"A3_Characters_F_BLUFOR",

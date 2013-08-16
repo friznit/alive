@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_CQBInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\nme_CQB\icon_nme_CQB.paa";
-				picture = "x\alive\addons\nme_CQB\icon_nme_CQB.paa";
+				icon = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
+				picture = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
                 class Arguments
                 {
                         class CQB_debug_setting
