@@ -417,7 +417,9 @@ switch(_operation) do {
                 
                 _targetsTaken2 = _targetsTaken2 - [objNull];
                
-	            _result = [_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2];
+	            _result = [_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,time];
+                [_logic,"clusteroccupation",_result] call AliVE_fnc_HashSet;
+                
                 diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,_sideF,_sideE];
 		};
 

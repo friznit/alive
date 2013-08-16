@@ -2,8 +2,8 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
-item1[] = {"INIT_COMPLETE",4,4314,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,250,-922.720703,-597.062744,-424.983490,-549.198242,0.000000,"ANALYZE"};
+item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
+item2[] = {"ANALYZE",2,4346,-922.720703,-597.062744,-424.983490,-549.198242,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-719.710510,-506.882813,-629.710571,-456.882813,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-932.135986,-489.681396,-842.135864,-439.681396,5.000000,"ATTACK" \n "Conditions"};
 item5[] = {"",7,210,-348.663452,-250.421844,-340.663422,-242.421814,0.000000,""};
@@ -23,6 +23,10 @@ item18[] = {"NOT_BUSY",2,250,-933.784180,-271.617401,-843.784180,-221.617401,0.0
 item19[] = {"NOT_BUSY_1",2,250,-550.193359,-270.530762,-460.193329,-220.530762,0.000000,"NOT BUSY"};
 item20[] = {"COLLECT_TO_QUEUE",2,250,-717.154053,-759.634521,-627.154053,-709.634521,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-716.046936,-682.136108,-626.046936,-632.136108,0.000000,"ENTRIES" \n "IN QUEUE"};
+item22[] = {"ANALYZE_Conditio",4,218,-1210.526367,-597.002136,-1120.526123,-547.002014,0.000000,"ANALYZE" \n "Conditions"};
+item23[] = {"PERFORM_ANALYSIS",2,250,-1209.390747,-671.986206,-1119.390747,-621.986206,0.000000,"PERFORM" \n "ANALYSIS"};
+item24[] = {"WAITUNTIL_ANALYSIS",4,218,-1210.631958,-756.394836,-1120.631958,-706.394836,0.000000,"WAITUNTIL" \n "ANALYSIS" \n "DONE"};
+item25[] = {"RESET",2,250,-1210.631958,-838.320801,-1120.631958,-788.320801,0.000000,"RESET"};
 version=1;
 class LayoutItems
 {
@@ -44,27 +48,32 @@ link4[] = {2,7};
 link5[] = {2,8};
 link6[] = {2,9};
 link7[] = {2,10};
-link8[] = {3,2};
-link9[] = {4,11};
-link10[] = {5,6};
-link11[] = {6,9};
-link12[] = {7,11};
-link13[] = {8,11};
-link14[] = {9,20};
-link15[] = {10,11};
-link16[] = {11,12};
-link17[] = {11,13};
-link18[] = {12,19};
-link19[] = {13,18};
-link20[] = {14,16};
-link21[] = {16,9};
-link22[] = {17,9};
-link23[] = {18,14};
-link24[] = {19,5};
-link25[] = {20,21};
-link26[] = {21,2};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,68,6316128,1,-1062.269165,-388.910248,-409.620728,-1077.230591,937,929,1};
-window[] = {2,-1,-1,-1,-1,971,22,1755,22,3,954};
+link8[] = {2,22};
+link9[] = {3,2};
+link10[] = {4,11};
+link11[] = {5,6};
+link12[] = {6,9};
+link13[] = {7,11};
+link14[] = {8,11};
+link15[] = {9,20};
+link16[] = {10,11};
+link17[] = {11,12};
+link18[] = {11,13};
+link19[] = {12,19};
+link20[] = {13,18};
+link21[] = {14,16};
+link22[] = {16,9};
+link23[] = {17,9};
+link24[] = {18,14};
+link25[] = {19,5};
+link26[] = {20,21};
+link27[] = {21,2};
+link28[] = {22,23};
+link29[] = {23,24};
+link30[] = {24,25};
+link31[] = {25,16};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-1307.140625,-144.039917,82.899818,-1070.270508,937,929,1};
+window[] = {2,-1,-1,-1,-1,1081,132,1865,132,3,954};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -177,11 +186,12 @@ class FSM
     class ANALYZE
     {
       name = "ANALYZE";
-      init = /*%FSM<STATEINIT""">*/"private [""_target"",""_attack"",""_defend"",""_reserve"",""_custom"",""_operation"",""_data_operation"",""_data_value"",""_targetsWithState"",""_OPCOM_ACTION"",""_targetOccupation""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_target"",""_attack"",""_defend"",""_reserve"",""_custom"",""_operation"",""_data_operation"",""_data_value"",""_targetsWithState"",""_OPCOM_ACTION"",""_targetOccupation"",""_analyze""];" \n
        "" \n
        "_busy = true;" \n
        "" \n
        "_target = nil;" \n
+       "_analyze = nil;" \n
        "_attack = nil;" \n
        "_defend = nil;" \n
        "_reserve = nil;" \n
@@ -208,7 +218,7 @@ class FSM
        "	//select operation type" \n
        "	switch (_DATA_OPERATION) do {" \n
        "		case (""init"") : {" \n
-       "			_OPCOM_DATA= [""analyze"",nil]; _busy = false;" \n
+       "			_OPCOM_DATA= [""analyze"",""clusteroccupation""]; _busy = false;" \n
        "" \n
        "			// debug ---------------------------------------" \n
        "			if(_debug) then { [""OPCOM initialized, %1!"",_DATA_VALUE] call ALIVE_fnc_dumpR; };" \n
@@ -218,14 +228,6 @@ class FSM
        "" \n
        "		case (""analyze"") : {" \n
        "			private[""_orders"",""_result"",""_targetsWithState""];" \n
-       "			" \n
-       "			//Check TACOMs answer (neutral anaylsis if you pass nil to it, see below)" \n
-       "			if !(isnil ""_DATA_VALUE"") then {" \n
-       "				switch (_DATA_VALUE) do {" \n
-       "					case (""no groups available"") : {_OPCOM_DATA = nil};" \n
-       "					default {};" \n
-       "				};" \n
-       "			};" \n
        "" \n
        "			// debug ---------------------------------------" \n
        "			if(_debug) then {" \n
@@ -233,14 +235,23 @@ class FSM
        "				[""OPCOM analyse""] call ALIVE_fnc_dump;" \n
        "				//[true] call ALIVE_fnc_timer;" \n
        "			};" \n
-       "			// debug ---------------------------------------		" \n
+       "			// debug ---------------------------------------	" \n
        "			" \n
-       "			//Intensive calcs, only do on regular timeout analysis" \n
-       "			if (_timeout) then {" \n
-       "				" \n
-       "				//Update profiles grid analysis" \n
-       "				//[] spawn {[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfiles};" \n
+       "			//Check TACOMs Data value (starting attack if you pass nil to it, see below)" \n
+       "			if !(isnil ""_DATA_VALUE"") then {" \n
+       "				switch (_DATA_VALUE) do {" \n
+       "					case (""no groups available"") : {};" \n
+       "					case (""clusteroccupation""): {_analyze = ""clusteroccupation""};" \n
+       "					default {};" \n
+       "				};" \n
        "			};" \n
+       "" \n
+       "			//AnalyzeClusterOccupation" \n
+       "			_targetOccupation = [_OPCOM_HANDLER,""clusteroccupation"",[]] call ALiVE_fnc_HashGet;" \n
+       "			if ((count _targetOccupation > 0) && {time - (_targetOccupation select 4) > 15}) then {_analyze = ""clusteroccupation""};" \n
+       "" \n
+       "			// Exit if analysis should happen" \n
+       "			if !(isnil ""_analyze"") exitwith {};" \n
        "" \n
        "			//Get objectives" \n
        "			_obj = ([_OPCOM_HANDLER,""objectives"",[]] call AliVE_fnc_HashGet);" \n
@@ -250,9 +261,6 @@ class FSM
        "			_defending = ({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""defending""} count _obj);" \n
        "			_idle = ({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""idle""} count _obj);" \n
        "			_active = _attacking + _defending;" \n
-       "" \n
-       "			//AnalyzeClusterOccupation" \n
-       "			_targetOccupation = [_OPCOM_HANDLER,""analyzeclusteroccupation"",[_side,_sideEnemy]] call ALiVE_fnc_OPCOM;" \n
        "" \n
        "			_targetsTaken = _targetOccupation select 0;" \n
        "			_targetsAttacked = _targetOccupation select 1;" \n
@@ -346,7 +354,7 @@ class FSM
        "				};" \n
        "				" \n
        "				//Trigger new OPCOM analysis after TACOM confirmation including TACOMs answer" \n
-       "				_OPCOM_DATA = [""analyze"",_return];" \n
+       "				_OPCOM_DATA = [""analyze"",""clusteroccupation""];" \n
        "" \n
        "				// debug ---------------------------------------" \n
        "				if(_debug) then { [""TACOM confirmed - %1 %2! Answer was %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return] call ALIVE_fnc_dumpR; };" \n
@@ -454,6 +462,16 @@ class FSM
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"time - _lastAnalyze > 60"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "ANALYZE_Conditio">*/
+        class ANALYZE_Conditio
+        {
+          priority = 0.000000;
+          to="PERFORM_ANALYSIS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_analyze"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -595,6 +613,52 @@ class FSM
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"(count _OPCOM_QUEUE > 0) && !(_busy) && (time - _lastAnalyze > 0.5);"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "PERFORM_ANALYSIS">*/
+    class PERFORM_ANALYSIS
+    {
+      name = "PERFORM_ANALYSIS";
+      init = /*%FSM<STATEINIT""">*/"_hdl = nil;" \n
+       "" \n
+       "switch (_analyze) do {" \n
+       "	case (""clusteroccupation"") : {_hdl = [_OPCOM_HANDLER,_side,_sideEnemy] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 1,_this select 2]] call ALiVE_fnc_OPCOM}};" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "WAITUNTIL_ANALYSIS">*/
+        class WAITUNTIL_ANALYSIS
+        {
+          priority = 0.000000;
+          to="RESET";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _hdl;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "RESET">*/
+    class RESET
+    {
+      name = "RESET";
+      init = /*%FSM<STATEINIT""">*/"_OPCOM_DATA= [""analyze"",nil]; _busy = false;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "OPCOM_RECEIVER">*/
+        class OPCOM_RECEIVER
+        {
+          priority = 0.000000;
+          to="COLLECT_TO_QUEUE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_OPCOM_DATA"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
