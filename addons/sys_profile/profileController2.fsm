@@ -1,0 +1,486 @@
+/*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, profile controller">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699,0.000000,"INIT" \n "COMPLETE"};
+item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
+item3[] = {"DESTROY",4,218,-66.461502,-168.242981,23.538473,-118.242981,0.000000,"DESTROY"};
+item4[] = {"END",1,250,68.367783,-167.244247,158.367798,-117.244301,0.000000,"END"};
+item5[] = {"SWITCH",2,250,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
+item6[] = {"SIMULATE",4,218,-189.816605,-11.441578,-99.816620,38.558418,3.000000,"SIMULATE"};
+item7[] = {"SIMULATE",2,250,-190.304626,67.458511,-100.304604,117.458504,0.000000,"SIMULATE"};
+item8[] = {"COMPLETE",4,218,-40.056381,376.276093,49.943604,426.276062,0.000000,"COMPLETE"};
+item9[] = {"SPAWN",4,218,-79.008347,-11.441580,10.991653,38.558411,2.000000,"SPAWN"};
+item10[] = {"SPAWN",2,250,-78.681198,67.064430,11.318882,117.064407,0.000000,"SPAWN"};
+item11[] = {"PROFILE_ANALYSIS",4,218,143.225143,-11.945818,233.225159,38.054165,5.000000,"PROFILE" \n "ANALYSIS"};
+item12[] = {"PROFILE_ANALYSIS",2,250,143.341751,66.349640,233.341797,116.349640,0.000000,"PROFILE" \n "ANALYSIS"};
+item13[] = {"DESPAWN",4,218,33.328533,-11.130665,123.328506,38.869316,4.000000,"DESPAWN"};
+item14[] = {"DESPAWN",2,250,33.655720,66.770706,123.655746,116.770691,0.000000,"DESPAWN"};
+item15[] = {"SCRIPT_DONE",4,218,-269.595398,154.521927,-179.595428,204.521927,0.000000,"SCRIPT" \n "DONE"};
+item16[] = {"DONE",2,250,-267.072144,233.220734,-180.412750,279.880157,0.000000,"DONE"};
+item17[] = {"SCRIPT_DONE",4,218,-141.613892,153.552383,-51.613960,203.552383,0.000000,"SCRIPT" \n "DONE"};
+item18[] = {"DONE_1",2,250,-140.060211,233.220749,-53.400841,279.880188,0.000000,"DONE"};
+item19[] = {"SCRIPT_DONE",4,4314,-13.632467,149.674164,76.367493,199.674164,0.000000,"SCRIPT" \n "DONE"};
+item20[] = {"DONE_2",2,250,-11.109213,234.190308,75.550171,280.849731,0.000000,"DONE"};
+version=1;
+class LayoutItems
+{
+	class Item2
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+};
+link0[] = {0,1};
+link1[] = {1,5};
+link2[] = {3,4};
+link3[] = {5,3};
+link4[] = {5,6};
+link5[] = {5,9};
+link6[] = {5,11};
+link7[] = {5,13};
+link8[] = {6,7};
+link9[] = {7,15};
+link10[] = {8,5};
+link11[] = {9,10};
+link12[] = {10,17};
+link13[] = {11,12};
+link14[] = {12,8};
+link15[] = {13,14};
+link16[] = {14,19};
+link17[] = {15,16};
+link18[] = {16,8};
+link19[] = {17,18};
+link20[] = {18,8};
+link21[] = {19,20};
+link22[] = {20,8};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,99,6316128,1,-435.153809,389.938843,569.770752,-468.624298,851,1071,1};
+window[] = {2,-1,-1,-1,-1,1088,146,1769,190,3,869};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "profile controller";
+  class States
+  {
+    /*%FSM<STATE "INIT">*/
+    class INIT
+    {
+      name = "INIT";
+      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_timer""," \n
+       """_simulationCycleTime"",""_lastSimulationTime"",""_doSimulation""," \n
+       """_spawnCycleTime"",""_lastSpawnTime"",""_doSpawn""," \n
+       """_despawnCycleTime"",""_lastDespawnTime"",""_doDespawn""," \n
+       """_profileAnalysisCycleTime"",""_lastProfileAnalysisTime"",""_doProfileAnalysis""," \n
+       """_destroy"",""_debug"",""_deleteMarkers"",""_deleteMarker"",""_createMarker""];" \n
+       "" \n
+       "_profileSystem = _this select 0;" \n
+       "_spawnDistance = _this select 1;" \n
+       "" \n
+       "_simulationCycleTime =5;" \n
+       "_lastSimulationTime = 0;" \n
+       "_doSimulation = false;" \n
+       "" \n
+       "_spawnCycleTime = 5;" \n
+       "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
+       "_doSpawn = false;" \n
+       "" \n
+       "_despawnCycleTime = 30;" \n
+       "_lastDespawnTime = 0;" \n
+       "_doDespawn = false;" \n
+       "" \n
+       "_profileAnalysisCycleTime = 90;" \n
+       "_lastProfileAnalysisTime = 0;" \n
+       "_doProfileAnalysis = false;" \n
+       "" \n
+       "_destroy = false;" \n
+       "_debug = [_profileSystem,""debug"",false] call ALiVE_fnc_HashGet;" \n
+       "_markers = [] call ALIVE_fnc_hashCreate;" \n
+       "" \n
+       "// debug ---------------------------------------" \n
+       "if(_debug) then { [""ALIVE Profile controller FSM init""] call ALIVE_fnc_dumpR; };" \n
+       "// debug ---------------------------------------" \n
+       "" \n
+       "_deleteMarkers = {" \n
+       "	{" \n
+       "		deleteMarkerLocal _x;" \n
+       "	} forEach (_markers select 2);" \n
+       "	_markers = [] call ALIVE_fnc_hashCreate;" \n
+       "};" \n
+       "" \n
+       "_deleteMarker = {" \n
+       "	private [""_profile"",""_m"",""_profileID""];" \n
+       "	_profile = _this;" \n
+       "	" \n
+       "	_profileID = [_profile,""profileID""] call ALIVE_fnc_hashGet;" \n
+       "	" \n
+       "	_profileIndex = _markers select 1;" \n
+       "	if(_profileID in _profileIndex) then {	" \n
+       "		_m = [_markers,_profileID] call ALIVE_fnc_hashGet;			" \n
+       "		deleteMarkerLocal _m;		" \n
+       "		[_markers,_profileID] call ALIVE_fnc_hashRem;" \n
+       "	};" \n
+       "};" \n
+       "" \n
+       "_createMarker = {" \n
+       "	private [""_profile"",""_waypoint"",""_m"",""_position"",""_profileID"",""_debugColor"",""_profileSide"",""_markerLabel""];" \n
+       "	_profile = _this select 0;" \n
+       "	_waypoint = _this select 1;" \n
+       "	" \n
+       "	_entityProfile call _deleteMarker;" \n
+       "" \n
+       "	_position = [_waypoint,""position""] call ALIVE_fnc_hashGet;" \n
+       "	_profileID = [_profile,""profileID""] call ALIVE_fnc_hashGet;" \n
+       "	_profileSide = [_profile,""side""] call ALIVE_fnc_hashGet;" \n
+       "	_markerLabel = format[""%1 destination"", _profileID];" \n
+       "	" \n
+       "	switch(_profileSide) do {" \n
+       "		case ""EAST"":{" \n
+       "			_debugColor = ""ColorRed"";" \n
+       "		};" \n
+       "		case ""WEST"":{" \n
+       "			_debugColor = ""ColorBlue"";" \n
+       "		};" \n
+       "		case ""CIV"":{" \n
+       "			_debugColor = ""ColorYellow"";" \n
+       "		};" \n
+       "		case ""GUER"":{" \n
+       "			_debugColor = ""ColorGreen"";" \n
+       "		};" \n
+       "		default {" \n
+       "			_debugColor = ""ColorGreen"";" \n
+       "		};" \n
+       "	};" \n
+       "" \n
+       "	if(count _position > 0) then {" \n
+       "		_m = createMarkerLocal [format[""MARKER_%1"",_profileID], _position];" \n
+       "		_m setMarkerShapeLocal ""ICON"";" \n
+       "		_m setMarkerSizeLocal [1, 1];" \n
+       "		_m setMarkerTypeLocal ""waypoint"";" \n
+       "		_m setMarkerColorLocal _debugColor;" \n
+       "		_m setMarkerTextLocal format[""%1 destination"",_profileID];" \n
+       "" \n
+       "		[_markers,_profileID,_m] call ALIVE_fnc_hashSet;" \n
+       "	};" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "INIT_COMPLETE">*/
+        class INIT_COMPLETE
+        {
+          priority = 0.000000;
+          to="SWITCH";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "END">*/
+    class END
+    {
+      name = "END";
+      init = /*%FSM<STATEINIT""">*/"// debug ---------------------------------------" \n
+       "if(_debug) then { [""SIMULATION CONTROLLER destroyed""] call ALIVE_fnc_dumpR; };" \n
+       "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "SWITCH">*/
+    class SWITCH
+    {
+      name = "SWITCH";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "PROFILE_ANALYSIS">*/
+        class PROFILE_ANALYSIS
+        {
+          priority = 5.000000;
+          to="PROFILE_ANALYSIS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(time - _lastProfileAnalysisTime) > _profileAnalysisCycleTime"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "DESPAWN">*/
+        class DESPAWN
+        {
+          priority = 4.000000;
+          to="DESPAWN";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((time - _lastDespawnTime) > _despawnCycleTime) && !(_doDespawn)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "SIMULATE">*/
+        class SIMULATE
+        {
+          priority = 3.000000;
+          to="SIMULATE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(time - _lastSimulationTime) > _simulationCycleTime"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "SPAWN">*/
+        class SPAWN
+        {
+          priority = 2.000000;
+          to="SPAWN";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((time - _lastSpawnTime) > _spawnCycleTime) && !(_doSpawn)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "DESTROY">*/
+        class DESTROY
+        {
+          priority = 0.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_destroy"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "SIMULATE">*/
+    class SIMULATE
+    {
+      name = "SIMULATE";
+      init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Simulated profile movement - started cycling at %1 second iterations"",_simulationCycleTime] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "private [""_simulationHandle""];" \n
+       "" \n
+       "[true] call ALIVE_fnc_timer;" \n
+       "_startSimulate = time;" \n
+       "_simulationHandle = [_markers,_simulationCycleTime,_debug] spawn ALIVE_fnc_simulateProfileMovement;" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "SCRIPT_DONE">*/
+        class SCRIPT_DONE
+        {
+          priority = 0.000000;
+          to="DONE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _simulationHandle;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "SPAWN">*/
+    class SPAWN
+    {
+      name = "SPAWN";
+      init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller  - started cycling at %1 second iterations"",_spawnCycleTime] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "private [""_spawnHandle""];" \n
+       "" \n
+       "[true] call ALIVE_fnc_timer;" \n
+       "_spawnHandle = [_spawnDistance,_debug] spawn ALIVE_fnc_profileSpawner;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "SCRIPT_DONE">*/
+        class SCRIPT_DONE
+        {
+          priority = 0.000000;
+          to="DONE_1";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _spawnHandle;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "PROFILE_ANALYSIS">*/
+    class PROFILE_ANALYSIS
+    {
+      name = "PROFILE_ANALYSIS";
+      init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Profile analysis  - started cycling at %1 second iterations"",_profileAnalysisCycleTime] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "// run profile analysis on all sectors" \n
+       "// spawned to avoid lock ups for now" \n
+       "" \n
+       "[_debug] spawn {" \n
+       "" \n
+       "	_debug = _this select 0;" \n
+       "	[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;" \n
+       "			" \n
+       "	// DEBUG -------------------------------------------------------------------------------------" \n
+       "	/*" \n
+       "	if(_debug) then {" \n
+       "		_sectors = [ALIVE_sectorGrid, ""sectors""] call ALIVE_fnc_sectorGrid;" \n
+       "			" \n
+       "		// clear the sector data plot" \n
+       "		[ALIVE_sectorPlotter, ""clear""] call ALIVE_fnc_plotSectors;" \n
+       "			" \n
+       "		// plot the sector data" \n
+       "		[ALIVE_sectorPlotter, ""plot"", [_sectors, ""entitiesBySide""]] call ALIVE_fnc_plotSectors;" \n
+       "	};" \n
+       "	*/" \n
+       "};" \n
+       "" \n
+       "_doProfileAnalysis = false;" \n
+       "_lastProfileAnalysisTime = time;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "COMPLETE">*/
+        class COMPLETE
+        {
+          priority = 0.000000;
+          to="SWITCH";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "DESPAWN">*/
+    class DESPAWN
+    {
+      name = "DESPAWN";
+      init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "if(_debug) then {" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Despawn controller  - started cycling at %1 second iterations"",_despawnCycleTime] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "private [""_despawnHandle""];" \n
+       "" \n
+       "[true] call ALIVE_fnc_timer;" \n
+       "_despawnHandle = [_spawnDistance,_debug] spawn ALIVE_fnc_profileDespawner;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "SCRIPT_DONE">*/
+        class SCRIPT_DONE
+        {
+          priority = 0.000000;
+          to="DONE_2";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _despawnHandle;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "DONE">*/
+    class DONE
+    {
+      name = "DONE";
+      init = /*%FSM<STATEINIT""">*/"[] call ALIVE_fnc_timer;" \n
+       "" \n
+       "_doSimulation = false;" \n
+       "_lastSimulationTime = time;" \n
+       "" \n
+       "_simulationCycleTime = _lastSimulationTime - _startSimulate;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "COMPLETE">*/
+        class COMPLETE
+        {
+          priority = 0.000000;
+          to="SWITCH";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "DONE_1">*/
+    class DONE_1
+    {
+      name = "DONE_1";
+      init = /*%FSM<STATEINIT""">*/"[] call ALIVE_fnc_timer;" \n
+       "" \n
+       "_doSpawn = false;" \n
+       "_lastSpawnTime = time;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "COMPLETE">*/
+        class COMPLETE
+        {
+          priority = 0.000000;
+          to="SWITCH";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "DONE_2">*/
+    class DONE_2
+    {
+      name = "DONE_2";
+      init = /*%FSM<STATEINIT""">*/"[] call ALIVE_fnc_timer;" \n
+       "" \n
+       "_doDespawn = false;" \n
+       "_lastDespawnTime = time;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "COMPLETE">*/
+        class COMPLETE
+        {
+          priority = 0.000000;
+          to="SWITCH";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="INIT";
+  finalStates[] =
+  {
+    "END",
+  };
+};
+/*%FSM</COMPILE>*/

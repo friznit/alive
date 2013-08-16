@@ -77,7 +77,7 @@ TIMEREND
 
 TIMERSTART
 STAT("Getting sectors in radius");
-_sectors = [ALIVE_sectorGrid, "sectorsInRadius", [getPos player, 2000]] call ALIVE_fnc_sectorGrid;
+_sectors = [ALIVE_sectorGrid, "sectorsInRadius", [getPos player, 500]] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
 
@@ -98,15 +98,19 @@ STAT("Generating random groups for flat empty positions");
 private ["_testFactions","_testTypes","_type","_faction","_group"];
 
 _testFactions  = ["BLU_F"];
-_testTypes = ["Infantry","Motorized","Mechanized","Air"];
+//_testTypes = ["Infantry","Motorized","Mechanized","Air"];
+_testTypes = ["Infantry"];
+_maxEntities = 30;
 
 {
-	_position = _x;
-	_type = _testTypes call BIS_fnc_selectRandom; 
-	_faction = _testFactions call BIS_fnc_selectRandom;
-	_group = [_type,_faction] call ALIVE_fnc_configGetRandomGroup;
-	if!(_group == "FALSE") then {
-		[_group, _position] call ALIVE_fnc_createProfilesFromGroupConfig;
+	if(_forEachIndex < _maxEntities) then {
+		_position = _x;
+		_type = _testTypes call BIS_fnc_selectRandom; 
+		_faction = _testFactions call BIS_fnc_selectRandom;
+		_group = [_type,_faction] call ALIVE_fnc_configGetRandomGroup;
+		if!(_group == "FALSE") then {
+			[_group, _position] call ALIVE_fnc_createProfilesFromGroupConfig;
+		};
 	};
 } forEach _flatEmptyPositions;
 TIMEREND
@@ -116,7 +120,7 @@ DEBUGON
 
 
 _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
-_maxWaypoints = 200;
+_maxWaypoints = 50;
 _waypointDestination = getPos player;
 
 {
@@ -134,5 +138,8 @@ _waypointDestination = getPos player;
 _fakeLogic = [] call ALIVE_fnc_hashCreate;
 [_fakeLogic,"debug",true] call ALIVE_fnc_hashSet;
 // start the profile controller FSM
-[_fakeLogic,50] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
+//[_fakeLogic,50] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
+
+_handle = [_fakeLogic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";						
+_handle = [_fakeLogic,1000] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 

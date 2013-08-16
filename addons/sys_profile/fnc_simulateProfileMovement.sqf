@@ -132,7 +132,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	if(count _waypoints > 0 && !(_vehicleCargo)) then {
 					
 		// entity is not spawned, simulate
-		if!(_active) then {					
+		if!(_active) then {		
 					
 			_activeWaypoint = _waypoints select 0;
 			_type = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
