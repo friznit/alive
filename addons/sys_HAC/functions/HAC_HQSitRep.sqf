@@ -404,6 +404,11 @@ while {not ((isNull (_logic getvariable "HAC_HQ")) or ((_logic getvariable "HAC_
 		}
 	foreach (_logic getvariable "HAC_HQ_Friends") + [(_logic getvariable "HAC_HQ")];
 
+	/* Raps modified for new group caching project, not to be mistaken with profile caching of all units, this will only hash cache sub-ordinates under the group leader - this will include CEP caching units to the total so HAC does not think that all the unita are killed. */
+	if (!isNil "cep_unit_count") then {
+		_logic setvariable ["HAC_HQ_CCurrent", (_logic getvariable "HAC_HQ_CCurrent") + cep_unit_count];
+	};
+	
 	_logic setvariable ["HAC_HQ_Ex", []];
 
 	if ((_logic getvariable "HAC_HQ_ExInfo")) then 

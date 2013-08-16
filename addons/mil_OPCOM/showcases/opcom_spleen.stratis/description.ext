@@ -6,12 +6,14 @@ class header {
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
 
+
 author = ALiVE Studios || Mission by Highhead;
 onLoadMission = "Iran has landed on Stratis! Only a few BLUFOR troops are stationed on the southern part of the island. Hold it by any means possible!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE: Just Pure Death;
-loadScreen = "rsc\logo_alive.paa";
+loadScreen = "x\alive\addons\mil_opcom\showcases\opcom_spleen.stratis\rsc\logo_alive.paa";
+
 
 aiKills = 0;
 briefing = 1;
