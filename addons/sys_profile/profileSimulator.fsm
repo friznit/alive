@@ -199,7 +199,7 @@ class FSM
        "" \n
        "" \n
        "_profiles = [ALIVE_profileHandler, ""profiles""] call ALIVE_fnc_hashGet;" \n
-       "_entityProfiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_hashGet;" \n
+       "_entityProfiles = [ALIVE_profileHandler, ""getProfilesByType"", ""entity""] call ALIVE_fnc_profileHandler;" \n
        "_profileBlock = [ALIVE_arrayBlockHandler,""getNextBlock"", [""simulation"",_profiles select 2,5]] call ALIVE_fnc_arrayBlockHandler;" \n
        "" \n
        "_profileCount = count _entityProfiles;" \n
