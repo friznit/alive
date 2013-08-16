@@ -436,7 +436,7 @@ switch(_operation) do {
                 _entArr = [];
                 _seeArr = [];
                 
-                _profiles = [_pos, 900, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
+                _profiles = [_pos, 600, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
                 {
                     if (count _profiles > 0) then {
                         _entArr set [count _entArr,[(_x select 2 select 4),(_x select 2 select 2)]];
@@ -449,13 +449,13 @@ switch(_operation) do {
                     _pos = ATLtoASL _pos;
                     _pos set [2,(_pos select 2) + 2];
                     
-                    if ({(_x select 1) distance _pos < 800} count _entArr > 0) then {
+                    if ({(_x select 1) distance _pos < 500} count _entArr > 0) then {
                         {
                             _id = _x select 0;
                             _posP = ATLtoASL (_x select 1);
                             _posP set [2,(_posP select 2) + 2];
                             
-                            if (((_x select 1) distance _pos < 800) && {!(terrainIntersectASL [_pos, _posP])}) then {
+                            if (((_x select 1) distance _pos < 500) && {!(terrainIntersectASL [_pos, _posP])}) then {
                                 _seeArr set [count _seeArr, _x];
                             };
                         } foreach _entArr;
@@ -687,7 +687,7 @@ switch(_operation) do {
         case "NearestAvailableSection": {
             			ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                         
-                        private ["_profileIDs","_profileID","_ProfileIDsBusy","_size","_state","_available","_objectives","_objective","_section","_sections","_pending_orders"];
+                        private ["_id","_profileIDs","_profileID","_ProfileIDsBusy","_size","_state","_available","_objectives","_objective","_section","_sections","_pending_orders"];
         
         				_position = _args select 0;
 						_typeOp = _args select 1;
@@ -709,7 +709,7 @@ switch(_operation) do {
                         _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",_side] call ALIVE_fnc_profileHandler;
                         _available = [];
                         _result = nil;
-                      
+                        
                         if (_size < 0) then {_size = floor((count _profileIDs)/_objectivescount)};
 
 						_ProfileIDsBusy = [];
@@ -718,11 +718,23 @@ switch(_operation) do {
 							_ProfileIDsBusy set [count _ProfileIDsBusy,_ProfileID];
 						} foreach _pending_orders;
                         
-                        //{
                         for "_i" from 0 to ((count _objectives)-1) do {
                            _objective = _objectives select _i;
                            _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
                            _state = [_objective,"opcom_state","unassigned"] call ALiVE_fnc_HashGet;
+                           _id = [_objective,"objectiveID"] call ALiVE_fnc_HashGet;
+                           
+                           {
+                               _ProfileID = _x;
+                               _section = [_objective,"section"] call ALiVE_fnc_HashGet;
+                               
+                           		if !(_ProfileID in _profileIDs) then {
+									_section = _section - [_ProfileID]; [_objective,"section",_section] call ALiVE_fnc_HashSet;
+                              		if (count _section < 1) then {[_objective,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_objective,"opcom_orders","none"] call ALiVE_fnc_HashSet; [_objective,"danger",-1] call ALiVE_fnc_HashSet};
+                            	};
+                           } foreach _section;
+
+							_section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
 
                            if ((_state == "idle") && {count _section > _size_reserve}) then {
                                {

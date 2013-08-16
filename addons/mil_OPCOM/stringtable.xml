@@ -15,13 +15,13 @@
 	<English>Enables OPCOM Module Debug</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_CONTROLTYPE">
-	<English>Type:</English>
+	<English>Control Type:</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_CONTROLTYPE_COMMENT">
 	<English>Type of OPCOM control</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_SIDE">
-	<English>Type:</English>
+	<English>Side:</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_SIDE_COMMENT">
 	<English>OPCOMs side</English>
