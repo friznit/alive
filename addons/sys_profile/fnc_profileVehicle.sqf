@@ -282,10 +282,8 @@ switch(_operation) do {
 							[_logic,"debug",true] call MAINCLASS;
 						};
 						
-						_profileID = _logic select 2 select 4;
-						
-						// store position on handler position index
-						_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;						
+						// store position on handler position index						
+						_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
                 };
 				_result = [_logic,"position"] call ALIVE_fnc_hashGet;

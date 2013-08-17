@@ -186,9 +186,9 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_arrayBlockHandler.sqf";
 				recompile = 1;
 			};
-			class simulateProfileMovement {
-				description = "simulateProfileMovement";
-				file = "\x\alive\addons\sys_profile\fnc_simulateProfileMovement.sqf";
+			class profileSimulator {
+				description = "profileSimulator";
+				file = "\x\alive\addons\sys_profile\fnc_profileSimulator.sqf";
 				recompile = 1;
 			};
 			class profileSpawner {

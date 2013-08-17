@@ -8,10 +8,10 @@ item3[] = {"DESTROY",4,218,-71.868134,-91.997047,18.131832,-41.997047,0.000000,"
 item4[] = {"END",1,250,48.878220,-90.319656,138.878342,-40.319702,0.000000,"END"};
 item5[] = {"SWITCH",2,250,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
 item6[] = {"SIMULATE",4,218,-190.485504,-10.103760,-100.485519,39.896233,3.000000,"SIMULATE"};
-item7[] = {"SIMULATE",2,250,-189.632462,68.802841,-99.632439,118.802834,0.000000,"SIMULATE"};
+item7[] = {"SIMULATE",2,4346,-189.632462,68.802841,-99.632439,118.802834,0.000000,"SIMULATE"};
 item8[] = {"COMPLETE",4,218,-323.934753,68.486259,-233.934753,118.486214,0.000000,"COMPLETE"};
 item9[] = {"SCRIPT_DONE",4,218,-189.442581,144.570786,-99.442566,194.570831,0.000000,"SCRIPT" \n "DONE"};
-item10[] = {"MEASURE",2,4346,-187.726379,224.287781,-101.067009,270.947083,0.000000,"MEASURE"};
+item10[] = {"MEASURE",2,250,-187.726379,224.287781,-101.067009,270.947083,0.000000,"MEASURE"};
 version=1;
 class LayoutItems
 {
@@ -36,7 +36,7 @@ link7[] = {8,5};
 link8[] = {9,10};
 link9[] = {10,8};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,93,6316128,1,-384.671082,187.342346,395.960999,-323.929016,851,1071,1};
-window[] = {2,-1,-1,-1,-1,1082,245,1868,184,3,869};
+window[] = {2,-1,-1,-1,-1,1016,-52,1571,118,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -48,7 +48,7 @@ class FSM
     {
       name = "INIT";
       init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_simulationCycleTime"",""_lastSimulationTime"",""_doSimulation""," \n
-       """_destroy"",""_debug"",""_deleteMarkers"",""_deleteMarker"",""_createMarker""];" \n
+       """_destroy"",""_debug""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
        "" \n
@@ -137,7 +137,7 @@ class FSM
        "private [""_handle""];" \n
        "" \n
        "_startSimulate = time;" \n
-       "_handle = [_markers,_simulationCycleTime,true] spawn ALIVE_fnc_simulateProfileMovement;"/*%FSM</STATEINIT""">*/;
+       "_handle = [_markers,_simulationCycleTime,true] spawn ALIVE_fnc_profileSimulator;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

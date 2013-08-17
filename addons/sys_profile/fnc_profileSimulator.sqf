@@ -1,8 +1,8 @@
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(simulateProfileMovement);
+SCRIPT(profileSimulator);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_simulateProfileMovement
+Function: ALIVE_fnc_profileSimulator
 
 Description:
 Simulates movement of profiles that have waypoints set
@@ -13,7 +13,7 @@ Returns:
 
 Examples:
 (begin example)
-_result = [] call ALIVE_fnc_simulateProfileMovement;
+_result = [] call ALIVE_fnc_profileSimulator;
 (end)
 
 See Also:
@@ -82,7 +82,7 @@ _createMarker = {
 	};
 
 	if(count _position > 0) then {
-		_m = createMarkerLocal [format["MARKER_%1",_profileID], _position];
+		_m = createMarkerLocal [format["SIM_MARKER_%1",_profileID], _position];
 		_m setMarkerShapeLocal "ICON";
 		_m setMarkerSizeLocal [1, 1];
 		_m setMarkerTypeLocal "waypoint";
