@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, profile spawner">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item3[] = {"DESTROY",4,218,-73.696571,-92.433327,16.303419,-42.433308,0.000000,"DESTROY"};
@@ -15,7 +15,7 @@ item10[] = {"DESPAWN",2,250,-71.600838,86.586937,18.399143,136.586945,0.000000,"
 item11[] = {"SCRIPT_DONE",4,218,-192.269577,160.458603,-102.269608,210.458603,0.000000,"SCRIPT" \n "DONE"};
 item12[] = {"DONE",2,250,-190.715836,231.826080,-104.056488,278.485535,0.000000,"DONE"};
 item13[] = {"SCRIPT_DONE",4,218,-71.805855,160.339294,18.194071,210.339294,0.000000,"SCRIPT" \n "DONE"};
-item14[] = {"DONE_1",2,4346,-70.252144,232.251190,16.407221,278.910675,0.000000,"DONE"};
+item14[] = {"DONE_1",2,250,-70.252144,232.251190,16.407221,278.910675,0.000000,"DONE"};
 version=1;
 class LayoutItems
 {
@@ -44,8 +44,8 @@ link11[] = {11,12};
 link12[] = {12,6};
 link13[] = {13,14};
 link14[] = {14,6};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,99,6316128,1,-362.905121,149.239578,330.904144,-313.639893,851,1031,1};
-window[] = {2,-1,-1,-1,-1,973,-1845,-222,75,3,869};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,99,6316128,1,-362.905121,149.239578,330.904144,-313.639893,851,1071,1};
+window[] = {2,-1,-1,-1,-1,1065,121,1744,167,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -61,12 +61,12 @@ class FSM
        "" \n
        "_profileSystem = _this select 0;" \n
        "_spawnDistance = _this select 1;" \n
+       "_spawnCycleTime = if(count _this > 2) then {_this select 2} else {7};" \n
+       "_despawnCycleTime = if(count _this > 3) then {_this select 3} else {32};" \n
        "" \n
-       "_spawnCycleTime = 5;" \n
        "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
        "_doSpawn = false;" \n
        "" \n
-       "_despawnCycleTime = 30;" \n
        "_lastDespawnTime = 0;" \n
        "_doDespawn = false;" \n
        "" \n

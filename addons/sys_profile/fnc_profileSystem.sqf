@@ -63,7 +63,9 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);						
 						
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
-						[_logic,"spawnRadius",false] call ALIVE_fnc_hashSet;
+						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
+						[_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
+						[_logic,"despawnCycleTime",30] call ALIVE_fnc_hashSet;
                 };
                 
                 /*
@@ -79,7 +81,9 @@ switch(_operation) do {
                 if (isServer) then {
 						
 						_debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
-						_spawnRadius = [_logic,"spawnRadius",false] call ALIVE_fnc_hashGet;
+						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+						_spawnCycleTime = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+						_despawnCycleTime = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
@@ -141,7 +145,7 @@ switch(_operation) do {
 						_handle = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
 						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
 						
-						_handle = [_logic,_spawnRadius] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_handle = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
 												
 						

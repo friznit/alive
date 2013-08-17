@@ -35,8 +35,8 @@ link6[] = {7,9};
 link7[] = {8,5};
 link8[] = {9,10};
 link9[] = {10,8};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,93,6316128,1,-384.671082,187.342346,395.960999,-323.929016,851,1031,1};
-window[] = {2,-1,-1,-1,-1,1048,-1770,-147,150,3,869};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,93,6316128,1,-384.671082,187.342346,395.960999,-323.929016,851,1071,1};
+window[] = {2,-1,-1,-1,-1,1082,245,1868,184,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -161,7 +161,7 @@ class FSM
       init = /*%FSM<STATEINIT""">*/"_doSimulation = false;" \n
        "_lastSimulationTime = time;" \n
        "" \n
-       "_simulationCycleTime = (_lastSimulationTime - _startSimulate) + 10;"/*%FSM</STATEINIT""">*/;
+       "_simulationCycleTime = (_lastSimulationTime - _startSimulate) + 3;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

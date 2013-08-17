@@ -149,6 +149,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 			};
 						
 			_moveDistance = floor(_speedPerSecond * _cycleTime);
+			_direction = 0;
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
@@ -211,6 +212,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 				{
 					_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 					[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
+					[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 					[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
 				} forEach _vehiclesInCommandOf;												
 			}else{
