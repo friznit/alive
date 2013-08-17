@@ -100,7 +100,7 @@ private ["_testFactions","_testTypes","_type","_faction","_group"];
 _testFactions  = ["BLU_F"];
 //_testTypes = ["Infantry","Motorized","Mechanized","Air"];
 _testTypes = ["Infantry"];
-_maxEntities = 30;
+_maxEntities = 200;
 
 {
 	if(_forEachIndex < _maxEntities) then {
@@ -120,7 +120,7 @@ DEBUGON
 
 
 _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
-_maxWaypoints = 50;
+_maxWaypoints = 200;
 _waypointDestination = getPos player;
 
 {

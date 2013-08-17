@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(test_functionality7);
+SCRIPT(test_groupConfigBestPlacesSpawn);
 
-//execVM "\x\alive\addons\sys_profile\tests\test_functionality7.sqf"
+//execVM "\x\alive\addons\sys_profile\tests\test_groupConfigBestPlacesSpawn.sqf"
 
 // ----------------------------------------------------------------------------
 

@@ -2,14 +2,15 @@
 SCRIPT(staticVehicleEmptyPositionData);
 
 
-/* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_staticVehicleEmptyPositionDatas
 
-Description:
+/* ----------------------------------------------------------------------------
+Function; ALIVE_fnc_staticVehicleEmptyPositionDatas
+
+Description;
 Sets global variable for vehicle positions static data, returned from ALIVE_fnc_vehicleGenerateEmptyPositionData
 
 
-Author:
+Author;
 ARJay
 ---------------------------------------------------------------------------- */
 
@@ -44,6 +45,15 @@ ALIVE_vehiclePositions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_vehiclePositions,"B_SDV_01_F",[1,1,0,0,2]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"O_SDV_01_F",[1,1,0,0,2]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"I_SDV_01_F",[1,1,0,0,2]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"B_UAV_01_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"O_UAV_01_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"I_UAV_01_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"B_UAV_02_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"O_UAV_02_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"I_UAV_02_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"B_UAV_02_CAS_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"O_UAV_02_CAS_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"I_UAV_02_CAS_F",[1,1,0,0,0]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"B_MRAP_01_F",[1,0,0,0,3]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"B_MRAP_01_gmg_F",[1,1,0,0,2]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"B_MRAP_01_hmg_F",[1,1,0,0,2]] call ALIVE_fnc_hashSet;
@@ -65,3 +75,10 @@ ALIVE_vehiclePositions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_vehiclePositions,"I_Truck_02_transport_F",[1,0,0,0,16]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"B_APC_Wheeled_01_cannon_F",[1,1,1,0,8]] call ALIVE_fnc_hashSet;
 [ALIVE_vehiclePositions,"O_APC_Wheeled_02_rcws_F",[1,1,1,0,8]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"B_UGV_01_F",[1,0,0,0,1]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"O_UGV_01_F",[1,0,0,0,1]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"I_UGV_01_F",[1,0,0,0,1]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"B_UGV_01_rcws_F",[1,1,0,0,1]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"O_UGV_01_rcws_F",[1,1,0,0,1]] call ALIVE_fnc_hashSet;
+[ALIVE_vehiclePositions,"I_UGV_01_rcws_F",[1,1,0,0,1]] call ALIVE_fnc_hashSet;
+

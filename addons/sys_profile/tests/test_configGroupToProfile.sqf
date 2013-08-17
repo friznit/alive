@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(test_functionality6);
+SCRIPT(test_configGroupToProfile);
 
-//execVM "\x\alive\addons\sys_profile\tests\test_functionality6.sqf"
+//execVM "\x\alive\addons\sys_profile\tests\test_configGroupToProfile.sqf"
 
 // ----------------------------------------------------------------------------
 

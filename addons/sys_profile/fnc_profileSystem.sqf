@@ -139,7 +139,7 @@ switch(_operation) do {
 						*/
 						
 						_handle = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
-						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;						
+						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
 						
 						_handle = [_logic,_spawnRadius] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;

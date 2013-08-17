@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(test_functionality3);
+SCRIPT(test_createUnitsFromMap);
 
-//execVM "\x\alive\addons\sys_profile\tests\test_functionality3.sqf"
+//execVM "\x\alive\addons\sys_profile\tests\test_createUnitsFromMap.sqf"
 
 // ----------------------------------------------------------------------------
 

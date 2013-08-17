@@ -36,6 +36,7 @@ ARJay
 	} do {
 		_instanceName = vehicleVarName cursorTarget;
 		_typeOf = typeOf cursorTarget;
+		_name = typeName cursorTarget;
 		
 		if(_name == "Error: No Unit") then {_name = "";};
 		
@@ -45,7 +46,7 @@ ARJay
 		sleep 1;
 		titleFadeOut 0.3;
 		
-		if(((cursorTarget isKindOf "Man") || (cursorTarget isKindOf "StaticWeapon") || (cursorTarget isKindOf "Air") || (cursorTarget isKindOf "Car") || (cursorTarget isKindOf "Ship"))) then {
+		if(((cursorTarget isKindOf "Man") || (cursorTarget isKindOf "StaticWeapon") || (cursorTarget isKindOf "Air") || (cursorTarget isKindOf "Car") || (cursorTarget isKindOf "Armored") || (cursorTarget isKindOf "Ship"))) then {
 			if(_hold > 2) then {
 				[cursorTarget] call ALIVE_fnc_inspectObject;
 				_hold = 0;
