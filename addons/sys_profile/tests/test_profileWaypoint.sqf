@@ -178,7 +178,7 @@ STAT("Sleep for 10");
 SLEEP 20;
 
 
-terminate _simulate;
+terminate _handle;
 
 
 STAT("De-Spawn the unit via the profile");

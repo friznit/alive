@@ -564,9 +564,10 @@ switch(_operation) do {
 				};
 		};
 		case "spawn": {
-				private ["_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
+				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
 				"_profileID","_active","_waypoints","_vehicleAssignments","_group","_unitPosition","_eventID","_waypointCount","_unitCount","_units","_unit"];
 				
+				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
 				_side = _logic select 2 select 3; //[_logic, "side"] call MAINCLASS;
 				_sideObject = [_side] call ALIVE_fnc_sideTextToObject;
@@ -578,6 +579,7 @@ switch(_operation) do {
 				_active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;	
 				_waypoints = _logic select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
 				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				
 				_unitCount = 0;
 				_units = [];
 
@@ -631,9 +633,10 @@ switch(_operation) do {
 				};
 		};
 		case "despawn": {
-				private ["_group","_leader","_units","_positions","_damages","_ranks","_active","_profileID","_unitCount","_waypoints",
+				private ["_debug","_group","_leader","_units","_positions","_damages","_ranks","_active","_profileID","_unitCount","_waypoints",
 				"_profileWaypoint","_unit","_vehicle","_vehicleID","_profileVehicle","_profileVehicleAssignments","_assignments","_vehicleAssignments"];
 
+				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_group = _logic select 2 select 13; //[_logic,"group"] call ALIVE_fnc_hashGet;
 				_leader = _logic select 2 select 10; //[_logic,"leader"] call ALIVE_fnc_hashGet;
 				_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
@@ -642,6 +645,7 @@ switch(_operation) do {
 				_ranks = _logic select 2 select 20; //[_logic,"ranks"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+				
 				_unitCount = 0;
 
 				// not already inactive
