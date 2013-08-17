@@ -29,8 +29,8 @@ private ["_profileVehicle","_vehicleClass","_vehicleAssignments","_emptyPosition
 
 _profileVehicle = _this;
 
-_vehicleClass = [_profileVehicle, "vehicleClass"] call ALIVE_fnc_hashGet;
-_vehicleAssignments = [_profileVehicle, "vehicleAssignments"] call ALIVE_fnc_hashGet;
+_vehicleClass = _profileVehicle select 2 select 11; //[_profileVehicle, "vehicleClass"] call ALIVE_fnc_hashGet;
+_vehicleAssignments = _profileVehicle select 2 select 7; //[_profileVehicle, "vehicleAssignments"] call ALIVE_fnc_hashGet;
 
 // instantiate static vehicle position data
 if(isNil "ALIVE_vehiclePositions") then {

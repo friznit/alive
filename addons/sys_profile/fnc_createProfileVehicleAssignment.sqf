@@ -32,10 +32,10 @@ private ["_profileEntity","_profileVehicle","_entityID","_unitIndexes","_current
 _profileEntity = _this select 0;
 _profileVehicle = _this select 1;
 
-_entityID = [_profileEntity, "profileID"] call ALIVE_fnc_hashGet;
+_entityID = _profileEntity select 2 select 4; //[_profileEntity, "profileID"] call ALIVE_fnc_hashGet;
 _unitIndexes = [_profileEntity, "unitIndexes"] call ALIVE_fnc_profileEntity;
 _currentEntityAssignments = [_profileEntity, "vehicleAssignments"] call ALIVE_fnc_hashGet;
-_vehicleID = [_profileVehicle, "profileID"] call ALIVE_fnc_hashGet;
+_vehicleID = _profileVehicle select 2 select 4; //[_profileVehicle, "profileID"] call ALIVE_fnc_hashGet;
 
 // get indexes of units that are already assigned to vehicles
 _usedIndexes = _currentEntityAssignments call ALIVE_fnc_profileVehicleAssignmentGetUsedIndexes;

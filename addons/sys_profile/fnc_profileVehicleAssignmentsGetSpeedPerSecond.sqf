@@ -30,7 +30,7 @@ private ["_assignments","_profile","_result","_vehiclesInCommandOf","_manSpeedAr
 _assignments = _this select 0;
 _profile = _this select 1;
 
-_vehiclesInCommandOf = [_profile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
+_vehiclesInCommandOf = _profile select 2 select 8; //[_profile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
 _manSpeedArray = "Man" call ALIVE_fnc_vehicleGetSpeedPerSecond;
 _countAssignedUnits = _assignments call ALIVE_fnc_profileVehicleAssignmentsGetCount;
 _unitCount = [_profile,"unitCount"] call ALIVE_fnc_profileEntity;
@@ -50,7 +50,7 @@ if(_countAssignedUnits < _unitCount || count(_vehiclesInCommandOf) == 0) then {
 	_speeds = [];
 	{
 		_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-		_vehicleClass = [_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;
+		_vehicleClass = _vehicleProfile select 2 select 11; //[_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;
 		_speedArray = _vehicleClass call ALIVE_fnc_vehicleGetSpeedPerSecond;
 		_speeds set [count _speeds, _speedArray];
 	} forEach _vehiclesInCommandOf;

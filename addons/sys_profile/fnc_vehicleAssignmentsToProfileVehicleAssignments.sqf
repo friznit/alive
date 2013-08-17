@@ -29,13 +29,13 @@ private ["_profile","_profileType","_profileID","_profileActive","_vehicle","_gr
 
 _profile = _this select 0;
 
-_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
-_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-_profileActive = [_profile,"active"] call ALIVE_fnc_hashGet;
+_profileType = _profile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
+_profileID = _profile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+_profileActive = _profile select 2 select 1; //[_profile,"active"] call ALIVE_fnc_hashGet;
 
 if(_profileType == "vehicle") then {
 
-	_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;	
+	_vehicle = _profile select 2 select 10; //[_profile,"vehicle"] call ALIVE_fnc_hashGet;	
 	_groupsInVehicle = _vehicle call ALIVE_fnc_vehicleGetGroupsWithin;
 	
 	/*
@@ -48,7 +48,7 @@ if(_profileType == "vehicle") then {
 		_leader = leader _group;
 		_entityID = _leader getVariable "profileID";
 		_entityProfile = [ALIVE_profileHandler, "getProfile", _entityID] call ALIVE_fnc_profileHandler;
-		_entityProfileActive = [_entityProfile,"active"] call ALIVE_fnc_hashGet;
+		_entityProfileActive = _entityProfile select 2 select 1; //[_entityProfile,"active"] call ALIVE_fnc_hashGet;
 		
 		_assignment = [_vehicle, _group] call ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment;
 		_vehicleAssignments = [_profileID,_entityID,_assignment];			
@@ -63,7 +63,7 @@ if(_profileType == "vehicle") then {
 	
 } else {
 	
-	_units = [_profile,"units"] call ALIVE_fnc_hashGet;
+	_units = _profile select 2 select 21; //[_profile,"units"] call ALIVE_fnc_hashGet;
 	_group = group (_units select 0);
 	_vehiclesUnitsIn = _units call ALIVE_fnc_unitArrayGetVehiclesWithin;
 	
@@ -76,9 +76,18 @@ if(_profileType == "vehicle") then {
 	
 	{
 		_vehicle = _x;
-		_vehicleID = _vehicle getVariable "profileID";
+		_vehicleID = _vehicle getVariable ["profileID","none"];
+		
+		/*
+		if(_vehicleID == "none") then {
+			_vehicleID = 
+		};
+		*/
+		
+		//["V: %1 VID: %2",_vehicle,_vehicleID] call ALIVE_fnc_dump;
+		
 		_vehicleProfile = [ALIVE_profileHandler, "getProfile", _vehicleID] call ALIVE_fnc_profileHandler;
-		_vehicleProfileActive = [_vehicleProfile,"active"] call ALIVE_fnc_hashGet;
+		_vehicleProfileActive = _vehicleProfile select 2 select 1; //[_vehicleProfile,"active"] call ALIVE_fnc_hashGet;
 		
 		_assignment = [_vehicle, _group] call ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment;
 		_vehicleAssignments = [_vehicleID,_profileID,_assignment];			

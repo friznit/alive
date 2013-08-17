@@ -29,7 +29,7 @@ private ["_assignments","_profile","_profileType","_result","_vehicle","_assignm
 _assignments = _this select 0;
 _profile = _this select 1;
 
-_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
+_profileType = _profile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
 
 _result = [];
 			

@@ -27,7 +27,7 @@ _unit = _this select 0;
 
 _profileID = _unit getVariable "profileID";
 _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
-_profileType = [_profile, "type"] call ALIVE_fnc_hashGet;
+_profileType = _logic select 2 select 4; // [_profile, "type"] call ALIVE_fnc_hashGet;
 
 switch(_profileType) do {
 		case "entity": {
@@ -38,12 +38,6 @@ switch(_profileType) do {
 				// will need to have dead unit cleanup scripts
 				[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
 			};
-		};
-		case "mil": {
-			[_profile, "handleDeath"] call ALIVE_fnc_profileMil;
-		};
-		case "civ": {
-			[_profile, "handleDeath"] call ALIVE_fnc_profileCiv;
 		};
 		case "vehicle": {
 			[_profile, "handleDeath"] call ALIVE_fnc_profileVehicle;

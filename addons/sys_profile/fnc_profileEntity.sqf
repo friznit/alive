@@ -258,7 +258,8 @@ switch(_operation) do {
 						[_logic,"ranks",[]] call ALIVE_fnc_hashSet; // select 2 select 20
 						[_logic,"units",[]] call ALIVE_fnc_hashSet; // select 2 select 21
 						[_logic,"speedPerSecond","Man" call ALIVE_fnc_vehicleGetSpeedPerSecond] call ALIVE_fnc_hashSet; // select 2 select 22
-						[_logic,"spawnType","check"] call ALIVE_fnc_hashSet; // select 2 select 23
+						[_logic,"despawnPosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 23
+						[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 24
                 };
 
                 /*
@@ -335,13 +336,13 @@ switch(_operation) do {
 						_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;						
 						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
                 };
-				_result = [_logic,"position"] call ALIVE_fnc_hashGet;
+				_result = _logic select 2 select 2; //[_logic,"position"] call ALIVE_fnc_hashGet;
         };
 		case "positions": {
 				if(typeName _args == "ARRAY") then {
 						[_logic,"positions",_args] call ALIVE_fnc_hashSet;
                 };
-				_result = [_logic,"positions"] call ALIVE_fnc_hashGet;
+				_result = _logic select 2 select 18; //[_logic,"positions"] call ALIVE_fnc_hashGet;
         };
 		case "damages": {
 				if(typeName _args == "ARRAY") then {
@@ -375,7 +376,7 @@ switch(_operation) do {
         };
 		case "unitCount": {
 				private ["_unitClasses","_unitCount"];
-				_unitClasses = [_logic,"unitClasses"] call ALIVE_fnc_hashGet;
+				_unitClasses = _logic select 2 select 11; //[_logic,"unitClasses"] call ALIVE_fnc_hashGet;
 				_unitCount = count _unitClasses;
 				[_logic,"unitCount",_unitCount] call ALIVE_fnc_hashSet;
 
@@ -398,7 +399,7 @@ switch(_operation) do {
 				_result = [_logic,"speedPerSecond"] call ALIVE_fnc_hashGet;
         };
 		case "addVehicleAssignment": {
-				private ["_assignments","_key"];
+				private ["_assignments","_key","_active"];
 
 				if(typeName _args == "ARRAY") then {
 						_assignments = [_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
@@ -415,7 +416,8 @@ switch(_operation) do {
 						[_logic,"speedPerSecond",[_assignments,_logic] call ALIVE_fnc_profileVehicleAssignmentsGetSpeedPerSecond] call ALIVE_fnc_hashSet;
 
 						// if spawned make the unit get in
-						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
+						_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
+						if(_active) then {
 							[_args, _logic, true] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
 						};
                 };
@@ -426,15 +428,16 @@ switch(_operation) do {
 				[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
 		};
         case "insertWaypoint": {
-				private ["_waypoints","_units","_unit","_group"];
+				private ["_waypoints","_units","_unit","_group","_active"];
 
 				if(typeName _args == "ARRAY") then {
-						_waypoints = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
+						_waypoints = _logic select 2 select 16; //[_logic,"waypoints"] call ALIVE_fnc_hashGet;
 						_waypoints = [_waypoints, [_args], 0] call BIS_fnc_arrayInsert;
                         [_logic,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
 
-						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
-							_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+						_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
+						if(_active) then {
+							_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 							_unit = _units select 0;
 							_group = group _unit;
 							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
@@ -443,14 +446,15 @@ switch(_operation) do {
                 };
 		};
 		case "addWaypoint": {
-				private ["_waypoints","_units","_unit","_group"];
+				private ["_waypoints","_units","_unit","_group","_active"];
 
 				if(typeName _args == "ARRAY") then {
-						_waypoints = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
+						_waypoints = _logic select 2 select 16; //[_logic,"waypoints"] call ALIVE_fnc_hashGet;
 						_waypoints set [count _waypoints, _args];
 
-						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
-							_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+						_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
+						if(_active) then {
+							_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 							_unit = _units select 0;
 							_group = group _unit;
 							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
@@ -459,12 +463,13 @@ switch(_operation) do {
                 };
 		};
 		case "clearWaypoints": {
-				private ["_units","_unit","_group"];
+				private ["_units","_unit","_group","_active"];
 
 				[_logic,"waypoints",[]] call ALIVE_fnc_hashSet;
 
-				if([_logic,"active"] call ALIVE_fnc_hashGet) then {
-						_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
+				if(_active) then {
+						_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 						_unit = _units select 0;
 						_group = group _unit;
 						while { count (waypoints _group) > 0 } do
@@ -476,9 +481,9 @@ switch(_operation) do {
 		case "mergePositions": {
 				private ["_position","_unitCount","_positions"];
 
-				_position = [_logic,"position"] call ALIVE_fnc_hashGet;
+				_position = _logic select 2 select 2; //[_logic,"position"] call ALIVE_fnc_hashGet;
 				_unitCount = [_logic,"unitCount"] call MAINCLASS;
-				_positions = [_logic,"positions"] call ALIVE_fnc_hashGet;
+				_positions = _logic select 2 select 18; //[_logic,"positions"] call ALIVE_fnc_hashGet;
 
 				for "_i" from 0 to _unitCount-1 do
 				{
@@ -493,10 +498,10 @@ switch(_operation) do {
 						_position = [_args, 1, [0,0,0], [[]]] call BIS_fnc_param;
 						_damage = [_args, 2, 0, [0]] call BIS_fnc_param;
 						_rank = [_args, 3, "PRIVATE", [""]] call BIS_fnc_param;
-						_unitClasses = [_logic,"unitClasses"] call ALIVE_fnc_hashGet;
-						_positions = [_logic,"positions"] call ALIVE_fnc_hashGet;
-						_damages = [_logic,"damages"] call ALIVE_fnc_hashGet;
-						_ranks = [_logic,"ranks"] call ALIVE_fnc_hashGet;
+						_unitClasses = _logic select 2 select 11; //[_logic,"unitClasses"] call ALIVE_fnc_hashGet;
+						_positions = _logic select 2 select 18; //[_logic,"positions"] call ALIVE_fnc_hashGet;
+						_damages = _logic select 2 select 19; //[_logic,"damages"] call ALIVE_fnc_hashGet;
+						_ranks = _logic select 2 select 20; //[_logic,"ranks"] call ALIVE_fnc_hashGet;
 
 						_unitIndex = count _unitClasses;
 
@@ -507,14 +512,14 @@ switch(_operation) do {
                 };
 		};
 		case "removeUnit": {
-				private ["_unitIndex","_unitClass","_damages","_ranks","_units","_unitClasses","_positions"];
+				private ["_unitIndex","_unitClass","_damages","_ranks","_units","_unitClasses","_positions","_active"];
 
 				if(typeName _args == "SCALAR") then {
 						_unitIndex = _args;
-						_unitClasses = [_logic,"unitClasses"] call ALIVE_fnc_hashGet;
-						_positions = [_logic,"positions"] call ALIVE_fnc_hashGet;
-						_damages = [_logic,"damages"] call ALIVE_fnc_hashGet;
-						_ranks = [_logic,"ranks"] call ALIVE_fnc_hashGet;
+						_unitClasses = _logic select 2 select 11; //[_logic,"unitClasses"] call ALIVE_fnc_hashGet;
+						_positions = _logic select 2 select 18; //[_logic,"positions"] call ALIVE_fnc_hashGet;
+						_damages = _logic select 2 select 19; //[_logic,"damages"] call ALIVE_fnc_hashGet;
+						_ranks = _logic select 2 select 20; //[_logic,"ranks"] call ALIVE_fnc_hashGet;
 
 						_unitClasses set [_unitIndex, objNull];
 						_unitClasses = _unitClasses - [objNull];
@@ -530,8 +535,9 @@ switch(_operation) do {
 						[_logic,"damages",_damages] call ALIVE_fnc_hashSet;
 						[_logic,"ranks",_ranks] call ALIVE_fnc_hashSet;
 
-						if([_logic,"active"] call ALIVE_fnc_hashGet) then {
-							_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+						_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
+						if(_active) then {
+							_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 							_units set [_unitIndex, objNull];
 							_units = _units - [objNull];
 							[_logic,"units",_units] call ALIVE_fnc_hashSet;
@@ -547,7 +553,7 @@ switch(_operation) do {
 				private ["_units","_unitIndex"];
 		
 				if(typeName _args == "OBJECT") then {
-					_units = [_logic,"units"] call ALIVE_fnc_hashGet;
+					_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 					_unitIndex = 0;
 					{
 						if(_x == _args) then {
@@ -601,7 +607,7 @@ switch(_operation) do {
 
 						_unitCount = _unitCount + 1;
 					} forEach _unitClasses;
-
+					
 					// set group profile as active and store references to units on the profile
 					[_logic,"leader", leader _group] call ALIVE_fnc_hashSet;
 					[_logic,"group", _group] call ALIVE_fnc_hashSet;
@@ -616,6 +622,12 @@ switch(_operation) do {
 					
 					// store the profile id on the active profiles index
 					[ALIVE_profileHandler,"setActive",_profileID] call ALIVE_fnc_profileHandler;
+					
+					// DEBUG -------------------------------------------------------------------------------------
+					if(_debug) then {
+						["Profile [%1] Spawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+					};
+					// DEBUG -------------------------------------------------------------------------------------
 				};
 		};
 		case "despawn": {
@@ -635,18 +647,21 @@ switch(_operation) do {
 				// not already inactive
 				if(_active) then {
 
-					[_logic, "active", false] call ALIVE_fnc_hashSet;
+					[_logic,"active", false] call ALIVE_fnc_hashSet;
 
 					// update profile waypoints before despawn
-					[_logic, "clearWaypoints"] call MAINCLASS;
+					[_logic,"clearWaypoints"] call MAINCLASS;
 					[_logic,_group] call ALIVE_fnc_waypointsToProfileWaypoints;
 					
 					// update profile vehicle assignments before despawn
-					[_logic, "clearVehicleAssignments"] call MAINCLASS;					
+					[_logic,"clearVehicleAssignments"] call MAINCLASS;					
 					[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
 					
+					_position = getPosATL _leader;
+					
 					// update the profiles position
-					[_logic, "position", getPosATL _leader] call ALIVE_fnc_hashSet;
+					[_logic,"position", _position] call ALIVE_fnc_hashSet;
+					[_logic,"despawnPosition", _position] call ALIVE_fnc_hashSet;
 
 					// delete units
 					{
@@ -669,6 +684,12 @@ switch(_operation) do {
 					
 					// store the profile id on the in active profiles index
 					[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
+					
+					// DEBUG -------------------------------------------------------------------------------------
+					if(_debug) then {
+						["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+					};
+					// DEBUG -------------------------------------------------------------------------------------
 				};
 		};
 		case "handleDeath": {

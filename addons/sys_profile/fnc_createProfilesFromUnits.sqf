@@ -69,6 +69,7 @@ if(_debug) then {
 		[_profileEntity, "profileID", _entityID] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "position", getPosATL _leader] call ALIVE_fnc_profileEntity;
+		[_profileEntity, "despawnPosition", getPosATL _leader] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
@@ -97,6 +98,7 @@ if(_debug) then {
 					[_profileVehicle, "profileID", _vehicleID] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "despawnPosition", getPosATL _vehicle] call ALIVE_fnc_hashSet;
 					[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "fuel", fuel _vehicle] call ALIVE_fnc_profileVehicle;

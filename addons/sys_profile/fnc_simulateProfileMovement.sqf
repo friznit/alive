@@ -198,7 +198,8 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 				if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};
 							
 				[] call _handleWPcomplete;
-							
+				
+				[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 				[_entityProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
 				[_entityProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
 			};
@@ -220,22 +221,34 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 					
 		// entity is spawned, update positions
 		} else {
-					
+		
 			_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 			_newPosition = getPosATL _leader;
-		
-			if(_vehicleCommander) then {
-				// if in command of vehicle move all entities within the vehicle						
-				// set the vehicle position and merge all assigned entities positions
-				{
-					_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-					[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
-					[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
-				} forEach _vehiclesInCommandOf;												
-			} else {
-				// set the entity position and merge all unit positions to group position
-				[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
-				[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+			_position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
+			
+			_moveDistance = _newPosition distance _position;
+			
+			if(_moveDistance > 10) then {					
+				if(_vehicleCommander) then {
+					// if in command of vehicle move all entities within the vehicle						
+					// set the vehicle position and merge all assigned entities positions
+					
+					_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+					_newPosition = getPosATL vehicle _leader;
+					
+					{
+						_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;				
+						[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
+						[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+					} forEach _vehiclesInCommandOf;												
+				} else {
+					_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+					_newPosition = getPosATL _leader;
+				
+					// set the entity position and merge all unit positions to group position
+					[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
+					[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+				};			
 			};
 		};
 		};
