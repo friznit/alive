@@ -33,7 +33,9 @@ _grid = _this select 0;
 
 _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
-switch(worldName) do {
+_worldName = [worldName] call CBA_fnc_capitalize;
+
+switch(_worldName) do {
 	case "Stratis":{
 		call ALIVE_fnc_staticMapAnalysisStratis;
 	};
