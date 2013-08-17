@@ -127,10 +127,12 @@ _m setMarkerTextLocal "destination";
 */
 
 
-STAT("Start simulated profile movement");
-_simulate = [] spawn {
-	[true] call ALIVE_fnc_simulateProfileMovement;	
-};
+_fakeLogic = [] call ALIVE_fnc_hashCreate;
+[_fakeLogic,"debug",true] call ALIVE_fnc_hashSet;
+// start the profile controller FSM
+//[_fakeLogic,50] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
+
+_handle = [_fakeLogic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";						
 
 
 STAT("Sleep for 10");

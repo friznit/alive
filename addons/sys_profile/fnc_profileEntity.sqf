@@ -589,7 +589,7 @@ switch(_operation) do {
 						_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
 						_unit setDamage _damage;
 						_unit setRank _rank;
-
+						
 						// set profile id on the unit
 						_unit setVariable ["profileID", _profileID];
 						_unit setVariable ["profileIndex", _unitCount];

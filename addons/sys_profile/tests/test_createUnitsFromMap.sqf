@@ -65,9 +65,10 @@ STAT("Create profiles from editor placed units");
 DEBUGON;
 
 
-STAT("Run waypoint simulator");
-[] spawn {[true] call ALIVE_fnc_simulateProfileMovement};
+_fakeLogic = [] call ALIVE_fnc_hashCreate;
+[_fakeLogic,"debug",true] call ALIVE_fnc_hashSet;
+// start the profile controller FSM
+//[_fakeLogic,50] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
 
-
-STAT("Run profile spawner");
-[] spawn {[30,true] call ALIVE_fnc_profileSpawner};
+_handle = [_fakeLogic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";						
+_handle = [_fakeLogic,1000] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";

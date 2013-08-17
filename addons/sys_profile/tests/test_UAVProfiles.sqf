@@ -48,7 +48,7 @@ diag_log format["Timer End %1",_timeEnd];
 player setCaptive true;
 
 // debug info on cursor target
-//[] call ALIVE_fnc_cursorTargetInfo;
+[] call ALIVE_fnc_cursorTargetInfo;
 
 // CREATE PROFILE HANDLER
 STAT("Create Profile Handler");
@@ -56,17 +56,83 @@ ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 
 
-STAT("Create profiles for a config group");
-_result = [_group1, getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+STAT("Create Entity Profile 1");
+_profileEntity1 = [nil, "create"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "init"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "profileID", "group_01"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "unitClasses", ["B_UAV_AI"]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "position", getPos player] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "positions", [getPos player]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "damages", [0,0]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "ranks", ["CAPTAIN"]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "side", "WEST"] call ALIVE_fnc_profileEntity;
+
+
+STAT("Create Vehicle Profile 1");
+_profileVehicle1 = [nil, "create"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "init"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "profileID", "vehicle_01"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "vehicleClass", "B_UAV_01_F"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "position", [getPos player, 20, 180] call BIS_fnc_relPos] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "direction", 180] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "damage", 0] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "fuel", 1] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "side", "WEST"] call ALIVE_fnc_profileVehicle;
+
+
+STAT("Register Profiles");
+[ALIVE_profileHandler, "registerProfile", _profileEntity1] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "registerProfile", _profileVehicle1] call ALIVE_fnc_profileHandler;
+
+
+STAT("Assign group 1 to vehicle 1");
+[_profileEntity1,_profileVehicle1] call ALIVE_fnc_createProfileVehicleAssignment;
+
+
+STAT("Add waypoint");
+_position = [getPos player, 200, random 360] call BIS_fnc_relPos;
+_profileWaypoint = [_position, 0] call ALIVE_fnc_createProfileWaypoint;
+[_profileEntity1, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
 
 STAT("Spawn the unit via the profile");
-_profileEntity = _result select 0;
-[_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "spawn"] call ALIVE_fnc_profileEntity;
 
 
-sleep 10;
-[_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
+DEBUGON
 
+
+sleep 30;
+
+
+STAT("De-Spawn the unit via the profile");
+[_profileEntity1, "despawn"] call ALIVE_fnc_profileEntity;
+
+
+sleep 30;
+
+
+STAT("Spawn the unit via the profile");
+[_profileEntity1, "spawn"] call ALIVE_fnc_profileEntity;
+
+
+sleep 30;
+
+
+STAT("De-Spawn the unit via the profile");
+[_profileEntity1, "despawn"] call ALIVE_fnc_profileEntity;
+
+
+sleep 30;
+
+
+STAT("Un-Register Profile");
+[ALIVE_profileHandler, "unregisterProfile", _profileEntity1] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "unregisterProfile", _profileVehicle1] call ALIVE_fnc_profileHandler;
+
+
+_profileEntity1 = nil;
+_profileVehicle1 = nil;
 
 
 DEBUGON

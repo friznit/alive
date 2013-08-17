@@ -120,5 +120,10 @@ if(count _sortedFlatEmptyPositions > 0) then {
 DEBUGON
 
 
-STAT("Run profile spawner");
-[] spawn {[1000,true] call ALIVE_fnc_profileSpawner};
+_fakeLogic = [] call ALIVE_fnc_hashCreate;
+[_fakeLogic,"debug",true] call ALIVE_fnc_hashSet;
+// start the profile controller FSM
+//[_fakeLogic,50] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
+
+_handle = [_fakeLogic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";						
+_handle = [_fakeLogic,1000] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
