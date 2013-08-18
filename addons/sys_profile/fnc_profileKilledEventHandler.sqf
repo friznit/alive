@@ -29,8 +29,6 @@ _profileID = _unit getVariable "profileID";
 _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
 _profileType = _profile select 2 select 5; // [_profile, "type"] call ALIVE_fnc_hashGet;
 
-["DEATH PID: %1 TYPE: %2",_profileID,_profileType] call ALIVE_fnc_dump;
-
 switch(_profileType) do {
 		case "entity": {
 			_result = [_profile,"handleDeath",_unit] call ALIVE_fnc_profileEntity;

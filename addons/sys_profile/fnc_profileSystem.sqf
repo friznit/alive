@@ -82,8 +82,8 @@ switch(_operation) do {
 						
 						_debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
 						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
-						_spawnCycleTime = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
-						_despawnCycleTime = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
+						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
