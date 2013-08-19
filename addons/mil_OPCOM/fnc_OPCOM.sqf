@@ -97,9 +97,19 @@ switch(_operation) do {
                     [_handler, "position",_position] call ALiVE_fnc_HashSet;
                     [_handler, "simultanobjectives",10] call ALiVE_fnc_HashSet;
                     [_handler, "debug",(call compile _debug)] call ALiVE_fnc_HashSet;
-                    [_handler, "sectionsamount_attack", 3] call ALiVE_fnc_HashSet;
-					[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
-					[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
+                    
+                    switch (_type) do {
+						case ("invasion") : {
+								[_handler, "sectionsamount_attack", 3] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
+						};
+						case ("occupation") : {
+								[_handler, "sectionsamount_attack", 2] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_reserve", 3] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_defend", 4] call ALiVE_fnc_HashSet;
+						};
+					};
 					
 					/*
 					CONTROLLER  - coordination
@@ -114,7 +124,7 @@ switch(_operation) do {
                     sleep (random 7);
                     			
 					"OPCOM and TACOM starting..." call ALiVE_fnc_logger;
-                    [_handler] call {
+                    _OPCOM = [_handler] call {
                         _handler = _this select 0;
 						_OPCOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
 						_TACOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
@@ -795,12 +805,12 @@ switch(_operation) do {
 						};
 
 						_sections = [_sections,[],{_position distance (_x select 1)},"ASCEND"] call BIS_fnc_sortBy;
-						{_sections set [_foreachIndex,_x select 0]} foreach _sections;
 
 						{
 							if ((count _section) >= _size) exitwith {};
-							_section set [count _section,_x];
+                              _section set [count _section,_x select 0];
 						} foreach _sections;
+                        
 						_result = _section;
         };
         
@@ -921,11 +931,45 @@ switch(_operation) do {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
                 } else {
 						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
-                };                
+                };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
                 
                 _result = _args;
         };
+        
+        case "OPCOM_monitor": {
+            ASSERT_TRUE(typeName _args == "BOOL",str _args);
+            
+            //private ["_hdl","_side","_state","_FSM","_cycleTime"];
+            
+            _hdl = [_logic,"monitor",false] call AliVE_fnc_HashGet;
+            
+            if (!(_args) && {!(typeName _hdl == "BOOL")}) then {
+                    terminate _hdl;
+                    [_logic,"monitor",nil] call AliVE_fnc_HashSet;
+            } else {
+                _hdl = _logic spawn {
+                    hintsilent "OPCOM monitoring started...";
+                    
+	            	_FSM = [_this,"OPCOM_FSM"] call AliVE_fnc_HashGet;
+
+					while {true} do {
+				        	sleep 0.5;
+	                        _state = _FSM getfsmvariable "_OPCOM_status"; 
+	                        _side = _FSM getfsmvariable "_side";
+                            _cycleTime = _FSM getfsmvariable "_cycleTime";
+                            _timestamp = floor(time - (_FSM getfsmvariable "_timestamp"));
+                            
+                            if (_timestamp > _cycleTime) then {
+								hintsilent parsetext (format["<t align=left>OPCOM side: %1<br/><br/>WARNING! Max. duration exceeded!<br/>state: %2<br/>duration: %3</t>",_side,_state,_timestamp]);
+                            };
+                     };
+				};
+                [_logic,"monitor",_hdl] call AliVE_fnc_HashSet;
+			};
+            _result = _hdl;
+		};
+        
 		case "state": {
 				private["_state"];
                 
