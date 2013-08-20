@@ -231,12 +231,17 @@ switch(_operation) do {
             };
         };
                                 
-		case "createobjectivesbydistance": {
+		case "createobjectives": {
                 if(isnil "_args") then {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
+                    
+                    private ["_SEP","_objectives","_startpos","_side","_type","_typeOp","_pos","_height"];
+                    
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
-                        _SEP = _args;
+                        _SEP = _args select 0;
+                        _typeOp = _args select 1;
+                        
 						_objectives = [_SEP,"objectives"] call ALiVE_fnc_SEP;
                         _startpos = [_logic,"position"] call ALiVE_fnc_HashGet;
                         _side = [_logic,"side"] call ALiVE_fnc_HashGet;
@@ -249,9 +254,20 @@ switch(_operation) do {
 									_size = [_target,"size"] call ALiVE_fnc_hashGet;
 									_type = [_target,"type"] call ALiVE_fnc_hashGet;
 									_priority = [_target,"priority"] call ALiVE_fnc_hashGet;
-									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority]];
+                                    _height = (ATLtoASL [_pos select 0, _pos select 1,0]) select 2;
+                                    
+									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height]];
 						} foreach _objectives;
-						_objectives = [_objectives_unsorted,[],{_startpos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
+                        
+                        switch (_typeOp) do {
+                            //by distance
+                            case ("distance") : {_objectives = [_objectives_unsorted,[],{_startpos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy};
+                            
+                            //by size and height
+                            case ("strategic") : {_objectives = [_objectives_unsorted,[],{((_x select 1) + (_x select 3) + ((_x select 4)/2)) - ((_startpos distance (_x select 0))/10)},"DESCEND"] call BIS_fnc_sortBy};
+                            case ("size") : {};
+                            default {};
+                        };
 						
 						//Create objectives for OPCOM and set it on the OPCOM Handler 
 						//GetObjectivesByPriority
@@ -264,7 +280,7 @@ switch(_operation) do {
 									_type = _x select 2; [_target, "type",_type] call ALIVE_fnc_HashSet;
 									_priority = _x select 3; [_target, "priority",_priority] call ALIVE_fnc_HashSet;
 									_opcom_state = "unassigned"; [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
-						
+                                    
 									if  (_debug) then {
 										_m = createMarkerLocal [_id, _pos];
 										_m setMarkerShapeLocal "RECTANGLE";
@@ -277,7 +293,7 @@ switch(_operation) do {
 										_m setMarkerSizeLocal [0.5, 0.5];
 										_m setMarkerTypeLocal "mil_dot";
 										_m setMarkerColorLocal "ColorYellow";
-										//_m setMarkerTextLocal format["Objective Priority %1",_foreachIndex];
+										_m setMarkerTextLocal format["Objective Priority %1",_foreachIndex];
 									};
 						
 									_objectives set [_forEachIndex, _target];
@@ -287,7 +303,7 @@ switch(_operation) do {
                 ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
                 _result = _args;
-        };                                       
+        };
 
 		case "objectives": {
                 if(isnil "_args") then {

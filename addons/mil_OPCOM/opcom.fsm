@@ -1,9 +1,9 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-922.720703,-597.062744,-424.983490,-549.198242,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-922.720703,-597.062744,-424.983490,-549.198242,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-719.710510,-506.882813,-629.710571,-456.882813,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-932.135986,-489.681396,-842.135864,-439.681396,5.000000,"ATTACK" \n "Conditions"};
 item5[] = {"",7,210,-348.663452,-250.421844,-340.663422,-242.421814,0.000000,""};
@@ -73,7 +73,7 @@ link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,16};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-1055.432129,-418.606628,-15.920654,-1072.368652,750,929,1};
-window[] = {2,-1,-1,-1,-1,971,22,1755,22,3,767};
+window[] = {2,-1,-1,-1,-1,993,44,1777,44,3,767};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -117,7 +117,14 @@ class FSM
        "};" \n
        "// debug ---------------------------------------" \n
        "" \n
-       "_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectivesbydistance"",SEP] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "switch (_controlType) do {" \n
+       "	case (""occupation"") do {" \n
+       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""strategic""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "	};" \n
+       "	case (""invasion"") do {" \n
+       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""distance""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "	};" \n
+       "};" \n
        "" \n
        "/*" \n
        "//Mock targets for testing purposes" \n
