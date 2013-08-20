@@ -11,10 +11,10 @@ class CfgVehicles {
 				picture = "x\alive\addons\sys_HAC\icon_sys_HAC.paa";
                 class Arguments
                 {
-                        class HAC_HQ_Debug
+                        class HAC_Debug_Param_1
                         {
-                                displayName = "$STR_ALIVE_HAC_DEBUG";
-                                description = "$STR_ALIVE_HAC_DEBUG_COMMENT";
+                                displayName = "$STR_ALIVE_HAC_DEBUG_1";
+                                description = "$STR_ALIVE_HAC_DEBUG_COMMENT_1";
                                 class Values
                                 {
                                         class Yes
@@ -30,7 +30,45 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class HAC_HQ_Personality
+                         class HAC_Debug_Param_2
+                        {
+                                displayName = "$STR_ALIVE_HAC_DEBUG_2";
+                                description = "$STR_ALIVE_HAC_DEBUG_COMMENT_2";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class HAC_Debug_Param_3
+                        {
+                                displayName = "$STR_ALIVE_HAC_DEBUG_3";
+                                description = "$STR_ALIVE_HAC_DEBUG_COMMENT_3";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                       class HAC_HQ_Personality
                         {
                                 displayName = "$STR_ALIVE_HAC_PERS";
                                 description = "$STR_ALIVE_HAC_PERS_COMMENT";

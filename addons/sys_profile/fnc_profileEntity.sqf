@@ -200,7 +200,7 @@ _createMarkers = {
         if(count _position > 0) then {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
 				_m setMarkerShapeLocal "ICON";
-				_m setMarkerSizeLocal [1, 1];
+				_m setMarkerSizeLocal [.65, .65];
 				_m setMarkerTypeLocal _debugIcon;
 				_m setMarkerColorLocal _debugColor;
                 _m setMarkerTextLocal _profileID;

@@ -186,7 +186,10 @@ _logic setvariable ["RHQ_LArmor", [
 "O_MRAP_02_gmg_F",
 "O_MRAP_02_hmg_F",
 "I_MRAP_03_gmg_F",
-"I_MRAP_03_hmg_F"
+"I_MRAP_03_hmg_F",
+"B_UGV_01_rcws_F",
+"O_UGV_01_rcws_F",
+"I_UGV_01_rcws_F"
 
 ]];  
 
@@ -211,6 +214,9 @@ _logic setvariable ["RHQ_Cars", [
 _logic setvariable ["RHQ_Air", [
 "B_Heli_Light_01_armed_F",
 "B_Heli_Attack_01_F",
+"B_UAV_02_F",
+"O_UAV_02_F",
+"I_UAV_02_F",
 "O_Heli_Attack_02_F",
 "O_Heli_Attack_02_black_F"
 
@@ -227,7 +233,12 @@ _logic setvariable ["RHQ_NCAir", [
 ]];
 
 _logic setvariable ["RHQ_BAir", []];
-_logic setvariable ["RHQ_RAir", []];
+_logic setvariable ["RHQ_RAir", [
+"B_UAV_01_F",
+"O_UAV_01_F",
+"I_UAV_01_F"
+
+]];
 
 _logic setvariable ["RHQ_Naval", [
 "B_Boat_Transport_01_F",
@@ -302,7 +313,10 @@ _logic setvariable ["RHQ_NCCargo", [
 "I_Truck_02_transport_F",
 "I_Truck_02_covered_F",
 "I_MRAP_03_F",
-"I_Heli_Transport_02_F"
+"I_Heli_Transport_02_F",
+"B_UGV_01_F",
+"O_UGV_01_F",
+"I_UGV_01_F"
 
 ]];  
 
@@ -316,7 +330,7 @@ _logic setvariable ["RHQ_Crew", [
 
 ]];
 
-//A2
+// A2
 _logic setvariable ["RHQ_Snipers_BAF",
 [
 "BAF_Soldier_SniperN_MTP",

@@ -92,9 +92,13 @@ switch(_operation) do {
 			//_logic setvariable ["HAC_HQ_PathFinding",500];
                     
                     //Enable Debug
-                    if (call compile (_logic getvariable "HAC_HQ_Debug")) then {
+                    if (call compile (_logic getvariable "HAC_Debug_Param_1")) then {
 	                    _logic setvariable ["HAC_BB_Debug", true];   
+                    };
+                    if (call compile (_logic getvariable "HAC_Debug_Param_2")) then {
                         _logic setvariable ["HAC_HQ_Debug", true];
+                    };
+                    if (call compile (_logic getvariable "HAC_Debug_Param_3")) then {
 						_logic setvariable ["HAC_HQ_DebugII",true];
                     };
                     

@@ -8,11 +8,23 @@
 <Key ID="STR_ALIVE_HAC_COMMENT">
 	<English>HETMAN AI Controller</English>
 </Key>
-<Key ID="STR_ALIVE_HAC_DEBUG">
-	<English>Enable Debug:</English>
+<Key ID="STR_ALIVE_HAC_DEBUG_1">
+	<English>Enable OPCOM Debug:</English>
 </Key>
-<Key ID="STR_ALIVE_HAC_DEBUG_COMMENT">
-	<English>Enables HAC Module Debug</English>
+<Key ID="STR_ALIVE_HAC_DEBUG_COMMENT_1">
+	<English>Enables HAC OPCOM Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_HAC_DEBUG_2">
+	<English>Enable TACOM Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_HAC_DEBUG_COMMENT_2">
+	<English>Enables HAC TACOM Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_HAC_DEBUG_3">
+	<English>Enable HAC Unit Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_HAC_DEBUG_COMMENT_3">
+	<English>Enables HAC Unit Module Debug</English>
 </Key>
 <Key ID="STR_ALIVE_HAC_ENABLE">
 	<English>Enable HAC</English>
