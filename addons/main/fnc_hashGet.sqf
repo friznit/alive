@@ -47,4 +47,4 @@ if(!(isNil "_result") && {typeName _result == "STRING"} && {_result == "UNDEF"} 
 	_result = _default;
 };
 
-_result
+if !(isnil "_result") then {_result} else {nil};
