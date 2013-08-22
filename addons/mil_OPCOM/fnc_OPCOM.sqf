@@ -649,7 +649,9 @@ switch(_operation) do {
             _knownE = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
             _attackedE = [_logic,"attackedentities",[]] call ALiVE_fnc_HashGet;
             
-            _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler;
+            _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler; 
+            if ((str _profile) == "[]") exitwith {_result = _profile};
+            
             _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
             _section = [];
             
@@ -708,6 +710,18 @@ switch(_operation) do {
             };
             
             _result = _section;
+        };
+        
+        
+        case "scantroops" : {
+            _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
+            
+            {
+                _profile = [ALIVE_profileHandler, "getProfile",_x] call ALIVE_fnc_profileHandler;
+                _assignments = [_profile,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+                
+                player sidechat format["%1",_assignments];
+            } foreach _profileIDs;
         };
         
         case "NearestAvailableSection": {
