@@ -210,7 +210,7 @@ _createMarkers = {
 				_m setMarkerTypeLocal _debugIcon;
 				_m setMarkerColorLocal _debugColor;
 				_m setMarkerAlphaLocal _debugAlpha;
-                //_m setMarkerTextLocal _profileID;
+                _m setMarkerTextLocal _profileID;
 
 				_markers set [count _markers, _m];
 				
