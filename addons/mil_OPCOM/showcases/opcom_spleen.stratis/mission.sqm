@@ -492,7 +492,7 @@ class Mission
 				items=7;
 				class Item0
 				{
-					position[]={2186.7258,2.6203847,1917.8795};
+					position[]={2055.5964,4.0108376,2224.4155};
 					azimut=36.346539;
 					id=30;
 					side="WEST";
@@ -502,7 +502,7 @@ class Mission
 				};
 				class Item1
 				{
-					position[]={2191.645,2.2054017,1915.8975};
+					position[]={2060.5156,4.2915335,2222.4336};
 					azimut=36.346539;
 					id=31;
 					side="WEST";
@@ -512,7 +512,7 @@ class Mission
 				};
 				class Item2
 				{
-					position[]={2198.7297,4.2848678,1898.3663};
+					position[]={2067.6003,5.4425483,2204.9023};
 					azimut=36.346539;
 					id=32;
 					side="WEST";
@@ -522,7 +522,7 @@ class Mission
 				};
 				class Item3
 				{
-					position[]={2181.6204,3.0664272,1920.7711};
+					position[]={2050.491,3.9030609,2227.3071};
 					azimut=36.346539;
 					id=33;
 					side="WEST";
@@ -532,7 +532,7 @@ class Mission
 				};
 				class Item4
 				{
-					position[]={2200.5393,2.4170775,1918.073};
+					position[]={2069.4099,5.6197648,2224.6091};
 					azimut=36.3465;
 					special="CARGO";
 					id=34;
@@ -545,7 +545,7 @@ class Mission
 				};
 				class Item5
 				{
-					position[]={2196.8003,2.8167958,1909.8738};
+					position[]={2065.6709,4.7655711,2216.4099};
 					azimut=36.346539;
 					id=35;
 					side="WEST";
@@ -556,7 +556,7 @@ class Mission
 				};
 				class Item6
 				{
-					position[]={2199.1816,3.9105012,1903.76};
+					position[]={2068.0522,5.0870366,2210.2961};
 					azimut=36.346539;
 					id=36;
 					side="WEST";
@@ -568,12 +568,18 @@ class Mission
 			};
 			class Waypoints
 			{
-				items=1;
+				items=2;
 				class Item0
 				{
-					position[]={2776.9612,143.11458,1738.6047};
-					idStatic=134752;
-					idObject=-2034059680;
+					position[]={2212.842,52.124115,2123.0254};
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+				class Item1
+				{
+					position[]={2779.123,143.58607,1746.5635};
 					class Effects
 					{
 					};
@@ -4072,7 +4078,7 @@ class Mission
 					position[]={4162.8662,179.96211,3853.8291};
 					class args
 					{
-						items=3;
+						items=4;
 						class Item0
 						{
 							value="false";
@@ -4089,7 +4095,13 @@ class Mission
 						{
 							value="[""OPF_F""]";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_FACTIONS";
+							typeName="CQB_FACTIONS_STRAT";
+						};
+						class Item3
+						{
+							value="[""IND_F""]";
+							parentCls="ALiVE_mil_cqb";
+							typeName="CQB_FACTIONS_REG";
 						};
 					};
 					id=353;

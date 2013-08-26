@@ -72,8 +72,8 @@ link28[] = {22,23};
 link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,16};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-1055.432129,-418.606628,-15.920654,-1072.368652,750,929,1};
-window[] = {2,-1,-1,-1,-1,971,22,1755,22,3,767};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,72,6316128,1,-1381.370361,-183.475098,-3.909546,-1412.573975,790,929,1};
+window[] = {2,-1,-1,-1,-1,1015,66,1799,66,3,807};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -117,7 +117,14 @@ class FSM
        "};" \n
        "// debug ---------------------------------------" \n
        "" \n
-       "_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectivesbydistance"",SEP] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "switch (_controlType) do {" \n
+       "	case (""occupation"") do {" \n
+       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""strategic""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "	};" \n
+       "	case (""invasion"") do {" \n
+       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""distance""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "	};" \n
+       "};" \n
        "" \n
        "/*" \n
        "//Mock targets for testing purposes" \n
@@ -298,14 +305,14 @@ class FSM
        "						if (_active < ([_OPCOM_HANDLER,""simultanobjectives"",3] call ALiVE_fnc_HashGet)) then {" \n
        "							if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""unassigned""} count _obj) > 0)) then {_targetsWithState = ""unassigned""};" \n
        "						};" \n
-       "		" \n
-       "						//Case Prio 2: Defend all taken objectives" \n
-       "						[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsAttacked,""defend""]] call ALiVE_fnc_OPCOM;" \n
-       "						if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""defend""} count _obj) > 0)) then {_targetsWithState = ""defend""};" \n
-       "		" \n
-       "						//Case Prio 1: Attack enemy occupied objectives" \n
+       "" \n
+       "						//Case Prio 2: Attack enemy occupied objectives" \n
        "						[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsTakenEnemy,""attack""]] call ALiVE_fnc_OPCOM;" \n
        "						if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""attack""} count _obj) > 0)) then {_targetsWithState = ""attack""};" \n
+       "" \n
+       "						//Case Prio 1: Defend all taken objectives" \n
+       "						[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsAttacked,""defend""]] call ALiVE_fnc_OPCOM;" \n
+       "						if ((({([_x,""opcom_state""] call AliVE_fnc_HashGet) == ""defend""} count _obj) > 0)) then {_targetsWithState = ""defend""};" \n
        "		" \n
        "						//Case Prio 0: Secure all taken objectives" \n
        "						[_OPCOM_HANDLER,""setstatebyclusteroccupation"",[_targetsTaken,""reserve""]] call ALiVE_fnc_OPCOM;" \n
@@ -687,7 +694,9 @@ class FSM
        "// debug ---------------------------------------	" \n
        "" \n
        "switch (_analyze) do {" \n
-       "	case (""clusteroccupation"") : {_hdl = [_OPCOM_HANDLER,_side,_sideEnemy] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 1,_this select 2]] call ALiVE_fnc_OPCOM}};" \n
+       "	case (""clusteroccupation"") : {" \n
+       "		_hdl = [_OPCOM_HANDLER,_side,_sideEnemy] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 1,_this select 2]] call ALiVE_fnc_OPCOM};" \n
+       "	};" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links

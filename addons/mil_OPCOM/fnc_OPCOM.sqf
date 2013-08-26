@@ -105,8 +105,8 @@ switch(_operation) do {
 								[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
 						};
 						case ("occupation") : {
-								[_handler, "sectionsamount_attack", 2] call ALiVE_fnc_HashSet;
-								[_handler, "sectionsamount_reserve", 3] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_attack", 3] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_reserve", 2] call ALiVE_fnc_HashSet;
 								[_handler, "sectionsamount_defend", 4] call ALiVE_fnc_HashSet;
 						};
 					};
@@ -231,12 +231,17 @@ switch(_operation) do {
             };
         };
                                 
-		case "createobjectivesbydistance": {
+		case "createobjectives": {
                 if(isnil "_args") then {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
+                    
+                    private ["_SEP","_objectives","_startpos","_side","_type","_typeOp","_pos","_height"];
+                    
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
-                        _SEP = _args;
+                        _SEP = _args select 0;
+                        _typeOp = _args select 1;
+                        
 						_objectives = [_SEP,"objectives"] call ALiVE_fnc_SEP;
                         _startpos = [_logic,"position"] call ALiVE_fnc_HashGet;
                         _side = [_logic,"side"] call ALiVE_fnc_HashGet;
@@ -249,9 +254,20 @@ switch(_operation) do {
 									_size = [_target,"size"] call ALiVE_fnc_hashGet;
 									_type = [_target,"type"] call ALiVE_fnc_hashGet;
 									_priority = [_target,"priority"] call ALiVE_fnc_hashGet;
-									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority]];
+                                    _height = (ATLtoASL [_pos select 0, _pos select 1,0]) select 2;
+                                    
+									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height]];
 						} foreach _objectives;
-						_objectives = [_objectives_unsorted,[],{_startpos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
+                        
+                        switch (_typeOp) do {
+                            //by distance
+                            case ("distance") : {_objectives = [_objectives_unsorted,[],{_startpos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy};
+                            
+                            //by size and height
+                            case ("strategic") : {_objectives = [_objectives_unsorted,[],{((_x select 1) + (_x select 3) + ((_x select 4)/2)) - ((_startpos distance (_x select 0))/10)},"DESCEND"] call BIS_fnc_sortBy};
+                            case ("size") : {};
+                            default {};
+                        };
 						
 						//Create objectives for OPCOM and set it on the OPCOM Handler 
 						//GetObjectivesByPriority
@@ -264,7 +280,7 @@ switch(_operation) do {
 									_type = _x select 2; [_target, "type",_type] call ALIVE_fnc_HashSet;
 									_priority = _x select 3; [_target, "priority",_priority] call ALIVE_fnc_HashSet;
 									_opcom_state = "unassigned"; [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
-						
+                                    
 									if  (_debug) then {
 										_m = createMarkerLocal [_id, _pos];
 										_m setMarkerShapeLocal "RECTANGLE";
@@ -277,7 +293,7 @@ switch(_operation) do {
 										_m setMarkerSizeLocal [0.5, 0.5];
 										_m setMarkerTypeLocal "mil_dot";
 										_m setMarkerColorLocal "ColorYellow";
-										//_m setMarkerTextLocal format["Objective Priority %1",_foreachIndex];
+										_m setMarkerTextLocal format["Objective Priority %1",_foreachIndex];
 									};
 						
 									_objectives set [_forEachIndex, _target];
@@ -287,7 +303,7 @@ switch(_operation) do {
                 ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
                 _result = _args;
-        };                                       
+        };
 
 		case "objectives": {
                 if(isnil "_args") then {
@@ -336,7 +352,6 @@ switch(_operation) do {
                } foreach _section;
             } foreach _objectives;
         };
-        
         
         case "analyzeclusteroccupation": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
@@ -633,7 +648,9 @@ switch(_operation) do {
             _knownE = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
             _attackedE = [_logic,"attackedentities",[]] call ALiVE_fnc_HashGet;
             
-            _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler;
+            _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler; 
+            if ((str _profile) == "[]") exitwith {_result = _profile};
+            
             _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
             _section = [];
             
@@ -693,7 +710,142 @@ switch(_operation) do {
             
             _result = _section;
         };
+
+        case "scantroops" : {
+            
+            private ["_inf","_mot","_mech","_arm","_air","_sea","_profileIDs"];
+            
+            _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
+            _inf = [];
+            _mot = [];
+            _mech = [];
+            _arm = [];
+            _air = [];
+            _sea = [];
+            
+            {
+                private ["_profile","_assignment","_type","_objectType","_vehicleClass"];
+                
+                _profile = [ALIVE_profileHandler, "getProfile",_x] call ALIVE_fnc_profileHandler;
+                _assignments = [_profile,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+                _type = [_profile,"type"] call ALIVE_fnc_hashGet;
+                _objectType = [_profile,"objectType"] call ALIVE_fnc_hashGet;
+                _vehicleClass = [_profile,"vehicleClass"] call ALIVE_fnc_hashGet;
+
+                switch (tolower _type) do {
+                    case ("vehicle") : {
+	                        switch (tolower _objectType) do {
+	                			case "car":{
+                                    if ((count (_assignments select 1)) > 0) then {
+                                        {_mot set [count _mot,_x]} foreach (_assignments select 1);
+                                    };
+								};
+								case "tank":{
+                                    if ((count (_assignments select 1)) > 0) then {
+										{_arm set [count _arm,_x]} foreach (_assignments select 1);
+                                    };
+                                };
+								case "armored":{
+                                    if ((count (_assignments select 1)) > 0) then {
+										{_mech set [count _mech,_x]} foreach (_assignments select 1);
+                                    };
+								};
+								case "truck":{
+                                    if ((count (_assignments select 1)) > 0) then {
+                                    	{_mot set [count _mot,_x]} foreach (_assignments select 1);
+                                    };
+								};
+								case "ship":{
+                                    if ((count (_assignments select 1)) > 0) then {
+										{_sea set [count _sea,_x]} foreach (_assignments select 1);
+                                    };
+								};
+								case "helicopter":{
+                                    if ((count (_assignments select 1)) > 0) then {
+										{_air set [count _air,_x]} foreach (_assignments select 1);
+                                    };
+								};
+								case "plane":{
+                                    if ((count (_assignments select 1)) > 0) then {
+										{_air set [count _air,_x]} foreach (_assignments select 1);
+                                    };
+								};
+	                        };
+                        };
+                        
+                        case ("entity") : {
+                            if ((count (_assignments select 1)) == 0) then {
+                                _inf set [count _inf,_x];
+                            };
+                        };
+                };
+            } foreach _profileIDs;
+            
+            [_logic,"infantry",_inf] call ALiVE_fnc_HashSet;
+            [_logic,"motorized",_mot] call ALiVE_fnc_HashSet;
+            [_logic,"mechanized",_mech] call ALiVE_fnc_HashSet;
+            [_logic,"armored",_arm] call ALiVE_fnc_HashSet;
+            [_logic,"air",_air] call ALiVE_fnc_HashSet;
+            [_logic,"sea",_sea] call ALiVE_fnc_HashSet;
+            
+            _result = [_inf,_mot,_mech,_arm,_air,_sea];
+        };
         
+        case "NearestAvailableSectionNew": {
+            
+            private ["_type","_pos","_size","_troops","_busy","_section","_reserved"];
+            
+            _pos = _args select 0;
+            _size = _args select 1; 
+            if (count _args > 2) then {_type = _args select 2} else {_type = "all"};
+            
+            [_logic,"scantroops"] call ALiVE_fnc_OPCOM;
+            
+            //Get selected entities by type
+            switch (_type) do {
+                case ("infantry") : {
+                    _troops = [_logic,"infantry",[]] call ALiVE_fnc_HashGet;
+                };
+                case ("motorized") : {
+                    _troops = [_logic,"motorized",[]] call ALiVE_fnc_HashGet;
+                };
+                case ("mechanized") : {
+                    _troops = [_logic,"mechanized",[]] call ALiVE_fnc_HashGet;
+                };
+                case ("armored") : {
+                    _troops = [_logic,"armored",[]] call ALiVE_fnc_HashGet;
+                };
+                case ("air") : {
+                    _troops = [_logic,"air",[]] call ALiVE_fnc_HashGet;
+                };
+                case ("sea") : {
+                    _troops = [_logic,"sea",[]] call ALiVE_fnc_HashGet;
+                };
+                case ("all") : {
+                    _troops = ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"motorized",[]] call ALiVE_fnc_HashGet) + ([_logic,"mechanized",[]] call ALiVE_fnc_HashGet) + ([_logic,"armored",[]] call ALiVE_fnc_HashGet) + ([_logic,"air",[]] call ALiVE_fnc_HashGet) + ([_logic,"sea",[]] call ALiVE_fnc_HashGet);
+                };
+            };
+            
+            //subtract busy and reserved profiles
+            _busy = [];
+            {_busy set [count _busy,_x select 1]} foreach ([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet);
+            {_busy = _busy + ([_x,"section",[]] call ALiVE_fnc_HashGet)} foreach ([_logic,"objectives",[]] call ALiVE_fnc_HashGet);
+            _reserved = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
+            _troops = (_troops - _busy - _reserved);
+
+            //Sort by distance
+            _troops = [_troops,[],{_pos distance (([ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler) select 2 select 2)},"ASCEND"] call BIS_fnc_sortBy;
+            
+            //Collect section
+            _section = [];
+            for "_i" from 0 to (_size - 1) do {
+                if (_i > ((count _troops)-1)) exitwith {};
+                _section set [count _section,_troops select _i];
+            };
+            
+			_result = _section;
+        };
+
         case "NearestAvailableSection": {
             			ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                         

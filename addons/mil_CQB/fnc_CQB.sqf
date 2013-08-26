@@ -58,8 +58,11 @@ switch(_operation) do {
 				if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
                 _logic setVariable ["CQB_spawn", _CQB_spawn];
                 
-                _factions = _logic getvariable ["CQB_FACTIONS",["OPF_F"]];
-				if (typename (_factions) == "STRING") then {_factions = call compile _factions};
+                _factionsStrat = _logic getvariable ["CQB_FACTIONS_STRAT",["OPF_F"]];
+				if (typename (_factionsStrat) == "STRING") then {_factionsStrat = call compile _factionsStrat};
+                
+                _factionsReg = _logic getvariable ["CQB_FACTIONS_REG",["OPF_F"]];
+				if (typename (_factionsReg) == "STRING") then {_factionsReg = call compile _factionsReg};
             
 	        	CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
                 if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
@@ -81,7 +84,7 @@ switch(_operation) do {
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
                         
-				    // Get all enterable houses across the map
+				    // Get all enterable houses of strategic types below across the whole map (rest will be regular)
 					_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
                     _strategicTypes = [
                     	//A3
@@ -106,7 +109,12 @@ switch(_operation) do {
                         "O_diver_F",
                         "O_diver_TL_F",
                         "O_diver_exp_F",
-                        "O_helipilot_F"
+                        "O_helipilot_F",
+                        "I_diver_F",
+                        "I_diver_TL_F",
+                        "I_diver_exp_F",
+                        "I_crew_F",
+                        "I_helicrew_F"
                     ];
 
 					//set default values on main CQB instance
@@ -119,7 +127,7 @@ switch(_operation) do {
         			_logic setVariable ["class", ALiVE_fnc_CQB];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
-					[_logic, "factions", _factions] call ALiVE_fnc_CQB;
+					[_logic, "factions", _factionsStrat] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 800] call ALiVE_fnc_CQB;
 					_logic setVariable ["debugColor","ColorRed",true];
 					_logic setVariable ["debugPrefix","Strategic",true];
@@ -132,7 +140,7 @@ switch(_operation) do {
         			_logic setVariable ["class", ALiVE_fnc_CQB];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
-					[_logic, "factions", _factions] call ALiVE_fnc_CQB;
+					[_logic, "factions", _factionsReg] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
                     _logic setVariable ["debugColor","ColorGreen",true];
 					_logic setVariable ["debugPrefix","Regular",true];
@@ -526,6 +534,8 @@ switch(_operation) do {
 				[_factions, ceil(random 2),_blacklist] call ALiVE_fnc_chooseRandomUnits;
 			};
             
+            private ["_side"];
+            
 			// Action: spawn AI
 			// this just flags the house as beginning spawning
 			// and will be over-written in addHouse
@@ -539,7 +549,15 @@ switch(_operation) do {
 			};
 
 			// Action: restore AI
-			_grp = [getPosATL _house, east, _units] call BIS_fnc_spawnGroup;
+            
+            switch (getNumber(configFile >> "Cfgvehicles" >> _units select 0 >> "side")) do {
+                case 0 : {_side = EAST};
+                case 1 : {_side = WEST};
+                case 2 : {_side = RESISTANCE};
+                default {_side = EAST};
+            };
+            
+			_grp = [getPosATL _house,_side, _units] call BIS_fnc_spawnGroup;
 										
 			if (count units _grp == 0) exitWith {
 				if (_debug) then {
