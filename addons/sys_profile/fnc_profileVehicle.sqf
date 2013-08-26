@@ -170,7 +170,7 @@ _createMarkers = {
 			};
 		};
 		
-		_debugAlpha = 0.2;
+		_debugAlpha = 0.5;
 		if(_profileActive) then {
 			_debugAlpha = 1;
 		};
