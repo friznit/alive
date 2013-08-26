@@ -160,7 +160,22 @@ class cfgFunctions {
 				description = "shellSort";
 				file = "\x\alive\addons\fnc_analysis\fnc_shellSort.sqf";
 				recompile = 1;
-			};			
+			};
+			class getClosestLand {
+				description = "getClosestLand";
+				file = "\x\alive\addons\fnc_analysis\fnc_getClosestLand.sqf";
+				recompile = 1;
+			};
+			class getClosestSea {
+				description = "getClosestSea";
+				file = "\x\alive\addons\fnc_analysis\fnc_getClosestSea.sqf";
+				recompile = 1;
+			};
+			class getClosestRoad {
+				description = "getClosestRoad";
+				file = "\x\alive\addons\fnc_analysis\fnc_getClosestRoad.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

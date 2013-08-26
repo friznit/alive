@@ -77,4 +77,7 @@ if(_setCurrent) then {
 	_group setCurrentWaypoint _waypoint;
 };
 
+//["p wp to wp"] call ALIVE_fnc_dump;
+//_profileWaypoint call ALIVE_fnc_inspectHash;
+
 _waypoint

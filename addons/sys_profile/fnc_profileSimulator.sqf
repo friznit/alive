@@ -96,7 +96,7 @@ _createMarker = {
 
 private ["_profiles","_profileBlock","_profile","_entityProfile","_profileType","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo",
 	"_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_moveDistance","_vehicleProfile",
-	"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements"];
+	"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements","_isCycling"];
 
 _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 //_profileBlock = [ALIVE_arrayBlockHandler,"getNextBlock", ["simulation",_profiles select 2,50]] call ALIVE_fnc_arrayBlockHandler;
@@ -115,6 +115,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	_vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
 	_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
 	_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+	_isCycling = _entityProfile select 2 select 25; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
 	_vehicleCommander = false;
 	_vehicleCargo = false;
 				
@@ -132,7 +133,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	if(count _waypoints > 0 && !(_vehicleCargo)) then {
 					
 		// entity is not spawned, simulate
-		if!(_active) then {		
+		if!(_active) then {
 					
 			_activeWaypoint = _waypoints select 0;
 			_type = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
@@ -155,7 +156,6 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 			if(_debug) then {
 				//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				//["ALIVE Simulated profile movement Profile: [%1] WPType: [%2] WPSpeed: [%3] Distance: [%4] MoveSpeed: [%5] SpeedArray: %6",_profileID,_type,_speed,_distance,_speedPerSecond,_speedPerSecondArray] call ALIVE_fnc_dump;
-				//[ALIVE_simulationController,"createMarker",[_entityProfile,_activeWaypoint]] call ALIVE_fnc_simulationController;
 				[_entityProfile,_activeWaypoint] call _createMarker;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
@@ -180,29 +180,33 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 					_handleWPcomplete = {};
 				};
 			};
-						
+			
 			// distance to wp destination within completion radius
 			if(_distance <= (_moveDistance * 2)) then {
 						
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
-					//[ALIVE_simulationController,"deleteMarker",_entityProfile] call ALIVE_fnc_simulationController;
 					_entityProfile call _deleteMarker;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
-							
-				_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
+					
+				if(_isCycling) then {
+					_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
+				};
+				
 				_waypoints set [0,objNull];
 				_waypoints = _waypoints - [objNull];
 							
 				//Needs review of any variables in hashes
 				if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};
 							
-				[] call _handleWPcomplete;
+				[] call _handleWPcomplete;			
 				
-				[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 				[_entityProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
-				[_entityProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
+				
+				if(_isCycling) then {
+					[_entityProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
+				};
 			};
 						
 											
@@ -210,13 +214,15 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 				// if in command of vehicle move all entities within the vehicle						
 				// set the vehicle position and merge all assigned entities positions
 				{
+					[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 					_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 					[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
 					[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 					[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
-				} forEach _vehiclesInCommandOf;												
+				} forEach _vehiclesInCommandOf;										
 			}else{
 				// set the entity position and merge all unit positions to group position
+				[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 				[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
 				[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
 			};

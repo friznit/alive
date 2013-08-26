@@ -65,7 +65,7 @@ switch(_operation) do {
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
 						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
-						[_logic,"despawnCycleTime",30] call ALIVE_fnc_hashSet;
+						[_logic,"despawnCycleTime",6] call ALIVE_fnc_hashSet;
                 };
                 
                 /*

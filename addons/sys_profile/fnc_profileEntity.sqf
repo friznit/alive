@@ -159,7 +159,7 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_profileID","_profileSide","_typePrefix"];
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha","_profileID","_profileSide","_profileActive","_typePrefix"];
         _logic = _this;
         _markers = [];
 
@@ -167,6 +167,7 @@ _createMarkers = {
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
 		_profileType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
+		_profileActive = [_logic,"active"] call ALIVE_fnc_hashGet;
 		
 		switch(_profileSide) do {
 			case "EAST":{
@@ -196,6 +197,11 @@ _createMarkers = {
 				_debugIcon = format["%1_inf",_typePrefix];
 			};
 		};
+		
+		_debugAlpha = 0.2;
+		if(_profileActive) then {
+			_debugAlpha = 1;
+		};
 
         if(count _position > 0) then {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
@@ -203,7 +209,8 @@ _createMarkers = {
 				_m setMarkerSizeLocal [1, 1];
 				_m setMarkerTypeLocal _debugIcon;
 				_m setMarkerColorLocal _debugColor;
-                _m setMarkerTextLocal _profileID;
+				_m setMarkerAlphaLocal _debugAlpha;
+                //_m setMarkerTextLocal _profileID;
 
 				_markers set [count _markers, _m];
 				
@@ -239,7 +246,7 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);
 						
 						// init the super class
-						[_logic, "init"] call SUPERCLASS;						
+						[_logic, "init"] call SUPERCLASS;	
 						
 						// set defaults
 						[_logic,"type","entity"] call ALIVE_fnc_hashSet;
@@ -260,6 +267,7 @@ switch(_operation) do {
 						[_logic,"speedPerSecond","Man" call ALIVE_fnc_vehicleGetSpeedPerSecond] call ALIVE_fnc_hashSet; // select 2 select 22
 						[_logic,"despawnPosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 23
 						[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 24
+						[_logic,"isCycling",false] call ALIVE_fnc_hashSet; // select 2 select 25
                 };
 
                 /*
@@ -333,10 +341,16 @@ switch(_operation) do {
 						};
 						
 						// store position on handler position index
-						_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;						
+						_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;					
 						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
                 };
 				_result = _logic select 2 select 2; //[_logic,"position"] call ALIVE_fnc_hashGet;
+        };
+		case "despawnPosition": {
+				if(typeName _args == "ARRAY") then {
+						[_logic,"despawnPosition",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"despawnPosition"] call ALIVE_fnc_hashGet;
         };
 		case "positions": {
 				if(typeName _args == "ARRAY") then {
@@ -451,6 +465,10 @@ switch(_operation) do {
 				if(typeName _args == "ARRAY") then {
 						_waypoints = _logic select 2 select 16; //[_logic,"waypoints"] call ALIVE_fnc_hashGet;
 						_waypoints set [count _waypoints, _args];
+						
+						if(([_args,"type"] call ALIVE_fnc_hashGet) == 'CYCLE') then {
+							[_logic,"isCycling",true] call ALIVE_fnc_hashSet;
+						};
 
 						_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
 						if(_active) then {
@@ -466,6 +484,7 @@ switch(_operation) do {
 				private ["_units","_unit","_group","_active"];
 
 				[_logic,"waypoints",[]] call ALIVE_fnc_hashSet;
+				[_logic,"waypointsCompleted",[]] call ALIVE_fnc_hashSet;
 
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
 				if(_active) then {
@@ -565,7 +584,7 @@ switch(_operation) do {
 		};
 		case "spawn": {
 				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
-				"_profileID","_active","_waypoints","_vehicleAssignments","_group","_unitPosition","_eventID","_waypointCount","_unitCount","_units","_unit"];
+				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_group","_unitPosition","_eventID","_waypointCount","_unitCount","_units","_unit"];
 				
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
@@ -578,6 +597,7 @@ switch(_operation) do {
 				_ranks = _logic select 2 select 20; //[_logic,"ranks"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;	
 				_waypoints = _logic select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
+				_waypointsCompleted = _logic select 2 select 17; //[_entityProfile,"waypointsCompleted"] call ALIVE_fnc_hashGet;
 				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				
 				_unitCount = 0;
@@ -585,8 +605,13 @@ switch(_operation) do {
 
 				// not already active
 				if!(_active) then {
+				
+					// determine a suitable spawn position
+					//[true] call ALIVE_fnc_timer;
+					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
+					//[] call ALIVE_fnc_timer;
 
-					_group = createGroup _sideObject;
+					_group = createGroup _sideObject;				
 
 					{
 						_unitPosition = _positions select _unitCount;
@@ -616,7 +641,8 @@ switch(_operation) do {
 					[_logic,"units", _units] call ALIVE_fnc_hashSet;
 					[_logic,"active", true] call ALIVE_fnc_hashSet;
 
-					// create waypoints from profile waypoints
+					// create waypoints from profile waypoints					
+					_waypoints = _waypoints + _waypointsCompleted;
 					[_waypoints, _group] call ALIVE_fnc_profileWaypointsToWaypoints;
 
 					// create vehicle assignments from profile vehicle assignments
@@ -627,7 +653,7 @@ switch(_operation) do {
 					
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
-						["Profile [%1] Spawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+						//["Profile [%1] Spawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
 					};
 					// DEBUG -------------------------------------------------------------------------------------
 				};
@@ -691,7 +717,7 @@ switch(_operation) do {
 					
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
-						["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+						//["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
 					};
 					// DEBUG -------------------------------------------------------------------------------------
 				};

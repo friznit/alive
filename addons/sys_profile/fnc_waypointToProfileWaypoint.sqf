@@ -55,4 +55,7 @@ _profileWaypoint = [] call ALIVE_fnc_hashCreate;
 [_profileWaypoint,"attachVehicle",""] call ALIVE_fnc_hashSet;
 [_profileWaypoint,"statements",_statements] call ALIVE_fnc_hashSet;
 
+//["wp to p wp"] call ALIVE_fnc_dump;
+//_profileWaypoint call ALIVE_fnc_inspectHash;
+
 _profileWaypoint

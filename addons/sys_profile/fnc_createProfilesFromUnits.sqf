@@ -25,7 +25,7 @@ Highhead
 
 private ["_debug","_groups","_entityCount","_vehicleCount","_group","_leader","_units","_inVehicle","_unitClasses","_positions",
 "_ranks","_damages","_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
-"_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind"];
+"_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle"];
 
 _debug = if(count _this > 0) then {_this select 0} else {false};
 
@@ -64,23 +64,30 @@ if(_debug) then {
 		
 		_entityID = format["entity_%1",_entityCount];
 		
+		_position = getPosATL _leader;
+		
 		_profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "init"] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "profileID", _entityID] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
-		[_profileEntity, "position", getPosATL _leader] call ALIVE_fnc_profileEntity;
-		[_profileEntity, "despawnPosition", getPosATL _leader] call ALIVE_fnc_profileEntity;
+		[_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+		[_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
 		[_profileEntity, "side", str(side _leader)] call ALIVE_fnc_profileEntity;
 		
 		[ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
-			   
-		{
-			_profileWaypoint = [_x] call ALIVE_fnc_waypointToProfileWaypoint;
-			[_profileEntity, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
-		} forEach (waypoints _group);
+		
+		_waypoints = waypoints _group;
+		
+		if(currentWaypoint _group < count _waypoints) then {
+			for "_i" from (currentWaypoint _group) to (count _waypoints)-1 do
+			{
+				_profileWaypoint = [(_waypoints select _i)] call ALIVE_fnc_waypointToProfileWaypoint;
+				[_profileEntity, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+			};
+		};
 		
 		{
 			if (!(vehicle _x == _x)) then {
@@ -92,13 +99,15 @@ if(_debug) then {
 					_vehicle setVariable ["profileID",format["vehicle_%1",_vehicleCount]];
 					
 					_vehicleID = format["vehicle_%1",_vehicleCount];
-									
+					
+					_position = getPosATL _vehicle;
+
 					_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "profileID", _vehicleID] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
-					[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
-					[_profileVehicle, "despawnPosition", getPosATL _vehicle] call ALIVE_fnc_hashSet;
+					[_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "fuel", fuel _vehicle] call ALIVE_fnc_profileVehicle;
@@ -192,8 +201,15 @@ if(_debug) then {
 	_vehicle = _x;
 	_vehicleClass = typeOf _vehicle;
 	_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
+	_playerVehicle = false;
 	
 	if((_vehicle getVariable ["profileID",""]) == "" && _vehicleKind !="") then {
+	
+		{
+			if(isPlayer _x) then {
+				_playerVehicle = true;
+			};
+		} forEach crew _vehicle;
 					
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
@@ -210,12 +226,15 @@ if(_debug) then {
 		[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
 		
+		if(_playerVehicle) then {
+			[_profileVehicle, "active", true] call ALIVE_fnc_profileVehicle;
+		} else {
+			deleteVehicle _vehicle;
+		};	
+		
 		[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 		
-		_vehicleCount = _vehicleCount + 1;
-				
-		deleteVehicle _vehicle;
-		
+		_vehicleCount = _vehicleCount + 1;	
 	};
 	
 } forEach _vehicles;

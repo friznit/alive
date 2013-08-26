@@ -107,7 +107,7 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_profileID","_debugColor","_debugIcon","_profileSide","_vehicleType","_typePrefix"];
+        private ["_logic","_markers","_m","_position","_profileID","_debugColor","_debugIcon","_debugAlpha","_profileSide","_vehicleType","_profileActive","_typePrefix"];
         _logic = _this;
         _markers = [];
 
@@ -115,6 +115,7 @@ _createMarkers = {
 		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
 		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
 		_vehicleType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
+		_profileActive = [_logic,"active"] call ALIVE_fnc_hashGet;
 		
 		switch(_profileSide) do {
 			case "EAST":{
@@ -169,13 +170,19 @@ _createMarkers = {
 			};
 		};
 		
+		_debugAlpha = 0.2;
+		if(_profileActive) then {
+			_debugAlpha = 1;
+		};
+		
         if(count _position > 0) then {
 				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
 				_m setMarkerShapeLocal "ICON";
 				_m setMarkerSizeLocal [1, 1];
 				_m setMarkerTypeLocal _debugIcon;
 				_m setMarkerColorLocal _debugColor;
-                _m setMarkerTextLocal _profileID;
+				_m setMarkerAlphaLocal _debugAlpha;
+                //_m setMarkerTextLocal _profileID;
 
 				_markers set [count _markers, _m];
 
@@ -217,6 +224,7 @@ switch(_operation) do {
 						[_logic,"canFire",true] call ALIVE_fnc_hashSet; // select 2 select 18
 						[_logic,"needReload",0] call ALIVE_fnc_hashSet; // select 2 select 19
 						[_logic,"despawnPosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 20
+						[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 21
                 };
 
                 /*
@@ -287,6 +295,12 @@ switch(_operation) do {
 						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
                 };
 				_result = [_logic,"position"] call ALIVE_fnc_hashGet;
+        };
+		case "despawnPosition": {
+				if(typeName _args == "ARRAY") then {
+						[_logic,"despawnPosition",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"despawnPosition"] call ALIVE_fnc_hashGet;
         };
 		case "direction": {
 				if(typeName _args == "SCALAR") then {
@@ -391,17 +405,24 @@ switch(_operation) do {
 
 				// not already active
 				if!(_active) then {
+				
+					// determine a suitable spawn position
+					//[true] call ALIVE_fnc_timer;
+					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
+					//[] call ALIVE_fnc_timer;
 
 					// spawn the unit
 					if(_engineOn && (_vehicleType=="Helicopter" || _vehicleType=="Plane")) then {
-						_position set [2,50];
+						if((_position select 2) < 50) then {
+							_position set [2,50];
+						};
 						_special = "FLY";
 					}else{
 						_special = "NONE";
+						_position set [2,0];
 					};
 													
 					_vehicle = createVehicle [_vehicleClass, _position, [], 0, _special];
-					_position = _position findEmptyPosition [1, 100, _vehicleClass];
 					_vehicle setPos _position;
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
@@ -434,7 +455,7 @@ switch(_operation) do {
 					
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
-						["Profile [%1] Spawn - class: %2 type: %3 pos: %4",_profileID,_vehicleClass,_vehicleType,_position] call ALIVE_fnc_dump;
+						//["Profile [%1] Spawn - class: %2 type: %3 pos: %4",_profileID,_vehicleClass,_vehicleType,_position] call ALIVE_fnc_dump;
 					};
 					// DEBUG -------------------------------------------------------------------------------------
 				};
@@ -479,7 +500,7 @@ switch(_operation) do {
 					
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
-						["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+						//["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
 					};
 					// DEBUG -------------------------------------------------------------------------------------
 				};

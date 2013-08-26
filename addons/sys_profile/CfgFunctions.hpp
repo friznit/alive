@@ -181,6 +181,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentsGetCount.sqf";
 				recompile = 1;
 			};
+			class profileGetGoodSpawnPosition {
+				description = "profileGetGoodSpawnPosition";
+				file = "\x\alive\addons\sys_profile\fnc_profileGetGoodSpawnPosition.sqf";
+				recompile = 1;
+			};
 			class arrayBlockHandler {
 				description = "arrayBlockHandler";
 				file = "\x\alive\addons\sys_profile\fnc_arrayBlockHandler.sqf";

@@ -25,19 +25,17 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_waypoints","_group","_waypointCount"];
+private ["_waypoints","_group"];
 	
 _waypoints = _this select 0;
 _group = _this select 1;
 
 if(count _waypoints > 0) then {
-	_waypointCount = 0;
 	{
-		if(_waypointCount == 0) then {
+		if(_forEachIndex == 0) then {
 			[_x, _group, true] call ALIVE_fnc_profileWaypointToWaypoint;
 		} else {
 			[_x, _group] call ALIVE_fnc_profileWaypointToWaypoint;
 		};
-		_waypointCount = _waypointCount + 1;
 	} forEach _waypoints;
 };
