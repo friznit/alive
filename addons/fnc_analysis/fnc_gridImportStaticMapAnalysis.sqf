@@ -39,6 +39,9 @@ switch(_worldName) do {
 	case "Stratis":{
 		call ALIVE_fnc_staticMapAnalysisStratis;
 	};
+	case "Altis":{
+		call ALIVE_fnc_staticMapAnalysisAltis;
+	};
 };
 
 {
