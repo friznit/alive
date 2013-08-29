@@ -110,7 +110,7 @@ switch(_operation) do {
 						[_logic,"id","grid"] call ALIVE_fnc_hashSet;
 						[_logic,"gridPosition",[0,0]] call ALIVE_fnc_hashSet;
 						[_logic,"gridSize",[] call ALIVE_fnc_getMapBounds] call ALIVE_fnc_hashSet;
-						[_logic,"sectorDimensions",[500,500]] call ALIVE_fnc_hashSet;
+						[_logic,"sectorDimensions",[1000,1000]] call ALIVE_fnc_hashSet;
 						[_logic,"sectorType","SECTOR"] call ALIVE_fnc_hashSet;
                 };                
                 
