@@ -37,7 +37,8 @@ private ["_spawnhouses","_BuildingTypeStrategic","_nonstrathouses","_strathouses
 PARAMS_1(_spawnhouses);
 ASSERT_TRUE(typeName _spawnhouses == "ARRAY",str _spawnhouses);
 DEFAULT_PARAM(1,_BuildingTypeStrategic,[]);
-DEFAULT_PARAM(2,_blackzone,"ALIVE_CQB_BL_%1");
+DEFAULT_PARAM(2,_BuildingTypeRegular,(_spawnhouses - _BuildingTypeStrategic));
+DEFAULT_PARAM(3,_blackzone,"ALIVE_CQB_BL_%1");
 
 _CQB_spawn = _logic getVariable ["CQB_spawn", 1];
 
@@ -64,9 +65,11 @@ _nonstrathouses = [];
 				_strathouses set [count _strathouses, _x];
 			};
 		} else {
-			if ((random 1) < (_CQB_spawn / 10)) then {
-				_nonstrathouses set [count _nonstrathouses, _x];
-			};
+        	if (typeOf _x in _BuildingTypeRegular) then {
+				if ((random 1) < (_CQB_spawn / 10)) then {
+					_nonstrathouses set [count _nonstrathouses, _x];
+				};
+            };
 		};
 	};
 } forEach _spawnhouses;

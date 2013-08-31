@@ -84,24 +84,59 @@ switch(_operation) do {
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
                         
-				    // Get all enterable houses of strategic types below across the whole map (rest will be regular)
-					_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
                     _strategicTypes = [
                     	//A3
 						"Land_Cargo_Patrol_V1_F",
                         "Land_Cargo_HQ_V2_F",
                         "Land_Cargo_House_V2_F",
-                        "Land_Cargo_Patrol_V2_F",
+                        //"Land_Cargo_Patrol_V2_F",
 						"Land_MilOffices_V1_F",
-						"Land_dp_smallFactory_F",
+						//"Land_dp_smallFactory_F",
 						"Land_Cargo_HQ_V1_F",
-						"Land_Radar_F",
-						"Land_Airport_Tower_F",
-						"Land_TentHangar_V1_F"
+						//"Land_Radar_F",
+						"Land_Airport_Tower_F"
+						//"Land_TentHangar_V1_F"
 					];
-                    _result = [_spawnhouses, _strategicTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
-					_strategicHouses = _result select 0;
+                    
+                    _regularTypes = [
+                    	"Land_u_Shop_02_V1_F",
+                    	"Land_d_House_Big_02_V1_F",
+                        "Land_i_House_Big_01_V1_F",
+                        "Land_u_House_Small_02_V1_F",
+                        "Land_i_House_Big_02_V3_F"
+                    ];
+                    
+                    // Get all enterable houses of strategic types below across the whole map (rest will be regular)
+                    //Workaroung until SEP is fixed for Altis
+                    //_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
+                    //_spawnhouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 2000];
+                    //_spawnhouses = (getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")) nearObjects ["House_F", 15000];
+                    
+                    /*
+                    _strategicHouses = [];
+                    for "_i" from 0 to (count _strategicTypes)-1 do {
+                        _tmp = (getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")) nearObjects [_strategicTypes select _i, 15000];
+                        _strategicHouses = _strategicHouses + _tmp;
+                    };
+                    
+                    _nonStrategicHouses = [];
+                    for "_i" from 0 to (count _regularTypes)-1 do {
+                        _tmp = (getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")) nearObjects [_regularTypes select _i, 15000];
+                        _nonStrategicHouses = _nonStrategicHouses + _tmp;
+                    };
+					*/
+                    _Houses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 15000];
+                    _Houses = _Houses + (nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _regularTypes, 15000]);
+                    
+					//_strategicHouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 10000];
+                    //_nonStrategicHouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _regularTypes, 10000];
+                    
+                    _result = [_Houses, _strategicTypes,_regularTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
+					_Houses = nil;
+                    
+                    _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
+                    _result = nil;
                     
                     //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
                     _UnitsBlackList = [
@@ -118,8 +153,8 @@ switch(_operation) do {
                     ];
 
 					//set default values on main CQB instance
-                    [MOD(CQB), "houses", _spawnhouses] call ALiVE_fnc_CQB;
-					[MOD(CQB), "factions", _factions] call ALiVE_fnc_CQB;
+                    //[MOD(CQB), "houses", _strategicHouses + _nonStrategicHouses] call ALiVE_fnc_CQB;
+					[MOD(CQB), "factions", _factionsReg + _factionsStrat] call ALiVE_fnc_CQB;
 					[MOD(CQB), "spawnDistance", 800] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
@@ -152,7 +187,7 @@ switch(_operation) do {
                     [MOD(CQB), "GarbageCollecting", true] call ALiVE_fnc_CQB;
                     MOD(CQB) setVariable ["init", true, true];
                     
-                    diag_log format["Regular logic %1, houses %2",_logic,count _spawnhouses];
+                    //diag_log format["Regular logic %1, houses %2",_logic,count _spawnhouses];
                     // and publicVariable Main class to clients
                     
                     publicVariable QMOD(CQB);
@@ -567,6 +602,9 @@ switch(_operation) do {
 			};
 			// position AI
 			_positions = [_house] call ALiVE_fnc_getBuildingPositions;
+            
+            diag_log _positions;
+            
 			{
 		        _pos = (_positions call BIS_fnc_selectRandom);
 				_x setPosATL [_pos select 0, _pos select 1, (_pos select 2 + 0.4)];
