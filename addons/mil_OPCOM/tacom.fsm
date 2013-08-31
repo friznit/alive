@@ -3,27 +3,31 @@
 /*
 item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
-item5[] = {"",7,210,171.547714,544.715576,179.547714,552.715454,0.000000,""};
+item5[] = {"",7,210,176.004105,761.434937,184.004105,769.434814,0.000000,""};
 item6[] = {"",7,210,174.604492,1.165148,182.604553,9.165155,0.000000,""};
 item7[] = {"DEFEND_condition",4,218,-197.909698,270.277069,-107.909790,320.277069,2.000000,"DEFEND" \n "conditions"};
 item8[] = {"RESERVE_conditio",4,218,-98.860970,268.983917,-8.860947,318.983917,1.000000,"RESERVE" \n "conditions"};
 item9[] = {"CUSTOM_condition",4,218,5.405207,267.636688,95.405060,317.636871,0.000000,"CUSTOM" \n "conditions"};
-item10[] = {"ISSUE_ORDERS",2,250,-410.405243,456.688202,88.862106,500.891266,0.000000,"ISSUE ORDERS"};
-item11[] = {"GROUP_NOT_CONFIR",4,218,-150.917450,516.797485,-60.917450,566.797729,0.000000,"GROUP" \n "NOT" \n "CONFIRM"};
-item12[] = {"GROUP_CONFIRM",4,218,-255.035431,517.626587,-165.035599,567.626709,0.000000,"GROUP" \n "CONFIRM"};
-item13[] = {"",7,210,-514.293091,537.052490,-506.293060,545.052490,0.000000,""};
+item10[] = {"ISSUE_ORDERS",2,4346,-405.948853,673.407532,93.318497,717.610718,0.000000,"ISSUE ORDERS"};
+item11[] = {"GROUP_NOT_CONFIR",4,218,-146.461060,733.516846,-56.461060,783.517090,0.000000,"GROUP" \n "NOT" \n "CONFIRM"};
+item12[] = {"GROUP_CONFIRM",4,218,-250.579010,734.345947,-160.579208,784.346069,0.000000,"GROUP" \n "CONFIRM"};
+item13[] = {"",7,210,-509.836731,753.771851,-501.836670,761.771851,0.000000,""};
 item14[] = {"",7,210,-513.869507,2.740855,-505.869385,10.740835,0.000000,""};
 item15[] = {"INITIALIZE",2,250,-195.246613,-87.998024,-105.246597,-37.998020,0.000000,"INITIALIZE"};
 item16[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
-item17[] = {"TRANSMIT_TO_OPCO",2,250,-382.604156,516.228027,-292.604156,566.228149,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
-item18[] = {"TRANSMIT_TO_OPCO_1",2,250,-30.464867,512.843384,59.535149,562.843506,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
+item17[] = {"TRANSMIT_TO_OPCO",2,250,-378.147766,732.947388,-288.147766,782.947510,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
+item18[] = {"TRANSMIT_TO_OPCO_1",2,250,-26.008476,729.562744,63.991539,779.562866,0.000000,"TRANSMIT" \n "TO" \n "OPCOM"};
 item19[] = {"RECON_Conditions",4,218,-399.338531,271.491608,-309.338531,321.491608,0.000000,"RECON" \n "Conditions"};
 item20[] = {"COLLECT_TO_QUEUE",2,250,-191.535400,70.489761,-101.535316,120.489708,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.571014,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
+item23[] = {"SELECT_SECTION",2,250,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
+item24[] = {"SECTION_SELECTED",4,218,-197.466095,422.042877,-107.466232,472.042908,0.000000,"SECTION" \n "SELECTED"};
+item25[] = {"PREPARE_ORDERS",2,250,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
+item26[] = {"PREPARED",4,218,-202.116547,569.103699,-112.116524,619.103699,0.000000,"PREPARED"};
 version=1;
 class LayoutItems
 {
@@ -47,12 +51,12 @@ link6[] = {2,9};
 link7[] = {2,19};
 link8[] = {2,22};
 link9[] = {3,20};
-link10[] = {4,10};
+link10[] = {4,23};
 link11[] = {5,6};
 link12[] = {6,3};
-link13[] = {7,10};
-link14[] = {8,10};
-link15[] = {9,10};
+link13[] = {7,23};
+link14[] = {8,23};
+link15[] = {9,23};
 link16[] = {10,11};
 link17[] = {10,12};
 link18[] = {11,18};
@@ -62,12 +66,16 @@ link21[] = {14,3};
 link22[] = {15,3};
 link23[] = {17,13};
 link24[] = {18,5};
-link25[] = {19,10};
+link25[] = {19,23};
 link26[] = {20,21};
 link27[] = {21,2};
 link28[] = {22,2};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-747.486450,412.930634,711.296265,-552.510803,853,929,1};
-window[] = {2,-1,-1,-1,-1,994,110,1733,110,3,870};
+link29[] = {23,24};
+link30[] = {24,25};
+link31[] = {25,26};
+link32[] = {26,10};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-651.469971,316.913574,1017.395996,-72.578300,669,753,1};
+window[] = {0,-1,-1,-1,-1,1082,198,1821,198,1,686};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -118,7 +126,7 @@ class FSM
     class ANALYZE
     {
       name = "ANALYZE";
-      init = /*%FSM<STATEINIT""">*/"private [""_operation"",""_data_operation"",""_data_value"",""_tacom_data"",""_recon"",""_capture"",""_defend"",""_reserve"",""_custom"",""_dataset"",""_transmit"",""_TACOM_ACTION"",""_timeout"",""_section"",""_sectionSupport""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_pos"",""_objective"",""_size"",""_operation"",""_data_operation"",""_data_value"",""_tacom_data"",""_recon"",""_capture"",""_defend"",""_reserve"",""_custom"",""_dataset"",""_transmit"",""_TACOM_ACTION"",""_timeout"",""_section"",""_sectionSupport""];" \n
        "" \n
        "_busy = true;" \n
        "" \n
@@ -177,69 +185,29 @@ class FSM
        "			switch (_opcom_orders) do {" \n
        "" \n
        "				case (""attack"") : {" \n
-       "					[_OPCOM_HANDLER,""cleanupduplicatesections""] call ALiVE_fnc_OPCOM;" \n
-       "" \n
-       "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
        "					_danger = [_objective,""danger"",-1] call AliVE_fnc_HashGet;" \n
-       "" \n
-       "					if (count _section < _sectionsamount_attack) then {" \n
-       "						//_section = [_OPCOM_HANDLER,""NearestAvailableSection"",[_pos,""attack"",_sectionsamount_attack,_objective]] call ALiVE_fnc_OPCOM;" \n
-       "						_section = [_OPCOM_HANDLER,""NearestAvailableSectionNew"",[_pos,_sectionsamount_attack,""infantry""]] call ALiVE_fnc_OPCOM;" \n
-       "" \n
-       "						if (count _section >= _sectionsamount_attack) then {" \n
-       "							[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
-       "						} else {" \n
-       "							{[_OPCOM_HANDLER,""resetorders"",_x] call ALiVE_fnc_OPCOM} foreach _section;" \n
-       "							_section = []; [_objective,""section"",[]] call ALiVE_fnc_HashSet;" \n
-       "						};" \n
-       "					};" \n
+       "					_size = _sectionsamount_attack;" \n
        "" \n
        "					switch (_danger < 1) do {" \n
-       "						case (true) : {_recon = [_objective,_section]};" \n
-       "						case (false) : {_capture = [_objective,_section]};" \n
+       "						case (true) : {_recon = [_objective,_size]};" \n
+       "						case (false) : {_capture = [_objective,_size]};" \n
        "					};" \n
        "				};" \n
        "" \n
        "				case (""defend"") : {" \n
-       "					[_OPCOM_HANDLER,""cleanupduplicatesections""] call ALiVE_fnc_OPCOM;" \n
-       "" \n
-       "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
        "					_nearEnemies = [_objective,""entitiesnearsector"",[_pos,_sideEnemy,false]] call AliVE_fnc_OPCOM;" \n
-       "" \n
-       "					if (count _section < _sectionsamount_defend) then {" \n
-       "						_sectionSupport = [_OPCOM_HANDLER,""NearestAvailableSectionNew"",[_pos,_sectionsamount_defend,""infantry""]] call ALiVE_fnc_OPCOM;" \n
-       "" \n
-       "						for ""_i"" from 0 to ((_sectionsamount_defend - (count _section)) - 1) do {" \n
-       "							if (_i > ((count _sectionSupport) - 1)) exitwith {};" \n
-       "							_section set [count _section,_sectionSupport select _i];" \n
-       "						};" \n
-       "						[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
-       "					};" \n
+       "					_size = _sectionsamount_defend;" \n
        "" \n
        "					switch (count _nearEnemies > 0) do {" \n
-       "						case (true) : {_defend = [_objective,_section]};" \n
-       "						case (false) : {_reserve = [_objective,_section]};" \n
+       "						case (true) : {_defend = [_objective,_size]};" \n
+       "						case (false) : {_reserve = [_objective,_size]};" \n
        "					};" \n
        "				};" \n
        "		" \n
        "				case (""reserve"") : {" \n
-       "					[_OPCOM_HANDLER,""cleanupduplicatesections""] call ALiVE_fnc_OPCOM;" \n
-       "					_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
+       "					_size = _sectionsamount_reserve;" \n
        "" \n
-       "					if (count _section < _sectionsamount_reserve) then {" \n
-       "						_section = [_OPCOM_HANDLER,""NearestAvailableSectionNew"",[_pos,_sectionsamount_reserve,""infantry""]] call ALiVE_fnc_OPCOM;" \n
-       "" \n
-       "						if (count _section >= _sectionsamount_reserve) then {" \n
-       "							{" \n
-       "								if (count _section == _sectionsamount_reserve) exitwith {};" \n
-       "								[_OPCOM_HANDLER,""resetorders"",_x] call ALiVE_fnc_OPCOM;" \n
-       "								_section = _section - [_x];" \n
-       "							} foreach _section;" \n
-       "							[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
-       "						};" \n
-       "					};" \n
-       "" \n
-       "					_reserve = [_objective,_section];" \n
+       "					_reserve = [_objective,_size];" \n
        "				};" \n
        "				case (""custom"") : {};" \n
        "				default {};" \n
@@ -333,8 +301,6 @@ class FSM
        "						// debug ---------------------------------------" \n
        "					};" \n
        "" \n
-       "						player sidechat ""Completed Reserve"";" \n
-       "" \n
        "						//transmit to OPCOM as objective was completed" \n
        "						_dataset = {_OPCOM_FSM setFSMVariable [""_OPCOM_DATA"",[""completed"",_objective]]};" \n
        "				};" \n
@@ -364,7 +330,7 @@ class FSM
         class CAPTURE_Conditio
         {
           priority = 3.000000;
-          to="ISSUE_ORDERS";
+          to="SELECT_SECTION";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(isnil ""_capture"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -374,7 +340,7 @@ class FSM
         class DEFEND_condition
         {
           priority = 2.000000;
-          to="ISSUE_ORDERS";
+          to="SELECT_SECTION";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(isnil ""_defend"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -384,7 +350,7 @@ class FSM
         class RESERVE_conditio
         {
           priority = 1.000000;
-          to="ISSUE_ORDERS";
+          to="SELECT_SECTION";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(isnil ""_reserve"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -394,7 +360,7 @@ class FSM
         class CUSTOM_condition
         {
           priority = 0.000000;
-          to="ISSUE_ORDERS";
+          to="SELECT_SECTION";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(isnil ""_custom"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -404,7 +370,7 @@ class FSM
         class RECON_Conditions
         {
           priority = 0.000000;
-          to="ISSUE_ORDERS";
+          to="SELECT_SECTION";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(isnil ""_recon"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -437,30 +403,20 @@ class FSM
     class ISSUE_ORDERS
     {
       name = "ISSUE_ORDERS";
-      init = /*%FSM<STATEINIT""">*/"private [""_data""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profiles"",""_data"",""_state"",""_section"",""_pos"",""_objectiveID"",""_turn"",""_objectivesX""];" \n
        "" \n
        "//Get all profileIDs and objectives" \n
        "_profiles = ([ALIVE_profileHandler, ""getProfiles"", ""entity""] call ALIVE_fnc_profileHandler) select 1;" \n
        "_objectives = [_OPCOM_HANDLER,""objectives""] call ALiVE_fnc_HashGet;" \n
-       "" \n
-       "//prepare orders" \n
-       "if !(isnil ""_recon"") then {_operation = ""recon""};" \n
-       "if !(isnil ""_capture"") then {_operation = ""capture""};" \n
-       "if !(isnil ""_defend"") then {_operation = ""defend""};" \n
-       "if !(isnil ""_reserve"") then {_operation = ""reserve""};" \n
-       "if !(isnil ""_custom"") then {_operation = ""custom""};" \n
-       "" \n
-       "//_data = [_OPCOM_HANDLER,""addTask"",[_operation,_pos,_section,_statements]] call ALiVE_fnc_OPCOM;" \n
+       "_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
+       "_state = [_objective,""opcom_state"",""unassigned""] call ALiVE_fnc_HashGet;" \n
+       "_pos = [_objective,""center""] call AliVE_fnc_HashGet;" \n
+       "_objectiveID = [_objective,""objectiveID""] call AliVE_fnc_HashGet;" \n
        "" \n
        "//set orders by type" \n
        "switch (_operation) do {" \n
        "" \n
        "		case ( ""recon"") : {" \n
-       "			_objective = _recon select 0;" \n
-       "			_state = [_objective,""opcom_state""] call ALiVE_fnc_HashGet;" \n
-       "			_section = [_objective,""section""] call AliVE_fnc_HashGet;" \n
-       "			_pos = [_objective,""center""] call AliVE_fnc_HashGet;" \n
-       "			_objectiveID = [_objective,""objectiveID""] call AliVE_fnc_HashGet;" \n
        "			_turn = true;" \n
        "" \n
        "			if (count _section >= _sectionsamount_attack) then {" \n
@@ -483,12 +439,13 @@ class FSM
        "						[_OPCOM_HANDLER,""setorders"",[_posWP,_profileID,_objectiveID,_operation]] call ALiVE_fnc_OPCOM;" \n
        "					};" \n
        "				} foreach _section;" \n
-       "				" \n
+       "" \n
+       "				_recon set [1,_section];" \n
        "				_TAC_confirmed = true;" \n
        "			} else {" \n
        "				if (count _section == 0) then {" \n
-       "					_TAC_confirmed = false;" \n
        "					_recon set [1,[""no groups available""]];" \n
+       "					_TAC_confirmed = false;" \n
        "				} else {" \n
        "					{" \n
        "						_profileID = _x;" \n
@@ -498,7 +455,7 @@ class FSM
        "" \n
        "							//Select nearest taken objective to regroup" \n
        "							_posP = [_profile, ""position""] call ALIVE_fnc_profileEntity;" \n
-       "							_objectives = [_objectives,[],{_posP distance (_x select 2 select 1)},""ASCEND""] call BIS_fnc_sortBy;" \n
+       "							_objectivesX = [_objectives,[],{_posP distance (_x select 2 select 1)},""ASCEND""] call BIS_fnc_sortBy;" \n
        "							" \n
        "							{" \n
        "								_state = [_x,""opcom_state""] call ALivE_fnc_HashGet;" \n
@@ -510,27 +467,21 @@ class FSM
        "									_profileWaypoint = [_posWP, 50] call ALIVE_fnc_createProfileWaypoint;" \n
        "									[_profile, ""addWaypoint"", _profileWaypoint] call ALIVE_fnc_profileEntity;" \n
        "								};" \n
-       "							} foreach _objectives;" \n
+       "							} foreach _objectivesX;" \n
        "						};" \n
        "					} foreach _section;" \n
        "" \n
-       "					_TAC_confirmed = false;" \n
        "					_recon set [1,[""not enough groups to build a section, regrouping...""]];" \n
+       "					_TAC_confirmed = false;" \n
        "				};" \n
        "			};" \n
        "			_data = _recon;" \n
        "		};" \n
        "" \n
        "		case ( ""capture"") : {" \n
-       "			_objective = _capture select 0;" \n
-       "			_state = [_objective,""opcom_state""] call ALiVE_fnc_HashGet;" \n
-       "			_section = [_objective,""section""] call AliVE_fnc_HashGet;" \n
-       "			_pos = [_objective,""center""] call AliVE_fnc_HashGet;" \n
-       "			_objectiveID = [_objective,""objectiveID""] call AliVE_fnc_HashGet;" \n
        "" \n
        "			if (count _section > 0) then {" \n
        "				[_objective,""tacom_state"",""capture""] call AliVE_fnc_HashSet;" \n
-       "				diag_log format[""_capture _objective %1 _pos %2 _section %3"",_objective,_pos,_section];" \n
        "" \n
        "				{" \n
        "					private [""_profile"",""_profileID"",""_statements""];" \n
@@ -538,8 +489,6 @@ class FSM
        "						_profileID = _x;" \n
        "" \n
        "						if (_profileID in _profiles) then {" \n
-       "							_profile = [ALIVE_profileHandler, ""getProfile"", _profileID] call ALIVE_fnc_profileHandler;" \n
-       "" \n
        "							[_OPCOM_HANDLER,""setorders"",[([_pos,50] call CBA_fnc_RandPos),_profileID,_objectiveID,_operation]] call ALiVE_fnc_OPCOM;" \n
        "						};" \n
        "				} foreach _section;" \n
@@ -554,29 +503,22 @@ class FSM
        "		};" \n
        "" \n
        "		case (""defend"") : {" \n
-       "			_objective = _defend select 0;" \n
-       "			_state = [_objective,""opcom_state""] call ALiVE_fnc_HashGet;" \n
-       "			_section = [_objective,""section""] call AliVE_fnc_HashGet;" \n
-       "			_pos = [_objective,""center""] call AliVE_fnc_HashGet;" \n
-       "			_objectiveID = [_objective,""objectiveID""] call AliVE_fnc_HashGet;" \n
        "" \n
        "			if (count _section > 0) then {" \n
        "				[_objective,""tacom_state"",""defend""] call AliVE_fnc_HashSet;" \n
-       "				diag_log format[""_defend _objective %1 _pos %2 _section %3"",_objective,_pos,_section];" \n
        "" \n
        "				{" \n
-       "					private [""_profile"",""_profileID"",""_statements""];" \n
+       "					private [""_profileID"",""_statements""];" \n
        "" \n
        "						_profileID = _x;" \n
        "" \n
        "						if (_profileID in _profiles) then {" \n
-       "							_profile = [ALIVE_profileHandler, ""getProfile"", _profileID] call ALIVE_fnc_profileHandler;" \n
-       "" \n
        "							[_OPCOM_HANDLER,""setorders"",[([_pos,50] call CBA_fnc_RandPos),_profileID,_objectiveID,_operation]] call ALiVE_fnc_OPCOM;" \n
        "						};" \n
        "				} foreach _section;" \n
        "" \n
        "				_TAC_confirmed = true;" \n
+       "				_defend set [1,_section];" \n
        "			} else {" \n
        "				_TAC_confirmed = false;" \n
        "				_defend set [1,[""no groups available""]];" \n
@@ -585,31 +527,24 @@ class FSM
        "		};" \n
        "" \n
        "		case ( ""reserve"") : {" \n
-       "			_objective = _reserve select 0;" \n
-       "			_state = [_objective,""opcom_state""] call ALiVE_fnc_HashGet;" \n
-       "			_section = [_objective,""section""] call AliVE_fnc_HashGet;" \n
-       "			_pos = [_objective,""center""] call AliVE_fnc_HashGet;" \n
-       "			_objectiveID = [_objective,""objectiveID""] call AliVE_fnc_HashGet;" \n
-       "" \n
        "			if (count _section > 0) then {" \n
        "				[_objective,""tacom_state"",""reserve""] call AliVE_fnc_HashSet;" \n
        "" \n
        "				{" \n
-       "					private [""_profile"",""_profileID"",""_statements""];" \n
+       "					private [""_profileID"",""_statements""];" \n
        "" \n
        "						_profileID = _x;" \n
        "" \n
        "						if (_profileID in _profiles) then {" \n
-       "							_profile = [ALIVE_profileHandler, ""getProfile"", _profileID] call ALIVE_fnc_profileHandler;" \n
-       "" \n
        "							[_OPCOM_HANDLER,""setorders"",[([_pos,50] call CBA_fnc_RandPos),_profileID,_objectiveID,_operation]] call ALiVE_fnc_OPCOM;" \n
        "						};" \n
        "				} foreach _section;" \n
        "" \n
+       "				_reserve set [1,_section];" \n
        "				_TAC_confirmed = true;" \n
        "			} else {" \n
-       "				_TAC_confirmed = false;" \n
        "				_reserve set [1,[""no groups available""]];" \n
+       "				_TAC_confirmed = false;" \n
        "			};" \n
        "			_data = _reserve;" \n
        "		};" \n
@@ -724,6 +659,99 @@ class FSM
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"(count _TACOM_QUEUE > 0) && !(_busy) && (time - _lastanalyze > 0.5);"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "SELECT_SECTION">*/
+    class SELECT_SECTION
+    {
+      name = "SELECT_SECTION";
+      init = /*%FSM<STATEINIT""">*/"private [""_objective"",""_section"",""_size"",""_sectionAssist"",""_operation"",""_hdl""];" \n
+       "" \n
+       "//prepare data" \n
+       "if !(isnil ""_recon"") then {_operation = ""recon""; _objective = _recon select 0; _size = _recon select 1};" \n
+       "if !(isnil ""_capture"") then {_operation = ""capture""; _objective = _capture select 0; _size = _capture select 1};" \n
+       "if !(isnil ""_defend"") then {_operation = ""defend""; _objective = _defend select 0; _size = _defend select 1};" \n
+       "if !(isnil ""_reserve"") then {_operation = ""reserve""; _objective = _reserve select 0; _size = _reserve select 1};" \n
+       "if !(isnil ""_custom"") then {_operation = ""custom""; _objective = _custom select 0; _size = _custom select 1};" \n
+       "" \n
+       "_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
+       "" \n
+       "if (count _section < _size) then {" \n
+       "	_hdl = [_OPCOM_HANDLER,[_objective,_size,""infantry""]] spawn {" \n
+       "		private [""_objective"",""_pos""];" \n
+       "" \n
+       "		_objective = _this select 1 select 0;" \n
+       "		_size = _this select 1 select 1;" \n
+       "		_pos = ([_objective,""center""] call ALiVE_fnc_HashGet);" \n
+       "" \n
+       "		_sectionAssist = [_this select 0,""NearestAvailableSectionNew"",[_pos,_size,""infantry""]] call ALiVE_fnc_OPCOM;" \n
+       "		[_objective, ""sectionAssist"",_sectionAssist] call ALiVE_fnc_HashSet;" \n
+       "	};" \n
+       "} else {" \n
+       "	_hdl = [] spawn {true};" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "SECTION_SELECTED">*/
+        class SECTION_SELECTED
+        {
+          priority = 0.000000;
+          to="PREPARE_ORDERS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _hdl;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "PREPARE_ORDERS">*/
+    class PREPARE_ORDERS
+    {
+      name = "PREPARE_ORDERS";
+      init = /*%FSM<STATEINIT""">*/"terminate _hdl;" \n
+       "" \n
+       "private [""_section"",""_sectionAssist""];" \n
+       "" \n
+       "_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
+       "_sectionAssist = [_objective,""sectionAssist"",[]] call AliVE_fnc_HashGet;" \n
+       "" \n
+       "//Add groups" \n
+       "if (count _section < _size) then {" \n
+       "" \n
+       "	for ""_i"" from 0 to ((_size - (count _section)) - 1) do {" \n
+       "		if (_i > ((count _sectionAssist) - 1)) exitwith {};" \n
+       "		_section set [count _section,_sectionAssist select _i];" \n
+       "	};" \n
+       "	[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
+       "};" \n
+       "" \n
+       "//Remove groups" \n
+       "if (count ([_objective,""section"",_section] call AliVE_fnc_HashGet) >= _size) then {" \n
+       "	{" \n
+       "		if (count _section == _size) exitwith {};" \n
+       "		[_OPCOM_HANDLER,""resetorders"",_x] call ALiVE_fnc_OPCOM;" \n
+       "		_section = _section - [_x];" \n
+       "	} foreach _section;" \n
+       "	[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
+       "};" \n
+       "" \n
+       "_section = [_objective,""section"",_section] call AliVE_fnc_HashGet;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "PREPARED">*/
+        class PREPARED
+        {
+          priority = 0.000000;
+          to="ISSUE_ORDERS";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/

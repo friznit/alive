@@ -1,0 +1,24 @@
+//http://community.bistudio.com/wiki/description.ext#Header_Class
+class header {
+	gametype = COOP;
+	minplayers = 1;
+	maxplayers = 10;
+	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
+};
+
+author = ALiVE Studios || Mission by Highhead;
+onLoadMission = "Estimated time of initial setup is about 5-7 minutes! Don't interrupt or escape it, be patient and go pet your dog or take your wife for a walk in the meanwhile!";
+onLoadIntroTime = true;
+onLoadMissionTime = true;
+onLoadName = ALiVE Showcase: OPCOM Altis;
+loadScreen = "rsc\logo_alive.paa";
+
+aiKills = 0;
+briefing = 1;
+debriefing = 1;
+respawn = 3;
+respawnDelay = 15;
+RespawnDialog = 0;
+disabledAI = 1;
+enableDebugConsole = 1;
+allowFunctionsRecompile = 1;
