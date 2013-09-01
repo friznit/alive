@@ -12,6 +12,8 @@ LOG("Testing BaseClass");
 // UNIT TESTS
 ASSERT_DEFINED("ALIVE_fnc_baseClass","ALIVE_fnc_baseClass is not defined!");
 
+enableEnvironment false;
+
 #define STAT(msg) sleep 1; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
@@ -106,5 +108,7 @@ if(isServer) then {
 };
 
 diag_log (allMissionObjects "") - _amo;
+
+enableEnvironment true;
 
 nil;
