@@ -202,7 +202,7 @@ switch(_operation) do {
         	if(isnil "_args") then {
 					_args = [_logic,"objectives",[]] call ALIVE_fnc_hashGet;
             } else {
-            	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+            	ASSERT_TRUE(typeName _args == "STRING",str _args);
                 private ["_objective"];
                 
                 _objective = [_logic,"getobjectivebyid",_args] call ALiVE_fnc_OPCOM;
@@ -220,7 +220,7 @@ switch(_operation) do {
                 
                 _args = [_logic,"objectives",[]] call ALIVE_fnc_hashGet;
             };
-            _result = _args
+            _result = _args;
         };
         
         case "addTask": {
