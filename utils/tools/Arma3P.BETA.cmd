@@ -1,17 +1,7 @@
 @echo off
 if not exist p:\ (goto installP)
-if not exist extractpbo.exe (goto installpbo)
-
-REM For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Wow6432Node\Bohemia Interactive Studio\Oxygen 2 rem Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
-REM IF DEFINED _ARMA2PATH (GOTO found)
-REM For /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Bohemia Interactive Studio\Oxygen 2 Personal Edition" /v "MAIN"') Do (set _ARMA2PATH=%%B)
-REM IF DEFINED _ARMA2PATH (GOTO found)
-REM echo you must install BI's personal tools
-REM pause
-REM @exit /B 1
-
-GOTO found
-:installpbo
+if exist extractpbo.exe (goto installok)
+:install
 echo extractpbo is required
 pause
 @exit /B 1
@@ -19,7 +9,7 @@ pause
 echo P: drive must be set
 pause
 @exit /B 1
-:found
+:installok
 rem Dta\bin.pbo
 rem Dta\core.pbo
 rem Dta\languagecore.pbo
@@ -37,11 +27,11 @@ rem ***************************************************
 
 rem run this cmd from same dir as extractpbo.exe
 rem WARNING*WARNING*WARNING*WARNING*WARNING*WARNING*WARNING*WARNING*
-rem WARNING: this bat obviously overwrites everything in p:\a3
+rem WARNING: this bat obviously overwrites everything in p:\ca
 rem WARNING*WARNING*WARNING*WARNING*WARNING*WARNING*WARNING*WARNING
 
 SETLOCAL ENABLEEXTENSIONS
-SET WRP_PROJECTS="P:\WRP_PROJECTS_A3"
+
 rem ********************
 rem find the arma3 path
 rem ********************
@@ -76,64 +66,93 @@ echo %_ARMA3PATH%
 
 :run
 
-rem for record keeping
 
-if exist "%_ARMA3PATH%\Addons" (dir /b/s "%_ARMA3PATH%\Addons\*.pbo" >a3pbo.lst) 
-if exist "%_ARMA3PATH%\Dta" (dir /b/s "%_ARMA3PATH%\Dta\*.pbo" >>a3pbo.lst)
+rem :::::::::::::::::::::::::::::
+rem :::::::: ProcessOA ::::::::::
+rem :::::::::::::::::::::::::::::
 
+if exist "%_ARMA3PATH%\Addons" (dir /b/s "%_ARMA3PATH%\Addons\*.pbo" >a3.txt) 
+if exist "%_ARMA3PATH%\Dta" (dir /b/s "%_ARMA3PATH%\Dta\*.pbo" >>a3.txt)
 
+goto process
+
+findstr  /i "beta" "exp.txt" >betalist.txt
+findstr  /iv "beta" "exp.txt" >pipe.txt
+type betalist.txt >>pipe.txt
+del /q betalist.txt
+del /q exp.txt
+ren pipe.txt exp.txt
+rem ::::::::::::::::::::::::::::
 
 :process
 
-echo preserving personal edition shaders and hpp's
+echo preserving roads and bin folders
+
+rem ******* preserve personal edition shaders and hpp's
 if not exist p:\bin (goto nobin)
-if exist p:\pebin (rmdir /s/q p:\pebin)
-ren p:\bin pebin
+rem if exist p:\pebin (rmdir /s/q p:\pebin)
+rem ren p:\bin pebin
 :nobin
 
 echo removing folders. Expect this to take some time......
-
 @echo off
 if exist p:\a3 (rmdir /s/q p:\a3)
-rem no need to remove languagecores plural, they're single files
 rem if exist p:\languagecore (rmdir /s/q p:\languagecore)
-if exist p:\core (rmdir /s/q p:\core)
-
-if exist %WRP_PROJECTS% (rmdir /s/q %WRP_PROJECTS%)
-if exist p:\a3_bin (rmdir /s/q p:\a3_bin)
-
+rem if exist p:\core (rmdir /s/q p:\core)
+@echo off
+echo done
+ extractpbo -a "%_ARMA3PATH%\Addons" p:\
+mkdir p:\a3\dta
+extractpbo -a "%_ARMA3PATH%\Dta" p:\a3\dta
+goto skip
 echo extracting pbo's. expect THIS to take some time !!!.......
+rem ******* standard co extraction ************
+FOR /F "tokens=1* delims=," %%A in (a3.txt) do (
+ extractpbo -a "%%A" p:\
+ if ERRORLEVEL 1 goto err
+)
 
-rem just do the entire folder in one go
-extractpbo "%_ARMA3PATH%\Addons" p:\
-extractpbo  "%_ARMA3PATH%\Dta" p:\
+goto skip
 
-echo replacing with a3's bin config
+***** retrieve roads2 mlods ***********
+echo retrieving mlod roads
+if not exist p:\roads2 (goto noroads2)
+rem copy only the base mlods. textures are fine as pbo entities
+xcopy /y /q P:\roads2\*.p3d P:\ca\roads2
+rmdir /s/q p:\roads2
+:noroads2
+if not exist p:\roads_pmc (goto noroadspmc)
+xcopy /y /q P:\roads_pmc\*.p3d P:\ca\roads_pmc
+rmdir /s/q p:\roads_pmc
+:noroadspmc
+if not exist p:\roads_e (goto noroadse)
+xcopy /y /q /s P:\roads_e\*.p3d P:\ca\roads_e
+rmdir /s/q p:\roads_e
+:noroadse
+echo replacing with engine's bin config
 rem ******** retrieve pe's bin stuff (except cpp) eg overwrite it shaders are pe********
 rem the engine's config is installed, the shaders et al are personal tools stuff, left for buldozer
-copy /y p:\bin\config.cpp p:\pebin
-ren p:\bin a3_bin
+echo retrieving bin
+copy /y p:\bin\config.cpp pebin
+rmdir /s/q p:\bin
 ren p:\pebin bin
-echo attaching product.bin
-copy /y "%_ARMA3PATH%\Dta\product.bin" p:\
-
 
 rem ******** fixup languagecore ***************
 echo fixing stringtables
 copy p:\languagecore\stringtable.xml p:\bin
-rem can't do anything about _f and _h because they're called same thing
 
 
-rem ************* copy all a3 configs to project folder ***************
-echo creating a wrp projects folder
-xcopy /s /y p:\a3\*.cpp "%WRP_PROJECTS%\a3\"
-echo copy (or move) %WRP_PROJECTS%\a3 to "your projects folder"\a3
+rem ************* copy all ca configs to project folder ***************
+:sklug
+xcopy /s /y p:\ca\*.cpp "%WRP_PROJECTS%\ca\"
+echo copy (or move) WRP_PROJECTS\ca to your projects folder
+rem *********** convert all 49's to 48 **************** required for petools 2.0
+convertp3d -50 p:\a3
+if ERRORLEVEL 1 goto err
+:skip
 
 
-
-
-del a3pbo.lst
-rem record keeping
+rem del co.txt record keeping
 :success
 echo success 
 pause
