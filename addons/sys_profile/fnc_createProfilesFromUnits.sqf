@@ -23,16 +23,54 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_debug","_groups","_entityCount","_vehicleCount","_group","_leader","_units","_inVehicle","_unitClasses","_positions",
-"_ranks","_damages","_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
+private ["_createMode","_createModeObjects","_debug","_groups","_vehicles","_entityCount","_vehicleCount","_createModeGroups","_createModeVehicles",
+"_group","_leader","_units","_ignore","_inVehicle","_unitClasses","_positions","_ranks","_damages",
+"_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
 "_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle"];
 
-_debug = if(count _this > 0) then {_this select 0} else {false};
+_createMode = _this select 0;
+_createModeObjects = _this select 1;
+_debug = if(count _this > 2) then {_this select 2} else {false};
 
 _groups = allGroups;
+_vehicles = vehicles;
 _entityCount = 0;
 _vehicleCount = 0;
 
+_createModeGroups = [];
+_createModeVehicles = [];
+
+// use the passed create mode objects array of to
+// compile lists of vehicles and groups to use 
+{
+	_object = _x;
+	if!(isNull group _object) then {
+		_group  = group _object;
+		_createModeGroups set [count _createModeGroups, _group];
+		
+		{
+			_vehicle = vehicle _x;
+			if(!(_vehicle == _x)) then {
+				if!(_vehicle in _createModeVehicles) then {
+					_createModeVehicles set [count _createModeVehicles, _vehicle];
+				};
+			};
+		} forEach units _group;
+	}else{
+		_createModeVehicles set [count _createModeVehicles, _object];
+	};
+} forEach _createModeObjects;
+
+
+if(_createMode == "ADD") then {
+	_groups = _createModeGroups;
+	_vehicles = _createModeVehicles;
+};
+
+if(_createMode == "IGNORE") then {
+	_groups = _groups - _createModeGroups;
+	_vehicles = _vehicles - _createModeVehicles;
+};
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
@@ -41,7 +79,6 @@ if(_debug) then {
 	[true] call ALIVE_fnc_timer;
 };
 // DEBUG -------------------------------------------------------------------------------------
-
 
 {
 	_group = _x;
@@ -183,8 +220,6 @@ _deleteVehicleCount = 0;
 		_deleteEntityCount = _deleteEntityCount + 1;
 	};
 } forEach _groups;
-
-_vehicles = vehicles;
 
 
 // DEBUG -------------------------------------------------------------------------------------

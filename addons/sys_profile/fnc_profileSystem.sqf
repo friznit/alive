@@ -63,6 +63,8 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);						
 						
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
+						[_logic,"syncMode","ADD"] call ALIVE_fnc_hashSet;
+						[_logic,"syncedUnits",[]] call ALIVE_fnc_hashSet;
 						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",6] call ALIVE_fnc_hashSet;
@@ -81,6 +83,8 @@ switch(_operation) do {
                 if (isServer) then {
 						
 						_debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
+						_syncMode = [_logic,"syncMode","ADD"] call ALIVE_fnc_hashGet;
+						_syncedUnits = [_logic,"syncedUnits",[]] call ALIVE_fnc_hashGet;
 						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
@@ -92,6 +96,8 @@ switch(_operation) do {
 							[true] call ALIVE_fnc_timer;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
+						
+						["ALIVE Sync Mode: %1 Units: %2",_syncMode,_syncedUnits] call ALIVE_fnc_dump;
 						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
@@ -110,7 +116,7 @@ switch(_operation) do {
 						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 						
 						// create profiles for all map units that dont have profiles
-						[false] call ALIVE_fnc_createProfilesFromUnits;
+						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;
 						
 						// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 						[ALIVE_profileHandler, "debug", _debug] call ALIVE_fnc_profileHandler;
@@ -223,6 +229,20 @@ switch(_operation) do {
 						ALIVE_spawnRadius = _args;
                 };
 				_result = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+        };
+		case "syncMode": {
+				if(typeName _args == "STRING") then {
+						[_logic,"syncMode",_args] call ALIVE_fnc_hashSet;
+						ALIVE_spawnRadius = _args;
+                };
+				_result = [_logic,"syncMode"] call ALIVE_fnc_hashGet;
+        };
+		case "syncedUnits": {
+				if(typeName _args == "ARRAY") then {
+						[_logic,"syncedUnits",_args] call ALIVE_fnc_hashSet;
+						ALIVE_spawnRadius = _args;
+                };
+				_result = [_logic,"syncedUnits"] call ALIVE_fnc_hashGet;
         };
 		case "state": {
 				private["_state"];

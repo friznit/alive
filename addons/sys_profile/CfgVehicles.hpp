@@ -29,6 +29,30 @@ class CfgVehicles {
                                         };
                                 };
                         };
+						class syncronised
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SYNC";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SYNC_COMMENT";
+                                class Values
+                                {
+                                        class Add
+                                        {
+                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SYNC_ADD";
+                                                value = "ADD";
+                                        };
+                                        class Ignore
+                                        {
+                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SYNC_IGNORE";
+                                                value = "IGNORE";
+                                        };
+										class None
+                                        {
+                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SYNC_NONE";
+                                                value = "NONE";
+												default = true;
+                                        };
+                                };
+                        };
 						 class spawnRadius
                         {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS";
