@@ -69,4 +69,6 @@ rem %exe% "%arma%\@a2co\@vostok\Addons\vostok.pbo" > %target%\objects.vostok.sqf
 rem %exe% "%arma%\@a2co\@vostok\Addons\vostok_w.pbo" > %target%\objects.vostok_w.sqf
 
 
+:err
+:ENDfailA2
 pause

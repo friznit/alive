@@ -46,6 +46,7 @@ move /Y %source%\*.pbo %target%\
 goto end
 
 :err
+:ENDfailA2
 pause
 
 :end
