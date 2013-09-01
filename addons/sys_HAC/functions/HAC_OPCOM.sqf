@@ -73,7 +73,7 @@ if (_BBSide == "A") then {
 		if ((typeName HAC_BB_MC) == "OBJECT") then {
 			_lng = ((triggerArea HAC_BB_MC) select 0)*2
 		} else {
-			_lng = _logic getvariable ["HAC_BB_MapLng",10000];
+			_lng = _logic getvariable ["HAC_BB_MapLng",20000];
 		};
 
 		_logic setvariable ["HAC_BB_MapXMax", ((_logic getvariable "HAC_BB_MapC") select 0) + _lng/2];
