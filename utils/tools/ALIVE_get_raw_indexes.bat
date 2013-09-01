@@ -1,6 +1,22 @@
 @echo off
 set exe=DeWrp.exe -O
-set arma=C:\Steam\SteamApps\common\Arma 3\
+
+for /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Wow6432Node\Bohemia Interactive Studio\ArmA 3" /v "MAIN"') do (set _FOUNDPATH_A3=%%B)
+if defined _FOUNDPATH_A3 goto found_A3
+ 
+for /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Bohemia Interactive Studio\ArmA 3" /v "MAIN"') do (set _FOUNDPATH_A3=%%B)
+if defined _FOUNDPATH_A3 goto found_A3
+ 
+for /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Wow6432Node\Bohemia Interactive\ArmA 3" /v "MAIN"') do (set _FOUNDPATH_A3=%%B)
+if defined _FOUNDPATH_A3 goto found_A3
+ 
+for /F "Tokens=2* skip=2" %%A In ('REG QUERY "HKLM\SOFTWARE\Bohemia Interactive\ArmA 3" /v "MAIN"') do (set _FOUNDPATH_A3=%%B)
+if defined _FOUNDPATH_A3 goto found_A3
+
+:found_A3
+set _ARMA3_PATH=%_FOUNDPATH_A3%
+
+set arma=%_ARMA3_PATH%
 set target=P:\x\alive\addons\fnc_strategic\indexes
 
 %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
