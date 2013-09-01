@@ -1,4 +1,5 @@
-	private ["_logic","_unit","_sentences","_side","_lastTime","_varName","_sentence","_kind","_lastKind","_exitNow","_chatRep","_repExChance","_ct"];
+/*
+    	private ["_logic","_unit","_sentences","_side","_lastTime","_varName","_sentence","_kind","_lastKind","_exitNow","_chatRep","_repExChance","_ct"];
 
 	_unit = _this select 0;
 	_sentences = _this select 1;
@@ -68,3 +69,5 @@
 		};
 	//player sidechat format ["sent: %1",_sentence];
 	missionNameSpace setVariable ["HAC_AIChatLT" + _varName,[time,_kind]];
+*/
+    
