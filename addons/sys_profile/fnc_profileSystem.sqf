@@ -97,8 +97,6 @@ switch(_operation) do {
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 						
-						["ALIVE Sync Mode: %1 Units: %2",_syncMode,_syncedUnits] call ALIVE_fnc_dump;
-						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
 						[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
