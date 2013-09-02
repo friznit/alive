@@ -386,8 +386,6 @@ switch(_operation) do {
                              	} foreach _pending_orders;
                                 _pending_orders = _pending_orders - ["x"];
                                 [_logic,"pendingorders",_pending_orders] call ALiVE_fnc_HashSet;
-
-                                player sidechat ("killed " + _proID);
                             };
                             
                             //If section is now empty exit and reset the objective
@@ -417,7 +415,6 @@ switch(_operation) do {
 	                            if ((_state == "idle") && {count _section > _size_reserve}) then {
 	                                _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
 	                                if (count _section == _size_reserve) exitwith {};
-	                                player sidechat "reset " + _x;
 	                                [_logic,"resetorders",_x] call ALiVE_fnc_OPCOM;
 	                            };
                             };
@@ -567,7 +564,7 @@ switch(_operation) do {
                 _entArr = [];
                 _seeArr = [];
                 
-                _profiles = [_pos, 600, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
+                _profiles = [_pos, 800, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
                 {
                     if (count _profiles > 0) then {
                         _entArr set [count _entArr,[(_x select 2 select 4),(_x select 2 select 2)]];
@@ -580,7 +577,7 @@ switch(_operation) do {
                     _pos = ATLtoASL _pos;
                     _pos set [2,(_pos select 2) + 2];
                     
-                    if ({(_x select 1) distance _pos < 500} count _entArr > 0) then {
+                    if ({(_x select 1) distance _pos < 600} count _entArr > 0) then {
                         {
                             _id = _x select 0;
                             _posP = ATLtoASL (_x select 1);
@@ -724,14 +721,15 @@ switch(_operation) do {
             _pos = _args;
             _sideEnemy = [_logic,"sideenemy","EAST"] call ALiVE_fnc_HashGet;
             _knownEntities = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
+            _knownEntities = _knownEntities - ["x"];
 
             _visibleEnemies = [_logic,"entitiesnearsector",[_pos,_sideEnemy,true]] call ALiVE_fnc_OPCOM;
 			if (count _visibleEnemies > 0) then {
                 {
                 	_id = _x select 0;
                     _posP = _x select 1;
-                    
-                    if !({(_x select 0) == _id} count _knownEntities > 0) then {
+
+                   if !({(_x select 0) == _id} count _knownEntities > 0) then {
                         _knownEntities set [count _knownEntities,_x];
                     };
                 } foreach _visibleEnemies;
@@ -744,7 +742,7 @@ switch(_operation) do {
         case "attackentity": {
             ASSERT_TRUE(typeName _args == "ARRAY",str _args);
             
-            private ["_target","_size","_type","_knownE","_attackedE","_pos","_profiles","_profile","_section","_profileID","_i"];
+            private ["_target","_size","_type","_knownE","_attackedE","_pos","_profiles","_profileIDs","_profile","_section","_profileID","_i","_waypoints"];
             
             _target = _args select 0;
             _size = _args select 1;
@@ -753,6 +751,7 @@ switch(_operation) do {
             _side = [_logic,"side"] call ALiVE_fnc_Hashget;
             _knownE = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
             _attackedE = [_logic,"attackedentities",[]] call ALiVE_fnc_HashGet;
+            _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"sideenemy",[]] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
             
             _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler; 
             if ((str _profile) == "[]") exitwith {_result = _profile};
@@ -761,7 +760,7 @@ switch(_operation) do {
             _section = [];
             
             {
-                if ((isnil "_x") || {_x select 0 == _target}) then {
+                if ((isnil "_x") || {_x select 0 == _target} || {!((_x select 0) in _profileIDs)}) then {
                     _knownE set [_foreachIndex,"x"];
                     _knownE = _knownE - ["x"];
                     
@@ -770,7 +769,7 @@ switch(_operation) do {
             } foreach _knownE;
             
             {
-            	if ((isnil "_x") || {time - (_x select 3) > 90}) then {
+            	if ((isnil "_x") || {time - (_x select 3) > 90} || {!((_x select 0) in _profileIDs)}) then {
                     _attackedE set [_foreachIndex,"x"];
                     _attackedE = _attackedE - ["x"];
                     
@@ -781,16 +780,22 @@ switch(_operation) do {
             if ({!(isnil "_x") && {_x select 0 == _target}} count _attackedE < 1) then {
 	            switch (_type) do {
 	                case ("infantry") : {
-	                    _profiles = [_pos, 1000, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
+	                    //_profiles = [_pos, 1000, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
+                        _profiles = [_logic,"infantry"] call ALiVE_fnc_HashGet;
 	                };
 	                case ("mechandized") : {
-	                    _profiles = [_pos, 1500, [_side,"vehicle","Car"]] call ALIVE_fnc_getNearProfiles;
+	                    //_profiles = [_pos, 1500, [_side,"vehicle","Car"]] call ALIVE_fnc_getNearProfiles;
 	                };
 	                case ("armored") : {};
-	                case ("air") : {};
+	                case ("air") : {
+                        //_profiles = [_pos, 3000, [_side,"vehicle","Helicopter"]] call ALIVE_fnc_getNearProfiles;
+                        _profiles = [_logic,"air"] call ALiVE_fnc_HashGet;
+                    };
 	            };
                 
                 if (count _profiles > 0) then {
+                    
+                    _profiles = [_profiles,[],{_p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; ([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos},"ASCEND"] call BIS_fnc_sortBy;
 
                     _i = 0;
 	                while {count _section < _size} do {
@@ -798,20 +803,28 @@ switch(_operation) do {
                         
                         if (_i >= count _profiles) exitwith {};
                         
-                        _profileID = ((_profiles select _i) select 2) select 4;
+                        _profileID = (_profiles select _i);
+                        _profile = ([ALiVE_ProfileHandler,"getProfile",_profileID] call ALiVE_fnc_profileHandler);
+                        _waypoints = [_profile,"waypoints"] call ALIVE_fnc_hashGet;
                         
-                        if ({!(isnil "_x") && {_profileID in (_x select 2)}} count _attackedE < 1) then {
+                        if (({!(isnil "_x") && {_profileID in (_x select 2)}} count _attackedE) < 1 && {count _waypoints <= 2}) then {
                             _profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
-							[(_profiles select _i),"insertWaypoint",_profileWaypoint] call ALIVE_fnc_profileEntity;
-                        	_section set [count _section, ((_profiles select _i) select 2) select 4];
+							[_profile,"insertWaypoint",_profileWaypoint] call ALIVE_fnc_profileEntity;
+                        	_section set [count _section, _profileID];
+                        } else {
+                            //player sidechat format["Entity %1 is already on attack mission...!",_profileID];
                         };
-                        
                         _i = _i + 1;
             		};
                     
-                    _attackedE set [count _attackedE,[_target,_pos,_section,time]];
-	                [_logic,"attackedentities",_attackedE] call ALiVE_fnc_HashSet;
+                    if (count _section > 0) then {
+                    	_attackedE set [count _attackedE,[_target,_pos,_section,time]];
+	                	[_logic,"attackedentities",_attackedE] call ALiVE_fnc_HashSet;
+                        //player sidechat format["Group %1 is attacked by %2",_target, _section];
+                    };
                 };
+            } else {
+                //player sidechat format["Target %1 already beeing attacked, dead or not existing for any reason...!",_target];
             };
             
             _result = _section;
@@ -929,7 +942,10 @@ switch(_operation) do {
                     _troops = [_logic,"sea",[]] call ALiVE_fnc_HashGet;
                 };
                 case ("all") : {
-                    _troops = ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"motorized",[]] call ALiVE_fnc_HashGet) + ([_logic,"mechanized",[]] call ALiVE_fnc_HashGet) + ([_logic,"armored",[]] call ALiVE_fnc_HashGet) + ([_logic,"air",[]] call ALiVE_fnc_HashGet) + ([_logic,"sea",[]] call ALiVE_fnc_HashGet);
+                    _troops = ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"motorized",[]] call ALiVE_fnc_HashGet) + ([_logic,"mechanized",[]] call ALiVE_fnc_HashGet) + ([_logic,"armored",[]] call ALiVE_fnc_HashGet) + ([_logic,"air",[]] call ALiVE_fnc_HashGet) + ([_logic,"sea",[]] call ALiVE_fnc_HashGet);
+                };
+                case ("land") : {
+                    _troops = ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"motorized",[]] call ALiVE_fnc_HashGet) + ([_logic,"mechanized",[]] call ALiVE_fnc_HashGet) + ([_logic,"armored",[]] call ALiVE_fnc_HashGet);
                 };
             };
             
