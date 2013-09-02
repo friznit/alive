@@ -147,19 +147,22 @@ switch(_operation) do {
 						_profileSpawnerFSM = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 												
 						// run grid analysis
-						[] spawn { 
+						[_debug] spawn { 
+							_debug = _this select 0;
 							waituntil {
 								sleep 90;
 								
 								private ["_sectors","_sectorData"];
 								
 								// DEBUG -------------------------------------------------------------------------------------
-								["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-								["ALIVE Grid analysis for profile positions"] call ALIVE_fnc_dump;
+								if(_debug) then {
+									["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+									["ALIVE Grid analysis for profile positions"] call ALIVE_fnc_dump;
+								};
 								// DEBUG -------------------------------------------------------------------------------------
 								
 								// run profile analysis on all sectors
-								_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;						
+								_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;				
 								
 								// clear the sector data plot
 								[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
