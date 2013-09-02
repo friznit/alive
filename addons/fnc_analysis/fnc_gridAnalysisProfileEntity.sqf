@@ -26,7 +26,8 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_grid","_err","_profilesBySide","_sectors","_sideProfiles","_side","_profiles","_profile","_profileType","_profileActive","_leader","_position","_sector","_sectorData","_sideProfile"];
+private ["_grid","_err","_profilesBySide","_sectors","_updatedSectors","_sideProfiles","_side","_profiles",
+"_profile","_profileID","_profileType","_profileActive","_leader","_position","_sector","_sectorData","_sideProfile"];
 
 _grid = _this select 0;
 
@@ -37,11 +38,12 @@ _grid = _this select 0;
 //[true] call ALIVE_fnc_timer;
 
 _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
+_updatedSectors = [];
 
 {
 	_sector = _x;
 	
-	_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
+	_sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
 		
 	if("entitiesBySide" in (_sectorData select 1)) then {
 		_sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
@@ -57,67 +59,62 @@ _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
 //[] call ALIVE_fnc_timer;
 
-
 // run analysis on all profiles
 
 //["ANALYSE PROFILES"] call ALIVE_fnc_dump;
 //[true] call ALIVE_fnc_timer;
 
-_profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGet;
+_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 
 {
-	_side = _x;
-	_profiles = [_profilesBySide, _side] call ALIVE_fnc_hashGet;
+	_profile = _x;
 	
-	{
-		_profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+	_profileID = _profile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+	_profileType = _profile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
+	_profileActive = _profile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
+	_side = _profile select 2 select 3; //[_profile, "active"] call ALIVE_fnc_hashGet;
+	
+	if(_profileType == "entity") then {
+	
+		if(_profileActive) then {
+			_leader = _profile select 2 select 10; //[_profile,"leader"] call ALIVE_fnc_hashGet;
+			_position = getPosATL _leader;
+		} else {
+			_position = _profile select 2 select 2; //[_profile, "position"] call ALIVE_fnc_hashGet;
+		};		
+	
+		_sector = [_grid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
+		_sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
+				
+		//_sectorData call ALIVE_fnc_inspectHash;
 		
-		//_profile call ALIVE_fnc_inspectHash;
-
-		if(count _profile > 0) then {
-		
-			_profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
-			_profileActive = [_profile, "active"] call ALIVE_fnc_hashGet;
+		if("entitiesBySide" in (_sectorData select 1)) then {
+			_sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+			_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;
+		}else{
+			_sideProfiles = [] call ALIVE_fnc_hashCreate;
+			[_sideProfiles, "EAST", []] call ALIVE_fnc_hashSet;
+			[_sideProfiles, "WEST", []] call ALIVE_fnc_hashSet;
+			[_sideProfiles, "CIV", []] call ALIVE_fnc_hashSet;
+			[_sideProfiles, "GUER", []] call ALIVE_fnc_hashSet;
 			
-			if(_profileType == "entity") then {
-				
-				if(_profileActive) then {
-					_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
-					_position = getPosATL _leader;
-				} else {
-					_position = [_profile, "position"] call ALIVE_fnc_hashGet;
-				};		
-					
-				_sector = [_grid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
-				_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-				
-				//_sectorData call ALIVE_fnc_inspectHash;
-				
-				if("entitiesBySide" in (_sectorData select 1)) then {
-					_sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
-					_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;
-				}else{
-					_sideProfiles = [] call ALIVE_fnc_hashCreate;
-					[_sideProfiles, "EAST", []] call ALIVE_fnc_hashSet;
-					[_sideProfiles, "WEST", []] call ALIVE_fnc_hashSet;
-					[_sideProfiles, "CIV", []] call ALIVE_fnc_hashSet;
-					[_sideProfiles, "GUER", []] call ALIVE_fnc_hashSet;
-					
-					[_sector, "data", ["entitiesBySide",_sideProfiles]] call ALIVE_fnc_sector;
-					
-					_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;			
-				};
-				
-				_sideProfile set [count _sideProfile, [_x,_position]];
-				
-				// store the result of the analysis on the sector instance
-				[_sector, "data", ["entitiesBySide",_sideProfiles]] call ALIVE_fnc_sector;
-			};
+			[_sector, "data", ["entitiesBySide",_sideProfiles]] call ALIVE_fnc_sector; 
 			
+			_sideProfile = [_sideProfiles, _side] call ALIVE_fnc_hashGet;			
 		};
 		
-	} forEach _profiles;
+		_sideProfile set [count _sideProfile, [_profileID,_position]];
+		
+		// store the result of the analysis on the sector instance
+		[_sector, "data", ["entitiesBySide",_sideProfiles]] call ALIVE_fnc_sector;
+		
+		if!(_sector in _updatedSectors) then {
+			_updatedSectors set [count _updatedSectors, _sector];
+		};
+	};
 	
-} forEach (_profilesBySide select 1);
+} forEach (_profiles select 2);
 
 //[] call ALIVE_fnc_timer;
+
+_updatedSectors

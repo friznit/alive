@@ -654,6 +654,7 @@ switch(_operation) do {
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
 						//["Profile [%1] Spawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+						[_logic,"debug",true] call MAINCLASS;
 					};
 					// DEBUG -------------------------------------------------------------------------------------
 				};
@@ -718,6 +719,7 @@ switch(_operation) do {
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
 						//["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+						[_logic,"debug",true] call MAINCLASS;
 					};
 					// DEBUG -------------------------------------------------------------------------------------
 				};

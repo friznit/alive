@@ -134,41 +134,22 @@ switch(_operation) do {
 							["ALIVE Map units converted to profiles"] call ALIVE_fnc_dump;
 							["ALIVE Profile initial analysis complete"] call ALIVE_fnc_dump;
 							["ALIVE Simulation controller created"] call ALIVE_fnc_dump;
-							["ALIVE View controller created"] call ALIVE_fnc_dump;
+							["ALIVE Spawn controller created"] call ALIVE_fnc_dump;
 							[] call ALIVE_fnc_timer;
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;					
 						};
 						// DEBUG -------------------------------------------------------------------------------------
-							
-						// start the profile controller FSM
-						/*
-						_handle = [_logic,_spawnRadius] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
-						[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
-						*/
+
+						// start the profile simulator
+						_profileSimulatorFSM = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
 						
-						_handle = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
-						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
-						
-						_handle = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						//[_logic, "controller_FSM",_handle] call ALiVE_fnc_HashSet;
+						// start the profile spawner
+						_profileSpawnerFSM = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 												
-						
-						// start profile simulation with debug enabled
-						/*
-						[_debug] spawn {
-							_debug = _this select 0;
-							[_debug] call ALIVE_fnc_simulateProfileMovement
-						};
-						*/
-						
-						/*
-						// start profile spawner with activation radius of 1000m and debug enabled
-						[] spawn {[1000,false] call ALIVE_fnc_profileSpawner};
-						
 						// run grid analysis
 						[] spawn { 
 							waituntil {
-								sleep 240;
+								sleep 90;
 								
 								private ["_sectors","_sectorData"];
 								
@@ -178,27 +159,20 @@ switch(_operation) do {
 								// DEBUG -------------------------------------------------------------------------------------
 								
 								// run profile analysis on all sectors
-								[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
-								
-								// DEBUG -------------------------------------------------------------------------------------
-								// display visual representation of sector data
-								
-								_sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
+								_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;						
 								
 								// clear the sector data plot
 								[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
 								
 								// plot the sector data
 								[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
-								// DEBUG -------------------------------------------------------------------------------------
-								
-										
+																		
 								sleep 5;		
 								
 								false 
 							};
 						};
-						*/
+						
                 };
         };
         case "destroy": {                

@@ -133,7 +133,7 @@ switch(_operation) do {
 				_id = [_sector, "id"] call ALIVE_fnc_sector;
 				_bounds = [_sector, "bounds"] call ALIVE_fnc_sector;
 				_dimensions = [_sector, "dimensions"] call ALIVE_fnc_sector;
-				_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
+				_sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
 				
 				switch(_key) do {
 						case "units": {
@@ -217,9 +217,9 @@ switch(_operation) do {
 								
 								if(_eastCount > 0) then {
 									if(_eastCount > 0) then { _alpha = 0.2; };
-									if(_eastCount > 10) then { _alpha = 0.3; };
-									if(_eastCount > 20) then { _alpha = 0.4; };
-									if(_eastCount > 30) then { _alpha = 0.5; };
+									if(_eastCount > 2) then { _alpha = 0.3; };
+									if(_eastCount > 4) then { _alpha = 0.4; };
+									if(_eastCount > 6) then { _alpha = 0.5; };
 
 									_markerID = format[MTEMPLATE, format["%1ee%2",_plotterID,_id]];
 									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorRed"] call _createMarker;												
@@ -228,9 +228,9 @@ switch(_operation) do {
 								
 								if(_westCount > 0) then {
 									if(_westCount > 0) then { _alpha = 0.2; };
-									if(_westCount > 10) then { _alpha = 0.3; };
-									if(_westCount > 20) then { _alpha = 0.4; };
-									if(_westCount > 30) then { _alpha = 0.5; };
+									if(_westCount > 2) then { _alpha = 0.3; };
+									if(_westCount > 4) then { _alpha = 0.4; };
+									if(_westCount > 6) then { _alpha = 0.5; };
 									
 									_markerID = format[MTEMPLATE, format["%1ew%2",_plotterID,_id]];
 									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorBlue"] call _createMarker;												
@@ -239,9 +239,9 @@ switch(_operation) do {
 								
 								if(_civCount > 0) then {
 									if(_civCount > 0) then { _alpha = 0.2; };
-									if(_civCount > 10) then { _alpha = 0.3; };
-									if(_civCount > 20) then { _alpha = 0.4; };
-									if(_civCount > 30) then { _alpha = 0.5; };
+									if(_civCount > 2) then { _alpha = 0.3; };
+									if(_civCount > 4) then { _alpha = 0.4; };
+									if(_civCount > 6) then { _alpha = 0.5; };
 									
 									_markerID = format[MTEMPLATE, format["%1ec%2",_plotterID,_id]];
 									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorGreen"] call _createMarker;												
@@ -250,9 +250,9 @@ switch(_operation) do {
 								
 								if(_guerCount > 0) then {
 									if(_guerCount > 0) then { _alpha = 0.2; };
-									if(_guerCount > 10) then { _alpha = 0.3; };
-									if(_guerCount > 20) then { _alpha = 0.4; };
-									if(_guerCount > 30) then { _alpha = 0.5; };
+									if(_guerCount > 2) then { _alpha = 0.3; };
+									if(_guerCount > 4) then { _alpha = 0.4; };
+									if(_guerCount > 6) then { _alpha = 0.5; };
 									
 									_markerID = format[MTEMPLATE, format["%1eg%2",_plotterID,_id]];
 									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorYellow"] call _createMarker;												

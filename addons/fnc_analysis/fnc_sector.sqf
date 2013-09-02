@@ -147,9 +147,9 @@ switch(_operation) do {
                         TRACE_1("After module init",_logic);
 
 						// set defaults
-						[_logic,"gridID","grid"] call ALIVE_fnc_hashSet;
-						[_logic,"debugColor","ColorBlack"] call ALIVE_fnc_hashSet;
 						[_logic,"data",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+						[_logic,"gridID","grid"] call ALIVE_fnc_hashSet;
+						[_logic,"debugColor","ColorBlack"] call ALIVE_fnc_hashSet;						
                 };
                 
                 /*
