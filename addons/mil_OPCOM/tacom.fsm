@@ -11,7 +11,7 @@ item6[] = {"",7,210,174.604492,1.165148,182.604553,9.165155,0.000000,""};
 item7[] = {"DEFEND_condition",4,218,-197.909698,270.277069,-107.909790,320.277069,2.000000,"DEFEND" \n "conditions"};
 item8[] = {"RESERVE_conditio",4,218,-98.860970,268.983917,-8.860947,318.983917,1.000000,"RESERVE" \n "conditions"};
 item9[] = {"CUSTOM_condition",4,218,5.405207,267.636688,95.405060,317.636871,0.000000,"CUSTOM" \n "conditions"};
-item10[] = {"ISSUE_ORDERS",2,4346,-405.948853,673.407532,93.318497,717.610718,0.000000,"ISSUE ORDERS"};
+item10[] = {"ISSUE_ORDERS",2,250,-405.948853,673.407532,93.318497,717.610718,0.000000,"ISSUE ORDERS"};
 item11[] = {"GROUP_NOT_CONFIR",4,218,-146.461060,733.516846,-56.461060,783.517090,0.000000,"GROUP" \n "NOT" \n "CONFIRM"};
 item12[] = {"GROUP_CONFIRM",4,218,-250.579010,734.345947,-160.579208,784.346069,0.000000,"GROUP" \n "CONFIRM"};
 item13[] = {"",7,210,-509.836731,753.771851,-501.836670,761.771851,0.000000,""};
@@ -24,7 +24,7 @@ item19[] = {"RECON_Conditions",4,218,-399.338531,271.491608,-309.338531,321.4916
 item20[] = {"COLLECT_TO_QUEUE",2,250,-191.535400,70.489761,-101.535316,120.489708,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.571014,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
-item23[] = {"SELECT_SECTION",2,250,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
+item23[] = {"SELECT_SECTION",2,4346,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
 item24[] = {"SECTION_SELECTED",4,218,-197.466095,422.042877,-107.466232,472.042908,0.000000,"SECTION" \n "SELECTED"};
 item25[] = {"PREPARE_ORDERS",2,250,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
 item26[] = {"PREPARED",4,218,-202.116547,569.103699,-112.116524,619.103699,0.000000,"PREPARED"};
@@ -74,8 +74,8 @@ link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,26};
 link32[] = {26,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-651.469971,316.913574,1017.395996,-72.578300,669,753,1};
-window[] = {0,-1,-1,-1,-1,1082,198,1821,198,1,686};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-651.469971,316.913574,1017.395996,-72.578300,629,753,1};
+window[] = {0,-1,-1,-1,-1,963,142,1765,79,1,646};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -158,14 +158,7 @@ class FSM
        "	switch (_DATA_OPERATION) do {" \n
        "" \n
        "		case (""analyze_internal"") : {" \n
-       "" \n
-       "			_knownE = [_OPCOM_HANDLER,""knownentities"",[]] call ALiVE_fnc_HashGet;" \n
-       "" \n
-       "			if (count _knownE > 0) then {" \n
-       "				_grp = _knownE select 0 select 0;" \n
-       "				_attackers = [_OPCOM_HANDLER, ""attackentity"",[_knownE select 0 select 0,2,""infantry""]] call ALIVE_fnc_OPCOM;" \n
-       "				player sidechat format[""Group %1 is attacked by %2"",_grp, _attackers];" \n
-       "			};" \n
+       "		// Empty for now" \n
        "		};" \n
        "		" \n
        "		//Analyze sent data" \n
@@ -180,6 +173,22 @@ class FSM
        "				//[true] call ALIVE_fnc_timer;" \n
        "			};" \n
        "			// debug ---------------------------------------		" \n
+       "" \n
+       "			//Attack reported enemy directly" \n
+       "			if (count ([_OPCOM_HANDLER,""knownentities"",[]] call ALiVE_fnc_HashGet) > 0) then {" \n
+       "" \n
+       "				_trgt = ([_OPCOM_HANDLER,""knownentities"",[]] call ALiVE_fnc_HashGet) select 0 select 0;" \n
+       "				_prf = [ALIVE_profileHandler, ""getProfile"",_trgt] call ALIVE_fnc_profileHandler; " \n
+       "				_ass= ([_prf,""vehicleAssignments""] call ALIVE_fnc_hashGet) select 1;" \n
+       "" \n
+       "				if (count _ass > 0) then {" \n
+       "					// Attack with an air vehicle if target is in a vehicle" \n
+       "					_attackers = [_OPCOM_HANDLER, ""attackentity"",[_trgt,1,""air""]] call ALIVE_fnc_OPCOM;" \n
+       "				} else {" \n
+       "					// Send infantry groups if target is not in a vehicle" \n
+       "					_attackers = [_OPCOM_HANDLER, ""attackentity"",[_trgt,2,""infantry""]] call ALIVE_fnc_OPCOM;" \n
+       "				};" \n
+       "			};" \n
        "" \n
        "			//select internal TACOM orders by global OPCOM order and set appropriate conditions for execution" \n
        "			switch (_opcom_orders) do {" \n
@@ -247,21 +256,13 @@ class FSM
        "" \n
        "			switch (_state) do {" \n
        "				case (""recon"") : {" \n
-       "" \n
-       "						_visibleEnemies = [_OPCOM_HANDLER,""scanenemies"",_posP] call ALiVE_fnc_OPCOM;" \n
-       "						if (count _visibleEnemies > 0) then {" \n
-       "" \n
-       "							_direction = [(_visibleEnemies select 0 select 1), _posP] call BIS_fnc_dirTo;" \n
-       "							_newPosition = [(_visibleEnemies select 0 select 1), 100, _direction] call BIS_fnc_relPos;" \n
-       "							_profileWaypoint = [_newPosition, 50] call ALIVE_fnc_createProfileWaypoint;" \n
-       "							_waypoint = [_profile,""insertWaypoint"",_profileWaypoint] call ALIVE_fnc_profileEntity;" \n
-       "						};" \n
-       "" \n
        "					if !([_OPCOM_HANDLER,""synchronizeorders"",_ProfileID] call ALiVE_fnc_OPCOM) exitwith {" \n
        "						// debug ---------------------------------------" \n
        "						if(_debug) then { [""TACOM %1 regrouping! Waiting for %2 groups!"",_ProfileID,({_objectiveID == (_x select 2)} count ([_OPCOM_HANDLER,""pendingorders"",[]] call ALiVE_fnc_HashGet))] call ALIVE_fnc_dumpR; };" \n
        "						// debug ---------------------------------------" \n
        "					};" \n
+       "						//Scan for visible enemies (done only once on recon for performance sake - regulary scan every 2 minutes done by OPCOM)" \n
+       "						_visibleEnemies = [_OPCOM_HANDLER,""scanenemies"",_posP] call ALiVE_fnc_OPCOM;" \n
        "" \n
        "						// TBD: Calculate danger level depending on recon outcome (sector analysis)" \n
        "						[_objective,""danger"",5] call AliVE_fnc_HashSet;" \n
@@ -688,7 +689,7 @@ class FSM
        "		_size = _this select 1 select 1;" \n
        "		_pos = ([_objective,""center""] call ALiVE_fnc_HashGet);" \n
        "" \n
-       "		_sectionAssist = [_this select 0,""NearestAvailableSectionNew"",[_pos,_size,""infantry""]] call ALiVE_fnc_OPCOM;" \n
+       "		_sectionAssist = [_this select 0,""NearestAvailableSectionNew"",[_pos,_size,""land""]] call ALiVE_fnc_OPCOM;" \n
        "		[_objective, ""sectionAssist"",_sectionAssist] call ALiVE_fnc_HashSet;" \n
        "	};" \n
        "} else {" \n

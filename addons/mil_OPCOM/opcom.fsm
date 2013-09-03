@@ -1,9 +1,9 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-929.164673,-375.286652,-839.164551,-325.286652,5.000000,"ATTACK" \n "Conditions"};
 item5[] = {"",7,210,-345.692139,-136.027100,-337.692108,-128.027069,0.000000,""};
@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1544.890259,-234.916107,59.018250,-1016.039978,1132,929,1};
-window[] = {2,-1,-1,-1,-1,971,22,1755,22,3,1149};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1512.789307,-267.017242,32.673752,-989.695679,1132,929,1};
+window[] = {2,-1,-1,-1,-1,1169,220,1953,220,3,1149};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -145,6 +145,7 @@ class FSM
        "						for ""_i"" from 1 to 15 do {" \n
        "							_objectives_unsorted set [count _objectives_unsorted,[(getmarkerpos format[""m_%1"",_i]),150,""civilian"",25]];" \n
        "						};" \n
+       "" \n
        "" \n
        "						_objectives_unsorted = [" \n
        "									[[2815.68,1190.84,0],150,""civilian"",25]," \n
@@ -296,7 +297,6 @@ class FSM
        "			_idle = ({(_x select 2 select 5) == ""idle""} count _obj);" \n
        "			_active = _attacking + _defending;" \n
        "" \n
-       "			_active = 1;" \n
        "			_targetsTaken = _targetOccupation select 0;" \n
        "			_targetsAttacked = _targetOccupation select 1;" \n
        "			_targetsTakenEnemy = _targetOccupation select 2;" \n
@@ -692,12 +692,22 @@ class FSM
     class PERFORM_ANALYSIS
     {
       name = "PERFORM_ANALYSIS";
-      init = /*%FSM<STATEINIT""">*/"private [""_clusterOccupationAnalysis"",""_troopsAnalysis""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_clusterOccupationAnalysis"",""_troopsAnalysis"",""_enemyScan""];" \n
        "" \n
        "switch (_analyze) do {" \n
        "	case (""analysis"") : {" \n
        "		_clusterOccupationAnalysis = [_OPCOM_HANDLER,_side,_sideEnemy] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 1,_this select 2]] call ALiVE_fnc_OPCOM};" \n
        "		_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
+       "		" \n
+       "		_enemyScan = [_OPCOM_HANDLER,_side] spawn {" \n
+       "			private [""_profiles"",""_pos""];" \n
+       "" \n
+       "			_profiles = [ALiVE_ProfileHandler,""getProfilesBySide"",_this select 1] call ALiVE_fnc_ProfileHandler;" \n
+       "			{" \n
+       "				_pos = [([ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler),""position""] call ALiVE_fnc_HashGet;" \n
+       "				_visibleEnemies = [_this select 0,""scanenemies"",_pos] call ALiVE_fnc_OPCOM;" \n
+       "			} foreach _profiles;" \n
+       "		};" \n
        "	};" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -709,7 +719,7 @@ class FSM
           priority = 0.000000;
           to="RESET";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"scriptdone _troopsAnalysis && scriptdone _clusterOccupationAnalysis;"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _troopsAnalysis && scriptdone _clusterOccupationAnalysis && scriptdone _enemyScan;"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
