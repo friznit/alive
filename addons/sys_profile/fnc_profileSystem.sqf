@@ -123,6 +123,11 @@ switch(_operation) do {
 						ALIVE_arrayBlockHandler = [nil, "create"] call ALIVE_fnc_arrayBlockHandler;
 						[ALIVE_arrayBlockHandler, "init"] call ALIVE_fnc_arrayBlockHandler;
 						
+						// create command router
+						ALIVE_commandRouter = [nil, "create"] call ALIVE_fnc_commandRouter;
+						[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
+						[ALIVE_commandRouter, "debug", _debug] call ALIVE_fnc_commandRouter;
+						
 						// run initial profile analysis
 						[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
 
@@ -132,7 +137,6 @@ switch(_operation) do {
 							["ALIVE Sector grid created"] call ALIVE_fnc_dump;
 							["ALIVE Profile handler created"] call ALIVE_fnc_dump;
 							["ALIVE Map units converted to profiles"] call ALIVE_fnc_dump;
-							["ALIVE Profile initial analysis complete"] call ALIVE_fnc_dump;
 							["ALIVE Simulation controller created"] call ALIVE_fnc_dump;
 							["ALIVE Spawn controller created"] call ALIVE_fnc_dump;
 							[] call ALIVE_fnc_timer;

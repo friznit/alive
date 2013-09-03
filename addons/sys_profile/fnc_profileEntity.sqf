@@ -259,7 +259,7 @@ switch(_operation) do {
 						[_logic,"companyID",""] call ALIVE_fnc_hashSet; // select 2 select 14			
 						[_logic,"groupID",""] call ALIVE_fnc_hashSet; // select 2 select 15
 						[_logic,"waypoints",[]] call ALIVE_fnc_hashSet; // select 2 select 16
-						[_logic,"waypointsCompleted",[]] call ALIVE_fnc_hashSet; // select 2 select 17						
+						[_logic,"waypointsCompleted",[]] call ALIVE_fnc_hashSet; // select 2 select 17				
 						[_logic,"positions",[]] call ALIVE_fnc_hashSet; // select 2 select 18
 						[_logic,"damages",[]] call ALIVE_fnc_hashSet; // select 2 select 19
 						[_logic,"ranks",[]] call ALIVE_fnc_hashSet; // select 2 select 20
@@ -268,6 +268,8 @@ switch(_operation) do {
 						[_logic,"despawnPosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 23
 						[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 24
 						[_logic,"isCycling",false] call ALIVE_fnc_hashSet; // select 2 select 25
+						[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 26
+						[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 27
                 };
 
                 /*
@@ -497,6 +499,43 @@ switch(_operation) do {
 						};
 				}
 		};
+		case "addActiveCommand": {
+				private ["_activeCommands"];
+
+				if(typeName _args == "ARRAY") then {
+						
+						_activeCommands = _logic select 2 select 26; //[_logic,"commands"] call ALIVE_fnc_hashGet;
+						_activeCommands set [count _activeCommands, _args];
+                };
+		};
+		case "clearActiveCommands": {
+				private ["_activeCommands"];
+				
+				_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				
+				if(count _activeCommands > 0) then {
+					[ALIVE_commandRouter, "deactivate", [_logic, _activeCommands]] call ALIVE_fnc_commandRouter;
+					[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet;
+				};				
+		};
+		case "addInactiveCommand": {
+				private ["_inactiveCommands"];
+
+				if(typeName _args == "ARRAY") then {
+						_inactiveCommands = _logic select 2 select 27; //[_logic,"commands"] call ALIVE_fnc_hashGet;
+						_inactiveCommands set [count _inactiveCommands, _args];
+                };
+		};
+		case "clearInactiveCommands": {
+				private ["_inactiveCommands"];
+				
+				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				
+				if(count _inactiveCommands > 0) then {
+					[ALIVE_commandRouter, "deactivate", [_logic, _inactiveCommands]] call ALIVE_fnc_commandRouter;
+					[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet;
+				};
+		};
 		case "mergePositions": {
 				private ["_position","_unitCount","_positions"];
 
@@ -584,7 +623,8 @@ switch(_operation) do {
 		};
 		case "spawn": {
 				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
-				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_group","_unitPosition","_eventID","_waypointCount","_unitCount","_units","_unit"];
+				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_activeCommands","_inactiveCommands","_group","_unitPosition","_eventID",
+				"_waypointCount","_unitCount","_units","_unit"];
 				
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
@@ -599,6 +639,8 @@ switch(_operation) do {
 				_waypoints = _logic select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
 				_waypointsCompleted = _logic select 2 select 17; //[_entityProfile,"waypointsCompleted"] call ALIVE_fnc_hashGet;
 				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				
 				_unitCount = 0;
 				_units = [];
@@ -648,6 +690,14 @@ switch(_operation) do {
 					// create vehicle assignments from profile vehicle assignments
 					[_vehicleAssignments, _logic] call ALIVE_fnc_profileVehicleAssignmentsToVehicleAssignments;
 					
+					// process commands
+					if(count _inactiveCommands > 0) then {
+						[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
+					};
+					if(count _activeCommands > 0) then {
+						[ALIVE_commandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_commandRouter;
+					};
+					
 					// store the profile id on the active profiles index
 					[ALIVE_profileHandler,"setActive",_profileID] call ALIVE_fnc_profileHandler;
 					
@@ -660,7 +710,7 @@ switch(_operation) do {
 				};
 		};
 		case "despawn": {
-				private ["_debug","_group","_leader","_units","_positions","_damages","_ranks","_active","_profileID","_unitCount","_waypoints",
+				private ["_debug","_group","_leader","_units","_positions","_damages","_ranks","_active","_profileID","_activeCommands","_inactiveCommands","_unitCount","_waypoints",
 				"_profileWaypoint","_unit","_vehicle","_vehicleID","_profileVehicle","_profileVehicleAssignments","_assignments","_vehicleAssignments"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -672,6 +722,8 @@ switch(_operation) do {
 				_ranks = _logic select 2 select 20; //[_logic,"ranks"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+				_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				
 				_unitCount = 0;
 
@@ -713,6 +765,14 @@ switch(_operation) do {
 					[_logic,"group", objNull] call ALIVE_fnc_hashSet;
 					[_logic,"units", []] call ALIVE_fnc_hashSet;
 					
+					// process commands
+					if(count _activeCommands > 0) then {
+						[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
+					};
+					if(count _inactiveCommands > 0) then {
+						[ALIVE_commandRouter, "activate", [_logic, _inactiveCommands]] call ALIVE_fnc_commandRouter;
+					};
+					
 					// store the profile id on the in active profiles index
 					[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
 					
@@ -727,6 +787,10 @@ switch(_operation) do {
 		case "handleDeath": {
 				if(typeName _args == "OBJECT") then {
 					_result = [_logic, "removeUnitByObject", _args] call MAINCLASS;
+					
+					if!(_result) then {
+						[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
+					};
 				};
 		};
         default {
