@@ -754,7 +754,7 @@ switch(_operation) do {
             _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"sideenemy",[]] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
             
             _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler; 
-            if ((str _profile) == "[]") exitwith {_result = _profile};
+            if (count _profile < 1) exitwith {_result = _profile};
             
             _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
             _section = [];
@@ -795,7 +795,7 @@ switch(_operation) do {
                 
                 if (count _profiles > 0) then {
                     
-                    _profiles = [_profiles,[],{_p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; ([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos},"ASCEND"] call BIS_fnc_sortBy;
+                    _profiles = [_profiles,[],{_p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if (count _p > 0) then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos}},"ASCEND"] call BIS_fnc_sortBy;
 
                     _i = 0;
 	                while {count _section < _size} do {
