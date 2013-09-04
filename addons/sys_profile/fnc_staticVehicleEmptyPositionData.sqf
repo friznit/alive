@@ -3,7 +3,6 @@ SCRIPT(staticVehicleEmptyPositionData);
 
 
 
-
 /* ----------------------------------------------------------------------------
 Function;
  ALIVE_fnc_staticVehicleEmptyPositionDatas
