@@ -28,7 +28,7 @@ link3[] = {5,3};
 link4[] = {5,6};
 link5[] = {6,5};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,93,6316128,1,-384.671082,187.342346,395.960999,-323.929016,851,1030,1};
-window[] = {2,-1,-1,-1,-1,1132,-1686,-63,234,3,869};
+window[] = {2,-1,-1,-1,-1,976,-1842,-219,78,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -44,7 +44,7 @@ class FSM
        " To be used when profile is active" \n
        "*/" \n
        "" \n
-       "private [""_profile"",""_args"",""_destroy"",""_debug""];" \n
+       "private [""_profile"",""_args"",""_destroy"",""_debug"",""_profileID"",""_leader"",""_group"",""_units"",""_testWait"",""_iteration""];" \n
        "" \n
        "_profile = _this select 0;" \n
        "_args = _this select 1;" \n
@@ -52,14 +52,16 @@ class FSM
        "" \n
        "_destroy = false;" \n
        "" \n
+       "_profileID = _profile select 2 select 4;" \n
        "_leader = _profile select 2 select 10;" \n
        "_group = _profile select 2 select 13;" \n
        "_units = _profile select 2 select 21;" \n
        "" \n
        "_testWait = 5;" \n
+       "_iteration = 0;" \n
        "" \n
        "// debug ---------------------------------------" \n
-       "if(_debug) then { [""Test Command FSM Init""] call ALIVE_fnc_dump; };" \n
+       "if(_debug) then { [""ALiVE Executed FSM Command - [%1] called args: %2"",_profileID,_args] call ALIVE_fnc_dump; };" \n
        "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -82,7 +84,7 @@ class FSM
     {
       name = "END";
       init = /*%FSM<STATEINIT""">*/"// debug ---------------------------------------" \n
-       "if(_debug) then { [""Test Command Destroyed""] call ALIVE_fnc_dump; };" \n
+       "if(_debug) then { [""ALiVE Executed FSM Command - [%1] destroy"",_profileID] call ALIVE_fnc_dump; };" \n
        "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -95,8 +97,10 @@ class FSM
     {
       name = "ACTION";
       init = /*%FSM<STATEINIT""">*/"// debug ---------------------------------------" \n
-       "if(_debug) then { [""Test FSM Command Action""] call ALIVE_fnc_dump; };" \n
+       "if(_debug) then { [""ALiVE Executed FSM Command - [%1] iteration: %2"",_profileID,_iteration] call ALIVE_fnc_dump; };" \n
        "// debug ---------------------------------------" \n
+       "" \n
+       "_iteration = _iteration + 1;" \n
        "" \n
        "_startWait = time;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;

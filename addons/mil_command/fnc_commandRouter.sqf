@@ -20,7 +20,7 @@ Boolean - state - Store or restore state of analysis
 
 Examples:
 (begin example)
-// create a sector
+// create the command router
 _logic = [nil, "create"] call ALIVE_fnc_commandRouter;
 
 (end)
@@ -64,7 +64,10 @@ switch(_operation) do {
                         TRACE_1("After module init",_logic);
 
 						// set defaults
-						[_logic,"commandState",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+						[_logic,"debug",false] call ALIVE_fnc_hashSet; // select 2 select 0
+						[_logic,"commandState",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet; // select 2 select 1
+						[_logic,"isManaging",false] call ALIVE_fnc_hashSet; // select 2 select 2
+						[_logic,"managerHandle",objNull] call ALIVE_fnc_hashSet; // select 2 select 3
                 };
                 
                 /*
@@ -125,65 +128,102 @@ switch(_operation) do {
 				if(typeName _args == "ARRAY") then {
 				
 					private ["_profile","_commands","_profileID","_activeCommand","_commandName",
-					"_commandType","_commandArgs","_handle"];
+					"_commandType","_commandArgs","_debug","_handle","_isManaging"];
 				
 					_profile = _args select 0;
 					_commands = _args select 1;
 					
-					_profileID = _profile select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+					_profileID = _profile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
 					
+					// get the active command vars
 					_activeCommand = _commands select 0;
 					_commandName = _activeCommand select 0;
 					_commandType = _activeCommand select 1;
 					_commandArgs = _activeCommand select 2;
 					
-					_commandState = _logic select 2 select 0;
+					_debug = _logic select 2 select 0; //[logic,"debug"] call ALIVE_fnc_hashGet;
+					_commandState = _logic select 2 select 1; //[logic,"commandState"] call ALIVE_fnc_hashGet;
 					
+					// DEBUG -------------------------------------------------------------------------------------
+					//if(_debug) then {
+						["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+						["ALiVE Command Router - Activate Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
+					//};
+					// DEBUG -------------------------------------------------------------------------------------					
+					
+					// handle various command types
 					switch(_commandType) do {
 						case "fsm": {
+							// exec the command FSM and store the handle on the internal command states hash
 							_handle = [_profile, _commandArgs, true] execFSM format["\x\alive\addons\mil_command\%1.fsm",_commandName];
 							[_commandState, _profileID, [_handle, _activeCommand]] call ALIVE_fnc_hashSet;
 						};
 						case "spawn": {
+							// spawn the command script and store the handle on the internal command states hash
 							_handle = [_profile, _commandArgs, true] spawn (call compile _commandName);
 							[_commandState, _profileID, [_handle, _activeCommand]] call ALIVE_fnc_hashSet;
 						};
+						case "managed": {
+							// add the managed command to the internal command states hash
+							[_commandState, _profileID, [_profile, _activeCommand]] call ALIVE_fnc_hashSet;
+							
+							// if the managed commands loop is not running start it
+							_isManaging = _logic select 2 select 2;
+							if!(_isManaging) then {
+								[_logic,"startManagement"] call MAINCLASS;
+							};							
+						};
 					};
-				
+					
 					// DEBUG -------------------------------------------------------------------------------------
-					//if(_debug) then {
-						["COMMAND Activate [%1]",_profileID] call ALIVE_fnc_dump;
+					//if(_debug) then {						
+						["ALiVE Command Router - Current Command State:"] call ALIVE_fnc_dump;
+						_commandState call ALIVE_fnc_inspectHash;
+						["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 					//};
-					// DEBUG -------------------------------------------------------------------------------------
+					// DEBUG -------------------------------------------------------------------------------------					
 				};
         };
 		case "deactivate": {
 				if(typeName _args == "ARRAY") then {
 				
-					private ["_profile","_profileID","_commandState","_activeCommandState",
-					"_handle","_activeCommand","_commandName","_commandType","_commandArgs"];
+					private ["_profile","_profileID","_debug","_commandState","_activeCommandState",
+					"_handle","_activeCommand","_commandName","_commandType","_commandArgs","_isManaging"];
 				
 					_profile = _args;
 					
 					_profileID = _profile select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 					
-					_commandState = _logic select 2 select 0;
+					_debug = _logic select 2 select 0;
+					_commandState = _logic select 2 select 1;
 					
+					// does the profile have currently active commands
 					if(_profileID in (_commandState select 1)) then {
 						_activeCommandState = [_commandState, _profileID] call ALIVE_fnc_hashGet;
 						
+						// get the active command vars
 						_handle = _activeCommandState select 0;
 						_activeCommand = _activeCommandState select 1;
 						_commandName = _activeCommand select 0;
 						_commandType = _activeCommand select 1;
 						_commandArgs = _activeCommand select 2;
 						
+						// DEBUG -------------------------------------------------------------------------------------
+						//if(_debug) then {
+							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+							["ALiVE Command Router - De-activate Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
+						//};
+						// DEBUG -------------------------------------------------------------------------------------
+						
+						// handle various command types
 						switch(_commandType) do {
+							// destroy the FSM command
 							case "fsm": {
 								if!(completedFSM _handle) then {
 									_handle setFSMVariable ["_destroy",true];
 								};
 							};
+							// destroy the spawned script command
 							case "spawn": {
 								if!(scriptDone _handle) then {
 									terminate _handle;
@@ -191,16 +231,127 @@ switch(_operation) do {
 							};
 						};
 						
-						[_commandState, _profileID] call ALIVE_fnc_hashRem;					
-					
+						// clear the profiles command state
+						[_commandState, _profileID] call ALIVE_fnc_hashRem;
+						
 						// DEBUG -------------------------------------------------------------------------------------
-						//if(_debug) then {
-							["COMMAND Deactivate [%1]",_profileID] call ALIVE_fnc_dump;
+						//if(_debug) then {							
+							["ALiVE Command Router - Current Command State:"] call ALIVE_fnc_dump;
+							_commandState call ALIVE_fnc_inspectHash;
+							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						//};
 						// DEBUG -------------------------------------------------------------------------------------
+
+						// if there are no active commands shut down the 
+						// management loop if it is running
+						if(count (_commandState select 1) == 0) then {
+							_isManaging = _logic select 2 select 2;
+							if(_isManaging) then {
+								[_logic,"stopManagement"] call MAINCLASS;
+							};
+						};					
 					};
 				};
         };
+		case "startManagement": {
+		
+			private ["_debug","_commandState","_handle"];
+		
+			_debug = _logic select 2 select 0;
+			_commandState = _logic select 2 select 1;
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			//if(_debug) then {
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				["ALiVE Command Router - Command Manager Started"] call ALIVE_fnc_dump;
+			//};
+			// DEBUG -------------------------------------------------------------------------------------
+			
+			// spawn the manager thread
+			_handle = [_logic, _debug, _commandState] spawn {
+			
+				private ["_debug","_commandState","_activeCommand","_profile","_profileID","_commandType","_commandName","_commandArgs"];
+			
+				_logic = _this select 0;
+				_debug = _this select 1;
+				_commandState = _this select 2;
+			
+				// start the manager loop
+				waituntil {
+					
+					// for each of the internal commands 
+					{						
+						_activeCommand = _x;
+						
+						_profile = _activeCommand select 0;
+						_profileID = _profile select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+						
+						_activeCommand = _activeCommand select 1;
+						_commandType = _activeCommand select 1;
+						
+						// if we are a managed command
+						if(_commandType == "managed") then {
+							_commandName = _activeCommand select 0;
+							_commandArgs = _activeCommand select 2;
+							
+							// DEBUG -------------------------------------------------------------------------------------
+							//if(_debug) then {
+								["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+								["ALiVE Command Router - Manage Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
+							//};
+							// DEBUG -------------------------------------------------------------------------------------
+						
+							// command state set, continue with the command
+							if(count _activeCommand > 3) then {
+								_nextState = _activeCommand select 3;
+								_nextStateArgs = _activeCommand select 4;
+								
+								// if the managed command has not completed
+								if!(_nextState == "complete") then {
+									[_profile, _commandState, _commandName, _nextStateArgs, _nextState, true] call (call compile _commandName);
+								}else{
+									[_logic,"deactivate",_profile] call MAINCLASS;
+								};
+							} else {							
+								// no current command state set, must have just been activated
+								//[_profile, _commandState, _commandName, _commandArgs, "init", true] call compile _commandName;
+								
+								[_profile, _commandState, _commandName, _commandArgs, "init", true] call (call compile _commandName);
+							};
+						}
+					} forEach (_commandState select 2);
+					
+					sleep 5;
+		
+					false 
+				};				
+			};
+			
+			[_logic,"isManaging",true] call ALIVE_fnc_hashSet;
+			[_logic,"managerHandle",_handle] call ALIVE_fnc_hashSet;
+		
+		};
+		case "stopManagement": {
+		
+			private ["_debug","_handle"];
+		
+			_debug = _logic select 2 select 0;
+			_handle = _logic select 2 select 3;
+			
+			if!(scriptDone _handle) then {
+				terminate _handle;
+			};
+			
+			[_logic,"isManaging",false] call ALIVE_fnc_hashSet;
+			[_logic,"managerHandle",objNull] call ALIVE_fnc_hashSet;
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			//if(_debug) then {
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				["ALiVE Command Router - Command Manager Stopped"] call ALIVE_fnc_dump;
+			//};
+			// DEBUG -------------------------------------------------------------------------------------
+		};		
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
         };

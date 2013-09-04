@@ -514,7 +514,7 @@ switch(_operation) do {
 				_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				
 				if(count _activeCommands > 0) then {
-					[ALIVE_commandRouter, "deactivate", [_logic, _activeCommands]] call ALIVE_fnc_commandRouter;
+					[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
 					[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet;
 				};				
 		};
@@ -532,7 +532,7 @@ switch(_operation) do {
 				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				
 				if(count _inactiveCommands > 0) then {
-					[ALIVE_commandRouter, "deactivate", [_logic, _inactiveCommands]] call ALIVE_fnc_commandRouter;
+					[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
 					[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet;
 				};
 		};

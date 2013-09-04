@@ -11,6 +11,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\mil_command\fnc_testCommand.sqf";
 				recompile = 1;
 			};
+			class testManagedCommand {
+				description = "testManagedCommand";
+				file = "\x\alive\addons\mil_command\fnc_testManagedCommand.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

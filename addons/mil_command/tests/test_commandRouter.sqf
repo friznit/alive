@@ -47,9 +47,9 @@ diag_log format["Timer End %1",_timeEnd];
 
 _profile = [ALIVE_profileHandler, "getProfile", "entity_0"] call ALIVE_fnc_profileHandler;
 
-//[_profile, "addActiveCommand", ["testCommand","fsm","param1"]] call ALIVE_fnc_profileEntity;
-
-[_profile, "addActiveCommand", ["ALIVE_fnc_testCommand","spawn","param1"]] call ALIVE_fnc_profileEntity;
+//[_profile, "addActiveCommand", ["testCommand","fsm",["param1","param2"]]] call ALIVE_fnc_profileEntity;
+//[_profile, "addActiveCommand", ["ALIVE_fnc_testCommand","spawn",["param1","param2"]]] call ALIVE_fnc_profileEntity;
+[_profile, "addActiveCommand", ["ALIVE_fnc_testManagedCommand","managed",["param1","param2"]]] call ALIVE_fnc_profileEntity;
 
 STAT("De-Spawn");
 [_profile, "despawn"] call ALIVE_fnc_profileEntity;
