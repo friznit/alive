@@ -96970,11 +96970,6 @@ wrp_objects=
 			[258800,[12994,10075]]
 		]
 	],
-	["ca\structures\pond\pond_small_06.p3d",
-		[
-			[340314,[6460,3095]]
-		]
-	],
 	["ca\buildings\molo_drevo_bs.p3d",
 		[
 			[339648,[6375,3187]],
@@ -96987,11 +96982,6 @@ wrp_objects=
 	["ca\signs2\sign_38b.p3d",
 		[
 			[963898,[6343,3320]]
-		]
-	],
-	["ca\structures\pond\pond_small_07.p3d",
-		[
-			[339087,[6253,3354]]
 		]
 	],
 	["ca\signs2\sign_38a.p3d",
@@ -97032,11 +97022,6 @@ wrp_objects=
 			[962465,[6909,2963]]
 		]
 	],
-	["ca\structures\pond\pond_big_32_03.p3d",
-		[
-			[342314,[7077,2964]]
-		]
-	],
 	["ca\structures\misc_powerlines\powlines_transformer2.p3d",
 		[
 			[961195,[6877,3104]],
@@ -97056,16 +97041,6 @@ wrp_objects=
 			[959790,[8133,11666]],
 			[228743,[8779,11597]],
 			[959867,[11251,12123]]
-		]
-	],
-	["ca\structures\pond\pond_big_32_02.p3d",
-		[
-			[342324,[7064,3002]]
-		]
-	],
-	["ca\structures\pond\pond_big_32_01.p3d",
-		[
-			[342293,[7037,3041]]
 		]
 	],
 	["ca\buildings2\church_01\church_01.p3d",
@@ -97936,11 +97911,6 @@ wrp_objects=
 			[1002597,[4511,4635]]
 		]
 	],
-	["ca\structures\pond\pond_small_08.p3d",
-		[
-			[332410,[5735,4111]]
-		]
-	],
 	["ca\signs2\signt\sign_danger.p3d",
 		[
 			[1002339,[3921,4766]],
@@ -98226,11 +98196,6 @@ wrp_objects=
 			[963113,[5841,4995]]
 		]
 	],
-	["ca\structures\pond\pond_small_15.p3d",
-		[
-			[336767,[6822,4492]]
-		]
-	],
 	["ca\signs2\sign_35a.p3d",
 		[
 			[963146,[7515,4647]]
@@ -98249,26 +98214,6 @@ wrp_objects=
 			[352666,[10039,4143]],
 			[304789,[11739,5113]],
 			[299058,[11763,6502]]
-		]
-	],
-	["ca\structures\pond\pond_big_31_04.p3d",
-		[
-			[218950,[5790,5172]]
-		]
-	],
-	["ca\structures\pond\pond_big_31_03.p3d",
-		[
-			[218958,[5765,5172]]
-		]
-	],
-	["ca\structures\pond\pond_big_31_01.p3d",
-		[
-			[218949,[5770,5204]]
-		]
-	],
-	["ca\structures\pond\pond_big_31_02.p3d",
-		[
-			[218970,[5790,5210]]
 		]
 	],
 	["ca\signs2\sign_moglievka_start.p3d",
@@ -98388,11 +98333,6 @@ wrp_objects=
 			[234067,[10262,12067]]
 		]
 	],
-	["ca\structures\pond\pondtest.p3d",
-		[
-			[183281,[2588,5941]]
-		]
-	],
 	["ca\signs2\sign_sosnovka_start.p3d",
 		[
 			[962913,[2537,6238]],
@@ -98437,11 +98377,6 @@ wrp_objects=
 	["ca\signs2\sign_61c.p3d",
 		[
 			[962905,[2725,6640]]
-		]
-	],
-	["ca\structures\pond\pond_small_03.p3d",
-		[
-			[183978,[3368,6483]]
 		]
 	],
 	["ca\signs2\sign_myshkino_end.p3d",
@@ -98593,11 +98528,6 @@ wrp_objects=
 			[964296,[9323,3600]]
 		]
 	],
-	["ca\structures\pond\pond_small_02.p3d",
-		[
-			[197578,[4221,6747]]
-		]
-	],
 	["ca\signs2\sign_55b.p3d",
 		[
 			[963006,[4772,6741]]
@@ -98631,26 +98561,6 @@ wrp_objects=
 	["ca\signs2\sign_54a.p3d",
 		[
 			[963024,[5034,6812]]
-		]
-	],
-	["ca\structures\pond\pond_big_30_03.p3d",
-		[
-			[196639,[4138,7209]]
-		]
-	],
-	["ca\structures\pond\pond_big_30_04.p3d",
-		[
-			[196690,[4167,7214]]
-		]
-	],
-	["ca\structures\pond\pond_big_30_01.p3d",
-		[
-			[196633,[4143,7246]]
-		]
-	],
-	["ca\structures\pond\pond_big_30_02.p3d",
-		[
-			[196774,[4169,7246]]
 		]
 	],
 	["ca\signs2\sign_66a.p3d",
@@ -98712,11 +98622,6 @@ wrp_objects=
 	["ca\signs2\sign_50b.p3d",
 		[
 			[963065,[6395,7521]]
-		]
-	],
-	["ca\structures\pond\pond_small_11.p3d",
-		[
-			[210434,[7074,7328]]
 		]
 	],
 	["ca\signs2\sign_novy_sobor_start.p3d",
@@ -98871,16 +98776,6 @@ wrp_objects=
 	["ca\structures\rail\rail_station_big\sign_prigorodki.p3d",
 		[
 			[975168,[8069,3265]]
-		]
-	],
-	["ca\structures\pond\pond_small_16.p3d",
-		[
-			[341780,[7759,3413]]
-		]
-	],
-	["ca\structures\pond\pond_small_17.p3d",
-		[
-			[350173,[7957,3364]]
 		]
 	],
 	["ca\signs2\sign_pusta_end.p3d",
@@ -99085,26 +98980,6 @@ wrp_objects=
 			[258307,[12920,10003]]
 		]
 	],
-	["ca\structures\pond\pond_big_36_03.p3d",
-		[
-			[355419,[10167,3152]]
-		]
-	],
-	["ca\structures\pond\pond_big_36_04.p3d",
-		[
-			[355501,[10199,3154]]
-		]
-	],
-	["ca\structures\pond\pond_big_36_01.p3d",
-		[
-			[354749,[10171,3201]]
-		]
-	],
-	["ca\structures\pond\pond_big_36_02.p3d",
-		[
-			[354787,[10201,3202]]
-		]
-	],
 	["ca\roads2\dam\dam_conc\dam_conc_20.p3d",
 		[
 			[354798,[10275,3615]],
@@ -99123,11 +98998,6 @@ wrp_objects=
 			[354791,[10315,3614]],
 			[78565,[9663,13649]],
 			[78496,[9653,13666]]
-		]
-	],
-	["ca\structures\pond\pond_big_35_01.p3d",
-		[
-			[353380,[10293,3660]]
 		]
 	],
 	["ca\misc\sign_wooden_relic_zagorie.p3d",
@@ -99154,11 +99024,6 @@ wrp_objects=
 			[1006899,[11150,9939]],
 			[1005611,[10833,11176]],
 			[1005053,[10676,12419]]
-		]
-	],
-	["ca\structures\pond\pond_big_35_02.p3d",
-		[
-			[353401,[10286,3739]]
 		]
 	],
 	["ca\structures\nav_boathouse\nav_boathouse.p3d",
@@ -99238,11 +99103,6 @@ wrp_objects=
 			[963233,[9206,8911]]
 		]
 	],
-	["ca\structures\pond\pond_small_22.p3d",
-		[
-			[371008,[12568,3680]]
-		]
-	],
 	["ca\structures\wreck\wreck_ship_2.p3d",
 		[
 			[375164,[13686,3470]]
@@ -99254,37 +99114,12 @@ wrp_objects=
 			[254507,[13992,11161]]
 		]
 	],
-	["ca\structures\pond\pond_big_44.p3d",
-		[
-			[338026,[7721,3972]]
-		]
-	],
-	["ca\structures\pond\pond_small_14.p3d",
-		[
-			[226508,[7718,4926]]
-		]
-	],
 	["ca\structures\misc\misc_scaffolding\misc_scaffolding.p3d",
 		[
 			[284378,[8411,4975]],
 			[261819,[11908,9052]],
 			[261818,[11926,9072]],
 			[238693,[10771,10832]]
-		]
-	],
-	["ca\structures\pond\pond_big_33_01.p3d",
-		[
-			[284452,[8690,4907]]
-		]
-	],
-	["ca\structures\pond\pond_big_33_02.p3d",
-		[
-			[284454,[8730,4909]]
-		]
-	],
-	["ca\structures\pond\pond_big_33_03.p3d",
-		[
-			[284463,[8761,4912]]
 		]
 	],
 	["ca\signs2\sign_32a.p3d",
@@ -99295,36 +99130,6 @@ wrp_objects=
 	["ca\signs2\sign_32b.p3d",
 		[
 			[963586,[9062,4940]]
-		]
-	],
-	["ca\structures\pond\pond_small_19.p3d",
-		[
-			[284894,[9221,4937]]
-		]
-	],
-	["ca\structures\pond\pond_small_13.p3d",
-		[
-			[280259,[7857,5668]]
-		]
-	],
-	["ca\structures\pond\pond_big_34_03.p3d",
-		[
-			[352638,[9987,4164]]
-		]
-	],
-	["ca\structures\pond\pond_big_34_04.p3d",
-		[
-			[352652,[10025,4157]]
-		]
-	],
-	["ca\structures\pond\pond_big_34_02.p3d",
-		[
-			[352679,[10015,4195]]
-		]
-	],
-	["ca\structures\pond\pond_big_34_01.p3d",
-		[
-			[352620,[9981,4201]]
 		]
 	],
 	["ca\signs2\sign_28a.p3d",
@@ -99402,16 +99207,6 @@ wrp_objects=
 			[376258,[9750,6474]],
 			[376217,[12567,10032]],
 			[376222,[12661,9996]]
-		]
-	],
-	["ca\structures\pond\pond_small_18.p3d",
-		[
-			[352521,[9831,4623]]
-		]
-	],
-	["ca\structures\pond\pond_small_20.p3d",
-		[
-			[352734,[10690,4527]]
 		]
 	],
 	["ca\structures\castle\a_castle_wall1_corner.p3d",
@@ -99535,11 +99330,6 @@ wrp_objects=
 			[964506,[12769,4459]]
 		]
 	],
-	["ca\structures\pond\pond_small_23.p3d",
-		[
-			[303964,[11719,5119]]
-		]
-	],
 	["ca\misc3\cncblock_d.p3d",
 		[
 			[1016315,[12615,4967]],
@@ -99551,16 +99341,6 @@ wrp_objects=
 			[1016321,[12626,4966]],
 			[204350,[6254,7790]],
 			[204351,[6265,7782]]
-		]
-	],
-	["ca\structures\pond\pond_small_25.p3d",
-		[
-			[306895,[12761,4958]]
-		]
-	],
-	["ca\structures\pond\pond_small_24.p3d",
-		[
-			[304556,[12392,5313]]
 		]
 	],
 	["ca\signs2\sign_27a.p3d",
@@ -99602,11 +99382,6 @@ wrp_objects=
 	["ca\misc\bilboard_cibulka.p3d",
 		[
 			[978679,[13509,4479]]
-		]
-	],
-	["ca\structures\pond\pond_small_12.p3d",
-		[
-			[222992,[7692,5935]]
 		]
 	],
 	["ca\structures\ruins\ruin_corner_2.p3d",
@@ -99749,11 +99524,6 @@ wrp_objects=
 			[963563,[10815,6737]]
 		]
 	],
-	["ca\structures\pond\pond_small_27.p3d",
-		[
-			[276640,[11444,7391]]
-		]
-	],
 	["ca\buildings2\ind_workshop01\ind_workshop01_box.p3d",
 		[
 			[276509,[11456,7441]],
@@ -99806,34 +99576,9 @@ wrp_objects=
 			[248019,[10524,9741]]
 		]
 	],
-	["ca\structures\pond\pond_big_38_03.p3d",
-		[
-			[299059,[11719,6509]]
-		]
-	],
-	["ca\structures\pond\pond_big_38_04.p3d",
-		[
-			[299060,[11751,6509]]
-		]
-	],
-	["ca\structures\pond\pond_big_38_01.p3d",
-		[
-			[287501,[11717,6544]]
-		]
-	],
-	["ca\structures\pond\pond_big_38_02.p3d",
-		[
-			[299015,[11749,6543]]
-		]
-	],
 	["ca\structures\ind_quarry\ind_quarry.p3d",
 		[
 			[300973,[12904,6267]]
-		]
-	],
-	["ca\structures\pond\pond_small_26.p3d",
-		[
-			[301558,[13217,6264]]
 		]
 	],
 	["ca\signs2\sign_19a.p3d",
@@ -99866,26 +99611,6 @@ wrp_objects=
 		[
 			[963647,[11965,7272]],
 			[963648,[12241,7285]]
-		]
-	],
-	["ca\structures\pond\pond_big_39_03.p3d",
-		[
-			[297524,[13056,7221]]
-		]
-	],
-	["ca\structures\pond\pond_big_39_01.p3d",
-		[
-			[297525,[13055,7248]]
-		]
-	],
-	["ca\structures\pond\pond_big_39_04.p3d",
-		[
-			[297626,[13115,7222]]
-		]
-	],
-	["ca\structures\pond\pond_big_39_02.p3d",
-		[
-			[297546,[13115,7241]]
 		]
 	],
 	["ca\signs2\sign_21c.p3d",
@@ -99931,26 +99656,6 @@ wrp_objects=
 	["ca\roads2\bridge\bridge_stone_asf2_25.p3d",
 		[
 			[171816,[3585,8497]]
-		]
-	],
-	["ca\structures\pond\pond_big_29_03.p3d",
-		[
-			[132733,[3456,8535]]
-		]
-	],
-	["ca\structures\pond\pond_big_29_01.p3d",
-		[
-			[132725,[3456,8559]]
-		]
-	],
-	["ca\structures\pond\pond_big_29_04.p3d",
-		[
-			[171712,[3506,8534]]
-		]
-	],
-	["ca\structures\pond\pond_big_29_02.p3d",
-		[
-			[132726,[3506,8559]]
 		]
 	],
 	["ca\signs2\sign_vybor_start.p3d",
@@ -100028,11 +99733,6 @@ wrp_objects=
 			[962984,[5433,8521]]
 		]
 	],
-	["ca\structures\pond\pond_small_04.p3d",
-		[
-			[153498,[5643,8575]]
-		]
-	],
 	["ca\signs2\sign_64a.p3d",
 		[
 			[962799,[3841,8858]]
@@ -100051,11 +99751,6 @@ wrp_objects=
 	["ca\signs2\sign_65b.p3d",
 		[
 			[962822,[4487,8840]]
-		]
-	],
-	["ca\structures\pond\pond_small_01.p3d",
-		[
-			[148287,[4437,9096]]
 		]
 	],
 	["ca\structures\mil\mil_barracks_i.p3d",
@@ -100497,11 +100192,6 @@ wrp_objects=
 			[963030,[6049,7773]]
 		]
 	],
-	["ca\structures\pond\pond_small_05.p3d",
-		[
-			[203045,[5918,7952]]
-		]
-	],
 	["ca\buildings2\farm_wtower\farm_wtower.p3d",
 		[
 			[204404,[6242,7683]],
@@ -100520,39 +100210,9 @@ wrp_objects=
 			[963055,[7097,7696]]
 		]
 	],
-	["ca\structures\pond\pond_big_37_03.p3d",
-		[
-			[158071,[6558,9257]]
-		]
-	],
 	["ca\structures\nav_boathouse\nav_boathouse_pierl.p3d",
 		[
 			[996069,[6561,9300]]
-		]
-	],
-	["ca\structures\pond\pond_big_37_01.p3d",
-		[
-			[157796,[6564,9304]]
-		]
-	],
-	["ca\structures\pond\pond_big_37_02.p3d",
-		[
-			[158028,[6600,9303]]
-		]
-	],
-	["ca\structures\pond\pond_big_37_04.p3d",
-		[
-			[158130,[6601,9258]]
-		]
-	],
-	["ca\structures\pond\pond_small_09.p3d",
-		[
-			[160660,[7354,9273]]
-		]
-	],
-	["ca\structures\pond\pond_small_10.p3d",
-		[
-			[161000,[7468,9263]]
 		]
 	],
 	["ca\signs2\sign_68a.p3d",
@@ -101043,26 +100703,6 @@ wrp_objects=
 			[1004050,[8409,12235]]
 		]
 	],
-	["ca\structures\pond\pond_big_28_03.p3d",
-		[
-			[109398,[2180,11805]]
-		]
-	],
-	["ca\structures\pond\pond_big_28_04.p3d",
-		[
-			[109411,[2226,11798]]
-		]
-	],
-	["ca\structures\pond\pond_big_28_01.p3d",
-		[
-			[109251,[2176,11844]]
-		]
-	],
-	["ca\structures\pond\pond_big_28_02.p3d",
-		[
-			[109406,[2224,11842]]
-		]
-	],
 	["ca\structures\wall\wall_wood2_5_end_2.p3d",
 		[
 			[987013,[4631,12229]]
@@ -101311,26 +100951,6 @@ wrp_objects=
 			[963448,[12047,9099]]
 		]
 	],
-	["ca\structures\pond\pond_big_40_03.p3d",
-		[
-			[265817,[12762,8800]]
-		]
-	],
-	["ca\structures\pond\pond_big_40_02.p3d",
-		[
-			[265818,[12793,8818]]
-		]
-	],
-	["ca\structures\pond\pond_big_40_04.p3d",
-		[
-			[265819,[12794,8799]]
-		]
-	],
-	["ca\structures\pond\pond_big_40_01.p3d",
-		[
-			[265813,[12758,8822]]
-		]
-	],
 	["ca\structures\wall\gate_wood1_5.p3d",
 		[
 			[261552,[11879,9206]],
@@ -101538,11 +101158,6 @@ wrp_objects=
 			[963178,[9570,11823]]
 		]
 	],
-	["ca\structures\pond\pond_small_21.p3d",
-		[
-			[227186,[8279,12146]]
-		]
-	],
 	["ca\signs2\sign_krasnostav_start.p3d",
 		[
 			[963183,[10679,12409]],
@@ -101577,134 +101192,9 @@ wrp_objects=
 			[963197,[11227,12244]]
 		]
 	],
-	["ca\structures\pond\pond_big_41_01.p3d",
-		[
-			[252921,[13183,11559]]
-		]
-	],
-	["ca\structures\pond\pond_big_41_04.p3d",
-		[
-			[252955,[13234,11547]]
-		]
-	],
-	["ca\structures\pond\pond_big_41_05.p3d",
-		[
-			[252957,[13286,11536]]
-		]
-	],
-	["ca\structures\pond\pond_big_41_02.p3d",
-		[
-			[252956,[13234,11585]]
-		]
-	],
-	["ca\structures\pond\pond_big_41_03.p3d",
-		[
-			[252950,[13288,11587]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_18.p3d",
-		[
-			[252923,[13292,11926]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_14.p3d",
-		[
-			[252924,[13291,11947]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_19.p3d",
-		[
-			[252925,[13324,11921]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_20.p3d",
-		[
-			[252926,[13371,11925]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_15.p3d",
-		[
-			[252756,[13324,11961]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_16.p3d",
-		[
-			[252750,[13375,11961]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_17.p3d",
-		[
-			[252752,[13421,11963]]
-		]
-	],
 	["ca\signs2\sign_13a.p3d",
 		[
 			[963222,[11710,12199]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_10.p3d",
-		[
-			[252746,[13284,12028]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_06.p3d",
-		[
-			[252747,[13276,12061]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_03.p3d",
-		[
-			[252741,[13278,12111]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_04.p3d",
-		[
-			[252743,[13316,12111]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_11.p3d",
-		[
-			[252748,[13324,12010]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_12.p3d",
-		[
-			[252749,[13375,12010]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_13.p3d",
-		[
-			[252755,[13418,12010]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_09.p3d",
-		[
-			[252753,[13420,12057]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_07.p3d",
-		[
-			[252754,[13324,12061]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_08.p3d",
-		[
-			[252751,[13375,12061]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_05.p3d",
-		[
-			[252744,[13380,12097]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_01.p3d",
-		[
-			[252742,[13292,12147]]
-		]
-	],
-	["ca\structures\pond\pond_big_42_02.p3d",
-		[
-			[252745,[13316,12151]]
 		]
 	],
 	["ca\signs2\sign_olsha_start.p3d",
@@ -101717,185 +101207,3 @@ wrp_objects=
 			[962769,[13346,12831]]
 		]
 	],
-	["ca\structures\pond\pond_big_43_30.p3d",
-		[
-			[78223,[9245,13541]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_31.p3d",
-		[
-			[78545,[9283,13541]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_32.p3d",
-		[
-			[78546,[9335,13553]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_34.p3d",
-		[
-			[78553,[9435,13554]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_35.p3d",
-		[
-			[78551,[9485,13555]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_36.p3d",
-		[
-			[78562,[9535,13558]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_20.p3d",
-		[
-			[78188,[9249,13577]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_21.p3d",
-		[
-			[78530,[9283,13590]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_11.p3d",
-		[
-			[78531,[9301,13618]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_22.p3d",
-		[
-			[78547,[9335,13590]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_12.p3d",
-		[
-			[78548,[9335,13622]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_33.p3d",
-		[
-			[78549,[9385,13561]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_23.p3d",
-		[
-			[78534,[9385,13590]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_24.p3d",
-		[
-			[78554,[9435,13590]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_13.p3d",
-		[
-			[78533,[9385,13627]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_14.p3d",
-		[
-			[78550,[9435,13640]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_27.p3d",
-		[
-			[78559,[9585,13590]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_25.p3d",
-		[
-			[78555,[9485,13590]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_26.p3d",
-		[
-			[78558,[9535,13590]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_15.p3d",
-		[
-			[78552,[9485,13640]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_16.p3d",
-		[
-			[78560,[9535,13640]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_17.p3d",
-		[
-			[78556,[9585,13640]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_06.p3d",
-		[
-			[78437,[9444,13692]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_03.p3d",
-		[
-			[78434,[9442,13742]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_02.p3d",
-		[
-			[78329,[9435,13790]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_07.p3d",
-		[
-			[78439,[9485,13692]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_08.p3d",
-		[
-			[78482,[9535,13692]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_09.p3d",
-		[
-			[78495,[9585,13688]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_05.p3d",
-		[
-			[78440,[9516,13728]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_04.p3d",
-		[
-			[78438,[9485,13746]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_01.p3d",
-		[
-			[78312,[9395,13802]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_28.p3d",
-		[
-			[78561,[9634,13592]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_29.p3d",
-		[
-			[78563,[9672,13598]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_18.p3d",
-		[
-			[78557,[9634,13640]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_19.p3d",
-		[
-			[78564,[9667,13625]]
-		]
-	],
-	["ca\structures\pond\pond_big_43_10.p3d",
-		[
-			[78481,[9626,13688]]
-		]
-	]
-];
-//closing wrp...done

@@ -1,7 +1,7 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 #$index_names = ('stratis')
 $index_names = ('altis','chernarus','desert_e','provinggrounds_pmc','shapur_baf','stratis','takistan','utes','zargabad')
-$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','pond')
+$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\')
 
 foreach ($index_name in $index_names){
     
