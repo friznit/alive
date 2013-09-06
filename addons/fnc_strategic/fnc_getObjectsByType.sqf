@@ -46,6 +46,9 @@ if(isNil "wrp_objects") then {
 	_file = format["\x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", worldName];
 	call compile preprocessFileLineNumbers _file;
 	format["Reading raw object data from file - %1 objects", count wrp_objects] call ALIVE_fnc_logger;
+	
+	/*
+	Removed due to index parser
 	{
 		if([_x select 0, "\plants"] call CBA_fnc_find != -1) then {
 			wrp_objects set [_forEachIndex, -1];
@@ -59,8 +62,10 @@ if(isNil "wrp_objects") then {
 			};
 		};
 	} forEach wrp_objects;
+		
 	wrp_objects = wrp_objects - [-1];
 	format["Removed plants, rocks and pond objects - %1 objects", count wrp_objects] call ALIVE_fnc_logger;
+	*/
 };
 _raw_objects = wrp_objects;
 _err = "raw object information not read correctly from file";
