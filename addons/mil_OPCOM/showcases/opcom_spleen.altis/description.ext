@@ -11,7 +11,7 @@ onLoadMission = "Estimated time of initial setup is about 5-7 minutes! Don't int
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE Showcase: OPCOM Altis;
-loadScreen = "rsc\logo_alive.paa";
+loadScreen = "x\alive\addons\mil_opcom\showcases\opcom_spleen.altis\rsc\logo_alive.paa";
 
 aiKills = 0;
 briefing = 1;
