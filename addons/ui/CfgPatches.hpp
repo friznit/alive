@@ -1,4 +1,5 @@
 // Simply a package which requires other addons.
+#include "script_component.hpp"
 class CfgPatches {
 	class ADDON {
 		units[] = {};

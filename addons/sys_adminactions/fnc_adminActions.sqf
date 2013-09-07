@@ -117,7 +117,7 @@ switch(_operation) do {
                                         "call ALIVE_fnc_adminActionsMenuDef",
                                         "main"
                                 ]
-                        ] call CBA_fnc_flexiMenu_Add;
+                        ] call ALIVE_fnc_flexiMenu_Add;
                 };
                 
                 /*
@@ -146,7 +146,7 @@ switch(_operation) do {
                                         "call ALIVE_fnc_adminActionsMenuDef",
                                         "main"
                                 ]
-                        ] call CBA_fnc_flexiMenu_Remove;
+                        ] call ALIVE_fnc_flexiMenu_Remove;
                 };
         };
         default {

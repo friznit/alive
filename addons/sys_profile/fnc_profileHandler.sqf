@@ -80,7 +80,7 @@ TRACE_1("profileHandler - input",_this);
 _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
-_result = true;
+//_result = true;
 
 #define MTEMPLATE "ALiVE_PROFILEHANDLER_%1"
 
@@ -562,7 +562,7 @@ switch(_operation) do {
 					if(_profileID in _profileIndex) then {
 						_result = [_profiles, _profileID] call ALIVE_fnc_hashGet;
 					}else{
-						_result = [];
+						_result = nil;
 					};		
 				};
 		};
@@ -635,4 +635,5 @@ switch(_operation) do {
         };
 };
 TRACE_1("profileHandler - output",_result);
-_result;
+
+if !(isnil "_result") then {_result} else {nil};

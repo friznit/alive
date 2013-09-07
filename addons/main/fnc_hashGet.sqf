@@ -35,6 +35,8 @@ private ["_hash","_key","_default","_result"];
 _hash = _this select 0;
 _key = _this select 1;
 
+if (isnil "_hash" || {isnil "_key"}) exitwith {nil};
+
 if(count _this > 2) then {
 	_default = _this select 2;
 	_result = [_hash, _key, _default] call CBA_fnc_hashGet;

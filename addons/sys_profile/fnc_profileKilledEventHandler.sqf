@@ -27,6 +27,9 @@ _unit = _this select 0;
 
 _profileID = _unit getVariable "profileID";
 _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+
+if (isnil "_profile") exitwith {};
+
 _profileType = _profile select 2 select 5; // [_profile, "type"] call ALIVE_fnc_hashGet;
 
 switch(_profileType) do {
