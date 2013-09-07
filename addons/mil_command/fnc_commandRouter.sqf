@@ -314,8 +314,6 @@ switch(_operation) do {
 								};
 							} else {							
 								// no current command state set, must have just been activated
-								//[_profile, _commandState, _commandName, _commandArgs, "init", true] call compile _commandName;
-								
 								[_profile, _commandState, _commandName, _commandArgs, "init", true] call (call compile _commandName);
 							};
 						}
