@@ -117,16 +117,21 @@ switch(_operation) do {
 			        
 			        "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger;
 			        waituntil {sleep 5; !(isnil "ALiVE_ProfileHandler")};
+                    
+                    sleep 5;
 			        
 			        "OPCOM - Waiting for SEP objectives..." call ALiVE_fnc_logger;
-			        //waituntil {sleep 5; (!(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP}) && {count ([SEP,"objectives"] call ALiVE_fnc_SEP) > 0})};
-                    
-                    sleep (random 7);
-                    			
+			        waituntil {sleep 5; (!(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP}) && {count ([SEP,"objectives"] call ALiVE_fnc_SEP) > 0})};
+
+                    sleep 5;
+                                        			
 					"OPCOM and TACOM starting..." call ALiVE_fnc_logger;
                     _OPCOM = [_handler] call {
                         _handler = _this select 0;
 						_OPCOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+                        
+                        sleep 10;
+                        
 						_TACOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
