@@ -277,13 +277,18 @@ switch(_operation) do {
 			// - Optionally use hangers for military vehicle assets
 			// - Calculate number of fixed wing air assets
 			_types = [
-					"ss_hangar",
-					"hangar_2",
-					"airport_tower",
-					"runway_beton",
-					"runway_end",
-					"runway_main",
-					"runwayold"
+				"ss_hangar",
+				"hangar_2",
+				"airport_tower",
+				"runway_beton",
+				"runway_end",
+				"runway_main",
+				"runway_secondary",
+				"signs_delfinaki",
+				"signs_sofia",
+				"signs_ioannina",
+				"signs_kalochori",
+				"runwayold"
 			];
 			_clusters_air2 = [_logic, _types] call ALIVE_fnc_findTargets;
 			{
