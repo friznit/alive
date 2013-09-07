@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
@@ -14,14 +14,14 @@ item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.57934
 item10[] = {"CUSTOM_condition",4,218,-506.692078,-374.296844,-416.692169,-324.296844,2.000000,"CUSTOM" \n "conditions"};
 item11[] = {"ORDER_TACOM",2,250,-929.397888,-266.917206,-430.130585,-222.714111,0.000000,"ORDER" \n "TACOM"};
 item12[] = {"TACOM_CONFIRM",4,218,-677.962830,-157.584137,-587.962830,-107.584137,0.000000,"TACOM" \n "CONFIRM"};
-item13[] = {"TACOM_NOT_CONFIR",4,218,-772.502075,-158.670807,-682.502197,-108.670807,0.000000,"TACOM" \n "NOT CONFIRM"};
+item13[] = {"TACOM_NOT_CONFIR",4,4314,-772.502075,-158.670807,-682.502197,-108.670807,0.000000,"TACOM" \n "NOT CONFIRM"};
 item14[] = {"",7,210,-1035.794922,-137.497955,-1027.794678,-129.497955,0.000000,""};
 item15[] = {"_",-1,250,-437.714081,-121.191147,-434.628998,-121.191147,0.000000,""};
 item16[] = {"",7,210,-1032.922607,-816.473755,-1024.922607,-808.473755,0.000000,""};
 item17[] = {"INITIALIZE",2,250,-721.197266,-875.105042,-625.643738,-851.020447,0.000000,"INITIALIZE"};
 item18[] = {"NOT_BUSY",2,250,-930.812866,-157.222656,-840.812866,-107.222656,0.000000,"NOT BUSY"};
 item19[] = {"NOT_BUSY_1",2,250,-547.222046,-156.136017,-457.222015,-106.136017,0.000000,"NOT BUSY"};
-item20[] = {"COLLECT_TO_QUEUE",2,250,-717.154053,-759.634521,-627.154053,-709.634521,0.000000,"COLLECT" \n "TO QUEUE"};
+item20[] = {"COLLECT_TO_QUEUE",2,250,-717.153931,-750.096619,-627.154053,-700.096619,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-716.046936,-682.136108,-626.046936,-632.136108,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"ANALYZE_Conditio",4,218,-1207.555176,-482.607452,-1117.554932,-432.607269,0.000000,"ANALYZE" \n "Conditions"};
 item23[] = {"PERFORM_ANALYSIS",2,250,-1209.390747,-710.863525,-1119.390747,-660.863525,0.000000,"PERFORM" \n "ANALYSIS"};
@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1512.789307,-267.017242,32.673752,-989.695679,1132,929,1};
-window[] = {2,-1,-1,-1,-1,1169,220,1953,220,3,1149};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1564.712769,-215.094574,75.285522,-1032.307495,1132,929,1};
+window[] = {2,-1,-1,-1,-1,1191,242,1975,242,3,1149};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -124,22 +124,19 @@ class FSM
        "" \n
        "switch (_controlType) do {" \n
        "	case (""occupation"") do {" \n
-       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""strategic""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "//		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""strategic""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
        "	};" \n
        "	case (""invasion"") do {" \n
-       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""distance""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "//		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""distance""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
        "	};" \n
        "};" \n
        "" \n
-       "/*" \n
        "//Mock targets for testing purposes" \n
        "" \n
        "						_towns = nearestLocations [getArray (configFile >> ""CfgWorlds"" >> worldName >> ""centerPosition""), [""NameCityCapital"",""NameCity"",""NameVillage""],20000];" \n
        "						_objectives_unsorted = []; { _objectives_unsorted set [count _objectives_unsorted, [position _x,(size _x) select 0,""civilian"",(size _x) select 0]]} foreach _towns;" \n
        "" \n
-       "" \n
-       "" \n
-       "" \n
+       "/*" \n
        "						//Stratis, markers" \n
        "						_objectives_unsorted = [];" \n
        "						for ""_i"" from 1 to 15 do {" \n
@@ -156,9 +153,7 @@ class FSM
        "									[[3063.56,2140.04,0],100,""civilian"",50]," \n
        "									[[2325.01,2287.62,0],100,""civilian"",50]" \n
        "						];" \n
-       "" \n
-       "" \n
-       "" \n
+       "*/" \n
        "						_objectives = [_objectives_unsorted,[],{([_OPCOM_HANDLER,""position""] call ALiVE_fnc_HashGet) distance (_x select 0)},""ASCEND""] call BIS_fnc_sortBy;" \n
        "						" \n
        "						//Create objectives for OPCOM and set it on the OPCOM Handler " \n
@@ -186,7 +181,8 @@ class FSM
        "						 } foreach _objectives;" \n
        "" \n
        "_objectives = [_OPCOM_HANDLER,""objectives"",_objectives] call ALiVE_fnc_OPCOM;" \n
-       "*/" \n
+       "" \n
+       "" \n
        "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
@@ -569,7 +565,7 @@ class FSM
           priority = 0.000000;
           to="NOT_BUSY";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(isnil ""_OPCOM_DATA"") && {(_OPCOM_DATA select 0) == ""confirmed""} && {!((_OPCOM_DATA select 1) select 0)};"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(!(isnil ""_OPCOM_DATA"") && {(_OPCOM_DATA select 0) == ""confirmed""} && {!((_OPCOM_DATA select 1) select 0)}) || {time - _timeStamp > 30}"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -681,7 +677,7 @@ class FSM
           priority = 0.000000;
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(count _OPCOM_QUEUE > 0) && !(_busy) && (time - _lastAnalyze > 0.5);"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((count _OPCOM_QUEUE > 0) || time - _lastAnalyze > _cycleTime) && ((time - _lastAnalyze > 0.5) && !(_busy))"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -705,7 +701,7 @@ class FSM
        "			_profiles = [ALiVE_ProfileHandler,""getProfilesBySide"",_this select 1] call ALiVE_fnc_ProfileHandler;" \n
        "			{" \n
        "				_pos = [([ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler),""position""] call ALiVE_fnc_HashGet;" \n
-       "				_visibleEnemies = [_this select 0,""scanenemies"",_pos] call ALiVE_fnc_OPCOM;" \n
+       "				if !(isnil ""_pos"") then {_visibleEnemies = [_this select 0,""scanenemies"",_pos] call ALiVE_fnc_OPCOM};" \n
        "			} foreach _profiles;" \n
        "		};" \n
        "	};" \n
