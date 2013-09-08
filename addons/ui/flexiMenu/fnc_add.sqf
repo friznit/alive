@@ -57,3 +57,4 @@ for "_e" from (count GVAR(typeMenuSources) - 1) to 0 step -1 do {
 	_list set [count _list, GVAR(typeMenuSources) select _e];
 };
 GVAR(typeMenuSources) = _list;
+diag_log format["PersistentDB: SERVER MSG: SQL output: %1", QUOTE(GVAR(display))];

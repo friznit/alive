@@ -16,8 +16,11 @@
 class alive_flexiMenu_rscPopup { //: _flexiMenu_rscRose
 	idd = -1; //_flexiMenu_IDD;
 	movingEnable = 0;
-	onLoad = __EVAL(format["uiNamespace setVariable ['%1', _this select 0]", QUOTE(GVAR(display))]);
-	onUnload = __EVAL(format["uiNamespace setVariable ['%1', displayNull]", QUOTE(GVAR(display))]);
+	//onLoad = uiNamespace setVariable ['%1', _this select 0], QUOTE(GVAR(display));
+	//onUnload = uiNamespace setVariable ['%1', displayNull], QUOTE(GVAR(display));
+
+	onLoad = "with uiNamespace do {alive_ui_display = _this select 0}; (_this select 0) call alive_fFlexiMenu_keySpoof;";
+	onUnload = "with uiNamespace do {alive_ui_display = displayNull};";
 	class controlsBackground {};
 	class objects {};
 
@@ -53,13 +56,13 @@ class alive_flexiMenu_rscPopup { //: _flexiMenu_rscRose
 			align = "left";
 			shadow = "true";
 		};
-		animTextureNormal = _eval_image("normal");
-		animTextureDisabled = _eval_image("disabled");
-		animTextureOver = _eval_image("over");
-		animTextureFocused = _eval_image("focused");
-		animTexturePressed = _eval_image("down");
-		animTextureDefault = _eval_image("default");
-		animTextureNoShortcut = _eval_image("normal");
+		animTextureNormal = "x\alive\addons\ui\flexiMenu\data\popup\normal.paa";
+		animTextureDisabled = "x\alive\addons\ui\flexiMenu\data\popup\disabled.paa";
+		animTextureOver = "x\alive\addons\ui\flexiMenu\data\popup\over.paa";
+		animTextureFocused = "x\alive\addons\ui\flexiMenu\data\popup\focused.paa";
+		animTexturePressed = "x\alive\addons\ui\flexiMenu\data\popup\down.paa";
+		animTextureDefault = "x\alive\addons\ui\flexiMenu\data\popup\default.paa";
+		animTextureNoShortcut = "x\alive\addons\ui\flexiMenu\data\popup\normal.paa";
 	};
 	//---------------------------------
 	class controls {
