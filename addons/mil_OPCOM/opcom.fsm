@@ -77,7 +77,7 @@ link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1564.712769,-215.094574,75.285522,-1032.307495,1132,929,1};
-window[] = {2,-1,-1,-1,-1,1015,66,1799,66,3,1149};
+window[] = {2,-1,-1,-1,-1,1147,198,1931,198,3,1149};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -93,6 +93,7 @@ class FSM
        "_busy = false;" \n
        "" \n
        "_OPCOM_HANDLER = _this select 0;" \n
+       "_OBJECTIVES = _this select 1;" \n
        "_OPCOM_FSM =  [_OPCOM_HANDLER,""OPCOM_FSM""] call ALiVE_fnc_HashGet;" \n
        "_TACOM_FSM =  [_OPCOM_HANDLER,""TACOM_FSM""] call ALiVE_fnc_HashGet;" \n
        "" \n
@@ -103,7 +104,6 @@ class FSM
        "_simultanObjectives = [_OPCOM_HANDLER, ""simultanobjectives"",10] call ALiVE_fnc_HashGet;" \n
        "" \n
        "_OPCOM_QUEUE = [];" \n
-       "_objectives = [];" \n
        "_targets = [];" \n
        "_cycleTime = 120;" \n
        "_timestamp = time;" \n
@@ -122,19 +122,20 @@ class FSM
        "};" \n
        "// debug ---------------------------------------" \n
        "" \n
+       "" \n
        "switch (_controlType) do {" \n
        "	case (""occupation"") do {" \n
-       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""strategic""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[_objectives,""strategic""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
        "	};" \n
        "	case (""invasion"") do {" \n
-       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[SEP,""distance""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
+       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[_objectives,""distance""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
        "	};" \n
        "};" \n
        "" \n
        "/*" \n
        "//Mock targets for testing purposes" \n
        "" \n
-       "						_towns = nearestLocations [getArray (configFile >> ""CfgWorlds"" >> worldName >> ""centerPosition""), [""NameCityCapital"",""NameCity"",""NameVillage""],20000];" \n
+       "						_towns = nearestLocations [getArray (configFile >> ""CfgWorlds"" >> worldName >> ""centerPosition""), [""NameCityCapital"",""NameCity"",""NameVillage"",""Hill""],20000];" \n
        "						_objectives_unsorted = []; { _objectives_unsorted set [count _objectives_unsorted, [position _x,(size _x) select 0,""civilian"",(size _x) select 0]]} foreach _towns;" \n
        "" \n
        "" \n
@@ -143,7 +144,6 @@ class FSM
        "						for ""_i"" from 1 to 15 do {" \n
        "							_objectives_unsorted set [count _objectives_unsorted,[(getmarkerpos format[""m_%1"",_i]),150,""civilian"",25]];" \n
        "						};" \n
-       "" \n
        "" \n
        "						_objectives_unsorted = [" \n
        "									[[2815.68,1190.84,0],150,""civilian"",25]," \n
@@ -169,7 +169,6 @@ class FSM
        "									_priority = _x select 3; [_target, ""priority"",_priority] call ALIVE_fnc_HashSet;" \n
        "									_opcom_state = ""unassigned""; [_target, ""opcom_state"",_opcom_state] call ALIVE_fnc_HashSet;" \n
        "						" \n
-       "" \n
        "									if  (_debug) then {" \n
        "						            	_m = createMarkerLocal [_id, _pos];" \n
        "										_m setMarkerShapeLocal ""RECTANGLE"";" \n
@@ -178,7 +177,7 @@ class FSM
        "										_m setMarkerColorLocal ""ColorWhite"";" \n
        "										//_m setMarkerTextLocal format[""Objective Priority %1"",_foreachIndex];" \n
        "									};" \n
-       "						" \n
+       "					" \n
        "									_objectives set [_forEachIndex, _target];" \n
        "						 } foreach _objectives;" \n
        "" \n

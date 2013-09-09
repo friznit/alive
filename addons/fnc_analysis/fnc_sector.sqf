@@ -84,7 +84,7 @@ _deleteMarkers = {
 		private ["_logic"];
         _logic = _this;
         {
-                deleteMarkerLocal _x;
+                deleteMarker _x;
 		} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
 };
 
@@ -101,29 +101,29 @@ _createMarkers = {
 		
         if((count _position > 0) && (count _dimensions > 0)) then {
 
-				_m = createMarkerLocal [format[MTEMPLATE, format["b%1_%2",_gridID,_id]], _position];
-				_m setMarkerShapeLocal "RECTANGLE";
-                _m setMarkerSizeLocal _dimensions;
-				_m setMarkerBrushLocal "Border";
-				_m setMarkerColorLocal _debugColor;
+				_m = createMarker [format[MTEMPLATE, format["b%1_%2",_gridID,_id]], _position];
+				_m setMarkerShape "RECTANGLE";
+                _m setMarkerSize _dimensions;
+				_m setMarkerBrush "Border";
+				_m setMarkerColor _debugColor;
 							
                 _markers set [count _markers, _m];
 				
-				_m = createMarkerLocal [format[MTEMPLATE, format["g%1_%2",_gridID,_id]], _position];
-				_m setMarkerShapeLocal "RECTANGLE";
-                _m setMarkerSizeLocal _dimensions;
-				_m setMarkerAlphaLocal 0.2;
-				_m setMarkerBrushLocal "Solid";
-				_m setMarkerColorLocal "ColorGreen";
+				_m = createMarker [format[MTEMPLATE, format["g%1_%2",_gridID,_id]], _position];
+				_m setMarkerShape "RECTANGLE";
+                _m setMarkerSize _dimensions;
+				_m setMarkerAlpha 0.2;
+				_m setMarkerBrush "Solid";
+				_m setMarkerColor "ColorGreen";
 							
                 _markers set [count _markers, _m];
 				
-				_m = createMarkerLocal [format[MTEMPLATE, format["l%1_%2",_gridID,_id]], _position];
-				_m setMarkerShapeLocal "ICON";
-				_m setMarkerSizeLocal [0.5, 0.5];
-				_m setMarkerTypeLocal "mil_dot";
-				_m setMarkerColorLocal _debugColor;
-                _m setMarkerTextLocal _id;
+				_m = createMarker [format[MTEMPLATE, format["l%1_%2",_gridID,_id]], _position];
+				_m setMarkerShape "ICON";
+				_m setMarkerSize [0.5, 0.5];
+				_m setMarkerType "mil_dot";
+				_m setMarkerColor _debugColor;
+                _m setMarkerText _id;
 				
 				_markers set [count _markers, _m];
 				

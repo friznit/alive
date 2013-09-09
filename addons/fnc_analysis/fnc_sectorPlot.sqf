@@ -63,12 +63,12 @@ _createMarker = {
 		_shape = if(count _this > 5) then {_this select 5} else {"RECTANGLE"};
 		_brush = if(count _this > 6) then {_this select 6} else {"SOLID"};
 		
-		_m = createMarkerLocal [_markerID, _position];		
-		_m setMarkerSizeLocal _dimensions;
-		_m setMarkerAlphaLocal _alpha;
-		_m setMarkerColorLocal _color;
-		_m setMarkerShapeLocal _shape;
-		_m setMarkerBrushLocal _brush;
+		_m = createMarker [_markerID, _position];		
+		_m setMarkerSize _dimensions;
+		_m setMarkerAlpha _alpha;
+		_m setMarkerColor _color;
+		_m setMarkerShape _shape;
+		_m setMarkerBrush _brush;
 
 		_m
 };
@@ -541,7 +541,7 @@ switch(_operation) do {
 				_markers = [_logic,"markers",[]] call ALIVE_fnc_hashGet;
 				
 				{
-					deleteMarkerLocal _x;
+					deleteMarker _x;
 				} forEach _markers;				
 		};
         default {

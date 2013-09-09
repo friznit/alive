@@ -120,19 +120,30 @@ switch(_operation) do {
                     
                     sleep 5;
 			        
-			        "OPCOM - Waiting for SEP objectives..." call ALiVE_fnc_logger;
-			        waituntil {sleep 5; (!(isnil {[SEP,"objectives"] call ALiVE_fnc_SEP}) && {count ([SEP,"objectives"] call ALiVE_fnc_SEP) > 0})};
+			        "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;
+                    private ["_objectives"];
+                    _objectives = [];
+                    
+                    //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
+                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
+						private ["_obj"];
+                        
+                        waituntil {sleep 5; _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
+                        _objectives = _objectives + _obj;
+                    };
 
                     sleep 5;
-                                        			
-					"OPCOM and TACOM starting..." call ALiVE_fnc_logger;
-                    _OPCOM = [_handler] call {
+
+                    //done this way to easily switch between spawn and call for testing purposes
+                    "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
+                    _OPCOM = [_handler,_objectives] call {
                         _handler = _this select 0;
-						_OPCOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+                        _objectives = _this select 1;
                         
-                        sleep 10;
+						_OPCOM = [_handler,_objectives] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+                        sleep 2;
+						_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
                         
-						_TACOM = [_handler,_side] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     };
@@ -266,13 +277,12 @@ switch(_operation) do {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
                     
-                    private ["_SEP","_objectives","_startpos","_side","_type","_typeOp","_pos","_height"];
+                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height"];
                     
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
-                        _SEP = _args select 0;
+                        _objectives = _args select 0;
                         _typeOp = _args select 1;
-                        
-						_objectives = [_SEP,"objectives"] call ALiVE_fnc_SEP;
+
                         _startpos = [_logic,"position"] call ALiVE_fnc_HashGet;
                         _side = [_logic,"side"] call ALiVE_fnc_HashGet;
 
@@ -802,7 +812,8 @@ switch(_operation) do {
                 
                 if (count _profiles > 0) then {
                     
-                    _profiles = [_profiles,[],{if !(isnil "_x") then {_p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos}}},"ASCEND"] call BIS_fnc_sortBy;
+                    _profilesUnsorted = _profiles;
+                    _profiles = [_profilesUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos}}},"ASCEND"] call BIS_fnc_sortBy;
 
                     _i = 0;
 	                while {count _section < _size} do {
@@ -979,7 +990,8 @@ switch(_operation) do {
             _troops = _troops - ["x"];
             
             //Sort by distance
-            _troops = [_troops,[],{if (_x in _profileIDs) then {_profile = nil; _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_profile") then {_pos2 = [_profile,"position"] call ALiVE_fnc_HashGet; (_pos distance _pos2)}} else {}},"ASCEND"] call BIS_fnc_sortBy;
+            _troopsUnsorted = _troops;
+            _troops = [_troopsUnsorted,[],{if !(isnil "_x") then {_profile = nil; _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_profile") then {_pos2 = [_profile,"position"] call ALiVE_fnc_HashGet; (_pos distance _pos2)}} else {}},"ASCEND"] call BIS_fnc_sortBy;
             
             //Collect section
             _section = [];
@@ -1101,7 +1113,7 @@ switch(_operation) do {
 								};
 						};
 
-						_sections = [_sections,[],{_position distance (_x select 1)},"ASCEND"] call BIS_fnc_sortBy;
+						_sections = [_sections,[],{if !(isnil "_x") then {_position distance (_x select 1)}},"ASCEND"] call BIS_fnc_sortBy;
 
 						{
 							if ((count _section) >= _size) exitwith {};
