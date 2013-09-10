@@ -133,7 +133,7 @@ switch(_operation) do {
                     };
 
                     sleep 5;
-
+                    
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
                     _OPCOM = [_handler,_objectives] call {
@@ -147,6 +147,13 @@ switch(_operation) do {
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     };
+                    
+                    //Add random movement to profiles so they dont stand still if no waypoints
+                    _profIDs = [ALIVE_profileHandler, "getProfilesBySide",[_handler,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
+                    {
+                        _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
+                        [_prof, "addActiveCommand", ["ALIVE_fnc_randomMovement","spawn",200]] call ALIVE_fnc_profileEntity;
+					} foreach _profIDs;
                 };
                 
                 /*
