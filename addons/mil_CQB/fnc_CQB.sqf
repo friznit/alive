@@ -89,7 +89,8 @@ switch(_operation) do {
 						"Land_Cargo_Patrol_V1_F",
                         "Land_Cargo_HQ_V2_F",
                         "Land_Cargo_House_V2_F",
-                        //"Land_Cargo_Patrol_V2_F",
+                        "Land_Cargo_Tower_V3_F",
+                        "Land_Cargo_Patrol_V2_F",
 						"Land_MilOffices_V1_F",
 						//"Land_dp_smallFactory_F",
 						"Land_Cargo_HQ_V1_F",
@@ -102,41 +103,72 @@ switch(_operation) do {
                     	"Land_u_Shop_02_V1_F",
                     	"Land_d_House_Big_02_V1_F",
                         "Land_i_House_Big_01_V1_F",
+                        "Land_i_House_Big_01_V2_F",
                         "Land_u_House_Small_02_V1_F",
-                        "Land_i_House_Big_02_V3_F"
+                        "Land_i_House_Big_02_V3_F",
+                        "Land_i_Stone_HouseBig_V2_F",
+                        "Land_i_Stone_HouseBig_V1_F",
+                        "Land_d_House_Big_01_V1_F"
                     ];
                     
                     // Get all enterable houses of strategic types below across the whole map (rest will be regular)
                     //Workaroung until SEP is fixed for Altis
                     //_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
-                    //_spawnhouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 2000];
-                    //_spawnhouses = (getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")) nearObjects ["House_F", 15000];
                     
-                    /*
-                    _strategicHouses = [];
-                    for "_i" from 0 to (count _strategicTypes)-1 do {
-                        _tmp = (getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")) nearObjects [_strategicTypes select _i, 15000];
-                        _strategicHouses = _strategicHouses + _tmp;
+                    private ["_collection","_objectives","_pos","_size"];
+
+                    _collection = []; 
+                    if (count synchronizedObjects _logic > 0) then {
+                        _objectives = [];
+                        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
+							private ["_obj"];
+                        
+                        	waituntil {sleep 5; _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
+                        	_objectives = _objectives + _obj;
+                        };
+                        {
+                            _pos = [_x,"center"] call ALiVE_fnc_HashGet;
+                            _size = [_x,"size"] call ALiVE_fnc_HashGet;
+                            
+                            _collection set [count _collection,[_pos,_size]];
+                        } foreach _objectives;
+                    } else {
+                        _objectives = nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["NameCityCapital","NameCity","NameVillage","NameLocal","Hill"],20000];
+                        {
+                            _pos = position _x;
+                            _size = size _x;
+                            
+                            _collection set [count _collection,[_pos,_size]];
+                        } foreach _objectives;
                     };
+
+					_houses = []; 
+                    {
+                        private ["_houses_tmp","_pos","_size"];
+                        _time = time;
+                        _pos = _x select 0;
+                        _size = _x select 1;
+                        
+                        _houses_tmp = nearestObjects [_pos, (_regularTypes + _strategicTypes), _size*2];
+                        _houses = _houses + _houses_tmp;
+                        
+                        player sidechat format["Search for houses in town %1 finished! Time taken %2",_x,time - _time];
+                        diag_log format["Search for houses in town %1 finished! Time taken %2",_x,time - _time];
+                    } foreach _collection;
+                    _collection = nil;
+                    _objectives = nil;
                     
-                    _nonStrategicHouses = [];
-                    for "_i" from 0 to (count _regularTypes)-1 do {
-                        _tmp = (getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")) nearObjects [_regularTypes select _i, 15000];
-                        _nonStrategicHouses = _nonStrategicHouses + _tmp;
-                    };
-					*/
-                    _Houses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 15000];
-                    _Houses = _Houses + (nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _regularTypes, 15000]);
+                    //_Houses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 15000];
+                    //_Houses = _Houses + (nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _regularTypes, 15000]);
                     
 					//_strategicHouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 10000];
                     //_nonStrategicHouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _regularTypes, 10000];
                     
-                    _result = [_Houses, _strategicTypes,_regularTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
-					_Houses = nil;
-                    
+                    _result = [_houses, _strategicTypes,_regularTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
                     _result = nil;
+                    _houses = nil;
                     
                     //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
                     _UnitsBlackList = [
