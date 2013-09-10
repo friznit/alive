@@ -45,19 +45,23 @@ _createModeVehicles = [];
 {
 	_object = _x;
 	if!(isNull group _object) then {
-		_group  = group _object;
-		_createModeGroups set [count _createModeGroups, _group];
-		
-		{
-			_vehicle = vehicle _x;
-			if(!(_vehicle == _x)) then {
-				if!(_vehicle in _createModeVehicles) then {
-					_createModeVehicles set [count _createModeVehicles, _vehicle];
+		if!(side _object == sideLogic) then {			
+			_group  = group _object;
+			_createModeGroups set [count _createModeGroups, _group];
+			
+			{
+				_vehicle = vehicle _x;
+				if(!(_vehicle == _x)) then {
+					if!(_vehicle in _createModeVehicles) then {
+						_createModeVehicles set [count _createModeVehicles, _vehicle];
+					};
 				};
-			};
-		} forEach units _group;
+			} forEach units _group;
+		}
 	}else{
-		_createModeVehicles set [count _createModeVehicles, _object];
+		if!(side _object == sideLogic) then {
+			_createModeVehicles set [count _createModeVehicles, _object];
+		};
 	};
 } forEach _createModeObjects;
 
