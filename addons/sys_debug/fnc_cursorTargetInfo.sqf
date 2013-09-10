@@ -38,6 +38,10 @@ ARJay
 		_typeOf = typeOf cursorTarget;
 		_name = typeName cursorTarget;
 		
+		[_typeOf] call ALIVE_fnc_dump;
+		_model = getText(configFile >> "CfgVehicles" >> _typeOf >> "model");
+		[_model] call ALIVE_fnc_dump;
+		
 		if(_name == "Error: No Unit") then {_name = "";};
 		
 		_text = format ["%1 | %3", _instanceName, _name, _typeOf];
@@ -46,23 +50,21 @@ ARJay
 		sleep 1;
 		titleFadeOut 0.3;
 		
-		if(((cursorTarget isKindOf "Man") || (cursorTarget isKindOf "StaticWeapon") || (cursorTarget isKindOf "Air") || (cursorTarget isKindOf "Car") || (cursorTarget isKindOf "Armored") || (cursorTarget isKindOf "Ship"))) then {
-			if(_hold > 2) then {
-				[cursorTarget] call ALIVE_fnc_inspectObject;
-				_hold = 0;
-			};
-			
-			_hold = _hold + 1;
-		};
-		
 		if(cursorTarget isKindOf "House") then {
-			if(_hold > 2) then {
+			if(_hold > 5) then {
 				[cursorTarget] call ALIVE_fnc_inspectObject;
 				[cursorTarget] call ALIVE_fnc_debugBuildingPositions;
 				_hold = 0;
 			};
 			
 			_hold = _hold + 1;				
+		}else{
+			if(_hold > 5) then {
+				[cursorTarget] call ALIVE_fnc_inspectObject;
+				_hold = 0;
+			};
+			
+			_hold = _hold + 1;
 		};
 		
 		sleep 1;
