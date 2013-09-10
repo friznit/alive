@@ -52,7 +52,7 @@ _deleteMarker = {
 };
 
 _createMarker = {
-	private ["_profile","_waypoint","_m","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
+	private ["_profile","_waypoint","_m","_label","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
 	_profile = _this select 0;
 	_waypoint = _this select 1;
 	
@@ -82,12 +82,14 @@ _createMarker = {
 	};
 
 	if(count _position > 0) then {
-		_m = createMarkerLocal [format["SIM_MARKER_%1",_profileID], _position];
-		_m setMarkerShapeLocal "ICON";
-		_m setMarkerSizeLocal [1, 1];
-		_m setMarkerTypeLocal "waypoint";
-		_m setMarkerColorLocal _debugColor;
-		_m setMarkerTextLocal format["%1 destination",_profileID];
+		_m = createMarker [format["SIM_MARKER_%1",_profileID], _position];
+		_m setMarkerShape "ICON";
+		_m setMarkerSize [1, 1];
+		_m setMarkerType "waypoint";
+		_m setMarkerColor _debugColor;
+		
+		_label = [_profileID, "_"] call CBA_fnc_split;
+		_m setMarkerText format["%1",_label select 1];
 
 		[_markers,_profileID,_m] call ALIVE_fnc_hashSet;
 	};

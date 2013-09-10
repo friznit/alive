@@ -30,7 +30,7 @@
 	<English>Objective Size Filter:</English>
 </Key>
 <Key ID="STR_ALIVE_MO_SIZE_FILTER_COMMENT">
-	<English>Filter objects less than selected size</English>
+	<English>Filter objectives less than selected size</English>
 </Key>
 <Key ID="STR_ALIVE_MO_SIZE_FILTER_NONE">
 	<English>Do not filter</English>
@@ -45,10 +45,10 @@
 	<English>Only huge objectives</English>
 </Key>
 <Key ID="STR_ALIVE_MO_PRIORITY_FILTER">
-	<English>Objective Size Filter:</English>
+	<English>Objective Priority Filter:</English>
 </Key>
 <Key ID="STR_ALIVE_MO_PRIORITY_FILTER_COMMENT">
-	<English>Filter objects less than selected priority</English>
+	<English>Filter objectives less than selected priority</English>
 </Key>
 <Key ID="STR_ALIVE_MO_PRIORITY_FILTER_NONE">
 	<English>Do not filter</English>
