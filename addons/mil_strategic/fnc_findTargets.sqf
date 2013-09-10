@@ -8,7 +8,7 @@ Description:
 Identify targets within the TAOR
 
 Parameters:
-Array - A list of HQ objects to identify locations
+Array - A list of objects to identify locations
 Array - Position identifying Centre of Mass
 Scalar - Max Radius from CoM (optional)
 
@@ -43,8 +43,8 @@ _types = [_this, 1, [], [[]]] call BIS_fnc_param;
 TRACE_1("findTargets - input",_types);
 
 _obj_array = _types call ALIVE_fnc_getObjectsByType;
-_obj_array = [[_logic, "taor"] call ALIVE_fnc_SEP, _obj_array, true] call ALIVE_fnc_validateLocations;
-_obj_array = [[_logic, "blacklist"] call ALIVE_fnc_SEP, _obj_array, false] call ALIVE_fnc_validateLocations;
+_obj_array = [[_logic, "taor"] call ALIVE_fnc_MO, _obj_array, true] call ALIVE_fnc_validateLocations;
+_obj_array = [[_logic, "blacklist"] call ALIVE_fnc_MO, _obj_array, false] call ALIVE_fnc_validateLocations;
 _clusters = [_obj_array] call ALIVE_fnc_findClusters;
 
 TRACE_1("findTargets - output",_clusters);

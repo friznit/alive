@@ -26,6 +26,18 @@ class CfgFactionClasses
                 priority = 104;
                 side = 7;
         };
+		class AliveMilitary
+        {
+                displayName = "$STR_ALIVE_MILITARY";
+                priority = 105;
+                side = 7;
+        };
+		class AliveCivilian
+        {
+                displayName = "$STR_ALIVE_CIVILIAN";
+                priority = 106;
+                side = 7;
+        };
 };
 class CfgVehicles {
 	class Logic;
@@ -59,6 +71,18 @@ class CfgVehicles {
                 scope = 1;
                 displayName = "EditorAliveEnemyBase";
                 category = "AliveEnemy";
+        };
+		class ModuleAliveMilitaryBase: Module_F
+        {
+                scope = 1;
+                displayName = "EditorAliveMilitaryBase";
+                category = "AliveMilitary";
+        };
+		class ModuleAliveCivilianBase: Module_F
+        {
+                scope = 1;
+                displayName = "EditorAliveCivilianBase";
+                category = "AliveCivilian";
         };
         class ALiVE_require : ModuleAliveSystemBase {
                 scope = 2;

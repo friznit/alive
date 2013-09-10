@@ -64,7 +64,7 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-	private ["_logic","_markers","_m","_max","_nodes","_center","_random"];
+	private ["_logic","_markers","_m","_size","_priority","_type","_nodes","_center","_random"];
 	_logic = _this;
 	_markers = [];
 	_nodes = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
@@ -75,32 +75,34 @@ _createMarkers = {
 		{
 			_m = format[MTEMPLATE, _random, count _markers];
 			if(str getMarkerPos _m == "[0,0,0]") then {
-				_m = createMarkerLocal [_m, getPosATL _x];
-				_m setMarkerShapeLocal "Icon";
-				_m setMarkerSizeLocal [0.5,0.5];
-				_m setMarkerTypeLocal "mil_dot";
+				_m = createMarker [_m, getPosATL _x];
+				_m setMarkerShape "Icon";
+				_m setMarkerSize [0.5,0.5];
+				_m setMarkerType "mil_dot";
 				_markers set [count _markers, _m];
 			} else {
-				_m setMarkerPosLocal (getPosATL _x);
+				_m setMarkerPos (getPosATL _x);
 			};
-			_m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
+			_m setMarkerColor ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
 		} forEach _nodes;
 		
 		_center = [_logic, "center"] call MAINCLASS;
-		_max = [_logic, "size"] call MAINCLASS;
-		_m = createMarkerLocal [format[MTEMPLATE, _random, count _markers], _center];
-		_m setMarkerShapeLocal "Icon";
-		_m setMarkerSizeLocal [0.75, 0.75];
-		_m setMarkerTypeLocal "mil_dot";
-		_m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
-		_m setMarkerTextLocal format["%1 (%2)",_m,_max];
+		_size = [_logic, "size"] call MAINCLASS;
+		_priority = [_logic, "priority"] call MAINCLASS;
+		_type = [_logic, "type"] call MAINCLASS;
+		_m = createMarker [format[MTEMPLATE, _random, count _markers], _center];
+		_m setMarkerShape "Icon";
+		_m setMarkerSize [0.75, 0.75];
+		_m setMarkerType "mil_dot";
+		_m setMarkerColor ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
+		_m setMarkerText format["%1|%2|%3",_type,_priority,floor(_size)];
 		_markers set [count _markers, _m];
 		
-		_m = createMarkerLocal [_m + "_size", _center];
-		_m setMarkerShapeLocal "Ellipse";
-		_m setMarkerSizeLocal [_max, _max];
-		_m setMarkerColorLocal ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
-		_m setMarkerAlphaLocal 0.5;
+		_m = createMarker [_m + "_size", _center];
+		_m setMarkerShape "Ellipse";
+		_m setMarkerSize [_size, _size];
+		_m setMarkerColor ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
+		_m setMarkerAlpha 0.5;
 		_markers set [count _markers, _m];
 		
 		[_logic, "debugMarkers", _markers] call ALIVE_fnc_hashSet;
@@ -119,8 +121,10 @@ switch(_operation) do {
 		if (isServer) then {
 			// if server, initialise module game logic
 			_logic = [nil, "create"] call SUPERCLASS;
-			[_logic, "super", SUPERCLASS] call ALIVE_fnc_hashSet;
-			[_logic, "class", MAINCLASS] call ALIVE_fnc_hashSet;
+			[_logic,"super"] call ALIVE_fnc_hashRem;
+			[_logic,"class"] call ALIVE_fnc_hashRem;
+			
+			
 			TRACE_1("After module init",_logic);
 			_result = _logic;
 		};
@@ -168,7 +172,7 @@ switch(_operation) do {
 			_data = [];
 			{
 				_data set [count _data, [
-					_x call ALIVE_fnc_findObjectID,
+					_x call ALIVE_fnc_findObjectIDString,
 					position _x
 				]];
 			} forEach ([_logic, "nodes",[]] call ALIVE_fnc_hashGet);
@@ -184,8 +188,11 @@ switch(_operation) do {
 			_nodes = [_args, "nodes"] call ALIVE_fnc_hashGet;
 			{
 				private["_node"];
-				_node = (_x select 1) nearestObject (_x select 0);
-				_data set [count _data, _node];
+				_objID = parseNumber(_x select 0);
+				if(_objID > 0) then {
+					_node = (_x select 1) nearestObject (parseNumber(_x select 0));
+					_data set [count _data, _node];
+				}
 			} forEach _nodes;
 			[_logic, "nodes", _data] call MAINCLASS;
 		};		
@@ -261,8 +268,8 @@ switch(_operation) do {
 	case "type": {
 		_result = [
 			_logic,_operation,_args,
-			"civilian",
-			["military","infrastructure","civilian"]
+			"CIV",
+			["MIL","INF","CIV"]
 		] call ALIVE_fnc_OOsimpleOperation;
 	};        
 	// Determine cluster priority - valid values are any integer, higher numbers higher priority

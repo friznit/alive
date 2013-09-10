@@ -14,6 +14,12 @@
 <Key ID="STR_ALIVE_ENEMY">
 	<Original>ALiVE Enemy</Original>
 </Key>
+<Key ID="STR_ALIVE_MILITARY">
+	<Original>ALiVE Military</Original>
+</Key>
+<Key ID="STR_ALIVE_CIVILIAN">
+	<Original>ALiVE Civilian</Original>
+</Key>
 <Key ID="STR_ALIVE_REQUIRES_ALIVE">
 	<Original>Requires ALiVE</Original>
 	<German>Erfordern ALiVE</German>

@@ -44,5 +44,6 @@ if(count _result > 1) then {
 } else {
 	_result = typeOf _tmp;
 };
+
 TRACE_1("findObjectID - output",_result);
 _result;

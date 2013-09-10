@@ -35,7 +35,7 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_types","_err","_file","_raw_objects","_object_hash","_expanded","_data_array","_obj_array"];
+private ["_types","_err","_worldName","_file","_raw_objects","_object_hash","_expanded","_data_array","_obj_array"];
 _types = _this;
 _err = "types provided not valid";
 ASSERT_DEFINED("_types",_err);
@@ -43,7 +43,8 @@ ASSERT_TRUE(typeName _types == "ARRAY", _err);
 
 if(isNil "wrp_objects") then {
 	// read raw object data
-	_file = format["\x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", worldName];
+	_worldName = toLower(worldName);	
+	_file = format["\x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", _worldName];
 	call compile preprocessFileLineNumbers _file;
 	format["Reading raw object data from file - %1 objects", count wrp_objects] call ALIVE_fnc_logger;
 	

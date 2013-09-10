@@ -1,20 +1,20 @@
 class CfgVehicles {
-        class ModuleAliveEnemyBase;
-        class ADDON : ModuleAliveEnemyBase
+        class ModuleAliveMilitaryBase;
+        class ADDON : ModuleAliveMilitaryBase
         {
                 scope = 2;
-                displayName = "$STR_ALIVE_SEP";
-                function = "ALIVE_fnc_SEPInit";
+                displayName = "$STR_ALIVE_MO";
+                function = "ALIVE_fnc_MOInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\mil_strategic\icon_nme_SEP.paa";
-				picture = "x\alive\addons\mil_strategic\icon_nme_SEP.paa";
+				icon = "x\alive\addons\mil_strategic\icon_mil_MO.paa";
+				picture = "x\alive\addons\mil_strategic\icon_mil_MO.paa";
                 class Arguments
                 {
                         class debug
                         {
-                                displayName = "$STR_ALIVE_SEP_DEBUG";
-                                description = "$STR_ALIVE_SEP_DEBUG_COMMENT";
+                                displayName = "$STR_ALIVE_MO_DEBUG";
+                                description = "$STR_ALIVE_MO_DEBUG_COMMENT";
                                 class Values
                                 {
                                         class Yes
@@ -30,115 +30,96 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class targets
-                        {
-                                displayName = "$STR_ALIVE_SEP_TARGETS";
-                                description = "$STR_ALIVE_SEP_TARGETS_COMMENT";
-                                class Values
-                                {
-                                        class MILITARY
-                                        {
-                                                name = "$STR_ALIVE_SEP_TARGETS_MIL";
-                                                value = "MIL";
-                                        };
-                                        class CIVILIAN
-                                        {
-                                                name = "$STR_ALIVE_SEP_TARGETS_CIV";
-                                                value = "CIV";
-                                        };
-                                        class ALL
-                                        {
-                                                name = "$STR_ALIVE_SEP_TARGETS_ALL";
-                                                value = "ALL";
-                                                default = 1;
-                                        };
-                                };
-                        };
-                        class size
-                        {
-                                displayName = "$STR_ALIVE_SEP_SIZE";
-                                description = "$STR_ALIVE_SEP_SIZE_COMMENT";
-                                class Values
-                                {
-                                        class BN
-                                        {
-                                                name = "$STR_ALIVE_SEP_SIZE_BN";
-                                                value = "BN";
-                                        };
-                                        class CY
-                                        {
-                                                name = "$STR_ALIVE_SEP_SIZE_CY";
-                                                value = "CY";
-						default = 1;
-                                        };
-                                        class PL
-                                        {
-                                                name = "$STR_ALIVE_SEP_SIZE_PL";
-                                                value = "PL";
-                                        };
-                                };
-                        };
-                        class type
-                        {
-                                displayName = "$STR_ALIVE_SEP_TYPE";
-                                description = "$STR_ALIVE_SEP_TYPE_COMMENT";
-                                class Values
-                                {
-                                        class RANDOM
-                                        {
-                                                name = "$STR_ALIVE_SEP_TYPE_RANDOM";
-                                                value = "RANDOM";
-						default = 1;
-                                        };
-                                        class ARMOR
-                                        {
-                                                name = "$STR_ALIVE_SEP_TYPE_ARMOR";
-                                                value = "ARMOR";
-                                        };
-                                        class MECH
-                                        {
-                                                name = "$STR_ALIVE_SEP_TYPE_MECH";
-                                                value = "MECH";
-                                        };
-                                        class MOTOR
-                                        {
-                                                name = "$STR_ALIVE_SEP_TYPE_MOTOR";
-                                                value = "MOTOR";
-                                        };
-                                        class LIGHT
-                                        {
-                                                name = "$STR_ALIVE_SEP_TYPE_LIGHT";
-                                                value = "LIGHT";
-                                        };
-                                        class AIRBORNE
-                                        {
-                                                name = "$STR_ALIVE_SEP_TYPE_AIRBORNE";
-                                                value = "AIRBORNE";
-                                        };
-                                        class MARINE
-                                        {
-                                                name = "$STR_ALIVE_SEP_TYPE_MARINE";
-                                                value = "MARINE";
-                                        };
-                                };
-                        };
-                        class faction
-                        {
-                                displayName = "$STR_ALIVE_SEP_FACTION";
-                                description = "$STR_ALIVE_SEP_FACTION_COMMENT";
-                                defaultValue = "OPF_F";
-                        };
                         class taor
                         {
-                                displayName = "$STR_ALIVE_SEP_TAOR";
-                                description = "$STR_ALIVE_SEP_TAOR_COMMENT";
+                                displayName = "$STR_ALIVE_MO_TAOR";
+                                description = "$STR_ALIVE_MO_TAOR_COMMENT";
                                 defaultValue = "";
                         };
                         class blacklist
                         {
-                                displayName = "$STR_ALIVE_SEP_BLACKLIST";
-                                description = "$STR_ALIVE_SEP_BLACKLIST_COMMENT";
+                                displayName = "$STR_ALIVE_MO_BLACKLIST";
+                                description = "$STR_ALIVE_MO_BLACKLIST_COMMENT";
                                 defaultValue = "";
+                        };
+						class sizeFilter
+                        {
+                                displayName = "$STR_ALIVE_MO_SIZE_FILTER";
+                                description = "$STR_ALIVE_MO_SIZE_FILTER_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_MO_SIZE_FILTER_NONE";
+                                                value = "0";
+                                        };
+                                        class SMALL
+                                        {
+                                                name = "$STR_ALIVE_MO_SIZE_FILTER_SMALL";
+                                                value = "100";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_MO_SIZE_FILTER_MEDIUM";
+                                                value = "200";
+                                        };
+										class LARGE
+                                        {
+                                                name = "$STR_ALIVE_MO_SIZE_FILTER_LARGE";
+                                                value = "300";
+                                        };
+                                };
+                        };
+						class priorityFilter
+                        {
+                                displayName = "$STR_ALIVE_MO_PRIORITY_FILTER";
+                                description = "$STR_ALIVE_MO_PRIORITY_FILTER_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_MO_PRIORITY_FILTER_NONE";
+                                                value = "0";
+                                        };
+                                        class LOW
+                                        {
+                                                name = "$STR_ALIVE_MO_PRIORITY_FILTER_LOW";
+                                                value = "10";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_MO_PRIORITY_FILTER_MEDIUM";
+                                                value = "30";
+                                        };
+										class HIGH
+                                        {
+                                                name = "$STR_ALIVE_MO_PRIORITY_FILTER_HIGH";
+                                                value = "40";
+                                        };
+                                };
+                        };
+						class initType
+                        {
+                                displayName = "$STR_ALIVE_MO_INIT_TYPE";
+                                description = "$STR_ALIVE_MO_INIT_TYPE_COMMENT";
+                                class Values
+                                {
+                                        class STATIC
+                                        {
+                                                name = "$STR_ALIVE_MO_INIT_TYPE_STATIC";
+                                                value = "STATIC";
+                                        };
+                                        class DYNAMIC
+                                        {
+                                                name = "$STR_ALIVE_MO_INIT_TYPE_DYNAMIC";
+                                                value = "DYNAMIC";
+                                        };
+										class GENERATE
+                                        {
+                                                name = "$STR_ALIVE_MO_INIT_TYPE_GENERATE";
+                                                value = "GENERATE";
+                                        };
+                                };
                         };
                 };
                 

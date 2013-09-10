@@ -2,91 +2,79 @@
 <Project name="Arma3">
 <Package name="ALiVE">
 <Container name="STR_DN">
-<Key ID="STR_ALIVE_SEP">
-	<English>SEP</English>
+<Key ID="STR_ALIVE_MO">
+	<English>Military Objectives</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_COMMENT">
-	<English>Strategic Enemy Placement</English>
+<Key ID="STR_ALIVE_MO_COMMENT">
+	<English>Strategic Military Objectives</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_DEBUG">
+<Key ID="STR_ALIVE_MO_DEBUG">
 	<English>Enable Debug:</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_DEBUG_COMMENT">
-	<English>Enables SEP Module Debug</English>
+<Key ID="STR_ALIVE_MO_DEBUG_COMMENT">
+	<English>Enables MO Module Debug</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_TARGETS">
-	<English>Objective Type:</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TARGETS_COMMENT">
-	<English>What types of infrastructure are the enemy force targetting</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TARGETS_MIL">
-	<English>Military Infrastructure</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TARGETS_CIV">
-	<English>Civilian Infrastructure</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TARGETS_ALL">
-	<English>All Infrastructure</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_SIZE">
-	<English>Force Size:</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_SIZE_COMMENT">
-	<English>Number of units to be placed</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_SIZE_BN">
-	<English>Battalion (300-1200)</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_SIZE_CY">
-	<English>Company (90-250)</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_SIZE_PL">
-	<English>Platoon (30-50)</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE">
-	<English>Force Weighting:</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_COMMENT">
-	<English>The preferred type of force deployed</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_RANDOM">
-	<English>Random</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_ARMOR">
-	<English>Armoured</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_MECH">
-	<English>Mechanised</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_MOTOR">
-	<English>Motorised</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_LIGHT">
-	<English>Light Infantry</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_AIRBORNE">
-	<English>Airborne</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TYPE_MARINE">
-	<English>Marines</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_FACTION">
-	<English>Force Faction:</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_FACTION_COMMENT">
-	<English>Faction of the units to be placed</English>
-</Key>
-<Key ID="STR_ALIVE_SEP_TAOR">
+<Key ID="STR_ALIVE_MO_TAOR">
 	<English>TAOR Marker:</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_TAOR_COMMENT">
+<Key ID="STR_ALIVE_MO_TAOR_COMMENT">
 	<English>Tactical Area Operation Responsibility Marker</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_BLACKLIST">
+<Key ID="STR_ALIVE_MO_BLACKLIST">
 	<English>Blacklist Marker:</English>
 </Key>
-<Key ID="STR_ALIVE_SEP_BLACKLIST_COMMENT">
+<Key ID="STR_ALIVE_MO_BLACKLIST_COMMENT">
 	<English>Exclusion Marker</English>
+</Key>
+<Key ID="STR_ALIVE_MO_SIZE_FILTER">
+	<English>Objective Size Filter:</English>
+</Key>
+<Key ID="STR_ALIVE_MO_SIZE_FILTER_COMMENT">
+	<English>Filter objects less than selected size</English>
+</Key>
+<Key ID="STR_ALIVE_MO_SIZE_FILTER_NONE">
+	<English>Do not filter</English>
+</Key>
+<Key ID="STR_ALIVE_MO_SIZE_FILTER_SMALL">
+	<English>Ignore small objectives</English>
+</Key>
+<Key ID="STR_ALIVE_MO_SIZE_FILTER_MEDIUM">
+	<English>Ignore small + medium objectives</English>
+</Key>
+<Key ID="STR_ALIVE_MO_SIZE_FILTER_LARGE">
+	<English>Only huge objectives</English>
+</Key>
+<Key ID="STR_ALIVE_MO_PRIORITY_FILTER">
+	<English>Priority Filter:</English>
+</Key>
+<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_COMMENT">
+	<English>Filter objects less than selected priority</English>
+</Key>
+<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_NONE">
+	<English>Do not filter</English>
+</Key>
+<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_LOW">
+	<English>Ignore low priority objectives</English>
+</Key>
+<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_MEDIUM">
+	<English>Ignore low + medium priority objectives</English>
+</Key>
+<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_HIGH">
+	<English>Only high priority objectives</English>
+</Key>
+<Key ID="STR_ALIVE_MO_INIT_TYPE">
+	<English>Initialisation Type:</English>
+</Key>
+<Key ID="STR_ALIVE_MO_INIT_TYPE_COMMENT">
+	<English>What type of initialization</English>
+</Key>
+<Key ID="STR_ALIVE_MO_INIT_TYPE_STATIC">
+	<English>Load objectives list from preset static data</English>
+</Key>
+<Key ID="STR_ALIVE_MO_INIT_TYPE_DYNAMIC">
+	<English>Generate objectives list dynamicly (Long map load times)</English>
+</Key>
+<Key ID="STR_ALIVE_MO_INIT_TYPE_GENERATE">
+	<English>Generate script output based on dynamic init using current settings</English>
 </Key>
 </Container></Package></Project>

@@ -154,12 +154,13 @@ _deleteMarkers = {
 		private ["_logic"];
         _logic = _this;
         {
-                deleteMarkerLocal _x;
+                deleteMarker _x;
 		} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha","_profileID","_profileSide","_profileActive","_typePrefix"];
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha"
+		,"_profileID","_profileSide","_profileActive","_typePrefix","_label"];
         _logic = _this;
         _markers = [];
 
@@ -204,23 +205,25 @@ _createMarkers = {
 		};
 
         if(count _position > 0) then {
-				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
-				_m setMarkerShapeLocal "ICON";
-				_m setMarkerSizeLocal [.65, .65];
-				_m setMarkerTypeLocal _debugIcon;
-				_m setMarkerColorLocal _debugColor;
-				_m setMarkerAlphaLocal _debugAlpha;
-                _m setMarkerTextLocal _profileID;
+				_m = createMarker [format[MTEMPLATE, _profileID], _position];
+				_m setMarkerShape "ICON";
+				_m setMarkerSize [.65, .65];
+				_m setMarkerType _debugIcon;
+				_m setMarkerColor _debugColor;
+				_m setMarkerAlpha _debugAlpha;
+				
+				_label = [_profileID, "_"] call CBA_fnc_split;
+                _m setMarkerText format["e%1",_label select 1];
 
 				_markers set [count _markers, _m];
 				
 				/*
-				_m = createMarkerLocal [format["SPAWN_%1",format[MTEMPLATE, _profileID]], _position];
-				_m setMarkerShapeLocal "ELLIPSE";;
-				_m setMarkerSizeLocal [ALIVE_spawnRadius, ALIVE_spawnRadius];
-				_m setMarkerBrushLocal "Border";
-				_m setMarkerColorLocal _debugColor;
-				_m setMarkerTextLocal format["%1 destination",_profileID];
+				_m = createMarker [format["SPAWN_%1",format[MTEMPLATE, _profileID]], _position];
+				_m setMarkerShape "ELLIPSE";;
+				_m setMarkerSize [ALIVE_spawnRadius, ALIVE_spawnRadius];
+				_m setMarkerBrush "Border";
+				_m setMarkerColor _debugColor;
+				_m setMarkerText format["%1 destination",_profileID];
 				
 				_markers set [count _markers, _m];
 				*/

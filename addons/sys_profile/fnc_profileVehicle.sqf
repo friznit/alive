@@ -102,7 +102,7 @@ _deleteMarkers = {
 		private ["_logic"];
         _logic = _this;
         {
-                deleteMarkerLocal _x;
+                deleteMarker _x;
 		} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
 };
 
@@ -176,14 +176,18 @@ _createMarkers = {
 		};
 		
         if(count _position > 0) then {
-				_m = createMarkerLocal [format[MTEMPLATE, _profileID], _position];
-				_m setMarkerShapeLocal "ICON";
-				_m setMarkerSizeLocal [1, 1];
-				_m setMarkerTypeLocal _debugIcon;
-				_m setMarkerColorLocal _debugColor;
-				_m setMarkerAlphaLocal _debugAlpha;
-                _m setMarkerTextLocal _profileID;
-
+				_m = createMarker [format[MTEMPLATE, _profileID], _position];
+				_m setMarkerShape "ICON";
+				_m setMarkerSize [1, 1];
+				_m setMarkerType _debugIcon;
+				_m setMarkerColor _debugColor;
+				_m setMarkerAlpha _debugAlpha;
+				
+				/*
+				_label = [_profileID, "_"] call CBA_fnc_split;
+				_m setMarkerText format["v%1",_label select 1];
+				*/
+				
 				_markers set [count _markers, _m];
 
 				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;

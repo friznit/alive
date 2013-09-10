@@ -16,6 +16,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\mil_command\fnc_testManagedCommand.sqf";
 				recompile = 1;
 			};
+			class buildingPatrol {
+				description = "buildingPatrol";
+				file = "\x\alive\addons\mil_command\fnc_buildingPatrol.sqf";
+				recompile = 1;
+			};
+			class managedBuildingPatrol {
+				description = "managedBuildingPatrol";
+				file = "\x\alive\addons\mil_command\fnc_managedBuildingPatrol.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

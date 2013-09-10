@@ -1,12 +1,12 @@
 #include <\x\alive\addons\mil_strategic\script_component.hpp>
 
-#define TESTS ["SEP","findHQ"]
+#define TESTS ["MO"]
 
 SCRIPT(test-strategic);
 
 // ----------------------------------------------------------------------------
 
-LOG("=== Testing NME Strategic ===");
+LOG("=== Testing Mil Strategic ===");
 
 {
 	call compile preprocessFileLineNumbers format ["\x\alive\addons\mil_strategic\tests\test_%1.sqf", _x];
