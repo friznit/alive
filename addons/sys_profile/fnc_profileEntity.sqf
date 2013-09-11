@@ -503,41 +503,58 @@ switch(_operation) do {
 				}
 		};
 		case "addActiveCommand": {
-				private ["_activeCommands"];
+				private ["_activeCommands","_type"];
 
 				if(typeName _args == "ARRAY") then {
+
+                    	_type = _logic select 2 select 5;
 						
-						_activeCommands = _logic select 2 select 26; //[_logic,"commands"] call ALIVE_fnc_hashGet;
-						_activeCommands set [count _activeCommands, _args];
+                        if (!(isnil "_type") && {_type == "entity"}) then {
+                        
+							_activeCommands = _logic select 2 select 26; //[_logic,"commands"] call ALIVE_fnc_hashGet;
+							_activeCommands set [count _activeCommands, _args];
+                        };
                 };
 		};
 		case "clearActiveCommands": {
-				private ["_activeCommands"];
-				
-				_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-				
-				if(count _activeCommands > 0) then {
-					[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
-					[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet;
-				};				
+				private ["_activeCommands","_type"];
+                
+                _type = _logic select 2 select 5;
+						
+                if (!(isnil "_type") && {_type == "entity"}) then {
+					_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+					
+					if(count _activeCommands > 0) then {
+						[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
+						[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet;
+					};
+                };
 		};
 		case "addInactiveCommand": {
-				private ["_inactiveCommands"];
-
-				if(typeName _args == "ARRAY") then {
-						_inactiveCommands = _logic select 2 select 27; //[_logic,"commands"] call ALIVE_fnc_hashGet;
-						_inactiveCommands set [count _inactiveCommands, _args];
+				private ["_inactiveCommands","_type"];
+                
+                _type = _logic select 2 select 5;
+						
+                if (!(isnil "_type") && {_type == "entity"}) then {
+					if(typeName _args == "ARRAY") then {
+							_inactiveCommands = _logic select 2 select 27; //[_logic,"commands"] call ALIVE_fnc_hashGet;
+							_inactiveCommands set [count _inactiveCommands, _args];
+	                };
                 };
 		};
 		case "clearInactiveCommands": {
-				private ["_inactiveCommands"];
-				
-				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-				
-				if(count _inactiveCommands > 0) then {
-					[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
-					[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet;
-				};
+				private ["_inactiveCommands","_type"];
+                
+                _type = _logic select 2 select 5;
+						
+                if (!(isnil "_type") && {_type == "entity"}) then {
+					_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+					
+					if(count _inactiveCommands > 0) then {
+						[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
+						[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet;
+					};
+                };
 		};
 		case "mergePositions": {
 				private ["_position","_unitCount","_positions"];
