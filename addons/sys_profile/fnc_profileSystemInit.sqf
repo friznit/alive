@@ -28,6 +28,9 @@ PARAMS_1(_logic);
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
 if(isServer) then {
+	
+	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
+	
 	_debug = _logic getVariable ["debug",false];
 	_syncMode = _logic getVariable ["syncronised","ADD"];
 	_syncedUnits = synchronizedObjects _logic;

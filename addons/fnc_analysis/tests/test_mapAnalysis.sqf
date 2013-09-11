@@ -54,11 +54,11 @@ TIMEREND
 
 STAT("Create Grid");
 TIMERSTART
-/*
+///*
 [_grid, "gridPosition", [getPos player select 0, getPos player select 1]] call ALIVE_fnc_sectorGrid;
 [_grid, "gridSize", 500] call ALIVE_fnc_sectorGrid;
 [_grid, "sectorDimensions", [500,500]] call ALIVE_fnc_sectorGrid;                                                       
-*/
+//*/
 _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
@@ -81,13 +81,14 @@ DEBUGOFF
 
 
 STAT("Start static terrain analysis");
-[_grid, true, true] call ALIVE_fnc_gridMapAnalysis;
+[_grid, [], true, true] call ALIVE_fnc_gridMapAnalysis;
 
 
 DEBUGON
 
 
-//[_plotter, "plot", [_allSectors, "elevation"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_allSectors, "elevationLand"]] call ALIVE_fnc_plotSectors;
+[_plotter, "plot", [_allSectors, "elevationSea"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;

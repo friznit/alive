@@ -31,8 +31,8 @@ nil
 private ["_clusters","_sizeFilter","_priorityFilter","_clustersCopy","_cluster"];
 
 _clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
-_sizeFilter = [_this, 1, 1000, [0]] call BIS_fnc_param;
-_priorityFilter = [_this, 2, 100, [0]] call BIS_fnc_param;
+_sizeFilter = [_this, 1, 0, [0]] call BIS_fnc_param;
+_priorityFilter = [_this, 2, 0, [0]] call BIS_fnc_param;
 
 _clustersCopy = [];
 

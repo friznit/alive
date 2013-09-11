@@ -35,13 +35,10 @@ _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
 _worldName = [worldName] call CBA_fnc_capitalize;
 
-switch(_worldName) do {
-	case "Stratis":{
-		call ALIVE_fnc_staticMapAnalysisStratis;
-	};
-	case "Altis":{
-		call ALIVE_fnc_staticMapAnalysisAltis;
-	};
+if(isNil "ALIVE_gridData") then {				
+	_worldName = toLower(worldName);			
+	_file = format["\x\alive\addons\fnc_analysis\data\data.%1.sqf", _worldName];				
+	call compile preprocessFileLineNumbers _file;
 };
 
 {

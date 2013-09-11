@@ -31,12 +31,14 @@ ARJay
 private ["_grid","_export","_debug","_sectors","_exportString","_landSectors","_sector","_sectorData","_sectorID","_subGrid","_subGridSectors"];
 
 _grid = _this select 0;
-_export = if(count _this > 1) then {_this select 1} else {false};
-_debug = if(count _this > 2) then {_this select 2} else {false};
+_sectors = _this select 1;
+_export = if(count _this > 2) then {_this select 2} else {false};
+_debug = if(count _this > 3) then {_this select 3} else {false};
 
 // reset existing analysis data
-
-_sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
+if(count _sectors == 0) then {
+	_sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
+};
 
 if(_export) then {
 	_exportString = 'ALIVE_gridData = [] call ALIVE_fnc_hashCreate;';
@@ -93,22 +95,26 @@ if(_debug) then {
 	
 	// copy all sub grid sector data into this parent sector data
 	
-	private ["_elevationSamples","_elevation","_terrainSamples","_terrain","_landTerrain","_shoreTerrain","_seaTerrain",
+	private ["_elevationSamples","_elevationSamplesLand","_elevationSamplesSea","_elevation","_terrainSamples","_terrain","_landTerrain","_shoreTerrain","_seaTerrain",
 	"_forestPlaces","_hillPlaces","_meadowPlaces","_treePlaces","_housePlaces","_seaPlaces",
-	"_flatEmptySamples","_roadSamples","_crossroadSamples","_terminusSamples","_bestPlaces","_roads","_terrainSamples"];
+	"_flatEmptySamples","_roadSamples","_crossroadSamples","_terminusSamples","_bestPlaces","_roads","_terrainSamples","_currentElevation"];
 	
-	_elevationSamples = [];
+	_elevationSamplesLand = [];
+
 	_elevation = 0;
+	_elevationSamples = [];
 	_terrain = "";
 	_landTerrain = [];
 	_shoreTerrain = [];
 	_seaTerrain = [];
 	_forestPlaces = [];
 	_hillPlaces = [];
+	/*
 	_meadowPlaces = [];
 	_treePlaces = [];
 	_housePlaces = [];
 	_seaPlaces = [];
+	*/
 	_flatEmptySamples = [];
 	_roadSamples = [];
 	_crossroadSamples = [];
@@ -134,12 +140,25 @@ if(_debug) then {
 		
 	} forEach _subGridSectors;
 	
+	_elevationSamplesLand = [];
+	_elevationSamplesSea = [];
+	
 	// calculate average elevation for the sector
 	{
-		_elevation = _elevation + (_x select 1);
+		_currentElevation = _x select 1;
+		_elevation = _elevation + _currentElevation;
+		if(_currentElevation >= 0) then {
+			_elevationSamplesLand set [count _elevationSamplesLand, _x];
+		}else{
+			_elevationSamplesSea set [count _elevationSamplesSea, _x];
+		};
 	} forEach _elevationSamples;
 	
 	_elevation = _elevation / ((count _elevationSamples)-1);
+	
+	["L: %1",_landTerrain] call ALIVE_fnc_dump;
+	["S: %1",_shoreTerrain] call ALIVE_fnc_dump;
+	["SEA: %1",_seaTerrain] call ALIVE_fnc_dump;
 	
 	// determine terrain type
 	if((count _landTerrain == 0) && (count _shoreTerrain == 0) && (count _seaTerrain > 0)) then {
@@ -153,6 +172,10 @@ if(_debug) then {
 	if((count _landTerrain > 0) && (count _shoreTerrain == 0) && (count _seaTerrain == 0)) then {
 		_terrain = "LAND";
 	};	
+	
+	if((count _landTerrain > 0) && (count _shoreTerrain > 0) && (count _seaTerrain == 0)) then {
+		_terrain = "LAND";
+	};
 	
 	if(_terrain == "SHORE" || _terrain == "LAND") then {
 		
@@ -215,10 +238,12 @@ if(_debug) then {
 			
 			_subGridForestPlaces = [_subGridBestPlaces, "forest"] call ALIVE_fnc_hashGet;
 			_subGridHillPlaces = [_subGridBestPlaces, "exposedHills"] call ALIVE_fnc_hashGet;
+			/*
 			_subGridMeadowPlaces = [_subGridBestPlaces, "meadow"] call ALIVE_fnc_hashGet;
 			_subGridTreePlaces = [_subGridBestPlaces, "exposedTrees"] call ALIVE_fnc_hashGet;
 			_subGridHousePlaces = [_subGridBestPlaces, "houses"] call ALIVE_fnc_hashGet;
 			_subGridSeaPlaces = [_subGridBestPlaces, "sea"] call ALIVE_fnc_hashGet;
+			*/
 			
 			_subGridRoad = [_subGridRoads, "road"] call ALIVE_fnc_hashGet;
 			_subGridCrossroad = [_subGridRoads, "crossroad"] call ALIVE_fnc_hashGet;
@@ -226,10 +251,12 @@ if(_debug) then {
 			
 			_forestPlaces = _forestPlaces + _subGridForestPlaces;
 			_hillPlaces = _hillPlaces + _subGridHillPlaces;
+			/*
 			_meadowPlaces = _meadowPlaces + _subGridMeadowPlaces;
 			_treePlaces = _treePlaces + _subGridTreePlaces;
 			_housePlaces = _housePlaces + _subGridHousePlaces;
 			_seaPlaces = _seaPlaces + _subGridSeaPlaces;
+			*/
 			
 			_roadSamples = _roadSamples + _subGridRoad;
 			_crossroadSamples = _crossroadSamples + _subGridCrossroad;
@@ -253,17 +280,20 @@ if(_debug) then {
 	_bestPlaces = [] call ALIVE_fnc_hashCreate;
 	[_bestPlaces,"forest",_forestPlaces] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"exposedHills",_hillPlaces] call ALIVE_fnc_hashSet;
+	/*
 	[_bestPlaces,"meadow",_meadowPlaces] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"exposedTrees",_treePlaces] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"houses",_housePlaces] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"sea",_seaPlaces] call ALIVE_fnc_hashSet;
+	*/
 	
 	_roads = [] call ALIVE_fnc_hashCreate;
 	[_roads,"road",_roadSamples] call ALIVE_fnc_hashSet;
 	[_roads,"crossroad",_crossroadSamples] call ALIVE_fnc_hashSet;
 	[_roads,"terminus",_terminusSamples] call ALIVE_fnc_hashSet;
 	
-	[_sectorData, "elevationSamples",_elevationSamples] call ALIVE_fnc_hashSet;
+	[_sectorData, "elevationSamplesLand",_elevationSamplesLand] call ALIVE_fnc_hashSet;
+	[_sectorData, "elevationSamplesSea",_elevationSamplesSea] call ALIVE_fnc_hashSet;
 	[_sectorData, "elevation",_elevation] call ALIVE_fnc_hashSet;
 	[_sectorData, "terrainSamples",_terrainSamples] call ALIVE_fnc_hashSet;
 	[_sectorData, "terrain",_terrain] call ALIVE_fnc_hashSet;
@@ -277,7 +307,8 @@ if(_debug) then {
 	if(_export) then {
 		_exportString = _exportString + '_sectorData = [] call ALIVE_fnc_hashCreate;';
 		
-		_exportString = _exportString + format['[_sectorData,"elevationSamples",%1] call ALIVE_fnc_hashSet;',_elevationSamples];
+		_exportString = _exportString + format['[_sectorData,"elevationSamplesLand",%1] call ALIVE_fnc_hashSet;',_elevationSamplesLand];
+		_exportString = _exportString + format['[_sectorData,"elevationSamplesSea",%1] call ALIVE_fnc_hashSet;',_elevationSamplesSea];
 		_exportString = _exportString + format['[_sectorData,"elevation",%1] call ALIVE_fnc_hashSet;',_elevation];
 		
 		_exportString = _exportString + format['[_sectorData,"flatEmpty",%1] call ALIVE_fnc_hashSet;',_flatEmptySamples];
@@ -293,10 +324,12 @@ if(_debug) then {
 		_exportString = _exportString + '_bestPlaces = [] call ALIVE_fnc_hashCreate;';		
 		_exportString = _exportString + format['[_bestPlaces,"forest",%1] call ALIVE_fnc_hashSet;',_forestPlaces];
 		_exportString = _exportString + format['[_bestPlaces,"exposedHills",%1] call ALIVE_fnc_hashSet;',_hillPlaces];
+		/*
 		_exportString = _exportString + format['[_bestPlaces,"meadow",%1] call ALIVE_fnc_hashSet;',_meadowPlaces];
 		_exportString = _exportString + format['[_bestPlaces,"exposedTrees",%1] call ALIVE_fnc_hashSet;',_treePlaces];
 		_exportString = _exportString + format['[_bestPlaces,"houses",%1] call ALIVE_fnc_hashSet;',_housePlaces];
 		_exportString = _exportString + format['[_bestPlaces,"sea",%1] call ALIVE_fnc_hashSet;',_seaPlaces];
+		*/
 		_exportString = _exportString + format['[_sectorData,"bestPlaces",_bestPlaces] call ALIVE_fnc_hashSet;'];
 		
 		_exportString = _exportString + '_roads = [] call ALIVE_fnc_hashCreate;';

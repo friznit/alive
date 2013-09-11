@@ -97,6 +97,13 @@ switch(_operation) do {
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 						
+						// create the profile handler
+						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
+						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+						
+						// create profiles for all map units that dont have profiles
+						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;
+						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
 						[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
@@ -107,14 +114,7 @@ switch(_operation) do {
 						[ALIVE_sectorPlotter, "init"] call ALIVE_fnc_plotSectors;
 						
 						// import static map analysis to the grid
-						[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;
-						
-						// create the profile handler
-						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
-						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
-						
-						// create profiles for all map units that dont have profiles
-						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;
+						[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;						
 						
 						// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 						[ALIVE_profileHandler, "debug", _debug] call ALIVE_fnc_profileHandler;
@@ -129,7 +129,7 @@ switch(_operation) do {
 						[ALIVE_commandRouter, "debug", _debug] call ALIVE_fnc_commandRouter;
 						
 						// run initial profile analysis
-						[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
+						//[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
 
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {

@@ -1,4 +1,4 @@
-//#define DEBUG_CODE_FULL
+//#define DEBUG_MODE_FULL
 #include <\x\alive\addons\civ_strategic\script_component.hpp>
 SCRIPT(CO);
 
@@ -127,7 +127,7 @@ switch(_operation) do {
 	case "priorityFilter": {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY_FILTER] call ALIVE_fnc_OOsimpleOperation;
 	};
-	// Return the Blacklist marker
+	// Return the Init Type
 	case "initType": {
 		_result = [_logic,_operation,_args,DEFAULT_INIT_TYPE,["STATIC","DYNAMIC","GENERATE"]] call ALIVE_fnc_OOsimpleOperation;
 	};
@@ -209,7 +209,7 @@ switch(_operation) do {
 				ALIVE_loadedCIVClusters = true;
 			};
 			
-			waituntil {sleep 0.1; !(isnil "ALIVE_loadedCIVClusters")};
+			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedCIVClusters")};
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MO;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MO;
@@ -354,6 +354,12 @@ switch(_operation) do {
 			_objectivesSettlement = [_logic, "objectivesSettlement"] call MAINCLASS;
 			_worldName = toLower(worldName);
 			
+			["HQ: %1",_objectivesHQ] call ALIVE_fnc_dump;
+			["PO: %1",_objectivesPower] call ALIVE_fnc_dump;
+			["CO: %1",_objectivesComms] call ALIVE_fnc_dump;
+			["MA: %1",_objectivesMarine] call ALIVE_fnc_dump;
+			["FU: %1",_objectivesFuel] call ALIVE_fnc_dump;
+			
 			_exportString = '';
 			
 			_objectivesName = 'ALIVE_clustersCiv';
@@ -362,48 +368,56 @@ switch(_operation) do {
 			_exportString = _result;
 			
 			if(count _objectivesHQ > 0) then {
+				["HQ"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivHQ';
 				_result = [_objectivesHQ, _objectivesName] call ALIVE_fnc_staticClusterOutput;				
 				_exportString = _exportString + _result;
 			};
 			
 			if(count _objectivesPower > 0) then {
+				["POWER"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivPower';
 				_result = [_objectivesPower, _objectivesName] call ALIVE_fnc_staticClusterOutput;			
 				_exportString = _exportString + _result;
 			};
 			
 			if(count _objectivesComms > 0) then {
+				["COMMS"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivComms';
 				_result = [_objectivesComms, _objectivesName] call ALIVE_fnc_staticClusterOutput;				
 				_exportString = _exportString + _result;
 			};
 			
 			if(count _objectivesMarine > 0) then {
+				["MARINE"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivMarine';
 				_result = [_objectivesMarine, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 				_exportString = _exportString + _result;
 			};
 			
 			if(count _objectivesRail > 0) then {
+				["RAIL"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivRail';
 				_result = [_objectivesRail, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 				_exportString = _exportString + _result;
 			};	
 			
 			if(count _objectivesFuel > 0) then {
+				["FUEL"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivFuel';
 				_result = [_objectivesFuel, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 				_exportString = _exportString + _result;
 			};
 			
 			if(count _objectivesConstruction > 0) then {
+				["CON"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivConstruction';
 				_result = [_objectivesConstruction, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 				_exportString = _exportString + _result;
 			};
 			
 			if(count _objectivesSettlement > 0) then {
+				["SET"] call ALIVE_fnc_dump;
 				_objectivesName = 'ALIVE_clustersCivSettlement';
 				_result = [_objectivesSettlement, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 				_exportString = _exportString + _result;
@@ -454,7 +468,7 @@ switch(_operation) do {
 			_clusters_hq = [_clusters_hq] call ALIVE_fnc_consolidateClusters;
 						
 			// Store the categorised clusters on the logic
-			[_logic, "objectivesHQ", [_clusters_hq] call ALIVE_fnc_copyClusters] call MAINCLASS;			
+			[_logic, "objectivesHQ", [_clusters_hq] call ALIVE_fnc_copyClusters] call MAINCLASS;		
 			
 			_clusters = +_clusters_hq;
 			

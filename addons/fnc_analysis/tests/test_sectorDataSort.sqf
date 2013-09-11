@@ -230,7 +230,7 @@ if(count _sortedForestPositions > 0) then {
 	deleteMarkerLocal _m1;
 };
 
-
+/*
 STAT("Sort exposed trees by distance to player");
 _sortedTreePositions = [_playerSectorData, "bestPlaces", [getPos player,"exposedTrees"]] call ALIVE_fnc_sectorDataSort;
 ["Sorted exposed trees positions: %1",_sortedTreePositions] call ALIVE_fnc_dump;
@@ -241,7 +241,7 @@ if(count _sortedTreePositions > 0) then {
 	sleep 20;
 	deleteMarkerLocal _m2;
 };
-
+*/
 
 STAT("Sort exposed hills by distance to player");
 _sortedHillPositions = [_playerSectorData, "bestPlaces", [getPos player,"exposedHills"]] call ALIVE_fnc_sectorDataSort;
@@ -254,7 +254,7 @@ if(count _sortedHillPositions > 0) then {
 	deleteMarkerLocal _m3;
 };
 
-
+/*
 STAT("Sort meadow by distance to player");
 _sortedMeadowPositions = [_playerSectorData, "bestPlaces", [getPos player,"meadow"]] call ALIVE_fnc_sectorDataSort;
 ["Sorted meadow positions: %1",_sortedHillPositions] call ALIVE_fnc_dump;
@@ -289,6 +289,7 @@ if(count _sortedSeaPositions > 0) then {
 	sleep 20;
 	deleteMarkerLocal _m6;
 };
+*/
 
 
 STAT("Sleeping before clear");

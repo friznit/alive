@@ -50,17 +50,21 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	
 	_forestExpression = "(1 + forest + trees) * (1 - sea) * (1 - houses)";
 	_exposedHillsExpression = "(1 + hills) * (1 - forest) * (1 - sea)";
+	/*
 	_meadowExpression = "(1 + meadow) * (1 - forest) * (1 - sea) * (1 - hills)";
 	_exposedTreesExpression = "(1 + trees) * (1 - forest) * (1 - sea)";
 	_housesExpression = "(1 + houses) * (1 - forest) * (1 - sea) * (1 - meadow)";
 	_seaExpression = "(1 + sea) * (1 - hills) * (1 - meadow)";
+	*/
 	
 	_selectedForestPlaces = selectBestPlaces [_centerPosition,_radius,_forestExpression,_precision,_sources];	
 	_selectedHillsPlaces = selectBestPlaces [_centerPosition,_radius,_exposedHillsExpression,_precision,_sources];	
+	/*
 	_selectedMeadowsPlaces = selectBestPlaces [_centerPosition,_radius,_meadowExpression,_precision,_sources];	
 	_selectedTreesPlaces = selectBestPlaces [_centerPosition,_radius,_exposedTreesExpression,_precision,_sources];	
 	_selectedHousesPlaces = selectBestPlaces [_centerPosition,_radius,_housesExpression,_precision,_sources];
 	_selectedSeaPlaces = selectBestPlaces [_centerPosition,_radius,_seaExpression,_precision,_sources];	
+	*/
 	
 	/*
 	["S: %1 FORREST: %2",_id,_selectedForestPlaces] call ALIVE_fnc_dump;
@@ -73,10 +77,12 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	
 	_forestPositions = [];
 	_hillsPositions = [];
+	/*
 	_meadowsPositions = [];
 	_treesPositions = [];
 	_housesPositions = [];
 	_seaPositions = [];
+	*/
 		
 	{
 		_pos = _x select 0;
@@ -95,7 +101,8 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 		};
 		
 	} forEach _selectedHillsPlaces;
-	
+		
+	/*
 	{
 		_pos = _x select 0;
 		_cost = _x select 1;
@@ -131,13 +138,16 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 		};
 		
 	} forEach _selectedSeaPlaces;
+	*/
 	
 	[_bestPlaces,"forest",_forestPositions] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"exposedHills",_hillsPositions] call ALIVE_fnc_hashSet;
+	/*
 	[_bestPlaces,"meadow",_meadowsPositions] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"exposedTrees",_treesPositions] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"houses",_housesPositions] call ALIVE_fnc_hashSet;
 	[_bestPlaces,"sea",_seaPositions] call ALIVE_fnc_hashSet;
+	*/
 	
 	// store the result of the analysis on the sector instance
 	[_sector, "data", ["bestPlaces",_bestPlaces]] call ALIVE_fnc_sector;

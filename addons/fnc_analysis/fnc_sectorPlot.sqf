@@ -425,10 +425,12 @@ switch(_operation) do {
 								
 								_forestPositions = [_plotData,"forest"] call ALIVE_fnc_hashGet;
 								_hillsPositions = [_plotData,"exposedHills"] call ALIVE_fnc_hashGet;
+								/*
 								_meadowsPositions = [_plotData,"meadow"] call ALIVE_fnc_hashGet;
 								_treesPositions = [_plotData,"exposedTrees"] call ALIVE_fnc_hashGet;
 								_housesPositions = [_plotData,"houses"] call ALIVE_fnc_hashGet;
 								_seaPositions = [_plotData,"sea"] call ALIVE_fnc_hashGet;
+								*/
 								
 								_dimensions = [5,5];
 								_alpha = 1;
@@ -447,6 +449,7 @@ switch(_operation) do {
 									_markers set [count _markers, _m];
 								} forEach _hillsPositions;
 								
+								/*
 								{
 									_position = _x;
 									_markerID = format["BPM_%1_%2",_id,_forEachIndex];
@@ -473,7 +476,8 @@ switch(_operation) do {
 									_markerID = format["BPS_%1_%2",_id,_forEachIndex];
 									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlue"] call _createMarker;
 									_markers set [count _markers, _m];
-								} forEach _seaPositions;								
+								} forEach _seaPositions;
+								*/								
 							};
 						};
 						case "flatEmpty": {

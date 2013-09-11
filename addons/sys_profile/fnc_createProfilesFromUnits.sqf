@@ -40,6 +40,9 @@ _vehicleCount = 0;
 _createModeGroups = [];
 _createModeVehicles = [];
 
+//["Create Mode: %1",_createMode] call ALIVE_fnc_dump;
+//["Create Objects: %1",_createModeObjects] call ALIVE_fnc_dump;
+
 // use the passed create mode objects array of to
 // compile lists of vehicles and groups to use 
 {
@@ -65,7 +68,6 @@ _createModeVehicles = [];
 	};
 } forEach _createModeObjects;
 
-
 if(_createMode == "ADD") then {
 	_groups = _createModeGroups;
 	_vehicles = _createModeVehicles;
@@ -75,6 +77,9 @@ if(_createMode == "IGNORE") then {
 	_groups = _groups - _createModeGroups;
 	_vehicles = _vehicles - _createModeVehicles;
 };
+
+//["Create Mode Groups: %1",_groups] call ALIVE_fnc_dump;
+//["Create Mode Vehicles: %1",_vehicles] call ALIVE_fnc_dump;
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
@@ -185,7 +190,6 @@ if(_debug) then {
 	};
 	
 } forEach _groups;
-
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {

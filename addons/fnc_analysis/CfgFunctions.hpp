@@ -171,16 +171,6 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_getClosestRoad.sqf";
 				recompile = 1;
 			};
-			class staticMapAnalysisStratis {
-				description = "staticMapAnalysisStratis";
-				file = "\x\alive\addons\fnc_analysis\fnc_staticMapAnalysisStratis.sqf";
-				recompile = 1;
-			};
-			class staticMapAnalysisAltis {
-				description = "staticMapAnalysisAltis";
-				file = "\x\alive\addons\fnc_analysis\fnc_staticMapAnalysisAltis.sqf";
-				recompile = 1;
-			};
 		};
 	};
 };

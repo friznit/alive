@@ -60,12 +60,22 @@ switch (_key) do {
 		
 		_sortedData
 	};
-	case "elevation": {
+	case "elevationLand": {
 		private ["_order"];
 		
 		_order = if(count _args > 0) then {_args select 0} else {"ASCEND"};
 		
-		_data = [_sectorData, "elevationSamples"] call ALIVE_fnc_hashGet;		
+		_data = [_sectorData, "elevationSamplesLand"] call ALIVE_fnc_hashGet;		
+		_sortedData = [_data,[],{_x select 1},_order] call BIS_fnc_sortBy;
+		
+		_sortedData
+	};
+	case "elevationSea": {
+		private ["_order"];
+		
+		_order = if(count _args > 0) then {_args select 0} else {"ASCEND"};
+		
+		_data = [_sectorData, "elevationSamplesSea"] call ALIVE_fnc_hashGet;		
 		_sortedData = [_data,[],{_x select 1},_order] call BIS_fnc_sortBy;
 		
 		_sortedData

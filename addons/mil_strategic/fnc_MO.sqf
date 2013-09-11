@@ -177,6 +177,8 @@ switch(_operation) do {
 	case "initStatic": {
         if (isServer) then {
 		
+			//waituntil {sleep 1; ["MO WAITING"] call ALIVE_fnc_dump; time > 0};
+		
 			[true] call ALIVE_fnc_timer;
 		
 			private ["_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
@@ -189,7 +191,7 @@ switch(_operation) do {
 				ALIVE_loadedMilClusters = true;
 			};
 			
-			waituntil {sleep 0.1; !(isnil "ALIVE_loadedMilClusters")};
+			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedMilClusters")};
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MO;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MO;
