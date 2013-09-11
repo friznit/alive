@@ -26,6 +26,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\mil_command\fnc_managedBuildingPatrol.sqf";
 				recompile = 1;
 			};
+			class randomMovement {
+				description = "Random Movement within a given radius";
+				file = "\x\alive\addons\mil_command\fnc_randomMovement.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };
