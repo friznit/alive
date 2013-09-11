@@ -115,24 +115,22 @@ switch(_operation) do {
 					CONTROLLER  - coordination
 					*/
 			        
-			        "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger;
-			        waituntil {sleep 5; !(isnil "ALiVE_ProfileHandler")};
+			        waituntil {sleep 10; "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger; !(isnil "ALiVE_ProfileHandler")};
                     
-                    sleep 5;
+                    sleep 10;
 			        
-			        "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;
+			        //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
                     private ["_objectives"];
                     _objectives = [];
                     
-                    //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
                     for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 						private ["_obj"];
                         
-                        waituntil {sleep 5; _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
+                        waituntil {sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger; _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
                         _objectives = _objectives + _obj;
                     };
 
-                    sleep 5;
+                    sleep 5 + (random 30);
                     
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
@@ -148,12 +146,11 @@ switch(_operation) do {
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     };
                     
+                    sleep 30;
+                    
                     //Add random movement to profiles so they dont stand still if no waypoints
                     _profIDs = [ALIVE_profileHandler, "getProfilesBySide",[_handler,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
-                    {
-                        _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
-                        [_prof, "addActiveCommand", ["ALIVE_fnc_randomMovement","spawn",200]] call ALIVE_fnc_profileEntity;
-					} foreach _profIDs;
+                    {private ["_prof","_type"]; _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; [_prof, "addActiveCommand", ["ALIVE_fnc_randomMovement","spawn",200]] call ALIVE_fnc_profileEntity} foreach _profIDs;
                 };
                 
                 /*
@@ -284,7 +281,7 @@ switch(_operation) do {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
                     
-                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height"];
+                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height","_debug"];
                     
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
                         _objectives = _args select 0;
@@ -292,6 +289,7 @@ switch(_operation) do {
 
                         _startpos = [_logic,"position"] call ALiVE_fnc_HashGet;
                         _side = [_logic,"side"] call ALiVE_fnc_HashGet;
+                        _debug = [_logic,"debug",false] call ALiVE_fnc_HashGet;
 
 						_objectives_unsorted = [];
 						_targets = [];
@@ -447,7 +445,7 @@ switch(_operation) do {
         case "analyzeclusteroccupation": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
-                private ["_priorities","_side","_sides","_id","_entArr","_ent","_sectors","_entities","_state","_controltype"];
+                private ["_type","_priorities","_side","_sides","_id","_entArr","_ent","_sectors","_entities","_state","_controltype"];
 
 				_sides = _args;
                 _sideF = _sides select 0;
@@ -820,7 +818,7 @@ switch(_operation) do {
                 if (count _profiles > 0) then {
                     
                     _profilesUnsorted = _profiles;
-                    _profiles = [_profilesUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos}}},"ASCEND"] call BIS_fnc_sortBy;
+                    _profiles = [_profilesUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos} else {[0,0,0] distance _pos}} else {[0,0,0] distance _pos}},"ASCEND"] call BIS_fnc_sortBy;
 
                     _i = 0;
 	                while {count _section < _size} do {
@@ -998,7 +996,7 @@ switch(_operation) do {
             
             //Sort by distance
             _troopsUnsorted = _troops;
-            _troops = [_troopsUnsorted,[],{if !(isnil "_x") then {_profile = nil; _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_profile") then {_pos2 = [_profile,"position"] call ALiVE_fnc_HashGet; (_pos distance _pos2)}} else {}},"ASCEND"] call BIS_fnc_sortBy;
+            _troops = [_troopsUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos} else {[0,0,0] distance _pos}} else {[0,0,0] distance _pos}},"ASCEND"] call BIS_fnc_sortBy;
             
             //Collect section
             _section = [];
@@ -1013,7 +1011,7 @@ switch(_operation) do {
         case "NearestAvailableSection": {
             			ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                         
-                        private ["_id","_profileIDs","_profileID","_ProfileIDsBusy","_size","_state","_available","_objectives","_objective","_section","_sections","_pending_orders"];
+                        private ["_typeOp","_id","_profileIDs","_profileID","_ProfileIDsBusy","_size","_state","_available","_objectives","_objective","_section","_sections","_pending_orders"];
         
         				_position = _args select 0;
 						_typeOp = _args select 1;
@@ -1106,7 +1104,7 @@ switch(_operation) do {
                         _section = [];
 						
 						for "_i" from 0 to ((count _available)-1) do {
-								private ["_profile","_profileID","_profileType","_position","_active"];
+								private ["_profile","_profileID","_profileType","_position","_active","_type"];
 								
 								_profile = [ALIVE_profileHandler, "getProfile", _available select _i] call ALIVE_fnc_profileHandler;
 								_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
