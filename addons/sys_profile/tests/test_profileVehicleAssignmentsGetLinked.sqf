@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\sys_profile\script_component.hpp>
-SCRIPT(test_profileVehicleAssignments);
+SCRIPT(test_profileVehicleAssignmentsGetLinked);
 
-//execVM "\x\alive\addons\sys_profile\tests\test_profileVehicleAssignments.sqf"
+//execVM "\x\alive\addons\sys_profile\tests\test_profileVehicleAssignmentsGetLinked.sqf"
 
 // ----------------------------------------------------------------------------
 
@@ -56,6 +56,7 @@ player setCaptive true;
 STAT("Create Profile Handler");
 ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 
 
 STAT("Create Entity Profile 1");
@@ -65,7 +66,7 @@ _profileEntity1 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "unitClasses", ["B_Crew_F","B_Crew_F"]] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "position", getPos player] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "positions", [getPos player,getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
-[_profileEntity1, "damages", [0,0,0,0]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "damages", [0,0]] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "ranks", ["CAPTAIN","LIEUTENANT"]] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "side", "WEST"] call ALIVE_fnc_profileEntity;
 
@@ -77,7 +78,7 @@ _profileEntity2 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "unitClasses", ["B_Crew_F","B_Crew_F"]] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "position", getPos player] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "positions", [getPos player,getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
-[_profileEntity2, "damages", [0,0,0,0]] call ALIVE_fnc_profileEntity;
+[_profileEntity2, "damages", [0,0]] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "ranks", ["CAPTAIN","LIEUTENANT"]] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "side", "WEST"] call ALIVE_fnc_profileEntity;
 
@@ -173,27 +174,7 @@ STAT("Wait for group to board vehicles");
 SLEEP 20;
 
 
-STAT("De-Spawn the vehicle via the profile");
-[_profileVehicle1, "despawn"] call ALIVE_fnc_profileVehicle;
+STAT("Get Linked Profiles");
+_linked = [_profileVehicle1] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;
 
-
-DEBUGON
-
-
-STAT("Spawn the vehicle via the profile");
-[_profileVehicle1, "spawn"] call ALIVE_fnc_profileVehicle;
-
-
-STAT("Clear vehicle assignments for vehicle 1");
-[_profileVehicle1] call ALIVE_fnc_removeProfileVehicleAssignments;
-
-
-STAT("Remove vehicle assignment for group3 to vehicle2");
-[_profileEntity3,_profileVehicle2] call ALIVE_fnc_removeProfileVehicleAssignment;
-
-
-STAT("Remove vehicle assignment for group2 to vehicle2");
-[_profileEntity2,_profileVehicle2] call ALIVE_fnc_removeProfileVehicleAssignment;
-
-
-DEBUGON
+_linked call ALIVE_fnc_inspectHash;

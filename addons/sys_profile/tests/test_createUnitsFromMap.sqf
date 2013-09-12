@@ -59,7 +59,7 @@ DEBUGON;
 
 
 STAT("Create profiles from editor placed units");
-[true] call ALIVE_fnc_createProfilesFromUnits;
+["NONE",[],true] call ALIVE_fnc_createProfilesFromUnits;
 
 
 DEBUGON;
@@ -67,8 +67,7 @@ DEBUGON;
 
 _fakeLogic = [] call ALIVE_fnc_hashCreate;
 [_fakeLogic,"debug",true] call ALIVE_fnc_hashSet;
-// start the profile controller FSM
-//[_fakeLogic,50] execFSM "\x\alive\addons\sys_profile\profileController.fsm";
+
 
 _handle = [_fakeLogic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";						
 _handle = [_fakeLogic,200,5,5] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";

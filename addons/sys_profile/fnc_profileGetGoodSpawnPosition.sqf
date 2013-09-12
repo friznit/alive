@@ -189,6 +189,11 @@ switch(_type) do {
 							[_vehicleProfile,"position",_position] call ALIVE_fnc_profileVehicle;
 							//[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 							[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+							
+							if(_inAir) then {
+								[_vehicleProfile,"engineOn", true] call ALIVE_fnc_profileVehicle;
+							};
+							
 						} forEach _vehicles;
 					
 					} else {
@@ -198,19 +203,26 @@ switch(_type) do {
 						//[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 						[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
 						
+						if(_inAir) then {
+							[_vehicleProfile,"engineOn", true] call ALIVE_fnc_profileVehicle;
+						};						
 					};
 				};
 			};
 		// the profile has not been moved via simulation
 		// set the position to the position it was despawned in
 		} else {
-			_spawnPosition = _despawnPosition;
-			
-			//[_spawnPosition,"DESP",_profileID] call _createMarker;
-			
+		
+			if(((_despawnPosition select 0) + (_despawnPosition select 1)) == 0) then {
+				_spawnPosition = _position;
+			}else{
+				_spawnPosition = _despawnPosition;			
+				//[_spawnPosition,"DESP",_profileID] call _createMarker;				
+			};		
+
 			[_profile,"position",_spawnPosition] call ALIVE_fnc_hashSet;
 			[_profile,"mergePositions"] call ALIVE_fnc_profileEntity;
-			
+				
 			//["GGSP [%1] - not simulated - set pos as despawn position: %2",_profileID,_spawnPosition] call ALIVE_fnc_dump;
 		}
 	};
@@ -236,10 +248,15 @@ switch(_type) do {
 		// the profile has not been moved via simulation
 		// set the position to the position it was despawned in
 		}else{
-			_spawnPosition = _despawnPosition;
-			[_profile,"position",_spawnPosition] call ALIVE_fnc_hashSet;
 			
-			//[_spawnPosition,"DESP",_profileID] call _createMarker;
+			if(((_despawnPosition select 0) + (_despawnPosition select 1)) == 0) then {
+				_spawnPosition = _position;
+			}else{
+				_spawnPosition = _despawnPosition;			
+				//[_spawnPosition,"DESP",_profileID] call _createMarker;				
+			};
+			
+			[_profile,"position",_spawnPosition] call ALIVE_fnc_hashSet;
 			
 			//["GGSP [%1] - not simulated - set pos as despawn position: %2",_profileID,_result] call ALIVE_fnc_dump;
 		};

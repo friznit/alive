@@ -28,8 +28,8 @@ private ["_createMode","_createModeObjects","_debug","_groups","_vehicles","_ent
 "_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
 "_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle"];
 
-_createMode = _this select 0;
-_createModeObjects = _this select 1;
+_createMode = if(count _this > 0) then {_this select 0} else {"NONE"};
+_createModeObjects = if(count _this > 1) then {_this select 1} else {[]};
 _debug = if(count _this > 2) then {_this select 2} else {false};
 
 _groups = allGroups;
@@ -145,13 +145,15 @@ if(_debug) then {
 					_vehicle setVariable ["profileID",format["vehicle_%1",_vehicleCount]];
 					
 					_vehicleID = format["vehicle_%1",_vehicleCount];
+					_vehicleClass = typeOf _vehicle;
+					_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 					
 					_position = getPosATL _vehicle;
 
 					_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "profileID", _vehicleID] call ALIVE_fnc_profileVehicle;
-					[_profileVehicle, "vehicleClass", typeOf _vehicle] call ALIVE_fnc_profileVehicle;
+					[_profileVehicle, "vehicleClass", _vehicleClass] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
@@ -163,6 +165,10 @@ if(_debug) then {
 					[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
 					[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
+					
+					if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
+						[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
+					};
 					
 					[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 					
@@ -253,12 +259,15 @@ if(_debug) then {
 				_playerVehicle = true;
 			};
 		} forEach crew _vehicle;
+		
+		_position = getPosATL _vehicle;
 					
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "profileID", format["vehicle_%1",_vehicleCount]] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "vehicleClass", _vehicleClass] call ALIVE_fnc_profileVehicle;
-		[_profileVehicle, "position", getPosATL _vehicle] call ALIVE_fnc_profileVehicle;
+		[_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
+		[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "direction", getDir _vehicle] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "damage", _vehicle call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "fuel", fuel _vehicle] call ALIVE_fnc_profileVehicle;
@@ -268,6 +277,10 @@ if(_debug) then {
 		[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
+		
+		if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
+			[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
+		};
 		
 		if(_playerVehicle) then {
 			[_profileVehicle, "active", true] call ALIVE_fnc_profileVehicle;

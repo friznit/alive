@@ -3,7 +3,7 @@
 #include <\x\alive\addons\sys_profile\script_component.hpp>
 SCRIPT(test_profileEntity);
 
-//execVM "\x\alive\addons\sys_profile\tests\test_profileHandler.sqf"
+//execVM "\x\alive\addons\sys_profile\tests\test_profileEntity.sqf"
 
 // ----------------------------------------------------------------------------
 
@@ -48,6 +48,7 @@ diag_log format["Timer End %1",_timeEnd];
 STAT("Create Profile Handler");
 ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 
 
 _logic = nil;

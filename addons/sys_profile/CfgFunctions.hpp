@@ -296,6 +296,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetEmptyPositions.sqf";
 				recompile = 1;
 			};
+			class vehicleAssignmentsGetLinkedProfiles {
+				description = "vehicleAssignmentsGetLinkedProfiles";
+				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentsGetLinkedProfiles.sqf";
+				recompile = 1;
+			};
 			class vehicleAssignmentsToProfileVehicleAssignments {
 				description = "vehicleAssignmentsToProfileVehicleAssignments";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignmentsToProfileVehicleAssignments.sqf";

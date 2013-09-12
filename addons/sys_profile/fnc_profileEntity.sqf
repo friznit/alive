@@ -249,7 +249,7 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);
 						
 						// init the super class
-						[_logic, "init"] call SUPERCLASS;	
+						[_logic, "init"] call SUPERCLASS;
 						
 						// set defaults
 						[_logic,"type","entity"] call ALIVE_fnc_hashSet;
@@ -273,6 +273,7 @@ switch(_operation) do {
 						[_logic,"isCycling",false] call ALIVE_fnc_hashSet; // select 2 select 25
 						[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 26
 						[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 27
+						[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 28
                 };
 
                 /*
@@ -392,6 +393,12 @@ switch(_operation) do {
 						[_logic,"units",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"units"] call ALIVE_fnc_hashGet;
+        };
+		case "spawnType": {
+				if(typeName _args == "ARRAY") then {
+						[_logic,"spawnType",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"spawnType"] call ALIVE_fnc_hashGet;
         };
 		case "unitCount": {
 				private ["_unitClasses","_unitCount"];
@@ -731,7 +738,7 @@ switch(_operation) do {
 		};
 		case "despawn": {
 				private ["_debug","_group","_leader","_units","_positions","_damages","_ranks","_active","_profileID","_activeCommands","_inactiveCommands","_unitCount","_waypoints",
-				"_profileWaypoint","_unit","_vehicle","_vehicleID","_profileVehicle","_profileVehicleAssignments","_assignments","_vehicleAssignments"];
+				"_profileWaypoint","_unit","_vehicle","_vehicleID","_profileVehicle","_profileVehicleAssignments","_assignments","_vehicleAssignments","_despawnPrevented","_linked","_spawnType"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_group = _logic select 2 select 13; //[_logic,"group"] call ALIVE_fnc_hashGet;
@@ -749,59 +756,77 @@ switch(_operation) do {
 
 				// not already inactive
 				if(_active) then {
-
-					[_logic,"active", false] call ALIVE_fnc_hashSet;
-
-					// update profile waypoints before despawn
-					[_logic,"clearWaypoints"] call MAINCLASS;
-					[_logic,_group] call ALIVE_fnc_waypointsToProfileWaypoints;
-					
-					// update profile vehicle assignments before despawn
-					[_logic,"clearVehicleAssignments"] call MAINCLASS;					
-					[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
-					
-					_position = getPosATL _leader;
-					
-					// update the profiles position
-					[_logic,"position", _position] call ALIVE_fnc_hashSet;
-					[_logic,"despawnPosition", _position] call ALIVE_fnc_hashSet;
-
-					// delete units
-					{
-						_unit = _x;
-						_positions set [_unitCount, getPosATL _unit];
-						_damages set [_unitCount, getDammage _unit];
-						_ranks set [_unitCount, rank _unit];
-						deleteVehicle _unit;
-						_unitCount = _unitCount + 1;
-					} forEach _units;
-
-					// delete group
-					deleteGroup _group;
-
-					[_logic,"leader", objNull] call ALIVE_fnc_hashSet;
-					[_logic,"positions", _positions] call ALIVE_fnc_hashSet;
-					[_logic,"damages", _damages] call ALIVE_fnc_hashSet;
-					[_logic,"group", objNull] call ALIVE_fnc_hashSet;
-					[_logic,"units", []] call ALIVE_fnc_hashSet;
-					
-					// process commands
-					if(count _activeCommands > 0) then {
-						[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
-					};
-					if(count _inactiveCommands > 0) then {
-						[ALIVE_commandRouter, "activate", [_logic, _inactiveCommands]] call ALIVE_fnc_commandRouter;
+				
+					// if any linked profiles have despawn prevented
+					_despawnPrevented = false;
+					_linked = [_logic] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;
+					_linked call ALIVE_fnc_inspectHash;
+					if(count (_linked select 1) > 1) then {
+						{
+							_spawnType = [_x,"spawnType"] call ALIVE_fnc_hashGet;
+							if(count _spawnType > 0) then {
+								if(_spawnType select 0 == "preventDespawn") then {
+									_despawnPrevented = true;
+								};
+							}
+						} forEach (_linked select 2);
 					};
 					
-					// store the profile id on the in active profiles index
-					[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
-					
-					// DEBUG -------------------------------------------------------------------------------------
-					if(_debug) then {
-						//["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
-						[_logic,"debug",true] call MAINCLASS;
+					if!(_despawnPrevented) then {				
+
+						[_logic,"active", false] call ALIVE_fnc_hashSet;
+
+						// update profile waypoints before despawn
+						[_logic,"clearWaypoints"] call MAINCLASS;
+						[_logic,_group] call ALIVE_fnc_waypointsToProfileWaypoints;
+						
+						// update profile vehicle assignments before despawn
+						[_logic,"clearVehicleAssignments"] call MAINCLASS;					
+						[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
+						
+						_position = getPosATL _leader;
+						
+						// update the profiles position
+						[_logic,"position", _position] call ALIVE_fnc_hashSet;
+						[_logic,"despawnPosition", _position] call ALIVE_fnc_hashSet;
+
+						// delete units
+						{
+							_unit = _x;
+							_positions set [_unitCount, getPosATL _unit];
+							_damages set [_unitCount, getDammage _unit];
+							_ranks set [_unitCount, rank _unit];
+							deleteVehicle _unit;
+							_unitCount = _unitCount + 1;
+						} forEach _units;
+
+						// delete group
+						deleteGroup _group;
+
+						[_logic,"leader", objNull] call ALIVE_fnc_hashSet;
+						[_logic,"positions", _positions] call ALIVE_fnc_hashSet;
+						[_logic,"damages", _damages] call ALIVE_fnc_hashSet;
+						[_logic,"group", objNull] call ALIVE_fnc_hashSet;
+						[_logic,"units", []] call ALIVE_fnc_hashSet;
+						
+						// process commands
+						if(count _activeCommands > 0) then {
+							[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
+						};
+						if(count _inactiveCommands > 0) then {
+							[ALIVE_commandRouter, "activate", [_logic, _inactiveCommands]] call ALIVE_fnc_commandRouter;
+						};
+						
+						// store the profile id on the in active profiles index
+						[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
+						
+						// DEBUG -------------------------------------------------------------------------------------
+						if(_debug) then {
+							//["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
+							[_logic,"debug",true] call MAINCLASS;
+						};
+						// DEBUG -------------------------------------------------------------------------------------
 					};
-					// DEBUG -------------------------------------------------------------------------------------
 				};
 		};
 		case "handleDeath": {
