@@ -31,6 +31,11 @@ class cfgFunctions {
 	                        file = "\x\alive\addons\main\fnc_isAbleToHost.sqf";
 				recompile = 1;
 			};
+			class anyAutonomousInRange {
+				description = "Checks if UAVs/UGVs are in range.";
+	                        file = "\x\alive\addons\main\fnc_anyAutonomousInRange.sqf";
+				recompile = 1;
+			};
 			class anyPlayersInRange {
 				description = "Checks if players are in range.";
 	                        file = "\x\alive\addons\main\fnc_anyPlayersInRange.sqf";

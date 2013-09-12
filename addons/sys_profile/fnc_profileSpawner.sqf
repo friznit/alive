@@ -42,7 +42,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 		_profileType = _profile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
 		_position = _profile select 2 select 2; //_position = [_profile,"position"] call ALIVE_fnc_hashGet;
 		
-		if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange > 0) then {		
+		if (([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange > 0) || ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0)) then {
 				
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
