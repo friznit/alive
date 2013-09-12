@@ -31,4 +31,4 @@ PARAMS_1(_pos);
 DEFAULT_PARAM(1,_dist,2500);
 
 // checks to see if there are any autonomous units (UAVs/UGVs) near pos and distance
-({_pos distance _x < (_dist + 800)} count allUnitsUav);
+({_pos distance _x < (_dist + 800) && isUavConnected _x} count allUnitsUav);
