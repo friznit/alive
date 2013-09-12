@@ -27,44 +27,41 @@
 	_sGr = 0;
 	_hprev = getTerrainHeightASL [_posX,_posY];
 
-	for "_i" from 1 to 10 do
-		{
+	for "_i" from 1 to 10 do {
 		_samplePos = [_posX + ((random (_rds * 2)) - _rds),_posY + ((random (_rds * 2)) - _rds)];
 		_hcurr = getTerrainHeightASL _samplePos;
-		_sGr = _sGr + abs (_hcurr - _hprev)
-		};
+		_sGr = _sGr + abs (_hcurr - _hprev);
+	};
 
 	_sGr = _sGr/10;
 
-		{
+	{
 		_valS = 0;
 
-		for "_i" from 1 to _samples do
-			{
+		for "_i" from 1 to _samples do {
 			_position = [_posX + (random (_rds/5)) - (_rds/10),_posY + (random (_rds/5)) - (_rds/10)];
-
-
 			_value = selectBestPlaces [_position,_radius,_x,_precision,_sourcesCount];
-
 			_val0 = _value select 0;
 			_val0 = _val0 select 1;
-
 			_valS = _valS + _val0;
-			};
+		};
 
 		_valS = _valS/_samples;
 
-		switch (_x) do
-			{
+		switch (_x) do {
 			case ("Houses") : {_urban = _urban + _valS};
 			case ("Trees") : {_forest = _forest + (_valS/3)};
 			case ("Forest") : {_forest = _forest + _valS};
 			case ("Hills") : {_hills = _hills + _valS};
 			case ("Meadow") : {_flat = _flat + _valS};
 			case ("Sea") : {_sea = _sea + _valS};
-			};
-		}
-	foreach ["Houses","Trees","Forest","Hills","Meadow","Sea"];
+		};
+	} foreach ["Houses","Trees","Forest","Hills","Meadow","Sea"];
 
-	[_urban,_forest,_hills,_flat,_sea,_sGr]
+	[_urban,_forest,_hills,_flat,_sea,_sGr];
+	
+	// debug
+	_array = [_urban,_forest,_hills,_flat,_sea,_sGr];
+	_logic globalChat format ["Terra: %1",_array];
+
     

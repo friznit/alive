@@ -22,8 +22,8 @@ _BBHQs = (_this select 0) select 0;
 _BBSide = (_this select 0) select 1;
 _logic = _this select ((count _this)-1);
 
-diag_log format ["Init Input %1 | %2 | %3",_BBHQs,_BBHQs,_logic];
-
+_logic globalChat format ["Init Input %1 | %2 | %3",_BBHQs,_BBSide,_logic];
+diag_log format ["Init Input %1 | %2 | %3",_BBHQs,_BBSide,_logic];
 {
 	(group _x) setVariable ["BBProgress",0]
 } foreach _BBHQs;
@@ -36,7 +36,7 @@ if ((_BBSide == "B") and (count (_logic getvariable "HAC_BBa_HQs") > 0)) then {
 
 if (_logic getvariable "HAC_BB_Debug") then {
 	_logic globalChat format ["OPCOM %1 awakes (time: %2)",_logic,time];
-	diag_log format ["OPCOM %1 awakes (time: %2)",_logic,time]
+	diag_log format ["OPCOM %1 awakes (time: %2)",_logic,time];
 };
 
 _BBHQGrps = [];
@@ -50,17 +50,23 @@ _BBHQGrps = [];
 		case (_logic) : {
 			waitUntil {sleep 0.1; diag_log format ["Waiting for HAC_HQ_readyForBB - Input %1 | %2",_BBHQs,_BBSide]; not (isNil {_logic getvariable "HAC_HQ_readyForBB"})}
 		};
-	}
+	};
 } foreach _BBHQs;
 
-_cntr = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+// setup the maps center position by size of the map then find the middle
+_cntr = getNumber(configFile >> "CfgWorlds" >> worldName >> "MapSize");
+_cntr = [(_cntr /2),(_cntr /2), 0];
+
+// locates the maps designed center position which is usually never the center of the map
+// _cntr = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+
 if (_BBSide == "A") then {
-	if not (isNil "HAC_BB_MC") then {
-		if ((typeName HAC_BB_MC) == "OBJECT") then {_cntr = getposATL HAC_BB_MC} else {_cntr = HAC_BB_MC};
-	} else {
+	// if not (isNil "HAC_BB_MC") then {
+		// if ((typeName HAC_BB_MC) == "OBJECT") then {_cntr = getposATL HAC_BB_MC} else {_cntr = HAC_BB_MC};
+	// } else {
 		HAC_BB_MapC = _cntr;		
 		waitUntil {not (isNil "HAC_BB_MapC")};
-	};
+	// };
 	_logic setvariable ["HAC_BB_MapC", _cntr];
 
 	//if ((_cntr select 0) < 1000) then {_cntr = getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")};
@@ -71,9 +77,9 @@ if (_BBSide == "A") then {
 	_lng = (_cntr select 0)*2;
 	if not (isNil "HAC_BB_MC") then {
 		if ((typeName HAC_BB_MC) == "OBJECT") then {
-			_lng = ((triggerArea HAC_BB_MC) select 0)*2
+			_lng = ((triggerArea HAC_BB_MC) select 0)*2;
 		} else {
-			_lng = _logic getvariable ["HAC_BB_MapLng",20000];
+			_lng = _logic getvariable ["HAC_BB_MapLng",40000];
 		};
 
 		_logic setvariable ["HAC_BB_MapXMax", ((_logic getvariable "HAC_BB_MapC") select 0) + _lng/2];
@@ -171,16 +177,17 @@ _strArea = [];
 if (_logic getvariable "HAC_BB_Debug") then {
 	_logic globalChat format ["OPCOM %1 is looking for strategic objectives.",_logic];
 	diag_log format ["OPCOM %1 is looking for strategic objectives.",_logic]
-	};
+};
 
-_objRad = 25000;
+_objRad = 40000;
+	_logic globalChat format ["Starting the locate",_logic];
 
 _cntr = (missionNameSpace getVariable "BattleF") select 0;
 _lng = (missionNameSpace getVariable "BattleF") select 1;
 
-if not (isNil "HAC_BB_MC") then {
-	_objRad = _lng/2
-	};
+// if not (isNil "HAC_BB_MC") then {
+	// _objRad = _lng/2
+	// };
 
 _loc10 = nearestLocations [_cntr, ["NameCityCapital"], _objRad]; 
 _loc5 = nearestLocations [_cntr, ["NameCity","Airport"], _objRad]; 
@@ -188,35 +195,35 @@ _loc2 = nearestLocations [_cntr, ["NameVillage"], _objRad];
 _loc1 = nearestLocations [_cntr, ["BorderCrossing"], _objRad]; 
 _locHill = nearestLocations [_cntr, ["Hill","ViewPoint"], _objRad]; 
 
+
 {
-	_strArea set [(count _strArea),[(position _x),10,false]]
+	_strArea set [(count _strArea),[(position _x),10,false]];
 } foreach _loc10;
 
 {
-	_strArea set [(count _strArea),[(position _x),5,false]]
+	_strArea set [(count _strArea),[(position _x),5,false]];
 } foreach _loc5;
 
 {
-	_strArea set [(count _strArea),[(position _x),2,false]]
+	_strArea set [(count _strArea),[(position _x),2,false]];
 } foreach _loc2;
 
 {
-	_strArea set [(count _strArea),[(position _x),1,false]]
+	_strArea set [(count _strArea),[(position _x),1,false]];
 } foreach _loc1;
-
 
 {
 	_topArr = [(position _x),3,_logic] call ALiVE_fnc_HAC_TerraCognita;
 	_frstV = _topArr select 1;
-	if (_frstV > 0.25) then 
-		{
-		_strArea set [(count _strArea),[(position _x),1,false]]
-		}
-	else
-		{
-		_strArea set [(count _strArea),[(position _x),2,false]]
-		}
+	if (_frstV > 0.25) then {
+		_strArea set [(count _strArea),[(position _x),1,false]];
+	} else {
+		_strArea set [(count _strArea),[(position _x),2,false]];
+	};
 } foreach _locHill;
+
+// debug
+// hintC format["%1",_strArea];
 
 _BBStr = [];
 
@@ -228,12 +235,12 @@ _fixedInitStatus = [];
 	_pos = _x select 0;
 	_pos = (_pos select 0) + (_pos select 1);
 
-	_fixedInitStatus set [(count _fixedInitStatus),_pos]
+	_fixedInitStatus set [(count _fixedInitStatus),_pos];
 } foreach _BBStr;
 
 _BBSAL = _logic;
 {
-	_BBStr set [(count _BBStr),[(position _x),_x getVariable ["AreaValue",1],false]]
+	_BBStr set [(count _BBStr),[(position _x),_x getVariable ["AreaValue",1],false]];
 } foreach (synchronizedObjects _BBSAL);
 
 _strArea = _strArea + _BBStr;
@@ -270,10 +277,10 @@ diag_log format["StrArea:%1",_strArea0];
 			
 			if (_fVal > _sVal) then {
 				_strArea set [_k,[[(_fX + _sX)/2,(_fY + _sY)/2,0],_fVal + _sVal,_fTkn]];
-				_strArea set [_j,"deleteThis"]
+				_strArea set [_j,"deleteThis"];
 			} else {
 				_strArea set [_j,[[(_fX + _sX)/2,(_fY + _sY)/2,0],_fVal + _sVal,_sTkn]];
-				_strArea set [_k,"deleteThis"]
+				_strArea set [_k,"deleteThis"];
 			};
 		};
 	} foreach _strArea0;
@@ -284,8 +291,7 @@ _strArea = _strArea - ["deleteThis"];
 
 _strArea0 = nil;
 
-switch (_BBSide) do
-	{
+switch (_BBSide) do {
 	case ("A") : {missionNameSpace setVariable ["A_SAreas",_strArea]};
 	case ("B") : {missionNameSpace setVariable ["B_SAreas",_strArea]};
 	};
@@ -626,37 +632,31 @@ if ((true) and (true)) then {
 		_rightSectors = [];
 		_frontSectors = [];
 
-			{
+		{
 			_where = [(position _x),_ArmyPos,_attackAxis,_logic] call ALiVE_fnc_HAC_WhereIs;
 			_isLeft = _where select 0;
 			_isFlank = _where select 1;
 			_isRear = _where select 2;
 
-			if (_isLeft) then 
-				{
-				_leftSectors set [(count _leftSectors),_x]
-				} 
-			else 
-				{
-				_rightSectors set [(count _rightSectors),_x]
-				};
+			if (_isLeft) then {
+				_leftSectors set [(count _leftSectors),_x];
+			} else {
+				_rightSectors set [(count _rightSectors),_x];
+			};
 
-			if not (_isFlank) then 
-				{
-				_frontSectors set [(count _frontSectors),_x]
-				};
+			if not (_isFlank) then {
+				_frontSectors set [(count _frontSectors),_x];
+			};
 
 			_x setVariable [_isLeftName,_isLeft];
 			_x setVariable [_isFlankName,_isFlank];
 			_x setVariable [_isRearName,_isRear];
-			}
-		foreach _sectors;
+		} foreach _sectors;
 
-		if (_logic getvariable "HAC_BB_Debug") then
-			{
+		if (_logic getvariable "HAC_BB_Debug") then {
 			_logic globalChat format ["OPCOM %1 assigns front sections to divisions.",_logic];
-			diag_log format ["OPCOM %1 assigns front sections to divisions.",_logic]
-			};
+			diag_log format ["OPCOM %1 assigns front sections to divisions.",_logic];
+		};
 
 		_leftAn = [_leftSectors,_logic] call ALiVE_fnc_HAC_TopoAnalize;
 
@@ -683,35 +683,28 @@ if ((true) and (true)) then {
 		_rightSA = [];
 		_frontSA = [];
 
-			{
+		{
 			_where = [(_x select 0),_ArmyPos,_attackAxis,_logic] call ALiVE_fnc_HAC_WhereIs;
 			_isLeft = _where select 0;
 			_isFlank = _where select 1;
 			_isRear = _where select 2;
 
-			if (_isFlank) then
-				{
-				if (_isLeft) then 
-					{
+			if (_isFlank) then {
+				if (_isLeft) then {
 					_x set [3,_leftName];
 					_leftSA set [(count _leftSA),_x];
-					_leftSANmbr = _leftSANmbr + 1
-					} 
-				else 
-					{
+					_leftSANmbr = _leftSANmbr + 1;
+				} else {
 					_x set [3,_rightName];
 					_rightSA set [(count _rightSA),_x];
-					_rightSANmbr = _rightSANmbr + 1
-					}
-				}
-			else
-				{
+					_rightSANmbr = _rightSANmbr + 1;
+				};
+			} else {
 				_x set [3,_frontName];
 				_frontSA set [(count _frontSA),_x];
-				_frontSANmbr = _frontSANmbr + 1
-				}
-			}
-		foreach _strArea;
+				_frontSANmbr = _frontSANmbr + 1;
+			};
+		} foreach _strArea;
 
 		_leftSpace = count _leftSectors;
 		_rightSpace = count _rightSectors;
@@ -729,26 +722,23 @@ if ((true) and (true)) then {
 		_RmaxVeh = false;
 		_FmaxVeh = false;
 
-		switch (true) do
-			{
+		switch (true) do {
 			case ((_leftSpace >= _rightSpace) and (_leftSpace >= _frontSpace)) : {_LmaxSpace = true};
 			case ((_rightSpace >= _leftSpace) and (_rightSpace >= _frontSpace)) : {_RmaxSpace = true};
 			case ((_frontSpace >= _leftSpace) and (_frontSpace >= _rightSpace)) : {_FmaxSpace = true};
-			};
+		};
 
-		switch (true) do
-			{
+		switch (true) do {
 			case (((count _leftSA) >= (count _rightSA)) and ((count _leftSA) >= (count _frontSA))) : {_LmaxSA = true};
 			case (((count _rightSA) >= (count _leftSA)) and ((count _rightSA) >= (count _frontSA))) : {_RmaxSA = true};
 			case (((count _frontSA) >= (count _leftSA)) and ((count _frontSA) >= (count _rightSA))) : {_FmaxSA = true};
-			};
+		};
 
-		switch (true) do
-			{
+		switch (true) do {
 			case ((_leftVeh >= _rightVeh) and (_leftVeh >= _frontVeh)) : {_LmaxVeh = true};
 			case ((_rightVeh >= _leftVeh) and (_rightVeh >= _frontVeh)) : {_RmaxVeh = true};
 			case ((_frontVeh >= _leftVeh) and (_frontVeh >= _rightVeh)) : {_FmaxVeh = true};
-			};
+		};
 
 		missionNamespace setVariable [_leftFlankName,[_leftSectors,_LmaxSpace,_LmaxSA,_LmaxVeh,_leftSpace,_leftSA,_leftInf,_leftVeh]];
 		missionNamespace setVariable [_rightFlankName,[_rightSectors,_RmaxSpace,_RmaxSA,_RmaxVeh,_rightSpace,_rightSA,_rightInf,_rightVeh]];
@@ -761,106 +751,85 @@ if ((true) and (true)) then {
 		_flSMaxStr = _leftFlankName;
 		_flSpace = (missionNamespace getVariable _leftFlankName) select 1;
 
-		if not (_flSpace) then
+		if not (_flSpace) then {
 			{
-				{
 				_fl = missionNamespace getVariable _x;
 				_spaceF = _fl select 1;
-				if (_spaceF) exitWith {_flSMaxStr = _x}
-				}
-			foreach [_rightFlankName,_centerFrontName];
-			};
+				if (_spaceF) exitWith {_flSMaxStr = _x};
+			} foreach [_rightFlankName,_centerFrontName];
+		};
 
 		_flSAMaxStr = _leftFlankName;
 		_flSA = (missionNamespace getVariable _leftFlankName) select 2;
 
-		if not (_flSA) then
+		if not (_flSA) then {
 			{
-				{
 				_fl = missionNamespace getVariable _x;
 				_SAF = _fl select 2;
-				if (_SAF) exitWith {_flSAMaxStr = _x}
-				}
-			foreach [_rightFlankName,_centerFrontName];
-			};
+				if (_SAF) exitWith {_flSAMaxStr = _x};
+			} foreach [_rightFlankName,_centerFrontName];
+		};
 
 		_flVMaxStr = _leftFlankName;
 		_flVeh = (missionNamespace getVariable _leftFlankName) select 3;
 
-		if not (_flVeh) then
+		if not (_flVeh) then {
 			{
-				{
 				_fl = missionNamespace getVariable _x;
 				_vehF = _fl select 3;
 				if (_vehF) exitWith {_flVMaxStr = _x}
-				}
-			foreach [_rightFlankName,_centerFrontName];
-			};
-
-
+			} foreach [_rightFlankName,_centerFrontName];
+		};
 
 		_vehAll = 0;
 
-			{
+		{
 			_ldrRep = ((group _x) getVariable "ForceRep") select 0;
 			_forceChar = _ldrRep select 5;
 			_vehPerc = (_forceChar select 1) + (_forceChar select 2) + (_forceChar select 3);
 
-			_vehAll = _vehAll + _vehPerc
-			}
-		foreach _BBHQs;
+			_vehAll = _vehAll + _vehPerc;
+		} foreach _BBHQs;
 
 		_vehAv = _vehAll/(count _BBHQs);
 
 		_moreVehHQ = [];
 
-			{
+		{
 			_ldrRep = ((group _x) getVariable "ForceRep") select 0;
 			_forceChar = _ldrRep select 5;
 			_vehPerc = (_forceChar select 1) + (_forceChar select 2) + (_forceChar select 3);
 
-			if (_vehPerc >= _vehAv) then 
-				{
+			if (_vehPerc >= _vehAv) then {
 				_moreVehHQ set [(count _moreVehHQ),_x];
 				(group _x) setVariable ["ForceProfile","V"]
-				}
-			else
-				{
-				(group _x) setVariable ["ForceProfile","I"]
-				}
-			}
-		foreach _BBHQs;
+			} else {
+				(group _x) setVariable ["ForceProfile","I"];
+			};
+		} foreach _BBHQs;
 
 		_numAll = 0;
 
-			{
+		{
 			_ldrRep = ((group _x) getVariable "ForceRep") select 0;
 			_forceNum = _ldrRep select 1;
 
-			_numAll = _numAll + _forceNum
-			}
-		foreach _BBHQs;
+			_numAll = _numAll + _forceNum;
+		} foreach _BBHQs;
 
 		_numAv = _numAll/(count _BBHQs);
-
 		_moreNumHQ = [];
-
-			{
+		{
 			_ldrRep = ((group _x) getVariable "ForceRep") select 0;
 			_forceNum = _ldrRep select 1;
 
-			if (_forceNum >= _numAv) then 
-				{
+			if (_forceNum >= _numAv) then {
 				_moreNumHQ set [(count _moreNumHQ),_x];
-				(group _x) setVariable ["NumProfile","A"]
-				}
-			else
-				{
-				(group _x) setVariable ["NumProfile","B"]
-				}
-
-			}
-		foreach _BBHQs;
+				(group _x) setVariable ["NumProfile","A"];
+			} else {
+				(group _x) setVariable ["NumProfile","B"];
+			};
+		} foreach _BBHQs;
 
 		_goingLeft = [];
 		_goingRight = [];
@@ -881,16 +850,13 @@ if ((true) and (true)) then {
 		
 		_resCand = [];
 
-			{
-			if (((group _x) getVariable ["ForceProfile","V"]) == "I") then {_resCand set [(count _resCand),_x]}
-			}
-		foreach _moreNumHQ;
+		{
+			if (((group _x) getVariable ["ForceProfile","V"]) == "I") then {_resCand set [(count _resCand),_x]};
+		} foreach _moreNumHQ;
 		
-		while {(_resCount > 0)} do
-			{
+		while {(_resCount > 0)} do {
 
-			if (((count _resCand) > 0) and ((random 100) < 90)) then
-				{
+			if (((count _resCand) > 0) and ((random 100) < 90)) then {
 				_ldr = _resCand select (floor (random (count _resCand)));
 
 				_goingReserve set [(count _goingReserve),_ldr];
@@ -899,7 +865,7 @@ if ((true) and (true)) then {
 				_resCand = _resCand - [_ldr];
 				_resCount = _resCount - 1;
 
-				};
+			};
 
 			if (_resCount <= 0) exitWith {};
 
@@ -910,73 +876,61 @@ if ((true) and (true)) then {
 			_moreNumHQ = _moreNumHQ - [_ldr];
 			_resCand = _resCand - [_ldr];
 			_resCount = _resCount - 1;
-			};
+		};
 	
-		if not (_allAreTaken) then
-			{
-			if ((count _BBHQs) > 1) then
-				{
-				if (((count _moreVehHQ) > 0) and ((random 100) < 90)) then
-					{
+		if not (_allAreTaken) then {
+			if ((count _BBHQs) > 1) then {
+				if (((count _moreVehHQ) > 0) and ((random 100) < 90)) then {
 					_ldr = _moreVehHQ select (floor (random (count _moreVehHQ)));
-					switch (_flVMaxStr) do
-						{
-						case (_leftFlankName) : 
-							{
+					switch (_flVMaxStr) do {
+						case (_leftFlankName) : {
 							_goingLeft set [(count _goingLeft),_ldr];
 							_moreVehHQ = _moreVehHQ - [_ldr];
 							_moreNumHQ = _moreNumHQ - [_ldr];
 							_flankCount = _flankCount - 1;
-							};
+						};
 
-						case (_rightFlankName) : 
-							{
+						case (_rightFlankName) : {
 							_goingRight set [(count _goingRight),_ldr];
 							_moreVehHQ = _moreVehHQ - [_ldr];
 							_moreNumHQ = _moreNumHQ - [_ldr];
-							_flankCount = _flankCount - 1
-							};
+							_flankCount = _flankCount - 1;
+						};
 
-						case (_centerFrontName) : 
-							{
+						case (_centerFrontName) : {
 							_goingAhead set [(count _goingAhead),_ldr];
 							_moreVehHQ = _moreVehHQ - [_ldr];
 							_moreNumHQ = _moreNumHQ - [_ldr];
-							_centerCount = _centerCount - 1
-							};
+							_centerCount = _centerCount - 1;
 						};
 					};
+				};
 
-				if (((count _moreNumHQ) > 0) and ((random 100) < 90)) then
-					{
+				if (((count _moreNumHQ) > 0) and ((random 100) < 90)) then {
 					_ldr = _moreNumHQ select (floor (random (count _moreNumHQ)));
-					switch (_flSAMaxStr) do
-						{
-						case (_leftFlankName) : 
-							{
+					switch (_flSAMaxStr) do {
+						case (_leftFlankName) : {
 							_goingLeft set [(count _goingLeft),_ldr];
 							_moreVehHQ = _moreVehHQ - [_ldr];
 							_moreNumHQ = _moreNumHQ - [_ldr];
 							_flankCount = _flankCount - 1;
-							};
+						};
 
-						case (_rightFlankName) : 
-							{
+						case (_rightFlankName) : {
 							_goingRight set [(count _goingRight),_ldr];
 							_moreVehHQ = _moreVehHQ - [_ldr];
 							_moreNumHQ = _moreNumHQ - [_ldr];
-							_flankCount = _flankCount - 1
-							};
+							_flankCount = _flankCount - 1;
+						};
 
-						case (_centerFrontName) : 
-							{
+						case (_centerFrontName) : {
 							_goingAhead set [(count _goingAhead),_ldr];
 							_moreVehHQ = _moreVehHQ - [_ldr];
 							_moreNumHQ = _moreNumHQ - [_ldr];
-							_centerCount = _centerCount - 1
-							};
+							_centerCount = _centerCount - 1;
 						};
 					};
+				};
 
 				_allFree = +(_BBHQs - (_goingReserve + _goingLeft + _goingRight + _goingAhead));
 

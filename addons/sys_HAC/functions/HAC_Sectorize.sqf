@@ -25,26 +25,23 @@
 	_centers = [[_posX,_posY]];
 	_first = false;
 
-	while {(true)} do
-		{
-		while {(true)} do
-			{
+	while {(true)} do {
+		while {(true)} do {
 			if not (_first) then {_first = true;_posX = _posX + _step};
 			if not ([_posX,_PosY] in _main) exitwith {_posX = ((_ctr select 0) - _rd) + _step/2;_first = true};
 			_centers set [(count _centers),[_posX,_PosY]];
-			_first = false
-			};
-		_posY = _posY + _step;
-		if not ([_posX,_PosY] in _main) exitwith {}
+			_first = false;
 		};
+		_posY = _posY + _step;
+		if not ([_posX,_PosY] in _main) exitwith {};
+	};
 
-	if not (_ang in [0,90,180,270]) then
-		{
+	if not (_ang in [0,90,180,270]) then {
 		_main setDirection _ang;
 		_centers2 = _centers;
 		_centers = [];
 
-			{
+		{
 			_Xa = _x select 0;
 			_Ya = _x select 1;
 			_dXa = (_X1 - _Xa);
@@ -59,23 +56,24 @@
 			_Xb = _X1 + _dXb;
 			_Yb = _Y1 + _dYb;
 			_center = [_Xb,_Yb];
-			_centers set [(count _centers),_center]
-			}
-		foreach _centers2
-		};
+			_centers set [(count _centers),_center];
+		} foreach _centers2;
+	};
 	
 	_sectors = [];
 
-		{
+	{
 		_crX = _x select 0;
 		_crY = _x select 1;
 		_crPoint = [_crX,_crY,0];
 		_sec = createLocation ["Name", _crPoint, _EdgeL/2, _EdgeL/2];
 		_sec setDirection _ang;
 		_sec setRectangular true;
-
 		_sectors set [(count _sectors),_sec];
-		}
-	foreach _centers;
+	} foreach _centers;
 
-	[_sectors,_main]
+	[_sectors,_main];
+
+	// debug
+	_array = [_sectors,_main];
+	_logic globalChat format ["Sectorize: %1",_array];

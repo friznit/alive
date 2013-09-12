@@ -12,6 +12,10 @@ _logic setvariable ["RHQ_Recon", [
 "B_sniper_F",
 "B_spotter_F",
 "B_soldier_M_F",
+"B_soldier_UAV_F",
+"B_G_Soldier_M_F",
+"B_G_Soldier_F",
+"B_G_Soldier_lite_F",
 "O_recon_exp_F",
 "O_recon_JTAC_F",
 "O_recon_M_F",
@@ -22,9 +26,11 @@ _logic setvariable ["RHQ_Recon", [
 "O_sniper_F",
 "O_spotter_F",
 "O_soldier_M_F",
+"O_soldier_UAV_F",
 "I_Sniper_F",
 "I_Spotter_F",
-"I_Soldier_M_F"
+"I_Soldier_M_F",
+"I_soldier_UAV_F"
 
 ]];
 
@@ -34,23 +40,32 @@ _logic setvariable ["RHQ_FO", [
 "B_soldier_M_F",
 "B_recon_M_F",
 "B_recon_JTAC_F",
+"B_soldier_UAV_F",
+"B_diver_TL_F",
+"B_diver_exp_F",
+"B_diver_F",
+"B_G_Soldier_M_F",
+"B_G_officer_F",
+"B_G_Soldier_F",
+"B_G_Soldier_lite_F",
+"B_G_Soldier_SL_F",
+"B_G_Soldier_TL_F",
 "O_spotter_F",
 "O_sniper_F",
 "O_soldier_M_F",
 "O_recon_JTAC_F",
 "O_recon_M_F",
-"I_Soldier_M_F",
-"I_Sniper_F",
-"I_Spotter_F",
-"B_diver_TL_F",
-"B_diver_exp_F",
-"B_diver_F",
 "O_diver_F",
 "O_diver_exp_F",
 "O_diver_TL_F",
+"O_soldier_UAV_F",
+"I_Soldier_M_F",
+"I_Sniper_F",
+"I_Spotter_F",
 "I_diver_F",
 "I_diver_exp_F",
-"I_diver_TL_F"
+"I_diver_TL_F",
+"I_soldier_UAV_F"
 
 ]];
 
@@ -59,6 +74,7 @@ _logic setvariable ["RHQ_Snipers", [
 "B_sniper_F",
 "B_soldier_M_F",
 "B_recon_M_F",
+"B_G_Soldier_M_F",
 "O_spotter_F",
 "O_sniper_F",
 "O_soldier_M_F",
@@ -70,8 +86,11 @@ _logic setvariable ["RHQ_Snipers", [
 ]];
 
 _logic setvariable ["RHQ_Art",[
-"O_Mortar_01_F",
 "B_Mortar_01_F",
+"B_MBT_01_arty_F",
+"B_MBT_01_mlrs_F",
+"O_Mortar_01_F",
+"O_MBT_02_arty_F",
 "I_Mortar_01_F"
 
 ]];
@@ -81,23 +100,38 @@ _logic setvariable ["RHQ_ATInf", [
 "B_soldier_AAT_F",
 "B_recon_LAT_F",
 "B_soldier_AT_F",
+"B_static_AT_F",
 "O_Soldier_LAT_F",
 "O_Soldier_AAT_F",
 "O_recon_LAT_F",
 "O_Soldier_AT_F",
+"O_soldierU_AAT_F",
+"O_soldierU_AT_F",
+"O_soldierU_LAT_F",
+"O_static_AT_F",
 "I_Soldier_AAT_F",
 "I_Soldier_LAT_F",
-"I_Soldier_AT_F"
+"I_Soldier_AT_F",
+"I_static_AT_F"
 
 ]];
 
 _logic setvariable ["RHQ_AAInf", [
 "B_soldier_AA_F",
 "B_soldier_AAA_F",
+"B_soldier_AAR_F",
+"B_static_AA_F",
 "O_Soldier_AA_F",
 "O_Soldier_AAA_F",
+"O_Soldier_AAR_F",
+"O_soldierU_AAR_F",
+"O_soldierU_AAA_F",
+"O_soldierU_AA_F",
+"O_static_AA_F",
 "I_Soldier_AA_F",
-"I_Soldier_AAA_F"
+"I_Soldier_AAA_F",
+"I_Soldier_AAR_F",
+"I_static_AA_F"
 
 ]]; 
 
@@ -106,54 +140,69 @@ _logic setvariable ["RHQ_Inf", [
 "B_soldier_TL_F",
 "B_Soldier_A_F",
 "B_soldier_AR_F",
-"B_medic_F",
-"B_crew_F",
-"B_engineer_F",
+"B_soldier_UAV_F",
 "B_soldier_exp_F",
 "B_Soldier_GL_F",
-"B_Helipilot_F",
 "B_soldier_M_F",
 "B_soldier_AA_F",
 "B_soldier_AT_F",
 "B_officer_F",
-"B_soldier_repair_F",
 "B_Soldier_F",
 "B_soldier_LAT_F",
 "B_Soldier_lite_F",
-"B_Soldier_F",
-"B_soldier_AAR_F",
-"B_soldier_AAA_F",
-"B_soldier_AAT_F",
+"B_soldier_PG_F",
+"B_diver_TL_F",
+"B_diver_exp_F",
+"B_diver_F",
+"B_G_Soldier_A_F",
+"B_G_Soldier_AR_F",
+"B_G_medic_F",
+"B_G_engineer_F",
+"B_G_Soldier_exp_F",
+"B_G_Soldier_GL_F",
+"B_G_Soldier_M_F",
+"B_G_officer_F",
+"B_G_Soldier_F",
+"B_G_Soldier_lite_F",
+"B_G_Soldier_LAT_F",
+"B_G_Soldier_SL_F",
+"B_G_Soldier_TL_F",
 "O_Soldier_A_F",
 "O_Soldier_AR_F",
-"O_medic_F",
-"O_crew_F",
-"O_engineer_F",
 "O_soldier_exp_F",
 "O_Soldier_GL_F",
-"O_helipilot_F",
 "O_soldier_M_F",
 "O_Soldier_AA_F",
 "O_Soldier_AT_F",
 "O_officer_F",
-"O_soldier_repair_F",
 "O_Soldier_F",
 "O_Soldier_LAT_F",
 "O_Soldier_lite_F",
 "O_Soldier_SL_F",
 "O_Soldier_TL_F",
-"O_Soldier_AAR_F",
-"O_Soldier_AAA_F",
-"O_Soldier_AAT_F",
+"O_soldier_UAV_F",
+"O_soldier_PG_F",
+"O_diver_F",
+"O_diver_exp_F",
+"O_diver_TL_F",
+"O_soldierU_A_F",
+"O_soldierU_AAR_F",
+"O_soldierU_AAA_F",
+"O_soldierU_AAT_F",
+"O_soldierU_AR_F",
+"O_soldierU_exp_F",
+"O_SoldierU_GL_F",
+"O_soldierU_M_F",
+"O_soldierU_AA_F",
+"O_soldierU_AT_F",
+"O_soldierU_F",
+"O_soldierU_LAT_F",
+"O_SoldierU_SL_F",
+"O_soldierU_TL_F",
 "I_Soldier_A_F",
 "I_Soldier_AR_F",
-"I_medic_F",
-"I_crew_F",
-"I_engineer_F",
 "I_Soldier_exp_F",
 "I_Soldier_GL_F",
-"I_helicrew_F",
-"I_helipilot_F",
 "I_Soldier_M_F",
 "I_Soldier_AA_F",
 "I_Soldier_AT_F",
@@ -164,48 +213,60 @@ _logic setvariable ["RHQ_Inf", [
 "I_Soldier_lite_F",
 "I_Soldier_SL_F",
 "I_Soldier_TL_F",
-"I_Soldier_AAR_F",
-"I_Soldier_AAA_F",
-"I_Soldier_AAT_F"
+"I_soldier_UAV_F"
 
 ]];
 
-_logic setvariable ["RHQ_HArmor", []];
+_logic setvariable ["RHQ_HArmor", [
+"B_MBT_01_cannon_F",
+"O_MBT_02_cannon_F"
+
+]];
 
 _logic setvariable ["RHQ_MArmor", [
-"O_APC_Wheeled_02_rcws_F",
-"B_APC_Wheeled_01_cannon_F",
 "B_APC_Tracked_01_rcws_F",
-"O_APC_Tracked_02_cannon_F"
+"B_APC_Tracked_01_AA_F",
+"B_APC_Tracked_01_CRV_F",
+"B_APC_Wheeled_01_cannon_F",
+"O_APC_Wheeled_02_rcws_F",
+"O_APC_Tracked_02_AA_F",
+"O_APC_Tracked_02_cannon_F",
+"I_APC_Wheeled_03_cannon_F"
 
 ]];
 
 _logic setvariable ["RHQ_LArmor", [
-"B_MRAP_01_gmg_F",
 "B_MRAP_01_hmg_F",
-"O_MRAP_02_gmg_F",
+"B_MRAP_01_gmg_F",
+"B_UGV_01_rcws_F",
+"B_G_Offroad_01_armed_F",
 "O_MRAP_02_hmg_F",
+"O_UGV_01_rcws_F",
+"O_MRAP_02_gmg_F",
 "I_MRAP_03_gmg_F",
 "I_MRAP_03_hmg_F",
-"B_UGV_01_rcws_F",
-"O_UGV_01_rcws_F",
 "I_UGV_01_rcws_F"
 
 ]];  
 
 _logic setvariable ["RHQ_LarmorAT", [
-"O_MRAP_02_gmg_F",
-"B_MRAP_01_gmg_F",
-"I_MRAP_03_gmg_F"
 
 ]];  
 
 _logic setvariable ["RHQ_Cars", [
 "B_MRAP_01_F",
 "B_Quadbike_01_F",
+"B_G_Quadbike_01_F",
+"B_G_Offroad_01_F",
+"B_G_Van_01_transport_F",
 "O_MRAP_02_F",
 "O_Quadbike_01_F",
 "I_MRAP_03_F",
+"C_Hatchback_01_F",
+"C_Hatchback_01_sport_F",
+"C_SUV_01_F",
+"C_Van_01_transport_F",
+"C_Van_01_box_F",
 "C_Offroad_01_F",
 "C_Quadbike_01_F"
 
@@ -215,10 +276,12 @@ _logic setvariable ["RHQ_Air", [
 "B_Heli_Light_01_armed_F",
 "B_Heli_Attack_01_F",
 "B_UAV_02_F",
-"O_UAV_02_F",
-"I_UAV_02_F",
 "O_Heli_Attack_02_F",
-"O_Heli_Attack_02_black_F"
+"O_Heli_Attack_02_black_F",
+"O_UAV_02_F",
+"I_Plane_Fighter_03_AA_F",
+"I_Plane_Fighter_03_CAS_F",
+"I_UAV_02_F"
 
 ]];
 
@@ -232,7 +295,10 @@ _logic setvariable ["RHQ_NCAir", [
 
 ]];
 
-_logic setvariable ["RHQ_BAir", []];
+_logic setvariable ["RHQ_BAir", [
+
+]];
+
 _logic setvariable ["RHQ_RAir", [
 "B_UAV_01_F",
 "O_UAV_01_F",
@@ -245,6 +311,7 @@ _logic setvariable ["RHQ_Naval", [
 "B_Lifeboat",
 "B_Boat_Armed_01_minigun_F",
 "B_SDV_01_F",
+"B_G_Boat_Transport_01_F",
 "O_Boat_Transport_01_F",
 "O_Lifeboat",
 "O_Boat_Armed_01_hmg_F",
@@ -252,50 +319,121 @@ _logic setvariable ["RHQ_Naval", [
 "I_Boat_Transport_01_F",
 "I_Boat_Armed_01_minigun_F",
 "I_SDV_01_F",
+"C_Boat_Civil_01_F",
+"C_Boat_Civil_01_police_F",
+"C_Boat_Civil_01_rescue_F",
 "C_Rubberboat"
 
 ]];
 
-_logic setvariable ["RHQ_Static", []];
+_logic setvariable ["RHQ_Static", [
+"B_HMG_01_A_weapon_F",
+"B_GMG_01_A_weapon_F",
+"B_HMG_01_F",
+"B_HMG_01_high_F",
+"B_GMG_01_F",
+"B_GMG_01_high_F",
+"B_HMG_01_A_F",
+"B_GMG_01_A_F",
+"O_HMG_01_F",
+"O_HMG_01_high_F",
+"O_GMG_01_F",
+"O_GMG_01_high_F",
+"O_HMG_01_A_F",
+"O_GMG_01_A_F",
+"I_HMG_01_F",
+"I_HMG_01_high_F",
+"I_GMG_01_F",
+"I_GMG_01_high_F",
+"I_HMG_01_A_F",
+"I_GMG_01_A_F"
 
-_logic setvariable ["RHQ_StaticAA", []];
+]];
 
-_logic setvariable ["RHQ_StaticAT", []];
+_logic setvariable ["RHQ_StaticAA", [
+"B_static_AA_F",
+"O_static_AA_F",
+"I_static_AA_F"
+
+]];
+
+_logic setvariable ["RHQ_StaticAT", [
+"B_static_AT_F",
+"O_static_AT_F",
+"I_static_AT_F"
+
+]];
 
 _logic setvariable ["RHQ_Support", [
-"B_Soldier_A_F",
-"O_Soldier_A_F",
-"I_Soldier_A_F"
+"B_support_AMG_F",
+"B_support_AMort_F",
+"B_support_GMG_F",
+"B_support_MG_F",
+"B_support_Mort_F",
+"O_support_AMG_F",
+"O_support_AMort_F",
+"O_support_GMG_F",
+"O_support_MG_F",
+"O_support_Mort_F",
+"I_support_AMG_F",
+"I_support_AMort_F",
+"I_support_GMG_F",
+"I_support_MG_F",
+"I_support_Mort_F"
 
 ]];
 
 _logic setvariable ["RHQ_Med", [
 "B_recon_medic_F",
 "B_medic_F",
+"B_Truck_01_medical_F",
+"B_G_medic_F",
 "O_medic_F",
 "O_recon_medic_F",
-"I_medic_F"
+"O_Truck_02_medical_F",
+"I_medic_F",
+"I_Truck_02_medical_F"
 
 ]];
 
-_logic setvariable ["RHQ_Ammo", []];
+_logic setvariable ["RHQ_Ammo", [
+"B_Truck_01_ammo_F",
+"O_Truck_02_Ammo_F",
+"I_Truck_02_ammo_F"
 
-_logic setvariable ["RHQ_Fuel", []];
+]];
 
-_logic setvariable ["RHQ_Rep", []];
+_logic setvariable ["RHQ_Fuel", [
+"B_Truck_01_fuel_F",
+"B_G_Van_01_fuel_F",
+"O_Truck_02_fuel_F",
+"I_Truck_02_fuel_F",
+"C_Van_01_fuel_F"
+
+
+]];
+
+_logic setvariable ["RHQ_Rep", [
+"B_Truck_01_Repair_F",
+"O_Truck_02_box_F",
+"I_Truck_02_box_F"
+
+]];
 
 _logic setvariable ["RHQ_Cargo", [
-"B_MRAP_01_hmg_F",
-"B_MRAP_01_gmg_F",
-"O_MRAP_02_gmg_F",
-"O_MRAP_02_hmg_F",
-"B_Heli_Light_01_armed_F",
 "B_Heli_Transport_01_F",
 "B_Heli_Transport_01_camo_F",
 "B_MRAP_01_F",
+"B_Truck_01_box_F",
+"B_Truck_01_mover_F",
+"B_Truck_01_transport_F",
+"B_Truck_01_covered_F",
 "O_MRAP_02_F",
-"O_Heli_Attack_02_F",
+"O_Truck_02_transport_F",
+"O_Truck_02_covered_F",
 "O_Heli_Light_02_unarmed_F",
+"I_Truck_02_transport_F",
+"I_Truck_02_covered_F",
 "I_Heli_Transport_02_F"
 
 ]]; 
@@ -321,12 +459,18 @@ _logic setvariable ["RHQ_NCCargo", [
 ]];  
 
 _logic setvariable ["RHQ_Crew", [
-"B_Helipilot_F",
 "B_crew_F",
+"B_helicrew_F",
+"B_Helipilot_F",
+"B_Pilot_F",
 "O_helipilot_F",
+"O_helicrew_F",
 "O_crew_F",
+"O_Pilot_F",
+"I_helipilot_F",
 "I_helicrew_F",
-"I_helipilot_F"
+"I_pilot_F",
+"I_crew_F"
 
 ]];
 
