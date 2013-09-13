@@ -74,8 +74,8 @@ link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,26};
 link32[] = {26,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-648.375366,197.284042,825.644348,-186.726868,629,753,1};
-window[] = {0,-1,-1,-1,-1,1016,132,1755,132,1,646};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-617.609192,166.517365,867.650391,-71.057571,629,753,1};
+window[] = {0,-1,-1,-1,-1,1005,152,1775,121,1,646};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -100,6 +100,12 @@ class FSM
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
        "_sideEnemy = [_OPCOM_HANDLER,""sideenemy"",""WEST""] call ALiVE_fnc_HashGet;" \n
        "_cycleTime = 120;" \n
+       "" \n
+       "_colorside = ""ColorRed"";" \n
+       "switch (_side) do {" \n
+       "	case (""WEST"") : {_colorside = ""ColorBlue""};" \n
+       "	case (""EAST"") : {_colorside = ""ColorRed""};" \n
+       "};" \n
        "" \n
        "_sectionsamount_attack = [_OPCOM_HANDLER,""sectionsamount_attack"",4] call ALiVE_fnc_HashGet;" \n
        "_sectionsamount_reserve = [_OPCOM_HANDLER,""sectionsamount_reserve"",1] call ALiVE_fnc_HashGet;" \n
@@ -173,13 +179,6 @@ class FSM
        "			_pos = [_objective,""center""] call AliVE_fnc_HashGet;" \n
        "			_opcom_orders = [_objective,""opcom_orders""] call AliVE_fnc_HashGet;" \n
        "" \n
-       "			// debug ---------------------------------------" \n
-       "			if(_debug) then {" \n
-       "				[""TACOM analyse""] call ALIVE_fnc_dump;" \n
-       "				//[true] call ALIVE_fnc_timer;" \n
-       "			};" \n
-       "			// debug ---------------------------------------		" \n
-       "" \n
        "			//Attack reported enemy directly" \n
        "			if (count ([_OPCOM_HANDLER,""knownentities"",[]] call ALiVE_fnc_HashGet) > 0) then {" \n
        "" \n
@@ -230,14 +229,6 @@ class FSM
        "				case (""custom"") : {};" \n
        "				default {};" \n
        "			};" \n
-       "" \n
-       "			// debug ---------------------------------------" \n
-       "			if(_debug) then {" \n
-       "				[""TACOM analysed""] call ALIVE_fnc_dump;" \n
-       "				//[] call ALIVE_fnc_timer;" \n
-       "			};" \n
-       "			// debug ---------------------------------------		" \n
-       "" \n
        "		};" \n
        "" \n
        "		//handle internal order completion by TACOM order state" \n
@@ -247,13 +238,6 @@ class FSM
        "			_ProfileID = _DATA_VALUE select 0;" \n
        "			_objectiveID = _DATA_VALUE select 1;" \n
        "			_orders = _DATA_VALUE select 2;" \n
-       "" \n
-       "			// debug ---------------------------------------" \n
-       "			if(_debug) then {" \n
-       "				[""TACOM order completed""] call ALIVE_fnc_dump;" \n
-       "				//[true] call ALIVE_fnc_timer;" \n
-       "			};" \n
-       "			// debug ---------------------------------------	" \n
        "" \n
        "			_objective = [_OPCOM_HANDLER,""getobjectivebyid"",_objectiveID] call ALiVE_fnc_OPCOM;" \n
        "			_profile = [ALiVE_ProfileHandler,""getProfile"",_profileID] call ALiVE_fnc_ProfileHandler;" \n
@@ -279,7 +263,7 @@ class FSM
        "						// TBD: Calculate danger level depending on recon outcome (sector analysis)" \n
        "						[_objective,""danger"",5] call AliVE_fnc_HashSet;" \n
        "" \n
-       "						//dont transmit recon to opcom as objective is not captured yet" \n
+       "						//analyse as recon is completed" \n
        "						_dataset = {_TACOM_DATA = [""analyze"",_objective]};" \n
        "				};" \n
        "				case (""capture"") : {" \n
@@ -289,8 +273,10 @@ class FSM
        "						// debug ---------------------------------------" \n
        "					};" \n
        "					" \n
-       "						//transmit to OPCOM as objective was completed" \n
-       "						_dataset = {_OPCOM_FSM setFSMVariable [""_OPCOM_DATA"",[""completed"",_objective]]};" \n
+       "						//set objective state and re-analyse after objective state change" \n
+       "						[_objective,""opcom_state"",""reserve""] call AliVE_fnc_HashSet;" \n
+       "						[_objective,""opcom_orders"",""reserve""] call AliVE_fnc_HashSet;" \n
+       "						_dataset = {_TACOM_DATA = [""analyze"",_objective]};" \n
        "				};" \n
        "				case (""defend"") : {" \n
        "					if !([_OPCOM_HANDLER,""synchronizeorders"",_ProfileID] call ALiVE_fnc_OPCOM) exitwith {" \n
@@ -299,8 +285,8 @@ class FSM
        "						// debug ---------------------------------------" \n
        "					};" \n
        "				" \n
-       "							//dont transmit defend as long as entities are near" \n
-       "							_dataset = {_TACOM_DATA = [""analyze"",_objective]};" \n
+       "						//analyse" \n
+       "						_dataset = {_TACOM_DATA = [""analyze"",_objective]};" \n
        "				};" \n
        "				case (""reserve"") : {" \n
        "					_ProfilesReserve = [_OPCOM_HANDLER,""ProfileIDsReserve"",[]] call ALiVE_fnc_HashGet;" \n
@@ -314,19 +300,14 @@ class FSM
        "						// debug ---------------------------------------" \n
        "					};" \n
        "" \n
-       "						//transmit to OPCOM as objective was completed" \n
-       "						_dataset = {_OPCOM_FSM setFSMVariable [""_OPCOM_DATA"",[""completed"",_objective]]};" \n
+       "					//transmit to OPCOM as objective was completed" \n
+       "					[_objective,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n
+       "					[_objective,""opcom_orders"",""none""] call AliVE_fnc_HashSet;" \n
+       "					if (_debug) then {([_objective,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal _colorside};" \n
        "				};" \n
        "				default {_dataset = {}};" \n
        "			};" \n
        "			if !(isnil ""_dataset"") then {if (_transmit) then {call _dataset}};" \n
-       "" \n
-       "			// debug ---------------------------------------" \n
-       "			if(_debug) then {" \n
-       "				[""TACOM order completed complete""] call ALIVE_fnc_dump;" \n
-       "				//[true] call ALIVE_fnc_timer;" \n
-       "			};" \n
-       "			// debug ---------------------------------------	" \n
        "		};" \n
        "		default {};" \n
        "	};" \n

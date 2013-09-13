@@ -1,16 +1,16 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,4346,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-929.164673,-375.286652,-839.164551,-325.286652,5.000000,"ATTACK" \n "Conditions"};
 item5[] = {"",7,210,-345.692139,-136.027100,-337.692108,-128.027069,0.000000,""};
 item6[] = {"",7,210,-347.610199,-817.749023,-339.610168,-809.749023,0.000000,""};
 item7[] = {"DEFEND_condition",4,218,-792.029785,-376.003082,-702.029785,-326.003082,4.000000,"DEFEND" \n "conditions"};
 item8[] = {"RESERVE_conditio",4,218,-647.107849,-374.023468,-557.107788,-324.023468,3.000000,"RESERVE" \n "conditions"};
-item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.579346,0.000000,"OPCOM" \n "RECEIVER"};
+item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.579346,1.000000,"OPCOM" \n "RECEIVER"};
 item10[] = {"CUSTOM_condition",4,218,-506.692078,-374.296844,-416.692169,-324.296844,2.000000,"CUSTOM" \n "conditions"};
 item11[] = {"ORDER_TACOM",2,250,-929.397888,-266.917206,-430.130585,-222.714111,0.000000,"ORDER" \n "TACOM"};
 item12[] = {"TACOM_CONFIRM",4,218,-677.962830,-157.584137,-587.962830,-107.584137,0.000000,"TACOM" \n "CONFIRM"};
@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1564.712769,-215.094574,75.285522,-1032.307495,1132,929,1};
-window[] = {2,-1,-1,-1,-1,1147,198,1931,198,3,1149};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1485.145996,-294.661407,7.361633,-969.634949,1132,929,1};
+window[] = {2,-1,-1,-1,-1,971,22,1755,22,3,1149};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -251,10 +251,7 @@ class FSM
        "	switch (_DATA_OPERATION) do {" \n
        "		case (""init"") : {" \n
        "" \n
-       "                     if (_debug) then {" \n
-       "                            [_OPCOM_HANDLER,""OPCOM_monitor"",true] call AliVE_fnc_OPCOM;" \n
-       "                     };" \n
-       "" \n
+       "                   [_OPCOM_HANDLER,""OPCOM_monitor"",true] call AliVE_fnc_OPCOM;" \n
        "			_OPCOM_DATA= [""analyze"",""analysis""];" \n
        "" \n
        "			// debug ---------------------------------------" \n
@@ -278,7 +275,7 @@ class FSM
        "" \n
        "			//AnalyzeClusterOccupation" \n
        "			_targetOccupation = [_OPCOM_HANDLER,""clusteroccupation"",[]] call ALiVE_fnc_HashGet;" \n
-       "			if ((count _targetOccupation > 0) && {time - (_targetOccupation select 4) > 30}) then {_analyze = ""analysis""};" \n
+       "			if ((count _targetOccupation > 0) && {time - (_targetOccupation select 4) > 60}) then {_analyze = ""analysis""};" \n
        "" \n
        "			// Exit if analysis should happen" \n
        "			if !(isnil ""_analyze"") exitwith {_busy = false};" \n
@@ -399,53 +396,18 @@ class FSM
        "				_OPCOM_DATA = [""analyze"",nil];" \n
        "" \n
        "				// debug ---------------------------------------" \n
-       "				if(_debug) then { [""TACOM confirmed - %1 %2! Answer was %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return] call ALIVE_fnc_dumpR; };" \n
+       "				if(_debug) then { [""TACOM message received: %1 %2! Details: %3!"",([_target,""opcom_state""] call AliVE_fnc_HashGet),([_target,""objectiveID""] call AliVE_fnc_HashGet),_return] call ALIVE_fnc_dumpR; };" \n
        "				// debug ---------------------------------------" \n
        "" \n
        "			}  else {" \n
        "				[_target,""opcom_orders"",""none""] call ALiVE_fnc_HashSet;" \n
        "" \n
        "				// debug ---------------------------------------" \n
-       "				if(_debug) then { [""TACOM could not confirm orders! Answer was %1"",_return] call ALIVE_fnc_dumpR; };" \n
+       "				if(_debug) then { [""TACOM message received: %1"",_return] call ALIVE_fnc_dumpR; };" \n
        "				// debug ---------------------------------------" \n
        "" \n
        "			};" \n
        "			_busy = false;" \n
-       "		};" \n
-       "" \n
-       "		//Handle TACOM order completion by state" \n
-       "		case (""completed"") : {" \n
-       "			_target = _DATA_VALUE;" \n
-       "			_state = [_target,""opcom_state""] call AliVE_fnc_HashGet;" \n
-       "			_targets = [_OPCOM_HANDLER,""objectives"",[]] call AliVE_fnc_HashGet;" \n
-       "" \n
-       "			switch (_state) do {" \n
-       "				case (""attacking"") : {" \n
-       "						[_target,""opcom_state"",""reserve""] call AliVE_fnc_HashSet;" \n
-       "" \n
-       "						// debug ---------------------------------------" \n
-       "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal ""ColorWhite""};" \n
-       "						// debug ---------------------------------------" \n
-       "				};" \n
-       "				case (""defending"") : {" \n
-       "						[_target,""opcom_state"",""reserve""] call AliVE_fnc_HashSet;" \n
-       "			" \n
-       "						// debug ---------------------------------------" \n
-       "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal ""ColorOrange""};" \n
-       "						// debug ---------------------------------------" \n
-       "				};" \n
-       "				case (""reserving"") : {" \n
-       "						[_target,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n
-       "" \n
-       "						// debug ---------------------------------------" \n
-       "						if (_debug) then {([_target,""objectiveID""] call AliVE_fnc_HashGet) setMarkerColorLocal _colorside};" \n
-       "						// debug ---------------------------------------" \n
-       "				};" \n
-       "			};" \n
-       "			" \n
-       "			//Trigger new OPCOM analysis" \n
-       "			_OPCOM_DATA = [""analyze"",nil];" \n
-       "			 _busy = false;" \n
        "		};" \n
        "" \n
        "		case (""custom"") : {_custom = _DATA_VALUE};" \n
@@ -498,6 +460,18 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
+        /*%FSM<LINK "OPCOM_RECEIVER">*/
+        class OPCOM_RECEIVER
+        {
+          priority = 1.000000;
+          to="COLLECT_TO_QUEUE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
+           "" \n
+           "!(isnil ""_OPCOM_DATA"");"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "OPCOM_FEEDER">*/
         class OPCOM_FEEDER
         {
@@ -515,18 +489,6 @@ class FSM
           to="PERFORM_CLEANUP";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(isnil ""_analyze"");"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "OPCOM_RECEIVER">*/
-        class OPCOM_RECEIVER
-        {
-          priority = 0.000000;
-          to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
-           "" \n
-           "!(isnil ""_OPCOM_DATA"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -595,7 +557,7 @@ class FSM
         /*%FSM<LINK "OPCOM_RECEIVER">*/
         class OPCOM_RECEIVER
         {
-          priority = 0.000000;
+          priority = 1.000000;
           to="COLLECT_TO_QUEUE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
@@ -621,7 +583,7 @@ class FSM
         /*%FSM<LINK "OPCOM_RECEIVER">*/
         class OPCOM_RECEIVER
         {
-          priority = 0.000000;
+          priority = 1.000000;
           to="COLLECT_TO_QUEUE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
@@ -647,7 +609,7 @@ class FSM
         /*%FSM<LINK "OPCOM_RECEIVER">*/
         class OPCOM_RECEIVER
         {
-          priority = 0.000000;
+          priority = 1.000000;
           to="COLLECT_TO_QUEUE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
@@ -757,7 +719,7 @@ class FSM
         /*%FSM<LINK "OPCOM_RECEIVER">*/
         class OPCOM_RECEIVER
         {
-          priority = 0.000000;
+          priority = 1.000000;
           to="COLLECT_TO_QUEUE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n

@@ -409,7 +409,7 @@ switch(_operation) do {
                             };
                             
                             //If section is now empty exit and reset the objective
-                            if (count _section < 1) exitwith {player sidechat ("reset " + _proID); [_logic,"resetObjective",([_objective,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM};
+                            if (count _section < 1) exitwith {[_logic,"resetObjective",([_objective,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM};
                             
                             if (_proID in _profileIDs) then {
 	                            //Still not empty? Then get needed profile data
@@ -567,7 +567,7 @@ switch(_operation) do {
 					[_logic,"setstatebyclusteroccupation",[(_x select 0),(_x select 1)]] call ALiVE_fnc_OPCOM;
 				} foreach _priorities;
                 
-                diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,_sideF,_sideE];
+                //diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,_sideF,_sideE];
 		};
 
         case "entitiesnearsector": {
@@ -855,8 +855,6 @@ switch(_operation) do {
             };
 
             _result = _section;
-            
-            player sidechat ("Attackers " + str(_result));
         };
 
         case "scantroops" : {
