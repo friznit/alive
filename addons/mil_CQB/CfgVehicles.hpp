@@ -79,7 +79,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_CQB_FACTIONS_REG";
                                 description = "$STR_ALIVE_CQB_FACTIONS_REG_COMMENT";
-                                defaultValue = ["OPF_F","BLAH"];
+                                defaultValue = ["OPF_F"];
                         };
                 };
                 

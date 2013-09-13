@@ -83,7 +83,8 @@ switch(_operation) do {
                     MOD(CQB) = _logic;
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
-                        
+                    
+                    //Define strategic buildings    
                     _strategicTypes = [
                     	//A3
 						"Land_Cargo_Patrol_V1_F",
@@ -101,6 +102,7 @@ switch(_operation) do {
 						//"Land_TentHangar_V1_F"
 					];
                     
+                    //Define regular buildings
                     _regularTypes = [
                     	"Land_u_Shop_02_V1_F",
                     	"Land_d_House_Big_02_V1_F",
@@ -113,9 +115,23 @@ switch(_operation) do {
                         "Land_d_House_Big_01_V1_F"
                     ];
                     
-                    // Get all enterable houses of strategic types below across the whole map (rest will be regular)
-                    //Workaroung until SEP is fixed for Altis
+                    //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
+                    _UnitsBlackList = [
+                    	//A3
+                        "O_diver_F",
+                        "O_diver_TL_F",
+                        "O_diver_exp_F",
+                        "O_helipilot_F",
+                        "I_diver_F",
+                        "I_diver_TL_F",
+                        "I_diver_exp_F",
+                        "I_crew_F",
+                        "I_helicrew_F"
+                    ];
+                    
+                    //Get all enterable houses of strategic types below across the whole map (rest will be regular)
                     //_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
+                    //Workaroung until SEP is fixed for Altis
                     
                     private ["_collection","_objectives","_pos","_size"];
 
@@ -143,8 +159,8 @@ switch(_operation) do {
                             _collection set [count _collection,[_pos,_size]];
                         } foreach _objectives;
                     };
-
-					_houses = []; 
+                    
+                    _houses = [];
                     {
                         private ["_houses_tmp","_pos","_size"];
                         _time = time;
@@ -154,40 +170,20 @@ switch(_operation) do {
                         _houses_tmp = nearestObjects [_pos, (_regularTypes + _strategicTypes), _size*2];
                         _houses = _houses + _houses_tmp;
                         
-                        player sidechat format["Search for houses in town %1 finished! Time taken %2",_x,time - _time];
-                        diag_log format["Search for houses in town %1 finished! Time taken %2",_x,time - _time];
+                        //player sidechat format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
+                        //diag_log format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
                     } foreach _collection;
-                    _collection = nil;
-                    _objectives = nil;
-                    
-                    //_Houses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 15000];
-                    //_Houses = _Houses + (nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _regularTypes, 15000]);
-                    
-					//_strategicHouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _strategicTypes, 10000];
-                    //_nonStrategicHouses = nearestObjects [(getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")), _regularTypes, 10000];
-                    
+                        
                     _result = [_houses, _strategicTypes,_regularTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
+                    
                     _result = nil;
                     _houses = nil;
-                    
-                    //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
-                    _UnitsBlackList = [
-                    	//A3
-                        "O_diver_F",
-                        "O_diver_TL_F",
-                        "O_diver_exp_F",
-                        "O_helipilot_F",
-                        "I_diver_F",
-                        "I_diver_TL_F",
-                        "I_diver_exp_F",
-                        "I_crew_F",
-                        "I_helicrew_F"
-                    ];
+                    _collection = nil;
 
 					//set default values on main CQB instance
-                    //[MOD(CQB), "houses", _strategicHouses + _nonStrategicHouses] call ALiVE_fnc_CQB;
+                    [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
 					[MOD(CQB), "factions", _factionsReg + _factionsStrat] call ALiVE_fnc_CQB;
 					[MOD(CQB), "spawnDistance", 800] call ALiVE_fnc_CQB;
 
