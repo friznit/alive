@@ -486,7 +486,7 @@ switch(_operation) do {
 					// if any linked profiles have despawn prevented
 					_despawnPrevented = false;
 					_linked = [_logic] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;
-					_linked call ALIVE_fnc_inspectHash;
+					//_linked call ALIVE_fnc_inspectHash;
 					if(count (_linked select 1) > 1) then {
 						{
 							_spawnType = [_x,"spawnType"] call ALIVE_fnc_hashGet;

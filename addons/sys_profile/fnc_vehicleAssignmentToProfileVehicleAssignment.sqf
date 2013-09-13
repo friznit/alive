@@ -44,7 +44,7 @@ _assignments = [[],[],[],[],[]];
 	
 		_assignedRole = assignedVehicleRole _x;
 		_assignedRoleName = _assignedRole select 0;
-		
+	
 		switch(_assignedRoleName) do {
 			case "Driver":{
 				_assignments set [0, [_unitIndex]];
