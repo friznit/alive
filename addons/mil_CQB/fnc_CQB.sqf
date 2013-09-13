@@ -84,7 +84,28 @@ switch(_operation) do {
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
                     
-                    //Define strategic buildings    
+                    //Define strategic buildings
+                    _strategicTypes = [
+                    	//A3
+						"Land_Cargo_Patrol_V1_F",
+                        //"Land_Cargo_Patrol_V2_F",
+                        "Land_Cargo_House_V1_F",
+                        "Land_Cargo_House_V2_F",
+                        "Land_Cargo_Tower_V3_F",
+                        "Land_Airport_Tower_F",
+						"Land_Cargo_HQ_V1_F",
+                        "Land_Cargo_HQ_V2_F",
+                        "Land_MilOffices_V1_F",
+                        "Land_Research_HQ_F",
+                        "Land_CarService_F",
+                        "Land_Hospital_main_F"
+                        //"Land_dp_smallFactory_F",
+						//"Land_Radar_F",
+						//"Land_TentHangar_V1_F"
+					];
+                    
+                    
+                    /*    
                     _strategicTypes = [
                     	//A3
 						"Land_Cargo_Patrol_V1_F",
@@ -92,7 +113,7 @@ switch(_operation) do {
                         "Land_Cargo_House_V2_F",
                         "Land_Cargo_House_V1_F",
                         "Land_Cargo_Tower_V3_F",
-                        "Land_Cargo_Patrol_V2_F",
+                        //"Land_Cargo_Patrol_V2_F",
 						"Land_MilOffices_V1_F",
                         "Land_Dome_Big_F",
 						//"Land_dp_smallFactory_F",
@@ -101,6 +122,7 @@ switch(_operation) do {
 						"Land_Airport_Tower_F"
 						//"Land_TentHangar_V1_F"
 					];
+                    */
                     
                     //Define regular buildings
                     _regularTypes = [
@@ -177,10 +199,6 @@ switch(_operation) do {
                     _result = [_houses, _strategicTypes,_regularTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
-                    
-                    _result = nil;
-                    _houses = nil;
-                    _collection = nil;
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
