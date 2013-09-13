@@ -145,10 +145,10 @@ switch(_operation) do {
 					_commandState = _logic select 2 select 1; //[logic,"commandState"] call ALIVE_fnc_hashGet;
 					
 					// DEBUG -------------------------------------------------------------------------------------
-					//if(_debug) then {
+					if(_debug) then {
 						["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						["ALiVE Command Router - Activate Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
-					//};
+					};
 					// DEBUG -------------------------------------------------------------------------------------					
 					
 					// handle various command types
@@ -176,11 +176,11 @@ switch(_operation) do {
 					};
 					
 					// DEBUG -------------------------------------------------------------------------------------
-					//if(_debug) then {						
+					if(_debug) then {						
 						["ALiVE Command Router - Current Command State:"] call ALIVE_fnc_dump;
 						_commandState call ALIVE_fnc_inspectHash;
 						["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-					//};
+					};
 					// DEBUG -------------------------------------------------------------------------------------					
 				};
         };
@@ -235,11 +235,11 @@ switch(_operation) do {
 						[_commandState, _profileID] call ALIVE_fnc_hashRem;
 						
 						// DEBUG -------------------------------------------------------------------------------------
-						//if(_debug) then {							
+						if(_debug) then {							
 							["ALiVE Command Router - Current Command State:"] call ALIVE_fnc_dump;
 							_commandState call ALIVE_fnc_inspectHash;
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-						//};
+						};
 						// DEBUG -------------------------------------------------------------------------------------
 
 						// if there are no active commands shut down the 
