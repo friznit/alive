@@ -32,8 +32,6 @@ private ["_position","_radius","_result","_err", "_sector","_sectorData","_secto
 _position = _this select 0;
 //_radius = _this select 1;
 
-_result = _position;
-
 _err = format["get closest land requires a position array - %1",_position];
 ASSERT_TRUE(typeName _position == "ARRAY",_err);
 //_err = format["get closest land requires a radius scalar - %1",_radius];
@@ -53,8 +51,7 @@ if(_sectorTerrain == "SHORE") then {
 	
 	if(count _samples > 0) then {
 		//["GCL got land samples: %1",_samples] call ALIVE_fnc_dump;
-		_result = _samples select (random (count _samples)-1);
-		_result set [2,0];
+		_result = _samples select (floor(random (count _samples)-1));
 	};
 };
 
@@ -76,12 +73,11 @@ if(_sectorTerrain == "SEA") then {
 		
 		if(count _samples > 0) then {
 			//["GCL got land samples: %1",_samples] call ALIVE_fnc_dump;
-			_result = _samples select (random (count _samples)-1);
-			_result set [2,0];
+			_result = _samples select (floor(random (count _samples)-1));
 		};
 	}else{
 		// not sure what to do here, they are out to sea...
 	};
 };			
 
-_result
+if !(isnil "_result") then {_result set [2,0]; _result} else {_position};

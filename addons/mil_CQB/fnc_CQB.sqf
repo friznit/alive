@@ -769,7 +769,10 @@ switch(_operation) do {
 							// if group are all dead
 							// mark house as cleared
 							if ({alive _x} count (units _grp) == 0) then {
-								// update central CQB house listings
+                                
+                                if (isnil "_house") exitwith {diag_log "CQB ERROR: _House didnt exist, when trying to clear it!"};
+								
+                                // update central CQB house listings
 								[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
 							};
 						} forEach (_logic getVariable ["groups",[]]);

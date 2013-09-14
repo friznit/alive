@@ -465,8 +465,11 @@ switch(_operation) do {
 						if(_active) then {
 							_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 							_unit = _units select 0;
-							_group = group _unit;
-							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+                            
+                            if !(isnil "_unit") then {
+								_group = group _unit;
+								[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+                            };
 						};
 						_result = _args;
                 };
@@ -486,8 +489,11 @@ switch(_operation) do {
 						if(_active) then {
 							_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 							_unit = _units select 0;
-							_group = group _unit;
-							[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+                            
+                            if !(isnil "_unit") then {
+								_group = group _unit;
+								[_args, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+                            };
 						};
 						_result = _args;
                 };
