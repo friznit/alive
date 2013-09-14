@@ -53,16 +53,21 @@ if!(_profileID in (_linkedProfiles select 1)) then {
 			_group = _x;
 			_leader = leader _group;
 			_entityID = _leader getVariable "profileID";
+            
+            if !(isnil "_entityID") then {
 			
-			//["E: %1 EID: %2",_leader,_entityID] call ALIVE_fnc_dump;
-			
-			_entityProfile = [ALIVE_profileHandler, "getProfile", _entityID] call ALIVE_fnc_profileHandler;
-			_entityProfileActive = _entityProfile select 2 select 1; //[_entityProfile,"active"] call ALIVE_fnc_hashGet;			
-					
-			if(_entityProfileActive) then {
-				_linkedProfiles = [_entityProfile, _linkedProfiles] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;				
-			};
-			
+				//["E: %1 EID: %2",_leader,_entityID] call ALIVE_fnc_dump;
+				
+				_entityProfile = [ALIVE_profileHandler, "getProfile", _entityID] call ALIVE_fnc_profileHandler;
+                
+                if !(isnil "_entityProfile") then {
+					_entityProfileActive = _entityProfile select 2 select 1; //[_entityProfile,"active"] call ALIVE_fnc_hashGet;			
+							
+					if(_entityProfileActive) then {
+						_linkedProfiles = [_entityProfile, _linkedProfiles] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;				
+					};
+                };
+            };
 		} forEach _groupsInVehicle;
 		
 	} else {
@@ -80,16 +85,22 @@ if!(_profileID in (_linkedProfiles select 1)) then {
 		
 		{
 			_vehicle = _x;
-			_vehicleID = _vehicle getVariable ["profileID","none"];
+            
+            if !(isnil "_vehicle") then {
+				_vehicleID = _vehicle getVariable ["profileID","none"];
+						
+				//["V: %1 VID: %2",_vehicle,_vehicleID] call ALIVE_fnc_dump;
+				
+				_vehicleProfile = [ALIVE_profileHandler, "getProfile", _vehicleID] call ALIVE_fnc_profileHandler;
+                
+                if !(isnil "_vehicleProfile") then {
+					_vehicleProfileActive = _vehicleProfile select 2 select 1; //[_vehicleProfile,"active"] call ALIVE_fnc_hashGet;
 					
-			//["V: %1 VID: %2",_vehicle,_vehicleID] call ALIVE_fnc_dump;
-			
-			_vehicleProfile = [ALIVE_profileHandler, "getProfile", _vehicleID] call ALIVE_fnc_profileHandler;
-			_vehicleProfileActive = _vehicleProfile select 2 select 1; //[_vehicleProfile,"active"] call ALIVE_fnc_hashGet;
-			
-			if(_vehicleProfileActive) then {
-				_linkedProfiles = [_vehicleProfile, _linkedProfiles] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;	
-			};			
+					if(_vehicleProfileActive) then {
+						_linkedProfiles = [_vehicleProfile, _linkedProfiles] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;	
+					};
+                };
+            };			
 		} forEach _vehiclesUnitsIn;
 			
 	};

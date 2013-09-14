@@ -92,20 +92,23 @@ switch(_type) do {
 					_inCommand = true;
 					{
 						_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-						//_vehicleClass = _vehicleProfile select 2 select 11; //[_profile,"vehicleClass"] call ALIVE_fnc_hashGet;
-						_vehicleObjectType = _vehicleProfile select 2 select 6; //[_profile,"objectType"] call ALIVE_fnc_hashGet;
-						
-						_vehicles set [count _vehicles, _vehicleProfile];
-						
-						if(_vehicleObjectType == "Car" || _vehicleObjectType == "Truck" || _vehicleObjectType == "Armored") then {
-							_inCar = true;
-						};
-						if(_vehicleObjectType == "Plane" || _vehicleObjectType == "Helicopter") then {
-							_inAir = true;
-						};
-						if(_vehicleObjectType == "Ship") then {
-							_inShip = true;
-						};
+                        
+                        if !(isnil "_vehicleProfile") then {
+							//_vehicleClass = _vehicleProfile select 2 select 11; //[_profile,"vehicleClass"] call ALIVE_fnc_hashGet;
+							_vehicleObjectType = _vehicleProfile select 2 select 6; //[_profile,"objectType"] call ALIVE_fnc_hashGet;
+							
+							_vehicles set [count _vehicles, _vehicleProfile];
+							
+							if(_vehicleObjectType == "Car" || _vehicleObjectType == "Truck" || _vehicleObjectType == "Armored") then {
+								_inCar = true;
+							};
+							if(_vehicleObjectType == "Plane" || _vehicleObjectType == "Helicopter") then {
+								_inAir = true;
+							};
+							if(_vehicleObjectType == "Ship") then {
+								_inShip = true;
+							};
+                        };
 					} forEach _vehiclesInCommandOf;
 				};
 				

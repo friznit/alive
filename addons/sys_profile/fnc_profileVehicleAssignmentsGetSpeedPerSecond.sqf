@@ -50,9 +50,12 @@ if(_countAssignedUnits < _unitCount || count(_vehiclesInCommandOf) == 0) then {
 	_speeds = [];
 	{
 		_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-		_vehicleClass = _vehicleProfile select 2 select 11; //[_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;
-		_speedArray = _vehicleClass call ALIVE_fnc_vehicleGetSpeedPerSecond;
-		_speeds set [count _speeds, _speedArray];
+        
+        if !(isnil "_vehicleProfile") then {
+			_vehicleClass = _vehicleProfile select 2 select 11; //[_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;
+			_speedArray = _vehicleClass call ALIVE_fnc_vehicleGetSpeedPerSecond;
+			_speeds set [count _speeds, _speedArray];
+        };
 	} forEach _vehiclesInCommandOf;
 	
 	//["SPEEDS: %1",_speeds] call ALIVE_fnc_dump;	

@@ -370,7 +370,7 @@ switch(_operation) do {
 		case "addVehicleAssignment": {
 				private ["_assignments","_key","_units","_unit","_group"];
 
-				if(typeName _args == "ARRAY") then {
+				if ((typeName _args == "ARRAY") && {!(isnil {_args select 1})}) then {
 						_assignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 						_key = _args select 1;
 						[_assignments, _key, _args] call ALIVE_fnc_hashSet;

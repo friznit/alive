@@ -44,7 +44,10 @@ if(_profileType == "vehicle") then {
 	{
 		_entityID = _x;
 		_profileEntity = [ALIVE_profileHandler, "getProfile", _entityID] call ALIVE_fnc_profileHandler;
-		[_profileEntity,_profile,true] call ALIVE_fnc_removeProfileVehicleAssignment;
+        
+        if !(isnil "_profileEntity") then {
+			[_profileEntity,_profile,true] call ALIVE_fnc_removeProfileVehicleAssignment;
+        };
 	} forEach _keys;
 	
 }else{
@@ -57,7 +60,9 @@ if(_profileType == "vehicle") then {
 	{
 		_vehicleID = _x;
 		_profileVehicle = [ALIVE_profileHandler, "getProfile", _vehicleID] call ALIVE_fnc_profileHandler;
-		[_profile,_profileVehicle,true] call ALIVE_fnc_removeProfileVehicleAssignment;
+        if !(isnil "_profileVehicle") then {
+			[_profile,_profileVehicle,true] call ALIVE_fnc_removeProfileVehicleAssignment;
+        };
 	} forEach _keys;
 	
 };	

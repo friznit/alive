@@ -44,51 +44,54 @@ _assignments = [[],[],[],[],[]];
 	
 		_assignedRole = assignedVehicleRole _x;
 		_assignedRoleName = _assignedRole select 0;
+        
+        if !(isnil "_assignedRoleName") then {
 	
-		switch(_assignedRoleName) do {
-			case "Driver":{
-				_assignments set [0, [_unitIndex]];
-			};
-			case "Cargo":{
-				_cargo = _assignments select 4;
-				_cargo set [count _cargo,_unitIndex];
-				_assignments set [4, _cargo];
-			};
-			case "Turret":{
-				_assignedTurret = _assignedRole select 1;
-				_turretConfig = [_vehicle, _assignedTurret] call CBA_fnc_getTurret;
-				_turretIsGunner = getNumber(_turretConfig >> "primaryGunner");
-				_turretIsCommander = getNumber(_turretConfig >> "primaryObserver");
-				_isTurret = true;				
-				
-				if(_turretIsGunner == 1) then {
-					_gunner = _assignments select 1;
-					_gunner set [count _gunner,_unitIndex];
-					_assignments set [1, _gunner];
-					_isTurret = false;
+			switch(_assignedRoleName) do {
+				case "Driver":{
+					_assignments set [0, [_unitIndex]];
 				};
-				
-				if(_turretIsCommander == 1) then {
-					_commander = _assignments select 2;
-					_commander set [count _commander,_unitIndex];
-					_assignments set [2, _commander];
-					_isTurret = false;
+				case "Cargo":{
+					_cargo = _assignments select 4;
+					_cargo set [count _cargo,_unitIndex];
+					_assignments set [4, _cargo];
 				};
-				
-				if(_isTurret) then {
-					_turret = _assignments select 3;
-					_turret set [count _turret,_unitIndex];
-					_assignments set [3, _turret];
+				case "Turret":{
+					_assignedTurret = _assignedRole select 1;
+					_turretConfig = [_vehicle, _assignedTurret] call CBA_fnc_getTurret;
+					_turretIsGunner = getNumber(_turretConfig >> "primaryGunner");
+					_turretIsCommander = getNumber(_turretConfig >> "primaryObserver");
+					_isTurret = true;				
+					
+					if(_turretIsGunner == 1) then {
+						_gunner = _assignments select 1;
+						_gunner set [count _gunner,_unitIndex];
+						_assignments set [1, _gunner];
+						_isTurret = false;
+					};
+					
+					if(_turretIsCommander == 1) then {
+						_commander = _assignments select 2;
+						_commander set [count _commander,_unitIndex];
+						_assignments set [2, _commander];
+						_isTurret = false;
+					};
+					
+					if(_isTurret) then {
+						_turret = _assignments select 3;
+						_turret set [count _turret,_unitIndex];
+						_assignments set [3, _turret];
+					};
+	
+					/*
+					["ASS TUR: %1",_assignedTurret] call ALIVE_fnc_dump;
+					["ASS TUR GUN: %1",_turretIsGunner] call ALIVE_fnc_dump;
+					["ASS TUR COMMAND: %1",_turretIsCommander] call ALIVE_fnc_dump;
+					["ASS TUR TUR: %1",_isTurret] call ALIVE_fnc_dump;
+					*/
 				};
-
-				/*
-				["ASS TUR: %1",_assignedTurret] call ALIVE_fnc_dump;
-				["ASS TUR GUN: %1",_turretIsGunner] call ALIVE_fnc_dump;
-				["ASS TUR COMMAND: %1",_turretIsCommander] call ALIVE_fnc_dump;
-				["ASS TUR TUR: %1",_isTurret] call ALIVE_fnc_dump;
-				*/
 			};
-		};
+        };
 	};	
 	_unitIndex = _unitIndex + 1;
 } forEach _units;
