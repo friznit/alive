@@ -39,7 +39,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	
 		_profileID = _profile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
 		_profileType = _profile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
-		_position = _profile select 2 select 2; //_position = [_profile,"position"] call ALIVE_fnc_hashGet;
+		_position = _profile select 2 select 2; //_position = [_profile,"position"] call ALIVE_fnc_hashGet;		
 
 		if(_profileType == "vehicle") then {
 			_vehicle = _profile select 2 select 10; //_vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet;
@@ -49,7 +49,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 			_position = getPosATL _leader;
 		};
 		
-		if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) then {		
+		if (([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) && ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0)) then {
 				
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {

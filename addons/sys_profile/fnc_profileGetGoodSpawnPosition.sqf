@@ -52,16 +52,6 @@ _createMarker = {
 	_markerCount = _markerCount + 1;
 };
 
-/*
-	Wolffy.au
-[18/08/2013 1:07:38 PM] ARJay: it needs to:
-if the profile is a land vehicle
-- check that the simulated poistion is not in the sea
-- check i f there are nearish roads to spawn as priority
-- if not near 500m? of road find an empty space
-- if I am part of a group of vehicles spawn me near group but not close enough to explode
-*/
-
 _debug = _profile select 2 select 0; //[_profile,"debug"] call ALIVE_fnc_hashGet;
 _active = _profile select 2 select 1; //[_profile,"active"] call ALIVE_fnc_hashGet;
 _position = _profile select 2 select 2; //[_profile,"position"] call ALIVE_fnc_hashGet;
@@ -90,7 +80,7 @@ switch(_type) do {
 		//["GGSP [%1] - commanding vehicles: %2 cargo vehicles: %3 simulated: %4",_profileID,_vehiclesInCommandOf,_vehiclesInCargoOf,_hasSimulated] call ALIVE_fnc_dump;
 	
 		// the profile has been moved via simulation
-		if(_hasSimulated) then {
+		if(_hasSimulated || ((_despawnPosition select 0) + (_despawnPosition select 1)) == 0) then {
 			
 			// entity is not in the cargo of a vehicle
 			if(count _vehiclesInCargoOf == 0) then {	

@@ -34,7 +34,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	private ["_profile","_profileID","_profileType","_position","_active"];
 
 	_profile = _x;
-	_active = _profile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;		
+	_active = _profile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
 	
 	if!(_active) then {
 		

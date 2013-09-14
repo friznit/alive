@@ -576,7 +576,7 @@ switch(_operation) do {
 					_type = _args;
 
 					_profilesByType = [_logic, "profilesByType"] call ALIVE_fnc_hashGet;
-
+				
 					_result = [_profilesByType, _type] call ALIVE_fnc_hashGet;
 				};
 		};
@@ -598,7 +598,7 @@ switch(_operation) do {
 					_type = _args;
 
 					_profilesByVehicleType = [_logic, "profilesByVehicleType"] call ALIVE_fnc_hashGet;
-
+					
 					_result = [_profilesByVehicleType, _type] call ALIVE_fnc_hashGet;
 				};
 		};
