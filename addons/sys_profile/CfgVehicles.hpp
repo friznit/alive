@@ -57,7 +57,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS";
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS_COMMENT";
-								defaultvalue = "1000";
+								defaultvalue = "1500";
                         };
                 };
                 

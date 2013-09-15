@@ -124,6 +124,7 @@ switch(_operation) do {
 			[_logic,"super"] call ALIVE_fnc_hashRem;
 			[_logic,"class"] call ALIVE_fnc_hashRem;
 			
+			[_logic, "parkingPositions", []] call ALIVE_fnc_hashSet;			
 			
 			TRACE_1("After module init",_logic);
 			_result = _logic;
@@ -278,7 +279,13 @@ switch(_operation) do {
 			_logic,_operation,_args,
 			0
 		] call ALIVE_fnc_OOsimpleOperation;
-	};        
+	};
+	case "parkingPositions": {
+		if(typeName _args == "ARRAY") then {
+			[_logic, "parkingPositions", _args] call ALIVE_fnc_hashSet;
+		};
+		_result = [_logic, "parkingPositions", []] call ALIVE_fnc_hashGet;
+	};    
 	default {
 		_result = [_logic, _operation, _args] call SUPERCLASS;
 	};

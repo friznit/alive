@@ -41,6 +41,16 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_strategic\fnc_copyClusters.sqf";
                                 recompile = 1;
                         };
+						class generateParkingPositions {
+                                description = "Generate parking positions for cluster nodes";
+                                file = "\x\alive\addons\mil_strategic\fnc_generateParkingPositions.sqf";
+                                recompile = 1;
+                        };
+						class generateParkingPosition {
+                                description = "Generate parking position for building";
+                                file = "\x\alive\addons\mil_strategic\fnc_generateParkingPosition.sqf";
+                                recompile = 1;
+                        };
                 };
         };
 };

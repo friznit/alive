@@ -63,38 +63,33 @@ class CfgVehicles {
                                         class RANDOM
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_RANDOM";
-                                                value = "RANDOM";
+                                                value = "Random";
 												default = 1;
                                         };
                                         class ARMOR
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_ARMOR";
-                                                value = "ARMOR";
+                                                value = "Armored";
                                         };
                                         class MECH
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_MECH";
-                                                value = "MECH";
+                                                value = "Mechanized";
                                         };
                                         class MOTOR
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_MOTOR";
-                                                value = "MOTOR";
+                                                value = "Motorized";
                                         };
                                         class LIGHT
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_LIGHT";
-                                                value = "LIGHT";
+                                                value = "Infantry";
                                         };
                                         class AIRBORNE
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_AIRBORNE";
-                                                value = "AIRBORNE";
-                                        };
-                                        class MARINE
-                                        {
-                                                name = "$STR_ALIVE_MP_TYPE_MARINE";
-                                                value = "MARINE";
+                                                value = "Air";
                                         };
                                 };
                         };
@@ -103,6 +98,62 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_MP_FACTION";
                                 description = "$STR_ALIVE_MP_FACTION_COMMENT";
                                 defaultValue = "OPF_F";
+                        };
+						class sizeFilter
+                        {
+                                displayName = "$STR_ALIVE_MP_SIZE_FILTER";
+                                description = "$STR_ALIVE_MP_SIZE_FILTER_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_MP_SIZE_FILTER_NONE";
+                                                value = "0";
+                                        };
+                                        class SMALL
+                                        {
+                                                name = "$STR_ALIVE_MP_SIZE_FILTER_SMALL";
+                                                value = "100";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_MP_SIZE_FILTER_MEDIUM";
+                                                value = "200";
+                                        };
+										class LARGE
+                                        {
+                                                name = "$STR_ALIVE_MP_SIZE_FILTER_LARGE";
+                                                value = "300";
+                                        };
+                                };
+                        };
+						class priorityFilter
+                        {
+                                displayName = "$STR_ALIVE_MP_PRIORITY_FILTER";
+                                description = "$STR_ALIVE_MP_PRIORITY_FILTER_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_MP_PRIORITY_FILTER_NONE";
+                                                value = "0";
+                                        };
+                                        class LOW
+                                        {
+                                                name = "$STR_ALIVE_MP_PRIORITY_FILTER_LOW";
+                                                value = "10";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_MP_PRIORITY_FILTER_MEDIUM";
+                                                value = "30";
+                                        };
+										class HIGH
+                                        {
+                                                name = "$STR_ALIVE_MP_PRIORITY_FILTER_HIGH";
+                                                value = "40";
+                                        };
+                                };
                         };
                         class taor
                         {
@@ -115,6 +166,34 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_MP_BLACKLIST";
                                 description = "$STR_ALIVE_MP_BLACKLIST_COMMENT";
                                 defaultValue = "";
+                        };
+						class ambientVehicleAmount
+                        {
+                                displayName = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT";
+                                description = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_NONE";
+                                                value = "0";
+                                        };
+                                        class LOW
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_LOW";
+                                                value = "0.2";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_MEDIUM";
+                                                value = "0.6";
+                                        };
+										class HIGH
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_HIGH";
+                                                value = "1";
+                                        };
+                                };
                         };
                 };
                 

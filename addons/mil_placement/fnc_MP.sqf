@@ -45,6 +45,9 @@ Wolffy
 #define DEFAULT_OBJECTIVES_AIR []
 #define DEFAULT_OBJECTIVES_HELI []
 #define DEFAULT_OBJECTIVES_VEHICLE []
+#define DEFAULT_SIZE_FILTER "0"
+#define DEFAULT_PRIORITY_FILTER "0"
+#define DEFAULT_AMBIENT_VEHICLE_AMOUNT "1"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -112,12 +115,12 @@ switch(_operation) do {
 	case "size": {
 		_result = [_logic,_operation,_args,DEFAULT_SIZE,["BN","PL","CY"]] call ALIVE_fnc_OOsimpleOperation;
 	};
-	// Determine type of enemy force - valid values are: RANDOM, ARMOR, MECH, MOTOR, LIGHT, AIRBORNE and MARINE
+	// Determine type of enemy force - valid values are: "Random","Armored","Mechanized","Motorized","Infantry","Air
 	case "type": {
-		_result = [_logic,_operation,_args,DEFAULT_TYPE,["RANDOM","ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"]] call ALIVE_fnc_OOsimpleOperation;
-		if(_result == "RANDOM") then {
+		_result = [_logic,_operation,_args,DEFAULT_TYPE,["Random","Armored","Mechanized","Motorized","Infantry","Air"]] call ALIVE_fnc_OOsimpleOperation;
+		if(_result == "Random") then {
 			// Randomly pick an type
-			_result = ["ARMOR","MECH","MOTOR","LIGHT","AIRBORNE","MARINE"] call BIS_fnc_selectRandom;
+			_result = ["Armored","Mechanized","Motorized","Infantry","Air"] call BIS_fnc_selectRandom;
 			_logic setVariable ["type", _result];
 		};
 	};
@@ -132,6 +135,18 @@ switch(_operation) do {
 	// Return the Blacklist marker
 	case "blacklist": {
 		_result = [_logic,_operation,_args,DEFAULT_BLACKLIST] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Return the Size filter
+	case "sizeFilter": {
+		_result = [_logic,_operation,_args,DEFAULT_SIZE_FILTER] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Return the Priority filter
+	case "priorityFilter": {
+		_result = [_logic,_operation,_args,DEFAULT_PRIORITY_FILTER] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Return the Ambient Vehicle Amount
+	case "ambientVehicleAmount": {
+		_result = [_logic,_operation,_args,DEFAULT_AMBIENT_VEHICLE_AMOUNT] call ALIVE_fnc_OOsimpleOperation;
 	};
 	// Return the objectives as an array of clusters
 	case "objectives": {
@@ -157,18 +172,35 @@ switch(_operation) do {
 	case "init": {
         if (isServer) then {
 		
-			private ["_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist","_blacklistClusters","_center"];
+			private ["_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
+			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
 								
-			if(isNil "ALIVE_clustersMil") then {			
+			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
+				//["LOADING MP DATA"] call ALIVE_fnc_dump;
+				[true] call ALIVE_fnc_timer;
+				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
+				ALIVE_loadedMilClusters = true;
+				
+				[] call ALIVE_fnc_timer;
+				//["MP DATA LOADED"] call ALIVE_fnc_dump;
 			};
 			
-			_taor = [_logic, "taor"] call ALIVE_fnc_MO;
-			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MO;
+			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedMilClusters")};
+			
+			//["PARSING MP DATA"] call ALIVE_fnc_dump;
+			//[true] call ALIVE_fnc_timer;
+			
+			_taor = [_logic, "taor"] call ALIVE_fnc_MP;
+			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MP;
+			_sizeFilter = parseNumber([_logic, "sizeFilter"] call ALIVE_fnc_MP);
+			_priorityFilter = parseNumber([_logic, "priorityFilter"] call ALIVE_fnc_MP);
+			
 			
 			_clusters = ALIVE_clustersMil;
+			_clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			// cull clusters outside of TAOR marker if defined
 			_clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			// cull clusters inside of Blacklist marker if defined
@@ -187,6 +219,7 @@ switch(_operation) do {
 			
 			
 			_HQClusters = ALIVE_clustersMilHQ;
+			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
 			/*
@@ -198,6 +231,7 @@ switch(_operation) do {
 			
 			
 			_airClusters = ALIVE_clustersMilAir;
+			_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
 			/*
@@ -209,6 +243,7 @@ switch(_operation) do {
 			
 			
 			_heliClusters = ALIVE_clustersMilHeli;
+			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
 			/*
@@ -220,6 +255,7 @@ switch(_operation) do {
 			
 			
 			_vehicleClusters = ALIVE_clustersMilVehicle;
+			_vehicleClusters = [_vehicleClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_vehicleClusters = [_vehicleClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_vehicleClusters = [_vehicleClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
 			/*
@@ -229,7 +265,317 @@ switch(_operation) do {
 			*/
 			[_logic, "objectivesVehicle", _vehicleClusters] call MAINCLASS;
 			
+			
+			//["MP DATA PARSED"] call ALIVE_fnc_dump;
+			//[] call ALIVE_fnc_timer;
+			
+			// start placement
+			[_logic, "placement"] call MAINCLASS;
         };
+	};
+	// Placement
+	case "placement": {
+        if (isServer) then {
+		
+			waituntil {sleep 0.1; !(isnil "ALIVE_profileHandler")};
+		
+			private ["_clusters","_cluster","_HQClusters","_airClusters","_heliClusters","_vehicleClusters",
+			"_countHQClusters","_countAirClusters","_countHeliClusters","_size","_type","_faction","_ambientVehicleAmount",
+			"_factionConfig","_factionSideNumber","_side","_vehicleClass","_position","_direction","_unitBlackist",
+			"_vehicleBlacklist","_heliClasses","_nodes","_airClasses","_node","_forceMax"];
+			
+			_clusters = [_logic, "objectives"] call MAINCLASS;
+			_HQClusters = [_logic, "objectivesHQ"] call MAINCLASS;
+			_airClusters = [_logic, "objectivesAir"] call MAINCLASS;
+			_heliClusters = [_logic, "objectivesHeli"] call MAINCLASS;
+			_vehicleClusters = [_logic, "objectivesVehicle"] call MAINCLASS;
+			
+			_countHQClusters = count _HQClusters;
+			_countAirClusters = count _airClusters;
+			_countHeliClusters = count _heliClusters;
+			_countVehicleClusters = count _vehicleClusters;			
+			
+			_size = [_logic, "size"] call MAINCLASS;
+			_type = [_logic, "type"] call MAINCLASS;
+			_faction = [_logic, "faction"] call MAINCLASS;
+			_ambientVehicleAmount = parseNumber([_logic, "ambientVehicleAmount"] call MAINCLASS);
+			
+			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
+			_factionSideNumber = getNumber(_factionConfig >> "side");
+			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
+			
+			//["Size: %1 Type: %2 SideNum: %3 Side: %4 Faction: %5",_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;			
+			//["Clusters hq:%1 a:%2 h:%3 v:%4", count _HQClusters, count _airClusters, count _heliClusters, count _vehicleClusters] call ALIVE_fnc_dump;
+			
+			_unitBlackist = ["O_UAV_AI","B_UAV_AI"];
+			_vehicleBlacklist = ["O_UAV_02_F","O_UAV_02_CAS_F","O_UAV_01_F","O_UGV_01_F","O_UGV_01_rcws_F","B_UAV_01_F","B_UAV_02_F","B_UAV_02_CAS_F","B_UGV_01_F","B_UGV_01_rcws_F"];
+			
+			
+			// Spawn helicopters on pads
+			
+			if(_ambientVehicleAmount > 0) then {
+						
+				_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;			
+				_heliClasses = _heliClasses - _vehicleBlacklist;
+				
+				if(count _heliClasses > 0) then {
+					{
+						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+						//[_x, "debug", true] call ALIVE_fnc_cluster;
+						{
+							_position = position _x;
+							_direction = direction _x;
+							_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
+							if(random 1 > 0.6) then {
+								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+							}else{
+								[_vehicleClass,_side,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
+							};
+							
+						} forEach _nodes;				
+					} forEach _heliClusters;
+				};
+			};
+			
+			
+			// Spawn air units in hangars
+			
+			if(_ambientVehicleAmount > 0) then {
+			
+				_airClasses = [0,_faction,"Plane"] call ALiVE_fnc_findVehicleType;			
+				_airClasses = _airClasses - _vehicleBlacklist;
+				_airClasses = _airClasses + _heliClasses;
+				
+				if(count _airClasses > 0) then {
+				
+					{
+						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+						//[_x, "debug", true] call ALIVE_fnc_cluster;
+						{
+							_position = position _x;
+							_direction = direction _x;
+							_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
+							if(random 1 > 0.6) then {
+								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+							};
+						} forEach _nodes;				
+					} forEach _airClusters;
+				};
+			};
+					
+			
+			// Spawn land units				
+
+			if(_ambientVehicleAmount > 0) then {
+			
+				_carClasses = [0,_faction,"Car"] call ALiVE_fnc_findVehicleType;
+				_armorClasses = [0,_faction,"Tank"] call ALiVE_fnc_findVehicleType;
+				_landClasses = _carClasses + _armorClasses;
+				_landClasses = _landClasses - _vehicleBlacklist;
+				
+				if(count _landClasses > 0) then {
+							
+					{
+						_parkingPositions = [_x, "parkingPositions"] call ALIVE_fnc_hashGet;
+						_countParkingPositions = count _parkingPositions;
+						
+						_parkingChance = 0.1 * _ambientVehicleAmount;
+						
+						if(_countParkingPositions > 50) then {
+							_parkingChance = 0.1 * _ambientVehicleAmount;
+						};
+						
+						if(_countParkingPositions > 40 && _countParkingPositions < 50) then {
+							_parkingChance = 0.2 * _ambientVehicleAmount;
+						};
+						
+						if(_countParkingPositions > 30 && _countParkingPositions < 40) then {
+							_parkingChance = 0.3 * _ambientVehicleAmount;
+						};
+						
+						if(_countParkingPositions > 20 && _countParkingPositions < 30) then {
+							_parkingChance = 0.4 * _ambientVehicleAmount;
+						};
+						
+						if(_countParkingPositions > 10 && _countParkingPositions < 20) then {
+							_parkingChance = 0.6 * _ambientVehicleAmount;
+						};
+						
+						if(_countParkingPositions > 0 && _countParkingPositions < 10) then {
+							_parkingChance = 0.7 * _ambientVehicleAmount;
+						};
+						
+						//[_x, "debug", true] call ALIVE_fnc_cluster;
+						{
+							_position = _x select 0;
+							_direction = _x select 1;
+							_vehicleClass = _landClasses call BIS_fnc_selectRandom;
+							if(random 1 < _parkingChance) then {
+								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+							};
+						} forEach _parkingPositions;				
+					} forEach _clusters;
+				};					
+			};
+			
+			
+			// Spawn the main force
+			
+			private ["_forceMax","_countArmored","_countMechanized","_countMotorized","_countInfantry",
+			"_countAir","_groups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
+			"_groupCount","_clusterCount"];			
+			
+			// Force Strength
+			_forceMax = 0;
+			switch(_size) do {
+				case "BN": {
+					// Battalion (300-1200)
+					_forceMax = 300 + random 900;
+				};
+				case "CY": {
+					// Company (90-250)
+					_forceMax = 90 + random 160;
+				};
+				case "PL": {
+					// Platoon (30-50)
+					_forceMax = 30 + random 20;					
+				};
+			};
+			
+			_countArmored = 0;
+			_countMechanized = 0;
+			_countMotorized = 0;
+			_countInfantry = 0;
+			_countAir = 0;
+			
+			// Force Composition			
+			switch(_type) do {
+				case "Armored": {					
+					_countArmored = floor((_forceMax / 20) * 0.5);
+					_countMechanized = floor((_forceMax / 12) * random(0.2));
+					_countMotorized = floor((_forceMax / 12) * random(0.2));
+					_countInfantry = floor((_forceMax / 10) * 0.5);
+					_countAir = floor((_forceMax / 30) * random(0.1));
+				};
+				case "Mechanized": {
+					_countMechanized = floor((_forceMax / 12) * 0.5);
+					_countArmored = floor((_forceMax / 20) * random(0.2));
+					_countMotorized = floor((_forceMax / 12) * random(0.2));
+					_countInfantry = floor((_forceMax / 10) * 0.5);
+					_countAir = floor((_forceMax / 30) * random(0.1));
+				};
+				case "Motorized": {
+					_countMotorized = floor((_forceMax / 12) * 0.5);
+					_countMechanized = floor((_forceMax / 12) * random(0.2));
+					_countArmored = floor((_forceMax / 20) * random(0.2));
+					_countInfantry = floor((_forceMax / 10) * 0.5);
+					_countAir = floor((_forceMax / 30) * random(0.1));
+				};
+				case "Infantry": {
+					_countInfantry = floor((_forceMax / 10) * 0.8);
+					_countMotorized = floor((_forceMax / 12) * random(0.2));
+					_countMechanized = floor((_forceMax / 12) * random(0.2));
+					_countArmored = floor((_forceMax / 20) * random(0.2));
+					_countAir = floor((_forceMax / 30) * random(0.1));
+				};
+				case "Air": {
+					_countAir = floor((_forceMax / 30) * 0.5);
+					_countInfantry = floor((_forceMax / 10) * 0.5);
+					_countMotorized = floor((_forceMax / 12) * random(0.2));
+					_countMechanized = floor((_forceMax / 12) * random(0.2));
+					_countArmored = floor((_forceMax / 20) * random(0.2));
+				};
+			};
+			
+			/*
+			["Count Armor: %1",_countArmored] call ALIVE_fnc_dump;
+			["Count Mech: %1",_countMechanized] call ALIVE_fnc_dump;
+			["Count Motor: %1",_countMotorized] call ALIVE_fnc_dump;
+			["Count Air: %1",_countAir] call ALIVE_fnc_dump;
+			["Count Infantry: %1",_countInfantry] call ALIVE_fnc_dump;
+			*/
+			
+			// Assign groups
+			_groups = [];
+			
+			for "_i" from 0 to _countArmored -1 do {
+				_group = ["Armored",_faction] call ALIVE_fnc_configGetRandomGroup;
+				if!(_group == "FALSE") then {
+					_groups set [count _groups, _group];
+				};
+			};
+			
+			for "_i" from 0 to _countMechanized -1 do {
+				_group = ["Mechanized",_faction] call ALIVE_fnc_configGetRandomGroup;
+				if!(_group == "FALSE") then {
+					_groups set [count _groups, _group];
+				}
+			};
+			
+			for "_i" from 0 to _countMotorized -1 do {
+				_group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
+				if!(_group == "FALSE") then {
+					_groups set [count _groups, _group];
+				};
+			};
+			
+			for "_i" from 0 to _countInfantry -1 do {
+				_group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
+				if!(_group == "FALSE") then {
+					_groups set [count _groups, _group];
+				}
+			};
+			
+			for "_i" from 0 to _countAir -1 do {
+				_group = ["Air",_faction] call ALIVE_fnc_configGetRandomGroup;
+				if!(_group == "FALSE") then {
+					_groups set [count _groups, _group];
+				};
+			};
+			
+			/*
+			["Groups: %1",_groups] call ALIVE_fnc_dump;			
+			["Group count: %1",count _groups] call ALIVE_fnc_dump;
+			["Cluster count: %1",count _clusters] call ALIVE_fnc_dump;
+			*/
+			
+			// Position and create groups
+			_groupCount = count _groups;
+			_clusterCount = count _clusters;
+			_groupPerCluster = floor(_groupCount / _clusterCount);		
+			_totalCount = 0;
+			
+			//["Groups / Cluster: %1",_groupPerCluster] call ALIVE_fnc_dump;
+			
+			{		
+				_center = [_x, "center"] call ALIVE_fnc_hashGet;
+				_size = [_x, "size"] call ALIVE_fnc_hashGet;
+				
+				if(_totalCount < _groupCount) then {
+				
+					if(_groupPerCluster > 0) then {
+					
+						for "_i" from 0 to _groupPerCluster -1 do {
+							_group = _groups select _totalCount;														
+							_position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;					
+							[_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;					
+							
+							_totalCount = _totalCount + 1;
+						};
+						
+					}else{
+						_group = _groups select _totalCount;														
+						_position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;					
+						[_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;					
+						
+						_totalCount = _totalCount + 1;
+					};
+				};					
+			} forEach _clusters;
+		
+			
+			//[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+		};
 	};
 };
 

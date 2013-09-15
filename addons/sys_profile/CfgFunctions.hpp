@@ -80,7 +80,17 @@ class cfgFunctions {
 				description = "createProfilesFromGroupConfig";
 				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromGroupConfig.sqf";
 				recompile = 1;
-			};	
+			};
+			class createProfilesCrewedVehicle {
+				description = "createProfilesCrewedVehicle";
+				file = "\x\alive\addons\sys_profile\fnc_createProfilesCrewedVehicle.sqf";
+				recompile = 1;
+			};
+			class createProfileVehicle {
+				description = "createProfileVehicle";
+				file = "\x\alive\addons\sys_profile\fnc_createProfileVehicle.sqf";
+				recompile = 1;
+			};
 			class createProfilesFromUnits {
 				description = "createProfilesFromUnits";
 				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromUnits.sqf";

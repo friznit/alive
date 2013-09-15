@@ -108,6 +108,8 @@ switch(_operation) do {
 						[_logic,"profilesActive",[]] call ALIVE_fnc_hashSet;
 						[_logic,"profilesInActive",[]] call ALIVE_fnc_hashSet;
 						[_logic,"profilePositions",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+						[_logic,"profileEntityCount",0] call ALIVE_fnc_hashSet;
+						[_logic,"profileVehicleCount",0] call ALIVE_fnc_hashSet;
 
 
 						_profilesBySide = [] call ALIVE_fnc_hashCreate;
@@ -629,6 +631,18 @@ switch(_operation) do {
 					// return the sides vehicle type
 					_result = [[[_profilesCatagorised, _side] call ALIVE_fnc_hashGet, "vehicleType"] call ALIVE_fnc_hashGet, _vehicleType] call ALIVE_fnc_hashGet;
 				};
+		};
+		case "getNextInsertEntityID": {
+			_entityCount = [_logic, "profileEntityCount"] call ALIVE_fnc_hashGet;
+			_result = format["entity_%1",_entityCount];
+			_entityCount = _entityCount + 1;
+			[_logic, "profileEntityCount", _entityCount] call ALIVE_fnc_hashSet;
+		};
+		case "getNextInsertVehicleID": {
+			_entityCount = [_logic, "profileVehicleCount"] call ALIVE_fnc_hashGet;
+			_result = format["entity_%1",_entityCount];
+			_entityCount = _entityCount + 1;
+			[_logic, "profileVehicleCount", _entityCount] call ALIVE_fnc_hashSet;
 		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;

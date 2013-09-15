@@ -178,20 +178,27 @@ switch(_operation) do {
         if (isServer) then {
 		
 			//waituntil {sleep 1; ["MO WAITING"] call ALIVE_fnc_dump; time > 0};
-		
-			[true] call ALIVE_fnc_timer;
-		
+				
 			private ["_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
 								
-			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {				
+			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
+				["LOADING MO DATA"] call ALIVE_fnc_dump;
+				[true] call ALIVE_fnc_timer;
+				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedMilClusters = true;
+				
+				[] call ALIVE_fnc_timer;
+				["MO DATA LOADED"] call ALIVE_fnc_dump;
 			};
 			
 			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedMilClusters")};
+			
+			["PARSING MO DATA"] call ALIVE_fnc_dump;
+			[true] call ALIVE_fnc_timer;
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MO;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MO;
@@ -266,6 +273,7 @@ switch(_operation) do {
 			[_logic, "objectivesVehicle", _vehicleClusters] call MAINCLASS;
 			
 			
+			["MO DATA PARSED"] call ALIVE_fnc_dump;
 			[] call ALIVE_fnc_timer;
 			
         };
@@ -361,8 +369,7 @@ switch(_operation) do {
 			"MO - Searching airfield locations" call ALiVE_fnc_logger;
 			_types = [
 				"tenthangar",
-				"mil_hangar",
-				"radar"
+				"mil_hangar"				
 			];
 			_clusters_mil_air = [_logic, _types] call ALIVE_fnc_findTargets;
 			_clusters_mil_air = [_clusters_mil_air, "MIL", 20, "ColorOrange"] call ALIVE_fnc_setTargets;
@@ -371,9 +378,7 @@ switch(_operation) do {
 			_types = [
 				"ss_hangar",
 				"hangar_2",
-				"hangar",
-				"airport_tower",
-				"airport",
+				"hangar",				
 				"runway_beton",
 				"runway_end",
 				"runway_main",
@@ -428,7 +433,7 @@ switch(_operation) do {
 			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 			
 			
-	
+			
 			// Find sheds
 			// ------------------------------------------------------------------
 			private ["_clusters_vehicle"];
@@ -457,6 +462,9 @@ switch(_operation) do {
 			
 			// Military targets
 			_types = [
+				"airport_tower",
+				"airport",
+				"radar",
 				"bunker",
 				"cargo_house_v",
 				"cargo_patrol_",
@@ -484,6 +492,22 @@ switch(_operation) do {
 			"MO - Consolidating Clusters" call ALiVE_fnc_logger;
 			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 			"MO - Locations Completed" call ALiVE_fnc_logger;
+			
+			
+			// Generate parking positions
+			// ------------------------------------------------------------------
+			"MO - Generating Parking Positions" call ALiVE_fnc_logger;
+			[true] call ALIVE_fnc_timer;
+			_types = [
+				"airport",
+				"bunker",
+				"cargo_house_v",
+				"cargo_patrol_",
+				"research"
+			];
+			[_clusters,_types] call ALIVE_fnc_generateParkingPositions;
+			[] call ALIVE_fnc_timer;
+			
 			
 			// switch on debug for all clusters
 			{

@@ -43,4 +43,6 @@ for "_i" from 0 to count _groupData -1 do {
 	_config = _config select (_groupData select _i);
 };
 
+//["CFG: %1",_config] call ALIVE_fnc_dump;
+
 _config

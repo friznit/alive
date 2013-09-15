@@ -33,18 +33,29 @@ _type = if(count _this > 0) then {_this select 0} else {"Infantry"};
 _faction = if(count _this > 1) then {_this select 1} else {"OPF_F"};
 _side = if(count _this > 2) then {_this select 2} else {"EAST"};
 
-if!(_faction == "OPF_F") then {
-	_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
-	_factionSide = getNumber(_factionConfig >> "side");
-	_side = _factionSide call ALIVE_fnc_sideNumberToText;
+_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
+
+//["Faction: %1",_factionConfig] call ALIVE_fnc_dump;
+
+_factionSide = getNumber(_factionConfig >> "side");
+_side = _factionSide call ALIVE_fnc_sideNumberToText;
+
+//["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
+
+if(_faction == "BLU_G_F") then {
+	_faction = "Guerilla";
 };
 
-if(_side == "GUER") then {
-	_side = "INDEP";
+if(_faction == "IND_F") then {
+	_side = "Indep";
 };
+
+//["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
 
 _typeConfig = (configFile >> "CfgGroups" >> _side >> _faction >> _type);
 _groups = [];
+
+//["Config: %1",_typeConfig] call ALIVE_fnc_dump;
 
 for "_i" from 0 to count _typeConfig -1 do {
 	_class = _typeConfig select _i;
