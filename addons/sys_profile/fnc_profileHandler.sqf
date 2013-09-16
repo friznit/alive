@@ -639,10 +639,10 @@ switch(_operation) do {
 			[_logic, "profileEntityCount", _entityCount] call ALIVE_fnc_hashSet;
 		};
 		case "getNextInsertVehicleID": {
-			_entityCount = [_logic, "profileVehicleCount"] call ALIVE_fnc_hashGet;
-			_result = format["entity_%1",_entityCount];
-			_entityCount = _entityCount + 1;
-			[_logic, "profileVehicleCount", _entityCount] call ALIVE_fnc_hashSet;
+			_vehicleCount = [_logic, "profileVehicleCount"] call ALIVE_fnc_hashGet;
+			_result = format["vehicle_%1",_vehicleCount];
+			_vehicleCount = _vehicleCount + 1;
+			[_logic, "profileVehicleCount", _vehicleCount] call ALIVE_fnc_hashSet;
 		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;

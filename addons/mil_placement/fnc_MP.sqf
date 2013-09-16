@@ -621,6 +621,8 @@ switch(_operation) do {
 				};				
 			}forEach _profilesBySide;
 			*/
+			
+			//[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
 		};
 	};
 };
