@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1485.145996,-294.661407,7.361633,-969.634949,1132,929,1};
-window[] = {2,-1,-1,-1,-1,971,22,1755,22,3,1149};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1473.300781,-306.506836,-259.763641,-1201.952637,1013,818,1};
+window[] = {0,-1,-1,-32000,-32000,1041,2018,3751,92,1,1030};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -99,7 +99,8 @@ class FSM
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
-       "_sideEnemy = [_OPCOM_HANDLER,""sideenemy"",""EAST""] call ALiVE_fnc_HashGet;" \n
+       "_sidesEnemy = [_OPCOM_HANDLER,""sidesenemy"",[""EAST""]] call ALiVE_fnc_HashGet;" \n
+       "_sidesFriendly = [_OPCOM_HANDLER,""sidesenemy"",[""WEST""]] call ALiVE_fnc_HashGet;" \n
        "_controltype = [_OPCOM_HANDLER, ""controltype"",""invasion""] call ALiVE_fnc_HashGet;" \n
        "_simultanObjectives = [_OPCOM_HANDLER, ""simultanobjectives"",10] call ALiVE_fnc_HashGet;" \n
        "" \n
@@ -341,32 +342,34 @@ class FSM
        "						} foreach _priorities;" \n
        "" \n
        "			//Select orders and execute" \n
-       "				if !(isnil ""_targetsWithState"") then {_orders = [_OPCOM_HANDLER,""selectordersbystate"",_targetsWithState] call ALiVE_fnc_OPCOM};" \n
-       "				if !(isnil ""_orders"") then {_OPCOM_DATA = _orders};" \n
+       "				if !(isnil ""_targetsWithState"") then {" \n
+       "					_orders = [_OPCOM_HANDLER,""selectordersbystate"",_targetsWithState] call ALiVE_fnc_OPCOM;" \n
+       "					" \n
+       "					if !(isnil ""_orders"") then {" \n
+       "						private [""_o""];" \n
        "" \n
-       "				_busy = false;" \n
-       "		};" \n
+       "						_o = _orders select 1;" \n
+       "						_operation = [_o,""opcom_orders""] call AliVE_fnc_HashGet;" \n
        "" \n
-       "		//Execute analyzed orders" \n
-       "		case (""execute"") : {" \n
-       "			_operation = [_DATA_VALUE,""opcom_orders""] call AliVE_fnc_HashGet;" \n
-       "" \n
-       "			switch (_operation) do {" \n
-       "				case (""attack"") : {" \n
-       "					_attack = _DATA_VALUE;" \n
+       "						switch (_operation) do {" \n
+       "							case (""attack"") : {" \n
+       "								_attack = _o;" \n
+       "							};" \n
+       "							case (""defend"") : {" \n
+       "								_defend = _o;" \n
+       "							};" \n
+       "							case (""reserve"") : {" \n
+       "								_reserve = _o;" \n
+       "							};" \n
+       "							//Custom" \n
+       "						};" \n
+       "					// debug ---------------------------------------" \n
+       "						if(_debug) then { [""OPCOM orders TACOM to %1 target %2"",([_o,""opcom_orders""] call AliVE_fnc_HashGet),([_o,""objectiveID""] call AliVE_fnc_HashGet)] call ALIVE_fnc_dumpR; };" \n
+       "					// debug ---------------------------------------" \n
+       "					};" \n
+       "				} else {" \n
+       "					_busy = false;" \n
        "				};" \n
-       "				case (""defend"") : {" \n
-       "					_defend = _DATA_VALUE;" \n
-       "				};" \n
-       "				case (""reserve"") : {" \n
-       "					_reserve = _DATA_VALUE;" \n
-       "				};" \n
-       "				//Custom" \n
-       "			};" \n
-       "" \n
-       "			// debug ---------------------------------------" \n
-       "			if(_debug) then { [""OPCOM orders TACOM to %1 target %2"",([_DATA_VALUE,""opcom_orders""] call AliVE_fnc_HashGet),([_DATA_VALUE,""objectiveID""] call AliVE_fnc_HashGet)] call ALIVE_fnc_dumpR; };" \n
-       "			// debug ---------------------------------------" \n
        "		};" \n
        "" \n
        "		//Handle TACOM confirmation by state" \n
@@ -654,7 +657,7 @@ class FSM
        "" \n
        "switch (_analyze) do {" \n
        "	case (""analysis"") : {" \n
-       "		_clusterOccupationAnalysis = [_OPCOM_HANDLER,_side,_sideEnemy] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 1,_this select 2]] call ALiVE_fnc_OPCOM};" \n
+       "		_clusterOccupationAnalysis = [_OPCOM_HANDLER,_side,_sidesEnemy,_sidesFriendly] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 3,_this select 2]] call ALiVE_fnc_OPCOM};" \n
        "		_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
        "		" \n
        "		_enemyScan = [_OPCOM_HANDLER,_side] spawn {" \n
