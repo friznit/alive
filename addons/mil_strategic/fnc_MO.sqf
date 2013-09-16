@@ -183,22 +183,22 @@ switch(_operation) do {
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
 								
 			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
-				["LOADING MO DATA"] call ALIVE_fnc_dump;
-				[true] call ALIVE_fnc_timer;
+				//["LOADING MO DATA"] call ALIVE_fnc_dump;
+				//[true] call ALIVE_fnc_timer;
 				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedMilClusters = true;
 				
-				[] call ALIVE_fnc_timer;
-				["MO DATA LOADED"] call ALIVE_fnc_dump;
+				//[] call ALIVE_fnc_timer;
+				//["MO DATA LOADED"] call ALIVE_fnc_dump;
 			};
 			
 			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedMilClusters")};
 			
-			["PARSING MO DATA"] call ALIVE_fnc_dump;
-			[true] call ALIVE_fnc_timer;
+			//["PARSING MO DATA"] call ALIVE_fnc_dump;
+			//[true] call ALIVE_fnc_timer;
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MO;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MO;
@@ -273,8 +273,8 @@ switch(_operation) do {
 			[_logic, "objectivesVehicle", _vehicleClusters] call MAINCLASS;
 			
 			
-			["MO DATA PARSED"] call ALIVE_fnc_dump;
-			[] call ALIVE_fnc_timer;
+			//["MO DATA PARSED"] call ALIVE_fnc_dump;
+			//[] call ALIVE_fnc_timer;
 			
         };
 	};

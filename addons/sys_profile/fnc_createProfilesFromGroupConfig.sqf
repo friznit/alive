@@ -37,17 +37,20 @@ _prefix = if(count _this > 4) then {_this select 4} else {""};
 
 _groupProfiles = [];
 
-//["GC: %1",_groupClass] call ALIVE_fnc_dump;
-_groupBlacklist = ["BUS_TankPlatoon_AA","BUS_MechInf_AA"]; // these have broken vehicle names 
+//["Group Class: %1",_groupClass] call ALIVE_fnc_dump;
 
-if!(_groupClass in _groupBlacklist) then {
-	_config = _groupClass call ALIVE_fnc_configGetGroup;
+_config = _groupClass call ALIVE_fnc_configGetGroup;
+
+//["Group Config: %1 %2",_config,_groupClass] call ALIVE_fnc_dump;
+
+if(count _config > 0) then {
+
+	//["CFG: %1",_config] call ALIVE_fnc_dump;
+
 	_groupName = getText(_config >> "name");
 	_groupSide = getNumber(_config >> "side");
 	_groupUnits = [];
 	_groupVehicles = [];
-
-	//["CGROUP Name: %1",_groupClass] call ALIVE_fnc_dump;
 
 	// loop through the config for the group
 	for "_i" from 0 to count _config -1 do {
@@ -88,7 +91,7 @@ if!(_groupClass in _groupBlacklist) then {
 	[_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "objectType", _groupClass] call ALIVE_fnc_profileEntity;
-	
+
 	if!(_spawnGoodPosition) then {
 		[_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
 	};
@@ -163,7 +166,7 @@ if!(_groupClass in _groupBlacklist) then {
 		_rank = _unit select 1;
 		[_profileEntity, "addUnit", [_class,_position,0,_rank]] call ALIVE_fnc_profileEntity;
 	} forEach _groupUnits;
-
+	
 };
 
 _groupProfiles

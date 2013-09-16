@@ -177,14 +177,19 @@ switch(_operation) do {
 								
 			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
 				//["LOADING MP DATA"] call ALIVE_fnc_dump;
-				[true] call ALIVE_fnc_timer;
+				//[true] call ALIVE_fnc_timer;
 				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedMilClusters = true;
 				
-				[] call ALIVE_fnc_timer;
+				// instantiate static vehicle position data
+				if(isNil "ALIVE_groupConfig") then {
+					[] call ALIVE_fnc_groupGenerateConfigData;
+				};
+								
+				//[] call ALIVE_fnc_timer;
 				//["MP DATA LOADED"] call ALIVE_fnc_dump;
 			};
 			
@@ -281,8 +286,8 @@ switch(_operation) do {
 		
 			private ["_clusters","_cluster","_HQClusters","_airClusters","_heliClusters","_vehicleClusters",
 			"_countHQClusters","_countAirClusters","_countHeliClusters","_size","_type","_faction","_ambientVehicleAmount",
-			"_factionConfig","_factionSideNumber","_side","_vehicleClass","_position","_direction","_unitBlackist",
-			"_vehicleBlacklist","_heliClasses","_nodes","_airClasses","_node","_forceMax"];
+			"_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass","_position","_direction","_unitBlackist",
+			"_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node","_forceMax"];
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
 			_HQClusters = [_logic, "objectivesHQ"] call MAINCLASS;
@@ -303,12 +308,17 @@ switch(_operation) do {
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
 			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
+			_countProfiles = 0;
 			
 			//["Size: %1 Type: %2 SideNum: %3 Side: %4 Faction: %5",_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;			
 			//["Clusters hq:%1 a:%2 h:%3 v:%4", count _HQClusters, count _airClusters, count _heliClusters, count _vehicleClusters] call ALIVE_fnc_dump;
 			
 			_unitBlackist = ["O_UAV_AI","B_UAV_AI"];
 			_vehicleBlacklist = ["O_UAV_02_F","O_UAV_02_CAS_F","O_UAV_01_F","O_UGV_01_F","O_UGV_01_rcws_F","B_UAV_01_F","B_UAV_02_F","B_UAV_02_CAS_F","B_UGV_01_F","B_UGV_01_rcws_F"];
+			_groupBlacklist = ["HAF_AttackTeam_UAV","HAF_ReconTeam_UAV","HAF_AttackTeam_UGV","HAF_ReconTeam_UGV","HAF_SmallTeam_UAV",
+			"BUS_AttackTeam_UAV","BUS_ReconTeam_UAV","BUS_AttackTeam_UGV","BUS_ReconTeam_UGV","BUS_SmallTeam_UAV",
+			"OI_AttackTeam_UAV","OI_ReconTeam_UAV","OI_AttackTeam_UGV","OI_ReconTeam_UGV","OI_SmallTeam_UAV",
+			"BUS_TankPlatoon_AA","BUS_MechInf_AA"];
 			
 			
 			// Spawn helicopters on pads
@@ -328,14 +338,18 @@ switch(_operation) do {
 							_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
 							if(random 1 > 0.6) then {
 								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+								_countProfiles = _countProfiles + 1;
 							}else{
 								[_vehicleClass,_side,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
+								_countProfiles = _countProfiles + 2;
 							};
 							
 						} forEach _nodes;				
 					} forEach _heliClusters;
 				};
 			};
+			
+			//["MP[%1] Heli: %2",_faction,_countProfiles] call ALIVE_fnc_dump;
 			
 			
 			// Spawn air units in hangars
@@ -357,11 +371,14 @@ switch(_operation) do {
 							_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
 							if(random 1 > 0.6) then {
 								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+								_countProfiles = _countProfiles + 1;
 							};
 						} forEach _nodes;				
 					} forEach _airClusters;
 				};
 			};
+			
+			//["MP[%1] Air: %2",_faction,_countProfiles] call ALIVE_fnc_dump;
 					
 			
 			// Spawn land units				
@@ -412,11 +429,14 @@ switch(_operation) do {
 							_vehicleClass = _landClasses call BIS_fnc_selectRandom;
 							if(random 1 < _parkingChance) then {
 								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+								_countProfiles = _countProfiles + 1;
 							};
 						} forEach _parkingPositions;				
 					} forEach _clusters;
 				};					
 			};
+			
+			//["MP[%1] Land: %2",_faction,_countProfiles] call ALIVE_fnc_dump;
 			
 			
 			// Spawn the main force
@@ -533,17 +553,24 @@ switch(_operation) do {
 				};
 			};
 			
-			/*
-			["Groups: %1",_groups] call ALIVE_fnc_dump;			
-			["Group count: %1",count _groups] call ALIVE_fnc_dump;
-			["Cluster count: %1",count _clusters] call ALIVE_fnc_dump;
-			*/
+			//["Count Groups: %1",count _groups] call ALIVE_fnc_dump;	
+			
+			_groups = _groups - _groupBlacklist;
+			
+			//["Count Groups Post Blacklist: %1",count _groups] call ALIVE_fnc_dump;	
+			
+			///*
+			//["Groups: %1",_groups] call ALIVE_fnc_dump;			
+			//["Group count: %1",count _groups] call ALIVE_fnc_dump;
+			//["Cluster count: %1",count _clusters] call ALIVE_fnc_dump;
+			//*/
 			
 			// Position and create groups
 			_groupCount = count _groups;
 			_clusterCount = count _clusters;
 			_groupPerCluster = floor(_groupCount / _clusterCount);		
 			_totalCount = 0;
+
 			
 			//["Groups / Cluster: %1",_groupPerCluster] call ALIVE_fnc_dump;
 			
@@ -558,23 +585,42 @@ switch(_operation) do {
 						for "_i" from 0 to _groupPerCluster -1 do {
 							_group = _groups select _totalCount;														
 							_position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;					
-							[_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;					
+							_profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 							
+							_countProfiles = _countProfiles + count _profiles;
 							_totalCount = _totalCount + 1;
 						};
 						
 					}else{
 						_group = _groups select _totalCount;														
 						_position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;					
-						[_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;					
-						
+						_profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+						_countProfiles = _countProfiles + count _profiles;						
 						_totalCount = _totalCount + 1;
 					};
 				};					
 			} forEach _clusters;
 		
+			/*
+			["MP[%1] Force: %2",_faction,_countProfiles] call ALIVE_fnc_dump;			
+			_profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGet;
+			_profilesBySide = [_profilesBySide, _side] call ALIVE_fnc_hashGet;
+			["MP[%1] Side profiles: %2",_faction,count _profilesBySide] call ALIVE_fnc_dump;
 			
-			//[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+			{
+				_profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+				_type = [_profile, "type"] call ALIVE_fnc_hashGet; 
+				switch(_type)do{
+					case "entity":{
+						[_profile, "debug", true] call ALIVE_fnc_profileEntity;
+					};
+					case "vehicle":{
+						[_profile, "debug", true] call ALIVE_fnc_profileVehicle;
+					};
+				};				
+			}forEach _profilesBySide;
+			*/
 		};
 	};
 };

@@ -213,7 +213,7 @@ _createMarkers = {
 				_m setMarkerAlpha _debugAlpha;
 				
 				_label = [_profileID, "_"] call CBA_fnc_split;
-                _m setMarkerText format["e%1",_label select 1];
+                _m setMarkerText format["e%1",_label select ((count _label) - 1)];
 
 				_markers set [count _markers, _m];
 				

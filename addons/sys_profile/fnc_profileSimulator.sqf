@@ -89,7 +89,7 @@ _createMarker = {
 		_m setMarkerColor _debugColor;
 		
 		_label = [_profileID, "_"] call CBA_fnc_split;
-		_m setMarkerText format["%1",_label select 1];
+		_m setMarkerText format["%1",_label select ((count _label) - 1)];
 
 		[_markers,_profileID,_m] call ALIVE_fnc_hashSet;
 	};
