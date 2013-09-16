@@ -32,8 +32,6 @@ _hash = _this select 0;
 _key = _this select 1;
 _value = _this select 2;
 
-if (isnil "_hash" || {isnil "_key"}) exitwith {nil};
-
 private ["_index", "_isDefault"];
 
 if (isNil "BIS_fnc_areEqual") then { LOG( "WARNING: BIS_fnc_areEqual is Nil") };
