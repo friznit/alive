@@ -88,13 +88,19 @@ switch(_operation) do {
                     _side = _logic getvariable ["side","EAST"];
                     _position = getposATL _logic;
                     
+                    //Thank you, BIS...
+                    if (_side == "GUER") then {_side = "RESISTANCE"};
+                    
                     _sides = ["EAST","WEST","RESISTANCE"];
                     _sidesEnemy = []; {if (((call compile _side) getfriend (call compile _x)) < 0.6) then {_sidesEnemy set [count _sidesEnemy,_x]}} foreach (_sides - [_side]);
                     _sidesFriendly = (_sides - _sidesEnemy);
                     
+                    //Thank you again, BIS...
+                    if (_side == "RESISTANCE") then {_side = "GUER"};
                     {if (_x == "RESISTANCE") then {_sidesEnemy set [_foreachIndex,"GUER"]}} foreach _sidesEnemy;
                     {if (_x == "RESISTANCE") then {_sidesFriendly set [_foreachIndex,"GUER"]}} foreach _sidesFriendly;
 
+					//Finally
 					[_handler, "side",_side] call ALiVE_fnc_HashSet;
                     [_handler, "sidesenemy",_sidesEnemy] call ALiVE_fnc_HashSet;
                     [_handler, "sidesfriendly",_sidesFriendly] call ALiVE_fnc_HashSet;
@@ -450,10 +456,10 @@ switch(_operation) do {
         case "analyzeclusteroccupation": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
-                private ["_pos","_item","_type","_priorities","_side","_sides","_id","_entArr","_ent","_sectors","_entities","_state","_controltype"];
+                private ["_pos","_item","_type","_prios","_side","_sides","_id","_entArr","_ent","_sectors","_entities","_state","_controltype"];
 
 				_sides = _args;
-                _sideF = _sides select 0;
+                _sidesF = _sides select 0;
                 _sidesE = _sides select 1;
                 _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
                 _controltype = [_logic, "controltype","invasion"] call ALiVE_fnc_HashGet;
@@ -461,8 +467,8 @@ switch(_operation) do {
 				//_distance = _args select 1;
                 _result_tmp = [];
                 for "_i" from 0 to ((count _sides)-1) do {
+                    _sideX = _sides select _i;
                     _nearForces = [];
-                    _side = _sides select _i;
                     
                     {
   		                for "_z" from 0 to ((count _objectives)-1) do {
@@ -483,16 +489,17 @@ switch(_operation) do {
 				            {
 				                if (typeName (_x select 2 select 4) == "STRING") then {
 				                	_entities set [count _entities,_x select 2 select 4];
+                                    
+                                    //player sidechat format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
+	                       			//diag_log format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
 				            	};
 	                            sleep 0.03;
 				            } foreach _profiles;
 	                        
-	                        //player sidechat format["Entities: %1, count total %2",_entities,count _entities];
-	                        //diag_log format["Entities: %1, count total %2",_entities,count _entities];
-		                    
+	                    
 		                    if (count _entities > 0) then {_nearForces set [count _nearForces,[_id,_entities]]};
 	                    };
-                    } foreach _side;
+                    } foreach _sideX;
                     
                     _result_tmp set [count _result_tmp,_nearForces];
                 };
@@ -554,10 +561,10 @@ switch(_operation) do {
 				_targetsAttacked = _result select 1;
 				_targetsTakenEnemy = _result select 2;
 				_targetsAttackedEnemy = _result select 3;
-        
+                
                 switch (_controltype) do {
 					case ("invasion") : {
-						_priorities = [
+						_prios = [
 							[_targetsTaken,"reserve"],
 							[_targetsTakenEnemy,"attack"],
 							[_targetsAttackedEnemy,"defend"]
@@ -565,7 +572,7 @@ switch(_operation) do {
                     };
                     
                     case ("occupation") : {
-						_priorities = [
+						_prios = [
 							[_targetsTaken,"reserve"],
 							[_targetsTakenEnemy,"attack"],
 							[_targetsAttackedEnemy,"defend"]
@@ -575,9 +582,10 @@ switch(_operation) do {
                 
 				{
 					[_logic,"setstatebyclusteroccupation",[(_x select 0),(_x select 1)]] call ALiVE_fnc_OPCOM;
-				} foreach _priorities;
+				} foreach _prios;
                 
-                //diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,_sideF,_sideE];
+                //diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken, _targetsAttackedEnemy, _targetsTakenEnemy, _targetsAttackedEnemy,_sidesF,_sidesE];
+                //player sidechat format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken, _targetsAttackedEnemy, _targetsTakenEnemy, _targetsAttackedEnemy,_sidesF,_sidesE];
 		};
 
         case "entitiesnearsector": {
@@ -780,21 +788,27 @@ switch(_operation) do {
         case "attackentity": {
             ASSERT_TRUE(typeName _args == "ARRAY",str _args);
             
-            private ["_target","_size","_type","_knownE","_attackedE","_pos","_profiles","_profileIDs","_profile","_section","_profileID","_i","_waypoints"];
+            private ["_target","_sides","_size","_type","_proIDs","_knownE","_attackedE","_pos","_profiles","_profileIDs","_profile","_section","_profileID","_i","_waypoints"];
             
             _target = _args select 0;
             _size = _args select 1;
             _type = _args select 2;
             
             _side = [_logic,"side"] call ALiVE_fnc_Hashget;
+            _sides = [_logic,"sidesenemy",["EAST"]] call ALiVE_fnc_HashGet;
             _knownE = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
             _attackedE = [_logic,"attackedentities",[]] call ALiVE_fnc_HashGet;
-            _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"sideenemy",[]] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
             _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler; 
-            
-            _section = [];
+           
+           	_section = [];
+            _profileIDs = [];
             
             if (isnil "_profile") exitwith {_result = _section};
+            
+           {
+                _proIDs = [ALIVE_profileHandler, "getProfilesBySide",_x] call ALIVE_fnc_profileHandler;
+                _profileIDs = _profileIDs + _proIDs;
+            } foreach _sides;
             
             _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
 
