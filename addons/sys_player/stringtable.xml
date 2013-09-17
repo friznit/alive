@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_player">
+	<English>Player Persistence</English>
+	<German>Player Persistence</German>
+	<Italian>Player Persistence</Italian>
+</Key>
+<Key ID="STR_ALIVE_player_COMMENT">
+	<English>Player Persistence Module</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWRESET">
+	<English>Allow Player Reset:</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWRESET_ENABLE">
+	<English>Enable Player Reset</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWRESET_DISABLE">
+	<English>Disable Player Reset</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWRESET_COMMENT">
+	<English>Allow players to reset themselves to their last saved position</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWRESET_ACTION">
+	<English>Reset to Last Saved Position</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWMANUALSAVE">
+	<English>Allow Manual Save:</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWMANUALSAVE_ENABLE">
+	<English>Enable Player Manual Save</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWMANUALSAVE_DISABLE">
+	<English>Disable Player Manual Save</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWMANUALSAVE_COMMENT">
+	<English>Allow players to manually save their current state</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWMANUALSAVE_ACTION">
+	<English>Save Player Data</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWDIFFCLASS">
+	<English>Allow different class rejoin:</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWDIFFCLASS_ENABLE">
+	<English>Enable Different Class Rejoin</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWDIFFCLASS_DISABLE">
+	<English>Disable Different Class Rejoin</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWDIFFCLASS_COMMENT">
+	<English>Allow players to rejoin the mission as a different class</English>
+</Key>
+<Key ID="STR_ALIVE_player_STORETODB">
+	<English>Save to Database:</English>
+</Key>
+<Key ID="STR_ALIVE_player_STORETODB_ENABLE">
+	<English>Enable external database</English>
+</Key>
+<Key ID="STR_ALIVE_player_STORETODB_DISABLE">
+	<English>Disable external database</English>
+</Key>
+<Key ID="STR_ALIVE_player_STORETODB_COMMENT">
+	<English>Enable/disable saving player data</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVELOADOUT">
+	<English>Store Loadout:</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVELOADOUT_COMMENT">
+	<English>Enable/disable saving player load-out data</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVEHEALTH">
+	<English>Store Health:</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVEHEALTH_COMMENT">
+	<English>Enable/disable saving player health data</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVEPOSITION">
+	<English>Store Position:</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVEPOSITION_COMMENT">
+	<English>Enable/disable saving player position data</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVESCORES">
+	<English>Store Scores:</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVESCORES_COMMENT">
+	<English>Enable/disable saving player score for the current mission</English>
+</Key>
+<Key ID="STR_ALIVE_player_AUTOSAVETIME">
+	<English>Auto Save Interval:</English>
+</Key>
+<Key ID="STR_ALIVE_player_AUTOSAVETIME_SET">
+	<English>Set Auto Save Interval</English>
+</Key>
+<Key ID="STR_ALIVE_player_AUTOSAVETIME_COMMENT">
+	<English>Set the interval between auto saves of player data (in seconds) to external database. This may impact server performance. 0 means save only at mission exit or player disconnection.</English>
+</Key>
+<Key ID="STR_ALIVE_player_KEY">
+	<English>Unique Mission ID:</English>
+</Key>
+<Key ID="STR_ALIVE_player_KEY_COMMENT">
+	<English>You must set a unique mission ID that is specific to your server and mission. IP addresses may change, server names may change, so try to avoid relying on these. Mission names are often used by other groups or within the same group.</English>
+</Key>
+<Key ID="STR_ALIVE_player_ERROR1">
+	<English>Only one Player Persistence module can be used</English>
+</Key>
+</Container></Package></Project>
