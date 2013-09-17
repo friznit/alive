@@ -222,7 +222,8 @@ switch(_operation) do {
 			
 			private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
 			
-			
+			waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")} && {!(isnil "ALIVE_clustersMilVehicle")}};
+            
 			_HQClusters = ALIVE_clustersMilHQ;
 			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
