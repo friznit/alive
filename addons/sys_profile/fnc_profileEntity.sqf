@@ -340,6 +340,11 @@ switch(_operation) do {
 				private ["_profileID"];
 				
 				if(typeName _args == "ARRAY") then {
+						
+						if(count _args == 2) then  {
+							_args set [count _args, 0];
+						};
+				
 						[_logic,"position",_args] call ALIVE_fnc_hashSet;
 						
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
