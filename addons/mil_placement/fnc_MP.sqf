@@ -38,8 +38,8 @@ Wolffy
 #define DEFAULT_SIZE QUOTE(CY)
 #define DEFAULT_TYPE QUOTE(RANDOM)
 #define DEFAULT_FACTION QUOTE(OPF_F)
-#define DEFAULT_TAOR QUOTE("""")
-#define DEFAULT_BLACKLIST QUOTE("""")
+#define DEFAULT_TAOR []
+#define DEFAULT_BLACKLIST []
 #define DEFAULT_OBJECTIVES []
 #define DEFAULT_OBJECTIVES_HQ []
 #define DEFAULT_OBJECTIVES_AIR []
@@ -130,11 +130,39 @@ switch(_operation) do {
 	};
 	// Return TAOR marker
 	case "taor": {
-		_result = [_logic,_operation,_args,DEFAULT_TAOR] call ALIVE_fnc_OOsimpleOperation;
+		if(typeName _args == "STRING") then {			
+			_args = [_args, ","] call CBA_fnc_split;			
+			if(count _args > 0) then {
+				_logic setVariable [_operation, _args];
+			};
+		};
+		if(typeName _args == "ARRAY") then {		
+			_logic setVariable [_operation, _args];
+		};
+		_result = _logic getVariable [_operation, DEFAULT_TAOR];
+		/*
+		if(_result == "") then {
+			_result = [];
+		};
+		*/
 	};
 	// Return the Blacklist marker
 	case "blacklist": {
-		_result = [_logic,_operation,_args,DEFAULT_BLACKLIST] call ALIVE_fnc_OOsimpleOperation;
+		if(typeName _args == "STRING") then {			
+			_args = [_args, ","] call CBA_fnc_split;			
+			if(count _args > 0) then {
+				_logic setVariable [_operation, _args];
+			};
+		};
+		if(typeName _args == "ARRAY") then {		
+			_logic setVariable [_operation, _args];
+		};
+		_result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
+		/*
+		if(_result == "") then {
+			_result = [];
+		};
+		*/
 	};
 	// Return the Size filter
 	case "sizeFilter": {
@@ -197,6 +225,9 @@ switch(_operation) do {
 			
 			//["PARSING MP DATA"] call ALIVE_fnc_dump;
 			//[true] call ALIVE_fnc_timer;
+			
+			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
+			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MP;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MP;

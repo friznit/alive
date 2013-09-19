@@ -39,8 +39,8 @@ Wolffy
 #define DEFAULT_OBJECTIVES_AIR []
 #define DEFAULT_OBJECTIVES_HELI []
 #define DEFAULT_OBJECTIVES_VEHICLE []
-#define DEFAULT_TAOR QUOTE("""")
-#define DEFAULT_BLACKLIST QUOTE("""")
+#define DEFAULT_TAOR []
+#define DEFAULT_BLACKLIST []
 #define DEFAULT_INIT_TYPE QUOTE(STATIC)
 #define DEFAULT_SIZE_FILTER "0"
 #define DEFAULT_PRIORITY_FILTER "0"
@@ -109,11 +109,39 @@ switch(_operation) do {
 	};        
 	// Return TAOR marker
 	case "taor": {
-		_result = [_logic,_operation,_args,DEFAULT_TAOR] call ALIVE_fnc_OOsimpleOperation;
+		if(typeName _args == "STRING") then {	
+			_args = [_args, ","] call CBA_fnc_split;
+			if(count _args > 0) then {
+				_logic setVariable [_operation, _args];
+			};
+		};
+		if(typeName _args == "ARRAY") then {		
+			_logic setVariable [_operation, _args];
+		};
+		_result = _logic getVariable [_operation, DEFAULT_TAOR];
+		/*
+		if(typeName _result == "STRING") then {
+			_result = [];
+		};
+		*/		
 	};
 	// Return the Blacklist marker
 	case "blacklist": {
-		_result = [_logic,_operation,_args,DEFAULT_BLACKLIST] call ALIVE_fnc_OOsimpleOperation;
+		if(typeName _args == "STRING") then {			
+			_args = [_args, ","] call CBA_fnc_split;
+			if(count _args > 0) then {
+				_logic setVariable [_operation, _args];
+			};
+		};
+		if(typeName _args == "ARRAY") then {		
+			_logic setVariable [_operation, _args];
+		};
+		_result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
+		/*
+		if(typeName _result == "STRING") then {
+			_result = [];
+		};
+		*/		
 	};
 	// Return the Size filter
 	case "sizeFilter": {
@@ -155,7 +183,10 @@ switch(_operation) do {
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
-			TRACE_1("After module init",_logic);			
+			TRACE_1("After module init",_logic);
+
+			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
+			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
 			
 			_initType = [_logic, "initType"] call MAINCLASS;
 			

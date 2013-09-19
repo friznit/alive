@@ -28,22 +28,29 @@ nil
 ---------------------------------------------------------------------------- */
 
 
-private ["_clusters","_marker","_markerClusters","_center"];
+private ["_clusters","_markers","_marker","_markerClusters","_center"];
 
 _clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
-_marker = [_this, 1, "", [""]] call BIS_fnc_param;
+_markers = [_this, 1, [], [[]]] call BIS_fnc_param;
 
-_markerClusters = _clusters;
+_markerClusters = [];
 
-if(_marker call ALIVE_fnc_markerExists) then {			
-	_marker setMarkerAlpha 0;
-	_markerClusters = [];
-	{
-		_center = [_x,"center"] call ALIVE_fnc_hashGet;
-		if!([_marker, _center] call BIS_fnc_inTrigger) then {
-			_markerClusters set [count _markerClusters, _x];
-		};
-	} forEach _clusters;
+{
+	_marker =_x;
+	if(_marker call ALIVE_fnc_markerExists) then {			
+		_marker setMarkerAlpha 0;		
+		{
+			_center = [_x,"center"] call ALIVE_fnc_hashGet;
+			if!([_marker, _center] call BIS_fnc_inTrigger) then {
+				_markerClusters set [count _markerClusters, _x];
+			};
+		} forEach _clusters;
+	};
+} forEach _markers;
+
+if(count _markerClusters == 0) then {
+	_markerClusters = _clusters;
 };
+
 
 _markerClusters
