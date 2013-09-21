@@ -331,6 +331,8 @@ switch(_operation) do {
 			"_countHQClusters","_countAirClusters","_countHeliClusters","_size","_type","_faction","_ambientVehicleAmount",
 			"_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass","_position","_direction","_unitBlackist",
 			"_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node","_forceMax"];
+            
+            waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
 			_HQClusters = [_logic, "objectivesHQ"] call MAINCLASS;
@@ -620,6 +622,8 @@ switch(_operation) do {
 			{		
 				_center = [_x, "center"] call ALIVE_fnc_hashGet;
 				_size = [_x, "size"] call ALIVE_fnc_hashGet;
+                
+                _guards = [(["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup), _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 				
 				if(_totalCount < _groupCount) then {
 				
