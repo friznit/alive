@@ -128,7 +128,7 @@ switch(_operation) do {
 			        
 			        waituntil {sleep 10; "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger; !(isnil "ALiVE_ProfileHandler")};
                     
-                    sleep 10;
+                    sleep 5;
 			        
 			        //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
                     private ["_objectives"];
@@ -141,7 +141,7 @@ switch(_operation) do {
                         _objectives = _objectives + _obj;
                     };
 
-                    sleep 5 + (random 30);
+                    sleep 5;
                     
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
@@ -157,11 +157,11 @@ switch(_operation) do {
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     };
                     
-                    sleep 30;
+                    sleep 0.5;
                     
                     //Add random movement to profiles so they dont stand still if no waypoints
                     _profIDs = [ALIVE_profileHandler, "getProfilesBySide",[_handler,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
-                    {private ["_prof","_type"]; _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; [_prof, "addActiveCommand", ["ALIVE_fnc_randomMovement","spawn",200]] call ALIVE_fnc_profileEntity} foreach _profIDs;
+                    {private ["_prof","_type"]; _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; [_prof, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity} foreach _profIDs;
                 };
                 
                 /*

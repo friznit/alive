@@ -1,9 +1,9 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,4346,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,176.004105,761.434937,184.004105,769.434814,0.000000,""};
@@ -74,8 +74,8 @@ link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,26};
 link32[] = {26,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-617.609192,166.517365,491.169891,-447.538055,629,753,1};
-window[] = {0,-1,-1,-1,-1,1060,176,1799,176,1,646};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-544.663452,93.571182,865.094177,101.039017,629,753,1};
+window[] = {0,-1,-1,-1,-1,1011,2012,3635,127,1,646};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -237,7 +237,7 @@ class FSM
        "" \n
        "		//handle internal order completion by TACOM order state" \n
        "		case (""completed"") : {" \n
-       "			private [""_ProfileID""];" \n
+       "			private [""_ProfileID"",""_profile""];" \n
        "" \n
        "			_ProfileID = _DATA_VALUE select 0;" \n
        "			_objectiveID = _DATA_VALUE select 1;" \n
@@ -303,6 +303,12 @@ class FSM
        "						if(_debug) then { [""TACOM %1 regrouping! Waiting for %2 groups!"",_ProfileID,({_objectiveID == (_x select 2)} count ([_OPCOM_HANDLER,""pendingorders"",[]] call ALiVE_fnc_HashGet))] call ALIVE_fnc_dumpR; };" \n
        "						// debug ---------------------------------------" \n
        "					};" \n
+       "" \n
+       "					//Command to garrison" \n
+       "					[_profile, ""clearActiveCommands""] call ALIVE_fnc_profileEntity;" \n
+       "					[_profile, ""addActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",200]] call ALIVE_fnc_profileEntity;" \n
+       "" \n
+       "					player sidechat format [""profile %1 has commands %2"",_profileID,([_profile,""activeCommands""] call AliVE_fnc_HashGet)];" \n
        "" \n
        "					//transmit to OPCOM as objective was completed" \n
        "					[_objective,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n
