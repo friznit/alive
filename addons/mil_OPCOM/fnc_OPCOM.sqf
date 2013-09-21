@@ -117,8 +117,8 @@ switch(_operation) do {
 						};
 						case ("occupation") : {
 								[_handler, "sectionsamount_attack", 4] call ALiVE_fnc_HashSet;
-								[_handler, "sectionsamount_reserve", 2] call ALiVE_fnc_HashSet;
-								[_handler, "sectionsamount_defend", 3] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
 						};
 					};
 					
@@ -141,7 +141,8 @@ switch(_operation) do {
                         _objectives = _objectives + _obj;
                     };
 
-                    sleep 5;
+					//Wait long enough for all MIL_MP instances (needs an indicator when all MIL_MP instances are finished)
+                    sleep 30 + (random 20);
                     
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
@@ -157,11 +158,17 @@ switch(_operation) do {
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     };
                     
-                    sleep 0.5;
+                    sleep 5;
                     
                     //Add random movement to profiles so they dont stand still if no waypoints
                     _profIDs = [ALIVE_profileHandler, "getProfilesBySide",[_handler,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
-                    {private ["_prof","_type"]; _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; [_prof, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity} foreach _profIDs;
+                    player sidechat format["%1 profiles for side %2",count _profIDs,([_handler,"side"] call ALiVE_fnc_HashGet)];
+                    sleep 5;
+                    {
+                        private ["_prof","_type"];
+                        _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
+                        [_prof, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
+                    } foreach _profIDs;
                 };
                 
                 /*
@@ -788,7 +795,7 @@ switch(_operation) do {
         case "attackentity": {
             ASSERT_TRUE(typeName _args == "ARRAY",str _args);
             
-            private ["_target","_sides","_size","_type","_proIDs","_knownE","_attackedE","_pos","_profiles","_profileIDs","_profile","_section","_profileID","_i","_waypoints"];
+            private ["_target","_reserved","_sides","_size","_type","_proIDs","_knownE","_attackedE","_pos","_profiles","_profileIDs","_profile","_section","_profileID","_i","_waypoints","_posAttacker","_dist"];
             
             _target = _args select 0;
             _size = _args select 1;
@@ -798,10 +805,12 @@ switch(_operation) do {
             _sides = [_logic,"sidesenemy",["EAST"]] call ALiVE_fnc_HashGet;
             _knownE = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
             _attackedE = [_logic,"attackedentities",[]] call ALiVE_fnc_HashGet;
+            _reserved = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
             _profile = [ALiVE_ProfileHandler,"getProfile",_target] call ALiVE_fnc_ProfileHandler; 
            
            	_section = [];
             _profileIDs = [];
+            _dist = 1000;
             
             if (isnil "_profile") exitwith {_result = _section};
             
@@ -835,14 +844,19 @@ switch(_operation) do {
 	                case ("infantry") : {
 	                    //_profiles = [_pos, 1000, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
                         _profiles = [_logic,"infantry"] call ALiVE_fnc_HashGet;
+                        _dist = 1000;
 	                };
 	                case ("mechandized") : {
 	                    //_profiles = [_pos, 1500, [_side,"vehicle","Car"]] call ALIVE_fnc_getNearProfiles;
 	                };
-	                case ("armored") : {};
+	                case ("armored") : {
+                        _profiles = [_logic,"armored"] call ALiVE_fnc_HashGet;
+                        _dist = 3000;
+                    };
 	                case ("air") : {
                         //_profiles = [_pos, 3000, [_side,"vehicle","Helicopter"]] call ALIVE_fnc_getNearProfiles;
                         _profiles = [_logic,"air"] call ALiVE_fnc_HashGet;
+                        _dist = 15000;
                     };
 	            };
                 
@@ -859,8 +873,9 @@ switch(_operation) do {
                         
                        		_profileID = (_profiles select _i);
                         	_profile = ([ALiVE_ProfileHandler,"getProfile",_profileID] call ALiVE_fnc_profileHandler);
+                           	_posAttacker = [_profile, "position"] call ALiVE_fnc_HashGet;
 	                        
-                            if !(isnil "_profile") then {
+                            if (!(isnil "_profile") && {_pos distance _posAttacker < _dist} && {!(_profileID in _reserved)}) then {
 
 		                        _waypoints = [_profile,"waypoints"] call ALIVE_fnc_hashGet;
 	                        
@@ -872,6 +887,7 @@ switch(_operation) do {
 		                            //player sidechat format["Entity %1 is already on attack mission...!",_profileID];
 		                        };
 	                        };
+                            
                         _i = _i + 1;
             		};
                     

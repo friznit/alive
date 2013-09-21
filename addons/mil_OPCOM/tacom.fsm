@@ -75,7 +75,7 @@ link30[] = {24,25};
 link31[] = {25,26};
 link32[] = {26,10};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-544.663452,93.571182,865.094177,101.039017,629,753,1};
-window[] = {0,-1,-1,-1,-1,1011,2012,3635,127,1,646};
+window[] = {0,-1,-1,-1,-1,972,88,1711,88,1,646};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -307,8 +307,6 @@ class FSM
        "					//Command to garrison" \n
        "					[_profile, ""clearActiveCommands""] call ALIVE_fnc_profileEntity;" \n
        "					[_profile, ""addActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",200]] call ALIVE_fnc_profileEntity;" \n
-       "" \n
-       "					player sidechat format [""profile %1 has commands %2"",_profileID,([_profile,""activeCommands""] call AliVE_fnc_HashGet)];" \n
        "" \n
        "					//transmit to OPCOM as objective was completed" \n
        "					[_objective,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n
