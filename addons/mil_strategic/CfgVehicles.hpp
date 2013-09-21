@@ -34,13 +34,13 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_MO_TAOR";
                                 description = "$STR_ALIVE_MO_TAOR_COMMENT";
-                                defaultValue = "";
+                                defaultValue = [];
                         };
                         class blacklist
                         {
                                 displayName = "$STR_ALIVE_MO_BLACKLIST";
                                 description = "$STR_ALIVE_MO_BLACKLIST_COMMENT";
-                                defaultValue = "";
+                                defaultValue = [];
                         };
 						class sizeFilter
                         {

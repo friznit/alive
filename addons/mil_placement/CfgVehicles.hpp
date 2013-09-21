@@ -159,13 +159,13 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_MP_TAOR";
                                 description = "$STR_ALIVE_MP_TAOR_COMMENT";
-                                defaultValue = "";
+                                defaultValue = [];
                         };
                         class blacklist
                         {
                                 displayName = "$STR_ALIVE_MP_BLACKLIST";
                                 description = "$STR_ALIVE_MP_BLACKLIST_COMMENT";
-                                defaultValue = "";
+                                defaultValue = [];
                         };
 						class ambientVehicleAmount
                         {

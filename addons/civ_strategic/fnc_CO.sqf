@@ -113,39 +113,47 @@ switch(_operation) do {
 	};        
 	// Return TAOR marker
 	case "taor": {
-		if(typeName _args == "STRING") then {			
-			_args = [_args, ","] call CBA_fnc_split;			
+		if(typeName _args == "STRING") then {
+			_logic setVariable [_operation, call compile _args];
+			
+			/*
+			_args = [_args, ","] call CBA_fnc_split;
 			if(count _args > 0) then {
 				_logic setVariable [_operation, _args];
 			};
+			*/
 		};
 		if(typeName _args == "ARRAY") then {		
 			_logic setVariable [_operation, _args];
 		};
 		_result = _logic getVariable [_operation, DEFAULT_TAOR];
 		/*
-		if(_result == "") then {
+		if(typeName _result == "STRING") then {
 			_result = [];
 		};
-		*/
+		*/		
 	};
 	// Return the Blacklist marker
 	case "blacklist": {
-		if(typeName _args == "STRING") then {			
-			_args = [_args, ","] call CBA_fnc_split;			
+		if(typeName _args == "STRING") then {
+			_logic setVariable [_operation, call compile _args];
+			
+			/*
+			_args = [_args, ","] call CBA_fnc_split;
 			if(count _args > 0) then {
 				_logic setVariable [_operation, _args];
 			};
+			*/
 		};
 		if(typeName _args == "ARRAY") then {		
 			_logic setVariable [_operation, _args];
 		};
 		_result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
 		/*
-		if(_result == "") then {
+		if(typeName _result == "STRING") then {
 			_result = [];
 		};
-		*/
+		*/		
 	};
 	// Return the Size filter
 	case "sizeFilter": {
