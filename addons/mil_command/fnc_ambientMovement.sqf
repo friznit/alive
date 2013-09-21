@@ -1,4 +1,4 @@
-private ["_waypoints","_profile","_pos","_radius","_profileWaypoint","_savepos","_type","_speed","_formation","_behaviour"];
+private ["_waypoints","_id","_unit","_profile","_obj","_leader","_pos","_radius","_positions","_assignments","_profileWaypoint","_savepos","_type","_speed","_formation","_behaviour","_type","_objs"];
 
 _profile = _this select 0;
 _args = _this select 1;
@@ -7,7 +7,10 @@ _debug = true;
 _radius = _args;
 
 _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
+_id = [_profile,"profileID"] call ALiVE_fnc_HashGet;
+_type = [_profile,"type"] call ALiVE_fnc_HashGet;
 _waypoints = [_profile,"waypoints",[]] call ALiVE_fnc_HashGet;
+_assignments = [_profile,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 
 if (count _waypoints == 0) then {
 	for "_i" from 0 to 4 do {
@@ -31,3 +34,4 @@ if (count _waypoints == 0) then {
                     sleep 0.2;
 	};
 };
+
