@@ -28,9 +28,15 @@ class CfgMissions
 					};
 					class showcase_mil_opcom_altis
 					{
-						briefingName = "ALiVE OPCOM Spleen - Altis";
+						briefingName = "ALiVE | OPCOM Spleen - Altis";
 						directory = "x\alive\addons\mil_opcom\showcases\opcom_spleen.altis";
 						overviewPicture = "x\alive\addons\mil_opcom\showcases\opcom_spleen.altis\rsc\logo_alive.paa";
+					};
+					class showcase_mil_opcom_foursome
+					{
+						briefingName = "ALiVE | Foursome";
+						directory = "x\alive\addons\mil_opcom\showcases\foursome.altis";
+						overviewPicture = "x\alive\addons\mil_opcom\showcases\foursome.altis\rsc\logo_alive.paa";
 					};
         };
 };

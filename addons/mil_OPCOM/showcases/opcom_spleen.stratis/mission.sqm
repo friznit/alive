@@ -41,8 +41,8 @@ class Mission
 	randomSeed=14323470;
 	class Intel
 	{
-		briefingName="ALiVE OPCOM Spleen STRATIS";
-		overviewText="ALiVE AI Commandment Showcase";
+		briefingName="ALiVE | OPCOM Spleen";
+		overviewText="ALiVE | AI Commandment Showcase";
 		startWeather=0.19;
 		startWind=0.099999994;
 		startWaves=0.099999994;
