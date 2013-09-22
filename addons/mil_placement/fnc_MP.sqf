@@ -619,11 +619,22 @@ switch(_operation) do {
 			
 			//["Groups / Cluster: %1",_groupPerCluster] call ALIVE_fnc_dump;
 			
-			{		
+			{
+                private ["_grp","_center","_size"];
+                		
 				_center = [_x, "center"] call ALIVE_fnc_hashGet;
 				_size = [_x, "size"] call ALIVE_fnc_hashGet;
                 
-                _guards = [(["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup), _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                //Select guards (chose the group with most units, considering to create guard groupconfigs)
+                switch (_faction) do {
+                    case ("OPF_F") : {_grp = "OIA_InfSquad_Weapons"};
+                    case ("IND_F") : {_grp = "HAF_InfSquad"};
+                    case ("BLU_F") : {_grp = "BUS_InfSquad_Weapons"};
+                    case ("BLU_G_F") : {_grp = "IRG_InfSquad_Weapons"};
+                    default {_grp = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup};
+                };
+                
+                _guards = [_grp, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 				
 				if(_totalCount < _groupCount) then {
 				
