@@ -25,8 +25,8 @@ if ((count _objs > 0) && {count _units > 0} && {_type == "entity"} && {((count (
     	_obj = _objs select _i;
     
         switch (typeof _obj) do {
-            case ("Land_Cargo_Tower_V3_F") : {_positions = [15,12,8,2,3,7]};
-            case ("Land_Cargo_Tower_V1_F") : {_positions = [15,12,8,2,3,7]};
+            case ("Land_Cargo_Tower_V3_F") : {_positions = [15,12,8]};
+            case ("Land_Cargo_Tower_V1_F") : {_positions = [15,12,8]};
             case ("Land_Cargo_Patrol_V1_F") : {_positions = [1]};
             case ("Land_Cargo_Patrol_V3_F") : {_positions = [1]};
         };
@@ -37,6 +37,7 @@ if ((count _objs > 0) && {count _units > 0} && {_type == "entity"} && {((count (
         	_unit = _units select (count _units - _foreachIndex - 1);
             _unit setposATL (_obj buildingpos _x);
             _unit setdir (random 360);
+            _unit setUnitPos "UP";
             _unit disableAI "MOVE";
             _units = _units - [_unit];
 
