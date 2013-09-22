@@ -26,12 +26,12 @@ private ["_unit"];
 _unit = _this select 0;
 
 weaponsP = weapons _unit;
-magazinesP = magazines _unit;
+magazinesP = magazinesAmmo _unit;
 primesideP = primaryWeaponItems _unit; 
 vestP = vest _unit;
 uniformP = uniform _unit;
 headgearP = headgear _unit;
-backpackP = backpack _unit;
+backpackP = unitBackpack _unit;
 secsideP = secondaryWeaponItems _unit;
 handgunsideP = handgunItems _unit;
 itemsP = items _unit;

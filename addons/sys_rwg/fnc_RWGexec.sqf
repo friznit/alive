@@ -25,10 +25,10 @@ RWG_HANDLE = player addeventhandler ["respawn", {
         removeallitems _corpse;
         removebackpack _corpse;
 
-	RWG_HANDLE_actSave = _unit addAction [("<t color=""#ffc600"">" + ("Save Gear") + "</t>"),{[_unit] call ALIVE_fnc_RWGsavegear},["RWG"],-100,true,false,'',""];
-        RWG_HANDLE_actLoad = _unit addAction [("<t color=""#ffc600"">" + ("Load Gear") + "</t>"),{[_unit] call ALIVE_fnc_RWGloadgear},["RWG"],-100,true,false,'',""];
+	RWG_HANDLE_actSave = _unit addAction [("<t color=""#ffc600"">" + ("Save Gear") + "</t>"),{[_unit] call ALIVE_fnc_RWGsavegear},["RWG"],-1000,false,false,'',""];
+        RWG_HANDLE_actLoad = _unit addAction [("<t color=""#ffc600"">" + ("Load Gear") + "</t>"),{[_unit] call ALIVE_fnc_RWGloadgear},["RWG"],-1001,false,false,'',""];
 }];
 
 [player] call ALIVE_fnc_RWGsavegear;
-RWG_HANDLE_actSave = player addAction [("<t color=""#ffc600"">" + ("Save Gear") + "</t>"),{[player] call ALIVE_fnc_RWGsavegear},["RWG"],-100,true,false,'',""];
-RWG_HANDLE_actLoad = player addAction [("<t color=""#ffc600"">" + ("Load Gear") + "</t>"),{[player] call ALIVE_fnc_RWGloadgear},["RWG"],-100,true,false,'',""];
+RWG_HANDLE_actSave = player addAction [("<t color=""#ffc600"">" + ("Save Gear") + "</t>"),{[player] call ALIVE_fnc_RWGsavegear},["RWG"],-1002,false,false,'',""];
+RWG_HANDLE_actLoad = player addAction [("<t color=""#ffc600"">" + ("Load Gear") + "</t>"),{[player] call ALIVE_fnc_RWGloadgear},["RWG"],-1003,false,false,'',""];
