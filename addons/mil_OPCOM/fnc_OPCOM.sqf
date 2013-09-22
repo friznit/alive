@@ -142,7 +142,7 @@ switch(_operation) do {
                     };
 
 					//Wait long enough for all MIL_MP instances (needs an indicator when all MIL_MP instances are finished)
-                    sleep 30 + (random 20);
+                    sleep 15 + (random 30);
                     
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
@@ -151,7 +151,7 @@ switch(_operation) do {
                         _objectives = _this select 1;
                         
 						_OPCOM = [_handler,_objectives] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
-                        sleep 2;
+                        sleep 1;
 						_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
                         
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
@@ -163,7 +163,7 @@ switch(_operation) do {
                     //Add random movement to profiles so they dont stand still if no waypoints
                     _profIDs = [ALIVE_profileHandler, "getProfilesBySide",[_handler,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
                     player sidechat format["%1 profiles for side %2",count _profIDs,([_handler,"side"] call ALiVE_fnc_HashGet)];
-                    sleep 5;
+                    sleep 1;
                     {
                         private ["_prof","_type"];
                         _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
@@ -782,7 +782,7 @@ switch(_operation) do {
                 	_id = _x select 0;
                     _posP = _x select 1;
 
-                   if !({(_x select 0) == _id} count _knownEntities > 0) then {
+                   if !({(!(isnil "_x") && {(_x select 0) == _id})} count _knownEntities > 0) then {
                         _knownEntities set [count _knownEntities,_x];
                     };
                 } foreach _visibleEnemies;
@@ -871,12 +871,14 @@ switch(_operation) do {
 
                         if (_i >= count _profiles) exitwith {};
                         
-                       		_profileID = (_profiles select _i);
-                        	_profile = ([ALiVE_ProfileHandler,"getProfile",_profileID] call ALiVE_fnc_profileHandler);
-                           	_posAttacker = [_profile, "position"] call ALiVE_fnc_HashGet;
+                   		_profileID = (_profiles select _i);
+                    	_profile = ([ALiVE_ProfileHandler,"getProfile",_profileID] call ALiVE_fnc_profileHandler);
+                        
+                        if !(isnil "_profile") then {
+	                       	_posAttacker = [_profile, "position"] call ALiVE_fnc_HashGet;
 	                        
-                            if (!(isnil "_profile") && {_pos distance _posAttacker < _dist} && {!(_profileID in _reserved)}) then {
-
+	                        if (!(isnil "_profile") && {_pos distance _posAttacker < _dist} && {!(_profileID in _reserved)}) then {
+	
 		                        _waypoints = [_profile,"waypoints"] call ALIVE_fnc_hashGet;
 	                        
 		                        if (({!(isnil "_x") && {_profileID in (_x select 2)}} count _attackedE) < 1 && {count _waypoints <= 2}) then {
@@ -887,6 +889,7 @@ switch(_operation) do {
 		                            //player sidechat format["Entity %1 is already on attack mission...!",_profileID];
 		                        };
 	                        };
+                        };
                             
                         _i = _i + 1;
             		};

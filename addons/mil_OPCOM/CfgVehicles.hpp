@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveEnemyBase;
-        class ADDON : ModuleAliveEnemyBase
+        class ModuleAliveMilitaryBase;
+        class ADDON : ModuleAliveMilitaryBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_OPCOM";
@@ -53,7 +53,26 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_OPCOM_SIDE";
                                 description = "$STR_ALIVE_OPCOM_SIDE_COMMENT";
-                                defaultValue = "EAST";
+                                
+                                class Values
+                                {
+                                        class side_east
+                                        {
+                                                name = "OPFOR";
+                                                value = "EAST";
+                                                default = "EAST";
+                                        };
+                                        class side_west
+                                        {
+                                                name = "BLUFOR";
+                                                value = "WEST";
+                                        };
+                                        class side_ind
+                                        {
+                                                name = "INDEPENDENT";
+                                                value = "GUER";
+                                        };
+                                };
                         };
                 };
                 
