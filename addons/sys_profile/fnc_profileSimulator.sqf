@@ -102,7 +102,9 @@ private ["_profiles","_profileBlock","_profile","_entityProfile","_profileType",
 
 _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 //_profileBlock = [ALIVE_arrayBlockHandler,"getNextBlock", ["simulation",_profiles select 2,50]] call ALIVE_fnc_arrayBlockHandler;
-	
+
+_clash = [];
+_engaged = [0,0,0];
 {
 	_entityProfile = _x;
 
@@ -118,6 +120,8 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
 	_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
 	_isCycling = _entityProfile select 2 select 25; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+    _side = _entityProfile select 2 select 3; //[_entityProfile, "side"] call ALIVE_fnc_hashGet;
+    _positions = _entityProfile select 2 select 18; //[_entityProfile, "positions"] call ALIVE_fnc_hashGet;
 	_vehicleCommander = false;
 	_vehicleCargo = false;
 				
@@ -130,6 +134,18 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 	if(count _vehiclesInCargoOf > 0) then {	
 		_vehicleCargo = true;
 	};
+    
+    // if near profiles of other sides are near collect to clashing groups
+    if (({((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}} count (_profiles select 2)) > 0) then {
+       
+        _clash set [count _clash,[_profileID,_currentPosition,_side,(count _positions),_vehiclesInCommandOf]];
+        
+        switch (_side) do {
+            case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
+            case ("EAST") : {_engaged set [1,(_engaged select 1) + (count _positions)]};
+            case ("GUER") : {_engaged set [2,(_engaged select 2) + (count _positions)]};
+        };
+    };
 							
 	// entity has waypoints assigned and entity is not in cargo of a vehicle
 	if(count _waypoints > 0 && !(_vehicleCargo)) then {
@@ -279,3 +295,48 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 		};
 	};
 } forEach (_profiles select 2);
+
+//Count total clashing forces (single profiles)
+_engagedTotal = (_engaged select 0) + (_engaged select 1) + (_engaged select 2);
+
+//Simulate death
+_toBekilled = [];
+{
+    private ["_engagedOwn"];
+    
+    _profileID = _x select 0;
+    _currentPosition = _x select 1;
+    _side = _x select 2;
+    _positions = _x select 3;
+    _vehiclesInCommandOf = _x select 4;
+    
+    _factor1 = 0;
+    _factor2 = 0;
+    
+     switch (_side) do {
+        case ("WEST") : {_engagedOwn = _engaged select 0};
+        case ("EAST") : {_engagedOwn = _engaged select 1};
+        case ("GUER") : {_engagedOwn = _engaged select 2; _side = "INDEPENDENT"};
+    };
+    
+    if (count _vehiclesInCommandOf > 0) then {_factor1 = 0.3};
+    _factor2 = _engagedOwn / _engagedTotal;
+    _weighting = _factor1 + _factor2;
+    
+    // Enemy sides near, chance of death by weighting
+    if ((({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0) && (random 1 > _weighting)) then {
+        _clash set [_foreachIndex,["",[0,0,0],""]];
+        _toBekilled set [count _toBekilled,_profileID];
+    };
+} foreach _clash;
+
+//remove profile
+{
+    _profileID = _x;
+	_profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+	
+	if (!(isnil "_profile") && {!(_profile select 2 select 1)}) then {
+        	//player sidechat format["Group %1 killed in simulated combat!",_profileID];
+			[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+    };
+} foreach _toBekilled;
