@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
@@ -10,7 +10,7 @@ item5[] = {"",7,210,-345.692139,-136.027100,-337.692108,-128.027069,0.000000,""}
 item6[] = {"",7,210,-347.610199,-817.749023,-339.610168,-809.749023,0.000000,""};
 item7[] = {"DEFEND_condition",4,218,-792.029785,-376.003082,-702.029785,-326.003082,4.000000,"DEFEND" \n "conditions"};
 item8[] = {"RESERVE_conditio",4,218,-647.107849,-374.023468,-557.107788,-324.023468,3.000000,"RESERVE" \n "conditions"};
-item9[] = {"OPCOM_RECEIVER",4,4314,-717.074463,-838.579346,-627.074646,-788.579346,1.000000,"OPCOM" \n "RECEIVER"};
+item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.579346,1.000000,"OPCOM" \n "RECEIVER"};
 item10[] = {"CUSTOM_condition",4,218,-506.692078,-374.296844,-416.692169,-324.296844,2.000000,"CUSTOM" \n "conditions"};
 item11[] = {"ORDER_TACOM",2,250,-929.397888,-266.917206,-430.130585,-222.714111,0.000000,"ORDER" \n "TACOM"};
 item12[] = {"TACOM_CONFIRM",4,218,-677.962830,-157.584137,-587.962830,-107.584137,0.000000,"TACOM" \n "CONFIRM"};
@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1473.300781,-306.506836,6.699280,-906.638000,1045,818,1};
-window[] = {0,-1,-1,-1,-1,1008,63,1850,59,1,1062};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1473.300781,-306.506836,-107.188721,-1020.526001,1045,818,1};
+window[] = {0,-1,-1,-1,-1,1059,110,1897,110,1,1062};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -136,25 +136,11 @@ class FSM
        "/*" \n
        "//Mock targets for testing purposes" \n
        "" \n
-       "						_towns = nearestLocations [getArray (configFile >> ""CfgWorlds"" >> worldName >> ""centerPosition""), [""NameCityCapital"",""NameCity"",""NameVillage"",""Hill""],20000];" \n
-       "						_objectives_unsorted = []; { _objectives_unsorted set [count _objectives_unsorted, [position _x,(size _x) select 0,""civilian"",(size _x) select 0]]} foreach _towns;" \n
-       "" \n
-       "" \n
-       "						//Stratis, markers" \n
+       "						// markers m_0 -  m_15" \n
        "						_objectives_unsorted = [];" \n
-       "						for ""_i"" from 1 to 15 do {" \n
+       "						for ""_i"" from 0 to 15 do {" \n
        "							_objectives_unsorted set [count _objectives_unsorted,[(getmarkerpos format[""m_%1"",_i]),150,""civilian"",25]];" \n
        "						};" \n
-       "" \n
-       "						_objectives_unsorted = [" \n
-       "									[[2815.68,1190.84,0],150,""civilian"",25]," \n
-       "									[[2387.99,1623.91,0],100,""civilian"",50]," \n
-       "									[[2951.52,1866,0],50,""civilian"",75]," \n
-       "									[[2383.95,1973.6,0],100,""civilian"",50]," \n
-       "									[[3300.31,2527.79,0],100,""civilian"",50]," \n
-       "									[[3063.56,2140.04,0],100,""civilian"",50]," \n
-       "									[[2325.01,2287.62,0],100,""civilian"",50]" \n
-       "						];" \n
        "" \n
        "						_objectives = [_objectives_unsorted,[],{([_OPCOM_HANDLER,""position""] call ALiVE_fnc_HashGet) distance (_x select 0)},""ASCEND""] call BIS_fnc_sortBy;" \n
        "						" \n

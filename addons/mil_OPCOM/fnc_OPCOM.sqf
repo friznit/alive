@@ -134,6 +134,7 @@ switch(_operation) do {
                     private ["_objectives"];
                     _objectives = [];
                     
+
                     for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 						private ["_obj"];
                         
@@ -408,55 +409,25 @@ switch(_operation) do {
                 _objective = _x;
                 _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
                 _state = [_objective,"opcom_state",[]] call ALiVE_fnc_HashGet;
+                _idlestates = ["unassigned","idle"];
                 
-               {	
-               				_proID = _x;
-                            
-                            //if killed, remove Profile from assigned section and delete pending order
-                            if !(_proID in _profileIDs) then {
-                                _section = _section - [_proID];
-                                [_objective,"section",_section] call ALiVE_fnc_HashSet;
-                                
-                                {
-                                    if ((typename _x == "ARRAY") && {(_proID == (_x select 1))}) then {
-                                        _pending_orders set [_foreachIndex,"x"];
-                                    };
-                             	} foreach _pending_orders;
-                                _pending_orders = _pending_orders - ["x"];
-                                [_logic,"pendingorders",_pending_orders] call ALiVE_fnc_HashSet;
-                            };
-                            
-                            //If section is now empty exit and reset the objective
-                            if (count _section < 1) exitwith {[_logic,"resetObjective",([_objective,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM};
-                            
-                            if (_proID in _profileIDs) then {
-	                            //Still not empty? Then get needed profile data
-	                            _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
+                _wps = 0;
+                {
+                	_profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
+                    if !(isnil "_profile") then {
+                        _wps = _wps + (count (_profile select 2 select 16));
+                    } else {
+                        _section = _section - [_x];
+                        _section = [_objective,"section",_section] call ALiVE_fnc_HashGet;
+                    };
+                } foreach _section;
+                
+                if (!(_state in _idlestates) && {count _section > 0} && {_wps == 0}) then {
+                    {[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
+                    [_logic,"resetObjective",([_objective,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM;
 
-	                            //If there are more than one orders there must have been something wrong, reset them
-	                       		if ({_proID in ([_x,"section",[]] call ALiVE_fnc_HashGet)} count _objectives > 1) then {
-	                                [_logic,"resetorders",_proID] call ALiVE_fnc_OPCOM;
-	                            };
-	                            
-	                            /*
-	                            _pending_orders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
-	                            diag_log _pending_orders;
-	                            if (({_proID == (_x select 1)} count _pending_orders > 1) && {count _wayPoints < 1}) then {
-	                                {if (_proID == (_x select 1)) exitwith {_orders = _x}} foreach _pending_orders;
-	                                [_logic,"resetorders",_proID] call ALiVE_fnc_OPCOM;
-	                                [_logic,"setorders",_orders] call ALiVE_fnc_OPCOM;
-	                            };
-	                            */
-	                            
-	                            //If an objective was secured only keep the reserve-groups
-	                            if ((_state == "idle") && {count _section > _size_reserve}) then {
-	                                _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
-	                                if (count _section == _size_reserve) exitwith {};
-	                                [_logic,"resetorders",_x] call ALiVE_fnc_OPCOM;
-	                            };
-                            };
-                            sleep 0.03;
-               } foreach _section;
+                    _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
+                }; 
             } foreach _objectives;
         };
         
@@ -756,6 +727,9 @@ switch(_operation) do {
                     [_x,"section",_section] call ALiVE_fnc_HashSet;
                 };
             } foreach _objectives;
+            
+            [_profile, "clearActiveCommands"] call ALIVE_fnc_profileEntity;
+			[_profile, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
             
             _result = true;
         };
