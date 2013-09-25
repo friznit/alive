@@ -26,40 +26,40 @@
 <Key ID="STR_ALIVE_CO_BLACKLIST_COMMENT">
 	<English>Exclusion Marker</English>
 </Key>
-<Key ID="STR_ALIVE_MO_SIZE_FILTER">
+<Key ID="STR_ALIVE_CO_SIZE_FILTER">
 	<English>Objective Size Filter:</English>
 </Key>
-<Key ID="STR_ALIVE_MO_SIZE_FILTER_COMMENT">
+<Key ID="STR_ALIVE_CO_SIZE_FILTER_COMMENT">
 	<English>Filter objectives less than selected size</English>
 </Key>
-<Key ID="STR_ALIVE_MO_SIZE_FILTER_NONE">
+<Key ID="STR_ALIVE_CO_SIZE_FILTER_NONE">
 	<English>Do not filter</English>
 </Key>
-<Key ID="STR_ALIVE_MO_SIZE_FILTER_SMALL">
+<Key ID="STR_ALIVE_CO_SIZE_FILTER_SMALL">
 	<English>Ignore small objectives</English>
 </Key>
-<Key ID="STR_ALIVE_MO_SIZE_FILTER_MEDIUM">
+<Key ID="STR_ALIVE_CO_SIZE_FILTER_MEDIUM">
 	<English>Ignore small + medium objectives</English>
 </Key>
-<Key ID="STR_ALIVE_MO_SIZE_FILTER_LARGE">
+<Key ID="STR_ALIVE_CO_SIZE_FILTER_LARGE">
 	<English>Only huge objectives</English>
 </Key>
-<Key ID="STR_ALIVE_MO_PRIORITY_FILTER">
+<Key ID="STR_ALIVE_CO_PRIORITY_FILTER">
 	<English>Objective Priority Filter:</English>
 </Key>
-<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_COMMENT">
+<Key ID="STR_ALIVE_CO_PRIORITY_FILTER_COMMENT">
 	<English>Filter objectives less than selected priority</English>
 </Key>
-<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_NONE">
+<Key ID="STR_ALIVE_CO_PRIORITY_FILTER_NONE">
 	<English>Do not filter</English>
 </Key>
-<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_LOW">
+<Key ID="STR_ALIVE_CO_PRIORITY_FILTER_LOW">
 	<English>Ignore low priority objectives</English>
 </Key>
-<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_MEDIUM">
+<Key ID="STR_ALIVE_CO_PRIORITY_FILTER_MEDIUM">
 	<English>Ignore low + medium priority objectives</English>
 </Key>
-<Key ID="STR_ALIVE_MO_PRIORITY_FILTER_HIGH">
+<Key ID="STR_ALIVE_CO_PRIORITY_FILTER_HIGH">
 	<English>Only high priority objectives</English>
 </Key>
 <Key ID="STR_ALIVE_CO_INIT_TYPE">
