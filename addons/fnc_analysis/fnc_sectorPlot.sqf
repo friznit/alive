@@ -535,6 +535,105 @@ switch(_operation) do {
 								} forEach _terminusPositions;						
 							};
 						};
+						case "clustersMil": {
+							if(_key in (_sectorData select 1)) then {
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								_consolidatedPositions = [_plotData,"consolidated"] call ALIVE_fnc_hashGet;
+								_airPositions = [_plotData,"air"] call ALIVE_fnc_hashGet;
+								_heliPositions = [_plotData,"heli"] call ALIVE_fnc_hashGet;
+								
+								_dimensions = [60,60];
+								_alpha = 1;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["MCC_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _consolidatedPositions;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["MCA_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _airPositions;	
+								
+								{
+									_position = _x select 0;
+									_markerID = format["MCH_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorOrange"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _heliPositions;
+							};
+						};
+						case "clustersCiv": {
+							if(_key in (_sectorData select 1)) then {
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								_consolidatedPositions = [_plotData,"consolidated"] call ALIVE_fnc_hashGet;
+								_powerPositions = [_plotData,"power"] call ALIVE_fnc_hashGet;
+								_commsPositions = [_plotData,"comms"] call ALIVE_fnc_hashGet;
+								_marinePositions = [_plotData,"marine"] call ALIVE_fnc_hashGet;
+								_fuelPositions = [_plotData,"fuel"] call ALIVE_fnc_hashGet;
+								_railPositions = [_plotData,"rail"] call ALIVE_fnc_hashGet;
+								_constructionPositions = [_plotData,"construction"] call ALIVE_fnc_hashGet;
+								_settlementPositions = [_plotData,"settlement"] call ALIVE_fnc_hashGet;
+								
+								_dimensions = [60,60];
+								_alpha = 1;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["CCC_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlack"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _consolidatedPositions;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["CCP_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorYellow"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _powerPositions;	
+								
+								{
+									_position = _x select 0;
+									_markerID = format["CCC_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorWhite"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _commsPositions;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["CCM_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlue"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _marinePositions;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["CCF_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorOrange"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _fuelPositions;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["CCCO_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorPink"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _constructionPositions;
+								
+								{
+									_position = _x select 0;
+									_markerID = format["CCS_%1_%2",_id,_forEachIndex];
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_markers set [count _markers, _m];
+								} forEach _settlementPositions;
+							};
+						};
 				};	
 		
 				[_logic,"markers",_markers] call ALIVE_fnc_hashSet;

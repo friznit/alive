@@ -246,7 +246,7 @@ switch(_operation) do {
 			//["BLACK: %1",_blacklist] call ALIVE_fnc_dump;
 			
 			
-			_clusters = ALIVE_clustersMil;
+			_clusters = ALIVE_clustersMil select 2;
 			_clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			// cull clusters outside of TAOR marker if defined
 			_clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -266,7 +266,7 @@ switch(_operation) do {
 			
 			waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")} && {!(isnil "ALIVE_clustersMilVehicle")}};
             
-			_HQClusters = ALIVE_clustersMilHQ;
+			_HQClusters = ALIVE_clustersMilHQ select 2;
 			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -278,7 +278,7 @@ switch(_operation) do {
 			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;			
 			
 			
-			_airClusters = ALIVE_clustersMilAir;
+			_airClusters = ALIVE_clustersMilAir select 2;
 			_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -290,7 +290,7 @@ switch(_operation) do {
 			[_logic, "objectivesAir", _airClusters] call MAINCLASS;
 			
 			
-			_heliClusters = ALIVE_clustersMilHeli;
+			_heliClusters = ALIVE_clustersMilHeli select 2;
 			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -302,7 +302,7 @@ switch(_operation) do {
 			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
 			
 			
-			_vehicleClusters = ALIVE_clustersMilVehicle;
+			_vehicleClusters = ALIVE_clustersMilVehicle select 2;
 			_vehicleClusters = [_vehicleClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_vehicleClusters = [_vehicleClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_vehicleClusters = [_vehicleClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;

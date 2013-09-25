@@ -248,7 +248,7 @@ switch(_operation) do {
 			//["BLACK: %1",_blacklist] call ALIVE_fnc_dump;
 			
 			
-			_clusters = ALIVE_clustersMil;
+			_clusters = ALIVE_clustersMil select 2;
 			_clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			// cull clusters outside of TAOR marker if defined
 			_clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -267,7 +267,7 @@ switch(_operation) do {
 			private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
 			
 			
-			_HQClusters = ALIVE_clustersMilHQ;
+			_HQClusters = ALIVE_clustersMilHQ select 2;
 			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -279,7 +279,7 @@ switch(_operation) do {
 			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;			
 			
 			
-			_airClusters = ALIVE_clustersMilAir;
+			_airClusters = ALIVE_clustersMilAir select 2;
 			_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -291,7 +291,7 @@ switch(_operation) do {
 			[_logic, "objectivesAir", _airClusters] call MAINCLASS;
 			
 			
-			_heliClusters = ALIVE_clustersMilHeli;
+			_heliClusters = ALIVE_clustersMilHeli select 2;
 			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -303,7 +303,7 @@ switch(_operation) do {
 			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
 			
 			
-			_vehicleClusters = ALIVE_clustersMilVehicle;
+			_vehicleClusters = ALIVE_clustersMilVehicle select 2;
 			_vehicleClusters = [_vehicleClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_vehicleClusters = [_vehicleClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_vehicleClusters = [_vehicleClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -324,7 +324,7 @@ switch(_operation) do {
 	case "generateStaticData": {
         if (isServer) then {
 		
-			private ["_objectives","_objectivesHQ","_objectivesAir","_objectivesHeli","_objectivesVehicle","_worldName","_objectivesName","_exportString","_result"];
+			private ["_objectives","_objectivesHQ","_objectivesAir","_objectivesHeli","_objectivesVehicle","_worldName","_objectivesName","_exportString","_result","_clusterCount"];
 
 			_objectives = [_logic, "objectives"] call MAINCLASS;
 			_objectivesHQ = [_logic, "objectivesHQ"] call MAINCLASS;
@@ -334,33 +334,42 @@ switch(_operation) do {
 			_worldName = toLower(worldName);
 			
 			_exportString = '';
+			_clusterCount = 0;
 			
 			_objectivesName = 'ALIVE_clustersMil';
-			_result = [_objectives, _objectivesName] call ALIVE_fnc_staticClusterOutput;
+			_result = [_objectives, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;
+			
+			_clusterCount = _clusterCount + count _objectives;
 			
 			_exportString = _result;
 			
 			if(count _objectivesHQ > 0) then {
 				_objectivesName = 'ALIVE_clustersMilHQ';
-				_result = [_objectivesHQ, _objectivesName] call ALIVE_fnc_staticClusterOutput;				
+				_result = [_objectivesHQ, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;				
 				_exportString = _exportString + _result;
 			};
+			
+			_clusterCount = _clusterCount + count _objectivesHQ;
 			
 			if(count _objectivesAir > 0) then {
 				_objectivesName = 'ALIVE_clustersMilAir';
-				_result = [_objectivesAir, _objectivesName] call ALIVE_fnc_staticClusterOutput;			
+				_result = [_objectivesAir, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;			
 				_exportString = _exportString + _result;
 			};
+			
+			_clusterCount = _clusterCount + count _objectivesAir;
 			
 			if(count _objectivesHeli > 0) then {
 				_objectivesName = 'ALIVE_clustersMilHeli';
-				_result = [_objectivesHeli, _objectivesName] call ALIVE_fnc_staticClusterOutput;				
+				_result = [_objectivesHeli, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;				
 				_exportString = _exportString + _result;
 			};
 			
+			_clusterCount = _clusterCount + count _objectivesHeli;
+			
 			if(count _objectivesVehicle > 0) then {
 				_objectivesName = 'ALIVE_clustersMilVehicle';
-				_result = [_objectivesVehicle, _objectivesName] call ALIVE_fnc_staticClusterOutput;
+				_result = [_objectivesVehicle, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;
 				_exportString = _exportString + _result;
 			};		
 			
@@ -399,7 +408,7 @@ switch(_operation) do {
 			_clusters_hq = [_clusters_hq] call ALIVE_fnc_consolidateClusters;
 						
 			// Store the categorised clusters on the logic
-			[_logic, "objectivesHQ", [_clusters_hq] call ALIVE_fnc_copyClusters] call MAINCLASS;			
+			[_logic, "objectivesHQ", [_clusters_hq] call ALIVE_fnc_copyClusters] call MAINCLASS;		
 			
 			_clusters = +_clusters_hq;
 			
@@ -537,7 +546,7 @@ switch(_operation) do {
 			
 			
 			// Generate parking positions
-			// ------------------------------------------------------------------
+			// ------------------------------------------------------------------			
 			"MO - Generating Parking Positions" call ALiVE_fnc_logger;
 			[true] call ALIVE_fnc_timer;
 			_types = [
@@ -549,6 +558,7 @@ switch(_operation) do {
 			];
 			[_clusters,_types] call ALIVE_fnc_generateParkingPositions;
 			[] call ALIVE_fnc_timer;
+			
 			
 			
 			// switch on debug for all clusters

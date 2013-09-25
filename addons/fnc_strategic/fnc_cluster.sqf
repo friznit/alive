@@ -207,8 +207,7 @@ switch(_operation) do {
 		} else {
 			_result = _args;
 		};
-	};
-	
+	};	
 	case "size": {
 		// Read Only - return distance from centre to furthest node
 		_args = [_logic, _operation, 0] call ALIVE_fnc_hashGet;
@@ -275,6 +274,13 @@ switch(_operation) do {
 	};        
 	// Determine cluster priority - valid values are any integer, higher numbers higher priority
 	case "priority": {
+		_result = [
+			_logic,_operation,_args,
+			0
+		] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Determine cluster priority - valid values are any integer, higher numbers higher priority
+	case "clusterID": {
 		_result = [
 			_logic,_operation,_args,
 			0

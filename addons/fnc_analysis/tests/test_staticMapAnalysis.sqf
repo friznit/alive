@@ -65,7 +65,7 @@ _plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
 TIMEREND
 
 
-DEBUGON
+//DEBUGON
 
 
 _allSectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
@@ -82,6 +82,30 @@ STAT("Filter out sea sectors");
 TIMERSTART
 _landSectors = [_allSectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
 TIMEREND
+
+
+STAT("Plot mil clusters");
+TIMERSTART
+[_plotter, "plot", [_landSectors, "clustersMil"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
+
+
+STAT("Plot civ clusters");
+TIMERSTART
+[_plotter, "plot", [_landSectors, "clustersCiv"]] call ALIVE_fnc_plotSectors;
+TIMEREND
+
+STAT("Sleeping before clear plot");
+sleep 30;
+
+
+[_plotter, "clear"] call ALIVE_fnc_plotSectors;
 
 
 STAT("Plot elevation");

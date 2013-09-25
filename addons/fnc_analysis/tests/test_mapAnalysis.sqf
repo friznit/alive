@@ -56,8 +56,8 @@ STAT("Create Grid");
 TIMERSTART
 ///*
 [_grid, "gridPosition", [getPos player select 0, getPos player select 1]] call ALIVE_fnc_sectorGrid;
-[_grid, "gridSize", 500] call ALIVE_fnc_sectorGrid;
-[_grid, "sectorDimensions", [500,500]] call ALIVE_fnc_sectorGrid;                                                       
+[_grid, "gridSize", 2000] call ALIVE_fnc_sectorGrid;
+[_grid, "sectorDimensions", [1000,1000]] call ALIVE_fnc_sectorGrid;                                                       
 //*/
 _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
