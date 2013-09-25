@@ -1,4 +1,4 @@
-// Define player data collection
+// Define player data getting and setting
 
 GVAR(UNIT_DATA) = [
 		["lastSaveTime",{ time;}, "SKIP"],

@@ -29,7 +29,7 @@ if (!isNil(ALIVE_fnc_player) && isDedicated) then {
 	_uid = _this select 2;
 
 	if (_name == "__SERVER__") exitWith {
-		// If server connects, load player data from database
+		// If server connects, load all player data from database
 
 		_result = [ALIVE_PlayerSystem, "loadPlayers", []] call ALIVE_fnc_player;
 		TRACE_1("LOADING PLAYER DATA", _result);
@@ -38,19 +38,24 @@ if (!isNil(ALIVE_fnc_player) && isDedicated) then {
 
 	};
 
+	// If not server then wait for server to load data then proceed
 	_check = ALIVE_PlayerSystem getVariable ["loaded", false];
 
 	// Disable user input?
 	// Disallow damage?
 	// Black Screen?
 
+	TRACE_1("Waiting for player data to load",_check);
 	while  {!_check} do {
 		_check = ALIVE_PlayerSystem getVariable ["loaded", false];
-		TRACE_1("Waiting for player data to load",_check)
 	};
+	TRACE_1("Player data to loaded",_check);
 
 	// If player connecting then get player data from memory and update player object
 	{
+		private "_player";
+		_player = getPlayerUID _x;
+		TRACE_2("SYS_PLAYER PLAYABLEUNITS CHECK",_player, _uid);
 		if (getPlayerUID _x == _uid) exitwith {
 			diag_log[format["SYS_PLAYER: PLAYER UNIT FOUND IN PLAYABLEUNITS (%1)",_x]];
 			_unit = _x;
@@ -59,7 +64,7 @@ if (!isNil(ALIVE_fnc_player) && isDedicated) then {
 	} foreach playableUnits;
 
 	if (isNull _unit) then {
-		diag_log["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS"];
+		diag_log[format["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS(%1)",_name]];
 
 		/// Hmmmm connecting player isn't found...
 

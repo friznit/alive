@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_playerInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\sys_player\icon_sys_player.paa";
-				picture = "x\alive\addons\sys_player\icon_sys_player.paa";
+		icon = "x\alive\addons\sys_player\icon_sys_player.paa";
+		picture = "x\alive\addons\sys_player\icon_sys_player.paa";
                 class Arguments
                 {
                         class key

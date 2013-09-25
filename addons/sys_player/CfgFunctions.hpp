@@ -4,7 +4,7 @@ class cfgFunctions {
                         class player {
                                 description = "The main class";
                                 file = "\x\alive\addons\sys_player\fnc_player.sqf";
-								recompile = 1;
+				recompile = 1;
                         };
                         class playerInit {
                                 description = "The module initialisation function";

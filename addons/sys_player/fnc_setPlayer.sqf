@@ -38,11 +38,11 @@ _player = _args select 0;
 
 _playerHash = [] call CBA_fnc_hashCreate;
 
-// Get save options
-_saveLoadout = _logic getvariable ["saveLoadout",1];
-_saveHealth = _logic getvariable ["saveHealth",1];
-_savePosition = _logic getvariable ["savePosition",1];
-_saveScores = _logic getvariable ["saveScores",1];
+	// Get save options
+	_saveLoadout = _logic getvariable ["saveLoadout","1"];
+	_saveHealth = _logic getvariable ["saveHealth","1"];
+	_savePosition = _logic getvariable ["savePosition","1"];
+	_saveScores = _logic getvariable ["saveScores","1"];
 
 // Create Data Command Array
 _data = GVAR(UNIT_DATA);

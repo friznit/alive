@@ -117,6 +117,9 @@ switch(_operation) do {
                         // any client side logic
 
                         // Delete logic on client?
+                        _logic setVehicleVarName "ALIVE_CLIENTSystem";
+
+                        TRACE_1("SYS_PLAYER LOGIC CLIENT", _logic);
                 };
 
 
@@ -192,15 +195,15 @@ switch(_operation) do {
 
             		};
             	   };
+
+                           TRACE_1("After module init",_logic);
+                        "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
+                        _result = _logic;
                 };
 
                 // Eventhandlers for OPC/OPD are called from main
 
                 // Eventhandlers for other stuff here?
-
-                TRACE_1("After module init",_logic);
-                "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
-                _result = _logic;
 
         };
 
