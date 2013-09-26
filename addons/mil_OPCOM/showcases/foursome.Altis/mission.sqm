@@ -52,7 +52,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE | Foursome v0.6";
+		briefingName="ALiVE Showcase - Foursome v0.65";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -153,7 +153,7 @@ class Mission
 						items=3;
 						class Item0
 						{
-							value="false";
+							value="true";
 							parentCls="ALiVE_sys_profile";
 							typeName="debug";
 						};
@@ -748,7 +748,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={20471.063,0.097881332,30165.375};
+					position[]={21169.244,-0.0020978525,30320.527};
 					azimut=-203.51401;
 					special="FLY";
 					id=18;
@@ -764,8 +764,24 @@ class Mission
 			};
 			class Waypoints
 			{
-				items=1;
+				items=3;
 				class Item0
+				{
+					position[]={27979.168,0.21003185,29059.695};
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+				class Item1
+				{
+					position[]={29299.238,-0.18222436,27211.598};
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+				class Item2
 				{
 					position[]={23534.146,91.901741,21126.076};
 					expActiv="insertion_heli setspeedmode ""LIMITED""; insertion_heli land ""LAND"";";
