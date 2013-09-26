@@ -1,16 +1,16 @@
 // ----------------------------------------------------------------------------
 
-#include <\x\alive\addons\sys_adminactions\script_component.hpp>
-SCRIPT(test_adminActions);
+#include <\x\alive\addons\sys_player\script_component.hpp>
+SCRIPT(test_player);
 
 // ----------------------------------------------------------------------------
 
 private ["_result","_err","_logic","_amo"];
 
-LOG("Testing AdminActions");
+LOG("Testing player");
 
 // UNIT TESTS
-ASSERT_DEFINED("ALIVE_fnc_adminActions","ALIVE_fnc_adminActions is not defined!");
+ASSERT_DEFINED("ALIVE_fnc_player","ALIVE_fnc_player is not defined!");
 
 #define STAT(msg) sleep 1; \
 diag_log ["TEST("+str player+": "+msg]; \
@@ -27,7 +27,7 @@ _logic = nil;
 
 STAT("Create instance");
 if(isServer) then {
-	_logic = [nil, "create"] call ALIVE_fnc_adminActions;
+	_logic = [nil, "create"] call ALIVE_fnc_player;
 	TEST_LOGIC = _logic;
 	publicVariable "TEST_LOGIC";
 };
@@ -42,14 +42,14 @@ ASSERT_TRUE(typeName _logic == "OBJECT", _err);
 if(isMultiplayer) then {
 
 STAT("Check not server admin");
-_result = [_logic, "active"] call ALIVE_fnc_adminActions;
+_result = [_logic, "active"] call ALIVE_fnc_player;
 ASSERT_FALSE(_result, "Player is already server admin");
 
 STAT("Login as server admin");
 serverCommand "#login";
 
 STAT("Check is server admin");
-_result = [_logic, "active"] call ALIVE_fnc_adminActions;
+_result = [_logic, "active"] call ALIVE_fnc_player;
 ASSERT_TRUE(_result, "Player is not server admin");
 };
 
@@ -58,7 +58,7 @@ sleep 5;
 
 STAT("Destroy old instance");
 if(isServer) then {
-	[_logic, "destroy"] call ALIVE_fnc_adminActions;
+	[_logic, "destroy"] call ALIVE_fnc_player;
 	missionNamespace setVariable ["TEST_LOGIC",nil];
 } else {
 	waitUntil{isNull TEST_LOGIC};

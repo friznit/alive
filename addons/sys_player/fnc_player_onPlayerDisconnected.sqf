@@ -15,7 +15,7 @@
 
 #include "script_component.hpp"
 
-if (!isNil(ALIVE_fnc_player) && isDedicated) then {
+if (!isNil QMOD(sys_player) && isDedicated) then {
 	private ["_unit","_id","_uid","_name","_check","_result"];
 
 	_unit = objNull;
@@ -29,9 +29,9 @@ if (!isNil(ALIVE_fnc_player) && isDedicated) then {
 	if (_name == "__SERVER__") exitWith {
 
 		// If storetoDB is enabled then save player data
-		_check = [ALIVE_PlayerSystem,"storeToDB",[],true] call ALIVE_fnc_OOsimpleOperation;
+		_check = [MOD(sys_player),"storeToDB",[],true] call ALIVE_fnc_OOsimpleOperation;
 		if (_check) then {
-			_result = [ALIVE_PlayerSystem, "savePlayers", []] call ALIVE_fnc_player;
+			_result = [MOD(sys_player), "savePlayers", []] call ALIVE_fnc_player;
 			TRACE_1("SAVING PLAYER DATA", _result);
 		};
 	};
@@ -45,21 +45,22 @@ if (!isNil(ALIVE_fnc_player) && isDedicated) then {
 
 	if (isNull _unit) then {
 		private ["_timeDiff","_lastPlayerSaveTime"];
-		diag_log["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS"];
+		diag_log["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS (%1)", _name];
 		// Work out when the last player save was and report the difference
 
-		_lastPlayerSaveTime = [ALIVE_PlayerSystem, "getPlayerSaveTime", [_uid]] call ALIVE_fnc_player;
-		_timeDiff = _lastPlayerSaveTime - time;
+		_lastPlayerSaveTime = [MOD(sys_player), "getPlayerSaveTime", [_uid]] call ALIVE_fnc_player;
+		_timeDiff = time - _lastPlayerSaveTime;
 		diag_log["SYS_PLAYER: Have not saved player state for %2 for %1 seconds", _timeDiff,_name];
 
 	} else {
 
 		// Set player data to in memory store
 
-		_result = [ALIVE_PlayerSystem, "setPlayer", [_unit]] call ALIVE_fnc_player;
+		_result = [MOD(sys_player), "setPlayer", [_unit]] call ALIVE_fnc_player;
 		TRACE_1("SETTING PLAYER DATA", _result);
 	};
 
-};
+	MOD(sys_player) setVariable [str(_uid), false, true];
 
+};
 // ====================================================================================

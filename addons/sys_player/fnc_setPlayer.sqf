@@ -34,36 +34,38 @@ private ["_logic","_args","_player","_find","_saveLoadout","_saveHealth","_saveP
 _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _args = [_this, 1, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 
+_data =  [];
+
 _player = _args select 0;
 
 _playerHash = [] call CBA_fnc_hashCreate;
 
 	// Get save options
-	_saveLoadout = _logic getvariable ["saveLoadout","1"];
-	_saveHealth = _logic getvariable ["saveHealth","1"];
-	_savePosition = _logic getvariable ["savePosition","1"];
-	_saveScores = _logic getvariable ["saveScores","1"];
+	_saveLoadout = _logic getvariable ["saveLoadout","true"];
+	_saveHealth = _logic getvariable ["saveHealth","true"];
+	_savePosition = _logic getvariable ["savePosition","true"];
+	_saveScores = _logic getvariable ["saveScores","true"];
 
 // Create Data Command Array
 _data = GVAR(UNIT_DATA);
 
-TRACE_5("SYS_PLAYER",_saveLoadout,_saveHealth,_savePosition,_saveScores,_data);
-
-if (_savePosition == "1") then {
+if (call compile _savePosition) then {
 	_data = _data + GVAR(POSITION_DATA);
 };
 
-if (_saveHealth == "1") then {
+if (call compile _saveHealth) then {
 	_data = _data + GVAR(HEALTH_DATA);
 };
 
-if (_saveLoadout == "1") then {
+if (call compile _saveLoadout) then {
 	_data =_data + GVAR(LOADOUT_DATA);
 };
 
-if (_saveScores == "1") then {
+if (call compile _saveScores) then {
 	_data =_data + GVAR(SCORE_DATA);
 };
+
+TRACE_5("SYS_PLAYER",_saveLoadout,_saveHealth,_savePosition,_saveScores,_data);
 
 // Run data collection commands
 {

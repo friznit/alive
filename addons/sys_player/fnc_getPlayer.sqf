@@ -42,31 +42,31 @@ _owner = _args select 1;
 	_playerHash = [GVAR(player_data), getPlayerUID _player] call CBA_fnc_hashGet;
 
 	// Get save options
-	_saveLoadout = _logic getvariable ["saveLoadout","1"];
-	_saveHealth = _logic getvariable ["saveHealth","1"];
-	_savePosition = _logic getvariable ["savePosition","1"];
-	_saveScores = _logic getvariable ["saveScores","1"];
+	_saveLoadout = _logic getvariable ["saveLoadout","true"];
+	_saveHealth = _logic getvariable ["saveHealth","true"];
+	_savePosition = _logic getvariable ["savePosition","true"];
+	_saveScores = _logic getvariable ["saveScores","true"];
 
 	// Create Data Command Array
 	_data = GVAR(UNIT_DATA);
 
-	TRACE_5("SYS_PLAYER GETPLAYER SETTINGS",_saveLoadout,_saveHealth,_savePosition,_saveScores,_data);
-
-	if (_savePosition == "1") then {
+	if (call compile _savePosition) then {
 		_data = _data + GVAR(POSITION_DATA);
 	};
 
-	if (_saveHealth == "1") then {
+	if (call compile _saveHealth) then {
 		_data = _data + GVAR(HEALTH_DATA);
 	};
 
-	if (_saveLoadout == "1") then {
+	if (call compile _saveLoadout) then {
 		_data =_data + GVAR(LOADOUT_DATA);
 	};
 
-	if (_saveScores == "1") then {
+	if (call compile _saveScores) then {
 		_data =_data + GVAR(SCORE_DATA);
 	};
+
+	TRACE_5("SYS_PLAYER GETPLAYER SETTINGS",_saveLoadout,_saveHealth,_savePosition,_saveScores,_data);
 
 	// Run data collection commands
 	{

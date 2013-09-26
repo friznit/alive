@@ -3,7 +3,7 @@
 GVAR(UNIT_DATA) = [
 		["lastSaveTime",{ time;}, "SKIP"],
 		["name",{ name (_this select 0);}, "SKIP"],
-		["class",{typeof  (_this select 0);}, {[ALIVE_PlayerSystem, "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}],
+		["class",{typeof  (_this select 0);}, {[MOD(sys_player), "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}],
 		["rating",{rating  (_this select 0);}, {(_this select 0) addrating (_this select 1);}],
 		["rank",{rank (_this select 0);}, {(_this select 0) setUnitRank (_this select 1);}],
 		["group",{group  (_this select 0);}, {(_this select 0) joinSilent (_this select 1);}],
@@ -189,9 +189,9 @@ GVAR(LOADOUT_DATA) = [
 		if (vehicle (_this select 0) == (_this select 0)) then {
 			_currentweapon = currentMuzzle (_this select 0);
 			_currentmode = currentWeaponMode (_this select 0);
-		    _isFlash = (this select 0) isFlashlightOn _currentweapon;
-		    _isIR = (this select 0) isIRLaserOn _currentweapon;
-		    _nvg = currentVisionMode (this select 0); 
+		    _isFlash = (_this select 0) isFlashlightOn _currentweapon;
+		    _isIR = (_this select 0) isIRLaserOn _currentweapon;
+		    _nvg = currentVisionMode (_this select 0); 
 		    _data = [_currentweapon, _currentmode, _isFlash, _isIR, _nvg];
 		} else { // Player in vehicle
 			_currentweapon = currentWeapon (_this select 0);

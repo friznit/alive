@@ -65,7 +65,7 @@ _result = true;
 switch(_operation) do {
         case "init": {
                 // Ensure only one module is used
-                if (isServer && !(isNil QMOD(player))) exitWith {
+                if (isServer && !(isNil QMOD(sys_player))) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_player_ERROR1");
                 };
 
@@ -81,12 +81,12 @@ switch(_operation) do {
 
              if (isServer) then {
 
-                	// if server, initialise module game logic
-            	   _logic setVariable ["super", QUOTE(SUPERCLASS)];
-            	   _logic setVariable ["class", QUOTE(MAINCLASS)];
+                        MOD(sys_player) = _logic;
+                        publicVariable QMOD(sys_player);
 
-                     // Set module object name for reference outside module code
-                     // _logic setVehicleVarName "ALIVE_PlayerSystem";
+                	// if server, initialise module game logic
+            	   MOD(sys_player) setVariable ["super", QUOTE(SUPERCLASS)];
+            	   MOD(sys_player) setVariable ["class", QUOTE(MAINCLASS)];
 
                       TRACE_1("SYS_PLAYER LOGIC", _logic);
 
@@ -94,12 +94,12 @@ switch(_operation) do {
             	private ["_serverID"];
 
             	_serverID = [] call ALIVE_fnc_getServerName;
-            	_logic setVariable ["serverID", _serverID];
-            	_logic setVariable ["missionID", missionName];
+            	MOD(sys_player) setVariable ["serverID", _serverID];
+            	MOD(sys_player) setVariable ["missionID", missionName];
 
             	// Set unique key for this mission - assuming that server name isn't going to change :(
-            	if (_logic getVariable ["key",""] == "") then {
-            	       _logic setVariable ["key", _serverID+missionName];
+            	if (MOD(sys_player) getVariable ["key",""] == "") then {
+            	       MOD(sys_player) setVariable ["key", _serverID+missionName];
             	};
 
                 	// Setup data handler
@@ -111,15 +111,16 @@ switch(_operation) do {
                       // Create Player Store
                       GVAR(player_data) = [] call CBA_fnc_hashCreate;
 
-                        TRACE_3("SYS_PLAYER", _logic, GVAR(player_data),GVAR(datahandler));
+                      MOD(sys_player) setVariable ["init", true, true];
+
+                        TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player) getvariable "init", MOD(sys_player) getvariable "serverID", MOD(sys_player) getvariable "missionID");
+                        TRACE_3("SYS_PLAYER DATA", MOD(sys_player), GVAR(player_data),GVAR(datahandler));
+
+
 
                 } else {
                         // any client side logic
 
-                        // Delete logic on client?
-                        _logic setVehicleVarName "ALIVE_CLIENTSystem";
-
-                        TRACE_1("SYS_PLAYER LOGIC CLIENT", _logic);
                 };
 
 
@@ -155,6 +156,7 @@ switch(_operation) do {
                 /*
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_playermenuDef)
+                - Tell the server that the player is connected
                 - Spawn process to regularly save player data to an in memory store
                 - Spawn process to regularly save to DB based on auto save time
                 - setup event handler to load data on server start (OPC)
@@ -164,31 +166,51 @@ switch(_operation) do {
                 - setup any event handlers needed on clientside
                 */
 
+                TRACE_2("Setting player guid on logic",isDedicated,isHC);
+                // For players set the uid variable on the logic once they are a valid player
+                if(!isDedicated && !isHC) then {
+                    private ["_puid"];
+                    TRACE_1("SYS_PLAYER GETTING READY TO SET GUID",player);
+
+                    if (isNull player) then {
+                        while {isNil QMOD(sys_player)} do {
+                            TRACE_1("Waiting for Player Persistence module to init", isNil QMOD(sys_player));
+                        };
+                        while {isNull player} do {
+                            TRACE_1("Waiting for player to init",player);
+                        };
+                    };
+
+                    _puid = getplayerUID player;
+                    TRACE_1("SYS_PLAYER GUID SET", _puid);
+                } else {
+                    TRACE_2("NO SYS_PLAYER or ISDEDICATED/HC", isDedicated, isNil QMOD(sys_player));
+                };
+
                 // Set up any spawn processes for checks
                 if (isServer) then {
 
-            	   [_logic] spawn {
-            		private ["_logic","_lastSaveTime","_lastDBSaveTime"];
-            		_logic = _this;
+            	   [] spawn {
+            		private ["_lastSaveTime","_lastDBSaveTime"];
             		_lastSaveTime = time;
             		_lastDBSaveTime = time;
 
-            		while {!isNil "ALIVE_fnc_player"} do {
+            		while {!isNil QMOD(sys_player)} do {
 
             			// Every X minutes store player data
             			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
                                     			{
-                                    				[_logic, "setPlayer", [_x]] call ALIVE_fnc_player;
+                                    				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
                                     			} foreach playableUnits;
                                     			_lastSaveTime = time;
             			};
 
             			// If auto save interval is defined and ext db is enabled, then save to external db
-            			_check = [_logic,"storeToDB",[],DEFAULT_STORETODB] call ALIVE_fnc_OOsimpleOperation;
-            			_autoSaveTime = [_logic,"autoSaveTime",[],DEFAULT_AUTOSAVETIME] call ALIVE_fnc_OOsimpleOperation;
+            			_check = [MOD(sys_player),"storeToDB",[],DEFAULT_STORETODB] call ALIVE_fnc_OOsimpleOperation;
+            			_autoSaveTime = [MOD(sys_player),"autoSaveTime",[],DEFAULT_AUTOSAVETIME] call ALIVE_fnc_OOsimpleOperation;
             			if (_check && (time >= (_lastDBSaveTime + _autoSaveTime))) then {
             				// Save player data to external db
-            				[_logic, "savePlayers", []] call ALIVE_fnc_player;
+            				[MOD(sys_player), "savePlayers", []] call MAINCLASS;
             			};
 
             			sleep DEFAULT_INTERVAL;
@@ -198,12 +220,13 @@ switch(_operation) do {
 
                            TRACE_1("After module init",_logic);
                         "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
-                        _result = _logic;
                 };
 
                 // Eventhandlers for OPC/OPD are called from main
 
                 // Eventhandlers for other stuff here?
+
+
 
         };
 
@@ -242,13 +265,13 @@ switch(_operation) do {
         };
         case "loadPlayers": {
                 // Load all players from external DB into player store
-                _result = true;
+                _result = false;
         };
         case "savePlayers": {
                 // Save all players to external DB
                 // Check to see if external database selected
                 // Call save players function
-                _result = true;
+                _result = false;
         };
         case "getPlayer": {
         	           // Get player data from player store and apply to player object
@@ -263,7 +286,11 @@ switch(_operation) do {
                     };
         };
         case "getPlayerSaveTime": {
-        	// Get the time of the last player save for a specific player
+                    private ["_playerHash","_unit"];
+                	// Get the time of the last player save for a specific player
+                    _unit = _args select 0;
+                    _playerHash = [GVAR(player_data), getplayerUID _unit] call CBA_fnc_hashGet;
+                    _result =  [_playerHash, "lastSaveTime"] call CBA_fnc_hashGet;
         };
         case "setPlayer": {
                         // Set player data to player store
@@ -284,10 +311,17 @@ switch(_operation) do {
 
                 if (isServer) then {
                 		// if server
-                		[_logic, "destroy"] call SUPERCLASS;
+
+                                _logic setVariable ["super", nil];
+                                _logic setVariable ["class", nil];
+                                _logic setVariable ["init", nil];
+                                // and publicVariable to clients
+                                MOD(sys_player) = _logic;
+                                publicVariable QMOD(sys_player);
+                                [_logic, "destroy"] call SUPERCLASS;
                 };
 
-                _logic = nil;
+
 
                 if(!isDedicated && !isHC) then {
                         // remove main menu
@@ -296,7 +330,7 @@ switch(_operation) do {
                                 [SELF_INTERACTION_KEY],
                                 -9500,
                                 [
-                                        "call ALIVE_fnc_playerMenuDef",
+                                        "call MAINCLASSMenuDef",
                                         "main"
                                 ]
                         ] call CBA_fnc_flexiMenu_Remove;
