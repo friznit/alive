@@ -35,6 +35,9 @@ private ["_hash","_key","_default","_result"];
 _hash = _this select 0;
 _key = _this select 1;
 
+//Avoid passing a non-existing hash or key to the CBA function
+if ((isnil "_hash") || (isnil "_key")) exitwith {};
+
 if(count _this > 2) then {
 	_default = _this select 2;
 	_result = [_hash, _key, _default] call CBA_fnc_hashGet;
