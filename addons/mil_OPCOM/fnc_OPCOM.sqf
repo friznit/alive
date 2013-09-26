@@ -397,6 +397,7 @@ switch(_operation) do {
 
 				_result = _objective;
 		};
+
         case "cleanupduplicatesections": {
             private ["_objectives","_objective","_section","_proID","_state","_size_reserve","_pending_orders","_profile","_wayPoints","_orders","_profileIDs"];
             
@@ -430,7 +431,7 @@ switch(_operation) do {
                 }; 
             } foreach _objectives;
         };
-        
+
         case "analyzeclusteroccupation": {
             	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
@@ -692,14 +693,14 @@ switch(_operation) do {
         
         case "resetorders": {
             ASSERT_TRUE(typeName _args == "STRING",str _args);
-			private ["_profileID","_profile","_ProfileIDsBusy","_profileIDx","_pendingOrders","_ProfileIDsReserve","_section","_objectives"];
+			private ["_active","_profileID","_profile","_ProfileIDsBusy","_profileIDx","_pendingOrders","_ProfileIDsReserve","_section","_objectives"];
             
-            _profileID = _args;
-            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+        	_profileID = _args;
             _pendingOrders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
             _ProfileIDsBusy = [_logic,"ProfileIDsBusy",[]] call ALiVE_fnc_HashGet;
             _ProfileIDsReserve = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
             _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
+            
             
             //Reset busy queue if there is an entry for the entitiy
 			[_logic,"ProfileIDsBusy",_ProfileIDsBusy - [_profileID]] call ALiVE_fnc_HashSet;
@@ -728,8 +729,15 @@ switch(_operation) do {
                 };
             } foreach _objectives;
             
-            [_profile, "clearActiveCommands"] call ALIVE_fnc_profileEntity;
-			[_profile, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+               _active = [_profile, "active", false] call ALIVE_fnc_HashGet;
+
+               if !(_active) then {
+	            	[_profile, "clearActiveCommands"] call ALIVE_fnc_profileEntity;
+					[_profile, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
+               };
+            };
             
             _result = true;
         };
