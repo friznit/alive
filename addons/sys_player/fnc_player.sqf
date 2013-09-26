@@ -167,22 +167,23 @@ switch(_operation) do {
                 */
 
                 TRACE_2("Setting player guid on logic",isDedicated,isHC);
-                // For players set the uid variable on the logic once they are a valid player
+                // For players waituntil the player is valid then let server know.
                 if(!isDedicated && !isHC) then {
-                    private ["_puid"];
-                    TRACE_1("SYS_PLAYER GETTING READY TO SET GUID",player);
+                    [] spawn {
+                        private ["_puid"];
+                        TRACE_1("SYS_PLAYER GETTING READY",player);
 
-                    if (isNull player) then {
-                        while {isNil QMOD(sys_player)} do {
-                            TRACE_1("Waiting for Player Persistence module to init", isNil QMOD(sys_player));
-                        };
-                        while {isNull player} do {
-                            TRACE_1("Waiting for player to init",player);
-                        };
+                        waitUntil { !(isNull player) };
+                        sleep 0.2;
+
+                        waitUntil {!isNil QMOD(sys_player)};
+                        sleep 0.2;
+
+                        _puid = getplayerUID player;
+                        TRACE_1("SYS_PLAYER GUID SET", _puid);
+
+                        MOD(sys_player) setVariable [_puid, true, true];
                     };
-
-                    _puid = getplayerUID player;
-                    TRACE_1("SYS_PLAYER GUID SET", _puid);
                 } else {
                     TRACE_2("NO SYS_PLAYER or ISDEDICATED/HC", isDedicated, isNil QMOD(sys_player));
                 };

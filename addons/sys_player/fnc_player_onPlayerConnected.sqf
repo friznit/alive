@@ -17,9 +17,8 @@
 
 if (!isNil QMOD(sys_player) && isDedicated) then {
 
-	private ["_owner","_data","_unit","_id","_uid","_name","_module","_check", "_player"];
+	private ["_id","_uid","_name","_module", "_result"];
 
-	_unit = objNull;
 	_module = "players";
 
 	TRACE_1("SYS_PLAYER PLAYER CONNECT", _this);
@@ -38,45 +37,63 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	};
 
-	// If not server then wait for server to load data then proceed
-	_check = MOD(sys_player) getVariable ["loaded", false];
-
 	// Disable user input?
 	// Disallow damage?
 	// Black Screen?
 
-	// Wait for player data to be loaded by server
-	TRACE_1("Waiting for player data to load",_check);
-	while  {!_check} do {
+	// If not server then wait for server to load data, wait for player to connect and player object to get assigned then proceed
+
+	[_uid, _name] spawn {
+		private ["_owner","_data","_unit","_uid","_name","_check"];
+
+		_uid = _this select 0;
+		_name = _this select 1;
+
+		_unit = objNull;
+
 		_check = MOD(sys_player) getVariable ["loaded", false];
-	};
-	TRACE_1("Player data to loaded",_check);
+		// Wait for player data to be loaded by server
+		TRACE_1("Waiting for player data to load",_check);
+		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable ["loaded", false]; TRACE_1("Waiting for data",_check); _check};
+		sleep 0.2;
+		TRACE_1("Player data loaded",_check);
 
-	// If player connecting then get player data from memory and update player object
-	{
-		private "_player";
-		_player = getPlayerUID _x;
-		TRACE_2("SYS_PLAYER PLAYABLEUNITS CHECK",_player);
-		if (getPlayerUID _x == _uid) exitwith {
-			diag_log[format["SYS_PLAYER: PLAYER UNIT FOUND IN PLAYABLEUNITS (%1)",_x]];
-			_unit = _x;
-			_owner = owner _unit;
+		_check = MOD(sys_player) getVariable [_uid, false];
+		// Wait for player data to be loaded by server
+		TRACE_1("Waiting for player to connect",_check);
+		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable [_uid, false]; TRACE_1("Waiting for player",_check); _check};
+		sleep 0.2;
+		TRACE_1("Player connected",_check);
+
+		// If player connecting then get player data from memory and update player object
+		{
+			private ["_playerGUID","_tmp"];
+			_tmp = _x;
+			_playerGUID = getPlayerUID _tmp;
+			TRACE_1("Waiting for playable unit to get GUID",_playerGUID);
+			waitUntil {sleep 0.3; _playerGUID = getPlayerUID _tmp; TRACE_1("Waiting for GUID",_playerGUID); _playerGUID != ""};
+			sleep 0.2;
+			TRACE_2("SYS_PLAYER PLAYABLEUNITS CHECK",_playerGUID, _uid);
+			if (getPlayerUID _tmp == _uid ) exitwith {
+				TRACE_1("SYS_PLAYER: PLAYER UNIT FOUND IN PLAYABLEUNITS",name _tmp);
+				_unit = _tmp;
+				_owner = owner _unit;
+			};
+		} foreach playableUnits;
+
+		if (isNull _unit) then {
+			diag_log[format["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS(%1)",_name]];
+
+			/// Hmmmm connecting player isn't found...
+
+		} else {
+
+			_result = [MOD(sys_player), "getPlayer", [_unit,_owner]] call ALIVE_fnc_player;
+
+			TRACE_1("GETTING PLAYER DATA", _result);
+
 		};
-	} foreach playableUnits;
-
-	if (isNull _unit) then {
-		diag_log[format["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS(%1)",_name]];
-
-		/// Hmmmm connecting player isn't found...
-
-	} else {
-
-		_result = [MOD(sys_player), "getPlayer", [_unit,_owner]] call ALIVE_fnc_player;
-
-		TRACE_1("GETTING PLAYER DATA", _result);
-
 	};
-
 };
 
 // ====================================================================================

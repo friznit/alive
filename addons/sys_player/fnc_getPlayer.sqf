@@ -40,6 +40,7 @@ _owner = _args select 1;
 
 	// Grab player data from memory store
 	_playerHash = [GVAR(player_data), getPlayerUID _player] call CBA_fnc_hashGet;
+	TRACE_1("GET PLAYER", _playerHash);
 
 	// Get save options
 	_saveLoadout = _logic getvariable ["saveLoadout","true"];
@@ -66,7 +67,7 @@ _owner = _args select 1;
 		_data =_data + GVAR(SCORE_DATA);
 	};
 
-	TRACE_5("SYS_PLAYER GETPLAYER SETTINGS",_saveLoadout,_saveHealth,_savePosition,_saveScores,_data);
+	TRACE_5("SYS_PLAYER GETPLAYER SETTINGS",_saveLoadout,_saveHealth,_savePosition,_saveScores,count _data);
 
 	// Run data collection commands
 	{
@@ -75,14 +76,16 @@ _owner = _args select 1;
 		_value = [_playerHash, _key] call CBA_fnc_hashGet;
 		_cmd = _x select 2;
 
-		if (_cmd != "SKIP") then {
+		if (typeName _cmd != "STRING") then {
 			// Execute on server
 			[_player,_value] call _cmd;
 
 			// or owner client?
 			// ["getplayer", [_player]] call CBA_fnc_remoteLocalEvent;
 
-			TRACE_3("SYS_PLAYER GET PLAYER DATA RESTORE",_player, _key, _value);
+			TRACE_3("SYS_PLAYER GET PLAYER DATA", _player, _key, _value);
+		} else {
+			TRACE_1("SKIPPING GET PLAYER CMD",_cmd);
 		};
 
 	} foreach _data;

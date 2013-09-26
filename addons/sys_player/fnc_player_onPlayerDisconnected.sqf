@@ -16,7 +16,7 @@
 #include "script_component.hpp"
 
 if (!isNil QMOD(sys_player) && isDedicated) then {
-	private ["_unit","_id","_uid","_name","_check","_result"];
+	private ["_unit","_id","_uid","_name","_check","_result","_test"];
 
 	_unit = objNull;
 
@@ -60,7 +60,10 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 		TRACE_1("SETTING PLAYER DATA", _result);
 	};
 
-	MOD(sys_player) setVariable [str(_uid), false, true];
+	MOD(sys_player) setVariable [_uid, false, true];
+
+	_test = MOD(sys_player) getVariable [_uid, false];
+	TRACE_1("REMOVING PLAYER GUID FROM LOGIC", _test);
 
 };
 // ====================================================================================

@@ -6,8 +6,8 @@ GVAR(UNIT_DATA) = [
 		["class",{typeof  (_this select 0);}, {[MOD(sys_player), "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}],
 		["rating",{rating  (_this select 0);}, {(_this select 0) addrating (_this select 1);}],
 		["rank",{rank (_this select 0);}, {(_this select 0) setUnitRank (_this select 1);}],
-		["group",{group  (_this select 0);}, {(_this select 0) joinSilent (_this select 1);}],
-		["leader", {(leader  (_this select 0) == (_this select 0));}, {(_this select 1) selectLeader (_this select 0);}]
+		["group",{group  (_this select 0);}, "SKIP"], // {[(_this select 0)] joinSilent (_this select 1);}
+		["leader", {(leader  (_this select 0) == (_this select 0));}, "SKIP"] // {(_this select 1) selectLeader (_this select 0);}
 		// Identity?
 ];
 
@@ -35,7 +35,7 @@ GVAR(POSITION_DATA) = [
 			};
 		}; 
 		_thisstance;
-	 }, {(_this select 0) playAction (_this select 1);}],
+	 }, {(_this select 0) playActionNow (_this select 1);}],
 	["side", { side (group (_this select 0));}, "SKIP"],
 	["vehicle",{ 
 		if (vehicle (_this select 0) != (_this select 0)) then {
@@ -129,7 +129,12 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
-	["secondaryWeapon", {secondaryWeapon (_this select 0);}, {(_this select 0) removeWeapon (secondaryWeapon (_this select 0)); (_this select 0) addWeapon (_this select 1);}],
+	["secondaryWeapon", {secondaryWeapon (_this select 0);}, {
+		(_this select 0) removeWeapon (secondaryWeapon (_this select 0)); 
+		if ((_this select 1) != "") then {
+			(_this select 0) addWeapon (_this select 1);
+		};
+	}],
 	["secondaryWeaponItems", {secondaryWeaponItems (_this select 0);}, {
 		{
 			if (_x !="" && !(_x in (secondaryWeaponItems (_this select 0)))) then { 
@@ -201,7 +206,7 @@ GVAR(LOADOUT_DATA) = [
 	}, {
 		if (vehicle (_this select 0) == (_this select 0)) then {
 			(_this select 0) selectWeapon ((_this select 1) select 0);
-			(_this select 0) action ["SwitchMagazine", (_this select 0), (_this select 0), ((_this select 1) select 1)];
+			// (_this select 0) action ["SwitchMagazine", (_this select 0), (_this select 0), ((_this select 1) select 1)];
 			if (typeName (_this select 1) select 2 == "BOOL" && (_this select 1) select 2) then {
 				(_this select 0) action ["GunLightOn", (_this select 0)];
 			};
