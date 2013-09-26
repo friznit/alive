@@ -48,7 +48,7 @@ _filteredSectors = [];
 		
 		_placesTypeData = [_bestPlaces,_placeType] call ALIVE_fnc_hashGet;
 		
-		if(count _placesTypeData > 0) then {
+		if (!(isnil "_placesTypeData") && {count _placesTypeData > 0}) then {
 			_filteredSectors set [count _filteredSectors, _sector];
 		};
 	};

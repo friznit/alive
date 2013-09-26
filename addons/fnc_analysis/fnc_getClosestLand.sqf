@@ -51,7 +51,7 @@ if(_sectorTerrain == "SHORE") then {
 	
 	if(count _samples > 0) then {
 		//["GCL got land samples: %1",_samples] call ALIVE_fnc_dump;
-		_result = _samples select (floor(random (count _samples)-1));
+		_result = _samples select (floor(random((count _samples)-1)));
 	};
 };
 
@@ -73,7 +73,7 @@ if(_sectorTerrain == "SEA") then {
 		
 		if(count _samples > 0) then {
 			//["GCL got land samples: %1",_samples] call ALIVE_fnc_dump;
-			_result = _samples select (floor(random (count _samples)-1));
+			_result = _samples select (floor(random((count _samples)-1)));
 		};
 	}else{
 		// not sure what to do here, they are out to sea...
