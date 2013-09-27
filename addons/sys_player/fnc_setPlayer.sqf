@@ -65,7 +65,7 @@ if (call compile _saveScores) then {
 	_data =_data + GVAR(SCORE_DATA);
 };
 
-TRACE_5("SYS_PLAYER",_saveLoadout,_saveHealth,_savePosition,_saveScores, count _data);
+TRACE_5("SYS_PLAYER SET",_saveLoadout,_saveHealth,_savePosition,_saveScores, count _data);
 
 // Run data collection commands
 {

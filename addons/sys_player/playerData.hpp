@@ -3,7 +3,7 @@
 GVAR(UNIT_DATA) = [
 		["lastSaveTime",{ time;}, "SKIP"],
 		["name",{ name (_this select 0);}, "SKIP"],
-		["class",{typeof  (_this select 0);}, {[MOD(sys_player), "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}],
+		["class",{typeof  (_this select 0);}, "SKIP"], // {[MOD(sys_player), "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}
 		["rating",{rating  (_this select 0);}, {(_this select 0) addrating (_this select 1);}],
 		["rank",{rank (_this select 0);}, {(_this select 0) setUnitRank (_this select 1);}],
 		["group",{group  (_this select 0);}, "SKIP"], // {[(_this select 0)] joinSilent (_this select 1);}
@@ -114,7 +114,7 @@ GVAR(HEALTH_DATA) = [
 
 GVAR(LOADOUT_DATA) = [
 	["primaryweapon", {primaryWeapon (_this select 0);}, {(_this select 0) removeWeapon (primaryWeapon (_this select 0)); (_this select 0) addWeapon (_this select 1);}],
-	["primaryWeaponItems", {primaryWeaponItems (_this select 0);}, {
+	["primaryWeaponItems", {primaryWeaponItems (_this select 0);}, { 
 		{
 			if (_x !="" && !(_x in (primaryWeaponItems (_this select 0)))) then { 
 				(_this select 0) addPrimaryWeaponItem _x; 
@@ -135,7 +135,7 @@ GVAR(LOADOUT_DATA) = [
 			(_this select 0) addWeapon (_this select 1);
 		};
 	}],
-	["secondaryWeaponItems", {secondaryWeaponItems (_this select 0);}, {
+	["secondaryWeaponItems", {secondaryWeaponItems (_this select 0);}, { 
 		{
 			if (_x !="" && !(_x in (secondaryWeaponItems (_this select 0)))) then { 
 				(_this select 0) addSecondaryWeaponItem _x; 
@@ -187,8 +187,6 @@ GVAR(LOADOUT_DATA) = [
 			(_this select 0) assignItem _x;
 		} foreach (_this select 1);
 	}],
-	// Get/Set Ammo - uniform, vest, backpack
-	// get/set loaded mags
 	["weaponstate", { 
 		private ["_currentweapon","_currentmode","_isFlash","_isIR","_data"];
 		if (vehicle (_this select 0) == (_this select 0)) then {
@@ -207,20 +205,25 @@ GVAR(LOADOUT_DATA) = [
 		if (vehicle (_this select 0) == (_this select 0)) then {
 			(_this select 0) selectWeapon ((_this select 1) select 0);
 			// (_this select 0) action ["SwitchMagazine", (_this select 0), (_this select 0), ((_this select 1) select 1)];
-			if (typeName (_this select 1) select 2 == "BOOL" && (_this select 1) select 2) then {
+			if ((_this select 1) select 2) then {
 				(_this select 0) action ["GunLightOn", (_this select 0)];
 			};
-			if (typeName (_this select 1) select 3 == "BOOL" && (_this select 1) select 3) then {
+			if ((_this select 1) select 3) then {
 				(_this select 0) action ["IRLaserOn", (_this select 0)];
 			};
-			if (typeName (_this select 1) select 4 == "SCALAR" && (_this select 1) select 4 == 1) then {
-				(_this select 0) action ["nvGoogles", (_this select 0)];
+			if ( ((_this select 1) select 4) == 1 ) then {
+				(_this select 0) action ["nvGoggles", (_this select 0)];
 			};
 		} else { // Player in vehicle
 			(_this select 0) selectWeapon ((_this select 1) select 0);
 		};
 	}]
 
+];
+
+GVAR(MAGAZINE_DATA) = [
+	//get set magazine
+	//get set Ammo - uniform, vest, backpack
 ];
 
 GVAR(SCORE_DATA) = [

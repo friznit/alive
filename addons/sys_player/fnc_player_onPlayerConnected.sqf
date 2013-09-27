@@ -75,9 +75,9 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 			sleep 0.2;
 			TRACE_2("SYS_PLAYER PLAYABLEUNITS CHECK",_playerGUID, _uid);
 			if (getPlayerUID _tmp == _uid ) exitwith {
-				TRACE_1("SYS_PLAYER: PLAYER UNIT FOUND IN PLAYABLEUNITS",name _tmp);
 				_unit = _tmp;
 				_owner = owner _unit;
+				TRACE_2("SYS_PLAYER: PLAYER UNIT FOUND IN PLAYABLEUNITS",_unit, _owner);
 			};
 		} foreach playableUnits;
 

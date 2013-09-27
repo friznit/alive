@@ -119,7 +119,7 @@ switch(_operation) do {
 
 
                 } else {
-                        // any client side logic
+                        // any client side logic for model
 
                 };
 
@@ -218,16 +218,19 @@ switch(_operation) do {
 
             		};
             	   };
-
-                           TRACE_1("After module init",_logic);
-                        "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
                 };
 
                 // Eventhandlers for OPC/OPD are called from main
 
-                // Eventhandlers for other stuff here?
+                // Eventhandlers for other stuff here
 
+                // Setup player eventhandler to handle get player calls
+                if(!isDedicated && !isHC) then {
+                    ["getPlayer", {[_this select 0, _this select 1] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
+                };
 
+               TRACE_1("After module init",_logic);
+                "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
 
         };
 
@@ -275,12 +278,22 @@ switch(_operation) do {
                 _result = false;
         };
         case "getPlayer": {
-        	           // Get player data from player store and apply to player object
+        	           // Get player data from player store and apply to player object on client
                     private ["_playerHash","_unit"];
                     _unit  = _args select 0;
+                    _owner = _args select 1;
+
                     // Check that the hash is found
                      if ([GVAR(player_data), (getPlayerUID _unit)] call CBA_fnc_hashHasKey) then {
-                        _result = [_logic, _args] call ALIVE_fnc_getPlayer;
+
+                            // Grab player data from memory store
+                            _playerHash = [GVAR(player_data), getPlayerUID _unit] call CBA_fnc_hashGet;
+                            TRACE_1("GET PLAYER", _playerHash);
+
+                            // Execute getplayer on local client using CBA_fnc_remoteLocalEvent
+                            [ "getPlayer", [_unit, [_unit, _playerHash]] ] call CBA_fnc_whereLocalEvent;
+
+                            _result = true;
                     } else {
                         TRACE_3("SYS_PLAYER PLAYER DATA DOES NOT EXIST",_unit);
                         _result = false;
