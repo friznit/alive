@@ -1,6 +1,12 @@
 TODO
-- load players
-- save players
-- get player
-- set player
-
+- load players to db
+- save players to db
+- restore backpack items
+- restore vest items
+- restore magazines
+- save/restore ammo
+- restore primaryweaponitems properly
+- restore secondaryweaponitems properly
+- clean up module implementation
+- player menu
+- code review
