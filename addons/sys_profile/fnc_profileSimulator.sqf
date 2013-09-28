@@ -322,7 +322,7 @@ _toBekilled = [];
     if (count _vehiclesInCommandOf > 0) then {_factor1 = 0.3};
     _factor2 = _engagedOwn / _engagedTotal;
     _weighting = _factor1 + _factor2;
-    
+
     // Enemy sides near, chance of death by weighting
     if ((({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0) && (random 1 > _weighting)) then {
         _clash set [_foreachIndex,["",[0,0,0],""]];
@@ -337,6 +337,16 @@ _toBekilled = [];
 	
 	if (!(isnil "_profile") && {!(_profile select 2 select 1)}) then {
         	//player sidechat format["Group %1 killed in simulated combat!",_profileID];
+            _vehiclesInCommandOf = _profile select 2 select 8;
+            
+            if (count _vehiclesInCommandOf > 0) then {
+                {
+                    //player sidechat format["Vehicle %1 destroyed!",_x];
+                    _vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    [ALIVE_profileHandler, "unregisterProfile", _vehicleProfile] call ALIVE_fnc_profileHandler;
+                } foreach _vehiclesInCommandOf;
+            };
+
 			[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
     };
 } foreach _toBekilled;
