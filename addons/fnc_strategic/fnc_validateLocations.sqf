@@ -31,8 +31,6 @@ nil
 private ["_markers","_marker","_obj_array","_result","_marker","_insideOnly"];
 PARAMS_3(_markers,_obj_array,_insideOnly);
 
-["M: %1 count M:%2", _markers, count _markers] call ALIVE_fnc_dump;
-
 _result = _obj_array;
 
 {
