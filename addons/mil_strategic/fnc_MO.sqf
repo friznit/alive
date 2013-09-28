@@ -64,6 +64,7 @@ switch(_operation) do {
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];
+			_logic setVariable ["moduleType", "ALIVE_MO"];
 			
 			[_logic, "destroy"] call SUPERCLASS;
 		};
@@ -179,10 +180,6 @@ switch(_operation) do {
 	case "objectivesHeli": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_HELI] call ALIVE_fnc_OOsimpleOperation;
 	};
-	// Return the Vehicle objectives as an array of clusters
-	case "objectivesVehicle": {
-		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_VEHICLE] call ALIVE_fnc_OOsimpleOperation;
-	};
 	// Main process
 	case "init": {
         if (isServer) then {
@@ -191,10 +188,34 @@ switch(_operation) do {
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
+			_logic setVariable ["moduleType", "ALIVE_MO"];
+			_logic setVariable ["startupComplete", false];
 			TRACE_1("After module init",_logic);
 
 			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
 			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
+
+			[_logic,"register"] call MAINCLASS;			
+        };
+	};
+	case "register": {
+		
+			private["_registration","_moduleType"];
+		
+			_moduleType = _logic getVariable "moduleType";
+			_registration = [_logic,_moduleType];
+	
+			if(isNil "ALIVE_registry") then {
+				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
+				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
+			};
+
+			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
+	};
+	// Main process
+	case "start": {
+        if (isServer) then {
+			private ["_initType"];
 			
 			_initType = [_logic, "initType"] call MAINCLASS;
 			
@@ -209,43 +230,41 @@ switch(_operation) do {
 					[_logic, "initDynamic"] call MAINCLASS;
 					[_logic, "generateStaticData"] call MAINCLASS;
 				};
-			};			
+			};		
+
+			// set module as started
+			_logic setVariable ["startupComplete", true];
         };
 	};
 	// Static Init
 	case "initStatic": {
         if (isServer) then {
 		
-			//waituntil {sleep 1; ["MO WAITING"] call ALIVE_fnc_dump; time > 0};
-				
-			private ["_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
+			private ["_debug","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
+			
+			_debug = [_logic, "debug"] call MAINCLASS;
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				["ALIVE MO - Startup"] call ALIVE_fnc_dump;
+				[true] call ALIVE_fnc_timer;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
+			
 								
 			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
-				//["LOADING MO DATA"] call ALIVE_fnc_dump;
-				//[true] call ALIVE_fnc_timer;
-				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedMilClusters = true;
-				
-				//[] call ALIVE_fnc_timer;
-				//["MO DATA LOADED"] call ALIVE_fnc_dump;
 			};
-			
-			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedMilClusters")};
-			
-			//["PARSING MO DATA"] call ALIVE_fnc_dump;
-			//[true] call ALIVE_fnc_timer;
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MO;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MO;
 			_sizeFilter = parseNumber([_logic, "sizeFilter"] call ALIVE_fnc_MO);
 			_priorityFilter = parseNumber([_logic, "priorityFilter"] call ALIVE_fnc_MO);
-			
-			//["TAOR: %1",_taor] call ALIVE_fnc_dump;
-			//["BLACK: %1",_blacklist] call ALIVE_fnc_dump;
 			
 			
 			_clusters = ALIVE_clustersMil select 2;
@@ -264,7 +283,7 @@ switch(_operation) do {
 			[_logic, "objectives", _clusters] call MAINCLASS;
 			
 			
-			private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
+			private ["_HQClusters","_airClusters","_heliClusters"];
 			
 			
 			_HQClusters = ALIVE_clustersMilHQ select 2;
@@ -303,20 +322,14 @@ switch(_operation) do {
 			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
 			
 			
-			_vehicleClusters = ALIVE_clustersMilVehicle select 2;
-			_vehicleClusters = [_vehicleClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_vehicleClusters = [_vehicleClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_vehicleClusters = [_vehicleClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _vehicleClusters;
-			*/
-			[_logic, "objectivesVehicle", _vehicleClusters] call MAINCLASS;
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["ALIVE CO - Startup completed"] call ALIVE_fnc_dump;
+				[] call ALIVE_fnc_timer;
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
 			
-			
-			//["MO DATA PARSED"] call ALIVE_fnc_dump;
-			//[] call ALIVE_fnc_timer;
 			
         };
 	};
@@ -324,13 +337,12 @@ switch(_operation) do {
 	case "generateStaticData": {
         if (isServer) then {
 		
-			private ["_objectives","_objectivesHQ","_objectivesAir","_objectivesHeli","_objectivesVehicle","_worldName","_objectivesName","_exportString","_result","_clusterCount"];
+			private ["_objectives","_objectivesHQ","_objectivesAir","_objectivesHeli","_worldName","_objectivesName","_exportString","_result","_clusterCount"];
 
 			_objectives = [_logic, "objectives"] call MAINCLASS;
 			_objectivesHQ = [_logic, "objectivesHQ"] call MAINCLASS;
 			_objectivesAir = [_logic, "objectivesAir"] call MAINCLASS;
 			_objectivesHeli = [_logic, "objectivesHeli"] call MAINCLASS;
-			_objectivesVehicle = [_logic, "objectivesVehicle"] call MAINCLASS;
 			_worldName = toLower(worldName);
 			
 			_exportString = '';
@@ -365,13 +377,7 @@ switch(_operation) do {
 				_exportString = _exportString + _result;
 			};
 			
-			_clusterCount = _clusterCount + count _objectivesHeli;
-			
-			if(count _objectivesVehicle > 0) then {
-				_objectivesName = 'ALIVE_clustersMilVehicle';
-				_result = [_objectivesVehicle, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;
-				_exportString = _exportString + _result;
-			};		
+			_clusterCount = _clusterCount + count _objectivesHeli;	
 			
 			copyToClipboard _exportString;
 			["Military Objectives generation complete, results have been copied to the clipboard"] call ALIVE_fnc_dump;
@@ -483,26 +489,6 @@ switch(_operation) do {
 			_clusters = _clusters + _clusters_heli;
 			_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 			
-			
-			
-			// Find sheds
-			// ------------------------------------------------------------------
-			private ["_clusters_vehicle"];
-			
-			"MO - Searching vehicle locations" call ALiVE_fnc_logger;
-			_types = [
-				"shed_big_f",
-				"shed_small_f"
-			];
-			_clusters_vehicle = [_logic, _types] call ALIVE_fnc_findTargets;
-			_clusters_vehicle = [_clusters_vehicle, "MIL", 10, "ColorGreen"] call ALIVE_fnc_setTargets;
-			
-			_clusters_vehicle = [_clusters_vehicle] call ALIVE_fnc_consolidateClusters;
-
-			// Store the categorised clusters on the logic
-			[_logic, "objectivesVehicle", [_clusters_vehicle] call ALIVE_fnc_copyClusters] call MAINCLASS;
-			
-			
 					
 			
 			// Find general military locations
@@ -546,7 +532,8 @@ switch(_operation) do {
 			
 			
 			// Generate parking positions
-			// ------------------------------------------------------------------			
+			// ------------------------------------------------------------------
+			
 			"MO - Generating Parking Positions" call ALiVE_fnc_logger;
 			[true] call ALIVE_fnc_timer;
 			_types = [

@@ -211,10 +211,34 @@ switch(_operation) do {
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
+			_logic setVariable ["moduleType", "ALIVE_CO"];
+			_logic setVariable ["startupComplete", false];
 			TRACE_1("After module init",_logic);
 
 			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
-			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;			
+			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
+
+			[_logic,"register"] call MAINCLASS;			
+        };
+	};
+	case "register": {
+		
+			private["_registration","_moduleType"];
+		
+			_moduleType = _logic getVariable "moduleType";
+			_registration = [_logic,_moduleType];
+	
+			if(isNil "ALIVE_registry") then {
+				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
+				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
+			};
+
+			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
+	};
+	// Main process
+	case "start": {
+        if (isServer) then {
+			private ["_initType"];
 			
 			_initType = [_logic, "initType"] call MAINCLASS;
 			
@@ -229,17 +253,27 @@ switch(_operation) do {
 					[_logic, "initDynamic"] call MAINCLASS;
 					[_logic, "generateStaticData"] call MAINCLASS;
 				};
-			};			
+			};
+			
+			// set module as started
+			_logic setVariable ["startupComplete", true];
         };
 	};
 	// Static Init
 	case "initStatic": {
         if (isServer) then {
 		
-			[true] call ALIVE_fnc_timer;
-		
-			private ["_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
+			private ["_debug","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
+						
+			_debug = [_logic, "debug"] call MAINCLASS;
+			
+			if(_debug) then {
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				["ALIVE CO - Startup"] call ALIVE_fnc_dump;
+				[true] call ALIVE_fnc_timer;
+			};
+			
 			
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
 				_worldName = toLower(worldName);			
@@ -247,8 +281,6 @@ switch(_operation) do {
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedCIVClusters = true;
 			};
-			
-			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedCIVClusters")};
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MO;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MO;
@@ -371,7 +403,12 @@ switch(_operation) do {
 			[_logic, "objectivesSettlement", _settlementClusters] call MAINCLASS;
 			
 			
-			[] call ALIVE_fnc_timer;
+			if(_debug) then {
+				["ALIVE CO - Startup completed"] call ALIVE_fnc_dump;
+				[] call ALIVE_fnc_timer;
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+			};
+			
 			
         };
 	};

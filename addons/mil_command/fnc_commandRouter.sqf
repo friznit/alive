@@ -209,10 +209,10 @@ switch(_operation) do {
 						_commandArgs = _activeCommand select 2;
 						
 						// DEBUG -------------------------------------------------------------------------------------
-						//if(_debug) then {
+						if(_debug) then {
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 							["ALiVE Command Router - De-activate Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
-						//};
+						};
 						// DEBUG -------------------------------------------------------------------------------------
 						
 						// handle various command types
@@ -261,10 +261,10 @@ switch(_operation) do {
 			_commandState = _logic select 2 select 1;
 			
 			// DEBUG -------------------------------------------------------------------------------------
-			//if(_debug) then {
+			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALiVE Command Router - Command Manager Started"] call ALIVE_fnc_dump;
-			//};
+			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
 			// spawn the manager thread
@@ -295,10 +295,10 @@ switch(_operation) do {
 							_commandArgs = _activeCommand select 2;
 							
 							// DEBUG -------------------------------------------------------------------------------------
-							//if(_debug) then {
+							if(_debug) then {
 								["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 								["ALiVE Command Router - Manage Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
-							//};
+							};
 							// DEBUG -------------------------------------------------------------------------------------
 						
 							// command state set, continue with the command
@@ -344,10 +344,10 @@ switch(_operation) do {
 			[_logic,"managerHandle",objNull] call ALIVE_fnc_hashSet;
 			
 			// DEBUG -------------------------------------------------------------------------------------
-			//if(_debug) then {
+			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALiVE Command Router - Command Manager Stopped"] call ALIVE_fnc_dump;
-			//};
+			};
 			// DEBUG -------------------------------------------------------------------------------------
 		};		
         default {

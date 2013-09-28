@@ -529,7 +529,7 @@ switch(_operation) do {
 				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
 		};
 		case "setInActive": {
-				private["_profileID","_profiles","_profileIndex"];
+				private["_profileID","_profilesInActive","_profilesActive"];
 
 				_profileID = _args;
 				_profilesInActive = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
@@ -633,12 +633,16 @@ switch(_operation) do {
 				};
 		};
 		case "getNextInsertEntityID": {
+			private["_entityCount"];
+			
 			_entityCount = [_logic, "profileEntityCount"] call ALIVE_fnc_hashGet;
 			_result = format["entity_%1",_entityCount];
 			_entityCount = _entityCount + 1;
 			[_logic, "profileEntityCount", _entityCount] call ALIVE_fnc_hashSet;
 		};
 		case "getNextInsertVehicleID": {
+			private["_vehicleCount"];
+		
 			_vehicleCount = [_logic, "profileVehicleCount"] call ALIVE_fnc_hashGet;
 			_result = format["vehicle_%1",_vehicleCount];
 			_vehicleCount = _vehicleCount + 1;

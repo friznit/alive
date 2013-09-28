@@ -48,7 +48,7 @@ nil
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS ALIVE_fnc_baseClassHash
-#define MAINCLASS ALIVE_fnc_profile
+#define MAINCLASS ALIVE_fnc_OPCOM
 
 private ["_logic","_operation","_args","_result"];
 
@@ -62,7 +62,34 @@ _result = nil;
 #define MTEMPLATE "ALiVE_OPCOM_%1"
 
 switch(_operation) do {
-        case "init": {                
+        // Main process
+		case "init": {
+			if (isServer) then {
+				// if server, initialise module game logic
+				_logic setVariable ["super", SUPERCLASS];
+				_logic setVariable ["class", MAINCLASS];
+				_logic setVariable ["moduleType", "ALIVE_OPCOM"];
+				TRACE_1("After module init",_logic);
+
+				[_logic,"register"] call MAINCLASS;			
+			};
+		};
+		case "register": {
+			
+			private["_registration","_moduleType"];
+	
+			_moduleType = _logic getVariable "moduleType";
+			_registration = [_logic,_moduleType,["ALIVE_profileHandler","SYNCED"]];
+	
+			if(isNil "ALIVE_registry") then {
+				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
+				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
+			};
+
+			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
+		};
+		// Main process
+		case "start": {                
                 /*
                 MODEL - no visual just reference data
                 - nodes
@@ -71,10 +98,6 @@ switch(_operation) do {
                 */
                 
                 if (isServer) then {
-	                // if server, initialise module game logic
-					_logic setVariable ["super", SUPERCLASS];
-					_logic setVariable ["class", MAINCLASS];
-					TRACE_1("After module init",_logic);
 			        
 			        //Create OPCOM #Hash#Datahandler
 					_handler = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
@@ -126,7 +149,7 @@ switch(_operation) do {
 					CONTROLLER  - coordination
 					*/
 			        
-			        waituntil {sleep 10; "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger; !(isnil "ALiVE_ProfileHandler")};
+			        //waituntil {sleep 10; "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger; !(isnil "ALiVE_ProfileHandler")};
                     
                     sleep 5;
 			        
@@ -138,7 +161,7 @@ switch(_operation) do {
                     for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 						private ["_obj"];
                         
-                        waituntil {sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger; _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
+                        waituntil {/*sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;*/ _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
                         _objectives = _objectives + _obj;
                     };
 

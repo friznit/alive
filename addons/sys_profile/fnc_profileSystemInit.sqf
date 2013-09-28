@@ -48,5 +48,5 @@ if(isServer) then {
 	[_profileSystem, "syncMode", _syncMode] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "start"] call ALIVE_fnc_profileSystem;
+	[_profileSystem, "register"] call ALIVE_fnc_profileSystem;
 };

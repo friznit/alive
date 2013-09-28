@@ -207,14 +207,52 @@ switch(_operation) do {
 	// Main process
 	case "init": {
         if (isServer) then {
+			// if server, initialise module game logic
+			_logic setVariable ["super", SUPERCLASS];
+			_logic setVariable ["class", MAINCLASS];
+			_logic setVariable ["moduleType", "ALIVE_MP"];
+			_logic setVariable ["startupComplete", false];
+			TRACE_1("After module init",_logic);
+
+			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
+			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
+
+			[_logic,"register"] call MAINCLASS;			
+        };
+	};
+	case "register": {
 		
-			private ["_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
+			private["_registration","_moduleType"];
+		
+			_moduleType = _logic getVariable "moduleType";
+			_registration = [_logic,_moduleType,["ALIVE_profileHandler"]];
+	
+			if(isNil "ALIVE_registry") then {
+				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
+				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
+			};
+
+			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
+	};
+	// Main process
+	case "start": {
+        if (isServer) then {
+		
+			private ["_debug","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
+			
+			_debug = [_logic, "debug"] call MAINCLASS;			
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				["ALIVE MP - Startup"] call ALIVE_fnc_dump;
+				[true] call ALIVE_fnc_timer;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
+			
 								
 			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
-				//["LOADING MP DATA"] call ALIVE_fnc_dump;
-				//[true] call ALIVE_fnc_timer;
-				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
@@ -224,26 +262,13 @@ switch(_operation) do {
 				if(isNil "ALIVE_groupConfig") then {
 					[] call ALIVE_fnc_groupGenerateConfigData;
 				};
-								
-				//[] call ALIVE_fnc_timer;
-				//["MP DATA LOADED"] call ALIVE_fnc_dump;
 			};
 			
-			//waituntil {sleep 0.1; !(isnil "ALIVE_loadedMilClusters")};
-			
-			//["PARSING MP DATA"] call ALIVE_fnc_dump;
-			//[true] call ALIVE_fnc_timer;
-			
-			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
-			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
 			
 			_taor = [_logic, "taor"] call ALIVE_fnc_MP;
 			_blacklist = [_logic, "blacklist"] call ALIVE_fnc_MP;
 			_sizeFilter = parseNumber([_logic, "sizeFilter"] call ALIVE_fnc_MP);
 			_priorityFilter = parseNumber([_logic, "priorityFilter"] call ALIVE_fnc_MP);
-			
-			//["TAOR: %1",_taor] call ALIVE_fnc_dump;
-			//["BLACK: %1",_blacklist] call ALIVE_fnc_dump;
 			
 			
 			_clusters = ALIVE_clustersMil select 2;
@@ -264,7 +289,7 @@ switch(_operation) do {
 			
 			private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
 			
-			waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")} && {!(isnil "ALIVE_clustersMilVehicle")}};
+			waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")}};
             
 			_HQClusters = ALIVE_clustersMilHQ select 2;
 			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
@@ -302,20 +327,13 @@ switch(_operation) do {
 			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
 			
 			
-			_vehicleClusters = ALIVE_clustersMilVehicle select 2;
-			_vehicleClusters = [_vehicleClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_vehicleClusters = [_vehicleClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_vehicleClusters = [_vehicleClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _vehicleClusters;
-			*/
-			[_logic, "objectivesVehicle", _vehicleClusters] call MAINCLASS;
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["ALIVE MP - Startup completed"] call ALIVE_fnc_dump;
+				[] call ALIVE_fnc_timer;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
 			
-			
-			//["MP DATA PARSED"] call ALIVE_fnc_dump;
-			//[] call ALIVE_fnc_timer;
 			
 			// start placement
 			[_logic, "placement"] call MAINCLASS;
@@ -325,13 +343,23 @@ switch(_operation) do {
 	case "placement": {
         if (isServer) then {
 		
-			waituntil {sleep 0.1; !(isnil "ALIVE_profileHandler")};
-		
-			private ["_clusters","_cluster","_HQClusters","_airClusters","_heliClusters","_vehicleClusters",
+			private ["_debug","_clusters","_cluster","_HQClusters","_airClusters","_heliClusters","_vehicleClusters",
 			"_countHQClusters","_countAirClusters","_countHeliClusters","_size","_type","_faction","_ambientVehicleAmount",
 			"_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass","_position","_direction","_unitBlackist",
 			"_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node","_forceMax"];
             
+		
+			_debug = [_logic, "debug"] call MAINCLASS;		
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				["ALIVE MP - Placement"] call ALIVE_fnc_dump;
+				[true] call ALIVE_fnc_timer;
+			};
+			// DEBUG -------------------------------------------------------------------------------------			
+			
+		
             waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
@@ -394,7 +422,12 @@ switch(_operation) do {
 				};
 			};
 			
-			//["MP[%1] Heli: %2",_faction,_countProfiles] call ALIVE_fnc_dump;
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["ALIVE MP [%1] - [%2] Heli units placed",_faction,_countProfiles] call ALIVE_fnc_dump;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
 			
 			
 			// Spawn air units in hangars
@@ -423,7 +456,12 @@ switch(_operation) do {
 				};
 			};
 			
-			//["MP[%1] Air: %2",_faction,_countProfiles] call ALIVE_fnc_dump;
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["ALIVE MP [%1] - [%2] Air units placed",_faction,_countProfiles] call ALIVE_fnc_dump;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
 					
 			
 			// Spawn land units				
@@ -481,7 +519,12 @@ switch(_operation) do {
 				};					
 			};
 			
-			//["MP[%1] Land: %2",_faction,_countProfiles] call ALIVE_fnc_dump;
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["ALIVE MP [%1] - [%2] Ambient land units placed",_faction,_countProfiles] call ALIVE_fnc_dump;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
 			
 			
 			// Spawn the main force
@@ -552,13 +595,18 @@ switch(_operation) do {
 				};
 			};
 			
-			/*
-			["Count Armor: %1",_countArmored] call ALIVE_fnc_dump;
-			["Count Mech: %1",_countMechanized] call ALIVE_fnc_dump;
-			["Count Motor: %1",_countMotorized] call ALIVE_fnc_dump;
-			["Count Air: %1",_countAir] call ALIVE_fnc_dump;
-			["Count Infantry: %1",_countInfantry] call ALIVE_fnc_dump;
-			*/
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["ALIVE MP [%1] - Main force ceration ",_factions] call ALIVE_fnc_dump;
+				["Count Armor: %1",_countArmored] call ALIVE_fnc_dump;
+				["Count Mech: %1",_countMechanized] call ALIVE_fnc_dump;
+				["Count Motor: %1",_countMotorized] call ALIVE_fnc_dump;
+				["Count Air: %1",_countAir] call ALIVE_fnc_dump;
+				["Count Infantry: %1",_countInfantry] call ALIVE_fnc_dump;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
+			
 			
 			// Assign groups
 			_groups = [];
@@ -598,26 +646,14 @@ switch(_operation) do {
 				};
 			};
 			
-			//["Count Groups: %1",count _groups] call ALIVE_fnc_dump;	
-			
 			_groups = _groups - _groupBlacklist;
-			
-			//["Count Groups Post Blacklist: %1",count _groups] call ALIVE_fnc_dump;	
-			
-			///*
-			//["Groups: %1",_groups] call ALIVE_fnc_dump;			
-			//["Group count: %1",count _groups] call ALIVE_fnc_dump;
-			//["Cluster count: %1",count _clusters] call ALIVE_fnc_dump;
-			//*/
+
 			
 			// Position and create groups
 			_groupCount = count _groups;
 			_clusterCount = count _clusters;
 			_groupPerCluster = floor(_groupCount / _clusterCount);		
 			_totalCount = 0;
-
-			
-			//["Groups / Cluster: %1",_groupPerCluster] call ALIVE_fnc_dump;
 			
 			{
                 private ["_grp","_center","_size"];
@@ -660,27 +696,18 @@ switch(_operation) do {
 				};					
 			} forEach _clusters;
 		
-			/*
-			["MP[%1] Force: %2",_faction,_countProfiles] call ALIVE_fnc_dump;			
-			_profilesBySide = [ALIVE_profileHandler, "profilesBySide"] call ALIVE_fnc_hashGet;
-			_profilesBySide = [_profilesBySide, _side] call ALIVE_fnc_hashGet;
-			["MP[%1] Side profiles: %2",_faction,count _profilesBySide] call ALIVE_fnc_dump;
+		
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["ALIVE MP - Placement completed"] call ALIVE_fnc_dump;
+				[] call ALIVE_fnc_timer;
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+			};
+			// DEBUG -------------------------------------------------------------------------------------
 			
-			{
-				_profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-				_type = [_profile, "type"] call ALIVE_fnc_hashGet; 
-				switch(_type)do{
-					case "entity":{
-						[_profile, "debug", true] call ALIVE_fnc_profileEntity;
-					};
-					case "vehicle":{
-						[_profile, "debug", true] call ALIVE_fnc_profileVehicle;
-					};
-				};				
-			}forEach _profilesBySide;
-			*/
 			
-			//[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+			// set module as started
+			_logic setVariable ["startupComplete", true];
 		};
 	};
 };

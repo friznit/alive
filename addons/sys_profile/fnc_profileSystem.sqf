@@ -47,19 +47,13 @@ _result = true;
 #define MTEMPLATE "ALiVE_PROFILESYSTEM_%1"
 
 switch(_operation) do {
-        case "init": {                
-                /*
-                MODEL - no visual just reference data
-                - nodes
-                - center
-                - size
-                */
-                
+        case "init": {                         
                 if (isServer) then {
                         // if server, initialise module game logic
-						// nil these out they add a lot of code to the hash..
-						[_logic,"super"] call ALIVE_fnc_hashRem;
-						[_logic,"class"] call ALIVE_fnc_hashRem;
+						[_logic,"super",SUPERCLASS] call ALIVE_fnc_hashSet;
+						[_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
+						[_logic,"moduleType","ALIVE_profileHandler"] call ALIVE_fnc_hashSet;
+						[_logic,"startupComplete",false] call ALIVE_fnc_hashSet;
                         //TRACE_1("After module init",_logic);						
 						
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
@@ -69,16 +63,25 @@ switch(_operation) do {
 						[_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",6] call ALIVE_fnc_hashSet;
                 };
-                
-                /*
-                VIEW - purely visual
-                */
-                
-                /*
-                CONTROLLER  - coordination
-                */
         };
-		case "start": {                
+		case "register": {
+		
+				private["_registration","_moduleType"];
+		
+				_moduleType = [_logic,"moduleType"] call ALIVE_fnc_hashGet;
+				_registration = [_logic,_moduleType];
+		
+				if(isNil "ALIVE_registry") then {
+					ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
+					[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
+				};
+
+				[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
+		};
+		case "start": {
+		
+				private["_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnCycleTime","_despawnCycleTime",
+				"_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];
                 
                 if (isServer) then {
 						
@@ -88,21 +91,16 @@ switch(_operation) do {
 						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
+
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-							["ALIVE Profile system init"] call ALIVE_fnc_dump;
+							["ALIVE ProfileSystem - Startup"] call ALIVE_fnc_dump;
 							[true] call ALIVE_fnc_timer;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 						
-						// create the profile handler
-						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
-						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
-						
-						// create profiles for all map units that dont have profiles
-						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;
 						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
@@ -115,6 +113,13 @@ switch(_operation) do {
 						
 						// import static map analysis to the grid
 						[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;						
+						
+						// create the profile handler
+						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
+						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+						
+						// create profiles for all map units that dont have profiles
+						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;						
 						
 						// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 						[ALIVE_profileHandler, "debug", _debug] call ALIVE_fnc_profileHandler;
@@ -131,9 +136,10 @@ switch(_operation) do {
 						// run initial profile analysis
 						//[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
 
+						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
-							["ALIVE Profile system init complete"] call ALIVE_fnc_dump;
+							["ALIVE ProfileSystem - Startup completed"] call ALIVE_fnc_dump;
 							["ALIVE Sector grid created"] call ALIVE_fnc_dump;
 							["ALIVE Profile handler created"] call ALIVE_fnc_dump;
 							["ALIVE Map units converted to profiles"] call ALIVE_fnc_dump;
@@ -144,11 +150,17 @@ switch(_operation) do {
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 						
+						
 						// start the profile simulator
 						_profileSimulatorFSM = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
+						[_logic,"simulator_FSM",_profileSimulatorFSM] call ALIVE_fnc_hashSet;
 						
 						// start the profile spawner
 						_profileSpawnerFSM = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;						
+						
+						// set module as started
+						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
 												
 						// run grid analysis
 						[_debug] spawn { 
@@ -158,12 +170,14 @@ switch(_operation) do {
 								
 								private ["_sectors","_sectorData"];
 								
+								
 								// DEBUG -------------------------------------------------------------------------------------
 								if(_debug) then {
 									["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 									["ALIVE Grid analysis for profile positions"] call ALIVE_fnc_dump;
 								};
 								// DEBUG -------------------------------------------------------------------------------------
+								
 								
 								// run profile analysis on all sectors
 								_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;				
@@ -187,8 +201,11 @@ switch(_operation) do {
                 if (isServer) then {
 					[_logic, "destroy"] call SUPERCLASS;
 					
-					_fsmHandler = [_logic, "controller_FSM"] call ALiVE_fnc_HashGet;					
-					_fsmHandler setFSMVariable ["_destroy",true];
+					_profileSimulatorFSM = [_logic, "simulator_FSM"] call ALiVE_fnc_HashGet;					
+					_profileSimulatorFSM setFSMVariable ["_destroy",true];
+					
+					_profileSpawnerFSM = [_logic, "simulator_FSM"] call ALiVE_fnc_HashGet;					
+					_profileSpawnerFSM setFSMVariable ["_destroy",true];
 					
                 };                
         };
