@@ -7,11 +7,11 @@ class header {
 };
 
 author = ALiVE Studios || Mission by Highhead;
-onLoadMission = "Iran has landed on Stratis! Only a few BLUFOR troops are stationed on the southern part of the island. Hold it by any means possible!";
+onLoadMission = "Iran has invaded Lemnos! All greek forces where pushed back to the south in a sudden strike, while in the north local guerilla groups built up trying to oppose the Iranian assault. NATO have quickly landed a few troops from the northeast to support the 2 struggling forces so Greek forces can regain control over the island!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;
-onLoadName = ALiVE: Just Pure Death;
-loadScreen = "rsc\logo_alive.paa";
+onLoadName = ALiVE | Foursome;
+loadScreen = "x\alive\addons\mil_opcom\showcases\opcom_spleen.stratis\rsc\logo_alive.paa";
 
 aiKills = 0;
 briefing = 1;
