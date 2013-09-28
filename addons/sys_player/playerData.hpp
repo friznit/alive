@@ -1,4 +1,42 @@
 // Define player data getting and setting
+#define PLACEHOLDER QUOTE(ItemWatch);
+
+if (!isDedicated && !isHC) then {
+	placeholdercount = 0;
+};
+
+addItemToUniformOrVest = {
+	private ["_target","_item"];
+	_target = _this select 0;
+	_item = _this select 1;
+	_saveAmmo = MOD(sys_player) getvariable ["saveAmmo", false];
+	TRACE_2("adding item", _target, _item);
+	if(typename _item == "ARRAY") then {
+		if(_item select 0 != "") then {
+			if(_saveAmmo) then {
+				_target addMagazine _item;
+			} else {
+				_target addMagazine (_item select 0);
+			};
+		};
+	} else {
+		if(_item != "") then {
+			if(isClass(configFile>>"CfgMagazines">>_item)) then {
+				_target addMagazine _item;
+			} else {
+				if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
+					_target addWeapon _item;  
+				} else {
+					_target addItem _item;        
+				};
+			};
+		};
+	};	
+};
+
+fillContainer = {
+	//Fill up uniform, vest, backpack with placeholder objects to ensure correct load when restored
+};
 
 GVAR(UNIT_DATA) = [
 		["lastSaveTime",{ time;}, "SKIP"],
@@ -113,16 +151,30 @@ GVAR(HEALTH_DATA) = [
 ];
 
 GVAR(LOADOUT_DATA) = [
-	["primaryweapon", {primaryWeapon (_this select 0);}, {(_this select 0) removeWeapon (primaryWeapon (_this select 0)); (_this select 0) addWeapon (_this select 1);}],
-	["primaryWeaponItems", {primaryWeaponItems (_this select 0);}, { 
+	["primaryweapon", {primaryWeapon (_this select 0);}, {
+		(_this select 0) removeWeapon (primaryWeapon (_this select 0)); 
+		(_this select 0) addWeapon (_this select 1);
+	}],
+	["primaryWeaponItems", {primaryWeaponItems (_this select 0);}, {
+		private ["_target","_primw"];
+		_target = _this select 0;
 		{
-			if (_x !="" && !(_x in (primaryWeaponItems (_this select 0)))) then { 
-				(_this select 0) addPrimaryWeaponItem _x; 
+			_target removePrimaryWeaponItem _x;
+		} foreach (primaryWeaponItems _target);
+		{
+			if (_x !="" && !(_x in (primaryWeaponItems _target))) then { 
+				_target addPrimaryWeaponItem _x; 
 			}; 
 		} foreach (_this select 1);
 	}],
-	["handgunWeapon", {handgunWeapon (_this select 0);}, {(_this select 0) removeWeapon (handgunWeapon (_this select 0)); (_this select 0) addWeapon (_this select 1);}],
+	["handgunWeapon", {handgunWeapon (_this select 0);}, {
+		(_this select 0) removeWeapon (handgunWeapon (_this select 0)); 
+		(_this select 0) addWeapon (_this select 1);
+	}],
 	["handgunItems", {handgunItems (_this select 0);}, {
+		{
+			(_this select 0) removeHandGunItem _x;
+		} foreach (handgunItems (_this select 0));
 		{
 			if (_x !="" && !(_x in (handgunItems (_this select 0)))) then { 
 				(_this select 0) addHandGunItem _x; 
@@ -136,36 +188,75 @@ GVAR(LOADOUT_DATA) = [
 		};
 	}],
 	["secondaryWeaponItems", {secondaryWeaponItems (_this select 0);}, { 
+		private ["_target","_primw"];
+		_target = _this select 0;
+		/*_primw = primaryWeapon _target;
+		_target selectWeapon (secondaryWeapon _target);
 		{
-			if (_x !="" && !(_x in (secondaryWeaponItems (_this select 0)))) then { 
-				(_this select 0) addSecondaryWeaponItem _x; 
+			_target removePrimaryWeaponItem _x;
+		} foreach (primaryWeaponItems _target);*/
+		{
+			if (_x !="" && !(_x in (secondaryWeaponItems _target))) then { 
+				_target addsecondaryWeaponItem _x; 
 			}; 
 		} foreach (_this select 1);
+		//_target selectWeapon _primw;
 	}],
 	["uniform", {uniform (_this select 0);}, {
 		removeUniform (_this select 0); 
 		(_this select 0) addUniform (_this select 1);
 	}],
+	["uniformItems", {uniformItems (_this select 0);}, {
+		{
+			[(_this select 0), _x] call addItemToUniformOrVest;
+		} foreach (_this select 1);
+	}],
 	["vest", {vest (_this select 0);}, {
 		removeVest (_this select 0); 
 		(_this select 0) addVest (_this select 1);
 	}],
-	
+	["vestItems", {vestItems (_this select 0);}, {
+		{
+			[(_this select 0), _x] call addItemToUniformOrVest;
+		} foreach (_this select 1);
+	}],
 	["backpack", {backpack (_this select 0);}, {removeBackpack (_this select 0); (_this select 0) addBackpack (_this select 1);}],
 	["backpackitems", {	
 		private ["_cargo","_backpacks","_target"];
-		_target = (_this select 0);
-		_cargo = getbackpackcargo (unitbackpack _target);
+		_cargo = getbackpackcargo (unitbackpack (_this select 0));
 		_backpacks = [];
 		{
 			for "_i" from 1 to ((_cargo select 1) select _foreachindex) do {
 				_backpacks set [count _backpacks, _x];
 			};
 		} foreach (_cargo select 0);	
-		(backpackitems _target) + _backpacks;
+		(backpackitems (_this select 0)) + _backpacks;
 	}, {
 		clearAllItemsFromBackpack (_this select 0);
-		// Add Backpack cargo
+		private ["_target","_item"];
+		_target = _this select 0;
+		_item = _this select 1;
+		if(typename _item == "ARRAY") then {
+			if(_item select 0 != "") then {
+					_target addMagazine (_item select 0);
+			};
+		} else {
+			if(isClass(configFile>>"CfgMagazines">>_item)) then {
+				(unitBackpack _target) addMagazineCargo [_item,1];
+			} else {
+				if(_item != "") then {
+					if(getNumber(configFile>>"CfgVehicles">>_item>>"isbackpack")==1) then {
+						(unitBackpack _target) addBackpackCargo [_item,1];  
+					} else {
+						if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
+							(unitBackpack _target) addWeaponCargo [_item,1];  
+						} else {
+							_target addItem _item;         
+						};
+					};
+				};
+			};
+		};
 	}],
 	["assigneditems", {	
 		private ["_data", "_headgear", "_goggles", "_target"];
@@ -203,14 +294,27 @@ GVAR(LOADOUT_DATA) = [
 		_data;
 	}, {
 		if (vehicle (_this select 0) == (_this select 0)) then {
-			(_this select 0) selectWeapon ((_this select 1) select 0);
+			private ["_ammo","_target","_weap"];
+			_target = _this select 0;
+			_weap = ((_this select 1) select 0);
+			// Set weapon
+			_target selectWeapon _weap;
+			// Set firemode
+			_ammo = _target ammo _weap;
+			_target setAmmo [_weap, 0];
+			(_this select 0) forceWeaponFire [_weap, (_this select 1) select 1];
+			_target setAmmo [_weap, _ammo];
+			// Set magazine?
 			// (_this select 0) action ["SwitchMagazine", (_this select 0), (_this select 0), ((_this select 1) select 1)];
+			// Set Gun Light
 			if ((_this select 1) select 2) then {
 				(_this select 0) action ["GunLightOn", (_this select 0)];
 			};
+			// Set IR Laser
 			if ((_this select 1) select 3) then {
 				(_this select 0) action ["IRLaserOn", (_this select 0)];
 			};
+			// Set NVG
 			if ( ((_this select 1) select 4) == 1 ) then {
 				(_this select 0) action ["nvGoggles", (_this select 0)];
 			};
@@ -221,8 +325,7 @@ GVAR(LOADOUT_DATA) = [
 
 ];
 
-GVAR(MAGAZINE_DATA) = [
-	//get set magazine
+GVAR(AMMO_DATA) = [
 	//get set Ammo - uniform, vest, backpack
 ];
 

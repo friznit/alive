@@ -29,10 +29,9 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_player","Main function missing");
 
-_activated = [_this,2,true,[true]] call BIS_fnc_param;
+//_activated = [_this,2,true,[true]] call BIS_fnc_param;
 
-if (_activated) then {
+//if (_activated) then {
 	[_logic, "init",[]] call ALIVE_fnc_player;
-};
-
+//
 true

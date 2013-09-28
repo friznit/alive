@@ -45,6 +45,7 @@ _playerHash = [] call CBA_fnc_hashCreate;
 	_saveHealth = _logic getvariable ["saveHealth","true"];
 	_savePosition = _logic getvariable ["savePosition","true"];
 	_saveScores = _logic getvariable ["saveScores","true"];
+	_saveAmmo = _logic getvariable ["saveAmmo","true"];
 
 // Create Data Command Array
 _data = GVAR(UNIT_DATA);

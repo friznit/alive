@@ -70,6 +70,12 @@
 <Key ID="STR_ALIVE_player_SAVELOADOUT_COMMENT">
 	<English>Enable/disable saving player load-out data</English>
 </Key>
+<Key ID="STR_ALIVE_player_SAVEAMMO">
+	<English>Store Ammo Count:</English>
+</Key>
+<Key ID="STR_ALIVE_player_SAVEAMMO_COMMENT">
+	<English>Enable/disable saving player ammo count</English>
+</Key>
 <Key ID="STR_ALIVE_player_SAVEHEALTH">
 	<English>Store Health:</English>
 </Key>

@@ -49,6 +49,7 @@ if (local _player) then {
 	_saveHealth = _logic getvariable ["saveHealth","true"];
 	_savePosition = _logic getvariable ["savePosition","true"];
 	_saveScores = _logic getvariable ["saveScores","true"];
+	_saveAmmo = _logic getvariable ["saveAmmo","false"];
 
 	// Create Data Command Array
 	_data = GVAR(UNIT_DATA);

@@ -65,12 +65,13 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = 1;
+                                                default = 1;
                                         };
                                         class No
                                         {
                                                 name = "No";
                                                 value = 0;
-						default = 1;
+
                                         };
                                 };
                         };
@@ -85,6 +86,25 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_player_SAVELOADOUT";
                                 description = "$STR_ALIVE_player_SAVELOADOUT_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class saveAmmo
+                        {
+                                displayName = "$STR_ALIVE_player_SAVEAMMO";
+                                description = "$STR_ALIVE_player_SAVEAMMO_COMMENT";
                                 class Values
                                 {
                                         class Yes
