@@ -80,7 +80,7 @@ if (local _player) then {
 		_cmd = _x select 2;
 
 		if (typeName _cmd != "STRING") then {
-			// Execute on server
+			// Execute
 			[_player,_value] call _cmd;
 
 			TRACE_3("SYS_PLAYER GET PLAYER DATA", _player, _key, _value);
