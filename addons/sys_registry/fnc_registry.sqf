@@ -203,8 +203,8 @@ switch(_operation) do {
 							
 							for "_i" from 0 to ((count synchronizedObjects _module)-1) do {
 								_syncedModule = (synchronizedObjects _module) select _i;
-								_syncedModuleType = _syncedModule getVariable ["moduleType",true];
-								_started = _syncedModule getVariable ["startupComplete",true];
+								_syncedModuleType = _syncedModule getVariable ["moduleType","NONE"];
+								_started = _syncedModule getVariable ["startupComplete",false];
 								
 								// DEBUG -------------------------------------------------------------------------------------
 								["ALIVE Registry - %2 [%1] required synced %3 module has started:%4",_moduleID,_moduleType,_syncedModuleType,_started] call ALIVE_fnc_dump;

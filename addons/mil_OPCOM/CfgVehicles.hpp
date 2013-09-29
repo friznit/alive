@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_OPCOM";
                 function = "ALIVE_fnc_OPCOMInit";
+				functionPriority = 4;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";

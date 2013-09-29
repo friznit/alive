@@ -598,7 +598,7 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - Main force ceration ",_factions] call ALIVE_fnc_dump;
+				["ALIVE MP [%1] - Main force ceration ",_faction] call ALIVE_fnc_dump;
 				["Count Armor: %1",_countArmored] call ALIVE_fnc_dump;
 				["Count Mech: %1",_countMechanized] call ALIVE_fnc_dump;
 				["Count Motor: %1",_countMotorized] call ALIVE_fnc_dump;

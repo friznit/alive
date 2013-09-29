@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_CO";
                 function = "ALIVE_fnc_COInit";
+				functionPriority = 1;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\civ_strategic\icon_civ_CO.paa";

@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_MO";
                 function = "ALIVE_fnc_MOInit";
+				functionPriority = 2;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\mil_strategic\icon_mil_MO.paa";
