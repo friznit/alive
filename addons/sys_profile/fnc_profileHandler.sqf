@@ -358,7 +358,14 @@ switch(_operation) do {
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
-							[_profile,"debug",true] call ALIVE_fnc_hashSet;
+							switch(_profileType) do {
+								case "entity": {
+									[_profile, "debug", true] call ALIVE_fnc_profileEntity;
+								};
+								case "vehicle": {
+									[_profile, "debug", true] call ALIVE_fnc_profileVehicle;
+								};
+							};
 							["ALIVE Profile Handler"] call ALIVE_fnc_dump;
 							["Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
 							_profile call ALIVE_fnc_inspectHash;

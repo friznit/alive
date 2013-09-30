@@ -401,7 +401,7 @@ switch(_operation) do {
 			_countUncrewedHelis = 0;
 
 						
-			_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;			
+			_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;	
 			_heliClasses = _heliClasses - _vehicleBlacklist;
 			
 			if(count _heliClasses > 0) then {

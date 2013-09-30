@@ -53,8 +53,8 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 				
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-				["ALIVE Profile spawner - despawn [%1]",_profileID] call ALIVE_fnc_dump;
+				//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				//["ALIVE Profile spawner - despawn [%1]",_profileID] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------					
 					

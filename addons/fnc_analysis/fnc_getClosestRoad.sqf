@@ -58,8 +58,14 @@ if(count _roads > 0) then {
 		_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
 		_sectorRoads = [_sectorData, "roads"] call ALIVE_fnc_hashGet;
 		_roads = [_sectorData, "roads", [_position, "road"]] call ALIVE_fnc_sectorDataSort;
-		_road = _roads select 0;
+		if(count _roads > 10) then {
+			_road = _roads select (floor(random((count _roads)-1 / 10)));
+		}else{
+			_road = _roads select (floor(random((count _roads)-1)));
+		};
 		_result = _road select 0;
+	}else{
+	
 	};
 };
 

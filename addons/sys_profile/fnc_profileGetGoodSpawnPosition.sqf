@@ -99,7 +99,7 @@ switch(_type) do {
 							
 							_vehicles set [count _vehicles, _vehicleProfile];
 							
-							if(_vehicleObjectType == "Car" || _vehicleObjectType == "Truck" || _vehicleObjectType == "Armored") then {
+							if(_vehicleObjectType == "Car" || _vehicleObjectType == "Truck" || _vehicleObjectType == "Armored" || _vehicleObjectType == "Tank") then {
 								_inCar = true;
 							};
 							if(_vehicleObjectType == "Plane" || _vehicleObjectType == "Helicopter") then {
@@ -147,8 +147,13 @@ switch(_type) do {
 				// if the entity is in a car
 				if(_inCar) then {
 				
-					//["GGSP [%1] - car",_profileID] call ALIVE_fnc_dump;
+					//["GGSP [%1] - car get closest road",_profileID] call ALIVE_fnc_dump;
 					_spawnPosition = [_position] call ALIVE_fnc_getClosestRoad;	
+					
+					if(surfaceIsWater _spawnPosition) then {
+						//["GGSP [%1] - car closest road is water",_profileID] call ALIVE_fnc_dump;
+						_spawnPosition = [_position] call ALIVE_fnc_getClosestLand;
+					};
 
 					//[_spawnPosition,"ROAD",_profileID] call _createMarker;					
 				};

@@ -416,6 +416,7 @@ switch(_operation) do {
 				_radius = _args select 1;
 				
 				_sectorDimensions = [_logic,"sectorDimensions"] call ALIVE_fnc_hashGet;
+				
 				_sectorWidth = _sectorDimensions select 0;
 				_sectors = [];
 				

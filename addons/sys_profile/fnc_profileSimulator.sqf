@@ -232,11 +232,12 @@ _engaged = [0,0,0];
 					if(_vehicleCommander) then {
 						// if in command of vehicle move all entities within the vehicle						
 						// set the vehicle position and merge all assigned entities positions
-						{
-							[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
+						[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
+						{							
 							_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
                             
                             if !(isnil "_vehicleProfile") then {
+								[_vehicleProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 								[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
 								[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 								[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
