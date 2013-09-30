@@ -32,7 +32,7 @@ _debug = if(count _this > 2) then {_this select 2} else {false};
 
 _deleteMarkers = {
 	{
-		deleteMarkerLocal _x;
+		deleteMarker _x;
 	} forEach (_markers select 2);
 	_markers = [] call ALIVE_fnc_hashCreate;
 };
@@ -46,7 +46,7 @@ _deleteMarker = {
 	_profileIndex = _markers select 1;
 	if(_profileID in _profileIndex) then {	
 		_m = [_markers,_profileID] call ALIVE_fnc_hashGet;			
-		deleteMarkerLocal _m;		
+		deleteMarker _m;		
 		[_markers,_profileID] call ALIVE_fnc_hashRem;
 	};
 };
