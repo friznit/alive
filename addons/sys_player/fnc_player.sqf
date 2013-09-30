@@ -197,6 +197,7 @@ switch(_operation) do {
                         MOD(sys_player) setVariable [_puid, true, true];
 
                         // Save initial start state on client if reset is allowed
+                        sleep 120;
                         if (MOD(sys_player) getVariable ["allowReset", DEFAULT_RESET]) then {
                             // Save data on the client
                             _playerHash = [MOD(sys_player), [player]] call ALIVE_fnc_setPlayer;
@@ -248,7 +249,7 @@ switch(_operation) do {
 
                 // Setup player eventhandler to handle get player calls
                 if(!isDedicated && !isHC) then {
-                    ["getPlayer", {[MOD(sys_player),[_this select 0, _this select 1]] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
+                    ["getPlayer", {[MOD(sys_player),(_this select 1)] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
                 };
 
             TRACE_4("SYS_PLAYER", _logic getvariable "ALLOWRESET", _logic getvariable "ALLOWDIFFCLASS",_logic getvariable "ALLOWMANUALSAVE",_logic getvariable "STORETODB" );
