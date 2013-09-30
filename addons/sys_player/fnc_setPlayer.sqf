@@ -41,28 +41,28 @@ _player = _args select 0;
 _playerHash = [] call CBA_fnc_hashCreate;
 
 	// Get save options
-	_saveLoadout = _logic getvariable ["saveLoadout","true"];
-	_saveHealth = _logic getvariable ["saveHealth","true"];
-	_savePosition = _logic getvariable ["savePosition","true"];
-	_saveScores = _logic getvariable ["saveScores","true"];
-	_saveAmmo = _logic getvariable ["saveAmmo","true"];
+	_saveLoadout = _logic getvariable ["saveLoadout",true];
+	_saveHealth = _logic getvariable ["saveHealth",true];
+	_savePosition = _logic getvariable ["savePosition",true];
+	_saveScores = _logic getvariable ["saveScores",true];
+	_saveAmmo = _logic getvariable ["saveAmmo",false];
 
 // Create Data Command Array
 _data = GVAR(UNIT_DATA);
 
-if (call compile _savePosition) then {
+if ( _savePosition) then {
 	_data = _data + GVAR(POSITION_DATA);
 };
 
-if (call compile _saveHealth) then {
+if ( _saveHealth) then {
 	_data = _data + GVAR(HEALTH_DATA);
 };
 
-if (call compile _saveLoadout) then {
+if ( _saveLoadout) then {
 	_data =_data + GVAR(LOADOUT_DATA);
 };
 
-if (call compile _saveScores) then {
+if ( _saveScores) then {
 	_data =_data + GVAR(SCORE_DATA);
 };
 

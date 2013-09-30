@@ -47,8 +47,8 @@ nil
 #define DEFAULT_INTERVAL 300
 
 #define DEFAULT_RESET true
-#define DEFAULT_DIFFCLASS true
-#define DEFAULT_MANUALSAVE false
+#define DEFAULT_DIFFCLASS false
+#define DEFAULT_MANUALSAVE true
 #define DEFAULT_STORETODB true
 #define DEFAULT_AUTOSAVETIME 600
 
@@ -82,6 +82,20 @@ switch(_operation) do {
              if (isServer) then {
 
                         MOD(sys_player) = _logic;
+
+                        // Set Module Parameters as booleans
+                        MOD(sys_player) setVariable ["ALLOWRESET", call compile (_logic getvariable "ALLOWRESET"), true];
+                        MOD(sys_player) setVariable ["ALLOWDIFFCLASS", call compile (_logic getvariable "ALLOWDIFFCLASS"), true];
+                        MOD(sys_player) setVariable ["ALLOWMANUALSAVE", call compile (_logic getvariable "ALLOWMANUALSAVE"), true];
+                        MOD(sys_player) setVariable ["STORETODB", call compile (_logic getvariable "STORETODB"), true];
+
+                        MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
+                        MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
+                        MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth"), true];
+                        MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition"), true];
+                        MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores"), true];
+
+                        // Push to clients
                         publicVariable QMOD(sys_player);
 
                 	// if server, initialise module game logic
@@ -115,8 +129,6 @@ switch(_operation) do {
 
                         TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player) getvariable "init", MOD(sys_player) getvariable "serverID", MOD(sys_player) getvariable "missionID");
                         TRACE_3("SYS_PLAYER DATA", MOD(sys_player), GVAR(player_data),GVAR(datahandler));
-
-
 
                 } else {
                         // any client side logic for model
@@ -183,6 +195,16 @@ switch(_operation) do {
                         TRACE_1("SYS_PLAYER GUID SET", _puid);
 
                         MOD(sys_player) setVariable [_puid, true, true];
+
+                        // Save initial start state on client if reset is allowed
+                        if (MOD(sys_player) getVariable ["allowReset", DEFAULT_RESET]) then {
+                            // Save data on the client
+                            _playerHash = [MOD(sys_player), [player]] call ALIVE_fnc_setPlayer;
+
+                            // Store playerhash on client
+                            player setVariable [QGVAR(player_data), _playerHash];
+                            GVAR(resetAvailable) = true;
+                        };
                     };
                 } else {
                     TRACE_2("NO SYS_PLAYER or ISDEDICATED/HC", isDedicated, isNil QMOD(sys_player));
@@ -226,8 +248,10 @@ switch(_operation) do {
 
                 // Setup player eventhandler to handle get player calls
                 if(!isDedicated && !isHC) then {
-                    ["getPlayer", {[_this select 0, _this select 1] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
+                    ["getPlayer", {[MOD(sys_player),[_this select 0, _this select 1]] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
                 };
+
+            TRACE_4("SYS_PLAYER", _logic getvariable "ALLOWRESET", _logic getvariable "ALLOWDIFFCLASS",_logic getvariable "ALLOWMANUALSAVE",_logic getvariable "STORETODB" );
 
                TRACE_1("After module init",_logic);
                 "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
@@ -316,8 +340,41 @@ switch(_operation) do {
         case "checkPlayer": {
         	// Check to see if the player joining has the same class as the one stored in memory
         };
+        case "manualSavePlayer": {
+            private ["_playerHash","_unit"];
+             _unit  = _args select 0;
+
+            // Process a request from a player to save on server
+            ["server",QMOD(sys_player),[[MOD(sys_player), "setPlayer", _args],{call ALiVE_fnc_player}]] call ALIVE_fnc_BUS;
+
+            // Save data on the client too?
+            _playerHash = [_logic, _args] call ALIVE_fnc_setPlayer;
+
+            // Store playerhash on client
+            player setVariable [QGVAR(player_data), _playerHash];
+            GVAR(resetAvailable) = true;
+        };
         case "resetPlayer": {
-        	// Return the player state to the previous saved states
+        	// Return the player state to the previous start state
+                    private ["_playerHash","_unit"];
+                    _unit  = _args select 0;
+
+                    // Check that the hash is found
+                     if ([_unit getVariable QGVAR(player_data)] call CBA_fnc_isHash) then {
+
+                            // Grab player data from local player object
+                            _playerHash = _unit getVariable QGVAR(player_data);
+                            TRACE_2("RESET PLAYER", _unit, _playerHash);
+
+                            // Execute getplayer on local client
+                            [_logic, [_unit,  _playerHash]] call ALIVE_fnc_getPlayer;
+
+                            _result = true;
+                    } else {
+                        TRACE_3("SYS_PLAYER PLAYER DATA DOES NOT EXIST",_unit);
+                        _result = false;
+                    };
+
         };
         case "destroy": {
 

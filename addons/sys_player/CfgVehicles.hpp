@@ -26,13 +26,13 @@ class CfgVehicles {
                                         class Yes
                                         {
                                                 name = "Yes";
-                                                value = 1;
+                                                value = true;
                                                 default = 1;
                                         };
                                         class No
                                         {
                                                 name = "No";
-                                                value = 0;
+                                                value = false;
                                         };
                                 };
                         };
@@ -45,13 +45,13 @@ class CfgVehicles {
                                         class Yes
                                         {
                                                 name = "Yes";
-                                                value = 1;
+                                                value = true;
                                         };
                                         class No
                                         {
                                                 name = "No";
-                                                value = 0;
-						default = 0;
+                                                value = false;
+                                                default = 1;
                                         };
                                 };
                         };                        
@@ -64,13 +64,13 @@ class CfgVehicles {
                                         class Yes
                                         {
                                                 name = "Yes";
-                                                value = 1;
+                                                value = true;
                                                 default = 1;
                                         };
                                         class No
                                         {
                                                 name = "No";
-                                                value = 0;
+                                                value = false;
 
                                         };
                                 };
@@ -92,7 +92,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -116,7 +116,7 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-                                                default = false;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -130,7 +130,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -149,7 +149,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -168,7 +168,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -187,7 +187,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {

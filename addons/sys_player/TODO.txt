@@ -1,11 +1,12 @@
 TODO
+- vest, uniform and backpack changes don't get synced to server for some reason... BIS issue, need to workaround it. server does not seem to respect uniform, vest, backpack loads?
+- check why stance is affected now
+- Player Reset is bugged
+- Player menu - auto save set interval gui
 - load players to db
 - save players to db
-- vest, uniform and backpack changes don't get synced to server for some reason... BIS issue, need to workaround it.
 - save/restore ammo count
-- check why stance is affected now
 - check in-vehicle / weapon selection
 - restore secondaryweaponitems properly
 - clean up module implementation
-- player menu
 - code review

@@ -55,13 +55,13 @@ if (typeName _params == typeName []) then {
 /*
         ["Menu Caption", "flexiMenu resource dialog", "optional icon folder", menuStayOpenUponSelect],
         [
-            ["caption", 
-                "action", 
-                "icon", 
-                "tooltip", 
-                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]}, 
+            ["caption",
+                "action",
+                "icon",
+                "tooltip",
+                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]},
                 -1 (shortcut DIK code),
-                {0|1/"0"|"1"/false|true} (enabled), 
+                {0|1/"0"|"1"/false|true} (enabled),
                 {-1|0|1/"-1"|"0"|"1"/false|true} (visible)
             ],
              ...
@@ -75,8 +75,8 @@ _menus =
 				"",
 				"",
 				localize "STR_ALIVE_player_COMMENT",
-                                ["call ALiVE_fnc_playerMenuDef", "player", 1],
-                                -1, 1, call ALIVE_fnc_isServerAdmin
+                               		 ["call ALiVE_fnc_playerMenuDef", "player", 1],
+                                		-1, 1, true
 			]
 		]
 	]
@@ -87,62 +87,111 @@ if (_menuName == "player") then {
 		[
 			["player", localize "STR_ALIVE_player", "popup"],
 			[
+				// ADMIN MENUS
 				[localize "STR_ALIVE_player_ALLOWRESET_ENABLE",
-					{ player setCaptive true },
+					{ MOD(sys_player) setVariable ["allowReset", true, true]; },
 					"",
 					localize "STR_ALIVE_player_ALLOWRESET_COMMENT",
 					"",
 					-1,
-					MOD(player) getVariable ["ALLOWRESET", 0],
-					!captive player
+					!(MOD(sys_player) getVariable ["ALLOWRESET",true]),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["ALLOWRESET",true])))
 				],
 				[localize "STR_ALIVE_player_ALLOWRESET_DISABLE",
-					{ player setCaptive false },
+					{  MOD(sys_player) setVariable ["allowReset", false, true];},
 					"",
 					localize "STR_ALIVE_player_ALLOWRESET_COMMENT",
 					"",
 					-1,
-					MOD(player) getVariable ["ALLOWRESET", 0],
-					captive player
+					 (MOD(sys_player) getVariable ["ALLOWRESET", true]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["ALLOWRESET", true])))
 				],
 
 				[localize "STR_ALIVE_player_ALLOWDIFFCLASS_ENABLE",
-					{ MOD(player) setVariable ["ALLOWDIFFCLASS", true]; onMapSingleClick {vehicle player setPos _pos;} },
+					{ MOD(sys_player) setVariable ["allowDiffClass", true, true]},
 					"",
 					localize "STR_ALIVE_player_ALLOWDIFFCLASS_COMMENT",
 					"",
 					-1,
-					MOD(player) getVariable ["ALLOWDIFFCLASS", 0],
-					!(MOD(player) getVariable ["ALLOWDIFFCLASS", false])
+					!( (MOD(sys_player) getVariable ["ALLOWDIFFCLASS", false])),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["ALLOWDIFFCLASS",false])))
 				],
 				[localize "STR_ALIVE_player_ALLOWDIFFCLASS_DISABLE",
-					{ MOD(player) setVariable ["ALLOWDIFFCLASS", false]; onMapSingleClick DEFAULT_MAPCLICK; },
+					{ MOD(sys_player) setVariable ["allowDiffClass", false, true]; },
 					"",
 					localize "STR_ALIVE_player_ALLOWDIFFCLASS_COMMENT",
 					"",
 					-1,
-					MOD(player) getVariable ["ALLOWDIFFCLASS", 0],
-					(MOD(player) getVariable ["teleport_enabled", false])
+					 (MOD(sys_player) getVariable ["ALLOWDIFFCLASS",false]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["ALLOWDIFFCLASS", false])))
 				],
 
-				[localize "STR_ALIVE_player_AUTOSAVE_ENABLE",
-					{ [] execVM "\x\alive\addons\sys_player\mark_units.sqf"; },
+				[localize "STR_ALIVE_player_ALLOWMANUALSAVE_ENABLE",
+					{ MOD(sys_player) setVariable ["allowManualsave", true, true]; },
 					"",
-					localize "STR_ALIVE_player_AUTOSAVE_COMMENT",
+					localize "STR_ALIVE_player_ALLOWMANUALSAVE_COMMENT",
 					"",
 					-1,
-					MOD(player) getVariable ["AUTOSAVE", 0],
-					true
+					!( (MOD(sys_player) getVariable ["allowManualsave", false])),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["allowManualsave", true])))
+				],
+				[localize "STR_ALIVE_player_ALLOWMANUALSAVE_DISABLE",
+					{ MOD(sys_player) setVariable ["allowManualsave", false, true]; },
+					"",
+					localize "STR_ALIVE_player_ALLOWMANUALSAVE_COMMENT",
+					"",
+					-1,
+					 (MOD(sys_player) getVariable ["allowManualsave", true]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["allowManualsave", true])))
+				],
+
+				[localize "STR_ALIVE_player_STORETODB_ENABLE",
+					{ MOD(sys_player) setVariable ["storeTodb",true, true]; },
+					"",
+					localize "STR_ALIVE_player_STORETODB_COMMENT",
+					"",
+					-1,
+					!( (MOD(sys_player) getVariable ["STORETODB", true])),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["STORETODB", true])))
+				],
+				[localize "STR_ALIVE_player_STORETODB_DISABLE",
+					{ MOD(sys_player) setVariable ["storeTodb", false, true]; },
+					"",
+					localize "STR_ALIVE_player_STORETODB_COMMENT",
+					"",
+					-1,
+					 (MOD(sys_player) getVariable ["STORETODB", true]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["STORETODB", true])))
 				],
 
 				[localize "STR_ALIVE_player_AUTOSAVETIME_SET",
-					{ createDialog "RscDisplayDebugPublic" },
+					{ hint "Open Auto Save Time Dialog :)" },
 					"",
 					localize "STR_ALIVE_player_AUTOSAVETIME_COMMENT",
 					"",
 					-1,
-					MOD(player) getVariable ["console", 0],
-					true
+					 (MOD(sys_player) getVariable ["STORETODB", true]),
+					call ALIVE_fnc_isServerAdmin
+				],
+
+				// PLAYER MENUS
+				[localize "STR_ALIVE_player_ALLOWRESET_ACTION",
+					{ [MOD(sys_player), "resetPlayer", [player]] call ALIVE_fnc_player;},
+					"",
+					"",
+					localize STR_ALIVE_player_ALLOWRESET_ACTION_COMMENT,
+					-1,
+					!(isNil QGVAR(resetAvailable)),
+					(MOD(sys_player) getVariable ["ALLOWRESET", true])
+				],
+				[localize "STR_ALIVE_player_ALLOWMANUALSAVE_ACTION",
+					{ [MOD(sys_player), "manualSavePlayer", [player]] call ALIVE_fnc_player },
+					"",
+					"",
+					"",
+					-1,
+					 (MOD(sys_player) getVariable ["allowManualsave", true]),
+					 (MOD(sys_player) getVariable ["allowManualsave", true])
 				]
 			]
 		]

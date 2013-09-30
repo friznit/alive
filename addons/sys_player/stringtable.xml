@@ -20,13 +20,16 @@
 	<English>Disable Player Reset</English>
 </Key>
 <Key ID="STR_ALIVE_player_ALLOWRESET_COMMENT">
-	<English>Allow players to reset themselves to their last saved position</English>
+	<English>Allow players to reset themselves to their current session starting state or manual save point</English>
 </Key>
 <Key ID="STR_ALIVE_player_ALLOWRESET_ACTION">
-	<English>Reset to Last Saved Position</English>
+	<English>Reset to Previous Session State</English>
 </Key>
 <Key ID="STR_ALIVE_player_ALLOWMANUALSAVE">
 	<English>Allow Manual Save:</English>
+</Key>
+<Key ID="STR_ALIVE_player_ALLOWRESET_ACTION_COMMENT">
+	<English>Reset yourself to the last current session starting state or manual save point</English>
 </Key>
 <Key ID="STR_ALIVE_player_ALLOWMANUALSAVE_ENABLE">
 	<English>Enable Player Manual Save</English>
@@ -59,7 +62,7 @@
 	<English>Enable external database</English>
 </Key>
 <Key ID="STR_ALIVE_player_STORETODB_DISABLE">
-	<English>Disable external database</English>
+	<English>Disable External Database</English>
 </Key>
 <Key ID="STR_ALIVE_player_STORETODB_COMMENT">
 	<English>Enable/disable saving player data</English>
