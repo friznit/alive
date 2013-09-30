@@ -10,31 +10,39 @@ class CfgVehicles {
 				picture = "x\alive\addons\sup_multispawn\icon_sup_multispawn.paa";
                 class Arguments
                 {
-                        class Enabled
+                        class debug
                         {
-                                displayName = "$STR_ALIVE_multispawn_ENABLED";
-                                description = "$STR_ALIVE_multispawn_ENABLED_COMMENT";
+                                displayName = "$STR_ALIVE_multispawn_DEBUG";
+                                description = "$STR_ALIVE_multispawn_DEBUG_COMMENT";
                                 class Values
                                 {
                                         class Yes
                                         {
                                                 name = "Yes";
-                                                value = 1;
+                                                value = true;
 												default = 1;
                                         };
                                         class No
                                         {
                                                 name = "No";
-                                                value = 0;
+                                                value = false;
                                         };
                                 };
                         };
-                          class Condition
+                        class spawntype
                         {
-                                displayName = "Condition:";
-                                description = "";
-                                defaultValue = "true";
-                        };                        
+                                displayName = "$STR_ALIVE_multispawn_TYPE";
+                                description = "$STR_ALIVE_multispawn_TYPE_COMMENT";
+                                class Values
+                                {
+                                        class forwardspawn
+                                        {
+                                                name = "Forward Respawn";
+                                                value = "forwardspawn";
+                                                default = 1;
+                                        };
+                                };
+                        };                    
                 };
                 
         };

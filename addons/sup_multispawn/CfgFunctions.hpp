@@ -55,6 +55,11 @@ class cfgFunctions {
                                 description = "The server function to convert hq objects from deployed to undeployed and vice versa";
                                 file = "\x\alive\addons\sup_multispawn\functions\fnc_multispawnConvert.sqf";
 				recompile = 1;
+						};
+				         class forwardSpawn {
+                                description = "The spawn function that lets you selects a group unit and spawn near it";
+                                file = "\x\alive\addons\sup_multispawn\functions\fnc_forwardSpawn.sqf";
+				recompile = 1;
                         };
                 };
         };

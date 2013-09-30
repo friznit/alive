@@ -8,11 +8,17 @@
 <Key ID="STR_ALIVE_multispawn_COMMENT">
 	<English>XXXX</English>
 </Key>
-<Key ID="STR_ALIVE_multispawn_ENABLED">
-	<English>Enable multispawn:</English>
+<Key ID="STR_ALIVE_multispawn_DEBUG">
+	<English>Enable debug:</English>
 </Key>
-<Key ID="STR_ALIVE_multispawn_ENABLED_COMMENT">
-	<English>XXX</English>
+<Key ID="STR_ALIVE_multispawn_DEBUG_COMMENT">
+	<English>Enables debug</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_TYPE">
+	<English>Type:</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_TYPE_COMMENT">
+	<English>Type of respawn</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_DISABLED">
 	<English>Disable multispawn:</English>

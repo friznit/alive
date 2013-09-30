@@ -64,11 +64,17 @@ switch(_operation) do {
                         // if server, initialise module game logic
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", ALIVE_fnc_multispawn];
-                        _logic setVariable ["init", true];
+                        _logic setVariable ["init", true,true];
+                        
+                        _debug = call compile (_logic getvariable ["debug","false"]);
+                        MULTISPAWN_TYPE = _logic getvariable ["spawntype","forwardspawn"]; PublicVariable "MULTISPAWN_TYPE";
+                        
+                        
                         // and publicVariable to clients
                         ALIVE_multispawn = _logic;
                         publicVariable "ALIVE_multispawn";
-
+                        
+                        /*
                         // Wobbleyehadedbob - New Code ------------------------------------------------------------------
                         private ["_isMHQ","_initMHQs","_mhqVehicles"];
                         
@@ -82,10 +88,13 @@ switch(_operation) do {
                         PV_server_syncHQState = [99, ""]; 
                         "PV_server_syncHQState" addPublicVariableEventHandler {(_this select 1) call ALIVE_fnc_multispawnSyncState;};
                         // ----------------------------------------------------------------------------------------------
+                        */
 
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
+                        
+                        /*
                         deleteVehicle _logic;
 
                         // Wobbleyehadedbob - New Code ------------------------------------------------------------------
@@ -100,12 +109,12 @@ switch(_operation) do {
                         // Listens for MHQ state-change events from the server
                         "PV_client_syncHQState" addPublicVariableEventHandler {(_this select 1) call ALIVE_fnc_multispawnSyncState};
                         // ----------------------------------------------------------------------------------------------
+                        */
                 };
                 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil "ALIVE_multispawn"};
-                waitUntil {ALIVE_multispawn getVariable ["init", false]};        
+                waitUntil {(!(isNil "ALIVE_multispawn") && {ALIVE_multispawn getVariable ["init", false]})};
 
                 /*
                 VIEW - purely visual
@@ -113,7 +122,17 @@ switch(_operation) do {
                 - frequent check to modify menu and display status (ALIVE_fnc_multispawnsmenuDef)
                 */
                 
+                //Initialise locals if client and not HC
                 if(!isDedicated && !isHC) then {
+                    Waituntil {!(isnil "MULTISPAWN_TYPE")};
+                    
+                    switch (MULTISPAWN_TYPE) do {
+                        //Initialise a local "killed"-EH
+                        case ("forwardspawn") : {diag_log format["Forward Spawn EH placed...",time]; player addEventHandler ["killed", {[] spawn ALiVE_fnc_ForwardSpawn}]};
+                        default {};
+                    };
+                    
+                    	/*
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
                         // if ACE spectator enabled, seto to allow exit
@@ -143,6 +162,7 @@ switch(_operation) do {
                         // Event Handler that calls the player relocation on respawn
                         player addEventhandler ["respawn", {[player] call ALIVE_fnc_multispawnRelocatePlayer}];
                         // ----------------------------------------------------------------------------------------------
+                        */
                 };
                 
         };
