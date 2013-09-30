@@ -687,10 +687,10 @@ switch(_operation) do {
 				if!(_active) then {
 				
 					// determine a suitable spawn position
-					["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
-					[true] call ALIVE_fnc_timer;
+					//["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
+					//[true] call ALIVE_fnc_timer;
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
-					[] call ALIVE_fnc_timer;
+					//[] call ALIVE_fnc_timer;
 
 					_group = createGroup _sideObject;				
 
