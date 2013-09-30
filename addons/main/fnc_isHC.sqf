@@ -40,19 +40,15 @@ if(isNil "headlessClients" && isServer) then {
 
 while {isNil "headlessClients"} do {};
 
-if (!isDedicated) then {
-        private["_hc","_lock","_x"];
-        _hc = ppEffectCreate ["filmGrain", 2005];
-        if (_hc == -1) then {
+_headless = (!(isDedicated) && {!(hasInterface)});
+if (_headless) then {
                 isHC = true;
                 // Random delay
                 for [{_x=1},{_x<=random 10000},{_x=_x+1}] do {};
-                if(!(player in headlessClients)) then {
+ 
+                if (!(player in headlessClients)) then {
                         headlessClients set [count headlessClients, player];
                         publicVariable "headlessClients";
                 };
-        } else {
-                ppEffectDestroy _hc;
-        };
 };
 isHC;
