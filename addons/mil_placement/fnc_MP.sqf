@@ -396,41 +396,48 @@ switch(_operation) do {
 			
 			// Spawn helicopters on pads
 			
-			if(_ambientVehicleAmount > 0) then {
+			private ["_countCrewedHelis","_countUncrewedHelis"];
+			_countCrewedHelis = 0;
+			_countUncrewedHelis = 0;
+
 						
-				_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;			
-				_heliClasses = _heliClasses - _vehicleBlacklist;
-				
-				if(count _heliClasses > 0) then {
+			_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;	
+			_heliClasses = _heliClasses - _vehicleBlacklist;
+			
+			if(count _heliClasses > 0) then {
+				{
+					_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+					//[_x, "debug", true] call ALIVE_fnc_cluster;
 					{
-						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
-						//[_x, "debug", true] call ALIVE_fnc_cluster;
-						{
-							_position = position _x;
-							_direction = direction _x;
-							_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
-							if(random 1 > 0.6) then {
-								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
-								_countProfiles = _countProfiles + 1;
-							}else{
-								[_vehicleClass,_side,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
-								_countProfiles = _countProfiles + 2;
-							};
-							
-						} forEach _nodes;				
-					} forEach _heliClusters;
-				};
+						_position = position _x;
+						_direction = direction _x;
+						_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
+						if(random 1 > 0.8) then {
+							[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+							_countProfiles = _countProfiles + 1;
+							_countUncrewedHelis =_countUncrewedHelis + 1;
+						}else{
+							[_vehicleClass,_side,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
+							_countProfiles = _countProfiles + 2;
+							_countCrewedHelis = _countCrewedHelis + 1;
+						};
+						
+					} forEach _nodes;				
+				} forEach _heliClusters;
 			};
 			
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - [%2] Heli units placed",_faction,_countProfiles] call ALIVE_fnc_dump;
+				["ALIVE MP [%1] - Heli units placed: crewed:%2 uncrewed:%3",_faction,_countCrewedHelis,_countUncrewedHelis] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
 			
 			// Spawn air units in hangars
+			
+			private ["_countAirUnits"];
+			_countAirUnits = 0;
 			
 			if(_ambientVehicleAmount > 0) then {
 			
@@ -450,6 +457,7 @@ switch(_operation) do {
 							if(random 1 > 0.6) then {
 								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
 								_countProfiles = _countProfiles + 1;
+								_countAirUnits = _countAirUnits + 1;
 							};
 						} forEach _nodes;				
 					} forEach _airClusters;
@@ -459,12 +467,15 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - [%2] Air units placed",_faction,_countProfiles] call ALIVE_fnc_dump;
+				["ALIVE MP [%1] - Air units placedin hangars: %2",_faction,_countAirUnits] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 					
 			
 			// Spawn land units				
+			
+			private ["_countLandUnits"];
+			_countLandUnits = 0;
 
 			if(_ambientVehicleAmount > 0) then {
 			
@@ -513,6 +524,7 @@ switch(_operation) do {
 							if(random 1 < _parkingChance) then {
 								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
 								_countProfiles = _countProfiles + 1;
+								_countLandUnits = _countLandUnits + 1;
 							};
 						} forEach _parkingPositions;				
 					} forEach _clusters;
@@ -522,7 +534,7 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - [%2] Ambient land units placed",_faction,_countProfiles] call ALIVE_fnc_dump;
+				["ALIVE MP [%1] - Ambient land units placed: %2",_faction,_countLandUnits] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
@@ -699,6 +711,7 @@ switch(_operation) do {
 		
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
+				["ALIVE MP - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
 				["ALIVE MP - Placement completed"] call ALIVE_fnc_dump;
 				[] call ALIVE_fnc_timer;
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;

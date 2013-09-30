@@ -134,7 +134,7 @@ switch(_operation) do {
 						[ALIVE_commandRouter, "debug", _debug] call ALIVE_fnc_commandRouter;
 						
 						// run initial profile analysis
-						//[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
+						//[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;						
 
 						
 						// DEBUG -------------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ switch(_operation) do {
 						
 						// start the profile spawner
 						_profileSpawnerFSM = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;						
+						[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;				
 						
 						// set module as started
 						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
@@ -173,8 +173,8 @@ switch(_operation) do {
 								
 								// DEBUG -------------------------------------------------------------------------------------
 								if(_debug) then {
-									["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-									["ALIVE Grid analysis for profile positions"] call ALIVE_fnc_dump;
+									//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+									//["ALIVE Grid analysis for profile positions"] call ALIVE_fnc_dump;
 								};
 								// DEBUG -------------------------------------------------------------------------------------
 								

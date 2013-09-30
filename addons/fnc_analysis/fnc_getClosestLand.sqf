@@ -61,8 +61,11 @@ if(_sectorTerrain == "SHORE") then {
 if(_sectorTerrain == "SEA") then {
 
 	//["GCL - sector terrain is sea"] call ALIVE_fnc_dump;
-	_sectors = [ALIVE_sectorGrid, "surroundingSectors", _position] call ALIVE_fnc_sectorGrid;	
-	_sectors = [_sectors, "land"] call ALIVE_fnc_sectorFilterBestPlaces;
+	_sectors = [ALIVE_sectorGrid, "surroundingSectors", _position] call ALIVE_fnc_sectorGrid;
+	//_sectors = [_sectors, "land"] call ALIVE_fnc_sectorFilterBestPlaces;
+	_sectors = [_sectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
+	
+	//["GCL - lands sectors count %1",count _sectors] call ALIVE_fnc_dump;
 	
 	if(count _sectors > 0) then {
 		_sectors = [_sectors,_position] call ALIVE_fnc_sectorSortDistance;
@@ -76,7 +79,31 @@ if(_sectorTerrain == "SEA") then {
 			_result = _samples select (floor(random((count _samples)-1)));
 		};
 	}else{
-		// not sure what to do here, they are out to sea...
+	
+		//["GCL - no land in surrounding sectors"] call ALIVE_fnc_dump;
+		
+		// no land within surrounding sectors use radius to find larger area
+		_sectors = [ALIVE_sectorGrid, "sectorsInRadius", [_position, 3000]] call ALIVE_fnc_sectorGrid;
+		//_sectors = [_sectors, "land"] call ALIVE_fnc_sectorFilterBestPlaces;
+		_sectors = [_sectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
+		
+		if(count _sectors > 0) then {
+		
+			//["GCL - no land in radius sectors"] call ALIVE_fnc_dump;
+		
+			_sectors = [_sectors,_position] call ALIVE_fnc_sectorSortDistance;
+			_sector = _sectors select 0;
+			_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+			_sectorTerrainSamples = [_sectorData, "terrainSamples"] call ALIVE_fnc_hashGet;
+			_samples = [_sectorTerrainSamples, "land"] call ALIVE_fnc_hashGet;
+			
+			if(count _samples > 0) then {
+				//["GCL got land samples: %1",_samples] call ALIVE_fnc_dump;
+				_result = _samples select (floor(random((count _samples)-1)));
+			};
+		}else{
+			// not sure what to do here, they are out to sea...
+		}
 	};
 };			
 
