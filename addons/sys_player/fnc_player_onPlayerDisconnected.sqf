@@ -50,7 +50,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 		_lastPlayerSaveTime = [MOD(sys_player), "getPlayerSaveTime", [_uid]] call ALIVE_fnc_player;
 		_timeDiff = time - _lastPlayerSaveTime;
-		diag_log["SYS_PLAYER: Have not saved player state for %2 for %1 seconds", _timeDiff,_name];
+		diag_log format["SYS_PLAYER: Have not saved player state for %2 for %1 seconds", _timeDiff,_name];
 
 	} else {
 

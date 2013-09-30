@@ -300,10 +300,10 @@ switch(_operation) do {
                     };
         };
         case "getPlayerSaveTime": {
-                    private ["_playerHash","_unit"];
+                    private ["_playerHash","_puid"];
                 	// Get the time of the last player save for a specific player
-                    _unit = _args select 0;
-                    _playerHash = [GVAR(player_data), getplayerUID _unit] call CBA_fnc_hashGet;
+                    _puid = _args select 0;
+                    _playerHash = [GVAR(player_data), _puid] call CBA_fnc_hashGet;
                     _result =  [_playerHash, "lastSaveTime"] call CBA_fnc_hashGet;
         };
         case "setPlayer": {

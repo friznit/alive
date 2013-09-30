@@ -1,11 +1,10 @@
 TODO
 - load players to db
 - save players to db
-- restore backpack items
-- restore vest items
-- restore magazines
-- save/restore ammo
-- restore primaryweaponitems properly
+- vest, uniform and backpack changes don't get synced to server for some reason... BIS issue, need to workaround it.
+- save/restore ammo count
+- check why stance is affected now
+- check in-vehicle / weapon selection
 - restore secondaryweaponitems properly
 - clean up module implementation
 - player menu

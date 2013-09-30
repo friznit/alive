@@ -1,8 +1,8 @@
 // Define player data getting and setting
-#define PLACEHOLDER QUOTE(ItemWatch);
+#define FILLER_ITEM QUOTE(ItemWatch);
 
 if (!isDedicated && !isHC) then {
-	placeholdercount = 0;
+	PLACEHOLDERCOUNT = 0;
 };
 
 addItemToUniformOrVest = {
@@ -36,11 +36,36 @@ addItemToUniformOrVest = {
 
 fillContainer = {
 	//Fill up uniform, vest, backpack with placeholder objects to ensure correct load when restored
+	private ["_target","_container","_count","_loaded"];
+	_target = _this select 0;
+	_container = _this select 1;
+	_count = PLACEHOLDERCOUNT;
+	_loaded = false;
+	while{!_loaded} do {
+			private "_currentLoad";
+			if (_container == "uniform") then {
+				_currentLoad = loadUniform _target;
+			} else {
+				_currentLoad = loadVest _target;
+			};
+			_target addItem FILLER_ITEM;
+			if (_container == "uniform") then {
+				if (loadUniform _target == _currentLoad) then {_loaded = true;};
+			} else {
+				if (loadVest _target == _currentLoad) then {_loaded = true;};
+			};
+			PLACEHOLDERCOUNT = PLACEHOLDERCOUNT + 1;				
+	};
+	TRACE_2("Added Filler items", PLACEHOLDERCOUNT - _count, PLACEHOLDERCOUNT);
 };
 
 GVAR(UNIT_DATA) = [
 		["lastSaveTime",{ time;}, "SKIP"],
-		["name",{ name (_this select 0);}, "SKIP"],
+		["name",{ name (_this select 0);}, {(_this select 0) setName (_this select 1);}],
+		["speaker",{ speaker (_this select 0);}, {(_this select 0) setSpeaker (_this select 1);}],
+		["nameSound",{ nameSound (_this select 0);}, {(_this select 0) setNameSound (_this select 1);}],
+		["pitch",{ pitch (_this select 0);}, {(_this select 0) setPitch (_this select 1);}],
+		["face",{ face (_this select 0);}, {(_this select 0) setFace (_this select 1);}],
 		["class",{typeof  (_this select 0);}, "SKIP"], // {[MOD(sys_player), "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}
 		["rating",{rating  (_this select 0);}, {(_this select 0) addrating (_this select 1);}],
 		["rank",{rank (_this select 0);}, {(_this select 0) setUnitRank (_this select 1);}],
@@ -190,26 +215,22 @@ GVAR(LOADOUT_DATA) = [
 	["secondaryWeaponItems", {secondaryWeaponItems (_this select 0);}, { 
 		private ["_target","_primw"];
 		_target = _this select 0;
-		/*_primw = primaryWeapon _target;
-		_target selectWeapon (secondaryWeapon _target);
-		{
-			_target removePrimaryWeaponItem _x;
-		} foreach (primaryWeaponItems _target);*/
 		{
 			if (_x !="" && !(_x in (secondaryWeaponItems _target))) then { 
 				_target addsecondaryWeaponItem _x; 
 			}; 
 		} foreach (_this select 1);
-		//_target selectWeapon _primw;
 	}],
 	["uniform", {uniform (_this select 0);}, {
 		removeUniform (_this select 0); 
 		(_this select 0) addUniform (_this select 1);
 	}],
 	["uniformItems", {uniformItems (_this select 0);}, {
+		PLACEHOLDERCOUNT = 0;
 		{
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
+		[(_this select 0),"uniform"] call fillContainer;
 	}],
 	["vest", {vest (_this select 0);}, {
 		removeVest (_this select 0); 
@@ -219,8 +240,15 @@ GVAR(LOADOUT_DATA) = [
 		{
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
+		[(_this select 0),"vest"] call fillContainer;
 	}],
-	["backpack", {backpack (_this select 0);}, {removeBackpack (_this select 0); (_this select 0) addBackpack (_this select 1);}],
+	["backpack", {backpack (_this select 0);}, {
+		removeBackpack (_this select 0);
+		if ((_this select 1) != "") then { 
+			TRACE_1("Adding Backpack", (_this select 1)); 
+			(_this select 0) addBackpack (_this select 1);
+		};
+	}],
 	["backpackitems", {	
 		private ["_cargo","_backpacks","_target"];
 		_cargo = getbackpackcargo (unitbackpack (_this select 0));
@@ -233,29 +261,38 @@ GVAR(LOADOUT_DATA) = [
 		(backpackitems (_this select 0)) + _backpacks;
 	}, {
 		clearAllItemsFromBackpack (_this select 0);
-		private ["_target","_item"];
+		private ["_target"];
 		_target = _this select 0;
-		_item = _this select 1;
-		if(typename _item == "ARRAY") then {
-			if(_item select 0 != "") then {
-					_target addMagazine (_item select 0);
-			};
-		} else {
-			if(isClass(configFile>>"CfgMagazines">>_item)) then {
-				(unitBackpack _target) addMagazineCargo [_item,1];
+		{
+			private "_item";
+			_item = _x;
+			TRACE_2("adding item to backpack", _target, _item);
+			if(typename _item == "ARRAY") then {
+				if(_item select 0 != "") then {
+						_target addMagazine (_item select 0);
+				};
 			} else {
-				if(_item != "") then {
-					if(getNumber(configFile>>"CfgVehicles">>_item>>"isbackpack")==1) then {
-						(unitBackpack _target) addBackpackCargo [_item,1];  
-					} else {
-						if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
-							(unitBackpack _target) addWeaponCargo [_item,1];  
+				if(isClass(configFile>>"CfgMagazines">>_item)) then {
+					(unitBackpack _target) addMagazineCargo [_item,1];
+				} else {
+					if(_item != "") then {
+						if(getNumber(configFile>>"CfgVehicles">>_item>>"isbackpack")==1) then {
+							(unitBackpack _target) addBackpackCargo [_item,1];  
 						} else {
-							_target addItem _item;         
+							if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
+								(unitBackpack _target) addWeaponCargo [_item,1];  
+							} else {
+								_target addItem _item;         
+							};
 						};
 					};
 				};
 			};
+		} foreach (_this select 1);
+		// remove item placeholders from vest and uniform
+		TRACE_2("Removing placeholder items", FILLER_ITEM, PLACEHOLDERCOUNT);
+		for "_i" from 1 to PLACEHOLDERCOUNT do {
+			_target removeItem FILLER_ITEM; 
 		};
 	}],
 	["assigneditems", {	
@@ -279,14 +316,15 @@ GVAR(LOADOUT_DATA) = [
 		} foreach (_this select 1);
 	}],
 	["weaponstate", { 
-		private ["_currentweapon","_currentmode","_isFlash","_isIR","_data"];
+		private ["_currentweapon","_currentmode","_isFlash","_isIR","_weapLow","_data"];
 		if (vehicle (_this select 0) == (_this select 0)) then {
 			_currentweapon = currentMuzzle (_this select 0);
 			_currentmode = currentWeaponMode (_this select 0);
 		    _isFlash = (_this select 0) isFlashlightOn _currentweapon;
 		    _isIR = (_this select 0) isIRLaserOn _currentweapon;
 		    _nvg = currentVisionMode (_this select 0); 
-		    _data = [_currentweapon, _currentmode, _isFlash, _isIR, _nvg];
+		    _weapLow = weaponLowered (_this select 0);
+		    _data = [_currentweapon, _currentmode, _isFlash, _isIR, _nvg, _weapLow];
 		} else { // Player in vehicle
 			_currentweapon = currentWeapon (_this select 0);
 			_data = [_currentweapon];
@@ -317,6 +355,12 @@ GVAR(LOADOUT_DATA) = [
 			// Set NVG
 			if ( ((_this select 1) select 4) == 1 ) then {
 				(_this select 0) action ["nvGoggles", (_this select 0)];
+			} else {
+				(_this select 0) action ["nvGogglesOff", (_this select 0)];
+			};
+			// Lower Weapon
+			if ((_this select 1) select 5) then {
+				(_this select 0) action ["WeaponOnBack", (_this select 0)];
 			};
 		} else { // Player in vehicle
 			(_this select 0) selectWeapon ((_this select 1) select 0);
