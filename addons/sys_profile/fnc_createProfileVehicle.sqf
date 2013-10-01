@@ -42,6 +42,8 @@ _prefix = if(count _this > 5) then {_this select 5} else {""};
 
 _vehicleID = [ALIVE_profileHandler, "getNextInsertVehicleID"] call ALIVE_fnc_profileHandler;
 
+_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
+
 // create the profile for the vehicle
 								
 _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
@@ -53,6 +55,10 @@ _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
+
+if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
+	[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
+};
 
 if!(_spawnGoodPosition) then {
 	[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;

@@ -118,6 +118,8 @@ if(count _config > 0) then {
 		_vehicleRank = _vehicle select 1;
 		
 		//["V: %1 %2",_vehicle,_vehicleClass] call ALIVE_fnc_dump;
+		
+		_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 										
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
@@ -128,6 +130,10 @@ if(count _config > 0) then {
 		[_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
+		
+		if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
+			[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
+		};
 		
 		if!(_spawnGoodPosition) then {
 			[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;

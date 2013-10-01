@@ -155,7 +155,7 @@ if(_debug) then {
 						_vehicleClass = typeOf _vehicle;
 						_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 						
-						["V: %1 K: %2",_vehicleClass,_vehicleKind] call ALIVE_fnc_dump;
+						//["V: %1 K: %2",_vehicleClass,_vehicleKind] call ALIVE_fnc_dump;
 						
 						_position = getPosATL _vehicle;
 						
