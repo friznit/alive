@@ -535,7 +535,9 @@ switch(_operation) do {
 								} forEach _terminusPositions;						
 							};
 						};
-						case "clustersMil": {
+						case "clustersMil": {						
+							private["_consolidatedPositions","_airPositions","_heliPositions","_dimensions","_alpha","_position","_markerID","_m"];
+						
 							if(_key in (_sectorData select 1)) then {
 								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 								
@@ -558,7 +560,7 @@ switch(_operation) do {
 									_markerID = format["MCA_%1_%2",_id,_forEachIndex];
 									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
 									_markers set [count _markers, _m];
-								} forEach _airPositions;	
+								} forEach _airPositions;
 								
 								{
 									_position = _x select 0;
@@ -569,6 +571,9 @@ switch(_operation) do {
 							};
 						};
 						case "clustersCiv": {
+							private["_consolidatedPositions","_powerPositions","_commsPositions","_marinePositions","_fuelPositions","_railPositions",
+							"_constructionPositions","_settlementPositions","_dimensions","_alpha","_position","_markerID","_m"];
+							
 							if(_key in (_sectorData select 1)) then {
 								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
 								

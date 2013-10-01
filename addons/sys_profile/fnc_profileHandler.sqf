@@ -349,7 +349,7 @@ switch(_operation) do {
 
 						// store reference to main profile on by type hash						
 						_profilesType = [_profilesByType, _profileType] call ALIVE_fnc_hashGet;
-						_profilesType set [count _profilesType, _profileID];				
+						_profilesType set [count _profilesType, _profileID];		
 						
 						// store reference to main profile on by catagorised type hash	
 						_profilesCatagorisedType = [_profilesCatagorisedTypes, _profileType] call ALIVE_fnc_hashGet;
