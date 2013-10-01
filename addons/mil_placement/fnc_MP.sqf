@@ -300,7 +300,7 @@ switch(_operation) do {
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
 			} forEach _HQClusters;
 			*/
-			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;			
+			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;		
 			
 			
 			_airClusters = ALIVE_clustersMilAir select 2;
@@ -316,7 +316,7 @@ switch(_operation) do {
 			
 			
 			_heliClusters = ALIVE_clustersMilHeli select 2;
-			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
 			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
 			/*
@@ -330,13 +330,22 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP - Startup completed"] call ALIVE_fnc_dump;
+				["ALIVE MP - Count clusters %1",count _clusters] call ALIVE_fnc_dump;
+				["ALIVE MP - Count air clusters %1",count _airClusters] call ALIVE_fnc_dump;
+				["ALIVE MP - Count heli clusters %1",count _heliClusters] call ALIVE_fnc_dump;		
 				[] call ALIVE_fnc_timer;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
 			
-			// start placement
-			[_logic, "placement"] call MAINCLASS;
+			if(count _clusters > 0) then {
+				// start placement
+				[_logic, "placement"] call MAINCLASS;
+			}else{
+				["ALIVE MP - Warning no usuable locations found for placement, you need to inlcude military locations within the TAOR marker"] call ALIVE_fnc_dump;
+				// set module as started
+				_logic setVariable ["startupComplete", true];
+			};
         };
 	};
 	// Placement

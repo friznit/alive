@@ -284,7 +284,9 @@ switch(_operation) do {
 				
 					// DEBUG -------------------------------------------------------------------------------------
 					["ALIVE Registry - Startup queue completed.."] call ALIVE_fnc_dump;
-					// DEBUG -------------------------------------------------------------------------------------		
+					// DEBUG -------------------------------------------------------------------------------------	
+
+					[ALiVE_ProfileHandler, "debug",true] call ALiVE_fnc_ProfileHandler;					
 				
 					// shut down the startup queue
 					[_logic, "startupRunning", false] call ALIVE_fnc_hashSet;

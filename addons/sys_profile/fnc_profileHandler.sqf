@@ -354,7 +354,7 @@ switch(_operation) do {
 						// store reference to main profile on by catagorised type hash	
 						_profilesCatagorisedType = [_profilesCatagorisedTypes, _profileType] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedType set [count _profilesCatagorisedType, _profileID];
-						
+				
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
@@ -371,10 +371,10 @@ switch(_operation) do {
 							_profile call ALIVE_fnc_inspectHash;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
-
+						
 						
 						if(_profileType == "entity" || _profileType == "civ" || _profileType == "vehicle") then {
-
+							
 							// store reference to main profile on by side hash
 							_profilesSide = [_profilesBySide, _profileSide] call ALIVE_fnc_hashGet;
 							_profilesSide set [count _profilesSide, _profileID];

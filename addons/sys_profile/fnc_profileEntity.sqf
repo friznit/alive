@@ -160,7 +160,7 @@ _deleteMarkers = {
 
 _createMarkers = {
         private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha"
-		,"_profileID","_profileSide","_profileActive","_typePrefix","_label"];
+		,"_profileID","_profileSide","_profileType","_profileActive","_typePrefix","_label"];
         _logic = _this;
         _markers = [];
 

@@ -35,22 +35,21 @@ _markers = [_this, 1, [], [[]]] call BIS_fnc_param;
 
 _markerClusters = [];
 
-{
-	_marker =_x;
-	if(_marker call ALIVE_fnc_markerExists) then {			
-		_marker setMarkerAlpha 0;		
-		{
-			_center = [_x,"center"] call ALIVE_fnc_hashGet;
-			if([_marker, _center] call BIS_fnc_inTrigger) then {
-				_markerClusters set [count _markerClusters, _x];
-			};
-		} forEach _clusters;
-	};
-} forEach _markers;
-
-if(count _markerClusters == 0) then {
+if(count _markers > 0) then {
+	{
+		_marker =_x;
+		if(_marker call ALIVE_fnc_markerExists) then {
+			_marker setMarkerAlpha 0;
+			{
+				_center = [_x,"center"] call ALIVE_fnc_hashGet;
+				if([_marker, _center] call BIS_fnc_inTrigger) then {
+					_markerClusters set [count _markerClusters, _x];
+				};
+			} forEach _clusters;
+		};
+	} forEach _markers;
+}else{
 	_markerClusters = _clusters;
 };
-
 
 _markerClusters
