@@ -1,11 +1,11 @@
 TODO
-- vest, uniform and backpack changes don't get synced to server for some reason for JIP clients... BIS issue, need to workaround it. server does not seem to respect uniform, vest, backpack loads?
-- check why stance is affected now
+- vest uniform changes don't get synced to server for some reason for JIP clients... BIS issue, need to workaround it. server does not seem to respect uniform, vest loads? - JIP disconnect does not store items from vest or uniform.
+- 2nd manual save causes error
 - Player menu - auto save set interval gui
 - load players to db
 - save players to db
-- save/restore ammo count
+- save/restore ammo count for magazines in vest, uniform and backpacks
 - check in-vehicle / weapon selection
-- restore secondaryweaponitems properly
 - clean up module implementation
 - code review
+- restore secondaryweaponitems properly

@@ -5,28 +5,41 @@ if (!isDedicated && !isHC) then {
 	PLACEHOLDERCOUNT = 0;
 };
 
+getMagazine = {
+		private ["_target","_magazine","_weap"];
+		_target = (_this select 0);
+		_weap = currentWeapon _target;
+		_target selectWeapon (_this select 1);
+		if(MOD(sys_player) getvariable ["saveAmmo", false]) then {
+				_magazine = [currentMagazine _target, _target ammo (currentWeapon _target)];
+		} else {
+				_magazine = currentMagazine _target;
+		};	
+		_target selectWeapon _weap;
+		_magazine;
+};
+
 addItemToUniformOrVest = {
-	private ["_target","_item"];
+	private ["_target","_item","_result"];
 	_target = _this select 0;
 	_item = _this select 1;
-	_saveAmmo = MOD(sys_player) getvariable ["saveAmmo", false];
-	TRACE_2("adding item", _target, _item);
 	if(typename _item == "ARRAY") then {
 		if(_item select 0 != "") then {
-			if(_saveAmmo) then {
-				_target addMagazine _item;
-			} else {
-				_target addMagazine (_item select 0);
-			};
+			TRACE_2("adding item array", _target, _item);
+			_target addMagazine _item;
 		};
 	} else {
 		if(_item != "") then {
 			if(isClass(configFile>>"CfgMagazines">>_item)) then {
-				_target addMagazine _item;
+					TRACE_2("adding item magazine", _target, _item);
+					_result = [_target, _item] call CBA_fnc_addMagazine;
+					if !(_result) then {TRACE_2("FAILED adding magazine", _target, _item);};
 			} else {
 				if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
-					_target addWeapon _item;  
+					TRACE_2("adding item weapon", _target, _item);
+					_target addWeaponGlobal _item;  
 				} else {
+					TRACE_2("adding item", _target, _item);
 					_target addItem _item;        
 				};
 			};
@@ -176,9 +189,36 @@ GVAR(HEALTH_DATA) = [
 ];
 
 GVAR(LOADOUT_DATA) = [
+	["assignedItemMagazines", {
+		private ["_target","_magazines","_weap"];
+		_target = (_this select 0);
+		_magazines = [];
+		_weap = currentWeapon _target;
+		{
+			private "_magazine";
+			_target selectWeapon _x;
+			if(currentWeapon _target==_x) then {
+				_magazine = currentMagazine _target;
+				if(_magazine != "") then {
+					_magazines set[count _magazines, _magazine];
+				};	
+			};
+		} forEach (assignedItems _target);
+		_target selectWeapon _weap;
+		_magazines;}, 
+	 {
+		{
+			[(_this select 0), _x] call addItemToUniformOrVest;
+		} foreach (_this select 1);
+	}],
+	["primaryWeaponMagazine", { [(_this select 0), primaryWeapon (_this select 0)] call getMagazine;}, 
+	 { removeAllWeapons (_this select 0);  
+	   [(_this select 0), (_this select 1)] call addItemToUniformOrVest;
+	   TRACE_1("Restore Mag", currentMagazineDetail (_this select 0));
+	}],
 	["primaryweapon", {primaryWeapon (_this select 0);}, {
-		(_this select 0) removeWeapon (primaryWeapon (_this select 0)); 
 		(_this select 0) addWeapon (_this select 1);
+			   TRACE_1("Restore Mag", currentMagazineDetail (_this select 0));
 	}],
 	["primaryWeaponItems", {primaryWeaponItems (_this select 0);}, {
 		private ["_target","_primw"];
@@ -192,8 +232,10 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
+	["handgunWeaponMagazine", { [(_this select 0), handgunWeapon (_this select 0)] call getMagazine;}, 
+	 { [(_this select 0), (_this select 1)] call addItemToUniformOrVest;
+	}],
 	["handgunWeapon", {handgunWeapon (_this select 0);}, {
-		(_this select 0) removeWeapon (handgunWeapon (_this select 0)); 
 		(_this select 0) addWeapon (_this select 1);
 	}],
 	["handgunItems", {handgunItems (_this select 0);}, {
@@ -206,11 +248,15 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
+	["secondaryWeaponMagazine", { [(_this select 0), secondaryWeapon (_this select 0)] call getMagazine;}, 
+	 { (_this select 0) addbackpack "B_Bergen_mcamo"; //Needed because you cannot load AT directly
+	 	[(_this select 0), (_this select 1)] call addItemToUniformOrVest;
+	}],
 	["secondaryWeapon", {secondaryWeapon (_this select 0);}, {
-		(_this select 0) removeWeapon (secondaryWeapon (_this select 0)); 
 		if ((_this select 1) != "") then {
 			(_this select 0) addWeapon (_this select 1);
 		};
+		removeBackpack (_this select 0);
 	}],
 	["secondaryWeaponItems", {secondaryWeaponItems (_this select 0);}, { 
 		private ["_target","_primw"];
@@ -269,18 +315,18 @@ GVAR(LOADOUT_DATA) = [
 			TRACE_2("adding item to backpack", _target, _item);
 			if(typename _item == "ARRAY") then {
 				if(_item select 0 != "") then {
-						_target addMagazine (_item select 0);
+						_target addMagazineGlobal (_item select 0);
 				};
 			} else {
 				if(isClass(configFile>>"CfgMagazines">>_item)) then {
-					(unitBackpack _target) addMagazineCargo [_item,1];
+					(unitBackpack _target) addMagazineCargoGlobal [_item,1];
 				} else {
 					if(_item != "") then {
 						if(getNumber(configFile>>"CfgVehicles">>_item>>"isbackpack")==1) then {
-							(unitBackpack _target) addBackpackCargo [_item,1];  
+							(unitBackpack _target) addBackpackCargoGlobal [_item,1];  
 						} else {
 							if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
-								(unitBackpack _target) addWeaponCargo [_item,1];  
+								(unitBackpack _target) addWeaponCargoGlobal [_item,1];  
 							} else {
 								_target addItem _item;         
 							};
@@ -311,8 +357,13 @@ GVAR(LOADOUT_DATA) = [
 	}, {
 		removeAllAssignedItems (_this select 0);
 		{
-			(_this select 0) addItem _x;
-			(_this select 0) assignItem _x;
+			// Check to see if item is a binocular type which in fact is treated as a weapon
+			if !(isClass(configFile>>"CfgWeapons">>_x>>"WeaponSlotsInfo")) then {
+				(_this select 0) addItem _x;
+				(_this select 0) assignItem _x;
+			} else {
+				(_this select 0) addWeaponGlobal _x;
+			};
 		} foreach (_this select 1);
 	}],
 	["weaponstate", { 
@@ -367,10 +418,6 @@ GVAR(LOADOUT_DATA) = [
 		};
 	}]
 
-];
-
-GVAR(AMMO_DATA) = [
-	//get set Ammo - uniform, vest, backpack
 ];
 
 GVAR(SCORE_DATA) = [

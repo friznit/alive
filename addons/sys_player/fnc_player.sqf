@@ -336,7 +336,8 @@ switch(_operation) do {
                         private ["_playerHash","_unit"];
                         _unit  = _args select 0;
                         _playerHash = [_logic, _args] call ALIVE_fnc_setPlayer;
-                        _result = [GVAR(player_data), getplayerUID _unit, _playerHash] call CBA_fnc_hashSet;
+                        [GVAR(player_data), getplayerUID _unit, _playerHash] call CBA_fnc_hashSet;
+                        _result = _playerHash;
         };
         case "checkPlayer": {
         	// Check to see if the player joining has the same class as the one stored in memory
@@ -351,9 +352,13 @@ switch(_operation) do {
             // Save data on the client too?
             _playerHash = [_logic, _args] call ALIVE_fnc_setPlayer;
 
+             TRACE_2("MANUAL PLAYER SAVE", _unit, _playerHash);
+
             // Store playerhash on client
             player setVariable [QGVAR(player_data), _playerHash];
             GVAR(resetAvailable) = true;
+
+            _result = _playerHash;
         };
         case "resetPlayer": {
         	// Return the player state to the previous start state
