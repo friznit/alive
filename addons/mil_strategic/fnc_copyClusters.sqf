@@ -59,7 +59,7 @@ _clustersCopy = [];
 		} forEach _parkingPositions;
 		
 		[_cluster,"parkingPositions",_newParkingPositions] call ALIVE_fnc_hashSet;		
-		
+		[_cluster,"clusterID",[_x,"clusterID"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 		[_cluster,"center",[_x,"center"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 		[_cluster,"size",_size] call ALIVE_fnc_hashSet;
 		[_cluster,"type",[_x,"type"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
