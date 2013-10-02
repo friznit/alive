@@ -194,6 +194,8 @@ switch(_operation) do {
                         
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
+                        
+                        _logic setVariable ["handler",_handler];
                     };
                     
                     sleep 5;
@@ -210,13 +212,6 @@ switch(_operation) do {
 					
 					// set module as startup complete
 					_logic setVariable ["startupComplete", true];
-					
-					
-					// ARJay EDITS --------
-					// HH I need to be able to get the handler hash from the module instance
-					// but I couldn't find an easy way to do it, so I just chucked the handler
-					// on the module here. Can you review please?
-					_logic setVariable ["handler",_handler];
                 };
                 
                 /*
@@ -347,7 +342,7 @@ switch(_operation) do {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
                     
-                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height","_debug"];
+                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height","_debug","_clusterID"];
                     
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
                         _objectives = _args select 0;
@@ -365,9 +360,10 @@ switch(_operation) do {
 									_size = [_target,"size"] call ALiVE_fnc_hashGet;
 									_type = [_target,"type"] call ALiVE_fnc_hashGet;
 									_priority = [_target,"priority"] call ALiVE_fnc_hashGet;
+                                    _clusterID = [_target,"clusterID"] call ALiVE_fnc_hashGet;
                                     _height = (ATLtoASL [_pos select 0, _pos select 1,0]) select 2;
-                                    
-									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height]];
+
+									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height,_clusterID]];
 						} foreach _objectives;
                         
                         switch (_typeOp) do {
@@ -390,6 +386,7 @@ switch(_operation) do {
 									_size = _x select 1; [_target, "size",_size] call ALIVE_fnc_HashSet;
 									_type = _x select 2; [_target, "type",_type] call ALIVE_fnc_HashSet;
 									_priority = _x select 3; [_target, "priority",_priority] call ALIVE_fnc_HashSet;
+                                    _clusterID = _x select 5; [_target, "clusterID",_clusterID] call ALIVE_fnc_HashSet;
 									_opcom_state = "unassigned"; [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
                                     
 									if  (_debug) then {
