@@ -20,7 +20,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_spawnRadius","_syncedUnits","_profileSystem"];
+private ["_logic","_debug","_plotSectors","_syncMode","_spawnRadius","_syncedUnits","_profileSystem"];
 
 PARAMS_1(_logic);
 
@@ -32,7 +32,8 @@ if(isServer) then {
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
 	_debug = _logic getVariable ["debug",false];
-	_syncMode = _logic getVariable ["syncronised","ADD"];
+	_plotSectors = _logic getVariable ["plotSectors",false];
+	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1000"]);
 
@@ -41,10 +42,17 @@ if(isServer) then {
 	}else{
 		_debug = false;
 	};
+	
+	if(_plotSectors == "true") then {
+		_plotSectors = true;
+	}else{
+		_plotSectors = false;
+	};
 
 	_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "init"] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;
+	[_profileSystem, "plotSectors", _plotSectors] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "syncMode", _syncMode] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;

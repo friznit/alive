@@ -57,6 +57,7 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);						
 						
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
+						[_logic,"plotSectors",false] call ALIVE_fnc_hashSet;
 						[_logic,"syncMode","ADD"] call ALIVE_fnc_hashSet;
 						[_logic,"syncedUnits",[]] call ALIVE_fnc_hashSet;
 						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
@@ -80,12 +81,13 @@ switch(_operation) do {
 		};
 		case "start": {
 		
-				private["_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnCycleTime","_despawnCycleTime",
+				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnCycleTime","_despawnCycleTime",
 				"_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];
                 
                 if (isServer) then {
 						
 						_debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
+						_plotSectors = [_logic,"plotSectors",false] call ALIVE_fnc_hashGet;
 						_syncMode = [_logic,"syncMode","ADD"] call ALIVE_fnc_hashGet;
 						_syncedUnits = [_logic,"syncedUnits",[]] call ALIVE_fnc_hashGet;
 						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
@@ -163,8 +165,9 @@ switch(_operation) do {
 						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
 												
 						// run grid analysis
-						[_debug] spawn { 
+						[_debug,_plotSectors] spawn { 
 							_debug = _this select 0;
+							_plotSectors = _this select 1;
 							waituntil {
 								sleep 90;
 								
@@ -180,13 +183,15 @@ switch(_operation) do {
 								
 								
 								// run profile analysis on all sectors
-								_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;				
-								
-								// clear the sector data plot
-								[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
-								
-								// plot the sector data
-								[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
+								_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;		
+
+								if(_plotSectors) then {
+									// clear the sector data plot
+									[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+									
+									// plot the sector data
+									[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
+								};
 																		
 								sleep 5;		
 								
@@ -219,6 +224,12 @@ switch(_operation) do {
                 
                 _result = _args;
         };
+		case "plotSectors": {
+				if(typeName _args == "SCALAR") then {
+						[_logic,"plotSectors",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"plotSectors"] call ALIVE_fnc_hashGet;
+        };
 		case "spawnRadius": {
 				if(typeName _args == "SCALAR") then {
 						[_logic,"spawnRadius",_args] call ALIVE_fnc_hashSet;
@@ -229,14 +240,12 @@ switch(_operation) do {
 		case "syncMode": {
 				if(typeName _args == "STRING") then {
 						[_logic,"syncMode",_args] call ALIVE_fnc_hashSet;
-						ALIVE_spawnRadius = _args;
                 };
 				_result = [_logic,"syncMode"] call ALIVE_fnc_hashGet;
         };
 		case "syncedUnits": {
 				if(typeName _args == "ARRAY") then {
 						[_logic,"syncedUnits",_args] call ALIVE_fnc_hashSet;
-						ALIVE_spawnRadius = _args;
                 };
 				_result = [_logic,"syncedUnits"] call ALIVE_fnc_hashGet;
         };

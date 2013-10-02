@@ -655,6 +655,26 @@ switch(_operation) do {
 			_vehicleCount = _vehicleCount + 1;
 			[_logic, "profileVehicleCount", _vehicleCount] call ALIVE_fnc_hashSet;
 		};
+		case "getUnitCount": {
+			private["_unitCount","_entities","_entity","_count"];
+			_unitCount = 0;
+			_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
+			
+			{
+				_profileType = _x select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
+				if(_profileType == "entity") then {
+					_count = [_x, "unitCount"] call ALIVE_fnc_profileEntity;				
+					_unitCount = _unitCount + _count;
+				}
+			} forEach (_profiles select 2);
+
+			_result = _unitCount;
+		};
+		case "getVehicleCount": {
+			private["_unitCount","_entities","_entity","_count"];
+			_vehicles = [_logic, "getProfilesByType", "vehicle"] call MAINCLASS;
+			_result = count _vehicles;
+		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
         };

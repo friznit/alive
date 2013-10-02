@@ -69,6 +69,7 @@ switch(_operation) do {
 				_logic setVariable ["super", SUPERCLASS];
 				_logic setVariable ["class", MAINCLASS];
 				_logic setVariable ["moduleType", "ALIVE_OPCOM"];
+				_logic setVariable ["startupComplete", false];
 				TRACE_1("After module init",_logic);
 
 				[_logic,"register"] call MAINCLASS;			
@@ -79,7 +80,7 @@ switch(_operation) do {
 			private["_registration","_moduleType"];
 	
 			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["ALIVE_profileHandler","SYNCED"]];
+			_registration = [_logic,_moduleType,["ALIVE_profileHandler","SYNCED"],["ALIVE_MI","ALIVE_OPCOM"]];
 	
 			if(isNil "ALIVE_registry") then {
 				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
@@ -148,6 +149,12 @@ switch(_operation) do {
 					/*
 					CONTROLLER  - coordination
 					*/
+					
+					
+					// ARJay EDITS --------
+					// HH - I removed some of the waiting here because the registry ensures that all MP's and MO's
+					// are completely loaded by the time OPCOM is started. Also to allow for other modules to be
+					// synced to OPCOM. Can you review the following changes please?
 			        
 			        //waituntil {sleep 10; "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger; !(isnil "ALiVE_ProfileHandler")};
                     
@@ -156,17 +163,24 @@ switch(_operation) do {
 			        //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
                     private ["_objectives"];
                     _objectives = [];
-                    
 
                     for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 						private ["_obj"];
                         
-                        waituntil {/*sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;*/ _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
+                        //waituntil {
+							/*sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;*/ 
+							//_obj = nil; 
+							_obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; 
+							//(!(isnil "_obj") && {count _obj > 0})
+						//};
                         _objectives = _objectives + _obj;
                     };
 
 					//Wait long enough for all MIL_MP instances (needs an indicator when all MIL_MP instances are finished)
-                    sleep 15 + (random 30);
+                    //sleep 15 + (random 30);					
+					
+					// END ARJay EDITS --------
+					
                     
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
@@ -193,6 +207,16 @@ switch(_operation) do {
                         _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
                         [_prof, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
                     } foreach _profIDs;
+					
+					// set module as startup complete
+					_logic setVariable ["startupComplete", true];
+					
+					
+					// ARJay EDITS --------
+					// HH I need to be able to get the handler hash from the module instance
+					// but I couldn't find an easy way to do it, so I just chucked the handler
+					// on the module here. Can you review please?
+					_logic setVariable ["handler",_handler];
                 };
                 
                 /*

@@ -12,7 +12,13 @@
 	<English>Enable Debug:</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT">
-	<English>Enables OPCOM Module Debug</English>
+	<English>Enables Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_PLOT_SECTORS">
+	<English>Sector Coloring:</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_PLOT_SECTORS_COMMENT">
+	<English>Enables sector coloring according to units presence</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SYNC">
 	<English>Syncronisation Options:</English>

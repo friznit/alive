@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_MI">
+	<English>Military Intelligence</English>
+</Key>
+<Key ID="STR_ALIVE_MI_COMMENT">
+	<English>Strategic Military Intelligence</English>
+</Key>
+<Key ID="STR_ALIVE_MI_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_MI_DEBUG_COMMENT">
+	<English>Enables MI Module Debug</English>
+</Key>
+</Container></Package></Project>

@@ -140,6 +140,7 @@ switch(_operation) do {
 				_module = _args select 0;
 				_moduleType = _args select 1;
 				_requiredModules = [_args, 2, [], [[]]] call BIS_fnc_param;
+				_excludedModules = [_args, 3, [], [[]]] call BIS_fnc_param;
 				
 				_modules = [_logic, "modules"] call ALIVE_fnc_hashGet;
 				_modulesByType = [_logic, "modulesByType"] call ALIVE_fnc_hashGet;
@@ -153,7 +154,7 @@ switch(_operation) do {
 				[_modulesByType, _moduleType, _modulesType] call ALIVE_fnc_hashSet;
 				
 				// place the module in the queue
-				_startupQueue set [count _startupQueue, [_moduleID,_moduleType,_requiredModules]];				
+				_startupQueue set [count _startupQueue, [_moduleID,_moduleType,_requiredModules,_excludedModules]];				
 				[_modules, _moduleID, _module] call ALIVE_fnc_hashSet;
 								
 				/*
@@ -172,7 +173,7 @@ switch(_operation) do {
 			};
         };
 		case "startup": {
-				private["_startupQueue","_modulesStarted","_queuedModule","_moduleID","_moduleType","_requiredModules","_requirementsPassed","_startedModules","_class"];
+				private["_startupQueue","_modulesStarted","_queuedModule","_moduleID","_moduleType","_requiredModules","_excludedModules","_requirementsPassed","_startedModules","_class"];
 				
 				_startupQueue = [_logic, "startupQueue"] call ALIVE_fnc_hashGet;
 				_modulesStarted = [_logic, "modulesStarted"] call ALIVE_fnc_hashGet;
@@ -184,6 +185,7 @@ switch(_operation) do {
 					_moduleID = _queuedModule select 0;
 					_moduleType = _queuedModule select 1;
 					_requiredModules = _queuedModule select 2;
+					_excludedModules = _queuedModule select 3;
 					
 					// DEBUG -------------------------------------------------------------------------------------
 					["ALIVE Registry - %2 Startup [%1]",_moduleID,_moduleType] call ALIVE_fnc_dump;
@@ -206,15 +208,18 @@ switch(_operation) do {
 								_syncedModuleType = _syncedModule getVariable ["moduleType","NONE"];
 								_started = _syncedModule getVariable ["startupComplete",false];
 								
-								// DEBUG -------------------------------------------------------------------------------------
-								["ALIVE Registry - %2 [%1] required synced %3 module has started:%4",_moduleID,_moduleType,_syncedModuleType,_started] call ALIVE_fnc_dump;
-								// DEBUG -------------------------------------------------------------------------------------
+								if!(_syncedModuleType in _excludedModules) then {
 								
-								if!(_started) then {
-									_requirementsPassed = false;
-								};
-							};
-						
+									// DEBUG -------------------------------------------------------------------------------------
+									["ALIVE Registry - %2 [%1] required synced %3 module has started:%4",_moduleID,_moduleType,_syncedModuleType,_started] call ALIVE_fnc_dump;
+									// DEBUG -------------------------------------------------------------------------------------
+									
+									if!(_started) then {
+										_requirementsPassed = false;
+									};
+								
+								};						
+							};					
 						};
 					
 						_startedModules = [];
@@ -284,7 +289,12 @@ switch(_operation) do {
 				
 					// DEBUG -------------------------------------------------------------------------------------
 					["ALIVE Registry - Startup queue completed.."] call ALIVE_fnc_dump;
-					// DEBUG -------------------------------------------------------------------------------------		
+					// DEBUG -------------------------------------------------------------------------------------
+
+					if!(isNil "ALIVE_profileHandler") then {
+						["ALIVE total unit count: %1", [ALIVE_profileHandler, "getUnitCount"] call ALIVE_fnc_profileHandler] call ALIVE_fnc_dump;
+						["ALIVE total vehicle count: %1", [ALIVE_profileHandler, "getVehicleCount"] call ALIVE_fnc_profileHandler] call ALIVE_fnc_dump;
+					};
 				
 					// shut down the startup queue
 					[_logic, "startupRunning", false] call ALIVE_fnc_hashSet;
