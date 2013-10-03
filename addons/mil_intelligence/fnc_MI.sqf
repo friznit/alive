@@ -366,7 +366,7 @@ switch(_operation) do {
 			_objective = _intelItem select 3;
 			_sector = _intelItem select 4;
 			
-			//_objective call ALIVE_fnc_inspectHash;
+			//_sector call ALIVE_fnc_inspectHash;
 			
 			_center = [_objective,"center"] call ALIVE_fnc_hashGet;
 			_type = [_objective,"type"] call ALIVE_fnc_hashGet;
