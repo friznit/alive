@@ -4,7 +4,7 @@ TODO
 - Player menu - auto save set interval gui
 - load players to db
 - save players to db
-- save/restore ammo count for magazines in vest, uniform and backpacks
+- a few missing items on vest?
 - check in-vehicle / weapon selection
 - clean up module implementation
 - code review

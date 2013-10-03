@@ -5,7 +5,27 @@ if (!isDedicated && !isHC) then {
 	PLACEHOLDERCOUNT = 0;
 };
 
-getMagazine = {
+getContainerMagazines = {
+	private ["_target","_container","_magazines","_contMags"];
+	_target = (_this select 0);
+	_container = (_this select 1);
+	_magazines = magazinesAmmoFull _target;
+	_contMags = [];
+	{
+		private "_mag";
+		_mag = _x;
+		if (toLower(_mag select 4) == _container) then {
+			if(MOD(sys_player) getvariable ["saveAmmo", false]) then {
+					_contMags set [count _contMags, [_mag select 0, _mag select 1]];
+			} else {
+					_contMags set [count _contMags, _mag select 0];
+			};
+		};
+	} foreach _magazines;
+	_contMags;
+};
+
+getWeaponMagazine = {
 		private ["_target","_magazine","_weap"];
 		_target = (_this select 0);
 		_weap = currentWeapon _target;
@@ -211,7 +231,7 @@ GVAR(LOADOUT_DATA) = [
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
 	}],
-	["primaryWeaponMagazine", { [(_this select 0), primaryWeapon (_this select 0)] call getMagazine;}, 
+	["primaryWeaponMagazine", { [(_this select 0), primaryWeapon (_this select 0)] call getWeaponmagazine;}, 
 	 { removeAllWeapons (_this select 0);  
 	   [(_this select 0), (_this select 1)] call addItemToUniformOrVest;
 	   TRACE_1("Restore Mag", currentMagazineDetail (_this select 0));
@@ -232,7 +252,7 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
-	["handgunWeaponMagazine", { [(_this select 0), handgunWeapon (_this select 0)] call getMagazine;}, 
+	["handgunWeaponMagazine", { [(_this select 0), handgunWeapon (_this select 0)] call getWeaponmagazine;}, 
 	 { [(_this select 0), (_this select 1)] call addItemToUniformOrVest;
 	}],
 	["handgunWeapon", {handgunWeapon (_this select 0);}, {
@@ -248,7 +268,7 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
-	["secondaryWeaponMagazine", { [(_this select 0), secondaryWeapon (_this select 0)] call getMagazine;}, 
+	["secondaryWeaponMagazine", { [(_this select 0), secondaryWeapon (_this select 0)] call getWeaponmagazine;}, 
 	 { (_this select 0) addbackpack "B_Bergen_mcamo"; //Needed because you cannot load AT directly
 	 	[(_this select 0), (_this select 1)] call addItemToUniformOrVest;
 	}],
@@ -271,7 +291,16 @@ GVAR(LOADOUT_DATA) = [
 		removeUniform (_this select 0); 
 		(_this select 0) addUniform (_this select 1);
 	}],
-	["uniformItems", {uniformItems (_this select 0);}, {
+	["uniformItems", {
+		private ["_uniformItems"];
+		_uniformItems = [(_this select 0), "uniform"] call getContainerMagazines;
+		{
+			if !(isClass(configFile>>"CfgMagazines">>_x)) then {
+				_uniformItems set [count _uniformItems, _x];
+			};
+		} foreach uniformItems (_this select 0);
+		_uniformItems;
+	 }, {
 		PLACEHOLDERCOUNT = 0;
 		{
 			[(_this select 0), _x] call addItemToUniformOrVest;
@@ -282,7 +311,16 @@ GVAR(LOADOUT_DATA) = [
 		removeVest (_this select 0); 
 		(_this select 0) addVest (_this select 1);
 	}],
-	["vestItems", {vestItems (_this select 0);}, {
+	["vestItems", {
+		private ["_vestItems"];
+		_vestItems = [(_this select 0), "vest"] call getContainerMagazines;
+		{
+			if !(isClass(configFile>>"CfgMagazines">>_x)) then {
+				_vestItems set [count _vestItems, _x];
+			};
+		} foreach vestItems (_this select 0);
+		_vestItems;
+	}, {
 		{
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
