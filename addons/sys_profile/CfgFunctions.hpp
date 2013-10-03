@@ -226,6 +226,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_sideNumberToText.sqf";
 				recompile = 1;
 			};
+			class sideTextToLong {
+				description = "sideTextToLong";
+				file = "\x\alive\addons\sys_profile\fnc_sideTextToLong.sqf";
+				recompile = 1;
+			};
 			class vehicleGetAmmo {
 				description = "vehicleGetAmmo";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetAmmo.sqf";

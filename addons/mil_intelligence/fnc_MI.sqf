@@ -108,6 +108,8 @@ switch(_operation) do {
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_MI"];
 			_logic setVariable ["startupComplete", false];
+			
+			_logic setVariable ["intelligenceObtained", [] call ALIVE_fnc_hashCreate];
 			TRACE_1("After module init",_logic);
 
 			[_logic,"register"] call MAINCLASS;			
@@ -155,8 +157,8 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALIVE MI - Startup completed"] call ALIVE_fnc_dump;
+				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
@@ -174,13 +176,15 @@ switch(_operation) do {
 	case "monitor": {
         if (isServer) then {
 		
-			private ["_debug","_modules","_module","_modulesObjectives","_moduleSide","_moduleEnemies","_moduleFriendly","_objectives"];
+			private ["_debug","_intelligenceObtained","_modules","_module","_modulesObjectives","_moduleSide","_moduleEnemies","_moduleFriendly","_objectives"];
 			
 			_modules = _args;
 			
 			_debug = [_logic, "debug"] call MAINCLASS;
+			_intelligenceObtained = _logic getVariable "intelligenceObtained";
 			_modulesObjectives = [];
 			
+			// get objectives and modules settings from syncronised OPCOM instances
 			{
 				_module = _x;
 				_moduleSide = [_module,"side"] call ALiVE_fnc_HashGet;
@@ -198,17 +202,23 @@ switch(_operation) do {
 				
 				_modulesObjectives set [count _modulesObjectives, [_moduleSide,_moduleEnemies,_moduleFriendly,_objectives]];
 				
-			} forEach _modules;
-
+			} forEach _modules;			
 			
-			[_debug, _modulesObjectives] spawn {
-				private ["_debug","_modulesObjectives","_intelligenceDelivered","_moduleSide","_moduleEnemies","_moduleFriendly",
-				"_objectives","_id","_state","_danger","_tacom_state","_occupied"];
+			_intelligenceChance = 1;
+
+			// spawn monitoring loop
+			
+			[_logic, _debug, _modulesObjectives, _intelligenceObtained, _intelligenceChance] spawn {
+			
+				private ["_debug","_modulesObjectives","_intelligenceObtained","_intelligenceChance","_moduleSide",
+						"_moduleEnemies","_moduleFriendly","_objectives","_id","_state","_danger","_tacom_state","_occupied",
+						"_reserve","_recon","_capture","_intelligenceAvailable","_intelligenceAdded","_objective","_center","_sector"];
 				
-				_debug = _this select 0;
-				_modulesObjectives = _this select 1;
-				
-				_intelligenceDelivered = [];
+				_logic = _this select 0;
+				_debug = _this select 1;
+				_modulesObjectives = _this select 2;
+				_intelligenceObtained = _this select 3;
+				_intelligenceChance = _this select 4;
 								
 				waituntil {
 					sleep (45 + random 20);
@@ -219,90 +229,192 @@ switch(_operation) do {
 						_moduleFriendly = _x select 2;
 						_objectives = _x select 3;
 						
+						/*
 						["Side: %1", _moduleSide] call ALIVE_fnc_dump;
 						["Enemies: %1", _moduleEnemies] call ALIVE_fnc_dump;
 						["Friends: %1", _moduleFriendly] call ALIVE_fnc_dump;
+						*/
 						
 						_reserve = [];
 						_recon = [];
 						_capture = [];
-												
+						
+						// sort objective states
 						{
-							//_x call ALIVE_fnc_inspectHash;
-							/*
-							_id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
-							_state = [_x,"opcom_state"] call ALIVE_fnc_hashGet;
-							_orders = [_x,"opcom_orders"] call ALIVE_fnc_hashGet;
-							_danger = [_x,"danger"] call ALIVE_fnc_hashGet;
-							*/
-							
 							_tacom_state = '';
 							if("tacom_state" in (_x select 1)) then {
 								_tacom_state = [_x,"tacom_state"] call ALIVE_fnc_hashGet;
 							};
 							
+							/*
+							_id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
+							_x call ALIVE_fnc_inspectHash;
+							["OBJ: %1 state: %2",_id, _tacom_state] call ALIVE_fnc_dump;
+							*/
+							
 							switch(_tacom_state) do {
 								case "reserve":{
-									_reserved set [count _reserved, _x];
+									_reserve set [count _reserve, [_moduleSide, _moduleEnemies, _moduleFriendly, _x]];
 								};
 								case "recon":{
-									_recon set [count _recon, _x];
+									_recon set [count _recon, [_moduleSide, _moduleEnemies, _moduleFriendly, _x]];
 								};
 								case "capture":{
-									_capture set [count _capture, _x];
+									_capture set [count _capture, [_moduleSide, _moduleEnemies, _moduleFriendly, _x]];
 								};
 							};
 							
-							["OBJ [%1] state: %2 orders: %3 danger: %4 tacom state: %5",_id,_state,_orders,_danger,_tacom_state] call ALIVE_fnc_dump;
-							
 						} forEach _objectives;
 						
-						_intelligenceSent = false;
 						
-						if(count _capture > 0) then {
-							{
-								_id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
-								if!(_id in _intelligenceDelivered) then {
-									["INTEL SENT"] call ALIVE_fnc_dump;
-									_x call ALIVE_fnc_inspectHash;
-									_intelligenceSent = true;
-									_intelligenceDelivered set [count _intelligenceDelivered, _id];
-								};
-							} forEach _capture;							
+						// DEBUG -------------------------------------------------------------------------------------
+						if(_debug) then {
+							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+							["ALIVE MI - reserved: %1 recon: %2 capture: %3 for side %4", count _reserve, count _recon, count _capture, _moduleSide] call ALIVE_fnc_dump;
 						};
+						// DEBUG -------------------------------------------------------------------------------------
 						
-						if(count _recon > 0 && !(_intelligenceSent)) then {
-							{
-								_id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
-								if!(_id in _intelligenceDelivered) then {
-									["INTEL SENT"] call ALIVE_fnc_dump;
-									_x call ALIVE_fnc_inspectHash;
-									_intelligenceSent = true;
-									_intelligenceDelivered set [count _intelligenceDelivered, _id];
-								};
-							} forEach _recon;							
+						
+						_intelligenceAvailable = true;
+						_intelligenceAdded = [];
+						
+						// if chance of gathering intelligence passes
+						// loop through sorted objectives until a not
+						// delivered intelligence item is found
+						if(_intelligenceChance > random 1) then {
+						
+						
+							// DEBUG -------------------------------------------------------------------------------------
+							if(_debug) then {
+								["ALIVE MI - Intelligence chance dice roll succeeded"] call ALIVE_fnc_dump;
+							};
+							// DEBUG -------------------------------------------------------------------------------------
+						
+						
+							if(count _capture > 0 && _intelligenceAvailable) then {
+								{
+									_objective = _x select 3;
+									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
+									if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+										_center = [_objective,"center"] call ALIVE_fnc_hashGet;
+										_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+										_x set [count _x, _sector];
+										_intelligenceAvailable = false;
+										_intelligenceAdded set [count _intelligenceAdded, _id];
+										[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+									};
+								} forEach _capture;							
+							};
+							
+							if(count _recon > 0 && _intelligenceAvailable) then {
+								{
+									_objective = _x select 3;
+									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
+									if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+										_center = [_objective,"center"] call ALIVE_fnc_hashGet;
+										_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+										_x set [count _x, _sector];
+										_intelligenceAvailable = false;
+										_intelligenceAdded set [count _intelligenceAdded, _id];
+										[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+									};
+								} forEach _recon;							
+							};
+							
+							if(count _reserve > 0 && _intelligenceAvailable) then {
+								{
+									_objective = _x select 3;
+									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
+									if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+										_center = [_objective,"center"] call ALIVE_fnc_hashGet;
+										_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+										_x set [count _x, _sector];
+										_intelligenceAvailable = false;
+										_intelligenceAdded set [count _intelligenceAdded, _id];
+										[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+									};
+								} forEach _reserve;							
+							};
+							
+							if(count _intelligenceAdded > 0) then {
+								[_logic, "notifyIntelligenceItem", _intelligenceAdded] call MAINCLASS;
+							};
 						};
-						
-						if(count _reserved > 0 && !(_intelligenceSent)) then {
-							{
-								_id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
-								if!(_id in _intelligenceDelivered) then {
-									["INTEL SENT"] call ALIVE_fnc_dump;
-									_x call ALIVE_fnc_inspectHash;
-									_intelligenceSent = true;
-									_intelligenceDelivered set [count _intelligenceDelivered, _id];
-								};
-							} forEach _reserved;							
-						};						
 						
 					} forEach _modulesObjectives;
-					
-					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 					
 					false 
 				};
 			};
 		};		
+	};
+	case "notifyIntelligenceItem": {
+		private ["_intelItems","_intelItemID","_intelligenceObtained","_intelItem","_sides","_objective",
+		"_side","_command","_sector","_center","_type","_state","_grid","_details","_typeName","_sideText"];
+						
+		_intelItems = _args;
+		
+		_intelligenceObtained = _logic getVariable "intelligenceObtained";
+		
+		{
+			_intelItemID = _x;
+			
+			_intelItem = [_intelligenceObtained, _intelItemID] call ALIVE_fnc_hashGet;
+			
+			_side = _intelItem select 0;
+			_sides = _intelItem select 1;
+			_objective = _intelItem select 3;
+			_sector = _intelItem select 4;
+			
+			_objective call ALIVE_fnc_inspectHash;
+			
+			_center = [_objective,"center"] call ALIVE_fnc_hashGet;
+			_type = [_objective,"type"] call ALIVE_fnc_hashGet;
+			_state = [_objective,"tacom_state"] call ALIVE_fnc_hashGet;
+			_grid = mapGridPosition _center;
+			_details = "";
+			
+			switch(_type) do {
+				case "MIL": {
+					_typeName = "military objective";
+				};
+				case "CIV": {
+					_typeName = "civilian objective";
+				};
+			};
+			
+			_sideText = [_side] call ALIVE_fnc_sideTextToLong;
+			_details = format["New intel received, %1 forces ",_sideText];
+			
+			switch(_state) do {
+				case "reserve": {
+					_details = _details + format["sighted occupying %1 ", _typeName];
+				};
+				case "recon": {
+					_details = _details + format["sighted near %1 ", _typeName];
+				};
+				case "capture": {
+					_details = _details + format["are attacking %1 ", _typeName];
+				};
+			};
+			
+			_details = _details + format[" - coords: %1",_grid];		
+
+			
+			// DEBUG -------------------------------------------------------------------------------------
+			if(_debug) then {
+				["Alive MI - Intel message: %1",_details] call ALIVE_fnc_dump;
+			};
+			// DEBUG -------------------------------------------------------------------------------------			
+			
+			
+			{
+				_side = [_x] call ALIVE_fnc_sideTextToObject;								
+				_command = [_side,"HQ"];
+				_command SideChat _details;
+			} forEach _sides;
+			
+		} forEach _intelItems;		
 	};
 };
 

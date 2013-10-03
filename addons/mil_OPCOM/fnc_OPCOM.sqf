@@ -386,7 +386,7 @@ switch(_operation) do {
 									_size = _x select 1; [_target, "size",_size] call ALIVE_fnc_HashSet;
 									_type = _x select 2; [_target, "type",_type] call ALIVE_fnc_HashSet;
 									_priority = _x select 3; [_target, "priority",_priority] call ALIVE_fnc_HashSet;
-                                    _clusterID = _x select 5; [_target, "clusterID",_clusterID] call ALIVE_fnc_HashSet;
+									_clusterID = _x select 5; [_target, "clusterID",_clusterID] call ALIVE_fnc_HashSet;
 									_opcom_state = "unassigned"; [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
                                     
 									if  (_debug) then {

@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1473.300781,-306.506836,-107.188721,-1020.526001,1045,818,1};
-window[] = {0,-1,-1,-1,-1,1046,75,1862,97,1,1062};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1561.217285,-218.590591,236.631531,-796.059265,1044,803,1};
+window[] = {0,-1,-1,-1,-1,1053,-1816,-29,104,1,1062};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -270,11 +270,11 @@ class FSM
        "			//Get objectives" \n
        "			_obj = ([_OPCOM_HANDLER,""objectives"",[]] call AliVE_fnc_HashGet);" \n
        "" \n
-       "			_unassigned = ({(_x select 2 select 5) == ""unassigned""} count _obj);" \n
-       "			_attacking = ({(_x select 2 select 5) == ""attacking""} count _obj);" \n
-       "			_reserving = ({(_x select 2 select 5) == ""reserving""} count _obj);" \n
-       "			_defending = ({(_x select 2 select 5) == ""defending""} count _obj);" \n
-       "			_idle = ({(_x select 2 select 5) == ""idle""} count _obj);" \n
+       "			_unassigned = ({(_x select 2 select 6) == ""unassigned""} count _obj);" \n
+       "			_attacking = ({(_x select 2 select 6) == ""attacking""} count _obj);" \n
+       "			_reserving = ({(_x select 2 select 6) == ""reserving""} count _obj);" \n
+       "			_defending = ({(_x select 2 select 6) == ""defending""} count _obj);" \n
+       "			_idle = ({(_x select 2 select 6) == ""idle""} count _obj);" \n
        "			_active = _attacking + _defending;" \n
        "" \n
        "			_targetsTaken = _targetOccupation select 0;" \n
@@ -289,7 +289,7 @@ class FSM
        "						_idl = [];" \n
        "" \n
        "						{" \n
-       "							switch (_x select 2 select 5) do {" \n
+       "							switch (_x select 2 select 6) do {" \n
        "								case (""unassigned"") : {_un set [count _un,_x]};" \n
        "								case (""attack"") : {_at set [count _at,_x]};" \n
        "								case (""defend"") : {_def set [count _def,_x]};" \n
