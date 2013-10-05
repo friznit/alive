@@ -149,16 +149,6 @@ switch(_operation) do {
 					/*
 					CONTROLLER  - coordination
 					*/
-					
-					
-					// ARJay EDITS --------
-					// HH - I removed some of the waiting here because the registry ensures that all MP's and MO's
-					// are completely loaded by the time OPCOM is started. Also to allow for other modules to be
-					// synced to OPCOM. Can you review the following changes please?
-			        
-			        //waituntil {sleep 10; "OPCOM - Waiting for virtual layer (profiles)..." call ALiVE_fnc_logger; !(isnil "ALiVE_ProfileHandler")};
-                    
-                    sleep 5;
 			        
 			        //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
                     private ["_objectives"];
@@ -175,13 +165,10 @@ switch(_operation) do {
 						//};
                         _objectives = _objectives + _obj;
                     };
-
-					//Wait long enough for all MIL_MP instances (needs an indicator when all MIL_MP instances are finished)
-                    //sleep 15 + (random 30);					
-					
-					// END ARJay EDITS --------
-					
                     
+                    //wait random time to ensure opcoms analysis doesnt run at the same time
+                    sleep random(25);
+
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
                     _OPCOM = [_handler,_objectives] call {
@@ -197,18 +184,6 @@ switch(_operation) do {
                         
                         _logic setVariable ["handler",_handler];
                     };
-                    
-                    sleep 5;
-                    
-                    //Add random movement to profiles so they dont stand still if no waypoints
-                    _profIDs = [ALIVE_profileHandler, "getProfilesBySide",[_handler,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
-                    player sidechat format["%1 profiles for side %2",count _profIDs,([_handler,"side"] call ALiVE_fnc_HashGet)];
-                    sleep 1;
-                    {
-                        private ["_prof","_type"];
-                        _prof = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
-                        [_prof, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
-                    } foreach _profIDs;
 					
 					// set module as startup complete
 					_logic setVariable ["startupComplete", true];
