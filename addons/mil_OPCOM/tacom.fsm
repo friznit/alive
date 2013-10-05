@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
@@ -24,7 +24,7 @@ item19[] = {"RECON_Conditions",4,218,-399.338531,271.491608,-309.338531,321.4916
 item20[] = {"COLLECT_TO_QUEUE",2,250,-191.535400,70.489761,-101.535316,120.489708,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.571014,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
-item23[] = {"SELECT_SECTION",2,250,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
+item23[] = {"SELECT_SECTION",2,4346,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
 item24[] = {"SECTION_SELECTED",4,218,-197.466095,422.042877,-107.466232,472.042908,0.000000,"SECTION" \n "SELECTED"};
 item25[] = {"PREPARE_ORDERS",2,250,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
 item26[] = {"PREPARED",4,218,-202.116547,569.103699,-112.116524,619.103699,0.000000,"PREPARED"};
@@ -74,8 +74,8 @@ link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,26};
 link32[] = {26,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-544.663452,93.571182,334.844879,-429.210236,629,753,1};
-window[] = {0,-1,-1,-1,-1,928,44,1667,44,1,646};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-544.663452,93.571182,887.846252,123.791138,629,753,1};
+window[] = {0,-1,-1,-1,-1,1126,242,1865,242,1,646};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -108,6 +108,7 @@ class FSM
        "_sectionsamount_reserve = [_OPCOM_HANDLER,""sectionsamount_reserve"",1] call ALiVE_fnc_HashGet;" \n
        "_sectionsamount_defend = [_OPCOM_HANDLER,""sectionsamount_defend"",2] call ALiVE_fnc_HashGet;" \n
        "" \n
+       "_colorside = ""ColorRed"";" \n
        "switch (_side) do {" \n
        "	case (""WEST"") : {_colorside = ""ColorBlue""};" \n
        "	case (""EAST"") : {_colorside = ""ColorRed""};" \n
@@ -712,7 +713,7 @@ class FSM
        "		_size = _this select 1 select 1;" \n
        "		_pos = ([_objective,""center""] call ALiVE_fnc_HashGet);" \n
        "" \n
-       "		_sectionAssist = [_this select 0,""NearestAvailableSectionNew"",[_pos,_size,""land""]] call ALiVE_fnc_OPCOM;" \n
+       "		_sectionAssist = [_this select 0,""NearestAvailableSection"",[_pos,_size,[""infantry"",""motorized"",""mechanized"",""armored""]]] call ALiVE_fnc_OPCOM;" \n
        "		[_objective, ""sectionAssist"",_sectionAssist] call ALiVE_fnc_HashSet;" \n
        "	};" \n
        "} else {" \n

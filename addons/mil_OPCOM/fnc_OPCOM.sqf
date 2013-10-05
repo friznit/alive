@@ -844,19 +844,25 @@ switch(_operation) do {
             if ({!(isnil "_x") && {_x select 0 == _target}} count _attackedE < 1) then {
 	            switch (_type) do {
 	                case ("infantry") : {
-	                    //_profiles = [_pos, 1000, [_side,"entity"]] call ALIVE_fnc_getNearProfiles;
                         _profiles = [_logic,"infantry"] call ALiVE_fnc_HashGet;
                         _dist = 1000;
 	                };
 	                case ("mechandized") : {
-	                    //_profiles = [_pos, 1500, [_side,"vehicle","Car"]] call ALIVE_fnc_getNearProfiles;
+	                    _profiles = [_logic,"mechandized"] call ALiVE_fnc_HashGet;
 	                };
 	                case ("armored") : {
                         _profiles = [_logic,"armored"] call ALiVE_fnc_HashGet;
                         _dist = 3000;
                     };
+                    case ("artillery") : {
+                        _profiles = [_logic,"artillery"] call ALiVE_fnc_HashGet;
+                        _dist = 5000;
+                    };
+                    case ("AAA") : {
+                        _profiles = [_logic,"AAA"] call ALiVE_fnc_HashGet;
+                        _dist = 5000;
+                    };
 	                case ("air") : {
-                        //_profiles = [_pos, 3000, [_side,"vehicle","Helicopter"]] call ALIVE_fnc_getNearProfiles;
                         _profiles = [_logic,"air"] call ALiVE_fnc_HashGet;
                         _dist = 15000;
                     };
@@ -911,15 +917,20 @@ switch(_operation) do {
 
         case "scantroops" : {
             
-            private ["_inf","_mot","_mech","_arm","_air","_sea","_profileIDs"];
+            private ["_inf","_mot","_mech","_arm","_air","_sea","_profileIDs","_artilleryClasses","_AAA","_AAAClasses"];
+            
+            _artilleryClasses = ["B_MBT_01_arty_F","B_MBT_01_mlrs_F","O_MBT_02_arty_F"];
+            _AAAClasses = ["O_APC_Tracked_02_AA_F","B_APC_Tracked_01_AA_F"];
             
             _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
             _inf = [];
             _mot = [];
-            _mech = [];
+            _AAA = [];
             _arm = [];
             _air = [];
             _sea = [];
+            _mech = [];
+            _arty = [];
             
             {
                 private ["_profile","_assignment","_type","_objectType","_vehicleClass"];
@@ -938,37 +949,42 @@ switch(_operation) do {
 		                        switch (tolower _objectType) do {
 		                			case "car":{
 	                                    if ((count (_assignments select 1)) > 0) then {
-	                                        {_mot set [count _mot,_x]} foreach (_assignments select 1);
+	                                        {if !(_x in _mot) then {_mot set [count _mot,_x]}} foreach (_assignments select 1);
 	                                    };
 									};
 									case "tank":{
 	                                    if ((count (_assignments select 1)) > 0) then {
-											{_arm set [count _arm,_x]} foreach (_assignments select 1);
+                                            if (_vehicleClass in (_artilleryClasses + _AAAClasses)) then {
+                                                if (_vehicleClass in _artilleryClasses) then {{if !(_x in _arty) then {_arty set [count _arty,_x]}} foreach (_assignments select 1)};
+                                                if (_vehicleClass in _AAAClasses) then {{if !(_x in _AAA) then {_AAA set [count _AAA,_x]}} foreach (_assignments select 1)};
+                                            } else {
+                                                {if !(_x in _arm) then {_arm set [count _arm,_x]}} foreach (_assignments select 1);
+                                            };
 	                                    };
 	                                };
 									case "armored":{
 	                                    if ((count (_assignments select 1)) > 0) then {
-											{_mech set [count _mech,_x]} foreach (_assignments select 1);
+											{if !(_x in _mech) then {_mech set [count _mech,_x]}} foreach (_assignments select 1);
 	                                    };
 									};
 									case "truck":{
 	                                    if ((count (_assignments select 1)) > 0) then {
-	                                    	{_mot set [count _mot,_x]} foreach (_assignments select 1);
+	                                    	{if !(_x in _mot) then {_mot set [count _mot,_x]}} foreach (_assignments select 1);
 	                                    };
 									};
 									case "ship":{
 	                                    if ((count (_assignments select 1)) > 0) then {
-											{_sea set [count _sea,_x]} foreach (_assignments select 1);
+											{if !(_x in _sea) then {_sea set [count _sea,_x]}} foreach (_assignments select 1);
 	                                    };
 									};
 									case "helicopter":{
 	                                    if ((count (_assignments select 1)) > 0) then {
-											{_air set [count _air,_x]} foreach (_assignments select 1);
+											{if !(_x in _air) then {_air set [count _air,_x]}} foreach (_assignments select 1);
 	                                    };
 									};
 									case "plane":{
 	                                    if ((count (_assignments select 1)) > 0) then {
-											{_air set [count _air,_x]} foreach (_assignments select 1);
+											{if !(_x in _air) then {_air set [count _air,_x]}} foreach (_assignments select 1);
 	                                    };
 									};
 		                        };
@@ -987,51 +1003,28 @@ switch(_operation) do {
             [_logic,"motorized",_mot] call ALiVE_fnc_HashSet;
             [_logic,"mechanized",_mech] call ALiVE_fnc_HashSet;
             [_logic,"armored",_arm] call ALiVE_fnc_HashSet;
+            [_logic,"artillery",_arty] call ALiVE_fnc_HashSet;
+            [_logic,"AAA",_AAA] call ALiVE_fnc_HashSet;
             [_logic,"air",_air] call ALiVE_fnc_HashSet;
             [_logic,"sea",_sea] call ALiVE_fnc_HashSet;
             
-            _result = [_inf,_mot,_mech,_arm,_air,_sea];
+            _result = [_inf,_mot,_mech,_arm,_air,_sea,_arty,_AAA];
         };
         
-        case "NearestAvailableSectionNew": {
+        case "NearestAvailableSection": {
             
-            private ["_type","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
+            private ["_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
             
             _pos = _args select 0;
             _size = _args select 1; 
-            if (count _args > 2) then {_type = _args select 2} else {_type = "all"};
+            if (count _args > 2) then {_types = _args select 2} else {_types = ["infantry"]};
             _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",([_logic,"side","EAST"] call ALiVE_fnc_HashGet)] call ALIVE_fnc_profileHandler;
-            
-            //[_logic,"scantroops"] call ALiVE_fnc_OPCOM;
-            
-            //Get selected entities by type
-            switch (_type) do {
-                case ("infantry") : {
-                    _troops = [_logic,"infantry",[]] call ALiVE_fnc_HashGet;
-                };
-                case ("motorized") : {
-                    _troops = [_logic,"motorized",[]] call ALiVE_fnc_HashGet;
-                };
-                case ("mechanized") : {
-                    _troops = [_logic,"mechanized",[]] call ALiVE_fnc_HashGet;
-                };
-                case ("armored") : {
-                    _troops = [_logic,"armored",[]] call ALiVE_fnc_HashGet;
-                };
-                case ("air") : {
-                    _troops = [_logic,"air",[]] call ALiVE_fnc_HashGet;
-                };
-                case ("sea") : {
-                    _troops = [_logic,"sea",[]] call ALiVE_fnc_HashGet;
-                };
-                case ("all") : {
-                    _troops = ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"motorized",[]] call ALiVE_fnc_HashGet) + ([_logic,"mechanized",[]] call ALiVE_fnc_HashGet) + ([_logic,"armored",[]] call ALiVE_fnc_HashGet) + ([_logic,"air",[]] call ALiVE_fnc_HashGet) + ([_logic,"sea",[]] call ALiVE_fnc_HashGet);
-                };
-                case ("land") : {
-                    _troops = ([_logic,"infantry",[]] call ALiVE_fnc_HashGet) + ([_logic,"motorized",[]] call ALiVE_fnc_HashGet) + ([_logic,"mechanized",[]] call ALiVE_fnc_HashGet) + ([_logic,"armored",[]] call ALiVE_fnc_HashGet);
-                };
-            };
-            
+
+			_troops = [];
+            {
+                _troops = _troops + ([_logic,_x,[]] call ALiVE_fnc_HashGet);
+            } foreach _types;
+
             //subtract busy and reserved profiles
             _busy = [];
             {_busy set [count _busy,_x select 1]} foreach ([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet);
@@ -1056,126 +1049,6 @@ switch(_operation) do {
             };
             
 			_result = _section;
-        };
-
-        case "NearestAvailableSection": {
-            			ASSERT_TRUE(typeName _args == "ARRAY",str _args);
-                        
-                        private ["_typeOp","_id","_profileIDs","_profileID","_ProfileIDsBusy","_size","_state","_available","_objectives","_objective","_section","_sections","_pending_orders"];
-        
-        				_position = _args select 0;
-						_typeOp = _args select 1;
-                        _size = _args select 2;
-                        if (count _args > 3) then {
-                            _objective = _args select 3;
-                        	_section = ([_objective,"section",[]] call ALiVE_fnc_HashGet);
-                            _state = ([_objective,"opcom_state",[]] call ALiVE_fnc_HashGet);
-                        } else {_objective = nil};
-                        
-                        _side = [_logic,"side","EAST"] call ALiVE_fnc_HashGet;
-                        _ProfileIDsReserve = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
-                        _size_reserve = [_logic,"sectionsamount_reserve",1] call ALiVE_fnc_HashGet;
-                        _size_attack = [_logic,"sectionsamount_attack",1] call ALiVE_fnc_HashGet;
-                        _size_defend = [_logic,"sectionsamount_defend",1] call ALiVE_fnc_HashGet;
-                        _objectivescount = [_logic,"simultanobjectives",3] call ALiVE_fnc_HashGet;
-                        _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
-                        _pending_orders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
-                        _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",_side] call ALIVE_fnc_profileHandler;
-                        _available = [];
-                        _result = nil;
-                        
-                        if (_size < 0) then {_size = floor((count _profileIDs)/_objectivescount)};
-
-						_ProfileIDsBusy = [];
-						{
-							_ProfileID = _x select 1;
-							_ProfileIDsBusy set [count _ProfileIDsBusy,_ProfileID];
-						} foreach _pending_orders;
-                        
-                        for "_i" from 0 to ((count _objectives)-1) do {
-                           _objective = _objectives select _i;
-                           _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
-                           _state = [_objective,"opcom_state","unassigned"] call ALiVE_fnc_HashGet;
-                           _id = [_objective,"objectiveID"] call ALiVE_fnc_HashGet;
-                           
-                           {
-                               _ProfileID = _x;
-                               _section = [_objective,"section"] call ALiVE_fnc_HashGet;
-                               
-                           		if !(_ProfileID in _profileIDs) then {
-									_section = _section - [_ProfileID]; [_objective,"section",_section] call ALiVE_fnc_HashSet;
-                              		if (count _section < 1) then {[_objective,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_objective,"opcom_orders","none"] call ALiVE_fnc_HashSet; [_objective,"danger",-1] call ALiVE_fnc_HashSet};
-                            	};
-                           } foreach _section;
-
-							_section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
-
-                           if ((_state == "idle") && {count _section > _size_reserve}) then {
-                               {
-                                   _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
-                                   if (count _section == _size_reserve) exitwith {};
-                                   [_logic,"resetorders",_x] call ALiVE_fnc_OPCOM;
-                               } foreach _section;
-                           };
-                           
-                           if ({_x in _ProfileIDsBusy} count _section > 0) then {
-                               {
-                                   _grp = _x;
-                                   
-                                   if !(_grp in _ProfileIDsBusy) then {
-                                       _ProfileIDsBusy set [count _ProfileIDsBusy,_grp];
-                                   };
-                               } foreach _section;
-                           };
-                        };
-                        
-                        _ProfileIDsReserveTMP = _ProfileIDsReserve - _ProfileIDsBusy;
-                        _ProfileIDsBusyTMP = _ProfileIDsBusy - _ProfileIDsReserve;
-                        
-                        _ProfileIDsBusy = _ProfileIDsBusyTMP;
-                        _ProfileIDsReserve = _ProfileIDsReserveTMP;
-                        
-						[_logic,"ProfileIDsBusy",_ProfileIDsBusy] call ALiVE_fnc_HashSet;
-                        [_logic,"ProfileIDsReserve",_ProfileIDsReserve] call ALiVE_fnc_HashSet;
-
-						switch (_typeOp) do {
-							case ("attack") : {_available = _profileIDs - _ProfileIDsBusy - _ProfileIDsReserve};
-							case ("reserve") : {_available = _profileIDs - _ProfileIDsBusy - _ProfileIDsReserve};
-                            case ("defend") : {
-                                _available = _profileIDs - _ProfileIDsBusy - _ProfileIDsReserve;
-                                
-                                if (count _available < _size) then {
-                                    _available = _available + _ProfileIDsReserve;
-                                };
-                            };
-						};
-                        
-                        _sections = [];
-                        _section = [];
-						
-						for "_i" from 0 to ((count _available)-1) do {
-								private ["_profile","_profileID","_profileType","_position","_active","_type"];
-								
-								_profile = [ALIVE_profileHandler, "getProfile", _available select _i] call ALIVE_fnc_profileHandler;
-								_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-								_side = [_profile, "side"] call ALIVE_fnc_hashGet;
-								_active = [_profile, "active"] call ALIVE_fnc_hashGet;
-								_pos = [_profile,"position"] call ALIVE_fnc_hashGet;
-								_type = [_profile, "type"] call ALIVE_fnc_hashGet;
-
-								if !(_type == "vehicle") then {
-									_sections set [count _sections,[_ProfileID,_pos]];
-								};
-						};
-
-						_sections = [_sections,[],{if !(isnil "_x") then {_position distance (_x select 1)}},"ASCEND"] call BIS_fnc_sortBy;
-
-						{
-							if ((count _section) >= _size) exitwith {};
-                              _section set [count _section,_x select 0];
-						} foreach _sections;
-                        
-						_result = _section;
         };
         
         case "setstatebyclusteroccupation": {
