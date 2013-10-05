@@ -30,14 +30,6 @@ publicVariable "NEO_coreLogic";
 				"Falcon-One",
 				0,
 				{}
-			],
-			[
-				getMarkerPos "NEO_mkr_cas_01", 
-				270,
-				"I_Plane_Fighter_03_CAS_F",
-				"Predator-One",
-				0,
-				{}
 			]
 		],
 		[																	//ARTY ARRAY MUST COME IN THIRD, USE EMPTY ARRAY IF NO ARTY UNITS SHOULD BE ADDED TO SIDE
