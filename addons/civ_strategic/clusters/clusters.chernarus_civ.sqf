@@ -3121,4 +3121,4 @@ _parkingPositions= [];
 [_cluster,"priority",10] call ALIVE_fnc_hashSet;
 [_cluster,"debugColor","ColorPink"] call ALIVE_fnc_hashSet;
 [ALIVE_clustersCivConstruction,"c_1",_cluster] call ALIVE_fnc_hashSet;
-
+ALIVE_clustersCivSettlement = [] call ALIVE_fnc_hashCreate;
