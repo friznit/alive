@@ -36,36 +36,42 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_SPAWN_COMMENT";
                                 class Values
                                 {
+                                        class CQB_spawn_5
+                                        {
+                                                name = "5%";
+                                                value = 5;
+                                                default = 5;
+												CQB_spawn = 5;
+                                        };
                                         class CQB_spawn_10
                                         {
                                                 name = "10%";
-                                                value = 1;
-												default = 1;
-												CQB_spawn = 1;
+                                                value = 10;
+												CQB_spawn = 10;
                                         };
                                         class CQB_spawn_20
                                         {
                                                 name = "20%";
-                                                value = 2;
-                                                CQB_spawn = 2;
+                                                value = 20;
+                                                CQB_spawn = 20;
                                         };
                                         class CQB_spawn_30
                                         {
                                                 name = "30%";
-                                                value = 3;
-                                                CQB_spawn = 3;
+                                                value = 30;
+                                                CQB_spawn = 30;
                                         };
                                         class CQB_spawn_40
                                         {
                                                 name = "40%";
-                                                value = 4;
-                                                CQB_spawn = 4;
+                                                value = 40;
+                                                CQB_spawn = 40;
                                         };
                                         class CQB_spawn_50
                                         {
                                                 name = "50%";
-                                                value = 5;
-                                                CQB_spawn = 5;
+                                                value = 50;
+                                                CQB_spawn = 50;
                                         };
                                 };
                         };

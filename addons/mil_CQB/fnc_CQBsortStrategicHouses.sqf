@@ -61,13 +61,13 @@ _nonstrathouses = [];
 	// Check if spawn position is NOT within a blacklist trigger
 	if ({[_x, _pos] call BIS_fnc_inTrigger} count _triglist == 0) then {
 		if (typeOf _x in _BuildingTypeStrategic) then {
-			if (((random 1) < (_CQB_spawn / 3)) && {!(_x in _strathouses)}) then {
+			if (((random 1) < (_CQB_spawn / 30)) && {!(_x in _strathouses)}) then {
 				_strathouses set [count _strathouses, _x];
 			};
 		} else {
         	if (typeOf _x in _BuildingTypeRegular) then {
                 
-				if (((random 1) < (_CQB_spawn / 10)) && {!(_x in _nonstrathouses)}) then {
+				if (((random 1) < (_CQB_spawn / 100)) && {!(_x in _nonstrathouses)}) then {
 					_nonstrathouses set [count _nonstrathouses, _x];
 				};
             };
