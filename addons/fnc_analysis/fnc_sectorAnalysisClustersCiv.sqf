@@ -38,7 +38,7 @@ if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
 	//[true] call ALIVE_fnc_timer;
 	
 	_worldName = toLower(worldName);			
-	_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_civ.sqf", _worldName];		
+	_file = format["\x\alive\addons\civ_strategic\clusters\clusters.%1_civ.sqf", _worldName];		
 	call compile preprocessFileLineNumbers _file;
 	ALIVE_loadedCivClusters = true;
 	

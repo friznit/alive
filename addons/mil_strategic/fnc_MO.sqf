@@ -256,7 +256,7 @@ switch(_operation) do {
 								
 			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
 				_worldName = toLower(worldName);			
-				_file = format["\x\alive\addons\fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
+				_file = format["\x\alive\addons\mil_strategic\clusters\clusters.%1_mil.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedMilClusters = true;
 			};
