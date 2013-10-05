@@ -10,11 +10,12 @@ getContainerMagazines = {
 	_target = (_this select 0);
 	_container = (_this select 1);
 	_magazines = magazinesAmmoFull _target;
+	TRACE_1("Mags", _magazines);
 	_contMags = [];
 	{
 		private "_mag";
 		_mag = _x;
-		if (toLower(_mag select 4) == _container) then {
+		if ( toLower(_mag select 4) == _container && !(getnumber (configFile>>"CfgMagazines">>(_mag select 0)>>"count") == 1) ) then {
 			if(MOD(sys_player) getvariable ["saveAmmo", false]) then {
 					_contMags set [count _contMags, [_mag select 0, _mag select 1]];
 			} else {
@@ -227,6 +228,7 @@ GVAR(LOADOUT_DATA) = [
 		_target selectWeapon _weap;
 		_magazines;}, 
 	 {
+		(_this select 0) addbackpack "B_Bergen_mcamo"; // as a place to put items temporarily
 		{
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
@@ -234,11 +236,9 @@ GVAR(LOADOUT_DATA) = [
 	["primaryWeaponMagazine", { [(_this select 0), primaryWeapon (_this select 0)] call getWeaponmagazine;}, 
 	 { removeAllWeapons (_this select 0);  
 	   [(_this select 0), (_this select 1)] call addItemToUniformOrVest;
-	   TRACE_1("Restore Mag", currentMagazineDetail (_this select 0));
 	}],
 	["primaryweapon", {primaryWeapon (_this select 0);}, {
 		(_this select 0) addWeapon (_this select 1);
-			   TRACE_1("Restore Mag", currentMagazineDetail (_this select 0));
 	}],
 	["primaryWeaponItems", {primaryWeaponItems (_this select 0);}, {
 		private ["_target","_primw"];
@@ -269,7 +269,7 @@ GVAR(LOADOUT_DATA) = [
 		} foreach (_this select 1);
 	}],
 	["secondaryWeaponMagazine", { [(_this select 0), secondaryWeapon (_this select 0)] call getWeaponmagazine;}, 
-	 { (_this select 0) addbackpack "B_Bergen_mcamo"; //Needed because you cannot load AT directly
+	 { 
 	 	[(_this select 0), (_this select 1)] call addItemToUniformOrVest;
 	}],
 	["secondaryWeapon", {secondaryWeapon (_this select 0);}, {
@@ -295,7 +295,8 @@ GVAR(LOADOUT_DATA) = [
 		private ["_uniformItems"];
 		_uniformItems = [(_this select 0), "uniform"] call getContainerMagazines;
 		{
-			if !(isClass(configFile>>"CfgMagazines">>_x)) then {
+			TRACE_1("Uniform Item", _x);
+			if ( getnumber (configFile>>"CfgMagazines">>_x>>"count") == 1 || !isClass (configFile>>"CfgMagazines">>_x) ) then {
 				_uniformItems set [count _uniformItems, _x];
 			};
 		} foreach uniformItems (_this select 0);
@@ -315,7 +316,8 @@ GVAR(LOADOUT_DATA) = [
 		private ["_vestItems"];
 		_vestItems = [(_this select 0), "vest"] call getContainerMagazines;
 		{
-			if !(isClass(configFile>>"CfgMagazines">>_x)) then {
+			TRACE_1("Vest Item", _x);
+			if ( getnumber (configFile>>"CfgMagazines">>_x>>"count") == 1 || !isClass (configFile>>"CfgMagazines">>_x) ) then {
 				_vestItems set [count _vestItems, _x];
 			};
 		} foreach vestItems (_this select 0);

@@ -1,10 +1,9 @@
 TODO
-- vest uniform changes don't get synced to server for some reason for JIP clients... BIS issue, need to workaround it. server does not seem to respect uniform, vest loads? - JIP disconnect does not store items from vest or uniform.
 - 2nd manual save causes error
 - Player menu - auto save set interval gui
 - load players to db
 - save players to db
-- a few missing items on vest?
+- ammo count for mags in backpack
 - check in-vehicle / weapon selection
 - clean up module implementation
 - code review
