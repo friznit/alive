@@ -439,13 +439,13 @@ switch(_operation) do {
 			
 			switch(_state) do {
 				case "reserve": {
-					_details = _details + format["sighted occupying %1 ", _typeName];
+					_details = _details + format["sighted occupying %1", _typeName];
 				};
 				case "recon": {
-					_details = _details + format["sighted near %1 ", _typeName];
+					_details = _details + format["sighted near %1", _typeName];
 				};
 				case "capture": {
-					_details = _details + format["are attacking %1 ", _typeName];
+					_details = _details + format["are attacking %1", _typeName];
 				};
 			};
 			
