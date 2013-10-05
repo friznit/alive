@@ -134,7 +134,8 @@ switch(_operation) do {
                         "Land_i_House_Big_02_V3_F",
                         "Land_i_Stone_HouseBig_V2_F",
                         "Land_i_Stone_HouseBig_V1_F",
-                        "Land_d_House_Big_01_V1_F"
+                        "Land_d_House_Big_01_V1_F",
+                        "Land_i_House_Small_03_V1_F"
                     ];
                     
                     //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
@@ -189,7 +190,7 @@ switch(_operation) do {
                         _pos = _x select 0;
                         _size = _x select 1;
                         
-                        _houses_tmp = nearestObjects [_pos, (_regularTypes + _strategicTypes), _size*2];
+                        _houses_tmp = nearestObjects [_pos, (_regularTypes + _strategicTypes), _size];
                         _houses = _houses + _houses_tmp;
                         
                         //player sidechat format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
