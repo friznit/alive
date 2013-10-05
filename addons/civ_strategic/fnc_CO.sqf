@@ -536,6 +536,7 @@ switch(_operation) do {
 				"a_municipaloffice",
 				"a_office01",
 				"a_office02",
+				"offices",
 				"airport_tower"
 			];
 
@@ -558,9 +559,10 @@ switch(_operation) do {
 			
 			_types = [
 				//"_dam_",
+				"dp_main",
 				"_pec_",
 				"powerstation",
-				"spp_",
+				"spp_t",
 				"trafostanica"
 			];
 			_clusters_power = [_logic, _types] call ALIVE_fnc_findTargets;
@@ -664,7 +666,7 @@ switch(_operation) do {
 			_types = [
 				"fuelstation",
 				"_oil_",
-				"dp_",
+				"dp_bigtank",
 				"IndPipe"
 			];
 			_clusters_fuel = [_logic, _types] call ALIVE_fnc_findTargets;
@@ -689,7 +691,8 @@ switch(_operation) do {
 			"CO - Searching Construction locations" call ALiVE_fnc_logger;
 			
 			_types = [
-				"wip"
+				"wip",
+				"bridge_highway"
 			];
 			_clusters_construction = [_logic, _types] call ALIVE_fnc_findTargets;
 			_clusters_construction = [_clusters_construction, "CIV", 10, "ColorPink"] call ALIVE_fnc_setTargets;
@@ -713,7 +716,12 @@ switch(_operation) do {
 			"CO - Searching Settlement locations" call ALiVE_fnc_logger;
 			
 			_types = [
-				"households"
+				"church",
+				"hospital",
+				"amphitheater",
+				"chapel_v",
+				"d_house_big",
+				"d_house_shop"
 			];
 			_clusters_settlement = [_logic, _types] call ALIVE_fnc_findTargets;
 			_clusters_settlement = [_clusters_settlement, "CIV", 0, "ColorGreen"] call ALIVE_fnc_setTargets;
