@@ -162,7 +162,7 @@ switch(_operation) do {
                                         "call ALIVE_fnc_playerMenuDef",
                                         "main"
                                 ]
-                        ] call CBA_fnc_flexiMenu_Add;
+                        ] call ALiVE_fnc_flexiMenu_Add;
                 };
 
                 /*
@@ -410,7 +410,7 @@ switch(_operation) do {
                                         "call MAINCLASSMenuDef",
                                         "main"
                                 ]
-                        ] call CBA_fnc_flexiMenu_Remove;
+                        ] call ALiVE_fnc_flexiMenu_Remove;
                 };
         };
         default {
