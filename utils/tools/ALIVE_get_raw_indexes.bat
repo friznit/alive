@@ -46,6 +46,12 @@ set target=P:\x\alive\addons\fnc_strategic\indexes
 %exe% "%arma%\@a2co\Common\provinggrounds_pmc.pbo" > %target%\objects.provinggrounds_pmc.sqf
 %exe% "%arma%\@a2co\Common\shapur_baf.pbo" > %target%\objects.shapur_baf.sqf
 
+rem %exe% "D:\SteamLibrary\SteamApps\common\ARMA Gold\AddOns\desert.pbo" > %target%\objects.desert.sqf
+rem %exe% "D:\SteamLibrary\SteamApps\common\ARMA Gold\AddOns\Desert2.pbo" > %target%\objects.desert2.sqf
+rem %exe% "D:\SteamLibrary\SteamApps\common\ARMA Gold\AddOns\sara.pbo" > %target%\objects.sara.sqf
+rem %exe% "D:\SteamLibrary\SteamApps\common\ARMA Gold\AddOns\saralite.pbo" > %target%\objects.saralite.sqf
+rem %exe% "%arma%\@dbe1\AddOns\Sara_DBE1.pbo" > %target%\objects.sara_dbe1.sqf
+
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_abel.pbo" > %target%\objects.abel.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_cain.pbo" > %target%\objects.cain.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_eden.pbo" > %target%\objects.eden.sqf
