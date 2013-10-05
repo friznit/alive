@@ -120,7 +120,7 @@ TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCL
 						"call ALIVE_fnc_statisticsMenuDef",
 						"main"
 				]
-		] call CBA_fnc_flexiMenu_Add;
+		] call ALiVE_fnc_flexiMenu_Add;
 };
 
 ADDON = true;
