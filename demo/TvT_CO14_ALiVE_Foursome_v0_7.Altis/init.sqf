@@ -1,3 +1,7 @@
+#ifndef execNow
+#define execNow call compile preprocessfilelinenumbers
+#endif
+
 titleText ["ALiVE | Foursome", "BLACK IN",3];
 
 			_object = player;
@@ -61,4 +65,4 @@ ABORTCHECK = false;
 
 } else {};
 
-
+execNow "init_SR.sqf";
