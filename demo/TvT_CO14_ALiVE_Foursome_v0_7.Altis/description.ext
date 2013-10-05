@@ -5,13 +5,13 @@ class header {
 	maxplayers = 10;
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
+
 #include "scripts\NEO_radio\hpp\main.hpp"
 	
 	class RscTitles 
 	{    										
 		#include "scripts\NEO_radio\hpp\titles.hpp"
 	};
-
 
 
 author = ALiVE Studios || Mission by Highhead;
@@ -27,6 +27,6 @@ debriefing = 1;
 respawn = 3;
 respawnDelay = 15;
 RespawnDialog = 0;
-disabledAI = 1;
+disabledAI = 0;
 enableDebugConsole = 1;
 allowFunctionsRecompile = 1;

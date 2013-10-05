@@ -26,9 +26,9 @@ titleText ["ALiVE | Foursome", "BLACK IN",3];
 
 
 
-	playmusic "Track09_Night_percussions";
-	60 fadesound 0.5;
-	2 fademusic 1;
+	//playmusic "Track09_Night_percussions";
+	//60 fadesound 0.5;
+	//2 fademusic 1;
 
 [] spawn {	
 	// set fog level 
