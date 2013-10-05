@@ -90,7 +90,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.81";
+		briefingName="ALiVE Showcase - Foursome v0.82";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -179,7 +179,7 @@ class Mission
 						};
 						class Item1
 						{
-							value="BN";
+							value="CY";
 							parentCls="ALiVE_mil_placement";
 							typeName="size";
 						};
@@ -569,7 +569,7 @@ class Mission
 						};
 						class Item1
 						{
-							value="CY";
+							value="BN";
 							parentCls="ALiVE_mil_placement";
 							typeName="size";
 						};
