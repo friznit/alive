@@ -181,6 +181,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_getClosestRoad.sqf";
 				recompile = 1;
 			};
+			class liveAnalysis {
+				description = "liveAnalysis";
+				file = "\x\alive\addons\fnc_analysis\fnc_liveAnalysis.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

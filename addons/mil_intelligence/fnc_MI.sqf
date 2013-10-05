@@ -133,7 +133,7 @@ switch(_operation) do {
 	case "start": {
         if (isServer) then {
 		
-			private ["_debug","_modules","_module"];
+			private ["_debug","_modules","_module","_activeAnalysisJobs"];
 			
 			_debug = [_logic, "debug"] call MAINCLASS;			
 			
@@ -152,6 +152,17 @@ switch(_operation) do {
 				_module = (synchronizedObjects _logic) select _i;
 				_module = _module getVariable "handler";
 				_modules set [count _modules, _module];
+			};
+						
+			// if grid profile analysis is running with plot sectors, turn off plot sectors
+			_activeAnalysisJobs = [ALIVE_liveAnalysis, "getAnalysisJobs"] call ALIVE_fnc_liveAnalysis;
+			
+			if("gridProfileEntity" in (_activeAnalysisJobs select 1)) then {
+				_gridProfileAnalysis = [_activeAnalysisJobs, "gridProfileEntity"] call ALIVE_fnc_hashGet;
+				_args = [_gridProfileAnalysis, "args"] call ALIVE_fnc_hashGet;
+				_args set [4, [false]];
+				// clear the sector data plot
+				[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
 			};
 			
 			
@@ -202,7 +213,7 @@ switch(_operation) do {
 				
 				_modulesObjectives set [count _modulesObjectives, [_moduleSide,_moduleEnemies,_moduleFriendly,_objectives]];
 				
-			} forEach _modules;			
+			} forEach _modules;
 			
 			_intelligenceChance = 1;
 
@@ -289,19 +300,31 @@ switch(_operation) do {
 								["ALIVE MI - Intelligence chance dice roll succeeded"] call ALIVE_fnc_dump;
 							};
 							// DEBUG -------------------------------------------------------------------------------------
-						
+							
+							private ["_sectorData","_entitiesBySide","_entitiesSide"];
 						
 							if(count _capture > 0 && _intelligenceAvailable) then {
 								{
 									_objective = _x select 3;
 									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
-									if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
-										_center = [_objective,"center"] call ALIVE_fnc_hashGet;
-										_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-										_x set [count _x, _sector];
-										_intelligenceAvailable = false;
-										_intelligenceAdded set [count _intelligenceAdded, _id];
-										[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+									_section = [_objective,"section"] call ALIVE_fnc_hashGet;
+									_center = [_objective,"center"] call ALIVE_fnc_hashGet;
+									_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+									_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;		
+
+									if("entitiesBySide" in (_sectorData select 1)) then {								
+										
+										_entitiesBySide = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+										_entitiesSide = [_entitiesBySide, _moduleSide] call ALIVE_fnc_hashGet;
+										
+										if(count _entitiesSide > 0) then {
+											if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+												_x set [count _x, _sector];
+												_intelligenceAvailable = false;
+												_intelligenceAdded set [count _intelligenceAdded, _id];
+												[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+											};
+										};
 									};
 								} forEach _capture;							
 							};
@@ -310,13 +333,24 @@ switch(_operation) do {
 								{
 									_objective = _x select 3;
 									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
-									if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
-										_center = [_objective,"center"] call ALIVE_fnc_hashGet;
-										_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-										_x set [count _x, _sector];
-										_intelligenceAvailable = false;
-										_intelligenceAdded set [count _intelligenceAdded, _id];
-										[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+									_section = [_objective,"section"] call ALIVE_fnc_hashGet;
+									_center = [_objective,"center"] call ALIVE_fnc_hashGet;
+									_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+									_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+
+									if("entitiesBySide" in (_sectorData select 1)) then {								
+										
+										_entitiesBySide = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+										_entitiesSide = [_entitiesBySide, _moduleSide] call ALIVE_fnc_hashGet;
+										
+										if(count _entitiesSide > 0) then {
+											if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+												_x set [count _x, _sector];
+												_intelligenceAvailable = false;
+												_intelligenceAdded set [count _intelligenceAdded, _id];
+												[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+											};
+										};
 									};
 								} forEach _recon;							
 							};
@@ -325,13 +359,24 @@ switch(_operation) do {
 								{
 									_objective = _x select 3;
 									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
-									if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
-										_center = [_objective,"center"] call ALIVE_fnc_hashGet;
-										_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-										_x set [count _x, _sector];
-										_intelligenceAvailable = false;
-										_intelligenceAdded set [count _intelligenceAdded, _id];
-										[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+									_section = [_objective,"section"] call ALIVE_fnc_hashGet;
+									_center = [_objective,"center"] call ALIVE_fnc_hashGet;
+									_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+									_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+
+									if("entitiesBySide" in (_sectorData select 1)) then {								
+										
+										_entitiesBySide = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+										_entitiesSide = [_entitiesBySide, _moduleSide] call ALIVE_fnc_hashGet;
+										
+										if(count _entitiesSide > 0) then {
+											if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+												_x set [count _x, _sector];
+												_intelligenceAvailable = false;
+												_intelligenceAdded set [count _intelligenceAdded, _id];
+												[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
+											};
+										};
 									};
 								} forEach _reserve;							
 							};
@@ -366,12 +411,18 @@ switch(_operation) do {
 			_objective = _intelItem select 3;
 			_sector = _intelItem select 4;
 			
-			//_sector call ALIVE_fnc_inspectHash;
-			
 			_center = [_objective,"center"] call ALIVE_fnc_hashGet;
 			_type = [_objective,"type"] call ALIVE_fnc_hashGet;
 			_state = [_objective,"tacom_state"] call ALIVE_fnc_hashGet;
 			_grid = mapGridPosition _center;
+			
+			// setup analysis and plotting job
+			// analysis job will run every 45 seconds for 5 times
+			
+			[ALIVE_liveAnalysis, "registerAnalysisJob", [45, 5, "intelligenceItem", _intelItemID, [_intelItem]]] call ALIVE_fnc_liveAnalysis;
+			
+			// compile radio message text
+			
 			_details = "";
 			
 			switch(_type) do {
@@ -398,7 +449,7 @@ switch(_operation) do {
 				};
 			};
 			
-			_details = _details + format[" - coords: %1",_grid];		
+			_details = _details + format[" - coords: %1",_grid];
 
 			
 			// DEBUG -------------------------------------------------------------------------------------

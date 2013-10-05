@@ -639,6 +639,70 @@ switch(_operation) do {
 								} forEach _settlementPositions;
 							};
 						};
+						case "mil_intelligence": {
+							private["_eastProfiles","_westProfiles","_civProfiles","_guerProfiles","_eastCount","_westCount","_civCount","_guerCount","_markerID","_alpha", "_m"];
+							
+							/*
+							if(_key in (_sectorData select 1)) then {
+							
+								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+								
+								_eastProfiles = [_plotData, "EAST"] call ALIVE_fnc_hashGet;
+								_westProfiles = [_plotData, "WEST"] call ALIVE_fnc_hashGet;
+								_civProfiles = [_plotData, "CIV"] call ALIVE_fnc_hashGet;
+								_guerProfiles = [_plotData, "GUER"] call ALIVE_fnc_hashGet;
+								
+								_eastCount = count _eastProfiles;
+								_westCount = count _westProfiles;
+								_civCount = count _civProfiles;
+								_guerCount = count _guerProfiles;
+								
+								if(_eastCount > 0) then {
+									if(_eastCount > 0) then { _alpha = 0.2; };
+									if(_eastCount > 2) then { _alpha = 0.3; };
+									if(_eastCount > 4) then { _alpha = 0.4; };
+									if(_eastCount > 6) then { _alpha = 0.5; };
+
+									_markerID = format[MTEMPLATE, format["%1ee%2",_plotterID,_id]];
+									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorRed"] call _createMarker;												
+									_markers set [count _markers, _m];
+								};
+								
+								if(_westCount > 0) then {
+									if(_westCount > 0) then { _alpha = 0.2; };
+									if(_westCount > 2) then { _alpha = 0.3; };
+									if(_westCount > 4) then { _alpha = 0.4; };
+									if(_westCount > 6) then { _alpha = 0.5; };
+									
+									_markerID = format[MTEMPLATE, format["%1ew%2",_plotterID,_id]];
+									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorBlue"] call _createMarker;												
+									_markers set [count _markers, _m];
+								};
+								
+								if(_civCount > 0) then {
+									if(_civCount > 0) then { _alpha = 0.2; };
+									if(_civCount > 2) then { _alpha = 0.3; };
+									if(_civCount > 4) then { _alpha = 0.4; };
+									if(_civCount > 6) then { _alpha = 0.5; };
+									
+									_markerID = format[MTEMPLATE, format["%1ec%2",_plotterID,_id]];
+									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorGreen"] call _createMarker;												
+									_markers set [count _markers, _m];
+								};
+								
+								if(_guerCount > 0) then {
+									if(_guerCount > 0) then { _alpha = 0.2; };
+									if(_guerCount > 2) then { _alpha = 0.3; };
+									if(_guerCount > 4) then { _alpha = 0.4; };
+									if(_guerCount > 6) then { _alpha = 0.5; };
+									
+									_markerID = format[MTEMPLATE, format["%1eg%2",_plotterID,_id]];
+									_m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorYellow"] call _createMarker;												
+									_markers set [count _markers, _m];
+								};
+							};
+							*/
+						};
 				};	
 		
 				[_logic,"markers",_markers] call ALIVE_fnc_hashSet;

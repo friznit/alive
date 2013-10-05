@@ -93,7 +93,6 @@ switch(_operation) do {
 						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
-
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
@@ -114,7 +113,12 @@ switch(_operation) do {
 						[ALIVE_sectorPlotter, "init"] call ALIVE_fnc_plotSectors;
 						
 						// import static map analysis to the grid
-						[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;						
+						[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;
+
+						// create live analysis
+						ALIVE_liveAnalysis = [nil, "create"] call ALIVE_fnc_liveAnalysis;
+						[ALIVE_liveAnalysis, "init"] call ALIVE_fnc_liveAnalysis;
+						[ALIVE_liveAnalysis, "debug", _debug] call ALIVE_fnc_liveAnalysis;
 						
 						// create the profile handler
 						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
@@ -133,10 +137,7 @@ switch(_operation) do {
 						// create command router
 						ALIVE_commandRouter = [nil, "create"] call ALIVE_fnc_commandRouter;
 						[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
-						[ALIVE_commandRouter, "debug", _debug] call ALIVE_fnc_commandRouter;
-						
-						// run initial profile analysis
-						//[ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;						
+						[ALIVE_commandRouter, "debug", false] call ALIVE_fnc_commandRouter;				
 
 						
 						// DEBUG -------------------------------------------------------------------------------------
@@ -163,41 +164,11 @@ switch(_operation) do {
 						
 						// set module as started
 						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
-												
-						// run grid analysis
-						[_debug,_plotSectors] spawn { 
-							_debug = _this select 0;
-							_plotSectors = _this select 1;
-							waituntil {
-								sleep 90;
-								
-								private ["_sectors","_sectorData"];
-								
-								
-								// DEBUG -------------------------------------------------------------------------------------
-								if(_debug) then {
-									//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-									//["ALIVE Grid analysis for profile positions"] call ALIVE_fnc_dump;
-								};
-								// DEBUG -------------------------------------------------------------------------------------
-								
-								
-								// run profile analysis on all sectors
-								_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;		
-
-								if(_plotSectors) then {
-									// clear the sector data plot
-									[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
-									
-									// plot the sector data
-									[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
-								};
-																		
-								sleep 5;		
-								
-								false 
-							};
-						};
+						
+						// register profile entity analysis job on the live analysis
+						// analysis job will run every 90 seconds and has no run count limit
+						[ALIVE_liveAnalysis, "registerAnalysisJob", [90, 0, "gridProfileEntity", "gridProfileEntity", [_plotSectors]]] call ALIVE_fnc_liveAnalysis;
+						[ALIVE_liveAnalysis, "start"] call ALIVE_fnc_liveAnalysis;
 						
                 };
         };
@@ -225,10 +196,14 @@ switch(_operation) do {
                 _result = _args;
         };
 		case "plotSectors": {
-				if(typeName _args == "SCALAR") then {
+				if(typeName _args != "BOOL") then {
+						_args = [_logic,"plotSectors"] call ALIVE_fnc_hashGet;
+                } else {
 						[_logic,"plotSectors",_args] call ALIVE_fnc_hashSet;
-                };
-				_result = [_logic,"plotSectors"] call ALIVE_fnc_hashGet;
+                };                
+                ASSERT_TRUE(typeName _args == "BOOL",str _args);
+                
+                _result = _args;
         };
 		case "spawnRadius": {
 				if(typeName _args == "SCALAR") then {
