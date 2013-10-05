@@ -1769,4 +1769,4 @@ _parkingPositions= [];
 [_cluster,"priority",10] call ALIVE_fnc_hashSet;
 [_cluster,"debugColor","ColorOrange"] call ALIVE_fnc_hashSet;
 [ALIVE_clustersMilAir,"c_114",_cluster] call ALIVE_fnc_hashSet;
-
+ALIVE_clustersMilHeli = [] call ALIVE_fnc_hashCreate;
