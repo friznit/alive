@@ -88,110 +88,110 @@ if (_menuName == "player") then {
 			["player", localize "STR_ALIVE_player", "popup"],
 			[
 				// ADMIN MENUS
-				[localize "STR_ALIVE_player_ALLOWRESET_ENABLE",
+				[localize "STR_ALIVE_player_allowReset_ENABLE",
 					{ MOD(sys_player) setVariable ["allowReset", true, true]; },
 					"",
-					localize "STR_ALIVE_player_ALLOWRESET_COMMENT",
+					localize "STR_ALIVE_player_allowReset_COMMENT",
 					"",
 					-1,
-					!(MOD(sys_player) getVariable ["ALLOWRESET",true]),
-					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["ALLOWRESET",true])))
+					!(MOD(sys_player) getVariable ["allowReset",true]),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["allowReset",true])))
 				],
-				[localize "STR_ALIVE_player_ALLOWRESET_DISABLE",
+				[localize "STR_ALIVE_player_allowReset_DISABLE",
 					{  MOD(sys_player) setVariable ["allowReset", false, true];},
 					"",
-					localize "STR_ALIVE_player_ALLOWRESET_COMMENT",
+					localize "STR_ALIVE_player_allowReset_COMMENT",
 					"",
 					-1,
-					 (MOD(sys_player) getVariable ["ALLOWRESET", true]),
-					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["ALLOWRESET", true])))
+					 (MOD(sys_player) getVariable ["allowReset", true]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["allowReset", true])))
 				],
 
-				[localize "STR_ALIVE_player_ALLOWDIFFCLASS_ENABLE",
+				[localize "STR_ALIVE_player_allowDiffClass_ENABLE",
 					{ MOD(sys_player) setVariable ["allowDiffClass", true, true]},
 					"",
-					localize "STR_ALIVE_player_ALLOWDIFFCLASS_COMMENT",
+					localize "STR_ALIVE_player_allowDiffClass_COMMENT",
 					"",
 					-1,
-					!( (MOD(sys_player) getVariable ["ALLOWDIFFCLASS", false])),
-					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["ALLOWDIFFCLASS",false])))
+					!( (MOD(sys_player) getVariable ["allowDiffClass", false])),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["allowDiffClass",false])))
 				],
-				[localize "STR_ALIVE_player_ALLOWDIFFCLASS_DISABLE",
+				[localize "STR_ALIVE_player_allowDiffClass_DISABLE",
 					{ MOD(sys_player) setVariable ["allowDiffClass", false, true]; },
 					"",
-					localize "STR_ALIVE_player_ALLOWDIFFCLASS_COMMENT",
+					localize "STR_ALIVE_player_allowDiffClass_COMMENT",
 					"",
 					-1,
-					 (MOD(sys_player) getVariable ["ALLOWDIFFCLASS",false]),
-					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["ALLOWDIFFCLASS", false])))
+					 (MOD(sys_player) getVariable ["allowDiffClass",false]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["allowDiffClass", false])))
 				],
 
-				[localize "STR_ALIVE_player_ALLOWMANUALSAVE_ENABLE",
-					{ MOD(sys_player) setVariable ["allowManualsave", true, true]; },
+				[localize "STR_ALIVE_player_allowManualSave_ENABLE",
+					{ MOD(sys_player) setVariable ["allowManualSave", true, true]; },
 					"",
-					localize "STR_ALIVE_player_ALLOWMANUALSAVE_COMMENT",
+					localize "STR_ALIVE_player_allowManualSave_COMMENT",
 					"",
 					-1,
-					!( (MOD(sys_player) getVariable ["allowManualsave", false])),
-					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["allowManualsave", true])))
+					!( (MOD(sys_player) getVariable ["allowManualSave", false])),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["allowManualSave", true])))
 				],
-				[localize "STR_ALIVE_player_ALLOWMANUALSAVE_DISABLE",
-					{ MOD(sys_player) setVariable ["allowManualsave", false, true]; },
+				[localize "STR_ALIVE_player_allowManualSave_DISABLE",
+					{ MOD(sys_player) setVariable ["allowManualSave", false, true]; },
 					"",
-					localize "STR_ALIVE_player_ALLOWMANUALSAVE_COMMENT",
-					"",
-					-1,
-					 (MOD(sys_player) getVariable ["allowManualsave", true]),
-					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["allowManualsave", true])))
-				],
-
-				[localize "STR_ALIVE_player_STORETODB_ENABLE",
-					{ MOD(sys_player) setVariable ["storeTodb",true, true]; },
-					"",
-					localize "STR_ALIVE_player_STORETODB_COMMENT",
+					localize "STR_ALIVE_player_allowManualSave_COMMENT",
 					"",
 					-1,
-					!( (MOD(sys_player) getVariable ["STORETODB", true])),
-					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["STORETODB", true])))
-				],
-				[localize "STR_ALIVE_player_STORETODB_DISABLE",
-					{ MOD(sys_player) setVariable ["storeTodb", false, true]; },
-					"",
-					localize "STR_ALIVE_player_STORETODB_COMMENT",
-					"",
-					-1,
-					 (MOD(sys_player) getVariable ["STORETODB", true]),
-					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["STORETODB", true])))
+					 (MOD(sys_player) getVariable ["allowManualSave", true]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["allowManualSave", true])))
 				],
 
-				[localize "STR_ALIVE_player_AUTOSAVETIME_SET",
-					{ createDialog "ALIVE_ui_sys_player_setAutoSaveTime";},
+				[localize "STR_ALIVE_player_storeToDB_ENABLE",
+					{ MOD(sys_player) setVariable ["storeToDB",true, true]; },
 					"",
-					localize "STR_ALIVE_player_AUTOSAVETIME_COMMENT",
+					localize "STR_ALIVE_player_storeToDB_COMMENT",
 					"",
 					-1,
-					MOD(sys_player) getVariable ["STORETODB", true],
+					!( (MOD(sys_player) getVariable ["storeToDB", true])),
+					(call ALIVE_fnc_isServerAdmin && !( (MOD(sys_player) getVariable ["storeToDB", true])))
+				],
+				[localize "STR_ALIVE_player_storeToDB_DISABLE",
+					{ MOD(sys_player) setVariable ["storeToDB", false, true]; },
+					"",
+					localize "STR_ALIVE_player_storeToDB_COMMENT",
+					"",
+					-1,
+					 (MOD(sys_player) getVariable ["storeToDB", true]),
+					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["storeToDB", true])))
+				],
+
+				[localize "STR_ALIVE_player_autoSaveTime_SET",
+					{ createDialog "ALIVE_ui_sys_player_setautoSaveTime";},
+					"",
+					localize "STR_ALIVE_player_autoSaveTime_COMMENT",
+					"",
+					-1,
+					MOD(sys_player) getVariable ["storeToDB", true],
 					call ALIVE_fnc_isServerAdmin
 				],
 
 				// PLAYER MENUS
-				[localize "STR_ALIVE_player_ALLOWRESET_ACTION",
+				[localize "STR_ALIVE_player_allowReset_ACTION",
 					{ [MOD(sys_player), "resetPlayer", [player]] call ALIVE_fnc_player;},
 					"",
 					"",
-					localize STR_ALIVE_player_ALLOWRESET_ACTION_COMMENT,
+					localize STR_ALIVE_player_allowReset_ACTION_COMMENT,
 					-1,
 					!(isNil QGVAR(resetAvailable)),
-					(MOD(sys_player) getVariable ["ALLOWRESET", true])
+					(MOD(sys_player) getVariable ["allowReset", true])
 				],
-				[localize "STR_ALIVE_player_ALLOWMANUALSAVE_ACTION",
+				[localize "STR_ALIVE_player_allowManualSave_ACTION",
 					{ [MOD(sys_player), "manualSavePlayer", [player]] call ALIVE_fnc_player },
 					"",
 					"",
 					"",
 					-1,
-					 (MOD(sys_player) getVariable ["allowManualsave", true]),
-					 (MOD(sys_player) getVariable ["allowManualsave", true])
+					 (MOD(sys_player) getVariable ["allowManualSave", true]),
+					 (MOD(sys_player) getVariable ["allowManualSave", true])
 				]
 			]
 		]

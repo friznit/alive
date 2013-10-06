@@ -4,7 +4,7 @@ class RscFrame;
 class RscButtonMenuOK;	
 class RscButtonMenuCancel;	
 
-class ALIVE_ui_sys_player_setAutoSaveTime {
+class ALIVE_ui_sys_player_setautoSaveTime {
 	idd = 80601;
 	movingEnable = 1;
 	enableSimulation = 1;
@@ -14,7 +14,7 @@ class ALIVE_ui_sys_player_setAutoSaveTime {
 		// GUI EDITOR OUTPUT START (by Matt, v1.063, #Jypymu)
 		////////////////////////////////////////////////////////
 
-		class AutoSaveTime_EditBox: RscEdit
+		class autoSaveTime_EditBox: RscEdit
 		{
 			idc = 1400;
 			text = "0"; //--- ToDo: Localize;
@@ -26,7 +26,7 @@ class ALIVE_ui_sys_player_setAutoSaveTime {
 			tooltip = "Enter a number in seconds. Enter 0 to only save on mission end. Ensure you enter a valid number!"; //--- ToDo: Localize;
 		};
 
-		class AutoSaveTime_Frame: RscFrame
+		class autoSaveTime_Frame: RscFrame
 		{
 			idc = 1800;
 			x = 0.442737 * safezoneW + safezoneX;
@@ -36,7 +36,7 @@ class ALIVE_ui_sys_player_setAutoSaveTime {
 			colorBackground[] = {0,0,0,0.5};
 		};
 		
-		class AutoSaveTime_RscButtonMenuOK_2600: RscButtonMenuOK
+		class autoSaveTime_RscButtonMenuOK_2600: RscButtonMenuOK
 		{
 			x = 0.535579 * safezoneW + safezoneX;
 			y = 0.493799 * safezoneH + safezoneY;
@@ -45,7 +45,7 @@ class ALIVE_ui_sys_player_setAutoSaveTime {
 			action = "ALIVE_sys_player setVariable ['autoSaveTime', parseNumber (ctrlText 1400), true];";
 		};
 		
-		class AutoSaveTime_RscButtonMenuCancel_2700: RscButtonMenuCancel
+		class autoSaveTime_RscButtonMenuCancel_2700: RscButtonMenuCancel
 		{
 			x = 0.449999 * safezoneW + safezoneX;
 			y = 0.493799 * safezoneH + safezoneY;
@@ -54,7 +54,7 @@ class ALIVE_ui_sys_player_setAutoSaveTime {
 			action = "closeDialog 0;";
 		};
 
-		class AutoSaveTime_Header: RscText
+		class autoSaveTime_Header: RscText
 		{
 			idc = 1000;
 			text = "Set Auto Save Interval (DB)"; //--- ToDo: Localize;

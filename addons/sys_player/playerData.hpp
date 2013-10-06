@@ -100,7 +100,7 @@ GVAR(UNIT_DATA) = [
 		["nameSound",{ nameSound (_this select 0);}, {(_this select 0) setNameSound (_this select 1);}],
 		["pitch",{ pitch (_this select 0);}, {(_this select 0) setPitch (_this select 1);}],
 		["face",{ face (_this select 0);}, {(_this select 0) setFace (_this select 1);}],
-		["class",{typeof  (_this select 0);}, "SKIP"], // {[MOD(sys_player), "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}
+		["class",{typeof  (_this select 0);}, {[MOD(sys_player), "checkPlayer", [(_this select 0), (_this select 1)]] call ALIVE_fnc_Player;}],
 		["rating",{rating  (_this select 0);}, {(_this select 0) addrating (_this select 1);}],
 		["rank",{rank (_this select 0);}, {(_this select 0) setUnitRank (_this select 1);}],
 		["group",{group  (_this select 0);}, "SKIP"], // {[(_this select 0)] joinSilent (_this select 1);}

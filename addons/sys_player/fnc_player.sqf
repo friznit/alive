@@ -49,8 +49,8 @@ nil
 #define DEFAULT_RESET true
 #define DEFAULT_DIFFCLASS false
 #define DEFAULT_MANUALSAVE true
-#define DEFAULT_STORETODB true
-#define DEFAULT_AUTOSAVETIME 0
+#define DEFAULT_storeToDB true
+#define DEFAULT_autoSaveTime 0
 
 private ["_result", "_operation", "_args", "_logic", "_ops"];
 
@@ -84,11 +84,11 @@ switch(_operation) do {
                         MOD(sys_player) = _logic;
 
                         // Set Module Parameters as booleans
-                        MOD(sys_player) setVariable ["ALLOWRESET", call compile (_logic getvariable "ALLOWRESET"), true];
-                        MOD(sys_player) setVariable ["ALLOWDIFFCLASS", call compile (_logic getvariable "ALLOWDIFFCLASS"), true];
-                        MOD(sys_player) setVariable ["ALLOWMANUALSAVE", call compile (_logic getvariable "ALLOWMANUALSAVE"), true];
-                        MOD(sys_player) setVariable ["STORETODB", call compile (_logic getvariable "STORETODB"), true];
-                        MOD(sys_player) setVariable ["AutoSaveTime", call compile (_logic getvariable "AutoSaveTime"), true];
+                        MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
+                        MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
+                        MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
+                        MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
+                        MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
 
                         MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
                         MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
@@ -221,7 +221,7 @@ switch(_operation) do {
             		MOD(sys_player) setVariable ["lastDBSaveTime",time, true];
 
             		while {!isNil QMOD(sys_player)} do {
-                                            private ["_check","_autoSaveTime","_interval"];
+                                            private ["_check","_autoSaveTime","_lastDBSaveTime"];
             			// Every 5 minutes store player data in memory
             			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
                                     			{
@@ -231,13 +231,14 @@ switch(_operation) do {
             			};
 
             			// If auto save interval is defined and ext db is enabled, then save to external db
-            			_check = [MOD(sys_player),"storeToDB",[],DEFAULT_STORETODB] call ALIVE_fnc_OOsimpleOperation;
+            			_check = [MOD(sys_player),"storeToDB",[],DEFAULT_storeToDB] call ALIVE_fnc_OOsimpleOperation;
             			_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
-                                            _interval = MOD(sys_player) getVariable ["lastDBSaveTime",0];
-                                            TRACE_3("Checking auto save", _check, _autoSaveTime,  _interval);
+                                            _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
+                                            TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
 
-            			if ( _autoSaveTime > 0 && _check && (time >= (_interval + _autoSaveTime)) ) then {
+            			if ( _autoSaveTime > 0 && _check && (time >= (_lastDBSaveTime + _autoSaveTime)) ) then {
             				// Save player data to external db
+                                                        TRACE_3("Saving players to DB", time, (_lastDBSaveTime + _autoSaveTime), _check);
             				[MOD(sys_player), "savePlayers", []] call MAINCLASS;
                                                        MOD(sys_player) setVariable ["lastDBSaveTime",time, true];
             			};
@@ -257,7 +258,7 @@ switch(_operation) do {
                     ["getPlayer", {[MOD(sys_player),(_this select 1)] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
                 };
 
-            TRACE_4("SYS_PLAYER", _logic getvariable "ALLOWRESET", _logic getvariable "ALLOWDIFFCLASS",_logic getvariable "ALLOWMANUALSAVE",_logic getvariable "STORETODB" );
+            TRACE_4("SYS_PLAYER", _logic getvariable "allowReset", _logic getvariable "allowDiffClass",_logic getvariable "allowManualSave",_logic getvariable "storeToDB" );
 
                TRACE_1("After module init",_logic);
                 "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
@@ -274,10 +275,10 @@ switch(_operation) do {
                 _result = [_logic,_operation,_args,DEFAULT_MANUALSAVE] call ALIVE_fnc_OOsimpleOperation;
         };
         case "storeToDB": {
-                _result = [_logic,_operation,_args,DEFAULT_STORETODB] call ALIVE_fnc_OOsimpleOperation;
+                _result = [_logic,_operation,_args,DEFAULT_storeToDB] call ALIVE_fnc_OOsimpleOperation;
         };
         case "autoSaveTime": {
-                _result = [_logic,_operation,_args,DEFAULT_AUTOSAVETIME] call ALIVE_fnc_OOsimpleOperation;
+                _result = [_logic,_operation,_args,DEFAULT_autoSaveTime] call ALIVE_fnc_OOsimpleOperation;
         };
         case "debug": {
                 if (typeName _args == "BOOL") then {
@@ -346,6 +347,16 @@ switch(_operation) do {
         };
         case "checkPlayer": {
         	// Check to see if the player joining has the same class as the one stored in memory
+            private ["_unit","_type","_trigger"];
+            _unit = _args select 0;
+            _type = _args select 1;
+            if (typeOf _unit != _type && _unit == player && !(MOD(sys_player) getVariable ["allowDiffClass",false])) then {
+                cutText [format["You cannot rejoin this server with a different class (expected %1)", getText (configFile>>"cfgVehicles">>_type>>"displayName")] , "PLAIN DOWN"];
+                _unit setVariable [QGVAR(kicked), true, true];
+                _trigger = createtrigger ["emptydetector", [0,0]];
+                _trigger settriggertype "end6";
+                _trigger settriggerstatements ["true","",""];
+            };
         };
         case "manualSavePlayer": {
             private ["_playerHash","_unit"];

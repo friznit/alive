@@ -1,9 +1,9 @@
 *Model - no visual just reference data*
 - server side object only
-- allowreset enabled
+- allowReset enabled
 - forceclass enabled
 - autosave enabled
-- autosavetime set to 5 mins
+- autoSaveTime set to 5 mins
 - save loadout
 - save health
 - save position

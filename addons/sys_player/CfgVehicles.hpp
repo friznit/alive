@@ -19,8 +19,8 @@ class CfgVehicles {
                         };                
                         class allowReset
                         {
-                                displayName = "$STR_ALIVE_player_ALLOWRESET";
-                                description = "$STR_ALIVE_player_ALLOWRESET_COMMENT";
+                                displayName = "$STR_ALIVE_player_allowReset";
+                                description = "$STR_ALIVE_player_allowReset_COMMENT";
                                 class Values
                                 {
                                         class Yes
@@ -38,8 +38,8 @@ class CfgVehicles {
                         };
                         class allowDiffClass
                         {
-                                displayName = "$STR_ALIVE_player_ALLOWDIFFCLASS";
-                                description = "$STR_ALIVE_player_ALLOWDIFFCLASS_COMMENT";
+                                displayName = "$STR_ALIVE_player_allowDiffClass";
+                                description = "$STR_ALIVE_player_allowDiffClass_COMMENT";
                                 class Values
                                 {
                                         class Yes
@@ -57,8 +57,8 @@ class CfgVehicles {
                         };                        
                         class allowManualSave
                         {
-                                displayName = "$STR_ALIVE_player_ALLOWMANUALSAVE";
-                                description = "$STR_ALIVE_player_ALLOWMANUALSAVE_COMMENT";
+                                displayName = "$STR_ALIVE_player_allowManualSave";
+                                description = "$STR_ALIVE_player_allowManualSave_COMMENT";
                                 class Values
                                 {
                                         class Yes
@@ -77,8 +77,8 @@ class CfgVehicles {
                         };
                         class autoSaveTime
                         {
-                                displayName = "$STR_ALIVE_player_AUTOSAVETIME";
-                                description = "$STR_ALIVE_player_AUTOSAVETIME_COMMENT";
+                                displayName = "$STR_ALIVE_player_autoSaveTime";
+                                description = "$STR_ALIVE_player_autoSaveTime_COMMENT";
 				defaultValue = "0";
                         };
 
@@ -179,8 +179,8 @@ class CfgVehicles {
                         };
                         class storeToDB
                         {
-                                displayName = "$STR_ALIVE_player_STORETODB";
-                                description = "$STR_ALIVE_player_STORETODB_COMMENT";
+                                displayName = "$STR_ALIVE_player_storeToDB";
+                                description = "$STR_ALIVE_player_storeToDB_COMMENT";
                                 class Values
                                 {
                                         class Yes

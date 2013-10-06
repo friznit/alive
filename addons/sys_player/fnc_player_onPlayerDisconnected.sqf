@@ -28,7 +28,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	if (_name == "__SERVER__") exitWith {
 
-		// If storetoDB is enabled then save player data
+		// If storeToDB is enabled then save player data
 		_check = [MOD(sys_player),"storeToDB",[],true] call ALIVE_fnc_OOsimpleOperation;
 		if (_check) then {
 			_result = [MOD(sys_player), "savePlayers", []] call ALIVE_fnc_player;
@@ -54,10 +54,13 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	} else {
 
-		// Set player data to in memory store
-
-		_result = [MOD(sys_player), "setPlayer", [_unit]] call ALIVE_fnc_player;
-		TRACE_1("SETTING PLAYER DATA", _result);
+		// Set player data to in memory store (unless kicked)
+		if !(_unit getVariable [QGVAR(kicked), false]) then {
+			_result = [MOD(sys_player), "setPlayer", [_unit]] call ALIVE_fnc_player;
+			TRACE_1("SETTING PLAYER DATA", _result);
+		} else {
+			_unit setVariable [QGVAR(kicked), false, true];
+		};
 	};
 
 	MOD(sys_player) setVariable [_uid, false, true];
