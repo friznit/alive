@@ -374,40 +374,40 @@ switch(_operation) do {
 					
 					_markers = _markers + [_m];			
 				
-					_icon = "hd_unknown";
+					_icon = "Unknown";
 					switch(_state) do {
 						case "reserve":{
-							_icon = "hd_flag";
+							_icon = "mil_marker";
 						};
 						case "recon":{
 						
 							// create direction marker
-							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], [_position, 10, _dir] call BIS_fnc_relPos];
+							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], [_position, 100, _dir] call BIS_fnc_relPos];
 							_m setMarkerShape "ICON";
 							_m setMarkerSize [0.5,0.5];
-							_m setMarkerType "hd_ambush";
+							_m setMarkerType "mil_arrow";
 							_m setMarkerColor _color;
 							_m setMarkerAlpha _alpha;
 							_m setMarkerDir _dir;							
 							
 							_markers = _markers + [_m];						
 						
-							_icon = "hd_unknown";
+							_icon = "Unknown";
 						};
 						case "capture":{
 						
 							// create direction marker
-							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], [_position, 10, _dir] call BIS_fnc_relPos];
+							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], [_position, 100, _dir] call BIS_fnc_relPos];
 							_m setMarkerShape "ICON";
 							_m setMarkerSize [0.5,0.5];
-							_m setMarkerType "hd_arrow";
+							_m setMarkerType "mil_arrow2";
 							_m setMarkerColor _color;
 							_m setMarkerAlpha _alpha;
 							_m setMarkerDir _dir;							
 							
 							_markers = _markers + [_m];
 						
-							_icon = "hd_warning";
+							_icon = "Warning";
 						};
 					};
 					

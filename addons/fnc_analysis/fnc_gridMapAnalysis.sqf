@@ -97,9 +97,7 @@ if(_debug) then {
 	
 	private ["_elevationSamples","_elevationSamplesLand","_elevationSamplesSea","_elevation","_terrainSamples","_terrain","_landTerrain","_shoreTerrain","_seaTerrain",
 	"_forestPlaces","_hillPlaces","_meadowPlaces","_treePlaces","_housePlaces","_seaPlaces",
-	"_flatEmptySamples","_roadSamples","_crossroadSamples","_terminusSamples","_bestPlaces","_roads","_terrainSamples","_currentElevation",
-	"_consolidatedClusters","_airClusters","_heliClusters","_sectorCivClusters","_consolidatedCivClusters","_powerClusters","_commsClusters",
-	"_marineClusters","_railClusters","_fuelClusters","_constructionClusters","_settlementClusters"];
+	"_flatEmptySamples","_roadSamples","_crossroadSamples","_terminusSamples","_bestPlaces","_roads","_terrainSamples","_currentElevation"];
 	
 	_elevationSamplesLand = [];
 
@@ -111,9 +109,6 @@ if(_debug) then {
 	_seaTerrain = [];
 	_forestPlaces = [];
 	_hillPlaces = [];
-	_consolidatedClusters = [];
-	_airClusters = [];
-	_heliClusters = [];
 	/*
 	_meadowPlaces = [];
 	_treePlaces = [];
@@ -225,36 +220,6 @@ if(_debug) then {
 			["road analysis completed"] call ALIVE_fnc_dump;
 			[] call ALIVE_fnc_timer;
 			["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-			["start mil cluster analysis"] call ALIVE_fnc_dump;
-			[true] call ALIVE_fnc_timer;
-		};
-		// DEBUG -------------------------------------------------------------------------------------
-		
-		[[_sector]] call ALIVE_fnc_sectorAnalysisClustersMil;		
-		[[_sector]] call ALIVE_fnc_sectorAnalysisClustersCiv;
-		
-		_sectorData = [_sector, "data"] call ALIVE_fnc_sector;
-		
-		_sectorMilClusters = [_sectorData, "clustersMil"] call ALIVE_fnc_hashGet;
-		_consolidatedClusters = [_sectorMilClusters, "consolidated"] call ALIVE_fnc_hashGet;
-		_airClusters = [_sectorMilClusters, "air"] call ALIVE_fnc_hashGet;
-		_heliClusters = [_sectorMilClusters, "heli"] call ALIVE_fnc_hashGet;
-		
-		_sectorCivClusters = [_sectorData, "clustersCiv"] call ALIVE_fnc_hashGet;
-		_consolidatedCivClusters = [_sectorCivClusters, "consolidated"] call ALIVE_fnc_hashGet;
-		_powerClusters = [_sectorCivClusters, "power"] call ALIVE_fnc_hashGet;
-		_commsClusters = [_sectorCivClusters, "comms"] call ALIVE_fnc_hashGet;
-		_marineClusters = [_sectorCivClusters, "marine"] call ALIVE_fnc_hashGet;
-		_railClusters = [_sectorCivClusters, "rail"] call ALIVE_fnc_hashGet;
-		_fuelClusters = [_sectorCivClusters, "fuel"] call ALIVE_fnc_hashGet;
-		_constructionClusters = [_sectorCivClusters, "construction"] call ALIVE_fnc_hashGet;
-		_settlementClusters = [_sectorCivClusters, "settlement"] call ALIVE_fnc_hashGet;
-		
-		// DEBUG -------------------------------------------------------------------------------------
-		if(_debug) then {
-			["cluster analysis completed"] call ALIVE_fnc_dump;
-			[] call ALIVE_fnc_timer;
-			["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 			["start compilation of sub sector data into parent sector"] call ALIVE_fnc_dump;
 			[true] call ALIVE_fnc_timer;
 		};
@@ -270,7 +235,6 @@ if(_debug) then {
 			_subGridFlatEmptySamples = [_subGridSectorData, "flatEmpty"] call ALIVE_fnc_hashGet;
 			_subGridRoads = [_subGridSectorData, "roads"] call ALIVE_fnc_hashGet;
 			_subGridBestPlaces = [_subGridSectorData, "bestPlaces"] call ALIVE_fnc_hashGet;
-			
 			
 			_subGridForestPlaces = [_subGridBestPlaces, "forest"] call ALIVE_fnc_hashGet;
 			_subGridHillPlaces = [_subGridBestPlaces, "exposedHills"] call ALIVE_fnc_hashGet;
@@ -296,7 +260,7 @@ if(_debug) then {
 			
 			_roadSamples = _roadSamples + _subGridRoad;
 			_crossroadSamples = _crossroadSamples + _subGridCrossroad;
-			_terminusSamples = _terminusSamples + _subGridTerminus;					
+			_terminusSamples = _terminusSamples + _subGridTerminus;
 			
 			if(count (_subGridFlatEmptySamples select 0) > 0) then {
 				_flatEmptySamples = _flatEmptySamples + _subGridFlatEmptySamples;
@@ -335,7 +299,7 @@ if(_debug) then {
 	[_sectorData, "terrain",_terrain] call ALIVE_fnc_hashSet;
 	[_sectorData, "flatEmpty",_flatEmptySamples] call ALIVE_fnc_hashSet;
 	[_sectorData, "roads",_roads] call ALIVE_fnc_hashSet;
-	[_sectorData, "bestPlaces",_bestPlaces] call ALIVE_fnc_hashSet;
+	[_sectorData, "bestPlaces",_bestPlaces] call ALIVE_fnc_hashSet;	
 	
 	[_sector, "data", _sectorData] call ALIVE_fnc_hashSet;
 	
@@ -372,24 +336,7 @@ if(_debug) then {
 		_exportString = _exportString + format['[_roads,"road",%1] call ALIVE_fnc_hashSet;',_roadSamples];
 		_exportString = _exportString + format['[_roads,"crossroad",%1] call ALIVE_fnc_hashSet;',_crossroadSamples];
 		_exportString = _exportString + format['[_roads,"terminus",%1] call ALIVE_fnc_hashSet;',_terminusSamples];
-		_exportString = _exportString + format['[_sectorData,"roads",_roads] call ALIVE_fnc_hashSet;'];
-
-		_exportString = _exportString + '_clustersMil = [] call ALIVE_fnc_hashCreate;';
-		_exportString = _exportString + format['[_clustersMil,"consolidated",%1] call ALIVE_fnc_hashSet;',_consolidatedClusters];
-		_exportString = _exportString + format['[_clustersMil,"air",%1] call ALIVE_fnc_hashSet;',_airClusters];
-		_exportString = _exportString + format['[_clustersMil,"heli",%1] call ALIVE_fnc_hashSet;',_heliClusters];
-		_exportString = _exportString + format['[_sectorData,"clustersMil",_clustersMil] call ALIVE_fnc_hashSet;'];
-		
-		_exportString = _exportString + '_clustersCiv = [] call ALIVE_fnc_hashCreate;';
-		_exportString = _exportString + format['[_clustersCiv,"consolidated",%1] call ALIVE_fnc_hashSet;',_consolidatedClusters];
-		_exportString = _exportString + format['[_clustersCiv,"power",%1] call ALIVE_fnc_hashSet;',_powerClusters];
-		_exportString = _exportString + format['[_clustersCiv,"comms",%1] call ALIVE_fnc_hashSet;',_commsClusters];
-		_exportString = _exportString + format['[_clustersCiv,"marine",%1] call ALIVE_fnc_hashSet;',_marineClusters];
-		_exportString = _exportString + format['[_clustersCiv,"fuel",%1] call ALIVE_fnc_hashSet;',_fuelClusters];
-		_exportString = _exportString + format['[_clustersCiv,"rail",%1] call ALIVE_fnc_hashSet;',_railClusters];
-		_exportString = _exportString + format['[_clustersCiv,"construction",%1] call ALIVE_fnc_hashSet;',_constructionClusters];
-		_exportString = _exportString + format['[_clustersCiv,"settlement",%1] call ALIVE_fnc_hashSet;',_settlementClusters];
-		_exportString = _exportString + format['[_sectorData,"_clustersCiv",_clustersCiv] call ALIVE_fnc_hashSet;'];
+		_exportString = _exportString + format['[_sectorData,"roads",_roads] call ALIVE_fnc_hashSet;'];		
 		
 		_exportString = _exportString + format['[ALIVE_gridData, "%1", _sectorData] call ALIVE_fnc_hashSet;',_sectorID];
 	};

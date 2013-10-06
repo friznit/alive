@@ -87,8 +87,8 @@ STAT("Start static terrain analysis");
 DEBUGON
 
 
-[_plotter, "plot", [_allSectors, "elevationLand"]] call ALIVE_fnc_plotSectors;
-[_plotter, "plot", [_allSectors, "elevationSea"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_allSectors, "elevationLand"]] call ALIVE_fnc_plotSectors;
+//[_plotter, "plot", [_allSectors, "elevationSea"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "terrain"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "bestPlaces"]] call ALIVE_fnc_plotSectors;
 //[_plotter, "plot", [_allSectors, "flatEmpty"]] call ALIVE_fnc_plotSectors;
