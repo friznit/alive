@@ -1,10 +1,9 @@
 TODO
 - 2nd manual save causes error
-- Player menu - auto save set interval gui
 - load players to db
 - save players to db
 - ammo count for mags in backpack
-- check in-vehicle / weapon selection
+- check in-vehicle / weapon selection (not working)
 - clean up module implementation
 - code review
 - restore secondaryweaponitems properly

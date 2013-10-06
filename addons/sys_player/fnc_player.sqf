@@ -50,7 +50,7 @@ nil
 #define DEFAULT_DIFFCLASS false
 #define DEFAULT_MANUALSAVE true
 #define DEFAULT_STORETODB true
-#define DEFAULT_AUTOSAVETIME 600
+#define DEFAULT_AUTOSAVETIME 0
 
 private ["_result", "_operation", "_args", "_logic", "_ops"];
 
@@ -88,6 +88,7 @@ switch(_operation) do {
                         MOD(sys_player) setVariable ["ALLOWDIFFCLASS", call compile (_logic getvariable "ALLOWDIFFCLASS"), true];
                         MOD(sys_player) setVariable ["ALLOWMANUALSAVE", call compile (_logic getvariable "ALLOWMANUALSAVE"), true];
                         MOD(sys_player) setVariable ["STORETODB", call compile (_logic getvariable "STORETODB"), true];
+                        MOD(sys_player) setVariable ["AutoSaveTime", call compile (_logic getvariable "AutoSaveTime"), true];
 
                         MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
                         MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
@@ -215,13 +216,13 @@ switch(_operation) do {
                 if (isServer) then {
 
             	   [] spawn {
-            		private ["_lastSaveTime","_lastDBSaveTime"];
+            		private ["_lastSaveTime"];
             		_lastSaveTime = time;
-            		_lastDBSaveTime = time;
+            		MOD(sys_player) setVariable ["lastDBSaveTime",time, true];
 
             		while {!isNil QMOD(sys_player)} do {
-
-            			// Every X minutes store player data
+                                            private ["_check","_autoSaveTime","_interval"];
+            			// Every 5 minutes store player data in memory
             			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
                                     			{
                                     				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
@@ -231,10 +232,14 @@ switch(_operation) do {
 
             			// If auto save interval is defined and ext db is enabled, then save to external db
             			_check = [MOD(sys_player),"storeToDB",[],DEFAULT_STORETODB] call ALIVE_fnc_OOsimpleOperation;
-            			_autoSaveTime = [MOD(sys_player),"autoSaveTime",[],DEFAULT_AUTOSAVETIME] call ALIVE_fnc_OOsimpleOperation;
-            			if (_check && (time >= (_lastDBSaveTime + _autoSaveTime))) then {
+            			_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
+                                            _interval = MOD(sys_player) getVariable ["lastDBSaveTime",0];
+                                            TRACE_3("Checking auto save", _check, _autoSaveTime,  _interval);
+
+            			if ( _autoSaveTime > 0 && _check && (time >= (_interval + _autoSaveTime)) ) then {
             				// Save player data to external db
             				[MOD(sys_player), "savePlayers", []] call MAINCLASS;
+                                                       MOD(sys_player) setVariable ["lastDBSaveTime",time, true];
             			};
 
             			sleep DEFAULT_INTERVAL;

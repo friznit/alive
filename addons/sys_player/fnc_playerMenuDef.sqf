@@ -165,12 +165,12 @@ if (_menuName == "player") then {
 				],
 
 				[localize "STR_ALIVE_player_AUTOSAVETIME_SET",
-					{ hint "Open Auto Save Time Dialog :)" },
+					{ createDialog "ALIVE_ui_sys_player_setAutoSaveTime";},
 					"",
 					localize "STR_ALIVE_player_AUTOSAVETIME_COMMENT",
 					"",
 					-1,
-					 (MOD(sys_player) getVariable ["STORETODB", true]),
+					MOD(sys_player) getVariable ["STORETODB", true],
 					call ALIVE_fnc_isServerAdmin
 				],
 
