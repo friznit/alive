@@ -31,6 +31,34 @@ class CfgVehicles {
                                         };
                                 };
                         };
+						class intelChance
+                        {
+                                displayName = "$STR_ALIVE_MI_INTEL_CHANCE";
+                                description = "$STR_ALIVE_MI_INTEL_CHANCE_COMMENT";
+                                class Values
+                                {
+                                        class LOW
+                                        {
+                                                name = "$STR_ALIVE_MI_INTEL_CHANCE_LOW";
+                                                value = "0.1";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_MI_INTEL_CHANCE_MEDIUM";
+                                                value = "0.2";
+                                        };
+										class HIGH
+                                        {
+                                                name = "$STR_ALIVE_MI_INTEL_CHANCE_HIGH";
+                                                value = "0.4";
+                                        };
+										class TOTAL
+                                        {
+                                                name = "$STR_ALIVE_MI_INTEL_CHANCE_TOTAL";
+                                                value = "1";
+                                        };
+                                };
+                        };
                 };
                 
         };

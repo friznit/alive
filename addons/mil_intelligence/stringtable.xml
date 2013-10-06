@@ -14,4 +14,22 @@
 <Key ID="STR_ALIVE_MI_DEBUG_COMMENT">
 	<English>Enables MI Module Debug</English>
 </Key>
+<Key ID="STR_ALIVE_MI_INTEL_CHANCE">
+	<English>Intel Coverage:</English>
+</Key>
+<Key ID="STR_ALIVE_MI_INTEL_CHANCE_COMMENT">
+	<English>Intel coverage of enemy force</English>
+</Key>
+<Key ID="STR_ALIVE_MI_INTEL_CHANCE_LOW">
+	<English>Low coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_MI_INTEL_CHANCE_MEDIUM">
+	<English>Medium coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_MI_INTEL_CHANCE_HIGH">
+	<English>High coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_MI_INTEL_CHANCE_TOTAL">
+	<English>Total coverage of intel</English>
+</Key>
 </Container></Package></Project>

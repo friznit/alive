@@ -35,6 +35,7 @@ ARJay
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_MI
 #define MTEMPLATE "ALiVE_MI_%1"
+#define DEFAULT_INTEL_CHANCE "0.1"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -99,6 +100,10 @@ switch(_operation) do {
 			} forEach _simple_operations;
 		};
 		*/		
+	};
+	// Return the Size filter
+	case "intelChance": {
+		_result = [_logic,_operation,_args,DEFAULT_INTEL_CHANCE] call ALIVE_fnc_OOsimpleOperation;
 	};
 	// Main process
 	case "init": {
@@ -192,6 +197,8 @@ switch(_operation) do {
 			_modules = _args;
 			
 			_debug = [_logic, "debug"] call MAINCLASS;
+			_intelligenceChance = parseNumber([_logic, "intelChance"] call MAINCLASS);
+			
 			_intelligenceObtained = _logic getVariable "intelligenceObtained";
 			_modulesObjectives = [];
 			
@@ -214,15 +221,13 @@ switch(_operation) do {
 				_modulesObjectives set [count _modulesObjectives, [_moduleSide,_moduleEnemies,_moduleFriendly,_objectives]];
 				
 			} forEach _modules;
-			
-			_intelligenceChance = 1;
 
 			// spawn monitoring loop
 			
 			[_logic, _debug, _modulesObjectives, _intelligenceObtained, _intelligenceChance] spawn {
 			
 				private ["_debug","_modulesObjectives","_intelligenceObtained","_intelligenceChance","_moduleSide",
-						"_moduleEnemies","_moduleFriendly","_objectives","_id","_state","_danger","_tacom_state","_occupied",
+						"_moduleEnemies","_moduleFriendly","_objectives","_intelComplete","_itemComplete","_id","_state","_danger","_tacom_state","_occupied",
 						"_reserve","_recon","_capture","_intelligenceAvailable","_intelligenceAdded","_objective","_center","_sector"];
 				
 				_logic = _this select 0;
@@ -239,6 +244,31 @@ switch(_operation) do {
 						_moduleEnemies = _x select 1;
 						_moduleFriendly = _x select 2;
 						_objectives = _x select 3;
+						
+						// reset intel once all objectives completed
+						if(count (_intelligenceObtained select 2) == count _objectives) then {
+							_intelComplete = true;
+							{					
+								_itemComplete = _x select 5;
+								if!(_itemComplete) then {
+									_intelComplete = false;
+								};
+							} forEach (_intelligenceObtained select 2);
+							
+							if(_intelComplete) then {
+							
+								
+								// DEBUG -------------------------------------------------------------------------------------
+								if(_debug) then {
+									["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+									["ALIVE MI - intel run completed, reset"] call ALIVE_fnc_dump;
+								};
+								// DEBUG -------------------------------------------------------------------------------------
+								
+
+								_intelligenceObtained = [] call ALIVE_fnc_hashCreate;
+							};
+						};
 						
 						/*
 						["Side: %1", _moduleSide] call ALIVE_fnc_dump;
@@ -294,6 +324,7 @@ switch(_operation) do {
 						// delivered intelligence item is found
 						if(_intelligenceChance > random 1) then {
 						
+							_maxItems = floor(random 5);
 						
 							// DEBUG -------------------------------------------------------------------------------------
 							if(_debug) then {
@@ -303,7 +334,7 @@ switch(_operation) do {
 							
 							private ["_sectorData","_entitiesBySide","_entitiesSide"];
 						
-							if(count _capture > 0 && _intelligenceAvailable) then {
+							if(count _capture > 0 && (count _intelligenceAdded < _maxItems)) then {
 								{
 									_objective = _x select 3;
 									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
@@ -318,9 +349,9 @@ switch(_operation) do {
 										_entitiesSide = [_entitiesBySide, _moduleSide] call ALIVE_fnc_hashGet;
 										
 										if(count _entitiesSide > 0) then {
-											if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+											if(!(_id in (_intelligenceObtained select 1)) && (count _intelligenceAdded < _maxItems)) then {
 												_x set [count _x, _sector];
-												_intelligenceAvailable = false;
+												_x set [count _x, false];
 												_intelligenceAdded set [count _intelligenceAdded, _id];
 												[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
 											};
@@ -329,7 +360,7 @@ switch(_operation) do {
 								} forEach _capture;							
 							};
 							
-							if(count _recon > 0 && _intelligenceAvailable) then {
+							if(count _recon > 0 && (count _intelligenceAdded < _maxItems)) then {
 								{
 									_objective = _x select 3;
 									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
@@ -344,9 +375,9 @@ switch(_operation) do {
 										_entitiesSide = [_entitiesBySide, _moduleSide] call ALIVE_fnc_hashGet;
 										
 										if(count _entitiesSide > 0) then {
-											if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+											if(!(_id in (_intelligenceObtained select 1)) && (count _intelligenceAdded < _maxItems)) then {
 												_x set [count _x, _sector];
-												_intelligenceAvailable = false;
+												_x set [count _x, false];
 												_intelligenceAdded set [count _intelligenceAdded, _id];
 												[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
 											};
@@ -355,7 +386,7 @@ switch(_operation) do {
 								} forEach _recon;							
 							};
 							
-							if(count _reserve > 0 && _intelligenceAvailable) then {
+							if(count _reserve > 0 && (count _intelligenceAdded < _maxItems)) then {
 								{
 									_objective = _x select 3;
 									_id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
@@ -370,9 +401,9 @@ switch(_operation) do {
 										_entitiesSide = [_entitiesBySide, _moduleSide] call ALIVE_fnc_hashGet;
 										
 										if(count _entitiesSide > 0) then {
-											if(!(_id in (_intelligenceObtained select 1)) && _intelligenceAvailable) then {
+											if(!(_id in (_intelligenceObtained select 1)) && (count _intelligenceAdded < _maxItems)) then {
 												_x set [count _x, _sector];
-												_intelligenceAvailable = false;
+												_x set [count _x, false];
 												_intelligenceAdded set [count _intelligenceAdded, _id];
 												[_intelligenceObtained, _id , _x] call ALIVE_fnc_hashSet;
 											};

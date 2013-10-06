@@ -150,88 +150,6 @@ _result = true;
 
 #define MTEMPLATE "ALiVE_PROFILEENTITY_%1"
 
-_deleteMarkers = {
-		private ["_logic"];
-        _logic = _this;
-        {
-                deleteMarker _x;
-		} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
-};
-
-_createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha"
-		,"_profileID","_profileSide","_profileType","_profileActive","_typePrefix","_label"];
-        _logic = _this;
-        _markers = [];
-
-		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
-		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
-		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
-		_profileType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
-		_profileActive = [_logic,"active"] call ALIVE_fnc_hashGet;
-		
-		switch(_profileSide) do {
-			case "EAST":{
-				_debugColor = "ColorRed";
-				_typePrefix = "o";
-			};
-			case "WEST":{
-				_debugColor = "ColorBlue";
-				_typePrefix = "b";
-			};
-			case "CIV":{
-				_debugColor = "ColorYellow";
-				_typePrefix = "n";
-			};
-			case "GUER":{
-				_debugColor = "ColorGreen";
-				_typePrefix = "n";
-			};
-			default {
-				_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
-				_typePrefix = "n";
-			};
-		};
-		
-		switch(_profileType) do {
-			default {
-				_debugIcon = format["%1_inf",_typePrefix];
-			};
-		};
-		
-		_debugAlpha = 0.5;
-		if(_profileActive) then {
-			_debugAlpha = 1;
-		};
-
-        if(count _position > 0) then {
-				_m = createMarker [format[MTEMPLATE, _profileID], _position];
-				_m setMarkerShape "ICON";
-				_m setMarkerSize [.65, .65];
-				_m setMarkerType _debugIcon;
-				_m setMarkerColor _debugColor;
-				_m setMarkerAlpha _debugAlpha;
-				
-				_label = [_profileID, "_"] call CBA_fnc_split;
-                _m setMarkerText format["e%1",_label select ((count _label) - 1)];
-
-				_markers set [count _markers, _m];
-				
-				/*
-				_m = createMarker [format["SPAWN_%1",format[MTEMPLATE, _profileID]], _position];
-				_m setMarkerShape "ELLIPSE";;
-				_m setMarkerSize [ALIVE_spawnRadius, ALIVE_spawnRadius];
-				_m setMarkerBrush "Border";
-				_m setMarkerColor _debugColor;
-				_m setMarkerText format["%1 destination",_profileID];
-				
-				_markers set [count _markers, _m];
-				*/
-
-				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
-        };
-};
-
 switch(_operation) do {
         case "init": {
                 /*
@@ -242,38 +160,38 @@ switch(_operation) do {
                 */
 
                 if (isServer) then {
-                        // if server, initialise module game logic
-						// nil these out they add a lot of code to the hash..
-						[_logic,"super"] call ALIVE_fnc_hashRem;
-						[_logic,"class"] call ALIVE_fnc_hashRem;
-                        //TRACE_1("After module init",_logic);
-						
-						// init the super class
-						[_logic, "init"] call SUPERCLASS;
-						
-						// set defaults
-						[_logic,"type","entity"] call ALIVE_fnc_hashSet;
-						[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet; // select 2 select 8
-						[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet; // select 2 select 9
-						[_logic,"leader",objNull] call ALIVE_fnc_hashSet; // select 2 select 10						
-						[_logic,"unitClasses",[]] call ALIVE_fnc_hashSet; // select 2 select 11
-						[_logic,"unitCount",0] call ALIVE_fnc_hashSet; // select 2 select 12
-						[_logic,"group",objNull] call ALIVE_fnc_hashSet; // select 2 select 13
-						[_logic,"companyID",""] call ALIVE_fnc_hashSet; // select 2 select 14			
-						[_logic,"groupID",""] call ALIVE_fnc_hashSet; // select 2 select 15
-						[_logic,"waypoints",[]] call ALIVE_fnc_hashSet; // select 2 select 16
-						[_logic,"waypointsCompleted",[]] call ALIVE_fnc_hashSet; // select 2 select 17				
-						[_logic,"positions",[]] call ALIVE_fnc_hashSet; // select 2 select 18
-						[_logic,"damages",[]] call ALIVE_fnc_hashSet; // select 2 select 19
-						[_logic,"ranks",[]] call ALIVE_fnc_hashSet; // select 2 select 20
-						[_logic,"units",[]] call ALIVE_fnc_hashSet; // select 2 select 21
-						[_logic,"speedPerSecond","Man" call ALIVE_fnc_vehicleGetSpeedPerSecond] call ALIVE_fnc_hashSet; // select 2 select 22
-						[_logic,"despawnPosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 23
-						[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 24
-						[_logic,"isCycling",false] call ALIVE_fnc_hashSet; // select 2 select 25
-						[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 26
-						[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 27
-						[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 28
+					// if server, initialise module game logic
+					// nil these out they add a lot of code to the hash..
+					[_logic,"super"] call ALIVE_fnc_hashRem;
+					[_logic,"class"] call ALIVE_fnc_hashRem;
+					//TRACE_1("After module init",_logic);
+					
+					// init the super class
+					[_logic, "init"] call SUPERCLASS;
+					
+					// set defaults
+					[_logic,"type","entity"] call ALIVE_fnc_hashSet;
+					[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet; // select 2 select 8
+					[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet; // select 2 select 9
+					[_logic,"leader",objNull] call ALIVE_fnc_hashSet; // select 2 select 10						
+					[_logic,"unitClasses",[]] call ALIVE_fnc_hashSet; // select 2 select 11
+					[_logic,"unitCount",0] call ALIVE_fnc_hashSet; // select 2 select 12
+					[_logic,"group",objNull] call ALIVE_fnc_hashSet; // select 2 select 13
+					[_logic,"companyID",""] call ALIVE_fnc_hashSet; // select 2 select 14			
+					[_logic,"groupID",""] call ALIVE_fnc_hashSet; // select 2 select 15
+					[_logic,"waypoints",[]] call ALIVE_fnc_hashSet; // select 2 select 16
+					[_logic,"waypointsCompleted",[]] call ALIVE_fnc_hashSet; // select 2 select 17				
+					[_logic,"positions",[]] call ALIVE_fnc_hashSet; // select 2 select 18
+					[_logic,"damages",[]] call ALIVE_fnc_hashSet; // select 2 select 19
+					[_logic,"ranks",[]] call ALIVE_fnc_hashSet; // select 2 select 20
+					[_logic,"units",[]] call ALIVE_fnc_hashSet; // select 2 select 21
+					[_logic,"speedPerSecond","Man" call ALIVE_fnc_vehicleGetSpeedPerSecond] call ALIVE_fnc_hashSet; // select 2 select 22
+					[_logic,"despawnPosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 23
+					[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 24
+					[_logic,"isCycling",false] call ALIVE_fnc_hashSet; // select 2 select 25
+					[_logic,"activeCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 26
+					[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 27
+					[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 28
                 };
 
                 /*
@@ -292,10 +210,10 @@ switch(_operation) do {
                 };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
-				 _logic call _deleteMarkers;
+				[_logic, "deleteMarker"] call MAINCLASS;
 
                 if(_args) then {
-                        _logic call _createMarkers;
+                    [_logic, "createMarker", [true]] call MAINCLASS;
                 };
 
                 _result = _args;
@@ -849,6 +767,99 @@ switch(_operation) do {
 						[ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
 					};
 				};
+		};
+		case "createMarker": {
+				private ["_debugMode","_markers","_m","_position","_dimensions","_color","_icon","_alpha"
+				,"_profileID","_profileSide","_profileType","_profileActive","_vehiclesInCommandOf","_typePrefix","_label"];
+				
+				_debugMode = [_args, 0, false, [false]] call BIS_fnc_param;
+				_alpha = [_args, 1, 0.5, [1]] call BIS_fnc_param;
+				
+				_markers = [];
+
+				_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
+				_profileID = _logic select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+				_profileSide = _logic select 2 select 3; //[_logic, "side"] call MAINCLASS;
+				_profileType  = _logic select 2 select 6; //[_logic,"objectType"] call ALIVE_fnc_hashGet;
+				_profileActive = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;				
+				_vehiclesInCommandOf = _logic select 2 select 8; //[_profile,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
+					
+				if(count _vehiclesInCommandOf > 0 && !(_debugMode)) then {
+				
+					_vehicleMarkers = [];
+					_inCommand = true;
+					{
+						_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+												
+						if !(isnil "_vehicleProfile") then {
+							_markers = [_vehicleProfile, "createMarker", _args] call ALIVE_fnc_profileVehicle;
+						};
+						
+						_vehicleMarkers = _vehicleMarkers + _markers;
+					} forEach _vehiclesInCommandOf;
+					
+					[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+					
+				}else{
+				
+					switch(_profileSide) do {
+						case "EAST":{
+							_color = "ColorRed";
+							_typePrefix = "o";
+						};
+						case "WEST":{
+							_color = "ColorBlue";
+							_typePrefix = "b";
+						};
+						case "CIV":{
+							_color = "ColorYellow";
+							_typePrefix = "n";
+						};
+						case "GUER":{
+							_color = "ColorGreen";
+							_typePrefix = "n";
+						};
+						default {
+							_color = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+							_typePrefix = "n";
+						};
+					};
+					
+					switch(_profileType) do {
+						default {
+							_icon = format["%1_inf",_typePrefix];
+						};
+					};
+					
+					if(_profileActive && _debugMode) then {
+						_alpha = 1;
+					};
+
+					if(count _position > 0) then {
+						_m = createMarker [format[MTEMPLATE, _profileID], _position];
+						_m setMarkerShape "ICON";
+						_m setMarkerSize [.65, .65];
+						_m setMarkerType _icon;
+						_m setMarkerColor _color;
+						_m setMarkerAlpha _alpha;
+						
+						if(_debugMode) then {
+							_label = [_profileID, "_"] call CBA_fnc_split;
+							_m setMarkerText format["e%1",_label select ((count _label) - 1)];
+						};
+
+						_markers set [count _markers, _m];
+
+						[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+					};
+				};
+				
+				_result = _markers;
+		};
+		case "deleteMarker": {
+				{
+					deleteMarker _x;
+				} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
 		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
