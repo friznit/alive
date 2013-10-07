@@ -31,6 +31,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleCrew.sqf";
 				recompile = 1;
 			};
+			class configGetVehicleEmptyPositions {
+				description = "configGetVehicleEmptyPositions";
+				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleEmptyPositions.sqf";
+				recompile = 1;
+			};
 			class configGetVehicleHitPoints {
 				description = "configGetVehicleHitPoints";
 				file = "\x\alive\addons\sys_profile\fnc_configGetVehicleHitPoints.sqf";

@@ -9,6 +9,8 @@ Get turrets data for a vehicle class
 
 Parameters:
 String - vehicle class name
+Boolean - Ignore Gunner (optional)
+Boolean - Ignore Commander (optional)
 
 Returns:
 Array of turret data
