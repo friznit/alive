@@ -44,23 +44,15 @@ ARJay
 			_scope = getNumber(_item >> "scope");
 			
 			if(_scope == 2) then {
-						
-				_vehicle = createVehicle [_class, _pos, [], 0, "NONE"];
-				_vehicle setPos _pos;
-				
-				sleep 1;
-				
-				_countPositions = [_vehicle] call ALIVE_fnc_vehicleCountEmptyPositions;
-							
-				if(_countPositions > 0) then {
-					_positions = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
-					
+				_positions = [_class] call ALIVE_fnc_configGetVehicleEmptyPositions;
+				_count = 0;
+				{
+					_count = _count + _x;
+				} forEach _positions;
+
+				if(_count > 0) then {
 					_exportString = _exportString + format['[ALIVE_vehiclePositions,"%1",%2] call ALIVE_fnc_hashSet;',_class,_positions];
-				};		
-				
-				deleteVehicle _vehicle;
-				
-				sleep 1;
+				};
 			};
 		};
 	};	
