@@ -558,9 +558,9 @@ switch(_operation) do {
 			"CO - Searching Power locations" call ALiVE_fnc_logger;
 			
 			_types = [
-				//"_dam_",
+				"dam_",
 				"dp_main",
-				"_pec_",
+				"pec_",
 				"powerstation",
 				"spp_t",
 				"trafostanica"
@@ -587,8 +587,11 @@ switch(_operation) do {
 			
 			_types = [
 				"communication_f",
+				"IlluminantTower",
 				"vysilac_fm",
-				"ttowerbig_"
+				"telek",
+				"ttowerbig_",
+				"tvtower"
 			];
 			_clusters_comms = [_logic, _types] call ALIVE_fnc_findTargets;
 			_clusters_comms = [_clusters_comms, "CIV", 40, "ColorWhite"] call ALIVE_fnc_setTargets;
@@ -640,6 +643,9 @@ switch(_operation) do {
 			
 			_types = [
 				"rail_house",
+				"rail_station",
+				"rail_platform",
+				"rails_bridge",
 				"stationhouse"
 			];
 			_clusters_rail = [_logic, _types] call ALIVE_fnc_findTargets;
@@ -665,9 +671,13 @@ switch(_operation) do {
 			
 			_types = [
 				"fuelstation",
-				"_oil_",
+				"oil_",
 				"dp_bigtank",
-				"IndPipe"
+				"expedice",
+				"IndPipe",
+				"komin",
+				"Ind_Stack_Big",
+				"Ind_TankBig"
 			];
 			_clusters_fuel = [_logic, _types] call ALIVE_fnc_findTargets;
 			_clusters_fuel = [_clusters_fuel, "CIV", 30, "ColorOrange"] call ALIVE_fnc_setTargets;
@@ -691,6 +701,8 @@ switch(_operation) do {
 			"CO - Searching Construction locations" call ALiVE_fnc_logger;
 			
 			_types = [
+				"Ind_Mlyn_01",
+				"Ind_Pec_01",
 				"wip",
 				"bridge_highway"
 			];
