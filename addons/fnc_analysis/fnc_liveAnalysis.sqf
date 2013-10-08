@@ -374,7 +374,7 @@ switch(_operation) do {
 					
 					_markers = _markers + [_m];			
 				
-					_icon = "Unknown";
+					_icon = "mil_unknown";
 					switch(_state) do {
 						case "reserve":{
 							_icon = "mil_marker";
