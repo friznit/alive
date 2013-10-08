@@ -336,7 +336,7 @@ switch(_operation) do {
 						_profileID = _x;
 						_profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
 						if !(isnil "_profile") then {
-							_marker = [_profile, "createMarker", [false,_alpha]] call ALIVE_fnc_profileEntity;
+							_marker = [_profile, "createMarker", [_alpha]] call ALIVE_fnc_profileEntity;
 							_markers = _markers + _marker;
 							_profiles set [count _profiles, _profileID];
 							
@@ -390,9 +390,9 @@ switch(_operation) do {
 							_m setMarkerAlpha _alpha;
 							_m setMarkerDir _dir;							
 							
-							_markers = _markers + [_m];						
+							_markers = _markers + [_m];
 						
-							_icon = "Unknown";
+							_icon = "mil_unknown";
 						};
 						case "capture":{
 						
@@ -407,7 +407,7 @@ switch(_operation) do {
 							
 							_markers = _markers + [_m];
 						
-							_icon = "Warning";
+							_icon = "mil_warning";
 						};
 					};
 					

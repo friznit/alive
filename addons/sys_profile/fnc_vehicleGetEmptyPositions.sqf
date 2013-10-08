@@ -29,7 +29,7 @@ private ["_vehicle","_count","_positions","_turrets","_turretEmptyCount","_turre
 	
 _vehicle = _this select 0;
 
-_positions = [0,0,0,[],0];
+_positions = [0,0,0,0,0];
 
 // get turrets for this class ignoring gunner and commander turrets
 _turrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;

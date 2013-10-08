@@ -98,6 +98,97 @@ _result = true;
 
 #define MTEMPLATE "ALiVE_PROFILEVEHICLE_%1"
 
+_deleteMarkers = {
+		private ["_logic"];
+        _logic = _this;
+        {
+                deleteMarker _x;
+		} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
+};
+
+_createMarkers = {
+        private ["_logic","_markers","_m","_position","_profileID","_debugColor","_debugIcon","_debugAlpha","_profileSide","_vehicleType","_profileActive","_typePrefix"];
+        _logic = _this;
+        _markers = [];
+
+		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
+		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
+		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
+		_vehicleType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
+		_profileActive = [_logic,"active"] call ALIVE_fnc_hashGet;
+		
+		switch(_profileSide) do {
+			case "EAST":{
+				_debugColor = "ColorRed";
+				_typePrefix = "o";
+			};
+			case "WEST":{
+				_debugColor = "ColorBlue";
+				_typePrefix = "b";
+			};
+			case "CIV":{
+				_debugColor = "ColorYellow";
+				_typePrefix = "n";
+			};
+			case "GUER":{
+				_debugColor = "ColorGreen";
+				_typePrefix = "n";
+			};
+			default {
+				_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+				_typePrefix = "n";
+			};
+		};
+		
+		switch(_vehicleType) do {
+			case "Car":{
+				_debugIcon = format["%1_recon",_typePrefix];
+			};
+			case "Tank":{
+				_debugIcon = format["%1_armor",_typePrefix];
+			};
+			case "Armored":{
+				_debugIcon = format["%1_armor",_typePrefix];
+			};
+			case "Truck":{
+				_debugIcon = format["%1_recon",_typePrefix];
+			};
+			case "Ship":{
+				_debugIcon = format["%1_unknown",_typePrefix];
+			};
+			case "Helicopter":{
+				_debugIcon = format["%1_air",_typePrefix];
+			};
+			case "Plane":{
+				_debugIcon = format["%1_plane",_typePrefix];
+			};
+			case "StaticWeapon":{
+				_debugIcon = format["%1_mortar",_typePrefix];
+			};
+			default {
+				_debugIcon = "hd_dot";
+			};
+		};
+		
+		_debugAlpha = 0.5;
+		if(_profileActive) then {
+			_debugAlpha = 1;
+		};
+		
+        if(count _position > 0) then {
+				_m = createMarker [format[MTEMPLATE, _profileID], _position];
+				_m setMarkerShape "ICON";
+				_m setMarkerSize [1, 1];
+				_m setMarkerType _debugIcon;
+				_m setMarkerColor _debugColor;
+				_m setMarkerAlpha _debugAlpha;
+				
+				_markers set [count _markers, _m];
+
+				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+        };
+};
+
 switch(_operation) do {
         case "init": {
                 /*
@@ -152,10 +243,10 @@ switch(_operation) do {
                 };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
-				[_logic, "deleteMarker"] call MAINCLASS;
+				 _logic call _deleteMarkers;
 
                 if(_args) then {
-                    [_logic, "createMarker", [true]] call MAINCLASS;
+                        _logic call _createMarkers;
                 };
 
                 _result = _args;
@@ -454,10 +545,9 @@ switch(_operation) do {
 				[_logic] call ALIVE_fnc_removeProfileVehicleAssignments;
 		};
 		case "createMarker": {
-				private ["_debugMode","_markers","_m","_position","_profileID","_color","_icon","_alpha","_profileSide","_vehicleType","_profileActive","_typePrefix"];
+				private ["_markers","_m","_position","_profileID","_color","_icon","_alpha","_profileSide","_vehicleType","_profileActive","_typePrefix"];
 				
-				_debugMode = [_args, 0, false, [false]] call BIS_fnc_param;
-				_alpha = [_args, 1, 0.5, [1]] call BIS_fnc_param;
+				_alpha = [_args, 0, 0.5, [1]] call BIS_fnc_param;
 				
 				_markers = [];
 
@@ -520,12 +610,8 @@ switch(_operation) do {
 					};
 				};
 				
-				if(_profileActive && _debugMode) then {
-					_alpha = 1;
-				};
-				
 				if(count _position > 0) then {
-					_m = createMarker [format[MTEMPLATE, _profileID], _position];
+					_m = createMarker [format[MTEMPLATE, format["%1_debug",_profileID]], _position];
 					_m setMarkerShape "ICON";
 					_m setMarkerSize [1, 1];
 					_m setMarkerType _icon;
@@ -534,7 +620,7 @@ switch(_operation) do {
 					
 					_markers set [count _markers, _m];
 
-					[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+					[_logic,"markers",_markers] call ALIVE_fnc_hashSet;
 				};
 				
 				_result = _markers;
@@ -542,7 +628,7 @@ switch(_operation) do {
 		case "deleteMarker": {
 				{
 					deleteMarker _x;
-				} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
+				} forEach ([_logic,"markers", []] call ALIVE_fnc_hashGet);
 		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;

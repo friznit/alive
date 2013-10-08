@@ -237,7 +237,7 @@ switch(_operation) do {
 				_intelligenceChance = _this select 4;
 								
 				waituntil {
-					sleep (45 + random 20);
+					sleep (25 + random 20);
 					
 					{
 						_moduleSide = _x select 0;
@@ -326,11 +326,13 @@ switch(_operation) do {
 						
 							_maxItems = floor(random 5);
 						
+						
 							// DEBUG -------------------------------------------------------------------------------------
 							if(_debug) then {
 								["ALIVE MI - Intelligence chance dice roll succeeded"] call ALIVE_fnc_dump;
 							};
 							// DEBUG -------------------------------------------------------------------------------------
+							
 							
 							private ["_sectorData","_entitiesBySide","_entitiesSide"];
 						
@@ -350,6 +352,15 @@ switch(_operation) do {
 										
 										if(count _entitiesSide > 0) then {
 											if(!(_id in (_intelligenceObtained select 1)) && (count _intelligenceAdded < _maxItems)) then {
+											
+											
+												// DEBUG -------------------------------------------------------------------------------------
+												if(_debug) then {
+													["ALIVE MI - Objective capture intel item generated"] call ALIVE_fnc_dump;
+												};
+												// DEBUG -------------------------------------------------------------------------------------
+											
+											
 												_x set [count _x, _sector];
 												_x set [count _x, false];
 												_intelligenceAdded set [count _intelligenceAdded, _id];
@@ -376,6 +387,15 @@ switch(_operation) do {
 										
 										if(count _entitiesSide > 0) then {
 											if(!(_id in (_intelligenceObtained select 1)) && (count _intelligenceAdded < _maxItems)) then {
+											
+												
+												// DEBUG -------------------------------------------------------------------------------------
+												if(_debug) then {
+													["ALIVE MI - Objective recon intel item generated"] call ALIVE_fnc_dump;
+												};
+												// DEBUG -------------------------------------------------------------------------------------
+											
+											
 												_x set [count _x, _sector];
 												_x set [count _x, false];
 												_intelligenceAdded set [count _intelligenceAdded, _id];
@@ -402,6 +422,15 @@ switch(_operation) do {
 										
 										if(count _entitiesSide > 0) then {
 											if(!(_id in (_intelligenceObtained select 1)) && (count _intelligenceAdded < _maxItems)) then {
+											
+												
+												// DEBUG -------------------------------------------------------------------------------------
+												if(_debug) then {
+													["ALIVE MI - Objective reserve intel item generated"] call ALIVE_fnc_dump;
+												};
+												// DEBUG -------------------------------------------------------------------------------------
+																								
+											
 												_x set [count _x, _sector];
 												_x set [count _x, false];
 												_intelligenceAdded set [count _intelligenceAdded, _id];
@@ -425,11 +454,12 @@ switch(_operation) do {
 		};		
 	};
 	case "notifyIntelligenceItem": {
-		private ["_intelItems","_intelItemID","_intelligenceObtained","_intelItem","_sides","_objective",
+		private ["_intelItems","_debug","_intelItemID","_intelligenceObtained","_intelItem","_sides","_objective",
 		"_side","_command","_sector","_center","_type","_state","_grid","_details","_typeName","_sideText"];
 						
 		_intelItems = _args;
 		
+		_debug = [_logic, "debug"] call MAINCLASS;
 		_intelligenceObtained = _logic getVariable "intelligenceObtained";
 		
 		{
@@ -450,7 +480,7 @@ switch(_operation) do {
 			// setup analysis and plotting job
 			// analysis job will run every 45 seconds for 5 times
 			
-			[ALIVE_liveAnalysis, "registerAnalysisJob", [45, 5, "intelligenceItem", _intelItemID, [_intelItem]]] call ALIVE_fnc_liveAnalysis;
+			[ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "intelligenceItem", _intelItemID, [_intelItem]]] call ALIVE_fnc_liveAnalysis;
 			
 			// compile radio message text
 			

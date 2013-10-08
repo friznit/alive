@@ -150,6 +150,77 @@ _result = true;
 
 #define MTEMPLATE "ALiVE_PROFILEENTITY_%1"
 
+_deleteMarkers = {
+		private ["_logic"];
+        _logic = _this;
+        {
+                deleteMarker _x;
+		} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
+};
+
+_createMarkers = {
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha"
+		,"_profileID","_profileSide","_profileType","_profileActive","_typePrefix","_label"];
+        _logic = _this;
+        _markers = [];
+
+		_position = [_logic,"position"] call ALIVE_fnc_hashGet;
+		_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
+		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
+		_profileType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
+		_profileActive = [_logic,"active"] call ALIVE_fnc_hashGet;
+		
+		switch(_profileSide) do {
+			case "EAST":{
+				_debugColor = "ColorRed";
+				_typePrefix = "o";
+			};
+			case "WEST":{
+				_debugColor = "ColorBlue";
+				_typePrefix = "b";
+			};
+			case "CIV":{
+				_debugColor = "ColorYellow";
+				_typePrefix = "n";
+			};
+			case "GUER":{
+				_debugColor = "ColorGreen";
+				_typePrefix = "n";
+			};
+			default {
+				_debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+				_typePrefix = "n";
+			};
+		};
+		
+		switch(_profileType) do {
+			default {
+				_debugIcon = format["%1_inf",_typePrefix];
+			};
+		};
+		
+		_debugAlpha = 0.5;
+		if(_profileActive) then {
+			_debugAlpha = 1;
+		};
+
+        if(count _position > 0) then {
+				_m = createMarker [format[MTEMPLATE, format["%1_debug",_profileID]], _position];
+				_m setMarkerShape "ICON";
+				_m setMarkerSize [.65, .65];
+				_m setMarkerType _debugIcon;
+				_m setMarkerColor _debugColor;
+				_m setMarkerAlpha _debugAlpha;
+				
+				_label = [_profileID, "_"] call CBA_fnc_split;
+                _m setMarkerText format["e%1",_label select ((count _label) - 1)];
+
+				_markers set [count _markers, _m];
+
+				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+        };
+};
+
 switch(_operation) do {
         case "init": {
                 /*
@@ -210,10 +281,10 @@ switch(_operation) do {
                 };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
-				[_logic, "deleteMarker"] call MAINCLASS;
+				 _logic call _deleteMarkers;
 
                 if(_args) then {
-                    [_logic, "createMarker", [true]] call MAINCLASS;
+                        _logic call _createMarkers;
                 };
 
                 _result = _args;
@@ -769,11 +840,10 @@ switch(_operation) do {
 				};
 		};
 		case "createMarker": {
-				private ["_debugMode","_markers","_m","_position","_dimensions","_color","_icon","_alpha"
+				private ["_markers","_m","_position","_dimensions","_color","_icon","_alpha"
 				,"_profileID","_profileSide","_profileType","_profileActive","_vehiclesInCommandOf","_typePrefix","_label"];
-				
-				_debugMode = [_args, 0, false, [false]] call BIS_fnc_param;
-				_alpha = [_args, 1, 0.5, [1]] call BIS_fnc_param;
+
+				_alpha = [_args, 0, 0.5, [1]] call BIS_fnc_param;
 				
 				_markers = [];
 
@@ -784,7 +854,7 @@ switch(_operation) do {
 				_profileActive = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;				
 				_vehiclesInCommandOf = _logic select 2 select 8; //[_profile,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
 					
-				if(count _vehiclesInCommandOf > 0 && !(_debugMode)) then {
+				if(count _vehiclesInCommandOf > 0) then {
 				
 					_vehicleMarkers = [];
 					_inCommand = true;
@@ -798,7 +868,7 @@ switch(_operation) do {
 						_vehicleMarkers = _vehicleMarkers + _markers;
 					} forEach _vehiclesInCommandOf;
 					
-					[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+					[_logic,"markers",_markers] call ALIVE_fnc_hashSet;
 					
 				}else{
 				
@@ -830,10 +900,6 @@ switch(_operation) do {
 							_icon = format["%1_inf",_typePrefix];
 						};
 					};
-					
-					if(_profileActive && _debugMode) then {
-						_alpha = 1;
-					};
 
 					if(count _position > 0) then {
 						_m = createMarker [format[MTEMPLATE, _profileID], _position];
@@ -843,14 +909,9 @@ switch(_operation) do {
 						_m setMarkerColor _color;
 						_m setMarkerAlpha _alpha;
 						
-						if(_debugMode) then {
-							_label = [_profileID, "_"] call CBA_fnc_split;
-							_m setMarkerText format["e%1",_label select ((count _label) - 1)];
-						};
-
 						_markers set [count _markers, _m];
 
-						[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+						[_logic,"markers",_markers] call ALIVE_fnc_hashSet;
 					};
 				};
 				
@@ -859,7 +920,7 @@ switch(_operation) do {
 		case "deleteMarker": {
 				{
 					deleteMarker _x;
-				} forEach ([_logic,"debugMarkers", []] call ALIVE_fnc_hashGet);
+				} forEach ([_logic,"markers", []] call ALIVE_fnc_hashGet);
 		};
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
