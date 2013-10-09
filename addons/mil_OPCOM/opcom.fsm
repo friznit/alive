@@ -1,9 +1,9 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-929.164673,-375.286652,-839.164551,-325.286652,5.000000,"ATTACK" \n "Conditions"};
 item5[] = {"",7,210,-345.692139,-136.027100,-337.692108,-128.027069,0.000000,""};
@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1561.217285,-218.590591,236.631531,-796.059265,1044,803,1};
-window[] = {0,-1,-1,-1,-1,1079,-1790,-3,130,1,1062};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1561.217285,-218.590591,-61.670898,-1112.645630,1045,818,1};
+window[] = {0,-1,-1,-1,-1,971,22,1809,22,1,1062};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -109,6 +109,7 @@ class FSM
        "_cycleTime = 120;" \n
        "_timestamp = time;" \n
        "_lastanalyze = 0;" \n
+       "_orderFailed = false;" \n
        "" \n
        "_colorside = ""ColorRed"";" \n
        "switch (_side) do {" \n
@@ -458,8 +459,8 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
            "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_failsafe};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"if (_failsafe) then {_OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
+           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "OPCOM_FEEDER">*/
@@ -516,8 +517,8 @@ class FSM
         {
           priority = 0.000000;
           to="NOT_BUSY";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(!(isnil ""_OPCOM_DATA"") && {(_OPCOM_DATA select 0) == ""confirmed""} && {!((_OPCOM_DATA select 1) select 0)}) || {time - _timeStamp > 30}"/*%FSM</CONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_orderFailed = false; _orderFailed = (time - _timestamp) > 10;"/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(!(isnil ""_OPCOM_DATA"") && {(_OPCOM_DATA select 0) == ""confirmed""} && {!((_OPCOM_DATA select 1) select 0)}) || {_orderFailed}"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -553,8 +554,8 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
            "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_failsafe};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"if (_failsafe) then {_OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
+           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -580,8 +581,8 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
            "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_failsafe};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"if (_failsafe) then {_OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
+           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -607,8 +608,8 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
            "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_failsafe};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"if (_failsafe) then {_OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
+           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -719,8 +720,8 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
            "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_failsafe};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"if (_failsafe) then {_OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
+           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };

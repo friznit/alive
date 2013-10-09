@@ -1013,12 +1013,11 @@ switch(_operation) do {
         
         case "NearestAvailableSection": {
             
-            private ["_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
+            private ["_st","_troopsunsorted","_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
             
             _pos = _args select 0;
             _size = _args select 1; 
             if (count _args > 2) then {_types = _args select 2} else {_types = ["infantry"]};
-            _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",([_logic,"side","EAST"] call ALiVE_fnc_HashGet)] call ALIVE_fnc_profileHandler;
 
 			_troops = [];
             {
@@ -1032,13 +1031,24 @@ switch(_operation) do {
             _reserved = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
             _troops = (_troops - _busy - _reserved);
             
+            _st = 2000;
+            waituntil
             {
-                if ((isnil "_x") || {!(_x in _profileIDs)}) then {_troops set [_forEachIndex,"x"]};
-            } foreach _troops;
-            _troops = _troops - ["x"];
+            
+            	_nearProfiles = [_pos, _st, [([_logic,"side","EAST"] call ALiVE_fnc_HashGet),"entity"]] call ALIVE_fnc_getNearProfiles;
+	            _troopsUnsorted = [];
+	            {
+	                _pi = _x select 2 select 4;
+	                _pp = _x select 2 select 2;
+	                
+	                if (_pi in _troops) then {_troopsUnsorted set [count _troopsUnsorted,_pi]};
+	            } foreach _nearProfiles;
+                
+                _st = _st + 2000;
+	            ((count _troopsUnsorted >= _size) || {_st > 15000});
+            };
             
             //Sort by distance
-            _troopsUnsorted = _troops;
             _troops = [_troopsUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos} else {[0,0,0] distance _pos}} else {[0,0,0] distance _pos}},"ASCEND"] call BIS_fnc_sortBy;
             
             //Collect section
