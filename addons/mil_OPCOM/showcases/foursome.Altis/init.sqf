@@ -2,7 +2,7 @@ startLoadingScreen ["Loading..."];;
 titleText ["ALiVE initialising...", "BLACK IN",9999];
 0 fadesound 0;
 
-sleep 30;
+sleep 140;
 endloadingscreen;
 titleText ["ALiVE | Foursome", "BLACK IN",3];
 
@@ -71,32 +71,26 @@ while {(time - _time) < 180} do {
 };
 _cam CameraEffect ["Terminate","Back"];
 CamDestroy _cam;
-
     
 if (isServer) then {
-
-//Allmissionobjects analyzer
-ABORTCHECK = false;
-[] spawn {
-	_lastexport = time;
-	waituntil {
-		private ["_cnt"];
-
-		sleep 60;
-		_cnt = count (allmissionobjects "");
+	//Allmissionobjects analyzer
+	ABORTCHECK = false;
+	[] spawn {
+		_lastexport = time;
+		waituntil {
+			private ["_cnt"];
 	
-		if (time-_lastexport > 300) then {
-			{diag_log format["Total count: %4 | %1 | %2 | %3", _x,getposATL _x,typeof _x,_cnt]} foreach (allmissionobjects "");
-			_lastexport = time;
+			sleep 60;
+			_cnt = count (allmissionobjects "");
+		
+			if (time-_lastexport > 300) then {
+				{diag_log format["Total count: %4 | %1 | %2 | %3", _x,getposATL _x,typeof _x,_cnt]} foreach (allmissionobjects "");
+				_lastexport = time;
+			};
+	
+			diag_log _cnt;
+			//player sidechat format["Count allmissionobjects %1",_cnt];
+			(ABORTCHECK);
 		};
-
-		diag_log _cnt;
-		player sidechat format["Count allmissionobjects %1",_cnt];
-		(ABORTCHECK);
 	};
-};
-
-
 } else {};
-
-
