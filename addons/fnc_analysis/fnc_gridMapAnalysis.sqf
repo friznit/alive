@@ -28,7 +28,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_grid","_export","_debug","_sectors","_exportString","_landSectors","_sector","_sectorData","_sectorID","_subGrid","_subGridSectors"];
+private ["_grid","_export","_debug","_sectors","_exportString","_subGridRoads","_sector","_sectorData","_sectorID","_subGrid","_subGridSectors"];
 
 _grid = _this select 0;
 _sectors = _this select 1;
