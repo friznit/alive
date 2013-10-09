@@ -59,12 +59,12 @@ class Mission
 		"A3_Characters_F_INDEP",
 		"alive_mil_cqb",
 		"alive_sys_profile",
-		"alive_mil_intelligence",
 		"alive_main",
 		"alive_sup_multispawn",
-		"alive_sys_player",
 		"cba_xeh",
 		"alive_civ_strategic",
+		"alive_sys_player",
+		"alive_mil_intelligence",
 		"A3_Weapons_F_Ammoboxes",
 		"a3_weapons_f_beta_ammoboxes",
 		"a3_weapons_f_gamma_ammoboxes",
@@ -90,7 +90,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.82";
+		briefingName="ALiVE Showcase - Foursome v0.86";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -503,7 +503,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=5;
-					synchronizations[]={1,7,3,2,8,10};
+					synchronizations[]={1,7,3,2,8,11};
 				};
 			};
 		};
@@ -1037,7 +1037,7 @@ class Mission
 						items=4;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_debug_setting";
 						};
@@ -1067,7 +1067,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=9;
-					synchronizations[]={1,7,11};
+					synchronizations[]={1,7,10};
 				};
 			};
 		};
@@ -1085,13 +1085,13 @@ class Mission
 						items=4;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sys_profile";
 							typeName="debug";
 						};
 						class Item1
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sys_profile";
 							typeName="plotSectors";
 						};
@@ -1125,38 +1125,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={14878.849,17.901123,16651.377};
-					class args
-					{
-						items=1;
-						class Item0
-						{
-							value="true";
-							parentCls="ALiVE_mil_intelligence";
-							typeName="debug";
-						};
-					};
-					id=33;
-					side="LOGIC";
-					vehicle="ALiVE_mil_intelligence";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=10;
-					synchronizations[]={5};
-				};
-			};
-		};
-		class Item19
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
 					position[]={15482.622,18.923798,17150.4};
-					id=34;
+					id=33;
 					side="LOGIC";
 					vehicle="ALiVE_require";
 					leader=1;
@@ -1165,7 +1135,7 @@ class Mission
 				};
 			};
 		};
-		class Item20
+		class Item19
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1190,7 +1160,7 @@ class Mission
 							typeName="spawntype";
 						};
 					};
-					id=35;
+					id=34;
 					side="LOGIC";
 					vehicle="ALiVE_sup_multispawn";
 					leader=1;
@@ -1199,95 +1169,7 @@ class Mission
 				};
 			};
 		};
-		class Item21
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={15667.17,18.357325,17147.424};
-					class args
-					{
-						items=11;
-						class Item0
-						{
-							value="";
-							parentCls="ALiVE_sys_player";
-							typeName="key";
-						};
-						class Item1
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="allowReset";
-						};
-						class Item2
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="allowDiffClass";
-						};
-						class Item3
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="allowManualSave";
-						};
-						class Item4
-						{
-							value="0";
-							parentCls="ALiVE_sys_player";
-							typeName="autoSaveTime";
-						};
-						class Item5
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="saveLoadout";
-						};
-						class Item6
-						{
-							value="false";
-							parentCls="ALiVE_sys_player";
-							typeName="saveAmmo";
-						};
-						class Item7
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="saveHealth";
-						};
-						class Item8
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="savePosition";
-						};
-						class Item9
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="saveScores";
-						};
-						class Item10
-						{
-							value="true";
-							parentCls="ALiVE_sys_player";
-							typeName="storeToDB";
-						};
-					};
-					id=36;
-					side="LOGIC";
-					vehicle="ALiVE_sys_player";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-				};
-			};
-		};
-		class Item22
+		class Item20
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1296,7 +1178,7 @@ class Mission
 				class Item0
 				{
 					position[]={30287.018,-187.14948,27256.879};
-					id=37;
+					id=35;
 					side="LOGIC";
 					vehicle="SLX_XEH_Logic";
 					leader=1;
@@ -1306,7 +1188,7 @@ class Mission
 				};
 			};
 		};
-		class Item23
+		class Item21
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1355,14 +1237,138 @@ class Mission
 							typeName="initType";
 						};
 					};
-					id=38;
+					id=36;
 					side="LOGIC";
 					vehicle="ALiVE_civ_strategic";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=11;
+					syncId=10;
 					synchronizations[]={9};
+				};
+			};
+		};
+		class Item22
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={15665.302,18.39044,17148.963};
+					class args
+					{
+						items=11;
+						class Item0
+						{
+							value="";
+							parentCls="ALiVE_sys_player";
+							typeName="key";
+						};
+						class Item1
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="allowReset";
+						};
+						class Item2
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="allowDiffClass";
+						};
+						class Item3
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="allowManualSave";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_sys_player";
+							typeName="autoSaveTime";
+						};
+						class Item5
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="saveLoadout";
+						};
+						class Item6
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="saveAmmo";
+						};
+						class Item7
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="saveHealth";
+						};
+						class Item8
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="savePosition";
+						};
+						class Item9
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="saveScores";
+						};
+						class Item10
+						{
+							value="true";
+							parentCls="ALiVE_sys_player";
+							typeName="storeToDB";
+						};
+					};
+					id=37;
+					side="LOGIC";
+					vehicle="ALiVE_sys_player";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
+				};
+			};
+		};
+		class Item23
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={14894.116,17.901176,16647.377};
+					class args
+					{
+						items=2;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_mil_intelligence";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="0.2";
+							parentCls="ALiVE_mil_intelligence";
+							typeName="intelChance";
+						};
+					};
+					id=38;
+					side="LOGIC";
+					vehicle="ALiVE_mil_intelligence";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
+					syncId=11;
+					synchronizations[]={5};
 				};
 			};
 		};

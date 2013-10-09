@@ -2,7 +2,7 @@
 class header {
 	gametype = COOP;
 	minplayers = 1;
-	maxplayers = 10;
+	maxplayers = 19;
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
 
@@ -15,7 +15,7 @@ class header {
 
 
 author = ALiVE Studios || Mission by Highhead;
-onLoadMission = "Iran has invaded Lemnos! All greek forces where pushed back to the south in a sudden strike, while in the north local guerilla groups built up trying to oppose the Iranian assault. NATO have quickly landed a few troops from the northeast to support the 2 struggling forces so Greek forces can regain control over the island!";
+onLoadMission = "Iran has invaded Lemnos in a sudden strike! Greek forces have been pushed back to the south, while in the north local guerilla tryed to oppose the Iranian assault. A few NATO forces have been deployed in the northeast to support the 2 struggling forces and greek army can regain control over the island!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Foursome;
