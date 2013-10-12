@@ -131,7 +131,7 @@ class FSM
        "_grp = _this select 1;" \n
        "_callsign = _this select 2;" \n
        "_base = _this select 3;" \n
-       "_h = createVehicle [""Land_HelipadCircle_F"", _base, [], 0, ""CAN_COLLIDE""];" \n
+       "_h = createVehicle [""Land_HelipadEmpty_F"", _base, [], 0, ""CAN_COLLIDE""];" \n
        "_task = ""NONE"";" \n
        "_pos = [];" \n
        "_posLand = [];" \n
@@ -319,7 +319,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
            "" \n
            "//Find position to land" \n
-           "_heliHs = nearestObjects [_pos, [""HeliH"", ""HeliHCivil"", ""HeliHRescue""], 50];" \n
+           "_heliHs = nearestObjects [_pos, [""Land_HelipadSquare_F"",""Land_HelipadRescue_F"",""Land_HelipadCivil_F"",""Land_HelipadCircle_F"",""Land_HelipadEmpty_F"",""HeliH"", ""HeliHCivil"", ""HeliHRescue""], 50];" \n
            "" \n
            "if (count _heliHs > 0) then" \n
            "{" \n
@@ -331,7 +331,7 @@ class FSM
            "	" \n
            "	if (count _posLand < 2) then" \n
            "	{" \n
-           "		_heliHs = nearestObjects [_pos, [""HeliH"", ""HeliHCivil"", ""HeliHRescue""], 100];" \n
+           "		_heliHs = nearestObjects [_pos, [""Land_HelipadSquare_F"",""Land_HelipadRescue_F"",""Land_HelipadCivil_F"",""Land_HelipadCircle_F"",""Land_HelipadEmpty_F"",""HeliH"", ""HeliHCivil"", ""HeliHRescue""], 100];" \n
            "" \n
            "		if (count _heliHs > 0) then" \n
            "		{" \n

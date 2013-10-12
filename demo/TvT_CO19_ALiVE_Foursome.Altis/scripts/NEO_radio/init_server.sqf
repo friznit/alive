@@ -49,7 +49,9 @@ _sides = _sides - ["DELETE"];
 		//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
 		_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 		[_veh, _grp, units _grp] spawn _code;
- 
+ 		
+        //not working reliably on JIP, actions are added in INIT for JIP
+ 		/*
 		[[_veh, ["Support Radio", "scripts\NEO_radio\radio_action.sqf", "radio", -1, false, true, "", "_this in _target
 			&&
 			_this hasWeapon ""itemRadio""
@@ -63,14 +65,11 @@ _sides = _sides - ["DELETE"];
 			&&
 			{
 				lifeState _x == ""ALIVE""
-				&&
-				_x in (assignedCargo _target)
-				&&
-				rankID _x > rankID _this
 			}
 			count (crew _target) == 0
 		"]],"fnc_addAction",true,true] spawn BIS_fnc_MP;  
-		
+		*/
+        
 		//FSM
 		[_veh, _grp, _callsign, _pos] execFSM "scripts\NEO_radio\fsms\transport.fsm";
 		

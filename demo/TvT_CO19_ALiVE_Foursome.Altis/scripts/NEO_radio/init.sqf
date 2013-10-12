@@ -42,31 +42,50 @@ if (isServer) then
 	_this execVM "scripts\NEO_radio\init_server.sqf";
 };
 
-//Client
+//JIP Client
 if (!isDedicated) then 
 {
 	waitUntil { !isNil { player } };
 	waitUntil { !isNull player };
 	waitUntil { !(player != player) };
 	
-	NEO_radioLogic setVariable ["NEO_radioPlayerActionArray", 
-	[
-		"Support Radio",
-		"scripts\NEO_radio\radio_action.sqf",
-		"radio",
-		-1,
-		false,
-		true,
-		"", 
-		"_this == _target
-			&&
-			_this hasWeapon ""LaserDesignator""
-			"
-	]];
- 
+    //Define available actions locally
+	NEO_radioLogic setVariable ["NEO_radioPlayerActionArray",
+	    [ 
+			[
+				"Support Radio",
+				"scripts\NEO_radio\radio_action.sqf",
+				"radio",
+				-1,
+				false,
+				true,
+				"", 
+				"
+		        	_this == _target
+					&&
+					_this hasWeapon ""LaserDesignator""
+				"
+			],
+			[
+		    	"Talk with pilot",
+		        "scripts\NEO_radio\radio_action.sqf",
+		        "talk",
+		        -1,
+		        false,
+		        true,
+		        "",
+				"
+					(vehicle _this) in ((NEO_radioLogic getVariable format ['NEO_radioTrasportArray_%1', side _this]) select 0)
+					&&
+					{alive (driver (vehicle _this))}
+		        "
+		    ]
+	    ]
+    ];
 	
-	player addAction (NEO_radioLogic getVariable "NEO_radioPlayerActionArray");
-	player addEventHandler ["Respawn", { (_this select 0) addAction (NEO_radioLogic getVariable "NEO_radioPlayerActionArray") }];
+    //Add Actions and eventhandler locally
+	{player addAction _x} foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray");
+	player addEventHandler ["Respawn", { {(_this select 0) addAction _x } foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray") }];
 	
 	//player addaction ["CALL CAS","\x\alive\addons\sup_cas\cas\radio_action.sqf","radio",-1,	false,true,	"", ""];
 	//player addEventHandler ["Respawn", { ["ALIVE_radioPlayerActionArray",["CALL CAS","\x\alive\addons\sup_cas\cas\radio_action.sqf","radio",-1,	false,true,	"", ""]]}];

@@ -271,7 +271,7 @@ class FSM
            "_battery setVariable [""NEO_radioArtyNewTask"", nil, true];" \n
            "" \n
            "//Get ASL position" \n
-           "_dummy = ""HeliHEmpty"" createVehicleLocal _target;" \n
+           "_dummy = ""Land_HelipadEmpty_F"" createVehicleLocal _target;" \n
            "_dummy setPosATL [getPosATL _dummy select 0, getPosATL _dummy select 1, 0];" \n
            "_target = getPosASL _dummy;" \n
            "deleteVehicle _dummy;" \n

@@ -32,6 +32,8 @@
 			_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 			[_veh, _grp, units _grp] spawn _code;
 			
+            //call RE not working in A3, actions are added in init for JIP
+            /*
 			[nil, _veh, "per", rAddAction, "Support Radio", "scripts\NEO_radio\radio_action.sqf", "radio", -1, false, true, "", 
 			"
 				_this in _target
@@ -54,6 +56,7 @@
 				}
 				count (crew _target) == 0
 			"] call RE;
+            */
 			
 			//FSM
 			[_veh, _grp, _callsign, _pos] execFSM "scripts\NEO_radio\fsms\transport.fsm";
