@@ -488,7 +488,7 @@ switch(_operation) do {
 			// delete the group
 			_grp = _house getVariable "group";
 
-			if(!isNil "_grp") then {
+			if (!(isNil "_grp") && {({alive _x} count (units _grp) > 0)}) then {
 				[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
 			};
 			
