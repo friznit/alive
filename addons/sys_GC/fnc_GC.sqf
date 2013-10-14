@@ -214,7 +214,7 @@ switch(_operation) do {
 							{
 								//Player and his squadmates cannot be too close.
 								//ToDo: use 'cameraOn' as well?
-								if (({(_x distance _object) <= 500} count ([] call BIS_fnc_listPlayers)) == 0) then
+								if (({(_x distance _object) <= 1700} count ([] call BIS_fnc_listPlayers)) == 0) then
 								{
 									deleteVehicle _object;
 								};
