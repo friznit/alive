@@ -20,4 +20,10 @@
 <Key ID="STR_ALIVE_GC_INDIVIDUALTYPES_COMMENT">
 	<English>f.e. ["Box_NATO_Wps_F","Box_NATO_AmmoOrd_F"]</English>
 </Key>
+<Key ID="STR_ALIVE_GC_INTERVAL">
+	<English>Interval:</English>
+</Key>
+<Key ID="STR_ALIVE_GC_INTERVAL_COMMENT">
+	<English>Interval in which to clean killed objects</English>
+</Key>
 </Container></Package></Project>

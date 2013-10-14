@@ -21,7 +21,7 @@ link7[] = {6,7};
 link8[] = {7,4};
 link9[] = {8,1};
 globals[] = {10.000000,1,0,1,16777215,640,480,1,10,6316128,1,-359.369995,359.369965,499.406189,-290.195496,639,702,1};
-window[] = {0,-1,-1,-1,-1,965,132,1396,132,1,656};
+window[] = {0,-1,-1,-1,-1,1053,220,1484,220,1,656};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -38,6 +38,7 @@ class FSM
        "_collector = _this;" \n
        "_lastAnalyze = 0;" \n
        "_path = ""\x\alive\addons\sys_GC\"";" \n
+       "_interval = call compile (_collector getvariable ([""ALiVE_GC_INTERVAL"",""300""]));" \n
        "" \n
        "//Initialize the queue." \n
        "private [""_queue""];" \n
@@ -66,7 +67,7 @@ class FSM
       init = /*%FSM<STATEINIT""">*/"_auto = _collector getVariable [""auto"",false];" \n
        "_queue = _collector getVariable [""queue"",[]];" \n
        "" \n
-       "if (_auto && {time - _lastanalyze > 300}) then {" \n
+       "if (_auto && {time - _lastanalyze > _interval}) then {" \n
        "	_handle = [_collector,""collect""] spawn ALiVE_fnc_GC;" \n
        "	_lastAnalyze = time;" \n
        "} else {" \n
