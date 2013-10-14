@@ -51,7 +51,7 @@ ABORTCHECK = false;
 		sleep 60;
 		_cnt = count (allmissionobjects "");
 	
-		if (time-_lastexport > 300) then {
+		if (time-_lastexport > 1800) then {
 			{diag_log format["Total count: %4 | %1 | %2 | %3", _x,getposATL _x,typeof _x,_cnt]} foreach (allmissionobjects "");
 			_lastexport = time;
 		};
