@@ -92,7 +92,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.87";
+		briefingName="ALiVE Showcase - Foursome v0.9";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -1382,10 +1382,10 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15721.819,17.413258,17147.471};
+					position[]={15714.45,17.668348,17148.297};
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="true";
@@ -1394,7 +1394,13 @@ class Mission
 						};
 						class Item1
 						{
-							value="[""Box_NATO_AmmoOrd_F""]";
+							value="300";
+							parentCls="ALiVE_sys_GC";
+							typeName="ALiVE_GC_INTERVAL";
+						};
+						class Item2
+						{
+							value="[]";
 							parentCls="ALiVE_sys_GC";
 							typeName="ALiVE_GC_INDIVIDUALTYPES";
 						};
