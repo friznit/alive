@@ -36,13 +36,13 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_GC_INTERVAL";
                                 description = "$STR_ALIVE_GC_INTERVAL_COMMENT";
                                 defaultValue = 300;
-                        }
+                        };
                         class ALiVE_GC_INDIVIDUALTYPES
                         {
                                 displayName = "$STR_ALIVE_GC_INDIVIDUALTYPES";
                                 description = "$STR_ALIVE_GC_INDIVIDUALTYPES_COMMENT";
                                 defaultValue = [];
-                        }
+                        };
                  };
                 
         };

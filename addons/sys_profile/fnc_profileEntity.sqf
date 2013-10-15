@@ -868,7 +868,7 @@ switch(_operation) do {
 						_vehicleMarkers = _vehicleMarkers + _markers;
 					} forEach _vehiclesInCommandOf;
 					
-					[_logic,"markers",_markers] call ALIVE_fnc_hashSet;
+					[_logic,"markers",_vehicleMarkers] call ALIVE_fnc_hashSet;
 					
 				}else{
 				
