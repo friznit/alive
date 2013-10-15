@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
@@ -24,7 +24,7 @@ item19[] = {"NOT_BUSY_1",2,250,-547.222046,-156.136017,-457.222015,-106.136017,0
 item20[] = {"COLLECT_TO_QUEUE",2,250,-717.153931,-750.096619,-627.154053,-700.096619,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-716.046936,-682.136108,-626.046936,-632.136108,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"ANALYZE_Conditio",4,218,-1207.555176,-482.607452,-1117.554932,-432.607269,0.000000,"ANALYZE" \n "Conditions"};
-item23[] = {"PERFORM_ANALYSIS",2,250,-1209.390747,-710.863525,-1119.390747,-660.863525,0.000000,"PERFORM" \n "ANALYSIS"};
+item23[] = {"PERFORM_ANALYSIS",2,4346,-1209.390747,-710.863525,-1119.390747,-660.863525,0.000000,"PERFORM" \n "ANALYSIS"};
 item24[] = {"ANALYSIS_DONE",4,218,-1213.964233,-771.945801,-1123.964233,-721.945801,0.000000,"ANALYSIS" \n "DONE"};
 item25[] = {"RESET",2,250,-1210.631958,-838.320801,-1120.631958,-788.320801,0.000000,"RESET"};
 item26[] = {"PERFORM_CLEANUP",2,250,-1206.501831,-555.380127,-1116.501831,-505.380127,0.000000,"PERFORM" \n "CLEANUP"};
@@ -76,7 +76,7 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1561.217285,-218.590591,-61.670898,-1112.645630,1045,818,1};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1561.217285,-218.590591,-42.398682,-1093.373413,1045,818,1};
 window[] = {0,-1,-1,-1,-1,971,22,1809,22,1,1062};
 *//*%FSM</HEAD>*/
 class FSM
@@ -99,6 +99,7 @@ class FSM
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
+       "_factions = [_OPCOM_HANDLER,""factions"",[""OPF_F""]] call ALiVE_fnc_HashGet;" \n
        "_sidesEnemy = [_OPCOM_HANDLER,""sidesenemy"",[""EAST""]] call ALiVE_fnc_HashGet;" \n
        "_sidesFriendly = [_OPCOM_HANDLER,""sidesfriendly"",[""WEST""]] call ALiVE_fnc_HashGet;" \n
        "_controltype = [_OPCOM_HANDLER, ""controltype"",""invasion""] call ALiVE_fnc_HashGet;" \n
@@ -651,10 +652,13 @@ class FSM
        "		_clusterOccupationAnalysis = [_OPCOM_HANDLER,_side,_sidesEnemy,_sidesFriendly] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 3,_this select 2]] call ALiVE_fnc_OPCOM};" \n
        "		_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
        "		" \n
-       "		_enemyScan = [_OPCOM_HANDLER,_side] spawn {" \n
+       "		_enemyScan = [_OPCOM_HANDLER,_factions] spawn {" \n
        "			private [""_profiles"",""_pos""];" \n
        "" \n
-       "			_profiles = [ALiVE_ProfileHandler,""getProfilesBySide"",_this select 1] call ALiVE_fnc_ProfileHandler;" \n
+       "			_profiles = [];" \n
+       "			{" \n
+       "				_profiles = _profiles + ([ALiVE_ProfileHandler,""getProfilesByFaction"",_x] call ALiVE_fnc_ProfileHandler);" \n
+       "			} foreach (_this select 1);" \n
        "			{" \n
        "				_pos = [([ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler),""position""] call ALiVE_fnc_HashGet;" \n
        "				if !(isnil ""_pos"") then {_visibleEnemies = [_this select 0,""scanenemies"",_pos] call ALiVE_fnc_OPCOM};" \n

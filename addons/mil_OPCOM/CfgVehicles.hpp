@@ -50,30 +50,11 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class side
+                        class factions
                         {
-                                displayName = "$STR_ALIVE_OPCOM_SIDE";
-                                description = "$STR_ALIVE_OPCOM_SIDE_COMMENT";
-                                
-                                class Values
-                                {
-                                        class side_east
-                                        {
-                                                name = "OPFOR";
-                                                value = "EAST";
-                                                default = "EAST";
-                                        };
-                                        class side_west
-                                        {
-                                                name = "BLUFOR";
-                                                value = "WEST";
-                                        };
-                                        class side_ind
-                                        {
-                                                name = "INDEPENDENT";
-                                                value = "GUER";
-                                        };
-                                };
+                                displayName = "$STR_ALIVE_OPCOM_FACTIONS";
+                                description = "$STR_ALIVE_OPCOM_FACTIONS_COMMENT";
+                                defaultValue = ["OPF_F"];
                         };
                 };
                 

@@ -109,8 +109,16 @@ switch(_operation) do {
 					//Retrieve module-object variables
                     _debug = _logic getvariable ["debug",true];
                     _type = _logic getvariable ["controltype","invasion"];
-                    _side = _logic getvariable ["side","EAST"];
+                    _factions = call compile (_logic getvariable ["factions","['OPF_F']"]);
                     _position = getposATL _logic;
+                    _side = "EAST";
+
+                    switch (getNumber(configfile >> "CfgFactionClasses" >> _factions select 0 >> "side")) do {
+                		case 0 : {_side = "EAST"};
+                		case 1 : {_side = "WEST"};
+                		case 2 : {_side = "GUER"};
+                		default {_side = "EAST"};
+            		};
                     
                     //Thank you, BIS...
                     if (_side == "GUER") then {_side = "RESISTANCE"};
@@ -123,9 +131,25 @@ switch(_operation) do {
                     if (_side == "RESISTANCE") then {_side = "GUER"};
                     {if (_x == "RESISTANCE") then {_sidesEnemy set [_foreachIndex,"GUER"]}} foreach _sidesEnemy;
                     {if (_x == "RESISTANCE") then {_sidesFriendly set [_foreachIndex,"GUER"]}} foreach _sidesFriendly;
+                    
+                    //Get Data from other modules! Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
+                    private ["_objectives"];
+                    _objectives = [];
+                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
+						private ["_obj"];
+                        
+                        //waituntil {
+							/*sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;*/ 
+							//_obj = nil; 
+							_obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
+							//(!(isnil "_obj") && {count _obj > 0})
+						//};
+                        _objectives = _objectives + _obj;
+                    };
 
 					//Finally
 					[_handler, "side",_side] call ALiVE_fnc_HashSet;
+                    [_handler, "factions",_factions] call ALiVE_fnc_HashSet;
                     [_handler, "sidesenemy",_sidesEnemy] call ALiVE_fnc_HashSet;
                     [_handler, "sidesfriendly",_sidesFriendly] call ALiVE_fnc_HashSet;
                     [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
@@ -149,22 +173,6 @@ switch(_operation) do {
 					/*
 					CONTROLLER  - coordination
 					*/
-			        
-			        //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
-                    private ["_objectives"];
-                    _objectives = [];
-
-                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
-						private ["_obj"];
-                        
-                        //waituntil {
-							/*sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;*/ 
-							//_obj = nil; 
-							_obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; 
-							//(!(isnil "_obj") && {count _obj > 0})
-						//};
-                        _objectives = _objectives + _obj;
-                    };
                     
                     //wait random time to ensure opcoms analysis doesnt run at the same time
                     sleep random(25);
@@ -193,9 +201,6 @@ switch(_operation) do {
                 VIEW - purely visual
                 */
                 
-                /*
-                CONTROLLER  - coordination
-                */
         };
         case "createhashobject": {                
                 if (isServer) then {
@@ -424,7 +429,13 @@ switch(_operation) do {
             	_objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
                 _pending_orders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
                 _size_reserve = [_logic,"sectionsamount_reserve",1] call ALiVE_fnc_HashGet;
-                _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
+                _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
+                //_profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
+                
+                _profileIDs = [];
+                {
+                    _profileIDs = _profileIDs + ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler);
+                } foreach _factions;
             
             {
                 _objective = _x;
@@ -804,6 +815,7 @@ switch(_operation) do {
             _type = _args select 2;
             
             _side = [_logic,"side"] call ALiVE_fnc_Hashget;
+            _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
             _sides = [_logic,"sidesenemy",["EAST"]] call ALiVE_fnc_HashGet;
             _knownE = [_logic,"knownentities",[]] call ALiVE_fnc_HashGet;
             _attackedE = [_logic,"attackedentities",[]] call ALiVE_fnc_HashGet;
@@ -921,8 +933,13 @@ switch(_operation) do {
             
             _artilleryClasses = ["B_MBT_01_arty_F","B_MBT_01_mlrs_F","O_MBT_02_arty_F"];
             _AAAClasses = ["O_APC_Tracked_02_AA_F","B_APC_Tracked_01_AA_F"];
+            _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
             
-            _profileIDs = [ALIVE_profileHandler, "getProfilesBySide",[_logic,"side"] call ALiVE_fnc_HashGet] call ALIVE_fnc_profileHandler;
+            _profileIDs = [];
+            {
+                _profileIDs = _profileIDs + ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler);
+            } foreach _factions;
+            
             _inf = [];
             _mot = [];
             _AAA = [];

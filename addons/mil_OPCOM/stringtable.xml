@@ -26,4 +26,10 @@
 <Key ID="STR_ALIVE_OPCOM_SIDE_COMMENT">
 	<English>OPCOMs side</English>
 </Key>
+<Key ID="STR_ALIVE_OPCOM_FACTIONS">
+	<English>Factions:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_FACTIONS_COMMENT">
+	<English>OPCOMs factions f.e. ["BLU_F","BLU_G_F"]. Only use factions of one side!</English>
+</Key>
 </Container></Package></Project>
