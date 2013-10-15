@@ -33,12 +33,16 @@ _vehicleClass = _profileVehicle select 2 select 11; //[_profileVehicle, "vehicle
 _vehicleAssignments = _profileVehicle select 2 select 7; //[_profileVehicle, "vehicleAssignments"] call ALIVE_fnc_hashGet;
 
 // instantiate static vehicle position data
+/*
 if(isNil "ALIVE_vehiclePositions") then {
 	[] call ALIVE_fnc_staticVehicleEmptyPositionData;
 };
+*/
 
 // prepare data
-_emptyPositionData = [ALIVE_vehiclePositions, _vehicleClass] call ALIVE_fnc_hashGet;
+_emptyPositionData = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions; //[ALIVE_vehiclePositions, _vehicleClass] call ALIVE_fnc_hashGet;
+
+["EMPTY POS DATA: %1",_emptyPositionData] call ALIVE_fnc_dump;
 
 // if the vehicle already has assignments
 if(count (_vehicleAssignments select 1) > 0) then {

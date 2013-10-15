@@ -425,11 +425,11 @@ switch(_operation) do {
 						_direction = direction _x;
 						_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
 						if(random 1 > 0.8) then {
-							[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+							[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
 							_countProfiles = _countProfiles + 1;
 							_countUncrewedHelis =_countUncrewedHelis + 1;
 						}else{
-							[_vehicleClass,_side,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
+							[_vehicleClass,_side,_faction,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
 							_countProfiles = _countProfiles + 2;
 							_countCrewedHelis = _countCrewedHelis + 1;
 						};
@@ -467,7 +467,7 @@ switch(_operation) do {
 							_direction = direction _x;
 							_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
 							if(random 1 > 0.6) then {
-								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+								[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
 								_countProfiles = _countProfiles + 1;
 								_countAirUnits = _countAirUnits + 1;
 							};
@@ -534,7 +534,7 @@ switch(_operation) do {
 							_direction = _x select 1;
 							_vehicleClass = _landClasses call BIS_fnc_selectRandom;
 							if(random 1 < _parkingChance) then {
-								[_vehicleClass,_side,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+								[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
 								_countProfiles = _countProfiles + 1;
 								_countLandUnits = _countLandUnits + 1;
 							};

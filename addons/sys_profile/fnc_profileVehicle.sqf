@@ -225,6 +225,7 @@ switch(_operation) do {
 					[_logic,"despawnPosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 20
 					[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 21
 					[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 22
+					[_logic,"faction",""] call ALIVE_fnc_hashSet; // select 2 select 23
                 };
 
                 /*
@@ -268,6 +269,12 @@ switch(_operation) do {
 						[_logic,"side",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"side"] call ALIVE_fnc_hashGet;
+        };
+		case "faction": {
+				if(typeName _args == "STRING") then {
+						[_logic,"faction",_args] call ALIVE_fnc_hashSet;
+                };
+				_result = [_logic,"faction"] call ALIVE_fnc_hashGet;
         };
 		case "objectType": {
 				if(typeName _args == "STRING") then {

@@ -27,7 +27,8 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_groupClass","_position","_direction","_spawnGoodPosition","_config","_groupName","_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
+private ["_groupClass","_position","_direction","_spawnGoodPosition","_config","_groupName","_groupSide","_groupFaction",
+"_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
 
 _groupClass = _this select 0;
 _position = _this select 1;
@@ -49,6 +50,7 @@ if(count _config > 0) then {
 
 	_groupName = getText(_config >> "name");
 	_groupSide = getNumber(_config >> "side");
+	_groupFaction = getText(_config >> "faction");
 	_groupUnits = [];
 	_groupVehicles = [];
 
@@ -90,6 +92,7 @@ if(count _config > 0) then {
 	[_profileEntity, "profileID", format["%1-%2",_prefix,_entityID]] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+	[_profileEntity, "faction", _groupFaction] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "objectType", _groupClass] call ALIVE_fnc_profileEntity;
 
 	if!(_spawnGoodPosition) then {
@@ -103,9 +106,11 @@ if(count _config > 0) then {
 	// if there are vehicles for this group
 
 	// instantiate static vehicle position data
+	/*
 	if(isNil "ALIVE_vehiclePositions") then {
 		[] call ALIVE_fnc_staticVehicleEmptyPositionData;
 	};
+	*/
 
 	private ["_vehicleID","_vehicleClass","_vehicleRank","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
 
@@ -128,6 +133,7 @@ if(count _config > 0) then {
 		[_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "direction", 0] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
+		[_profileVehicle, "faction", _groupFaction] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
 		
@@ -145,7 +151,7 @@ if(count _config > 0) then {
 		// create crew members for the vehicle
 		
 		_crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
-		_vehiclePositions = [ALIVE_vehiclePositions,_vehicleClass] call ALIVE_fnc_hashGet;
+		_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions; //[ALIVE_vehiclePositions,_vehicleClass] call ALIVE_fnc_hashGet;
 		_countCrewPositions = 0;
 		
 		//["VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;

@@ -29,15 +29,16 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleClass","_side","_rank","_direction","_spawnGoodPosition","_position","_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
+private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_position","_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
 
 _vehicleClass = _this select 0;
 _side = _this select 1;
-_rank = _this select 2;
-_position = _this select 3;
-_direction = if(count _this > 4) then {_this select 4} else {0};
-_spawnGoodPosition = if(count _this > 5) then {_this select 5} else {true};
-_prefix = if(count _this > 6) then {_this select 6} else {""};
+_faction = _this select 2;
+_rank = _this select 3;
+_position = _this select 4;
+_direction = if(count _this > 5) then {_this select 5} else {0};
+_spawnGoodPosition = if(count _this > 6) then {_this select 6} else {true};
+_prefix = if(count _this > 7) then {_this select 7} else {""};
 
 // get counts of current profiles
 
@@ -56,6 +57,7 @@ _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity, "profileID", format["%1-%2",_prefix,_entityID]] call ALIVE_fnc_profileEntity;
 [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
 [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+[_profileEntity, "faction", _faction] call ALIVE_fnc_profileEntity;
 
 if!(_spawnGoodPosition) then {
 	[_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
@@ -66,9 +68,11 @@ _groupProfiles set [count _groupProfiles, _profileEntity];
 
 
 // instantiate static vehicle position data
+/*
 if(isNil "ALIVE_vehiclePositions") then {
 	[] call ALIVE_fnc_staticVehicleEmptyPositionData;
 };
+*/
 
 private ["_vehicleID","_vehicleClass","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
 
@@ -83,6 +87,7 @@ _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "direction", _direction] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
+[_profileVehicle, "faction", _faction] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
 
@@ -100,7 +105,7 @@ _groupProfiles set [count _groupProfiles, _profileVehicle];
 // create crew members for the vehicle
 
 _crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
-_vehiclePositions = [ALIVE_vehiclePositions,_vehicleClass] call ALIVE_fnc_hashGet;
+_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions; //[ALIVE_vehiclePositions,_vehicleClass] call ALIVE_fnc_hashGet;
 _countCrewPositions = 0;
 
 // count all non cargo positions

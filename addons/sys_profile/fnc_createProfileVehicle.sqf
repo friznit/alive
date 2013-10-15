@@ -29,14 +29,15 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleClass","_side","_direction","_spawnGoodPosition","_position","_vehicleID","_profileVehicle"];
+private ["_vehicleClass","_side","_faction","_direction","_spawnGoodPosition","_position","_vehicleID","_profileVehicle"];
 
 _vehicleClass = _this select 0;
 _side = _this select 1;
-_position = _this select 2;
-_direction = if(count _this > 3) then {_this select 3} else {0};
-_spawnGoodPosition = if(count _this > 4) then {_this select 4} else {true};
-_prefix = if(count _this > 5) then {_this select 5} else {""};
+_faction = _this select 2;
+_position = _this select 3;
+_direction = if(count _this > 4) then {_this select 4} else {0};
+_spawnGoodPosition = if(count _this > 5) then {_this select 5} else {true};
+_prefix = if(count _this > 6) then {_this select 6} else {""};
 
 // get counts of current profiles
 
@@ -53,6 +54,7 @@ _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "direction", _direction] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
+[_profileVehicle, "faction", _faction] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
 
