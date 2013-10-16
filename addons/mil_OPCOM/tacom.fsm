@@ -74,8 +74,8 @@ link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,26};
 link32[] = {26,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-544.663452,93.571182,401.092377,-333.755707,654,753,1};
-window[] = {0,-1,-1,-1,-1,1004,176,1799,120,1,671};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-501.434662,50.342316,351.319702,-283.983124,654,753,1};
+window[] = {0,-1,-1,-1,-1,994,110,1733,110,1,671};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -128,7 +128,7 @@ class FSM
        "                        _prof = [ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler;" \n
        "                        [_prof, ""addActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",200]] call ALIVE_fnc_profileEntity;" \n
        "} foreach _profIDs;" \n
-       "player sidechat format[""%1 profiles for side %2"",count _profIDs,([_OPCOM_HANDLER,""side""] call ALiVE_fnc_HashGet)];"/*%FSM</STATEINIT""">*/;
+       "player sidechat format[""%1 profiles for %2"",count _profIDs,_factions];"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

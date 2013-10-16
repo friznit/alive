@@ -330,6 +330,7 @@ switch(_operation) do {
 
                         _startpos = [_logic,"position"] call ALiVE_fnc_HashGet;
                         _side = [_logic,"side"] call ALiVE_fnc_HashGet;
+                        _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
                         _debug = [_logic,"debug",false] call ALiVE_fnc_HashGet;
 
 						_objectives_unsorted = [];
@@ -358,10 +359,11 @@ switch(_operation) do {
 						
 						//Create objectives for OPCOM and set it on the OPCOM Handler 
 						//GetObjectivesByPriority
+                        _OID = (count (missionNameSpace getvariable ["OPCOM_instances",[]]))-1;
 						{
 									_target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
 						
-									_id = format["OPCOM_objective_%1_%2",_side,_foreachIndex]; [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
+									_id = format["OPCOM_%1_objective_%2",_OID,_foreachIndex]; [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
 									_pos = _x select 0; [_target, "center",_pos] call ALIVE_fnc_HashSet;
 									_size = _x select 1; [_target, "size",_size] call ALIVE_fnc_HashSet;
 									_type = _x select 2; [_target, "type",_type] call ALIVE_fnc_HashSet;
@@ -706,18 +708,21 @@ switch(_operation) do {
 					if (_i >= (count _orders_pending)) exitwith {};
 			
 					_item = _orders_pending select _i;
-					_pos = _item select 0;
-					_profileID = _item select 1;
-					_objectiveID = _item select 2;
-					_time = _item select 3;
-					_dead = !(_ProfileID in _profiles);
-					_timeout = (time - _time) > 3600;
-			
-					if ((_dead) || {_timeout} || {_ProfileID == _ProfileIDInput}) then {
-						_orders_pending set [_i,"x"]; _orders_pending = _orders_pending - ["x"];
-                        [_logic,"pendingorders",_orders_pending] call ALiVE_fnc_HashSet;
-                        if (({_objectiveID == (_x select 2)} count (_orders_pending)) == 0) then {_synchronized = true};
-					};
+                    
+                    if (typeName _item == "ARRAY") then {
+						_pos = _item select 0;
+						_profileID = _item select 1;
+						_objectiveID = _item select 2;
+						_time = _item select 3;
+						_dead = !(_ProfileID in _profiles);
+						_timeout = (time - _time) > 3600;
+				
+						if ((_dead) || {_timeout} || {_ProfileID == _ProfileIDInput}) then {
+							_orders_pending set [_i,"x"]; _orders_pending = _orders_pending - ["x"];
+	                        [_logic,"pendingorders",_orders_pending] call ALiVE_fnc_HashSet;
+	                        if (({_objectiveID == (_x select 2)} count (_orders_pending)) == 0) then {_synchronized = true};
+						};
+                    };
 				};
 				_result = _synchronized;
         };
