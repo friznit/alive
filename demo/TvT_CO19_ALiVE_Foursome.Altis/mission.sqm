@@ -64,9 +64,9 @@ class Mission
 		"cba_xeh",
 		"alive_civ_strategic",
 		"alive_sys_player",
-		"alive_mil_intelligence",
 		"alive_sys_gc",
 		"alive_mil_opcom",
+		"alive_mil_intelligence",
 		"A3_Weapons_F_Ammoboxes",
 		"a3_weapons_f_beta_ammoboxes",
 		"a3_weapons_f_gamma_ammoboxes",
@@ -92,7 +92,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.91";
+		briefingName="ALiVE Showcase - Foursome v0.91.1";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -235,7 +235,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=1;
-					synchronizations[]={6,10,11,12,9};
+					synchronizations[]={6,9,10,11,8};
 				};
 			};
 		};
@@ -313,7 +313,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=2;
-					synchronizations[]={11,12};
+					synchronizations[]={10,11};
 				};
 			};
 		};
@@ -391,7 +391,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=3;
-					synchronizations[]={10,12};
+					synchronizations[]={9,11};
 				};
 			};
 		};
@@ -499,7 +499,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=4;
-					synchronizations[]={6,12,9};
+					synchronizations[]={6,11,8};
 				};
 			};
 		};
@@ -691,7 +691,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=5;
-					synchronizations[]={12,9};
+					synchronizations[]={11,8};
 				};
 			};
 		};
@@ -961,7 +961,7 @@ class Mission
 						items=4;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sys_profile";
 							typeName="debug";
 						};
@@ -1220,42 +1220,6 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={14894.116,17.901176,16647.377};
-					class args
-					{
-						items=2;
-						class Item0
-						{
-							value="false";
-							parentCls="ALiVE_mil_intelligence";
-							typeName="debug";
-						};
-						class Item1
-						{
-							value="0.2";
-							parentCls="ALiVE_mil_intelligence";
-							typeName="intelChance";
-						};
-					};
-					id=35;
-					side="LOGIC";
-					vehicle="ALiVE_mil_intelligence";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=8;
-					synchronizations[]={8,12};
-				};
-			};
-		};
-		class Item21
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
 					position[]={15714.45,17.668348,17148.297};
 					class args
 					{
@@ -1279,7 +1243,7 @@ class Mission
 							typeName="ALiVE_GC_INDIVIDUALTYPES";
 						};
 					};
-					id=36;
+					id=35;
 					side="LOGIC";
 					vehicle="ALiVE_sys_GC";
 					leader=1;
@@ -1288,7 +1252,7 @@ class Mission
 				};
 			};
 		};
-		class Item22
+		class Item21
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1319,18 +1283,18 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=37;
+					id=36;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=9;
+					syncId=8;
 					synchronizations[]={5,1,4};
 				};
 			};
 		};
-		class Item23
+		class Item22
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1361,18 +1325,18 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=38;
+					id=37;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=10;
+					syncId=9;
 					synchronizations[]={3,1};
 				};
 			};
 		};
-		class Item24
+		class Item23
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1403,18 +1367,18 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=39;
+					id=38;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=11;
+					syncId=10;
 					synchronizations[]={2,1};
 				};
 			};
 		};
-		class Item25
+		class Item24
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1445,14 +1409,50 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=40;
+					id=39;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
+					syncId=11;
+					synchronizations[]={2,1,3,4,5,12};
+				};
+			};
+		};
+		class Item25
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={15141.168,17.938866,16647.816};
+					class args
+					{
+						items=2;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_mil_intelligence";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="0.1";
+							parentCls="ALiVE_mil_intelligence";
+							typeName="intelChance";
+						};
+					};
+					id=40;
+					side="LOGIC";
+					vehicle="ALiVE_mil_intelligence";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
 					syncId=12;
-					synchronizations[]={2,1,3,4,5,8};
+					synchronizations[]={11};
 				};
 			};
 		};
