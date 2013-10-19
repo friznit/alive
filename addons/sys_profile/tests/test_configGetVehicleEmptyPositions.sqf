@@ -27,14 +27,14 @@ ASSERT_TRUE(_result,str _data + " == " + str _test);
 
 _type = "B_MRAP_01_gmg_F";
 _test = [1,1,0,0,2];
-STAT("Test Mortar");
+STAT("Test MRAP");
 _data = [_type] call ALIVE_fnc_configGetVehicleEmptyPositions;
 _result = [_data, _test] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,str _data + " == " + str _test);
 
 _type = "B_Truck_01_transport_F";
 _test = [1,0,0,0,17];
-STAT("Test Mortar");
+STAT("Test Truck");
 _data = [_type] call ALIVE_fnc_configGetVehicleEmptyPositions;
 _result = [_data, _test] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,str _data + " == " + str _test);

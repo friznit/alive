@@ -15,7 +15,7 @@ Returns:
 Examples:
 (begin example)
 // inspect config class
-["CfgGroups"] call ALIVE_fnc_inspectConfigRecurse;
+["CfgVehicles"] call ALIVE_fnc_inspectConfigRecurse;
 (end)
 
 See Also:

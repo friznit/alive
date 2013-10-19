@@ -26,7 +26,7 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_vehicle","_positions","_class","_turretEmptyCount","_root"];
+private ["_vehicle","_positions","_class","_turretEmptyCount","_findRecurse","_turrets"];
 	
 _vehicle = [_this, 0, "", [""]] call BIS_fnc_param;
 
@@ -38,29 +38,51 @@ _positions set [0, getNumber(_class >> "hasDriver")];
 // get turrets for this class ignoring gunner and commander turrets
 _turretEmptyCount = 0;
 
-_root = (configFile >> "CfgVehicles" >> _vehicle >> "turrets");
-for "_i" from 0 to count _root -1 do {
-	private["_class"];
-	_class = _root select _i;
-
-	if (isClass _class) then {
-		if (getNumber(_class >> "hasGunner") == 1) then {
-			if(getNumber(_class >> "primaryGunner") == 1) then {
+_findRecurse = {
+	private ["_root","_turret","_path","_currentPath","_hasGunner","_primaryGunner","_primaryObserver"];
+	
+	_root = (_this select 0);
+	_path = +(_this select 1);
+	
+	for "_i" from 0 to count _root -1 do {
+	
+		_turret = _root select _i;
+		
+		if (isClass _turret) then {
+			_currentPath = _path + [_i];
+			
+			_primaryGunner = false;
+			_primaryObserver = false;
+			
+			if(getNumber(_turret >> "primaryGunner") == 1) then {
+				_primaryGunner = true;
 				_positions set [1, 1];
-			} else {
-				if(getNumber(_class >> "primaryObserver") == 1) then {
-					_positions set [2, 1];
-				} else {
-					_turretEmptyCount = _turretEmptyCount +1;
-				};
+			};
+			
+			if(getNumber(_turret >> "primaryObserver") == 1) then {
+				_primaryObserver = true;
+				_positions set [2, 1];
+			};
+			
+			if(!(_primaryGunner) && !(_primaryObserver)) then {
+				_turretEmptyCount = _turretEmptyCount +1;
+			};
+			
+			//["PG: %1 PO: %2", _primaryGunner,_primaryObserver] call ALIVE_fnc_dump;
+			
+			_turret = _turret >> "turrets";
+			
+			if (isClass _turret) then {
+				[_turret, _currentPath] call _findRecurse;
 			};
 		};
 	};
 };
 
-if(getNumber(configFile >> "CfgVehicles" >> _vehicle >> "CommanderOptics" >> "primaryObserver") == 1) then {
-	_positions set [2, 1];
-};
+_turrets = (configFile >> "CfgVehicles" >> _vehicle >> "turrets");
+
+[_turrets, []] call _findRecurse;
+
 
 _positions set [3, _turretEmptyCount];
 _positions set [4, getNumber(_class >> "transportSoldier")];
