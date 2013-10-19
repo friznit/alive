@@ -105,13 +105,6 @@ if(count _config > 0) then {
 
 	// if there are vehicles for this group
 
-	// instantiate static vehicle position data
-	/*
-	if(isNil "ALIVE_vehiclePositions") then {
-		[] call ALIVE_fnc_staticVehicleEmptyPositionData;
-	};
-	*/
-
 	private ["_vehicleID","_vehicleClass","_vehicleRank","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
 
 	{
@@ -151,7 +144,7 @@ if(count _config > 0) then {
 		// create crew members for the vehicle
 		
 		_crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
-		_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions; //[ALIVE_vehiclePositions,_vehicleClass] call ALIVE_fnc_hashGet;
+		_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
 		_countCrewPositions = 0;
 		
 		//["VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;

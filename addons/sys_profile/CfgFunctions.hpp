@@ -291,11 +291,6 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGenerateEmptyPositionData.sqf";
 				recompile = 1;
 			};
-			class staticVehicleEmptyPositionData {
-				description = "staticVehicleEmptyPositionData";
-				file = "\x\alive\addons\sys_profile\fnc_staticVehicleEmptyPositionData.sqf";
-				recompile = 1;
-			};
 			class vehicleAssignGroup {
 				description = "vehicleAssignGroup";
 				file = "\x\alive\addons\sys_profile\fnc_vehicleAssignGroup.sqf";

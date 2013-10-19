@@ -66,14 +66,6 @@ if!(_spawnGoodPosition) then {
 _groupProfiles set [count _groupProfiles, _profileEntity];
 [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
-
-// instantiate static vehicle position data
-/*
-if(isNil "ALIVE_vehiclePositions") then {
-	[] call ALIVE_fnc_staticVehicleEmptyPositionData;
-};
-*/
-
 private ["_vehicleID","_vehicleClass","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
 
 _vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
@@ -105,7 +97,7 @@ _groupProfiles set [count _groupProfiles, _profileVehicle];
 // create crew members for the vehicle
 
 _crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
-_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions; //[ALIVE_vehiclePositions,_vehicleClass] call ALIVE_fnc_hashGet;
+_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
 _countCrewPositions = 0;
 
 // count all non cargo positions

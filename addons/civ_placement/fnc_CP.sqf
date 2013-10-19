@@ -1,11 +1,11 @@
-//#define DEBUG_MPDE_FULL
-#include <\x\alive\addons\mil_placement\script_component.hpp>
-SCRIPT(MP);
+//#define DEBUG_MODE_FULL
+#include <\x\alive\addons\civ_placement\script_component.hpp>
+SCRIPT(CP);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_MP
+Function: ALIVE_fnc_CP
 Description:
-Military objectives 
+Civitary objectives 
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -23,10 +23,9 @@ Array - state - Save and restore module state
 Array - faction - Faction associated with module
 
 Examples:
-[_logic, "faction", "OPF_F"] call ALiVE_fnc_MP;
 
 See Also:
-- <ALIVE_fnc_MPInit>
+- <ALIVE_fnc_CPInit>
 
 Author:
 Wolffy
@@ -34,26 +33,29 @@ ARJay
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS ALIVE_fnc_baseClass
-#define MAINCLASS ALIVE_fnc_MP
-#define MTEMPLATE "ALiVE_MP_%1"
+#define MAINCLASS ALIVE_fnc_CP
+#define MTEMPLATE "ALiVE_CP_%1"
 #define DEFAULT_SIZE "100"
-#define DEFAULT_TYPE QUOTE(RANDOM)
-#define DEFAULT_FACTION QUOTE(OPF_F)
-#define DEFAULT_TAOR []
-#define DEFAULT_BLACKLIST []
 #define DEFAULT_WITH_PLACEMENT true
 #define DEFAULT_OBJECTIVES []
 #define DEFAULT_OBJECTIVES_HQ []
-#define DEFAULT_OBJECTIVES_AIR []
-#define DEFAULT_OBJECTIVES_HELI []
-#define DEFAULT_OBJECTIVES_VEHICLE []
+#define DEFAULT_OBJECTIVES_POWER []
+#define DEFAULT_OBJECTIVES_COMMS []
+#define DEFAULT_OBJECTIVES_MARINE []
+#define DEFAULT_OBJECTIVES_RAIL []
+#define DEFAULT_OBJECTIVES_FUEL []
+#define DEFAULT_OBJECTIVES_CONSTRUCTION []
+#define DEFAULT_OBJECTIVES_SETTLEMENT [] 
+#define DEFAULT_TAOR []
+#define DEFAULT_BLACKLIST []
 #define DEFAULT_SIZE_FILTER "0"
 #define DEFAULT_PRIORITY_FILTER "0"
-#define DEFAULT_AMBIENT_VEHICLE_AMOUNT "1"
+#define DEFAULT_TYPE QUOTE(RANDOM)
+#define DEFAULT_FACTION QUOTE(OPF_F)
 
 private ["_logic","_operation","_args","_result"];
 
-TRACE_1("MP - input",_this);
+TRACE_1("CP - input",_this);
 
 _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
@@ -112,7 +114,7 @@ switch(_operation) do {
 				[_logic, _x, [_args, _x] call ALIVE_fnc_hashGet] call MAINCLASS;
 			} forEach _simple_operations;
 		};		
-	};
+	};        
 	// Determine size of enemy force - valid values are: BN, CY and PL
 	case "size": {
 		_result = [_logic,_operation,_args,DEFAULT_SIZE] call ALIVE_fnc_OOsimpleOperation;
@@ -129,24 +131,6 @@ switch(_operation) do {
 	// Determine force faction
 	case "faction": {
 		_result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call ALIVE_fnc_OOsimpleOperation;
-	};
-	// Return the Ambient Vehicle Amount
-	case "ambientVehicleAmount": {
-		_result = [_logic,_operation,_args,DEFAULT_AMBIENT_VEHICLE_AMOUNT] call ALIVE_fnc_OOsimpleOperation;
-	};
-	case "placeHelis": {
-		if (typeName _args == "BOOL") then {
-			_logic setVariable ["placeHelis", _args];
-		} else {
-			_args = _logic getVariable ["placeHelis", false];
-		};
-		if (typeName _args == "STRING") then {
-			if(_args == "true") then {_args = true;} else {_args = false;};
-			_logic setVariable ["placeHelis", _args];
-		};
-		ASSERT_TRUE(typeName _args == "BOOL",str _args);
-
-		_result = _args;
 	};
 	// Return TAOR marker
 	case "taor": {
@@ -206,25 +190,42 @@ switch(_operation) do {
 	case "objectivesHQ": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_HQ] call ALIVE_fnc_OOsimpleOperation;
 	};
-	// Return the AIR objectives as an array of clusters
-	case "objectivesAir": {
-		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_AIR] call ALIVE_fnc_OOsimpleOperation;
+	// Return the Power objectives as an array of clusters
+	case "objectivesPower": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_POWER] call ALIVE_fnc_OOsimpleOperation;
 	};
-	// Return the Heli objectives as an array of clusters
-	case "objectivesHeli": {
-		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_HELI] call ALIVE_fnc_OOsimpleOperation;
+	// Return the Comms objectives as an array of clusters
+	case "objectivesComms": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_COMMS] call ALIVE_fnc_OOsimpleOperation;
 	};
-	// Return the Vehicle objectives as an array of clusters
-	case "objectivesVehicle": {
-		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_VEHICLE] call ALIVE_fnc_OOsimpleOperation;
+	// Return the MARINE objectives as an array of clusters
+	case "objectivesMarine": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_MARINE] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Return the RAIL objectives as an array of clusters
+	case "objectivesRail": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_RAIL] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Return the FUEL objectives as an array of clusters
+	case "objectivesFuel": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_FUEL] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Return the CONSTRUCTION objectives as an array of clusters
+	case "objectivesConstruction": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_CONSTRUCTION] call ALIVE_fnc_OOsimpleOperation;
+	};
+	// Return the SETTLEMENT objectives as an array of clusters
+	case "objectivesSettlement": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_SETTLEMENT] call ALIVE_fnc_OOsimpleOperation;
 	};
 	// Main process
 	case "init": {
         if (isServer) then {
+						
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
-			_logic setVariable ["moduleType", "ALIVE_MP"];
+			_logic setVariable ["moduleType", "ALIVE_CP"];
 			_logic setVariable ["startupComplete", false];
 			TRACE_1("After module init",_logic);
 
@@ -234,7 +235,7 @@ switch(_operation) do {
 			[_logic,"register"] call MAINCLASS;			
         } else {
             {deleteMarkerLocal _x} foreach (call compile (_logic getVariable ["taor", DEFAULT_TAOR]));
-            {deleteMarkerLocal _x} foreach (call compile (_logic getVariable ["blacklist", DEFAULT_TAOR]));
+            {deleteMarkerLocal _x} foreach (call compile (_logic getVariable ["blacklist", DEFAULT_TAOR]));            
         };
 	};
 	case "register": {
@@ -242,44 +243,36 @@ switch(_operation) do {
 			private["_registration","_moduleType"];
 		
 			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["ALIVE_profileHandler"]];
+			_registration = [_logic,_moduleType];
 	
 			if(isNil "ALIVE_registry") then {
 				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;
+				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
 			};
 
 			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
 	};
-	// Main process
+	// Static Init
 	case "start": {
         if (isServer) then {
 		
 			private ["_debug","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
-			
+						
 			_debug = [_logic, "debug"] call MAINCLASS;
 			
-			
-			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-				["ALIVE MP - Startup"] call ALIVE_fnc_dump;
+				["ALIVE CP - Startup"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
-			// DEBUG -------------------------------------------------------------------------------------
 			
-								
-			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
+			
+			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
 				_worldName = toLower(worldName);			
-				_file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];				
+				_file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
-				ALIVE_loadedMilClusters = true;
-				
-				// instantiate static vehicle position data
-				if(isNil "ALIVE_groupConfig") then {
-					[] call ALIVE_fnc_groupGenerateConfigData;
-				};
+				ALIVE_loadedCIVClusters = true;
 			};
 			
 			_placement = [_logic, "withPlacement"] call MAINCLASS;
@@ -289,27 +282,26 @@ switch(_operation) do {
 			_priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
 			
 			
-			_clusters = ALIVE_clustersMil select 2;
+			_clusters = ALIVE_clustersCiv select 2;
 			_clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			// cull clusters outside of TAOR marker if defined
 			_clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			// cull clusters inside of Blacklist marker if defined
 			_clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
+			///*
 			// switch on debug for all clusters if debug on
 			{
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
 			} forEach _clusters;
-			*/
+			//*/
 			// store the clusters on the logic
 			[_logic, "objectives", _clusters] call MAINCLASS;
 			
 			
-			private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
+			private ["_HQClusters","_powerClusters","_commsClusters","_marineClusters","_railClusters","_fuelClusters","_constructionClusters"];
 			
-			waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")}};
-            
-			_HQClusters = ALIVE_clustersMilHQ select 2;
+			
+			_HQClusters = ALIVE_clustersCivHQ select 2;
 			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -318,70 +310,134 @@ switch(_operation) do {
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
 			} forEach _HQClusters;
 			*/
-			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;		
+			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;			
 			
 			
-			_airClusters = ALIVE_clustersMilAir select 2;
-			_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+			_powerClusters = ALIVE_clustersCivPower select 2;
+			_powerClusters = [_powerClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_powerClusters = [_powerClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+			_powerClusters = [_powerClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
 			/*
 			{
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _airClusters;
+			} forEach _powerClusters;
 			*/
-			[_logic, "objectivesAir", _airClusters] call MAINCLASS;
+			[_logic, "objectivesPower", _powerClusters] call MAINCLASS;
 			
 			
-			_heliClusters = ALIVE_clustersMilHeli select 2;
-			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
-			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			///*
+			_commsClusters = ALIVE_clustersCivComms select 2;
+			_commsClusters = [_commsClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_commsClusters = [_commsClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+			_commsClusters = [_commsClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+			/*
 			{
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _heliClusters;
-			//*/
-			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
+			} forEach _commsClusters;
+			*/
+			[_logic, "objectivesComms", _commsClusters] call MAINCLASS;
+			
+			
+			_marineClusters = ALIVE_clustersCivMarine select 2;
+			_marineClusters = [_marineClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_marineClusters = [_marineClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+			_marineClusters = [_marineClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+			/*
+			{
+				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+			} forEach _marineClusters;
+			*/
+			[_logic, "objectivesMarine", _marineClusters] call MAINCLASS;
+			
+			
+			_railClusters = ALIVE_clustersCivMarine select 2;
+			_railClusters = [_railClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_railClusters = [_railClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+			_railClusters = [_railClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+			/*
+			{
+				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+			} forEach _railClusters;
+			*/
+			[_logic, "objectivesRail", _railClusters] call MAINCLASS;
+			
+			
+			_fuelClusters = ALIVE_clustersCivMarine select 2;
+			_fuelClusters = [_fuelClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_fuelClusters = [_fuelClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+			_fuelClusters = [_fuelClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+			/*
+			{
+				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+			} forEach _fuelClusters;
+			*/
+			[_logic, "objectivesFuel", _fuelClusters] call MAINCLASS;
+			
+			
+			_constructionClusters = ALIVE_clustersCivConstruction select 2;
+			_constructionClusters = [_constructionClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_constructionClusters = [_constructionClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+			_constructionClusters = [_constructionClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+			/*
+			{
+				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+			} forEach _constructionClusters;
+			*/
+			[_logic, "objectivesConstruction", _constructionClusters] call MAINCLASS;
+			
+			
+			_settlementClusters = ALIVE_clustersCivSettlement select 2;
+			_settlementClusters = [_settlementClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+			_settlementClusters = [_settlementClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+			_settlementClusters = [_settlementClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+			/*
+			{
+				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+			} forEach _settlementClusters;
+			*/
+			[_logic, "objectivesSettlement", _settlementClusters] call MAINCLASS;
 			
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP - Startup completed"] call ALIVE_fnc_dump;
-				["ALIVE MP - Count clusters %1",count _clusters] call ALIVE_fnc_dump;
-				["ALIVE MP - Count air clusters %1",count _airClusters] call ALIVE_fnc_dump;
-				["ALIVE MP - Count heli clusters %1",count _heliClusters] call ALIVE_fnc_dump;		
+				["ALIVE CP - Startup completed"] call ALIVE_fnc_dump;
+				["ALIVE CP - Count clusters %1",count _clusters] call ALIVE_fnc_dump;
+				["ALIVE CP - Count power clusters %1",count _powerClusters] call ALIVE_fnc_dump;
+				["ALIVE CP - Count comms clusters %1",count _commsClusters] call ALIVE_fnc_dump;
+				["ALIVE CP - Count marine clusters %1",count _marineClusters] call ALIVE_fnc_dump;		
+				["ALIVE CP - Count rail clusters %1",count _railClusters] call ALIVE_fnc_dump;		
+				["ALIVE CP - Count fuel clusters %1",count _fuelClusters] call ALIVE_fnc_dump;		
+				["ALIVE CP - Count construction clusters %1",count _constructionClusters] call ALIVE_fnc_dump;		
+				["ALIVE CP - Count settlement clusters %1",count _settlementClusters] call ALIVE_fnc_dump;
 				[] call ALIVE_fnc_timer;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
+			
 			
 			if(_placement) then {
 				if(count _clusters > 0) then {
 					// start placement
 					[_logic, "placement"] call MAINCLASS;
 				}else{
-					["ALIVE MP - Warning no usuable locations found for placement, you need to inlcude military locations within the TAOR marker"] call ALIVE_fnc_dumpR;
+					["ALIVE CP - Warning no usuable locations found for placement, you need to inlcude civilian locations within the TAOR marker"] call ALIVE_fnc_dumpR;
 					// set module as started
 					_logic setVariable ["startupComplete", true];
 				};
 			}else{
-				
-				// DEBUG -------------------------------------------------------------------------------------
-				if(_debug) then { ["ALIVE MP - Objectives Only"] call ALIVE_fnc_dump; };
-				// DEBUG -------------------------------------------------------------------------------------
-				
 				_logic setVariable ["startupComplete", true];
 			};
+			
         };
 	};
 	// Placement
-	case "placement": {
+	case "placement": {		
         if (isServer) then {
-		
-			private ["_debug","_clusters","_cluster","_HQClusters","_airClusters","_heliClusters","_vehicleClusters",
-			"_countHQClusters","_countAirClusters","_countHeliClusters","_size","_type","_faction","_ambientVehicleAmount","_placeHelis",
-			"_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass","_position","_direction","_unitBlackist",
-			"_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node"];
+			
+			
+			private ["_debug","_clusters","_cluster","_HQClusters","_powerClusters","_commsClusters","_marineClusters","_railClusters",
+			"_fuelClusters","_constructionClusters","_settlementClusters","_countHQClusters","_countPowerClusters","_countCommsClusters",
+			"_countMarineClusters","_countRailClusters","_countFuelClusters","_countConstructionClusters","_countSettlementClusters","_size","_type",
+			"_faction","_ambientVehicleAmount","_placeHelis","_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass",
+			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node"];
             
 		
 			_debug = [_logic, "debug"] call MAINCLASS;		
@@ -389,7 +445,7 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-				["ALIVE MP - Placement"] call ALIVE_fnc_dump;
+				["ALIVE CP - Placement"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
 			// DEBUG -------------------------------------------------------------------------------------			
@@ -399,20 +455,26 @@ switch(_operation) do {
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
 			_HQClusters = [_logic, "objectivesHQ"] call MAINCLASS;
-			_airClusters = [_logic, "objectivesAir"] call MAINCLASS;
-			_heliClusters = [_logic, "objectivesHeli"] call MAINCLASS;
-			_vehicleClusters = [_logic, "objectivesVehicle"] call MAINCLASS;
+			_powerClusters = [_logic, "objectivesPower"] call MAINCLASS;
+			_commsClusters = [_logic, "objectivesComms"] call MAINCLASS;
+			_marineClusters = [_logic, "objectivesMarine"] call MAINCLASS;
+			_railClusters = [_logic, "objectivesRail"] call MAINCLASS;
+			_fuelClusters = [_logic, "objectivesFuel"] call MAINCLASS;
+			_constructionClusters = [_logic, "objectivesConstruction"] call MAINCLASS;
+			_settlementClusters = [_logic, "objectivesSettlement"] call MAINCLASS;			
 			
 			_countHQClusters = count _HQClusters;
-			_countAirClusters = count _airClusters;
-			_countHeliClusters = count _heliClusters;
-			_countVehicleClusters = count _vehicleClusters;			
+			_countPowerClusters = count _powerClusters;
+			_countCommsClusters = count _commsClusters;
+			_countMarineClusters = count _marineClusters;
+			_countRailClusters = count _railClusters;			
+			_countFuelClusters = count _fuelClusters;			
+			_countConstructionClusters = count _constructionClusters;			
+			_countSettlementClusters = count _settlementClusters;			
 			
 			_size = parseNumber([_logic, "size"] call MAINCLASS);
 			_type = [_logic, "type"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
-			_ambientVehicleAmount = parseNumber([_logic, "ambientVehicleAmount"] call MAINCLASS);
-			_placeHelis = [_logic, "placeHelis"] call MAINCLASS;
 			
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
@@ -422,7 +484,7 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - Size: %2 Type: %3 SideNum: %4 Side: %5 Faction: %6",_faction,_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;
+				["ALIVE CP [%1] - Size: %2 Type: %3 SideNum: %4 Side: %5 Faction: %6",_faction,_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------			
 			
@@ -431,158 +493,6 @@ switch(_operation) do {
 				_file = "\x\alive\addons\mil_placement\vehicles\static_vehicle_data.sqf";				
 				call compile preprocessFileLineNumbers _file;
 			};
-						
-			// Spawn helicopters on pads
-			
-			private ["_countCrewedHelis","_countUncrewedHelis"];
-			_countCrewedHelis = 0;
-			_countUncrewedHelis = 0;
-			
-			if(_placeHelis) then {
-							
-				_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;	
-				_heliClasses = _heliClasses - ALIVE_vehicleBlacklist;
-				
-				if(count _heliClasses > 0) then {
-					{
-						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
-						//[_x, "debug", true] call ALIVE_fnc_cluster;
-						{
-							_position = position _x;
-							_direction = direction _x;
-							_vehicleClass = _heliClasses call BIS_fnc_selectRandom;
-							if(random 1 > 0.8) then {
-								[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
-								_countProfiles = _countProfiles + 1;
-								_countUncrewedHelis =_countUncrewedHelis + 1;
-							}else{
-								[_vehicleClass,_side,_faction,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
-								_countProfiles = _countProfiles + 2;
-								_countCrewedHelis = _countCrewedHelis + 1;
-							};
-							
-						} forEach _nodes;				
-					} forEach _heliClusters;
-				};			
-			};
-			
-			
-			// DEBUG -------------------------------------------------------------------------------------
-			if(_debug) then {
-				["ALIVE MP [%1] - Heli units placed: crewed:%2 uncrewed:%3",_faction,_countCrewedHelis,_countUncrewedHelis] call ALIVE_fnc_dump;
-			};
-			// DEBUG -------------------------------------------------------------------------------------
-			
-			
-			// Spawn air units in hangars
-			
-			private ["_countAirUnits"];
-			_countAirUnits = 0;
-			
-			if(_ambientVehicleAmount > 0) then {
-			
-				_airClasses = [0,_faction,"Plane"] call ALiVE_fnc_findVehicleType;			
-				_airClasses = _airClasses - ALIVE_vehicleBlacklist;
-				_airClasses = _airClasses + _heliClasses;
-				
-				if(count _airClasses > 0) then {
-				
-					{
-						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
-						//[_x, "debug", true] call ALIVE_fnc_cluster;
-						{
-							_hangar = [str _x, "hangar"] call CBA_fnc_find;
-							
-							if(_hangar > 0) then {
-														
-								_position = position _x;
-								_direction = direction _x;
-								_vehicleClass = _airClasses call BIS_fnc_selectRandom;
-								if(random 1 > 0.6) then {
-									[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
-									_countProfiles = _countProfiles + 1;
-									_countAirUnits = _countAirUnits + 1;
-								};
-								
-							};
-						} forEach _nodes;				
-					} forEach _airClusters;
-				};
-			};
-			
-			
-			// DEBUG -------------------------------------------------------------------------------------
-			if(_debug) then {
-				["ALIVE MP [%1] - Air units placedin hangars: %2",_faction,_countAirUnits] call ALIVE_fnc_dump;
-			};
-			// DEBUG -------------------------------------------------------------------------------------
-					
-			
-			// Spawn land units				
-			
-			private ["_countLandUnits"];
-			_countLandUnits = 0;
-
-			if(_ambientVehicleAmount > 0) then {
-			
-				_carClasses = [0,_faction,"Car"] call ALiVE_fnc_findVehicleType;
-				_armorClasses = [0,_faction,"Tank"] call ALiVE_fnc_findVehicleType;
-				_landClasses = _carClasses + _armorClasses;
-				_landClasses = _landClasses - ALIVE_vehicleBlacklist;
-				
-				if(count _landClasses > 0) then {
-							
-					{
-						_parkingPositions = [_x, "parkingPositions"] call ALIVE_fnc_hashGet;
-						_countParkingPositions = count _parkingPositions;
-						
-						_parkingChance = 0.1 * _ambientVehicleAmount;
-						
-						if(_countParkingPositions > 50) then {
-							_parkingChance = 0.1 * _ambientVehicleAmount;
-						};
-						
-						if(_countParkingPositions > 40 && _countParkingPositions < 50) then {
-							_parkingChance = 0.2 * _ambientVehicleAmount;
-						};
-						
-						if(_countParkingPositions > 30 && _countParkingPositions < 40) then {
-							_parkingChance = 0.3 * _ambientVehicleAmount;
-						};
-						
-						if(_countParkingPositions > 20 && _countParkingPositions < 30) then {
-							_parkingChance = 0.4 * _ambientVehicleAmount;
-						};
-						
-						if(_countParkingPositions > 10 && _countParkingPositions < 20) then {
-							_parkingChance = 0.6 * _ambientVehicleAmount;
-						};
-						
-						if(_countParkingPositions > 0 && _countParkingPositions < 10) then {
-							_parkingChance = 0.7 * _ambientVehicleAmount;
-						};
-						
-						//[_x, "debug", true] call ALIVE_fnc_cluster;
-						{
-							_position = _x select 0;
-							_direction = _x select 1;
-							_vehicleClass = _landClasses call BIS_fnc_selectRandom;
-							if(random 1 < _parkingChance) then {
-								[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
-								_countProfiles = _countProfiles + 1;
-								_countLandUnits = _countLandUnits + 1;
-							};
-						} forEach _parkingPositions;				
-					} forEach _clusters;
-				};					
-			};
-			
-			
-			// DEBUG -------------------------------------------------------------------------------------
-			if(_debug) then {
-				["ALIVE MP [%1] - Ambient land units placed: %2",_faction,_countLandUnits] call ALIVE_fnc_dump;
-			};
-			// DEBUG -------------------------------------------------------------------------------------
 			
 			
 			// Spawn the main force
@@ -593,7 +503,7 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - Size: %2",_faction,_size] call ALIVE_fnc_dump;
+				["ALIVE CP [%1] - Size: %2",_faction,_size] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
@@ -645,7 +555,7 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - Main force creation ",_faction] call ALIVE_fnc_dump;
+				["ALIVE CP [%1] - Main force creation ",_faction] call ALIVE_fnc_dump;
 				["Count Armor: %1",_countArmored] call ALIVE_fnc_dump;
 				["Count Mech: %1",_countMechanized] call ALIVE_fnc_dump;
 				["Count Motor: %1",_countMotorized] call ALIVE_fnc_dump;
@@ -738,8 +648,8 @@ switch(_operation) do {
 		
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
-				["ALIVE MP - Placement completed"] call ALIVE_fnc_dump;
+				["ALIVE CP - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
+				["ALIVE CP - Placement completed"] call ALIVE_fnc_dump;
 				[] call ALIVE_fnc_timer;
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 			};
@@ -748,9 +658,9 @@ switch(_operation) do {
 			
 			// set module as started
 			_logic setVariable ["startupComplete", true];
-		};
+		};		
 	};
 };
 
-TRACE_1("MP - output",_result);
+TRACE_1("CP - output",_result);
 _result;

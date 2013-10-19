@@ -91,6 +91,51 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_strategic\fnc_validateLocations.sqf";
 				recompile = 1;
 			};
+			class findTargets {
+				description = "Identify targets within the TAOR";
+				file = "\x\alive\addons\fnc_strategic\fnc_findTargets.sqf";
+				recompile = 1;
+			};
+			class setTargets {
+				description = "Set basic params on clusters";
+				file = "\x\alive\addons\fnc_strategic\fnc_setTargets.sqf";
+				recompile = 1;
+			};
+			class clustersInsideMarker {
+				description = "Return list of clusters inside a marker";
+				file = "\x\alive\addons\fnc_strategic\fnc_clustersInsideMarker.sqf";
+				recompile = 1;
+			};
+			class clustersOutsideMarker {
+				description = "Return list of clusters outside a marker";
+				file = "\x\alive\addons\fnc_strategic\fnc_clustersOutsideMarker.sqf";
+				recompile = 1;
+			};
+			class staticClusterOutput {
+				description = "Returns clusters in string format for static file storage";
+				file = "\x\alive\addons\fnc_strategic\fnc_staticClusterOutput.sqf";
+				recompile = 1;
+			};
+			class copyClusters {
+				description = "Duplicate an array of clusters";
+				file = "\x\alive\addons\fnc_strategic\fnc_copyClusters.sqf";
+				recompile = 1;
+			};
+			class findHQ {
+				description = "Identify potential HQ locations within a radius";
+				file = "\x\alive\addons\fnc_strategic\fnc_findHQ.sqf";
+				recompile = 1;
+			};
+			class generateParkingPositions {
+				description = "Generate parking positions for cluster nodes";
+				file = "\x\alive\addons\fnc_strategic\fnc_generateParkingPositions.sqf";
+				recompile = 1;
+			};
+			class generateParkingPosition {
+				description = "Generate parking position for building";
+				file = "\x\alive\addons\fnc_strategic\fnc_generateParkingPosition.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

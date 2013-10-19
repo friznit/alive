@@ -1,19 +1,19 @@
 class cfgFunctions {
         class PREFIX {
                 class COMPONENT {
-                        class MP {
+                        class CP {
                                 description = "The main class";
-                                file = "\x\alive\addons\mil_placement\fnc_MP.sqf";
+                                file = "\x\alive\addons\civ_placement\fnc_CP.sqf";
                                 recompile = 1;
                         };
-                        class MPInit {
+                        class CPInit {
                                 description = "The module initialisation function";
-                                file = "\x\alive\addons\mil_placement\fnc_MPInit.sqf";
+                                file = "\x\alive\addons\civ_placement\fnc_CPInit.sqf";
                                 recompile = 1;
                         };
-						class milClusterGeneration {
+						class civClusterGeneration {
                                 description = "Generates static cluster output";
-                                file = "\x\alive\addons\mil_placement\fnc_milClusterGeneration.sqf";
+                                file = "\x\alive\addons\civ_placement\fnc_civClusterGeneration.sqf";
                                 recompile = 1;
                         };
                 };

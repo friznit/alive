@@ -1,8 +1,0 @@
-x\alive\addons\mil_strategic
-======<HEADER>=======
-prefix=x\alive\addons\mil_strategic
-product=Arma 3
-version=1
-Pbo Type is: Arma Addon
-======</HEADER>============
-

@@ -62,23 +62,11 @@
 <Key ID="STR_ALIVE_MP_PRIORITY_FILTER_HIGH">
 	<English>Only high priority objectives</English>
 </Key>
-<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT">
-	<English>Place ambient vehicles</English>
+<Key ID="STR_ALIVE_MP_PLACEMENT">
+	<English>Place units:</English>
 </Key>
-<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_COMMENT">
-	<English>Place ambeint vehicles in locations</English>
-</Key>
-<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_NONE">
-	<English>No ambient vehicles</English>
-</Key>
-<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_LOW">
-	<English>Low ambient vehicles</English>
-</Key>
-<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_MEDIUM">
-	<English>Medium ambient vehicles</English>
-</Key>
-<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_HIGH">
-	<English>High ambient vehicles</English>
+<Key ID="STR_ALIVE_MP_PLACEMENT_COMMENT">
+	<English>Place units or objectives only</English>
 </Key>
 <Key ID="STR_ALIVE_MP_SIZE">
 	<English>Force Size:</English>
@@ -86,14 +74,26 @@
 <Key ID="STR_ALIVE_MP_SIZE_COMMENT">
 	<English>Number of units to be placed</English>
 </Key>
+<Key ID="STR_ALIVE_MP_SIZE_BNx3">
+	<English>Battalion (1200)</English>
+</Key>
+<Key ID="STR_ALIVE_MP_SIZE_BNx2">
+	<English>Battalion (800)</English>
+</Key>
 <Key ID="STR_ALIVE_MP_SIZE_BN">
-	<English>Battalion (300-1200)</English>
+	<English>Battalion (400)</English>
+</Key>
+<Key ID="STR_ALIVE_MP_SIZE_CYx2">
+	<English>Company (200)</English>
 </Key>
 <Key ID="STR_ALIVE_MP_SIZE_CY">
-	<English>Company (90-250)</English>
+	<English>Company (100)</English>
+</Key>
+<Key ID="STR_ALIVE_MP_SIZE_PLx2">
+	<English>Platoon (60)</English>
 </Key>
 <Key ID="STR_ALIVE_MP_SIZE_PL">
-	<English>Platoon (30-50)</English>
+	<English>Platoon (30)</English>
 </Key>
 <Key ID="STR_ALIVE_MP_TYPE">
 	<English>Force Weighting:</English>
@@ -124,5 +124,29 @@
 </Key>
 <Key ID="STR_ALIVE_MP_FACTION_COMMENT">
 	<English>Faction of the units to be placed (BLU_F, OPF_F, IND_F, BLU_G_F)</English>
+</Key>
+<Key ID="STR_ALIVE_MP_PLACE_HELI">
+	<English>Place helis:</English>
+</Key>
+<Key ID="STR_ALIVE_MP_PLACE_HELI_COMMENT">
+	<English>Place helicopters on pads</English>
+</Key>
+<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT">
+	<English>Place ambient vehicles</English>
+</Key>
+<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_COMMENT">
+	<English>Place ambeint vehicles in locations</English>
+</Key>
+<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_NONE">
+	<English>No ambient vehicles</English>
+</Key>
+<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_LOW">
+	<English>Low ambient vehicles</English>
+</Key>
+<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_MEDIUM">
+	<English>Medium ambient vehicles</English>
+</Key>
+<Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_HIGH">
+	<English>High ambient vehicles</English>
 </Key>
 </Container></Package></Project>

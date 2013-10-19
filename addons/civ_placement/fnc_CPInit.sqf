@@ -1,8 +1,8 @@
-#include <\x\alive\addons\mil_placement\script_component.hpp>
-SCRIPT(MPInit);
+#include <\x\alive\addons\civ_placement\script_component.hpp>
+SCRIPT(COInit);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_MPInit
+Function: ALIVE_fnc_COInit
 Description:
 Creates the server side object to store settings
 
@@ -14,7 +14,7 @@ Returns:
 Nil
 
 See Also:
-- <ALIVE_fnc_MP>
+- <ALIVE_fnc_CO>
 
 Author:
 Wolffy.au
@@ -28,6 +28,6 @@ PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
 
 // Confirm init function available
-ASSERT_DEFINED("ALIVE_fnc_MP","Main function missing");
+ASSERT_DEFINED("ALIVE_fnc_CP","Main function missing");
 
-[_logic, "init"] call ALIVE_fnc_MP;
+[_logic, "init"] call ALIVE_fnc_CP;
