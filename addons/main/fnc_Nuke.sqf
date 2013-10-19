@@ -59,7 +59,7 @@ if (hasInterface) then {
 		    	
 				setviewdistance ((_this select 0)*1.5);
 		        while {
-		            ((viewdistance < 10000) and (viewdistance < ((_this select 0)*2.2)))}
+		            ((viewdistance < 20000) and (viewdistance < ((_this select 0)*2.2)))}
 		            	do {
 		            setviewdistance (viewdistance + 50);
 		        };
@@ -101,9 +101,9 @@ if (hasInterface) then {
 		//_light setLightColor[1500, 1200, 1000];
 		_light setLightBrightness 100000.0;
 		
-		[_nukepos,40] execvm "scripts\nuke\nuke_sound_client.sqf";
-		[_nukepos,40] execvm "scripts\nuke\nuke_shockwave_client.sqf";
-		[_nukepos,40] execvm "scripts\nuke\nuke_shockimpact_client.sqf";
+		//[_nukepos,40] execvm "scripts\nuke\nuke_sound_client.sqf";
+		//[_nukepos,40] execvm "scripts\nuke\nuke_shockwave_client.sqf";
+		//[_nukepos,40] execvm "scripts\nuke\nuke_shockimpact_client.sqf";
 		
 		sleep 0.1;
 		
