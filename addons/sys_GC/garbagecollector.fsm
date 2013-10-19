@@ -2,12 +2,12 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Start",0,250,-20.000000,-160.000000,70.000000,-110.000000,0.000000,"Start"};
-item1[] = {"Check_queue",2,4346,-20.000000,-10.000000,70.000000,40.000000,0.000000,"Check queue"};
+item1[] = {"Check_queue",2,250,-20.000000,-10.000000,70.000000,40.000000,0.000000,"Check queue"};
 item2[] = {"Empty",4,218,-87.128693,82.178215,2.871286,132.178223,1.000000,"Empty"};
 item3[] = {"Not_empty",4,218,43.564377,82.178215,133.564362,132.178223,0.000000,"Not empty"};
 item4[] = {"Delay",2,250,-210.000000,80.000000,-120.000000,130.000000,0.000000,"Delay"};
 item5[] = {"Delay_over___10s",4,218,-220.000000,-20.000000,-110.000000,40.000000,0.000000,"Delay over " \n "(10s)"};
-item6[] = {"___process_queue",2,250,40.000000,200.000000,150.000000,250.000000,0.000000,"* process_queue *"};
+item6[] = {"___process_queue",2,4346,40.000000,200.000000,150.000000,250.000000,0.000000,"* process_queue *"};
 item7[] = {"Always",8,218,-210.000000,200.000000,-120.000000,250.000000,0.000000,"Always"};
 item8[] = {"Always",8,218,-20.000000,-90.000000,70.000000,-40.000000,0.000000,"Always"};
 link0[] = {0,8};
@@ -21,7 +21,7 @@ link7[] = {6,7};
 link8[] = {7,4};
 link9[] = {8,1};
 globals[] = {10.000000,1,0,1,16777215,640,480,1,10,6316128,1,-359.369995,359.369965,499.406189,-290.195496,639,702,1};
-window[] = {0,-1,-1,-1,-1,1053,220,1484,220,1,656};
+window[] = {0,-1,-1,-1,-1,877,44,1308,44,1,656};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -36,6 +36,7 @@ class FSM
        "" \n
        "private [""_collector"", ""_timeNow"", ""_handle"", ""_path"", ""_autotime""];" \n
        "_collector = _this;" \n
+       "_threshold = 150;" \n
        "_lastAnalyze = 0;" \n
        "_path = ""\x\alive\addons\sys_GC\"";" \n
        "_interval = call compile (_collector getvariable ([""ALiVE_GC_INTERVAL"",""300""]));" \n
@@ -125,7 +126,13 @@ class FSM
     class ___process_queue
     {
       name = "___process_queue";
-      init = /*%FSM<STATEINIT""">*/"_handle = -1; _handle = [_collector,""process""] spawn ALiVE_fnc_GC;"/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"_handle = -1; " \n
+       "" \n
+       "if ((count _queue) < _threshold) then {" \n
+       "	_handle = [_collector,""process""] spawn ALiVE_fnc_GC;" \n
+       "} else {" \n
+       "	_handle = [_collector,""processInstantly""] spawn ALiVE_fnc_GC;" \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
