@@ -234,8 +234,10 @@ switch(_operation) do {
 
 			[_logic,"register"] call MAINCLASS;			
         } else {
-            {deleteMarkerLocal _x} foreach (call compile (_logic getVariable ["taor", DEFAULT_TAOR]));
-            {deleteMarkerLocal _x} foreach (call compile (_logic getVariable ["blacklist", DEFAULT_TAOR]));            
+            [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
+            [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
+            {deleteMarkerLocal _x} foreach (_logic getVariable ["taor", DEFAULT_TAOR]);
+            {deleteMarkerLocal _x} foreach (_logic getVariable ["blacklist", DEFAULT_TAOR]);            
         };
 	};
 	case "register": {

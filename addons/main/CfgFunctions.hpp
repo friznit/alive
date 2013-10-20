@@ -106,6 +106,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_sendHint.sqf";
 				recompile = 1;
 			};
+			class Nuke {
+				description = "Fires a Nuke at given position";
+				file = "\x\alive\addons\main\fnc_Nuke.sqf";
+				recompile = 1;
+			};
                 };
         };
 };

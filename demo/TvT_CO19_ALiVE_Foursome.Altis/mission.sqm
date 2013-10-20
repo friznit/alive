@@ -42,13 +42,12 @@ class Mission
 		"alive_mil_intelligence",
 		"alive_sys_player",
 		"cba_xeh",
-		"alive_civ_strategic",
-		"alive_sys_gc"
+		"alive_sys_gc",
+		"alive_civ_placement"
 	};
 	addOnsAuto[]=
 	{
 		"alive_sys_adminactions",
-		"alive_mil_placement",
 		"A3_Characters_F_OPFOR",
 		"alive_sys_rwg",
 		"alive_sys_viewdistance",
@@ -62,10 +61,11 @@ class Mission
 		"alive_main",
 		"alive_sup_multispawn",
 		"cba_xeh",
-		"alive_civ_strategic",
 		"alive_sys_player",
 		"alive_sys_gc",
 		"alive_mil_opcom",
+		"alive_mil_placement",
+		"alive_civ_placement",
 		"alive_mil_intelligence",
 		"A3_Weapons_F_Ammoboxes",
 		"a3_weapons_f_beta_ammoboxes",
@@ -92,7 +92,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.91.1";
+		briefingName="ALiVE Showcase - Foursome v0.92";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -163,240 +163,6 @@ class Mission
 		};
 		class Item1
 		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={8251.5176,91.842964,15673.024};
-					class args
-					{
-						items=9;
-						class Item0
-						{
-							value="false";
-							parentCls="ALiVE_mil_placement";
-							typeName="debug";
-						};
-						class Item1
-						{
-							value="CY";
-							parentCls="ALiVE_mil_placement";
-							typeName="size";
-						};
-						class Item2
-						{
-							value="Motorized";
-							parentCls="ALiVE_mil_placement";
-							typeName="type";
-						};
-						class Item3
-						{
-							value="OPF_F";
-							parentCls="ALiVE_mil_placement";
-							typeName="faction";
-						};
-						class Item4
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="sizeFilter";
-						};
-						class Item5
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="priorityFilter";
-						};
-						class Item6
-						{
-							value="[""OPFOR_TAOR""]";
-							parentCls="ALiVE_mil_placement";
-							typeName="taor";
-						};
-						class Item7
-						{
-							value="[]";
-							parentCls="ALiVE_mil_placement";
-							typeName="blacklist";
-						};
-						class Item8
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="ambientVehicleAmount";
-						};
-					};
-					id=1;
-					side="LOGIC";
-					vehicle="ALiVE_mil_placement";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=1;
-					synchronizations[]={6,9,10,11,8};
-				};
-			};
-		};
-		class Item2
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={11221.189,139.20505,8201.3145};
-					class args
-					{
-						items=9;
-						class Item0
-						{
-							value="false";
-							parentCls="ALiVE_mil_placement";
-							typeName="debug";
-						};
-						class Item1
-						{
-							value="CY";
-							parentCls="ALiVE_mil_placement";
-							typeName="size";
-						};
-						class Item2
-						{
-							value="Infantry";
-							parentCls="ALiVE_mil_placement";
-							typeName="type";
-						};
-						class Item3
-						{
-							value="IND_F";
-							parentCls="ALiVE_mil_placement";
-							typeName="faction";
-						};
-						class Item4
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="sizeFilter";
-						};
-						class Item5
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="priorityFilter";
-						};
-						class Item6
-						{
-							value="[""GREENFOR_TAOR""]";
-							parentCls="ALiVE_mil_placement";
-							typeName="taor";
-						};
-						class Item7
-						{
-							value="[]";
-							parentCls="ALiVE_mil_placement";
-							typeName="blacklist";
-						};
-						class Item8
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="ambientVehicleAmount";
-						};
-					};
-					id=2;
-					side="LOGIC";
-					vehicle="ALiVE_mil_placement";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=2;
-					synchronizations[]={10,11};
-				};
-			};
-		};
-		class Item3
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={9348.0352,16.661766,21544.746};
-					class args
-					{
-						items=9;
-						class Item0
-						{
-							value="false";
-							parentCls="ALiVE_mil_placement";
-							typeName="debug";
-						};
-						class Item1
-						{
-							value="CY";
-							parentCls="ALiVE_mil_placement";
-							typeName="size";
-						};
-						class Item2
-						{
-							value="Infantry";
-							parentCls="ALiVE_mil_placement";
-							typeName="type";
-						};
-						class Item3
-						{
-							value="BLU_G_F";
-							parentCls="ALiVE_mil_placement";
-							typeName="faction";
-						};
-						class Item4
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="sizeFilter";
-						};
-						class Item5
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="priorityFilter";
-						};
-						class Item6
-						{
-							value="[""BLUFOR_REBELS_TAOR""]";
-							parentCls="ALiVE_mil_placement";
-							typeName="taor";
-						};
-						class Item7
-						{
-							value="[]";
-							parentCls="ALiVE_mil_placement";
-							typeName="blacklist";
-						};
-						class Item8
-						{
-							value="0.2";
-							parentCls="ALiVE_mil_placement";
-							typeName="ambientVehicleAmount";
-						};
-					};
-					id=3;
-					side="LOGIC";
-					vehicle="ALiVE_mil_placement";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=3;
-					synchronizations[]={9,11};
-				};
-			};
-		};
-		class Item4
-		{
 			side="EAST";
 			class Vehicles
 			{
@@ -405,7 +171,7 @@ class Mission
 				{
 					position[]={21626.299,12.164746,10943.408};
 					azimut=0.29490992;
-					id=4;
+					id=1;
 					side="EAST";
 					vehicle="O_sniper_F";
 					player="PLAY CDG";
@@ -417,7 +183,7 @@ class Mission
 				{
 					position[]={21631.262,11.827534,10938.396};
 					azimut=0.29490992;
-					id=5;
+					id=2;
 					side="EAST";
 					vehicle="O_spotter_F";
 					player="PLAY CDG";
@@ -425,85 +191,7 @@ class Mission
 				};
 			};
 		};
-		class Item5
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={20931.596,31.711824,13003.034};
-					class args
-					{
-						items=9;
-						class Item0
-						{
-							value="false";
-							parentCls="ALiVE_mil_placement";
-							typeName="debug";
-						};
-						class Item1
-						{
-							value="BN";
-							parentCls="ALiVE_mil_placement";
-							typeName="size";
-						};
-						class Item2
-						{
-							value="Armored";
-							parentCls="ALiVE_mil_placement";
-							typeName="type";
-						};
-						class Item3
-						{
-							value="OPF_F";
-							parentCls="ALiVE_mil_placement";
-							typeName="faction";
-						};
-						class Item4
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="sizeFilter";
-						};
-						class Item5
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="priorityFilter";
-						};
-						class Item6
-						{
-							value="[""OPFOR_TAOR_1""]";
-							parentCls="ALiVE_mil_placement";
-							typeName="taor";
-						};
-						class Item7
-						{
-							value="[]";
-							parentCls="ALiVE_mil_placement";
-							typeName="blacklist";
-						};
-						class Item8
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="ambientVehicleAmount";
-						};
-					};
-					id=6;
-					side="LOGIC";
-					vehicle="ALiVE_mil_placement";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=4;
-					synchronizations[]={6,11,8};
-				};
-			};
-		};
-		class Item6
+		class Item2
 		{
 			side="LOGIC";
 			class Vehicles
@@ -528,7 +216,7 @@ class Mission
 							typeName="Condition";
 						};
 					};
-					id=7;
+					id=3;
 					side="LOGIC";
 					vehicle="ALiVE_sys_RWG";
 					leader=1;
@@ -537,7 +225,7 @@ class Mission
 				};
 			};
 		};
-		class Item7
+		class Item3
 		{
 			side="LOGIC";
 			class Vehicles
@@ -574,7 +262,7 @@ class Mission
 							typeName="minTG";
 						};
 					};
-					id=8;
+					id=4;
 					side="LOGIC";
 					vehicle="ALiVE_sys_viewdistance";
 					leader=1;
@@ -583,7 +271,7 @@ class Mission
 				};
 			};
 		};
-		class Item8
+		class Item4
 		{
 			side="LOGIC";
 			class Vehicles
@@ -608,7 +296,7 @@ class Mission
 							typeName="Condition";
 						};
 					};
-					id=9;
+					id=5;
 					side="LOGIC";
 					vehicle="ALiVE_sys_newsfeed";
 					leader=1;
@@ -617,85 +305,7 @@ class Mission
 				};
 			};
 		};
-		class Item9
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={27126.611,30.370413,22650.443};
-					class args
-					{
-						items=9;
-						class Item0
-						{
-							value="false";
-							parentCls="ALiVE_mil_placement";
-							typeName="debug";
-						};
-						class Item1
-						{
-							value="CY";
-							parentCls="ALiVE_mil_placement";
-							typeName="size";
-						};
-						class Item2
-						{
-							value="Armored";
-							parentCls="ALiVE_mil_placement";
-							typeName="type";
-						};
-						class Item3
-						{
-							value="BLU_F";
-							parentCls="ALiVE_mil_placement";
-							typeName="faction";
-						};
-						class Item4
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="sizeFilter";
-						};
-						class Item5
-						{
-							value="0";
-							parentCls="ALiVE_mil_placement";
-							typeName="priorityFilter";
-						};
-						class Item6
-						{
-							value="[""BLUFOR_TAOR""]";
-							parentCls="ALiVE_mil_placement";
-							typeName="taor";
-						};
-						class Item7
-						{
-							value="[]";
-							parentCls="ALiVE_mil_placement";
-							typeName="blacklist";
-						};
-						class Item8
-						{
-							value="0.2";
-							parentCls="ALiVE_mil_placement";
-							typeName="ambientVehicleAmount";
-						};
-					};
-					id=10;
-					side="LOGIC";
-					vehicle="ALiVE_mil_placement";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=5;
-					synchronizations[]={11,8};
-				};
-			};
-		};
-		class Item10
+		class Item5
 		{
 			side="WEST";
 			class Vehicles
@@ -705,7 +315,7 @@ class Mission
 				{
 					position[]={27479.602,6.0325952,20855.229};
 					azimut=-46.479099;
-					id=11;
+					id=6;
 					side="WEST";
 					vehicle="B_recon_TL_F";
 					player="PLAYER COMMANDER";
@@ -717,7 +327,7 @@ class Mission
 				{
 					position[]={27486.664,6.2392168,20855.406};
 					azimut=-46.479099;
-					id=12;
+					id=7;
 					side="WEST";
 					vehicle="B_recon_M_F";
 					player="PLAY CDG";
@@ -728,7 +338,7 @@ class Mission
 				{
 					position[]={27479.779,5.7270799,20848.156};
 					azimut=-46.479099;
-					id=13;
+					id=8;
 					side="WEST";
 					vehicle="B_recon_medic_F";
 					player="PLAY CDG";
@@ -738,7 +348,7 @@ class Mission
 				{
 					position[]={27493.734,6.5461888,20855.6};
 					azimut=-46.479099;
-					id=14;
+					id=9;
 					side="WEST";
 					vehicle="B_recon_F";
 					player="PLAY CDG";
@@ -749,7 +359,7 @@ class Mission
 				{
 					position[]={27479.965,5.4348879,20841.088};
 					azimut=-46.479099;
-					id=15;
+					id=10;
 					side="WEST";
 					vehicle="B_recon_LAT_F";
 					player="PLAY CDG";
@@ -759,7 +369,7 @@ class Mission
 				{
 					position[]={27500.809,6.7374096,20855.775};
 					azimut=-46.479099;
-					id=16;
+					id=11;
 					side="WEST";
 					vehicle="B_recon_JTAC_F";
 					player="PLAY CDG";
@@ -769,7 +379,7 @@ class Mission
 				{
 					position[]={27480.141,5.1752877,20834.021};
 					azimut=-46.479099;
-					id=17;
+					id=12;
 					side="WEST";
 					vehicle="B_recon_exp_F";
 					player="PLAY CDG";
@@ -777,7 +387,7 @@ class Mission
 				};
 			};
 		};
-		class Item11
+		class Item6
 		{
 			side="WEST";
 			class Vehicles
@@ -786,7 +396,7 @@ class Mission
 				class Item0
 				{
 					position[]={4836.0747,337.64801,21928.842};
-					id=18;
+					id=13;
 					side="WEST";
 					vehicle="B_G_Soldier_M_F";
 					player="PLAY CDG";
@@ -797,7 +407,7 @@ class Mission
 				class Item1
 				{
 					position[]={4841.0747,338.17236,21923.842};
-					id=19;
+					id=14;
 					side="WEST";
 					vehicle="B_G_Soldier_M_F";
 					player="PLAY CDG";
@@ -806,7 +416,7 @@ class Mission
 				};
 			};
 		};
-		class Item12
+		class Item7
 		{
 			side="GUER";
 			class Vehicles
@@ -816,7 +426,7 @@ class Mission
 				{
 					position[]={8908.0498,67.052544,7478.9741};
 					azimut=-18.366301;
-					id=20;
+					id=15;
 					side="GUER";
 					vehicle="I_Soldier_SL_F";
 					player="PLAY CDG";
@@ -828,7 +438,7 @@ class Mission
 				{
 					position[]={8914.374,67.204834,7475.8057};
 					azimut=-18.366301;
-					id=21;
+					id=16;
 					side="GUER";
 					vehicle="I_Soldier_AR_F";
 					player="PLAY CDG";
@@ -839,7 +449,7 @@ class Mission
 				{
 					position[]={8904.8848,67.086418,7472.6533};
 					azimut=-18.366301;
-					id=22;
+					id=17;
 					side="GUER";
 					vehicle="I_Soldier_AAR_F";
 					player="PLAY CDG";
@@ -850,7 +460,7 @@ class Mission
 				{
 					position[]={8920.6973,67.378098,7472.6348};
 					azimut=-18.366301;
-					id=23;
+					id=18;
 					side="GUER";
 					vehicle="I_Soldier_AT_F";
 					player="PLAY CDG";
@@ -861,7 +471,7 @@ class Mission
 				{
 					position[]={8901.7109,66.957664,7466.3325};
 					azimut=-18.366301;
-					id=24;
+					id=19;
 					side="GUER";
 					vehicle="I_Soldier_AAT_F";
 					player="PLAY CDG";
@@ -872,7 +482,7 @@ class Mission
 				{
 					position[]={8927.0156,67.46946,7469.4644};
 					azimut=-18.366301;
-					id=25;
+					id=20;
 					side="GUER";
 					vehicle="I_Soldier_A_F";
 					player="PLAY CDG";
@@ -882,7 +492,7 @@ class Mission
 				{
 					position[]={8898.542,66.412323,7460.0112};
 					azimut=-18.366301;
-					id=26;
+					id=21;
 					side="GUER";
 					vehicle="I_soldier_F";
 					player="PLAY CDG";
@@ -891,7 +501,7 @@ class Mission
 				class Item7
 				{
 					position[]={8909.8574,67.216476,7471.2476};
-					id=27;
+					id=22;
 					side="GUER";
 					vehicle="I_medic_F";
 					player="PLAY CDG";
@@ -899,7 +509,7 @@ class Mission
 				};
 			};
 		};
-		class Item13
+		class Item8
 		{
 			side="LOGIC";
 			class Vehicles
@@ -936,18 +546,18 @@ class Mission
 							typeName="CQB_FACTIONS_REG";
 						};
 					};
-					id=28;
+					id=23;
 					side="LOGIC";
 					vehicle="ALiVE_mil_cqb";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=6;
-					synchronizations[]={1,4,7};
+					syncId=1;
+					synchronizations[]={11};
 				};
 			};
 		};
-		class Item14
+		class Item9
 		{
 			side="LOGIC";
 			class Vehicles
@@ -984,7 +594,7 @@ class Mission
 							typeName="spawnRadius";
 						};
 					};
-					id=29;
+					id=24;
 					side="LOGIC";
 					vehicle="ALiVE_sys_profile";
 					leader=1;
@@ -993,7 +603,7 @@ class Mission
 				};
 			};
 		};
-		class Item15
+		class Item10
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1002,7 +612,7 @@ class Mission
 				class Item0
 				{
 					position[]={15482.622,18.923798,17150.4};
-					id=30;
+					id=25;
 					side="LOGIC";
 					vehicle="ALiVE_require";
 					leader=1;
@@ -1011,7 +621,7 @@ class Mission
 				};
 			};
 		};
-		class Item16
+		class Item11
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1036,7 +646,7 @@ class Mission
 							typeName="spawntype";
 						};
 					};
-					id=31;
+					id=26;
 					side="LOGIC";
 					vehicle="ALiVE_sup_multispawn";
 					leader=1;
@@ -1045,7 +655,7 @@ class Mission
 				};
 			};
 		};
-		class Item17
+		class Item12
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1054,7 +664,7 @@ class Mission
 				class Item0
 				{
 					position[]={30287.018,-187.14948,27256.879};
-					id=32;
+					id=27;
 					side="LOGIC";
 					vehicle="SLX_XEH_Logic";
 					leader=1;
@@ -1064,67 +674,7 @@ class Mission
 				};
 			};
 		};
-		class Item18
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={15492.857,18.938496,17057.303};
-					class args
-					{
-						items=6;
-						class Item0
-						{
-							value="false";
-							parentCls="ALiVE_civ_strategic";
-							typeName="debug";
-						};
-						class Item1
-						{
-							value="[""OPFOR_TAOR_1"",""OPFOR_TAOR""]";
-							parentCls="ALiVE_civ_strategic";
-							typeName="taor";
-						};
-						class Item2
-						{
-							value="[]";
-							parentCls="ALiVE_civ_strategic";
-							typeName="blacklist";
-						};
-						class Item3
-						{
-							value="0";
-							parentCls="ALiVE_civ_strategic";
-							typeName="sizeFilter";
-						};
-						class Item4
-						{
-							value="0";
-							parentCls="ALiVE_civ_strategic";
-							typeName="priorityFilter";
-						};
-						class Item5
-						{
-							value="STATIC";
-							parentCls="ALiVE_civ_strategic";
-							typeName="initType";
-						};
-					};
-					id=33;
-					side="LOGIC";
-					vehicle="ALiVE_civ_strategic";
-					leader=1;
-					lock="UNLOCKED";
-					skill=0.60000002;
-					syncId=7;
-					synchronizations[]={6};
-				};
-			};
-		};
-		class Item19
+		class Item13
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1203,7 +753,7 @@ class Mission
 							typeName="storeToDB";
 						};
 					};
-					id=34;
+					id=28;
 					side="LOGIC";
 					vehicle="ALiVE_sys_player";
 					leader=1;
@@ -1212,7 +762,7 @@ class Mission
 				};
 			};
 		};
-		class Item20
+		class Item14
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1243,7 +793,7 @@ class Mission
 							typeName="ALiVE_GC_INDIVIDUALTYPES";
 						};
 					};
-					id=35;
+					id=29;
 					side="LOGIC";
 					vehicle="ALiVE_sys_GC";
 					leader=1;
@@ -1252,7 +802,7 @@ class Mission
 				};
 			};
 		};
-		class Item21
+		class Item15
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1283,18 +833,18 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=36;
+					id=30;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=8;
-					synchronizations[]={5,1,4};
+					syncId=2;
+					synchronizations[]={10,6,9,2};
 				};
 			};
 		};
-		class Item22
+		class Item16
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1325,18 +875,18 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=37;
+					id=31;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=9;
-					synchronizations[]={3,1};
+					syncId=3;
+					synchronizations[]={7,6};
 				};
 			};
 		};
-		class Item23
+		class Item17
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1367,18 +917,18 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=38;
+					id=32;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=10;
-					synchronizations[]={2,1};
+					syncId=4;
+					synchronizations[]={8,6};
 				};
 			};
 		};
-		class Item24
+		class Item18
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1409,14 +959,542 @@ class Mission
 							typeName="factions";
 						};
 					};
-					id=39;
+					id=33;
 					side="LOGIC";
 					vehicle="ALiVE_mil_OPCOM";
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
+					syncId=5;
+					synchronizations[]={6,8,7,9,10,12};
+				};
+			};
+		};
+		class Item19
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8997.2598,86.959564,15235.679};
+					class args
+					{
+						items=11;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="OPFOR_TAOR";
+							parentCls="ALiVE_mil_placement";
+							typeName="taor";
+						};
+						class Item2
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="blacklist";
+						};
+						class Item3
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="sizeFilter";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="priorityFilter";
+						};
+						class Item5
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement";
+							typeName="withPlacement";
+						};
+						class Item6
+						{
+							value="800";
+							parentCls="ALiVE_mil_placement";
+							typeName="size";
+						};
+						class Item7
+						{
+							value="Infantry";
+							parentCls="ALiVE_mil_placement";
+							typeName="type";
+						};
+						class Item8
+						{
+							value="OPF_F";
+							parentCls="ALiVE_mil_placement";
+							typeName="faction";
+						};
+						class Item9
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement";
+							typeName="placeHelis";
+						};
+						class Item10
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="ambientVehicleAmount";
+						};
+					};
+					id=34;
+					side="LOGIC";
+					vehicle="ALiVE_mil_placement";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
+					syncId=6;
+					synchronizations[]={5,2,3,4};
+				};
+			};
+		};
+		class Item20
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={9343.3867,16.419561,21663.545};
+					class args
+					{
+						items=11;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="BLUFOR_REBELS_TAOR";
+							parentCls="ALiVE_mil_placement";
+							typeName="taor";
+						};
+						class Item2
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="blacklist";
+						};
+						class Item3
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="sizeFilter";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="priorityFilter";
+						};
+						class Item5
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement";
+							typeName="withPlacement";
+						};
+						class Item6
+						{
+							value="200";
+							parentCls="ALiVE_mil_placement";
+							typeName="size";
+						};
+						class Item7
+						{
+							value="Infantry";
+							parentCls="ALiVE_mil_placement";
+							typeName="type";
+						};
+						class Item8
+						{
+							value="BLU_G_F";
+							parentCls="ALiVE_mil_placement";
+							typeName="faction";
+						};
+						class Item9
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="placeHelis";
+						};
+						class Item10
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="ambientVehicleAmount";
+						};
+					};
+					id=35;
+					side="LOGIC";
+					vehicle="ALiVE_mil_placement";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
+					syncId=7;
+					synchronizations[]={5,3};
+				};
+			};
+		};
+		class Item21
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={11203.02,156.38304,8390.0889};
+					class args
+					{
+						items=11;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="GREENFOR_TAOR";
+							parentCls="ALiVE_mil_placement";
+							typeName="taor";
+						};
+						class Item2
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="blacklist";
+						};
+						class Item3
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="sizeFilter";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="priorityFilter";
+						};
+						class Item5
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement";
+							typeName="withPlacement";
+						};
+						class Item6
+						{
+							value="200";
+							parentCls="ALiVE_mil_placement";
+							typeName="size";
+						};
+						class Item7
+						{
+							value="Motorized";
+							parentCls="ALiVE_mil_placement";
+							typeName="type";
+						};
+						class Item8
+						{
+							value="IND_F";
+							parentCls="ALiVE_mil_placement";
+							typeName="faction";
+						};
+						class Item9
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="placeHelis";
+						};
+						class Item10
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="ambientVehicleAmount";
+						};
+					};
+					id=36;
+					side="LOGIC";
+					vehicle="ALiVE_mil_placement";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
+					syncId=8;
+					synchronizations[]={5,4};
+				};
+			};
+		};
+		class Item22
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={20206.086,111.10516,13019.341};
+					class args
+					{
+						items=11;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="OPFOR_TAOR_1";
+							parentCls="ALiVE_mil_placement";
+							typeName="taor";
+						};
+						class Item2
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="blacklist";
+						};
+						class Item3
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="sizeFilter";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="priorityFilter";
+						};
+						class Item5
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement";
+							typeName="withPlacement";
+						};
+						class Item6
+						{
+							value="800";
+							parentCls="ALiVE_mil_placement";
+							typeName="size";
+						};
+						class Item7
+						{
+							value="Armored";
+							parentCls="ALiVE_mil_placement";
+							typeName="type";
+						};
+						class Item8
+						{
+							value="OPF_F";
+							parentCls="ALiVE_mil_placement";
+							typeName="faction";
+						};
+						class Item9
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="placeHelis";
+						};
+						class Item10
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="ambientVehicleAmount";
+						};
+					};
+					id=37;
+					side="LOGIC";
+					vehicle="ALiVE_mil_placement";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
+					syncId=9;
+					synchronizations[]={5,2};
+				};
+			};
+		};
+		class Item23
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={27170.424,11.136011,24076.209};
+					class args
+					{
+						items=11;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_mil_placement";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="BLUFOR_TAOR";
+							parentCls="ALiVE_mil_placement";
+							typeName="taor";
+						};
+						class Item2
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="blacklist";
+						};
+						class Item3
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="sizeFilter";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="priorityFilter";
+						};
+						class Item5
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement";
+							typeName="withPlacement";
+						};
+						class Item6
+						{
+							value="400";
+							parentCls="ALiVE_mil_placement";
+							typeName="size";
+						};
+						class Item7
+						{
+							value="Infantry";
+							parentCls="ALiVE_mil_placement";
+							typeName="type";
+						};
+						class Item8
+						{
+							value="BLU_F";
+							parentCls="ALiVE_mil_placement";
+							typeName="faction";
+						};
+						class Item9
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement";
+							typeName="placeHelis";
+						};
+						class Item10
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement";
+							typeName="ambientVehicleAmount";
+						};
+					};
+					id=38;
+					side="LOGIC";
+					vehicle="ALiVE_mil_placement";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
+					syncId=10;
+					synchronizations[]={5,2};
+				};
+			};
+		};
+		class Item24
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={15487.282,19.017624,17051.199};
+					class args
+					{
+						items=9;
+						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_civ_placement";
+							typeName="debug";
+						};
+						class Item1
+						{
+							value="";
+							parentCls="ALiVE_civ_placement";
+							typeName="taor";
+						};
+						class Item2
+						{
+							value="";
+							parentCls="ALiVE_civ_placement";
+							typeName="blacklist";
+						};
+						class Item3
+						{
+							value="0";
+							parentCls="ALiVE_civ_placement";
+							typeName="sizeFilter";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_civ_placement";
+							typeName="priorityFilter";
+						};
+						class Item5
+						{
+							value="false";
+							parentCls="ALiVE_civ_placement";
+							typeName="withPlacement";
+						};
+						class Item6
+						{
+							value="200";
+							parentCls="ALiVE_civ_placement";
+							typeName="size";
+						};
+						class Item7
+						{
+							value="Random";
+							parentCls="ALiVE_civ_placement";
+							typeName="type";
+						};
+						class Item8
+						{
+							value="OPF_F";
+							parentCls="ALiVE_civ_placement";
+							typeName="faction";
+						};
+					};
+					id=39;
+					side="LOGIC";
+					vehicle="ALiVE_civ_placement";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
 					syncId=11;
-					synchronizations[]={2,1,3,4,5,12};
+					synchronizations[]={1};
 				};
 			};
 		};
@@ -1428,7 +1506,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15141.168,17.938866,16647.816};
+					position[]={14861.209,17.65901,16645.631};
 					class args
 					{
 						items=2;
@@ -1452,7 +1530,7 @@ class Mission
 					lock="UNLOCKED";
 					skill=0.60000002;
 					syncId=12;
-					synchronizations[]={11};
+					synchronizations[]={5};
 				};
 			};
 		};

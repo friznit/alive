@@ -241,6 +241,15 @@ switch(_operation) do {
 			_queue = _queue - [-1];
 			_logic setVariable ["queue", _queue, true];
         };
+        
+        case "processInstantly": { 
+			_queue = _logic getVariable ["queue",[]];
+            
+            {deleteVehicle (_x select 0); _queue set [_foreachIndex, -1]} foreach _queue;
+			_queue = _queue - [-1];
+            
+			_logic setVariable ["queue", _queue, true];
+        };
 
         case "destroy": {                
                 [_logic, "debug", false] call MAINCLASS;
