@@ -1,6 +1,6 @@
 #include <\x\alive\addons\mil_placement\script_component.hpp>
 
-#define TESTS ["MP","clusterGeneration","findHQ"]
+#define TESTS ["MP","clusterGeneration","clusterVisualisation"]
 
 SCRIPT(test-placement);
 

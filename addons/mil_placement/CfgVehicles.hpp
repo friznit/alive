@@ -226,6 +226,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+						class placeSupplies
+                        {
+                                displayName = "$STR_ALIVE_MP_PLACE_SUPPLIES";
+                                description = "$STR_ALIVE_MP_PLACE_SUPPLIES_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
 						class ambientVehicleAmount
                         {
                                 displayName = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT";

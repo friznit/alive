@@ -137,6 +137,12 @@
 <Key ID="STR_ALIVE_MP_PLACE_HELI_COMMENT">
 	<English>Place air units in objectives</English>
 </Key>
+<Key ID="STR_ALIVE_MP_PLACE_SUPPLIES">
+	<English>Place supplies:</English>
+</Key>
+<Key ID="STR_ALIVE_MP_PLACE_SUPPLIES_COMMENT">
+	<English>Place supply boxes in objectives</English>
+</Key>
 <Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT">
 	<English>Place ambient vehicles</English>
 </Key>

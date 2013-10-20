@@ -27,6 +27,11 @@ nil
 
 private ["_obj_array","_types","_clusters","_clusters_tmp","_size"];
 
+if(isNil "ALIVE_civilianHQBuildingTypes") then {
+	_file = "\x\alive\addons\mil_placement\static\staticData.sqf";
+	call compile preprocessFileLineNumbers _file;
+};
+
 
 // Find HQ locations
 // ------------------------------------------------------------------
@@ -34,15 +39,7 @@ private ["_clusters_hq","_clusters_copy_hq"];
 
 "CO - Searching HQ locations" call ALiVE_fnc_logger;
 
-_types = [
-	"a_municipaloffice",
-	"a_office01",
-	"a_office02",
-	"offices",
-	"airport_tower"
-];
-
-_clusters_hq = [_types] call ALIVE_fnc_findTargets;
+_clusters_hq = [ALIVE_civilianHQBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_hq = [_clusters_hq, "CIV", 50, "ColorBlack"] call ALIVE_fnc_setTargets;
 _clusters_hq = [_clusters_hq] call ALIVE_fnc_consolidateClusters;
 			
@@ -59,15 +56,7 @@ private ["_clusters_power","_clusters_copy_power"];
 
 "CO - Searching Power locations" call ALiVE_fnc_logger;
 
-_types = [
-	"dam_",
-	"dp_main",
-	"pec_",
-	"powerstation",
-	"spp_t",
-	"trafostanica"
-];
-_clusters_power = [_types] call ALIVE_fnc_findTargets;
+_clusters_power = [ALIVE_civilianPowerBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_power = [_clusters_power, "CIV", 40, "ColorYellow"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -87,15 +76,7 @@ private ["_clusters_comms","_clusters_copy_comms"];
 
 "CO - Searching Comms locations" call ALiVE_fnc_logger;
 
-_types = [
-	"communication_f",
-	"IlluminantTower",
-	"vysilac_fm",
-	"telek",
-	"ttowerbig_",
-	"tvtower"
-];
-_clusters_comms = [_types] call ALIVE_fnc_findTargets;
+_clusters_comms = [ALIVE_civilianCommsBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_comms = [_clusters_comms, "CIV", 40, "ColorWhite"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -115,14 +96,7 @@ private ["_clusters_marine","_clusters_copy_marine"];
 
 "CO - Searching Marine locations" call ALiVE_fnc_logger;
 
-_types = [
-	"crane",
-	"lighthouse",
-	"nav_pier",
-	"pier_",
-	"wtower"
-];
-_clusters_marine = [_types] call ALIVE_fnc_findTargets;
+_clusters_marine = [ALIVE_civilianMarineBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_marine = [_clusters_marine, "CIV", 30, "ColorBlue"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -143,14 +117,7 @@ private ["_clusters_rail","_clusters_copy_rail"];
 
 "CO - Searching Rail locations" call ALiVE_fnc_logger;
 
-_types = [
-	"rail_house",
-	"rail_station",
-	"rail_platform",
-	"rails_bridge",
-	"stationhouse"
-];
-_clusters_rail = [_types] call ALIVE_fnc_findTargets;
+_clusters_rail = [ALIVE_civilianRailBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_rail = [_clusters_rail, "CIV", 10, "ColorKhaki"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -171,17 +138,7 @@ private ["_clusters_fuel","_clusters_copy_fuel"];
 
 "CO - Searching Fuel locations" call ALiVE_fnc_logger;
 
-_types = [
-	"fuelstation",
-	"oil_",
-	"dp_bigtank",
-	"expedice",
-	"IndPipe",
-	"komin",
-	"Ind_Stack_Big",
-	"Ind_TankBig"
-];
-_clusters_fuel = [_types] call ALIVE_fnc_findTargets;
+_clusters_fuel = [ALIVE_civilianFuelBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_fuel = [_clusters_fuel, "CIV", 30, "ColorOrange"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -202,13 +159,7 @@ private ["_clusters_construction","_clusters_copy_construction"];
 
 "CO - Searching Construction locations" call ALiVE_fnc_logger;
 
-_types = [
-	"Ind_Mlyn_01",
-	"Ind_Pec_01",
-	"wip",
-	"bridge_highway"
-];
-_clusters_construction = [_types] call ALIVE_fnc_findTargets;
+_clusters_construction = [ALIVE_civilianConstructionBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_construction = [_clusters_construction, "CIV", 10, "ColorPink"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -229,15 +180,7 @@ private ["_clusters_settlement","_clusters_copy_settlement"];
 
 "CO - Searching Settlement locations" call ALiVE_fnc_logger;
 
-_types = [
-	"church",
-	"hospital",
-	"amphitheater",
-	"chapel_v",
-	"d_house_big",
-	"d_house_shop"
-];
-_clusters_settlement = [_types] call ALIVE_fnc_findTargets;
+_clusters_settlement = [ALIVE_civilianSettlementBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_settlement = [_clusters_settlement, "CIV", 0, "ColorGreen"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -332,4 +275,4 @@ if(count _clusters_copy_settlement > 0) then {
 
 copyToClipboard _exportString;
 ["Civilian Objectives generation complete, results have been copied to the clipboard"] call ALIVE_fnc_dump;
-["Should be pasted in file: fnc_strategic\clusters\clusters.%1_civ.sqf", _worldName] call ALIVE_fnc_dump;
+["Should be pasted in file: civ_placement\clusters\clusters.%1_civ.sqf", _worldName] call ALIVE_fnc_dump;

@@ -1,6 +1,6 @@
 #include <\x\alive\addons\civ_placement\script_component.hpp>
 
-#define TESTS ["CO"]
+#define TESTS ["CP","clusterGeneration","clusterVisualisation"]
 
 SCRIPT(test-strategic);
 

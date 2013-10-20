@@ -11,7 +11,7 @@ private ["_result","_err","_logic","_amo","_state","_result2"];
 
 LOG("Testing Cluster Generation");
 
-ASSERT_DEFINED("ALIVE_fnc_MP","");
+ASSERT_DEFINED("ALIVE_fnc_CP","");
 
 #define STAT(msg) sleep 0.5; \
 diag_log ["TEST("+str player+": "+msg]; \

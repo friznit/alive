@@ -351,7 +351,7 @@ switch(_operation) do {
 			[_logic, "objectivesMarine", _marineClusters] call MAINCLASS;
 			
 			
-			_railClusters = ALIVE_clustersCivMarine select 2;
+			_railClusters = ALIVE_clustersCivRail select 2;
 			_railClusters = [_railClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_railClusters = [_railClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_railClusters = [_railClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -363,7 +363,7 @@ switch(_operation) do {
 			[_logic, "objectivesRail", _railClusters] call MAINCLASS;
 			
 			
-			_fuelClusters = ALIVE_clustersCivMarine select 2;
+			_fuelClusters = ALIVE_clustersCivFuel select 2;
 			_fuelClusters = [_fuelClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_fuelClusters = [_fuelClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_fuelClusters = [_fuelClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -491,8 +491,10 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------			
 			
 			
+			// Load static data
+			
 			if(isNil "ALIVE_unitBlackist") then {
-				_file = "\x\alive\addons\mil_placement\vehicles\static_vehicle_data.sqf";				
+				_file = "\x\alive\addons\mil_placement\static\staticData.sqf";				
 				call compile preprocessFileLineNumbers _file;
 			};
 			

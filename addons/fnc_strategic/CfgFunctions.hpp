@@ -136,6 +136,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_strategic\fnc_generateParkingPosition.sqf";
 				recompile = 1;
 			};
+			class getParkingPosition {
+				description = "Gets a parking position for a building";
+				file = "\x\alive\addons\fnc_strategic\fnc_getParkingPosition.sqf";
+				recompile = 1;
+			};
+			class findBuildingsInClusterNodes {
+				description = "Find building names in cluster nodes";
+				file = "\x\alive\addons\fnc_strategic\fnc_findBuildingsInClusterNodes.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };

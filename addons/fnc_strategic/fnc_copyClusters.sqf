@@ -29,7 +29,7 @@ nil
 
 
 private ["_clusters","_sizeFilter","_priorityFilter","_clustersCopy","_priority",
-"_size","_nodes","_newNodes","_parkingPositions","_newParkingPositions","_cluster"];
+"_size","_nodes","_newNodes","_cluster"];
 
 _clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
 _sizeFilter = [_this, 1, 0, [0]] call BIS_fnc_param;
@@ -52,13 +52,6 @@ _clustersCopy = [];
 		
 		[_cluster,"nodes",_newNodes] call ALIVE_fnc_hashSet;
 		
-		_parkingPositions = [_x,"parkingPositions"] call ALIVE_fnc_hashGet;
-		_newParkingPositions = [];
-		{
-			_newParkingPositions set [count _newParkingPositions, _x];
-		} forEach _parkingPositions;
-		
-		[_cluster,"parkingPositions",_newParkingPositions] call ALIVE_fnc_hashSet;		
 		[_cluster,"clusterID",[_x,"clusterID"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 		[_cluster,"center",[_x,"center"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 		[_cluster,"size",_size] call ALIVE_fnc_hashSet;

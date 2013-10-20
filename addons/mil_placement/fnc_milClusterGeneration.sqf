@@ -27,6 +27,11 @@ nil
 ---------------------------------------------------------------------------- */
 
 private ["_obj_array","_types","_clusters","_clusters_tmp","_size"];
+
+if(isNil "ALIVE_militaryHQBuildingTypes") then {
+	_file = "\x\alive\addons\mil_placement\static\staticData.sqf";
+	call compile preprocessFileLineNumbers _file;
+};
 			
 			
 // Find HQ locations
@@ -35,18 +40,7 @@ private ["_clusters_hq","_clusters_copy_hq"];
 
 "MO - Searching HQ locations" call ALiVE_fnc_logger;
 
-_types = [
-	"barrack",
-	"cargo_hq_",
-	"miloffices",
-	"mil_house",
-	"mil_controltower",
-	"barrack",
-	"miloffices",
-	"cargo_tower"
-];
-
-_clusters_hq = [_types] call ALIVE_fnc_findTargets;
+_clusters_hq = [ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_hq = [_clusters_hq, "MIL", 50, "ColorRed"] call ALIVE_fnc_setTargets;
 _clusters_hq = [_clusters_hq] call ALIVE_fnc_consolidateClusters;
 			
@@ -61,25 +55,12 @@ _clusters = +_clusters_hq;
 private ["_clusters_mil_air","_clusters_civ_air","_clusters_air","_clusters_copy_air"];
 
 "MO - Searching airfield locations" call ALiVE_fnc_logger;
-_types = [
-	"tenthangar",
-	"mil_hangar"				
-];
-_clusters_mil_air = [_types] call ALIVE_fnc_findTargets;
+
+_clusters_mil_air = [ALIVE_militaryAirBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_mil_air = [_clusters_mil_air, "MIL", 20, "ColorOrange"] call ALIVE_fnc_setTargets;
 
 // Find civ air locations
-_types = [
-	"ss_hangar",
-	"hangar_2",
-	"hangar",				
-	"runway_beton",
-	"runway_end",
-	"runway_main",
-	"runway_secondary",
-	"runwayold"
-];
-_clusters_civ_air = [_types] call ALIVE_fnc_findTargets;
+_clusters_civ_air = [ALIVE_civilianAirBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_civ_air = [_clusters_civ_air, "MIL", 10, "ColorOrange"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -99,21 +80,11 @@ _clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 private ["_clusters_mil_heli","_clusters_civ_heli","_clusters_copy_heli"];
 
 "MO - Searching helipad locations" call ALiVE_fnc_logger;
-_types = [
-	"helipadempty",
-	"helipadsquare",
-	"heli_h_army"
-];
-_clusters_mil_heli = [_types] call ALIVE_fnc_findTargets;
+_clusters_mil_heli = [ALIVE_militaryHeliBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_mil_heli = [_clusters_mil_heli, "MIL", 20, "ColorYellow"] call ALIVE_fnc_setTargets;
 
 // Find civ heli locations
-_types = [
-	"helipadempty",
-	"heli_h_civil",
-	"heli_h_rescue"
-];
-_clusters_civ_heli = [_types] call ALIVE_fnc_findTargets;
+_clusters_civ_heli = [ALIVE_civilianHeliBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_civ_heli = [_clusters_civ_heli, "MIL", 10, "ColorYellow"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -135,24 +106,7 @@ private ["_clusters_mil"];
 "MO - Searching military locations" call ALiVE_fnc_logger;
 
 // Military targets
-_types = [
-	"airport_tower",
-	"airport",
-	"radar",
-	"bunker",
-	"cargo_house_v",
-	"cargo_patrol_",
-	"research",
-	"deerstand",
-	"hbarrier",
-	"mil_wall",
-	"fortification",
-	//"mil_wired",
-	"razorwire",
-	"dome",
-	"vez"
-];
-_clusters_mil = [_types] call ALIVE_fnc_findTargets;
+_clusters_mil = [ALIVE_militaryBuildingTypes] call ALIVE_fnc_findTargets;
 _clusters_mil = [_clusters_mil, "MIL", 0, "ColorGreen"] call ALIVE_fnc_setTargets;
 
 // Consolidate locations
@@ -170,23 +124,6 @@ _clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 {
 	[_x, "debug", true] call ALIVE_fnc_cluster;
 } forEach _clusters;
-
-
-
-// Generate parking positions
-// ------------------------------------------------------------------
-
-"MO - Generating Parking Positions" call ALiVE_fnc_logger;
-[true] call ALIVE_fnc_timer;
-_types = [
-	"airport",
-	"bunker",
-	"cargo_house_v",
-	"cargo_patrol_",
-	"research"
-];
-[_clusters,_types] call ALIVE_fnc_generateParkingPositions;
-[] call ALIVE_fnc_timer;
 
 
 
@@ -230,4 +167,4 @@ _clusterCount = _clusterCount + count _clusters_copy_heli;
 
 copyToClipboard _exportString;
 ["Military Objectives generation complete, results have been copied to the clipboard"] call ALIVE_fnc_dump;
-["Should be pasted in file: fnc_strategic\clusters\clusters.%1_mil.sqf", _worldName] call ALIVE_fnc_dump;
+["Should be pasted in file: mil_placement\clusters\clusters.%1_mil.sqf", _worldName] call ALIVE_fnc_dump;

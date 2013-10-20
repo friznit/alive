@@ -1,0 +1,92 @@
+Generating Cluster Data
+==========================================================================
+
+Indexes
+--------------------------------------------------------------------------
+
+Run Index Creation:
+
+utils/tools/ALIVE_get_raw_indexes.bat
+
+Indexes will be created in fnc_strategic/indexes/
+
+Run Index parser:
+
+utils/tools/ALIVE_raw_index_parser.ps1
+
+
+
+
+Military Clusters
+--------------------------------------------------------------------------
+
+
+
+Run Cluster Generation:
+
+execVM "\x\alive\addons\mil_placement\tests\test_clusterGeneration.sqf"
+
+Once completed paste the results in:
+
+mil_placement\clusters\clusters.WORLDNAME_mil.sqf
+
+Run a find and replace for ; and replace with :\r\n on the file.
+
+
+Merge sector data with cluster data:
+
+execVM "\x\alive\addons\fnc_analysis\tests\test_appendClustersMil.sqf"
+
+Once completed paste the results in a temp file
+Run a find and replace for ; and replace with :\r\n on the file.
+
+Copy the contents of the file to the bottom of the grid data file replacing the existing 
+cluster data sections
+
+fnc_analysis\data\data.WORLDNAME.sqf
+
+
+Debug
+
+execVM "\x\alive\addons\mil_placement\tests\test_clusterVisualisation.sqf"
+
+Debug grid data merge
+
+execVM "\x\alive\addons\fnc_analysis\tests\test_staticMapAnalysis.sqf"
+
+
+
+
+Civilian Clusters
+--------------------------------------------------------------------------
+
+Run Cluster Generation:
+
+execVM "\x\alive\addons\civ_placement\tests\test_clusterGeneration.sqf"
+
+Once completed paste the results in:
+
+civ_placement\clusters\clusters.WORLDNAME_civ.sqf
+
+Run a find and replace for ; and replace with :\r\n on the file.
+
+
+Merge sector data with cluster data:
+
+execVM "\x\alive\addons\fnc_analysis\tests\test_appendClustersCiv.sqf"
+
+Once completed paste the results in a temp file
+Run a find and replace for ; and replace with :\r\n on the file.
+
+Copy the contents of the file to the bottom of the grid data file replacing the existing 
+cluster data sections
+
+fnc_analysis\data\data.WORLDNAME.sqf
+
+Debug
+
+execVM "\x\alive\addons\civ_placement\tests\test_clusterVisualisation.sqf"
+
+Debug grid data merge
+
+execVM "\x\alive\addons\fnc_analysis\tests\test_staticMapAnalysis.sqf"
