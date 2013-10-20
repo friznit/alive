@@ -548,7 +548,7 @@ switch(_operation) do {
 					{
 						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
 						
-						_buildings = [_nodes, ALIVE_airBuildings] call ALIVE_fnc_findBuildingsInClusterNodes;
+						_buildings = [_nodes, ALIVE_airBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 						
 						//[_x, "debug", true] call ALIVE_fnc_cluster;
 						{													

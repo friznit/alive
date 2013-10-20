@@ -46,9 +46,9 @@ ALIVE_factionDefaultGuards = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultGuards, "BLU_G_F", "IRG_InfSquad_Weapons"] call ALIVE_fnc_hashSet;
 
 ALIVE_factionDefaultSupports = [] call ALIVE_fnc_hashCreate;
-[ALIVE_factionDefaultSupports, "OPF_F", ["O_Truck_02_Ammo_F","O_Truck_02_box_F","O_Truck_02_fuel_F","O_Truck_02_medical_F","Box_East_AmmoVeh_F"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupports, "IND_F", ["I_Truck_02_ammo_F","I_Truck_02_box_F","I_Truck_02_fuel_F","I_Truck_02_medical_F","Box_IND_AmmoVeh_F"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupports, "BLU_F", ["B_Truck_01_ammo_F","B_Truck_01_fuel_F","B_Truck_01_medical_F","B_Truck_01_Repair_F","Box_NATO_AmmoVeh_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupports, "OPF_F", ["O_Truck_02_Ammo_F","O_Truck_02_box_F","O_Truck_02_fuel_F","O_Truck_02_medical_F"]] call ALIVE_fnc_hashSet; // ,"Box_East_AmmoVeh_F"
+[ALIVE_factionDefaultSupports, "IND_F", ["I_Truck_02_ammo_F","I_Truck_02_box_F","I_Truck_02_fuel_F","I_Truck_02_medical_F"]] call ALIVE_fnc_hashSet; // ,"Box_IND_AmmoVeh_F"
+[ALIVE_factionDefaultSupports, "BLU_F", ["B_Truck_01_ammo_F","B_Truck_01_fuel_F","B_Truck_01_medical_F","B_Truck_01_Repair_F"]] call ALIVE_fnc_hashSet; // ,"Box_NATO_AmmoVeh_F"
 [ALIVE_factionDefaultSupports, "BLU_G_F", ["B_G_Van_01_fuel_F"]] call ALIVE_fnc_hashSet;
 
 ALIVE_factionDefaultSupplies = [] call ALIVE_fnc_hashCreate;
