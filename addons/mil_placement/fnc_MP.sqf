@@ -650,7 +650,7 @@ switch(_operation) do {
 									_vehicleClass = _landClasses call BIS_fnc_selectRandom;
 								};								
 														
-								_parkingPosition = [_vehicleClass,_building,true] call ALIVE_fnc_getParkingPosition;
+								_parkingPosition = [_vehicleClass,_building] call ALIVE_fnc_getParkingPosition;
 								_positionOK = true;
 								
 								{
