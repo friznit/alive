@@ -479,7 +479,7 @@ switch(_operation) do {
 			private ["_countAirUnits"];
 			_countAirUnits = 0;
 			
-			if(_ambientVehicleAmount > 0) then {
+			if(_placeHelis) then {
 			
 				_airClasses = [0,_faction,"Plane"] call ALiVE_fnc_findVehicleType;			
 				_airClasses = _airClasses - ALIVE_vehicleBlacklist;
@@ -518,9 +518,9 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
 					
 			
-			// Spawn land units				
+			// Spawn ambient vehicles	
 			
-			private ["_countLandUnits"];
+			private ["_countLandUnits","_carClasses","_armorClasses","_landClasses"];
 			_countLandUnits = 0;
 
 			if(_ambientVehicleAmount > 0) then {
@@ -533,6 +533,7 @@ switch(_operation) do {
 				if(count _landClasses > 0) then {
 							
 					{
+						/*
 						_parkingPositions = [_x, "parkingPositions"] call ALIVE_fnc_hashGet;
 						_countParkingPositions = count _parkingPositions;
 						
@@ -572,7 +573,113 @@ switch(_operation) do {
 								_countProfiles = _countProfiles + 1;
 								_countLandUnits = _countLandUnits + 1;
 							};
-						} forEach _parkingPositions;				
+						} forEach _parkingPositions;
+						*/
+						
+						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+						
+						_types = [
+							"airport",
+							"bunker",
+							"cargo_house_v",
+							"cargo_patrol_",
+							"research"
+						];
+						
+						_buildings = [];
+						
+						{
+							_node = _x;
+							_model = toLower(getText(configFile >> "CfgVehicles" >> (typeOf _node) >> "model"));
+							_isBuilding = false;
+							
+							{
+								if([_model, _x] call CBA_fnc_find != -1) then {
+									_isBuilding = true;
+								};
+							} forEach _types;
+							
+							if(_isBuilding) then {
+								_buildings set [count _buildings, _x];
+							};
+						} forEach _nodes;
+						
+						_countBuildings = count _buildings;
+						_parkingChance = 0.1 * _ambientVehicleAmount;
+						
+						["COUNT BUILDING: %1",_countBuildings] call ALIVE_fnc_dump;
+						
+						if(_countBuildings > 50) then {
+							_parkingChance = 0.1 * _ambientVehicleAmount;
+						};
+						
+						if(_countBuildings > 40 && _countBuildings < 50) then {
+							_parkingChance = 0.2 * _ambientVehicleAmount;
+						};
+						
+						if(_countBuildings > 30 && _countBuildings < 40) then {
+							_parkingChance = 0.3 * _ambientVehicleAmount;
+						};
+						
+						if(_countBuildings > 20 && _countBuildings < 30) then {
+							_parkingChance = 0.4 * _ambientVehicleAmount;
+						};
+						
+						if(_countBuildings > 10 && _countBuildings < 20) then {
+							_parkingChance = 0.6 * _ambientVehicleAmount;
+						};
+						
+						if(_countBuildings > 0 && _countBuildings < 10) then {
+							_parkingChance = 0.7 * _ambientVehicleAmount;
+						};											
+						
+						{
+							if(random 1 < _parkingChance) then {
+							
+								_building = _x;
+
+								_direction = direction _building + (floor random 4)*90;
+								_bbox = boundingbox _building;
+								_bboxA = (_bbox select 0);
+								_bboxB = (_bbox select 1);
+								_bboxX = abs(_bboxA select 0) + abs(_bboxB select 0);
+								_bboxY = abs(_bboxA select 1) + abs(_bboxB select 1);
+								_difmin = (_bboxX min _bboxY);
+								_difmax = (_bboxX max _bboxY);
+								_dif = _difmin/2 + sqrt(_difmin)*0.3;								
+								
+								if (_difmax < 15) then {
+									_buildingPosition = position _building; //_obj modeltoworld [0,0,0];
+									_position = [
+										(_buildingPosition select 0)+(sin (_direction + 90) * _dif),
+										(_buildingPosition select 1)+(cos (_direction + 90) * _dif),
+										0
+									];									
+								};
+								
+								_nearRoads = _position nearRoads 10;
+								if(count _nearRoads > 0) then
+								{
+									_road = _nearRoads select 0;
+									_roadConnectedTo = roadsConnectedTo _road;
+									_connectedRoad = _roadConnectedTo select 0;
+									if!(isNil '_connectedRoad') then {
+										_direction = [_road, _connectedRoad] call BIS_fnc_DirTo;
+									};
+								};
+								
+								_vehicleClass = _landClasses call BIS_fnc_selectRandom;
+								
+								//_testPosition = _position findEmptyPosition[2, 100, "B_Truck_01_mover_F"];								
+								//min max nearest water gradient shore
+								_testPosition = [_position,0,10,0.5,0,20,0] call BIS_fnc_findSafePos;
+								
+								[_testPosition] call ALIVE_fnc_spawnDebugMarker;								
+								[_vehicleClass,_side,_faction,_testPosition,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+							};
+							
+						} forEach _buildings;
+						
 					} forEach _clusters;
 				};					
 			};

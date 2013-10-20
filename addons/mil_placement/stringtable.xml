@@ -68,6 +68,12 @@
 <Key ID="STR_ALIVE_MP_PLACEMENT_COMMENT">
 	<English>Place units or objectives only</English>
 </Key>
+<Key ID="STR_ALIVE_MP_PLACEMENT_YES">
+	<English>Place Units</English>
+</Key>
+<Key ID="STR_ALIVE_MP_PLACEMENT_NO">
+	<English>Objectives Only</English>
+</Key>
 <Key ID="STR_ALIVE_MP_SIZE">
 	<English>Force Size:</English>
 </Key>
@@ -126,10 +132,10 @@
 	<English>Faction of the units to be placed (BLU_F, OPF_F, IND_F, BLU_G_F)</English>
 </Key>
 <Key ID="STR_ALIVE_MP_PLACE_HELI">
-	<English>Place helis:</English>
+	<English>Place air units:</English>
 </Key>
 <Key ID="STR_ALIVE_MP_PLACE_HELI_COMMENT">
-	<English>Place helicopters on pads</English>
+	<English>Place air units in objectives</English>
 </Key>
 <Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT">
 	<English>Place ambient vehicles</English>

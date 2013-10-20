@@ -68,6 +68,12 @@
 <Key ID="STR_ALIVE_CP_PLACEMENT_COMMENT">
 	<English>Place units or objectives only</English>
 </Key>
+<Key ID="STR_ALIVE_CP_PLACEMENT_YES">
+	<English>Place Units</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PLACEMENT_NO">
+	<English>Objectives Only</English>
+</Key>
 <Key ID="STR_ALIVE_CP_SIZE">
 	<English>Force Size:</English>
 </Key>

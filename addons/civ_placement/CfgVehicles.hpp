@@ -105,15 +105,15 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CP_PLACEMENT_COMMENT";
                                 class Values
                                 {
-                                        class Yes
+                                         class Yes
                                         {
-                                                name = "Yes";
+                                                name = "$STR_ALIVE_CP_PLACEMENT_YES";
                                                 value = true;
                                                 default = true;
                                         };
                                         class No
                                         {
-                                                name = "No";
+                                                name = "$STR_ALIVE_CP_PLACEMENT_NO";
                                                 value = false;
                                         };
                                 };
