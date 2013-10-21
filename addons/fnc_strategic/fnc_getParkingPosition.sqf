@@ -35,7 +35,7 @@ _debug = if(count _this > 2) then {_this select 2} else {false};
 
 _result = [];
 
-private ["_direction","_bbox","_bboxA","_bboxB","_bboxX","_bboxY","_difmin","_difmax","_dif","_buildingPosition","_position"];
+private ["_direction","_bbox","_bboxA","_bboxB","_bboxX","_bboxY","_difmin","_difmax","_dif","_buildingPosition","_position","_safePos"];
 
 _position = position _building;
 _direction = direction _building + (floor random 4)*90;
@@ -60,9 +60,21 @@ if (_difmax < 15) then {
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
+	//["POS1: %1",_position] call ALIVE_fnc_dump;
 	[_position, 1] call ALIVE_fnc_spawnDebugMarker;
+	[_position, 1] call ALIVE_fnc_placeDebugMarker;
 };
 // DEBUG -------------------------------------------------------------------------------------
+
+
+// pos min max nearest water gradient shore
+_safePos = [_position,0,10,5,0,20,0] call BIS_fnc_findSafePos;
+
+if(((_safePos select 0) == 10801.9) && ((_safePos select 1) == 10589.6)) then {
+	_position = [_position,0,50,5,0,20,0] call BIS_fnc_findSafePos;
+}else{
+	_position = _safePos;
+};
 
 
 private ["_nearRoads","_road","_roadConnectedTo","_connectedRoad"];
@@ -77,14 +89,13 @@ if(count _nearRoads > 0) then
 		_direction = [_road, _connectedRoad] call BIS_fnc_DirTo;
 	};
 };
-						
-//min max nearest water gradient shore
-_position = [_position,0,10,5,0,20,0] call BIS_fnc_findSafePos;
 
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
+	//["POS2: %1",_position] call ALIVE_fnc_dump;
 	[_position] call ALIVE_fnc_spawnDebugMarker;
+	[_position] call ALIVE_fnc_placeDebugMarker;
 };
 // DEBUG -------------------------------------------------------------------------------------
 

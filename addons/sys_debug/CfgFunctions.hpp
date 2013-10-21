@@ -26,6 +26,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_debug\fnc_spawnDebugMarker.sqf";
 				recompile = 1;
 			};
+			class placeDebugMarker {
+				description = "placeDebugMarker";
+				file = "\x\alive\addons\sys_debug\fnc_placeDebugMarker.sqf";
+				recompile = 1;
+			};
 			class cursorTargetInfo {
 				description = "cursorTargetInfo";
 				file = "\x\alive\addons\sys_debug\fnc_cursorTargetInfo.sqf";

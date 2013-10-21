@@ -321,9 +321,12 @@ switch(_operation) do {
 					
 					_row = floor(_relativePositionX / _sectorWidth);
 					_column = floor(_relativePositionY / _sectorHeight);
+					
+					_result = [_row, _column];
+				}else{
+					["!!!!!POS OUTSIDE GRID: %1", _position] call ALIVE_fnc_dump;
+					_result = [0, 0];
 				};
-
-				_result = [_row, _column];
         };
 		case "gridIndexToSector": {
 				private["_rowIndex","_columnIndex","_grid","_column"];
