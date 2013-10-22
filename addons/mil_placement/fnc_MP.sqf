@@ -358,11 +358,11 @@ switch(_operation) do {
 				_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
 				_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 				_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-				///*
+				/*
 				{
 					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
 				} forEach _heliClusters;
-				//*/
+				*/
             };
             
             [_logic, "objectivesHQ", _HQClusters] call MAINCLASS;
