@@ -323,43 +323,51 @@ switch(_operation) do {
 			
 			private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
 			
-			waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")}};
+			//waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")}};
             
-			_HQClusters = ALIVE_clustersMilHQ select 2;
-			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _HQClusters;
-			*/
-			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;		
+            _HQClusters = DEFAULT_OBJECTIVES_HQ;
+			_airClusters = DEFAULT_OBJECTIVES_AIR;
+			_heliClusters = DEFAULT_OBJECTIVES_HELI;
+            
+            if !(isnil "ALIVE_clustersMilHQ") then {
+				_HQClusters = ALIVE_clustersMilHQ select 2;
+				_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _HQClusters;
+				*/
+            };
 			
+			if !(isnil "ALIVE_clustersMilAir") then {
+				_airClusters = ALIVE_clustersMilAir select 2;
+				_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _airClusters;
+				*/
+            };
 			
-			_airClusters = ALIVE_clustersMilAir select 2;
-			_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _airClusters;
-			*/
-			[_logic, "objectivesAir", _airClusters] call MAINCLASS;
-			
-			
-			_heliClusters = ALIVE_clustersMilHeli select 2;
-			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
-			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			///*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _heliClusters;
-			//*/
+            if !(isnil "ALIVE_clustersMilHeli") then {
+				_heliClusters = ALIVE_clustersMilHeli select 2;
+				_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
+				_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				///*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _heliClusters;
+				//*/
+            };
+            
+            [_logic, "objectivesHQ", _HQClusters] call MAINCLASS;
+            [_logic, "objectivesAir", _airClusters] call MAINCLASS;
 			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
-			
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
