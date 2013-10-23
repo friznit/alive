@@ -131,6 +131,12 @@
 <Key ID="STR_ALIVE_MP_FACTION_COMMENT">
 	<English>Faction of the units to be placed (BLU_F, OPF_F, IND_F, BLU_G_F)</English>
 </Key>
+<Key ID="STR_ALIVE_MP_CREATE_HQ">
+    <English>Create HQ:</English>
+</Key>
+<Key ID="STR_ALIVE_MP_CREATE_HQ_COMMENT">
+    <English>Select HQ objective close to the module</English>
+</Key>
 <Key ID="STR_ALIVE_MP_PLACE_HELI">
 	<English>Place air units:</English>
 </Key>

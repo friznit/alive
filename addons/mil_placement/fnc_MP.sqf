@@ -134,6 +134,20 @@ switch(_operation) do {
 	case "ambientVehicleAmount": {
 		_result = [_logic,_operation,_args,DEFAULT_AMBIENT_VEHICLE_AMOUNT] call ALIVE_fnc_OOsimpleOperation;
 	};
+	case "createHQ": {
+    		if (typeName _args == "BOOL") then {
+    			_logic setVariable ["createHQ", _args];
+    		} else {
+    			_args = _logic getVariable ["createHQ", false];
+    		};
+    		if (typeName _args == "STRING") then {
+    			if(_args == "true") then {_args = true;} else {_args = false;};
+    			_logic setVariable ["createHQ", _args];
+    		};
+    		ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+    		_result = _args;
+    	};
 	case "placeHelis": {
 		if (typeName _args == "BOOL") then {
 			_logic setVariable ["placeHelis", _args];
@@ -329,11 +343,11 @@ switch(_operation) do {
 			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
+			///*
 			{
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
 			} forEach _HQClusters;
-			*/
+			//*/
 			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;		
 			
 			
@@ -353,11 +367,11 @@ switch(_operation) do {
 			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
 			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			///*
+			/*
 			{
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
 			} forEach _heliClusters;
-			//*/
+			*/
 			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
 			
 			

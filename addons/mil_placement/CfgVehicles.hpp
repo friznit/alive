@@ -207,6 +207,25 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_MP_FACTION_COMMENT";
                                 defaultValue = "OPF_F";
                         };
+                        class createHQ
+                        {
+                                displayName = "$STR_ALIVE_MP_CREATE_HQ";
+                                description = "$STR_ALIVE_MP_CREATE_HQ_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
 						class placeHelis
                         {
                                 displayName = "$STR_ALIVE_MP_PLACE_HELI";
