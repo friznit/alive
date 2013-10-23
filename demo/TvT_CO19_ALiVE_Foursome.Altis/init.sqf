@@ -64,5 +64,3 @@ ABORTCHECK = false;
 
 
 } else {};
-
-execNow "init_SR.sqf";
