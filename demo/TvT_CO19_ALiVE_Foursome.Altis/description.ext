@@ -6,14 +6,6 @@ class header {
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
 
-#include "scripts\NEO_radio\hpp\main.hpp"
-	
-	class RscTitles 
-	{    										
-		#include "scripts\NEO_radio\hpp\titles.hpp"
-	};
-
-
 author = ALiVE Studios || Mission by Highhead;
 onLoadMission = "Iran has invaded Lemnos in a sudden strike! Greek forces have been pushed back to the south, while in the north local guerilla tryed to oppose the Iranian assault. A few NATO forces have been deployed in the northeast to support the 2 struggling forces and greek army can regain control over the island!";
 onLoadIntroTime = true;

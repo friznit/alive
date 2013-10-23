@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_TRANSPORT">
+	<English>Combat Support Transport</English>
+</Key>
+<Key ID="STR_ALIVE_TRANSPORT_COMMENT">
+	<English>Transport Module for ALiVE Combat Support</English>
+</Key>
+<Key ID="STR_ALIVE_TRANSPORT_CALLSIGN">
+	<English>Callsign</English>
+</Key>
+<Key ID="STR_ALIVE_TRANSPORT_CALLSIGN_DESC">
+	<English>Enter the Callsign, ensure that it is unique</English>
+</Key>
+<Key ID="STR_ALIVE_TRANSPORT_TYPE">
+	<English>Transport Vehicle Type</English>
+</Key>
+<Key ID="STR_ALIVE_TRANSPORT_TYPE_DESC">
+	<English>Type of Transport i.e B_Heli_Transport_01_camo_F</English>
+</Key>
+
+</Container></Package></Project>
