@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_CAS">
+	<English>Combat Support CAS</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_COMMENT">
+	<English>XXXX</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_CALLSIGN">
+	<English>Callsign</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_CALLSIGN_DESC">
+	<English>Enter the Callsign, ensure that it is unique</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_TYPE">
+	<English>CAS Vehuicle Type</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_TYPE_DESC">
+	<English>Type of CAS i.e B_Heli_Attack_01_F or I_Plane_Fighter_03_CAS_F</English>
+</Key>
+
+</Container></Package></Project>
