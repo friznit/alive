@@ -50,6 +50,8 @@ ARJay
 #define DEFAULT_SIZE_FILTER "0"
 #define DEFAULT_PRIORITY_FILTER "0"
 #define DEFAULT_AMBIENT_VEHICLE_AMOUNT "1"
+#define DEFAULT_HQ_BUILDING objNull
+#define DEFAULT_HQ_CLUSTER []
 
 private ["_logic","_operation","_args","_result"];
 
@@ -246,6 +248,14 @@ switch(_operation) do {
 	case "objectivesVehicle": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_VEHICLE] call ALIVE_fnc_OOsimpleOperation;
 	};
+	// Return the HQ Building
+    case "HQBuilding": {
+        _result = [_logic,_operation,_args,DEFAULT_HQ_BUILDING] call ALIVE_fnc_OOsimpleOperation;
+    };
+    // Return the HQ Cluster
+    case "HQCluster": {
+        _result = [_logic,_operation,_args,DEFAULT_HQ_CLUSTER] call ALIVE_fnc_OOsimpleOperation;
+    };
 	// Main process
 	case "init": {
         if (isServer) then {
@@ -423,7 +433,7 @@ switch(_operation) do {
 			"_airClasses","_node","_buildings"];
             
 		
-			_debug = [_logic, "debug"] call MAINCLASS;		
+			_debug = [_logic, "debug"] call MAINCLASS;
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
@@ -509,8 +519,11 @@ switch(_operation) do {
 
                         if(_hqBuilding in _nodes) then {
                             [_x, "priority",1000] call ALIVE_fnc_hashSet;
+                            [_logic, "HQCluster", _x] call MAINCLASS;
                         };
                     } forEach _clusters;
+
+                    [_logic, "HQBuilding", _hqBuilding] call MAINCLASS;
                 }else{
                     ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dumpR;
                 };
