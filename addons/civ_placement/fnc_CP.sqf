@@ -283,7 +283,6 @@ switch(_operation) do {
 			_sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
 			_priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
 			
-			
 			_clusters = ALIVE_clustersCiv select 2;
 			_clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
 			// cull clusters outside of TAOR marker if defined
@@ -298,107 +297,123 @@ switch(_operation) do {
 			//*/
 			// store the clusters on the logic
 			[_logic, "objectives", _clusters] call MAINCLASS;
-			
-			
+
 			private ["_HQClusters","_powerClusters","_commsClusters","_marineClusters","_railClusters","_fuelClusters","_constructionClusters"];
+
+			_HQClusters = DEFAULT_OBJECTIVES_HQ;
+			_powerClusters = DEFAULT_OBJECTIVES_POWER;
+			_commsClusters = DEFAULT_OBJECTIVES_COMMS;
+			_marineClusters = DEFAULT_OBJECTIVES_MARINE;
+			_railClusters = DEFAULT_OBJECTIVES_RAIL;
+			_fuelClusters = DEFAULT_OBJECTIVES_FUEL;
+			_constructionClusters = DEFAULT_OBJECTIVES_CONSTRUCTION;
+			_settlementClusters = DEFAULT_OBJECTIVES_SETTLEMENT;
+            
+            if !(isnil "ALIVE_clustersCivHQ") then {
+				_HQClusters = ALIVE_clustersCivHQ select 2;
+				_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _HQClusters;
+				*/
+			};
 			
+            if !(isnil "ALIVE_clustersCivPower") then {
+				_powerClusters = ALIVE_clustersCivPower select 2;
+				_powerClusters = [_powerClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_powerClusters = [_powerClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_powerClusters = [_powerClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _powerClusters;
+				*/
+			};
 			
-			_HQClusters = ALIVE_clustersCivHQ select 2;
-			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _HQClusters;
-			*/
-			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;			
+            if !(isnil "ALIVE_clustersCivComms") then {
+				_commsClusters = ALIVE_clustersCivComms select 2;
+				_commsClusters = [_commsClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_commsClusters = [_commsClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_commsClusters = [_commsClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _commsClusters;
+				*/
+			};
 			
+            if !(isnil "ALIVE_clustersCivMarine") then {
+				_marineClusters = ALIVE_clustersCivMarine select 2;
+				_marineClusters = [_marineClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_marineClusters = [_marineClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_marineClusters = [_marineClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _marineClusters;
+				*/
+			};
 			
-			_powerClusters = ALIVE_clustersCivPower select 2;
-			_powerClusters = [_powerClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_powerClusters = [_powerClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_powerClusters = [_powerClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _powerClusters;
-			*/
-			[_logic, "objectivesPower", _powerClusters] call MAINCLASS;
+            if !(isnil "ALIVE_clustersCivRail") then {
+				_railClusters = ALIVE_clustersCivRail select 2;
+				_railClusters = [_railClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_railClusters = [_railClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_railClusters = [_railClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _railClusters;
+				*/
+			};
 			
+            if !(isnil "ALIVE_clustersCivFuel") then {
+				_fuelClusters = ALIVE_clustersCivFuel select 2;
+				_fuelClusters = [_fuelClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_fuelClusters = [_fuelClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_fuelClusters = [_fuelClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _fuelClusters;
+				*/
+			};
 			
-			_commsClusters = ALIVE_clustersCivComms select 2;
-			_commsClusters = [_commsClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_commsClusters = [_commsClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_commsClusters = [_commsClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _commsClusters;
-			*/
-			[_logic, "objectivesComms", _commsClusters] call MAINCLASS;
+            if !(isnil "ALIVE_clustersCivConstruction") then {
+				_constructionClusters = ALIVE_clustersCivConstruction select 2;
+				_constructionClusters = [_constructionClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_constructionClusters = [_constructionClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_constructionClusters = [_constructionClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _constructionClusters;
+				*/
+			};
 			
-			
-			_marineClusters = ALIVE_clustersCivMarine select 2;
-			_marineClusters = [_marineClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_marineClusters = [_marineClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_marineClusters = [_marineClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _marineClusters;
-			*/
-			[_logic, "objectivesMarine", _marineClusters] call MAINCLASS;
-			
-			
-			_railClusters = ALIVE_clustersCivRail select 2;
-			_railClusters = [_railClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_railClusters = [_railClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_railClusters = [_railClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _railClusters;
-			*/
+            if !(isnil "ALIVE_clustersCivSettlement") then {
+				_settlementClusters = ALIVE_clustersCivSettlement select 2;
+				_settlementClusters = [_settlementClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_settlementClusters = [_settlementClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_settlementClusters = [_settlementClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _settlementClusters;
+				*/
+			};
+            
+            [_logic, "objectivesHQ", _HQClusters] call MAINCLASS;
+            [_logic, "objectivesPower", _powerClusters] call MAINCLASS;
+            [_logic, "objectivesComms", _commsClusters] call MAINCLASS;
+            [_logic, "objectivesMarine", _marineClusters] call MAINCLASS;
 			[_logic, "objectivesRail", _railClusters] call MAINCLASS;
-			
-			
-			_fuelClusters = ALIVE_clustersCivFuel select 2;
-			_fuelClusters = [_fuelClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_fuelClusters = [_fuelClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_fuelClusters = [_fuelClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _fuelClusters;
-			*/
-			[_logic, "objectivesFuel", _fuelClusters] call MAINCLASS;
-			
-			
-			_constructionClusters = ALIVE_clustersCivConstruction select 2;
-			_constructionClusters = [_constructionClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_constructionClusters = [_constructionClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_constructionClusters = [_constructionClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _constructionClusters;
-			*/
-			[_logic, "objectivesConstruction", _constructionClusters] call MAINCLASS;
-			
-			
-			_settlementClusters = ALIVE_clustersCivSettlement select 2;
-			_settlementClusters = [_settlementClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_settlementClusters = [_settlementClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_settlementClusters = [_settlementClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _settlementClusters;
-			*/
-			[_logic, "objectivesSettlement", _settlementClusters] call MAINCLASS;
-			
-			
+            [_logic, "objectivesFuel", _fuelClusters] call MAINCLASS;
+            [_logic, "objectivesConstruction", _constructionClusters] call MAINCLASS;
+            [_logic, "objectivesSettlement", _settlementClusters] call MAINCLASS;
+            			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE CP - Startup completed"] call ALIVE_fnc_dump;
@@ -413,7 +428,6 @@ switch(_operation) do {
 				[] call ALIVE_fnc_timer;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
 			
 			if(_placement) then {
 				if(count _clusters > 0) then {

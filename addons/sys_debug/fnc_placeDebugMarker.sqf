@@ -27,7 +27,7 @@ ARJay
 
 private ["_indicators","_position","_type","_class","_result"];
 
-_indicators = ["waypoint","mil_dot","mil_box","mil_triangle"];
+_indicators = ["waypoint","mil_dot","mil_box","mil_triangle","mil_flag"];
 	
 _position = _this select 0;
 _type = if(count _this > 1) then {_this select 1} else {0};

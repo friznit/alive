@@ -107,12 +107,24 @@ switch(_operation) do {
                     missionNameSpace setVariable ["OPCOM_instances",(missionNameSpace getvariable ["OPCOM_instances",[]]) + [_handler]];
 
 					//Retrieve module-object variables
-                    _debug = _logic getvariable ["debug",true];
                     _type = _logic getvariable ["controltype","invasion"];
-                    _factions = call compile (_logic getvariable ["factions","['OPF_F']"]);
+                    _faction1 = _logic getvariable ["faction1","OPF_F"];
+                    _faction2 = _logic getvariable ["faction2","NONE"];
+                    _faction3 = _logic getvariable ["faction3","NONE"];
+                    _faction4 = _logic getvariable ["faction4","NONE"];
+                    _factions = call compile (_logic getvariable ["factions","[]"]);
+                    _debug = call compile (_logic getvariable ["debug","false"]);
+                    
+                    //Get position
                     _position = getposATL _logic;
-                    _side = "EAST";
+                    
+                    //Collect factions and determine sides
+                    //If missionmaker did not overwrite default factions then use the ones from the module dropdowns
+                    if ((count _factions) == 0) then {
+						{if (!(_x == "NONE") && {!(_x in _factions)}) then {_factions set [count _factions,_x]}} foreach [_faction1,_faction2,_faction3,_faction4];
+                    };
 
+                    _side = "EAST";
                     switch (getNumber(configfile >> "CfgFactionClasses" >> _factions select 0 >> "side")) do {
                 		case 0 : {_side = "EAST"};
                 		case 1 : {_side = "WEST"};
@@ -137,13 +149,7 @@ switch(_operation) do {
                     _objectives = [];
                     for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 						private ["_obj"];
-                        
-                        //waituntil {
-							/*sleep 10; "OPCOM - Waiting for objectives..." call ALiVE_fnc_logger;*/ 
-							//_obj = nil; 
-							_obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
-							//(!(isnil "_obj") && {count _obj > 0})
-						//};
+						_obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
                         _objectives = _objectives + _obj;
                     };
 
@@ -155,7 +161,7 @@ switch(_operation) do {
                     [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
                     [_handler, "position",_position] call ALiVE_fnc_HashSet;
                     [_handler, "simultanobjectives",10] call ALiVE_fnc_HashSet;
-                    [_handler, "debug",(call compile _debug)] call ALiVE_fnc_HashSet;
+                    [_handler, "debug",_debug] call ALiVE_fnc_HashSet;
                     
                     switch (_type) do {
 						case ("invasion") : {
@@ -174,7 +180,56 @@ switch(_operation) do {
 					CONTROLLER  - coordination
 					*/
                     
-                    //wait random time to ensure opcoms analysis doesnt run at the same time
+                    //Before starting check if startup parameters are ok!
+					//Check if there is no selected faction used by another OPCOM
+                    _OPCOMS = (missionNameSpace getvariable ["OPCOM_instances",[]]) - [_handler];
+                    _errorMessage = "Faction %1 is already used by another OPCOM (side: %2)! Please change the faction!";
+                    _error1 = ""; _error2 = ""; _exit = false; //defaults
+                    {
+                        _Selected_OPCOM = _x;
+                        //Waituntil init has passed on that instance
+                        waituntil {sleep 1; !(isnil {[_Selected_OPCOM, "factions"] call ALiVE_fnc_HashGet})};
+                        
+                        _pos_OPCOM_selected = [_Selected_OPCOM, "position"] call ALiVE_fnc_HashGet;
+                        _side_OPCOM_selected = [_Selected_OPCOM, "side"] call ALiVE_fnc_HashGet;
+                        _factions_OPCOM_selected = [_Selected_OPCOM, "factions"] call ALiVE_fnc_HashGet;
+                        
+                        //Not really beautiful to identify opcom by position (array check wont work), but it works...
+                        if !(str(_position) == str(_pos_OPCOM_selected)) then {
+	                        {
+	                            _own_faction = _x;
+	                            if (_own_faction in _factions_OPCOM_selected) exitwith {
+	                                _exit = true; _error1 = _own_faction; _error2 = _side_OPCOM_selected};
+	                        } foreach _factions;
+	                        if (_exit) exitwith {_exit = true};
+                        };
+                    } foreach _OPCOMS;
+                    if (_exit) exitwith {
+                        // debug ---------------------------------------
+							if (_debug) then {[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR};
+						// debug ---------------------------------------
+                    };
+                    
+                    //Still there? Cool, check if there are objectives
+                    _errorMessage = "There are no objectives for this OPCOM instance! Please assign Military Placement Objectives!%1%2";
+                    _error1 = ""; _error2 = ""; //defaults
+                    if ((count _objectives) < 1) exitwith {
+                         // debug ---------------------------------------
+							if (_debug) then {[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR};
+						// debug ---------------------------------------
+                    };
+                    
+                    //Still there? Awesome, check if there are different sides within the factions
+                    _errorMessage = "There are different sides within this OPCOM %1! Please only select one side per OPCOM!%2";
+                    _error1 = _side; _error2 = ""; _exit = false;  //defaults
+                    _exit = !(({(getNumber(configfile >> "CfgFactionClasses" >> (_factions select 0) >> "side")) == (getNumber(configfile >> "CfgFactionClasses" >> _x >> "side"))} count _factions) == (count _factions));
+                    if (_exit) exitwith {
+                         // debug ---------------------------------------
+							if (_debug) then {[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR};
+						// debug ---------------------------------------
+                    };
+                    
+                    //Still there? Mega, wait random time to ensure all opcoms analysis wont run at the same time on start!
                     sleep random(25);
 
                     //done this way to easily switch between spawn and call for testing purposes

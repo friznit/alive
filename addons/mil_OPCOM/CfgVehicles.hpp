@@ -50,11 +50,151 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class faction1
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_FACTION";
+                                description = "$STR_ALIVE_OPCOM_FACTION_COMMENT";
+                                class Values
+                                {
+                                        class NATO
+                                        {
+                                                name = "NATO";
+                                                value = "BLU_F";
+                                                default = "BLU_F";
+                                                defaultValue = "BLU_F";
+                                        };
+                                        class IRAN
+                                        {
+                                                name = "IRAN";
+                                                value = "OPF_F";
+                                        };
+                                        class GREEKARMY
+                                        {
+                                                name = "AAF";
+                                                value = "IND_F";
+                                        };
+                                        class REBELS
+                                        {
+                                                name = "REBELS";
+                                                value = "BLU_G_F";
+                                        };
+                                        class NONE
+                                        {
+                                                name = "NONE";
+                                                value = "NONE";
+                                        };
+                                };
+                        };
+                        class faction2
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_FACTION";
+                                description = "$STR_ALIVE_OPCOM_FACTION_COMMENT";
+                                class Values
+                                {
+                                		class NONE
+                                        {
+                                                name = "NONE";
+                                                value = "NONE";
+                                                default = "NONE";
+                                                defaultValue = "NONE";
+                                        };
+                                        class NATO
+                                        {
+                                                name = "NATO";
+                                                value = "BLU_F";
+                                        };
+                                        class IRAN
+                                        {
+                                                name = "IRAN";
+                                                value = "OPF_F";
+                                        };
+                                        class GREEKARMY
+                                        {
+                                                name = "AAF";
+                                                value = "IND_F";
+                                        };
+                                        class REBELS
+                                        {
+                                                name = "REBELS";
+                                                value = "BLU_G_F";
+                                        };
+                                };
+                        };
+                        class faction3
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_FACTION";
+                                description = "$STR_ALIVE_OPCOM_FACTION_COMMENT";
+                                class Values
+                                {
+                                		class NONE
+                                        {
+                                                name = "NONE";
+                                                value = "NONE";
+                                                default = "NONE";
+                                                defaultValue = "NONE";
+                                        };
+                                        class NATO
+                                        {
+                                                name = "NATO";
+                                                value = "BLU_F";
+                                        };
+                                        class IRAN
+                                        {
+                                                name = "IRAN";
+                                                value = "OPF_F";
+                                        };
+                                        class GREEKARMY
+                                        {
+                                                name = "AAF";
+                                                value = "IND_F";
+                                        };
+                                        class REBELS
+                                        {
+                                                name = "REBELS";
+                                                value = "BLU_G_F";
+                                        };
+                                };
+                        };
+                        class faction4
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_FACTION";
+                                description = "$STR_ALIVE_OPCOM_FACTION_COMMENT";
+                                class Values
+                                {
+                                		class NONE
+                                        {
+                                                name = "NONE";
+                                                value = "NONE";
+                                                default = "NONE";
+                                                defaultValue = "NONE";
+                                        };
+                                        class NATO
+                                        {
+                                                name = "NATO";
+                                                value = "BLU_F";
+                                        };
+                                        class IRAN
+                                        {
+                                                name = "IRAN";
+                                                value = "OPF_F";
+                                        };
+                                        class GREEKARMY
+                                        {
+                                                name = "AAF";
+                                                value = "IND_F";
+                                        };
+                                        class REBELS
+                                        {
+                                                name = "REBELS";
+                                                value = "BLU_G_F";
+                                        };
+                                };
+                        };
                         class factions
                         {
                                 displayName = "$STR_ALIVE_OPCOM_FACTIONS";
                                 description = "$STR_ALIVE_OPCOM_FACTIONS_COMMENT";
-                                defaultValue = ["OPF_F"];
+                                defaultValue = [];
                         };
                 };
                 

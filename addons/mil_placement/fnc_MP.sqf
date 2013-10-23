@@ -337,43 +337,51 @@ switch(_operation) do {
 			
 			private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
 			
-			waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")}};
+			//waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")}};
             
-			_HQClusters = ALIVE_clustersMilHQ select 2;
-			_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			///*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _HQClusters;
-			//*/
-			[_logic, "objectivesHQ", _HQClusters] call MAINCLASS;		
+            _HQClusters = DEFAULT_OBJECTIVES_HQ;
+			_airClusters = DEFAULT_OBJECTIVES_AIR;
+			_heliClusters = DEFAULT_OBJECTIVES_HELI;
+            
+            if !(isnil "ALIVE_clustersMilHQ") then {
+				_HQClusters = ALIVE_clustersMilHQ select 2;
+				_HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _HQClusters;
+				*/
+            };
 			
+			if !(isnil "ALIVE_clustersMilAir") then {
+				_airClusters = ALIVE_clustersMilAir select 2;
+				_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+				_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _airClusters;
+				*/
+            };
 			
-			_airClusters = ALIVE_clustersMilAir select 2;
-			_airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-			_airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _airClusters;
-			*/
-			[_logic, "objectivesAir", _airClusters] call MAINCLASS;
-			
-			
-			_heliClusters = ALIVE_clustersMilHeli select 2;
-			_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
-			_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-			_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
-			{
-				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-			} forEach _heliClusters;
-			*/
+            if !(isnil "ALIVE_clustersMilHeli") then {
+				_heliClusters = ALIVE_clustersMilHeli select 2;
+				_heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;	
+				_heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+				_heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+				/*
+				{
+					[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+				} forEach _heliClusters;
+				*/
+            };
+            
+            [_logic, "objectivesHQ", _HQClusters] call MAINCLASS;
+            [_logic, "objectivesAir", _airClusters] call MAINCLASS;
 			[_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
-			
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
@@ -390,7 +398,7 @@ switch(_operation) do {
 					// start placement
 					[_logic, "placement"] call MAINCLASS;
 				}else{
-					["ALIVE MP - Warning no usuable locations found for placement, you need to inlcude military locations within the TAOR marker"] call ALIVE_fnc_dumpR;
+					["ALIVE MP - Warning no locations found for placement, you need to inlcude military locations within the TAOR marker",_] call ALIVE_fnc_dumpR;
 					// set module as started
 					_logic setVariable ["startupComplete", true];
 				};
@@ -443,6 +451,7 @@ switch(_operation) do {
 			_type = [_logic, "type"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
 			_ambientVehicleAmount = parseNumber([_logic, "ambientVehicleAmount"] call MAINCLASS);
+			_createHQ = [_logic, "createHQ"] call MAINCLASS;
 			_placeHelis = [_logic, "placeHelis"] call MAINCLASS;
 			_placeSupplies = [_logic, "placeSupplies"] call MAINCLASS;
 			
@@ -455,6 +464,7 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Size: %2 Type: %3 SideNum: %4 Side: %5 Faction: %6",_faction,_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;
+				["ALIVE MP [%1] - Ambient Vehicles: %2 Create HQ: %3 Place Helis: %4 Place Supplies: %5",_faction,_ambientVehicleAmount,_createHQ,_placeHelis,_placeSupplies] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------			
 			
@@ -465,7 +475,47 @@ switch(_operation) do {
 				_file = "\x\alive\addons\mil_placement\static\staticData.sqf";
 				call compile preprocessFileLineNumbers _file;
 			};
-			
+
+
+			// Create HQ
+
+			private ["_modulePosition","_sortedData","_closestHQCluster","_hqBuilding"];
+
+			if(_createHQ) then {
+
+			    _modulePosition = position _logic;
+
+                if(_countHQClusters > 0) then {
+
+                    _sortedData = [_HQClusters,[],{_modulePosition distance ([_x, "center"] call ALIVE_fnc_hashGet)},"ASCEND"] call BIS_fnc_sortBy;
+
+                    _closestHQCluster = _sortedData select 0;
+
+                    _nodes = [_closestHQCluster, "nodes"] call ALIVE_fnc_hashGet;
+
+                    _buildings = [_nodes, ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
+                    _hqBuilding = _buildings select 0;
+
+
+                    // DEBUG -------------------------------------------------------------------------------------
+                    if(_debug) then {
+                        [position _hqBuilding, 4] call ALIVE_fnc_placeDebugMarker;
+                    };
+                    // DEBUG -------------------------------------------------------------------------------------
+
+
+                    {
+                        _nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+
+                        if(_hqBuilding in _nodes) then {
+                            [_x, "priority",1000] call ALIVE_fnc_hashSet;
+                        };
+                    } forEach _clusters;
+                }else{
+                    ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dumpR;
+                };
+			};
+
 			
 			// Spawn supplies in objectives
 			
@@ -664,7 +714,7 @@ switch(_operation) do {
 									_vehicleClass = _landClasses call BIS_fnc_selectRandom;
 								};								
 														
-								_parkingPosition = [_vehicleClass,_building, _debug] call ALIVE_fnc_getParkingPosition;
+								_parkingPosition = [_vehicleClass,_building] call ALIVE_fnc_getParkingPosition;
 								_positionOK = true;
 								
 								{
