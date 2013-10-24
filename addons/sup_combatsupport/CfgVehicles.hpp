@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_CombatSupportInit";
                 isGlobal = 1;
                 isPersistent = 1;
-                icon = "x\alive\addons\sys_newsfeed\icon_sys_newsfeed.paa";
-                picture = "x\alive\addons\sys_newsfeed\icon_sys_newsfeed.paa";
+                icon = "x\alive\addons\sup_combatsupport\icon_sup_combatsupport.paa";
+                picture = "x\alive\addons\sup_combatsupport\icon_sup_combatsupport.paa";
                  class Arguments
                 {
                         class combatsupport_item

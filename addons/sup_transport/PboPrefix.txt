@@ -1,4 +1,4 @@
-x\alive\addons\sup_cas
+x\alive\addons\sup_transport
 ======<HEADER>=======
 prefix=x\alive\addons\sup_transport
 product=Arma 3

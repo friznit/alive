@@ -1,6 +1,6 @@
-x\alive\addons\sup_combatSupport
+x\alive\addons\sup_combatsupport
 ======<HEADER>=======
-prefix=x\alive\addons\sup_combatSupport
+prefix=x\alive\addons\sup_combatsupport
 product=Arma 3
 version=1
 Pbo Type is: Arma Addon
