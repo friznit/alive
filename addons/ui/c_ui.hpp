@@ -112,17 +112,17 @@ class CUI_List {
 	autoScrollRewind = 0;
 	maxHistoryDelay = 1.0;
 
-	arrowFull = "\ca\ui\data\ui_arrow_top_active_ca.paa";
-	arrowEmpty = "\ca\ui\data\ui_arrow_top_ca.paa";
+	/*arrowFull = "\ca\ui\data\ui_arrow_top_active_ca.paa";
+	arrowEmpty = "\ca\ui\data\ui_arrow_top_ca.paa";*/
 	
 	class ScrollBar	{
 		color[] = {CUI_Colours_WindowText, 3/4};
 		colorActive[] = {CUI_Colours_WindowText, 1};
 		colorDisabled[] = {CUI_Colours_WindowText, 1/2};
-		thumb = "\ca\ui\data\ui_scrollbar_thumb_ca.paa";
+		/*thumb = "\ca\ui\data\ui_scrollbar_thumb_ca.paa";
 		arrowFull = "\ca\ui\data\ui_arrow_top_active_ca.paa";
 		arrowEmpty = "\ca\ui\data\ui_arrow_top_ca.paa";
-		border = "\ca\ui\data\ui_border_scroll_ca.paa";
+		border = "\ca\ui\data\ui_border_scroll_ca.paa";*/
 	};
 };
 
@@ -178,17 +178,19 @@ class CUI_Combo {
 	autoScrollRewind = 0;
 	maxHistoryDelay = 1.0;
 	
+	/*
 	arrowFull = "\ca\ui\data\ui_arrow_top_active_ca.paa";
 	arrowEmpty = "\ca\ui\data\ui_arrow_top_ca.paa";
+	*/
 	
 	class ScrollBar	{
 		color[] = {CUI_Colours_WindowText, 3/4};
 		colorActive[] = {CUI_Colours_WindowText, 1};
 		colorDisabled[] = {CUI_Colours_WindowText, 1/2};
-		thumb = "\ca\ui\data\ui_scrollbar_thumb_ca.paa";
+		/*thumb = "\ca\ui\data\ui_scrollbar_thumb_ca.paa";
 		arrowFull = "\ca\ui\data\ui_arrow_top_active_ca.paa";
 		arrowEmpty = "\ca\ui\data\ui_arrow_top_ca.paa";
-		border = "\ca\ui\data\ui_border_scroll_ca.paa";
+		border = "\ca\ui\data\ui_border_scroll_ca.paa";*/
 	};
 };
 
