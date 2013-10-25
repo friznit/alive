@@ -335,12 +335,12 @@ switch(_operation) do {
 			_clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 			// cull clusters inside of Blacklist marker if defined
 			_clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-			/*
+			///*
 			// switch on debug for all clusters if debug on
 			{
 				[_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
 			} forEach _clusters;
-			*/
+			//*/
 			// store the clusters on the logic
 			[_logic, "objectives", _clusters] call MAINCLASS;
 			
