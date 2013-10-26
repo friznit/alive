@@ -146,6 +146,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_strategic\fnc_findBuildingsInClusterNodes.sqf";
 				recompile = 1;
 			};
+			class GetNearestAirportID {
+				description = "Gets the ID of nearest Airport, to be used with landAt";
+				file = "\x\alive\addons\fnc_strategic\fnc_GetNearestAirportID.sqf";
+				recompile = 1;
+			};
 		};
 	};
 };
