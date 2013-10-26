@@ -97,7 +97,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.93.2";
+		briefingName="ALiVE Showcase - Foursome v0.93.7";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -534,7 +534,7 @@ class Mission
 						};
 						class Item1
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sys_profile";
 							typeName="plotSectors";
 						};
@@ -1660,7 +1660,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={26770.375,22.974003,24573.73};
+					position[]={26804.371,23.470184,24584.914};
 					class args
 					{
 						items=1;
@@ -1690,8 +1690,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={26749.975,20.779203,24611.311};
-					azimut=128.70386;
+					position[]={26849.891,22.519426,24633.162};
+					azimut=41.029186;
 					class args
 					{
 						items=2;
@@ -1727,8 +1727,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={26752.07,21.533283,24586.557};
-					azimut=130.57991;
+					position[]={26833.322,22.840904,24615.279};
+					azimut=38.353012;
 					class args
 					{
 						items=2;
@@ -1764,8 +1764,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={26768.492,22.069185,24606.748};
-					azimut=128.75887;
+					position[]={26868.65,22.206947,24650.449};
+					azimut=39.233944;
 					class args
 					{
 						items=2;
@@ -1801,8 +1801,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={26730.664,20.219978,24627.951};
-					azimut=128.10126;
+					position[]={26816.1,23.238993,24600.945};
+					azimut=39.812016;
 					class args
 					{
 						items=2;
@@ -1838,8 +1838,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={26793.133,22.213905,24621.949};
-					azimut=41.847645;
+					position[]={27154.027,24.800049,24904.209};
+					azimut=215.80513;
 					class args
 					{
 						items=2;

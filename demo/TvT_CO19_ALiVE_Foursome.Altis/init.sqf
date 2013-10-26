@@ -22,20 +22,12 @@ titleText ["ALiVE | Foursome", "BLACK IN",3];
 		
 			_cam CameraEffect ["Terminate","Back"];
 			CamDestroy _cam;
-
-
-
-
-	//playmusic "Track09_Night_percussions";
-	//60 fadesound 0.5;
-	//2 fademusic 1;
-
 [] spawn {	
 	// set fog level 
-	0 setfog [0.1,0.001,100];
+	0 setfog [0.02,0.001,50];
 	sleep 30;
 
-	3600 setfog [0.01,0.04,50];
+	3600 setfog [0.01,0.001,50];
 };
 
     
