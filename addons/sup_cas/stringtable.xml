@@ -15,7 +15,7 @@
 	<English>Enter the Callsign, ensure that it is unique</English>
 </Key>
 <Key ID="STR_ALIVE_CAS_TYPE">
-	<English>CAS Vehuicle Type</English>
+	<English>CAS Vehicle Type</English>
 </Key>
 <Key ID="STR_ALIVE_CAS_TYPE_DESC">
 	<English>Type of CAS i.e B_Heli_Attack_01_F or I_Plane_Fighter_03_CAS_F</English>

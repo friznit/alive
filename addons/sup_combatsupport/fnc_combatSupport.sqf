@@ -77,12 +77,14 @@ switch(_operation) do {
 						            switch (typeOf ((synchronizedObjects _logic) select _i)) do {
 						                    case ("ALiVE_sup_cas") : {
 						                    private ["_position","_callsign","_type"];
-						                                     
+			
                                             _position = getposATL ((synchronizedObjects _logic) select _i);
                                             _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
                                             _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
-                                 
-                                            _casArray = [_position,90, _type, _callsign, 0,{}];
+                                            _direction =  getDir ((synchronizedObjects _logic) select _i);
+                                            _id = [_position] call ALiVE_fnc_getNearestAirportID;
+
+                                            _casArray = [_position,_direction, _type, _callsign, _id,{}];
                                             _casArrays set [count _casArrays,_casArray];
 						                                    };
 						                    case ("ALiVE_SUP_TRANSPORT") : {
@@ -91,8 +93,9 @@ switch(_operation) do {
 						                        _position = getposATL ((synchronizedObjects _logic) select _i);
 						                        _callsign = ((synchronizedObjects _logic) select _i) getvariable ["transport_callsign","FRIZ ONE"];
 						                        _type = ((synchronizedObjects _logic) select _i) getvariable ["transport_type","B_Heli_Transport_01_camo_F"];
+						                        _direction =  getDir ((synchronizedObjects _logic) select _i);
 						             
-						                        _transportArray = [_position,90,_type, _callsign,["pickup", "land", "land (eng off)", "move", "circle"],{}];
+						                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle"],{}];
 						                        _transportArrays set [count _transportArrays,_transportArray];
 						                    };
 						            };
