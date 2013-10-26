@@ -76,7 +76,7 @@ _menus =
 				"",
 				localize "STR_ALIVE_CS_COMMENT",
                  "",
-                 -1, 1, true
+                 -1, 1, player hasweapon (NEO_radioLogic getvariable ["combatsupport_item","LaserDesignator"])
 			]
 		]
 	]

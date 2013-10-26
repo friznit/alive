@@ -69,14 +69,6 @@ switch(_operation) do {
                         //not publicVariable to clients yet to let it init before
                         NEO_radioLogic = _logic;
 
-                        private ["_side"];
-						_side = West;
-						
-						
-						private ["_t", "_c", "_a"];
-							_t = [];
-							_c = [];
-							_a = [];
 
 						   _transportArrays = [];
 						    _casArrays = [];
@@ -86,12 +78,12 @@ switch(_operation) do {
 						                    case ("ALiVE_sup_cas") : {
 						                    private ["_position","_callsign","_type"];
 						                                     
-						                                            _position = getposATL ((synchronizedObjects _logic) select _i);
-						                                            _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
-						                                            _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
-						                                 
-						                                            _casArray = [_position,90, _type, _callsign, 0,{}];
-						                                            _casArrays set [count _casArrays,_casArray];
+                                            _position = getposATL ((synchronizedObjects _logic) select _i);
+                                            _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
+                                            _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
+                                 
+                                            _casArray = [_position,90, _type, _callsign, 0,{}];
+                                            _casArrays set [count _casArrays,_casArray];
 						                                    };
 						                    case ("ALiVE_SUP_TRANSPORT") : {
 						                       private ["_position","_callsign","_type"];
@@ -108,19 +100,35 @@ switch(_operation) do {
 						         
 						    SUP_CASARRAYS  = _casArrays; PublicVariable "SUP_CASARRAYS";
 						    SUP_TRANSPORTARRAYS  = _transportArrays; PublicVariable "SUP_TRANSPORTARRAYS";
+						     _sides = [WEST,EAST,INDEPENDENT];
+						    {
+                            NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _x], [],true];
+							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _x], [],true];
+						} foreach _sides;
 
-                            NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _side], [],true];
-							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _side], [],true];
-							NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _side], [],true];
+						private ["_t", "_c", "_a"];
+							_t = [];
+							_c = [];
+							_a = [];
 
 						  {
-								private ["_pos", "_dir", "_type", "_callsign", "_tasks", "_code"];
+								private ["_pos", "_dir", "_type", "_callsign", "_tasks", "_code","_side"];
 								_pos = _x select 0; _pos set [2, 0];
 								_dir = _x select 1;
 								_type = _x select 2;
 								_callsign = toUpper (_x select 3);
 								_tasks = _x select 4;
 								_code = _x select 5;
+                                
+                                _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
+								_side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
+								
+			                    switch (_side) do {
+			                		case 0 : {_side = EAST};
+			                		case 1 : {_side = WEST};
+			                		case 2 : {_side = RESISTANCE};
+			                		default {_side = EAST};
+			            		};
 								
 								private ["_veh"];
 								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
@@ -160,13 +168,23 @@ switch(_operation) do {
 							} forEach SUP_TRANSPORTARRAYS;
 						
 						{
-								private ["_pos", "_dir", "_type", "_callsign", "_airport", "_code"];
+								private ["_pos", "_dir", "_type", "_callsign", "_airport", "_code","_side"];
 								_pos = _x select 0; _pos set [2, 0];
 								_dir = _x select 1;
 								_type = _x select 2;
 								_callsign = toUpper (_x select 3);
 								_airport = _x select 4;
 								_code = _x select 5;
+                                
+                                _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
+								_side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
+
+			                    switch (_side) do {
+			                		case 0 : {_side = EAST};
+			                		case 1 : {_side = WEST};
+			                		case 2 : {_side = INDEPENDENT};
+			                		default {_side = EAST};
+			            		};
 								
 								private ["_veh"];
 								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
@@ -191,9 +209,10 @@ switch(_operation) do {
 								
 							} forEach SUP_CASARRAYS;
 							
-							NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _side], _t, true];
-							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _side], _c, true];
-                            
+							  
+							NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _sides], _t, true];
+							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _sides], _c, true];
+   
                             //Now PV the logic to all clients indicate its ready
                             _logic setVariable ["init", true,true];
                             publicVariable "NEO_radioLogic";
@@ -219,12 +238,7 @@ switch(_operation) do {
 					if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true};
 				    
 					// check if player has item defined in module TODO!
-					/*_item = _logic getvariable ["combatsupport_item","LaserDesignator"];
-					ITEM = _item;
-					publicVariable "ITEM";
-					diag_log format["_item: %1",_item];
-					 if(player hasWeapon _item) then {player sidechat "item: %1, _item";} else {player sidechat "No Item";};
-				 if(player hasWeapon _item) then {*/
+
 				 		// initialise main menu
 				    [
 				            "player",
@@ -237,7 +251,6 @@ switch(_operation) do {
 				    ] call ALIVE_fnc_flexiMenu_Add;
                 };
             };
-        //};
         case "destroy": {
                 if (isServer) then {
                         // if server

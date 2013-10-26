@@ -1,4 +1,4 @@
-#define COMPONENT sup_transport
+#define COMPONENT SUP_TRANSPORT
 #include <\x\alive\addons\main\script_mod.hpp>
 
 #ifdef DEBUG_ENABLED_SUP_TRANSPORT
