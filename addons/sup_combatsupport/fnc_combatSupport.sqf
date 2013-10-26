@@ -70,42 +70,43 @@ switch(_operation) do {
                         NEO_radioLogic = _logic;
 
 
-						   _transportArrays = [];
-						    _casArrays = [];
+						_transportArrays = [];
+						_casArrays = [];
+						_sides = [WEST,EAST,RESISTANCE];
 						     
-						        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
-						            switch (typeOf ((synchronizedObjects _logic) select _i)) do {
-						                    case ("ALiVE_sup_cas") : {
-						                    private ["_position","_callsign","_type"];
-			
-                                            _position = getposATL ((synchronizedObjects _logic) select _i);
-                                            _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
-                                            _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
-                                            _direction =  getDir ((synchronizedObjects _logic) select _i);
-                                            _id = [_position] call ALiVE_fnc_getNearestAirportID;
+				        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
+				            switch (typeOf ((synchronizedObjects _logic) select _i)) do {
+				                    case ("ALiVE_sup_cas") : {
+				                    private ["_position","_callsign","_type"];
+	
+                                    _position = getposATL ((synchronizedObjects _logic) select _i);
+                                    _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
+                                    _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
+                                    _direction =  getDir ((synchronizedObjects _logic) select _i);
+                                    _id = [_position] call ALiVE_fnc_getNearestAirportID;
 
-                                            _casArray = [_position,_direction, _type, _callsign, _id,{}];
-                                            _casArrays set [count _casArrays,_casArray];
-						                                    };
-						                    case ("ALiVE_SUP_TRANSPORT") : {
-						                       private ["_position","_callsign","_type"];
-						                 
-						                        _position = getposATL ((synchronizedObjects _logic) select _i);
-						                        _callsign = ((synchronizedObjects _logic) select _i) getvariable ["transport_callsign","FRIZ ONE"];
-						                        _type = ((synchronizedObjects _logic) select _i) getvariable ["transport_type","B_Heli_Transport_01_camo_F"];
-						                        _direction =  getDir ((synchronizedObjects _logic) select _i);
-						             
-						                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle"],{}];
-						                        _transportArrays set [count _transportArrays,_transportArray];
-						                    };
-						            };
-						        };
-						         
-						    SUP_CASARRAYS  = _casArrays; PublicVariable "SUP_CASARRAYS";
-						    SUP_TRANSPORTARRAYS  = _transportArrays; PublicVariable "SUP_TRANSPORTARRAYS";
-						     _sides = [WEST,EAST,INDEPENDENT];
-						    {
-                            NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _x], [],true];
+                                    _casArray = [_position,_direction, _type, _callsign, _id,{}];
+                                    _casArrays set [count _casArrays,_casArray];
+				                                    };
+				                    case ("ALiVE_SUP_TRANSPORT") : {
+				                       private ["_position","_callsign","_type"];
+				                 
+				                        _position = getposATL ((synchronizedObjects _logic) select _i);
+				                        _callsign = ((synchronizedObjects _logic) select _i) getvariable ["transport_callsign","FRIZ ONE"];
+				                        _type = ((synchronizedObjects _logic) select _i) getvariable ["transport_type","B_Heli_Transport_01_camo_F"];
+				                        _direction =  getDir ((synchronizedObjects _logic) select _i);
+				             
+				                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle"],{}];
+				                        _transportArrays set [count _transportArrays,_transportArray];
+				                    };
+				            };
+				        };
+					         
+					    SUP_CASARRAYS  = _casArrays; PublicVariable "SUP_CASARRAYS";
+					    SUP_TRANSPORTARRAYS  = _transportArrays; PublicVariable "SUP_TRANSPORTARRAYS";
+						    
+                        {
+                        	NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _x], [],true];
 							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _x], [],true];
 						} foreach _sides;
 
@@ -167,7 +168,8 @@ switch(_operation) do {
 								
 								_t = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", _side];
 								_t set [count _t, [_veh, _grp, _callsign]];
-								
+                                
+                                NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _side], _t,true];
 							} forEach SUP_TRANSPORTARRAYS;
 						
 						{
@@ -185,7 +187,7 @@ switch(_operation) do {
 			                    switch (_side) do {
 			                		case 0 : {_side = EAST};
 			                		case 1 : {_side = WEST};
-			                		case 2 : {_side = INDEPENDENT};
+			                		case 2 : {_side = RESISTANCE};
 			                		default {_side = EAST};
 			            		};
 								
@@ -209,12 +211,9 @@ switch(_operation) do {
 								
 								_c = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", _side];
 								_c set [count _c, [_veh, _grp, _callsign]];
-								
+                                
+                                NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _side], _c,true];
 							} forEach SUP_CASARRAYS;
-							
-							  
-							NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _sides], _t, true];
-							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _sides], _c, true];
    
                             //Now PV the logic to all clients indicate its ready
                             _logic setVariable ["init", true,true];
