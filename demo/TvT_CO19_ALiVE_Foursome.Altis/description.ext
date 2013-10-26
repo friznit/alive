@@ -1,0 +1,24 @@
+//http://community.bistudio.com/wiki/description.ext#Header_Class
+class header {
+	gametype = COOP;
+	minplayers = 1;
+	maxplayers = 19;
+	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
+};
+
+author = ALiVE Studios || Mission by Highhead;
+onLoadMission = "Iran has invaded Lemnos in a sudden strike! Greek forces have been pushed back to the south, while in the north local guerilla tryed to oppose the Iranian assault. A few NATO forces have been deployed in the northeast to support the 2 struggling forces and greek army can regain control over the island!";
+onLoadIntroTime = true;
+onLoadMissionTime = true;
+onLoadName = ALiVE | Foursome;
+loadScreen = "x\alive\addons\mil_opcom\showcases\opcom_spleen.stratis\rsc\logo_alive.paa";
+
+aiKills = 0;
+briefing = 1;
+debriefing = 1;
+respawn = 3;
+respawnDelay = 15;
+RespawnDialog = 0;
+disabledAI = 0;
+enableDebugConsole = 1;
+allowFunctionsRecompile = 1;
