@@ -32,4 +32,7 @@
 <Key ID="STR_ALIVE_MI_INTEL_CHANCE_TOTAL">
 	<English>Total coverage of intel</English>
 </Key>
+<Key ID="STR_ALIVE_SD">
+    <English>Military Sector Display</English>
+</Key>
 </Container></Package></Project>

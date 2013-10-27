@@ -30,25 +30,6 @@ class CfgVehicles {
                                         };
                                 };
                         };
-						class plotSectors
-                        {
-                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_PLOT_SECTORS";
-                                description = "$STR_ALIVE_PROFILE_SYSTEM_PLOT_SECTORS_COMMENT";
-                                class Values
-                                {
-                                        class Yes
-                                        {
-                                                name = "Yes";
-                                                value = true;
-                                                default = true;
-                                        };
-                                        class No
-                                        {
-                                                name = "No";
-                                                value = false;
-                                        };
-                                };
-                        };
 						class syncronised
                         {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_SYNC";

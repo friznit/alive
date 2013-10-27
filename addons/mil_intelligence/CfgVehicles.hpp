@@ -62,4 +62,15 @@ class CfgVehicles {
                 };
                 
         };
+        class ADDON2 : ModuleAliveMilitaryBase
+        {
+                scope = 2;
+                displayName = "$STR_ALIVE_SD";
+                function = "ALIVE_fnc_SDInit";
+                functionPriority = 5;
+                isGlobal = 1;
+                isPersistent = 1;
+                icon = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
+                picture = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
+        };
 };

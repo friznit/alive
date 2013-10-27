@@ -125,7 +125,7 @@ switch(_operation) do {
 						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 						
 						// create profiles for all map units that dont have profiles
-						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;						
+						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;
 						
 						// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 						[ALIVE_profileHandler, "debug", _debug] call ALIVE_fnc_profileHandler;
@@ -160,7 +160,7 @@ switch(_operation) do {
 						
 						// start the profile spawner
 						_profileSpawnerFSM = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;				
+						[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;
 						
 						// set module as started
 						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
