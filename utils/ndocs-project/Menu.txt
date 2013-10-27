@@ -83,6 +83,8 @@ Group: ALiVE  {
          File: ALiVE_fnc_hashSet  (main/fnc_hashSet.sqf)
          File: ALiVE_fnc_OOsimpleOperation  (main/fnc_OOsimpleOperation.sqf)
          File: ALIVE_fnc_sendHint  (main/fnc_sendHint.sqf)
+         File: ALIVE_fnc_Nuke  (main/fnc_Nuke.sqf)
+         File: fnc_anyAutonomousInRange  (main/fnc_anyAutonomousInRange.sqf)
          }  # Group: Main
 
       Group: Sys_adminactions  {
@@ -133,13 +135,22 @@ Group: ALiVE  {
 
       Group: Fnc_strategic  {
 
+         File: ALIVE_fnc_clustersInsideMarker  (fnc_strategic/fnc_clustersInsideMarker.sqf)
+         File: ALIVE_fnc_clustersOutsideMarker  (fnc_strategic/fnc_clustersOutsideMarker.sqf)
          File: ALIVE_fnc_consolidateClusters  (fnc_strategic/fnc_consolidateClusters.sqf)
+         File: ALIVE_fnc_copyClusters  (fnc_strategic/fnc_copyClusters.sqf)
+         File: ALIVE_fnc_findBuildingsInClusterNodes  (fnc_strategic/fnc_findBuildingsInClusterNodes.sqf)
          File: ALIVE_fnc_findClusterCenter  (fnc_strategic/fnc_findClusterCenter.sqf)
          File: ALIVE_fnc_findClusters  (fnc_strategic/fnc_findClusters.sqf)
          File: ALIVE_fnc_findFlatArea  (fnc_strategic/fnc_findFlatArea.sqf)
+         File: ALIVE_fnc_findHQ  (fnc_strategic/fnc_findHQ.sqf)
          File: ALIVE_fnc_findIndoorHousePositions  (fnc_strategic/fnc_findIndoorHousePositions.sqf)
          File: ALIVE_fnc_findNearHousePositions  (fnc_strategic/fnc_findNearHousePositions.sqf)
          File: ALIVE_fnc_findObjectID  (fnc_strategic/fnc_findObjectID.sqf)
+         File: ALIVE_fnc_findObjectIDString  (fnc_strategic/fnc_findObjectIDString.sqf)
+         File: ALIVE_fnc_findTargets  (fnc_strategic/fnc_findTargets.sqf)
+         File: ALIVE_fnc_generateParkingPosition  (fnc_strategic/fnc_generateParkingPosition.sqf)
+         File: ALIVE_fnc_generateParkingPositions  (fnc_strategic/fnc_generateParkingPositions.sqf)
          File: ALIVE_fnc_getAllEnterableHouses  (fnc_strategic/fnc_getAllEnterableHouses.sqf)
          File: ALIVE_fnc_getBuildingPositions  (fnc_strategic/fnc_getBuildingPositions.sqf)
          File: ALIVE_fnc_getEnterableHouses  (fnc_strategic/fnc_getEnterableHouses.sqf)
@@ -147,7 +158,10 @@ Group: ALiVE  {
          File: ALIVE_fnc_getNearestClusterInArray  (fnc_strategic/fnc_getNearestClusterInArray.sqf)
          File: ALIVE_fnc_getNearestObjectInArray  (fnc_strategic/fnc_getNearestObjectInArray.sqf)
          File: ALIVE_fnc_getObjectsByType  (fnc_strategic/fnc_getObjectsByType.sqf)
+         File: ALIVE_fnc_getParkingPosition  (fnc_strategic/fnc_getParkingPosition.sqf)
          File: ALIVE_fnc_isHouseEnterable  (fnc_strategic/fnc_isHouseEnterable.sqf)
+         File: ALIVE_fnc_setTargets  (fnc_strategic/fnc_setTargets.sqf)
+         File: ALIVE_fnc_staticClusterOutput  (fnc_strategic/fnc_staticClusterOutput.sqf)
          File: ALIVE_fnc_validateLocations  (fnc_strategic/fnc_validateLocations.sqf)
          File: MAINCLASS  (fnc_strategic/fnc_cluster.sqf)
          }  # Group: Fnc_strategic
@@ -163,11 +177,28 @@ Group: ALiVE  {
 
    }  # Group: ALiVE
 
+File: ALIVE_fnc_CQB  (sup_cas/fnc_CAS.sqf)
+File: ALIVE_fnc_CQB  (sup_transport/fnc_TRANSPORT.sqf)
+File: ALIVE_fnc_CQBInit  (sup_cas/fnc_CASInit.sqf)
+File: ALIVE_fnc_CQBInit  (sup_transport/fnc_TRANSPORTInit.sqf)
+File: ALIVE_fnc_crewinfo  (sys_crewinfo/fnc_crewinfo.sqf)
+File: ALIVE_fnc_crewinfoInit  (sys_crewinfo/fnc_crewinfoInit.sqf)
+File: ALIVE_fnc_GCInit  (sys_GC/fnc_GCInit.sqf)
 File: ALIVE_fnc_HAC  (sys_HAC/fnc_HAC.sqf)
 File: ALIVE_fnc_HAC_Init  (sys_HAC/fnc_HAC_Init.sqf)
 File: ALIVE_fnc_OPCOMInit  (mil_OPCOM/fnc_OPCOMInit.sqf)
 File: ALIVE_fnc_readData  (sys_data_sql/fnc_readData_sql.sqf)
 File: ALIVE_fnc_writeData  (sys_data_sql/fnc_writeData_sql.sqf)
+
+Group: Civ_placement  {
+
+   File: ALIVE_fnc_civClusterGeneration  (civ_placement/fnc_civClusterGeneration.sqf)
+   File: ALIVE_fnc_COInit  (civ_placement/fnc_CPInit.sqf)
+   File: ALIVE_fnc_CP  (civ_placement/fnc_CP.sqf)
+   }  # Group: Civ_placement
+
+File: Columns UI  (ui/c_ui.hpp)
+File: Columns UI  (ui/c_ui_.hpp)
 
 Group: Fnc_analysis  {
 
@@ -181,6 +212,8 @@ Group: Fnc_analysis  {
    File: ALIVE_fnc_gridImportStaticMapAnalysis  (fnc_analysis/fnc_gridImportStaticMapAnalysis.sqf)
    File: ALIVE_fnc_gridMapAnalysis  (fnc_analysis/fnc_gridMapAnalysis.sqf)
    File: ALIVE_fnc_sectorAnalysisBestPlaces  (fnc_analysis/fnc_sectorAnalysisBestPlaces.sqf)
+   File: ALIVE_fnc_sectorAnalysisClustersCiv  (fnc_analysis/fnc_sectorAnalysisClustersCiv.sqf)
+   File: ALIVE_fnc_sectorAnalysisClustersMil  (fnc_analysis/fnc_sectorAnalysisClustersMil.sqf)
    File: ALIVE_fnc_sectorAnalysisElevation  (fnc_analysis/fnc_sectorAnalysisElevation.sqf)
    File: ALIVE_fnc_sectorAnalysisFlatEmpty  (fnc_analysis/fnc_sectorAnalysisFlatEmpty.sqf)
    File: ALIVE_fnc_sectorAnalysisRoads  (fnc_analysis/fnc_sectorAnalysisRoads.sqf)
@@ -202,12 +235,22 @@ Group: Fnc_analysis  {
    File: ALIVE_fnc_unitArrayFilterInSector  (fnc_analysis/fnc_unitArrayFilterInSector.sqf)
    File: ALIVE_fnc_unitArraySortSide  (fnc_analysis/fnc_unitArraySortSide.sqf)
    File: MAINCLASS  (fnc_analysis/fnc_plotSectors.sqf)
-   File: MAINCLASS  (fnc_analysis/fnc_staticMapAnalysisStratis.sqf)
    File: MAINCLASS  (fnc_analysis/fnc_sectorPlot.sqf)
    File: MAINCLASS  (fnc_analysis/fnc_sectorGrid.sqf)
-   File: MAINCLASS  (fnc_analysis/fnc_staticMapAnalysisAltis.sqf)
    File: MAINCLASS  (fnc_analysis/fnc_sector.sqf)
+   File: MAINCLASS  (fnc_analysis/fnc_liveAnalysis.sqf)
    }  # Group: Fnc_analysis
+
+File: MAINCLASS  (sys_registry/fnc_registry.sqf)
+
+Group: Mil_command  {
+
+   File: ALIVE_fnc_testCommand  (mil_command/fnc_testCommand.sqf)
+   File: ALIVE_fnc_testCommand  (mil_command/fnc_buildingPatrol.sqf)
+   File: ALIVE_fnc_testManagedCommand  (mil_command/fnc_testManagedCommand.sqf)
+   File: ALIVE_fnc_testManagedCommand  (mil_command/fnc_managedBuildingPatrol.sqf)
+   File: MAINCLASS  (mil_command/fnc_commandRouter.sqf)
+   }  # Group: Mil_command
 
 Group: Mil_CQB  {
 
@@ -216,16 +259,29 @@ Group: Mil_CQB  {
    File: ALIVE_fnc_CQBsortStrategicHouses  (mil_CQB/fnc_CQBsortStrategicHouses.sqf)
    }  # Group: Mil_CQB
 
+Group: Mil_intelligence  {
+
+   File: ALIVE_fnc_MI  (mil_intelligence/fnc_MI.sqf)
+   File: ALIVE_fnc_MIInit  (mil_intelligence/fnc_MIInit.sqf)
+   File: ALIVE_fnc_SD  (mil_intelligence/fnc_SD.sqf)
+   File: ALIVE_fnc_SDInit  (mil_intelligence/fnc_SDInit.sqf)
+   }  # Group: Mil_intelligence
+
 File: mil_OPCOM/fnc_OPCOM.sqf  (mil_OPCOM/fnc_OPCOM.sqf)
 
-Group: Mil_strategic  {
+Group: Mil_placement  {
 
-   File: ALIVE_fnc_composeForce  (mil_strategic/fnc_composeForce.sqf)
-   File: ALIVE_fnc_findHQ  (mil_strategic/fnc_findHQ.sqf)
-   File: ALIVE_fnc_findTargets  (mil_strategic/fnc_findTargets.sqf)
-   File: ALIVE_fnc_SEP  (mil_strategic/fnc_SEP.sqf)
-   File: ALIVE_fnc_SEPInit  (mil_strategic/fnc_SEPInit.sqf)
-   }  # Group: Mil_strategic
+   File: ALIVE_fnc_milClusterGeneration  (mil_placement/fnc_milClusterGeneration.sqf)
+   File: ALIVE_fnc_MP  (mil_placement/fnc_MP.sqf)
+   File: ALIVE_fnc_MPInit  (mil_placement/fnc_MPInit.sqf)
+   }  # Group: Mil_placement
+
+Group: Sup_combatsupport  {
+
+   File: ALIVE_fnc_combatSupport  (sup_combatsupport/fnc_combatSupport.sqf)
+   File: ALIVE_fnc_combatSupportInit  (sup_combatsupport/fnc_combatSupportInit.sqf)
+   File: ALIVE_fnc_combatSupportMenuDef  (sup_combatsupport/fnc_combatSupportMenuDef.sqf)
+   }  # Group: Sup_combatsupport
 
 Group: Sup_multispawn  {
 
@@ -277,12 +333,28 @@ Group: Sys_debug  {
    File: ALIVE_fnc_inspectClasses  (sys_debug/fnc_inspectClasses.sqf)
    File: ALIVE_fnc_inspectConfig  (sys_debug/fnc_inspectConfig.sqf)
    File: ALIVE_fnc_inspectConfigItem  (sys_debug/fnc_inspectConfigItem.sqf)
+   File: ALIVE_fnc_inspectConfigRecurse  (sys_debug/fnc_inspectConfigRecurse.sqf)
    File: ALIVE_fnc_inspectEnvironment  (sys_debug/fnc_inspectEnvironment.sqf)
    File: ALIVE_fnc_inspectHash  (sys_debug/fnc_inspectHash.sqf)
    File: ALIVE_fnc_inspectObject  (sys_debug/fnc_inspectObject.sqf)
+   File: ALIVE_fnc_inspectVehicle  (sys_debug/fnc_inspectVehicle.sqf)
+   File: ALIVE_fnc_placeDebugMarker  (sys_debug/fnc_placeDebugMarker.sqf)
    File: ALIVE_fnc_spawnDebugMarker  (sys_debug/fnc_spawnDebugMarker.sqf)
    File: ALIVE_fnc_timer  (sys_debug/fnc_timer.sqf)
    }  # Group: Sys_debug
+
+File: sys_GC/fnc_GC.sqf  (sys_GC/fnc_GC.sqf)
+
+Group: Sys_player  {
+
+   File: ALIVE_fnc_getPlayer  (sys_player/fnc_getPlayer.sqf)
+   File: ALIVE_fnc_LoadPlayers  (sys_player/fnc_loadPlayers.sqf)
+   File: ALIVE_fnc_player  (sys_player/fnc_player.sqf)
+   File: ALIVE_fnc_playerInit  (sys_player/fnc_playerInit.sqf)
+   File: ALIVE_fnc_playerMenuDef  (sys_player/fnc_playerMenuDef.sqf)
+   File: ALIVE_fnc_SavePlayers  (sys_player/fnc_savePlayers.sqf)
+   File: ALIVE_fnc_setPlayer  (sys_player/fnc_setPlayer.sqf)
+   }  # Group: Sys_player
 
 Group: Sys_profile  {
 
@@ -290,13 +362,16 @@ Group: Sys_profile  {
    File: ALIVE_fnc_configGetRandomGroup  (sys_profile/fnc_configGetRandomGroup.sqf)
    File: ALIVE_fnc_configGetVehicleClass  (sys_profile/fnc_configGetVehicleClass.sqf)
    File: ALIVE_fnc_configGetVehicleCrew  (sys_profile/fnc_configGetVehicleCrew.sqf)
+   File: ALIVE_fnc_configGetVehicleEmptyPositions  (sys_profile/fnc_configGetVehicleEmptyPositions.sqf)
    File: ALIVE_fnc_configGetVehicleHitPoints  (sys_profile/fnc_configGetVehicleHitPoints.sqf)
    File: ALIVE_fnc_configGetVehicleMaxSpeed  (sys_profile/fnc_configGetVehicleMaxSpeed.sqf)
    File: ALIVE_fnc_configGetVehicleTurretPositions  (sys_profile/fnc_configGetVehicleTurretPositions.sqf)
    File: ALIVE_fnc_configGetVehicleTurrets  (sys_profile/fnc_configGetVehicleTurrets.sqf)
    File: ALIVE_fnc_configGetWeaponMagazines  (sys_profile/fnc_configGetWeaponMagazines.sqf)
+   File: ALIVE_fnc_createProfilesCrewedVehicle  (sys_profile/fnc_createProfilesCrewedVehicle.sqf)
    File: ALIVE_fnc_createProfilesFromGroupConfig  (sys_profile/fnc_createProfilesFromGroupConfig.sqf)
    File: ALIVE_fnc_createProfilesFromUnits  (sys_profile/fnc_createProfilesFromUnits.sqf)
+   File: ALIVE_fnc_createProfileVehicle  (sys_profile/fnc_createProfileVehicle.sqf)
    File: ALIVE_fnc_createProfileVehicleAssignment  (sys_profile/fnc_createProfileVehicleAssignment.sqf)
    File: ALIVE_fnc_createProfileWaypoint  (sys_profile/fnc_createProfileWaypoint.sqf)
    File: ALIVE_fnc_getNearProfiles  (sys_profile/fnc_getNearProfiles.sqf)
@@ -324,10 +399,12 @@ Group: Sys_profile  {
    File: ALIVE_fnc_removeProfileVehicleAssignment  (sys_profile/fnc_removeProfileVehicleAssignment.sqf)
    File: ALIVE_fnc_removeProfileVehicleAssignments  (sys_profile/fnc_removeProfileVehicleAssignments.sqf)
    File: ALIVE_fnc_sideNumberToText  (sys_profile/fnc_sideNumberToText.sqf)
+   File: ALIVE_fnc_sideTextToLong  (sys_profile/fnc_sideTextToLong.sqf)
    File: ALIVE_fnc_sideTextToObject  (sys_profile/fnc_sideTextToObject.sqf)
    File: ALIVE_fnc_unitArrayGetVehiclesWithin  (sys_profile/fnc_unitArrayGetVehiclesWithin.sqf)
    File: ALIVE_fnc_unitArraySortByRank  (sys_profile/fnc_unitArraySortByRank.sqf)
    File: ALIVE_fnc_vehicleAssignGroup  (sys_profile/fnc_vehicleAssignGroup.sqf)
+   File: ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles  (sys_profile/fnc_vehicleAssignmentsGetLinkedProfiles.sqf)
    File: ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments  (sys_profile/fnc_vehicleAssignmentsToProfileVehicleAssignments.sqf)
    File: ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment  (sys_profile/fnc_vehicleAssignmentToProfileVehicleAssignment.sqf)
    File: ALIVE_fnc_vehicleCountEmptyPositions  (sys_profile/fnc_vehicleCountEmptyPositions.sqf)
