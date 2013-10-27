@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_crewinfoInit";
                 isGlobal = 1;
                 isPersistent = 1;
-                icon = "sys_crewinfo\icon_sys_crewinfo.paa";
-                picture = "sys_crewinfo\icon_sys_crewinfo.paa";
+                icon = "\x\alive\addons\sys_crewinfo\icon_sys_crewinfo.paa";
+                picture = "\x\alive\addons\sys_crewinfo\icon_sys_crewinfo.paa";
                 
 			         	class Arguments
 			          {

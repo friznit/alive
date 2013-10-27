@@ -16,5 +16,5 @@ class CfgPatches {
 
 
 class RscTitles {
-	#include <namesright.hpp>
+	#include <\x\alive\addons\sys_crewinfo\namesright.hpp>
 };
