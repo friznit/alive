@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_CASInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
-				picture = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
+				icon = "x\alive\addons\sup_cas\icon_sup_cas.paa";
+				picture = "x\alive\addons\sup_cas\icon_sup_cas.paa";
                 class Arguments
                 {
                         class cas_callsign

@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_TRANSPORTInit";
                 isGlobal = 1;
                 isPersistent = 1;
-				icon = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
-				picture = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
+				icon = "x\alive\addons\sup_transport\icon_sup_transport.paa";
+				picture = "x\alive\addons\sup_transport\icon_sup_transport.paa";
                 class Arguments
                 {
                         class transport_callsign
