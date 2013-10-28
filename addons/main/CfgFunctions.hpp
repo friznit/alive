@@ -111,6 +111,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_Nuke.sqf";
 				recompile = 1;
 			};
+			class getDominantFaction {
+				description = "Gets the dominant faction in given radius";
+				file = "\x\alive\addons\main\fnc_getDominantFaction.sqf";
+				recompile = 1;
+			};
                 };
         };
 };
