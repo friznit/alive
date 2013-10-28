@@ -207,7 +207,7 @@ switch(_operation) do {
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
 					[MOD(CQB), "factions", _factionsReg + _factionsStrat] call ALiVE_fnc_CQB;
-					[MOD(CQB), "spawnDistance", 800] call ALiVE_fnc_CQB;
+					[MOD(CQB), "spawnDistance", 1000] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
@@ -215,7 +215,7 @@ switch(_operation) do {
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsStrat] call ALiVE_fnc_CQB;
-					[_logic, "spawnDistance", 800] call ALiVE_fnc_CQB;
+					[_logic, "spawnDistance", 1000] call ALiVE_fnc_CQB;
 					_logic setVariable ["debugColor","ColorRed",true];
 					_logic setVariable ["debugPrefix","Strategic",true];
 					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
@@ -228,7 +228,7 @@ switch(_operation) do {
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsReg] call ALiVE_fnc_CQB;
-					[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
+					[_logic, "spawnDistance", 700] call ALiVE_fnc_CQB;
                     _logic setVariable ["debugColor","ColorGreen",true];
 					_logic setVariable ["debugPrefix","Regular",true];
 
@@ -611,11 +611,13 @@ switch(_operation) do {
 			// if a house and unit is provided start spawn process
 			ASSERT_TRUE(typeName _args == "OBJECT",str typeName _args);
             
-            _house = _args;
+            _house = _args select 0;
+            _dominantFaction = _args select 1;
+            
             _debug = _logic getVariable ["debug",false];
             
         	_createUnitTypes = {
-				private ["_factions","_units","_blacklist"];
+				private ["_factions","_units","_blacklist","_faction","_dominantFaction"];
 				PARAMS_1(_factions);
                 _blacklist = _logic getVariable ["UnitsBlackList",[]];
 				[_factions, ceil(random 2),_blacklist] call ALiVE_fnc_chooseRandomUnits;
@@ -628,11 +630,16 @@ switch(_operation) do {
 			// and will be over-written in addHouse
 			
 			_units = _house getVariable ["unittypes", []];
+            _faction = _house getVariable ["faction", [([([_logic, "factions", ["OPF_F"]] call ALiVE_fnc_CQB)] call BIS_fnc_SelectRandom)]];
+            
+            if (isnil "_dominantFaction") then {_dominantFaction = "OPF_F"};
+            
 			// Check: if no units already defined
-			if(count _units == 0) then {
+			if ((count _units == 0) || {!(_dominantFaction == _faction)}) then {
 				// Action: identify AI unit types
-				_units = [(_logic getVariable ["factions", []])] call (_logic getVariable ["_createUnitTypes", _createUnitTypes]);
+				_units = [[_dominantFaction]] call (_logic getVariable ["_createUnitTypes", _createUnitTypes]);
 				_house setVariable ["unittypes", _units, true];
+                _house setVariable ["faction", _dominantFaction, true];
 			};
 
 			// Action: restore AI
@@ -744,7 +751,8 @@ switch(_operation) do {
                                     
 	                                    if !(isnull _host) then {
 		                                    _house setvariable ["group","preinit",true];
-                                            [_host,"CQB",[[_logic, "spawnGroup", _house],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
+                                            _dominantFaction = [getposATL _house, 500] call ALiVE_fnc_getDominantFaction;
+                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
                                             sleep 0.1;
 	                                    } else {
 	                                        diag_log format ["CQB ERROR: Null object on host %1",_host];
