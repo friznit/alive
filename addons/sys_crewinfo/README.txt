@@ -20,7 +20,7 @@
 | Component |
 #===========#
 
-ALiVE_sys_creinfo
+ALiVE_sys_crewinfo
 
 #================#
 | Main author(s) |
