@@ -68,7 +68,8 @@ switch(_operation) do {
                         CREWINFO_DEBUG = call compile (_logic getvariable ["crewinfo_debug_setting","false"]);
                         CREWINFO_UILOC = call compile (_logic getvariable ["crewinfo_ui_setting",1]);
                         // and publicVariable to clients
-                        publicVariable "CREWINFODEBUG";
+                        publicVariable "CREWINFO_DEBUG";
+                        publicVariable "CREWINFO_UILOC";
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
