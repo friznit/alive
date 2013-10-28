@@ -65,8 +65,10 @@ switch(_operation) do {
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", ALIVE_fnc_crewinfo];
                         _logic setVariable ["init", true, true];
+                        CREWINFO_DEBUG = call compile (_logic getvariable ["crewinfo_debug_setting","false"]);
+                        CREWINFO_UILOC = call compile (_logic getvariable ["crewinfo_ui_setting",1]);
                         // and publicVariable to clients
-                       
+                        publicVariable "CREWINFODEBUG";
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
@@ -82,13 +84,31 @@ switch(_operation) do {
                 VIEW - purely visual
                 - initialise 
                 */
-                private ["_ui","_HudNames","_vehicleID","_picture","_vehicle","_vehname","_weapname","_weap","_wepdir","_Azimuth"];
+               
                 
                 if(!isDedicated && !isHC) then {
+                	 		Waituntil {!(isnil "CREWINFO_DEBUG")};
+                	 		Waituntil {!(isnil "CREWINFO_UILOC")};
+                	 		private ["_ui","_HudNames","_vehicleID","_picture","_vehicle","_vehname","_weapname","_weap","_wepdir","_Azimuth"];
+                				
+                				// DEBUG -------------------------------------------------------------------------------------
+													if(CREWINFO_DEBUG) then {
+														["ALIVE Crew Info - Starting..."] call ALIVE_fnc_dump;
+															if (CREWINFO_UILOC == 1) then {
+																["ALIVE Crew Info - Drawing UI right (%1)", CREWINFO_UILOC] call ALIVE_fnc_dump;
+															} else {
+																["ALIVE Crew Info - Drawing UI left (%1)", CREWINFO_UILOC] call ALIVE_fnc_dump;
+															};
+													};
+												// DEBUG -------------------------------------------------------------------------------------
+
 											  disableSerialization;
 											  while {true} do  {
-											   	 1000 cutRsc ["HudNames","PLAIN"];
-											   	 _ui = uiNameSpace getVariable "HudNames";
+											  	if (CREWINFO_UILOC == 1) then {
+											   	 1000 cutRsc ["HudNamesRight","PLAIN"]; _ui = uiNameSpace getVariable "HudNamesRight";
+											  	} else {
+											  	 1000 cutRsc ["HudNamesLeft","PLAIN"]; _ui = uiNameSpace getVariable "HudNamesLeft";
+											  	};
 											 	   _HudNames = _ui displayCtrl 99999;
 													    if (player != vehicle player) then {
 													        _name = "";

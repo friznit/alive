@@ -18,16 +18,18 @@ class CfgVehicles {
 			                                description = "$STR_ALIVE_CREWINFO_DEBUG_COMMENT";
 			                                class Values
 			                                {
-			                                        class Yes
-			                                        {
-			                                                name = "Yes";
-			                                                value = true;
-			                                                default = true;
-			                                        };
+			                                	
 			                                        class No
 			                                        {
 			                                                name = "No";
 			                                                value = false;
+			                                                default = false;
+			                                        };
+			                                        class Yes
+			                                        {
+			                                                name = "Yes";
+			                                                value = true;
+			                                               
 			                                        };
 			                                };
 			                        };

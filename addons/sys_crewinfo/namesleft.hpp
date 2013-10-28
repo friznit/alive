@@ -1,19 +1,16 @@
 ﻿
-
-#define names_idc 99999
-
-class HudNames {
+class HudNamesLeft {
 	idd = -1;
     fadeout=0;
     fadein=0;
 	duration = 10000000000;
-	name= "HudNames";
-	onLoad = "uiNamespace setVariable ['HudNames', _this select 0]";
+	name= "HudNamesLeft";
+	onLoad = "uiNamespace setVariable ['HudNamesLeft', _this select 0]";
 	
 	class controlsBackground {
-		class HudNames_1:CIRscStructuredText
+		class HudNames_l:CIRscStructuredText
 		{
-			idc = names_idc;
+			idc = 99999;
 			type = CT_STRUCTURED_TEXT;
 			size = 0.040;
 			x = (SafeZoneX + 0.015);
