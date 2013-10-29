@@ -28,8 +28,7 @@ _side = _this select 0;
 _spawnDistance = if(count _this > 1) then {_this select 1} else {1000};
 _debug = if(count _this > 2) then {_this select 2} else {false};
 
-_profiles = [ALIVE_profileHandler, "getProfilesBySide", _side] call ALIVE_fnc_profileHandler;
-//_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
+_profiles = [ALIVE_profileHandler, "getProfilesBySideFull", _side] call ALIVE_fnc_profileHandler;
 
 {
 	private ["_profile","_profileID","_profileType","_position","_active","_vehicle","_leader"];

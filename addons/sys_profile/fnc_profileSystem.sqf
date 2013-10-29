@@ -158,8 +158,7 @@ switch(_operation) do {
 						_profileSimulatorFSM = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
 						[_logic,"simulator_FSM",_profileSimulatorFSM] call ALIVE_fnc_hashSet;
 						
-						// start the profile spawner
-						//[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;
+						// start the profile spawners
 
 						_profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 						_profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
