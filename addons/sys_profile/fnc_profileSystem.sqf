@@ -159,8 +159,17 @@ switch(_operation) do {
 						[_logic,"simulator_FSM",_profileSimulatorFSM] call ALIVE_fnc_hashSet;
 						
 						// start the profile spawner
-						_profileSpawnerFSM = [_logic,_spawnRadius,_spawnCycleTime,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;
+						//[_logic,"spawner_FSM",_profileSpawnerFSM] call ALIVE_fnc_hashSet;
+
+						_profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+
+						_profileDespawnerFSMEast = [_logic,"EAST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
+                        _profileDespawnerFSMWest = [_logic,"WEST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
+                        _profileDespawnerFSMGuer = [_logic,"GUER",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
+                        _profileDespawnerFSMCiv = [_logic,"CIV",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
 						
 						// set module as started
 						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
@@ -168,6 +177,12 @@ switch(_operation) do {
 						// register profile entity analysis job on the live analysis
 						// analysis job will run every 90 seconds and has no run count limit
 						[ALIVE_liveAnalysis, "registerAnalysisJob", [90, 0, "gridProfileEntity", "gridProfileEntity", [_plotSectors]]] call ALIVE_fnc_liveAnalysis;
+
+						// register player analysis job on the live analysis
+						// analysis job will run every 10 seconds and has no run count limit
+						[ALIVE_liveAnalysis, "registerAnalysisJob", [20, 0, "activeSectors", "activeSectors", [_plotSectors]]] call ALIVE_fnc_liveAnalysis;
+
+						// start analysis jobs
 						[ALIVE_liveAnalysis, "start"] call ALIVE_fnc_liveAnalysis;
 						
                 };

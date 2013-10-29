@@ -22,12 +22,14 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_spawnDistance","_debug","_entityProfiles","_vehicleProfiles"];
+private ["_side","_spawnDistance","_debug","_entityProfiles","_vehicleProfiles"];
 
-_spawnDistance = if(count _this > 0) then {_this select 0} else {1000};
-_debug = if(count _this > 1) then {_this select 1} else {false};
+_side = _this select 0;
+_spawnDistance = if(count _this > 1) then {_this select 1} else {1000};
+_debug = if(count _this > 2) then {_this select 2} else {false};
 
-_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
+_profiles = [ALIVE_profileHandler, "getProfilesBySide", _side] call ALIVE_fnc_profileHandler;
+//_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 
 {
 	private ["_profile","_profileID","_profileType","_position","_active","_vehicle","_leader"];
@@ -49,7 +51,7 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 			_position = getPosATL _leader;
 		};
 		
-		if (([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) && ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0)) then {
+		if(([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) && ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0)) then {
 				
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {

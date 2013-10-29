@@ -140,6 +140,9 @@ switch(_operation) do {
 					case "gridProfileEntity":{
 						[_logic, "cleanupGridProfileEntityAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
 					};
+					case "activeSectors":{
+                        [_logic, "cleanupActiveSectorAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
+                    };
 					case "intelligenceItem":{
 						[_logic, "cleanupIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
 					};
@@ -203,6 +206,9 @@ switch(_operation) do {
 									case "gridProfileEntity":{
 										[_logic, "runGridProfileEntityAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
 									};
+									case "activeSectors":{
+                                        [_logic, "runActiveSectorAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                    };
 									case "intelligenceItem":{
 										[_logic, "runIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
 									};
@@ -227,63 +233,122 @@ switch(_operation) do {
 			};
 		};
 		case "runGridProfileEntityAnalysis": {
-			
+
 			private ["_jobID","_jobArgs","_sectors","_plotSectors","_debug"];
-		
+
 			if(typeName _args == "ARRAY") then {
-			
+
 				_jobID = _args select 0;
 				_jobArgs = _args select 1;
 				_plotSectors = _jobArgs select 0;
-				
+
 				_debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
-				
-					
+
+
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 					["ALIVE Live Analysis - grid entity profile positions"] call ALIVE_fnc_dump;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
-				
-								
+
+
 				// run profile analysis on all sectors
 				_sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
 
 				if(_plotSectors) then {
 					// clear the sector data plot
 					[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
-					
+
 					// plot the sector data
 					[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
 				};
-			
+
 			};
         };
 		case "cleanupGridProfileEntityAnalysis": {
-			
+
 			private ["_jobID","_jobArgs","_sectors","_plotSectors","_debug"];
-		
+
 			if(typeName _args == "ARRAY") then {
-			
+
 				_jobID = _args select 0;
 				_jobArgs = _args select 1;
 				_plotSectors = _jobArgs select 0;
-				
-				_debug = [_logic,"debug"] call ALIVE_fnc_hashGet;					
-					
+
+				_debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 					["ALIVE Live Analysis - cleanup grid entity profile positions"] call ALIVE_fnc_dump;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
-								
+
 
 				// clear the sector data plot
 				[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
-			
+
 			};
+        };
+        case "runActiveSectorAnalysis": {
+
+            private ["_jobID","_jobArgs","_sectors","_plotSectors","_debug"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+                _plotSectors = _jobArgs select 0;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - active sector analysis"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                // run profile analysis on all sectors
+                _sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisActive;
+
+                if(_plotSectors) then {
+                    // clear the sector data plot
+                    [ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+
+                    // plot the sector data
+                    [ALIVE_sectorPlotter, "plot", [_sectors, "active"]] call ALIVE_fnc_plotSectors;
+                };
+
+            };
+        };
+        case "cleanupActiveSectorAnalysis": {
+
+            private ["_jobID","_jobArgs","_sectors","_plotSectors","_debug"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+                _plotSectors = _jobArgs select 0;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - cleanup active sector positions"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                // clear the sector data plot
+                [ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+
+            };
         };
 		case "runIntelligenceItemAnalysis": {
 			

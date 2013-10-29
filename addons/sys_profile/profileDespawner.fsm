@@ -1,17 +1,17 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, profile spawner">*/
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, profile despawner">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item3[] = {"DESTROY",4,218,-73.696571,-92.433327,16.303419,-42.433308,0.000000,"DESTROY"};
 item4[] = {"END",1,250,44.243935,-93.057465,134.243912,-43.057518,0.000000,"END"};
 item5[] = {"SWITCH",2,250,-191.784912,-93.250328,-101.784897,-43.250317,0.000000,"SWITCH"};
 item6[] = {"COMPLETE",4,218,-350.314392,229.873047,-260.314484,279.873016,0.000000,"COMPLETE"};
-item7[] = {"SPAWN",4,218,-191.476974,11.827783,-101.476913,61.827759,2.000000,"SPAWN"};
-item8[] = {"SPAWN",2,4346,-192.358017,85.911118,-102.357964,135.911102,0.000000,"SPAWN"};
-item9[] = {"SCRIPT_DONE",4,218,-192.269577,160.458603,-102.269608,210.458603,0.000000,"SCRIPT" \n "DONE"};
-item10[] = {"DONE",2,250,-190.715836,231.826080,-104.056488,278.485535,0.000000,"DONE"};
+item7[] = {"DESPAWN",4,218,-191.512466,11.904621,-101.512589,61.904591,4.000000,"DESPAWN"};
+item8[] = {"DESPAWN",2,250,-190.760178,85.383293,-100.760269,135.383301,0.000000,"DESPAWN"};
+item9[] = {"SCRIPT_DONE",4,218,-190.965195,159.135651,-100.965340,209.135651,0.000000,"SCRIPT" \n "DONE"};
+item10[] = {"DONE",2,250,-189.411484,231.047546,-102.752190,277.707062,0.000000,"DONE"};
 version=1;
 class LayoutItems
 {
@@ -35,28 +35,28 @@ link6[] = {7,8};
 link7[] = {8,9};
 link8[] = {9,10};
 link9[] = {10,6};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,99,6316128,1,-519.239868,305.574158,620.719482,-377.586426,851,1030,1};
-window[] = {2,-1,-1,-1,-1,1106,-1712,-89,208,3,869};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,99,6316128,1,-362.905121,149.239578,330.904144,-313.639893,851,1030,1};
+window[] = {2,-1,-1,-1,-1,924,-1894,-271,26,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
-  fsmName = "profile spawner";
+  fsmName = "profile despawner";
   class States
   {
     /*%FSM<STATE "INIT">*/
     class INIT
     {
       name = "INIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_spawnCycleTime"",""_lastSpawnTime"",""_doSpawn""," \n
-       """_lastDespawnTime"",""_destroy"",""_debug""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_lastSpawnTime""," \n
+       """_despawnCycleTime"",""_lastDespawnTime"",""_doDespawn"",""_destroy"",""_debug""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
        "_side = _this select 1;" \n
        "_spawnDistance = _this select 2;" \n
-       "_spawnCycleTime = if(count _this > 3) then {_this select 3} else {7};" \n
+       "_despawnCycleTime = if(count _this > 3) then {_this select 3} else {32};" \n
        "" \n
-       "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
-       "_doSpawn = false;" \n
+       "_lastDespawnTime = 0;" \n
+       "_doDespawn = false;" \n
        "" \n
        "_destroy = false;" \n
        "_debug = [_profileSystem,""debug"",false] call ALiVE_fnc_HashGet;" \n
@@ -102,13 +102,13 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "SPAWN">*/
-        class SPAWN
+        /*%FSM<LINK "DESPAWN">*/
+        class DESPAWN
         {
-          priority = 2.000000;
-          to="SPAWN";
+          priority = 4.000000;
+          to="DESPAWN";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((time - _lastSpawnTime) > _spawnCycleTime) && !(_doSpawn)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((time - _lastDespawnTime) > _despawnCycleTime) && !(_doDespawn)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -125,22 +125,22 @@ class FSM
       };
     };
     /*%FSM</STATE>*/
-    /*%FSM<STATE "SPAWN">*/
-    class SPAWN
+    /*%FSM<STATE "DESPAWN">*/
+    class DESPAWN
     {
-      name = "SPAWN";
+      name = "DESPAWN";
       init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
        "if(_debug) then {" \n
        "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller  - started cycling at %1 second iterations"",_spawnCycleTime] call ALIVE_fnc_dump;" \n
+       "	//[""ALIVE Despawn controller  - started cycling at %1 second iterations"",_despawnCycleTime] call ALIVE_fnc_dump;" \n
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_spawnHandle""];" \n
+       "private [""_despawnHandle""];" \n
        "" \n
-       "//_spawnHandle = [_spawnDistance,_debug] spawn ALIVE_fnc_profileSpawner;" \n
+       "//_despawnHandle = [_spawnDistance,_debug] spawn ALIVE_fnc_profileDespawner;" \n
        "" \n
-       "_spawnHandle = [_side,_spawnDistance,_debug] spawn ALIVE_fnc_profileSpawner;"/*%FSM</STATEINIT""">*/;
+       "_despawnHandle = [_side,_spawnDistance,_debug] spawn ALIVE_fnc_profileDespawner;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -150,7 +150,7 @@ class FSM
           priority = 0.000000;
           to="DONE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"scriptdone _spawnHandle;"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _despawnHandle;"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -162,8 +162,8 @@ class FSM
     {
       name = "DONE";
       init = /*%FSM<STATEINIT""">*/"" \n
-       "_doSpawn = false;" \n
-       "_lastSpawnTime = time;"/*%FSM</STATEINIT""">*/;
+       "_doDespawn = false;" \n
+       "_lastDespawnTime = time;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

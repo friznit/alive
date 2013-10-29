@@ -609,7 +609,7 @@ switch(_operation) do {
 			_args = false;
 		} else {
 			// if a house and unit is provided start spawn process
-			ASSERT_TRUE(typeName _args == "OBJECT",str typeName _args);
+			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
             
             _house = _args select 0;
             _dominantFaction = _args select 1;

@@ -23,15 +23,17 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_spawnDistance","_debug","_entityProfiles","_vehicleProfiles"];
+private ["_side","_spawnDistance","_debug","_entityProfiles","_vehicleProfiles"];
 
-_spawnDistance = if(count _this > 0) then {_this select 0} else {1000};
-_debug = if(count _this > 1) then {_this select 1} else {false};
+_side = _this select 0;
+_spawnDistance = if(count _this > 1) then {_this select 1} else {1000};
+_debug = if(count _this > 2) then {_this select 2} else {false};
 
-_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
+_profiles = [ALIVE_profileHandler, "getProfilesBySide", _side] call ALIVE_fnc_profileHandler;
+//_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 
 {
-	private ["_profile","_profileID","_profileType","_position","_active"];
+	private ["_profile","_profileID","_profileType","_position","_spawn","_active"];
 
 	_profile = _x;
 	_active = _profile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
@@ -41,8 +43,17 @@ _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 		_profileID = _profile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
 		_profileType = _profile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
 		_position = _profile select 2 select 2; //_position = [_profile,"position"] call ALIVE_fnc_hashGet;
+
+		_spawn = false;
+		if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange > 0) then {
+		    _spawn = true;
+		}else{
+            if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0) then {
+                _spawn = true;
+            };
+		};
 		
-		if (([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange > 0) || ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0)) then {
+		if (_spawn) then {
 				
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {

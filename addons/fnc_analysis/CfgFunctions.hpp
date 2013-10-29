@@ -36,6 +36,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_gridAnalysisProfileVehicle.sqf";
 				recompile = 1;
 			};
+			class gridAnalysisActive {
+                description = "gridAnalysisActive";
+                file = "\x\alive\addons\fnc_analysis\fnc_gridAnalysisActive.sqf";
+                recompile = 1;
+            };
 			class sectorFilterProfiles {
 				description = "sectorFilterProfiles";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterProfiles.sqf";

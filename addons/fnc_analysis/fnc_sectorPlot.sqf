@@ -322,6 +322,27 @@ switch(_operation) do {
 								};
 							};
 						};
+						case "active": {
+                            private["_active","_activeCount","_markerID","_alpha", "_m"];
+
+                            if(_key in (_sectorData select 1)) then {
+
+                                _plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;
+
+                                _activeCount = count _plotData;
+
+                                if(_activeCount > 0) then {
+                                    if(_activeCount > 0) then { _alpha = 0.2; };
+                                    if(_activeCount > 2) then { _alpha = 0.3; };
+                                    if(_activeCount > 4) then { _alpha = 0.4; };
+                                    if(_activeCount > 6) then { _alpha = 0.5; };
+
+                                    _markerID = format[MTEMPLATE, format["%1act%2",_plotterID,_id]];
+                                    _m = [_markerID,_centerPosition,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+                                    _markers set [count _markers, _m];
+                                };
+                            };
+                        };
 						case "terrain": {
 							private["_alpha","_markerID","_m"];
 							

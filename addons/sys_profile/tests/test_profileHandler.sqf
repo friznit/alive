@@ -23,13 +23,13 @@ diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
 
 #define DEBUGON STAT("Setup debug parameters"); \
-_result = [_logic, "debug", true] call ALIVE_fnc_profileHandler; \
+_result = [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler; \
 _err = "enabled debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(_result, _err);
 
 #define DEBUGOFF STAT("Disable debug"); \
-_result = [_logic, "debug", true] call ALIVE_fnc_profileHandler; \
+_result = [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler; \
 _err = "disable debug"; \
 ASSERT_TRUE(typeName _result == "BOOL", _err); \
 ASSERT_TRUE(!_result, _err);
@@ -48,16 +48,15 @@ _logic = nil;
 
 STAT("Create Profile Handler instance");
 if(isServer) then {
-	_logic = [nil, "create"] call ALIVE_fnc_profileHandler;
-	TEST_LOGIC = _logic;
+	ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
+	TEST_LOGIC = ALIVE_profileHandler;
 	publicVariable "TEST_LOGIC";
 };
 
 
 STAT("Init Profile Handler");
-_result = [_logic, "init"] call ALIVE_fnc_profileHandler;
+_result = [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 _err = "set init";
-ASSERT_TRUE(typeName _result == "BOOL", _err);
 
 
 STAT("Confirm new Profile Handler instance");
@@ -78,6 +77,7 @@ _profile1 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profile1, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
 [_profile1, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
 [_profile1, "side", "WEST"] call ALIVE_fnc_profileEntity;
+[_profile1, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Create Entity Profile");
@@ -90,6 +90,7 @@ _profile2 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profile2, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
 [_profile2, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
 [_profile2, "side", "WEST"] call ALIVE_fnc_profileEntity;
+[_profile2, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Create Vehicle Profile");
@@ -102,24 +103,22 @@ _profile3 = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profile3, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profile3, "fuel", 1] call ALIVE_fnc_profileVehicle;
 [_profile3, "side", "WEST"] call ALIVE_fnc_profileVehicle;
+[_profile3, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Register Profile");
 _result = [_logic, "registerProfile", _profile1] call ALIVE_fnc_profileHandler;
 _err = "register profile";
-ASSERT_TRUE(typeName _result == "BOOL", _err);
 
 
 STAT("Register Profile");
 _result = [_logic, "registerProfile", _profile2] call ALIVE_fnc_profileHandler;
 _err = "register profile";
-ASSERT_TRUE(typeName _result == "BOOL", _err);
 
 
 STAT("Register Profile");
 _result = [_logic, "registerProfile", _profile3] call ALIVE_fnc_profileHandler;
 _err = "register profile";
-ASSERT_TRUE(typeName _result == "BOOL", _err);
 
 
 DEBUGON;
