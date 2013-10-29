@@ -122,7 +122,7 @@ class NEO_RscListBox {
 class NEO_RscGUIListBox : NEO_RscListBox {
 	color[] = {1, 1, 1, 1};
 	colorText[] = {1, 1, 1, 0.75};
-	colorScrollbar[] = {0.95, 0.95, 0.95, 1};
+	colorScrollbar[] = {0.023529, 0, 0.0313725, 1};
 	colorSelect[] = {0.95, 0.95, 0.95, 1};
 	colorSelect2[] = {0.95, 0.95, 0.95, 1};
 	colorSelectBackground[] = {0.6, 0.839, 0.47, 0.3};
@@ -638,4 +638,23 @@ ptsPerSquareSea = 8;
     importance = 1;
     size = 24;
     };
+};
+class RscPicture
+{
+  colorBackground[] = {0,0,0,0};
+  colorText[] = {1,1,1,1};
+  fixedWidth = 0;
+  access = 0;
+  type = 0;
+  idc = -1;
+  style = 48;
+    font = "PuristaMedium"; 
+  sizeEx = 0;
+  lineSpacing = 0;
+  text = "";
+  shadow = 0;
+  x = 0;
+  y = 0;
+  w = 0.2;
+  h = 0.15;
 };

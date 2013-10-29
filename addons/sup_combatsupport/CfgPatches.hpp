@@ -12,4 +12,5 @@ class CfgPatches {
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
+
 //#include <\x\alive\addons\sys_newsfeed\newsfeed\newsfeed.hpp>

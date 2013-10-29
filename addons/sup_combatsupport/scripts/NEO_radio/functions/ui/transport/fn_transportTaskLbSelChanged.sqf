@@ -7,11 +7,11 @@ _slider = _display displayCtrl 655578;
 _sliderText = _display displayCtrl 655579;
 _show = switch (toUpper (_lb lbText _index)) do
 {
-	case "PICKUP" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit will move to location and wait for a smoke visual and confirmation (EVAC)</t>" };
-	case "LAND" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit will move to coordinates and land the chopper at his discression (DROP)</t>" };
-	case "LAND (ENG OFF)" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit will move to coordinates and land the chopper at his discression and will shutdown engine (DROP)</t>" };
-	case "MOVE" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit will move to designated position and wait for further orders</t>" };
-	case "CIRCLE" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit will move to designated corrdinates and circle the area clockwise till further notice</t>" };
+	case "PICKUP" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit will move to location and wait for a smoke visual and confirmation (EVAC)</t>" };
+	case "LAND" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit will move to coordinates and land the chopper at his discression (DROP)</t>" };
+	case "LAND (ENG OFF)" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit will move to coordinates and land the chopper at his discression and will shutdown engine (DROP)</t>" };
+	case "MOVE" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit will move to designated position and wait for further orders</t>" };
+	case "CIRCLE" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit will move to designated corrdinates and circle the area clockwise till further notice</t>" };
 };
 
 //Help Text
@@ -23,10 +23,10 @@ _text ctrlSetStructuredText parseText _show;
 //Slider
 if (toUpper (_lb lbText _index) == "CIRCLE") then
 {
-	_slider ctrlSetPosition [(0.135 * safezoneW) + safezoneX, (0.5 * safezoneH) + safezoneY, (0.136102 * safezoneW), (0.018 * safezoneH)];
+	_slider ctrlSetPosition [0.281002 * safezoneW + safezoneX, 0.5504 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.0196 * safezoneH)];
 	_slider ctrlCommit 0;
 	_sliderText ctrlSetText "Radius: 200/300";
-	_sliderText ctrlSetPosition [(0.153559 * safezoneW) + safezoneX, (0.43 * safezoneH) + safezoneY, (0.098983 * safezoneW), (0.028 * safezoneH)];
+	_sliderText ctrlSetPosition [0.280111 * safezoneW + safezoneX, 0.514 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)];
 	_sliderText ctrlCommit 0;
 
 	_slider sliderSetRange [100, 300];

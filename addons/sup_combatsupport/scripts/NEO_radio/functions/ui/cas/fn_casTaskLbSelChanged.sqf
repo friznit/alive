@@ -20,7 +20,7 @@ _casTaskText = _display displayCtrl 655588;
 _casTaskHelpText = _display displayCtrl 655589;
 _show = switch (toUpper (_lb lbText _index)) do
 {
-	case "SAD" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit will move to location, provide Close Air Support and engage all painted targets</t>" };
+	case "SAD" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit will move to location, provide Close Air Support and engage all painted targets</t>" };
 };
 _veh = _casArray select (lbCurSel _casUnitLb) select 0;
 _casRadiusSlider = _display displayCtrl 655592;
@@ -30,9 +30,9 @@ _casRadiusSliderText = _display displayCtrl 655593;
 if (toUpper (_lb lbText _index) == "SAD") then
 {
 	_casRadiusSliderText ctrlSetText "CAS Radius: 500m";
-	_casRadiusSliderText ctrlSetPosition [0.153559 * safezoneW + safezoneX, 0.388 * safezoneH + safezoneY, (0.098983 * safezoneW), (0.028 * safezoneH)];
+	_casRadiusSliderText ctrlSetPosition [0.280111 * safezoneW + safezoneX, 0.514 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)];
 	_casRadiusSliderText ctrlCommit 0;
-	_casRadiusSlider ctrlSetPosition [(0.122627 * safezoneW) + safezoneX, (0.43 * safezoneH) + safezoneY, (0.136102 * safezoneW), (0.018 * safezoneH)];
+	_casRadiusSlider ctrlSetPosition [0.281002 * safezoneW + safezoneX, 0.5504 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.0196 * safezoneH)];
 	_casRadiusSlider ctrlCommit 0;
 
 	_casFlyHeighSliderText ctrlCommit 0;

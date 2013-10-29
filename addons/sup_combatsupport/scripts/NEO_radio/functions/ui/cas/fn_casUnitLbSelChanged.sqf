@@ -28,10 +28,10 @@ _status = _veh getVariable "NEO_radioCasUnitStatus";
 //Status Text
 _casHelpUnitText ctrlSetStructuredText parseText (switch (_status) do
 {
-	case "NONE" : { "<t color='#00FF00' size='0.7' font='PuristaMedium'>Unit is available and waiting for task</t>" };
-	case "KILLED" : { "<t color='#FF0000' size='0.7' font='PuristaMedium'>Unit is combat innefective</t>" };
-	case "MISSION" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit is on a mission, you may abort or change the current task</t>" };
-	case "RTB" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit is RTB</t>" };
+	case "NONE" : { "<t color='#627057' size='0.7' font='PuristaMedium'>Unit is available and waiting for task</t>" };
+	case "KILLED" : { "<t color='#603234' size='0.7' font='PuristaMedium'>Unit is combat innefective</t>" };
+	case "MISSION" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is on a mission, you may abort or change the current task</t>" };
+	case "RTB" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is RTB</t>" };
 });
 
 //Marker
@@ -56,8 +56,8 @@ else
 if (_status != "KILLED") then
 {
 	//Targets Text
-	_casTaskText ctrlSetStructuredText parseText "<t color='#FFFFFF' size='0.8' font='PuristaMedium'>TASK</t>";
-	_casTaskHelpText ctrlSetStructuredText parseText "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Select a task</t>";
+	_casTaskText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>TASK</t>";
+	_casTaskHelpText ctrlSetStructuredText parseText "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Select a task</t>";
 	
 	//Tasks LB
 	_casTaskLb ctrlEnable true;
@@ -72,9 +72,9 @@ if (_status != "KILLED") then
 	
 	//Sliders
 	_casFlyHeighSliderText ctrlSetText "Altitude: Med";
-	_casFlyHeighSliderText ctrlSetPosition [(0.153559 * safezoneW) + safezoneX, (0.476 * safezoneH) + safezoneY, (0.098983 * safezoneW), (0.028 * safezoneH)];
+	_casFlyHeighSliderText ctrlSetPosition [0.397304 * safezoneW + safezoneX, 0.514 * safezoneH + safezoneY, (0.105169 * safezoneW), (0.028 * safezoneH)];
 	_casFlyHeighSliderText ctrlCommit 0;
-	_casFlyHeightSlider ctrlSetPosition [(0.122627 * safezoneW) + safezoneX, (0.514 * safezoneH) + safezoneY, (0.136102 * safezoneW), (0.018 * safezoneH)];
+	_casFlyHeightSlider ctrlSetPosition [0.402708 * safezoneW + safezoneX, 0.5508 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.0196 * safezoneH)];
 	_casFlyHeightSlider ctrlCommit 0;
 
 	_casFlyHeightSlider sliderSetRange [1, 3];

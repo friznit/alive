@@ -30,13 +30,13 @@ uinamespace setVariable ["NEO_radioCbVehicle", _chopper];
 //Help Text
 _text ctrlSetStructuredText parseText (switch (_status) do
 {
-	case "NONE" : { "<t color='#00FF00' size='0.7' font='PuristaMedium'>Unit is available and waiting for task</t>" };
-	case "KILLED" : { "<t color='#FF0000' size='0.7' font='PuristaMedium'>Unit is combat innefective</t>" };
-	case "MISSION" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit is on a mission, you may abort or change the current task</t>" };
-	case "RTB" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit is RTB</t>" };
-	case "SMOKE" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit is waiting for smoke</t>" };
-	case "SMOKECONF" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit is waiting for smoke confirmation</t>" };
-	case "CARGO" : { "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Unit is waiting for cargo to board</t>" };
+	case "NONE" : { "<t color='#627057' size='0.7' font='PuristaMedium'>Unit is available and waiting for task</t>" };
+	case "KILLED" : { "<t color='#603234' size='0.7' font='PuristaMedium'>Unit is combat innefective</t>" };
+	case "MISSION" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is on a mission, you may abort or change the current task</t>" };
+	case "RTB" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is RTB</t>" };
+	case "SMOKE" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is waiting for smoke</t>" };
+	case "SMOKECONF" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is waiting for smoke confirmation</t>" };
+	case "CARGO" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is waiting for cargo to board</t>" };
 });
 
 //Base Button
@@ -56,14 +56,14 @@ _transportSmokeNotFoundButton = _display displayCtrl 655577;
 
 if (_chopper getVariable "NEO_radioTrasportUnitStatus" == "SMOKECONF") then
 {
-	_transportSmokeFoundButton ctrlEnable true; _transportSmokeFoundButton ctrlSetPosition [(0.58661 * safezoneW) + safezoneX, (0.654 * safezoneH) + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)]; _transportSmokeFoundButton ctrlCommit 0;
-	_transportSmokeNotFoundButton ctrlEnable true; _transportSmokeNotFoundButton ctrlSetPosition [(0.728898 * safezoneW) + safezoneX, (0.654 * safezoneH) + safezoneY, (0.0804237 * safezoneW), (0.028 * safezoneH)]; _transportSmokeNotFoundButton ctrlCommit 0;
+	_transportSmokeFoundButton ctrlEnable true; _transportSmokeFoundButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.6176 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _transportSmokeFoundButton ctrlCommit 0;
+	_transportSmokeNotFoundButton ctrlEnable true; _transportSmokeNotFoundButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.584 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _transportSmokeNotFoundButton ctrlCommit 0;
 }
 else
 
 {
-	_transportSmokeFoundButton ctrlEnable false; _transportSmokeFoundButton ctrlSetPosition [safeZoneX + (safeZoneW / 2.3), safeZoneY + (safeZoneH / 1.425), (safeZoneW / 1000), (safeZoneH / 1000)]; _transportSmokeFoundButton ctrlCommit 0;
-	_transportSmokeNotFoundButton ctrlEnable false; _transportSmokeNotFoundButton ctrlSetPosition [safeZoneX + (safeZoneW / 2.175), safeZoneY + (safeZoneH / 1.375), (safeZoneW / 1000), (safeZoneH / 1000)]; _transportSmokeNotFoundButton ctrlCommit 0;
+	_transportSmokeFoundButton ctrlEnable false; _transportSmokeFoundButton ctrlSetPosition [safeZoneX + (safeZoneW / 1000), safeZoneY + (safeZoneH / 1.425), (safeZoneW / 1000), (safeZoneH / 1000)]; _transportSmokeFoundButton ctrlCommit 0;
+	_transportSmokeNotFoundButton ctrlEnable false; _transportSmokeNotFoundButton ctrlSetPosition [safeZoneX + (safeZoneW / 1000), safeZoneY + (safeZoneH / 1.375), (safeZoneW / 1000), (safeZoneH / 1000)]; _transportSmokeNotFoundButton ctrlCommit 0;
 };
 
 //Transport Tasks
@@ -73,6 +73,7 @@ _transportTaskText = _display displayCtrl 655571;
 _transportHelpTaskText = _display displayCtrl 655573;
 _tasksArray = _chopper getVariable "NEO_transportAvailableTasks";
 
+
 //Re-initialize Controls
 { _x ctrlSetPosition [1, 1, (safeZoneW / 1000), (safeZoneH / 1000)]; _x ctrlCommit 0; } forEach [_slider, _sliderText, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
 { _x ctrlSetText "" } forEach [_sliderText, _transportTaskText, _transportHelpTaskText, _transportComboText];
@@ -81,12 +82,16 @@ _tasksArray = _chopper getVariable "NEO_transportAvailableTasks";
 if (_status != "KILLED") then
 {
 	//Help Text
-	_transportTaskText ctrlSetStructuredText parseText "<t color='#FFFFFF' size='0.8' font='PuristaMedium'>TASK</t>";
-	_transportHelpTaskText ctrlSetStructuredText parseText "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Select a task</t>";
+	_transportTaskText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>TASK</t>";
+	_transportHelpTaskText ctrlSetStructuredText parseText "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Select a task</t>";
+
+	_transportTaskLb ctrlEnable true;
+	lbClear _transportTaskLb;
 	
 	{
 		_transportTaskLb lbAdd (toUpper _x);
 	} forEach _tasksArray;
+
 	_transportTaskLb ctrlEnable true;
 	_transportTaskLb ctrlSetEventHandler ["LBSelChanged", "_this call NEO_fnc_transportTaskLbSelChanged"];
 
@@ -98,10 +103,10 @@ if (_status != "KILLED") then
 	_map ctrlSetEventHandler ["MouseButtonDown", "_this call NEO_fnc_radioMapEvent"];
 	
 	//ComboBoxes
-	_transportHeightCombo ctrlEnable true; _transportHeightCombo ctrlSetPosition [(0.135 * safezoneW) + safezoneX, (0.57 * safezoneH) + safezoneY, (0.129915 * safezoneW), (0.028 * safezoneH)]; _transportHeightCombo ctrlCommit 0;
-	_transportSpeedCombo ctrlEnable true; _transportSpeedCombo ctrlSetPosition [(0.283475 * safezoneW) + safezoneX, (0.57 * safezoneH) + safezoneY, (0.129915 * safezoneW), (0.028 * safezoneH)]; _transportSpeedCombo ctrlCommit 0;
-	_transportRoeCombo ctrlEnable true; _transportRoeCombo ctrlSetPosition [(0.438136 * safezoneW) + safezoneX, (0.57 * safezoneH) + safezoneY, (0.129915 * safezoneW), (0.028 * safezoneH)]; _transportRoeCombo ctrlCommit 0;
-	_transportComboText ctrlSetText "Behaviour"; _transportComboText ctrlSetPosition [(0.32678 * safezoneW) + safezoneX, (0.528 * safezoneH) + safezoneY, (0.0618644 * safezoneW), (0.028 * safezoneH)]; _transportComboText ctrlCommit 0;
+	_transportHeightCombo ctrlEnable true; _transportHeightCombo ctrlSetPosition [0.278525 * safezoneW + safezoneX, 0.64 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)]; _transportHeightCombo ctrlCommit 0;
+	_transportSpeedCombo ctrlEnable true; _transportSpeedCombo ctrlSetPosition [0.401017 * safezoneW + safezoneX, 0.64 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)]; _transportSpeedCombo ctrlCommit 0;
+	_transportRoeCombo ctrlEnable true; _transportRoeCombo ctrlSetPosition [0.339153 * safezoneW + safezoneX, 0.696 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)]; _transportRoeCombo ctrlCommit 0;
+	_transportComboText ctrlSetText "Behaviour"; _transportComboText ctrlSetPosition [0.363898 * safezoneW + safezoneX, 0.598 * safezoneH + safezoneY, (0.0494915 * safezoneW), (0.028 * safezoneH)]; _transportComboText ctrlCommit 0;
 
 	lbClear _transportHeightCombo;
 	{
