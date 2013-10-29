@@ -26,11 +26,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sup_combatsupport\fnc_combatSupportMenuDef.sqf";
                 				recompile = 1;
                         };
-                        class getUserMenuButton {
-                            description = "Get's the user defined menu button";
-                             file = "\x\alive\addons\sup_combatsupport\fnc_getUserMenuButton.sqf";
-                             recompile = 1;
-                        };
                 };
         };
 };

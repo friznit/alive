@@ -1,6 +1,5 @@
 #define COMPONENT sup_combatsupport
 #include <\x\alive\addons\main\script_mod.hpp>
-#include <\userconfig\ALiVE\ALiVE_clientsideconfig.hpp>
 #include <\a3\editor_f\Data\Scripts\dikCodes.h>
 
 
