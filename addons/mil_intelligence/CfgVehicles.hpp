@@ -59,6 +59,29 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class friendlyIntel
+                        {
+                                displayName = "$STR_ALIVE_MI_FRIENDLY_INTEL";
+                                description = "$STR_ALIVE_MI_FRIENDLY_INTEL_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_MI_FRIENDLY_INTEL_NONE";
+                                                value = "NONE";
+                                        };
+                                        class CONFLICT
+                                        {
+                                                name = "$STR_ALIVE_MI_FRIENDLY_INTEL_CONFLICT";
+                                                value = "CONFLICT";
+                                        };
+                                        class TOTAL
+                                        {
+                                                name = "$STR_ALIVE_MI_FRIENDLY_INTEL_TOTAL";
+                                                value = "TOTAL";
+                                        };
+                                };
+                        };
                 };
                 
         };

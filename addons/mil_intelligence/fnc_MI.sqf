@@ -213,7 +213,7 @@ switch(_operation) do {
 
 				waituntil {
 					sleep 10;
-					_objectives = nil; 
+					_objectives = nil;
 					_objectives = [_module,"objectives"] call ALIVE_fnc_hashGet;
 					(!(isnil "_objectives") && {count _objectives > 0})
 				};
