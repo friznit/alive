@@ -131,6 +131,7 @@ switch(_operation) do {
                         "Land_u_House_Big_01_V1_F",
                         "Land_u_House_Small_02_V1_F",
                         "Land_u_House_Big_02_V1_F",
+                        "Land_u_Shop_02_V1_F",
                         "Land_i_House_Big_02_V3_F",
                         "Land_i_Stone_HouseBig_V2_F",
                         "Land_i_Stone_HouseBig_V1_F",
@@ -631,9 +632,7 @@ switch(_operation) do {
 			
 			_units = _house getVariable ["unittypes", []];
             _faction = _house getVariable ["faction", [([([_logic, "factions", ["OPF_F"]] call ALiVE_fnc_CQB)] call BIS_fnc_SelectRandom)]];
-            
-            if (isnil "_dominantFaction") then {_dominantFaction = "OPF_F"};
-            
+
 			// Check: if no units already defined
 			if ((count _units == 0) || {!(_dominantFaction == _faction)}) then {
 				// Action: identify AI unit types
@@ -752,6 +751,8 @@ switch(_operation) do {
 	                                    if !(isnull _host) then {
 		                                    _house setvariable ["group","preinit",true];
                                             _dominantFaction = [getposATL _house, 500] call ALiVE_fnc_getDominantFaction;
+                                            if (isnil "_dominantFaction") then {_dominantFaction = "OPF_F"};
+                                            
                                             [_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
                                             sleep 0.1;
 	                                    } else {
