@@ -21,6 +21,16 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_intelligence\fnc_SDInit.sqf";
                                 recompile = 1;
                         };
+                        class PSD {
+                                description = "The main class";
+                                file = "\x\alive\addons\mil_intelligence\fnc_PSD.sqf";
+                                recompile = 1;
+                        };
+                        class PSDInit {
+                                description = "The module initialisation function";
+                                file = "\x\alive\addons\mil_intelligence\fnc_PSDInit.sqf";
+                                recompile = 1;
+                        };
                 };
         };
 };

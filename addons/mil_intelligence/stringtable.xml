@@ -35,4 +35,7 @@
 <Key ID="STR_ALIVE_SD">
     <English>Military Sector Display</English>
 </Key>
+<Key ID="STR_ALIVE_PSD">
+    <English>Player Sector Display</English>
+</Key>
 </Container></Package></Project>

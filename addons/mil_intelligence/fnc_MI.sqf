@@ -324,7 +324,7 @@ switch(_operation) do {
 						// delivered intelligence item is found
 						if(_intelligenceChance > random 1) then {
 						
-							_maxItems = floor(random 5);
+							_maxItems = 2 + floor(random 5);
 						
 						
 							// DEBUG -------------------------------------------------------------------------------------

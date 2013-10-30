@@ -1,9 +1,9 @@
 //#define DEBUG_MODE_FULL
 #include <\x\alive\addons\mil_intelligence\script_component.hpp>
-SCRIPT(SD);
+SCRIPT(PSD);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_SD
+Function: ALIVE_fnc_PSD
 Description:
 Sector Display
 
@@ -26,19 +26,19 @@ Examples:
 [_logic, "debug", true] call ALiVE_fnc_SD;
 
 See Also:
-- <ALIVE_fnc_SDInit>
+- <ALIVE_fnc_PSDInit>
 
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS ALIVE_fnc_baseClass
-#define MAINCLASS ALIVE_fnc_SD
-#define MTEMPLATE "ALiVE_SD_%1"
+#define MAINCLASS ALIVE_fnc_PSD
+#define MTEMPLATE "ALiVE_PSD_%1"
 
 private ["_logic","_operation","_args","_result"];
 
-TRACE_1("SD - input",_this);
+TRACE_1("PSD - input",_this);
 
 _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
@@ -106,7 +106,7 @@ switch(_operation) do {
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
-			_logic setVariable ["moduleType", "ALIVE_SD"];
+			_logic setVariable ["moduleType", "ALIVE_PSD"];
 			_logic setVariable ["startupComplete", false];
 
 			TRACE_1("After module init",_logic);
@@ -123,7 +123,7 @@ switch(_operation) do {
 	
 			if(isNil "ALIVE_registry") then {
 				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
+				[ALIVE_registry, "init"] call ALIVE_fnc_registry;
 			};
 
 			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
@@ -132,7 +132,7 @@ switch(_operation) do {
 	case "start": {
         if (isServer) then {
 		
-			private ["_debug","_modules","_module","_activeAnalysisJobs","_gridProfileAnalysis","_args"];
+			private ["_debug","_modules","_module","_activeAnalysisJobs","_activeAnalysis","_args"];
 			
 			_debug = [_logic, "debug"] call MAINCLASS;			
 			
@@ -140,24 +140,24 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-				["ALIVE SD - Startup"] call ALIVE_fnc_dump;
+				["ALIVE PSD - Startup"] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 
 						
-			// if grid profile analysis is running, turn on plot sectors
+			// if player analysis is running, turn on plot sectors
 			_activeAnalysisJobs = [ALIVE_liveAnalysis, "getAnalysisJobs"] call ALIVE_fnc_liveAnalysis;
 			
-			if("gridProfileEntity" in (_activeAnalysisJobs select 1)) then {
-				_gridProfileAnalysis = [_activeAnalysisJobs, "gridProfileEntity"] call ALIVE_fnc_hashGet;
-				_args = [_gridProfileAnalysis, "args"] call ALIVE_fnc_hashGet;
+			if("activeSectors" in (_activeAnalysisJobs select 1)) then {
+				_activeAnalysis = [_activeAnalysisJobs, "activeSectors"] call ALIVE_fnc_hashGet;
+				_args = [_activeAnalysis, "args"] call ALIVE_fnc_hashGet;
 				_args set [4, [true]];
 			};
 			
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE SD - Startup completed"] call ALIVE_fnc_dump;
+				["ALIVE PSD - Startup completed"] call ALIVE_fnc_dump;
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
@@ -168,5 +168,5 @@ switch(_operation) do {
 	};
 };
 
-TRACE_1("MI - output",_result);
+TRACE_1("PSD - output",_result);
 _result;

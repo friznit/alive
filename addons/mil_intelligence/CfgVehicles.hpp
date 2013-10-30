@@ -73,4 +73,15 @@ class CfgVehicles {
                 icon = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
                 picture = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
         };
+        class ADDON3 : ModuleAliveMilitaryBase
+        {
+                scope = 2;
+                displayName = "$STR_ALIVE_PSD";
+                function = "ALIVE_fnc_PSDInit";
+                functionPriority = 5;
+                isGlobal = 1;
+                isPersistent = 1;
+                icon = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
+                picture = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
+        };
 };
