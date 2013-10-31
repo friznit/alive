@@ -104,7 +104,7 @@ switch(_operation) do {
                     
 					//Retrieve module-object variables
                     _debug = call compile (_logic getvariable ["debug","false"]);
-                    _logic setvariable ["debug",_debug];
+                    _logic setvariable ["debug",_debug,true];
 					_logic setVariable ["auto", true];
                     
                     /*
@@ -131,6 +131,16 @@ switch(_operation) do {
         
         case "collect": { 
 	        _individual = call compile (_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]]);
+            _debug = _logic getvariable ["debug",false];
+            _time = time;
+            
+            // DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					["ALIVE Garbage Collector started collecting at %1...",_time] call ALIVE_fnc_dumpR;
+				};
+			// DEBUG -------------------------------------------------------------------------------------
+            
 			{
                 [_logic,"trashIt",_x] call ALiVE_fnc_GC;
 			    sleep 0.03;
@@ -152,6 +162,14 @@ switch(_operation) do {
 			        sleep 0.03;
 				} foreach _amo;
 			};
+            
+            // DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["ALIVE Garbage Collector collection finished at %1! Time taken %2...",_time,(time - _time)] call ALIVE_fnc_dumpR;
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				};
+			// DEBUG -------------------------------------------------------------------------------------
+            
         };
         
         case "trashIt": { 
@@ -159,6 +177,7 @@ switch(_operation) do {
 	
 			private ["_object", "_queue", "_timeToDie"];
 			_object = _args;
+            _debug = _logic getvariable ["debug",false];
 			
 			_queue = _logic getVariable ["queue",[]];
 			
@@ -186,6 +205,13 @@ switch(_operation) do {
 					_timeToDie = time;
 				};
 			};
+            
+           
+            // DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["ALIVE Garbage Collector trashed object %1 to bin! Time to deletion %2...",_object,_timeToDie] call ALIVE_fnc_dumpR;
+				};
+			// DEBUG -------------------------------------------------------------------------------------
 			
 			_queue = _queue + [[_object, _timeToDie]];
 			_logic setVariable ["queue", _queue];
@@ -193,6 +219,15 @@ switch(_operation) do {
         
         case "process": { 
 			_queue = _logic getVariable ["queue",[]];
+            _debug = _logic getvariable ["debug",false];
+            _time = time;
+            
+            // DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					["ALIVE Garbage Collector deletion started at %1 for %2 objects...",_time,(count _queue)] call ALIVE_fnc_dumpR;
+				};
+			// DEBUG -------------------------------------------------------------------------------------
 			
 			_i = 0;
 			{
@@ -237,6 +272,13 @@ switch(_operation) do {
 				};
 				_i = _i + 1;
 			} forEach _queue;
+            
+    		// DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["ALIVE Garbage Collector deletion processed at %1! Time taken %2...",_time,(time - _time)] call ALIVE_fnc_dumpR;
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				};
+			// DEBUG -------------------------------------------------------------------------------------
 			
 			_queue = _queue - [-1];
 			_logic setVariable ["queue", _queue, true];
@@ -244,9 +286,25 @@ switch(_operation) do {
         
         case "processInstantly": { 
 			_queue = _logic getVariable ["queue",[]];
+            _debug = _logic getvariable ["debug",false];
+            _time = time;
+            
+            // DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+					["ALIVE Garbage Collector insta-deletion started at %1 for %2 objects...",_time,(count _queue)] call ALIVE_fnc_dumpR;
+				};
+			// DEBUG -------------------------------------------------------------------------------------
             
             {deleteVehicle (_x select 0); _queue set [_foreachIndex, -1]} foreach _queue;
 			_queue = _queue - [-1];
+            
+            // DEBUG -------------------------------------------------------------------------------------
+				if(_debug) then {
+					["ALIVE Garbage Collector insta-deletion processed at %1! Time taken %2...",_time,(time - _time)] call ALIVE_fnc_dumpR;
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+				};
+			// DEBUG -------------------------------------------------------------------------------------
             
 			_logic setVariable ["queue", _queue, true];
         };
