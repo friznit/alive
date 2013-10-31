@@ -179,7 +179,7 @@ switch(_operation) do {
 
 						// register player analysis job on the live analysis
 						// analysis job will run every 10 seconds and has no run count limit
-						[ALIVE_liveAnalysis, "registerAnalysisJob", [20, 0, "activeSectors", "activeSectors", [_plotSectors]]] call ALIVE_fnc_liveAnalysis;
+						[ALIVE_liveAnalysis, "registerAnalysisJob", [15, 0, "activeSectors", "activeSectors", [_plotSectors]]] call ALIVE_fnc_liveAnalysis;
 
 						// start analysis jobs
 						[ALIVE_liveAnalysis, "start"] call ALIVE_fnc_liveAnalysis;

@@ -46,6 +46,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MI_INTEL_CHANCE_MEDIUM";
                                                 value = "0.2";
+                                                default = true;
                                         };
 										class HIGH
                                         {
@@ -74,6 +75,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MI_FRIENDLY_INTEL_CONFLICT";
                                                 value = "CONFLICT";
+                                                default = true;
                                         };
                                         class TOTAL
                                         {

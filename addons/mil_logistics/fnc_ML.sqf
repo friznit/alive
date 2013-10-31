@@ -57,6 +57,8 @@ switch(_operation) do {
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];
 
+			_logic setVariable ["markers", []];
+
 			[_logic, "destroy"] call SUPERCLASS;
 		};
 		
@@ -74,7 +76,57 @@ switch(_operation) do {
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
 		_result = _args;
-	};        
+	};
+	case "createMarker": {
+	    private["_position","_faction","_markers","_debugColor","_markerID","_m"];
+
+        _position = _args select 0;
+        _faction = _args select 1;
+
+        _markers = _logic getVariable ["markers", []];
+
+        if(count _markers > 10) then {
+            {
+                deleteMarker _x;
+            } forEach _markers;
+            _markers = [];
+        };
+
+        _debugColor = "ColorPink";
+
+        switch(_faction) do {
+            case "OPF_F":{
+                _debugColor = "ColorRed";
+            };
+            case "BLU_F":{
+                _debugColor = "ColorBlue";
+            };
+            case "IND_F":{
+                _debugColor = "ColorGreen";
+            };
+            case "BLU_G_F":{
+                _debugColor = "ColorBrown";
+            };
+            default {
+                _debugColor = "ColorGreen";
+            };
+        };
+
+        _markerID = time;
+
+        if(count _position > 0) then {
+            _m = createMarker [format["%1_%2",MTEMPLATE,_markerID], _position];
+            _m setMarkerShape "ICON";
+            _m setMarkerSize [0.5, 0.5];
+            _m setMarkerType "mil_join";
+            _m setMarkerColor _debugColor;
+            _m setMarkerText "ML";
+
+            _markers set [count _markers, _m];
+        };
+
+        _logic setVariable ["markers", _markers];
+	};
 	case "state": {
 		private["_state","_data","_nodes","_simple_operations"];
 		/*
@@ -275,18 +327,8 @@ switch(_operation) do {
 
                             } forEach _objectives;
 
-                            // have locations to resupply
+                            // side has reserved locations to resupply at
                             if(count _reserve > 0) then {
-
-
-                                // DEBUG -------------------------------------------------------------------------------------
-                                if(_debug) then {
-                                    /*
-                                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                    ["ALIVE ML - %1 reserved clusters found for side, checking if re-inforcements required %2", count _reserve, _moduleSide] call ALIVE_fnc_dump;
-                                    */
-                                };
-                                // DEBUG -------------------------------------------------------------------------------------
 
                                 // loop through module factions and get a breakdown of
                                 // faction force composition from the profile handler
@@ -298,18 +340,6 @@ switch(_operation) do {
 
                                     _currentTotalProfiles = [_factionBreakdown, "total"] call ALIVE_fnc_hashGet;
                                     _initialTotalProfiles = [_initialFactionBreakdown, "total"] call ALIVE_fnc_hashGet;
-
-
-                                    // DEBUG -------------------------------------------------------------------------------------
-                                    if(_debug) then {
-                                        /*
-                                        ["ALIVE ML - [%1] Initial faction breakdown", _faction] call ALIVE_fnc_dump;
-                                        _initialFactionBreakdown call ALIVE_fnc_inspectHash;
-                                        ["ALIVE ML - [%1] Current faction breakdown", _faction] call ALIVE_fnc_dump;
-                                        _factionBreakdown call ALIVE_fnc_inspectHash;
-                                        */
-                                    };
-                                    // DEBUG -------------------------------------------------------------------------------------
 
 
                                     // the faction has suffered losses
@@ -330,13 +360,12 @@ switch(_operation) do {
                                         // calculate force deficit of current forces in comparison to initial forces
                                         _entitiesDeficit = ([_initialFactionBreakdown, "entity"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "entity"] call ALIVE_fnc_hashGet);
                                         _vehiclesDeficit = ([_initialFactionBreakdown, "vehicle"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "vehicle"] call ALIVE_fnc_hashGet);
-                                        _entitiesDeficit = _entitiesDeficit - _vehiclesDeficit;
                                         _carDeficit = ([_initialFactionBreakdown, "car"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "car"] call ALIVE_fnc_hashGet);
                                         _tankDeficit = ([_initialFactionBreakdown, "tank"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "tank"] call ALIVE_fnc_hashGet);
                                         _armorDeficit = ([_initialFactionBreakdown, "armor"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "armor"] call ALIVE_fnc_hashGet);
                                         _truckDeficit = ([_initialFactionBreakdown, "truck"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "truck"] call ALIVE_fnc_hashGet);
 
-                                        ["Group deficits %1 Entities %2 Vehciles %3 Car %4 Tank %5 Armor %6 Truck",_entitiesDeficit,_vehiclesDeficit,_carDeficit,_tankDeficit,_armorDeficit,_truckDeficit] call ALIVE_fnc_dump;
+                                        //["Group deficits %1 Entities %2 Vehciles %3 Car %4 Tank %5 Armor %6 Truck",_entitiesDeficit,_vehiclesDeficit,_carDeficit,_tankDeficit,_armorDeficit,_truckDeficit] call ALIVE_fnc_dump;
 
                                         // generate groups list
                                         _groups = [];
@@ -382,7 +411,25 @@ switch(_operation) do {
                                         // dont want to spawn too many groups on objectives if
                                         // not many are held
                                         if(_groupPerCluster > 5) then {
+
+
+                                            // DEBUG -------------------------------------------------------------------------------------
+                                            if(_debug) then {
+                                                ["ALIVE ML - [%1] Group per cluster level %2 is high restrict to 2 groups per cluster", _faction, _groupPerCluster] call ALIVE_fnc_dump;
+                                            };
+                                            // DEBUG -------------------------------------------------------------------------------------
+
+
                                             _groupPerCluster = 2;
+                                        }else{
+
+
+                                            // DEBUG -------------------------------------------------------------------------------------
+                                            if(_debug) then {
+                                                ["ALIVE ML - [%1] groupCount: %2 clusterCount: %3 groupPerCluster: %4", _faction, _groupCount, _clusterCount, _groupPerCluster] call ALIVE_fnc_dump;
+                                            };
+                                            // DEBUG -------------------------------------------------------------------------------------
+
                                         };
 
                                         // place new groups around objectives
@@ -393,40 +440,59 @@ switch(_operation) do {
                                             _id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
                                             _center = [_objective,"center"] call ALIVE_fnc_hashGet;
                                             _size = [_objective,"size"] call ALIVE_fnc_hashGet;
-                                            _sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-                                            _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
 
-                                            // TODO: check if there are any players in the sector
-                                            /*
-                                            if("active" in (_sectorData select 1)) then {
-                                                _active = [_sectorData, "active"] call ALIVE_fnc_hashGet;
-                                                if(count _active > 0 ) then {
-                                                    ["player in sector"] call ALIVE_fnc_dump;
-                                                };
-                                            };
-                                            */
+                                            _playersInRange = [_center, 2000] call ALiVE_fnc_anyPlayersInRange;
 
-                                            if(_totalCount < _groupCount) then {
 
-                                                if(_groupPerCluster > 0) then {
+                                            if(_playersInRange == 0) then {
+                                                if(_totalCount < _groupCount) then {
 
-                                                    for "_i" from 0 to _groupPerCluster -1 do {
+                                                    if(_groupPerCluster > 0) then {
+
+                                                        for "_i" from 0 to _groupPerCluster -1 do {
+                                                            _group = _groups select _totalCount;
+                                                            _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+                                                            _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+
+                                                            // DEBUG -------------------------------------------------------------------------------------
+                                                            if(_debug) then {
+                                                                [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
+                                                            };
+                                                            // DEBUG -------------------------------------------------------------------------------------
+
+
+                                                            _countProfiles = _countProfiles + count _profiles;
+                                                            _totalCount = _totalCount + 1;
+                                                        };
+
+                                                    }else{
                                                         _group = _groups select _totalCount;
                                                         _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
                                                         _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 
+
+                                                        // DEBUG -------------------------------------------------------------------------------------
+                                                        if(_debug) then {
+                                                            [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
+                                                        };
+                                                        // DEBUG -------------------------------------------------------------------------------------
+
+
                                                         _countProfiles = _countProfiles + count _profiles;
                                                         _totalCount = _totalCount + 1;
                                                     };
-
-                                                }else{
-                                                    _group = _groups select _totalCount;
-                                                    _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
-                                                    _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-
-                                                    _countProfiles = _countProfiles + count _profiles;
-                                                    _totalCount = _totalCount + 1;
                                                 };
+                                            }else{
+
+
+                                                // DEBUG -------------------------------------------------------------------------------------
+                                                if(_debug) then {
+                                                    ["ALIVE ML - [%1] Players near do not spawn reinforcements", _faction] call ALIVE_fnc_dump;
+                                                };
+                                                // DEBUG -------------------------------------------------------------------------------------
+
+
                                             };
                                         } forEach _reserve;
 

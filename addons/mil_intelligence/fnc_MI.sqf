@@ -36,6 +36,7 @@ ARJay
 #define MAINCLASS ALIVE_fnc_MI
 #define MTEMPLATE "ALiVE_MI_%1"
 #define DEFAULT_INTEL_CHANCE "0.1"
+#define DEFAULT_FRIENDLY_INTEL "NONE"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -101,10 +102,14 @@ switch(_operation) do {
 		};
 		*/		
 	};
-	// Return the Size filter
+	// Return the Intel Chance
 	case "intelChance": {
 		_result = [_logic,_operation,_args,DEFAULT_INTEL_CHANCE] call ALIVE_fnc_OOsimpleOperation;
 	};
+	// Return the Friendly Intel
+    case "friendlyIntel": {
+        _result = [_logic,_operation,_args,DEFAULT_FRIENDLY_INTEL] call ALIVE_fnc_OOsimpleOperation;
+    };
 	// Main process
 	case "init": {
         if (isServer) then {
@@ -192,12 +197,13 @@ switch(_operation) do {
 	case "monitor": {
         if (isServer) then {
 		
-			private ["_debug","_intelligenceObtained","_modules","_module","_modulesObjectives","_moduleSide","_moduleEnemies","_moduleFriendly","_objectives"];
+			private ["_debug","_intelligenceChance","_friendlyIntel","_intelligenceObtained","_modules","_module","_modulesObjectives","_moduleSide","_moduleEnemies","_moduleFriendly","_objectives"];
 			
 			_modules = _args;
 			
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_intelligenceChance = parseNumber([_logic, "intelChance"] call MAINCLASS);
+			_friendlyIntel = parseNumber([_logic, "friendlyIntel"] call MAINCLASS);
 			
 			_intelligenceObtained = _logic getVariable "intelligenceObtained";
 			_modulesObjectives = [];
@@ -329,7 +335,7 @@ switch(_operation) do {
 						
 							// DEBUG -------------------------------------------------------------------------------------
 							if(_debug) then {
-								["ALIVE MI - Intelligence chance dice roll succeeded"] call ALIVE_fnc_dump;
+								["ALIVE MI - Intelligence chance dice roll succeeded -  max intel items: %1",_maxItems] call ALIVE_fnc_dump;
 							};
 							// DEBUG -------------------------------------------------------------------------------------
 							

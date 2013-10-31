@@ -170,7 +170,7 @@ switch(_operation) do {
 				_debug = _this select 2;
 				
 				waituntil {
-					sleep 10;
+					sleep 5;
 					
 					_jobsToCancel = [];
 				
@@ -219,7 +219,7 @@ switch(_operation) do {
 							
 							};					
 							
-							sleep 10;
+							sleep 2;
 						};					
 				
 					} forEach (_analysisJobs select 2);
