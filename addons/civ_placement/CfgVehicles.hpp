@@ -43,6 +43,55 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CP_BLACKLIST_COMMENT";
                                 defaultValue = "";
                         };
+                        class clusterType
+                        {
+                                displayName = "$STR_ALIVE_CP_CLUSTER_TYPE";
+                                description = "$STR_ALIVE_CP_CLUSTER_TYPE_COMMENT";
+                                class Values
+                                {
+                                        class ALL
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_ALL";
+                                                value = "All";
+                                                default = 1;
+                                        };
+                                        class HQ
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_HQ";
+                                                value = "HQ";
+                                        };
+                                        class POWER
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_POWER";
+                                                value = "Power";
+                                        };
+                                        class COMMS
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_COMMS";
+                                                value = "Comms";
+                                        };
+                                        class FUEL
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_FUEL";
+                                                value = "Fuel";
+                                        };
+                                        class MARINE
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_MARINE";
+                                                value = "Marine";
+                                        };
+                                        class CONSTRUCTION
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_CONSTRUCTION";
+                                                value = "Construction";
+                                        };
+                                        class SETTLEMENT
+                                        {
+                                                name = "$STR_ALIVE_CP_CLUSTER_TYPE_SETTLEMENT";
+                                                value = "Settlement";
+                                        };
+                                };
+                        };
 						class sizeFilter
                         {
                                 displayName = "$STR_ALIVE_CP_SIZE_FILTER";
@@ -58,6 +107,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_CP_SIZE_FILTER_SMALL";
                                                 value = "100";
+                                                default = 1;
                                         };
 										class MEDIUM
                                         {

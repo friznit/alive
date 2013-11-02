@@ -849,12 +849,30 @@ switch(_operation) do {
 				}
 			};
 			
-			for "_i" from 0 to _countMotorized -1 do {
-				_group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
-				if!(_group == "FALSE") then {
-					_groups set [count _groups, _group];
-				};
-			};
+			if(_countMotorized > 0) then {
+
+                private["_motorizedGroups"];
+
+                _motorizedGroups = [];
+
+                for "_i" from 0 to _countMotorized -1 do {
+                    _group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
+                    if!(_group == "FALSE") then {
+                        _motorizedGroups set [count _motorizedGroups, _group];
+                    };
+                };
+
+                if(count _motorizedGroups == 0) then {
+                    for "_i" from 0 to _countMotorized -1 do {
+                        _group = ["Motorized_MTP",_faction] call ALIVE_fnc_configGetRandomGroup;
+                        if!(_group == "FALSE") then {
+                            _motorizedGroups set [count _motorizedGroups, _group];
+                        };
+                    };
+                };
+
+                _groups = _groups + _motorizedGroups;
+            };
 			
 			for "_i" from 0 to _countInfantry -1 do {
 				_group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;

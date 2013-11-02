@@ -26,6 +26,36 @@
 <Key ID="STR_ALIVE_CP_BLACKLIST_COMMENT">
 	<English>Exclusion Marker</English>
 </Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE">
+    <English>Objective Type Filter:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_COMMENT">
+    <English>The type of objective</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_ALL">
+    <English>All</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_HQ">
+    <English>HQ</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_POWER">
+    <English>Power Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_COMMS">
+    <English>Communications Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_FUEL">
+    <English>Fuel Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_MARINE">
+    <English>Marine Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_CONSTRUCTION">
+    <English>Construction Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_SETTLEMENT">
+    <English>Settlement</English>
+</Key>
 <Key ID="STR_ALIVE_CP_SIZE_FILTER">
 	<English>Objective Size Filter:</English>
 </Key>
