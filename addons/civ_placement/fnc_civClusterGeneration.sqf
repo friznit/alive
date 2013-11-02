@@ -66,7 +66,7 @@ _clusters_power = [_clusters_power] call ALIVE_fnc_consolidateClusters;
 _clusters_copy_power = [_clusters_power] call ALIVE_fnc_copyClusters;
 
 _clusters = _clusters + _clusters_power;
-_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+//_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 
 
@@ -86,7 +86,7 @@ _clusters_comms = [_clusters_comms] call ALIVE_fnc_consolidateClusters;
 _clusters_copy_comms = [_clusters_comms] call ALIVE_fnc_copyClusters;
 
 _clusters = _clusters + _clusters_comms;
-_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+//_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 
 
@@ -107,7 +107,7 @@ _clusters_copy_marine = [_clusters_marine] call ALIVE_fnc_copyClusters;
 
 // Consolidate locations
 _clusters = _clusters + _clusters_marine;
-_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+//_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 
 
@@ -128,7 +128,7 @@ _clusters_copy_rail = [_clusters_rail] call ALIVE_fnc_copyClusters;
 
 // Consolidate locations
 _clusters = _clusters + _clusters_rail;
-_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+//_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 
 
@@ -149,7 +149,7 @@ _clusters_copy_fuel = [_clusters_fuel] call ALIVE_fnc_copyClusters;
 
 // Consolidate locations
 _clusters = _clusters + _clusters_fuel;
-_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+//_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 
 
@@ -170,7 +170,7 @@ _clusters_copy_construction = [_clusters_construction] call ALIVE_fnc_copyCluste
 
 // Consolidate locations
 _clusters = _clusters + _clusters_construction;
-_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
+//_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 
 
@@ -191,7 +191,6 @@ _clusters_copy_settlement = [_clusters_settlement] call ALIVE_fnc_copyClusters;
 
 // Consolidate locations
 _clusters = _clusters + _clusters_settlement;
-_clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 			
 

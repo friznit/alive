@@ -53,6 +53,8 @@ _result = _master;
 	};
 } foreach _redundant;
 
+["Consolidating %1 targets", count _master] call ALIVE_fnc_dump;
+
 // iterate through master list of clusters
 {
 	private["_out","_max","_dist"];
@@ -96,6 +98,8 @@ _result = _master;
 	} forEach _result;
 	_result = _result - [-1];
 } forEach _master;
+
+["Targets Consolidated"] call ALIVE_fnc_dump;
 
 // return master list
 TRACE_1("consolidateClusters - output",_result);

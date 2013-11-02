@@ -38,10 +38,14 @@ _type = [_this, 1, "", [""]] call BIS_fnc_param;
 _priority = [_this, 2, 0, [0]] call BIS_fnc_param;
 _debugColour = [_this, 3, "ColorRed", ["String"]] call BIS_fnc_param;
 
+["Setting targets"] call ALIVE_fnc_dump;
+
 {
 	[_x, "type", _type] call ALIVE_fnc_cluster;
 	[_x, "priority", _priority] call ALIVE_fnc_cluster;
 	[_x, "debugColor", _debugColour] call ALIVE_fnc_hashSet;
 } forEach _clusters;
+
+["Targets Set"] call ALIVE_fnc_dump;
 
 _clusters

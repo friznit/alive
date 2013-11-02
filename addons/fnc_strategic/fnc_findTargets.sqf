@@ -36,10 +36,11 @@ private ["_logic","_types","_obj_array","_clusters"];
 
 _types = [_this, 0, [], [[]]] call BIS_fnc_param;
 
-TRACE_1("findTargets - input",_types);
+["Finding targets"] call ALIVE_fnc_dump;
 
 _obj_array = _types call ALIVE_fnc_getObjectsByType;
 _clusters = [_obj_array] call ALIVE_fnc_findClusters;
 
-TRACE_1("findTargets - output",_clusters);
+["Targets found"] call ALIVE_fnc_dump;
+
 _clusters;

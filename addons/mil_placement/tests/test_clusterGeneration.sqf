@@ -37,7 +37,7 @@ ASSERT_TRUE(!_result, _err);
 //========================================
 
 
-[] call ALIVE_fnc_milClusterGeneration;
+_FSMtest = [] execFSM "\x\alive\addons\mil_placement\milClusterGeneration.fsm";
 
 
 nil;

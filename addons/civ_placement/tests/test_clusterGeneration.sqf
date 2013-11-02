@@ -37,7 +37,7 @@ ASSERT_TRUE(!_result, _err);
 //========================================
 
 
-[] call ALIVE_fnc_civClusterGeneration;
+_FSMtest = [] execFSM "\x\alive\addons\civ_placement\civClusterGeneration.fsm";
 
 
 nil;

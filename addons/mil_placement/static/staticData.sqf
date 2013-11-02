@@ -205,11 +205,11 @@ ALIVE_civilianConstructionBuildingTypes = [
 
 
 ALIVE_civilianSettlementBuildingTypes = [
+    /*
 	"church",
 	"hospital",
 	"amphitheater",
 	"chapel_v",
-	"d_house_big",
-	"d_house_shop",
+	*/
 	"households"
 ];
