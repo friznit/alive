@@ -421,6 +421,7 @@ switch(_operation) do {
 
 
                                             _groupPerCluster = 2;
+
                                         }else{
 
 
@@ -434,17 +435,31 @@ switch(_operation) do {
 
                                         // place new groups around objectives
                                         {
-                                            private ["_objective","_id","_center","_size","_sector","_sectorData","_profiles"];
+                                            private ["_objective","_id","_center","_size","_playersInRange","_sector","_sectorData","_profiles",
+                                            "_profileCount","_sideProfiles","_sideProfile","_position"];
 
                                             _objective = _x select 1;
                                             _id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
                                             _center = [_objective,"center"] call ALIVE_fnc_hashGet;
                                             _size = [_objective,"size"] call ALIVE_fnc_hashGet;
 
+                                            // players near check
                                             _playersInRange = [_center, 2000] call ALiVE_fnc_anyPlayersInRange;
 
+                                            // profiles near check
+                                            _sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+                                            _sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
 
-                                            if(_playersInRange == 0) then {
+                                            _profileCount = 0;
+                                            if("entitiesBySide" in (_sectorData select 1)) then {
+                                                _sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+                                            	_sideProfile = [_sideProfiles, _moduleSide] call ALIVE_fnc_hashGet;
+                                            	_profileCount = count _sideProfile;
+                                            };
+
+                                            // do not reinforce if players are near and
+                                            // if there are more than 10 profiles in sector
+                                            if((_playersInRange == 0) && (_profileCount < 10)) then {
                                                 if(_totalCount < _groupCount) then {
 
                                                     if(_groupPerCluster > 0) then {
@@ -488,7 +503,7 @@ switch(_operation) do {
 
                                                 // DEBUG -------------------------------------------------------------------------------------
                                                 if(_debug) then {
-                                                    ["ALIVE ML - [%1] Players near do not spawn reinforcements", _faction] call ALIVE_fnc_dump;
+                                                    ["ALIVE ML - [%1] Players near, or more than 10 profiles in sector - do not spawn reinforcements", _faction] call ALIVE_fnc_dump;
                                                 };
                                                 // DEBUG -------------------------------------------------------------------------------------
 
@@ -517,7 +532,7 @@ switch(_operation) do {
                                 // DEBUG -------------------------------------------------------------------------------------
                                 if(_debug) then {
                                     ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                    ["ALIVE ML - no reserved clusters for side, cannot re-inforce %1", _moduleSide] call ALIVE_fnc_dump;
+                                    ["ALIVE ML - no reserved clusters for side, cannot reinforce %1", _moduleSide] call ALIVE_fnc_dump;
                                 };
                                 // DEBUG -------------------------------------------------------------------------------------
 

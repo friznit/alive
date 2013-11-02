@@ -599,13 +599,31 @@ switch(_operation) do {
 					_groups set [count _groups, _group];
 				}
 			};
-			
-			for "_i" from 0 to _countMotorized -1 do {
-				_group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
-				if!(_group == "FALSE") then {
-					_groups set [count _groups, _group];
-				};
-			};
+
+			if(_countMotorized > 0) then {
+
+			    private["_motorizedGroups"];
+
+                _motorizedGroups = [];
+
+                for "_i" from 0 to _countMotorized -1 do {
+                    _group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
+                    if!(_group == "FALSE") then {
+                        _motorizedGroups set [count _motorizedGroups, _group];
+                    };
+                };
+
+                if(count _motorizedGroups == 0) then {
+                    for "_i" from 0 to _countMotorized -1 do {
+                        _group = ["Motorized_MTP",_faction] call ALIVE_fnc_configGetRandomGroup;
+                        if!(_group == "FALSE") then {
+                            _motorizedGroups set [count _motorizedGroups, _group];
+                        };
+                    };
+                };
+
+                _groups = _groups + _motorizedGroups;
+            };
 			
 			for "_i" from 0 to _countInfantry -1 do {
 				_group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
@@ -645,7 +663,7 @@ switch(_operation) do {
 					
 						for "_i" from 0 to _groupPerCluster -1 do {
 							_group = _groups select _totalCount;														
-							_position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;					
+							_position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
 							_profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 							
 							_countProfiles = _countProfiles + count _profiles;
