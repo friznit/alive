@@ -179,6 +179,11 @@ _engaged = [0,0,0];
 				// DEBUG -------------------------------------------------------------------------------------
 				
 				if (!(isnil "_currentPosition") && {count _currentPosition > 0} && {!(isnil "_destination")} && {count _destination > 0}) then {
+                    
+                    //Match 2D since some profiles dont have a _pos select 2 defined
+                    _currentPosition set [2,0];
+                    _destination set [2,0];
+                    
 		            switch (_type) do {
 						case "MOVE" : {
 							 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
