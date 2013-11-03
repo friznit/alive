@@ -61,11 +61,6 @@ class cfgFunctions {
 	                        file = "\x\alive\addons\main\fnc_deleteLink.sqf";
 				recompile = 1;
 			};
-			class exMP {
-				description = "Multi-Locality execution with network-optimized commands PublicvariableServer and PublicvariableClient";
-	                        file = "\x\alive\addons\main\fnc_exMP.sqf";
-				recompile = 1;
-			};
 			class BUS {
 				description = "ALiVE Service Bus";
 	                        file = "\x\alive\addons\main\fnc_bus.sqf";
