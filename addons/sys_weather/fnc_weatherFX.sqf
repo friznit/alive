@@ -38,7 +38,7 @@
 								    _currentWindDirection = _this select 7;
 								    _targetFogDecayValue = _this select 8;
 								    _targetFogAltitudeValue = _this select 9;
-								    			    
+	    
 						    		if (initfirstRunClientside && !isDedicated && !isHC) then {
 						    			    skiptime -24;
    											  86400 setOvercast _currentOvercast;
@@ -390,7 +390,8 @@
 										};
 										
 								
-										
+							  if (isDedicated || isHC)	{ initfirstRunClientside = false; };
+							   
 								if(!isDedicated && !isHC) then {
 								    "drn_DynamicWeatherEventArgs" addPublicVariableEventHandler { drn_DynamicWeatherEventArgs call drn_fnc_DynamicWeather_SetWeatherLocal; };
 								    waitUntil {!isNil "drn_var_DynamicWeather_ServerInitialized"};
