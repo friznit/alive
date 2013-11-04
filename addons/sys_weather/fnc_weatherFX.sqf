@@ -390,7 +390,7 @@
 										};
 										
 								
-							  if (isDedicated || isHC)	{ initfirstRunClientside = false; };
+							  if (isDedicated || isHC) then { initfirstRunClientside = false; };
 							   
 								if(!isDedicated && !isHC) then {
 								    "drn_DynamicWeatherEventArgs" addPublicVariableEventHandler { drn_DynamicWeatherEventArgs call drn_fnc_DynamicWeather_SetWeatherLocal; };
