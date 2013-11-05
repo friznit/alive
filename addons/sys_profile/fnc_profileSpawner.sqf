@@ -23,11 +23,15 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_side","_spawnDistance","_debug","_entityProfiles","_vehicleProfiles"];
+private ["_side","_spawnDistance","_activeLimiter","_debug","_activeEntities","_activeEntityCount","_entityProfiles","_vehicleProfiles"];
 
 _side = _this select 0;
 _spawnDistance = if(count _this > 1) then {_this select 1} else {1000};
-_debug = if(count _this > 2) then {_this select 2} else {false};
+_activeLimiter = if(count _this > 2) then {_this select 2} else {100};
+_debug = if(count _this > 3) then {_this select 3} else {false};
+
+_activeEntities = [ALIVE_profileHandler, "getActiveEntities"] call ALIVE_fnc_profileHandler;
+_activeEntityCount = count _activeEntities;
 
 _profiles = [ALIVE_profileHandler, "getProfilesBySideFull", _side] call ALIVE_fnc_profileHandler;
 
@@ -53,6 +57,32 @@ _profiles = [ALIVE_profileHandler, "getProfilesBySideFull", _side] call ALIVE_fn
 		};
 		
 		if (_spawn) then {
+
+            // spawn limiter
+		    if(_activeEntityCount > _activeLimiter) then {
+
+		        // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    //["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Profile spawner - spawn limited reached destroying..  [%1]",_profileID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                if (!(isnil "_profile") && {!(_profile select 2 select 1)}) then {
+                        _vehiclesInCommandOf = _profile select 2 select 8;
+
+                        if (count _vehiclesInCommandOf > 0) then {
+                            {
+                                _vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                [ALIVE_profileHandler, "unregisterProfile", _vehicleProfile] call ALIVE_fnc_profileHandler;
+                            } foreach _vehiclesInCommandOf;
+                        };
+
+                        [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+                };
+		    }else{
+		        _activeEntityCount = _activeEntityCount + 1;
+		    };
 				
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {

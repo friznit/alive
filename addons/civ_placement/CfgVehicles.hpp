@@ -101,23 +101,23 @@ class CfgVehicles {
                                         class NONE
                                         {
                                                 name = "$STR_ALIVE_CP_SIZE_FILTER_NONE";
-                                                value = "0";
+                                                value = "160";
                                         };
                                         class SMALL
                                         {
                                                 name = "$STR_ALIVE_CP_SIZE_FILTER_SMALL";
-                                                value = "100";
+                                                value = "250";
                                                 default = 1;
                                         };
 										class MEDIUM
                                         {
                                                 name = "$STR_ALIVE_CP_SIZE_FILTER_MEDIUM";
-                                                value = "200";
+                                                value = "400";
                                         };
 										class LARGE
                                         {
                                                 name = "$STR_ALIVE_CP_SIZE_FILTER_LARGE";
-                                                value = "300";
+                                                value = "700";
                                         };
                                 };
                         };

@@ -912,7 +912,7 @@ switch(_operation) do {
 					
 						for "_i" from 0 to _groupPerCluster -1 do {
 							_group = _groups select _totalCount;														
-							_position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;					
+							_position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
 							_profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 							
 							_countProfiles = _countProfiles + count _profiles;

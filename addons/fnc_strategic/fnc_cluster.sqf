@@ -85,7 +85,7 @@ _createMarkers = {
 			};
 			_m setMarkerColor ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
 		} forEach _nodes;
-		
+
 		_center = [_logic, "center"] call MAINCLASS;
 		_size = [_logic, "size"] call MAINCLASS;
 		_priority = [_logic, "priority"] call MAINCLASS;

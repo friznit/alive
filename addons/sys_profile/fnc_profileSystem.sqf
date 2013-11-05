@@ -61,6 +61,7 @@ switch(_operation) do {
 						[_logic,"syncMode","ADD"] call ALIVE_fnc_hashSet;
 						[_logic,"syncedUnits",[]] call ALIVE_fnc_hashSet;
 						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
+						[_logic,"activeLimiter",100] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",6] call ALIVE_fnc_hashSet;
                 };
@@ -81,7 +82,7 @@ switch(_operation) do {
 		};
 		case "start": {
 		
-				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnCycleTime","_despawnCycleTime",
+				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_activeLimiter","_spawnCycleTime","_despawnCycleTime",
 				"_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];
                 
                 if (isServer) then {
@@ -91,6 +92,7 @@ switch(_operation) do {
 						_syncMode = [_logic,"syncMode","ADD"] call ALIVE_fnc_hashGet;
 						_syncedUnits = [_logic,"syncedUnits",[]] call ALIVE_fnc_hashGet;
 						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+						_activeLimiter = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
 						
@@ -148,6 +150,9 @@ switch(_operation) do {
 							["ALIVE Map units converted to profiles"] call ALIVE_fnc_dump;
 							["ALIVE Simulation controller created"] call ALIVE_fnc_dump;
 							["ALIVE Spawn controller created"] call ALIVE_fnc_dump;
+							["ALIVE Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
+							["ALIVE Spawn Radius: %1", _spawnRadius] call ALIVE_fnc_dump;
+							["ALIVE Spawn Cycle Time: %1", _spawnCycleTime] call ALIVE_fnc_dump;
 							[] call ALIVE_fnc_timer;
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;					
 						};
@@ -160,10 +165,10 @@ switch(_operation) do {
 						
 						// start the profile spawners
 
-						_profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						_profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						_profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						_profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+						_profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 
 						_profileDespawnerFSMEast = [_logic,"EAST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
                         _profileDespawnerFSMWest = [_logic,"WEST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
@@ -225,6 +230,12 @@ switch(_operation) do {
 						ALIVE_spawnRadius = _args;
                 };
 				_result = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+        };
+        case "activeLimiter": {
+                if(typeName _args == "SCALAR") then {
+                        [_logic,"activeLimiter",_args] call ALIVE_fnc_hashSet;
+                };
+                _result = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
         };
 		case "syncMode": {
 				if(typeName _args == "STRING") then {

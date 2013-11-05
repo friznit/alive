@@ -735,6 +735,7 @@ switch(_operation) do {
 					
 					// store the profile id on the active profiles index
 					[ALIVE_profileHandler,"setActive",_profileID] call ALIVE_fnc_profileHandler;
+					[ALIVE_profileHandler,"setEntityActive",_profileID] call ALIVE_fnc_profileHandler;
 					
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
@@ -827,6 +828,7 @@ switch(_operation) do {
 						
 						// store the profile id on the in active profiles index
 						[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
+						[ALIVE_profileHandler,"setEntityInActive",_profileID] call ALIVE_fnc_profileHandler;
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {

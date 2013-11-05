@@ -153,7 +153,8 @@ ALIVE_civilianPowerBuildingTypes = [
 	"pec_",
 	"powerstation",
 	"spp_t",
-	"trafostanica"
+	"trafostanica",
+	"ind_coltan_mine"
 ];
 
 ALIVE_civilianCommsBuildingTypes = [
@@ -192,7 +193,9 @@ ALIVE_civilianFuelBuildingTypes = [
 	"IndPipe",
 	"komin",
 	"Ind_Stack_Big",
-	"Ind_TankBig"
+	"Ind_TankBig",
+	"fuel_tank_big",
+	"ind_fuelstation"
 ];
 
 
@@ -205,11 +208,14 @@ ALIVE_civilianConstructionBuildingTypes = [
 
 
 ALIVE_civilianSettlementBuildingTypes = [
-    /*
-	"church",
+    "church",
 	"hospital",
 	"amphitheater",
 	"chapel_v",
-	*/
-	"households"
+	/*"households",*/
+	"house",
+	"housel",
+	"housec",
+	"housea",
+	"housek"
 ];
