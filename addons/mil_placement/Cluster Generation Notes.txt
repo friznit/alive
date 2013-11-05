@@ -40,7 +40,7 @@ execVM "\x\alive\addons\fnc_analysis\tests\test_appendClustersMil.sqf"
 Once completed paste the results in a temp file
 Run a find and replace for ; and replace with ;\r\n on the file.
 
-Copy the contents of the file to the bottom of the grid data file replacing the existing 
+Copy the contents of the file to the bottom of the grid data file replacing the existing
 cluster data sections
 
 fnc_analysis\data\data.WORLDNAME.sqf

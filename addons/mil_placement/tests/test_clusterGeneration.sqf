@@ -11,8 +11,6 @@ private ["_result","_err","_logic","_amo","_state","_result2"];
 
 LOG("Testing MP");
 
-ASSERT_DEFINED("ALIVE_fnc_MP","");
-
 #define STAT(msg) sleep 0.5; \
 diag_log ["TEST("+str player+": "+msg]; \
 titleText [msg,"PLAIN"]
