@@ -107,6 +107,8 @@ switch(_operation) do {
 						[_logic,"profilesByCompany",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profilesActive",[]] call ALIVE_fnc_hashSet;
 						[_logic,"profilesInActive",[]] call ALIVE_fnc_hashSet;
+						[_logic,"entitiesActive",[]] call ALIVE_fnc_hashSet;
+                        [_logic,"entitiesInActive",[]] call ALIVE_fnc_hashSet;
 						[_logic,"profilePositions",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profileEntityCount",0] call ALIVE_fnc_hashSet;
 						[_logic,"profileVehicleCount",0] call ALIVE_fnc_hashSet;
@@ -323,7 +325,7 @@ switch(_operation) do {
         };
 		case "registerProfile": {
 				private["_profile","_profilesSide","_profileID","_profiles","_profilesByType","_profilesBySide","_profilesByFaction","_profilesByFactionByType",
-				"_profilesByFactionByVehicleType","_profilesByVehicleType","_profilesActive","_profilesInActive","_profilesByCompany",
+				"_profilesByFactionByVehicleType","_profilesByVehicleType","_profilesActive","_profilesInActive","_entityProfilesActive","_entityProfilesInActive","_profilesByCompany",
 				"_profilesCatagorised","_profilePositions","_profileType","_profilesType","_profileSide","_profileFaction","_profilesSide",
 				"_profilesFaction","_profileActive","_profileCompany","_profleByCompanyArray","_profileVehicleType","_profilesVehicleType",
 				"_profilesCatagorisedSide","_profilesCatagorisedTypes","_profilesCatagorisedVehicleTypes","_profilesCatagorisedType",
@@ -342,6 +344,8 @@ switch(_operation) do {
 						_profilesByVehicleType = [_logic, "profilesByVehicleType"] call ALIVE_fnc_hashGet;
 						_profilesActive = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
 						_profilesInActive = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
+						_entityProfilesActive = [_logic, "entitiesActive"] call ALIVE_fnc_hashGet;
+                        _entityProfilesInActive = [_logic, "entitiesInActive"] call ALIVE_fnc_hashGet;
 						_profilesByCompany = [_logic, "profilesByCompany"] call ALIVE_fnc_hashGet;
 						_profilesCatagorised = [_logic, "profilesCatagorised"] call ALIVE_fnc_hashGet;
 						_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
@@ -439,8 +443,16 @@ switch(_operation) do {
 
 							if(_profileActive) then {
 								_profilesActive set [count _profilesActive, _profileID];
+
+								if(_profileType == "entity") then {
+                                    _entityProfilesActive set [count _entityProfilesActive, _profileID];
+								};
 							}else{
 								_profilesInActive set [count _profilesInActive, _profileID];
+
+								if(_profileType == "entity") then {
+                                    _entityProfilesInActive set [count _entityProfilesInActive, _profileID];
+                                };
 							};
 
 							if!(_profileType == "vehicle") then {
@@ -471,7 +483,7 @@ switch(_operation) do {
         };
 		case "unregisterProfile": {
 				private["_profile","_profileID","_profiles","_profilesByType","_profilesBySide","_profilesByFaction","_profilesByFaction","_profilesByFactionByType",
-                "_profilesByFactionByVehicleType","_profilesByVehicleType","_profilesActive","_profilesInActive","_profilesByCompany","_profileType","_profilesType","_profileSide",
+                "_profilesByFactionByVehicleType","_profilesByVehicleType","_profilesActive","_profilesInActive","_entityProfilesActive","_entityProfilesInActive","_profilesByCompany","_profileType","_profilesType","_profileSide",
 				"_profileFaction","_profilesSide","_profilesFaction","_profileActive","_profleByCompanyArray","_profileVehicleType",
 				"_profilesVehicleType","_profilesCatagorised","_profilesCatagorisedSide","_profilesCatagorisedTypes",
 				"_profilesCatagorisedVehicleTypes","_profilesCatagorisedType","_profilesCatagorisedVehicleType","_profilePositions","_profilesBySideFull"];
@@ -489,6 +501,8 @@ switch(_operation) do {
 						_profilesByVehicleType = [_logic, "profilesByVehicleType"] call ALIVE_fnc_hashGet;
 						_profilesActive = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
 						_profilesInActive = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
+						_entityProfilesActive = [_logic, "entitiesActive"] call ALIVE_fnc_hashGet;
+                        _entityProfilesInActive = [_logic, "entitiesInActive"] call ALIVE_fnc_hashGet;
 						_profilesByCompany = [_logic, "profilesByCompany"] call ALIVE_fnc_hashGet;
 						_profilesCatagorised = [_logic, "profilesCatagorised"] call ALIVE_fnc_hashGet;
 						_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
@@ -574,9 +588,17 @@ switch(_operation) do {
 							if(_profileActive) then {
 								_profilesActive = _profilesActive - [_profileID];
 								[_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
+
+								if(_profileType == "entity") then {
+                                    _entityProfilesActive = _entityProfilesActive - [_profileID];
+                                };
 							}else{
 								_profilesInActive = _profilesInActive - [_profileID];
 								[_logic, "profilesInActive", _profilesInActive] call ALIVE_fnc_hashSet;
+
+								if(_profileType == "entity") then {
+                                    _entityProfilesInActive = _entityProfilesInActive - [_profileID];
+                                };
 							};
 
 							if!(_profileType == "vehicle") then {
@@ -637,6 +659,48 @@ switch(_operation) do {
 				_profilesInActive = [_logic, "profilesInActive",_profilesInActive] call ALIVE_fnc_hashSet;
 				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
 		};
+		case "getActive": {
+                private["_profileID","_profilesInActive","_profilesActive"];
+
+                _result = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
+        };
+        case "setEntityActive": {
+                private["_profileID","_entityProfilesInActive","_entityProfilesActive"];
+
+                _profileID = _args;
+                _entityProfilesActive = [_logic, "entitiesActive"] call ALIVE_fnc_hashGet;
+                _entityProfilesInActive = [_logic, "entitiesInActive"] call ALIVE_fnc_hashGet;
+
+                if(_profileID in _entityProfilesInActive) then {
+                    _entityProfilesInActive = _entityProfilesInActive - [_profileID];
+                };
+
+                _entityProfilesActive set [count _entityProfilesActive, _profileID];
+
+                _entityProfilesInActive = [_logic, "entitiesInActive",_entityProfilesInActive] call ALIVE_fnc_hashSet;
+                _entityProfilesActive = [_logic, "entitiesActive", _entityProfilesActive] call ALIVE_fnc_hashSet;
+        };
+        case "setEntityInActive": {
+                private["_profileID","_entityProfilesInActive","_entityProfilesActive"];
+
+                _profileID = _args;
+                _entityProfilesActive = [_logic, "entitiesActive"] call ALIVE_fnc_hashGet;
+                _entityProfilesInActive = [_logic, "entitiesInActive"] call ALIVE_fnc_hashGet;
+
+                if(_profileID in _entityProfilesActive) then {
+                    _entityProfilesActive = _entityProfilesActive - [_profileID];
+                };
+
+                _entityProfilesInActive set [count _entityProfilesInActive, _profileID];
+
+                _entityProfilesInActive = [_logic, "entitiesInActive",_entityProfilesInActive] call ALIVE_fnc_hashSet;
+                _entityProfilesActive = [_logic, "entitiesActive", _entityProfilesActive] call ALIVE_fnc_hashSet;
+        };
+        case "getActiveEntities": {
+                private["_profileID","_profilesInActive","_profilesActive"];
+
+                _result = [_logic, "entitiesActive"] call ALIVE_fnc_hashGet;
+        };
 		case "setPosition": {
 				private["_profileID","_position","_profilePositions"];
 

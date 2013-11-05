@@ -41,6 +41,12 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS_COMMENT">
 	<English>Sets the distance from players to spawn profile units</English>
 </Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER">
+    <English>Active Limiter:</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT">
+    <English>Sets the max number of profiles to spawn at any one time</English>
+</Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
 	<English>Only one Profile System module can be used</English>
 </Key>

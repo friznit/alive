@@ -20,7 +20,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_plotSectors","_syncMode","_spawnRadius","_syncedUnits","_profileSystem"];
+private ["_logic","_debug","_plotSectors","_syncMode","_spawnRadius","_activeLimiter","_syncedUnits","_profileSystem"];
 
 PARAMS_1(_logic);
 
@@ -35,6 +35,9 @@ if(isServer) then {
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1000"]);
+	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","100"]);
+
+	["ALIVE Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
 
 	if(_debug == "true") then {
 		_debug = true;
@@ -48,5 +51,6 @@ if(isServer) then {
 	[_profileSystem, "syncMode", _syncMode] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
+	[_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "register"] call ALIVE_fnc_profileSystem;
 };

@@ -1,4 +1,4 @@
-// ----------------------------------------------------------------------------
+a// ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\sys_profile\script_component.hpp>
 SCRIPT(test_profileVehicleAssignmentsGetLinked);
