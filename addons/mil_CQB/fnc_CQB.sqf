@@ -149,11 +149,18 @@ switch(_operation) do {
                         "O_diver_TL_F",
                         "O_diver_exp_F",
                         "O_helipilot_F",
+                        "B_diver_F",
+                        "B_diver_TL_F",
+                        "B_diver_exp_F",
+                        "B_Helipilot_F",
                         "I_diver_F",
                         "I_diver_TL_F",
                         "I_diver_exp_F",
                         "I_crew_F",
-                        "I_helicrew_F"
+                        "B_helipilot_F",
+                        "I_helicrew_F",
+                        "O_UAV_AI",
+                        "B_UAV_AI"
                     ];
                     
                     //Get all enterable houses of strategic types below across the whole map (rest will be regular)
@@ -162,7 +169,8 @@ switch(_operation) do {
                     
                     private ["_collection","_objectives","_pos","_size"];
 
-                    _collection = []; 
+                    _collection = [];
+
                     if (count synchronizedObjects _logic > 0) then {
                         _objectives = [];
                         for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
@@ -193,7 +201,7 @@ switch(_operation) do {
                         _time = time;
                         _pos = _x select 0;
                         _size = _x select 1;
-                        
+
                         _houses_tmp = nearestObjects [_pos, (_regularTypes + _strategicTypes), _size];
                         _houses = _houses + _houses_tmp;
                         
