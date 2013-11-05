@@ -45,7 +45,7 @@
 	
 								    // Set current weather values
 								    
-								    if (initfirstRunClientside && !isDedicated && !isHC) then { ["ALIVE Dynamic Weather - Clientside first run, skipping time... initfirstRunClientside: %1;", initfirstRunClientside] call ALIVE_fnc_dump; skiptime -24;  };
+								    if (initfirstRunClientside && !isDedicated && !isHC) then { if (WEATHER_DEBUG) then { ["ALIVE Dynamic Weather - Clientside first run, skipping time... initfirstRunClientside: %1;", initfirstRunClientside] call ALIVE_fnc_dump; }; skiptime -24;  };
 								    120 setOvercast _currentOvercast;
 								    120 setWaves _currentOvercast;
 								    120 setGusts _currentOvercast;
@@ -119,7 +119,7 @@
 							    drn_DynamicWeather_WindDirection = _initialWind select 1;
 							    
 							    
-							     if (SP) then { ["ALIVE Dynamic Weather - Single player mode, skipping time..."] call ALIVE_fnc_dump; skiptime -24; };
+							     if (SP) then { if (WEATHER_DEBUG) then { ["ALIVE Dynamic Weather - Single player mode, skipping time..."] call ALIVE_fnc_dump; }; skiptime -24; };
 							     
 							    if (_initialFog == -1) then {
 							        _initialFog = (_minimumFog + random (_maximumFog - _minimumFog));
