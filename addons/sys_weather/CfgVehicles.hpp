@@ -33,6 +33,40 @@ class CfgVehicles {
 			                                        };
 			                                };
 			                        };
+			                        
+ 															class weather_initial_setting
+			                        {
+			                                displayName = "$STR_ALIVE_WEATHER_INITIAL";
+			                                description = "$STR_ALIVE_WEATHER_INITIAL_COMMENT";
+			                                class Values
+			                                {
+			                                	
+			                                	
+																							class initialRandom
+			                                        {
+			                                                name = "Random";
+			                                                value = 1;
+			                                                default = 1;
+			                                        };
+			                                        class initialClear
+			                                        {
+			                                                name = "Clear";
+			                                                value = 2;
+			                                        };
+			                                        class initialOvercast
+			                                        {
+			                                                name = "Overcast";
+			                                                value = 3;
+			                                               
+			                                        };
+ 																							class initialStormy
+			                                        {
+			                                                name = "Stormy";
+			                                                value = 4;
+			                                               
+			                                        };
+			                                };
+			                        };
 			          };
 			                
 			  };

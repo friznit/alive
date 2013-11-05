@@ -14,4 +14,10 @@
 <Key ID="STR_ALIVE_WEATHER_ERROR1">
 	<English>Only one dynamic weather module can be used</English>
 </Key>
+<Key ID="STR_ALIVE_WEATHER_INITIAL">
+	<English>Initial Weather:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_INITIAL_COMMENT">
+	<English>Initial weather setting</English>
+</Key>
 </Container></Package></Project>
