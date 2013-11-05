@@ -667,8 +667,6 @@ switch(_operation) do {
 				_supportClasses = [ALIVE_factionDefaultSupports,_faction] call ALIVE_fnc_hashGet;
 				
 				_landClasses = _landClasses - _supportClasses;
-
-				["LC: %1",_landClasses] call ALIVE_fnc_dump;
 				
 				if(count _landClasses > 0) then {
 							

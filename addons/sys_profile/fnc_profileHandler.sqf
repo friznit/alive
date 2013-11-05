@@ -591,6 +591,7 @@ switch(_operation) do {
 
 								if(_profileType == "entity") then {
                                     _entityProfilesActive = _entityProfilesActive - [_profileID];
+                                    [_logic, "entitiesActive", _entityProfilesActive] call ALIVE_fnc_hashSet;
                                 };
 							}else{
 								_profilesInActive = _profilesInActive - [_profileID];
@@ -598,6 +599,7 @@ switch(_operation) do {
 
 								if(_profileType == "entity") then {
                                     _entityProfilesInActive = _entityProfilesInActive - [_profileID];
+                                    [_logic, "entitiesInActive", _entityProfilesInActive] call ALIVE_fnc_hashSet;
                                 };
 							};
 
@@ -697,9 +699,24 @@ switch(_operation) do {
                 _entityProfilesActive = [_logic, "entitiesActive", _entityProfilesActive] call ALIVE_fnc_hashSet;
         };
         case "getActiveEntities": {
-                private["_profileID","_profilesInActive","_profilesActive"];
-
                 _result = [_logic, "entitiesActive"] call ALIVE_fnc_hashGet;
+        };
+        case "getInActiveEntities": {
+                _result = [_logic, "entitiesInActive"] call ALIVE_fnc_hashGet;
+        };
+        case "getInActiveEntitiesForMarking": {
+                private["_entities","_profile","_position","_side"];
+
+                _entities = [_logic, "entitiesInActive"] call ALIVE_fnc_hashGet;
+                _result = [];
+
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    _position = _profile select 2 select 2;
+                    _side = _profile select 2 select 3;
+
+                    _result set [count _result, [_position,_side]];
+                } forEach _entities;
         };
 		case "setPosition": {
 				private["_profileID","_position","_profilePositions"];
