@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_REVIVE">
+	<English>Revive</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_DEBUG_COMMENT">
+	<English>Enables Revive Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_ERROR1">
+	<English>Only one revive module can be used</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_LANG">
+	<English>Revive Language:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_LANG_COMMENT">
+	<English>Choose your language to be displayed in game for the revive text</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_LIVES">
+	<English>Number of Revives:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_LIVES_COMMENT">
+	<English>The number of revives allowed before you are not able to be revived during your current game session</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_ALLOW_RESPAWN">
+	<English>Allow Respawn:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_ALLOW_RESPAWN_COMMENT">
+	<English>This will show a respawn button if allowed after being killed. Respawns back to the respawn_xxx marker for that faction</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_SPECTATOR">
+	<English>Revive Spectator:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_SPECTATOR_COMMENT">
+	<English>*** WIP *** - If enabled, this will allow a third person view while waiting to be revived.</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_MARKER">
+	<English>Revive Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_MARKER_COMMENT">
+	<English>This will place a marker on the map where the unit to be revived is located</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_INJURED">
+	<English>Injured after Revive:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_INJURED_COMMENT">
+	<English>if enabled, this will revive the unit but leave that unit still injured. Realism approach if turned on.</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_DRAG">
+	<English>Drag Body:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_DRAG_COMMENT">
+	<English>Will allow the injured unit to be dragged to a safe location before being revived.</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_CARRY">
+	<English>Carry Body:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_CARRY_COMMENT">
+	<English>*** WIP *** - Will allow the injured unit to be carried to a safe location before being revived.</English>
+</Key>
+</Container></Package></Project>
