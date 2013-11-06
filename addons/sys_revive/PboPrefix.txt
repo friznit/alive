@@ -1,0 +1,7 @@
+x\alive\addons\sys_revive
+======<HEADER>=======
+prefix=x\alive\addons\sys_revive
+product=Arma 3
+version=1
+Pbo Type is: Arma Addon
+======</HEADER>============

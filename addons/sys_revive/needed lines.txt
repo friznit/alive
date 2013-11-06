@@ -1,0 +1,73 @@
+/* ----------------- SYS Revive || Modules\@SUPPORT\Mods\sys_revive\ ----------------- */
+// [] execVM "Modules\@SUPPORT\Mods\sys_revive\revive_init.sqf";
+
+
+/* -------- SYS Revive ||  -------- */
+	// #include <Modules\@SUPPORT\Mods\sys_revive\dlg_attente_reanimation.h>
+
+
+/* -------- Class Params ||  -------- */
+	// class Params {
+		// #include <Modules\@SUPPORT\params.hpp>
+		// #include <Modules\@SUPPORT\Mods\sys_revive\params.hpp>
+	// };
+/* -------- Class CfgSounds ||  -------- */
+	// class CfgSounds {
+		// sounds[] = {Vent,Para,REV_Heartbeat};
+		// class REV_Heartbeat {
+			// name = "REV_Wounded_Heartbeat";
+			// sound[] = {"Modules\@SUPPORT\Mods\sys_revive\Sounds\HEARTBEAT.ogg",db-11,1};
+			// titles[] = {};
+		// };
+	// };
+/* -------- Class RscTitles ||  -------- */
+	// class RscTitles {
+		// class REV_Wounded_BloodSplash {
+			// idd = -1;
+			// movingEnable = 0;
+			// duration = 0.5;
+			// fadein = 0;
+			// fadeout = 6;
+			// name = "Revive Blood Splash";
+			// controls[] = {"REV_BloodSplash"};
+
+			// class REV_BloodSplash {
+				// idc=-1;
+				// type=0;
+				// style = 48;
+				// text = "Modules\@SUPPORT\Mods\sys_revive\Textures\Blood.paa";
+				// colorBackground[] = {1,1,1,0.4 };
+				// colorText[] = { 1, 1, 1, 1 };
+				// font = "PuristaMedium";
+				// sizeEx = 0.05;
+				// x = safezoneX;
+				// y = safezoneY;
+				// w = safezoneW;
+				// h = safezoneH;  
+			// };
+		// };
+		// class REV_Wounded_EyePain {
+			// idd = -1;
+			// movingEnable = 0;
+			// duration = 0.5;
+			// fadein = 0;
+			// fadeout = 6;
+			// name = "Revive Eye Pain";
+			// controls[] = {"REV_EyePain"};
+
+			// class REV_EyePain {
+				// idc=-1;
+				// type=0;
+				// style = 48;
+				// text = "Modules\@SUPPORT\Mods\sys_revive\Textures\EyeHurt.paa";
+				// colorBackground[] = { 1,1,1,0.4 };
+				// colorText[] = { 1, 1, 1, 1 };
+				// font = "PuristaMedium";
+				// sizeEx = 0.05;
+				// x = safezoneX;
+				// y = safezoneY;
+				// w = safezoneW;
+				// h = safezoneH;  
+			// };
+		// };
+	// };
