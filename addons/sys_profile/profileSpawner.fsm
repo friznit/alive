@@ -36,7 +36,7 @@ link7[] = {8,9};
 link8[] = {9,10};
 link9[] = {10,6};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,99,6316128,1,-519.239868,305.574158,620.719482,-377.586426,851,1030,1};
-window[] = {2,-1,-1,-1,-1,1106,-1712,-89,208,3,869};
+window[] = {2,-1,-1,-1,-1,950,-1868,-245,52,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -47,13 +47,14 @@ class FSM
     class INIT
     {
       name = "INIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_spawnCycleTime"",""_lastSpawnTime"",""_doSpawn""," \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_spawnCycleTime"",""_activeLimiter"",""_lastSpawnTime"",""_doSpawn""," \n
        """_lastDespawnTime"",""_destroy"",""_debug""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
        "_side = _this select 1;" \n
        "_spawnDistance = _this select 2;" \n
        "_spawnCycleTime = if(count _this > 3) then {_this select 3} else {7};" \n
+       "_activeLimiter = if(count _this > 4) then {_this select 4} else {100};" \n
        "" \n
        "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
        "_doSpawn = false;" \n
@@ -140,7 +141,7 @@ class FSM
        "" \n
        "//_spawnHandle = [_spawnDistance,_debug] spawn ALIVE_fnc_profileSpawner;" \n
        "" \n
-       "_spawnHandle = [_side,_spawnDistance,_debug] spawn ALIVE_fnc_profileSpawner;"/*%FSM</STATEINIT""">*/;
+       "_spawnHandle = [_side,_spawnDistance,_activeLimiter,_debug] spawn ALIVE_fnc_profileSpawner;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

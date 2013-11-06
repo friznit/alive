@@ -54,11 +54,17 @@ class CfgVehicles {
                                         };
                                 };
                         };
-						 class spawnRadius
+						class spawnRadius
                         {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS";
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS_COMMENT";
 								defaultvalue = "1500";
+                        };
+                        class activeLimiter
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT";
+                                defaultvalue = "100";
                         };
                 };
                 

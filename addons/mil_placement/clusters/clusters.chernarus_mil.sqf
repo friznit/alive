@@ -1385,6 +1385,4 @@ _nodes set [count _nodes, ["146097",[4883.47,9668.51,0]]];
 [_cluster,"priority",10] call ALIVE_fnc_hashSet;
 [_cluster,"debugColor","ColorOrange"] call ALIVE_fnc_hashSet;
 [ALIVE_clustersMilAir,"c_100",_cluster] call ALIVE_fnc_hashSet;
-
 ALIVE_clustersMilHeli = [] call ALIVE_fnc_hashCreate;
-

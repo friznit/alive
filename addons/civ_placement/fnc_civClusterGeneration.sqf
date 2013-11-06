@@ -221,6 +221,10 @@ if(count _clusters_copy_hq > 0) then {
 	_objectivesName = 'ALIVE_clustersCivHQ';
 	_result = [_clusters_copy_hq, _objectivesName] call ALIVE_fnc_staticClusterOutput;				
 	_exportString = _exportString + _result;
+}else{
+    _objectivesName = 'ALIVE_clustersCivHQ';
+    _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+    _exportString = _exportString + _result;
 };
 
 if(count _clusters_copy_power > 0) then {
@@ -228,49 +232,77 @@ if(count _clusters_copy_power > 0) then {
 	_objectivesName = 'ALIVE_clustersCivPower';
 	_result = [_clusters_copy_power, _objectivesName] call ALIVE_fnc_staticClusterOutput;			
 	_exportString = _exportString + _result;
-};
+}else{
+     _objectivesName = 'ALIVE_clustersCivPower';
+     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+     _exportString = _exportString + _result;
+ };
 
 if(count _clusters_copy_comms > 0) then {
 	["COMMS"] call ALIVE_fnc_dump;
 	_objectivesName = 'ALIVE_clustersCivComms';
 	_result = [_clusters_copy_comms, _objectivesName] call ALIVE_fnc_staticClusterOutput;				
 	_exportString = _exportString + _result;
-};
+}else{
+     _objectivesName = 'ALIVE_clustersCivComms';
+     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+     _exportString = _exportString + _result;
+ };
 
 if(count _clusters_copy_marine > 0) then {
 	["MARINE"] call ALIVE_fnc_dump;
 	_objectivesName = 'ALIVE_clustersCivMarine';
 	_result = [_clusters_copy_marine, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 	_exportString = _exportString + _result;
-};
+}else{
+     _objectivesName = 'ALIVE_clustersCivMarine';
+     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+     _exportString = _exportString + _result;
+ };
 
 if(count _clusters_copy_rail > 0) then {
 	["RAIL"] call ALIVE_fnc_dump;
 	_objectivesName = 'ALIVE_clustersCivRail';
 	_result = [_clusters_copy_rail, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 	_exportString = _exportString + _result;
-};	
+}else{
+     _objectivesName = 'ALIVE_clustersCivRail';
+     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+     _exportString = _exportString + _result;
+ };
 
 if(count _clusters_copy_fuel > 0) then {
 	["FUEL"] call ALIVE_fnc_dump;
 	_objectivesName = 'ALIVE_clustersCivFuel';
 	_result = [_clusters_copy_fuel, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 	_exportString = _exportString + _result;
-};
+}else{
+     _objectivesName = 'ALIVE_clustersCivFuel';
+     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+     _exportString = _exportString + _result;
+ };
 
 if(count _clusters_copy_construction > 0) then {
 	["CON"] call ALIVE_fnc_dump;
 	_objectivesName = 'ALIVE_clustersCivConstruction';
 	_result = [_clusters_copy_construction, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 	_exportString = _exportString + _result;
-};
+}else{
+     _objectivesName = 'ALIVE_clustersCivConstruction';
+     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+     _exportString = _exportString + _result;
+ };
 
 if(count _clusters_copy_settlement > 0) then {
 	["SET"] call ALIVE_fnc_dump;
 	_objectivesName = 'ALIVE_clustersCivSettlement';
 	_result = [_clusters_copy_settlement, _objectivesName] call ALIVE_fnc_staticClusterOutput;
 	_exportString = _exportString + _result;
-};
+}else{
+     _objectivesName = 'ALIVE_clustersCivSettlement';
+     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+     _exportString = _exportString + _result;
+ };
 
 copyToClipboard _exportString;
 ["Civilian Objectives generation complete, results have been copied to the clipboard"] call ALIVE_fnc_dump;

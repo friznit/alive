@@ -11,6 +11,9 @@
 								drn_DynamicWeather_DebugTextEventArgs = []; 
 								drn_DynamicWeatherEventArgs = []; 
 								drn_AskServerDynamicWeatherEventArgs = [];
+								
+								 if (count playableUnits == 0) then {SP = true} else {SP = false};
+								 
 								"drn_DynamicWeather_DebugTextEventArgs" addPublicVariableEventHandler { drn_DynamicWeather_DebugTextEventArgs call drn_fnc_DynamicWeather_ShowDebugTextLocal;};
 								
 								drn_fnc_DynamicWeather_ShowDebugTextLocal = {
@@ -39,26 +42,10 @@
 								    _targetFogDecayValue = _this select 8;
 								    _targetFogAltitudeValue = _this select 9;
 	    
-						    		if (initfirstRunClientside && !isDedicated && !isHC) then {
-						    			    skiptime -24;
-   											  86400 setOvercast _currentOvercast;
-											    86400 setWaves _currentOvercast;
-											    86400 setGusts _currentOvercast;
-											    86400 setFog [_currentFog, drn_DynamicWeather_initialFogDecay, drn_DynamicWeather_initialFogAltitude];
-											    86400 setRain _currentRain;
-											    86400 setWindForce _currentWindForce;
-											    86400 setWindDir _currentWindDirection;
-											    skipTime 24;
-   												simulWeatherSync; 
-						    				initfirstRunClientside = false;
-						    				
-						    			 if (WEATHER_DEBUG) then {  
-								    		_msg = format ["_currentFog: %1, _targetFogDecayValue: %2, _targetFogAltitudeValue: %3, _currentOvercast: %4, _currentRain: %5, _currentWindForce: %6, _currentWindDirection: %7", _currentFog, _targetFogDecayValue, _targetFogAltitudeValue, _currentOvercast, _currentRain, _currentWindForce, _currentWindDirection];  [_msg] call drn_fnc_DynamicWeather_ShowDebugTextLocal;
-								    	 	["ALIVE Dynamic Weather (Clientside first run) - _currentFog: %1, _targetFogDecayValue: %2, _targetFogAltitudeValue: %3, _currentOvercast: %4, _currentRain: %5, _currentWindForce: %6, _currentWindDirection: %7", _currentFog, _targetFogDecayValue, _targetFogAltitudeValue, _currentOvercast, _currentRain, _currentWindForce, _currentWindDirection] call ALIVE_fnc_dump;
-								    	};
-								    
-						    		} else {
+	
 								    // Set current weather values
+								    
+								    if (initfirstRunClientside && !isDedicated && !isHC) then { if (WEATHER_DEBUG) then { ["ALIVE Dynamic Weather - Clientside first run, skipping time... initfirstRunClientside: %1;", initfirstRunClientside] call ALIVE_fnc_dump; }; skiptime -24;  };
 								    120 setOvercast _currentOvercast;
 								    120 setWaves _currentOvercast;
 								    120 setGusts _currentOvercast;
@@ -66,15 +53,31 @@
 								    drn_var_DynamicWeather_Rain = _currentRain;
 								    120 setWindForce _currentWindForce;
 								    120 setWindDir _currentWindDirection;
-								    // Set forecast
-								    if (_currentWeatherChange == "OVERCAST") then { _timeUntilCompletion setOvercast _targetWeatherValue; _timeUntilCompletion setWaves _targetWeatherValue; _timeUntilCompletion setGusts _targetWeatherValue;};
-								    if (_currentWeatherChange == "FOG") then { _timeUntilCompletion setFog [_targetWeatherValue, _targetFogDecayValue, _targetFogAltitudeValue]; };
-								  
+								    
 								    if (WEATHER_DEBUG) then {  
 								    	_msg = format ["_currentFog: %1, _targetFogDecayValue: %2, _targetFogAltitudeValue: %3, _currentOvercast: %4, _currentRain: %5, _currentWindForce: %6, _currentWindDirection: %7", _currentFog, _targetFogDecayValue, _targetFogAltitudeValue, _currentOvercast, _currentRain, _currentWindForce, _currentWindDirection];  [_msg] call drn_fnc_DynamicWeather_ShowDebugTextLocal;
 								    	 ["ALIVE Dynamic Weather - _currentFog: %1, _targetFogDecayValue: %2, _targetFogAltitudeValue: %3, _currentOvercast: %4, _currentRain: %5, _currentWindForce: %6, _currentWindDirection: %7", _currentFog, _targetFogDecayValue, _targetFogAltitudeValue, _currentOvercast, _currentRain, _currentWindForce, _currentWindDirection] call ALIVE_fnc_dump;
 								    };
-								  };
+								    
+								    // Set forecast
+								    if (_currentWeatherChange == "OVERCAST") then { 
+								    	_timeUntilCompletion setOvercast _targetWeatherValue; _timeUntilCompletion setWaves _targetWeatherValue; _timeUntilCompletion setGusts _targetWeatherValue;
+									    	if (WEATHER_DEBUG) then {  
+									    	_msg = format ["_currentWeatherChange: %1, %2 setOvercast, setWaves, setGusts  %3", _currentWeatherChange, _timeUntilCompletion, _targetWeatherValue];  [_msg] call drn_fnc_DynamicWeather_ShowDebugTextLocal;
+									    	 ["ALIVE Dynamic Weather - _currentWeatherChange: %1, %2 setOvercast, setWaves, setGusts  %3", _currentWeatherChange, _timeUntilCompletion, _targetWeatherValue] call ALIVE_fnc_dump;
+									    	};
+								    	};
+								    	
+								    if (_currentWeatherChange == "FOG") then { 
+								    	_timeUntilCompletion setFog [_targetWeatherValue, _targetFogDecayValue, _targetFogAltitudeValue]; 
+								    		if (WEATHER_DEBUG) then {  
+									    	_msg = format ["_currentWeatherChange: %1, %2 setFog [%3,%4,%5]", _currentWeatherChange, _timeUntilCompletion, _targetWeatherValue, _targetFogDecayValue, _targetFogAltitudeValue];  [_msg] call drn_fnc_DynamicWeather_ShowDebugTextLocal;
+									    	 ["ALIVE Dynamic Weather - _currentWeatherChange: %1, %2 setFog [%3,%4,%5]", _currentWeatherChange, _timeUntilCompletion, _targetWeatherValue, _targetFogDecayValue, _targetFogAltitudeValue] call ALIVE_fnc_dump;
+									    	};
+								    	};
+								    	
+								     if (initfirstRunClientside && !isDedicated && !isHC) then { skiptime 24; 0 = [] spawn {sleep 0.1; simulweathersync}; };
+								     initfirstRunClientside = false;
 								};
 							
 							
@@ -82,8 +85,18 @@
 								
 								
                 if (isServer) then { 	
-                	
+
                 	 if (WEATHER_DEBUG) then {  ["ALIVE Dynamic Weather - Server Starting..."] call ALIVE_fnc_dump;  };
+                	 
+		                switch (INITIAL_WEATHER) do
+										{
+											case 1: { };  // Random
+											case 2: { _initialOvercast = 0; _initialFog = 0; _initialRain = 0; };  // Clear
+											case 3: { _initialOvercast = 0.51; _initialFog = 0; };  // Overcast
+											case 4: { _initialOvercast = 0.95; _initialFog = 0; _initialRain = 1; };  // Stormy
+										};
+                
+                
                 	 
 									    drn_fnc_DynamicWeather_SetWeatherAllClients = {
 									        private ["_timeUntilCompletion", "_currentWeatherChange"];
@@ -96,12 +109,18 @@
     
     									"drn_AskServerDynamicWeatherEventArgs" addPublicVariableEventHandler { call drn_fnc_DynamicWeather_SetWeatherAllClients; };
 
+
+ 								 
 							    drn_DynamicWeather_CurrentWeatherChange = "";
 							    drn_DynamicWeather_WeatherTargetValue = 0;
 							    drn_DynamicWeather_WeatherChangeStartedTime = time;
 							    drn_DynamicWeather_WeatherChangeCompletedTime = time;
 							    drn_DynamicWeather_WindForce = _initialWind select 0;
 							    drn_DynamicWeather_WindDirection = _initialWind select 1;
+							    
+							    
+							     if (SP) then { if (WEATHER_DEBUG) then { ["ALIVE Dynamic Weather - Single player mode, skipping time..."] call ALIVE_fnc_dump; }; skiptime -24; };
+							     
 							    if (_initialFog == -1) then {
 							        _initialFog = (_minimumFog + random (_maximumFog - _minimumFog));
 							    }
@@ -156,6 +175,7 @@
 						    publicVariable "drn_var_DynamicWeather_Rain";
 						    drn_var_DynamicWeather_ServerInitialized = true;
 						    publicVariable "drn_var_DynamicWeather_ServerInitialized";
+						     if (SP) then { skiptime 24; 0 = [] spawn {sleep 0.1; simulweathersync}; };
 
     						if (WEATHER_DEBUG) then {  
     							_msg = format ["_initialFog: %1, _initialFogDecay: %2, _initialFogAltitude: %3, _initialOvercast: %4, _initialRain: %5, initialWindForce: %6, initialWindDirection: %7", _initialFog, _initialFogDecay, _initialFogAltitude, _initialOvercast, _initialRain, drn_DynamicWeather_WindForce, drn_DynamicWeather_WindDirection];  [_msg] call drn_fnc_DynamicWeather_ShowDebugTextLocal; 
@@ -393,6 +413,7 @@
 							  if (isDedicated || isHC) then { initfirstRunClientside = false; };
 							   
 								if(!isDedicated && !isHC) then {
+									  waitUntil {!isNull (findDisplay 46)};
 								    "drn_DynamicWeatherEventArgs" addPublicVariableEventHandler { drn_DynamicWeatherEventArgs call drn_fnc_DynamicWeather_SetWeatherLocal; };
 								    waitUntil {!isNil "drn_var_DynamicWeather_ServerInitialized"};
 								    initfirstRunClientside = true;
