@@ -779,19 +779,19 @@ switch(_operation) do {
                             _leader = leader _grp;
 							
                             // get house in question
-							_house = _leader getVariable "house";
+							_house = _leader getVariable ["house",(_grp getvariable "house")];
                             
                             // Initializing grouphouse locally on all units to save PVs (see addgroup). 
                             // If not all units are flagged with house then flag them;
                             if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
-                                {_x setvariable ["house",_house]} foreach (units _grp);
+                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
                             };
 							
 							// if group are all dead
 							// mark house as cleared
 							if ({alive _x} count (units _grp) == 0) then {
                                 
-                                if (isnil "_house") exitwith {diag_log "CQB ERROR: _House didnt exist, when trying to clear it!"};
+                                if (isnil "_house") exitwith {diag_log "CQB ERROR: _House didnt exist, when trying to clear it!"; };
 								
                                 // update central CQB house listings
 								[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
