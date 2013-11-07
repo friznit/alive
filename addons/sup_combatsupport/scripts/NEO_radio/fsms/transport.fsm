@@ -366,9 +366,13 @@ class FSM
            "};" \n
            "" \n
            "_posLand set [2, 0];" \n
-           "_h setPosATL _posLand;" \n
-           "" \n
+           "if (surfaceIsWater _posLand) then {" \n
            "_chopper doMove _posLand;" \n
+           "_task = ""HOVER"";" \n
+           "} else {" \n
+           " _h setPosATL _posLand;" \n
+           " _chopper doMove _posLand;" \n
+           "};" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -1043,13 +1047,11 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"if (_task == ""LAND"") then" \n
+          action=/*%FSM<ACTION""">*/"switch (_task) do" \n
            "{" \n
-           "	_chopper land ""GET OUT"";" \n
-           "}" \n
-           "else" \n
-           "{" \n
-           "	_chopper land ""LAND"";" \n
+           "case ""LAND"" : { _chopper land ""GET OUT"";};" \n
+           "case ""HOVER"" : {[[_chopper,""Unable to Land at coordinates. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
+           "default {_chopper land ""LAND""; };" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -1061,7 +1063,11 @@ class FSM
     class __11
     {
       name = "__11";
-      init = /*%FSM<STATEINIT""">*/"[[_chopper,""Landing at coordinates. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+      init = /*%FSM<STATEINIT""">*/"switch (_task) do" \n
+      "{" \n
+      "case ""HOVER"" : {[[_chopper,""Awaiting new orders. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
+      "default { [[_chopper,""Landing at coordinates. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
+      "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links

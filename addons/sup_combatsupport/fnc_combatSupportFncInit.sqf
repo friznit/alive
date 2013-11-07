@@ -10,6 +10,9 @@ NEO_fnc_radioSupportAdd = compile preprocessFileLineNumbers "x\alive\addons\sup_
 NEO_fnc_radioSupportRemove = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_supportRemove.sqf";
 fnc_setGroupID = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setGroupID.sqf";
 fnc_addAction = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_addAction.sqf";
+fnc_setFlyInHeight = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setFlyInHeight.sqf";
+fnc_setSpeed = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setSpeed.sqf";
+fnc_setROE = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setROE.sqf";
 
 //»»»»»»»»»»»»»»»»»»»»»»
 //UI

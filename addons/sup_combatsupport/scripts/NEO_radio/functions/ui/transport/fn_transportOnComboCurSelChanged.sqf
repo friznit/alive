@@ -26,12 +26,13 @@ switch (_cb) do
 			_h = switch (_index) do
 			{
 				case 0 : { 100 };
-				case 1 : { 500 };
-				case DEFAULT { 1000 };
+				case 1 : { 300 };
+				case DEFAULT { 600 };
 			};
 			
 			//Set Unit Behaviour Properties where they are local
-			[nil, _chopper, "loc", rSPAWN, [_chopper, _h], { (_this select 0) flyInHeight (_this select 1) }] call RE;
+			//[nil, _chopper, "loc", rSPAWN, [_chopper, _h], { (_this select 0) flyInHeight (_this select 1) }] call RE;
+			[[_chopper,_h], "fnc_setFlyInHeight", false, false] spawn BIS_fnc_MP;
 			
 			//Dialog from player, only if unit is on a mission (flying)
 			if (_status != "NONE") then { [player, format ["%1 fly at %2 meters height. Out.", (str group _chopper call NEO_fnc_callsignFix), _h], "side"] call NEO_fnc_messageBroadcast };
@@ -54,7 +55,7 @@ switch (_cb) do
 			};
 			
 			//Set Unit Behaviour Properties where they are local
-			[nil, _chopper, "loc", rSPAWN, [_chopper, _s], { (_this select 0) setSpeedMode (_this select 1) }] call RE;
+			[[_chopper,_s], "fnc_setSpeed", false, false] spawn BIS_fnc_MP;
 			
 			//Dialog from player, only if unit is on a mission (flying)
 			if (_status != "NONE") then { [player, format ["%1 fly with a %2 speed. Out.", (str group _chopper call NEO_fnc_callsignFix), _s], "side"] call NEO_fnc_messageBroadcast };
@@ -76,6 +77,8 @@ switch (_cb) do
 			};
 			
 			//Set Unit Behaviour Properties where they are local
+			[[_chopper,_r], "fnc_setROE", false, false] spawn BIS_fnc_MP;
+			/*
 			[nil, _chopper, "loc", rSPAWN, [_chopper, _r], 
 			{
 				private ["_chopper", "_engage", "_crew"];
@@ -102,7 +105,7 @@ switch (_cb) do
 						};
 					};
 				} forEach _crew;
-			}] call RE;
+			}] call RE;*/
 			
 			//Dialog from player, only if unit is on a mission (flying)
 			if (_r) then

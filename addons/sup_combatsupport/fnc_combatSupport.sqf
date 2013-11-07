@@ -148,7 +148,7 @@ switch(_operation) do {
 								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
 								_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
-						
+						/*
 								[[ _veh, ["Talk with pilot", {call ALIVE_fnc_radioAction}, "talk", -1, false, true, "", 
 								"
 									_this in _target
@@ -161,7 +161,7 @@ switch(_operation) do {
 										rankID _x > rankID _this
 									}
 									count (crew _target) == 0
-								"]],"fnc_addAction",true,true] spawn BIS_fnc_MP;  
+								"]],"fnc_addAction",true,true] spawn BIS_fnc_MP;  */
 						
 								_transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
 								[_veh, _grp, _callsign, _pos] execFSM _transportfsm;
@@ -228,6 +228,27 @@ switch(_operation) do {
                 /*
                 VIEW - purely visual
                 */
+				NEO_radioLogic setVariable ["NEO_radioPlayerActionArray",
+			   	 [ 
+					[
+				    	("<t color=""#700000"">" + ("Talk To Pilot") + "</t>"),
+				        {call ALIVE_fnc_radioAction},
+				        "talk",
+				        -1,
+				        false,
+				        true,
+				        "",
+						"
+							({(_x select 0) == vehicle _this} count (NEO_radioLogic getVariable format ['NEO_radioTrasportArray_%1', side _this]) > 0)
+							&&
+							{alive (driver (vehicle _this))}
+				        "
+				    ]
+			    ]
+	      	  ];
+
+	        	{player addAction _x} foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray");
+				player addEventHandler ["Respawn", { {(_this select 0) addAction _x } foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray") }];
                 
                 //if there is a real screen it must be a player so hand out the menu item
 				if (hasInterface) then {
