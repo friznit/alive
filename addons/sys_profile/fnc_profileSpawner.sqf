@@ -55,7 +55,7 @@ _profiles = [ALIVE_profileHandler, "getProfilesBySideFull", _side] call ALIVE_fn
                 _spawn = true;
             };
 		};
-		
+
 		if (_spawn) then {
 
             // spawn limiter
@@ -82,25 +82,26 @@ _profiles = [ALIVE_profileHandler, "getProfilesBySideFull", _side] call ALIVE_fn
                 };
 		    }else{
 		        _activeEntityCount = _activeEntityCount + 1;
+
+		        switch(_profileType) do {
+                        case "entity": {
+                            [_profile, "spawn"] call ALIVE_fnc_profileEntity;
+                        };
+                        case "vehicle": {
+                            [_profile, "spawn"] call ALIVE_fnc_profileVehicle;
+                        };
+                };
+
+                sleep 0.05;
 		    };
-				
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-				//["ALIVE Profile spawner - spawn [%1]",_profileID] call ALIVE_fnc_dump;			
+				//["ALIVE Profile spawner - spawn [%1]",_profileID] call ALIVE_fnc_dump;
 			};
-			// DEBUG -------------------------------------------------------------------------------------					
-			
-			switch(_profileType) do {
-					case "entity": {
-						[_profile, "spawn"] call ALIVE_fnc_profileEntity;
-					};
-					case "vehicle": {
-						[_profile, "spawn"] call ALIVE_fnc_profileVehicle;
-					};
-			};
-			
-			sleep 0.05;
+			// DEBUG -------------------------------------------------------------------------------------
+
 		};
 	}
 } forEach (_profiles select 2);
