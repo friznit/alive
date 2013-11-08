@@ -134,7 +134,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15402.514,17.647125,16465.693};
+					position[]={15281.765,-0.0050922483,15505.883};
 					class args
 					{
 						items=4;
@@ -212,7 +212,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15562.851,18.107811,16566.994};
+					position[]={15442.102,-0.13125136,15607.184};
 					class args
 					{
 						items=2;
@@ -246,7 +246,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15476.275,18.501108,16568.334};
+					position[]={15355.526,-0.0025683343,15608.523};
 					class args
 					{
 						items=4;
@@ -292,7 +292,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15402.238,15.807861,16570.436};
+					position[]={15280.017,0.034651622,15609.998};
 					class args
 					{
 						items=2;
@@ -530,7 +530,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15479.885,13.41308,16352.516};
+					position[]={15359.136,-0.04439228,15392.705};
 					id=23;
 					side="LOGIC";
 					vehicle="ALiVE_require";
@@ -548,7 +548,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15403.482,19.146023,16511.404};
+					position[]={15282.733,-0.15597218,15551.594};
 					class args
 					{
 						items=2;
@@ -582,7 +582,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15474.398,19.881962,16515.295};
+					position[]={15353.649,0.047456451,15555.484};
 					class args
 					{
 						items=11;
@@ -670,7 +670,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15559.819,19.698132,16512.506};
+					position[]={15439.07,0.12921971,15552.695};
 					class args
 					{
 						items=3;
@@ -1491,13 +1491,13 @@ class Mission
 				class Item0
 				{
 					position[]={26849.891,22.519426,24633.162};
-					azimut=41.029186;
+					azimut=41.029202;
 					class args
 					{
 						items=2;
 						class Item0
 						{
-							value="EAGLE ONE";
+							value="HIGHHEAD ONE";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_callsign";
 						};
@@ -1528,13 +1528,13 @@ class Mission
 				class Item0
 				{
 					position[]={26833.322,22.840904,24615.279};
-					azimut=38.353012;
+					azimut=38.353001;
 					class args
 					{
 						items=2;
 						class Item0
 						{
-							value="RODEO TWO";
+							value="ARJAY ONE";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_callsign";
 						};
@@ -1565,13 +1565,13 @@ class Mission
 				class Item0
 				{
 					position[]={26868.65,22.206947,24650.449};
-					azimut=39.233944;
+					azimut=39.233898;
 					class args
 					{
 						items=2;
 						class Item0
 						{
-							value="RODEO TWO";
+							value="TUPOLOV ONE";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_callsign";
 						};
@@ -1602,13 +1602,13 @@ class Mission
 				class Item0
 				{
 					position[]={26816.1,23.238993,24600.945};
-					azimut=39.812016;
+					azimut=39.812;
 					class args
 					{
 						items=2;
 						class Item0
 						{
-							value="EAGLE ONE";
+							value="WOLFFY ONE";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_callsign";
 						};
@@ -1639,13 +1639,13 @@ class Mission
 				class Item0
 				{
 					position[]={27154.027,24.800049,24904.209};
-					azimut=215.80513;
+					azimut=215.80499;
 					class args
 					{
 						items=2;
 						class Item0
 						{
-							value="EAGLE ONE";
+							value="RAPS ONE";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_callsign";
 						};
@@ -1675,7 +1675,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15401.457,14.560966,16410.871};
+					position[]={15280.708,-0.10239652,15451.061};
 					class args
 					{
 						items=2;
@@ -1709,7 +1709,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15484.102,13.784153,16408.342};
+					position[]={15363.353,0.13264924,15448.531};
 					id=43;
 					side="LOGIC";
 					vehicle="ADDON2";
@@ -1799,7 +1799,7 @@ class Mission
 						items=1;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_mil_logistics";
 							typeName="debug";
 						};
@@ -1955,7 +1955,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15560.733,15.980657,16463.545};
+					position[]={15439.984,-0.22822228,15503.734};
 					class args
 					{
 						items=4;
@@ -2001,7 +2001,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15557.257,13.820845,16406.623};
+					position[]={15436.508,0.013472294,15446.813};
 					class args
 					{
 						items=2;
@@ -2035,13 +2035,13 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15476.035,14.991089,16468.283};
+					position[]={15355.286,0.1470132,15508.473};
 					class args
 					{
 						items=18;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sys_aiskill";
 							typeName="debug";
 						};
