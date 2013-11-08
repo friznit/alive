@@ -91,9 +91,9 @@ _profiles = [ALIVE_profileHandler, "getProfilesBySideFull", _side] call ALIVE_fn
                             [_profile, "spawn"] call ALIVE_fnc_profileVehicle;
                         };
                 };
-
-                sleep 0.05;
 		    };
+
+		    sleep 0.05;
 
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
