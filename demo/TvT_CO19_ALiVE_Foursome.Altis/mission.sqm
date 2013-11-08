@@ -676,7 +676,7 @@ class Mission
 						items=3;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sys_GC";
 							typeName="debug";
 						};
@@ -1769,7 +1769,7 @@ class Mission
 						items=1;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_mil_logistics";
 							typeName="debug";
 						};
