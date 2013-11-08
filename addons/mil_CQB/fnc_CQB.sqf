@@ -149,18 +149,19 @@ switch(_operation) do {
                         "O_diver_TL_F",
                         "O_diver_exp_F",
                         "O_helipilot_F",
+                        "O_UAV_AI",
                         "B_diver_F",
                         "B_diver_TL_F",
                         "B_diver_exp_F",
                         "B_Helipilot_F",
+                        "B_RangeMaster_F", 
+                        "B_helipilot_F",
+                        "B_UAV_AI",
+                        "I_helicrew_F",
                         "I_diver_F",
                         "I_diver_TL_F",
                         "I_diver_exp_F",
-                        "I_crew_F",
-                        "B_helipilot_F",
-                        "I_helicrew_F",
-                        "O_UAV_AI",
-                        "B_UAV_AI"
+                        "I_crew_F"
                     ];
                     
                     //Get all enterable houses of strategic types below across the whole map (rest will be regular)
