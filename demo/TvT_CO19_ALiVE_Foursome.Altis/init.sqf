@@ -17,6 +17,9 @@ _cam CamCommit 0;
 
 _cam camsetpos [_camx -15 ,_camy + 15,_camz+3];
 _cam CamCommit 20;
+
+// disable AI slots
+disabledAI = 1;
 		
 sleep 20;
 		
