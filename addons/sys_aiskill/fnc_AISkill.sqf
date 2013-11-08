@@ -355,6 +355,8 @@ switch(_operation) do {
                                 _x setSkill ["reloadSpeed", _factionSkill select 9];
                                 _x setSkill ["commanding", _factionSkill select 10];
                                 _x setSkill ["general", _factionSkill select 11];
+
+                                sleep 0.03;
                             };
                         };
 
