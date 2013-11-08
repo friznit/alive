@@ -136,7 +136,7 @@ _engaged = [0,0,0];
 	};
     
     // if near profiles of other sides are near collect to clashing groups
-    if (({((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}} count (_profiles select 2)) > 0) then {
+    if (({if !(isnil "_x") then {((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}}} count (_profiles select 2)) > 0) then {
        
         _clash set [count _clash,[_profileID,_currentPosition,_side,(count _positions),_vehiclesInCommandOf]];
         
