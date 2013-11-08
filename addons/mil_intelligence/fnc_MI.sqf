@@ -163,7 +163,8 @@ switch(_operation) do {
 				_module = _module getVariable "handler";
 				_modules set [count _modules, _module];
 			};
-						
+
+            /*
 			// if grid profile analysis is running with plot sectors, turn off plot sectors
 			_activeAnalysisJobs = [ALIVE_liveAnalysis, "getAnalysisJobs"] call ALIVE_fnc_liveAnalysis;
 			
@@ -174,7 +175,7 @@ switch(_operation) do {
 				// clear the sector data plot
 				[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
 			};
-			
+			*/
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
