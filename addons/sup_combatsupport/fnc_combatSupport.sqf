@@ -33,7 +33,7 @@ See Also:
 - <ALIVE_fnc_combatSupportRWGExec>
 
 Author:
-Highhead
+NEO, adapted by Gunny for ALiVE
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS nil
@@ -72,7 +72,7 @@ switch(_operation) do {
 
 						_transportArrays = [];
 						_casArrays = [];
-						_sides = [WEST,EAST,RESISTANCE];
+						_sides = [WEST,EAST,RESISTANCE,CIVILIAN];
 						     
 				        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 				            switch (typeOf ((synchronizedObjects _logic) select _i)) do {

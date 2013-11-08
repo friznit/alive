@@ -42,55 +42,56 @@ if(count _categorySelector > 0) then {
 	_categoryObjectType = if(count _categorySelector > 2) then {_categorySelector select 2} else {"none"};
 	
 	{
-		
+		if !(isnil "_x") then { 
 		_type = _x select 2 select 5;
-		
-		if(_type == _categoryType) then {
-		
-			_side = _x select 2 select 3;
-
-			if(_side == _categorySide) then {
-							
-				if(_categoryObjectType != "none") then {
-				
-					_objectType = _x select 2 select 6;
+			if(_type == _categoryType) then {
+			
+				_side = _x select 2 select 3;
+	
+				if(_side == _categorySide) then {
+								
+					if(_categoryObjectType != "none") then {
 					
-					if(_categoryObjectType == _objectType) then {
+						_objectType = _x select 2 select 6;
+						
+						if(_categoryObjectType == _objectType) then {
+						
+							_profilePosition = _x select 2 select 2;
+							
+							if(_position distance _profilePosition < _radius) then {
+								_result set [count _result, _x];
+							};					
+						};				
+					}else{
 					
 						_profilePosition = _x select 2 select 2;
 						
 						if(_position distance _profilePosition < _radius) then {
 							_result set [count _result, _x];
-						};					
-					};				
-				}else{
-				
-					_profilePosition = _x select 2 select 2;
-					
-					if(_position distance _profilePosition < _radius) then {
-						_result set [count _result, _x];
-					};				
+						};				
+					};
 				};
 			};
-			
-		};
+       };
 	}forEach (_profiles select 2);
 }else{
 	_categoryType = "entity";
 	
 	{
-		_type = _x select 2 select 5;
-				
-		if(_type == _categoryType) then {
-		
-			_profilePosition = _x select 2 select 2;
-            
-            diag_log format ["NearEntitiescheck: _profilePosition by select %1 | _pos by hash %2",_profilePosition,([_x,"position"] call ALIVE_fnc_hashGet)];
+        if !(isnil "_x") then {
+			_type = _x select 2 select 5;
+					
+			if(_type == _categoryType) then {
 			
-			if(_position distance _profilePosition < _radius) then {
-				_result set [count _result, _x];
-			};			
-		};
+				_profilePosition = _x select 2 select 2;
+	            
+	            diag_log format ["NearEntitiescheck: _profilePosition by select %1 | _pos by hash %2",_profilePosition,([_x,"position"] call ALIVE_fnc_hashGet)];
+				
+				if(_position distance _profilePosition < _radius) then {
+					_result set [count _result, _x];
+				};			
+			};
+        };
 	}forEach (_profiles select 2);
 };
 

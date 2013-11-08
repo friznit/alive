@@ -19,6 +19,6 @@ debriefing = 1;
 respawn = 3;
 respawnDelay = 15;
 RespawnDialog = 0;
-disabledAI = 0;
+disabledAI = 1;
 enableDebugConsole = 1;
 allowFunctionsRecompile = 1;
