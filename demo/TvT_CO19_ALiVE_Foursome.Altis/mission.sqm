@@ -109,7 +109,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.95.8";
+		briefingName="ALiVE Showcase - Foursome v0.95.81";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -4111,7 +4111,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=9;
+		items=11;
 		class Item0
 		{
 			position[]={9398.7012,-0.00020372868,23568.303};
@@ -4182,6 +4182,22 @@ class Mission
 			name="respawn_east";
 			type="flag_CSAT";
 			angle=0.0043004793;
+		};
+		class Item9
+		{
+			position[]={12807.025,87.701157,16664.723};
+			name="obj_1";
+			text="Primary Objective: Secure military base";
+			type="mil_objective";
+			colorName="ColorRed";
+		};
+		class Item10
+		{
+			position[]={3750.0259,18.835581,13000.84};
+			name="obj_2";
+			text="Secondary: Blow up hospital";
+			type="mil_destroy";
+			colorName="ColorRed";
 		};
 	};
 };
