@@ -30,58 +30,72 @@ class vdist_dialog
 
 	class controls 
 	{
-		class vdistback: IGUIBack
+		class vdistback: RscPicture
 		{
-			type = 0;
-			idc = 124;
-			style = 128;
-			text = "Set View Settings";
-			colorText[] = {0,0,0,0};
-			font = GUI_FONT_NORMAL;
-			sizeEx = 0;
-			shadow = 0;
-			x = X_MODB * GUI_GRID_W + GUI_GRID_X;
-			y = (SLIDER_START - SLIDER_TITLE_SPACE)  * GUI_GRID_H + GUI_GRID_Y;
-			w = 16 * GUI_GRID_W;
-			h = 5.1 * GUI_GRID_H;
-			colorbackground[] = {0,0,0,0.5};
+			idc = -1;
+			text = "x\alive\addons\sys_viewdistance\vdist\ALiVE_Intface_1.paa";
+			x = 0.399807 * safezoneW + safezoneX;
+			y = 0.180773 * safezoneH + safezoneY;
+			w = 0.185542 * safezoneW;
+			h = 0.574049 * safezoneH;
+			moving = 0;
+			colorBackground[] = {0,0,0,0};
 		};
 		
-		class RscText_1012: RscText
+		class vd_text: RscText
 		{
 			idc = 1012;
 			text = "View Distance"; 
-			x = X_MOD * GUI_GRID_W + GUI_GRID_X;
-			y = (SLIDER_START - SLIDER_TITLE_SPACE)  * GUI_GRID_H + GUI_GRID_Y;
-			w = 14.5 * GUI_GRID_W;
-			h = 1.5 * GUI_GRID_H;
+			x = 0.452996 * safezoneW + safezoneX;
+			y = 0.334787 * safezoneH + safezoneY;
+			w = 0.0804017 * safezoneW;
+			h = 0.0280024 * safezoneH;
 		};
-		
-		class RscSlider_1912: RscSlider // view distance slider
+			class vd_amnt: RscText
+		{
+			idc = 10091;
+			text = ""; 
+			style = 2; //1 2 3...176
+			x = 0.454233 * safezoneW + safezoneX;
+			y = 0.368389 * safezoneH + safezoneY;
+			w = 0.0742169 * safezoneW;
+			h = 0.0280024 * safezoneH;
+		};
+		class vd_slider: RscSlider // view distance slider
 		{
 			idc = 1912;
-			x = X_MOD * GUI_GRID_W + GUI_GRID_X;
-			y = SLIDER_START * GUI_GRID_H + GUI_GRID_Y;
-			w = 15 * GUI_GRID_W;
-			h = 1 * GUI_GRID_H;
+			x = 0.434442 * safezoneW + safezoneX;
+			y = 0.413192 * safezoneH + safezoneY;
+			w = 0.11751 * safezoneW;
+			h = 0.0280024 * safezoneH
 		};	
-		class RscText_1013: RscText
+		class td_text: RscText
 		{
 			idc = 1013;
-			text = "Terrain Detail"; 
-			x = X_MOD * GUI_GRID_W + GUI_GRID_X;
-			y = ((SLIDER_START + (SLIDER_INTERVAL * 0.5))-SLIDER_TITLE_SPACE)  * GUI_GRID_H + GUI_GRID_Y;
-			w = 14.5 * GUI_GRID_W;
-			h = 1.5 * GUI_GRID_H;
+			text = "Terrain Detail"; //--- ToDo: Localize;
+			x = 0.454233 * safezoneW + safezoneX;
+			y = 0.457996 * safezoneH + safezoneY;
+			w = 0.0742169 * safezoneW;
+			h = 0.0280024 * safezoneH;
 		};
-		
-		class RscSlider_1913: RscSlider // view distance slider
+			class td_amnt: RscText
+		{
+		idc = 10093;
+		text = "";
+		style = 2; //1 2 3...176
+		x = 0.454233 * safezoneW + safezoneX;
+		y = 0.488799 * safezoneH + safezoneY;
+		w = 0.0742169 * safezoneW;
+		h = 0.0280024 * safezoneH;
+		};
+
+			class td_slider: RscSlider // view distance slider
 		{
 			idc = 1913;
-			x = X_MOD * GUI_GRID_W + GUI_GRID_X;
-			y = (SLIDER_START + (SLIDER_INTERVAL * 0.5)) * GUI_GRID_H + GUI_GRID_Y;
-			w = 15 * GUI_GRID_W;
-			h = 1 * GUI_GRID_H;
+			x = 0.435679 * safezoneW + safezoneX;
+			y = 0.539204 * safezoneH + safezoneY;
+			w = 0.11751 * safezoneW;
+			h = 0.0280024 * safezoneH;
 		};	
 	};
 };

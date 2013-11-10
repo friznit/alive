@@ -154,3 +154,22 @@ class RscSlider
 	shadow = 0;
 	h = 0.025;
 };
+class RscPicture
+{
+  colorBackground[] = {0,0,0,0};
+  colorText[] = {1,1,1,1};
+  fixedWidth = 0;
+  access = 0;
+  type = 0;
+  idc = -1;
+  style = 48;
+   font = "PuristaMedium"; 
+  sizeEx = 0;
+  lineSpacing = 0;
+  text = "";
+  shadow = 0;
+  x = 0;
+  y = 0;
+  w = 0.2;
+  h = 0.15;
+};

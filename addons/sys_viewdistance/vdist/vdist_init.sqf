@@ -1,15 +1,14 @@
-sleep .01; 
 
 createDialog "vdist_dialog";
 sleep 0.1;
 
 #define SLIDER_VIEWDISTANCE ((vdist_dialog select 0) displayCtrl 1912)
-#define TEXT_VIEWDISTANCE ((vdist_dialog select 0) displayCtrl 1012)
+#define TEXT_VIEWDISTANCE ((vdist_dialog select 0) displayCtrl 10091)
 #define SLIDER_TERRAINDETAIL ((vdist_dialog select 0) displayCtrl 1913)
-#define TEXT_TERRAINDETAIL ((vdist_dialog select 0) displayCtrl 1013)
+#define TEXT_TERRAINDETAIL ((vdist_dialog select 0) displayCtrl 10093)
 if (isnil "terraindetail") then {terraindetail = 3};
-TEXT_VIEWDISTANCE ctrlSetText "View Distance: " + str(round viewDistance);
-TEXT_TERRAINDETAIL ctrlSetText "Terrain Detail: " + str(round terraindetail);
+TEXT_VIEWDISTANCE ctrlSetText "" + str(round viewDistance);
+TEXT_TERRAINDETAIL ctrlSetText "" + str(round terraindetail);
 
 _mingetvd = Alive_vdist getvariable["minVD", 2]; // get the minimum view distance set in themodule
 _minsetvd= parseNumber _mingetvd; // convert the minimum variable to a number
@@ -23,7 +22,7 @@ if (_maxsetvd == 0) then {_maxsetvd= 15000;};//if the maximum view distance has 
 #define ESTABLISH_VDIST_SLIDER(DIALOG_GVAR,CTRL_NUMVD,RANGEMAX,INCREMENTER)	\
 CTRL_NUMVD sliderSetRange [_minsetvd,_maxsetvd]; \
 CTRL_NUMVD sliderSetPosition INCREMENTER;\
-
+MAXVD = _maxsetvd;
 ESTABLISH_VDIST_SLIDER(vdist_dialog,SLIDER_VIEWDISTANCE,15000,(viewDistance));
 
 
@@ -33,7 +32,7 @@ fn_vdist_Slider_ChangeViewDistance =
 {
 _val = _this select 1;
 setviewdistance _val;
-TEXT_VIEWDISTANCE ctrlSetText "View Distance: " + str(round _val);
+TEXT_VIEWDISTANCE ctrlSetText "" + str(round viewdistance);
 };
 
 #define ESTABLISH_TDTL_SLIDER(DIALOG_GVAR,CTRL_NUMTD,RANGEMAX,INCREMENTER)	\
@@ -46,13 +45,12 @@ ESTABLISH_TDTL_SLIDER(vdist_dialog,SLIDER_TERRAINDETAIL,15000,(terrainDetail));
 SLIDER_TERRAINDETAIL ctrlSetEventHandler ["SliderPosChanged","_this call fn_vdist_Slider_ChangeTerrainDetail"];
 
 fn_vdist_Slider_ChangeTerrainDetail =
-{
+	{
  _terraindetail = round(_this select 1); 
  terraindetail = _terraindetail; 
- diag_log format["Terrain Detail variable: %1",  _terraindetail]; 
-TEXT_TERRAINDETAIL ctrlSetText "Terrain Detail: " + str(round terraindetail);
+TEXT_TERRAINDETAIL  ctrlSetText "" + str(round terraindetail);
 if (terraindetail == _terraindetail) then {
 	setterraingrid ([50, 25, 12.5, 6.25, 3.125] select (terraindetail - 1));
-	diag_log format["Terrain Detail slider: %1",  terraindetail];
-};
-};
+	};
+
+					};
