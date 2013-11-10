@@ -762,7 +762,11 @@ switch(_operation) do {
                                             _dominantFaction = [getposATL _house, 500] call ALiVE_fnc_getDominantFaction;
                                             if (isnil "_dominantFaction") then {_dominantFaction = "OPF_F"};
                                             
-                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
+                                            //Trying async calls
+                                            //[_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
+                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
+                                            
+                                            format["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_dominantFaction] call ALiVE_fnc_logger;
                                             sleep 0.1;
 	                                    } else {
 	                                        diag_log format ["CQB ERROR: Null object on host %1",_host];
