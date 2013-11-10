@@ -1,7 +1,45 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
-#$index_names = ('stratis')
-$index_names = ('altis','chernarus','desert_e','provinggrounds_pmc','shapur_baf','stratis','takistan','utes','zargabad')
-$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\')
+
+$index_names = (
+    #'abel',
+    'altis',
+    #'cain',
+    'celle',
+    'chernarus',
+    'carraigdubh',
+    'clafghan',
+    'desert',
+    'desert_e',
+    'desert2',
+    #'eden',
+    'fallujah',
+    'fdf_isle1_a',
+    'isladuala',
+    'lingor',
+    'mcn_hazarkot',
+    'namalsk',
+    'isoladicapraia',
+    #'noe',
+    'panthera',
+    'provinggrounds_pmc',
+    'sara',
+    'sara_dbe1',
+    'saralite',
+    'shapur_baf',
+    'stratis',
+    'takistan',
+    'thirsk',
+    'thirskw',
+    'tigeria',
+    #'tigeria_se',
+    'torabora',
+    'tup_qom',
+    'utes',
+    #'vostok',
+    #'vostok_w',
+    'zargabad')
+
+$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg')
 
 foreach ($index_name in $index_names){
     

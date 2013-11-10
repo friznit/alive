@@ -24,7 +24,7 @@ Military Clusters
 
 Run Cluster Generation:
 
-execVM "\x\alive\addons\mil_placement\tests\test_clusterGeneration.sqf"
+
 
 Once completed paste the results in:
 
@@ -90,3 +90,128 @@ execVM "\x\alive\addons\civ_placement\tests\test_clusterVisualisation.sqf"
 Debug grid data merge
 
 execVM "\x\alive\addons\fnc_analysis\tests\test_staticMapAnalysis.sqf"
+
+
+
+Cluster Generation State
+--------------------------------------------------------------------------
+
+
+
+namalsk
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+fallujah
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+thirsk
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+thirsk winter - thirskw
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+podagorsk - fdf_isle1_a
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+celle
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+clafghan
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+torabora
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+tigeria
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+tup_qom
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+ngs_capraia
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+
+
+
+Hazar-Kot mcn_hazarkot
+--------------------------------
+indexed
+done clusters
+done data
+done merge
+
+broken on mil placement unknown
+
+lingor
+--------------------------------
+indexed
+gamec crash
+
+carraigdubh
+--------------------------------
+indexed
+game crash
+
+panthera
+--------------------------------
+indexed
+game crash
+
+isla duala
+--------------------------------
+indexed
+game crash
+
+CWR2 - abel,cain,eden,noe
+--------------------------------
+cannot load any of the maps in editor via AIA
+Warning Message: No entry 'config.bin/CfgVoice/rob.directories'.
+
+vostok 
+--------------------------------
+no index files produced by deWrp

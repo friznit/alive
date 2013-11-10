@@ -7467,13 +7467,6 @@ wrp_objects=
 			[129521,[2788,6127]]
 		]
 	],
-	["a3\signs_f\signt\signt_warningrocks.p3d",
-		[
-			[130133,[2424,5840]],
-			[130398,[2518,5853]],
-			[130251,[2560,5865]]
-		]
-	],
 	["a3\structures_f\households\addons\i_garage_v1_f.p3d",
 		[
 			[132690,[2773,5732]],
