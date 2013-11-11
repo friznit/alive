@@ -3,7 +3,7 @@
 
 class vdist_Slider : RscSlider
 {
-}; 
+};
 
 #define X_MOD 52 
 #define X_MODB 51.5
@@ -17,6 +17,7 @@ class vdist_Slider : RscSlider
 #define GUI_GRID_H			(GUI_GRID_HAbs / 25)
 #define GUI_GRID_X			(safezoneX)
 #define GUI_GRID_Y			(safezoneY + safezoneH - GUI_GRID_HAbs)
+
 
 class vdist_dialog
 {
@@ -40,8 +41,7 @@ class vdist_dialog
 			h = 0.574049 * safezoneH;
 			moving = 0;
 			colorBackground[] = {0,0,0,0};
-		};
-		
+		};		
 		class vd_text: RscText
 		{
 			idc = 1012;
@@ -51,7 +51,7 @@ class vdist_dialog
 			w = 0.0804017 * safezoneW;
 			h = 0.0280024 * safezoneH;
 		};
-			class vd_amnt: RscText
+		class vd_amnt: RscText
 		{
 			idc = 10091;
 			text = ""; 
@@ -67,7 +67,7 @@ class vdist_dialog
 			x = 0.434442 * safezoneW + safezoneX;
 			y = 0.413192 * safezoneH + safezoneY;
 			w = 0.11751 * safezoneW;
-			h = 0.0280024 * safezoneH
+			h = 0.0280024 * safezoneH;
 		};	
 		class td_text: RscText
 		{
@@ -78,18 +78,17 @@ class vdist_dialog
 			w = 0.0742169 * safezoneW;
 			h = 0.0280024 * safezoneH;
 		};
-			class td_amnt: RscText
+		class td_amnt: RscText
 		{
-		idc = 10093;
-		text = "";
-		style = 2; //1 2 3...176
-		x = 0.454233 * safezoneW + safezoneX;
-		y = 0.488799 * safezoneH + safezoneY;
-		w = 0.0742169 * safezoneW;
-		h = 0.0280024 * safezoneH;
+			idc = 10093;
+			text = "";
+			style = 2; //1 2 3...176
+			x = 0.454233 * safezoneW + safezoneX;
+			y = 0.488799 * safezoneH + safezoneY;
+			w = 0.0742169 * safezoneW;
+			h = 0.0280024 * safezoneH;
 		};
-
-			class td_slider: RscSlider // view distance slider
+		class td_slider: RscSlider // view distance slider
 		{
 			idc = 1913;
 			x = 0.435679 * safezoneW + safezoneX;
