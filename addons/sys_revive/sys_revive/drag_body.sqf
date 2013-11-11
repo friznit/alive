@@ -5,7 +5,7 @@ _player = player;
 
 _wounded setVariable ["REV_Medical_Support_Unit", _player, true];
 REV_Release_Body = false;
-_id_action = _player addAction [STR_REV_Action_Release_Body, SYS_RevPath+"sys_revive\release_body.sqf", _wounded, 10, false, true, "", ""];
+_id_action = _player addAction [STR_REV_Action_Release_Body, "\x\alive\addons\sys_revive\sys_revive\release_body.sqf", _wounded, 10, false, true, "", ""];
 
 // Is attached to the injured player
 _wounded attachTo [_player, [0, 1.1, 0.092]];

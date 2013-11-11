@@ -24,7 +24,7 @@ nil
 
 private ["_logic"];
 
-PARAMS_1 (_logic);
+PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
 
 // Confirm init function available
