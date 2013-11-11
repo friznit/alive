@@ -406,12 +406,13 @@ switch(_operation) do {
 				};
 		};
 		case "spawn": {
-				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID"];
+				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_vehicleClass = _logic select 2 select 11; //[_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
 				_vehicleType = _logic select 2 select 6; //[_logic,"objectType"] call ALIVE_fnc_hashGet;
 				_position = _logic select 2 select 2; //[_logic,"position"] call ALIVE_fnc_hashGet;
+				_side = _logic select 2 select 3; //[_logic,"side"] call ALIVE_fnc_hashGet;
 				_direction = _logic select 2 select 12; //[_logic,"direction"] call ALIVE_fnc_hashGet;
 				_damage = _logic select 2 select 16; //[_logic,"damage"] call ALIVE_fnc_hashGet;
 				_fuel = _logic select 2 select 13; //[_logic,"fuel"] call ALIVE_fnc_hashGet;
@@ -446,7 +447,7 @@ switch(_operation) do {
 					_vehicle setDir _direction;
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
-					_vehicle setVehicleVarName _profileID;
+					//_vehicle setVehicleVarName _profileID;
 
 					if(count _damage > 0) then {
 						[_vehicle, _damage] call ALIVE_fnc_vehicleSetDamage;
@@ -470,7 +471,7 @@ switch(_operation) do {
 					[_vehicleAssignments, _logic] call ALIVE_fnc_profileVehicleAssignmentsToVehicleAssignments;
 					
 					// store the profile id on the active profiles index
-					[ALIVE_profileHandler,"setActive",_profileID] call ALIVE_fnc_profileHandler;
+					[ALIVE_profileHandler,"setActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
 					
 					// DEBUG -------------------------------------------------------------------------------------
 					if(_debug) then {
@@ -481,10 +482,11 @@ switch(_operation) do {
 				};
 		};
 		case "despawn": {
-				private ["_debug","_active","_vehicle","_profileID","_position","_despawnPrevented","_linked","_spawnType"];
+				private ["_debug","_active","_side","_vehicle","_profileID","_position","_despawnPrevented","_linked","_spawnType"];
 				
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
+				_side = _logic select 2 select 3; //[_logic,"side"] call ALIVE_fnc_hashGet;
 				_vehicle = _logic select 2 select 10; //[_logic,"vehicle"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 
@@ -511,7 +513,7 @@ switch(_operation) do {
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
 						
 						// update profile vehicle assignments before despawn
-						[_logic,"clearVehicleAssignments"] call MAINCLASS;					
+						[_logic,"clearVehicleAssignments"] call MAINCLASS;
 						[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
 						
 						_position = getPosATL _vehicle;
@@ -533,7 +535,7 @@ switch(_operation) do {
 						deleteVehicle _vehicle;
 						
 						// store the profile id on the in active profiles index
-						[ALIVE_profileHandler,"setInActive",_profileID] call ALIVE_fnc_profileHandler;
+						[ALIVE_profileHandler,"setInActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {

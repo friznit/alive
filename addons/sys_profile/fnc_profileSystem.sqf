@@ -62,8 +62,8 @@ switch(_operation) do {
 						[_logic,"syncedUnits",[]] call ALIVE_fnc_hashSet;
 						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
 						[_logic,"activeLimiter",100] call ALIVE_fnc_hashSet;
-						[_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
-						[_logic,"despawnCycleTime",6] call ALIVE_fnc_hashSet;
+						[_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
+						//[_logic,"despawnCycleTime",6] call ALIVE_fnc_hashSet;
                 };
         };
 		case "register": {
@@ -164,17 +164,27 @@ switch(_operation) do {
 						[_logic,"simulator_FSM",_profileSimulatorFSM] call ALIVE_fnc_hashSet;
 						
 						// start the profile spawners
+						///*
+                        _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+                        _profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+                        _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
+                        _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
 
-						_profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						_profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						_profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-						_profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner.fsm";
-
-						_profileDespawnerFSMEast = [_logic,"EAST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
+                        _profileDespawnerFSMEast = [_logic,"EAST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
                         _profileDespawnerFSMWest = [_logic,"WEST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
                         _profileDespawnerFSMGuer = [_logic,"GUER",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
                         _profileDespawnerFSMCiv = [_logic,"CIV",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner.fsm";
-						
+                        //*/
+
+
+                        // HH to test the beast comment out the ones above and decomment these ones
+                        /*
+                        _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner3.fsm";
+                        _profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner3.fsm";
+                        _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner3.fsm";
+                        _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner3.fsm";
+                        */
+
 						// set module as started
 						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
 						

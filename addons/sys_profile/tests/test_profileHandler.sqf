@@ -76,6 +76,7 @@ _profile1 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profile1, "position", [getPos player, 20, 45] call BIS_fnc_relPos] call ALIVE_fnc_profileEntity;
 [_profile1, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
 [_profile1, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
+[_profile1, "ranks", ["PRIVATE","PRIVATE","PRIVATE"]] call ALIVE_fnc_profileEntity;
 [_profile1, "side", "WEST"] call ALIVE_fnc_profileEntity;
 [_profile1, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
@@ -89,6 +90,7 @@ _profile2 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profile2, "position", [getPos player, 20, 90] call BIS_fnc_relPos] call ALIVE_fnc_profileEntity;
 [_profile2, "positions", [getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
 [_profile2, "damages", [0,0,0]] call ALIVE_fnc_profileEntity;
+[_profile2, "ranks", ["PRIVATE","PRIVATE","PRIVATE"]] call ALIVE_fnc_profileEntity;
 [_profile2, "side", "WEST"] call ALIVE_fnc_profileEntity;
 [_profile2, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
@@ -205,6 +207,29 @@ ASSERT_TRUE(typeName _state == "ARRAY", _err);
 diag_log _state;
 
 
+STAT("Spawn Profile 1");
+[_profile1, "spawn"] call ALIVE_fnc_profileEntity;
+
+STAT("Get state");
+_state = [_logic, "state"] call ALIVE_fnc_profileHandler;
+_err = "get state";
+ASSERT_TRUE(typeName _state == "ARRAY", _err);
+
+_state call ALIVE_fnc_inspectHash;
+
+STAT("Despawn Profile 1");
+[_profile1, "despawn"] call ALIVE_fnc_profileEntity;
+
+STAT("Get state");
+_state = [_logic, "state"] call ALIVE_fnc_profileHandler;
+_err = "get state";
+ASSERT_TRUE(typeName _state == "ARRAY", _err);
+
+_state call ALIVE_fnc_inspectHash;
+
+
+
+
 STAT("Un-Register Profile 1");
 _result = [_logic, "unregisterProfile", _profile1] call ALIVE_fnc_profileHandler;
 _err = "unregister profile";
@@ -246,6 +271,7 @@ ASSERT_TRUE(typeName _state == "ARRAY", _err);
 
 
 _state call ALIVE_fnc_inspectHash;
+
 
 
 STAT("Un-Register Profile 2");

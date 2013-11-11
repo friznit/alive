@@ -68,6 +68,7 @@ _profileEntity1 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "damages", [0,0,0,0]] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "ranks", ["CAPTAIN","LIEUTENANT"]] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "side", "WEST"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Create Entity Profile 2");
@@ -80,6 +81,7 @@ _profileEntity2 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "damages", [0,0,0,0]] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "ranks", ["CAPTAIN","LIEUTENANT"]] call ALIVE_fnc_profileEntity;
 [_profileEntity2, "side", "WEST"] call ALIVE_fnc_profileEntity;
+[_profileEntity2, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Create Entity Profile 3");
@@ -92,6 +94,7 @@ _profileEntity3 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity3, "damages", [0,0,0,0]] call ALIVE_fnc_profileEntity;
 [_profileEntity3, "ranks", ["CAPTAIN","LIEUTENANT","PRIVATE","PRIVATE"]] call ALIVE_fnc_profileEntity;
 [_profileEntity3, "side", "WEST"] call ALIVE_fnc_profileEntity;
+[_profileEntity3, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Create Vehicle Profile 1");
@@ -104,6 +107,7 @@ _profileVehicle1 = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "fuel", 1] call ALIVE_fnc_profileVehicle;
 [_profileVehicle1, "side", "WEST"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle1, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Create Vehicle Profile 2");
@@ -116,6 +120,7 @@ _profileVehicle2 = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle2, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profileVehicle2, "fuel", 1] call ALIVE_fnc_profileVehicle;
 [_profileVehicle2, "side", "WEST"] call ALIVE_fnc_profileVehicle;
+[_profileVehicle2, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
 
 
 STAT("Register Profiles");
