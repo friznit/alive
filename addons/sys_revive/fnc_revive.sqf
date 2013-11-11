@@ -40,12 +40,12 @@ Author:
 
 private ["_logic","_operation","_args"];
 
-PARAMS_1 (_logic);
-DEFAULT_PARAM (1,_operation,"");
-DEFAULT_PARAM (2,_args,[]);
+PARAMS_1(_logic);
+DEFAULT_PARAM(1,_operation,"");
+DEFAULT_PARAM(2,_args,[]);
 
-switch (_operation) do {
-	case "init": {                
+switch(_operation) do {
+        case "init": {                
 		/*
 		MODEL - no visual just reference data
 		- server side object only
@@ -64,7 +64,7 @@ switch (_operation) do {
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", ALIVE_fnc_revive];
 			_logic setVariable ["init", true, true];
-			REVIVE_DEBUG = call compile (_logic getvariable ["revive_debug_setting","false"]);
+			// REVIVE_DEBUG = call compile (_logic getvariable ["revive_debug_setting","false"]);
 			REVIVE_LANG = call compile (_logic getvariable ["revive_language_setting","false"]);
 			REVIVE_LIVES = call compile (_logic getvariable ["revive_lives_setting","false"]);
 			REVIVE_ALLOW_RESPAWN = call compile (_logic getvariable ["revive_allow_respawn","false"]);
@@ -74,7 +74,7 @@ switch (_operation) do {
 			REVIVE_DRAG = call compile (_logic getvariable ["revive_drag_body","false"]);
 			REVIVE_CARRY = call compile (_logic getvariable ["revive_carry_body","false"]);
 			// and publicVariable to clients
-			publicVariable "REVIVE_DEBUG";
+			// publicVariable "REVIVE_DEBUG";
 		} else {
 			// if client clean up client side game logics as they will transfer
 			// to servers on client disconnect
@@ -89,8 +89,8 @@ switch (_operation) do {
 		VIEW - purely visual
 		- initialise 
 		*/
-		Waituntil {!(isnil "REVIVE_DEBUG")};
-		call ALIVE_fnc_revive;
+		// Waituntil {!(isnil "REVIVE_DEBUG")};
+		call ALIVE_fnc_reviveScript;
 	};
 	case "destroy": {
 		if (isServer) then {
