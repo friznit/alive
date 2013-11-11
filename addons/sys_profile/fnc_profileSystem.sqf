@@ -63,7 +63,7 @@ switch(_operation) do {
 						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
 						[_logic,"activeLimiter",100] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
-						//[_logic,"despawnCycleTime",6] call ALIVE_fnc_hashSet;
+						[_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
                 };
         };
 		case "register": {
