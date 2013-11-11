@@ -14,7 +14,7 @@ _assignments = [_profile,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 
 if (isnil "_pos") exitwith {};
 
-[_profile,200] call ALiVE_fnc_ambientMovement;
+[_profile,100] call ALiVE_fnc_ambientMovement;
 
 waituntil {sleep 0.5; [_profile,"active"] call ALiVE_fnc_HashGet};
 sleep 0.3;
