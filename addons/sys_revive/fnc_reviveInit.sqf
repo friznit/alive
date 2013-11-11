@@ -28,7 +28,7 @@ PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
 
 // Confirm init function available
-ASSERT_DEFINED ("ALIVE_fnc_revive","Main function missing");
+ASSERT_DEFINED("ALIVE_fnc_revive","Main function missing");
 
 [_logic, "init"] call ALIVE_fnc_revive;
 
