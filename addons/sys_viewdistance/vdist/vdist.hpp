@@ -35,10 +35,10 @@ class vdist_dialog
 		{
 			idc = -1;
 			text = "x\alive\addons\sys_viewdistance\vdist\ALiVE_Intface_1.paa";
-			x = 0.399807 * safezoneW + safezoneX;
-			y = 0.180773 * safezoneH + safezoneY;
-			w = 0.185542 * safezoneW;
-			h = 0.574049 * safezoneH;
+			x = 0.394859 * safezoneW + safezoneX;
+			y = 0.130369 * safezoneH + safezoneY;
+			w = 0.204097 * safezoneW;
+			h = 0.798068 * safezoneH;
 			moving = 0;
 			colorBackground[] = {0,0,0,0};
 		};		

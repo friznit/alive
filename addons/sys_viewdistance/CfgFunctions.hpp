@@ -16,6 +16,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_viewdistance\fnc_vDistMenuDef.sqf";
 				recompile = 1;
                         };
+                        class vDistGuiInit {
+                                description = "The Gui";
+                                file = "\x\alive\addons\sys_viewdistance\vdist\fnc_vdist_init.sqf";
+                                recompile = 1;
+                        };
                 };
         };
 };

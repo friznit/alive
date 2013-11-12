@@ -72,7 +72,7 @@ _menus =
 		["main", "ALiVE", _menuRsc],
 		[
 			[localize "STR_ALIVE_VDIST",
-				{ [] execVM "\x\alive\addons\sys_viewdistance\vdist\vdist_init.sqf"; },
+				{[] call ALIVE_fnc_vDistGuiInit},
 				"",
 				localize "STR_ALIVE_VDIST_COMMENT",
                  "",
