@@ -240,10 +240,10 @@ class NEO_RscButton
 	font = "PuristaMedium";
 	size = "(safeZoneW / 125) + (safeZoneH / 125)";
 	text = "";
-soundClick[] = {"\A3\ui_f\data\sound\onclick",0.07,1};
-  soundEnter[] = {"\A3\ui_f\data\sound\onover",0.09,1};
-  soundEscape[] = {"\A3\ui_f\data\sound\onescape",0.09,1};
-  soundPush[] = {"\A3\ui_f\data\sound\new1",0,0};
+ soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1};
+ soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush",0.09,1};
+ soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick",0.09,1};
+ soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1};
 	textureNoShortcut = "";
 	action = "";
 	
