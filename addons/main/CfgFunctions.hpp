@@ -41,6 +41,11 @@ class cfgFunctions {
 	                        file = "\x\alive\addons\main\fnc_anyPlayersInRange.sqf";
 				recompile = 1;
 			};
+			class anyPlayersInRangeExcludeAir {
+                description = "Checks if players are in range, excludes players in air units";
+                file = "\x\alive\addons\main\fnc_anyPlayersInRangeExcludeAir.sqf";
+                recompile = 1;
+            };
 			class chooseRandomUnits {
 				description = "Selects random unittypes of certain factions.";
 	                        file = "\x\alive\addons\main\fnc_chooseRandomUnits.sqf";

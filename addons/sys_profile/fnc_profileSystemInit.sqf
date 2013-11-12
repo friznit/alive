@@ -35,7 +35,7 @@ if(isServer) then {
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1000"]);
-	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","100"]);
+	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
 
 	["ALIVE Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
 

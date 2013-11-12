@@ -9,10 +9,10 @@ item4[] = {"END",1,250,43.372803,-89.655373,133.372833,-39.655460,0.000000,"END"
 item5[] = {"TIMER",2,250,-191.784912,-93.250328,-101.784897,-43.250317,0.000000,"TIMER"};
 item6[] = {"COMPLETE",4,218,116.471710,355.902557,206.472076,405.902588,0.000000,"COMPLETE"};
 item7[] = {"START",4,218,-192.425964,-19.086315,-102.425903,30.913666,2.000000,"START"};
-item8[] = {"ANALYSE",2,4346,-121.637917,195.866745,-31.637772,245.866928,0.000000,"ANALYSE"};
+item8[] = {"ANALYSE",2,250,-121.637917,195.866745,-31.637772,245.866928,0.000000,"ANALYSE"};
 item9[] = {"DO_SPAWN",4,218,-123.076942,274.904297,-33.076859,324.904358,0.000000,"DO" \n "SPAWN"};
 item10[] = {"DONE",2,250,-120.598183,507.647278,-33.938690,554.306946,0.000000,"DONE"};
-item11[] = {"SPAWN_LOOP",2,250,-122.133957,356.411804,-32.133873,406.411865,0.000000,"SPAWN" \n "LOOP"};
+item11[] = {"SPAWN_LOOP",2,4346,-122.133957,356.411804,-32.133873,406.411865,0.000000,"SPAWN" \n "LOOP"};
 item12[] = {"ITERATE",4,218,4.978054,356.221527,94.978058,406.221588,1.000000,"ITERATE"};
 item13[] = {"END__LOOP",4,218,-122.198143,431.177094,-32.198082,481.177094,0.000000,"END " \n "LOOP"};
 item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,0.000000,"WAIT"};
@@ -86,7 +86,7 @@ link37[] = {28,10};
 link38[] = {29,15};
 link39[] = {30,8};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-525.964905,221.846863,659.557739,-280.699127,851,1070,1};
-window[] = {2,-1,-1,-1,-1,1065,106,1729,167,3,869};
+window[] = {2,-1,-1,-1,-1,1009,248,1871,111,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -207,7 +207,7 @@ class FSM
        "		if!(_active) then {" \n
        "			_position = _profile select 2 select 2;" \n
        "" \n
-       "			if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange > 0) then {" \n
+       "			if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRangeExcludeAir > 0) then {" \n
        "				_toSpawn set [count _toSpawn, _profile];" \n
        "			}else{" \n
        "				if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0) then {" \n
@@ -339,7 +339,9 @@ class FSM
        "			if (count _vehiclesInCommandOf > 0) then {" \n
        "				{" \n
        "					_vehicleProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "					[ALIVE_profileHandler, ""unregisterProfile"", _vehicleProfile] call ALIVE_fnc_profileHandler;" \n
+       "					if!(isnil ""_vehicleProfile"") then {" \n
+       "						[ALIVE_profileHandler, ""unregisterProfile"", _vehicleProfile] call ALIVE_fnc_profileHandler;" \n
+       "					};" \n
        "				} foreach _vehiclesInCommandOf;" \n
        "			};" \n
        "" \n
@@ -396,7 +398,7 @@ class FSM
     class ANALYSE_1
     {
       name = "ANALYSE_1";
-      init = /*%FSM<STATEINIT""">*/"private [""_profile"",""_active"",""_position"",""_countToDespawn""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profile"",""_active"",""_profileType"",""_vehicle"",""_leader"",""_position"",""_countToDespawn""];" \n
        "" \n
        "_block = [ALIVE_arrayBlockHandler,""getNextBlock"", [format[""activeProfiles%1"",_side],_activeProfiles,30]] call ALIVE_fnc_arrayBlockHandler;" \n
        "" \n
@@ -408,8 +410,17 @@ class FSM
        "" \n
        "		_active = _profile select 2 select 1;" \n
        "" \n
+       "" \n
        "		if(_active) then {" \n
-       "			_position = _profile select 2 select 2;" \n
+       "			_profileType = _profile select 2 select 5;" \n
+       "" \n
+       "			if(_profileType == ""vehicle"") then {" \n
+       "				_vehicle = _profile select 2 select 10;" \n
+       "				_position = getPosATL _vehicle;" \n
+       "			}else{" \n
+       "				_leader = _profile select 2 select 10;" \n
+       "				_position = getPosATL _leader;" \n
+       "			};				" \n
        "" \n
        "			if(([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) && ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0)) then {" \n
        "				_toDespawn set [count _toDespawn, _profile];" \n
