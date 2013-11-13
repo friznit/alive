@@ -26,7 +26,7 @@
 <Key ID="STR_ALIVE_CQB_FACTIONS_REG">
 	<English>Factions:</English>
 </Key>
-<Key ID="STR_ALIVE_CQB_FACTIONS_COMMENT_REG_COMMENT">
+<Key ID="STR_ALIVE_CQB_FACTIONS_REG_COMMENT">
 	<English>Chooses the factions of regular CQB units</English>
 </Key>
 
