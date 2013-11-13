@@ -89,7 +89,7 @@ if !(isServer && isDedicated) then {
 			};
 		};
 		
-		REV_FNCT_nouvel_inconscient = {
+		REV_FNCT_unconscious = {
 			private ["_unit", "_id_action"];
 			_unit = _this select 1;
 			
@@ -97,17 +97,25 @@ if !(isServer && isDedicated) then {
 				if !(isNull _unit) then {
 					player reveal _unit;
 					
-					_id_action = _unit addAction [STR_REV_Action_Revive, "\x\alive\addons\sys_revive\sys_revive\revive.sqf", [], 10, false, true, "",
+					// _id_action = _unit addAction [STR_REV_Action_Revive, "\x\alive\addons\sys_revive\sys_revive\revive.sqf", [], 10, false, true, "",
+					// "player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && call REV_FNCT_peut_revive && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
+					// _unit setVariable ["REV_id_action_revive", _id_action, false];
+					
+					// _id_action = _unit addAction [STR_REV_Action_Drag_Body, "\x\alive\addons\sys_revive\sys_revive\drag_body.sqf", [], 10, false, true, "",
+					// "player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && REV_CFG_Allow_To_Drag_Body && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
+					// _unit setVariable ["REV_id_action_trainer_corps", _id_action, false];
+					
+					_id_action = _unit addAction [STR_REV_Action_Revive, {call ALIVE_fnc_revive2;}, [], 10, false, true, "",
 					"player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && call REV_FNCT_peut_revive && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
 					_unit setVariable ["REV_id_action_revive", _id_action, false];
 					
-					_id_action = _unit addAction [STR_REV_Action_Drag_Body, "\x\alive\addons\sys_revive\sys_revive\drag_body.sqf", [], 10, false, true, "",
+					_id_action = _unit addAction [STR_REV_Action_Drag_Body, {call ALIVE_fnc_reviveDrag;}, [], 10, false, true, "",
 					"player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && REV_CFG_Allow_To_Drag_Body && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
 					_unit setVariable ["REV_id_action_trainer_corps", _id_action, false];
 				};
 			};
 		};
-		"REV_Unconscious_Player" addPublicVariableEventHandler REV_FNCT_nouvel_inconscient;
+		"REV_Unconscious_Player" addPublicVariableEventHandler REV_FNCT_unconscious;
 		
 		REV_FNCT_End_Unconciousness = {
 			private ["_unit"];
@@ -160,7 +168,7 @@ if !(isServer && isDedicated) then {
 			{
 				if !(isNil {_x getVariable "REV_Unconscious"}) then {
 					if (_x getVariable "REV_Unconscious") then {
-						["REV_Unconscious_Player", _x] call REV_FNCT_nouvel_inconscient;
+						["REV_Unconscious_Player", _x] call REV_FNCT_unconscious;
 					};
 				};
 			};

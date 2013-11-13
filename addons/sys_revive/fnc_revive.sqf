@@ -91,6 +91,8 @@ switch(_operation) do {
 		*/
 		// Waituntil {!(isnil "REVIVE_DEBUG")};
 		call ALIVE_fnc_reviveScript;
+		// call ALIVE_fnc_revive2;
+		// call ALIVE_fnc_reviveDrag;
 	};
 	case "destroy": {
 		if (isServer) then {
