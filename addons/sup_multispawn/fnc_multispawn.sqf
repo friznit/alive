@@ -55,6 +55,13 @@ switch(_operation) do {
 				- enabled/disabled
                 */
                 
+                //Check if Revive is in mission on all localities first, needs to be merged with respawn manager
+                _revive = false;
+                _allLogics = (getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition")) nearEntities ["Logic", 30000];
+                {
+                    if (typeOf _x == "ALiVE_SYS_REVIVE") exitwith {_revive = true};
+                } foreach _allLogics;
+                
                 // Ensure only one module is used
                 if (isServer && !(isNil "ALIVE_multispawn")) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_multispawn_ERROR1");
@@ -68,8 +75,7 @@ switch(_operation) do {
                         
                         _debug = call compile (_logic getvariable ["debug","false"]);
                         MULTISPAWN_TYPE = _logic getvariable ["spawntype","forwardspawn"]; PublicVariable "MULTISPAWN_TYPE";
-                        
-                        
+                                                
                         // and publicVariable to clients
                         ALIVE_multispawn = _logic;
                         publicVariable "ALIVE_multispawn";
@@ -123,12 +129,18 @@ switch(_operation) do {
                 */
                 
                 //Initialise locals if client and not HC
-                if(!isDedicated && !isHC) then {
+                if(hasInterface) then {
                     Waituntil {!(isnil "MULTISPAWN_TYPE")};
                     
                     switch (MULTISPAWN_TYPE) do {
                         //Initialise a local "killed"-EH
-                        case ("forwardspawn") : {diag_log format["Forward Spawn EH placed...",time]; player addEventHandler ["killed", {[] spawn ALiVE_fnc_ForwardSpawn}]};
+                        case ("forwardspawn") : {
+                            	//Not compatible with revive
+                            	if (_revive) exitwith {"Revive is enabled, exiting Multispawn!" call ALiVE_fnc_Logger}; 
+                            
+                            	diag_log format["Forward Spawn EH placed...",time];
+                            	player addEventHandler ["killed", {[] spawn ALiVE_fnc_ForwardSpawn}];
+                            };
                         default {};
                     };
                     
