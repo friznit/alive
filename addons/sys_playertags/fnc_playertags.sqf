@@ -87,6 +87,18 @@ switch(_operation) do {
                          PLAYERTAGS_GROUPCOLOUR = _logic getvariable ["playertags_groupcolour_setting","#A8F000"]; 
                          PLAYERTAGS_THISGROUPLEADERNAMECOLOUR = _logic getvariable ["playertags_thisgroupleadernamecolour_setting","#FFB300"]; 
                          PLAYERTAGS_THISGROUPCOLOUR =_logic getvariable ["playertags_thisgroupcolour_setting","#009D91"]; 
+                         // and publicVariable to clients
+	                        publicVariable "PLAYERTAGS_DEBUG";
+	                        publicVariable "PLAYERTAGS_GROUP";
+	                        publicVariable "PLAYERTAGS_RANK";
+	                        publicVariable "PLAYERTAGS_INVEHICLE";
+	                        publicVariable "PLAYERTAGS_DISTANCE";
+	                        publicVariable "PLAYERTAGS_TOLERANCE";
+	                        publicVariable "PLAYERTAGS_SCALE";
+	                        publicVariable "PLAYERTAGS_NAMECOLOUR";
+	                        publicVariable "PLAYERTAGS_GROUPCOLOUR";
+	                        publicVariable "PLAYERTAGS_THISGROUPLEADERNAMECOLOUR";
+	                        publicVariable "PLAYERTAGS_THISGROUPCOLOUR";
 
                 } else {
                         // any client side logic
