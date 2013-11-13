@@ -38,6 +38,12 @@
 <Key ID="STR_ALIVE_PLAYERTAGS_RANK_COMMENT">
 	<English>Enables Player Rank Indicator</English>
 </Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_INVEHICLE">
+	<English>In Vehicle:</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_INVEHICLE_COMMENT">
+	<English>Enables Player Tags in Vehicles</English>
+</Key>
 <Key ID="STR_ALIVE_PLAYERTAGS_DISTANCE">
 	<English>Tag Distance:</English>
 </Key>
@@ -55,5 +61,29 @@
 </Key>
 <Key ID="STR_ALIVE_PLAYERTAGS_TOLERANCE_COMMENT">
 	<English>Sets Name Tag Tolerance</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_NAMECOLOUR">
+	<English>Name Colour:</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_NAMECOLOUR_COMMENT">
+	<English>Sets Name Colour</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_GROUPCOLOUR">
+	<English>Group Colour:</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_GROUPCOLOUR_COMMENT">
+	<English>Sets Group Colour</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_THISGROUPLEADERNAMECOLOUR">
+	<English>Your GL Colour:</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_THISGROUPLEADERNAMECOLOUR_COMMENT">
+	<English>Sets Your Group Leader's Colour</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_THISGROUPCOLOUR">
+	<English>Your Group Colour:</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYERTAGS_THISGROUPCOLOUR_COMMENT">
+	<English>Sets Your Group's Colour</English>
 </Key>
 </Container></Package></Project>

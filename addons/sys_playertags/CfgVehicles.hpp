@@ -79,6 +79,27 @@ class CfgVehicles {
 			                                };
 			                        };
 			                        
+                       				 class playertags_invehicle_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_INVEHICLE";
+			                                description = "$STR_ALIVE_PLAYERTAGS_INVEHICLE_COMMENT";
+ 																			class Values
+			                                {
+			                                	
+			                                        class No
+			                                        {
+			                                                name = "No";
+			                                                value = false;
+			                                        };
+			                                        class Yes
+			                                        {
+			                                                name = "Yes";
+			                                                value = true;
+			                                                default = true;
+			                                               
+			                                        };
+			                                };
+			                        };
 			                        
 			                        class playertags_distance_setting
 			                        {
@@ -103,6 +124,41 @@ class CfgVehicles {
                                			  defaultValue = 0.65;
                                       typeName = "NUMBER";
 			                        };
+			                        
+			                        class playertags_namecolour_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_NAMECOLOUR";
+			                                description = "$STR_ALIVE_PLAYERTAGS_NAMECOLOUR_COMMENT";
+                               			  defaultValue = "#FFFFFF"; // white
+                                      typeName = "STRING";
+			                        };
+			                        
+			                        class playertags_groupcolour_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_GROUPCOLOUR";
+			                                description = "$STR_ALIVE_PLAYERTAGS_GROUPCOLOUR_COMMENT";
+                               			  defaultValue = "#A8F000"; // green
+                                      typeName = "STRING";
+			                        };
+			                        
+			                        class playertags_thisgroupleadernamecolour_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_THISGROUPLEADERNAMECOLOUR";
+			                                description = "$STR_ALIVE_PLAYERTAGS_THISGROUPLEADERNAMECOLOUR_COMMENT";
+                               			  defaultValue = "#FFB300"; // yellow
+                                      typeName = "STRING";
+			                        };
+			                        
+			                        class playertags_thisgroupcolour_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_THISGROUPCOLOUR";
+			                                description = "$STR_ALIVE_PLAYERTAGS_THISGROUPCOLOUR_COMMENT";
+                               			  defaultValue = "#009D91"; // cyan
+                                      typeName = "STRING";
+			                        };
+            
 			          };
         };
 };
+
+

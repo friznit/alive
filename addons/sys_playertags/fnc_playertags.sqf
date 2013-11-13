@@ -15,7 +15,17 @@ Returns:
 Any - The new instance or the result of the selected function and parameters
 
 Attributes:
-
+Boolean - debug - Debug enabled
+Boolean - group - Display player group enabled
+Boolean - rank - Display player rank enabled
+Boolean - invehicle - Display player tags in vehicles enabled
+Number  - distance - Sets player name tag distance
+Number  - tolerance - Sets player name tag tolerance
+Number  - scale - Sets player name tag scale
+String  - namecolour - Sets name colour
+String  - groupcolour - Sets group colour
+String  - thisgroupleadernamecolour - Sets player's group leader colour
+String  - thisgroupcolour - Sets player's group colour
 
 The popup menu will change to show status as function is enabled and disabled.
 
@@ -50,11 +60,6 @@ switch(_operation) do {
         case "init": {                
                 /*
                 MODEL - no visual just reference data
-                - server side object only
-                - ghosting enabled
-                - teleport enabled
-                - mark units enabled
-                - Debug console enabled
                 */
                 
                 // Ensure only one module is used
@@ -74,9 +79,15 @@ switch(_operation) do {
                          PLAYERTAGS_DEBUG = call compile (_logic getvariable ["playertags_debug_setting","false"]);
                          PLAYERTAGS_GROUP = call compile (_logic getvariable ["playertags_displaygroup_setting","false"]);
                          PLAYERTAGS_RANK = call compile (_logic getvariable ["playertags_displayrank_setting","false"]);
+                         PLAYERTAGS_INVEHICLE = call compile (_logic getvariable ["playertags_invehicle_setting","false"]);
                          PLAYERTAGS_DISTANCE = _logic getvariable ["playertags_distance_setting",20];
                          PLAYERTAGS_TOLERANCE = _logic getvariable ["playertags_tolerance_setting",0.75];
                          PLAYERTAGS_SCALE = _logic getvariable ["playertags_scale_setting",0.65];
+                         PLAYERTAGS_NAMECOLOUR = _logic getvariable ["playertags_namecolour_setting","#FFFFFF"];       
+                         PLAYERTAGS_GROUPCOLOUR = _logic getvariable ["playertags_groupcolour_setting","#A8F000"]; 
+                         PLAYERTAGS_THISGROUPLEADERNAMECOLOUR = _logic getvariable ["playertags_thisgroupleadernamecolour_setting","#FFB300"]; 
+                         PLAYERTAGS_THISGROUPCOLOUR =_logic getvariable ["playertags_thisgroupcolour_setting","#009D91"]; 
+
                 } else {
                         // any client side logic
                 };

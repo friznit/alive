@@ -33,7 +33,7 @@ if (_type isKindOf "Car" ||
 		_type isKindOf "StaticWeapon" ||
 		_type isKindOf "Plane" ||
 		_type isKindOf "Helicopter" ||
-		_type isKindOf "Tank") then {
+		_type isKindOf "Tank" && PLAYERTAGS_INVEHICLE) then {
 	_vehicle = _obj;
 	_objTypeStr = format["%1", (typeOf _vehicle)];
 	_name = getText(configFile >> "cfgVehicles" >> _objTypeStr >> "displayName");
@@ -50,14 +50,14 @@ if (_type isKindOf "Car" ||
 			if (commander _vehicle == _x) then {
 				_tmpText = _tmpText + "C: ";
 			};
-			_nameColor = '#ffffff';
-			_groupColor = '#A8F000'; // green
-			_rankColor = '#ffffff';
+			_nameColor = PLAYERTAGS_NAMECOLOUR;
+			_groupColor = PLAYERTAGS_GROUPCOLOUR;
+
 			if (_x == leader group _x) then {
-				_nameColor = '#FFB300'; // yellow
+				_nameColor = PLAYERTAGS_THISGROUPLEADERNAMECOLOUR;
 			};
 			if (group _x == _ownGroup) then {
-				_groupColor = '#009D91'; // Cyan
+				_groupColor = PLAYERTAGS_THISGROUPCOLOUR;
 			};
 			_rank = '';
 			if (PLAYERTAGS_RANK) then {
@@ -67,7 +67,7 @@ if (_type isKindOf "Car" ||
 			if (PLAYERTAGS_GROUP) then {
 				_thisgroup = group _x;
 			};
-			_tmpText = _tmpText + format["<t color='%1'>%5 %2</t><br/>", _nameColor, name _x, _groupColor, _thisgroup, _rank, _rankColor];
+			_tmpText = _tmpText + format["<t color='%1'>%5 %2</t><br/>", _nameColor, name _x, _groupColor, _thisgroup, _rank];
 			_lineCount = _lineCount + 1;
 		}
 	} foreach (crew _vehicle);
@@ -75,17 +75,17 @@ if (_type isKindOf "Car" ||
 else {
 	_man = _obj;
 	_group = group _man;
-	_nameColor = '#ffffff';
-	_groupColor = '#A8F000'; // green
-	_rankColor = '#ffffff';
+	_nameColor = PLAYERTAGS_NAMECOLOUR;
+	_groupColor = PLAYERTAGS_GROUPCOLOUR;
+
 
 	if (alive _man) then
 	{
 		if (_man == leader _group) then {
-			_nameColor = '#FFB300'; // yellow
+			_nameColor = PLAYERTAGS_THISGROUPLEADERNAMECOLOUR;
 		};
 		if (_group == _ownGroup) then {
-			_groupColor = '#009D91'; // cyan
+			_groupColor = PLAYERTAGS_THISGROUPCOLOUR;
 		};
 		_rank = '';
 		if (PLAYERTAGS_RANK) then {
@@ -95,10 +95,12 @@ else {
 		if (PLAYERTAGS_GROUP) then {
 				_thisgroup = group _man;
 		};
-		_tmpText = _tmpText + format["<t color='%1'>%5 %2</t> <br/><t color='%3'>%4</t>", _nameColor, name _man, _groupColor, _thisgroup, _rank, _rankColor];
+		_tmpText = _tmpText + format["<t color='%1'>%5 %2</t> <br/><t color='%3'>%4</t>", _nameColor, name _man, _groupColor, _thisgroup, _rank];
 		_lineCount = 1;
 	};
 };
 	
 foundUnitsText set [foundUnitsCount, [_tmpText, _scrPos, _lineCount, _objDistMod, _absolutePos]];
 foundUnitsCount = foundUnitsCount + 1;
+
+
