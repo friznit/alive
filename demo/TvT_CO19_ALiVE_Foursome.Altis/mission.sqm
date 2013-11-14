@@ -2518,7 +2518,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15283.113,-0.0035053957,15394.555};
+					position[]={15282.527,0.13957287,15398.35};
 					class args
 					{
 						items=11;
@@ -2542,7 +2542,7 @@ class Mission
 						};
 						class Item3
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sys_playertags";
 							typeName="playertags_invehicle_setting";
 						};
