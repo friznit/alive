@@ -53,7 +53,6 @@ private ["_logic","_operation","_args"];
 PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,[]);
-
 enable_playertags = false;
 
 switch(_operation) do {
@@ -61,7 +60,7 @@ switch(_operation) do {
                 /*
                 MODEL - no visual just reference data
                 */
-                
+
                 // Ensure only one module is used
                 if (isServer && !(isNil QMOD(playertags))) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_PLAYERTAGS_ERROR1");
@@ -76,34 +75,10 @@ switch(_operation) do {
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", ALIVE_fnc_playertags];
                         _logic setVariable ["init", true, true];
-                         PLAYERTAGS_DEBUG = call compile (_logic getvariable ["playertags_debug_setting","false"]);
-                         PLAYERTAGS_GROUP = call compile (_logic getvariable ["playertags_displaygroup_setting","false"]);
-                         PLAYERTAGS_RANK = call compile (_logic getvariable ["playertags_displayrank_setting","false"]);
-                         PLAYERTAGS_INVEHICLE = call compile (_logic getvariable ["playertags_invehicle_setting","false"]);
-                         PLAYERTAGS_DISTANCE = _logic getvariable ["playertags_distance_setting",20];
-                         PLAYERTAGS_TOLERANCE = _logic getvariable ["playertags_tolerance_setting",0.75];
-                         PLAYERTAGS_SCALE = _logic getvariable ["playertags_scale_setting",0.65];
-                         PLAYERTAGS_NAMECOLOUR = _logic getvariable ["playertags_namecolour_setting","#FFFFFF"];       
-                         PLAYERTAGS_GROUPCOLOUR = _logic getvariable ["playertags_groupcolour_setting","#A8F000"]; 
-                         PLAYERTAGS_THISGROUPLEADERNAMECOLOUR = _logic getvariable ["playertags_thisgroupleadernamecolour_setting","#FFB300"]; 
-                         PLAYERTAGS_THISGROUPCOLOUR =_logic getvariable ["playertags_thisgroupcolour_setting","#009D91"]; 
-                         // and publicVariable to clients
-	                        publicVariable "PLAYERTAGS_DEBUG";
-	                        publicVariable "PLAYERTAGS_GROUP";
-	                        publicVariable "PLAYERTAGS_RANK";
-	                        publicVariable "PLAYERTAGS_INVEHICLE";
-	                        publicVariable "PLAYERTAGS_DISTANCE";
-	                        publicVariable "PLAYERTAGS_TOLERANCE";
-	                        publicVariable "PLAYERTAGS_SCALE";
-	                        publicVariable "PLAYERTAGS_NAMECOLOUR";
-	                        publicVariable "PLAYERTAGS_GROUPCOLOUR";
-	                        publicVariable "PLAYERTAGS_THISGROUPLEADERNAMECOLOUR";
-	                        publicVariable "PLAYERTAGS_THISGROUPCOLOUR";
 
                 } else {
                         // any client side logic
                 };
-
 
 
                 // and wait for game logic to initialise
@@ -115,10 +90,22 @@ switch(_operation) do {
                 - initialise menu
                 - frequent check to modify menu and display status (ALIVE_fnc_playertagsMenuDef)
                 */
-                
-
+               
 
                 if(!isDedicated && !isHC) then {
+                	
+                   PLAYERTAGS_DEBUG = call compile (_logic getvariable ["playertags_debug_setting","false"]);
+                   PLAYERTAGS_GROUP = call compile (_logic getvariable ["playertags_displaygroup_setting","true"]);
+                   PLAYERTAGS_RANK = call compile (_logic getvariable ["playertags_displayrank_setting","true"]);
+                   PLAYERTAGS_INVEHICLE = call compile (_logic getvariable ["playertags_invehicle_setting","false"]);
+                   PLAYERTAGS_DISTANCE = _logic getvariable ["playertags_distance_setting",20];
+                   PLAYERTAGS_TOLERANCE = _logic getvariable ["playertags_tolerance_setting",0.75];
+                   PLAYERTAGS_SCALE = _logic getvariable ["playertags_scale_setting",0.65];
+                   PLAYERTAGS_NAMECOLOUR = _logic getvariable ["playertags_namecolour_setting","#FFFFFF"];       
+                   PLAYERTAGS_GROUPCOLOUR = _logic getvariable ["playertags_groupcolour_setting","#A8F000"]; 
+                   PLAYERTAGS_THISGROUPLEADERNAMECOLOUR = _logic getvariable ["playertags_thisgroupleadernamecolour_setting","#FFB300"]; 
+                   PLAYERTAGS_THISGROUPCOLOUR =_logic getvariable ["playertags_thisgroupcolour_setting","#009D91"]; 
+                	
                 		Waituntil {!(isnil "PLAYERTAGS_DEBUG")};
                 		if(PLAYERTAGS_DEBUG) then {
                 			["ALIVE Player Tags - Menu Starting..."] call ALIVE_fnc_dump;
