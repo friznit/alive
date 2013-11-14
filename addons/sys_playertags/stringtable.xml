@@ -39,10 +39,10 @@
 	<English>Enables Player Rank Indicator</English>
 </Key>
 <Key ID="STR_ALIVE_PLAYERTAGS_INVEHICLE">
-	<English>In Vehicle:</English>
+	<English>In Vehicle?:</English>
 </Key>
 <Key ID="STR_ALIVE_PLAYERTAGS_INVEHICLE_COMMENT">
-	<English>Enables Player Tags in Vehicles</English>
+	<English>Enables Player Tags whilst in Vehicles (disable if using crewinfo module)</English>
 </Key>
 <Key ID="STR_ALIVE_PLAYERTAGS_DISTANCE">
 	<English>Tag Distance:</English>

@@ -64,11 +64,7 @@ switch(_operation) do {
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", ALIVE_fnc_weather];
                         _logic setVariable ["init", true, true];
-                        WEATHER_DEBUG = call compile (_logic getvariable ["weather_debug_setting","false"]);
                         INITIAL_WEATHER = call compile (_logic getvariable ["weather_initial_setting","false"]);
-                        // and publicVariable to clients
-                        publicVariable "WEATHER_DEBUG";
-
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
@@ -83,6 +79,7 @@ switch(_operation) do {
                 VIEW - purely visual
                 - initialise 
                 */
+                WEATHER_DEBUG = call compile (_logic getvariable ["weather_debug_setting","false"]);
                 Waituntil {!(isnil "WEATHER_DEBUG")};
 								call ALIVE_fnc_weatherFX;
 

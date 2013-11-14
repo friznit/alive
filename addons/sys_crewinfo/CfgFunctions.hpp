@@ -11,6 +11,11 @@
                                 file = "\x\alive\addons\sys_crewinfo\fnc_crewinfoInit.sqf";
 																recompile = 1;
                         };  
+ 											 class crewinfoClient {
+                               description = "The module script";
+                                file = "\x\alive\addons\sys_crewinfo\fnc_crewinfoClient.sqf";
+																recompile = 1;
+                        };  
                 };
         };
 };

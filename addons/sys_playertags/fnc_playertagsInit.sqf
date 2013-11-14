@@ -17,7 +17,7 @@ See Also:
 - <ALIVE_fnc_playertags>
 
 Author:
-Wolffy.au
+[KH]Jman
 
 Peer Reviewed:
 nil
@@ -28,8 +28,11 @@ private ["_logic"];
 PARAMS_1(_logic);
 
 
+
+
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_playertags","Main function missing");
+
 
 [_logic, "init"] call ALIVE_fnc_playertags;
 
