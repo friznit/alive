@@ -1,9 +1,9 @@
 //#define DEBUG_MODE_FULL
 #include <\x\alive\addons\sys_aiskill\script_component.hpp>
-SCRIPT(PSD);
+SCRIPT(AISkill);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_PSD
+Function: ALIVE_fnc_AISkill
 Description:
 Sector Display
 
@@ -20,23 +20,45 @@ Nil - init - Intiate instance
 Nil - destroy - Destroy instance
 Boolean - debug - Debug enabled
 Array - state - Save and restore module state
-Array - faction - Faction associated with module
+Nil - register
+Nil - start
+String or Array - skillFactionsRecruit
+String or Array - skillFactionsRegular
+String or Array - skillFactionsVeteran
+String or Array - skillFactionsNinja
+Scalar - customSkillFactions
+Scalar - customSkillAbilityMin
+Scalar - customSkillAbilityMax
+Scalar - customSkillAimAccuracy
+Scalar - customSkillAimShake
+Scalar - customSkillAimSpeed
+Scalar - customSkillEndurance
+Scalar - customSkillSpotDistance
+Scalar - customSkillSpotTime
+Scalar - customSkillCourage
+Scalar - customSkillReload
+Scalar - customSkillCommanding
+Scalar - customSkillGeneral
 
 Examples:
-[_logic, "debug", true] call ALiVE_fnc_SD;
+[_logic, "debug", true] call ALiVE_fnc_AISkill;
 
 See Also:
 - <ALIVE_fnc_AISkillInit>
 
 Author:
 ARJay
+Peer Reviewed:
+Wolffy.au 20131113
 ---------------------------------------------------------------------------- */
+
+// FIXME - do you want to convert all references of Ninja to Expert? :)
 
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_AISkill
 #define MTEMPLATE "ALiVE_AISKILL_%1"
 
-private ["_logic","_operation","_args","_result"];
+private ["_logic","_operation","_args","_result","_debug"];
 
 TRACE_1("AISKILL - input",_this);
 
@@ -58,7 +80,6 @@ switch(_operation) do {
 			
 			[_logic, "destroy"] call SUPERCLASS;
 		};
-		
 	};
 	case "debug": {
 		if (typeName _args == "BOOL") then {
@@ -74,7 +95,9 @@ switch(_operation) do {
 
 		_result = _args;
 	};        
-	case "state": {
+		// FIXME - state operation does not appear to be required
+        // either remove or fix to serialise to string
+    	case "state": {
 		private["_state","_data","_nodes","_simple_operations"];
 		/*
 		_simple_operations = ["targets", "size","type","faction"];
@@ -101,12 +124,16 @@ switch(_operation) do {
 		*/		
 	};
 	// Main process
+    // FIXME - can we standardise on create instead of init
 	case "init": {
         if (isServer) then {
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_AISKill"];
+            
+            // FIXME - can you change startupComplete to initialising
+            // and set to true, then set to nil once completed?
 			_logic setVariable ["startupComplete", false];
 
 			[_logic, "skillFactionsRecruit", _logic getVariable ["skillFactionsRecruit", []]] call MAINCLASS;
@@ -117,24 +144,25 @@ switch(_operation) do {
 
 			TRACE_1("After module init",_logic);
 
-			[_logic,"register"] call MAINCLASS;			
+			[_logic, "register"] call MAINCLASS;			
         };
 	};
 	case "register": {
-		
 			private["_registration","_moduleType"];
 		
 			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,[]];
+			_registration = [_logic, _moduleType, []];
 	
 			if(isNil "ALIVE_registry") then {
 				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
 				[ALIVE_registry, "init"] call ALIVE_fnc_registry;
 			};
 
-			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
+			[ALIVE_registry, "register", _registration] call ALIVE_fnc_registry;
 	};
     case "skillFactionsRecruit": {
+        // FIXME - my preference would be to use a swtich statement here
+        // rather than multiple if statements
         if(typeName _args == "STRING") then {
             _args = [_args, " ", ""] call CBA_fnc_replace;
             _args = [_args, ","] call CBA_fnc_split;
@@ -148,7 +176,9 @@ switch(_operation) do {
         _result = _logic getVariable [_operation, []];
     };
     case "skillFactionsRegular": {
-        if(typeName _args == "STRING") then {
+        // FIXME - my preference would be to use a swtich statement here
+        // rather than multiple if statements
+		if(typeName _args == "STRING") then {
             _args = [_args, " ", ""] call CBA_fnc_replace;
             _args = [_args, ","] call CBA_fnc_split;
             if(count _args > 0) then {
@@ -161,6 +191,8 @@ switch(_operation) do {
         _result = _logic getVariable [_operation, []];
     };
     case "skillFactionsVeteran": {
+        // FIXME - my preference would be to use a swtich statement here
+        // rather than multiple if statements
         if(typeName _args == "STRING") then {
             _args = [_args, " ", ""] call CBA_fnc_replace;
             _args = [_args, ","] call CBA_fnc_split;
@@ -174,6 +206,8 @@ switch(_operation) do {
         _result = _logic getVariable [_operation, []];
     };
     case "skillFactionsNinja": {
+        // FIXME - my preference would be to use a swtich statement here
+        // rather than multiple if statements
         if(typeName _args == "STRING") then {
             _args = [_args, " ", ""] call CBA_fnc_replace;
             _args = [_args, ","] call CBA_fnc_split;
@@ -187,6 +221,8 @@ switch(_operation) do {
         _result = _logic getVariable [_operation, []];
     };
     case "customSkillFactions": {
+        // FIXME - my preference would be to use a swtich statement here
+        // rather than multiple if statements
         if(typeName _args == "STRING") then {
             _args = [_args, " ", ""] call CBA_fnc_replace;
             _args = [_args, ","] call CBA_fnc_split;
@@ -238,12 +274,12 @@ switch(_operation) do {
 	// Main process
 	case "start": {
         if (isServer) then {
-
+            // FIXME - maybe being pedantic, but can't you move this into the spawn?
             _debug = [_logic, "debug"] call MAINCLASS;
 
 			[_logic, _debug] spawn {
-
-			    _logic = _this select 0;
+                private ["_minSkill","_maxSkill","_diff","_factionSkill","_faction","_aimingAccuracy","_aimingShake","_aimingSpeed","_logic","_debug","_skillFactionsRecruit","_skillFactionsRegular","_skillFactionsVeteran","_skillFactionsNinja","_customSkillFactions","_customSkillAbilityMin","_customSkillAbilityMax","_customSkillAimAccuracy","_customSkillAimShake","_customSkillAimSpeed","_customSkillEndurance","_customSkillSpotDistance","_customSkillSpotTime","_customSkillCourage","_customSkillReload","_customSkillCommanding","_customSkillGeneral","_recruitSkill","_regularSkill","_veteranSkill","_expertSkill","_customSkill","_factionSkills"];
+				_logic = _this select 0;
                 _debug = _this select 1;
 
 			    _skillFactionsRecruit = [_logic, "skillFactionsRecruit"] call MAINCLASS;
@@ -317,9 +353,8 @@ switch(_operation) do {
 
 
 			    waituntil {
-
-
                     {
+						// FIXME - is there a way to setVariable the unit and not reset it every loop?
                         _faction = faction _x;
 
                         _aimingAccuracy = _x skill "aimingAccuracy";
@@ -330,9 +365,8 @@ switch(_operation) do {
                             _factionSkill = [_factionSkills,_faction] call ALIVE_fnc_hashGet;
 
                             if((_aimingAccuracy != _factionSkill select 2) && (_aimingShake != _factionSkill select 3) && (_aimingSpeed != _factionSkill select 4)) then {
-
-
                                 // DEBUG -------------------------------------------------------------------------------------
+								// FIXME - this needs to be read using getVariable every loop, as debug should be able to turn on and off during run-time
                                 if(_debug) then {
                                     ["AISKILL Setting unit skill:"] call ALIVE_fnc_dump;
                                 };
@@ -359,7 +393,6 @@ switch(_operation) do {
                                 sleep 0.03;
                             };
                         };
-
                     } forEach allUnits;
 
 
@@ -370,7 +403,8 @@ switch(_operation) do {
                 };
 			};
 
-			_logic setVariable ["startupComplete", true];
+			// FIXME - refer to earlier comment about startupComplete vs initialising
+            _logic setVariable ["startupComplete", true];
         };
 	};
 };

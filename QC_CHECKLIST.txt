@@ -1,0 +1,8 @@
+Load into Squint - check for errors
+Reformat code using ST2/Eclipse
+Update and verify API documentation
+Check module parameters isGlobal, etc
+Check functions recompile
+
+
+LintCheck

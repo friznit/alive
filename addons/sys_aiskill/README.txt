@@ -33,6 +33,7 @@ ALiVE Team
 #===============#
 
 ARJay
+Jman
 
 #=============================#
 | Rough component description |

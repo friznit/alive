@@ -1,14 +1,14 @@
 // Simply a package which requires other addons.
 class CfgPatches {
 	class ADDON {
-		units[] = {};
-		weapons[] = {};
+		units[] = { };
+		weapons[] = { };
 		requiredVersion = REQUIRED_VERSION;
-		requiredAddons[] = {};
+		requiredAddons[] = { };
 		versionDesc = "ALiVE";
 		versionAct = "['sys_aiskill',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
-		author[] = {"ARJay"};
+		author[] = { "ARJay","Jman" };
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
