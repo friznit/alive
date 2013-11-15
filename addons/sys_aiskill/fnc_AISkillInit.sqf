@@ -14,6 +14,7 @@ Returns:
 Nil
 
 See Also:
+- <ALIVE_fnc_AISkill>
 
 Author:
 ARJay

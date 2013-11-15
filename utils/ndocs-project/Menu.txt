@@ -74,7 +74,6 @@ Group: ALiVE  {
          File: ALIVE_fnc_BUS  (main/fnc_BUS.sqf)
          File: ALIVE_fnc_createLink  (main/fnc_createLink.sqf)
          File: ALIVE_fnc_deleteLink  (main/fnc_deleteLink.sqf)
-         File: ALIVE_fnc_exMP  (main/fnc_exMP.sqf)
          File: ALIVE_fnc_markerExists  (main/fnc_MarkerExists.sqf)
          File: ALIVE_fnc_baseClassHash  (main/fnc_BaseClassHash.sqf)
          File: ALiVE_fnc_hashCreate  (main/fnc_hashCreate.sqf)
@@ -85,6 +84,8 @@ Group: ALiVE  {
          File: ALIVE_fnc_sendHint  (main/fnc_sendHint.sqf)
          File: ALIVE_fnc_Nuke  (main/fnc_Nuke.sqf)
          File: fnc_anyAutonomousInRange  (main/fnc_anyAutonomousInRange.sqf)
+         File: ALiVE_fnc_anyPlayersInRangeExcludeAir  (main/fnc_anyPlayersInRangeExcludeAir.sqf)
+         File: ALiVE_fnc_getDominantFaction  (main/fnc_getDominantFaction.sqf)
          }  # Group: Main
 
       Group: Sys_adminactions  {
@@ -166,6 +167,18 @@ Group: ALiVE  {
          File: MAINCLASS  (fnc_strategic/fnc_cluster.sqf)
          }  # Group: Fnc_strategic
 
+      Group: Sys_AISkill  {
+
+         File: ALIVE_fnc_AISkill  (sys_aiskill/fnc_AISkill.sqf)
+         File: ALIVE_fnc_AISkillInit  (sys_aiskill/fnc_AISkillInit.sqf)
+         }  # Group: Sys_AISkill
+
+      Group: Sys_CrewInfo  {
+
+         File: ALIVE_fnc_crewinfo  (sys_crewinfo/fnc_crewinfo.sqf)
+         File: ALIVE_fnc_crewinfoInit  (sys_crewinfo/fnc_crewinfoInit.sqf)
+         }  # Group: Sys_CrewInfo
+
       }  # Group: Functions
 
    Group: Index  {
@@ -181,13 +194,17 @@ File: ALIVE_fnc_CQB  (sup_cas/fnc_CAS.sqf)
 File: ALIVE_fnc_CQB  (sup_transport/fnc_TRANSPORT.sqf)
 File: ALIVE_fnc_CQBInit  (sup_cas/fnc_CASInit.sqf)
 File: ALIVE_fnc_CQBInit  (sup_transport/fnc_TRANSPORTInit.sqf)
-File: ALIVE_fnc_crewinfo  (sys_crewinfo/fnc_crewinfo.sqf)
-File: ALIVE_fnc_crewinfoInit  (sys_crewinfo/fnc_crewinfoInit.sqf)
 File: ALIVE_fnc_GCInit  (sys_GC/fnc_GCInit.sqf)
 File: ALIVE_fnc_HAC  (sys_HAC/fnc_HAC.sqf)
 File: ALIVE_fnc_HAC_Init  (sys_HAC/fnc_HAC_Init.sqf)
+File: ALIVE_fnc_ML  (mil_logistics/fnc_ML.sqf)
+File: ALIVE_fnc_MLInit  (mil_logistics/fnc_MLInit.sqf)
 File: ALIVE_fnc_OPCOMInit  (mil_OPCOM/fnc_OPCOMInit.sqf)
 File: ALIVE_fnc_readData  (sys_data_sql/fnc_readData_sql.sqf)
+File: ALIVE_fnc_revive  (sys_revive/fnc_revive.sqf)
+File: ALIVE_fnc_reviveInit  (sys_revive/fnc_reviveInit.sqf)
+File: ALIVE_fnc_weather  (sys_weather/fnc_weather.sqf)
+File: ALIVE_fnc_weatherInit  (sys_weather/fnc_weatherInit.sqf)
 File: ALIVE_fnc_writeData  (sys_data_sql/fnc_writeData_sql.sqf)
 
 Group: Civ_placement  {
@@ -207,6 +224,7 @@ Group: Fnc_analysis  {
    File: ALIVE_fnc_getClosestSea  (fnc_analysis/fnc_getClosestSea.sqf)
    File: ALIVE_fnc_getMapSize  (fnc_analysis/fnc_getMapBounds.sqf)
    File: ALIVE_fnc_getNearUnits  (fnc_analysis/fnc_getNearUnits.sqf)
+   File: ALIVE_fnc_gridAnalysisActive  (fnc_analysis/fnc_gridAnalysisActive.sqf)
    File: ALIVE_fnc_gridAnalysisProfileEntity  (fnc_analysis/fnc_gridAnalysisProfileEntity.sqf)
    File: ALIVE_fnc_gridAnalysisProfileVehicle  (fnc_analysis/fnc_gridAnalysisProfileVehicle.sqf)
    File: ALIVE_fnc_gridImportStaticMapAnalysis  (fnc_analysis/fnc_gridImportStaticMapAnalysis.sqf)
@@ -263,6 +281,8 @@ Group: Mil_intelligence  {
 
    File: ALIVE_fnc_MI  (mil_intelligence/fnc_MI.sqf)
    File: ALIVE_fnc_MIInit  (mil_intelligence/fnc_MIInit.sqf)
+   File: ALIVE_fnc_PSD  (mil_intelligence/fnc_PSD.sqf)
+   File: ALIVE_fnc_PSDInit  (mil_intelligence/fnc_PSDInit.sqf)
    File: ALIVE_fnc_SD  (mil_intelligence/fnc_SD.sqf)
    File: ALIVE_fnc_SDInit  (mil_intelligence/fnc_SDInit.sqf)
    }  # Group: Mil_intelligence
@@ -355,6 +375,13 @@ Group: Sys_player  {
    File: ALIVE_fnc_SavePlayers  (sys_player/fnc_savePlayers.sqf)
    File: ALIVE_fnc_setPlayer  (sys_player/fnc_setPlayer.sqf)
    }  # Group: Sys_player
+
+Group: Sys_playertags  {
+
+   File: ALIVE_fnc_fnc_playertagsMenuDef  (sys_playertags/fnc_playertagsMenuDef.sqf)
+   File: ALIVE_fnc_playertags  (sys_playertags/fnc_playertags.sqf)
+   File: ALIVE_fnc_playertagsInit  (sys_playertags/fnc_playertagsInit.sqf)
+   }  # Group: Sys_playertags
 
 Group: Sys_profile  {
 
