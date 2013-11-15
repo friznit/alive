@@ -38,7 +38,7 @@ See Also:
 
 Author:
 Wolffy.au
-JMan
+Jman
 
 Peer reviewed:
 nil

@@ -32,7 +32,7 @@ ALiVE Team
 | Local credits |
 #===============#
 
-[VRC]Raps
+Raptor
 
 #=============================#
 | Rough component description |

@@ -23,7 +23,7 @@ Examples:
 Author:
 Wolffy.au
 Modified:
-Raps [VRC]
+Raptor
 ---------------------------------------------------------------------------- */
 
 private ["_pos","_dist"];

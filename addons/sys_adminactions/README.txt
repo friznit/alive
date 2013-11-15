@@ -33,7 +33,7 @@ ALiVE Team
 #===============#
 
 Wolffy.au
-JMan
+Jman
 
 #=============================#
 | Rough component description |

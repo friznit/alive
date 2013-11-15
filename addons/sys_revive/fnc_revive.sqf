@@ -33,7 +33,7 @@ See Also:
 
 
 Author:
-[VRC]Raps
+Raptor
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS nil

@@ -32,7 +32,7 @@ ALiVE Team
 | Local credits |
 #===============#
 
-[KH]Jman
+Jman
 
 #=============================#
 | Rough component description |

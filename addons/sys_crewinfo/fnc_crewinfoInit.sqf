@@ -17,7 +17,7 @@ See Also:
 - <ALIVE_fnc_crewinfo>
 
 Author:
-[KH]Jman
+Jman
 Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */

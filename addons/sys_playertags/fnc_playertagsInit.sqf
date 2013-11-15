@@ -17,7 +17,7 @@ See Also:
 - <ALIVE_fnc_playertags>
 
 Author:
-[KH]Jman
+Jman
 
 Peer Reviewed:
 nil

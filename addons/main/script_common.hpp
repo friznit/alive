@@ -1,3 +1,3 @@
-#define __cr_managers "Managers: Wolffy, Tupolov, Highhead, Friznit"
-#define __cr_devs "Developers: Wolffy, Tupolov, Highhead, JMan, WobblyHeadBob, Zorrobyte, ARJay, VRCRaptor"
-#define __cr_testers "Contributors: Rye, Alderman, Singleton, Glowbal, HazeyGaming, xxx"
+#define __cr_managers "Managers: Friznit, Highhead, Tupolov, Wolffy.au"
+#define __cr_devs "Developers: ARJay, Gunny, Jman, Raptor, WobbleyHeadedBob"
+#define __cr_testers "Contributors: Rye, Ligthert, Singleton, SavageCDN, Kremator"

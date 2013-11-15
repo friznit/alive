@@ -31,7 +31,7 @@ See Also:
 - <CBA_fnc_flexiMenu_Add>
 
 Author:
-[KH]Jman
+Jman
 
 Peer reviewed:
 nil

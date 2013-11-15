@@ -8,7 +8,7 @@ class CfgPatches {
 		versionDesc = "ALiVE";
 		versionAct = "['SYS_REVIVE',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
-		author[] = {"[VRC]Raps"};
+		author[] = {"Raptor"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
@@ -44,7 +44,7 @@ class RscTitles {
 			x = safezoneX;
 			y = safezoneY;
 			w = safezoneW;
-			h = safezoneH;  
+			h = safezoneH;
 		};
 	};
 	class REV_Wounded_EyePain {
@@ -68,7 +68,7 @@ class RscTitles {
 			x = safezoneX;
 			y = safezoneY;
 			w = safezoneW;
-			h = safezoneH;  
+			h = safezoneH;
 		};
 	};
 };

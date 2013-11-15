@@ -17,7 +17,7 @@ See Also:
 - <ALIVE_fnc_revive>
 
 Author:
-[VRC]Raps
+Raptor
 Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */

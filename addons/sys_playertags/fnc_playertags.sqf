@@ -40,7 +40,7 @@ See Also:
 - <ALIVE_fnc_playertagsMenuDef>
 
 Author:
-[KH]Jman
+Jman
 
 Peer reviewed:
 nil
