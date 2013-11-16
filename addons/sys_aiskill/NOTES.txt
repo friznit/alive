@@ -1,10 +1,10 @@
 Wolffy.au:
-I would change the design of this module, but it might be over-engineering.
-
 Firstly, does this mean that every unit of the faction is identically set? If 
 so, my preference is to keep the BI model, that different ranks get different
 skill levels, which means team leaders are more skilled and more important to
 kill during game play.
+
+I would suggest change the design of this module, but it might be over-engineering.
 
 Firstly, as a component, I would expect that the spawn process can be stopped
 and started as required. Personally, I would create an "active"(bool)
