@@ -48,6 +48,7 @@ See Also:
 
 Author:
 ARJay
+
 Peer Reviewed:
 Wolffy.au 20131113
 ---------------------------------------------------------------------------- */
@@ -82,7 +83,10 @@ switch(_operation) do {
 		};
 	};
 	case "debug": {
-		if (typeName _args == "BOOL") then {
+        // FIXME - my preference would be to use a swtich statement here
+        // rather than multiple if statements
+        // FIXME - what is the requirement for STRING input also?
+        if (typeName _args == "BOOL") then {
 			_logic setVariable ["debug", _args];
 		} else {
 			_args = _logic getVariable ["debug", false];
@@ -95,9 +99,9 @@ switch(_operation) do {
 
 		_result = _args;
 	};        
-		// FIXME - state operation does not appear to be required
-        // either remove or fix to serialise to string
-    	case "state": {
+	// FIXME - state operation does not appear to be required
+	// either remove or fix to serialise to string
+   	case "state": {
 		private["_state","_data","_nodes","_simple_operations"];
 		/*
 		_simple_operations = ["targets", "size","type","faction"];
@@ -163,6 +167,8 @@ switch(_operation) do {
     case "skillFactionsRecruit": {
         // FIXME - my preference would be to use a swtich statement here
         // rather than multiple if statements
+        // FIXME - I see this code stanza repeated many times. Can it be made
+        // into a main function like OOsimpleOperation?
         if(typeName _args == "STRING") then {
             _args = [_args, " ", ""] call CBA_fnc_replace;
             _args = [_args, ","] call CBA_fnc_split;
@@ -393,6 +399,7 @@ switch(_operation) do {
                                 sleep 0.03;
                             };
                         };
+                    // FIXME - Should debug show stats, how many units have been set in this iteration?
                     } forEach allUnits;
 
 
