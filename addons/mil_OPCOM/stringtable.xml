@@ -26,6 +26,12 @@
 <Key ID="STR_ALIVE_OPCOM_SIDE_COMMENT">
 	<English>OPCOMs side</English>
 </Key>
+<Key ID="STR_ALIVE_OPCOM_PLAYERTASKINGS">
+	<English>Player Tasks:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_PLAYERTASKINGS_COMMENT">
+	<English>Enables OPCOMs secondary mission system for players!</English>
+</Key>
 <Key ID="STR_ALIVE_OPCOM_FACTIONS">
 	<English>Override Factions:</English>
 </Key>
