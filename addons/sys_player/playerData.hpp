@@ -15,11 +15,11 @@ getContainerMagazines = {
 	{
 		private "_mag";
 		_mag = _x;
-		if ( toLower(_mag select 4) == _container && !(getnumber (configFile>>"CfgMagazines">>(_mag select 0)>>"count") == 1) ) then {
+		if ( toLower(_mag select 4) == _container && !(getnumber (configFile>>"CfgMagazines">>(_mag select 0)>>"count") == 1) && !(_mag select 2)) then {
 			if(MOD(sys_player) getvariable ["saveAmmo", false]) then {
 					_contMags set [count _contMags, [_mag select 0, _mag select 1]];
 			} else {
-					_contMags set [count _contMags, _mag select 0];
+					_contMags set [count _contMags, [_mag select 0, getnumber (configFile>>"CfgMagazines">>(_mag select 0)>>"count")]];
 			};
 		};
 	} foreach _magazines;
@@ -29,14 +29,17 @@ getContainerMagazines = {
 getWeaponMagazine = {
 		private ["_target","_magazine","_weap"];
 		_target = (_this select 0);
-		_weap = currentWeapon _target;
-		_target selectWeapon (_this select 1);
-		if(MOD(sys_player) getvariable ["saveAmmo", false]) then {
-				_magazine = [currentMagazine _target, _target ammo (currentWeapon _target)];
-		} else {
-				_magazine = currentMagazine _target;
-		};	
-		_target selectWeapon _weap;
+		_weap = (_this select 1);
+		_magazine = [];
+		{
+			if ( (_x select 3) == _weap && (_x select 2) ) then {
+				if(MOD(sys_player) getvariable ["saveAmmo", false]) then {
+						_magazine set [count _magazine, [_x select 0, _x select 1]];
+				} else {
+						_magazine set [count _magazine, [_x select 0, getnumber (configFile>>"CfgMagazines">>(_x select 0)>>"count")]];
+				};	
+			};
+		} foreach (magazinesAmmoFull _target);
 		_magazine;
 };
 
@@ -47,14 +50,15 @@ addItemToUniformOrVest = {
 	if(typename _item == "ARRAY") then {
 		if(_item select 0 != "") then {
 			TRACE_2("adding item array", _target, _item);
-			_target addMagazine _item;
+			_target addMagazine _item; // add to client
+
+			["server",QMOD(sys_player),[[(_this select 0), _item],{(_this select 0) addMagazine (_this select 1);}]] call ALIVE_fnc_BUS; // Do it on server as addMagazine array is not global
 		};
 	} else {
 		if(_item != "") then {
 			if(isClass(configFile>>"CfgMagazines">>_item)) then {
 					TRACE_2("adding item magazine", _target, _item);
-					_result = [_target, _item] call CBA_fnc_addMagazine;
-					if !(_result) then {TRACE_2("FAILED adding magazine", _target, _item);};
+					_target addMagazine _item;
 			} else {
 				if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
 					TRACE_2("adding item weapon", _target, _item);
@@ -83,6 +87,7 @@ fillContainer = {
 				_currentLoad = loadVest _target;
 			};
 			_target addItem FILLER_ITEM;
+			["server",QMOD(sys_player),[[(_this select 0), "ItemWatch"],{(_this select 0) addItem (_this select 1);}]] call ALIVE_fnc_BUS; // Do it on server as addItem is not global
 			if (_container == "uniform") then {
 				if (loadUniform _target == _currentLoad) then {_loaded = true;};
 			} else {
@@ -94,7 +99,8 @@ fillContainer = {
 };
 
 GVAR(UNIT_DATA) = [
-		["lastSaveTime",{ time;}, "SKIP"],
+		["lastSaveTime",{ dateToNumber date;}, "SKIP"],
+		["puid",{ getPlayerUID (_this select 0);}, "SKIP"],
 		["name",{ name (_this select 0);}, {(_this select 0) setName (_this select 1);}],
 		["speaker",{ speaker (_this select 0);}, {(_this select 0) setSpeaker (_this select 1);}],
 		["nameSound",{ nameSound (_this select 0);}, {(_this select 0) setNameSound (_this select 1);}],
@@ -104,7 +110,9 @@ GVAR(UNIT_DATA) = [
 		["rating",{rating  (_this select 0);}, {(_this select 0) addrating (_this select 1);}],
 		["rank",{rank (_this select 0);}, {(_this select 0) setUnitRank (_this select 1);}],
 		["group",{group  (_this select 0);}, "SKIP"], // {[(_this select 0)] joinSilent (_this select 1);}
-		["leader", {(leader  (_this select 0) == (_this select 0));}, "SKIP"] // {(_this select 1) selectLeader (_this select 0);}
+		["leader", {(leader  (_this select 0) == (_this select 0));}, "SKIP"], // {(_this select 1) selectLeader (_this select 0);}
+		["viewDistance", { (_this select 0) getvariable ["viewDistance",1500];}, {setviewDistance (_this select 1);}],
+		["terrainGrid", { (_this select 0) getvariable ["terrainGrid",25];}, {setterraingrid (_this select 1);}]
 		// Identity?
 ];
 
@@ -157,10 +165,11 @@ GVAR(POSITION_DATA) = [
 		_thisVehicle = (_this select 0) getVariable ["vehicle", "NONE"];
 		if (_thisVehicle != "NONE") then {
 			{
-				if ( str(_x) == _thisVehicle) exitWith {
+				TRACE_1("", _x getVariable "vehicleID");
+				if ( _x getVariable "vehicleID" == _thisVehicle) exitWith {
 						_thisSeat = (_this select 1);
 			 			if (_thisSeat != "") then {	
-						//	(_this select 0) sideChat format["Player, %1 entered vehicle position  %2", _thisVehicle, _thisSeat];	
+							TRACE_2("", _thisVehicle, _thisSeat);	
 									switch (_thisSeat) do
 									{
 									   case "driver":
@@ -210,6 +219,7 @@ GVAR(HEALTH_DATA) = [
 ];
 
 GVAR(LOADOUT_DATA) = [
+
 	["assignedItemMagazines", {
 		private ["_target","_magazines","_weap"];
 		_target = (_this select 0);
@@ -233,12 +243,15 @@ GVAR(LOADOUT_DATA) = [
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
 	}],
-	["primaryWeaponMagazine", { [(_this select 0), primaryWeapon (_this select 0)] call getWeaponmagazine;}, 
-	 { removeAllWeapons (_this select 0);  
-	   [(_this select 0), (_this select 1)] call addItemToUniformOrVest;
+	["primaryWeaponMagazine", { [(_this select 0), 1] call getWeaponmagazine;}, 
+	 { removeAllWeapons (_this select 0); 
+	 	["server",QMOD(sys_player),[[(_this select 0)],{removeAllWeapons (_this select 0);}]] call ALIVE_fnc_BUS; // RemoveAllWeapons is not global
+	 	{
+	 		   (_this select 0) addMagazine _x;
+	 	} foreach (_this select 1);
 	}],
 	["primaryweapon", {primaryWeapon (_this select 0);}, {
-		(_this select 0) addWeapon (_this select 1);
+		(_this select 0) addWeaponGlobal (_this select 1);
 	}],
 	["primaryWeaponItems", {primaryWeaponItems (_this select 0);}, {
 		private ["_target","_primw"];
@@ -252,11 +265,15 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
-	["handgunWeaponMagazine", { [(_this select 0), handgunWeapon (_this select 0)] call getWeaponmagazine;}, 
-	 { [(_this select 0), (_this select 1)] call addItemToUniformOrVest;
+	["handgunWeaponMagazine", { [(_this select 0), 2] call getWeaponmagazine;}, 
+	 { 	 	
+	 	{
+	 		   (_this select 0) addMagazine _x;
+	 	} foreach (_this select 1);
+	 	//[0, {diag_log format['post mags: %1', magazinesAmmoFull _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 	}],
 	["handgunWeapon", {handgunWeapon (_this select 0);}, {
-		(_this select 0) addWeapon (_this select 1);
+		(_this select 0) addWeaponGlobal (_this select 1);
 	}],
 	["handgunItems", {handgunItems (_this select 0);}, {
 		{
@@ -268,13 +285,15 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
-	["secondaryWeaponMagazine", { [(_this select 0), secondaryWeapon (_this select 0)] call getWeaponmagazine;}, 
+	["secondaryWeaponMagazine", { [(_this select 0), 4] call getWeaponmagazine;}, 
 	 { 
-	 	[(_this select 0), (_this select 1)] call addItemToUniformOrVest;
+	 	{
+	 		   (_this select 0) addMagazine _x;
+	 	} foreach (_this select 1);
 	}],
 	["secondaryWeapon", {secondaryWeapon (_this select 0);}, {
 		if ((_this select 1) != "") then {
-			(_this select 0) addWeapon (_this select 1);
+			(_this select 0) addWeaponGlobal (_this select 1);
 		};
 		removeBackpack (_this select 0);
 	}],
@@ -287,16 +306,35 @@ GVAR(LOADOUT_DATA) = [
 			}; 
 		} foreach (_this select 1);
 	}],
+
 	["uniform", {uniform (_this select 0);}, {
-		removeUniform (_this select 0); 
-		(_this select 0) addUniform (_this select 1);
+		//if (uniform (_this select 0) != (_this select 1)) then {
+				removeUniform (_this select 0);
+				//[0, {diag_log format['remove uniform: %1', uniform _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+
+				(_this select 0) addUniform (_this select 1);
+				// Check to see uniform state on client and server
+				//[0, {diag_log format['add uniform: %1', uniform _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+
+				{
+					(_this select 0) removeItemFromUniform _x;
+					["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) removeItemFromUniform (_this select 1);}]] call ALIVE_fnc_BUS; // removeItemFromUniform is not global
+					//[0, {diag_log format['uniformItems pre: %1', uniformItems _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+				} foreach uniformItems (_this select 0);	
+		/*} else {
+
+				[0, {diag_log format['server no change uniform: %1', uniform _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+				[0, {diag_log format['server remove uniform items: %1', uniformItems _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+		};*/
 	}],
+
 	["uniformItems", {
 		private ["_uniformItems"];
-		_uniformItems = [(_this select 0), "uniform"] call getContainerMagazines;
+		_uniformItems = [];
 		{
-			TRACE_1("Uniform Item", _x);
+
 			if ( getnumber (configFile>>"CfgMagazines">>_x>>"count") == 1 || !isClass (configFile>>"CfgMagazines">>_x) ) then {
+				TRACE_1("Uniform Item", _x);
 				_uniformItems set [count _uniformItems, _x];
 			};
 		} foreach uniformItems (_this select 0);
@@ -304,29 +342,66 @@ GVAR(LOADOUT_DATA) = [
 	 }, {
 		PLACEHOLDERCOUNT = 0;
 		{
+			//[(_this select 0), _x] call addItemToUniformOrVest;
+			(_this select 0) addItemToUniform _x;
+			["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) addItemToUniform (_this select 1);}]] call ALIVE_fnc_BUS; // addItemToUniform is not global
+		} foreach (_this select 1);
+		//[0, {diag_log format['uniformItems: %1', uniformItems _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+	}],
+	["uniformMagazines", {
+		private ["_uniformMags"];
+		_uniformMags = [];
+		_uniformMags = [(_this select 0), "uniform"] call getContainerMagazines;
+		_uniformMags;
+	},{
+		{
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
+		//[0, {diag_log format['uni mags: %1', magazinesAmmoFull _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 		[(_this select 0),"uniform"] call fillContainer;
 	}],
 	["vest", {vest (_this select 0);}, {
-		removeVest (_this select 0); 
-		(_this select 0) addVest (_this select 1);
+				removeVest (_this select 0);
+				//[0, {diag_log format['remove vest: %1', vest _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+
+				(_this select 0) addVest (_this select 1);
+				// Check to see vest state on client and server
+				//[0, {diag_log format['add vest: %1', vest _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+
+				{
+					(_this select 0) removeItemFromVest _x;
+					["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) removeItemFromVest (_this select 1);}]] call ALIVE_fnc_BUS; // removeItemFromVest is not global
+				} foreach vestItems (_this select 0);
 	}],
 	["vestItems", {
 		private ["_vestItems"];
-		_vestItems = [(_this select 0), "vest"] call getContainerMagazines;
+		_vestItems = [];
 		{
-			TRACE_1("Vest Item", _x);
 			if ( getnumber (configFile>>"CfgMagazines">>_x>>"count") == 1 || !isClass (configFile>>"CfgMagazines">>_x) ) then {
+				TRACE_1("Vest Item", _x);
 				_vestItems set [count _vestItems, _x];
 			};
 		} foreach vestItems (_this select 0);
 		_vestItems;
 	}, {
 		{
+			(_this select 0) addItemToVest _x;
+			["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) addItemToVest (_this select 1);}]] call ALIVE_fnc_BUS; // addItemToVest is not global
+		} foreach (_this select 1);
+		//[0, {diag_log format['vestItems: %1', vestItems _this];},  (_this select 0)] call CBA_fnc_globalExecute;
+	}],
+	["vestMagazines", {
+		private ["_vestMags"];
+		_vestMags = [];
+		_vestMags = [(_this select 0), "vest"] call getContainerMagazines;
+		_vestMags;
+	},{
+		{
 			[(_this select 0), _x] call addItemToUniformOrVest;
 		} foreach (_this select 1);
+		//[0, {diag_log format['vest mags: %1', magazinesAmmoFull _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 		[(_this select 0),"vest"] call fillContainer;
+		_vestMags;
 	}],
 	["backpack", {backpack (_this select 0);}, {
 		removeBackpack (_this select 0);
@@ -335,52 +410,74 @@ GVAR(LOADOUT_DATA) = [
 			(_this select 0) addBackpack (_this select 1);
 		};
 	}],
-	["backpackitems", {	
-		private ["_cargo","_backpacks","_target"];
+	["backpackCargo", {
+		private ["_cargo","_backpacks"];
 		_cargo = getbackpackcargo (unitbackpack (_this select 0));
+		TRACE_1("",_cargo);
 		_backpacks = [];
 		{
 			for "_i" from 1 to ((_cargo select 1) select _foreachindex) do {
 				_backpacks set [count _backpacks, _x];
 			};
-		} foreach (_cargo select 0);	
-		(backpackitems (_this select 0)) + _backpacks;
-	}, {
+		} foreach (_cargo select 0);
+		_backpacks;
+	},{
 		clearAllItemsFromBackpack (_this select 0);
 		private ["_target"];
 		_target = _this select 0;
 		{
 			private "_item";
 			_item = _x;
+			if(_item != "") then {
+				if(getNumber(configFile>>"CfgVehicles">>_item>>"isbackpack")==1) then {
+					TRACE_2("adding item to backpack", _target, _item);
+					(unitBackpack _target) addBackpackCargoGlobal [_item,1];  
+				};
+			};
+		} foreach (_this select 1);
+	}],
+	["backpackMagazines", {
+		private ["_bpMags"];
+		_bpMags = [];
+		_bpMags = [(_this select 0), "Backpack"] call getContainerMagazines;
+		_bpMags;
+	},{
+		{
+			[(_this select 0), _x] call addItemToUniformOrVest;
+		} foreach (_this select 1);
+	}],
+	["backpackitems", {	
+		private ["_bp"];
+		_bp = [];
+		{
+			if ( getnumber (configFile>>"CfgMagazines">>_x>>"count") == 1 || !isClass (configFile>>"CfgMagazines">>_x) ) then {
+					_bp set [count _bp, _x];
+			};
+		} foreach backpackitems (_this select 0);	
+		_bp;
+	}, {
+		private ["_target"];
+		_target = _this select 0;
+		{
+			private "_item";
+			_item = _x;
 			TRACE_2("adding item to backpack", _target, _item);
-			if(typename _item == "ARRAY") then {
-				if(_item select 0 != "") then {
-						_target addMagazineGlobal (_item select 0);
-				};
-			} else {
-				if(isClass(configFile>>"CfgMagazines">>_item)) then {
-					(unitBackpack _target) addMagazineCargoGlobal [_item,1];
-				} else {
-					if(_item != "") then {
-						if(getNumber(configFile>>"CfgVehicles">>_item>>"isbackpack")==1) then {
-							(unitBackpack _target) addBackpackCargoGlobal [_item,1];  
-						} else {
-							if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
-								(unitBackpack _target) addWeaponCargoGlobal [_item,1];  
-							} else {
-								_target addItem _item;         
-							};
-						};
+			if(_item != "") then {
+					if(isClass(configFile>>"CfgWeapons">>_item>>"WeaponSlotsInfo") && getNumber(configFile>>"CfgWeapons">>_item>>"showempty")==1) then {
+						(unitBackpack _target) addWeaponCargoGlobal [_item,1];  
+					} else {
+						_target addItem _item;         
 					};
-				};
 			};
 		} foreach (_this select 1);
 		// remove item placeholders from vest and uniform
 		TRACE_2("Removing placeholder items", FILLER_ITEM, PLACEHOLDERCOUNT);
 		for "_i" from 1 to PLACEHOLDERCOUNT do {
 			_target removeItem FILLER_ITEM; 
+			["server",QMOD(sys_player),[[(_this select 0), "ItemWatch"],{(_this select 0) removeItem (_this select 1);}]] call ALIVE_fnc_BUS; // removeItem is not global
 		};
 	}],
+
 	["assigneditems", {	
 		private ["_data", "_headgear", "_goggles", "_target"];
 		_target = (_this select 0);
@@ -396,6 +493,8 @@ GVAR(LOADOUT_DATA) = [
 		_data;
 	}, {
 		removeAllAssignedItems (_this select 0);
+		removeHeadgear (_this select 0);
+		removeGoggles (_this select 0);
 		{
 			// Check to see if item is a binocular type which in fact is treated as a weapon
 			if !(isClass(configFile>>"CfgWeapons">>_x>>"WeaponSlotsInfo")) then {
@@ -408,7 +507,7 @@ GVAR(LOADOUT_DATA) = [
 	}],
 	["weaponstate", { 
 		private ["_currentweapon","_currentmode","_isFlash","_isIR","_weapLow","_data"];
-		if (vehicle (_this select 0) == (_this select 0)) then {
+		if (typeof (vehicle (_this select 0)) == typeof (_this select 0)) then {
 			_currentweapon = currentMuzzle (_this select 0);
 			_currentmode = currentWeaponMode (_this select 0);
 		    _isFlash = (_this select 0) isFlashlightOn _currentweapon;
@@ -422,36 +521,41 @@ GVAR(LOADOUT_DATA) = [
 		};
 		_data;
 	}, {
-		if (vehicle (_this select 0) == (_this select 0)) then {
+		// Set NVG
+
+		TRACE_2("", typeof vehicle (_this select 0), typeof (_this select 0));
+		if (typeof (vehicle (_this select 0)) == typeof (_this select 0)) then {
 			private ["_ammo","_target","_weap"];
 			_target = _this select 0;
 			_weap = ((_this select 1) select 0);
 			// Set weapon
 			_target selectWeapon _weap;
 			// Set firemode
-			_ammo = _target ammo _weap;
-			_target setAmmo [_weap, 0];
-			(_this select 0) forceWeaponFire [_weap, (_this select 1) select 1];
-			_target setAmmo [_weap, _ammo];
-			// Set magazine?
-			// (_this select 0) action ["SwitchMagazine", (_this select 0), (_this select 0), ((_this select 1) select 1)];
-			// Set Gun Light
-			if ((_this select 1) select 2) then {
-				(_this select 0) action ["GunLightOn", (_this select 0)];
-			};
-			// Set IR Laser
-			if ((_this select 1) select 3) then {
-				(_this select 0) action ["IRLaserOn", (_this select 0)];
-			};
-			// Set NVG
-			if ( ((_this select 1) select 4) == 1 ) then {
-				(_this select 0) action ["nvGoggles", (_this select 0)];
-			} else {
-				(_this select 0) action ["nvGogglesOff", (_this select 0)];
-			};
-			// Lower Weapon
-			if ((_this select 1) select 5) then {
-				(_this select 0) action ["WeaponOnBack", (_this select 0)];
+			if (count (_this select 1) > 1) then {
+				_ammo = _target ammo _weap;
+				_target setAmmo [_weap, 0];
+				(_this select 0) forceWeaponFire [_weap, (_this select 1) select 1];
+				_target setAmmo [_weap, _ammo];
+				// Set magazine?
+				// (_this select 0) action ["SwitchMagazine", (_this select 0), (_this select 0), ((_this select 1) select 1)];
+				// Set NVG
+				if ( ((_this select 1) select 4) == 1 ) then {
+					(_this select 0) action ["nvGoggles", (_this select 0)];
+				} else {
+					(_this select 0) action ["nvGogglesOff", (_this select 0)];
+				};
+				// Set Gun Light
+				if ((_this select 1) select 2) then {
+					(_this select 0) action ["GunLightOn", (_this select 0)];
+				};
+				// Set IR Laser
+				if ((_this select 1) select 3) then {
+					(_this select 0) action ["IRLaserOn", (_this select 0)];
+				};
+				// Lower Weapon
+				if ((_this select 1) select 5) then {
+					(_this select 0) action ["WeaponOnBack", (_this select 0)];
+				};
 			};
 		} else { // Player in vehicle
 			(_this select 0) selectWeapon ((_this select 1) select 0);
