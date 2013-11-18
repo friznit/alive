@@ -121,7 +121,7 @@ REV_Waiting_For_Revive = [] spawn {
 		_player setVelocity [0, 0, 0];
 		_player setDir _direction_before_death;
 		// _player setPos [_position_before_death select 0, _position_before_death select 1, _height_ATL_before_death - (_position_before_death select 2)];
-		_player setPos [_position_before_death select 0, _position_before_death select 1, 0];
+		_player setPosATL [_position_before_death select 0, _position_before_death select 1, _height_ATL_before_death];
 		_player setCaptive true;
 
 		// Remove the old body
