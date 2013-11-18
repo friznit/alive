@@ -1,4 +1,4 @@
-
+#include <\x\alive\addons\sys_playertags\script_component.hpp>
 	private ["_display", "_unit", "_tmpText", "_scrPos", "_lineCount","_ctrl","_absolutePos","_distMod","_overlayWidth","_ctrls","_display"];
 	
 #define PLAYERTAGSOVERLAY_IDD 990
@@ -19,7 +19,7 @@
 	};
 
 	while { true } do {
-		[] call playertags_recognise;
+		[] call ALIVE_fnc_playertagsRecognise;
 		_i = 0;
 		while {_i < foundUnitsCount} do {
 			_ctrl = _ctrls select _i;

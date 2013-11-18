@@ -61,7 +61,7 @@ class playertagsRecogText {
 		fadeout = 0.0;
 		duration = 1e6;
 		access = 0;
-		onLoad = "_this call playertags_recogniseOverlayCtrl;";
+		onLoad = "_this call ALIVE_fnc_playertagsRecogniseOverlayCtrl;";
 
 		class objects {};
 		class controlsBackground {};

@@ -1,5 +1,5 @@
 
-if (!enable_playertags) exitWith {foundUnitsCount = 0;};
+if (!enable_playertags || visibleMap) exitWith {foundUnitsCount = 0;};
 
 _gen = player;
 _tolerance = playertags_tolerance;
@@ -45,7 +45,7 @@ while { (_shownObjects < 10) && (_i < _objCount) } do {
 
 				if (_distToCenter <= _tolerance * _objSizeMod * _objDistMod) then {
 					_shownObjects = _shownObjects + 1;
-					[_obj, _objDist, _scrPos, _objDistMod, false] call playertags_generateLabelText;
+					[_obj, _objDist, _scrPos, _objDistMod, false] call ALIVE_fnc_playertagsGenerateLabelText;
 				};
 			};
 		};
@@ -56,6 +56,6 @@ if (_playerVehicle != _gen) then {
 	if (foundUnitsCount > 9) then {
 		foundUnitsCount = 9;
 	};
-	[_playerVehicle, 0, [0.0, 0.05], 2, true] call playertags_generateLabelText;
+	[_playerVehicle, 0, [0.0, 0.05], 2, true] call ALIVE_fnc_playertagsGenerateLabelText;
 };
 

@@ -93,7 +93,6 @@ switch(_operation) do {
                
 
                 if(!isDedicated && !isHC) then {
-                	
                    PLAYERTAGS_DEBUG = call compile (_logic getvariable ["playertags_debug_setting","false"]);
                    PLAYERTAGS_GROUP = call compile (_logic getvariable ["playertags_displaygroup_setting","true"]);
                    PLAYERTAGS_RANK = call compile (_logic getvariable ["playertags_displayrank_setting","true"]);
@@ -110,6 +109,7 @@ switch(_operation) do {
                 		if(PLAYERTAGS_DEBUG) then {
                 			["ALIVE Player Tags - Menu Starting..."] call ALIVE_fnc_dump;
                 		};
+                		
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 

@@ -55,7 +55,8 @@ if (typeName _params == typeName []) then {
 if(PLAYERTAGS_DEBUG) then {
 	["ALIVE Player Tags - _menuName: %1",_menuName] call ALIVE_fnc_dump;
 };
-				
+	
+
 _menus =
 [
 	[
@@ -79,7 +80,7 @@ if (_menuName == "playertags") then {
 			["playertags", localize "STR_ALIVE_PLAYERTAGS", "popup"],
 			[
 				[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_ENABLE",
-					{ MOD(playertags) setVariable ["display_enabled", true]; enable_playertags = true;},
+					{ MOD(playertags) setVariable ["display_enabled", true]; enable_playertags = true; },
 					"",
 					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
 					"",
@@ -88,9 +89,8 @@ if (_menuName == "playertags") then {
 					!(MOD(playertags) getVariable ["display_enabled", false])
 				],
 				
-			
 					[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_DISABLE",
-					 { MOD(playertags) setVariable ["display_enabled", false]; enable_playertags = false;},
+					 { 	MOD(playertags) setVariable ["display_enabled", false]; enable_playertags = false; },
 					"",
 					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
 					"",
