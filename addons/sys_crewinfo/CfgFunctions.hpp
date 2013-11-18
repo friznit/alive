@@ -4,17 +4,17 @@
                         class crewinfo {
                                 description = "The main class";
                                 file = "\x\alive\addons\sys_crewinfo\fnc_crewinfo.sqf";
-																recompile = 1;
+																recompile = RECOMPILE;
                         };
                         class crewinfoInit {
                                 description = "The module initialisation function";
                                 file = "\x\alive\addons\sys_crewinfo\fnc_crewinfoInit.sqf";
-																recompile = 1;
+																recompile = RECOMPILE;
                         };  
  											 class crewinfoClient {
                                description = "The module script";
                                 file = "\x\alive\addons\sys_crewinfo\fnc_crewinfoClient.sqf";
-																recompile = 1;
+																recompile = RECOMPILE;
                         };  
                 };
         };

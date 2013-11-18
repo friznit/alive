@@ -1,5 +1,4 @@
-﻿
-class HudNamesLeft {
+﻿class HudNamesLeft {
 	idd = -1;
     fadeout=0;
     fadein=0;
@@ -13,14 +12,15 @@ class HudNamesLeft {
 			idc = 99999;
 			type = CT_STRUCTURED_TEXT;
 			size = 0.040;
-			x = (SafeZoneX + 0.015);
-			y = (SafeZoneY + 0.60);
-			w = 0.4; h = 0.65;
+			x = safezoneX + 0.1;
+			y = safezoneY + safezoneh/4;
+			w = 0.2; 
+			h = 0.3;
 			colorText[] = {1,1,1,1};
 			lineSpacing = 3;
 			colorBackground[] = {0,0,0,0};
 			text = "";
-			font = "PuristaLight";
+			font = "PuristaSemibold";
 			shadow = 2;
 			class Attributes {
 				align = "left";

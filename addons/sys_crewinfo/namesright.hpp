@@ -12,14 +12,15 @@
 			idc = 99999;
 			type = CT_STRUCTURED_TEXT;
 			size = 0.040;
-			x = (SafeZoneX + 2.2);
-			y = (SafeZoneY + 0.60);
-			w = 0.3; h = 0.5;
+			x = safezoneX + safezoneW - 0.3;
+			y = safezoneY + safezoneh/4;
+			w = 0.2; 
+			h = 0.3;
 			colorText[] = {1,1,1,1};
 			lineSpacing = 3;
 			colorBackground[] = {0,0,0,0};
 			text = "";
-			font = "PuristaMedium";
+			font = "PuristaSemibold";
 			shadow = 2;
 			class Attributes {
 				align = "left";
