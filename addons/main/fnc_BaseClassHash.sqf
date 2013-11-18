@@ -39,12 +39,12 @@ nil
 private ["_logic","_operation","_args","_result"];
 
 if(
-        isNil "_this" ||
-        {typeName _this != "ARRAY"} ||
-        {count _this == 0} ||
-        {typeName (_this select 0) != "ARRAY"} // changed to array
+	isNil "_this" ||
+	{typeName _this != "ARRAY"} ||
+	{count _this == 0} ||
+	{typeName (_this select 0) != "ARRAY"} // changed to array
 ) then {
-        _this = [[], "create"]; // changed to array
+	_this = [[], "create"]; // changed to array
 };
 
 TRACE_1("baseClassHash - input",_this);
@@ -55,25 +55,24 @@ _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
 
 switch(_operation) do {
-        default {
-                private["_err"];
-                _err = format["%1 does not support ""%2"" operation", _logic, _operation];
-                //ERROR_WITH_TITLE(str _logic,_err);
-                diag_log _err;
-        };
-        case "create": {
-                // Create a module object for settings and persistence
-                _logic = [] call CBA_fnc_hashCreate;
+	default {
+		private["_err"];
+		_err = format["%1 does not support ""%2"" operation", _logic, _operation];
+		_err call ALiVE_fnc_logger;
+	};
+	case "create": {
+		// Create a module object for settings and persistence
+		_logic = [] call CBA_fnc_hashCreate;
 		[_logic, "class", ALIVE_fnc_baseClassHash] call ALIVE_fnc_hashSet;
-                _result = _logic;
-        };
-        case "destroy": {
+		_result = _logic;
+	};
+	case "destroy": {
 		{
 			[_logic, _x] call ALIVE_fnc_hashRem;
 		} forEach +(_logic select 1);
-
+		
 		_logic = nil;
-        };
+	};
 };
 TRACE_1("baseClassHash - output",_result);
 _result;

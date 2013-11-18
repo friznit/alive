@@ -25,7 +25,7 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_fac","_allvehs","_vehx","_fx","_cx","_cargoslots","_type","_nonconfigs","_nonsims"];
+private ["_fac","_allvehs","_vehx","_fx","_cx","_cargoslots","_type","_nonconfigs","_nonsims","_err"];
 
 PARAMS_1(_cargoslots);
 _err = "cargo slots not valid";

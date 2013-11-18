@@ -24,7 +24,8 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_hash","_key","_result"];
+
+private ["_hash","_key","_defaultValue"];
 
 _hash = _this select 0;
 _key = _this select 1;

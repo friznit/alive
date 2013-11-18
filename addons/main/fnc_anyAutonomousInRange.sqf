@@ -2,7 +2,7 @@
 SCRIPT(anyAutonomousInRange);
 
 /* ----------------------------------------------------------------------------
-Function: fnc_anyAutonomousInRange
+Function: ALiVE_fnc_anyAutonomousInRange
 
 Description:
 Return the number of UAV/UGV units within range of a position
@@ -21,9 +21,10 @@ Examples:
 (end)
 
 Author:
-Wolffy.au
-Modified:
 Raptor
+
+Peer Reviewed:
+Wolffy 20131117
 ---------------------------------------------------------------------------- */
 
 private ["_pos","_dist"];

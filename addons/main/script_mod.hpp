@@ -14,11 +14,11 @@
 #define REQUIRED_VERSION 1.0
 
 /*
-// Defined DEBUG_MODE_NORMAL in a few CBA_fncs to prevent looped logging :)
-#ifndef DEBUG_MODE_NORMAL
-	#define DEBUG_MODE_FULL
-#endif
-*/
+ // Defined DEBUG_MODE_NORMAL in a few CBA_fncs to prevent looped logging :)
+ #ifndef DEBUG_MODE_NORMAL
+ #define DEBUG_MODE_FULL
+ #endif
+ */
 
 // Set a default debug mode for the component here (See documentation on how to default to each of the modes).
 //	#define DEBUG_ENABLED_MAIN
@@ -35,7 +35,6 @@
 //	#define DEBUG_ENABLED_SYS_SIMULATION
 //	#define DEBUG_ENABLED_SYS_PLAYER
 //	#define DEBUG_ENABLED_SYS_PERF
-
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
 #define RECOMPILE 1

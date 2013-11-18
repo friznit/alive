@@ -22,6 +22,9 @@ Examples:
 
 Author:
 Wolffy.au
+ 
+Peer reviewed:
+nil
 ---------------------------------------------------------------------------- */
 
 private ["_pos","_dist"];
