@@ -35,13 +35,22 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+    if (!Sentry::check()) return Redirect::to('user/login');
 });
 
-
-Route::filter('auth.basic', function()
+Route::filter('admin_auth', function()
 {
-	return Auth::basic();
+    if (!Sentry::check())
+    {
+        // if not logged in, redirect to login
+        return Redirect::to('user/login');
+    }
+
+    if (!Sentry::getUser()->hasAccess('admin'))
+    {
+        // has no access
+        return Response::make('Access Forbidden', '403');
+    }
 });
 
 /*

@@ -14,8 +14,8 @@
 			size = 0.040;
 			x = safezoneX + 0.1;
 			y = safezoneY + safezoneh/4;
-			w = 0.2; 
-			h = 0.3;
+			w = 0.3; 
+			h = 0.5;
 			colorText[] = {1,1,1,1};
 			lineSpacing = 3;
 			colorBackground[] = {0,0,0,0};

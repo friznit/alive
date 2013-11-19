@@ -298,6 +298,9 @@ switch(_operation) do {
                 };
                 case "HQ": {
                     if !(isnil "ALIVE_clustersCivHQ") then {
+                        if(_sizeFilter == 160) then {
+                            _sizeFilter = 0;
+                        };
                         _clusters = ALIVE_clustersCivHQ select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                         _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -310,6 +313,9 @@ switch(_operation) do {
                 };
                 case "Power": {
                     if !(isnil "ALIVE_clustersCivPower") then {
+                        if(_sizeFilter == 160) then {
+                            _sizeFilter = 0;
+                        };
                         _clusters = ALIVE_clustersCivPower select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                         _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -322,6 +328,9 @@ switch(_operation) do {
                 };
                 case "Comms": {
                     if !(isnil "ALIVE_clustersCivComms") then {
+                        if(_sizeFilter == 160) then {
+                            _sizeFilter = 0;
+                        };
                         _clusters = ALIVE_clustersCivComms select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                         _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -333,6 +342,10 @@ switch(_operation) do {
                     };
                 };
                 case "Marine": {
+                    ["SF: %1, %2", _sizeFilter, typeName _sizeFilter] call ALIVE_fnc_dump;
+                    if(_sizeFilter == 160) then {
+                        _sizeFilter = 0;
+                    };
                     if !(isnil "ALIVE_clustersCivMarine") then {
                         _clusters = ALIVE_clustersCivMarine select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
@@ -345,6 +358,9 @@ switch(_operation) do {
                     };
                 };
                 case "Rail": {
+                    if(_sizeFilter == 160) then {
+                        _sizeFilter = 0;
+                    };
                     if !(isnil "ALIVE_clustersCivRail") then {
                         _clusters = ALIVE_clustersCivRail select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
@@ -357,6 +373,9 @@ switch(_operation) do {
                     };
                 };
                 case "Fuel": {
+                    if(_sizeFilter == 160) then {
+                        _sizeFilter = 0;
+                    };
                     if !(isnil "ALIVE_clustersCivFuel") then {
                         _clusters = ALIVE_clustersCivFuel select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
@@ -369,6 +388,9 @@ switch(_operation) do {
                     };
                 };
                 case "Construction": {
+                    if(_sizeFilter == 160) then {
+                        _sizeFilter = 0;
+                    };
                     if !(isnil "ALIVE_clustersCivConstruction") then {
                         _clusters = ALIVE_clustersCivConstruction select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
