@@ -342,7 +342,6 @@ switch(_operation) do {
         };
         
         case "addTask": {
-            
             _operation = _args select 0;
             _pos = _args select 1;
             _section = _args select 2;
@@ -378,7 +377,7 @@ switch(_operation) do {
                 if(isnil "_args") then {
 						_args = [_logic,"playertasks",[]] call ALIVE_fnc_hashGet;
                 } else {
-                    private ["_pos","_type","_condition","_objective","_ostate","_objectives","_cid","_id","_object","_message","_desc","_state","_oType","_buildingTypes","_clusterHandler"];
+                    private ["_pos","_type","_conditionwin","_conditionFail","_objective","_ostate","_objectives","_cid","_id","_object","_messageWin","_messageFail","_message","_desc","_state","_oType","_buildingTypes","_clusterHandler"];
                     
                     _objective = _args select 0;
                     _type = _args select 1;
@@ -396,17 +395,14 @@ switch(_operation) do {
                     
                     switch (_type) do {
                         case ("objective_sabotage") : {
-
-							_cid = [_objective,"clusterID"] call ALiVE_fnc_HashGet;
                             _otype = [_objective,"type"] call ALiVE_fnc_HashGet;
 
                             switch (_oType) do {
-                                case ("MIL") : {_clusterHandler = ALIVE_clustersMil; _buildingTypes = ALIVE_militaryHQBuildingTypes};
-                                case ("CIV") : {_clusterHandler = ALIVE_clustersCiv; _buildingTypes = ALIVE_civilianCommsBuildingTypes};
+                                case ("MIL") : {_buildingTypes = ALIVE_militaryHQBuildingTypes};
+                                case ("CIV") : {_buildingTypes = ALIVE_civilianCommsBuildingTypes + ALIVE_civilianPowerBuildingTypes + ALIVE_civilianFuelBuildingTypes};
                             };
                             
-							_cluster = [_clusterHandler,_cid] call ALIVE_fnc_hashGet;
-							_nodes = [_cluster, "nodes"] call ALIVE_fnc_hashGet;
+							_nodes = [_objective, "nodes"] call ALIVE_fnc_hashGet;
 							_buildings = [_nodes, _buildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 							
                             //Remove destroyed buildings
@@ -417,38 +413,55 @@ switch(_operation) do {
 							
                             _object = _buildings select 0;
                             _pos = getposATL _object;
+                            _objectType = getText(configFile >> "CfgVehicles" >> (typeOf _object) >> "displayName");
                             
                             _id = str(floor(_pos select 0)) + str(floor(_pos select 1));
-                            _condition = [[_object],{(damage (_this select 0)) > 0.98}]; //true if building is disabled
-                            _objectType = getText(configFile >> "CfgVehicles" >> (typeOf _object) >> "displayName");
-
+                            _desc = format["Disable the %1 at %2!",_objectType, _pos];
+                            _conditionwin = [[_object],{(damage (_this select 0)) > 0.98}]; //true if building is disabled
+                            _conditionFail = [[],{false}]; //false if unneeded and only timeout shall happen
                             _message = format["Destroy %1!",_objectType];
-                            _desc = format["Disable the %1 at %2!",_objectType, _pos];;
+                            _messageWin = format["Mission accomplished!",_objectType];
+                            _messageFail = format["Sabotage failed!",_objectType];
                         };
                         
                         case ("objective_hold") : {
-
 							_cid = [_objective,"clusterID"] call ALiVE_fnc_HashGet;
                             _ostate = [_objective,"opcom_state"] call ALiVE_fnc_HashGet;
                             _pos = [_objective,"center"] call ALiVE_fnc_HashGet;
                             _timeout = 1800;
                             
                             _id = str(floor(_pos select 0)) + str(floor(_pos select 1));
-                            _condition = [[_objective,_ostate],{
+                            _desc = format["Hold objective %1 at %2 for 30 minutes!",_cid, _pos];
+                            _conditionWin = [[_objective,_ostate],{
                                 _objective = _this select 0;
                                 _ostateOld = _this select 1;
                                 _ostateNew = [_objective,"opcom_state"] call ALiVE_fnc_HashGet;
 
 								!(_ostateOld == _ostateNew) && {(_ostateNew == "idle")}; //true if objective status changed to idle (secured)
                             }];
-                            
+                            _conditionFail = [[],{false}]; //false if unneeded and only timeout shall happen
                             _message = format["Hold %1!",_cid];
-                            _desc = format["Hold objective %1 at %2 for 30 minutes!",_cid, _pos];
+                            _messageWin = format["Objective held!",_cid];
+                            _messageFail = format["Objective lost!",_cid];
                         };
                     };
 
                     if (isnil "_id") exitwith {_args = false};
-
+                    
+                    /*//INTREP tbd
+                    _center = [_objective,"center"] call ALIVE_fnc_hashGet;
+         			_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+         			_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;  
+         			_sectorData call ALIVE_fnc_inspectHash;
+                    
+                    _enemies = [];
+                    {
+                        _enemies = _enemies + ([_pos, 1000, [_x,"entity"]] call ALIVE_fnc_getNearProfiles);
+                    } foreach ([_logic,"sidesenemy",[]] call ALiVE_fnc_HashGet);
+                    
+                    ["Enemy Count: %1",count _enemies] call ALiVE_fnc_DumpR;
+                    */
+                    
                     _taskParams = [
                     	_id,
                         call compile _side,
@@ -464,13 +477,22 @@ switch(_operation) do {
                         true
                     ];
                     
-                    _handle = [_logic,_taskParams,_condition,_timeout] spawn {
+                    _handle = [_logic,_taskParams,_conditionWin,_messageWin,_conditionFail,_messageFail,_timeout] spawn {
                         
                         _logic = _this select 0;
                         _taskParams = _this select 1;
-                        _conditionparams = _this select 2 select 0;
-                        _condition = _this select 2 select 1;
-                        _timeout = _this select 3;
+                        
+                        _conditionWin = _this select 2;
+                        _conditionWinParams = _conditionWin select 0;
+                        _conditionWinCode = _conditionWin select 1;
+                        _messageWin = _this select 3;
+                        
+                        _conditionFail = _this select 4;
+                        _conditionFailParams = _conditionFail select 0;
+                        _conditionFailCode = _conditionFail select 1;
+                        _messageFail = _this select 5;
+                       
+                        _timeout = _this select 6;
                         
                         _tasks = [_logic,"playertasks",[]] call ALiVE_fnc_HashGet;
                         _time = time;
@@ -480,17 +502,22 @@ switch(_operation) do {
                         
                         waituntil {
 							sleep 5;
-							((_conditionparams call _condition) || {time - _time > _timeout});
+							((_conditionWinParams call _conditionWinCode) || {_conditionFailParams call _conditionFailCode} ||  {time - _time > _timeout});
 						};
                         
-                        if (_conditionparams call _condition) then {
+                        if (_conditionWinParams call _conditionWinCode) then {
                             _taskParams set [4,"SUCCEEDED"];
-							_taskParams set [2,[_taskParams select 2 select 0, "Mission accomplished!", _taskParams select 2 select 2]];
+							_taskParams set [2,[_taskParams select 2 select 0, _messageWin, _taskParams select 2 select 2]];
                             
 						} else {
-							_taskParams set [4,"FAILED"];
-                            _taskParams set [2,[_taskParams select 2 select 0, "You failed!", _taskParams select 2 select 2]];
-						};
+                            if (_conditionFailParams call _conditionFailCode) then {
+								_taskParams set [4,"FAILED"];
+	                            _taskParams set [2,[_taskParams select 2 select 0, _messageFail, _taskParams select 2 select 2]];
+							} else {
+                                _taskParams set [4,"CANCELED"];
+                                _taskParams set [2,[_taskParams select 2 select 0, "Task canceled!", _taskParams select 2 select 2]];
+                            };
+                        };
                         
                         _id = _taskParams call BIS_fnc_setTask;
                         [_logic,"playertasks",_tasks - [_id]] call ALiVE_fnc_HashSet;
@@ -510,24 +537,25 @@ switch(_operation) do {
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
                         _objectives = _args select 0;
                         _typeOp = _args select 1;
-
+                        
                         _startpos = [_logic,"position"] call ALiVE_fnc_HashGet;
                         _side = [_logic,"side"] call ALiVE_fnc_HashGet;
                         _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
                         _debug = [_logic,"debug",false] call ALiVE_fnc_HashGet;
 
 						_objectives_unsorted = [];
-						_targets = [];
 						{
+                            private ["_target","_pos","_size","_type","_priority","_clusterID","_height"];
 									_target = _x;
 									_pos = [_target,"center"] call ALiVE_fnc_hashGet;
 									_size = [_target,"size"] call ALiVE_fnc_hashGet;
 									_type = [_target,"type"] call ALiVE_fnc_hashGet;
 									_priority = [_target,"priority"] call ALiVE_fnc_hashGet;
                                     _clusterID = [_target,"clusterID"] call ALiVE_fnc_hashGet;
+                                    _nodes = [_target,"nodes"] call ALiVE_fnc_HashGet;
                                     _height = (ATLtoASL [_pos select 0, _pos select 1,0]) select 2;
-
-									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height,_clusterID]];
+                                    
+									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height,_clusterID,_nodes]];
 						} foreach _objectives;
                         
                         switch (_typeOp) do {
@@ -544,6 +572,7 @@ switch(_operation) do {
 						//GetObjectivesByPriority
                         _OID = (count (missionNameSpace getvariable ["OPCOM_instances",[]]))-1;
 						{
+                            private ["_target","_id","_pos","_size","_type","_priority","_clusterID","_opcom_state"];
 									_target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
 						
 									_id = format["OPCOM_%1_objective_%2",_OID,_foreachIndex]; [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
@@ -553,7 +582,7 @@ switch(_operation) do {
 									_priority = _x select 3; [_target, "priority",_priority] call ALIVE_fnc_HashSet;
 									_opcom_state = "unassigned"; [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
 									_clusterID = _x select 5; [_target, "clusterID",_clusterID] call ALIVE_fnc_HashSet;
-									
+                                    _nodes = _x select 6; [_target, "nodes",_nodes] call ALIVE_fnc_HashSet;
                                     
 									if  (_debug) then {
 										_m = createMarkerLocal [_id, _pos];
