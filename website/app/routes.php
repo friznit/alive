@@ -1,26 +1,31 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
+Event::listen('illuminate.query', function($query) {
+    var_dump($query);
+});
 */
 
-Route::controller('/auth', 'AuthController');
+Route::controller('user', 'UserController');
 
-Route::get('style', function()
+Route::get('admin', array('before' => 'auth', function()
 {
-    return View::make('style/index');
+    return View::make('admin/home/index');
+}));
+
+Route::controller('admin/user', 'AdminUserController');
+
+Route::resource('admin/group', 'AdminGroupController');
+
+Route::get('war-room', array('before' => 'auth', function()
+{
+    return View::make('warroom/home/index');
+}));
+
+Route::get('style', function() {
+    return View::make('public/style/index');
 });
 
-Route::get('/', function()
-{
-    return View::make('home/index');
+Route::get('/', function() {
+    return View::make('public/home/index');
 });
-
-//Route::controller('/', 'HomeController');

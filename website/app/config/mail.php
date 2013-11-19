@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	'host' => 'mail.iinet.net.au',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+    'from' => array('address' => 'andyj@netspace.net.au', 'name' => 'Andy Johnston'),
 
 	/*
 	|--------------------------------------------------------------------------

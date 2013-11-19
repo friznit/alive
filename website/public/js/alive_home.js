@@ -24,10 +24,5 @@ $(function(){
         });
 
     });
-
-    $("#login").on('click', function(e) {
-        alert('FOO');
-    });
-
 });
 
