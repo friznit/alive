@@ -373,6 +373,7 @@ switch(_operation) do {
             };
         };
         
+        //This will be merged out to the tasks module in RC2
         case "addplayertask": {
                 if(isnil "_args") then {
 						_args = [_logic,"playertasks",[]] call ALIVE_fnc_hashGet;
@@ -395,13 +396,14 @@ switch(_operation) do {
                     
                     switch (_type) do {
                         case ("objective_sabotage") : {
+                            //Select building types by objective type (CIV/MIL)
                             _otype = [_objective,"type"] call ALiVE_fnc_HashGet;
-
                             switch (_oType) do {
                                 case ("MIL") : {_buildingTypes = ALIVE_militaryHQBuildingTypes};
                                 case ("CIV") : {_buildingTypes = ALIVE_civilianCommsBuildingTypes + ALIVE_civilianPowerBuildingTypes + ALIVE_civilianFuelBuildingTypes};
                             };
                             
+                            //Get building-objects from nodes
 							_nodes = [_objective, "nodes"] call ALIVE_fnc_hashGet;
 							_buildings = [_nodes, _buildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 							
@@ -411,10 +413,12 @@ switch(_operation) do {
 							//Exit if no buildings of type were found
                             if (count _buildings == 0) exitwith {};
 							
+                            //Get the needed nearest building variables
                             _object = _buildings select 0;
                             _pos = getposATL _object;
                             _objectType = getText(configFile >> "CfgVehicles" >> (typeOf _object) >> "displayName");
                             
+                            //Prepare Task Data
                             _id = str(floor(_pos select 0)) + str(floor(_pos select 1));
                             _desc = format["Disable the %1 at %2!",_objectType, _pos];
                             _conditionwin = [[_object],{(damage (_this select 0)) > 0.98}]; //true if building is disabled
@@ -425,11 +429,15 @@ switch(_operation) do {
                         };
                         
                         case ("objective_hold") : {
+                            //Get objective data
 							_cid = [_objective,"clusterID"] call ALiVE_fnc_HashGet;
                             _ostate = [_objective,"opcom_state"] call ALiVE_fnc_HashGet;
                             _pos = [_objective,"center"] call ALiVE_fnc_HashGet;
+                            
+                            //Overwrite timeout to happen after half an hour
                             _timeout = 1800;
                             
+                            //Prepare Task data
                             _id = str(floor(_pos select 0)) + str(floor(_pos select 1));
                             _desc = format["Hold objective %1 at %2 for 30 minutes!",_cid, _pos];
                             _conditionWin = [[_objective,_ostate],{
@@ -445,22 +453,62 @@ switch(_operation) do {
                             _messageFail = format["Objective lost!",_cid];
                         };
                     };
-
+                    
+					//Exit if no Task data has been prepared
                     if (isnil "_id") exitwith {_args = false};
                     
-                    /*//INTREP tbd
+                    ///*//INTREP WIP
                     _center = [_objective,"center"] call ALIVE_fnc_hashGet;
          			_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-         			_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;  
-         			_sectorData call ALIVE_fnc_inspectHash;
+         			_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+                    _sectorTerrainSamples = [_sectordata,"terrainSamples",[]] call ALiVE_fnc_HashGet;
+         			_milClusters = [_sectordata,"clustersMil",[]] call ALiVE_fnc_HashGet;
+                    _civClusters = [_sectordata,"clustersCiv",[]] call ALiVE_fnc_HashGet;
                     
+                    _highest = ([_sectordata,"elevationSamplesLand",[]] call ALiVE_fnc_HashGet) select ((count ([_sectordata,"elevationSamplesLand"] call ALiVE_fnc_HashGet))-1);
+                    _lowest = ([_sectordata,"elevationSamplesLand",[]] call ALiVE_fnc_HashGet) select 0;
+                    _shore = [_sectorTerrainSamples,"shore",[]] call ALiVE_fnc_HashGet;
+                    
+                    _consolidated = [_civClusters,"consolidated",[]] call ALivE_fnc_HashGet;
+					_power =  [_civClusters,"power",[]] call ALivE_fnc_HashGet;
+					_comms =  [_civClusters,"comms",[]] call ALivE_fnc_HashGet;
+					_marine = [_civClusters,"marine",[]] call ALivE_fnc_HashGet;
+					_fuel = [_civClusters,"fuel",[]] call ALivE_fnc_HashGet;
+					_rail = [_civClusters,"rail",[]] call ALivE_fnc_HashGet;
+					_construction = [_civClusters,"construction",[]] call ALivE_fnc_HashGet;
+					_settlement = [_civClusters,"settlement",[]] call ALivE_fnc_HashGet;
+                    
+                    _messageIntel = (format["The highest point in this sector is the hill at %1!",_highest]);
+                    
+                    if (count (_power + _comms + _marine + _fuel + _rail + _settlement) > 0) then {
+                        if (count _power > 0) then {
+                        	_messageIntel = _messageIntel + " " + (format["Power infrastructure is found near %1!",_power select 0 select 0]);
+                        };
+                        if (count _comms > 0) then {
+                        	_messageIntel = _messageIntel + " " + (format["There are communication towers at %1!",_comms select 0 select 0]);
+                        };
+                    	if (count _fuel > 0) then {
+                        	_messageIntel = _messageIntel + " " + (format["Fuel supplies are located at %1!",_fuel select 0 select 0]);
+                        };
+                        if (count _settlement > 0) then {
+                        	_messageIntel = _messageIntel + " " + (format["A nearby civilian settlement is around %1!",_settlement select 0 select 0]);
+                        };
+                    };
+                   
                     _enemies = [];
                     {
                         _enemies = _enemies + ([_pos, 1000, [_x,"entity"]] call ALIVE_fnc_getNearProfiles);
                     } foreach ([_logic,"sidesenemy",[]] call ALiVE_fnc_HashGet);
                     
-                    ["Enemy Count: %1",count _enemies] call ALiVE_fnc_DumpR;
-                    */
+                    _strength = "minimal";
+                    if (count _enemies > 10) then {_strength = "light"};
+                    if (count _enemies > 30) then {_strength = ""};
+                    if (count _enemies > 50) then {_strength = "heavy"};
+                    
+                    _messageIntel = (format["You have to expect %1 enemy resistance!",_strength]) + " " + _messageIntel;
+                    _desc = _desc + " " + _messageIntel;
+                    //*/
+                    
                     
                     _taskParams = [
                     	_id,
