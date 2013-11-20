@@ -178,9 +178,8 @@ switch(_operation) do {
 			private ["_object", "_queue", "_timeToDie"];
 			_object = _args;
             _debug = _logic getvariable ["debug",false];
-			
 			_queue = _logic getVariable ["queue",[]];
-			
+            
 			switch (typeName _object) do
 			{
 				case (typeName objNull):
@@ -205,7 +204,6 @@ switch(_operation) do {
 					_timeToDie = time;
 				};
 			};
-            
            
             // DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
@@ -217,15 +215,18 @@ switch(_operation) do {
 			_logic setVariable ["queue", _queue];
         };
         
-        case "process": { 
+        case "process": {
+            if (isnil "_args") then {_args = false};
+            
+            _instant = _args;
 			_queue = _logic getVariable ["queue",[]];
             _debug = _logic getvariable ["debug",false];
-            _time = time;
+            _timeCheck = time;
             
             // DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-					["ALIVE Garbage Collector deletion started at %1 for %2 objects...",_time,(count _queue)] call ALIVE_fnc_dumpR;
+					["ALIVE Garbage Collector deletion started at %1 for %2 objects...",_timeCheck,(count _queue)] call ALIVE_fnc_dumpR;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
 			
@@ -238,7 +239,8 @@ switch(_operation) do {
 					_time = _entry select 1;
 			
 					//Check the object was in the queue for at least the assigned time (expiry date).
-					if (_time <= time) then
+                    //If instant parameter is set to true, then it will be directly deleted
+					if ((_time <= time) || {_instant}) then
 					{
 						private ["_object"];
 						_object = _entry select 0;
@@ -273,40 +275,15 @@ switch(_operation) do {
 				_i = _i + 1;
 			} forEach _queue;
             
+            _queue = _queue - [-1];
+            _logic setVariable ["queue", _queue, true];
+            
     		// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
-					["ALIVE Garbage Collector deletion processed at %1! Time taken %2...",_time,(time - _time)] call ALIVE_fnc_dumpR;
+					["ALIVE Garbage Collector deletion processed at %1! Time taken: %2! Objects left in queue: %3",_timeCheck,(time - _timeCheck),(count _queue)] call ALIVE_fnc_dumpR;
                     ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			_queue = _queue - [-1];
-			_logic setVariable ["queue", _queue, true];
-        };
-        
-        case "processInstantly": { 
-			_queue = _logic getVariable ["queue",[]];
-            _debug = _logic getvariable ["debug",false];
-            _time = time;
-            
-            // DEBUG -------------------------------------------------------------------------------------
-				if(_debug) then {
-					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-					["ALIVE Garbage Collector insta-deletion started at %1 for %2 objects...",_time,(count _queue)] call ALIVE_fnc_dumpR;
-				};
-			// DEBUG -------------------------------------------------------------------------------------
-            
-            {deleteVehicle (_x select 0); _queue set [_foreachIndex, -1]} foreach _queue;
-			_queue = _queue - [-1];
-            
-            // DEBUG -------------------------------------------------------------------------------------
-				if(_debug) then {
-					["ALIVE Garbage Collector insta-deletion processed at %1! Time taken %2...",_time,(time - _time)] call ALIVE_fnc_dumpR;
-                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-				};
-			// DEBUG -------------------------------------------------------------------------------------
-            
-			_logic setVariable ["queue", _queue, true];
         };
 
         case "destroy": {                
