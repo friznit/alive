@@ -24,7 +24,7 @@ Military Clusters
 
 Run Cluster Generation:
 
-
+execVM "\x\alive\addons\mil_placement\tests\test_clusterGeneration.sqf"
 
 Once completed paste the results in:
 
