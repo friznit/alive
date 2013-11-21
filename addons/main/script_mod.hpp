@@ -5,6 +5,7 @@
 #define MAJOR 0
 #define MINOR 0
 #define PATCHLVL 0
+// BUILD should be YYMMDDR eg 1311211
 #define BUILD 0
 
 #define VERSION MAJOR.MINOR.PATCHLVL.BUILD
