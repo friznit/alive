@@ -3,9 +3,9 @@
 
 // TODO: Consider Mod-wide or Component-narrow versions (or both, depending on wishes!)
 #define MAJOR 0
-#define MINOR 4
+#define MINOR 0
 #define PATCHLVL 0
-#define BUILD 1311201
+#define BUILD 0
 
 #define VERSION MAJOR.MINOR.PATCHLVL.BUILD
 #define VERSION_AR MAJOR,MINOR,PATCHLVL,BUILD
