@@ -4,7 +4,7 @@ class cfgFunctions {
 			class registry {
 				description = "registry";
 				file = "\x\alive\addons\sys_registry\fnc_registry.sqf";
-				recompile = 1;
+				recompile = RECOMPILE;
 			};
 		};
 	};
