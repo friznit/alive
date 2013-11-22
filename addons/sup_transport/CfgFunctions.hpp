@@ -4,12 +4,12 @@ class cfgFunctions {
                         class TRANSPORT {
                                 description = "The main class";
                                 file = "\x\alive\addons\sup_transport\fnc_TRANSPORT.sqf";
-				recompile = 1;
+				recompile = RECOMPILE;
                         };
                         class TRANSPORTInit {
                                 description = "The module initialisation function";
                                 file = "\x\alive\addons\sup_transport\fnc_TRANSPORTInit.sqf";
-				recompile = 1;
+				recompile = RECOMPILE;
                         };
                    };     
         };

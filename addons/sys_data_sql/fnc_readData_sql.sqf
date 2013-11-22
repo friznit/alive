@@ -14,7 +14,7 @@ String - Returns a response error
 
 Examples:
 (begin example)
-	
+
 (end)
 
 Author:
@@ -42,13 +42,13 @@ TRACE_3("ReadData SQL -", [_params] call CBA_fnc_strLen, _params, typeName _para
 //validate params?
 
 private ["_uid","_cmd","_sql"];
-			
+
 _uid = "";
 
 // Build the SQL command
 _cmd = format ["Arma2NETMySQLCommand ['%1', 'SELECT * FROM %2 WHERE ", _databaseName, _module];
 {
-	_uid = _uid + (_x select 0) + "=" + (_x select 1) + " AND ";
+    _uid = _uid + (_x select 0) + "=" + (_x select 1) + " AND ";
 } foreach _params;
 _sql = _cmd + _uid + "']";
 
@@ -59,8 +59,8 @@ _sql = [_sql, "AND ']", "']"] call CBA_fnc_replace;
 _response = [_sql] call ALIVE_fnc_sendToPlugIn;
 
 if (typeName _response == "ARRAY") then {
-	_result = [_response select 0] call ALIVE_fnc_restoreData_sql;
+    _result = [_response select 0] call ALIVE_fnc_restoreData_sql;
 } else {
-	
+    
 };
 _result;
