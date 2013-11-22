@@ -23,30 +23,46 @@ onTeamSwitch
 */
 
 // Setup player disconnection eventhandler
+
+// Deprecated due to new BIS_fnc_addStackedEventHandler
+
+
 onPlayerDisconnected {
 
 	TRACE_1("OPD DATA",_this);
 
-	// Stats module onPlayerDisconnected call
-	[_id, _name, _uid] call ALIVE_fnc_stats_onPlayerDisconnected;
+	if !(isNil QMOD(sys_statistics)) then {
+		// Stats module onPlayerDisconnected call
+		[_id, _name, _uid] call ALIVE_fnc_stats_onPlayerDisconnected;
+	};
 
-	// sys_player module onPlayerDisconnected call
-	[_id, _name, _uid] call ALIVE_fnc_player_onPlayerDisconnected;
+	if !(isNil QMOD(sys_player)) then {
+		// sys_player module onPlayerDisconnected call
+		[_id, _name, _uid] call ALIVE_fnc_player_onPlayerDisconnected;
+	};
 
-	// Data module onPlayerDisconnected call
-	[_id, _name, _uid] call ALIVE_fnc_data_onPlayerDisconnected;
+	if !(isNil QMOD(sys_perf)) then {
+		[_id, _name, _uid] call ALIVE_fnc_perf_onPlayerDisconnected;
+	};
 
+	if !(isNil QMOD(sys_data)) then {
+		// Data module onPlayerDisconnected call
+		[_id, _name, _uid] call ALIVE_fnc_data_onPlayerDisconnected;
+	};
 };
 
 onPlayerConnected {
 
 	TRACE_1("OPC DATA",_this);
 
-	// Stats module onPlayerConnected call
-	[_id, _name, _uid] call ALIVE_fnc_stats_onPlayerConnected;
+	if !(isNil QMOD(sys_statistics)) then {
+		// Stats module onPlayerConnected call
+		[_id, _name, _uid] call ALIVE_fnc_stats_onPlayerConnected;
+	};
 
-	// sys_player module onPlayerConnected call
-	[_id, _name, _uid] call ALIVE_fnc_player_onPlayerConnected;
-
+	if !(isNil QMOD(sys_player)) then {
+		// sys_player module onPlayerConnected call
+		[_id, _name, _uid] call ALIVE_fnc_player_onPlayerConnected;
+	};
 };
 
