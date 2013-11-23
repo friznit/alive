@@ -22,7 +22,7 @@ class CfgVehicles {
 		picture = "x\alive\addons\sys_aiskill\icon_sys_AISkill.paa";
 
 		// Module description. Must inherit from base class, otherwise pre-defined entities won't be available
-		class ModuleDescription: ModuleDescription
+		class ModuleDescription
 		{
 			// Short description, will be formatted as structured text
 			description = "$STR_ALIVE_AISKILL_COMMENT";	 
