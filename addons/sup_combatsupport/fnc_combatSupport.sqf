@@ -232,7 +232,7 @@ switch(_operation) do {
 			   	 [ 
 					[
 				    	("<t color=""#700000"">" + ("Talk To Pilot") + "</t>"),
-				        {call ALIVE_fnc_radioAction},
+				        {["talk"] call ALIVE_fnc_radioAction},
 				        "talk",
 				        -1,
 				        false,

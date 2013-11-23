@@ -4,7 +4,7 @@ class NEO_resourceRadio
 {
 	idd = 655555;
 	onLoad = "[] spawn NEO_fnc_radioOnLoad; ";
-	onUnload = "_this call ALIVE_fnc_radioOnUnload";
+	onUnload = "_this call NEO_fnc_radioOnUnload";
 	
 	class controls
 	{
