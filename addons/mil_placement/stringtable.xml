@@ -167,4 +167,7 @@
 <Key ID="STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_HIGH">
 	<English>High ambient vehicles</English>
 </Key>
+<Key ID="STR_ALIVE_MP_USAGE">
+	<English>Place the Military Placement module in the editor, select the desired Size, Weighting and Faction from the drop down. Custom factions can be entered in the text box (separated by a comma). These will overwrite the default factions in the drop down.</English>
+</Key>
 </Container></Package></Project>
