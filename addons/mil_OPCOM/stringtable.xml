@@ -6,7 +6,7 @@
 	<English>OPCOM</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_COMMENT">
-	<English>Strategic Enemy Placement</English>
+	<English>Virtual AI High Command</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_DEBUG">
 	<English>Enable Debug:</English>
@@ -43,5 +43,8 @@
 </Key>
 <Key ID="STR_ALIVE_OPCOM_FACTION_COMMENT">
 	<English>OPCOM will control this faction. Multiselection is possible!</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_USAGE">
+	<English>Place an OPCOM module in the editor and select a faction from the dropdown. Custom factions can be entered in the “override default faction” box. Choose the Control Type in the drop down menu. By default, OPCOM will take command of all available virtual units (profiles) for its faction. Therefore, it requires a minimum of one synced Placement Module and the Profiles module.</English>
 </Key>
 </Container></Package></Project>
