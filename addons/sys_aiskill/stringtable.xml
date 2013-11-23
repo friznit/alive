@@ -32,11 +32,11 @@
 <Key ID="STR_ALIVE_AISKILL_VETERAN_COMMENT">
     <English>Faction units will be given veteran skill level, seperate multiple factions with commas (BLU_F,OPF_F,IND_F,BLU_G_F)</English>
 </Key>
-<Key ID="STR_ALIVE_AISKILL_NINJA">
-    <English>Ninja Factions:</English>
+<Key ID="STR_ALIVE_AISKILL_EXPERT">
+    <English>Expert Factions:</English>
 </Key>
-<Key ID="STR_ALIVE_AISKILL_NINJA_COMMENT">
-    <English>Faction units will be given ninja skill level, seperate multiple factions with commas (BLU_F,OPF_F,IND_F,BLU_G_F)</English>
+<Key ID="STR_ALIVE_AISKILL_EXPERT_COMMENT">
+    <English>Faction units will be given expert skill level, seperate multiple factions with commas (BLU_F,OPF_F,IND_F,BLU_G_F)</English>
 </Key>
 <Key ID="STR_ALIVE_AISKILL_CUSTOM">
     <English>Custom Skill:</English>

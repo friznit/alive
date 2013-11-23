@@ -38,6 +38,10 @@ class CfgVehicles {
 		class ArgumentsBaseUnits {
 			class Units;
 		};
+		class ModuleDescription
+		{
+			class AnyBrain;
+		};
 	};
 	class ModuleAliveSystemBase: Module_F {
 		scope = 1;
