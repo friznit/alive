@@ -5,7 +5,7 @@ SCRIPT(test_bus);
 
 // ----------------------------------------------------------------------------
 
-private ["_err","_logic","_amo"];
+private ["_expected","_returned","_result"];
 
 LOG("Testing ALiVE Service Bus");
 
@@ -29,7 +29,8 @@ _result = [typeName _expected, typeName _returned] call BIS_fnc_areEqual;
 ASSERT_TRUE(_result,typeOf _expected + " != " + typeOf _returned);
 
 [] spawn {
-    Hintsilent "ALiVE Service Bus Test - Waiting for players (at least 2 clients needed)!";
+    private ["_tmTmp","_ret","_message","_timewait"];
+        Hintsilent "ALiVE Service Bus Test - Waiting for players (at least 2 clients needed)!";
     waituntil {({!(isnull _x)} count playableunits > 1)};
   
     Hint "Starting ALiVE Service Bus Test in 20 seconds!";

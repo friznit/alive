@@ -21,7 +21,7 @@ See Also:
 Author:
 Highhead, FX from LK Nuke
 ---------------------------------------------------------------------------- */
-private ["_id","_snow","_on","_markername","_cnt","_nukepos","_fallouttime","_cone","_top","_top2","_top3","_smoke","_wave","_light","_expdist","_vdold"];
+private ["_nukepos","_fallouttime","_radzone"];
 
 _nukepos = _this select 0;
 _radzone = _this select 1;
@@ -29,11 +29,12 @@ _fallouttime = _this select 2;
 
 if (hasInterface) then {
 	[_nukepos,_radzone,_fallouttime] spawn {
+		private ["_i","_on","_snow","_nukepos","_fallouttime","_expdist","_Cone","_top","_smoke","_Wave","_light","_top2","_top3","_nuclearrain","_fnc_nuke_ashCreate"];
 		_nukepos = _this select 0;
-		_radzone = _this select 1;
+		//_radzone = _this select 1;
 		_fallouttime = _this select 2;
 	
-		_vdold = viewdistance;
+		//_vdold = viewdistance;
 		_expdist = player distance _nukepos;
 		
 		waituntil {!isnil "_nukepos"};
@@ -58,11 +59,11 @@ if (hasInterface) then {
 			[_expdist] spawn {
 		    	
 				setviewdistance ((_this select 0)*1.5);
-		        while {
-		            ((viewdistance < 20000) and (viewdistance < ((_this select 0)*2.2)))}
-		            	do {
-		            setviewdistance (viewdistance + 50);
-		        };
+			while {
+			    ((viewdistance < 20000) and (viewdistance < ((_this select 0)*2.2)))}
+			    	do {
+			    setviewdistance (viewdistance + 50);
+			};
 			};
 		};
 		
@@ -107,7 +108,7 @@ if (hasInterface) then {
 		
 		sleep 0.1;
 		
-		_xHandle = []spawn
+		/*_xHandle =*/ []spawn
 		{
 			Sleep 4;
 			"colorCorrections" ppEffectAdjust [1, 0.8, -0.001, [0.0, 0.0, 0.0, 0.0], [0.8*2, 0.5*2, 0.0, 0.7], [0.9, 0.9, 0.9, 0.0]];
@@ -141,6 +142,7 @@ if (hasInterface) then {
 		
 		//Remove objects in blastradius
 		[_nukepos] spawn {
+			private ["_nukepos","_arr1","_arr"];
 			_nukepos = _this select 0;
 			
 			_arr1 = allmissionobjects "";
@@ -148,7 +150,7 @@ if (hasInterface) then {
 			
 			{
 			    if ((_x distance _nukepos) < 500) then {
-			        _x hideobject true;
+				_x hideobject true;
 			    };
 			} foreach _arr;
 		};
@@ -201,6 +203,7 @@ if (hasInterface) then {
 		_on = false;
 		
 		_fnc_nuke_ashCreate = {
+			private ["_pos","_parray","_snow"];
 			_pos = _this select 0;
 			_parray = [
 			/* 00 */		["\A3\data_f\ParticleEffects\Universal\Universal.p3d", 16, 12, 8, 1],//"\Ca\Data\cl_water",
@@ -279,16 +282,16 @@ if (hasInterface) then {
 
 if (isServer) then {
 	[_nukepos,_radzone,_fallouttime] spawn {
-		
+		private ["_array","_nukepos","_radzone","_fallouttime","_id","_markername","_markernameicon","_radiationStart"];
 		_nukepos = _this select 0;
 		_radzone = _this select 1;
 		_fallouttime = _this select 2;
 	
-		_cnt = 0;
+		//_cnt = 0;
 		
 		_id = floor(random 1000);
 		_markername = call compile format["""rad_zone_id_%1""",_id];
-		_markerobj = createMarker [_markername, _nukepos];
+		//_markerobj = createMarker [_markername, _nukepos];
 		_markername setMarkerShape "ELLIPSE";
 		_markername setMarkerType "mil_destroy";
 		_markername setMarkerColor "ColorOrange";
@@ -297,7 +300,7 @@ if (isServer) then {
 		_markername setMarkerAlpha 0.3;
 		
 		_markernameicon = call compile format["""rad_zone_icon_id_%1""",_id];
-		_markerobj1 = createMarker [_markernameicon, _nukepos];
+		//_markerobj1 = createMarker [_markernameicon, _nukepos];
 		_markernameicon setMarkerShape "ICON";
 		_markernameicon setMarkerColor "ColorRed";
 		_markernameicon setMarkerType "mil_destroy";

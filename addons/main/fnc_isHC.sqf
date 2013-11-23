@@ -31,24 +31,25 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
+private ["_x","_headless"];
 isHC = false;
 
 if(isNil "headlessClients" && isServer) then {
-        headlessClients = [];
-        publicVariable "headlessClients";
+	headlessClients = [];
+	publicVariable "headlessClients";
 };
 
 while {isNil "headlessClients"} do {};
 
 _headless = (!(isDedicated) && {!(hasInterface)});
 if (_headless) then {
-                isHC = true;
-                // Random delay
-                for [{_x=1},{_x<=random 10000},{_x=_x+1}] do {};
- 
-                if (!(player in headlessClients)) then {
-                        headlessClients set [count headlessClients, player];
-                        publicVariable "headlessClients";
-                };
+	isHC = true;
+	// Random delay
+	for [{_x=1},{_x<=random 10000},{_x=_x+1}] do {};
+	
+	if (!(player in headlessClients)) then {
+		headlessClients set [count headlessClients, player];
+		publicVariable "headlessClients";
+	};
 };
 isHC;
