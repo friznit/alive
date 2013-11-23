@@ -35,5 +35,7 @@
 <Key ID="STR_ALIVE_CS_ERROR1">
 	<English>Only one Combat Support module can be used</English>
 </Key>
-
+<Key ID="STR_ALIVE_CS_USAGE">
+	<English>Place Module and set the settings accordingly! Sync to a SUP CAS or SUP Transport Module!</English>
+</Key>
 </Container></Package></Project>
