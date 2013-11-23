@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_OPCOM";
                 function = "ALIVE_fnc_OPCOMInit";
+                author = MODULE_AUTHOR;
 				functionPriority = 4;
                 isGlobal = 1;
                 isPersistent = 1;
@@ -216,6 +217,52 @@ class CfgVehicles {
                                 defaultValue = [];
                         };
                 };
-                
+            	class ModuleDescription
+				{
+					//description = "$STR_ALIVE_OPCOM_COMMENT"; // Short description, will be formatted as structured text
+					description[] = {
+							"$STR_ALIVE_OPCOM_COMMENT",
+							"",
+							"$STR_ALIVE_OPCOM_USAGE"
+					};
+					sync[] = {"ALiVE_civ_placement","ALiVE_mil_placement","ALiVE_mil_intelligence"}; // Array of synced entities (can contain base classes)
+		 
+					class ALiVE_civ_placement
+					{
+						description[] = { // Multi-line descriptions are supported
+							"$STR_ALIVE_CP_COMMENT",
+							"",
+							"$STR_ALIVE_CP_USAGE"
+						};
+						position = 0; // Position is taken into effect
+						direction = 0; // Direction is taken into effect
+						optional = 1; // Synced entity is optional
+						duplicate = 1; // Multiple entities of this type can be synced
+					};
+					class ALiVE_mil_placement
+					{
+						description[] = { // Multi-line descriptions are supported
+							"$STR_ALIVE_MP_COMMENT",
+							"",
+							"$STR_ALIVE_MP_USAGE"
+						};
+						position = 0; // Position is taken into effect
+						direction = 0; // Direction is taken into effect
+						optional = 1; // Synced entity is optional
+						duplicate = 1; // Multiple entities of this type can be synced
+					};
+					class ALiVE_mil_intelligence
+					{
+						description[] = { // Multi-line descriptions are supported
+							"$STR_ALIVE_MI_COMMENT",
+							"",
+							"$STR_ALIVE_MI_USAGE"
+						};
+						position = 0; // Position is taken into effect
+						direction = 0; // Direction is taken into effect
+						optional = 1; // Synced entity is optional
+						duplicate = 1; // Multiple entities of this type can be synced
+					};
+				};
         };
 };
