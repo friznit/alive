@@ -6,7 +6,7 @@
     <English>AI Skill</English>
 </Key>
 <Key ID="STR_ALIVE_AISKILL_COMMENT">
-    <English>Set AI Skill levels by presets or custom settings</English>
+    <English>Set AI Skill levels per faction by presets or custom settings</English>
 </Key>
 <Key ID="STR_ALIVE_AISKILL_DEBUG">
     <English>Enable Debug:</English>
