@@ -39,3 +39,4 @@
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
 #define RECOMPILE 1
+#define MODULE_AUTHOR QUOTE(ALiVE Add-on Team)

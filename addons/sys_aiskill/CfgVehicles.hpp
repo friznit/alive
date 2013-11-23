@@ -1,16 +1,43 @@
 class CfgVehicles {
 	class ModuleAliveSystemBase;
 	class ADDON: ModuleAliveSystemBase {
+		author = MODULE_AUTHOR;
+		// Editor visibility; 2 will show it in the menu, 1 will hide it.
 		scope = 2;
+		// Name displayed in the menu
 		displayName = "$STR_ALIVE_AISkill";
-		function = "ALIVE_fnc_AISkillInit";
-		functionPriority = 5;
+		// Map icon. Delete this entry to use the default icon
 		icon = "x\alive\addons\sys_aiskill\icon_sys_AISkill.paa";
+		// Name of function triggered once conditions are met
+		function = "ALIVE_fnc_AISkillInit";
+		// Execution priority, modules with lower number are executed first. 0 is used when the attribute is undefined
+		functionPriority = 5;
+		// 1 for remote execution on all clients, 0 for server only execution
+		isGlobal = 0;
+		// 1 for persistent execution (i.e. will be called on every JIPped client). Use with caution, can lead to desync
+		isPersistent = 0;
+		// 1 for module waiting until all synced triggers are activated
+		isTriggerActivated = 0;
+
 		picture = "x\alive\addons\sys_aiskill\icon_sys_AISkill.paa";
+
+		// Module description. Must inherit from base class, otherwise pre-defined entities won't be available
+		class ModuleDescription: ModuleDescription
+		{
+			// Short description, will be formatted as structured text
+			description = "$STR_ALIVE_AISKILL_COMMENT";	 
+		};
+
+		// Module arguments
 		class Arguments {
+			// Module specific arguments
 			class debug {
+				// Argument label
 				displayName = "$STR_ALIVE_AISKILL_DEBUG";
+				// Tooltip description
 				description = "$STR_ALIVE_AISKILL_COMMENT";
+				// Value type, can be "NUMBER", "STRING" or "BOOL"
+				typeName = "BOOL";
 				class Values {
 					class Yes {
 						name = "Yes";
@@ -38,9 +65,9 @@ class CfgVehicles {
 				description = "$STR_ALIVE_AISKILL_VETERAN_COMMENT";
 				defaultValue = "";
 			};
-			class skillFactionsNinja {
-				displayName = "$STR_ALIVE_AISKILL_NINJA";
-				description = "$STR_ALIVE_AISKILL_NINJA_COMMENT";
+			class skillFactionsExpert {
+				displayName = "$STR_ALIVE_AISKILL_EXPERT";
+				description = "$STR_ALIVE_AISKILL_EXPERT_COMMENT";
 				defaultValue = "";
 			};
 			class customSkillFactions {
