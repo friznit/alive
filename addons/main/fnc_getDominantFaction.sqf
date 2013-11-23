@@ -36,25 +36,25 @@ _countProfiles = 0;
 if !(isnil "ALIVE_profileHandler") then {
 	_profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 } else {
-    _profiles = [[],[],[]];
+	_profiles = [[],[],[]];
 };
 
 //Start Counting
 _result = [];
 for "_i" from 1 to ((count _factions)-1) do //access 0 has no side therfore start from 1
 {
-    _faction = configName(_factions select _i);
-    _side = getNumber(_factions select _i >> "side");
-    
-    //Get faction from Config classes
-    if (_side <= 3) then {
-        
-        //Count troops
-        _countGroups = {(_pos distance (getposATL (leader _x)) < _radius) && {{isPlayer _x} count (units _x) < 1} && {toLower(faction leader _x) == toLower(_faction)}} count allgroups;
+	_faction = configName(_factions select _i);
+	_side = getNumber(_factions select _i >> "side");
+	
+	//Get faction from Config classes
+	if (_side <= 3) then {
+		
+		//Count troops
+		_countGroups = {(_pos distance (getposATL (leader _x)) < _radius) && {{isPlayer _x} count (units _x) < 1} && {toLower(faction leader _x) == toLower(_faction)}} count allgroups;
 		_countProfiles = {((_x select 2 select 5) == "entity") && {(_x select 2 select 2) distance _pos < _radius} && {tolower(_x select 2 select 29) == tolower(_faction)}} count (_profiles select 2);
-        
-        _result set [count _result,[_faction,_countGroups + _countProfiles]];
-    };
+		
+		_result set [count _result,[_faction,_countGroups + _countProfiles]];
+	};
 };
 //Sort Faction by count
 _result = [_result,[],{_x select 1},"DESCEND"] call BIS_fnc_sortBy;
