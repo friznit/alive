@@ -274,169 +274,199 @@ switch(_operation) do {
 				ALIVE_loadedCIVClusters = true;
 			};
 
-			_clusterType = [_logic, "clusterType"] call MAINCLASS;
-			_placement = [_logic, "withPlacement"] call MAINCLASS;
-			_taor = [_logic, "taor"] call MAINCLASS;
-			_blacklist = [_logic, "blacklist"] call MAINCLASS;
-			_sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
-			_priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
+			_error = false;
+            if!(isNil "ALIVE_clusterBuild") then {
+                private ["_clusterVersion","_clusterBuild","_clusterType","_version","_build"];
 
-			private ["_clusters"];
+                _clusterVersion = ALIVE_clusterBuild select 2;
+                _clusterBuild = ALIVE_clusterBuild select 3;
+                _clusterType = ALIVE_clusterBuild select 4;
+                _version = productVersion select 2;
+                _build = productVersion select 3;
 
-            _clusters = DEFAULT_OBJECTIVES;
-
-			switch(_clusterType) do {
-                case "All": {
-                    _clusters = ALIVE_clustersCiv select 2;
-                    _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                    _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                    _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                    {
-                        [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                    } forEach _clusters;
-                    [_logic, "objectives", _clusters] call MAINCLASS;
+                if!(_clusterType == 'Stable') then {
+                    ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
+                    ["ALIVE Civilian Placement - Warning ALiVE requires the STABLE game build"] call ALIVE_fnc_dumpR;
+                    _error = true;
                 };
-                case "HQ": {
-                    if !(isnil "ALIVE_clustersCivHQ") then {
+
+                if(!(_clusterVersion == _version) || !(_clusterBuild == _build)) then {
+                    ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
+                    ["ALIVE Civilain Placement - Warning this version of ALiVE is only compatible with A3 version %1.%2",_clusterVersion, _clusterBuild] call ALIVE_fnc_dumpR;
+                    _error = true;
+                }else{
+                    ["ALiVE cluster version matches"] call ALIVE_fnc_dump;
+                };
+            };
+
+            if!(_error) then {
+                _clusterType = [_logic, "clusterType"] call MAINCLASS;
+                _placement = [_logic, "withPlacement"] call MAINCLASS;
+                _taor = [_logic, "taor"] call MAINCLASS;
+                _blacklist = [_logic, "blacklist"] call MAINCLASS;
+                _sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
+                _priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
+
+                private ["_clusters"];
+
+                _clusters = DEFAULT_OBJECTIVES;
+
+                switch(_clusterType) do {
+                    case "All": {
+                        _clusters = ALIVE_clustersCiv select 2;
+                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                        {
+                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                        } forEach _clusters;
+                        [_logic, "objectives", _clusters] call MAINCLASS;
+                    };
+                    case "HQ": {
+                        if !(isnil "ALIVE_clustersCivHQ") then {
+                            if(_sizeFilter == 160) then {
+                                _sizeFilter = 0;
+                            };
+                            _clusters = ALIVE_clustersCivHQ select 2;
+                            _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                            _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                            {
+                                [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                            } forEach _clusters;
+                            [_logic, "objectives", _clusters] call MAINCLASS;
+                        };
+                    };
+                    case "Power": {
+                        if !(isnil "ALIVE_clustersCivPower") then {
+                            if(_sizeFilter == 160) then {
+                                _sizeFilter = 0;
+                            };
+                            _clusters = ALIVE_clustersCivPower select 2;
+                            _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                            _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                            {
+                                [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                            } forEach _clusters;
+                            [_logic, "objectives", _clusters] call MAINCLASS;
+                        };
+                    };
+                    case "Comms": {
+                        if !(isnil "ALIVE_clustersCivComms") then {
+                            if(_sizeFilter == 160) then {
+                                _sizeFilter = 0;
+                            };
+                            _clusters = ALIVE_clustersCivComms select 2;
+                            _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                            _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                            {
+                                [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                            } forEach _clusters;
+                            [_logic, "objectives", _clusters] call MAINCLASS;
+                        };
+                    };
+                    case "Marine": {
+                        ["SF: %1, %2", _sizeFilter, typeName _sizeFilter] call ALIVE_fnc_dump;
                         if(_sizeFilter == 160) then {
                             _sizeFilter = 0;
                         };
-                        _clusters = ALIVE_clustersCivHQ select 2;
-                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                        {
-                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                        } forEach _clusters;
-                        [_logic, "objectives", _clusters] call MAINCLASS;
+                        if !(isnil "ALIVE_clustersCivMarine") then {
+                            _clusters = ALIVE_clustersCivMarine select 2;
+                            _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                            _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                            {
+                                [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                            } forEach _clusters;
+                            [_logic, "objectives", _clusters] call MAINCLASS;
+                        };
                     };
-                };
-                case "Power": {
-                    if !(isnil "ALIVE_clustersCivPower") then {
+                    case "Rail": {
                         if(_sizeFilter == 160) then {
                             _sizeFilter = 0;
                         };
-                        _clusters = ALIVE_clustersCivPower select 2;
-                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                        {
-                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                        } forEach _clusters;
-                        [_logic, "objectives", _clusters] call MAINCLASS;
+                        if !(isnil "ALIVE_clustersCivRail") then {
+                            _clusters = ALIVE_clustersCivRail select 2;
+                            _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                            _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                            {
+                                [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                            } forEach _clusters;
+                            [_logic, "objectives", _clusters] call MAINCLASS;
+                        };
                     };
-                };
-                case "Comms": {
-                    if !(isnil "ALIVE_clustersCivComms") then {
+                    case "Fuel": {
                         if(_sizeFilter == 160) then {
                             _sizeFilter = 0;
                         };
-                        _clusters = ALIVE_clustersCivComms select 2;
-                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                        {
-                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                        } forEach _clusters;
-                        [_logic, "objectives", _clusters] call MAINCLASS;
+                        if !(isnil "ALIVE_clustersCivFuel") then {
+                            _clusters = ALIVE_clustersCivFuel select 2;
+                            _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                            _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                            {
+                                [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                            } forEach _clusters;
+                            [_logic, "objectives", _clusters] call MAINCLASS;
+                        };
+                    };
+                    case "Construction": {
+                        if(_sizeFilter == 160) then {
+                            _sizeFilter = 0;
+                        };
+                        if !(isnil "ALIVE_clustersCivConstruction") then {
+                            _clusters = ALIVE_clustersCivConstruction select 2;
+                            _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                            _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                            {
+                                [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                            } forEach _clusters;
+                            [_logic, "objectives", _clusters] call MAINCLASS;
+                        };
+                    };
+                    case "Settlement": {
+                        if !(isnil "ALIVE_clustersCivSettlement") then {
+                             _clusters = ALIVE_clustersCivSettlement select 2;
+                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                             _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                             {
+                                  [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                             } forEach _clusters;
+                             [_logic, "objectives", _clusters] call MAINCLASS;
+                          };
                     };
                 };
-                case "Marine": {
-                    ["SF: %1, %2", _sizeFilter, typeName _sizeFilter] call ALIVE_fnc_dump;
-                    if(_sizeFilter == 160) then {
-                        _sizeFilter = 0;
-                    };
-                    if !(isnil "ALIVE_clustersCivMarine") then {
-                        _clusters = ALIVE_clustersCivMarine select 2;
-                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                        {
-                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                        } forEach _clusters;
-                        [_logic, "objectives", _clusters] call MAINCLASS;
-                    };
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["ALIVE CP - Startup completed"] call ALIVE_fnc_dump;
+                    ["ALIVE CP - Count clusters %1",count _clusters] call ALIVE_fnc_dump;
+                    [] call ALIVE_fnc_timer;
                 };
-                case "Rail": {
-                    if(_sizeFilter == 160) then {
-                        _sizeFilter = 0;
+                // DEBUG -------------------------------------------------------------------------------------
+
+                if(_placement) then {
+                    if(count _clusters > 0) then {
+                        // start placement
+                        [_logic, "placement"] call MAINCLASS;
+                    }else{
+                        ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
+                        ["ALIVE Civilain Placement - Warning no usuable locations found for placement, you need to inlcude civilian locations within the TAOR marker"] call ALIVE_fnc_dumpR;
+                        // set module as started
+                        _logic setVariable ["startupComplete", true];
                     };
-                    if !(isnil "ALIVE_clustersCivRail") then {
-                        _clusters = ALIVE_clustersCivRail select 2;
-                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                        {
-                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                        } forEach _clusters;
-                        [_logic, "objectives", _clusters] call MAINCLASS;
-                    };
+                }else{
+                    _logic setVariable ["startupComplete", true];
                 };
-                case "Fuel": {
-                    if(_sizeFilter == 160) then {
-                        _sizeFilter = 0;
-                    };
-                    if !(isnil "ALIVE_clustersCivFuel") then {
-                        _clusters = ALIVE_clustersCivFuel select 2;
-                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                        {
-                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                        } forEach _clusters;
-                        [_logic, "objectives", _clusters] call MAINCLASS;
-                    };
-                };
-                case "Construction": {
-                    if(_sizeFilter == 160) then {
-                        _sizeFilter = 0;
-                    };
-                    if !(isnil "ALIVE_clustersCivConstruction") then {
-                        _clusters = ALIVE_clustersCivConstruction select 2;
-                        _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                        _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                        {
-                            [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                        } forEach _clusters;
-                        [_logic, "objectives", _clusters] call MAINCLASS;
-                    };
-                };
-                case "Settlement": {
-                    if !(isnil "ALIVE_clustersCivSettlement") then {
-                         _clusters = ALIVE_clustersCivSettlement select 2;
-                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
-                         _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                         _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
-                         {
-                              [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                         } forEach _clusters;
-                         [_logic, "objectives", _clusters] call MAINCLASS;
-                      };
-                };
-			};
-            			
-			// DEBUG -------------------------------------------------------------------------------------
-			if(_debug) then {
-				["ALIVE CP - Startup completed"] call ALIVE_fnc_dump;
-				["ALIVE CP - Count clusters %1",count _clusters] call ALIVE_fnc_dump;
-				[] call ALIVE_fnc_timer;
-			};
-			// DEBUG -------------------------------------------------------------------------------------
-			
-			if(_placement) then {
-				if(count _clusters > 0) then {
-					// start placement
-					[_logic, "placement"] call MAINCLASS;
-				}else{
-					["ALIVE CP - Warning no usuable locations found for placement, you need to inlcude civilian locations within the TAOR marker"] call ALIVE_fnc_dumpR;
-					// set module as started
-					_logic setVariable ["startupComplete", true];
-				};
 			}else{
-				_logic setVariable ["startupComplete", true];
+			    // error
+                _logic setVariable ["startupComplete", true];
 			};
-			
         };
 	};
 	// Placement

@@ -134,12 +134,16 @@ _worldName = toLower(worldName);
 _exportString = '';
 _clusterCount = 0;
 
+
+_pV = productVersion;
+_exportString = _exportString + format['ALIVE_clusterBuild = ["%1", "%2", %3, %4, "%5"];',_pV select 0, _pV select 1, _pV select 2, _pV select 3, _pV select 4];
+
 _objectivesName = 'ALIVE_clustersMil';
 _result = [_clusters, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;
 
 _clusterCount = _clusterCount + count _clusters;
 
-_exportString = _result;
+_exportString = _exportString + _result;
 
 if(count _clusters_copy_hq > 0) then {
 	_objectivesName = 'ALIVE_clustersMilHQ';
