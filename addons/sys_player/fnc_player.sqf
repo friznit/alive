@@ -243,7 +243,7 @@ switch(_operation) do {
                 };
 
                 // Set up any spawn processes for checks
-                if (isServer) then {
+                if (isDedicated) then {
 
             	   [] spawn {
             		private ["_lastSaveTime"];
