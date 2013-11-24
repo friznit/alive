@@ -401,7 +401,6 @@ GVAR(LOADOUT_DATA) = [
 		} foreach (_this select 1);
 		//[0, {diag_log format['vest mags: %1', magazinesAmmoFull _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 		[(_this select 0),"vest"] call fillContainer;
-		_vestMags;
 	}],
 	["backpack", {backpack (_this select 0);}, {
 		removeBackpack (_this select 0);
