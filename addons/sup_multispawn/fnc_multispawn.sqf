@@ -139,7 +139,7 @@ switch(_operation) do {
                             	if (_revive) exitwith {"Revive is enabled, exiting Multispawn!" call ALiVE_fnc_Logger}; 
                             
                             	diag_log format["Forward Spawn EH placed...",time];
-                            	player addEventHandler ["killed", {[] spawn ALiVE_fnc_ForwardSpawn}];
+                            	player addEventHandler ["killed", {[] spawn ALiVE_fnc_ForwardSpawn; if !(isnil "ALiVE_fnc_setGear") then {pLOADOUT = ["", [player]] call ALiVE_fnc_setGear}}];
                             };
                         default {};
                     };
