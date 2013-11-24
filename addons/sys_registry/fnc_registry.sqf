@@ -165,17 +165,20 @@ switch(_operation) do {
             
             if!(_startupRunning) then {
                 [_logic, "startupRunning", true] call ALIVE_fnc_hashSet;
-                [_logic,"startup"] call MAINCLASS;
+                [_logic,"startup",0] call MAINCLASS;
             };
         };
     };
     case "startup": {
-        private["_startupQueue","_modulesStarted","_queuedModule","_moduleID","_moduleType","_requiredModules","_excludedModules","_requirementsPassed","_startedModules","_class"];
+        private["_startupQueue","_modulesStarted","_queuedModule","_moduleID","_moduleType","_requiredModules","_excludedModules","_requirementsPassed","_startedModules","_class","_loopCount"];
         
         _startupQueue = [_logic, "startupQueue"] call ALIVE_fnc_hashGet;
         _modulesStarted = [_logic, "modulesStarted"] call ALIVE_fnc_hashGet;
         _modules = [_logic, "modules"] call ALIVE_fnc_hashGet;
-        
+
+        _loopCount = _args;
+
+        ["-------------------------------- ALIVE REGISTRY LOOP COUNT: %1",_loopCount] call ALIVE_fnc_dump;
         
         {
             _queuedModule = _x;
@@ -275,12 +278,28 @@ switch(_operation) do {
         
         // loop
         if((count _startupQueue) > 0) then {
-            
-            // DEBUG -------------------------------------------------------------------------------------
-            ["ALIVE Registry - Startup queue not empty, looping.."] call ALIVE_fnc_dump;
-            // DEBUG -------------------------------------------------------------------------------------				
-            
-            [_logic, "startup"] call MAINCLASS
+
+            _loopCount = _loopCount + 1;
+
+            if(_loopCount > 10) then {
+                ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
+                ["ALIVE Registry - Warning module startup appears to be broken, aborting. Check your module syncronisation and requirements"] call ALIVE_fnc_dumpR;
+
+                {
+                    _queuedModule = _x;
+                    _moduleID = _queuedModule select 0;
+                    _moduleType = _queuedModule select 1;
+
+                    ["ALIVE Registry - Module remaining to be started: %1 %2",_moduleType,_moduleID] call ALIVE_fnc_dumpR;
+
+                } forEach _startupQueue;
+            }else{
+                // DEBUG -------------------------------------------------------------------------------------
+                ["ALIVE Registry - Startup queue not empty, looping.."] call ALIVE_fnc_dump;
+                // DEBUG -------------------------------------------------------------------------------------
+
+                [_logic, "startup", _loopCount] call MAINCLASS;
+            };
         }else{
             
             // DEBUG -------------------------------------------------------------------------------------
