@@ -37,7 +37,7 @@ class CfgVehicles {
                                 {
                                         class forwardspawn
                                         {
-                                                name = "Forward Respawn";
+                                                name = "Spawn on squad";
                                                 value = "forwardspawn";
                                                 default = 1;
                                         };
