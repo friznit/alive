@@ -106,12 +106,6 @@
 <Key ID="STR_ALIVE_player_autoSaveTime_COMMENT">
 	<English>Set the interval between auto saves of player data (in seconds) to external database. This may impact server performance. 0 means save only at mission exit or player disconnection.</English>
 </Key>
-<Key ID="STR_ALIVE_player_KEY">
-	<English>Unique Mission ID:</English>
-</Key>
-<Key ID="STR_ALIVE_player_KEY_COMMENT">
-	<English>You must set a unique mission ID that is specific to your server and mission. IP addresses may change, server names may change, so try to avoid relying on these. Mission names are often used by other groups or within the same group.</English>
-</Key>
 <Key ID="STR_ALIVE_player_ERROR1">
 	<English>Only one Player Persistence module can be used</English>
 </Key>

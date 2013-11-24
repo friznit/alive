@@ -26,17 +26,18 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data_couchdb\fnc_restoreData.sqf";
 					recompile = RECOMPILE;
 				};
-/*				class loadData_couchdb {
-					description = "Loads all records/documents from a table/document set stored in a data source";
-					file = "\x\alive\addons\sys_data_couchdb\fnc_loadData.sqf";
-					recompile = RECOMPILE;
-				};
 				class saveData_couchdb {
 					description = "Saves all records/documents to a data source";
 					file = "\x\alive\addons\sys_data_couchdb\fnc_saveData.sqf";
 					recompile = RECOMPILE;
 				};
+				class loadData_couchdb {
+					description = "Loads all records/documents from a table/document set stored in a data source";
+					file = "\x\alive\addons\sys_data_couchdb\fnc_loadData.sqf";
+					recompile = RECOMPILE;
+				};
 
+/*
 				class deleteData_couchdb {
 					description = "Deletes a record stored in a data source";
 					file = "\x\alive\addons\sys_data_couchdb\fnc_deleteData.sqf";

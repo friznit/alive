@@ -1,335 +1,223 @@
-/* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_parseJSON
-
-Description:
-	Parses a JSON string into a Hash structure.
-
-	See also: <CBA_fnc_parseJSON>
-
-Parameters:
-	_string - JSON formatted string [String].
-
-Returns:
-	Data structure taken from the string, or nil if file had syntax errors.
-
-Author:
-	Tupolov (from Spooner's original parseYAML CBA function)
----------------------------------------------------------------------------- */
-
-#include "script_component.hpp"
-
-#define ASCII_HASH 35
-#define ASCII_LEFT_BRACKET 91
-#define ASCII_LEFT_CURLY_BRACKET 123
-#define ASCII_RIGHT_BRACKET 93
-#define ASCII_RIGHT_CURLY_BRACKET 125
-#define ASCII_COMMA 44
-#define ASCII_COLON 58
-#define ASCII_QUOTES 34
-
-#define JSON_MODE_STRING 0
-#define JSON_MODE_ASSOC_KEY 1
-#define JSON_MODE_ASSOC_VALUE 2
-#define JSON_MODE_ARRAY 3
-#define JSON_MODE_HASH 4
-
-#define JSON_TYPE_UNKNOWN 0
-#define JSON_TYPE_SCALAR 1
-#define JSON_TYPE_ARRAY 2
-#define JSON_TYPE_ASSOC 3
-#define JSON_TYPE_HASH 4
-
-#define ASCII_JSON_COMMENT ASCII_HASH
-#define ASCII_JSON_ASSOC ASCII_COLON
-#define ASCII_JSON_ARRAY ASCII_LEFT_BRACKET
-#define ASCII_JSON_HASH ASCII_LEFT_CURLY_BRACKET
-
+#include <\x\alive\addons\sys_data\script_component.hpp>
 SCRIPT(parseJSON);
 
-// -----------------------------------------------------------------------------
+/* ----------------------------------------------------------------------------
+Function: ALIVE_fnc_parseJSON
+Description:
+Converts a JSON formatted string into a CBA HASH array
 
-private "_raiseError";
-_raiseError =
-{
-	PARAMS_4(_message,_JSON,_pos,_lines);
+Parameters:
+String - The JSON string
 
-	private ["_errorBlock", "_i", "_lastLine", "_lastChar"];
+Returns:
+Hash - array of data
 
-	_lastLine = _lines select ((count _lines) - 1);
-	_lastChar = _lastLine select ((count _lastLine) - 1);
-	_lastLine resize ((count _lastLine) - 1);
+Examples:
+(begin example)
+// _hash = [_input] call ALIVE_fnc_parseJSON;
+(end)
 
-	PUSH(_lastLine,ASCII_VERTICAL_BAR);
-	PUSH(_lastLine,ASCII_HASH);
-	PUSH(_lastLine,ASCII_VERTICAL_BAR);
-	PUSH(_lastLine,_lastChar);
+See Also:
+- <CBA_fnc_parseYAML>
 
-	_pos = _pos + 1;
-	while { _pos < (count _JSON) } do {
-		_char = _JSON select _pos;
+Author:
+Tupolov
 
-		if (_char == ASCII_JSON_COMMENT) exitWith {};
+Peer reviewed:
+nil
+---------------------------------------------------------------------------- */
 
-		PUSH(_lastLine,_char);
+#define JSON_MODE_VALUE 0
+#define JSON_MODE_KEY 1
 
-		_pos = _pos + 1;
-	};
+#define JSON_TYPE_ARRAY 2
+#define JSON_TYPE_STRING 3
+#define JSON_TYPE_OBJECT 4
 
-	_errorBlock = "";
-	for [{ _i = 0 max ((count _lines) - 6) }, { _i < (count _lines)}, { _i = _i + 1 }] do {
-		_errorBlock = _errorBlock + format ["\n%1: %2", [_i + 1, 3] call CBA_fnc_formatNumber,
-			toString (_lines select _i)];
-	};
+// JSON Specific tokens
+#define JSON_OBJECT_START 123
+#define JSON_OBJECT_FINISH 125
+#define JSON_ARRAY_START 91
+#define JSON_ARRAY_FINISH 93
 
-	_message = format ["%1, in ""%2"" at line %3:\n%4", _message,
-		_file, count _lines, _errorBlock];
+// JSON terminators - colon for end of key, comma for end of value
+#define ASCII_COLON 58
+#define ASCII_COMMA 44
+#define ASCII_QUOTES 34
 
-	ERROR_WITH_TITLE("CBA JSON parser error",_message);
-};
+private ["_string","_charArray","_mode","_type","_result","_pos","_retval"];
 
-private "_parse";
-_parse =
-{
-	PARAMS_4(_JSON,_pos,_indent,_lines);
+JSON_fnc_parse = {
+	// Accepts array of characters as ASCII codes
+	// Returns Hash | Array values and pos
+	private ["_charArray","_pos","_mode","_return","_type","_key","_done","_result","_tmpArr","_value","_tmpHash","_tmpStr","_origType"];
 
-	private ["_error", "_currentIndent", "_key", "_value", "_return","_mode", "_dataType", "_data","_lineBreaks"];
+	// TRACE_1("Parse", toString (_this select 0));
 
-	_error = false;
-	_currentIndent = _indent max 0;
-	_key = [];
-	_value = [];
+	_charArray = _this select 0;
+	_pos = _this select 1;
+	_mode = _this select 2;
+	_type = _this select 3;
+	_origType = _type;
+	_key = "";
 	_return = false;
-	_mode = JSON_MODE_STRING;
-	_dataType = JSON_TYPE_UNKNOWN;
-	_lineBreaks = [ASCII_COMMA,ASCII_RIGHT_BRACKET,ASCII_RIGHT_CURLY_BRACKET];
-	// _data is initially undefined.
 
-	TRACE_3("Parsing JSON data item",_currentIndent,_pos,count _lines);
+	 TRACE_2("Starting at", _pos, _charArray select _pos);
 
-	while { (_pos < ((count _JSON) - 1)) and (not _error) and (not _return) } do
-	{
-		_pos = _pos + 1;
-		_char = _JSON select _pos;
-		
-		if (_char == ASCII_QUOTES) then
-		{
-			// Skip quotation marks 
-			// TRACE_1("FOUND QUOTE, SKIPPING",_char);
-			
-		} else {
-			
-			switch (_mode) do
+	switch (_type) do {
+		case JSON_TYPE_OBJECT: {
+			_tmpHash = [] call CBA_fnc_hashCreate;
+			// TRACE_1("Creating hash", _tmpHash);
+		};
+		case JSON_TYPE_ARRAY: {
+			_tmpArr = [];
+		};
+		case default {
+			_tmpStr = "";
+		};
+	};
+
+    	while {!_return} do {
+		_done = false;
+		switch (_mode) do {
+			case JSON_MODE_KEY:
 			{
-				case JSON_MODE_ARRAY:
-				{
-					if (_char in _lineBreaks) then
-					{
-						_value = [toString _value] call CBA_fnc_trim;
-
-						// If remainder of line is blank, assume
-						// multi-line data.
-						if (([_value] call CBA_fnc_strLen) == 0) then
-						{
-							private ["_retVal"];
-
-							_retVal = ([_JSON, _pos, _currentIndent, _lines] call _parse);
-							_pos = _retVal select 0;
-							_value = _retVal select 1;
-							_error = _retVal select 2;
-						};
-
-						if (not _error) then
-						{
-							TRACE_1("Added Array element",_value);
-							PUSH(_data,_value);
-							_mode = JSON_MODE_STRING;
-						};
+				private ["_tmpKey"];
+				_tmpKey = [];
+                while {!_done} do {
+					private ["_char"];
+					_char = 0;
+					_char = _charArray select _pos;
+					if (_char == ASCII_COLON) then {
+						// End of Key
+						//TRACE_1("Setting Key", toString _tmpKey);
+						_key = toString _tmpKey;
+						_mode = JSON_MODE_VALUE;
+						_done = true;
 					} else {
-						PUSH(_value,_char);
-					};
-				};
-				case JSON_MODE_ASSOC_KEY:
-				{
-					if (_char in _lineBreaks) then
-					{
-						["Unexpected new-line, when expecting ':'",
-								_JSON, _pos, _lines] call _raiseError;
-							_error = true;
-					} else {
-						switch (_char) do
-						{
-							case ASCII_JSON_ASSOC:
-							{
-								_key = [toString _key] call CBA_fnc_trim;
-								_mode = JSON_MODE_ASSOC_VALUE;
-								TRACE_1("Adding key",_key);
-							};
-							default
-							{
-								PUSH(_key,_char);
-								//TRACE_1("Adding key",_key);
-							};
+						if (_char != ASCII_QUOTES) then {
+							_tmpKey set [count _tmpKey, _char];
 						};
 					};
+					_pos = _pos + 1;
 				};
-				case JSON_MODE_ASSOC_VALUE:
-				{
-					if (_char in _lineBreaks) then
-					{
-						_value = [toString _value] call CBA_fnc_trim;
-
-						// If remainder of line is blank, assume
-						// multi-line data.
-						if (([_value] call CBA_fnc_strLen) == 0) then
-						{
-							private ["_retVal"];
-
-							_retVal = ([_JSON, _pos, _currentIndent, _lines] call _parse);
-							_pos = _retVal select 0;
-							_value = _retVal select 1;
-							_error = _retVal select 2;
+			};
+			case JSON_MODE_VALUE:
+			{
+				private ["_tmpVal"];
+				_tmpVal = [];
+                while {!_done} do {
+					private ["_char"];
+					_char = _charArray select _pos;
+					switch (_char) do {
+						case JSON_OBJECT_START:{
+							private "_retval";
+							_mode = JSON_MODE_KEY;
+							_type = JSON_TYPE_OBJECT;
+							_pos = _pos + 1;
+							// TRACE_1("Starting hash", _pos);
+							_retval = [_charArray, _pos,_mode, _type] call JSON_fnc_parse;
+							_value = _retval select 0;
+							 TRACE_1("Got hash", _value);
+							_pos = _retval select 1;
+							_mode = JSON_MODE_VALUE;
+							_type = _origType;
+							_done = true;
 						};
-
-						if (not _error) then
-						{
-							TRACE_1("Added Hash element",_value);
-							[_data, _key, _value] call ALIVE_fnc_hashSet;
-							_mode = JSON_MODE_STRING;
+						case JSON_OBJECT_FINISH:{
+							[_tmpHash, _key, _value] call CBA_fnc_hashSet;
+							// TRACE_1("Finishing hash", _tmpHash);
+							_result = [_tmpHash, _pos];
+							_done = true;
+							_return = true;
 						};
-					} else {
-						PUSH(_value,_char);
-						//TRACE_1("Adding value",_value);
-					};
-				};
-				case JSON_MODE_STRING:
-				{
-
-					switch (_char) do
-					{
-						case ASCII_JSON_HASH:
-						{
-							_currentIndent = _currentIndent + 1;
-							TRACE_2("Indented",_indent,_currentIndent);
+						case JSON_ARRAY_START:{
+							private "_retval";
+							_mode = JSON_MODE_VALUE;
+							_type = JSON_TYPE_ARRAY;
+							_pos = _pos + 1;
+							 TRACE_1("Starting array", _pos);
+							_retval = [_charArray, _pos,_mode, _type] call JSON_fnc_parse;
+							_value = _retval select 0;
+							_pos = _retval select 1;
+							_type = _origType;
+							_done = true;
 						};
-						case ASCII_JSON_ASSOC:
-						{
-							["Can't start a line with ':'",
-								_JSON, _pos, _lines] call _raiseError;
-							_error = true;
-						};
-						case ASCII_JSON_ARRAY:
-						{
-							TRACE_2("Array element found",_indent,_currentIndent);
-
-							if (_currentIndent > _indent) then
-							{
-								if (_dataType == JSON_TYPE_UNKNOWN) then
-								{
-									TRACE_2("Starting new Array",count _lines,_indent);
-
-									_data = [];
-									_dataType = JSON_TYPE_ARRAY;
-
-									_indent = _currentIndent;
-
-									_value = [];
-									_mode = JSON_MODE_ARRAY;
-								} else {
-									//TRACE_2("BLAH",_indent,_currentIndent);
-									_error = true;
-								};
-							}
-							else{if (_currentIndent < _indent) then
-							{
-								// Ignore and pass down the stack.
-								TRACE_2("End of Array",count _lines,_indent);
-								_pos = _pos - 1;
-								_return = true;
+						case JSON_ARRAY_FINISH:{
+							if (isNil "_value") then {
+								_tmpArr = [];
 							} else {
-								if (_dataType == JSON_TYPE_ARRAY) then
-								{
-									TRACE_2("New element of Array",count _lines,_indent);
-									_value = [];
-									_mode = JSON_MODE_ARRAY;
-								} else {
-									//TRACE_3("BLEHH",_dataType,_indent,_currentIndent);
-									_error = true;
-								};
-							}; };
+								_tmpArr set [count _tmpArr, _value];
+							};
+							 TRACE_1("Finishing array", _tmpArr);
+							_result = [_tmpArr,_pos];
+							_done = true;
+							_return = true;
 						};
-						default // Anything else must be the start of an associative key.
-						{
-							if (_currentIndent > _indent) then
-							{
-								if (_dataType == JSON_TYPE_UNKNOWN) then
-								{
-									TRACE_2("Starting new Hash",count _lines,_indent);
-
-									_data = [] call ALIVE_fnc_hashCreate;
-									_dataType = JSON_TYPE_ASSOC;
-
-									_indent = _currentIndent;
-
-									_key = [_char];
-									_value = [];
-									_mode = JSON_MODE_ASSOC_KEY;
-								} else {
-									//TRACE_3("BLAH",_dataType,_indent,_currentIndent);
-									_error = true;
+						case ASCII_COMMA:{
+							// means end of value
+							if (isNil "_value") then {
+								_value = "";
+							};
+							switch (_type) do {
+								case JSON_TYPE_OBJECT: {
+									TRACE_2("setting hash", _key, _value);
+									[_tmpHash, _key, _value] call CBA_fnc_hashSet;
+									_mode = JSON_MODE_KEY;
+									_done = true;
+									_value = "";
 								};
-							} else {
-								if (_currentIndent < _indent) then
-								{
-									// Ignore and pass down the stack.
-									TRACE_2("End of Hash",count _lines,_indent);
-									_pos = _pos - 1;
-									_return = true;
-								} else {
-									if (_dataType == JSON_TYPE_ASSOC) then
-									{
-										TRACE_2("New element of Hash",count _lines,_indent);
-										_key = [_char];
-										_value = [];
-										_mode = JSON_MODE_ASSOC_KEY;
-									} else {
-										//TRACE_3("BLEH",_dataType,_indent,_currentIndent);
-										_error = true;
-									};
-								}; 
+								case JSON_TYPE_ARRAY: {
+									 TRACE_2("setting array", _tmpArr, _value);
+									_tmpArr set [count _tmpArr, _value];
+									_tmpVal = [];
+									_value = "";
+								};
+								case default {
+									TRACE_2("setting value", _key, _value);
+									_value = toString _tmpVal;
+									_mode = JSON_MODE_KEY;
+									_done = true;
+								};
 							};
 						};
+						case default {
+							// must be a String Value
+							if (_char != ASCII_QUOTES) then {
+								_tmpVal set [count _tmpVal, _char];
+								_value = toString _tmpVal;
+								if (_value == "any") then {_value = "nil";};
+							};
+
+						};
 					};
+
+					_pos = _pos + 1;
+
 				};
 			};
 		};
 	};
 
-	TRACE_4("Parsed JSON data item",_indent,_pos,_error,count _lines);
-
-	[_pos, _data, _error]; // Return.
+	_result
 };
 
-// ----------------------------------------------------------------------------
+// MAIN
 
-PARAMS_1(_string);
+_string = _this select 0;
 
-private ["_JSONString", "_JSON","_pos","_error","_retVal","_value"];
-_JSONString = _string;
-_JSON = toArray _JSONString;
+// Create an array of characters from the JSON string
+_charArray = toArray _string;
 
-TRACE_2("Parsing JSON string",_string,count _JSON);
+// Set position to start with (skip " character)
+_pos = 1;
 
-_pos = -1;
+_mode = JSON_MODE_KEY;
+_type = JSON_TYPE_OBJECT;
 
-_retVal = ([_JSON, _pos, -1, [[]]] call _parse);
-_pos = _retVal select 0;
-_value = _retVal select 1;
-_error = _retVal select 2;
-TRACE_2("Parsed",_pos,_error);
+// Start parsing
+_retval = [_charArray, _pos,_mode, _type] call JSON_fnc_parse;
 
-if (_error) then
-{
-	nil; // Return.
-} else {
-	_value; // Return.
-};
+_result = _retval select 0;
+
+_result

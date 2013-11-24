@@ -31,9 +31,10 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 		// If storeToDB is enabled then save player data
 		_check = [MOD(sys_player),"storeToDB",[],true] call ALIVE_fnc_OOsimpleOperation;
 		if (_check) then {
-			_result = [MOD(sys_player), "savePlayers", []] call ALIVE_fnc_player;
+			_result = [MOD(sys_player), "savePlayers", [false]] call ALIVE_fnc_player;
 			TRACE_1("SAVING PLAYER DATA", _result);
 		};
+		MOD(sys_player) setVariable ["saved", true];
 	};
 
 	{
@@ -49,7 +50,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 		// Work out when the last player save was and report the difference
 
 		_lastPlayerSaveTime = [MOD(sys_player), "getPlayerSaveTime", [_uid]] call ALIVE_fnc_player;
-		_timeDiff = time - _lastPlayerSaveTime;
+		_timeDiff = (dateToNumber date) - _lastPlayerSaveTime;
 		diag_log format["SYS_PLAYER: Have not saved player state for %2 for %1 seconds", _timeDiff,_name];
 
 	} else {

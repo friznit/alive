@@ -23,7 +23,7 @@ Wolffy.au
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(convertData_couchdb);
 
 // -------------------------------------------------------------------
@@ -34,64 +34,68 @@ _convert = {
 	private ["_type","_data","_result","_key"];
 	_key = _this select 0;
 	_data = _this select 1;
-	
+
 	// Get the type we are dealing with
 	_type = typeName _data;
 	if ([_data] call CBA_fnc_isHash) then {
 		_type = "HASH";
 	};
-	
+
 	// Store the type with the key in the dictionary
-	[ALIVE_DataDictionary, "setDataDictionary", [_key, _type]] call ALIVE_fnc_Data;
-	
-	TRACE_2("ConvertData", _type, _data);
+	if ([_logic,"storeType", false] call CBA_fnc_hashGet) then {
+		[ALIVE_DataDictionary, "setDataDictionary", [_key, _type]] call ALIVE_fnc_Data;
+	};
+	//TRACE_2("ConvertData", _type, _data);
 
 	switch(_type) do {
-		case "HASH" : {
-			_result = [_logic, "convert", [_data]] call ALIVE_fnc_Data;
-		};
-		case "OBJECT": {
-			_result = format["""""%1""""", _data];
-		};
-		case "TEXT": {
-			_result = format["""""%1""""", _data];
-		};
-		case "SCALAR": {
-			_result = str(_data);
+		case "ARRAY": {
+			private ["_tmp","_i"];
+			TRACE_2("ARRAY CONVERSION DATA", _data, typeName _data);
+			_tmp = "";
+			_i = 0;
+			{
+				private ["_tmpKey","_value"];
+				TRACE_2("ARRAY CONVERSION X", _x, typeName _x);
+				_tmpKey = _key + str(_i);
+
+				// Convert Values
+				_value = [_tmpKey, _x] call _convert;
+				TRACE_2("ARRAY CONVERTED VALUE", typename _value, _value);
+
+				_tmp = _tmp + "," + _value;
+
+				_i = _i + 1;
+			} foreach _data;
+
+			_result = "[" + _tmp + "]";
+
+			// Get rid of any left over commas
+			_result = [_result, "[,", "["] call CBA_fnc_replace;
+
+			TRACE_2("ARRAY CONVERSION RESULT", typename _result, _result);
 		};
 		case "BOOL": {
 			private["_tmp"];
 			_tmp = if(_data) then {"true"} else {"false"};
 			_result = format["""""%1""""", _tmp]; // double quotes around string
 		};
+		case "GROUP": {
+			_result = format["""""%1""""", _data];
+		};
+		case "HASH" : {
+			_result = [_logic, "convert", [_data]] call ALIVE_fnc_Data;
+		};
+		case "OBJECT": {
+			_result = format["""""%1""""", _data];
+		};
+		case "SCALAR": {
+			_result = str(_data);
+		};
 		case "SIDE": {
 			_result = format["""""%1""""", _data]; // double quotes around string
 		};
-		case "ARRAY": {
-			private ["_tmp","_i"];
-			TRACE_2("ARRAY CONVERSION DATA", _data, typeName _data);
-			_tmp = "";
-			_i = 0;
-			{	
-				private ["_tmpKey","_value"];
-				TRACE_2("ARRAY CONVERSION X", _x, typeName _x);
-				_tmpKey = _key + str(_i);
-				
-				// Convert Values
-				_value = [_tmpKey, _x] call _convert;
-				TRACE_2("ARRAY CONVERTED VALUE", typename _value, _value);
-
-				_tmp = _tmp + "," + _value;
-	
-				_i = _i + 1;
-			} foreach _data;
-			
-			_result = "[" + _tmp + "]";
-
-			// Get rid of any left over commas
-			_result = [_result, "[,", "["] call CBA_fnc_replace;
-			
-			TRACE_2("ARRAY CONVERSION RESULT", typename _result, _result);
+		case "TEXT": {
+			_result = format["""""%1""""", _data];
 		};
 
 		default {
@@ -130,6 +134,6 @@ if(isNil "_hash") exitWith {
 _result = "{" + _string + "}";
 
 // replace {,
-_result = [_result, "{,", "{"] call CBA_fnc_replace; 
+_result = [_result, "{,", "{"] call CBA_fnc_replace;
 
 _result;

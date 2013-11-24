@@ -30,10 +30,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 	if (_name == "__SERVER__") exitWith {
 		// If server connects, load all player data from database
 
-		_result = [MOD(sys_player), "loadPlayers", []] call ALIVE_fnc_player;
-		TRACE_1("LOADING PLAYER DATA", _result);
-		// Set true that player data has been loaded
-		MOD(sys_player) setVariable ["loaded", true, true];
+		// MOVED TO MODULE INIT
 
 	};
 
@@ -51,12 +48,12 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 		_unit = objNull;
 
-		_check = MOD(sys_player) getVariable ["loaded", false];
-		// Wait for player data to be loaded by server
-		TRACE_1("Waiting for player data to load",_check);
-		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable ["loaded", false]; TRACE_1("Waiting for data",_check); _check};
+		_check = MOD(sys_player) getVariable ["init", false];
+		// Wait for player module to init
+		TRACE_1("Waiting for player module to init",_check);
+		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable ["init", false]; TRACE_1("Waiting for init",_check); _check};
 		sleep 0.2;
-		TRACE_1("Player data loaded",_check);
+		TRACE_1("Player module init complete",_check);
 
 		_check = MOD(sys_player) getVariable [_uid, false];
 		// Wait for player data to be loaded by server
@@ -88,6 +85,9 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 		} else {
 
+			// Ask player if they want to be restored first?
+
+			// Apply data to player object
 			_result = [MOD(sys_player), "getPlayer", [_unit,_owner]] call ALIVE_fnc_player;
 
 			TRACE_1("GETTING PLAYER DATA", _result);

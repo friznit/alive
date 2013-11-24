@@ -1,4 +1,4 @@
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(writeData_couchdb);
 
 /* ----------------------------------------------------------------------------
@@ -8,7 +8,7 @@ Description:
 Writes data to an external couchdb (using JSON string)
 
 Parameters:
-Object - Data handler logic 
+Object - Data handler logic
 Array - Module (string), Data (array), Async (bool) optional, UID (string) optional
 
 Returns:
@@ -36,6 +36,8 @@ _args = _this select 1;
 // For SQL this is an INSERT command followed by the column ids and values
 // Outgoing calls to callExtension have a check to ensure they do not exceed 16kb
 // Avoided using the format command as it has a 2kb limt
+
+// Need to check if document already exists... with couchdb, record should have a _rev field. For SQL, just delete?
 
 // Validate params passed to function
 
@@ -76,7 +78,7 @@ if (typeName (_data select 0) != "STRING") then {
 	} foreach _data;
 	_data = _tmp;
 };
-	
+
 // From data passed create couchDB string
 
 _cmd = "";
@@ -85,7 +87,7 @@ _string = "";
 
 // Build the JSON command
 //_cmd = format ["SendJSON ['POST', '%1', '%2', '%3'", _module, _data, _databaseName];
-// ["SendJSON ['POST', 'events', '{key:value,key:value}', 'arma3live']; 
+// ["SendJSON ['POST', 'events', '{key:value,key:value}', 'arma3live'];
 
 if (!_async) then {
 	_cmd = format ["SendJSON [""%2"", ""%1""", _module, _method];

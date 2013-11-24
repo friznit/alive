@@ -24,17 +24,13 @@ Wolffy.au
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(restoreData_couchdb);
 
-private ["_result","_key","_logic","_input","_hash","_restore"];
+private ["_logic","_input","_hash"];
 
 _logic = _this select 0;
-_input = _this select 1;
-
-_input = _input select 0;
-
-_result = [];
+_input = (_this select 1) select 0;
 
 // Convert string to Hash
 _hash = [_input] call ALIVE_fnc_parseJSON;
@@ -43,21 +39,37 @@ TRACE_1("RESTORE DATA", _hash);
 // Restore Data types in hash
 
 // for each pair, process key and value
-_restore = {
-	
-	private ["_type","_data","_tmp"];
+ALIVE_fnc_restore = {
 
-	_type = [ALIVE_DataDictionary, "getDataDictionary", [_key]] call ALIVE_fnc_Data;
+	private ["_type","_data","_tkey","_tVal","_arrayResult"];
+
+	_tkey = _this select 0;
+	_tVal = _this select 1;
+
+
+
+	if (count _this > 2) then {
+		_arrayResult = _this select 2;
+		TRACE_3("Restore Check", _key, _tkey, _tVal);
+		_type = [ALIVE_DataDictionary, "getDataDictionary", [_tkey]] call ALIVE_fnc_Data;
+		_value = _tVal;
+	} else {
+		_arrayResult = false;
+		_type = [ALIVE_DataDictionary, "getDataDictionary", [_key]] call ALIVE_fnc_Data;
+	};
+
+	TRACE_2("FUNC RESTORE",_value, _key);
+
 	if (isNil "_type") then {
 		_type = "STRING";
 	};
-	
-	TRACE_3("COUCH RESTORE KEY/DATA", _key, _value, _type);
+
+	//
 
 	// Address each data type accordingly
 	switch(_type) do {
 			case "HASH": {
-					_data = [_logic, "restore", [_x]] call ALIVE_fnc_Data;
+					_data = [_logic, "restore", [_value]] call ALIVE_fnc_Data;
 			};
 			case "STRING": {
 					_data = _value;
@@ -67,7 +79,7 @@ _restore = {
 			};
 			case "BOOL": {
 					private["_tmp"];
-					_tmp = if(parseNumber _value == 0) then {false} else {true};
+					_tmp = if (parseNumber _value == 0) then {false} else {true};
 					_data = _tmp;
 			};
 			case "SCALAR": {
@@ -83,25 +95,56 @@ _restore = {
 					};
 			};
 			case "ARRAY": {
-					private["_tmp","_i","_tmpKey"];
-					_value = [_value, "any", "nil"] call CBA_fnc_replace;
-					_tmp = call compile _value;
+					private ["_tmp","_i","_tmpKey"];
+					TRACE_3("ARRAY RESTORE", _key, typeName _value, _value);
+
+					/*if (typeName _value != "ARRAY") then {
+						_value = [_value, "any", "nil"] call CBA_fnc_replace;
+						_tmp = call compile _value;
+					} else {
+						_tmp = + _value;
+					};*/
+
 					_data = [];
 					_i = 0;
-					_tmpKey = _key + str(_i);
 					{
-							_data set [count _data, [_tmpKey, _x] call _restore];
-							_i = _i + 1;
-					} forEach _tmp;
+						private "_item";
+						if (_arrayResult) then {
+							_tmpKey = _tkey + str(_i);
+						} else {
+							_tmpKey = _key + str(_i);
+						};
+						_item = _x;
+						TRACE_1("",_item);
+						_data set [count _data, [_tmpKey, _item, true] call ALIVE_fnc_restore];
+						_i = _i + 1;
+					} forEach _value;
+
+					TRACE_1("ARRAY RESTORED",_data);
 			};
 			default {
 				_data = _value;
 			};
 	};
-	[_hash, _key, _data] call ALIVE_fnc_hashSet;
-}; 
 
-[_hash, _restore] call CBA_fnc_hashEachPair;
+
+	if (isNil "_data" || typeName _data == "STRING") then {
+		if (isNil "_data" || _data == "any" || _data == "null") then {_data = "";};
+	};
+
+	//TRACE_1("DATA RESTORED",_data);
+
+	if (_arrayResult) exitWith {
+		_arrayResult = false;
+		_data
+	};
+
+
+	TRACE_3("COUCH RESTORE KEY/DATA", _key, _data, _type);
+	[_hash, _key, _data] call ALIVE_fnc_hashSet;
+};
+
+[_hash, ALIVE_fnc_restore] call CBA_fnc_hashEachPair;
 
 _hash;
 

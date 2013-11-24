@@ -79,57 +79,87 @@ switch(_operation) do {
                 // DEFINE PLAYER DATA
                 #include <playerData.hpp>
 
-             if (isServer) then {
+             if (isDedicated) then {
 
-                        MOD(sys_player) = _logic;
+                    MOD(sys_player) = _logic;
 
-                        // Set Module Parameters as booleans
-                        MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
-                        MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
-                        MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
-                        MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
-                        MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
+                    // Set Module Parameters as booleans
+                    MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
+                    MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
+                    MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
+                    MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
+                    MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
 
-                        MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
-                        MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
-                        MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth"), true];
-                        MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition"), true];
-                        MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores"), true];
+                    MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
+                    MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
+                    MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth"), true];
+                    MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition"), true];
+                    MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores"), true];
 
-                        // Push to clients
-                        publicVariable QMOD(sys_player);
+                    MOD(sys_player) setVariable ["saved", false];
+
+                    // Push to clients
+                    publicVariable QMOD(sys_player);
 
                 	// if server, initialise module game logic
             	   MOD(sys_player) setVariable ["super", QUOTE(SUPERCLASS)];
             	   MOD(sys_player) setVariable ["class", QUOTE(MAINCLASS)];
 
-                      TRACE_1("SYS_PLAYER LOGIC", _logic);
+                  TRACE_1("SYS_PLAYER LOGIC", _logic);
 
-            	// Grab Server ID and Mission ID
-            	private ["_serverID"];
+                	// Grab Server ID and Mission ID
+                	private ["_serverID"];
 
-            	_serverID = [] call ALIVE_fnc_getServerName;
-            	MOD(sys_player) setVariable ["serverID", _serverID];
-            	MOD(sys_player) setVariable ["missionID", missionName];
+                	_serverID = [] call ALIVE_fnc_getServerName;
+                	MOD(sys_player) setVariable ["serverID", _serverID];
+                	MOD(sys_player) setVariable ["missionID", missionName];
 
-            	// Set unique key for this mission - assuming that server name isn't going to change :(
-            	if (MOD(sys_player) getVariable ["key",""] == "") then {
-            	       MOD(sys_player) setVariable ["key", _serverID+missionName];
-            	};
+                    // Check to see if data module has been placed
+                    if !(isNil "ALIVE_sys_data") then {
+                        private ["_missionName"];
+                        // Setup data handler
+                    	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
+                    	[GVAR(datahandler),"storeType",true] call ALIVE_fnc_Data;
 
-                	// Setup data handler
-                	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
-                	[GVAR(datahandler),"source","couchdb"] call ALIVE_fnc_Data; //maybe chosen by mission maker via module params
-                	[GVAR(datahandler),"databaseName","arma3live"] call ALIVE_fnc_Data; // maybe chosen by mission maker via module params
-                	[GVAR(datahandler),"storeType",true] call ALIVE_fnc_Data;
+                        _missionName = [missionName, " ","-"] call CBA_fnc_replace;
 
-                      // Create Player Store
-                      GVAR(player_data) = [] call CBA_fnc_hashCreate;
+                        // Set key to servername if group tag not available
+                        MOD(sys_player) setVariable ["key", ([GVAR(datahandler),"key", [] call ALIVE_fnc_getServerName] call CBA_fnc_hashGet) + "_" + _missionName];
 
-                      MOD(sys_player) setVariable ["init", true, true];
+                        private ["_res"];
+                        // Check that a dictionary is available before loading any player data
 
-                        TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player) getvariable "init", MOD(sys_player) getvariable "serverID", MOD(sys_player) getvariable "missionID");
+                        if (ALIVE_sys_data_dictionaryLoaded) then {
+                            // Load Player Data for Mission
+                            _res = [MOD(sys_player), "loadPlayers", [false]] call ALIVE_fnc_player;
+                        } else {
+                            _res = "DICTIONARY NOT AVAILABLE";
+                        };
+
+                        // Check load players returned a hash
+                        if ([_res] call CBA_fnc_isHash) then {
+                            GVAR(player_data) = _res;
+                        } else {
+                                  // Create Player Store
+                                GVAR(player_data) = [] call CBA_fnc_hashCreate;
+                        };
+
+                        // Set true that player data has been loaded
+                        MOD(sys_player) setVariable ["loaded", true, true];
+
+                        TRACE_1("LOADED PLAYER DATA", _res);
+
                         TRACE_3("SYS_PLAYER DATA", MOD(sys_player), GVAR(player_data),GVAR(datahandler));
+                    };
+
+                    MOD(sys_player) setVariable ["init", true, true];
+
+                    TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player) getvariable "init", MOD(sys_player) getvariable "serverID", MOD(sys_player) getvariable "missionID");
+
+                    // Setup OPC and OPD events
+                    //[QGVAR(OPC), "OnPlayerConnected","ALIVE_fnc_player_OnPlayerConnected"] call BIS_fnc_addStackedEventHandler;
+                   // [QGVAR(OPD), "OnPlayerDisconnected","ALIVE_fnc_player_OnPlayerDisconnected"] call BIS_fnc_addStackedEventHandler;
+
 
                 } else {
                         // any client side logic for model
@@ -217,17 +247,17 @@ switch(_operation) do {
 
             	   [] spawn {
             		private ["_lastSaveTime"];
-            		_lastSaveTime = time;
-            		MOD(sys_player) setVariable ["lastDBSaveTime",time, true];
+            		_lastSaveTime = dateToNumber date;
+            		MOD(sys_player) setVariable ["lastDBSaveTime",_lastSaveTime, true];
 
             		while {!isNil QMOD(sys_player)} do {
-                                            private ["_check","_autoSaveTime","_lastDBSaveTime"];
+                        private ["_check","_autoSaveTime","_lastDBSaveTime"];
             			// Every 5 minutes store player data in memory
             			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
                                     			{
                                     				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
                                     			} foreach playableUnits;
-                                    			_lastSaveTime = time;
+                                    			_lastSaveTime = dateToNumber date;
             			};
 
             			// If auto save interval is defined and ext db is enabled, then save to external db
@@ -236,11 +266,11 @@ switch(_operation) do {
                                             _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
                                             TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
 
-            			if ( _autoSaveTime > 0 && _check && (time >= (_lastDBSaveTime + _autoSaveTime)) ) then {
+            			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) ) then {
             				// Save player data to external db
-                                                        TRACE_3("Saving players to DB", time, (_lastDBSaveTime + _autoSaveTime), _check);
-            				[MOD(sys_player), "savePlayers", []] call MAINCLASS;
-                                                       MOD(sys_player) setVariable ["lastDBSaveTime",time, true];
+                                                        TRACE_3("Saving players to DB", dateToNumber date, (_lastDBSaveTime + _autoSaveTime), _check);
+            				[MOD(sys_player), "savePlayers", [false]] call MAINCLASS;
+                                                       MOD(sys_player) setVariable ["lastDBSaveTime",dateToNumber date, true];
             			};
 
             			sleep DEFAULT_INTERVAL;
@@ -260,8 +290,8 @@ switch(_operation) do {
 
             TRACE_4("SYS_PLAYER", _logic getvariable "allowReset", _logic getvariable "allowDiffClass",_logic getvariable "allowManualSave",_logic getvariable "storeToDB" );
 
-               TRACE_1("After module init",_logic);
-                "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
+            TRACE_1("After module init",_logic);
+            "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
 
         };
 
@@ -299,14 +329,46 @@ switch(_operation) do {
                 _result = _args;
         };
         case "loadPlayers": {
-                // Load all players from external DB into player store
-                _result = false;
+                    // Load all players from external DB into player store
+
+                    _result = [GVAR(datahandler), "load", ["sys_player", _logic getvariable "key", _args select 0]] call ALIVE_fnc_Data;
+                    TRACE_1("Loading player data", _result);
         };
         case "savePlayers": {
-                // Save all players to external DB
-                // Check to see if external database selected
-                // Call save players function
-                _result = false;
+                    // Save all players to external DB
+                    private ["_ondisconnect"];
+                    _ondisconnect = _args select 0;
+                    TRACE_1("",GVAR(player_data));
+                    _result = [GVAR(datahandler), "save", ["sys_player", GVAR(player_data), _logic getvariable "key", _ondisconnect]] call ALIVE_fnc_Data;
+        };
+        case "getGear": {
+                    // Get loadout data from gear store on client and apply to player object on client
+                    private ["_gearHash","_unit"];
+                    _unit  = _args select 0;
+
+                    // Check that the hash is found
+                     if ([GVAR(gear_data), (getPlayerUID _unit)] call CBA_fnc_hashHasKey) then {
+
+                            // Grab player data from memory store
+                            _gearHash = [GVAR(gear_data), getPlayerUID _unit] call CBA_fnc_hashGet;
+                            TRACE_1("GET GEAR", _gearHash);
+
+                            // Execute getGear on local client
+                            [_unit, _gearHash] call ALiVE_fnc_getGear;
+
+                            _result = true;
+                    } else {
+                        TRACE_1("SYS_PLAYER GEAR DATA DOES NOT EXIST",_unit);
+                        _result = false;
+                    };
+        };
+        case "setGear": {
+                        // Set player data to player store
+                        private ["_gearHash","_unit"];
+                        _unit  = _args select 0;
+                        _gearHash = [_logic, _args] call ALIVE_fnc_setGear;
+                        [GVAR(gear_data), getplayerUID _unit, _gearHash] call CBA_fnc_hashSet;
+                        _result = _gearHash;
         };
         case "getPlayer": {
         	           // Get player data from player store and apply to player object on client
@@ -326,7 +388,7 @@ switch(_operation) do {
 
                             _result = true;
                     } else {
-                        TRACE_3("SYS_PLAYER PLAYER DATA DOES NOT EXIST",_unit);
+                        TRACE_1("SYS_PLAYER PLAYER DATA DOES NOT EXIST",_unit);
                         _result = false;
                     };
         };
@@ -346,17 +408,17 @@ switch(_operation) do {
                         _result = _playerHash;
         };
         case "checkPlayer": {
-        	// Check to see if the player joining has the same class as the one stored in memory
-            private ["_unit","_type","_trigger"];
-            _unit = _args select 0;
-            _type = _args select 1;
-            if (typeOf _unit != _type && _unit == player && !(MOD(sys_player) getVariable ["allowDiffClass",false])) then {
-                cutText [format["You cannot rejoin this server with a different class (expected %1)", getText (configFile>>"cfgVehicles">>_type>>"displayName")] , "PLAIN DOWN"];
-                _unit setVariable [QGVAR(kicked), true, true];
-                _trigger = createtrigger ["emptydetector", [0,0]];
-                _trigger settriggertype "end6";
-                _trigger settriggerstatements ["true","",""];
-            };
+        	       // Check to see if the player joining has the same class as the one stored in memory
+                private ["_unit","_type","_trigger"];
+                _unit = _args select 0;
+                _type = _args select 1;
+                if (typeOf _unit != _type && _unit == player && !(MOD(sys_player) getVariable ["allowDiffClass",false])) then {
+                    cutText [format["You cannot rejoin this server with a different class (expected %1)", getText (configFile>>"cfgVehicles">>_type>>"displayName")] , "PLAIN DOWN"];
+                    _unit setVariable [QGVAR(kicked), true, true];
+                    _trigger = createtrigger ["emptydetector", [0,0]];
+                    _trigger settriggertype "end6";
+                    _trigger settriggerstatements ["true","",""];
+                };
         };
         case "manualSavePlayer": {
             private ["_playerHash","_unit"];

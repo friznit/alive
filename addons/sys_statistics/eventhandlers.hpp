@@ -3,16 +3,6 @@ class Extended_PreInit_EventHandlers
  class alive_sys_statistics
  {
   init = "call ('\x\alive\addons\sys_statistics\XEH_preInit.sqf' call SLX_XEH_COMPILE)";
-  serverInit = "call ('\x\alive\addons\sys_statistics\XEH_preServerInit.sqf' call SLX_XEH_COMPILE)";
- };
-};
-
-class Extended_PostInit_EventHandlers
-{
- class alive_sys_statistics
- {
-  serverInit = "call ('\x\alive\addons\sys_statistics\XEH_PostServerInit.sqf' call SLX_XEH_COMPILE)";
-  clientInit = "call ('\x\alive\addons\sys_statistics\XEH_postClientInit.sqf' call SLX_XEH_COMPILE)";
  };
 };
 

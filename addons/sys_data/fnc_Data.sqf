@@ -1,4 +1,4 @@
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(Data);
 
 /* ----------------------------------------------------------------------------
@@ -36,10 +36,6 @@ Tupolov
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_Data
 
-#define DEFAULT_NAME QUOTE(alivedb)
-#define DEFAULT_SOURCE QUOTE(couchdb)
-#define DEFAULT_STORETYPE true
-
 private ["_result", "_operation", "_args", "_logic", "_ops"];
 
 _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
@@ -49,15 +45,15 @@ _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 TRACE_3("SYS_DATA",_logic, _operation, _args);
 
 _ops = ["read","write","update","delete","load","save","convert","restore"];
-		
+
 _result = true;
 
 if (_operation in _ops) then {
-	
+
 			ASSERT_TRUE(typeName _args == "ARRAY", _args);
 			if(typeName _args == "ARRAY") then {
 				private ["_function","_script"];
-				_source = [_logic, "source", DEFAULT_SOURCE] call ALIVE_fnc_hashGet;
+				_source = [_logic, "source"] call ALIVE_fnc_hashGet;
 				_script = format ["ALIVE_fnc_%1Data_%2", _operation, _source];
 				_function = call compile _script;
 				TRACE_2("SYS_DATA: Operation Request - ",_source, _script);
@@ -69,28 +65,30 @@ if (_operation in _ops) then {
 				_result = false;
 			};
 } else {
-				
+
 	switch(_operation) do {
-	
-        case "create": {                
+
+        case "create": {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
                 */
-                
+
                 if (isServer) then {
 
                         // if server, initialise module game logic
                         _logic = [nil, "create"] call SUPERCLASS;
                         [_logic, "super", QUOTE(SUPERCLASS)] call ALIVE_fnc_hashSet;
                         [_logic, "class", QUOTE(MAINCLASS)] call ALIVE_fnc_hashSet;
-                        //[_logic, "super", ""] call ALIVE_fnc_hashSet;
-                        //[_logic, "class", ""] call ALIVE_fnc_hashSet;
-                        
+                        [_logic, "databaseName", GVAR(databaseName)] call ALIVE_fnc_hashSet;
+                        [_logic, "source", GVAR(source)] call ALIVE_fnc_hashSet;
+                        [_logic, "storeTYpe", true] call ALIVE_fnc_hashSet;
+                        [_logic, "key", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
+
 						TRACE_1("After module init",_logic);
-						
+
 						_result = _logic;
-									
+
                 } else {
                         // any client side logic
                 };
@@ -100,17 +98,17 @@ if (_operation in _ops) then {
                 - initialise menu
                 - frequent check to modify menu and display status (ALIVE_fnc_adminActoinsmenuDef)
                 */
-                
-                
+
+
                 /*
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_statisticsmenuDef)
                 */
         };
-		
+
 		case "databaseName": {
 			ASSERT_TRUE(typeName _args == "STRING", _args);
-			if(typeName _args == "STRING") then { 
+			if(typeName _args == "STRING") then {
 				_result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
 			} else {
 				private["_err"];
@@ -118,10 +116,10 @@ if (_operation in _ops) then {
                 ERROR_WITH_TITLE(str _logic,_err);
 			};
 		};
-		
+
 		case "storeType": {
 			ASSERT_TRUE(typeName _args == "BOOL", _args);
-			if(typeName _args == "BOOL") then { 
+			if(typeName _args == "BOOL") then {
 				_result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
 			} else {
 				private["_err"];
@@ -129,7 +127,7 @@ if (_operation in _ops) then {
                 ERROR_WITH_TITLE(str _logic,_err);
 			};
 		};
-		
+
 		case "setDataDictionary": {
 			ASSERT_TRUE(typeName _args == "ARRAY", _args);
 			if(typeName _args == "ARRAY") then {
@@ -145,10 +143,10 @@ if (_operation in _ops) then {
 				_result = false;
 			};
 		};
-		
+
 		case "getDataDictionary": {
 			ASSERT_TRUE(typeName _args == "ARRAY", _args);
-			if(typeName _args == "ARRAY") then { 
+			if(typeName _args == "ARRAY") then {
 				_result = [ALIVE_DataDictionary, _args select 0, "STRING"] call ALIVE_fnc_hashGet;
 			} else {
 				private["_err"];
@@ -157,10 +155,10 @@ if (_operation in _ops) then {
 				_result = false;
 			};
 		};
-		
+
 		case "source": {
 			ASSERT_TRUE(typeName _args == "STRING", _args);
-			if(typeName _args == "STRING") then { 
+			if(typeName _args == "STRING") then {
 				_result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
 			} else {
 				private["_err"];
@@ -169,31 +167,31 @@ if (_operation in _ops) then {
 				_result = false;
 			};
 		};
-		
+
 		case "debug": {
                 if(typeName _args != "BOOL") then {
                         _args = [_logic, "debug", false] call ALIVE_fnc_hashGet;
                 } else {
                         _result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
-                };                
+                };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
-                
+
                 if(_args) then {
 
                 };
                 _result = _args;
-        }; 
-		
+        };
+
         case "destroy": {
 				[_logic, "debug", false] call MAINCLASS;
 				if (isServer) then {
 						// if server
 						[_logic, "destroy"] call SUPERCLASS;
 				};
-				
+
 				_logic = nil;
         };
-		
+
         default {
 			_result = [_logic, _operation, _args] call SUPERCLASS;
         };

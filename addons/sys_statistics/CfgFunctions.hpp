@@ -31,6 +31,11 @@ class cfgFunctions {
 								file = "\x\alive\addons\sys_statistics\fnc_stats_createPlayerProfile.sqf";
 								recompile = RECOMPILE;
 						};
+						class statisticsInit {
+                                description = "The module init function";
+                                file = "\x\alive\addons\sys_statistics\fnc_statisticsInit.sqf";
+								recompile = RECOMPILE;
+                        };
 				};
         };
 };

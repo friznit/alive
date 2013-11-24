@@ -16,16 +16,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_player\fnc_playerMenuDef.sqf";
 				recompile = RECOMPILE;
                         };
-                        class loadPlayers {
-                                description = "Loads all player data from external db into the store";
-                                file = "\x\alive\addons\sys_player\fnc_loadPlayers.sqf";
-				recompile = RECOMPILE;
-                        };
-                        class savePlayers {
-                                description = "Saves all player data from the store into the external db";
-                                file = "\x\alive\addons\sys_player\fnc_savePlayers.sqf";
-				recompile = RECOMPILE;
-                        };
                         class getPlayer {
                                 description = "Gets player data from the store and applies it to the player object";
                                 file = "\x\alive\addons\sys_player\fnc_getPlayer.sqf";
@@ -34,6 +24,16 @@ class cfgFunctions {
                         class setPlayer {
                                 description = "Sets player data to the store";
                                 file = "\x\alive\addons\sys_player\fnc_setPlayer.sqf";
+                                recompile = RECOMPILE;
+                        };                                
+                        class getGear {
+                                description = "Gets loadout data from a store and applies it to the player object";
+                                file = "\x\alive\addons\sys_player\fnc_getGear.sqf";
+                                recompile = RECOMPILE;
+                        };
+                        class setGear {
+                                description = "Sets loadout data to a store";
+                                file = "\x\alive\addons\sys_player\fnc_setGear.sqf";
 				recompile = RECOMPILE;
                         };
                         class player_OnPlayerDisconnected {

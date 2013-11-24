@@ -47,6 +47,9 @@ if (local _player) then {
 	_player setVariable [QGVAR(player_data), _playerHash];
 	GVAR(resetAvailable) = true;
 
+	// Store the document revision number on the player object
+	_player setVariable ["_rev", [_playerHash,"_rev"] call CBA_fnc_hashGet, true];
+
 	// Get save options
 	_saveLoadout = _logic getvariable ["saveLoadout",true];
 	_saveHealth = _logic getvariable ["saveHealth",true];
@@ -75,7 +78,7 @@ if (local _player) then {
 
 	TRACE_5("SYS_PLAYER GET PLAYER SETTINGS",_saveLoadout,_saveHealth,_savePosition,_saveScores, count _data);
 
-	// Run data collection commands
+	// Run data commands
 	{
 		private ["_key","_cmd","_value"];
 		_key = _x select 0;

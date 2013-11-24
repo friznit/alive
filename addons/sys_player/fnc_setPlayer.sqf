@@ -40,6 +40,11 @@ _player = _args select 0;
 
 _playerHash = [] call CBA_fnc_hashCreate;
 
+// ensure last document revision is passed with the new player record if it exists
+if (_player getVariable ["_rev","MISSING"] != "MISSING") then {
+	[_playerHash, "_rev", _player getVariable "_rev"] call CBA_fnc_hashSet;
+};
+
 	// Get save options
 	_saveLoadout = _logic getvariable ["saveLoadout",true];
 	_saveHealth = _logic getvariable ["saveHealth",true];

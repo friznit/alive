@@ -6,6 +6,11 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data\fnc_data.sqf";
 					recompile = RECOMPILE;
 				};
+                class dataInit {
+                    description = "The module initialisation function";
+                    file = "\x\alive\addons\sys_data\fnc_dataInit.sqf";
+					recompile = RECOMPILE;
+                };
 				class sendToPlugIn {
 					description = "Sends data to an external plugin via arma2net";
 					file = "\x\alive\addons\sys_data\fnc_sendToPlugIn.sqf";
@@ -29,6 +34,11 @@ class cfgFunctions {
 				class getServerTime {
 					description = "Gets the current local time from the server via arma2net";
 					file = "\x\alive\addons\sys_data\fnc_getServerTime.sqf";
+					recompile = RECOMPILE;
+				};
+				class getGroupID {
+					description = "Gets the group ID via arma2net";
+					file = "\x\alive\addons\sys_data\fnc_getGroupID.sqf";
 					recompile = RECOMPILE;
 				};
 				class parseJSON {

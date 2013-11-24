@@ -21,7 +21,7 @@ Tupolov
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(readData_couchdb);
 
 private ["_response","_result","_error","_module","_data","_pairs","_cmd","_json","_logic","_args","_convert","_db"];
@@ -49,7 +49,7 @@ if (_uid != "") then {
 	// use keys to grab one or more documents
 	_cmd = format ["SendJSON [""GET"", ""%1/_all_docs?startkey=%2&endkey=%3&include_docs=true"", """" ", _module, str(_keys select 0), str(_keys select 1)];
 };
-	
+
 // Add databaseName
 _db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
@@ -62,14 +62,14 @@ TRACE_1("COUCH READ DATA", _json);
 _response = [_json] call ALIVE_fnc_sendToPlugIn;
 
 // From response create key/value pair arrays
-if (_response != "ERROR") then {	
-	
+if (_response != "ERROR") then {
+
 	_result = [_logic, "restore", [_response]] call ALIVE_fnc_Data;
 
 } else {
 	_result = _response;
 };
-TRACE_1("COUCH READ RESPONSE", _response);
+TRACE_2("COUCH READ", _response, _result);
 
 /*
 	// Handle data error
@@ -79,5 +79,5 @@ TRACE_1("COUCH READ RESPONSE", _response);
 */
 
 _result;
-		
+
 
