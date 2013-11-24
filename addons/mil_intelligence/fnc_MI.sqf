@@ -350,7 +350,7 @@ switch(_operation) do {
 									_section = [_objective,"section"] call ALIVE_fnc_hashGet;
 									_center = [_objective,"center"] call ALIVE_fnc_hashGet;
 									_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-									_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;		
+									_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
 
 									if("entitiesBySide" in (_sectorData select 1)) then {								
 										
