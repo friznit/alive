@@ -459,56 +459,60 @@ switch(_operation) do {
                     
                     ///*//INTREP WIP
                     _center = [_objective,"center"] call ALIVE_fnc_hashGet;
-         			_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-         			_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
-                    _sectorTerrainSamples = [_sectordata,"terrainSamples",[]] call ALiVE_fnc_HashGet;
-         			_milClusters = [_sectordata,"clustersMil",[]] call ALiVE_fnc_HashGet;
-                    _civClusters = [_sectordata,"clustersCiv",[]] call ALiVE_fnc_HashGet;
                     
-                    _highest = ([_sectordata,"elevationSamplesLand",[]] call ALiVE_fnc_HashGet) select ((count ([_sectordata,"elevationSamplesLand"] call ALiVE_fnc_HashGet))-1);
-                    _lowest = ([_sectordata,"elevationSamplesLand",[]] call ALiVE_fnc_HashGet) select 0;
-                    _shore = [_sectorTerrainSamples,"shore",[]] call ALiVE_fnc_HashGet;
-                    
-                    _consolidated = [_civClusters,"consolidated",[]] call ALivE_fnc_HashGet;
-					_power =  [_civClusters,"power",[]] call ALivE_fnc_HashGet;
-					_comms =  [_civClusters,"comms",[]] call ALivE_fnc_HashGet;
-					_marine = [_civClusters,"marine",[]] call ALivE_fnc_HashGet;
-					_fuel = [_civClusters,"fuel",[]] call ALivE_fnc_HashGet;
-					_rail = [_civClusters,"rail",[]] call ALivE_fnc_HashGet;
-					_construction = [_civClusters,"construction",[]] call ALivE_fnc_HashGet;
-					_settlement = [_civClusters,"settlement",[]] call ALivE_fnc_HashGet;
-                    
-                    _messageIntel = (format["The highest point in this sector is the hill at %1!",_highest]);
-                    
-                    if (count (_power + _comms + _marine + _fuel + _rail + _settlement) > 0) then {
-                        if (count _power > 0) then {
-                        	_messageIntel = _messageIntel + " " + (format["Power infrastructure is found near %1!",_power select 0 select 0]);
+                    if !(isnil "ALIVE_sectorGrid") then {
+	         			_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+	         			_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+	                    _sectorTerrainSamples = [_sectordata,"terrainSamples",[]] call ALiVE_fnc_HashGet;
+	         			_milClusters = [_sectordata,"clustersMil",[]] call ALiVE_fnc_HashGet;
+	                    _civClusters = [_sectordata,"clustersCiv",[]] call ALiVE_fnc_HashGet;
+	                    
+	                    _highest = ([_sectordata,"elevationSamplesLand",[]] call ALiVE_fnc_HashGet) select ((count ([_sectordata,"elevationSamplesLand"] call ALiVE_fnc_HashGet))-1);
+	                    _lowest = ([_sectordata,"elevationSamplesLand",[]] call ALiVE_fnc_HashGet) select 0;
+	                    _shore = [_sectorTerrainSamples,"shore",[]] call ALiVE_fnc_HashGet;
+                        
+                        _messageIntel = (format["The highest point in this sector is the hill at %1!",_highest]);
+                        
+                        if (!(isnil "_civClusters") && {count _civClusters > 0}) then {
+		                    _consolidated = [_civClusters,"consolidated",[]] call ALivE_fnc_HashGet;
+							_power =  [_civClusters,"power",[]] call ALivE_fnc_HashGet;
+							_comms =  [_civClusters,"comms",[]] call ALivE_fnc_HashGet;
+							_marine = [_civClusters,"marine",[]] call ALivE_fnc_HashGet;
+							_fuel = [_civClusters,"fuel",[]] call ALivE_fnc_HashGet;
+							_rail = [_civClusters,"rail",[]] call ALivE_fnc_HashGet;
+							_construction = [_civClusters,"construction",[]] call ALivE_fnc_HashGet;
+							_settlement = [_civClusters,"settlement",[]] call ALivE_fnc_HashGet;
+		                    
+		                    if (count (_power + _comms + _marine + _fuel + _rail + _settlement) > 0) then {
+		                        if (count _power > 0) then {
+		                        	_messageIntel = _messageIntel + " " + (format["Power infrastructure is found near %1!",_power select 0 select 0]);
+		                        };
+		                        if (count _comms > 0) then {
+		                        	_messageIntel = _messageIntel + " " + (format["There are communication towers at %1!",_comms select 0 select 0]);
+		                        };
+		                    	if (count _fuel > 0) then {
+		                        	_messageIntel = _messageIntel + " " + (format["Fuel supplies are located at %1!",_fuel select 0 select 0]);
+		                        };
+		                        if (count _settlement > 0) then {
+		                        	_messageIntel = _messageIntel + " " + (format["A nearby civilian settlement is around %1!",_settlement select 0 select 0]);
+		                        };
+		                    };
                         };
-                        if (count _comms > 0) then {
-                        	_messageIntel = _messageIntel + " " + (format["There are communication towers at %1!",_comms select 0 select 0]);
-                        };
-                    	if (count _fuel > 0) then {
-                        	_messageIntel = _messageIntel + " " + (format["Fuel supplies are located at %1!",_fuel select 0 select 0]);
-                        };
-                        if (count _settlement > 0) then {
-                        	_messageIntel = _messageIntel + " " + (format["A nearby civilian settlement is around %1!",_settlement select 0 select 0]);
-                        };
+	                   
+	                    _enemies = [];
+	                    {
+	                        _enemies = _enemies + ([_pos, 1000, [_x,"entity"]] call ALIVE_fnc_getNearProfiles);
+	                    } foreach ([_logic,"sidesenemy",[]] call ALiVE_fnc_HashGet);
+	                    
+	                    _strength = "minimal";
+	                    if (count _enemies > 10) then {_strength = "light"};
+	                    if (count _enemies > 30) then {_strength = ""};
+	                    if (count _enemies > 50) then {_strength = "heavy"};
+	                    
+	                    _messageIntel = (format["You have to expect %1 enemy resistance!",_strength]) + " " + _messageIntel;
+	                    _desc = _desc + " " + _messageIntel;
                     };
-                   
-                    _enemies = [];
-                    {
-                        _enemies = _enemies + ([_pos, 1000, [_x,"entity"]] call ALIVE_fnc_getNearProfiles);
-                    } foreach ([_logic,"sidesenemy",[]] call ALiVE_fnc_HashGet);
-                    
-                    _strength = "minimal";
-                    if (count _enemies > 10) then {_strength = "light"};
-                    if (count _enemies > 30) then {_strength = ""};
-                    if (count _enemies > 50) then {_strength = "heavy"};
-                    
-                    _messageIntel = (format["You have to expect %1 enemy resistance!",_strength]) + " " + _messageIntel;
-                    _desc = _desc + " " + _messageIntel;
                     //*/
-                    
                     
                     _taskParams = [
                     	_id,
