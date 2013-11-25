@@ -107,7 +107,8 @@ switch(_operation) do {
 
                   TRACE_1("SYS_PLAYER LOGIC", _logic);
 
-                  MOD(sys_player) setVariable ["missionID", missionName];
+                    // Create Player Store in memory
+                    GVAR(player_data) = [] call CBA_fnc_hashCreate;
 
                     // Check to see if data module has been placed
                     if !(isNil "ALIVE_sys_data") then {
@@ -139,9 +140,6 @@ switch(_operation) do {
                         // Check load players returned a hash
                         if ([_res] call CBA_fnc_isHash) then {
                             GVAR(player_data) = _res;
-                        } else {
-                                  // Create Player Store
-                                GVAR(player_data) = [] call CBA_fnc_hashCreate;
                         };
 
                         // Set true that player data has been loaded
@@ -153,8 +151,6 @@ switch(_operation) do {
                     };
 
                     MOD(sys_player) setVariable ["init", true, true];
-
-                    //TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player) getvariable "init", MOD(sys_player) getvariable "serverID", MOD(sys_player) getvariable "missionID");
 
                     // Setup OPC and OPD events
                     //[QGVAR(OPC), "OnPlayerConnected","ALIVE_fnc_player_OnPlayerConnected"] call BIS_fnc_addStackedEventHandler;
