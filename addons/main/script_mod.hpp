@@ -4,8 +4,8 @@
 // TODO: Consider Mod-wide or Component-narrow versions (or both, depending on wishes!)
 #define MAJOR 0
 #define MINOR 5
-#define PATCHLVL 0
-#define BUILD 1311211
+#define PATCHLVL 1
+#define BUILD 1311251
 
 #define VERSION MAJOR.MINOR.PATCHLVL.BUILD
 #define VERSION_AR MAJOR,MINOR,PATCHLVL,BUILD
@@ -37,5 +37,5 @@
 //	#define DEBUG_ENABLED_SYS_PERF
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
-#define RECOMPILE 1
+#define RECOMPILE 0
 #define MODULE_AUTHOR QUOTE(ALiVE Add-on Team)
