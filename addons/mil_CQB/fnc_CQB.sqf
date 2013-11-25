@@ -353,7 +353,7 @@ switch(_operation) do {
 					_cqbai = _cqbai + count units _x;
 				};
 			} forEach (_logic getVariable ["groups",[]]);
-			format["CQB Population: %1 remaing positions | %2 active positions | %3 local CQB AI...", _remaincount, _activecount, _cqbai] call ALiVE_fnc_logger;        
+			["CQB Population: %1 remaing positions | %2 active positions | %3 local CQB AI...", _remaincount, _activecount, _cqbai] call ALiVE_fnc_Dump;        
 		};
 		_args;
 	};
@@ -481,7 +481,7 @@ switch(_operation) do {
 			[_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceAdd;
 
             if (_logic getVariable ["debug", false]) then {
-                format["CQB Population: Adding house %1...", _house] call ALiVE_fnc_logger;
+                ["CQB Population: Adding house %1...", _house] call ALiVE_fnc_Dump;
 				_m = format[MTEMPLATE, _house];
 				if(str getMarkerPos _m == "[0,0,0]") then {
 					createmarkerLocal [_m, getPosATL _house];
@@ -510,7 +510,7 @@ switch(_operation) do {
 			[_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceRemove;
 
 			if (_logic getVariable ["debug", false]) then {
-				format["CQB Population: Clearing house %1...", _house] call ALiVE_fnc_logger;
+				["CQB Population: Clearing house %1...", _house] call ALiVE_fnc_Dump;
 			};
 			deleteMarkerLocal format[MTEMPLATE, _house];
 		};
@@ -583,7 +583,7 @@ switch(_operation) do {
 			(leader _grp) setVariable ["house",_house, true];
 			
 	        if (_logic getVariable ["debug", false]) then {
-	        	format["CQB Population: Group %1 created on %2", _grp, owner leader _grp] call ALiVE_fnc_logger;
+	        	["CQB Population: Group %1 created on %2", _grp, owner leader _grp] call ALiVE_fnc_Dump;
 			};
 			// mark active houses
 			format[MTEMPLATE, _house] setMarkerTypeLocal "Waypoint";
@@ -608,7 +608,7 @@ switch(_operation) do {
 			} forEach units _grp;
 			
 		if (_logic getVariable ["debug", false]) then {
-			format["CQB Population: Group %1 deleted from %2...", _grp, owner leader _grp] call ALiVE_fnc_logger;
+			["CQB Population: Group %1 deleted from %2...", _grp, owner leader _grp] call ALiVE_fnc_Dump;
 		};
 		format[MTEMPLATE, _house] setMarkerTypeLocal "mil_Dot";
 		deleteGroup _grp;
@@ -665,14 +665,12 @@ switch(_operation) do {
 										
 			if (count units _grp == 0) exitWith {
 				if (_debug) then {
-					format["CQB Population: Group %1 deleted on creation - no units...", _grp] call ALiVE_fnc_logger;
+					["CQB Population: Group %1 deleted on creation - no units...", _grp] call ALiVE_fnc_Dump;
 				};
 				[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
 			};
 			// position AI
 			_positions = [_house] call ALiVE_fnc_getBuildingPositions;
-            
-            diag_log _positions;
             
 			{
 		        _pos = (_positions call BIS_fnc_selectRandom);
@@ -768,7 +766,7 @@ switch(_operation) do {
                                             //[_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
                                             [_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
                                             
-                                            format["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_dominantFaction] call ALiVE_fnc_logger;
+                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_dominantFaction] call ALiVE_fnc_Dump;
                                             sleep 0.1;
 	                                    } else {
 	                                        diag_log format ["CQB ERROR: Null object on host %1",_host];
@@ -788,21 +786,26 @@ switch(_operation) do {
                             // get house in question
 							_house = _leader getVariable ["house",(_grp getvariable "house")];
                             
-                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
-                            // If not all units are flagged with house then flag them;
-                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
-                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
-                            };
-							
-							// if group are all dead
-							// mark house as cleared
-							if ({alive _x} count (units _grp) == 0) then {
-                                
-                                if (isnil "_house") exitwith {diag_log "CQB ERROR: _House didnt exist, when trying to clear it!"; };
+                            //If house is defined then... (can be disabled due to "object streaming")
+                            if !(isnil "_house") then {
+	                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
+	                            // If not all units are flagged with house then flag them;
+	                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
+	                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
+	                            };
 								
-                                // update central CQB house listings
-								[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
-							};
+								// if group are all dead
+								// mark house as cleared
+								if ({alive _x} count (units _grp) == 0) then {
+	                                
+	                                if (isnil "_house") exitwith {diag_log "CQB ERROR: _House didnt exist, when trying to clear it!"};
+									
+	                                // update central CQB house listings
+									[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
+								};
+                            } else {
+                                ["No House was defined for CQB group %1! Count units in group that have _house set: %2", _grp, {!(isnil {_x getvariable ["house",nil]})} count (units _grp)] call ALiVE_fnc_Dump;
+                            };
 						} forEach (_logic getVariable ["groups",[]]);
                         
                         if (_debug) then {
@@ -811,7 +814,7 @@ switch(_operation) do {
 							_activecount = count (_logic getVariable ["groups", []]);
 	                        _groupsempty = {(isNil {(leader _x) getVariable "house"})} count (_logic getVariable ["groups", []]);
 	                        
-	                       format["CQB Population: %1 remaing positions | %2 active positions | inactive houses %3 | groups with no house %4...", _remaincount, _activecount,_housesempty,_groupsempty] call ALiVE_fnc_logger; 
+	                       ["CQB Population: %1 remaing positions | %2 active positions | inactive houses %3 | groups with no house %4...", _remaincount, _activecount,_housesempty,_groupsempty] call ALiVE_fnc_Dump; 
                         };
 
 						!([_logic,"active"] call ALiVE_fnc_CQB);
