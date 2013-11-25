@@ -2,7 +2,8 @@
 								private ["_minWeatherChangeTimeMin", "_maxWeatherChangeTimeMin", "_minTimeBetweenWeatherChangesMin", "_maxTimeBetweenWeatherChangesMin", "_rainIntervalRainProbability", "_windChangeProbability"];
 								private ["_minimumFog", "_maximumFog", "_minimumOvercast", "_maximumOvercast", "_minimumRain", "_maximumRain", "_minimumWind", "_maximumWind", "_minRainIntervalTimeMin", "_maxRainIntervalTimeMin", "_forceRainToStopAfterOneRainInterval", "_maxWind"];
                 _this = []; _debug = WEATHER_DEBUG; _initialFog = -1; _initialOvercast = -1; _initialRain = -1; _initialWind = [-1, -1];
-								_minWeatherChangeTimeMin = 10; _maxWeatherChangeTimeMin = 20; _minTimeBetweenWeatherChangesMin = 5; _maxTimeBetweenWeatherChangesMin = 10; _minimumFog = 0; _maximumFog = 0.1; _minimumOvercast = 0; _maximumOvercast = 1;
+								_minWeatherChangeTimeMin = WEATHER_CHANGE_MIN; _maxWeatherChangeTimeMin = WEATHER_CHANGE_MAX; _minTimeBetweenWeatherChangesMin = WEATHER_CHANGE_MIN/2; _maxTimeBetweenWeatherChangesMin = WEATHER_CHANGE_MAX/2; 
+								_minimumFog = 0; _maximumFog = 0.1; _minimumOvercast = 0; _maximumOvercast = 1;
 								_minimumRain = 0; _maximumRain = 0.8; _minimumWind = 0; _maximumWind = 1; _windChangeProbability = 25; _rainIntervalRainProbability = 50; _LightningProbability = 15; _minRainIntervalTimeMin = 0;
 								_maxRainIntervalTimeMin = (_maxWeatherChangeTimeMin + _maxTimeBetweenWeatherChangesMin) / 2; _forceRainToStopAfterOneRainInterval = false;
 								_initialFog = (_minimumFog + random (_maximumFog - _minimumFog)); _initialFogDecay = _initialFog/10+random _initialFog/100;
@@ -92,7 +93,7 @@
 										{
 											case 1: { };  // Random
 											case 2: { _initialOvercast = 0; _initialFog = 0; _initialRain = 0; };  // Clear
-											case 3: { _initialOvercast = 0.51; _initialFog = 0; };  // Overcast
+											case 3: { _initialOvercast = 0.41; _initialFog = 0; };  // Overcast
 											case 4: { _initialOvercast = 0.95; _initialFog = 0; _initialRain = 1; };  // Stormy
 										};
                 

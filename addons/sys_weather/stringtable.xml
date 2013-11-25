@@ -20,4 +20,18 @@
 <Key ID="STR_ALIVE_WEATHER_INITIAL_COMMENT">
 	<English>Initial weather setting</English>
 </Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MIN">
+	<English>Change Min:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MIN_COMMENT">
+	<English>Minimum time in minutes for the weather to change</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MAX">
+	<English>Change Max:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MAX_COMMENT">
+	<English>Maximum time in minutes for the weather to change</English>
+</Key>
 </Container></Package></Project>
+
+
