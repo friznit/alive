@@ -1,8 +1,0 @@
-TODO
-- Start module by default without need to place editor module
-- Turn module off if editor module placed
-- Fix unitkilled to pick up on vehicles
-- Fix fired to pick up on player firing from vehicle
-- confirm integer code is working
-- separate out data handling code
-- 
