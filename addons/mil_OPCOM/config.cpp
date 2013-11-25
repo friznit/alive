@@ -16,7 +16,7 @@ class CfgMissions
         {
                 displayName = "$STR_A3_CFGMISSIONS_SHOWCASES0";
                 briefingName = "$STR_A3_CFGMISSIONS_SHOWCASES0";
-                author = "$STR_A3_Bohemia_Interactive";
+                author = MODULE_AUTHOR;
                 overviewPicture = "a3\Missions_F_Beta\data\img\Campaign_overview_CA.paa";
                 overviewText = "$STR_A3_CFGMISSIONS_SHOWCASES0";
                 

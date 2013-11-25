@@ -10,7 +10,7 @@ class CfgVehicles {
                 isPersistent = 1;
                 icon = "x\alive\addons\sys_data\icon_sys_data.paa";
                 picture = "x\alive\addons\sys_data\icon_sys_data.paa";
-                author = "Tupolov";
+                author = MODULE_AUTHOR;
                 class ModuleDescription
                 {
                         description = "This module allows you to persist mission data to an external database as well as enabling data storage for all other modules. This module is required for statistics too."; // Short description, will be formatted as structured text       
