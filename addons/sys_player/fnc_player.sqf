@@ -107,16 +107,16 @@ switch(_operation) do {
 
                   TRACE_1("SYS_PLAYER LOGIC", _logic);
 
-                	// Grab Server ID and Mission ID
-                	private ["_serverID"];
-
-                	_serverID = [] call ALIVE_fnc_getServerName;
-                	MOD(sys_player) setVariable ["serverID", _serverID];
-                	MOD(sys_player) setVariable ["missionID", missionName];
+                  MOD(sys_player) setVariable ["missionID", missionName];
 
                     // Check to see if data module has been placed
                     if !(isNil "ALIVE_sys_data") then {
-                        private ["_missionName"];
+                        // Grab Server ID and Mission ID
+                        private ["_serverID","_missionName"];
+
+                        _serverID = [] call ALIVE_fnc_getServerName;
+                        MOD(sys_player) setVariable ["serverID", _serverID];
+
                         // Setup data handler
                     	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
                     	[GVAR(datahandler),"storeType",true] call ALIVE_fnc_Data;
@@ -154,7 +154,7 @@ switch(_operation) do {
 
                     MOD(sys_player) setVariable ["init", true, true];
 
-                    TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player) getvariable "init", MOD(sys_player) getvariable "serverID", MOD(sys_player) getvariable "missionID");
+                    //TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player) getvariable "init", MOD(sys_player) getvariable "serverID", MOD(sys_player) getvariable "missionID");
 
                     // Setup OPC and OPD events
                     //[QGVAR(OPC), "OnPlayerConnected","ALIVE_fnc_player_OnPlayerConnected"] call BIS_fnc_addStackedEventHandler;
