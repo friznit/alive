@@ -82,6 +82,8 @@ switch(_operation) do {
                 - initialise 
                 */
                 WEATHER_DEBUG = call compile (_logic getvariable ["weather_debug_setting","false"]);
+                WEATHER_CHANGE_MIN = _logic getvariable ["weather_change_min_setting",40];
+                WEATHER_CHANGE_MAX = _logic getvariable ["weather_change_max_setting",60];
                 Waituntil {!(isnil "WEATHER_DEBUG")};
 								call ALIVE_fnc_weatherFX;
 
