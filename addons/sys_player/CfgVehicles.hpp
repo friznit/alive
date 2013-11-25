@@ -9,6 +9,11 @@ class CfgVehicles {
                 isPersistent = 1;
 		icon = "x\alive\addons\sys_player\icon_sys_player.paa";
 		picture = "x\alive\addons\sys_player\icon_sys_player.paa";
+                author = MODULE_AUTHOR;
+                class ModuleDescription
+                {
+                        description = "This module allows you to persist player state between reconnects and server restarts."; // Short description, will be formatted as structured text       
+                }; 
                 class Arguments
                 {
                         class key
