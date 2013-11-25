@@ -67,7 +67,25 @@ class CfgVehicles {
 			                                        };
 			                                };
 			                        };
+			                        
+			                        class weather_change_min_setting
+			                        {
+			                                displayName = "$STR_ALIVE_WEATHER_CHANGE_MIN";
+			                                description = "$STR_ALIVE_WEATHER_CHANGE_MIN_COMMENT";
+                               			  defaultValue = 40;
+                                      typeName = "NUMBER";
+			                        };
+			                        
+			                        class weather_change_max_setting
+			                        {
+			                                displayName = "$STR_ALIVE_WEATHER_CHANGE_MAX";
+			                                description = "$STR_ALIVE_WEATHER_CHANGE_MAX_COMMENT";
+                               			  defaultValue = 60;
+                                      typeName = "NUMBER";
+			                        };           
 			          };
 			                
 			  };
 };
+
+

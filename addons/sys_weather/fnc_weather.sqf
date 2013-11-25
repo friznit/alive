@@ -65,6 +65,8 @@ switch(_operation) do {
                         _logic setVariable ["class", ALIVE_fnc_weather];
                         _logic setVariable ["init", true, true];
                         INITIAL_WEATHER = call compile (_logic getvariable ["weather_initial_setting","false"]);
+                        WEATHER_CHANGE_MIN = _logic getvariable ["weather_change_min_setting",40];
+                        WEATHER_CHANGE_MAX = _logic getvariable ["weather_change_max_setting",60];
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
