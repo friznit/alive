@@ -50,21 +50,6 @@ ASSERT_OP(typeName _args, == ,"ARRAY", _err);
 // Validate args
 _module = _args select 0;
 _data = _args select 1;
-_method = "POST";
-
-if (count _args > 2) then {
-	_async = _args select 2;
-} else {
-	_async = false;
-	_uid = "";
-};
-
-// If the UID is specified then add it to the URL
-if (count _args > 3) then {
-	_uid = _args select 3;
-	_module = format ["%1/%2", _module, _uid];
-	_method = "PUT";
-};
 
 // Check to see if ARRAY rather than CBA HASH has been passed as data
 if (typeName (_data select 0) != "STRING") then {
@@ -79,8 +64,31 @@ if (typeName (_data select 0) != "STRING") then {
 	_data = _tmp;
 };
 
-// From data passed create couchDB string
+// Check to see if document needs to be written or appended. If appending, use PUT method
+_rev = [_data, "_rev", "MISSING"] call ALIVE_fnc_hashGet;
+if (_rev != "MISSING") then {
+	// Update mission data
+	_method = "PUT";
+} else {
+	_method = "POST";
+};
 
+// Add the async flag
+if (count _args > 2) then {
+	_async = _args select 2;
+} else {
+	_async = false;
+	_uid = "";
+};
+
+// If the UID is specified then add it to the URL
+if (count _args > 3) then {
+	_uid = _args select 3;
+	_module = format ["%1/%2", _module, _uid];
+	_method = "PUT";
+};
+
+// From data passed create couchDB string
 _cmd = "";
 _json = "";
 _string = "";

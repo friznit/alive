@@ -41,16 +41,13 @@ _result = "";
 // For each record in the store, save the data to a document in the module table, unique key is the mission key + document key
 
 _saveData = {
-	private ["_documentID","_response","_docRev"];
+	private ["_documentID","_response"];
 	_documentID = _missionKey + "-" + _key;
-	_docRev = [_value, "_rev","MISSING"] call CBA_fnc_hashGet;
-	TRACE_3("Saving Data", _missionKey, _key, _docRev, _value);
 
-	if (_docRev == "MISSING") then {
-		_response = [_logic, "write", [_module, _value, _async, _documentID] ] call ALIVE_fnc_Data;
-	} else {
-		_response = [_logic, "update", [_module, _value, _async, _documentID, _docRev] ] call ALIVE_fnc_Data;
-	};
+	TRACE_3("Saving Data", _missionKey, _key, _value);
+
+	_response = [_logic, "write", [_module, _value, _async, _documentID] ] call ALIVE_fnc_Data;
+
 	_result = _result + "," + _response;
 };
 
