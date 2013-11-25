@@ -82,7 +82,7 @@ if (_operation in _ops) then {
                         [_logic, "class", QUOTE(MAINCLASS)] call ALIVE_fnc_hashSet;
                         [_logic, "databaseName", GVAR(databaseName)] call ALIVE_fnc_hashSet;
                         [_logic, "source", GVAR(source)] call ALIVE_fnc_hashSet;
-                        [_logic, "storeTYpe", true] call ALIVE_fnc_hashSet;
+                        [_logic, "storeType", true] call ALIVE_fnc_hashSet;
                         [_logic, "key", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
 
 						TRACE_1("After module init",_logic);

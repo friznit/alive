@@ -1,9 +1,7 @@
 #include <\x\alive\addons\sys_data\script_component.hpp>
 SCRIPT(DataInit);
 
-//https://dev-heaven.net/projects/cca/wiki/Extended_Eventhandlers#New-in-19-version-stringtable-and-pre-init-EH-code
-
-// https://dev-heaven.net/projects/cca/wiki/Extended_Eventhandlers#New-in-200-Support-for-ArmA-II-serverInit-and-clientInit-entries
+// Sets up a system for data (separate from the fnc_data module = datahandler)
 
 LOG(MSG_INIT);
 private ["_response","_dictionaryName","_logic"];
@@ -13,8 +11,6 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_Data","Main function missing");
 
-ADDON = false;
-
 TRACE_2("SYS_DATA",isDedicated, _logic);
 
 if (isDedicated) then {
@@ -22,9 +18,11 @@ if (isDedicated) then {
 	// Setup OPC and OPD events
 	//[QGVAR(OPD), "OnPlayerDisconnected","ALIVE_fnc_data_OnPlayerDisconnected"] call BIS_fnc_addStackedEventHandler;
 
+	MOD(sys_data) = _logic;
+
 	//Set Data logic defaults
-	GVAR(databaseName) = _logic getVariable "databaseName";
-	GVAR(source) = _logic getVariable "source";
+	GVAR(databaseName) = MOD(sys_data) getVariable "databaseName";
+	GVAR(source) = MOD(sys_data) getVariable "source";
 	GVAR(GROUP_ID) = [] call ALIVE_fnc_getGroupID;
 
 	// Load Data Dictionary from central public database?
@@ -47,6 +45,27 @@ if (isDedicated) then {
 	};
 
 	TRACE_2("DATA DICTIONARY", ALIVE_DataDictionary, _response);
+
+	TRACE_3("SYS_DATA MISSION", _logic, MOD(sys_data), MOD(sys_data) getVariable "saveDateTime");
+
+	// Handle basic mission persistence - date/time
+	GVAR(mission_data) = [] call CBA_fnc_hashCreate;
+	if (GVAR(dictionaryLoaded) && (MOD(sys_data) getVariable ["saveDateTime","true"] == "true")) then {
+		private ["_missionName","_response"];
+		// Read in date/time for mission
+		_missionName = format["%1_%2", GVAR(GROUP_ID), missionName];
+		_response = [GVAR(datahandler), "read", ["sys_data", [], _missionName]] call ALIVE_fnc_Data;
+		if ( typeName _response != "STRING") then {
+			GVAR(mission_data) = _response;
+			TRACE_1("MISSION DATA LOADED", _response);
+			setdate ([GVAR(mission_data), "date", date] call CBA_fnc_hashGet);
+		} else {
+			TRACE_1("NO MISSION DATA AVAILABLE",_response);
+		};
+	} else {
+		TRACE_1("EITHER DATA LOAD FAILED OR MISSION DATA PERSISTENCE TURNED OFF", GVAR(dictionaryLoaded));
+	};
+
 
 	// Spawn a process to handle async writes
 
@@ -78,8 +97,8 @@ if (isDedicated) then {
 	};
 
 	// Start the perf monitoring module
-	if !(_logic getvariable ["disablePerf", "true"] == "true" || ALIVE_sys_perf_disabled) then {
-		[_logic] call ALIVE_fnc_perfInit;
+	if !(MOD(sys_data) getvariable ["disablePerf", "true"] == "true" || ALIVE_sys_perf_disabled) then {
+		[MOD(sys_data)] call ALIVE_fnc_perfInit;
 	};
 };
 
@@ -88,4 +107,3 @@ if !(_logic getvariable ["disableStats","false"] == "true" || ALIVE_sys_statisti
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
 
-ADDON = true;
