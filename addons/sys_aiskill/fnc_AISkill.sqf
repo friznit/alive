@@ -154,6 +154,8 @@ switch(_operation) do {
 			[_logic, "skillFactionsExpert", _logic getVariable ["skillFactionsExpert", []]] call MAINCLASS;
 			[_logic, "customSkillFactions", _logic getVariable ["customSkillFactions", []]] call MAINCLASS;
 			
+			// FIXME - potentially move this below the last command to signify
+			// init has completed
 			TRACE_1("After module init",_logic);
 			
 			[_logic, "register"] call MAINCLASS;			
