@@ -258,6 +258,40 @@ class CfgVehicles {
                                 defaultValue = "OPF_F";
                         };
                 };
-                
+                class ModuleDescription
+                {
+                    //description = "$STR_ALIVE_OPCOM_COMMENT"; // Short description, will be formatted as structured text
+                    description[] = {
+                            "$STR_ALIVE_CP_COMMENT",
+                            "",
+                            "$STR_ALIVE_CP_USAGE"
+                    };
+                    sync[] = {"ALiVE_mil_OPCOM","ALiVE_mil_CQB"}; // Array of synced entities (can contain base classes)
+
+                    class ALiVE_mil_OPCOM
+                    {
+                        description[] = { // Multi-line descriptions are supported
+                            "$STR_ALIVE_OPCOM_COMMENT",
+                            "",
+                            "$STR_ALIVE_OPCOM_USAGE"
+                        };
+                        position = 0; // Position is taken into effect
+                        direction = 0; // Direction is taken into effect
+                        optional = 1; // Synced entity is optional
+                        duplicate = 1; // Multiple entities of this type can be synced
+                    };
+                    class ALiVE_mil_CQB
+                    {
+                        description[] = { // Multi-line descriptions are supported
+                            "$STR_ALIVE_CQB_COMMENT",
+                            "",
+                            "$STR_ALIVE_CQB_USAGE"
+                        };
+                        position = 0; // Position is taken into effect
+                        direction = 0; // Direction is taken into effect
+                        optional = 1; // Synced entity is optional
+                        duplicate = 1; // Multiple entities of this type can be synced
+                    };
+                };
         };
 };

@@ -32,4 +32,7 @@
 <Key ID="STR_ALIVE_ML_INTEL_CHANCE_TOTAL">
 	<English>Total coverage of intel</English>
 </Key>
+<Key ID="STR_ALIVE_ML_USAGE">
+    <English>Place a Military Logistics module to reinforce and resupply factions under control of the synced OPCOM module.</English>
+</Key>
 </Container></Package></Project>

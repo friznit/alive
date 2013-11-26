@@ -88,6 +88,16 @@ class CfgVehicles {
                                 };
                         };
                 };
+                class ModuleDescription
+                {
+                    //description = "$STR_ALIVE_OPCOM_COMMENT"; // Short description, will be formatted as structured text
+                    description[] = {
+                            "$STR_ALIVE_ADMINACTIONS_COMMENT",
+                            "",
+                            "$STR_ALIVE_ADMINACTIONS_USAGE"
+                    };
+
+                };
                 
         };
 };
