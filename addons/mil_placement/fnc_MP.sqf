@@ -324,7 +324,7 @@ switch(_operation) do {
 
             _error = false;
 			if!(isNil "ALIVE_clusterBuild") then {
-			    private ["_clusterVersion","_clusterBuild","_clusterType","_version","_build"];
+			    private ["_clusterVersion","_clusterBuild","_clusterType","_version","_build","_message"];
 
                 _clusterVersion = ALIVE_clusterBuild select 2;
                 _clusterBuild = ALIVE_clusterBuild select 3;
@@ -334,16 +334,18 @@ switch(_operation) do {
 
                 if!(_clusterType == 'Stable') then {
                     ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
-                    ["ALIVE Military Placement - Warning ALiVE requires the STABLE game build"] call ALIVE_fnc_dumpR;
+                    _message = "Warning ALiVE requires the STABLE game build";
+                    [_message] call ALIVE_fnc_dump;
+                    [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                     _error = true;
                 };
 
                 if(!(_clusterVersion == _version) || !(_clusterBuild == _build)) then {
                     ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
-                    ["ALIVE Military Placement - Warning this version of ALiVE is only compatible with A3 version %1.%2",_clusterVersion, _clusterBuild] call ALIVE_fnc_dumpR;
+                    _message = format["Warning this version of ALiVE is only compatible with A3 version: %1.%2. The server is running version: %3.%4. Please contact your server administrator and update to the latest ALiVE release version.",_clusterVersion, _clusterBuild, _version, _build];
+                    [_message] call ALIVE_fnc_dump;
+                    [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                     _error = true;
-                }else{
-                    ["ALiVE cluster version matches"] call ALIVE_fnc_dump;
                 };
             };
 

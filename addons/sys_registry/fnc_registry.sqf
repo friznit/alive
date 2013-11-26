@@ -178,8 +178,6 @@ switch(_operation) do {
 
         _loopCount = _args;
 
-        ["-------------------------------- ALIVE REGISTRY LOOP COUNT: %1",_loopCount] call ALIVE_fnc_dump;
-        
         {
             _queuedModule = _x;
             _moduleID = _queuedModule select 0;
@@ -277,22 +275,26 @@ switch(_operation) do {
         
         
         // loop
-        if((count _startupQueue) > 0) then {
+        if((count _startupQueue) > 10) then {
 
             _loopCount = _loopCount + 1;
 
-            if(_loopCount > 10) then {
-                ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
-                ["ALIVE Registry - Warning module startup appears to be broken, aborting. Check your module syncronisation and requirements"] call ALIVE_fnc_dumpR;
+            if(_loopCount > 0) then {
+                private ["_message"];
+                _message = "ALIVE Registry - Warning module startup appears to be broken, aborting. Check your module syncronisation settings for possible errors";
 
                 {
                     _queuedModule = _x;
                     _moduleID = _queuedModule select 0;
                     _moduleType = _queuedModule select 1;
 
-                    ["ALIVE Registry - Module remaining to be started: %1 %2",_moduleType,_moduleID] call ALIVE_fnc_dumpR;
+                    _message = _message + format[" - Module remaining to be started: %1 ",_moduleType];
 
                 } forEach _startupQueue;
+
+                ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
+                [_message] call ALIVE_fnc_dumpR;
+                [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
             }else{
                 // DEBUG -------------------------------------------------------------------------------------
                 ["ALIVE Registry - Startup queue not empty, looping.."] call ALIVE_fnc_dump;
