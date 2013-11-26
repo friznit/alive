@@ -7,8 +7,8 @@ class CfgVehicles {
                 function = "ALIVE_fnc_OPCOMInit";
                 author = MODULE_AUTHOR;
 				functionPriority = 4;
-                isGlobal = 1;
-                isPersistent = 1;
+                isGlobal = 0;
+                isPersistent = 0;
 				icon = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
 				picture = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
                 class Arguments

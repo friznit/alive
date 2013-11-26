@@ -6,8 +6,8 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_CP";
                 function = "ALIVE_fnc_CPInit";
 				functionPriority = 1;
-                isGlobal = 1;
-                isPersistent = 1;
+                isGlobal = 0;
+                isPersistent = 0;
 				icon = "x\alive\addons\civ_placement\icon_civ_CP.paa";
 				picture = "x\alive\addons\civ_placement\icon_civ_CP.paa";
                 class Arguments
