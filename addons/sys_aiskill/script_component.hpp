@@ -5,7 +5,7 @@
 #define DEBUG_MODE_FULL
 #endif
 
-#ifdef DEBUG_SETTINGS_sys_aiskill
+#ifdef DEBUG_ENABLED_SYS_AISKILL
 #define DEBUG_SETTINGS DEBUG_ENABLED_SYS_AISKILL
 #endif
 
