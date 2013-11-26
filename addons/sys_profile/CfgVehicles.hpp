@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_PROFILE_SYSTEM";
                 function = "ALIVE_fnc_profileSystemInit";
 				functionPriority = 0;
-                isGlobal = 1;
+                isGlobal = 0;
 				icon = "x\alive\addons\sys_profile\icon_sys_profile.paa";
 				picture = "x\alive\addons\sys_profile\icon_sys_profile.paa";
                 class Arguments
