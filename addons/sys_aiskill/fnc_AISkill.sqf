@@ -301,7 +301,7 @@ switch(_operation) do {
 			_debug = [_logic, "debug"] call MAINCLASS;
 			
 			[_logic, _debug] spawn {
-				private ["_minSkill","_maxSkill","_diff","_factionSkill","_faction","_aimingAccuracy","_aimingShake","_aimingSpeed","_logic","_debug","_skillFactionsRecruit","_skillFactionsRegular","_skillFactionsVeteran","_customSkillFactions","_customSkillAbilityMin","_customSkillAbilityMax","_customSkillAimAccuracy","_customSkillAimShake","_customSkillAimSpeed","_customSkillEndurance","_customSkillSpotDistance","_customSkillSpotTime","_customSkillCourage","_customSkillReload","_customSkillCommanding","_customSkillGeneral","_recruitSkill","_regularSkill","_veteranSkill","_expertSkill","_customSkill","_factionSkills","_skillFactionsExpert"];
+				private ["_minSkill","_maxSkill","_diff","_factionSkill","_faction","_aimingAccuracy","_aimingShake","_aimingSpeed","_logic","_debug","_skillFactionsRecruit","_skillFactionsRegular","_skillFactionsVeteran","_customSkillFactions","_customSkillAbilityMin","_customSkillAbilityMax","_customSkillAimAccuracy","_customSkillAimShake","_customSkillAimSpeed","_customSkillEndurance","_customSkillSpotDistance","_customSkillSpotTime","_customSkillCourage","_customSkillReload","_customSkillCommanding","_customSkillGeneral","_recruitSkill","_regularSkill","_veteranSkill","_expertSkill","_customSkill","_factionSkills","_skillFactionsExpert","_countEffected"];
 				_logic = _this select 0;
 				_debug = _this select 1;
 				
@@ -334,6 +334,16 @@ switch(_operation) do {
 					["AISKILL Custom Skill: Reload:%1 Commanding:%2 General:%3",_customSkillReload,_customSkillCommanding,_customSkillGeneral] call ALIVE_fnc_dump;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
+
+				if(
+				    (count _skillFactionsRecruit == 0) &&
+				    (count _skillFactionsRegular == 0) &&
+				    (count _skillFactionsVeteran == 0) &&
+				    (count _skillFactionsExpert == 0) &&
+				    (count _customSkillFactions == 0)
+				) then {
+                    _skillFactionsRegular = ["OPF_F","BLU_F","BLU_GL_F","IND_F"];
+				};
 				
 				
 				// min abil, max abil, aim acc, aim shake, aim speed, end, sdist, stime, cour, reload, comm, gen
@@ -376,6 +386,9 @@ switch(_operation) do {
 				
 				
 				waituntil {
+
+				    _countEffected = 0;
+
 					{
 						// FIXME - is there a way to setVariable the unit and not reset it every loop?
 						_faction = faction _x;
@@ -388,13 +401,6 @@ switch(_operation) do {
 							_factionSkill = [_factionSkills,_faction] call ALIVE_fnc_hashGet;
 							
 							if((_aimingAccuracy != _factionSkill select 2) && (_aimingShake != _factionSkill select 3) && (_aimingSpeed != _factionSkill select 4)) then {
-								// DEBUG -------------------------------------------------------------------------------------
-								// FIXME - this needs to be read using getVariable every loop, as debug should be able to turn on and off during run-time
-								if(_debug) then {
-									["AISKILL Setting unit skill:"] call ALIVE_fnc_dump;
-								};
-								// DEBUG -------------------------------------------------------------------------------------
-								
 								
 								_minSkill = _factionSkill select 0;
 								_maxSkill = _factionSkill select 1;
@@ -412,12 +418,22 @@ switch(_operation) do {
 								_x setSkill ["reloadSpeed", _factionSkill select 9];
 								_x setSkill ["commanding", _factionSkill select 10];
 								_x setSkill ["general", _factionSkill select 11];
+
+								_countEffected = _countEffected + 1;
 								
 								sleep 0.03;
 							};
 						};
-						// FIXME - Should debug show stats, how many units have been set in this iteration?
 					} forEach allUnits;
+
+
+					// DEBUG -------------------------------------------------------------------------------------
+                    if(_debug) then {
+                        if(_countEffected > 0) then {
+                            ["AISKILL Set unit skill on %1 units",_countEffected] call ALIVE_fnc_dump;
+                        };
+                    };
+                    // DEBUG -------------------------------------------------------------------------------------
 					
 					
 					sleep (30);
