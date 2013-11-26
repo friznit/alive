@@ -32,6 +32,30 @@ class CfgVehicles {
                                 };
                         };
                 };
+                class ModuleDescription
+                {
+                    //description = "$STR_ALIVE_OPCOM_COMMENT"; // Short description, will be formatted as structured text
+                    description[] = {
+                            "$STR_ALIVE_ML_COMMENT",
+                            "",
+                            "$STR_ALIVE_ML_USAGE"
+                    };
+                    sync[] = {"ALiVE_mil_OPCOM"}; // Array of synced entities (can contain base classes)
+
+                    class ALiVE_mil_OPCOM
+                    {
+                        description[] = { // Multi-line descriptions are supported
+                            "$STR_ALIVE_OPCOM_COMMENT",
+                            "",
+                            "$STR_ALIVE_OPCOM_USAGE"
+                        };
+                        position = 0; // Position is taken into effect
+                        direction = 0; // Direction is taken into effect
+                        optional = 1; // Synced entity is optional
+                        duplicate = 1; // Multiple entities of this type can be synced
+                    };
+
+                };
                 
         };
 };

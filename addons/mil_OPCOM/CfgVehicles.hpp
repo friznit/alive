@@ -225,7 +225,7 @@ class CfgVehicles {
 							"",
 							"$STR_ALIVE_OPCOM_USAGE"
 					};
-					sync[] = {"ALiVE_civ_placement","ALiVE_mil_placement","ALiVE_mil_intelligence"}; // Array of synced entities (can contain base classes)
+					sync[] = {"ALiVE_civ_placement","ALiVE_mil_placement","ALiVE_mil_intelligence","ALiVE_mil_logistics"}; // Array of synced entities (can contain base classes)
 		 
 					class ALiVE_civ_placement
 					{
@@ -263,6 +263,18 @@ class CfgVehicles {
 						optional = 1; // Synced entity is optional
 						duplicate = 1; // Multiple entities of this type can be synced
 					};
+					class ALiVE_mil_logistics
+                    {
+                        description[] = { // Multi-line descriptions are supported
+                            "$STR_ALIVE_ML_COMMENT",
+                            "",
+                            "$STR_ALIVE_ML_USAGE"
+                        };
+                        position = 0; // Position is taken into effect
+                        direction = 0; // Direction is taken into effect
+                        optional = 1; // Synced entity is optional
+                        duplicate = 1; // Multiple entities of this type can be synced
+                    };
 				};
         };
 };

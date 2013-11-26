@@ -285,17 +285,17 @@ switch(_operation) do {
                 _build = productVersion select 3;
 
                 if!(_clusterType == 'Stable') then {
-                    ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
                     _message = "Warning ALiVE requires the STABLE game build";
                     [_message] call ALIVE_fnc_dump;
+                    [_message] spawn BIS_fnc_guiMessage;
                     [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                     _error = true;
                 };
 
                 if(!(_clusterVersion == _version) || !(_clusterBuild == _build)) then {
-                    ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
                     _message = format["Warning this version of ALiVE is only compatible with A3 version: %1.%2. The server is running version: %3.%4. Please contact your server administrator and update to the latest ALiVE release version.",_clusterVersion, _clusterBuild, _version, _build];
                     [_message] call ALIVE_fnc_dump;
+                    [_message] spawn BIS_fnc_guiMessage;
                     [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                     _error = true;
                 };

@@ -275,11 +275,11 @@ switch(_operation) do {
         
         
         // loop
-        if((count _startupQueue) > 10) then {
+        if((count _startupQueue) > 0) then {
 
             _loopCount = _loopCount + 1;
 
-            if(_loopCount > 0) then {
+            if(_loopCount > 10) then {
                 private ["_message"];
                 _message = "ALIVE Registry - Warning module startup appears to be broken, aborting. Check your module syncronisation settings for possible errors";
 
@@ -292,8 +292,8 @@ switch(_operation) do {
 
                 } forEach _startupQueue;
 
-                ["------------------------------ WARNING -----------------------------"] call ALIVE_fnc_dumpR;
                 [_message] call ALIVE_fnc_dumpR;
+                [_message] spawn BIS_fnc_guiMessage;
                 [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
             }else{
                 // DEBUG -------------------------------------------------------------------------------------

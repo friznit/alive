@@ -55,4 +55,7 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_ERROR1">
 	<English>Only one Admin Actions module can be used</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_USAGE">
+    <English>Place an admin actions module to give the server admin or single player admin functions like teleport, ghost and run scripts.</English>
+</Key>
 </Container></Package></Project>
