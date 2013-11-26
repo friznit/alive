@@ -11,7 +11,7 @@ onLoadMission = "Iran has invaded Altis in a sudden strike! Greek forces have be
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Foursome;
-loadScreen = "x\alive\addons\mil_opcom\showcases\opcom_spleen.stratis\rsc\logo_alive.paa";
+loadScreen = "x\alive\addons\mil_opcom\showcases\foursome.Altis\rsc\logo_alive.paa";
 
 aiKills = 0;
 briefing = 1;
