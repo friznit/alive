@@ -171,7 +171,7 @@ switch(_operation) do {
 
                 TRACE_2("Adding menu",isDedicated,isHC);
 
-                if(!isDedicated && !isHC) then {
+                if(!isServer && !isHC) then {
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
@@ -207,7 +207,7 @@ switch(_operation) do {
 
                 TRACE_2("Setting player guid on logic",isDedicated,isHC);
                 // For players waituntil the player is valid then let server know.
-                if(!isDedicated && !isHC) then {
+                if(!isServer && !isHC) then {
                     [] spawn {
                         private ["_puid"];
                         TRACE_1("SYS_PLAYER GETTING READY",player);
@@ -280,7 +280,7 @@ switch(_operation) do {
                 // Eventhandlers for other stuff here
 
                 // Setup player eventhandler to handle get player calls
-                if(!isDedicated && !isHC) then {
+                if(!isServer && !isHC) then {
                     ["getPlayer", {[MOD(sys_player),(_this select 1)] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
                 };
 
