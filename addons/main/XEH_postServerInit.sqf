@@ -26,7 +26,9 @@ onTeamSwitch
 
 // Deprecated due to new BIS_fnc_addStackedEventHandler
 
-
+// FIXME - what are these here and not in their respective modules?
+// Is think you may have misunderstood me when I said we should only have
+// one OPD and OPC for all of ALIVE.
 onPlayerDisconnected {
 
 	TRACE_1("OPD DATA",_this);
