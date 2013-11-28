@@ -5,9 +5,10 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_MI";
                 function = "ALIVE_fnc_MIInit";
+                author = MODULE_AUTHOR;
 				functionPriority = 5;
                 isGlobal = 1;
-                isPersistent = 1;
+                isPersistent = 0;
 				icon = "x\alive\addons\mil_intelligence\icon_mil_MI.paa";
 				picture = "x\alive\addons\mil_intelligence\icon_mil_MI.paa";
                 class Arguments
@@ -92,6 +93,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_SD";
                 function = "ALIVE_fnc_SDInit";
+                author = MODULE_AUTHOR;
                 functionPriority = 5;
                 isGlobal = 0;
                 isPersistent = 0;
@@ -103,6 +105,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_PSD";
                 function = "ALIVE_fnc_PSDInit";
+                author = MODULE_AUTHOR;
                 functionPriority = 5;
                 isGlobal = 0;
                 isPersistent = 0;

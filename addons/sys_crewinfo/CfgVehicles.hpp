@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_CREWINFO";
                 function = "ALIVE_fnc_crewinfoInit";
+                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
                 icon = "\x\alive\addons\sys_crewinfo\icon_sys_crewinfo.paa";

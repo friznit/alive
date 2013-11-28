@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_GC";
                 function = "ALIVE_fnc_GCInit";
+                author = MODULE_AUTHOR;
 				functionPriority = 4;
                 isGlobal = 1;
                 isPersistent = 1;

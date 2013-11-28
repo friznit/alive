@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_DISABLE_PERF";
 				function = "ALIVE_fnc_perfModuleFunction";
+				author = MODULE_AUTHOR;
                 isGlobal = 1;
 				isPersistent = 1;
 				icon = "x\alive\addons\sys_perf\icon_sys_perf.paa";
