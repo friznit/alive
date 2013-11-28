@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_WEATHER";
                 function = "ALIVE_fnc_weatherInit";
+                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
                 icon = "\x\alive\addons\sys_weather\icon_sys_weather.paa";

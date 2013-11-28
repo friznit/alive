@@ -242,7 +242,7 @@ switch(_operation) do {
 			private["_registration","_moduleType"];
 		
 			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType];
+			_registration = [_logic,_moduleType,["ALIVE_profileHandler"]];
 	
 			if(isNil "ALIVE_registry") then {
 				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;

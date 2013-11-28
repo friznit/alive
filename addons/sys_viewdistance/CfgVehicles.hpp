@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_VDIST";
                 function = "ALIVE_fnc_vDistInit";
+                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
                 icon = "x\alive\addons\sys_viewdistance\icon_sys_viewdistance.paa";

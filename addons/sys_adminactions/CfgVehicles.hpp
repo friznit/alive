@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_ADMINACTIONS";
                 function = "ALIVE_fnc_adminActionsInit";
+                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
 		icon = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";

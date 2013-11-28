@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_MP";
                 function = "ALIVE_fnc_MPInit";
+                author = MODULE_AUTHOR;
 				functionPriority = 1;
                 isGlobal = 1;
                 isPersistent = 0;
