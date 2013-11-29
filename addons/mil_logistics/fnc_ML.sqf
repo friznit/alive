@@ -467,6 +467,28 @@ switch(_operation) do {
                                                         for "_i" from 0 to _groupPerCluster -1 do {
                                                             _group = _groups select _totalCount;
                                                             _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+
+                                                            if!(surfaceIsWater _position) then {
+                                                                _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+
+                                                                // DEBUG -------------------------------------------------------------------------------------
+                                                                if(_debug) then {
+                                                                    [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
+                                                                };
+                                                                // DEBUG -------------------------------------------------------------------------------------
+
+
+                                                                _countProfiles = _countProfiles + count _profiles;
+                                                                _totalCount = _totalCount + 1;
+                                                            };
+                                                        };
+
+                                                    }else{
+                                                        _group = _groups select _totalCount;
+                                                        _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+
+                                                        if!(surfaceIsWater _position) then {
                                                             _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 
 
@@ -480,22 +502,6 @@ switch(_operation) do {
                                                             _countProfiles = _countProfiles + count _profiles;
                                                             _totalCount = _totalCount + 1;
                                                         };
-
-                                                    }else{
-                                                        _group = _groups select _totalCount;
-                                                        _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
-                                                        _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-
-
-                                                        // DEBUG -------------------------------------------------------------------------------------
-                                                        if(_debug) then {
-                                                            [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
-                                                        };
-                                                        // DEBUG -------------------------------------------------------------------------------------
-
-
-                                                        _countProfiles = _countProfiles + count _profiles;
-                                                        _totalCount = _totalCount + 1;
                                                     };
                                                 };
                                             }else{
