@@ -401,15 +401,18 @@ switch(_operation) do {
 						_profileID = _x;
 						_profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
 						if !(isnil "_profile") then {
-							_marker = [_profile, "createMarker", [_alpha]] call ALIVE_fnc_profileEntity;
-							_markers = _markers + _marker;
-							_profiles set [count _profiles, _profileID];
-							
-							_position = _profile select 2 select 2;
+						    _position = _profile select 2 select 2;
+
+						    if!(surfaceIsWater _position) then {
+						        _marker = [_profile, "createMarker", [_alpha]] call ALIVE_fnc_profileEntity;
+                                _markers = _markers + _marker;
+                                _profiles set [count _profiles, _profileID];
+						    };
+
 							_dir = [_position, _center] call BIS_fnc_dirTo;
 						};			
 					} forEach _section;
-					
+
 					// set the side color
 					switch(_side) do {
 						case "EAST":{
