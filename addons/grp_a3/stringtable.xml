@@ -59,4 +59,52 @@
 <Key ID="STR_A3_CfgVehicles_Quadbike_Light_F0">
 	<Original>Quadbike (Light)</Original>
 </Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfSentry0">
+	<Original>Sentry</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfSquad0">
+	<Original>Rifle Squad</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfSquad_Weapons0">
+	<Original>Weapons Squad</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfTeam0">
+	<Original>Fire Team</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfTeam_AA0">
+	<Original>Air-defense Team</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfTeam_AT0">
+	<Original>Anti-armor Team</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfWepTeam0">
+	<Original>Weapons Team</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfSupTeam0">
+	<Original>Support Team</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfHQ0">
+	<Original>Infantry HQ</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_ReconSentry0">
+	<Original>Recon Sentry</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_ORG_MotInf_Team0">
+	<Original>Motorized Patrol</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_ORG_Technicals0">
+	<Original>Technicals</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_ORG_Technicals0">
+	<Original>Technicals</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_Support_CLS0">
+	<Original>Support Team (CLS)</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_Support_ENG0">
+	<Original>Support Team (Engineer)</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_Support_EOD0">
+	<Original>Support Team (EOD)</Original>
+</Key>
 </Container></Package></Project>
