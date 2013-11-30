@@ -128,7 +128,7 @@ if (_menuName == "adminActions") then {
 				],
 
 				[localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_ENABLE",
-					{ [] execVM "\x\alive\addons\sys_adminactions\mark_units.sqf"; },
+					{ [] call ALIVE_fnc_markUnits },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT",
 					"",
