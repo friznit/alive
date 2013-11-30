@@ -366,6 +366,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_vehicleGetSpeedPerSecond.sqf";
 				recompile = RECOMPILE;
 			};
+			class getInActiveEntitiesForMarking {
+                description = "getInActiveEntitiesForMarking";
+                file = "\x\alive\addons\sys_profile\fnc_getInActiveEntitiesForMarking.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };
