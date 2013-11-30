@@ -72,7 +72,7 @@ _menus =
 		["main", "ALiVE", _menuRsc],
 		[
 			[localize "STR_ALIVE_NEWSFEED",
-				{ [] execVM "\x\alive\addons\sys_newsfeed\newsfeed\newsfeed_init.sqf"; },
+				{[] call ALIVE_fnc_newsFeedMenuInit},
 				"",
 				localize "STR_ALIVE_NEWSFEED_COMMENT",
                  "",
