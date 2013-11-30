@@ -642,7 +642,7 @@ switch(_operation) do {
 			// and will be over-written in addHouse
 			
 			_units = _house getVariable ["unittypes", []];
-            _faction = _house getVariable ["faction", [_logic getvariable ["factions",["OPF_F"]]] call BIS_fnc_SelectRandom];
+            _faction = _house getVariable ["faction", (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom];
 
 			// Check: if no units already defined
 			if ((count _units == 0) || {!(_dominantFaction == _faction)}) then {
@@ -760,7 +760,7 @@ switch(_operation) do {
 	                                    if !(isnull _host) then {
 		                                    _house setvariable ["group","preinit",true];
                                             _dominantFaction = [getposATL _house, 500] call ALiVE_fnc_getDominantFaction;
-                                            if (isnil "_dominantFaction") then {_dominantFaction = [(_logic getvariable ["factions",["OPF_F"]])] call BIS_fnc_SelectRandom};
+                                            if (isnil "_dominantFaction") then {_dominantFaction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom};
                                             
                                             //Trying async calls
                                             //[_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
