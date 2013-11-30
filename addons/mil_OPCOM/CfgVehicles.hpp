@@ -93,10 +93,15 @@ class CfgVehicles {
                                                 name = "AAF";
                                                 value = "IND_F";
                                         };
-                                        class REBELS
+                                        class REBELS_BLU
                                         {
-                                                name = "REBELS";
+                                                name = "REBELS BLU";
                                                 value = "BLU_G_F";
+                                        };
+		                                class REBELS_OPF
+                                        {
+                                                name = "REBELS RED";
+                                                value = "OPF_G_F";
                                         };
                                         class NONE
                                         {
@@ -133,10 +138,15 @@ class CfgVehicles {
                                                 name = "AAF";
                                                 value = "IND_F";
                                         };
-                                        class REBELS
+                                        class REBELS_BLU
                                         {
-                                                name = "REBELS";
+                                                name = "REBELS BLU";
                                                 value = "BLU_G_F";
+                                        };
+		                                class REBELS_OPF
+                                        {
+                                                name = "REBELS RED";
+                                                value = "OPF_G_F";
                                         };
                                 };
                         };
@@ -168,10 +178,15 @@ class CfgVehicles {
                                                 name = "AAF";
                                                 value = "IND_F";
                                         };
-                                        class REBELS
+                                        class REBELS_BLU
                                         {
-                                                name = "REBELS";
+                                                name = "REBELS BLU";
                                                 value = "BLU_G_F";
+                                        };
+		                                class REBELS_OPF
+                                        {
+                                                name = "REBELS RED";
+                                                value = "OPF_G_F";
                                         };
                                 };
                         };
@@ -203,10 +218,15 @@ class CfgVehicles {
                                                 name = "AAF";
                                                 value = "IND_F";
                                         };
-                                        class REBELS
+                                        class REBELS_BLU
                                         {
-                                                name = "REBELS";
+                                                name = "REBELS BLU";
                                                 value = "BLU_G_F";
+                                        };
+		                                class REBELS_OPF
+                                        {
+                                                name = "REBELS RED";
+                                                value = "OPF_G_F";
                                         };
                                 };
                         };
