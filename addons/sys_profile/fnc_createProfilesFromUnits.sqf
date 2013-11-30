@@ -32,6 +32,8 @@ _createMode = if(count _this > 0) then {_this select 0} else {"NONE"};
 _createModeObjects = if(count _this > 1) then {_this select 1} else {[]};
 _debug = if(count _this > 2) then {_this select 2} else {false};
 
+_debug = true;
+
 _groups = allGroups;
 _vehicles = vehicles;
 _entityCount = 0;
@@ -114,6 +116,36 @@ if(_debug) then {
 			_ranks set [count _ranks, rank _x];
 			_damages set [count _damages, getDammage _x];
 		} foreach (_units);
+
+		if (!(vehicle _leader == _leader)) then {
+            _vehicle = (vehicle _leader);
+
+            if(_vehicle getVariable ["ALIVE_CombatSupport",false]) then {
+                _unitBlacklisted = true;
+            };
+
+            /*
+            _countTrans = count (_vehicle getVariable ["NEO_transportAvailableTasks",[]]);
+
+            ["COUNT T: %1",_countTrans] call ALIVE_fnc_dump;
+
+            if(_countTrans > 0) then {
+                _unitBlacklisted = true;
+            };
+
+            _casName = format["NEO_radioCasArray_%1", (side _vehicle)];
+
+            ["CN: %1",_casName] call ALIVE_fnc_dump;
+
+            _countCas = count (_vehicle getVariable [_casName,[]]);
+
+            ["COUNT C: %1",_countCas] call ALIVE_fnc_dump;
+
+            if(_countCas > 0) then {
+                _unitBlacklisted = true;
+            };
+            */
+        };
 		
 		if(!_unitBlacklisted) then {
 		
@@ -237,6 +269,37 @@ _deleteVehicleCount = 0;
 		if((typeOf _x) in _unitBlackist) then {
 			_unitBlacklisted = true;
 		};
+
+		if (!(vehicle _x == _x)) then {
+            _vehicle = (vehicle _x);
+
+            if(_vehicle getVariable ["ALIVE_CombatSupport",false]) then {
+                _unitBlacklisted = true;
+            };
+
+            /*
+            _countTrans = count (_vehicle getVariable ["NEO_transportAvailableTasks",[]]);
+
+            ["COUNT T: %1",_countTrans] call ALIVE_fnc_dump;
+
+            if(_countTrans > 0) then {
+                _unitBlacklisted = true;
+            };
+
+            _casName = format["NEO_radioCasArray_%1", (side _vehicle)];
+
+            ["CN: %1",_casName] call ALIVE_fnc_dump;
+
+            _countCas = count (_vehicle getVariable [_casName,[]]);
+
+            ["COUNT C: %1",_countCas] call ALIVE_fnc_dump;
+
+            if(_countCas > 0) then {
+                _unitBlacklisted = true;
+            };
+            */
+        };
+
 	} foreach (_units);
 	
 	if(!_unitBlacklisted) then {
@@ -278,7 +341,7 @@ if(_debug) then {
 	_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 	_playerVehicle = false;
 	
-	if!(_vehicleClass in _vehicleBlacklist) then {
+	if(!(_vehicleClass in _vehicleBlacklist) && !(_vehicle getVariable ["ALIVE_CombatSupport",true]))then {
 		if((_vehicle getVariable ["profileID",""]) == "" && _vehicleKind !="") then {
 		
 			{

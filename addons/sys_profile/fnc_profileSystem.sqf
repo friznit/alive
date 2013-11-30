@@ -178,11 +178,11 @@ switch(_operation) do {
                         _profileDespawnerFSMCiv = [_logic,"CIV",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner_v1.fsm";
                         */
 
-                        // version 2 spawner system
-                        _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2.fsm";
-                        _profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2.fsm";
-                        _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2.fsm";
-                        _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2.fsm";
+                        // version 2.1 spawner system
+                        _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
+                        _profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
+                        _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
+                        _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
 
 						// set module as started
 						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;

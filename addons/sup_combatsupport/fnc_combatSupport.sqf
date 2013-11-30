@@ -147,6 +147,7 @@ switch(_operation) do {
 								{ _veh lockturret [[_x], true] } forEach [0,1,2];
 								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
+								_veh setVariable ["ALIVE_CombatSupport", true];
 								_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 						/*
 								[[ _veh, ["Talk with pilot", {call ALIVE_fnc_radioAction}, "talk", -1, false, true, "", 
@@ -196,6 +197,8 @@ switch(_operation) do {
 								_veh setDir _dir;
 								_veh setPosATL _pos;
 								_veh setVelocity [0,0,-1];
+
+								_veh setVariable ["ALIVE_CombatSupport", true];
 								
 								private ["_grp"];
 								_grp = createGroup _side;

@@ -201,6 +201,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileGetGoodSpawnPosition.sqf";
 				recompile = RECOMPILE;
 			};
+			class profileGetAnyLinkedInRange {
+				description = "profileGetAnyLinkedInRange";
+				file = "\x\alive\addons\sys_profile\fnc_profileGetAnyLinkedInRange.sqf";
+				recompile = RECOMPILE;
+			};
 			class arrayBlockHandler {
 				description = "arrayBlockHandler";
 				file = "\x\alive\addons\sys_profile\fnc_arrayBlockHandler.sqf";
