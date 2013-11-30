@@ -1481,7 +1481,12 @@ switch(_operation) do {
                     [_logic,"monitor",nil] call AliVE_fnc_HashSet;
             } else {
                 _hdl = _logic spawn {
-                    hintsilent "OPCOM and TACOM monitoring started...";
+                    
+                    // debug ---------------------------------------
+					if ([_this,"debug",false] call ALiVE_fnc_HashGet) then {
+						["OPCOM and TACOM monitoring started..."] call ALIVE_fnc_dumpR;
+					};
+					// debug ---------------------------------------
                     
 	            	_FSM_OPCOM = [_this,"OPCOM_FSM"] call AliVE_fnc_HashGet;
                     _FSM_TACOM = [_this,"TACOM_FSM"] call AliVE_fnc_HashGet;
@@ -1495,7 +1500,12 @@ switch(_operation) do {
                             _maxLimit = (_cycleTime + (count allunits));
                             
                             if (_timestamp > _maxLimit) then {
-								hintsilent parsetext (format["<t align=left>OPCOM side: %1<br/><br/>WARNING! Max. duration exceeded!<br/>state OPCOM: %2<br/>state TACOM: %4<br/>duration: %3</t>",_side,_state,_timestamp,_state_TACOM]);
+                                // debug ---------------------------------------
+								if ([_this,"debug",false] call ALiVE_fnc_HashGet) then {
+                                    _message = parsetext (format["<t align=left>OPCOM side: %1<br/><br/>WARNING! Max. duration exceeded!<br/>state OPCOM: %2<br/>state TACOM: %4<br/>duration: %3</t>",_side,_state,_timestamp,_state_TACOM]);
+									[_message] call ALIVE_fnc_dumpR;
+								};
+								// debug ---------------------------------------
                             };
                             
                             sleep 1;
