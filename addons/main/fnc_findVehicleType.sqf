@@ -40,7 +40,7 @@ _nonSims = ["parachute","house"];
 _allvehs = [];
 for "_y" from 1 to count(configFile >> "CfgVehicles") - 1 do {
 	_vehx = (configFile >> "CfgVehicles") select _y;
-	if(getNumber (_vehx >> "scope") > 1) then {
+	if(getNumber (_vehx >> "scope") >= 1) then {
 		if (!(getText(_vehx >> "simulation") in _nonsims)) then {
 			_cx = configName _vehx;
 			if ({(_cx isKindOf _x)} count _nonconfigs == 0) then {
