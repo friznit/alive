@@ -65,7 +65,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER";
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT";
-                                defaultvalue = "30";
+                                defaultvalue = "50";
                         };
                 };
                 
