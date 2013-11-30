@@ -5,7 +5,6 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_NEWSFEED";
                 function = "ALIVE_fnc_newsFeedInit";
-                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
                 icon = "x\alive\addons\sys_newsfeed\icon_sys_newsfeed.paa";
