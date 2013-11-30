@@ -10,7 +10,7 @@ createDialog "newsfeed_dialog";
 	_mission  = missionName;
 	_player = name player;
 
-	_newsOnline = "http://www.kevingunn.co.uk/alive_news.php?map=" + _map + "&mission=" + _mission + "&player=" + _player;
+	_newsOnline = "http://alivemod.com/alive_news.php?map=" + _map + "&mission=" + _mission + "&player=" + _player;
 	_newsOffline = "news.html";
 
 
