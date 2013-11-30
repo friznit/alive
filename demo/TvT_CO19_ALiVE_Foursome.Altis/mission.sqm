@@ -113,7 +113,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.95.96";
+		briefingName="ALiVE Showcase - Foursome v0.96.04";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -2602,7 +2602,7 @@ class Mission
 						};
 						class Item2
 						{
-							value="false";
+							value="true";
 							parentCls="ALiVE_sys_player";
 							typeName="allowDiffClass";
 						};
