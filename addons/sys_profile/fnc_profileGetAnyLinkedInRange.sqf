@@ -42,7 +42,7 @@ _profiles = [_profile] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;
         breakTo "MAIN";
     };
 } forEach (_profiles select 2);
-[] call ALIVE_fnc_timer;
+//[] call ALIVE_fnc_timer;
 
 
 
