@@ -85,8 +85,8 @@ link36[] = {27,21};
 link37[] = {28,10};
 link38[] = {29,15};
 link39[] = {30,8};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-502.260620,198.142181,601.557007,-155.040878,860,929,1};
-window[] = {2,-1,-1,-1,-1,920,22,1645,22,3,877};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-502.260620,198.142181,694.695190,-177.750656,859,1070,1};
+window[] = {2,-1,-1,-1,-1,1092,129,1752,194,3,877};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -398,12 +398,9 @@ class FSM
     class ANALYSE_1
     {
       name = "ANALYSE_1";
-      init = /*%FSM<STATEINIT""">*/"private [""_profile"",""_subProfile"",""_active"",""_profileType"",""_vehicle"",""_leader"",""_position"",""_countToDespawn"",""_stopDespawn"",""_linked"",""_sublinked"",""_subSublinked"",""_entitiesInCommandOf"",""_entitiesInCargoOf"",""_vehiclesInCommandOf"",""_vehiclesInCargoOf""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profile"",""_active"",""_profileType"",""_position"",""_countToDespawn"",""_stopDespawn""];" \n
        "" \n
        "_block = [ALIVE_arrayBlockHandler,""getNextBlock"", [format[""activeProfiles%1"",_side],_activeProfiles,30]] call ALIVE_fnc_arrayBlockHandler;" \n
-       "_linked = [];" \n
-       "_sublinked = [];" \n
-       "_subSublinked = [];" \n
        "" \n
        "{" \n
        "	_profile = _x;" \n
@@ -417,75 +414,9 @@ class FSM
        "" \n
        "			if(([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) && ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0)) then {" \n
        "" \n
-       "				///// should be merged out to something like [ALiVE_ProfileHandler,""findLinks"",_profileID] call ALiVE_fnc_ProfileHandler //////" \n
-       "				if(_profileType == ""vehicle"") then {" \n
-       "					_entitiesInCommandOf = [_profile,""entitiesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "					_entitiesInCargoOf = [_profile,""entitiesInCargoOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "	" \n
-       "					_linked = _entitiesInCommandOf + _entitiesInCargoOf;" \n
-       "	" \n
-       "				}else{" \n
-       "					_vehiclesInCommandOf = [_profile,""vehiclesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "					_vehiclesInCargoOf = [_profile,""vehiclesInCargoOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "	" \n
-       "					_linked = _vehiclesInCommandOf + _vehiclesInCargoOf;" \n
-       "				};" \n
-       "" \n
-       "				if (count _linked > 0) then {" \n
-       "					{" \n
-       "						_subProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "" \n
-       "						if !(isnil ""_subProfile"") then {" \n
-       "							_profileType = _subProfile select 2 select 5;" \n
-       "" \n
-       "							if(_profileType == ""vehicle"") then {" \n
-       "								_entitiesInCommandOf = [_subProfile,""entitiesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "								_entitiesInCargoOf = [_subProfile,""entitiesInCargoOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "	" \n
-       "								_sublinked = _entitiesInCommandOf + _entitiesInCargoOf;" \n
-       "							}else{" \n
-       "								_vehiclesInCommandOf = [_subProfile,""vehiclesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "								_vehiclesInCargoOf = [_subProfile,""vehiclesInCargoOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "	" \n
-       "								_sublinked = _vehiclesInCommandOf + _vehiclesInCargoOf;" \n
-       "							};" \n
-       "						};" \n
-       "					} foreach _linked;" \n
-       "" \n
-       "					{" \n
-       "						_subSubProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "						if !(isnil ""_subSubProfile"") then {" \n
-       "							_profileType = _subSubProfile select 2 select 5;" \n
-       "" \n
-       "							if(_profileType == ""vehicle"") then {" \n
-       "								_entitiesInCommandOf = [_subSubProfile,""entitiesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "								_entitiesInCargoOf = [_subSubProfile,""entitiesInCargoOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "	" \n
-       "								_subSublinked = _entitiesInCommandOf + _entitiesInCargoOf;" \n
-       "							}else{" \n
-       "								_vehiclesInCommandOf = [_subSubProfile,""vehiclesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "								_vehiclesInCargoOf = [_subSubProfile,""vehiclesInCargoOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "	" \n
-       "								_subSublinked = _vehiclesInCommandOf + _vehiclesInCargoOf;" \n
-       "							};" \n
-       "						};" \n
-       "					} foreach _sublinked;" \n
-       "" \n
-       "					_linked = _linked + _sublinked + _subSublinked;" \n
-       "" \n
-       "					//Needs to be checked with more than 10 players" \n
-       "					_outOfRange = {" \n
-       "							_linkedProfile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler;" \n
-       "							_profilePosition = getposATL (_linkedProfile select 2 select 10);" \n
-       "							!([_profilePosition, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0)" \n
-       "					} count _linked;" \n
-       "" \n
-       "					if (_outOfRange == 0) then {" \n
-       "							_toDespawn set [count _toDespawn, _profile];" \n
-       "					}; " \n
-       "				} else {" \n
+       "				if([_profile, _spawnDistance] call ALIVE_fnc_profileGetAnyLinkedInRange == 0) then {" \n
        "					_toDespawn set [count _toDespawn, _profile];" \n
-       "				};" \n
+       "				};				" \n
        "			};" \n
        "		};" \n
        "	};" \n
@@ -510,7 +441,7 @@ class FSM
        "	// DEBUG -------------------------------------------------------------------------------------" \n
        "	if(_debug) then {" \n
        "		//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "		//[""ALIVE Spawn controller [%1] - despawner analysis count to despawn: %2"",_side,_countToDespawn] call ALIVE_fnc_dump;" \n
+       "		[""ALIVE Spawn controller [%1] - despawner analysis count to despawn: %2"",_side,_countToDespawn] call ALIVE_fnc_dump;" \n
        "	};" \n
        "	// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
