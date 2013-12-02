@@ -163,7 +163,7 @@ if(_debug) then {
 			[_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
 			[_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
 			[_profileEntity, "side", str(side _leader)] call ALIVE_fnc_profileEntity;
-			[_profileEntity, "faction", str(faction _leader)] call ALIVE_fnc_profileEntity;
+			[_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
 			
 			[ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 			
@@ -209,7 +209,7 @@ if(_debug) then {
 						[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
 						[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
 						[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
-						[_profileVehicle, "faction", str(faction _vehicle)] call ALIVE_fnc_profileVehicle;
+						[_profileVehicle, "faction", faction _vehicle] call ALIVE_fnc_profileVehicle;
 						
 						if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 							[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
@@ -367,7 +367,7 @@ if(_debug) then {
 			[_profileVehicle, "canMove", canMove _vehicle] call ALIVE_fnc_profileVehicle;
 			[_profileVehicle, "needReload", needReload _vehicle] call ALIVE_fnc_profileVehicle;
 			[_profileVehicle, "side", str(side _vehicle)] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "faction", str(faction _vehicle)] call ALIVE_fnc_profileVehicle;
+			[_profileVehicle, "faction", faction _vehicle] call ALIVE_fnc_profileVehicle;
 			
 			if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 				[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
