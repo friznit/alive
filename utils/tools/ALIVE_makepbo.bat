@@ -1,6 +1,6 @@
 @echo off
 rem set exe=echo
-set exe=MakePBO.exe -A -BD -L -Z default
+set exe=MakePBO.exe -A -BD -L -Z "ogg,wav,jpg,sqm"
 set source=P:\x\alive\addons
 
 rem ********************
