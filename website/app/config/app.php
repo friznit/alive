@@ -115,7 +115,8 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Cartalyst\Sentry\SentryServiceProvider',
         'Prologue\Alerts\AlertsServiceProvider',
-
+        'Way\Generators\GeneratorsServiceProvider',
+        'Codesleeve\Stapler\StaplerServiceProvider'
 	),
 
 	/*
@@ -181,7 +182,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
         'Sentry'          => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
-        'Alert'             => 'Prologue\Alerts\Facades\Alert',
+        'Alert'           => 'Prologue\Alerts\Facades\Alert',
 
 	),
 

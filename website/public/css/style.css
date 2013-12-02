@@ -130,6 +130,14 @@
 }
 
 /* -----------------------------*/
+.black-panel {
+    background: #000;
+    margin-bottom:0;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+/* -----------------------------*/
 .dark2-panel {
     color:#686868;
     background: #232323;
@@ -230,6 +238,9 @@
 }
 .dark-list li i {
     padding-top:4px;
+}
+.top-margin { 
+    margin-top:10px; 
 }
 
 /*

@@ -11,23 +11,21 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <li><a href="#Trailer">Trailer</a></li>
                 <li><a href="#Welcome">Welcome</a></li>
                 <li><a href="#Gameplay">Gameplay</a></li>
-                <li><a href="#Media">Media</a></li>
                 <li><a href="#Download">Download</a></li>
+                <li><a href="#Media">Media</a></li>
+                <li><a href="#Editors">Editors</a></li>
                 <li><a href="#ALiVEWarRoom">ALiVE War Room</a></li>
                 <li><a href="#FAQ">FAQ's</a></li>
                 <li><a href="#INFO">More Info</a></li>
-                <!--<li{{ (Request::is('style') ? ' class="active"' : '') }}><a href="{{{ URL::to('style') }}}/">Style</a></li>-->
-                <!--
-                <li{{ (Request::is('/') ? ' class="active"' : '') }}><a href="{{{ URL::to('') }}}/">Home</a></li>
-                -->
             </ul>
             <ul class="nav navbar-nav pull-right">
                 @if (Sentry::check() && Sentry::getUser()->hasAccess('admin'))
                 <li id="login"><a href="{{ URL::to('war-room') }}"><img src="{{ URL::to('/') }}/img/alive_warroom_tiny.png" class="img-responsive navbar-warroom"/></a></li>
                 @else
-                    <li id="login"><a href="{{ URL::to('user/login') }}"><img src="{{ URL::to('/') }}/img/alive_warroom_login.png" class="img-responsive navbar-warroom"/></a></li>
+                    <!--<li id="login"><a href="{{ URL::to('user/login') }}"><img src="{{ URL::to('/') }}/img/alive_warroom_login.png" class="img-responsive navbar-warroom"/></a></li>-->
                 @endif
             </ul>
         </div>

@@ -145,6 +145,38 @@ class UserController extends BaseController {
         }
     }
 
+    // Profile ----------------------------------------------------------------------------------------------------
+
+    public function getProfile()
+    {
+        try {
+            // Find the current user
+            if ( Sentry::check()) {
+                // Find the user using the user id
+                $data['user'] = Sentry::getUser();
+
+                //Do they have admin access?
+                if ( $currentUser->hasAccess('admin') || $currentUser->getId() == $id) {
+                    //Either they are an admin, or:
+                    //They are not an admin, but they are viewing their own profile.
+                    $data['user'] = Sentry::getUserProvider()->findById($id);
+                    return View::make('user.profile')->with($data);
+                } else {
+                    Alert::error('You don\'t have access to that user.')->flash();
+                    return Redirect::to('admin/user');
+                }
+            }
+        } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+            Alert::error('There was a problem accessing this account.')->flash();
+            return Redirect::to('admin');
+        }
+    }
+
+    public function postProfile()
+    {
+
+    }
+
     // Authentication --------------------------------------------------------------------------------------------------
 
     public function getLogin()

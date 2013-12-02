@@ -29,11 +29,21 @@ class AdminUserController extends BaseController {
                     //$data['allUsers'] = Sentry::getUserProvider()->findAll();
 
                     $data['allUsers'] = Sentry::getUserProvider()->createModel()
-                        ->join('throttle', 'throttle.user_id', '=', 'users.id')
-                        ->paginate(10);
+                        ->leftJoin('throttle', 'throttle.user_id', '=', 'users.id')
+                        ->leftJoin('profiles', 'profiles.user_id', '=', 'users.id')
+                        ->paginate(10, array(
+                            'users.id',
+                            'users.email',
+                            'users.activated',
+                            'users.last_login',
+                            'profiles.username',
+                            'throttle.suspended',
+                            'throttle.banned'
+                        ));
 
                     //Assemble an array of each user's status
                     $data['userStatus'] = array();
+
                     foreach ($data['allUsers'] as $user) {
                         if ($user->isActivated()) {
                             $data['userStatus'][$user->id] = "Active";
@@ -190,12 +200,14 @@ class AdminUserController extends BaseController {
             if ( $currentUser->hasAccess('admin')) {
                 $data['user'] = Sentry::getUserProvider()->findById($id);
                 $data['userGroups'] = $data['user']->getGroups();
+                $data['profile'] = $data['user']->profile;
                 $data['allGroups'] = Sentry::getGroupProvider()->findAll();
                 return View::make('admin/user.edit')->with($data);
             } elseif ($currentUser->getId() == $id) {
                 //They are not an admin, but they are viewing their own profile.
                 $data['user'] = Sentry::getUserProvider()->findById($id);
                 $data['userGroups'] = $data['user']->getGroups();
+                $data['profile'] = $data['user']->profile;
                 return View::make('admin/user.edit')->with($data);
             } else {
                 Alert::error('You don\'t have access to that user.')->flash();
@@ -211,12 +223,24 @@ class AdminUserController extends BaseController {
     public function postEdit($id) {
         $input = array(
             'firstName' => Input::get('firstName'),
-            'lastName' => Input::get('lastName')
+            'lastName' => Input::get('lastName'),
+            'username' => Input::get('username'),
+            'a2ID' => Input::get('a2ID'),
+            'a3ID' => Input::get('a3ID'),
+            'preferredClass' => Input::get('preferredClass'),
+            'primaryProfile' => Input::get('primaryProfile'),
+            'secondaryProfile' => Input::get('secondaryProfile'),
+            'alias' => Input::get('alias'),
+            'armaFace' => Input::get('armaFace'),
+            'armaVoice' => Input::get('armaVoice'),
+            'armaPitch' => Input::get('armaPitch'),
+            'twitchStream' => Input::get('twitchStream'),
         );
 
         $rules = array (
             'firstName' => 'alpha',
             'lastName' => 'alpha',
+            'username' => 'required',
         );
 
         $v = Validator::make($input, $rules);
@@ -234,6 +258,7 @@ class AdminUserController extends BaseController {
                     // Either they are an admin, or they are changing their own password.
                     // Find the user using the user id
                     $user = Sentry::getUserProvider()->findById($id);
+                    $profile = $user->profile;
 
                     // Update the user details
                     $user->first_name = $input['firstName'];
@@ -242,6 +267,74 @@ class AdminUserController extends BaseController {
                     // Update the user
                     if ($user->save()) {
                         // User information was updated
+                        // update the user profile
+                        //  'preferredClass' => Input::get('preferredClass'),
+                        $profile->username = $input['username'];
+                        $profile->alias = $input['alias'];
+                        $profile->a2_id = $input['a2ID'];
+                        $profile->a3_id = $input['a3ID'];
+                        $profile->primary_profile = $input['primaryProfile'];
+                        $profile->secondary_profile = $input['secondaryProfile'];
+                        $profile->arma_face = $input['armaFace'];
+                        $profile->arma_voice = $input['armaVoice'];
+                        $profile->arma_pitch = $input['armaPitch'];
+                        $profile->twitch_stream = $input['twitchStream'];
+
+                        if ($profile->save()) {
+                            Alert::success('Profile updated.')->flash();
+                            return Redirect::to('admin/user/show/'. $id);
+                        }
+                    } else {
+                        // User information was not updated
+                        Alert::error('Profile could not be updated.')->flash();
+                        return Redirect::to('admin/user/edit/' . $id);
+                    }
+
+                } else {
+                    Alert::error('You don\'t have access to that user.')->flash();
+                    return Redirect::to('admin');
+                }
+            } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
+                Alert::error('User already exists.')->flash();
+                return Redirect::to('admin/user/edit/' . $id);
+            } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+                Alert::error('User was not found.')->flash();
+                return Redirect::to('admin/user/edit/' . $id);
+            }
+        }
+    }
+
+    public function postChangeavatar($id) {
+
+        $input = array(
+            'avatar' => Input::file('avatar'),
+        );
+
+        $rules = array (
+            'avatar' => 'mimes:jpeg,bmp,png',
+        );
+
+        $v = Validator::make($input, $rules);
+
+        if ($v->fails()) {
+            return Redirect::to('admin/user/edit/' . $id)->withErrors($v)->withInput();
+        } else {
+            try {
+                //Get the current user's id.
+                Sentry::check();
+                $currentUser = Sentry::getUser();
+
+                //Do they have admin access?
+                if ( $currentUser->hasAccess('admin')  || $currentUser->getId() == $id) {
+                    // Either they are an admin, or they are changing their own password.
+                    // Find the user using the user id
+                    $user = Sentry::getUserProvider()->findById($id);
+                    $profile = $user->profile;
+
+                    $profile->avatar->clear();
+                    $profile->avatar = $input['avatar'];
+
+                    if ($profile->save()) {
                         Alert::success('Profile updated.')->flash();
                         return Redirect::to('admin/user/show/'. $id);
                     } else {
@@ -308,6 +401,65 @@ class AdminUserController extends BaseController {
                     } else {
                         // The oldPassword did not match the password in the database. Abort.
                         Alert::error('You did not provide the correct password.')->flash();
+                        return Redirect::to('admin/user/edit/' . $id);
+                    }
+                } else {
+                    Alert::error('You don\'t have access to that user.')->flash();
+                    return Redirect::to('/');
+                }
+            } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
+                Alert::error('Login field required.')->flash();
+                return Redirect::to('admin/user/edit/' . $id);
+            } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
+                Alert::error('User already exists.')->flash();
+                return Redirect::to('admin/user/edit/' . $id);
+            } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+                Alert::error('User was not found.')->flash();
+                return Redirect::to('admin/user/edit/' . $id);
+            }
+        }
+    }
+
+
+    public function postChangeemail($id)
+    {
+        $input = array(
+            'oldEmail' => Input::get('oldEmail'),
+            'newEmail' => Input::get('newEmail'),
+            'newEmail_confirmation' => Input::get('newEmail_confirmation')
+        );
+
+        $rules = array (
+            'oldEmail' => 'required|email',
+            'newEmail' => 'required|email|confirmed',
+            'newEmail_confirmation' => 'required'
+        );
+
+        $v = Validator::make($input, $rules);
+
+        if ($v->fails()) {
+            return Redirect::to('admin/user/edit/' . $id)->withErrors($v)->withInput();
+        } else {
+            try {
+                //Get the current user's id.
+                Sentry::check();
+                $currentUser = Sentry::getUser();
+
+                //Do they have admin access?
+                if ( $currentUser->hasAccess('admin')  || $currentUser->getId() == $id) {
+                    // Either they are an admin, or they are changing their own password.
+                    $user = Sentry::getUserProvider()->findById($id);
+
+                    //The oldPassword matches the current password in the DB. Proceed.
+                    $user->email = $input['newEmail'];
+
+                    if ($user->save()) {
+                        // User saved
+                        Alert::success('Your email has been changed.')->flash();
+                        return Redirect::to('admin/user/show/'. $id);
+                    } else {
+                        // User not saved
+                        Alert::error('Your email could not be changed.')->flash();
                         return Redirect::to('admin/user/edit/' . $id);
                     }
                 } else {

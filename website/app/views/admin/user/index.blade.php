@@ -50,6 +50,7 @@
             <table class="table table-hover">
                 <thead>
                     <th>User ID</th>
+                    <th>Username</th>
                     <th>User</th>
                     <th>Status</th>
                     <th>Options</th>
@@ -57,13 +58,14 @@
                 <tbody>
                 @foreach ($allUsers as $user)
                 <tr>
-                    <td>{{{ $user->user_id }}}</td>
-                    <td><a href="{{ URL::to('admin/user/show') }}/{{ $user->user_id }}">{{{ $user->email }}}</a></td>
+                    <td>{{{ $user->id }}}</td>
+                    <td>{{{ $user->username }}}</td>
+                    <td><a href="{{ URL::to('admin/user/show') }}/{{ $user->id }}">{{{ $user->email }}}</a></td>
                     <td>{{ $userStatus[$user->id] }} </td>
                     <td>
-                        <button class="btn btn-default" onClick="location.href='{{ URL::to('admin/user/edit') }}/{{ $user->user_id}}'">Edit</button>
-                        <button class="btn btn-default" onClick="location.href='{{ URL::to('admin/user/suspend') }}/{{ $user->user_id}}'">Suspend</button>
-                        <button class="btn btn-default action_confirm" href="{{ URL::to('admin/user/delete') }}/{{ $user->user_id}}" data-token="{{ Session::getToken() }}" data-method="post">Delete</button>
+                        <button class="btn btn-default" onClick="location.href='{{ URL::to('admin/user/edit') }}/{{ $user->id}}'">Edit</button>
+                        <button class="btn btn-default" onClick="location.href='{{ URL::to('admin/user/suspend') }}/{{ $user->id}}'">Suspend</button>
+                        <button class="btn btn-default action_confirm" href="{{ URL::to('admin/user/delete') }}/{{ $user->id}}" data-token="{{ Session::getToken() }}" data-method="post">Delete</button>
                     </td>
                 </tr>
                 @endforeach

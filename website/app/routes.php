@@ -1,10 +1,9 @@
 <?php
 
-/*
-Event::listen('illuminate.query', function($query) {
-    var_dump($query);
-});
-*/
+if(Config::get('app.debug')){
+    Log::info("Route ---------------------------------------------");
+    query_debug();
+}
 
 Route::controller('user', 'UserController');
 
@@ -14,7 +13,7 @@ Route::get('admin', array('before' => 'auth', function()
 }));
 
 Route::controller('admin/user', 'AdminUserController');
-
+Route::resource('admin/profile', 'AdminProfileController');
 Route::resource('admin/group', 'AdminGroupController');
 
 Route::get('war-room', array('before' => 'auth', function()
@@ -29,3 +28,4 @@ Route::get('style', function() {
 Route::get('/', function() {
     return View::make('public/home/index');
 });
+

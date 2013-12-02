@@ -3,6 +3,19 @@
 {{-- Content --}}
 @section('content')
 
+<div class="jumbotron black-panel" id="Trailer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <!--<iframe width="420" height="500" src="http://www.youtube.com/apiplayer?video_id=88iDovAvk80&version=3" frameborder="0" modestbranding allowfullscreen></iframe>-->
+<iframe width="420" height="500" src="//www.youtube.com/embed/88iDovAvk80" autohide="3" frameborder="0" showinfo="0" modestbranding="1" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="jumbotron alive-background-panel" id="Welcome">
     <div class="container">
         <div class="row">
@@ -32,6 +45,37 @@
     </div>
 </div>
 
+<div class="jumbotron white-panel" id="Download">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h2>Download</h2>
+                <table class="table">
+                    <tr>
+                        <th>Version</th>
+                        <th>Compatible With</th>
+                        <th></th>
+                    </tr>
+                    <tr class="success">
+                        <td>0.5.2</td>
+                        <td>Arma 3 Stable 1.6.112613</td>
+                        <td><a class="btn btn-primary btn-lg pull-right" href="http://dev-heaven.net/attachments/download/21342/@alive_0-5-2.7z"><i class="fa fa-download"></i> Download</a></td>
+                    </tr>
+                </table>
+                <br/><h2>Installation</h2>
+                <p>Dependencies:  ALiVE Requires <b>CBA_A3</b><br/><br/>
+                As with any other mod, extract @ALiVE into Steamapps/Common/ArmA 3 or My Documents/ArmA3.<br/><br/>
+                Then either add @ALiVE to your shortcut -mod line, or enable it using the in game Expansions menu or use a launcher like Play with Six or ArmA3Sync.<br/><br/>
+                Further instructions for installing mods are in this handy guide on <a target="_blank" href="http://www.armaholic.com/forums.php?m=posts&q=20866]ArmAholic">Armaholic</a>
+                </p>
+            </div>
+            <div class="col-md-5">
+                <img src="{{ URL::to('/') }}/img/alivebox.gif" class="img-responsive" />
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="jumbotron dark-panel" id="Media">
     <div class="container">
         <div class="row">
@@ -40,6 +84,22 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-2">
+                <p>In the first techdemo video a brief glimpse under the hood of the Advanced Light Infantry Virtual Environment modification.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/jjeD0a7MdoU" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <p></p>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+        <div class="row top-margin">
             <div class="col-md-2">
                 <p>ALiVE logistics and reinforcement system test. A hectic 3 faction battle in a small valley on the western side of Altis.</p>
             </div>
@@ -60,31 +120,117 @@
     </div>
 </div>
 
-<div class="jumbotron white-panel" id="Download">
+<div class="jumbotron white-panel" id="Editors">
     <div class="container">
         <div class="row">
-            <div class="col-md-7">
-                <h2>Download</h2>
-                <table class="table">
-                    <tr>
-                        <th>Version</th>
-                        <th>Compatible With</th>
-                        <th></th>
-                    </tr>
-                    <tr class="success">
-                        <td>1.0.0.4</td>
-                        <td>Arma 3 Stable 1.0.0.4</td>
-                        <td><a class="btn btn-primary pull-right" href="#"><i class="fa fa-download"></i> Download</a></td>
-                    </tr>
-                    <tr>
-                        <td>1.0.0.2</td>
-                        <td>Arma 3 Stable 1.0.0.2</td>
-                        <td><a class="btn btn-primary pull-right" href="#"><i class="fa fa-download"></i> Download</a></td>
-                    </tr>
-                </table>
+            <div class="col-md-6">
+                <h2>Editors</h2>
+                <p>The following resources will help you get started with using the ALiVE mod's modules.</p>
             </div>
-            <div class="col-md-5">
-                <img src="{{ URL::to('/') }}/img/alivebox.gif" class="img-responsive" />
+        </div>
+         <div class="row">
+            <div class="col-md-6">
+                <br/><h4>ALiVE User Manual</h4>
+                <a class="btn btn-yellow btn-lg"href="http://dev-heaven.net/attachments/download/21306/ALiVE%20Manual%20Compressed.pdf"><i class="fa fa-download"></i> Download User Manual</a><br/>
+            </div>
+             <div class="col-md-6">
+                <br/><h4>Sample Missions</h4>
+                <p>Coming Soon</p>
+                <!--<a class="btn btn-yellow btn-lg"href="#"><i class="fa fa-download"></i> Download Sample Mission Pack</a><br/>-->
+            </div>
+        </div>
+        <div class="row top-margin">
+            <div class="col-md-6">
+                <br/><h4>Simple Mission Tutorials</h4><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <p>The first episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The Profile System module.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/g-8qwL61an4" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <p>The second episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The Profile System module continued and the Military Placement module.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/gDcG0srHW8A" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="row top-margin">
+            <div class="col-md-2">
+                <p>The third episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The Military placement module continued.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/rYI94Q80VCw" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <p>The forth episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The OPCOM module.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/LIJLy54k9CU" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="row top-margin">
+            <div class="col-md-2">
+                <p>The fifth episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The Civilian Placement module.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/KKAAO_rNH_Y" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <p>The sixth episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The CQB module.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/pP11I43-E10" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="row top-margin">
+            <div class="col-md-2">
+                <p>The seventh episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The Combat Support modules</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/LysKvQw0W7I" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <p>The eighth episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: The Military Intelligence, Military Sector Display, and Player Sector Display modules</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/IO8gRLuAE4k" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="row top-margin">
+            <div class="col-md-2">
+                <p>The ninth episode in a series of videos showing you how to use the ALiVE modules to create a simple mission. In this episode: AI Skill, Crew Info, Dynamic Weather, Garbage collector, Player Tags and the View Settings modules.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                    <iframe width="420" height="500" src="//www.youtube.com/embed/VwdHmXwBKD0" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-4">
+                <p><br/>Download the tutorial missions and follow along with the videos.</p>
+                <a class="btn btn-yellow btn-lg pull-right"href="downloads/ALiVE_tutorial_missions.zip"><i class="fa fa-download"></i> Download Tutorial missions</a>
             </div>
         </div>
     </div>
@@ -99,8 +245,19 @@
                 <p>ALiVE mod introduces revolutionary web services integration by streaming Arma 3 in game data to our ALiVE War Room web platform. War Room allows players and groups to review current and past operations as well keep track of individual and group performance statistics.</p>
                 <p>War Room offers groups membership to a "virtual" task force operating across the various AO's offered by the Arma 3 engine. War Room exposes task force wins, losses and leaderboards for performance. The platform will provide live streaming capabilities for BLUFOR tracking in a web browser as well as Twitch integration for live helmet cam views and the much awaited ALiVE xStream functionality.</p>
                 <p>Beside events, statistics and streaming, War Room provides the platform for persisting Multiplayer Campaigns. This allows groups to run "multi-session operations" by storing game state to a cloud based database. Group admins can update campaign data via the War Room, such as adding map markers, objectives, editing loadouts or adding vehicles and units to the campaign - all via the web platform.</p>
-                <p>We believe ALiVE War Room is a revolutionary step in Arma gaming - sign up today!</p>
+                <!--<p>We believe ALiVE War Room is a revolutionary step in Arma gaming - sign up today!</p>-->
             </div>
+            <div class="col-md-5 col-md-offset-1">
+                <div class="panel panel-dark">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">ALiVE War Room</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Registrations opening soon!</p>
+                    </div>
+                </div>
+            </div>
+            <!--
             <div class="col-md-5 col-md-offset-1">
                 <div class="panel panel-dark">
                     <div class="panel-heading">
@@ -111,6 +268,7 @@
                     </div>
                 </div>
             </div>
+            -->
         </div>
     </div>
 </div>
@@ -171,6 +329,18 @@
         </div>
     </div>
 </div>
-
-
+<!--
+<div class="jumbotron white-panel" id="Helpout">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h2>Help out</h2>
+            </div>
+            <div class="col-md-5">
+                <a class="coinbase-button" data-code="d8ebf42741de6073065e8c00ceaf6223" data-button-style="donation_large" href="https://coinbase.com/checkouts/d8ebf42741de6073065e8c00ceaf6223">Donate Bitcoins</a><script src="https://coinbase.com/assets/button.js" type="text/javascript"></script>
+            </div>
+        </div>
+    </div>
+</div>
+-->
 @stop
