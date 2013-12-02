@@ -1,7 +1,10 @@
 @echo off
 rem set exe=echo
-set exe=MakePBO.exe -A -BD -L -Z "ogg,wav,jpg,sqm"
+set exe=MakePBO.exe -A -BD -L -Z default
 set source=P:\x\alive\addons
+
+set exeuncommpressed=MakePBO.exe -A -BD -L
+set uncommpressedsource=P:\x\alive\addons\mil_OPCOM
 
 rem ********************
 rem find the arma3 path
@@ -39,6 +42,9 @@ FOR /F "tokens=1* delims=," %%A in ('dir %source% /ad /b') do (
 	%exe% "%source%\%%A"
 	if ERRORLEVEL 1 goto err
 )
+
+ echo %exeuncommpressed% %uncommpressedsource%
+ %exeuncommpressed% "%uncommpressedsource%"
 
 del /Y %target%\*.pbo
 move /Y %source%\*.pbo %target%\
