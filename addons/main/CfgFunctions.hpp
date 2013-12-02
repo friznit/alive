@@ -26,6 +26,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_logger.sqf";
 				recompile = RECOMPILE;
 			};
+			class aliveInit {
+				description = "ALiVE init function";
+				file = "\x\alive\addons\main\fnc_aliveInit.sqf";
+				recompile = RECOMPILE;
+			};
 			class isAbleToHost {
 				description = "Checks if a player shall host AI.";
 				file = "\x\alive\addons\main\fnc_isAbleToHost.sqf";
