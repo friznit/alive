@@ -16,11 +16,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_playertags\fnc_playertagsMenuDef.sqf";
 																recompile = RECOMPILE;
                         };
- 												class playertagsScript {
-                                description = "The module script setup";
-                                file = "\x\alive\addons\sys_playertags\playertags_setupRecognise.sqf";
-																recompile = RECOMPILE;
-                        };
 												class playertagsRecognise {
                                 description = "The condition script";
                                 file = "\x\alive\addons\sys_playertags\playertags_recognise.sqf";

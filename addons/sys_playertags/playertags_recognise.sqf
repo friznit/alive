@@ -4,8 +4,8 @@ if (!enable_playertags || visibleMap) exitWith {foundUnitsCount = 0;};
 _gen = player;
 _tolerance = playertags_tolerance;
 _maxDistance = playertags_distance;
+_possibleVehicles = playertags_targetvehicles;
 _ownSide = side _gen;
-_possibleVehicles = ["Man", "Car", "Tank", "StaticWeapon", "Helicopter", "Plane"];
 _playerVehicle = vehicle _gen;
 _genPos = getPos _gen;
 _objects = [];
@@ -33,7 +33,7 @@ while { (_shownObjects < 10) && (_i < _objCount) } do {
 		_bbZDiff = (_bbZMax - _bbZMin) / 2.0;
 		if (_bbZDiff > 1) then { _bbZDiff = 1; };
 		_objPos set [2, (_objPos select 2) + _bbZDiff];
-		_scrPos = worldToScreen _objPos;
+	  _scrPos = worldToScreen (_obj modelToWorld [0,0,playertags_height]);
 		if (count _scrPos == 2) then {
 			_scrX = _scrPos select 0;
 			_scrY = _scrPos select 1;

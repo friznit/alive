@@ -52,10 +52,7 @@ if (typeName _params == typeName []) then {
 };
 //-----------------------------------------------------------------------------
 
-if(PLAYERTAGS_DEBUG) then {
-	["ALIVE Player Tags - _menuName: %1",_menuName] call ALIVE_fnc_dump;
-};
-	
+
 
 _menus =
 [
@@ -63,7 +60,10 @@ _menus =
 		["main", "ALiVE", _menuRsc],
 		[
 			[localize "STR_ALIVE_PLAYERTAGS" + " >",
-		  { [PLAYERTAGS_DISTANCE, PLAYERTAGS_TOLERANCE, PLAYERTAGS_SCALE] call ALIVE_fnc_playertagsScript;},
+		  { 
+		  	0 cutRsc ["playertagsOverlayRsc", "PLAIN"];
+		  },
+		  
 			"",
 				localize "STR_ALIVE_PLAYERTAGS_COMMENT",
                   ["call ALiVE_fnc_playertagsMenuDef", "playertags", 1],

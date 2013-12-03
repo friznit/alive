@@ -1,7 +1,6 @@
 #include <\x\alive\addons\sys_playertags\script_component.hpp>
 	private ["_display", "_unit", "_tmpText", "_scrPos", "_lineCount","_ctrl","_absolutePos","_distMod","_overlayWidth","_ctrls","_display"];
 	
-#define PLAYERTAGSOVERLAY_IDD 990
 #define PLAYERTAGSOVERLAY_TEXT0_IDC 991
 
   
