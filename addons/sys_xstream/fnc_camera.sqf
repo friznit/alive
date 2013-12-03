@@ -257,7 +257,7 @@ while { ((count subjects + count infantry) > 0) && GVAR(cameraStarted)} do {
 			sleep 5;
 		};
 
-/*
+		/*
 		// First Person
 		if ((_sceneChoice > 8) && (_sceneChoice < 11)) then {
 			_cam camPrepareRelPos (position _cameraTarget);
