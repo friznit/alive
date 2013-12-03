@@ -7,6 +7,5 @@ TODO
 - confirm integer code is working
 
 Website
-- Tier 1 operator list missing some players
 - Marksmen should not include static weapons
 - 
