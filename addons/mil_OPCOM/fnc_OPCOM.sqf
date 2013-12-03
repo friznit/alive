@@ -402,7 +402,7 @@ switch(_operation) do {
                                 case ("MIL") : {_buildingTypes = ALIVE_militaryHQBuildingTypes};
                                 case ("CIV") : {_buildingTypes = ALIVE_civilianCommsBuildingTypes + ALIVE_civilianPowerBuildingTypes + ALIVE_civilianFuelBuildingTypes};
                             };
-                            
+
                             //Get building-objects from nodes
 							_nodes = [_objective, "nodes"] call ALIVE_fnc_hashGet;
 							_buildings = [_nodes, _buildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
@@ -520,7 +520,7 @@ switch(_operation) do {
                         	[
                             	_desc,
                                 _message,
-                                _id
+                                _message
                             ],
                         _pos,
                         _state,
