@@ -1,5 +1,6 @@
 //#define DEBUG_MODE_FULL
 #include <\x\alive\addons\sys_xstream\script_component.hpp>
+
 SCRIPT(xStream);
 
 /* ----------------------------------------------------------------------------
@@ -140,7 +141,7 @@ switch(_operation) do {
 
                 // initialise main menu
                 [
-                        "xstream",
+                        "player",
                         [SELF_INTERACTION_KEY],
                         -9500,
                         [
@@ -247,32 +248,19 @@ switch(_operation) do {
 	case "startCamera": {
 		if !(isDedicated && isHC) then {
 
-			private ["_handle"];
-
 			GVAR(cameraStarted) = true;
+
+			[_logic] spawn ALiVE_fnc_camera;
 
 			player setCaptive true;
 			player allowDammage false;
-
-			_handle = [_logic] spawn ALiVE_fnc_camera;
-
-			_logic setVariable ["cameraHandle", _handle, true];
-
 
 		};
 	};
 	case "stopCamera": {
 		if !(isDedicated && isHC) then {
 
-			private ["_handle","_lhandle"];
-
 			GVAR(cameraStarted) = false;
-
-		/*	_handle = _logic getVariable "cameraHandle";
-			_lhandle = _logic getVariable "loopHandle";
-
-			terminate _handle;
-			terminate _lhandle; */
 
 			player setCaptive false;
 			player allowDammage true;

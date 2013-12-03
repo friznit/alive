@@ -57,37 +57,37 @@
     <English>Stop xStream Camera</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_acreChannel">
-    <English>Camera ACRE Channel:</English>
+    <English>ACRE Channel:</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_acreChannel_COMMENT">
     <English>(Optional) Select an ACRE channel for the camera system to listen in on (recommend an HQ net)</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_cameraShake">
-    <English>Enable Camera Shake:</English>
+    <English>Camera Shake:</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_cameraShake_COMMENT">
     <English>Enable camera shake for the ALiVE xStream camera</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_satellite">
-    <English>Enable Satellite Camera:</English>
+    <English>Satellite Camera:</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_satellite_COMMENT">
     <English>Enable satellite camera views for the ALiVE xStream camera system</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_aerial">
-    <English>Enable Aerial Camera:</English>
+    <English>Aerial Camera:</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_aerial_COMMENT">
     <English>Enable satellite camera views for the ALiVE xStream camera system</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_vehicle">
-    <English>Enable Vehicle Camera:</English>
+    <English>Vehicle Camera:</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_vehicle_COMMENT">
     <English>Enable external vehicle camera views for the ALiVE xStream camera system</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_thirdPerson">
-    <English>Enable 3rd Person Camera:</English>
+    <English>3rd Person Camera:</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_thirdPerson_COMMENT">
     <English>Enable third person camera views for the ALiVE xStream camera system</English>
