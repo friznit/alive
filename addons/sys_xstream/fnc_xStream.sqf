@@ -268,11 +268,11 @@ switch(_operation) do {
 
 			GVAR(cameraStarted) = false;
 
-			_handle = _logic getVariable "cameraHandle";
+		/*	_handle = _logic getVariable "cameraHandle";
 			_lhandle = _logic getVariable "loopHandle";
 
 			terminate _handle;
-			terminate _lhandle;
+			terminate _lhandle; */
 
 			player setCaptive false;
 			player allowDammage true;
