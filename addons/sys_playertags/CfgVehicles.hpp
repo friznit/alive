@@ -101,6 +101,14 @@ class CfgVehicles {
 			                                };
 			                        };
 			                        
+			                        class playertags_targets_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_TARGETS";
+			                                description = "$STR_ALIVE_PLAYERTAGS_TARGETS_COMMENT";
+                               			  defaultValue = "[""CAManBase"", ""Car"", ""Tank"", ""StaticWeapon"", ""Helicopter"", ""Plane""]";
+                                      typeName = "ARRAY";
+			                        };
+			                        
 			                        class playertags_distance_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_DISTANCE";
@@ -124,6 +132,16 @@ class CfgVehicles {
                                			  defaultValue = 0.65;
                                       typeName = "NUMBER";
 			                        };
+			                        
+			                        
+			                        class playertags_height_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_HEIGHT";
+			                                description = "$STR_ALIVE_PLAYERTAGS_HEIGHT_COMMENT";
+                               			  defaultValue = 1.1;
+                                      typeName = "NUMBER";
+			                        };
+			                        
 			                        
 			                        class playertags_namecolour_setting
 			                        {
@@ -156,7 +174,7 @@ class CfgVehicles {
                                			  defaultValue = "#009D91"; // cyan
                                       typeName = "STRING";
 			                        };
-            
+
 			          };
         };
 };

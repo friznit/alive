@@ -93,21 +93,24 @@ switch(_operation) do {
                
 
                 if(!isDedicated && !isHC) then {
-                   PLAYERTAGS_DEBUG = call compile (_logic getvariable ["playertags_debug_setting","false"]);
-                   PLAYERTAGS_GROUP = call compile (_logic getvariable ["playertags_displaygroup_setting","true"]);
-                   PLAYERTAGS_RANK = call compile (_logic getvariable ["playertags_displayrank_setting","true"]);
-                   PLAYERTAGS_INVEHICLE = call compile (_logic getvariable ["playertags_invehicle_setting","false"]);
-                   PLAYERTAGS_DISTANCE = _logic getvariable ["playertags_distance_setting",20];
-                   PLAYERTAGS_TOLERANCE = _logic getvariable ["playertags_tolerance_setting",0.75];
-                   PLAYERTAGS_SCALE = _logic getvariable ["playertags_scale_setting",0.65];
-                   PLAYERTAGS_NAMECOLOUR = _logic getvariable ["playertags_namecolour_setting","#FFFFFF"];       
-                   PLAYERTAGS_GROUPCOLOUR = _logic getvariable ["playertags_groupcolour_setting","#A8F000"]; 
-                   PLAYERTAGS_THISGROUPLEADERNAMECOLOUR = _logic getvariable ["playertags_thisgroupleadernamecolour_setting","#FFB300"]; 
-                   PLAYERTAGS_THISGROUPCOLOUR =_logic getvariable ["playertags_thisgroupcolour_setting","#009D91"]; 
+                   playertags_debug = call compile (_logic getvariable ["playertags_debug_setting","false"]);
+                   playertags_group = call compile (_logic getvariable ["playertags_displaygroup_setting","true"]);
+                   playertags_rank = call compile (_logic getvariable ["playertags_displayrank_setting","true"]);
+                   playertags_invehicle = call compile (_logic getvariable ["playertags_invehicle_setting","false"]);
+                   playertags_distance = _logic getvariable ["playertags_distance_setting",20];
+                   playertags_tolerance = _logic getvariable ["playertags_tolerance_setting",0.75];
+                   playertags_scale = _logic getvariable ["playertags_scale_setting",0.65];
+                   playertags_namecolour = _logic getvariable ["playertags_namecolour_setting","#FFFFFF"];       
+                   playertags_groupcolour = _logic getvariable ["playertags_groupcolour_setting","#A8F000"]; 
+                   playertags_thisgroupleadernamecolour = _logic getvariable ["playertags_thisgroupleadernamecolour_setting","#FFB300"]; 
+                   playertags_thisgroupcolour =_logic getvariable ["playertags_thisgroupcolour_setting","#009D91"]; 
+                   playertags_targetvehicles = call compile (_logic getvariable ["playertags_targets_setting","[""CAManBase"", ""Car"", ""Tank"", ""StaticWeapon"", ""Helicopter"", ""Plane""]"]);
+                   playertags_height = _logic getvariable ["playertags_height_setting",1.1];
+                   
                 	
-                		Waituntil {!(isnil "PLAYERTAGS_DEBUG")};
-                		if(PLAYERTAGS_DEBUG) then {
-                			["ALIVE Player Tags - Menu Starting..."] call ALIVE_fnc_dump;
+                		Waituntil {!(isnil "playertags_debug")};
+                		if(playertags_debug) then {
+                			["ALIVE Player Tags - Menu Starting... playertags_distance: %1, playertags_tolerance: %2, playertags_scale:, %3", playertags_distance, playertags_tolerance, playertags_scale] call ALIVE_fnc_dump;
                 		};
                 		
                         // Initialise interaction key if undefined
