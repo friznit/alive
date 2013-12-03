@@ -7,6 +7,10 @@ private ["_relpos","_cam","_cameraTarget","_fov","_sceneChoice","_subChoice","_l
 
 _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 
+// Setup params from logic
+
+
+
 TargetFired = [];
 subjects = [player];
 infantry = [player];
@@ -53,8 +57,6 @@ _loopHandle = [] spawn {
 		infantry = [];
 	};
 };
-
-_logic setVariable ["loophandle", _loopHandle];
 
 // Set up visual effects
 0 setOvercast random 0.2;

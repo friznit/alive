@@ -11,9 +11,9 @@ class CfgFunctions {
 				file = "\x\alive\addons\sys_xstream\fnc_xStreamInit.sqf";
 				recompile = RECOMPILE;
 			};
-            class xstreamMenuDef {
+            class xStreamMenuDef {
                 description = "The module menu definition";
-                file = "\x\alive\addons\sys_xstream\fnc_xstreamMenuDef.sqf";
+                file = "\x\alive\addons\sys_xstream\fnc_xStreamMenuDef.sqf";
 				recompile = RECOMPILE;
             };
 			class camera {
