@@ -663,7 +663,7 @@ switch(_operation) do {
 						//[_x, "debug", true] call ALIVE_fnc_cluster;
 						{													
 							_position = position _x;
-							_direction = direction _x;
+							_direction = if(random 1 < 0.5) then {direction _x} else {direction _x - 180};
 							_vehicleClass = _airClasses call BIS_fnc_selectRandom;
 							if(random 1 > 0.6) then {
 								[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
