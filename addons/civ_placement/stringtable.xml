@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_CP">
+	<English>Military Civilian Placement</English>
+</Key>
+<Key ID="STR_ALIVE_CP_COMMENT">
+	<English>Strategic Military Civilian Placement</English>
+</Key>
+<Key ID="STR_ALIVE_CP_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_DEBUG_COMMENT">
+	<English>Enables CP Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TAOR">
+	<English>TAOR Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TAOR_COMMENT">
+	<English>Tactical Area Operation Responsibility Marker</English>
+</Key>
+<Key ID="STR_ALIVE_CP_BLACKLIST">
+	<English>Blacklist Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_BLACKLIST_COMMENT">
+	<English>Exclusion Marker</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE">
+    <English>Objective Type Filter:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_COMMENT">
+    <English>The type of objective</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_ALL">
+    <English>All</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_HQ">
+    <English>HQ</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_POWER">
+    <English>Power Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_COMMS">
+    <English>Communications Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_FUEL">
+    <English>Fuel Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_MARINE">
+    <English>Marine Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_CONSTRUCTION">
+    <English>Construction Infrastructure</English>
+</Key>
+<Key ID="STR_ALIVE_CP_CLUSTER_TYPE_SETTLEMENT">
+    <English>Settlement</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_FILTER">
+	<English>Objective Size Filter:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_FILTER_COMMENT">
+	<English>Filter objectives less than selected size</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_FILTER_NONE">
+	<English>Do not filter</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_FILTER_SMALL">
+	<English>Ignore small objectives</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_FILTER_MEDIUM">
+	<English>Ignore small + medium objectives</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_FILTER_LARGE">
+	<English>Only huge objectives</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PRIORITY_FILTER">
+	<English>Objective Priority Filter:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PRIORITY_FILTER_COMMENT">
+	<English>Filter objectives less than selected priority</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PRIORITY_FILTER_NONE">
+	<English>Do not filter</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PRIORITY_FILTER_LOW">
+	<English>Ignore low priority objectives</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PRIORITY_FILTER_MEDIUM">
+	<English>Ignore low + medium priority objectives</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PRIORITY_FILTER_HIGH">
+	<English>Only high priority objectives</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PLACEMENT">
+	<English>Place units:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PLACEMENT_COMMENT">
+	<English>Place units or objectives only</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PLACEMENT_YES">
+	<English>Place Units</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PLACEMENT_NO">
+	<English>Objectives Only</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE">
+	<English>Force Size:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_COMMENT">
+	<English>Number of units to be placed</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_BNx3">
+	<English>Battalion (1200)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_BNx2">
+	<English>Battalion (800)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_BN">
+	<English>Battalion (400)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_CYx2">
+	<English>Company (200)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_CY">
+	<English>Company (100)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_PLx2">
+	<English>Platoon (60)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_SIZE_PL">
+	<English>Platoon (30)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE">
+	<English>Force Weighting:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE_COMMENT">
+	<English>The preferred type of force deployed</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE_RANDOM">
+	<English>Random</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE_ARMOR">
+	<English>Armoured</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE_MECH">
+	<English>Mechanised</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE_MOTOR">
+	<English>Motorised</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE_LIGHT">
+	<English>Light Infantry</English>
+</Key>
+<Key ID="STR_ALIVE_CP_TYPE_AIRBORNE">
+	<English>Airborne</English>
+</Key>
+<Key ID="STR_ALIVE_CP_FACTION">
+	<English>Force Faction:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_FACTION_COMMENT">
+	<English>Faction of the units to be placed (BLU_F, OPF_F, IND_F, BLU_G_F)</English>
+</Key>
+<Key ID="STR_ALIVE_CP_USAGE">
+	<English>Define the settings on the module, place optional TAOR / Blacklist markers! This module has to be synced to an OPCOM module, if you want to use OPCOM!</English>
+</Key>
+</Container></Package></Project>

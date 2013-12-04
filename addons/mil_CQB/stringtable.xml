@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_CQB">
+	<English>CQB</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_COMMENT">
+	<English>ALiVE Close Quarter Battles</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DEBUG_COMMENT">
+	<English>Enables CQB Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_ENABLE">
+	<English>Enable CQB</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS_STRAT">
+	<English>Factions:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS_STRAT_COMMENT">
+	<English>Chooses the factions of strategic CQB units</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS_REG">
+	<English>Factions:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS_REG_COMMENT">
+	<English>Chooses the factions of regular CQB units</English>
+</Key>
+
+<Key ID="STR_ALIVE_CQB_ENABLE_COMMENT">
+	<English>Enables CQB module</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_SPAWN">
+	<English>Density</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_SPAWN_COMMENT">
+	<English>Percentage of occupied houses</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DISABLE">
+	<English>Disable CQB</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DISABLE_COMMENT">
+	<English>Disables CQB module</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_ERROR1">
+	<English>Only one CQB module can be used</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_USAGE">
+	<English>Place the CQB module and select the preferred intensity. CQB can be synchronised (F5) to a Mil_MP or CIV_CP module (optionally).</English>
+</Key>
+</Container></Package></Project>

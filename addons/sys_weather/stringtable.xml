@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_WEATHER">
+	<English>Dynamic Weather</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_DEBUG_COMMENT">
+	<English>Enables Dynamic Weather Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_ERROR1">
+	<English>Only one dynamic weather module can be used</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_INITIAL">
+	<English>Initial Weather:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_INITIAL_COMMENT">
+	<English>Initial weather setting</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MIN">
+	<English>Change Min:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MIN_COMMENT">
+	<English>Minimum time in minutes for the weather to change</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MAX">
+	<English>Change Max:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_CHANGE_MAX_COMMENT">
+	<English>Maximum time in minutes for the weather to change</English>
+</Key>
+</Container></Package></Project>
+
+

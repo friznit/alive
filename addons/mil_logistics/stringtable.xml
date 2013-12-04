@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_ML">
+	<English>Military Logistics</English>
+</Key>
+<Key ID="STR_ALIVE_ML_COMMENT">
+	<English>Strategic Military Logistics</English>
+</Key>
+<Key ID="STR_ALIVE_ML_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_ML_DEBUG_COMMENT">
+	<English>Enables ML Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_ML_INTEL_CHANCE">
+	<English>Intel Coverage:</English>
+</Key>
+<Key ID="STR_ALIVE_ML_INTEL_CHANCE_COMMENT">
+	<English>Intel coverage of enemy force</English>
+</Key>
+<Key ID="STR_ALIVE_ML_INTEL_CHANCE_LOW">
+	<English>Low coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_ML_INTEL_CHANCE_MEDIUM">
+	<English>Medium coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_ML_INTEL_CHANCE_HIGH">
+	<English>High coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_ML_INTEL_CHANCE_TOTAL">
+	<English>Total coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_ML_USAGE">
+    <English>Place a Military Logistics module to reinforce and resupply factions under control of the synced OPCOM module.</English>
+</Key>
+</Container></Package></Project>

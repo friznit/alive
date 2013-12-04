@@ -1,0 +1,8 @@
+TODO
+- storing a customized rifle in a backpack, doesn't persist custom items etc
+- ammo state not saved correctly
+- inventory state isn't sync'd between client and server for JIP (use put/take EH)
+- Look at getting data from client rather than server (not reliable)
+- 2nd manual save causes error
+- code review
+

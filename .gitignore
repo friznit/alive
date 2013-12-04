@@ -1,3 +1,6 @@
 *.pbo
-*.png
-
+store/function_library/*
+utils/ndocs-project/Data/*
+utils/ndocs-project/Menu_Backup*
+*obsolete*
+.idea

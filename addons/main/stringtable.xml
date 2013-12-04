@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_SYS">
+	<Original>ALiVE Systems</Original>
+</Key>
+<Key ID="STR_ALIVE_SUPPORT">
+	<Original>ALiVE Support</Original>
+</Key>
+<Key ID="STR_ALIVE_AMBIENT">
+	<Original>ALiVE Ambience</Original>
+</Key>
+<Key ID="STR_ALIVE_ENEMY">
+	<Original>ALiVE Enemy</Original>
+</Key>
+<Key ID="STR_ALIVE_MILITARY">
+	<Original>ALiVE Military</Original>
+</Key>
+<Key ID="STR_ALIVE_CIVILIAN">
+	<Original>ALiVE Civilian</Original>
+</Key>
+<Key ID="STR_ALIVE_REQUIRES_ALIVE">
+	<Original>Requires ALiVE</Original>
+	<German>Erfordern ALiVE</German>
+	<Italian>Richiedono ALiVE</Italian>
+	<Spanish>Requieren ALiVE</Spanish>
+	<French>Exiger ALiVE</French>
+	<Czech>Vyžadovat ALiVE</Czech>
+	<Russian>Требовать ALiVE</Russian>
+	<Polish>Wymagaj ALiVE</Polish>
+	<Hungarian>Igénylése ALiVE</Hungarian>
+</Key>
+</Container></Package></Project>

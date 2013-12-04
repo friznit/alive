@@ -1,0 +1,11 @@
+pre {
+	margin: 0;
+	background: #33EE33;
+	border: 1px solid #448844;
+	padding: 0.5em 1em 0.5em 1em;
+}
+
+p {
+	text-indent: 0;
+	margin-bottom: 1em;
+}

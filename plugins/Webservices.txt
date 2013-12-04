@@ -1,0 +1,9 @@
+# This is a comment
+# Any line starting with a "#" is considered a comment
+# Make sure each of your webservices doesn't have a "#" in front!
+# Put each webservices you want on a separate line, more options will be available in the future
+# SERVER ADMINS! For now, contact tupolov73@gmail.com with subject "Web Data Access" and we will provide you with a username and password to use.
+# For an example, see the following
+# webservicetype,username,password
+# example:
+# JSON,armausername,playwithmyballs
