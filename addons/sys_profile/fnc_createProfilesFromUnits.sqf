@@ -89,7 +89,7 @@ if(_createMode == "IGNORE") then {
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
 	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-	["ALIVE Create profiles from map groups"] call ALIVE_fnc_dump;
+	["ALIVE Create profiles from map groups !!"] call ALIVE_fnc_dump;
 	[true] call ALIVE_fnc_timer;
 };
 // DEBUG -------------------------------------------------------------------------------------
