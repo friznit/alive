@@ -4,9 +4,9 @@
 // TODO: Consider Mod-wide or Component-narrow versions (or both, depending on wishes!)
 #define MAJOR 0
 #define MINOR 5
-#define PATCHLVL 2
+#define PATCHLVL 3
 // BUILD should be YYMMDDR eg 1311211
-#define BUILD 1312021
+#define BUILD 1312041
 
 #define VERSION MAJOR.MINOR.PATCHLVL.BUILD
 #define VERSION_AR MAJOR,MINOR,PATCHLVL,BUILD
