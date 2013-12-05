@@ -189,7 +189,7 @@ switch(_operation) do {
                     _error1 = ""; _error2 = ""; _exit = false; //defaults
                     {
                         _Selected_OPCOM = _x;
-                        //Waituntil init has passed on that instance
+                        //Wait until init has passed on that instance
                         waituntil {sleep 1; !(isnil {[_Selected_OPCOM, "factions"] call ALiVE_fnc_HashGet})};
                         
                         _pos_OPCOM_selected = [_Selected_OPCOM, "position"] call ALiVE_fnc_HashGet;
@@ -207,18 +207,14 @@ switch(_operation) do {
                         };
                     } foreach _OPCOMS;
                     if (_exit) exitwith {
-                        // debug ---------------------------------------
-							if (_debug) then {[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR};
-						// debug ---------------------------------------
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
                     //Still there? Cool, check if there are objectives
                     _errorMessage = "There are no objectives for this OPCOM instance! Please assign Military Placement Objectives!%1%2";
                     _error1 = ""; _error2 = ""; //defaults
                     if ((count _objectives) < 1) exitwith {
-                         // debug ---------------------------------------
-							if (_debug) then {[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR};
-						// debug ---------------------------------------
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
                     //Still there? Awesome, check if there are different sides within the factions
@@ -226,9 +222,23 @@ switch(_operation) do {
                     _error1 = _side; _error2 = ""; _exit = false;  //defaults
                     _exit = !(({(getNumber(configfile >> "CfgFactionClasses" >> (_factions select 0) >> "side")) == (getNumber(configfile >> "CfgFactionClasses" >> _x >> "side"))} count _factions) == (count _factions));
                     if (_exit) exitwith {
-                         // debug ---------------------------------------
-							if (_debug) then {[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR};
-						// debug ---------------------------------------
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
+                    };
+                    
+                    //Still there? Nice, check if there are profiles available for OPCOM to control
+                    _errorMessage = "There are no profiles for faction(s) %2 assigned to OPCOM %1!";
+                    _error1 = _side; _error2 = _factions; _exit = false; _profiles_count = 0; //defaults
+                     if !(isnil "ALIVE_profileHandler") then {
+                         {
+                             _profiles_count_tmp = ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler); 
+                         	if !(isnil "_profiles_count_tmp") then {_profiles_count = _profiles_count + (count _profiles_count_tmp)};
+                         } foreach _factions;
+                     } else {
+                         _errorMessage = "OPCOM %1 needs the SYS Profiles module to be happy...!";
+                     };
+                    _exit = (isnil "ALIVE_profileHandler") || {(_profiles_count == 0)};
+                    if (_exit) exitwith {
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
                     //Still there? Mega, wait random time to ensure all opcoms analysis wont run at the same time on start!
