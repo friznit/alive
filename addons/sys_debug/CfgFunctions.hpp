@@ -11,6 +11,26 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_debug\fnc_dumpR.sqf";
 				recompile = RECOMPILE;
 			};
+			class dumpMP {
+				description = "dumpMP";
+				file = "\x\alive\addons\sys_debug\fnc_dumpMP.sqf";
+				recompile = RECOMPILE;
+			};
+			class dumpMPH {
+				description = "dumpMPH";
+				file = "\x\alive\addons\sys_debug\fnc_dumpMPH.sqf";
+				recompile = RECOMPILE;
+			};
+			class hintS {
+				description = "hintS";
+				file = "\x\alive\addons\sys_debug\fnc_hintS.sqf";
+				recompile = RECOMPILE;
+			};
+			class sideC {
+				description = "sideC";
+				file = "\x\alive\addons\sys_debug\fnc_sideC.sqf";
+				recompile = RECOMPILE;
+			};
 			class timer {
 				description = "timer";
 				file = "\x\alive\addons\sys_debug\fnc_timer.sqf";
