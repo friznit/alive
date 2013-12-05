@@ -68,7 +68,7 @@ switch(_operation) do {
             [_logic,"startupQueue",[]] call ALIVE_fnc_hashSet;
             [_logic,"startupRunning",false] call ALIVE_fnc_hashSet;
             [_logic,"modulesStarted",[]] call ALIVE_fnc_hashSet;
-            
+
             if([_logic, "debug"] call MAINCLASS) then {
                 ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
                 ["ALIVE Registry init"] call ALIVE_fnc_dump;
@@ -186,7 +186,7 @@ switch(_operation) do {
             _excludedModules = _queuedModule select 3;
             
             // DEBUG -------------------------------------------------------------------------------------
-            ["ALIVE Registry - %2 Startup [%1]",_moduleID,_moduleType] call ALIVE_fnc_dump;
+            ["ALIVE Registry - %2 Startup [%1]",_moduleID,_moduleType] call ALiVE_fnc_DumpMPH;
             // DEBUG -------------------------------------------------------------------------------------
             
             _requirementsPassed = true;
@@ -194,7 +194,7 @@ switch(_operation) do {
             if(count _requiredModules > 0) then {
                 
                 // DEBUG -------------------------------------------------------------------------------------
-                ["ALIVE Registry - %2 [%1] has required modules defined: %3",_moduleID,_moduleType,_requiredModules] call ALIVE_fnc_dump;
+                ["ALIVE Registry - %2 [%1] has required modules defined: %3",_moduleID,_moduleType,_requiredModules] call ALiVE_fnc_Dump;
                 // DEBUG -------------------------------------------------------------------------------------
                 
                 if("SYNCED" in _requiredModules) then {
@@ -209,9 +209,9 @@ switch(_operation) do {
                         if!(_syncedModuleType in _excludedModules) then {
                             
                             // DEBUG -------------------------------------------------------------------------------------
-                            ["ALIVE Registry - %2 [%1] required synced %3 module has started:%4",_moduleID,_moduleType,_syncedModuleType,_started] call ALIVE_fnc_dump;
+                            ["ALIVE Registry - %2 [%1] required synced %3 module has started:%4",_moduleID,_moduleType,_syncedModuleType,_started] call ALiVE_fnc_DumpMPH;
                             // DEBUG -------------------------------------------------------------------------------------
-                            
+
                             if!(_started) then {
                                 _requirementsPassed = false;
                             };
@@ -245,9 +245,9 @@ switch(_operation) do {
                 };
                 
                 // DEBUG -------------------------------------------------------------------------------------
-                ["ALIVE Registry - %2 [%1] starting..",_moduleID,_moduleType] call ALIVE_fnc_dump;
+                ["ALIVE Registry - %2 [%1] starting...",_moduleID,_moduleType] call ALiVE_fnc_DumpMPH;
                 // DEBUG -------------------------------------------------------------------------------------
-                
+
                 //["Class: %1",_class] call ALIVE_fnc_dump;					
                 [_module,"start"] call _class;
                 
@@ -259,9 +259,8 @@ switch(_operation) do {
             }else{
                 
                 // DEBUG -------------------------------------------------------------------------------------
-                ["ALIVE Registry - %2 [%1] is not ready to be started, waiting on: %3",_moduleID,_moduleType,_requiredModules] call ALIVE_fnc_dump;
+                ["ALIVE Registry - %2 [%1] is not ready to be started, waiting on: %3",_moduleID,_moduleType,_requiredModules] call ALiVE_fnc_Dump;
                 // DEBUG -------------------------------------------------------------------------------------
-                
             };
             
         } forEach _startupQueue;
@@ -297,7 +296,7 @@ switch(_operation) do {
                 [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
             }else{
                 // DEBUG -------------------------------------------------------------------------------------
-                ["ALIVE Registry - Startup queue not empty, looping.."] call ALIVE_fnc_dump;
+                ["ALIVE Registry - Startup queue not empty, looping..."] call ALiVE_fnc_Dump;
                 // DEBUG -------------------------------------------------------------------------------------
 
                 [_logic, "startup", _loopCount] call MAINCLASS;
@@ -305,7 +304,7 @@ switch(_operation) do {
         }else{
             
             // DEBUG -------------------------------------------------------------------------------------
-            ["ALIVE Registry - Startup queue completed.."] call ALIVE_fnc_dump;
+            ["ALIVE Registry - Startup queue completed..."] call ALiVE_fnc_DumpMPH;
             // DEBUG -------------------------------------------------------------------------------------
             
             if!(isNil "ALIVE_profileHandler") then {
