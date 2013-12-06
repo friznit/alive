@@ -54,6 +54,12 @@ if(count _config > 0) then {
 	_groupUnits = [];
 	_groupVehicles = [];
 
+    /*
+	["CFG Name: %1",_groupName] call ALIVE_fnc_dump;
+    ["CFG Side: %1",_groupSide] call ALIVE_fnc_dump;
+    ["CFG Faction: %1",_groupFaction] call ALIVE_fnc_dump;
+    */
+
 	// loop through the config for the group
 	for "_i" from 0 to count _config -1 do {
 		_class = (_config select _i);
