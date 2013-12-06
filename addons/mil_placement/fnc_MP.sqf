@@ -569,8 +569,15 @@ switch(_operation) do {
 			_countSupplies = 0;
 			
 			if(_placeSupplies) then {
-			
-				_supplyClasses = [ALIVE_factionDefaultSupplies,_faction] call ALIVE_fnc_hashGet;
+
+			    // attempt to get supplies by faction
+				_supplyClasses = [ALIVE_factionDefaultSupplies,_faction,[]] call ALIVE_fnc_hashGet;
+
+				// if no supplies found for the faction use side supplies
+				if(count _supplyClasses == 0) then {
+				    _supplyClasses = [ALIVE_sideDefaultSupplies,_side] call ALIVE_fnc_hashGet;
+				};
+
 				_supplyClasses = _supplyClasses - ALIVE_vehicleBlacklist;
 				
 				if(count _supplyClasses > 0) then {
@@ -697,7 +704,12 @@ switch(_operation) do {
 				_landClasses = _carClasses + _armorClasses;
 				_landClasses = _landClasses - ALIVE_vehicleBlacklist;				
 				
-				_supportClasses = [ALIVE_factionDefaultSupports,_faction] call ALIVE_fnc_hashGet;
+				_supportClasses = [ALIVE_factionDefaultSupports,_faction,[]] call ALIVE_fnc_hashGet;
+
+				// if no supports found for the faction use side supplies
+                if(count _supportClasses == 0) then {
+                    _supportClasses = [ALIVE_sideDefaultSupports,_side] call ALIVE_fnc_hashGet;
+                };
 				
 				_landClasses = _landClasses - _supportClasses;
 				
@@ -798,7 +810,7 @@ switch(_operation) do {
 			// Spawn the main force
 			
 			private ["_countArmored","_countMechanized","_countMotorized","_countInfantry",
-			"_countAir","_groups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
+			"_countAir","_groups","_motorizedGroups","_infantryGroups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
 			"_groupCount","_clusterCount"];
 			
 			// DEBUG -------------------------------------------------------------------------------------
@@ -884,8 +896,6 @@ switch(_operation) do {
 			
 			if(_countMotorized > 0) then {
 
-                private["_motorizedGroups"];
-
                 _motorizedGroups = [];
 
                 for "_i" from 0 to _countMotorized -1 do {
@@ -906,13 +916,16 @@ switch(_operation) do {
 
                 _groups = _groups + _motorizedGroups;
             };
-			
+
+			_infantryGroups = [];
 			for "_i" from 0 to _countInfantry -1 do {
 				_group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
 				if!(_group == "FALSE") then {
-					_groups set [count _groups, _group];
+					_infantryGroups set [count _infantryGroups, _group];
 				}
 			};
+
+			_groups = _groups + _infantryGroups;
 			
 			for "_i" from 0 to _countAir -1 do {
 				_group = ["Air",_faction] call ALIVE_fnc_configGetRandomGroup;
@@ -936,7 +949,7 @@ switch(_operation) do {
 				_center = [_x, "center"] call ALIVE_fnc_hashGet;
 				_size = [_x, "size"] call ALIVE_fnc_hashGet;
 				
-				_guardGroup = [ALIVE_factionDefaultGuards,_faction] call ALIVE_fnc_hashGet;
+				_guardGroup = _infantryGroups call BIS_fnc_selectRandom;
                 _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 				
 				if(_totalCount < _groupCount) then {

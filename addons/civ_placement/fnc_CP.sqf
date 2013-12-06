@@ -523,7 +523,7 @@ switch(_operation) do {
 			// Spawn the main force
 			
 			private ["_countArmored","_countMechanized","_countMotorized","_countInfantry",
-			"_countAir","_groups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
+			"_countAir","_groups","_motorizedGroups","_infantryGroups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
 			"_groupCount","_clusterCount"];
 			
 			// DEBUG -------------------------------------------------------------------------------------
@@ -609,8 +609,6 @@ switch(_operation) do {
 
 			if(_countMotorized > 0) then {
 
-			    private["_motorizedGroups"];
-
                 _motorizedGroups = [];
 
                 for "_i" from 0 to _countMotorized -1 do {
@@ -632,12 +630,15 @@ switch(_operation) do {
                 _groups = _groups + _motorizedGroups;
             };
 			
-			for "_i" from 0 to _countInfantry -1 do {
-				_group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
-				if!(_group == "FALSE") then {
-					_groups set [count _groups, _group];
-				}
-			};
+			_infantryGroups = [];
+            for "_i" from 0 to _countInfantry -1 do {
+                _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
+                if!(_group == "FALSE") then {
+                    _infantryGroups set [count _infantryGroups, _group];
+                }
+            };
+
+            _groups = _groups + _infantryGroups;
 			
 			for "_i" from 0 to _countAir -1 do {
 				_group = ["Air",_faction] call ALIVE_fnc_configGetRandomGroup;
@@ -661,9 +662,9 @@ switch(_operation) do {
 				_center = [_x, "center"] call ALIVE_fnc_hashGet;
 				_size = [_x, "size"] call ALIVE_fnc_hashGet;
 				
-				_guardGroup = [ALIVE_factionDefaultGuards,_faction] call ALIVE_fnc_hashGet;                
+				_guardGroup = _infantryGroups call BIS_fnc_selectRandom;
                 _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-				
+
 				if(_totalCount < _groupCount) then {
 				
 					if(_groupPerCluster > 0) then {
