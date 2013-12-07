@@ -53,18 +53,18 @@ if (typeName _params == typeName []) then {
 };
 //-----------------------------------------------------------------------------
 /*
-        ["Menu Caption", "flexiMenu resource dialog", "optional icon folder", menuStayOpenUponSelect],
-        [
-            ["caption", 
-                "action", 
-                "icon", 
-                "tooltip", 
-                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]}, 
-                -1 (shortcut DIK code),
-                {0|1/"0"|"1"/false|true} (enabled), 
-                {-1|0|1/"-1"|"0"|"1"/false|true} (visible)
-            ],
-             ...
+	["Menu Caption", "flexiMenu resource dialog", "optional icon folder", menuStayOpenUponSelect],
+	[
+	    ["caption", 
+		"action", 
+		"icon", 
+		"tooltip", 
+		{"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]}, 
+		-1 (shortcut DIK code),
+		{0|1/"0"|"1"/false|true} (enabled), 
+		{-1|0|1/"-1"|"0"|"1"/false|true} (visible)
+	    ],
+	     ...
 */
 _menus =
 [
@@ -75,8 +75,8 @@ _menus =
 				{[] call ALIVE_fnc_vDistGuiInit},
 				"",
 				localize "STR_ALIVE_VDIST_COMMENT",
-                 "",
-                 -1, 1, true
+		 		"",
+		 		-1, 1, true
 			]
 		]
 	]
@@ -94,4 +94,4 @@ if (count _menuDef == 0) then {
 	diag_log format ["Error: Menu not found: %1, %2, %3", str _menuName, _this, __FILE__];
 };
 
-_menuDef // return value
+_menuDef; // return value

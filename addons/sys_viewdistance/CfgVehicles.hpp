@@ -16,25 +16,25 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_VDIST_MAX";
                                 description = "$STR_ALIVE_VDIST_MAX_COMMENT";
-				defaultvalue = "20000";
+                                defaultvalue = "20000";
                         };
                         class minVD
                         {
                                 displayName = "$STR_ALIVE_VDIST_MIN";
                                 description = "$STR_ALIVE_VDIST_MIN_COMMENT";
-				defaultvalue = "500";
+                                defaultvalue = "500";
                         };
                         class maxTG
                         {
                                 displayName = "$STR_ALIVE_TGRID_MAX";
                                 description = "$STR_ALIVE_TGRID_MAX_COMMENT";
-				defaultvalue = "50";
+                                defaultvalue = "50";
                         };
                         class minTG
                         {
                                 displayName = "$STR_ALIVE_TGRID_MIN";
                                 description = "$STR_ALIVE_TGRID_MIN_COMMENT";
-				defaultvalue = "5";
+                                defaultvalue = "5";
                         };
                 };
                 
