@@ -16,7 +16,7 @@ CBA_HASH - Weather conditions
 Examples:
 (begin example)
 // get london weather
-_weather = ["20131202", "England/London"] call ALIVE_fnc_getWeather;
+_weather = ["England/London"] call ALIVE_fnc_getWeather;
 (end)
 
 See Also:
@@ -30,16 +30,34 @@ nil
 
 private ["_date","_location","_cmd","_result"];
 
-PARAMS_2(_date,_location);
+PARAMS_1(_location);
 
-// Check params
+// Check param
 // TO DO
 
+_date = date;
+
+_year = "2012";
+_i = 0;
+{
+	if (_x < 10) then {
+		_date set [_i, "0" + str(_x)];
+	} else {
+		_date set [_i, _x];
+	};
+	_i = _i + 1;
+} foreach _date;
+
+
 // Create function call
-_cmd = format ["GetWeather [""%1"", ""%2""]", _date, _location];
+_cmd = format ["GetWeather [""%1"",""%2"",""%3"",""%4"",""%5""]", _year, _date select 1, _date select 2, _date select 3, _location];
+
+diag_log format ["cmd: %1",_cmd];
 
 // Send command to plugin
 _response = [_cmd] call ALIVE_fnc_sendToPlugin;
+
+diag_log format ["JSON: %1",_response];
 
 // Check response for error
 // TO DO
