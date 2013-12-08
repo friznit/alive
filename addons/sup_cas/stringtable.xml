@@ -6,7 +6,7 @@
 	<English>Combat Support CAS</English>
 </Key>
 <Key ID="STR_ALIVE_CAS_COMMENT">
-	<English>Combat Support CAS</English>
+	<English>XXXX</English>
 </Key>
 <Key ID="STR_ALIVE_CAS_CALLSIGN">
 	<English>Callsign</English>
@@ -20,7 +20,12 @@
 <Key ID="STR_ALIVE_CAS_TYPE_DESC">
 	<English>Type of CAS i.e B_Heli_Attack_01_F or I_Plane_Fighter_03_CAS_F</English>
 </Key>
-<Key ID="STR_ALIVE_CAS_USAGE">
-	<English>Place CAS module, choose type accordingly and sync it to the main combat support module</English>
+<Key ID="STR_ALIVE_CAS_HEIGHT">
+	<English>Spawn Height</English>
 </Key>
+<Key ID="STR_ALIVE_CAS_HEIGHT_DESC">
+	<English>Sets Assets Spawn Height ASL, for use with Nimitz Addon</English>
+</Key>
+
+
 </Container></Package></Project>

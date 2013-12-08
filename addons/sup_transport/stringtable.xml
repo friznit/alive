@@ -20,8 +20,11 @@
 <Key ID="STR_ALIVE_TRANSPORT_TYPE_DESC">
 	<English>Type of Transport i.e B_Heli_Transport_01_camo_F</English>
 </Key>
-<Key ID="STR_ALIVE_TRANSPORT_USAGE">
-	<English>Place Module and set the settings accordingly! Sync to a main Combart Support Module!</English>
+<Key ID="STR_ALIVE_TRANSPORT_HEIGHT">
+	<English>Spawn Height</English>
+</Key>
+<Key ID="STR_ALIVE_TRANSPORT_HEIGHT_DESC">
+	<English>Sets Assets Spawn Height ASL, for use with Nimitz Addon</English>
 </Key>
 
 </Container></Package></Project>

@@ -82,10 +82,12 @@ switch(_operation) do {
                                     _position = getposATL ((synchronizedObjects _logic) select _i);
                                     _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
                                     _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
+                                    _heightset = ((synchronizedObjects _logic) select _i) getvariable ["cas_height",0];;
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
                                     _id = [_position] call ALiVE_fnc_getNearestAirportID;
-
-                                    _casArray = [_position,_direction, _type, _callsign, _id,{}];
+                                    _height = parseNumber _heightset;
+                                    diag_log format["_height: %1", _height];
+                                    _casArray = [_position,_direction, _type, _callsign, _id,{},_height];
                                     _casArrays set [count _casArrays,_casArray];
 				                                    };
 				                    case ("ALiVE_SUP_TRANSPORT") : {
@@ -94,9 +96,13 @@ switch(_operation) do {
 				                        _position = getposATL ((synchronizedObjects _logic) select _i);
 				                        _callsign = ((synchronizedObjects _logic) select _i) getvariable ["transport_callsign","FRIZ ONE"];
 				                        _type = ((synchronizedObjects _logic) select _i) getvariable ["transport_type","B_Heli_Transport_01_camo_F"];
+				                        _heightset = ((synchronizedObjects _logic) select _i) getvariable ["transport_height",0];
+				                         _height = parseNumber _heightset;
 				                        _direction =  getDir ((synchronizedObjects _logic) select _i);
+				                 
+
 				             
-				                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle"],{}];
+				                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle"],{},_height];
 				                        _transportArrays set [count _transportArrays,_transportArray];
 				                    };
 				            };
@@ -116,13 +122,14 @@ switch(_operation) do {
 							_a = [];
 
 						  {
-								private ["_pos", "_dir", "_type", "_callsign", "_tasks", "_code","_side"];
+								private ["_pos", "_dir", "_type", "_callsign", "_tasks", "_code","_Height","_side"];
 								_pos = _x select 0; _pos set [2, 0];
 								_dir = _x select 1;
 								_type = _x select 2;
 								_callsign = toUpper (_x select 3);
 								_tasks = _x select 4;
 								_code = _x select 5;
+								_height = _x select 6;
                                 
                                 _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
 								_side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
@@ -138,6 +145,12 @@ switch(_operation) do {
 								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
 								_veh setDir _dir;
 								_veh setPosATL _pos;
+								  diag_log format["_height: %1", _height];
+								If(_height > 0) then {
+								_veh setposasl [getposASL _veh select 0, getposASL _veh select 1, _height];
+							} else {
+							_veh setPosATL _pos;
+							};
 								_veh setVelocity [0,0,-1];
 
 							
@@ -150,6 +163,7 @@ switch(_operation) do {
 								{ _veh lockturret [[_x], true] } forEach [0,1,2];
 								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
+								[_veh, _grp, units _grp] spawn _code;
 								_veh setVariable ["ALIVE_CombatSupport", true];
 								_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 						/*
@@ -184,6 +198,7 @@ switch(_operation) do {
 								_callsign = toUpper (_x select 3);
 								_airport = _x select 4;
 								_code = _x select 5;
+								_height = _x select 6;
                                 
                                 _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
 								_side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
@@ -196,16 +211,19 @@ switch(_operation) do {
 			            		};
 								
 								private ["_veh"];
-								
-								if(getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
+		
 								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
-    							 
-									} else {
-								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
-									};
+							
 								_veh setDir _dir;
 								_veh setPosATL _pos;
+								 diag_log format["_height: %1", _height];
+								If(_height > 0) then {
+								_veh setposasl [getposASL _veh select 0, getposASL _veh select 1, _height];
+							} else {
+							_veh setPosATL _pos;
+							};
 								_veh setVelocity [0,0,-1];
+
 							
 
 								_veh setVariable ["ALIVE_CombatSupport", true];

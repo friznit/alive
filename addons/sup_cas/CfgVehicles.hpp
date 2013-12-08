@@ -5,7 +5,6 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_CAS";
                 function = "ALIVE_fnc_CASInit";
-                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\sup_cas\icon_sup_cas.paa";
@@ -25,6 +24,12 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CAS_TYPE_DESC";
                                 defaultValue ="B_Heli_Attack_01_F";
                                 };  
+                        class cas_height
+                                {
+                                displayName = "$STR_ALIVE_CAS_HEIGHT";
+                                description = "$STR_ALIVE_CAS_HEIGHT_DESC";
+                                defaultValue=0;
+                                };
                         };
-                };
+                };       
         };

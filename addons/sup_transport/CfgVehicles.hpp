@@ -5,7 +5,6 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_TRANSPORT";
                 function = "ALIVE_fnc_TRANSPORTInit";
-                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\sup_transport\icon_sup_transport.paa";
@@ -24,6 +23,13 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_TRANSPORT_TYPE_DESC";
                                 defaultValue="B_Heli_Transport_01_camo_F";
                                 };
+                        class transport_height
+                                {
+                                displayName = "$STR_ALIVE_TRANSPORT_HEIGHT";
+                                description = "$STR_ALIVE_TRANSPORT_HEIGHT_DESC";
+                                defaultValue=0;
+                                };
                         };
                 };
+                
         };
