@@ -104,6 +104,7 @@ switch(_operation) do {
 					         
 					    SUP_CASARRAYS  = _casArrays; PublicVariable "SUP_CASARRAYS";
 					    SUP_TRANSPORTARRAYS  = _transportArrays; PublicVariable "SUP_TRANSPORTARRAYS";
+					    diag_log format["SUP_CASARRAYS: %1", SUP_CASARRAYS];
 						    
                         {
                         	NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _x], [],true];
@@ -139,9 +140,12 @@ switch(_operation) do {
 								_veh setDir _dir;
 								_veh setPosATL _pos;
 								_veh setVelocity [0,0,-1];
+
+							
 								
 								private ["_grp"];
 								_grp = createGroup _side;
+
 								[_veh, _grp] call BIS_fnc_spawnCrew;
 								_veh lockDriver true;
 								{ _veh lockturret [[_x], true] } forEach [0,1,2];
@@ -193,21 +197,32 @@ switch(_operation) do {
 			            		};
 								
 								private ["_veh"];
+								
+								if(getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
 								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
+    							 
+									} else {
+								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
+									};
 								_veh setDir _dir;
 								_veh setPosATL _pos;
 								_veh setVelocity [0,0,-1];
+							
 
 								_veh setVariable ["ALIVE_CombatSupport", true];
 								
 								private ["_grp"];
 								_grp = createGroup _side;
+								if(getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
+								createVehicleCrew _veh;   
+								} else {
 								[_veh, _grp] call BIS_fnc_spawnCrew;
 								_veh lockDriver true;
 								{ _veh lockturret [[_x], true] } forEach [0,1,2];
+								
 								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
-								[_veh, _grp, units _grp] spawn _code;
+								[_veh, _grp, units _grp] spawn _code; };
 								
 								//FSM
 								[_veh, _grp, _callsign, _pos, _airport] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
