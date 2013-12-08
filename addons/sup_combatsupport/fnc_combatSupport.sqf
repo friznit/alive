@@ -104,8 +104,7 @@ switch(_operation) do {
 					         
 					    SUP_CASARRAYS  = _casArrays; PublicVariable "SUP_CASARRAYS";
 					    SUP_TRANSPORTARRAYS  = _transportArrays; PublicVariable "SUP_TRANSPORTARRAYS";
-					    diag_log format["SUP_CASARRAYS: %1", SUP_CASARRAYS];
-						    
+								    
                         {
                         	NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _x], [],true];
 							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _x], [],true];
