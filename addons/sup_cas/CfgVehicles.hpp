@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_CAS";
                 function = "ALIVE_fnc_CASInit";
+                author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\sup_cas\icon_sup_cas.paa";
