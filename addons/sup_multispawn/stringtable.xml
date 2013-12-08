@@ -29,5 +29,10 @@
 <Key ID="STR_ALIVE_multispawn_ERROR1">
 	<English>Only one multispawn module can be used</English>
 </Key>
-
+<Key ID="STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED">
+	<English>Enemy check:</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED_COMMENT">
+	<English>Allowed to spawn on squadmates even if enemies are near!</English>
+</Key>
 </Container></Package></Project>

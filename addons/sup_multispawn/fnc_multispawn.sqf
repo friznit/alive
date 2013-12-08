@@ -63,7 +63,7 @@ switch(_operation) do {
                 } foreach _allLogics;
                 
                 // Ensure only one module is used
-                if (isServer && !(isNil "ALIVE_multispawn")) exitWith {
+                if (isServer && !(isNil "ALIVE_SUP_multispawn")) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_multispawn_ERROR1");
                 };
                 
@@ -77,8 +77,8 @@ switch(_operation) do {
                         MULTISPAWN_TYPE = _logic getvariable ["spawntype","forwardspawn"]; PublicVariable "MULTISPAWN_TYPE";
                                                 
                         // and publicVariable to clients
-                        ALIVE_multispawn = _logic;
-                        publicVariable "ALIVE_multispawn";
+                        ALIVE_SUP_multispawn = _logic;
+                        publicVariable "ALIVE_SUP_MULTISPAWN";
                         
                         /*
                         // Wobbleyehadedbob - New Code ------------------------------------------------------------------
@@ -120,7 +120,7 @@ switch(_operation) do {
                 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {(!(isNil "ALIVE_multispawn") && {ALIVE_multispawn getVariable ["init", false]})};
+                waitUntil {(!(isNil "ALIVE_SUP_multispawn") && {ALIVE_SUP_multispawn getVariable ["init", false]})};
 
                 /*
                 VIEW - purely visual
@@ -139,7 +139,8 @@ switch(_operation) do {
                             	if (_revive) exitwith {"Revive is enabled, exiting Multispawn!" call ALiVE_fnc_Logger}; 
                             
                             	diag_log format["Forward Spawn EH placed...",time];
-                            	player addEventHandler ["killed", {[] spawn ALiVE_fnc_ForwardSpawn; if !(isnil "ALiVE_fnc_setGear") then {pLOADOUT = ["", [player]] call ALiVE_fnc_setGear}}];
+                            	player addEventHandler ["killed", {if !(isnil "ALiVE_fnc_setGear") then {pLOADOUT = ["", [_this select 0]] call ALiVE_fnc_setGear}}];
+                                player addEventHandler ["respawn", {titleText ["Respawn in progress...", "BLACK IN", 9999]; [] spawn ALiVE_fnc_ForwardSpawn}];
                             };
                         default {};
                     };
@@ -185,8 +186,8 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        ALIVE_multispawn = _logic;
-                        publicVariable "ALIVE_multispawn";
+                        ALIVE_SUP_multispawn = _logic;
+                        publicVariable "ALIVE_SUP_multispawn";
                 };
                 
                 if(!isDedicated && !isHC) then {

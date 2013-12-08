@@ -1,5 +1,10 @@
 #define __NMEDISTANCE 50
 
+private ["_reset","_hdl"];
+
+titleText ["Respawn in progress...", "BLACK IN",999];
+disableUserInput true;
+
 if (isDedicated) exitwith {};
 if (isnil "keyspressed") then {
     keyspressed = {
@@ -24,9 +29,12 @@ if (isnil "keyspressed") then {
 };
 
 waituntil {alive player}; _unit = player;
-if !(isnil "pLOADOUT") then {["", [_unit,pLOADOUT]] call ALiVE_fnc_getGear};
 
-aliveUnits = []; {if (alive _x and _x != player) then {aliveUnits set [count aliveUnits,_x]};} foreach units (group player); if (count aliveUnits == 0) exitwith {TitleText[format["There are no units in your group %1!",group player],"PLAIN DOWN"]};
+//Setting gear
+if !(isnil "pLOADOUT") then {_hdl = ["", [_unit,pLOADOUT]] spawn ALiVE_fnc_getGear};
+
+aliveUnits = []; {if (alive _x and _x != player) then {aliveUnits set [count aliveUnits,_x]};} foreach units (group player); if (count aliveUnits == 0) exitwith {TitleText[format["There are no units in your group %1!",group player],"PLAIN DOWN"]; disableUserInput false};
+
 actualUnits = 0;
 keyout = 0;
 _distance = 40000;
@@ -44,6 +52,10 @@ _cam attachTo [_selection, [0,-5,2.5]];
 
 TitleText[format["Select unit with ARROWKEYS and press ENTER to select, Backspace to exit!",true],"PLAIN DOWN"];
 _DispId = ["KeyDown", "_this call keyspressed"] call CBA_fnc_addDisplayHandler;
+
+titleText ["Respawn in progress...", "BLACK IN",3];
+disableUserInput false;
+
 while {!(keyout > 0)} do {
 	_currentmate = (aliveUnits select actualUnits);
 	if (isnil "_currentmate") then {
@@ -59,7 +71,7 @@ while {!(keyout > 0)} do {
 		_cam camcommit 0;
 		waituntil {camCommitted _cam};
         
-        	_cam attachTo [_selection, [0,-5,2.5]];
+        _cam attachTo [_selection, [0,-5,2.5]];
 		
 		_target = _currentmate;
 		
@@ -81,13 +93,19 @@ while {!(keyout > 0)} do {
 	sleep 0.1;
 };
 ["KeyDown", _DispId] call CBA_fnc_removeDisplayHandler;
-If (EXITFSS) exitwith {showCinemaBorder false; player cameraEffect ["terminate","back"];camdestroy _cam;};
+
+If (EXITFSS) exitwith {showCinemaBorder false; player cameraEffect ["terminate","back"];camdestroy _cam; disableUserInput false};
+
+if (!(isnil "_hdl") && {!(scriptDone _hdl)}) then {titleText ["Gear is still beeing applied...", "PLAIN"]};
 
 _playerUnit = (aliveUnits select actualUnits);
 _enemyunits = {((side _x) getfriend (side _playerUnit)) < 0.6} count ((getposATL _playerUnit) nearEntities [["CAmanBase"],__NMEDISTANCE]);
+_spawningNearEnemiesAllowed = call compile (ALIVE_SUP_MULTISPAWN getvariable ["spawningnearenemiesallowed","false"]);
 
-if (_enemyunits > 0) then {
+if ((_enemyunits > 0) && {!(_spawningNearEnemiesAllowed)}) then {
 	TitleText[format["That unit is too close to enemies for a safe spawn."],"PLAIN DOWN"];
+    sleep 2;
+    if (true) exitwith {_reset = true};
 } else {
 	if (vehicle _playerUnit == _playerUnit) then {
     	TitleText[format["Transported to unit %1!",_playerUnit],"PLAIN DOWN"];
@@ -122,6 +140,13 @@ if (_enemyunits > 0) then {
 	};
 };
 
-showCinemaBorder false;
-player cameraEffect ["terminate","back"];
+
+//Allow for reselecting on reset
+if !(isnil "_reset") then {
+    [] spawn ALiVE_fnc_ForwardSpawn;
+} else {
+	showCinemaBorder false;
+	player cameraEffect ["terminate","back"];    
+};
+
 camdestroy _cam;

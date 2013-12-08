@@ -42,7 +42,26 @@ class CfgVehicles {
                                                 default = 1;
                                         };
                                 };
-                        };                    
+                        };
+                        class spawningnearenemiesallowed
+                        {
+                                displayName = "$STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED";
+                                description = "$STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "No";
+                                                value = false;
+												default = false;
+                                        };
+                                        class No
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                        };
+                                };
+                        };                          
                 };
                 
         };

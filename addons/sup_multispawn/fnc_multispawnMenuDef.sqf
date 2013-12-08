@@ -88,22 +88,22 @@ if (_menuName == "multispawn") then {
 			["multispawn", localize "STR_ALIVE_multispawn", "popup"],
 			[
 				[localize "STR_ALIVE_multispawn_ENABLE",
-					{ ALIVE_multispawn setVariable ["enabled", true]; },
+					{ ALIVE_SUP_multispawn setVariable ["enabled", true]; },
 					"",
 					localize "STR_ALIVE_multispawn_ENABLE_COMMENT",
 					"",
 					-1,
-					ALIVE_multispawn getVariable ["enabled", 0],
-					!(ALIVE_multispawn getVariable ["enabled", false])
+					ALIVE_SUP_multispawn getVariable ["enabled", 0],
+					!(ALIVE_SUP_multispawn getVariable ["enabled", false])
 				],
 				[localize "STR_ALIVE_multispawn_DISABLE",
-					{ ALIVE_multispawn setVariable ["enabled", false]; },
+					{ ALIVE_SUP_multispawn setVariable ["enabled", false]; },
 					"",
 					localize "STR_ALIVE_multispawn_DISABLE_COMMENT",
 					"",
 					-1,
-					ALIVE_multispawn getVariable ["enabled", 0],
-					(ALIVE_multispawn getVariable ["enabled", false])
+					ALIVE_SUP_multispawn getVariable ["enabled", 0],
+					(ALIVE_SUP_multispawn getVariable ["enabled", false])
 				]
 			]
 		]
