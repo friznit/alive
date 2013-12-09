@@ -82,11 +82,10 @@ switch(_operation) do {
                                     _position = getposATL ((synchronizedObjects _logic) select _i);
                                     _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
                                     _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
-                                    _heightset = ((synchronizedObjects _logic) select _i) getvariable ["cas_height",0];;
+                                    _heightset = ((synchronizedObjects _logic) select _i) getvariable ["cas_height","0"];
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
                                     _id = [_position] call ALiVE_fnc_getNearestAirportID;
-                                    _height = parseNumber _heightset;
-                                    diag_log format["_height: %1", _height];
+                                    _height = parsenumber(_heightset);
                                     _casArray = [_position,_direction, _type, _callsign, _id,{},_height];
                                     _casArrays set [count _casArrays,_casArray];
 				                                    };
@@ -96,11 +95,9 @@ switch(_operation) do {
 				                        _position = getposATL ((synchronizedObjects _logic) select _i);
 				                        _callsign = ((synchronizedObjects _logic) select _i) getvariable ["transport_callsign","FRIZ ONE"];
 				                        _type = ((synchronizedObjects _logic) select _i) getvariable ["transport_type","B_Heli_Transport_01_camo_F"];
-				                        _heightset = ((synchronizedObjects _logic) select _i) getvariable ["transport_height",0];
-				                         _height = parseNumber _heightset;
+				                        _heightset = ((synchronizedObjects _logic) select _i) getvariable ["transport_height","0"];
+				                        _height = parsenumber(_heightset);
 				                        _direction =  getDir ((synchronizedObjects _logic) select _i);
-				                 
-
 				             
 				                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle"],{},_height];
 				                        _transportArrays set [count _transportArrays,_transportArray];
