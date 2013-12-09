@@ -957,6 +957,8 @@ switch(_operation) do {
 				_var = ["_TACOM_DATA",["completed",[_ProfileID,_objectiveID,_orders]]];
 				_statements = format["[] spawn {sleep (random 10); %1 setfsmvariable %2}",_TACOM_FSM,_var];
 				[_profileWaypoint,"statements",["true",_statements]] call ALIVE_fnc_hashSet;
+                [_profileWaypoint,"behaviour","AWARE"] call ALIVE_fnc_hashSet;
+                [_profileWaypoint,"speed","NORMAL"] call ALIVE_fnc_hashSet;
 
 				[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
                 
@@ -1043,7 +1045,7 @@ switch(_operation) do {
 
                if !(_active) then {
 	            	[_profile, "clearActiveCommands"] call ALIVE_fnc_profileEntity;
-					[_profile, "addActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
+					[_profile, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
                };
             };
             
