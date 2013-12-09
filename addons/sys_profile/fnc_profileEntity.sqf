@@ -264,6 +264,7 @@ switch(_operation) do {
 					[_logic,"inactiveCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 27
 					[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 28
 					[_logic,"faction",[]] call ALIVE_fnc_hashSet; // select 2 select 29
+					[_logic,"isPlayer",false] call ALIVE_fnc_hashSet; // select 2 select 30
                 };
 
                 /*
@@ -401,6 +402,12 @@ switch(_operation) do {
                 };
 				_result = [_logic,"spawnType"] call ALIVE_fnc_hashGet;
         };
+        case "isPlayer": {
+                if(typeName _args == "BOOL") then {
+                        [_logic,"isPlayer",_args] call ALIVE_fnc_hashSet;
+                };
+                _result = [_logic,"isPlayer"] call ALIVE_fnc_hashGet;
+        };
 		case "unitCount": {
 				private ["_unitClasses","_unitCount"];
 				_unitClasses = _logic select 2 select 11; //[_logic,"unitClasses"] call ALIVE_fnc_hashGet;
@@ -516,18 +523,35 @@ switch(_operation) do {
 						};
 				}
 		};
+		case "setActiveCommand": {
+                private ["_activeCommands","_type"];
+
+                if(typeName _args == "ARRAY") then {
+
+                    [_logic, "clearActiveCommands"] call MAINCLASS;
+
+                    [_logic, "addActiveCommand", _args] call MAINCLASS;
+
+                    _active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
+
+                    if(_active) then {
+                        _activeCommands = _logic select 2 select 26; //[_logic,"commands"] call ALIVE_fnc_hashGet;
+                        [ALIVE_commandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_commandRouter;
+                    };
+                };
+        };
 		case "addActiveCommand": {
 				private ["_activeCommands","_type"];
 
 				if(typeName _args == "ARRAY") then {
 
-                    	_type = _logic select 2 select 5;
-						
-                        if (!(isnil "_type") && {_type == "entity"}) then {
-                        
-							_activeCommands = _logic select 2 select 26; //[_logic,"commands"] call ALIVE_fnc_hashGet;
-							_activeCommands set [count _activeCommands, _args];
-                        };
+                    _type = _logic select 2 select 5;
+
+                    if (!(isnil "_type") && {_type == "entity"}) then {
+
+                        _activeCommands = _logic select 2 select 26; //[_logic,"commands"] call ALIVE_fnc_hashGet;
+                        _activeCommands set [count _activeCommands, _args];
+                    };
                 };
 		};
 		case "clearActiveCommands": {

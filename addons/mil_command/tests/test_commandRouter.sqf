@@ -45,18 +45,83 @@ diag_log format["Timer End %1",_timeEnd];
 //========================================
 
 
-_profile = [ALIVE_profileHandler, "getProfile", "entity_0"] call ALIVE_fnc_profileHandler;
+player setCaptive true;
 
+// debug info on cursor target
+//[] call ALIVE_fnc_cursorTargetInfo;
+
+// CREATE PROFILE HANDLER
+STAT("Create Profile Handler");
+ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
+[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+
+// create sector grid
+ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
+[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
+[ALIVE_sectorGrid, "createGrid"] call ALIVE_fnc_sectorGrid;
+
+// create sector plotter
+ALIVE_sectorPlotter = [nil, "create"] call ALIVE_fnc_plotSectors;
+[ALIVE_sectorPlotter, "init"] call ALIVE_fnc_plotSectors;
+
+// import static map analysis to the grid
+[ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;
+
+// create command router
+ALIVE_commandRouter = [nil, "create"] call ALIVE_fnc_commandRouter;
+[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
+[ALIVE_commandRouter, "debug", true] call ALIVE_fnc_commandRouter;
+
+
+STAT("Create Entity Profile 1");
+_profileEntity1 = [nil, "create"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "init"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "profileID", "group_01"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "unitClasses", ["B_Crew_F","B_Crew_F"]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "position", getPos player] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "positions", [getPos player,getPos player,getPos player,getPos player]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "damages", [0,0]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "ranks", ["CAPTAIN","LIEUTENANT"]] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "side", "WEST"] call ALIVE_fnc_profileEntity;
+[_profileEntity1, "faction", "BLU_F"] call ALIVE_fnc_profileEntity;
+
+STAT("Register Profiles");
+[ALIVE_profileHandler, "registerProfile", _profileEntity1] call ALIVE_fnc_profileHandler;
+
+
+_profile = [ALIVE_profileHandler, "getProfile", "group_01"] call ALIVE_fnc_profileHandler;
+
+STAT("Add Active Command");
 //[_profile, "addActiveCommand", ["testCommand","fsm",["param1","param2"]]] call ALIVE_fnc_profileEntity;
 //[_profile, "addActiveCommand", ["ALIVE_fnc_testCommand","spawn",["param1","param2"]]] call ALIVE_fnc_profileEntity;
 [_profile, "addActiveCommand", ["ALIVE_fnc_testManagedCommand","managed",["param1","param2"]]] call ALIVE_fnc_profileEntity;
 
+STAT("Spawn");
+[_profile, "spawn"] call ALIVE_fnc_profileEntity;
+
+sleep 30;
+
 STAT("De-Spawn");
 [_profile, "despawn"] call ALIVE_fnc_profileEntity;
 
-sleep 10;
+sleep 5;
+
+STAT("Spawn");
+[_profile, "spawn"] call ALIVE_fnc_profileEntity;
+
+sleep 5;
+
+STAT("Set Active Command");
+[_profile, "setActiveCommand", ["ALIVE_fnc_testCommand","spawn",["param1","param2"]]] call ALIVE_fnc_profileEntity;
+
+sleep 5;
 
 STAT("De-Spawn");
 [_profile, "despawn"] call ALIVE_fnc_profileEntity;
+
+sleep 5;
+
+STAT("Spawn");
+[_profile, "spawn"] call ALIVE_fnc_profileEntity;
 
 nil;
