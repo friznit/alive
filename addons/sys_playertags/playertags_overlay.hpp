@@ -10,21 +10,6 @@
 #define WIDTH 0.4
 #define HEIGHT 0.3
 
-class playertagsMeter {
-	type = 0;
-	style = ST_CENTER;
-	access = 0;
-	font = FontM;
-	sizeEx = 0.023;
-	size = 0.06;
-	idc = -1;
-
-	colorBackground[] = { 1, 1, 0, 1 };
-	colorText[] = { 0, 0, 0, 1 };
-
-	w = 0.1;
-	h = 0.1;
-};
 
 class playertagsRecogText {
 	type = CT_STRUCTURED_TEXT;

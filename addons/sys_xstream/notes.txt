@@ -35,16 +35,19 @@ Priority of triggers
 - Target Lock by - Aircraft, Tank, Car, Static, AA inf, AT Inf, Sniper, Inf with Laser, Inf
 - ACRE Radio Transmit - Coy Cmdr, Pl Cmdr, Section Cmdr, Team Ldr
 - Hit - Aircraft, Tank, Ship, Car, Inf, Static
-- Entering Building
 - Entering Location
+- Movement near enemy
+- Entering Building
+- Movement by vehicle
+- Movement by group leader
 - Get In vehicle
+- Take off vehicle?
 - Landing Vehicle (gear lowered or close to ground)
 - Get out vehicle
 - Weapon Assembled
 - Heal
-- Movement near enemy
-- Movement by vehicle
-- Movement by group leader
+- Movement by anyone
+- Any unit
 
 
 Usage: Place the camera module and choose the following settings:

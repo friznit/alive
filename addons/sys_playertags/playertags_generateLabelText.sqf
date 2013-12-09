@@ -29,7 +29,7 @@ func_getRank = {
 };
 
 	_tagsInVehicle = true;
-	if (_obj == vehicle player && !PLAYERTAGS_INVEHICLE) then { _tagsInVehicle = false; };
+	if (_obj == vehicle player && !playertags_invehicle) then { _tagsInVehicle = false; };
 		
 		if (_type isKindOf "Car" ||
 				_type isKindOf "StaticWeapon" ||
@@ -54,21 +54,21 @@ func_getRank = {
 									if (commander _vehicle == _x) then {
 										_tmpText = _tmpText + "C: ";
 									};
-									_nameColor = PLAYERTAGS_NAMECOLOUR;
-									_groupColor = PLAYERTAGS_GROUPCOLOUR;
+									_nameColor = playertags_namecolour;
+									_groupColor = playertags_groupcolour;
 						
 									if (_x == leader group _x) then {
-										_nameColor = PLAYERTAGS_THISGROUPLEADERNAMECOLOUR;
+										_nameColor = playertags_thisgroupleadernamecolour;
 									};
 									if (group _x == _ownGroup) then {
-										_groupColor = PLAYERTAGS_THISGROUPCOLOUR;
+										_groupColor = playertags_thisgroupcolour;
 									};
 									_rank = '';
-									if (PLAYERTAGS_RANK) then {
+									if (playertags_rank) then {
 										_rank = (rankId _x) call func_getRank;
 									};
 									_thisgroup = '';
-									if (PLAYERTAGS_GROUP) then {
+									if (playertags_group) then {
 										_thisgroup = group _x;
 									};
 									_tmpText = _tmpText + format["<t color='%1'>%5 %2</t><br/>", _nameColor, name _x, _groupColor, _thisgroup, _rank];
@@ -80,24 +80,24 @@ func_getRank = {
 		else {
 			_man = _obj;
 			_group = group _man;
-			_nameColor = PLAYERTAGS_NAMECOLOUR;
-			_groupColor = PLAYERTAGS_GROUPCOLOUR;
+			_nameColor = playertags_namecolour;
+			_groupColor = playertags_groupcolour;
 		
 		
 			if (alive _man) then
 			{
 				if (_man == leader _group) then {
-					_nameColor = PLAYERTAGS_THISGROUPLEADERNAMECOLOUR;
+					_nameColor = playertags_thisgroupleadernamecolour;
 				};
 				if (_group == _ownGroup) then {
-					_groupColor = PLAYERTAGS_THISGROUPCOLOUR;
+					_groupColor = playertags_thisgroupcolour;
 				};
 				_rank = '';
-				if (PLAYERTAGS_RANK) then {
+				if (playertags_rank) then {
 				_rank = (rankId _man) call func_getRank;
 				};
 				_thisgroup = '';
-				if (PLAYERTAGS_GROUP) then {
+				if (playertags_group) then {
 						_thisgroup = group _man;
 				};
 				_tmpText = _tmpText + format["<t color='%1'>%5 %2</t> <br/><t color='%3'>%4</t>", _nameColor, name _man, _groupColor, _thisgroup, _rank];
