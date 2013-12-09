@@ -113,7 +113,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.96.04";
+		briefingName="ALiVE Showcase - Foursome v0.96.05";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -525,7 +525,7 @@ class Mission
 					position[]={15282.733,-0.15597218,15551.594};
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="false";
@@ -537,6 +537,12 @@ class Mission
 							value="forwardspawn";
 							parentCls="ALiVE_sup_multispawn";
 							typeName="spawntype";
+						};
+						class Item2
+						{
+							value="false";
+							parentCls="ALiVE_sup_multispawn";
+							typeName="spawningnearenemiesallowed";
 						};
 					};
 					id=23;
@@ -1386,7 +1392,7 @@ class Mission
 					azimut=41.029202;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="HIGHHEAD ONE";
@@ -1398,6 +1404,12 @@ class Mission
 							value="B_Heli_Light_01_armed_F";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_sup_cas";
+							typeName="cas_height";
 						};
 					};
 					id=35;
@@ -1423,7 +1435,7 @@ class Mission
 					azimut=38.353001;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="ARJAY ONE";
@@ -1435,6 +1447,12 @@ class Mission
 							value="B_Heli_Transport_01_camo_F";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_SUP_TRANSPORT";
+							typeName="transport_height";
 						};
 					};
 					id=36;
@@ -1460,7 +1478,7 @@ class Mission
 					azimut=39.233898;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="TUPOLOV ONE";
@@ -1472,6 +1490,12 @@ class Mission
 							value="B_Heli_Light_01_F";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_SUP_TRANSPORT";
+							typeName="transport_height";
 						};
 					};
 					id=37;
@@ -1497,7 +1521,7 @@ class Mission
 					azimut=39.812;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="WOLFFY ONE";
@@ -1509,6 +1533,12 @@ class Mission
 							value="B_Heli_Attack_01_F";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_sup_cas";
+							typeName="cas_height";
 						};
 					};
 					id=38;
@@ -1534,7 +1564,7 @@ class Mission
 					azimut=215.80499;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="JMAN ONE";
@@ -1546,6 +1576,12 @@ class Mission
 							value="I_Plane_Fighter_03_CAS_F";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_sup_cas";
+							typeName="cas_height";
 						};
 					};
 					id=39;
@@ -2027,7 +2063,7 @@ class Mission
 					azimut=41.029202;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="GUNNY ONE";
@@ -2039,6 +2075,12 @@ class Mission
 							value="B_Heli_Attack_01_F";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_sup_cas";
+							typeName="cas_height";
 						};
 					};
 					id=49;
@@ -2064,7 +2106,7 @@ class Mission
 					azimut=39.233898;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="RAPS ONE";
@@ -2076,6 +2118,12 @@ class Mission
 							value="B_Heli_Transport_01_camo_F";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_SUP_TRANSPORT";
+							typeName="transport_height";
 						};
 					};
 					id=50;
@@ -2101,7 +2149,7 @@ class Mission
 					azimut=41.029202;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="FRIZ ONE";
@@ -2113,6 +2161,12 @@ class Mission
 							value="B_Heli_Light_01_armed_F";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_sup_cas";
+							typeName="cas_height";
 						};
 					};
 					id=51;
@@ -2138,7 +2192,7 @@ class Mission
 					azimut=39.233898;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="RYE ONE";
@@ -2150,6 +2204,12 @@ class Mission
 							value="B_Heli_Light_01_F";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_SUP_TRANSPORT";
+							typeName="transport_height";
 						};
 					};
 					id=52;
@@ -2175,7 +2235,7 @@ class Mission
 					azimut=40.639198;
 					class args
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							value="RODIGAN ONE";
@@ -2187,6 +2247,12 @@ class Mission
 							value="I_Heli_Transport_02_F";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_type";
+						};
+						class Item2
+						{
+							value="0";
+							parentCls="ALiVE_SUP_TRANSPORT";
+							typeName="transport_height";
 						};
 					};
 					id=53;
