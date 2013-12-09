@@ -951,7 +951,14 @@ switch(_operation) do {
 				
 				_guardGroup = _infantryGroups call BIS_fnc_selectRandom;
                 _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-				
+                
+                //ARJay, here we could place the default patrols/garrisons instead of the static garrisson if you like to (same is in CIV MP)
+                {
+                	if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+    					[_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity; 
+                	};
+                } foreach _guards;
+
 				if(_totalCount < _groupCount) then {
 
                     if(_groupPerCluster > 0) then {
@@ -962,6 +969,14 @@ switch(_operation) do {
 
                             if!(surfaceIsWater _position) then {
                                 _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                                
+                                //ARJay, here we could place the default "Chill around campfire situation" instead of the static garrisson if you like to
+                                {
+                                    if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+                        				[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;    
+                                    };
+                                } foreach _profiles;
+                                
                                 _countProfiles = _countProfiles + count _profiles;
                                 _totalCount = _totalCount + 1;
                             };
@@ -973,6 +988,13 @@ switch(_operation) do {
 
                         if!(surfaceIsWater _position) then {
                             _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                            
+                            //ARJay, here we could place the default "Chill around campfire situation" instead of the static garrisson if you like to
+                            {
+                                if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+                    				[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;    
+                                };
+                            } foreach _profiles;
 
                             _countProfiles = _countProfiles + count _profiles;
                             _totalCount = _totalCount + 1;
@@ -980,8 +1002,7 @@ switch(_operation) do {
                     };
                 };
 			} forEach _clusters;
-		
-		
+            
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
