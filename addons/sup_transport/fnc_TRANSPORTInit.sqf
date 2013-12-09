@@ -2,7 +2,7 @@
 SCRIPT(TRANSPORTInit);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_CQBInit
+Function: ALIVE_fnc_TransportInit
 Description:
 Creates the server side object to store settings
 
@@ -14,11 +14,11 @@ Returns:
 Nil
 
 See Also:
-- <ALIVE_fnc_CQB>
+- <ALIVE_fnc_Transport>
 
 Author:
-Wolffy.au
-Tupolov
+Gunny
+
 Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */

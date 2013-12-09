@@ -2,7 +2,7 @@
 SCRIPT(TRANSPORT);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_CQB
+Function: ALIVE_fnc_transport
 Description:
 XXXXXXXXXX
 
@@ -22,19 +22,20 @@ Parameters:
 none
 
 Description:
-CQB Module! Detailed description to follow
+Transport Module! Detailed description to follow
 
 Examples:
-[_logic, "factions", ["OPF_F"] call ALiVE_fnc_CQB;
-[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
-[_logic, "spawnDistance", 500] call ALiVE_fnc_CQB;
-[_logic, "active", true] call ALiVE_fnc_CQB;
+[_logic, "factions", ["OPF_F"] call ALiVE_fnc_Transport;
+[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_Transport;
+[_logic, "spawnDistance", 500] call ALiVE_fnc_Transport;
+[_logic, "active", true] call ALiVE_fnc_Transport;
 
 See Also:
-- <ALIVE_fnc_CQBInit>
+- <ALIVE_fnc_TransportInit>
 
 Author:
-Wolffy, Highhead
+Gunny
+
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS nil

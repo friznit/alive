@@ -7,10 +7,6 @@ Function: ALIVE_fnc_GC
 Description:
 Garbage Collector
 
-Function: MAINCLASS
-Description:
-Base class for GC objects to inherit from
-
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
 String - The selected function
@@ -33,7 +29,8 @@ Examples:
 See Also:
 
 Author:
-Highhead, original by BIS
+BIS
+Highhead
 
 Peer reviewed:
 nil

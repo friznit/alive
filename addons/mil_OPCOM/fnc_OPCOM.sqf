@@ -7,8 +7,6 @@ Function: ALIVE_fnc_OPCOM
 Description:
 Virtual AI Controller (WIP) 
 
-Function: MAINCLASS
-Description:
 Base class for OPCOM objects to inherit from
 
 Parameters:

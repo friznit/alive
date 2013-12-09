@@ -1,8 +1,8 @@
 #include <\x\alive\addons\mil_cqb\script_component.hpp>
-SCRIPT(CQBInit);
+SCRIPT(HACInit);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_HAC_Init
+Function: ALIVE_fnc_HACInit
 Description:
 Creates the server side object to store settings
 
@@ -14,7 +14,7 @@ Returns:
 Nil
 
 See Also:
-- <ALIVE_fnc_CQB>
+- <ALIVE_fnc_HAC>
 
 Author:
 Wolffy.au
@@ -32,6 +32,6 @@ PARAMS_1(_logic);
 ASSERT_DEFINED("ALIVE_fnc_HAC","Main function missing");
 
 [_logic, "init"] call ALIVE_fnc_HAC;
-//[_logic, "syncunits", _syncunits] call ALIVE_fnc_CQB;
+//[_logic, "syncunits", _syncunits] call ALIVE_fnc_HAC;
 
 
