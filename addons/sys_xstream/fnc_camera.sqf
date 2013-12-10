@@ -194,19 +194,19 @@ while { ((count subjects + count infantry) > 0) && GVAR(cameraStarted)} do {
 		if (_timely > 0 || _sceneChoice > 10) then {
 			// Check to see if it is a Man, if so get closer
 			if (_cameraTarget iskindof "MAN") then {
-				x = (2-(round(random 4))) * cos(random 120);
-				y = -2;
-				z = 1.7;
+				x = (2-(round(random 4))) * cos(random 90);
+				y = 0.3 + (random 2);
+				z = (eyePos _cameraTarget) select 2;
 			} else {
 				_fov = _fov + 0.3;
-				x = (5-(round(random 10))) * cos(random 120);
-				y = -20;
+				x = (5-(round(random 10))) * cos(random 90);
+				y = (sizeOf (typeOf _cameraTarget)) + (random 10);
 				z = 3;
 			};
 
 			_relpos = [x , y, z];
 			_cam attachTo [_cameraTarget,_relpos];
-			_cam camSetTarget _cameraTarget;
+			_cam camSetTarget (assignedTarget _cameraTarget);
 			_cam camSetFOV _fov;
 			_cam cameraEffect ["INTERNAL", "BACK"];
 			_cam camCommit 0;

@@ -55,7 +55,6 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	} else {
 
-		// Set player data to in memory store (unless kicked)
 		if !(_unit getVariable [QGVAR(kicked), false]) then {
 			_result = [MOD(sys_player), "setPlayer", [_unit]] call ALIVE_fnc_player;
 			TRACE_1("SETTING PLAYER DATA", _result);
@@ -70,4 +69,5 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 	TRACE_1("REMOVING PLAYER GUID FROM LOGIC", _test);
 
 };
+
 // ====================================================================================

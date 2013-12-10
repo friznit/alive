@@ -28,7 +28,6 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 	_uid = _this select 2;
 
 	if (_name == "__SERVER__") exitWith {
-		// If server connects, load all player data from database
 
 		// MOVED TO MODULE INIT
 

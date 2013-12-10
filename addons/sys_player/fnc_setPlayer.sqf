@@ -63,9 +63,10 @@ if ( _saveHealth) then {
 	_data = _data + GVAR(HEALTH_DATA);
 };
 
+/* LOADOUT IS NOW UPDATED VIA CLIENT UPDATES NOT FROM SERVER, need to incorp GVAR(gear_data)
 if ( _saveLoadout) then {
 	_data =_data + GVAR(LOADOUT_DATA);
-};
+};*/
 
 if ( _saveScores) then {
 	_data =_data + GVAR(SCORE_DATA);
@@ -87,6 +88,15 @@ TRACE_5("SYS_PLAYER SET",_saveLoadout,_saveHealth,_savePosition,_saveScores, cou
 	};
 	[_playerHash, _key, _value] call CBA_fnc_hashSet;
 } foreach _data;
+
+// Add gear data to player's hash
+private ["_gearHash","_addGear"];
+_gearHash = [GVAR(gear_data), getPlayerUID _player] call ALIVE_fnc_hashGet;
+_addGear = {
+	[_playerHash, _key, _value] call ALIVE_fnc_hashSet;
+};
+[_gearHash, _addGear] call CBA_fnc_hashEachPair;
+
 
 // Add player hash to player data
 _result = _playerHash;

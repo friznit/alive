@@ -108,7 +108,7 @@ switch(_operation) do {
                   TRACE_1("SYS_PLAYER LOGIC", _logic);
 
                     // Create Player Store in memory
-                    GVAR(player_data) = [] call CBA_fnc_hashCreate;
+                    GVAR(player_data) = [] call ALIVE_fnc_hashCreate;
 
                     // Check to see if data module has been placed
                     if !(isNil "ALIVE_sys_data") then {
@@ -125,7 +125,7 @@ switch(_operation) do {
                         _missionName = [missionName, " ","-"] call CBA_fnc_replace;
 
                         // Set key to servername if group tag not available
-                        MOD(sys_player) setVariable ["key", ([GVAR(datahandler),"key", [] call ALIVE_fnc_getServerName] call CBA_fnc_hashGet) + "_" + _missionName];
+                        MOD(sys_player) setVariable ["key", ([GVAR(datahandler),"key", [] call ALIVE_fnc_getServerName] call ALIVE_fnc_hashGet) + "_" + _missionName];
 
                         private ["_res"];
                         // Check that a dictionary is available before loading any player data
@@ -158,8 +158,30 @@ switch(_operation) do {
 
 
                 } else {
+                    if (!isServer && !isHC) then {
                         // any client side logic for model
+                        TRACE_2("Adding player event handlers",isServer,isHC);
 
+                         // Setup Put/Take EH
+                         // This is required to ensure that the vest and uniform items are synched between client and server
+                         // sends gear data to the server whenever there is a put/take event
+                        if (_logic getvariable "saveLoadout") then {
+                            player addEventHandler ["Put", {
+                                private ["_gearHash"];
+                                diag_log _this;
+                                // Get player gear
+                                _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
+                                ["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                            }];
+                            player addEventHandler ["Take", {
+                                private ["_gearHash"];
+                                diag_log _this;
+                                // Get player gear
+                                _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
+                               ["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                            }];
+                        };
+                    };
                 };
 
 
@@ -228,10 +250,12 @@ switch(_operation) do {
                         if (MOD(sys_player) getVariable ["allowReset", DEFAULT_RESET]) then {
                             // Save data on the client
                             _playerHash = [MOD(sys_player), [player]] call ALIVE_fnc_setPlayer;
-
                             // Store playerhash on client
                             player setVariable [QGVAR(player_data), _playerHash];
                             GVAR(resetAvailable) = true;
+
+                            // Save gear on the client
+                            [MOD(sys_player), "setGear", [player]] call MAINCLASS;
                         };
                     };
                 } else {
@@ -246,14 +270,15 @@ switch(_operation) do {
             		_lastSaveTime = dateToNumber date;
             		MOD(sys_player) setVariable ["lastDBSaveTime",_lastSaveTime, true];
 
+                    // Regularly store the player state to a server store and/or DB
             		while {!isNil QMOD(sys_player)} do {
                         private ["_check","_autoSaveTime","_lastDBSaveTime"];
             			// Every 5 minutes store player data in memory
             			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
-                                    			{
-                                    				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
-                                    			} foreach playableUnits;
-                                    			_lastSaveTime = dateToNumber date;
+                			{
+                				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
+                			} foreach playableUnits;
+                			_lastSaveTime = dateToNumber date;
             			};
 
             			// If auto save interval is defined and ext db is enabled, then save to external db
@@ -264,9 +289,9 @@ switch(_operation) do {
 
             			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) ) then {
             				// Save player data to external db
-                                                        TRACE_3("Saving players to DB", dateToNumber date, (_lastDBSaveTime + _autoSaveTime), _check);
+                            TRACE_3("Saving players to DB", dateToNumber date, (_lastDBSaveTime + _autoSaveTime), _check);
             				[MOD(sys_player), "savePlayers", [false]] call MAINCLASS;
-                                                       MOD(sys_player) setVariable ["lastDBSaveTime",dateToNumber date, true];
+                            MOD(sys_player) setVariable ["lastDBSaveTime",dateToNumber date, true];
             			};
 
             			sleep DEFAULT_INTERVAL;
@@ -346,7 +371,7 @@ switch(_operation) do {
                      if ([GVAR(gear_data), (getPlayerUID _unit)] call CBA_fnc_hashHasKey) then {
 
                             // Grab player data from memory store
-                            _gearHash = [GVAR(gear_data), getPlayerUID _unit] call CBA_fnc_hashGet;
+                            _gearHash = [GVAR(gear_data), getPlayerUID _unit] call ALIVE_fnc_hashGet;
                             TRACE_1("GET GEAR", _gearHash);
 
                             // Execute getGear on local client
@@ -363,11 +388,28 @@ switch(_operation) do {
                         private ["_gearHash","_unit"];
                         _unit  = _args select 0;
                         _gearHash = [_logic, _args] call ALIVE_fnc_setGear;
-                        [GVAR(gear_data), getplayerUID _unit, _gearHash] call CBA_fnc_hashSet;
+                        if (isNil QGVAR(gear_data)) then {
+                            GVAR(gear_data) = [] call ALIVE_fnc_hashCreate;
+                        };
+                        [GVAR(gear_data), getplayerUID _unit] call ALIVE_fnc_hashRem;
+                        [GVAR(gear_data), getplayerUID _unit, _gearHash] call ALIVE_fnc_hashSet;
                         _result = _gearHash;
         };
+        case "updateGear": {
+                    // Needed so that changes on client are reflected on server gear store
+                     private ["_gearHash","_unit","_tmpHash","_updateGear"];
+                    _unit  = _args select 0;
+                    _gearHash = _args select 1;
+                    // Update GVAR player data
+                    if (isNil QGVAR(gear_data)) then {
+                        GVAR(gear_data) = [] call ALIVE_fnc_hashCreate;
+                    };
+                    [GVAR(gear_data), getplayerUID _unit] call ALIVE_fnc_hashRem;
+                    [GVAR(gear_data), getplayerUID _unit, _gearHash] call ALIVE_fnc_hashSet;
+                    _result = _gearHash;
+        };
         case "getPlayer": {
-        	           // Get player data from player store and apply to player object on client
+        	       // Get player data from player store and apply to player object on client
                     private ["_playerHash","_unit"];
                     _unit  = _args select 0;
                     _owner = _args select 1;
@@ -376,7 +418,7 @@ switch(_operation) do {
                      if ([GVAR(player_data), (getPlayerUID _unit)] call CBA_fnc_hashHasKey) then {
 
                             // Grab player data from memory store
-                            _playerHash = [GVAR(player_data), getPlayerUID _unit] call CBA_fnc_hashGet;
+                            _playerHash = [GVAR(player_data), getPlayerUID _unit] call ALIVE_fnc_hashGet;
                             TRACE_1("GET PLAYER", _playerHash);
 
                             // Execute getplayer on local client using CBA_fnc_remoteLocalEvent
@@ -392,15 +434,16 @@ switch(_operation) do {
                     private ["_playerHash","_puid"];
                 	// Get the time of the last player save for a specific player
                     _puid = _args select 0;
-                    _playerHash = [GVAR(player_data), _puid] call CBA_fnc_hashGet;
-                    _result =  [_playerHash, "lastSaveTime"] call CBA_fnc_hashGet;
+                    _playerHash = [GVAR(player_data), _puid] call ALIVE_fnc_hashGet;
+                    _result =  [_playerHash, "lastSaveTime"] call ALIVE_fnc_hashGet;
         };
         case "setPlayer": {
                         // Set player data to player store
                         private ["_playerHash","_unit"];
                         _unit  = _args select 0;
                         _playerHash = [_logic, _args] call ALIVE_fnc_setPlayer;
-                        [GVAR(player_data), getplayerUID _unit, _playerHash] call CBA_fnc_hashSet;
+                        [GVAR(player_data), getplayerUID _unit] call ALIVE_fnc_hashRem;
+                        [GVAR(player_data), getplayerUID _unit, _playerHash] call ALIVE_fnc_hashSet;
                         _result = _playerHash;
         };
         case "checkPlayer": {
@@ -417,8 +460,12 @@ switch(_operation) do {
                 };
         };
         case "manualSavePlayer": {
-            private ["_playerHash","_unit"];
-             _unit  = _args select 0;
+            private ["_playerHash","_unit","_gearHash"];
+            _unit  = _args select 0;
+
+            //Update gear
+            _gearHash = [MOD(sys_player), "setGear", [player]] call MAINCLASS;
+            ["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
 
             // Process a request from a player to save on server
             ["server",QMOD(sys_player),[[MOD(sys_player), "setPlayer", _args],{call ALiVE_fnc_player}]] call ALIVE_fnc_BUS;
@@ -436,24 +483,24 @@ switch(_operation) do {
         };
         case "resetPlayer": {
         	// Return the player state to the previous start state
-                    private ["_playerHash","_unit"];
-                    _unit  = _args select 0;
+            private ["_playerHash","_unit","_gearHash"];
+            _unit  = _args select 0;
 
-                    // Check that the hash is found
-                     if ([_unit getVariable QGVAR(player_data)] call CBA_fnc_isHash) then {
+            // Check that the hash is found
+             if ([_unit getVariable QGVAR(player_data)] call CBA_fnc_isHash) then {
 
-                            // Grab player data from local player object
-                            _playerHash = _unit getVariable QGVAR(player_data);
-                            TRACE_2("RESET PLAYER", _unit, _playerHash);
+                    // Grab player data from local player object
+                    _playerHash = _unit getVariable QGVAR(player_data);
+                    TRACE_2("RESET PLAYER", _unit, _playerHash);
 
-                            // Execute getplayer on local client
-                            [_logic, [_unit,  _playerHash]] call ALIVE_fnc_getPlayer;
+                    // Execute getplayer on local client
+                    [_logic, [_unit,  _playerHash]] call ALIVE_fnc_getPlayer;
 
-                            _result = true;
-                    } else {
-                        TRACE_3("SYS_PLAYER PLAYER DATA DOES NOT EXIST",_unit);
-                        _result = false;
-                    };
+                    _result = true;
+            } else {
+                TRACE_3("SYS_PLAYER PLAYER DATA DOES NOT EXIST",_unit);
+                _result = false;
+            };
 
         };
         case "destroy": {
@@ -481,7 +528,7 @@ switch(_operation) do {
                                 [SELF_INTERACTION_KEY],
                                 -9500,
                                 [
-                                        "call MAINCLASSMenuDef",
+                                        "call playerMenuDef",
                                         "main"
                                 ]
                         ] call ALiVE_fnc_flexiMenu_Remove;

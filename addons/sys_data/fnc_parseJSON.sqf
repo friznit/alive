@@ -209,7 +209,7 @@ _string = _this select 0;
 // diag_log _string;
 
 
-if (_string == "" || _string == "" || _string == "ERROR" ) exitWith {_result = "ERROR"; _result};
+if (_string == "" || _string == " " || _string == "ERROR" ) exitWith {_result = "ERROR"; _result};
 
 // Create an array of characters from the JSON string
 _charArray = toArray _string;

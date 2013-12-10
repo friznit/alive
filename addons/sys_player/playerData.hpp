@@ -52,7 +52,7 @@ addItemToUniformOrVest = {
 			TRACE_2("adding item array", _target, _item);
 			_target addMagazine _item; // add to client
 
-			["server",QMOD(sys_player),[[(_this select 0), _item],{(_this select 0) addMagazine (_this select 1);}]] call ALIVE_fnc_BUS; // Do it on server as addMagazine array is not global
+//			["server",QMOD(sys_player),[[(_this select 0), _item],{(_this select 0) addMagazine (_this select 1);}]] call ALIVE_fnc_BUS; // Do it on server as addMagazine array is not global
 		};
 	} else {
 		if(_item != "") then {
@@ -87,7 +87,7 @@ fillContainer = {
 				_currentLoad = loadVest _target;
 			};
 			_target addItem FILLER_ITEM;
-			["server",QMOD(sys_player),[[(_this select 0), "ItemWatch"],{(_this select 0) addItem (_this select 1);}]] call ALIVE_fnc_BUS; // Do it on server as addItem is not global
+//			["server",QMOD(sys_player),[[(_this select 0), "ItemWatch"],{(_this select 0) addItem (_this select 1);}]] call ALIVE_fnc_BUS; // Do it on server as addItem is not global
 			if (_container == "uniform") then {
 				if (loadUniform _target == _currentLoad) then {_loaded = true;};
 			} else {
@@ -245,7 +245,7 @@ GVAR(LOADOUT_DATA) = [
 	}],
 	["primaryWeaponMagazine", { [(_this select 0), 1] call getWeaponmagazine;}, 
 	 { removeAllWeapons (_this select 0); 
-	 	["server",QMOD(sys_player),[[(_this select 0)],{removeAllWeapons (_this select 0);}]] call ALIVE_fnc_BUS; // RemoveAllWeapons is not global
+//	 	["server",QMOD(sys_player),[[(_this select 0)],{removeAllWeapons (_this select 0);}]] call ALIVE_fnc_BUS; // RemoveAllWeapons is not global
 	 	{
 	 		   (_this select 0) addMagazine _x;
 	 	} foreach (_this select 1);
@@ -318,7 +318,7 @@ GVAR(LOADOUT_DATA) = [
 
 				{
 					(_this select 0) removeItemFromUniform _x;
-					["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) removeItemFromUniform (_this select 1);}]] call ALIVE_fnc_BUS; // removeItemFromUniform is not global
+//					["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) removeItemFromUniform (_this select 1);}]] call ALIVE_fnc_BUS; // removeItemFromUniform is not global
 					//[0, {diag_log format['uniformItems pre: %1', uniformItems _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 				} foreach uniformItems (_this select 0);	
 		/*} else {
@@ -344,7 +344,7 @@ GVAR(LOADOUT_DATA) = [
 		{
 			//[(_this select 0), _x] call addItemToUniformOrVest;
 			(_this select 0) addItemToUniform _x;
-			["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) addItemToUniform (_this select 1);}]] call ALIVE_fnc_BUS; // addItemToUniform is not global
+//			["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) addItemToUniform (_this select 1);}]] call ALIVE_fnc_BUS; // addItemToUniform is not global
 		} foreach (_this select 1);
 		//[0, {diag_log format['uniformItems: %1', uniformItems _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 	}],
@@ -370,7 +370,7 @@ GVAR(LOADOUT_DATA) = [
 
 				{
 					(_this select 0) removeItemFromVest _x;
-					["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) removeItemFromVest (_this select 1);}]] call ALIVE_fnc_BUS; // removeItemFromVest is not global
+//					["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) removeItemFromVest (_this select 1);}]] call ALIVE_fnc_BUS; // removeItemFromVest is not global
 				} foreach vestItems (_this select 0);
 	}],
 	["vestItems", {
@@ -386,7 +386,7 @@ GVAR(LOADOUT_DATA) = [
 	}, {
 		{
 			(_this select 0) addItemToVest _x;
-			["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) addItemToVest (_this select 1);}]] call ALIVE_fnc_BUS; // addItemToVest is not global
+//			["server",QMOD(sys_player),[[(_this select 0), _x],{(_this select 0) addItemToVest (_this select 1);}]] call ALIVE_fnc_BUS; // addItemToVest is not global
 		} foreach (_this select 1);
 		//[0, {diag_log format['vestItems: %1', vestItems _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 	}],
@@ -473,7 +473,7 @@ GVAR(LOADOUT_DATA) = [
 		TRACE_2("Removing placeholder items", FILLER_ITEM, PLACEHOLDERCOUNT);
 		for "_i" from 1 to PLACEHOLDERCOUNT do {
 			_target removeItem FILLER_ITEM; 
-			["server",QMOD(sys_player),[[(_this select 0), "ItemWatch"],{(_this select 0) removeItem (_this select 1);}]] call ALIVE_fnc_BUS; // removeItem is not global
+//			["server",QMOD(sys_player),[[(_this select 0), "ItemWatch"],{(_this select 0) removeItem (_this select 1);}]] call ALIVE_fnc_BUS; // removeItem is not global
 		};
 	}],
 
