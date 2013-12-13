@@ -503,16 +503,22 @@ switch(_operation) do {
 			// delete the group
 			_grp = _house getVariable "group";
 
-			if (!(isNil "_grp") && {({alive _x} count (units _grp) > 0)}) then {
+			if (!(isNil "_grp") && {({alive _x} count (units _grp) == 0)}) then {
+                
+                if (_logic getVariable ["debug", false]) then {
+					["CQB Population: Removing group %1...", _grp] call ALiVE_fnc_Dump;
+				};
 				[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
-			};
-			
-			[_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceRemove;
-
-			if (_logic getVariable ["debug", false]) then {
-				["CQB Population: Clearing house %1...", _house] call ALiVE_fnc_Dump;
-			};
-			deleteMarkerLocal format[MTEMPLATE, _house];
+                
+                if (_logic getVariable ["debug", false]) then {
+					["CQB Population: Clearing house %1...", _house] call ALiVE_fnc_Dump;
+				};
+                [_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceRemove;
+                
+                deleteMarkerLocal format[MTEMPLATE, _house];
+			} else {
+                ["CQB Population Warning: Group %1 is still alive...", _grp] call ALiVE_fnc_Dump;
+            };
 		};
 	};
     
@@ -769,43 +775,50 @@ switch(_operation) do {
                                             ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_dominantFaction] call ALiVE_fnc_Dump;
                                             sleep 0.1;
 	                                    } else {
-	                                        diag_log format ["CQB ERROR: Null object on host %1",_host];
+	                                        ["CQB ERROR: Null object on host %1",_host] call ALiVE_fnc_DumpR;
 	                                    };
                                 	} else {
-                                        diag_log format ["CQB ERROR: No playerhosts for house %1!",_house];
+                                        ["CQB ERROR: No playerhosts for house %1!",_house] call ALiVE_fnc_DumpR;
                                     };
                                 } else {
-                                    diag_log format ["CQB ERROR: No players in List %1!",_players];
+                                    ["CQB ERROR: No players in List %1!",_players] call ALiVE_fnc_DumpR;
                                 };
                             };
 						} forEach (_logic getVariable ["houses", []]);
 						{
 							_grp = _x;
-                            _leader = leader _grp;
-							
-                            // get house in question
-							_house = _leader getVariable ["house",(_grp getvariable "house")];
                             
-                            //If house is defined then... (can be disabled due to "object streaming")
-                            if !(isnil "_house") then {
-	                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
-	                            // If not all units are flagged with house then flag them;
-	                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
-	                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
-	                            };
+                            if !(isnil "_grp") then { 
+	                            _leader = leader _grp;
 								
-								// if group are all dead
-								// mark house as cleared
-								if ({alive _x} count (units _grp) == 0) then {
-	                                
-	                                if (isnil "_house") exitwith {diag_log "CQB ERROR: _House didnt exist, when trying to clear it!"};
+	                            // get house in question
+								_house = _leader getVariable ["house",(_grp getvariable "house")];
+	                            
+	                            //If house is defined then... (can be disabled due to "object streaming")
+	                            if !(isnil "_house") then {
+	                               
+		                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
+		                            // If not all units are flagged with house then flag them;
+		                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
+		                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
+		                            };
 									
-	                                // update central CQB house listings
-									[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
-								};
+									// if group are all dead
+									// mark house as cleared
+									if ({alive _x} count (units _grp) == 0) then {
+		                                
+		                                if (isnil "_house") exitwith {["CQB ERROR: _House didnt exist, when trying to clear it!"] call ALiVE_fnc_DumpR};
+										
+		                                // update central CQB house listings
+										[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
+									};
+	                            } else {
+	                                ["CQB ERROR: No House was defined for CQB group %1! Count units in group that have _house set: %2", _grp, {!(isnil {_x getvariable ["house",nil]})} count (units _grp)] call ALiVE_fnc_DumpR;
+	                            };
                             } else {
-                                ["No House was defined for CQB group %1! Count units in group that have _house set: %2", _grp, {!(isnil {_x getvariable ["house",nil]})} count (units _grp)] call ALiVE_fnc_Dump;
+                            	["CQB ERROR: No Group was defined! Moving on..."] call ALiVE_fnc_DumpR;
                             };
+                            
 						} forEach (_logic getVariable ["groups",[]]);
                         
                         if (_debug) then {
