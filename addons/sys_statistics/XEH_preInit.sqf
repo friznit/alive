@@ -6,8 +6,6 @@
 
 LOG(MSG_INIT);
 
-ADDON = false;
-
 // Enable the module
 GVAR(ENABLED) = true;
 GVAR(DISABLED) = false;
@@ -40,4 +38,4 @@ PREP(getOutEH);
 // Handling Combat Dives
 PREP(divingEH);
 
-ADDON = true;
+

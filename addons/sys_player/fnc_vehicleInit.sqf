@@ -37,14 +37,16 @@ if (isServer && !isHC) then {
 		GVAR(VEHICLEID) = 0;
 	};
 
-	_vehicleID = format ["vehicle_%1",GVAR(VEHICLEID)];
+	if ((_vehicle getVariable ["vehicleID","MISSING"]) == "MISSING") then {
+		_vehicleID = format ["vehicle_%1",GVAR(VEHICLEID)];
 
-	TRACE_2("SYS_PLAYER giving vehicle an ID", _vehicle, _vehicleID);
+		TRACE_2("SYS_PLAYER giving vehicle an ID", _vehicle, _vehicleID);
 
-	_vehicle setVariable ["vehicleID", _vehicleID, true];
-	_vehicle setVehicleVarName _vehicleID;
-	_vehicle call compile format ["%1 = _this; publicVariable ""%1""", _vehicleID];
+		_vehicle setVariable ["vehicleID", _vehicleID, true];
+		_vehicle setVehicleVarName _vehicleID;
+		_vehicle call compile format ["%1 = _this; publicVariable ""%1""", _vehicleID];
 
-	GVAR(VEHICLEID) = GVAR(VEHICLEID) + 1;
+		GVAR(VEHICLEID) = GVAR(VEHICLEID) + 1;
+	};
 };
 

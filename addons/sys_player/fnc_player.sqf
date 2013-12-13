@@ -79,6 +79,10 @@ switch(_operation) do {
                 // DEFINE PLAYER DATA
                 #include <playerData.hpp>
 
+                // Create Player and Gear Store in memory on client and server
+                GVAR(player_data) = [] call ALIVE_fnc_hashCreate;
+                GVAR(gear_data) = [] call ALIVE_fnc_hashCreate;
+
              if (isDedicated) then {
 
                     MOD(sys_player) = _logic;
@@ -107,8 +111,7 @@ switch(_operation) do {
 
                   TRACE_1("SYS_PLAYER LOGIC", _logic);
 
-                    // Create Player Store in memory
-                    GVAR(player_data) = [] call ALIVE_fnc_hashCreate;
+
 
                     // Check to see if data module has been placed
                     if !(isNil "ALIVE_sys_data") then {
@@ -167,18 +170,22 @@ switch(_operation) do {
                          // sends gear data to the server whenever there is a put/take event
                         if (_logic getvariable "saveLoadout") then {
                             player addEventHandler ["Put", {
-                                private ["_gearHash"];
+                                private ["_gearHash","_unit"];
                                 diag_log _this;
                                 // Get player gear
                                 _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
-                                ["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                                _unit = _this select 0;
+                                [0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
+                                //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
                             }];
                             player addEventHandler ["Take", {
-                                private ["_gearHash"];
+                                private ["_gearHash","_unit"];
                                 diag_log _this;
+                                _unit = _this select 0;
                                 // Get player gear
                                 _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
-                               ["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                                [0, {[ALiVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
+                               //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
                             }];
                         };
                     };
@@ -249,13 +256,17 @@ switch(_operation) do {
                         sleep 120;
                         if (MOD(sys_player) getVariable ["allowReset", DEFAULT_RESET]) then {
                             // Save data on the client
+                            private ["_playerHash","_gearHash"];
+
+                            // Save gear on the client and server
+                            _gearHash = [MOD(sys_player), "setGear", [player]] call MAINCLASS;
+                            [0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [player, _gearHash] ] call CBA_fnc_globalExecute;
+                            //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+
                             _playerHash = [MOD(sys_player), [player]] call ALIVE_fnc_setPlayer;
                             // Store playerhash on client
                             player setVariable [QGVAR(player_data), _playerHash];
                             GVAR(resetAvailable) = true;
-
-                            // Save gear on the client
-                            [MOD(sys_player), "setGear", [player]] call MAINCLASS;
                         };
                     };
                 } else {
@@ -464,11 +475,13 @@ switch(_operation) do {
             _unit  = _args select 0;
 
             //Update gear
-            _gearHash = [MOD(sys_player), "setGear", [player]] call MAINCLASS;
-            ["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+            _gearHash = [MOD(sys_player), "setGear", [_unit]] call MAINCLASS;
+            [0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
+            //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
 
             // Process a request from a player to save on server
-            ["server",QMOD(sys_player),[[MOD(sys_player), "setPlayer", _args],{call ALiVE_fnc_player}]] call ALIVE_fnc_BUS;
+            [0, {[ALIVE_sys_player, "setPlayer", _this] call ALIVE_fnc_player}, _args] call CBA_fnc_globalExecute;
+            //["server",QMOD(sys_player),[[MOD(sys_player), "setPlayer", _args],{call ALiVE_fnc_player}]] call ALIVE_fnc_BUS;
 
             // Save data on the client too?
             _playerHash = [_logic, _args] call ALIVE_fnc_setPlayer;
