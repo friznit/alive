@@ -1,2 +1,0 @@
-TODO
-- Configure url to point to permanent link
