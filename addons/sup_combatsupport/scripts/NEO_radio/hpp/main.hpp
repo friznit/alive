@@ -472,6 +472,156 @@ class NEO_resourceRadio
 			colorBackground[] = {0,0,0,0};
 			sizeEx = 0.8 * GUI_GRID_H;
 		};
-
+		class NEO_radioArtyUnitList : NEO_RscGUIListBox
+		{
+			idc = 655594;
+			x = 0.269865 * safezoneW + safezoneX;
+			y = 0.3068 * safezoneH + safezoneY;
+			w = 0.242507 * safezoneW;
+			h = 0.084 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+			colorActive[] = {0.384,0.439,0.341,1};
+			sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+			rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+		};
+		class NEO_radioArtyUnitText : NEO_RscText
+		{
+			idc = 655595;
+			x = 0.271103 * safezoneW + safezoneX;
+			y = 0.2732 * safezoneH + safezoneY;
+			w = 0.0779492 * safezoneW;
+			h = 0.0308 * safezoneH;
+			colorText[] = {0.706,0.706,0.706,1};
+			colorBackground[] = {0,0,0,0};
+			sizeEx = 0.8 * GUI_GRID_H;
+			text = "";
+		};
+		class NEO_radioArtyHelpUnitText : NEO_radioArtyUnitText
+		{
+			idc = 655596;
+			x = 0.351527 * safezoneW + safezoneX;
+			y = 0.2732 * safezoneH + safezoneY;
+			w = 0.160845 * safezoneW;
+			h = 0.0308 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+			sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+			rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+			text = "";
+		};
+		class NEO_radioArtyConfirmButton : NEO_radioTransportConfirmButton
+		{
+			idc = 655597;
+			x = 0.519796 * safezoneW + safezoneX;
+			y = 0.6848 * safezoneH + safezoneY;
+			w = safeZoneW / 1000;
+			h = safeZoneH / 1000;
+			text = "Confirm";
+			colorBackground[] = {0.384,0.439,0.341,1};
+			sizeEx = 0.8 * GUI_GRID_H;
+		};
+			class NEO_radioArtyBaseButton : NEO_radioArtyConfirmButton
+		{
+			idc = 655610;
+			x = 0.519796 * safezoneW + safezoneX;
+			y = 0.6512 * safezoneH + safezoneY;
+			w = safeZoneW / 1000;
+			h = safeZoneH / 1000;
+			text = "Order Unit RTB";
+			colorBackground[] = {0.173,0.173,0.173,1};
+			sizeEx = 0.8 * GUI_GRID_H;
+		};
+		class NEO_radioArtyOrdnanceTypeText : NEO_radioArtyUnitText
+		{
+			idc = 655600;
+			x = 0.271103 * safezoneW + safezoneX;
+			y = 0.3936 * safezoneH + safezoneY;
+			w = 0.0742373 * safezoneW;
+			h = 0.0308 * safezoneH;
+			colorText[] = {0.706,0.706,0.706,1};
+			colorBackground[] = {0,0,0,0};
+			sizeEx = 0.8 * GUI_GRID_H;
+			text = "";
+		};
+		class NEO_radioArtyOrdnanceTypeLb : NEO_radioArtyUnitList
+		{
+			idc = 655601;
+			x = 0.269865 * safezoneW + safezoneX;
+			y = 0.4272 * safezoneH + safezoneY;
+			w = 0.242507 * safezoneW;
+			h = 0.084 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+			colorActive[] = {0.384,0.439,0.341,1};
+	        sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+			rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+		};
+		class NEO_radioArtyRateOfFireText : NEO_radioArtyOrdnanceTypeText
+		{
+			idc = 655602;
+			x = 0.284599 * safezoneW + safezoneX;
+			y = 0.556006 * safezoneH + safezoneY;
+			w = 0.080931 * safezoneW;
+			h = 0.0280024 * safezoneH;
+		};
+		
+		//Arty Rate Of Fire Lb
+		class NEO_radioArtyRateOfFireLb : NEO_radioArtyOrdnanceTypeLb
+		{
+			idc = 655603;
+			x = 0.282108 * safezoneW + safezoneX;
+			y = 0.598008 * safezoneH + safezoneY;
+			w = 0.0859113 * safezoneW;
+			h = 0.0560048 * safezoneH;
+		};
+		
+		//Arty Round Count Text
+		class NEO_radioArtyRoundCountText : NEO_radioArtyOrdnanceTypeText
+		{
+			idc = 655604;
+			x = 0.406618 * safezoneW + safezoneX;
+			y = 0.556005 * safezoneH + safezoneY;
+			w = 0.080931 * safezoneW;
+			h = 0.0280024 * safezoneH;
+		};
+		
+		//Arty Round Count Lb
+		class NEO_radioArtyRoundCountLb : NEO_radioArtyOrdnanceTypeLb
+		{
+			idc = 655605;
+			x = 0.404129 * safezoneW + safezoneX;
+			y = 0.598008 * safezoneH + safezoneY;
+			w = 0.0859114 * safezoneW;
+			h = 0.140012 * safezoneH;
+		};
+		class NEO_radioArtyMoveButton : NEO_radioTransportSmokeFoundButton
+		{
+			idc = 655606;
+			text = "Get in Range";
+		};
+		
+		//Arty Dont Move
+		class NEO_radioArtyDontMoveButton : NEO_radioTransportSmokeNotFoundButton
+		{
+			idc = 655607;
+			text = "Don't Move";
+		};
+			class NEO_radioArtyDispersionText : NEO_radioCasUnitText
+		{
+			idc = 655608;
+			text = "";
+			x = 0.290824 * safezoneW + safezoneX;
+			y = 0.668014 * safezoneH + safezoneY;
+			w = safeZoneW / 1000;
+		};
+		
+		//Arty Dispersion Slider
+		class NEO_radioArtyDispersionSlider : NEO_radioCasRadiusSlider
+		{
+			idc = 655609;
+			x = 0.270903 * safezoneW + safezoneX;
+			y = 0.710018 * safezoneH + safezoneY;
+			w = safeZoneW / 1000;
+			h= safeZoneW / 1000;
+		};
+		
 	};
 };

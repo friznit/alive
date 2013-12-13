@@ -32,10 +32,12 @@ private ["_available", "_transportArray", "_casArray", "_artyArray"];
 _available = [];
 _transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", side _unit];
 _casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", side _unit];
+_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", side _unit];
 
 //Available Supports
 if (count _transportArray > 0) then { _available set [count _available, ["TRANSPORT", "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\transport_ca.paa"]] };
 if (count _casArray > 0) then { _available set [count _available, ["CAS", "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\cas_ca.paa"]] };
+if (count _artyArray > 0 && (_action == "radio" || _action == "talkarty")) then { _available set [count _available, ["ARTY", "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\artillery_ca.paa"]] };
 //Support ListBox
 lbClear _suppListBox;
 {
@@ -60,7 +62,19 @@ switch (_action) do
 			lbSetCurSel [655568, 0];
 		};
 	};
-	
+
+	case "talkarty" :
+	{
+		NEO_radioLogic setVariable ["NEO_radioTalkWithArty", vehicle cursorTarget];
+		
+		[] spawn
+		{
+			lbSetCurSel [655565, 2];
+			waituntil { lbSize 655594 > 0 };
+			lbSetCurSel [655594, 0];;
+		};
+	};
+
 	case "radio" :
 	{
 		if (count _available > 0 && count _available < 2) then 
@@ -85,6 +99,17 @@ switch (_action) do
 					_count = _count + 1;
 				};
 			} forEach _transportArray;
+			
+			{
+				_obj = _x select 0;
+				
+				if ((_obj getVariable "NEO_radioArtyUnitStatus") == "RESPONSE") then
+				{
+					_index = [2, _forEachIndex];
+					_sup = _artylist;
+					_count = _count + 1;
+				};
+			} forEach _artyArray;
 			
 			if (_count > 0) then
 			{

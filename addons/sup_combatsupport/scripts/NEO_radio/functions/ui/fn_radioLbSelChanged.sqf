@@ -166,14 +166,14 @@ switch (toUpper (_lb lbText _index)) do
 	{
 		private ["_artyArray"];
 		_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", side player];
-		
+	
 		if (count _artyArray > 0) then
 		{
-			_artyUnitText ctrlSetStructuredText parseText "<t color='#FFFFFF' size='0.8' font='PuristaMedium'>BATTERY</t>";
+			_artyUnitText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>BATTERY</t>";
 			_artyHelpUnitText ctrlSetStructuredText parseText "<t color='#FFFF00' size='0.7' font='PuristaMedium'>Select a unit</t>";
 			//done
-			_artyConfirmButton ctrlEnable false; _artyConfirmButton ctrlSetPosition [(0.302034 * safezoneW) + safezoneX, (0.654 * safezoneH) + safezoneY, (0.0804237 * safezoneW), (0.028 * safezoneH)]; _artyConfirmButton ctrlCommit 0;
-			_artyBaseButton ctrlEnable false; _artyBaseButton ctrlSetPosition [(0.438136 * safezoneW) + safezoneX, (0.654 * safezoneH) + safezoneY, (0.098983 * safezoneW), (0.028 * safezoneH)]; _artyBaseButton ctrlCommit 0;
+			_artyConfirmButton ctrlEnable false; _artyConfirmButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.6848 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _artyConfirmButton ctrlCommit 0;
+			_artyBaseButton ctrlEnable false; _artyBaseButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.6512 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _artyBaseButton ctrlCommit 0;
 			
 			if (!isNil { NEO_radioLogic getVariable "NEO_radioTalkWithArty" }) then
 			{
