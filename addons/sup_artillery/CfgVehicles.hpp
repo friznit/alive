@@ -23,7 +23,7 @@ class CfgVehicles {
                                 {
                                 displayName = "$STR_ALIVE_ARTILLERY_TYPE";
                                 description = "$STR_ALIVE_ARTILLERY_TYPE_DESC";
-                                defaultValue ="B_Mortar_01_F";
+                                defaultValue ="B_MBT_01_arty_F";
                                 };  
                         class artillery_he
                                 {

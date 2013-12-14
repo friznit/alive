@@ -4,7 +4,7 @@
 item0[] = {"Start",0,250,-41.455616,-237.568573,48.544384,-187.568573,0.000000,"Start"};
 item1[] = {"True",4,218,-42.781796,-125.724930,47.218204,-75.724922,0.000000,"True"};
 item2[] = {"main_loop",2,250,-43.161469,-20.598993,46.838547,29.401003,0.000000,"main loop"};
-item3[] = {"new_task",4,4314,-38.938957,58.070740,51.061043,108.070747,0.000000,"new task"};
+item3[] = {"new_task",4,218,-38.938957,58.070740,51.061043,108.070747,0.000000,"new task"};
 item4[] = {"_",2,250,-39.730919,130.312286,50.269096,180.312286,0.000000,""};
 item5[] = {"proceed",4,218,-38.146973,229.671280,51.853027,279.671356,0.000000,"proceed"};
 item6[] = {"__1",2,250,-40.522888,304.116425,49.477127,354.116425,0.000000,""};
@@ -37,7 +37,7 @@ item32[] = {"Mobile",4,218,230.611542,265.626190,320.611542,315.626190,1.000000,
 item33[] = {"__9",2,250,231.537720,340.923096,321.537689,390.923096,0.000000,""};
 item34[] = {"Move_out_",4,218,232.825073,427.215485,322.825073,477.215424,1.000000,"Move out" \n ""};
 item35[] = {"__10",2,250,232.825104,504.689758,322.825134,554.689758,0.000000,""};
-item36[] = {"in_position",4,218,417.836151,597.977905,507.836151,647.977905,0.000000,"in position"};
+item36[] = {"in_position",4,4314,417.836151,597.977905,507.836151,647.977905,0.000000,"in position"};
 item37[] = {"__11",-1,250,208.475998,662.958740,211.796326,664.065491,0.000000,""};
 item38[] = {"__12",2,250,144.283020,586.591187,216.574615,621.096313,0.000000,""};
 item39[] = {"",7,210,143.778152,244.724869,151.778152,252.724869,0.000000,""};
@@ -129,8 +129,8 @@ link60[] = {47,49};
 link61[] = {48,15};
 link62[] = {49,50};
 link63[] = {50,30};
-globals[] = {0.000000,0,0,0,0,640,480,1,57,6316128,1,-521.099243,548.239868,623.395569,-114.052917,1379,911,1};
-window[] = {2,-1,-1,-1,-1,810,50,1490,50,3,1397};
+globals[] = {0.000000,0,0,0,0,640,480,1,57,6316128,1,-753.661438,780.801758,1453.256836,-155.645660,907,951,1};
+window[] = {2,-1,-1,-1,-1,925,2166,3606,165,3,925};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -410,7 +410,7 @@ class FSM
            "&&" \n
            "time > _delay" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"[(_units select 0), ""We are firing on target. Out."", ""side""] call NEO_fnc_messageBroadcast;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"[[(_units select 0), ""We are firing on target. Out."", ""side""],"" NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -445,7 +445,7 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_battery getVariable ""ARTY_SPLASH""" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"[(_units select 0), ""Splash. Out."", ""side""] call NEO_fnc_messageBroadcast;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"[[(_units select 0), ""Splash. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -484,7 +484,7 @@ class FSM
            "&&" \n
            "time > _delay" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"[(_units select 0), ""Battery is rounds complete. Out."", ""side""] call NEO_fnc_messageBroadcast;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"[[(_units select 0), ""Battery is rounds complete. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -564,7 +564,7 @@ class FSM
            "	_x doMove ([_pos, 20, random 360] call BIS_fnc_relPos);" \n
            "} forEach _units;" \n
            "" \n
-           "[(_units select 0), ""Battery is moving back to Base. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "[[(_units select 0), ""Battery is moving back to Base. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -578,12 +578,12 @@ class FSM
           action=/*%FSM<ACTION""">*/"if (count (_battery getVariable ""NEO_radioArtyBatteryRounds"") < 1) then" \n
            "{" \n
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NOAMMO"", true];" \n
-           "	[(_units select 0), ""Battery is out of ammo. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[(_units select 0), ""Battery is out of ammo. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "}" \n
            "else" \n
            "{" \n
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NONE"", true];" \n
-           "	[(_units select 0), ""Battery is ready for fire mission. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[(_units select 0), ""Battery is ready for fire mission. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -636,7 +636,7 @@ class FSM
            "[(_units select 0), _callsign, side leader _grp, _battery] spawn" \n
            "{" \n
            "	sleep 5;" \n
-           "	[_this select 0, ""Target is out of range of battery, would you like us to move into good position? Over."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[_this select 0, ""Target is out of range of battery, would you like us to move into good position? Over."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "	" \n
            "	[_this select 0, _this select 1, _this select 3] spawn" \n
            "	{" \n
@@ -649,11 +649,11 @@ class FSM
            "		" \n
            "		while { (_battery getVariable ""NEO_radioArtyUnitStatus"") == ""RESPONSE"" } do" \n
            "		{" \n
-           "			[" \n
+           "			[[" \n
            "				_unit," \n
            "				""Should we move in range? Please respond. Over.""," \n
            "				""side""" \n
-           "			] call NEO_fnc_messageBroadcast;" \n
+           "			],"" NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "			" \n
            "			sleep 75;" \n
            "		};" \n
@@ -673,7 +673,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"(_units select 0) spawn" \n
            "{" \n
            "	sleep 5;" \n
-           "	[_this, ""Target is out of range of battery, choose another target. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[_this, ""Target is out of range of battery, choose another target. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -755,7 +755,7 @@ class FSM
            "(_units select 0) spawn" \n
            "{" \n
            "	sleep 5;" \n
-           "	[_this, ""Copy that, moving in range of target, stand by. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[_this, ""Copy that, moving in range of target, stand by. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -773,7 +773,7 @@ class FSM
            "(_units select 0) spawn" \n
            "{" \n
            "	sleep 5;" \n
-           "	[_this, ""Copy that, aborting fire mission. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[_this, ""Copy that, aborting fire mission. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -928,12 +928,12 @@ class FSM
            "if (count (_battery getVariable ""NEO_radioArtyBatteryRounds"") < 1) then" \n
            "{" \n
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NOAMMO"", true];" \n
-           "	[(_units select 0), ""Battery is at Base and out of ammo. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[(_units select 0), ""Battery is at Base and out of ammo. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "}" \n
            "else" \n
            "{" \n
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NONE"", true];" \n
-           "	[(_units select 0), ""Battery is at Base and ready for fire mission. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+           "	[[(_units select 0), ""Battery is at Base and ready for fire mission. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
