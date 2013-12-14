@@ -209,9 +209,9 @@ switch(_operation) do {
                     };
                     
                     //Still there? Cool, check if there are objectives
-                    _errorMessage = "There are no objectives for this OPCOM instance! Please assign Military Placement Objectives!%1%2";
-                    _error1 = ""; _error2 = ""; //defaults
-                    if ((count _objectives) < 1) exitwith {
+                    _errorMessage = "There are %1 objectives for this OPCOM instance! %2";
+                    _error1 = count _objectives; _error2 = "Please assign Military Placement Objectives!"; //defaults
+                    if ((count _objectives) == 0) exitwith {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
@@ -239,7 +239,12 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
-                    //Still there? Mega, wait random time to ensure all opcoms analysis wont run at the same time on start!
+                    //Still there? Mega, lets summarize...
+                    if (_debug) then {
+                    	["OPCOM %1 starts with %2 profiles and %3 objectives!",_side,_profiles_count,count _objectives] call ALIVE_fnc_dumpR;
+                	};
+                    
+                    //Wait random time to ensure all opcoms analysis wont run at the same time on start!
                     sleep random(25);
 
                     //done this way to easily switch between spawn and call for testing purposes
@@ -1507,13 +1512,13 @@ switch(_operation) do {
 	                        _side = _FSM_OPCOM getfsmvariable "_side";
                             _cycleTime = _FSM_OPCOM getfsmvariable "_cycleTime";
                             _timestamp = floor(time - (_FSM_OPCOM getfsmvariable "_timestamp"));
-                            _maxLimit = (_cycleTime + (count allunits));
+                            _maxLimit = _cycleTime + ((count allunits)*2);
                             
                             if (_timestamp > _maxLimit) then {
                                 // debug ---------------------------------------
 								if ([_this,"debug",false] call ALiVE_fnc_HashGet) then {
                                     _message = parsetext (format["<t align=left>OPCOM side: %1<br/><br/>WARNING! Max. duration exceeded!<br/>state OPCOM: %2<br/>state TACOM: %4<br/>duration: %3</t>",_side,_state,_timestamp,_state_TACOM]);
-									[_message] call ALIVE_fnc_dumpR;
+									[_message] call ALIVE_fnc_dump; hintsilent _message;
 								};
 								// debug ---------------------------------------
                             };
