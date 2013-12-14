@@ -63,6 +63,8 @@ switch(_operation) do {
                 
                 _factionsReg = _logic getvariable ["CQB_FACTIONS_REG",["OPF_F"]];
 				if (typename (_factionsReg) == "STRING") then {_factionsReg = call compile _factionsReg};
+                
+                _CQB_Locations = _logic getvariable ["CQB_LOCATIONTYPE","towns"];
             
 	        	CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
                 if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
@@ -187,15 +189,23 @@ switch(_operation) do {
                             _collection set [count _collection,[_pos,_size]];
                         } foreach _objectives;
                     } else {
-                        _objectives = nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["NameCityCapital","NameCity","NameVillage","NameLocal","Hill"],20000];
-                        {
-                            _pos = position _x;
-                            _size = size _x;
-                            
-                            if (_size select 0 > _size select 1) then {_size = _size select 0} else {_size = _size select 1};
-                            
-                            _collection set [count _collection,[_pos,_size]];
-                        } foreach _objectives;
+                        switch (_CQB_Locations) do {
+                            case ("towns") : {
+		                        _objectives = nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["NameCityCapital","NameCity","NameVillage","NameLocal","Hill"],20000];
+		                        {
+		                            _pos = position _x;
+		                            _size = size _x;
+		                            
+		                            if (_size select 0 > _size select 1) then {_size = _size select 0} else {_size = _size select 1};
+		                            
+		                            _collection set [count _collection,[_pos,_size]];
+		                        } foreach _objectives;
+                            };
+                            case ("all") : {
+                                _collection set [count _collection,[getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"),30000]];
+                            };
+                            default {};
+                        };
                     };
                     
                     _houses = [];

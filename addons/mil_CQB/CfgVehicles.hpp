@@ -31,6 +31,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_LOCATIONTYPE
+                        {
+                                displayName = "$STR_ALIVE_CQB_LOCATIONTYPE";
+                                description = "$STR_ALIVE_CQB_LOCATIONTYPE_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Towns";
+                                                value = "towns";
+                                        };
+                                        class No
+                                        {
+                                                name = "Complete map";
+                                                value = "all";
+                                                default = "all";
+                                        };
+                                };
+                        };
                         class CQB_spawn_setting
                         {
                                 displayName = "$STR_ALIVE_CQB_SPAWN";

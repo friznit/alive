@@ -51,4 +51,10 @@
 <Key ID="STR_ALIVE_CQB_USAGE">
 	<English>Place the CQB module and select the preferred intensity. CQB can be synchronised (F5) to a Mil_MP or CIV_CP module (optionally).</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_LOCATIONTYPE">
+	<English>CQB locations</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_LOCATIONTYPE_COMMENT">
+	<English>Selects the type of area in which CQB will be available, if synced to a MIL/CIV MP module this setting will be overwritten</English>
+</Key>
 </Container></Package></Project>
