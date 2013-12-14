@@ -6,15 +6,15 @@ if(Config::get('app.debug')){
 }
 
 Route::controller('user', 'UserController');
-
-Route::get('admin', array('before' => 'auth', function()
-{
-    return View::make('admin/home/index');
-}));
-
 Route::controller('admin/user', 'AdminUserController');
-Route::resource('admin/profile', 'AdminProfileController');
+Route::controller('admin/clan', 'AdminClanController');
+Route::controller('admin/application', 'AdminApplicationController');
 Route::resource('admin/group', 'AdminGroupController');
+
+View::composer('warroom/home/index', function($view)
+{
+    $view->with(get_default_data());
+});
 
 Route::get('war-room', array('before' => 'auth', function()
 {

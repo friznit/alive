@@ -44,6 +44,15 @@
                                 <label class="checkbox inline">
                                     <input type="checkbox" value="1" name="userPermissions"> User
                                 </label>
+                                <label class="checkbox inline">
+                                    <input type="checkbox" value="1" name="clansPermissions"> Clans
+                                </label>
+                                <label class="checkbox inline">
+                                    <input type="checkbox" value="1" name="clanPermissions"> Clan
+                                </label>
+                                <label class="checkbox inline">
+                                    <input type="checkbox" value="1" name="clanMemberPermissions"> Clan Members
+                                </label>
                             </div>
 
                         </div>

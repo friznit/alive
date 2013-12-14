@@ -26,26 +26,6 @@
 
                         <div class="panel-body">
 
-                            <div class="form-group {{ ($errors->has('firstName')) ? 'has-error' : '' }}" for="firstName">
-                                <label class="control-label" for="firstName">First Name</label>
-                                <input name="firstName" value="{{ (Request::old('firstName')) ? Request::old("firstName") : $user->first_name }}" type="text" class="form-control" placeholder="First Name">
-                                <?php
-                                if($errors->has('firstName')){
-                                    echo '<span class="label label-danger">' . $errors->first('firstName') . '</span>';
-                                }
-                                ?>
-                            </div>
-
-                            <div class="form-group {{ $errors->has('lastName') ? 'has-error' : '' }}" for="lastName">
-                                <label class="control-label" for="lastName">Last Name</label>
-                                <input name="lastName" value="{{ (Request::old('lastName')) ? Request::old("lastName") : $user->last_name }}" type="text" class="form-control" placeholder="Last Name">
-                                <?php
-                                if($errors->has('lastName')){
-                                    echo '<span class="label label-danger">' . $errors->first('lastName') . '</span>';
-                                }
-                                ?>
-                            </div>
-
                              <div class="form-group {{ $errors->has('username') ? 'has-error' : '' }}" for="username">
                                 <label class="control-label" for="username">User name</label>
                                 <input name="username" value="{{ (Request::old('username')) ? Request::old("username") : $profile->username }}" type="text" class="form-control" placeholder="username">
@@ -56,6 +36,83 @@
                                 ?>
                             </div>
 
+                            <div class="form-group {{ $errors->has('a3ID') ? 'has-error' : '' }}" for="a3ID">
+                                <label class="control-label" for="a3ID">Arma 3 Player ID </label><span class="badge" data-toggle="modal" data-target="#myModal">?</span>
+                                <input name="a3ID" value="{{ (Request::old('a3ID')) ? Request::old("a3ID") : $profile->a3_id }}" type="text" class="form-control" placeholder="Arma 3 ID">
+                                <?php
+                                if($errors->has('a3ID')){
+                                    echo '<span class="label label-danger">' . $errors->first('a3ID') . '</span>';
+                                }
+                                ?>
+                            </div>
+
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">How to find your Arma 3 Player ID</h4>
+                                        </div>
+                                        <div class="strip">
+                                            <p>We use your player ID to connect your war room account to your in-game activity.</p>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="{{ URL::to('/') }}/img/id1.jpg" class="img-responsive dark-border center-block" /><br/>
+                                            <img src="{{ URL::to('/') }}/img/id2.jpg" class="img-responsive dark-border" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group {{ ($errors->has('country')) ? 'has-error' : '' }}" for="country">
+                                <label class="control-label" for="country">Country</label>
+                                <select name="country" value="{{ (Request::old('country')) ? Request::old("country") : $profile->country }}" type="text" class="form-control" placeholder="Country">
+                                @foreach ($countries as $key =>$value)
+                                @if ($key == $profile->country)
+                                <option value="{{$key}}" selected="selected">{{$value}}</option>
+                                @else
+                                <option value="{{$key}}">{{$value}}</option>
+                                @endif
+                                @endforeach
+                                </select>
+                                <?php
+                                if($errors->has('country')){
+                                    echo '<span class="label label-danger">' . $errors->first('country') . '</span>';
+                                }
+                                ?>
+                            </div>
+
+                            <div class="form-group {{ $errors->has('ageGroup') ? 'has-error' : '' }}" for="ageGroup">
+                                <label class="control-label" for="ageGroup">Age Group</label>
+                                <select name="ageGroup" value="{{ (Request::old('ageGroup')) ? Request::old("ageGroup") : $profile->age_group }}" type="text" class="form-control" placeholder="Age Group">
+                                @foreach ($ageGroup as $key =>$value)
+                                @if ($key == $profile->age_group)
+                                <option value="{{$key}}" selected="selected">{{$value}}</option>
+                                @else
+                                <option value="{{$key}}">{{$value}}</option>
+                                @endif
+                                @endforeach
+                                </select>
+                                <?php
+                                if($errors->has('ageGroup')){
+                                    echo '<span class="label label-danger">' . $errors->first('ageGroup') . '</span>';
+                                }
+                                ?>
+                            </div>
+
+                            <div class="form-group {{ $errors->has('twitchStream') ? 'has-error' : '' }}" for="twitchStream">
+                                <label class="control-label" for="twitchStream">Twitch Stream</label>
+                                <input name="twitchStream" value="{{ (Request::old('twitchStream')) ? Request::old("twitchStream") : $profile->twitch_stream }}" type="text" class="form-control" placeholder="Twitch Stream">
+                                <?php
+                                if($errors->has('twitchStream')){
+                                    echo '<span class="label label-danger">' . $errors->first('twitchStream') . '</span>';
+                                }
+                                ?>
+                            </div>
+
+                            <!--
                             <div class="form-group {{ $errors->has('alias') ? 'has-error' : '' }}" for="alias">
                                 <label class="control-label" for="alias">Alias</label>
                                 <input name="alias" value="{{ (Request::old('alias')) ? Request::old("alias") : $profile->alias }}" type="text" class="form-control" placeholder="Alias">
@@ -72,16 +129,6 @@
                                 <?php
                                 if($errors->has('a2ID')){
                                     echo '<span class="label label-danger">' . $errors->first('a2ID') . '</span>';
-                                }
-                                ?>
-                            </div>
-
-                            <div class="form-group {{ $errors->has('a3ID') ? 'has-error' : '' }}" for="a3ID">
-                                <label class="control-label" for="a3ID">Arma 3 ID</label>
-                                <input name="a3ID" value="{{ (Request::old('a3ID')) ? Request::old("a3ID") : $profile->a3_id }}" type="text" class="form-control" placeholder="Arma 3 ID">
-                                <?php
-                                if($errors->has('a3ID')){
-                                    echo '<span class="label label-danger">' . $errors->first('a3ID') . '</span>';
                                 }
                                 ?>
                             </div>
@@ -136,28 +183,26 @@
                                 ?>
                             </div>
 
-                            <div class="form-group {{ $errors->has('twitchStream') ? 'has-error' : '' }}" for="twitchStream">
-                                <label class="control-label" for="twitchStream">Twitch Stream</label>
-                                <input name="twitchStream" value="{{ (Request::old('twitchStream')) ? Request::old("twitchStream") : $profile->twitch_stream }}" type="text" class="form-control" placeholder="Twitch Stream">
+                            <div class="form-group {{ $errors->has('remark') ? 'has-error' : '' }}" for="remark">
+                                <label class="control-label" for="remark">Remark</label>
+                                <input name="remark" value="{{ (Request::old('remark')) ? Request::old("remark") : $profile->remark }}" type="text" class="form-control" placeholder="Remark">
                                 <?php
-                                if($errors->has('twitchStream')){
-                                    echo '<span class="label label-danger">' . $errors->first('twitchStream') . '</span>';
+                                if($errors->has('remark')){
+                                    echo '<span class="label label-danger">' . $errors->first('remark') . '</span>';
                                 }
                                 ?>
                             </div>
+                            -->
 
                         </div>
                         <div class="panel-footer clearfix">
                             <div class="btn-toolbar pull-right" role="toolbar">
-                                <input class="btn btn-dark" type="reset" value="Reset">
                                 <input class="btn btn-yellow" type="submit" value="Save">
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
 
-            <div class="col-md-4">
                 <div class="panel panel-dark">
                     <div class="panel-heading">
                         <h3 class="panel-title">Change Password</h3>
@@ -200,7 +245,6 @@
                         </div>
                         <div class="panel-footer clearfix">
                             <div class="btn-toolbar pull-right" role="toolbar">
-                                <input class="btn btn-dark" type="reset" value="Reset">
                                 <input class="btn btn-yellow" type="submit" value="Change Password">
                             </div>
                         </div>
@@ -216,14 +260,9 @@
 
                         <div class="panel-body">
 
-                            <div class="form-group {{ $errors->has('oldEmail') ? 'has-error' : '' }}" for="oldEmail">
+                            <div class="form-group" for="oldEmail">
                                 <label class="control-label" for="oldEmail">Old Email</label>
-                                <input name="oldEmail" value="{{ (Request::old('oldEmail')) ? Request::old("oldEmail") : $user->email }}" type="email" class="form-control" placeholder="Old Email">
-                                <?php
-                                if($errors->has('oldEmail')){
-                                    echo '<span class="label label-danger">' . $errors->first('oldEmail') . '</span>';
-                                }
-                                ?>
+                                <input name="oldEmail" value="{{ (Request::old('oldEmail')) ? Request::old("oldEmail") : $user->email }}" type="email" class="form-control" placeholder="Old Email" readonly>
                             </div>
 
                             <div class="form-group {{ $errors->has('newEmail') ? 'has-error' : '' }}" for="newEmail">
@@ -249,36 +288,73 @@
                         </div>
                         <div class="panel-footer clearfix">
                             <div class="btn-toolbar pull-right" role="toolbar">
-                                <input class="btn btn-dark" type="reset" value="Reset">
                                 <input class="btn btn-yellow" type="submit" value="Change Email">
                             </div>
                         </div>
                     </form>
                 </div>
+
             </div>
 
             <div class="col-md-4">
+
                 <div class="panel panel-dark">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Change Avatar</h3>
+                        <h3 class="panel-title">Upload Avatar</h3>
                     </div>
 
                     <form action="{{ URL::to('admin/user/changeavatar') }}/{{ $user->id }}" method="post" enctype="multipart/form-data">
                         {{ Form::token() }}
 
-                        <div class="panel-body">
-                             <img src="<?= $profile->avatar->url('medium') ?>" ><br/><br/>
-                        	<input type="file" id="avatar_upload" name="avatar" />
+                        <div class="strip">
+                            <p>Ensure your image is square to avoid distortion.</p>
+                        </div>
+
+                        <div class="panel-body avatars">
+                            <p>Large (300px x 300px)</p>
+                            <img src="<?= $profile->avatar->url('medium') ?>" ><br/><br/>
+                            <p>Medium (100px x 100px)</p>
+                            <img src="<?= $profile->avatar->url('thumb') ?>" ><br/><br/>
+                            <p>Small (40px x 40px)</p>
+                            <img src="<?= $profile->avatar->url('tiny') ?>" ><br/><br/>
+                            <input type="file" id="avatar_upload" name="avatar" />
                         </div>
                         <div class="panel-footer clearfix">
                             <div class="btn-toolbar pull-right" role="toolbar">
-                                <input class="btn btn-yellow" type="submit" value="Change Avatar">
+                                <input class="btn btn-yellow" type="submit" value="Upload Avatar">
                             </div>
                         </div>
                     </form>
                 </div>
 
-@if (Sentry::check() && Sentry::getUser()->hasAccess('admin'))
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="panel panel-dark">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Delete Account</h3>
+                    </div>
+
+                    <!--
+                    <form action="{{ URL::to('admin/user/delete') }}/{{ $user->id }}" method="post">
+                        {{ Form::token() }}
+
+                        <div class="panel-footer clearfix">
+                            <div class="btn-toolbar pull-right" role="toolbar">
+                                <input class="btn btn-red action_confirm" type="submit" value="Delete My Account">
+                            </div>
+                        </div>
+                    </form>
+                    -->
+                    <div class="panel-footer clearfix">
+                        <div class="btn-toolbar pull-right" role="toolbar">
+                            <button class="btn btn-red action_confirm" href="{{ URL::to('admin/user/delete') }}/{{ $user->id}}" data-token="{{ Session::getToken() }}" data-method="post">Delete My Account</button>
+                        </div>
+                    </div>
+                </div>
+
+                @if ($auth['isAdmin'])
 
                 <div class="panel panel-dark">
                     <div class="panel-heading">
@@ -314,11 +390,10 @@
                         </div>
                     </form>
                 </div>
+
+                @endif
+
             </div>
-
-
-@endif
-
         </div>
     </div>
 </div>

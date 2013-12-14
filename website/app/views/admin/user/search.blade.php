@@ -8,10 +8,6 @@
             {{-- Content --}}
             @section('content')
 
-            @if (Sentry::check())
-
-            @if($user->hasAccess('admin'))
-
             <h2>Search Results for "{{{ $query }}}"</h2>
 
             <form class="light" action="{{ URL::to('admin/user/search') }}" method="post">
@@ -32,14 +28,14 @@
                         }
                         ?>
                         <div class="input-group">
+                            <label class="checkbox-inline">
+                                <input type="radio" name="type" value="userName" checked> by Username&nbsp;
+                            </label>
                             <label class="radio-inline">
-                                <input type="radio" name="type" value="id" checked> by ID
+                                <input type="radio" name="type" value="id"> by ID
                             </label>
                             <label class="checkbox-inline">
                                 <input type="radio" name="type" value="email"> by Email
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="radio" name="type" value="lastName"> by Last Name
                             </label>
                         </div>
                     </div>
@@ -49,8 +45,9 @@
 
             <table class="table table-hover">
                 <thead>
-                    <th>ID</th>
-                    <th>Email</th>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>User</th>
                     <th>Status</th>
                     <th>Options</th>
                 </thead>
@@ -58,12 +55,15 @@
                 @foreach ($allUsers as $user)
                 <tr>
                     <td>{{{ $user->user_id }}}</td>
+                    <td>{{{ $user->username }}}</td>
                     <td><a href="{{ URL::to('admin/user/show') }}/{{ $user->user_id }}">{{{ $user->email }}}</a></td>
                     <td>{{ $userStatus[$user->id] }} </td>
                     <td>
                         <button class="btn btn-default" onClick="location.href='{{ URL::to('admin/user/edit') }}/{{ $user->user_id}}'">Edit</button>
+                        @if ($auth['userId'] != $user->id)
                         <button class="btn btn-default" onClick="location.href='{{ URL::to('admin/user/suspend') }}/{{ $user->user_id}}'">Suspend</button>
                         <button class="btn btn-default action_confirm" href="{{ URL::to('admin/user/delete') }}/{{ $user->user_id}}" data-token="{{ Session::getToken() }}" data-method="post">Delete</button>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
@@ -71,13 +71,6 @@
             </table>
 
             <?php echo $allUsers->links(); ?>
-
-            @else
-            <h4>You are not an Administrator</h4>
-            @endif
-            @else
-            <h4>You are not logged in</h4>
-            @endif
 
             </div>
         </div>

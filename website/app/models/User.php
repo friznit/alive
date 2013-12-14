@@ -11,4 +11,9 @@ class User extends SentryUserModel {
     public function group() {
         return $this->hasOne('Group');
     }
+
+    public function applications() {
+        return $this->hasMany('Application');
+    }
+
 }

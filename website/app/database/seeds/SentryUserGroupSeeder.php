@@ -20,10 +20,6 @@ class SentryUserGroupSeeder extends Seeder {
         $adminGroup = Sentry::getGroupProvider()->findByName('Admins');
 
 	    // Assign the groups to the users
-	    $adminUser->addGroup($userGroup);
-        $adminUser->addGroup($gruntGroup);
-        $adminUser->addGroup($officerGroup);
-        $adminUser->addGroup($leaderGroup);
         $adminUser->addGroup($adminGroup);
 	}
 

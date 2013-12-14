@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder {
         $this->call('SentryUserGroupSeeder');
 
         $this->call('ProfileSeeder');
-	}
+
+        $this->call('CountriesSeeder');
+
+    }
 
 }

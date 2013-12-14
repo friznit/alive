@@ -116,7 +116,9 @@ return array(
         'Cartalyst\Sentry\SentryServiceProvider',
         'Prologue\Alerts\AlertsServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
-        'Codesleeve\Stapler\StaplerServiceProvider'
+        'Codesleeve\Stapler\StaplerServiceProvider',
+        'anlutro\cURL\Laravel\cURLServiceProvider',
+        'Webpatser\Countries\CountriesServiceProvider',
 	),
 
 	/*
@@ -183,6 +185,8 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
         'Sentry'          => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
         'Alert'           => 'Prologue\Alerts\Facades\Alert',
+        'cURL'            => 'anlutro\cURL\Laravel\cURL',
+        'Countries'       => 'Webpatser\Countries\CountriesFacade',
 
 	),
 

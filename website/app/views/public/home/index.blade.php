@@ -57,9 +57,9 @@
                         <th></th>
                     </tr>
                     <tr class="success">
-                        <td>0.5.2</td>
-                        <td>Arma 3 Stable 1.6.112613</td>
-                        <td><a class="btn btn-primary btn-lg pull-right" href="http://dev-heaven.net/attachments/download/21342/@alive_0-5-2.7z"><i class="fa fa-download"></i> Download</a></td>
+                        <td>0.5.4</td>
+                        <td>Arma 3 Stable 1.08.113494</td>
+                        <td><a class="btn btn-primary btn-lg pull-right" href="http://dev-heaven.net/attachments/download/21377/@alive_0-5-4.7z"><i class="fa fa-download"></i> Download</a></td>
                     </tr>
                 </table>
                 <br/><h2>Installation</h2>
@@ -128,15 +128,47 @@
                 <p>The following resources will help you get started with using the ALiVE mod's modules.</p>
             </div>
         </div>
-         <div class="row">
+        <div class="row">
             <div class="col-md-6">
                 <br/><h4>ALiVE User Manual</h4>
                 <a class="btn btn-yellow btn-lg"href="http://dev-heaven.net/attachments/download/21306/ALiVE%20Manual%20Compressed.pdf"><i class="fa fa-download"></i> Download User Manual</a><br/>
             </div>
+        </div>
+        <div class="row top-margin">
              <div class="col-md-6">
-                <br/><h4>Sample Missions</h4>
-                <p>Coming Soon</p>
-                <!--<a class="btn btn-yellow btn-lg"href="#"><i class="fa fa-download"></i> Download Sample Mission Pack</a><br/>-->
+                <br/><h4>Sample Missions</h4><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <p><b>Pyrgos Assault</b><br/><small>by [KH]Jman</small><br/>The Rebels have taken over Pyrgos. Take it back and drive them into the sea!. Player respawn and revive are enabled. You will see player's injured via markers. </p>
+                <a class="btn btn-yellow" href="downloads/CO10_Pyrgos_Assault_v1_7.Altis.zip"><i class="fa fa-download"></i> Download</a><br/>
+            </div>
+            <div class="col-md-4">
+                <img src="{{ URL::to('/') }}/img/pyrgos.jpg" class="img-responsive" />
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+        <br/>
+        <div class="row top-margin">
+            <div class="col-md-2">
+                <p><b>Valley of Just Pure Death</b><br/><small>by ARJay</small><br/>A hectic 3 faction battle in a small valley on the western side of Altis.</p>
+                <a class="btn btn-yellow" href="downloads/ALiVE_ValleyOfJPD.Altis.zip"><i class="fa fa-download"></i> Download</a><br/>
+            </div>
+            <div class="col-md-4">
+               <img src="{{ URL::to('/') }}/img/jpd.jpg" class="img-responsive" />
+            </div>
+            <div class="col-md-2">
+                <p><b>Mountain War</b><br/><small>by (AEF)Spinfx</small><br/>Stratis is split down the middle with BLUFOR holding the western side and OPFOR holding the east. Featuring BIS support modules, BTC Revive, and VAS.</p>
+                <a class="btn btn-yellow" href="downloads/ALiVE_MountainWar.Stratis.zip"><i class="fa fa-download"></i> Download</a><br/>
+            </div>
+            <div class="col-md-4">
+                <img src="{{ URL::to('/') }}/img/mountain_war.jpg" class="img-responsive" />
             </div>
         </div>
         <div class="row top-margin">

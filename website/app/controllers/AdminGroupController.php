@@ -4,43 +4,51 @@ class AdminGroupController extends BaseController {
 
     public function __construct()
     {
-        $this->beforeFilter('admin_auth');
+        //Check CSRF token on POST
+        $this->beforeFilter('csrf', array('on' => 'post'));
+
+        // Authenticated access only
+        $this->beforeFilter('auth');
+
     }
+
+    // Lists -----------------------------------------------------------------------------------------------------------
 
     public function index()
     {
-        try {
-            // Find the current user
-            if ( ! Sentry::check()) {
-                // User is not logged in, or is not activated
-                Session::flash('error', 'You must be logged in to perform that action.');
-                return Redirect::to('/');
-            } else {
-                // User is logged in
-                $user = Sentry::getUser();
+        $data = get_default_data();
+        $auth = $data['auth'];
 
-                // Get the user groups
-                $data['myGroups'] = $user->getGroups();
-
-                //Get all the available groups.
-                $data['allGroups'] = Sentry::getGroupProvider()->findAll();
-
-
-                return View::make('admin/group.index', $data);
-            }
-        } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            Session::flash('error', 'User was not found.');
-            return Redirect::to('admin/group');
+        if ($auth['isAdmin']) {
+            $data['allGroups'] = Sentry::getGroupProvider()->findAll();
+            return View::make('admin/group.index', $data);
+        }else{
+            Alert::error('Sorry.')->flash();
+            return Redirect::to('admin/user/show/'.$auth['userId']);
         }
     }
 
+    // Create ----------------------------------------------------------------------------------------------------------
+
     public function create()
     {
-        return View::make('admin/group.create');
+        $data = get_default_data();
+        $auth = $data['auth'];
+
+        if ($auth['isAdmin']) {
+            return View::make('admin/group.create', $data);
+        }else{
+            Alert::error('Sorry.')->flash();
+            return Redirect::to('admin/user/show/'.$auth['userId']);
+        }
     }
 
     public function store()
     {
+
+        $data = get_default_data();
+        $auth = $data['auth'];
+
         $input = array(
             'newGroup' => Input::get('newGroup')
         );
@@ -52,68 +60,103 @@ class AdminGroupController extends BaseController {
         $v = Validator::make($input, $rules);
 
         if ($v->fails()) {
-            return Redirect::to('admin/group/create')->withErrors($v)->withInput();
+            return Redirect::to('admin/group/create')->withErrors($v)->withInput()->with($data);
         } else {
-            try {
-                // Create the group
-                $group = Sentry::getGroupProvider()->create(array(
 
-                    'name'        => $input['newGroup'],
-                    'permissions' => array(
-                        'admin' => Input::get('adminPermissions', 0),
-                        'users' => Input::get('userPermissions', 0),
-                    ),
-                ));
+            if ($auth['isAdmin']) {
 
-                if ($group) {
-                    Session::flash('success', 'New Group Created');
-                    return Redirect::to('admin/group');
-                } else {
-                    Session::flash('error', 'New Group was not created');
-                    return Redirect::to('admin/group');
+                try {
+                    $group = Sentry::getGroupProvider()->create(array(
+
+                        'name'        => $input['newGroup'],
+                        'permissions' => array(
+                            'admin' => Input::get('adminPermissions', 0),
+                            'users' => Input::get('userPermissions', 0),
+                            'clans' => Input::get('clansPermissions', 0),
+                            'clan' => Input::get('clanPermissions', 0),
+                            'clanmembers' => Input::get('clanMemberPermissions', 0),
+                        ),
+                    ));
+
+                    if ($group) {
+                        Session::flash('success', 'New Group Created');
+                        return Redirect::to('admin/group');
+                    } else {
+                        Session::flash('error', 'New Group was not created');
+                        return Redirect::to('admin/group');
+                    }
+                } catch (Cartalyst\Sentry\Groups\NameRequiredException $e) {
+                    Session::flash('error', 'Name field is required');
+                    return Redirect::to('admin/group/create')->withErrors($v)->withInput();
+                } catch (Cartalyst\Sentry\Groups\GroupExistsException $e) {
+                    Session::flash('error', 'Group already exists');
+                    return Redirect::to('admin/group/create')->withErrors($v)->withInput();
                 }
-            } catch (Cartalyst\Sentry\Groups\NameRequiredException $e) {
-                Session::flash('error', 'Name field is required');
-                return Redirect::to('admin/group/create')->withErrors($v)->withInput();
-            } catch (Cartalyst\Sentry\Groups\GroupExistsException $e) {
-                Session::flash('error', 'Group already exists');
-                return Redirect::to('admin/group/create')->withErrors($v)->withInput();
+            }else{
+                Alert::error('Sorry.')->flash();
+                return Redirect::to('admin/user/show/'.$auth['userId']);
             }
         }
     }
 
+    // Show ------------------------------------------------------------------------------------------------------------
+
     public function show($id)
     {
-        try {
-            // Find the group using the group id
-            $data['group'] = Sentry::getGroupProvider()->findById($id);
 
-            // Get the group permissions
-            $data['groupPermissions'] = $data['group']->getPermissions();
-        } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
-            Session::flash('error', 'Group does not exist.');
-            return Redirect::to('groups');
+        $data = get_default_data();
+        $auth = $data['auth'];
+
+        if ($auth['isAdmin']) {
+
+            try {
+
+                $data['group'] = Sentry::getGroupProvider()->findById($id);
+                $data['groupPermissions'] = $data['group']->getPermissions();
+                return View::make('admin/group.show', $data);
+
+            } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
+                Session::flash('error', 'Group does not exist.');
+                return Redirect::to('groups');
+            }
+
+        }else{
+            Alert::error('Sorry.')->flash();
+            return Redirect::to('admin/user/show/'.$auth['userId']);
         }
-
-        return View::make('admin/group.show', $data);
     }
+
+    // Edit ------------------------------------------------------------------------------------------------------------
 
     public function edit($id)
     {
-        try {
-            // Find the group using the group id
-            $data['group'] = Sentry::getGroupProvider()->findById($id);
 
-        } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
-            Session::flash('error', 'Group does not exist.');
-            return Redirect::to('groups');
+        $data = get_default_data();
+        $auth = $data['auth'];
+
+        if ($auth['isAdmin']) {
+
+            try {
+
+                $data['group'] = Sentry::getGroupProvider()->findById($id);
+                return View::make('admin/group.edit', $data);
+
+            } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
+                Session::flash('error', 'Group does not exist.');
+                return Redirect::to('groups');
+            }
+        }else{
+            Alert::error('Sorry.')->flash();
+            return Redirect::to('admin/user/show/'.$auth['userId']);
         }
-
-        return View::make('admin/group.edit', $data);
     }
 
     public function update($id)
     {
+
+        $data = get_default_data();
+        $auth = $data['auth'];
+
         $input = array(
             'name' => Input::get('name')
         );
@@ -125,58 +168,71 @@ class AdminGroupController extends BaseController {
         $v = Validator::make($input, $rules);
 
         if ($v->fails()) {
-            return Redirect::to('admin/group/'. $id . '/edit')->withErrors($v)->withInput();
+            return Redirect::to('admin/group/'. $id . '/edit')->withErrors($v)->withInput()->with($data);
         } else {
-            try {
-                // Find the group using the group id
-                $group = Sentry::getGroupProvider()->findById($id);
 
-                // Update the group details
-                $group->name = $input['name'];
-                $group->permissions = array(
-                    'admin' => Input::get('adminPermissions', 0),
-                    'users' => Input::get('userPermissions', 0),
-                );
+            if ($auth['isAdmin']) {
 
-                // Update the group
-                if ($group->save()) {
-                    // Group information was updated
-                    Session::flash('success', 'Group has been updated.');
-                    return Redirect::to('admin/group');
-                } else {
-                    // Group information was not updated
-                    Session::flash('error', 'There was a problem updating the group.');
+                try {
+                    $group = Sentry::getGroupProvider()->findById($id);
+
+                    $group->name = $input['name'];
+                    $group->permissions = array(
+                        'admin' => Input::get('adminPermissions', 0),
+                        'users' => Input::get('userPermissions', 0),
+                        'clans' => Input::get('clansPermissions', 0),
+                        'clan' => Input::get('clanPermissions', 0),
+                        'clanmembers' => Input::get('clanMemberPermissions', 0),
+                    );
+
+                    if ($group->save()) {
+                        Session::flash('success', 'Group updated.');
+                        return Redirect::to('admin/group');
+                    } else {
+                        Session::flash('error', 'There was a problem updating the group.');
+                        return Redirect::to('admin/group/'. $id . '/edit')->withErrors($v)->withInput();
+                    }
+                } catch (Cartalyst\Sentry\Groups\GroupExistsException $e) {
+                    Session::flash('error', 'Group already exists.');
+                    return Redirect::to('admin/group/'. $id . '/edit')->withErrors($v)->withInput();
+                } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
+                    Session::flash('error', 'Group was not found.');
                     return Redirect::to('admin/group/'. $id . '/edit')->withErrors($v)->withInput();
                 }
-            } catch (Cartalyst\Sentry\Groups\GroupExistsException $e) {
-                Session::flash('error', 'Group already exists.');
-                return Redirect::to('admin/group/'. $id . '/edit')->withErrors($v)->withInput();
-            } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
-                Session::flash('error', 'Group was not found.');
-                return Redirect::to('admin/group/'. $id . '/edit')->withErrors($v)->withInput();
+            }else{
+                Alert::error('Sorry.')->flash();
+                return Redirect::to('admin/user/show/'.$auth['userId']);
             }
         }
     }
 
+    // Delete ----------------------------------------------------------------------------------------------------------
+
     public function destroy($id)
     {
-        try {
-            // Find the group using the group id
-            $group = Sentry::getGroupProvider()->findById($id);
 
-            // Delete the group
-            if ($group->delete()) {
-                // Group was successfully deleted
-                Session::flash('success', 'Group has been deleted.');
-                return Redirect::to('admin/group/');
-            } else {
-                // There was a problem deleting the group
-                Session::flash('error', 'There was a problem deleting that group.');
+        $data = get_default_data();
+        $auth = $data['auth'];
+
+        if ($auth['isAdmin']) {
+
+            try {
+                $group = Sentry::getGroupProvider()->findById($id);
+
+                if ($group->delete()) {
+                    Session::flash('success', 'Group has been deleted.');
+                    return Redirect::to('admin/group/');
+                } else {
+                    Session::flash('error', 'There was a problem deleting that group.');
+                    return Redirect::to('admin/group/');
+                }
+            } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
+                Session::flash('error', 'Group was not found.');
                 return Redirect::to('admin/group/');
             }
-        } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
-            Session::flash('error', 'Group was not found.');
-            return Redirect::to('admin/group/');
+        }else{
+            Alert::error('Sorry.')->flash();
+            return Redirect::to('admin/user/show/'.$auth['userId']);
         }
     }
 

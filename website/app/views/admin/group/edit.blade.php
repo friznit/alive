@@ -46,6 +46,15 @@
                                 <label class="checkbox inline">
                                     <input type="checkbox" value="1" name="userPermissions" @if ( isset($group['permissions']['users']) ) checked @endif> User
                                 </label>
+                                <label class="checkbox inline">
+                                    <input type="checkbox" value="1" name="clansPermissions" @if ( isset($group['permissions']['clans']) ) checked @endif> Clans
+                                </label>
+                                <label class="checkbox inline">
+                                    <input type="checkbox" value="1" name="clanPermissions" @if ( isset($group['permissions']['clan']) ) checked @endif> Clan
+                                </label>
+                                <label class="checkbox inline">
+                                    <input type="checkbox" value="1" name="clanMemberPermissions" @if ( isset($group['permissions']['clanmembers']) ) checked @endif> Clan Members
+                                </label>
                             </div>
 
                         </div>

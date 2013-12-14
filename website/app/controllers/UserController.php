@@ -43,20 +43,16 @@ class UserController extends BaseController {
         else
         {
             try {
-                //Attempt to register the user.
                 $user = Sentry::register(array('email' => $input['email'], 'password' => $input['password']));
 
-                //Get the activation code & prep data for email
                 $data['activationCode'] = $user->GetActivationCode();
                 $data['email'] = $input['email'];
                 $data['userId'] = $user->getId();
 
-                //send email with link to activate.
                 Mail::send('emails.auth.welcome', $data, function($m) use($data) {
                     $m->to($data['email'])->subject('Welcome to the ALiVE War Room - Activate your account');
                 });
 
-                //success!
                 Alert::success('Your account has been created. Check your email for the confirmation link.')->flash();
                 return Redirect::to('user/register');
 
@@ -75,19 +71,15 @@ class UserController extends BaseController {
     public function getActivate($userId = null, $activationCode = null)
     {
         try {
-            // Find the user
             $user = Sentry::getUserProvider()->findById($userId);
 
-            // Attempt user activation
             if ($user->attemptActivation($activationCode)) {
-                //Add this person to the user group.
-                $userGroup = Sentry::getGroupProvider()->findById(1);
+                $userGroup = Sentry::findGroupByName('Users');
                 $user->addGroup($userGroup);
 
                 Alert::success('Your account has been activated. Please log in.')->flash();
-                return Redirect::to('user/login');
+                return Redirect::to('user/loginactivate');
             } else {
-                // User activation failed
                 Alert::error('There was a problem activating this account. Please contact the system administrator.')->flash();
                 return Redirect::to('user/register');
             }
@@ -121,21 +113,17 @@ class UserController extends BaseController {
         if ($v->fails()) {
             return Redirect::to('user/resend')->withErrors($v)->withInput();
         } else {
-            //Attempt to find the user.
             $user = Sentry::getUserProvider()->findByLogin(Input::get('email'));
 
             if (!$user->isActivated()) {
-                //Get the activation code & prep data for email
                 $data['activationCode'] = $user->GetActivationCode();
                 $data['email'] = $input['email'];
                 $data['userId'] = $user->getId();
 
-                //send email with link to activate.
                 Mail::send('emails.auth.welcome', $data, function($m) use ($data) {
                     $m->to($data['email'])->subject('ALiVE War Room - Activate your account');
                 });
 
-                //success!
                 Alert::success('Check your email for the confirmation link.')->flash();
                 return Redirect::to('/user/resend');
             } else {
@@ -147,24 +135,19 @@ class UserController extends BaseController {
 
     // Profile ----------------------------------------------------------------------------------------------------
 
-    public function getProfile()
+    public function getProfile($id)
     {
         try {
-            // Find the current user
-            if ( Sentry::check()) {
-                // Find the user using the user id
-                $data['user'] = Sentry::getUser();
+            $data['user'] = Sentry::getUser();
+            $data['countries'] = DB::table('countries')->lists('name','iso_3166_2');
+            $data['ageGroup'] = get_age_group_data();
 
-                //Do they have admin access?
-                if ( $currentUser->hasAccess('admin') || $currentUser->getId() == $id) {
-                    //Either they are an admin, or:
-                    //They are not an admin, but they are viewing their own profile.
-                    $data['user'] = Sentry::getUserProvider()->findById($id);
-                    return View::make('user.profile')->with($data);
-                } else {
-                    Alert::error('You don\'t have access to that user.')->flash();
-                    return Redirect::to('admin/user');
-                }
+            if ( $data['user']->hasAccess('admin') || $data['user']->getId() == $id) {
+                $data['user'] = Sentry::getUserProvider()->findById($id);
+                return View::make('user.profile')->with($data);
+            } else {
+                Alert::error('You don\'t have access to that user.')->flash();
+                return Redirect::to('admin/user');
             }
         } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
             Alert::error('There was a problem accessing this account.')->flash();
@@ -172,9 +155,77 @@ class UserController extends BaseController {
         }
     }
 
-    public function postProfile()
+    public function postProfile($id)
     {
+        $input = array(
+            'username' => Input::get('username'),
+            'a2ID' => Input::get('a2ID'),
+            'a3ID' => Input::get('a3ID'),
+            'country' => Input::get('country'),
+            'ageGroup' => Input::get('ageGroup'),
+            'preferredClass' => Input::get('preferredClass'),
+            'primaryProfile' => Input::get('primaryProfile'),
+            'secondaryProfile' => Input::get('secondaryProfile'),
+            'alias' => Input::get('alias'),
+            'armaFace' => Input::get('armaFace'),
+            'armaVoice' => Input::get('armaVoice'),
+            'armaPitch' => Input::get('armaPitch'),
+            'twitchStream' => Input::get('twitchStream'),
+        );
 
+        $rules = array (
+            'username' => 'required',
+        );
+
+        $v = Validator::make($input, $rules);
+
+        if ($v->fails()) {
+            return Redirect::to('user/profile/' . $id)->withErrors($v)->withInput();
+        } else {
+
+            try {
+                $currentUser = Sentry::getUser();
+
+                if ($currentUser->getId() == $id) {
+
+                    $user = Sentry::getUserProvider()->findById($id);
+                    if(is_null($user->profile)){
+                        $profile = new Profile;
+
+                        $countries = DB::table('countries')->lists('name','iso_3166_2');
+                        $countryName = $countries[$input['country']];
+
+                        $profile->user_id = $id;
+                        $profile->username = $input['username'];
+                        $profile->alias = $input['alias'];
+                        $profile->a2_id = $input['a2ID'];
+                        $profile->a3_id = $input['a3ID'];
+                        $profile->country = $input['country'];
+                        $profile->country_name = $countryName;
+                        $profile->age_group = $input['ageGroup'];
+                        $profile->primary_profile = $input['primaryProfile'];
+                        $profile->secondary_profile = $input['secondaryProfile'];
+                        $profile->arma_face = $input['armaFace'];
+                        $profile->arma_voice = $input['armaVoice'];
+                        $profile->arma_pitch = $input['armaPitch'];
+                        $profile->twitch_stream = $input['twitchStream'];
+
+                        if ($profile->save()) {
+                            Alert::success('Profile updated.')->flash();
+                            return Redirect::to('war-room');
+                        }
+                    }else{
+                        return Redirect::to('war-room');
+                    }
+                } else {
+                    Alert::error('You don\'t have access to that user.')->flash();
+                    return Redirect::to('user/profile/' . $id);
+                }
+            } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+                Alert::error('User was not found.')->flash();
+                return Redirect::to('user/profile/' . $id);
+            }
+        }
     }
 
     // Authentication --------------------------------------------------------------------------------------------------
@@ -182,6 +233,11 @@ class UserController extends BaseController {
     public function getLogin()
     {
         return View::make('user.login');
+    }
+
+    public function getLoginactivate()
+    {
+        return View::make('user.login_activate');
     }
 
     public function postLogin()
@@ -203,25 +259,18 @@ class UserController extends BaseController {
             return Redirect::to('user/login')->withErrors($v)->withInput();
         } else {
             try {
-                //Check for suspension or banned status
                 $user = Sentry::getUserProvider()->findByLogin($input['email']);
                 $throttle = Sentry::getThrottleProvider()->findByUserId($user->id);
                 $throttle->check();
 
-                // Set login credentials
                 $credentials = array(
                     'email'    => $input['email'],
                     'password' => $input['password']
                 );
 
-                // Try to authenticate the user
                 $user = Sentry::authenticate($credentials, $input['rememberMe']);
 
             } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
-                // Sometimes a user is found, however hashed credentials do
-                // not match. Therefore a user technically doesn't exist
-                // by those credentials. Check the error message returned
-                // for more information.
                 Alert::error('Invalid username or password.')->flash();
                 return Redirect::to('user/login')->withErrors($v)->withInput();
 
@@ -240,7 +289,16 @@ class UserController extends BaseController {
 
             }
 
-            //Login was succesful.
+            $activation = Input::get('activation');
+
+            if($activation === 'true'){
+                return Redirect::to('user/profile/' . $user->id);
+            }
+
+            if(is_null($user->profile)){
+                return Redirect::to('user/profile/' . $user->id);
+            }
+
             return Redirect::to('war-room');
         }
     }
@@ -279,7 +337,6 @@ class UserController extends BaseController {
                 $data['userId'] = $user->getId();
                 $data['email'] = $input['email'];
 
-                // Email the reset code to the user
                 Mail::send('emails.auth.reset', $data, function($m) use($data) {
                     $m->to($data['email'])->subject('ALiVE War Room - Password Reset Confirmation');
                 });
@@ -297,17 +354,10 @@ class UserController extends BaseController {
     public function getReset($userId = null, $resetCode = null) {
         try
         {
-            // Find the user
             $user = Sentry::getUserProvider()->findById($userId);
             $newPassword = $this->_generatePassword(8,8);
 
-            // Attempt to reset the user password
             if ($user->attemptResetPassword($resetCode, $newPassword)) {
-                // Password reset passed
-                //
-                // Email the reset code to the user
-
-                //Prepare New Password body
                 $data['newPassword'] = $newPassword;
                 $data['email'] = $user->getLogin();
 
@@ -319,7 +369,6 @@ class UserController extends BaseController {
                 return Redirect::to('/user/login');
 
             } else {
-                // Password reset failed
                 Alert::error('There was a problem.  Please contact the system administrator.')->flash();
                 return Redirect::to('user/resetpassword');
             }
