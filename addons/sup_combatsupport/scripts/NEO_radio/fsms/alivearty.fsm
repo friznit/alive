@@ -129,8 +129,8 @@ link60[] = {47,49};
 link61[] = {48,15};
 link62[] = {49,50};
 link63[] = {50,30};
-globals[] = {0.000000,0,0,0,0,640,480,1,57,6316128,1,-753.661438,780.801758,1453.256836,-155.645660,907,951,1};
-window[] = {2,-1,-1,-1,-1,925,2166,3606,165,3,925};
+globals[] = {0.000000,0,0,0,0,640,480,1,57,6316128,1,-430.456909,457.596924,915.110657,22.155872,906,911,1};
+window[] = {2,-1,-1,-1,-1,786,260,1700,26,3,924};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -379,7 +379,7 @@ class FSM
       init = /*%FSM<STATEINIT""">*/"(_units select 0) spawn" \n
        "{" \n
        "	sleep 5;" \n
-       "	[_this, ""Stand by for fire mission. Out."", ""side""] call NEO_fnc_messageBroadcast;" \n
+       "	[[_this, ""Stand by for fire mission. Out."", ""side""],""NEO_fnc_messageBroadcast;"",true,true] spawn BIS_fnc_MP;" \n
        "};" \n
        "" \n
        "_delay = time + 10;" \n
