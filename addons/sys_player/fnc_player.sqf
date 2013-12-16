@@ -175,8 +175,9 @@ switch(_operation) do {
                                 // Get player gear
                                 _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
                                 _unit = _this select 0;
-                                [0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
-                                //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                                [[MOD(sys_player), "updateGear", [_unit, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+                                //[0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
+                                //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
                             }];
                             player addEventHandler ["Take", {
                                 private ["_gearHash","_unit"];
@@ -184,8 +185,9 @@ switch(_operation) do {
                                 _unit = _this select 0;
                                 // Get player gear
                                 _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
-                                [0, {[ALiVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
-                               //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                                [[MOD(sys_player), "updateGear", [_unit, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+                                //[0, {[ALiVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
+                               //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
                             }];
                         };
                     };
@@ -260,8 +262,9 @@ switch(_operation) do {
 
                             // Save gear on the client and server
                             _gearHash = [MOD(sys_player), "setGear", [player]] call MAINCLASS;
-                            [0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [player, _gearHash] ] call CBA_fnc_globalExecute;
-                            //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                            [[MOD(sys_player), "updateGear", [player, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+                            //[0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [player, _gearHash] ] call CBA_fnc_globalExecute;
+                            //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
 
                             _playerHash = [MOD(sys_player), [player]] call ALIVE_fnc_setPlayer;
                             // Store playerhash on client
@@ -476,11 +479,13 @@ switch(_operation) do {
 
             //Update gear
             _gearHash = [MOD(sys_player), "setGear", [_unit]] call MAINCLASS;
-            [0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
+            [[MOD(sys_player), "updateGear", [_unit, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+            //[0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
             //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", [_this select 0, _this select 1]] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
 
             // Process a request from a player to save on server
-            [0, {[ALIVE_sys_player, "setPlayer", _this] call ALIVE_fnc_player}, _args] call CBA_fnc_globalExecute;
+            [[MOD(sys_player), "setPlayer", _args], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+            //[0, {[ALIVE_sys_player, "setPlayer", _this] call ALIVE_fnc_player}, _args] call CBA_fnc_globalExecute;
             //["server",QMOD(sys_player),[[MOD(sys_player), "setPlayer", _args],{call ALiVE_fnc_player}]] call ALIVE_fnc_BUS;
 
             // Save data on the client too?
