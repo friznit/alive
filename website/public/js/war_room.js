@@ -26,6 +26,7 @@ function parseArmaDate(input) {
     if (diff <= 129600) {return "1 day ago";}
     if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
     if (diff <= 777600) {return "1 week ago";}
+		if (diff > 777600) {return "Over a week ago";}
     return "on " + system_date;
 }
 

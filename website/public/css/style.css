@@ -45,6 +45,48 @@ h4 {
 }
 
 /* -----------------------------*/
+.globalmap-panel {
+	background: url("../img/map_background.png");
+	background-size: auto;
+	margin-bottom: 0;
+	color: #999999;
+	background-repeat: repeat-x;
+	min-height: 900px;
+	max-height: 910px;
+}
+.globalmap-panel h2{
+    font-weight:900;
+	font-family: "MorganSansCond Caps";
+}
+.globalmap-panel p {
+    color:#000;
+    font-size:10px;
+    font-weight:400;
+}
+.globalmap-panel table {
+    color:#000;
+    font-size:14px;
+    font-weight:400;
+    color:#ffffff;
+}
+.globalmap-panel table tbody td {
+    padding-top: 20px;
+}
+.globalmap-panel table tbody tr.success td {
+    background: #ebf4f6;
+}
+.globalmap-panel table tbody td a {
+    margin-top: -10px;
+}
+.globalmap-panel p {
+    color:#ffffff;
+    font-size:14px;
+}
+.globalmap-panel hr {
+    border:1px solid #ffffff;
+}
+
+/* -----------------------------*/
 .white-panel {
     border-top: 1px solid #ffffff;
     border-bottom: 1px solid #ffffff;
