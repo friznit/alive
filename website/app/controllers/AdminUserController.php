@@ -253,15 +253,17 @@ class AdminUserController extends BaseController {
 
                     if ($user->save()) {
 
-                        $countries = DB::table('countries')->lists('name','iso_3166_2');
-                        $countryName = $countries[$input['country']];
+                        if($input['country'] != ''){
+                            $countries = DB::table('countries')->lists('name','iso_3166_2');
+                            $countryName = $countries[$input['country']];
+                            $profile->country = $input['country'];
+                            $profile->country_name = $countryName;
+                        }
 
                         $profile->username = $input['username'];
                         $profile->alias = $input['alias'];
                         $profile->a2_id = $input['a2ID'];
                         $profile->a3_id = $input['a3ID'];
-                        $profile->country = $input['country'];
-                        $profile->country_name = $countryName;
                         $profile->age_group = $input['ageGroup'];
                         $profile->primary_profile = $input['primaryProfile'];
                         $profile->secondary_profile = $input['secondaryProfile'];
@@ -616,6 +618,13 @@ class AdminUserController extends BaseController {
                 $user = Sentry::getUserProvider()->findById($id);
 
                 $profile = $user->profile;
+
+                $applications = $user->applications->all();
+
+                foreach($applications as $application){
+                    $application->delete();
+                }
+
                 $profile->delete();
 
                 if ($user->delete()) {
@@ -630,6 +639,69 @@ class AdminUserController extends BaseController {
                 } else {
                     Alert::error('There was a problem deleting that user.')->flash();
                     return Redirect::to('admin/user');
+                }
+
+            } else {
+                Alert::error('Sorry.')->flash();
+                return Redirect::to('admin/user/show/'.$auth['userId']);
+            }
+
+        } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+            Alert::error('User was not found.')->flash();
+            return Redirect::to('admin/user/edit/' . $id);
+        } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e) {
+            Alert::error('Trying to access unidentified Groups.')->flash();
+            return Redirect::to('admin/user/edit/' . $id);
+        }
+    }
+
+    // Cloud connect ---------------------------------------------------------------------------------------------------
+
+    public function getConnect($id)
+    {
+
+        $data = get_default_data();
+        $auth = $data['auth'];
+
+        try {
+
+            if ($auth['isAdmin'] || $auth['userId'] == $id) {
+
+                $user = Sentry::getUserProvider()->findById($id);
+                $profile = $user->profile;
+
+                $clan_id = $profile->clan_id;
+
+                $clan = Clan::find($clan_id);
+
+                if(!is_null($profile->remote_id)){
+                    Alert::error('Already connected to cloud data store.')->flash();
+                    return Redirect::to('admin/user/show/'.$auth['userId']);
+                }
+
+                if(is_null($profile->a3_id)){
+                    Alert::error('You need to add your Arma 3 player id to your profile to connect to the cloud.')->flash();
+                    return Redirect::to('admin/user/show/'.$auth['userId']);
+                }
+
+                $couchAPI = new Alive\CouchAPI();
+                $result = $couchAPI->createClanMember($profile->a3_id, $profile->username, $clan->id);
+
+                if(isset($result['response'])){
+                    if(isset($result['response']->rev)){
+                        $remoteId = $result['response']->rev;
+                        $profile->remote_id = $remoteId;
+                        $profile->save();
+
+                        Alert::success('Member connected to the cloud data store.')->flash();
+                        return Redirect::to('admin/user/show/'.$auth['userId']);
+                    }else{
+                        Alert::error('There was an error connecting to the cloud data store, please try again later.')->flash();
+                        return Redirect::to('admin/user/show/'.$auth['userId']);
+                    }
+                }else{
+                    Alert::error('There was an error connecting to the cloud data store, please try again later.')->flash();
+                    return Redirect::to('admin/user/show/'.$auth['userId']);
                 }
 
             } else {

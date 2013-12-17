@@ -28,4 +28,9 @@ class Profile extends Eloquent {
         return $this->belongsTo('Clan');
     }
 
+    public function applications()
+    {
+        return $this->hasMany('Application');
+    }
+
 }

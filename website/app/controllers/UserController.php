@@ -192,16 +192,18 @@ class UserController extends BaseController {
                     if(is_null($user->profile)){
                         $profile = new Profile;
 
-                        $countries = DB::table('countries')->lists('name','iso_3166_2');
-                        $countryName = $countries[$input['country']];
+                        if($input['country'] != ''){
+                            $countries = DB::table('countries')->lists('name','iso_3166_2');
+                            $countryName = $countries[$input['country']];
+                            $profile->country = $input['country'];
+                            $profile->country_name = $countryName;
+                        }
 
                         $profile->user_id = $id;
                         $profile->username = $input['username'];
                         $profile->alias = $input['alias'];
                         $profile->a2_id = $input['a2ID'];
                         $profile->a3_id = $input['a3ID'];
-                        $profile->country = $input['country'];
-                        $profile->country_name = $countryName;
                         $profile->age_group = $input['ageGroup'];
                         $profile->primary_profile = $input['primaryProfile'];
                         $profile->secondary_profile = $input['secondaryProfile'];

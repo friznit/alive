@@ -21,18 +21,52 @@
 
                 <h2>Join Application</h2>
 
-                <p><em>Application created: {{ $application->created_at }}</em></p>
-                <p><em>Application Updated: {{ $application->updated_at }}</em></p>
-
-                <p><b>Username</b> {{{ $application->user->profile->username }}}</p>
-                <p><b>Age Group</b> {{{ $application->age_group }}}</p>
-                <p><b>Country</b> {{{ $application->country }}}</p>
-                <b>Message</b>
-                <p>{{{ $application->note }}}</p>
+                <table class="table">
+                    <tr>
+                        <td width="30%">Username</td>
+                        <td width="70%">{{{ $application->user->profile->username }}}</td>
+                    </tr>
+                    <tr>
+                        <td>Age Group</td>
+                        <td>{{{ $application->age_group }}}</td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td><?php
+                            if(!is_null($application->country)){
+                                ?>
+                                <img src="{{ URL::to('/') }}/img/flags_iso/32/{{ strtolower($application->country) }}.png" alt="{{ $application->country_name }}" title="{{ $application->country_name }}"/>
+                            <?php
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Created</td>
+                        <td>{{ $application->created_at }}</td>
+                    </tr>
+                    <tr>
+                        <td>Updated</td>
+                        <td>{{ $application->updated_at }}</td>
+                    </tr>
+                </table>
 
             </div>
 
             <div class="col-md-6">
+
+                <h2>Application Submission</h2>
+
+                <table class="table">
+                    <tr>
+                        <td>{{{ $application->note }}}</td>
+                    </tr>
+                    <tr>
+                        <td><button class="btn btn-red action_confirm" href="{{ URL::to('admin/application/deny') }}/{{ $application->id}}" data-token="{{ Session::getToken() }}" data-method="post">Deny Application</button>
+                        <button class="btn btn-yellow action_confirm" href="{{ URL::to('admin/application/accept') }}/{{ $application->id}}" data-token="{{ Session::getToken() }}" data-method="post">Accept Application</button></td>
+                    </tr>
+                </table>
+
                 <div class="panel panel-dark">
                     <div class="panel-heading">
                         <h3 class="panel-title">Respond</h3>

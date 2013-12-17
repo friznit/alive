@@ -27,11 +27,21 @@
                         <div class="panel-body">
 
                             <div class="form-group {{ ($errors->has('newGroup')) ? 'has-error' : '' }}" for="newGroup">
-                                <label class="control-label" for="newGroup">New Group</label>
+                                <label class="control-label" for="newGroup">Group Name</label>
                                 <input name="newGroup" value="{{ Request::old("newGroup") }}" type="text" class="form-control" placeholder="New Group">
                                 <?php
                                 if($errors->has('newGroup')){
                                     echo '<span class="label label-danger">' . $errors->first('newGroup') . '</span>';
+                                }
+                                ?>
+                            </div>
+
+                            <div class="form-group {{ ($errors->has('tag')) ? 'has-error' : '' }}" for="tag">
+                                <label class="control-label" for="tag">Tag</label>
+                                <input name="tag" value="{{ Request::old('tag') }}" type="text" class="form-control" placeholder="Tag">
+                                <?php
+                                if($errors->has('title')){
+                                    echo '<span class="label label-danger">' . $errors->first('title') . '</span>';
                                 }
                                 ?>
                             </div>
