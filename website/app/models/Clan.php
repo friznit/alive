@@ -28,4 +28,8 @@ class Clan extends Eloquent {
         return $this->hasMany('Application');
     }
 
+    public function servers() {
+        return $this->hasMany('Server');
+    }
+
 }

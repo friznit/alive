@@ -666,7 +666,7 @@ form .badge {
     padding:9px;
     background: url("../img/stripe.png");
     border:#000;
-    color:#ccc;
+    color:#9f9f9f;
     margin-bottom:10px;
     font-family: 'Roboto Condensed', sans-serif;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8e8e8',endColorstr='#fff5f5f5',GradientType=0);
@@ -675,8 +675,13 @@ form .badge {
 }
 
 .panel-dark .strip p {
+    color:#9f9f9f;
     padding-top:10px;
     padding-left:5px;
+}
+
+.panel-dark .strip .table a.btn {
+    margin-top:-3px;
 }
 
 .badge {
@@ -685,5 +690,21 @@ form .badge {
     cursor:pointer;
 }
 
+.table td img {
+    margin-top:-8px;
+}
 
+.table-condensed {
+    padding:0px;
+    margin:0px;
+}
 
+.table-condensed tbody tr {
+    padding:0px;
+    margin:0px;
+}
+
+.table-condensed tbody tr td {
+    padding:0px;
+    margin:0px;
+}

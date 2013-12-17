@@ -25,7 +25,10 @@
 		],
 		"files": [
 		    "app/helpers.php"
-        ]
+        ],
+        "psr-0": {
+            "Alive": "app/lib"
+        }
 	},
 	"scripts": {
 		"post-install-cmd": [
