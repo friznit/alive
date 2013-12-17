@@ -2,7 +2,7 @@
 
     $(document).ready(function() {
 
-        $.getJSON('http://msostore.iriscouch.com/events/_design/events/_view/all_events?descending=true&limit=200&callback=?', function(data) {
+        $.getJSON('http://msostore.iriscouch.com/events/_design/events/_view/all_events?descending=true&limit=12&callback=?', function(data) {
 
             $.each(data.rows, function (index, row) {
 

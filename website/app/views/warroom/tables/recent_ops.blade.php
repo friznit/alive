@@ -1,11 +1,14 @@
 <script>
 
+	
     $(document).ready(function(){
         $('#recent_ops').dataTable({
             "bJQueryUI": true,
-            "sAjaxSource": 'http://msostore.iriscouch.com/events/_design/events/_view/recent_operations?descending=true&limit=13&callback=?',
+            "sAjaxSource": 'http://msostore.iriscouch.com/events/_design/events/_view/recent_operations?descending=true&limit=50&callback=?',
             "sAjaxDataProp": "rows",
-            "bPaginate": true,
+            "bPaginate": false,
+			"sScrollY": "610",
+			"bScrollCollapse": true,
             "fnDrawCallback": function ( oSettings ) {
                 /* Need to redo the counters if filtered or sorted */
                 /*
@@ -37,12 +40,6 @@
                     "mRender": function ( data, type, row) {
                         return data[2];
                     }
-                },{
-                    "aTargets": [ 3 ],
-                    "mDataProp": "value",
-                    "mRender": function ( data, type, row) {
-                        return data[3];
-                    }
                 }
             ]
         } );
@@ -50,13 +47,12 @@
 
 </script>
 
-<table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped table-bordered" id="recent_ops">
+<table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-condensed" id="recent_ops">
     <thead>
     <tr>
         <th>Date</th>
         <th>Map</th>
         <th>Operation</th>
-        <th>Command</th>
     </tr>
     </thead>
     <tbody>
