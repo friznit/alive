@@ -108,7 +108,7 @@
                 </div>
             </div>
             
-            <div class="col-md-5">
+            <div class="col-md-6">
 
                 <div class="panel panel-dark">
                     <div class="panel-heading">
@@ -137,7 +137,7 @@
                     </form>
                 </div>
              </div>
-             <div class="col-md-5">
+             <div class="col-md-6">
 
                 <div class="panel panel-dark">
                     <div class="panel-heading">
@@ -166,7 +166,7 @@
                     </form>
                 </div>
 			</div>
-</div>
+		</div>
     </div>
 </div>
 

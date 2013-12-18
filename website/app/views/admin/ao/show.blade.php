@@ -15,7 +15,7 @@
         </div>
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-md-6">
 
                 <h2>
                     {{{ $ao->name }}}
@@ -53,7 +53,7 @@
                 </table>
 
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
             	<img src="{{ $ao->pic->url('mediumPic') }}" ><br/><br/>
             </div>
         </div>

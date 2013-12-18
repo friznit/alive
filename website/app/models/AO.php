@@ -18,7 +18,7 @@ class AO extends Eloquent {
 		$this->hasAttachedFile('pic', [
             'styles' => [
             'largePic' => '2048x2048',
-			'mediumPic' => '1024x1024',
+			'mediumPic' => '768x768',
             'smallPic' => '512x512',
 			'thumbPic' => '256x256'
             ]
