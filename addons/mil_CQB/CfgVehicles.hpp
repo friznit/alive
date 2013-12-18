@@ -56,11 +56,17 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_SPAWN_COMMENT";
                                 class Values
                                 {
+                                        class CQB_spawn_2
+                                        {
+                                                name = "2%";
+                                                value = 2;
+                                                default = 2;
+												CQB_spawn = 2;
+                                        };                                
                                         class CQB_spawn_5
                                         {
                                                 name = "5%";
                                                 value = 5;
-                                                default = 5;
 												CQB_spawn = 5;
                                         };
                                         class CQB_spawn_10
