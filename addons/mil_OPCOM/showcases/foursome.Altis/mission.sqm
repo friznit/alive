@@ -1532,7 +1532,7 @@ class Mission
 						};
 						class Item1
 						{
-							value="5";
+							value="2";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_spawn_setting";
 						};
