@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('ProfileSeeder');
 
         $this->call('CountriesSeeder');
+		$this->call('AOSeeder');
 
     }
 

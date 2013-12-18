@@ -10,6 +10,7 @@ Route::controller('admin/user', 'AdminUserController');
 Route::controller('admin/clan', 'AdminClanController');
 Route::controller('admin/application', 'AdminApplicationController');
 Route::controller('admin/server', 'AdminServerController');
+Route::controller('admin/ao', 'AdminAOController');
 Route::resource('admin/group', 'AdminGroupController');
 
 View::composer('warroom/home/index', function($view)
