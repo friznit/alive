@@ -161,6 +161,19 @@ class AdminClanController extends BaseController {
                                     }
                                 }
 
+                                if(is_null($profile->remote_id)){
+                                    $couchAPI = new Alive\CouchAPI();
+                                    $result = $couchAPI->createClanMember($profile->a3_id, $profile->username, $clan->id);
+
+                                    if(isset($result['response'])){
+                                        if(isset($result['response']->rev)){
+                                            $remoteId = $result['response']->rev;
+                                            $profile->remote_id = $remoteId;
+                                            $profile->save();
+                                        }
+                                    }
+                                }
+
                                 Alert::success('Group created. You are now the leader of this group')->flash();
                                 return Redirect::to('admin/clan/show/'. $clan->id);
                             }

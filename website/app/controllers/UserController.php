@@ -159,10 +159,12 @@ class UserController extends BaseController {
     {
         $input = array(
             'username' => Input::get('username'),
-            'a2ID' => Input::get('a2ID'),
             'a3ID' => Input::get('a3ID'),
             'country' => Input::get('country'),
             'ageGroup' => Input::get('ageGroup'),
+            'twitchStream' => Input::get('twitchStream'),
+            /*
+            'a2ID' => Input::get('a2ID'),
             'preferredClass' => Input::get('preferredClass'),
             'primaryProfile' => Input::get('primaryProfile'),
             'secondaryProfile' => Input::get('secondaryProfile'),
@@ -170,7 +172,7 @@ class UserController extends BaseController {
             'armaFace' => Input::get('armaFace'),
             'armaVoice' => Input::get('armaVoice'),
             'armaPitch' => Input::get('armaPitch'),
-            'twitchStream' => Input::get('twitchStream'),
+            */
         );
 
         $rules = array (
@@ -201,23 +203,27 @@ class UserController extends BaseController {
 
                         $profile->user_id = $id;
                         $profile->username = $input['username'];
-                        $profile->alias = $input['alias'];
-                        $profile->a2_id = $input['a2ID'];
                         $profile->a3_id = $input['a3ID'];
                         $profile->age_group = $input['ageGroup'];
+                        $profile->twitch_stream = $input['twitchStream'];
+
+                        /*
+                        $profile->alias = $input['alias'];
+                        $profile->a2_id = $input['a2ID'];
                         $profile->primary_profile = $input['primaryProfile'];
                         $profile->secondary_profile = $input['secondaryProfile'];
                         $profile->arma_face = $input['armaFace'];
                         $profile->arma_voice = $input['armaVoice'];
                         $profile->arma_pitch = $input['armaPitch'];
-                        $profile->twitch_stream = $input['twitchStream'];
+                        */
 
                         if ($profile->save()) {
+
                             Alert::success('Profile updated.')->flash();
-                            return Redirect::to('war-room');
+                            return Redirect::to('war-room')->with('welcome', true);
                         }
                     }else{
-                        return Redirect::to('war-room');
+                        return Redirect::to('war-room')->with('welcome', true);
                     }
                 } else {
                     Alert::error('You don\'t have access to that user.')->flash();

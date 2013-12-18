@@ -26,7 +26,7 @@
 
                         <div class="panel-body">
 
-                             <div class="form-group {{ $errors->has('username') ? 'has-error' : '' }}" for="username">
+                            <div class="form-group {{ $errors->has('username') ? 'has-error' : '' }}" for="username">
                                 <label class="control-label" for="username">User name</label>
                                 <input name="username" value="{{ (Request::old('username')) ? Request::old("username") : $profile->username }}" type="text" class="form-control" placeholder="username">
                                 <?php

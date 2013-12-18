@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
+    $("#recent_ops_container").mCustomScrollbar({
+        autoHideScrollbar:true,
+        theme:"light-thin"
+    });
+
+    $("#live_feed").mCustomScrollbar({
+        autoHideScrollbar:true,
+        theme:"light-thin"
+    });
+
 });
 
 function getServerDetails(ipaddr) {
@@ -10,6 +20,31 @@ function getServerDetails(ipaddr) {
 
     return serverName;
 }
+
+function counter(element, end) {
+    var	$text	= element,
+        endVal	= 0,
+        currVal	= 0,
+        obj	= {};
+
+    obj.getTextVal = function() {
+        return parseInt(currVal, 10);
+    };
+
+    obj.setTextVal = function(val) {
+        currVal = parseInt(val, 10);
+        $text.text(currVal);
+    };
+
+    obj.setTextVal(0);
+
+
+    currVal = 0; // Reset this every time
+    endVal = end;
+
+    TweenLite.to(obj, 7, {setTextVal: endVal, ease: Power2.easeInOut});
+};
+
 
 function parseArmaDate(input) {
     var system_date = new Date(input);

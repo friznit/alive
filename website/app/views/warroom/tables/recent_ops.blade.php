@@ -1,25 +1,15 @@
 <script>
 
-	
     $(document).ready(function(){
         $('#recent_ops').dataTable({
             "bJQueryUI": true,
             "sAjaxSource": 'http://msostore.iriscouch.com/events/_design/events/_view/recent_operations?descending=true&limit=50&callback=?',
             "sAjaxDataProp": "rows",
             "bPaginate": false,
-			"sScrollY": "610",
-			"bScrollCollapse": true,
+            "bFilter": false,
+            "bInfo": false,
             "fnDrawCallback": function ( oSettings ) {
-                /* Need to redo the counters if filtered or sorted */
-                /*
-                if ( oSettings.bSorted || oSettings.bFiltered )
-                {
-                    for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
-                    {
-                        $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
-                    }
-                }
-                */
+                $("#recent_ops_container").mCustomScrollbar("update");
             },
             "aoColumnDefs": [
                 {
@@ -47,14 +37,18 @@
 
 </script>
 
-<table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-condensed" id="recent_ops">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Map</th>
-        <th>Operation</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div id="recent_ops_container">
+
+    <table cellpadding="0" cellspacing="0" border="0" class="dataTable table" id="recent_ops">
+        <thead>
+        <tr>
+            <th width="30%">Date</th>
+            <th width="10%">Map</th>
+            <th width="60%">Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</div>

@@ -218,10 +218,13 @@ class AdminUserController extends BaseController {
 
         $input = array(
             'username' => Input::get('username'),
-            'a2ID' => Input::get('a2ID'),
             'a3ID' => Input::get('a3ID'),
             'country' => Input::get('country'),
             'ageGroup' => Input::get('ageGroup'),
+            'twitchStream' => Input::get('twitchStream'),
+            'remark' => Input::get('remark'),
+            /*
+            'a2ID' => Input::get('a2ID'),
             'preferredClass' => Input::get('preferredClass'),
             'primaryProfile' => Input::get('primaryProfile'),
             'secondaryProfile' => Input::get('secondaryProfile'),
@@ -229,8 +232,7 @@ class AdminUserController extends BaseController {
             'armaFace' => Input::get('armaFace'),
             'armaVoice' => Input::get('armaVoice'),
             'armaPitch' => Input::get('armaPitch'),
-            'twitchStream' => Input::get('twitchStream'),
-            'remark' => Input::get('remark'),
+            */
         );
 
         $rules = array (
@@ -251,6 +253,9 @@ class AdminUserController extends BaseController {
                     $user = Sentry::getUserProvider()->findById($id);
                     $profile = $user->profile;
 
+                    $clan_id = $profile->clan_id;
+                    $clan = Clan::find($clan_id);
+
                     if ($user->save()) {
 
                         if($input['country'] != ''){
@@ -260,20 +265,51 @@ class AdminUserController extends BaseController {
                             $profile->country_name = $countryName;
                         }
 
+                        $cloudCreate = false;
+                        if(is_null($profile->a3_id)){
+                            $cloudCreate = true;
+                        }
+
                         $profile->username = $input['username'];
-                        $profile->alias = $input['alias'];
-                        $profile->a2_id = $input['a2ID'];
                         $profile->a3_id = $input['a3ID'];
                         $profile->age_group = $input['ageGroup'];
+                        $profile->twitch_stream = $input['twitchStream'];
+                        $profile->remark = $input['remark'];
+
+                        /*
+                        $profile->alias = $input['alias'];
+                        $profile->a2_id = $input['a2ID'];
                         $profile->primary_profile = $input['primaryProfile'];
                         $profile->secondary_profile = $input['secondaryProfile'];
                         $profile->arma_face = $input['armaFace'];
                         $profile->arma_voice = $input['armaVoice'];
                         $profile->arma_pitch = $input['armaPitch'];
-                        $profile->twitch_stream = $input['twitchStream'];
-                        $profile->remark = $input['remark'];
+                        */
 
                         if ($profile->save()) {
+
+                            if($cloudCreate){
+                                $couchAPI = new Alive\CouchAPI();
+                                $result = $couchAPI->createClanMember($profile->a3_id, $profile->username, $clan->id);
+
+                                if(isset($result['response'])){
+                                    if(isset($result['response']->rev)){
+                                        $remoteId = $result['response']->rev;
+                                        $profile->remote_id = $remoteId;
+                                        $profile->save();
+
+                                        Alert::success('Member connected to the cloud data store.')->flash();
+                                        return Redirect::to('admin/user/show/'.$auth['userId']);
+                                    }else{
+                                        Alert::error('There was an error connecting to the cloud data store, please try again later.')->flash();
+                                        return Redirect::to('admin/user/show/'.$auth['userId']);
+                                    }
+                                }else{
+                                    Alert::error('There was an error connecting to the cloud data store, please try again later.')->flash();
+                                    return Redirect::to('admin/user/show/'.$auth['userId']);
+                                }
+                            }
+
                             Alert::success('Profile updated.')->flash();
                             return Redirect::to('admin/user/show/'. $id);
                         }
