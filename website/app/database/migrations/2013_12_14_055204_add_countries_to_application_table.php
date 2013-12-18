@@ -27,7 +27,7 @@ class AddCountriesToApplicationTable extends Migration {
     {
         Schema::table('applications', function(Blueprint $table)
         {
-            $table->string("country_name")->nullable();
+            $table->dropColumn('country_name');
         });
     }
 

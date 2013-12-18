@@ -26,7 +26,7 @@
 
                         <div class="panel-body">
 
-                             <div class="form-group {{ $errors->has('username') ? 'has-error' : '' }}" for="username">
+                            <div class="form-group {{ $errors->has('username') ? 'has-error' : '' }}" for="username">
                                 <label class="control-label" for="username">User name</label>
                                 <input name="username" value="{{ (Request::old('username')) ? Request::old("username") : $profile->username }}" type="text" class="form-control" placeholder="username">
                                 <?php
@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="form-group {{ $errors->has('a3ID') ? 'has-error' : '' }}" for="a3ID">
-                                <label class="control-label" for="a3ID">Arma 3 Player ID </label><span class="badge" data-toggle="modal" data-target="#myModal">?</span>
+                                <label class="control-label" for="a3ID">Arma 3 Player ID </label><span class="badge" data-toggle="modal" data-target="#playerIDModal">?</span>
                                 <input name="a3ID" value="{{ (Request::old('a3ID')) ? Request::old("a3ID") : $profile->a3_id }}" type="text" class="form-control" placeholder="Arma 3 ID">
                                 <?php
                                 if($errors->has('a3ID')){
@@ -46,11 +46,11 @@
                                 ?>
                             </div>
 
-                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="playerIDModal" tabindex="-1" role="dialog" aria-labelledby="playerIDModal" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel">How to find your Arma 3 Player ID</h4>
+                                            <h4 class="modal-title" id="myModalLabel"></h4>
                                         </div>
                                         <div class="strip">
                                             <p>We use your player ID to connect your war room account to your in-game activity.</p>
@@ -335,18 +335,6 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Delete Account</h3>
                     </div>
-
-                    <!--
-                    <form action="{{ URL::to('admin/user/delete') }}/{{ $user->id }}" method="post">
-                        {{ Form::token() }}
-
-                        <div class="panel-footer clearfix">
-                            <div class="btn-toolbar pull-right" role="toolbar">
-                                <input class="btn btn-red action_confirm" type="submit" value="Delete My Account">
-                            </div>
-                        </div>
-                    </form>
-                    -->
                     <div class="panel-footer clearfix">
                         <div class="btn-toolbar pull-right" role="toolbar">
                             <button class="btn btn-red action_confirm" href="{{ URL::to('admin/user/delete') }}/{{ $user->id}}" data-token="{{ Session::getToken() }}" data-method="post">Delete My Account</button>

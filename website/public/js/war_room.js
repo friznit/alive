@@ -1,5 +1,27 @@
 $(document).ready(function() {
 
+    $("#live_feed_container").mCustomScrollbar({
+        scrollButtons:{
+            enable:true
+        },
+        advanced:{
+            updateOnContentResize: true
+        },
+        autoHideScrollbar:true,
+        theme:"light-thin"
+    });
+
+    $("#recent_ops_container").mCustomScrollbar({
+        scrollButtons:{
+            enable:true
+        },
+        advanced:{
+            updateOnContentResize: true
+        },
+        autoHideScrollbar:true,
+        theme:"light-2"
+    });
+
 });
 
 function getServerDetails(ipaddr) {
@@ -10,6 +32,31 @@ function getServerDetails(ipaddr) {
 
     return serverName;
 }
+
+function counter(element, end) {
+    var	$text	= element,
+        endVal	= 0,
+        currVal	= 0,
+        obj	= {};
+
+    obj.getTextVal = function() {
+        return parseInt(currVal, 10);
+    };
+
+    obj.setTextVal = function(val) {
+        currVal = parseInt(val, 10);
+        $text.text(currVal);
+    };
+
+    obj.setTextVal(0);
+
+
+    currVal = 0; // Reset this every time
+    endVal = end;
+
+    TweenLite.to(obj, 7, {setTextVal: endVal, ease: Power2.easeInOut});
+};
+
 
 function parseArmaDate(input) {
     var system_date = new Date(input);
@@ -26,6 +73,7 @@ function parseArmaDate(input) {
     if (diff <= 129600) {return "1 day ago";}
     if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
     if (diff <= 777600) {return "1 week ago";}
+		if (diff > 777600) {return "Over a week ago";}
     return "on " + system_date;
 }
 

@@ -3,18 +3,25 @@
 {{-- Content --}}
 @section('content')
 
-<div class="dark-panel form-holder" id="Media">
-    @include('warroom/charts/tempo')
-</div>
+<div class="globalmap-panel">
 
-<div class="white-panel">
+    <div class="row" >
+
+    </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-3">
             @include('warroom/tables/overview')
+            @include('warroom/tables/recent_ops')
+            @include('warroom/tables/live_feed')
+        </div>
+        <div class="col-md-3">
+
         </div>
     </div>
 
+    <!--
+	
     <div class="row">
         <div class="col-md-2 col-md-offset-2">
             @include('warroom/charts/casualties')
@@ -30,6 +37,17 @@
         </div>
     </div>
 
+    -->
+
+</div>
+
+<div class="dark-panel form-holder" id="Media">
+    @include('warroom/charts/tempo')
+</div>
+
+<!--
+<div class="white-panel">
+
     <div class="row">
         <div class="col-md-4 col-md-offset-2">
             @include('warroom/tables/t1operators')
@@ -43,8 +61,8 @@
         <div class="col-md-4 col-md-offset-2">
             @include('warroom/tables/pilots')
         </div>
-        <div class="col-md-4">
-            @include('warroom/tables/recent_ops')
+         <div class="col-md-4">
+            @include('warroom/tables/operations')
         </div>
     </div>
 
@@ -78,16 +96,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 col-md-offset-2">
-            @include('warroom/tables/operations')
-        </div>
-        <div class="col-md-4">
-            @include('warroom/tables/live_feed')
-        </div>
-    </div>
-
 </div>
-
+-->
 
 @stop

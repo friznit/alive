@@ -17,7 +17,7 @@
                         @section('chart_id')
                         @show
                         plotBorderWidth: 0,
-                        backgroundColor: 'white',
+                        backgroundColor: 'transparent',
                         plotBackgroundColor: null,
                         plotShadow: false,
                         height: 140,

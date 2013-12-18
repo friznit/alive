@@ -1,3 +1,59 @@
+
+@font-face {
+    font-family: 'silkscreennormal';
+    src: url('../fonts/slkscr-webfont.eot');
+    src: url('../fonts/slkscr-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/slkscr-webfont.woff') format('woff'),
+    url('../fonts/slkscr-webfont.ttf') format('truetype'),
+    url('../fonts/slkscr-webfont.svg#silkscreennormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'silkscreenbold';
+    src: url('../fonts/slkscrb-webfont.eot');
+    src: url('../fonts/slkscrb-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/slkscrb-webfont.woff') format('woff'),
+    url('../fonts/slkscrb-webfont.ttf') format('truetype'),
+    url('../fonts/slkscrb-webfont.svg#silkscreenbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'silkscreen_expandednormal';
+    src: url('../fonts/slkscre-webfont.eot');
+    src: url('../fonts/slkscre-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/slkscre-webfont.woff') format('woff'),
+    url('../fonts/slkscre-webfont.ttf') format('truetype'),
+    url('../fonts/slkscre-webfont.svg#silkscreen_expandednormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'silkscreen_expandedbold';
+    src: url('../fonts/slkscreb-webfont.eot');
+    src: url('../fonts/slkscreb-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/slkscreb-webfont.woff') format('woff'),
+    url('../fonts/slkscreb-webfont.ttf') format('truetype'),
+    url('../fonts/slkscreb-webfont.svg#silkscreen_expandedbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'alterebro';
+    src: url('../fonts/alterebro-pixel-font.eot');
+    src: url('../fonts/alterebro-pixel-font.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/alterebro-pixel-font.woff') format('woff'),
+    url('../fonts/alterebro-pixel-font.ttf') format('truetype'),
+    url('../fonts/alterebro-pixel-font.svg#alterebro') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /*
  *  Global Styles
  ----------------------------------------*/
@@ -30,6 +86,46 @@ h4 {
 }
 
 /*
+ *  War Room
+ ----------------------------------------*/
+
+#recent_ops_container {
+    max-height:180px;
+    margin-top:10px;
+    margin-left:10px;
+}
+
+#overview_container {
+    margin-top:20px;
+    margin-left:10px;
+}
+
+#live_feed_container {
+    max-height:180px;
+    margin-top:50px;
+    margin-left:20px;
+    font-family: 'silkscreennormal', san-serif;
+    font-size:9px;
+    line-height: 10px;
+}
+
+#live_feed_container .operation {
+    color: #fcaf17;
+}
+
+#live_feed_container .highlight {
+    color: #926c20;
+}
+
+#live_feed_container .highlight2 {
+    color: #b1ce97;
+}
+
+#live_feed_container .highlight3 {
+    color: #0d233a;
+}
+
+/*
  *  Panel Sections
  ----------------------------------------*/
 .alive-background-panel {
@@ -42,6 +138,56 @@ h4 {
     color:#ffffff;
     font-size:14px;
     line-height: 1.7;
+}
+
+/* -----------------------------*/
+.globalmap-panel {
+	background: url("../img/map_background.png");
+	background-size: auto;
+	margin-bottom: 0;
+	color: #98b0d7;
+	background-repeat: repeat-x;
+	min-height: 900px;
+	max-height: 910px;
+}
+.globalmap-panel h2{
+    font-weight:900;
+	font-family: "MorganSansCond Caps";
+}
+.globalmap-panel p {
+    font-size:10px;
+    font-weight:400;
+}
+.globalmap-panel table {
+
+}
+.globalmap-panel table thead th {
+    font-family: 'silkscreenbold', san-serif;
+    font-size:9px;
+    line-height: 7px;
+    padding-top: 20px;
+    border-bottom: none;
+}
+.globalmap-panel table tbody td {
+    font-family: 'silkscreennormal', san-serif;
+    font-size:9px;
+    line-height: 7px;
+    padding-top: 20px;
+    border-top:1px solid #1f355a;
+    padding:10px;
+}
+.globalmap-panel table tbody tr.success td {
+}
+.globalmap-panel table tbody td a {
+    margin-top: -10px;
+}
+.globalmap-panel p {
+}
+.globalmap-panel hr {
+    border: none;
+    height: 1px;
+    color: #1f355a;
+    background-color: #1f355a;
 }
 
 /* -----------------------------*/
@@ -624,7 +770,7 @@ form .badge {
     padding:9px;
     background: url("../img/stripe.png");
     border:#000;
-    color:#ccc;
+    color:#9f9f9f;
     margin-bottom:10px;
     font-family: 'Roboto Condensed', sans-serif;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8e8e8',endColorstr='#fff5f5f5',GradientType=0);
@@ -633,8 +779,13 @@ form .badge {
 }
 
 .panel-dark .strip p {
+    color:#9f9f9f;
     padding-top:10px;
     padding-left:5px;
+}
+
+.panel-dark .strip .table a.btn {
+    margin-top:-3px;
 }
 
 .badge {
@@ -643,5 +794,21 @@ form .badge {
     cursor:pointer;
 }
 
+.table td img {
+    margin-top:-8px;
+}
 
+.table-condensed {
+    padding:0px;
+    margin:0px;
+}
 
+.table-condensed tbody tr {
+    padding:0px;
+    margin:0px;
+}
+
+.table-condensed tbody tr td {
+    padding:0px;
+    margin:0px;
+}

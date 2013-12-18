@@ -13,16 +13,20 @@
             <h2>Groups</h2>
 
             <table class="table table-hover">
-                <thead>
-                    <th>Name</th>
-                    <th>Country</th>
-                    <th>Options</th>
-                </thead>
                 <tbody>
                 @foreach ($allClans as $clan)
                 <tr>
+                    <td><a href="{{ URL::to('admin/clan/show') }}/{{ $clan->id }}"><img src="{{ $clan->avatar->url('tiny') }}" ></a></td>
                     <td><a href="{{ URL::to('admin/clan/show') }}/{{ $clan->id }}">{{{ $clan->name }}}</a></td>
-                    <td>{{{ $clan->country }}}</td>
+                    <td>
+                        <?php
+                        if(!is_null($clan->country)){
+                            ?>
+                            <img src="{{ URL::to('/') }}/img/flags_iso/32/{{ strtolower($clan->country) }}.png" alt="{{ $clan->country_name }}" title="{{ $clan->country_name }}"/>
+                        <?php
+                        }
+                        ?>
+                    </td>
                     <td>
                         <?php
                         $applied = false;

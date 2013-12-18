@@ -68,13 +68,9 @@
 
                             <div class="form-group {{ ($errors->has('country')) ? 'has-error' : '' }}" for="country">
                                 <label class="control-label" for="country">Country</label>
-                                <select name="country" value="{{ (Request::old('country')) ? Request::old("country") : $profile->country }}" type="text" class="form-control" placeholder="Country">
+                                <select name="country" type="text" class="form-control" placeholder="Country">
                                 @foreach ($countries as $key =>$value)
-                                @if ($key == $profile->country)
-                                <option value="{{$key}}" selected="selected">{{$value}}</option>
-                                @else
                                 <option value="{{$key}}">{{$value}}</option>
-                                @endif
                                 @endforeach
                                 </select>
                                 <?php
@@ -86,13 +82,9 @@
 
                             <div class="form-group {{ $errors->has('ageGroup') ? 'has-error' : '' }}" for="ageGroup">
                                 <label class="control-label" for="ageGroup">Age Group</label>
-                                <select name="ageGroup" value="{{ (Request::old('ageGroup')) ? Request::old("ageGroup") : $profile->age_group }}" type="text" class="form-control" placeholder="Age Group">
+                                <select name="ageGroup" value="{{ Request::old('ageGroup') }}" type="text" class="form-control" placeholder="Age Group">
                                 @foreach ($ageGroup as $key =>$value)
-                                @if ($key == $profile->age_group)
-                                <option value="{{$key}}" selected="selected">{{$value}}</option>
-                                @else
                                 <option value="{{$key}}">{{$value}}</option>
-                                @endif
                                 @endforeach
                                 </select>
                                 <?php

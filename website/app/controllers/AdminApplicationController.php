@@ -19,7 +19,7 @@ class AdminApplicationController extends BaseController {
         $data = get_default_data();
         $auth = $data['auth'];
 
-        $data['allClans'] = Clan::paginate(10);
+        $data['allClans'] = Clan::where('allow_applicants',1)->paginate(10);
         $data['applications'] = $auth['user']->applications;
         return View::make('admin/application.index')->with($data);
 
@@ -46,6 +46,7 @@ class AdminApplicationController extends BaseController {
         }
 
         $data['application'] = $application;
+        $data['clan'] = $clan;
 
         return View::make('admin/application.show_applicant')->with($data);
     }
@@ -196,14 +197,10 @@ class AdminApplicationController extends BaseController {
         $auth = $data['auth'];
 
         $input = array(
-            'username' => Input::get('username'),
-            'country' => Input::get('country'),
-            'ageGroup' => Input::get('ageGroup'),
             'note' => Input::get('note'),
         );
 
         $rules = array (
-            'username' => 'required',
             'note' => 'required'
         );
 
@@ -231,16 +228,19 @@ class AdminApplicationController extends BaseController {
 
             if($profile->clan_id == 0){
 
-                $countries = DB::table('countries')->lists('name','iso_3166_2');
-                $countryName = $countries[$input['country']];
-
                 $application = new Application;
+
+                if($profile->country != ''){
+                    $countries = DB::table('countries')->lists('name','iso_3166_2');
+                    $countryName = $countries[$profile->country];
+                    $application->country = $profile->country;
+                    $application->country_name = $profile->country_name;
+                }
+
                 $application->user_id = $user_id;
                 $application->clan_id = $id;
-                $application->username = $input['username'];
-                $application->country = $input['country'];
-                $application->country_name = $countryName;
-                $application->age_group = $input['ageGroup'];
+                $application->username = $profile->username;
+                $application->age_group = $profile->age_group;
                 $application->note = $input['note'];
 
                 $application->save();
@@ -306,4 +306,74 @@ class AdminApplicationController extends BaseController {
 
     }
 
+    // Accept / Deny ---------------------------------------------------------------------------------------------------
+
+    public function postAccept($id)
+    {
+
+        $data = get_default_data();
+        $auth = $data['auth'];
+
+        $currentUser = $auth['user'];
+        $profile = $auth['profile'];
+
+        $application = Application::find($id);
+        $clan = $application->clan;
+
+        if (!$auth['isAdmin'] && $profile->clan_id != $clan->id) {
+            Alert::error('You don\'t have access to that application.')->flash();
+            return Redirect::to('admin/clan/show/'. $clan->id);
+        }
+
+        $applicant = Sentry::findUserById($application->user_id);
+        $applicantProfile = $applicant->profile;
+
+        if($applicant->inGroup($auth['officerGroup'])){
+            $applicant->removeGroup($auth['officerGroup']);
+        }
+        if($applicant->inGroup($auth['leaderGroup'])){
+            $applicant->removeGroup($auth['leaderGroup']);
+        }
+
+        if(!$applicant->inGroup($auth['adminGroup'])){
+            $applicant->addGroup($auth['gruntGroup']);
+        }
+
+        $applicantProfile->clan_id = $clan->id;
+        $applicantProfile->save();
+
+        forEach($applicant->applications as $application){
+            $application->delete();
+        }
+
+        Alert::success('You have accepted the applicant into your group.')->flash();
+        return Redirect::to('admin/clan/show/'. $clan->id);
+
+    }
+
+    public function postDeny($id)
+    {
+
+        $data = get_default_data();
+        $auth = $data['auth'];
+
+        $currentUser = $auth['user'];
+        $profile = $auth['profile'];
+
+        $application = Application::find($id);
+        $clan = $application->clan;
+
+        if (!$auth['isAdmin'] && $profile->clan_id != $clan->id) {
+            Alert::error('You don\'t have access to that application.')->flash();
+            return Redirect::to('admin/clan/show/'. $clan->id);
+        }
+
+        $application->denied = true;
+
+        $application->save();
+
+        Alert::success('Application denied.')->flash();
+        return Redirect::to('admin/clan/show/'. $clan->id);
+
+    }
 }
