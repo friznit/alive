@@ -41,9 +41,11 @@
 
 </div>
 
+<!--
 <div class="dark-panel form-holder" id="Media">
     @include('warroom/charts/tempo')
 </div>
+-->
 
 <!--
 <div class="white-panel">

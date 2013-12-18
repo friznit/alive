@@ -19,7 +19,7 @@ $(document).ready(function() {
             updateOnContentResize: true
         },
         autoHideScrollbar:true,
-        theme:"light-2"
+        theme:"light-thin"
     });
 
 });
