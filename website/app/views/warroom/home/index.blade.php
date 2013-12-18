@@ -15,6 +15,9 @@
             @include('warroom/tables/recent_ops')
             @include('warroom/tables/live_feed')
         </div>
+        <div class="col-md-3">
+
+        </div>
     </div>
 
     <!--

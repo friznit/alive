@@ -1,13 +1,25 @@
 $(document).ready(function() {
 
-    $("#recent_ops_container").mCustomScrollbar({
+    $("#live_feed_container").mCustomScrollbar({
+        scrollButtons:{
+            enable:true
+        },
+        advanced:{
+            updateOnContentResize: true
+        },
         autoHideScrollbar:true,
         theme:"light-thin"
     });
 
-    $("#live_feed").mCustomScrollbar({
+    $("#recent_ops_container").mCustomScrollbar({
+        scrollButtons:{
+            enable:true
+        },
+        advanced:{
+            updateOnContentResize: true
+        },
         autoHideScrollbar:true,
-        theme:"light-thin"
+        theme:"light-2"
     });
 
 });

@@ -100,13 +100,29 @@ h4 {
     margin-left:10px;
 }
 
-#live_feed {
+#live_feed_container {
     max-height:180px;
-    margin-top:20px;
-    margin-left:10px;
+    margin-top:50px;
+    margin-left:20px;
     font-family: 'silkscreennormal', san-serif;
     font-size:9px;
     line-height: 10px;
+}
+
+#live_feed_container .operation {
+    color: #fcaf17;
+}
+
+#live_feed_container .highlight {
+    color: #926c20;
+}
+
+#live_feed_container .highlight2 {
+    color: #b1ce97;
+}
+
+#live_feed_container .highlight3 {
+    color: #0d233a;
 }
 
 /*
@@ -139,7 +155,6 @@ h4 {
 	font-family: "MorganSansCond Caps";
 }
 .globalmap-panel p {
-    color:#000;
     font-size:10px;
     font-weight:400;
 }
@@ -169,7 +184,10 @@ h4 {
 .globalmap-panel p {
 }
 .globalmap-panel hr {
-    border:1px solid #1f355a;
+    border: none;
+    height: 1px;
+    color: #1f355a;
+    background-color: #1f355a;
 }
 
 /* -----------------------------*/
