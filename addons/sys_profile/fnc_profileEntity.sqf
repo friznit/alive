@@ -717,25 +717,27 @@ switch(_operation) do {
                     //["Profile [%1] Spawn - Spawn Units",_profileID] call ALIVE_fnc_dump;
                     //[true] call ALIVE_fnc_timer;
 					{
-						_unitPosition = _positions select _unitCount;
-						_damage = _damages select _unitCount;
-						_rank = _ranks select _unitCount;
-						_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
-						_unit setPos formationPosition _unit;
-						//_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
-						_unit setDamage _damage;
-						_unit setRank _rank;
-						
-						// set profile id on the unit
-						_unit setVariable ["profileID", _profileID];
-						_unit setVariable ["profileIndex", _unitCount];
-
-						// killed event handler
-						_eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
-
-						_units set [_unitCount, _unit];
-
-						_unitCount = _unitCount + 1;
+                        if !(isnil "_x") then {
+							_unitPosition = _positions select _unitCount;
+							_damage = _damages select _unitCount;
+							_rank = _ranks select _unitCount;
+							_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
+							_unit setPos formationPosition _unit;
+							//_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
+							_unit setDamage _damage;
+							_unit setRank _rank;
+							
+							// set profile id on the unit
+							_unit setVariable ["profileID", _profileID];
+							_unit setVariable ["profileIndex", _unitCount];
+	
+							// killed event handler
+							_eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+	
+							_units set [_unitCount, _unit];
+	
+							_unitCount = _unitCount + 1;
+                        };
 					} forEach _unitClasses;
 					//[] call ALIVE_fnc_timer;
 					

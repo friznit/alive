@@ -98,7 +98,7 @@ _createMarker = {
 
 private ["_profiles","_profileBlock","_profile","_entityProfile","_profileType","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo",
 	"_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_moveDistance","_vehicleProfile",
-	"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements","_isCycling"];
+	"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements","_isCycling","_isPlayer"];
 
 _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 //_profileBlock = [ALIVE_arrayBlockHandler,"getNextBlock", ["simulation",_profiles select 2,50]] call ALIVE_fnc_arrayBlockHandler;
@@ -111,46 +111,34 @@ _engaged = [0,0,0];
 	_profileType = _entityProfile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
 				
 	if(_profileType == "entity") then {
-        _profileID = _entityProfile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
-        _active = _entityProfile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
-        _waypoints = _entityProfile select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
-        _waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
-        _currentPosition = _entityProfile select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
-        _vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
-        _vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
-        _speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
-        _isCycling = _entityProfile select 2 select 25; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
-        _side = _entityProfile select 2 select 3; //[_entityProfile, "side"] call ALIVE_fnc_hashGet;
-        _positions = _entityProfile select 2 select 18; //[_entityProfile, "positions"] call ALIVE_fnc_hashGet;
-        _isPlayer = _entityProfile select 2 select 30; //[_entityProfile, "isPlayer"] call ALIVE_fnc_hashGet;
-        _vehicleCommander = false;
-        _vehicleCargo = false;
-
-        // if entity is commanding a vehicle/s
-        if(count _vehiclesInCommandOf > 0) then {
-            _vehicleCommander = true;
-        };
-
-        // if entity is cargo of vehicle/s
-        if(count _vehiclesInCargoOf > 0) then {
-            _vehicleCargo = true;
-        };
-
-        // if near profiles of other sides are near collect to clashing groups
-        if (({if !(isnil "_x") then {((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}}} count (_profiles select 2)) > 0) then {
-
-            _clash set [count _clash,[_profileID,_currentPosition,_side,(count _positions),_vehiclesInCommandOf]];
-
-            switch (_side) do {
-                case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
-                case ("EAST") : {_engaged set [1,(_engaged select 1) + (count _positions)]};
-                case ("GUER") : {_engaged set [2,(_engaged select 2) + (count _positions)]};
-            };
-        };
-
-        // entity has waypoints assigned and entity is not in cargo of a vehicle
-        if(count _waypoints > 0 && !(_vehicleCargo) && !(_isPlayer)) then {
+		_profileID = _entityProfile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+		_active = _entityProfile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;	
+		_waypoints = _entityProfile select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
+		_waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
+		_currentPosition = _entityProfile select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
+		_vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
+		_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
+		_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+		_isCycling = _entityProfile select 2 select 25; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+		_side = _entityProfile select 2 select 3; //[_entityProfile, "side"] call ALIVE_fnc_hashGet;
+		_positions = _entityProfile select 2 select 18; //[_entityProfile, "positions"] call ALIVE_fnc_hashGet;
+		_isPlayer = _entityProfile select 2 select 30; //[_entityProfile, "isPlayer"] call ALIVE_fnc_hashGet;
+		_vehicleCommander = false;
+		_vehicleCargo = false;
 					
+		// if entity is commanding a vehicle/s
+		if(count _vehiclesInCommandOf > 0) then {
+			_vehicleCommander = true;				
+		};
+					
+		// if entity is cargo of vehicle/s
+		if(count _vehiclesInCargoOf > 0) then {	
+			_vehicleCargo = true;
+		};
+		
+		// entity has waypoints assigned and entity is not in cargo of a vehicle
+		if(count _waypoints > 0 && !(_vehicleCargo) && !(_isPlayer)) then {
+						
 			// entity is not spawned, simulate
 			if!(_active) then {
 						
@@ -180,84 +168,96 @@ _engaged = [0,0,0];
 				// DEBUG -------------------------------------------------------------------------------------
 				
 				if (!(isnil "_currentPosition") && {count _currentPosition > 0} && {!(isnil "_destination")} && {count _destination > 0}) then {
-                    
-                    //Match 2D since some profiles dont have a _pos select 2 defined
-                    _currentPosition set [2,0];
-                    _destination set [2,0];
-                    
-		            switch (_type) do {
-						case "MOVE" : {
-							 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-							 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
-							 _handleWPcomplete = {};
-		
+					
+					// if other profiles of enemy sides are near collect to clashing groups and do not simulate them
+					if (({if !(isnil "_x") then {((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}}} count (_profiles select 2)) > 0) then {
+					   
+						_clash set [count _clash,[_profileID,_currentPosition,_side,(count _positions),_vehiclesInCommandOf]];
+						
+						switch (_side) do {
+							case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
+							case ("EAST") : {_engaged set [1,(_engaged select 1) + (count _positions)]};
+							case ("GUER") : {_engaged set [2,(_engaged select 2) + (count _positions)]};
 						};
-						case "CYCLE" : {
-							 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-							 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
-							 _handleWPcomplete = {
-								_waypoints = _waypoints + _waypointsCompleted;
-								_waypointsCompleted = [];
+					} else {
+						//else simulate them
+						//Match 2D since some profiles dont have a _pos select 2 defined
+						_currentPosition set [2,0];
+						_destination set [2,0];
+						
+						switch (_type) do {
+							case "MOVE" : {
+								 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
+								 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
+								 _handleWPcomplete = {};
+			
+							};
+							case "CYCLE" : {
+								 _direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
+								 _newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
+								 _handleWPcomplete = {
+									_waypoints = _waypoints + _waypointsCompleted;
+									_waypointsCompleted = [];
+								};
+							};
+							default {
+								_newPosition = _currentPosition;
+								_handleWPcomplete = {};
 							};
 						};
-						default {
-							_newPosition = _currentPosition;
-							_handleWPcomplete = {};
-						};
-					};
-					
-					// distance to wp destination within completion radius
-					if(_distance <= (_moveDistance * 2)) then {
+						
+						// distance to wp destination within completion radius
+						if(_distance <= (_moveDistance * 2)) then {
+									
+							// DEBUG -------------------------------------------------------------------------------------
+							if(_debug) then {
+								_entityProfile call _deleteMarker;
+							};
+							// DEBUG -------------------------------------------------------------------------------------
 								
-						// DEBUG -------------------------------------------------------------------------------------
-						if(_debug) then {
-							_entityProfile call _deleteMarker;
-						};
-						// DEBUG -------------------------------------------------------------------------------------
+							if(_isCycling) then {
+								_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
+							};
 							
-						if(_isCycling) then {
-							_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
+							_waypoints set [0,objNull];
+							_waypoints = _waypoints - [objNull];
+										
+							//Needs review of any variables in hashes
+							if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};
+										
+							[] call _handleWPcomplete;			
+							
+							[_entityProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
+							
+							if(_isCycling) then {
+								[_entityProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
+							};
 						};
-						
-						_waypoints set [0,objNull];
-						_waypoints = _waypoints - [objNull];
-									
-						//Needs review of any variables in hashes
-						if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};
-									
-						[] call _handleWPcomplete;			
-						
-						[_entityProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
-						
-						if(_isCycling) then {
-							[_entityProfile,"waypointsCompleted",_waypointsCompleted] call ALIVE_fnc_hashSet;
-						};
-					};
-								
 													
-					if(_vehicleCommander) then {
-						// if in command of vehicle move all entities within the vehicle						
-						// set the vehicle position and merge all assigned entities positions
-						[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
-						{							
-							_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                            
-                            if !(isnil "_vehicleProfile") then {
-								[_vehicleProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
-								[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
-								[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
-								[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
-                            };
-						} forEach _vehiclesInCommandOf;										
-					}else{
-						// set the entity position and merge all unit positions to group position
-						[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
-						[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
-						[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+						if(_vehicleCommander) then {
+							// if in command of vehicle move all entities within the vehicle						
+							// set the vehicle position and merge all assigned entities positions
+							[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
+							{							
+								_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+								
+								if !(isnil "_vehicleProfile") then {
+									[_vehicleProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
+									[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
+									[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
+									[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+								};
+							} forEach _vehiclesInCommandOf;										
+						}else{
+							// set the entity position and merge all unit positions to group position
+							[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
+							[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
+							[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+						};
 					};
-	            } else {
-	            	diag_log format ["Profile-Simulator corrupted profile detected %3: _currentPosition %1 _destination %2",_currentPosition,_destination,_entityProfile];
-	            };
+				} else {
+					diag_log format ["Profile-Simulator corrupted profile detected %3: _currentPosition %1 _destination %2",_currentPosition,_destination,_entityProfile];
+				};
 						
 			// entity is spawned, update positions
 			} else {
@@ -266,8 +266,8 @@ _engaged = [0,0,0];
 				_newPosition = getPosATL _leader;
 				_position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
 				
-	            if (!(isnil "_newPosition") && {count _newPosition > 0} && {!(isnil "_position")} && {count _position > 0}) then {
-	            
+				if (!(isnil "_newPosition") && {count _newPosition > 0} && {!(isnil "_position")} && {count _position > 0}) then {
+				
 					_moveDistance = _newPosition distance _position;
 					
 					if(_moveDistance > 10) then {					
@@ -280,11 +280,11 @@ _engaged = [0,0,0];
 							
 							{
 								_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                                
-                                if !(isnil "_vehicleProfile") then {				
+								
+								if !(isnil "_vehicleProfile") then {				
 									[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
 									[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
-                                };
+								};
 							} forEach _vehiclesInCommandOf;												
 						} else {
 							_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
@@ -295,9 +295,9 @@ _engaged = [0,0,0];
 							[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
 						};			
 					};
-	            } else {
-	            	diag_log format ["Profile-Simulator corrupted profile detected %3: _newPosition %1 _position %2",_newPosition,_position,_entityProfile];
-	            };
+				} else {
+					diag_log format ["Profile-Simulator corrupted profile detected %3: _newPosition %1 _position %2",_newPosition,_position,_entityProfile];
+				};
 			};
 		} else {
 		    // entity is player entity
@@ -356,7 +356,7 @@ _toBekilled = [];
     _positions = _x select 3;
     _vehiclesInCommandOf = _x select 4;
     
-    _factor1 = 0;
+    _factor1 = 0.2;
     _factor2 = 0;
     
      switch (_side) do {
@@ -365,12 +365,16 @@ _toBekilled = [];
         case ("GUER") : {_engagedOwn = _engaged select 2; _side = "INDEPENDENT"};
     };
     
-    if (count _vehiclesInCommandOf > 0) then {_factor1 = 0.3};
-    _factor2 = _engagedOwn / _engagedTotal;
-    _weighting = _factor1 + _factor2;
+    _killFactor = random 1;
+    _surviveFactor = 1;
+    
+    if (count _vehiclesInCommandOf > 0) then {_killFactor = _killFactor - 0.25};
+    if (_engagedTotal > 0) then {
+        _surviveFactor = (_engagedOwn/_engagedTotal);
+    };
 
     // Enemy sides near, chance of death by weighting
-    if ((({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0) && (random 1 > _weighting)) then {
+    if ((({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0) && (_killFactor > _surviveFactor)) then {
         _clash set [_foreachIndex,["",[0,0,0],""]];
         _toBekilled set [count _toBekilled,_profileID];
     };
@@ -384,15 +388,29 @@ _toBekilled = [];
 	if (!(isnil "_profile") && {!(_profile select 2 select 1)}) then {
         	//player sidechat format["Group %1 killed in simulated combat!",_profileID];
             _vehiclesInCommandOf = _profile select 2 select 8;
+            _units = _profile select 2 select 11;
+            _deathToll = floor(random(count _units));
             
-            if (count _vehiclesInCommandOf > 0) then {
-                {
-                    //player sidechat format["Vehicle %1 destroyed!",_x];
-                    _vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                    [ALIVE_profileHandler, "unregisterProfile", _vehicleProfile] call ALIVE_fnc_profileHandler;
-                } foreach _vehiclesInCommandOf;
+            //To be looked at, "removeUnit" seems to leave null entries in units array (also tested with foreach)
+            //["Count units %1 for profile %2 before deletion | Array %3",(count _units),_profileID,([_profile,"unitClasses",[]] call ALIVE_fnc_hashGet)] call ALiVE_fnc_DumpR;
+        	for "_i" from 0 to _deathToll do {
+                if (_i > _deathToll) exitwith {};
+                [_profile, "removeUnit", _i] call ALiVE_fnc_profileEntity;
             };
-
-			[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+            //["Count units %1 for profile %2 after deletion | Array %3",(count ([_profile,"unitClasses",[]] call ALIVE_fnc_hashGet)),_profileID,([_profile,"unitClasses",[]] call ALIVE_fnc_hashGet)] call ALiVE_fnc_DumpR;
+            
+            if (count (_profile select 2 select 11) == 0) then {
+                //["Deleting %1!",_profileID] call ALiVE_fnc_DumpR;
+                
+	            if (count _vehiclesInCommandOf > 0) then {
+	                {
+	                    //player sidechat format["Vehicle %1 destroyed!",_x];
+	                    _vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+	                    [ALIVE_profileHandler, "unregisterProfile", _vehicleProfile] call ALIVE_fnc_profileHandler;
+	                } foreach _vehiclesInCommandOf;
+	            };
+	
+				[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+            };
     };
 } foreach _toBekilled;

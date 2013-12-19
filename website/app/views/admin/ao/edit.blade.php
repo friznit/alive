@@ -14,7 +14,30 @@
             </div>
 
         </div>
-        
+        <div class = "row">
+        	<div class="col-md-13">
+                <div class="panel panel-dark">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Select Position on Map</h3>
+                    </div>
+                    <div class="panel-body">
+                    	
+
+                        <img style="max-width:100%" id="myImgId" alt="Global Map" src="{{ URL::to('/') }}/img/map_background.png" />
+                        
+                        <script type="text/javascript">
+                        <!--
+						
+						
+                        var myImg = document.getElementById("myImgId");
+                        myImg.onmousedown = GetCoordinates;
+						                        //-->
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
 
             <div class="col-md-4">
@@ -60,7 +83,7 @@
 
                             <div class="form-group {{ ($errors->has('imageMapX')) ? 'has-error' : '' }}" for="imageMapX">
                                 <label class="control-label" for="imageMapX">Position on Global Map (X)</label>
-                                <input name="imageMapX" value="{{ (Request::old('imageMapX')) ? Request::old("imageMapX") : $ao->imageMapX }}" type="text" class="form-control" placeholder="imageMapX">
+                                <input id="imageMapX" name="imageMapX" value="{{ (Request::old('imageMapX')) ? Request::old("imageMapX") : $ao->imageMapX }}" type="text" class="form-control" placeholder="imageMapX">
                                 <?php
                                 if($errors->has('imageMapX')){
                                     echo '<span class="label label-danger">' . $errors->first('imageMapX') . '</span>';
@@ -70,7 +93,7 @@
                             
                            <div class="form-group {{ ($errors->has('imageMapY')) ? 'has-error' : '' }}" for="imageMapY">
                                 <label class="control-label" for="imageMapY">Position on Global Map (Y)</label>
-                                <input name="imageMapY" value="{{ (Request::old('imageMapY')) ? Request::old("imageMapY") : $ao->imageMapY }}" type="text" class="form-control" placeholder="imageMapY">
+                                <input id="imageMapY" name="imageMapY" value="{{ (Request::old('imageMapY')) ? Request::old("imageMapY") : $ao->imageMapY }}" type="text" class="form-control" placeholder="imageMapY">
                                 <?php
                                 if($errors->has('imageMapY')){
                                     echo '<span class="label label-danger">' . $errors->first('imageMapY') . '</span>';

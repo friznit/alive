@@ -90,7 +90,7 @@ switch(_operation) do {
                     _strategicTypes = [
                     	//A3
 						"Land_Cargo_Patrol_V1_F",
-                        //"Land_Cargo_Patrol_V2_F",
+                        "Land_Cargo_Patrol_V2_F",
                         "Land_Cargo_House_V1_F",
                         "Land_Cargo_House_V2_F",
                         "Land_Cargo_Tower_V3_F",
@@ -100,48 +100,37 @@ switch(_operation) do {
                         "Land_MilOffices_V1_F",
                         "Land_Research_HQ_F",
                         "Land_CarService_F",
-                        "Land_Hospital_main_F"
-                        //"Land_dp_smallFactory_F",
-						//"Land_Radar_F",
-						//"Land_TentHangar_V1_F"
-					];
-                    
-                    
-                    /*    
-                    _strategicTypes = [
-                    	//A3
-						"Land_Cargo_Patrol_V1_F",
-                        "Land_Cargo_HQ_V2_F",
-                        "Land_Cargo_House_V2_F",
-                        "Land_Cargo_House_V1_F",
-                        "Land_Cargo_Tower_V3_F",
-                        //"Land_Cargo_Patrol_V2_F",
-						"Land_MilOffices_V1_F",
-                        "Land_Dome_Big_F",
-						//"Land_dp_smallFactory_F",
-						"Land_Cargo_HQ_V1_F",
-						//"Land_Radar_F",
-						"Land_Airport_Tower_F"
-						//"Land_TentHangar_V1_F"
-					];
-                    */
-                    
-                    //Define regular buildings
-                    _regularTypes = [
-                    	"Land_u_Shop_02_V1_F",
-                    	"Land_d_House_Big_02_V1_F",
-                        "Land_u_House_Big_01_V1_F",
-                        "Land_u_House_Small_02_V1_F",
-                        "Land_u_House_Big_02_V1_F",
-                        "Land_u_Shop_02_V1_F",
-                        "Land_i_House_Big_02_V3_F",
-                        "Land_i_Stone_HouseBig_V2_F",
-                        "Land_i_Stone_HouseBig_V1_F",
-                        "Land_i_House_Big_02_V3_F",
-                        "Land_i_House_Big_01_V1_F",
-                        "Land_i_House_Big_01_V2_F",
-                        "Land_i_House_Small_03_V1_F",
-                        "Land_d_House_Big_01_V1_F"
+                        "Land_Hospital_main_F",
+                        "Land_dp_smallFactory_F",
+						"Land_Radar_F",
+						"Land_TentHangar_V1_F",
+                        
+                        //A2
+                        "Land_A_TVTower_Base",
+						"Land_Dam_ConcP_20",
+						"Land_Ind_Expedice_1",
+						"Land_Ind_SiloVelke_02",
+						"Land_Mil_Barracks",
+						"Land_Mil_Barracks_i",
+						"Land_Mil_Barracks_L",
+						"Land_Mil_Guardhouse",
+						"Land_Mil_House",
+						"Land_Fort_Watchtower",
+						"Land_Vysilac_FM",
+						"Land_SS_hangar",
+						"Land_telek1",
+						"Land_vez",
+						"Land_A_FuelStation_Shed",
+						"Land_watertower1",
+						"Land_trafostanica_velka",
+						"Land_Ind_Oil_Tower_EP1",
+						"Land_A_Villa_EP1",
+						"Land_fortified_nest_small_EP1",
+                        "Land_Mil_Barracks_i_EP1",
+						"Land_fortified_nest_big_EP1",
+						"Land_Fort_Watchtower_EP1",
+						"Land_Ind_PowerStation_EP1",
+						"Land_Ind_PowerStation"
                     ];
                     
                     //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
@@ -208,21 +197,27 @@ switch(_operation) do {
                         };
                     };
                     
-                    _houses = [];
+                    _houses_reg = [];
+                    _houses_strat = [];
                     {
                         private ["_houses_tmp","_pos","_size"];
                         _time = time;
                         _pos = _x select 0;
                         _size = _x select 1;
 
-                        _houses_tmp = nearestObjects [_pos, (_regularTypes + _strategicTypes), _size];
-                        _houses = _houses + _houses_tmp;
+                        _houses_reg_tmp = nearestObjects [_pos, ["house"], _size];
+                        _houses_strat_tmp = nearestObjects [_pos, _strategicTypes, _size];
+                        
+                        _houses_reg = _houses_reg + _houses_reg_tmp;
+                        _houses_strat = _houses_strat + _houses_strat_tmp;
                         
                         //player sidechat format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
                         //diag_log format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
                     } foreach _collection;
-                        
-                    _result = [_houses, _strategicTypes,_regularTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
+                    
+                    _houses = _houses_reg + _houses_strat;
+                    
+                    _result = [_houses, _strategicTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
 
@@ -515,20 +510,26 @@ switch(_operation) do {
 
 			if (!(isNil "_grp") && {({alive _x} count (units _grp) == 0)}) then {
                 
+                //Remove group from list but dont delete bodies (done by GC)
                 if (_logic getVariable ["debug", false]) then {
 					["CQB Population: Removing group %1...", _grp] call ALiVE_fnc_Dump;
 				};
-				[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
+				[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceRemove;
                 
+                //Remove house from list
                 if (_logic getVariable ["debug", false]) then {
 					["CQB Population: Clearing house %1...", _house] call ALiVE_fnc_Dump;
 				};
                 [_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceRemove;
                 
-                deleteMarkerLocal format[MTEMPLATE, _house];
 			} else {
-                ["CQB Population Warning: Group %1 is still alive...", _grp] call ALiVE_fnc_Dump;
+                ["CQB Population Warning: Group %1 is still alive! Removing...", _grp] call ALiVE_fnc_Dump;
+                
+                [_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
+                [_logic,"houses",[_house],true,true] call BIS_fnc_variableSpaceRemove;
             };
+            
+            deleteMarkerLocal format[MTEMPLATE, _house];
 		};
 	};
     
@@ -612,22 +613,21 @@ switch(_operation) do {
 			private ["_grp","_house"];
 			_grp = _args;
 			_house = (leader _grp) getVariable "house";
-	
+            
             // Update house that group despawned
-			_house setVariable ["group",nil, true]; 
-    
-			// Despawn group
+            if !(isnil "_house") then {
+                _house setVariable ["group",nil, true];
+                format[MTEMPLATE, _house] setMarkerTypeLocal "mil_Dot";
+            };
+            
+            // Despawn group
+            if (_logic getVariable ["debug", false]) then {
+				["CQB Population: Deleting group %1 from %2...", _grp, owner leader _grp] call ALiVE_fnc_Dump;
+			};
+            
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceRemove;
-			{
-                _x setVariable ["house", nil, true];
-				deleteVehicle _x;
-			} forEach units _grp;
-			
-		if (_logic getVariable ["debug", false]) then {
-			["CQB Population: Group %1 deleted from %2...", _grp, owner leader _grp] call ALiVE_fnc_Dump;
-		};
-		format[MTEMPLATE, _house] setMarkerTypeLocal "mil_Dot";
-		deleteGroup _grp;
+			{deleteVehicle _x} forEach units _grp;
+            deleteGroup _grp;
 	    };
 	};
     
@@ -687,9 +687,10 @@ switch(_operation) do {
 			};
 			// position AI
 			_positions = [_house] call ALiVE_fnc_getBuildingPositions;
+            if (count _positions == 0) exitwith {_grp};
             
 			{
-		        _pos = (_positions call BIS_fnc_selectRandom);
+	        	_pos = (_positions call BIS_fnc_selectRandom);
 				_x setPosATL [_pos select 0, _pos select 1, (_pos select 2 + 0.4)];
 			} forEach units _grp;
 			[_logic, "addGroup", [_house, _grp]] call ALiVE_fnc_CQB;
@@ -742,7 +743,7 @@ switch(_operation) do {
 							// Check: if any players within spawn distance
 
                             _players = [] call BIS_fnc_listPlayers;
-                            _nearplayers = ({((getPosATL _house) distance _x) < _spawn} count _players);
+                            _nearplayers = ({(((getposATL _x) select 2) < 10) && {((getPosATL _house) distance _x) < _spawn}} count _players);
 							if ((isNil {_house getVariable "group"}) && {_nearplayers != 0}) then {
 
                                 _playerhosts = [];
@@ -824,6 +825,7 @@ switch(_operation) do {
 									};
 	                            } else {
 	                                ["CQB ERROR: No House was defined for CQB group %1! Count units in group that have _house set: %2", _grp, {!(isnil {_x getvariable ["house",nil]})} count (units _grp)] call ALiVE_fnc_DumpR;
+									[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
 	                            };
                             } else {
                             	["CQB ERROR: No Group was defined! Moving on..."] call ALiVE_fnc_DumpR;
