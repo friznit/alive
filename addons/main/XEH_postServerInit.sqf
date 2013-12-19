@@ -51,6 +51,11 @@ onPlayerDisconnected {
 		// Data module onPlayerDisconnected call
 		[_id, _name, _uid] call ALIVE_fnc_data_onPlayerDisconnected;
 	};
+
+	if !(isNil 'ALIVE_profileHandler') then {
+        // Profiles module onPlayerDisconnected call
+        [_id, _name, _uid] call ALIVE_fnc_profile_onPlayerDisconnected;
+    };
 };
 
 onPlayerConnected {
@@ -66,5 +71,10 @@ onPlayerConnected {
 		// sys_player module onPlayerConnected call
 		[_id, _name, _uid] call ALIVE_fnc_player_onPlayerConnected;
 	};
+
+	if !(isNil 'ALIVE_profileHandler') then {
+        // Profiles module onPlayerDisconnected call
+        [_id, _name, _uid] call ALIVE_fnc_profile_onPlayerConnected;
+    };
 };
 

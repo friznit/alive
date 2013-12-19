@@ -936,72 +936,83 @@ switch(_operation) do {
 			
 			_groups = _groups - ALIVE_groupBlacklist;
 
+			// DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                ["ALIVE MP [%1] - Groups ",_groups] call ALIVE_fnc_dump;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
+
 			
 			// Position and create groups
 			_groupCount = count _groups;
 			_clusterCount = count _clusters;
 			_groupPerCluster = floor(_groupCount / _clusterCount);		
 			_totalCount = 0;
+
+			if(_groupCount > 0) then {
 			
-			{
-                private ["_guardGroup","_guards","_center","_size"];
-                		
-				_center = [_x, "center"] call ALIVE_fnc_hashGet;
-				_size = [_x, "size"] call ALIVE_fnc_hashGet;
-				
-				_guardGroup = _infantryGroups call BIS_fnc_selectRandom;
-                _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-                
-                //ARJay, here we could place the default patrols/garrisons instead of the static garrisson if you like to (same is in CIV MP)
                 {
-                	if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-    					[_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity; 
-                	};
-                } foreach _guards;
+                    private ["_guardGroup","_guards","_center","_size"];
 
-				if(_totalCount < _groupCount) then {
+                    _center = [_x, "center"] call ALIVE_fnc_hashGet;
+                    _size = [_x, "size"] call ALIVE_fnc_hashGet;
 
-                    if(_groupPerCluster > 0) then {
+                    _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
+                    _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 
-                        for "_i" from 0 to _groupPerCluster -1 do {
+                    //ARJay, here we could place the default patrols/garrisons instead of the static garrisson if you like to (same is in CIV MP)
+                    {
+                        if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity;
+                        };
+                    } foreach _guards;
+
+                    if(_totalCount < _groupCount) then {
+
+                        if(_groupPerCluster > 0) then {
+
+                            for "_i" from 0 to _groupPerCluster -1 do {
+                                _group = _groups select _totalCount;
+                                _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
+
+                                if!(surfaceIsWater _position) then {
+                                    _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                                    //ARJay, here we could place the default "Chill around campfire situation" instead of the static garrisson if you like to
+                                    {
+                                        if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+                                            [_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;
+                                        };
+                                    } foreach _profiles;
+
+                                    _countProfiles = _countProfiles + count _profiles;
+                                    _totalCount = _totalCount + 1;
+                                };
+                            };
+
+                        }else{
                             _group = _groups select _totalCount;
-                            _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
+                            _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
 
                             if!(surfaceIsWater _position) then {
                                 _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-                                
+
                                 //ARJay, here we could place the default "Chill around campfire situation" instead of the static garrisson if you like to
                                 {
                                     if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                        				[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;    
+                                        [_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;
                                     };
                                 } foreach _profiles;
-                                
+
                                 _countProfiles = _countProfiles + count _profiles;
                                 _totalCount = _totalCount + 1;
                             };
                         };
-
-                    }else{
-                        _group = _groups select _totalCount;
-                        _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
-
-                        if!(surfaceIsWater _position) then {
-                            _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-                            
-                            //ARJay, here we could place the default "Chill around campfire situation" instead of the static garrisson if you like to
-                            {
-                                if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                    				[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;    
-                                };
-                            } foreach _profiles;
-
-                            _countProfiles = _countProfiles + count _profiles;
-                            _totalCount = _totalCount + 1;
-                        };
                     };
-                };
-			} forEach _clusters;
+                } forEach _clusters;
+            }else{
+                ["ALIVE MP - Warning no usable groups found to use the faction used may be faulty."] call ALIVE_fnc_dumpR;
+            };
             
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {

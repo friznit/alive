@@ -32,8 +32,6 @@ _createMode = if(count _this > 0) then {_this select 0} else {"NONE"};
 _createModeObjects = if(count _this > 1) then {_this select 1} else {[]};
 _debug = if(count _this > 2) then {_this select 2} else {false};
 
-_debug = true;
-
 _groups = allGroups;
 _vehicles = vehicles;
 _entityCount = 0;
@@ -89,7 +87,7 @@ if(_createMode == "IGNORE") then {
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
 	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-	["ALIVE Create profiles from map groups !!"] call ALIVE_fnc_dump;
+	["ALIVE Create profiles from map groups"] call ALIVE_fnc_dump;
 	[true] call ALIVE_fnc_timer;
 };
 // DEBUG -------------------------------------------------------------------------------------
@@ -130,7 +128,7 @@ if(_debug) then {
 			_entityID = format["entity_%1",_entityCount];
 			
 			_position = getPosATL _leader;
-			
+
 			_profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 			[_profileEntity, "init"] call ALIVE_fnc_profileEntity;
 			[_profileEntity, "profileID", _entityID] call ALIVE_fnc_profileEntity;
@@ -142,6 +140,11 @@ if(_debug) then {
 			[_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
 			[_profileEntity, "side", str(side _leader)] call ALIVE_fnc_profileEntity;
 			[_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
+
+			_initCommand = _leader getVariable ["addCommand",[]];
+            if(count _initCommand > 0) then {
+                [_profileEntity, "addActiveCommand", _initCommand] call ALIVE_fnc_profileEntity;
+            };
 
 			[ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 			

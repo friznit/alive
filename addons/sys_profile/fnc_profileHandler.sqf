@@ -113,6 +113,7 @@ switch(_operation) do {
 						[_logic,"profileCount",0] call ALIVE_fnc_hashSet;
 						[_logic,"profileEntityCount",0] call ALIVE_fnc_hashSet;
 						[_logic,"profileVehicleCount",0] call ALIVE_fnc_hashSet;
+						[_logic,"playerEntities",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 
 						_profilesBySide = [] call ALIVE_fnc_hashCreate;
 						[_profilesBySide, "EAST", []] call ALIVE_fnc_hashSet;
@@ -345,7 +346,7 @@ switch(_operation) do {
 				"_profileSide","_profileFaction","_profilesSide","_profilesFaction","_profileActive","_profileCompany","_profleByCompanyArray",
 				"_profileVehicleType","_profilesVehicleType","_profilesCatagorisedSide","_profilesCatagorisedTypes","_profilesCatagorisedVehicleTypes",
 				"_profilesCatagorisedType","_profilesCatagorisedVehicleType","_profilePosition","_profilesSideFull","_profilesBySideFull",
-				"_profilesActiveSide","_profilesInActiveSide"];
+				"_profilesActiveSide","_profilesInActiveSide","_playerEntities","_profileIsPlayer"];
 
 				if(typeName _args == "ARRAY") then {
 						_profile = _args;
@@ -367,6 +368,7 @@ switch(_operation) do {
 						_profilesByCompany = [_logic, "profilesByCompany"] call ALIVE_fnc_hashGet;
 						_profilesCatagorised = [_logic, "profilesCatagorised"] call ALIVE_fnc_hashGet;
 						_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
+						_playerEntities = [_logic, "playerEntities"] call ALIVE_fnc_hashGet;
 						
 						_profileSide = [_profile, "side"] call ALIVE_fnc_hashGet;
 						_profileFaction = [_profile, "faction"] call ALIVE_fnc_hashGet;
@@ -374,6 +376,7 @@ switch(_operation) do {
 						_profileType = [_profile, "type"] call ALIVE_fnc_hashGet;
 						_profileVehicleType = [_profile, "objectType"] call ALIVE_fnc_hashGet;
 						_profilePosition = [_profile, "position"] call ALIVE_fnc_hashGet;
+						_profileIsPlayer = [_profile, "isPlayer"] call ALIVE_fnc_hashGet;
 						
 						_profilesCatagorisedSide = [_profilesCatagorised, _profileSide] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedTypes = [_profilesCatagorisedSide, "type"] call ALIVE_fnc_hashGet;
@@ -482,6 +485,12 @@ switch(_operation) do {
 							};
 
 							if!(_profileType == "vehicle") then {
+
+                                // if player entity
+                                if(_profileIsPlayer) then {
+                                    [_playerEntities, _profileID, _profile] call ALIVE_fnc_hashSet;
+                                };
+
 								// if company id is set
 								_profileCompany = [_profile, "companyID"] call ALIVE_fnc_hashGet;
 								if!(_profileCompany == "") then {
@@ -513,7 +522,8 @@ switch(_operation) do {
                 "_profilesInActiveBySide","_entityProfilesInActive","_profilesByCompany","_profileType","_profilesType","_profileSide",
 				"_profileFaction","_profilesSide","_profilesFaction","_profileActive","_profleByCompanyArray","_profileVehicleType",
 				"_profilesVehicleType","_profilesCatagorised","_profilesCatagorisedSide","_profilesCatagorisedTypes","_profilesCatagorisedVehicleTypes",
-				"_profilesCatagorisedType","_profilesCatagorisedVehicleType","_profilePositions","_profilesBySideFull","_profilesSideFull","_profilesActiveSide","_profilesInActiveSide"];
+				"_profilesCatagorisedType","_profilesCatagorisedVehicleType","_profilePositions","_profilesBySideFull","_profilesSideFull","_profilesActiveSide","_profilesInActiveSide",
+				"_playerEntities","_profileIsPlayer"];
 
 				if(typeName _args == "ARRAY") then {
 						_profile = _args;
@@ -535,12 +545,14 @@ switch(_operation) do {
 						_profilesByCompany = [_logic, "profilesByCompany"] call ALIVE_fnc_hashGet;
 						_profilesCatagorised = [_logic, "profilesCatagorised"] call ALIVE_fnc_hashGet;
 						_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
+						_playerEntities = [_logic, "playerEntities"] call ALIVE_fnc_hashGet;
 						
 						_profileSide = [_profile, "side"] call ALIVE_fnc_hashGet;
 						_profileFaction = [_profile, "faction"] call ALIVE_fnc_hashGet;
 						_profileID = [_profile, "profileID"] call ALIVE_fnc_hashGet;
 						_profileType = [_profile, "type"] call ALIVE_fnc_hashGet;
 						_profileVehicleType = [_profile, "objectType"] call ALIVE_fnc_hashGet;
+						_profileIsPlayer = [_profile, "isPlayer"] call ALIVE_fnc_hashGet;
 												
 						_profilesCatagorisedSide = [_profilesCatagorised, _profileSide] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedTypes = [_profilesCatagorisedSide, "type"] call ALIVE_fnc_hashGet;
@@ -641,6 +653,11 @@ switch(_operation) do {
 							};
 
 							if!(_profileType == "vehicle") then {
+
+							    if(_profileIsPlayer) then {
+							        [_playerEntities, _profileID] call ALIVE_fnc_hashRem;
+							    };
+
 								// if company id is set
 								_profileCompany = [_profile, "companyID"] call ALIVE_fnc_hashGet;
 								if!(_profileCompany == "") then {
@@ -734,14 +751,13 @@ switch(_operation) do {
                 [_profilesInActiveSide, _profileID, _profile] call ALIVE_fnc_hashSet;
                 [_profilesInActiveBySide, _side, _profilesInActiveSide] call ALIVE_fnc_hashSet;
 		};
+		case "getPlayerEntities": {
+                _result = [_logic, "playerEntities"] call ALIVE_fnc_hashGet;
+        };
 		case "getActive": {
-                private["_profileID","_profilesInActive","_profilesActive"];
-
                 _result = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;
         };
         case "getInActive": {
-                private["_profileID","_profilesInActive","_profilesActive"];
-
                 _result = [_logic, "profilesInActive"] call ALIVE_fnc_hashGet;
         };
         case "getActiveBySide": {

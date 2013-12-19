@@ -111,44 +111,45 @@ _engaged = [0,0,0];
 	_profileType = _entityProfile select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
 				
 	if(_profileType == "entity") then {
-	_profileID = _entityProfile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
-	_active = _entityProfile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;	
-	_waypoints = _entityProfile select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
-	_waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
-	_currentPosition = _entityProfile select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
-	_vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
-	_vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
-	_speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
-	_isCycling = _entityProfile select 2 select 25; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
-    _side = _entityProfile select 2 select 3; //[_entityProfile, "side"] call ALIVE_fnc_hashGet;
-    _positions = _entityProfile select 2 select 18; //[_entityProfile, "positions"] call ALIVE_fnc_hashGet;
-	_vehicleCommander = false;
-	_vehicleCargo = false;
-				
-	// if entity is commanding a vehicle/s
-	if(count _vehiclesInCommandOf > 0) then {
-		_vehicleCommander = true;				
-	};
-				
-	// if entity is cargo of vehicle/s
-	if(count _vehiclesInCargoOf > 0) then {	
-		_vehicleCargo = true;
-	};
-    
-    // if near profiles of other sides are near collect to clashing groups
-    if (({if !(isnil "_x") then {((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}}} count (_profiles select 2)) > 0) then {
-       
-        _clash set [count _clash,[_profileID,_currentPosition,_side,(count _positions),_vehiclesInCommandOf]];
-        
-        switch (_side) do {
-            case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
-            case ("EAST") : {_engaged set [1,(_engaged select 1) + (count _positions)]};
-            case ("GUER") : {_engaged set [2,(_engaged select 2) + (count _positions)]};
+        _profileID = _entityProfile select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
+        _active = _entityProfile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
+        _waypoints = _entityProfile select 2 select 16; //[_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
+        _waypointsCompleted = _entityProfile select 2 select 17; //[_entityProfile,"waypointsCompleted",[]] call ALIVE_fnc_hashGet;
+        _currentPosition = _entityProfile select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
+        _vehiclesInCommandOf = _entityProfile select 2 select 8; //[_entityProfile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
+        _vehiclesInCargoOf = _entityProfile select 2 select 9; //[_entityProfile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
+        _speedPerSecondArray = _entityProfile select 2 select 22; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+        _isCycling = _entityProfile select 2 select 25; //[_entityProfile, "speedPerSecond"] call ALIVE_fnc_hashGet;
+        _side = _entityProfile select 2 select 3; //[_entityProfile, "side"] call ALIVE_fnc_hashGet;
+        _positions = _entityProfile select 2 select 18; //[_entityProfile, "positions"] call ALIVE_fnc_hashGet;
+        _isPlayer = _entityProfile select 2 select 30; //[_entityProfile, "isPlayer"] call ALIVE_fnc_hashGet;
+        _vehicleCommander = false;
+        _vehicleCargo = false;
+
+        // if entity is commanding a vehicle/s
+        if(count _vehiclesInCommandOf > 0) then {
+            _vehicleCommander = true;
         };
-    };
-							
-	// entity has waypoints assigned and entity is not in cargo of a vehicle
-	if(count _waypoints > 0 && !(_vehicleCargo)) then {
+
+        // if entity is cargo of vehicle/s
+        if(count _vehiclesInCargoOf > 0) then {
+            _vehicleCargo = true;
+        };
+
+        // if near profiles of other sides are near collect to clashing groups
+        if (({if !(isnil "_x") then {((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}}} count (_profiles select 2)) > 0) then {
+
+            _clash set [count _clash,[_profileID,_currentPosition,_side,(count _positions),_vehiclesInCommandOf]];
+
+            switch (_side) do {
+                case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
+                case ("EAST") : {_engaged set [1,(_engaged select 1) + (count _positions)]};
+                case ("GUER") : {_engaged set [2,(_engaged select 2) + (count _positions)]};
+            };
+        };
+
+        // entity has waypoints assigned and entity is not in cargo of a vehicle
+        if(count _waypoints > 0 && !(_vehicleCargo) && !(_isPlayer)) then {
 					
 			// entity is not spawned, simulate
 			if!(_active) then {
@@ -298,7 +299,46 @@ _engaged = [0,0,0];
 	            	diag_log format ["Profile-Simulator corrupted profile detected %3: _newPosition %1 _position %2",_newPosition,_position,_entityProfile];
 	            };
 			};
-		};
+		} else {
+		    // entity is player entity
+            if(_isPlayer) then {
+
+                 _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                 _newPosition = getPosATL _leader;
+                 _position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
+
+                 if (!(isnil "_newPosition") && {count _newPosition > 0} && {!(isnil "_position")} && {count _position > 0}) then {
+
+                     _moveDistance = _newPosition distance _position;
+
+                     if(_moveDistance > 10) then {
+                         if(_vehicleCommander) then {
+                             // if in command of vehicle move all entities within the vehicle
+                             // set the vehicle position and merge all assigned entities positions
+
+                             _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                             _newPosition = getPosATL vehicle _leader;
+
+                             {
+                                 _vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+
+                                 if !(isnil "_vehicleProfile") then {
+                                     [_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
+                                     [_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+                                 };
+                             } forEach _vehiclesInCommandOf;
+                         } else {
+                             _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                             _newPosition = getPosATL _leader;
+
+                             // set the entity position and merge all unit positions to group position
+                             [_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
+                             [_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+                         };
+                     };
+                 };
+            };
+        };
 	};
 } forEach (_profiles select 2);
 

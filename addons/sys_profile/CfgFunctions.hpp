@@ -100,7 +100,12 @@ class cfgFunctions {
 				description = "createProfilesFromUnits";
 				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromUnits.sqf";
 				recompile = RECOMPILE;
-			};			
+			};
+		    class createProfilesFromPlayers {
+                description = "createProfilesFromPlayers";
+                file = "\x\alive\addons\sys_profile\fnc_createProfilesFromPlayers.sqf";
+                recompile = RECOMPILE;
+            };
 			class profileKilledEventHandler {
 				description = "profileKilledEventHandler";
 				file = "\x\alive\addons\sys_profile\fnc_profileKilledEventHandler.sqf";
@@ -369,6 +374,16 @@ class cfgFunctions {
 			class getInActiveEntitiesForMarking {
                 description = "getInActiveEntitiesForMarking";
                 file = "\x\alive\addons\sys_profile\fnc_getInActiveEntitiesForMarking.sqf";
+                recompile = RECOMPILE;
+            };
+            class profile_onPlayerConnected {
+                description = "profile_onPlayerConnected";
+                file = "\x\alive\addons\sys_profile\fnc_profile_onPlayerConnected.sqf";
+                recompile = RECOMPILE;
+            };
+            class profile_onPlayerDisconnected {
+                description = "profile_onPlayerDisconnected";
+                file = "\x\alive\addons\sys_profile\fnc_profile_onPlayerDisconnected.sqf";
                 recompile = RECOMPILE;
             };
 		};

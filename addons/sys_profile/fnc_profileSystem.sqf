@@ -125,6 +125,9 @@ switch(_operation) do {
 						// create the profile handler
 						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+
+						// create profiles for all players that dont have profiles
+                        [true] call ALIVE_fnc_createProfilesFromPlayers;
 						
 						// create profiles for all map units that dont have profiles
 						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;
@@ -139,7 +142,7 @@ switch(_operation) do {
 						// create command router
 						ALIVE_commandRouter = [nil, "create"] call ALIVE_fnc_commandRouter;
 						[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
-						[ALIVE_commandRouter, "debug", false] call ALIVE_fnc_commandRouter;				
+						[ALIVE_commandRouter, "debug", false] call ALIVE_fnc_commandRouter;
 
 						
 						// DEBUG -------------------------------------------------------------------------------------
