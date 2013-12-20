@@ -60,10 +60,10 @@
     </div>
     <div class="tab-pane" id="tab_operations">
 
-        <div class="table-container dark2-panel">
+        <div class="table-container dark2-panel container">
 
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-12">
                     <h2>Operations</h2>
                     @include('warroom/tables/operations')
 
@@ -77,10 +77,10 @@
     </div>
     <div class="tab-pane" id="tab_tier1">
 
-        <div class="table-container dark2-panel">
+        <div class="table-container dark2-panel container">
 
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-12">
                     <h2>Tier 1 Operators</h2>
                     @include('warroom/tables/t1operators')
 
@@ -97,10 +97,10 @@
     </div>
     <div class="tab-pane" id="tab_personnel">
 
-        <div class="table-container dark2-panel">
+        <div class="table-container dark2-panel container">
 
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-12">
                     <h2>Personnel</h2>
                     @include('warroom/tables/personnel')
                 </div>
@@ -111,10 +111,10 @@
     </div>
     <div class="tab-pane" id="tab_score">
 
-        <div class="table-container dark2-panel">
+        <div class="table-container dark2-panel container">
 
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-12">
 
 
                     <h2>Kills / Minute</h2>
