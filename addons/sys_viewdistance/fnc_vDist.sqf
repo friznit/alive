@@ -104,7 +104,15 @@ switch(_operation) do {
                       };
                     setTerrainGrid _settg;
 
+ };
+                    _maxgetvd = (ALIVE_vdist getVariable ["maxVD", 2]); // get the maximum view distance se in the module
+                    _maxsetvd = parseNumber _maxgetvd; // convert the maximum variable to a number
+                    if (_maxsetvd == 0) then {_maxsetvd = 15000;};//if the maximum view distance has not been set i.e blank, then set it to 15000
+                    if(viewdistance >  _maxsetvd) then {
+                        setViewDistance _maxsetvd;
                     };
+
+
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
                         // if ACE spectator enabled, seto to allow exit

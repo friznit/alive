@@ -73,7 +73,7 @@ _minsetvd = parseNumber _mingetvd; // convert the minimum variable to a number
 if (_minsetVD == 0) then {_minsetvd = 500;}; //if the minimum view distance has not been set i.e blank, then set it to 500
 _maxgetvd = (ALIVE_vdist getVariable ["maxVD", 2]); // get the maximum view distance se in the module
 _maxsetvd = parseNumber _maxgetvd; // convert the maximum variable to a number
-if (_maxsetvd == 0) then {_maxsetvd = 15000;};//if the maximum view distance has not been set i.e blank, then set it to 10000
+if (_maxsetvd == 0) then {_maxsetvd = 15000;};//if the maximum view distance has not been set i.e blank, then set it to 1000
 
 
 createDialog "vdist_dialog";
