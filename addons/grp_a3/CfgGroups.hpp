@@ -101,7 +101,7 @@ class CfgGroups
 					name = "$STR_A3_CfgGroups_East_OPF_F_Infantry_OIA_InfHQ0";
 					side = 0;
 					faction = "OPF_F";
-					rarityGroup = 0;
+					rarityGroup = 0.1;
 					class Unit0
 					{
 						side = 0;
@@ -194,14 +194,14 @@ class CfgGroups
 				};
 				class OIA_MotInf_AT
 				{
-					rarityGroup = 0.15;
+					rarityGroup = 0.1;
 				};
 				class OIA_MotInf_Section
 				{
 					name = "$STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_MotInfSection0";
 					side = 0;
 					faction = "OPF_F";
-					rarityGroup = 0.2;
+					rarityGroup = 0.5;
 					class Unit0
 					{
 						side = 0;
@@ -264,7 +264,7 @@ class CfgGroups
 					name = "$STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_MotInf_ATV0";
 					faction = "OPF_F";
 					side = 0;
-					rarityGroup = 0.1;
+					rarityGroup = 0.2;
 					class Unit0
 					{
 						side = 0;
@@ -285,7 +285,7 @@ class CfgGroups
 					name = "$STR_A3_CfgGroups_East_OPF_F_Motorized_MTP_OIA_MotInf_HQ0";
 					side = 0;
 					faction = "OPF_F";
-					rarityGroup = 0;
+					rarityGroup = 0.1;
 					class Unit0
 					{
 						side = 0;
@@ -331,16 +331,65 @@ class CfgGroups
 					class Unit0
 					{
 						side = 0;
-						vehicle="O_Truck_02_covered_F";
+						vehicle = "O_soldier_SL_F";
 						rank = "SERGEANT";
-						position[] = {-5,7,0};
+						position[] = {0,0,0};
 					};
 					class Unit1
 					{
 						side = 0;
-						vehicle="O_Truck_02_covered_F";
+						vehicle = "O_soldier_TL_F";
+						rank = "SERGEANT";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 0;
+						vehicle = "O_soldier_AR_F";
 						rank = "CORPORAL";
-						position[] = {-5,0,0};
+						position[] = {-5,-5,0};
+					};
+					class Unit3
+					{
+						side = 0;
+						vehicle = "O_soldier_AR_F";
+						rank = "PRIVATE";
+						position[] = {10,-10,0};
+					};
+					class Unit4
+					{
+						side = 0;
+						vehicle = "O_soldier_AAR_F";
+						rank = "PRIVATE";
+						position[] = {-10,-10,0};
+					};
+					class Unit5
+					{
+						side = 0;
+						vehicle = "O_soldier_LAT_F";
+						rank = "CORPORAL";
+						position[] = {15,-15,0};
+					};
+					class Unit6
+					{
+						side = 0;
+						vehicle = "O_medic_F";
+						rank = "PRIVATE";
+						position[] = {-15,-15,0};
+					};
+					class Unit7
+					{
+						side = 0;
+						vehicle = "O_soldier_F";
+						rank = "PRIVATE";
+						position[] = {20,-20,0};
+					};
+					class Unit8
+					{
+						side = 0;
+						vehicle="O_Truck_02_covered_F";
+						rank = "PRIVATE";
+						position[] = {-20,-20,0};
 					};
 				};
 			};
