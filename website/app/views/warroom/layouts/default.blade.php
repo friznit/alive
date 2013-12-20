@@ -19,7 +19,7 @@
     <script src="{{ URL::to('/') }}/js/war_room.js"></script>
     <script src="{{ URL::to('/') }}/js/dataTables.bootstrap.js"></script>
     <script src="{{ URL::to('/') }}/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+	<script src="http://www.openlayers.org/api/2.7/OpenLayers.js" type="text/javascript"></script>
     <script src="{{ URL::to('/') }}/js/greenthumb/easing/EasePack.min.js"></script>
     <script src="{{ URL::to('/') }}/js/greenthumb/TweenLite.min.js"></script>
     <!--[if lt IE 9]>
