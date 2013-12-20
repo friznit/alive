@@ -54,6 +54,7 @@ if(count (_playerProfiles select 1) > 0) then {
         _units = _profile select 2 select 21;
         _countPlayers = 0;
         {
+            _unit = _x;
             if!(isNull _unit) then {
                 if(isPlayer _unit) then {
                     _countPlayers = _countPlayers + 1;

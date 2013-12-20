@@ -202,6 +202,10 @@ switch(_operation) do {
 						[ALIVE_liveAnalysis, "start"] call ALIVE_fnc_liveAnalysis;
 						
                 };
+                if(hasInterface) then {
+                    player addEventHandler ["killed", {titleText ["KILLED", "BLACK IN", 9999];}];
+                    player addEventHandler ["respawn", {titleText ["RESPAWN", "BLACK IN", 9999];}];
+                }
         };
         case "destroy": {                
                 [_logic, "debug", false] call MAINCLASS;
