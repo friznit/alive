@@ -3,18 +3,11 @@
 {{-- Chart Data --}}
 @section('chart_datasource')
 
-            baseUrl = 'http://msostore.iriscouch.com/events/_design/kill/_view/';
             blu_casualties_data = [];
 
-            var ajaxUrl = baseUrl + 'side_killed_count_by_class?group_level=2&callback=?';
+            var ajaxUrl = '{{ URL::to('/') }}/api/lossesblu';
             $.getJSON(ajaxUrl, function(data) {
-                for (var i=0; i<data.rows.length; i++) {
-                    if(data.rows[i].value > 0) {
-                        if((data.rows[i].key[0] == "WEST") && (data.rows[i].key[1] != null) && (data.rows[i].key[1] != "any")) {
-                            blu_casualties_data.push([data.rows[i].key[1], data.rows[i].value]);
-                        }
-                    }
-                }
+                blu_casualties_data = data
                 makeBluLossesChart();
             });
 

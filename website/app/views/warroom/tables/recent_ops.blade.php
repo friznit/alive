@@ -3,7 +3,7 @@
     $(document).ready(function(){
         $('#recent_ops').dataTable({
             "bJQueryUI": true,
-            "sAjaxSource": 'http://msostore.iriscouch.com/events/_design/events/_view/recent_operations?descending=true&limit=50&callback=?',
+            "sAjaxSource": '{{ URL::to('/') }}/api/recentoperations',
             "sAjaxDataProp": "rows",
             "bPaginate": false,
             "bFilter": false,

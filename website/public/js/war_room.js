@@ -22,6 +22,13 @@ $(document).ready(function() {
         theme:"light-thin"
     });
 
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target);
+        if(target.attr('href') == '#two'){
+            $(window).resize();
+        }
+    })
+
 });
 
 function getServerDetails(ipaddr) {

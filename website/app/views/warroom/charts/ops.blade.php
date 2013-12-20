@@ -3,20 +3,15 @@
 {{-- Chart Data --}}
 @section('chart_datasource')
 
-            baseUrl = 'http://msostore.iriscouch.com/events/_design/events/_view/';
             op_data = [];
 
-            var ajaxUrl = baseUrl + 'operations_by_map?group_level=1&callback=?';
+            var ajaxUrl = '{{ URL::to('/') }}/api/operationsbymap';
             $.getJSON(ajaxUrl, function(data) {
-                for (var i=0; i<data.rows.length; i++) {
-                    if(data.rows[i].value > 0) {
-                        if(data.rows[i].key != null) {
-                            op_data.push([data.rows[i].key, data.rows[i].value]);
-                        }
-                    }
-                }
+                op_data = data;
                 makeOpChart();
             });
+
+
 
 @overwrite
 

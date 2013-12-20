@@ -3,18 +3,11 @@
 {{-- Chart Data --}}
 @section('chart_datasource')
 
-            baseUrl = 'http://msostore.iriscouch.com/events/_design/kill/_view/';
             opf_casualties_data = [];
 
-            var ajaxUrl = baseUrl + 'side_killed_count_by_class?group_level=2&callback=?';
+            var ajaxUrl = '{{ URL::to('/') }}/api/lossesopf';
             $.getJSON(ajaxUrl, function(data) {
-                for (var i=0; i<data.rows.length; i++) {
-                    if(data.rows[i].value > 0) {
-                        if((data.rows[i].key[0] == "EAST") && (data.rows[i].key[1] != null) && (data.rows[i].key[1] != "any")) {
-                            opf_casualties_data.push([data.rows[i].key[1], data.rows[i].value]);
-                        }
-                    }
-                }
+                opf_casualties_data = data;
                 makeOpfLossesChart();
             });
 

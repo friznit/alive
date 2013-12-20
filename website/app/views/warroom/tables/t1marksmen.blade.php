@@ -28,7 +28,7 @@
 
 </script>
 
-<table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped table-bordered" id="t1_marksmen">
+<table cellpadding="0" cellspacing="0" border="0" class="dataTable table" id="t1_marksmen">
     <thead>
     <tr>
         <th>Player</th>

@@ -3,16 +3,11 @@
 {{-- Chart Data --}}
 @section('chart_datasource')
 
-            baseUrl = 'http://msostore.iriscouch.com/events/_design/kill/_view/';
             casualties_data = [];
 
-            var ajaxUrl = baseUrl + 'side_killed_count?group_level=1&callback=?';
+            var ajaxUrl = '{{ URL::to('/') }}/api/casualties';
             $.getJSON(ajaxUrl, function(data) {
-                for (var i=0; i<data.rows.length; i++) {
-                    if(data.rows[i].value > 1) {
-                    casualties_data.push([data.rows[i].key, data.rows[i].value]);
-                    }
-                }
+                casualties_data = data;
                 makeCasualtiesChart();
             });
 

@@ -2,35 +2,38 @@
 
     $(document).ready(function() {
 
-        $.getJSON('http://msostore.iriscouch.com/events/_design/events/_view/Totals?callback=?', function(totals)
-        {
-            var kills = totals.rows[0].value.Kills;
+        var ajaxUrl = '{{ URL::to('/') }}/api/totals';
+        $.getJSON(ajaxUrl, function(data) {
+            var totals = data;
+
+            var kills = totals.Kills;
             counter($('#ekia').append(),kills);
 
-            var losses = totals.rows[0].value.Deaths;
+            var losses = totals.Deaths;
             counter($('#losses').append(),losses);
 
-            var ops = totals.rows[0].value.Operations;
+            var ops = totals.Operations;
             counter($('#operation_count').append(),ops);
 
-            var hours = Math.round((totals.rows[0].value.CombatHours / 60)*10)/10;
+            var hours = Math.round((totals.CombatHours / 60)*10)/10;
             counter($('#combat_hours').append(),hours);
 
-            var fired = totals.rows[0].value.ShotsFired;
+            var fired = totals.ShotsFired;
             counter($('#ammo').append(),fired);
-        })
+        });
 
-        $.getJSON('http://msostore.iriscouch.com/events/_design/events/_view/players_list?group_level=2&callback=?', function(activeunits)
-        {
-            var active = activeunits.rows.length;
-            counter($('#active_units').append(),active);
-        })
+        var ajaxUrl = '{{ URL::to('/') }}/api/activeunitcount';
+        $.getJSON(ajaxUrl, function(data) {
+            var activeunits = data;
+
+            counter($('#active_units').append(),activeunits);
+        });
     })
 </script>
 
 <div id="overview_container">
 
-    <table cellpadding="0" cellspacing="0" border="0" class="table" id="overview">
+    <table cellpadding="0" cellspacing="0" border="0" class="table overview-table">
         <tbody>
         <tr>
             <td width="40%">Enemy killed in action</td>

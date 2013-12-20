@@ -27,7 +27,8 @@
 		    "app/helpers.php"
         ],
         "psr-0": {
-            "Alive": "app/lib"
+            "Alive": "app/lib",
+            "Tempo": "app/lib"
         }
 	},
 	"scripts": {

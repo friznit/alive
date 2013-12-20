@@ -9,17 +9,10 @@
 
         $.each(names, function(i, name) {
 
-            $.getJSON('http://msostore.iriscouch.com/events/_design/events/_view/'+ name.toLowerCase() +'_by_day?group_level=1&callback=?',	function(data) {
+            var ajaxUrl = '{{ URL::to('/') }}/api/'+ name.toLowerCase() +'byday';
+            $.getJSON(ajaxUrl, function(data) {
 
-                var seriesData = [];
-
-                for (var r = 0; r < data.rows.length; r++) {
-                    if (data.rows[r].value > 0) {
-                        if (data.rows[r].key[0] != null) {
-                            seriesData.push([data.rows[r].key[0], data.rows[r].value]);
-                        }
-                    }
-                }
+                var seriesData = data;
 
                 seriesOptions[i] = {
                     name: name,

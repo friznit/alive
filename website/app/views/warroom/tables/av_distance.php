@@ -28,7 +28,7 @@
 
 </script>
 
-<table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped table-bordered" id="av_distance">
+<table cellpadding="0" cellspacing="0" border="0" class="dataTable table" id="av_distance">
     <thead>
     <tr>
         <th>Player</th>
