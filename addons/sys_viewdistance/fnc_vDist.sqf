@@ -85,6 +85,26 @@ switch(_operation) do {
                 */
                 
                 if(!isDedicated && !isHC) then {
+                    _mingettg = Alive_vdist getvariable["minTG", 2]; // get the minimum terrain grid set in themodule
+                    _minsettg = parseNumber _mingettg; // convert the minimum variable to a number
+                    if (_minsettg == 0) then {_minsettg = 1;}; //if the minimum terrain grid has not been set i.e blank, then set it to 1
+                    _maxgettg = (ALIVE_vdist getVariable ["maxTG", 2]); // get the maximum terrain grid set in the module
+                    _maxsettg = parseNumber _maxgettg; // convert the maximum variable to a number
+                    if (_maxsettg == 0) then {_maxsettg = 5;};//if the maximum terrain grid has not been set i.e blank, then set it to  5
+
+                    _tgvalue = _maxsettg - _minsettg;
+                    _settg = 12.5;
+                    if(_tgvalue == 0) then {
+                                     switch (_maxsettg) do {
+                                     case 1 : {_settg = 50};
+                                     case 2 : {_settg = 25};
+                                     case 3 : {_settg = 12.5};
+                                     case 4 : {_settg = 6.25};
+                                     case 5 : {_settg = 3.125};                                      
+                      };
+                    setTerrainGrid _settg;
+
+                    };
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
                         // if ACE spectator enabled, seto to allow exit

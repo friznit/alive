@@ -36,13 +36,13 @@
 	<English>Max TG:</English>
 </Key>
 <Key ID="STR_ALIVE_TGRID_MAX_COMMENT">
-	<English>Maximum Terrain Grid allowed in Game</English>
+	<English>Maximum Terrain Grid allowed in Game 1 Low -> 5 High</English>
 </Key>
 <Key ID="STR_ALIVE_TGRID_MIN">
 	<English>Min TG:</English>
 </Key>
 <Key ID="STR_ALIVE_TGRID_MIN_COMMENT">
-	<English>Minimum Terrain Grid allowed in Game</English>
+	<English>Minimum Terrain Grid allowed in Game 1 Low -> 5 High</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_ERROR1">
 	<English>Only one View Distance module can be used</English>

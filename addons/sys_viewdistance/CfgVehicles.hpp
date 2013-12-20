@@ -28,13 +28,13 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_TGRID_MAX";
                                 description = "$STR_ALIVE_TGRID_MAX_COMMENT";
-                                defaultvalue = "50";
+                                defaultvalue = "5";
                         };
                         class minTG
                         {
                                 displayName = "$STR_ALIVE_TGRID_MIN";
                                 description = "$STR_ALIVE_TGRID_MIN_COMMENT";
-                                defaultvalue = "5";
+                                defaultvalue = "1";
                         };
                 };
                 
