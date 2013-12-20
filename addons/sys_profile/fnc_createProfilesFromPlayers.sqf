@@ -26,7 +26,7 @@ ARJay
 private ["_debug","_players","_entityCount","_group","_leader","_units","_unitClasses","_positions","_ranks",
 "_damages","_unitCount","_profileID","_unit","_eventID","_profileID","_position","_side"];
 
-_debug = if(count _this > 0) then {_this select 0} else {false};
+_debug = if(count _this > 0) then {_this select 0} else {true};
 
 _players = [];
 _entityCount = 0;
@@ -62,6 +62,8 @@ if(count (_playerProfiles select 1) > 0) then {
             };
         } forEach _units;
 
+        ["!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PLAYER COUNT: %1",_countPlayers] call ALIVE_fnc_dump;
+
         if(_countPlayers == 0) then {
             [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
             _countRemoved = _countRemoved + 1;
@@ -87,6 +89,9 @@ if(_debug) then {
 	_leader = leader _group;
 	_units = units _group;
 
+	["!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PLAYER GROUP: %1",_group] call ALIVE_fnc_dump;
+	["!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PLAYER VAR: %1",_leader getVariable ["profileID",""]] call ALIVE_fnc_dump;
+
 	if(_leader getVariable ["profileID",""] == "") then {
 
 		_unitClasses = [];
@@ -104,8 +109,8 @@ if(_debug) then {
             _damages set [count _damages, getDammage _x];
 
             // set profile id on the unit
-            _unit setVariable ["profileID", _profileID];
-            _unit setVariable ["profileIndex", _unitCount];
+            _unit setVariable ["profileID", _profileID,true];
+            _unit setVariable ["profileIndex", _unitCount,true];
 
             // killed event handler
             if!(isPlayer _unit) then {
@@ -144,7 +149,8 @@ if(_debug) then {
 	
 } forEach _players;
 
-[ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+_players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+_players call ALIVE_fnc_inspectHash;
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {

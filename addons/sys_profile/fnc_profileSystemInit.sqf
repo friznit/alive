@@ -54,3 +54,20 @@ if(isServer) then {
 	[_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "register"] call ALIVE_fnc_profileSystem;
 };
+
+if(hasInterface) then {
+    player addEventHandler ["killed", {
+        (_this select 0) setVariable ["profileID", nil, true];
+        (_this select 0) setVariable ["profileIndex", nil, true];
+        
+        ["server","PS",[[],{call ALIVE_fnc_createProfilesFromPlayers}]] call ALiVE_fnc_BUS;
+    }];
+    player addEventHandler ["respawn",
+    {
+        []spawn {
+            // wait for player
+            waitUntil {alive player};
+            ["server","PS",[[],{call ALIVE_fnc_createProfilesFromPlayers}]] call ALiVE_fnc_BUS;
+        };
+    }];
+};
