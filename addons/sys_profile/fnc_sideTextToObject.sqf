@@ -40,7 +40,7 @@ switch(_side) do {
 		_result = resistance;
 	};
 	case "CIV": {
-		_result = civ;
+		_result = civilian;
 	};
 };
 
