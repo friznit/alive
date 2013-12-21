@@ -59,8 +59,6 @@ if(isServer) then {
 
 if(hasInterface) then {
     player addEventHandler ["killed", {
-        //(_this select 0) setVariable ["profileID", nil, true];
-        //(_this select 0) setVariable ["profileIndex", nil, true];
         []spawn {
             _uid = getPlayerUID player;
 
