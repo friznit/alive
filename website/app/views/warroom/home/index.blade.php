@@ -2,45 +2,56 @@
 
 {{-- Content --}}
 @section('content')
+ 
+<div id="map" style="height: 900px;"></div>
 
-<div id="statsnav" class="navbar navbar-warroom" role="navigation">
-    <div class="container">
-        <ul class="nav navbar-nav nav-tabs" data-tabs="tabs">
-            <li class="active"><a data-toggle="tab" href="#one">Areas of Operation</a></li>
-            <li><a data-toggle="tab" href="#two">Operational Tempo</a></li>
-            <li><a data-toggle="tab" href="#tab_operations">Operations</a></li>
-            <li><a data-toggle="tab" href="#tab_tier1">Tier 1</a></li>
-            <li><a data-toggle="tab" href="#tab_personnel">Personnel</a></li>
-            <li><a data-toggle="tab" href="#tab_score">High Scores</a></li>
-        </ul>
-    </div>
+<script type="text/javascript">
+
+        var map = L.map('map', {
+			minZoom: 2,
+			maxZoom: 5,
+			crs: L.CRS.Simple
+		}).setView([2048,2048], 2);
+		
+		var southWest = map.unproject([0,4096], map.getMaxZoom());
+		var northEast = map.unproject([4096,0], map.getMaxZoom());
+		map.setMaxBounds(new L.LatLngBounds(southWest, northEast));
+		L.tileLayer("{{ URL::to('/') }}/maps/globalmap3/{z}/{x}/{y}.png" , {
+            attribution: 'ALiVE',
+            tms: true	//means invert.
+        }).addTo(map);
+		
+		map.on('click', function(e) {
+			alert(map.project(e.latlng, map.getMaxZoom()));
+		});
+		
+    $(document).ready(function() {
+		$(".trigger").click(function(){
+			$(".panel").toggle("fast");
+			$(this).toggleClass("active");
+			return false;
+		});
+	});
+</script>
+
+<div class="col-md-2" style="position: absolute; z-index:10000; right: 10px; top:50px;">
+    @include('warroom/tables/overview')
 </div>
 
-<div class="tab-content">
-    <div class="tab-pane active" id="one">
-        <div class="stats-container globalmap-panel">
+<div class="col-md-2" style="position: absolute; z-index:10000; left: 10px; top:50px;">
+    @include('warroom/tables/recent_ops')
+</div>
 
-            <div class="row">
-                <div class="col-md-3">
-                    @include('warroom/tables/overview')
-                    @include('warroom/tables/recent_ops')
-                    @include('warroom/tables/live_feed')
-                </div>
-            </div>
+<div class="col-md-2" style="position: absolute; z-index:10000; left: 10px; top:300px;">
+    @include('warroom/tables/t1operators')
+</div>
 
-        </div>
-    </div>
-    <div class="tab-pane" id="two">
+<div class="col-md-2" style="position: absolute; z-index:10000; right: 10px; top:300px;">
+    @include('warroom/tables/live_feed')
+</div>
 
-        <div class="stats-container dark2-panel">
+<div class="col-md-12">
 
-            <div class="row">
-                <div class="col-md-12">
-                    @include('warroom/charts/tempo')
-                </div>
-            </div>
-
-            <div class="row">
                 <div class="col-md-3">
                     @include('warroom/charts/blu_losses')
                 </div>
@@ -53,96 +64,7 @@
                 <div class="col-md-3">
                     @include('warroom/charts/ops')
                 </div>
-            </div>
 
-        </div>
-
-    </div>
-    <div class="tab-pane" id="tab_operations">
-
-        <div class="table-container dark2-panel container">
-
-            <div class="row">
-                <div class="col-md-12">
-                    <h2>Operations</h2>
-                    @include('warroom/tables/operations')
-
-                    <h2>Operation Breakdown</h2>
-                    @include('warroom/tables/breakdown')
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="tab-pane" id="tab_tier1">
-
-        <div class="table-container dark2-panel container">
-
-            <div class="row">
-                <div class="col-md-12">
-                    <h2>Tier 1 Operators</h2>
-                    @include('warroom/tables/t1operators')
-
-                    <h2>Tier 1 Marksmen</h2>
-                    @include('warroom/tables/t1marksmen')
-
-                    <h2>Tier 1 Vehicle Commanders</h2>
-                    @include('warroom/tables/pilots')
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="tab-pane" id="tab_personnel">
-
-        <div class="table-container dark2-panel container">
-
-            <div class="row">
-                <div class="col-md-12">
-                    <h2>Personnel</h2>
-                    @include('warroom/tables/personnel')
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="tab-pane" id="tab_score">
-
-        <div class="table-container dark2-panel container">
-
-            <div class="row">
-                <div class="col-md-12">
-
-
-                    <h2>Kills / Minute</h2>
-                    @include('warroom/tables/kpm')
-
-                    <h2>AV</h2>
-                    @include('warroom/tables/av_distance')
-
-                    <h2>Score</h2>
-                    @include('warroom/tables/score')
-
-                    <h2>Rating</h2>
-                    @include('warroom/tables/rating')
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<div class="row">
-    <div class="col-md-12">
-        @include('warroom/charts/tempo')
-    </div>
-</div>
+ </div>
 
 @stop

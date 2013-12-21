@@ -131,7 +131,12 @@ img {
  ----------------------------------------*/
 
 #recent_ops_container {
-    max-height:220px;
+    margin-top:25px;
+    font-family: 'Roboto Condensed', san-serif;
+	color: #fcaf17;
+    font-size:12px;
+    line-height: 10px;
+	max-height:220px;
 }
 
 #overview_container {
@@ -140,14 +145,29 @@ img {
 }
 
 table.overview-table {
+    margin-top:25px;
+    font-family: 'Roboto Condensed', san-serif;
+	color: #fcaf17;
+    font-size:12px;
+    line-height: 13px;
 }
 
-#live_feed_container {
-    max-height:220px;
-    margin-top:50px;
+#t1operators_container {
+    max-height:600px;
+    margin-top:25px;
     font-family: 'Roboto Condensed', san-serif;
     font-size:12px;
     line-height: 13px;
+	color: #fcaf17;
+}
+
+#live_feed_container {
+    max-height:600px;
+    margin-top:25px;
+    font-family: 'Roboto Condensed', san-serif;
+    font-size:12px;
+    line-height: 13px;
+	color:#CCC;
 }
 
 #live_feed_container .operation {

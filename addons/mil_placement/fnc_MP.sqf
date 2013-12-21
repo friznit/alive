@@ -362,7 +362,8 @@ switch(_operation) do {
                 // cull clusters outside of TAOR marker if defined
                 _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
                 // cull clusters inside of Blacklist marker if defined
-                _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
+                _clusters = _clusters - _blacklistClusters;
                 ///*
                 // switch on debug for all clusters if debug on
                 {
@@ -385,7 +386,8 @@ switch(_operation) do {
                     _HQClusters = ALIVE_clustersMilHQ select 2;
                     _HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                     _HQClusters = [_HQClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                    _HQClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                    _blacklistClusters = [_HQClusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
+                    _HQClusters = _HQClusters - _blacklistClusters;
                     /*
                     {
                         [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
@@ -397,7 +399,8 @@ switch(_operation) do {
                     _airClusters = ALIVE_clustersMilAir select 2;
                     _airClusters = [_airClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                     _airClusters = [_airClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                    _airClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                    _blacklistClusters = [_airClusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
+                    _airClusters = _airClusters - _blacklistClusters;
                     /*
                     {
                         [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
@@ -409,7 +412,8 @@ switch(_operation) do {
                     _heliClusters = ALIVE_clustersMilHeli select 2;
                     _heliClusters = [_heliClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                     _heliClusters = [_heliClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                    _heliClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                    _blacklistClusters = [_heliClusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
+                    _heliClusters = _heliClusters - _blacklistClusters;
                     /*
                     {
                         [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;

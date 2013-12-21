@@ -37,13 +37,15 @@ if(isServer) then {
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1000"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
 
-	["ALIVE Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
-
 	if(_debug == "true") then {
 		_debug = true;
 	}else{
 		_debug = false;
 	};
+
+    if(_debug) then {
+        ["ALIVE Profile System Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
+    };
 
 	_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "init"] call ALIVE_fnc_profileSystem;
@@ -57,17 +59,26 @@ if(isServer) then {
 
 if(hasInterface) then {
     player addEventHandler ["killed", {
-        (_this select 0) setVariable ["profileID", nil, true];
-        (_this select 0) setVariable ["profileIndex", nil, true];
-        
-        ["server","PS",[[],{call ALIVE_fnc_createProfilesFromPlayers}]] call ALiVE_fnc_BUS;
+        []spawn {
+            _uid = getPlayerUID player;
+
+            ["ALIVE KILLED: uid:%1",_uid] call ALIVE_fnc_dump;
+
+            ["server","PS",[["KILLED",_uid,player],{call ALIVE_fnc_createProfilesFromPlayers}]] call ALiVE_fnc_BUS;
+        };
     }];
     player addEventHandler ["respawn",
     {
         []spawn {
             // wait for player
-            waitUntil {alive player};
-            ["server","PS",[[],{call ALIVE_fnc_createProfilesFromPlayers}]] call ALiVE_fnc_BUS;
+            waitUntil {sleep 0.3; alive player};
+            waitUntil {sleep 0.3; (getPlayerUID player) != ""};
+
+            _uid = getPlayerUID player;
+
+            ["ALIVE RESPAWN: uid:%1",_uid] call ALIVE_fnc_dump;
+
+            ["server","PS",[["RESPAWN",_uid,player],{call ALIVE_fnc_createProfilesFromPlayers}]] call ALiVE_fnc_BUS;
         };
     }];
 };

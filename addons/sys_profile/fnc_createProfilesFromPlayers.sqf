@@ -23,139 +23,645 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_debug","_players","_entityCount","_group","_leader","_units","_unitClasses","_positions","_ranks",
-"_damages","_unitCount","_profileID","_unit","_eventID","_profileID","_position","_side"];
+private ["_state","_uid","_player","_debug","_players","_entityCount","_playerProfiles","_profileIndex","_registeredProfile","_group","_leader","_units","_unitClasses","_positions","_ranks",
+"_damages","_unitCount","_profileID","_unit","_eventID","_profileID","_position","_side","_existingPlayers","_existingProfile"];
 
-_debug = if(count _this > 0) then {_this select 0} else {true};
+_state = _this select 0;
+_uid = if(count _this > 1) then {_this select 1} else {""};
+_player = if(count _this > 2) then {_this select 2} else {objNull};
+_debug = if(count _this > 3) then {_this select 3} else {true};
 
 _players = [];
-_entityCount = 0;
-
 if (isMultiplayer) then {
 	_players = playableUnits;
 } else {
     _players = [player];
 };
 
-// DEBUG -------------------------------------------------------------------------------------
-if(_debug) then {
-	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-	["ALIVE Remove existing profiles with no players"] call ALIVE_fnc_dump;
-	[true] call ALIVE_fnc_timer;
-};
-// DEBUG -------------------------------------------------------------------------------------
-
 _playerProfiles = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
-_countRemoved = 0;
+_profileIndex = [ALIVE_profileHandler,"getPlayerIndex"] call ALIVE_fnc_profileHandler;
 
-if(count (_playerProfiles select 1) > 0) then {
-    {
-        _profile = _x;
-        _units = _profile select 2 select 21;
-        _countPlayers = 0;
-        {
-            _unit = _x;
-            if!(isNull _unit) then {
+_entityCount = count (_playerProfiles select 1);
+
+["ALIVE Player profiler - State: %1",_state] call ALIVE_fnc_dump;
+["ALIVE Player profiler - Current Entity Count: %1",_entityCount] call ALIVE_fnc_dump;
+["ALIVE Player profiler - UID: %1",_uid] call ALIVE_fnc_dump;
+["ALIVE Player profiler - Player: %1",_player] call ALIVE_fnc_dump;
+["ALIVE Player profiler - Player Group: %1",group _player] call ALIVE_fnc_dump;
+["ALIVE Player profiler - Player Group Units: %1",units group _player] call ALIVE_fnc_dump;
+
+
+if(_uid in (_profileIndex select 1)) then {
+    _registeredProfile = [_profileIndex, _uid] call ALIVE_fnc_hashGet;
+};
+
+if!(isNil "_registeredProfile") then {
+
+    ["ALIVE Player profiler - Registered profile exists"] call ALIVE_fnc_dump;
+
+    switch(_state) do {
+        case "CONNECT":{
+
+        };
+        case "DISCONNECT":{
+
+            ["ALIVE Player profiler - Registered profile found, remove disconnecting player from profile"] call ALIVE_fnc_dump;
+
+            _profileEntity = _registeredProfile;
+            _group = _profileEntity select 2 select 13;
+            _profileID = _profileEntity select 2 select 4;
+            _units = units _group;
+            _existingPlayers = [];
+
+            [_profileIndex, _uid] call ALIVE_fnc_hashRem;
+
+            {
+                _unit = _x;
                 if(isPlayer _unit) then {
-                    _countPlayers = _countPlayers + 1;
+                    _uuid = getPlayerUID _unit;
+                    if(_uuid != _uid) then {
+                        _existingPlayers = _existingPlayers + [_uuid];
+                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    }else{
+                        ["ALIVE Player profiler - found disconnecting player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    };
+                };
+            } forEach _units;
+
+            // there are existing players in this group check if they are profiled
+            if(count _existingPlayers > 0) then {
+                ["ALIVE Player profiler - other players in group, wait until disconnecting player is null and update"] call ALIVE_fnc_dump;
+
+                _leader = leader _group;
+
+                _unitClasses = [];
+                _positions = [];
+                _ranks = [];
+                _damages = [];
+                _unitCount = 0;
+
+                {
+                    _unit = _x;
+                    _unitClasses set [count _unitClasses, typeOf _x];
+                    _positions set [count _positions, getPosATL _x];
+                    _ranks set [count _ranks, rank _x];
+                    _damages set [count _damages, getDammage _x];
+
+                    _unitCount = _unitCount + 1;
+
+                } foreach (_units);
+
+                _position = getPosATL _leader;
+
+                [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
+                [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
+                [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Remove disconnected player profile complete"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+            }else{
+                ["ALIVE Player profiler - No players found removing profile.."] call ALIVE_fnc_dump;
+                [ALIVE_profileHandler, "unregisterProfile", _profileEntity] call ALIVE_fnc_profileHandler;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Remove disconnected player profile complete"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+            }
+
+        };
+        case "KILLED":{
+            ["ALIVE Player profiler - Registered profile found, remove killed player from profile"] call ALIVE_fnc_dump;
+
+            _profileEntity = _registeredProfile;
+            _group = _profileEntity select 2 select 13;
+            _profileID = _profileEntity select 2 select 4;
+            _units = units _group;
+            _existingPlayers = [];
+
+            [_profileIndex, _uid] call ALIVE_fnc_hashRem;
+
+            {
+                _unit = _x;
+                if(isPlayer _unit) then {
+                    _uuid = getPlayerUID _unit;
+                    if(_uuid != _uid) then {
+                        _existingPlayers = _existingPlayers + [_uuid];
+                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    }else{
+                        ["ALIVE Player profiler - found disconnecting player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    };
+                };
+            } forEach _units;
+
+            // there are existing players in this group check if they are profiled
+            if(count _existingPlayers > 0) then {
+                ["ALIVE Player profiler - other players in group, wait until disconnecting player is null and update"] call ALIVE_fnc_dump;
+
+                _leader = leader _group;
+
+                _unitClasses = [];
+                _positions = [];
+                _ranks = [];
+                _damages = [];
+                _unitCount = 0;
+
+                {
+                    _unit = _x;
+                    _unitClasses set [count _unitClasses, typeOf _x];
+                    _positions set [count _positions, getPosATL _x];
+                    _ranks set [count _ranks, rank _x];
+                    _damages set [count _damages, getDammage _x];
+
+                    _unitCount = _unitCount + 1;
+
+                } foreach (_units);
+
+                _position = getPosATL _leader;
+
+                [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
+                [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
+                [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Remove disconnected player profile complete"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+            }else{
+                ["ALIVE Player profiler - No players found removing profile.."] call ALIVE_fnc_dump;
+                [ALIVE_profileHandler, "unregisterProfile", _profileEntity] call ALIVE_fnc_profileHandler;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Remove disconnected player profile complete"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+            }
+        };
+        case "RESPAWN":{
+
+        };
+    };
+
+
+}else{
+
+    ["ALIVE Player profiler - Registered profile does not exist"] call ALIVE_fnc_dump;
+
+    switch(_state) do {
+        case "INIT":{
+
+            // pick up players in single player
+            if!(isMultiplayer) then {
+                {
+                    _group = group _x;
+                    _leader = leader _group;
+                    _units = units _group;
+                    _unitClasses = [];
+                    _positions = [];
+                    _ranks = [];
+                    _damages = [];
+                    _unitCount = 0;
+                    _profileID = format["player_%1",_entityCount];
+
+                    {
+                        _unit = _x;
+                        _unitClasses set [count _unitClasses, typeOf _x];
+                        _positions set [count _positions, getPosATL _x];
+                        _ranks set [count _ranks, rank _x];
+                        _damages set [count _damages, getDammage _x];
+
+                        // set profile id on the unit
+                        _unit setVariable ["profileID", _profileID,true];
+                        _unit setVariable ["profileIndex", _unitCount,true];
+
+                        // killed event handler
+                        if!(isPlayer _unit) then {
+                            _eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+                        };
+
+                        _unitCount = _unitCount + 1;
+
+                    } foreach (_units);
+
+                    _position = getPosATL _leader;
+                    _side = str(side _leader);
+
+                    _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "init"] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "profileID", _profileID] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
+                    [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
+                    [_profileEntity, "group", _group] call ALIVE_fnc_hashSet;
+                    [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
+                    [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
+
+                    [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
+
+                    _entityCount = _entityCount + 1;
+
+                    [_profileIndex, getPlayerUID _x, _profileEntity] call ALIVE_fnc_hashSet;
+
+                } forEach _players;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Create profiles from players complete - total player profiles: [%1]",_entityCount] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+            };
+
+        };
+        case "CONNECT":{
+
+            // a player has connected to the server
+
+            _group = group _player;
+            _leader = leader _group;
+            _units = units _group;
+            _existingPlayers = [];
+
+            if(_player == _leader) then {
+                ["ALIVE Player profiler - Connected player is the group leader: %1",_player] call ALIVE_fnc_dump;
+            };
+
+            {
+                _unit = _x;
+                if(isPlayer _unit) then {
+                    _uuid = getPlayerUID _unit;
+                    if(_uuid != _uid) then {
+                        _existingPlayers = _existingPlayers + [_uuid];
+                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    }else{
+                        ["ALIVE Player profiler - found connecting player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    };
+                };
+            } forEach _units;
+
+            // there are existing players in this group check if they are profiled
+            if(count _existingPlayers > 0) then {
+                _uuid = _existingPlayers select 0;
+                ["ALIVE Player profiler - checking other players for profile: %1",_uuid] call ALIVE_fnc_dump;
+                if(_uuid in (_profileIndex select 1)) then {
+                   _existingProfile = [_profileIndex, _uid] call ALIVE_fnc_hashGet;
                 };
             };
-        } forEach _units;
 
-        ["!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PLAYER COUNT: %1",_countPlayers] call ALIVE_fnc_dump;
+            if!(isNil "_existingProfile") then {
 
-        if(_countPlayers == 0) then {
-            [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
-            _countRemoved = _countRemoved + 1;
-        }else{
-            _entityCount = _entityCount + 1;
-        };
+                ["ALIVE Player profiler - Existing profile found, add connecting player to profile"] call ALIVE_fnc_dump;
 
-    } forEach (_playerProfiles select 2);
-};
+                _profileEntity = _existingProfile;
+                _unitClasses = [];
+                _positions = [];
+                _ranks = [];
+                _damages = [];
+                _unitCount = 0;
+                _profileID = _profileEntity select 2 select 4;
 
-// DEBUG -------------------------------------------------------------------------------------
-if(_debug) then {
-    [] call ALIVE_fnc_timer;
-    ["ALIVE Removed %1 player profiles",_countRemoved] call ALIVE_fnc_dump;
-	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-	["ALIVE Create profiles from players"] call ALIVE_fnc_dump;
-	[true] call ALIVE_fnc_timer;
-};
-// DEBUG -------------------------------------------------------------------------------------
+                {
+                    _unit = _x;
+                    _unitClasses set [count _unitClasses, typeOf _x];
+                    _positions set [count _positions, getPosATL _x];
+                    _ranks set [count _ranks, rank _x];
+                    _damages set [count _damages, getDammage _x];
 
-{
-	_group = group _x;
-	_leader = leader _group;
-	_units = units _group;
+                    // set profile id on the unit
+                    _unit setVariable ["profileID", _profileID];
+                    _unit setVariable ["profileIndex", _unitCount];
 
-	["!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PLAYER GROUP: %1",_group] call ALIVE_fnc_dump;
-	["!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PLAYER VAR: %1",_leader getVariable ["profileID",""]] call ALIVE_fnc_dump;
+                    _unitCount = _unitCount + 1;
 
-	if(_leader getVariable ["profileID",""] == "") then {
+                } foreach (_units);
 
-		_unitClasses = [];
-		_positions = [];
-		_ranks = [];
-		_damages = [];
-        _unitCount = 0;
-        _profileID = format["player_%1",_entityCount];
+                _position = getPosATL _leader;
+                _side = str(side _leader);
 
-        {
-            _unit = _x;
-            _unitClasses set [count _unitClasses, typeOf _x];
-            _positions set [count _positions, getPosATL _x];
-            _ranks set [count _ranks, rank _x];
-            _damages set [count _damages, getDammage _x];
+                [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
+                [_profileEntity, "group", _group] call ALIVE_fnc_hashSet;
+                [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
+                [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
 
-            // set profile id on the unit
-            _unit setVariable ["profileID", _profileID,true];
-            _unit setVariable ["profileIndex", _unitCount,true];
+                [_profileIndex, _uid, _profileEntity] call ALIVE_fnc_hashSet;
 
-            // killed event handler
-            if!(isPlayer _unit) then {
-                _eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+                {
+                    [_profileIndex, _x, _profileEntity] call ALIVE_fnc_hashSet;
+                } forEach _existingPlayers;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Create connected player profile complete - total player profiles: [%1]",_entityCount] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+            }else{
+
+                ["ALIVE Player profiler - No existing profile found, create profile for connecting player"] call ALIVE_fnc_dump;
+
+                _unitClasses = [];
+                _positions = [];
+                _ranks = [];
+                _damages = [];
+                _unitCount = 0;
+                _profileID = format["player_%1",_entityCount];
+
+                {
+                    _unit = _x;
+                    _unitClasses set [count _unitClasses, typeOf _x];
+                    _positions set [count _positions, getPosATL _x];
+                    _ranks set [count _ranks, rank _x];
+                    _damages set [count _damages, getDammage _x];
+
+                    // set profile id on the unit
+                    _unit setVariable ["profileID", _profileID,true];
+                    _unit setVariable ["profileIndex", _unitCount,true];
+
+                    // killed event handler
+                    if!(isPlayer _unit) then {
+                        _eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+                    };
+
+                    _unitCount = _unitCount + 1;
+
+                } foreach (_units);
+
+                _position = getPosATL _leader;
+                _side = str(side _leader);
+
+                _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "init"] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "profileID", _profileID] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
+                [_profileEntity, "group", _group] call ALIVE_fnc_hashSet;
+                [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
+                [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
+
+                [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
+
+                _entityCount = _entityCount + 1;
+
+                [_profileIndex, _uid, _profileEntity] call ALIVE_fnc_hashSet;
+
+                {
+                    [_profileIndex, _x, _profileEntity] call ALIVE_fnc_hashSet;
+                } forEach _existingPlayers;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Create connected player profile complete - total player profiles: [%1]",_entityCount] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
             };
 
-            _unitCount = _unitCount + 1;
+        };
+        case "DISCONNECT":{
 
-        } foreach (_units);
+        };
+        case "KILLED":{
 
-        _position = getPosATL _leader;
-        _side = str(side _leader);
+        };
+        case "RESPAWN":{
 
-        _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "init"] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "profileID", _profileID] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
-        [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
-        [_profileEntity, "group", _group] call ALIVE_fnc_hashSet;
-        [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
-        [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
+             // a player has respawned
 
-        [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
+            _group = group _player;
+            _leader = leader _group;
+            _units = units _group;
+            _existingPlayers = [];
 
-        _entityCount = _entityCount + 1;
-	
-	};
-	
-} forEach _players;
+            if(_player == _leader) then {
+                ["ALIVE Player profiler - Respawned player is the group leader: %1",_player] call ALIVE_fnc_dump;
+            };
 
-_players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
-_players call ALIVE_fnc_inspectHash;
+            {
+                _unit = _x;
+                if(isPlayer _unit) then {
+                    _uuid = getPlayerUID _unit;
+                    if(_uuid != _uid) then {
+                        _existingPlayers = _existingPlayers + [_uuid];
+                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    }else{
+                        ["ALIVE Player profiler - found respawned player in this group: %1",_unit] call ALIVE_fnc_dump;
+                    };
+                };
+            } forEach _units;
 
-// DEBUG -------------------------------------------------------------------------------------
-if(_debug) then {
-	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-	["ALIVE Create profiles from players Complete - entity profiles created: [%1]",_entityCount] call ALIVE_fnc_dump;
-	[] call ALIVE_fnc_timer;
+            // there are existing players in this group check if they are profiled
+            if(count _existingPlayers > 0) then {
+                _uuid = _existingPlayers select 0;
+                ["ALIVE Player profiler - checking other players for profile: %1",_uuid] call ALIVE_fnc_dump;
+                if(_uuid in (_profileIndex select 1)) then {
+                   _existingProfile = [_profileIndex, _uid] call ALIVE_fnc_hashGet;
+                };
+            };
+
+            if!(isNil "_existingProfile") then {
+
+                ["ALIVE Player profiler - Existing profile found, add respawned player to profile"] call ALIVE_fnc_dump;
+
+                _profileEntity = _existingProfile;
+                _unitClasses = [];
+                _positions = [];
+                _ranks = [];
+                _damages = [];
+                _unitCount = 0;
+                _profileID = _profileEntity select 2 select 4;
+
+                {
+                    _unit = _x;
+                    _unitClasses set [count _unitClasses, typeOf _x];
+                    _positions set [count _positions, getPosATL _x];
+                    _ranks set [count _ranks, rank _x];
+                    _damages set [count _damages, getDammage _x];
+
+                    // set profile id on the unit
+                    _unit setVariable ["profileID", _profileID];
+                    _unit setVariable ["profileIndex", _unitCount];
+
+                    _unitCount = _unitCount + 1;
+
+                } foreach (_units);
+
+                _position = getPosATL _leader;
+                _side = str(side _leader);
+
+                [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
+                [_profileEntity, "group", _group] call ALIVE_fnc_hashSet;
+                [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
+                [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
+
+                [_profileIndex, _uid, _profileEntity] call ALIVE_fnc_hashSet;
+
+                {
+                    [_profileIndex, _x, _profileEntity] call ALIVE_fnc_hashSet;
+                } forEach _existingPlayers;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Create respawned player profile complete - total player profiles: [%1]",_entityCount] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+            }else{
+
+                ["ALIVE Player profiler - No existing profile found, create profile for respawned player"] call ALIVE_fnc_dump;
+
+                _unitClasses = [];
+                _positions = [];
+                _ranks = [];
+                _damages = [];
+                _unitCount = 0;
+                _profileID = format["player_%1",_entityCount];
+
+                {
+                    _unit = _x;
+                    _unitClasses set [count _unitClasses, typeOf _x];
+                    _positions set [count _positions, getPosATL _x];
+                    _ranks set [count _ranks, rank _x];
+                    _damages set [count _damages, getDammage _x];
+
+                    // set profile id on the unit
+                    _unit setVariable ["profileID", _profileID,true];
+                    _unit setVariable ["profileIndex", _unitCount,true];
+
+                    // killed event handler
+                    if!(isPlayer _unit) then {
+                        _eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+                    };
+
+                    _unitCount = _unitCount + 1;
+
+                } foreach (_units);
+
+                _position = getPosATL _leader;
+                _side = str(side _leader);
+
+                _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "init"] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "profileID", _profileID] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "unitClasses", _unitClasses] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "ranks", _ranks] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "faction", faction _leader] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "isPlayer", true] call ALIVE_fnc_profileEntity;
+                [_profileEntity, "leader", _leader] call ALIVE_fnc_hashSet;
+                [_profileEntity, "group", _group] call ALIVE_fnc_hashSet;
+                [_profileEntity, "units", _units] call ALIVE_fnc_hashSet;
+                [_profileEntity, "active", true] call ALIVE_fnc_hashSet;
+
+                [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
+
+                _entityCount = _entityCount + 1;
+
+                [_profileIndex, _uid, _profileEntity] call ALIVE_fnc_hashSet;
+
+                {
+                    [_profileIndex, _x, _profileEntity] call ALIVE_fnc_hashSet;
+                } forEach _existingPlayers;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    _players = [ALIVE_profileHandler, "getPlayerEntities"] call ALIVE_fnc_profileHandler;
+                    _players call ALIVE_fnc_inspectHash;
+                    _index = [ALIVE_profileHandler, "getPlayerIndex"] call ALIVE_fnc_profileHandler;
+                    _index call ALIVE_fnc_inspectHash;
+                    ["ALIVE Player profiler - Create respawned player profile complete - total player profiles: [%1]",_entityCount] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+            };
+
+        };
+    };
 };
-// DEBUG -------------------------------------------------------------------------------------

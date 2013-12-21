@@ -10,6 +10,7 @@
     <link href="{{ URL::to('/') }}/css/style.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,900,500italic,500,300' rel='stylesheet' type='text/css'>
+     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.css" />
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="http://code.highcharts.com/stock/highstock.js"></script>
@@ -19,7 +20,8 @@
     <script src="{{ URL::to('/') }}/js/war_room.js"></script>
     <script src="{{ URL::to('/') }}/js/dataTables.bootstrap.js"></script>
     <script src="{{ URL::to('/') }}/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+	<script src="http://www.openlayers.org/api/2.7/OpenLayers.js" type="text/javascript"></script>
+     <script src="http://cdn.leafletjs.com/leaflet-0.6/leaflet.js"></script>
     <script src="{{ URL::to('/') }}/js/greenthumb/easing/EasePack.min.js"></script>
     <script src="{{ URL::to('/') }}/js/greenthumb/TweenLite.min.js"></script>
     <!--[if lt IE 9]>

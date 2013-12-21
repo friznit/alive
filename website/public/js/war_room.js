@@ -84,6 +84,7 @@ function parseArmaDate(input) {
     return "on " + system_date;
 }
 
+// AO Edit/Create
 function FindPosition(oElement)
 {
   if(typeof( oElement.offsetParent ) != "undefined")
@@ -128,3 +129,39 @@ function GetCoordinates(e)
   document.getElementById("imageMapX").value = PosX*width;
   document.getElementById("imageMapY").value = PosY*height;
 }
+
+// Open Layers
+function overlay_getTileURL(bounds) {
+	var res = this.map.getResolution();
+	var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+	var y = Math.round((bounds.bottom - this.maxExtent.bottom) / (res * this.tileSize.h));
+	var z = this.map.getZoom();
+	if (x >= 0 && y >= 0) {
+		return this.url + z + "/" + x + "/" + y + "." + this.type;				
+	} else {
+		return "http://www.maptiler.org/img/none.png";
+	}
+}
+
+function getWindowHeight() {
+	if (self.innerHeight) return self.innerHeight;
+	if (document.documentElement && document.documentElement.clientHeight)
+		return document.documentElement.clientHeight;
+	if (document.body) return document.body.clientHeight;
+		return 0;
+}
+
+function getWindowWidth() {
+	if (self.innerWidth) return self.innerWidth;
+	if (document.documentElement && document.documentElement.clientWidth)
+		return document.documentElement.clientWidth;
+	if (document.body) return document.body.clientWidth;
+		return 0;
+}
+
+function resize() {  
+	var map = document.getElementById("map");  
+	map.style.height = (getWindowHeight()-80) + "px";
+	map.style.width = (getWindowWidth()-20) + "px";
+	if (map.updateSize) { map.updateSize(); };
+} 

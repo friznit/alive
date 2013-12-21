@@ -1,5 +1,4 @@
 <script>
-
     $(document).ready(function(){
         $('#recent_ops').dataTable({
             "bJQueryUI": true,

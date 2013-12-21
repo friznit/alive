@@ -114,6 +114,7 @@ switch(_operation) do {
 						[_logic,"profileEntityCount",0] call ALIVE_fnc_hashSet;
 						[_logic,"profileVehicleCount",0] call ALIVE_fnc_hashSet;
 						[_logic,"playerEntities",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+						[_logic,"playerIndex",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 
 						_profilesBySide = [] call ALIVE_fnc_hashCreate;
 						[_profilesBySide, "EAST", []] call ALIVE_fnc_hashSet;
@@ -753,6 +754,9 @@ switch(_operation) do {
 		};
 		case "getPlayerEntities": {
                 _result = [_logic, "playerEntities"] call ALIVE_fnc_hashGet;
+        };
+        case "getPlayerIndex": {
+                _result = [_logic, "playerIndex"] call ALIVE_fnc_hashGet;
         };
 		case "getActive": {
                 _result = [_logic, "profilesActive"] call ALIVE_fnc_hashGet;

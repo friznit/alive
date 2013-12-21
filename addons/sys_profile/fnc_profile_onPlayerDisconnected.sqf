@@ -29,4 +29,5 @@ _id = _this select 0;
 _name = _this select 1;
 _uid = _this select 2;
 
-[] call ALIVE_fnc_createProfilesFromPlayers;
+["ALIVE DISCONNECT: uid:%1",_uid] call ALIVE_fnc_dump;
+["DISCONNECT",_uid] call ALIVE_fnc_createProfilesFromPlayers;

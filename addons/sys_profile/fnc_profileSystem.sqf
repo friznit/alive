@@ -127,7 +127,7 @@ switch(_operation) do {
 						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 
 						// create profiles for all players that dont have profiles
-                        [true] call ALIVE_fnc_createProfilesFromPlayers;
+                        ["INIT"] call ALIVE_fnc_createProfilesFromPlayers;
 						
 						// create profiles for all map units that dont have profiles
 						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;

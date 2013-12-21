@@ -9,12 +9,20 @@
             </button>
             <a class="navbar-brand" href="{{ URL::to('/') }}"><img src="{{ URL::to('/') }}/img/logo.png"/></a>
             <a class="navbar-brand" href="{{ URL::to('/war-room') }}"><img src="{{ URL::to('/') }}/img/alive_warroom_tiny.png"/></a>
+
         </div>
         <div class="navbar-collapse collapse">
+        	<ul class="nav navbar-nav">
+                <li{{ (Request::is('war-room/personnel*') ? ' class="active"' : '') }}><a href="{{{ URL::to('war-room') }}}/">Personnel</a></li>
+                <li{{ (Request::is('war-room/ops*') ? ' class="active"' : '') }}><a href="{{{ URL::to('war-room') }}}/">Operations</a></li>
+                <li{{ (Request::is('war-room/orbat*') ? ' class="active"' : '') }}><a href="{{{ URL::to('war-room') }}}/">ORBAT</a></li>
+                <li{{ (Request::is('war-room/AO*') ? ' class="active"' : '') }}><a href="{{{ URL::to('war-room') }}}/">Maps</a></li>
+                <li{{ (Request::is('war-room/stats*') ? ' class="active"' : '') }}><a href="{{{ URL::to('war-room/stats') }}}/">Data</a></li>
+            </ul>
             <ul class="nav navbar-nav pull-right">
 
                 <li {{ (Request::is('admin/user/show/*') ? 'class="active"' : '') }}><a href="{{ URL::to('admin/user/show/') }}/{{ Sentry::getUser()->getId() }}">Profile</a></li>
-
+ 
                 @if ($auth['isAdmin'])
                 <li {{ (Request::is('admin/ao*') ? 'class="active"' : '') }}><a href="{{ URL::to('admin/ao') }}">AOs</a></li>
                 <li {{ (Request::is('admin/clan*') ? 'class="active"' : '') }}><a href="{{ URL::to('admin/clan') }}">Groups</a></li>
