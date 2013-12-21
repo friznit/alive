@@ -318,8 +318,7 @@ switch(_operation) do {
                         _clusters = ALIVE_clustersCiv select 2;
                         _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                         _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                        _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                        _clusters = _clusters - _blacklistClusters;
+                        _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                         {
                             [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                         } forEach _clusters;
@@ -333,8 +332,7 @@ switch(_operation) do {
                             _clusters = ALIVE_clustersCivHQ select 2;
                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                            _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                            _clusters = _clusters - _blacklistClusters;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                             {
                                 [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                             } forEach _clusters;
@@ -349,8 +347,7 @@ switch(_operation) do {
                             _clusters = ALIVE_clustersCivPower select 2;
                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                            _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                            _clusters = _clusters - _blacklistClusters;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                             {
                                 [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                             } forEach _clusters;
@@ -365,8 +362,7 @@ switch(_operation) do {
                             _clusters = ALIVE_clustersCivComms select 2;
                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                            _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                            _clusters = _clusters - _blacklistClusters;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                             {
                                 [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                             } forEach _clusters;
@@ -382,8 +378,7 @@ switch(_operation) do {
                             _clusters = ALIVE_clustersCivMarine select 2;
                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                            _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                            _clusters = _clusters - _blacklistClusters;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                             {
                                 [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                             } forEach _clusters;
@@ -398,8 +393,7 @@ switch(_operation) do {
                             _clusters = ALIVE_clustersCivRail select 2;
                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                            _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                            _clusters = _clusters - _blacklistClusters;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                             {
                                 [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                             } forEach _clusters;
@@ -414,8 +408,7 @@ switch(_operation) do {
                             _clusters = ALIVE_clustersCivFuel select 2;
                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                            _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                            _clusters = _clusters - _blacklistClusters;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                             {
                                 [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                             } forEach _clusters;
@@ -430,8 +423,7 @@ switch(_operation) do {
                             _clusters = ALIVE_clustersCivConstruction select 2;
                             _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                             _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                            _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                            _clusters = _clusters - _blacklistClusters;
+                            _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                             {
                                 [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                             } forEach _clusters;
@@ -443,8 +435,7 @@ switch(_operation) do {
                              _clusters = ALIVE_clustersCivSettlement select 2;
                              _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                              _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
-                             _blacklistClusters = [_clusters, _blacklist] call ALIVE_fnc_clustersInsideMarker;
-                             _clusters = _clusters - _blacklistClusters;
+                             _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
                              {
                                   [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
                              } forEach _clusters;
