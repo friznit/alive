@@ -251,9 +251,15 @@ switch(_operation) do {
 
 			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
 	};
-	// Static Init
-	case "start": {
+	// Main process
+    case "start": {
+        _FSMtest = [_logic] execFSM "\x\alive\addons\civ_placement\civTest.fsm";
+    };
+    // Main process
+    case "go": {
         if (isServer) then {
+
+            startloadingscreen ["Please Wait...","RscDisplayLoadCustom"];
 		
 			private ["_debug","_clusterType","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
@@ -491,7 +497,7 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------			
 			
 		
-            waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
+            //waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
 			

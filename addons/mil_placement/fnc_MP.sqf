@@ -292,7 +292,11 @@ switch(_operation) do {
 			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
 	};
 	// Main process
-	case "start": {
+    case "start": {
+        _FSMtest = [_logic] execFSM "\x\alive\addons\mil_placement\milTest.fsm";
+    };
+	// Main process
+	case "go": {
         if (isServer) then {
 		
 			private ["_debug","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
@@ -477,7 +481,7 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------			
 			
 		
-            waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
+            //waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
 			_HQClusters = [_logic, "objectivesHQ"] call MAINCLASS;
