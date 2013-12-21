@@ -258,8 +258,6 @@ switch(_operation) do {
     // Main process
     case "go": {
         if (isServer) then {
-
-            startloadingscreen ["Please Wait...","RscDisplayLoadCustom"];
 		
 			private ["_debug","_clusterType","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
