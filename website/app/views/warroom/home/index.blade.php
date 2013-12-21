@@ -8,13 +8,13 @@
 <script type="text/javascript">
 
         var map = L.map('map', {
-			minZoom: 2,
+			minZoom: 0,
 			maxZoom: 5,
 			crs: L.CRS.Simple
-		}).setView([2048,2048], 2);
+		}).setView([4096,4096], 2);
 		
-		var southWest = map.unproject([0,4096], map.getMaxZoom());
-		var northEast = map.unproject([4096,0], map.getMaxZoom());
+		var southWest = map.unproject([0,1654], map.getMaxZoom());
+		var northEast = map.unproject([8192,6400], map.getMaxZoom());
 		map.setMaxBounds(new L.LatLngBounds(southWest, northEast));
 		L.tileLayer("{{ URL::to('/') }}/maps/globalmap3/{z}/{x}/{y}.png" , {
             attribution: 'ALiVE',

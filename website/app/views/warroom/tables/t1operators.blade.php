@@ -6,6 +6,7 @@
 					"sAjaxDataProp": "rows",
 					"sScrollY": "500px",
 					"bPaginate": false,
+					"bInfo": false,
 					"bScrollCollapse": true,
 					"aaSorting": [[1, "desc" ]],
 					"aoColumnDefs": [
