@@ -253,7 +253,7 @@ switch(_operation) do {
 	};
 	// Main process
     case "start": {
-        _FSMtest = [_logic] execFSM "\x\alive\addons\civ_placement\civTest.fsm";
+        _FSMtest = [_logic] execFSM "\x\alive\addons\civ_placement\civPlacementInit.fsm";
     };
     // Main process
     case "go": {

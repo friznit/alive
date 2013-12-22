@@ -293,7 +293,7 @@ switch(_operation) do {
 	};
 	// Main process
     case "start": {
-        _FSMtest = [_logic] execFSM "\x\alive\addons\mil_placement\milTest.fsm";
+        _FSMtest = [_logic] execFSM "\x\alive\addons\mil_placement\milPlacementInit.fsm";
     };
 	// Main process
 	case "go": {
