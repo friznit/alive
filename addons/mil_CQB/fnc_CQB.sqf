@@ -53,6 +53,37 @@ switch(_operation) do {
                 ERROR_WITH_TITLE(str _logic,_err);
         };
         case "init": {
+            if (isServer) then {
+                // if server, initialise module game logic
+                _logic setVariable ["super", SUPERCLASS];
+                _logic setVariable ["class", ALIVE_fnc_CQB];
+                _logic setVariable ["moduleType", "ALIVE_QCB"];
+                _logic setVariable ["startupComplete", false];
+                TRACE_1("After module init",_logic);
+
+                [_logic,"register"] call ALIVE_fnc_CQB;
+            };
+        };
+        case "register": {
+
+                private["_registration","_moduleType"];
+
+                _moduleType = _logic getVariable "moduleType";
+                _registration = [_logic,_moduleType];
+
+                if(isNil "ALIVE_registry") then {
+                    ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
+                    [ALIVE_registry, "init"] call ALIVE_fnc_registry;
+                };
+
+                [ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
+        };
+        // Main process
+        case "start": {
+                if (isServer) then {
+                    _logic setVariable ["startupComplete", true];
+                };
+        //case "init": {
             	//Init further mandatory params on all localities
 				_CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
 				if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
