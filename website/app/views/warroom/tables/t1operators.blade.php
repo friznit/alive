@@ -9,11 +9,15 @@
 					"bInfo": false,
 					"bScrollCollapse": true,
 					"aaSorting": [[1, "desc" ]],
+					"fnInitComplete": function () {
+						        $("#t1_operators_wrapper").find('.dataTables_scrollBody').mCustomScrollbar();
+					},
 					"aoColumnDefs": [
 						{ "mDataProp": "key",  "aTargets": [ 0 ]},
 						{ "mDataProp": "value", "aTargets": [ 1 ]}
 					]
-				} );
+		} );
+
     });
 
 </script>
