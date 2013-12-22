@@ -96,6 +96,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_debug\fnc_inspectVehicle.sqf";
 				recompile = RECOMPILE;
 			};
+			class debugHandler {
+                description = "debugHandler";
+                file = "\x\alive\addons\sys_debug\fnc_debugHandler.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

@@ -80,7 +80,12 @@ switch(_operation) do {
 
 				[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
 		};
-		case "start": {
+		// Main process
+        case "start": {
+            _FSMtest = [_logic] execFSM "\x\alive\addons\sys_profile\profileSystemInit.fsm";
+        };
+        // Main process
+        case "go": {
 		
 				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_activeLimiter","_spawnCycleTime","_despawnCycleTime",
 				"_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];

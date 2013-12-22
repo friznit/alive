@@ -137,6 +137,16 @@ if (_menuName == "adminActions") then {
 					true
 				],
 
+				[localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE",
+                    { [] call ALIVE_fnc_profileSystemDebug },
+                    "",
+                    localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
+                    "",
+                    -1,
+                    MOD(adminActions) getVariable ["profile_debug", 0],
+                    true
+                ],
+
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
 					{ createDialog "RscDisplayDebugPublic" },
 					"",

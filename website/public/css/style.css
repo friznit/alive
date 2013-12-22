@@ -137,6 +137,12 @@ img {
     font-size:12px;
     line-height: 10px;
 	max-height:220px;
+		background: transparent;
+	background-color: rgba(1, 1, 1, 0.75);
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 25px;
 }
 
 #overview_container {
@@ -150,15 +156,28 @@ table.overview-table {
 	color: #fcaf17;
     font-size:12px;
     line-height: 13px;
+		background: transparent;
+	background-color: rgba(1, 1, 1, 0.75);
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 25px;
 }
 
 #t1operators_container {
     max-height:600px;
     margin-top:25px;
+	background: transparent;
+	background-color: rgba(1, 1, 1, 0.75);
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 25px;
     font-family: 'Roboto Condensed', san-serif;
     font-size:12px;
     line-height: 13px;
 	color: #fcaf17;
+
 }
 
 #live_feed_container {
@@ -168,6 +187,12 @@ table.overview-table {
     font-size:12px;
     line-height: 13px;
 	color:#CCC;
+		background: transparent;
+	background-color: rgba(1, 1, 1, 0.75);
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 25px;
 }
 
 #live_feed_container .operation {

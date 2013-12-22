@@ -253,7 +253,7 @@ switch(_operation) do {
 	};
 	// Main process
     case "start": {
-        _FSMtest = [_logic] execFSM "\x\alive\addons\civ_placement\civTest.fsm";
+        _FSMtest = [_logic] execFSM "\x\alive\addons\civ_placement\civPlacementInit.fsm";
     };
     // Main process
     case "go": {
@@ -312,6 +312,33 @@ switch(_operation) do {
                 _blacklist = [_logic, "blacklist"] call MAINCLASS;
                 _sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
                 _priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
+
+                // check markers for existance
+                private ["_marker","_counter"];
+
+                if(count _taor > 0) then {
+                    _counter = 0;
+                    {
+                        _marker =_x;
+                        if!(_marker call ALIVE_fnc_markerExists) then {
+                            _taor = _taor - [_taor select _counter];
+                        }else{
+                            _counter = _counter + 1;
+                        };
+                    } forEach _taor;
+                };
+
+                if(count _blacklist > 0) then {
+                    _counter = 0;
+                    {
+                        _marker =_x;
+                        if!(_marker call ALIVE_fnc_markerExists) then {
+                            _blacklist = _blacklist - [_blacklist select _counter];
+                        }else{
+                            _counter = _counter + 1;
+                        };
+                    } forEach _blacklist;
+                };
 
                 private ["_clusters"];
 

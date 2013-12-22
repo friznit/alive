@@ -21,6 +21,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_adminactions\fnc_markUnits.sqf";
                                 recompile = RECOMPILE;
                         };
+                        class profileSystemDebug {
+                                description = "Turn on profile system debug";
+                                file = "\x\alive\addons\sys_adminactions\fnc_profileSystemDebug.sqf";
+                                recompile = RECOMPILE;
+                        };
                 };
         };
 };
