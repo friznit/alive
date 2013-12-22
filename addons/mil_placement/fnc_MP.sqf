@@ -360,6 +360,32 @@ switch(_operation) do {
                 _sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
                 _priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
 
+                // check markers for existance
+                private ["_marker","_counter"];
+
+                if(count _taor > 0) then {
+                    _counter = 0;
+                    {
+                        _marker =_x;
+                        if!(_marker call ALIVE_fnc_markerExists) then {
+                            _taor = _taor - [_taor select _counter];
+                        }else{
+                            _counter = _counter + 1;
+                        };
+                    } forEach _taor;
+                };
+
+                if(count _blacklist > 0) then {
+                    _counter = 0;
+                    {
+                        _marker =_x;
+                        if!(_marker call ALIVE_fnc_markerExists) then {
+                            _blacklist = _blacklist - [_blacklist select _counter];
+                        }else{
+                            _counter = _counter + 1;
+                        };
+                    } forEach _blacklist;
+                };
 
                 _clusters = ALIVE_clustersMil select 2;
                 _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;

@@ -64,7 +64,7 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-	private ["_logic","_markers","_m","_size","_priority","_type","_nodes","_center","_random"];
+	private ["_logic","_markers","_m","_size","_priority","_type","_id","_nodes","_center","_random"];
 	_logic = _this;
 	_markers = [];
 	_nodes = [_logic, "nodes", []] call ALIVE_fnc_hashGet;
@@ -90,12 +90,13 @@ _createMarkers = {
 		_size = [_logic, "size"] call MAINCLASS;
 		_priority = [_logic, "priority"] call MAINCLASS;
 		_type = [_logic, "type"] call MAINCLASS;
+		_id = [_logic, "clusterID"] call ALIVE_fnc_hashGet;
 		_m = createMarker [format[MTEMPLATE, _random, count _markers], _center];
 		_m setMarkerShape "Icon";
 		_m setMarkerSize [0.75, 0.75];
 		_m setMarkerType "mil_dot";
 		_m setMarkerColor ([_logic, "debugColor","ColorYellow"] call ALIVE_fnc_hashGet);
-		_m setMarkerText format["%1|%2|%3",_type,_priority,floor(_size)];
+		_m setMarkerText format["%1|%2|%3|%4",_id,_type,_priority,floor(_size)];
 		_markers set [count _markers, _m];
 		
 		_m = createMarker [_m + "_size", _center];
