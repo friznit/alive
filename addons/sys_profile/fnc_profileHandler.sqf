@@ -300,10 +300,10 @@ switch(_operation) do {
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_args) then {
-							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-							["ALIVE Profile Handler State"] call ALIVE_fnc_dump;
-							_state = [_logic, "state"] call MAINCLASS;
-							_state call ALIVE_fnc_inspectHash;
+							//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+							//["ALIVE Profile Handler State"] call ALIVE_fnc_dump;
+							//_state = [_logic, "state"] call MAINCLASS;
+							//_state call ALIVE_fnc_inspectHash;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 					};

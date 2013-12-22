@@ -43,6 +43,15 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT">
 	<English>Allow server admins to mark units positions for 15 seconds</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG">
+    <English>Debug Profile System:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE">
+    <English>Activate Debug Profiles</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT">
+    <English>Toggle debug mode on the profile system</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CONSOLE">
 	<English>Allow Debug:</English>
 </Key>
