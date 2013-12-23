@@ -80,10 +80,6 @@ switch(_operation) do {
 
 				[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
 		};
-		// Main process
-        case "start": {
-            _FSMtest = [_logic] execFSM "\x\alive\addons\sys_profile\profileSystemInit.fsm";
-        };
         // Main process
         case "go": {
 		
@@ -108,7 +104,10 @@ switch(_operation) do {
 							[true] call ALIVE_fnc_timer;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
-						
+
+						// create the profile handler
+						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
+						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
@@ -127,10 +126,6 @@ switch(_operation) do {
 						[ALIVE_liveAnalysis, "init"] call ALIVE_fnc_liveAnalysis;
 						[ALIVE_liveAnalysis, "debug", _debug] call ALIVE_fnc_liveAnalysis;
 						
-						// create the profile handler
-						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
-						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
-
 						// create profiles for all players that dont have profiles
                         ["INIT"] call ALIVE_fnc_createProfilesFromPlayers;
 						
@@ -205,7 +200,6 @@ switch(_operation) do {
 
 						// start analysis jobs
 						[ALIVE_liveAnalysis, "start"] call ALIVE_fnc_liveAnalysis;
-						
                 };
         };
         case "destroy": {                

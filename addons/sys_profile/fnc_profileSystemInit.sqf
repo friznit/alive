@@ -56,7 +56,10 @@ if(isServer) then {
 	[_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "register"] call ALIVE_fnc_profileSystem;
+
+	//[_profileSystem, "register"] call ALIVE_fnc_profileSystem;
+
+	[_profileSystem,"go"] call ALIVE_fnc_profileSystem;
 };
 
 if(hasInterface) then {
