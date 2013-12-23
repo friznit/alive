@@ -61,7 +61,9 @@ switch(_operation) do {
                 _logic setVariable ["startupComplete", false];
                 TRACE_1("After module init",_logic);
 
-                [_logic,"register"] call ALIVE_fnc_CQB;
+				//Registry disabled for now (start directly)
+                //[_logic,"register"] call ALIVE_fnc_CQB;
+                [_logic,"start"] call ALIVE_fnc_CQB;
             };
         };
         case "register": {
@@ -80,10 +82,6 @@ switch(_operation) do {
         };
         // Main process
         case "start": {
-                if (isServer) then {
-                    _logic setVariable ["startupComplete", true];
-                };
-        //case "init": {
             	//Init further mandatory params on all localities
 				_CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
 				if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
@@ -193,7 +191,6 @@ switch(_operation) do {
                     private ["_collection","_objectives","_pos","_size"];
 
                     _collection = [];
-
                     if (count synchronizedObjects _logic > 0) then {
                         _objectives = [];
                         for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
@@ -248,7 +245,7 @@ switch(_operation) do {
                     
                     _houses = _houses_reg + _houses_strat;
                     
-                    _result = [_houses, _strategicTypes, "ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
+                    _result = [_houses,_strategicTypes,"ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
 
@@ -292,6 +289,10 @@ switch(_operation) do {
                     
                     publicVariable QMOD(CQB);
                     diag_log "CQB Init finished";
+
+                    if (isServer) then {
+                        _logic setVariable ["startupComplete", true];
+                    };
             } else {
                     // if client clean up client side game logics as they will transfer
                     // to servers on client disconnect
@@ -441,7 +442,7 @@ switch(_operation) do {
 
 		};		
 	};
-    
+   
 	case "factions": {
 		if(isNil "_args") then {
 			// if no new faction list was provided return current setting
