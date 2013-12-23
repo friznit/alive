@@ -70,7 +70,9 @@ switch(_operation) do {
 				_logic setVariable ["startupComplete", false];
 				TRACE_1("After module init",_logic);
 
-				[_logic,"register"] call MAINCLASS;			
+				//[_logic,"register"] call MAINCLASS;
+
+                [_logic,"start"] call MAINCLASS;
 			};
 		};
 		case "register": {
@@ -100,6 +102,9 @@ switch(_operation) do {
 			        
 			        //Create OPCOM #Hash#Datahandler
 					_handler = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
+                    
+                    //Set handler on module
+                    _logic setVariable ["handler",_handler];
                    
 					call compile format["OPCOM_%1 = _handler",count (missionNameSpace getvariable ["OPCOM_instances",[]])];
                     missionNameSpace setVariable ["OPCOM_instances",(missionNameSpace getvariable ["OPCOM_instances",[]]) + [_handler]];
@@ -223,14 +228,15 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
+                    /*
                     //Still there? Nice, check if there are profiles available for OPCOM to control
                     _errorMessage = "There are no profiles for faction(s) %2 assigned to OPCOM %1!";
                     _error1 = _side; _error2 = _factions; _exit = false; _profiles_count = 0; //defaults
                      if !(isnil "ALIVE_profileHandler") then {
-                         {
-                             _profiles_count_tmp = ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler); 
-                         	if !(isnil "_profiles_count_tmp") then {_profiles_count = _profiles_count + (count _profiles_count_tmp)};
-                         } foreach _factions;
+	                         {
+	                             _profiles_count_tmp = ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler); 
+	                         	if !(isnil "_profiles_count_tmp") then {_profiles_count = _profiles_count + (count _profiles_count_tmp)};
+	                         } foreach _factions;
                      } else {
                          _errorMessage = "OPCOM %1 needs the SYS Profiles module to be happy...!";
                      };
@@ -238,6 +244,7 @@ switch(_operation) do {
                     if (_exit) exitwith {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
+                    */
                     
                     //Still there? Mega, lets summarize...
                     if (_debug) then {
@@ -260,7 +267,7 @@ switch(_operation) do {
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                         
-                        _logic setVariable ["handler",_handler];
+                        //_logic setVariable ["handler",_handler];
                     };
 					
 					// set module as startup complete
