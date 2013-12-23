@@ -121,6 +121,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_getDominantFaction.sqf";
 				recompile = RECOMPILE;
 			};
+			class isModuleSynced {
+				description = "Checks if modules are synced";
+				file = "\x\alive\addons\main\fnc_isModuleSynced.sqf";
+				recompile = RECOMPILE;
+			};
+			class isModuleAvailable {
+				description = "Checks if modules are available";
+				file = "\x\alive\addons\main\fnc_isModuleAvailable.sqf";
+				recompile = RECOMPILE;
+			};
 		};
 	};
 };
