@@ -229,7 +229,9 @@ switch(_operation) do {
 			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
 			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
 
-			[_logic,"register"] call MAINCLASS;			
+			//[_logic,"register"] call MAINCLASS;
+
+		    [_logic,"start"] call MAINCLASS;
         } else {
             [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
             [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
@@ -251,12 +253,9 @@ switch(_operation) do {
 
 			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
 	};
-	// Main process
-    case "start": {
-        _FSMtest = [_logic] execFSM "\x\alive\addons\civ_placement\civPlacementInit.fsm";
-    };
+    
     // Main process
-    case "go": {
+    case "start": {
         if (isServer) then {
 		
 			private ["_debug","_clusterType","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
