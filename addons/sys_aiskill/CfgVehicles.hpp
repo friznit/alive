@@ -11,7 +11,7 @@ class CfgVehicles {
 		// Name of function triggered once conditions are met
 		function = "ALIVE_fnc_AISkillInit";
 		// Execution priority, modules with lower number are executed first. 0 is used when the attribute is undefined
-		functionPriority = 5;
+		functionPriority = 7;
 		// 1 for remote execution on all clients, 0 for server only execution
 		isGlobal = 0;
 		// 1 for persistent execution (i.e. will be called on every JIPped client). Use with caution, can lead to desync
