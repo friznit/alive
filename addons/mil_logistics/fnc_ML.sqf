@@ -61,7 +61,6 @@ switch(_operation) do {
 
 			[_logic, "destroy"] call SUPERCLASS;
 		};
-		
 	};
 	case "debug": {
 		if (typeName _args == "BOOL") then {
@@ -165,7 +164,9 @@ switch(_operation) do {
 			_logic setVariable ["intelligenceObtained", [] call ALIVE_fnc_hashCreate];
 			TRACE_1("After module init",_logic);
 
-			[_logic,"register"] call MAINCLASS;			
+			//[_logic,"register"] call MAINCLASS;
+
+            [_logic,"start"] call MAINCLASS;
         };
 	};
 	case "register": {
@@ -202,8 +203,10 @@ switch(_operation) do {
 			_modules = [];
 					
 			for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
-				_module = (synchronizedObjects _logic) select _i;
-				_module = _module getVariable "handler";
+				_moduleObject = (synchronizedObjects _logic) select _i;
+               
+                waituntil {_module = _moduleObject getVariable "handler"; !(isnil "_module")};
+                _module = _moduleObject getVariable "handler";
 				_modules set [count _modules, _module];
 			};
 			

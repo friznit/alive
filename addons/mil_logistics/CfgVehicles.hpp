@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_ML";
                 function = "ALIVE_fnc_MLInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 5;
+				functionPriority = 6;
                 isGlobal = 1;
                 isPersistent = 0;
 				icon = "x\alive\addons\mil_logistics\icon_mil_ML.paa";
