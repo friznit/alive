@@ -148,15 +148,6 @@ switch(_operation) do {
                     {if (_x == "RESISTANCE") then {_sidesEnemy set [_foreachIndex,"GUER"]}} foreach _sidesEnemy;
                     {if (_x == "RESISTANCE") then {_sidesFriendly set [_foreachIndex,"GUER"]}} foreach _sidesFriendly;
                     
-                    //Get Data from other modules! Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
-                    private ["_objectives"];
-                    _objectives = [];
-                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
-						private ["_obj"];
-						_obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
-                        _objectives = _objectives + _obj;
-                    };
-
 					//Finally
 					[_handler, "side",_side] call ALiVE_fnc_HashSet;
                     [_handler, "factions",_factions] call ALiVE_fnc_HashSet;
@@ -180,13 +171,54 @@ switch(_operation) do {
 								[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
 						};
 					};
-					
+                    
 					/*
 					CONTROLLER  - coordination
 					*/
                     
+                    ///////////
                     //Before starting check if startup parameters are ok!
-					//Check if there is no selected faction used by another OPCOM
+                    ///////////
+                    
+                    //Check if a SYS Profile Module is available
+                    _errorMessage = "No Profiles module was found! Please place a Profile System module! %1 %2";
+                    _error1 = ""; _error2 = ""; //defaults
+                    if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) exitwith {
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
+                    };
+                    
+                    //Get objectives data from other modules!
+                    private ["_objectives"];
+                    _objectives = [];
+                    
+                    if (([_logic,["ALiVE_mil_placement"]] call ALiVE_fnc_isModuleSynced) || {[_logic,["ALiVE_civ_placement"]] call ALiVE_fnc_isModuleSynced}) then {
+                       
+	                    //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
+	                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
+							private ["_obj","_mod"];
+	                        
+	                        _mod = (synchronizedObjects _logic) select _i;
+	                        
+	                        if ((typeof _mod) in ["ALiVE_mil_placement","ALiVE_civ_placement"]) then {
+	                        
+		                        waituntil {sleep 1; ["ALiVE OPCOM %1 loading objectives...",_side] call ALiVE_fnc_Dump; _obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; !(isnil "_obj") && {count _obj > 0}};
+		                        
+								_obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
+		                        _objectives = _objectives + _obj;
+	                        };
+	                    };
+                    } else {
+		                ["MIL or CIV Placement module not synced to OPCOM %1! Wasnt able to retrieve Objectives...",_side] call ALiVE_fnc_DumpR;
+		            };
+
+                    //Check if there are any objectives
+                    _errorMessage = "There are %1 objectives for this OPCOM instance! %2";
+                    _error1 = count _objectives; _error2 = "Please assign Military or Civilian Placement Objectives!"; //defaults
+                    if ((count _objectives) == 0) exitwith {
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
+                    };
+                    
+					//Ok? Check if there is no selected faction used by another OPCOM
                     _OPCOMS = (missionNameSpace getvariable ["OPCOM_instances",[]]) - [_handler];
                     _errorMessage = "Faction %1 is already used by another OPCOM (side: %2)! Please change the faction!";
                     _error1 = ""; _error2 = ""; _exit = false; //defaults
@@ -213,13 +245,6 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
-                    //Still there? Cool, check if there are objectives
-                    _errorMessage = "There are %1 objectives for this OPCOM instance! %2";
-                    _error1 = count _objectives; _error2 = "Please assign Military Placement Objectives!"; //defaults
-                    if ((count _objectives) == 0) exitwith {
-						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
-                    };
-                    
                     //Still there? Awesome, check if there are different sides within the factions
                     _errorMessage = "There are different sides within this OPCOM %1! Please only select one side per OPCOM!%2";
                     _error1 = _side; _error2 = ""; _exit = false;  //defaults
@@ -228,31 +253,17 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
-                    /*
-                    //Still there? Nice, check if there are profiles available for OPCOM to control
-                    _errorMessage = "There are no profiles for faction(s) %2 assigned to OPCOM %1!";
-                    _error1 = _side; _error2 = _factions; _exit = false; _profiles_count = 0; //defaults
-                     if !(isnil "ALIVE_profileHandler") then {
-	                         {
-	                             _profiles_count_tmp = ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler); 
-	                         	if !(isnil "_profiles_count_tmp") then {_profiles_count = _profiles_count + (count _profiles_count_tmp)};
-	                         } foreach _factions;
-                     } else {
-                         _errorMessage = "OPCOM %1 needs the SYS Profiles module to be happy...!";
-                     };
-                    _exit = (isnil "ALIVE_profileHandler") || {(_profiles_count == 0)};
-                    if (_exit) exitwith {
-						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
-                    };
-                    */
-                    
                     //Still there? Mega, lets summarize...
                     if (_debug) then {
                     	["OPCOM %1 starts with %2 profiles and %3 objectives!",_side,_profiles_count,count _objectives] call ALIVE_fnc_dumpR;
                 	};
                     
                     //Wait random time to ensure all opcoms analysis wont run at the same time on start!
-                    sleep random(25);
+                    sleep random(5);
+                    
+                    ///////////
+                    //Startup
+                    ///////////
 
                     //done this way to easily switch between spawn and call for testing purposes
                     "OPCOM and TACOM starting..." call ALiVE_fnc_logger;

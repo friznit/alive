@@ -146,6 +146,10 @@ switch(_operation) do {
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 
+            if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) exitwith {
+                ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+            };
+            waituntil {!(isnil "ALiVE_ProfileHandler")};
 						
 			// if grid profile analysis is running, turn on plot sectors
 			_activeAnalysisJobs = [ALIVE_liveAnalysis, "getAnalysisJobs"] call ALIVE_fnc_liveAnalysis;

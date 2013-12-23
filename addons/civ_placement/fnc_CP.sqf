@@ -230,8 +230,13 @@ switch(_operation) do {
 			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
 
 			//[_logic,"register"] call MAINCLASS;
-
-		    [_logic,"start"] call MAINCLASS;
+            
+            if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
+                ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+            };
+            waituntil {!(isnil "ALiVE_ProfileHandler")};
+            
+            [_logic,"start"] call MAINCLASS;
         } else {
             [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
             [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;

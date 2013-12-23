@@ -156,8 +156,12 @@ switch(_operation) do {
 				["ALIVE MI - Startup"] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-				
-				
+			
+            if !(["ALiVE_sys_profile","ALiVE_mil_opcom"] call ALiVE_fnc_isModuleAvailable) exitwith {
+                ["Profile module or OPCOM module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+            };
+			waituntil {!(isnil "ALiVE_ProfileHandler")};
+            	
 			_modules = [];
 			for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 				_moduleObject = (synchronizedObjects _logic) select _i;
