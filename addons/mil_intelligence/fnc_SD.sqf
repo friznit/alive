@@ -111,7 +111,9 @@ switch(_operation) do {
 
 			TRACE_1("After module init",_logic);
 
-			[_logic,"register"] call MAINCLASS;			
+			//[_logic,"register"] call MAINCLASS;
+
+            [_logic,"start"] call MAINCLASS;
         };
 	};
 	case "register": {
