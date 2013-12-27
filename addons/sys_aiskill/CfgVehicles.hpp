@@ -90,7 +90,7 @@ class CfgVehicles {
 			class customSkillAimAccuracy {
 				displayName = "$STR_ALIVE_AISKILL_CUSTOM_AIM_ACCURACY";
 				description = "$STR_ALIVE_AISKILL_CUSTOM_AIM_ACCURACY_COMMENT";
-				defaultValue = 0.05;
+				defaultValue = 0.3;
 				typeName = "NUMBER";
 			};
 			class customSkillAimShake {
@@ -102,37 +102,37 @@ class CfgVehicles {
 			class customSkillAimSpeed {
 				displayName = "$STR_ALIVE_AISKILL_CUSTOM_AIM_SPEED";
 				description = "$STR_ALIVE_AISKILL_CUSTOM_AIM_SPEED_COMMENT";
-				defaultValue = 0.1;
+				defaultValue = 0.3;
 				typeName = "NUMBER";
 			};
 			class customSkillEndurance {
 				displayName = "$STR_ALIVE_AISKILL_CUSTOM_ENDURANCE";
 				description = "$STR_ALIVE_AISKILL_CUSTOM_ENDURANCE_COMMENT";
-				defaultValue = 0.1;
+				defaultValue = 0.3;
 				typeName = "NUMBER";
 			};
 			class customSkillSpotDistance {
 				displayName = "$STR_ALIVE_AISKILL_CUSTOM_SPOT_DISTANCE";
 				description = "$STR_ALIVE_AISKILL_CUSTOM_SPOT_DISTANCE_COMMENT";
-				defaultValue = 0.5;
+				defaultValue = 0.9;
 				typeName = "NUMBER";
 			};
 			class customSkillSpotTime {
 				displayName = "$STR_ALIVE_AISKILL_CUSTOM_SPOT_TIME";
 				description = "$STR_ALIVE_AISKILL_CUSTOM_SPOT_TIME_COMMENT";
-				defaultValue = 0.4;
+				defaultValue = 0.5;
 				typeName = "NUMBER";
 			};
 			class customSkillCourage {
 				displayName = "$STR_ALIVE_AISKILL_CUSTOM_COURAGE";
 				description = "$STR_ALIVE_AISKILL_CUSTOM_COURAGE_COMMENT";
-				defaultValue = 0.1;
+				defaultValue = 0.7;
 				typeName = "NUMBER";
 			};
 			class customSkillReload {
 				displayName = "$STR_ALIVE_AISKILL_CUSTOM_RELOAD";
 				description = "$STR_ALIVE_AISKILL_CUSTOM_RELOAD_COMMENT";
-				defaultValue = 0.1;
+				defaultValue = 0.3;
 				typeName = "NUMBER";
 			};
 			class customSkillCommanding {
