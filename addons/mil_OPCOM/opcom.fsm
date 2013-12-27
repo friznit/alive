@@ -1,8 +1,8 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
-item1[] = {"INIT_COMPLETE",4,4314,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
 item4[] = {"ATTACK_Condition",4,218,-929.164673,-375.286652,-839.164551,-325.286652,5.000000,"ATTACK" \n "Conditions"};
@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1312.997192,-466.811005,-403.685181,-1197.469971,996,818,1};
-window[] = {0,-1,-1,-1,-1,1017,42,1812,68,1,1013};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1312.997192,-466.811005,-276.114990,-971.075134,996,818,1};
+window[] = {0,-1,-1,-1,-1,993,44,1814,44,1,1013};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -107,7 +107,7 @@ class FSM
        "" \n
        "_OPCOM_QUEUE = [];" \n
        "_targets = [];" \n
-       "_cycleTime = 120;" \n
+       "_cycleTime = 300;" \n
        "_timestamp = time;" \n
        "_lastanalyze = 0;" \n
        "_orderFailed = false;" \n
@@ -124,15 +124,6 @@ class FSM
        "	//[true] call ALIVE_fnc_timer;" \n
        "};" \n
        "// debug ---------------------------------------" \n
-       "" \n
-       "switch (_controlType) do {" \n
-       "	case (""occupation"") : {" \n
-       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[_objectives,""strategic""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
-       "	};" \n
-       "	case (""invasion"") : {" \n
-       "		_objectives = [_OPCOM_HANDLER,""objectives"",[_OPCOM_HANDLER,""createobjectives"",[_objectives,""distance""]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;" \n
-       "	};" \n
-       "};" \n
        "" \n
        "/*" \n
        "//Mock targets for testing purposes" \n
@@ -189,14 +180,8 @@ class FSM
           priority = 0.000000;
           to="INITIALIZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/"_OPCOM_FSM =  [_OPCOM_HANDLER,""OPCOM_FSM""] call ALiVE_fnc_HashGet;" \n
-           "_TACOM_FSM =  [_OPCOM_HANDLER,""TACOM_FSM""] call ALiVE_fnc_HashGet;" \n
-           "" \n
-           "_profiles_count = 0;" \n
-           "{" \n
-           "	_profiles_count_tmp = ([ALIVE_profileHandler, ""getProfilesByFaction"",_x] call ALIVE_fnc_profileHandler); " \n
-           "	if !(isnil ""_profiles_count_tmp"") then {_profiles_count = _profiles_count + (count _profiles_count_tmp)};" \n
-           "} foreach _factions;"/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(isnil ""_OPCOM_FSM"") && !(isnil ""_TACOM_FSM"") && {_OPCOM_FSM > 0 && _TACOM_FSM > 0} && {_profiles_count > 0};"/*%FSM</CONDITION""">*/;
+           "_TACOM_FSM =  [_OPCOM_HANDLER,""TACOM_FSM""] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_OPCOM_FSM"") && !(isnil ""_TACOM_FSM"") && {_OPCOM_FSM > 0 && _TACOM_FSM > 0}"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -249,7 +234,7 @@ class FSM
        "					};" \n
        "			 // debug ---------------------------------------" \n
        "" \n
-       "			_OPCOM_DATA= [""analyze"",""analysis""];" \n
+       "			_OPCOM_DATA= [""analyze"",nil];" \n
        "" \n
        "			// debug ---------------------------------------" \n
        "			if(_debug) then { [""OPCOM initialized, %1!"",_DATA_VALUE] call ALIVE_fnc_dumpR; };" \n

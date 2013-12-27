@@ -6,7 +6,7 @@
 
 titleText ["The ALiVE Team presents...", "BLACK IN",9999];
 
-sleep 3;
+sleep 2;
 
 titleText ["A L i V E   |   F o u r s o m e", "BLACK IN",9999];
 
@@ -17,7 +17,7 @@ Following a surprise invasion of Altis by CSAT forces in recent weeks, a BLUFOR 
 linking up with local militia and removing the hostile threat. CIVPOP has been removed to Agia Marina where they are being held under martial law.
 ", "BLACK IN",9999];
 
-sleep 15;
+sleep 5;
 
 titleText ["
 REDFOR troops have occupied key strategic points across the Area of Operations.  Strength and dispositions include at least 1 Combined 
@@ -25,7 +25,7 @@ Arms Motor Rifle Battalion, 1 Light Infantry Battalion and support units includi
 A mobile reserve in the South of the Island is poised to react any hostile threat.
 ", "BLACK IN",9999];
 
-sleep 15;
+sleep 5;
 
 titleText ["
 BLUFOR troops are approaching from the North East to link up with the struggling guerilla factions and to assist Greek forces regaining control over the 
@@ -33,7 +33,7 @@ island.  BLUFOR have a formidable array of equipment and support assets at a For
 defences are weak and resupply is difficult.
 ", "BLACK IN",9999];
 
-sleep 15;
+sleep 5;
 
 titleText ["
 GREENFOR have retreated to a few small strongholds in the mountainous North of the island. Only a few guerillas survived the brutal Iranian assault 
@@ -44,7 +44,7 @@ titleText ["
 Orders are to advance to contact South West clearing all enemy within boundaries in order to regain control of the island.  Attempt to establish comms with militia factions in the East for coordinated assaults.
 ", "BLACK IN",9999];
 
-sleep 15;
+sleep 5;
 
 titleText ["A L i V E   |   F o u r s o m e", "BLACK IN",5];
 15 fadesound 1;

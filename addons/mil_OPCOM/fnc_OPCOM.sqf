@@ -189,24 +189,38 @@ switch(_operation) do {
                     
                     //Get objectives data from other modules!
                     private ["_objectives"];
-                    _objectives = [];
                     
+                    _objectives = [];
                     if (([_logic,["ALiVE_mil_placement"]] call ALiVE_fnc_isModuleSynced) || {[_logic,["ALiVE_civ_placement"]] call ALiVE_fnc_isModuleSynced}) then {
                        
-	                    //Iterate through all synchronized modules (for now assumed that its done correctly and only modules with variable "objectives" set, no failsafe)
+	                    //Iterate through all synchronized modules
 	                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 							private ["_obj","_mod"];
 	                        
 	                        _mod = (synchronizedObjects _logic) select _i;
 	                        
 	                        if ((typeof _mod) in ["ALiVE_mil_placement","ALiVE_civ_placement"]) then {
-	                        
-		                        waituntil {sleep 1; ["ALiVE OPCOM %1 loading objectives...",_side] call ALiVE_fnc_Dump; _obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; !(isnil "_obj") && {count _obj > 0}};
-		                        
+                                while {_startupComplete = _mod getVariable ["startupComplete", false]; !(_startupComplete)} do {};
+                                
 								_obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
 		                        _objectives = _objectives + _obj;
 	                        };
-	                    };
+						};
+                        
+                        switch (_type) do {
+							case ("occupation") : {
+								_objectives = [_handler,"objectives",[_handler,"createobjectives",[_objectives,"strategic"]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;
+							};
+							case ("invasion") : {
+								_objectives = [_handler,"objectives",[_handler,"createobjectives",[_objectives,"distance"]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;
+							};
+						};
+                        
+	                    //Perform initial cluster occupation and troops analysis as MP modules are finished
+	                	_clusterOccupationAnalysis = [_handler,_side,_sidesEnemy,_sidesFriendly] call {[_this select 0,"analyzeclusteroccupation",[_this select 3,_this select 2]] call ALiVE_fnc_OPCOM};
+						_troopsAnalysis = [_handler] call {[_this select 0,"scantroops"] call ALiVE_fnc_OPCOM};
+	                	["ALiVE OPCOM %1 Initial analysis done...",_side] call ALiVE_fnc_Dump; 
+                        
                     } else {
 		                ["MIL or CIV Placement module not synced to OPCOM %1! Wasnt able to retrieve Objectives...",_side] call ALiVE_fnc_DumpR;
 		            };
@@ -218,6 +232,18 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
+                    //Check if there are any profiles available
+                    _errorMessage = "There are no profiles for this OPCOM instance! %2";
+                    _error1 = ""; _error2 = "Please assign troops to this OPCOM!"; //defaults
+                    _profiles_count = 0;
+					{
+						_profiles_count_tmp = ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler); 
+						if !(isnil "_profiles_count_tmp") then {_profiles_count = _profiles_count + (count _profiles_count_tmp)};
+					} foreach _factions;
+                    if (_profiles_count == 0) exitwith {
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
+                    };
+
 					//Ok? Check if there is no selected faction used by another OPCOM
                     _OPCOMS = (missionNameSpace getvariable ["OPCOM_instances",[]]) - [_handler];
                     _errorMessage = "Faction %1 is already used by another OPCOM (side: %2)! Please change the faction!";
@@ -225,7 +251,7 @@ switch(_operation) do {
                     {
                         _Selected_OPCOM = _x;
                         //Wait until init has passed on that instance
-                        waituntil {sleep 1; !(isnil {[_Selected_OPCOM, "factions"] call ALiVE_fnc_HashGet})};
+                        waituntil {!(isnil {[_Selected_OPCOM, "factions"] call ALiVE_fnc_HashGet})};
                         
                         _pos_OPCOM_selected = [_Selected_OPCOM, "position"] call ALiVE_fnc_HashGet;
                         _side_OPCOM_selected = [_Selected_OPCOM, "side"] call ALiVE_fnc_HashGet;
@@ -253,20 +279,19 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
-                    //Still there? Mega, lets summarize...
+                    //Mega, lets summarize...
                     if (_debug) then {
                     	["OPCOM %1 starts with %2 profiles and %3 objectives!",_side,_profiles_count,count _objectives] call ALIVE_fnc_dumpR;
                 	};
-                    
-                    //Wait random time to ensure all opcoms analysis wont run at the same time on start!
-                    sleep random(5);
-                    
+
                     ///////////
                     //Startup
                     ///////////
+                    
+                    sleep (random 5);
 
                     //done this way to easily switch between spawn and call for testing purposes
-                    "OPCOM and TACOM starting..." call ALiVE_fnc_logger;
+                    ["OPCOM and TACOM starting..."] call ALiVE_fnc_Dump;
                     _OPCOM = [_handler,_objectives] call {
                         _handler = _this select 0;
                         _objectives = _this select 1;
@@ -277,10 +302,8 @@ switch(_operation) do {
                         
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
-                        
-                        //_logic setVariable ["handler",_handler];
                     };
-					
+                    
 					// set module as startup complete
 					_logic setVariable ["startupComplete", true];
                 };
@@ -800,7 +823,7 @@ switch(_operation) do {
                                     //player sidechat format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
 	                       			//diag_log format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
 				            	};
-	                            sleep 0.03;
+	                            //sleep 0.03;
 				            } foreach _profiles;
 	                        
 	                    
@@ -824,7 +847,7 @@ switch(_operation) do {
 						_targetsAttacked1 set [count _targetsAttacked1,_x];
 						_remover1 set [count _remover1,_foreachIndex];
 					};
-                    sleep 0.03;
+                    //sleep 0.03;
 				} foreach _targetsTaken1;
 	
 				_targetsAttacked2 = [];
@@ -837,7 +860,7 @@ switch(_operation) do {
 						_targetsAttacked2 set [count _targetsAttacked2,_x];
 						_remover2 set [count _remover2,_foreachIndex];
 					};
-                    sleep 0.03;
+                    //sleep 0.03;
 				} foreach _targetsTaken2;
                 
 
@@ -846,7 +869,7 @@ switch(_operation) do {
                    		_targetsTaken1 set [_x,"x"];
                    		_targetsTaken1 = _targetsTaken1 - ["x"];
                 	};
-                    sleep 0.03;
+                    //sleep 0.03;
                 } foreach _remover1;
                 
                 _targetsTaken1 = _targetsTaken1 - [objNull];
@@ -856,7 +879,7 @@ switch(_operation) do {
                    		_targetsTaken2 set [_x,"x"];
                    		_targetsTaken2 = _targetsTaken2 - ["x"];
                     };
-                    sleep 0.03;
+                    //sleep 0.03;
                 } foreach _remover2;
                 
                 _targetsTaken2 = _targetsTaken2 - [objNull];
