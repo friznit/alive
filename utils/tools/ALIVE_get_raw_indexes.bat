@@ -62,6 +62,8 @@ rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_eden.pbo" > %target%\objects.eden.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_noe.pbo" > %target%\objects.noe.sqf
 
 rem ----------------------------- User ------------------------------------
+rem %exe% "%arma%\@a2co\@Sangin\Addons\hellskitchen.pbo" > %target%\objects.hellskitchen.sqf
+rem %exe% "%arma%\@a2co\@Sangin\Addons\hellskitchens.pbo" > %target%\objects.hellskitchens.sqf
 rem %exe% "%arma%\@a2co\@carraigdubh\Addons\carraigdubh.pbo" > %target%\objects.carraigdubh.sqf
 rem %exe% "%arma%\@a2co\@CLAfghan\Addons\clafghan.pbo" > %target%\objects.clafghan.sqf
 rem %exe% "%arma%\@a2co\@fallujah\Addons\fallujah1_2.pbo" > %target%\objects.fallujah.sqf

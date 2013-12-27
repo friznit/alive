@@ -3,6 +3,8 @@
 $index_names = (
     'altis',
     'stratis'
+    #'hellskitchen',
+    #'hellskitchens'
     #'celle',
     #'chernarus',
     #'carraigdubh',

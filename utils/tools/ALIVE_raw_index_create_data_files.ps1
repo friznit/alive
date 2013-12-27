@@ -14,6 +14,8 @@ $index_names = (
     'desert',
     'desert_e',
     'desert2',
+    'hellskitchen',
+    'hellskitchens',
     #'eden',
     'fallujah',
     'fdf_isle1_a',
