@@ -47,7 +47,7 @@ if(count _categorySelector > 0) then {
 			if(_type == _categoryType) then {
 			
 				_side = _x select 2 select 3;
-	
+
 				if(_side == _categorySide) then {
 								
 					if(_categoryObjectType != "none") then {

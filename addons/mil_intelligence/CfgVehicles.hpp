@@ -47,7 +47,6 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MI_INTEL_CHANCE_MEDIUM";
                                                 value = "0.2";
-                                                default = true;
                                         };
 										class HIGH
                                         {
@@ -58,6 +57,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MI_INTEL_CHANCE_TOTAL";
                                                 value = "1";
+                                                default = true;
                                         };
                                 };
                         };
@@ -67,23 +67,24 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_MI_FRIENDLY_INTEL_COMMENT";
                                 class Values
                                 {
-                                        class NONE
+                                        class Yes
                                         {
-                                                name = "$STR_ALIVE_MI_FRIENDLY_INTEL_NONE";
-                                                value = "NONE";
-                                        };
-                                        class CONFLICT
-                                        {
-                                                name = "$STR_ALIVE_MI_FRIENDLY_INTEL_CONFLICT";
-                                                value = "CONFLICT";
+                                                name = "Yes";
+                                                value = true;
                                                 default = true;
                                         };
-                                        class TOTAL
+                                        class No
                                         {
-                                                name = "$STR_ALIVE_MI_FRIENDLY_INTEL_TOTAL";
-                                                value = "TOTAL";
+                                                name = "No";
+                                                value = false;
                                         };
                                 };
+                        };
+                        class friendlyIntelRadius
+                        {
+                                displayName = "$STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS";
+                                description = "$STR_ALIVE_MP_FRIENDLY_INTEL_RADIUS_COMMENT";
+                                defaultValue = 2000;
                         };
                 };
                 

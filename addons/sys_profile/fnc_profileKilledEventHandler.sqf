@@ -21,7 +21,7 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_unit","_profileID","_profile","_profileType"];
+private ["_unit","_profileID","_profile","_profileType","_position","_faction","_side","_event","_eventID"];
 	
 _unit = _this select 0;
 
@@ -37,9 +37,19 @@ switch(_profileType) do {
 			_result = [_profile,"handleDeath",_unit] call ALIVE_fnc_profileEntity;
 			// all units in profile are killed			
 			if!(_result) then {
-				// not sure about this, it will remove the profile and the bodies will remain
+
+			    _position = _profile select 2 select 2;
+                _faction = _profile select 2 select 29;
+                _side = _profile select 2 select 3;
+
+			    // not sure about this, it will remove the profile and the bodies will remain
 				// will need to have dead unit cleanup scripts
 				[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+
+				// log event
+
+                _event = ['PROFILE_KILLED', [_position,_faction,_side],"Profile"] call ALIVE_fnc_event;
+                _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 			};
 		};
 		case "vehicle": {

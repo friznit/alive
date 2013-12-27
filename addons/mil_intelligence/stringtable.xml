@@ -15,10 +15,10 @@
 	<English>Enables MI Module Debug</English>
 </Key>
 <Key ID="STR_ALIVE_MI_INTEL_CHANCE">
-	<English>Enemy Coverage:</English>
+	<English>Intel Coverage:</English>
 </Key>
 <Key ID="STR_ALIVE_MI_INTEL_CHANCE_COMMENT">
-	<English>The enemy side to this OPCOM will receive intel</English>
+	<English>Amount of intel reports generated</English>
 </Key>
 <Key ID="STR_ALIVE_MI_INTEL_CHANCE_LOW">
 	<English>Low coverage of intel</English>
@@ -36,19 +36,16 @@
     <English>Friendly Coverage:</English>
 </Key>
 <Key ID="STR_ALIVE_MI_FRIENDLY_INTEL_COMMENT">
-    <English>The friendly side to this OPCOM will receive intel</English>
+    <English>Display nearby friendly units</English>
 </Key>
-<Key ID="STR_ALIVE_MI_FRIENDLY_INTEL_NONE">
-    <English>No friendly intel</English>
+<Key ID="STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS">
+    <English>Friendly Radius:</English>
 </Key>
-<Key ID="STR_ALIVE_MI_FRIENDLY_INTEL_CONFLICT">
-    <English>Display friendly units in conflict</English>
-</Key>
-<Key ID="STR_ALIVE_MI_FRIENDLY_INTEL_TOTAL">
-    <English>Display all friendly unit positions</English>
+<Key ID="STR_ALIVE_MP_FRIENDLY_INTEL_RADIUS_COMMENT">
+    <English>Display friendly units within this radius around players</English>
 </Key>
 <Key ID="STR_ALIVE_MI_USAGE">
-    <English>place a Mil_Int module and Synch (F5) to an OPCOM of the side you want to receive intel about. Select the level of detail and frequency of intel received in the options. It is also possible to show Friendly Intel to track BLUFOR units. The options simulate either a global BLUFOR tracker showing all BLUFOR groups, or Contact Reports which will only show those units in contact with the enemy.</English>
+    <English>place 1 Mil_Int module only per mission. Select the level of detail and frequency of intel received in the options. It is also possible to show Friendly Intel to track units friendly to players.</English>
 </Key>
 <Key ID="STR_ALIVE_SD">
     <English>Military Sector Display</English>

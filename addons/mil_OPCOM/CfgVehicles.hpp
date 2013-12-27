@@ -271,18 +271,6 @@ class CfgVehicles {
 						optional = 1; // Synced entity is optional
 						duplicate = 1; // Multiple entities of this type can be synced
 					};
-					class ALiVE_mil_intelligence
-					{
-						description[] = { // Multi-line descriptions are supported
-							"$STR_ALIVE_MI_COMMENT",
-							"",
-							"$STR_ALIVE_MI_USAGE"
-						};
-						position = 0; // Position is taken into effect
-						direction = 0; // Direction is taken into effect
-						optional = 1; // Synced entity is optional
-						duplicate = 1; // Multiple entities of this type can be synced
-					};
 					class ALiVE_mil_logistics
                     {
                         description[] = { // Multi-line descriptions are supported

@@ -146,7 +146,16 @@ switch(_operation) do {
 					case "intelligenceItem":{
 						[_logic, "cleanupIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
 					};
-				};			
+					case "KIAIntelligenceItem":{
+					    [_logic, "cleanupKIAIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
+					};
+					case "reinforceIntelligenceItem":{
+                        [_logic, "cleanupReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
+                    };
+                    case "showFriendlies":{
+                        [_logic, "cleanupShowFriendliesAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
+                    };
+				};
 				
 				[_analysisJobs,_jobID] call ALIVE_fnc_hashRem;				
 			};
@@ -212,14 +221,21 @@ switch(_operation) do {
 									case "intelligenceItem":{
 										[_logic, "runIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
 									};
+									case "KIAIntelligenceItem":{
+                                        [_logic, "runKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                    };
+                                    case "reinforceIntelligenceItem":{
+                                        [_logic, "runReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                    };
+                                    case "showFriendlies":{
+                                        [_logic, "runShowFriendliesAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                    };
 								};
 								
 								[_job, "lastRun", time] call ALIVE_fnc_hashSet;
 								[_job, "runCount", (_runCount + 1)] call ALIVE_fnc_hashSet;
 							
-							};					
-							
-							sleep 2;
+							};
 						};					
 				
 					} forEach (_analysisJobs select 2);
@@ -313,14 +329,14 @@ switch(_operation) do {
 
 
                 // run profile analysis on all sectors
-                _sectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisActive;
+                ALIVE_activeSectors = [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisActive;
 
                 if(_plotSectors) then {
                     // clear the sector data plot
                     [ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
 
                     // plot the sector data
-                    [ALIVE_sectorPlotter, "plot", [_sectors, "active"]] call ALIVE_fnc_plotSectors;
+                    [ALIVE_sectorPlotter, "plot", [ALIVE_activeSectors, "active"]] call ALIVE_fnc_plotSectors;
                 };
 
             };
@@ -375,10 +391,8 @@ switch(_operation) do {
 				_intelItem = _jobArgs select 0;
 				
 				_side = _intelItem select 0;
-				_sides = _intelItem select 1;
-				_objective = _intelItem select 3;
-				_sector = _intelItem select 4;
-				
+				_objective = _intelItem select 1;
+
 				_center = [_objective,"center"] call ALIVE_fnc_hashGet;
 				_size = [_objective,"size"] call ALIVE_fnc_hashGet;
 				_priority = [_objective,"priority"] call ALIVE_fnc_hashGet;
@@ -387,7 +401,7 @@ switch(_operation) do {
 				_section = [_objective,"section"] call ALIVE_fnc_hashGet;
 				_objectiveID = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
 				
-				private ["_profiles","_markers","_profileID","_profile","_alpha","_marker","_color","_dir","_position","_icon"];
+				private ["_profiles","_markers","_profileID","_profile","_alpha","_marker","_color","_dir","_position","_icon","_text"];
 				
 				// on the first run create all the markers
 				if(_runCount == 0) then {
@@ -443,10 +457,16 @@ switch(_operation) do {
 					_markers = _markers + [_m];			
 				
 					_icon = "mil_unknown";
+					_text = "";
 					switch(_state) do {
 						case "reserve":{
 							_icon = "mil_marker";
+							_text = " occupied";
 						};
+						case "defend":{
+                            _icon = "mil_marker";
+                            _text = " occupied";
+                        };
 						case "recon":{
 						
 							// create direction marker
@@ -461,6 +481,7 @@ switch(_operation) do {
 							_markers = _markers + [_m];
 						
 							_icon = "mil_unknown";
+							_text = " sighting";
 						};
 						case "capture":{
 						
@@ -476,6 +497,7 @@ switch(_operation) do {
 							_markers = _markers + [_m];
 						
 							_icon = "mil_warning";
+							_text = " captured";
 						};
 					};
 					
@@ -485,7 +507,8 @@ switch(_operation) do {
 					_m setMarkerSize [0.5, 0.5];
 					_m setMarkerType _icon;
 					_m setMarkerColor _color;
-					_m setMarkerAlpha _alpha;					
+					_m setMarkerAlpha _alpha;
+                    _m setMarkerText _text;
 					
 					_markers = _markers + [_m];
 					
@@ -562,8 +585,398 @@ switch(_operation) do {
 			
 			};
         };
+        case "runKIAIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+                _runCount = _args select 2;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - KIA intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                _intelItem = _jobArgs select 0;
+
+                _position = _intelItem select 0;
+                _faction = _intelItem select 1;
+                _side = _intelItem select 2;
+
+                private ["_markers","_alpha","_marker","_color","_dir","_icon"];
+
+                // on the first run create all the markers
+                if(_runCount == 0) then {
+
+                    _markers = [];
+                    _alpha = 1;
+
+                    // set the side color
+                    switch(_side) do {
+                        case "EAST":{
+                            _color = "ColorRed";
+                        };
+                        case "WEST":{
+                            _color = "ColorBlue";
+                        };
+                        case "CIV":{
+                            _color = "ColorYellow";
+                        };
+                        case "GUER":{
+                            _color = "ColorGreen";
+                        };
+                        default {
+                            _color = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+                        };
+                    };
+
+                    // create type marker
+                    _m = createMarker [format[MTEMPLATE, format["%1_type", _jobID]], _position];
+                    _m setMarkerShape "ICON";
+                    _m setMarkerSize [0.3, 0.3];
+                    _m setMarkerType "mil_warning";
+                    _m setMarkerColor _color;
+                    _m setMarkerAlpha _alpha;
+                    _m setMarkerText " KIA";
+
+                    _markers = _markers + [_m];
+
+                    _jobArgs set [count _jobArgs, [_markers]];
+
+                // on subsequent runs lower marker alpha
+                } else {
+
+                    _markers = _jobArgs select 1 select 0;
+                    _profiles = _jobArgs select 1 select 1;
+
+                    // set alpha based on age of intel item
+                    if(_runCount <= 1) then {
+                        _alpha = 1;
+                    };
+                    if(_runCount == 2) then {
+                        _alpha = 0.75;
+                    };
+                    if(_runCount == 3) then {
+                        _alpha = 0.5;
+                    };
+                    if(_runCount > 3) then {
+                        _alpha = 0.2;
+                    };
+
+                    {
+                        _x setMarkerAlpha _alpha;
+                    } forEach _markers;
+
+                };
+            };
+        };
+        case "cleanupKIAIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_side","_sides","_objective","_sector","_center","_type","_state"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+                _intelItem = _jobArgs select 0;
+
+                // set item as completed
+                _intelItem set [5, true];
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - KIA intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                private ["_markers"];
+
+                _markers = _jobArgs select 1 select 0;
+
+                {
+                    deleteMarker _x;
+                } forEach _markers;
+
+            };
+        };
+        case "runReinforceIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+                _runCount = _args select 2;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - Reinforce intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                _intelItem = _jobArgs select 0;
+
+                _position = _intelItem select 0;
+                _faction = _intelItem select 1;
+                _side = _intelItem select 2;
+
+                private ["_markers","_alpha","_marker","_color","_dir","_icon"];
+
+                // on the first run create all the markers
+                if(_runCount == 0) then {
+
+                    _markers = [];
+                    _alpha = 1;
+
+                    // set the side color
+                    switch(_side) do {
+                        case "EAST":{
+                            _color = "ColorRed";
+                        };
+                        case "WEST":{
+                            _color = "ColorBlue";
+                        };
+                        case "CIV":{
+                            _color = "ColorYellow";
+                        };
+                        case "GUER":{
+                            _color = "ColorGreen";
+                        };
+                        default {
+                            _color = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+                        };
+                    };
+
+                    // create type marker
+                    _m = createMarker [format[MTEMPLATE, format["%1_type", _jobID]], _position];
+                    _m setMarkerShape "ICON";
+                    _m setMarkerSize [0.3, 0.3];
+                    _m setMarkerType "mil_join";
+                    _m setMarkerColor _color;
+                    _m setMarkerAlpha _alpha;
+                    _m setMarkerText " reinforce";
+
+                    _markers = _markers + [_m];
+
+                    _jobArgs set [count _jobArgs, [_markers]];
+
+                // on subsequent runs lower marker alpha
+                } else {
+
+                    _markers = _jobArgs select 1 select 0;
+                    _profiles = _jobArgs select 1 select 1;
+
+                    // set alpha based on age of intel item
+                    if(_runCount <= 1) then {
+                        _alpha = 1;
+                    };
+                    if(_runCount == 2) then {
+                        _alpha = 0.75;
+                    };
+                    if(_runCount == 3) then {
+                        _alpha = 0.5;
+                    };
+                    if(_runCount > 3) then {
+                        _alpha = 0.2;
+                    };
+
+                    {
+                        _x setMarkerAlpha _alpha;
+                    } forEach _markers;
+
+                };
+            };
+        };
+        case "cleanupReinforceIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_side","_sides","_objective","_sector","_center","_type","_state"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+                _intelItem = _jobArgs select 0;
+
+                // set item as completed
+                _intelItem set [5, true];
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - KIA intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                private ["_markers"];
+
+                _markers = _jobArgs select 1 select 0;
+
+                {
+                    deleteMarker _x;
+                } forEach _markers;
+
+            };
+        };
+        case "runShowFriendliesAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_radius","_debug","_sector","_side","_centerPosition","_sectorData","_profiles","_markers",
+            "_active","_sides","_player","_nearProfiles","_profile","_position","_centerPosition","_sectorData"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+                _runCount = _args select 2;
+
+                _radius = _jobArgs select 0;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - show friendlies"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                if(count _jobArgs > 1) then {
+                    if((count (_jobArgs select 1)) > 0) then {
+                        _markers = _jobArgs select 1 select 0;
+                        _profiles = _jobArgs select 1 select 1;
+
+                        {
+                            _profile = _x;
+                            if !(isnil "_profile") then {
+                                [_profile, "deleteMarker"] call ALIVE_fnc_profileEntity;
+                            };
+                        } forEach _profiles;
+
+                        {
+                            deleteMarker _x;
+                        } forEach _markers;
+                    };
+                };
+
+                _jobArgs set [1, []];
+
+                _profiles = [];
+                _markers = [];
+
+                if(!isNil "ALIVE_activeSectors") then {
+
+                    {
+                        _sector = _x;
+                        _centerPosition = [_sector, "center"] call ALIVE_fnc_sector;
+                        _sectorData = _sector select 2 select 0;
+                        if("active" in (_sectorData select 1)) then {
+                            _active = [_sectorData, "active"] call ALIVE_fnc_hashGet;
+                            _sides = [];
+                            {
+                                _player = _x select 0;
+                                if!((side player) in _sides) then {
+                                    _sides set [count _sides, side player];
+                                };
+
+                            } forEach _active;
+
+                            {
+                                _nearProfiles = [_centerPosition, _radius, [str(_x),"entity"]] call ALIVE_fnc_getNearProfiles;
+
+                                {
+                                    _profile = _x;
+                                    if !(isnil "_profile") then {
+                                        _position = _profile select 2 select 2;
+
+                                        if!(surfaceIsWater _position) then {
+                                            _marker = [_profile, "createMarker", [1]] call ALIVE_fnc_profileEntity;
+                                            _markers = _markers + _marker;
+                                            _profiles set [count _profiles, _profile];
+                                        };
+
+                                    };
+                                } forEach _nearProfiles;
+
+                            } forEach _sides;
+                        };
+
+                    } forEach ALIVE_activeSectors;
+
+                };
+
+                _jobArgs set [1, [_markers, _profiles]];
+            };
+        };
+        case "cleanupShowFriendliesAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_side","_sides","_objective","_sector","_center","_type","_state"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+                _intelItem = _jobArgs select 0;
+
+                // set item as completed
+                _intelItem set [5, true];
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                private ["_profiles","_markers","_profileID","_profile","_alpha","_marker"];
+
+                _markers = _jobArgs select 1 select 0;
+                _profiles = _jobArgs select 1 select 1;
+
+                {
+                    _profileID = _x;
+                    _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+                    if !(isnil "_profile") then {
+                        [_profile, "deleteMarker"] call ALIVE_fnc_profileEntity;
+                    };
+                } forEach _profiles;
+
+                {
+                    deleteMarker _x;
+                } forEach _markers;
+
+            };
+        };
         default {
-                _result = [_logic, _operation, _args] call SUPERCLASS;
+            _result = [_logic, _operation, _args] call SUPERCLASS;
         };
 };
 TRACE_1("liveAnalysis - output",_result);

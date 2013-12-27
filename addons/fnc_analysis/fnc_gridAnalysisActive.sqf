@@ -72,7 +72,7 @@ _players = [] call BIS_fnc_listPlayers;
         _active = [_sectorData, "active"] call ALIVE_fnc_hashGet;
     };
 
-    _active set [count _active, [getPlayerUID _player,_position]];
+    _active set [count _active, [_player,_position]];
 
     // store the result of the analysis on the sector instance
     [_sector, "data", ["active",_active]] call ALIVE_fnc_sector;

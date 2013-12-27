@@ -125,6 +125,11 @@ switch(_operation) do {
 						ALIVE_liveAnalysis = [nil, "create"] call ALIVE_fnc_liveAnalysis;
 						[ALIVE_liveAnalysis, "init"] call ALIVE_fnc_liveAnalysis;
 						[ALIVE_liveAnalysis, "debug", _debug] call ALIVE_fnc_liveAnalysis;
+
+						// create event log
+                        ALIVE_eventLog = [nil, "create"] call ALIVE_fnc_eventLog;
+                        [ALIVE_eventLog, "init"] call ALIVE_fnc_eventLog;
+                        [ALIVE_eventLog, "debug", false] call ALIVE_fnc_eventLog;
 						
 						// create profiles for all players that dont have profiles
                         ["INIT"] call ALIVE_fnc_createProfilesFromPlayers;
@@ -143,6 +148,8 @@ switch(_operation) do {
 						ALIVE_commandRouter = [nil, "create"] call ALIVE_fnc_commandRouter;
 						[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
 						[ALIVE_commandRouter, "debug", false] call ALIVE_fnc_commandRouter;
+
+
 
 						
 						// DEBUG -------------------------------------------------------------------------------------

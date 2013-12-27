@@ -485,6 +485,10 @@ switch(_operation) do {
                                                                 };
                                                                 // DEBUG -------------------------------------------------------------------------------------
 
+                                                                // log event
+                                                                _event = ['PROFILE_REINFORCE', [_position,_faction,_moduleSide],"ALIVE_ML"] call ALIVE_fnc_event;
+                                                                _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 
                                                                 _countProfiles = _countProfiles + count _profiles;
                                                                 _totalCount = _totalCount + 1;
@@ -504,6 +508,10 @@ switch(_operation) do {
                                                                 [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
                                                             };
                                                             // DEBUG -------------------------------------------------------------------------------------
+
+                                                            // log event
+                                                            _event = ['PROFILE_REINFORCE', [_position,_faction,_moduleSide],"ALIVE_ML"] call ALIVE_fnc_event;
+                                                            _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
 
                                                             _countProfiles = _countProfiles + count _profiles;

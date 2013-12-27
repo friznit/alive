@@ -207,7 +207,7 @@ _createMarkers = {
         if(count _position > 0) then {
 				_m = createMarker [format[MTEMPLATE, format["%1_debug",_profileID]], _position];
 				_m setMarkerShape "ICON";
-				_m setMarkerSize [.65, .65];
+				_m setMarkerSize [.4, .4];
 				_m setMarkerType _debugIcon;
 				_m setMarkerColor _debugColor;
 				_m setMarkerAlpha _debugAlpha;
@@ -960,7 +960,7 @@ switch(_operation) do {
 					if(count _position > 0) then {
 						_m = createMarker [format[MTEMPLATE, _profileID], _position];
 						_m setMarkerShape "ICON";
-						_m setMarkerSize [.65, .65];
+						_m setMarkerSize [0.4, 0.4];
 						_m setMarkerType _icon;
 						_m setMarkerColor _color;
 						_m setMarkerAlpha _alpha;

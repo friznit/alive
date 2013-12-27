@@ -407,8 +407,16 @@ _toBekilled = [];
 	                    //player sidechat format["Vehicle %1 destroyed!",_x];
 	                    _vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 	                    [ALIVE_profileHandler, "unregisterProfile", _vehicleProfile] call ALIVE_fnc_profileHandler;
+
 	                } foreach _vehiclesInCommandOf;
 	            };
+
+	            // log event
+	            _position = _profile select 2 select 2;
+	            _faction = _profile select 2 select 29;
+	            _side = _profile select 2 select 3;
+                _event = ['PROFILE_KILLED', [_position,_faction,_side],"ProfileSimulator"] call ALIVE_fnc_event;
+                _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 	
 				[ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
             };
