@@ -149,7 +149,8 @@ switch(_operation) do {
 						[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
 						[ALIVE_commandRouter, "debug", false] call ALIVE_fnc_commandRouter;
 
-
+                        // global server flag
+						ALIVE_profileSystemInit = true;
 
 						
 						// DEBUG -------------------------------------------------------------------------------------
