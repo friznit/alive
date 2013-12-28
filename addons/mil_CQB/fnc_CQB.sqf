@@ -300,8 +300,7 @@ switch(_operation) do {
                         _logic setVariable ["startupComplete", true];
                     };
             } else {
-                    // if client clean up client side game logics as they will transfer
-                    // to servers on client disconnect
+                    // if client clean up markers (needs to be checked when HC is implemented)
             };
                 
 		TRACE_2("After module init",MOD(CQB),MOD(CQB) getVariable "init");
@@ -332,10 +331,15 @@ switch(_operation) do {
                 */
                 
 		TRACE_2("Waiting for CQB PV",isDedicated,isHC);
-
+				
+                //Client?
                 if(!isDedicated && !isHC) then {
                     [CQB_Strategic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                     [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
+                    
+                    //Delete markers
+                    [MOD(CQB), "blacklist", MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
+            		{deleteMarkerLocal _x} foreach (MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]);
                 };
         };
         
