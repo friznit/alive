@@ -38,12 +38,12 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_LOCATIONTYPE_COMMENT";
                                 class Values
                                 {
-                                        class Yes
+                                        class Towns
                                         {
                                                 name = "Towns";
                                                 value = "towns";
                                         };
-                                        class No
+                                        class All
                                         {
                                                 name = "Complete map";
                                                 value = "all";
@@ -99,6 +99,25 @@ class CfgVehicles {
                                                 name = "50%";
                                                 value = 50;
                                                 CQB_spawn = 50;
+                                        };
+                                };
+                        };
+                        class CQB_UseDominantFaction
+                        {
+                                displayName = "$STR_ALIVE_CQB_USEDOMINANTFACTION";
+                                description = "$STR_ALIVE_CQB_USEDOMINANTFACTION_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Dominant";
+                                                value = "true";
+                                                default = "true";
+                                        };
+                                        class No
+                                        {
+                                                name = "Static";
+                                                value = "false";
                                         };
                                 };
                         };

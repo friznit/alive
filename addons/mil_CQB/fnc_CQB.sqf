@@ -94,6 +94,9 @@ switch(_operation) do {
                 _factionsReg = _logic getvariable ["CQB_FACTIONS_REG",["OPF_F"]];
 				if (typename (_factionsReg) == "STRING") then {_factionsReg = call compile _factionsReg};
                 
+                _useDominantFaction = _logic getvariable ["CQB_UseDominantFaction","true"];
+				if (typename (_useDominantFaction) == "STRING") then {_useDominantFaction = call compile _useDominantFaction};
+                
                 _CQB_Locations = _logic getvariable ["CQB_LOCATIONTYPE","towns"];
                 
                 [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
@@ -696,13 +699,15 @@ switch(_operation) do {
 			// if a house and unit is provided start spawn process
 			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
             
+            private ["_faction","_houseFaction"];
+            
             _house = _args select 0;
-            _dominantFaction = _args select 1;
+            _faction = _args select 1;
             
             _debug = _logic getVariable ["debug",false];
             
         	_createUnitTypes = {
-				private ["_factions","_units","_blacklist","_faction","_dominantFaction"];
+				private ["_factions","_units","_blacklist","_faction","_houseFaction"];
 				PARAMS_1(_factions);
                 _blacklist = _logic getVariable ["UnitsBlackList",[]];
 				[_factions, ceil(random 2),_blacklist] call ALiVE_fnc_chooseRandomUnits;
@@ -715,14 +720,14 @@ switch(_operation) do {
 			// and will be over-written in addHouse
 			
 			_units = _house getVariable ["unittypes", []];
-            _faction = _house getVariable ["faction", (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom];
+            _houseFaction = _house getVariable ["faction", (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom];
 
 			// Check: if no units already defined
-			if ((count _units == 0) || {!(_dominantFaction == _faction)}) then {
+			if ((count _units == 0) || {!(_houseFaction == _faction)}) then {
 				// Action: identify AI unit types
-				_units = [[_dominantFaction]] call (_logic getVariable ["_createUnitTypes", _createUnitTypes]);
+				_units = [[_faction]] call (_logic getVariable ["_createUnitTypes", _createUnitTypes]);
 				_house setVariable ["unittypes", _units, true];
-                _house setVariable ["faction", _dominantFaction, true];
+                _house setVariable ["faction", _faction, true];
 			};
 
 			// Action: restore AI
@@ -782,8 +787,9 @@ switch(_operation) do {
 			
 			// spawn loop
 			_logic spawn {
-				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_playerhosts"];
+				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_playerhosts","_faction","_useDominantFaction"];
 				_logic = _this;
+                
 				
 				// default functions - can be overridden
 				// over-arching spawning loop
@@ -791,6 +797,7 @@ switch(_operation) do {
 						sleep (2 + random 1);
                         _debug = _logic getVariable ["debug",false];
 						_spawn = _logic getVariable ["spawnDistance", 800];
+                        _useDominantFaction = call compile (MOD(CQB) getvariable ["CQB_UseDominantFaction","true"]);
                         
 						{
 							// if conditions are right, spawn a group and place them
@@ -833,14 +840,17 @@ switch(_operation) do {
                                     
 	                                    if !(isnull _host) then {
 		                                    _house setvariable ["group","preinit",true];
-                                            _dominantFaction = [getposATL _house, 500] call ALiVE_fnc_getDominantFaction;
-                                            if (isnil "_dominantFaction") then {_dominantFaction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom};
                                             
-                                            //Trying async calls
-                                            //[_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS_RetVal;
-                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_dominantFaction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
+                                            if (_useDominantFaction) then {
+                                            	_faction = [getposATL _house, 500] call ALiVE_fnc_getDominantFaction;
+                                            	if (isnil "_faction") then {_faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom};
+                                            } else {
+                                                _faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom;
+                                            };
                                             
-                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_dominantFaction] call ALiVE_fnc_Dump;
+                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_faction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
+                                            
+                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
                                             sleep 0.1;
 	                                    } else {
 	                                        ["CQB ERROR: Null object on host %1",_host] call ALiVE_fnc_DumpR;

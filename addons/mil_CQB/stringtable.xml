@@ -29,18 +29,17 @@
 <Key ID="STR_ALIVE_CQB_FACTIONS_REG_COMMENT">
 	<English>Chooses the factions of regular CQB units</English>
 </Key>
-
 <Key ID="STR_ALIVE_CQB_ENABLE_COMMENT">
 	<English>Enables CQB module</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN">
-	<English>Density</English>
+	<English>Density:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN_COMMENT">
 	<English>Percentage of occupied houses</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_DISABLE">
-	<English>Disable CQB</English>
+	<English>Disable CQB:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_DISABLE_COMMENT">
 	<English>Disables CQB module</English>
@@ -52,15 +51,21 @@
 	<English>Place the CQB module and select the preferred intensity. CQB can be synchronised (F5) to a Mil_MP or CIV_CP module (optionally).</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_LOCATIONTYPE">
-	<English>CQB locations</English>
+	<English>CQB locations:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_LOCATIONTYPE_COMMENT">
 	<English>Selects the type of area in which CQB will be available, if synced to a MIL/CIV MP module this setting will be overwritten</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_BLACKLIST">
-	<English>Blacklist</English>
+	<English>Blacklist:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_BLACKLIST_COMMENT">
 	<English>Markers where no CQB will be present</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_USEDOMINANTFACTION">
+	<English>Placement:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_USEDOMINANTFACTION_COMMENT">
+	<English>CQB will determine the dominant faction or use static factions from the faction param fields</English>
 </Key>
 </Container></Package></Project>
