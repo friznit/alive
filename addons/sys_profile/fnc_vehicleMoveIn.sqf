@@ -67,12 +67,15 @@ _turret = _assignments select 3;
 if(count _turret > 0) then {
 	// get turrets for this class ignoring gunner and commander turrets
 	_turrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
-	
+
 	for "_i" from 0 to (count _turret)-1 do {
 		_unit = _turret select _i;
-		_turretPath = _turrets call BIS_fnc_arrayPop;
-		_unit assignAsTurret [_vehicle, _turretPath];
-		_unit moveInTurret [_vehicle, _turretPath];
+
+		if(count _turrets > 0) then {
+            _turretPath = _turrets call BIS_fnc_arrayPop;
+            _unit assignAsTurret [_vehicle, _turretPath];
+            _unit moveInTurret [_vehicle, _turretPath];
+        };
 	};
 };
 
