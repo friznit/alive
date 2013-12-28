@@ -115,7 +115,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.98.03";
+		briefingName="ALiVE Showcase - Foursome v0.98.04";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -1680,7 +1680,7 @@ class Mission
 					position[]={15279.249,17.393339,17032.498};
 					class args
 					{
-						items=5;
+						items=7;
 						class Item0
 						{
 							value="false";
@@ -1701,15 +1701,27 @@ class Mission
 						};
 						class Item3
 						{
-							value="[""OPF_F""]";
+							value="true";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_FACTIONS_STRAT";
+							typeName="CQB_UseDominantFaction";
 						};
 						class Item4
 						{
 							value="[""OPF_F""]";
 							parentCls="ALiVE_mil_cqb";
+							typeName="CQB_FACTIONS_STRAT";
+						};
+						class Item5
+						{
+							value="[""OPF_F""]";
+							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS_REG";
+						};
+						class Item6
+						{
+							value="";
+							parentCls="ALiVE_mil_cqb";
+							typeName="blacklist";
 						};
 					};
 					id=43;
