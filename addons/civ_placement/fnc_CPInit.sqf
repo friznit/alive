@@ -33,3 +33,5 @@ ASSERT_DEFINED("ALIVE_fnc_CP","Main function missing");
 ["CP INIT"] call ALIVE_fnc_dump;
 
 [_logic, "init"] call ALIVE_fnc_CP;
+
+["CP INIT COMPLETE"] call ALIVE_fnc_dump;

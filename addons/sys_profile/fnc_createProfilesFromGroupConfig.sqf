@@ -46,17 +46,38 @@ _config = _groupClass call ALIVE_fnc_configGetGroup;
 
 if(count _config > 0) then {
 
+    private ["_entityID","_side","_profileEntity","_classes","_positions","_damages","_ranks","_unit"];
+
 	//["CFG: %1",_config] call ALIVE_fnc_dump;
 
 	_groupName = getText(_config >> "name");
 	_groupSide = getNumber(_config >> "side");
 	_groupFaction = getText(_config >> "faction");
+
+    /*
+	["CFG Name: %1",_groupName] call ALIVE_fnc_dump;
+    ["CFG Side: %1",_groupSide] call ALIVE_fnc_dump;
+    ["CFG Faction: %1",_groupFaction] call ALIVE_fnc_dump;
+    */
+
+	if(!isNil "ALIVE_factionCustomMappings") then {
+        if(_groupFaction in (ALIVE_factionCustomMappings select 1)) then {
+            _customMappings = [ALIVE_factionCustomMappings, _groupFaction] call ALIVE_fnc_hashGet;
+            _side = [_customMappings, "Side"] call ALIVE_fnc_hashGet;
+            _groupFaction = [_customMappings, "FactionName"] call ALIVE_fnc_hashGet;
+        }else{
+            _side = _groupSide call ALIVE_fnc_sideNumberToText;
+        };
+    }else{
+        _side = _groupSide call ALIVE_fnc_sideNumberToText;
+    };
+
 	_groupUnits = [];
 	_groupVehicles = [];
 
     /*
 	["CFG Name: %1",_groupName] call ALIVE_fnc_dump;
-    ["CFG Side: %1",_groupSide] call ALIVE_fnc_dump;
+    ["CFG Side: %1",_side] call ALIVE_fnc_dump;
     ["CFG Faction: %1",_groupFaction] call ALIVE_fnc_dump;
     */
 
@@ -68,10 +89,10 @@ if(count _config > 0) then {
 			_vehicle = getText(_class >> "vehicle");
 			_vehicleType = _vehicle call ALIVE_fnc_configGetVehicleClass;
 			
-			//["CGROUP Name: %1 VehicleType: %2",_groupName,_vehicleType] call ALIVE_fnc_dump;
+			//["CGROUP Name: %1 VehicleType: %2 vehicle: %3",_groupName,_vehicleType,_vehicle] call ALIVE_fnc_dump;
 			
 			// seperate vehicles and units in the group
-			if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Armored")||(_vehicleType == "Ship")||(_vehicleType == "Air")) then {
+			if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Armored")||(_vehicleType == "Ship")||(_vehicleType == "Air")||(_vehicleType == "LIB_Medium_Tanks")||(_vehicleType == "LIB_Heavy_Tanks")) then {
 				_groupVehicles set [count _groupVehicles, [_vehicle,_rank]];			
 			} else {
 				_groupUnits set [count _groupUnits, [_vehicle,_rank]];
@@ -88,10 +109,6 @@ if(count _config > 0) then {
 
 
 	// create the group entity profile
-
-	private ["_entityID","_side","_profileEntity","_classes","_positions","_damages","_ranks","_unit"];
-
-	_side = _groupSide call ALIVE_fnc_sideNumberToText;
 
 	_profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "init"] call ALIVE_fnc_profileEntity;
@@ -121,7 +138,7 @@ if(count _config > 0) then {
 		_vehicleClass = _vehicle select 0;
 		_vehicleRank = _vehicle select 1;
 		
-		//["V: %1 %2",_vehicle,_vehicleClass] call ALIVE_fnc_dump;
+	    //["V: %1 %2",_vehicle,_vehicleClass] call ALIVE_fnc_dump;
 		
 		_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 										
@@ -153,7 +170,7 @@ if(count _config > 0) then {
 		_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
 		_countCrewPositions = 0;
 		
-		//["VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;
+		//"VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;
 		
 		// count all non cargo positions
 		for "_i" from 0 to count _vehiclePositions -2 do {

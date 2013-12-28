@@ -36,8 +36,8 @@ set arma=%_ARMA3PATH%
 set target=P:\x\alive\addons\fnc_strategic\indexes
 
 rem ----------------------------- A3 --------------------------------------
-%exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
-%exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
+rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
+rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
 rem ----------------------------- A2 --------------------------------------
 rem %exe% "%arma%\@a2co\Addons\chernarus.pbo" > %target%\objects.chernarus.sqf
@@ -60,6 +60,13 @@ rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_abel.pbo" > %target%\objects.abel.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_cain.pbo" > %target%\objects.cain.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_eden.pbo" > %target%\objects.eden.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_noe.pbo" > %target%\objects.noe.sqf
+
+rem ----------------------------- Iron Front ----------------------------------
+%exe% "%arma%\@a2co\@IF\addons\baranow_wrp.pbo" > %target%\objects.baranow.sqf
+%exe% "%arma%\@a2co\@IF\addons\ivachev_wrp.pbo" > %target%\objects.ivachev.sqf
+%exe% "%arma%\@a2co\@IF\addons\panovo_wrp.pbo" > %target%\objects.panovo.sqf
+%exe% "%arma%\@a2co\@IF\addons\staszow_wrp.pbo" > %target%\objects.staszow.sqf
+%exe% "%arma%\@a2co\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.france.sqf
 
 rem ----------------------------- User ------------------------------------
 rem %exe% "%arma%\@a2co\@Sangin\Addons\hellskitchen.pbo" > %target%\objects.hellskitchen.sqf

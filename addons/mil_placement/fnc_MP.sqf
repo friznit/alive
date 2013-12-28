@@ -269,8 +269,6 @@ switch(_operation) do {
 			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
 			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
 
-			//[_logic,"register"] call MAINCLASS;
-            
             if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) exitwith {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
@@ -285,21 +283,6 @@ switch(_operation) do {
             {deleteMarkerLocal _x} foreach (_logic getVariable ["blacklist", DEFAULT_TAOR]);
         };
 	};
-	case "register": {
-		
-			private["_registration","_moduleType"];
-		
-			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["ALIVE_profileHandler"]];
-	
-			if(isNil "ALIVE_registry") then {
-				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;
-			};
-
-			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-	};
-	// Main process
 	case "start": {
         if (isServer) then {
 		
@@ -471,6 +454,7 @@ switch(_operation) do {
                         [_logic, "placement"] call MAINCLASS;
                     }else{
                         ["ALIVE MP - Warning no locations found for placement, you need to inlcude military locations within the TAOR marker",_] call ALIVE_fnc_dumpR;
+
                         // set module as started
                         _logic setVariable ["startupComplete", true];
                     };
@@ -480,13 +464,14 @@ switch(_operation) do {
                     if(_debug) then { ["ALIVE MP - Objectives Only"] call ALIVE_fnc_dump; };
                     // DEBUG -------------------------------------------------------------------------------------
 
+                    // set module as started
                     _logic setVariable ["startupComplete", true];
+
                 };
             }else{
-
                 // errors
                 _logic setVariable ["startupComplete", true];
-            }
+            };
         };
 	};
 	// Placement
@@ -549,10 +534,9 @@ switch(_operation) do {
 			// Load static data
 			
 			if(isNil "ALIVE_unitBlackist") then {
-				_file = "\x\alive\addons\mil_placement\static\staticData.sqf";
+				_file = "\x\alive\addons\sys_profile\static\staticData.sqf";
 				call compile preprocessFileLineNumbers _file;
 			};
-
 
 			// Create HQ
 
@@ -991,15 +975,17 @@ switch(_operation) do {
                     _center = [_x, "center"] call ALIVE_fnc_hashGet;
                     _size = [_x, "size"] call ALIVE_fnc_hashGet;
 
-                    _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
-                    _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                    if(count _infantryGroups > 0) then {
+                        _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
+                        _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 
-                    //ARJay, here we could place the default patrols/garrisons instead of the static garrisson if you like to (same is in CIV MP)
-                    {
-                        if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity;
-                        };
-                    } foreach _guards;
+                        //ARJay, here we could place the default patrols/garrisons instead of the static garrisson if you like to (same is in CIV MP)
+                        {
+                            if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+                                [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity;
+                            };
+                        } foreach _guards;
+                    };
 
                     if(_totalCount < _groupCount) then {
 
@@ -1056,10 +1042,10 @@ switch(_operation) do {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			
+
 			// set module as started
-			_logic setVariable ["startupComplete", true];
+            _logic setVariable ["startupComplete", true];
+
 		};
 	};
 };

@@ -27,9 +27,11 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
-["PROFILES INIT"] call ALIVE_fnc_dump;
+
 
 if(isServer) then {
+
+    ["PROFILES INIT"] call ALIVE_fnc_dump;
 	
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
@@ -57,9 +59,9 @@ if(isServer) then {
 	[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
 
-	//[_profileSystem, "register"] call ALIVE_fnc_profileSystem;
+	[_profileSystem,"start"] call ALIVE_fnc_profileSystem;
 
-	[_profileSystem,"go"] call ALIVE_fnc_profileSystem;
+	["PROFILES INIT COMPLETE"] call ALIVE_fnc_dump;
 };
 
 if(hasInterface) then {

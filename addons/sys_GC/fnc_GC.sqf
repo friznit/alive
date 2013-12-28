@@ -59,33 +59,16 @@ switch(_operation) do {
 				_logic setVariable ["class", MAINCLASS];
                 
                 //Registering disabled for now
-				//_logic setVariable ["moduleType", "ALIVE_GC"];
-				//_logic setVariable ["startupComplete", false];
+				_logic setVariable ["moduleType", "ALIVE_GC"];
+				_logic setVariable ["startupComplete", false];
 				TRACE_1("After module init",_logic);
 
-				//[_logic,"register"] call MAINCLASS;
-                
                 //Start GC
                 [_logic,"start"] call MAINCLASS;
                 
 			};
 		};
-		case "register": {
-			
-			private["_registration","_moduleType"];
-	
-			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["ALIVE_profileHandler","SYNCED"],["ALIVE_MI","ALIVE_OPCOM"]];
-	
-			if(isNil "ALIVE_registry") then {
-				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
-			};
-
-			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-		};
-		// Main process
-		case "start": {                
+		case "start": {
                 /*
                 MODEL - no visual just reference data
                 - nodes
@@ -116,9 +99,10 @@ switch(_operation) do {
 					
                     _fsm = _logic execfsm "\x\alive\addons\sys_GC\garbagecollector.fsm";
                     _logic setVariable ["ALiVE_GC_FSM", _fsm];
-                    
+
                     // set module as startup complete
-					//_logic setVariable ["startupComplete",true,true];
+                    _logic setVariable ["startupComplete",true];
+                    
 				};
 
                 /*

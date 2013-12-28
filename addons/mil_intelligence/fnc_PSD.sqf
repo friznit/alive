@@ -146,6 +146,10 @@ switch(_operation) do {
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 
+            if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) exitwith {
+                ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+            };
+            waituntil {!(isnil "ALIVE_liveAnalysis")};
 						
 			// if player analysis is running, turn on plot sectors
 			_activeAnalysisJobs = [ALIVE_liveAnalysis, "getAnalysisJobs"] call ALIVE_fnc_liveAnalysis;

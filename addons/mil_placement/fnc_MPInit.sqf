@@ -33,3 +33,5 @@ ASSERT_DEFINED("ALIVE_fnc_MP","Main function missing");
 ["MP INIT"] call ALIVE_fnc_dump;
 
 [_logic, "init"] call ALIVE_fnc_MP;
+
+["MP INIT COMPLETE"] call ALIVE_fnc_dump;

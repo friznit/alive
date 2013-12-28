@@ -1,8 +1,13 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
-    'altis',
-    'stratis'
+    'baranow',
+    'france',
+    'ivachev',
+    'panovo',
+    'staszow'
+    #'altis',
+    #'stratis'
     #'hellskitchen',
     #'hellskitchens'
     #'celle',
@@ -35,7 +40,7 @@ $index_names = (
     #'zargabad'
     )
 
-$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg')
+$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg','vegetation')
 
 foreach ($index_name in $index_names){
     

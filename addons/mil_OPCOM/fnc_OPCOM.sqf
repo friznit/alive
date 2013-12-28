@@ -70,26 +70,9 @@ switch(_operation) do {
 				_logic setVariable ["startupComplete", false];
 				TRACE_1("After module init",_logic);
 
-				//[_logic,"register"] call MAINCLASS;
-
                 [_logic,"start"] call MAINCLASS;
 			};
 		};
-		case "register": {
-			
-			private["_registration","_moduleType"];
-	
-			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["ALIVE_profileHandler","SYNCED"],["ALIVE_MI","ALIVE_ML","ALIVE_OPCOM"]];
-	
-			if(isNil "ALIVE_registry") then {
-				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
-			};
-
-			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-		};
-		// Main process
 		case "start": {                
                 /*
                 MODEL - no visual just reference data

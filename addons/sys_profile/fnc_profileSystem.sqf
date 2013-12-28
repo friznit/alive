@@ -54,7 +54,7 @@ switch(_operation) do {
 						[_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
 						[_logic,"moduleType","ALIVE_profileHandler"] call ALIVE_fnc_hashSet;
 						[_logic,"startupComplete",false] call ALIVE_fnc_hashSet;
-                        //TRACE_1("After module init",_logic);						
+                        //TRACE_1("After module init",_logic);
 						
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
 						[_logic,"plotSectors",false] call ALIVE_fnc_hashSet;
@@ -66,22 +66,7 @@ switch(_operation) do {
 						[_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
                 };
         };
-		case "register": {
-		
-				private["_registration","_moduleType"];
-		
-				_moduleType = [_logic,"moduleType"] call ALIVE_fnc_hashGet;
-				_registration = [_logic,_moduleType];
-		
-				if(isNil "ALIVE_registry") then {
-					ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-					[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
-				};
-
-				[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-		};
-        // Main process
-        case "go": {
+        case "start": {
 		
 				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_activeLimiter","_spawnCycleTime","_despawnCycleTime",
 				"_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];
@@ -101,9 +86,17 @@ switch(_operation) do {
 						if(_debug) then {
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 							["ALIVE ProfileSystem - Startup"] call ALIVE_fnc_dump;
-							[true] call ALIVE_fnc_timer;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
+
+                        // Load static data
+                        if(isNil "ALIVE_unitBlackist") then {
+                            _file = "\x\alive\addons\sys_profile\static\staticData.sqf";
+                            call compile preprocessFileLineNumbers _file;
+                        };
+
+                        // global server flag
+                        ALIVE_profileSystemDataLoaded = true;
 
 						// create the profile handler
 						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
@@ -164,8 +157,7 @@ switch(_operation) do {
 							["ALIVE Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
 							["ALIVE Spawn Radius: %1", _spawnRadius] call ALIVE_fnc_dump;
 							["ALIVE Spawn Cycle Time: %1", _spawnCycleTime] call ALIVE_fnc_dump;
-							[] call ALIVE_fnc_timer;
-							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;					
+							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 						
@@ -195,9 +187,9 @@ switch(_operation) do {
                         _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
                         _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
 
-						// set module as started
-						[_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
-						
+                        // set module as started
+                        [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
+
 						// register profile entity analysis job on the live analysis
 						// analysis job will run every 90 seconds and has no run count limit
 						[ALIVE_liveAnalysis, "registerAnalysisJob", [90, 0, "gridProfileEntity", "gridProfileEntity", [_plotSectors]]] call ALIVE_fnc_liveAnalysis;

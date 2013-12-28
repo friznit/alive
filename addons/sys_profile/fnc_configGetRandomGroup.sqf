@@ -33,22 +33,32 @@ _type = if(count _this > 0) then {_this select 0} else {"Infantry"};
 _faction = if(count _this > 1) then {_this select 1} else {"OPF_F"};
 _side = if(count _this > 2) then {_this select 2} else {"EAST"};
 
-_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
-
-//["Faction: %1",_factionConfig] call ALIVE_fnc_dump;
-
-_factionSide = getNumber(_factionConfig >> "side");
-_side = _factionSide call ALIVE_fnc_sideNumberToText;
-
 //["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
 
-if(_faction == "BLU_G_F") then {
-	_faction = "Guerilla";
+if(!isNil "ALIVE_factionCustomMappings") then {
+    if(_faction in (ALIVE_factionCustomMappings select 1)) then {
+        _customMappings = [ALIVE_factionCustomMappings, _faction] call ALIVE_fnc_hashGet;
+        //_customMappings call ALIVE_fnc_inspectHash;
+        _side = [_customMappings, "GroupSideName"] call ALIVE_fnc_hashGet;
+        //_faction = [_customMappings, "FactionName"] call ALIVE_fnc_hashGet;
+        _faction = [_customMappings, "GroupFactionName"] call ALIVE_fnc_hashGet;
+        _groupFactionTypes = [_customMappings, "GroupFactionTypes"] call ALIVE_fnc_hashGet;
+        _type = [_groupFactionTypes, _type] call ALIVE_fnc_hashGet;
+    }else{
+        _factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
+        _factionSide = getNumber(_factionConfig >> "side");
+        _side = _factionSide call ALIVE_fnc_sideNumberToText;
+    };
+}else{
+    _factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
+    _factionSide = getNumber(_factionConfig >> "side");
+    _side = _factionSide call ALIVE_fnc_sideNumberToText;
 };
 
 if(_side == "GUER") then {
 	_side = "INDEP";
 };
+
 
 //["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
 

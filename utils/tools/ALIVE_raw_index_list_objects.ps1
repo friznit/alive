@@ -1,9 +1,14 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
-    #'abel',
+    'baranow',
+    'france',
+    'ivachev',
+    'panovo',
+    'staszow',
+    #--'abel',
     'altis',
-    #'cain',
+    #--'cain',
     'celle',
     'chernarus',
     'carraigdubh',
@@ -11,7 +16,7 @@ $index_names = (
     'desert',
     'desert_e',
     'desert2',
-    #'eden',
+    #--'eden',
     'hellskitchen',
     'hellskitchens',
     'fallujah',
@@ -21,7 +26,7 @@ $index_names = (
     'mcn_hazarkot',
     'namalsk',
     'isoladicapraia',
-    #'noe',
+    #--'noe',
     'panthera',
     'provinggrounds_pmc',
     'sara',
@@ -33,12 +38,12 @@ $index_names = (
     'thirsk',
     'thirskw',
     'tigeria',
-    #'tigeria_se',
+    #--'tigeria_se',
     'torabora',
     'tup_qom',
     'utes',
-    #'vostok',
-    #'vostok_w',
+    #--'vostok',
+    #--'vostok_w',
     'zargabad')
 
 

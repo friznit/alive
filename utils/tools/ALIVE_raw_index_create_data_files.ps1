@@ -4,6 +4,11 @@ $analysis_path = 'P:\x\alive\addons\fnc_analysis\data\'
 
 
 $index_names = (
+    'baranow',
+    'france',
+    'ivachev',
+    'panovo',
+    'staszow',
     #'abel',
     'altis',
     #'cain',

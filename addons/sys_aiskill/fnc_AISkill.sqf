@@ -143,9 +143,6 @@ switch(_operation) do {
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_AISKill"];
-			
-			// FIXME - can you change startupComplete to initialising
-			// and set to true, then set to nil once completed?
 			_logic setVariable ["startupComplete", false];
 			
 			[_logic, "skillFactionsRecruit", _logic getVariable ["skillFactionsRecruit", []]] call MAINCLASS;
@@ -158,23 +155,8 @@ switch(_operation) do {
 			// init has completed
 			TRACE_1("After module init",_logic);
 			
-			//[_logic, "register"] call MAINCLASS;
-
 			[_logic, "start"] call MAINCLASS;
 		};
-	};
-	case "register": {
-		private["_registration","_moduleType"];
-		
-		_moduleType = _logic getVariable "moduleType";
-		_registration = [_logic, _moduleType, []];
-		
-		if(isNil "ALIVE_registry") then {
-			ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-			[ALIVE_registry, "init"] call ALIVE_fnc_registry;
-		};
-		
-		[ALIVE_registry, "register", _registration] call ALIVE_fnc_registry;
 	};
 	case "skillFactionsRecruit": {
 		// FIXME - my preference would be to use a swtich statement here
@@ -443,8 +425,7 @@ switch(_operation) do {
 					false
 				};
 			};
-			
-			// FIXME - refer to earlier comment about startupComplete vs initialising
+			// set module as startup complete
 			_logic setVariable ["startupComplete", true];
 		};
 	};

@@ -30,6 +30,8 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_CombatSupport","Main function missing");
 
+["SUP CS INIT"] call ALIVE_fnc_dump;
+
 [_logic, "init"] call ALIVE_fnc_CombatSupport;
 
 

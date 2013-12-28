@@ -120,6 +120,17 @@ switch(_operation) do {
                     MOD(CQB) = _logic;
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
+
+                    // Load static data
+                    /*
+                    if(isNil "ALIVE_unitBlackist") then {
+                        _file = "\x\alive\addons\sys_profile\static\staticData.sqf";
+                        call compile preprocessFileLineNumbers _file;
+                    };
+
+                    _strategicTypes = ALIVE_CQBStrategicTypes;
+                    _UnitsBlackList = ALIVE_CQBunitBlackist;
+                    */
                     
                     //Define strategic buildings
                     _strategicTypes = [

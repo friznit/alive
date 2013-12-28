@@ -160,30 +160,13 @@ switch(_operation) do {
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_ML"];
 			_logic setVariable ["startupComplete", false];
-			
+
 			_logic setVariable ["intelligenceObtained", [] call ALIVE_fnc_hashCreate];
 			TRACE_1("After module init",_logic);
-
-			//[_logic,"register"] call MAINCLASS;
 
             [_logic,"start"] call MAINCLASS;
         };
 	};
-	case "register": {
-		
-			private["_registration","_moduleType"];
-		
-			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["SYNCED"]];
-	
-			if(isNil "ALIVE_registry") then {
-				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
-			};
-
-			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-	};
-	// Main process
 	case "start": {
         if (isServer) then {
 		
@@ -296,10 +279,10 @@ switch(_operation) do {
 				// Load static data
 
                 if(isNil "ALIVE_unitBlackist") then {
-                    _file = "\x\alive\addons\mil_placement\static\staticData.sqf";
+                    _file = "\x\alive\addons\sys_profile\static\staticData.sqf";
                     call compile preprocessFileLineNumbers _file;
                 };
-								
+
 				waituntil {
 					sleep (10);
 					

@@ -96,6 +96,7 @@ switch(_operation) do {
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_MI"];
+			_logic setVariable ["startupComplete", false];
 			_logic setVariable ["listenerID", ""];
 
 			[_logic,"start"] call MAINCLASS;
@@ -104,6 +105,11 @@ switch(_operation) do {
     case "start": {
         private["_friendlyIntel"];
 
+        if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) exitwith {
+            ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+        };
+        waituntil {!(isnil "ALIVE_liveAnalysis")};
+
         _friendlyIntel = [_logic, "friendlyIntel"] call MAINCLASS;
 
         if(_friendlyIntel) then {
@@ -111,6 +117,8 @@ switch(_operation) do {
         };
 
         [_logic,"listen"] call MAINCLASS;
+
+        _logic setVariable ["startupComplete", true];
     };
 	case "showFriendlies": {
         private["_friendlyIntelRadius"];

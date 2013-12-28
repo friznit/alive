@@ -31,4 +31,6 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_CAS","Main function missing");
 
+["SUP CAS INIT"] call ALIVE_fnc_dump;
+
 [_logic, "init"] call ALIVE_fnc_CAS;
