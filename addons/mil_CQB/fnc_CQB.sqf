@@ -300,7 +300,7 @@ switch(_operation) do {
                         _logic setVariable ["startupComplete", true];
                     };
             } else {
-                    // if client clean up markers (needs to be checked when HC is implemented)
+                    // if client and not HC delete logic?
             };
                 
 		TRACE_2("After module init",MOD(CQB),MOD(CQB) getVariable "init");
