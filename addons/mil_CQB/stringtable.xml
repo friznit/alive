@@ -57,4 +57,10 @@
 <Key ID="STR_ALIVE_CQB_LOCATIONTYPE_COMMENT">
 	<English>Selects the type of area in which CQB will be available, if synced to a MIL/CIV MP module this setting will be overwritten</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_BLACKLIST">
+	<English>Blacklist</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_BLACKLIST_COMMENT">
+	<English>Markers where no CQB will be present</English>
+</Key>
 </Container></Package></Project>

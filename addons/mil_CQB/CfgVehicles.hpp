@@ -114,6 +114,12 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_FACTIONS_REG_COMMENT";
                                 defaultValue = ["OPF_F"];
                         };
+                        class blacklist
+                        {
+                                displayName = "$STR_ALIVE_CQB_BLACKLIST";
+                                description = "$STR_ALIVE_CQB_BLACKLIST_COMMENT";
+                                defaultValue = "";
+                        };
                 };
                 class ModuleDescription
 				{

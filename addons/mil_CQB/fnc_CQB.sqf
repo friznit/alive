@@ -39,6 +39,7 @@ Wolffy, Highhead
 
 #define SUPERCLASS nil
 #define MTEMPLATE "ALiVE_CQB_%1"
+#define DEFAULT_BLACKLIST []
 
 private ["_logic","_operation","_args"];
 
@@ -94,6 +95,8 @@ switch(_operation) do {
 				if (typename (_factionsReg) == "STRING") then {_factionsReg = call compile _factionsReg};
                 
                 _CQB_Locations = _logic getvariable ["CQB_LOCATIONTYPE","towns"];
+                
+                [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
             
 	        	CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
                 if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
@@ -245,7 +248,7 @@ switch(_operation) do {
                     
                     _houses = _houses_reg + _houses_strat;
                     
-                    _result = [_houses,_strategicTypes,"ALIVE_CQB_BL_%1"] call ALiVE_fnc_CQBsortStrategicHouses;
+                    _result = [_houses,_strategicTypes,[_logic, "blacklist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
 
@@ -333,6 +336,28 @@ switch(_operation) do {
                 };
         };
         
+        case "blacklist": {
+            if !(isnil "_args") then {
+				if(typeName _args == "STRING") then {
+                    if !(_args == "") then {
+						_args = [_args, " ", ""] call CBA_fnc_replace;
+						_args = [_args, ","] call CBA_fnc_split;
+						if(count _args > 0) then {
+							_logic setVariable [_operation, _args];
+						};
+                    } else {
+                        _logic setVariable [_operation, []];
+                    };
+				} else {
+					if(typeName _args == "ARRAY") then {		
+						_logic setVariable [_operation, _args];
+					};
+	            };
+            };
+            _result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
+            _result;
+		};
+                
         case "destroy": {
                 if (isServer) then {
                         // if server
