@@ -62,10 +62,10 @@ rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_eden.pbo" > %target%\objects.eden.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_noe.pbo" > %target%\objects.noe.sqf
 
 rem ----------------------------- Iron Front ----------------------------------
-%exe% "%arma%\@a2co\@IF\addons\baranow_wrp.pbo" > %target%\objects.baranow.sqf
-%exe% "%arma%\@a2co\@IF\addons\ivachev_wrp.pbo" > %target%\objects.ivachev.sqf
-%exe% "%arma%\@a2co\@IF\addons\panovo_wrp.pbo" > %target%\objects.panovo.sqf
-%exe% "%arma%\@a2co\@IF\addons\staszow_wrp.pbo" > %target%\objects.staszow.sqf
+rem %exe% "%arma%\@a2co\@IF\addons\baranow_wrp.pbo" > %target%\objects.baranow.sqf
+rem %exe% "%arma%\@a2co\@IF\addons\ivachev_wrp.pbo" > %target%\objects.ivachev.sqf
+rem %exe% "%arma%\@a2co\@IF\addons\panovo_wrp.pbo" > %target%\objects.panovo.sqf
+rem %exe% "%arma%\@a2co\@IF\addons\staszow_wrp.pbo" > %target%\objects.staszow.sqf
 %exe% "%arma%\@a2co\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.france.sqf
 
 rem ----------------------------- User ------------------------------------

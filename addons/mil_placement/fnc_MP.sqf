@@ -591,6 +591,8 @@ switch(_operation) do {
 			    // attempt to get supplies by faction
 				_supplyClasses = [ALIVE_factionDefaultSupplies,_faction,[]] call ALIVE_fnc_hashGet;
 
+				//["SUPPLY CLASSES: %1",_supplyClasses] call ALIVE_fnc_dump;
+
 				// if no supplies found for the faction use side supplies
 				if(count _supplyClasses == 0) then {
 				    _supplyClasses = [ALIVE_sideDefaultSupplies,_side] call ALIVE_fnc_hashGet;
@@ -603,14 +605,17 @@ switch(_operation) do {
 						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
 						
 						_buildings = [_nodes, ALIVE_militarySupplyBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
-						
+
+						//["BUILDINGS: %1",_buildings] call ALIVE_fnc_dump;
+
 						//[_x, "debug", true] call ALIVE_fnc_cluster;
 						{													
 							_position = position _x;
 							_direction = direction _x;
 							_vehicleClass = _supplyClasses call BIS_fnc_selectRandom;
 							if(random 1 > 0.6) then {
-								_box = createVehicle [_vehicleClass, _position, [], 0, "NONE"];  
+								_box = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
+								_countSupplies = _countSupplies + 1;
 							};
 						} forEach _buildings;				
 					} forEach _clusters;
@@ -724,13 +729,21 @@ switch(_operation) do {
 				
 				_supportClasses = [ALIVE_factionDefaultSupports,_faction,[]] call ALIVE_fnc_hashGet;
 
+				//["SUPPORT CLASSES: %1",_supportClasses] call ALIVE_fnc_dump;
+
 				// if no supports found for the faction use side supplies
                 if(count _supportClasses == 0) then {
                     _supportClasses = [ALIVE_sideDefaultSupports,_side] call ALIVE_fnc_hashGet;
                 };
-				
-				_landClasses = _landClasses - _supportClasses;
-				
+
+                if(count _landClasses == 0) then {
+                    _landClasses = _landClasses + _supportClasses;
+                }else{
+                    _landClasses = _landClasses - _supportClasses;
+                };
+
+                //["LAND CLASSES: %1",_landClasses] call ALIVE_fnc_dump;
+
 				if(count _landClasses > 0) then {
 							
 					{					
@@ -740,10 +753,15 @@ switch(_operation) do {
 				
 						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;	
 						
-						_buildings = [_nodes, ALIVE_militaryParkingBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;					
-						
+						_buildings = [_nodes, ALIVE_militaryParkingBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
+
+                        //["BUILDINGS: %1",_buildings] call ALIVE_fnc_dump;
+
 						_countBuildings = count _buildings;
 						_parkingChance = 0.1 * _ambientVehicleAmount;
+
+						//["COUNT BUILDINGS: %1",_countBuildings] call ALIVE_fnc_dump;
+						//["CHANCE: %1",_parkingChance] call ALIVE_fnc_dump;
 						
 						if(_countBuildings > 50) then {
 							_supportMax = 5;
@@ -755,41 +773,47 @@ switch(_operation) do {
 							_parkingChance = 0.2 * _ambientVehicleAmount;
 						};
 						
-						if(_countBuildings > 30 && _countBuildings < 40) then {
+						if(_countBuildings > 30 && _countBuildings < 41) then {
 							_supportMax = 5;
 							_parkingChance = 0.3 * _ambientVehicleAmount;
 						};
 						
-						if(_countBuildings > 20 && _countBuildings < 30) then {
+						if(_countBuildings > 20 && _countBuildings < 31) then {
 							_supportMax = 3;
 							_parkingChance = 0.4 * _ambientVehicleAmount;
 						};
 						
-						if(_countBuildings > 10 && _countBuildings < 20) then {
+						if(_countBuildings > 10 && _countBuildings < 21) then {
 							_supportMax = 2;
 							_parkingChance = 0.6 * _ambientVehicleAmount;
 						};
 						
-						if(_countBuildings > 0 && _countBuildings < 10) then {
+						if(_countBuildings > 0 && _countBuildings < 11) then {
 							_supportMax = 1;
 							_parkingChance = 0.7 * _ambientVehicleAmount;
 						};
 
+						//["SUPPORT MAX: %1",_supportMax] call ALIVE_fnc_dump;
+                        //["CHANCE: %1",_parkingChance] call ALIVE_fnc_dump;
+
 						_usedPositions = [];
-						
+
 						{
 							if(random 1 < _parkingChance) then {
-							
-								_building = _x;								
+
+								_building = _x;
 								
 								_supportPlacement = false;
 								if(_supportCount <= _supportMax) then {
 									_supportPlacement = true;
-									_vehicleClass = _supportClasses call BIS_fnc_selectRandom;		
+									_vehicleClass = _supportClasses call BIS_fnc_selectRandom;
 								}else{
 									_vehicleClass = _landClasses call BIS_fnc_selectRandom;
-								};								
-														
+								};
+
+                                //["SUPPORT PLACEMENT: %1",_supportPlacement] call ALIVE_fnc_dump;
+                                //["VEHICLE CLASS: %1",_vehicleClass] call ALIVE_fnc_dump;
+
 								_parkingPosition = [_vehicleClass,_building] call ALIVE_fnc_getParkingPosition;
 								_positionOK = true;
 								
@@ -799,9 +823,13 @@ switch(_operation) do {
 										_positionOK = false;
 									};
 								} forEach _usedPositions;
-								
+
+								//["POS OK: %1",_positionOK] call ALIVE_fnc_dump;
+
 								if(_positionOK) then {
 									[_vehicleClass,_side,_faction,_parkingPosition select 0,_parkingPosition select 1,false,_faction] call ALIVE_fnc_createProfileVehicle;
+
+									_countLandUnits = _countLandUnits + 1;
 								
 									_usedPositions set [count _usedPositions, _parkingPosition];
 									

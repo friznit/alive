@@ -156,7 +156,6 @@ ALIVE_factionDefaultSupplies = [] call ALIVE_fnc_hashCreate;
  * CP MP building types for cluster generation
  */
 
-
 ALIVE_airBuildingTypes = [
 	"hangar"
 ];
@@ -319,6 +318,75 @@ ALIVE_civilianSettlementBuildingTypes = [
 	"housea",
 	"housek"
 ];
+
+
+/*
+ * Custom building types for specific maps
+ * Add to default building lists for specific maps
+ */
+
+
+_worldName = worldName;
+
+
+// Iron Front
+if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev" || _worldName == "Panovo" || _worldName == "Colleville") then {
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "Land_lib_Mil_Barracks",
+        "lib_posed",
+        "blockhouse",
+        "barrier_p1",
+        "ZalChata",
+        "lib_Mil_Barracks_L",
+        "dum01"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "Land_lib_Mil_Barracks",
+        "lib_posed",
+        "blockhouse",
+        "barrier_p1",
+        "ZalChata",
+        "lib_Mil_Barracks_L",
+        "dum01"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+    	"Land_lib_Mil_Barracks",
+    	"lib_Mil_Barracks_L",
+        "dum01"
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+    	"Land_lib_Mil_Barracks",
+        "lib_posed",
+        "blockhouse",
+        "barrier_p1",
+        "ZalChata",
+        "lib_Mil_Barracks_L",
+        "dum01"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+    	"lib_admin",
+    	"lib_kostel_1",
+    	"lib_church"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "kulna",
+        "lib_dom",
+        "lib_cr",
+        "lib_sarai",
+        "lib_Kladovka",
+        "lib_hata",
+        "lib_apteka",
+        "lib_city_shop",
+        "lib_kirpich",
+        "lib_banya"
+    ];
+};
 
 
 /*
