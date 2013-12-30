@@ -154,7 +154,7 @@ switch(_operation) do {
 								[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
 						};
 					};
-                    
+
 					/*
 					CONTROLLER  - coordination
 					*/
@@ -170,7 +170,7 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
-                    //Get objectives data from other modules!
+                    //Get objectives data from other modules or placed Location logics!
                     private ["_objectives"];
                     
                     _objectives = [];
@@ -178,16 +178,39 @@ switch(_operation) do {
                        
 	                    //Iterate through all synchronized modules
 	                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
-							private ["_obj","_mod"];
+							private ["_obj","_mod","_size","_type","_priority"];
 	                        
 	                        _mod = (synchronizedObjects _logic) select _i;
 	                        
 	                        if ((typeof _mod) in ["ALiVE_mil_placement","ALiVE_civ_placement"]) then {
+                                diag_log "mod";
                                 while {_startupComplete = _mod getVariable ["startupComplete", false]; !(_startupComplete)} do {};
                                 
 								_obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
 		                        _objectives = _objectives + _obj;
-	                        };
+	                        } else {
+                                //Is it a synced editor location-gamelogic?
+	                            if (_mod iskindof "LocationBase_F") then {
+	                                
+                                    //These two values can be overwritten with f.e. *this setvariable ["size",700]* in init-field of editorobject...
+	                                _size = _mod getvariable ["size",150];
+	                                _priority = _mod getvariable ["priority",200];
+                                    
+                                    //Get type of location-logic from config
+	                                _type = getText(configfile >> "CfgVehicles" >> (typeOf _mod) >> "displayName");
+	                                
+                                    //Create #Hash objective for this location
+	                    			_obj = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
+	                                [_obj,"center",getposATL _mod] call ALiVE_fnc_HashSet;
+									[_obj,"size",_size] call ALiVE_fnc_hashSet;
+									[_obj,"type",_type] call ALiVE_fnc_hashSet;
+									[_obj,"priority",_priority] call ALiVE_fnc_hashSet;
+	                                [_obj,"clusterID",""] call ALiVE_fnc_hashSet;
+	                                [_obj,"nodes",[]] call ALiVE_fnc_HashSet;
+	                                
+	                                _objectives = _objectives + [_obj];
+	                            };
+                            };
 						};
                         
                         switch (_type) do {
@@ -309,29 +332,41 @@ switch(_operation) do {
 					_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
                     ASSERT_TRUE(typeName _args == "ARRAY",str _args);
-                    _pos = _args select 0;
-                    _size = _args select 1;
-                    _opcom_state = "unassigned"; if (count _args > 2) then {_opcom_state = _args select 2};
+                    ASSERT_TRUE(count _args > 2,str _args);
                     
-                    _objectives = [_logic, "objectives",[]] call ALIVE_fnc_HashGet;
+                    private ["_debug","_params","_id","_pos","_size","_type","_priority","_opcom_state","_clusterID","_nodes","_target","_objectives"];
+
                     _debug = [_logic, "debug",false] call ALIVE_fnc_HashGet;
+                    _params = _args;
                     
-                    _type = "unknown";
-                    _priority = 25;
+                    _id = _params select 0;
+                    _pos = _params select 1;
+                    _size = _params select 2;
                     
-    				_target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
-		
-					_id = format["OPCOM_objective_%1",count _objectives];
+                    if (count _params > 3) then {_type = _params select 3};
+                    if (count _params > 4) then {_priority = _params select 4};
+                    if (count _params > 5) then {_opcom_state = _params select 5};
+                    if (count _params > 6) then {_clusterID = _params select 6};
+                    if (count _params > 7) then {_nodes = _params select 7};
+                    
+                    if (isnil "_type") then {_type = "unknown"};
+                    if (isnil "_priority") then {_priority = 100};
+                    if (isnil "_opcom_state") then {_opcom_state = "unassigned"};
+                    if (isnil "_clusterID") then {_clusterID = "none"};
+                    if (isnil "_nodes") then {_nodes = []};
+                    
+                    _target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
                     [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
-					[_target, "center",_pos] call ALIVE_fnc_HashSet;
-					[_target, "size",_size] call ALIVE_fnc_HashSet;
-					[_target, "type",_type] call ALIVE_fnc_HashSet;
-					[_target, "priority",_priority] call ALIVE_fnc_HashSet;
-					[_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
-                    [_target, "opcom_orders","none"] call ALIVE_fnc_HashSet;
-		
-					if (_debug) then {
-		            	_m = createMarkerLocal [_id, _pos];
+                    [_target, "center",_pos] call ALIVE_fnc_HashSet;
+                    [_target, "size",_size] call ALIVE_fnc_HashSet;
+                    [_target, "type",_type] call ALIVE_fnc_HashSet;
+                    [_target, "priority",_priority] call ALIVE_fnc_HashSet;
+                    [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
+                    [_target, "clusterID",_clusterID] call ALIVE_fnc_HashSet;
+                    [_target, "nodes",_nodes] call ALIVE_fnc_HashSet;
+
+					if  (_debug) then {
+						_m = createMarkerLocal [_id, _pos];
 						_m setMarkerShapeLocal "RECTANGLE";
 						_m setMarkerSizeLocal [_size, _size];
 						_m setMarkerBrushLocal "FDiagonal";
@@ -342,16 +377,47 @@ switch(_operation) do {
 						_m setMarkerSizeLocal [0.5, 0.5];
 						_m setMarkerTypeLocal "mil_dot";
 						_m setMarkerColorLocal "ColorYellow";
-						_m setMarkerTextLocal _id;
+                        
+                        /*
+                        switch (_side) do {
+                            case "EAST" : {_m setMarkerTextLocal format["Objective %2 Priority %1",_foreachIndex,_side]};
+                            case "WEST" : {_m setMarkerTextLocal format["Objective                 %2 Priority %1",_foreachIndex,_side]};
+                        };
+                        */
 					};
-		
-					_objectives set [count _objectives, _target];
-                    _objectives = [_objectives,[],{SEP distance ((_x select 2) select 1)},"ASCEND"] call BIS_fnc_sortBy;
-                    [_logic, "objectives",_objectives] call ALIVE_fnc_HashSet;
+                    
+                    _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
+                    _objectives set [count _objectives,_target] call ALiVE_fnc_HashSet;
+                    [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
+                    
                     _args = _target;
                 };
                 _result = _args;
         };
+        
+	    case "sortObjectives": {
+	        if(isnil "_args") then {
+				_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
+	        } else {
+                private ["_objectives","_type"];
+                
+                _type = _args;
+                _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
+                
+                switch (_type) do {
+                            //by distance
+                            case ("distance") : {_objectives = [_objectives,[],{([_logic, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND"] call BIS_fnc_sortBy};
+                            
+                            //by size and height
+                            case ("strategic") : {_objectives = [_objectives,[],{_height = (ATLtoASL [(_x select 2 select 1) select 0, (_x select 2 select 1) select 1,0]) select 2; ((_x select 2 select 2) + (_x select 2 select 4) + (_height/2)) - ((([_logic, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10)},"DESCEND"] call BIS_fnc_sortBy};
+                            case ("size") : {};
+                            default {};
+                };
+                [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
+                _args = _objectives;
+            };
+            _result = _args;
+	    };
         
         case "resetObjective": {
         	if(isnil "_args") then {
@@ -438,6 +504,7 @@ switch(_operation) do {
                             switch (_oType) do {
                                 case ("MIL") : {_buildingTypes = ALIVE_militaryHQBuildingTypes};
                                 case ("CIV") : {_buildingTypes = ALIVE_civilianCommsBuildingTypes + ALIVE_civilianPowerBuildingTypes + ALIVE_civilianFuelBuildingTypes};
+                            	default {_buildingTypes = ALIVE_militaryHQBuildingTypes};
                             };
 
                             //Get building-objects from nodes
@@ -621,7 +688,7 @@ switch(_operation) do {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
                     
-                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height","_debug","_clusterID"];
+                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height","_debug","_clusterID","_target"];
                     
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
                         _objectives = _args select 0;
@@ -646,58 +713,27 @@ switch(_operation) do {
                                     
 									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height,_clusterID,_nodes]];
 						} foreach _objectives;
-                        
-                        switch (_typeOp) do {
-                            //by distance
-                            case ("distance") : {_objectives = [_objectives_unsorted,[],{_startpos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy};
-                            
-                            //by size and height
-                            case ("strategic") : {_objectives = [_objectives_unsorted,[],{((_x select 1) + (_x select 3) + ((_x select 4)/2)) - ((_startpos distance (_x select 0))/10)},"DESCEND"] call BIS_fnc_sortBy};
-                            case ("size") : {};
-                            default {};
-                        };
 						
 						//Create objectives for OPCOM and set it on the OPCOM Handler 
 						//GetObjectivesByPriority
                         _OID = (count (missionNameSpace getvariable ["OPCOM_instances",[]]))-1;
 						{
                             private ["_target","_id","_pos","_size","_type","_priority","_clusterID","_opcom_state"];
-									_target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
-						
-									_id = format["OPCOM_%1_objective_%2",_OID,_foreachIndex]; [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;
-									_pos = _x select 0; [_target, "center",_pos] call ALIVE_fnc_HashSet;
-									_size = _x select 1; [_target, "size",_size] call ALIVE_fnc_HashSet;
-									_type = _x select 2; [_target, "type",_type] call ALIVE_fnc_HashSet;
-									_priority = _x select 3; [_target, "priority",_priority] call ALIVE_fnc_HashSet;
-									_opcom_state = "unassigned"; [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
-									_clusterID = _x select 5; [_target, "clusterID",_clusterID] call ALIVE_fnc_HashSet;
-                                    _nodes = _x select 6; [_target, "nodes",_nodes] call ALIVE_fnc_HashSet;
+									_id = format["OPCOM_%1_objective_%2",_OID,_foreachIndex];
+									_pos = _x select 0; 
+									_size = _x select 1; 
+									_type = _x select 2; 
+									_priority = _x select 3; 
+									_opcom_state = "unassigned";
+									_clusterID = _x select 5;
+                                    _nodes = _x select 6;
                                     
-									if  (_debug) then {
-										_m = createMarkerLocal [_id, _pos];
-										_m setMarkerShapeLocal "RECTANGLE";
-										_m setMarkerSizeLocal [_size, _size];
-										_m setMarkerBrushLocal "FDiagonal";
-										_m setMarkerColorLocal "ColorYellow";
-										
-										_m = createMarkerLocal [format["%1_label",_id], _pos];
-										_m setMarkerShapeLocal "ICON";
-										_m setMarkerSizeLocal [0.5, 0.5];
-										_m setMarkerTypeLocal "mil_dot";
-										_m setMarkerColorLocal "ColorYellow";
-                                        
-                                        /*
-                                        switch (_side) do {
-                                            case "EAST" : {_m setMarkerTextLocal format["Objective %2 Priority %1",_foreachIndex,_side]};
-                                            case "WEST" : {_m setMarkerTextLocal format["Objective                 %2 Priority %1",_foreachIndex,_side]};
-                                        };
-                                        */
-									};
-						
-									_objectives set [_forEachIndex, _target];
-						 } foreach _objectives;
-                         _args = _objectives;
-                };                
+                                    [_logic,"addObjective",[_id,_pos,_size,_type,_priority,_opcom_state,_clusterID,_nodes]] call ALiVE_fnc_OPCOM;
+						 } foreach _objectives_unsorted;
+                         [_logic,"sortObjectives",_typeOp] call ALiVE_fnc_OPCOM;
+                         
+                         _args = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
+                };
                 ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                 
                 _result = _args;
