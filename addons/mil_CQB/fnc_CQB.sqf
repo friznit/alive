@@ -54,35 +54,12 @@ switch(_operation) do {
                 ERROR_WITH_TITLE(str _logic,_err);
         };
         case "init": {
-            if (isServer) then {
-                // if server, initialise module game logic
+                //Initialise module game logic on all localities (clientside spawn)
                 _logic setVariable ["super", SUPERCLASS];
                 _logic setVariable ["class", ALIVE_fnc_CQB];
-                _logic setVariable ["moduleType", "ALIVE_QCB"];
-                _logic setVariable ["startupComplete", false];
+                
                 TRACE_1("After module init",_logic);
 
-				//Registry disabled for now (start directly)
-                //[_logic,"register"] call ALIVE_fnc_CQB;
-                [_logic,"start"] call ALIVE_fnc_CQB;
-            };
-        };
-        case "register": {
-
-                private["_registration","_moduleType"];
-
-                _moduleType = _logic getVariable "moduleType";
-                _registration = [_logic,_moduleType];
-
-                if(isNil "ALIVE_registry") then {
-                    ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-                    [ALIVE_registry, "init"] call ALIVE_fnc_registry;
-                };
-
-                [ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-        };
-        // Main process
-        case "start": {
             	//Init further mandatory params on all localities
 				_CQB_spawn = _logic getvariable ["CQB_spawn_setting",1];
 				if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
@@ -110,8 +87,8 @@ switch(_operation) do {
 				- enabled/disabled
                 */
                 
-                // Ensure only one module is used
-                if (isServer && !(isNil QMOD(CQB))) exitWith {
+                // Ensure only one module is used on server
+                if (isServer && {!(isNil QMOD(CQB))}) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_CQB_ERROR1");
                 };
                 
@@ -120,16 +97,19 @@ switch(_operation) do {
                     MOD(CQB) = _logic;
                     MOD(CQB) setVariable ["super", SUPERCLASS];
                     MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
+                    
+                    _logic setVariable ["startupComplete", false,true];
 
+					//Implement when ready (not 0.5.6 yet if undiscussed)
+					/*
                     // Load static data
-                    /*
                     if(isNil "ALIVE_unitBlackist") then {
-                        _file = "\x\alive\addons\sys_profile\static\staticData.sqf";
+                        _file = "\x\alive\addons\fnc_strategic\static\staticData.sqf";
                         call compile preprocessFileLineNumbers _file;
                     };
 
                     _strategicTypes = ALIVE_CQBStrategicTypes;
-                    _UnitsBlackList = ALIVE_CQBunitBlackist;
+                    _UnitsBlackList = ALIVE_CQBUnitBlacklist;
                     */
                     
                     //Define strategic buildings
@@ -203,8 +183,7 @@ switch(_operation) do {
                     
                     //Get all enterable houses of strategic types below across the whole map (rest will be regular)
                     //_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
-                    //Workaroung until SEP is fixed for Altis
-                    
+              
                     private ["_collection","_objectives","_pos","_size"];
 
                     _collection = [];
@@ -310,48 +289,46 @@ switch(_operation) do {
                     if (isServer) then {
                         _logic setVariable ["startupComplete", true];
                     };
-            } else {
-                    // if client and not HC delete logic?
             };
                 
-		TRACE_2("After module init",MOD(CQB),MOD(CQB) getVariable "init");
+			TRACE_2("After module init",MOD(CQB),MOD(CQB) getVariable "init");
 
-                // and wait for game logic to initialise
-                // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(CQB)};
+            // and wait for game logic to initialise
+            // TODO merge into lazy evaluation
+            waitUntil {!isNil QMOD(CQB)};
+            waitUntil {MOD(CQB) getVariable ["init", false]};
+            
+            /*
+            CONTROLLER  - coordination
+            - Start CQB Controller on Server
+            */
+
+			if (isServer) then {
                 waitUntil {MOD(CQB) getVariable ["init", false]};
+				[CQB_Regular, "active", true] call ALiVE_fnc_CQB;
+				diag_log ([CQB_Regular, "state"] call ALiVE_fnc_CQB);
                 
-                /*
-                CONTROLLER  - coordination
-                - Start CQB Controller on Server
-                */
-
-				if (isServer) then {
-	                waitUntil {MOD(CQB) getVariable ["init", false]};
-					[CQB_Regular, "active", true] call ALiVE_fnc_CQB;
-					diag_log ([CQB_Regular, "state"] call ALiVE_fnc_CQB);
-	                
-					[CQB_Strategic, "active", true] call ALiVE_fnc_CQB;
-					diag_log ([CQB_Strategic, "state"] call ALiVE_fnc_CQB);
-				};
+				[CQB_Strategic, "active", true] call ALiVE_fnc_CQB;
+				diag_log ([CQB_Strategic, "state"] call ALiVE_fnc_CQB);
+			};
+            
+            /*
+            VIEW - purely visual
+            - initialise menu
+            - frequent check to modify menu and display status (ALIVE_fnc_CQBsmenuDef)
+            */
                 
-                /*
-                VIEW - purely visual
-                - initialise menu
-                - frequent check to modify menu and display status (ALIVE_fnc_CQBsmenuDef)
-                */
-                
-		TRACE_2("Waiting for CQB PV",isDedicated,isHC);
+			TRACE_2("Waiting for CQB PV",isDedicated,isHC);
 				
-                //Client?
-                if(!isDedicated && !isHC) then {
-                    [CQB_Strategic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-                    [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-                    
-                    //Delete markers
-                    [MOD(CQB), "blacklist", MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
-            		{deleteMarkerLocal _x} foreach (MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]);
-                };
+            //Client?
+            if(!isDedicated && !isHC) then {
+                [CQB_Strategic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
+                [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
+                
+                //Delete markers
+                [MOD(CQB), "blacklist", MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
+        		{deleteMarkerLocal _x} foreach (MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]);
+            };
         };
         
         case "blacklist": {
