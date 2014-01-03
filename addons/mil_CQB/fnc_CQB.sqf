@@ -58,6 +58,8 @@ switch(_operation) do {
                 _logic setVariable ["super", SUPERCLASS];
                 _logic setVariable ["class", ALIVE_fnc_CQB];
                 
+                diag_log "CQB diag";
+                
                 TRACE_1("After module init",_logic);
 
             	//Init further mandatory params on all localities
@@ -124,6 +126,7 @@ switch(_operation) do {
 						"Land_Cargo_HQ_V1_F",
                         "Land_Cargo_HQ_V2_F",
                         "Land_MilOffices_V1_F",
+                        "Land_Offices_01_V1_F",
                         "Land_Research_HQ_F",
                         "Land_CarService_F",
                         "Land_Hospital_main_F",
