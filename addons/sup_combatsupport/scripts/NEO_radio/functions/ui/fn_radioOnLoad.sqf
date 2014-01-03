@@ -28,11 +28,24 @@ _abort = SR_getControl(SR_Main_Display,SR_ABORT_BTN);
 _unit = player;
 _action = uinamespace getVariable "NEO_radioCurrentAction";
 
-private ["_available", "_transportArray", "_casArray", "_artyArray"];
+private ["_available", "_transportArray", "_casArray", "_artyArray","_side"];
+
+/*
+if (isnil "playerSide") then {
+	switch (getNumber(configFile >> "Cfgvehicles" >> (typeof _unit) >> "side")) do {
+	    case 0 : {_side = EAST};
+	    case 1 : {_side = WEST};
+	    case 2 : {_side = RESISTANCE};
+	    case 3 : {_side = CIVILIAN};
+	    default {_side = EAST};
+	};
+	playerSide = _side;
+};
+*/
 _available = [];
-_transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", side _unit];
-_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", side _unit];
-_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", side _unit];
+_transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", playerSide];
+_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
+_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", playerSide];
 
 //Available Supports
 if (count _transportArray > 0) then { _available set [count _available, ["TRANSPORT", "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\transport_ca.paa"]] };

@@ -365,7 +365,7 @@ switch(_operation) do {
 				        true,
 				        "",
 						"
-							({(_x select 0) == vehicle _this} count (NEO_radioLogic getVariable format ['NEO_radioTrasportArray_%1', side _this]) > 0)
+							({(_x select 0) == vehicle _this} count (NEO_radioLogic getVariable format ['NEO_radioTrasportArray_%1', playerSide]) > 0)
 							&&
 							{alive (driver (vehicle _this))}
 				        "

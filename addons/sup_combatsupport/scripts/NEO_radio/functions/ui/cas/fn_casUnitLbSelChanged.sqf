@@ -8,7 +8,7 @@ private
 	"_casTaskHelpText", "_casFlyHeightSlider", "_casFlyHeighSliderText", "_casRadiusSlider", "_casRadiusSliderText", "_supportMarker", 
 	"_veh", "_status"
 ];
-_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", side player];
+_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
 _casUnitLb = _display displayCtrl 655582;
 _casUnitText = _display displayCtrl 655583;
 _casHelpUnitText = _display displayCtrl 655584;

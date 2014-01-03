@@ -4,7 +4,7 @@ private
 	"_artyRoundCountLb", "_battery", "_status"
 ];
 _display = findDisplay 655555;
-_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", side player];
+_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", playerSide];
 _artyConfirmButton = _display displayCtrl 655597;
 _artyUnitLb = _display displayCtrl 655594;
 _artyOrdnanceTypeLb = _display displayCtrl 655601;

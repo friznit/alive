@@ -9,7 +9,7 @@ private
 	"_casArray", "_casUnitLb", "_casUnitText", "_casHelpUnitText", "_casConfirmButton", "_casBaseButton", "_casTaskLb", "_casTaskText", 
 	"_casTaskHelpText", "_show", "_veh", "_casRadiusSlider", "_casRadiusSliderText"
 ];
-_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", side player];
+_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
 _casUnitLb = _display displayCtrl 655582;
 _casUnitText = _display displayCtrl 655583;
 _casHelpUnitText = _display displayCtrl 655584;

@@ -90,7 +90,7 @@ switch (toUpper (_lb lbText _index)) do
 	case "TRANSPORT" : 
 	{
 		private ["_transportArray"];
-		_transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", side player];
+		_transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", playerSide];
 		
 		if (count _transportArray > 0) then
 		{
@@ -135,7 +135,7 @@ switch (toUpper (_lb lbText _index)) do
 	case "CAS" : 
 	{
 		private ["_casArray"];
-		_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", side player];
+		_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
 		
 		if (count _casArray > 0) then
 		{
@@ -165,7 +165,7 @@ switch (toUpper (_lb lbText _index)) do
 	case "ARTY" :
 	{
 		private ["_artyArray"];
-		_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", side player];
+		_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", playerSide];
 	
 		if (count _artyArray > 0) then
 		{

@@ -2,7 +2,7 @@ private ["_casConfirmButton", "_casArray", "_veh"];
 _casConfirmButton = _display displayCtrl 655585;
 _casUnitLb = _display displayCtrl 655582;
 _casTaskLb = _display displayCtrl 655587;
-_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", side player];
+_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
 _veh = _casArray select (lbCurSel _casUnitLb) select 0;
 
 if

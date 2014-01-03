@@ -8,7 +8,7 @@ _slider = _display displayCtrl 655578;
 _transportFlyHeightSlider = _display displayCtrl 655580;
 
 private ["_transportArray", "_unit", "_grp", "_callsign", "_callSignPlayer", "_task", "_marker", "_pos"];
-_transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", side player];
+_transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", playerSide];
 _unit = _transportArray select (lbCurSel _transportUnitLb) select 0; if (!isNil { NEO_radioLogic getVariable "NEO_radioTalkWithPilot" }) then { _unit = vehicle player };
 _grp = _transportArray select (lbCurSel _transportUnitLb) select 1; if (!isNil { NEO_radioLogic getVariable "NEO_radioTalkWithPilot" }) then { _grp = group (driver _unit) };
 _callsign = _transportArray select (lbCurSel _transportUnitLb) select 2; if (!isNil { NEO_radioLogic getVariable "NEO_radioTalkWithPilot" }) then { _callsign = (format ["%1", _grp]) call NEO_fnc_callsignFix };
