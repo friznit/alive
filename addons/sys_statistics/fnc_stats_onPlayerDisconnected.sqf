@@ -16,7 +16,7 @@
 #include "script_component.hpp"
 
 if (GVAR(ENABLED)) then {
-	private ["_class","_puid","_PlayerSide","_PlayerFaction","_startTime","_endTime","_minutesPlayed","_data","_shotsFired","_shotsFiredData","_unit","_playerType","_score","_rating","_id","_uid","_name"];
+	private ["_class","_puid","_PlayerSide","_PlayerFaction","_startTime","_endTime","_minutesPlayed","_data","_shotsFired","_shotsFiredData","_unit","_playerType","_score","_rating","_id","_uid","_name","_rank"];
 
 	_unit = objNull;
 
@@ -59,6 +59,7 @@ if (GVAR(ENABLED)) then {
 		_shotsFiredData = [];
 		_score = 0;
 		_rating = 0;
+		_rank = "PRIVATE";
 
 	} else {
 
@@ -72,6 +73,7 @@ if (GVAR(ENABLED)) then {
 
 		_score = score _unit;
 		_rating = rating _unit;
+		_rank = rank _unit;
 
 		// Grab shots fired data
 		_shotsFired = _unit getvariable QGVAR(shotsFired);
@@ -90,7 +92,7 @@ if (GVAR(ENABLED)) then {
 	};
 
 	// Format Data
-	_data = [ ["Event","PlayerFinish"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction] , ["PlayerName",_name] , ["PlayerType",_PlayerType] , ["PlayerClass",_class] , ["Player", _uid] , ["shotsFired", _shotsFiredData] , ["timePlayed",_minutesPlayed], ["score",_score], ["rating",_rating] ];
+	_data = [ ["Event","PlayerFinish"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction] , ["PlayerName",_name] , ["PlayerType",_PlayerType] , ["PlayerClass",_class] , ["Player", _uid] , ["shotsFired", _shotsFiredData] , ["timePlayed",_minutesPlayed], ["score",_score], ["rating",_rating], ["PlayerRank",_rank] ];
 
 	// Send Data
 	GVAR(UPDATE_EVENTS) = _data;
