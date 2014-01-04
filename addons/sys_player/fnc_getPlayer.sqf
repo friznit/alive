@@ -96,6 +96,8 @@ if (local _player) then {
 
 	} foreach _data;
 
+	_player setVariable[QGVAR(playerloaded), true];
+
 	_result = true;
 };
 
