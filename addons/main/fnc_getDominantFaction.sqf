@@ -51,8 +51,8 @@ for "_i" from 1 to ((count _factions)-1) do //access 0 has no side therfore star
 		
 		//Count troops
 		_countGroups = {(_pos distance (getposATL (leader _x)) < _radius) && {{isPlayer _x} count (units _x) < 1} && {toLower(faction leader _x) == toLower(_faction)}} count allgroups;
-		_countProfiles = {((_x select 2 select 5) == "entity") && {(_x select 2 select 2) distance _pos < _radius} && {tolower(_x select 2 select 29) == tolower(_faction)}} count (_profiles select 2);
-		
+		_countProfiles = {((_x select 2 select 5) == "entity") && {!(_x select 2 select 30)} && {(_x select 2 select 2) distance _pos < _radius} && {tolower(_x select 2 select 29) == tolower(_faction)}} count (_profiles select 2);
+        
 		_result set [count _result,[_faction,_countGroups + _countProfiles]];
 	};
 };
