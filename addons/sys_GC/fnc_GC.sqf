@@ -111,9 +111,15 @@ switch(_operation) do {
         };
         
         case "collect": { 
+        private ["_queue"];
+        
 	        _individual = call compile (_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]]);
             _debug = _logic getvariable ["debug",false];
+            _queue = _logic getVariable ["queue",[]];
+            _dead = +allDead;
+            
             _time = time;
+            _ObjectsToTrash = _dead - _queue;
             
             // DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
@@ -125,10 +131,10 @@ switch(_operation) do {
 			{
                 [_logic,"trashIt",_x] call ALiVE_fnc_GC;
 			    sleep 0.03;
-			} forEach allDead;
+			} forEach _ObjectsToTrash;
 			
 			{
-				if (count units _x == 0) then {
+				if ((count units _x == 0) && {!(_x in _queue)}) then {
                     [_logic,"trashIt",_x] call ALiVE_fnc_GC;
 				};
 			    sleep 0.03;
@@ -137,7 +143,7 @@ switch(_operation) do {
 			if ((count _individual) > 0) then {
 			    _amo = (allmissionObjects ""); _amo = +_amo;
 				{
-					if (((typeof _x) in _individual) && {((damage _x) == 1)}) then {
+					if (((typeof _x) in _individual) && {((damage _x) == 1)} && {!(_x in _queue)}) then {
                         [_logic,"trashIt",_x] call ALiVE_fnc_GC;
 					};
 			        sleep 0.03;
@@ -150,7 +156,6 @@ switch(_operation) do {
                     ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
-            
         };
         
         case "trashIt": { 
@@ -161,6 +166,8 @@ switch(_operation) do {
             _debug = _logic getvariable ["debug",false];
 			_queue = _logic getVariable ["queue",[]];
             
+            if ((isnil "_object") || {isnull _object}) exitwith {};
+
 			switch (typeName _object) do
 			{
 				case (typeName objNull):
@@ -185,14 +192,15 @@ switch(_operation) do {
 					_timeToDie = time;
 				};
 			};
-           
             // DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
-					["ALIVE Garbage Collector trashed object %1 to bin! Time to deletion %2...",_object,_timeToDie] call ALIVE_fnc_dumpR;
+					["ALIVE GC trashed %1! Time to die %2...",_object,_timeToDie] call ALIVE_fnc_dumpR;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			_queue = _queue + [[_object, _timeToDie]];
+            
+            _object setvariable ["timeToDie",_timeToDie];
+			_queue set [count _queue,_object];
+            
 			_logic setVariable ["queue", _queue];
         };
         
@@ -211,32 +219,29 @@ switch(_operation) do {
 				};
 			// DEBUG -------------------------------------------------------------------------------------
 			
-			_i = 0;
 			{
-			
-				private ["_entry", "_time"];
-				_entry = _x;
-				if(typeName _x == "ARRAY") then {
-					_time = _entry select 1;
-			
+				private ["_object", "_time"];
+                
+				_object = _x;
+
+                if (!(isnil "_object") && {!(isnull _object)}) then {
+                    
+                    _time = _object getvariable ["timeToDie",0];
+                    
 					//Check the object was in the queue for at least the assigned time (expiry date).
-                    //If instant parameter is set to true, then it will be directly deleted
-					if ((_time <= time) || {_instant}) then
-					{
-						private ["_object"];
-						_object = _entry select 0;
+	                //If instant parameter is set to true, then it will be directly deleted
+					if ((_time <= time) || {_instant}) then {
 			
-						switch (typeName _object) do
-						{
+						switch (typeName _object) do {
 							case (typeName objNull):
 							{
 								//Player and his squadmates cannot be too close.
 								//ToDo: use 'cameraOn' as well?
-								if (({(_x distance _object) <= 1700} count ([] call BIS_fnc_listPlayers)) == 0) then
+								if ((({(_x distance _object) <= 1700} count ([] call BIS_fnc_listPlayers)) == 0) || {_instant}) then
 								{
 									deleteVehicle _object;
+	                                _queue set [_foreachIndex, -1];
 								};
-								_queue set [_i, -1];
 							};
 			
 							case (typeName grpNull):
@@ -245,19 +250,20 @@ switch(_operation) do {
 								if (({alive _x} count (units _object)) == 0) then
 								{
 									deleteGroup _object;
+	                                _queue set [_foreachIndex, -1];
 								};
-								_queue set [_i, -1];
 							};
 			
 							default {};
 						};
 					};
-				};
-				_i = _i + 1;
+                } else {
+                	_queue set [_foreachIndex, -1];
+                };
 			} forEach _queue;
             
             _queue = _queue - [-1];
-            _logic setVariable ["queue", _queue, true];
+            _logic setVariable ["queue", _queue];
             
     		// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {

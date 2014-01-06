@@ -26,4 +26,10 @@
 <Key ID="STR_ALIVE_GC_INTERVAL_COMMENT">
 	<English>Interval in which to clean killed objects</English>
 </Key>
+<Key ID="STR_ALIVE_GC_THRESHHOLD">
+	<English>Limiter:</English>
+</Key>
+<Key ID="STR_ALIVE_GC_THRESHHOLD_COMMENT">
+	<English>Will remove all dead objects and groups if this limit is met (count allDead)</English>
+</Key>
 </Container></Package></Project>
