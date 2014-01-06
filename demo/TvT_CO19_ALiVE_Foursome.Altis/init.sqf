@@ -6,8 +6,9 @@ if (hasInterface) then {
 	private ["_cam","_camx","_camy","_camz","_object"];
 	
 	titleText ["The ALiVE Team presents...", "BLACK IN",9999];
-	
-	waituntil {!(isnull player)};
+	_start = time;
+
+	waituntil {(player getvariable ["alive_sys_player_playerloaded",false]) || ((time - _start) > 20)};
 	sleep 10;
 	
 	_object = player;
