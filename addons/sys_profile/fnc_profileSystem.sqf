@@ -55,12 +55,16 @@ switch(_operation) do {
 						[_logic,"moduleType","ALIVE_profileHandler"] call ALIVE_fnc_hashSet;
 						[_logic,"startupComplete",false] call ALIVE_fnc_hashSet;
                         //TRACE_1("After module init",_logic);
-						
+
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
 						[_logic,"plotSectors",false] call ALIVE_fnc_hashSet;
 						[_logic,"syncMode","ADD"] call ALIVE_fnc_hashSet;
 						[_logic,"syncedUnits",[]] call ALIVE_fnc_hashSet;
 						[_logic,"spawnRadius",1000] call ALIVE_fnc_hashSet;
+						[_logic,"spawnTypeJet",false] call ALIVE_fnc_hashSet;
+						[_logic,"spawnTypeJetRadius",1000] call ALIVE_fnc_hashSet;
+						[_logic,"spawnTypeHeli",true] call ALIVE_fnc_hashSet;
+						[_logic,"spawnTypeHeliRadius",1000] call ALIVE_fnc_hashSet;
 						[_logic,"activeLimiter",30] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
@@ -68,8 +72,8 @@ switch(_operation) do {
         };
         case "start": {
 		
-				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_activeLimiter","_spawnCycleTime","_despawnCycleTime",
-				"_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];
+				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJet","_spawnTypeJetRadius","_spawnTypeHeli","_spawnTypeHeliRadius",
+				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];
                 
                 if (isServer) then {
 						
@@ -78,10 +82,14 @@ switch(_operation) do {
 						_syncMode = [_logic,"syncMode","ADD"] call ALIVE_fnc_hashGet;
 						_syncedUnits = [_logic,"syncedUnits",[]] call ALIVE_fnc_hashGet;
 						_spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+						_spawnTypeJet = [_logic,"spawnTypeJet"] call ALIVE_fnc_hashGet;
+                        _spawnTypeJetRadius = [_logic,"spawnTypeJetRadius"] call ALIVE_fnc_hashGet;
+                        _spawnTypeHeli = [_logic,"spawnTypeHeli"] call ALIVE_fnc_hashGet;
+                        _spawnTypeHeliRadius = [_logic,"spawnTypeHeliRadius"] call ALIVE_fnc_hashGet;
 						_activeLimiter = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
-						
+
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -156,6 +164,10 @@ switch(_operation) do {
 							["ALIVE Spawn controller created"] call ALIVE_fnc_dump;
 							["ALIVE Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
 							["ALIVE Spawn Radius: %1", _spawnRadius] call ALIVE_fnc_dump;
+							["ALIVE Spawn in Jet: %1",_spawnTypeJet] call ALIVE_fnc_dump;
+                            ["ALIVE Spawn in Jet Radius: %1",_spawnTypeJetRadius] call ALIVE_fnc_dump;
+                            ["ALIVE Spawn in Heli: %1",_spawnTypeHeli] call ALIVE_fnc_dump;
+                            ["ALIVE Spawn in Heli Radius: %1",_spawnTypeHeliRadius] call ALIVE_fnc_dump;
 							["ALIVE Spawn Cycle Time: %1", _spawnCycleTime] call ALIVE_fnc_dump;
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						};
@@ -182,10 +194,10 @@ switch(_operation) do {
                         */
 
                         // version 2.1 spawner system
-                        _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
-                        _profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
-                        _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
-                        _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
+                        _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnTypeJet,_spawnTypeJetRadius,_spawnTypeHeli,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
+                        _profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnTypeJet,_spawnTypeJetRadius,_spawnTypeHeli,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
+                        _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnTypeJet,_spawnTypeJetRadius,_spawnTypeHeli,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
+                        _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnTypeJet,_spawnTypeJetRadius,_spawnTypeHeli,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
 
                         // set module as started
                         [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
@@ -241,6 +253,40 @@ switch(_operation) do {
 						ALIVE_spawnRadius = _args;
                 };
 				_result = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
+        };
+        case "spawnTypeJet": {
+                if(typeName _args != "BOOL") then {
+                        _args = [_logic,"spawnTypeJet"] call ALIVE_fnc_hashGet;
+                } else {
+                        [_logic,"spawnTypeJet",_args] call ALIVE_fnc_hashSet;
+                };
+                ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+                _result = _args;
+        };
+        case "spawnTypeJetRadius": {
+                if(typeName _args == "SCALAR") then {
+                        [_logic,"spawnTypeJetRadius",_args] call ALIVE_fnc_hashSet;
+                        ALIVE_spawnRadius = _args;
+                };
+                _result = [_logic,"spawnTypeJetRadius"] call ALIVE_fnc_hashGet;
+        };
+        case "spawnTypeHeli": {
+                if(typeName _args != "BOOL") then {
+                        _args = [_logic,"spawnTypeHeli"] call ALIVE_fnc_hashGet;
+                } else {
+                        [_logic,"spawnTypeHeli",_args] call ALIVE_fnc_hashSet;
+                };
+                ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+                _result = _args;
+        };
+        case "spawnTypeHeliRadius": {
+                if(typeName _args == "SCALAR") then {
+                        [_logic,"spawnTypeHeliRadius",_args] call ALIVE_fnc_hashSet;
+                        ALIVE_spawnRadius = _args;
+                };
+                _result = [_logic,"spawnTypeHeliRadius"] call ALIVE_fnc_hashGet;
         };
         case "activeLimiter": {
                 if(typeName _args == "SCALAR") then {

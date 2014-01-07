@@ -48,12 +48,6 @@ class CfgVehicles {
                                                 name = "$STR_ALIVE_PROFILE_SYSTEM_SYNC_IGNORE";
                                                 value = "IGNORE";
                                         };
-										class None
-                                        {
-                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SYNC_NONE";
-                                                value = "NONE";
-												default = true;
-                                        };
                                 };
                         };
 						class spawnRadius
@@ -61,6 +55,56 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS";
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS_COMMENT";
 								defaultvalue = "1500";
+                        };
+                        class spawnTypeJet
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_YES";
+                                                value = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_NO";
+                                                value = false;
+                                                default = true;
+                                        };
+                                };
+                        };
+                        class spawnTypeJetRadius
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS_COMMENT";
+                                defaultvalue = "2000";
+                        };
+                        class spawnTypeHeli
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_YES";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_NO";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class spawnTypeHeliRadius
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_RADIUS";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_RADIUS_COMMENT";
+                                defaultvalue = "2000";
                         };
                         class activeLimiter
                         {

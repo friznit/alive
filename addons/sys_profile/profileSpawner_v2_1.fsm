@@ -85,8 +85,8 @@ link36[] = {27,21};
 link37[] = {28,10};
 link38[] = {29,15};
 link39[] = {30,8};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-502.260620,198.142181,694.695190,-177.750656,859,1030,1};
-window[] = {2,-1,-1,-1,-1,1054,-1764,-141,156,3,877};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-739.000366,434.881195,771.370178,-417.516724,1017,1030,1};
+window[] = {2,-1,-1,-1,-1,1106,-1712,-89,208,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -102,8 +102,12 @@ class FSM
        "_profileSystem = _this select 0;" \n
        "_side = _this select 1;" \n
        "_spawnDistance = _this select 2;" \n
-       "_spawnCycleTime = if(count _this > 3) then {_this select 3} else {7};" \n
-       "_activeLimiter = if(count _this > 4) then {_this select 4} else {100};" \n
+       "_spawnTypeJet = _this select 3;" \n
+       "_spawnTypeJetRadius = _this select 4;" \n
+       "_spawnTypeHeli = _this select 5;" \n
+       "_spawnTypeHeliRadius = _this select 6;" \n
+       "_spawnCycleTime = if(count _this > 7) then {_this select 7} else {7};" \n
+       "_activeLimiter = if(count _this > 8) then {_this select 8} else {100};" \n
        "" \n
        "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
        "" \n
@@ -207,11 +211,23 @@ class FSM
        "		if!(_active) then {" \n
        "			_position = _profile select 2 select 2;" \n
        "" \n
-       "			if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRangeExcludeAir > 0) then {" \n
-       "				_toSpawn set [count _toSpawn, _profile];" \n
+       "			// do not spawn for jets or helis" \n
+       "			if(!_spawnTypeJet && !_spawnTypeHeli) then {" \n
+       "				if ([_position, _spawnDistance, true] call ALiVE_fnc_anyPlayersInRangeExcludeAir) then {		" \n
+       "					_toSpawn set [count _toSpawn, _profile];" \n
+       "				}else{" \n
+       "					if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0) then {" \n
+       "						 _toSpawn set [count _toSpawn, _profile];" \n
+       "					};" \n
+       "				};" \n
        "			}else{" \n
-       "				if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0) then {" \n
-       "					 _toSpawn set [count _toSpawn, _profile];" \n
+       "				// spawn for jets and or  helis" \n
+       "				if ([_position, _spawnDistance, _spawnTypeJet, _spawnTypeJetRadius, _spawnTypeHeli, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {" \n
+       "					_toSpawn set [count _toSpawn, _profile];" \n
+       "				}else{" \n
+       "					if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0) then {" \n
+       "						 _toSpawn set [count _toSpawn, _profile];" \n
+       "					};" \n
        "				};" \n
        "			};" \n
        "		};" \n
@@ -398,7 +414,7 @@ class FSM
     class ANALYSE_1
     {
       name = "ANALYSE_1";
-      init = /*%FSM<STATEINIT""">*/"private [""_profile"",""_active"",""_profileType"",""_position"",""_countToDespawn"",""_stopDespawn""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profile"",""_active"",""_position"",""_countToDespawn"",""_stopDespawn""];" \n
        "" \n
        "_block = [ALIVE_arrayBlockHandler,""getNextBlock"", [format[""activeProfiles%1"",_side],_activeProfiles,30]] call ALIVE_fnc_arrayBlockHandler;" \n
        "" \n
@@ -409,14 +425,25 @@ class FSM
        "		_active = _profile select 2 select 1;" \n
        "" \n
        "		if(_active) then {" \n
-       "			_profileType = _profile select 2 select 5;" \n
-       "			_position = getposATL (_profile select 2 select 10);" \n
        "" \n
-       "			if(([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) && ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0)) then {" \n
+       "		    _position = getposATL (_profile select 2 select 10);" \n
        "" \n
-       "				if([_profile, _spawnDistance] call ALIVE_fnc_profileGetAnyLinkedInRange == 0) then {" \n
-       "					_toDespawn set [count _toDespawn, _profile];" \n
-       "				};				" \n
+       "			// do not spawn for jets or helis" \n
+       "			if(!_spawnTypeJet && !_spawnTypeHeli) then {" \n
+       "				if(([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRange == 0) && ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0)) then {" \n
+       "					if([_profile, _spawnDistance] call ALIVE_fnc_profileGetAnyLinkedInRange == 0) then {" \n
+       "				            _toDespawn set [count _toDespawn, _profile];" \n
+       "					};   " \n
+       "                    	};" \n
+       "			}else{" \n
+       "				// spawn for jets and or  helis" \n
+       "				if !([_position, _spawnDistance, _spawnTypeJet, _spawnTypeJetRadius, _spawnTypeHeli, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {" \n
+       "					if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0) then {" \n
+       "						if([_profile, _spawnDistance] call ALIVE_fnc_profileGetAnyLinkedInRange == 0) then {" \n
+       "				            	_toDespawn set [count _toDespawn, _profile];" \n
+       "						};" \n
+       "					};" \n
+       "				};" \n
        "			};" \n
        "		};" \n
        "	};" \n
