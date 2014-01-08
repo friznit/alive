@@ -35,6 +35,7 @@ ARJay
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_SD
 #define MTEMPLATE "ALiVE_SD_%1"
+#define DEFAULT_RUN_EVERY 120
 
 private ["_logic","_operation","_args","_result"];
 
@@ -73,33 +74,14 @@ switch(_operation) do {
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
 		_result = _args;
-	};        
-	case "state": {
-		private["_state","_data","_nodes","_simple_operations"];
-		/*
-		_simple_operations = ["targets", "size","type","faction"];
-		
-		if(typeName _args != "ARRAY") then {
-			_state = [] call CBA_fnc_hashCreate;
-			// Save state
-			{
-				[_state, _x, _logic getVariable _x] call ALIVE_fnc_hashSet;
-			} forEach _simple_operations;
-
-			if ([_logic, "debug"] call MAINCLASS) then {
-				diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_state);
-			};
-			_result = _state;
-		} else {
-			ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
-			
-			// Restore state
-			{
-				[_logic, _x, [_args, _x] call ALIVE_fnc_hashGet] call MAINCLASS;
-			} forEach _simple_operations;
-		};
-		*/		
 	};
+	case "runEvery": {
+	    if(typeName _args == "STRING") then {
+            _args = parseNumber(_args);
+            _args = floor(_args * 60);
+	    };
+        _result = [_logic,_operation,_args,DEFAULT_RUN_EVERY] call ALIVE_fnc_OOsimpleOperation;
+    };
 	// Main process
 	case "init": {
         if (isServer) then {
@@ -111,38 +93,23 @@ switch(_operation) do {
 
 			TRACE_1("After module init",_logic);
 
-			//[_logic,"register"] call MAINCLASS;
-
             [_logic,"start"] call MAINCLASS;
         };
 	};
-	case "register": {
-		
-			private["_registration","_moduleType"];
-		
-			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["ALIVE_profileHandler"]];
-	
-			if(isNil "ALIVE_registry") then {
-				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;			
-			};
-
-			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-	};
-	// Main process
 	case "start": {
         if (isServer) then {
 		
 			private ["_debug","_modules","_module","_activeAnalysisJobs","_gridProfileAnalysis","_args"];
-			
-			_debug = [_logic, "debug"] call MAINCLASS;			
+
+			_debug = [_logic, "debug"] call MAINCLASS;
+            _runEvery = [_logic, "runEvery"] call MAINCLASS;
 			
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALIVE SD - Startup"] call ALIVE_fnc_dump;
+				["ALIVE SD - Run every: %1",_runEvery] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 
@@ -151,12 +118,12 @@ switch(_operation) do {
             };
             waituntil {!(isnil "ALIVE_liveAnalysis")};
 						
-			// if grid profile analysis is running, turn on plot sectors
 			_activeAnalysisJobs = [ALIVE_liveAnalysis, "getAnalysisJobs"] call ALIVE_fnc_liveAnalysis;
 			
 			if("gridProfileEntity" in (_activeAnalysisJobs select 1)) then {
 				_gridProfileAnalysis = [_activeAnalysisJobs, "gridProfileEntity"] call ALIVE_fnc_hashGet;
 				_args = [_gridProfileAnalysis, "args"] call ALIVE_fnc_hashGet;
+				_args set [0, _runEvery];
 				_args set [4, [true]];
 			};
 			

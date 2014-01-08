@@ -83,7 +83,7 @@ class CfgVehicles {
                         class friendlyIntelRadius
                         {
                                 displayName = "$STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS";
-                                description = "$STR_ALIVE_MP_FRIENDLY_INTEL_RADIUS_COMMENT";
+                                description = "$STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS_COMMENT";
                                 defaultValue = 2000;
                         };
                 };
@@ -100,6 +100,16 @@ class CfgVehicles {
                 isPersistent = 0;
                 icon = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
                 picture = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
+                class Arguments
+                {
+                    class runEvery
+                    {
+                            displayName = "$STR_ALIVE_SD_RUN_EVERY";
+                            description = "$STR_ALIVE_SD_RUN_EVERY_COMMENT";
+                            defaultValue = 2;
+                            typeName = "NUMBER";
+                    };
+                };
         };
         class ADDON3 : ModuleAliveMilitaryBase
         {

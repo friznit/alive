@@ -41,7 +41,7 @@
 <Key ID="STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS">
     <English>Friendly Radius:</English>
 </Key>
-<Key ID="STR_ALIVE_MP_FRIENDLY_INTEL_RADIUS_COMMENT">
+<Key ID="STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS_COMMENT">
     <English>Display friendly units within this radius around players</English>
 </Key>
 <Key ID="STR_ALIVE_MI_USAGE">
@@ -49,6 +49,12 @@
 </Key>
 <Key ID="STR_ALIVE_SD">
     <English>Military Sector Display</English>
+</Key>
+<Key ID="STR_ALIVE_SD_RUN_EVERY">
+    <English>Update time</English>
+</Key>
+<Key ID="STR_ALIVE_SD_RUN_EVERY_COMMENT">
+    <English>Update sector markings every number of minutes entered</English>
 </Key>
 <Key ID="STR_ALIVE_PSD">
     <English>Player Sector Display</English>

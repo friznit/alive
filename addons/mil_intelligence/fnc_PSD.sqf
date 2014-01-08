@@ -73,32 +73,6 @@ switch(_operation) do {
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
 		_result = _args;
-	};        
-	case "state": {
-		private["_state","_data","_nodes","_simple_operations"];
-		/*
-		_simple_operations = ["targets", "size","type","faction"];
-		
-		if(typeName _args != "ARRAY") then {
-			_state = [] call CBA_fnc_hashCreate;
-			// Save state
-			{
-				[_state, _x, _logic getVariable _x] call ALIVE_fnc_hashSet;
-			} forEach _simple_operations;
-
-			if ([_logic, "debug"] call MAINCLASS) then {
-				diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_state);
-			};
-			_result = _state;
-		} else {
-			ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
-			
-			// Restore state
-			{
-				[_logic, _x, [_args, _x] call ALIVE_fnc_hashGet] call MAINCLASS;
-			} forEach _simple_operations;
-		};
-		*/		
 	};
 	// Main process
 	case "init": {
@@ -111,26 +85,9 @@ switch(_operation) do {
 
 			TRACE_1("After module init",_logic);
 
-			//[_logic,"register"] call MAINCLASS;
-
             [_logic,"start"] call MAINCLASS;
         };
 	};
-	case "register": {
-		
-			private["_registration","_moduleType"];
-		
-			_moduleType = _logic getVariable "moduleType";
-			_registration = [_logic,_moduleType,["ALIVE_profileHandler"]];
-	
-			if(isNil "ALIVE_registry") then {
-				ALIVE_registry = [nil, "create"] call ALIVE_fnc_registry;
-				[ALIVE_registry, "init"] call ALIVE_fnc_registry;
-			};
-
-			[ALIVE_registry,"register",_registration] call ALIVE_fnc_registry;
-	};
-	// Main process
 	case "start": {
         if (isServer) then {
 		
