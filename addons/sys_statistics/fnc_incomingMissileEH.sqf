@@ -1,13 +1,13 @@
-/* 
+/*
  * Filename:
- * fnc_handleDamageEH.sqf 
+ * fnc_handleDamageEH.sqf
  *
  * Description:
  * Extended handleDamage Eventhandler
- * 
+ *
  * Created by Tupolov
  * Creation date: 21/03/2013
- * 
+ *
  * */
 
 // ====================================================================================
@@ -18,28 +18,31 @@
 if (GVAR(ENABLED)) then {
 	private ["_sidetarget","_sidesource","_targettype","_sourceweapon","_sourcetype","_distance","_datetime","_factionsource","_factiontarget","_data","_targetPos","_sourcePos","_source","_target","_targetVehicleClass","_sourceVehicleClass","_currenttime","_projectile"];
 
-	// Set Data 
+	// Set Data
 	_target = _this select 0;
 	_projectile = _this select 1;
 	_source = _this select 2;
-		
+
 	if (isServer) then {
 		diag_log _this;
-		
+
 		if ((isPlayer _target) || (isPlayer _source) || (isPlayer (gunner _target))  || (isPlayer (gunner _source)) ) then {
-		
+
 			_sideTarget = side (group _target); // group side is more reliable
 			_sidesource = side _source;
-			
-			_factionsource = getText (configFile >> "cfgFactionClasses" >> (faction _source) >> "displayName"); 
-			_factionTarget = getText (configFile >> "cfgFactionClasses" >> (faction _target) >> "displayName"); 
-			
+
+			_factionsource = getText (configFile >> "cfgFactionClasses" >> (faction _source) >> "displayName");
+			_factionTarget = getText (configFile >> "cfgFactionClasses" >> (faction _target) >> "displayName");
+
 			_targettype = getText (configFile >> "cfgVehicles" >> (typeof _target) >> "displayName");
 			_sourcetype = getText (configFile >> "cfgVehicles" >> (typeof _source) >> "displayName");
-			
+
+			_sourcecfg = typeOf _source;
+			_targetcfg = typeOf _target;
+
 			_targetVehicleClass = "None";
 			_sourceVehicleClass = "None";
-			
+
 			switch (true) do {
 				case (_target isKindof "LandVehicle"): {_targetVehicleClass = "Vehicle";};
 				case (_target isKindof "Air"): {_targetVehicleClass = "Aircraft";};
@@ -48,64 +51,66 @@ if (GVAR(ENABLED)) then {
 				default {_targetVehicleClass = "Other";};
 			};
 
-			switch (true) do 
+			switch (true) do
 			{
-				case (_source isKindof "LandVehicle"): 
-				{	
+				case (_source isKindof "LandVehicle"):
+				{
 					_sourceVehicleClass = "Vehicle";
 				};
-				case (_source isKindof "Air"): 
-				{	
+				case (_source isKindof "Air"):
+				{
 					_sourceVehicleClass = "Aircraft";
 				};
-				case (_source isKindof "Ship"): 
-				{	
+				case (_source isKindof "Ship"):
+				{
 					_sourceVehicleClass = "Ship";
 				};
-				case (_source isKindof "Man"): 
-				{	
+				case (_source isKindof "Man"):
+				{
 					_sourceVehicleClass = "Infantry";
 				};
-				default 
+				default
 				{
 					_sourceVehicleClass = "Other";
 				};
 			};
-			
+
 			_sourceweapon = getText (configFile >> "cfgWeapons" >> (currentweapon _source) >> "displayName");
-			
+			_sourceweaponType = currentweapon _source;
+
 			if (vehicle _source != _source) then {
 					_sourceweapon = _sourceweapon + format[" (%1)", getText (configFile >> "cfgVehicles" >> (typeof (vehicle _source)) >> "displayName")];
+					_sourceweaponType = currentweapon (vehicle _source);
 			};
-			
+
 			_distance = ceil(_target distance _source);
-			
+
 			_targetPos = mapgridposition _target;
 			_sourcePos = mapgridposition _source;
-			
+
 			// Log data
-			_data = [ ["Event","Missile"] , ["targetSide",_sideTarget] , ["targetFaction",_factionTarget] , ["targetType",_targetType] , ["targetClass", _targetVehicleClass] , ["targetPos",_targetPos] , ["sourceSide",_sidesource] , ["sourceFaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass",_sourceVehicleClass] , ["sourcePos", _sourcePos] , ["Weapon",_sourceweapon] , ["Distance",_distance] , ["target",_target] , ["source",_source] , ["projectile", _projectile] ];
-			
+			_data = [ ["Event","Missile"] , ["targetSide",_sideTarget] , ["targetFaction",_factionTarget] , ["targetType",_targetType] , ["targetClass", _targetVehicleClass] , ["targetPos",_targetPos] , ["sourceSide",_sidesource] , ["sourceFaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass",_sourceVehicleClass] , ["sourcePos", _sourcePos] , ["Weapon",_sourceweapon] , ["WeaponType",_sourceweaponType] ,["Distance",_distance] , ["target",_target] , ["source",_source] , ["projectile", _projectile], ["sourceCfg",_sourcecfg] , ["targetCfg",_targetcfg] ];
+
 			if (isPlayer _target) then { // Player was Target
-				
+
 					_data = _data + [ ["FiredAt","true"] , ["Player", getplayeruid _target] , ["PlayerName", name _target] ];
-					
+
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
 					publicVariableServer "ALIVE_SYS_STAT_UPDATE_EVENTS";
 
 			};
-			
+
 			if (isPlayer _source) then { // Player was firing
-				
+
 					_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source] ];
-					
+
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
 					publicVariableServer "ALIVE_SYS_STAT_UPDATE_EVENTS";
 
-			};	
-					
+			};
+
 		};
 	};
 };

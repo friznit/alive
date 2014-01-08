@@ -41,9 +41,10 @@ if (isDedicated && GVAR(ENABLED)) then {
 	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
 	[GVAR(datahandler),"storeType",false] call ALIVE_fnc_Data;
 
-	// Grab Server IP
+	// Grab Server IP and data group info
 	GVAR(serverIP) = [] call ALIVE_fnc_getServerIP;
 	GVAR(serverName) = [] call ALIVE_fnc_getServerName;
+	GVAR(groupTag) = [] call ALIVE_fnc_getGroupID;
 
 	// If the host IP web service is down, just use the serverName
 	if (GVAR(serverIP) == "ERROR") then {
@@ -91,7 +92,7 @@ if (isDedicated && GVAR(ENABLED)) then {
 			_realtime = [] call ALIVE_fnc_getServerTime;
 
 			// _data should be an array of key/value
-			_data = [ ["realTime",_realtime],["Server",GVAR(serverIP)],["Operation",GVAR(operation)],["Map",worldName],["gameTime",_gametime] ] + _data;
+			_data = [ ["realTime",_realtime],["Server",GVAR(serverIP)],["Group",GVAR(groupTag)],["Operation",GVAR(operation)],["Map",worldName],["gameTime",_gametime] ] + _data;
 
 			// Write event data to DB
 			if ((_data select 5) select 1 == "OperationFinish") then {
