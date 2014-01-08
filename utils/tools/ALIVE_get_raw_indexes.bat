@@ -66,9 +66,13 @@ rem %exe% "%arma%\@a2co\@IF\addons\baranow_wrp.pbo" > %target%\objects.baranow.s
 rem %exe% "%arma%\@a2co\@IF\addons\ivachev_wrp.pbo" > %target%\objects.ivachev.sqf
 rem %exe% "%arma%\@a2co\@IF\addons\panovo_wrp.pbo" > %target%\objects.panovo.sqf
 rem %exe% "%arma%\@a2co\@IF\addons\staszow_wrp.pbo" > %target%\objects.staszow.sqf
-%exe% "%arma%\@a2co\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.france.sqf
+rem %exe% "%arma%\@a2co\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.france.sqf
 
 rem ----------------------------- User ------------------------------------
+
+%exe% "%arma%\@a2co\@fata\addons\fata.pbo" > %target%\objects.fata.sqf
+
+rem %exe% "%arma%\@koplic\addons\projeta3-01.pbo" > %target%\objects.koplic.sqf
 rem %exe% "%arma%\@a2co\@Sangin\Addons\hellskitchen.pbo" > %target%\objects.hellskitchen.sqf
 rem %exe% "%arma%\@a2co\@Sangin\Addons\hellskitchens.pbo" > %target%\objects.hellskitchens.sqf
 rem %exe% "%arma%\@a2co\@carraigdubh\Addons\carraigdubh.pbo" > %target%\objects.carraigdubh.sqf
