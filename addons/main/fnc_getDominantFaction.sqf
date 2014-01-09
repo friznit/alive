@@ -22,7 +22,6 @@ Examples:
 Author:
 Highhead
 ---------------------------------------------------------------------------- */
-
 private ["_pos","_radius","_fac","_facs","_profiles"];
 
 PARAMS_1(_pos);
