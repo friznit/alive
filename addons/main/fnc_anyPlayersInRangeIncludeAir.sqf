@@ -44,6 +44,19 @@ _anyInRange = false;
 _isHelicopter = false;
 _isJet = false;
 
+/*
+ * Additional bool for "spawn with jets" / "spawn with heli" is unneeded on the sys profile module.
+ * Actually there is only the spawnradius for jets and helis as module params needed.
+ * If you dont want to spawn with jets or heli, just set spawnradius to 0 (defaultvalue 0 for jets on module param f.e.)
+ * The function would be pretty simple then, without if/thens and should be pretty quick:
+
+_anyInRange = 	({
+				    (_x distance _pos < _dist) ||
+				    {(vehicle player iskindof "Plane") && (_x distance _pos < _jetSpawnDistance)} || 
+				    {(vehicle player iskindof "Helicopter") && (_x distance _pos < _helicopterSpawnDistance)}
+				} count _players) > 0;
+*/
+
 scopeName "main";
 
 {
