@@ -101,91 +101,21 @@ Cluster Generation State
 
 
 namalsk
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 fallujah
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 thirsk
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 thirsk winter - thirskw
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 podagorsk - fdf_isle1_a
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 celle
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 clafghan
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 torabora
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 tigeria
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 tup_qom
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
 ngs_capraia
---------------------------------
-indexed
-done clusters
-done data
-done merge
-
-
-
-
 Hazar-Kot mcn_hazarkot
---------------------------------
-indexed
-done clusters
-done data
-done merge
+
+
+
+
 
 broken on mil placement unknown
 

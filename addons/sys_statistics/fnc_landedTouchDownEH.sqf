@@ -38,7 +38,7 @@ Tupolov
 if (GVAR(ENABLED)) then {
 	private ["_ptime","_LandedInterval","_sidevehicle","_vehicletype","_factionvehicle","_data","_vehiclePos","_vehicle","_airport"];
 
-	// Set Data 
+	// Set Data
 	_vehicle = _this select 0;
 	_airport = _this select 1;
 
@@ -47,31 +47,32 @@ if (GVAR(ENABLED)) then {
 	if (isPlayer (driver _vehicle)) then {
 		// Check to see if vehicle is having a "bumpy" landing
 		_LandedInterval = time - (_vehicle getVariable [QGVAR(LandedTime),31]);
-		
+
 		diag_log format["Last landed %1 seconds ago (%2)", _LandedInterval, time];
 
-		if (_LandedInterval > 30) then {	
+		if (_LandedInterval > 30) then {
 			_sidevehicle = side (group _vehicle); // group side is more reliable
 
-			_factionvehicle = getText (configFile >> "cfgFactionClasses" >> (faction _vehicle) >> "displayName");  
-			
+			_factionvehicle = getText (configFile >> "cfgFactionClasses" >> (faction _vehicle) >> "displayName");
+
 			_vehicletype = getText (configFile >> "cfgVehicles" >> (typeof _vehicle) >> "displayName");
+			_vehicleConfig = typeOf _vehicle;
 
 			_vehiclePos = mapgridposition _vehicle;
-			
+
 			_ptime = time;
 			_vehicle setVariable [QGVAR(LandedTime), _ptime, true];
-			
+
 			// Log data
-			_data = [ ["Event","Landed"] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehiclePos",_vehiclePos] , ["vehicle",_vehicle] , ["Airport",_airport] ];
-			
+			_data = [ ["Event","Landed"] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehiclePos",_vehiclePos] , ["vehicle",_vehicle] , ["Airport",_airport], ["vehicleConfig",_vehicleConfig] ];
+
 			_data = _data + [ ["Player",getplayeruid _vehicle] , ["PlayerName",name _vehicle] ];
-				
+
 			// Send data to server to be written to DB
 			GVAR(UPDATE_EVENTS) = _data;
 			publicVariableServer QGVAR(UPDATE_EVENTS);
 
-		};		
+		};
 	};
 };
 // ====================================================================================

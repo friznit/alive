@@ -10,6 +10,7 @@ Return the number of players within range of a position, excluding any players i
 Parameters:
 Array - Position measuring from
 Number - Distance being measured (optional)
+Bool - Also exclude player in helicopters
 
 Returns:
 Number - Returns number of players within range
@@ -27,12 +28,15 @@ Peer Reviewed:
 Wolffy 20131117
 ---------------------------------------------------------------------------- */
 
-private ["_pos","_dist","_players","_player","_inRangeCount","_vehicleClass","_vehicleKind","_vehicle"];
+private ["_pos","_dist","_includeHelicopters","_players","_player","_anyInRange","_vehicleClass","_vehicleKind","_vehicle"];
 PARAMS_1(_pos);
 DEFAULT_PARAM(1,_dist,2500);
+DEFAULT_PARAM(2,_includeHelicopters,false);
 
 _players = [] call BIS_fnc_listPlayers;
-_inRangeCount = 0;
+_anyInRange = false;
+
+scopeName "main";
 
 {
 	_player = _x;
@@ -48,12 +52,21 @@ _inRangeCount = 0;
 			
 			// not a plane
 			if!(_vehicleKind == "Plane") then {
-				_inRangeCount = _inRangeCount + 1;
+			    if(_includeHelicopters) then {
+			        if!(_vehicleKind == "Helicopter") then {
+			            _anyInRange = true;
+			            breakTo "main";
+                    };
+			    }else{
+			        _anyInRange = true;
+			        breakTo "main";
+			    };
 			};
 		}else{
-			_inRangeCount = _inRangeCount + 1;
+			_anyInRange = true;
+			breakTo "main";
 		};
 	};
 } forEach _players;
 
-_inRangeCount
+_anyInRange

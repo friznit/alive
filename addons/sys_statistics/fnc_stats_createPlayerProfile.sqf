@@ -20,7 +20,7 @@ Tupolov
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(stats_createPlayerProfile);
 
 private ["_result","_profile","_data","_msg","_profile"];
@@ -31,20 +31,23 @@ _data = _this select 0;
 _profile = "";
 
 if ([_data] call CBA_fnc_isHash) then {
-		
+
+	// Grab Player's serverGroup
+	player setVariable [QGVAR(playerGroup), [_data, "serverGroup", "Unknown"] call ALIVE_fnc_hashGet, true];
+
 	// Create a Player diary record
 	player createDiarySubject ["statsPage","ALiVE"];
-	
+
 	_prof = {
 		_profile = _profile + _key + " : " + _value + "<br />";
 	};
-	
+
 	[_data, _prof] call CBA_fnc_hashEachPair;
-	
-	player createDiaryRecord ["statsPage", ["Profile", _profile]]; 
-	
+
+	player createDiaryRecord ["statsPage", ["Profile", _profile]];
+
 	_msg = format["Welcome %1!", name player];
-	
+
 	[_msg, "Profile download from ALiVE website completed. Your profile is now available in player diary under the entry ALiVE > Profile."] call ALIVE_fnc_sendHint;
 
 	_result = true;
@@ -56,5 +59,5 @@ if ([_data] call CBA_fnc_isHash) then {
 
 
 _result;
-		
+
 

@@ -24,7 +24,7 @@ class Extended_Killed_Eventhandlers
 {
 	class LANDVEHICLE
 	{
-		class alive_sys_stat 
+		class alive_sys_stat
 		{
 			killed = "_this call alive_sys_stat_fnc_unitKilledEH";
 		};
@@ -47,7 +47,7 @@ Tupolov
 if (GVAR(ENABLED)) then {
 	private ["_sideKilled","_sideKiller","_killedtype","_killerweapon","_killertype","_distance","_datetime","_factionKiller","_factionKilled","_data","_killedPos","_killerPos","_server","_realtime","_killer","_killed","_killedVehicleClass","_killerVehicleClass"];
 
-	// Set Data 
+	// Set Data
 	_killed = _this select 0;
 	_killer = _this select 1;
 
@@ -57,18 +57,18 @@ if (GVAR(ENABLED)) then {
 
 	// if killed is a player or a vehicle then record, if killer is player or player in a vehicle
 	if ( (_killed == player) || !(_killed iskindof "Man") || (isPlayer _killer) ) then {
-		
+
 		//diag_log format["Unit Killed: vehicle: %1, killed: %2, killer: %3, killerunit: %4 (%5)", typeof vehicle _killed, typeof _killed, typeof _killer, _killer, isPlayer _killer];
 
 		_sideKilled = side (group _killed); // group side is more reliable
 		_sideKiller = side _killer;
-		
-		_factionKiller = getText (configFile >> "cfgFactionClasses" >> (faction _killer) >> "displayName"); 
-		_factionKilled = getText (configFile >> "cfgFactionClasses" >> (faction _killed) >> "displayName"); 
-		
+
+		_factionKiller = getText (configFile >> "cfgFactionClasses" >> (faction _killer) >> "displayName");
+		_factionKilled = getText (configFile >> "cfgFactionClasses" >> (faction _killed) >> "displayName");
+
 		_killedtype = getText (configFile >> "cfgVehicles" >> (typeof _killed) >> "displayName");
 		_killertype = getText (configFile >> "cfgVehicles" >> (typeof _killer) >> "displayName");
-		
+
 		switch (true) do {
 			case (_killed isKindof "LandVehicle"): {_killedVehicleClass = "Vehicle";};
 			case (_killed isKindof "Air"): {_killedVehicleClass = "Aircraft";};
@@ -84,37 +84,40 @@ if (GVAR(ENABLED)) then {
 			case (_killer isKindof "Man") : {	_killerVehicleClass = "Infantry";};
 			default {_killerVehicleClass = "Other";};
 		};
-		
+
 		_killerweapon = getText (configFile >> "cfgWeapons" >> (currentweapon _killer) >> "displayName");
-		
+		_killerweaponType = currentweapon _killer;
+
 		if (vehicle _killer != _killer) then {
 				_killerweapon = _killerweapon + format[" (%1)", getText (configFile >> "cfgVehicles" >> (typeof (vehicle _killer)) >> "displayName")];
+				_killerweaponType = currentweapon (vehicle _killer);
 		};
-		
+
 		if (_killerweapon == "") then {
 			_killerweapon = "UNKNOWN";
+			_killerweaponType = "UNKNOWN";
 		};
-		
+
 		_distance = ceil(_killed distance _killer);
-		
+
 		_killedPos = mapgridposition _killed;
 		_killerPos = mapgridposition _killer;
-		
+
 		// Log data
-		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["Weapon",_killerweapon] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer] ];
+		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["Weapon",_killerweapon] , ["WeaponType",_killerweaponType] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer] ];
 
 		if (player == _killed) exitWith { // Player was killed
-		
+
 			if (_killer == _killed) then { // Suicide?
 				_data = _data + [["suicide",true]];
 			};
-			
+
 				_data = _data + [ ["Death","true"] , ["Player",getplayeruid _killed], ["PlayerName",name _killed] ];
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
 				publicVariableServer QGVAR(UPDATE_EVENTS);
 		};
-		
+
 		if (!(_killed iskindof "Man")) then { // vehicle was killed
 
 				if (isPlayer _killer || isPlayer (gunner _killer)) then {
@@ -124,19 +127,19 @@ if (GVAR(ENABLED)) then {
 				GVAR(UPDATE_EVENTS) = _data;
 				publicVariableServer QGVAR(UPDATE_EVENTS);
 		};
-		
+
 		if (isPlayer _killer && (_killer != _killed) && (_killed iskindof "Man")) then { // Player was killer
-			
+
 				// Check to see if player is in a vehicle and firing the weapon
 				//if (_killer iskindof "Man" || isPlayer (gunner _killer) || isPlayer (commander _killer) || isPlayer (driver _killer) ) then {
 					_data = _data + [ ["Player",getplayeruid _killer] , ["PlayerName",name _killer] ];
 					// Send data to server to be written to DB
 					GVAR(UPDATE_EVENTS) = _data;
-					publicVariableServer QGVAR(UPDATE_EVENTS);		
-				//};	
-				
+					publicVariableServer QGVAR(UPDATE_EVENTS);
+				//};
+
 		};
-					
-	};				
+
+	};
 };
 // ====================================================================================
