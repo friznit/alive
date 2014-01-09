@@ -17,12 +17,6 @@ class CfgVehicles {
                 }; 
                  class Arguments
                 {
-                        class databaseName
-                        {
-                                displayName = "$STR_ALIVE_data_dataBASENAME";
-                                description = "$STR_ALIVE_data_dataBASENAME_COMMENT";
-                                defaultValue = "ARMA3ALIVE";
-                        };
                         class source
                         {
                                 displayName = "$STR_ALIVE_data_SOURCE";

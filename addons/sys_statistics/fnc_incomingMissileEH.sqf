@@ -93,7 +93,7 @@ if (GVAR(ENABLED)) then {
 
 			if (isPlayer _target) then { // Player was Target
 
-					_data = _data + [ ["FiredAt","true"] , ["Player", getplayeruid _target] , ["PlayerName", name _target] ];
+					_data = _data + [ ["FiredAt","true"] , ["Player", getplayeruid _target] , ["PlayerName", name _target], ["playerGroup", _target getvariable [QGVAR(playerGroup), "Unknown"]] ];
 
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
@@ -103,7 +103,7 @@ if (GVAR(ENABLED)) then {
 
 			if (isPlayer _source) then { // Player was firing
 
-					_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source] ];
+					_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source], ["playerGroup", _source getvariable [QGVAR(playerGroup), "Unknown"]] ];
 
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;

@@ -49,7 +49,7 @@ _ops = ["read","write","update","delete","load","save","convert","restore"];
 _result = true;
 
 if (_operation in _ops) then {
-
+		if !(GVAR(DISABLED)) then {
 			ASSERT_TRUE(typeName _args == "ARRAY", _args);
 			if(typeName _args == "ARRAY") then {
 				private ["_function","_script"];
@@ -64,6 +64,12 @@ if (_operation in _ops) then {
                 ERROR_WITH_TITLE(str _logic,_err);
 				_result = false;
 			};
+		} else {
+			private["_err"];
+            _err = format["%1 %2 operation refused as module is disabled.", _logic, _operation];
+            ERROR_WITH_TITLE(str _logic,_err);
+			_result = false;
+		};
 } else {
 
 	switch(_operation) do {

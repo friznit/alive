@@ -179,22 +179,6 @@ if (isDedicated && GVAR(ENABLED)) then {
 
 if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
-	// Get player information
-	_name = name player;
-	_class = getText (configFile >> "cfgVehicles" >> (typeof player) >> "displayName");
-	_puid = getplayeruid player;
-	_PlayerSide = side (group player); // group side is more reliable
-	_PlayerFaction = faction player;
-
-	// Setup the event data for player starting
-	_data = [["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["Player",_puid] ];
-
-	GVAR(UPDATE_EVENTS) = _data;
-	publicVariableServer QGVAR(UPDATE_EVENTS);
-
-	// Set player startTime
-	player setVariable [QGVAR(timeStarted), date, true];
-
 	// Set player shotsFired
 	player setVariable [QGVAR(shotsFired), [[primaryweapon player, 0, primaryweapon player, getText (configFile >> "cfgWeapons" >> primaryweapon player >> "displayName")]]];
 
@@ -259,6 +243,19 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 			sleep 30;
 		};
 	};
+
+	// Get player information and send player start event
+	_name = name player;
+	_class = getText (configFile >> "cfgVehicles" >> (typeof player) >> "displayName");
+	_puid = getplayeruid player;
+	_PlayerSide = side (group player); // group side is more reliable
+	_PlayerFaction = faction player;
+	_playerGroup = player getVariable [QGVAR(playerGroup),"MISSING"];
+
+	// Setup the event data for player starting
+	_data = [ ["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["Player",_puid] ];
+	GVAR(UPDATE_EVENTS) = _data;
+	publicVariableServer QGVAR(UPDATE_EVENTS);
 };
 
 

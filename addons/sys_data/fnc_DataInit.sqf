@@ -21,16 +21,51 @@ if (isDedicated) then {
 	MOD(sys_data) = _logic;
 
 	//Set Data logic defaults
-	GVAR(databaseName) = MOD(sys_data) getVariable "databaseName";
+	GVAR(DISABLED) = false;
+	GVAR(databaseName) = "arma3live";
 	GVAR(source) = MOD(sys_data) getVariable "source";
 	GVAR(GROUP_ID) = [] call ALIVE_fnc_getGroupID;
 
-	// Load Data Dictionary from central public database?
+
 	// Setup data handler
 	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
 
 	// Setup Data Dictionary
 	ALIVE_DataDictionary = [] call CBA_fnc_hashCreate;
+
+	// Get global config information
+	_config = [GVAR(datahandler), "read", ["sys_data", [], "config"]] call ALIVE_fnc_Data;
+
+	// Check that the config loaded ok, if not then stop the data module
+	if (typeName _config == "STRING") exitWith {
+		["CANNOT CONNECT TO DATABASE, DISABLING DATA MODULE"] call ALIVE_fnc_logger;
+		GVAR(DISABLED) = true;
+	};
+
+	// Check to see if the service is off
+	if ([_config, "On"] call ALIVE_fnc_hashGet == "false") exitWith {
+		["CONNECTED TO DATABASE, BUT SERVICE HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
+		GVAR(DISABLED) = true;
+	};
+
+	["CONNECTED TO DATABASE OK"] call ALIVE_fnc_logger;
+
+	// Global config overrides module settings
+	if ([_config, "PerfData","false"] call ALIVE_fnc_hashGet == "true") then {
+		["CONNECTED TO DATABASE AND PERFDATA HAS BEEN TURNED ON"] call ALIVE_fnc_logger;
+		MOD(sys_data) setvariable ["disablePerf", "false"];
+		ALIVE_sys_perf_ENABLED = true;
+	};
+
+	if ([_config, "EventData","false"] call ALIVE_fnc_hashGet == "false") then {
+		["CONNECTED TO DATABASE, BUT STAT DATA HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
+		ALIVE_sys_statistics_ENABLED = false;
+	};
+
+	ALIVE_sys_statistics_level = [_config, "EventLevel",5] call ALIVE_fnc_hashGet;
+
+	// Load Data Dictionary from central public database
+
 	_dictionaryName = format["dictionary_%1_%2", GVAR(GROUP_ID), missionName];
 	// Try loading dictionary from db
 	_response = [GVAR(datahandler), "read", ["sys_data", [], _dictionaryName]] call ALIVE_fnc_Data;
@@ -97,13 +132,13 @@ if (isDedicated) then {
 	};
 
 	// Start the perf monitoring module
-	if !(MOD(sys_data) getvariable ["disablePerf", "true"] == "true" || ALIVE_sys_perf_disabled) then {
+	if !(MOD(sys_data) getvariable ["disablePerf", "true"] == "true" || !(ALIVE_sys_perf_ENABLED)  ) then {
 		[MOD(sys_data)] call ALIVE_fnc_perfInit;
 	};
 };
 
 // Kickoff the stats module
-if !(_logic getvariable ["disableStats","false"] == "true" || ALIVE_sys_statistics_disabled) then {
+if !(_logic getvariable ["disableStats","false"] == "true" || !(ALIVE_sys_statistics_ENABLED)  ) then {
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
 
