@@ -51,17 +51,21 @@ if(isServer) then {
         _debug = false;
     };
 
-    if(_spawnTypeJet == "true") then {
-        _spawnTypeJet = true;
-    }else{
-        _spawnTypeJet = false;
+    if(typeName _spawnTypeJet == "STRING") then {
+        if(_spawnTypeJet == "true") then {
+            _spawnTypeJet = true;
+        }else{
+            _spawnTypeJet = false;
+        };
     };
 
-	if(_spawnTypeHeli == "true") then {
-		_spawnTypeHeli = true;
-	}else{
-		_spawnTypeHeli = false;
-	};
+    if(typeName _spawnTypeHeli == "STRING") then {
+        if(_spawnTypeHeli == "true") then {
+            _spawnTypeHeli = true;
+        }else{
+            _spawnTypeHeli = false;
+        };
+    };
 
 	_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "init"] call ALIVE_fnc_profileSystem;
