@@ -30,33 +30,25 @@ ARJay
 Peer Reviewed:
 ---------------------------------------------------------------------------- */
 
-private ["_pos","_dist","_includeJets","_jetSpawnDistance","_includeHelicopters","_helicopterSpawnDistance","_players","_player","_position","_anyInRange",
+private ["_pos","_dist","_jetSpawnDistance","_helicopterSpawnDistance","_players","_player","_position","_anyInRange",
 "_vehicleClass","_vehicleKind","_vehicle","_isHelicopter","_isJet","_normalSpawn"];
 PARAMS_1(_pos);
 DEFAULT_PARAM(1,_dist,2500);
-DEFAULT_PARAM(2,_includeJets,false);
-DEFAULT_PARAM(3,_jetSpawnDistance,2500);
-DEFAULT_PARAM(4,_includeHelicopters,true);
-DEFAULT_PARAM(5,_helicopterSpawnDistance,2500);
+DEFAULT_PARAM(2,_jetSpawnDistance,0);
+DEFAULT_PARAM(3,_helicopterSpawnDistance,2500);
 
 _players = [] call BIS_fnc_listPlayers;
 _anyInRange = false;
 _isHelicopter = false;
 _isJet = false;
 
-/*
- * Additional bool for "spawn with jets" / "spawn with heli" is unneeded on the sys profile module.
- * Actually there is only the spawnradius for jets and helis as module params needed.
- * If you dont want to spawn with jets or heli, just set spawnradius to 0 (defaultvalue 0 for jets on module param f.e.)
- * The function would be pretty simple then, without if/thens and should be pretty quick:
-
 _anyInRange = 	({
-				    (_x distance _pos < _dist) ||
-				    {(vehicle player iskindof "Plane") && (_x distance _pos < _jetSpawnDistance)} || 
+				    (!(vehicle player iskindof "Plane") && !(vehicle player iskindof "Helicopter") && (_x distance _pos < _dist)) ||
+				    {(vehicle player iskindof "Plane") && (_x distance _pos < _jetSpawnDistance)} ||
 				    {(vehicle player iskindof "Helicopter") && (_x distance _pos < _helicopterSpawnDistance)}
 				} count _players) > 0;
-*/
 
+/*
 scopeName "main";
 
 {
@@ -126,5 +118,6 @@ scopeName "main";
         };
     };
 } forEach _players;
+*/
 
 _anyInRange
