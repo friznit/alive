@@ -38,9 +38,9 @@ if(isServer) then {
 	_debug = _logic getVariable ["debug",false];
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
-	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1000"]);
-	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","1000"]);
-	_spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1000"]);
+	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
+    _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
+	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
 
     if(_debug == "true") then {

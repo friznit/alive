@@ -33,9 +33,9 @@ Peer Reviewed:
 private ["_pos","_dist","_jetSpawnDistance","_helicopterSpawnDistance","_players","_player","_position","_anyInRange",
 "_vehicleClass","_vehicleKind","_vehicle","_isHelicopter","_isJet","_normalSpawn"];
 PARAMS_1(_pos);
-DEFAULT_PARAM(1,_dist,2500);
+DEFAULT_PARAM(1,_dist,1500);
 DEFAULT_PARAM(2,_jetSpawnDistance,0);
-DEFAULT_PARAM(3,_helicopterSpawnDistance,2500);
+DEFAULT_PARAM(3,_helicopterSpawnDistance,1500);
 
 _players = [] call BIS_fnc_listPlayers;
 _anyInRange = false;

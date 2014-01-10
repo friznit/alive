@@ -56,17 +56,17 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS_COMMENT";
 								defaultvalue = "1500";
                         };
-                        class spawnTypeJetRadius
-                        {
-                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS";
-                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS_COMMENT";
-                                defaultvalue = "2000";
-                        };
                         class spawnTypeHeliRadius
                         {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_RADIUS";
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_RADIUS_COMMENT";
-                                defaultvalue = "2000";
+                                defaultvalue = "1500";
+                        };
+                        class spawnTypeJetRadius
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS_COMMENT";
+                                defaultvalue = "0";
                         };
                         class activeLimiter
                         {
