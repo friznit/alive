@@ -27,7 +27,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 	_name = _this select 1;
 	_uid = _this select 2;
 
-	if (_name == "__SERVER__") exitWith {
+	if (_name == "__SERVER__" || _uid == "") exitWith {
 
 		// MOVED TO MODULE INIT
 

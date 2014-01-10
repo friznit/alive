@@ -80,7 +80,7 @@ if (GVAR(ENABLED)) then {
 		// Log data
 		_data = [ ["Event","GetOut"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",_unit] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes",_vehMinutes], ["vehicleConfig",_vehiclecfg]  ];
 
-		_data = _data + [ ["Player",getplayeruid _unit] , ["PlayerName",name _unit] ];
+		_data = _data + [ ["Player",getplayeruid _unit], ["playerGroup", _unit getvariable [QGVAR(playerGroup), "Unknown"]] , ["PlayerName",name _unit] ];
 
 		// Send data to server to be written to DB
 		GVAR(UPDATE_EVENTS) = _data;
@@ -92,7 +92,7 @@ if (GVAR(ENABLED)) then {
 
 			_data = [ ["Event","ParaJump"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",str(_unit)] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes", _vehMinutes], ["vehicleConfig",_vehiclecfg] , ["jumpHeight",_height] ];
 
-			_data = _data + [ ["Player",getplayeruid _unit] , ["PlayerName",name _unit] ];
+			_data = _data + [ ["Player",getplayeruid _unit], ["playerGroup", _unit getvariable [QGVAR(playerGroup), "Unknown"]] , ["PlayerName",name _unit] ];
 
 			// Send data to server to be written to DB
 			GVAR(UPDATE_EVENTS) = _data;

@@ -41,7 +41,7 @@ Tupolov
 if (GVAR(ENABLED)) then {
 	private ["_sideunit","_sidevehicle","_unittype","_vehicleweapon","_vehicletype","_distance","_datetime","_factionvehicle","_factionunit","_data","_unitPos","_vehiclePos","_server","_realtime","_vehicle","_unit","_unitVehicleClass","_vehicleVehicleClass","_position"];
 
-	// Set Data 
+	// Set Data
 	_vehicle = _this select 0;
 	_position = _this select 1;
 	_unit = _this select 2;
@@ -49,43 +49,43 @@ if (GVAR(ENABLED)) then {
 	//diag_log format["GetIn: %1", _this];
 
 	if (local _unit && isPlayer _unit) then {
-		
+
 		_sideunit = side (group _unit); // group side is more reliable
 		_sidevehicle = side _vehicle;
-		
-		_factionvehicle = getText (configFile >> "cfgFactionClasses" >> (faction _vehicle) >> "displayName"); 
-		_factionunit = getText (configFile >> "cfgFactionClasses" >> (faction _unit) >> "displayName"); 
-		
+
+		_factionvehicle = getText (configFile >> "cfgFactionClasses" >> (faction _vehicle) >> "displayName");
+		_factionunit = getText (configFile >> "cfgFactionClasses" >> (faction _unit) >> "displayName");
+
 		_unittype = getText (configFile >> "cfgVehicles" >> (typeof _unit) >> "displayName");
 		_vehicletype = getText (configFile >> "cfgVehicles" >> (typeof _vehicle) >> "displayName");
-		
+
 		_unitVehicleClass = "Infantry";
 		_vehicleVehicleClass = "None";
-		
+
 		switch true do {
 			case (_vehicle isKindof "LandVehicle"): {_vehicleVehicleClass = "Vehicle";};
 			case (_vehicle isKindof "Air"): {_vehicleVehicleClass = "Aircraft";};
 			case (_vehicle isKindof "Ship"): {_vehicleVehicleClass = "Ship";};
 			case (_vehicle isKindof "Man"): {_vehicleVehicleClass = "Infantry";};
-			
+
 			case default {_vehicleVehicleClass = "Other";};
 		};
-			
+
 		_unitPos = mapgridposition _unit;
 		_vehiclePos = mapgridposition _vehicle;
-		
+
 		// Log data
 		_data = [ ["Event","GetIn"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",str(_unit)] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] ];
-			
-		_data = _data + [ ["Player",getplayeruid _unit] , ["PlayerName",name _unit] ];
-		
+
+		_data = _data + [ ["Player",getplayeruid _unit], ["playerGroup", _unit getvariable [QGVAR(playerGroup), "Unknown"]] , ["PlayerName",name _unit] ];
+
 		// Set Player GetIn time
 		_unit setVariable [QGVAR(GetInTime), date, true];
-		
+
 		// Send data to server to be written to DB
 		GVAR(UPDATE_EVENTS) = _data;
 		publicVariableServer QGVAR(UPDATE_EVENTS);
-				
+
 	};
 };
 // ====================================================================================

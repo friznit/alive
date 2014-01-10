@@ -23,7 +23,7 @@ Peer Reviewed:
 #include "script_component.hpp"
 SCRIPT(stats_createPlayerProfile);
 
-private ["_result","_profile","_data","_msg","_profile"];
+private ["_result","_profile","_data","_msg","_profile","_playerGroup"];
 
 TRACE_1("CREATING PLAYER PROFILE", _this);
 
@@ -33,7 +33,9 @@ _profile = "";
 if ([_data] call CBA_fnc_isHash) then {
 
 	// Grab Player's serverGroup
-	player setVariable [QGVAR(playerGroup), [_data, "serverGroup", "Unknown"] call ALIVE_fnc_hashGet, true];
+	_playerGroup = [_data, "ServerGroup", "Unknown"] call ALIVE_fnc_hashGet;
+
+	player setVariable [QGVAR(playerGroup), _playerGroup, true];
 
 	// Create a Player diary record
 	player createDiarySubject ["statsPage","ALiVE"];
@@ -48,7 +50,7 @@ if ([_data] call CBA_fnc_isHash) then {
 
 	_msg = format["Welcome %1!", name player];
 
-	[_msg, "Profile download from ALiVE website completed. Your profile is now available in player diary under the entry ALiVE > Profile."] call ALIVE_fnc_sendHint;
+	[_msg, "Profile download from ALiVE website completed. Your ALiVE web profile is now available in player diary under the entry ALiVE > Profile."] call ALIVE_fnc_sendHint;
 
 	_result = true;
 

@@ -112,7 +112,7 @@ if (GVAR(ENABLED)) then {
 				_data = _data + [["suicide",true]];
 			};
 
-				_data = _data + [ ["Death","true"] , ["Player",getplayeruid _killed], ["PlayerName",name _killed] ];
+				_data = _data + [ ["Death","true"] , ["Player",getplayeruid _killed], ["PlayerName",name _killed], ["playerGroup", _killed getvariable [QGVAR(playerGroup), "Unknown"]] ];
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
 				publicVariableServer QGVAR(UPDATE_EVENTS);
@@ -121,7 +121,7 @@ if (GVAR(ENABLED)) then {
 		if (!(_killed iskindof "Man")) then { // vehicle was killed
 
 				if (isPlayer _killer || isPlayer (gunner _killer)) then {
-					_data = _data + [["Player",getplayeruid _killer] , ["PlayerName",name _killer] ];
+					_data = _data + [["Player",getplayeruid _killer] , ["PlayerName",name _killer], ["playerGroup", _killer getvariable [QGVAR(playerGroup), "Unknown"]] ];
 				};
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
@@ -132,7 +132,7 @@ if (GVAR(ENABLED)) then {
 
 				// Check to see if player is in a vehicle and firing the weapon
 				//if (_killer iskindof "Man" || isPlayer (gunner _killer) || isPlayer (commander _killer) || isPlayer (driver _killer) ) then {
-					_data = _data + [ ["Player",getplayeruid _killer] , ["PlayerName",name _killer] ];
+					_data = _data + [ ["Player",getplayeruid _killer] , ["PlayerName",name _killer], ["playerGroup", _killer getvariable [QGVAR(playerGroup), "Unknown"]] ];
 					// Send data to server to be written to DB
 					GVAR(UPDATE_EVENTS) = _data;
 					publicVariableServer QGVAR(UPDATE_EVENTS);

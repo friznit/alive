@@ -101,7 +101,7 @@ if (GVAR(ENABLED)) then {
 
 		if (isPlayer _hit && (getPlayerUID _hit != getPlayerUID _source)) then { // Player was hit
 
-				_data = _data + [ ["PlayerHit","true"] , ["Player",getplayeruid _hit] , ["PlayerName",name _hit] ];
+				_data = _data + [ ["PlayerHit","true"] , ["Player",getplayeruid _hit] , ["PlayerName",name _hit], ["playerGroup", _hit getvariable [QGVAR(playerGroup), "Unknown"]] ];
 
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
@@ -114,7 +114,7 @@ if (GVAR(ENABLED)) then {
 				if (_damage > 0.5) then {
 					_data = _data + [ ["Disabled","true"] ];
 				};
-				_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source] ];
+				_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source], ["playerGroup", _source getvariable [QGVAR(playerGroup), "Unknown"]] ];
 
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;

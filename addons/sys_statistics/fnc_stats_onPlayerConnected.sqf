@@ -27,7 +27,7 @@ if (GVAR(ENABLED) && isDedicated) then {
 	_name = _this select 1;
 	_uid = _this select 2;
 
-	if (_name == "__SERVER__") exitWith {};
+	if (_name == "__SERVER__" || _uid == "") exitWith {};
 
 	{
 		if (getPlayerUID _x == _uid) exitwith {
@@ -51,6 +51,9 @@ if (GVAR(ENABLED) && isDedicated) then {
 		_owner publicVariableClient "STATS_PLAYER_PROFILE";
 
 		TRACE_3("SENDING PROFILE DATA TO CLIENT", _owner, _data, _unit);
+
+		// Set player startTime
+		_unit setVariable [QGVAR(timeStarted), date, true];
 
 	};
 
