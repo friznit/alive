@@ -46,7 +46,8 @@ _callsign = _artyArray select (lbCurSel _artyUnitLb) select 2; if (!isNil { NEO_
 _callsignPlayer = (format ["%1", group player]) call NEO_fnc_callsignFix;
 
 //Dislog from player
-[player, format ["%1, this is %2. We need %5 %6 strike at position. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1, _type, _ordnanceType], "side"] call NEO_fnc_messageBroadcast;;
+[[player,format["%1, this is %2. We need %5 %6 strike at position. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1, _type, _ordnanceType],"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+
 
 //NEW TASK
 _battery setVariable ["NEO_radioArtyNewTask", [_type, _ordnanceType, _rate, _count, _dispersion, _pos,_unit,_ord], true];

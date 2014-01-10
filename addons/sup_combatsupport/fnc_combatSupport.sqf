@@ -87,7 +87,9 @@ switch(_operation) do {
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
                                     _id = [_position] call ALiVE_fnc_getNearestAirportID;
                                     _height = parsenumber(_heightset);
-                                    _casArray = [_position,_direction, _type, _callsign, _id,{},_height];
+                                    _code =  ((synchronizedObjects _logic) select _i) getvariable ["cas_code",""];
+									_compiledcode = compile _code;
+                                    _casArray = [_position,_direction, _type, _callsign, _id,_compiledcode,_height];
                                     _casArrays set [count _casArrays,_casArray];
 				                                    };
 				                    case ("ALiVE_SUP_TRANSPORT") : {
@@ -99,8 +101,10 @@ switch(_operation) do {
 				                        _heightset = ((synchronizedObjects _logic) select _i) getvariable ["transport_height","0"];
 				                        _height = parsenumber(_heightset);
 				                        _direction =  getDir ((synchronizedObjects _logic) select _i);
+				                        _code =  ((synchronizedObjects _logic) select _i) getvariable ["transport_code",""];
+										_compiledcode = compile _code;
 				             
-				                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle"],{},_height];
+				                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_compiledcode,_height];
 				                        _transportArrays set [count _transportArrays,_transportArray];
 				                    };
 				                     case ("ALiVE_sup_artillery") : {
@@ -203,7 +207,7 @@ switch(_operation) do {
 								{ _veh lockturret [[_x], true] } forEach [0,1,2];
 								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
-								[_veh, _grp, units _grp] spawn _code;
+								[_veh] spawn _code;
 								_veh setVariable ["ALIVE_CombatSupport", true];
 								_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 						
@@ -264,7 +268,7 @@ switch(_operation) do {
 								
 								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
-								[_veh, _grp, units _grp] spawn _code; };
+								[_veh] spawn _code; };
 								
 								//FSM
 								[_veh, _grp, _callsign, _pos, _airport] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
@@ -341,9 +345,36 @@ switch(_operation) do {
 
 						} forEach SUP_ARTYARRAYS;
 
-                            //Now PV the logic to all clients indicate its ready
-                            _logic setVariable ["init", true,true];
-                            publicVariable "NEO_radioLogic";
+						for "_i" from 0 to ((count _sides)-1) do {
+							_sideIn = _sides select _i;
+
+							["Transport before %1",NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _sideIn]] call ALiVE_fnc_DumpR;
+
+							{
+								if (!(_sideIn == _x) && {(_sideIn getfriend _x >= 0.6)}) then {
+									private ["_sideInArray","_xArray"];
+										_sideInArray = NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _sideIn];
+										_xArray = NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _x];
+									NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _sideIn], _sideInArray + _xArray,true];
+
+									private ["_sideInArray","_xArray"];
+										_sideInArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _sideIn];
+										_xArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _x];
+									NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _sideIn], _sideInArray + _xArray,true];
+
+									private ["_sideInArray","_xArray"];
+										_sideInArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _sideIn];
+										_xArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _x];
+									NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _sideIn], _sideInArray + _xArray,true];
+
+									["Transport after %1",NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _sideIn]] call ALiVE_fnc_DumpR;
+								};
+							} foreach _sides;
+						};
+
+                        //Now PV the logic to all clients indicate its ready
+                        _logic setVariable ["init", true,true];
+                        publicVariable "NEO_radioLogic";
                	};
                 
                 // and wait for game logic to initialise

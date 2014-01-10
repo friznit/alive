@@ -375,6 +375,18 @@ class NEO_resourceRadio
 			colorBackground[] = {0.173,0.173,0.173,1};
 			sizeEx = 0.8 * GUI_GRID_H;
 		};
+		class NEO_radioSitRepButton : NEO_radioCasConfirmButton
+		{
+			idc = 655625;
+			x = 0.445231 * safezoneW + safezoneX;
+			y = 0.150015 * safezoneH + safezoneY;
+			w = 0.0597643 * safezoneW;
+			h = 0.028 * safezoneH;
+			text = "SITREP";
+			action = "[] spawn fnc_getSitrep";
+			colorBackground[] = {0.384,0.439,0.341,1};
+			sizeEx = 0.8 * GUI_GRID_H;
+		};
 		
 		//CAS Task LB
 		class NEO_radioCasTaskList : NEO_radioCasUnitList
