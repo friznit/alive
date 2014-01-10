@@ -348,8 +348,6 @@ switch(_operation) do {
 						for "_i" from 0 to ((count _sides)-1) do {
 							_sideIn = _sides select _i;
 
-							["Transport before %1",NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _sideIn]] call ALiVE_fnc_DumpR;
-
 							{
 								if (!(_sideIn == _x) && {(_sideIn getfriend _x >= 0.6)}) then {
 									private ["_sideInArray","_xArray"];
@@ -366,8 +364,6 @@ switch(_operation) do {
 										_sideInArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _sideIn];
 										_xArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _x];
 									NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _sideIn], _sideInArray + _xArray,true];
-
-									["Transport after %1",NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _sideIn]] call ALiVE_fnc_DumpR;
 								};
 							} foreach _sides;
 						};
