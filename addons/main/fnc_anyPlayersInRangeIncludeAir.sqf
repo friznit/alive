@@ -43,9 +43,9 @@ _isHelicopter = false;
 _isJet = false;
 
 _anyInRange = 	({
-				    (!(vehicle player iskindof "Plane") && !(vehicle player iskindof "Helicopter") && (_x distance _pos < _dist)) ||
-				    {(vehicle player iskindof "Plane") && (_x distance _pos < _jetSpawnDistance)} ||
-				    {(vehicle player iskindof "Helicopter") && (_x distance _pos < _helicopterSpawnDistance)}
+				    (!(vehicle player iskindof "Plane") && {!(vehicle player iskindof "Helicopter")} && {(_x distance _pos < _dist)}) ||
+				    ({(vehicle player iskindof "Plane") && {(_x distance _pos < _jetSpawnDistance)}}) ||
+				    ({(vehicle player iskindof "Helicopter") && {(_x distance _pos < _helicopterSpawnDistance)}})
 				} count _players) > 0;
 
 /*
