@@ -86,7 +86,7 @@ link37[] = {28,10};
 link38[] = {29,15};
 link39[] = {30,8};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-784.846313,480.727020,817.802002,-463.948730,1017,1070,1};
-window[] = {2,-1,-1,-1,-1,1014,180,1803,116,3,1035};
+window[] = {2,-1,-1,-1,-1,1014,1,1624,116,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -415,19 +415,15 @@ class FSM
        "			_leader = _profile select 2 select 10;" \n
        "		      _position = getposATL _leader;" \n
        "" \n
+       "			// if leader is null get a new leader if possible" \n
        "			if(isNull(_leader)) then {" \n
-       "				_profileType = _profile select 2 select 5;" \n
-       "				[""DESPAWNER --- leader:%1 pos:%2 type:%3"",_leader,_position,_profileType] call ALIVE_fnc_dump;" \n
-       "				" \n
+       "				_profileType = _profile select 2 select 5;				" \n
        "				if(_profileType == ""entity"") then {" \n
        "					_group = _profile select 2 select 13;" \n
        "					_groupLeader = leader _group;" \n
-       "					[""DESPAWNER --- is entity -- group:%1 _groupLeader:%2"",_group,_groupLeader] call ALIVE_fnc_dump;" \n
-       "" \n
        "					if(!isNull(_groupLeader)) then {" \n
        "						[_profile, ""leader"",  _groupLeader] call ALIVE_fnc_hashSet;" \n
        "						_position = getposATL _groupLeader;" \n
-       "						[""DESPAWNER --- new leader:%1 pos:%2"",_groupLeader,_position] call ALIVE_fnc_dump;" \n
        "					};" \n
        "				};				" \n
        "			};" \n
