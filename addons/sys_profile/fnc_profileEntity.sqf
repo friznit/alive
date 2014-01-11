@@ -653,13 +653,6 @@ switch(_operation) do {
 
 						_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
 						if(_active) then {
-
-						    private ["_pleader","_group","_leader"];
-
-                            _pleader = _logic select 2 select 10; //[_logic,"leader"] call ALIVE_fnc_hashGet;
-						    _group = _logic select 2 select 13; //[_logic,"leader"] call ALIVE_fnc_hashGet;
-						    _leader = leader _group;
-
 							_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 							_units set [_unitIndex, objNull];
 							_units = _units - [objNull];
