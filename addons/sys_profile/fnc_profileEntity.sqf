@@ -241,7 +241,7 @@ switch(_operation) do {
 					[_logic, "init"] call SUPERCLASS;
 					
 					// set defaults
-					[_logic,"type","entity"] call ALIVE_fnc_hashSet;
+					[_logic,"type","entity"] call ALIVE_fnc_hashSet; // select 2 select 5
 					[_logic,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet; // select 2 select 8
 					[_logic,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet; // select 2 select 9
 					[_logic,"leader",objNull] call ALIVE_fnc_hashSet; // select 2 select 10						
@@ -653,6 +653,13 @@ switch(_operation) do {
 
 						_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
 						if(_active) then {
+
+						    private ["_pleader","_group","_leader"];
+
+                            _pleader = _logic select 2 select 10; //[_logic,"leader"] call ALIVE_fnc_hashGet;
+						    _group = _logic select 2 select 13; //[_logic,"leader"] call ALIVE_fnc_hashGet;
+						    _leader = leader _group;
+
 							_units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
 							_units set [_unitIndex, objNull];
 							_units = _units - [objNull];

@@ -5,7 +5,7 @@ SCRIPT(anyPlayersInRangeIncludeAir);
 Function: ALiVE_fnc_anyPlayersInRangeIncludeAir
 
 Description:
-Return the number of players within range of a position, including any players in planes or helicopters
+Return if any players are within range of a position, including any players in planes or helicopters
 
 Parameters:
 Array - Position measuring from
@@ -16,12 +16,12 @@ Bool - Include Helicopter
 Number - Helicopter spawn distance
 
 Returns:
-Number - Returns number of players within range
+Boolean - Returns if players within range
 
 Examples:
 (begin example)
 // No players in range
-([_pos, 2500, true, 3500, true 2500] call ALiVE_fnc_anyPlayersInRangeIncludeAir == 0)
+([_pos, 2500, 3500, 2500] call ALiVE_fnc_anyPlayersInRangeIncludeAir == false)
 (end)
 
 Author:
@@ -30,94 +30,27 @@ ARJay
 Peer Reviewed:
 ---------------------------------------------------------------------------- */
 
-private ["_pos","_dist","_jetSpawnDistance","_helicopterSpawnDistance","_players","_player","_position","_anyInRange",
-"_vehicleClass","_vehicleKind","_vehicle","_isHelicopter","_isJet","_normalSpawn"];
-PARAMS_1(_pos);
-DEFAULT_PARAM(1,_dist,1500);
+private ["_position","_spawnDistance","_jetSpawnDistance","_helicopterSpawnDistance","_players","_player","_position","_anyInRange"];
+PARAMS_1(_position);
+DEFAULT_PARAM(1,_spawnDistance,1500);
 DEFAULT_PARAM(2,_jetSpawnDistance,0);
 DEFAULT_PARAM(3,_helicopterSpawnDistance,1500);
 
 _players = [] call BIS_fnc_listPlayers;
 _anyInRange = false;
-_isHelicopter = false;
-_isJet = false;
 
-_anyInRange = 	({
-				    (!(vehicle player iskindof "Plane") && {!(vehicle player iskindof "Helicopter")} && {(_x distance _pos < _dist)}) ||
-				    ({(vehicle player iskindof "Plane") && {(_x distance _pos < _jetSpawnDistance)}}) ||
-				    ({(vehicle player iskindof "Helicopter") && {(_x distance _pos < _helicopterSpawnDistance)}})
-				} count _players) > 0;
-
-/*
 scopeName "main";
 
 {
-	_player = _x;
-	_vehicle = vehicle _player;
-	_position = getPos _player;
-
-	// air check
-    if!(_vehicle == _player) then {
-
-        _vehicleClass = typeOf _vehicle;
-        _vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
-
-        _normalSpawn = true;
-
-        if(_vehicleKind == "Helicopter") then {
-            _isHelicopter = true;
-        };
-
-        if(_vehicleKind == "Plane") then {
-            _isJet = true;
-        };
-
-        // spawn in helicopter check
-        if(_includeHelicopters) then {
-            if(_isHelicopter) then {
-                if((getPos _player) distance _pos < _helicopterSpawnDistance) then {
-                    _anyInRange = true;
-                    breakTo "main";
-                };
-            };
-        };
-
-        // disabled spawn in helicopter check
-        if(!(_includeHelicopters) && _isHelicopter) then {
-            _normalSpawn = false;
-        };
-
-        // jet check
-        if(_includeJets) then {
-            if(_isJet) then {
-                if((getPos _player) distance _pos < _jetSpawnDistance) then {
-                    _anyInRange = true;
-                    breakTo "main";
-                };
-            };
-        };
-
-        // disabled spawn in jet check
-        if(!(_includeJets) && _isJet) then {
-            _normalSpawn = false;
-        };
-
-        // normal player
-        if(_normalSpawn) then {
-            if(_position distance _pos < _dist) then {
-                _anyInRange = true;
-                breakTo "main";
-            };
-        };
-    }else{
-
-        // normal player
-        if(_position distance _pos < _dist) then {
-            _anyInRange = true;
-            breakTo "main";
-        };
+    if(
+        (!(vehicle _x isKindOf "Plane") && {!(vehicle _x isKindOf "Helicopter")} && {(_x distance _position < _spawnDistance)}) ||
+        ({(vehicle _x isKindOf "Plane") && {(_x distance _position < _jetSpawnDistance)}}) ||
+        ({(vehicle _x isKindOf "Helicopter") && {(_x distance _position < _helicopterSpawnDistance)}})
+    ) then {
+        _anyInRange = true;
+        breakTo "main";
     };
+
 } forEach _players;
-*/
 
 _anyInRange
