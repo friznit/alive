@@ -117,7 +117,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.98.2";
+		briefingName="ALiVE Showcase - Foursome v0.98.3";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -1752,7 +1752,7 @@ class Mission
 					position[]={15439.984,-0.22822228,15503.734};
 					class args
 					{
-						items=4;
+						items=6;
 						class Item0
 						{
 							value="false";
@@ -1772,6 +1772,18 @@ class Mission
 							typeName="spawnRadius";
 						};
 						class Item3
+						{
+							value="1500";
+							parentCls="ALiVE_sys_profile";
+							typeName="spawnTypeHeliRadius";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_sys_profile";
+							typeName="spawnTypeJetRadius";
+						};
+						class Item5
 						{
 							value="80";
 							parentCls="ALiVE_sys_profile";
