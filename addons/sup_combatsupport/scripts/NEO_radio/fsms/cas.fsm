@@ -1,19 +1,19 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, cas">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"react",0,250,-37.443069,45.098049,52.556931,95.098053,0.000000,"react"};
+item0[] = {"react",0,4346,-37.443069,45.098049,52.556931,95.098053,0.000000,"react"};
 item1[] = {"killed",4,218,-231.102844,45.315475,-141.102768,95.315475,50.000000,"killed"};
-item2[] = {"end1",1,250,-387.070557,45.144203,-297.070526,95.144188,0.000000,"end1"};
+item2[] = {"end1",1,250,-612.799438,40.307156,-522.799500,90.307144,0.000000,"end1"};
 item3[] = {"New_Task",4,218,-37.668053,138.662827,52.331947,188.662827,10.000000,"New Task"};
 item4[] = {"RRR",2,250,-37.496964,235.797745,52.503052,285.797729,0.000000,"RRR"};
 item5[] = {"",7,210,-190.932526,257.277374,-182.932526,265.277374,0.000000,""};
 item6[] = {"",7,210,-190.273483,159.833786,-182.273483,167.833786,0.000000,""};
 item7[] = {"circle",4,218,-36.830444,500.030273,53.169525,550.030273,0.000000,"circle"};
 item8[] = {"SAD",4,218,-37.646278,331.839966,52.353722,381.839966,0.000000,"SAD"};
-item9[] = {"_",2,250,-36.721684,410.072601,53.278328,460.072601,0.000000,""};
+item9[] = {"_",2,250,-43.171074,400.398499,46.828926,450.398499,0.000000,""};
 item10[] = {"",7,210,-190.843689,431.611511,-182.843689,439.611511,0.000000,""};
 item11[] = {"RTB",4,218,101.011452,329.679474,191.011475,379.679474,0.000000,"RTB"};
-item12[] = {"__1",2,250,102.577171,410.873779,192.577209,460.873779,0.000000,""};
+item12[] = {"__1",2,250,96.127769,401.199677,186.127777,451.199677,0.000000,""};
 item13[] = {"plane",4,218,108.344353,485.999847,198.344345,535.999634,0.000000,"plane"};
 item14[] = {"chopper",4,218,391.804871,406.994568,481.804749,456.994568,1.000000,"chopper"};
 item15[] = {"__2",2,250,97.279655,551.706543,187.279709,601.706543,0.000000,""};
@@ -41,24 +41,23 @@ link12[] = {9,7};
 link13[] = {9,10};
 link14[] = {10,5};
 link15[] = {11,12};
-link16[] = {12,10};
-link17[] = {12,13};
-link18[] = {12,14};
-link19[] = {12,22};
-link20[] = {13,15};
-link21[] = {14,17};
-link22[] = {15,16};
-link23[] = {16,10};
-link24[] = {17,16};
-link25[] = {17,18};
-link26[] = {18,19};
-link27[] = {19,20};
-link28[] = {20,16};
-link29[] = {21,11};
-link30[] = {22,23};
-link31[] = {23,16};
-globals[] = {0.000000,0,0,0,0,640,480,1,53,6316128,1,-484.712708,839.026184,1204.277344,-264.573090,821,911,1};
-window[] = {2,-1,-1,-1,-1,862,125,1385,125,3,839};
+link16[] = {12,13};
+link17[] = {12,14};
+link18[] = {12,22};
+link19[] = {13,15};
+link20[] = {14,17};
+link21[] = {15,16};
+link22[] = {16,10};
+link23[] = {17,16};
+link24[] = {17,18};
+link25[] = {18,19};
+link26[] = {19,20};
+link27[] = {20,16};
+link28[] = {21,11};
+link29[] = {22,23};
+link30[] = {23,16};
+globals[] = {0.000000,0,0,0,0,640,480,1,54,6316128,1,-910.977417,412.761475,1204.277344,-264.573090,821,951,1};
+window[] = {2,-1,-1,-1,-1,847,2069,3329,110,3,839};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -71,14 +70,19 @@ class FSM
       name = "react";
       init = /*%FSM<STATEINIT""">*/"private " \n
        "[" \n
-       "  ""_veh"", ""_grp"", ""_callsign"", ""_pos"", ""_airport"", ""_taskArray"", ""_task"", ""_posCircle"", ""_dirCas"", ""_posCas"", ""_radiusCas""," \n
+       "  ""_veh"", ""_grp"", ""_callsign"", ""_pos"",""_base"",""_airport"",""_dir"",""_height"",""_type"",""_respawn"", ""_taskArray"", ""_task"", ""_posCircle"", ""_dirCas"", ""_posCas"", ""_radiusCas""," \n
        "  ""_flyInHeight"", ""_h"", ""_posIn"", ""_target""" \n
        "];" \n
        "_veh = _this select 0;" \n
        "_grp = _this select 1;" \n
        "_callsign = _this select 2;" \n
        "_pos = _this select 3;" \n
+       "_base = _this select 3;" \n
        "_airport = _this select 4;" \n
+       "_dir = _this select 5;" \n
+       "_height = _this select 6;" \n
+       "_type = _this select 7;" \n
+       "_respawn = _this select 8;" \n
        "_taskArray = [];" \n
        "_task = """";" \n
        "_posCircle = [];" \n
@@ -162,7 +166,8 @@ class FSM
     class end1
     {
       name = "end1";
-      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"[_veh, _grp, _callsign, _base, _dir,_height,_type, _airport,_respawn] spawn ALIVE_fnc_RespawnCASAsset;" \n
+       ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -341,39 +346,6 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-        /*%FSM<LINK "killed">*/
-        class killed
-        {
-          priority = 50.000000;
-          to="end1";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!alive _veh" \n
-           "||" \n
-           "!canMove _veh" \n
-           "||" \n
-           "!alive driver _veh" \n
-           ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_veh setVariable [""NEO_radioCasUnitStatus"", ""KILLED"", true];" \n
-           ""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "New_Task">*/
-        class New_Task
-        {
-          priority = 10.000000;
-          to="RRR";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!isNil { _veh getVariable ""NEO_radioCasNewTask"" }" \n
-           ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_taskArray = _veh getVariable ""NEO_radioCasNewTask"";" \n
-           "_task = _taskArray select 0;" \n
-           "_posCas = _taskArray select 1;" \n
-           "_radiusCas = _taskArray select 2;" \n
-           "_flyInHeight = _taskArray select 3;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           ""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
         /*%FSM<LINK "chopper">*/
         class chopper
         {

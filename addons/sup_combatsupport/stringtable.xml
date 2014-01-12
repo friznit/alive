@@ -11,6 +11,24 @@
 <Key ID="STR_ALIVE_CS_ALLOW">
 	<English>Item</English>
 </Key>
+<Key ID="STR_ALIVE_CAS_LIMIT_COMMENT">
+	<English>Set the number of times CAS Asssets can be replenished</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_LIMIT">
+	<English>CAS Respawn Limit</English>
+</Key>
+<Key ID="STR_ALIVE_TRANS_LIMIT_COMMENT">
+	<English>Set the number of times Transport Asssets can be replenished</English>
+</Key>
+<Key ID="STR_ALIVE_TRANS_LIMIT">
+	<English>Trans Respawn Limit</English>
+</Key>
+<Key ID="STR_ALIVE_CS_RESPAWN_COMMENT">
+	<English>Set the amount of time before the CS Asset is replenished</English>
+</Key>
+<Key ID="STR_ALIVE_CS_RESPAWN">
+	<English>Respawn Time</English>
+</Key>
 <Key ID="STR_ALIVE_CS_ALLOW_COMMENT">
 	<English>Define the item the player must have to be able to use Combat Support i.e "LaserDesignator"</English>
 </Key>

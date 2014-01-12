@@ -18,6 +18,50 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CS_ALLOW_COMMENT";
                                 defaultValue = "LaserDesignator";
                         };
+                         /*class combatsupport_casrespawnlimit
+                        {
+                                displayName = "$STR_ALIVE_CAS_LIMIT";
+                                description = "$STR_ALIVE_CAS_LIMIT_COMMENT";
+                                defaultValue = "Not Used Yet";
+                        };
+                        class combatsupport_transportrespawnlimit
+                        {
+                                displayName = "$STR_ALIVE_TRANS_LIMIT";
+                                description = "$STR_ALIVE_TRANS_LIMIT_COMMENT";
+                                defaultValue = "5";
+                        };*/
+                        class combatsupport_respawn
+                        {
+                                displayName = "$STR_ALIVE_CS_RESPAWN";
+                                description = "$STR_ALIVE_CS_RESPAWN_COMMENT";
+                                class values
+                                {
+                                	class RESPAWN_1
+                                	{
+                                		name="1 Min";
+                                		value = 60;
+                                		CS_RESPAWN = 60;
+                                	};
+                                	class RESPAWN_10
+                                	{
+                                		name="10 Mins";
+                                		value = 600;
+                                		CS_RESPAWN = 600;
+                                	};
+                                	class RESPAWN_20
+                                	{
+                                		name="20 Mins";
+                                		value = 1200;
+                                		CS_RESPAWN = 1200;
+                                	};
+                                	class RESPAWN_30
+                                	{
+                                		name="30 Mins";
+                                		value = 1800;
+                                		CS_RESPAWN = 1800;
+                                	};
+                                };
+                        };
                 };
                 class ModuleDescription
 				{

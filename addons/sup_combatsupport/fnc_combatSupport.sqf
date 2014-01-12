@@ -69,7 +69,12 @@ switch(_operation) do {
                         //not publicVariable to clients yet to let it init before
                         NEO_radioLogic = _logic;
 
-
+                        _CS_Set_Respawn = NEO_radioLogic getvariable ["combatsupport_respawn",1];
+                         CS_RESPAWN = parsenumber(_CS_Set_Respawn);
+                        /*_CAS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_casrespawnlimit",1];
+                        CAS_RESPAWN_LIMIT = parsenumber(_CAS_SET_RESPAWN_LIMIT);
+                        _TRANS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_transportrespawnlimit",1];
+                        TRANS_RESPAWN_LIMIT = parsenumber(_TRANS_SET_RESPAWN_LIMIT);*/
 						_transportArrays = [];
 						_casArrays = [];
 						_artyArrays = [];
@@ -212,7 +217,7 @@ switch(_operation) do {
 								_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 						
 								_transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
-								[_veh, _grp, _callsign, _pos] execFSM _transportfsm;
+								[_veh, _grp, _callsign, _pos, _dir, _height, _type, CS_RESPAWN] execFSM _transportfsm;
 								
 								_t = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", _side];
 								_t set [count _t, [_veh, _grp, _callsign]];
@@ -269,9 +274,11 @@ switch(_operation) do {
 								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
 								[_veh] spawn _code; };
+
+								_casfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
 								
 								//FSM
-								[_veh, _grp, _callsign, _pos, _airport] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
+								[_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, CS_RESPAWN] execFSM _casfsm;
 								
 								_c = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", _side];
 								_c set [count _c, [_veh, _grp, _callsign]];
