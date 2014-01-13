@@ -265,6 +265,8 @@ _engaged = [0,0,0];
 				_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 				_newPosition = getPosATL _leader;
 				_position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
+
+
 				
 				if (!(isnil "_newPosition") && {count _newPosition > 0} && {!(isnil "_position")} && {count _position > 0}) then {
 				
@@ -276,6 +278,7 @@ _engaged = [0,0,0];
 							// set the vehicle position and merge all assigned entities positions
 							
 							_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+
 							_newPosition = getPosATL vehicle _leader;
 							
 							{

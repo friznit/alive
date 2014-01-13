@@ -20,7 +20,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJet","_spawnTypeJetRadius","_spawnTypeHeli","_spawnTypeHeliRadius","_activeLimiter","_profileSystem"];
+private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_profileSystem"];
 
 PARAMS_1(_logic);
 
@@ -38,11 +38,9 @@ if(isServer) then {
 	_debug = _logic getVariable ["debug",false];
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
-	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1000"]);
-	_spawnTypeJet = _logic getVariable ["spawnTypeJet",false];
-	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","1000"]);
-	_spawnTypeHeli = _logic getVariable ["spawnTypeHeli",true];
-	_spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1000"]);
+	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
+    _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
+	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
 
     if(_debug == "true") then {
@@ -51,31 +49,13 @@ if(isServer) then {
         _debug = false;
     };
 
-    if(typeName _spawnTypeJet == "STRING") then {
-        if(_spawnTypeJet == "true") then {
-            _spawnTypeJet = true;
-        }else{
-            _spawnTypeJet = false;
-        };
-    };
-
-    if(typeName _spawnTypeHeli == "STRING") then {
-        if(_spawnTypeHeli == "true") then {
-            _spawnTypeHeli = true;
-        }else{
-            _spawnTypeHeli = false;
-        };
-    };
-
 	_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "init"] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "syncMode", _syncMode] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "spawnTypeJet", _spawnTypeJet] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "spawnTypeHeli", _spawnTypeHeli] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
 

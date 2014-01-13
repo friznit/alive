@@ -58,8 +58,6 @@ switch(_operation) do {
                 _logic setVariable ["super", SUPERCLASS];
                 _logic setVariable ["class", ALIVE_fnc_CQB];
                 
-                diag_log "CQB diag";
-                
                 TRACE_1("After module init",_logic);
 
             	//Init further mandatory params on all localities

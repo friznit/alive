@@ -44,41 +44,17 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT">
     <English>Sets the max number of profiles to spawn at any one time</English>
 </Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET">
-    <English>Spawn in planes:</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_COMMENT">
-    <English>Spawn when players are in planes. Use the radius setting below to specify the spawn radius.</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_YES">
-    <English>Yes spawn in planes</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_NO">
-    <English>No don't spawn for planes</English>
-</Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS">
     <English>Spawn planes radius:</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS_COMMENT">
-    <English>The radius around player in planes to spawn profiles</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI">
-    <English>Spawn in heli:</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_COMMENT">
-    <English>Spawn when players are in helicopters. Use the radius setting below to specify the spawn radius.</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_YES">
-    <English>Yes spawn in helicopters</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_NO">
-    <English>No don't spawn for helicopters</English>
+    <English>The radius around player in planes to spawn profiles. Set to 0 to disable spawning while in planes</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_RADIUS">
     <English>Spawn heli radius:</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_RADIUS_COMMENT">
-    <English>The radius around player in helicopters to spawn profiles</English>
+    <English>The radius around player in helicopters to spawn profile. Set to 0 to disable spawning while in helicopters</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
 	<English>Only one Profile System module can be used</English>

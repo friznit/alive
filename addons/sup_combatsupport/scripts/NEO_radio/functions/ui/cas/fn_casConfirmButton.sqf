@@ -30,7 +30,7 @@ _coord = _pos call BIS_fnc_posToGrid;
 
 //New Task
 _veh setVariable ["NEO_radioCasNewTask", [_task, _pos, _radius, _flyInHeight], true];
-[player, format ["%1, this is %2. We need imediate CAS at position. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1], "side"] call NEO_fnc_messageBroadcast;
+[[player,format["%1, this is %2. We need imediate CAS at position. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1],"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
 
 //Interface
 [lbCurSel 655565] call NEO_fnc_radioRefreshUi;

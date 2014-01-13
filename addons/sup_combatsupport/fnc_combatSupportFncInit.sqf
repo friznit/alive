@@ -15,6 +15,9 @@ fnc_addAction = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupp
 fnc_setFlyInHeight = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setFlyInHeight.sqf";
 fnc_setSpeed = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setSpeed.sqf";
 fnc_setROE = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setROE.sqf";
+fnc_getSitrep = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_getSitrep.sqf";
+ALIVE_fnc_RespawnTransportAsset = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_RespawnTransportAsset.sqf";
+ALIVE_fnc_RespawnCASAsset = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_RespawnCASAsset.sqf";
 
 //»»»»»»»»»»»»»»»»»»»»»»
 //UI

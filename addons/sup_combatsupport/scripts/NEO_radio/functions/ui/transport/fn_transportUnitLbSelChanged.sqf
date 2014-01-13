@@ -12,6 +12,7 @@ _lb = _this select 0;
 _index = _this select 1;
 _transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", playerSide];
 _transportUnitLb = _display displayCtrl 655568;
+_sitRepButton = _display displayCtrl 655625;
 _chopper = _transportArray select (lbCurSel _transportUnitLb) select 0; if (!isNil { NEO_radioLogic getVariable "NEO_radioTalkWithPilot" }) then { _chopper = vehicle player };
 _status = _chopper getVariable "NEO_radioTrasportUnitStatus";
 _supportMarker = NEO_radioLogic getVariable "NEO_supportMarker";
@@ -86,6 +87,7 @@ if (_status != "KILLED") then
 	_transportHelpTaskText ctrlSetStructuredText parseText "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Select a task</t>";
 
 	_transportTaskLb ctrlEnable true;
+	_sitRepButton ctrlEnable true;
 	lbClear _transportTaskLb;
 	
 	{

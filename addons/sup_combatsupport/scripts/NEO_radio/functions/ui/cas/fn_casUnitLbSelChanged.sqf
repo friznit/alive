@@ -15,6 +15,7 @@ _casHelpUnitText = _display displayCtrl 655584;
 _casConfirmButton = _display displayCtrl 655585;
 _casBaseButton = _display displayCtrl 655586;
 _casTaskLb = _display displayCtrl 655587;
+_sitRepButton = _display displayCtrl 655625;
 _casTaskText = _display displayCtrl 655588;
 _casTaskHelpText = _display displayCtrl 655589;
 _casFlyHeightSlider = _display displayCtrl 655590;
@@ -61,6 +62,7 @@ if (_status != "KILLED") then
 	
 	//Tasks LB
 	_casTaskLb ctrlEnable true;
+	_sitRepButton ctrlEnable true;
 	lbClear _casTaskLb;
 	{
 		_casTaskLb lbAdd _x;

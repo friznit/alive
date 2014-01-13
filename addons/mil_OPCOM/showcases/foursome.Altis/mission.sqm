@@ -63,15 +63,15 @@ class Mission
 		"alive_mil_cqb",
 		"alive_sys_profile",
 		"alive_sys_aiskill",
-		"A3_Characters_F_OPFOR",
-		"A3_Characters_F_Civil",
-		"a3_characters_f_gamma",
 		"alive_sys_playertags",
 		"alive_civ_placement",
 		"alive_sys_weather",
 		"A3_Boat_F_Boat_Armed_01",
 		"A3_Modules_F_Intel",
 		"alive_sup_artillery",
+		"A3_Characters_F_OPFOR",
+		"A3_Characters_F_Civil",
+		"a3_characters_f_gamma",
 		"A3_Weapons_F_Ammoboxes",
 		"a3_weapons_f_beta_ammoboxes",
 		"a3_weapons_f_gamma_ammoboxes",
@@ -87,7 +87,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.98.2";
+		briefingName="ALiVE Showcase - Foursome v0.98.3";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -1559,7 +1559,7 @@ class Mission
 					position[]={15439.984,-0.22822228,15503.734};
 					class args
 					{
-						items=4;
+						items=6;
 						class Item0
 						{
 							value="false";
@@ -1579,6 +1579,18 @@ class Mission
 							typeName="spawnRadius";
 						};
 						class Item3
+						{
+							value="1500";
+							parentCls="ALiVE_sys_profile";
+							typeName="spawnTypeHeliRadius";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_sys_profile";
+							typeName="spawnTypeJetRadius";
+						};
+						class Item5
 						{
 							value="80";
 							parentCls="ALiVE_sys_profile";
@@ -1892,105 +1904,6 @@ class Mission
 		};
 		class Item31
 		{
-			side="EAST";
-			class Vehicles
-			{
-				items=4;
-				class Item0
-				{
-					position[]={3653.0293,7.3535204,13337.218};
-					azimut=-535.98737;
-					special="NONE";
-					id=31;
-					side="EAST";
-					vehicle="O_Soldier_F";
-					leader=1;
-					skill=0.60000002;
-					init="guards = units (group this); this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE; this setunitpos ""middle"";";
-				};
-				class Item1
-				{
-					position[]={3653.6902,7.4003196,13338.069};
-					azimut=-535.98712;
-					special="NONE";
-					id=32;
-					side="EAST";
-					vehicle="O_Soldier_F";
-					skill=0.60000002;
-					init="this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE; this setunitpos ""UP"";";
-				};
-				class Item2
-				{
-					position[]={3654.5776,7.3465853,13337.131};
-					azimut=-535.98737;
-					special="NONE";
-					id=33;
-					side="EAST";
-					vehicle="O_Soldier_F";
-					skill=0.60000002;
-					init="this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE_1; this setunitpos ""middle"";";
-				};
-				class Item3
-				{
-					position[]={3655.0737,7.4035501,13338.16};
-					azimut=-535.98712;
-					special="NONE";
-					id=34;
-					side="EAST";
-					vehicle="O_Soldier_F";
-					skill=0.60000002;
-					init="this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE; this setunitpos ""UP"";";
-				};
-			};
-			class Waypoints
-			{
-				items=1;
-				class Item0
-				{
-					position[]={3666.0056,8.1180229,13344.538};
-					type="SENTRY";
-					class Effects
-					{
-					};
-					showWP="NEVER";
-				};
-			};
-		};
-		class Item32
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=2;
-				class Item0
-				{
-					position[]={3653.0378,7.2616191,13334.01};
-					azimut=-359.46329;
-					special="NONE";
-					id=35;
-					side="CIV";
-					vehicle="C_man_polo_2_F";
-					leader=1;
-					skill=0.60000002;
-					text="HOSTAGE_1";
-					init="hostages = units (group this); this disableAI ""AUTOTARGET""; this switchmove ""amovpercmstpsnonwnondnon_amovpercmstpssurwnondnon""; this disableAI ""MOVE""; this disableAI ""TARGET"";   this addaction [""Free hostage"", {      [_this select 0] join group (_this select 1); (group (_this select 1)) selectleader (_this select 1);      (_this select 0) enableAI ""MOVE"";      (_this select 0) enableAI ""TARGET"";      }];";
-				};
-				class Item1
-				{
-					position[]={3654.7375,7.2742271,13333.987};
-					azimut=-359.46329;
-					special="NONE";
-					id=36;
-					side="CIV";
-					vehicle="C_man_1";
-					skill=0.60000002;
-					text="HOSTAGE";
-					init="hostages = units (group this); this disableAI ""AUTOTARGET""; this switchmove ""amovpercmstpsnonwnondnon_amovpercmstpssurwnondnon""; this disableAI ""MOVE""; this disableAI ""TARGET"";   this addaction [""Free hostage"", {      [_this select 0] join group (_this select 1); (group (_this select 1)) selectleader (_this select 1);      (_this select 0) enableAI ""MOVE"";      (_this select 0) enableAI ""TARGET"";      }];";
-				};
-			};
-		};
-		class Item33
-		{
 			side="LOGIC";
 			class Vehicles
 			{
@@ -2068,7 +1981,7 @@ class Mission
 							typeName="playertags_thisgroupcolour_setting";
 						};
 					};
-					id=37;
+					id=31;
 					side="LOGIC";
 					vehicle="ALiVE_sys_playertags";
 					leader=1;
@@ -2077,7 +1990,7 @@ class Mission
 				};
 			};
 		};
-		class Item34
+		class Item32
 		{
 			side="LOGIC";
 			class Vehicles
@@ -2150,7 +2063,7 @@ class Mission
 							typeName="faction";
 						};
 					};
-					id=38;
+					id=32;
 					side="LOGIC";
 					vehicle="ALiVE_civ_placement";
 					leader=1;
@@ -2161,7 +2074,7 @@ class Mission
 				};
 			};
 		};
-		class Item35
+		class Item33
 		{
 			side="LOGIC";
 			class Vehicles
@@ -2198,7 +2111,7 @@ class Mission
 							typeName="weather_change_max_setting";
 						};
 					};
-					id=39;
+					id=33;
 					side="LOGIC";
 					vehicle="ALiVE_sys_weather";
 					leader=1;
@@ -2207,7 +2120,7 @@ class Mission
 				};
 			};
 		};
-		class Item36
+		class Item34
 		{
 			side="WEST";
 			class Vehicles
@@ -2215,9 +2128,9 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={24525.887,0.094653256,24411.473};
-					azimut=-276.8483;
-					id=40;
+					position[]={25861.299,0.047738586,26822.598};
+					azimut=-194.51816;
+					id=34;
 					side="WEST";
 					vehicle="B_Boat_Armed_01_minigun_F";
 					leader=1;
@@ -2230,7 +2143,7 @@ class Mission
 				items=2;
 				class Item0
 				{
-					position[]={26281.471,-0.29387772,24706.373};
+					position[]={26310.75,-0.5688951,24682.605};
 					class Effects
 					{
 					};
@@ -2238,7 +2151,7 @@ class Mission
 				};
 				class Item1
 				{
-					position[]={26538.082,3.2526467,24729.105};
+					position[]={26565.766,3.2982178,24719.131};
 					class Effects
 					{
 					};
@@ -2246,7 +2159,7 @@ class Mission
 				};
 			};
 		};
-		class Item37
+		class Item35
 		{
 			side="WEST";
 			class Vehicles
@@ -2255,7 +2168,7 @@ class Mission
 				class Item0
 				{
 					position[]={26768.934,22.096239,24606.219};
-					id=41;
+					id=35;
 					side="WEST";
 					vehicle="B_soldier_SL_F";
 					leader=1;
@@ -2265,7 +2178,7 @@ class Mission
 				class Item1
 				{
 					position[]={26773.934,22.376221,24601.219};
-					id=42;
+					id=36;
 					side="WEST";
 					vehicle="B_soldier_TL_F";
 					rank="SERGEANT";
@@ -2274,7 +2187,7 @@ class Mission
 				class Item2
 				{
 					position[]={26763.934,22.021236,24601.219};
-					id=43;
+					id=37;
 					side="WEST";
 					vehicle="B_soldier_AR_F";
 					rank="CORPORAL";
@@ -2283,7 +2196,7 @@ class Mission
 				class Item3
 				{
 					position[]={26778.934,22.619482,24596.219};
-					id=44;
+					id=38;
 					side="WEST";
 					vehicle="B_soldier_AR_F";
 					skill=0.2;
@@ -2291,7 +2204,7 @@ class Mission
 				class Item4
 				{
 					position[]={26758.934,21.864542,24596.219};
-					id=45;
+					id=39;
 					side="WEST";
 					vehicle="B_soldier_AAR_F";
 					skill=0.2;
@@ -2299,7 +2212,7 @@ class Mission
 				class Item5
 				{
 					position[]={26783.934,22.865204,24591.219};
-					id=46;
+					id=40;
 					side="WEST";
 					vehicle="B_soldier_LAT_F";
 					rank="CORPORAL";
@@ -2308,7 +2221,7 @@ class Mission
 				class Item6
 				{
 					position[]={26753.934,21.592579,24591.219};
-					id=47;
+					id=41;
 					side="WEST";
 					vehicle="B_medic_F";
 					skill=0.2;
@@ -2316,7 +2229,7 @@ class Mission
 				class Item7
 				{
 					position[]={26788.934,23.145195,24586.219};
-					id=48;
+					id=42;
 					side="WEST";
 					vehicle="B_soldier_A_F";
 					skill=0.2;
@@ -2363,7 +2276,7 @@ class Mission
 				};
 			};
 		};
-		class Item38
+		class Item36
 		{
 			side="LOGIC";
 			class Vehicles
@@ -2382,7 +2295,7 @@ class Mission
 							typeName="State";
 						};
 					};
-					id=49;
+					id=43;
 					side="LOGIC";
 					vehicle="ModuleTaskSetState_F";
 					leader=1;
@@ -2393,7 +2306,7 @@ class Mission
 				};
 			};
 		};
-		class Item39
+		class Item37
 		{
 			side="LOGIC";
 			class Vehicles
@@ -2448,7 +2361,7 @@ class Mission
 							typeName="State";
 						};
 					};
-					id=50;
+					id=44;
 					side="LOGIC";
 					vehicle="ModuleTaskCreate_F";
 					leader=1;
@@ -2459,7 +2372,7 @@ class Mission
 				};
 			};
 		};
-		class Item40
+		class Item38
 		{
 			side="WEST";
 			class Vehicles
@@ -2468,7 +2381,7 @@ class Mission
 				class Item0
 				{
 					position[]={26710.09,19.769707,24634.688};
-					id=51;
+					id=45;
 					side="WEST";
 					vehicle="B_recon_TL_F";
 					leader=1;
@@ -2479,7 +2392,7 @@ class Mission
 				class Item1
 				{
 					position[]={26715.09,19.774323,24629.688};
-					id=52;
+					id=46;
 					side="WEST";
 					vehicle="B_recon_M_F";
 					rank="CORPORAL";
@@ -2488,7 +2401,7 @@ class Mission
 				class Item2
 				{
 					position[]={26705.09,19.76,24629.688};
-					id=53;
+					id=47;
 					side="WEST";
 					vehicle="B_recon_medic_F";
 					skill=0.2;
@@ -2496,7 +2409,7 @@ class Mission
 				class Item3
 				{
 					position[]={26720.09,19.99427,24624.688};
-					id=54;
+					id=48;
 					side="WEST";
 					vehicle="B_recon_F";
 					rank="CORPORAL";
@@ -2505,7 +2418,7 @@ class Mission
 				class Item4
 				{
 					position[]={26700.09,19.732159,24624.688};
-					id=55;
+					id=49;
 					side="WEST";
 					vehicle="B_recon_LAT_F";
 					skill=0.2;
@@ -2513,7 +2426,7 @@ class Mission
 				class Item5
 				{
 					position[]={26725.09,20.221327,24619.688};
-					id=56;
+					id=50;
 					side="WEST";
 					vehicle="B_recon_JTAC_F";
 					skill=0.2;
@@ -2521,14 +2434,14 @@ class Mission
 				class Item6
 				{
 					position[]={26695.09,19.717051,24619.688};
-					id=57;
+					id=51;
 					side="WEST";
 					vehicle="B_recon_exp_F";
 					skill=0.2;
 				};
 			};
 		};
-		class Item41
+		class Item39
 		{
 			side="LOGIC";
 			class Vehicles
@@ -2602,7 +2515,7 @@ class Mission
 							typeName="artillery_atmine";
 						};
 					};
-					id=58;
+					id=52;
 					side="LOGIC";
 					vehicle="ALiVE_sup_artillery";
 					leader=1;
@@ -2613,7 +2526,7 @@ class Mission
 				};
 			};
 		};
-		class Item42
+		class Item40
 		{
 			side="LOGIC";
 			class Vehicles
@@ -2650,7 +2563,7 @@ class Mission
 							typeName="friendlyIntelRadius";
 						};
 					};
-					id=59;
+					id=53;
 					side="LOGIC";
 					vehicle="ALiVE_mil_intelligence";
 					leader=1;
@@ -2658,6 +2571,105 @@ class Mission
 					skill=0.60000002;
 					syncId=26;
 					synchronizations[]={5};
+				};
+			};
+		};
+		class Item41
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=4;
+				class Item0
+				{
+					position[]={17360.734,18.179766,12590.031};
+					azimut=-594.09155;
+					special="NONE";
+					id=54;
+					side="EAST";
+					vehicle="O_Soldier_F";
+					leader=1;
+					skill=0.60000002;
+					init="guards = units (group this); this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE; this setunitpos ""middle"";";
+				};
+				class Item1
+				{
+					position[]={17359.703,18.148338,12589.833};
+					azimut=-594.09131;
+					special="NONE";
+					id=55;
+					side="EAST";
+					vehicle="O_Soldier_F";
+					skill=0.60000002;
+					init="this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE; this setunitpos ""UP"";";
+				};
+				class Item2
+				{
+					position[]={17359.93,18.093521,12588.747};
+					azimut=-594.09155;
+					special="NONE";
+					id=56;
+					side="EAST";
+					vehicle="O_Soldier_F";
+					skill=0.60000002;
+					init="this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE_1; this setunitpos ""middle"";";
+				};
+				class Item3
+				{
+					position[]={17360.596,18.241495,12591.211};
+					azimut=-594.09131;
+					special="NONE";
+					id=57;
+					side="EAST";
+					vehicle="O_Soldier_F";
+					skill=0.60000002;
+					init="this disableAI ""MOVE""; this disableAI ""AUTOTARGET""; this doTarget HOSTAGE; this setunitpos ""UP"";";
+				};
+			};
+			class Waypoints
+			{
+				items=1;
+				class Item0
+				{
+					position[]={17361.289,18.136204,12589.017};
+					type="SENTRY";
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+			};
+		};
+		class Item42
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=2;
+				class Item0
+				{
+					position[]={17362.988,18.067564,12586.951};
+					azimut=-417.56735;
+					special="NONE";
+					id=58;
+					side="CIV";
+					vehicle="C_man_polo_2_F";
+					leader=1;
+					skill=0.60000002;
+					text="HOSTAGE_1";
+					init="this disableAI ""MOVE""; this disableAI ""TARGET""; this disableAI ""AUTOTARGET""; this addaction [""Free hostage"", {      [_this select 0] join group (_this select 1); (group (_this select 1)) selectleader (_this select 1);      (_this select 0) enableAI ""MOVE"";      (_this select 0) enableAI ""TARGET"";      freed = true}];";
+				};
+				class Item1
+				{
+					position[]={17363.926,18.187092,12588.406};
+					azimut=-417.56735;
+					special="NONE";
+					id=59;
+					side="CIV";
+					vehicle="C_man_1";
+					skill=0.60000002;
+					text="HOSTAGE";
+					init="hostages = units (group this); this disableAI ""MOVE""; this disableAI ""TARGET""; this disableAI ""AUTOTARGET""; this addaction [""Free hostage"", {      [_this select 0] join group (_this select 1); (group (_this select 1)) selectleader (_this select 1);      (_this select 0) enableAI ""MOVE"";      (_this select 0) enableAI ""TARGET"";      (_this select 0) switchmove """"}];";
 				};
 			};
 		};
@@ -3072,8 +3084,8 @@ class Mission
 		};
 		class Item45
 		{
-			position[]={3712.2651,10.676976,13370.679};
-			azimut=-47.929031;
+			position[]={17375.162,18.729198,12610.867};
+			azimut=219.00003;
 			id=105;
 			side="EMPTY";
 			vehicle="C_Offroad_01_F";
@@ -3141,37 +3153,8 @@ class Mission
 	};
 	class Sensors
 	{
-		items=3;
+		items=5;
 		class Item0
-		{
-			position[]={3655.0664,7.2557588,13334.374};
-			angle=-447.42734;
-			activationBy="EAST";
-			repeating=1;
-			interruptable=1;
-			age="UNKNOWN";
-			expActiv="{_x playmove ""AmovPercMstpSsurWnonDnon""} foreach hostages;";
-			expDesactiv="if (isnil ""FREED"") then {FREED = true;{_x switchmove """"; _x enableAI ""MOVE""; _x enableAI ""TARGET"";} foreach hostages;}";
-			class Effects
-			{
-			};
-		};
-		class Item1
-		{
-			position[]={3653.8113,7.2304559,13335.039};
-			a=1200;
-			b=1200;
-			activationBy="WEST";
-			activationType="EAST D";
-			interruptable=1;
-			age="UNKNOWN";
-			expActiv="              {                 _x spawn {                      sleep 10;                   _this dofire (hostages call BIS_fnc_selectRandom);                      sleep 3;                      _this enableAI ""MOVE"";                      _this enableAI ""AUTOTARGET"";                      sleep 10;                      if ({alive _x} count hostages > 0) then {_this dofire (hostages call BIS_fnc_selectRandom)};                  };                } foreach guards;";
-			class Effects
-			{
-				soundDet="AlarmSfx";
-			};
-		};
-		class Item2
 		{
 			position[]={26715.377,19.794806,24623.523};
 			interruptable=1;
@@ -3184,6 +3167,67 @@ class Mission
 			};
 			synchronizations[]={23};
 			syncId=28;
+		};
+		class Item1
+		{
+			position[]={17361.488,18.106369,12588.412};
+			a=10;
+			b=10;
+			angle=-505.5311;
+			activationBy="EAST";
+			repeating=1;
+			interruptable=1;
+			age="UNKNOWN";
+			expActiv="{_x switchmove ""AmovPercMstpSsurWnonDnon""} foreach hostages;";
+			expDesactiv="{_x enableAI ""MOVE""; _x enableAI ""TARGET""; _x enableAI ""AUTOTARGET""; _x switchmove """"} foreach hostages;";
+			class Effects
+			{
+			};
+		};
+		class Item2
+		{
+			position[]={17361.875,18.156586,12589.189};
+			a=1500;
+			b=1500;
+			angle=-58.104427;
+			activationBy="WEST";
+			activationType="EAST D";
+			interruptable=1;
+			age="UNKNOWN";
+			expActiv="              {                 _x spawn {                      sleep 10;                   _this dofire (hostages call BIS_fnc_selectRandom);                      sleep 3;                      _this enableAI ""MOVE"";                      _this enableAI ""AUTOTARGET"";                      sleep 10;                      if ({alive _x} count hostages > 0) then {_this dofire (hostages call BIS_fnc_selectRandom)};                  };                } foreach guards; titleText [""You have been spotted by the enemy!"",""PLAIN""]; {_x domove ([getposATL _x,1000] call CBA_fnc_RandPos); _x setbehaviour ""CARELESS""; _x setSpeedMode ""FULL""} foreach hostages;";
+			class Effects
+			{
+				soundDet="AlarmSfx";
+			};
+		};
+		class Item3
+		{
+			position[]={17362.186,18.090492,12587.867};
+			a=0;
+			b=0;
+			angle=-58.104305;
+			interruptable=1;
+			age="UNKNOWN";
+			expCond="(({!alive _x} count hostages) == count hostages) || (({!alive _x} count guards) == count guards)";
+			expActiv="if (({!alive _x} count guards) == count guards) then {(titleText [""The hostages have been freed! Pick them up and bring them to our base!"",""PLAIN""])}; if (({!alive _x} count hostages) == count hostages) then {(titleText [""The hostages have been killed! Mission failed!"",""PLAIN""])};";
+			class Effects
+			{
+			};
+		};
+		class Item4
+		{
+			position[]={17362.693,18.146875,12588.632};
+			a=0;
+			b=0;
+			angle=-58.104305;
+			repeating=1;
+			interruptable=1;
+			age="UNKNOWN";
+			expCond="{(getposATL _x) distance (getmarkerpos ""respawn_west"") < 50} count hostages > 0";
+			expActiv="titleText [""The hostages have been saved successfully!"",""PLAIN""];";
+			class Effects
+			{
+			};
 		};
 	};
 };
