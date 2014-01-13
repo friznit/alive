@@ -68,6 +68,7 @@ if (GVAR(ENABLED)) then {
 
 		_killedtype = getText (configFile >> "cfgVehicles" >> (typeof _killed) >> "displayName");
 		_killertype = getText (configFile >> "cfgVehicles" >> (typeof _killer) >> "displayName");
+		_killerCfg = typeOf _killer;
 
 		switch (true) do {
 			case (_killed isKindof "LandVehicle"): {_killedVehicleClass = "Vehicle";};
@@ -104,7 +105,7 @@ if (GVAR(ENABLED)) then {
 		_killerPos = mapgridposition _killer;
 
 		// Log data
-		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["Weapon",_killerweapon] , ["WeaponType",_killerweaponType] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer] ];
+		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["Weapon",_killerweapon] , ["WeaponType",_killerweaponType] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer], ["KillerConfig",_killerCfg] ];
 
 		if (player == _killed) exitWith { // Player was killed
 
