@@ -87,7 +87,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.98.3";
+		briefingName="ALiVE Showcase - Foursome v0.98.31";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -1215,12 +1215,30 @@ class Mission
 					position[]={26808.197,23.562302,24582.48};
 					class args
 					{
-						items=1;
+						items=4;
 						class Item0
 						{
 							value="LaserDesignator";
 							parentCls="ALiVE_sup_combatsupport";
 							typeName="combatsupport_item";
+						};
+						class Item1
+						{
+							value="10";
+							parentCls="ALiVE_sup_combatsupport";
+							typeName="combatsupport_casrespawnlimit";
+						};
+						class Item2
+						{
+							value="10";
+							parentCls="ALiVE_sup_combatsupport";
+							typeName="combatsupport_transportrespawnlimit";
+						};
+						class Item3
+						{
+							value="600";
+							parentCls="ALiVE_sup_combatsupport";
+							typeName="combatsupport_respawn";
 						};
 					};
 					id=16;
