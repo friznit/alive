@@ -102,6 +102,42 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_DENSITY
+                        {
+                                displayName = "$STR_ALIVE_CQB_DENSITY";
+                                description = "$STR_ALIVE_CQB_DENSITY_COMMENT";
+                                class Values
+                                {
+                                        class CQB_DENSITY_0
+                                        {
+                                                name = "off";
+                                                value = 99999;
+                                                default = 99999;
+                                        };
+                                        class CQB_DENSITY_2
+                                        {
+                                                name = "very high";
+                                                value = 300;
+                                                
+                                        };                                
+                                        class CQB_DENSITY_5
+                                        {
+                                                name = "high";
+                                                value = 700;
+                                        };
+                                        class CQB_DENSITY_10
+                                        {
+                                                name = "medium";
+                                                value = 1000;
+                                        };
+                                        class CQB_DENSITY_20
+                                        {
+                                                name = "low";
+                                                value = 2000;
+                                                CQB_spawn = 20;
+                                        };
+                                };
+                        };
                         class CQB_UseDominantFaction
                         {
                                 displayName = "$STR_ALIVE_CQB_USEDOMINANTFACTION";

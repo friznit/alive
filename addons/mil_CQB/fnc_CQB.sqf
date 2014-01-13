@@ -65,6 +65,10 @@ switch(_operation) do {
 				if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
                 _logic setVariable ["CQB_spawn", _CQB_spawn];
                 
+                _CQB_density = _logic getvariable ["CQB_DENSITY",1000];
+				if (typename (_CQB_density) == "STRING") then {_CQB_density = call compile _CQB_density};
+                _logic setVariable ["CQB_DENSITY", _CQB_density];
+                
                 _factionsStrat = _logic getvariable ["CQB_FACTIONS_STRAT",["OPF_F"]];
 				if (typename (_factionsStrat) == "STRING") then {_factionsStrat = call compile _factionsStrat};
                 
@@ -242,7 +246,7 @@ switch(_operation) do {
                     
                     _houses = _houses_reg + _houses_strat;
                     
-                    _result = [_houses,_strategicTypes,[_logic, "blacklist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
+                    _result = [_houses,_strategicTypes,_CQB_density,[_logic, "blacklist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
 

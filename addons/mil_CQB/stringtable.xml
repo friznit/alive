@@ -68,4 +68,10 @@
 <Key ID="STR_ALIVE_CQB_USEDOMINANTFACTION_COMMENT">
 	<English>CQB will determine the dominant faction or use static factions from the faction param fields</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_DENSITY">
+	<English>Density:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DENSITY_COMMENT">
+	<English>Density of CQB placements</English>
+</Key>
 </Container></Package></Project>

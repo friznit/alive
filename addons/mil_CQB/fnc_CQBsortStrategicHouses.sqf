@@ -37,7 +37,8 @@ private ["_spawnhouses","_BuildingTypeStrategic","_nonstrathouses","_strathouses
 PARAMS_1(_spawnhouses);
 ASSERT_TRUE(typeName _spawnhouses == "ARRAY",str _spawnhouses);
 DEFAULT_PARAM(1,_BuildingTypeStrategic,[]);
-DEFAULT_PARAM(2,_blackzone,[]);
+DEFAULT_PARAM(2,_density,1000);
+DEFAULT_PARAM(3,_blackzone,[]);
 
 _CQB_spawn = _logic getVariable ["CQB_spawn", 1];
 
@@ -45,7 +46,7 @@ _strathouses = [];
 _nonstrathouses = [];
 
 {
-    private ["_pos","_positions"];
+    private ["_pos","_positions","_dist"];
     _positions = [_x] call ALiVE_fnc_getBuildingPositions;
     
     if ((count _positions) > 0) then {
@@ -53,13 +54,23 @@ _nonstrathouses = [];
 		// Check if spawn position is NOT within a blacklist trigger
 		if ({[_x, _pos] call BIS_fnc_inTrigger} count _blackzone == 0) then {
 			if (typeOf _x in _BuildingTypeStrategic) then {
-				if (((random 1) < (_CQB_spawn / 30)) && {!(_x in _strathouses)}) then {
-					_strathouses set [count _strathouses, _x];
-				};
+                if ({_pos distance (getposATL _x) < _density} count _strathouses == 0) then {
+                	_strathouses set [count _strathouses, _x];    
+                } else {
+                    if ({_pos distance (getposATL _x) < 60} count _strathouses == 0) then {
+						if (((random 1) < (_CQB_spawn / 30)) && {!(_x in _strathouses)}) then {
+							_strathouses set [count _strathouses, _x];
+						};
+                    };
+                };
 			} else {
-				if (((random 1) < (_CQB_spawn / 100)) && {!(_x in _nonstrathouses)}) then {
-					_nonstrathouses set [count _nonstrathouses, _x];
-				};
+                if ({_pos distance (getposATL _x) < _density} count _nonstrathouses == 0) then {
+                	_nonstrathouses set [count _nonstrathouses, _x];    
+                } else {
+					if (((random 1) < (_CQB_spawn / 100)) && {!(_x in _nonstrathouses)}) then {
+						_nonstrathouses set [count _nonstrathouses, _x];
+					};
+                };
 			};
 		};
     };
