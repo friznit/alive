@@ -18,18 +18,18 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CS_ALLOW_COMMENT";
                                 defaultValue = "LaserDesignator";
                         };
-                         /*class combatsupport_casrespawnlimit
+                        class combatsupport_casrespawnlimit
                         {
                                 displayName = "$STR_ALIVE_CAS_LIMIT";
                                 description = "$STR_ALIVE_CAS_LIMIT_COMMENT";
-                                defaultValue = "Not Used Yet";
+                                defaultValue = "3";
                         };
                         class combatsupport_transportrespawnlimit
                         {
                                 displayName = "$STR_ALIVE_TRANS_LIMIT";
                                 description = "$STR_ALIVE_TRANS_LIMIT_COMMENT";
-                                defaultValue = "5";
-                        };*/
+                                defaultValue = "3";
+                        };
                         class combatsupport_respawn
                         {
                                 displayName = "$STR_ALIVE_CS_RESPAWN";

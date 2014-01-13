@@ -69,12 +69,13 @@ switch(_operation) do {
                         //not publicVariable to clients yet to let it init before
                         NEO_radioLogic = _logic;
 
-                        _CS_Set_Respawn = NEO_radioLogic getvariable ["combatsupport_respawn",1];
-                         CS_RESPAWN = parsenumber(_CS_Set_Respawn);
-                        /*_CAS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_casrespawnlimit",1];
+                        _CS_Set_Respawn = NEO_radioLogic getvariable ["combatsupport_respawn","3"];
+                        CS_RESPAWN = parsenumber(_CS_Set_Respawn);
+                        _CAS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_casrespawnlimit","3"];
                         CAS_RESPAWN_LIMIT = parsenumber(_CAS_SET_RESPAWN_LIMIT);
-                        _TRANS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_transportrespawnlimit",1];
-                        TRANS_RESPAWN_LIMIT = parsenumber(_TRANS_SET_RESPAWN_LIMIT);*/
+                        _TRANS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_transportrespawnlimit","3"];
+                        TRANS_RESPAWN_LIMIT = parsenumber(_TRANS_SET_RESPAWN_LIMIT);
+                        
 						_transportArrays = [];
 						_casArrays = [];
 						_artyArrays = [];
@@ -358,19 +359,49 @@ switch(_operation) do {
 							{
 								if (!(_sideIn == _x) && {(_sideIn getfriend _x >= 0.6)}) then {
 									private ["_sideInArray","_xArray"];
-										_sideInArray = NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _sideIn];
-										_xArray = NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _x];
-									NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _sideIn], _sideInArray + _xArray,true];
+									_sideInArray = NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _sideIn];
+									_xArray = NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _x];
+
+                                    if (count _xArray > 0) then {
+                                        _add = [];
+                                        {
+                                            _vehicle = _x select 0;
+                                            if (({_vehicle == _x select 0} count _sideInArray) == 0) then {
+                                                _add set [count _add,_x];
+                                            };
+                                        } foreach _xArray;
+                                        NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _sideIn], _sideInArray + _add,true];
+                                    };
 
 									private ["_sideInArray","_xArray"];
-										_sideInArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _sideIn];
-										_xArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _x];
-									NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _sideIn], _sideInArray + _xArray,true];
+									_sideInArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _sideIn];
+									_xArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _x];
+                                        
+                                    if (count _xArray > 0) then {
+                                        _add = [];
+                                        {
+                                            _vehicle = _x select 0;
+                                            if (({_vehicle == _x select 0} count _sideInArray) == 0) then {
+                                                _add set [count _add,_x];
+                                            };
+                                        } foreach _xArray;
+                                        NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _sideIn], _sideInArray + _add,true];
+                                    };
 
 									private ["_sideInArray","_xArray"];
-										_sideInArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _sideIn];
-										_xArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _x];
-									NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _sideIn], _sideInArray + _xArray,true];
+									_sideInArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _sideIn];
+									_xArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _x];
+                                        
+                                    if (count _xArray > 0) then {
+                                        _add = [];
+                                        {
+                                            _vehicle = _x select 0;
+                                            if (({_vehicle == _x select 0} count _sideInArray) == 0) then {
+                                                _add set [count _add,_x];
+                                            };
+                                        } foreach _xArray;
+                                        NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _sideIn], _sideInArray + _add,true];
+                                    };
 								};
 							} foreach _sides;
 						};
