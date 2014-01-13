@@ -59,12 +59,13 @@ if (GVAR(ENABLED)) then {
 			_vehicleConfig = typeOf _vehicle;
 
 			_vehiclePos = mapgridposition _vehicle;
+			_vehicleGeoPos = position _vehicle;
 
 			_ptime = time;
 			_vehicle setVariable [QGVAR(LandedTime), _ptime, true];
 
 			// Log data
-			_data = [ ["Event","Landed"] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehiclePos",_vehiclePos] , ["vehicle",_vehicle] , ["Airport",_airport], ["vehicleConfig",_vehicleConfig] ];
+			_data = [ ["Event","Landed"] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehiclePos",_vehiclePos] , ["vehicleGeoPos",_vehicleGeoPos] , ["vehicle",_vehicle] , ["Airport",_airport], ["vehicleConfig",_vehicleConfig] ];
 
 			_data = _data + [ ["Player",getplayeruid _vehicle] , ["PlayerName",name _vehicle], ["playerGroup", (driver _vehicle) getvariable [QGVAR(playerGroup), "Unknown"]] ];
 

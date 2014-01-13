@@ -55,7 +55,13 @@ if ([_data] call CBA_fnc_isHash) then {
 	_result = true;
 
 } else {
+
+	_msg = format["Welcome %1!", name player];
+
+	[_msg, "Unfortunately we were unable to download your Profile from the ALiVE website. Either something is broken, or you have not registered at alivemod.com. Please do so as soon as possible so you can access the ALiVE War Room and your own personal stats."] call ALIVE_fnc_sendHint;
+
 	TRACE_1("NOT CREATING PLAYER PROFILE - NO VALID DATA", _data);
+
 	_result = false;
 };
 

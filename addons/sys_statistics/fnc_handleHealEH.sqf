@@ -36,11 +36,12 @@ if (GVAR(ENABLED)) then {
 		_medictype = getText (configFile >> "cfgVehicles" >> (typeof _medic) >> "displayName");
 
 		_patientPos = mapgridposition _patient;
+		_medicGeoPos = position _medic;
 		_medicPos = mapgridposition _medic;
 
 
 		// Log data
-		_data = [ ["Event","Heal"] , ["patientSide",_sidepatient] , ["patientfaction",_factionpatient] , ["patientType",_patientType] , ["patientPos",_patientPos] , ["medicSide",_sidemedic] , ["medicfaction",_factionmedic] , ["medicType",_medicType] , ["medicPos",_medicPos] , ["patient", _patient] , ["medic",_medic] ];
+		_data = [ ["Event","Heal"] , ["patientSide",_sidepatient] , ["patientfaction",_factionpatient] , ["patientType",_patientType] , ["patientPos",_patientPos] , ["medicGeoPos",_medicGeoPos] , ["medicSide",_sidemedic] , ["medicfaction",_factionmedic] , ["medicType",_medicType] , ["medicPos",_medicPos] , ["patient", _patient] , ["medic",_medic] ];
 		TRACE_1("SYS STAT HANDLE HEAL EH DETAIL", _data);
 
 		if (isPlayer _patient) then { // Player was patient

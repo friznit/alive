@@ -94,10 +94,12 @@ if (GVAR(ENABLED)) then {
 		_distance = ceil(_hit distance _source);
 
 		_hitPos = mapgridposition _hit;
+		_hitGeoPos = position _hit;
 		_sourcePos = mapgridposition _source;
+		_sourceGeoPos = position _source;
 
 		// Log data
-		_data = [ ["Event","Hit"] , ["hitSide",_sidehit] , ["hitfaction",_factionhit] , ["hitType",_hitType] , ["hitClass",_hitVehicleClass] ,["hitPos",_hitPos] , ["sourceSide",_sidesource] , ["sourcefaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass", _sourceVehicleClass] , ["sourcePos",_sourcePos] , ["Weapon",_sourceweapon] , ["WeaponType",_sourceweaponType] , ["Distance",_distance] , ["hit",_hit] , ["source",_source] , ["damage",_damage] , ["sourceCfg",_sourcecfg] , ["hitCfg",_hitcfg] ];
+		_data = [ ["Event","Hit"] , ["hitSide",_sidehit] , ["hitfaction",_factionhit] , ["hitType",_hitType] , ["hitClass",_hitVehicleClass] ,["hitPos",_hitPos] , ["hitGeoPos",_hitGeoPos] ,["sourceSide",_sidesource] , ["sourcefaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass", _sourceVehicleClass] , ["sourcePos",_sourcePos] , ["sourceGeoPos",_sourceGeoPos] , ["Weapon",_sourceweapon] , ["WeaponType",_sourceweaponType] , ["Distance",_distance] , ["hit",_hit] , ["source",_source] , ["damage",_damage] , ["sourceCfg",_sourcecfg] , ["hitCfg",_hitcfg] ];
 
 		if (isPlayer _hit && (getPlayerUID _hit != getPlayerUID _source)) then { // Player was hit
 

@@ -86,10 +86,12 @@ if (GVAR(ENABLED)) then {
 			_distance = ceil(_target distance _source);
 
 			_targetPos = mapgridposition _target;
+			_targetGeoPos = position _target;
 			_sourcePos = mapgridposition _source;
+			_sourceGeoPos = position _source;
 
 			// Log data
-			_data = [ ["Event","Missile"] , ["targetSide",_sideTarget] , ["targetFaction",_factionTarget] , ["targetType",_targetType] , ["targetClass", _targetVehicleClass] , ["targetPos",_targetPos] , ["sourceSide",_sidesource] , ["sourceFaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass",_sourceVehicleClass] , ["sourcePos", _sourcePos] , ["Weapon",_sourceweapon] , ["WeaponType",_sourceweaponType] ,["Distance",_distance] , ["target",_target] , ["source",_source] , ["projectile", _projectile], ["sourceCfg",_sourcecfg] , ["targetCfg",_targetcfg] ];
+			_data = [ ["Event","Missile"] , ["targetSide",_sideTarget] , ["targetFaction",_factionTarget] , ["targetType",_targetType] , ["targetClass", _targetVehicleClass] , ["targetPos",_targetPos] , ["targetGeoPos",_targetGeoPos], ["sourceSide",_sidesource] , ["sourceFaction",_factionsource] , ["sourceType",_sourceType] , ["sourceClass",_sourceVehicleClass] , ["sourcePos", _sourcePos] , ["sourceGeoPos",_sourceGeoPos] , ["Weapon",_sourceweapon] , ["WeaponType",_sourceweaponType] ,["Distance",_distance] , ["target",_target] , ["source",_source] , ["projectile", _projectile], ["sourceCfg",_sourcecfg] , ["targetCfg",_targetcfg] ];
 
 			if (isPlayer _target) then { // Player was Target
 

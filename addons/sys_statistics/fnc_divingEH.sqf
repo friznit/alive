@@ -55,8 +55,10 @@ if (GVAR(ENABLED)) then {
 
 		_unitPos = mapgridposition _unit;
 
+		_unitGeoPos = position _unit;
+
 		// Log data
-		_data = [ ["Event","CombatDive"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitPos",_unitPos] , ["unit",_unit] , ["diveTime",_diveTime] , ["Player",getplayeruid _unit], ["playerGroup", _unit getvariable [QGVAR(playerGroup), "Unknown"]] , ["PlayerName",name _unit] ];
+		_data = [ ["Event","CombatDive"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["unit",_unit] , ["diveTime",_diveTime] , ["Player",getplayeruid _unit], ["playerGroup", _unit getvariable [QGVAR(playerGroup), "Unknown"]] , ["PlayerName",name _unit] ];
 
 		// Send data to server to be written to DB
 		GVAR(UPDATE_EVENTS) = _data;
