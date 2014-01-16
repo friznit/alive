@@ -116,9 +116,9 @@ if (isDedicated) then {
 				private ["_cmd","_response"];
 				_cmd = _x;
 
-				"Arma2Net.Unmanaged" callExtension _cmd;
+				"Arma2Net" callExtension _cmd;
 
-				waitUntil {sleep 0.3; _response = ["SendJSONAsync []"] call ALIVE_fnc_sendToPlugIn; ([_response] call CBA_fnc_strLen) > 0};
+				waitUntil {sleep 0.3; _response = ["SendJSONAsync getresult"] call ALIVE_fnc_sendToPlugIn; ([_response] call CBA_fnc_strLen) > 0};
 
 				REM(GVAR(ASYNC_QUEUE),_cmd);
 

@@ -1,5 +1,5 @@
-#include <\x\alive\addons\sys_statistics\script_component.hpp>
-SCRIPT(statisticsDisable);
+#include <\x\alive\addons\sys_perf\script_component.hpp>
+SCRIPT(perfDisable);
 
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_statisticsDisable
