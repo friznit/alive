@@ -234,7 +234,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_OPCOM_FACTIONS";
                                 description = "$STR_ALIVE_OPCOM_FACTIONS_COMMENT";
-                                defaultValue = [];
+                                defaultValue = "";
                         };
                 };
             	class ModuleDescription

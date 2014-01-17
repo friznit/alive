@@ -98,7 +98,8 @@ switch(_operation) do {
                     _faction2 = _logic getvariable ["faction2","NONE"];
                     _faction3 = _logic getvariable ["faction3","NONE"];
                     _faction4 = _logic getvariable ["faction4","NONE"];
-                    _factions = call compile (_logic getvariable ["factions","[]"]);
+                    _factions = [_logic, "convert", _logic getvariable ["factions",[]]] call ALiVE_fnc_OPCOM;
+                    
                     _debug = call compile (_logic getvariable ["debug","false"]);
                     _tasksEnabled = call compile (_logic getvariable ["playertaskings","true"]);
                     
@@ -325,6 +326,27 @@ switch(_operation) do {
 						[_result,"class"] call ALIVE_fnc_hashRem;
                 };
         };
+        
+        case "convert": {
+	    	if !(isNil "_args") then {
+				if(typeName _args == "STRING") then {
+		            if !(_args == "") then {
+						_args = [_args, " ", ""] call CBA_fnc_replace;
+	                    _args = [_args, "[", ""] call CBA_fnc_replace;
+	                    _args = [_args, "]", ""] call CBA_fnc_replace;
+	                    _args = [_args, """", ""] call CBA_fnc_replace;
+						_args = [_args, ","] call CBA_fnc_split;
+                        
+						if !(count _args > 0) then {
+							_args = [];
+		            	};
+                    } else {
+                        _args = [];
+                    };
+                };
+                _result = _args;
+            };
+		};
         
         case "addObjective": {
                 if(isnil "_args") then {
