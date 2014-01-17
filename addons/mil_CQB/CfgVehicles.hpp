@@ -161,13 +161,13 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_CQB_FACTIONS_STRAT";
                                 description = "$STR_ALIVE_CQB_FACTIONS_STRAT_COMMENT";
-                                defaultValue = ["OPF_F"];
+                                defaultValue = "OPF_F";
                         };
                         class CQB_FACTIONS_REG
                         {
                                 displayName = "$STR_ALIVE_CQB_FACTIONS_REG";
                                 description = "$STR_ALIVE_CQB_FACTIONS_REG_COMMENT";
-                                defaultValue = ["OPF_F"];
+                                defaultValue = "OPF_F";
                         };
                         class blacklist
                         {

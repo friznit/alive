@@ -69,11 +69,11 @@ switch(_operation) do {
 				if (typename (_CQB_density) == "STRING") then {_CQB_density = call compile _CQB_density};
                 _logic setVariable ["CQB_DENSITY", _CQB_density];
                 
-                _factionsStrat = _logic getvariable ["CQB_FACTIONS_STRAT",["OPF_F"]];
-				if (typename (_factionsStrat) == "STRING") then {_factionsStrat = call compile _factionsStrat};
+                _factionsStrat = _logic getvariable ["CQB_FACTIONS_STRAT","OPF_F"];
+                _factionsStrat = [_logic,"factions",_factionsStrat] call ALiVE_fnc_CQB;
                 
-                _factionsReg = _logic getvariable ["CQB_FACTIONS_REG",["OPF_F"]];
-				if (typename (_factionsReg) == "STRING") then {_factionsReg = call compile _factionsReg};
+                _factionsReg = _logic getvariable ["CQB_FACTIONS_REG","OPF_F"];
+                _factionsReg = [_logic,"factions",_factionsReg] call ALiVE_fnc_CQB;
                 
                 _useDominantFaction = _logic getvariable ["CQB_UseDominantFaction","true"];
 				if (typename (_useDominantFaction) == "STRING") then {_useDominantFaction = call compile _useDominantFaction};
@@ -252,7 +252,7 @@ switch(_operation) do {
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
-					[MOD(CQB), "factions", _factionsReg + _factionsStrat] call ALiVE_fnc_CQB;
+                   [MOD(CQB), "factions", _factionsStrat + _factionsReg] call ALiVE_fnc_CQB;
 					[MOD(CQB), "spawnDistance", 1000] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
@@ -354,8 +354,8 @@ switch(_operation) do {
 					};
 	            };
             };
-            _result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
-            _result;
+            _args = _logic getVariable [_operation, DEFAULT_BLACKLIST];
+            
 		};
                 
         case "destroy": {
@@ -469,15 +469,31 @@ switch(_operation) do {
 	};
    
 	case "factions": {
-		if(isNil "_args") then {
+    	if(isNil "_args") then {
 			// if no new faction list was provided return current setting
-			_args = _logic getVariable ["factions", []];
+			_args = _logic getVariable [_operation, []];
 		} else {
-			// if a new faction list was provided set factions settings
-			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
-			_logic setVariable ["factions", _args, true];
-		};
-		_args;
+			if(typeName _args == "STRING") then {
+	            if !(_args == "") then {
+					_args = [_args, " ", ""] call CBA_fnc_replace;
+                    _args = [_args, "[", ""] call CBA_fnc_replace;
+                    _args = [_args, "]", ""] call CBA_fnc_replace;
+                    _args = [_args, """", ""] call CBA_fnc_replace;
+					_args = [_args, ","] call CBA_fnc_split;
+					if(count _args > 0) then {
+						_logic setVariable [_operation, _args];
+					};
+	            } else {
+	                _logic setVariable [_operation, []];
+	            };
+			} else {
+				if(typeName _args == "ARRAY") then {		
+					_logic setVariable [_operation, _args];
+				};
+	        };
+			_args = _logic getVariable [_operation, []];
+        };
+        _logic setVariable [_operation, _args, true];
 	};
     
 	case "spawnDistance": {
@@ -918,3 +934,4 @@ switch(_operation) do {
 		};
 	};
 };
+if !(isnil "_args") then {_args} else {nil};
