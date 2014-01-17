@@ -83,6 +83,7 @@ switch(_operation) do {
                     Publicvariable "ALiVE_GC";
                     
 					//Retrieve module-object variables
+                    _logic setvariable ["ALiVE_GC_INDIVIDUALTYPES",([_logic,"convert",(_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]])] call ALiVE_fnc_GC),true];
                     _debug = call compile (_logic getvariable ["debug","false"]);
                     _logic setvariable ["debug",_debug,true];
 					_logic setVariable ["auto", true];
@@ -110,10 +111,31 @@ switch(_operation) do {
                 */
         };
         
+        case "convert": {
+	    	if !(isNil "_args") then {
+				if(typeName _args == "STRING") then {
+		            if !(_args == "") then {
+						_args = [_args, " ", ""] call CBA_fnc_replace;
+	                    _args = [_args, "[", ""] call CBA_fnc_replace;
+	                    _args = [_args, "]", ""] call CBA_fnc_replace;
+	                    _args = [_args, """", ""] call CBA_fnc_replace;
+						_args = [_args, ","] call CBA_fnc_split;
+                        
+						if !(count _args > 0) then {
+							_args = [];
+		            	};
+                    } else {
+                        _args = [];
+                    };
+                };
+            };
+            _result = _args;
+		};
+        
         case "collect": { 
         private ["_queue"];
         
-	        _individual = call compile (_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]]);
+	        _individual = _logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]];
             _debug = _logic getvariable ["debug",false];
             _queue = _logic getVariable ["queue",[]];
             _dead = +allDead;

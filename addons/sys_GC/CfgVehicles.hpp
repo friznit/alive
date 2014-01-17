@@ -48,7 +48,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_GC_INDIVIDUALTYPES";
                                 description = "$STR_ALIVE_GC_INDIVIDUALTYPES_COMMENT";
-                                defaultValue = [];
+                                defaultValue = "";
                         };
                  };
                 
