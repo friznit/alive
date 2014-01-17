@@ -117,7 +117,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v0.98.32";
+		briefingName="ALiVE Showcase - Foursome v0.98.33";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -544,7 +544,7 @@ class Mission
 						};
 						class Item3
 						{
-							value="[]";
+							value="";
 							parentCls="ALiVE_sys_GC";
 							typeName="ALiVE_GC_INDIVIDUALTYPES";
 						};
@@ -614,7 +614,7 @@ class Mission
 						};
 						class Item7
 						{
-							value="[]";
+							value="";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="factions";
 						};
@@ -641,7 +641,7 @@ class Mission
 					position[]={9353.3311,11.392934,21897.121};
 					class args
 					{
-						items=7;
+						items=8;
 						class Item0
 						{
 							value="false";
@@ -656,31 +656,37 @@ class Mission
 						};
 						class Item2
 						{
-							value="BLU_G_F";
+							value="true";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction1";
+							typeName="PLAYERTASKINGS";
 						};
 						class Item3
 						{
-							value="NONE";
+							value="BLU_G_F";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction2";
+							typeName="faction1";
 						};
 						class Item4
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction3";
+							typeName="faction2";
 						};
 						class Item5
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction4";
+							typeName="faction3";
 						};
 						class Item6
 						{
-							value="[]";
+							value="NONE";
+							parentCls="ALiVE_mil_OPCOM";
+							typeName="faction4";
+						};
+						class Item7
+						{
+							value="";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="factions";
 						};
@@ -707,7 +713,7 @@ class Mission
 					position[]={11198.475,165.63631,8523.5869};
 					class args
 					{
-						items=7;
+						items=8;
 						class Item0
 						{
 							value="false";
@@ -722,31 +728,37 @@ class Mission
 						};
 						class Item2
 						{
-							value="IND_F";
+							value="true";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction1";
+							typeName="PLAYERTASKINGS";
 						};
 						class Item3
 						{
-							value="NONE";
+							value="IND_F";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction2";
+							typeName="faction1";
 						};
 						class Item4
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction3";
+							typeName="faction2";
 						};
 						class Item5
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="faction4";
+							typeName="faction3";
 						};
 						class Item6
 						{
-							value="[]";
+							value="NONE";
+							parentCls="ALiVE_mil_OPCOM";
+							typeName="faction4";
+						};
+						class Item7
+						{
+							value="";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="factions";
 						};
@@ -818,7 +830,7 @@ class Mission
 						};
 						class Item7
 						{
-							value="[]";
+							value="";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="factions";
 						};
@@ -1739,13 +1751,13 @@ class Mission
 						};
 						class Item5
 						{
-							value="[""OPF_F""]";
+							value="OPF_F";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS_STRAT";
 						};
 						class Item6
 						{
-							value="[""OPF_G_F""]";
+							value="OPF_G_F";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS_REG";
 						};
