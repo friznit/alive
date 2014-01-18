@@ -36,15 +36,18 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_menuDef", "_target", "_params", "_menuName", "_menuRsc", "_menus","_item"];
+private ["_menuDef", "_target", "_params", "_menuName", "_menuRsc", "_menus","_userItems","_items","_result"];
 // _this==[_target, _menuNameOrParams]
 
 PARAMS_2(_target,_params);
 
 _menuName = "";
 _menuRsc = "popup";
-_selectedItem = NEO_radioLogic getvariable ["combatsupport_item","LaserDesignator"];
+_items = assignedItems player;
+_userItems = [NEO_radioLogic getvariable ["combatsupport_item","LaserDesignator"]];
 
+//Finds selected userItem-string(s) in assignedItems
+_result = (({([toLower(str(_items)), toLower(_x)] call CBA_fnc_find) > -1} count _userItems) > 0);
 
 if (typeName _params == typeName []) then {
 	if (count _params < 1) exitWith {diag_log format["Error: Invalid params: %1, %2", _this, __FILE__];};
@@ -78,7 +81,7 @@ _menus =
 				"",
 				localize "STR_ALIVE_CS_COMMENT",
                  "",
-                 -1, 1, {toLower(_selectedItem) == toLower(_x)} count (assignedItems player) > 0
+                 -1, 1, _result
 			]
 		]
 	]
