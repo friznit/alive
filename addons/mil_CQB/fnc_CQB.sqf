@@ -167,23 +167,32 @@ switch(_operation) do {
                     //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
                     _UnitsBlackList = [
                     	//A3
-                        "O_diver_F",
-                        "O_diver_TL_F",
-                        "O_diver_exp_F",
-                        "O_helipilot_F",
-                        "O_UAV_AI",
-                        "B_diver_F",
-                        "B_diver_TL_F",
-                        "B_diver_exp_F",
-                        "B_Helipilot_F",
-                        "B_RangeMaster_F", 
-                        "B_helipilot_F",
-                        "B_UAV_AI",
-                        "I_helicrew_F",
-                        "I_diver_F",
-                        "I_diver_TL_F",
-                        "I_diver_exp_F",
-                        "I_crew_F"
+						"B_Helipilot_F",
+						"B_diver_F",
+						"B_diver_TL_F",
+						"B_diver_exp_F",
+						"B_RangeMaster_F",
+						"B_crew_F",
+						"B_Pilot_F",
+						"B_helicrew_F",
+						
+						"O_helipilot_F",
+						"O_diver_F",
+						"O_diver_TL_F",
+						"O_diver_exp_F",
+						"O_crew_F",
+						"O_Pilot_F",
+						"O_helicrew_F",
+						"O_UAV_AI",
+						
+						"I_crew_F",
+						"I_helipilot_F",
+						"I_helicrew_F",
+						"I_diver_F",
+						"I_diver_exp_F",
+						"I_diver_TL_F",
+						"I_pilot_F",
+						"I_Story_Colonel_F"
                     ];
                     
                     //Get all enterable houses of strategic types below across the whole map (rest will be regular)
@@ -252,7 +261,7 @@ switch(_operation) do {
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
-                   [MOD(CQB), "factions", _factionsStrat + _factionsReg] call ALiVE_fnc_CQB;
+                    [MOD(CQB), "factions", _factionsStrat + _factionsReg] call ALiVE_fnc_CQB;
 					[MOD(CQB), "spawnDistance", 1000] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
