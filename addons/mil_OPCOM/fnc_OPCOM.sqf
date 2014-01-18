@@ -502,6 +502,9 @@ switch(_operation) do {
                 if(isnil "_args") then {
 						_args = [_logic,"playertasks",[]] call ALIVE_fnc_hashGet;
                 } else {
+                    //Exit if no players online to not clutter map
+                    if ((count ([] call BIS_fnc_listPlayers) == 0)) exitwith {_result = [_logic,"playertasks",[]] call ALIVE_fnc_hashGet};
+                    
                     private ["_pos","_type","_conditionwin","_conditionFail","_objective","_ostate","_objectives","_cid","_id","_object","_messageWin","_messageFail","_message","_desc","_state","_oType","_buildingTypes","_clusterHandler"];
                     
                     _objective = _args select 0;
@@ -701,7 +704,7 @@ switch(_operation) do {
                     };
                     _args = _id;
                 };
-                _args;
+                _result = _args;
         };
                                 
 		case "createobjectives": {
