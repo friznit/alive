@@ -91,7 +91,7 @@ switch(_operation) do {
                     MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
                     MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
                     MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
-                    MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
+                    MOD(sys_player) setVariable ["storeToDB", false, true];
                     MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
 
                     MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
@@ -373,8 +373,10 @@ switch(_operation) do {
                     // Save all players to external DB
                     private ["_ondisconnect"];
                     _ondisconnect = _args select 0;
-                    TRACE_1("",GVAR(player_data));
-                    _result = [GVAR(datahandler), "save", ["sys_player", GVAR(player_data), _logic getvariable "key", _ondisconnect]] call ALIVE_fnc_Data;
+                    if (_logic getVariable ["storeToDB",false]) then {
+                        TRACE_1("",GVAR(player_data));
+                        _result = [GVAR(datahandler), "save", ["sys_player", GVAR(player_data), _logic getvariable "key", _ondisconnect]] call ALIVE_fnc_Data;
+                    };
         };
         case "getGear": {
                     // Get loadout data from gear store on client and apply to player object on client
