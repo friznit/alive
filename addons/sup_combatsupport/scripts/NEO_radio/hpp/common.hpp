@@ -117,6 +117,16 @@ class NEO_RscListBox {
 	soundExpand[] = {"", 0.0, 1};
 	soundCollapse[] = {"", 0.0, 1};
 	colorDisabled[] = {0,0,0,0};
+      class ListScrollBar
+  {
+    color[] = {1, 1, 1, 0.6};
+    colorActive[] = {1, 1, 1, 1};
+    colorDisabled[] = {1, 1, 1, 0.3};
+    arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa";
+  arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa";
+  border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa";
+  thumb = "\A3\ui_f\data\gui\cfg\scrollbar\thumb_ca.paa";
+  };
 };
 
 class NEO_RscGUIListBox : NEO_RscListBox {
@@ -129,7 +139,7 @@ class NEO_RscGUIListBox : NEO_RscListBox {
 	colorSelectBackground2[] = {0.6, 0.839, 0.47, 1};
 	period = 0;
 	sizeEx = (safeZoneH / 100) + (safeZoneH / 100);
-	class ScrollBar
+class ListScrollBar
 	{
 		color[] = {1, 1, 1, 0.6};
 		colorActive[] = {1, 1, 1, 1};
@@ -157,7 +167,7 @@ class NEO_RscComboBox
 	soundExpand[] = {"",0.1,1};
 	soundCollapse[] = {"",0.1,1};
 	maxHistoryDelay = 1;
-	class ScrollBar
+	class listScrollBar
 	{
 		color[] = {1,1,1,0.6};
 		colorActive[] = {1,1,1,1};
