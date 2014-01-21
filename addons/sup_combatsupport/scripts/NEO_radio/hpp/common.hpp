@@ -167,7 +167,7 @@ class NEO_RscComboBox
 	soundExpand[] = {"",0.1,1};
 	soundCollapse[] = {"",0.1,1};
 	maxHistoryDelay = 1;
-	class listScrollBar
+	class ComboScrollBar
 	{
 		color[] = {1,1,1,0.6};
 		colorActive[] = {1,1,1,1};
