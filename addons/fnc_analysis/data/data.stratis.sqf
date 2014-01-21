@@ -1350,6 +1350,7 @@ _roads = [] call ALIVE_fnc_hashCreate;
 // Appended MIL cluster data --------------------------------------------------------------------
 
 
+
 _sectorData = [ALIVE_gridData, "1_3"] call ALIVE_fnc_hashGet;
 _clustersMil = [] call ALIVE_fnc_hashCreate;
 [_clustersMil,"consolidated",[[[1985.14,3518.51],"c_0"]]] call ALIVE_fnc_hashSet;
@@ -1436,6 +1437,7 @@ _clustersMil = [] call ALIVE_fnc_hashCreate;
 
 
 
+
 _sectorData = [ALIVE_gridData, "4_3"] call ALIVE_fnc_hashGet;
 _clustersCiv = [] call ALIVE_fnc_hashCreate;
 [_clustersCiv,"consolidated",[[[4334.58,3787.56],"c_0"],[[4144.55,3289.91],"c_24"]]] call ALIVE_fnc_hashSet;
@@ -1469,7 +1471,7 @@ _clustersCiv = [] call ALIVE_fnc_hashCreate;
 [_clustersCiv,"fuel",[]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"rail",[]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"construction",[]] call ALIVE_fnc_hashSet;
-[_clustersCiv,"settlement",[[[3054.42,5957.07],"c_9"]]] call ALIVE_fnc_hashSet;
+[_clustersCiv,"settlement",[[[3054.39,5957.07],"c_9"]]] call ALIVE_fnc_hashSet;
 [_sectorData,"clustersCiv",_clustersCiv] call ALIVE_fnc_hashSet;
 [ALIVE_gridData, "3_5", _sectorData] call ALIVE_fnc_hashSet;
 _sectorData = [ALIVE_gridData, "6_5"] call ALIVE_fnc_hashGet;
@@ -1558,14 +1560,14 @@ _clustersCiv = [] call ALIVE_fnc_hashCreate;
 [ALIVE_gridData, "2_0", _sectorData] call ALIVE_fnc_hashSet;
 _sectorData = [ALIVE_gridData, "2_1"] call ALIVE_fnc_hashGet;
 _clustersCiv = [] call ALIVE_fnc_hashCreate;
-[_clustersCiv,"consolidated",[[[2456.18,1082.17],"c_11"],[[2925.87,1933.97],"c_18"],[[2166.68,1886.59],"c_27"]]] call ALIVE_fnc_hashSet;
+[_clustersCiv,"consolidated",[[[2456.18,1082.17],"c_11"],[[2925.83,1933.97],"c_18"],[[2166.68,1886.59],"c_27"]]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"power",[]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"comms",[]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"marine",[[[2381.95,1110.33],"c_2"]]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"fuel",[]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"rail",[]] call ALIVE_fnc_hashSet;
 [_clustersCiv,"construction",[]] call ALIVE_fnc_hashSet;
-[_clustersCiv,"settlement",[[[2334.55,1217.81],"c_1"],[[2665.74,1271.39],"c_2"],[[2925.87,1933.97],"c_4"],[[2166.68,1886.59],"c_22"]]] call ALIVE_fnc_hashSet;
+[_clustersCiv,"settlement",[[[2334.55,1217.81],"c_1"],[[2665.74,1271.39],"c_2"],[[2925.83,1933.97],"c_4"],[[2166.68,1886.59],"c_22"]]] call ALIVE_fnc_hashSet;
 [_sectorData,"clustersCiv",_clustersCiv] call ALIVE_fnc_hashSet;
 [ALIVE_gridData, "2_1", _sectorData] call ALIVE_fnc_hashSet;
 _sectorData = [ALIVE_gridData, "1_2"] call ALIVE_fnc_hashGet;
