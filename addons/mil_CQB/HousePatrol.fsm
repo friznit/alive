@@ -9,7 +9,7 @@ item4[] = {"Wait_while_Enemy",2,250,75.348831,-88.372116,165.348816,-38.372097,0
 item5[] = {"",7,210,190.465103,-67.441856,198.465118,-59.441856,0.000000,""};
 item6[] = {"",7,210,190.469543,-147.626953,198.469543,-139.626953,0.000000,""};
 item7[] = {"_",8,218,-154.463562,-22.245586,-64.463570,27.754414,0.000000,""};
-item8[] = {"Garrison_Buildin",2,4346,-155.005432,46.033588,-65.005432,96.033607,0.000000,"Garrison" \n "Buildings"};
+item8[] = {"Garrison_Buildin",2,250,-155.005432,46.033588,-65.005432,96.033607,0.000000,"Garrison" \n "Buildings"};
 item9[] = {"",7,210,190.209213,67.273834,198.209213,75.273834,0.000000,""};
 item10[] = {"Wait_1_minute",4,218,-38.573677,45.691322,51.426323,95.691330,0.000000,"Wait 1 minute"};
 item11[] = {"set_user_waiting",2,250,77.103096,46.333992,167.103088,96.333992,0.000000,"set" \n "user waiting" \n "time"};
@@ -21,7 +21,7 @@ item16[] = {"Pass_FSM_and_End",1,250,80.389030,194.239243,170.389069,244.239197,
 item17[] = {"End_1",1,250,-30.944130,192.897903,59.055893,242.897858,0.000000,"End"};
 item18[] = {"Players__out_of",4,218,-262.983612,51.398300,-172.983444,101.398277,0.000000,"Players " \n "out of Range"};
 item19[] = {"Move_home",2,250,-382.479431,49.360733,-292.479431,99.360764,0.000000,"Move home"};
-item20[] = {"Players__in_Rang",4,218,-383.809692,-88.932213,-293.809418,-38.932289,0.000000,"Players " \n "in Range"};
+item20[] = {"Players__in_Rang",4,4314,-383.809692,-88.932213,-293.809418,-38.932289,0.000000,"Players " \n "in Range"};
 item21[] = {"At_home",4,218,-382.350586,131.043976,-292.350250,181.044006,2.000000,"At home"};
 item22[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item23[] = {"Players__far_awa",4,218,-286.061401,128.855042,-196.061249,178.855042,3.000000,"Players " \n "far away"};
@@ -70,8 +70,8 @@ link27[] = {19,23};
 link28[] = {20,2};
 link29[] = {21,24};
 link30[] = {23,24};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,32,6316128,1,-492.625092,822.923157,330.624054,-560.151672,1372,929,1};
-window[] = {2,-1,-1,-1,-1,872,22,1691,22,3,1389};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,32,6316128,1,-529.891663,860.189392,589.196777,-256.377045,1182,719,1};
+window[] = {0,-1,-1,-1,-1,1070,220,1889,220,1,1199};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -118,6 +118,8 @@ class FSM
        "_leader = leader _grp;" \n
        "_mkr = format[""HP:%1"", _leader];" \n
        "_spawn = _logic getVariable [""spawnDistance"", 800];" \n
+       "_spawnHeli = _logic getVariable [""spawnDistanceHeli"", 0];" \n
+       "_spawnJet = _logic getVariable [""spawnDistanceJet"", 0];" \n
        "" \n
        "_radius = 10;" \n
        "if(count _this > 2) then {_radius = _this select 2;};" \n
@@ -257,7 +259,7 @@ class FSM
           priority = 0.000000;
           to="Move_home";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) == 0)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!([_posDespawn, _spawn*1.2, _spawnJet*1.2, _spawnHeli*1.2] call ALiVE_fnc_anyPlayersInRangeIncludeAir);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -378,7 +380,7 @@ class FSM
           priority = 0.000000;
           to="Move_home";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) == 0)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!([_posDespawn, _spawn*1.2, _spawnJet*1.2, _spawnHeli*1.2] call ALiVE_fnc_anyPlayersInRangeIncludeAir);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -440,7 +442,7 @@ class FSM
           priority = 0.000000;
           to="Move_home";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 1.2] call ALiVE_fnc_anyPlayersInRange) == 0)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!([_posDespawn, _spawn*1.2, _spawnJet*1.2, _spawnHeli*1.2] call ALiVE_fnc_anyPlayersInRangeIncludeAir);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -537,7 +539,7 @@ class FSM
           priority = 3.000000;
           to="End_delete_group";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn * 2.5] call ALiVE_fnc_anyPlayersInRange) == 0) && ({alive _x} count (units _grp) > 0)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!([_posDespawn, _spawn*2.5, _spawnJet*2, _spawnHeli*2] call ALiVE_fnc_anyPlayersInRangeIncludeAir) && {({alive _x} count (units _grp) > 0)}"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -557,7 +559,7 @@ class FSM
           priority = 0.000000;
           to="Select_floors";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(([_posDespawn, _spawn] call ALiVE_fnc_anyPlayersInRange) > 0)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"([_posDespawn, _spawn, _spawn, spawnJet,_spawnHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir);"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/

@@ -31,14 +31,16 @@ Author:
 Highhead
 Wolffy.au
 ---------------------------------------------------------------------------- */
-
 private ["_spawnhouses","_BuildingTypeStrategic","_nonstrathouses","_strathouses","_cqb_spawn_intensity","_triglist","_blackzone"];
+
+scopename "main";
 
 PARAMS_1(_spawnhouses);
 ASSERT_TRUE(typeName _spawnhouses == "ARRAY",str _spawnhouses);
 DEFAULT_PARAM(1,_BuildingTypeStrategic,[]);
 DEFAULT_PARAM(2,_density,1000);
 DEFAULT_PARAM(3,_blackzone,[]);
+DEFAULT_PARAM(4,_whitezone,[]);
 
 _CQB_spawn = _logic getVariable ["CQB_spawn", 1];
 
@@ -46,32 +48,41 @@ _strathouses = [];
 _nonstrathouses = [];
 
 {
-    private ["_pos","_positions","_dist"];
+    private ["_pos","_positions","_dist","_collect"];
     _positions = [_x] call ALiVE_fnc_getBuildingPositions;
+    _collect = true;
     
     if ((count _positions) > 0) then {
 		_pos = getPosATL _x;
-		// Check if spawn position is NOT within a blacklist trigger
+		//If spawn position is  within a whitelist trigger ignore blacklist trigger
+	    // Check if spawn position is NOT within a blacklist trigger
 		if ({[_x, _pos] call BIS_fnc_inTrigger} count _blackzone == 0) then {
-			if (typeOf _x in _BuildingTypeStrategic) then {
-                if ({_pos distance (getposATL _x) < _density} count _strathouses == 0) then {
-                	_strathouses set [count _strathouses, _x];    
-                } else {
-                    if ({_pos distance (getposATL _x) < 60} count _strathouses == 0) then {
-						if (((random 1) < (_CQB_spawn / 30)) && {!(_x in _strathouses)}) then {
-							_strathouses set [count _strathouses, _x];
+            
+            if (count _whitezone > 0) then {
+                if !({[_x, _pos] call BIS_fnc_inTrigger} count _whitezone > 0) then {_collect = false};
+            };
+            
+            if (_collect) then {
+				if (typeOf _x in _BuildingTypeStrategic) then {
+	                if ({_pos distance (getposATL _x) < _density} count _strathouses == 0) then {
+	                	_strathouses set [count _strathouses, _x];    
+	                } else {
+	                    if ({_pos distance (getposATL _x) < 60} count _strathouses == 0) then {
+							if (((random 1) < (_CQB_spawn / 30)) && {!(_x in _strathouses)}) then {
+								_strathouses set [count _strathouses, _x];
+							};
+	                    };
+	                };
+				} else {
+	                if ({_pos distance (getposATL _x) < _density} count _nonstrathouses == 0) then {
+	                	_nonstrathouses set [count _nonstrathouses, _x];    
+	                } else {
+						if (((random 1) < (_CQB_spawn / 100)) && {!(_x in _nonstrathouses)}) then {
+							_nonstrathouses set [count _nonstrathouses, _x];
 						};
-                    };
-                };
-			} else {
-                if ({_pos distance (getposATL _x) < _density} count _nonstrathouses == 0) then {
-                	_nonstrathouses set [count _nonstrathouses, _x];    
-                } else {
-					if (((random 1) < (_CQB_spawn / 100)) && {!(_x in _nonstrathouses)}) then {
-						_nonstrathouses set [count _nonstrathouses, _x];
-					};
-                };
-			};
+	                };
+				};
+            };
 		};
     };
 } forEach _spawnhouses;
