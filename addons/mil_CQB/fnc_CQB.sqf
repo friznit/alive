@@ -276,7 +276,7 @@ switch(_operation) do {
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
                     [MOD(CQB), "factions", _factionsStrat + _factionsReg] call ALiVE_fnc_CQB;
-					[MOD(CQB), "spawnDistance", _spawn] call ALiVE_fnc_CQB;
+		     MOD(CQB), "spawnDistance", _spawn] call ALiVE_fnc_CQB;
                     [MOD(CQB), "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
                     [MOD(CQB), "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
 
