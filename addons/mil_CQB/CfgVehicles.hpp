@@ -157,6 +157,24 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_spawndistance
+                        {
+                                displayName = "$STR_ALIVE_CQB_SPAWNDISTANCE";
+                                description = "$STR_ALIVE_CQB_SPAWNDISTANCE_COMMENT";
+                                defaultValue = 700;
+                        };
+                        class CQB_spawndistanceHeli
+                        {
+                                displayName = "$STR_ALIVE_CQB_SPAWNDISTANCEHELI";
+                                description = "$STR_ALIVE_CQB_SPAWNDISTANCEHELI_COMMENT";
+                                defaultValue = 0;
+                        };
+                        class CQB_spawndistanceJet
+                        {
+                                displayName = "$STR_ALIVE_CQB_SPAWNDISTANCEJET";
+                                description = "$STR_ALIVE_CQB_SPAWNDISTANCEJET_COMMENT";
+                                defaultValue = 0;
+                        };
                         class CQB_FACTIONS_STRAT
                         {
                                 displayName = "$STR_ALIVE_CQB_FACTIONS_STRAT";
@@ -175,6 +193,13 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_BLACKLIST_COMMENT";
                                 defaultValue = "";
                         };
+                        class whitelist
+                        {
+                                displayName = "$STR_ALIVE_CQB_WHITELIST";
+                                description = "$STR_ALIVE_CQB_WHITELIST_COMMENT";
+                                defaultValue = "";
+                        };
+                        
                 };
                 class ModuleDescription
 				{

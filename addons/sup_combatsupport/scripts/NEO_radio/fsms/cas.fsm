@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, cas">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"react",0,4346,-37.443069,45.098049,52.556931,95.098053,0.000000,"react"};
+item0[] = {"react",0,250,-37.443069,45.098049,52.556931,95.098053,0.000000,"react"};
 item1[] = {"killed",4,218,-231.102844,45.315475,-141.102768,95.315475,50.000000,"killed"};
 item2[] = {"end1",1,250,-612.799438,40.307156,-522.799500,90.307144,0.000000,"end1"};
 item3[] = {"New_Task",4,218,-37.668053,138.662827,52.331947,188.662827,10.000000,"New Task"};
@@ -56,8 +56,8 @@ link27[] = {20,16};
 link28[] = {21,11};
 link29[] = {22,23};
 link30[] = {23,16};
-globals[] = {0.000000,0,0,0,0,640,480,1,54,6316128,1,-910.977417,412.761475,1204.277344,-264.573090,821,951,1};
-window[] = {2,-1,-1,-1,-1,847,2069,3329,110,3,839};
+globals[] = {0.000000,0,0,0,0,640,480,1,54,6316128,1,-643.327454,680.411438,1204.277344,-264.573090,821,951,1};
+window[] = {2,-1,-1,-1,-1,846,1937,3197,109,3,839};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -101,6 +101,12 @@ class FSM
        "  _x allowFleeing 0;" \n
        "} forEach units _grp;" \n
        "" \n
+       "_grp setBehaviour ""CARELESS"";" \n
+       "_grp setCombatMode ""BLUE"";" \n
+       "_grp setSpeedMode ""FULL"";" \n
+       "_grp enableAttack false;" \n
+       "" \n
+       "{ _x disableAi ""TARGET""; _x disableAi ""AUTOTARGET""; } forEach units _grp;" \n
        "//Vehicle Status" \n
        "_veh setVariable [""NEO_radioCasUnitStatus"", ""NONE"", true];" \n
        "" \n

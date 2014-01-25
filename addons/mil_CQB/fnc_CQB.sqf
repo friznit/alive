@@ -40,6 +40,7 @@ Wolffy, Highhead
 #define SUPERCLASS nil
 #define MTEMPLATE "ALiVE_CQB_%1"
 #define DEFAULT_BLACKLIST []
+#define DEFAULT_WHITELIST []
 
 private ["_logic","_operation","_args"];
 
@@ -69,6 +70,18 @@ switch(_operation) do {
 				if (typename (_CQB_density) == "STRING") then {_CQB_density = call compile _CQB_density};
                 _logic setVariable ["CQB_DENSITY", _CQB_density];
                 
+                _spawn = _logic getvariable ["CQB_spawndistance","1000"];
+				if (typename (_spawn) == "STRING") then {_spawn = call compile _spawn};
+                _logic setVariable ["spawnDistance", _spawn];
+                
+                _spawnHeli = _logic getvariable ["CQB_spawndistanceHeli","0"];
+				if (typename (_spawnHeli) == "STRING") then {_spawnHeli = call compile _spawnHeli};
+                _logic setVariable ["spawnDistanceHeli", _spawnHeli];
+                
+                _spawnJet = _logic getvariable ["CQB_spawndistanceJet","0"];
+				if (typename (_spawnJet) == "STRING") then {_spawnJet = call compile _spawnJet};
+                _logic setVariable ["spawnDistanceJet", _spawnJet];
+                
                 _factionsStrat = _logic getvariable ["CQB_FACTIONS_STRAT","OPF_F"];
                 _factionsStrat = [_logic,"factions",_factionsStrat] call ALiVE_fnc_CQB;
                 
@@ -81,6 +94,7 @@ switch(_operation) do {
                 _CQB_Locations = _logic getvariable ["CQB_LOCATIONTYPE","towns"];
                 
                 [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
+                [_logic, "whitelist", _logic getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
             
 	        	CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
                 if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
@@ -255,14 +269,16 @@ switch(_operation) do {
                     
                     _houses = _houses_reg + _houses_strat;
                     
-                    _result = [_houses,_strategicTypes,_CQB_density,[_logic, "blacklist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
+                    _result = [_houses,_strategicTypes,_CQB_density,[_logic, "blacklist"] call ALiVE_fnc_CQB,[_logic, "whitelist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
                     [MOD(CQB), "factions", _factionsStrat + _factionsReg] call ALiVE_fnc_CQB;
-					[MOD(CQB), "spawnDistance", 1000] call ALiVE_fnc_CQB;
+		     		[MOD(CQB), "spawnDistance", _spawn] call ALiVE_fnc_CQB;
+                    [MOD(CQB), "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
+                    [MOD(CQB), "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
 
                     // Create strategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
@@ -270,7 +286,9 @@ switch(_operation) do {
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsStrat] call ALiVE_fnc_CQB;
-					[_logic, "spawnDistance", 1000] call ALiVE_fnc_CQB;
+					[_logic, "spawnDistance", (_spawn * 1.4)] call ALiVE_fnc_CQB;
+                    [_logic, "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
+                    [_logic, "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
 					_logic setVariable ["debugColor","ColorRed",true];
 					_logic setVariable ["debugPrefix","Strategic",true];
 					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
@@ -283,7 +301,9 @@ switch(_operation) do {
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsReg] call ALiVE_fnc_CQB;
-					[_logic, "spawnDistance", 700] call ALiVE_fnc_CQB;
+					[_logic, "spawnDistance", _spawn] call ALiVE_fnc_CQB;
+                    [_logic, "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
+                    [_logic, "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
                     _logic setVariable ["debugColor","ColorGreen",true];
 					_logic setVariable ["debugPrefix","Regular",true];
 
@@ -342,6 +362,8 @@ switch(_operation) do {
                 //Delete markers
                 [MOD(CQB), "blacklist", MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
         		{deleteMarkerLocal _x} foreach (MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]);
+                [MOD(CQB), "whitelist", MOD(CQB) getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
+        		{deleteMarkerLocal _x} foreach (MOD(CQB) getVariable ["whitelist", DEFAULT_WHITELIST]);
             };
         };
         
@@ -364,8 +386,29 @@ switch(_operation) do {
 	            };
             };
             _args = _logic getVariable [_operation, DEFAULT_BLACKLIST];
-            
 		};
+        
+        case "whitelist": {
+            if !(isnil "_args") then {
+				if(typeName _args == "STRING") then {
+                    if !(_args == "") then {
+						_args = [_args, " ", ""] call CBA_fnc_replace;
+						_args = [_args, ","] call CBA_fnc_split;
+						if(count _args > 0) then {
+							_logic setVariable [_operation, _args];
+						};
+                    } else {
+                        _logic setVariable [_operation, []];
+                    };
+				} else {
+					if(typeName _args == "ARRAY") then {		
+						_logic setVariable [_operation, _args];
+					};
+	            };
+            };
+            _args = _logic getVariable [_operation, DEFAULT_WHITELIST];
+		};
+        
                 
         case "destroy": {
                 if (isServer) then {
@@ -515,7 +558,31 @@ switch(_operation) do {
 			_logic setVariable ["spawnDistance", _args, true];
 		};
 		_args;
+	};
+    
+    case "spawnDistanceHeli": {
+		if(isNil "_args") then {
+			// if no new distance was provided return spawn distance setting
+			_args = _logic getVariable ["spawnDistanceHeli", 0];
+		} else {
+			// if a new distance was provided set spawn distance settings
+			ASSERT_TRUE(typeName _args == "SCALAR",str typeName _args);			
+			_logic setVariable ["spawnDistanceHeli", _args, true];
+		};
+		_args;
 	}; 
+
+    case "spawnDistanceJet": {
+		if(isNil "_args") then {
+			// if no new distance was provided return spawn distance setting
+			_args = _logic getVariable ["spawnDistanceJet", 0];
+		} else {
+			// if a new distance was provided set spawn distance settings
+			ASSERT_TRUE(typeName _args == "SCALAR",str typeName _args);			
+			_logic setVariable ["spawnDistanceJet", _args, true];
+		};
+		_args;
+	};     
 	
 	case "houses": {
 		if(!isNil "_args") then {
@@ -628,18 +695,23 @@ switch(_operation) do {
 	            if !(_args) exitwith {GC = nil; Publicvariable "GC";};
 	            
 	            //else run a GC for each instance, until it is deleted
-                _spawn = _logic getVariable ["spawnDistance", 800];
+                _spawn = _logic getVariable ["spawnDistance", 1000];
+                _spawnHeli = _logic getVariable ["spawnDistanceHeli", 0];
+                _spawnJet = _logic getVariable ["spawnDistanceJet", 0];
+                
 	            GC = _args;
 				{
-		            [_x,_spawn] spawn {
+		            [_x,_spawn,_spawnHeli,_spawnJet] spawn {
 		                _logic = _this select 0;
 		                _spawn = _this select 1;
+                        _spawnHeli = _this select 2;
+                        _spawnJet = _this select 3;
                         
 		                while {!(isnil "GC")} do {
 		                    sleep 30;
 							{
 			                   _lead = leader _x;
-								if ((local _lead) && (([getPosATL _lead, (_spawn * 2.5)] call ALiVE_fnc_anyPlayersInRange) == 0)) then {[_logic, "delGroup", _x] call ALiVE_fnc_CQB};
+								if ((local _lead) && {!([getposATL _lead, _spawn*3, _spawnJet*3,_spawnHeli*3] call ALiVE_fnc_anyPlayersInRangeIncludeAir)}) then {[_logic, "delGroup", _x] call ALiVE_fnc_CQB};
 							} forEach (_logic getVariable ["groups",[]]);
 		                };
 					};
@@ -809,7 +881,7 @@ switch(_operation) do {
 			
 			// spawn loop
 			_logic spawn {
-				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_playerhosts","_faction","_useDominantFaction"];
+				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_playerhosts","_faction","_useDominantFaction","_inRange"];
 				_logic = _this;
                 
 				
@@ -818,7 +890,10 @@ switch(_operation) do {
 					waitUntil{
 						sleep (2 + random 1);
                         _debug = _logic getVariable ["debug",false];
-						_spawn = _logic getVariable ["spawnDistance", 800];
+						_spawn = _logic getVariable ["spawnDistance", 1000];
+                        _spawnHeli = _logic getVariable ["spawnDistanceHeli", 0];
+                        _spawnJet = _logic getVariable ["spawnDistanceJet", 0];
+                        
                         _useDominantFaction = call compile (MOD(CQB) getvariable ["CQB_UseDominantFaction","true"]);
                         
 						{
@@ -827,10 +902,10 @@ switch(_operation) do {
 						
 							// Check: house doesn't already have AI AND
 							// Check: if any players within spawn distance
-
+                            
                             _players = [] call BIS_fnc_listPlayers;
-                            _nearplayers = ({(((getposATL _x) select 2) < 10) && {((getPosATL _house) distance _x) < _spawn}} count _players);
-							if ((isNil {_house getVariable "group"}) && {_nearplayers != 0}) then {
+                            _nearplayers = [getposATL _house,_spawn,_spawnJet,_spawnHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir;
+							if ((isNil {_house getVariable "group"}) && {_nearplayers}) then {
 
                                 _playerhosts = [];
                                 if (count _players > 0) then {
@@ -849,7 +924,7 @@ switch(_operation) do {
                                             */
 		                                	_canhost = true;
 	                                        
-	                                        if ((getPosATL _house distance _pl < _spawn) && _canHost) then {
+	                                        if (((getPosATL _house distance _pl < _spawn) && _canHost) || {(_i == (count _players)-1) && {(count _playerhosts == 0)}}) then {
 		                                        _playerhosts set [count _playerhosts,_pl];
 		                                    };
                                         } else {
