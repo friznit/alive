@@ -81,6 +81,10 @@ if(count _config > 0) then {
     ["CFG Faction: %1",_groupFaction] call ALIVE_fnc_dump;
     */
 
+    if(_side == "INDEP") then {
+    	_side = "GUER";
+    };
+
 	// loop through the config for the group
 	for "_i" from 0 to count _config -1 do {
 		_class = (_config select _i);
