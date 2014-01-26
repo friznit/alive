@@ -30,7 +30,7 @@ private ["_cmd","_response","_resp"];
 PARAMS_1(_cmd);
 
 if (([_cmd] call CBA_fnc_strLen) < 16000) then {
-	_response = "Arma2Net" callExtension _cmd;
+	_response = "Arma2Net.Unmanaged" callExtension _cmd;
 	TRACE_1("SEND TO PLUGIN: ", _response);
 } else{
 	format["SendToPlugIn - Output is greater than 16kb - NOT sending: %1", _cmd] call ALIVE_fnc_logger;

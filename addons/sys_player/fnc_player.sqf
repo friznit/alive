@@ -114,7 +114,7 @@ switch(_operation) do {
 
 
                     // Check to see if data module has been placed
-                    if !(isNil "ALIVE_sys_data") then {
+                    if !(isNil "ALIVE_sys_data" || ALIVE_sys_data_DISABLED) then {
                         // Grab Server ID and Mission ID
                         private ["_serverID","_missionName"];
 
@@ -161,7 +161,7 @@ switch(_operation) do {
 
 
                 } else {
-                    if (!isServer && !isHC) then {
+                    if (!isServer && !isHC && !(ALIVE_sys_data_DISABLED)) then {
                         // any client side logic for model
                         TRACE_2("Adding player event handlers",isServer,isHC);
 
@@ -202,7 +202,7 @@ switch(_operation) do {
 
                 TRACE_2("Adding menu",isDedicated,isHC);
 
-                if(!isServer && !isHC) then {
+                if(!isServer && !isHC && !(ALIVE_sys_data_DISABLED)) then {
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
@@ -238,7 +238,7 @@ switch(_operation) do {
 
                 TRACE_2("Setting player guid on logic",isDedicated,isHC);
                 // For players waituntil the player is valid then let server know.
-                if(!isServer && !isHC) then {
+                if(!isServer && !isHC && !(ALIVE_sys_data_DISABLED)) then {
                     [] spawn {
                         private ["_puid"];
                         TRACE_1("SYS_PLAYER GETTING READY",player);
@@ -277,7 +277,7 @@ switch(_operation) do {
                 };
 
                 // Set up any spawn processes for checks
-                if (isDedicated) then {
+                if (isDedicated && !(ALIVE_sys_data_DISABLED)) then {
 
             	   [] spawn {
             		private ["_lastSaveTime"];
@@ -365,9 +365,10 @@ switch(_operation) do {
         };
         case "loadPlayers": {
                     // Load all players from external DB into player store
-
-                    _result = [GVAR(datahandler), "load", ["sys_player", _logic getvariable "key", _args select 0]] call ALIVE_fnc_Data;
-                    TRACE_1("Loading player data", _result);
+                    if (_logic getVariable ["storeToDB",false]) then {
+                        _result = [GVAR(datahandler), "load", ["sys_player", _logic getvariable "key", _args select 0]] call ALIVE_fnc_Data;
+                        TRACE_1("Loading player data", _result);
+                    };
         };
         case "savePlayers": {
                     // Save all players to external DB
