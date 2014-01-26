@@ -422,8 +422,8 @@ BLU_G_F_typeMappings = [] call ALIVE_fnc_hashCreate;
 // dr Irregulars
 // ---------------------------------------------------------------------------------------------------------------------
 drIrregulars_mappings = [] call ALIVE_fnc_hashCreate;
-[drIrregulars_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
-[drIrregulars_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
+[drIrregulars_mappings, "Side", "INDEP"] call ALIVE_fnc_hashSet;
+[drIrregulars_mappings, "GroupSideName", "INDEP"] call ALIVE_fnc_hashSet;
 [drIrregulars_mappings, "FactionName", "drIrregulars"] call ALIVE_fnc_hashSet;
 [drIrregulars_mappings, "GroupFactionName", "drIrregulars"] call ALIVE_fnc_hashSet;
 
