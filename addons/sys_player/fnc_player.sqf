@@ -114,7 +114,7 @@ switch(_operation) do {
 
 
                     // Check to see if data module has been placed
-                    if !(isNil "ALIVE_sys_data" || ALIVE_sys_data_DISABLED) then {
+                    if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
                         // Grab Server ID and Mission ID
                         private ["_serverID","_missionName"];
 
@@ -161,7 +161,7 @@ switch(_operation) do {
 
 
                 } else {
-                    if (!isServer && !isHC && !(ALIVE_sys_data_DISABLED)) then {
+                    if (!isServer && !isHC && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED})) then {
                         // any client side logic for model
                         TRACE_2("Adding player event handlers",isServer,isHC);
 
@@ -202,7 +202,7 @@ switch(_operation) do {
 
                 TRACE_2("Adding menu",isDedicated,isHC);
 
-                if(!isServer && !isHC && !(ALIVE_sys_data_DISABLED)) then {
+                if(!isServer && !isHC) then {
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
@@ -238,7 +238,7 @@ switch(_operation) do {
 
                 TRACE_2("Setting player guid on logic",isDedicated,isHC);
                 // For players waituntil the player is valid then let server know.
-                if(!isServer && !isHC && !(ALIVE_sys_data_DISABLED)) then {
+                if(!isServer && !isHC) then {
                     [] spawn {
                         private ["_puid"];
                         TRACE_1("SYS_PLAYER GETTING READY",player);
@@ -277,7 +277,7 @@ switch(_operation) do {
                 };
 
                 // Set up any spawn processes for checks
-                if (isDedicated && !(ALIVE_sys_data_DISABLED)) then {
+                if (isDedicated) then {
 
             	   [] spawn {
             		private ["_lastSaveTime"];
@@ -301,7 +301,7 @@ switch(_operation) do {
                                             _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
                                             TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
 
-            			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) ) then {
+            			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) ) then {
             				// Save player data to external db
                             TRACE_3("Saving players to DB", dateToNumber date, (_lastDBSaveTime + _autoSaveTime), _check);
             				[MOD(sys_player), "savePlayers", [false]] call MAINCLASS;
