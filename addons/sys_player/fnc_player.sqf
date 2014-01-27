@@ -49,7 +49,7 @@ nil
 #define DEFAULT_RESET true
 #define DEFAULT_DIFFCLASS false
 #define DEFAULT_MANUALSAVE true
-#define DEFAULT_storeToDB true
+#define DEFAULT_storeToDB false
 #define DEFAULT_autoSaveTime 0
 
 private ["_result", "_operation", "_args", "_logic", "_ops"];
@@ -91,7 +91,7 @@ switch(_operation) do {
                     MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
                     MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
                     MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
-                    MOD(sys_player) setVariable ["storeToDB", false, true];
+                    MOD(sys_player) setVariable ["storeToDB", DEFAULT_storeToDB, true];
                     MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
 
                     MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
@@ -298,8 +298,8 @@ switch(_operation) do {
             			// If auto save interval is defined and ext db is enabled, then save to external db
             			_check = [MOD(sys_player),"storeToDB",[],DEFAULT_storeToDB] call ALIVE_fnc_OOsimpleOperation;
             			_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
-                                            _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
-                                            TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
+                        _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
+                        TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
 
             			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) ) then {
             				// Save player data to external db
@@ -365,7 +365,7 @@ switch(_operation) do {
         };
         case "loadPlayers": {
                     // Load all players from external DB into player store
-                    if (_logic getVariable ["storeToDB",false]) then {
+                    if (_logic getVariable ["storeToDB",DEFAULT_storeToDB]) then {
                         _result = [GVAR(datahandler), "load", ["sys_player", _logic getvariable "key", _args select 0]] call ALIVE_fnc_Data;
                         TRACE_1("Loading player data", _result);
                     };
@@ -374,7 +374,7 @@ switch(_operation) do {
                     // Save all players to external DB
                     private ["_ondisconnect"];
                     _ondisconnect = _args select 0;
-                    if (_logic getVariable ["storeToDB",false]) then {
+                    if (_logic getVariable ["storeToDB",DEFAULT_storeToDB]) then {
                         TRACE_1("",GVAR(player_data));
                         _result = [GVAR(datahandler), "save", ["sys_player", GVAR(player_data), _logic getvariable "key", _ondisconnect]] call ALIVE_fnc_Data;
                     };

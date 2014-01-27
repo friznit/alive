@@ -30,7 +30,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 		// If storeToDB is enabled then save player data
 		_check = MOD(sys_player) getvariable ["storeToDB",false];
-		if (_check && !(ALIVE_sys_data_DISABLED)) then {
+		if (_check && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED})) then {
 			_result = [MOD(sys_player), "savePlayers", [false]] call ALIVE_fnc_player;
 			TRACE_1("SAVING PLAYER DATA", _result);
 		};
