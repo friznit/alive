@@ -388,6 +388,58 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
     ];
 };
 
+// SMD Sahrani
+if(_worldName == "smd_sahrani_a2") then {
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "army",
+        "vez",
+        "budova"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "army"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "Land_lib_Mil_Barracks",
+        "mesto3"
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "vez",
+        "hlaska",
+        "budova",
+        "posed",
+        "hospital"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "rohova"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "olezlina",
+        "Dom",
+        "dum",
+        "kulna",
+        "statek",
+        "afbar",
+        "Panelak",
+        "deutshe",
+        "mesto",
+        "hotel"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "najezd",
+        "cargo",
+        "nabrezi",
+        "podesta"
+    ];
+
+};
+
 
 /*
  * Custom mappings for unit mods

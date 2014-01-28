@@ -8,8 +8,8 @@ $index_names = (
     #'ivachev',
     #'panovo',
     #'staszow'
-    'altis',
-    'stratis'
+    #'altis',
+    #'stratis'
     #'hellskitchen',
     #'hellskitchens'
     #'celle',
@@ -24,6 +24,7 @@ $index_names = (
     #'isladuala',
     #'lingor',
     #'mcn_hazarkot',
+    'mbg_celle2',
     #'namalsk',
     #'isoladicapraia',
     #'panthera',
@@ -32,6 +33,7 @@ $index_names = (
     #'sara_dbe1',
     #'saralite',
     #'shapur_baf',    
+    'smd_sahrani_a2'
     #'takistan',
     #'thirsk',
     #'thirskw',
