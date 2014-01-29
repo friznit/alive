@@ -155,6 +155,9 @@
 <Key ID="STR_ALIVE_CP_TYPE_AIRBORNE">
 	<English>Airborne</English>
 </Key>
+<Key ID="STR_ALIVE_CP_TYPE_SPECOPS">
+    <English>Spec Ops</English>
+</Key>
 <Key ID="STR_ALIVE_CP_FACTION">
 	<English>Force Faction:</English>
 </Key>

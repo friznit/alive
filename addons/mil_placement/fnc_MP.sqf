@@ -856,7 +856,7 @@ switch(_operation) do {
 			// Spawn the main force
 			
 			private ["_countArmored","_countMechanized","_countMotorized","_countInfantry",
-			"_countAir","_groups","_motorizedGroups","_infantryGroups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
+			"_countAir","_countSpecOps","_groups","_motorizedGroups","_infantryGroups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
 			"_groupCount","_clusterCount"];
 			
 			// DEBUG -------------------------------------------------------------------------------------
@@ -870,6 +870,7 @@ switch(_operation) do {
 			_countMotorized = 0;
 			_countInfantry = 0;
 			_countAir = 0;
+			_countSpecOps = 0;
 			
 			// Force Composition			
 			switch(_type) do {
@@ -879,6 +880,7 @@ switch(_operation) do {
 					_countMotorized = floor((_size / 12) * random(0.2));
 					_countInfantry = floor((_size / 10) * 0.5);
 					_countAir = floor((_size / 30) * random(0.1));
+					_countSpecOps = floor((_size / 25) * 0.5);
 				};
 				case "Mechanized": {
 					_countMechanized = floor((_size / 12) * 0.5);
@@ -886,6 +888,7 @@ switch(_operation) do {
 					_countMotorized = floor((_size / 12) * random(0.2));
 					_countInfantry = floor((_size / 10) * 0.5);
 					_countAir = floor((_size / 30) * random(0.1));
+					_countSpecOps = floor((_size / 25) * 0.5);
 				};
 				case "Motorized": {
 					_countMotorized = floor((_size / 12) * 0.5);
@@ -893,6 +896,7 @@ switch(_operation) do {
 					_countArmored = floor((_size / 20) * random(0.2));
 					_countInfantry = floor((_size / 10) * 0.5);
 					_countAir = floor((_size / 30) * random(0.1));
+					_countSpecOps = floor((_size / 25) * 0.5);
 				};
 				case "Infantry": {
 					_countInfantry = floor((_size / 10) * 0.8);
@@ -900,6 +904,7 @@ switch(_operation) do {
 					_countMechanized = floor((_size / 12) * random(0.2));
 					_countArmored = floor((_size / 20) * random(0.2));
 					_countAir = floor((_size / 30) * random(0.1));
+					_countSpecOps = floor((_size / 25) * 0.5);
 				};
 				case "Air": {
 					_countAir = floor((_size / 30) * 0.5);
@@ -907,7 +912,16 @@ switch(_operation) do {
 					_countMotorized = floor((_size / 12) * random(0.2));
 					_countMechanized = floor((_size / 12) * random(0.2));
 					_countArmored = floor((_size / 20) * random(0.2));
+					_countSpecOps = floor((_size / 25) * 0.5);
 				};
+				case "Specops": {
+                    _countAir = floor((_size / 30) * 0.5);
+                    _countInfantry = floor((_size / 10) * 0.5);
+                    _countMotorized = floor((_size / 12) * random(0.2));
+                    _countMechanized = floor((_size / 12) * random(0.2));
+                    _countArmored = floor((_size / 20) * random(0.2));
+                    _countSpecOps = floor((_size / 10) * 0.5);
+                };
 			};
 			
 			
@@ -919,6 +933,7 @@ switch(_operation) do {
 				["Count Motor: %1",_countMotorized] call ALIVE_fnc_dump;
 				["Count Air: %1",_countAir] call ALIVE_fnc_dump;
 				["Count Infantry: %1",_countInfantry] call ALIVE_fnc_dump;
+				["Count Spec Ops: %1",_countSpecOps] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
@@ -979,6 +994,13 @@ switch(_operation) do {
 					_groups set [count _groups, _group];
 				};
 			};
+
+			for "_i" from 0 to _countSpecOps -1 do {
+                _group = ["SpecOps",_faction] call ALIVE_fnc_configGetRandomGroup;
+                if!(_group == "FALSE") then {
+                    _groups set [count _groups, _group];
+                };
+            };
 			
 			_groups = _groups - ALIVE_groupBlacklist;
 

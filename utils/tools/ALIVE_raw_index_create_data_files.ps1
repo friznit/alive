@@ -33,6 +33,7 @@ $index_names = (
     'namalsk',
     'isoladicapraia',
     #'noe',
+    'pja305',
     'panthera',
     'provinggrounds_pmc',
     'sara',

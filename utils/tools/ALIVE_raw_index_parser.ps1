@@ -21,19 +21,20 @@ $index_names = (
     #'desert2',
     #'fallujah',
     #'fdf_isle1_a',
-    #'isladuala',
-    #'lingor',
+    'isladuala',
+    'lingor',
     #'mcn_hazarkot',
-    'mbg_celle2',
+    #'mbg_celle2',
     #'namalsk',
     #'isoladicapraia',
+    'pja305'
     #'panthera',
     #'provinggrounds_pmc',
     #'sara',
     #'sara_dbe1',
     #'saralite',
     #'shapur_baf',    
-    'smd_sahrani_a2'
+    #'smd_sahrani_a2'
     #'takistan',
     #'thirsk',
     #'thirskw',
@@ -44,7 +45,7 @@ $index_names = (
     #'zargabad'
     )
 
-$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg','vegetation')
+$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg','vegetation','shrub','palm')
 
 foreach ($index_name in $index_names){
     

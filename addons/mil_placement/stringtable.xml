@@ -125,6 +125,9 @@
 <Key ID="STR_ALIVE_MP_TYPE_AIRBORNE">
 	<English>Airborne</English>
 </Key>
+<Key ID="STR_ALIVE_MP_TYPE_SPECOPS">
+    <English>Spec Ops</English>
+</Key>
 <Key ID="STR_ALIVE_MP_FACTION">
 	<English>Force Faction:</English>
 </Key>
