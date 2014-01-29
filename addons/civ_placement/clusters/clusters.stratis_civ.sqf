@@ -1,4 +1,4 @@
-ALIVE_clusterBuild = ["Arma 3", "Arma3", 110, 114486, "Stable"];
+ALIVE_clusterBuild = ["Arma 3", "Arma3", 110, 114700, "Stable"];
 ALIVE_clustersCiv = [] call ALIVE_fnc_hashCreate;
 _cluster = [nil, "create"] call ALIVE_fnc_cluster;
 _nodes = [];
