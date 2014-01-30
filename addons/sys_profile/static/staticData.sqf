@@ -388,6 +388,102 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
     ];
 };
 
+// SMD Sahrani
+if(_worldName == "smd_sahrani_a2") then {
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "army",
+        "vez",
+        "budova"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "army"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "Land_lib_Mil_Barracks",
+        "mesto3"
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "vez",
+        "hlaska",
+        "budova",
+        "posed",
+        "hospital"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "rohova"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "olezlina",
+        "Dom",
+        "dum",
+        "kulna",
+        "statek",
+        "afbar",
+        "Panelak",
+        "deutshe",
+        "mesto",
+        "hotel"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "najezd",
+        "cargo",
+        "nabrezi",
+        "podesta"
+    ];
+
+};
+
+// Nziwasogo
+if(_worldName == "pja305") then {
+
+    /*
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "army",
+        "vez"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "army"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "Land_lib_Mil_Barracks",
+        "mesto3"
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "vez",
+        "hlaska"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "rohova"
+    ];
+    */
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "dum",
+        "Shed",
+        "hut",
+        "House",
+        "Dom"
+    ];
+
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "najezd",
+        "cargo"
+    ];
+
+};
+
 
 /*
  * Custom mappings for unit mods
@@ -421,6 +517,7 @@ BLU_G_F_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 // dr Irregulars
 // ---------------------------------------------------------------------------------------------------------------------
+/*
 drIrregulars_mappings = [] call ALIVE_fnc_hashCreate;
 [drIrregulars_mappings, "Side", "INDEP"] call ALIVE_fnc_hashSet;
 [drIrregulars_mappings, "GroupSideName", "INDEP"] call ALIVE_fnc_hashSet;
@@ -441,6 +538,7 @@ drIrregulars_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionCustomMappings, "drIrregulars", drIrregulars_mappings] call ALIVE_fnc_hashSet;
 
 [ALIVE_factionDefaultSupplies, "drIrregulars", ["Box_mas_ru_rifle_Wps_F"]] call ALIVE_fnc_hashSet;
+*/
 // ---------------------------------------------------------------------------------------------------------------------
 
 // African

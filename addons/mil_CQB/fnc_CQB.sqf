@@ -939,7 +939,7 @@ switch(_operation) do {
 		                                    _house setvariable ["group","preinit",true];
                                             
                                             if (_useDominantFaction) then {
-                                            	_faction = [getposATL _house, 500] call ALiVE_fnc_getDominantFaction;
+                                            	_faction = [getposATL _house, 250] call ALiVE_fnc_getDominantFaction;
                                             	if (isnil "_faction") then {_faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom};
                                             } else {
                                                 _faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom;
