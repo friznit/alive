@@ -36,6 +36,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_statistics\fnc_statisticsInit.sqf";
 								recompile = RECOMPILE;
                         };
+                        class getPlayerGroup {
+                                description = "Get's the player group associated with a unit";
+                                file = "\x\alive\addons\sys_statistics\fnc_getPlayerGroup.sqf";
+								recompile = RECOMPILE;
+                        };
 				};
         };
 };

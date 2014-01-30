@@ -89,9 +89,8 @@ if (GVAR(ENABLED)) then {
 		_killerweapon = getText (configFile >> "cfgWeapons" >> (currentweapon _killer) >> "displayName");
 		_killerweaponType = currentweapon _killer;
 
-		if (vehicle _killer != _killer) then {
+		if !(_killer isKindof "Man") then {
 				_killerweapon = _killerweapon + format[" (%1)", getText (configFile >> "cfgVehicles" >> (typeof (vehicle _killer)) >> "displayName")];
-				_killerweaponType = currentweapon (vehicle _killer);
 		};
 
 		if (_killerweapon == "") then {
@@ -115,16 +114,16 @@ if (GVAR(ENABLED)) then {
 				_data = _data + [["suicide",true]];
 			};
 
-				_data = _data + [ ["Death","true"] , ["Player",getplayeruid _killed], ["PlayerName",name _killed], ["playerGroup", _killed getvariable [QGVAR(playerGroup), "Unknown"]] ];
-				// Send data to server to be written to DB
-				GVAR(UPDATE_EVENTS) = _data;
-				publicVariableServer QGVAR(UPDATE_EVENTS);
+			_data = _data + [ ["Death","true"] , ["Player",getplayeruid _killed], ["PlayerName",name _killed], ["playerGroup", [_killed] call ALiVE_fnc_getPlayerGroup] ];
+			// Send data to server to be written to DB
+			GVAR(UPDATE_EVENTS) = _data;
+			publicVariableServer QGVAR(UPDATE_EVENTS);
 		};
 
 		if (!(_killed iskindof "Man")) then { // vehicle was killed
 
-				if (isPlayer _killer || isPlayer (gunner _killer)) then {
-					_data = _data + [["Player",getplayeruid _killer] , ["PlayerName",name _killer], ["playerGroup", _killer getvariable [QGVAR(playerGroup), "Unknown"]] ];
+				if (isPlayer _killer || isPlayer (gunner _killer) || isPlayer (driver _killer)) then {
+					_data = _data + [["Player",getplayeruid _killer] , ["PlayerName",name _killer], ["playerGroup", [_killer] call ALiVE_fnc_getPlayerGroup] ];
 				};
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
@@ -134,12 +133,12 @@ if (GVAR(ENABLED)) then {
 		if (isPlayer _killer && (_killer != _killed) && (_killed iskindof "Man")) then { // Player was killer
 
 				// Check to see if player is in a vehicle and firing the weapon
-				//if (_killer iskindof "Man" || isPlayer (gunner _killer) || isPlayer (commander _killer) || isPlayer (driver _killer) ) then {
-					_data = _data + [ ["Player",getplayeruid _killer] , ["PlayerName",name _killer], ["playerGroup", _killer getvariable [QGVAR(playerGroup), "Unknown"]] ];
+
+					_data = _data + [ ["Player",getplayeruid _killer] , ["PlayerName",name _killer], ["playerGroup", [_killer] call ALiVE_fnc_getPlayerGroup] ];
 					// Send data to server to be written to DB
 					GVAR(UPDATE_EVENTS) = _data;
 					publicVariableServer QGVAR(UPDATE_EVENTS);
-				//};
+
 
 		};
 
