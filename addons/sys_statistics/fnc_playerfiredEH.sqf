@@ -58,7 +58,7 @@ if (GVAR(ENABLED)) then {
 			_shotsfired set [_idx, [_muzzle, _shots + 1, _weapon, _weaponName]];
 		};
 
-		diag_log format["SF: %1", _shotsfired];
+		// diag_log format["SF: %1", _shotsfired];
 
 		player setVariable [QGVAR(shotsFired), _shotsfired, true];
 	};
