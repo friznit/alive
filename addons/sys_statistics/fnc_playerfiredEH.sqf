@@ -1,13 +1,13 @@
-/* 
+/*
  * Filename:
- * playerFiredEH.sqf 
+ * playerFiredEH.sqf
  *
  * Description: Keeps a record of shots fired for each player. Fires globally, but only executed where player is local. Does not capture players firing from vehicles, see firedEH.
- * 
- * 
+ *
+ *
  * Created by Tupolov
  * Creation date: 19/05/2012
- * 
+ *
  * */
 
 // ====================================================================================
@@ -18,7 +18,7 @@
 if (GVAR(ENABLED)) then {
 	private ["_player","_weapon","_muzzle"];
 
-	_player = _this select 0; 
+	_player = _this select 0;
 	_weapon = _this select 1;
 	_muzzle = _this select 2;
 
@@ -43,12 +43,12 @@ if (GVAR(ENABLED)) then {
 		} foreach _shotsfired;
 
 		_weaponName = getText (configFile >> "cfgWeapons" >> _weapon >> "displayName");
-		
+
 		if (_weaponName == "Throw") then {
 			_weaponName = getText (configFile >> "cfgWeapons" >> _weaponName >> _muzzle >> "displayName");
 			_weapon = _muzzle;
 		};
-			
+
 		// Add weapon count to array
 		if (_idx == 0) then {
 			_shotsfired set [_i, [_muzzle, 1, _weapon, _weaponName]];
@@ -58,9 +58,9 @@ if (GVAR(ENABLED)) then {
 			_shotsfired set [_idx, [_muzzle, _shots + 1, _weapon, _weaponName]];
 		};
 
-		//diag_log format["SF: %1", _shotsfired];
+		diag_log format["SF: %1", _shotsfired];
 
 		player setVariable [QGVAR(shotsFired), _shotsfired, true];
 	};
-};		
+};
 // ====================================================================================

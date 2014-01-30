@@ -78,9 +78,8 @@ if (GVAR(ENABLED)) then {
 			_sourceweapon = getText (configFile >> "cfgWeapons" >> (currentweapon _source) >> "displayName");
 			_sourceweaponType = currentweapon _source;
 
-			if (vehicle _source != _source) then {
+			if !(_source isKindof "Man") then {
 					_sourceweapon = _sourceweapon + format[" (%1)", getText (configFile >> "cfgVehicles" >> (typeof (vehicle _source)) >> "displayName")];
-					_sourceweaponType = currentweapon (vehicle _source);
 			};
 
 			_distance = ceil(_target distance _source);
@@ -95,7 +94,7 @@ if (GVAR(ENABLED)) then {
 
 			if (isPlayer _target) then { // Player was Target
 
-					_data = _data + [ ["FiredAt","true"] , ["Player", getplayeruid _target] , ["PlayerName", name _target], ["playerGroup", _target getvariable [QGVAR(playerGroup), "Unknown"]] ];
+					_data = _data + [ ["FiredAt","true"] , ["Player", getplayeruid _target] , ["PlayerName", name _target], ["playerGroup", [_target] call ALiVE_fnc_getPlayerGroup] ];
 
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;
@@ -105,7 +104,7 @@ if (GVAR(ENABLED)) then {
 
 			if (isPlayer _source) then { // Player was firing
 
-					_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source], ["playerGroup", _source getvariable [QGVAR(playerGroup), "Unknown"]] ];
+					_data = _data + [ ["Player",getplayeruid _source] , ["PlayerName",name _source], ["playerGroup", [_source] call ALiVE_fnc_getPlayerGroup] ];
 
 					// Send data to server to be written to DB
 					ALIVE_SYS_STAT_UPDATE_EVENTS = _data;

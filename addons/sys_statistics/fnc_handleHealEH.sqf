@@ -46,7 +46,7 @@ if (GVAR(ENABLED)) then {
 
 		if (isPlayer _patient) then { // Player was patient
 
-				_data = _data + [ ["Player",getplayeruid _patient] , ["PlayerName",name _patient], ["playerGroup", _patient getvariable [QGVAR(playerGroup), "Unknown"]] ];
+				_data = _data + [ ["Player",getplayeruid _patient] , ["PlayerName",name _patient], ["playerGroup", [_patient] call ALiVE_fnc_getPlayerGroup] ];
 
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
@@ -56,7 +56,7 @@ if (GVAR(ENABLED)) then {
 
 		if (isPlayer _medic) then {
 
-				_data = _data + [ ["Medic","true"] , ["Player",getplayeruid _medic] , ["PlayerName",name _medic], ["playerGroup", _medic getvariable [QGVAR(playerGroup), "Unknown"]] ];
+				_data = _data + [ ["Medic","true"] , ["Player",getplayeruid _medic] , ["PlayerName",name _medic], ["playerGroup", [_medic] call ALiVE_fnc_getPlayerGroup]] ];
 
 				// Send data to server to be written to DB
 				GVAR(UPDATE_EVENTS) = _data;
