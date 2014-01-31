@@ -42,7 +42,7 @@ if (GVAR(ENABLED)) then {
 
 		// Log data
 		_data = [ ["Event","Heal"] , ["patientSide",_sidepatient] , ["patientfaction",_factionpatient] , ["patientType",_patientType] , ["patientPos",_patientPos] , ["medicGeoPos",_medicGeoPos] , ["medicSide",_sidemedic] , ["medicfaction",_factionmedic] , ["medicType",_medicType] , ["medicPos",_medicPos] , ["patient", _patient] , ["medic",_medic] ];
-		TRACE_1("SYS STAT HANDLE HEAL EH DETAIL", _data);
+
 
 		if (isPlayer _patient) then { // Player was patient
 
@@ -63,6 +63,8 @@ if (GVAR(ENABLED)) then {
 				publicVariableServer QGVAR(UPDATE_EVENTS);
 
 		};
+
+		TRACE_1("SYS STAT HANDLE HEAL EH DETAIL", _data);
 
 	};
 };

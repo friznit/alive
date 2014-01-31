@@ -45,6 +45,7 @@ if (isDedicated && GVAR(ENABLED)) then {
 	GVAR(serverIP) = [] call ALIVE_fnc_getServerIP;
 	GVAR(serverName) = [] call ALIVE_fnc_getServerName;
 	GVAR(groupTag) = [] call ALIVE_fnc_getGroupID;
+	publicVariable QGVAR(groupTag);
 
 	// If the host IP web service is down, just use the serverName
 	if (GVAR(serverIP) == "ERROR") then {
@@ -250,7 +251,7 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	_puid = getplayeruid player;
 	_PlayerSide = side (group player); // group side is more reliable
 	_PlayerFaction = faction player;
-	_playerGroup = player getVariable [QGVAR(playerGroup),"MISSING"];
+
 
 	// Setup the event data for player starting
 	_data = [ ["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["Player",_puid] ];
