@@ -830,6 +830,7 @@ switch(_operation) do {
                 case 0 : {_side = EAST};
                 case 1 : {_side = WEST};
                 case 2 : {_side = RESISTANCE};
+                case 3 : {_side = CIVILIAN};
                 default {_side = EAST};
             };
             
