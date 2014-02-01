@@ -24,5 +24,5 @@ private ["_m","_markers","_delay"];
 if(isServer) then {
     ["profiles"] call ALIVE_fnc_debugHandler;
 }else{
-    ["server","Subject",[[1],{["profiles"] call ALIVE_fnc_debugHandler;}]] call ALiVE_fnc_BUS_RetVal;
+    ["server","Subject",[[1],{["profiles"] call ALIVE_fnc_debugHandler;}]] call ALiVE_fnc_BUS;
 };
