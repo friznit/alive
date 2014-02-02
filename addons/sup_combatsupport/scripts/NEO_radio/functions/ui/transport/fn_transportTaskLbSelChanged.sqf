@@ -53,7 +53,7 @@ CASE "INSERTION" :
 	_sliderText ctrlSetPosition [0.280111 * safezoneW + safezoneX, 0.514 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)];
 	_sliderText ctrlCommit 0;
 
-	_slider sliderSetRange [20, 40];
+	_slider sliderSetRange [5, 40];
 	_slider sliderSetspeed [1, 10];
 	_slider sliderSetPosition 25;
 	_slider ctrlSetEventHandler ["SliderPosChanged", 

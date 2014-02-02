@@ -43,11 +43,26 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT">
 	<English>Allow server admins to mark units positions for 15 seconds</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CQB_ENABLE">
+    <English>Activate CQB Debug</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CQB_ENABLE_COMMENT">
+    <English>Activates CQB Debug</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CQB_DISABLE">
+    <English>Deactivate CQB Debug</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CQB_DISABLE_COMMENT">
+    <English>Deactivates CQB Debug</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG">
     <English>Debug Profile System:</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE">
-    <English>Activate Debug Profiles</English>
+    <English>Activate Profiles Debug</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_DISABLE">
+    <English>Deactivate Profiles Debug</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT">
     <English>Toggle debug mode on the profile system</English>

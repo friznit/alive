@@ -136,16 +136,44 @@ if (_menuName == "adminActions") then {
 					MOD(adminActions) getVariable ["mark_units", 0],
 					true
 				],
-
-				[localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE",
-                    { [] call ALIVE_fnc_profileSystemDebug },
-                    "",
-                    localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
-                    "",
-                    -1,
-                    MOD(adminActions) getVariable ["profile_debug", 0],
-                    true
-                ],
+                
+                [localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE",
+					{ MOD(adminActions) setVariable ["CQB_enabled", true]; [CQB_REGULAR,"debug",true] call ALiVE_fnc_CQB; [CQB_STRATEGIC,"debug",true] call ALiVE_fnc_CQB; },
+					"",
+					localize "STR_ALIVE_ADMINACTIONS_CQB_COMMENT",
+					"",
+					-1,
+					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
+					!(MOD(adminActions) getVariable ["CQB_enabled", false])
+				],
+				[localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE",
+					{ MOD(adminActions) setVariable ["CQB_enabled", false]; [CQB_REGULAR,"debug",false] call ALiVE_fnc_CQB; [CQB_STRATEGIC,"debug",false] call ALiVE_fnc_CQB; },
+					"",
+					localize "STR_ALIVE_ADMINACTIONS_CQB_COMMENT",
+					"",
+					-1,
+					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
+					(MOD(adminActions) getVariable ["CQB_enabled", false])
+				],
+                
+                [localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE",
+					{ MOD(adminActions) setVariable ["PROFILES_enabled", true]; [] call ALIVE_fnc_profileSystemDebug; },
+					"",
+					localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
+					"",
+					-1,
+					["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable,
+					!(MOD(adminActions) getVariable ["PROFILES_enabled", false])
+				],
+				[localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_DISABLE",
+					{ MOD(adminActions) setVariable ["PROFILES_enabled", false]; [] call ALIVE_fnc_profileSystemDebug; },
+					"",
+					localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
+					"",
+					-1,
+					["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable,
+					(MOD(adminActions) getVariable ["PROFILES_enabled", false])
+				],
 
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
 					{ createDialog "RscDisplayDebugPublic" },
