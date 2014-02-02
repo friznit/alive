@@ -41,13 +41,13 @@ _unit = _this select 0;
 
 if !(_unit isKindof "Man") then {
 	switch (true) do {
-		case (isPlayer (commander _unit)) : {_playerGroup =	(commander _unit) getvariable [QGVAR(playerGroup), QGVAR(groupTag)];};
-		case (isPlayer (gunner _unit)) : {_playerGroup = (gunner _unit) getvariable [QGVAR(playerGroup), QGVAR(groupTag)];};
-		case (isPlayer (driver _unit)) : {_playerGroup = (driver _unit) getvariable [QGVAR(playerGroup), QGVAR(groupTag)];};
-		default {_playerGroup = _unit getvariable [QGVAR(playerGroup), QGVAR(groupTag)];};
+		case (isPlayer (commander _unit)) : {_playerGroup =	(commander _unit) getvariable [QGVAR(playerGroup), GVAR(groupTag)];};
+		case (isPlayer (gunner _unit)) : {_playerGroup = (gunner _unit) getvariable [QGVAR(playerGroup), GVAR(groupTag)];};
+		case (isPlayer (driver _unit)) : {_playerGroup = (driver _unit) getvariable [QGVAR(playerGroup), GVAR(groupTag)];};
+		default {_playerGroup = _unit getvariable [QGVAR(playerGroup), GVAR(groupTag)];};
 	};
 } else {
-	_playerGroup = _unit getvariable [QGVAR(playerGroup), QGVAR(groupTag)];
+	_playerGroup = _unit getvariable [QGVAR(playerGroup), GVAR(groupTag)];
 };
 
 _playerGroup
