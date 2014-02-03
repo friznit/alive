@@ -361,9 +361,9 @@ switch(_operation) do {
                 
                 //Delete markers
                 [MOD(CQB), "blacklist", MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
-        		{deleteMarkerLocal _x} foreach (MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]);
+        		{_x setMarkerAlpha 0} foreach (MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]);
                 [MOD(CQB), "whitelist", MOD(CQB) getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
-        		{deleteMarkerLocal _x} foreach (MOD(CQB) getVariable ["whitelist", DEFAULT_WHITELIST]);
+        		{_x setMarkerAlpha 0} foreach (MOD(CQB) getVariable ["whitelist", DEFAULT_WHITELIST]);
             };
         };
         

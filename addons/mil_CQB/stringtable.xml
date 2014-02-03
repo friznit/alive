@@ -33,10 +33,10 @@
 	<English>Enables CQB module</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN">
-	<English>Density:</English>
+	<English>Probability:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN_COMMENT">
-	<English>Percentage of occupied houses</English>
+	<English>Probability in % that a house will be occupied</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_DISABLE">
 	<English>Disable CQB:</English>
@@ -57,13 +57,13 @@
 	<English>Selects the type of area in which CQB will be available, if synced to a MIL/CIV MP module this setting will be overwritten</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_BLACKLIST">
-	<English>Blacklist:</English>
+	<English>Blacklist Marker:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_BLACKLIST_COMMENT">
 	<English>Markers where no CQB will be present (optional)</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_WHITELIST">
-	<English>Whitelist:</English>
+	<English>TAOR Marker:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_WHITELIST_COMMENT">
 	<English>Markers where CQB will be present (optional, opposite to Blacklist)</English>
@@ -78,7 +78,7 @@
 	<English>Density:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_DENSITY_COMMENT">
-	<English>Density of CQB placements</English>
+	<English>Density of additional CQB placements</English>
 </Key>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWNDISTANCE">
