@@ -52,10 +52,6 @@ if (isDedicated && GVAR(ENABLED)) then {
 		GVAR(serverIP) = GVAR(serverName);
 	};
 
-	// Try getting the actual MP hostname of server
-	//GVAR(serverhostname) = ["ServerHostName"] call ALIVE_fnc_sendToPlugIn;
-	//diag_log GVAR(serverhostname);
-
 	// Setup OPC and OPD events
 	//[QGVAR(OPC), "OnPlayerConnected","ALIVE_fnc_stats_OnPlayerConnected"] call BIS_fnc_addStackedEventHandler;
 	//[QGVAR(OPD), "OnPlayerDisconnected","ALIVE_fnc_stats_OnPlayerDisconnected"] call BIS_fnc_addStackedEventHandler;
@@ -96,7 +92,7 @@ if (isDedicated && GVAR(ENABLED)) then {
 			_data = [ ["realTime",_realtime],["Server",GVAR(serverIP)],["Group",GVAR(groupTag)],["Operation",GVAR(operation)],["Map",worldName],["gameTime",_gametime] ] + _data;
 
 			// Write event data to DB
-			if ((_data select 5) select 1 == "OperationFinish") then {
+			if ((_data select 6) select 1 == "OperationFinish") then {
 				_async = false;
 			} else {
 				_async = true;
