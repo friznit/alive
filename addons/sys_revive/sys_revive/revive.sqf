@@ -10,9 +10,9 @@ _player attachTo [_wounded, [-0.666, 0.222, 0]];
 _player setDir 90;
 _player playMoveNow "AinvPknlMstpSnonWrflDnon_medic";
 
-REV_code_distant = [_wounded, "playMoveNow", "AinjPpneMstpSnonWrflDnon_rolltoback"];
-publicVariable "REV_code_distant";
-["REV_code_distant", REV_code_distant] spawn REV_FNCT_code_distant;
+ALiVE_Animation = [_wounded, "playMoveNow", "AinjPpneMstpSnonWrflDnon_rolltoback"];
+publicVariable "ALiVE_Animation";
+["ALiVE_Animation", ALiVE_Animation] spawn ALiVE_FNC_animateBody;
 
 sleep 1.5;
 // The player plays an animation of random care
@@ -35,9 +35,9 @@ if !(isNull _wounded) then {
 		_wounded setVariable ["REV_Unconscious", false, true];
 		
 		// Discount on the belly and back of the gun
-		REV_code_distant = [_wounded, "playMoveNow", "AmovPpneMstpSrasWrflDnon"];
-		publicVariable "REV_code_distant";
-		["REV_code_distant", REV_code_distant] spawn REV_FNCT_code_distant;
+		ALiVE_Animation = [_wounded, "playMoveNow", "AmovPpneMstpSrasWrflDnon"];
+		publicVariable "ALiVE_Animation";
+		["ALiVE_Animation", ALiVE_Animation] spawn ALiVE_FNC_animateBody;
 	};
 	
 	_wounded setVariable ["REV_Medical_Support_Unit", nil, true];

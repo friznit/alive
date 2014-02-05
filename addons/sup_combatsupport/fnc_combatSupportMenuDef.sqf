@@ -44,10 +44,14 @@ PARAMS_2(_target,_params);
 _menuName = "";
 _menuRsc = "popup";
 _items = assignedItems player;
-_userItems = [NEO_radioLogic getvariable ["combatsupport_item","LaserDesignator"]];
-
+_backpacks = Backpack player;
+_userItems = [NEO_radioLogic getVariable ["combatsupport_item","LaserDesignator"]];
 //Finds selected userItem-string(s) in assignedItems
 _result = (({([toLower(str(_items)), toLower(_x)] call CBA_fnc_find) > -1} count _userItems) > 0);
+
+if(!_result) then {
+_result = (({([toLower(str(_backpacks)), toLower(_x)] call CBA_fnc_find) > -1} count _userItems) > 0);
+};
 
 if (typeName _params == typeName []) then {
 	if (count _params < 1) exitWith {diag_log format["Error: Invalid params: %1, %2", _this, __FILE__];};

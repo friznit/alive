@@ -9,17 +9,17 @@ _id_action = _player addAction [STR_REV_Action_Release_Body, "\x\alive\addons\sy
 
 // Is attached to the injured player
 _wounded attachTo [_player, [0, 1.1, 0.092]];
-REV_code_distant = [_wounded, "setDir", 180];
-publicVariable "REV_code_distant";
-["REV_code_distant", REV_code_distant] spawn REV_FNCT_code_distant;
+ALiVE_Animation = [_wounded, "setDir", 180];
+publicVariable "ALiVE_Animation";
+["ALiVE_Animation", ALiVE_Animation] spawn ALiVE_FNC_animateBody;
 
 // The player shoots the wounded by the handle of his waistcoat
 _player playMoveNow "AcinPknlMstpSrasWrflDnon";
 sleep 1;
 if (!isNull _player && alive _player && !isNull _wounded && alive _wounded) then {
-	REV_code_distant = [_wounded, "playMoveNow", "AinjPpneMstpSnonWrflDb_grab"];
-	publicVariable "REV_code_distant";
-	["REV_code_distant", REV_code_distant] spawn REV_FNCT_code_distant;
+	ALiVE_Animation = [_wounded, "playMoveNow", "AinjPpneMstpSnonWrflDb_grab"];
+	publicVariable "ALiVE_Animation";
+	["ALiVE_Animation", ALiVE_Animation] spawn ALiVE_FNC_animateBody;
 };
 
 sleep 3;
@@ -34,13 +34,13 @@ while {!REV_Release_Body && !isNull _player && alive _player && !isNull _wounded
 if !(isNull _wounded) then {
 	detach _wounded;
 	if (alive _wounded) then {
-		REV_code_distant = [_wounded, "playMoveNow", "AinjPpneMstpSnonWrflDb_release"];
-		publicVariable "REV_code_distant";
-		["REV_code_distant", REV_code_distant] spawn REV_FNCT_code_distant;
+		ALiVE_Animation = [_wounded, "playMoveNow", "AinjPpneMstpSnonWrflDb_release"];
+		publicVariable "ALiVE_Animation";
+		["ALiVE_Animation", ALiVE_Animation] spawn ALiVE_FNC_animateBody;
 	} else {
-		REV_code_distant = [_wounded, "switchMove", "AinjPpneMstpSnonWrflDnon"];
-		publicVariable "REV_code_distant";
-		["REV_code_distant", REV_code_distant] spawn REV_FNCT_code_distant;
+		ALiVE_Animation = [_wounded, "switchMove", "AinjPpneMstpSnonWrflDnon"];
+		ALiVE_Animation "ALiVE_Animation";
+		["ALiVE_Animation", ALiVE_Animation] spawn ALiVE_FNC_animateBody;
 	};
 	_wounded setVariable ["REV_Medical_Support_Unit", nil, true];
 };
