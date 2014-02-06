@@ -2,7 +2,7 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"react",0,250,-39.125454,36.278599,50.874546,86.278595,0.000000,"react"};
-item1[] = {"killed",4,4314,-176.596497,35.791580,-86.596497,85.791595,50.000000,"killed"};
+item1[] = {"killed",4,218,-176.596497,35.791580,-86.596497,85.791595,50.000000,"killed"};
 item2[] = {"end1",1,250,-381.218628,39.896168,-291.218750,89.896164,0.000000,"end1"};
 item3[] = {"new_task",4,218,-39.236374,128.021286,50.763626,178.021286,10.000000,"new task"};
 item4[] = {"",7,210,-134.446793,239.584732,-126.446762,247.584732,0.000000,""};
@@ -14,7 +14,7 @@ item9[] = {"circle",4,218,504.298615,342.826050,594.298584,392.826050,0.000000,"
 item10[] = {"",7,210,-134.421814,149.088745,-126.421806,157.088745,0.000000,""};
 item11[] = {"__1",2,250,-26.534916,398.299042,63.465096,448.299042,0.000000,""};
 item12[] = {"ready_for_smoke",4,218,-100.355843,530.731445,-10.355839,580.731445,0.000000,"ready for" \n "smoke"};
-item13[] = {"__2",2,250,-100.094650,622.111084,-10.094629,672.111084,0.000000,""};
+item13[] = {"__2",2,4346,-100.094650,622.111084,-10.094629,672.111084,0.000000,""};
 item14[] = {"",7,210,-134.421387,455.318359,-126.421387,463.318359,0.000000,""};
 item15[] = {"",7,210,-134.421356,643.722168,-126.421371,651.722168,0.000000,""};
 item16[] = {"smoke_found_",4,218,-100.416473,715.152222,-10.416485,765.152222,1.000000,"smoke found?"};
@@ -123,8 +123,8 @@ link67[] = {47,48};
 link68[] = {48,49};
 link69[] = {49,50};
 link70[] = {50,15};
-globals[] = {0.000000,0,0,0,0,640,480,1,19,6316128,1,-386.996307,829.955322,832.800903,-69.241989,892,929,1};
-window[] = {2,-1,-1,-1,-1,847,110,1370,110,3,909};
+globals[] = {0.000000,0,0,0,0,640,480,1,19,6316128,1,-193.947403,1023.004272,1179.991455,-67.076080,889,951,1};
+window[] = {2,-1,-1,-32000,-32000,877,2201,3461,140,3,907};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -299,16 +299,20 @@ class FSM
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_dirCircle = [_pos, _chopper] call BIS_fnc_dirTo;" \n
            "_chopper doMove ([_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos);" \n
+           "_chopper flyinheight 100;" \n
            "" \n
            "//New Status" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
            "" \n
            "//Dialog from pilot" \n
-           "_chopper spawn" \n
-           "{" \n
+           "[_chopper,_callsign] spawn" \n
+           "{		" \n
+           "private [""_chopper"", ""_callsign""];" \n
+           "		_chopper = _this select 0;" \n
+           "		_callsign = _this select 1;" \n
            "	sleep 5;" \n
            "	" \n
-           "   [[ _this, ""Copy that, we are inbound to provide overwatch. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "   [[ _chopper,format[ ""Copy that, %1 is inbound to provide overwatch. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -322,8 +326,8 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_task == ""RTB""" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""RTB"", true];" \n
-           "_chopper doMove _base;" \n
            "_chopper flyinheight 100;" \n
+           "_chopper doMove _base;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -348,7 +352,10 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_task == ""MOVE""" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
+           "_chopper flyinheight 100;" \n
            "_chopper doMove _pos;" \n
+           "" \n
+           "" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -363,7 +370,7 @@ class FSM
            "_task == ""LAND (ENG OFF)""" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
-           "" \n
+           "_chopper flyinheight 100;" \n
            "//Find position to land" \n
            "_heliHs = nearestObjects [_pos, [""Land_HelipadSquare_F"",""Land_HelipadRescue_F"",""Land_HelipadCivil_F"",""Land_HelipadCircle_F"",""Land_HelipadEmpty_F"",""HeliH"", ""HeliHCivil"", ""HeliHRescue""], 50];" \n
            "" \n
@@ -431,6 +438,7 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_task == ""PICKUP""" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_radiusCircle = 150;" \n
+           "_chopper flyinheight 100;" \n
            "_dirCircle = [_pos, _chopper] call BIS_fnc_dirTo;" \n
            "_chopper doMove ([_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos);" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
@@ -448,11 +456,14 @@ class FSM
        "{" \n
        "	_speechSaid = true;" \n
        "	" \n
-       "	_chopper spawn" \n
+       "	[_chopper,_callsign] spawn" \n
        "	{" \n
+       "		private [""_chopper"", ""_callsign""];" \n
+       "		_chopper = _this select 0;" \n
+       "		_callsign = _this select 1;" \n
        "		sleep 5;" \n
        "			" \n
-       "		[[_this, ""Copy that, we are moving to location to pickup you up. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "		[[_chopper, format[""Copy that, %1 is moving to location to pickup you up. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "	};" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
@@ -514,7 +525,7 @@ class FSM
        "{" \n
        "	_speechSaidSmoke = true;" \n
        "	" \n
-       "	[[_chopper,	""We have arrived at pickup point, pop a smoke to confirm landing position. Over."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_chopper,	format[""%1 has arrived at pickup point, pop smoke to confirm landing position. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "	" \n
        "	[_chopper, _callsign] spawn" \n
        "	{" \n
@@ -526,7 +537,7 @@ class FSM
        "		" \n
        "		while { (_chopper getVariable ""NEO_radioTrasportUnitStatus"") == ""SMOKE"" } do" \n
        "		{" \n
-       "			[[ _chopper, ""Still waiting for that smoke shell. Over."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "			[[ _chopper, format[""%1 is still waiting for that smoke. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "			" \n
        "			sleep 75;" \n
        "		};" \n
@@ -688,7 +699,7 @@ class FSM
        "	" \n
        "	while { (_chopper getVariable ""NEO_radioTrasportUnitStatus"") == ""SMOKECONF"" } do" \n
        "	{" \n
-       "		[[_chopper, format [""Please respond, is that %1 smoke yours? Over."", _smokeColor],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "		[[_chopper, format [""This is %1, please respond, is that %1 smoke yours? Over."", _smokeColor],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "		" \n
        "		sleep 75;" \n
        "	};" \n
@@ -886,6 +897,7 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_task == ""PICKUP""" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_radiusCircle = 150;" \n
+           "_chopper flyinheight 100;" \n
            "_dirCircle = [_pos, _chopper] call BIS_fnc_dirTo;" \n
            "_chopper doMove ([_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos);" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
@@ -942,11 +954,14 @@ class FSM
     class __8
     {
       name = "__8";
-      init = /*%FSM<STATEINIT""">*/"_chopper spawn" \n
-       "{" \n
+      init = /*%FSM<STATEINIT""">*/"[_chopper,_callsign] spawn" \n
+       "{		" \n
+       "private [""_chopper"", ""_callsign""];" \n
+       "		_chopper = _this select 0;" \n
+       "		_callsign = _this select 1;" \n
        "	sleep 5;" \n
        "	" \n
-       "	[[_this,""Copy that, we are RTB. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_chopper,format[""Copy that, %1 is RTB. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -1009,7 +1024,7 @@ class FSM
     class __9
     {
       name = "__9";
-      init = /*%FSM<STATEINIT""">*/"[[_chopper, ""We are at Base. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+      init = /*%FSM<STATEINIT""">*/"[[_chopper, format[""%1 is at Base. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -1053,11 +1068,14 @@ class FSM
     class __10
     {
       name = "__10";
-      init = /*%FSM<STATEINIT""">*/"_chopper spawn" \n
+      init = /*%FSM<STATEINIT""">*/"[_chopper,_callsign] spawn" \n
        "{" \n
+       "		private [""_chopper"", ""_callsign""];" \n
+       "		_chopper = _this select 0;" \n
+       "		_callsign = _this select 1;" \n
        "	sleep 5;" \n
        "	" \n
-       "	[[_this,""Copy that, landing at designated coordinates. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_chopper,format[""Copy that, %1 is landing at designated coordinates. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -1106,7 +1124,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"switch (_task) do" \n
            "{" \n
            "case ""LAND"" : { _chopper land ""GET OUT"";};" \n
-           "case ""HOVER"" : {[[_chopper,""Unable to Land at coordinates. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
+           "case ""HOVER"" : {[[_chopper,format[""%1 is unable to Land at coordinates. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
            "default {_chopper land ""LAND""; };" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
@@ -1121,8 +1139,8 @@ class FSM
       name = "__11";
       init = /*%FSM<STATEINIT""">*/"switch (_task) do" \n
        "{" \n
-       "case ""HOVER"" : {[[_chopper,""Awaiting new orders. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
-       "default { [[_chopper,""Landing at coordinates. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
+       "case ""HOVER"" : {[[_chopper,format[""%1 is awaiting new orders. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
+       "default { [[_chopper,format[""%1 is landing at coordinates. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -1167,11 +1185,15 @@ class FSM
     class __12
     {
       name = "__12";
-      init = /*%FSM<STATEINIT""">*/"_chopper spawn" \n
-       "{" \n
+      init = /*%FSM<STATEINIT""">*/"[_chopper,_callsign] spawn" \n
+       "{		" \n
+       "private [""_chopper"", ""_callsign""];" \n
+       "		_chopper = _this select 0;" \n
+       "		_callsign = _this select 1;" \n
+       "" \n
        "	sleep 5;" \n
        "	" \n
-       "	[[_this,""Copy that, we are moving to location. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_chopper,format[""Copy that,%1 is moving to location. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -1227,7 +1249,7 @@ class FSM
     class __13
     {
       name = "__13";
-      init = /*%FSM<STATEINIT""">*/"[[_chopper,""Holding position and waiting for further orders. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+      init = /*%FSM<STATEINIT""">*/"[[_chopper,format[""%1 is holding position and waiting for further orders. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -1335,11 +1357,14 @@ class FSM
     class __15
     {
       name = "__15";
-      init = /*%FSM<STATEINIT""">*/"_chopper spawn" \n
-       "{" \n
+      init = /*%FSM<STATEINIT""">*/"[_chopper,_callsign] spawn" \n
+       "{		" \n
+       "private [""_chopper"", ""_callsign""];" \n
+       "		_chopper = _this select 0;" \n
+       "		_callsign = _this select 1;" \n
        "	sleep 5;" \n
        "	" \n
-       "	[[_this,""Copy that, we are moving to Insertion Point. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_chopper,format[""Copy that, %1 is moving to Insertion Point. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;

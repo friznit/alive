@@ -10,7 +10,7 @@ private ["_chopper", "_engage", "_crew"];
 						{
 							_x enableAi "TARGET";
 							_x enableAi "AUTOTARGET";
-							_x setCombatMode "GREEN";
+							_x setCombatMode "YELLOW";
 							group _x enableAttack true;
 						}
 						else

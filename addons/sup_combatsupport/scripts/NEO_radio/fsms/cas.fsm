@@ -13,7 +13,7 @@ item8[] = {"SAD",4,218,-37.646278,331.839966,52.353722,381.839966,0.000000,"SAD"
 item9[] = {"_",2,250,-43.171074,400.398499,46.828926,450.398499,0.000000,""};
 item10[] = {"",7,210,-190.843689,431.611511,-182.843689,439.611511,0.000000,""};
 item11[] = {"RTB",4,218,101.011452,329.679474,191.011475,379.679474,0.000000,"RTB"};
-item12[] = {"__1",2,250,96.127769,401.199677,186.127777,451.199677,0.000000,""};
+item12[] = {"__1",2,4346,96.127769,401.199677,186.127777,451.199677,0.000000,""};
 item13[] = {"plane",4,218,108.344353,485.999847,198.344345,535.999634,0.000000,"plane"};
 item14[] = {"chopper",4,218,391.804871,406.994568,481.804749,456.994568,1.000000,"chopper"};
 item15[] = {"__2",2,250,97.279655,551.706543,187.279709,601.706543,0.000000,""};
@@ -56,8 +56,8 @@ link27[] = {20,16};
 link28[] = {21,11};
 link29[] = {22,23};
 link30[] = {23,16};
-globals[] = {0.000000,0,0,0,0,640,480,1,54,6316128,1,-643.327454,680.411438,1204.277344,-264.573090,821,951,1};
-window[] = {2,-1,-1,-1,-1,846,1937,3197,109,3,839};
+globals[] = {0.000000,0,0,0,0,640,480,1,54,6316128,1,-643.327454,680.411438,1204.277344,-264.573090,821,911,1};
+window[] = {2,-1,-1,-32000,-32000,870,301,1561,133,3,839};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -261,10 +261,15 @@ class FSM
            "_posCircle = [_posCas, _radiusCas, _dirCas] call BIS_fnc_relPos;" \n
            "_veh doMove _posCircle;" \n
            "" \n
-           "_veh spawn" \n
+           "[_veh,_callsign] spawn" \n
            "{" \n
+           "private [""_veh"", ""_callsign""];" \n
+           "		_veh = _this select 0;" \n
+           "		_callsign = _this select 1;" \n
+           "" \n
+           "" \n
            "  sleep 5;" \n
-           "  [[_this, ""Copy that, moving to location to provide CAS. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "  [[_veh, format[""Copy that, %1 is moving to location to provide CAS. Out."", _callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -343,10 +348,14 @@ class FSM
     class __1
     {
       name = "__1";
-      init = /*%FSM<STATEINIT""">*/"_veh spawn" \n
+      init = /*%FSM<STATEINIT""">*/"[_veh,_callsign] spawn" \n
        "{" \n
+       "private [""_veh"", ""_callsign""];" \n
+       "		_veh = _this select 0;" \n
+       "		_callsign = _this select 1;" \n
+       "" \n
        "  sleep 5;" \n
-       "  [[_this, ""We are RTB. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "  [[_veh, format[""%1 is RTB. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -488,7 +497,7 @@ class FSM
            "" \n
            "if (_veh isKindOf ""Helicopter"") then" \n
            "{" \n
-           "  [[_veh, ""We are at base. Out."", ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "  [[_veh, format[""%1 is at base. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
