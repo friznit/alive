@@ -17,7 +17,7 @@ _task = _transportTaskLb lbText (lbCurSel _transportTaskLb);
 _marker = NEO_radioLogic getVariable "NEO_supportMarker";
 _pos = getMarkerPos _marker;
 _pos set [2, 0];
-_amnt = sliderPosition _slider;
+_amnt = sliderPosition _slider;_location = _pos call BIS_fnc_posToGrid;
 
 
 //New Task Assigned
@@ -38,13 +38,13 @@ private ["_posTask", "_text"];
 _posTask = _pos call BIS_fnc_posToGrid;
 _text = switch (toUpper _task) do
 {
-	case "PICKUP" : { format ["%1 this is %2, requesting pickup at position. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
-	case "LAND" : { format ["%1 this is %2, land at position. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
-	case "LAND (ENG OFF)" : { format ["%1 this is %2, land at position. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
-	case "MOVE" : { format ["%1 this is %2, move to position and wait for orders. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
-	case "CIRCLE" : { format ["%1 this is %2, move to position and provide overwatch. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
+	case "PICKUP" : { format ["%1 this is %2, requesting pickup at %3 %2 . Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
+	case "LAND" : { format ["%1 this is %2, land at %3 %2. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
+	case "LAND (ENG OFF)" : { format ["%1 this is %2, land at %3 %2. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
+	case "MOVE" : { format ["%1 this is %2, move to %3 %2 and wait for orders. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
+	case "CIRCLE" : { format ["%1 this is %2, move to %3 %2 and provide overwatch. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
 	case "RTB" : { format ["%1 this is %2, return to base. Over.", _callsign, _callSignPlayer] };
-	case "INSERTION" : { format ["%1 this is %2, move to position for insertion. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
+	case "INSERTION" : { format ["%1 this is %2, move to %3 %2 for insertion. Over.", _callsign, _callSignPlayer, _posTask select 0, _posTask select 1] };
 };
 
 //New Task
