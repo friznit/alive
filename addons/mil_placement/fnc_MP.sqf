@@ -313,6 +313,8 @@ switch(_operation) do {
 				};
 			};
 
+			//Only spawn warning on version mismatch since map index changes were reduced
+            //uncomment //_error = true; below for exit
             _error = false;
 			if!(isNil "ALIVE_clusterBuild") then {
 			    private ["_clusterVersion","_clusterBuild","_clusterType","_version","_build","_message"];
@@ -328,7 +330,7 @@ switch(_operation) do {
                     [_message] call ALIVE_fnc_dump;
                     [_message] spawn BIS_fnc_guiMessage;
                     [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
-                    _error = true;
+                    //_error = true;
                 };
 
                 if(!(_clusterVersion == _version) || !(_clusterBuild == _build)) then {
@@ -336,7 +338,7 @@ switch(_operation) do {
                     [_message] call ALIVE_fnc_dump;
                     [_message] spawn BIS_fnc_guiMessage;
                     [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
-                    _error = true;
+                    //_error = true;
                 };
             };
 
