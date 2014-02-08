@@ -250,7 +250,7 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
 
 	// Setup the event data for player starting
-	_data = [ ["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["Player",_puid] ];
+	_data = [ ["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["PlayerRank", rank player], ["Player",_puid], ["GeoPos",position player] ];
 	GVAR(UPDATE_EVENTS) = _data;
 	publicVariableServer QGVAR(UPDATE_EVENTS);
 };
