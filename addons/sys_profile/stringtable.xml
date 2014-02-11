@@ -59,4 +59,10 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
 	<English>Only one Profile System module can be used</English>
 </Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_PERSISTENT">
+    <English>Persistent:</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_PERSISTENT_COMMENT">
+    <English>Save state of profiles</English>
+</Key>
 </Container></Package></Project>

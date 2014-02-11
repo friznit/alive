@@ -449,14 +449,24 @@ switch(_operation) do {
                 // DEBUG -------------------------------------------------------------------------------------
 
                 if(_placement) then {
-                    if(count _clusters > 0) then {
-                        // start placement
-                        [_logic, "placement"] call MAINCLASS;
+
+                    if!(ALIVE_profilesPersistent) then {
+
+                        if(count _clusters > 0) then {
+                            // start placement
+                            [_logic, "placement"] call MAINCLASS;
+                        }else{
+                            ["ALIVE MP - Warning no locations found for placement, you need to inlcude military locations within the TAOR marker"] call ALIVE_fnc_dumpR;
+
+                            // set module as started
+                            _logic setVariable ["startupComplete", true];
+                        };
+
                     }else{
-                        ["ALIVE MP - Warning no locations found for placement, you need to inlcude military locations within the TAOR marker"] call ALIVE_fnc_dumpR;
 
                         // set module as started
                         _logic setVariable ["startupComplete", true];
+
                     };
                 }else{
 
@@ -534,7 +544,7 @@ switch(_operation) do {
 			// Load static data
 			
 			if(isNil "ALIVE_unitBlackist") then {
-				_file = "\x\alive\addons\sys_profile\static\staticData.sqf";
+				_file = "\x\alive\addons\main\static\staticData.sqf";
 				call compile preprocessFileLineNumbers _file;
 			};
 

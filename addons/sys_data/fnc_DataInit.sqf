@@ -13,6 +13,8 @@ ASSERT_DEFINED("ALIVE_fnc_Data","Main function missing");
 
 TRACE_2("SYS_DATA",isDedicated, _logic);
 
+["SYS_DATA INIT"] call ALIVE_fnc_dump;
+
 if (isDedicated) then {
 
 	// Setup OPC and OPD events
@@ -161,4 +163,6 @@ TRACE_2("SYS_DATA STAT VAR", MOD(sys_data) getVariable "disableStats", ALIVE_sys
 if (_logic getvariable ["disableStats","false"] == "false") then {
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
+
+["SYS_DATA INIT COMPLETE"] call ALIVE_fnc_dump;
 

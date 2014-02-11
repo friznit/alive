@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_PROFILE_SYSTEM";
                 function = "ALIVE_fnc_profileSystemInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 0;
+                functionPriority = 1;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\sys_profile\icon_sys_profile.paa";
@@ -73,6 +73,25 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER";
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT";
                                 defaultvalue = "50";
+                        };
+                        class persistentState
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_PERSISTENT";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_PERSISTENT_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                                default = true;
+                                        };
+                                };
                         };
                 };
                 

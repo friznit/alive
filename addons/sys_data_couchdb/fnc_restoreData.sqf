@@ -64,8 +64,6 @@ ALIVE_fnc_restore = {
 		_type = "STRING";
 	};
 
-	//
-
 	// Address each data type accordingly
 	switch(_type) do {
 			case "HASH": {

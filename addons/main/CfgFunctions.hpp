@@ -111,6 +111,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_hashRem.sqf";
 				recompile = RECOMPILE;
 			};
+			class hashCopy {
+                description = "Duplicates a hash";
+                file = "\x\alive\addons\main\fnc_hashCopy.sqf";
+                recompile = RECOMPILE;
+            };
 			class sendHint {
 				description = "Displays a hint message on screen";
 				file = "\x\alive\addons\main\fnc_sendHint.sqf";

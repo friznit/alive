@@ -66,12 +66,13 @@ switch(_operation) do {
 						[_logic,"activeLimiter",30] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
+						[_logic,"persistent",false] call ALIVE_fnc_hashSet;
                 };
         };
         case "start": {
 		
 				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius",
-				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSM","_sectors"];
+				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSM","_sectors","_persistent"];
                 
                 if (isServer) then {
 						
@@ -85,6 +86,7 @@ switch(_operation) do {
 						_activeLimiter = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
+						_persistent = [_logic,"persistent",false] call ALIVE_fnc_hashGet;
 
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
@@ -95,7 +97,7 @@ switch(_operation) do {
 
                         // Load static data
                         if(isNil "ALIVE_unitBlackist") then {
-                            _file = "\x\alive\addons\sys_profile\static\staticData.sqf";
+                            _file = "\x\alive\addons\main\static\staticData.sqf";
                             call compile preprocessFileLineNumbers _file;
                         };
 
@@ -105,6 +107,41 @@ switch(_operation) do {
 						// create the profile handler
 						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+
+
+						// persistent
+                        ALIVE_profilesPersistent = false;
+                        if(_persistent) then {
+                            ALIVE_profilesPersistent = true;
+
+                            /*
+                            scopeName "main";
+                            call compile preProcessFile "\inidbi\init.sqf";
+                            _db = "PROFILE_PERSISTANCE";
+                            _profiles = [];
+
+                            for "_i" from 0 to 10000 do {
+                                _profile = [_db, "DATA", _i, "ARRAY"] call iniDB_read;
+                                if(count _profile > 0) then {
+                                    ["P: %1",_profile] call ALIVE_fnc_dump;
+                                    _profiles set [count _profiles, _profile];
+                                }else{
+                                    breakTo "main";
+                                };
+                            };
+
+                            if(count _profiles > 0) then {
+                                [ALIVE_profileHandler, "importProfileData", _profiles] call ALIVE_fnc_profileHandler;
+
+                                _state = [ALIVE_profileHandler, "state"] call ALIVE_fnc_profileHandler;
+
+                                _state call ALIVE_fnc_inspectHash;
+                            }else{
+                                ALIVE_profilesPersistent = false;
+                            };
+                            */
+                        };
+
 						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
@@ -163,6 +200,7 @@ switch(_operation) do {
                             ["ALIVE Spawn in Jet Radius: %1",_spawnTypeJetRadius] call ALIVE_fnc_dump;
                             ["ALIVE Spawn in Heli Radius: %1",_spawnTypeHeliRadius] call ALIVE_fnc_dump;
 							["ALIVE Spawn Cycle Time: %1", _spawnCycleTime] call ALIVE_fnc_dump;
+							["ALIVE Persistent: %1", _persistent] call ALIVE_fnc_dump;
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
@@ -287,6 +325,12 @@ switch(_operation) do {
                         [_logic,"activeLimiter",_args] call ALIVE_fnc_hashSet;
                 };
                 _result = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
+        };
+        case "persistent": {
+                if(typeName _args == "BOOL") then {
+                        [_logic,"persistent",_args] call ALIVE_fnc_hashSet;
+                };
+                _result = [_logic,"persistent"] call ALIVE_fnc_hashGet;
         };
 		case "syncMode": {
 				if(typeName _args == "STRING") then {

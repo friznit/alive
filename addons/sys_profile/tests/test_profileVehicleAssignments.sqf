@@ -188,7 +188,7 @@ DEBUGON
 STAT("Spawn the vehicle via the profile");
 [_profileVehicle1, "spawn"] call ALIVE_fnc_profileVehicle;
 
-
+/*
 STAT("Clear vehicle assignments for vehicle 1");
 [_profileVehicle1] call ALIVE_fnc_removeProfileVehicleAssignments;
 
@@ -199,6 +199,7 @@ STAT("Remove vehicle assignment for group3 to vehicle2");
 
 STAT("Remove vehicle assignment for group2 to vehicle2");
 [_profileEntity2,_profileVehicle2] call ALIVE_fnc_removeProfileVehicleAssignment;
+*/
 
 
 DEBUGON

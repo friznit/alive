@@ -20,7 +20,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_profileSystem"];
+private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_persistent","_profileSystem"];
 
 PARAMS_1(_logic);
 
@@ -31,7 +31,7 @@ ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
 if(isServer) then {
 
-    ["PROFILES INIT"] call ALIVE_fnc_dump;
+    ["SYS_PROFILE INIT"] call ALIVE_fnc_dump;
 	
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
@@ -42,11 +42,20 @@ if(isServer) then {
     _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
+	_persistent = _logic getVariable ["persistentState",false];
 
     if(_debug == "true") then {
         _debug = true;
     }else{
         _debug = false;
+    };
+
+    if(typeName _persistent == 'STRING') then {
+        if(_persistent == "true") then {
+            _persistent = true;
+        }else{
+            _persistent = false;
+        };
     };
 
 	_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
@@ -58,10 +67,11 @@ if(isServer) then {
 	[_profileSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_profileSystem;
 	[_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
+	[_profileSystem, "persistent", _persistent] call ALIVE_fnc_profileSystem;
 
 	[_profileSystem,"start"] call ALIVE_fnc_profileSystem;
 
-	["PROFILES INIT COMPLETE"] call ALIVE_fnc_dump;
+	["SYS_PROFILE INIT COMPLETE"] call ALIVE_fnc_dump;
 };
 
 if(hasInterface) then {

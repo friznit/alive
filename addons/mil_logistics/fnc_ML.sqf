@@ -279,7 +279,7 @@ switch(_operation) do {
 				// Load static data
 
                 if(isNil "ALIVE_unitBlackist") then {
-                    _file = "\x\alive\addons\sys_profile\static\staticData.sqf";
+                    _file = "\x\alive\addons\main\static\staticData.sqf";
                     call compile preprocessFileLineNumbers _file;
                 };
 

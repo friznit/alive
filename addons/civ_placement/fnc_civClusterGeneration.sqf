@@ -28,7 +28,7 @@ nil
 private ["_obj_array","_types","_clusters","_clusters_tmp","_size"];
 
 if(isNil "ALIVE_civilianHQBuildingTypes") then {
-	_file = "\x\alive\addons\sys_profile\static\staticData.sqf";
+	_file = "\x\alive\addons\main\static\staticData.sqf";
 	call compile preprocessFileLineNumbers _file;
 };
 
