@@ -145,15 +145,17 @@ _clusterCount = _clusterCount + count _clusters;
 
 _exportString = _exportString + _result;
 
+
+
 if(count _clusters_copy_hq > 0) then {
 	_objectivesName = 'ALIVE_clustersMilHQ';
 	_result = [_clusters_copy_hq, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;				
 	_exportString = _exportString + _result;
 }else{
-     _objectivesName = 'ALIVE_clustersMilHQ';
-     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
-     _exportString = _exportString + _result;
- };
+    _objectivesName = 'ALIVE_clustersMilHQ';
+    _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+    _exportString = _exportString + _result;
+};
 
 _clusterCount = _clusterCount + count _clusters_copy_hq;
 
@@ -162,10 +164,10 @@ if(count _clusters_copy_air > 0) then {
 	_result = [_clusters_copy_air, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;			
 	_exportString = _exportString + _result;
 }else{
-     _objectivesName = 'ALIVE_clustersMilAir';
-     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
-     _exportString = _exportString + _result;
- };
+    _objectivesName = 'ALIVE_clustersMilAir';
+    _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+    _exportString = _exportString + _result;
+};
 
 _clusterCount = _clusterCount + count _clusters_copy_air;
 
@@ -174,12 +176,13 @@ if(count _clusters_copy_heli > 0) then {
 	_result = [_clusters_copy_heli, _objectivesName, _clusterCount] call ALIVE_fnc_staticClusterOutput;				
 	_exportString = _exportString + _result;
 }else{
-     _objectivesName = 'ALIVE_clustersMilHeli';
-     _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
-     _exportString = _exportString + _result;
- };
+    _objectivesName = 'ALIVE_clustersMilHeli';
+    _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_objectivesName];
+    _exportString = _exportString + _result;
+};
 
-_clusterCount = _clusterCount + count _clusters_copy_heli;	
+_clusterCount = _clusterCount + count _clusters_copy_heli;
+
 
 copyToClipboard _exportString;
 ["Military Objectives generation complete, results have been copied to the clipboard"] call ALIVE_fnc_dump;

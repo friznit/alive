@@ -43,26 +43,26 @@ _clusters = [];
 _result = objNull;
 while {count _points > 0} do {
 	// Create new cluster
-        _cluster = [nil, "create"] call ALIVE_fnc_cluster;
-        _clusters set [count _clusters, _cluster];
+    _cluster = [nil, "create"] call ALIVE_fnc_cluster;
+    _clusters set [count _clusters, _cluster];
 	// Get first unclustered point
-        _first = _points select 0;
-        _nodes = [_first];
+    _first = _points select 0;
+    _nodes = [_first];
 
+    // Remove first point from unclustered points array
+    _points = _points - [_first];
+    _result = [_first, _points, _maxdist] call ALIVE_fnc_getNearestObjectInArray;
+
+    while{_result != _first} do {
+        _nodes set [count _nodes,_result];
+        //if(_result distance _first > _max) then {_max = _result distance _first;};
+        _first = _result;
         // Remove first point from unclustered points array
         _points = _points - [_first];
         _result = [_first, _points, _maxdist] call ALIVE_fnc_getNearestObjectInArray;
-        
-        while{_result != _first} do {
-                _nodes set [count _nodes,_result];
-                //if(_result distance _first > _max) then {_max = _result distance _first;};
-	        _first = _result;
-		// Remove first point from unclustered points array
-                _points = _points - [_first];
-	        _result = [_first, _points, _maxdist] call ALIVE_fnc_getNearestObjectInArray;
-        };
-        
-        [_cluster, "nodes", _nodes] call ALIVE_fnc_cluster;
+    };
+
+    [_cluster, "nodes", _nodes] call ALIVE_fnc_cluster;
 };
 
 _clusters;

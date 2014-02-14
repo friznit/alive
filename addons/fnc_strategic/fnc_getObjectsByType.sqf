@@ -82,7 +82,9 @@ _expanded = [];
 	private["_p3dname"];
 	_p3dname = _x;
 	{
+	    ["--- OBJ: %1 SEARCH: %2",_x,_p3dname] call ALIVE_fnc_dump;
 		if([_p3dname, _x] call CBA_fnc_find != -1) then {
+		    ["FOUND OBJECT: %1 WITH: %2",_x,_p3dname] call ALIVE_fnc_dump;
 			_expanded set [count _expanded, _p3dname];
 		};
 	} forEach _types;

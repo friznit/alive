@@ -40,8 +40,8 @@ rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
 rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
 rem ----------------------------- A2 --------------------------------------
-rem %exe% "%arma%\@a2co\Addons\chernarus.pbo" > %target%\objects.chernarus.sqf
-rem %exe% "%arma%\@a2co\Addons\utes.pbo" > %target%\objects.utes.sqf
+rem %exe% "%arma%\@a2\chernarus.pbo" > %target%\objects.chernarus.sqf
+rem %exe% "%arma%\@a2\utes.pbo" > %target%\objects.utes.sqf
 rem %exe% "%arma%\@a2co\Expansion\Addons\desert_e.pbo" > %target%\objects.desert_e.sqf
 rem %exe% "%arma%\@a2co\Expansion\Addons\takistan.pbo" > %target%\objects.takistan.sqf
 rem %exe% "%arma%\@a2co\Expansion\Addons\zargabad.pbo" > %target%\objects.zargabad.sqf
@@ -70,9 +70,9 @@ rem %exe% "%arma%\@a2co\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.fra
 
 rem ----------------------------- User ------------------------------------
 
-%exe% "%arma%\@a2co\@Nziwasogo_V03\addons\projeta3-05.pbo" > %target%\objects.nziwasogo.sqf
-%exe% "%arma%\@a2co\@Lingor\Addons\lingor.pbo" > %target%\objects.lingor.sqf
-%exe% "%arma%\@a2co\@isla_duala\Addons\isladuala.pbo" > %target%\objects.isladuala.sqf
+rem %exe% "%arma%\@a2co\@Nziwasogo_V03\addons\projeta3-05.pbo" > %target%\objects.nziwasogo.sqf
+rem %exe% "%arma%\@a2co\@Lingor\Addons\lingor.pbo" > %target%\objects.lingor.sqf
+rem %exe% "%arma%\@a2co\@isla_duala\Addons\isladuala.pbo" > %target%\objects.isladuala.sqf
 
 rem %exe% "%arma%\@a2co\@smd_sahrani_a2\addons\smd_sahrani_a2.pbo" > %target%\objects.smd_sahrani_a2.sqf
 rem %exe% "%arma%\@a2co\@MBG_Celle2\addons\mbg_celle2.pbo" > %target%\objects.mbg_celle2.sqf

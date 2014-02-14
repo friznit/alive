@@ -90,7 +90,7 @@ _createMarkers = {
 		_size = [_logic, "size"] call MAINCLASS;
 		_priority = [_logic, "priority"] call MAINCLASS;
 		_type = [_logic, "type"] call MAINCLASS;
-		_id = [_logic, "clusterID"] call ALIVE_fnc_hashGet;
+		_id = [_logic, "clusterID", ""] call ALIVE_fnc_hashGet;
 		_m = createMarker [format[MTEMPLATE, _random, count _markers], _center];
 		_m setMarkerShape "Icon";
 		_m setMarkerSize [0.75, 0.75];

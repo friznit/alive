@@ -333,7 +333,7 @@ if(_debug) then {
 		_exportString = _exportString + format['[_sectorData,"bestPlaces",_bestPlaces] call ALIVE_fnc_hashSet;'];
 		
 		_exportString = _exportString + '_roads = [] call ALIVE_fnc_hashCreate;';
-		_exportString = _exportString + format['[_roads,"road",%1] call ALIVE_fnc_hashSet;',_roadSamples];
+		_exportString = _exportString + str(formatText['[_roads,"road",%1] call ALIVE_fnc_hashSet;',_roadSamples]);
 		_exportString = _exportString + format['[_roads,"crossroad",%1] call ALIVE_fnc_hashSet;',_crossroadSamples];
 		_exportString = _exportString + format['[_roads,"terminus",%1] call ALIVE_fnc_hashSet;',_terminusSamples];
 		_exportString = _exportString + format['[_sectorData,"roads",_roads] call ALIVE_fnc_hashSet;'];		

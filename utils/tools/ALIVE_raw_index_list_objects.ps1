@@ -20,6 +20,7 @@ $index_names = (
     'hellskitchen',
     'hellskitchens',
     'fallujah',
+    'fata',
     'fdf_isle1_a',
     'isladuala',
     'lingor',
