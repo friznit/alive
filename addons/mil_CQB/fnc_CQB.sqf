@@ -118,96 +118,13 @@ switch(_operation) do {
                     
                     _logic setVariable ["startupComplete", false,true];
 
-					//Implement when ready (not 0.5.6 yet if undiscussed)
-					/*
-                    // Load static data
-                    if(isNil "ALIVE_unitBlackist") then {
-                        _file = "\x\alive\addons\fnc_strategic\static\staticData.sqf";
+                    if (isNil "ALIVE_CQBStrategicTypes") then {
+                        _file = "\x\alive\addons\main\static\staticData.sqf";
                         call compile preprocessFileLineNumbers _file;
                     };
 
                     _strategicTypes = ALIVE_CQBStrategicTypes;
-                    _UnitsBlackList = ALIVE_CQBUnitBlacklist;
-                    */
-                    
-                    //Define strategic buildings
-                    _strategicTypes = [
-                    	//A3
-						"Land_Cargo_Patrol_V1_F",
-                        "Land_Cargo_Patrol_V2_F",
-                        "Land_Cargo_House_V1_F",
-                        "Land_Cargo_House_V2_F",
-                        "Land_Cargo_Tower_V3_F",
-                        "Land_Airport_Tower_F",
-						"Land_Cargo_HQ_V1_F",
-                        "Land_Cargo_HQ_V2_F",
-                        "Land_MilOffices_V1_F",
-                        "Land_Offices_01_V1_F",
-                        "Land_Research_HQ_F",
-                        "Land_CarService_F",
-                        "Land_Hospital_main_F",
-                        "Land_dp_smallFactory_F",
-						"Land_Radar_F",
-						"Land_TentHangar_V1_F",
-                        
-                        //A2
-                        "Land_A_TVTower_Base",
-						"Land_Dam_ConcP_20",
-						"Land_Ind_Expedice_1",
-						"Land_Ind_SiloVelke_02",
-						"Land_Mil_Barracks",
-						"Land_Mil_Barracks_i",
-						"Land_Mil_Barracks_L",
-						"Land_Mil_Guardhouse",
-						"Land_Mil_House",
-						"Land_Fort_Watchtower",
-						"Land_Vysilac_FM",
-						"Land_SS_hangar",
-						"Land_telek1",
-						"Land_vez",
-						"Land_A_FuelStation_Shed",
-						"Land_watertower1",
-						"Land_trafostanica_velka",
-						"Land_Ind_Oil_Tower_EP1",
-						"Land_A_Villa_EP1",
-						"Land_fortified_nest_small_EP1",
-                        "Land_Mil_Barracks_i_EP1",
-						"Land_fortified_nest_big_EP1",
-						"Land_Fort_Watchtower_EP1",
-						"Land_Ind_PowerStation_EP1",
-						"Land_Ind_PowerStation"
-                    ];
-                    
-                    //Set units you dont want to spawn with _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
-                    _UnitsBlackList = [
-                    	//A3
-						"B_Helipilot_F",
-						"B_diver_F",
-						"B_diver_TL_F",
-						"B_diver_exp_F",
-						"B_RangeMaster_F",
-						"B_crew_F",
-						"B_Pilot_F",
-						"B_helicrew_F",
-						
-						"O_helipilot_F",
-						"O_diver_F",
-						"O_diver_TL_F",
-						"O_diver_exp_F",
-						"O_crew_F",
-						"O_Pilot_F",
-						"O_helicrew_F",
-						"O_UAV_AI",
-						
-						"I_crew_F",
-						"I_helipilot_F",
-						"I_helicrew_F",
-						"I_diver_F",
-						"I_diver_exp_F",
-						"I_diver_TL_F",
-						"I_pilot_F",
-						"I_Story_Colonel_F"
-                    ];
+                    _UnitsBlackList = ALIVE_CQBunitBlackist;
                     
                     //Get all enterable houses of strategic types below across the whole map (rest will be regular)
                     //_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
@@ -981,7 +898,7 @@ switch(_operation) do {
 									
 									// if group are all dead
 									// mark house as cleared
-									if ({alive _x} count (units _grp) == 0) then {
+									if (({alive _x} count (units _grp) == 0) || {!alive _house}) then {
 		                                
 		                                if (isnil "_house") exitwith {["CQB ERROR: _House didnt exist, when trying to clear it!"] call ALiVE_fnc_DumpR};
 										
