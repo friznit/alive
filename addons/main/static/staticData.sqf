@@ -15,13 +15,14 @@ ALIVE_CQBStrategicTypes =
 	"Land_Cargo_HQ_V1_F",
 	"Land_Cargo_HQ_V2_F",
 	"Land_MilOffices_V1_F",
+	"Land_Offices_01_V1_F",
 	"Land_Research_HQ_F",
 	"Land_CarService_F",
 	"Land_Hospital_main_F",
 	"Land_dp_smallFactory_F",
 	"Land_Radar_F",
 	"Land_TentHangar_V1_F",
-
+	
 	//A2
 	"Land_A_TVTower_Base",
 	"Land_Dam_ConcP_20",
@@ -53,23 +54,32 @@ ALIVE_CQBStrategicTypes =
 ALIVE_CQBunitBlackist =
 [
 	//A3
-	"O_diver_F",
-	"O_diver_TL_F",
-	"O_diver_exp_F",
-	"O_helipilot_F",
-	"O_UAV_AI",
+	"B_Helipilot_F",
 	"B_diver_F",
 	"B_diver_TL_F",
 	"B_diver_exp_F",
-	"B_Helipilot_F",
 	"B_RangeMaster_F",
-	"B_helipilot_F",
-	"B_UAV_AI",
+	"B_crew_F",
+	"B_Pilot_F",
+	"B_helicrew_F",
+	
+	"O_helipilot_F",
+	"O_diver_F",
+	"O_diver_TL_F",
+	"O_diver_exp_F",
+	"O_crew_F",
+	"O_Pilot_F",
+	"O_helicrew_F",
+	"O_UAV_AI",
+	
+	"I_crew_F",
+	"I_helipilot_F",
 	"I_helicrew_F",
 	"I_diver_F",
-	"I_diver_TL_F",
 	"I_diver_exp_F",
-	"I_crew_F"
+	"I_diver_TL_F",
+	"I_pilot_F",
+	"I_Story_Colonel_F"
 ];
 
 
@@ -118,7 +128,6 @@ ALIVE_groupBlacklist =
 	"BUS_TankPlatoon_AA", // BUG in CfgGroups vehicle name wrong
 	"BUS_MechInf_AA" // BUG in CfgGroups vehicle name wrong
 ];
-
 
 /*
  * Custom support and ammo classes for faction
