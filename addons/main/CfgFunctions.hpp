@@ -141,6 +141,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_isModuleAvailable.sqf";
 				recompile = RECOMPILE;
 			};
+			class setCuratorPosition {
+                description = "Sets curator camera position on server";
+                file = "\x\alive\addons\main\fnc_setCuratorPosition.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };
