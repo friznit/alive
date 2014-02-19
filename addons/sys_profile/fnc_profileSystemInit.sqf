@@ -95,22 +95,4 @@ if(hasInterface) then {
         };
     }];
 
-    /*
-    []spawn {
-
-        waituntil {
-
-            if(!isNull curatorCamera) then {
-                _position = position curatorCamera;
-                ["server","ZU",[[_position select 0, _position select 1, _position select 2, getPlayerUID player],{call ALIVE_fnc_setCuratorPosition}]] call ALiVE_fnc_BUS;
-            };
-
-            sleep (5);
-
-            false
-        };
-
-    };
-    */
-
 };

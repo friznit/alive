@@ -36,7 +36,7 @@ DEFAULT_PARAM(1,_spawnDistance,1500);
 DEFAULT_PARAM(2,_jetSpawnDistance,0);
 DEFAULT_PARAM(3,_helicopterSpawnDistance,1500);
 
-_players = [] call BIS_fnc_listPlayers;
+_players = ([] call BIS_fnc_listPlayers) + (call ALiVE_fnc_allCurators);
 _anyInRange = false;
 
 scopeName "main";
@@ -52,23 +52,5 @@ scopeName "main";
     };
 
 } forEach _players;
-
-/*
-if!(_anyInRange) then {
-    ["NONE IN RANGE"] call ALIVE_fnc_dump;
-    if!(isNil "ALIVE_curatorPositions") then {
-        ["CURATOR POSITIONS EXISTS"] call ALIVE_fnc_dump;
-        if(count (ALIVE_curatorPositions select 2) > 0) then {
-            ["COUNT CURATOR POSITIONS: %1",count (ALIVE_curatorPositions select 2)] call ALIVE_fnc_dump;
-            {
-                ["DISTANCE: %1",_position distance _x] call ALIVE_fnc_dump;
-                if(_position distance _x < _spawnDistance) then {
-                    _anyInRange = true;
-                };
-            } forEach (ALIVE_curatorPositions select 2);
-        };
-    };
-};
-*/
 
 _anyInRange
