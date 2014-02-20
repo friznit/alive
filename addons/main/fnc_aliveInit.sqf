@@ -29,3 +29,7 @@ PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
 
 // Do Something
+
+//Sets global type of Versioning (Kick or Warn)
+ALiVE_Versioning_Type = _logic getvariable ["ALiVE_Versioning","warning"];
+Publicvariable "ALiVE_Versioning_Type";

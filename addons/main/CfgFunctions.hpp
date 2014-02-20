@@ -141,6 +141,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_isModuleAvailable.sqf";
 				recompile = RECOMPILE;
 			};
+			class versioning {
+				description = "Warns or kicks players on version mismatch";
+				file = "\x\alive\addons\main\fnc_versioning.sqf";
+				recompile = RECOMPILE;
+			};
 			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";

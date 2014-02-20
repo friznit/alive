@@ -7,7 +7,7 @@ class CfgSettings {
 				main_addon = "ALiVE_main"; // Uncomment and specify this to manually define the Main Addon (CfgPatches entry) of the mod
 
 				// Optional: Add a custom handler function triggered upon version mismatch
-				// handler = "ALiVE_fnc_versioning"; // Adds a custom script function that will be triggered on version mismatch. Make sure this function is compiled at a called preInit, not spawn/execVM
+				handler = "ALiVE_fnc_versioning"; // Adds a custom script function that will be triggered on version mismatch. Make sure this function is compiled at a called preInit, not spawn/execVM
 
 				// Optional: Dependencies
 				// Example: Dependency on CBA

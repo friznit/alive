@@ -31,4 +31,10 @@
 	<Polish>Wymagaj ALiVE</Polish>
 	<Hungarian>Igénylése ALiVE</Hungarian>
 </Key>
+<Key ID="STR_ALIVE_REQUIRES_ALIVE_VERSIONING">
+	<Original>Versioning:</Original>
+</Key>
+<Key ID="STR_ALIVE_REQUIRES_ALIVE_VERSIONING_COMMENT">
+	<Original>Will output a warning or kick players on version mismatch</Original>
+</Key>
 </Container></Package></Project>

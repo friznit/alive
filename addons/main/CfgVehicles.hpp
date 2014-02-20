@@ -79,5 +79,29 @@ class CfgVehicles {
 		icon = "x\alive\addons\main\icon_requires_alive.paa";
 		picture = "x\alive\addons\main\icon_requires_alive.paa";
 		function = "ALiVE_fnc_aliveInit";
+		
+		class Arguments
+		{
+	        class ALiVE_Versioning
+	        {
+	                displayName = "$STR_ALIVE_REQUIRES_ALIVE_VERSIONING";
+	                description = "$STR_ALIVE_REQUIRES_ALIVE_VERSIONING_COMMENT";
+	                class Values
+	                {
+	                        class warning
+	                        {
+	                                name = "Warn players";
+	                                value = warning;
+	                                default = warning;
+	                        };
+	                        class kick
+	                        {
+	                                name = "Kick players";
+	                                value = kick;
+	                        };
+	                };
+	        };
+		};
+		
 	};
 };
