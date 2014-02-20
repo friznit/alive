@@ -29,14 +29,16 @@ ARJay
 
 Peer Reviewed:
 ---------------------------------------------------------------------------- */
-
 private ["_position","_spawnDistance","_jetSpawnDistance","_helicopterSpawnDistance","_players","_player","_position","_anyInRange"];
+
 PARAMS_1(_position);
 DEFAULT_PARAM(1,_spawnDistance,1500);
 DEFAULT_PARAM(2,_jetSpawnDistance,0);
 DEFAULT_PARAM(3,_helicopterSpawnDistance,1500);
 
-_players = ([] call BIS_fnc_listPlayers) + (call ALiVE_fnc_allCurators);
+//Change that function below when ZEUS is stable
+//_players = ([] call BIS_fnc_listPlayers) + (call ALiVE_fnc_allCurators);
+_players = [] call BIS_fnc_listPlayers;
 _anyInRange = false;
 
 scopeName "main";
@@ -44,13 +46,12 @@ scopeName "main";
 {
     if(
         (!(vehicle _x isKindOf "Plane") && {!(vehicle _x isKindOf "Helicopter")} && {(_x distance _position < _spawnDistance)}) ||
-        ({(vehicle _x isKindOf "Plane") && {(_x distance _position < _jetSpawnDistance)}}) ||
-        ({(vehicle _x isKindOf "Helicopter") && {(_x distance _position < _helicopterSpawnDistance)}})
+        {(vehicle _x isKindOf "Plane") && {(_x distance _position < _jetSpawnDistance)}} ||
+        {(vehicle _x isKindOf "Helicopter") && {(_x distance _position < _helicopterSpawnDistance)}}
     ) then {
         _anyInRange = true;
         breakTo "main";
     };
-
 } forEach _players;
 
 _anyInRange

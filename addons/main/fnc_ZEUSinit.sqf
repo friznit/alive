@@ -21,11 +21,16 @@ call ALIVE_fnc_ZEUSinit;
 
 See Also:
 - Main/eventhandlers.hpp
+- Main/XEH_postInit.sqf
+- Main/fnc_anyPlayersInRangeIncludeAir.sqf
 
 Author:
 Highhead
 ---------------------------------------------------------------------------- */
-//Only for backward-Compatibility, to be removed after release
+
+//Important, enable this init function in XEH_postInit.sqf! Disabled until ZEUS is stable!
+
+//Only for backward-Compatibility, may be removed after release
 if !(["ModuleCurator_F"] call ALiVE_fnc_isModuleAvailable) exitwith {
     ALiVE_fnc_ZeusRegister = {};
     ALiVE_fnc_AllCurators = {[]};

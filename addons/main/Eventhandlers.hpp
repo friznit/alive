@@ -11,8 +11,11 @@ class Extended_PostInit_EventHandlers {
 	};
 };
 
+/*
+//To be enabled when ZEUS is stable
 class Extended_Init_EventHandlers {
 	class Man {
 		init = "_this call ALiVE_fnc_ZeusRegister";
 	};
 };
+*/

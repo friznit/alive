@@ -141,11 +141,13 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_isModuleAvailable.sqf";
 				recompile = RECOMPILE;
 			};
+			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";
 				file = "\x\alive\addons\main\fnc_ZEUSinit.sqf";
 				recompile = RECOMPILE;
 			};
+			*/
 		};
 	};
 };
