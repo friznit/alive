@@ -77,7 +77,7 @@ ALIVE_fnc_restore = {
 			};
 			case "BOOL": {
 					private["_tmp"];
-					_tmp = if (parseNumber _value == 0) then {false} else {true};
+					_tmp = if (_value == "false") then {false} else {true};
 					_data = _tmp;
 			};
 			case "SCALAR": {
@@ -108,9 +108,9 @@ ALIVE_fnc_restore = {
 					{
 						private "_item";
 						if (_arrayResult) then {
-							_tmpKey = _tkey + str(_i);
+							_tmpKey = _tkey + "_" + str(_i);
 						} else {
-							_tmpKey = _key + str(_i);
+							_tmpKey = _key + "_" + str(_i);
 						};
 						_item = _x;
 						TRACE_1("",_item);

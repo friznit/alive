@@ -56,7 +56,7 @@ _convert = {
 			{
 				private ["_tmpKey","_value"];
 				TRACE_2("ARRAY CONVERSION X", _x, typeName _x);
-				_tmpKey = _key + str(_i);
+				_tmpKey = _key + "_" + str(_i);
 
 				// Convert Values
 				_value = [_tmpKey, _x] call _convert;
