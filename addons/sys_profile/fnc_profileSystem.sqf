@@ -147,7 +147,7 @@ switch(_operation) do {
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
 						[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
 						[ALIVE_sectorGrid, "createGrid"] call ALIVE_fnc_sectorGrid;
-						
+
 						// create sector plotter
 						ALIVE_sectorPlotter = [nil, "create"] call ALIVE_fnc_plotSectors;
 						[ALIVE_sectorPlotter, "init"] call ALIVE_fnc_plotSectors;

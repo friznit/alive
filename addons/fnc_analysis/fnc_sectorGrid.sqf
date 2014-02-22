@@ -373,42 +373,58 @@ switch(_operation) do {
 				//bl
 				_index = [(_indexX - 1),(_indexY - 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
 				
 				//ml
 				_index = [(_indexX - 1),(_indexY)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
 				
 				//tl
 				_index = [(_indexX - 1),(_indexY + 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
 				
 				//tm
 				_index = [(_indexX),(_indexY + 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
 				
 				//tr
 				_index = [(_indexX + 1),(_indexY + 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
 				
 				//mr
 				_index = [(_indexX + 1),(_indexY)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
 				
 				//br
 				_index = [(_indexX + 1),(_indexY - 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
 				
 				//bm
 				_index = [(_indexX),(_indexY - 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				_result set [count _result, _sector];	
+				if(count _sector > 0) then {
+				    _result set [count _result, _sector];
+                };
         };
 		case "sectorsInRadius": {
 				private["_position","_radius","_sectorDimensions","_sectorWidth","_sectors","_sector","_allSectors","_centre","_surroundingSectors","_bounds","_within"];
@@ -439,7 +455,7 @@ switch(_operation) do {
 					_sector = [_logic, "positionToSector", _position] call MAINCLASS;
 					_surroundingSectors = [_logic, "surroundingSectors", _position] call MAINCLASS;
 					_sectors set [0, _sector];
-					
+
 					{
 						_sector = _x;
 						_bounds = [_sector, "bounds"] call ALIVE_fnc_sector;
