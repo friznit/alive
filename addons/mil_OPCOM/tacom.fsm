@@ -3,7 +3,7 @@
 /*
 item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,4346,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,176.004105,761.434937,184.004105,769.434814,0.000000,""};
@@ -26,7 +26,7 @@ item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.5710
 item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
 item23[] = {"SELECT_SECTION",2,250,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
 item24[] = {"SECTION_SELECTED",4,218,-197.466095,422.042877,-107.466232,472.042908,0.000000,"SECTION" \n "SELECTED"};
-item25[] = {"PREPARE_ORDERS",2,250,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
+item25[] = {"PREPARE_ORDERS",2,4346,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
 item26[] = {"PREPARED",4,218,-202.116547,569.103699,-112.116524,619.103699,0.000000,"PREPARED"};
 version=1;
 class LayoutItems
@@ -74,8 +74,8 @@ link29[] = {23,24};
 link30[] = {24,25};
 link31[] = {25,26};
 link32[] = {26,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-647.949280,196.855621,779.547913,0.542511,1117,1030,1};
-window[] = {2,-1,-1,-1,-1,910,-1894,-271,26,3,1135};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-635.403503,184.309769,816.244507,135.105377,935,753,1};
+window[] = {0,-1,-1,-1,-1,906,22,1645,22,1,952};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -742,15 +742,24 @@ class FSM
        "if !(isnil ""_reserve"") then {_operation = ""reserve""; _objective = _reserve select 0; _size = _reserve select 1};" \n
        "if !(isnil ""_custom"") then {_operation = ""custom""; _objective = _custom select 0; _size = _custom select 1};" \n
        "" \n
-       "_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
+       "_section = [_objective, ""section"",[]] call ALiVE_fnc_HashGet;" \n
+       "{" \n
+       "	private [""_profile""];" \n
+       "	_profile = [ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler;" \n
        "" \n
+       "	if (isnil ""_profile"") then {" \n
+       "		[_OPCOM_HANDLER,""resetorders"",_x] call ALiVE_fnc_OPCOM;" \n
+       "	};" \n
+       "} foreach _section;" \n
+       "" \n
+       "_section = [_objective, ""section"",[]] call ALiVE_fnc_HashGet;" \n
        "if (count _section < _size) then {" \n
-       "	_hdl = [_OPCOM_HANDLER,[_objective,_size,""infantry""]] spawn {" \n
+       "	_hdl = [_OPCOM_HANDLER,[_objective,_size]] spawn {" \n
        "		private [""_objective"",""_pos""];" \n
        "" \n
        "		_objective = _this select 1 select 0;" \n
        "		_size = _this select 1 select 1;" \n
-       "		_pos = ([_objective,""center""] call ALiVE_fnc_HashGet);" \n
+       "		_pos = [_objective,""center""] call ALiVE_fnc_HashGet;" \n
        "" \n
        "		_sectionAssist = [_this select 0,""NearestAvailableSection"",[_pos,_size,[""infantry"",""motorized"",""mechanized"",""armored""]]] call ALiVE_fnc_OPCOM;" \n
        "		[_objective, ""sectionAssist"",_sectionAssist] call ALiVE_fnc_HashSet;" \n
@@ -780,9 +789,7 @@ class FSM
       name = "PREPARE_ORDERS";
       init = /*%FSM<STATEINIT""">*/"terminate _hdl;" \n
        "" \n
-       "private [""_section"",""_sectionAssist""];" \n
-       "" \n
-       "_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;" \n
+       "private [""_sectionAssist""];" \n
        "_sectionAssist = [_objective,""sectionAssist"",[]] call AliVE_fnc_HashGet;" \n
        "" \n
        "//Add groups" \n
@@ -790,22 +797,21 @@ class FSM
        "" \n
        "	for ""_i"" from 0 to ((_size - (count _section)) - 1) do {" \n
        "		if (_i > ((count _sectionAssist) - 1)) exitwith {};" \n
+       "" \n
        "		_section set [count _section,_sectionAssist select _i];" \n
        "	};" \n
        "	[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
        "};" \n
        "" \n
        "//Remove groups" \n
-       "if (count ([_objective,""section"",_section] call AliVE_fnc_HashGet) >= _size) then {" \n
+       "if ((count _section) > _size) then {" \n
        "	{" \n
        "		if (count _section == _size) exitwith {};" \n
+       "		[""Section removing %1"",_x] call ALiVE_fnc_DumpR;" \n
        "		[_OPCOM_HANDLER,""resetorders"",_x] call ALiVE_fnc_OPCOM;" \n
-       "		_section = _section - [_x];" \n
        "	} foreach _section;" \n
-       "	[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
        "};" \n
-       "" \n
-       "_section = [_objective,""section"",_section] call AliVE_fnc_HashGet;"/*%FSM</STATEINIT""">*/;
+       "_section = [_objective,""section"",[]] call AliVE_fnc_HashGet;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

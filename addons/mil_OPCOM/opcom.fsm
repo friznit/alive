@@ -76,8 +76,8 @@ link30[] = {24,25};
 link31[] = {25,16};
 link32[] = {26,27};
 link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1312.997192,-466.811005,-276.114990,-971.075134,996,818,1};
-window[] = {0,-1,-1,-1,-1,993,44,1814,44,1,1013};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1336.967651,-442.840698,-272.008484,-1006.341675,996,818,1};
+window[] = {0,-1,-1,-1,-1,1081,132,1902,132,1,1013};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -642,6 +642,7 @@ class FSM
        "" \n
        "switch (_analyze) do {" \n
        "	case (""analysis"") : {" \n
+       "		//ANALYSISDONE = false; [_OPCOM_HANDLER,_sidesFriendly,_sidesEnemy] execFSM ""\x\alive\addons\mil_opcom\analyze.fsm"";" \n
        "		_clusterOccupationAnalysis = [_OPCOM_HANDLER,_side,_sidesEnemy,_sidesFriendly] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 3,_this select 2]] call ALiVE_fnc_OPCOM};" \n
        "		_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
        "		" \n
@@ -668,7 +669,9 @@ class FSM
           priority = 0.000000;
           to="RESET";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"scriptdone _troopsAnalysis && scriptdone _clusterOccupationAnalysis && scriptdone _enemyScan;"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"scriptdone _troopsAnalysis && " \n
+           "scriptdone _clusterOccupationAnalysis && " \n
+           "scriptdone _enemyScan"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/

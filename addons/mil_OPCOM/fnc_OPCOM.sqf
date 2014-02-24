@@ -145,14 +145,14 @@ switch(_operation) do {
                     
                     switch (_type) do {
 						case ("invasion") : {
-								[_handler, "sectionsamount_attack", 3] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_attack", 4] call ALiVE_fnc_HashSet;
 								[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
 								[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
 						};
 						case ("occupation") : {
 								[_handler, "sectionsamount_attack", 4] call ALiVE_fnc_HashSet;
 								[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
-								[_handler, "sectionsamount_defend", 2] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_defend", 5] call ALiVE_fnc_HashSet;
 						};
 					};
 
@@ -171,11 +171,14 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
+                    //Wait for virtual profiles ready
+                    waituntil {[ALiVE_ProfileHandler,"startupComplete",false] call ALIVE_fnc_hashGet};
+                    
                     //Get objectives data from other modules or placed Location logics!
                     private ["_objectives"];
                     
                     _objectives = [];
-                    if (([_logic,["ALiVE_mil_placement"]] call ALiVE_fnc_isModuleSynced) || {[_logic,["ALiVE_civ_placement"]] call ALiVE_fnc_isModuleSynced}) then {
+                    //if (([_logic,["ALiVE_mil_placement"]] call ALiVE_fnc_isModuleSynced) || {[_logic,["ALiVE_civ_placement"]] call ALiVE_fnc_isModuleSynced}) then {
                        
 	                    //Iterate through all synchronized modules
 	                    for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
@@ -227,9 +230,9 @@ switch(_operation) do {
 						_troopsAnalysis = [_handler] call {[_this select 0,"scantroops"] call ALiVE_fnc_OPCOM};
 	                	["ALiVE OPCOM %1 Initial analysis done...",_side] call ALiVE_fnc_Dump; 
                         
-                    } else {
-		                ["MIL or CIV Placement module not synced to OPCOM %1! Wasnt able to retrieve Objectives...",_side] call ALiVE_fnc_DumpR;
-		            };
+                    //} else {
+		            //   ["MIL or CIV Placement module not synced to OPCOM %1! Wasnt able to retrieve Objectives...",_side] call ALiVE_fnc_DumpR;
+		            //};
 
                     //Check if there are any objectives
                     _errorMessage = "There are %1 objectives for this OPCOM instance! %2";
@@ -312,6 +315,7 @@ switch(_operation) do {
                     
 					// set module as startup complete
 					_logic setVariable ["startupComplete", true];
+                    [_handler,"startupComplete",true] call ALiVE_fnc_HashSet;
                 };
                 
                 /*
@@ -801,6 +805,8 @@ switch(_operation) do {
                 } foreach _factions;
             
             {
+                private ["_objective","_section","_state","_idlestates","_wps"];
+                
                 _objective = _x;
                 _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
                 _state = [_objective,"opcom_state",[]] call ALiVE_fnc_HashGet;
@@ -808,20 +814,21 @@ switch(_operation) do {
                 
                 _wps = 0;
                 {
+                    private ["_profile"];
+                    
                 	_profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
+                    
                     if !(isnil "_profile") then {
                         _wps = _wps + (count (_profile select 2 select 16));
                     } else {
-                        _section = _section - [_x];
-                        _section = [_objective,"section",_section] call ALiVE_fnc_HashGet;
+						[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM;
                     };
                 } foreach _section;
                 
+                _section = [_objective,"section",_section] call ALiVE_fnc_HashGet;
                 if (!(_state in _idlestates) && {count _section > 0} && {_wps == 0}) then {
                     {[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
                     [_logic,"resetObjective",([_objective,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM;
-
-                    _section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
                 }; 
             } foreach _objectives;
         };
@@ -1017,19 +1024,17 @@ switch(_operation) do {
                 _TACOM_FSM = [_logic,"TACOM_FSM"] call ALiVE_fnc_HashGet;
                 _objectives = [_logic,"objectives"] call ALiVE_fnc_HashGet;
                 
-                _pending_orders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
-                _pending_orders_tmp = _pending_orders;
-                
                 {
                     _id = [_x,"objectiveID"] call ALiVE_fnc_HashGet;
                     _section = [_x,"section",[]] call ALiVE_fnc_HashGet;
                     
                     if ((_profileID in _section) && {!(_objectiveID == _id)}) then {
-                        _section = _section - [_profileID];
-                        if (count _section < 1) then {[_x,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_x,"opcom_orders","none"] call ALiVE_fnc_HashSet; [_x,"danger",-1] call ALiVE_fnc_HashSet};
-                        [_x,"section",_section] call ALiVE_fnc_HashSet;
+                        [_logic,"resetorders",_profileID] call ALiVE_fnc_OPCOM;
                     };
                 } foreach _objectives;
+                
+                _pending_orders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
+                _pending_orders_tmp = _pending_orders;
                 
                 if (({(_x select 1) == _profileID} count _pending_orders_tmp) > 0) then {
                     {
@@ -1095,19 +1100,15 @@ switch(_operation) do {
 			private ["_active","_profileID","_profile","_ProfileIDsBusy","_profileIDx","_pendingOrders","_ProfileIDsReserve","_section","_objectives"];
             
         	_profileID = _args;
-            _pendingOrders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
-            _ProfileIDsBusy = [_logic,"ProfileIDsBusy",[]] call ALiVE_fnc_HashGet;
-            _ProfileIDsReserve = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
-            _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
-            
             
             //Reset busy queue if there is an entry for the entitiy
-			[_logic,"ProfileIDsBusy",_ProfileIDsBusy - [_profileID]] call ALiVE_fnc_HashSet;
+			[_logic,"ProfileIDsBusy",([_logic,"ProfileIDsBusy",[]] call ALiVE_fnc_HashGet) - [_profileID]] call ALiVE_fnc_HashSet;
             
             //Reset reserve queue if there is an entry for the entitiy
-            [_logic,"ProfileIDsReserve",_ProfileIDsReserve - [_profileID]] call ALiVE_fnc_HashSet;
+            [_logic,"ProfileIDsReserve",([_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet) - [_profileID]] call ALiVE_fnc_HashSet;
             
             //Reset pending orders if there is an entry for the entitiy
+            _pendingOrders = [_logic,"pendingorders",[]] call ALiVE_fnc_HashGet;
             {
 				_profileIDx = _x select 1;
                 
@@ -1119,12 +1120,17 @@ switch(_operation) do {
             [_logic,"pendingorders",_pendingOrders] call ALiVE_fnc_HashSet;
             
             //Reset section entry on objectives if the entitiy is still assigned to an objective
+            _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
             {
                 _section = [_x,"section",[]] call ALiVE_fnc_HashGet;
                 
                 if (_profileID in _section) then {
                     _section = _section - [_profileID];
                     [_x,"section",_section] call ALiVE_fnc_HashSet;
+                };
+                
+                if ((count _section) == 0) then {
+                    [_logic,"resetObjective",([_x,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM;
                 };
             } foreach _objectives;
             
@@ -1414,7 +1420,15 @@ switch(_operation) do {
             {_busy set [count _busy,_x select 1]} foreach ([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet);
             {_busy = _busy + ([_x,"section",[]] call ALiVE_fnc_HashGet)} foreach ([_logic,"objectives",[]] call ALiVE_fnc_HashGet);
             _reserved = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
-            _troops = (_troops - _busy - _reserved);
+            _busy = _busy - _reserved;
+            
+            if (_size >= 5) then {
+            	_troops = _troops - _reserved;
+            } else {
+                _troops = _troops - (_busy + _reserved);
+            };
+            
+            //["Busy %1 | Reserved %2 | Troops %3",count _busy, count _reserved,count _troops] call ALiVE_fnc_DumpR;
             
             _st = 2000;
             waituntil

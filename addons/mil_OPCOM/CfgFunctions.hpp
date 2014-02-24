@@ -12,7 +12,7 @@ class cfgFunctions {
                                 recompile = RECOMPILE;
                         };
                         class OPCOMpositions {
-                                description = "Collects objective positions of given state to an array list";
+                                description = "The main class";
                                 file = "\x\alive\addons\mil_opcom\fnc_OPCOMpositions.sqf";
                                 recompile = RECOMPILE;
                         };
