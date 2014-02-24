@@ -508,7 +508,7 @@ switch(_operation) do {
 
 			private ["_debug","_clusters","_cluster","_clustersSettlement","_clustersHQ","_clustersPower","_clustersComms","_clustersMarine",
 			"_clustersRail","_clustersFuel","_clustersConstruction","_ambientVehicleAmount","_vehicleClass",
-			"_faction","_factionConfig","_factionSideNumber","_side","_nodes","_node","_buildings"];
+			"_faction","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;		
 			
@@ -539,6 +539,7 @@ switch(_operation) do {
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
 			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
+			_sideObject = [_side] call ALIVE_fnc_sideTextToObject;
 
 			
 			// DEBUG -------------------------------------------------------------------------------------
@@ -699,7 +700,7 @@ switch(_operation) do {
 
             */
 
-            private ["_civClasses","_clusterID","_nodes","_buildings","_countBuildings","_building","_unitClass","_agentID","_buildingPosition","_agent"];
+            private ["_spawnChance","_civClasses","_clusterID","_nodes","_buildings","_countBuildings","_building","_unitClass","_agentID","_buildingPosition","_agent","_clusterGroup"];
 
             _civClasses = [0,_faction,"Man"] call ALiVE_fnc_findVehicleType;
 
@@ -719,26 +720,57 @@ switch(_operation) do {
 
                     _countBuildings = count _buildings;
 
+                    _spawnChance = 0.1;
+
+                    if(_countBuildings > 50) then {
+                        _spawnChance = 0.1;
+                    };
+
+                    if(_countBuildings > 40 && _countBuildings < 50) then {
+                        _spawnChance = 0.2;
+                    };
+
+                    if(_countBuildings > 30 && _countBuildings < 41) then {
+                        _spawnChance = 0.3;
+                    };
+
+                    if(_countBuildings > 20 && _countBuildings < 31) then {
+                        _spawnChance = 0.5;
+                    };
+
+                    if(_countBuildings > 10 && _countBuildings < 21) then {
+                        _spawnChance = 0.7;
+                    };
+
+                    if(_countBuildings > 0 && _countBuildings < 11) then {
+                        _spawnChance = 0.8;
+                    };
+
                     {
 
-                        _building = _x;
+                        if(random 1 < _spawnChance) then {
 
-                        _unitClass = _civClasses call BIS_fnc_selectRandom;
-                        _agentID = format["agent_%1",[ALIVE_agentHandler, "getNextInsertID"] call ALIVE_fnc_agentHandler];
+                            _building = _x;
 
-                        _buildingPosition = getPos _building;
+                            _unitClass = _civClasses call BIS_fnc_selectRandom;
+                            _agentID = format["agent_%1",[ALIVE_agentHandler, "getNextInsertID"] call ALIVE_fnc_agentHandler];
 
-                        _agent = [nil, "create"] call ALIVE_fnc_civilianAgent;
-                        [_agent, "init"] call ALIVE_fnc_civilianAgent;
-                        [_agent, "agentID", _agentID] call ALIVE_fnc_civilianAgent;
-                        [_agent, "agentClass", _unitClass] call ALIVE_fnc_civilianAgent;
-                        [_agent, "position", _buildingPosition] call ALIVE_fnc_civilianAgent;
-                        [_agent, "side", _side] call ALIVE_fnc_civilianAgent;
-                        [_agent, "faction", _faction] call ALIVE_fnc_civilianAgent;
-                        [_agent, "homeCluster", _clusterID] call ALIVE_fnc_civilianAgent;
-                        [_agent, "homePosition", _buildingPosition] call ALIVE_fnc_civilianAgent;
+                            _buildingPosition = getPos _building;
 
-                        [ALIVE_agentHandler, "registerAgent", _agent] call ALIVE_fnc_agentHandler;
+                            _agent = [nil, "create"] call ALIVE_fnc_civilianAgent;
+                            [_agent, "init"] call ALIVE_fnc_civilianAgent;
+                            [_agent, "agentID", _agentID] call ALIVE_fnc_civilianAgent;
+                            [_agent, "agentClass", _unitClass] call ALIVE_fnc_civilianAgent;
+                            [_agent, "position", _buildingPosition] call ALIVE_fnc_civilianAgent;
+                            [_agent, "side", _side] call ALIVE_fnc_civilianAgent;
+                            [_agent, "faction", _faction] call ALIVE_fnc_civilianAgent;
+                            [_agent, "homeCluster", _clusterID] call ALIVE_fnc_civilianAgent;
+                            [_agent, "homePosition", _buildingPosition] call ALIVE_fnc_civilianAgent;
+
+                            [_agent] call ALIVE_fnc_selectCivilianCommand;
+
+                            [ALIVE_agentHandler, "registerAgent", _agent] call ALIVE_fnc_agentHandler;
+                        };
 
                     } forEach _buildings;
 
@@ -746,7 +778,7 @@ switch(_operation) do {
             };
 
 
-            [ALIVE_agentHandler, "debug", true] call ALIVE_fnc_agentHandler;
+            //[ALIVE_agentHandler, "debug", true] call ALIVE_fnc_agentHandler;
 
 
             // DEBUG -------------------------------------------------------------------------------------

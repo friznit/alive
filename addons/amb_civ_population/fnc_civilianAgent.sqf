@@ -123,7 +123,7 @@ _createMarkers = {
     if(count _position > 0) then {
         _m = createMarker [format[MTEMPLATE, _agentID], _position];
         _m setMarkerShape "ICON";
-        _m setMarkerSize [0.6, 0.6];
+        _m setMarkerSize [0.4, 0.4];
         _m setMarkerType _debugIcon;
         _m setMarkerColor _debugColor;
         _m setMarkerAlpha _debugAlpha;
@@ -155,6 +155,7 @@ switch(_operation) do {
             [_logic,"side",""] call ALIVE_fnc_hashSet; // select 2 select 8
             [_logic,"homeCluster",""] call ALIVE_fnc_hashSet; // select 2 select 9
             [_logic,"homePosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 10
+            [_logic,"activeCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 11
         };
     };
     case "state": {
@@ -179,29 +180,29 @@ switch(_operation) do {
     };
     case "debug": {
         if(typeName _args != "BOOL") then {
-                _args = [_logic,"debug"] call ALIVE_fnc_hashGet;
+            _args = [_logic,"debug"] call ALIVE_fnc_hashGet;
         } else {
-                [_logic,"debug",_args] call ALIVE_fnc_hashSet;
+            [_logic,"debug",_args] call ALIVE_fnc_hashSet;
         };
         ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
          _logic call _deleteMarkers;
 
         if(_args) then {
-                _logic call _createMarkers;
+            _logic call _createMarkers;
         };
 
         _result = _args;
     };
     case "active": {
         if(typeName _args == "BOOL") then {
-                [_logic,"active",_args] call ALIVE_fnc_hashSet;
+            [_logic,"active",_args] call ALIVE_fnc_hashSet;
         };
         _result = [_logic,"active"] call ALIVE_fnc_hashGet;
     };
     case "agentID": {
         if(typeName _args == "STRING") then {
-                [_logic,"agentID",_args] call ALIVE_fnc_hashSet;
+            [_logic,"agentID",_args] call ALIVE_fnc_hashSet;
         };
         _result = [_logic,"agentID"] call ALIVE_fnc_hashGet;
     };
@@ -213,19 +214,19 @@ switch(_operation) do {
     };
     case "faction": {
         if(typeName _args == "STRING") then {
-                [_logic,"faction",_args] call ALIVE_fnc_hashSet;
+            [_logic,"faction",_args] call ALIVE_fnc_hashSet;
         };
         _result = [_logic,"faction"] call ALIVE_fnc_hashGet;
     };
     case "type": {
         if(typeName _args == "STRING") then {
-                [_logic,"type",_args] call ALIVE_fnc_hashSet;
+            [_logic,"type",_args] call ALIVE_fnc_hashSet;
         };
         _result = [_logic,"type"] call ALIVE_fnc_hashGet;
     };
     case "agentClass": {
         if(typeName _args == "STRING") then {
-                [_logic,"agentClass",_args] call ALIVE_fnc_hashSet;
+            [_logic,"agentClass",_args] call ALIVE_fnc_hashSet;
         };
         _result = _logic select 2 select 6; //[_logic,"agentClass"] call ALIVE_fnc_hashGet;
     };
@@ -246,13 +247,13 @@ switch(_operation) do {
     };
     case "unit": {
         if(typeName _args == "OBJECT") then {
-                [_logic,"unit",_args] call ALIVE_fnc_hashSet;
+            [_logic,"unit",_args] call ALIVE_fnc_hashSet;
         };
         _result = [_logic,"unit"] call ALIVE_fnc_hashGet;
     };
     case "homeCluster": {
         if(typeName _args == "STRING") then {
-                [_logic,"homeCluster",_args] call ALIVE_fnc_hashSet;
+            [_logic,"homeCluster",_args] call ALIVE_fnc_hashSet;
         };
         _result = [_logic,"homeCluster"] call ALIVE_fnc_hashGet;
     };
@@ -267,8 +268,43 @@ switch(_operation) do {
         };
         _result = [_logic,"homePosition"] call ALIVE_fnc_hashGet;
     };
+    case "setActiveCommand": {
+        private ["_activeCommands","_type"];
+
+        if(typeName _args == "ARRAY") then {
+
+            [_logic, "clearActiveCommands"] call MAINCLASS;
+
+            [_logic, "addActiveCommand", _args] call MAINCLASS;
+
+            _active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
+
+            if(_active) then {
+                _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+                [ALIVE_civCommandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_civCommandRouter;
+            };
+        };
+    };
+    case "addActiveCommand": {
+        private ["_activeCommands","_type"];
+
+        if(typeName _args == "ARRAY") then {
+            _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+            _activeCommands set [count _activeCommands, _args];
+        };
+    };
+    case "clearActiveCommands": {
+        private ["_activeCommands","_type"];
+
+        _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+
+        if(count _activeCommands > 0) then {
+            [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
+            [_logic,"activeCommands",[]] call ALIVE_fnc_hashSet;
+        };
+    };
     case "spawn": {
-        private ["_debug","_active","_position","_agentID","_agentClass","_side","_unit","_eventID"];
+        private ["_debug","_active","_position","_agentID","_agentClass","_side","_activeCommands","_unit","_eventID"];
 
         _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
         _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
@@ -276,11 +312,19 @@ switch(_operation) do {
         _agentID = _logic select 2 select 3; //[_logic,"agentID"] call ALIVE_fnc_hashGet;
         _agentClass = _logic select 2 select 6; //[_logic,"agentClass"] call ALIVE_fnc_hashGet;
         _side = _logic select 2 select 8; //[_logic,"side"] call ALIVE_fnc_hashGet;
+        _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+
+        _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
 
         // not already active
         if!(_active) then {
 
-            _unit = createVehicle [_agentClass, _position, [], 0, "NONE"];
+            //_unit = createVehicle [_agentClass, _position, [], 0, "NONE"];
+            //_unit = createAgent [_agentClass, _position, [], 0, "NONE"];
+            //_unit disableAI "FSM";
+
+            _group = createGroup _sideObject;
+            _unit = _group createUnit [_agentClass, _position, [], 0, "NONE"];
 
             // set profile id on the unit
             _unit setVariable ["agentID", _agentID];
@@ -294,6 +338,11 @@ switch(_operation) do {
 
             // store the profile id on the active profiles index
             [ALIVE_agentHandler,"setActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;
+
+            // process commands
+            if(count _activeCommands > 0) then {
+                [ALIVE_civCommandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_civCommandRouter;
+            };
 
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
@@ -311,6 +360,7 @@ switch(_operation) do {
         _side = _logic select 2 select 8; //[_logic,"side"] call ALIVE_fnc_hashGet;
         _unit = _logic select 2 select 5; //[_logic,"unit"] call ALIVE_fnc_hashGet;
         _agentID = _logic select 2 select 3; //[_logic,"agentID"] call ALIVE_fnc_hashGet;
+        _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
 
         // not already inactive
         if(_active) then {
@@ -328,6 +378,11 @@ switch(_operation) do {
 
             // store the profile id on the in active profiles index
             [ALIVE_agentHandler,"setInActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;
+
+            // process commands
+            if(count _activeCommands > 0) then {
+                [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
+            };
 
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
@@ -374,7 +429,7 @@ switch(_operation) do {
         if(count _position > 0) then {
             _m = createMarker [format[MTEMPLATE, format["%1_debug",_agentID]], _position];
             _m setMarkerShape "ICON";
-            _m setMarkerSize [0.6, 0.6];
+            _m setMarkerSize [0.4, 0.4];
             _m setMarkerType _icon;
             _m setMarkerColor _color;
             _m setMarkerAlpha _alpha;

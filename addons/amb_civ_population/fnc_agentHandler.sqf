@@ -282,7 +282,7 @@ switch(_operation) do {
         };
 
         [_agentsInActive, _agentID, _agent] call ALIVE_fnc_hashSet;
-};
+    };
     case "getActive": {
         _result = [_logic, "agentsActive"] call ALIVE_fnc_hashGet;
     };

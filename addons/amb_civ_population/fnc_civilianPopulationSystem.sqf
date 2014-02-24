@@ -95,9 +95,17 @@ switch(_operation) do {
             ALIVE_agentHandler = [nil, "create"] call ALIVE_fnc_agentHandler;
             [ALIVE_agentHandler, "init"] call ALIVE_fnc_agentHandler;
 
+            // create command router
+            ALIVE_civCommandRouter = [nil, "create"] call ALIVE_fnc_civCommandRouter;
+            [ALIVE_civCommandRouter, "init"] call ALIVE_fnc_civCommandRouter;
+            [ALIVE_civCommandRouter, "debug", true] call ALIVE_fnc_civCommandRouter;
+
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
                 ["ALIVE CivilianPopulationSystem - Startup completed"] call ALIVE_fnc_dump;
+                ["ALIVE Cluster handler created"] call ALIVE_fnc_dump;
+                ["ALIVE Agent handler created"] call ALIVE_fnc_dump;
+                ["ALIVE Civ command router created"] call ALIVE_fnc_dump;
                 ["ALIVE Active Limit: %1", _activeLimiter] call ALIVE_fnc_dump;
                 ["ALIVE Spawn Radius: %1", _spawnRadius] call ALIVE_fnc_dump;
                 ["ALIVE Spawn in Jet Radius: %1",_spawnTypeJetRadius] call ALIVE_fnc_dump;
@@ -113,6 +121,16 @@ switch(_operation) do {
             // start the cluster activator
             _clusterActivatorFSM = [_logic,_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime] execFSM "\x\alive\addons\amb_civ_population\clusterActivator.fsm";
             [_logic,"activator_FSM",_clusterActivatorFSM] call ALIVE_fnc_hashSet;
+
+            // every hour get environment settings
+            waituntil {
+
+                _env = call ALIVE_fnc_getEnvironment;
+
+                sleep (3600);
+
+                false
+            };
 
         };
     };

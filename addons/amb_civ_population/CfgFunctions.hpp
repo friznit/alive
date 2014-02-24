@@ -31,6 +31,26 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_population\fnc_agentHandler.sqf";
                 recompile = RECOMPILE;
             };
+            class addAmbientRoomLight {
+                description = "addAmbientRoomLight";
+                file = "\x\alive\addons\amb_civ_population\fnc_addAmbientRoomLight.sqf";
+                recompile = RECOMPILE;
+            };
+            class clientAddAmbientRoomLight {
+                description = "clientAddAmbientRoomLight";
+                file = "\x\alive\addons\amb_civ_population\fnc_clientAddAmbientRoomLight.sqf";
+                recompile = RECOMPILE;
+            };
+            class switchMove {
+                description = "switchMove";
+                file = "\x\alive\addons\amb_civ_population\fnc_switchMove.sqf";
+                recompile = RECOMPILE;
+            };
+            class clientSwitchMove {
+                description = "clientSwitchMove";
+                file = "\x\alive\addons\amb_civ_population\fnc_clientSwitchMove.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

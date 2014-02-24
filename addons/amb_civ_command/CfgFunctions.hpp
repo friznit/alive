@@ -1,0 +1,61 @@
+class cfgFunctions {
+	class PREFIX {
+		class COMPONENT {
+			class civCommandRouter {
+				description = "civCommandRouter";
+				file = "\x\alive\addons\amb_civ_command\fnc_civCommandRouter.sqf";
+				recompile = RECOMPILE;
+			};
+            class selectCivilianCommand {
+                description = "Select a random civilian command from a list of available commands";
+                file = "\x\alive\addons\amb_civ_command\fnc_selectCivilianCommand.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_randomMovement {
+                description = "Random movement within a given radius";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_randomMovement.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_idle {
+                description = "Idle command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_idle.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_housework {
+                description = "Housework command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_housework.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_sleep {
+                description = "Sleep command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_sleep.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_campfire {
+                description = "Campfire command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_campfire.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_startMeeting {
+                description = "Start meeting command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_startMeeting.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_joinMeeting {
+                description = "Join meeting command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_joinMeeting.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_startGathering {
+                description = "Start gathering command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_startGathering.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_joinGathering {
+                description = "Join gathering command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_joinGathering.sqf";
+                recompile = RECOMPILE;
+            };
+		};
+	};
+};

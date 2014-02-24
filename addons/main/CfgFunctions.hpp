@@ -146,6 +146,21 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_versioning.sqf";
 				recompile = RECOMPILE;
 			};
+			class getRandomPositionLand {
+                description = "Get a random position on land";
+                file = "\x\alive\addons\main\fnc_getRandomPositionLand.sqf";
+                recompile = RECOMPILE;
+            };
+			class getEnvironment {
+                description = "Sets and gets current environment";
+                file = "\x\alive\addons\main\fnc_getEnvironment.sqf";
+                recompile = RECOMPILE;
+            };
+            class getSunriseSunset {
+                description = "Gets times for sunrise and sunset";
+                file = "\x\alive\addons\main\fnc_getSunriseSunset.sqf";
+                recompile = RECOMPILE;
+            };
 			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";

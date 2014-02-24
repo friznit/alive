@@ -1,0 +1,81 @@
+#include <\x\alive\addons\amb_civ_command\script_component.hpp>
+SCRIPT(selectCivilianCommand);
+
+/* ----------------------------------------------------------------------------
+Function: ALIVE_fnc_selectCivilianCommand
+
+Description:
+Select the next civilian command for an agent
+
+Parameters:
+Array - agent
+
+Returns:
+
+Examples:
+(begin example)
+//
+_result = [_agent] call ALIVE_fnc_selectCivilianCommand;
+(end)
+
+See Also:
+
+Author:
+ARJay
+---------------------------------------------------------------------------- */
+
+private ["_agentData","_agent","_dayState","_command","_probability","_timeProbability","_diceRoll","_args"];
+
+_agentData = _this select 0;
+_agent = _agentData select 2 select 5;
+
+_dayState = ALIVE_currentEnvironment select 0;
+
+if(isNil "ALIVE_civCommands") then {
+    ALIVE_civCommands = [] call ALIVE_fnc_hashCreate;
+    [ALIVE_civCommands, "randomMovement", ["ALIVE_fnc_cc_randomMovement", "managed", [0.25,0.01,0.01], [100]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "idle", ["ALIVE_fnc_cc_idle", "managed", [0.1,0.1,0.1], [10,30]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "housework", ["ALIVE_fnc_cc_housework", "managed", [0.1,0.5,0.01], []]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "sleep", ["ALIVE_fnc_cc_sleep", "managed", [0,0.1,0.9], [300,1000]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "campfire", ["ALIVE_fnc_cc_campfire", "managed", [0,0.1,0.2], [60,300]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "startMeeting", ["ALIVE_fnc_cc_startMeeting", "managed", [0.1,0.1,0.01], []]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "startGathering", ["ALIVE_fnc_cc_startGathering", "managed", [0.1,0.01,0], [30,90]]] call ALIVE_fnc_hashSet;
+};
+
+if(_agent getVariable ["ALIVE_agentMeetingRequested",false]) exitWith {
+    [_agentData, "setActiveCommand", ["ALIVE_fnc_cc_joinMeeting", "managed",[30,90]]] call ALIVE_fnc_civilianAgent;
+};
+
+if(_agent getVariable ["ALIVE_agentGatheringRequested",false]) exitWith {
+    [_agentData, "setActiveCommand", ["ALIVE_fnc_cc_joinGathering", "managed",[]]] call ALIVE_fnc_civilianAgent;
+};
+
+if(count (ALIVE_civCommands select 1) > 0) then {
+    _command = (ALIVE_civCommands select 2) call BIS_fnc_selectRandom;
+    _probability = _command select 2;
+
+    switch(_dayState) do {
+        case "DAY": {
+            _timeProbability = _probability select 0;
+        };
+        case "EVENING": {
+            _timeProbability = _probability select 1;
+        };
+        case "NIGHT": {
+            _timeProbability = _probability select 2;
+        };
+    };
+
+    _diceRoll = random 1;
+
+    ["DAY STATE: %1 DICE ROLL: %2 PROB: %3", _dayState, _diceRoll, _probability] call ALIVE_fnc_dump;
+
+    if(_diceRoll < _timeProbability) then {
+        _args = + _command select 3;
+        [_agentData, "setActiveCommand", [_command select 0, _command select 1,_args]] call ALIVE_fnc_civilianAgent;
+    }else{
+        _command = [ALIVE_civCommands, "idle"] call ALIVE_fnc_hashGet;
+        _args = + _command select 3;
+        [_agentData, "setActiveCommand", [_command select 0, _command select 1,_args]] call ALIVE_fnc_civilianAgent;
+    }
+};
