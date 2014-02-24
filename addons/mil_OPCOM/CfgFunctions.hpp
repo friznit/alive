@@ -11,6 +11,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_opcom\fnc_OPCOMInit.sqf";
                                 recompile = RECOMPILE;
                         };
+                        class OPCOMpositions {
+                                description = "Collects objective positions of given state to an array list";
+                                file = "\x\alive\addons\mil_opcom\fnc_OPCOMpositions.sqf";
+                                recompile = RECOMPILE;
+                        };
                 };
         };
 };
