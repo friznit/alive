@@ -231,8 +231,9 @@ switch(_operation) do {
                         _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
                         _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";
 
-                        // set module as started
+                        // set modules as started
                         [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
+                        [ALiVE_ProfileHandler,"startupComplete",true] call ALIVE_fnc_hashSet;
 
 						// register profile entity analysis job on the live analysis
 						// analysis job will run every 90 seconds and has no run count limit

@@ -351,7 +351,7 @@ _engagedTotal = (_engaged select 0) + (_engaged select 1) + (_engaged select 2);
 //Simulate death
 _toBekilled = [];
 {
-    private ["_engagedOwn"];
+    private ["_engagedOwn","_surviveFactor"];
     
     _profileID = _x select 0;
     _currentPosition = _x select 1;
@@ -369,12 +369,15 @@ _toBekilled = [];
     };
     
     _killFactor = random 1;
-    _surviveFactor = 1;
     
-    if (count _vehiclesInCommandOf > 0) then {_killFactor = _killFactor - 0.25};
+    if (count _vehiclesInCommandOf > 0) then {_killFactor = _killFactor - 0.15};
     if (_engagedTotal > 0) then {
-        _surviveFactor = (_engagedOwn/_engagedTotal);
+        _surviveFactor = (_engagedOwn/_engagedTotal)-(random 0.25);
+    } else {
+		_surviveFactor = random 1;
     };
+    
+    //["Killfactor %1 | Survive %2",_killFactor,_surviveFactor] call ALiVE_fnc_dumpR;
 
     // Enemy sides near, chance of death by weighting
     if ((({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0) && (_killFactor > _surviveFactor)) then {
