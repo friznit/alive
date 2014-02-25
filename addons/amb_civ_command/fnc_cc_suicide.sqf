@@ -1,11 +1,11 @@
 #include <\x\alive\addons\amb_civ_command\script_component.hpp>
-SCRIPT(cc_startMeeting);
+SCRIPT(cc_suicide);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_cc_startMeeting
+Function: ALIVE_fnc_cc_suicide
 
 Description:
-Start meeting command for civilians
+Suicide Bomber command for civilians
 
 Parameters:
 Profile - profile
@@ -16,7 +16,7 @@ Returns:
 Examples:
 (begin example)
 //
-_result = [_agent, []] call ALIVE_fnc_cc_startMeeting;
+_result = [_agent, []] call ALIVE_fnc_cc_suicide;
 (end)
 
 See Also:
@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
 	case "init":{
 
-	    private ["_agents","_partner","_partnerAgent"];
+	    private ["_target"];
 
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
@@ -60,40 +60,46 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _agents = [ALIVE_agentHandler, "getActive"] call ALIVE_fnc_agentHandler;
-        _agents = _agents select 2;
+        _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
 
-        if(count _agents > 0) then {
-            _partner = _agents call BIS_fnc_selectRandom;
-            _partnerAgent = _partner select 2 select 5;
+        if(count _target > 0) then {
+            _target = _target select 0;
+            [_agent] call ALIVE_fnc_agentSelectSpeedMode;
+            _agent doMove getPosASL _target;
 
-            if!(_partnerAgent getVariable ["ALIVE_agentMeetingRequested",false]) then {
-                _partnerAgent setVariable ["ALIVE_agentMeetingRequested", true, false];
-                _partnerAgent setVariable ["ALIVE_agentMeetingTarget", _agent, false];
+            _nextState = "travel";
+            _nextStateArgs = [_target];
 
-                _nextState = "wait";
-                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
-            }else{
-                _nextState = "done";
-                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
-            };
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
 	};
-	case "wait":{
+	case "travel":{
+        private ["_target"];
 
-	    // DEBUG -------------------------------------------------------------------------------------
+        // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
             ["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        if(_agent getVariable ["ALIVE_agentMeetingComplete",false]) then {
-            _agent playMove "";
-            _nextState = "done";
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        _target = _args select 0;
+
+        if(unitReady _agent) then {
+
+            if(_agent distance _target > 5) then {
+                [_agent] call ALIVE_fnc_agentSelectSpeedMode;
+                _agent doMove getPosASL _target;
+            }else{
+
+                _object = "GrenadeHand" createVehicle (getPos _agent);
+                _object attachTo [_agent,[-0.02,-0.07,0.042],"rightHand"];
+
+                _nextState = "done";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            };
         };
 	};
 	case "done":{

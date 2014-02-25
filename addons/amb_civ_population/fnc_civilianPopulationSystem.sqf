@@ -61,7 +61,7 @@ switch(_operation) do {
                 [_logic,"spawnTypeJetRadius",1000] call ALIVE_fnc_hashSet;
                 [_logic,"spawnTypeHeliRadius",1000] call ALIVE_fnc_hashSet;
                 [_logic,"activeLimiter",30] call ALIVE_fnc_hashSet;
-                [_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
+                [_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
                 [_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
         };
     };
@@ -90,6 +90,7 @@ switch(_operation) do {
             // create the cluster handler
             ALIVE_clusterHandler = [nil, "create"] call ALIVE_fnc_clusterHandler;
             [ALIVE_clusterHandler, "init"] call ALIVE_fnc_clusterHandler;
+            [ALIVE_clusterHandler, "debug", _debug] call ALIVE_fnc_clusterHandler;
 
             // create the agent handler
             ALIVE_agentHandler = [nil, "create"] call ALIVE_fnc_agentHandler;
@@ -98,7 +99,10 @@ switch(_operation) do {
             // create command router
             ALIVE_civCommandRouter = [nil, "create"] call ALIVE_fnc_civCommandRouter;
             [ALIVE_civCommandRouter, "init"] call ALIVE_fnc_civCommandRouter;
-            [ALIVE_civCommandRouter, "debug", true] call ALIVE_fnc_civCommandRouter;
+            [ALIVE_civCommandRouter, "debug", _debug] call ALIVE_fnc_civCommandRouter;
+
+            // turn on debug again to see the state of the agent handler, and set debug on all a agents
+            [ALIVE_agentHandler, "debug", _debug] call ALIVE_fnc_agentHandler;
 
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {

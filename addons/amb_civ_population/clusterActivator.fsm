@@ -11,8 +11,8 @@ item6[] = {"COMPLETE",4,218,116.471710,355.902557,206.472076,405.902588,0.000000
 item7[] = {"START",4,218,-192.425964,-19.086315,-102.425903,30.913666,2.000000,"START"};
 item8[] = {"ANALYSE",2,250,-121.637917,195.866745,-31.637772,245.866928,0.000000,"ANALYSE"};
 item9[] = {"DO_ACTIVATE",4,218,-123.076942,274.904297,-33.076859,324.904358,0.000000,"DO" \n "ACTIVATE"};
-item10[] = {"DONE",2,4346,-115.620506,803.818848,-28.961014,850.478516,0.000000,"DONE"};
-item11[] = {"ACTIVATE_LOOP",2,250,-122.133957,356.411804,-32.133873,406.411865,0.000000,"ACTIVATE" \n "LOOP"};
+item10[] = {"DONE",2,250,-115.620506,803.818848,-28.961014,850.478516,0.000000,"DONE"};
+item11[] = {"ACTIVATE_LOOP",2,4346,-122.133957,356.411804,-32.133873,406.411865,0.000000,"ACTIVATE" \n "LOOP"};
 item12[] = {"ITERATE",4,218,4.978054,356.221527,94.978058,406.221588,1.000000,"ITERATE"};
 item13[] = {"END__LOOP",4,218,-122.198143,431.177094,-32.198082,481.177094,0.000000,"END " \n "LOOP"};
 item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,0.000000,"WAIT"};
@@ -121,7 +121,7 @@ link57[] = {43,45};
 link58[] = {44,43};
 link59[] = {45,21};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,139,6316128,1,-784.846313,480.727020,976.868286,-304.882446,1017,1030,1};
-window[] = {2,-1,-1,-1,-1,1158,-1660,-37,260,3,1035};
+window[] = {2,-1,-1,-1,-41,924,-1894,-271,26,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -354,8 +354,10 @@ class FSM
        "		//[""ALIVE Cluster activator - spawn [%1]"",_clusterID] call ALIVE_fnc_dump;			" \n
        "	};" \n
        "	// DEBUG -------------------------------------------------------------------------------------					" \n
-       "        " \n
-       "	[_cluster, ""debug"", true] call ALIVE_fnc_cluster;" \n
+       "      " \n
+       "	if(_debug) then {" \n
+       "		[_cluster, ""debug"", true] call ALIVE_fnc_cluster;" \n
+       "	};" \n
        "" \n
        "	[ALIVE_clusterHandler, ""setActive"", [_clusterID, _cluster]] call ALIVE_fnc_clusterHandler;" \n
        "" \n
@@ -399,7 +401,7 @@ class FSM
     class ANALYSE_1
     {
       name = "ANALYSE_1";
-      init = /*%FSM<STATEINIT""">*/"private [""_cluster"",""_position"",""_countToDespawn"",""_stopDespawn""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_cluster"",""_position"",""_size"",""_countToDespawn"",""_stopDespawn""];" \n
        "" \n
        "_block = [ALIVE_arrayBlockHandler,""getNextBlock"",[""activeClusters"",_activeClusters,30]] call ALIVE_fnc_arrayBlockHandler;" \n
        "" \n
@@ -409,8 +411,9 @@ class FSM
        "	if!(isnil ""_cluster"") then {" \n
        "		" \n
        "		_position = _cluster select 2 select 2;" \n
+       "		_size = _cluster select 2 select 3;" \n
        "" \n
-       "		if !([_position, _spawnDistance, _spawnTypeJetRadius, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {" \n
+       "		if !([_position, (_spawnDistance + (_size)/2), _spawnTypeJetRadius, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {" \n
        "			if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange == 0) then {" \n
        "		           	_toDespawn set [count _toDespawn, _cluster];" \n
        "			};" \n
@@ -583,7 +586,9 @@ class FSM
        "	};" \n
        "	// DEBUG -------------------------------------------------------------------------------------				" \n
        "" \n
-       "	[_cluster, ""debug"", false] call ALIVE_fnc_cluster;" \n
+       "	if(_debug) then {" \n
+       "		[_cluster, ""debug"", false] call ALIVE_fnc_cluster;" \n
+       "	};" \n
        "" \n
        "	[ALIVE_clusterHandler, ""setInActive"", [_clusterID, _cluster]] call ALIVE_fnc_clusterHandler;" \n
        "" \n
@@ -687,7 +692,7 @@ class FSM
        "" \n
        "	if!(isnil ""_cluster"") then {" \n
        "" \n
-       "		_position = _cluster select 2 select 2;" \n
+       "		_position = _cluster select 2 select 2; " \n
        "" \n
        "		if ([_position, _spawnDistance, _spawnTypeJetRadius, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {" \n
        "			_toSpawn set [count _toSpawn, _cluster];" \n

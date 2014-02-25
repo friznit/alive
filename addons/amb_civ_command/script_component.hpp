@@ -1,4 +1,4 @@
-#define COMPONENT mil_command
+#define COMPONENT amb_civ_command
 #include <\x\alive\addons\main\script_mod.hpp>
 
 #ifdef DEBUG_ENABLED_AMB_CIV_COMMAND

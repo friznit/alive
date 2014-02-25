@@ -162,6 +162,10 @@ ALIVE_factionDefaultSupplies = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupplies, "BLU_F", ["Box_NATO_Ammo_F","Box_NATO_AmmoOrd_F","Box_NATO_Grenades_F","Box_NATO_Support_F","Box_NATO_Wps_F","Box_NATO_WpsLaunch_F","Box_NATO_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "BLU_G_F", ["Box_IND_Ammo_F","Box_IND_AmmoOrd_F","Box_IND_Grenades_F","Box_IND_Support_F","Box_IND_Wps_F","Box_IND_WpsLaunch_F","Box_IND_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 
+
+ALIVE_civilianWeapons = [] call ALIVE_fnc_hashCreate;
+[ALIVE_civilianWeapons, "CIV_F", [["hgun_Pistol_heavy_01_F","11Rnd_45ACP_Mag"],["hgun_ACPC2_F","9Rnd_45ACP_Mag"],["hgun_Pistol_heavy_01_snds_F","11Rnd_45ACP_Mag"]]] call ALIVE_fnc_hashSet;
+
 /*
  * Map bounds for analysis grid, this is for when the map bounds function is faulty
  * due to incorrect map size values from config.

@@ -36,6 +36,21 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_command\fnc_cc_campfire.sqf";
                 recompile = RECOMPILE;
             };
+            class cc_observe {
+                description = "Observe command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_observe.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_suicide {
+                description = "Suicide command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_suicide.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_rogue {
+                description = "Rogue command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_rogue.sqf";
+                recompile = RECOMPILE;
+            };
             class cc_startMeeting {
                 description = "Start meeting command";
                 file = "\x\alive\addons\amb_civ_command\fnc_cc_startMeeting.sqf";

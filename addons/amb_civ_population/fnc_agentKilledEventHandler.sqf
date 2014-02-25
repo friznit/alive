@@ -25,7 +25,7 @@ private ["_unit","_agentID","_agent"];
 	
 _unit = _this select 0;
 
-_agentID = _unit getVariable "agentD";
+_agentID = _unit getVariable "agentID";
 _agent = [ALIVE_agentHandler, "getAgent", _agentID] call ALIVE_fnc_agentHandler;
 
 if (isnil "_agent") exitwith {};

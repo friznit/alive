@@ -289,6 +289,14 @@ switch(_operation) do {
         private ["_activeCommands","_type"];
 
         if(typeName _args == "ARRAY") then {
+
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                _agentID = _logic select 2 select 3;
+                ["ALIVE Agent [%1] Add Active Command - %2", _agentID, _args select 0] call ALIVE_fnc_dump;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
+
             _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
             _activeCommands set [count _activeCommands, _args];
         };
@@ -392,6 +400,9 @@ switch(_operation) do {
             // DEBUG -------------------------------------------------------------------------------------
 
         };
+    };
+    case "handleDeath": {
+        [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
     };
     case "createMarker": {
 

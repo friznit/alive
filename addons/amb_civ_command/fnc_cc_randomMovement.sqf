@@ -42,37 +42,46 @@ _nextStateArgs = [];
 
 
 // DEBUG -------------------------------------------------------------------------------------
-//if(_debug) then {
+if(_debug) then {
 	["ALiVE Managed Script Command - [%1] called args: %2",_agentID,_args] call ALIVE_fnc_dump;
-//};
+};
 // DEBUG -------------------------------------------------------------------------------------	
 
 switch (_state) do {
 	case "init":{
 
-	    private ["_maxDistance","_positions","_distance","_position"];
+	    private ["_maxDistance","_homePosition","_agentPosition","_startPosition","_positions","_distance","_position"];
 	
 		// DEBUG -------------------------------------------------------------------------------------
-		//if(_debug) then {
+		if(_debug) then {
 			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-		//};
+		};
 		// DEBUG -------------------------------------------------------------------------------------
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
         _maxDistance = _args select 0;
 
+        _homePosition = _agentData select 2 select 10;
+        _agentPosition = getPosASL _agent;
+
+        if(_agentPosition distance _homePosition > 100) then {
+            _startPosition = _homePosition;
+        }else{
+            _startPosition = _agentPosition;
+        };
+
         _positions = [];
 
         for "_i" from 0 to (5) do
         {
             _distance = random _maxDistance;
-            _position = [_agent, _distance] call ALIVE_fnc_getRandomPositionLand;
+            _position = [_startPosition, _distance] call ALIVE_fnc_getRandomPositionLand;
             _positions set [count _positions, _position];
         };
 
         _position = _positions call BIS_fnc_arrayPop;
-        _agent setSpeedMode "LIMITED";
+        [_agent] call ALIVE_fnc_agentSelectSpeedMode;
         _agent doMove _position;
 		
 		_nextState = "walk";
@@ -85,9 +94,9 @@ switch (_state) do {
 	    private ["_positions","_position"];
 	
 		// DEBUG -------------------------------------------------------------------------------------
-		//if(_debug) then {
+		if(_debug) then {
 			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-		//};
+		};
 		// DEBUG -------------------------------------------------------------------------------------
 
 		_positions = _args select 0;
@@ -102,7 +111,7 @@ switch (_state) do {
             if(unitReady _agent) then
             {
                 _position = _positions call BIS_fnc_arrayPop;
-                _agent setSpeedMode "LIMITED";
+                [_agent] call ALIVE_fnc_agentSelectSpeedMode;
                 _agent doMove _position;
 
                 _nextStateArgs = [_positions];
@@ -114,9 +123,9 @@ switch (_state) do {
 	case "done":{
 	
 		// DEBUG -------------------------------------------------------------------------------------
-		//if(_debug) then {
+		if(_debug) then {
 			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-		//};
+		};
 		// DEBUG -------------------------------------------------------------------------------------
 
 		_agent setVariable ["ALIVE_agentBusy", false, false];

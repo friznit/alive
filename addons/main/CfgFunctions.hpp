@@ -161,6 +161,26 @@ class cfgFunctions {
                 file = "\x\alive\addons\main\fnc_getSunriseSunset.sqf";
                 recompile = RECOMPILE;
             };
+            class getRandomPlayerNear {
+                description = "Gets a random nearby player";
+                file = "\x\alive\addons\main\fnc_getRandomPlayerNear.sqf";
+                recompile = RECOMPILE;
+            };
+            class getRandomManNear {
+                description = "Gets a random nearby man";
+                file = "\x\alive\addons\main\fnc_getRandomManNear.sqf";
+                recompile = RECOMPILE;
+            };
+            class getRandomManOrPlayerNear {
+                description = "Gets a random nearby player or man";
+                file = "\x\alive\addons\main\fnc_getRandomManOrPlayerNear.sqf";
+                recompile = RECOMPILE;
+            };
+            class addToEnemyGroup {
+                description = "Adds a unit to an enemy group of a target";
+                file = "\x\alive\addons\main\fnc_addToEnemyGroup.sqf";
+                recompile = RECOMPILE;
+            };
 			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";

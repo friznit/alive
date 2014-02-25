@@ -495,7 +495,10 @@ switch(_operation) do {
                 } forEach _clustersSettlement;
             };
 
-            [ALIVE_clusterHandler, "debug", true] call ALIVE_fnc_clusterHandler;
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                [ALIVE_clusterHandler, "debug", true] call ALIVE_fnc_clusterHandler;
+            };
 
             // start placement
             [_logic, "placement"] call MAINCLASS;

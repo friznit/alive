@@ -269,9 +269,13 @@ switch(_operation) do {
                     _agent = _activeCommand select 0;
                     _agentID = _agent select 2 select 3; //[_logic,"agentID"] call ALIVE_fnc_hashGet;
 
-                    [_agent, "debug", false] call ALIVE_fnc_civilianAgent;
-                    [_agent, "position", position (_agent select 2 select 5)] call ALIVE_fnc_civilianAgent;
-                    [_agent, "debug", true] call ALIVE_fnc_civilianAgent;
+                    // DEBUG -------------------------------------------------------------------------------------
+                    if(_debug) then {
+                        [_agent, "debug", false] call ALIVE_fnc_civilianAgent;
+                        [_agent, "position", position (_agent select 2 select 5)] call ALIVE_fnc_civilianAgent;
+                        [_agent, "debug", true] call ALIVE_fnc_civilianAgent;
+                    };
+                    // DEBUG -------------------------------------------------------------------------------------
 
                     _activeCommand = _activeCommand select 1;
                     _commandType = _activeCommand select 1;
@@ -295,16 +299,16 @@ switch(_operation) do {
 
                             // if the managed command has not completed
                             if!(_nextState == "complete") then {
-                                [_agent, _commandState, _commandName, _nextStateArgs, _nextState, true] call (call compile _commandName);
+                                [_agent, _commandState, _commandName, _nextStateArgs, _nextState, _debug] call (call compile _commandName);
                             }else{
                                 [_logic,"deactivate",_agent] call MAINCLASS;
 
                                 // pick a new command to activate
-                                [_agent] call ALIVE_fnc_selectCivilianCommand;
+                                [_agent, _debug] call ALIVE_fnc_selectCivilianCommand;
                             };
                         } else {
                             // no current command state set, must have just been activated
-                            [_agent, _commandState, _commandName, _commandArgs, "init", true] call (call compile _commandName);
+                            [_agent, _commandState, _commandName, _commandArgs, "init", _debug] call (call compile _commandName);
                         };
                     }
                 } forEach (_commandState select 2);

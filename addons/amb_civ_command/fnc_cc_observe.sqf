@@ -1,11 +1,11 @@
 #include <\x\alive\addons\amb_civ_command\script_component.hpp>
-SCRIPT(cc_startMeeting);
+SCRIPT(cc_observe);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_cc_startMeeting
+Function: ALIVE_fnc_cc_observe
 
 Description:
-Start meeting command for civilians
+Observe command for civilians
 
 Parameters:
 Profile - profile
@@ -16,7 +16,7 @@ Returns:
 Examples:
 (begin example)
 //
-_result = [_agent, []] call ALIVE_fnc_cc_startMeeting;
+_result = [_agent, []] call ALIVE_fnc_cc_observe;
 (end)
 
 See Also:
@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
 	case "init":{
 
-	    private ["_agents","_partner","_partnerAgent"];
+	    private ["_minTimeout","_maxTimeout","_target","_timeout","_timer"];
 
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
@@ -60,42 +60,82 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _agents = [ALIVE_agentHandler, "getActive"] call ALIVE_fnc_agentHandler;
-        _agents = _agents select 2;
+        _minTimeout = _args select 0;
+		_maxTimeout = _args select 1;
 
-        if(count _agents > 0) then {
-            _partner = _agents call BIS_fnc_selectRandom;
-            _partnerAgent = _partner select 2 select 5;
+        _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomManOrPlayerNear;
 
-            if!(_partnerAgent getVariable ["ALIVE_agentMeetingRequested",false]) then {
-                _partnerAgent setVariable ["ALIVE_agentMeetingRequested", true, false];
-                _partnerAgent setVariable ["ALIVE_agentMeetingTarget", _agent, false];
+        if(count _target > 0) then {
+            _target = _target select 0;
+            [_agent] call ALIVE_fnc_agentSelectSpeedMode;
+            _agent doMove getPosASL _target;
 
-                _nextState = "wait";
-                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
-            }else{
-                _nextState = "done";
-                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
-            };
+            _timeout = _minTimeout + floor(random _maxTimeout);
+            _timer = 0;
+
+            _nextState = "travel";
+            _nextStateArgs = [_target, _timeout, _timer];
+
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
 	};
-	case "wait":{
+	case "travel":{
+        private ["_target"];
 
-	    // DEBUG -------------------------------------------------------------------------------------
+        // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
             ["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        if(_agent getVariable ["ALIVE_agentMeetingComplete",false]) then {
-            _agent playMove "";
-            _nextState = "done";
+        _target = _args select 0;
+
+        if(unitReady _agent) then {
+
+            if!(isNull _target) then {
+                _agent doWatch _target;
+            };
+
+            if(random 1 < 0.3) then {
+                [_agent,"InBaseMoves_HandsBehindBack1"] call ALIVE_fnc_switchMove;
+            };
+
+            _nextState = "wait";
+            _nextStateArgs = _args;
+
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
 	};
+	case "wait":{
+
+        private ["_timeout","_timer"];
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        _target = _args select 0;
+        _timeout = _args select 1;
+        _timer = _args select 2;
+
+        if(_timer > _timeout) then
+        {
+            _agent playMove "";
+            _nextState = "done";
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        }else{
+            _timer = _timer + 1;
+
+            _nextStateArgs = [_target, _timeout, _timer];
+
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        };
+    };
 	case "done":{
 	
 		// DEBUG -------------------------------------------------------------------------------------

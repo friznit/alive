@@ -42,9 +42,9 @@ _nextStateArgs = [];
 
 
 // DEBUG -------------------------------------------------------------------------------------
-//if(_debug) then {
+if(_debug) then {
 	["ALiVE Managed Script Command - [%1] called args: %2",_agentID,_args] call ALIVE_fnc_dump;
-//};
+};
 // DEBUG -------------------------------------------------------------------------------------	
 
 switch (_state) do {
@@ -53,9 +53,9 @@ switch (_state) do {
 	    private ["_minTimeout","_maxTimeout","_position","_timeout","_timer"];
 
 		// DEBUG -------------------------------------------------------------------------------------
-		//if(_debug) then {
+		if(_debug) then {
 			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-		//};
+		};
 		// DEBUG -------------------------------------------------------------------------------------
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
@@ -66,7 +66,7 @@ switch (_state) do {
         _position = [position _agent,0,10,1,0,10,0] call BIS_fnc_findSafePos;
 
         if(count _position > 0) then {
-            _agent setSpeedMode "LIMITED";
+            [_agent] call ALIVE_fnc_agentSelectSpeedMode;
             _agent doMove _position;
 
             _timeout = _minTimeout + floor(random _maxTimeout);
@@ -85,9 +85,9 @@ switch (_state) do {
         private ["_positions","_fire"];
 
         // DEBUG -------------------------------------------------------------------------------------
-        //if(_debug) then {
+        if(_debug) then {
             ["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-        //};
+        };
         // DEBUG -------------------------------------------------------------------------------------
 
         _positions = _args select 0;
@@ -111,9 +111,9 @@ switch (_state) do {
         private ["_timeout","_timer","_fire"];
 
         // DEBUG -------------------------------------------------------------------------------------
-        //if(_debug) then {
+        if(_debug) then {
             ["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-        //};
+        };
         // DEBUG -------------------------------------------------------------------------------------
 
         _timeout = _args select 0;
@@ -137,9 +137,9 @@ switch (_state) do {
 	case "done":{
 	
 		// DEBUG -------------------------------------------------------------------------------------
-		//if(_debug) then {
+		if(_debug) then {
 			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-		//};
+		};
 		// DEBUG -------------------------------------------------------------------------------------
 
 		_agent setVariable ["ALIVE_agentBusy", false, false];
