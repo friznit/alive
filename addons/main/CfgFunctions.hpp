@@ -11,6 +11,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_baseClassHash.sqf";
 				recompile = RECOMPILE;
 			};
+			class buttonAbort {
+				description = "Calls any scripts required when the user disconnects";
+				file = "\x\alive\addons\main\fnc_buttonAbort.sqf";
+				recompile = RECOMPILE;
+			};
 			class isHC {
 				description = "Initialises isHC to indicate a player is a headless client.";
 				file = "\x\alive\addons\main\fnc_isHC.sqf";
