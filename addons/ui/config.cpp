@@ -47,6 +47,10 @@ class RscPicture;
 class RscPictureKeepAspect;
 class RscControlsGroup;
 class RscControlsGroupNoScrollbars;
+class RscButtonMenu;
+class RscButtonMenuCancel;
+class RscTitle;
+class RscDebugConsole;
 
 class cfgScriptPaths
 {
@@ -119,5 +123,109 @@ class RscDisplayMain: RscStandardDisplay
 			text = "\x\alive\addons\UI\logo_alive_white.paa";
 			tooltip = "$STR_ALIVE_UI_TOOLTIP_LOGO_ABOUT";
 		};
+	};
+};
+
+class RscDisplayMPInterrupt: RscStandardDisplay
+{
+	class controls
+	{
+		delete ButtonAbort;
+		class ALiVETitle: RscTitle
+		{
+			idc = 599;
+			style = 0;
+			text = "ALiVE Menu";
+			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
+			y = "17.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			colorBackground[] = {0.69,0.75,0.5,0.8};
+		};
+		class ALiVEButtonServerSave: RscButtonMenu
+		{
+			idc = 196;
+			text = "MISSION SAVE/ABORT (Admin Only)";
+			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
+			y = "18.6 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			action = "['SERVERSAVE'] call alive_fnc_buttonAbort";
+		};
+		class ALIVEButtonServerAbort: RscButtonMenu
+		{
+			idc = 197;
+			text = "MISSION ABORT (Admin Only)";
+			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
+			y = "19.7 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			action = "['SERVERABORT'] call alive_fnc_buttonAbort";
+		};
+		class ALiVEButtonSave: RscButtonMenu
+		{
+			idc = 198;
+			text = "PLAYER SAVE/ABORT";
+			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
+			y = "20.8 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			action = "['SAVE'] call alive_fnc_buttonAbort";
+		};
+		class ALIVEButtonAbort: RscButtonMenu
+		{
+			idc = 199;
+			text = "$STR_DISP_INT_ABORT";
+			x = "1 * 			(			((safezoneW / safezoneH) min 1.2) / 40) + 			(safezoneX)";
+			y = "20.8 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			action = "['ABORT'] call alive_fnc_buttonAbort";
+		};
+		class DebugConsole: RscDebugConsole
+		{
+			x = "33 * 			(			((safezoneW / safezoneH) min 1.2) / 40) + 			(safezoneX)";
+		};
+	};
+};
+
+
+class CfgDebriefing
+{  
+	class Saved
+	{
+		title = "Player Progress Saved";
+		subtitle = "";
+		description = "You have saved your mission progress.";
+		pictureBackground = "";
+		picture = "b_inf";
+		pictureColor[] = {0.0,0.3,0.6,1};
+	};
+	class Abort
+	{
+		title = "Mission Exit";
+		subtitle = "";
+		description = "You have quit from the current running mission";
+		pictureBackground = "";
+		picture = "b_hq";
+		pictureColor[] = {0.0,0.3,0.6,1};
+	};
+	class ServerSaved
+	{
+		title = "Mission Progress Saved";
+		subtitle = "";
+		description = "You have saved the mission, mission will now exit.";
+		pictureBackground = "";
+		picture = "b_hq";
+		pictureColor[] = {0.0,0.3,0.6,1};
+	};
+	class ServerAbort
+	{
+		title = "Mission Exit";
+		subtitle = "";
+		description = "The Mission will now exit.";
+		pictureBackground = "";
+		picture = "b_inf";
+		pictureColor[] = {0.0,0.3,0.6,1};
 	};
 };
