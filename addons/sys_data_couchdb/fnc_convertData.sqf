@@ -42,7 +42,7 @@ _convert = {
 	};
 
 	// Store the type with the key in the dictionary
-	if ([_logic,"storeType", false] call CBA_fnc_hashGet) then {
+	if ([_logic,"storeType", false] call CBA_fnc_hashGet && _type != "STRING") then {
 		[ALIVE_DataDictionary, "setDataDictionary", [_key, _type]] call ALIVE_fnc_Data;
 	};
 	//TRACE_2("ConvertData", _type, _data);
