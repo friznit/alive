@@ -123,7 +123,15 @@ switch (_mode) do {
 			"saved" call BIS_fnc_endMission;
 		};
 	};
-	case "SERVERSAVE": {"serversaved" call BIS_fnc_endMission;};
-	case "SERVERABORT": {"serverabort" call BIS_fnc_endMission;};
+	case "SERVERSAVE": {
+		if (call ALiVE_fnc_isServerAdmin) then {
+			"serversaved" call BIS_fnc_endMission;
+		};
+	};
+	case "SERVERABORT": {
+		if (call ALiVE_fnc_isServerAdmin) then {
+			"serverabort" call BIS_fnc_endMission;
+		};
+	};
 	default {"abort" call BIS_fnc_endMission;};
 };
