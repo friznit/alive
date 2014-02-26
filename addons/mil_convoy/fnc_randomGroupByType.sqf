@@ -1,10 +1,12 @@
-private ["_pos","_side","_type","_i","_group","_facs","_unit","_leader","_unittype","_newpos"];
+#include <\x\alive\addons\mil_convoy\script_component.hpp>
 
-_pos = _this select 0;
-_side = _this select 1;
-_type = _this select 2;
- _facs = factionsConvoy;
+private ["_logic","_pos","_side","_type","_i","_group","_facs","_unit","_leader","_unittype","_newpos"];
 
+_logic = _this select 0;
+_pos = _this select 1;
+_side = _this select 2;
+_type = _this select 3;
+_facs = _logic getvariable ["conv_factions_setting","OPF_F"];
 
 _group = creategroup _side;
 

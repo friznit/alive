@@ -1,3 +1,5 @@
+#include <\x\alive\addons\mil_convoy\script_component.hpp>
+
 private ["_choices","_bias","_result","_j"];
 _choices = _this select 0;
 _bias = _this select 1;
