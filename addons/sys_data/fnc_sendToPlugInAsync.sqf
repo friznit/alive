@@ -1,4 +1,4 @@
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(sendToPlugIn);
 
 /* ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ private ["_cmd","_response","_resp"];
 PARAMS_1(_cmd);
 
 // Send command to the async call handler (PVEH)
-if (([_cmd] call CBA_fnc_strLen) < 16000) then {
+if (([_cmd] call CBA_fnc_strLen) < 10000) then {
 	// update the async queue, send back response immediately
 	GVAR(ASYNC_QUEUE) = GVAR(ASYNC_QUEUE) + [_cmd];
 	publicVariableServer QGVAR(ASYNC_QUEUE);
