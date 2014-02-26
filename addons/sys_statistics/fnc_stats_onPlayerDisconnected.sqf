@@ -26,7 +26,7 @@ if (GVAR(ENABLED)) then {
 	_name = _this select 1;
 	_uid = _this select 2;
 
-	diag_log [str(_id), _name, _uid];
+	// diag_log [str(_id), _name, _uid];
 
 	if (_name == "__SERVER__") exitWith {
 
@@ -38,6 +38,11 @@ if (GVAR(ENABLED)) then {
 		// Send Data
 		GVAR(UPDATE_EVENTS) = _data;
 		publicVariableServer QGVAR(UPDATE_EVENTS);
+	};
+
+	// Cater for non player situations
+	if (_uid == "") exitWith {
+		diag_log["SYS_STATS: PLAYER DOES NOT HAVE UID, EXITING."];
 	};
 
 	{

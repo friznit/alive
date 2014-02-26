@@ -37,6 +37,12 @@ if (GVAR(ENABLED) && isDedicated) then {
 		};
 	} foreach playableUnits;
 
+	// Cater for non player situations
+	if (_uid == "") exitWith {
+		diag_log["SYS_STATS: PLAYER DOES NOT HAVE UID, EXITING."];
+	};
+
+
 	if (isNull _unit) then {
 		diag_log["SYS_STATS: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS"];
 
