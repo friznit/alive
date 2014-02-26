@@ -29,6 +29,9 @@ if (_name == "__SERVER__") exitWith {
 	TRACE_2("LOGIC STATE MISSION", MOD(sys_data), MOD(sys_data) getVariable "saveDateTime");
 
 	if !(GVAR(DISABLED)) then {
+
+		diag_log[format["SYS_DATA: SERVER EXIT SAVING DATA"]];
+
 		if (MOD(sys_data) getVariable ["saveDateTime","true"] == "true") then {
 
 			[GVAR(mission_data), "date", date] call ALIVE_fnc_hashSet;

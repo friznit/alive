@@ -36,7 +36,7 @@ if (([_cmd] call CBA_fnc_strLen) < 10000) then {
 	publicVariableServer QGVAR(ASYNC_QUEUE);
 	_response = "SENT";
 } else{
-	format["SendToPlugInAsync - Output is greater than 16kb - NOT sending: %1", _cmd] call ALIVE_fnc_logger;
+	format["SendToPlugInAsync - Output is greater than 10kb - NOT sending: %1", _cmd] call ALIVE_fnc_logger;
 	_response = "ERROR";
 };
 

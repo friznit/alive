@@ -33,8 +33,8 @@ if (([_cmd] call CBA_fnc_strLen) < 10000) then {
 	_response = "Arma2Net.Unmanaged" callExtension _cmd;
 	TRACE_1("SEND TO PLUGIN: ", _response);
 } else{
-	format["SendToPlugIn - Output is greater than 16kb - NOT sending: %1", _cmd] call ALIVE_fnc_logger;
-	_response = "String was greater than 16kb";
+	format["SendToPlugIn - Output is greater than 10kb - NOT sending: %1", _cmd] call ALIVE_fnc_logger;
+	_response = "String was greater than 10kb";
 };
 
 if (typeName _response == "ARRAY") then {
