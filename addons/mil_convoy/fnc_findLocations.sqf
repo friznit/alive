@@ -1,3 +1,5 @@
+#include <\x\alive\addons\mil_convoy\script_component.hpp>
+
 fnc_findLocations = {
 _types = _this;
 _locations = nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"),_types,30000];

@@ -1,4 +1,5 @@
 #include <\x\alive\addons\mil_convoy\script_component.hpp>
+
 SCRIPT(convoy);
 
 /* ----------------------------------------------------------------------------
@@ -58,52 +59,35 @@ switch(_operation) do {
 		- enabled/disabled
 		*/
 		// Ensure only one module is used
-case "init": {  
-
-		if (isServer) then {
-			MOD(convoy) = _logic;
-			publicVariable QMOD(convoy);
-
- 			 //Initialise module game logic on all localities (clientside spawn)
-                _logic setVariable ["super", SUPERCLASS];
-                _logic setVariable ["class", ALIVE_fnc_CONVOY];
-                _logic setVariable ["init", true, true]; 
-
-              _CONVOY_intensity = _logic getvariable["conv_intensity_setting",1];
-            CONVOY_intensity = parsenumber _CONVOY_intensity;
-		diag_log format["Convoy Instensity: %1", CONVOY_intensity];
-
-                 CONVOY_safearea = _logic getvariable ["conv_safearea_setting",2000];
-				if (typename (CONVOY_safearea) == "STRING") then {CONVOY_safearea = call compile CONVOY_safearea};
-                _logic setVariable ["convoy_safearea", CONVOY_safearea];
-		diag_log format["Safe Area: %1", CONVOY_safearea];
-
-                factionsConvoy = _logic getvariable ["CONV_FACTIONS","OPF_F"];
-                //factionsConvoy = [_logic,"convoyfactions",factionsConvoy];
-diag_log format["FActions: %1", factionsConvoy];
-
-                CONVOY_GLOBALDEBUG = _logic getvariable ["conv_debug_setting",false];
-                if (typename (CONVOY_GLOBALDEBUG) == "STRING") then {CONVOY_GLOBALDEBUG = call compile CONVOY_GLOBALDEBUG};
-diag_log format["DEBUG: %1", CONVOY_GLOBALDEBUG];            
-} else {
+		case "init": {  
 		
-};
+				if (isServer) then {
+		 			 //Initialise module game logic on all localities (clientside spawn)
+		                _logic setVariable ["super", SUPERCLASS];
+		                _logic setVariable ["class", ALIVE_fnc_CONVOY];
+		                _logic setVariable ["init", true, true]; 
+		
+						_logic setvariable ["conv_intensity_setting",(parsenumber (_logic getvariable["conv_intensity_setting","1"])),true];
+						_logic setvariable ["conv_safearea_setting",(parsenumber (_logic getvariable["conv_safearea_setting","2000"])),true];
+						_logic setvariable ["conv_debug_setting",(call compile (_logic getvariable["conv_debug_setting","false"])),true];
+						_logic getvariable ["conv_factions_setting","OPF_F"];
+		
+						/*
+		                CONVOY_GLOBALDEBUG = _logic getvariable ["conv_debug_setting",false];
+		                CONVOY_safearea = _logic getvariable ["conv_safearea_setting",2000];
+						CONVOY_intensity = _logic getvariable ["conv_intensity_setting",1];
+						*/
 
-
-		 
-
-
-		 if(!isDedicated && !isHC) then 
-		 	{
-		 call ALIVE_fnc_startConvoy;
-		  };
-
-
-};
-
+						[_logic] call ALIVE_fnc_startConvoy;
+				};
+				
+				//Clients
+				if(!isDedicated && !isHC) then {};
+		};
 
      	case "destroy": {
-		if (isServer) then {
+			if (isServer) then {
+
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];

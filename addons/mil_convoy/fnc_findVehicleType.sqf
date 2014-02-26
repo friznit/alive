@@ -1,3 +1,5 @@
+#include <\x\alive\addons\mil_convoy\script_component.hpp>
+
 private ["_fac","_allvehs","_vehx","_fx","_cx","_cargoslots","_grpx","_type","_nonconfigs","_nonsims"];
 
 _cargoslots = _this select 0;

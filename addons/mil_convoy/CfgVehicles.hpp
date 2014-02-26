@@ -59,7 +59,7 @@ class CfgVehicles {
 
                                 };
                         };
-                class CONV_FACTIONS
+                class conv_factions_setting
                         {
                                 displayName = "$STR_ALIVE_CONVOY_FACTIONS";
                                 description = "$STR_ALIVE_CONVOY_FACTIONS_COMMENT";

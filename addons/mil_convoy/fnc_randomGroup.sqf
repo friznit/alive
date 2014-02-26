@@ -1,13 +1,16 @@
-private ["_pos","_type","_fac","_facs","_sidex","_side","_grpx","_grps","_grp","_fx","_facx","_s","_spawnGrp","_wp","_nonConfigs"];
+#include <\x\alive\addons\mil_convoy\script_component.hpp>
 
-_pos = _this select 0;
-_type = _this select 1;
+private ["_logic","_pos","_type","_fac","_facs","_sidex","_side","_grpx","_grps","_grp","_fx","_facx","_s","_spawnGrp","_wp","_nonConfigs"];
+
+_logic = _this select 0;
+_pos = _this select 1;
+_type = _this select 2;
 _fac = nil;
 _nonConfigs = [""];
+
 // setup default param
-if (count _this > 2) then { _fac = _this select 2; };
-if (isNil "_fac") then { _fac = east; };
-//hint str _fac;
+if (count _this > 3) then {_fac = _this select 3};
+if (isNil "_fac") then {_fac = east};
 
 _facs = [];
 _side = nil;
@@ -145,9 +148,8 @@ if(_side == civilian) then {
     //randomspawnbytype
     _side = EAST;
 	diag_log format ["ALIVE-%1 fn_randomgroup defaulting fnc_randomgroupbytype", time];
-    _spawnGrp = [_pos,_side,_type] call ALIVE_fnc_randomgroupbytype;
+    _spawnGrp = [_logic,_pos,_side,_type] call ALIVE_fnc_randomgroupbytype;
 };
-
 
 if (isnil "_spawnGrp") then {diag_log format ["ALIVE-%1 fn_randomgroup failed, no _group created", time]};
 _spawnGrp;

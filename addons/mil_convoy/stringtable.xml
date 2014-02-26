@@ -18,13 +18,13 @@
 	<English>Convoy Intensity</English>
 </Key>
 <Key ID="STR_ALIVE_CONVOY_INTENSITY_DESC">
-	<English>Intensity settingof convoys - Low\Med\High</English>
+	<English>Intensity setting of convoys - Low\Med\High</English>
 </Key>
 <Key ID="STR_ALIVE_CONVOY_FACTIONS">
 	<English>Convoy Faction</English>
 </Key>
 <Key ID="STR_ALIVE_CONVOY_FACTIONS_COMMENT">
-	<English>Faction of Convoy's</English>
+	<English>Faction of Convoy's! Will be overridden if synced to an OPCOM!</English>
 </Key>
 <Key ID="STR_ALIVE_CONV_ERROR1">
 	<English>Only one Convoy module can be used</English>
