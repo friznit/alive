@@ -198,7 +198,11 @@ if(count _config > 0) then {
 		_rank = _unit select 1;
 		[_profileEntity, "addUnit", [_class,_position,0,_rank]] call ALIVE_fnc_profileEntity;
 	} forEach _groupUnits;
-	
+
+	{
+	    [_profileEntity,_profileVehicle,true] call ALIVE_fnc_createProfileVehicleAssignment;
+	} forEach _groupVehicles;
+
 };
 
 _groupProfiles

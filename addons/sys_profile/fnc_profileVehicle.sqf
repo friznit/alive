@@ -226,6 +226,7 @@ switch(_operation) do {
 					[_logic,"hasSimulated",false] call ALIVE_fnc_hashSet; // select 2 select 21
 					[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 22
 					[_logic,"faction",""] call ALIVE_fnc_hashSet; // select 2 select 23
+					[_logic,"_rev",""] call ALIVE_fnc_hashSet; // select 2 select 24
                 };
 
                 /*

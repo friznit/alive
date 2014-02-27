@@ -113,33 +113,6 @@ switch(_operation) do {
                         ALIVE_profilesPersistent = false;
                         if(_persistent) then {
                             ALIVE_profilesPersistent = true;
-
-                            /*
-                            scopeName "main";
-                            call compile preProcessFile "\inidbi\init.sqf";
-                            _db = "PROFILE_PERSISTANCE";
-                            _profiles = [];
-
-                            for "_i" from 0 to 10000 do {
-                                _profile = [_db, "DATA", _i, "ARRAY"] call iniDB_read;
-                                if(count _profile > 0) then {
-                                    ["P: %1",_profile] call ALIVE_fnc_dump;
-                                    _profiles set [count _profiles, _profile];
-                                }else{
-                                    breakTo "main";
-                                };
-                            };
-
-                            if(count _profiles > 0) then {
-                                [ALIVE_profileHandler, "importProfileData", _profiles] call ALIVE_fnc_profileHandler;
-
-                                _state = [ALIVE_profileHandler, "state"] call ALIVE_fnc_profileHandler;
-
-                                _state call ALIVE_fnc_inspectHash;
-                            }else{
-                                ALIVE_profilesPersistent = false;
-                            };
-                            */
                         };
 
 						

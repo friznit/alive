@@ -1149,7 +1149,8 @@ switch(_operation) do {
                             "debugMarkers",
                             "speedPerSecond",
                             "despawnPosition",
-                            "vehicleAssignments"
+                            "vehicleAssignments",
+                            "_rev"
                         ]] call ALIVE_fnc_hashCopy;
                     }else{
                         _exportProfile = [_profile, [], [
@@ -1161,13 +1162,20 @@ switch(_operation) do {
                             "debugMarkers",
                             "speedPerSecond",
                             "despawnPosition",
-                            "vehicleAssignments"
+                            "vehicleAssignments",
+                            "_rev"
                         ]] call ALIVE_fnc_hashCopy;
+                    };
+
+                    if([_exportProfile, "_rev"] call ALIVE_fnc_hashGet == "") then {
+                        [_exportProfile, "_rev"] call ALIVE_fnc_hashRem;
                     };
 
                     [_exportProfile, "vehicleAssignmentKeys", _assignmentKeys] call ALIVE_fnc_hashSet;
                     [_exportProfile, "vehicleAssignmentValues", _assignmentValues] call ALIVE_fnc_hashSet;
                     [_exportProfiles, _profileID, _exportProfile] call ALIVE_fnc_hashSet;
+
+                    _exportProfile call ALIVE_fnc_inspectHash;
 
                 };
 
@@ -1193,39 +1201,12 @@ switch(_operation) do {
                     {
                         _key = _x;
                         _value = _vehicleAssignmentValues select _forEachIndex;
-                        _assignments = _value select 2;
-                        {
-                            _assignment = _x;
-                            {
-                                _assignment set [_forEachIndex, parseNumber _x];
-                            } forEach _assignment;
-                        } forEach _assignments;
                         [_rebuiltHash, _key, _value] call ALIVE_fnc_hashSet;
                     } forEach _vehicleAssignmentKeys;
 
                     _rebuiltHash call ALIVE_fnc_inspectHash;
 
-                    _position = [_profile,"position"] call ALIVE_fnc_hashGet;
-
-                    {
-                        _position set [_forEachIndex, parseNumber _x];
-                    } forEach _position;
-
                     if(_profileType == "entity") then {
-
-                        _positions = [_profile,"positions"] call ALIVE_fnc_hashGet;
-
-                        {
-                            _x set [0, parseNumber (_x select 0)];
-                            _x set [1, parseNumber (_x select 1)];
-                            _x set [2, parseNumber (_x select 2)];
-                        } forEach _positions;
-
-                        _damages = [_profile,"damages"] call ALIVE_fnc_hashGet;
-
-                        {
-                            _damages set [_forEachIndex, parseNumber _x];
-                        } forEach _damages;
 
                         _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "init"] call ALIVE_fnc_profileEntity;
@@ -1237,9 +1218,9 @@ switch(_operation) do {
                         [_profileEntity, "unitCount", [_profile,"unitCount"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
                         [_profileEntity, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "unitClasses", [_profile,"unitClasses"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "positions", _positions] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+                        [_profileEntity, "position", [_profile,"position"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        [_profileEntity, "positions", [_profile,"positions"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        [_profileEntity, "damages", [_profile,"damages"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "ranks", [_profile,"ranks"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "side", [_profile,"side"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
@@ -1247,12 +1228,6 @@ switch(_operation) do {
                         [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
                     }else{
-
-                        _damage = [_profile,"damage"] call ALIVE_fnc_hashGet;
-
-                        {
-                            _x set [1, parseNumber (_x select 1)];
-                        } forEach _damage;
 
                         _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
@@ -1264,7 +1239,7 @@ switch(_operation) do {
                         [_profileVehicle, "vehicleClass", [_profile,"vehicleClass"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "position", [_profile,"position"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "direction", [_profile,"direction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
-                        [_profileVehicle, "damage", _damage] call ALIVE_fnc_profileVehicle;
+                        [_profileVehicle, "damage", [_profile,"damage"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "ammo", [_profile,"ammo"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "fuel", [_profile,"fuel"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;

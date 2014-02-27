@@ -26,15 +26,17 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_profileEntity","_profileVehicle","_entityID","_unitIndexes","_currentEntityAssignments","_vehicleID","_usedIndexes","_unitCount","_emptyPositionData",
-"_vehicleAssignments","_unitAssignments","_assignments","_assignedCount","_assignment","_emptyCount"];
+private ["_profileEntity","_profileVehicle","_append","_entityID","_unitIndexes","_currentEntityAssignments","_currentVehicleAssignments","_vehicleID",
+"_usedIndexes","_unitCount","_emptyPositionData","_vehicleAssignments","_unitAssignments","_assignments","_assignedCount","_assignment","_emptyCount"];
 	
 _profileEntity = _this select 0;
 _profileVehicle = _this select 1;
+_append = if(count _this > 2) then {_this select 2} else {false};
 
 _entityID = _profileEntity select 2 select 4; //[_profileEntity, "profileID"] call ALIVE_fnc_hashGet;
 _unitIndexes = [_profileEntity, "unitIndexes"] call ALIVE_fnc_profileEntity;
 _currentEntityAssignments = [_profileEntity, "vehicleAssignments"] call ALIVE_fnc_hashGet;
+_currentVehicleAssignments = [_profileVehicle, "vehicleAssignments"] call ALIVE_fnc_hashGet;
 _vehicleID = _profileVehicle select 2 select 4; //[_profileVehicle, "profileID"] call ALIVE_fnc_hashGet;
 
 // get indexes of units that are already assigned to vehicles
@@ -54,7 +56,6 @@ if(count(_unitIndexes) > 0) then {
 	["unit count:%1",_unitCount] call ALIVE_fnc_dump;
 	["empty position data:%1",_emptyPositionData] call ALIVE_fnc_dump;
 	*/
-
 
 	_assignments = [_vehicleID,_entityID,[[],[],[],[],[]]];
 	_assignedCount = 0;
@@ -78,6 +79,25 @@ if(count(_unitIndexes) > 0) then {
 			_assignment set [count _assignment, _unitIndexes select _assignedCount];			
 			_assignedCount = _assignedCount + 1;			
 		};
+	};
+
+	if(_append) then {
+	    private ["_currentEntityAssignment","_currentVehicleAssignment","_newPositions","_positions","_newPosition","_position"];
+
+	    _currentEntityAssignment = [_currentEntityAssignments, _vehicleID, []] call ALIVE_fnc_hashGet;
+	    _currentVehicleAssignment = [_currentVehicleAssignments, _entityID, []] call ALIVE_fnc_hashGet;
+
+        if((count _currentEntityAssignment > 0) && (count _currentVehicleAssignment > 0)) then {
+
+            _newPositions = _assignments select 2;
+            _positions = _currentEntityAssignment select 2;
+
+            {
+                _newPosition = _x;
+                _position = _positions select _forEachIndex;
+                _newPositions set [_forEachIndex, _newPosition + _position];
+            } forEach _newPositions;
+        };
 	};
 
 	[_profileEntity, "addVehicleAssignment", _assignments] call ALIVE_fnc_profileEntity;

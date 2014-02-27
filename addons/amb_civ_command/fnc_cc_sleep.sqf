@@ -92,7 +92,6 @@ switch (_state) do {
             _dayState = ALIVE_currentEnvironment select 0;
 
             if(_dayState == "EVENING" || _dayState == "NIGHT") then {
-                ["ARRIVED HOME IS EVENING OR NIGHT"] call ALIVE_fnc_dump;
 
                 _homePosition = _agentData select 2 select 10;
 

@@ -265,6 +265,7 @@ switch(_operation) do {
 					[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 28
 					[_logic,"faction",[]] call ALIVE_fnc_hashSet; // select 2 select 29
 					[_logic,"isPlayer",false] call ALIVE_fnc_hashSet; // select 2 select 30
+					[_logic,"_rev",""] call ALIVE_fnc_hashSet; // select 2 select 31
                 };
 
                 /*
@@ -711,6 +712,9 @@ switch(_operation) do {
 					//[true] call ALIVE_fnc_timer;
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
 					//[] call ALIVE_fnc_timer;
+
+					["SPAWN POS:%1",_position] call ALIVE_fnc_dump;
+					["SPAWN POSs:%1",_positions] call ALIVE_fnc_dump;
 
 					_group = createGroup _sideObject;				
 

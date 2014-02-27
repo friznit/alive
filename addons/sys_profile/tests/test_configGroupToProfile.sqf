@@ -51,9 +51,11 @@ player setCaptive true;
 //[] call ALIVE_fnc_cursorTargetInfo;
 
 // CREATE PROFILE HANDLER
+/*
 STAT("Create Profile Handler");
 ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
+*/
 
 
 STAT("Get random group names");
@@ -62,7 +64,7 @@ _group2 = ["Air"] call ALIVE_fnc_configGetRandomGroup;
 _group3 = ["Infantry","IND_F"] call ALIVE_fnc_configGetRandomGroup;
 _group4 = ["Mechanized","BLU_F"] call ALIVE_fnc_configGetRandomGroup;
 
-
+/*
 STAT("Create profiles for a config group");
 _result = [_group1, getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
 
@@ -96,16 +98,46 @@ _profileEntity = _result select 0;
 
 sleep 10;
 [_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
-
+*/
 
 STAT("Create profiles for a config group");
-_result = ["OIA_MotInf_Transport", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MotInf_Transport", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+
+/*
+_profiles = ["OIA_MotInf_Transport", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MotInf_Section", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MotInf_HQ", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MotInf_AT", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MotInf_AT", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MechInf_AA", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MechInf_AT", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_MechInfSquad", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_TankSection", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_TankPlatoon_AA", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["OIA_PO30_Transport", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+*/
+
+/*
+_profiles = ["BUS_TankSection", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["BUS_MechInf_AA", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["BUS_MechInf_Support", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["BUS_MotInf_AA", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["BUS_MotInf_GMGTeam", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["BUS_MotInf_MortTeam", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+_profiles = ["BUS_MechInfSquad", getPosATL player] call ALIVE_fnc_createProfilesFromGroupConfig;
+*/
+
+{
+    _x call ALIVE_fnc_inspectHash;
+} forEach _profiles;
+
 
 STAT("Spawn the unit via the profile");
-_profileEntity = _result select 0;
+_profileEntity = _profiles select 0;
 [_profileEntity, "spawn"] call ALIVE_fnc_profileEntity;
 
-
+/*
 sleep 10;
 [_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
 
@@ -120,6 +152,6 @@ _profileEntity = _result select 0;
 
 sleep 10;
 [_profileEntity, "despawn"] call ALIVE_fnc_profileEntity;
-
+*/
 
 DEBUGON
