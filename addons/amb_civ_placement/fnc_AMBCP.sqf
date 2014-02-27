@@ -488,6 +488,8 @@ switch(_operation) do {
             _clustersRail = [_logic, "objectivesRail", _clusters] call MAINCLASS;
             _clustersFuel = [_logic, "objectivesFuel", _clusters] call MAINCLASS;
             _clustersConstruction = [_logic, "objectivesConstruction", _clusters] call MAINCLASS;
+            
+            waituntil {!(isnil "ALIVE_clusterHandler")};
 
             if(count _clustersSettlement > 0) then {
                 {

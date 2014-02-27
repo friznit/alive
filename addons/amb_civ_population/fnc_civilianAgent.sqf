@@ -361,7 +361,7 @@ switch(_operation) do {
         };
     };
     case "despawn": {
-        private ["_debug","_active","_side","_unit","_agentID","_position"];
+        private ["_debug","_active","_side","_unit","_agentID","_position","_group"];
 
         _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
         _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
@@ -376,6 +376,7 @@ switch(_operation) do {
             [_logic,"active",false] call ALIVE_fnc_hashSet;
 
             _position = getPosATL _unit;
+            _group = group _unit;
 
             // update profile before despawn
             [_logic,"position", _position] call ALIVE_fnc_hashSet;
@@ -383,6 +384,7 @@ switch(_operation) do {
 
             // delete
             deleteVehicle _unit;
+            deletegroup _group;
 
             // store the profile id on the in active profiles index
             [ALIVE_agentHandler,"setInActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;
