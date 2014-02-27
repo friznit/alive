@@ -7,7 +7,7 @@ _intensity = _logic getvariable ["conv_intensity_setting",1];
 
 for "_j" from 1 to _intensity do {
         [_logic,_j] spawn {
-                private ["_timeout","_startpos","_roadRadius","_destpos","_destroada","_destroad","_endpos","_endroad","_grp","_front","_facs","_wp","_j","_convoyLocs","_debug","_sleep","_type","_starttime","_locations","_pos","_size","_list"];
+                private ["_timeout","_startpos","_roadRadius","_destpos","_destroada","_destroad","_endpos","_endroad","_grp","_front","_facs","_wp","_j","_convoyLocs","_debug","_sleep","_type","_starttime","_locations","_pos","_size","_list","_marker_start","_marker_dest","_marker_end"];
                 
                 _logic = _this select 0;
                 _j = _this select 1;
@@ -79,29 +79,53 @@ for "_j" from 1 to _intensity do {
                         _endroad = _list call BIS_fnc_selectRandom;
                         _endpos = getposATL _endroad;
                          diag_log format["_endpos: %1", _endpos];
+                         
+                        _startposList = _startpos nearRoads 500;
 						
 						if (_debug) then {
 							private ["_t","_c"];
-							_t = format["convoy_%1", floor(random 10000)];
-							_c = format["convoy_%1", floor(random 10000)];
-							[_c, _startpos, "Icon", [1,1], "TYPE:", "mil_start", "TEXT:", _t,"GLOBAL"] call CBA_fnc_createMarker;
-							_c = format["convoy_%1", floor(random 10000)];
-							[_c, _destpos, "Icon", [1,1], "TYPE:", "mil_pickup", "TEXT:", _t,"GLOBAL"] call CBA_fnc_createMarker;
-							_c = format["convoy_%1", floor(random 10000)];
-							[_c, _endpos, "Icon", [1,1], "TYPE:", "mil_end", "TEXT:", _t,"GLOBAL"] call CBA_fnc_createMarker;
+							_c = format["convoy_%1", getposATL (_startposList select 0)];
+                            _marker_start = [_c, getposATL (_startposList select 0), "Icon", [1,1], "TYPE:", "mil_start", "TEXT:",_c,"GLOBAL"] call CBA_fnc_createMarker;
+							
+                            _c = format["convoy_%1", _destpos];
+							_marker_dest = [_c, _destpos, "Icon", [1,1], "TYPE:", "mil_pickup", "TEXT:", _c,"GLOBAL"] call CBA_fnc_createMarker;
+							
+                            _c = format["convoy_%1", _endpos];
+							_marker_end = [_c, _endpos, "Icon", [1,1], "TYPE:", "mil_end", "TEXT:", _c,"GLOBAL"] call CBA_fnc_createMarker;
 						};
 						
                         _grp = nil;
                         _front = "";
+                        
+                        _fnc_SelectStartPosList = {
+                            private ["_startpos","_return"];
+
+	                        _startpos = (_startposList select 0);
+	                        _startposList = _startposList - [_startpos];
+                            _return = getposATL _startpos;
+                            
+                            _startpos = (_startposList select 0);
+	                        _startposList = _startposList - [_startpos];
+							_return;
+                        };
+                        
                         while {isNil "_grp"} do {
                                 _front = [["Motorized","Mechanized","Armored"],[16,4,1]] call ALIVE_fnc_selectRandom;
                                 _facs = _factionsConvoy;
-                                _grp = [_logic,_startpos,_front,_facs] call ALIVE_fnc_randomGroup;
+                                _grp = [_logic, call _fnc_SelectStartPosList,_front,_facs] call ALIVE_fnc_randomGroup;
                         };
-                                                
+
 						// Set direction so pointing towards destination
 						//_dir = getdir _startroad;
-                        _dir = [_startpos, _endpos] call BIS_fnc_dirTo;
+                        _dir = [_startpos, _destpos] call BIS_fnc_dirTo;
+                        
+                        {
+                            if (_x == (driver vehicle _x)) then {
+                                (vehicle _x) setvariable ["mil_convoy_positioned",true];
+                                (vehicle _x) setposATL (call _fnc_SelectStartPosList);
+                                (vehicle _x) setdir _dir;
+                            };
+                        } foreach (units _grp);
 						
 						_leader = leader _grp;
 						_leader setdir _dir;
@@ -111,27 +135,28 @@ for "_j" from 1 to _intensity do {
                                 case "Motorized": {
                                         for "_i" from 0 to (1 + floor(random 2)) do {
 										private "_veh";
-											_veh = [_logic,_startpos, _dir, _grp] call ALIVE_fnc_AddVehicle;
+
+											_veh = [_logic, call _fnc_SelectStartPosList, _dir, _grp] call ALIVE_fnc_AddVehicle;
                                         };
                                 };
                                 case "Mechanized": {
                                         for "_i" from 0 to (1 + floor(random 2)) do {
 											private "_veh";
-											_veh = [_logic,_startpos, _dir, _grp] call ALIVE_fnc_AddVehicle;
+											_veh = [_logic,call _fnc_SelectStartPosList, _dir, _grp] call ALIVE_fnc_AddVehicle;
                                         };
 	                                    if(random 1 > 0.66) then {
 											private "_veh";
-											_veh = [_logic,_startpos, _dir, _grp] call ALIVE_fnc_AddVehicle;
+											_veh = [_logic,call _fnc_SelectStartPosList, _dir, _grp] call ALIVE_fnc_AddVehicle;
 										};
                                 };
                                 case "Armored": {
                                         for "_i" from 0 to (1 + floor(random 2)) do {
 											private "_veh";
-											_veh = [_logic,_startpos, _dir, _grp] call ALIVE_fnc_AddVehicle;
+											_veh = [_logic,call _fnc_SelectStartPosList, _dir, _grp] call ALIVE_fnc_AddVehicle;
                                         };
                                         if(random 1 > 0.33) then {
 											private "_veh";
-											_veh = [_logic,_startpos, _dir, _grp] call ALIVE_fnc_AddVehicle;
+											_veh = [_logic,call _fnc_SelectStartPosList, _dir, _grp] call ALIVE_fnc_AddVehicle;
 										};
                                 };
                         };
@@ -140,21 +165,22 @@ for "_j" from 1 to _intensity do {
 						if(random 1 > 0.25) then {
 							for "_i" from 0 to (1 + ceil(random 2)) do {
 								private "_veh";
-								_veh = [_logic,_startpos, _dir, _grp, "Truck_F"] call ALIVE_fnc_AddVehicle;
+								_veh = [_logic,call _fnc_SelectStartPosList, _dir, _grp, "Truck_F"] call ALIVE_fnc_AddVehicle;
 							};
 						};
 						
-						diag_log format["ALIVE-%1 Convoy: #%2 %3 %4 %5 %6 units:%7", time, _j, _startpos, _destpos, _endpos, _front, count (units _grp)];
+						["ALIVE-%1 Convoy: #%2 %3 %4 %5 %6 units:%7", time, _j, _startpos, _destpos, _endpos, _front, count (units _grp)] call ALiVE_fnc_DumpR;
 												
 						_starttime = time;
-						
-                        {_x setSkill 0.2;} forEach units _grp;
+                        _convoyTimeout = 3600;
                         
-                        _wp = _grp addwaypoint [_startpos, 0];
-                        _wp setWaypointFormation "FILE";
-                        _wp setWaypointSpeed "LIMITED";
-                        _wp setWaypointBehaviour "SAFE";
-                        _wp setWaypointTimeout _timeout;
+                        {
+                            if (_x == (driver vehicle _x)) then {
+                                _x setskill 0.9;
+                            } else {
+                            	_x setSkill 0.2;
+                            };
+                        } forEach units _grp;
                         
                         _wp = _grp addwaypoint [_destpos, 0];
                         _wp setWaypointFormation "FILE";
@@ -186,17 +212,18 @@ for "_j" from 1 to _intensity do {
                         _wp setWaypointBehaviour "SAFE";
                         _wp setWaypointType "CYCLE";
 
-                         waitUntil{sleep 60; (!(_grp call CBA_fnc_isAlive) || (time > (_starttime + 3600)))};   
+                         waitUntil{sleep 60; (!(_grp call CBA_fnc_isAlive) || (time > (_starttime + _convoyTimeout)))};
 						
 						// Delete convoy
 						if (_debug) then {
 							diag_log format["ALIVE-%1 Convoy: %3 deleting %2", time, _grp, _j];
+                            {deletemarker _x} foreach [_marker_start,_marker_dest,_marker_end];
 						};
 						{deleteVehicle (vehicle _x); deleteVehicle _x;} forEach units _grp;
 						deletegroup _grp;
 
-                        _sleep = if(_debug) then {30;} else {random 300;};
-                        sleep _sleep;                
+                        _sleep = if(_debug) then {30} else {random 300};
+                        sleep _sleep;
                 };
         };
 };
