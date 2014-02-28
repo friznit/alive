@@ -207,7 +207,7 @@ class CfgDebriefing
 		subtitle = "";
 		description = "You have quit from the current running mission";
 		pictureBackground = "";
-		picture = "b_hq";
+		picture = "b_inf";
 		pictureColor[] = {0.0,0.3,0.6,1};
 	};
 	class ServerSaved
@@ -225,7 +225,7 @@ class CfgDebriefing
 		subtitle = "";
 		description = "The Mission will now exit.";
 		pictureBackground = "";
-		picture = "b_inf";
+		picture = "b_hq";
 		pictureColor[] = {0.0,0.3,0.6,1};
 	};
 };
