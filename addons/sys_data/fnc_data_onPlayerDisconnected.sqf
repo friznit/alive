@@ -16,13 +16,14 @@
 #include <\x\alive\addons\sys_data\script_component.hpp>
 SCRIPT(data_onPlayerDisconnected);
 
-private ["_result","_rev","_dictionaryName"];
+private ["_result","_name","_dictionaryName"];
 
 TRACE_1("DATA SERVER DISCONNECT", _this);
 
 _result = objNull;
+_name = _this select 1;
 
-if (_name == "__SERVER__") exitWith {
+if (_name == "__SERVER__") then {
 
 	// Save mission date / time
 
@@ -48,6 +49,8 @@ if (_name == "__SERVER__") exitWith {
 		_result = [GVAR(datahandler), "write", ["sys_data", ALIVE_DataDictionary, false, _dictionaryName] ] call ALIVE_fnc_Data;
 
 		TRACE_1("SAVING DATA DICTIONARY",_result);
+	} else {
+		diag_log[format["SYS_DATA: SERVER EXIT BUT DATA DISABLED"]];
 	};
 };
 
