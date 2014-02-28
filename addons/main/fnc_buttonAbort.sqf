@@ -78,17 +78,18 @@ _saveServer = {
 
 	["ABORT: SAVING SERVER"] call ALIVE_fnc_dump;
 
+	if !(isNil QMOD(sys_player)) then {
+	    ["ABORT: S SYS_PLAYER OPD"] call ALIVE_fnc_dump;
+		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
+	};
+
     if !(isNil QMOD(sys_statistics)) then {
 	    ["ABORT: S SYS_STATS OPD"] call ALIVE_fnc_dump;
 		// Stats module onPlayerDisconnected call
-		//[[_id, "__SERVER__", _uid],"ALIVE_fnc_stats_onPlayerDisconnected", false, false] call BIS_fnc_MP;
-		//["server",QMOD(sys_statistics),[[_id,"__SERVER__", _uid],{call ALIVE_fnc_stats_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
 		[_id,"__SERVER__", _uid] call ALIVE_fnc_stats_onPlayerDisconnected;
 	};
 	if !(isNil QMOD(sys_perf)) then {
 	    ["ABORT: S SYS_PERF OPD"] call ALIVE_fnc_dump;
-		//[[_id, "__SERVER__", _uid],"ALIVE_fnc_perf_onPlayerDisconnected", false, false] call BIS_fnc_MP;
-		//["server",QMOD(sys_perf),[[_id, "__SERVER__", _uid],{call ALIVE_fnc_perf_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
 		[_id, "__SERVER__", _uid] call ALIVE_fnc_perf_onPlayerDisconnected;
 	};
 
@@ -97,8 +98,6 @@ _saveServer = {
 	if !(isNil QMOD(sys_data)) then {
 	    ["ABORT: S SYS_DATA OPD"] call ALIVE_fnc_dump;
 		// Data module onPlayerDisconnected call
-		//[[_id, "__SERVER__", _uid],"ALIVE_fnc_data_onPlayerDisconnected", false, false] call BIS_fnc_MP;
-		//["server",QMOD(sys_data),[[_id, "__SERVER__", _uid],{call ALIVE_fnc_data_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
 		[_id, "__SERVER__", _uid] call ALIVE_fnc_data_onPlayerDisconnected;
 	};
 };
