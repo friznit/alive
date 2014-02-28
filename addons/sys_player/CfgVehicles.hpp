@@ -172,7 +172,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-/*                        class storeToDB
+                        class storeToDB
                         {
                                 displayName = "$STR_ALIVE_player_storeToDB";
                                 description = "$STR_ALIVE_player_storeToDB_COMMENT";
@@ -191,7 +191,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-*/
+
                         class autoSaveTime
                         {
                                 displayName = "$STR_ALIVE_player_autoSaveTime";

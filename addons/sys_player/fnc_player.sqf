@@ -91,7 +91,7 @@ switch(_operation) do {
                     MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
                     MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
                     MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
-                    MOD(sys_player) setVariable ["storeToDB", DEFAULT_storeToDB, true];
+                    MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
                     MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
 
                     MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];

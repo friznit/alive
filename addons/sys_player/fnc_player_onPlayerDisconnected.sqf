@@ -20,7 +20,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	_unit = objNull;
 
-	TRACE_1("STATS PLAYER DISCONNECT", _this);
+	TRACE_1("SYS PLAYER DISCONNECT", _this);
 
 	_id = _this select 0;
 	_name = _this select 1;
@@ -28,13 +28,16 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	if (_name == "__SERVER__") exitWith {
 
-		// If storeToDB is enabled then save player data
-		_check = MOD(sys_player) getvariable ["storeToDB",false];
-		if (_check && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED})) then {
+		if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 			_result = [MOD(sys_player), "savePlayers", [false]] call ALIVE_fnc_player;
 			TRACE_1("SAVING PLAYER DATA", _result);
 		};
 		MOD(sys_player) setVariable ["saved", true];
+	};
+
+	// Cater for non player situations
+	if (_uid == "") exitWith {
+		diag_log["SYS_PLAYER: PLAYER DOES NOT HAVE UID, EXITING."];
 	};
 
 	{
