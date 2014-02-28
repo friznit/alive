@@ -29,6 +29,8 @@ if (GVAR(ENABLED)) then {
 		// Format Data
 		_data = [ ["Type", "MissionFinish"] ];
 
+		diag_log[format["SYS_PERF: SHUTTING DOWN PERF DATA"]];
+
 		// Send Data
 		GVAR(UPDATE_PERF) = _data;
 		publicVariableServer QGVAR(UPDATE_PERF);
