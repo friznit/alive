@@ -296,7 +296,7 @@ switch(_operation) do {
             			};
 
             			// If auto save interval is defined and ext db is enabled, then save to external db
-            			_check = [MOD(sys_player),"storeToDB",[],DEFAULT_storeToDB] call ALIVE_fnc_OOsimpleOperation;
+            			_check = MOD(sys_player) getvariable ["storeToDB", DEFAULT_storeToDB];
             			_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
                         _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
                         TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
@@ -323,7 +323,8 @@ switch(_operation) do {
                     ["getPlayer", {[MOD(sys_player),(_this select 1)] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
                 };
 
-            TRACE_4("SYS_PLAYER", _logic getvariable "allowReset", _logic getvariable "allowDiffClass",_logic getvariable "allowManualSave",_logic getvariable "storeToDB" );
+            //TRACE_4("SYS_PLAYER", _logic getvariable "allowReset", _logic getvariable "allowDiffClass",_logic getvariable "allowManualSave",_logic getvariable "storeToDB" );
+            TRACE_4("SYS_PLAYER", MOD(sys_player) getvariable "allowReset", MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
 
             TRACE_1("After module init",_logic);
             "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
@@ -372,9 +373,11 @@ switch(_operation) do {
         };
         case "savePlayers": {
                     // Save all players to external DB
-                    private ["_ondisconnect"];
+                    private ["_ondisconnect","_check"];
                     _ondisconnect = _args select 0;
-                    if (_logic getVariable ["storeToDB",DEFAULT_storeToDB]) then {
+                    _check = _logic getVariable "storeToDB";
+                    TRACE_1("STORE TO DB",_check);
+                    if (_check) then {
                         TRACE_1("",GVAR(player_data));
                         _result = [GVAR(datahandler), "save", ["sys_player", GVAR(player_data), _logic getvariable "key", _ondisconnect]] call ALIVE_fnc_Data;
                     };
