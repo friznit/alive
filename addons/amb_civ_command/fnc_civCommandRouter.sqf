@@ -312,7 +312,7 @@ switch(_operation) do {
                             // no current command state set, must have just been activated
                             [_agent, _commandState, _commandName, _commandArgs, "init", _debug] call (call compile _commandName);
                         };
-                    }
+                    };
 
                     sleep 0.2;
 
