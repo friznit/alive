@@ -313,6 +313,9 @@ switch(_operation) do {
                             [_agent, _commandState, _commandName, _commandArgs, "init", _debug] call (call compile _commandName);
                         };
                     }
+
+                    sleep 0.2;
+
                 } forEach (_commandState select 2);
 
                 _env = call ALIVE_fnc_getEnvironment;

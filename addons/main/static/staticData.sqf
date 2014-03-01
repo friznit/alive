@@ -409,6 +409,8 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
         "lib_banya"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // Fallujah
@@ -524,6 +526,8 @@ if(_worldName == "fallujah") then {
         "hospital"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 
@@ -615,6 +619,8 @@ if(_worldName == "Namalsk") then {
         "hospital"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // SMD Sahrani
@@ -665,6 +671,8 @@ if(_worldName == "smd_sahrani_a2") then {
         "nabrezi",
         "podesta"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -756,6 +764,8 @@ if(_worldName == "thirsk" || _worldName == "thirskw" ) then {
         "hospital",
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -867,6 +877,8 @@ if(_worldName == "Chernarus") then {
         "house"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // Podagorsk
@@ -976,6 +988,8 @@ if(_worldName == "fdf_isle1_a") then {
         "generalstore",
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -1087,6 +1101,8 @@ if(_worldName == "mbg_celle2" || _worldName == "Celle") then {
         "house"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // Shapur
@@ -1155,6 +1171,8 @@ if(_worldName == "Shapur_BAF") then {
     ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -1242,6 +1260,8 @@ if(_worldName == "Takistan") then {
         "house"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // Zargabad
@@ -1323,6 +1343,8 @@ if(_worldName == "Zargabad") then {
         "houseblock",
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -1415,6 +1437,8 @@ if(_worldName == "CLAfghan") then {
         "opxbuildings"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // MCN Hazarkot
@@ -1473,6 +1497,8 @@ if(_worldName == "MCN_HazarKot") then {
     ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -1583,6 +1609,8 @@ if(_worldName == "isoladicapraia") then {
         "generalstore",
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -1695,6 +1723,8 @@ if(_worldName == "tigeria") then {
         "hut0"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // Fata
@@ -1782,6 +1812,8 @@ if(_worldName == "fata") then {
     ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -1884,6 +1916,8 @@ if(_worldName == "hellskitchen" || _worldName == "hellskitchens") then {
         "hut"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
 };
 
 // Torabora
@@ -1941,6 +1975,8 @@ if(_worldName == "torabora") then {
     ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -2046,6 +2082,7 @@ if(_worldName == "tup_qom") then {
         "house"
     ];
 
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 };
 
 // Utes
@@ -2121,6 +2158,8 @@ if(_worldName == "utes") then {
     ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
@@ -2224,6 +2263,8 @@ if(_worldName == "pja305") then {
         "hut",
         "house"
     ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
 };
 
