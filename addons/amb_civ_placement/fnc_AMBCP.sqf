@@ -546,6 +546,9 @@ switch(_operation) do {
 			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
 			_sideObject = [_side] call ALIVE_fnc_sideTextToObject;
 
+
+			_env = call ALIVE_fnc_getEnvironment;
+
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
@@ -568,11 +571,10 @@ switch(_operation) do {
 
             _countLandUnits = 0;
 
-            //["AMB VEH AMOUNT: %1", _ambientVehicleAmount] call ALIVE_fnc_dump;
+            ["AMB VEH AMOUNT: %1", _ambientVehicleAmount] call ALIVE_fnc_dump;
 
-            //["CIV BUILDING TYPES: %1", ALIVE_civilianParkingBuildingTypes] call ALIVE_fnc_dump;
+            ["CIV BUILDING TYPES: %1", ALIVE_civilianPopulationBuildingTypes] call ALIVE_fnc_dump;
 
-            /*
 
             if(_ambientVehicleAmount > 0) then {
 
@@ -603,11 +605,12 @@ switch(_operation) do {
                         _supportCount = 0;
                         _supportMax = 0;
 
+                        _clusterID = [_x, "clusterID"] call ALIVE_fnc_hashGet;
                         _nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
 
                         //["NODES: %1",_nodes] call ALIVE_fnc_dump;
 
-                        _buildings = [_nodes, ALIVE_civilianParkingBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
+                        _buildings = [_nodes, ALIVE_civilianPopulationBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 
                         //["BUILDINGS: %1",_buildings] call ALIVE_fnc_dump;
 
@@ -658,8 +661,8 @@ switch(_operation) do {
                                 _building = _x;
 
 
-                                ["SUPPORT CLASSES: %1",_supportClasses] call ALIVE_fnc_dump;
-                                ["LAND CLASSES: %1",_landClasses] call ALIVE_fnc_dump;
+                                //["SUPPORT CLASSES: %1",_supportClasses] call ALIVE_fnc_dump;
+                                //["LAND CLASSES: %1",_landClasses] call ALIVE_fnc_dump;
 
                                 _supportPlacement = false;
                                 if(_supportCount < _supportMax) then {
@@ -669,10 +672,10 @@ switch(_operation) do {
                                     _vehicleClass = _landClasses call BIS_fnc_selectRandom;
                                 };
 
-                                ["SUPPORT PLACEMENT: %1",_supportPlacement] call ALIVE_fnc_dump;
-                                ["VEHICLE CLASS: %1",_vehicleClass] call ALIVE_fnc_dump;
+                                //["SUPPORT PLACEMENT: %1",_supportPlacement] call ALIVE_fnc_dump;
+                                //["VEHICLE CLASS: %1",_vehicleClass] call ALIVE_fnc_dump;
 
-                                _parkingPosition = [_vehicleClass,_building,true] call ALIVE_fnc_getParkingPosition;
+                                _parkingPosition = [_vehicleClass,_building,false] call ALIVE_fnc_getParkingPosition;
                                 _positionOK = true;
 
                                 {
@@ -685,7 +688,10 @@ switch(_operation) do {
                                 //["POS OK: %1",_positionOK] call ALIVE_fnc_dump;
 
                                 if(_positionOK) then {
-                                    [_vehicleClass,_side,_faction,_parkingPosition select 0,_parkingPosition select 1,false,_faction] call ALIVE_fnc_createProfileVehicle;
+
+                                    _buildingPosition = getPos _building;
+
+                                    [_vehicleClass,_side,_faction,_parkingPosition select 0,_parkingPosition select 1,false,_faction,_clusterID,_parkingPosition select 0] call ALIVE_fnc_createCivilianVehicle;
 
                                     _countLandUnits = _countLandUnits + 1;
 
@@ -703,7 +709,6 @@ switch(_operation) do {
                 };
             };
 
-            */
 
             private ["_spawnChance","_civClasses","_clusterID","_nodes","_buildings","_countBuildings","_building","_unitClass","_agentID","_buildingPosition","_agent","_clusterGroup"];
 
@@ -719,7 +724,7 @@ switch(_operation) do {
 
                     //["NODES: %1",_nodes] call ALIVE_fnc_dump;
 
-                    _buildings = [_nodes, ALIVE_civilianParkingBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
+                    _buildings = [_nodes, ALIVE_civilianPopulationBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 
                     //["BUILDINGS: %1",_buildings] call ALIVE_fnc_dump;
 

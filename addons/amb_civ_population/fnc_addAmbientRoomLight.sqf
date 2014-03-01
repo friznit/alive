@@ -33,10 +33,9 @@ _brightness = random 10 / 100;
 
 _light = "#lightpoint" createVehicle getPos _building;
 
-if(isMultiplayer && !(isDedicated)) then
+if(isMultiplayer) then
 {
     [[_building, _light, _brightness, _colour],"ALIVE_fnc_clientAddAmbientRoomLight"] call BIS_fnc_MP;
-    //["arjay_clientCommandCreateRoomLight", [_building, _light, _brightness, _colour]] call arjay_broadcastClientCommand;
 }
 else
 {

@@ -27,8 +27,8 @@ private ["_building","_colour","_brightness","_light"];
 
 _building = _this select 0;
 _light = _this select 1;
-_colour = _this select 2;
-_brightness = _this select 3;
+_brightness = _this select 2;
+_colour = _this select 3;
 
 if(hasInterface) then {
     _light setLightBrightness _brightness;

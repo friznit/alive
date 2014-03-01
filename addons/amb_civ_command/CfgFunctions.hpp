@@ -51,6 +51,16 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_command\fnc_cc_rogue.sqf";
                 recompile = RECOMPILE;
             };
+            class cc_journey {
+                description = "Random journey command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_journey.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_driveTo {
+                description = "Drive to command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_driveTo.sqf";
+                recompile = RECOMPILE;
+            };
             class cc_startMeeting {
                 description = "Start meeting command";
                 file = "\x\alive\addons\amb_civ_command\fnc_cc_startMeeting.sqf";

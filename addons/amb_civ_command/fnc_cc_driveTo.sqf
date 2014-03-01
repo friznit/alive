@@ -1,11 +1,11 @@
 #include <\x\alive\addons\amb_civ_command\script_component.hpp>
-SCRIPT(cc_housework);
+SCRIPT(cc_driveTo);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_cc_housework
+Function: ALIVE_fnc_cc_driveTo
 
 Description:
-Housework command for agents
+Drive to location command for civilians
 
 Parameters:
 Profile - profile
@@ -16,7 +16,7 @@ Returns:
 Examples:
 (begin example)
 //
-_result = [_agent, []] call ALIVE_fnc_cc_housework;
+_result = [_agent, []] call ALIVE_fnc_cc_observe;
 (end)
 
 See Also:
@@ -50,8 +50,8 @@ if(_debug) then {
 switch (_state) do {
 	case "init":{
 
-	    private ["_homePosition","_positions","_position"];
-	
+	    private ["_vehicle","_destination","_position"];
+
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
 			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
@@ -60,17 +60,19 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _homePosition = _agentData select 2 select 10;
+        _vehicle = _args select 0;
+		_destination = _args select 1;
 
-        _positions = [_homePosition,5] call ALIVE_fnc_findIndoorHousePositions;
+		if!(isNull _vehicle) then {
 
-        if(count _positions > 0) then {
-            _position = _positions call BIS_fnc_arrayPop;
+		    _vehicle setVariable ["ALIVE_vehicleInUse", true, false];
+
+            _position = getPosASL _vehicle;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
             _agent doMove _position;
 
-            _nextState = "travel";
-            _nextStateArgs = [_positions];
+            _nextState = "travel_to_vehicle";
+            _nextStateArgs = _args;
 
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
@@ -78,8 +80,9 @@ switch (_state) do {
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
 	};
-	case "travel":{
-        private ["_positions","_dayState","_homePosition","_building","_music","_light"];
+	case "travel_to_vehicle":{
+
+        private ["_vehicle","_destination"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
@@ -87,76 +90,77 @@ switch (_state) do {
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        _positions = _args select 0;
+        _vehicle = _args select 0;
+        _destination = _args select 1;
 
         if(unitReady _agent) then {
 
-            _dayState = ALIVE_currentEnvironment select 0;
+            if!(isNull _vehicle) then {
+                _agent assignAsDriver _vehicle;
+                [_agent] orderGetIn true;
 
-            if(_dayState == "EVENING" || _dayState == "DAY") then {
+                _nextState = "get_in_vehicle";
+                _nextStateArgs = _args;
 
-                _homePosition = _agentData select 2 select 10;
-
-                if([_homePosition, 80] call ALiVE_fnc_anyPlayersInRange > 0) then {
-                    if!(_agent getVariable ["ALIVE_agentHouseMusicOn",false]) then {
-                        _building = _homePosition nearestObject "House";
-                        _music = [_building] call ALIVE_fnc_addAmbientRoomMusic;
-                        _agent setVariable ["ALIVE_agentHouseMusic", _music, false];
-                        _agent setVariable ["ALIVE_agentHouseMusicOn", true, false];
-                    };
-                };
-
-            };
-
-            if(_dayState == "EVENING" || _dayState == "NIGHT") then {
-
-                _homePosition = _agentData select 2 select 10;
-
-                if!(_agent getVariable ["ALIVE_agentHouseLightOn",false]) then {
-                    _building = _homePosition nearestObject "House";
-                    _light = [_building] call ALIVE_fnc_addAmbientRoomLight;
-                    _agent setVariable ["ALIVE_agentHouseLight", _light, false];
-                    _agent setVariable ["ALIVE_agentHouseLightOn", true, false];
-                };
-            };
-
-            _nextState = "housework";
-            _nextStateArgs = [_positions];
-
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
-        };
-	};
-	case "housework":{
-
-	    private ["_positions","_position"];
-	
-		// DEBUG -------------------------------------------------------------------------------------
-		if(_debug) then {
-			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
-		};
-		// DEBUG -------------------------------------------------------------------------------------
-
-		_positions = _args select 0;
-
-        if(count _positions == 0) then
-        {
-            _nextState = "done";
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
-        }
-        else
-        {
-            if(unitReady _agent) then
-            {
-                _position = _positions call BIS_fnc_arrayPop;
-                [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-                _agent doMove _position;
-
-                _nextStateArgs = [_positions];
-
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            }else{
+                _nextState = "done";
                 [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
             };
         };
 	};
+	case "get_in_vehicle":{
+
+        private ["_vehicle","_destination"];
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        _vehicle = _args select 0;
+        _destination = _args select 1;
+
+        if(unitReady _agent) then {
+
+            if(_agent in _vehicle) then {
+                _agent setSpeedMode "LIMITED";
+                _agent doMove _destination;
+
+                _nextState = "travel";
+                _nextStateArgs = _args;
+
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            }else{
+                _nextState = "done";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            };
+        };
+    };
+	case "travel":{
+
+        private ["_timeout","_timer"];
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        _vehicle = _args select 0;
+        _destination = _args select 1;
+
+        if(unitReady _agent) then {
+
+            if(_agent in _vehicle) then {
+                [_agent] orderGetIn false;
+            };
+
+            _nextState = "done";
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        };
+    };
 	case "done":{
 	
 		// DEBUG -------------------------------------------------------------------------------------

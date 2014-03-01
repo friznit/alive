@@ -1,10 +1,10 @@
 #include <\x\alive\addons\amb_civ_population\script_component.hpp>
-SCRIPT(civilianAgent);
+SCRIPT(civilianVehicle);
 
 /* ----------------------------------------------------------------------------
 Function: MAINCLASS
 Description:
-Civilian agent class
+Civilian vehicle class
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -27,31 +27,31 @@ None - despawn - De-Spawn the agent from the agent data
 Examples:
 (begin example)
 // create a agent
-_logic = [nil, "create"] call ALIVE_fnc_civilianAgent;
+_logic = [nil, "create"] call ALIVE_fnc_civilianVehicle;
 
 // init the agent
-_result = [_logic, "init"] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "init"] call ALIVE_fnc_civilianVehicle;
 
 // set the agent agent id
-_result = [_logic, "agentID", "agent_01"] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "agentID", "agent_01"] call ALIVE_fnc_civilianVehicle;
 
 // set the agent class of the agent
-_result = [_logic, "agentClass", "B_MRAP_01_hmg_F"] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "agentClass", "B_MRAP_01_hmg_F"] call ALIVE_fnc_civilianVehicle;
 
 // set the unit position of the agent
-_result = [_logic, "position", getPos player] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "position", getPos player] call ALIVE_fnc_civilianVehicle;
 
 // set the agent is active
-_result = [_logic, "active", true] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "active", true] call ALIVE_fnc_civilianVehicle;
 
 // set the agent unit object reference
-_result = [_logic, "unit", _unit] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "unit", _unit] call ALIVE_fnc_civilianVehicle;
 
 // spawn a unit from the agent
-_result = [_logic, "spawn"] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "spawn"] call ALIVE_fnc_civilianVehicle;
 
 // despawn a unit from the agent
-_result = [_logic, "despawn"] call ALIVE_fnc_civilianAgent;
+_result = [_logic, "despawn"] call ALIVE_fnc_civilianVehicle;
 (end)
 
 See Also:
@@ -64,18 +64,18 @@ nil
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS ALIVE_fnc_baseClassHash
-#define MAINCLASS ALIVE_fnc_civilianAgent
+#define MAINCLASS ALIVE_fnc_civilianVehicle
 
 private ["_logic","_operation","_args","_result","_deleteMarkers","_createMarkers"];
 
-TRACE_1("civilianAgent - input",_this);
+TRACE_1("civilianVehicle - input",_this);
 
 _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 _result = true;
 
-#define MTEMPLATE "ALiVE_CIVILIANAGENT_%1"
+#define MTEMPLATE "ALiVE_CIVILIANVEHICLE_%1"
 
 _deleteMarkers = {
     private ["_logic"];
@@ -113,7 +113,7 @@ _createMarkers = {
         };
     };
 
-    _debugIcon = "n_unknown";
+    _debugIcon = "n_inf";
 
     _debugAlpha = 0.5;
     if(_agentActive) then {
@@ -148,14 +148,16 @@ switch(_operation) do {
             [_logic,"active",false] call ALIVE_fnc_hashSet; // select 2 select 1
             [_logic,"position",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 2
             [_logic,"agentID",""] call ALIVE_fnc_hashSet; // select 2 select 3
-            [_logic,"type","agent"] call ALIVE_fnc_hashSet; // select 2 select 4
+            [_logic,"type","vehicle"] call ALIVE_fnc_hashSet; // select 2 select 4
             [_logic,"unit",objNull] call ALIVE_fnc_hashSet; // select 2 select 5
             [_logic,"agentClass",""] call ALIVE_fnc_hashSet; // select 2 select 6
             [_logic,"faction",""] call ALIVE_fnc_hashSet; // select 2 select 7
             [_logic,"side",""] call ALIVE_fnc_hashSet; // select 2 select 8
             [_logic,"homeCluster",""] call ALIVE_fnc_hashSet; // select 2 select 9
             [_logic,"homePosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 10
-            [_logic,"activeCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 11
+            [_logic,"direction",""] call ALIVE_fnc_hashSet; // select 2 select 11
+            [_logic,"fuel",1] call ALIVE_fnc_hashSet; // select 2 select 12
+            [_logic,"damage",[]] call ALIVE_fnc_hashSet; // select 2 select 13
         };
     };
     case "state": {
@@ -268,51 +270,26 @@ switch(_operation) do {
         };
         _result = [_logic,"homePosition"] call ALIVE_fnc_hashGet;
     };
-    case "setActiveCommand": {
-        private ["_activeCommands","_type"];
-
-        if(typeName _args == "ARRAY") then {
-
-            [_logic, "clearActiveCommands"] call MAINCLASS;
-
-            [_logic, "addActiveCommand", _args] call MAINCLASS;
-
-            _active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
-
-            if(_active) then {
-                _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
-                [ALIVE_civCommandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_civCommandRouter;
-            };
+    case "direction": {
+        if(typeName _args == "SCALAR") then {
+                [_logic,"direction",_args] call ALIVE_fnc_hashSet;
         };
+        _result = [_logic,"direction"] call ALIVE_fnc_hashGet;
     };
-    case "addActiveCommand": {
-        private ["_activeCommands","_type"];
-
+    case "damage": {
         if(typeName _args == "ARRAY") then {
-
-            // DEBUG -------------------------------------------------------------------------------------
-            if(_debug) then {
-                _agentID = _logic select 2 select 3;
-                ["ALIVE Agent [%1] Add Active Command - %2", _agentID, _args select 0] call ALIVE_fnc_dump;
-            };
-            // DEBUG -------------------------------------------------------------------------------------
-
-            _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
-            _activeCommands set [count _activeCommands, _args];
+                [_logic,"damage",_args] call ALIVE_fnc_hashSet;
         };
+        _result = [_logic,"damage"] call ALIVE_fnc_hashGet;
     };
-    case "clearActiveCommands": {
-        private ["_activeCommands","_type"];
-
-        _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
-
-        if(count _activeCommands > 0) then {
-            [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
-            [_logic,"activeCommands",[]] call ALIVE_fnc_hashSet;
+    case "fuel": {
+        if(typeName _args == "SCALAR") then {
+                [_logic,"fuel",_args] call ALIVE_fnc_hashSet;
         };
+        _result = [_logic,"fuel"] call ALIVE_fnc_hashGet;
     };
     case "spawn": {
-        private ["_debug","_active","_position","_agentID","_agentClass","_side","_homePosition","_activeCommands","_unit","_eventID"];
+        private ["_debug","_active","_position","_agentID","_agentClass","_side","_homePosition","_direction","_fuel","_damage","_unit","_eventID"];
 
         _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
         _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
@@ -320,20 +297,23 @@ switch(_operation) do {
         _agentID = _logic select 2 select 3; //[_logic,"agentID"] call ALIVE_fnc_hashGet;
         _agentClass = _logic select 2 select 6; //[_logic,"agentClass"] call ALIVE_fnc_hashGet;
         _side = _logic select 2 select 8; //[_logic,"side"] call ALIVE_fnc_hashGet;
-        _homePosition = _logic select 2 select 10; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
-        _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+        _homePosition = _logic select 2 select 10; //[_logic,"homePosition"] call ALIVE_fnc_hashGet;
+        _direction = _logic select 2 select 11; //[_logic,"direction"] call ALIVE_fnc_hashGet;
+        _fuel = _logic select 2 select 12; //[_logic,"fuel"] call ALIVE_fnc_hashGet;
+        _damage = _logic select 2 select 13; //[_logic,"damage"] call ALIVE_fnc_hashGet;
 
         _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
 
         // not already active
         if!(_active) then {
 
-            //_unit = createVehicle [_agentClass, _position, [], 0, "NONE"];
-            //_unit = createAgent [_agentClass, _position, [], 0, "NONE"];
-            //_unit disableAI "FSM";
+            _unit = createVehicle [_agentClass, _homePosition, [], 0, "NONE"];
+            _unit setDir _direction;
+            _unit setFuel _fuel;
 
-            _group = createGroup _sideObject;
-            _unit = _group createUnit [_agentClass, _homePosition, [], 0, "NONE"];
+            if(count _damage > 0) then {
+                [_unit, _damage] call ALIVE_fnc_vehicleSetDamage;
+            };
 
             // set profile id on the unit
             _unit setVariable ["agentID", _agentID];
@@ -348,11 +328,6 @@ switch(_operation) do {
             // store the profile id on the active profiles index
             [ALIVE_agentHandler,"setActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;
 
-            // process commands
-            if(count _activeCommands > 0) then {
-                [ALIVE_civCommandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_civCommandRouter;
-            };
-
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
                 //["Agent [%1] Spawn - class: %2 pos: %3",_agentID,_agentClass,_position] call ALIVE_fnc_dump;
@@ -362,14 +337,13 @@ switch(_operation) do {
         };
     };
     case "despawn": {
-        private ["_debug","_active","_side","_unit","_agentID","_activeCommands","_position","_group","_music","_light"];
+        private ["_debug","_active","_side","_unit","_agentID","_position"];
 
         _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
         _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
         _side = _logic select 2 select 8; //[_logic,"side"] call ALIVE_fnc_hashGet;
         _unit = _logic select 2 select 5; //[_logic,"unit"] call ALIVE_fnc_hashGet;
         _agentID = _logic select 2 select 3; //[_logic,"agentID"] call ALIVE_fnc_hashGet;
-        _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
 
         // not already inactive
         if(_active) then {
@@ -377,37 +351,19 @@ switch(_operation) do {
             [_logic,"active",false] call ALIVE_fnc_hashSet;
 
             _position = getPosATL _unit;
-            _group = group _unit;
 
             // update profile before despawn
             [_logic,"position", _position] call ALIVE_fnc_hashSet;
             [_logic,"unit",objNull] call ALIVE_fnc_hashSet;
-
-            if(_unit getVariable ["ALIVE_agentHouseMusicOn",false]) then {
-                _music = _unit getVariable "ALIVE_agentHouseMusic";
-                deleteVehicle _music;
-                _unit setVariable ["ALIVE_agentHouseMusic", objNull, false];
-                _unit setVariable ["ALIVE_agentHouseMusicOn", true, false];
-            };
-
-            if(_unit getVariable ["ALIVE_agentHouseLightOn",false]) then {
-                _light = _unit getVariable "ALIVE_agentHouseLight";
-                deleteVehicle _light;
-                _unit setVariable ["ALIVE_agentHouseLight", objNull, false];
-                _unit setVariable ["ALIVE_agentHouseLightOn", false, false];
-            };
+            [_logic,"direction", getDir _unit] call ALIVE_fnc_hashSet;
+            [_logic,"damage", _unit call ALIVE_fnc_vehicleGetDamage] call ALIVE_fnc_hashSet;
+            [_logic,"fuel", fuel _unit] call ALIVE_fnc_hashSet;
 
             // delete
             deleteVehicle _unit;
-            deleteGroup _group;
 
             // store the profile id on the in active profiles index
             [ALIVE_agentHandler,"setInActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;
-
-            // process commands
-            if(count _activeCommands > 0) then {
-                [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
-            };
 
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
@@ -419,7 +375,7 @@ switch(_operation) do {
         };
     };
     case "handleDeath": {
-        [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
+        [_logic,"damage",1] call ALIVE_fnc_hashSet;
     };
     case "createMarker": {
 
@@ -452,7 +408,7 @@ switch(_operation) do {
             };
         };
 
-        _icon = "n_unknown";
+        _icon = "n_inf";
 
         if(count _position > 0) then {
             _m = createMarker [format[MTEMPLATE, format["%1_debug",_agentID]], _position];

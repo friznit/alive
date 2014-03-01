@@ -250,10 +250,12 @@ switch(_operation) do {
         };
         // DEBUG -------------------------------------------------------------------------------------
 
+        _env = call ALIVE_fnc_getEnvironment;
+
         // spawn the manager thread
         _handle = [_logic, _debug, _commandState] spawn {
 
-            private ["_debug","_commandState","_activeCommand","_agent","_agentID","_commandType","_commandName","_commandArgs"];
+            private ["_debug","_commandState","_activeCommand","_agent","_agentID","_commandType","_commandName","_commandArgs","_env"];
 
             _logic = _this select 0;
             _debug = _this select 1;
@@ -312,6 +314,8 @@ switch(_operation) do {
                         };
                     }
                 } forEach (_commandState select 2);
+
+                _env = call ALIVE_fnc_getEnvironment;
 
                 sleep 5;
 

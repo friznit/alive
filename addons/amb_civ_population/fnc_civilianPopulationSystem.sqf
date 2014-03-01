@@ -123,18 +123,8 @@ switch(_operation) do {
             [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
 
             // start the cluster activator
-            _clusterActivatorFSM = [_logic,_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime] execFSM "\x\alive\addons\amb_civ_population\clusterActivator.fsm";
+            _clusterActivatorFSM = [_logic,_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime] execFSM "\x\alive\addons\amb_civ_population\clusterActivator_v2.fsm";
             [_logic,"activator_FSM",_clusterActivatorFSM] call ALIVE_fnc_hashSet;
-
-            // every hour get environment settings
-            waituntil {
-
-                _env = call ALIVE_fnc_getEnvironment;
-
-                sleep (3600);
-
-                false
-            };
 
         };
     };

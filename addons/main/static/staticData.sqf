@@ -163,8 +163,26 @@ ALIVE_factionDefaultSupplies = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupplies, "BLU_G_F", ["Box_IND_Ammo_F","Box_IND_AmmoOrd_F","Box_IND_Grenades_F","Box_IND_Support_F","Box_IND_Wps_F","Box_IND_WpsLaunch_F","Box_IND_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 
 
+/*
+ * Civ Pop Defaults
+ */
+
 ALIVE_civilianWeapons = [] call ALIVE_fnc_hashCreate;
 [ALIVE_civilianWeapons, "CIV_F", [["hgun_Pistol_heavy_01_F","11Rnd_45ACP_Mag"],["hgun_ACPC2_F","9Rnd_45ACP_Mag"],["hgun_Pistol_heavy_01_snds_F","11Rnd_45ACP_Mag"]]] call ALIVE_fnc_hashSet;
+
+ALIVE_civilianHouseTracks = [] call ALIVE_fnc_hashCreate;
+[ALIVE_civilianHouseTracks, "Track1", 180] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track2", 188] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track3", 199] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track4", 246] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track5", 335] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track6", 199] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track7", 177] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track8", 235] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track9", 246] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track10", 292] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track11", 189] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track12", 203] call ALIVE_fnc_hashSet;
 
 /*
  * Map bounds for analysis grid, this is for when the map bounds function is faulty
@@ -208,7 +226,7 @@ ALIVE_militaryHeliBuildingTypes = [];
 ALIVE_civilianHeliBuildingTypes = [];
 ALIVE_militaryBuildingTypes = [];
 
-ALIVE_civilianParkingBuildingTypes = [];
+ALIVE_civilianPopulationBuildingTypes = [];
 ALIVE_civilianHQBuildingTypes = [];
 ALIVE_civilianPowerBuildingTypes = [];
 ALIVE_civilianCommsBuildingTypes = [];
@@ -281,7 +299,7 @@ if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic") t
     	"dome"
     ];
 
-    ALIVE_civilianParkingBuildingTypes = ALIVE_civilianParkingBuildingTypes + [
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianPopulationBuildingTypes + [
         "house_",
         "shop_",
         "garage_",
@@ -2238,32 +2256,6 @@ BLU_G_F_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 [BLU_G_F_mappings, "GroupFactionTypes", BLU_G_F_typeMappings] call ALIVE_fnc_hashSet;
 [ALIVE_factionCustomMappings, "BLU_G_F", BLU_G_F_mappings] call ALIVE_fnc_hashSet;
-// ---------------------------------------------------------------------------------------------------------------------
-
-// dr Irregulars
-// ---------------------------------------------------------------------------------------------------------------------
-/*
-drIrregulars_mappings = [] call ALIVE_fnc_hashCreate;
-[drIrregulars_mappings, "Side", "INDEP"] call ALIVE_fnc_hashSet;
-[drIrregulars_mappings, "GroupSideName", "INDEP"] call ALIVE_fnc_hashSet;
-[drIrregulars_mappings, "FactionName", "drIrregulars"] call ALIVE_fnc_hashSet;
-[drIrregulars_mappings, "GroupFactionName", "drIrregulars"] call ALIVE_fnc_hashSet;
-
-drIrregulars_typeMappings = [] call ALIVE_fnc_hashCreate;
-[drIrregulars_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
-[drIrregulars_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
-[drIrregulars_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
-[drIrregulars_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
-[drIrregulars_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
-[drIrregulars_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
-[drIrregulars_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[drIrregulars_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[drIrregulars_mappings, "GroupFactionTypes", drIrregulars_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "drIrregulars", drIrregulars_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupplies, "drIrregulars", ["Box_mas_ru_rifle_Wps_F"]] call ALIVE_fnc_hashSet;
-*/
 // ---------------------------------------------------------------------------------------------------------------------
 
 // African

@@ -21,6 +21,16 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_population\fnc_civilianAgent.sqf";
                 recompile = RECOMPILE;
             };
+            class civilianVehicle {
+                description = "civilianVehicle";
+                file = "\x\alive\addons\amb_civ_population\fnc_civilianVehicle.sqf";
+                recompile = RECOMPILE;
+            };
+            class createCivilianVehicle {
+                description = "createCivilianVehicle";
+                file = "\x\alive\addons\amb_civ_population\fnc_createCivilianVehicle.sqf";
+                recompile = RECOMPILE;
+            };
             class agentKilledEventHandler {
                 description = "agentKilledEventHandler";
                 file = "\x\alive\addons\amb_civ_population\fnc_agentKilledEventHandler.sqf";
@@ -29,6 +39,16 @@ class cfgFunctions {
             class agentHandler {
                 description = "agentHandler";
                 file = "\x\alive\addons\amb_civ_population\fnc_agentHandler.sqf";
+                recompile = RECOMPILE;
+            };
+            class addAmbientRoomMusic {
+                description = "addAmbientRoomMusic";
+                file = "\x\alive\addons\amb_civ_population\fnc_addAmbientRoomMusic.sqf";
+                recompile = RECOMPILE;
+            };
+            class clientAddAmbientRoomMusic {
+                description = "clientAddAmbientRoomMusic";
+                file = "\x\alive\addons\amb_civ_population\fnc_clientAddAmbientRoomMusic.sqf";
                 recompile = RECOMPILE;
             };
             class addAmbientRoomLight {

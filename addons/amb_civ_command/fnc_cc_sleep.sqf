@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
 	case "init":{
 
-	    private ["_minTimeout","_maxTimeout","_homePosition","_timeout","_timer","_positions"];
+	    private ["_minTimeout","_maxTimeout","_homePosition","_timeout","_timer"];
 	
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
@@ -77,7 +77,7 @@ switch (_state) do {
         [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
 	};
 	case "travel":{
-        private ["_positions","_dayState","_homePosition","_building","_light"];
+        private ["_dayState","_music","_light"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
@@ -85,15 +85,21 @@ switch (_state) do {
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        _positions = _args select 0;
-
         if(unitReady _agent) then {
 
             _dayState = ALIVE_currentEnvironment select 0;
 
             if(_dayState == "EVENING" || _dayState == "NIGHT") then {
 
-                _homePosition = _agentData select 2 select 10;
+                if(_agent getVariable ["ALIVE_agentHouseMusicOn",false]) then {
+                    _music = _agent getVariable "ALIVE_agentHouseMusic";
+                    deleteVehicle _music;
+                    _agent setVariable ["ALIVE_agentHouseMusic", objNull, false];
+                    _agent setVariable ["ALIVE_agentHouseMusicOn", true, false];
+                };
+            };
+
+            if(_dayState == "EVENING" || _dayState == "NIGHT") then {
 
                 if(_agent getVariable ["ALIVE_agentHouseLightOn",false]) then {
                     _light = _agent getVariable "ALIVE_agentHouseLight";
