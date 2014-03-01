@@ -29,7 +29,7 @@ private ["_state","_uid","_player","_debug","_players","_entityCount","_playerPr
 _state = _this select 0;
 _uid = if(count _this > 1) then {_this select 1} else {""};
 _player = if(count _this > 2) then {_this select 2} else {objNull};
-_debug = if(count _this > 3) then {_this select 3} else {true};
+_debug = if(count _this > 3) then {_this select 3} else {false};
 
 _players = [];
 if (isMultiplayer) then {
@@ -43,13 +43,14 @@ _profileIndex = [ALIVE_profileHandler,"getPlayerIndex"] call ALIVE_fnc_profileHa
 
 _entityCount = count (_playerProfiles select 1);
 
+/*
 ["ALIVE Player profiler - State: %1",_state] call ALIVE_fnc_dump;
 ["ALIVE Player profiler - Current Entity Count: %1",_entityCount] call ALIVE_fnc_dump;
 ["ALIVE Player profiler - UID: %1",_uid] call ALIVE_fnc_dump;
 ["ALIVE Player profiler - Player: %1",_player] call ALIVE_fnc_dump;
 ["ALIVE Player profiler - Player Group: %1",group _player] call ALIVE_fnc_dump;
 ["ALIVE Player profiler - Player Group Units: %1",units group _player] call ALIVE_fnc_dump;
-
+*/
 
 if(_uid in (_profileIndex select 1)) then {
     _registeredProfile = [_profileIndex, _uid] call ALIVE_fnc_hashGet;
@@ -57,7 +58,7 @@ if(_uid in (_profileIndex select 1)) then {
 
 if!(isNil "_registeredProfile") then {
 
-    ["ALIVE Player profiler - Registered profile exists"] call ALIVE_fnc_dump;
+    //["ALIVE Player profiler - Registered profile exists"] call ALIVE_fnc_dump;
 
     switch(_state) do {
         case "CONNECT":{
@@ -65,7 +66,7 @@ if!(isNil "_registeredProfile") then {
         };
         case "DISCONNECT":{
 
-            ["ALIVE Player profiler - Registered profile found, remove disconnecting player from profile"] call ALIVE_fnc_dump;
+            //["ALIVE Player profiler - Registered profile found, remove disconnecting player from profile"] call ALIVE_fnc_dump;
 
             _profileEntity = _registeredProfile;
             _group = _profileEntity select 2 select 13;
@@ -81,16 +82,16 @@ if!(isNil "_registeredProfile") then {
                     _uuid = getPlayerUID _unit;
                     if(_uuid != _uid) then {
                         _existingPlayers = _existingPlayers + [_uuid];
-                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
                     }else{
-                        ["ALIVE Player profiler - found disconnecting player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found disconnecting player in this group: %1",_unit] call ALIVE_fnc_dump;
                     };
                 };
             } forEach _units;
 
             // there are existing players in this group check if they are profiled
             if(count _existingPlayers > 0) then {
-                ["ALIVE Player profiler - other players in group, wait until disconnecting player is null and update"] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - other players in group, wait until disconnecting player is null and update"] call ALIVE_fnc_dump;
 
                 _leader = leader _group;
 
@@ -135,7 +136,7 @@ if!(isNil "_registeredProfile") then {
                 // DEBUG -------------------------------------------------------------------------------------
 
             }else{
-                ["ALIVE Player profiler - No players found removing profile.."] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - No players found removing profile.."] call ALIVE_fnc_dump;
                 [ALIVE_profileHandler, "unregisterProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
                 // DEBUG -------------------------------------------------------------------------------------
@@ -151,7 +152,7 @@ if!(isNil "_registeredProfile") then {
 
         };
         case "KILLED":{
-            ["ALIVE Player profiler - Registered profile found, remove killed player from profile"] call ALIVE_fnc_dump;
+            //["ALIVE Player profiler - Registered profile found, remove killed player from profile"] call ALIVE_fnc_dump;
 
             _profileEntity = _registeredProfile;
             _group = _profileEntity select 2 select 13;
@@ -167,16 +168,16 @@ if!(isNil "_registeredProfile") then {
                     _uuid = getPlayerUID _unit;
                     if(_uuid != _uid) then {
                         _existingPlayers = _existingPlayers + [_uuid];
-                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
                     }else{
-                        ["ALIVE Player profiler - found disconnecting player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found disconnecting player in this group: %1",_unit] call ALIVE_fnc_dump;
                     };
                 };
             } forEach _units;
 
             // there are existing players in this group check if they are profiled
             if(count _existingPlayers > 0) then {
-                ["ALIVE Player profiler - other players in group, wait until disconnecting player is null and update"] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - other players in group, wait until disconnecting player is null and update"] call ALIVE_fnc_dump;
 
                 _leader = leader _group;
 
@@ -221,7 +222,7 @@ if!(isNil "_registeredProfile") then {
                 // DEBUG -------------------------------------------------------------------------------------
 
             }else{
-                ["ALIVE Player profiler - No players found removing profile.."] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - No players found removing profile.."] call ALIVE_fnc_dump;
                 [ALIVE_profileHandler, "unregisterProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
                 // DEBUG -------------------------------------------------------------------------------------
@@ -333,7 +334,7 @@ if!(isNil "_registeredProfile") then {
             _existingPlayers = [];
 
             if(_player == _leader) then {
-                ["ALIVE Player profiler - Connected player is the group leader: %1",_player] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - Connected player is the group leader: %1",_player] call ALIVE_fnc_dump;
             };
 
             {
@@ -342,9 +343,9 @@ if!(isNil "_registeredProfile") then {
                     _uuid = getPlayerUID _unit;
                     if(_uuid != _uid) then {
                         _existingPlayers = _existingPlayers + [_uuid];
-                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
                     }else{
-                        ["ALIVE Player profiler - found connecting player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found connecting player in this group: %1",_unit] call ALIVE_fnc_dump;
                     };
                 };
             } forEach _units;
@@ -352,7 +353,7 @@ if!(isNil "_registeredProfile") then {
             // there are existing players in this group check if they are profiled
             if(count _existingPlayers > 0) then {
                 _uuid = _existingPlayers select 0;
-                ["ALIVE Player profiler - checking other players for profile: %1",_uuid] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - checking other players for profile: %1",_uuid] call ALIVE_fnc_dump;
                 if(_uuid in (_profileIndex select 1)) then {
                    _existingProfile = [_profileIndex, _uid] call ALIVE_fnc_hashGet;
                 };
@@ -360,7 +361,7 @@ if!(isNil "_registeredProfile") then {
 
             if!(isNil "_existingProfile") then {
 
-                ["ALIVE Player profiler - Existing profile found, add connecting player to profile"] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - Existing profile found, add connecting player to profile"] call ALIVE_fnc_dump;
 
                 _profileEntity = _existingProfile;
                 _unitClasses = [];
@@ -420,7 +421,7 @@ if!(isNil "_registeredProfile") then {
 
             }else{
 
-                ["ALIVE Player profiler - No existing profile found, create profile for connecting player"] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - No existing profile found, create profile for connecting player"] call ALIVE_fnc_dump;
 
                 _unitClasses = [];
                 _positions = [];
@@ -508,7 +509,7 @@ if!(isNil "_registeredProfile") then {
             _existingPlayers = [];
 
             if(_player == _leader) then {
-                ["ALIVE Player profiler - Respawned player is the group leader: %1",_player] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - Respawned player is the group leader: %1",_player] call ALIVE_fnc_dump;
             };
 
             {
@@ -517,9 +518,9 @@ if!(isNil "_registeredProfile") then {
                     _uuid = getPlayerUID _unit;
                     if(_uuid != _uid) then {
                         _existingPlayers = _existingPlayers + [_uuid];
-                        ["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found another player in this group: %1",_unit] call ALIVE_fnc_dump;
                     }else{
-                        ["ALIVE Player profiler - found respawned player in this group: %1",_unit] call ALIVE_fnc_dump;
+                        //["ALIVE Player profiler - found respawned player in this group: %1",_unit] call ALIVE_fnc_dump;
                     };
                 };
             } forEach _units;
@@ -527,7 +528,7 @@ if!(isNil "_registeredProfile") then {
             // there are existing players in this group check if they are profiled
             if(count _existingPlayers > 0) then {
                 _uuid = _existingPlayers select 0;
-                ["ALIVE Player profiler - checking other players for profile: %1",_uuid] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - checking other players for profile: %1",_uuid] call ALIVE_fnc_dump;
                 if(_uuid in (_profileIndex select 1)) then {
                    _existingProfile = [_profileIndex, _uid] call ALIVE_fnc_hashGet;
                 };
@@ -535,7 +536,7 @@ if!(isNil "_registeredProfile") then {
 
             if!(isNil "_existingProfile") then {
 
-                ["ALIVE Player profiler - Existing profile found, add respawned player to profile"] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - Existing profile found, add respawned player to profile"] call ALIVE_fnc_dump;
 
                 _profileEntity = _existingProfile;
                 _unitClasses = [];
@@ -595,7 +596,7 @@ if!(isNil "_registeredProfile") then {
 
             }else{
 
-                ["ALIVE Player profiler - No existing profile found, create profile for respawned player"] call ALIVE_fnc_dump;
+                //["ALIVE Player profiler - No existing profile found, create profile for respawned player"] call ALIVE_fnc_dump;
 
                 _unitClasses = [];
                 _positions = [];

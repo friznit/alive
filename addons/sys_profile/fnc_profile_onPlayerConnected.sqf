@@ -51,7 +51,7 @@ if(isServer) then {
         } foreach playableUnits;
 
         if !(isNull _unit) then {
-            ["ALIVE CONNECT: uid:%1",_uid] call ALIVE_fnc_dump;
+            //["ALIVE CONNECT: uid:%1",_uid] call ALIVE_fnc_dump;
             ["CONNECT",_uid,_unit] call ALIVE_fnc_createProfilesFromPlayers;
         };
     };
