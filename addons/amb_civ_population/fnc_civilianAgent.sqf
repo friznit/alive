@@ -334,6 +334,9 @@ switch(_operation) do {
 
             _group = createGroup _sideObject;
             _unit = _group createUnit [_agentClass, _homePosition, [], 0, "NONE"];
+            
+            //set low skill to save performance
+            _unit setSkill 0.1;
 
             // set profile id on the unit
             _unit setVariable ["agentID", _agentID];
