@@ -376,12 +376,13 @@ switch(_operation) do {
 					{
 						// FIXME - is there a way to setVariable the unit and not reset it every loop?
 						_faction = faction _x;
+						_side = side _x;
 						
 						_aimingAccuracy = _x skill "aimingAccuracy";
 						_aimingShake = _x skill "aimingShake";
 						_aimingSpeed = _x skill "aimingSpeed";
 						
-						if(_faction in (_factionSkills select 1)) then {
+						if ((_faction in (_factionSkills select 1)) && {!(_side == CIVILIAN)}) then {
 							_factionSkill = [_factionSkills,_faction] call ALIVE_fnc_hashGet;
 							
 							if((_aimingAccuracy != _factionSkill select 2) && (_aimingShake != _factionSkill select 3) && (_aimingSpeed != _factionSkill select 4)) then {
