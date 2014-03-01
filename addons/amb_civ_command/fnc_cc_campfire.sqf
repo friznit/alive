@@ -129,7 +129,7 @@ switch (_state) do {
         }else{
             _timer = _timer + 1;
 
-            _nextStateArgs = [_timeout, _timer];
+            _nextStateArgs = [_timeout, _timer, _fire];
 
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
