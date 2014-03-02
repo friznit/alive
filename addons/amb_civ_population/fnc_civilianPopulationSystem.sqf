@@ -72,6 +72,8 @@ switch(_operation) do {
 
         if (isServer) then {
 
+            waituntil {!(isnil "ALIVE_sectorGrid")};
+
             _debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
             _spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
             _spawnTypeJetRadius = [_logic,"spawnTypeJetRadius"] call ALIVE_fnc_hashGet;
@@ -115,6 +117,9 @@ switch(_operation) do {
                 ["ALIVE Spawn in Jet Radius: %1",_spawnTypeJetRadius] call ALIVE_fnc_dump;
                 ["ALIVE Spawn in Heli Radius: %1",_spawnTypeHeliRadius] call ALIVE_fnc_dump;
                 ["ALIVE Spawn Cycle Time: %1", _spawnCycleTime] call ALIVE_fnc_dump;
+                ["ALIVE Initial civilian hostility settings:"] call ALIVE_fnc_dump;
+                ALIVE_civilianHostility call ALIVE_fnc_inspectHash;
+
                 ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
             };
             // DEBUG -------------------------------------------------------------------------------------
@@ -123,7 +128,7 @@ switch(_operation) do {
             [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
 
             // start the cluster activator
-            _clusterActivatorFSM = [_logic,_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime] execFSM "\x\alive\addons\amb_civ_population\clusterActivator_v2.fsm";
+            _clusterActivatorFSM = [_logic,_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\amb_civ_population\clusterActivator_v2.fsm";
             [_logic,"activator_FSM",_clusterActivatorFSM] call ALIVE_fnc_hashSet;
 
         };

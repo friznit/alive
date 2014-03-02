@@ -43,6 +43,7 @@ ARJay
 #define DEFAULT_PRIORITY_FILTER "0"
 #define DEFAULT_FACTION QUOTE(CIV_F)
 #define DEFAULT_AMBIENT_VEHICLE_AMOUNT "1"
+#define DEFAULT_PLACEMENT_MULTIPLIER "1"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -146,6 +147,10 @@ switch(_operation) do {
 	case "priorityFilter": {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY_FILTER] call ALIVE_fnc_OOsimpleOperation;
 	};
+	// Return the Placement Multiplier
+    case "placementMultiplier": {
+        _result = [_logic,_operation,_args,DEFAULT_PLACEMENT_MULTIPLIER] call ALIVE_fnc_OOsimpleOperation;
+    };
 	// Return the Ambient Vehicle Amount
     case "ambientVehicleAmount": {
         _result = [_logic,_operation,_args,DEFAULT_AMBIENT_VEHICLE_AMOUNT] call ALIVE_fnc_OOsimpleOperation;
@@ -307,6 +312,19 @@ switch(_operation) do {
                 if(!(worldName == "Altis") && _sizeFilter == 160) then {
                     _sizeFilter = 0;
                 };
+
+                if !(isnil "ALIVE_clustersCivSettlement") then {
+                     _clusters = ALIVE_clustersCivSettlement select 2;
+                     _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
+                     _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+                     _clusters = [_clusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                     {
+                          [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+                     } forEach _clusters;
+                     [_logic, "objectives", _clusters] call MAINCLASS;
+                };
+
+                /*
                 _clusters = ALIVE_clustersCiv select 2;
                 _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                 _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -432,6 +450,7 @@ switch(_operation) do {
                     } forEach _clusters;
                     [_logic, "objectivesConstruction", _clusters] call MAINCLASS;
                 };
+                */
 
 
                 // DEBUG -------------------------------------------------------------------------------------
@@ -478,7 +497,9 @@ switch(_operation) do {
             };
             // DEBUG -------------------------------------------------------------------------------------
 
+            _clusters = [_logic, "objectives"] call MAINCLASS;
 
+            /*
             _clusters = [_logic, "objectives"] call MAINCLASS;
             _clustersSettlement = [_logic, "objectivesSettlement", _clusters] call MAINCLASS;
             _clustersHQ = [_logic, "objectivesHQ", _clusters] call MAINCLASS;
@@ -488,13 +509,14 @@ switch(_operation) do {
             _clustersRail = [_logic, "objectivesRail", _clusters] call MAINCLASS;
             _clustersFuel = [_logic, "objectivesFuel", _clusters] call MAINCLASS;
             _clustersConstruction = [_logic, "objectivesConstruction", _clusters] call MAINCLASS;
+            */
             
             waituntil {!(isnil "ALIVE_clusterHandler")};
 
-            if(count _clustersSettlement > 0) then {
+            if(count _clusters > 0) then {
                 {
                     [ALIVE_clusterHandler, "registerCluster", _x] call ALIVE_fnc_clusterHandler;
-                } forEach _clustersSettlement;
+                } forEach _clusters;
             };
 
             // DEBUG -------------------------------------------------------------------------------------
@@ -513,7 +535,7 @@ switch(_operation) do {
 
 			private ["_debug","_clusters","_cluster","_clustersSettlement","_clustersHQ","_clustersPower","_clustersComms","_clustersMarine",
 			"_clustersRail","_clustersFuel","_clustersConstruction","_ambientVehicleAmount","_vehicleClass",
-			"_faction","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings"];
+			"_faction","_placementMultiplier","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;		
 			
@@ -527,7 +549,10 @@ switch(_operation) do {
 			
 		
             //waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
-			
+
+			_clusters = [_logic, "objectives"] call MAINCLASS;
+
+			/*
 			_clusters = [_logic, "objectives"] call MAINCLASS;
 			_clustersSettlement = [_logic, "objectivesSettlement", _clusters] call MAINCLASS;
 			_clustersHQ = [_logic, "objectivesHQ", _clusters] call MAINCLASS;
@@ -537,8 +562,10 @@ switch(_operation) do {
 			_clustersRail = [_logic, "objectivesRail", _clusters] call MAINCLASS;
 			_clustersFuel = [_logic, "objectivesFuel", _clusters] call MAINCLASS;
 			_clustersConstruction = [_logic, "objectivesConstruction", _clusters] call MAINCLASS;
+			*/
 			
 			_faction = [_logic, "faction"] call MAINCLASS;
+			_placementMultiplier = parseNumber([_logic, "placementMultiplier"] call MAINCLASS);
 			_ambientVehicleAmount = parseNumber([_logic, "ambientVehicleAmount"] call MAINCLASS);
 			
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
@@ -570,11 +597,6 @@ switch(_operation) do {
             "_countBuildings","_parkingChance","_usedPositions","_building","_parkingPosition","_positionOK","_supportPlacement"];
 
             _countLandUnits = 0;
-
-            ["AMB VEH AMOUNT: %1", _ambientVehicleAmount] call ALIVE_fnc_dump;
-
-            ["CIV BUILDING TYPES: %1", ALIVE_civilianPopulationBuildingTypes] call ALIVE_fnc_dump;
-
 
             if(_ambientVehicleAmount > 0) then {
 
@@ -733,27 +755,27 @@ switch(_operation) do {
                     _spawnChance = 0.1;
 
                     if(_countBuildings > 50) then {
-                        _spawnChance = 0.1;
+                        _spawnChance = 0.1 * _placementMultiplier;
                     };
 
                     if(_countBuildings > 40 && _countBuildings < 50) then {
-                        _spawnChance = 0.2;
+                        _spawnChance = 0.2 * _placementMultiplier;
                     };
 
                     if(_countBuildings > 30 && _countBuildings < 41) then {
-                        _spawnChance = 0.3;
+                        _spawnChance = 0.3 * _placementMultiplier;
                     };
 
                     if(_countBuildings > 20 && _countBuildings < 31) then {
-                        _spawnChance = 0.5;
+                        _spawnChance = 0.5 * _placementMultiplier;
                     };
 
                     if(_countBuildings > 10 && _countBuildings < 21) then {
-                        _spawnChance = 0.7;
+                        _spawnChance = 0.7 * _placementMultiplier;
                     };
 
                     if(_countBuildings > 0 && _countBuildings < 11) then {
-                        _spawnChance = 0.8;
+                        _spawnChance = 0.8 * _placementMultiplier;
                     };
 
                     {
@@ -784,7 +806,7 @@ switch(_operation) do {
 
                     } forEach _buildings;
 
-                } forEach _clustersSettlement;
+                } forEach _clusters;
             };
 
 

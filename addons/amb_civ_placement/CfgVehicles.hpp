@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveAmbientBase;
-        class ADDON : ModuleAliveAmbientBase
+        class ModuleAliveCivilianBase;
+        class ADDON : ModuleAliveCivilianBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_AMBCP";
@@ -106,6 +106,34 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_AMBCP_FACTION";
                                 description = "$STR_ALIVE_AMBCP_FACTION_COMMENT";
                                 defaultValue = "CIV_F";
+                        };
+                        class placementMultiplier
+                        {
+                                displayName = "$STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER";
+                                description = "$STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_COMMENT";
+                                class Values
+                                {
+                                        class LOW
+                                        {
+                                                name = "$STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_LOW";
+                                                value = "0.5";
+                                        };
+                                        class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_MEDIUM";
+                                                value = "1";
+                                        };
+                                        class HIGH
+                                        {
+                                                name = "$STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_HIGH";
+                                                value = "1.5";
+                                        };
+                                        class EXTREME
+                                        {
+                                                name = "$STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_EXTREME";
+                                                value = "2";
+                                        };
+                                };
                         };
                         class ambientVehicleAmount
                         {

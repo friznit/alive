@@ -38,6 +38,60 @@
 <Key ID="STR_ALIVE_CIV_POP_SPAWN_HELI_RADIUS_COMMENT">
     <English>The radius around player in helicopters to spawn civilians. Set to 0 to disable spawning while in helicopters</English>
 </Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST">
+    <English>BLUFOR Hostility</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST_COMMENT">
+    <English>How hostile are civilians intially to BLUFOR side</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST_LOW">
+    <English>Low</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST_MEDIUM">
+    <English>Medium</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST_HIGH">
+    <English>High</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST_EXTREME">
+    <English>Extreme</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST">
+    <English>OPFOR Hostility</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST_COMMENT">
+    <English>How hostile are civilians intially to OPFOR side</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST_LOW">
+    <English>Low</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST_MEDIUM">
+    <English>Medium</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST_HIGH">
+    <English>High</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST_EXTREME">
+    <English>Extreme</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP">
+    <English>Independant Hostility</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP_COMMENT">
+    <English>How hostile are civilians intially to Independant side</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP_LOW">
+    <English>Low</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP_MEDIUM">
+    <English>Medium</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP_HIGH">
+    <English>High</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP_EXTREME">
+    <English>Extreme</English>
+</Key>
 <Key ID="STR_ALIVE_CIV_POP_ERROR1">
 	<English>Only one Civilian Population System module can be used</English>
 </Key>

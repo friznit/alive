@@ -328,10 +328,6 @@ switch(_operation) do {
         // not already active
         if!(_active) then {
 
-            //_unit = createVehicle [_agentClass, _position, [], 0, "NONE"];
-            //_unit = createAgent [_agentClass, _position, [], 0, "NONE"];
-            //_unit disableAI "FSM";
-
             _group = createGroup _sideObject;
             _unit = _group createUnit [_agentClass, _homePosition, [], 0, "NONE"];
             
@@ -386,6 +382,7 @@ switch(_operation) do {
             [_logic,"position", _position] call ALIVE_fnc_hashSet;
             [_logic,"unit",objNull] call ALIVE_fnc_hashSet;
 
+            // remove music
             if(_unit getVariable ["ALIVE_agentHouseMusicOn",false]) then {
                 _music = _unit getVariable "ALIVE_agentHouseMusic";
                 deleteVehicle _music;
@@ -393,6 +390,7 @@ switch(_operation) do {
                 _unit setVariable ["ALIVE_agentHouseMusicOn", true, false];
             };
 
+            // remove lights
             if(_unit getVariable ["ALIVE_agentHouseLightOn",false]) then {
                 _light = _unit getVariable "ALIVE_agentHouseLight";
                 deleteVehicle _light;

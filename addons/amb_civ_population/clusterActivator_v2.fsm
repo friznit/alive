@@ -11,13 +11,13 @@ item6[] = {"COMPLETE",4,218,207.314255,358.391388,297.314575,408.391418,0.000000
 item7[] = {"START",4,218,-192.425964,-19.086315,-102.425903,30.913666,2.000000,"START"};
 item8[] = {"ANALYSE",2,250,-30.795383,198.355576,59.204765,248.355774,0.000000,"ANALYSE"};
 item9[] = {"DO_ACTIVATE",4,218,-32.234409,277.393127,57.765675,327.393188,0.000000,"DO" \n "ACTIVATE"};
-item10[] = {"DONE",2,4346,-24.777973,806.307678,61.881523,852.967346,0.000000,"DONE"};
+item10[] = {"DONE",2,250,-24.777973,806.307678,61.881523,852.967346,0.000000,"DONE"};
 item11[] = {"ACTIVATE_LOOP",2,250,-31.291431,358.900635,58.708664,408.900696,0.000000,"ACTIVATE" \n "LOOP"};
 item12[] = {"ITERATE",4,218,95.820595,358.710358,185.820602,408.710419,1.000000,"ITERATE"};
 item13[] = {"END__LOOP",4,218,-31.355610,433.665924,58.644455,483.665924,0.000000,"END " \n "LOOP"};
 item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,0.000000,"WAIT"};
 item15[] = {"COMPLETE",4,218,-419.532806,358.389832,-329.532654,408.389679,0.000000,"COMPLETE"};
-item16[] = {"CHECK",2,250,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
+item16[] = {"CHECK",2,4346,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
 item17[] = {"HAS__INACTIVE",4,218,-30.842457,123.296127,59.157623,173.296127,1.000000,"HAS " \n "INACTIVE"};
 item18[] = {"HAS__INACTIVE_CL",4,218,-190.356888,592.674255,-100.357147,642.674255,1.000000,"HAS " \n "INACTIVE" \n "CLUSTERS"};
 item19[] = {"WAIT",4,218,-317.030487,-94.616402,-227.030457,-44.616344,1.000000,"WAIT"};
@@ -131,8 +131,8 @@ link63[] = {47,41};
 link64[] = {48,41};
 link65[] = {49,15};
 link66[] = {49,18};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,160,6316128,1,-849.937683,327.282013,920.869507,-319.815521,1017,1070,1};
-window[] = {2,-1,-1,-32000,-32000,1026,164,1787,128,3,1035};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,160,6316128,1,-849.937683,327.282013,879.731506,-312.536194,1017,1030,1};
+window[] = {2,-1,-1,-32000,-32040,924,-1894,-271,26,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -143,13 +143,14 @@ class FSM
     class INIT
     {
       name = "INIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_civPopSystem"",""_spawnDistance"",""_spawnTypeJetRadius"",""_spawnTypeHeliRadius"",""_spawnCycleTime"",""_lastSpawnTime"",""_doSpawn"",""_destroy"",""_debug""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_civPopSystem"",""_spawnDistance"",""_spawnTypeJetRadius"",""_spawnTypeHeliRadius"",""_spawnCycleTime"",""_activeLimiter"",""_lastSpawnTime"",""_doSpawn"",""_destroy"",""_debug""];" \n
        "" \n
        "_civPopSystem = _this select 0;" \n
        "_spawnDistance = _this select 1;" \n
        "_spawnTypeJetRadius = _this select 2;" \n
        "_spawnTypeHeliRadius = _this select 3;" \n
        "_spawnCycleTime = if(count _this > 4) then {_this select 4} else {1};" \n
+       "_activeLimiter = if(count _this > 5) then {_this select 5} else {25};" \n
        "" \n
        "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
        "" \n
@@ -412,10 +413,11 @@ class FSM
     class CHECK
     {
       name = "CHECK";
-      init = /*%FSM<STATEINIT""">*/"private [""_activeClusters"",""_inactiveClusters"",""_countActive"",""_countClustersActive"",""_countInactive"",""_despawnCount"",""_toDespawn"",""_spawnCount"",""_toSpawn""," \n
-       """_analysisCount"",""_analysisComplete"",""_activeAgents"",""_agentsToDespawn"",""_agentsDespawned"",""_inactiveAgents"",""_agentsToSpawn""," \n
+      init = /*%FSM<STATEINIT""">*/"private [""_agentsActive"",""_activeClusters"",""_inactiveClusters"",""_countActive"",""_countClustersActive"",""_countInactive"",""_despawnCount"",""_toDespawn"",""_spawnCount"",""_toSpawn""," \n
+       """_analysisCount"",""_analysisComplete"",""_activeAgents"",""_agentsToDespawn"",""_agentsDespawned"",""_inactiveAgents"",""_agentsToSpawn"",""_countAgentsActive""," \n
        """_agentsSpawned"",""_agentAnalysisCount"",""_agentAnalysisComplete""];" \n
        "" \n
+       "_agentsActive = [ALIVE_agentHandler, ""getActiveAgents""] call ALIVE_fnc_agentHandler;" \n
        "_activeAgents = [ALIVE_agentHandler, ""getActive""] call ALIVE_fnc_agentHandler;" \n
        "_activeClusters = [ALIVE_clusterHandler, ""getActive""] call ALIVE_fnc_clusterHandler;" \n
        "_inactiveClusters = [ALIVE_clusterHandler, ""getInActive""] call ALIVE_fnc_clusterHandler;" \n
@@ -426,6 +428,8 @@ class FSM
        "_activeAgents = _activeAgents select 2;" \n
        "_activeClusters = _activeClusters select 2;" \n
        "_inactiveClusters = _inactiveClusters select 2;" \n
+       "" \n
+       "_countAgentsActive = count _agentsActive;" \n
        "" \n
        "//_activeAgents = [];" \n
        "_agentsToDespawn = [];" \n
@@ -575,10 +579,25 @@ class FSM
        "	if!(isnil ""_agent"") then {" \n
        "" \n
        "		_agentActive = _agent select 2 select 1;" \n
+       "		_type = _agent select 2 select 4;" \n
        "" \n
        "		if!(_agentActive) then {" \n
-       "			_agentsToSpawn set [count _agentsToSpawn, _agent];" \n
-       "		};		" \n
+       "" \n
+       "			if(_type == ""agent"") then {" \n
+       "			" \n
+       "				_countAgentsActive = count _agentsActive;" \n
+       "" \n
+       "				[""COUNT ACTIVE AGENTS: %1 LIMITER: %2"",_countAgentsActive, _activeLimiter] call ALIVE_fnc_dump;" \n
+       "" \n
+       "				if(_countAgentsActive >= _activeLimiter) then {" \n
+       "					[""ACTIVE AGENT LIMIT HIT NO MORE!!!!!""] call ALIVE_fnc_dump;" \n
+       "				}else{" \n
+       "					[_agent, ""spawn""] call ALIVE_fnc_civilianAgent;" \n
+       "				};" \n
+       "			}else{" \n
+       "				_agentsToSpawn set [count _agentsToSpawn, _agent];" \n
+       "			};		" \n
+       "		};" \n
        "	};" \n
        "" \n
        "} forEach _block;" \n
@@ -647,15 +666,13 @@ class FSM
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_agent"",""_agentID"",""_clusterAgents""];" \n
+       "private [""_agent"",""_agentID"",""_clusterAgents"",""_type""];" \n
        "" \n
        "_agent = _agentsToSpawn select _spawnCount;" \n
        "" \n
        "if!(isnil ""_agent"") then {" \n
        "	_agentID = _agent select 2 select 3;" \n
        "	_type = _agent select 2 select 4;" \n
-       "" \n
-       "	//[""TYPE: %1"",_type] call ALIVE_fnc_dump;" \n
        "" \n
        "	if(_type == ""agent"") then {" \n
        "		[_agent, ""spawn""] call ALIVE_fnc_civilianAgent;	" \n
@@ -787,16 +804,13 @@ class FSM
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_agent"",""_agentID"",""_clusterAgents""];" \n
+       "private [""_agent"",""_agentID"",""_clusterAgents"",""_type""];" \n
        "" \n
        "_agent = _toDespawn select _despawnCount;" \n
        "" \n
        "if!(isnil ""_agent"") then {" \n
        "	_agentID = _agent select 2 select 3;" \n
-       "" \n
        "	_type = _agent select 2 select 4;" \n
-       "" \n
-       "	//[""TYPE: %1"",_type] call ALIVE_fnc_dump;" \n
        "" \n
        "	if(_type == ""agent"") then {" \n
        "		[_agent, ""despawn""] call ALIVE_fnc_civilianAgent;	" \n

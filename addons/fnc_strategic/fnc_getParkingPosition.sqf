@@ -35,7 +35,7 @@ _debug = if(count _this > 2) then {_this select 2} else {false};
 
 _result = [];
 
-private ["_direction","_bbox","_bboxA","_bboxB","_bboxX","_bboxY","_difmin","_difmax","_dif","_buildingPosition","_position","_safePos"];
+private ["_direction","_bbox","_bboxA","_bboxB","_bboxX","_bboxY","_difmin","_difmax","_dif","_buildingPosition","_position","_safePos","_center","_vehicleMapSize"];
 
 _position = position _building;
 _direction = direction _building + (floor random 4)*90;
@@ -66,9 +66,17 @@ if(_debug) then {
 };
 // DEBUG -------------------------------------------------------------------------------------
 
+_vehicleMapSize = getNumber(configFile >> "CfgVehicles" >> _vehicleClass >> "mapSize");
+_vehicleMapSize = (_vehicleMapSize/3);
+if(_vehicleMapSize < 1) then {
+    _vehicleMapSize = 1;
+};
+
+//["VEHICLE MAP SIZE - Class: %1 VMS: %2",_vehicleClass, _vehicleMapSize] call ALIVE_fnc_dump;
+
 
 // pos min max nearest water gradient shore
-_safePos = [_position,0,10,1,0,10,0] call BIS_fnc_findSafePos;
+_safePos = [_position,0,10,_vehicleMapSize,0,10,0] call BIS_fnc_findSafePos;
 
 //["SAFE POS: %1",_safePos] call ALIVE_fnc_dump;
 

@@ -68,6 +68,24 @@
 <Key ID="STR_ALIVE_AMBCP_FACTION_COMMENT">
 	<English>Faction of the units to be placed (BLU_F, OPF_F, IND_F, BLU_G_F)</English>
 </Key>
+<Key ID="STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER">
+    <English>Placement Level</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_COMMENT">
+    <English>Amount of civilian agents to place in locations</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_LOW">
+    <English>Low</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_MEDIUM">
+    <English>Medium</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_HIGH">
+    <English>High</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_EXTREME">
+    <English>Extreme</English>
+</Key>
 <Key ID="STR_ALIVE_AMBCP_AMBIENT_VEHICLE_AMOUNT">
     <English>Place ambient vehicles</English>
 </Key>

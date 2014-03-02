@@ -20,14 +20,12 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_persistent","_profileSystem"];
+private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_persistent","_uid"];
 
 PARAMS_1(_logic);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
-
-
 
 if(isServer) then {
 
@@ -58,18 +56,18 @@ if(isServer) then {
         };
     };
 
-	_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "init"] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "syncMode", _syncMode] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
-	[_profileSystem, "persistent", _persistent] call ALIVE_fnc_profileSystem;
+	ALIVE_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "init"] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "syncMode", _syncMode] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "persistent", _persistent] call ALIVE_fnc_profileSystem;
 
-	[_profileSystem,"start"] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem,"start"] call ALIVE_fnc_profileSystem;
 
 	["SYS_PROFILE INIT COMPLETE"] call ALIVE_fnc_dump;
 };

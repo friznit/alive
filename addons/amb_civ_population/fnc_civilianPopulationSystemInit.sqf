@@ -20,14 +20,12 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_persistent","_profileSystem"];
+private ["_logic","_debug","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_hostilityWest","_hostilityEast","_hostilityIndep"];
 
 PARAMS_1(_logic);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_civilianPopulationSystem","Main function missing");
-
-
 
 if(isServer) then {
 
@@ -40,6 +38,13 @@ if(isServer) then {
     _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
+	_hostilityWest = _logic getVariable ["hostilityWest","LOW"];
+	_hostilityEast = _logic getVariable ["hostilityEast","LOW"];
+	_hostilityIndep = _logic getVariable ["hostilityIndep","LOW"];
+	ALIVE_civilianHostility = [] call ALIVE_fnc_hashCreate;
+	[ALIVE_civilianHostility, "WEST", _hostilityWest] call ALIVE_fnc_hashSet;
+	[ALIVE_civilianHostility, "EAST", _hostilityEast] call ALIVE_fnc_hashSet;
+	[ALIVE_civilianHostility, "INDEP", _hostilityIndep] call ALIVE_fnc_hashSet;
 
     if(_debug == "true") then {
         _debug = true;
@@ -47,15 +52,15 @@ if(isServer) then {
         _debug = false;
     };
 
-	_civilianPopulationSystem = [nil, "create"] call ALIVE_fnc_civilianPopulationSystem;
-	[_civilianPopulationSystem, "init"] call ALIVE_fnc_civilianPopulationSystem;
-	[_civilianPopulationSystem, "debug", _debug] call ALIVE_fnc_civilianPopulationSystem;
-	[_civilianPopulationSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_civilianPopulationSystem;
-	[_civilianPopulationSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_civilianPopulationSystem;
-	[_civilianPopulationSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_civilianPopulationSystem;
-	[_civilianPopulationSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_civilianPopulationSystem;
+	ALIVE_civilianPopulationSystem = [nil, "create"] call ALIVE_fnc_civilianPopulationSystem;
+	[ALIVE_civilianPopulationSystem, "init"] call ALIVE_fnc_civilianPopulationSystem;
+	[ALIVE_civilianPopulationSystem, "debug", _debug] call ALIVE_fnc_civilianPopulationSystem;
+	[ALIVE_civilianPopulationSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_civilianPopulationSystem;
+	[ALIVE_civilianPopulationSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_civilianPopulationSystem;
+	[ALIVE_civilianPopulationSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_civilianPopulationSystem;
+	[ALIVE_civilianPopulationSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_civilianPopulationSystem;
 
-	[_civilianPopulationSystem,"start"] call ALIVE_fnc_civilianPopulationSystem;
+	[ALIVE_civilianPopulationSystem,"start"] call ALIVE_fnc_civilianPopulationSystem;
 
 	["AMB_CIV_POPULATION INIT COMPLETE"] call ALIVE_fnc_dump;
 };
