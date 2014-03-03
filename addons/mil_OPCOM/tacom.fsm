@@ -26,8 +26,10 @@ item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.5710
 item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
 item23[] = {"SELECT_SECTION",2,250,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
 item24[] = {"SECTION_SELECTED",4,218,-197.466095,422.042877,-107.466232,472.042908,0.000000,"SECTION" \n "SELECTED"};
-item25[] = {"PREPARE_ORDERS",2,4346,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
+item25[] = {"PREPARE_ORDERS",2,250,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
 item26[] = {"PREPARED",4,218,-202.116547,569.103699,-112.116524,619.103699,0.000000,"PREPARED"};
+item27[] = {"EXIT",4,4314,-194.679718,900.017029,-104.679718,950.017029,99.000000,"EXIT"};
+item28[] = {"END",1,250,-194.260712,1031.765137,-104.260628,1081.765137,0.000000,"END"};
 version=1;
 class LayoutItems
 {
@@ -50,32 +52,34 @@ link5[] = {2,8};
 link6[] = {2,9};
 link7[] = {2,19};
 link8[] = {2,22};
-link9[] = {3,20};
-link10[] = {4,23};
-link11[] = {5,6};
-link12[] = {6,3};
-link13[] = {7,23};
-link14[] = {8,23};
-link15[] = {9,23};
-link16[] = {10,11};
-link17[] = {10,12};
-link18[] = {11,18};
-link19[] = {12,17};
-link20[] = {13,14};
-link21[] = {14,3};
-link22[] = {15,3};
-link23[] = {17,13};
-link24[] = {18,5};
-link25[] = {19,23};
-link26[] = {20,21};
-link27[] = {21,2};
-link28[] = {22,2};
-link29[] = {23,24};
-link30[] = {24,25};
-link31[] = {25,26};
-link32[] = {26,10};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,79,6316128,1,-635.403503,184.309769,816.244507,135.105377,935,753,1};
-window[] = {0,-1,-1,-1,-1,906,22,1645,22,1,952};
+link9[] = {2,27};
+link10[] = {3,20};
+link11[] = {4,23};
+link12[] = {5,6};
+link13[] = {6,3};
+link14[] = {7,23};
+link15[] = {8,23};
+link16[] = {9,23};
+link17[] = {10,11};
+link18[] = {10,12};
+link19[] = {11,18};
+link20[] = {12,17};
+link21[] = {13,14};
+link22[] = {14,3};
+link23[] = {15,3};
+link24[] = {17,13};
+link25[] = {18,5};
+link26[] = {19,23};
+link27[] = {20,21};
+link28[] = {21,2};
+link29[] = {22,2};
+link30[] = {23,24};
+link31[] = {24,25};
+link32[] = {25,26};
+link33[] = {26,10};
+link34[] = {27,28};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-1371.260010,920.164246,1438.573364,-406.819733,935,753,1};
+window[] = {0,-1,-1,-1,-1,950,66,1689,66,1,952};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -87,6 +91,7 @@ class FSM
     {
       name = "INIT";
       init = /*%FSM<STATEINIT""">*/"_busy = false;" \n
+       "_exitFSM = false;" \n
        "_TAC_confirmed = false;" \n
        "" \n
        "_TACOM_status = ""PreInit"";" \n
@@ -377,6 +382,16 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "EXIT">*/
+        class EXIT
+        {
+          priority = 99.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_exitFSM"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "CAPTURE_Conditio">*/
         class CAPTURE_Conditio
         {
@@ -407,16 +422,6 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "CUSTOM_condition">*/
-        class CUSTOM_condition
-        {
-          priority = 0.000000;
-          to="SELECT_SECTION";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(isnil ""_custom"");"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
         /*%FSM<LINK "RECON_Conditions">*/
         class RECON_Conditions
         {
@@ -434,6 +439,16 @@ class FSM
           to="ANALYZE";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"time - _lastanalyze > 15;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "CUSTOM_condition">*/
+        class CUSTOM_condition
+        {
+          priority = 0.000000;
+          to="SELECT_SECTION";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_custom"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -828,10 +843,22 @@ class FSM
       };
     };
     /*%FSM</STATE>*/
+    /*%FSM<STATE "END">*/
+    class END
+    {
+      name = "END";
+      init = /*%FSM<STATEINIT""">*/"[_OPCOM_HANDLER,""TACOM_FSM""] call ALiVE_fnc_HashRem;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
   };
   initState="INIT";
   finalStates[] =
   {
+    "END",
   };
 };
 /*%FSM</COMPILE>*/

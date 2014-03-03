@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
 item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
@@ -13,14 +13,14 @@ item8[] = {"RESERVE_conditio",4,218,-647.107849,-374.023468,-557.107788,-324.023
 item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.579346,1.000000,"OPCOM" \n "RECEIVER"};
 item10[] = {"CUSTOM_condition",4,218,-506.692078,-374.296844,-416.692169,-324.296844,2.000000,"CUSTOM" \n "conditions"};
 item11[] = {"ORDER_TACOM",2,250,-929.397888,-266.917206,-430.130585,-222.714111,0.000000,"ORDER" \n "TACOM"};
-item12[] = {"TACOM_CONFIRM",4,218,-677.962830,-157.584137,-587.962830,-107.584137,0.000000,"TACOM" \n "CONFIRM"};
+item12[] = {"TACOM_CONFIRM",4,218,-656.219116,-157.584137,-566.219116,-107.584137,0.000000,"TACOM" \n "CONFIRM"};
 item13[] = {"TACOM_NOT_CONFIR",4,218,-772.502075,-158.670807,-682.502197,-108.670807,0.000000,"TACOM" \n "NOT CONFIRM"};
 item14[] = {"",7,210,-1035.794922,-137.497955,-1027.794678,-129.497955,0.000000,""};
 item15[] = {"_",-1,250,-437.714081,-121.191147,-434.628998,-121.191147,0.000000,""};
 item16[] = {"",7,210,-1032.922607,-816.473755,-1024.922607,-808.473755,0.000000,""};
 item17[] = {"INITIALIZE",2,250,-721.197266,-875.105042,-625.643738,-851.020447,0.000000,"INITIALIZE"};
 item18[] = {"NOT_BUSY",2,250,-930.812866,-157.222656,-840.812866,-107.222656,0.000000,"NOT BUSY"};
-item19[] = {"NOT_BUSY_1",2,250,-547.222046,-156.136017,-457.222015,-106.136017,0.000000,"NOT BUSY"};
+item19[] = {"NOT_BUSY_1",2,250,-525.478333,-156.136017,-435.478302,-106.136017,0.000000,"NOT BUSY"};
 item20[] = {"COLLECT_TO_QUEUE",2,250,-717.153931,-750.096619,-627.154053,-700.096619,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-716.046936,-682.136108,-626.046936,-632.136108,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"ANALYZE_Conditio",4,218,-1207.555176,-482.607452,-1117.554932,-432.607269,0.000000,"ANALYZE" \n "Conditions"};
@@ -29,6 +29,8 @@ item24[] = {"ANALYSIS_DONE",4,218,-1213.964233,-771.945801,-1123.964233,-721.945
 item25[] = {"RESET",2,250,-1210.631958,-838.320801,-1120.631958,-788.320801,0.000000,"RESET"};
 item26[] = {"PERFORM_CLEANUP",2,250,-1206.501831,-555.380127,-1116.501831,-505.380127,0.000000,"PERFORM" \n "CLEANUP"};
 item27[] = {"CLEANUP_DONE",4,218,-1206.436401,-636.119812,-1116.436401,-586.119812,0.000000,"CLEANUP" \n "DONE"};
+item28[] = {"EXIT",4,218,-716.610535,-72.030029,-626.610535,-22.030073,99.000000,"EXIT"};
+item29[] = {"END",1,250,-716.626648,54.081299,-626.626587,104.081261,0.000000,"END"};
 version=1;
 class LayoutItems
 {
@@ -51,33 +53,35 @@ link5[] = {2,8};
 link6[] = {2,9};
 link7[] = {2,10};
 link8[] = {2,22};
-link9[] = {3,2};
-link10[] = {4,11};
-link11[] = {5,6};
-link12[] = {6,9};
-link13[] = {7,11};
-link14[] = {8,11};
-link15[] = {9,20};
-link16[] = {10,11};
-link17[] = {11,12};
-link18[] = {11,13};
-link19[] = {12,19};
-link20[] = {13,18};
-link21[] = {14,16};
-link22[] = {16,9};
-link23[] = {17,9};
-link24[] = {18,14};
-link25[] = {19,5};
-link26[] = {20,21};
-link27[] = {21,2};
-link28[] = {22,26};
-link29[] = {23,24};
-link30[] = {24,25};
-link31[] = {25,16};
-link32[] = {26,27};
-link33[] = {27,23};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,75,6316128,1,-1336.967651,-442.840698,-272.008484,-1006.341675,996,818,1};
-window[] = {0,-1,-1,-1,-1,1081,132,1902,132,1,1013};
+link9[] = {2,28};
+link10[] = {3,2};
+link11[] = {4,11};
+link12[] = {5,6};
+link13[] = {6,9};
+link14[] = {7,11};
+link15[] = {8,11};
+link16[] = {9,20};
+link17[] = {10,11};
+link18[] = {11,12};
+link19[] = {11,13};
+link20[] = {12,19};
+link21[] = {13,18};
+link22[] = {14,16};
+link23[] = {16,9};
+link24[] = {17,9};
+link25[] = {18,14};
+link26[] = {19,5};
+link27[] = {20,21};
+link28[] = {21,2};
+link29[] = {22,26};
+link30[] = {23,24};
+link31[] = {24,25};
+link32[] = {25,16};
+link33[] = {26,27};
+link34[] = {27,23};
+link35[] = {28,29};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,78,6316128,1,-1827.008301,840.713440,352.960083,-1325.652466,758,818,1};
+window[] = {0,-1,-1,-1,-1,971,22,1792,22,1,775};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -91,6 +95,7 @@ class FSM
       init = /*%FSM<STATEINIT""">*/"_OPCOM_status = ""PreInit"";" \n
        "" \n
        "_busy = false;" \n
+       "_exitFSM = false;" \n
        "" \n
        "_OPCOM_HANDLER = _this select 0;" \n
        "_OBJECTIVES = _this select 1;" \n
@@ -257,7 +262,7 @@ class FSM
        "" \n
        "			//AnalyzeClusterOccupation" \n
        "			_targetOccupation = [_OPCOM_HANDLER,""clusteroccupation"",[]] call ALiVE_fnc_HashGet;" \n
-       "			if ((count _targetOccupation > 0) && {time - (_targetOccupation select 4) > _cycleTime}) then {_analyze = ""analysis""};" \n
+       "			if (((count _targetOccupation > 0) && {time - (_targetOccupation select 4) > _cycleTime}) || {count _targetOccupation == 0}) then {_analyze = ""analysis""};" \n
        "" \n
        "			// Exit if analysis should happen" \n
        "			if !(isnil ""_analyze"") exitwith {_busy = false};" \n
@@ -265,11 +270,11 @@ class FSM
        "			//Get objectives" \n
        "			_obj = ([_OPCOM_HANDLER,""objectives"",[]] call AliVE_fnc_HashGet);" \n
        "" \n
-       "			_unassigned = ({(_x select 2 select 5) == ""unassigned""} count _obj);" \n
-       "			_attacking = ({(_x select 2 select 5) == ""attacking""} count _obj);" \n
-       "			_reserving = ({(_x select 2 select 5) == ""reserving""} count _obj);" \n
-       "			_defending = ({(_x select 2 select 5) == ""defending""} count _obj);" \n
-       "			_idle = ({(_x select 2 select 5) == ""idle""} count _obj);" \n
+       "			_unassigned = ({([_x,""opcom_state""] call ALiVE_fnc_HashGet) == ""unassigned""} count _obj);" \n
+       "			_attacking = ({([_x,""opcom_state""] call ALiVE_fnc_HashGet) == ""attacking""} count _obj);" \n
+       "			_reserving = ({([_x,""opcom_state""] call ALiVE_fnc_HashGet) == ""reserving""} count _obj);" \n
+       "			_defending = ({([_x,""opcom_state""] call ALiVE_fnc_HashGet) == ""defending""} count _obj);" \n
+       "			_idle = ({([_x,""opcom_state""] call ALiVE_fnc_HashGet) == ""idle""} count _obj);" \n
        "			_active = _attacking + _defending;" \n
        "" \n
        "			_targetsTaken = _targetOccupation select 0;" \n
@@ -404,6 +409,16 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "EXIT">*/
+        class EXIT
+        {
+          priority = 99.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_exitFSM"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "ATTACK_Condition">*/
         class ATTACK_Condition
         {
@@ -760,10 +775,22 @@ class FSM
       };
     };
     /*%FSM</STATE>*/
+    /*%FSM<STATE "END">*/
+    class END
+    {
+      name = "END";
+      init = /*%FSM<STATEINIT""">*/"[_OPCOM_HANDLER,""OPCOM_FSM""] call ALiVE_fnc_HashRem;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
   };
   initState="INIT";
   finalStates[] =
   {
+    "END",
   };
 };
 /*%FSM</COMPILE>*/

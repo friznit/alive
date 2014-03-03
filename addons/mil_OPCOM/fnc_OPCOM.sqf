@@ -82,15 +82,6 @@ switch(_operation) do {
                 */
                 
                 if (isServer) then {
-			        
-			        //Create OPCOM #Hash#Datahandler
-					_handler = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
-                    
-                    //Set handler on module
-                    _logic setVariable ["handler",_handler];
-                   
-					call compile format["OPCOM_%1 = _handler",count (missionNameSpace getvariable ["OPCOM_instances",[]])];
-                    missionNameSpace setVariable ["OPCOM_instances",(missionNameSpace getvariable ["OPCOM_instances",[]]) + [_handler]];
 
 					//Retrieve module-object variables
                     _type = _logic getvariable ["controltype","invasion"];
@@ -133,6 +124,17 @@ switch(_operation) do {
                     {if (_x == "RESISTANCE") then {_sidesFriendly set [_foreachIndex,"GUER"]}} foreach _sidesFriendly;
                     
 					//Finally
+                    
+                    //Create OPCOM #Hash#Datahandler
+					_handler = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
+                    
+                    //Set handler on module
+                    _logic setVariable ["handler",_handler];
+                   
+					call compile format["OPCOM_%1 = _handler",count (missionNameSpace getvariable ["OPCOM_instances",[]])];
+                    missionNameSpace setVariable ["OPCOM_instances",(missionNameSpace getvariable ["OPCOM_instances",[]]) + [_handler]];
+                    _opcomID = str(floor(_position select 0)) + str(floor(_position select 1));
+                    
 					[_handler, "side",_side] call ALiVE_fnc_HashSet;
                     [_handler, "factions",_factions] call ALiVE_fnc_HashSet;
                     [_handler, "sidesenemy",_sidesEnemy] call ALiVE_fnc_HashSet;
@@ -141,6 +143,7 @@ switch(_operation) do {
                     [_handler, "position",_position] call ALiVE_fnc_HashSet;
                     [_handler, "simultanobjectives",10] call ALiVE_fnc_HashSet;
                     [_handler, "tasksenabled",_tasksEnabled] call ALiVE_fnc_HashSet;
+                    [_handler, "opcomID",_opcomID] call ALiVE_fnc_HashSet;
                     [_handler, "debug",_debug] call ALiVE_fnc_HashSet;
                     
                     switch (_type) do {
@@ -351,6 +354,132 @@ switch(_operation) do {
                 _result = _args;
             };
 		};
+
+        case "saveData": {
+            private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective"];
+            
+		    ["SAVE OPCOM DATA"] call ALIVE_fnc_dump;
+
+            if (isDedicated) then {
+
+                ["SAVE OPCOM DATA - IS DEDI"] call ALIVE_fnc_dump;
+
+                if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
+
+                    ["SAVE OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
+
+                    private ["_datahandler","_exportProfiles","_async","_missionName"];
+
+                    _datahandler = [nil, "create"] call ALIVE_fnc_Data;
+                    [_datahandler,"storeType",true] call ALIVE_fnc_Data;
+
+                    _objectives = [_logic, "objectives",[]] call ALiVE_fnc_HashGet;
+		            _exportObjectives = [] call ALIVE_fnc_hashCreate;
+		
+		            {
+		                _objective = _x;
+		                _objectiveID = [_objective,"objectiveID",""] call ALiVE_fnc_HashGet;
+		
+		                _exportObjective = [_objective, [], [
+							"nodes"
+		                ]] call ALIVE_fnc_hashCopy;
+		
+		                if([_exportObjective, "_rev"] call ALIVE_fnc_hashGet == "") then {
+		                    [_exportObjective, "_rev"] call ALIVE_fnc_hashRem;
+		                };
+		
+		                [_exportObjectives, _objectiveID, _exportObjective] call ALIVE_fnc_hashSet;
+		                _exportObjective call ALIVE_fnc_inspectHash;
+		            } forEach (_objectives);
+
+                    _async = false; // Wait for response from server
+                    _missionName = [missionName, " ","-"] call CBA_fnc_replace;
+                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
+
+                    ["SAVE OPCOM DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
+
+                    _result = [_datahandler, "save", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
+                    ["RESULT: %1",_result] call ALIVE_fnc_dump;
+                };
+            };
+        };
+        
+        case "loadData": {
+		    private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective"];
+            
+            _opcomID = [_logic,"opcomID",""] call ALiVE_fnc_HashGet;
+			_opcomFSM = [_logic, "OPCOM_FSM",-1] call ALiVE_fnc_HashGet;
+            _tacomFSM = [_logic, "TACOM_FSM",-1] call ALiVE_fnc_HashGet;
+            
+            ["LOAD OPCOM DATA"] call ALIVE_fnc_dump;
+
+            if (isDedicated) then {
+
+                ["LOAD OPCOM DATA - IS DEDI"] call ALIVE_fnc_dump;
+
+                if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
+
+                    ["LOAD OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
+
+                    private ["_datahandler","_importProfiles","_async","_missionName"];
+
+                    _datahandler = [nil, "create"] call ALIVE_fnc_Data;
+                    [_datahandler,"storeType",true] call ALIVE_fnc_Data;
+
+                    _async = false; // Wait for response from server
+                    _missionName = [missionName, " ","-"] call CBA_fnc_replace;
+                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
+
+                    ["LOAD OPCOM DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
+                    _result = [_datahandler, "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data;
+                    
+                    if (!(isnil "_result") && {typename _result == "ARRAY"} && {count _result > 0} && {count (_result select 2) > 0}) then {
+                        
+                        _newObjectives = [];
+						{
+                            _id = [_x,"opcomID",""] call ALiVE_fnc_HashGet;
+                            
+                            if (_id == _opcomID) then {
+		                		[_x, "_rev"] call ALIVE_fnc_hashRem;
+		                		[_x, "_id"] call ALIVE_fnc_hashRem;
+                                
+                                _newObjectives set [count _newObjectives,_x];
+                            };
+	                    } foreach (_result select 2);
+                        
+                        _opcomFSM setFSMvariable ["_exitFSM",true];
+                        _tacomFSM setFSMvariable ["_exitFSM",true];
+                        
+                        waituntil {
+                            _opcomFSM = [_logic, "OPCOM_FSM"] call ALiVE_fnc_HashGet;
+            				_tacomFSM = [_logic, "TACOM_FSM"] call ALiVE_fnc_HashGet;
+                            isnil "_opcomFSM" && {isnil "_tacomFSM"};
+                        };
+
+	                    _result = [_logic,"objectives",_newObjectives] call ALiVE_fnc_OPCOM;
+                        _Occupation = [_logic,"clusteroccupation",[]] call ALiVE_fnc_HashSet;
+                        
+                        //done this way to easily switch between spawn and call for testing purposes
+                    	["OPCOM and TACOM re-starting..."] call ALiVE_fnc_Dump;
+                    	_OPCOM = [_logic,_newObjectives] call {
+                        	_handler = _this select 0;
+                        	_objectives = _this select 1;
+                        
+							_OPCOM = [_handler,_objectives] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+                        	sleep 1;
+							_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
+                        
+							[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
+                        	[_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
+                    	};
+
+	                    ["Imported %1 objectives from DB! %1",count _newObjectives] call ALIVE_fnc_dumpR;
+                    } else {
+                        ["Loading objectives from DB failed!"] call ALIVE_fnc_dumpR;
+                    };
+                };
+            };
+        };
         
         case "addObjective": {
                 if(isnil "_args") then {
@@ -373,6 +502,7 @@ switch(_operation) do {
                     if (count _params > 5) then {_opcom_state = _params select 5};
                     if (count _params > 6) then {_clusterID = _params select 6};
                     if (count _params > 7) then {_nodes = _params select 7};
+                    if (count _params > 8) then {_opcomID = _params select 8};
                     
                     if (isnil "_type") then {_type = "unknown"};
                     if (isnil "_priority") then {_priority = 100};
@@ -389,6 +519,8 @@ switch(_operation) do {
                     [_target, "opcom_state",_opcom_state] call ALIVE_fnc_HashSet;
                     [_target, "clusterID",_clusterID] call ALIVE_fnc_HashSet;
                     [_target, "nodes",_nodes] call ALIVE_fnc_HashSet;
+                    [_target, "opcomID",_opcomID] call ALIVE_fnc_HashSet;
+                    [_target,"_rev",""] call ALIVE_fnc_hashSet;
 
 					if  (_debug) then {
 						_m = createMarkerLocal [_id, _pos];
@@ -716,7 +848,7 @@ switch(_operation) do {
 						_args = [_logic,"objectives"] call ALIVE_fnc_hashGet;
                 } else {
                     
-                    private ["_objectives","_startpos","_side","_type","_typeOp","_pos","_height","_debug","_clusterID","_target"];
+                    private ["_objectives","_opcomID","_startpos","_side","_type","_typeOp","_pos","_height","_debug","_clusterID","_target"];
                     
                     	//Collect objectives from SEP and order by distance from OPCOM module (for now)
                         _objectives = _args select 0;
@@ -726,6 +858,7 @@ switch(_operation) do {
                         _side = [_logic,"side"] call ALiVE_fnc_HashGet;
                         _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
                         _debug = [_logic,"debug",false] call ALiVE_fnc_HashGet;
+                        _opcomID = [_logic,"opcomID",""] call ALiVE_fnc_HashGet;
 
 						_objectives_unsorted = [];
 						{
@@ -739,15 +872,15 @@ switch(_operation) do {
                                     _nodes = [_target,"nodes"] call ALiVE_fnc_HashGet;
                                     _height = (ATLtoASL [_pos select 0, _pos select 1,0]) select 2;
                                     
-									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height,_clusterID,_nodes]];
+									_objectives_unsorted set [count _objectives_unsorted, [_pos,_size,_type,_priority,_height,_clusterID,_nodes,_opcomID]];
 						} foreach _objectives;
 						
 						//Create objectives for OPCOM and set it on the OPCOM Handler 
 						//GetObjectivesByPriority
-                        _OID = (count (missionNameSpace getvariable ["OPCOM_instances",[]]))-1;
+                        //_OID = (count (missionNameSpace getvariable ["OPCOM_instances",[]]))-1;
 						{
                             private ["_target","_id","_pos","_size","_type","_priority","_clusterID","_opcom_state"];
-									_id = format["OPCOM_%1_objective_%2",_OID,_foreachIndex];
+									_id = format["OPCOM_%1_objective_%2",_opcomID,_foreachIndex];
 									_pos = _x select 0; 
 									_size = _x select 1; 
 									_type = _x select 2; 
@@ -755,8 +888,9 @@ switch(_operation) do {
 									_opcom_state = "unassigned";
 									_clusterID = _x select 5;
                                     _nodes = _x select 6;
+                                    _opcomID = _x select 7;
                                     
-                                    [_logic,"addObjective",[_id,_pos,_size,_type,_priority,_opcom_state,_clusterID,_nodes]] call ALiVE_fnc_OPCOM;
+                                    [_logic,"addObjective",[_id,_pos,_size,_type,_priority,_opcom_state,_clusterID,_nodes,_opcomID]] call ALiVE_fnc_OPCOM;
 						 } foreach _objectives_unsorted;
                          [_logic,"sortObjectives",_typeOp] call ALiVE_fnc_OPCOM;
                          
@@ -1600,17 +1734,21 @@ switch(_operation) do {
 						["OPCOM and TACOM monitoring started..."] call ALIVE_fnc_dumpR;
 					};
 					// debug ---------------------------------------
+					_FSM_OPCOM = [_this,"OPCOM_FSM"] call AliVE_fnc_HashGet;
+					_FSM_TACOM = [_this,"TACOM_FSM"] call AliVE_fnc_HashGet;
                     
-	            	_FSM_OPCOM = [_this,"OPCOM_FSM"] call AliVE_fnc_HashGet;
-                    _FSM_TACOM = [_this,"TACOM_FSM"] call AliVE_fnc_HashGet;
-
 					while {true} do {
-	                        _state = _FSM_OPCOM getfsmvariable "_OPCOM_status"; 
-                            _state_TACOM = _FSM_TACOM getfsmvariable "_TACOM_status";
-	                        _side = _FSM_OPCOM getfsmvariable "_side";
-                            _cycleTime = _FSM_OPCOM getfsmvariable "_cycleTime";
-                            _timestamp = floor(time - (_FSM_OPCOM getfsmvariable "_timestamp"));
-                            _maxLimit = _cycleTime + ((count allunits)*2);
+
+							_state = _FSM_OPCOM getfsmvariable "_OPCOM_status"; 
+							_state_TACOM = _FSM_TACOM getfsmvariable "_TACOM_status";
+							_side = _FSM_OPCOM getfsmvariable "_side";
+							_cycleTime = _FSM_OPCOM getfsmvariable "_cycleTime";
+							_timestamp = floor(time - (_FSM_OPCOM getfsmvariable "_timestamp"));
+                            
+                            //Exit if FSM has ended
+                            if (isnil "_cycleTime") exitwith {["Exiting OPCOM Monitor"] call ALiVE_fnc_Dump};
+
+							_maxLimit = _cycleTime + ((count allunits)*2);
                             
                             if (_timestamp > _maxLimit) then {
                                 // debug ---------------------------------------
