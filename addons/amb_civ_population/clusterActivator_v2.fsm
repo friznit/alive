@@ -23,8 +23,8 @@ item18[] = {"HAS__INACTIVE_CL",4,218,-190.356888,592.674255,-100.357147,642.6742
 item19[] = {"WAIT",4,218,-317.030487,-94.616402,-227.030457,-44.616344,1.000000,"WAIT"};
 item20[] = {"NO__ACTIVATE",4,218,69.500504,278.651886,159.500504,328.652008,0.000000,"NO " \n "ACTIVATE"};
 item21[] = {"ITERATE",4,218,93.003258,198.069321,183.003433,248.069336,2.000000,"ITERATE"};
-item22[] = {"ANALYSE_INACTIVE",2,4346,-30.795383,198.355576,59.204765,248.355774,0.000000,"ANALYSE" \n "INACTIVE" \n "CLUSTERS"};
-item23[] = {"ANALYSE_AGENTS",2,250,-29.551029,510.704590,60.449181,560.704712,0.000000,"ANALYSE" \n "AGENTS"};
+item22[] = {"ANALYSE_INACTIVE",2,250,-30.795383,198.355576,59.204765,248.355774,0.000000,"ANALYSE" \n "INACTIVE" \n "CLUSTERS"};
+item23[] = {"ANALYSE_AGENTS",2,4346,-29.551029,510.704590,60.449181,560.704712,0.000000,"ANALYSE" \n "AGENTS"};
 item24[] = {"DO__SPAWN",4,218,-27.457310,584.677979,62.542732,634.677979,0.000000,"DO " \n "SPAWN"};
 item25[] = {"ITERATE",4,218,95.492104,512.907166,185.492233,562.907166,2.000000,"ITERATE"};
 item26[] = {"NO__SPAWN",4,218,74.478180,583.534302,164.478195,633.534424,0.000000,"NO " \n "SPAWN"};
@@ -132,7 +132,7 @@ link64[] = {48,41};
 link65[] = {49,15};
 link66[] = {49,18};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,160,6316128,1,-849.937683,327.282013,879.731506,-312.536194,1017,1030,1};
-window[] = {2,-1,-1,-1,-41,1028,-1790,-167,130,3,1035};
+window[] = {2,-1,-1,-1,-1,950,-1868,-245,52,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -588,10 +588,10 @@ class FSM
        "			" \n
        "				_countAgentsActive = count _agentsActive;" \n
        "" \n
-       "				[""COUNT ACTIVE AGENTS: %1 LIMITER: %2"",_countAgentsActive, _activeLimiter] call ALIVE_fnc_dump;" \n
+       "				//[""COUNT ACTIVE AGENTS: %1 LIMITER: %2"",_countAgentsActive, _activeLimiter] call ALIVE_fnc_dump;" \n
        "" \n
        "				if(_countAgentsActive >= _activeLimiter) then {" \n
-       "					[""ACTIVE AGENT LIMIT HIT NO MORE!!!!!""] call ALIVE_fnc_dump;" \n
+       "					//[""ACTIVE AGENT LIMIT HIT NO MORE!!!!!""] call ALIVE_fnc_dump;" \n
        "				}else{" \n
        "					[_agent, ""spawn""] call ALIVE_fnc_civilianAgent;" \n
        "				};" \n

@@ -76,6 +76,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_population\fnc_agentSelectSpeedMode.sqf";
                 recompile = RECOMPILE;
             };
+            class getAgentEnemyNear {
+                description = "getAgentEnemyNear";
+                file = "\x\alive\addons\amb_civ_population\fnc_getAgentEnemyNear.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

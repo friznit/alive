@@ -91,16 +91,27 @@ switch (_state) do {
             //arm
             _faction = _agentData select 2 select 7;
             _weapons = [ALIVE_civilianWeapons, _faction] call ALIVE_fnc_hashGet;
-            _weaponGroup = _weapons call BIS_fnc_selectRandom;
-            _weapon = _weaponGroup select 0;
-            _ammo = _weaponGroup select 1;
 
-            _agent addWeapon _weapon;
-            _agent addMagazine _ammo;
-            _agent addMagazine _ammo;
+            if(count _weapons == 0) then {
+                _weapons = [ALIVE_civilianWeapons, "CIV"] call ALIVE_fnc_hashGet;
+            };
 
-            _nextState = "target";
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            if(count _weapons > 0) then {
+                _weaponGroup = _weapons call BIS_fnc_selectRandom;
+                _weapon = _weaponGroup select 0;
+                _ammo = _weaponGroup select 1;
+
+                _agent addWeapon _weapon;
+                _agent addMagazine _ammo;
+                _agent addMagazine _ammo;
+
+                _nextState = "target";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            }else{
+
+                _nextState = "done";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            };
         };
     };
 	case "target":{
@@ -115,9 +126,16 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
+        _target = [_agentData, getPosASL _agent, 300] call ALIVE_fnc_getAgentEnemyNear;
+
+        if(count _target == 0) then {
+            _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
+        };
 
         if(count _target > 0) then {
+
+            _agent setSkill 0.3 + random 1;
+
             _target = _target select 0;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
             _agent doMove getPosASL _target;
@@ -149,7 +167,13 @@ switch (_state) do {
 
         if(unitReady _agent) then {
 
+            if((isNull _target) || !(alive _target)) then {
+                _nextState = "done";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            };
+
             if(_agent distance _target > 20) then {
+                _agent addRating -10000;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;
                 _agent doMove getPosASL _target;
             }else{
@@ -170,6 +194,8 @@ switch (_state) do {
 		// DEBUG -------------------------------------------------------------------------------------
 
 		_agent setVariable ["ALIVE_agentBusy", false, false];
+
+		_agent setSkill 0.1;
 		
 		_nextState = "complete";
 		_nextStateArgs = [];

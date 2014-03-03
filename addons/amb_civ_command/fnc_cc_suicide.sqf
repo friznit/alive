@@ -60,7 +60,11 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
+		_target = [_agentData, getPosASL _agent, 300] call ALIVE_fnc_getAgentEnemyNear;
+
+		if(count _target == 0) then {
+		    _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
+		};
 
         if(count _target > 0) then {
             _target = _target select 0;

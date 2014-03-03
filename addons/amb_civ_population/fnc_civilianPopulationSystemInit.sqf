@@ -38,9 +38,9 @@ if(isServer) then {
     _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
-	_hostilityWest = _logic getVariable ["hostilityWest","LOW"];
-	_hostilityEast = _logic getVariable ["hostilityEast","LOW"];
-	_hostilityIndep = _logic getVariable ["hostilityIndep","LOW"];
+	_hostilityWest = parseNumber (_logic getVariable ["hostilityWest","0"]);
+	_hostilityEast = parseNumber (_logic getVariable ["hostilityEast","0"]);
+	_hostilityIndep = parseNumber (_logic getVariable ["hostilityIndep","0"]);
 	ALIVE_civilianHostility = [] call ALIVE_fnc_hashCreate;
 	[ALIVE_civilianHostility, "WEST", _hostilityWest] call ALIVE_fnc_hashSet;
 	[ALIVE_civilianHostility, "EAST", _hostilityEast] call ALIVE_fnc_hashSet;

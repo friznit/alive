@@ -38,7 +38,7 @@ if!((_unitSide) getFriend (_targetSide) < 0.6) then {
         case west:{
             _group = createGroup east;
         };
-        case west:{
+        case east:{
             _group = createGroup west;
         };
         case resistance:{

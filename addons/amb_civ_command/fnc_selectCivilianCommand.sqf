@@ -37,13 +37,13 @@ if(isNil "ALIVE_civCommands") then {
     ALIVE_civCommands = [] call ALIVE_fnc_hashCreate;
 
     /*
-    [ALIVE_civCommands, "idle", ["ALIVE_fnc_cc_idle", "managed", [0.1,0.1,0.1], [10,30]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "housework", ["ALIVE_fnc_cc_housework", "managed", [0.25,0.5,0.2], []]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "randomMovement", ["ALIVE_fnc_cc_randomMovement", "managed", [0.35,0.01,0.01], [100]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "sleep", ["ALIVE_fnc_cc_sleep", "managed", [0,0.1,0.9], [300,1000]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "journey", ["ALIVE_fnc_cc_journey", "managed", [1,1,1], []]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "idle", ["ALIVE_fnc_cc_idle", "managed", [0.1,0.1,0.1], [10,30]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [1,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [1,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
     */
 
+    ///*
     [ALIVE_civCommands, "idle", ["ALIVE_fnc_cc_idle", "managed", [0.1,0.1,0.1], [10,30]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "randomMovement", ["ALIVE_fnc_cc_randomMovement", "managed", [0.35,0.01,0.01], [100]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "journey", ["ALIVE_fnc_cc_journey", "managed", [0.2,0.5,0.2], []]] call ALIVE_fnc_hashSet;
@@ -55,7 +55,7 @@ if(isNil "ALIVE_civCommands") then {
     [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "startMeeting", ["ALIVE_fnc_cc_startMeeting", "managed", [0.2,0.1,0.01], []]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "startGathering", ["ALIVE_fnc_cc_startGathering", "managed", [0.1,0.01,0], [30,90]]] call ALIVE_fnc_hashSet;
-
+    //*/
 };
 
 if(_agent getVariable ["ALIVE_agentMeetingRequested",false]) exitWith {
