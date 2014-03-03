@@ -72,7 +72,7 @@ switch(_operation) do {
 
         if (isServer) then {
 
-            waituntil {!(isnil "ALIVE_sectorGrid")};
+            waituntil {!(isnil "ALIVE_profileSystemInit")};
 
             _debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
             _spawnRadius = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;

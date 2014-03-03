@@ -300,7 +300,7 @@ switch(_operation) do {
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
-								
+		    /*
 			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];				
@@ -312,6 +312,9 @@ switch(_operation) do {
 					[] call ALIVE_fnc_groupGenerateConfigData;
 				};
 			};
+			*/
+
+			waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
 
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit

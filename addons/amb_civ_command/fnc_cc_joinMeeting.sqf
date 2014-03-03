@@ -123,20 +123,23 @@ switch (_state) do {
         _timeout = _args select 1;
         _timer = _args select 2;
 
-        if(_timer > _timeout) then
-        {
-            _agent playMove "";
-            _target setVariable ["ALIVE_agentMeetingComplete", true, false];
-            _agent setVariable ["ALIVE_agentMeetingTarget", objNull, false];
-
+        if(isNull _target) then {
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
-            _timer = _timer + 1;
+            if(_timer > _timeout) then
+            {
+                _agent playMove "";
+                _target setVariable ["ALIVE_agentMeetingComplete", true, false];
+                _agent setVariable ["ALIVE_agentMeetingTarget", objNull, false];
 
-            _nextStateArgs = [_target, _timeout, _timer];
-
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+                _nextState = "done";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            }else{
+                _timer = _timer + 1;
+                _nextStateArgs = [_target, _timeout, _timer];
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            };
         };
     };
 	case "done":{

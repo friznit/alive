@@ -37,4 +37,13 @@ switch(_type) do {
             };
         };
     };
+    case "agents": {
+        if(!isNil 'ALIVE_agentHandler') then {
+            if([ALIVE_agentHandler, "debug"] call ALIVE_fnc_agentHandler) then {
+                [ALIVE_agentHandler, "debug", false] call ALIVE_fnc_agentHandler;
+            }else{
+                [ALIVE_agentHandler, "debug", true] call ALIVE_fnc_agentHandler;
+            };
+        };
+    };
 };

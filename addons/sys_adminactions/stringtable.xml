@@ -67,6 +67,18 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT">
     <English>Toggle debug mode on the profile system</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG">
+    <English>Debug Civilian System:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_ENABLE">
+    <English>Activate Civilian Debug</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_DISABLE">
+    <English>Deactivate Civilian Debug</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_COMMENT">
+    <English>Toggle debug mode on the civilian system</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CONSOLE">
 	<English>Allow Debug:</English>
 </Key>

@@ -256,13 +256,16 @@ switch(_operation) do {
 				[true] call ALIVE_fnc_timer;
 			};
 			
-			
+			/*
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedCIVClusters = true;
 			};
+			*/
+
+			waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
             
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit

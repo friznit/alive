@@ -233,15 +233,22 @@ switch(_operation) do {
 				["ALIVE AMBCP - Startup"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
-			
-			
+
+			waituntil {!(isnil "ALIVE_clusterHandler")};
+
+			/*
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];				
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedCIVClusters = true;
 			};
-            
+
+			waituntil {!(isnil "ALIVE_clustersCivSettlement")};
+            */
+
+            waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
+
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit
 			_error = false;
@@ -314,6 +321,7 @@ switch(_operation) do {
                 };
 
                 if !(isnil "ALIVE_clustersCivSettlement") then {
+
                      _clusters = ALIVE_clustersCivSettlement select 2;
                      _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                      _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -511,7 +519,7 @@ switch(_operation) do {
             _clustersConstruction = [_logic, "objectivesConstruction", _clusters] call MAINCLASS;
             */
             
-            waituntil {!(isnil "ALIVE_clusterHandler")};
+
 
             if(count _clusters > 0) then {
                 {

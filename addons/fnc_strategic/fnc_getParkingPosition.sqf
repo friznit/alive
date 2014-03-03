@@ -67,7 +67,7 @@ if(_debug) then {
 // DEBUG -------------------------------------------------------------------------------------
 
 _vehicleMapSize = getNumber(configFile >> "CfgVehicles" >> _vehicleClass >> "mapSize");
-_vehicleMapSize = (_vehicleMapSize/3);
+_vehicleMapSize = (_vehicleMapSize/4);
 if(_vehicleMapSize < 1) then {
     _vehicleMapSize = 1;
 };

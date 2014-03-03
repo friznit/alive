@@ -25,43 +25,29 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
+private ["_date","_dateString","_sunOrMoon","_hour","_minute","_sunSet","_sunRise","_dayState"];
+
 _date = date;
 _dateString = format["%1-%2-%3", _date select 0, _date select 1, _date select 2];
 
-// sunrise sunset is already set
-if!(isNil "ALIVE_sunriseSunset") then
-{
-    // date has changed reset
-    if(ALIVE_currentDate != _dateString) then
-    {
-        ALIVE_sunriseSunset = [_date select 0, _date select 1, _date select 2] call ALIVE_fnc_getSunriseSunset;
-    };
-}
-else
-{
-    ALIVE_sunriseSunset = [_date select 0, _date select 1, _date select 2] call ALIVE_fnc_getSunriseSunset;
-};
+_sunOrMoon = sunOrMoon;
 
-ALIVE_currentDate = _dateString;
+//["SUN OR MOON: %1",_sunOrMoon] call ALIVE_fnc_dump;
 
 _hour = _date select 3;
 _minute = _date select 4;
-_sunSet = ALIVE_sunriseSunset select 1;
-_sunSet = _sunSet select 0;
-_sunRise = ALIVE_sunriseSunset select 0;
-_sunRise = _sunRise select 0;
-
 _dayState = "DAY";
 
-if(_hour <= _sunRise) then
-{
-    _dayState = "NIGHT";
+//["TIME: %1:%2",_hour,_minute] call ALIVE_fnc_dump;
+
+if(_sunOrMoon < 1) then {
+    _dayState = "EVENING";
+    if((_hour >= 23) || (_hour < 6)) then {
+        _dayState = "NIGHT";
+    };
 };
 
-if(_hour > _sunSet) then
-{
-    _dayState = "EVENING";
-};
+//["DAY STATE: %1",_dayState] call ALIVE_fnc_dump;
 
 ALIVE_currentEnvironment = [_dayState, _hour, _minute];
 

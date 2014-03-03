@@ -2299,6 +2299,7 @@ BLU_G_F_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionCustomMappings, "BLU_G_F", BLU_G_F_mappings] call ALIVE_fnc_hashSet;
 // ---------------------------------------------------------------------------------------------------------------------
 
+
 // African
 // ---------------------------------------------------------------------------------------------------------------------
 mas_afr_rebl_o_mappings = [] call ALIVE_fnc_hashCreate;

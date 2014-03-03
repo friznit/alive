@@ -140,7 +140,7 @@ if (_menuName == "adminActions") then {
                 [localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE",
 					{ MOD(adminActions) setVariable ["CQB_enabled", true]; [CQB_REGULAR,"debug",true] call ALiVE_fnc_CQB; [CQB_STRATEGIC,"debug",true] call ALiVE_fnc_CQB; },
 					"",
-					localize "STR_ALIVE_ADMINACTIONS_CQB_COMMENT",
+					localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE_COMMENT",
 					"",
 					-1,
 					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
@@ -149,7 +149,7 @@ if (_menuName == "adminActions") then {
 				[localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE",
 					{ MOD(adminActions) setVariable ["CQB_enabled", false]; [CQB_REGULAR,"debug",false] call ALiVE_fnc_CQB; [CQB_STRATEGIC,"debug",false] call ALiVE_fnc_CQB; },
 					"",
-					localize "STR_ALIVE_ADMINACTIONS_CQB_COMMENT",
+					localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE_COMMENT",
 					"",
 					-1,
 					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
@@ -174,6 +174,25 @@ if (_menuName == "adminActions") then {
 					["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable,
 					(MOD(adminActions) getVariable ["PROFILES_enabled", false])
 				],
+
+				[localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_ENABLE",
+                    { MOD(adminActions) setVariable ["AGENTS_enabled", true]; [] call ALIVE_fnc_agentSystemDebug; },
+                    "",
+                    localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_COMMENT",
+                    "",
+                    -1,
+                    ["ALiVE_amb_civ_population"] call ALiVE_fnc_isModuleAvailable,
+                    !(MOD(adminActions) getVariable ["AGENTS_enabled", false])
+                ],
+                [localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_DISABLE",
+                    { MOD(adminActions) setVariable ["AGENTS_enabled", false]; [] call ALIVE_fnc_agentSystemDebug; },
+                    "",
+                    localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
+                    "",
+                    -1,
+                    ["ALiVE_amb_civ_population"] call ALiVE_fnc_isModuleAvailable,
+                    (MOD(adminActions) getVariable ["AGENTS_enabled", false])
+                ],
 
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
 					{ createDialog "RscDisplayDebugPublic" },

@@ -130,7 +130,7 @@ switch (_state) do {
         _timeout = _args select 0;
         _timer = _args select 1;
 
-        if(_timer > _timeout) then
+        if(_timer > _timeout || (ALIVE_currentEnvironment select 0 == "DAY")) then
         {
             _agent playMove "";
             _nextState = "done";

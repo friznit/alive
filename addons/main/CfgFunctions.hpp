@@ -161,11 +161,6 @@ class cfgFunctions {
                 file = "\x\alive\addons\main\fnc_getEnvironment.sqf";
                 recompile = RECOMPILE;
             };
-            class getSunriseSunset {
-                description = "Gets times for sunrise and sunset";
-                file = "\x\alive\addons\main\fnc_getSunriseSunset.sqf";
-                recompile = RECOMPILE;
-            };
             class getRandomPlayerNear {
                 description = "Gets a random nearby player";
                 file = "\x\alive\addons\main\fnc_getRandomPlayerNear.sqf";

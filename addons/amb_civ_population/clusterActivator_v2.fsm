@@ -17,13 +17,13 @@ item12[] = {"ITERATE",4,218,95.820595,358.710358,185.820602,408.710419,1.000000,
 item13[] = {"END__LOOP",4,218,-31.355610,433.665924,58.644455,483.665924,0.000000,"END " \n "LOOP"};
 item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,0.000000,"WAIT"};
 item15[] = {"COMPLETE",4,218,-419.532806,358.389832,-329.532654,408.389679,0.000000,"COMPLETE"};
-item16[] = {"CHECK",2,4346,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
+item16[] = {"CHECK",2,250,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
 item17[] = {"HAS__INACTIVE",4,218,-30.842457,123.296127,59.157623,173.296127,1.000000,"HAS " \n "INACTIVE"};
 item18[] = {"HAS__INACTIVE_CL",4,218,-190.356888,592.674255,-100.357147,642.674255,1.000000,"HAS " \n "INACTIVE" \n "CLUSTERS"};
 item19[] = {"WAIT",4,218,-317.030487,-94.616402,-227.030457,-44.616344,1.000000,"WAIT"};
 item20[] = {"NO__ACTIVATE",4,218,69.500504,278.651886,159.500504,328.652008,0.000000,"NO " \n "ACTIVATE"};
 item21[] = {"ITERATE",4,218,93.003258,198.069321,183.003433,248.069336,2.000000,"ITERATE"};
-item22[] = {"ANALYSE_INACTIVE",2,250,-30.795383,198.355576,59.204765,248.355774,0.000000,"ANALYSE" \n "INACTIVE" \n "CLUSTERS"};
+item22[] = {"ANALYSE_INACTIVE",2,4346,-30.795383,198.355576,59.204765,248.355774,0.000000,"ANALYSE" \n "INACTIVE" \n "CLUSTERS"};
 item23[] = {"ANALYSE_AGENTS",2,250,-29.551029,510.704590,60.449181,560.704712,0.000000,"ANALYSE" \n "AGENTS"};
 item24[] = {"DO__SPAWN",4,218,-27.457310,584.677979,62.542732,634.677979,0.000000,"DO " \n "SPAWN"};
 item25[] = {"ITERATE",4,218,95.492104,512.907166,185.492233,562.907166,2.000000,"ITERATE"};
@@ -132,7 +132,7 @@ link64[] = {48,41};
 link65[] = {49,15};
 link66[] = {49,18};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,160,6316128,1,-849.937683,327.282013,879.731506,-312.536194,1017,1030,1};
-window[] = {2,-1,-1,-32000,-32040,924,-1894,-271,26,3,1035};
+window[] = {2,-1,-1,-1,-41,1028,-1790,-167,130,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -511,7 +511,7 @@ class FSM
     class ANALYSE_INACTIVE
     {
       name = "ANALYSE_INACTIVE";
-      init = /*%FSM<STATEINIT""">*/"private [""_cluster"",""_position"",""_countToSpawn""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_cluster"",""_position"",""_size"",""_countToSpawn""];" \n
        "" \n
        "_block = [ALIVE_arrayBlockHandler,""getNextBlock"",[""inactiveClusters"",_inactiveClusters,30]] call ALIVE_fnc_arrayBlockHandler;" \n
        "" \n
@@ -521,9 +521,10 @@ class FSM
        "" \n
        "	if!(isnil ""_cluster"") then {" \n
        "" \n
-       "		_position = _cluster select 2 select 2; " \n
+       "		_position = _cluster select 2 select 2;" \n
+       "		_size = _cluster select 2 select 3;" \n
        "" \n
-       "		if ([_position, _spawnDistance, _spawnTypeJetRadius, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {" \n
+       "		if ([_position, (_spawnDistance + _size), _spawnTypeJetRadius, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {" \n
        "			_toSpawn set [count _toSpawn, _cluster];" \n
        "		}else{" \n
        "			if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0) then {" \n
