@@ -82,6 +82,9 @@ switch(_operation) do {
 				if (typename (_spawnJet) == "STRING") then {_spawnJet = call compile _spawnJet};
                 _logic setVariable ["spawnDistanceJet", _spawnJet];
                 
+                _locality = _logic getvariable ["CQB_locality_setting","client"];
+                _logic setVariable ["locality", _locality];
+                
                 _factionsStrat = _logic getvariable ["CQB_FACTIONS_STRAT","OPF_F"];
                 _factionsStrat = [_logic,"factions",_factionsStrat] call ALiVE_fnc_CQB;
                 
@@ -201,6 +204,8 @@ switch(_operation) do {
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
+                    _logic setVariable ["locality", _locality,true];
+                    
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsStrat] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", (_spawn * 1.4)] call ALiVE_fnc_CQB;
@@ -216,6 +221,8 @@ switch(_operation) do {
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
+                    _logic setVariable ["locality", _locality,true];
+                    
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsReg] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", _spawn] call ALiVE_fnc_CQB;
@@ -799,9 +806,8 @@ switch(_operation) do {
 			
 			// spawn loop
 			_logic spawn {
-				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_playerhosts","_faction","_useDominantFaction","_inRange"];
+				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_hosts","_faction","_useDominantFaction","_inRange","_locality"];
 				_logic = _this;
-                
 				
 				// default functions - can be overridden
 				// over-arching spawning loop
@@ -811,6 +817,7 @@ switch(_operation) do {
 						_spawn = _logic getVariable ["spawnDistance", 1000];
                         _spawnHeli = _logic getVariable ["spawnDistanceHeli", 0];
                         _spawnJet = _logic getVariable ["spawnDistanceJet", 0];
+                        _locality = _logic getVariable ["locality", "client"];
                         
                         _useDominantFaction = call compile (MOD(CQB) getvariable ["CQB_UseDominantFaction","true"]);
                         
@@ -820,40 +827,50 @@ switch(_operation) do {
 						
 							// Check: house doesn't already have AI AND
 							// Check: if any players within spawn distance
-                            
-                            _players = [] call BIS_fnc_listPlayers;
+
                             _nearplayers = [getposATL _house,_spawn,_spawnJet,_spawnHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir;
 							if ((isNil {_house getVariable "group"}) && {_nearplayers}) then {
-
-                                _playerhosts = [];
-                                if (count _players > 0) then {
-	                                for "_i" from 0 to (count _players - 1) do {
-	                                    _pl = _players select _i;
                                         
-                                        //Choose players from List
-                                        if !(isnull _pl) then {
-                                            
-                                            /* AI distribution not working properly yet
-                                            _threshold = 10;
-                                            _localunits = ({owner _x == owner _pl} count allUnits);
-                                            _unitLimit = (ceil (count allUnits / count _players)) + _threshold;
-                                            _canHost = (_localunits <= _unitLimit);
-                                            diag_log format ["Local units %1 on %2 vs. Unitlimit %3 (near players %4) turns canhost %5 for house %6 on logic %7",_localunits,_pl,_unitLimit,_nearplayers,_canhost,_house,_logic];
-                                            */
-		                                	_canhost = true;
-	                                        
-	                                        if (((getPosATL _house distance _pl < _spawn) && _canHost) || {(_i == (count _players)-1) && {(count _playerhosts == 0)}}) then {
-		                                        _playerhosts set [count _playerhosts,_pl];
-		                                    };
-                                        } else {
-                                            //diag_log format ["CQB Warning: Null object on host (%1) not selected",_pl];
+                                    switch (_locality) do {
+                                    	case ("server") : {
+                                            _hosts = ["server"];
                                         };
-	                                };
+                                    	case ("HC") : {
+                                            _hosts = ["server"];
+                                        };
+                                        case ("client") : {
+
+		                                	_hosts = [];
+		                                    _players = [] call BIS_fnc_listPlayers;
+			                                for "_i" from 0 to (count _players - 1) do {
+			                                    _pl = _players select _i;
+		                                        
+		                                        //Choose players from List
+		                                        if !(isnull _pl) then {
+		                                            
+		                                            /* AI distribution not working properly yet
+		                                            _threshold = 10;
+		                                            _localunits = ({owner _x == owner _pl} count allUnits);
+		                                            _unitLimit = (ceil (count allUnits / count _players)) + _threshold;
+		                                            _canHost = (_localunits <= _unitLimit);
+		                                            diag_log format ["Local units %1 on %2 vs. Unitlimit %3 (near players %4) turns canhost %5 for house %6 on logic %7",_localunits,_pl,_unitLimit,_nearplayers,_canhost,_house,_logic];
+		                                            */
+				                                	_canhost = true;
+			                                        
+			                                        if (((getPosATL _house distance _pl < _spawn) && _canHost) || {(_i == (count _players)-1) && {(count _hosts == 0)}}) then {
+				                                        _hosts set [count _hosts,_pl];
+				                                    };
+		                                        } else {
+		                                            //diag_log format ["CQB Warning: Null object on host (%1) not selected",_pl];
+		                                        };
+			                                };
+                                        };
+                                    };
                                     
-                                    if (count _playerhosts > 0) then {
-                                		_host = _playerhosts call BIS_fnc_selectRandom;
+                                    if (count _hosts > 0) then {
+                                		_host = _hosts call BIS_fnc_selectRandom;
                                     
-	                                    if !(isnull _host) then {
+	                                    if !(isnil "_host") then {
 		                                    _house setvariable ["group","preinit",true];
                                             
                                             if (_useDominantFaction) then {
@@ -873,9 +890,6 @@ switch(_operation) do {
                                 	} else {
                                         ["CQB ERROR: No playerhosts for house %1!",_house] call ALiVE_fnc_DumpR;
                                     };
-                                } else {
-                                    ["CQB ERROR: No players in List %1!",_players] call ALiVE_fnc_DumpR;
-                                };
                             };
 						} forEach (_logic getVariable ["houses", []]);
 						{

@@ -14,6 +14,13 @@
 <Key ID="STR_ALIVE_CQB_DEBUG_COMMENT">
 	<English>Enables CQB Module Debug</English>
 </Key>
+</Key>
+<Key ID="STR_ALIVE_CQB_LOCALITY">
+	<English>Locality:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_LOCALITY_COMMENT">
+	<English>Selects locality of hosted AI</English>
+</Key>
 <Key ID="STR_ALIVE_CQB_ENABLE">
 	<English>Enable CQB</English>
 </Key>

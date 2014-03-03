@@ -32,6 +32,30 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_locality_setting
+                        {
+                                displayName = "$STR_ALIVE_CQB_LOCALITY";
+                                description = "$STR_ALIVE_CQB_LOCALITY_COMMENT";
+                                class Values
+                                {
+                                        class client
+                                        {
+                                                name = "JIP clients";
+                                                value = "client";
+                                                default = true;
+                                        };
+                                        class server
+                                        {
+                                                name = "Server";
+                                                value = "server";
+                                        };
+                                        class headless
+                                        {
+                                                name = "Headless Client";
+                                                value = "HC";
+                                        };
+                                };
+                        };
                         class CQB_LOCATIONTYPE
                         {
                                 displayName = "$STR_ALIVE_CQB_LOCATIONTYPE";
