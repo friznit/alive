@@ -318,7 +318,11 @@ switch(_operation) do {
 
                 } forEach (_commandState select 2);
 
+                // get current environment settings
                 _env = call ALIVE_fnc_getEnvironment;
+
+                // get current global civilian population posture
+                [] call ALIVE_fnc_getGlobalPosture;
 
                 sleep 5;
 

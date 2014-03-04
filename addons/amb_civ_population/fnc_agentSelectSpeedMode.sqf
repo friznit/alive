@@ -5,7 +5,7 @@ SCRIPT(agentSelectSpeedMode);
 Function: ALIVE_fnc_agentSelectSpeedMode
 
 Description:
-Set a random speed mode on an agent
+Set a randomish speed mode on an agent
 
 Parameters:
 
@@ -27,8 +27,27 @@ private ["_agent","_probability","_colour","_brightness","_light"];
 
 _agent = _this select 0;
 
-_probabilityNormal = 0.4;
-_probabilityFull = 0.2;
+_probabilityNormal = 0.1;
+_probabilityFull = 0.05;
+
+switch(ALIVE_civilianGlobalPosture) do {
+    case "ENRAGED": {
+        _probabilityNormal = 0.4;
+        _probabilityFull = 0.2;
+    };
+    case "ANGRY": {
+        _probabilityNormal = 0.3;
+        _probabilityFull = 0.1;
+    };
+    case "DISCONTENTED": {
+        _probabilityNormal = 0.2;
+        _probabilityFull = 0.1;
+    };
+    case "PEACEFUL": {
+        _probabilityNormal = 0.1;
+        _probabilityFull = 0.05;
+    };
+};
 
 _diceRoll = random 1;
 

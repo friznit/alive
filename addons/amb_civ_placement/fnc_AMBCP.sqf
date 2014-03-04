@@ -581,8 +581,11 @@ switch(_operation) do {
 			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
 			_sideObject = [_side] call ALIVE_fnc_sideTextToObject;
 
-
+            // get current environment settings
 			_env = call ALIVE_fnc_getEnvironment;
+
+			// get current global civilian population posture
+			[] call ALIVE_fnc_getGlobalPosture;
 
 			
 			// DEBUG -------------------------------------------------------------------------------------

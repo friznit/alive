@@ -60,11 +60,13 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-		_target = [_agentData, getPosASL _agent, 300] call ALIVE_fnc_getAgentEnemyNear;
+		_target = [_agentData, getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
 
+        /*
 		if(count _target == 0) then {
 		    _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
 		};
+		*/
 
         if(count _target > 0) then {
             _target = _target select 0;
@@ -76,6 +78,7 @@ switch (_state) do {
 
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
+
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
@@ -91,18 +94,19 @@ switch (_state) do {
 
         _target = _args select 0;
 
+        if(_agent distance _target < 5) then {
+            _object = "GrenadeHand" createVehicle (getPos _agent);
+            _object attachTo [_agent,[-0.02,-0.07,0.042],"rightHand"];
+
+            _nextState = "done";
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        };
+
         if(unitReady _agent) then {
 
-            if(_agent distance _target > 5) then {
+            if(_agent distance _target > 2) then {
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;
                 _agent doMove getPosASL _target;
-            }else{
-
-                _object = "GrenadeHand" createVehicle (getPos _agent);
-                _object attachTo [_agent,[-0.02,-0.07,0.042],"rightHand"];
-
-                _nextState = "done";
-                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
             };
         };
 	};

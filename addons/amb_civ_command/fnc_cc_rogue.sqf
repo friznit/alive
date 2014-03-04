@@ -126,15 +126,17 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _target = [_agentData, getPosASL _agent, 300] call ALIVE_fnc_getAgentEnemyNear;
+        _target = [_agentData, getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
 
+        /*
         if(count _target == 0) then {
             _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
         };
+        */
 
         if(count _target > 0) then {
 
-            _agent setSkill 0.3 + random 1;
+            _agent setSkill 0.3 + random 0.5;
 
             _target = _target select 0;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
@@ -150,6 +152,7 @@ switch (_state) do {
 
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
+
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
@@ -195,7 +198,11 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", false, false];
 
-		_agent setSkill 0.1;
+        if(alive _agent) then {
+            _agent setCombatMode "WHITE";
+            _agent setBehaviour "SAFE";
+            _agent setSkill 0.1;
+        };
 		
 		_nextState = "complete";
 		_nextStateArgs = [];

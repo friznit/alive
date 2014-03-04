@@ -117,9 +117,11 @@ _mostHostileSide = _hostilitySides select _highestIndex;
 */
 
 if(count ([_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet) > 0) then {
-    _units = [_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet;
-    _unit = _units call BIS_fnc_selectRandom;
-    _result = [_unit];
+    if(_highest > 0) then {
+        _units = [_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet;
+        _unit = _units call BIS_fnc_selectRandom;
+        _result = [_unit];
+    }
 }else{
     _hostilityNumbers set [_highestIndex, -1];
 
@@ -141,9 +143,11 @@ if(count ([_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet) > 0) then {
     */
 
     if(count ([_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet) > 0) then {
-        _units = [_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet;
-        _unit = _units call BIS_fnc_selectRandom;
-        _result = [_unit];
+        if(_highest > 0) then {
+            _units = [_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet;
+            _unit = _units call BIS_fnc_selectRandom;
+            _result = [_unit];
+        }
     }else{
         _hostilityNumbers set [_highestIndex, -1];
 
@@ -165,9 +169,11 @@ if(count ([_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet) > 0) then {
         */
 
         if(count ([_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet) > 0) then {
-            _units = [_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet;
-            _unit = _units call BIS_fnc_selectRandom;
-            _result = [_unit];
+            if(_highest > 0) then {
+                _units = [_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet;
+                _unit = _units call BIS_fnc_selectRandom;
+                _result = [_unit];
+            }
         };
     };
 

@@ -5,7 +5,7 @@ SCRIPT(selectCivilianCommand);
 Function: ALIVE_fnc_selectCivilianCommand
 
 Description:
-Select the next civilian command for an agent
+Select the initial or next civilian command for an agent
 
 Parameters:
 Array - agent
@@ -24,16 +24,26 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_agentData","_debug","_agent","_dayState","_command","_probability","_timeProbability","_diceRoll","_args"];
+private ["_agentData","_debug","_agent","_dayState","_dayCommand","_eveningCommand","_nightCommand","_idleCommand","_commandName","_command","_probability","_timeProbability","_diceRoll","_args"];
 
 _agentData = _this select 0;
 _debug = if(count _this > 1) then {_this select 1} else {false};
 
 _agent = _agentData select 2 select 5;
-
 _dayState = ALIVE_currentEnvironment select 0;
 
+// set initial fall back commands
+
+_dayCommand = "randomMovement";
+_eveningCommand = "housework";
+_nightCommand = "sleep";
+_idleCommand = "idle";
+
+
+// setup all possible commands available to agents
+
 if(isNil "ALIVE_civCommands") then {
+
     ALIVE_civCommands = [] call ALIVE_fnc_hashCreate;
 
     /*
@@ -51,23 +61,74 @@ if(isNil "ALIVE_civCommands") then {
     [ALIVE_civCommands, "sleep", ["ALIVE_fnc_cc_sleep", "managed", [0,0.1,0.9], [300,1000]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "campfire", ["ALIVE_fnc_cc_campfire", "managed", [0,0.25,0.2], [60,300]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.2,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "startMeeting", ["ALIVE_fnc_cc_startMeeting", "managed", [0.2,0.1,0.01], []]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "startGathering", ["ALIVE_fnc_cc_startGathering", "managed", [0.1,0.01,0], [30,90]]] call ALIVE_fnc_hashSet;
     //*/
+
+    // set available commands
+    ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
 };
+
+// if an agent has been requested for a meeting join the meeting initiator
 
 if(_agent getVariable ["ALIVE_agentMeetingRequested",false]) exitWith {
     [_agentData, "setActiveCommand", ["ALIVE_fnc_cc_joinMeeting", "managed",[30,90]]] call ALIVE_fnc_civilianAgent;
 };
 
+// if an agent has been requested for a gathering join the gathering initiator
+
 if(_agent getVariable ["ALIVE_agentGatheringRequested",false]) exitWith {
     [_agentData, "setActiveCommand", ["ALIVE_fnc_cc_joinGathering", "managed",[]]] call ALIVE_fnc_civilianAgent;
 };
 
+// there are commands available
+
 if(count (ALIVE_civCommands select 1) > 0) then {
-    _command = (ALIVE_civCommands select 2) call BIS_fnc_selectRandom;
+
+    // check global posture adjust command probability accordingly
+
+    switch(ALIVE_civilianGlobalPosture) do {
+        case "ENRAGED": {
+            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+            _dayCommand = "randomMovement";
+            _idleCommand = "idle";
+            ALIVE_availableCivCommands = ["journey","sleep","observe","suicide","rogue"];
+        };
+        case "ANGRY": {
+            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+            _dayCommand = "randomMovement";
+            _idleCommand = "idle";
+            ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
+        };
+        case "DISCONTENTED": {
+            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+            _dayCommand = "randomMovement";
+            _idleCommand = "idle";
+            ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
+        };
+        case "PEACEFUL": {
+            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.2,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+            _dayCommand = "randomMovement";
+            _idleCommand = "idle";
+            ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
+        };
+    };
+
+    // select a random command
+    _commandName = ALIVE_availableCivCommands call BIS_fnc_selectRandom;
+    _command = [ALIVE_civCommands, _commandName] call ALIVE_fnc_hashGet;
+
+    // get the probability for the command for the current time of day
     _probability = _command select 2;
 
     switch(_dayState) do {
@@ -82,7 +143,10 @@ if(count (ALIVE_civCommands select 1) > 0) then {
         };
     };
 
+    // roll the probability dice
+
     _diceRoll = random 1;
+
 
     // DEBUG -------------------------------------------------------------------------------------
     if(_debug) then {
@@ -94,26 +158,38 @@ if(count (ALIVE_civCommands select 1) > 0) then {
     };
     // DEBUG -------------------------------------------------------------------------------------
 
+
+    // random command dice roll success run the random command
+
     if(_diceRoll < _timeProbability) then {
         _args = + _command select 3;
         [_agentData, "setActiveCommand", [_command select 0, _command select 1,_args]] call ALIVE_fnc_civilianAgent;
     }else{
-        if(random 1 > 0.6) then {
+
+        // random command dice roll failed
+
+        if(random 1 > 0.7) then {
+
+            // secondary dice roll succeeded pick a time appropriate command
+
             switch(_dayState) do {
                 case "DAY": {
-                    _command = [ALIVE_civCommands, "randomMovement"] call ALIVE_fnc_hashGet;
+                    _command = [ALIVE_civCommands, _dayCommand] call ALIVE_fnc_hashGet;
                 };
                 case "EVENING": {
-                    _command = [ALIVE_civCommands, "housework"] call ALIVE_fnc_hashGet;
+                    _command = [ALIVE_civCommands, _eveningCommand] call ALIVE_fnc_hashGet;
                 };
                 case "NIGHT": {
-                    _command = [ALIVE_civCommands, "sleep"] call ALIVE_fnc_hashGet;
+                    _command = [ALIVE_civCommands, _nightCommand] call ALIVE_fnc_hashGet;
                 };
             };
             _args = + _command select 3;
             [_agentData, "setActiveCommand", [_command select 0, _command select 1,_args]] call ALIVE_fnc_civilianAgent;
         }else{
-            _command = [ALIVE_civCommands, "idle"] call ALIVE_fnc_hashGet;
+
+            // secondary dice roll failed fall back to idle state
+
+            _command = [ALIVE_civCommands, _idleCommand] call ALIVE_fnc_hashGet;
             _args = + _command select 3;
             [_agentData, "setActiveCommand", [_command select 0, _command select 1,_args]] call ALIVE_fnc_civilianAgent;
         };

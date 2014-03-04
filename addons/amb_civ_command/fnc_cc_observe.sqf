@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
 	case "init":{
 
-	    private ["_minTimeout","_maxTimeout","_target","_timeout","_timer"];
+	    private ["_minTimeout","_maxTimeout","_target","_timeout","_timer","_position"];
 
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
@@ -63,12 +63,13 @@ switch (_state) do {
         _minTimeout = _args select 0;
 		_maxTimeout = _args select 1;
 
-        _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomManOrPlayerNear;
+        _target = [getPosASL _agent, 30] call ALIVE_fnc_getRandomManOrPlayerNear;
 
         if(count _target > 0) then {
             _target = _target select 0;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-            _agent doMove getPosASL _target;
+            _position = [getPosASL _target, 1+(random 5), random 360] call BIS_fnc_relPos;
+            _agent doMove _position;
 
             _timeout = _minTimeout + floor(random _maxTimeout);
             _timer = 0;
@@ -111,7 +112,7 @@ switch (_state) do {
 	};
 	case "wait":{
 
-        private ["_timeout","_timer"];
+        private ["_timeout","_timer","_position"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
@@ -129,6 +130,13 @@ switch (_state) do {
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
+            if(unitReady _agent) then {
+                if(_agent distance _target > 7) then {
+                    [_agent] call ALIVE_fnc_agentSelectSpeedMode;
+                    _position = [getPosASL _target,1+(random 5), random 360] call BIS_fnc_relPos;
+                    _agent doMove _position;
+                }
+            };
             _timer = _timer + 1;
 
             _nextStateArgs = [_target, _timeout, _timer];
