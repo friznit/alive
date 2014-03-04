@@ -713,8 +713,8 @@ switch(_operation) do {
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
 					//[] call ALIVE_fnc_timer;
 
-					["SPAWN POS:%1",_position] call ALIVE_fnc_dump;
-					["SPAWN POSs:%1",_positions] call ALIVE_fnc_dump;
+					//["SPAWN POS:%1",_position] call ALIVE_fnc_dump;
+					//["SPAWN POSs:%1",_positions] call ALIVE_fnc_dump;
 
 					_group = createGroup _sideObject;				
 

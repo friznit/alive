@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_CQB";
                 function = "ALIVE_fnc_CQBInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 2;
+                functionPriority = 6;
                 isGlobal = 1;
                 isPersistent = 1;
 				icon = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
