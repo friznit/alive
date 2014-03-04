@@ -86,7 +86,9 @@ switch(_operation) do {
 						_activeLimiter = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
-						_persistent = [_logic,"persistent",false] call ALIVE_fnc_hashGet;
+                        
+                        //persistent?
+						ALIVE_profilesPersistent = [_logic,"persistent",false] call ALIVE_fnc_hashGet;
 
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
@@ -120,21 +122,12 @@ switch(_operation) do {
                             };
                         };
 
-
                         // global server flag
                         ALIVE_profileSystemDataLoaded = true;
 
 						// create the profile handler
 						ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 						[ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
-
-
-						// persistent
-                        ALIVE_profilesPersistent = false;
-                        if(_persistent) then {
-                            ALIVE_profilesPersistent = true;
-                        };
-
 						
 						// create sector grid
 						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
@@ -193,7 +186,7 @@ switch(_operation) do {
                             ["ALIVE Spawn in Jet Radius: %1",_spawnTypeJetRadius] call ALIVE_fnc_dump;
                             ["ALIVE Spawn in Heli Radius: %1",_spawnTypeHeliRadius] call ALIVE_fnc_dump;
 							["ALIVE Spawn Cycle Time: %1", _spawnCycleTime] call ALIVE_fnc_dump;
-							["ALIVE Persistent: %1", _persistent] call ALIVE_fnc_dump;
+							["ALIVE Persistent: %1",ALIVE_profilesPersistent] call ALIVE_fnc_dump;
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
@@ -226,7 +219,6 @@ switch(_operation) do {
 
                         // set modules as started
                         [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
-                        [ALiVE_ProfileHandler,"startupComplete",true] call ALIVE_fnc_hashSet;
 
 						// register profile entity analysis job on the live analysis
 						// analysis job will run every 90 seconds and has no run count limit
