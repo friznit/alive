@@ -175,7 +175,7 @@ switch(_operation) do {
                     };
                     
                     //Wait for virtual profiles ready
-                    waituntil {[ALiVE_ProfileHandler,"startupComplete",false] call ALIVE_fnc_hashGet};
+                    waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
                     
                     //Get objectives data from other modules or placed Location logics!
                     private ["_objectives"];
@@ -435,13 +435,22 @@ switch(_operation) do {
                     
                     if (!(isnil "_result") && {typename _result == "ARRAY"} && {count _result > 0} && {count (_result select 2) > 0}) then {
                         
+
                         _newObjectives = [];
 						{
                             _id = [_x,"opcomID",""] call ALiVE_fnc_HashGet;
                             
                             if (_id == _opcomID) then {
-		                		[_x, "_rev"] call ALIVE_fnc_hashRem;
+                                
+                                //Get revision value
+                                _rev = [_x,"_rev",""] call ALiVE_fnc_HashGet;
+                                
+                                //Remove _id and revision
 		                		[_x, "_id"] call ALIVE_fnc_hashRem;
+                                [_x, "_rev"] call ALIVE_fnc_hashRem;
+                                
+                                //Reset Revision at the end
+                                [_x,"_rev",_rev] call ALiVE_fnc_HashSet;
                                 
                                 _newObjectives set [count _newObjectives,_x];
                             };
@@ -521,7 +530,7 @@ switch(_operation) do {
                     [_target, "nodes",_nodes] call ALIVE_fnc_HashSet;
                     [_target, "opcomID",_opcomID] call ALIVE_fnc_HashSet;
                     [_target,"_rev",""] call ALIVE_fnc_hashSet;
-
+                    
 					if  (_debug) then {
 						_m = createMarkerLocal [_id, _pos];
 						_m setMarkerShapeLocal "RECTANGLE";
@@ -566,7 +575,7 @@ switch(_operation) do {
                             case ("distance") : {_objectives = [_objectives,[],{([_logic, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND"] call BIS_fnc_sortBy};
                             
                             //by size and height
-                            case ("strategic") : {_objectives = [_objectives,[],{_height = (ATLtoASL [(_x select 2 select 1) select 0, (_x select 2 select 1) select 1,0]) select 2; ((_x select 2 select 2) + (_x select 2 select 4) + (_height/2)) - ((([_logic, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10)},"DESCEND"] call BIS_fnc_sortBy};
+                            case ("strategic") : {_objectives = [_objectives,[],{_height = (ATLtoASL [(_x select 2 select 1) select 0,(_x select 2 select 1) select 1,0]) select 2; ((_x select 2 select 2) + (_x select 2 select 4) + (_height/2)) - ((([_logic, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10)},"DESCEND"] call BIS_fnc_sortBy};
                             case ("size") : {};
                             default {};
                 };

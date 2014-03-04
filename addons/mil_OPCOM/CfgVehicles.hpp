@@ -2,16 +2,17 @@ class CfgVehicles {
         class ModuleAliveMilitaryBase;
         class ADDON : ModuleAliveMilitaryBase
         {
-                scope = 2;
-                displayName = "$STR_ALIVE_OPCOM";
-                function = "ALIVE_fnc_OPCOMInit";
-                author = MODULE_AUTHOR;
+				scope = 2;
+				displayName = "$STR_ALIVE_OPCOM";
+				function = "ALIVE_fnc_OPCOMInit";
+				author = MODULE_AUTHOR;
 				functionPriority = 7;
-                isGlobal = 1;
-                isPersistent = 0;
+				isGlobal = 1;
+				isPersistent = 0;
 				icon = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
 				picture = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
-                class Arguments
+				
+				class Arguments
                 {
                         class debug
                         {
