@@ -86,7 +86,7 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-    private ["_logic","_markers","_m","_position","_agentID","_debugColor","_debugIcon","_debugAlpha","_agentSide","_vehicleType","_agentActive"];
+    private ["_logic","_markers","_m","_position","_agentID","_debugColor","_debugIcon","_debugAlpha","_agentSide","_vehicleType","_agentActive","_agentPosture"];
     _logic = _this;
     _markers = [];
 
@@ -94,6 +94,7 @@ _createMarkers = {
     _agentID = [_logic,"agentID"] call ALIVE_fnc_hashGet;
     _agentSide = [_logic,"side"] call ALIVE_fnc_hashGet;
     _agentActive = [_logic,"active"] call ALIVE_fnc_hashGet;
+    _agentPosture = [_logic,"posture",0] call ALIVE_fnc_hashGet;
 
     switch(_agentSide) do {
         case "EAST":{
@@ -110,6 +111,21 @@ _createMarkers = {
         };
         default {
             _debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+        };
+    };
+
+    switch(_agentPosture) do {
+        case 3:{
+            _debugColor = "ColorRed";
+        };
+        case 2:{
+            _debugColor = "ColorOrange";
+        };
+        case 1:{
+            _debugColor = "ColorYellow";
+        };
+        case 0:{
+            _debugColor = "ColorGreen";
         };
     };
 
@@ -156,6 +172,7 @@ switch(_operation) do {
             [_logic,"homeCluster",""] call ALIVE_fnc_hashSet; // select 2 select 9
             [_logic,"homePosition",[0,0]] call ALIVE_fnc_hashSet; // select 2 select 10
             [_logic,"activeCommands",[]] call ALIVE_fnc_hashSet; // select 2 select 11
+            [_logic,"posture",0] call ALIVE_fnc_hashSet; // select 2 select 12
         };
     };
     case "state": {
@@ -424,7 +441,7 @@ switch(_operation) do {
     };
     case "createMarker": {
 
-        private ["_markers","_m","_position","_agentID","_color","_icon","_alpha","_side","_active"];
+        private ["_markers","_m","_position","_agentID","_color","_icon","_alpha","_side","_active","_agentPosture"];
 
         _alpha = [_args, 0, 0.5, [1]] call BIS_fnc_param;
 
@@ -434,6 +451,7 @@ switch(_operation) do {
         _agentID = [_logic,"agentID"] call ALIVE_fnc_hashGet;
         _side = [_logic,"side"] call ALIVE_fnc_hashGet;
         _active = [_logic,"active"] call ALIVE_fnc_hashGet;
+        _agentPosture = [_logic,"posture",0] call ALIVE_fnc_hashGet;
 
         switch(_side) do {
             case "EAST":{
@@ -450,6 +468,21 @@ switch(_operation) do {
             };
             default {
                 _color = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+            };
+        };
+
+        switch(_agentPosture) do {
+            case 3:{
+                _debugColor = "ColorRed";
+            };
+            case 2:{
+                _debugColor = "ColorOrange";
+            };
+            case 1:{
+                _debugColor = "ColorYellow";
+            };
+            case 0:{
+                _debugColor = "ColorGreen";
             };
         };
 

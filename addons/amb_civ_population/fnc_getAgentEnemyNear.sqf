@@ -17,7 +17,7 @@ Array - empty if none found, 1 unit within if found
 Examples:
 (begin example)
 //
-_result = [_agentData, getPos _agent, 300] call ALIVE_fnc_getAgentEnemyNear;
+_result = [getPos _agent, 300] call ALIVE_fnc_getAgentEnemyNear;
 (end)
 
 See Also:
@@ -26,12 +26,11 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_agentData","_position","_distance","_hostilitySettingsEAST","_hostilitySettingsWEST","_hostilitySettingsINDEP",
+private ["_position","_distance","_hostilitySettingsEAST","_hostilitySettingsWEST","_hostilitySettingsINDEP",
 "_hostilitySides","_hostilityNumbers","_nearUnits","_highest","_highestIndex","_nearEAST","_nearWEST","_nearINDEP","_players","_mostHostileSide"];
 
-_agentData = _this select 0;
-_position = _this select 1;
-_distance = _this select 2;
+_position = _this select 0;
+_distance = _this select 1;
 
 _result = [];
 
@@ -67,7 +66,7 @@ _nearINDEP = [_nearUnits, "INDEP"] call ALIVE_fnc_hashGet;
             };
         };
     };
-} forEach (_position nearObjects ["Man",_distance]);
+} forEach (_position nearObjects ["CAManBase",_distance]);
 
 
 _players = [] call BIS_fnc_listPlayers;
@@ -89,6 +88,10 @@ _players = [] call BIS_fnc_listPlayers;
         };
     };
 } forEach _players;
+
+_nearEAST = [_nearUnits, "EAST"] call ALIVE_fnc_hashGet;
+_nearWEST = [_nearUnits, "WEST"] call ALIVE_fnc_hashGet;
+_nearINDEP = [_nearUnits, "INDEP"] call ALIVE_fnc_hashGet;
 
 /*
 ["HOST EAST %1",_hostilitySettingsEAST] call ALIVE_fnc_dump;

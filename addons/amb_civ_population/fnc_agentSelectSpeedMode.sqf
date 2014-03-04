@@ -23,27 +23,29 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_agent","_probability","_colour","_brightness","_light"];
+private ["_agent","_probabilityNormal","_probabilityFull","_posture","_diceRoll"];
 
 _agent = _this select 0;
 
 _probabilityNormal = 0.1;
 _probabilityFull = 0.05;
 
-switch(ALIVE_civilianGlobalPosture) do {
-    case "ENRAGED": {
+_posture = _agent getVariable ["posture", 0];
+
+switch(_posture) do {
+    case 4: {
         _probabilityNormal = 0.4;
         _probabilityFull = 0.2;
     };
-    case "ANGRY": {
+    case 3: {
         _probabilityNormal = 0.3;
         _probabilityFull = 0.1;
     };
-    case "DISCONTENTED": {
+    case 2: {
         _probabilityNormal = 0.2;
         _probabilityFull = 0.1;
     };
-    case "PEACEFUL": {
+    case 1: {
         _probabilityNormal = 0.1;
         _probabilityFull = 0.05;
     };

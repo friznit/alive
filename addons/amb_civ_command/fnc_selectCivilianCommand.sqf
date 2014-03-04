@@ -89,8 +89,13 @@ if(count (ALIVE_civCommands select 1) > 0) then {
 
     // check global posture adjust command probability accordingly
 
-    switch(ALIVE_civilianGlobalPosture) do {
-        case "ENRAGED": {
+    _agentCluster = [ALIVE_clusterHandler, "getCluster", _agentData select 2 select 9] call ALIVE_fnc_clusterHandler;
+    _clusterHostilityLevel = [_agentCluster, "posture", 0] call ALIVE_fnc_hashGet;
+    [_agentData, "posture", _clusterHostilityLevel] call ALIVE_fnc_hashSet;
+    _agent setVariable ["posture", _clusterHostilityLevel];
+
+    switch(_clusterHostilityLevel) do {
+        case 3: {
             [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
@@ -98,7 +103,7 @@ if(count (ALIVE_civCommands select 1) > 0) then {
             _idleCommand = "idle";
             ALIVE_availableCivCommands = ["journey","sleep","observe","suicide","rogue"];
         };
-        case "ANGRY": {
+        case 2: {
             [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
@@ -106,7 +111,7 @@ if(count (ALIVE_civCommands select 1) > 0) then {
             _idleCommand = "idle";
             ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
         };
-        case "DISCONTENTED": {
+        case 1: {
             [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
@@ -114,7 +119,7 @@ if(count (ALIVE_civCommands select 1) > 0) then {
             _idleCommand = "idle";
             ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
         };
-        case "PEACEFUL": {
+        case 0: {
             [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
             [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.2,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;

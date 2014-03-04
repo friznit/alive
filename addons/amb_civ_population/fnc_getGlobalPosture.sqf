@@ -24,37 +24,21 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_hostilitySettingsEAST","_hostilitySettingsWEST","_hostilitySettingsINDEP","_hostilitySides","_hostilityNumbers","_highest","_highestIndex"];
+private ["_activeClusters","_cluster","_position","_size","_nearUnits","_hostileSide","_hostileLevel"];
 
-_hostilitySettingsEAST = [ALIVE_civilianHostility, "EAST"] call ALIVE_fnc_hashGet;
-_hostilitySettingsWEST = [ALIVE_civilianHostility, "WEST"] call ALIVE_fnc_hashGet;
-_hostilitySettingsINDEP = [ALIVE_civilianHostility, "INDEP"] call ALIVE_fnc_hashGet;
-
-_hostilitySides = ["EAST","WEST","INDEP"];
-_hostilityNumbers = [_hostilitySettingsEAST, _hostilitySettingsWEST, _hostilitySettingsINDEP];
-
-_highest = 0;
-_highestIndex = 0;
+_activeClusters = [ALIVE_clusterHandler, "getActive"] call ALIVE_fnc_clusterHandler;
 {
-    if(_x > _highest) then {
-        _highest = _x;
-        _highestIndex = _forEachIndex;
-    };
-} foreach _hostilityNumbers;
+    _cluster = _x;
+    _position = _cluster select 2 select 2;
+    _size = _cluster select 2 select 3;
 
- ALIVE_civilianGlobalPosture = "PEACEFUL";
+    _nearUnits = [_position, (_size*2)] call ALIVE_fnc_getAgentEnemyNear;
 
-switch(_highest) do {
-    case 3: {
-        ALIVE_civilianGlobalPosture = "ENRAGED";
+    if(count _nearUnits > 0) then {
+        _hostileSide = str(side (_nearUnits select 0));
+        _hostileLevel = [ALIVE_civilianHostility, _hostileSide] call ALIVE_fnc_hashGet;
+        [_cluster, "posture", _hostileLevel] call ALIVE_fnc_hashSet;
+    }else{
+        [_cluster, "posture", 0] call ALIVE_fnc_hashSet;
     };
-    case 2: {
-        ALIVE_civilianGlobalPosture = "ANGRY";
-    };
-    case 1: {
-        ALIVE_civilianGlobalPosture = "DISCONTENTED";
-    };
-    case 0: {
-        ALIVE_civilianGlobalPosture = "PEACEFUL";
-    };
-};
+} forEach (_activeClusters select 2);

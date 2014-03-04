@@ -155,6 +155,10 @@ switch(_operation) do {
     case "ambientVehicleAmount": {
         _result = [_logic,_operation,_args,DEFAULT_AMBIENT_VEHICLE_AMOUNT] call ALIVE_fnc_OOsimpleOperation;
     };
+    // Ambient vehicle faction
+    case "ambientVehicleFaction": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call ALIVE_fnc_OOsimpleOperation;
+    };
 	// Return the objectives as an array of clusters
 	case "objectives": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES] call ALIVE_fnc_OOsimpleOperation;
@@ -542,7 +546,7 @@ switch(_operation) do {
         if (isServer) then {
 
 			private ["_debug","_clusters","_cluster","_clustersSettlement","_clustersHQ","_clustersPower","_clustersComms","_clustersMarine",
-			"_clustersRail","_clustersFuel","_clustersConstruction","_ambientVehicleAmount","_vehicleClass",
+			"_clustersRail","_clustersFuel","_clustersConstruction","_ambientVehicleAmount","_ambientVehicleFaction","_vehicleClass",
 			"_faction","_placementMultiplier","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;		
@@ -575,6 +579,7 @@ switch(_operation) do {
 			_faction = [_logic, "faction"] call MAINCLASS;
 			_placementMultiplier = parseNumber([_logic, "placementMultiplier"] call MAINCLASS);
 			_ambientVehicleAmount = parseNumber([_logic, "ambientVehicleAmount"] call MAINCLASS);
+			_ambientVehicleFaction = [_logic, "ambientVehicleFaction"] call MAINCLASS;
 			
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
@@ -611,10 +616,10 @@ switch(_operation) do {
 
             if(_ambientVehicleAmount > 0) then {
 
-                _carClasses = [0,_faction,"Car"] call ALiVE_fnc_findVehicleType;
+                _carClasses = [0,_ambientVehicleFaction,"Car"] call ALiVE_fnc_findVehicleType;
                 _landClasses = _carClasses - ALIVE_vehicleBlacklist;
 
-                _supportClasses = [ALIVE_factionDefaultSupports,_faction,[]] call ALIVE_fnc_hashGet;
+                _supportClasses = [ALIVE_factionDefaultSupports,_ambientVehicleFaction,[]] call ALIVE_fnc_hashGet;
 
                 //["SUPPORT CLASSES: %1",_supportClasses] call ALIVE_fnc_dump;
 

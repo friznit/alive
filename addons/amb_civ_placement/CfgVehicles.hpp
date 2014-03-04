@@ -163,6 +163,12 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class ambientVehicleFaction
+                        {
+                                displayName = "$STR_ALIVE_AMBCP_AMBIENT_VEHICLE_FACTION";
+                                description = "$STR_ALIVE_AMBCP_AMBIENT_VEHICLE_FACTION_COMMENT";
+                                defaultValue = "CIV_F";
+                        };
                 };
                 /*
                 class ModuleDescription

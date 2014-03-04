@@ -126,7 +126,7 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _target = [_agentData, getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
+        _target = [getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
 
         /*
         if(count _target == 0) then {

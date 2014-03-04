@@ -66,7 +66,7 @@
 	<English>Force Faction:</English>
 </Key>
 <Key ID="STR_ALIVE_AMBCP_FACTION_COMMENT">
-	<English>Faction of the units to be placed (BLU_F, OPF_F, IND_F, BLU_G_F)</English>
+	<English>Faction of the units to be placed (CIV_F,mod_faction_name)</English>
 </Key>
 <Key ID="STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER">
     <English>Placement Level</English>
@@ -103,6 +103,12 @@
 </Key>
 <Key ID="STR_ALIVE_AMBCP_AMBIENT_VEHICLE_AMOUNT_HIGH">
     <English>High ambient vehicles</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_AMBIENT_VEHICLE_FACTION">
+    <English>Ambient vehicle faction</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_AMBIENT_VEHICLE_FACTION_COMMENT">
+    <English>Ambient vehicles pulled from this faction (CIV_F,mod_faction_name)</English>
 </Key>
 <Key ID="STR_ALIVE_AMBCP_USAGE">
 	<English>Define the settings on the module, place optional TAOR / Blacklist markers!</English>
