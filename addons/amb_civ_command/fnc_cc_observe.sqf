@@ -63,7 +63,7 @@ switch (_state) do {
         _minTimeout = _args select 0;
 		_maxTimeout = _args select 1;
 
-        _target = [getPosASL _agent, 30] call ALIVE_fnc_getRandomManOrPlayerNear;
+        _target = [getPosASL _agent, 50] call ALIVE_fnc_getRandomManOrPlayerNear;
 
         if(count _target > 0) then {
             _target = _target select 0;

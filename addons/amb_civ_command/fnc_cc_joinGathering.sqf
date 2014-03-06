@@ -60,15 +60,23 @@ switch (_state) do {
 
 		_agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _target = _agent getVariable "ALIVE_agentGatheringTarget";
-        _position = [getPosASL _target, random 5, random 360] call BIS_fnc_relPos;
-        [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-        _agent doMove _position;
+        _target = _agent getVariable ["ALIVE_agentGatheringTarget", objNull];
 
-        _nextState = "travel";
-        _nextStateArgs = [_target];
+        if!(isNull _target) then {
+            _position = [getPosASL _target, random 5, random 360] call BIS_fnc_relPos;
+            [_agent] call ALIVE_fnc_agentSelectSpeedMode;
+            _agent doMove _position;
 
-        [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            _nextState = "travel";
+            _nextStateArgs = [_target];
+
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        }else{
+            _agent setVariable ["ALIVE_agentGatheringComplete", true, false];
+            _agent setVariable ["ALIVE_agentGatheringRequested", false, false];
+            _nextState = "done";
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        };
 	};
 	case "travel":{
         private ["_target"];
@@ -83,21 +91,29 @@ switch (_state) do {
 
         if(unitReady _agent) then {
 
-            _agent lookAt _target;
-            _target lookAt _agent;
+            if!(isNull _target) then {
 
-            if!(_agent distance _target < 5) then {
-                if(random 1 < 0.5) then {
-                    [_agent,"acts_PointingLeftUnarmed"] call ALIVE_fnc_switchMove;
-                }else{
-                    [_agent,"acts_StandingSpeakingUnarmed"] call ALIVE_fnc_switchMove;
+                _agent lookAt _target;
+                _target lookAt _agent;
+
+                if!(_agent distance _target < 5) then {
+                    if(random 1 < 0.5) then {
+                        [_agent,"acts_PointingLeftUnarmed"] call ALIVE_fnc_switchMove;
+                    }else{
+                        [_agent,"acts_StandingSpeakingUnarmed"] call ALIVE_fnc_switchMove;
+                    };
                 };
+
+                _nextState = "wait";
+                _nextStateArgs = _args;
+
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            }else{
+                _agent setVariable ["ALIVE_agentGatheringComplete", true, false];
+                _agent setVariable ["ALIVE_agentGatheringRequested", false, false];
+                _nextState = "done";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
             };
-
-            _nextState = "wait";
-            _nextStateArgs = _args;
-
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
 	};
 	case "wait":{

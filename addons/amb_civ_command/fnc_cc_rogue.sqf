@@ -45,12 +45,12 @@ _nextStateArgs = [];
 if(_debug) then {
 	["ALiVE Managed Script Command - [%1] called args: %2",_agentID,_args] call ALIVE_fnc_dump;
 };
-// DEBUG -------------------------------------------------------------------------------------	
+// DEBUG -------------------------------------------------------------------------------------
 
 switch (_state) do {
     case "init":{
 
-        private ["_homePosition","_positions","_position"];
+        private ["_target","_armed","_homePosition","_positions","_position"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
@@ -60,23 +60,43 @@ switch (_state) do {
 
         _agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _homePosition = _agentData select 2 select 10;
+        _target = [getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
 
-        _positions = [_homePosition,5] call ALIVE_fnc_findIndoorHousePositions;
+        if(count _target > 0) then {
 
-        if(count _positions > 0) then {
-            _position = _positions call BIS_fnc_arrayPop;
-            [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-            _agent doMove _position;
+            _target = _target select 0;
 
-            _nextState = "travel";
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            _armed = _agent getVariable ["ALIVE_agentArmed", false];
+
+            if(_armed) then {
+                 _nextStateArgs = [_target];
+
+                _nextState = "target";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            }else{
+                _homePosition = _agentData select 2 select 10;
+                _positions = [_homePosition,5] call ALIVE_fnc_findIndoorHousePositions;
+
+                if(count _positions > 0) then {
+                    _position = _positions call BIS_fnc_arrayPop;
+                    [_agent] call ALIVE_fnc_agentSelectSpeedMode;
+                    _agent doMove _position;
+
+                    _nextStateArgs = [_target];
+
+                    _nextState = "arm";
+                    [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+                }else{
+                    _nextState = "done";
+                    [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+                };
+            };
         }else{
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
     };
-    case "travel":{
+    case "arm":{
 
         private ["_faction","_weapons","_weaponGroup","_weapon","_ammo"];
 
@@ -105,10 +125,13 @@ switch (_state) do {
                 _agent addMagazine _ammo;
                 _agent addMagazine _ammo;
 
+                _agent setVariable ["ALIVE_agentArmed", true, false];
+
+                _nextStateArgs = _args;
+
                 _nextState = "target";
                 [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
             }else{
-
                 _nextState = "done";
                 [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
             };
@@ -116,7 +139,7 @@ switch (_state) do {
     };
 	case "target":{
 
-	    private ["_minTimeout","_maxTimeout","_target","_timeout","_timer"];
+	    private ["_target"];
 
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
@@ -124,21 +147,12 @@ switch (_state) do {
 		};
 		// DEBUG -------------------------------------------------------------------------------------
 
-		_agent setVariable ["ALIVE_agentBusy", true, false];
+		_target = _args select 0;
 
-        _target = [getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
-
-        /*
-        if(count _target == 0) then {
-            _target = [getPosASL _agent, 300] call ALIVE_fnc_getRandomPlayerNear;
-        };
-        */
-
-        if(count _target > 0) then {
+        if!(isNull _target) then {
 
             _agent setSkill 0.3 + random 0.5;
 
-            _target = _target select 0;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
             _agent doMove getPosASL _target;
 
@@ -147,17 +161,17 @@ switch (_state) do {
             _agent setCombatMode "RED";
             _agent setBehaviour "AWARE";
 
-            _nextState = "travel";
-            _nextStateArgs = [_target];
+            _nextStateArgs = _args;
 
+            _nextState = "travel";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
-
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         };
 	};
 	case "travel":{
+
         private ["_target"];
 
         // DEBUG -------------------------------------------------------------------------------------
@@ -189,7 +203,7 @@ switch (_state) do {
         };
 	};
 	case "done":{
-	
+
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
 			["ALiVE Managed Script Command - [%1] state: %2",_agentID,_state] call ALIVE_fnc_dump;
@@ -203,10 +217,10 @@ switch (_state) do {
             _agent setBehaviour "SAFE";
             _agent setSkill 0.1;
         };
-		
+
 		_nextState = "complete";
 		_nextStateArgs = [];
-		
+
 		[_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
 	};
 };

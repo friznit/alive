@@ -36,7 +36,7 @@ _activeClusters = [ALIVE_clusterHandler, "getActive"] call ALIVE_fnc_clusterHand
 
     if(count _nearUnits > 0) then {
         _hostileSide = str(side (_nearUnits select 0));
-        _hostileLevel = [ALIVE_civilianHostility, _hostileSide] call ALIVE_fnc_hashGet;
+        _hostileLevel = [ALIVE_civilianHostility, _hostileSide, 0] call ALIVE_fnc_hashGet;
         [_cluster, "posture", _hostileLevel] call ALIVE_fnc_hashSet;
     }else{
         [_cluster, "posture", 0] call ALIVE_fnc_hashSet;

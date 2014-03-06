@@ -105,6 +105,20 @@ if(count _nearRoads > 0) then
 	};
 };
 
+_nearRoads = _position nearRoads 3;
+if(count _nearRoads > 0) then
+{
+    _road = _nearRoads select 0;
+    _roadConnectedTo = roadsConnectedTo _road;
+    _connectedRoad = _roadConnectedTo select 0;
+    if!(isNil '_connectedRoad') then {
+        _direction = [_road, _connectedRoad] call BIS_fnc_DirTo;
+    };
+
+    _position = position _road;
+
+    _position = [_position, 2, _direction-90] call BIS_fnc_relPos;
+};
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {

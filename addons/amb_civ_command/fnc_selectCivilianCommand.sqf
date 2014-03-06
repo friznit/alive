@@ -93,6 +93,9 @@ if(count (ALIVE_civCommands select 1) > 0) then {
     _clusterHostilityLevel = [_agentCluster, "posture", 0] call ALIVE_fnc_hashGet;
     [_agentData, "posture", _clusterHostilityLevel] call ALIVE_fnc_hashSet;
     _agent setVariable ["posture", _clusterHostilityLevel];
+	
+	//_clusterHostilityLevel = 3;
+	//["CLUSTER HOSTILITY: %1",_clusterHostilityLevel] call ALIVE_fnc_dump;
 
     switch(_clusterHostilityLevel) do {
         case 3: {
@@ -101,7 +104,7 @@ if(count (ALIVE_civCommands select 1) > 0) then {
             [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
             _dayCommand = "randomMovement";
             _idleCommand = "idle";
-            ALIVE_availableCivCommands = ["journey","sleep","observe","suicide","rogue"];
+            ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
         };
         case 2: {
             [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
