@@ -351,17 +351,17 @@ switch(_operation) do {
             //set low skill to save performance
             _unit setSkill 0.1;
 
-            // set profile id on the unit
+            // set agent id on the unit
             _unit setVariable ["agentID", _agentID];
 
             // killed event handler
             _eventID = _unit addEventHandler["Killed", ALIVE_fnc_agentKilledEventHandler];
 
-            // set profile as active and store a reference to the unit on the profile
+            // set agent as active and store a reference to the unit on the agent
             [_logic,"unit",_unit] call ALIVE_fnc_hashSet;
             [_logic,"active",true] call ALIVE_fnc_hashSet;
 
-            // store the profile id on the active profiles index
+            // store the agent id on the active agents index
             [ALIVE_agentHandler,"setActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;
 
             // process commands
@@ -395,7 +395,7 @@ switch(_operation) do {
             _position = getPosATL _unit;
             _group = group _unit;
 
-            // update profile before despawn
+            // update agent before despawn
             [_logic,"position", _position] call ALIVE_fnc_hashSet;
             [_logic,"unit",objNull] call ALIVE_fnc_hashSet;
 
@@ -419,7 +419,7 @@ switch(_operation) do {
             deleteVehicle _unit;
             deleteGroup _group;
 
-            // store the profile id on the in active profiles index
+            // store the agent id on the in active agents index
             [ALIVE_agentHandler,"setInActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;
 
             // process commands

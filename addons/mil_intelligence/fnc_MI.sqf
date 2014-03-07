@@ -130,7 +130,7 @@ switch(_operation) do {
     case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["PROFILE_REINFORCE","PROFILE_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["PROFILE_REINFORCE","PROFILE_KILLED","AGENT_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE"]]] call ALIVE_fnc_eventLog;
         _logic setVariable ["listenerID", _listenerID];
     };
     case "handleEvent": {
@@ -153,6 +153,9 @@ switch(_operation) do {
                 switch(_type) do {
                     case 'PROFILE_KILLED': {
                         [_logic,"notifyKIAIntelligenceItem",_event] call MAINCLASS;
+                    };
+                    case 'AGENT_KILLED': {
+                        [_logic,"notifyAgentKIAIntelligenceItem",_event] call MAINCLASS;
                     };
                     case 'PROFILE_REINFORCE': {
                         [_logic,"notifyReinforceIntelligenceItem",_event] call MAINCLASS;
@@ -183,6 +186,17 @@ switch(_operation) do {
         _from = [_event, "from"] call ALIVE_fnc_hashGet;
 
         [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "KIAIntelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
+
+    };
+    case "notifyAgentKIAIntelligenceItem": {
+        private["_event","_id","_data","_from"];
+
+        _event = _args;
+        _id = [_event, "id"] call ALIVE_fnc_hashGet;
+        _data = [_event, "data"] call ALIVE_fnc_hashGet;
+        _from = [_event, "from"] call ALIVE_fnc_hashGet;
+
+        [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "AgentKIAIntelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
 
     };
     case "notifyReinforceIntelligenceItem": {

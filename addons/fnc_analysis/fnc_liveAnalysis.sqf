@@ -149,6 +149,9 @@ switch(_operation) do {
 					case "KIAIntelligenceItem":{
 					    [_logic, "cleanupKIAIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
 					};
+					case "AgentKIAIntelligenceItem":{
+                        [_logic, "cleanupAgentKIAIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
+                    };
 					case "reinforceIntelligenceItem":{
                         [_logic, "cleanupReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
                     };
@@ -223,6 +226,9 @@ switch(_operation) do {
 									};
 									case "KIAIntelligenceItem":{
                                         [_logic, "runKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                    };
+                                    case "AgentKIAIntelligenceItem":{
+                                        [_logic, "runAgentKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
                                     };
                                     case "reinforceIntelligenceItem":{
                                         [_logic, "runReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
@@ -699,6 +705,115 @@ switch(_operation) do {
                 if(_debug) then {
                     ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
                     ["ALIVE Live Analysis - KIA intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                private ["_markers"];
+
+                _markers = _jobArgs select 1 select 0;
+
+                {
+                    deleteMarker _x;
+                } forEach _markers;
+
+            };
+        };
+        case "runAgentKIAIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+                _runCount = _args select 2;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - Agent KIA intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                _intelItem = _jobArgs select 0;
+
+                _position = _intelItem select 0;
+                _faction = _intelItem select 1;
+
+                private ["_markers","_alpha","_marker","_color","_dir","_icon"];
+
+                // on the first run create all the markers
+                if(_runCount == 0) then {
+
+                    _markers = [];
+                    _alpha = 1;
+                    _color = "ColorYellow";
+
+                    // create type marker
+                    _m = createMarker [format[MTEMPLATE, format["%1_type", _jobID]], _position];
+                    _m setMarkerShape "ICON";
+                    _m setMarkerSize [0.3, 0.3];
+                    _m setMarkerType "mil_warning";
+                    _m setMarkerColor _color;
+                    _m setMarkerAlpha _alpha;
+                    _m setMarkerText " KIA";
+
+                    _markers = _markers + [_m];
+
+                    _jobArgs set [count _jobArgs, [_markers]];
+
+                // on subsequent runs lower marker alpha
+                } else {
+
+                    _markers = _jobArgs select 1 select 0;
+                    _profiles = _jobArgs select 1 select 1;
+
+                    // set alpha based on age of intel item
+                    if(_runCount <= 1) then {
+                        _alpha = 1;
+                    };
+                    if(_runCount == 2) then {
+                        _alpha = 0.75;
+                    };
+                    if(_runCount == 3) then {
+                        _alpha = 0.5;
+                    };
+                    if(_runCount > 3) then {
+                        _alpha = 0.2;
+                    };
+
+                    {
+                        _x setMarkerAlpha _alpha;
+                    } forEach _markers;
+
+                };
+            };
+        };
+        case "cleanupAgentKIAIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_side","_sides","_objective","_sector","_center","_type","_state"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+                _intelItem = _jobArgs select 0;
+
+                // set item as completed
+                _intelItem set [5, true];
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - Agent KIA intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
                 };
                 // DEBUG -------------------------------------------------------------------------------------
 

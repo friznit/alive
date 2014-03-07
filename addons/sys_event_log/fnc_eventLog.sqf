@@ -198,6 +198,8 @@ switch(_operation) do {
             if(typeName _args == "ARRAY") then {
                 _event = _args;
 
+                //_event call ALIVE_fnc_inspectHash;
+
                 _debug = [_logic,"debug"] call MAINCLASS;
                 _events = [_logic,"events"] call ALIVE_fnc_hashGet;
                 _eventsByType = [_logic,"eventsByType"] call ALIVE_fnc_hashGet;

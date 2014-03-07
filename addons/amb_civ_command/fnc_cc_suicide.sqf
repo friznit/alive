@@ -146,19 +146,23 @@ switch (_state) do {
 
             _handle = [_agent, _target, _bomb1, _bomb2, _bomb3] spawn {
 
+                private ["_agent","_target","_bomb1","_bomb2","_bomb3","_diceRoll"];
+
                 _agent = _this select 0;
                 _target = _this select 1;
                 _bomb1 = _this select 2;
                 _bomb2 = _this select 3;
                 _bomb3 = _this select 4;
 
-                waituntil {sleep 0.5; _agent doMove getPosASL _target; ["WAITING!!!"] call ALIVE_fnc_dump; (_agent distance _target < 8) || !(alive _agent)};
+                waituntil {sleep 0.5; _agent doMove getPosASL _target; (_agent distance _target < 8) || !(alive _agent)};
 
                 deleteVehicle _bomb1;
                 deleteVehicle _bomb2;
                 deleteVehicle _bomb3;
 
-                if(alive _agent) then {
+                _diceRoll = random 1;
+
+                if(_diceRoll > 0.7) then {
                     _object = "HelicopterExploSmall" createVehicle (getPos _agent);
                     _object attachTo [_agent,[-0.02,-0.07,0.042],"rightHand"];
                 };
