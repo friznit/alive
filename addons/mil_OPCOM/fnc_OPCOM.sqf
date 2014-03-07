@@ -434,7 +434,6 @@ switch(_operation) do {
                     _result = [_datahandler, "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data;
                     
                     if (!(isnil "_result") && {typename _result == "ARRAY"} && {count _result > 0} && {count (_result select 2) > 0}) then {
-                        
 
                         _newObjectives = [];
 						{
@@ -482,7 +481,7 @@ switch(_operation) do {
                         	[_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     	};
 
-	                    ["Imported %1 objectives from DB! %1",count _newObjectives] call ALIVE_fnc_dumpR;
+	                    ["Imported %1 objectives from DB!",count _newObjectives] call ALIVE_fnc_dumpR;
                     } else {
                         ["Loading objectives from DB failed!"] call ALIVE_fnc_dumpR;
                     };
