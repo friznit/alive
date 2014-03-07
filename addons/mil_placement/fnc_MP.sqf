@@ -319,7 +319,7 @@ switch(_operation) do {
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit
             _error = false;
-			if!(isNil "ALIVE_clusterBuild") then {
+			if !(isNil "ALIVE_clusterBuild") then {
 			    private ["_clusterVersion","_clusterBuild","_clusterType","_version","_build","_message"];
 
                 _clusterVersion = ALIVE_clusterBuild select 2;
@@ -331,17 +331,18 @@ switch(_operation) do {
                 if!(_clusterType == 'Stable') then {
                     _message = "Warning ALiVE requires the STABLE game build";
                     [_message] call ALIVE_fnc_dump;
-                    [_message] spawn BIS_fnc_guiMessage;
-                    [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                     //_error = true;
                 };
 
                 if(!(_clusterVersion == _version) || !(_clusterBuild == _build)) then {
-                    _message = format["Warning this version of ALiVE is only compatible with A3 version: %1.%2. The server is running version: %3.%4. Please contact your server administrator and update to the latest ALiVE release version.",_clusterVersion, _clusterBuild, _version, _build];
+                    _message = format["Warning: This version of ALiVE is build for A3 version: %1.%2. The server is running version: %3.%4. Please contact your server administrator and update to the latest ALiVE release version.",_clusterVersion, _clusterBuild, _version, _build];
                     [_message] call ALIVE_fnc_dump;
-                    [_message] spawn BIS_fnc_guiMessage;
-                    [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                     //_error = true;
+                };
+                
+                if (!(isnil "_message") && {isnil QGVAR(CLUSTERWARNING_DISPLAYED)}) then {
+                    GVAR(CLUSTERWARNING_DISPLAYED) = true;
+                    [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                 };
             };
 
