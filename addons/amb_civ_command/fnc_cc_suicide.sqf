@@ -117,8 +117,6 @@ switch (_state) do {
             _bomb3 setVectorDirAndUp [[0.5,-0.5,0],[0.5,0.5,0]];
             _bomb3 setPosATL (getPosATL _bomb3);
 
-            _agent addRating -10000;
-
             _agent setVariable ["ALIVE_agentSuicide", true, false];
 
             _nextStateArgs = _args + [_bomb1, _bomb2, _bomb3];
@@ -154,14 +152,14 @@ switch (_state) do {
                 _bomb2 = _this select 3;
                 _bomb3 = _this select 4;
 
-                waituntil {sleep 0.5; _agent doMove getPosASL _target; ["WAITING!!!"] call ALIVE_fnc_dump; (_agent distance _target < 5) || !(alive _agent)};
+                waituntil {sleep 0.5; _agent doMove getPosASL _target; ["WAITING!!!"] call ALIVE_fnc_dump; (_agent distance _target < 8) || !(alive _agent)};
 
                 deleteVehicle _bomb1;
                 deleteVehicle _bomb2;
                 deleteVehicle _bomb3;
 
                 if(alive _agent) then {
-                    _object = "M_Mo_82mm_AT_LG" createVehicle (getPos _agent);
+                    _object = "HelicopterExploSmall" createVehicle (getPos _agent);
                     _object attachTo [_agent,[-0.02,-0.07,0.042],"rightHand"];
                 };
             };
