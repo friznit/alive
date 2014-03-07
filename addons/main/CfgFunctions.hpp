@@ -181,6 +181,21 @@ class cfgFunctions {
                 file = "\x\alive\addons\main\fnc_addToEnemyGroup.sqf";
                 recompile = RECOMPILE;
             };
+			class randomGroup {
+                description = "Spawns a random group";
+                file = "\x\alive\addons\main\fnc_randomGroup.sqf";
+				recompile = RECOMPILE;
+			};
+			class randomGroupByType {
+                description = "Random group by type (fallback for non configs)";
+                file = "\x\alive\addons\main\fnc_randomGroupbyType.sqf";
+				recompile = RECOMPILE;
+			};
+			class selectRandom {
+                description = "Selects randomly on bias";
+                file = "\x\alive\addons\main\fnc_selectRandom.sqf";
+				recompile = RECOMPILE;
+			};
 			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";

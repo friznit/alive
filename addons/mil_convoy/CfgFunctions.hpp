@@ -21,30 +21,15 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_convoy\fnc_findVehicleType.sqf";
                 recompile = RECOMPILE;
                         };
-                          class randomGroup {
-                                description = "Random Group";
-                                file = "\x\alive\addons\mil_convoy\fnc_randomGroup.sqf";
-                recompile = RECOMPILE;
-                        };
-                          class randomGroupByType {
-                                description = "Random Group by Type";
-                                file = "\x\alive\addons\mil_convoy\fnc_randomGroupbyType.sqf";
-                recompile = RECOMPILE;
-                        };
-                          class selectRandom {
-                                description = "Random Group by Type";
-                                file = "\x\alive\addons\mil_convoy\fnc_selectRandom.sqf";
-                recompile = RECOMPILE;
-                        };
                          class inTrigger {
                                 description = "Random Group by Type";
                                 file = "\x\alive\addons\mil_convoy\fnc_inTrigger.sqf";
-                recompile = RECOMPILE;
+								recompile = RECOMPILE;
                         };
                         class startConvoy {
                                 description = "Random Group by Type";
                                 file = "\x\alive\addons\mil_convoy\fnc_startConvoy.sqf";
-                recompile = RECOMPILE;
+								recompile = RECOMPILE;
                         };
                    };     
         };

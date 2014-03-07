@@ -1,12 +1,38 @@
-#include <\x\alive\addons\mil_convoy\script_component.hpp>
+#include <\x\alive\addons\main\script_component.hpp>
+SCRIPT(RandomGroupByType);
+
+/* ----------------------------------------------------------------------------
+Function: ALIVE_fnc_spawnRandomGroupByType
+
+Description:
+Compiles a group of units/vehicles of type Infantry,Motorized,Mechanized,Armored,Air
+
+Parameters:
+Array - position
+side - side
+type - cfg type like "motorized", "air"
+faction - cfg type like "BLU_F"
+
+Returns:
+created group
+
+Examples:
+(begin example)
+_grp = [getPos player,WEST,"Motorized","BLU_F"] call ALIVE_fnc_spawnRandomGroupByType;
+(end)
+
+See Also:
+
+Author:
+Wolffy, Highhead
+---------------------------------------------------------------------------- */
 
 private ["_logic","_pos","_side","_type","_i","_group","_facs","_unit","_leader","_unittype","_newpos"];
 
-_logic = _this select 0;
-_pos = _this select 1;
-_side = _this select 2;
-_type = _this select 3;
-_facs = _logic getvariable ["conv_factions_setting","OPF_F"];
+_pos = _this select 0;
+_side = _this select 1;
+_type = _this select 2;
+_facs = _this select 3;
 
 _group = creategroup _side;
 
@@ -64,8 +90,7 @@ if (_type == "Man") then {
 		};
 	};
 };
-        
-_leader = leader _group;
-diag_log format["ALIVE-%1 group with name %4 and %2 units created at %3.", time, count units _group, _pos, _group];
+
+["ALIVE-%1 group with name %4 and %2 units created at %3.", time, count units _group, _pos, _group] call ALiVE_fnc_Dump;
 _group;
                    

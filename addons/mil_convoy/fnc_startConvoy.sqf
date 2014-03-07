@@ -7,7 +7,7 @@ _intensity = _logic getvariable ["conv_intensity_setting",1];
 
 for "_j" from 1 to _intensity do {
         [_logic,_j] spawn {
-                private ["_timeout","_startpos","_roadRadius","_destpos","_destroada","_destroad","_endpos","_endroad","_grp","_front","_facs","_wp","_j","_convoyLocs","_debug","_sleep","_type","_starttime","_locations","_pos","_size","_list","_marker_start","_marker_dest","_marker_end"];
+                private ["_timeout","_startpos","_roadRadius","_destpos","_destroada","_destroad","_endpos","_endroad","_grp","_front","_wp","_j","_convoyLocs","_debug","_sleep","_type","_starttime","_locations","_pos","_size","_list","_marker_start","_marker_dest","_marker_end"];
                 
                 _logic = _this select 0;
                 _j = _this select 1;
@@ -16,6 +16,10 @@ for "_j" from 1 to _intensity do {
 				_safeArea = _logic getvariable ["conv_safearea_setting",2000];
 				_factionsConvoy = _logic getvariable ["conv_factions_setting","OPF_F"];
 				_debug = _logic getvariable ["conv_debug_setting",false];
+                
+                if (typename _factionsConvoy == "ARRAY") then {
+                    _factionsConvoy call BIS_fnc_SelectRandom;
+                };
                 
                 _convoyLocs = [];
                 _roadRadius = 500;
@@ -27,7 +31,7 @@ for "_j" from 1 to _intensity do {
 					
 					if ((typeof _mod) in ["ALiVE_mil_OPCOM"]) then {
 							waituntil {!(isnil "OPCOM_INSTANCES") && {[OPCOM_INSTANCES select 0,"startupComplete",false] call ALiVE_fnc_HashGet}};
-							waituntil {sleep 2; _convoyLocs = [_factionsConvoy,"idle"] call ALiVE_fnc_OPCOMpositions; ["Convoy faction %1 is waiting for secured OPCOM positions...",_factionsConvoy] call ALiVE_fnc_DumpR; count _convoyLocs >= 4};
+							waituntil {sleep 5; _convoyLocs = [_factionsConvoy,"idle"] call ALiVE_fnc_OPCOMpositions; ["Convoy faction %1 is waiting for secured OPCOM positions...",_factionsConvoy] call ALiVE_fnc_Dump; count _convoyLocs >= 4};
 				    } else {
 					    
 					};
@@ -45,7 +49,7 @@ for "_j" from 1 to _intensity do {
 				};
 
 				if (count _convoyLocs < 3) exitwith {
-                    ["No convoy locs found for faction %1! Using map locations!",_factionsConvoy] call ALiVE_fnc_DumpR;
+                    ["No convoy locs found for faction %1! Using map locations!",_factionsConvoy] call ALiVE_fnc_Dump;
                 };
                 
                 _timeout = if(_debug) then {[30, 30, 30];} else {[30, 120, 300];};
@@ -111,8 +115,7 @@ for "_j" from 1 to _intensity do {
                         
                         while {isNil "_grp"} do {
                                 _front = [["Motorized","Mechanized","Armored"],[16,4,1]] call ALIVE_fnc_selectRandom;
-                                _facs = _factionsConvoy;
-                                _grp = [_logic, call _fnc_SelectStartPosList,_front,_facs] call ALIVE_fnc_randomGroup;
+                                _grp = [call _fnc_SelectStartPosList,_front,_factionsConvoy] call ALIVE_fnc_randomGroup;
                         };
 
 						// Set direction so pointing towards destination
@@ -169,7 +172,7 @@ for "_j" from 1 to _intensity do {
 							};
 						};
 						
-						["ALIVE-%1 Convoy: #%2 %3 %4 %5 %6 units:%7", time, _j, _startpos, _destpos, _endpos, _front, count (units _grp)] call ALiVE_fnc_DumpR;
+						["ALIVE-%1 Convoy: #%2 %3 %4 %5 %6 units:%7", time, _j, _startpos, _destpos, _endpos, _front, count (units _grp)] call ALiVE_fnc_Dump;
 												
 						_starttime = time;
                         _convoyTimeout = 3600;
@@ -227,4 +230,3 @@ for "_j" from 1 to _intensity do {
                 };
         };
 };
-["ALIVE-%1 Convoy: convoys(%3)", time, _intensity] call ALiVE_fnc_Dump;
