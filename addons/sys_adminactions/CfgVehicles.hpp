@@ -8,8 +8,8 @@ class CfgVehicles {
                 author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
-		icon = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";
-		picture = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";
+                icon = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";
+                picture = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";
                 class Arguments
                 {
                         class ghost

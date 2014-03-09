@@ -122,7 +122,7 @@ switch(_operation) do {
                             };
                         };
 
-                        ["PS LOADED DATA FILES"] call ALIVE_fnc_dump;
+                        ["ALiVE [1] PROFILE SYSTEM LOADED DATA FILES"] call ALIVE_fnc_dump;
 
                         // global server flag
                         ALIVE_profileSystemDataLoaded = true;
@@ -194,7 +194,7 @@ switch(_operation) do {
 						// DEBUG -------------------------------------------------------------------------------------
 
 
-						["PS LOADED SUB SYSTEMS"] call ALIVE_fnc_dump;
+						["ALiVE [1] PROFILE SYSTEM LOADED SUB SYSTEMS"] call ALIVE_fnc_dump;
 
 						// start the profile simulator
 						_profileSimulatorFSM = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";

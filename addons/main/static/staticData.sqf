@@ -105,7 +105,16 @@ ALIVE_vehicleBlacklist =
 	"B_UAV_02_F",
 	"B_UAV_02_CAS_F",
 	"B_UGV_01_F",
-	"B_UGV_01_rcws_F"
+	"B_UGV_01_rcws_F",
+	"B_Parachute_02_F",
+	"I_Parachute_02_F",
+	"O_Parachute_02_F",
+	"Parachute",
+	"Parachute_02_base_F",
+	"ParachuteBase",
+	"ParachuteEast",
+	"ParachuteG",
+	"ParachuteWest"
 ];
 
 ALIVE_groupBlacklist = 
@@ -218,7 +227,7 @@ private["_worldName"];
 
 _worldName = worldName;
 
-["WORLD NAME: %1",_worldName] call ALIVE_fnc_dump;
+["ALiVE SETTING UP MAP: %1",_worldName] call ALIVE_fnc_dump;
 
 
 ALIVE_airBuildingTypes = [];
@@ -249,7 +258,6 @@ if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic") t
     ];
 
     ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
-    	"airport",
     	"bunker",
     	"cargo_house_v",
     	"cargo_patrol_",

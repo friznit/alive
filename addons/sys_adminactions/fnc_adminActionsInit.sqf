@@ -31,8 +31,10 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_adminActions","Main function missing");
 
-["ADMIN ACTIONS INIT"] call ALIVE_fnc_dump;
+["ALiVE [?] ADMIN ACTIONS INIT"] call ALIVE_fnc_dump;
 
 [_logic, "init"] call ALIVE_fnc_adminActions;
 //[_logic, "syncunits", _syncunits] call ALIVE_fnc_adminActions;
+
+["ALiVE [?] ADMIN ACTIONS INIT COMPLETE"] call ALIVE_fnc_dump;
 

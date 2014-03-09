@@ -30,4 +30,8 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_PSD","Main function missing");
 
+["ALiVE [8] PSD INIT"] call ALIVE_fnc_dump;
+
 [_logic, "init"] call ALIVE_fnc_PSD;
+
+["ALiVE [8] PSD INIT COMPLETE"] call ALIVE_fnc_dump;

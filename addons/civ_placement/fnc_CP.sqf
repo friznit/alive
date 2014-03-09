@@ -789,8 +789,6 @@ switch(_operation) do {
 			// set module as started
             _logic setVariable ["startupComplete", true];
 
-            ["CP STARTUP COMPLETE"] call ALIVE_fnc_dump;
-			
 		};
 	};
 };

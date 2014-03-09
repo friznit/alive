@@ -13,7 +13,7 @@ ASSERT_DEFINED("ALIVE_fnc_Data","Main function missing");
 
 TRACE_2("SYS_DATA",isDedicated, _logic);
 
-["SYS_DATA INIT"] call ALIVE_fnc_dump;
+["ALiVE [0] DATA INIT"] call ALIVE_fnc_dump;
 
 if (isDedicated) then {
 
@@ -164,5 +164,5 @@ if (_logic getvariable ["disableStats","false"] == "false") then {
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
 
-["SYS_DATA INIT COMPLETE"] call ALIVE_fnc_dump;
+["ALiVE [0] DATA INIT COMPLETE"] call ALIVE_fnc_dump;
 

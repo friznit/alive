@@ -244,7 +244,7 @@ if!(isNil "_registeredProfile") then {
 
 }else{
 
-    ["ALIVE Player profiler - Registered profile does not exist"] call ALIVE_fnc_dump;
+    //["ALIVE Player profiler - Registered profile does not exist"] call ALIVE_fnc_dump;
 
     switch(_state) do {
         case "INIT":{

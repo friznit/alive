@@ -31,8 +31,8 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_MI","Main function missing");
 
-["MI INIT"] call ALIVE_fnc_dump;
+["ALiVE [8] MI INIT"] call ALIVE_fnc_dump;
 
 [_logic, "init"] call ALIVE_fnc_MI;
 
-["MI INIT COMPLETE"] call ALIVE_fnc_dump;
+["ALiVE [8] MI INIT COMPLETE"] call ALIVE_fnc_dump;

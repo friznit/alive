@@ -31,6 +31,10 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_SD","Main function missing");
 
+["ALiVE [8] SD INIT"] call ALIVE_fnc_dump;
+
 [_logic, "runEvery", _logic getVariable ["runEvery","1"]] call ALIVE_fnc_SD;
 
 [_logic, "init"] call ALIVE_fnc_SD;
+
+["ALiVE [8] SD INIT COMPLETE"] call ALIVE_fnc_dump;

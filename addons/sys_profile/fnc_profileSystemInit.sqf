@@ -27,10 +27,10 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
+["ALiVE [1] PROFILE SYSTEM INIT"] call ALIVE_fnc_dump;
+
 if(isServer) then {
 
-    ["SYS_PROFILE INIT"] call ALIVE_fnc_dump;
-	
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
 	_debug = _logic getVariable ["debug",false];
@@ -69,8 +69,9 @@ if(isServer) then {
 
 	[ALIVE_profileSystem,"start"] call ALIVE_fnc_profileSystem;
 
-	["SYS_PROFILE INIT COMPLETE"] call ALIVE_fnc_dump;
 };
+
+["ALiVE [1] PROFILE SYSTEM INIT COMPLETE"] call ALIVE_fnc_dump;
 
 if(hasInterface) then {
     player addEventHandler ["killed", {

@@ -29,7 +29,7 @@ ASSERT_DEFINED("ALIVE_fnc_civilianPopulationSystem","Main function missing");
 
 if(isServer) then {
 
-    ["CIV POP INIT"] call ALIVE_fnc_dump;
+    ["ALiVE [2] CIV POP INIT"] call ALIVE_fnc_dump;
 	
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
@@ -62,5 +62,5 @@ if(isServer) then {
 
 	[ALIVE_civilianPopulationSystem,"start"] call ALIVE_fnc_civilianPopulationSystem;
 
-	["CIV POP INIT COMPLETE"] call ALIVE_fnc_dump;
+	["ALiVE [2] CIV POP INIT COMPLETE"] call ALIVE_fnc_dump;
 };

@@ -847,8 +847,6 @@ switch(_operation) do {
 			// set module as started
             _logic setVariable ["startupComplete", true];
 
-            ["AMBCP STARTUP COMPLETE"] call ALIVE_fnc_dump;
-			
 		};
 	};
 };

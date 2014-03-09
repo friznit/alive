@@ -29,8 +29,7 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_player","Main function missing");
 
-["SYS_PLAYER INIT"] call ALIVE_fnc_dump;
-
+["ALiVE [200] PLAYER INIT"] call ALIVE_fnc_dump;
 
 //_activated = [_this,2,true,[true]] call BIS_fnc_param;
 
@@ -38,6 +37,6 @@ ASSERT_DEFINED("ALIVE_fnc_player","Main function missing");
 	[_logic, "init",[]] call ALIVE_fnc_player;
 //
 
-["SYS_PLAYER INIT COMPLETE"] call ALIVE_fnc_dump;
+["ALiVE [200] PLAYER INIT COMPLETE"] call ALIVE_fnc_dump;
 
 true

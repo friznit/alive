@@ -242,7 +242,6 @@ switch(_operation) do {
                     // and publicVariable Main class to clients
                     
                     publicVariable QMOD(CQB);
-                    diag_log "CQB Init finished";
 
                     if (isServer) then {
                         _logic setVariable ["startupComplete", true];

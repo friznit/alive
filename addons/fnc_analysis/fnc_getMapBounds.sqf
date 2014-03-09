@@ -44,6 +44,6 @@ if!(isNil "ALIVE_mapBounds") then {
     };
 };
 
-["MAP BOUNDS: %1",_result] call ALIVE_fnc_dump;
+["ALiVE MAP BOUNDS: %1",_result] call ALIVE_fnc_dump;
 
 _result;

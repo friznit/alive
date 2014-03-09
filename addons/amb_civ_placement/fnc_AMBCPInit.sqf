@@ -29,8 +29,8 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_AMBCP","Main function missing");
 
-["AMBCP INIT"] call ALIVE_fnc_dump;
+["ALiVE [5] AMBCP INIT"] call ALIVE_fnc_dump;
 
 [_logic, "init"] call ALIVE_fnc_AMBCP;
 
-["AMBCP INIT COMPLETE"] call ALIVE_fnc_dump;
+["ALiVE [5] AMBCP INIT COMPLETE"] call ALIVE_fnc_dump;
