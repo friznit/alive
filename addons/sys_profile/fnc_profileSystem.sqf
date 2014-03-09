@@ -122,6 +122,8 @@ switch(_operation) do {
                             };
                         };
 
+                        ["PS LOADED DATA FILES"] call ALIVE_fnc_dump;
+
                         // global server flag
                         ALIVE_profileSystemDataLoaded = true;
 
@@ -153,17 +155,17 @@ switch(_operation) do {
 						
 						// create profiles for all players that dont have profiles
                         ["INIT"] call ALIVE_fnc_createProfilesFromPlayers;
-						
+
 						// create profiles for all map units that dont have profiles
 						[_syncMode, _syncedUnits, false] call ALIVE_fnc_createProfilesFromUnits;
 						
 						// turn on debug again to see the state of the profile handler, and set debug on all a profiles
 						[ALIVE_profileHandler, "debug", _debug] call ALIVE_fnc_profileHandler;
-						
+
 						// create array block stepper
 						ALIVE_arrayBlockHandler = [nil, "create"] call ALIVE_fnc_arrayBlockHandler;
 						[ALIVE_arrayBlockHandler, "init"] call ALIVE_fnc_arrayBlockHandler;
-						
+
 						// create command router
 						ALIVE_commandRouter = [nil, "create"] call ALIVE_fnc_commandRouter;
 						[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
@@ -190,26 +192,15 @@ switch(_operation) do {
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
-						
-						
+
+
+						["PS LOADED SUB SYSTEMS"] call ALIVE_fnc_dump;
+
 						// start the profile simulator
 						_profileSimulatorFSM = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";
 						[_logic,"simulator_FSM",_profileSimulatorFSM] call ALIVE_fnc_hashSet;
 						
 						// start the profile spawners
-
-						// version 1 spawner system
-						/*
-                        _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v1.fsm";
-                        _profileSpawnerFSMWest = [_logic,"WEST",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v1.fsm";
-                        _profileSpawnerFSMGuer = [_logic,"GUER",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v1.fsm";
-                        _profileSpawnerFSMCiv = [_logic,"CIV",_spawnRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v1.fsm";
-
-                        _profileDespawnerFSMEast = [_logic,"EAST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner_v1.fsm";
-                        _profileDespawnerFSMWest = [_logic,"WEST",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner_v1.fsm";
-                        _profileDespawnerFSMGuer = [_logic,"GUER",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner_v1.fsm";
-                        _profileDespawnerFSMCiv = [_logic,"CIV",_spawnRadius,_despawnCycleTime] execFSM "\x\alive\addons\sys_profile\profileDespawner_v1.fsm";
-                        */
 
                         // version 2.1 spawner system
                         _profileSpawnerFSMEast = [_logic,"EAST",_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\sys_profile\profileSpawner_v2_1.fsm";

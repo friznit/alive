@@ -127,6 +127,8 @@ switch(_operation) do {
             // set module as started
             [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
 
+            ["CIV POP SYSTEM STARTUP COMPLETE"] call ALIVE_fnc_dump;
+
             // start the cluster activator
             _clusterActivatorFSM = [_logic,_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\amb_civ_population\clusterActivator_v2.fsm";
             [_logic,"activator_FSM",_clusterActivatorFSM] call ALIVE_fnc_hashSet;

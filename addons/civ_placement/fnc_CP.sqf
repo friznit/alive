@@ -232,7 +232,7 @@ switch(_operation) do {
             if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
-            waituntil {!(isnil "ALiVE_ProfileHandler")};
+            //waituntil {!(isnil "ALiVE_ProfileHandler")};
             
             [_logic,"start"] call MAINCLASS;
         } else {
@@ -265,7 +265,7 @@ switch(_operation) do {
 			};
 			*/
 
-			waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
+			//waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
             
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit
@@ -788,6 +788,8 @@ switch(_operation) do {
 
 			// set module as started
             _logic setVariable ["startupComplete", true];
+
+            ["CP STARTUP COMPLETE"] call ALIVE_fnc_dump;
 			
 		};
 	};
