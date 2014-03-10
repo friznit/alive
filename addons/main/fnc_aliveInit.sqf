@@ -29,7 +29,16 @@ PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
 
 // Do Something
+["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
 
-//Sets global type of Versioning (Kick or Warn)
-ALiVE_Versioning_Type = _logic getvariable ["ALiVE_Versioning","warning"];
-Publicvariable "ALiVE_Versioning_Type";
+if (isServer) then {
+    //Sets global type of Versioning (Kick or Warn)
+	ALiVE_VERSIONING_TYPE = _logic getvariable ["ALiVE_Versioning","warning"];
+	Publicvariable "ALiVE_Versioning_Type";
+
+	//This is the last module init to be run, indicates that init has passed on server
+    ALiVE_REQUIRE_INITIALISED = true;
+    Publicvariable "ALiVE_REQUIRE_INITIALISED";
+};
+
+["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
