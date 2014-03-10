@@ -6,9 +6,8 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_MP";
                 function = "ALIVE_fnc_MPInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 3;
+				functionPriority = 4;
                 isGlobal = 1;
-                isPersistent = 0;
 				icon = "x\alive\addons\mil_placement\icon_mil_MP.paa";
 				picture = "x\alive\addons\mil_placement\icon_mil_MP.paa";
                 class Arguments

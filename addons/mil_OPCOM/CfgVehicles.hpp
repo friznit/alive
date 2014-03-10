@@ -6,9 +6,8 @@ class CfgVehicles {
 				displayName = "$STR_ALIVE_OPCOM";
 				function = "ALIVE_fnc_OPCOMInit";
 				author = MODULE_AUTHOR;
-				functionPriority = 7;
+				functionPriority = 6;
 				isGlobal = 1;
-				isPersistent = 0;
 				icon = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
 				picture = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
 				

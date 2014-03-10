@@ -31,6 +31,9 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_CAS","Main function missing");
 
-["SUP CAS INIT"] call ALIVE_fnc_dump;
+["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
 
 [_logic, "init"] call ALIVE_fnc_CAS;
+
+["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+

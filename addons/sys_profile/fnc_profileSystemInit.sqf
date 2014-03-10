@@ -27,7 +27,7 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
-["ALiVE [1] PROFILE SYSTEM INIT"] call ALIVE_fnc_dump;
+["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
 
 if(isServer) then {
 
@@ -71,8 +71,6 @@ if(isServer) then {
 
 };
 
-["ALiVE [1] PROFILE SYSTEM INIT COMPLETE"] call ALIVE_fnc_dump;
-
 if(hasInterface) then {
     player addEventHandler ["killed", {
         []spawn {
@@ -95,3 +93,5 @@ if(hasInterface) then {
     }];
 
 };
+
+["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;

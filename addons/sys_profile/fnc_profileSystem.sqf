@@ -103,26 +103,7 @@ switch(_operation) do {
                             call compile preprocessFileLineNumbers _file;
                         };
 
-                        if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
-                            _worldName = toLower(worldName);
-                            _file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];
-                            call compile preprocessFileLineNumbers _file;
-                            ALIVE_loadedCIVClusters = true;
-                        };
-
-                        if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
-                            _worldName = toLower(worldName);
-                            _file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
-                            call compile preprocessFileLineNumbers _file;
-                            ALIVE_loadedMilClusters = true;
-
-                            // instantiate static vehicle position data
-                            if(isNil "ALIVE_groupConfig") then {
-                                [] call ALIVE_fnc_groupGenerateConfigData;
-                            };
-                        };
-
-                        ["ALiVE [1] PROFILE SYSTEM LOADED DATA FILES"] call ALIVE_fnc_dump;
+                        ["ALiVE [-] PROFILE SYSTEM LOADED DATA FILES"] call ALIVE_fnc_dump;
 
                         // global server flag
                         ALIVE_profileSystemDataLoaded = true;
@@ -194,7 +175,7 @@ switch(_operation) do {
 						// DEBUG -------------------------------------------------------------------------------------
 
 
-						["ALiVE [1] PROFILE SYSTEM LOADED SUB SYSTEMS"] call ALIVE_fnc_dump;
+						["ALiVE [-] PROFILE SYSTEM LOADED SUB SYSTEMS"] call ALIVE_fnc_dump;
 
 						// start the profile simulator
 						_profileSimulatorFSM = [_logic] execFSM "\x\alive\addons\sys_profile\profileSimulator.fsm";

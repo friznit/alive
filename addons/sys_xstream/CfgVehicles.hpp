@@ -11,11 +11,9 @@ class CfgVehicles {
 		// Name of function triggered once conditions are met
 		function = "ALIVE_fnc_xStreamInit";
 		// Execution priority, modules with lower number are executed first. 0 is used when the attribute is undefined
-		functionPriority = 12;
-		// 1 for remote execution on all clients, 0 for server only execution
-		isGlobal = 1;
-		// 1 for persistent execution (i.e. will be called on every JIPped client). Use with caution, can lead to desync
-		isPersistent = 1;
+		functionPriority = 100;
+		// 1 for remote execution on all clients, 0 for server only execution, 2 for persistent execution (i.e. will be called on every JIPped client). Use with caution, can lead to desync
+		isGlobal = 2;
 		// 1 for module waiting until all synced triggers are activated
 		isTriggerActivated = 0;
 

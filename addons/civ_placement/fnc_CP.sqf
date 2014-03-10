@@ -232,7 +232,8 @@ switch(_operation) do {
             if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
-            //waituntil {!(isnil "ALiVE_ProfileHandler")};
+            
+            waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
             
             [_logic,"start"] call MAINCLASS;
         } else {
@@ -256,16 +257,12 @@ switch(_operation) do {
 				[true] call ALIVE_fnc_timer;
 			};
 			
-			/*
-			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
-				_worldName = toLower(worldName);			
-				_file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];				
-				call compile preprocessFileLineNumbers _file;
-				ALIVE_loadedCIVClusters = true;
-			};
-			*/
-
-			//waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
+            if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
+                _worldName = toLower(worldName);
+                _file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];
+                call compile preprocessFileLineNumbers _file;
+                ALIVE_loadedCIVClusters = true;
+            };
             
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit

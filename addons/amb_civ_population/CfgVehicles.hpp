@@ -7,8 +7,7 @@ class CfgVehicles {
                 function = "ALIVE_fnc_civilianPopulationSystemInit";
                 author = MODULE_AUTHOR;
                 functionPriority = 2;
-                isGlobal = 1;
-                isPersistent = 1;
+                isGlobal = 2;
 				icon = "x\alive\addons\amb_civ_population\icon_civ_pop.paa";
 				picture = "x\alive\addons\amb_civ_population\icon_civ_pop.paa";
                 class Arguments

@@ -29,7 +29,7 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_player","Main function missing");
 
-["ALiVE [200] PLAYER INIT"] call ALIVE_fnc_dump;
+["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
 
 //_activated = [_this,2,true,[true]] call BIS_fnc_param;
 
@@ -37,6 +37,6 @@ ASSERT_DEFINED("ALIVE_fnc_player","Main function missing");
 	[_logic, "init",[]] call ALIVE_fnc_player;
 //
 
-["ALiVE [200] PLAYER INIT COMPLETE"] call ALIVE_fnc_dump;
+["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
 
 true

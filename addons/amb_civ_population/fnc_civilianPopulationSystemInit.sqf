@@ -27,9 +27,9 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_civilianPopulationSystem","Main function missing");
 
-if(isServer) then {
+["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
 
-    ["ALiVE [2] CIV POP INIT"] call ALIVE_fnc_dump;
+if(isServer) then {
 	
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
@@ -61,6 +61,6 @@ if(isServer) then {
 	[ALIVE_civilianPopulationSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_civilianPopulationSystem;
 
 	[ALIVE_civilianPopulationSystem,"start"] call ALIVE_fnc_civilianPopulationSystem;
-
-	["ALiVE [2] CIV POP INIT COMPLETE"] call ALIVE_fnc_dump;
 };
+
+["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;

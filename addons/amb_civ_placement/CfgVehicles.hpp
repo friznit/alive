@@ -8,7 +8,6 @@ class CfgVehicles {
                 author = MODULE_AUTHOR;
 				functionPriority = 5;
                 isGlobal = 1;
-                isPersistent = 0;
 				icon = "x\alive\addons\amb_civ_placement\icon_civ_AMBCP.paa";
 				picture = "x\alive\addons\amb_civ_placement\icon_civ_AMBCP.paa";
                 class Arguments

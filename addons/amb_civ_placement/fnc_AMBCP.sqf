@@ -209,12 +209,11 @@ switch(_operation) do {
 			[_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
 			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
 
-            /*
             if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
-            waituntil {!(isnil "ALiVE_ProfileHandler")};
-            */
+            
+            waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
             
             [_logic,"start"] call MAINCLASS;
         } else {
@@ -240,7 +239,6 @@ switch(_operation) do {
 
 			waituntil {!(isnil "ALIVE_clusterHandler")};
 
-			/*
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
 				_worldName = toLower(worldName);			
 				_file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];				
@@ -248,10 +246,9 @@ switch(_operation) do {
 				ALIVE_loadedCIVClusters = true;
 			};
 
-			waituntil {!(isnil "ALIVE_clustersCivSettlement")};
-            */
-
-            waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
+			if (isnil "ALIVE_clustersCivSettlement") exitwith {
+                ["ALIVE AMBCP - Exiting because of lack of civilian settlements..."] call ALIVE_fnc_dump;
+            };
 
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit

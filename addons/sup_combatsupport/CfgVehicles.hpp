@@ -6,8 +6,8 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_COMBATSUPPORT";
                 function = "ALIVE_fnc_CombatSupportInit";
                 author = MODULE_AUTHOR;
-                isGlobal = 1;
-                isPersistent = 1;
+				functionPriority = 100;
+                isGlobal = 2;
                 icon = "x\alive\addons\sup_combatsupport\icon_sup_combatsupport.paa";
                 picture = "x\alive\addons\sup_combatsupport\icon_sup_combatsupport.paa";
                 class Arguments

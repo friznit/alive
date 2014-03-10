@@ -78,6 +78,7 @@ class CfgVehicles {
 		displayName = "$STR_ALIVE_REQUIRES_ALIVE";
 		icon = "x\alive\addons\main\icon_requires_alive.paa";
 		picture = "x\alive\addons\main\icon_requires_alive.paa";
+		functionPriority = 300;
 		function = "ALiVE_fnc_aliveInit";
 		
 		class Arguments

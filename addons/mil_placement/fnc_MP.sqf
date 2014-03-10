@@ -272,7 +272,8 @@ switch(_operation) do {
             if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) exitwith {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
-            //waituntil {!(isnil "ALiVE_ProfileHandler")};
+            
+            waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
             
             [_logic,"start"] call MAINCLASS;
             
@@ -300,20 +301,18 @@ switch(_operation) do {
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 			
-		    /*
-			if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
-				_worldName = toLower(worldName);			
-				_file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];				
-				call compile preprocessFileLineNumbers _file;
-				ALIVE_loadedMilClusters = true;
-				
-				// instantiate static vehicle position data
-				if(isNil "ALIVE_groupConfig") then {
-					[] call ALIVE_fnc_groupGenerateConfigData;
-				};
-			};
-			*/
+            if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
+                _worldName = toLower(worldName);
+                _file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
+                call compile preprocessFileLineNumbers _file;
+                ALIVE_loadedMilClusters = true;
 
+                // instantiate static vehicle position data
+                if(isNil "ALIVE_groupConfig") then {
+                    [] call ALIVE_fnc_groupGenerateConfigData;
+                };
+            };
+            
 			//waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
 
 			//Only spawn warning on version mismatch since map index changes were reduced
