@@ -31,7 +31,7 @@ private ["_targets"];
 _targets = _this;
 _result = false;
 
-if (isnil "ALiVE_ALL_LOGICS") then {ALiVE_ALL_LOGICS = allMissionObjects "Logic"; ALiVE_ALL_LOGICS = +ALiVE_ALL_LOGICS};
+if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiVE_ALLMODULES = +ALiVE_ALLMODULES};
 
 for "_i" from 0 to ((count _targets)-1) do {
 	private ["_mod"];
@@ -40,7 +40,7 @@ for "_i" from 0 to ((count _targets)-1) do {
     _mod = _targets select 0;
     
     if !(isnil "_mod") then {
-	    if ((({(typeof _x) == _mod} count ALiVE_ALL_LOGICS > 0))) then {
+	    if ((({(typeof _x) == _mod} count ALiVE_ALLMODULES > 0))) then {
 			_targets = _targets - [_mod];
 	    };
     };

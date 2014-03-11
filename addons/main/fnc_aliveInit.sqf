@@ -36,36 +36,20 @@ if (isServer) then {
 	ALiVE_VERSIONING_TYPE = _logic getvariable ["ALiVE_Versioning","warning"];
 	Publicvariable "ALiVE_Versioning_Type";
 
-
-    // mini registry
-    // checks for startupComplete var of modules defined in _waitModules
-
-	private ["_waitModules","_modules","_init","_startupComplete"];
-
-	_waitModules = ["ALiVE_amb_civ_placement","ALiVE_mil_placement","ALiVE_civ_placement"];
-	_modules = entities "Module_F";
-
+    //Waiting for the mandatory modules below, mind that not all modules need to be initialised before mission start
 	waitUntil {
-	    _init = true;
-        {
-            //["MODULE: %1 %2 %3",_x,typeof _x] call ALIVE_fnc_dump;
-            if(typeof _x in _waitModules) then {
-                _startupComplete = _x getVariable ["startupComplete",false];
-                //["MODULE STARTUP COMPLETE: %1 %2",typeof _x,_startupComplete] call ALIVE_fnc_dump;
-                if!(_startupComplete) then {
-                    _init = false;
-                };
-            };
-        } foreach _modules;
-        ["ALL MODULES STARTED: %1",_init] call ALIVE_fnc_dump;
-	    _init
+		[
+	        "ALiVE_amb_civ_placement",
+	        "ALiVE_mil_placement",
+	        "ALiVE_civ_placement"
+        ] call ALiVE_fnc_isModuleInitialised;
 	};
 
-
-
-	//This is the last module init to be run, indicates that init has passed on server
+    //This is the last module init to be run, therefore indicates that init of the defined modules above has passed on server
     ALiVE_REQUIRE_INITIALISED = true;
     Publicvariable "ALiVE_REQUIRE_INITIALISED";
+    
+    ["ALiVE ALL REQUIRED MODULES STARTED!"] call ALIVE_fnc_dump;
 };
 
 ["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;

@@ -196,6 +196,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\main\fnc_selectRandom.sqf";
 				recompile = RECOMPILE;
 			};
+			class isModuleInitialised {
+                description = "Checks if given modules are initialised";
+                file = "\x\alive\addons\main\fnc_isModuleInitialised.sqf";
+				recompile = RECOMPILE;
+			};			
 			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";
