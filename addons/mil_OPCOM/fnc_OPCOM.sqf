@@ -299,8 +299,6 @@ switch(_operation) do {
                     ///////////
                     //Startup
                     ///////////
-                    
-                    sleep (random 5);
 
                     //done this way to easily switch between spawn and call for testing purposes
                     ["OPCOM and TACOM starting..."] call ALiVE_fnc_Dump;
@@ -309,7 +307,6 @@ switch(_operation) do {
                         _objectives = _this select 1;
                         
 						_OPCOM = [_handler,_objectives] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
-                        sleep 1;
 						_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
                         
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
@@ -474,7 +471,6 @@ switch(_operation) do {
                         	_objectives = _this select 1;
                         
 							_OPCOM = [_handler,_objectives] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
-                        	sleep 1;
 							_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
                         
 							[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
