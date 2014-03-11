@@ -310,12 +310,12 @@ switch(_operation) do {
 				
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
-					["AISKILL Recruit:[%1] Regular:[%2] Veteran:[%3] Expert:[%4]",_skillFactionsRecruit,_skillFactionsRegular,_skillFactionsVeteran,_skillFactionsExpert] call ALIVE_fnc_dump;
-					["AISKILL Custom Skill: Factions:[%1]",_customSkillFactions] call ALIVE_fnc_dump;
-					["AISKILL Custom Skill: Min Ability:%1 Max Ability:%2",_customSkillAbilityMin,_customSkillAbilityMax] call ALIVE_fnc_dump;
-					["AISKILL Custom Skill: Aim Accuracy:%1 Aim Shake:%2 Aim Speed:%3",_customSkillAimAccuracy,_customSkillAimShake,_customSkillAimSpeed] call ALIVE_fnc_dump;
-					["AISKILL Custom Skill: Courage:%1 Endurance:%2 Spot Distance:%3 Spot Time:%4",_customSkillCourage,_customSkillEndurance,_customSkillSpotDistance,_customSkillSpotTime] call ALIVE_fnc_dump;
-					["AISKILL Custom Skill: Reload:%1 Commanding:%2 General:%3",_customSkillReload,_customSkillCommanding,_customSkillGeneral] call ALIVE_fnc_dump;
+					["ALiVE AISKILL Recruit:[%1] Regular:[%2] Veteran:[%3] Expert:[%4]",_skillFactionsRecruit,_skillFactionsRegular,_skillFactionsVeteran,_skillFactionsExpert] call ALIVE_fnc_dump;
+					["ALiVE AISKILL Custom Skill: Factions:[%1]",_customSkillFactions] call ALIVE_fnc_dump;
+					["ALiVE AISKILL Custom Skill: Min Ability:%1 Max Ability:%2",_customSkillAbilityMin,_customSkillAbilityMax] call ALIVE_fnc_dump;
+					["ALiVE AISKILL Custom Skill: Aim Accuracy:%1 Aim Shake:%2 Aim Speed:%3",_customSkillAimAccuracy,_customSkillAimShake,_customSkillAimSpeed] call ALIVE_fnc_dump;
+					["ALiVE AISKILL Custom Skill: Courage:%1 Endurance:%2 Spot Distance:%3 Spot Time:%4",_customSkillCourage,_customSkillEndurance,_customSkillSpotDistance,_customSkillSpotTime] call ALIVE_fnc_dump;
+					["ALiVE AISKILL Custom Skill: Reload:%1 Commanding:%2 General:%3",_customSkillReload,_customSkillCommanding,_customSkillGeneral] call ALIVE_fnc_dump;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
 
@@ -363,7 +363,7 @@ switch(_operation) do {
 				
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
-					["AISKILL Faction Skill Hash:"] call ALIVE_fnc_dump;
+					["ALiVE AISKILL Faction Skill Hash:"] call ALIVE_fnc_dump;
 					_factionSkills call ALIVE_fnc_inspectHash;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
@@ -415,7 +415,7 @@ switch(_operation) do {
 					// DEBUG -------------------------------------------------------------------------------------
                     if(_debug) then {
                         if(_countEffected > 0) then {
-                            ["AISKILL Set unit skill on %1 units",_countEffected] call ALIVE_fnc_dump;
+                            ["ALiVE AISKILL Set unit skill on %1 units",_countEffected] call ALIVE_fnc_dump;
                         };
                     };
                     // DEBUG -------------------------------------------------------------------------------------
