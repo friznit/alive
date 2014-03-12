@@ -2,7 +2,7 @@
 class header {
 	gametype = COOP;
 	minplayers = 1;
-	maxplayers = 19;
+	maxplayers = 23;
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
 
