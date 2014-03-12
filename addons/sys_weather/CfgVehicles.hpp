@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_WEATHER";
                 function = "ALIVE_fnc_weatherInit";
+                functionPriority = 27;
                 author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;

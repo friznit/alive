@@ -5,6 +5,7 @@ class CfgVehicles {
                 scope = 2;
                 displayName = "$STR_ALIVE_PLAYERTAGS";
                 function = "ALIVE_fnc_playertagsInit";
+                functionPriority = 24;
                 isGlobal = 1;
                 isPersistent = 1;
 								icon = "x\alive\addons\sys_playertags\icon_sys_playertags.paa";

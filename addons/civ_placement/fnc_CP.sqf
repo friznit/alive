@@ -256,14 +256,16 @@ switch(_operation) do {
 				["ALIVE CP - Startup"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
-			
+
+
             if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
                 _worldName = toLower(worldName);
                 _file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];
                 call compile preprocessFileLineNumbers _file;
                 ALIVE_loadedCIVClusters = true;
             };
-            
+
+
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit
 			_error = false;
@@ -302,6 +304,7 @@ switch(_operation) do {
                 _blacklist = [_logic, "blacklist"] call MAINCLASS;
                 _sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
                 _priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
+
 
                 // check markers for existance
                 private ["_marker","_counter"];
@@ -568,7 +571,8 @@ switch(_operation) do {
 				["ALIVE CP [%1] - Size: %2",_faction,_size] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
+
+
 			_countArmored = 0;
 			_countMechanized = 0;
 			_countMotorized = 0;
@@ -708,13 +712,14 @@ switch(_operation) do {
 			
 			_groups = _groups - ALIVE_groupBlacklist;
 
-			
+
 			// Position and create groups
 			_groupCount = count _groups;
 			_clusterCount = count _clusters;
 			_groupPerCluster = floor(_groupCount / _clusterCount);		
 			_totalCount = 0;
-			
+
+
 			{
                 private ["_guardGroup","_guards","_center","_size"];
                 		
@@ -772,7 +777,7 @@ switch(_operation) do {
 					};
 				};					
 			} forEach _clusters;
-		
+
 		
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {

@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_GC";
                 function = "ALIVE_fnc_GCInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 100;
+				functionPriority = 22;
                 isGlobal = 2;
 				icon = "x\alive\addons\sys_GC\icon_sys_GC.paa";
 				picture = "x\alive\addons\sys_GC\icon_sys_GC.paa";

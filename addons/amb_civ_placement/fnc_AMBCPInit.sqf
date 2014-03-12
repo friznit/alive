@@ -21,7 +21,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic"];
+private ["_logic","_moduleID"];
 
 PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
@@ -29,8 +29,8 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_AMBCP","Main function missing");
 
-["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 [_logic, "init"] call ALIVE_fnc_AMBCP;
 
-["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;

@@ -22,7 +22,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic"];
+private ["_logic","_moduleID"];
 
 PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
@@ -30,8 +30,8 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_PSD","Main function missing");
 
-["ALiVE [8] PSD INIT"] call ALIVE_fnc_dump;
+_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 [_logic, "init"] call ALIVE_fnc_PSD;
 
-["ALiVE [8] PSD INIT COMPLETE"] call ALIVE_fnc_dump;
+[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;

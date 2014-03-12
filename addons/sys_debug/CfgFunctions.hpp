@@ -21,6 +21,16 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_debug\fnc_dumpMPH.sqf";
 				recompile = RECOMPILE;
 			};
+			class dumpLogo {
+                description = "dumpLogo";
+                file = "\x\alive\addons\sys_debug\fnc_dumpLogo.sqf";
+                recompile = RECOMPILE;
+            };
+            class dumpModuleInit {
+                description = "dumpModuleInit";
+                file = "\x\alive\addons\sys_debug\fnc_dumpModuleInit.sqf";
+                recompile = RECOMPILE;
+            };
 			class hintS {
 				description = "hintS";
 				file = "\x\alive\addons\sys_debug\fnc_hintS.sqf";

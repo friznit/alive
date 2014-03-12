@@ -22,14 +22,14 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_activated"];
+private ["_logic","_activated","_moduleID"];
 
 PARAMS_1(_logic);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_player","Main function missing");
 
-["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 //_activated = [_this,2,true,[true]] call BIS_fnc_param;
 
@@ -37,6 +37,6 @@ ASSERT_DEFINED("ALIVE_fnc_player","Main function missing");
 	[_logic, "init",[]] call ALIVE_fnc_player;
 //
 
-["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
 
 true

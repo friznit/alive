@@ -22,7 +22,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic"];
+private ["_logic","_moduleID"];
 
 PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
@@ -30,6 +30,10 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_weather","Main function missing");
 
+_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
+
 [_logic, "init"] call ALIVE_fnc_weather;
+
+[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
 
 

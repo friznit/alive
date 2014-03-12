@@ -8,6 +8,7 @@ class CfgVehicles {
                 author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
+                functionPriority = 26;
                 icon = "x\alive\addons\sys_viewdistance\icon_sys_viewdistance.paa";
                 picture = "x\alive\addons\sys_viewdistance\icon_sys_viewdistance.paa";
                 class Arguments

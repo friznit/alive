@@ -20,14 +20,14 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_persistent","_uid"];
+private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_persistent","_uid","_moduleID"];
 
 PARAMS_1(_logic);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
-["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 if(isServer) then {
 
@@ -94,4 +94,4 @@ if(hasInterface) then {
 
 };
 
-["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;

@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_TRANSPORT";
                 function = "ALIVE_fnc_TRANSPORTInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 100;
+                functionPriority = 16;
                 isGlobal = 2;
 				icon = "x\alive\addons\sup_transport\icon_sup_transport.paa";
 				picture = "x\alive\addons\sup_transport\icon_sup_transport.paa";

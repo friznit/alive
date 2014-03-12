@@ -6,6 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_DISABLE_STATISTICS";
                 isGlobal = 1;
 		isPersistent = 1;
+
 		icon = "x\alive\addons\sys_statistics\icon_sys_statistics.paa";
 		picture = "x\alive\addons\sys_statistics\icon_sys_statistics.paa";
                 class Arguments

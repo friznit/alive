@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_AMBCP";
                 function = "ALIVE_fnc_AMBCPInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 5;
+				functionPriority = 6;
                 isGlobal = 1;
 				icon = "x\alive\addons\amb_civ_placement\icon_civ_AMBCP.paa";
 				picture = "x\alive\addons\amb_civ_placement\icon_civ_AMBCP.paa";

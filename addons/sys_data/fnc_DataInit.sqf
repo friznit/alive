@@ -4,7 +4,7 @@ SCRIPT(DataInit);
 // Sets up a system for data (separate from the fnc_data module = datahandler)
 
 LOG(MSG_INIT);
-private ["_response","_dictionaryName","_logic","_config"];
+private ["_response","_dictionaryName","_logic","_config","_moduleID"];
 
 PARAMS_1(_logic);
 
@@ -13,7 +13,7 @@ ASSERT_DEFINED("ALIVE_fnc_Data","Main function missing");
 
 TRACE_2("SYS_DATA",isDedicated, _logic);
 
-["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 if (isDedicated) then {
 
@@ -164,4 +164,4 @@ if (_logic getvariable ["disableStats","false"] == "false") then {
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
 
-["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;

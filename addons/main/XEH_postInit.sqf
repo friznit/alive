@@ -1,9 +1,10 @@
 #include "script_component.hpp"
 
 [] spawn {
+
     //If ALiVE_Require isnt placed or not client exit
-    if (!(["ALiVE_require"] call ALiVE_fnc_isModuleAvailable) || {!hasInterface}) exitwith {};
-    
+    if (!(["ALiVE_require"] call ALiVE_fnc_isModuleAvailable)) exitwith {};
+
     //Start ALiVE loading screen
 	["ALiVE_LOADINGSCREEN"] call BIS_fnc_startLoadingScreen;
     

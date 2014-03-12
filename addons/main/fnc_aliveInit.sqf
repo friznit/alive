@@ -23,13 +23,16 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic"];
+private ["_logic","_moduleID"];
 
 PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
 
 // Do Something
-["ALiVE [%1] %2 INIT",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+
+_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
+
+//_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 if (isServer) then {
     //Sets global type of Versioning (Kick or Warn)
@@ -48,8 +51,14 @@ if (isServer) then {
     //This is the last module init to be run, therefore indicates that init of the defined modules above has passed on server
     ALiVE_REQUIRE_INITIALISED = true;
     Publicvariable "ALiVE_REQUIRE_INITIALISED";
-    
-    ["ALiVE ALL REQUIRED MODULES STARTED!"] call ALIVE_fnc_dump;
+
 };
 
-["ALiVE [%1] %2 INIT COMPLETE",(getNumber(configfile >> "CfgVehicles" >>  typeOf _logic >> "functionPriority")),typeof _logic] call ALIVE_fnc_dump;
+
+[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
+
+["ALiVE Global INIT COMPLETE"] call ALIVE_fnc_dump;
+[false,"ALiVE Global Init Timer Complete","INIT"] call ALIVE_fnc_timer;
+[" "] call ALIVE_fnc_dump;
+
+//[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
