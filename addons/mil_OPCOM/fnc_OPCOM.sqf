@@ -145,6 +145,7 @@ switch(_operation) do {
                     [_handler, "tasksenabled",_tasksEnabled] call ALiVE_fnc_HashSet;
                     [_handler, "opcomID",_opcomID] call ALiVE_fnc_HashSet;
                     [_handler, "debug",_debug] call ALiVE_fnc_HashSet;
+                    [_handler, "module",_logic] call ALiVE_fnc_HashSet;
                     
                     switch (_type) do {
 						case ("invasion") : {
@@ -1631,10 +1632,12 @@ switch(_operation) do {
 		};
         
         case "selectordersbystate": {
-            	private ["_target","_state","_DATA_TMP","_ord"];
+            	private ["_target","_state","_DATA_TMP","_ord","_module"];
             	ASSERT_TRUE(typeName _args == "STRING",str _args);
                 
                 _state = _args;
+                _module = [_logic,"module"] call ALiVE_fnc_HashGet;
+                
                 _DATA_TMP = nil;
                 _ord = nil;
 
@@ -1642,22 +1645,24 @@ switch(_operation) do {
 					case ("attack") : {
 						{
 							_state = [_x,"opcom_state"] call AliVE_fnc_HashGet;
-							if (_state == "attack") exitwith {_target = _x};
+
+							//Set attack only if any synchronized triggers are activated
+							if ((_state == "attack") && {{((typeof _x) == "EmptyDetector") && {!(triggerActivated _x)}} count (synchronizedObjects _module) == 0}) exitwith {_target = _x};
 						} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
 		
 						//Trigger order execution
                         if !(isnil "_target") then {
                             _ord = [_target,"opcom_orders","none"] call AliVE_fnc_HashGet;
-                            //if (!(_ord == "attack")) then {
-								[_target,"opcom_orders","attack"] call AliVE_fnc_HashSet;
-								_DATA_TMP = ["execute",_target];
-                            //};
+							[_target,"opcom_orders","attack"] call AliVE_fnc_HashSet;
+							_DATA_TMP = ["execute",_target];
                         };
 					};
 					case ("unassigned") : {
 						{
 							_state = [_x,"opcom_state"] call AliVE_fnc_HashGet;
-							if (_state == "unassigned") exitwith {_target = _x};
+                            
+                            //Set attack only if any synchronized triggers are activated
+							if ((_state == "unassigned") && {{((typeof _x) == "EmptyDetector") && {!(triggerActivated _x)}} count (synchronizedObjects _module) == 0}) exitwith {_target = _x};
 						} foreach ([_logic,"objectives",[]] call AliVE_fnc_HashGet);
 		
 						//Trigger order execution
@@ -1700,7 +1705,8 @@ switch(_operation) do {
                         };
 					};
         		};
-                if !(isnil "_DATA_TMP") then {_result = _DATA_TMP} else {player sidechat "no target was selected"; _result = nil;};
+
+                if !(isnil "_DATA_TMP") then {_result = _DATA_TMP} else {player sidechat "no target was selected"; _result = nil};
 		};
        
         case "destroy": {                
@@ -1759,6 +1765,11 @@ switch(_operation) do {
 								if ([_this,"debug",false] call ALiVE_fnc_HashGet) then {
                                     _message = parsetext (format["<t align=left>OPCOM side: %1<br/><br/>WARNING! Max. duration exceeded!<br/>state OPCOM: %2<br/>state TACOM: %4<br/>duration: %3</t>",_side,_state,_timestamp,_state_TACOM]);
 									[_message] call ALIVE_fnc_dump; hintsilent _message;
+                                    
+                                    if (_timestamp > 900) then {
+                                        _FSM_OPCOM setfsmvariable ["_OPCOM_DATA",nil];
+                                        _FSM_OPCOM setfsmvariable ["_busy",false];
+                                    };
 								};
 								// debug ---------------------------------------
                             };
