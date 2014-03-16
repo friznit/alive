@@ -1706,7 +1706,7 @@ switch(_operation) do {
 					};
         		};
 
-                if !(isnil "_DATA_TMP") then {_result = _DATA_TMP} else {player sidechat "no target was selected"; _result = nil};
+                if !(isnil "_DATA_TMP") then {_result = _DATA_TMP} else {_result = nil};
 		};
        
         case "destroy": {                
