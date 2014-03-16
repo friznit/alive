@@ -226,6 +226,7 @@ ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 [ALIVE_mapBounds, "pja305", 21000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Celle", 11000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Takistan", 13000] call ALIVE_fnc_hashSet;
+[ALIVE_mapBounds, "praa_av", 6000] call ALIVE_fnc_hashSet;
 
 
 /*
@@ -1839,6 +1840,78 @@ if(_worldName == "fata") then {
 
 };
 
+// Afghan Village
+if(_worldName == "praa_av") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "mil"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "mil"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "barrack",
+        "mil_house"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "vez",
+        "mil"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+        "powerstation",
+        "ind_coltan_mine",
+        "ind_pipes"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+        "ind_tankbig"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+        "wip",
+        "ind_coltan_mine"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "house"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
+};
+
 // Sangin
 if(_worldName == "hellskitchen" || _worldName == "hellskitchens") then {
 
@@ -2283,6 +2356,335 @@ if(_worldName == "pja305") then {
         "dum",
         "shed",
         "hut",
+        "house"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
+};
+
+// Reshmaan
+if(_worldName == "reshmaan") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "watchtower",
+        "fortified"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower",
+        "fortified"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+        "hangar",
+        "runway_beton",
+        "runway_end",
+        "runway_main"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+        "heli_h_army",
+        "heli_h_rescue"
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "vez",
+        "fortified"
+    ];
+
+   ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+       "a_office01",
+       "a_office02"
+   ];
+
+   ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+       "pec_",
+       "powerstation",
+       "trafostanica"
+   ];
+
+   ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+       "vysilac_fm"
+   ];
+
+   ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+       "crane",
+       "cargo"
+   ];
+
+   ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+       "stationhouse"
+   ];
+
+   ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+       "fuelstation"
+   ];
+
+   ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+       "wip",
+       "ind_coltan_mine"
+   ];
+
+   ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+       "hospital",
+       "dum",
+       "shed",
+       "house"
+   ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
+};
+
+// MCN Aliabad
+if(_worldName == "MCN_Aliabad") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+        "misc_powerline"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+        "ind_coltan_mine"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "house"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
+};
+
+// Bystrica
+if(_worldName == "woodland_acr") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "mil"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "mil"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "deerstand"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "a_office01",
+        "a_office02"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+        "pec_",
+        "powerstation",
+        "trafostanica"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+        "vysilac_fm",
+        "telek"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "crane",
+        "nav_pier",
+        "pier_",
+        "pier"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+        "rail_house",
+        "rail_station",
+        "rail_platform",
+        "rails_bridge",
+        "stationhouse"
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+        "fuelstation",
+        "expedice",
+        "indpipe",
+        "komin",
+        "ind_stack_big",
+        "ind_tankbig",
+        "fuel_tank_big"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+        "workshop"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "hospital",
+        "houseblock",
+        "generalstore",
+        "house"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
+};
+
+// Bukovina
+if(_worldName == "bootcamp_acr") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "mil"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "mil"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "deerstand"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "a_office01",
+        "a_office02"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+        "vysilac_fm"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "crane"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+        "stationhouse"
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+        "fuelstation",
+        "komin",
+        "fuel_tank_big"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+        "workshop"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "houseblock",
+        "generalstore",
         "house"
     ];
 
