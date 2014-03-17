@@ -22,7 +22,7 @@ ALIVE_CQBStrategicTypes =
 	"Land_dp_smallFactory_F",
 	"Land_Radar_F",
 	"Land_TentHangar_V1_F",
-	
+
 	//A2
 	"Land_A_TVTower_Base",
 	"Land_Dam_ConcP_20",
@@ -62,7 +62,7 @@ ALIVE_CQBunitBlackist =
 	"B_crew_F",
 	"B_Pilot_F",
 	"B_helicrew_F",
-	
+
 	"O_helipilot_F",
 	"O_diver_F",
 	"O_diver_TL_F",
@@ -71,7 +71,7 @@ ALIVE_CQBunitBlackist =
 	"O_Pilot_F",
 	"O_helicrew_F",
 	"O_UAV_AI",
-	
+
 	"I_crew_F",
 	"I_helipilot_F",
 	"I_helicrew_F",
@@ -94,7 +94,7 @@ ALIVE_unitBlackist =
 	"B_UAV_AI"
 ];
 
-ALIVE_vehicleBlacklist = 
+ALIVE_vehicleBlacklist =
 [
 	"O_UAV_02_F",
 	"O_UAV_02_CAS_F",
@@ -117,7 +117,7 @@ ALIVE_vehicleBlacklist =
 	"ParachuteWest"
 ];
 
-ALIVE_groupBlacklist = 
+ALIVE_groupBlacklist =
 [
 	"HAF_AttackTeam_UAV",
 	"HAF_ReconTeam_UAV",
@@ -206,6 +206,14 @@ ALIVE_civilianHouseTracks = [] call ALIVE_fnc_hashCreate;
 [ALIVE_civilianHouseTracks, "Track10", 292] call ALIVE_fnc_hashSet;
 [ALIVE_civilianHouseTracks, "Track11", 189] call ALIVE_fnc_hashSet;
 [ALIVE_civilianHouseTracks, "Track12", 203] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track13", 16] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track14", 128] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track15", 14] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track16", 7] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track17", 19] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track18", 4] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track19", 22] call ALIVE_fnc_hashSet;
+[ALIVE_civilianHouseTracks, "Track20", 2] call ALIVE_fnc_hashSet;
 
 /*
  * Map bounds for analysis grid, this is for when the map bounds function is faulty
