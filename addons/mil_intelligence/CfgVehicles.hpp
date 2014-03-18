@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_MI";
                 function = "ALIVE_fnc_MIInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 9;
+				functionPriority = 10;
                 isGlobal = 1;
 				icon = "x\alive\addons\mil_intelligence\icon_mil_MI.paa";
 				picture = "x\alive\addons\mil_intelligence\icon_mil_MI.paa";
@@ -94,7 +94,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_SD";
                 function = "ALIVE_fnc_SDInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 10;
+                functionPriority = 12;
                 isGlobal = 0;
                 icon = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";
                 picture = "x\alive\addons\mil_intelligence\icon_mil_SD.paa";

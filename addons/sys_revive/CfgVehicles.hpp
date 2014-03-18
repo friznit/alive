@@ -4,7 +4,7 @@ class CfgVehicles {
 		scope = 2;
 		displayName = "$STR_ALIVE_REVIVE";
 		function = "ALIVE_fnc_reviveInit";
-		functionPriority = 25;
+		functionPriority = 26;
 		isGlobal = 1;
 		isPersistent = 1;
 		icon = "\x\alive\addons\sys_revive\icon_sys_revive.paa";

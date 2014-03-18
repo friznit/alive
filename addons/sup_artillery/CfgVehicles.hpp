@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_ARTILLERY";
                 function = "ALIVE_fnc_ARTILLERYInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 17;
+                functionPriority = 18;
                 isGlobal = 2;
 				icon = "x\alive\addons\sup_cas\icon_sup_cas.paa";
 				picture = "x\alive\addons\sup_cas\icon_sup_cas.paa";

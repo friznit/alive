@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_multispawn";
                 function = "ALIVE_fnc_multispawnInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 18;
+                functionPriority = 2;
                 isGlobal = 1;
 				icon = "x\alive\addons\sup_multispawn\icon_sup_multispawn.paa";
 				picture = "x\alive\addons\sup_multispawn\icon_sup_multispawn.paa";
