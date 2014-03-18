@@ -137,7 +137,7 @@ class RscDisplayMPInterrupt: RscStandardDisplay
 			style = 0;
 			text = "ALiVE Menu";
 			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
-			y = "17.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			y = "18.6 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			colorBackground[] = {0.69,0.75,0.5,0.8};
@@ -145,27 +145,17 @@ class RscDisplayMPInterrupt: RscStandardDisplay
 		class ALiVEButtonServerSave: RscButtonMenu
 		{
 			idc = 196;
-			text = "MISSION SAVE/ABORT (Admin Only)";
-			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
-			y = "18.6 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
-			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
-			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			action = "['SERVERSAVE'] call alive_fnc_buttonAbort";
-		};
-		class ALIVEButtonServerAbort: RscButtonMenu
-		{
-			idc = 197;
-			text = "MISSION ABORT (Admin Only)";
+			text = "SERVER EXIT (Admin Only)";
 			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
 			y = "19.7 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			action = "['SERVERABORT'] call alive_fnc_buttonAbort";
+			action = "['SERVERSAVE'] call alive_fnc_buttonAbort";
 		};
 		class ALiVEButtonSave: RscButtonMenu
 		{
 			idc = 198;
-			text = "PLAYER SAVE/ABORT";
+			text = "PLAYER EXIT";
 			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
 			y = "20.8 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
