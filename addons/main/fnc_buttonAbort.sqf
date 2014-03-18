@@ -42,6 +42,7 @@ TRACE_1("PLAYER CLICKING ON ABORT BUTTON",_this);
 ["--------------------------------------------------------------"] call ALIVE_fnc_dump;
 ["ALIVE Abort - mode: %1",_mode] call ALIVE_fnc_dump;
 
+// FUNCTION THAT SAVES PLAYER DATA
 _savePlayer = {
 	private ["_name","_uid","_id"];
 	_id = _this select 0;
@@ -50,18 +51,29 @@ _savePlayer = {
 
 	["ALIVE Abort - Save Player Data id: %1 name: %2 uid: %3",_id,_name,_uid] call ALIVE_fnc_dump;
 
-	if !(isNil QMOD(sys_statistics)) then {
-	    ["ALIVE Abort - Player Stats OPD"] call ALIVE_fnc_dump;
-		// Stats module onPlayerDisconnected call
-		//[[_id, _name, _uid],"ALIVE_fnc_stats_onPlayerDisconnected", false, false] call BIS_fnc_MP;
-		["server",QMOD(sys_statistics),[[_id, _name, _uid],{call ALIVE_fnc_stats_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
-	};
-
 	if !(isNil QMOD(sys_player)) then {
 	    ["ALIVE Abort - Player Data OPD"] call ALIVE_fnc_dump;
 		// sys_player module onPlayerDisconnected call
 		//[[_id, _name, _uid],"ALIVE_fnc_player_onPlayerDisconnected", false, false] call BIS_fnc_MP;
 		["server",QMOD(sys_player),[[_id, _name, _uid],{call ALIVE_fnc_player_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
+	};
+
+};
+
+// FUNCTION THAT HANDLES PLAYERS EXITING
+_exitPlayer = {
+		private ["_name","_uid","_id"];
+	_id = _this select 0;
+	_name = name (_this select 0);
+	_uid = getPlayerUID (_this select 0);
+
+	["ALIVE Abort - Exit Player id: %1 name: %2 uid: %3",_id,_name,_uid] call ALIVE_fnc_dump;
+
+	if !(isNil QMOD(sys_statistics)) then {
+	    ["ALIVE Abort - Player Stats OPD"] call ALIVE_fnc_dump;
+		// Stats module onPlayerDisconnected call
+		//[[_id, _name, _uid],"ALIVE_fnc_stats_onPlayerDisconnected", false, false] call BIS_fnc_MP;
+		["server",QMOD(sys_statistics),[[_id, _name, _uid],{call ALIVE_fnc_stats_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
 	};
 
 	if !(isNil 'ALIVE_profileHandler') then {
@@ -72,19 +84,15 @@ _savePlayer = {
     };
 };
 
-_saveServer = {
+// FUNCTION THAT HANDLES SERVER EXIT
+_exitServer = {
 	private ["_uid","_id"];
 	_id = "";
 	_uid = "";
 
-	["ALIVE Abort - Save Server Data"] call ALIVE_fnc_dump;
+	["ALIVE Abort - Exit Server Data"] call ALIVE_fnc_dump;
 
-	if !(isNil QMOD(sys_player)) then {
-	    ["ALIVE Abort - Server Player OPD"] call ALIVE_fnc_dump;
-		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
-	};
-
-    if !(isNil QMOD(sys_statistics)) then {
+	 if !(isNil QMOD(sys_statistics)) then {
 	    ["ALIVE Abort - Server Stats OPD"] call ALIVE_fnc_dump;
 		// Stats module onPlayerDisconnected call
 		[_id,"__SERVER__", _uid] call ALIVE_fnc_stats_onPlayerDisconnected;
@@ -102,16 +110,48 @@ _saveServer = {
 	};
 };
 
+// FUNCTION THAT HANDLES SERVER SAVE
+_saveServer = {
+	private ["_uid","_id"];
+	_id = "";
+	_uid = "";
+
+	["ALIVE Abort - Save Server Data"] call ALIVE_fnc_dump;
+
+	if !(isNil QMOD(sys_player)) then {
+	    ["ALIVE Abort - Server Player OPD"] call ALIVE_fnc_dump;
+		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
+	};
+
+};
+
+// Function run on server
 if (_mode == "SAVESERVERYO") then {
     // Save player data
 	[] call _saveServer;
+	[] call _exitServer;
 };
 
+// Function run on client
 if (_mode == "SAVE" || _mode == "REMSAVE") then {
     // Save player data
 	[player] call _savePlayer;
+	[player] call _exitPlayer;
 };
 
+// Function run on server
+if (_mode == "SERVERABORTYO") then {
+	// Exit player without saving
+	[] call _exitServer;
+};
+
+// Function run on client
+if (_mode == "ABORT") then {
+	// Exit player without saving
+	[player] call _exitPlayer;
+};
+
+// Check client for admin
 if (call ALiVE_fnc_isServerAdmin) then {
 
 	if (_mode == "SERVERSAVE") then {
@@ -135,12 +175,14 @@ if (call ALiVE_fnc_isServerAdmin) then {
 
 	    ["ALIVE Abort - Abort by Admin"] call ALIVE_fnc_dump;
 
-		["server",QMOD(main),[[],{endMission "serverabort"}]] call ALIVE_fnc_BUS;
-
 		["ALIVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
 
 		// abort all players
 		[["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
+
+		// exit server
+		["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
+		["server",QMOD(main),[[],{endMission "serverabort"}]] call ALIVE_fnc_BUS;
 	};
 };
 
