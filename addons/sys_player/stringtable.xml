@@ -43,6 +43,9 @@
 <Key ID="STR_ALIVE_player_allowManualSave_ACTION">
 	<English>Save Player Data</English>
 </Key>
+<Key ID="STR_ALIVE_player_allowManualSave_ACTION_COMMENT">
+	<English>Save your player data between disconnect and reconnect. If DB is enabled, will store player state between server restarts.</English>
+</Key>
 <Key ID="STR_ALIVE_player_allowDiffClass">
 	<English>Allow different class rejoin:</English>
 </Key>

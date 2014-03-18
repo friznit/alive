@@ -188,7 +188,7 @@ if (_menuName == "player") then {
 					{ [MOD(sys_player), "manualSavePlayer", [player]] call ALIVE_fnc_player },
 					"",
 					"",
-					"",
+					localize STR_ALIVE_player_allowManualSave_ACTION_COMMENT,
 					-1,
 					 (MOD(sys_player) getVariable ["allowManualSave", true]),
 					 (MOD(sys_player) getVariable ["allowManualSave", true])

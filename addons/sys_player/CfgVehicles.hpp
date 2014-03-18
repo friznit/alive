@@ -177,11 +177,11 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_player_storeToDB_COMMENT";
                                 class Values
                                 {
-                                        class Yes
+ /*                                       class Yes
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                        };
+                                        };*/
                                         class No
                                         {
                                                 name = "No";
