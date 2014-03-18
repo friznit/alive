@@ -145,7 +145,7 @@ if (_menuName == "player") then {
 					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["allowManualSave", true])))
 				],
 
-				[localize "STR_ALIVE_player_storeToDB_ENABLE",
+/*				[localize "STR_ALIVE_player_storeToDB_ENABLE",
 					{ MOD(sys_player) setVariable ["storeToDB",true, true]; },
 					"",
 					localize "STR_ALIVE_player_storeToDB_COMMENT",
@@ -162,7 +162,7 @@ if (_menuName == "player") then {
 					-1,
 					 (MOD(sys_player) getVariable ["storeToDB", true]),
 					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["storeToDB", true])))
-				],
+				],*/
 
 				[localize "STR_ALIVE_player_autoSaveTime_SET",
 					{ createDialog "ALIVE_ui_sys_player_setautoSaveTime";},
