@@ -1,0 +1,61 @@
+//http://community.bistudio.com/wiki/description.ext#Header_Class
+class header {
+	gametype = COOP;
+	minplayers = 1;
+	maxplayers = 5;
+	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
+};
+
+class CfgDebriefing
+{  
+	class End1
+	{
+		title = "Mission Failed";
+		subtitle = "";
+		description = "";
+	};
+};
+
+class CfgRespawnInventory
+{
+	class DIVER
+	{
+		displayName = "Diver"; // Name visible in the menu
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa"; // Icon displayed next to the name
+
+		vehicle = "B_diver_F";
+	};
+	class SNIPER
+	{
+		displayName = "Recon Sniper"; // Name visible in the menu
+		icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa"; // Icon displayed next to the name
+
+		// Alternative configuration pointing to a CfgVehicles class. Loadout will be copied from it.
+		vehicle = "B_recon_M_F";
+	};
+};
+
+#include "VAS\menu.hpp"
+class CfgFunctions
+{
+	#include "VAS\cfgfunctions.hpp"
+};
+
+author = ALiVE Studios || Mission by Highhead;
+onLoadMission = "INTEL has been received about a nuclear device beeing build in an hideout in Zaros, also centre of terrorist activities on Lemnos! The iranian contact is said to be an officer named Ahelef Mahmoud, very likely to be located near the device! Objective is to locate Mahmoud, disable the bomb, and return home safely!";
+onLoadIntroTime = true;
+onLoadMissionTime = true;
+onLoadName = ALiVE | Divide & Rule;
+loadScreen = "x\alive\addons\main\logo_alive.paa";
+
+aiKills = 0;
+briefing = 1;
+debriefing = 1;
+respawn = 3;
+respawnDelay = 15;
+RespawnDialog = 0;
+disabledAI = 1;
+enableDebugConsole = 1;
+allowFunctionsRecompile = 1;
+
+respawnTemplates[] = {"MenuPosition"};
