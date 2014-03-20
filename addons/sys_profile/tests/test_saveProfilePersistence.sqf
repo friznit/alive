@@ -30,7 +30,13 @@ diag_log format["Timer End %1",_timeEnd];
 
 //========================================
 
+[["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen"] call BIS_fnc_MP;
+["ALiVE_LOADINGSCREEN"] call BIS_fnc_startLoadingScreen;
+
 [ALIVE_profileHandler,"saveProfileData"] call ALIVE_fnc_profileHandler;
+
+[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen"] call BIS_fnc_MP;
+["ALiVE_LOADINGSCREEN"] call BIS_fnc_endLoadingScreen;
 
 
 //[ALIVE_profileHandler,"exportProfileData"] call ALIVE_fnc_profileHandler;

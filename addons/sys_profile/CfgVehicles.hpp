@@ -73,25 +73,6 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT";
                                 defaultvalue = "50";
                         };
-                        class persistentState
-                        {
-                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_PERSISTENT";
-                                description = "$STR_ALIVE_PROFILE_SYSTEM_PERSISTENT_COMMENT";
-                                class Values
-                                {
-                                        class Yes
-                                        {
-                                                name = "Yes";
-                                                value = true;
-                                        };
-                                        class No
-                                        {
-                                                name = "No";
-                                                value = false;
-                                                default = true;
-                                        };
-                                };
-                        };
                 };
                 
         };

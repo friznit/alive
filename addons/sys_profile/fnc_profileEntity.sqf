@@ -899,6 +899,51 @@ switch(_operation) do {
 					};
 				};
 		};
+		case "destroy": {
+            private ["_debug","_group","_units","_active","_profileID","_unitCount","_unit"];
+
+            _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
+            _group = _logic select 2 select 13; //[_logic,"group"] call ALIVE_fnc_hashGet;
+            _units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
+            _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
+            _profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+
+            _unitCount = 0;
+
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                ["Profile [%1] Destroying",_profileID] call ALIVE_fnc_dump;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
+
+            // clear waypoints
+            [_logic,"clearWaypoints"] call MAINCLASS;
+
+            // clear assignments
+            [_logic,"clearVehicleAssignments"] call MAINCLASS;
+
+            // deactivate command
+            [ALIVE_commandRouter, "deactivate", _logic] call ALIVE_fnc_commandRouter;
+
+            // not already inactive
+            if(_active) then {
+
+                // delete units
+                {
+                    _unit = _x;
+                    deleteVehicle _unit;
+                    _unitCount = _unitCount + 1;
+                } forEach _units;
+
+                // delete group
+                deleteGroup _group;
+            };
+
+            // unregister
+            [ALIVE_profileHandler, "unregisterProfile", _logic] call ALIVE_fnc_profileHandler;
+
+            [_logic, "destroy"] call SUPERCLASS;
+		};
 		case "createMarker": {
 				private ["_markers","_m","_position","_dimensions","_color","_icon","_alpha"
 				,"_profileID","_profileSide","_profileType","_profileActive","_vehiclesInCommandOf","_typePrefix","_label"];

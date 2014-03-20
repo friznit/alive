@@ -36,8 +36,8 @@ set arma=%_ARMA3PATH%
 set target=P:\x\alive\addons\fnc_strategic\indexes
 
 rem ----------------------------- A3 --------------------------------------
-rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
-rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
+%exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
+%exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
 rem ----------------------------- A2 --------------------------------------
 rem %exe% "%arma%\@a2\chernarus.pbo" > %target%\objects.chernarus.sqf

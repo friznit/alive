@@ -1044,6 +1044,41 @@ switch(_operation) do {
 			_vehicles = [_logic, "getProfilesByType", "vehicle"] call MAINCLASS;
 			_result = count _vehicles;
 		};
+		case "reset": {
+
+		     private["_profiles","_profileIndex","_profile","_profileID","_profileType","_isPlayer","_state"];
+
+            _profiles = [_logic, "getProfiles"] call MAINCLASS;
+
+            _profileIndex = [];
+            _profileIndex =+ _profiles select 1;
+
+            {
+                _profile = [_profiles, _x] call ALIVE_fnc_hashGet;
+
+                //_profile call ALIVE_fnc_inspectHash;
+
+                _profileID = _profile select 2 select 4;
+                _profileType = _profile select 2 select 5;
+                _isPlayer = false;
+
+                if(_profileType == "entity") then {
+                    _isPlayer = _profile select 2 select 30;
+                };
+
+                if!(_isPlayer) then {
+                    if(_profileType == "entity") then {
+                        [_profile, "destroy"] call ALIVE_fnc_profileEntity;
+                    }else{
+                        [_profile, "destroy"] call ALIVE_fnc_profileVehicle;
+                    };
+                };
+
+            } forEach _profileIndex;
+
+            _state = [_logic, "state"] call MAINCLASS;
+            _state call ALIVE_fnc_inspectHash;
+        };
 		case "saveProfileData": {
 
 		    ["SAVE PROFILE DATA"] call ALIVE_fnc_dump;
@@ -1102,7 +1137,6 @@ switch(_operation) do {
                     ["LOAD PROFILE DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
 
                     _result = [_datahandler, "load", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
-
                     ["RESULT: %1",_result] call ALIVE_fnc_dump;
 
                 };
@@ -1224,6 +1258,7 @@ switch(_operation) do {
                         [_profileEntity, "ranks", [_profile,"ranks"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "side", [_profile,"side"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        [_profileEntity, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
 
                         [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
@@ -1245,6 +1280,7 @@ switch(_operation) do {
                         [_profileVehicle, "fuel", [_profile,"fuel"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "side", [_profile,"side"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
+                        [_profileVehicle, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
 
                         [ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 

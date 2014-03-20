@@ -101,6 +101,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromUnits.sqf";
 				recompile = RECOMPILE;
 			};
+			class createProfilesFromUnitsRuntime {
+                description = "createProfilesFromUnitsRuntime";
+                file = "\x\alive\addons\sys_profile\fnc_createProfilesFromUnitsRuntime.sqf";
+                recompile = RECOMPILE;
+            };
 		    class createProfilesFromPlayers {
                 description = "createProfilesFromPlayers";
                 file = "\x\alive\addons\sys_profile\fnc_createProfilesFromPlayers.sqf";

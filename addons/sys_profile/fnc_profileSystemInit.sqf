@@ -20,7 +20,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_persistent","_uid","_moduleID"];
+private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_uid","_moduleID"];
 
 PARAMS_1(_logic);
 
@@ -40,20 +40,11 @@ if(isServer) then {
     _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
-	_persistent = _logic getVariable ["persistentState",false];
 
     if(_debug == "true") then {
         _debug = true;
     }else{
         _debug = false;
-    };
-
-    if(typeName _persistent == 'STRING') then {
-        if(_persistent == "true") then {
-            _persistent = true;
-        }else{
-            _persistent = false;
-        };
     };
 
 	ALIVE_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
@@ -65,7 +56,6 @@ if(isServer) then {
 	[ALIVE_profileSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
-	[ALIVE_profileSystem, "persistent", _persistent] call ALIVE_fnc_profileSystem;
 
 	[ALIVE_profileSystem,"start"] call ALIVE_fnc_profileSystem;
 

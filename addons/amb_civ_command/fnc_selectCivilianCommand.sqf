@@ -101,20 +101,20 @@ if(count (ALIVE_civCommands select 1) > 0) then {
 
     switch(_clusterHostilityLevel) do {
         case 3: {
-            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
+            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
             _dayCommand = "randomMovement";
             _idleCommand = "idle";
             ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
             //ALIVE_availableCivCommands = ["suicide"];
         };
         case 2: {
-            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
-            _dayCommand = "randomMovement";
-            _idleCommand = "idle";
+           [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
+           [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+           [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+           _dayCommand = "randomMovement";
+           _idleCommand = "idle";
             ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
         };
         case 1: {

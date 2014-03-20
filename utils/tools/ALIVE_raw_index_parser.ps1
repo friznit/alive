@@ -1,6 +1,8 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
+    'stratis',
+    'altis'
     #'fata'
     #'koplic'
     #'baranow',
@@ -13,11 +15,11 @@ $index_names = (
     #'hellskitchen',
     #'hellskitchens'
     #'celle',
-    'chernarus',
+    #'chernarus',
     #'carraigdubh',
     #'clafghan',
     #'desert',
-    'desert_e',
+    #'desert_e',
     #'desert2',
     #'fallujah',
     #'fdf_isle1_a',
@@ -29,23 +31,23 @@ $index_names = (
     #'isoladicapraia',
     #'pja305'
     #'panthera',
-    'provinggrounds_pmc',
+    #'provinggrounds_pmc',
     #'sara',
     #'sara_dbe1',
     #'saralite',
-    'shapur_baf',    
+    #'shapur_baf',    
     #'smd_sahrani_a2'
-    'takistan',
+    #'takistan',
     #'thirsk',
     #'thirskw',
     #'tigeria',
     #'torabora',
     #'tup_qom',
-    'utes',
-    'zargabad'
+    #'utes',
+    #'zargabad'
     )
 
-$black_list = ('rocks_f','plants_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg','vegetation','shrub','palm')
+$black_list = ('rocks_f','plants_f','signs_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg','vegetation','shrub','palm','calvaries','rowboat')
 
 foreach ($index_name in $index_names){
     

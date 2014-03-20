@@ -187,10 +187,12 @@ switch(_type) do {
 							[_vehicleProfile,"position",_position] call ALIVE_fnc_profileVehicle;
 							//[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 							[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
-							
+
+							/*
 							if(_inAir) then {
 								[_vehicleProfile,"engineOn", true] call ALIVE_fnc_profileVehicle;
 							};
+							*/
 							
 						} forEach _vehicles;
 					
@@ -200,10 +202,12 @@ switch(_type) do {
 						[_vehicleProfile,"position",_spawnPosition] call ALIVE_fnc_profileVehicle;
 						//[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 						[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
-						
+
+						/*
 						if(_inAir) then {
 							[_vehicleProfile,"engineOn", true] call ALIVE_fnc_profileVehicle;
-						};						
+						};
+                        */
 					};
 				};
 			};

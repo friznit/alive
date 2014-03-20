@@ -425,7 +425,7 @@ switch(_operation) do {
 
 				// not already active
 				if!(_active) then {
-				
+
 					// determine a suitable spawn position
 					//["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
 					//[true] call ALIVE_fnc_timer;
@@ -442,7 +442,7 @@ switch(_operation) do {
 						_special = "NONE";
 						_position set [2,0];
 					};
-													
+
 					_vehicle = createVehicle [_vehicleClass, _position, [], 0, _special];
 					//_vehicle setPos _position;
 					_vehicle setDir _direction;
@@ -484,7 +484,7 @@ switch(_operation) do {
 		};
 		case "despawn": {
 				private ["_debug","_active","_side","_vehicle","_profileID","_position","_despawnPrevented","_linked","_spawnType"];
-				
+
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
 				_side = _logic select 2 select 3; //[_logic,"side"] call ALIVE_fnc_hashGet;
@@ -493,7 +493,7 @@ switch(_operation) do {
 
 				// not already inactive
 				if(_active) then {
-				
+
 					// if any linked profiles have despawn prevented
 					_despawnPrevented = false;
 					_linked = [_logic] call ALIVE_fnc_vehicleAssignmentsGetLinkedProfiles;
@@ -508,17 +508,17 @@ switch(_operation) do {
 							}
 						} forEach (_linked select 2);
 					};
-					
+
 					if!(_despawnPrevented) then {
-					
+
 						[_logic,"active",false] call ALIVE_fnc_hashSet;
-						
+
 						// update profile vehicle assignments before despawn
 						[_logic,"clearVehicleAssignments"] call MAINCLASS;
 						[_logic] call ALIVE_fnc_vehicleAssignmentsToProfileVehicleAssignments;
-						
+
 						_position = getPosATL _vehicle;
-						
+
 						// update profile before despawn
 						[_logic,"position", _position] call ALIVE_fnc_hashSet;
 						[_logic,"despawnPosition", _position] call ALIVE_fnc_hashSet;
@@ -534,17 +534,17 @@ switch(_operation) do {
 
 						// delete
 						deleteVehicle _vehicle;
-						
+
 						// store the profile id on the in active profiles index
 						[ALIVE_profileHandler,"setInActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
-						
+
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							//["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;
 							[_logic,"debug",true] call MAINCLASS;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
-					
+
 					};
 				};
 		};
@@ -554,6 +554,34 @@ switch(_operation) do {
 				// remove all assignments for this vehicle
 				[_logic] call ALIVE_fnc_removeProfileVehicleAssignments;
 		};
+		case "destroy": {
+            private ["_debug","_active","_vehicle","_profileID"];
+
+            _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
+            _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
+            _vehicle = _logic select 2 select 10; //[_logic,"vehicle"] call ALIVE_fnc_hashGet;
+            _profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                ["Profile [%1] Destroying",_profileID] call ALIVE_fnc_dump;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
+
+            // clear assignments
+            [_logic,"clearVehicleAssignments"] call MAINCLASS;
+
+            // not already inactive
+            if(_active) then {
+
+                // delete
+                deleteVehicle _vehicle;
+            };
+
+            [ALIVE_profileHandler, "unregisterProfile", _logic] call ALIVE_fnc_profileHandler;
+
+            [_logic, "destroy"] call SUPERCLASS;
+        };
 		case "createMarker": {
 				private ["_markers","_m","_position","_profileID","_color","_icon","_alpha","_profileSide","_vehicleType","_profileActive","_typePrefix"];
 				
