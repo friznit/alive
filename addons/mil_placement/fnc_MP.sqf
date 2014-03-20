@@ -271,6 +271,7 @@ switch(_operation) do {
 
             if !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) exitwith {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+                _logic setVariable ["startupComplete", true];
             };
             
             waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
