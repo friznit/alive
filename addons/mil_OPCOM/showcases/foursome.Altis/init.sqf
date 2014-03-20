@@ -17,14 +17,18 @@ Following a surprise invasion of Altis by CSAT forces in recent weeks, a BLUFOR 
 linking up with local militia and removing the hostile threat. CIVPOP has been removed to Agia Marina where they are being held under martial law.
 REDFOR troops have occupied key strategic points across the Area of Operations.  Strength and dispositions include at least 1 Combined 
 Arms Motor Rifle Battalion, 1 Light Infantry Battalion and support units including possible attack helicopters, artillery and special forces. 
+", "BLACK IN",9999];
+
+sleep 15;
+
+titleText ["
 A mobile reserve in the South of the Island is poised to react any hostile threat! BLUFOR troops are approaching from the North East to link up with the struggling guerilla factions and to assist Greek forces regaining control over the 
 island.  BLUFOR have a formidable array of equipment and support assets at a Forward Operating Base near the Salt Flats, however numbers are limited, 
-defences are weak and resupply is difficult.
-GREENFOR have retreated to a few small strongholds in the mountainous North of the island. Only a few guerillas survived the brutal Iranian assault 
+defences are weak and resupply is difficult. GREENFOR have retreated to a few small strongholds in the mountainous North of the island. Only a few guerillas survived the brutal Iranian assault 
 but they are well placed to harass REDFOR rear echelons and supply lines.
 ", "BLACK IN",9999];
 
-sleep 20;
+sleep 15;
 
 titleText ["
 Orders are to advance to contact South West clearing all enemy within boundaries in order to regain control of the island.  Attempt to establish comms with militia factions in the East for coordinated assaults.
