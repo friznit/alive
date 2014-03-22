@@ -49,7 +49,7 @@ if (GVAR(ENABLED)) then {
 		_source = _hit;
 	};
 
-	if ((isPlayer _hit) || (isPlayer _source)) then {
+	if ( ((isPlayer _hit) || (isPlayer _source)) && MOD(sys_data) getVariable ["EventLevel",5] > 5) then {
 
 		_sidehit = side (group _hit); // group side is more reliable
 		_sidesource = side _source;
