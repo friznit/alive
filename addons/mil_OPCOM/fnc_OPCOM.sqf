@@ -606,6 +606,47 @@ switch(_operation) do {
             _result = _args;
         };
         
+        case "removeObjective": {
+        	if(isnil "_args") then {
+					_args = [_logic,"objectives",[]] call ALIVE_fnc_hashGet;
+            } else {
+            	ASSERT_TRUE(typeName _args == "STRING",str _args);
+                private ["_objective","_section","_debug","_objectiveID","_index"];
+                
+                _objectiveID = _args;
+                
+                _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
+                _debug = [_logic,"debug",false] call ALiVE_fnc_HashGet;
+
+                {
+                    _oID = [_x,"objectiveID",""] call ALiVE_fnc_HashGet;
+                    
+                    if (_oID == _objectiveID) exitwith {
+                		_section = [_x,"section",[]] call ALiVE_fnc_HashGet;
+                        
+                        {[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
+                		[_logic,"resetObjective",_objectiveID] call ALiVE_fnc_OPCOM;
+                        
+                        _index = _foreachIndex;
+                    };
+                } foreach _objectives;
+                
+                if !(isnil "_index") then {
+	                _objectives set [_index,objNull];
+	                _objectives = _objectives - [objNull];
+	                
+	                [_logic,"objectives", _objectives] call ALiVE_fnc_HashSet;
+                };
+                
+                _args = _objectives;
+                
+                // debug ---------------------------------------
+				if (_debug) then {deletemarkerLocal _objectiveID};
+				// debug ---------------------------------------
+            };
+            _result = _args;
+        };
+
         case "addTask": {
             _operation = _args select 0;
             _pos = _args select 1;
@@ -968,7 +1009,7 @@ switch(_operation) do {
                 if (!(_state in _idlestates) && {count _section > 0} && {_wps == 0}) then {
                     {[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
                     [_logic,"resetObjective",([_objective,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM;
-                }; 
+                };
             } foreach _objectives;
         };
 
