@@ -214,8 +214,11 @@ switch(_operation) do {
                 _logic setVariable ["startupComplete", true];
             };
             
-            waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
-            
+            if !(["ALiVE_amb_civ_population"] call ALiVE_fnc_isModuleAvailable) exitwith {
+                ["Civilian Population System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+                _logic setVariable ["startupComplete", true];
+            };
+
             [_logic,"start"] call MAINCLASS;
         } else {
             [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
@@ -237,7 +240,8 @@ switch(_operation) do {
 				["ALIVE AMBCP - Startup"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
-
+            
+           waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
 			waituntil {!(isnil "ALIVE_clusterHandler")};
 
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
