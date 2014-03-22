@@ -59,7 +59,7 @@ if (GVAR(ENABLED) && isDedicated) then {
 		TRACE_3("SENDING PROFILE DATA TO CLIENT", _owner, _data, _unit);
 
 		// Set player startTime
-		_unit setVariable [QGVAR(timeStarted), date, true];
+		[GVAR(PlayerStartTime), getPlayerUID _unit, date] call ALIVE_fnc_hashSet;
 
 	};
 

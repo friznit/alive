@@ -32,12 +32,14 @@ if (GVAR(ENABLED)) then {
 
 		_minutesPlayed = floor(( (dateToNumber date) - ( dateToNumber GVAR(timeStarted)) ) * 525600);
 
-		// Format Data
-		_data = [ ["Event","OperationFinish"] , ["timePlayed", _minutesPlayed] ];
 
-		// Send Data
-		GVAR(UPDATE_EVENTS) = _data;
-		publicVariableServer QGVAR(UPDATE_EVENTS);
+			// Format Data
+			_data = [ ["Event","OperationFinish"] , ["timePlayed", _minutesPlayed] ];
+
+			// Send Data
+			GVAR(UPDATE_EVENTS) = _data;
+			publicVariableServer QGVAR(UPDATE_EVENTS);
+
 	};
 
 	// Cater for non player situations
@@ -73,7 +75,8 @@ if (GVAR(ENABLED)) then {
 		_PlayerFaction = faction _unit;
 		_playerType = typeof _unit;
 		// Calculate Minutes Played
-		_minutesPlayed = floor(( (dateToNumber date) - ( dateToNumber (_unit getvariable QGVAR(timeStarted))) ) * 525600);
+
+		_minutesPlayed = floor( ( (dateToNumber date) - ( dateToNumber ([GVAR(PlayerStartTime), getPlayerUID _unit, GVAR(timeStarted)] call ALIVE_fnc_hashGet) )) * 525600);
 		//diag_log _minutesPlayed;
 
 		_score = score _unit;

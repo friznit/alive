@@ -82,8 +82,10 @@ if (isDedicated) then {
 		ALIVE_sys_statistics_ENABLED = false;
 	};
 
-
-	ALIVE_sys_statistics_level = [_config, "EventLevel",5] call ALIVE_fnc_hashGet;
+	// Set event level on data module
+ 	ALIVE_sys_statistics_EventLevel = [_config, "EventLevel",5] call ALIVE_fnc_hashGet;
+	// Set stats level
+	MOD(sys_data) setVariable ["EventLevel", ALIVE_sys_statistics_EventLevel, true];
 
 	// Load Data Dictionary from central public database
 

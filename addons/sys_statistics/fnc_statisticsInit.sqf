@@ -97,6 +97,7 @@ if (isDedicated && GVAR(ENABLED)) then {
 			} else {
 				_async = true;
 			};
+
 			_result = [GVAR(datahandler), "write", [_module, _data, _async] ] call ALIVE_fnc_Data;
 			if (_result == "ERROR") then {
 				ERROR("SYS STATISTICS FAILED TO WRITE TO DATABASE");
@@ -127,7 +128,11 @@ if (isDedicated && GVAR(ENABLED)) then {
 	GVAR(UPDATE_EVENTS) = _data;
 	publicVariableServer QGVAR(UPDATE_EVENTS);
 
+	// Set server start
 	GVAR(timeStarted) = date;
+
+	// Create player start time hash
+	GVAR(PlayerStartTime) = []call ALIVE_fnc_hashCreate;
 
 	//diag_log format["TimeStarted: %1", GVAR(timeStarted)];
 
