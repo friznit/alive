@@ -43,11 +43,16 @@ while {isNil "headlessClients"} do {};
 
 _headless = (!(isDedicated) && {!(hasInterface)});
 if (_headless) then {
+    //Set isHC in PreInit
 	isHC = true;
+    
 	// Random delay
 	for [{_x=1},{_x<=random 10000},{_x=_x+1}] do {};
+    
+    //Check for player object in PostInit call and add to headleassClients arry
+    while {isnull player} do {};
 	
-	if (!(player in headlessClients)) then {
+	if (!(isnull player) && {!(player in headlessClients)}) then {
 		headlessClients set [count headlessClients, player];
 		publicVariable "headlessClients";
 	};
