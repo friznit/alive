@@ -835,7 +835,7 @@ switch(_operation) do {
                                             _hosts = ["server"];
                                         };
                                     	case ("HC") : {
-                                            _hosts = ["server"];
+                                            _hosts = headlessClients;
                                         };
                                         case ("client") : {
 
