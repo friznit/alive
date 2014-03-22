@@ -137,7 +137,7 @@ class RscDisplayMPInterrupt: RscStandardDisplay
 			style = 0;
 			text = "ALiVE Menu";
 			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
-			y = "19.7 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			y = "18.6 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			colorBackground[] = {0.69,0.75,0.5,0.8};
@@ -147,12 +147,12 @@ class RscDisplayMPInterrupt: RscStandardDisplay
 			idc = 196;
 			text = "SERVER EXIT (Admin Only)";
 			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
-			y = "20.8 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
+			y = "19.7 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			action = "['SERVERABORT'] call alive_fnc_buttonAbort";
 		};
-/*		class ALiVEButtonSave: RscButtonMenu
+		class ALiVEButtonSave: RscButtonMenu
 		{
 			idc = 198;
 			text = "PLAYER EXIT";
@@ -161,7 +161,7 @@ class RscDisplayMPInterrupt: RscStandardDisplay
 			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			action = "['SAVE'] call alive_fnc_buttonAbort";
-		};*/
+		};
 		class ALIVEButtonAbort: RscButtonMenu
 		{
 			idc = 199;
