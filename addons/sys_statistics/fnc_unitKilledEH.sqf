@@ -120,7 +120,7 @@ if (GVAR(ENABLED)) then {
 			publicVariableServer QGVAR(UPDATE_EVENTS);
 		};
 
-		if (!(_killed iskindof "Man") && (_killedPos != "000000") && (_killedPos != "000999") ) then { // vehicle was killed
+		if (!(_killed iskindof "Man") && (_killedPos != "000000") && (_killedPos != "000999") && (_killedPos != "999000") && (_killedPos != "999999")  ) then { // vehicle was killed
 
 				if (isPlayer _killer || isPlayer (gunner _killer) || isPlayer (driver _killer)) then {
 					_data = _data + [["Player",getplayeruid _killer] , ["PlayerName",name _killer], ["playerGroup", [_killer] call ALiVE_fnc_getPlayerGroup] ];
