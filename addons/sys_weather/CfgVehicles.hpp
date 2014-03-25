@@ -44,47 +44,62 @@ class CfgVehicles {
 			                                {
 			                                	
 			                                	
-																							class initialRandom
+			                                        class initialArid
 			                                        {
-			                                                name = "Random";
+			                                                name = "Arid";
 			                                                value = 1;
+			                                        };
+			                                        class initialContinental
+			                                        {
+			                                                name = "Continental";
 			                                                default = 1;
-			                                        };
-			                                        class initialClear
-			                                        {
-			                                                name = "Clear";
 			                                                value = 2;
+			                                               
 			                                        };
-			                                        class initialOvercast
+ 																							class initialTropical
 			                                        {
-			                                                name = "Overcast";
+			                                                name = "Tropical";
 			                                                value = 3;
 			                                               
 			                                        };
- 																							class initialStormy
+ 																							class initialMediterranean
 			                                        {
-			                                                name = "Stormy";
+			                                                name = "Mediterranean";
 			                                                value = 4;
 			                                               
 			                                        };
+																							class initialRealWeather
+			                                        {
+			                                                name = "Real";
+			                                                value = 5;
+			                                        };
+			                                        /*
+																							class initialRandom
+			                                        {
+			                                                name = "Random";
+			                                                value = 6;
+			                                        };
+																							*/
 			                                };
 			                        };
 			                        
-			                        class weather_change_min_setting
+															 class weather_cycle_delay_setting
 			                        {
-			                                displayName = "$STR_ALIVE_WEATHER_CHANGE_MIN";
-			                                description = "$STR_ALIVE_WEATHER_CHANGE_MIN_COMMENT";
-                               			  defaultValue = 40;
+			                                displayName = "$STR_ALIVE_WEATHER_CYCLE_DELAY";
+			                                description = "$STR_ALIVE_WEATHER_CYCLE_DELAY_COMMENT";
+                               			  defaultValue = 1800;
+                                      typeName = "NUMBER";
+			                        };          
+			                        
+			                        class weather_cycle_variance_setting
+			                        {
+			                                displayName = "$STR_ALIVE_WEATHER_CYCLE_VARIANCE";
+			                                description = "$STR_ALIVE_WEATHER_CYCLE_VARIANCE_COMMENT";
+                               			  defaultValue = 0.2;
                                       typeName = "NUMBER";
 			                        };
 			                        
-			                        class weather_change_max_setting
-			                        {
-			                                displayName = "$STR_ALIVE_WEATHER_CHANGE_MAX";
-			                                description = "$STR_ALIVE_WEATHER_CHANGE_MAX_COMMENT";
-                               			  defaultValue = 60;
-                                      typeName = "NUMBER";
-			                        };           
+			                        
 			          };
 			                
 			  };

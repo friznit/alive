@@ -18,19 +18,25 @@
 	<English>Initial Weather:</English>
 </Key>
 <Key ID="STR_ALIVE_WEATHER_INITIAL_COMMENT">
-	<English>Initial weather setting</English>
+	<English>Initial weather setting. 
+		Arid - A region that receives very little precipitation. 
+		Continental - Climate is marked by variable weather patterns and a large seasonal temperature variance.
+		Tropical - Climate zone where winter rainfall is associated with large storms and most summer rainfall occurs during thunderstorms.
+		Mediterranean - The climate is characterized by hot, dry summers and cool, wet winters.
+		Real Weather - Real weather for a time and location you specifiy.
+		</English>
 </Key>
-<Key ID="STR_ALIVE_WEATHER_CHANGE_MIN">
-	<English>Change Min:</English>
+<Key ID="STR_ALIVE_WEATHER_CYCLE_VARIANCE">
+	<English>Cycle Variance:</English>
 </Key>
-<Key ID="STR_ALIVE_WEATHER_CHANGE_MIN_COMMENT">
-	<English>Minimum time in minutes for the weather to change</English>
+<Key ID="STR_ALIVE_WEATHER_CYCLE_VARIANCE_COMMENT">
+	<English>Change variance to weather between weather cycles</English>
 </Key>
-<Key ID="STR_ALIVE_WEATHER_CHANGE_MAX">
-	<English>Change Max:</English>
+<Key ID="STR_ALIVE_WEATHER_CYCLE_DELAY">
+	<English>Cycle Delay:</English>
 </Key>
-<Key ID="STR_ALIVE_WEATHER_CHANGE_MAX_COMMENT">
-	<English>Maximum time in minutes for the weather to change</English>
+<Key ID="STR_ALIVE_WEATHER_CYCLE_DELAY_COMMENT">
+	<English>Time in seconds between each weather cycle</English>
 </Key>
 </Container></Package></Project>
 
