@@ -26,6 +26,13 @@
                                 file = "\x\alive\addons\sys_weather\fnc_weatherCycleServer.sqf";
 																recompile = RECOMPILE;
                         }; 
+                        class weatherDebugEvent {
+                                description = "The weather debug cycle function";
+                                file = "\x\alive\addons\sys_weather\fnc_weatherDebugEvent.sqf";
+																recompile = RECOMPILE;
+                        }; 
+                        
+                        
                         
                         
                 };

@@ -63,9 +63,6 @@ private ["_nextWeatherChangeSeconds","_nextWeatherChangeMinutes","_newFog","_new
     }; 	 
 			
 
-
-
-				
 				 _newFog = _minimumFog + (_maximumFog - _minimumFog) * random 0.05;
 				 _newFogDecay = _newFog/10+random _newFog/100;
 				 _newFogAltitude = random 150;
@@ -90,11 +87,10 @@ private ["_nextWeatherChangeSeconds","_nextWeatherChangeMinutes","_newFog","_new
 						};
 						
 						
-				// if (_firstCycle) then { _period =  3600; } else { _period = 1800; };
+		
 	
  					_period = WEATHER_CYCLE_DELAY;
 				
-
 					_period setOvercast round(_newOvercast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces);
 					
 					if (_currenthour >= 20 || _currenthour <= 6 && random 100 < _fogProbability) then { 
@@ -122,35 +118,14 @@ private ["_nextWeatherChangeSeconds","_nextWeatherChangeMinutes","_newFog","_new
 	
 	
 				
-						while { (nextWeatherChange >= 0 && _cycle) } do {
+						while { ( round(overcast * (10 ^ _decimalplaces)) != round((_newOvercast) * (10 ^ _decimalplaces))  && _cycle) } do {
 							
-								_nextWeatherChangeSeconds = nextWeatherChange;
-								_nextWeatherChangeSeconds = round (_nextWeatherChangeSeconds);
-								_nextWeatherChangeMinutes = round (_nextWeatherChangeSeconds/60);
-										
-										
-										
+
 			if (_waiting) then {
-								hintSilent format["****************************\n Weather cycle will complete in:\n %1 seconds\n (%3 minutes)\n Current overcast setting: \n%2\n Overcast target value:\n%4\n****************************", _nextWeatherChangeSeconds, round(overcast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces), _nextWeatherChangeMinutes, round(_newOvercast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces)];
+								hintSilent format["****************************\n Current overcast setting: \n%1\n Overcast target value:\n%2\n****************************", round(overcast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces), round(_newOvercast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces)];
 							};	
 							
 							
-					
-				/*					
-										if (overcast > 0.85 && !_isRaining) then { 
-											if (_firstCycle) then { 0 setRain 1; } else { _nextWeatherChangeSeconds setRain 1; };
-											 _isRaining = true; 
-										};
-										if (overcast > 0.95 && !_isLightning ) then { 
-												if (_firstCycle) then { 0 setLightnings 1; } else { _nextWeatherChangeSeconds setLightnings 1; };
-											 _isLightning = true; 
-										};
-										
-										
-										if (overcast < 0.85 && _isRaining) then {  60 setRain 0;  _isRaining = false;  };
-										if (overcast < 0.95 && _isLightning) then {  60 setLightnings 0; _isLightning = false; };
-									
-				*/
 								if (round(overcast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces) == round(_newOvercast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces) && _waiting) then {  // if _newOvercast value reached
 									_waiting = false; 
 									

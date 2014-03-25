@@ -36,6 +36,16 @@ class CfgVehicles {
 			                                };
 			                        };
 			                        
+			                        
+			                         class weather_debug_cycle_setting
+			                        {
+			                                displayName = "$STR_ALIVE_WEATHER_DEBUG_CYCLE";
+			                                description = "$STR_ALIVE_WEATHER_DEBUG_CYCLE_COMMENT";
+                               			  defaultValue = 60;
+                                      typeName = "NUMBER";
+			                        };          
+			                        
+			                        
  															class weather_initial_setting
 			                        {
 			                                displayName = "$STR_ALIVE_WEATHER_INITIAL";

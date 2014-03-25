@@ -9,7 +9,13 @@
 	<English>Enable Debug:</English>
 </Key>
 <Key ID="STR_ALIVE_WEATHER_DEBUG_COMMENT">
-	<English>Enables Dynamic Weather Module Debug</English>
+	<English>Enables dynamic weather module debug mode</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_DEBUG_CYCLE">
+	<English>Debug Cycle Delay:</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_DEBUG_CYCLE_COMMENT">
+	<English>Cycle debug delay</English>
 </Key>
 <Key ID="STR_ALIVE_WEATHER_ERROR1">
 	<English>Only one dynamic weather module can be used</English>

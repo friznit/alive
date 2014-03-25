@@ -80,10 +80,12 @@ switch(_operation) do {
                 - initialise 
                 */
                 WEATHER_DEBUG = call compile (_logic getvariable ["weather_debug_setting","false"]);
+                WEATHER_DEBUG_CYCLE = _logic getvariable ["weather_debug_cycle_setting",60];
                 WEATHER_CYCLE_DELAY = _logic getvariable ["weather_cycle_delay_setting",1800];
                 WEATHER_CYCLE_VARIANCE = _logic getvariable ["weather_cycle_variance_setting",0.2];
                 Waituntil {!(isnil "WEATHER_DEBUG")};
 								call ALIVE_fnc_weatherServerInit;
+								if (WEATHER_DEBUG) then { [WEATHER_DEBUG_CYCLE] spawn ALIVE_fnc_weatherDebugEvent; };
 
         };
         case "destroy": {
