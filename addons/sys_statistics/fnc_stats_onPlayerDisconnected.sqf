@@ -84,7 +84,7 @@ if (GVAR(ENABLED)) then {
 		_rank = rank _unit;
 
 		// Grab shots fired data
-		_shotsFired = _unit getvariable QGVAR(shotsFired);
+		_shotsFired = _unit getvariable [QGVAR(shotsFired),[]];
 
 		_shotsFiredData = [];
 		{
