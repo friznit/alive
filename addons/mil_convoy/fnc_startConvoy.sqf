@@ -7,7 +7,7 @@ _intensity = _logic getvariable ["conv_intensity_setting",1];
 
 for "_j" from 1 to _intensity do {
         [_logic,_j] spawn {
-                private ["_timeout","_startpos","_roadRadius","_destpos","_destroada","_destroad","_endpos","_endroad","_grp","_front","_wp","_j","_convoyLocs","_debug","_sleep","_type","_starttime","_locations","_pos","_size","_list","_marker_start","_marker_dest","_marker_end"];
+                private ["_quit","_timeout","_startpos","_roadRadius","_destpos","_destroada","_destroad","_endpos","_endroad","_grp","_front","_wp","_j","_convoyLocs","_debug","_sleep","_type","_starttime","_locations","_pos","_size","_list","_marker_start","_marker_dest","_marker_end"];
                 
                 _logic = _this select 0;
                 _j = _this select 1;
@@ -38,7 +38,7 @@ for "_j" from 1 to _intensity do {
 				};
 				if (count _convoyLocs < 4) then {
 					_locations = nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["StrongPointArea","Strategic","CityCenter","FlatAreaCity","Airport","NameCity","NameCityCapital","NameVillage","NameMarine","BorderCrossing"],30000];
-					_roadRadius = 1500;
+					_roadRadius = 500;
                     {
 					   _pos = position _x;
 					   _size = size _x;
@@ -56,35 +56,48 @@ for "_j" from 1 to _intensity do {
                 
 				while {_intensity > 0} do {
                         //ALIVEPROFILERSTART("Convoys")
-						private ["_swag","_leader","_dir","_startroad","_list","_startroada"];
+						private ["_swag","_leader","_dir","_startroad","_list","_startroada","_pos","_loc"];
 						// Select a start position outside of player safe zone and not near base
 						
-                        while {
-                            _startroada = _convoyLocs call BIS_fnc_selectRandom;
-							_list = (_startroada nearRoads _roadRadius);
-                            _startroad = _list call BIS_fnc_selectRandom;
-                            _pos = getposATL _startroad;
-							[position _startroad] call ALIVE_fnc_intrigger;
-						} do {};
-
-                        _startpos =  getposATL _startroad; 
-                        _convoyLocs = _convoyLocs - [_startroada];
+                        _fncSelectPos = {
+                            private ["_pos","_loc"];
+                            
+                            _convoyLocs = _this;
+                            _roadRadius = 500;
                         
-                        diag_log format["_startpos: %1", _startpos];
+	                        waituntil {
+	                            private ["_quit","_road","_list"];
+	                            
+	                            _loc = _convoyLocs call BIS_fnc_selectRandom;
+                                
+								_list = (_loc nearRoads _roadRadius);
+	                            _quit = false;
+	                            
+	                            if (count _list > 5) then {
+		                            _road = _list call BIS_fnc_selectRandom;
+		                            _pos = getposATL _road;
+									
+		                            _quit = !([_pos] call ALIVE_fnc_intrigger);
+	                            } else {
+	                                _roadRadius = _roadRadius + 100;
+	                            };
+	                            _quit;
+							};
+	                        _convoyLocs = _convoyLocs - [_loc];
+                            _pos;
+                        };
                         
-                        _destroada = _convoyLocs call BIS_fnc_selectRandom;
-                        _list = (_destroada nearRoads _roadRadius);
-                        _destroad = _list call BIS_fnc_selectRandom;
-                        _destpos = getposATL _destroad;
-                        diag_log format["_destpos: %1", _destpos];
+                        _startpos = _convoyLocs call _fncSelectPos;
+                        _destpos = _convoyLocs call _fncSelectPos;
+                        _endpos = _convoyLocs call _fncSelectPos;
                         
-                        _endroada = _convoyLocs call BIS_fnc_selectRandom;
-                        _list = (_endroada nearRoads _roadRadius);
-                        _endroad = _list call BIS_fnc_selectRandom;
-                        _endpos = getposATL _endroad;
-                         diag_log format["_endpos: %1", _endpos];
-                         
-                        _startposList = _startpos nearRoads 500;
+                        ["ALiVE MIL CONVOYS Start: %1 Dest.: %2 End: %3", _startpos,_destpos,_endpos] call ALiVE_fnc_Dump;
+                        
+                        _startposList = [];
+                        _i = 500;
+                        while {count _startposList < 15} do {
+                            _startposList = _startpos nearRoads (_i + 100);
+                        };
 						
 						if (_debug) then {
 							private ["_t","_c"];

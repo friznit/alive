@@ -18,7 +18,7 @@
     _type = _type call BIS_fnc_selectRandom;
     
     if (_debug) then {
-		["ALiVE MIL CONVOY Spawning %1", _type] call ALiVE_fnc_DumpR;
+		["ALiVE MIL CONVOY Spawning %1 at %2", _type,_pos] call ALiVE_fnc_DumpR;
 	};
     
     _veh = [_pos, _dire, _type, _grop] call BIS_fnc_spawnVehicle;
