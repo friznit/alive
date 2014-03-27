@@ -328,7 +328,6 @@ switch(_operation) do {
 
             TRACE_1("After module init",_logic);
             "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
-
         };
 
         case "allowReset": {
@@ -511,7 +510,7 @@ switch(_operation) do {
             _unit  = _args select 0;
 
             // Check that the hash is found
-             if ([_unit getVariable QGVAR(player_data)] call CBA_fnc_isHash) then {
+             if ([_unit getVariable [QGVAR(player_data),[]]] call CBA_fnc_isHash) then {
 
                     // Grab player data from local player object
                     _playerHash = _unit getVariable QGVAR(player_data);
