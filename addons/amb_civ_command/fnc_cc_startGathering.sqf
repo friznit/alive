@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
     case "init":{
 
-        private ["_position","_minTimeout","_maxTimeout","_timeout","_timer"];
+        private ["_position","_minTimeout","_maxTimeout","_timeout","_timer","_pos"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
@@ -59,7 +59,8 @@ switch (_state) do {
         // DEBUG -------------------------------------------------------------------------------------
 
         //_position = getPosASL _agent findEmptyPosition[10, 100, "O_Ka60_F"];
-        _position = [position _agent,0,10,1,0,10,0] call BIS_fnc_findSafePos;
+        _pos = getposATL _agent;
+        _position = [_pos,0,10,1,0,10,0,[],[_pos]] call BIS_fnc_findSafePos;
 
         _minTimeout = _args select 0;
         _maxTimeout = _args select 1;

@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
 	case "init":{
 
-	    private ["_minTimeout","_maxTimeout","_position","_timeout","_timer"];
+	    private ["_minTimeout","_maxTimeout","_position","_timeout","_timer","_pos"];
 
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
@@ -63,7 +63,8 @@ switch (_state) do {
         _minTimeout = _args select 0;
 		_maxTimeout = _args select 1;
 
-        _position = [position _agent,0,10,1,0,10,0] call BIS_fnc_findSafePos;
+        _pos = getposATL _agent;
+        _position = [_pos,0,10,1,0,10,0,[],[_pos]] call BIS_fnc_findSafePos;
 
         if(count _position > 0) then {
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;

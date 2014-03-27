@@ -76,7 +76,7 @@ if(_vehicleMapSize < 1) then {
 
 
 // pos min max nearest water gradient shore
-_safePos = [_position,0,10,_vehicleMapSize,0,10,0] call BIS_fnc_findSafePos;
+_safePos = [_position,0,10,_vehicleMapSize,0,10,0,[],[_position]] call BIS_fnc_findSafePos;
 
 //["SAFE POS: %1",_safePos] call ALIVE_fnc_dump;
 
@@ -84,7 +84,7 @@ _center = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 
 //if(((_safePos select 0) == 10801.9) && ((_safePos select 1) == 10589.6)) then {
 if(((_safePos select 0) == (_center select 0)) && ((_safePos select 1) == (_center select 1))) then {
-	_position = [_position,0,20,3,0,20,0] call BIS_fnc_findSafePos;
+   _position = [_position,0,20,3,0,20,0,[],[_position]] call BIS_fnc_findSafePos;
 }else{
 	_position = _safePos;
 };
