@@ -46,7 +46,7 @@ if (isnil "ALiVE_BUSEH") then {
 	ARCHIVELIMIT = 100; //Limit items of archive
 	
 	"BUSE" addPublicVariableEventHandler {
-		private ["_from","_to","_subject","_body","_id","_data","_datastack","_status","_params","_code","_entry","_ret","_exec"];
+		private ["_from","_to","_subject","_body","_id","_data","_datastack","_status","_params","_code","_entry","_ret","_exec","_typeName"];
 		
 		_dataStack = _this select 1;
 		_id = _dataStack select 0;
@@ -66,11 +66,15 @@ if (isnil "ALiVE_BUSEH") then {
 		switch (_status) do {
 			case "new" : {
 				//Execute if local or "server";
-				if ((typename _to == "STRING") && {_to == "server"}) then {_exec = isServer} else {_exec = local _to};
+				if ((typeName _to == "STRING") && {_to == "server"}) then {_exec = isServer} else {_exec = local _to};
 				if (_exec) then {
+                    
+                    //["BUS TRACE INPUT %1 %2",_params,_code] call ALiVE_fnc_DumpR;
+                    if (!(isnil "_code") && {typeName _code == "STRING"}) then {_code = call compile _code};
 					if (isnil "_params") then {_ret = call _code} else {_ret = _params call _code};
 					if (isnil "_ret") then {_ret = "nothing"};
-					
+                    //["BUS TRACE EXECUTED %1 %2 RETURN: %3",_params,_code,_ret] call ALiVE_fnc_DumpR;
+                    
 					//Set and send execution status (if on server then the PVS is executed only on server and not other machines)
 					_status = "executed";
 					_entry = [_id,[_data,_status,_ret]];
@@ -197,12 +201,13 @@ _data = [_from,_to,_subject,_body];
 _id = (str(floor time) + str(floor(random 100)) + str(floor(time / random 3)));
 _id = call compile _id;
 
-if ((typename _to == "STRING") && {_to == "server"}) then {_localExec = isServer} else {_localExec = local _to};
+if ((typeName _to == "STRING") && {_to == "server"}) then {_localExec = isServer} else {_localExec = local _to};
 if (_localExec) then {
 	//Execute if to-adress is already local and do not transfer via net in this case
 	_params = _body select 0;
 	_code = _body select 1;
 	
+	if (!(isnil "_code") && {typeName _code == "STRING"}) then {_code = compile _code};
 	if (isnil "_params") then {_ret = call _code} else {_ret = _params call _code};
 	if (isnil "_ret") then {_ret = "nothing"};
 	
