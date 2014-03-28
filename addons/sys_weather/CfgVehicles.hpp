@@ -57,39 +57,41 @@ class CfgVehicles {
 			                                        class initialArid
 			                                        {
 			                                                name = "Arid";
-			                                                value = 1;
+			                                                value = 0;
 			                                        };
 			                                        class initialContinental
 			                                        {
 			                                                name = "Continental";
 			                                                default = 1;
-			                                                value = 2;
+			                                                value = 1;
 			                                               
 			                                        };
  																							class initialTropical
 			                                        {
 			                                                name = "Tropical";
-			                                                value = 3;
+			                                                value = 2;
 			                                               
 			                                        };
  																							class initialMediterranean
 			                                        {
 			                                                name = "Mediterranean";
-			                                                value = 4;
+			                                                value = 3;
 			                                               
 			                                        };
+																							class initialRandom
+			                                        {
+			                                                name = "Random";
+			                                                value = 4;
+			                                        };
+			                                        /*
 																							class initialRealWeather
 			                                        {
 			                                                name = "Real";
 			                                                value = 5;
 			                                        };
-			                                        /*
-																							class initialRandom
-			                                        {
-			                                                name = "Random";
-			                                                value = 6;
-			                                        };
-																							*/
+			                                       */
+
+																							
 			                                };
 			                        };
 			                        
@@ -108,6 +110,18 @@ class CfgVehicles {
                                			  defaultValue = 0.2;
                                       typeName = "NUMBER";
 			                        };
+			                      
+														/*
+    													class weather_real_location_setting
+    													{
+    														displayName = "$STR_ALIVE_WEATHER_REAL_LOCATION";
+			                          description = "$STR_ALIVE_WEATHER_REAL_LOCATION_COMMENT";
+                               	defaultValue = "";
+                                typeName = "STRING";
+    														
+    													};
+    													
+														*/			                  
 			                        
 			                        
 			          };

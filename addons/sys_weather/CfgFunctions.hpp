@@ -32,8 +32,11 @@
 																recompile = RECOMPILE;
                         }; 
                         
-                        
-                        
+                        class getWeather {
+                                description = "Gets real weather for a time and location function";
+                                file = "\x\alive\addons\sys_weather\fnc_getWeather.sqf";
+																recompile = RECOMPILE;
+                        };        
                         
                 };
         };

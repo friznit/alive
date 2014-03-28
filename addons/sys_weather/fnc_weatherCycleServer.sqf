@@ -121,7 +121,7 @@ private ["_nextWeatherChangeSeconds","_nextWeatherChangeMinutes","_newFog","_new
 						while { ( round(overcast * (10 ^ _decimalplaces)) != round((_newOvercast) * (10 ^ _decimalplaces))  && _cycle) } do {
 							
 
-			if (_waiting) then {
+			if (_waiting && WEATHER_DEBUG) then {
 								hintSilent format["****************************\n Current overcast setting: \n%1\n Overcast target value:\n%2\n****************************", round(overcast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces), round(_newOvercast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces)];
 							};	
 							

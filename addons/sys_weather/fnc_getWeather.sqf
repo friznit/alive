@@ -7,8 +7,7 @@ Description:
 Gets real weather for a time and location, returns a CBA_HASH of weather observations for the day
 
 Parameters:
-_this select 0: STRING - Date in YYYYMMDD format
-_this select 1: STRING - Location either as COUNTRY/CITY or LON,LAT
+_this select 0: STRING - Location either as COUNTRY/CITY or LON,LAT
 
 Returns:
 CBA_HASH - Weather conditions
@@ -25,28 +24,30 @@ See Also:
 Author:
 Tuplov
 Peer Reviewed:
-nil
+
 ---------------------------------------------------------------------------- */
 
-private ["_date","_location","_cmd","_result"];
+private ["_date","_location","_cmd","_result","_year","_response"];
 
-PARAMS_1(_location);
+_location = _this select 0;
 
 // Check param
 // TO DO
 
-_date = date;
 
-_year = "2012";
-_i = 0;
-{
-	if (_x < 10) then {
-		_date set [_i, "0" + str(_x)];
-	} else {
-		_date set [_i, _x];
-	};
-	_i = _i + 1;
-} foreach _date;
+				_date = date; 
+				_year = "2012";
+				_i = 0;
+				
+				{
+					if (_x < 10) then {
+						_date set [_i, "0" + str(_x)];
+					} else {
+						_date set [_i, _x];
+					};
+					_i = _i + 1;
+				} foreach _date;
+		
 
 
 // Create function call
