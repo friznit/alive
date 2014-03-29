@@ -25,6 +25,11 @@ Highhead
 private ["_modules"];
 
 _modules = _this;
+{_modules set [_foreachIndex,tolower(_x)]} foreach _modules;
+
+if !(isServer) exitwith {
+    ["server","ALiVE_PAUSE",[_modules,"ALiVE_fnc_pauseModule"]] call ALiVE_fnc_BUS;
+};
 
 if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiVE_ALLMODULES = +ALiVE_ALLMODULES};
 
@@ -33,10 +38,10 @@ if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiV
     
     _mod = _x;
     
-    if ((typeOf _mod) in _modules) then {
+    if (tolower(typeOf _mod) in _modules) then {
         
-    	_handler = _mod getvariable ["handler",[]];
-        _mainclass = _mod getvariable ["class",([_handler,"class",{}] call ALiVE_fnc_HashGet)];
+    	_handler = _mod getvariable ["handler",["",[],[],""]];
+        _mainclass = _mod getvariable ["class",([_handler,"class"] call ALiVE_fnc_HashGet)];
         
 	    switch (typeOf _mod) do {
             
@@ -45,7 +50,7 @@ if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiV
             
             //Default: Call "pause" operation of the module main class
 	        default {
-                if (count _handler > 0) then {
+                if (count (_handler select 1) > 0) then {
 			        [_handler,"pause",true] call _mainclass;
 				} else {
 			        [_mod,"pause",true] call _mainclass;
