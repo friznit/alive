@@ -1,10 +1,10 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
-item3[] = {"RECEIVE",4,4314,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
+item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,176.004105,761.434937,184.004105,769.434814,0.000000,""};
 item6[] = {"",7,210,174.604492,1.165148,182.604553,9.165155,0.000000,""};
@@ -78,7 +78,7 @@ link31[] = {24,25};
 link32[] = {25,26};
 link33[] = {26,10};
 link34[] = {27,28};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-502.499756,51.403549,436.480560,-10.081752,934,753,1};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-502.499756,51.403549,1.186096,-445.376221,934,753,1};
 window[] = {0,-1,-1,-1,-1,928,44,1667,44,1,951};
 *//*%FSM</HEAD>*/
 class FSM
@@ -110,6 +110,7 @@ class FSM
        "" \n
        "_lastanalyze = 0;" \n
        "_cycleTime = 120;" \n
+       "_pause = false;" \n
        "" \n
        "_sectionsamount_attack = [_OPCOM_HANDLER,""sectionsamount_attack"",4] call ALiVE_fnc_HashGet;" \n
        "_sectionsamount_reserve = [_OPCOM_HANDLER,""sectionsamount_reserve"",1] call ALiVE_fnc_HashGet;" \n
@@ -457,7 +458,7 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
            "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -663,7 +664,7 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
            "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -685,7 +686,7 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
            "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -707,7 +708,7 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
            "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;

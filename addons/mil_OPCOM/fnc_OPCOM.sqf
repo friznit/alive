@@ -339,6 +339,13 @@ switch(_operation) do {
                     
                     //Set value
                     _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                    
+                    _OPCOM_FSM = [_logic,"opcom_fsm",-1] call ALiVE_fnc_HashGet;
+                    _TACOM_FSM = [_logic,"tacom_fsm",-1] call ALiVE_fnc_HashGet;
+                    
+                    _TACOM_FSM setFSMvariable ["_pause",_args];
+                    _OPCOM_FSM setFSMvariable ["_pause",_args];
+                    
                     ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
 			};
 			_result = _args;
