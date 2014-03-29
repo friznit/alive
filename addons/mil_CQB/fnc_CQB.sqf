@@ -37,7 +37,9 @@ Author:
 Wolffy, Highhead
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS nil
+#define SUPERCLASS ALIVE_fnc_baseClassHash
+#define MAINCLASS ALIVE_fnc_CQB
+
 #define MTEMPLATE "ALiVE_CQB_%1"
 #define DEFAULT_BLACKLIST []
 #define DEFAULT_WHITELIST []
@@ -57,7 +59,7 @@ switch(_operation) do {
         case "init": {
                 //Initialise module game logic on all localities (clientside spawn)
                 _logic setVariable ["super", SUPERCLASS];
-                _logic setVariable ["class", ALIVE_fnc_CQB];
+                _logic setVariable ["class", MAINCLASS];
                 
                 TRACE_1("After module init",_logic);
 
@@ -290,6 +292,24 @@ switch(_operation) do {
             };
         };
         
+        case "pause": {
+			if(isNil "_args") then {
+				// if no new value was provided return current setting
+                _args = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+			} else {
+					// if a new value was provided set groups list
+					ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+                    
+                    private ["_state"];
+                    _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+                    if (_state && _args) exitwith {};
+                    
+                    //Set value
+                    _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                    ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+			};
+		};
+
         case "blacklist": {
             if !(isnil "_args") then {
 				if(typeName _args == "STRING") then {
@@ -805,139 +825,142 @@ switch(_operation) do {
 			
 			// spawn loop
 			_logic spawn {
-				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_hosts","_faction","_useDominantFaction","_inRange","_locality"];
+				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_hosts","_faction","_useDominantFaction","_inRange","_locality","_pause"];
 				_logic = _this;
 				
 				// default functions - can be overridden
 				// over-arching spawning loop
-					waitUntil{
+					waitUntil {
 						sleep (2 + random 1);
                         _debug = _logic getVariable ["debug",false];
 						_spawn = _logic getVariable ["spawnDistance", 1000];
                         _spawnHeli = _logic getVariable ["spawnDistanceHeli", 0];
                         _spawnJet = _logic getVariable ["spawnDistanceJet", 0];
                         _locality = _logic getVariable ["locality", "client"];
+                        _pause = MOD(CQB) getVariable ["pause", false];
                         
                         _useDominantFaction = call compile (MOD(CQB) getvariable ["CQB_UseDominantFaction","true"]);
                         
-						{
-							// if conditions are right, spawn a group and place them
-							_house = _x;
-						
-							// Check: house doesn't already have AI AND
-							// Check: if any players within spawn distance
-
-                            _nearplayers = [getposATL _house,_spawn,_spawnJet,_spawnHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir;
-							if ((isNil {_house getVariable "group"}) && {_nearplayers}) then {
-                                        
-                                    switch (_locality) do {
-                                    	case ("server") : {
-                                            _hosts = ["server"];
-                                        };
-                                    	case ("HC") : {
-                                            _hosts = headlessClients;
-                                        };
-                                        case ("client") : {
-
-		                                	_hosts = [];
-		                                    _players = [] call BIS_fnc_listPlayers;
-			                                for "_i" from 0 to (count _players - 1) do {
-			                                    _pl = _players select _i;
-		                                        
-		                                        //Choose players from List
-		                                        if !(isnull _pl) then {
-		                                            
-		                                            /* AI distribution not working properly yet
-		                                            _threshold = 10;
-		                                            _localunits = ({owner _x == owner _pl} count allUnits);
-		                                            _unitLimit = (ceil (count allUnits / count _players)) + _threshold;
-		                                            _canHost = (_localunits <= _unitLimit);
-		                                            diag_log format ["Local units %1 on %2 vs. Unitlimit %3 (near players %4) turns canhost %5 for house %6 on logic %7",_localunits,_pl,_unitLimit,_nearplayers,_canhost,_house,_logic];
-		                                            */
-				                                	_canhost = true;
+                        if (!_pause) then {
+							{
+								// if conditions are right, spawn a group and place them
+								_house = _x;
+							
+								// Check: house doesn't already have AI AND
+								// Check: if any players within spawn distance
+	
+	                            _nearplayers = [getposATL _house,_spawn,_spawnJet,_spawnHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir;
+								if ((isNil {_house getVariable "group"}) && {_nearplayers}) then {
+	                                        
+	                                    switch (_locality) do {
+	                                    	case ("server") : {
+	                                            _hosts = ["server"];
+	                                        };
+	                                    	case ("HC") : {
+	                                            _hosts = headlessClients;
+	                                        };
+	                                        case ("client") : {
+	
+			                                	_hosts = [];
+			                                    _players = [] call BIS_fnc_listPlayers;
+				                                for "_i" from 0 to (count _players - 1) do {
+				                                    _pl = _players select _i;
 			                                        
-			                                        if (((getPosATL _house distance _pl < _spawn) && _canHost) || {(_i == (count _players)-1) && {(count _hosts == 0)}}) then {
-				                                        _hosts set [count _hosts,_pl];
-				                                    };
-		                                        } else {
-		                                            //diag_log format ["CQB Warning: Null object on host (%1) not selected",_pl];
-		                                        };
-			                                };
-                                        };
-                                    };
-                                    
-                                    if (count _hosts > 0) then {
-                                		_host = _hosts call BIS_fnc_selectRandom;
-                                    
-	                                    if !(isnil "_host") then {
-		                                    _house setvariable ["group","preinit",true];
-                                            
-                                            if (_useDominantFaction) then {
-                                            	_faction = [getposATL _house, 250] call ALiVE_fnc_getDominantFaction;
-                                            	if (isnil "_faction") then {_faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom};
-                                            } else {
-                                                _faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom;
-                                            };
-                                            
-                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_faction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
-                                            
-                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
-                                            sleep 0.1;
-	                                    } else {
-	                                        ["CQB ERROR: Null object on host %1",_host] call ALiVE_fnc_DumpR;
+			                                        //Choose players from List
+			                                        if !(isnull _pl) then {
+			                                            
+			                                            /* AI distribution not working properly yet
+			                                            _threshold = 10;
+			                                            _localunits = ({owner _x == owner _pl} count allUnits);
+			                                            _unitLimit = (ceil (count allUnits / count _players)) + _threshold;
+			                                            _canHost = (_localunits <= _unitLimit);
+			                                            diag_log format ["Local units %1 on %2 vs. Unitlimit %3 (near players %4) turns canhost %5 for house %6 on logic %7",_localunits,_pl,_unitLimit,_nearplayers,_canhost,_house,_logic];
+			                                            */
+					                                	_canhost = true;
+				                                        
+				                                        if (((getPosATL _house distance _pl < _spawn) && _canHost) || {(_i == (count _players)-1) && {(count _hosts == 0)}}) then {
+					                                        _hosts set [count _hosts,_pl];
+					                                    };
+			                                        } else {
+			                                            //diag_log format ["CQB Warning: Null object on host (%1) not selected",_pl];
+			                                        };
+				                                };
+	                                        };
 	                                    };
-                                	} else {
-                                        ["CQB ERROR: No playerhosts for house %1!",_house] call ALiVE_fnc_DumpR;
-                                    };
-                            };
-						} forEach (_logic getVariable ["houses", []]);
-						{
-							_grp = _x;
-                            
-                            if !(isnil "_grp") then { 
-	                            _leader = leader _grp;
-								
-	                            // get house in question
-								_house = _leader getVariable ["house",(_grp getvariable "house")];
-	                            
-	                            //If house is defined then... (can be disabled due to "object streaming")
-	                            if !(isnil "_house") then {
-	                               
-		                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
-		                            // If not all units are flagged with house then flag them;
-		                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
-		                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
-		                            };
-									
-									// if group are all dead
-									// mark house as cleared
-									if (({alive _x} count (units _grp) == 0) || {!alive _house}) then {
-		                                
-		                                if (isnil "_house") exitwith {["CQB ERROR: _House didnt exist, when trying to clear it!"] call ALiVE_fnc_DumpR};
-										
-		                                // update central CQB house listings
-										[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
-									};
-	                            } else {
-	                                ["CQB ERROR: No House was defined for CQB group %1! Count units in group that have _house set: %2", _grp, {!(isnil {_x getvariable ["house",nil]})} count (units _grp)] call ALiVE_fnc_DumpR;
-									[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
+	                                    
+	                                    if (count _hosts > 0) then {
+	                                		_host = _hosts call BIS_fnc_selectRandom;
+	                                    
+		                                    if !(isnil "_host") then {
+			                                    _house setvariable ["group","preinit",true];
+	                                            
+	                                            if (_useDominantFaction) then {
+	                                            	_faction = [getposATL _house, 250] call ALiVE_fnc_getDominantFaction;
+	                                            	if (isnil "_faction") then {_faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom};
+	                                            } else {
+	                                                _faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom;
+	                                            };
+	                                            
+	                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_faction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
+	                                            
+	                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
+	                                            sleep 0.1;
+		                                    } else {
+		                                        ["CQB ERROR: Null object on host %1",_host] call ALiVE_fnc_DumpR;
+		                                    };
+	                                	} else {
+	                                        ["CQB ERROR: No playerhosts for house %1!",_house] call ALiVE_fnc_DumpR;
+	                                    };
 	                            };
-                            } else {
-                            	["CQB ERROR: No Group was defined! Moving on..."] call ALiVE_fnc_DumpR;
-                            };
-                            
-						} forEach (_logic getVariable ["groups",[]]);
-                        
-                        if (_debug) then {
-	                        _remaincount = count (_logic getVariable ["houses", []]);
-	                        _housesempty = {(isNil {_x getVariable "group"})} count (_logic getVariable ["houses", []]);
-							_activecount = count (_logic getVariable ["groups", []]);
-	                        _groupsempty = {(isNil {(leader _x) getVariable "house"})} count (_logic getVariable ["groups", []]);
+							} forEach (_logic getVariable ["houses", []]);
+							{
+								_grp = _x;
+	                            
+	                            if !(isnil "_grp") then { 
+		                            _leader = leader _grp;
+									
+		                            // get house in question
+									_house = _leader getVariable ["house",(_grp getvariable "house")];
+		                            
+		                            //If house is defined then... (can be disabled due to "object streaming")
+		                            if !(isnil "_house") then {
+		                               
+			                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
+			                            // If not all units are flagged with house then flag them;
+			                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
+			                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
+			                            };
+										
+										// if group are all dead
+										// mark house as cleared
+										if (({alive _x} count (units _grp) == 0) || {!alive _house}) then {
+			                                
+			                                if (isnil "_house") exitwith {["CQB ERROR: _House didnt exist, when trying to clear it!"] call ALiVE_fnc_DumpR};
+											
+			                                // update central CQB house listings
+											[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
+										};
+		                            } else {
+		                                ["CQB ERROR: No House was defined for CQB group %1! Count units in group that have _house set: %2", _grp, {!(isnil {_x getvariable ["house",nil]})} count (units _grp)] call ALiVE_fnc_DumpR;
+										[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
+		                            };
+	                            } else {
+	                            	["CQB ERROR: No Group was defined! Moving on..."] call ALiVE_fnc_DumpR;
+	                            };
+	                            
+							} forEach (_logic getVariable ["groups",[]]);
 	                        
-	                       ["CQB Population: %1 remaing positions | %2 active positions | inactive houses %3 | groups with no house %4...", _remaincount, _activecount,_housesempty,_groupsempty] call ALiVE_fnc_Dump; 
+	                        if (_debug) then {
+		                        _remaincount = count (_logic getVariable ["houses", []]);
+		                        _housesempty = {(isNil {_x getVariable "group"})} count (_logic getVariable ["houses", []]);
+								_activecount = count (_logic getVariable ["groups", []]);
+		                        _groupsempty = {(isNil {(leader _x) getVariable "house"})} count (_logic getVariable ["groups", []]);
+		                        
+		                       ["CQB Population: %1 remaing positions | %2 active positions | inactive houses %3 | groups with no house %4...", _remaincount, _activecount,_housesempty,_groupsempty] call ALiVE_fnc_Dump; 
+	                        };
+	
+							!([_logic,"active"] call ALiVE_fnc_CQB);
                         };
-
-						!([_logic,"active"] call ALiVE_fnc_CQB);
 					}; // end over-arching spawning loop
 					
 					// clean up groups if deactivated
