@@ -341,8 +341,8 @@ switch(_operation) do {
                     _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
                     ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
 			};
-		_result = _args;
-	};	 
+			_result = _args;
+		};
         
         case "createhashobject": {                
                 if (isServer) then {
