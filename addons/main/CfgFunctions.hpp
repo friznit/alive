@@ -200,7 +200,17 @@ class cfgFunctions {
                 description = "Checks if given modules are initialised";
                 file = "\x\alive\addons\main\fnc_isModuleInitialised.sqf";
 				recompile = RECOMPILE;
-			};			
+			};
+			class pauseModule {
+                description = "Pauses given module(s)";
+                file = "\x\alive\addons\main\fnc_pauseModule.sqf";
+				recompile = RECOMPILE;
+			};
+			class unPauseModule {
+                description = "activates given module(s) after pausing";
+                file = "\x\alive\addons\main\fnc_unPauseModule.sqf";
+				recompile = RECOMPILE;
+			};
 			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";
