@@ -10,7 +10,7 @@ item5[] = {"",7,210,-345.692139,-136.027100,-337.692108,-128.027069,0.000000,""}
 item6[] = {"",7,210,-347.610199,-817.749023,-339.610168,-809.749023,0.000000,""};
 item7[] = {"DEFEND_condition",4,218,-792.029785,-376.003082,-702.029785,-326.003082,4.000000,"DEFEND" \n "conditions"};
 item8[] = {"RESERVE_conditio",4,218,-647.107849,-374.023468,-557.107788,-324.023468,3.000000,"RESERVE" \n "conditions"};
-item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.579346,1.000000,"OPCOM" \n "RECEIVER"};
+item9[] = {"OPCOM_RECEIVER",4,4314,-717.074463,-838.579346,-627.074646,-788.579346,1.000000,"OPCOM" \n "RECEIVER"};
 item10[] = {"CUSTOM_condition",4,218,-506.692078,-374.296844,-416.692169,-324.296844,2.000000,"CUSTOM" \n "conditions"};
 item11[] = {"ORDER_TACOM",2,250,-929.397888,-266.917206,-430.130585,-222.714111,0.000000,"ORDER" \n "TACOM"};
 item12[] = {"TACOM_CONFIRM",4,218,-656.219116,-157.584137,-566.219116,-107.584137,0.000000,"TACOM" \n "CONFIRM"};
@@ -22,7 +22,7 @@ item17[] = {"INITIALIZE",2,250,-721.197266,-875.105042,-625.643738,-851.020447,0
 item18[] = {"NOT_BUSY",2,250,-930.812866,-157.222656,-840.812866,-107.222656,0.000000,"NOT BUSY"};
 item19[] = {"NOT_BUSY_1",2,250,-525.478333,-156.136017,-435.478302,-106.136017,0.000000,"NOT BUSY"};
 item20[] = {"COLLECT_TO_QUEUE",2,250,-717.153931,-752.207458,-627.154053,-702.207458,0.000000,"COLLECT" \n "TO QUEUE"};
-item21[] = {"ENTRIES_IN_QUEUE",4,4314,-716.046936,-682.136108,-626.046936,-632.136108,0.000000,"ENTRIES" \n "IN QUEUE"};
+item21[] = {"ENTRIES_IN_QUEUE",4,218,-716.046936,-682.136108,-626.046936,-632.136108,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"ANALYZE_Conditio",4,218,-1207.555176,-482.607452,-1117.554932,-432.607269,0.000000,"ANALYZE" \n "Conditions"};
 item23[] = {"PERFORM_ANALYSIS",2,250,-1209.390747,-710.863525,-1119.390747,-660.863525,0.000000,"PERFORM" \n "ANALYSIS"};
 item24[] = {"ANALYSIS_DONE",4,218,-1213.964233,-771.945801,-1123.964233,-721.945801,0.000000,"ANALYSIS" \n "DONE"};
@@ -81,8 +81,8 @@ link33[] = {25,16};
 link34[] = {26,27};
 link35[] = {27,23};
 link36[] = {28,29};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,78,6316128,1,-893.151184,-93.145668,9.161083,-854.169434,758,818,1};
-window[] = {0,-1,-1,-1,-1,1103,154,1924,154,1,775};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,78,6316128,1,-1133.341064,-333.335571,-367.152222,-1264.742920,828,929,1};
+window[] = {2,-1,-1,-1,-1,1191,242,2012,242,3,845};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -467,11 +467,12 @@ class FSM
         {
           priority = 1.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;" \n
+           "_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
-           "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+           "//See PreCondition and Action for _failsafe and _pause" \n
+           "(!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe}) && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -562,11 +563,12 @@ class FSM
         {
           priority = 1.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;" \n
+           "_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
-           "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+           "//See PreCondition and Action for _failsafe and _pause" \n
+           "(!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe}) && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -589,11 +591,12 @@ class FSM
         {
           priority = 1.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;" \n
+           "_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
-           "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+           "//See PreCondition and Action for _failsafe and _pause" \n
+           "(!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe}) && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -616,11 +619,12 @@ class FSM
         {
           priority = 1.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;" \n
+           "_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
-           "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+           "//See PreCondition and Action for _failsafe and _pause" \n
+           "(!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe}) && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -644,11 +648,12 @@ class FSM
         {
           priority = 1.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;" \n
+           "_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
-           "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+           "//See PreCondition and Action for _failsafe and _pause" \n
+           "(!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe}) && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -747,11 +752,12 @@ class FSM
         {
           priority = 1.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;"/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;" \n
+           "_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
            "" \n
-           "//See PreCondition and Action for _failsafe" \n
-           "!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe};"/*%FSM</CONDITION""">*/;
+           "//See PreCondition and Action for _failsafe and _pause" \n
+           "(!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe}) && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/

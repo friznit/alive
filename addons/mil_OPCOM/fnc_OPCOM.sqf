@@ -324,6 +324,26 @@ switch(_operation) do {
                 */
                 
         };
+        
+        case "pause": {
+			if(isNil "_args") then {
+				// if no new value was provided return current setting
+                _args = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+			} else {
+					// if a new value was provided set groups list
+					ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+                    
+                    private ["_state"];
+                    _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+                    if (_state && _args) exitwith {};
+                    
+                    //Set value
+                    _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                    ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+			};
+		_result = _args;
+	};	 
+        
         case "createhashobject": {                
                 if (isServer) then {
                         _result = [nil, "create"] call ALIVE_fnc_OPCOM;

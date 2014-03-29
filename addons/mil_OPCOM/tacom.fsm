@@ -4,7 +4,7 @@
 item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
-item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
+item3[] = {"RECEIVE",4,4314,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,176.004105,761.434937,184.004105,769.434814,0.000000,""};
 item6[] = {"",7,210,174.604492,1.165148,182.604553,9.165155,0.000000,""};
@@ -26,7 +26,7 @@ item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.5710
 item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
 item23[] = {"SELECT_SECTION",2,250,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
 item24[] = {"SECTION_SELECTED",4,218,-197.466095,422.042877,-107.466232,472.042908,0.000000,"SECTION" \n "SELECTED"};
-item25[] = {"PREPARE_ORDERS",2,4346,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
+item25[] = {"PREPARE_ORDERS",2,250,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
 item26[] = {"PREPARED",4,218,-202.116547,569.103699,-112.116524,619.103699,0.000000,"PREPARED"};
 item27[] = {"EXIT",4,218,-194.679718,900.017029,-104.679718,950.017029,99.000000,"EXIT"};
 item28[] = {"END",1,250,-194.260712,1031.765137,-104.260628,1081.765137,0.000000,"END"};
@@ -78,8 +78,8 @@ link31[] = {24,25};
 link32[] = {25,26};
 link33[] = {26,10};
 link34[] = {27,28};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-502.499756,51.403549,776.398071,315.721130,934,753,1};
-window[] = {0,-1,-1,-1,-1,975,166,1789,91,1,951};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-502.499756,51.403549,436.480560,-10.081752,934,753,1};
+window[] = {0,-1,-1,-1,-1,928,44,1667,44,1,951};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -457,9 +457,9 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
-           "!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
+           "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -663,9 +663,9 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
-           "!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
+           "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -685,9 +685,9 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
-           "!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
+           "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -707,9 +707,9 @@ class FSM
         {
           priority = 0.000000;
           to="COLLECT_TO_QUEUE";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_pause = [_OPCOM_HANDLER,""pause"",false] call ALiVE_fnc_HashGet;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_TACOM_status = ""waiting for data"";" \n
-           "!(isnil ""_TACOM_DATA"");"/*%FSM</CONDITION""">*/;
+           "!(isnil ""_TACOM_DATA"") && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
