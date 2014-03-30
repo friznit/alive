@@ -87,6 +87,24 @@ switch(_operation) do {
 
 			_result = _args;
         };
+        case "pause": {
+            if(typeName _args != "BOOL") then {
+                    // if no new value was provided return current setting
+                    _args = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+            } else {
+                    // if a new value was provided set groups list
+                    ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+
+                    private ["_state"];
+                    _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+                    if (_state && _args) exitwith {};
+
+                    //Set value
+                    _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                    ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+            };
+            _result = _args;
+        };
 		case "registerAnalysisJob": {
 			private ["_analysisJobs","_job","_jobID"];
 			
@@ -180,78 +198,82 @@ switch(_operation) do {
 				_logic = _this select 0;
 				_analysisJobs = _this select 1;
 				_debug = _this select 2;
-				
+
 				waituntil {
 					sleep 5;
-					
+
 					_jobsToCancel = [];
-				
-					{
-						_job = _x;
-						_args = [_job, "args"] call ALIVE_fnc_hashGet;
-						_lastRun = [_job, "lastRun"] call ALIVE_fnc_hashGet;
-						_runCount = [_job, "runCount"] call ALIVE_fnc_hashGet;
-						_runEvery = _args select 0;
-						_maxRunCount = _args select 1;
-						_jobMethod = _args select 2;
-						_jobID = _args select 3;
-						_jobArgs = _args select 4;
-						
-						//["ALIVE Live Analysis - job: %1 lastRun: %2 runEvery: %3 timer: %4 runTimes: %5 of %6",_jobID,_lastRun,_runEvery,(time - _lastRun),_runCount,_maxRunCount] call ALIVE_fnc_dump;
-						
-						// run count maxed cancel the job
-						if(_runCount > _maxRunCount && !(_maxRunCount == 0)) then {
-							_jobsToCancel set [count _jobsToCancel, _jobID];
-						}else{
-							if((time - _lastRun) > _runEvery) then {		
-							
-							
-								// DEBUG -------------------------------------------------------------------------------------
-								if(_debug) then {
-									["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-									["ALIVE Live Analysis - job: %1 lastRun: %2 runEvery: %3 runTimes: %4 of %5",_jobID,_lastRun,_runEvery,_runCount,_maxRunCount] call ALIVE_fnc_dump;
-								};
-								// DEBUG -------------------------------------------------------------------------------------
-								
-								
-								switch(_jobMethod) do {
-									case "gridProfileEntity":{
-										[_logic, "runGridProfileEntityAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
-									};
-									case "activeSectors":{
-                                        [_logic, "runActiveSectorAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+
+					if!([_logic, "pause"] call MAINCLASS) then {
+
+                        {
+                            _job = _x;
+                            _args = [_job, "args"] call ALIVE_fnc_hashGet;
+                            _lastRun = [_job, "lastRun"] call ALIVE_fnc_hashGet;
+                            _runCount = [_job, "runCount"] call ALIVE_fnc_hashGet;
+                            _runEvery = _args select 0;
+                            _maxRunCount = _args select 1;
+                            _jobMethod = _args select 2;
+                            _jobID = _args select 3;
+                            _jobArgs = _args select 4;
+
+                            //["ALIVE Live Analysis - job: %1 lastRun: %2 runEvery: %3 timer: %4 runTimes: %5 of %6",_jobID,_lastRun,_runEvery,(time - _lastRun),_runCount,_maxRunCount] call ALIVE_fnc_dump;
+
+                            // run count maxed cancel the job
+                            if(_runCount > _maxRunCount && !(_maxRunCount == 0)) then {
+                                _jobsToCancel set [count _jobsToCancel, _jobID];
+                            }else{
+                                if((time - _lastRun) > _runEvery) then {
+
+
+                                    // DEBUG -------------------------------------------------------------------------------------
+                                    if(_debug) then {
+                                        ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                                        ["ALIVE Live Analysis - job: %1 lastRun: %2 runEvery: %3 runTimes: %4 of %5",_jobID,_lastRun,_runEvery,_runCount,_maxRunCount] call ALIVE_fnc_dump;
                                     };
-									case "intelligenceItem":{
-										[_logic, "runIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
-									};
-									case "KIAIntelligenceItem":{
-                                        [_logic, "runKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                    // DEBUG -------------------------------------------------------------------------------------
+
+
+                                    switch(_jobMethod) do {
+                                        case "gridProfileEntity":{
+                                            [_logic, "runGridProfileEntityAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
+                                        case "activeSectors":{
+                                            [_logic, "runActiveSectorAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
+                                        case "intelligenceItem":{
+                                            [_logic, "runIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
+                                        case "KIAIntelligenceItem":{
+                                            [_logic, "runKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
+                                        case "AgentKIAIntelligenceItem":{
+                                            [_logic, "runAgentKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
+                                        case "reinforceIntelligenceItem":{
+                                            [_logic, "runReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
+                                        case "showFriendlies":{
+                                            [_logic, "runShowFriendliesAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
                                     };
-                                    case "AgentKIAIntelligenceItem":{
-                                        [_logic, "runAgentKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
-                                    };
-                                    case "reinforceIntelligenceItem":{
-                                        [_logic, "runReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
-                                    };
-                                    case "showFriendlies":{
-                                        [_logic, "runShowFriendliesAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
-                                    };
-								};
-								
-								[_job, "lastRun", time] call ALIVE_fnc_hashSet;
-								[_job, "runCount", (_runCount + 1)] call ALIVE_fnc_hashSet;
-							
-							};
-						};					
-				
-					} forEach (_analysisJobs select 2);
-					
+
+                                    [_job, "lastRun", time] call ALIVE_fnc_hashSet;
+                                    [_job, "runCount", (_runCount + 1)] call ALIVE_fnc_hashSet;
+
+                                };
+                            };
+
+                        } forEach (_analysisJobs select 2);
+
+                    };
+
 					{
 						[_logic, "cancelAnalysisJob", _x] call MAINCLASS;
 					} forEach _jobsToCancel;
-					
-					false 
-				};				
+
+					false
+				};
 			};
 		};
 		case "runGridProfileEntityAnalysis": {

@@ -248,9 +248,10 @@ switch(_operation) do {
         if (isServer) then {
 		
 			private ["_debug","_clusterType","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
-			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
+			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_faction"];
 						
 			_debug = [_logic, "debug"] call MAINCLASS;
+			_faction = [_logic, "faction"] call MAINCLASS;
 			
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -485,7 +486,7 @@ switch(_operation) do {
                             // start placement
                             [_logic, "placement"] call MAINCLASS;
                         }else{
-                            ["ALIVE CP - Warning no locations found for placement, you need to include civilian locations within the TAOR marker"] call ALIVE_fnc_dumpR;
+                            ["ALIVE CP [%1] - Warning no locations found for placement, you need to inclcude civilian locations within the TAOR marker",_faction] call ALIVE_fnc_dumpR;
 
                             // set module as started
                             _logic setVariable ["startupComplete", true];

@@ -76,6 +76,24 @@ switch(_operation) do {
 
 		_result = _args;
 	};
+	case "pause": {
+        if(typeName _args != "BOOL") then {
+            // if no new value was provided return current setting
+            _args = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+        } else {
+                // if a new value was provided set groups list
+                ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+
+                private ["_state"];
+                _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+                if (_state && _args) exitwith {};
+
+                //Set value
+                _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+        };
+        _result = _args;
+    };
 	case "createMarker": {
 	    private["_position","_faction","_markers","_debugColor","_markerID","_m"];
 
@@ -285,176 +303,202 @@ switch(_operation) do {
 
 				waituntil {
 					sleep (10);
-					
-					{
-						_moduleSide = _x select 0;
-						_moduleFactions = _x select 1;
-						_initialFactionBreakdowns = _x select 2;
-						_objectives = _x select 3;
 
-						{
+					if!([_logic, "pause"] call MAINCLASS) then {
 
-                            _reserve = [];
+                        {
+                            _moduleSide = _x select 0;
+                            _moduleFactions = _x select 1;
+                            _initialFactionBreakdowns = _x select 2;
+                            _objectives = _x select 3;
 
-                            // sort objective states
                             {
-                                _tacom_state = '';
-                                if("tacom_state" in (_x select 1)) then {
-                                    _tacom_state = [_x,"tacom_state"] call ALIVE_fnc_hashGet;
-                                };
 
-                                /*
-                                _id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
-                                _x call ALIVE_fnc_inspectHash;
-                                ["OBJ: %1 state: %2",_id, _tacom_state] call ALIVE_fnc_dump;
-                                */
+                                _reserve = [];
 
-                                switch(_tacom_state) do {
-                                    case "reserve":{
-                                        _reserve set [count _reserve, [_moduleSide, _x]];
-                                    };
-                                };
-
-                            } forEach _objectives;
-
-                            // side has reserved locations to resupply at
-                            if(count _reserve > 0) then {
-
-                                // loop through module factions and get a breakdown of
-                                // faction force composition from the profile handler
+                                // sort objective states
                                 {
-                                    _faction = _x;
+                                    _tacom_state = '';
+                                    if("tacom_state" in (_x select 1)) then {
+                                        _tacom_state = [_x,"tacom_state"] call ALIVE_fnc_hashGet;
+                                    };
 
-                                    _factionBreakdown = [ALIVE_profileHandler,"getFactionBreakdown",_faction] call ALIVE_fnc_profileHandler;
-                                    _initialFactionBreakdown = [_initialFactionBreakdowns,_faction] call ALIVE_fnc_hashGet;
+                                    /*
+                                    _id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
+                                    _x call ALIVE_fnc_inspectHash;
+                                    ["OBJ: %1 state: %2",_id, _tacom_state] call ALIVE_fnc_dump;
+                                    */
 
-                                    _currentTotalProfiles = [_factionBreakdown, "total"] call ALIVE_fnc_hashGet;
-                                    _initialTotalProfiles = [_initialFactionBreakdown, "total"] call ALIVE_fnc_hashGet;
-
-
-                                    // the faction has suffered losses
-                                    if(_currentTotalProfiles < _initialTotalProfiles) then {
-
-                                        _profileDeficit = _initialTotalProfiles - _currentTotalProfiles;
-
-                                        // DEBUG -------------------------------------------------------------------------------------
-                                        if(_debug) then {
-                                            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                            ["ALIVE ML - [%1] Has suffered losses. current force strength: %2 initial force strength: %3 ", _faction, _currentTotalProfiles, _initialTotalProfiles] call ALIVE_fnc_dump;
+                                    switch(_tacom_state) do {
+                                        case "reserve":{
+                                            _reserve set [count _reserve, [_moduleSide, _x]];
                                         };
-                                        // DEBUG -------------------------------------------------------------------------------------
+                                    };
 
-                                        private ["_entitiesDeficit","_vehiclesDeficit","_entitiesDeficit","_carDeficit","_tankDeficit","_armorDeficit","_truckDeficit",
-                                        "_group","_groups","_groupCount","_clusterCount","_groupPerCluster","_countProfiles","_totalCount"];
+                                } forEach _objectives;
 
-                                        // calculate force deficit of current forces in comparison to initial forces
-                                        _entitiesDeficit = ([_initialFactionBreakdown, "entity"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "entity"] call ALIVE_fnc_hashGet);
-                                        _vehiclesDeficit = ([_initialFactionBreakdown, "vehicle"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "vehicle"] call ALIVE_fnc_hashGet);
-                                        _carDeficit = ([_initialFactionBreakdown, "car"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "car"] call ALIVE_fnc_hashGet);
-                                        _tankDeficit = ([_initialFactionBreakdown, "tank"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "tank"] call ALIVE_fnc_hashGet);
-                                        _armorDeficit = ([_initialFactionBreakdown, "armor"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "armor"] call ALIVE_fnc_hashGet);
-                                        _truckDeficit = ([_initialFactionBreakdown, "truck"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "truck"] call ALIVE_fnc_hashGet);
+                                // side has reserved locations to resupply at
+                                if(count _reserve > 0) then {
 
-                                        //["Group deficits %1 Entities %2 Vehciles %3 Car %4 Tank %5 Armor %6 Truck",_entitiesDeficit,_vehiclesDeficit,_carDeficit,_tankDeficit,_armorDeficit,_truckDeficit] call ALIVE_fnc_dump;
+                                    // loop through module factions and get a breakdown of
+                                    // faction force composition from the profile handler
+                                    {
+                                        _faction = _x;
 
-                                        // generate groups list
-                                        _groups = [];
-                                        _totalCount = 0;
+                                        _factionBreakdown = [ALIVE_profileHandler,"getFactionBreakdown",_faction] call ALIVE_fnc_profileHandler;
+                                        _initialFactionBreakdown = [_initialFactionBreakdowns,_faction] call ALIVE_fnc_hashGet;
 
-                                        for "_i" from 0 to _entitiesDeficit -1 do {
-                                            _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                            if!(_group == "FALSE") then {
-                                                _groups set [count _groups, _group];
-                                            }
-                                        };
+                                        _currentTotalProfiles = [_factionBreakdown, "total"] call ALIVE_fnc_hashGet;
+                                        _initialTotalProfiles = [_initialFactionBreakdown, "total"] call ALIVE_fnc_hashGet;
 
-                                        for "_i" from 0 to _tankDeficit -1 do {
-                                            _group = ["Armored",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                            if!(_group == "FALSE") then {
-                                                _groups set [count _groups, _group];
-                                            };
-                                        };
 
-                                        for "_i" from 0 to _armorDeficit -1 do {
-                                            _group = ["Mechanized",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                            if!(_group == "FALSE") then {
-                                                _groups set [count _groups, _group];
-                                            }
-                                        };
+                                        // the faction has suffered losses
+                                        if(_currentTotalProfiles < _initialTotalProfiles) then {
 
-                                        for "_i" from 0 to _carDeficit -1 do {
-                                            _group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                            if!(_group == "FALSE") then {
-                                                _groups set [count _groups, _group];
-                                            };
-                                        };
-
-                                        _groups = _groups - ALIVE_groupBlacklist;
-
-                                        _groupCount = count _groups;
-
-                                        _clusterCount = count _reserve;
-                                        _groupPerCluster = floor(_groupCount / _clusterCount);
-                                        _countProfiles = 0;
-                                        _totalCount = 0;
-
-                                        // dont want to spawn too many groups on objectives if
-                                        // not many are held
-                                        if(_groupPerCluster > 5) then {
-
+                                            _profileDeficit = _initialTotalProfiles - _currentTotalProfiles;
 
                                             // DEBUG -------------------------------------------------------------------------------------
                                             if(_debug) then {
-                                                ["ALIVE ML - [%1] Group per cluster level %2 is high restrict to 2 groups per cluster", _faction, _groupPerCluster] call ALIVE_fnc_dump;
+                                                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                                                ["ALIVE ML - [%1] Has suffered losses. current force strength: %2 initial force strength: %3 ", _faction, _currentTotalProfiles, _initialTotalProfiles] call ALIVE_fnc_dump;
                                             };
                                             // DEBUG -------------------------------------------------------------------------------------
 
+                                            private ["_entitiesDeficit","_vehiclesDeficit","_entitiesDeficit","_carDeficit","_tankDeficit","_armorDeficit","_truckDeficit",
+                                            "_group","_groups","_groupCount","_clusterCount","_groupPerCluster","_countProfiles","_totalCount"];
 
-                                            _groupPerCluster = 2;
+                                            // calculate force deficit of current forces in comparison to initial forces
+                                            _entitiesDeficit = ([_initialFactionBreakdown, "entity"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "entity"] call ALIVE_fnc_hashGet);
+                                            _vehiclesDeficit = ([_initialFactionBreakdown, "vehicle"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "vehicle"] call ALIVE_fnc_hashGet);
+                                            _carDeficit = ([_initialFactionBreakdown, "car"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "car"] call ALIVE_fnc_hashGet);
+                                            _tankDeficit = ([_initialFactionBreakdown, "tank"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "tank"] call ALIVE_fnc_hashGet);
+                                            _armorDeficit = ([_initialFactionBreakdown, "armor"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "armor"] call ALIVE_fnc_hashGet);
+                                            _truckDeficit = ([_initialFactionBreakdown, "truck"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "truck"] call ALIVE_fnc_hashGet);
 
-                                        }else{
+                                            //["Group deficits %1 Entities %2 Vehciles %3 Car %4 Tank %5 Armor %6 Truck",_entitiesDeficit,_vehiclesDeficit,_carDeficit,_tankDeficit,_armorDeficit,_truckDeficit] call ALIVE_fnc_dump;
 
+                                            // generate groups list
+                                            _groups = [];
+                                            _totalCount = 0;
 
-                                            // DEBUG -------------------------------------------------------------------------------------
-                                            if(_debug) then {
-                                                ["ALIVE ML - [%1] groupCount: %2 clusterCount: %3 groupPerCluster: %4", _faction, _groupCount, _clusterCount, _groupPerCluster] call ALIVE_fnc_dump;
-                                            };
-                                            // DEBUG -------------------------------------------------------------------------------------
-
-                                        };
-
-                                        // place new groups around objectives
-                                        {
-                                            private ["_objective","_id","_center","_size","_playersInRange","_sector","_sectorData","_profiles",
-                                            "_profileCount","_sideProfiles","_sideProfile","_position"];
-
-                                            _objective = _x select 1;
-                                            _id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
-                                            _center = [_objective,"center"] call ALIVE_fnc_hashGet;
-                                            _size = [_objective,"size"] call ALIVE_fnc_hashGet;
-
-                                            // players near check
-                                            _playersInRange = [_center, 2000] call ALiVE_fnc_anyPlayersInRange;
-
-                                            // profiles near check
-                                            _sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-                                            _sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
-
-                                            _profileCount = 0;
-                                            if("entitiesBySide" in (_sectorData select 1)) then {
-                                                _sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
-                                            	_sideProfile = [_sideProfiles, _moduleSide] call ALIVE_fnc_hashGet;
-                                            	_profileCount = count _sideProfile;
+                                            for "_i" from 0 to _entitiesDeficit -1 do {
+                                                _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
+                                                if!(_group == "FALSE") then {
+                                                    _groups set [count _groups, _group];
+                                                }
                                             };
 
-                                            // do not reinforce if players are near and
-                                            // if there are more than 10 profiles in sector
-                                            if((_playersInRange == 0) && (_profileCount < 10)) then {
-                                                if(_totalCount < _groupCount) then {
+                                            for "_i" from 0 to _tankDeficit -1 do {
+                                                _group = ["Armored",_faction] call ALIVE_fnc_configGetRandomGroup;
+                                                if!(_group == "FALSE") then {
+                                                    _groups set [count _groups, _group];
+                                                };
+                                            };
 
-                                                    if(_groupPerCluster > 0) then {
+                                            for "_i" from 0 to _armorDeficit -1 do {
+                                                _group = ["Mechanized",_faction] call ALIVE_fnc_configGetRandomGroup;
+                                                if!(_group == "FALSE") then {
+                                                    _groups set [count _groups, _group];
+                                                }
+                                            };
 
-                                                        for "_i" from 0 to _groupPerCluster -1 do {
+                                            for "_i" from 0 to _carDeficit -1 do {
+                                                _group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
+                                                if!(_group == "FALSE") then {
+                                                    _groups set [count _groups, _group];
+                                                };
+                                            };
+
+                                            _groups = _groups - ALIVE_groupBlacklist;
+
+                                            _groupCount = count _groups;
+
+                                            _clusterCount = count _reserve;
+                                            _groupPerCluster = floor(_groupCount / _clusterCount);
+                                            _countProfiles = 0;
+                                            _totalCount = 0;
+
+                                            // dont want to spawn too many groups on objectives if
+                                            // not many are held
+                                            if(_groupPerCluster > 5) then {
+
+
+                                                // DEBUG -------------------------------------------------------------------------------------
+                                                if(_debug) then {
+                                                    ["ALIVE ML - [%1] Group per cluster level %2 is high restrict to 2 groups per cluster", _faction, _groupPerCluster] call ALIVE_fnc_dump;
+                                                };
+                                                // DEBUG -------------------------------------------------------------------------------------
+
+
+                                                _groupPerCluster = 2;
+
+                                            }else{
+
+
+                                                // DEBUG -------------------------------------------------------------------------------------
+                                                if(_debug) then {
+                                                    ["ALIVE ML - [%1] groupCount: %2 clusterCount: %3 groupPerCluster: %4", _faction, _groupCount, _clusterCount, _groupPerCluster] call ALIVE_fnc_dump;
+                                                };
+                                                // DEBUG -------------------------------------------------------------------------------------
+
+                                            };
+
+                                            // place new groups around objectives
+                                            {
+                                                private ["_objective","_id","_center","_size","_playersInRange","_sector","_sectorData","_profiles",
+                                                "_profileCount","_sideProfiles","_sideProfile","_position"];
+
+                                                _objective = _x select 1;
+                                                _id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
+                                                _center = [_objective,"center"] call ALIVE_fnc_hashGet;
+                                                _size = [_objective,"size"] call ALIVE_fnc_hashGet;
+
+                                                // players near check
+                                                _playersInRange = [_center, 2000] call ALiVE_fnc_anyPlayersInRange;
+
+                                                // profiles near check
+                                                _sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
+                                                _sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
+
+                                                _profileCount = 0;
+                                                if("entitiesBySide" in (_sectorData select 1)) then {
+                                                    _sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
+                                                    _sideProfile = [_sideProfiles, _moduleSide] call ALIVE_fnc_hashGet;
+                                                    _profileCount = count _sideProfile;
+                                                };
+
+                                                // do not reinforce if players are near and
+                                                // if there are more than 10 profiles in sector
+                                                if((_playersInRange == 0) && (_profileCount < 10)) then {
+                                                    if(_totalCount < _groupCount) then {
+
+                                                        if(_groupPerCluster > 0) then {
+
+                                                            for "_i" from 0 to _groupPerCluster -1 do {
+                                                                _group = _groups select _totalCount;
+                                                                _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+
+                                                                if!(surfaceIsWater _position) then {
+                                                                    _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+
+                                                                    // DEBUG -------------------------------------------------------------------------------------
+                                                                    if(_debug) then {
+                                                                        [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
+                                                                    };
+                                                                    // DEBUG -------------------------------------------------------------------------------------
+
+                                                                    // log event
+                                                                    _event = ['PROFILE_REINFORCE', [_position,_faction,_moduleSide],"ALIVE_ML"] call ALIVE_fnc_event;
+                                                                    _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+
+                                                                    _countProfiles = _countProfiles + count _profiles;
+                                                                    _totalCount = _totalCount + 1;
+                                                                };
+                                                            };
+
+                                                        }else{
                                                             _group = _groups select _totalCount;
                                                             _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
 
@@ -477,75 +521,53 @@ switch(_operation) do {
                                                                 _totalCount = _totalCount + 1;
                                                             };
                                                         };
-
-                                                    }else{
-                                                        _group = _groups select _totalCount;
-                                                        _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
-
-                                                        if!(surfaceIsWater _position) then {
-                                                            _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-
-
-                                                            // DEBUG -------------------------------------------------------------------------------------
-                                                            if(_debug) then {
-                                                                [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
-                                                            };
-                                                            // DEBUG -------------------------------------------------------------------------------------
-
-                                                            // log event
-                                                            _event = ['PROFILE_REINFORCE', [_position,_faction,_moduleSide],"ALIVE_ML"] call ALIVE_fnc_event;
-                                                            _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-
-                                                            _countProfiles = _countProfiles + count _profiles;
-                                                            _totalCount = _totalCount + 1;
-                                                        };
                                                     };
+                                                }else{
+
+
+                                                    // DEBUG -------------------------------------------------------------------------------------
+                                                    if(_debug) then {
+                                                        ["ALIVE ML - [%1] Players near, or more than 10 profiles in sector - do not spawn reinforcements", _faction] call ALIVE_fnc_dump;
+                                                    };
+                                                    // DEBUG -------------------------------------------------------------------------------------
+
+
                                                 };
-                                            }else{
+                                            } forEach _reserve;
 
 
-                                                // DEBUG -------------------------------------------------------------------------------------
-                                                if(_debug) then {
-                                                    ["ALIVE ML - [%1] Players near, or more than 10 profiles in sector - do not spawn reinforcements", _faction] call ALIVE_fnc_dump;
-                                                };
-                                                // DEBUG -------------------------------------------------------------------------------------
-
-
+                                            // DEBUG -------------------------------------------------------------------------------------
+                                            if(_debug) then {
+                                                ["ALIVE ML - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
+                                                ["ALIVE ML - Reinforcement completed"] call ALIVE_fnc_dump;
+                                                //[] call ALIVE_fnc_timer;
+                                                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
                                             };
-                                        } forEach _reserve;
+                                            // DEBUG -------------------------------------------------------------------------------------
 
-
-                                        // DEBUG -------------------------------------------------------------------------------------
-                                        if(_debug) then {
-                                            ["ALIVE ML - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
-                                            ["ALIVE ML - Reinforcement completed"] call ALIVE_fnc_dump;
-                                            //[] call ALIVE_fnc_timer;
-                                            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
                                         };
-                                        // DEBUG -------------------------------------------------------------------------------------
 
+                                    } forEach _moduleFactions;
+
+
+                                }else{
+
+
+                                    // DEBUG -------------------------------------------------------------------------------------
+                                    if(_debug) then {
+                                        ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                                        ["ALIVE ML - no reserved clusters for side, cannot reinforce %1", _moduleSide] call ALIVE_fnc_dump;
                                     };
-
-                                } forEach _moduleFactions;
-
-
-                            }else{
+                                    // DEBUG -------------------------------------------------------------------------------------
 
 
-                                // DEBUG -------------------------------------------------------------------------------------
-                                if(_debug) then {
-                                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                    ["ALIVE ML - no reserved clusters for side, cannot reinforce %1", _moduleSide] call ALIVE_fnc_dump;
                                 };
-                                // DEBUG -------------------------------------------------------------------------------------
 
+                            } forEach _moduleFactions;
 
-                            };
+                        } forEach _modulesObjectives;
 
-						} forEach _moduleFactions;
-						
-					} forEach _modulesObjectives;
+                    };
 					
 					false 
 				};

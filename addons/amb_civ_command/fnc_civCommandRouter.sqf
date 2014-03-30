@@ -81,6 +81,24 @@ switch(_operation) do {
         };
         _result = _args;
     };
+    case "pause": {
+        if(typeName _args != "BOOL") then {
+            // if no new value was provided return current setting
+            _args = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+        } else {
+                // if a new value was provided set groups list
+                ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+
+                private ["_state"];
+                _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+                if (_state && _args) exitwith {};
+
+                //Set value
+                _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+        };
+        _result = _args;
+    };
     case "state": {
         private["_state"];
 
@@ -264,59 +282,63 @@ switch(_operation) do {
             // start the manager loop
             waituntil {
 
-                // for each of the internal commands
-                {
-                    _activeCommand = _x;
+                if!([_logic, "pause"] call MAINCLASS) then {
 
-                    _agent = _activeCommand select 0;
-                    _agentID = _agent select 2 select 3; //[_logic,"agentID"] call ALIVE_fnc_hashGet;
+                    // for each of the internal commands
+                    {
+                        _activeCommand = _x;
 
-                    // DEBUG -------------------------------------------------------------------------------------
-                    if(_debug) then {
-                        [_agent, "debug", false] call ALIVE_fnc_civilianAgent;
-                        [_agent, "position", position (_agent select 2 select 5)] call ALIVE_fnc_civilianAgent;
-                        [_agent, "debug", true] call ALIVE_fnc_civilianAgent;
-                    };
-                    // DEBUG -------------------------------------------------------------------------------------
-
-                    _activeCommand = _activeCommand select 1;
-                    _commandType = _activeCommand select 1;
-
-                    // if we are a managed command
-                    if(_commandType == "managed") then {
-                        _commandName = _activeCommand select 0;
-                        _commandArgs = _activeCommand select 2;
+                        _agent = _activeCommand select 0;
+                        _agentID = _agent select 2 select 3; //[_logic,"agentID"] call ALIVE_fnc_hashGet;
 
                         // DEBUG -------------------------------------------------------------------------------------
                         if(_debug) then {
-                            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                            ["ALiVE Civ Command Router - Manage Command [%1] %2",_agentID,_activeCommand] call ALIVE_fnc_dump;
+                            [_agent, "debug", false] call ALIVE_fnc_civilianAgent;
+                            [_agent, "position", position (_agent select 2 select 5)] call ALIVE_fnc_civilianAgent;
+                            [_agent, "debug", true] call ALIVE_fnc_civilianAgent;
                         };
                         // DEBUG -------------------------------------------------------------------------------------
 
-                        // command state set, continue with the command
-                        if(count _activeCommand > 3) then {
-                            _nextState = _activeCommand select 3;
-                            _nextStateArgs = _activeCommand select 4;
+                        _activeCommand = _activeCommand select 1;
+                        _commandType = _activeCommand select 1;
 
-                            // if the managed command has not completed
-                            if!(_nextState == "complete") then {
-                                [_agent, _commandState, _commandName, _nextStateArgs, _nextState, _debug] call (call compile _commandName);
-                            }else{
-                                [_logic,"deactivate",_agent] call MAINCLASS;
+                        // if we are a managed command
+                        if(_commandType == "managed") then {
+                            _commandName = _activeCommand select 0;
+                            _commandArgs = _activeCommand select 2;
 
-                                // pick a new command to activate
-                                [_agent, _debug] call ALIVE_fnc_selectCivilianCommand;
+                            // DEBUG -------------------------------------------------------------------------------------
+                            if(_debug) then {
+                                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                                ["ALiVE Civ Command Router - Manage Command [%1] %2",_agentID,_activeCommand] call ALIVE_fnc_dump;
                             };
-                        } else {
-                            // no current command state set, must have just been activated
-                            [_agent, _commandState, _commandName, _commandArgs, "init", _debug] call (call compile _commandName);
+                            // DEBUG -------------------------------------------------------------------------------------
+
+                            // command state set, continue with the command
+                            if(count _activeCommand > 3) then {
+                                _nextState = _activeCommand select 3;
+                                _nextStateArgs = _activeCommand select 4;
+
+                                // if the managed command has not completed
+                                if!(_nextState == "complete") then {
+                                    [_agent, _commandState, _commandName, _nextStateArgs, _nextState, _debug] call (call compile _commandName);
+                                }else{
+                                    [_logic,"deactivate",_agent] call MAINCLASS;
+
+                                    // pick a new command to activate
+                                    [_agent, _debug] call ALIVE_fnc_selectCivilianCommand;
+                                };
+                            } else {
+                                // no current command state set, must have just been activated
+                                [_agent, _commandState, _commandName, _commandArgs, "init", _debug] call (call compile _commandName);
+                            };
                         };
-                    };
 
-                    sleep 0.2;
+                        sleep 0.2;
 
-                } forEach (_commandState select 2);
+                    } forEach (_commandState select 2);
+
+                };
 
                 // get current environment settings
                 _env = call ALIVE_fnc_getEnvironment;

@@ -11,14 +11,14 @@ item6[] = {"COMPLETE",4,218,116.471710,355.902557,206.472076,405.902588,0.000000
 item7[] = {"START",4,218,-192.425964,-19.086315,-102.425903,30.913666,2.000000,"START"};
 item8[] = {"ANALYSE",2,250,-121.637917,195.866745,-31.637772,245.866928,0.000000,"ANALYSE"};
 item9[] = {"DO_SPAWN",4,218,-123.076942,274.904297,-33.076859,324.904358,0.000000,"DO" \n "SPAWN"};
-item10[] = {"DONE",2,4346,-120.598183,507.647278,-33.938690,554.306946,0.000000,"DONE"};
+item10[] = {"DONE",2,250,-120.598183,507.647278,-33.938690,554.306946,0.000000,"DONE"};
 item11[] = {"SPAWN_LOOP",2,250,-122.133957,356.411804,-32.133873,406.411865,0.000000,"SPAWN" \n "LOOP"};
 item12[] = {"ITERATE",4,218,4.978054,356.221527,94.978058,406.221588,1.000000,"ITERATE"};
 item13[] = {"END__LOOP",4,218,-122.198143,431.177094,-32.198082,481.177094,0.000000,"END " \n "LOOP"};
-item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,0.000000,"WAIT"};
+item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,3.000000,"WAIT"};
 item15[] = {"ANALYSE_1",2,250,-273.843933,196.692368,-183.843842,246.692383,0.000000,"ANALYSE"};
 item16[] = {"DO__DESPAWN",4,218,-273.541809,276.163025,-183.541779,326.163147,1.000000,"DO " \n "DESPAWN"};
-item17[] = {"CHECK",2,250,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
+item17[] = {"CHECK",2,4346,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
 item18[] = {"DESPAWN_LOOP",2,250,-273.384827,357.735229,-183.384796,407.735413,0.000000,"DESPAWN" \n "LOOP"};
 item19[] = {"ITERATE",4,218,-396.179871,358.161102,-306.179688,408.161163,1.000000,"ITERATE"};
 item20[] = {"END__LOOP",4,218,-273.217529,432.999023,-183.217529,482.999084,0.000000,"END " \n "LOOP"};
@@ -86,7 +86,7 @@ link37[] = {28,10};
 link38[] = {29,15};
 link39[] = {30,8};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-784.846313,480.727020,817.802002,-463.948730,1017,1030,1};
-window[] = {2,-1,-1,-1,-1,1106,-1712,-89,208,3,1035};
+window[] = {2,-1,-1,-1,-1,924,-1894,-271,26,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -97,7 +97,7 @@ class FSM
     class INIT
     {
       name = "INIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_spawnTypeJetRadius"",""_spawnTypeHeliRadius"",""_spawnCycleTime"",""_activeLimiter"",""_lastSpawnTime"",""_doSpawn"",""_destroy"",""_debug""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_spawnDistance"",""_spawnTypeJetRadius"",""_spawnTypeHeliRadius"",""_spawnCycleTime"",""_activeLimiter"",""_lastSpawnTime"",""_doSpawn"",""_destroy"",""_debug"",""_pause""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
        "_side = _this select 1;" \n
@@ -110,6 +110,7 @@ class FSM
        "_lastSpawnTime = -_spawnCycleTime; // to prevent delay at mission start" \n
        "" \n
        "_destroy = false;" \n
+       "_pause = false;" \n
        "_debug = [_profileSystem,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "" \n
        "// debug ---------------------------------------" \n
@@ -149,11 +150,19 @@ class FSM
     {
       name = "TIMER";
       init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
-       "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller [%1] - timer last run:%2 cycle time: %3"",_side,time - _lastSpawnTime,_spawnCycleTime] call ALIVE_fnc_dump;" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller [%1] - timer last run:%2 cycle time: %3"",_side,time - _lastSpawnTime,_spawnCycleTime] call ALIVE_fnc_dump;" \n
        "};" \n
-       "// DEBUG -------------------------------------------------------------------------------------"/*%FSM</STATEINIT""">*/;
+       "*/" \n
+       "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "/*" \n
+       "if(_pause) then {" \n
+       "	[""ALIVE PROFILE SPAWNER PAUSED""] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "*/"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -163,7 +172,7 @@ class FSM
           priority = 2.000000;
           to="CHECK";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((time - _lastSpawnTime) > _spawnCycleTime)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((time - _lastSpawnTime) > _spawnCycleTime) && !(_pause)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -173,7 +182,7 @@ class FSM
           priority = 1.000000;
           to="TIMER";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((time - _lastSpawnTime) < _spawnCycleTime)"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((time - _lastSpawnTime) < _spawnCycleTime) && (_pause)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -223,12 +232,13 @@ class FSM
        "" \n
        "_analysisCount = _analysisCount + 30;" \n
        "" \n
-       "" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
-       "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller [%1] - spawner analysis: %2 of %3"",_side,_analysisCount,_countInactive] call ALIVE_fnc_dump;" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller [%1] - spawner analysis: %2 of %3"",_side,_analysisCount,_countInactive] call ALIVE_fnc_dump;" \n
        "};" \n
+       "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
        "" \n
@@ -238,10 +248,12 @@ class FSM
        "" \n
        "" \n
        "	// DEBUG -------------------------------------------------------------------------------------" \n
+       "	/*" \n
        "	if(_debug) then {" \n
-       "		//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "		//[""ALIVE Spawn controller [%1] - spawner analysis count to spawn: %2"",_side,_countToSpawn] call ALIVE_fnc_dump;" \n
+       "		[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "		[""ALIVE Spawn controller [%1] - spawner analysis count to spawn: %2"",_side,_countToSpawn] call ALIVE_fnc_dump;" \n
        "	};" \n
+       "	*/" \n
        "	// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
        "" \n
@@ -312,10 +324,12 @@ class FSM
     {
       name = "SPAWN_LOOP";
       init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
-       "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller [%1] - spawner loop %3 of %2"",_side,_countToSpawn,_spawnCount] call ALIVE_fnc_dump;" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller [%1] - spawner loop %3 of %2"",_side,_countToSpawn,_spawnCount] call ALIVE_fnc_dump;" \n
        "};" \n
+       "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
        "private [""_profile"",""_profileType"",""_profileID"",""_vehiclesInCommandOf"",""_vehicleProfile""];" \n
@@ -330,9 +344,11 @@ class FSM
        "	if(_activeEntityCount > _activeLimiter) then {" \n
        "" \n
        "           	// DEBUG -------------------------------------------------------------------------------------" \n
+       "		/*" \n
        "            if(_debug) then {" \n
-       "           	    //[""ALIVE Profile spawner - spawn limited reached destroying..  [%1]"",_profileID] call ALIVE_fnc_dump;" \n
+       "           	    [""ALIVE Profile spawner - spawn limited reached destroying..  [%1]"",_profileID] call ALIVE_fnc_dump;" \n
        "            };" \n
+       "		*/" \n
        "     	      // DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
        "            if (!(isnil ""_profile"") && {!(_profile select 2 select 1)}) then {" \n
@@ -353,9 +369,11 @@ class FSM
        "		_activeEntityCount = _activeEntityCount + 1;" \n
        "" \n
        "		// DEBUG -------------------------------------------------------------------------------------" \n
+       "		/*" \n
        "		if(_debug) then {" \n
-       "			//[""ALIVE Profile spawner - spawn [%1]"",_profileID] call ALIVE_fnc_dump;			" \n
+       "			[""ALIVE Profile spawner - spawn [%1]"",_profileID] call ALIVE_fnc_dump;			" \n
        "		};" \n
+       "		*/" \n
        "		// DEBUG -------------------------------------------------------------------------------------					" \n
        "        " \n
        "		switch(_profileType) do {" \n
@@ -443,10 +461,12 @@ class FSM
        "" \n
        "" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
-       "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller [%1] - despawner analysis: %2 of %3"",_side,_analysisCount,_countActive] call ALIVE_fnc_dump;" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller [%1] - despawner analysis: %2 of %3"",_side,_analysisCount,_countActive] call ALIVE_fnc_dump;" \n
        "};" \n
+       "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
        "" \n
@@ -456,10 +476,12 @@ class FSM
        "" \n
        "" \n
        "	// DEBUG -------------------------------------------------------------------------------------" \n
+       "	/*" \n
        "	if(_debug) then {" \n
-       "		//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "		//[""ALIVE Spawn controller [%1] - despawner analysis count to despawn: %2"",_side,_countToDespawn] call ALIVE_fnc_dump;" \n
+       "		[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "		[""ALIVE Spawn controller [%1] - despawner analysis count to despawn: %2"",_side,_countToDespawn] call ALIVE_fnc_dump;" \n
        "	};" \n
+       "	*/" \n
        "	// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
        "};"/*%FSM</STATEINIT""">*/;
@@ -526,15 +548,29 @@ class FSM
        "	_lastSpawnTime = time;" \n
        "};" \n
        "" \n
+       "//[""ALIVE SPAWNER RUNNING""] call ALIVE_fnc_dump;" \n
+       "" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
-       "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller [%1] - checking profiles to spawn: %3 despawn: %2"",_side,_countActive,_countInactive] call ALIVE_fnc_dump;" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller [%1] - checking profiles to spawn: %3 despawn: %2"",_side,_countActive,_countInactive] call ALIVE_fnc_dump;" \n
        "};" \n
+       "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "WAIT">*/
+        class WAIT
+        {
+          priority = 3.000000;
+          to="TIMER";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((_countActive == 0) && (_countInactive == 0))"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "HAS__ACTIVE">*/
         class HAS__ACTIVE
         {
@@ -555,16 +591,6 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "WAIT">*/
-        class WAIT
-        {
-          priority = 0.000000;
-          to="TIMER";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((_countActive == 0) && (_countInactive == 0))"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
       };
     };
     /*%FSM</STATE>*/
@@ -573,10 +599,12 @@ class FSM
     {
       name = "DESPAWN_LOOP";
       init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
-       "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller [%1] - despawner loop %3 of %2"",_side,_countToDespawn,_despawnCount] call ALIVE_fnc_dump;" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller [%1] - despawner loop %3 of %2"",_side,_countToDespawn,_despawnCount] call ALIVE_fnc_dump;" \n
        "};" \n
+       "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
        "private [""_profile"",""_profileType"",""_profileID""];" \n
@@ -588,9 +616,11 @@ class FSM
        "	_profileID = _profile select 2 select 4;" \n
        "" \n
        "	// DEBUG -------------------------------------------------------------------------------------" \n
+       "	/*" \n
        "	if(_debug) then {" \n
-       "		//[""ALIVE Profile spawner - despawn [%1]"",_profileID] call ALIVE_fnc_dump;			" \n
+       "		[""ALIVE Profile spawner - despawn [%1]"",_profileID] call ALIVE_fnc_dump;			" \n
        "	};" \n
+       "	*/" \n
        "	// DEBUG -------------------------------------------------------------------------------------				" \n
        "" \n
        "	switch(_profileType) do {" \n
@@ -646,10 +676,12 @@ class FSM
        "};" \n
        "" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
-       "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
-       "	//[""ALIVE Spawn controller [%1] - checking profiles to spawn: %2"",_side,_countInactive] call ALIVE_fnc_dump;" \n
+       "	[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
+       "	[""ALIVE Spawn controller [%1] - checking profiles to spawn: %2"",_side,_countInactive] call ALIVE_fnc_dump;" \n
        "};" \n
+       "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links

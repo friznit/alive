@@ -30,6 +30,7 @@ diag_log format["Timer End %1",_timeEnd];
 
 //========================================
 
+ALIVE_isPaused = true;
 [ALIVE_profileHandler,"reset"] call ALIVE_fnc_profileHandler;
 
 sleep 10;
@@ -45,3 +46,5 @@ _profiles call ALIVE_fnc_inspectHash;
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen"] call BIS_fnc_MP;
 ["ALiVE_LOADINGSCREEN"] call BIS_fnc_endLoadingScreen;
+
+ALIVE_isPaused = false;

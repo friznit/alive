@@ -105,7 +105,25 @@ switch(_operation) do {
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
 		
 		_result = _args;
-	};	
+	};
+	case "pause": {
+        if(typeName _args != "BOOL") then {
+            // if no new value was provided return current setting
+            _args = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+        } else {
+                // if a new value was provided set groups list
+                ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+
+                private ["_state"];
+                _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+                if (_state && _args) exitwith {};
+
+                //Set value
+                _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+        };
+        _result = _args;
+    };
 	// FIXME - state operation does not appear to be required
 	// either remove or fix to serialise to string
 	case "state": {
@@ -371,46 +389,49 @@ switch(_operation) do {
 				
 				waituntil {
 
-				    _countEffected = 0;
+				    if!([_logic, "pause"] call MAINCLASS) then {
 
-					{
-						// FIXME - is there a way to setVariable the unit and not reset it every loop?
-						_faction = faction _x;
-						_side = side _x;
-						
-						_aimingAccuracy = _x skill "aimingAccuracy";
-						_aimingShake = _x skill "aimingShake";
-						_aimingSpeed = _x skill "aimingSpeed";
-						
-						if ((_faction in (_factionSkills select 1)) && {!(_side == CIVILIAN)}) then {
-							_factionSkill = [_factionSkills,_faction] call ALIVE_fnc_hashGet;
-							
-							if((_aimingAccuracy != _factionSkill select 2) && (_aimingShake != _factionSkill select 3) && (_aimingSpeed != _factionSkill select 4)) then {
-								
-								_minSkill = _factionSkill select 0;
-								_maxSkill = _factionSkill select 1;
-								_diff = _maxSkill - _minSkill;
-								
-								_x setUnitAbility (_minSkill + (random _diff));
-								
-								_x setSkill ["aimingAccuracy", _factionSkill select 2];
-								_x setSkill ["aimingShake", _factionSkill select 3];
-								_x setSkill ["aimingSpeed", _factionSkill select 4];
-								_x setSkill ["endurance", _factionSkill select 5];
-								_x setSkill ["spotDistance", _factionSkill select 6];
-								_x setSkill ["spotTime", _factionSkill select 7];
-								_x setSkill ["courage", _factionSkill select 8];
-								_x setSkill ["reloadSpeed", _factionSkill select 9];
-								_x setSkill ["commanding", _factionSkill select 10];
-								_x setSkill ["general", _factionSkill select 11];
+                        _countEffected = 0;
 
-								_countEffected = _countEffected + 1;
-								
-								sleep 0.03;
-							};
-						};
-					} forEach allUnits;
+                        {
+                            // FIXME - is there a way to setVariable the unit and not reset it every loop?
+                            _faction = faction _x;
+                            _side = side _x;
 
+                            _aimingAccuracy = _x skill "aimingAccuracy";
+                            _aimingShake = _x skill "aimingShake";
+                            _aimingSpeed = _x skill "aimingSpeed";
+
+                            if ((_faction in (_factionSkills select 1)) && {!(_side == CIVILIAN)}) then {
+                                _factionSkill = [_factionSkills,_faction] call ALIVE_fnc_hashGet;
+
+                                if((_aimingAccuracy != _factionSkill select 2) && (_aimingShake != _factionSkill select 3) && (_aimingSpeed != _factionSkill select 4)) then {
+
+                                    _minSkill = _factionSkill select 0;
+                                    _maxSkill = _factionSkill select 1;
+                                    _diff = _maxSkill - _minSkill;
+
+                                    _x setUnitAbility (_minSkill + (random _diff));
+
+                                    _x setSkill ["aimingAccuracy", _factionSkill select 2];
+                                    _x setSkill ["aimingShake", _factionSkill select 3];
+                                    _x setSkill ["aimingSpeed", _factionSkill select 4];
+                                    _x setSkill ["endurance", _factionSkill select 5];
+                                    _x setSkill ["spotDistance", _factionSkill select 6];
+                                    _x setSkill ["spotTime", _factionSkill select 7];
+                                    _x setSkill ["courage", _factionSkill select 8];
+                                    _x setSkill ["reloadSpeed", _factionSkill select 9];
+                                    _x setSkill ["commanding", _factionSkill select 10];
+                                    _x setSkill ["general", _factionSkill select 11];
+
+                                    _countEffected = _countEffected + 1;
+
+                                    sleep 0.03;
+                                };
+                            };
+                        } forEach allUnits;
+
+                    };
 
 					// DEBUG -------------------------------------------------------------------------------------
                     if(_debug) then {

@@ -57,6 +57,8 @@ if(isServer) then {
 	[ALIVE_profileSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
 
+	_logic setVariable ["handler",ALIVE_profileSystem];
+
 	[ALIVE_profileSystem,"start"] call ALIVE_fnc_profileSystem;
 
 };

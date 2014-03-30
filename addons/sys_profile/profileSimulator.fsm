@@ -5,13 +5,14 @@ item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000
 item1[] = {"INIT_COMPLETE",4,218,-191.814072,-169.241699,-101.814072,-119.241699,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"_",-1,250,-440.685394,-235.585892,-437.600311,-235.585892,0.000000,""};
 item3[] = {"DESTROY",4,218,-71.868134,-91.997047,18.131832,-41.997047,0.000000,"DESTROY"};
-item4[] = {"END",1,4346,48.878220,-90.319656,138.878342,-40.319702,0.000000,"END"};
+item4[] = {"END",1,250,48.878220,-90.319656,138.878342,-40.319702,0.000000,"END"};
 item5[] = {"SWITCH",2,250,-190.815353,-90.341660,-100.815338,-40.341648,0.000000,"SWITCH"};
 item6[] = {"SIMULATE",4,218,-190.485504,-10.103760,-100.485519,39.896233,3.000000,"SIMULATE"};
-item7[] = {"SIMULATE",2,250,-189.632462,68.802841,-99.632439,118.802834,0.000000,"SIMULATE"};
+item7[] = {"SIMULATE",2,4346,-189.632462,68.802841,-99.632439,118.802834,0.000000,"SIMULATE"};
 item8[] = {"COMPLETE",4,218,-323.934753,68.486259,-233.934753,118.486214,0.000000,"COMPLETE"};
 item9[] = {"SCRIPT_DONE",4,218,-189.442581,144.570786,-99.442566,194.570831,0.000000,"SCRIPT" \n "DONE"};
 item10[] = {"MEASURE",2,250,-187.726379,224.287781,-101.067009,270.947083,0.000000,"MEASURE"};
+item11[] = {"WAIT",4,218,-313.421509,-89.343033,-223.421524,-39.343060,4.000000,"WAIT"};
 version=1;
 class LayoutItems
 {
@@ -30,13 +31,15 @@ link1[] = {1,5};
 link2[] = {3,4};
 link3[] = {5,3};
 link4[] = {5,6};
-link5[] = {6,7};
-link6[] = {7,9};
-link7[] = {8,5};
-link8[] = {9,10};
-link9[] = {10,8};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,93,6316128,1,-384.671082,187.342346,395.960999,-323.929016,851,1030,1};
-window[] = {2,-1,-1,-1,-1,1054,-1764,-141,156,3,869};
+link5[] = {5,11};
+link6[] = {6,7};
+link7[] = {7,9};
+link8[] = {8,5};
+link9[] = {9,10};
+link10[] = {10,8};
+link11[] = {11,5};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,94,6316128,1,-384.671082,187.342346,395.960999,-323.929016,851,1030,1};
+window[] = {2,-1,-1,-1,-1,924,-1894,-271,26,3,869};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -48,7 +51,7 @@ class FSM
     {
       name = "INIT";
       init = /*%FSM<STATEINIT""">*/"private [""_profileSystem"",""_startWait"",""_startSimulate"",""_simulationCycleTime"",""_lastSimulationTime"",""_doSimulation""," \n
-       """_destroy"",""_debug""];" \n
+       """_destroy"",""_pause"",""_debug""];" \n
        "" \n
        "_profileSystem = _this select 0;" \n
        "" \n
@@ -59,6 +62,7 @@ class FSM
        "_doSimulation = false;" \n
        "" \n
        "_destroy = false;" \n
+       "_pause = false;" \n
        "_debug = [_profileSystem,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_markers = [] call ALIVE_fnc_hashCreate;" \n
        "" \n
@@ -98,10 +102,24 @@ class FSM
     class SWITCH
     {
       name = "SWITCH";
-      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"/*" \n
+       "if(_pause) then {" \n
+       "	[""ALIVE PROFILE SIMULATOR PAUSED""] call ALIVE_fnc_dump;" \n
+       "};" \n
+       "*/"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "WAIT">*/
+        class WAIT
+        {
+          priority = 4.000000;
+          to="SWITCH";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_pause)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "SIMULATE">*/
         class SIMULATE
         {
@@ -130,11 +148,15 @@ class FSM
     {
       name = "SIMULATE";
       init = /*%FSM<STATEINIT""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+       "/*" \n
        "if(_debug) then {" \n
        "	//[""----------------------------------------------------------------------------------------""] call ALIVE_fnc_dump;" \n
        "	//[""ALIVE Simulated profile movement - started cycling at %1 second iterations"",_simulationCycleTime] call ALIVE_fnc_dump;" \n
        "};" \n
+       "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
+       "" \n
+       "//[""ALIVE SIMULATOR RUNNING""] call ALIVE_fnc_dump;" \n
        "" \n
        "private [""_handle""];" \n
        "" \n

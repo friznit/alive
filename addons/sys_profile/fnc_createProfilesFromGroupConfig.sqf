@@ -174,7 +174,7 @@ if(count _config > 0) then {
 		_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
 		_countCrewPositions = 0;
 		
-		//"VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;
+		//["VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;
 		
 		// count all non cargo positions
 		for "_i" from 0 to count _vehiclePositions -2 do {

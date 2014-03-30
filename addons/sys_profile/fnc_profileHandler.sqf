@@ -408,9 +408,8 @@ switch(_operation) do {
 									[_profile, "debug", true] call ALIVE_fnc_profileVehicle;
 								};
 							};
-							["ALIVE Profile Handler"] call ALIVE_fnc_dump;
-							["Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
-							_profile call ALIVE_fnc_inspectHash;
+							["ALIVE Profile Handler - Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
+							//_profile call ALIVE_fnc_inspectHash;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 						
@@ -592,9 +591,8 @@ switch(_operation) do {
 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
-							["ALIVE Profile Handler"] call ALIVE_fnc_dump;
-							["Un-Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
-							_profile call ALIVE_fnc_inspectHash;
+							["ALIVE Profile Handler - Un-Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
+							//_profile call ALIVE_fnc_inspectHash;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 						

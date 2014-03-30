@@ -98,6 +98,24 @@ switch(_operation) do {
                 };                
                 _result = _args;
         };
+        case "pause": {
+            if(typeName _args != "BOOL") then {
+                // if no new value was provided return current setting
+                _args = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+            } else {
+                    // if a new value was provided set groups list
+                    ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+
+                    private ["_state"];
+                    _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
+                    if (_state && _args) exitwith {};
+
+                    //Set value
+                    _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
+                    ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+            };
+            _result = _args;
+        };
 		case "state": {
 				private["_state"];
                 
@@ -278,46 +296,50 @@ switch(_operation) do {
 			
 				// start the manager loop
 				waituntil {
+
+				    if!([_logic, "pause"] call MAINCLASS) then {
 					
-					// for each of the internal commands 
-					{						
-						_activeCommand = _x;
-						
-						_profile = _activeCommand select 0;
-						_profileID = _profile select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
-						
-						_activeCommand = _activeCommand select 1;
-						_commandType = _activeCommand select 1;
-						
-						// if we are a managed command
-						if(_commandType == "managed") then {
-							_commandName = _activeCommand select 0;
-							_commandArgs = _activeCommand select 2;
-							
-							// DEBUG -------------------------------------------------------------------------------------
-							if(_debug) then {
-								["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-								["ALiVE Command Router - Manage Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
-							};
-							// DEBUG -------------------------------------------------------------------------------------
-						
-							// command state set, continue with the command
-							if(count _activeCommand > 3) then {
-								_nextState = _activeCommand select 3;
-								_nextStateArgs = _activeCommand select 4;
-								
-								// if the managed command has not completed
-								if!(_nextState == "complete") then {
-									[_profile, _commandState, _commandName, _nextStateArgs, _nextState, true] call (call compile _commandName);
-								}else{
-									[_logic,"deactivate",_profile] call MAINCLASS;
-								};
-							} else {							
-								// no current command state set, must have just been activated
-								[_profile, _commandState, _commandName, _commandArgs, "init", true] call (call compile _commandName);
-							};
-						}
-					} forEach (_commandState select 2);
+                        // for each of the internal commands
+                        {
+                            _activeCommand = _x;
+
+                            _profile = _activeCommand select 0;
+                            _profileID = _profile select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+
+                            _activeCommand = _activeCommand select 1;
+                            _commandType = _activeCommand select 1;
+
+                            // if we are a managed command
+                            if(_commandType == "managed") then {
+                                _commandName = _activeCommand select 0;
+                                _commandArgs = _activeCommand select 2;
+
+                                // DEBUG -------------------------------------------------------------------------------------
+                                if(_debug) then {
+                                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                                    ["ALiVE Command Router - Manage Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
+                                };
+                                // DEBUG -------------------------------------------------------------------------------------
+
+                                // command state set, continue with the command
+                                if(count _activeCommand > 3) then {
+                                    _nextState = _activeCommand select 3;
+                                    _nextStateArgs = _activeCommand select 4;
+
+                                    // if the managed command has not completed
+                                    if!(_nextState == "complete") then {
+                                        [_profile, _commandState, _commandName, _nextStateArgs, _nextState, true] call (call compile _commandName);
+                                    }else{
+                                        [_logic,"deactivate",_profile] call MAINCLASS;
+                                    };
+                                } else {
+                                    // no current command state set, must have just been activated
+                                    [_profile, _commandState, _commandName, _commandArgs, "init", true] call (call compile _commandName);
+                                };
+                            }
+                        } forEach (_commandState select 2);
+
+                    };
 					
 					sleep 5;
 		

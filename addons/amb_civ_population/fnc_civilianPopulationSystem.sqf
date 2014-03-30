@@ -133,16 +133,39 @@ switch(_operation) do {
 
         };
     };
+    case "pause": {
+            if(typeName _args != "BOOL") then {
+                    _args = [_logic,"debug"] call ALIVE_fnc_hashGet;
+            } else {
+                    [_logic,"debug",_args] call ALIVE_fnc_hashSet;
+            };
+            ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+            if(_args) then {
+
+                _clusterActivatorFSM = [_logic, "activator_FSM"] call ALiVE_fnc_HashGet;
+                _clusterActivatorFSM setFSMVariable ["_pause",true];
+
+                [ALIVE_civCommandRouter, "pause", true] call ALIVE_fnc_civCommandRouter;
+
+            }else{
+
+                _clusterActivatorFSM = [_logic, "activator_FSM"] call ALiVE_fnc_HashGet;
+                _clusterActivatorFSM setFSMVariable ["_pause",false];
+
+                [ALIVE_civCommandRouter, "pause", false] call ALIVE_fnc_civCommandRouter;
+
+            };
+
+            _result = _args;
+    };
     case "destroy": {
         [_logic, "debug", false] call MAINCLASS;
         if (isServer) then {
             [_logic, "destroy"] call SUPERCLASS;
 
-            _profileSimulatorFSM = [_logic, "simulator_FSM"] call ALiVE_fnc_HashGet;
-            _profileSimulatorFSM setFSMVariable ["_destroy",true];
-
-            _profileSpawnerFSM = [_logic, "simulator_FSM"] call ALiVE_fnc_HashGet;
-            _profileSpawnerFSM setFSMVariable ["_destroy",true];
+            _activatorFSM = [_logic, "activator_FSM"] call ALiVE_fnc_HashGet;
+            _activatorFSM setFSMVariable ["_destroy",true];
 
         };
     };

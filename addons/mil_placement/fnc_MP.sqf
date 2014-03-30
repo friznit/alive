@@ -289,10 +289,10 @@ switch(_operation) do {
         if (isServer) then {
 		
 			private ["_debug","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
-			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_error"];
+			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_error","_faction"];
 			
 			_debug = [_logic, "debug"] call MAINCLASS;
-			
+			_faction = [_logic, "faction"] call MAINCLASS;
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
@@ -462,7 +462,7 @@ switch(_operation) do {
                             // start placement
                             [_logic, "placement"] call MAINCLASS;
                         }else{
-                            ["ALIVE MP - Warning no locations found for placement, you need to inlcude military locations within the TAOR marker"] call ALIVE_fnc_dumpR;
+                            ["ALIVE MP [%1] - Warning no locations found for placement, you need to include military locations within the TAOR marker",_faction] call ALIVE_fnc_dumpR;
 
                             // set module as started
                             _logic setVariable ["startupComplete", true];

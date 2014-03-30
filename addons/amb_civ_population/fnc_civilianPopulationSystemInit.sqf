@@ -60,6 +60,8 @@ if(isServer) then {
 	[ALIVE_civilianPopulationSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_civilianPopulationSystem;
 	[ALIVE_civilianPopulationSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_civilianPopulationSystem;
 
+	_logic setVariable ["handler",ALIVE_civilianPopulationSystem];
+
 	[ALIVE_civilianPopulationSystem,"start"] call ALIVE_fnc_civilianPopulationSystem;
 };
 
