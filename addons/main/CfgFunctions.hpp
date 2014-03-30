@@ -211,6 +211,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\main\fnc_unPauseModule.sqf";
 				recompile = RECOMPILE;
 			};
+			class factionSide {
+                description = "Returns side of given faction";
+                file = "\x\alive\addons\main\fnc_factionSide.sqf";
+				recompile = RECOMPILE;
+			};
 			/* Enable when ZEUS is stable
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";

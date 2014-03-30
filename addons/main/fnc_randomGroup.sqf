@@ -171,9 +171,8 @@ if !(count _facs == 0) then {
 	//player globalChat format["type: %1 fac: %2", _type, _fac];
 } else {
     //randomspawnbytype
-    _side = EAST;
 	["ALIVE-%1 fn_randomgroup defaulting fnc_randomgroupbytype", time] call ALiVE_fnc_Dump;
-    _spawnGrp = [_pos,_side,_type,_factionInput] call ALIVE_fnc_randomgroupbytype;
+    _spawnGrp = [_pos,(_factionInput call ALiVE_fnc_factionSide),_type,_factionInput] call ALIVE_fnc_randomgroupbytype;
 };
 
 if (isnil "_spawnGrp") then {["ALIVE-%1 fn_randomgroup failed, no group created", time] call ALiVE_fnc_Dump};
