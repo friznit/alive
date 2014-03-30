@@ -45,13 +45,13 @@ DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,[]);
 
 switch(_operation) do {
-        case "init": {                
+        case "init": {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
                                 - enabled/disabled
                 */
-                
+
                 // Ensure only one module is used
                 if (isServer && !(isNil QMOD(weather))) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_WEATHER_ERROR1");
@@ -64,7 +64,7 @@ switch(_operation) do {
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", ALIVE_fnc_weather];
                         _logic setVariable ["init", true, true];
-                        INITIAL_WEATHER = call compile (_logic getvariable ["weather_initial_setting","false"]);
+                        INITIAL_WEATHER = _logic getvariable ["weather_initial_setting",4];
                 } else {
                         // if client clean up client side game logics as they will transfer
                         // to servers on client disconnect
@@ -73,21 +73,22 @@ switch(_operation) do {
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
                 waitUntil {!isNil QMOD(weather)};
-                waitUntil {MOD(weather) getVariable ["init", false]};        
+                waitUntil {MOD(weather) getVariable ["init", false]};
 
                 /*
                 VIEW - purely visual
-                - initialise 
+                - initialise
                 */
                 WEATHER_DEBUG = call compile (_logic getvariable ["weather_debug_setting","false"]);
                 WEATHER_DEBUG_CYCLE = _logic getvariable ["weather_debug_cycle_setting",60];
                 WEATHER_CYCLE_DELAY = _logic getvariable ["weather_cycle_delay_setting",1800];
                 WEATHER_CYCLE_VARIANCE = _logic getvariable ["weather_cycle_variance_setting",0.2];
-                WEATHER_CYCLE_REAL_LOCATION = call compile (_logic getvariable ["weather_real_location_setting",""]);
-                
+                WEATHER_CYCLE_REAL_LOCATION = _logic getvariable ["weather_real_location_setting",""];
+
                 Waituntil {!(isnil "WEATHER_DEBUG")};
-								call ALIVE_fnc_weatherServerInit;
-								if (WEATHER_DEBUG) then { [WEATHER_DEBUG_CYCLE] spawn ALIVE_fnc_weatherDebugEvent; };
+				[] call ALIVE_fnc_weatherServerInit;
+
+				if (WEATHER_DEBUG) then { [WEATHER_DEBUG_CYCLE] spawn ALIVE_fnc_weatherDebugEvent; };
 
         };
         case "destroy": {

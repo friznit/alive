@@ -50,6 +50,7 @@ class CfgVehicles {
 			                        {
 			                                displayName = "$STR_ALIVE_WEATHER_INITIAL";
 			                                description = "$STR_ALIVE_WEATHER_INITIAL_COMMENT";
+			                                typeName = "NUMBER";
 			                                class Values
 			                                {
 			                                	
@@ -83,13 +84,13 @@ class CfgVehicles {
 			                                                name = "Random";
 			                                                value = 4;
 			                                        };
-			                                        /*
+			                                       
 																							class initialRealWeather
 			                                        {
 			                                                name = "Real";
 			                                                value = 5;
 			                                        };
-			                                       */
+			                                       
 
 																							
 			                                };
@@ -111,17 +112,17 @@ class CfgVehicles {
                                       typeName = "NUMBER";
 			                        };
 			                      
-														/*
+														
     													class weather_real_location_setting
     													{
     														displayName = "$STR_ALIVE_WEATHER_REAL_LOCATION";
 			                          description = "$STR_ALIVE_WEATHER_REAL_LOCATION_COMMENT";
-                               	defaultValue = "";
+                               	defaultValue = "COUNTRY/CITY";
                                 typeName = "STRING";
     														
     													};
     													
-														*/			                  
+																                  
 			                        
 			                        
 			          };

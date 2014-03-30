@@ -27,43 +27,60 @@ Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
 
-private ["_date","_location","_cmd","_result","_year","_response"];
+private ["_date","_location","_cmd","_result","_year","_response","_newloc"];
 
 _location = _this select 0;
 
-// Check param
-// TO DO
-
-
-				_date = date; 
-				_year = "2012";
-				_i = 0;
-				
-				{
-					if (_x < 10) then {
-						_date set [_i, "0" + str(_x)];
-					} else {
-						_date set [_i, _x];
-					};
-					_i = _i + 1;
-				} foreach _date;
-		
-
-
+// Check Location
 // Create function call
-_cmd = format ["GetWeather [""%1"",""%2"",""%3"",""%4"",""%5""]", _year, _date select 1, _date select 2, _date select 3, _location];
+_cmd = format ["GetWeatherLocation [""%1""]", _location];
 
 diag_log format ["cmd: %1",_cmd];
 
 // Send command to plugin
-_response = [_cmd] call ALIVE_fnc_sendToPlugin;
+_newloc = [_cmd] call ALIVE_fnc_sendToPlugin;
 
-diag_log format ["JSON: %1",_response];
+diag_log format ["JSON: %1",_newloc];
 
-// Check response for error
-// TO DO
 
-// Parse correct response
-_result = [_response] call ALIVE_fnc_parseJSON;
+if ([_newloc, "Error"] call CBA_fnc_find == -1) then {
+
+	// Check param
+	// TO DO
+
+
+					_date = date;
+					_year = "2012";
+					_i = 0;
+
+					{
+						if (_x < 10) then {
+							_date set [_i, "0" + str(_x)];
+						} else {
+							_date set [_i, _x];
+						};
+						_i = _i + 1;
+					} foreach _date;
+
+
+
+	// Create function call
+	_cmd = format ["GetWeather [""%1"",""%2"",""%3"",""%4"",""%5""]", _year, _date select 1, _date select 2, _date select 3, _newloc];
+
+	diag_log format ["cmd: %1",_cmd];
+
+	// Send command to plugin
+	_response = [_cmd] call ALIVE_fnc_sendToPlugin;
+
+	diag_log format ["JSON: %1",_response];
+
+	// Check response for error
+	// TO DO
+
+	// Parse correct response
+	_result = [_response] call ALIVE_fnc_parseJSON;
+} else {
+	_result = _newloc;
+};
 
 _result;
