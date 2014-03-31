@@ -54,6 +54,12 @@ class CfgVehicles {
 			                                class Values
 			                                {
 			                                	
+			                                			  class initialBlank
+			                                        {
+			                                                name = "";
+			                                                default = 6;
+			                                                value = 6;
+			                                        };
 			                                	
 			                                        class initialArid
 			                                        {
@@ -63,7 +69,6 @@ class CfgVehicles {
 			                                        class initialContinental
 			                                        {
 			                                                name = "Continental";
-			                                                default = 1;
 			                                                value = 1;
 			                                               
 			                                        };
@@ -90,11 +95,50 @@ class CfgVehicles {
 			                                                name = "Real";
 			                                                value = 5;
 			                                        };
-			                                       
 
-																							
+		
 			                                };
 			                        };
+			                        
+			                        
+															class weather_override_setting
+			                        {
+			                                displayName = "$STR_ALIVE_WEATHER_OVERRIDE";
+			                                description = "$STR_ALIVE_WEATHER_OVERRIDE_COMMENT";
+			                                typeName = "NUMBER";
+			                                class Values
+			                                {
+
+			                                	 			class overrideBlank
+			                                        {
+			                                                name = "";
+			                                                default = 0;
+			                                                value = 0;
+			                                        };
+			                                        class overrideClear
+			                                        {
+			                                                name = "Clear";
+			                                                value = 1;
+			                                        };
+			                                        class overrideOvercast
+			                                        {
+			                                                name = "Overcast";
+			                                                value = 2;
+			                                               
+			                                        };
+			                                        class overrideStormy
+			                                        {
+			                                                name = "Stormy";
+			                                                value = 3;  
+			                                        };
+			                                        class overrideFoggy
+			                                        {
+			                                                name = "Foggy";
+			                                                value = 4;  
+			                                        };			
+			                                };
+			                        };
+			                        
 			                        
 															 class weather_cycle_delay_setting
 			                        {

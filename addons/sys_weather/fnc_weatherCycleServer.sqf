@@ -93,7 +93,7 @@ private ["_nextWeatherChangeSeconds","_nextWeatherChangeMinutes","_newFog","_new
 				
 					_period setOvercast round(_newOvercast * (10 ^ _decimalplaces)) / (10 ^ _decimalplaces);
 					
-					if (_currenthour >= 20 || _currenthour <= 6 && random 100 < _fogProbability) then { 
+					if (random 100 <= _fogProbability) then { 
 						_isFoggy = true;
 						_period setFog [_newFog, _newFogDecay, _newFogAltitude];
 					} else {

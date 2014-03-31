@@ -35,6 +35,15 @@
 	</English>
 </Key>
 
+<Key ID="STR_ALIVE_WEATHER_OVERRIDE">
+	<English>Weather Override:</English>
+</Key>
+
+<Key ID="STR_ALIVE_WEATHER_OVERRIDE_COMMENT">
+	<English>Set initial weather to one of the override settings
+	</English>
+</Key>
+
 <Key ID="STR_ALIVE_WEATHER_CYCLE_VARIANCE">
 	<English>Cycle Variance:</English>
 </Key>

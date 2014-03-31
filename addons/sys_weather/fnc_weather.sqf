@@ -84,6 +84,7 @@ switch(_operation) do {
                 WEATHER_CYCLE_DELAY = _logic getvariable ["weather_cycle_delay_setting",1800];
                 WEATHER_CYCLE_VARIANCE = _logic getvariable ["weather_cycle_variance_setting",0.2];
                 WEATHER_CYCLE_REAL_LOCATION = _logic getvariable ["weather_real_location_setting",""];
+                WEATHER_OVERRIDE = _logic getvariable ["weather_override_setting",0]; 
 
                 Waituntil {!(isnil "WEATHER_DEBUG")};
 				[] call ALIVE_fnc_weatherServerInit;
