@@ -81,8 +81,8 @@ link33[] = {25,16};
 link34[] = {26,27};
 link35[] = {27,23};
 link36[] = {28,29};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,78,6316128,1,-1133.341064,-333.335571,-367.152222,-1264.742920,828,929,1};
-window[] = {2,-1,-1,-1,-1,1125,176,1946,176,3,845};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,78,6316128,1,-1133.341064,-333.335571,-367.152222,-1264.742920,757,818,1};
+window[] = {0,-1,-1,-1,-1,1015,1986,3756,66,1,774};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -99,7 +99,7 @@ class FSM
        "_exitFSM = false;" \n
        "" \n
        "_OPCOM_HANDLER = _this select 0;" \n
-       "_OBJECTIVES = _this select 1;" \n
+       "_OBJECTIVES = [_OPCOM_HANDLER,""objectives"",[]] call ALiVE_fnc_HashGet;" \n
        "_OPCOM_FSM =  [_OPCOM_HANDLER,""OPCOM_FSM""] call ALiVE_fnc_HashGet;" \n
        "_TACOM_FSM =  [_OPCOM_HANDLER,""TACOM_FSM""] call ALiVE_fnc_HashGet;" \n
        "" \n

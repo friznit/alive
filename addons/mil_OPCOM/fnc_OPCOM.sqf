@@ -303,11 +303,10 @@ switch(_operation) do {
 
                     //done this way to easily switch between spawn and call for testing purposes
                     ["OPCOM and TACOM starting..."] call ALiVE_fnc_Dump;
-                    _OPCOM = [_handler,_objectives] call {
+                    _OPCOM = [_handler] call {
                         _handler = _this select 0;
-                        _objectives = _this select 1;
                         
-						_OPCOM = [_handler,_objectives] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+						_OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
 						_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
                         
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
@@ -430,7 +429,7 @@ switch(_operation) do {
         };
         
         case "loadData": {
-		    private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective"];
+			private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective"];
             
             _opcomID = [_logic,"opcomID",""] call ALiVE_fnc_HashGet;
 			_opcomFSM = [_logic, "OPCOM_FSM",-1] call ALiVE_fnc_HashGet;
@@ -451,35 +450,51 @@ switch(_operation) do {
                     _datahandler = [nil, "create"] call ALIVE_fnc_Data;
                     [_datahandler,"storeType",true] call ALIVE_fnc_Data;
 
-                    _async = false; // Wait for response from server
+                    _async = false;
                     _missionName = [missionName, " ","-"] call CBA_fnc_replace;
-                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
+                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
 
                     ["LOAD OPCOM DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
                     _result = [_datahandler, "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data;
                     
                     if (!(isnil "_result") && {typename _result == "ARRAY"} && {count _result > 0} && {count (_result select 2) > 0}) then {
 
-                        _newObjectives = [];
+                        _objectives = [];
 						{
                             _id = [_x,"opcomID",""] call ALiVE_fnc_HashGet;
                             
                             if (_id == _opcomID) then {
                                 
-                                //Get revision value
+
                                 _rev = [_x,"_rev",""] call ALiVE_fnc_HashGet;
-                                
-                                //Remove _id and revision
+
 		                		[_x, "_id"] call ALIVE_fnc_hashRem;
                                 [_x, "_rev"] call ALIVE_fnc_hashRem;
                                 
-                                //Reset Revision at the end
+
                                 [_x,"_rev",_rev] call ALiVE_fnc_HashSet;
+								[_x,"nodes",[]] call ALiVE_fnc_HashSet;
                                 
-                                _newObjectives set [count _newObjectives,_x];
+                                _objectives set [count _objectives,_x];
                             };
 	                    } foreach (_result select 2);
-                        
+
+                        {
+                            private ["_keys","_values","_entry"];
+                            
+                            _entry = _x;
+                            _values = [];
+                            _keys = ["objectiveID","center","size","type","priority","opcom_state","clusterID","nodes","opcomID","opcom_orders","danger","sectionAssist","section","tacom_state","_rev"];
+                            
+                            {
+                                _values set [_foreachIndex,([_entry,_x] call ALiVE_fnc_HashGet)];
+                            } foreach _keys;
+                            
+                            _entry set [1,_keys];
+                            _entry set [2,_values];
+                            
+                        } foreach _objectives;
+
                         _opcomFSM setFSMvariable ["_exitFSM",true];
                         _tacomFSM setFSMvariable ["_exitFSM",true];
                         
@@ -488,24 +503,50 @@ switch(_operation) do {
             				_tacomFSM = [_logic, "TACOM_FSM"] call ALiVE_fnc_HashGet;
                             isnil "_opcomFSM" && {isnil "_tacomFSM"};
                         };
+                        
 
-	                    _result = [_logic,"objectives",_newObjectives] call ALiVE_fnc_OPCOM;
-                        _Occupation = [_logic,"clusteroccupation",[]] call ALiVE_fnc_HashSet;
+	                    [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
+                        [_logic,"clusteroccupation",[]] call ALiVE_fnc_HashSet;
+
+                        _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
+                        {
+                            private ["_oID","_section","_orders","_state"];
+                            
+							_oID = [_x,"objectiveID",""] call ALiVE_fnc_HashGet;
+							_section = [_x,"section",[]] call ALiVE_fnc_HashGet;
+                            
+                            {[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
+							[_logic,"resetObjective",_oID] call ALiVE_fnc_OPCOM;
+
+							/*
+                            _orders = [_x,"opcom_orders","none"] call ALiVE_fnc_HashGet;
+                            _state = [_x,"opcom_state","unassigned"] call ALiVE_fnc_HashGet;
+
+							["Orders in: %1 state in: %2",_orders,_state] call ALiVE_fnc_DumpR;
+                            
+							if (_orders == "none") then {_state = "unassigned"} else {_state = _orders};
+
+							["Orders out: %1 state: %2",_orders,_state] call ALiVE_fnc_DumpR;
+
+                            //[_x,"opcom_orders","none"] call ALiVE_fnc_HashSet;
+                            //[_x,"opcom_state","unassigned"] call ALiVE_fnc_HashSet;
+							*/
+						} foreach _objectives;
                         
-                        //done this way to easily switch between spawn and call for testing purposes
+						_objectives = [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
+
                     	["OPCOM and TACOM re-starting..."] call ALiVE_fnc_Dump;
-                    	_OPCOM = [_logic,_newObjectives] call {
+                    	[_logic] call {
                         	_handler = _this select 0;
-                        	_objectives = _this select 1;
                         
-							_OPCOM = [_handler,_objectives] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+							_OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
 							_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
                         
 							[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         	[_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     	};
 
-	                    ["Imported %1 objectives from DB!",count _newObjectives] call ALIVE_fnc_dumpR;
+	                    ["Imported %1 objectives from DB!",count ([_logic,"objectives",[]] call ALiVE_fnc_HashGet)] call ALIVE_fnc_dumpR;
                     } else {
                         ["Loading objectives from DB failed!"] call ALIVE_fnc_dumpR;
                     };
@@ -1330,6 +1371,7 @@ switch(_operation) do {
             _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
             {
                 _section = [_x,"section",[]] call ALiVE_fnc_HashGet;
+				[_x,"sectionAssist",[]] call ALiVE_fnc_HashSet;
                 
                 if (_profileID in _section) then {
                     _section = _section - [_profileID];
