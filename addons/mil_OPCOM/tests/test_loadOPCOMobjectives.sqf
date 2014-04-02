@@ -30,6 +30,11 @@ diag_log format["Timer End %1",_timeEnd];
 
 //========================================
 
-[(OPCOM_INSTANCES select 0),"loadData"] call ALIVE_fnc_OPCOM;
+private ["_resultset"];
 
-//[OPCOM_INSTANCES select 0,"importOPCOMData",_objectives] call ALIVE_fnc_profileHandler;
+_resultset = [];
+{
+	_resultset set [count _resultset,[([_x,"loadData"] call ALIVE_fnc_OPCOM)]];
+} foreach OPCOM_INSTANCES;
+
+{["ALiVE OPCOM LOAD DATA RESULT: %1",str(_x)] call ALiVE_fnc_DumpMPH} foreach _resultset;

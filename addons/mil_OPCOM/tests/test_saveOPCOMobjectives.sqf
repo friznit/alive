@@ -30,4 +30,11 @@ diag_log format["Timer End %1",_timeEnd];
 
 //========================================
 
-[(OPCOM_INSTANCES select 0),"saveData"] call ALIVE_fnc_OPCOM;
+private ["_resultset"];
+
+_resultset = [];
+{
+	_resultset set [count _resultset,[([_x,"saveData"] call ALIVE_fnc_OPCOM)]];
+} foreach OPCOM_INSTANCES;
+
+{["ALiVE OPCOM SAVE DATA RESULT: %1",_x] call ALiVE_fnc_DumpMPH} foreach _resultset;

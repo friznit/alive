@@ -380,24 +380,39 @@ switch(_operation) do {
 		};
 
         case "saveData": {
-            private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective"];
-            
-		    ["SAVE OPCOM DATA"] call ALIVE_fnc_dump;
+            private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective","_objectivesGlobal","_save"];
 
             if (isDedicated) then {
 
-                ["SAVE OPCOM DATA - IS DEDI"] call ALIVE_fnc_dump;
-
                 if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
-                    ["SAVE OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
-
                     private ["_datahandler","_exportProfiles","_async","_missionName"];
+                    
+                    ["ALiVE SAVE OPCOM DATA TRIGGERED"] call ALIVE_fnc_dumpMPH;
 
+                    //Save only every 60 seconds, bad hack because of this http://dev.withsix.com/issues/74321
+                    //For normal each instance would save their own objectives but the hack collects all objectives of all OPCOMs on one save, FIFO principle
+                    if (isnil QGVAR(OBJECTIVES_DB_SAVE) || {!(isnil QGVAR(OBJECTIVES_DB_SAVE)) && {time - (GVAR(OBJECTIVES_DB_SAVE) select 1) > 60}}) then {
+                        
+	                    _objectivesGlobal = [];
+	                    {
+	                    	_objectivesGlobal = _objectivesGlobal + ([_x, "objectives",[]] call ALiVE_fnc_HashGet);
+	                    } foreach OPCOM_instances;
+
+                        GVAR(OBJECTIVES_DB_SAVE) = [_objectivesGlobal,time];
+                        {
+                            ["ALiVE SAVE OPCOM DATA Objective prepared for DB: %1",_x] call ALiVE_fnc_Dump;
+                        } foreach (GVAR(OBJECTIVES_DB_SAVE) select 0);
+                        _save = true;
+                    };
+                    if (isnil "_save") exitwith {["ALiVE SAVE OPCOM DATA Please wait at least 60 seconds before saving again!"] call ALiVE_fnc_DumpMPH; _result = nil};
+                    
+                    //If I didnt send you to hell - go and save, the feck!
+                    ["ALiVE SAVE OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
+                    
                     _datahandler = [nil, "create"] call ALIVE_fnc_Data;
                     [_datahandler,"storeType",true] call ALIVE_fnc_Data;
-
-                    _objectives = [_logic, "objectives",[]] call ALiVE_fnc_HashGet;
+                    
 		            _exportObjectives = [] call ALIVE_fnc_hashCreate;
 		
 		            {
@@ -414,48 +429,73 @@ switch(_operation) do {
 		
 		                [_exportObjectives, _objectiveID, _exportObjective] call ALIVE_fnc_hashSet;
 		                _exportObjective call ALIVE_fnc_inspectHash;
-		            } forEach (_objectives);
+		            } forEach (GVAR(OBJECTIVES_DB_SAVE) select 0);
 
                     _async = false; // Wait for response from server
                     _missionName = [missionName, " ","-"] call CBA_fnc_replace;
                     _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-                    ["SAVE OPCOM DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
+                    ["ALiVE SAVE OPCOM DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
                     _result = [_datahandler, "save", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
-                    ["RESULT: %1",_result] call ALIVE_fnc_dump;
+
+                    ["ALiVE SAVE OPCOM DATA RESULT (maybe truncated in RPT, dont worry): %1",_result] call ALIVE_fnc_dump;
+                    ["ALiVE SAVE OPCOM DATA SAVING COMPLETE!"] call ALIVE_fnc_dumpMPH;
                 };
             };
         };
         
         case "loadData": {
-			private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective"];
+			private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective","_opcomFSM","_tacomFSM"];
             
             _opcomID = [_logic,"opcomID",""] call ALiVE_fnc_HashGet;
 			_opcomFSM = [_logic, "OPCOM_FSM",-1] call ALiVE_fnc_HashGet;
             _tacomFSM = [_logic, "TACOM_FSM",-1] call ALiVE_fnc_HashGet;
-            
-            ["LOAD OPCOM DATA"] call ALIVE_fnc_dump;
 
             if (isDedicated) then {
 
-                ["LOAD OPCOM DATA - IS DEDI"] call ALIVE_fnc_dump;
-
                 if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
-                    ["LOAD OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
+                    private ["_datahandler","_importProfiles","_async","_missionName","_result"];
+                    
+                    ["ALiVE LOAD OPCOM DATA"] call ALIVE_fnc_dumpMPH;
+                    
+                    _opcomFSM setFSMvariable ["_exitFSM",true];
+                    _tacomFSM setFSMvariable ["_exitFSM",true];
 
-                    private ["_datahandler","_importProfiles","_async","_missionName"];
+                    waituntil {
+                        sleep 2;
+                        ["ALiVE LOAD OPCOM DATA WAITING FOR OPCOM & TACOM TO STOP..."] call ALIVE_fnc_dumpMPH;
 
-                    _datahandler = [nil, "create"] call ALIVE_fnc_Data;
-                    [_datahandler,"storeType",true] call ALIVE_fnc_Data;
+                        _opcomFSM = [_logic, "OPCOM_FSM"] call ALiVE_fnc_HashGet;
+        				_tacomFSM = [_logic, "TACOM_FSM"] call ALiVE_fnc_HashGet;
 
-                    _async = false;
-                    _missionName = [missionName, " ","-"] call CBA_fnc_replace;
-                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
+                        (isnil "_opcomFSM") && {isnil "_tacomFSM"};
+                    };
+                    
+                    //defaults
+                	_async = false;
+					_missionName = [missionName, " ","-"] call CBA_fnc_replace;
+					_missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
 
-                    ["LOAD OPCOM DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
-                    _result = [_datahandler, "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data;
+                    //Load only every 60 seconds
+                    if (isnil QGVAR(OBJECTIVES_DB_LOAD) || {!(isnil QGVAR(OBJECTIVES_DB_LOAD)) && {time - (GVAR(OBJECTIVES_DB_LOAD) select 1) > 60}}) then {
+
+						_datahandler = [nil, "create"] call ALIVE_fnc_Data;
+						[_datahandler,"storeType",true] call ALIVE_fnc_Data;
+                        
+                        GVAR(OBJECTIVES_DB_LOAD) = [[_datahandler, "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data,time];
+                        
+                        {
+                            ["ALiVE LOAD OPCOM DATA Objectives loaded from DB: %1",_x] call ALiVE_fnc_Dump;
+                        } foreach ((GVAR(OBJECTIVES_DB_LOAD) select 0) select 2);
+                    } else {
+                        ["ALiVE LOAD OPCOM DATA is waiting 60 seconds before loading from DB again!"] call ALiVE_fnc_DumpMPH;
+                    };
+                    
+                    _result = GVAR(OBJECTIVES_DB_LOAD) select 0;
+
+                    ["ALiVE LOAD OPCOM DATA LOADED - MISSION NAME: %1",_missionName] call ALIVE_fnc_dumpMPH;
                     
                     if (!(isnil "_result") && {typename _result == "ARRAY"} && {count _result > 0} && {count (_result select 2) > 0}) then {
 
@@ -495,16 +535,6 @@ switch(_operation) do {
                             
                         } foreach _objectives;
 
-                        _opcomFSM setFSMvariable ["_exitFSM",true];
-                        _tacomFSM setFSMvariable ["_exitFSM",true];
-                        
-                        waituntil {
-                            _opcomFSM = [_logic, "OPCOM_FSM"] call ALiVE_fnc_HashGet;
-            				_tacomFSM = [_logic, "TACOM_FSM"] call ALiVE_fnc_HashGet;
-                            isnil "_opcomFSM" && {isnil "_tacomFSM"};
-                        };
-                        
-
 	                    [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
                         [_logic,"clusteroccupation",[]] call ALiVE_fnc_HashSet;
 
@@ -535,7 +565,7 @@ switch(_operation) do {
                         
 						_objectives = [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
 
-                    	["OPCOM and TACOM re-starting..."] call ALiVE_fnc_Dump;
+                    	["ALiVE OPCOM and TACOM re-starting..."] call ALiVE_fnc_DumpMPH;
                     	[_logic] call {
                         	_handler = _this select 0;
                         
@@ -546,9 +576,9 @@ switch(_operation) do {
                         	[_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     	};
 
-	                    ["Imported %1 objectives from DB!",count ([_logic,"objectives",[]] call ALiVE_fnc_HashGet)] call ALIVE_fnc_dumpR;
+	                    ["ALiVE LOAD OPCOM DATA Imported %1 objectives from DB!",count ([_logic,"objectives",[]] call ALiVE_fnc_HashGet)] call ALIVE_fnc_dumpMPH;
                     } else {
-                        ["Loading objectives from DB failed!"] call ALIVE_fnc_dumpR;
+                        ["ALiVE LOAD OPCOM DATA Loading objectives from DB failed!"] call ALIVE_fnc_dumpR;
                     };
                 };
             };
