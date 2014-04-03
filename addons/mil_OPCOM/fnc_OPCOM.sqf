@@ -545,8 +545,12 @@ switch(_operation) do {
 							_oID = [_x,"objectiveID",""] call ALiVE_fnc_HashGet;
 							_section = [_x,"section",[]] call ALiVE_fnc_HashGet;
                             
-                            {[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
-							[_logic,"resetObjective",_oID] call ALiVE_fnc_OPCOM;
+                            if !(isnil "_section") then {
+                            	{[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
+                            };
+                            if !(isnil "_oID") then {
+                            	[_logic,"resetObjective",_oID] call ALiVE_fnc_OPCOM;
+                            };
 
 							/*
                             _orders = [_x,"opcom_orders","none"] call ALiVE_fnc_HashGet;
@@ -1403,13 +1407,15 @@ switch(_operation) do {
                 _section = [_x,"section",[]] call ALiVE_fnc_HashGet;
 				[_x,"sectionAssist",[]] call ALiVE_fnc_HashSet;
                 
-                if (_profileID in _section) then {
-                    _section = _section - [_profileID];
-                    [_x,"section",_section] call ALiVE_fnc_HashSet;
-                };
-                
-                if ((count _section) == 0) then {
-                    [_logic,"resetObjective",([_x,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM;
+                if !(isnil "_section") then {
+	                if (_profileID in _section) then {
+	                    _section = _section - [_profileID];
+	                    [_x,"section",_section] call ALiVE_fnc_HashSet;
+	                };
+	                
+	                if ((count _section) == 0) then {
+	                    [_logic,"resetObjective",([_x,"objectiveID"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_OPCOM;
+	                };
                 };
             } foreach _objectives;
             
