@@ -378,9 +378,29 @@ switch(_operation) do {
                 _result = _args;
             };
 		};
+        
+        case "stop": {
+            private ["_opcomID","_opcomFSM","_tacomFSM"];
+            
+            _opcomID = [_logic,"opcomID",""] call ALiVE_fnc_HashGet;
+			_opcomFSM = [_logic, "OPCOM_FSM",-1] call ALiVE_fnc_HashGet;
+            _tacomFSM = [_logic, "TACOM_FSM",-1] call ALiVE_fnc_HashGet;
+            
+	        _tacomFSM setFSMvariable ["_exitFSM",true];
+            _opcomFSM setFSMvariable ["_exitFSM",true];
+	        _opcomFSM setFSMvariable ["_busy",false];
+	        _tacomFSM setFSMvariable ["_busy",false];
+	
+	        waituntil {sleep 1; isnil {[_logic, "TACOM_FSM"] call ALiVE_fnc_HashGet}};
+            waituntil {sleep 1; isnil {[_logic, "OPCOM_FSM"] call ALiVE_fnc_HashGet}};
+            
+            ["ALiVE OPCOM stopped..."] call ALIVE_fnc_dumpMPH;
+            
+            _result = true;
+        };
 
         case "saveData": {
-            private["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective","_objectivesGlobal","_save"];
+            private ["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective","_objectivesGlobal","_save"];
 
             if (isDedicated) then {
 
@@ -392,7 +412,7 @@ switch(_operation) do {
 
                     //Save only every 60 seconds, bad hack because of this http://dev.withsix.com/issues/74321
                     //For normal each instance would save their own objectives but the hack collects all objectives of all OPCOMs on one save, FIFO principle
-                    if (isnil QGVAR(OBJECTIVES_DB_SAVE) || {!(isnil QGVAR(OBJECTIVES_DB_SAVE)) && {time - (GVAR(OBJECTIVES_DB_SAVE) select 1) > 60}}) then {
+                    if (isnil QGVAR(OBJECTIVES_DB_SAVE) || {!(isnil QGVAR(OBJECTIVES_DB_SAVE)) && {time - (GVAR(OBJECTIVES_DB_SAVE) select 1) > 300}}) then {
                         
 	                    _objectivesGlobal = [];
 	                    {
@@ -405,7 +425,7 @@ switch(_operation) do {
                         } foreach (GVAR(OBJECTIVES_DB_SAVE) select 0);
                         _save = true;
                     };
-                    if (isnil "_save") exitwith {["ALiVE SAVE OPCOM DATA Please wait at least 60 seconds before saving again!"] call ALiVE_fnc_DumpMPH; _result = nil};
+                    if (isnil "_save") exitwith {["ALiVE SAVE OPCOM DATA Please wait at least 5 minutes before saving again!"] call ALiVE_fnc_DumpMPH; _result = nil};
                     
                     //If I didnt send you to hell - go and save, the feck!
                     ["ALiVE SAVE OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
@@ -456,41 +476,34 @@ switch(_operation) do {
 
                 if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
-                    private ["_datahandler","_importProfiles","_async","_missionName","_result"];
-                    
+                    private ["_datahandler","_importProfiles","_async","_missionName","_result","_stopped","_i"];
+
                     ["ALiVE LOAD OPCOM DATA"] call ALIVE_fnc_dumpMPH;
                     
-                    _opcomFSM setFSMvariable ["_exitFSM",true];
-                    _tacomFSM setFSMvariable ["_exitFSM",true];
-
-                    waituntil {
-                        sleep 2;
-                        ["ALiVE LOAD OPCOM DATA WAITING FOR OPCOM & TACOM TO STOP..."] call ALIVE_fnc_dumpMPH;
-
-                        _opcomFSM = [_logic, "OPCOM_FSM"] call ALiVE_fnc_HashGet;
-        				_tacomFSM = [_logic, "TACOM_FSM"] call ALiVE_fnc_HashGet;
-
-                        (isnil "_opcomFSM") && {isnil "_tacomFSM"};
-                    };
+                    _stopped = [_logic,"stop"] call ALiVE_fnc_OPCOM;
                     
                     //defaults
                 	_async = false;
 					_missionName = [missionName, " ","-"] call CBA_fnc_replace;
 					_missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
 
-                    //Load only every 60 seconds
-                    if (isnil QGVAR(OBJECTIVES_DB_LOAD) || {!(isnil QGVAR(OBJECTIVES_DB_LOAD)) && {time - (GVAR(OBJECTIVES_DB_LOAD) select 1) > 60}}) then {
-
+                    //Load only every 5 minutes
+                    if (isnil QGVAR(OBJECTIVES_DB_LOAD) || {!(isnil QGVAR(OBJECTIVES_DB_LOAD)) && {time - (GVAR(OBJECTIVES_DB_LOAD) select 1) > 300}}) then {
+                        
+                        ["ALiVE LOAD OPCOM DATA FROM DB, PLEASE WAIT..."] call ALIVE_fnc_dumpMPH;
+                        
 						_datahandler = [nil, "create"] call ALIVE_fnc_Data;
 						[_datahandler,"storeType",true] call ALIVE_fnc_Data;
                         
+                        [true] call ALIVE_fnc_timer;
                         GVAR(OBJECTIVES_DB_LOAD) = [[_datahandler, "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data,time];
+                        [] call ALIVE_fnc_timer;
                         
                         {
                             ["ALiVE LOAD OPCOM DATA Objectives loaded from DB: %1",_x] call ALiVE_fnc_Dump;
                         } foreach ((GVAR(OBJECTIVES_DB_LOAD) select 0) select 2);
                     } else {
-                        ["ALiVE LOAD OPCOM DATA is waiting 60 seconds before loading from DB again!"] call ALiVE_fnc_DumpMPH;
+                        ["ALiVE LOAD OPCOM DATA is waiting 5 minutes before loading from DB again!"] call ALiVE_fnc_DumpMPH;
                     };
                     
                     _result = GVAR(OBJECTIVES_DB_LOAD) select 0;
@@ -505,12 +518,12 @@ switch(_operation) do {
                             
                             if (_id == _opcomID) then {
                                 
-
+                                //["ALiVE LOAD OPCOM DATA RESETTING RESULT %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_DumpMPH;
+                                
                                 _rev = [_x,"_rev",""] call ALiVE_fnc_HashGet;
 
 		                		[_x, "_id"] call ALIVE_fnc_hashRem;
                                 [_x, "_rev"] call ALIVE_fnc_hashRem;
-                                
 
                                 [_x,"_rev",_rev] call ALiVE_fnc_HashSet;
 								[_x,"nodes",[]] call ALiVE_fnc_HashSet;
@@ -521,6 +534,8 @@ switch(_operation) do {
 
                         {
                             private ["_keys","_values","_entry"];
+                            
+                            //["ALiVE LOAD OPCOM DATA CLEANING HASH %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_DumpMPH;
                             
                             _entry = _x;
                             _values = [];
@@ -537,13 +552,21 @@ switch(_operation) do {
 
 	                    [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
                         [_logic,"clusteroccupation",[]] call ALiVE_fnc_HashSet;
-
+                        
+						_i = 10;
                         _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
                         {
                             private ["_oID","_section","_orders","_state"];
+
+                            _entry = _x;
+
+                            if (_i == 10) then {
+                                _i = 0;
+                            	["ALiVE LOAD OPCOM DATA REBUILDING OBJECTIVE %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_DumpMPH;
+                            };
                             
-							_oID = [_x,"objectiveID",""] call ALiVE_fnc_HashGet;
-							_section = [_x,"section",[]] call ALiVE_fnc_HashGet;
+							_oID = [_entry,"objectiveID",""] call ALiVE_fnc_HashGet;
+							_section = [_entry,"section",[]] call ALiVE_fnc_HashGet;
                             
                             if !(isnil "_section") then {
                             	{[_logic,"resetorders",_x] call ALiVE_fnc_OPCOM} foreach _section;
@@ -551,6 +574,8 @@ switch(_operation) do {
                             if !(isnil "_oID") then {
                             	[_logic,"resetObjective",_oID] call ALiVE_fnc_OPCOM;
                             };
+                            
+                            _i = _i + 1;
 
 							/*
                             _orders = [_x,"opcom_orders","none"] call ALiVE_fnc_HashGet;
@@ -586,6 +611,8 @@ switch(_operation) do {
                     };
                 };
             };
+            
+            _result = GVAR(OBJECTIVES_DB_LOAD) select 0;
         };
         
         case "addObjective": {
@@ -1907,6 +1934,7 @@ switch(_operation) do {
 							_maxLimit = _cycleTime + ((count allunits)*2);
                             
                             if (_timestamp > _maxLimit) then {
+                            //if (true) then {
                                 // debug ---------------------------------------
 								if ([_this,"debug",false] call ALiVE_fnc_HashGet) then {
                                     _message = parsetext (format["<t align=left>OPCOM side: %1<br/><br/>WARNING! Max. duration exceeded!<br/>state OPCOM: %2<br/>state TACOM: %4<br/>duration: %3</t>",_side,_state,_timestamp,_state_TACOM]);

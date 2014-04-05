@@ -32,9 +32,34 @@ diag_log format["Timer End %1",_timeEnd];
 
 private ["_resultset"];
 
-_resultset = [];
-{
-	_resultset set [count _resultset,[([_x,"saveData"] call ALIVE_fnc_OPCOM)]];
-} foreach OPCOM_INSTANCES;
+if !(isServer) exitwith {};
 
-{["ALiVE OPCOM SAVE DATA RESULT: %1",_x] call ALiVE_fnc_DumpMPH} foreach _resultset;
+_resultset = [];
+
+[["ALiVE_LOADINGSCREEN_DATA"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
+[true] call ALiVE_fnc_timer;
+	{
+		_resultset set [count _resultset,[([_x,"saveData"] call ALIVE_fnc_OPCOM)]];
+	} foreach OPCOM_INSTANCES;
+[] call ALiVE_fnc_timer;
+{["ALiVE OPCOM SAVE DATA RESULT: %1",_x] call ALiVE_fnc_Dump} foreach _resultset;
+
+[["ALiVE_LOADINGSCREEN_DATA"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+
+/*
+//Save all including Profiles
+[] spawn {
+	sleep 1;
+    
+	["Saving Profiles..."] call ALiVE_fnc_DumpMPH;
+	_handle = execVM "\x\alive\addons\sys_profile\tests\test_saveProfilePersistence.sqf";
+	waituntil {scriptdone _handle};
+	["Profiles saving finished..."] call ALiVE_fnc_DumpMPH;
+	
+	sleep 1;
+	["Saving OPCOM..."] call ALiVE_fnc_DumpMPH;
+	_handle = execVM "\x\alive\addons\mil_OPCOM\tests\test_saveOPCOMobjectives.sqf";
+	waituntil {scriptdone _handle};
+	["OPCOM saving finished..."] call ALiVE_fnc_DumpMPH;
+};
+*/

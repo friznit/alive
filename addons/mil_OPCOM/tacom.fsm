@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, tacom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
@@ -24,12 +24,12 @@ item19[] = {"RECON_Conditions",4,218,-399.338531,271.491608,-309.338531,321.4916
 item20[] = {"COLLECT_TO_QUEUE",2,250,-191.535400,70.489761,-101.535316,120.489708,0.000000,"COLLECT" \n "TO QUEUE"};
 item21[] = {"ENTRIES_IN_QUEUE",4,218,-190.104828,130.570953,-100.104851,180.571014,0.000000,"ENTRIES" \n "IN QUEUE"};
 item22[] = {"Feeder",4,218,-362.502472,61.897980,-272.502472,111.897957,0.000000,"Feeder"};
-item23[] = {"SELECT_SECTION",2,250,-202.907623,354.023041,-112.907623,404.023041,0.000000,"SELECT" \n "SECTION"};
+item23[] = {"SELECT_SECTION",2,250,-195.460144,356.815826,-105.460136,406.815826,0.000000,"SELECT" \n "SECTION"};
 item24[] = {"SECTION_SELECTED",4,218,-197.466095,422.042877,-107.466232,472.042908,0.000000,"SECTION" \n "SELECTED"};
-item25[] = {"PREPARE_ORDERS",2,250,-202.980865,484.718994,-112.980873,534.719238,0.000000,"PREPARE" \n "ORDERS"};
-item26[] = {"PREPARED",4,218,-202.116547,569.103699,-112.116524,619.103699,0.000000,"PREPARED"};
-item27[] = {"EXIT",4,218,-194.679718,900.017029,-104.679718,950.017029,99.000000,"EXIT"};
-item28[] = {"END",1,250,-194.260712,1031.765137,-104.260628,1081.765137,0.000000,"END"};
+item25[] = {"PREPARE_ORDERS",2,250,-198.326187,497.752075,-108.326187,547.752319,0.000000,"PREPARE" \n "ORDERS"};
+item26[] = {"PREPARED",4,218,-199.323730,579.343994,-109.323708,629.343994,0.000000,"PREPARED"};
+item27[] = {"EXIT",4,218,-205.862900,897.221252,-115.862823,947.221252,99.000000,"EXIT"};
+item28[] = {"END",1,250,-205.443878,1033.162964,-115.443787,1083.162964,0.000000,"END"};
 version=1;
 class LayoutItems
 {
@@ -56,30 +56,35 @@ link9[] = {2,27};
 link10[] = {3,20};
 link11[] = {4,23};
 link12[] = {5,6};
-link13[] = {6,3};
-link14[] = {7,23};
-link15[] = {8,23};
-link16[] = {9,23};
-link17[] = {10,11};
-link18[] = {10,12};
-link19[] = {11,18};
-link20[] = {12,17};
-link21[] = {13,14};
-link22[] = {14,3};
-link23[] = {15,3};
-link24[] = {17,13};
-link25[] = {18,5};
-link26[] = {19,23};
-link27[] = {20,21};
-link28[] = {21,2};
-link29[] = {22,2};
-link30[] = {23,24};
-link31[] = {24,25};
-link32[] = {25,26};
-link33[] = {26,10};
-link34[] = {27,28};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-502.499756,51.403549,1.186096,-445.376221,934,753,1};
-window[] = {0,-1,-1,-1,-1,928,44,1667,44,1,951};
+link13[] = {5,27};
+link14[] = {6,3};
+link15[] = {7,23};
+link16[] = {8,23};
+link17[] = {9,23};
+link18[] = {10,11};
+link19[] = {10,12};
+link20[] = {10,27};
+link21[] = {11,18};
+link22[] = {12,17};
+link23[] = {13,14};
+link24[] = {13,27};
+link25[] = {14,3};
+link26[] = {15,3};
+link27[] = {17,13};
+link28[] = {18,5};
+link29[] = {19,23};
+link30[] = {20,21};
+link31[] = {20,27};
+link32[] = {21,2};
+link33[] = {22,2};
+link34[] = {23,24};
+link35[] = {23,27};
+link36[] = {24,25};
+link37[] = {25,26};
+link38[] = {26,10};
+link39[] = {27,28};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-920.202332,424.945068,1107.777832,23.306810,934,753,1};
+window[] = {0,-1,-1,-1,-1,906,22,1645,22,1,951};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -625,6 +630,16 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "EXIT">*/
+        class EXIT
+        {
+          priority = 99.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_exitFSM"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "GROUP_CONFIRM">*/
         class GROUP_CONFIRM
         {
@@ -681,6 +696,16 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "EXIT">*/
+        class EXIT
+        {
+          priority = 99.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_exitFSM"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "RECEIVE">*/
         class RECEIVE
         {
@@ -703,6 +728,16 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "EXIT">*/
+        class EXIT
+        {
+          priority = 99.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_exitFSM"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "RECEIVE">*/
         class RECEIVE
         {
@@ -729,6 +764,16 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "EXIT">*/
+        class EXIT
+        {
+          priority = 99.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_exitFSM"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "ENTRIES_IN_QUEUE">*/
         class ENTRIES_IN_QUEUE
         {
@@ -786,6 +831,16 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+        /*%FSM<LINK "EXIT">*/
+        class EXIT
+        {
+          priority = 99.000000;
+          to="END";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_exitFSM"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "SECTION_SELECTED">*/
         class SECTION_SELECTED
         {
