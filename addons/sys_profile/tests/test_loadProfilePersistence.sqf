@@ -30,7 +30,9 @@ diag_log format["Timer End %1",_timeEnd];
 
 //========================================
 
-ALIVE_isPaused = true;
+["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_pauseModule;
+
+
 [ALIVE_profileHandler,"reset"] call ALIVE_fnc_profileHandler;
 
 sleep 10;
@@ -40,11 +42,12 @@ sleep 10;
 
 _profiles = [ALIVE_profileHandler,"loadProfileData"] call ALIVE_fnc_profileHandler;
 
-_profiles call ALIVE_fnc_inspectHash;
+//_profiles call ALIVE_fnc_inspectHash;
 
 [ALIVE_profileHandler,"importProfileData",_profiles] call ALIVE_fnc_profileHandler;
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen"] call BIS_fnc_MP;
 ["ALiVE_LOADINGSCREEN"] call BIS_fnc_endLoadingScreen;
 
-ALIVE_isPaused = false;
+
+["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_unPauseModule;

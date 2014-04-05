@@ -1126,8 +1126,6 @@ switch(_operation) do {
                     _datahandler = [nil, "create"] call ALIVE_fnc_Data;
                     [_datahandler,"storeType",true] call ALIVE_fnc_Data;
 
-                    //_exportProfiles = [_logic, "exportProfileData"] call MAINCLASS;
-
                     _async = false; // Wait for response from server
                     _missionName = [missionName, " ","-"] call CBA_fnc_replace;
                     _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
@@ -1142,10 +1140,20 @@ switch(_operation) do {
             };
         };
 		case "exportProfileData": {
-		    private["_profiles","_exportProfiles","_profile","_profileID","_profileType","_isPlayer","_exportProfile","_isPlayer","_vehicleAssignments","_assignmentKeys","_assignmentValues"];
+		    private["_profiles","_exportProfiles","_profile","_profileID","_profileType","_isPlayer","_exportProfile","_isPlayer","_vehicleAssignments","_assignmentKeys",
+		    "_assignmentValues","_ranks","_side","_spawnType","_entitiesInCommandOf","_entitiesInCargoOf","_vehiclesInCommandOf","_vehiclesInCargoOf","_ranksMap"];
 
             _profiles = [_logic, "getProfiles"] call MAINCLASS;
             _exportProfiles = [] call ALIVE_fnc_hashCreate;
+
+            _ranksMap = [] call ALIVE_fnc_hashCreate;
+            [_ranksMap, "PRIVATE", 0] call ALIVE_fnc_hashSet;
+            [_ranksMap, "CORPORAL", 1] call ALIVE_fnc_hashSet;
+            [_ranksMap, "SERGEANT", 2] call ALIVE_fnc_hashSet;
+            [_ranksMap, "LIEUTENANT", 3] call ALIVE_fnc_hashSet;
+            [_ranksMap, "CAPTAIN", 4] call ALIVE_fnc_hashSet;
+            [_ranksMap, "MAJOR", 5] call ALIVE_fnc_hashSet;
+            [_ranksMap, "COLONEL", 6] call ALIVE_fnc_hashSet;
 
             {
                 _profile = _x;
@@ -1164,6 +1172,7 @@ switch(_operation) do {
                     _assignmentValues = _vehicleAssignments select 2;
 
                     if(_profileType == "entity") then {
+
                         _exportProfile = [_profile, [], [
                             "debug",
                             "active",
@@ -1182,29 +1191,96 @@ switch(_operation) do {
                             "speedPerSecond",
                             "despawnPosition",
                             "vehicleAssignments",
+                            "damages",
+                            "positions",
+                            "isPlayer",
+                            "objectType",
+                            "unitCount",
+                            "ranks",
+                            "side",
                             "_rev"
                         ]] call ALIVE_fnc_hashCopy;
+
+                        [_exportProfile, "type", 1] call ALIVE_fnc_hashSet;
+
+                        _ranks = _profile select 2 select 20;
+                        _exportRanks = [];
+
+                        {
+                            _exportRanks set [count _exportRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
+                        } forEach _ranks;
+
+                        [_exportProfile, "ranks", _exportRanks] call ALIVE_fnc_hashSet;
+
+                        _side = _profile select 2 select 3;
+
+                        [_exportProfile, "side", [_side] call ALIVE_fnc_sideTextToNumber] call ALIVE_fnc_hashSet;
+
+                        _vehiclesInCommandOf = [_exportProfile, "vehiclesInCommandOf"] call ALIVE_fnc_hashGet;
+                        if(count _vehiclesInCommandOf == 0) then {
+                            [_exportProfile, "vehiclesInCommandOf"] call ALIVE_fnc_hashRem;
+                        };
+
+                        _vehiclesInCargoOf = [_exportProfile, "vehiclesInCargoOf"] call ALIVE_fnc_hashGet;
+                        if(count _vehiclesInCargoOf == 0) then {
+                            [_exportProfile, "vehiclesInCargoOf"] call ALIVE_fnc_hashRem;
+                        };
+
                     }else{
+
                         _exportProfile = [_profile, [], [
                             "debug",
                             "active",
                             "vehicle",
-                            "engineOn",
                             "hasSimulated",
                             "debugMarkers",
                             "speedPerSecond",
                             "despawnPosition",
                             "vehicleAssignments",
+                            "ammo",
+                            "canMove",
+                            "canFire",
+                            "needReload",
+                            "fuel",
+                            "damage",
                             "_rev"
                         ]] call ALIVE_fnc_hashCopy;
+
+                        [_exportProfile, "type", 2] call ALIVE_fnc_hashSet;
+
+                        _side = _profile select 2 select 3;
+
+                        [_exportProfile, "side", [_side] call ALIVE_fnc_sideTextToNumber] call ALIVE_fnc_hashSet;
+
+                        _entitiesInCommandOf = [_exportProfile, "entitiesInCommandOf"] call ALIVE_fnc_hashGet;
+                        if(count _entitiesInCommandOf == 0) then {
+                            [_exportProfile, "entitiesInCommandOf"] call ALIVE_fnc_hashRem;
+                        };
+
+                        _entitiesInCargoOf = [_exportProfile, "entitiesInCargoOf"] call ALIVE_fnc_hashGet;
+                        if(count _entitiesInCargoOf == 0) then {
+                            [_exportProfile, "entitiesInCargoOf"] call ALIVE_fnc_hashRem;
+                        };
+
                     };
 
                     if([_exportProfile, "_rev"] call ALIVE_fnc_hashGet == "") then {
                         [_exportProfile, "_rev"] call ALIVE_fnc_hashRem;
                     };
 
-                    [_exportProfile, "vehicleAssignmentKeys", _assignmentKeys] call ALIVE_fnc_hashSet;
-                    [_exportProfile, "vehicleAssignmentValues", _assignmentValues] call ALIVE_fnc_hashSet;
+                    _spawnType = [_exportProfile, "spawnType"] call ALIVE_fnc_hashGet;
+                    if(count _spawnType == 0) then {
+                        [_exportProfile, "spawnType"] call ALIVE_fnc_hashRem;
+                    };
+
+                    if(count _assignmentKeys > 0) then {
+                        [_exportProfile, "vehicleAssignmentKeys", _assignmentKeys] call ALIVE_fnc_hashSet;
+                    };
+
+                    if(count _assignmentValues > 0) then {
+                        [_exportProfile, "vehicleAssignmentValues", _assignmentValues] call ALIVE_fnc_hashSet;
+                    };
+
                     [_exportProfiles, _profileID, _exportProfile] call ALIVE_fnc_hashSet;
 
                     _exportProfile call ALIVE_fnc_inspectHash;
@@ -1217,46 +1293,97 @@ switch(_operation) do {
 
         };
         case "importProfileData": {
-            private["_profiles","_profile","_profileType","_vehicleAssignmentKeys","_vehicleAssignmentValues","_key","_value","_assignments","_assignment","_rebuiltHash","_position","_damages","_damage"];
+            private["_profiles","_profile","_profileType","_vehicleAssignmentKeys","_vehicleAssignmentValues","_key","_value","_assignments","_assignment","_rebuiltHash",
+            "_position","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses"];
 
             if(typeName _args == "ARRAY") then {
+
+                _ranksMap = [] call ALIVE_fnc_hashCreate;
+                [_ranksMap, 0, "PRIVATE"] call ALIVE_fnc_hashSet;
+                [_ranksMap, 1, "CORPORAL"] call ALIVE_fnc_hashSet;
+                [_ranksMap, 2, "SERGEANT"] call ALIVE_fnc_hashSet;
+                [_ranksMap, 3, "LIEUTENANT"] call ALIVE_fnc_hashSet;
+                [_ranksMap, 4, "CAPTAIN"] call ALIVE_fnc_hashSet;
+                [_ranksMap, 5, "MAJOR"] call ALIVE_fnc_hashSet;
+                [_ranksMap, 6, "COLONEL"] call ALIVE_fnc_hashSet;
+
                 _profiles = _args;
 
                 {
                     _profile = _x;
                     _profileType = [_profile,"type"] call ALIVE_fnc_hashGet;
-                    _vehicleAssignmentKeys = [_profile,"vehicleAssignmentKeys"] call ALIVE_fnc_hashGet;
-                    _vehicleAssignmentValues = [_profile,"vehicleAssignmentValues"] call ALIVE_fnc_hashGet;
 
-                     _rebuiltHash = [] call ALIVE_fnc_hashCreate;
+                    if("vehicleAssignmentKeys" in (_profile select 1)) then {
+                        _vehicleAssignmentKeys = [_profile,"vehicleAssignmentKeys"] call ALIVE_fnc_hashGet;
+                        _vehicleAssignmentValues = [_profile,"vehicleAssignmentValues"] call ALIVE_fnc_hashGet;
 
-                    {
-                        _key = _x;
-                        _value = _vehicleAssignmentValues select _forEachIndex;
-                        [_rebuiltHash, _key, _value] call ALIVE_fnc_hashSet;
-                    } forEach _vehicleAssignmentKeys;
+                        _rebuiltHash = [] call ALIVE_fnc_hashCreate;
 
-                    _rebuiltHash call ALIVE_fnc_inspectHash;
+                        {
+                            _key = _x;
+                            _value = _vehicleAssignmentValues select _forEachIndex;
+                            [_rebuiltHash, _key, _value] call ALIVE_fnc_hashSet;
+                        } forEach _vehicleAssignmentKeys;
 
-                    if(_profileType == "entity") then {
+                    };
+
+                    _profile call ALIVE_fnc_inspectHash;
+
+                    if(_profileType == 1) then {
 
                         _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "init"] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "profileID", [_profile,"profileID"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "objectType", [_profile,"objectType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "vehicleAssignments", _rebuiltHash] call ALIVE_fnc_hashSet;
-                        [_profileEntity, "vehiclesInCommandOf", [_profile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-                        [_profileEntity, "vehiclesInCargoOf", [_profile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-                        [_profileEntity, "unitCount", [_profile,"unitCount"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-                        [_profileEntity, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "unitClasses", [_profile,"unitClasses"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "position", [_profile,"position"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        [_profileEntity, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        [_profileEntity, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+
+                        /*
+                        [_profileEntity, "objectType", [_profile,"objectType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        [_profileEntity, "unitCount", [_profile,"unitCount"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
                         [_profileEntity, "positions", [_profile,"positions"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "damages", [_profile,"damages"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "ranks", [_profile,"ranks"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "side", [_profile,"side"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
-                        [_profileEntity, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        */
+
+                        if("vehicleAssignmentKeys" in (_profile select 1)) then {
+                            [_profileEntity, "vehicleAssignments", _rebuiltHash] call ALIVE_fnc_hashSet;
+                        };
+
+                        if("vehiclesInCommandOf" in (_profile select 1)) then {
+                            [_profileEntity, "vehiclesInCommandOf", [_profile,"vehiclesInCommandOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        };
+
+                        if("vehiclesInCargoOf" in (_profile select 1)) then {
+                            [_profileEntity, "vehiclesInCargoOf", [_profile,"vehiclesInCargoOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        };
+
+                        if("spawnType" in (_profile select 1)) then {
+                            [_profileEntity, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        };
+
+                        _ranks = [_profile,"ranks"] call ALIVE_fnc_hashGet;
+                        _importRanks = [];
+
+                        {
+                            _importRanks set [count _importRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
+                        } forEach _ranks;
+
+                        [_profileEntity, "ranks", _importRanks] call ALIVE_fnc_hashSet;
+
+                        _side = [_profile,"side"] call ALIVE_fnc_hashGet;
+                        [_profileEntity, "side", _side call ALIVE_fnc_sideNumberToText] call ALIVE_fnc_profileEntity;
+
+                        _unitClasses = [_profile,"unitClasses"] call ALIVE_fnc_hashGet;
+                        _damages = [];
+                        {
+                            if !(isnil "_x") then {
+                                _damages set [count _damages, 0];
+                            };
+                        } forEach _unitClasses;
+
+                        [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
+
 
                         [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
@@ -1266,19 +1393,36 @@ switch(_operation) do {
                         [_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "profileID", [_profile,"profileID"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "objectType", [_profile,"objectType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
-                        [_profileVehicle, "vehicleAssignments", _rebuiltHash] call ALIVE_fnc_hashSet;
-                        [_profileVehicle, "entitiesInCommandOf", [_profile,"entitiesInCommandOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-                        [_profileVehicle, "entitiesInCargoOf", [_profile,"entitiesInCargoOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
                         [_profileVehicle, "vehicleClass", [_profile,"vehicleClass"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "position", [_profile,"position"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "direction", [_profile,"direction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
+                        [_profileVehicle, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
+                        [_profileVehicle, "engineOn", [_profile,"engineOn"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
+                        [_profileVehicle, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+
+                        /*
                         [_profileVehicle, "damage", [_profile,"damage"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "ammo", [_profile,"ammo"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
-                        [_profileVehicle, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "fuel", [_profile,"fuel"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
-                        [_profileVehicle, "side", [_profile,"side"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
-                        [_profileVehicle, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
-                        [_profileVehicle, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
+                        */
+
+                        if("vehicleAssignmentKeys" in (_profile select 1)) then {
+                            [_profileVehicle, "vehicleAssignments", _rebuiltHash] call ALIVE_fnc_hashSet;
+                        };
+
+                        if("entitiesInCommandOf" in (_profile select 1)) then {
+                            [_profileVehicle, "entitiesInCommandOf", [_profile,"entitiesInCommandOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        };
+
+                        if("entitiesInCargoOf" in (_profile select 1)) then {
+                            [_profileVehicle, "entitiesInCargoOf", [_profile,"entitiesInCargoOf"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        };
+
+                        if("spawnType" in (_profile select 1)) then {
+                            [_profileVehicle, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
+                        };
+
+
 
                         [ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 

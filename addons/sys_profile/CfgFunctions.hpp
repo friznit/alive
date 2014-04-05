@@ -241,6 +241,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_sideTextToObject.sqf";
 				recompile = RECOMPILE;
 			};
+			class sideTextToNumber {
+                description = "sideTextToNumber";
+                file = "\x\alive\addons\sys_profile\fnc_sideTextToNumber.sqf";
+                recompile = RECOMPILE;
+            };
 			class sideNumberToText {
 				description = "sideNumberToText";
 				file = "\x\alive\addons\sys_profile\fnc_sideNumberToText.sqf";
