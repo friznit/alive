@@ -102,7 +102,6 @@ _exitServer = {
 	    //["ABORT: S SYS_PERF OPD"] call ALIVE_fnc_dump;
 		[_id, "__SERVER__", _uid] call ALIVE_fnc_perf_onPlayerDisconnected;
 	};
-
 	if !(isNil QMOD(sys_data)) then {
 	    ["ALIVE Abort - Server Data OPD"] call ALIVE_fnc_dump;
 		// Data module onPlayerDisconnected call
@@ -122,7 +121,19 @@ _saveServer = {
 	    ["ALIVE Abort - Server Player OPD"] call ALIVE_fnc_dump;
 		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
 	};
-
+    
+    /* 
+    // Arjay please check!
+	if (["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
+	    ["ALIVE Abort - Server Save Profiles"] call ALIVE_fnc_dump;
+		call compile preprocessFile "\x\alive\addons\sys_profile\tests\test_saveProfilePersistence.sqf";
+	};    
+    */
+    
+	if (["ALiVE_mil_OPCOM"] call ALiVE_fnc_isModuleAvailable) then {
+	    ["ALIVE Abort - Server Save OPCOM State"] call ALIVE_fnc_dump;
+		call ALiVE_fnc_OPCOMSaveData;
+	};
 };
 
 // Function run on server
