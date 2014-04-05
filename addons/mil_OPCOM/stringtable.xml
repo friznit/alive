@@ -14,6 +14,12 @@
 <Key ID="STR_ALIVE_OPCOM_DEBUG_COMMENT">
 	<English>Enables OPCOM Module Debug</English>
 </Key>
+<Key ID="STR_ALIVE_OPCOM_PERSISTENT">
+	<English>Persistent:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_PERSISTENT_COMMENT">
+	<English>Enables external Database persistence for OPCOM</English>
+</Key>
 <Key ID="STR_ALIVE_OPCOM_CONTROLTYPE">
 	<English>Control Type:</English>
 </Key>

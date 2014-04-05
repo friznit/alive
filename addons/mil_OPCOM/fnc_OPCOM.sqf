@@ -92,6 +92,7 @@ switch(_operation) do {
                     _factions = [_logic, "convert", _logic getvariable ["factions",[]]] call ALiVE_fnc_OPCOM;
                     
                     _debug = call compile (_logic getvariable ["debug","false"]);
+                    _persistent = call compile (_logic getvariable ["persistent","false"]);
                     _tasksEnabled = call compile (_logic getvariable ["playertaskings","true"]);
                     
                     //Get position
@@ -136,16 +137,17 @@ switch(_operation) do {
                     _opcomID = str(floor(_position select 0)) + str(floor(_position select 1));
                     
 					[_handler, "side",_side] call ALiVE_fnc_HashSet;
-                    [_handler, "factions",_factions] call ALiVE_fnc_HashSet;
-                    [_handler, "sidesenemy",_sidesEnemy] call ALiVE_fnc_HashSet;
-                    [_handler, "sidesfriendly",_sidesFriendly] call ALiVE_fnc_HashSet;
-                    [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
-                    [_handler, "position",_position] call ALiVE_fnc_HashSet;
-                    [_handler, "simultanobjectives",10] call ALiVE_fnc_HashSet;
-                    [_handler, "tasksenabled",_tasksEnabled] call ALiVE_fnc_HashSet;
-                    [_handler, "opcomID",_opcomID] call ALiVE_fnc_HashSet;
-                    [_handler, "debug",_debug] call ALiVE_fnc_HashSet;
-                    [_handler, "module",_logic] call ALiVE_fnc_HashSet;
+					[_handler, "factions",_factions] call ALiVE_fnc_HashSet;
+					[_handler, "sidesenemy",_sidesEnemy] call ALiVE_fnc_HashSet;
+					[_handler, "sidesfriendly",_sidesFriendly] call ALiVE_fnc_HashSet;
+					[_handler, "controltype",_type] call ALiVE_fnc_HashSet;
+					[_handler, "position",_position] call ALiVE_fnc_HashSet;
+					[_handler, "simultanobjectives",10] call ALiVE_fnc_HashSet;
+					[_handler, "tasksenabled",_tasksEnabled] call ALiVE_fnc_HashSet;
+					[_handler, "opcomID",_opcomID] call ALiVE_fnc_HashSet;
+					[_handler, "debug",_debug] call ALiVE_fnc_HashSet;
+					[_handler, "persistent",_persistent] call ALiVE_fnc_HashSet;
+					[_handler, "module",_logic] call ALiVE_fnc_HashSet;
                     
                     switch (_type) do {
 						case ("invasion") : {
@@ -564,6 +566,7 @@ switch(_operation) do {
                                 _i = 0;
                             	["ALiVE LOAD OPCOM DATA REBUILDING OBJECTIVE %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_DumpMPH;
                             };
+                            _i = _i + 1;
                             
 							_oID = [_entry,"objectiveID",""] call ALiVE_fnc_HashGet;
 							_section = [_entry,"section",[]] call ALiVE_fnc_HashGet;
@@ -574,8 +577,6 @@ switch(_operation) do {
                             if !(isnil "_oID") then {
                             	[_logic,"resetObjective",_oID] call ALiVE_fnc_OPCOM;
                             };
-                            
-                            _i = _i + 1;
 
 							/*
                             _orders = [_x,"opcom_orders","none"] call ALiVE_fnc_HashGet;

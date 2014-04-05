@@ -12,8 +12,18 @@ class cfgFunctions {
                                 recompile = RECOMPILE;
                         };
                         class OPCOMpositions {
-                                description = "The main class";
+                                description = "Selects OPCOM objective positions of given state";
                                 file = "\x\alive\addons\mil_opcom\fnc_OPCOMpositions.sqf";
+                                recompile = RECOMPILE;
+                        };
+						class OPCOMLoadData {
+                                description = "Loads OPCOM state from DB";
+                                file = "\x\alive\addons\mil_opcom\fnc_OPCOMLoadData.sqf";
+                                recompile = RECOMPILE;
+                        };
+						class OPCOMSaveData {
+                                description = "Saves OPCOM state from DB";
+                                file = "\x\alive\addons\mil_opcom\fnc_OPCOMSaveData.sqf";
                                 recompile = RECOMPILE;
                         };
                 };
