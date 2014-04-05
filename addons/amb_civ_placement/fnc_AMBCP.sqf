@@ -250,6 +250,7 @@ switch(_operation) do {
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedCIVClusters = true;
 			};
+            waituntil {!(isnil "ALIVE_loadedCIVClusters") && {ALIVE_loadedCIVClusters}};
 
 			if (isnil "ALIVE_clustersCivSettlement") exitwith {
                 ["ALIVE AMBCP - Exiting because of lack of civilian settlements..."] call ALIVE_fnc_dump;

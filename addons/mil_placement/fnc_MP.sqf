@@ -313,6 +313,7 @@ switch(_operation) do {
                     [] call ALIVE_fnc_groupGenerateConfigData;
                 };
             };
+            waituntil {!(isnil "ALIVE_loadedMilClusters") && {ALIVE_loadedMilClusters}};
             
 			//waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
 

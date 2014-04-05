@@ -266,7 +266,7 @@ switch(_operation) do {
                 call compile preprocessFileLineNumbers _file;
                 ALIVE_loadedCIVClusters = true;
             };
-
+			waituntil {!(isnil "ALIVE_loadedCIVClusters") && {ALIVE_loadedCIVClusters}};
 
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit
