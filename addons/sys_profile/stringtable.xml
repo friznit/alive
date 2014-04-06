@@ -14,6 +14,12 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT">
 	<English>Enables Module Debug</English>
 </Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_PERSISTENT">
+    <English>Persistent:</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_PERSISTENT_COMMENT">
+    <English>Enables external Database persistence for Profiles</English>
+</Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_PLOT_SECTORS">
 	<English>Sector Coloring:</English>
 </Key>
@@ -58,11 +64,5 @@
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
 	<English>Only one Profile System module can be used</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_PERSISTENT">
-    <English>Persistent:</English>
-</Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_PERSISTENT_COMMENT">
-    <English>Save state of profiles</English>
 </Key>
 </Container></Package></Project>

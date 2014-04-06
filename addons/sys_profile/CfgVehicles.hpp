@@ -31,6 +31,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class persistent
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_PERSISTENT";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_PERSISTENT_COMMENT";
+                                class Values
+                                {
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                                default = 1;
+                                        };
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                        };
+                                };
+                        };
 						class syncronised
                         {
                                 displayName = "$STR_ALIVE_PROFILE_SYSTEM_SYNC";

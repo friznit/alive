@@ -59,7 +59,10 @@ if (hasInterface) then {
 
 //Dynamic Helperfunctions for all localities
 ALiVE_fnc_ZeusRegister = {
-	{_x addCuratorEditableObjects [_this]} foreach allCurators;
+    [_this] spawn {
+        _unit = _this select 0;
+        {_x addCuratorEditableObjects [_unit]} foreach allCurators;
+    };
 };
 
 ALiVE_fnc_allCurators = {allCurators};

@@ -20,7 +20,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_uid","_moduleID"];
+private ["_logic","_debug","_persistent","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_uid","_moduleID"];
 
 PARAMS_1(_logic);
 
@@ -34,6 +34,7 @@ if(isServer) then {
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
 	_debug = _logic getVariable ["debug",false];
+	_persistent = _logic getVariable ["persistent",false];
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
@@ -50,6 +51,7 @@ if(isServer) then {
 	ALIVE_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "init"] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "persistent", _persistent] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "syncMode", _syncMode] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "syncedUnits", _syncedUnits] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "spawnRadius", _spawnRadius] call ALIVE_fnc_profileSystem;

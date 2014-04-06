@@ -396,6 +396,16 @@ class cfgFunctions {
                 file = "\x\alive\addons\sys_profile\fnc_profile_onPlayerDisconnected.sqf";
                 recompile = RECOMPILE;
             };
+            class profilesSaveData {
+                description = "profilesSaveData";
+                file = "\x\alive\addons\sys_profile\fnc_profilesSaveData.sqf";
+                recompile = RECOMPILE;
+            };
+            class profilesLoadData {
+                description = "profilesLoadData";
+                file = "\x\alive\addons\sys_profile\fnc_profilesLoadData.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

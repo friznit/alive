@@ -51,7 +51,7 @@ if(_debug) then {
 	_leader = leader _group;
 	_units = units _group;
 
-	if((_leader getVariable ["profileID",""] == "") && !(isPlayer _leader) && !(isNull _leader) && !(str(side _leader) == "LOGIC")) then {
+	if((_leader getVariable ["profileID",""] == "") && !(isPlayer _leader) && !(isNull _leader) && !(str(side _leader) == "LOGIC") && !(_group getVariable ["ALIVE_profileIgnore", false])) then {
 	
 		_unitClasses = [];
 		_positions = [];
@@ -219,6 +219,10 @@ _deleteVehicleCount = 0;
                 _unitBlacklisted = true;
             };
 
+            if(_vehicle getVariable ["ALIVE_profileIgnore",false]) then {
+                _unitBlacklisted = true;
+            };
+
             if!(_vehicle getVariable ["runtimeProfiled",false]) then {
                 _unitBlacklisted = true;
             };
@@ -268,7 +272,7 @@ _vehicleCount = 0;
 	_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 	_playerVehicle = false;
 	
-	if(!(_vehicleClass in _vehicleBlacklist) && !(_vehicle getVariable ["ALIVE_CombatSupport",false]))then {
+	if(!(_vehicleClass in _vehicleBlacklist) && !(_vehicle getVariable ["ALIVE_CombatSupport",false]) && !(_vehicle getVariable ["ALIVE_profileIgnore",false]))then {
 
 		if((_vehicle getVariable ["profileID",""]) == "" && _vehicleKind !="") then {
 		

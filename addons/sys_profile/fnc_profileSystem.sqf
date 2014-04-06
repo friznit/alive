@@ -57,6 +57,7 @@ switch(_operation) do {
                         //TRACE_1("After module init",_logic);
 
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
+						[_logic,"persistent",false] call ALIVE_fnc_hashSet;
 						[_logic,"plotSectors",false] call ALIVE_fnc_hashSet;
 						[_logic,"syncMode","ADD"] call ALIVE_fnc_hashSet;
 						[_logic,"syncedUnits",[]] call ALIVE_fnc_hashSet;
@@ -66,17 +67,17 @@ switch(_operation) do {
 						[_logic,"activeLimiter",30] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
-						[_logic,"persistent",false] call ALIVE_fnc_hashSet;
                 };
         };
         case "start": {
 		
-				private["_debug","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius",
+				private["_debug","_persistent","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius",
 				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSM","_sectors","_persistent"];
                 
                 if (isServer) then {
 						
 						_debug = [_logic,"debug",false] call ALIVE_fnc_hashGet;
+						_persistent = [_logic,"persistent",false] call ALIVE_fnc_hashGet;
 						_plotSectors = [_logic,"plotSectors",false] call ALIVE_fnc_hashGet;
 						_syncMode = [_logic,"syncMode","ADD"] call ALIVE_fnc_hashGet;
 						_syncedUnits = [_logic,"syncedUnits",[]] call ALIVE_fnc_hashGet;
@@ -167,7 +168,7 @@ switch(_operation) do {
                             ["ALIVE Spawn in Jet Radius: %1",_spawnTypeJetRadius] call ALIVE_fnc_dump;
                             ["ALIVE Spawn in Heli Radius: %1",_spawnTypeHeliRadius] call ALIVE_fnc_dump;
 							["ALIVE Spawn Cycle Time: %1", _spawnCycleTime] call ALIVE_fnc_dump;
-							["ALIVE Persistent: %1",ALIVE_profilesPersistent] call ALIVE_fnc_dump;
+							["ALIVE Persistent: %1",_persistent] call ALIVE_fnc_dump;
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
@@ -287,9 +288,19 @@ switch(_operation) do {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
                 } else {
 						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
-                };                
+                };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
-                
+
+                _result = _args;
+        };
+        case "persistent": {
+                if(typeName _args != "BOOL") then {
+                        _args = [_logic,"persistent"] call ALIVE_fnc_hashGet;
+                } else {
+                        [_logic,"persistent",_args] call ALIVE_fnc_hashSet;
+                };
+                ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
                 _result = _args;
         };
 		case "plotSectors": {

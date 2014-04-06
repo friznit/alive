@@ -1283,7 +1283,7 @@ switch(_operation) do {
 
                     [_exportProfiles, _profileID, _exportProfile] call ALIVE_fnc_hashSet;
 
-                    _exportProfile call ALIVE_fnc_inspectHash;
+                    //_exportProfile call ALIVE_fnc_inspectHash;
 
                 };
 
@@ -1327,7 +1327,7 @@ switch(_operation) do {
 
                     };
 
-                    _profile call ALIVE_fnc_inspectHash;
+                    //_profile call ALIVE_fnc_inspectHash;
 
                     if(_profileType == 1) then {
 
@@ -1384,6 +1384,8 @@ switch(_operation) do {
 
                         [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
 
+                        _profileEntity call ALIVE_fnc_inspectHash;
+
 
                         [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
@@ -1422,6 +1424,7 @@ switch(_operation) do {
                             [_profileVehicle, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         };
 
+                        _profileVehicle call ALIVE_fnc_inspectHash;
 
 
                         [ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;

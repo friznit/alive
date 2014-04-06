@@ -122,14 +122,12 @@ _saveServer = {
 		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
 	};
     
-    /* 
-    // Arjay please check!
+
 	if (["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
 	    ["ALIVE Abort - Server Save Profiles"] call ALIVE_fnc_dump;
-		call compile preprocessFile "\x\alive\addons\sys_profile\tests\test_saveProfilePersistence.sqf";
+		call ALiVE_fnc_profilesSaveData;
 	};    
-    */
-    
+
 	if (["ALiVE_mil_OPCOM"] call ALiVE_fnc_isModuleAvailable) then {
 	    ["ALIVE Abort - Server Save OPCOM State"] call ALIVE_fnc_dump;
 		call ALiVE_fnc_OPCOMSaveData;

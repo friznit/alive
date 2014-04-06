@@ -54,11 +54,20 @@ _vehicleBlacklist = ["O_UAV_02_F","O_UAV_02_CAS_F","O_UAV_01_F","O_UGV_01_F","O_
 		if!(side _object == sideLogic) then {			
 			_group  = group _object;
 			_createModeGroups set [count _createModeGroups, _group];
+
+			if(_createMode == "IGNORE") then {
+			    _group setVariable ["ALIVE_profileIgnore", true];
+			};
 			
 			{
 				_vehicle = vehicle _x;
 				if(!(_vehicle == _x)) then {
 					if!(_vehicle in _createModeVehicles) then {
+
+                        if(_createMode == "IGNORE") then {
+                            _vehicle setVariable ["ALIVE_profileIgnore", true];
+                        };
+
 						_createModeVehicles set [count _createModeVehicles, _vehicle];
 					};
 				};
@@ -67,6 +76,10 @@ _vehicleBlacklist = ["O_UAV_02_F","O_UAV_02_CAS_F","O_UAV_01_F","O_UGV_01_F","O_
 	}else{
 		if!(side _object == sideLogic) then {
 			_createModeVehicles set [count _createModeVehicles, _object];
+
+			if(_createMode == "IGNORE") then {
+                _object setVariable ["ALIVE_profileIgnore", true];
+            };
 		};
 	};
 } forEach _createModeObjects;

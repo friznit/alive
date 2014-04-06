@@ -34,13 +34,15 @@ if !(isServer) exitwith {};
 _result = [];
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
-[true] call ALiVE_fnc_timer;
+[true, "ALiVE OPCOM persistence save data started", "opper"] call ALIVE_fnc_timer;
+
 	{
         if ([_x,"persistent",false] call ALIVE_fnc_HashGet) then {
 			_result set [count _result,[([_x,"saveData"] call ALIVE_fnc_OPCOM)]];
         };
 	} foreach OPCOM_INSTANCES;
-[] call ALiVE_fnc_timer;
+
+[false, "ALiVE OPCOM persistence save data complete","opper"] call ALIVE_fnc_timer;
 {["ALiVE OPCOM SAVE DATA RESULT: %1",_x] call ALiVE_fnc_Dump} foreach _result;
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;

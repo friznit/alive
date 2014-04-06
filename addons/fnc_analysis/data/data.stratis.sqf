@@ -1346,7 +1346,6 @@ _roads = [] call ALIVE_fnc_hashCreate;
 
 
 
-
 _sectorData = [ALIVE_gridData, "1_3"] call ALIVE_fnc_hashGet;
 _clustersMil = [] call ALIVE_fnc_hashCreate;
 [_clustersMil,"consolidated",[[[1985.14,3518.51],"c_0"]]] call ALIVE_fnc_hashSet;
@@ -1424,7 +1423,6 @@ _clustersMil = [] call ALIVE_fnc_hashCreate;
 [_clustersMil,"heli",[]] call ALIVE_fnc_hashSet;
 [_sectorData,"clustersMil",_clustersMil] call ALIVE_fnc_hashSet;
 [ALIVE_gridData, "1_5", _sectorData] call ALIVE_fnc_hashSet;
-
 
 
 
