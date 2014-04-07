@@ -175,6 +175,16 @@ if (_menuName == "adminActions") then {
 					(MOD(adminActions) getVariable ["PROFILES_enabled", false])
 				],
 
+				[localize "STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_ENABLE",
+                    { [] call ALIVE_fnc_adminCreateProfiles; },
+                    "",
+                    localize "STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_COMMENT",
+                    "",
+                    -1,
+                    MOD(adminActions) getVariable ["profiles_create", 0],
+                    true
+                ],
+
 				[localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_ENABLE",
                     { MOD(adminActions) setVariable ["AGENTS_enabled", true]; [] call ALIVE_fnc_agentSystemDebug; },
                     "",

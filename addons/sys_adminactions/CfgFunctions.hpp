@@ -26,6 +26,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_adminactions\fnc_profileSystemDebug.sqf";
                                 recompile = RECOMPILE;
                         };
+                        class adminCreateProfiles {
+                                description = "Profile non profiled units";
+                                file = "\x\alive\addons\sys_adminactions\fnc_adminCreateProfiles.sqf";
+                                recompile = RECOMPILE;
+                        };
                         class agentSystemDebug {
                                 description = "Turn on agent system debug";
                                 file = "\x\alive\addons\sys_adminactions\fnc_agentSystemDebug.sqf";

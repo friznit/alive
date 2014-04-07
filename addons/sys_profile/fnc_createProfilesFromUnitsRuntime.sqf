@@ -51,6 +51,8 @@ if(_debug) then {
 	_leader = leader _group;
 	_units = units _group;
 
+	//["CPR profileID: %1 isPlayer: %2 isIgnored: %3", _leader getVariable ["profileID",""], !(isPlayer _leader), _group getVariable ["ALIVE_profileIgnore", false]] call ALIVE_fnc_dump;
+
 	if((_leader getVariable ["profileID",""] == "") && !(isPlayer _leader) && !(isNull _leader) && !(str(side _leader) == "LOGIC") && !(_group getVariable ["ALIVE_profileIgnore", false])) then {
 	
 		_unitClasses = [];
@@ -102,6 +104,9 @@ if(_debug) then {
                 [_profileEntity, "addActiveCommand", _initCommand] call ALIVE_fnc_profileEntity;
             };
 
+            //["CPR profiling group..."] call ALIVE_fnc_dump;
+            //_profileEntity call ALIVE_fnc_inspectHash;
+
 			[ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 			
 			_waypoints = waypoints _group;
@@ -152,6 +157,9 @@ if(_debug) then {
 						if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 							[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
 						};
+
+						//["CPR profiling group vehicle..."] call ALIVE_fnc_dump;
+                        //_profileVehicle call ALIVE_fnc_inspectHash;
 						
 						[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 						
@@ -202,11 +210,12 @@ _deleteVehicleCount = 0;
 	_units = units _group;
 	_unitClasses = [];
 
-	if(_leader getVariable ["runtimeProfiled",false]) then {
+	_unitBlacklisted = false;
+
+	if!(_leader getVariable ["runtimeProfiled",false]) then {
         _unitBlacklisted = true;
     };
-	
-	_unitBlacklisted = false;
+
 	{
 		if((typeOf _x) in _unitBlackist) then {
 			_unitBlacklisted = true;
@@ -227,9 +236,15 @@ _deleteVehicleCount = 0;
                 _unitBlacklisted = true;
             };
 
+            //["CPR vehicle: %1 isIgnored: %2 runtimeProfiled: %3", _group, _vehicle getVariable ["ALIVE_profileIgnore",false], _vehicle getVariable ["runtimeProfiled",false]] call ALIVE_fnc_dump;
+
         };
 
 	} foreach (_units);
+
+	//["CPR group: %1 isRuntimeProfiled: %2", _group, _leader getVariable ["runtimeProfiled",false]] call ALIVE_fnc_dump;
+
+	//["CPR checking deletion status: %1 isBlacklisted: %2",_group, _unitBlacklisted] call ALIVE_fnc_dump;
 
 	if(!_unitBlacklisted) then {
 		
@@ -271,6 +286,8 @@ _vehicleCount = 0;
 	_vehicleClass = typeOf _vehicle;
 	_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 	_playerVehicle = false;
+
+	//["CPR empty vehicle class: %1 kind: %2 isIgnored: %4 isBlacklisted: %3 ", _vehicleClass, _vehicleKind, _vehicleClass in _vehicleBlacklist, _vehicle getVariable ["ALIVE_profileIgnore",false]] call ALIVE_fnc_dump;
 	
 	if(!(_vehicleClass in _vehicleBlacklist) && !(_vehicle getVariable ["ALIVE_CombatSupport",false]) && !(_vehicle getVariable ["ALIVE_profileIgnore",false]))then {
 
@@ -311,7 +328,10 @@ _vehicleCount = 0;
 				[_profileVehicle, "active", true] call ALIVE_fnc_profileVehicle;
 			} else {
 				deleteVehicle _vehicle;
-			};	
+			};
+
+			//["CPR profiling empty vehicle..."] call ALIVE_fnc_dump;
+            //_profileVehicle call ALIVE_fnc_inspectHash;
 			
 			[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 			

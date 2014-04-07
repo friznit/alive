@@ -88,6 +88,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class profiles_create
+                        {
+                                displayName = "$STR_ALIVE_ADMINACTIONS_CREATE_PROFILES";
+                                description = "$STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = 1;
+                                                default = 1;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = 0;
+                                        };
+                                };
+                        };
                         class agent_debug
                         {
                                 displayName = "$STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG";

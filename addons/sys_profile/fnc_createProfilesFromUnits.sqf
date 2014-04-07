@@ -138,7 +138,7 @@ if(_debug) then {
 		
 		if(!_unitBlacklisted) then {
 		
-			_entityID = format["entity_%1",_entityCount];
+			_entityID = [ALIVE_profileHandler, "getNextInsertEntityID"] call ALIVE_fnc_profileHandler;
 			
 			_position = getPosATL _leader;
 
@@ -179,7 +179,7 @@ if(_debug) then {
 					
 					if((_vehicle getVariable ["profileID",""]) == "") then {
 										
-						_vehicleID = format["vehicle_%1",_vehicleCount];
+						_vehicleID = [ALIVE_profileHandler, "getNextInsertVehicleID"] call ALIVE_fnc_profileHandler;
 						_vehicleClass = typeOf _vehicle;
 						_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 						
@@ -325,10 +325,12 @@ if(_debug) then {
 			} forEach crew _vehicle;
 			
 			_position = getPosATL _vehicle;
+
+			_vehicleID = [ALIVE_profileHandler, "getNextInsertVehicleID"] call ALIVE_fnc_profileHandler;
 						
 			_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 			[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
-			[_profileVehicle, "profileID", format["vehicle_%1",_vehicleCount]] call ALIVE_fnc_profileVehicle;
+			[_profileVehicle, "profileID", _vehicleID] call ALIVE_fnc_profileVehicle;
 			[_profileVehicle, "vehicleClass", _vehicleClass] call ALIVE_fnc_profileVehicle;
 			[_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
 			[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;

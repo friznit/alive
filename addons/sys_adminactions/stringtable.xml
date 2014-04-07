@@ -67,6 +67,15 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT">
     <English>Toggle debug mode on the profile system</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CREATE_PROFILES">
+    <English>Profile non profiled units:</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_ENABLE">
+    <English>Profile non profiled units</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_COMMENT">
+    <English>Create profiles from non profiles units and vehicles.</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG">
     <English>Debug Civilian System:</English>
 </Key>
