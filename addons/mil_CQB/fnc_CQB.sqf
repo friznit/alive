@@ -677,27 +677,36 @@ switch(_operation) do {
 
 	case "addGroup": {
 		if(!isNil "_args") then {
-			private ["_house","_grp"];
+			private ["_house","_grp","_leader"];
 			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
 			_house = ARG_1(_args,0);
 			ASSERT_TRUE(typeName _house == "OBJECT",str typeName _house);
 			_grp = ARG_1(_args,1);
 			ASSERT_TRUE(typeName _grp == "GROUP",str typeName _grp);
+            
+            _leader = leader _grp;
 			
 			// if a house is not enterable, you can't spawn AI on it
 			if (!([_house] call ALiVE_fnc_isHouseEnterable)) exitWith {
 				[_logic, "clearHouse", _house] call ALiVE_fnc_CQB;
 			};
 			
+            //Add group to main groups data
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceAdd;
-			_house setVariable ["group", _grp, true];
-			{_x setVariable ["house",_house]} foreach (units _grp);
+			
+            //Set group on house (globally with public flag so all localities know about it)
+            _house setVariable ["group", _grp, true];
             
-            //Only public flag leader with house to save PVs
-			(leader _grp) setVariable ["house",_house, true];
+            //Set house and ALiVE_profileIgnore on all single units locally without public flag to save PVs
+			{_x setVariable ["house",_house]; _x setVariable ["ALIVE_profileIgnore",true]} foreach (units _grp);
+
+            //Only public flag leader with house and AliVE_profileIgnore information to save PVs (and groups cant carry public flag on setvariable either way)
+            //See the "active" operation for setting the variables on the group
+			_leader setVariable ["house",_house, true];
+            _leader setvariable ["ALIVE_profileIgnore",true,true];
 			
 	        if (_logic getVariable ["debug", false]) then {
-	        	["CQB Population: Group %1 created on %2", _grp, owner leader _grp] call ALiVE_fnc_Dump;
+	        	["CQB Population: Group %1 created on %2", _grp, owner _leader] call ALiVE_fnc_Dump;
 			};
 			// mark active houses
 			format[MTEMPLATE, _house] setMarkerTypeLocal "Waypoint";
@@ -706,10 +715,11 @@ switch(_operation) do {
 
 	case "delGroup": {
 		if(!isNil "_args") then {
-			ASSERT_TRUE(typeName _args == "GROUP",str typeName _args);
+			ASSERT_TRUE(typeName _args == "GROUP",str typeName _args,_leader);
 			private ["_grp","_house"];
 			_grp = _args;
-			_house = (leader _grp) getVariable "house";
+            _leader = leader _grp;
+			_house = _leader getVariable "house";
             
             // Update house that group despawned
             if !(isnil "_house") then {
@@ -719,7 +729,7 @@ switch(_operation) do {
             
             // Despawn group
             if (_logic getVariable ["debug", false]) then {
-				["CQB Population: Deleting group %1 from %2...", _grp, owner leader _grp] call ALiVE_fnc_Dump;
+				["CQB Population: Deleting group %1 from %2...", _grp, owner _leader] call ALiVE_fnc_Dump;
 			};
             
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceRemove;
@@ -810,7 +820,7 @@ switch(_operation) do {
 		_logic getVariable ["active", false];
 	};
 	
-	ASSERT_TRUE(typeName _args == "BOOL",str _args);		
+	ASSERT_TRUE(typeName _args == "BOOL",str _args);
 	
 	// xor check args is different to current debug setting
 	if(
@@ -915,8 +925,8 @@ switch(_operation) do {
 							} forEach (_logic getVariable ["houses", []]);
 							{
 								_grp = _x;
-	                            
-	                            if !(isnil "_grp") then { 
+                                
+	                            if !(isnil "_grp") then {
 		                            _leader = leader _grp;
 									
 		                            // get house in question
@@ -925,10 +935,17 @@ switch(_operation) do {
 		                            //If house is defined then... (can be disabled due to "object streaming")
 		                            if !(isnil "_house") then {
 		                               
-			                            // Initializing grouphouse locally on all units to save PVs (see addgroup). 
-			                            // If not all units are flagged with house then flag them;
+			                            // Initializing group variables locally on all units to save PVs (see addgroup and deletgroup). Additionally public setvariable flag doesnt work for groups (only objects) 
+			                            // If not all units have been flagged yet then flag them;
+                                        // Use only "house" variable as indicator if flagging has been done already, to save performance
 			                            if (({!(isnil {_x getvariable ["house",nil]})} count (units _grp)) != (count units _grp)) then {
-			                                {_x setvariable ["house",_house]} foreach (units _grp); _grp setvariable ["house",_house];
+			                                {
+                                                _x setvariable ["house",_house];
+                                                _x setvariable ["ALIVE_profileIgnore",true];
+                                            } foreach (units _grp);
+                                            
+                                            _grp setvariable ["house",_house];
+                                            _grp setvariable ["ALIVE_profileIgnore",true];
 			                            };
 										
 										// if group are all dead
