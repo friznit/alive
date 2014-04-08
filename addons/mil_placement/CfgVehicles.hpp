@@ -194,11 +194,13 @@ class CfgVehicles {
                                                 name = "$STR_ALIVE_MP_TYPE_LIGHT";
                                                 value = "Infantry";
                                         };
+                                        /*
                                         class AIRBORNE
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_AIRBORNE";
                                                 value = "Air";
                                         };
+                                        */
                                         class SPECOPS
                                         {
                                                 name = "$STR_ALIVE_MP_TYPE_SPECOPS";

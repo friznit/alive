@@ -53,7 +53,15 @@ if(_debug) then {
 
 	//["CPR profileID: %1 isPlayer: %2 isIgnored: %3", _leader getVariable ["profileID",""], !(isPlayer _leader), _group getVariable ["ALIVE_profileIgnore", false]] call ALIVE_fnc_dump;
 
-	if((_leader getVariable ["profileID",""] == "") && !(isPlayer _leader) && !(isNull _leader) && !(str(side _leader) == "LOGIC") && !(_group getVariable ["ALIVE_profileIgnore", false])) then {
+	if(
+	    (_leader getVariable ["profileID",""] == "")
+	    && (_leader getVariable ["agentID",""] == "")
+	    && !(isPlayer _leader)
+	    && !(isNull _leader)
+	    && !(str(side _leader) == "LOGIC")
+	    && !(_group getVariable ["ALIVE_Convoy",false])
+	    && !(_group getVariable ["ALIVE_profileIgnore", false])
+	    ) then {
 	
 		_unitClasses = [];
 		_positions = [];
@@ -289,9 +297,14 @@ _vehicleCount = 0;
 
 	//["CPR empty vehicle class: %1 kind: %2 isIgnored: %4 isBlacklisted: %3 ", _vehicleClass, _vehicleKind, _vehicleClass in _vehicleBlacklist, _vehicle getVariable ["ALIVE_profileIgnore",false]] call ALIVE_fnc_dump;
 	
-	if(!(_vehicleClass in _vehicleBlacklist) && !(_vehicle getVariable ["ALIVE_CombatSupport",false]) && !(_vehicle getVariable ["ALIVE_profileIgnore",false]))then {
+	if(
+	    !(_vehicleClass in _vehicleBlacklist)
+	    && !(_vehicle getVariable ["ALIVE_CombatSupport",false])
+	    && !(_vehicle getVariable ["ALIVE_profileIgnore",false])
+	    && !(group _vehicle getVariable ["ALIVE_Convoy",false])
+	    )then {
 
-		if((_vehicle getVariable ["profileID",""]) == "" && _vehicleKind !="") then {
+		if((_vehicle getVariable ["profileID",""]) == "" && (_vehicle getVariable ["agentID",""]) == "" && _vehicleKind !="") then {
 		
 			{
 				if(isPlayer _x) then {

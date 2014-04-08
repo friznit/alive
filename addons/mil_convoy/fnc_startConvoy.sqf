@@ -185,7 +185,10 @@ for "_j" from 1 to _intensity do {
 							};
 						};
 						
-						["ALIVE-%1 Convoy: #%2 %3 %4 %5 %6 units:%7", time, _j, _startpos, _destpos, _endpos, _front, count (units _grp)] call ALiVE_fnc_Dump;
+						//["ALIVE-%1 Convoy: #%2 %3 %4 %5 %6 units:%7", time, _j, _startpos, _destpos, _endpos, _front, count (units _grp)] call ALiVE_fnc_Dump;
+
+						// set a owner var on the group
+						_grp setVariable ["ALIVE_Convoy",true];
 												
 						_starttime = time;
                         _convoyTimeout = 3600;
