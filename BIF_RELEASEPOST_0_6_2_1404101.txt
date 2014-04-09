@@ -43,7 +43,7 @@ At present we have only created the in game maps in the War Room for some of the
 * Real weather module (WIP)! Select reality based location and time and ALiVE will determine the real weather for this location.
 * Updates and Bugfixes to ALiVE WarRoom. Added more maps, AAR, Kill trajectory lines, and much more!
 * Added functionality to read alive.cfg from A3 Root folder
-* Fixes Fixes Fixes, we tried to adress as many tracker tickets as possible!
+* Fixes Fixes Fixes - of course we tried to adress as much feedback and as many tracker tickets as possible!
 
 Full Changelog (safe to click this time...):
 
@@ -61,6 +61,8 @@ Readable changelog:
 - Changed ALiVE_fnc_randomgroup to use correct side.
 - Fix for Military Convoy module spawns as enemy ([url]http://dev.withsix.com/issues/74307[/url])
 
+[DEMOS] Added ZEUS to the ALiVE Foursome, and ALiVE Divide & Rule missions
+
 [VARIOUS] Implemented Pause System
 [VARIOUS] BIS_fnc_findSafepos passed a default spawn pos to prevent or at least minimize [0,0,0] spawns
 
@@ -73,8 +75,10 @@ Readable changelog:
 [MIL_OPCOM] Implemented [_OPCOM, "removeObjective",_id] call ALiVE_fnc_OPCOM according to [url]http://dev.withsix.com/issues/74214[/url]
 [MIL_CONVOYS] Fixed script error havoc if no roads were found, refactored way of selecting near roads
 
-[MIL/CIV/AMBCIV PLACEMENT] Fixed bad race condition on that sometimes occurred on first server start! Important fix!
 [AMBCIV_PLACEMENT] Fix for hanging on loading screen if civilian population module wasnt placed but amb civ placement module was (warning displayed now)
+[MIL/CIV/AMBCIV PLACEMENT] Fixes & Changes:
+- Fixed bad race condition that sometimes occurred on first server start! Important fix!
+- Disabled Version Pop up windows, and only warn in .rpt to lessen frustration with DEV builds
 
 [SYS_PROFILE] Trimmed data that gets sent to couchDB on saving process down, to improve performance and loading times
 
@@ -96,6 +100,7 @@ Readable changelog:
 [/SPOILER]
 
 Download: Grab the latest version from [B][URL="http://alivemod.com"]ALiVEmod.com[/URL][/B] or [B][URL="http://www.withsix.com/"]PlayWithSix[/URL][/B]
+Note to server admins: We fixed some errors in the .dll - best is to grab the new @ArmA2NET folder from your ALiVE WarRoom
 
 [B][U]Disclaimer[/U][/B]
 We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
