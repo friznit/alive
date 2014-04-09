@@ -1,0 +1,89 @@
+[CENTER][URL="http://alivemod.com/"][IMG]https://lh3.googleusercontent.com/yaT923QqaWdy53Vc7Y7fSw51GNXD15VGGmpUpvlcYxY32Gwm3_-tTWji8k8SccpTk9NSRVkS_egZn2obtwGO68vGS4yBJDnR53osWkazThm6mHBvkLfWBDB2[/IMG][/URL]
+
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+The next generation dynamic persistent campaign for ArmA3[/B]
+
+
+We are really glad to [B]release to you - the best community on earth - the newest version of ALiVE[/B]!
+[B]Version number is now 0.6.2 and is considered as a service release[/B], 
+additionally we managed to implement cool new features but also fixed many issues. 
+
+
+[U][B]ZEUS COMPATIBILITY[/B][/U]
+Get a grip and watch the full scale of ALiVE and edit as the game master!
+
+[CENTER][IMG]https://community.bistudio.com/wikidata/images/thumb/8/82/arma3_zeus_logo.png/400px-arma3_zeus_logo.png[/IMG][/CENTER]
+
+Gunny posted it already, but for the sake of completeness of the releasepost i put it here again.
+
+[CENTER][video=youtube;qgMoOm_S1c4]https://www.youtube.com/watch?v=qgMoOm_S1c4[/video][/CENTER]
+[/CENTER]
+
+[U][B]Compiled highlights in this release:[/B][/U]
+
+* ALiVE ZEUS compatibility enabled
+* Real weather module (WIP)! Select reality based location and time and ALiVE will determine the real weather for this location.
+* Updates and Bugfixes to ALiVE WarRoom. Added more maps, AAR, Kill trajectory lines, and much more!
+* Added functionality to read alive.cfg from A3 Root folder
+* Fixes Fixes Fixes, we tried to adress as many tracker tickets as possible!
+
+Full Changelog (safe to click this time...):
+
+[SPOILER]
+[ALL] Updated version to 0.6.2.1404101 (public stable)
+    
+Readable changelog:
+
+[MAIN] Updated indexes and clusters to work with new stable!
+[MAIN] Enabled ZEUS for ALiVE autodiscover functionality!
+[MAIN] Implemented Save OPCOM into "Save Server" button (the button will be enabled soon(tm)).
+[MAIN] Changed BUS to BIS_fnc_MP to prevent script error with ALIVE_fnc_player_onPlayerDisconnected on player exit
+[MAIN] ALiVE_fnc_BUS, function-names can be transferred as strings
+[MAIN] Added ALiVE_fnc_factionSide, returns side from given faction (read from config).
+- Changed ALiVE_fnc_randomgroup to use correct side.
+- Fix for Military Convoy module spawns as enemy ([url]http://dev.withsix.com/issues/74307[/url])
+
+[VARIOUS] Implemented Pause System
+[VARIOUS] BIS_fnc_findSafepos passed a default spawn pos to prevent or at least minimize [0,0,0] spawns
+
+[ADMINACTIONS/SYS PROFILE/MIL CQB] Added button to create profiles from units to admin actions, works nice with Zeus!
+[ADDINS] Added exception handling for HTTP 404 status codes in ALiVEPlugIn
+[ADDINS] Added ALiVEPlugIn now supports placing the alive.cfg file into the Arma 3 root directory.
+[ADDINS] Updated ALIVEPLugIn to support real weather
+
+[MIL_OPCOM] Finished persistence basics for OPCOM!
+[MIL_OPCOM] Implemented [_OPCOM, "removeObjective",_id] call ALiVE_fnc_OPCOM according to [url]http://dev.withsix.com/issues/74214[/url]
+[MIL_CONVOYS] Fixed script error havoc if no roads were found, refactored way of selecting near roads
+
+[MIL/CIV/AMBCIV PLACEMENT] Fixed bad race condition on that sometimes occurred on first server start! Important fix!
+[AMBCIV_PLACEMENT] Fix for hanging on loading screen if civilian population module wasnt placed but amb civ placement module was (warning displayed now)
+
+[SYS_PROFILE] Trimmed data that gets sent to couchDB on saving process down, to improve performance and loading times
+
+[SYS_WEATHER] Added WIP real weather and fixed some configs/variable issues.
+[SYS_WEATHER] Added override values: clear, overcast, stormy and foggy.
+- Tweaked fog values.
+- Added GillSan font.
+
+[SUP_COMBAT SUPPORT] Fixes for issues:
+- Combat Support Transport Circle Function [url]http://dev.withsix.com/issues/74271[/url]
+- Insertion Script Tweak [url]http://dev.withsix.com/issues/74274[/url]
+
+[SYS_STATISTICS] Fixes: 
+- error when player was hit
+- reporting expecting integer instead of string for alive_sys_statistics_eventlevel
+- Fix for vehicles placed by BIS_fnc_findsafepos can sometimes be placed at 0,0,0 and destroyed. 
+- Fix for False vehicle destruction recorded
+- _shotsfired script error on player exit if no shots were fired yet
+[/SPOILER]
+
+Download: Grab the latest version from [B][URL="http://alivemod.com"]ALiVEmod.com[/URL][/B] or [B][URL="http://www.withsix.com/"]PlayWithSix[/URL][/B]
+
+[B][U]Disclaimer[/U][/B]
+We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+
+[B][U]Thanks To[/U][/B]
+Special thanks to everyone here for supporting us with feedback and bug reports.
+Our dedicated testing team - thank you so much - keep up the hard work ripping apart our codez!
+
+Stay tuned, comrades!
