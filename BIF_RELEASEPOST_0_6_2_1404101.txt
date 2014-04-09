@@ -9,15 +9,33 @@ We are really glad to [B]release to you - the best community on earth - the newe
 additionally we managed to implement cool new features but also fixed many issues. 
 
 
+
 [U][B]ZEUS COMPATIBILITY[/B][/U]
 Get a grip and watch the full scale of ALiVE and edit as the game master!
 
 [CENTER][IMG]https://community.bistudio.com/wikidata/images/thumb/8/82/arma3_zeus_logo.png/400px-arma3_zeus_logo.png[/IMG][/CENTER]
 
 Gunny posted it already, but for the sake of completeness of the releasepost i put it here again.
-
 [CENTER][video=youtube;qgMoOm_S1c4]https://www.youtube.com/watch?v=qgMoOm_S1c4[/video][/CENTER]
+
+
+[U][B]ALiVE WarRoom Updates[/B][/U]
+
+As we continue to develop features for the War Room, we are pleased to advise a couple of great new additions to the Operations Maps.
+We have added an event timeline, where you can step through each event, as it happened at a given time within your mission.
+Using the timeline you can even play back the whole operation, seeing who killed what, where and when.
+
+[IMG]http://i.imgur.com/BFPQIVU.jpg[/IMG]
+[URL="http://i.imgur.com/jFdiy1l.png"]Supersize me![/URL]
+
+In addition to the event timeline, we have also added your kill information.
+Clicking on a "KILL" Event will now show where the Player\AI was when they got the kill, 
+where the killed Player\AI was when they were killed and will be indicated by an animated kill line.
+
+At present we have only created the in game maps in the War Room for some of the biggest used AO's, we will be adding them all in due course.
+
 [/CENTER]
+
 
 [U][B]Compiled highlights in this release:[/B][/U]
 
