@@ -292,11 +292,13 @@ switch(_operation) do {
                     //_error = true;
                 };
                 
+                /*
                 if (!(isnil "_message") && {isnil QGVAR(CLUSTERWARNING_DISPLAYED)}) then {
                     GVAR(CLUSTERWARNING_DISPLAYED) = true;
                     //[_message] spawn BIS_fnc_guiMessage;
                     [[_message],"BIS_fnc_guiMessage",nil,true] spawn BIS_fnc_MP;
                 };
+                */
             };
 
             if!(_error) then {
