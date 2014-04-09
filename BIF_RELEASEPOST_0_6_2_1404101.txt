@@ -36,6 +36,13 @@ At present we have only created the in game maps in the War Room for some of the
 
 [/CENTER]
 
+[U][B]ALiVE Plugin Updates - Server Admins[/B][/U]
+
+We have made several key updates to our Server side plugin (ALiVEPlugIn.DLL) to improve performance, robustness and some new features. 
+
+The new features include support for future implementation of Real Weather in game. This will allow mission makers to apply the actual weather conditions for a specified location at that exact month/day/hour. We also added the ability to place your alive.cfg file in Arma 3 root directory, this is suitable for groups that may not have access to the game server's file system. Finally, we pushed some fixes for sys_statistics that will reduce bogus events hitting the DB and improve the capturing of player data on disconnect. Server Admins should ensure they use the the Server Exit button (in Main Menu) to close ALiVE mission sessions. Server Admins should ensure players disconnect using the Player Exit button.
+
+It's important Server Admins copy the new DLL to the appropriate location on their server (as specified in the ALiVE WarRoom server settings page).
 
 [U][B]Compiled highlights in this release:[/B][/U]
 
