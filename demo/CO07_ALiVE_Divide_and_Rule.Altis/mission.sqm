@@ -88,7 +88,7 @@ class Mission
 	randomSeed=13462500;
 	class Intel
 	{
-		briefingName="ALiVE | Divide & Rule v1.46 (ZEUS)";
+		briefingName="ALiVE | Divide & Rule v1.47 (ZEUS)";
 		resistanceWest=0;
 		resistanceEast=1;
 		startWeather=0.29999998;
@@ -301,7 +301,7 @@ class Mission
 					position[]={16008.611,-0.32447478,14848.071};
 					class args
 					{
-						items=7;
+						items=6;
 						class Item0
 						{
 							value="false";
@@ -337,12 +337,6 @@ class Mission
 							value="0.2";
 							parentCls="ALiVE_sys_weather";
 							typeName="weather_cycle_variance_setting";
-						};
-						class Item6
-						{
-							value="COUNTRY/CITY";
-							parentCls="ALiVE_sys_weather";
-							typeName="weather_real_location_setting";
 						};
 					};
 					id=4;
