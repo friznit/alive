@@ -62,13 +62,13 @@ if (_operation in _ops) then {
 				private["_err"];
                 _err = format["%1 %2 operation requires an ARRAY as an argument not %3.", _logic, _operation, typeName _args];
                 ERROR_WITH_TITLE(str _logic,_err);
-				_result = false;
+				_result = "ERROR";
 			};
 		} else {
 			private["_err"];
             _err = format["%1 %2 operation refused as module is disabled.", _logic, _operation];
             ERROR_WITH_TITLE(str _logic,_err);
-			_result = false;
+			_result = "ERROR";
 		};
 } else {
 
