@@ -65,9 +65,9 @@ if (isServer) then {};
 										_lightningProbability = 50;
 	
 											// Winter (December, January and February)
-					        		_minimumOvercast = 0.7;
+					        		_minimumOvercast = 0.35;
 					        		_maximumOvercast = 1;
-					        		_fogProbability = 30;
+					        		_fogProbability = 15;
 	
 					        	if (_currentmonth >=3 && _currentmonth <=5) then {  // Spring (March, April and May)
 					        		_minimumOvercast = 0.2;
@@ -99,7 +99,7 @@ if (isServer) then {};
 					        		_maximumOvercast = 1;
 					        	};
 					        	if (_currentmonth >=1 && _currentmonth <=2) then {  // winter (January and February)
-					        		_minimumOvercast = 0.5;
+					        		_minimumOvercast = 0.35;
 					        		_maximumOvercast = 1;
 					        	};
 					        	if (_currentmonth >=3 && _currentmonth <=5) then {  // summer (March to May)

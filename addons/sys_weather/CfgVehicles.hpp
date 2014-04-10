@@ -89,13 +89,13 @@ class CfgVehicles {
 			                                                name = "Random";
 			                                                value = 4;
 			                                        };
-			                                       
+			                                   /*    
 																							class initialRealWeather
 			                                        {
 			                                                name = "Real";
 			                                                value = 5;
 			                                        };
-
+																				 */
 		
 			                                };
 			                        };
@@ -156,7 +156,7 @@ class CfgVehicles {
                                       typeName = "NUMBER";
 			                        };
 			                      
-														
+														/*
     													class weather_real_location_setting
     													{
     														displayName = "$STR_ALIVE_WEATHER_REAL_LOCATION";
@@ -165,7 +165,7 @@ class CfgVehicles {
                                 typeName = "STRING";
     														
     													};
-    													
+    												*/	
 																                  
 			                        
 			                        
