@@ -43,14 +43,15 @@ _profileIndex = [ALIVE_profileHandler,"getPlayerIndex"] call ALIVE_fnc_profileHa
 
 _entityCount = count (_playerProfiles select 1);
 
-/*
-["ALIVE Player profiler - State: %1",_state] call ALIVE_fnc_dump;
-["ALIVE Player profiler - Current Entity Count: %1",_entityCount] call ALIVE_fnc_dump;
-["ALIVE Player profiler - UID: %1",_uid] call ALIVE_fnc_dump;
-["ALIVE Player profiler - Player: %1",_player] call ALIVE_fnc_dump;
-["ALIVE Player profiler - Player Group: %1",group _player] call ALIVE_fnc_dump;
-["ALIVE Player profiler - Player Group Units: %1",units group _player] call ALIVE_fnc_dump;
-*/
+// DEBUG -------------------------------------------------------------------------------------
+if(_debug) then {
+    ["ALIVE Player profiler - State: %1",_state] call ALIVE_fnc_dump;
+    ["ALIVE Player profiler - Current Entity Count: %1",_entityCount] call ALIVE_fnc_dump;
+    ["ALIVE Player profiler - UID: %1",_uid] call ALIVE_fnc_dump;
+    ["ALIVE Player profiler - Player: %1",_player] call ALIVE_fnc_dump;
+    ["ALIVE Player profiler - Player Group: %1",group _player] call ALIVE_fnc_dump;
+    ["ALIVE Player profiler - Player Group Units: %1",units group _player] call ALIVE_fnc_dump;
+};
 
 if(_uid in (_profileIndex select 1)) then {
     _registeredProfile = [_profileIndex, _uid] call ALIVE_fnc_hashGet;

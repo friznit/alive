@@ -35,34 +35,27 @@ _debug = if(count _this > 2) then {_this select 2} else {false};
 
 _result = [];
 
-private ["_direction","_bbox","_bboxA","_bboxB","_bboxX","_bboxY","_difmin","_difmax","_dif","_buildingPosition","_position","_safePos","_center","_vehicleMapSize"];
+private ["_direction","_bbr","_bboxA","_p1","_p2","_maxWidth","_maxLength","_longest","_buildingPosition","_position","_safePos","_center","_vehicleMapSize"];
 
 _position = position _building;
 _direction = direction _building + (floor random 4)*90;
-_bbox = boundingbox _building;
-_bboxA = (_bbox select 0);
-_bboxB = (_bbox select 1);
-_bboxX = abs(_bboxA select 0) + abs(_bboxB select 0);
-_bboxY = abs(_bboxA select 1) + abs(_bboxB select 1);
-_difmin = (_bboxX min _bboxY);
-_difmax = (_bboxX max _bboxY);
-_dif = _difmin/2 + sqrt(_difmin)*0.3;
 
-if (_difmax < 15) then {
-	_buildingPosition = position _building; //_obj modeltoworld [0,0,0];
-	_position = [
-		(_buildingPosition select 0)+(sin (_direction + 90) * _dif),
-		(_buildingPosition select 1)+(cos (_direction + 90) * _dif),
-		0
-	];									
-};
+_bbr = boundingBoxReal _building;
+_p1 = _bbr select 0;
+_p2 = _bbr select 1;
+_maxWidth = abs ((_p2 select 0) - (_p1 select 0));
+_maxLength = abs ((_p2 select 1) - (_p1 select 1));
+
+_longest = _maxWidth max _maxLength;
+
+_position = [_position, (_longest+1), _direction] call BIS_fnc_relPos;
 
 
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
 	//["POS1: %1",_position] call ALIVE_fnc_dump;
-	[_position, 1] call ALIVE_fnc_spawnDebugMarker;
-	[_position, 1] call ALIVE_fnc_placeDebugMarker;
+	[_position] call ALIVE_fnc_spawnDebugMarker;
+	[_position] call ALIVE_fnc_placeDebugMarker;
 };
 // DEBUG -------------------------------------------------------------------------------------
 
@@ -74,9 +67,8 @@ if(_vehicleMapSize < 1) then {
 
 //["VEHICLE MAP SIZE - Class: %1 VMS: %2",_vehicleClass, _vehicleMapSize] call ALIVE_fnc_dump;
 
-
 // pos min max nearest water gradient shore
-_safePos = [_position,0,10,_vehicleMapSize,0,10,0,[],[_position]] call BIS_fnc_findSafePos;
+_safePos = [_position,0,20,_vehicleMapSize,0,10,0,[],[_position]] call BIS_fnc_findSafePos;
 
 //["SAFE POS: %1",_safePos] call ALIVE_fnc_dump;
 
@@ -84,7 +76,7 @@ _center = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 
 //if(((_safePos select 0) == 10801.9) && ((_safePos select 1) == 10589.6)) then {
 if(((_safePos select 0) == (_center select 0)) && ((_safePos select 1) == (_center select 1))) then {
-   _position = [_position,0,20,3,0,20,0,[],[_position]] call BIS_fnc_findSafePos;
+    _position = [_position,0,20,_vehicleMapSize,0,20,0,[],[_position]] call BIS_fnc_findSafePos;
 }else{
 	_position = _safePos;
 };
@@ -120,11 +112,12 @@ if(count _nearRoads > 0) then
     _position = [_position, 2, _direction-90] call BIS_fnc_relPos;
 };
 
+
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
 	//["POS2: %1",_position] call ALIVE_fnc_dump;
-	[_position] call ALIVE_fnc_spawnDebugMarker;
-	[_position] call ALIVE_fnc_placeDebugMarker;
+	[_position, 1] call ALIVE_fnc_spawnDebugMarker;
+	[_position, 1] call ALIVE_fnc_placeDebugMarker;
 };
 // DEBUG -------------------------------------------------------------------------------------
 

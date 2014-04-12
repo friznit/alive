@@ -700,7 +700,10 @@ switch(_operation) do {
 			
 				_airClasses = [0,_faction,"Plane"] call ALiVE_fnc_findVehicleType;			
 				_airClasses = _airClasses - ALIVE_vehicleBlacklist;
-				_airClasses = _airClasses + _heliClasses;
+
+				if(count _airClasses == 0) then {
+				    _airClasses = _airClasses + _heliClasses;
+				};
 				
 				if(count _airClasses > 0) then {
 				
