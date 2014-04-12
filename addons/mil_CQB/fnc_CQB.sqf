@@ -205,6 +205,7 @@ switch(_operation) do {
                     // Create strategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
+                    _logic setVariable ["type", "strategic"];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
                     _logic setVariable ["locality", _locality,true];
                     
@@ -222,6 +223,7 @@ switch(_operation) do {
 					// Create nonstrategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
         			_logic setVariable ["class", ALiVE_fnc_CQB];
+                    _logic setVariable ["type", "regular"];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
                     _logic setVariable ["locality", _locality,true];
                     
@@ -423,7 +425,13 @@ switch(_operation) do {
 			// Save state
 			{
 				[_state, _x, _logic getVariable _x] call CBA_fnc_hashSet;
-			} forEach ["spawnDistance", "factions"];
+			} forEach [
+            	"type",
+                "spawnDistance",
+                "spawnDistanceHeli",
+                "spawnDistanceJet",
+                "factions"
+            ];
 			
 			_data = [];
 			{
@@ -436,7 +444,7 @@ switch(_operation) do {
 			
 			[_state, "houses", _data] call CBA_fnc_hashSet;                        
 			
-			_state;
+			_args = _state;
 		} else {
 			private["_houses","_groups"];
 			_groups = _logic getVariable ["groups",[]];
@@ -447,7 +455,10 @@ switch(_operation) do {
 			_houses = _logic getVariable ["houses",[]];
 
 			// Restore state
+            [_logic, "type", [_args, "type"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
 			[_logic, "spawnDistance", [_args, "spawnDistance"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
+            [_logic, "spawnDistanceHeli", [_args, "spawnDistanceHeli"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
+            [_logic, "spawnDistanceJet", [_args, "spawnDistanceJet"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
 			[_logic, "factions", [_args, "factions"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
 			
 			// houses and groups
@@ -459,7 +470,7 @@ switch(_operation) do {
 				_data set [count _data, _house];
 			} forEach ([_args, "houses"] call CBA_fnc_hashGet);
 			[_logic, "houses", _data] call ALiVE_fnc_CQB;
-
+			_args = _data;
 		};		
 	};
    
@@ -490,6 +501,18 @@ switch(_operation) do {
         };
         _logic setVariable [_operation, _args, true];
 	};
+    
+	case "type": {
+		if(isNil "_args") then {
+			// if no new distance was provided return spawn distance setting
+			_args = _logic getVariable ["type", "regular"];
+		} else {
+			// if a new distance was provided set spawn distance settings
+			ASSERT_TRUE(typeName _args == "STRING",str typeName _args);			
+			_logic setVariable ["type", _args, true];
+		};
+		_args;
+	}; 
     
 	case "spawnDistance": {
 		if(isNil "_args") then {
@@ -727,6 +750,10 @@ switch(_operation) do {
                 format[MTEMPLATE, _house] setMarkerTypeLocal "mil_Dot";
             };
             
+            if (isnil "_grp") exitwith {
+                _house setVariable ["group",nil, true];
+            };
+            
             // Despawn group
             if (_logic getVariable ["debug", false]) then {
 				["CQB Population: Deleting group %1 from %2...", _grp, owner _leader] call ALiVE_fnc_Dump;
@@ -734,6 +761,7 @@ switch(_operation) do {
             
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceRemove;
 			{deleteVehicle _x} forEach units _grp;
+            
             deleteGroup _grp;
 	    };
 	};
