@@ -43,6 +43,8 @@ if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiV
     	_handler = _mod getvariable ["handler",["",[],[],""]];
         _mainclass = _mod getvariable ["class",([_handler,"class"] call ALiVE_fnc_HashGet)];
         
+        if (typeName _mainClass == "STRING") then {_mainclass = compile _mainclass};
+        
 	    switch (typeOf _mod) do {
             
             //Example for special cases if needed, add your module pause code in here
