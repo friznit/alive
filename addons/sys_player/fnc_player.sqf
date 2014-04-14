@@ -255,7 +255,7 @@ switch(_operation) do {
                         MOD(sys_player) setVariable [_puid, true, true];
 
                         // Save initial start state on client if reset is allowed
-                        sleep 120;
+                        sleep 20;
                         if (MOD(sys_player) getVariable ["allowReset", DEFAULT_RESET]) then {
                             // Save data on the client
                             private ["_playerHash","_gearHash"];
