@@ -184,14 +184,15 @@ switch(_operation) do {
                     private ["_objectives"];
                     
                     if ([_handler,"persistent",false] call ALIVE_fnc_HashGet) then {
+                        ["Loading obj..."] call ALiVE_fnc_DumpR;
                     	_objectives = [_handler,"loadObjectivesDB"] call ALiVE_fnc_OPCOM;
+                        ["Loaded obj...",_objectives] call ALiVE_fnc_DumpR;
                     };
                     
                     if (!(isnil "_objectives") && {count _objectives > 0}) then {
                         ["ALiVE OPCOM loaded %1 objectives from DB!",count _objectives] call ALiVE_fnc_DumpMPH;
                     } else {
 	                    //If no data was loaded from DB then get objectives data from other modules or placed Location logics!
-
                     	_objectives = [];
                    
 	                    //Iterate through all synchronized modules
@@ -238,12 +239,21 @@ switch(_operation) do {
 								_objectives = [_handler,"objectives",[_handler,"createobjectives",[_objectives,"distance"]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;
 							};
 						};
+                        
+                        ["ALiVE OPCOM created %1 new objectives!",count _objectives] call ALiVE_fnc_DumpMPH;
                     };
 					
                     //Check if there are any objectives
                     _errorMessage = "There are %1 objectives for this OPCOM instance! %2";
                     _error1 = count _objectives; _error2 = "Please assign Military or Civilian Placement Objectives!"; //defaults
                     if ((count _objectives) == 0) exitwith {
+						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
+                    };
+                    
+                    //Warn if there are too many objectives
+                    _errorMessage = "There are %1 objectives for this OPCOM instance! %2";
+                    _error1 = count _objectives; _error2 = "Please lower the objective count for performance reasons, suggested is below 80!"; //defaults
+                    if ((count _objectives) > 80) then {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
@@ -423,8 +433,10 @@ switch(_operation) do {
                         
 	                    _objectivesGlobal = [];
 	                    {
-	                    	_objectivesGlobal = _objectivesGlobal + ([_x, "objectives",[]] call ALiVE_fnc_HashGet);
-	                    } foreach OPCOM_instances;
+                            if ([_x,"persistent",false] call ALIVE_fnc_HashGet) then {
+	                    		_objectivesGlobal = _objectivesGlobal + ([_x, "objectives",[]] call ALiVE_fnc_HashGet);
+                            };
+	                    } foreach OPCOM_INSTANCES;
 
                         GVAR(OBJECTIVES_DB_SAVE) = [_objectivesGlobal,time];
                         {
@@ -433,6 +445,7 @@ switch(_operation) do {
                         _save = true;
                     };
                     if (isnil "_save") exitwith {["ALiVE SAVE OPCOM DATA Please wait at least 5 minutes before saving again!"] call ALiVE_fnc_DumpMPH; _result = nil};
+                    if (count (GVAR(OBJECTIVES_DB_SAVE) select 0) == 0) exitwith {["ALiVE SAVE OPCOM DATA Dataset is empty, not saving...!"] call ALiVE_fnc_DumpMPH; _result = nil};
                     
                     //If I didnt send you to hell - go and save, the feck!
                     ["ALiVE SAVE OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
