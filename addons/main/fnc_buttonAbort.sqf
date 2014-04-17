@@ -53,9 +53,16 @@ _savePlayer = {
 
 	if !(isNil QMOD(sys_player)) then {
 	    ["ALIVE Abort - Player Data OPD"] call ALIVE_fnc_dump;
+	    // Update Gear
+	     if (MOD(sys_player) getvariable "saveLoadout") then {
+                private ["_gearHash","_unit"];
+                // Get player gear
+                _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
+				["ALIVE Abort - Storing Player Gear"] call ALIVE_fnc_dump;
+                [[MOD(sys_player), "updateGear", [player, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+        };
 		// sys_player module onPlayerDisconnected call
 		[[_id, _name, _uid],"ALIVE_fnc_player_onPlayerDisconnected", false, false] call BIS_fnc_MP;
-		//["server",QMOD(sys_player),[[_id, _name, _uid],{call ALIVE_fnc_player_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
 	};
 
 };
@@ -121,12 +128,12 @@ _saveServer = {
 	    ["ALIVE Abort - Server Player OPD"] call ALIVE_fnc_dump;
 		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
 	};
-    
+
 
 	if (["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
 	    ["ALIVE Abort - Server Save Profiles"] call ALIVE_fnc_dump;
 		call ALiVE_fnc_profilesSaveData;
-	};    
+	};
 
 	if (["ALiVE_mil_OPCOM"] call ALiVE_fnc_isModuleAvailable) then {
 	    ["ALIVE Abort - Server Save OPCOM State"] call ALIVE_fnc_dump;

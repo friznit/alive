@@ -40,6 +40,8 @@ _player = _args select 0;
 
 _playerHash = [] call CBA_fnc_hashCreate;
 
+TRACE_1("SET PLAYER",_this);
+
 // ensure last document revision is passed with the new player record if it exists
 if (_player getVariable ["_rev","MISSING"] != "MISSING") then {
 	[_playerHash, "_rev", _player getVariable "_rev"] call CBA_fnc_hashSet;
@@ -94,6 +96,7 @@ private ["_gearHash","_addGear"];
 _gearHash = [GVAR(gear_data), getPlayerUID _player] call ALIVE_fnc_hashGet;
 _addGear = {
 	[_playerHash, _key, _value] call ALIVE_fnc_hashSet;
+	TRACE_3("SYS_PLAYER SET PLAYER DATA",_player, _key, _value);
 };
 [_gearHash, _addGear] call CBA_fnc_hashEachPair;
 
