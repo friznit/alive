@@ -266,6 +266,7 @@ switch(_operation) do {
 					[_logic,"faction",[]] call ALIVE_fnc_hashSet; // select 2 select 29
 					[_logic,"isPlayer",false] call ALIVE_fnc_hashSet; // select 2 select 30
 					[_logic,"_rev",""] call ALIVE_fnc_hashSet; // select 2 select 31
+					[_logic,"_id",""] call ALIVE_fnc_hashSet; // select 2 select 32
                 };
 
                 /*
@@ -342,6 +343,8 @@ switch(_operation) do {
 						if(count _args == 2) then  {
 							_args set [count _args, 0];
 						};
+
+						//["SET ENT POS: %1",_args] call ALIVE_fnc_dump;
 				
 						[_logic,"position",_args] call ALIVE_fnc_hashSet;
 						

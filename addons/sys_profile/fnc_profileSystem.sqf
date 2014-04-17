@@ -67,12 +67,13 @@ switch(_operation) do {
 						[_logic,"activeLimiter",30] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
+
                 };
         };
         case "start": {
 		
 				private["_debug","_persistent","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius",
-				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSM","_sectors","_persistent"];
+				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSMEast","_profileSpawnerFSMWest","_profileSpawnerFSMGuer","_profileSpawnerFSMCiv","_sectors","_persistent"];
                 
                 if (isServer) then {
 						
@@ -87,9 +88,10 @@ switch(_operation) do {
 						_activeLimiter = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
 						_spawnCycleTime = [_logic,"spawnCycleTime"] call ALIVE_fnc_hashGet;
 						_despawnCycleTime = [_logic,"despawnCycleTime"] call ALIVE_fnc_hashGet;
-                        
-                        //persistent?
-						ALIVE_profilesPersistent = [_logic,"persistent",false] call ALIVE_fnc_hashGet;
+
+                        // set global profiles persistent var
+						ALIVE_loadProfilesPersistent = _persistent;
+						ALIVE_saveProfilesPersistent = _persistent;
 
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
@@ -98,7 +100,7 @@ switch(_operation) do {
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 
-                        // Load static data
+                        // load static data
                         if(isNil "ALIVE_unitBlackist") then {
                             _file = "\x\alive\addons\main\static\staticData.sqf";
                             call compile preprocessFileLineNumbers _file;
@@ -151,10 +153,7 @@ switch(_operation) do {
 						[ALIVE_commandRouter, "init"] call ALIVE_fnc_commandRouter;
 						[ALIVE_commandRouter, "debug", false] call ALIVE_fnc_commandRouter;
 
-                        // global server flag
-						ALIVE_profileSystemInit = true;
 
-						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							["ALIVE ProfileSystem - Startup completed"] call ALIVE_fnc_dump;
@@ -191,6 +190,14 @@ switch(_operation) do {
                         [_logic,"spawner_FSMWest",_profileSpawnerFSMWest] call ALIVE_fnc_hashSet;
                         [_logic,"spawner_FSMGuer",_profileSpawnerFSMGuer] call ALIVE_fnc_hashSet;
                         [_logic,"spawner_FSMCiv",_profileSpawnerFSMCiv] call ALIVE_fnc_hashSet;
+
+                        // if persistent load data
+                        if(ALIVE_loadProfilesPersistent) then {
+                            call ALIVE_fnc_profilesLoadData;
+                        };
+
+                        // global server flag
+                        ALIVE_profileSystemInit = true;
 
                         // set modules as started
                         [_logic,"startupComplete",true] call ALIVE_fnc_hashSet;
@@ -359,12 +366,6 @@ switch(_operation) do {
                         [_logic,"activeLimiter",_args] call ALIVE_fnc_hashSet;
                 };
                 _result = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
-        };
-        case "persistent": {
-                if(typeName _args == "BOOL") then {
-                        [_logic,"persistent",_args] call ALIVE_fnc_hashSet;
-                };
-                _result = [_logic,"persistent"] call ALIVE_fnc_hashGet;
         };
 		case "syncMode": {
 				if(typeName _args == "STRING") then {

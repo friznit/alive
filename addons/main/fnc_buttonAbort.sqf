@@ -76,12 +76,12 @@ _exitPlayer = {
 		//["server",QMOD(sys_statistics),[[_id, _name, _uid],{call ALIVE_fnc_stats_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
 	};
 
-	//if !(isNil 'ALIVE_profileHandler') then {
+	if !(isNil QMOD(sys_profileSystem)) then {
 	    ["ALIVE Abort - Player Profile Handler OPD"] call ALIVE_fnc_dump;
         // Profiles module onPlayerDisconnected call
         [[_id, _name, _uid],"ALIVE_fnc_profile_onPlayerDisconnected", false, false] call BIS_fnc_MP;
         //["server","ALIVE_profileHandler",[[_id, _name, _uid],{call ALIVE_fnc_profile_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
-    //};
+    };
 };
 
 // FUNCTION THAT HANDLES SERVER EXIT

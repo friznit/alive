@@ -48,6 +48,12 @@ if(isServer) then {
         _debug = false;
     };
 
+    if(_persistent == "true") then {
+        _persistent = true;
+    }else{
+        _persistent = false;
+    };
+
 	ALIVE_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "init"] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "debug", _debug] call ALIVE_fnc_profileSystem;

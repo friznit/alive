@@ -267,6 +267,7 @@ switch(_operation) do {
                 ALIVE_loadedCIVClusters = true;
             };
 			waituntil {!(isnil "ALIVE_loadedCIVClusters") && {ALIVE_loadedCIVClusters}};
+			waituntil {!(isnil "ALIVE_profileSystemInit")};
 
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit
@@ -482,7 +483,7 @@ switch(_operation) do {
 
                 if(_placement) then {
 
-                    if!(ALIVE_profilesPersistent) then {
+                    if!(ALIVE_loadProfilesPersistent) then {
 
                         if(count _clusters > 0) then {
                             // start placement
@@ -495,6 +496,10 @@ switch(_operation) do {
                         };
 
                     }else{
+
+                        // DEBUG -------------------------------------------------------------------------------------
+                        if(_debug) then { ["ALIVE CP - Profiles are persistent, no creation of profiles"] call ALIVE_fnc_dump; };
+                        // DEBUG -------------------------------------------------------------------------------------
 
                         // set module as started
                         _logic setVariable ["startupComplete", true];

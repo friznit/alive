@@ -227,6 +227,7 @@ switch(_operation) do {
 					[_logic,"spawnType",[]] call ALIVE_fnc_hashSet; // select 2 select 22
 					[_logic,"faction",""] call ALIVE_fnc_hashSet; // select 2 select 23
 					[_logic,"_rev",""] call ALIVE_fnc_hashSet; // select 2 select 24
+					[_logic,"_id",""] call ALIVE_fnc_hashSet; // select 2 select 25
                 };
 
                 /*
@@ -296,6 +297,8 @@ switch(_operation) do {
 						if(count _args == 2) then  {
 							_args set [count _args, 0];
 						};
+
+						//["SET VEH POS: %1",_args] call ALIVE_fnc_dump;
 				
 						[_logic,"position",_args] call ALIVE_fnc_hashSet;
 						

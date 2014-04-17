@@ -30,26 +30,65 @@ if !(isServer) exitwith {};
 
 _result = false;
 
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
-[true, "ALiVE Profile System persistence load data started", "psper"] call ALIVE_fnc_timer;
+if(ALIVE_loadProfilesPersistent) then {
 
+    if (isDedicated) then {
 
-["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_pauseModule;
+        if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
+            [true, "ALiVE Profile System persistence load data started", "psper"] call ALIVE_fnc_timer;
 
-[ALIVE_profileHandler,"reset"] call ALIVE_fnc_profileHandler;
+            /*
+            [["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
+            */
 
-_profiles = [ALIVE_profileHandler,"loadProfileData"] call ALIVE_fnc_profileHandler;
+            //["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_pauseModule;
 
-//_profiles call ALIVE_fnc_inspectHash;
+            if(isNil "ALiVE_sysProfileLastLoadTime" || {time - ALiVE_sysProfileLastLoadTime > 300}) then {
 
-[ALIVE_profileHandler,"importProfileData",_profiles] call ALIVE_fnc_profileHandler;
+                ALiVE_sysProfileLastLoadTime = time;
 
+                _profiles = [ALIVE_profileHandler,"loadProfileData"] call ALIVE_fnc_profileHandler;
 
-["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_unPauseModule;
+                ["LOADED: %1",_profiles] call ALIVE_fnc_dump;
 
+                if (!(isnil "_profiles") && {typename _profiles == "ARRAY"} && {count _profiles > 0} && {count (_profiles select 2) > 0}) then {
 
-[false, "ALiVE Profile System persistence load data complete","psper"] call ALIVE_fnc_timer;
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+                    ALiVE_sysProfileLastLoadTime = time;
+
+                    [ALIVE_profileHandler,"reset"] call ALIVE_fnc_profileHandler;
+
+                    //_profiles call ALIVE_fnc_inspectHash;
+
+                    [ALIVE_profileHandler,"importProfileData",_profiles] call ALIVE_fnc_profileHandler;
+
+                }else{
+
+                    ["ALiVE LOAD PROFILE DATA No data loaded setting persistence false"] call ALIVE_fnc_dumpMPH;
+
+                    ALIVE_loadProfilesPersistent = false;
+
+                };
+
+            }else{
+
+                ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dumpMPH;
+
+            };
+
+            //["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_unPauseModule;
+
+            /*
+            [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+            */
+
+            [false, "ALiVE Profile System persistence load data complete","psper"] call ALIVE_fnc_timer;
+        };
+    }else{
+        ["ALiVE LOAD PROFILE DATA Not run on dedicated server exiting"] call ALIVE_fnc_dumpMPH;
+
+        ALIVE_loadProfilesPersistent = false;
+    };
+};
 
 _result

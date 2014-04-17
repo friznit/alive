@@ -314,8 +314,7 @@ switch(_operation) do {
                 };
             };
             waituntil {!(isnil "ALIVE_loadedMilClusters") && {ALIVE_loadedMilClusters}};
-            
-			//waituntil {!(isnil "ALIVE_profileSystemDataLoaded")};
+			waituntil {!(isnil "ALIVE_profileSystemInit")};
 
 			//Only spawn warning on version mismatch since map index changes were reduced
             //uncomment //_error = true; below for exit
@@ -459,24 +458,16 @@ switch(_operation) do {
 
                 if(_placement) then {
 
-                    if!(ALIVE_profilesPersistent) then {
-
-                        if(count _clusters > 0) then {
-                            // start placement
-                            [_logic, "placement"] call MAINCLASS;
-                        }else{
-                            ["ALIVE MP [%1] - Warning no locations found for placement, you need to include military locations within the TAOR marker",_faction] call ALIVE_fnc_dumpR;
-
-                            // set module as started
-                            _logic setVariable ["startupComplete", true];
-                        };
-
+                    if(count _clusters > 0) then {
+                        // start placement
+                        [_logic, "placement"] call MAINCLASS;
                     }else{
+                        ["ALIVE MP [%1] - Warning no locations found for placement, you need to include military locations within the TAOR marker",_faction] call ALIVE_fnc_dumpR;
 
                         // set module as started
                         _logic setVariable ["startupComplete", true];
-
                     };
+
                 }else{
 
                     // DEBUG -------------------------------------------------------------------------------------
@@ -646,6 +637,18 @@ switch(_operation) do {
 				["ALIVE MP [%1] - Supplies placed: %2",_faction,_countSupplies] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
+
+
+			if(ALIVE_loadProfilesPersistent) exitWith {
+
+			    // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then { ["ALIVE MP - Profiles are persistent, no creation of profiles"] call ALIVE_fnc_dump; };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                // set module as started
+                _logic setVariable ["startupComplete", true];
+
+			};
 			
 			
 						

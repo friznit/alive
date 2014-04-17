@@ -1079,69 +1079,45 @@ switch(_operation) do {
         };
 		case "saveProfileData": {
 
-		    ["SAVE PROFILE DATA"] call ALIVE_fnc_dump;
+            private ["_datahandler","_exportProfiles","_async","_missionName"];
 
-            if (isDedicated) then {
+            _datahandler = [nil, "create"] call ALIVE_fnc_Data;
+            [_datahandler,"storeType",true] call ALIVE_fnc_Data;
 
-                ["SAVE PROFILE DATA - IS DEDI"] call ALIVE_fnc_dump;
+            _exportProfiles = [_logic, "exportProfileData"] call MAINCLASS;
 
-                if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
+            _async = false; // Wait for response from server
+            _missionName = [missionName, " ","-"] call CBA_fnc_replace;
+            _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-                    ["SAVE PROFILE DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
+            ["ALiVE SAVE PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-                    private ["_datahandler","_exportProfiles","_async","_missionName"];
+            _result = [_datahandler, "save", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
+            ["RESULT: %1",_result] call ALIVE_fnc_dump;
 
-                    _datahandler = [nil, "create"] call ALIVE_fnc_Data;
-                    [_datahandler,"storeType",true] call ALIVE_fnc_Data;
-
-                    _exportProfiles = [_logic, "exportProfileData"] call MAINCLASS;
-
-                    _async = false; // Wait for response from server
-                    _missionName = [missionName, " ","-"] call CBA_fnc_replace;
-                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
-
-                    ["SAVE PROFILE DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
-
-                    _result = [_datahandler, "save", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
-                    ["RESULT: %1",_result] call ALIVE_fnc_dump;
-
-                };
-
-            };
         };
         case "loadProfileData": {
 
-            ["LOAD PROFILE DATA"] call ALIVE_fnc_dump;
+            private ["_datahandler","_importProfiles","_async","_missionName"];
 
-            if (isDedicated) then {
+            _datahandler = [nil, "create"] call ALIVE_fnc_Data;
+            [_datahandler,"storeType",true] call ALIVE_fnc_Data;
 
-                ["LOAD PROFILE DATA - IS DEDI"] call ALIVE_fnc_dump;
+            _async = false; // Wait for response from server
+            _missionName = [missionName, " ","-"] call CBA_fnc_replace;
+            _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-                if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
+            ["ALiVE LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-                    ["LOAD PROFILE DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
+            _result = [_datahandler, "load", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
+            ["RESULT: %1",_result] call ALIVE_fnc_dump;
 
-                    private ["_datahandler","_importProfiles","_async","_missionName"];
-
-                    _datahandler = [nil, "create"] call ALIVE_fnc_Data;
-                    [_datahandler,"storeType",true] call ALIVE_fnc_Data;
-
-                    _async = false; // Wait for response from server
-                    _missionName = [missionName, " ","-"] call CBA_fnc_replace;
-                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
-
-                    ["LOAD PROFILE DATA - MISSION NAME: %1",_missionName] call ALIVE_fnc_dump;
-
-                    _result = [_datahandler, "load", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
-                    ["RESULT: %1",_result] call ALIVE_fnc_dump;
-
-                };
-
-            };
         };
 		case "exportProfileData": {
 		    private["_profiles","_exportProfiles","_profile","_profileID","_profileType","_isPlayer","_exportProfile","_isPlayer","_vehicleAssignments","_assignmentKeys",
-		    "_assignmentValues","_ranks","_side","_spawnType","_entitiesInCommandOf","_entitiesInCargoOf","_vehiclesInCommandOf","_vehiclesInCargoOf","_ranksMap"];
+		    "_assignmentValues","_ranks","_side","_spawnType","_entitiesInCommandOf","_entitiesInCargoOf","_vehiclesInCommandOf","_vehiclesInCargoOf","_ranksMap","_exportRanks","_classes","_exportClasses"];
+
+		    ["ALiVE EXPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
 
             _profiles = [_logic, "getProfiles"] call MAINCLASS;
             _exportProfiles = [] call ALIVE_fnc_hashCreate;
@@ -1197,8 +1173,7 @@ switch(_operation) do {
                             "objectType",
                             "unitCount",
                             "ranks",
-                            "side",
-                            "_rev"
+                            "side"
                         ]] call ALIVE_fnc_hashCopy;
 
                         [_exportProfile, "type", 1] call ALIVE_fnc_hashSet;
@@ -1207,10 +1182,23 @@ switch(_operation) do {
                         _exportRanks = [];
 
                         {
-                            _exportRanks set [count _exportRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
+                            if(typeName _x == "STRING") then {
+                                _exportRanks set [count _exportRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
+                            };
                         } forEach _ranks;
 
                         [_exportProfile, "ranks", _exportRanks] call ALIVE_fnc_hashSet;
+
+                        _classes = _profile select 2 select 11;
+                        _exportClasses = [];
+
+                        {
+                            if(typeName _x == "STRING") then {
+                                _exportClasses set [count _exportClasses, _x];
+                            };
+                        } forEach _classes;
+
+                        [_exportProfile, "unitClasses", _exportClasses] call ALIVE_fnc_hashSet;
 
                         _side = _profile select 2 select 3;
 
@@ -1243,13 +1231,12 @@ switch(_operation) do {
                             "needReload",
                             "fuel",
                             "damage",
-                            "_rev"
+                            "side"
                         ]] call ALIVE_fnc_hashCopy;
 
                         [_exportProfile, "type", 2] call ALIVE_fnc_hashSet;
 
                         _side = _profile select 2 select 3;
-
                         [_exportProfile, "side", [_side] call ALIVE_fnc_sideTextToNumber] call ALIVE_fnc_hashSet;
 
                         _entitiesInCommandOf = [_exportProfile, "entitiesInCommandOf"] call ALIVE_fnc_hashGet;
@@ -1268,6 +1255,10 @@ switch(_operation) do {
                         [_exportProfile, "_rev"] call ALIVE_fnc_hashRem;
                     };
 
+                    if([_exportProfile, "_id"] call ALIVE_fnc_hashGet == "") then {
+                        [_exportProfile, "_id"] call ALIVE_fnc_hashRem;
+                    };
+
                     _spawnType = [_exportProfile, "spawnType"] call ALIVE_fnc_hashGet;
                     if(count _spawnType == 0) then {
                         [_exportProfile, "spawnType"] call ALIVE_fnc_hashRem;
@@ -1283,7 +1274,7 @@ switch(_operation) do {
 
                     [_exportProfiles, _profileID, _exportProfile] call ALIVE_fnc_hashSet;
 
-                    //_exportProfile call ALIVE_fnc_inspectHash;
+                    _exportProfile call ALIVE_fnc_inspectHash;
 
                 };
 
@@ -1297,6 +1288,8 @@ switch(_operation) do {
             "_position","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses"];
 
             if(typeName _args == "ARRAY") then {
+
+                ["ALiVE IMPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
 
                 _ranksMap = [] call ALIVE_fnc_hashCreate;
                 [_ranksMap, 0, "PRIVATE"] call ALIVE_fnc_hashSet;
@@ -1338,6 +1331,7 @@ switch(_operation) do {
                         [_profileEntity, "position", [_profile,"position"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        [_profileEntity, "_id", [_profile,"_id"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 
                         /*
                         [_profileEntity, "objectType", [_profile,"objectType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
@@ -1401,6 +1395,7 @@ switch(_operation) do {
                         [_profileVehicle, "faction", [_profile,"faction"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "engineOn", [_profile,"engineOn"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        [_profileVehicle, "_id", [_profile,"_id"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 
                         /*
                         [_profileVehicle, "damage", [_profile,"damage"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
@@ -1423,6 +1418,9 @@ switch(_operation) do {
                         if("spawnType" in (_profile select 1)) then {
                             [_profileVehicle, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         };
+
+                        _side = [_profile,"side"] call ALIVE_fnc_hashGet;
+                        [_profileVehicle, "side", _side call ALIVE_fnc_sideNumberToText] call ALIVE_fnc_profileVehicle;
 
                         _profileVehicle call ALIVE_fnc_inspectHash;
 

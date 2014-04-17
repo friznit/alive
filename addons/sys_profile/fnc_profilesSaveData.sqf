@@ -31,20 +31,37 @@ if !(isServer) exitwith {};
 
 _result = false;
 
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
-[true, "ALiVE Profile System persistence save data started", "psper"] call ALIVE_fnc_timer;
+if(ALIVE_saveProfilesPersistent) then {
+
+    if (isDedicated) then {
+
+        if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
+
+            [["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
+            [true, "ALiVE Profile System persistence save data started", "psper"] call ALIVE_fnc_timer;
 
 
-["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_pauseModule;
+            ["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_pauseModule;
+
+            if(isNil "ALiVE_sysProfileLastSaveTime" || {time - ALiVE_sysProfileLastSaveTime > 300}) then {
+
+                ALiVE_sysProfileLastSaveTime = time;
+
+                [ALIVE_profileHandler,"saveProfileData"] call ALIVE_fnc_profileHandler;
+
+            }else{
+
+                ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dumpMPH;
+
+            };
+
+            ["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_unPauseModule;
 
 
-[ALIVE_profileHandler,"saveProfileData"] call ALIVE_fnc_profileHandler;
-
-
-["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_unPauseModule;
-
-
-[false, "ALiVE Profile System persistence save data complete","psper"] call ALIVE_fnc_timer;
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+            [false, "ALiVE Profile System persistence save data complete","psper"] call ALIVE_fnc_timer;
+            [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+        };
+    };
+};
 
 _result

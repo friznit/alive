@@ -98,7 +98,7 @@ _createMarker = {
 
 private ["_profiles","_profileBlock","_profile","_entityProfile","_profileType","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander","_vehicleCargo",
 	"_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_moveDistance","_vehicleProfile",
-	"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements","_isCycling","_isPlayer"];
+	"_vehicleClass","_vehicleAssignments","_speedArray","_direction","_newPosition","_leader","_handleWPcomplete","_statements","_isCycling","_isPlayer","_group"];
 
 _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 //_profileBlock = [ALIVE_arrayBlockHandler,"getNextBlock", ["simulation",_profiles select 2,50]] call ALIVE_fnc_arrayBlockHandler;
@@ -266,13 +266,12 @@ _engaged = [0,0,0];
 				_newPosition = getPosATL _leader;
 				_position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
 
-
-				
 				if (!(isnil "_newPosition") && {count _newPosition > 0} && {!(isnil "_position")} && {count _position > 0}) then {
 				
 					_moveDistance = _newPosition distance _position;
 					
-					if(_moveDistance > 10) then {					
+					if(_moveDistance > 10) then {
+
 						if(_vehicleCommander) then {
 							// if in command of vehicle move all entities within the vehicle						
 							// set the vehicle position and merge all assigned entities positions
@@ -303,6 +302,58 @@ _engaged = [0,0,0];
 				};
 			};
 		} else {
+
+            // the profile has no waypoints
+		    if(!(_vehicleCargo) && !(_isPlayer)) then {
+
+                _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                _group = group _leader;
+
+                // but the profile has waypoints set, but not but ALiVE
+                // eg Zeus
+                if(currentWaypoint _group < count waypoints _group && currentWaypoint _group > 0) then {
+                    //["S1: %1 %2", currentWaypoint _group, count waypoints _group] call ALIVE_fnc_dump;
+
+                    _newPosition = getPosATL _leader;
+                    _position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
+
+                    if (!(isnil "_newPosition") && {count _newPosition > 0} && {!(isnil "_position")} && {count _position > 0}) then {
+
+                        _moveDistance = _newPosition distance _position;
+
+                        if(_moveDistance > 10) then {
+
+                            if(_vehicleCommander) then {
+                                // if in command of vehicle move all entities within the vehicle
+                                // set the vehicle position and merge all assigned entities positions
+
+                                _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+
+                                _newPosition = getPosATL vehicle _leader;
+
+                                {
+                                    _vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+
+                                    if !(isnil "_vehicleProfile") then {
+                                        [_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
+                                        [_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+                                    };
+                                } forEach _vehiclesInCommandOf;
+                            } else {
+                                _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                                _newPosition = getPosATL _leader;
+
+                                // set the entity position and merge all unit positions to group position
+                                [_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
+                                [_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
+                            };
+                        };
+                    } else {
+                        diag_log format ["Profile-Simulator corrupted profile detected %3: _newPosition %1 _position %2",_newPosition,_position,_entityProfile];
+                    };
+                };
+		    };
+
 		    // entity is player entity
             if(_isPlayer) then {
 
