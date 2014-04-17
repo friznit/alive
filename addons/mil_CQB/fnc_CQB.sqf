@@ -127,73 +127,87 @@ switch(_operation) do {
                         _file = "\x\alive\addons\main\static\staticData.sqf";
                         call compile preprocessFileLineNumbers _file;
                     };
+                    
+                    private ["_houses","_nonStrategicHouses","_strategicHouses","_strategicTypes","_UnitsBlackList","_data","_success"];
 
                     _strategicTypes = ALIVE_CQBStrategicTypes;
                     _UnitsBlackList = ALIVE_CQBunitBlackist;
                     
-                    //Get all enterable houses of strategic types below across the whole map (rest will be regular)
-                    //_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
-              
-                    private ["_collection","_objectives","_pos","_size"];
-
-                    _collection = [];
-                    if (count synchronizedObjects _logic > 0) then {
-                        _objectives = [];
-                        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
-							private ["_obj"];
+                    //Check if there is data in DB
+                    _data = false call ALiVE_fnc_CQBLoadData;
+                    _success = (!(isnil "_data") && {typeName _data == "ARRAY"} && {count _data > 2});
+                    
+                    if (_success) then {
+                        //Default houses to empty if data was found for this mission
                         
-                        	waituntil {sleep 5; _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
-                        	_objectives = _objectives + _obj;
-                        };
-                        {
-                            _pos = [_x,"center"] call ALiVE_fnc_HashGet;
-                            _size = [_x,"size"] call ALiVE_fnc_HashGet;
-                            
-                            _collection set [count _collection,[_pos,_size]];
-                        } foreach _objectives;
+                        _strategicHouses = [];
+                        _nonStrategicHouses = [];
+                        _houses = [];
                     } else {
-                        switch (_CQB_Locations) do {
-                            case ("towns") : {
-		                        _objectives = nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["NameCityCapital","NameCity","NameVillage","NameLocal","Hill"],20000];
-		                        {
-		                            _pos = position _x;
-		                            _size = size _x;
-		                            
-		                            if (_size select 0 > _size select 1) then {_size = _size select 0} else {_size = _size select 1};
-		                            
-		                            _collection set [count _collection,[_pos,_size]];
-		                        } foreach _objectives;
-                            };
-                            case ("all") : {
-                                _collection set [count _collection,[getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"),30000]];
-                            };
-                            default {};
-                        };
+	                    //Get all enterable houses of strategic types below across the whole map (rest will be regular)
+	                    //_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
+	              
+	                    private ["_collection","_objectives","_pos","_size"];
+	
+	                    _collection = [];
+	                    if (count synchronizedObjects _logic > 0) then {
+	                        _objectives = [];
+	                        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
+								private ["_obj"];
+	                        
+	                        	waituntil {sleep 5; _obj = nil; _obj = [(synchronizedObjects _logic) select _i,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation; (!(isnil "_obj") && {count _obj > 0})};
+	                        	_objectives = _objectives + _obj;
+	                        };
+	                        {
+	                            _pos = [_x,"center"] call ALiVE_fnc_HashGet;
+	                            _size = [_x,"size"] call ALiVE_fnc_HashGet;
+	                            
+	                            _collection set [count _collection,[_pos,_size]];
+	                        } foreach _objectives;
+	                    } else {
+	                        switch (_CQB_Locations) do {
+	                            case ("towns") : {
+			                        _objectives = nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["NameCityCapital","NameCity","NameVillage","NameLocal","Hill"],20000];
+			                        {
+			                            _pos = position _x;
+			                            _size = size _x;
+			                            
+			                            if (_size select 0 > _size select 1) then {_size = _size select 0} else {_size = _size select 1};
+			                            
+			                            _collection set [count _collection,[_pos,_size]];
+			                        } foreach _objectives;
+	                            };
+	                            case ("all") : {
+	                                _collection set [count _collection,[getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"),30000]];
+	                            };
+	                            default {};
+	                        };
+	                    };
+	                    
+	                    _houses_reg = [];
+	                    _houses_strat = [];
+	                    {
+	                        private ["_houses_tmp","_pos","_size"];
+	                        _time = time;
+	                        _pos = _x select 0;
+	                        _size = _x select 1;
+	
+	                        _houses_reg_tmp = nearestObjects [_pos, ["house"], _size];
+	                        _houses_strat_tmp = nearestObjects [_pos, _strategicTypes, _size];
+	                        
+	                        _houses_reg = _houses_reg + _houses_reg_tmp;
+	                        _houses_strat = _houses_strat + _houses_strat_tmp;
+	                        
+	                        //player sidechat format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
+	                        //diag_log format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
+	                    } foreach _collection;
+	                    
+	                    _houses = _houses_reg + _houses_strat;
+	                    
+	                    _result = [_houses,_strategicTypes,_CQB_density,[_logic, "blacklist"] call ALiVE_fnc_CQB,[_logic, "whitelist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
+	                    _strategicHouses = _result select 0;
+						_nonStrategicHouses = _result select 1;
                     };
-                    
-                    _houses_reg = [];
-                    _houses_strat = [];
-                    {
-                        private ["_houses_tmp","_pos","_size"];
-                        _time = time;
-                        _pos = _x select 0;
-                        _size = _x select 1;
-
-                        _houses_reg_tmp = nearestObjects [_pos, ["house"], _size];
-                        _houses_strat_tmp = nearestObjects [_pos, _strategicTypes, _size];
-                        
-                        _houses_reg = _houses_reg + _houses_reg_tmp;
-                        _houses_strat = _houses_strat + _houses_strat_tmp;
-                        
-                        //player sidechat format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
-                        //diag_log format["Search for houses at %1 finished! Time taken %2",_x,time - _time];
-                    } foreach _collection;
-                    
-                    _houses = _houses_reg + _houses_strat;
-                    
-                    _result = [_houses,_strategicTypes,_CQB_density,[_logic, "blacklist"] call ALiVE_fnc_CQB,[_logic, "whitelist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
-                    _strategicHouses = _result select 0;
-					_nonStrategicHouses = _result select 1;
 
 					//set default values on main CQB instance
                     [MOD(CQB), "houses", _houses] call ALiVE_fnc_CQB;
@@ -208,17 +222,16 @@ switch(_operation) do {
                     _logic setVariable ["type", "strategic"];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
                     _logic setVariable ["locality", _locality,true];
-                    
+					_logic setVariable ["debugColor","ColorRed",true];
+					_logic setVariable ["debugPrefix","Strategic",true];                    
 					[_logic, "houses", _strategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsStrat] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", (_spawn * 1.4)] call ALiVE_fnc_CQB;
                     [_logic, "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
                     [_logic, "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
-					_logic setVariable ["debugColor","ColorRed",true];
-					_logic setVariable ["debugPrefix","Strategic",true];
 					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
+                    
                     CQB_Strategic = _logic;
-                    Publicvariable "CQB_Strategic";
 					
 					// Create nonstrategic CQB instance
                     _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
@@ -226,30 +239,45 @@ switch(_operation) do {
                     _logic setVariable ["type", "regular"];
                     _logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
                     _logic setVariable ["locality", _locality,true];
-                    
+                    _logic setVariable ["debugColor","ColorGreen",true];
+					_logic setVariable ["debugPrefix","Regular",true];
 					[_logic, "houses", _nonStrategicHouses] call ALiVE_fnc_CQB;
 					[_logic, "factions", _factionsReg] call ALiVE_fnc_CQB;
 					[_logic, "spawnDistance", _spawn] call ALiVE_fnc_CQB;
                     [_logic, "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
                     [_logic, "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
-                    _logic setVariable ["debugColor","ColorGreen",true];
-					_logic setVariable ["debugPrefix","Regular",true];
-
-                    CQB_Regular = _logic;
-                    Publicvariable "CQB_Regular";
+					[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                     
+                    CQB_Regular = _logic;
+                    
+                    //Set all instances on main module
                     MOD(CQB) setVariable ["instances",[CQB_Regular,CQB_Strategic],true];
-                    [MOD(CQB), "GarbageCollecting", true] call ALiVE_fnc_CQB;
+
+                    //if data was loaded from DB before then overwrite CQB state
+                    if (_success) then {
+                        {
+							private ["_state","_instance"];
+                            
+							_instance  = _x;
+							_state = [_instance,"state"] call ALiVE_fnc_CQB;
+							
+							["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dumpMPH;
+							[_state,"houses",_data] call ALiVE_fnc_HashSet;
+							
+							_state call ALIVE_fnc_inspectHash;
+							
+							[_instance,"state",_state] call ALiVE_fnc_CQB;
+						} foreach (MOD(CQB) getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
+                    };
+                    
+                    //Indicate startup is done on server
+                    MOD(CQB) setVariable ["startupComplete", true,true];
                     MOD(CQB) setVariable ["init", true, true];
                     
-                    //diag_log format["Regular logic %1, houses %2",_logic,count _spawnhouses];
-                    // and publicVariable Main class to clients
-                    
+                    //and publicVariable Main class and instances to clients
                     publicVariable QMOD(CQB);
-
-                    if (isServer) then {
-                        _logic setVariable ["startupComplete", true];
-                    };
+                    Publicvariable "CQB_Regular";
+                    Publicvariable "CQB_Strategic";
             };
                 
 			TRACE_2("After module init",MOD(CQB),MOD(CQB) getVariable "init");
@@ -265,6 +293,8 @@ switch(_operation) do {
             */
 
 			if (isServer) then {
+                [MOD(CQB), "GarbageCollecting", true] call ALiVE_fnc_CQB;
+                
                 waitUntil {MOD(CQB) getVariable ["init", false]};
 				[CQB_Regular, "active", true] call ALiVE_fnc_CQB;
 				diag_log ([CQB_Regular, "state"] call ALiVE_fnc_CQB);
@@ -421,55 +451,82 @@ switch(_operation) do {
 		private["_state","_data"];
 		
 		if(isNil "_args") then {
-			_state = [] call CBA_fnc_hashCreate;
+			_state = [] call ALiVE_fnc_hashCreate;
 			// Save state
 			{
-				[_state, _x, _logic getVariable _x] call CBA_fnc_hashSet;
+				[_state, _x, _logic getVariable _x] call ALiVE_fnc_hashSet;
 			} forEach [
             	"type",
                 "spawnDistance",
                 "spawnDistanceHeli",
                 "spawnDistanceJet",
-                "factions"
+                "factions",
+                "_rev"
             ];
+            
+            //Set data Identifyer
+            [_state,  "_rev", _logic getVariable "_rev"] call ALiVE_fnc_hashSet;
 			
-			_data = [];
+			_data = [] call ALiVE_fnc_HashCreate;
 			{
-				_data set [count _data,[
-					getPosATL _x,
-					typeOf _x,
-					_x getVariable "unittypes"
-				]];
+                private ["_hash"];
+                _hash = [] call ALiVE_fnc_HashCreate;
+                
+                _id = format["CQB_%1_%2",(_logic getVariable ["type","regular"]),str(floor((getPosATL _x) select 0)) + str(floor((getPosATL _x) select 1))];
+			
+				[_hash,"id",_id] call ALiVE_fnc_HashSet;
+				[_hash,"type",_logic getVariable "type"] call ALiVE_fnc_HashSet;
+				[_hash,"pos",getPosATL _x] call ALiVE_fnc_HashSet;
+				[_hash,"house",typeOf _x] call ALiVE_fnc_HashSet;
+				[_hash,"units",_x getVariable "unittypes"] call ALiVE_fnc_HashSet;
+                
+                //Get data Identifyer
+                [_hash,"_rev",_x getVariable "_rev"] call ALiVE_fnc_hashSet;
+
+				[_data,_id,_hash] call ALiVE_fnc_HashSet;
 			} forEach (_logic getVariable "houses");
 			
-			[_state, "houses", _data] call CBA_fnc_hashSet;                        
+			[_state, "houses", _data] call ALiVE_fnc_hashSet;
 			
 			_args = _state;
 		} else {
 			private["_houses","_groups"];
-			_groups = _logic getVariable ["groups",[]];
-			{
-				[_logic, "delGroup", _x] call ALiVE_fnc_CQB;
-			} forEach _groups;
-			_logic setVariable ["groups",[]];
-			_houses = _logic getVariable ["houses",[]];
+            
+            //Delete groups and markers
+			{[_logic, "delGroup", _x] call ALiVE_fnc_CQB} forEach (_logic getVariable ["groups",[]]);
+            {deleteMarkerLocal format[MTEMPLATE, _x]} foreach (_logic getVariable ["houses",[]]);
+            
+            //Reset basic dynamic data
+            _logic setVariable ["groups",[]];
+            _logic setVariable ["houses",[]];
 
-			// Restore state
-            [_logic, "type", [_args, "type"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
-			[_logic, "spawnDistance", [_args, "spawnDistance"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
-            [_logic, "spawnDistanceHeli", [_args, "spawnDistanceHeli"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
-            [_logic, "spawnDistanceJet", [_args, "spawnDistanceJet"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
-			[_logic, "factions", [_args, "factions"] call CBA_fnc_hashGet] call ALiVE_fnc_CQB;
+			//Restore state
+            [_logic, "type", [_args, "type"] call ALiVE_fnc_hashGet] call ALiVE_fnc_CQB;
+			[_logic, "spawnDistance", [_args, "spawnDistance"] call ALiVE_fnc_hashGet] call ALiVE_fnc_CQB;
+            [_logic, "spawnDistanceHeli", [_args, "spawnDistanceHeli"] call ALiVE_fnc_hashGet] call ALiVE_fnc_CQB;
+            [_logic, "spawnDistanceJet", [_args, "spawnDistanceJet"] call ALiVE_fnc_hashGet] call ALiVE_fnc_CQB;
+			[_logic, "factions", [_args, "factions"] call ALiVE_fnc_hashGet] call ALiVE_fnc_CQB;
+            
+            //Set data Identifyer
+            _logic setvariable ["_rev",[_args, "_rev"] call ALiVE_fnc_hashGet,true];
 			
 			// houses and groups
 			_data = [];
 			{
 				private["_house"];
-				_house = (_x select 0) nearestObject (_x select 1);
-				_house setVariable ["unittypes", _x select 2, true];
-				_data set [count _data, _house];
-			} forEach ([_args, "houses"] call CBA_fnc_hashGet);
+                
+	            if (([_x,"type","regular"] call ALiVE_fnc_HashGet) == ([_logic,"type"] call ALiVE_fnc_CQB)) then {
+					_house = ([_x,"pos",[0,0,0]] call ALiVE_fnc_HashGet) nearestObject ([_x,"house",""] call ALiVE_fnc_HashGet);
+					_house setVariable ["unittypes",([_x,"units"] call ALiVE_fnc_HashGet), true];
+                    
+                    //Set data Identifyer
+                    _house setVariable ["_rev",([_x,"_rev"] call ALiVE_fnc_HashGet), true];
+					
+                    _data set [count _data, _house];
+                };
+			} forEach (([_args, "houses"] call ALiVE_fnc_hashGet) select 2);
 			[_logic, "houses", _data] call ALiVE_fnc_CQB;
+            
 			_args = _data;
 		};		
 	};
@@ -1003,9 +1060,9 @@ switch(_operation) do {
 		                        
 		                       ["CQB Population: %1 remaing positions | %2 active positions | inactive houses %3 | groups with no house %4...", _remaincount, _activecount,_housesempty,_groupsempty] call ALiVE_fnc_Dump; 
 	                        };
-	
-							!([_logic,"active"] call ALiVE_fnc_CQB);
                         };
+                        
+                        !([_logic,"active"] call ALiVE_fnc_CQB);
 					}; // end over-arching spawning loop
 					
 					// clean up groups if deactivated

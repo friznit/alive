@@ -27,7 +27,27 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-                                                default = false;
+                                                default = 1;
+                                        };
+                                };
+                        };
+                        class CQB_persistent
+                        {
+                                displayName = "$STR_ALIVE_CQB_PERSISTENT";
+                                description = "$STR_ALIVE_CQB_PERSISTENT_COMMENT";
+                                
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -41,7 +61,7 @@ class CfgVehicles {
                                         {
                                                 name = "JIP clients";
                                                 value = "client";
-                                                default = true;
+                                                default = 1;
                                         };
                                         class server
                                         {
@@ -70,7 +90,7 @@ class CfgVehicles {
                                         {
                                                 name = "Complete map";
                                                 value = "all";
-                                                default = "all";
+                                                default = 1;
                                         };
                                 };
                         };
@@ -84,7 +104,7 @@ class CfgVehicles {
                                         {
                                                 name = "2%";
                                                 value = 2;
-                                                default = 2;
+                                                default = 1;
 												CQB_spawn = 2;
                                         };                                
                                         class CQB_spawn_5
@@ -135,7 +155,7 @@ class CfgVehicles {
                                         {
                                                 name = "off";
                                                 value = 99999;
-                                                default = 99999;
+                                                default = 1;
                                         };
                                         class CQB_DENSITY_2
                                         {
@@ -171,7 +191,7 @@ class CfgVehicles {
                                         {
                                                 name = "Dominant";
                                                 value = "true";
-                                                default = "true";
+                                                default = 1;
                                         };
                                         class No
                                         {

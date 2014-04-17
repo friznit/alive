@@ -14,6 +14,12 @@
 <Key ID="STR_ALIVE_CQB_DEBUG_COMMENT">
 	<English>Enables CQB Module Debug</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_PERSISTENT">
+	<English>Persistent:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_PERSISTENT_COMMENT">
+	<English>Enables CQB DB persistence (needs SYS DATA module and registration on ALiVE WarRoom)</English>
+</Key>
 </Key>
 <Key ID="STR_ALIVE_CQB_LOCALITY">
 	<English>Locality:</English>
