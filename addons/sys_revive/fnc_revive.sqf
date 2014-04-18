@@ -64,20 +64,26 @@ switch(_operation) do {
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", ALIVE_fnc_revive];
 			_logic setVariable ["init", true, true];
-			// REVIVE_DEBUG = call compile (_logic getvariable ["revive_debug_setting","false"]);
-			REVIVE_LANG = call compile (_logic getvariable ["revive_language_setting","false"]);
-			REVIVE_LIVES = call compile (_logic getvariable ["revive_lives_setting","false"]);
-			REVIVE_ALLOW_RESPAWN = call compile (_logic getvariable ["revive_allow_respawn","false"]);
-			REVIVE_SPECTATOR = call compile (_logic getvariable ["revive_spectator","false"]);
-			REVIVE_MARKER = call compile (_logic getvariable ["revive_player_marker","false"]);
-			REVIVE_INJURED = call compile (_logic getvariable ["revive_injured","false"]);
-			REVIVE_DRAG = call compile (_logic getvariable ["revive_drag_body","false"]);
-			REVIVE_CARRY = call compile (_logic getvariable ["revive_carry_body","false"]);
+			REV_Debug = call compile (_logic getvariable ["rev_debug_setting","false"]);
+			// REV_Language = call compile (_logic getvariable ["rev_language_setting","English"]);
+			REV_VAR_ReviveMode = _logic getvariable ["rev_mode_setting",1];
+			REV_VAR_BleedOutTime = _logic getvariable ["rev_bleedout_setting",300];
+			REV_VAR_isBulletproof = call compile (_logic getvariable ["rev_bulletproof_setting","false"]);
+			REV_VAR_isNeutral = call compile (_logic getvariable ["rev_neutral_setting","false"]);
+			REV_VAR_SP_PlayableUnits = call compile (_logic getvariable ["rev_playableunits_setting","true"]);
+			REV_VAR_TeamKillNotifications = call compile (_logic getvariable ["rev_notifyplayers_setting","true"]);
+			REV_VAR_NumRevivesAllowed = _logic getvariable ["rev_lives_setting",999];
+			REV_VAR_ReviveDamage = call compile (_logic getvariable ["rev_injured_setting","true"]);
+			REV_VAR_Suicide = call compile (_logic getvariable ["rev_allow_suicide_setting","true"]);
+			REV_VAR_AllowDrag = call compile (_logic getvariable ["rev_drag_body_setting","true"]);
+			// REV_VAR_AllowCarry = call compile (_logic getvariable ["rev_carry_body_setting","false"]);
+			// REV_VAR_Spectate = call compile (_logic getvariable ["rev_spectator_setting","false"]);
+			REV_VAR_BulletEffects = call compile (_logic getvariable ["rev_bullet_effects_setting","true"]);
+			REV_VAR_Show_Player_Marker = call compile (_logic getvariable ["rev_player_marker_setting","true"]);
 			// and publicVariable to clients
-			// publicVariable "REVIVE_DEBUG";
+			// publicVariable "REV_Debug";
 		} else {
-			// if client clean up client side game logics as they will transfer
-			// to servers on client disconnect
+			// if client, clean up client side game logics as they will transfer to servers on client disconnect
 			// deleteVehicle _logic;
 		};
 		// and wait for game logic to initialise
@@ -89,10 +95,8 @@ switch(_operation) do {
 		VIEW - purely visual
 		- initialise 
 		*/
-		// Waituntil {!(isnil "REVIVE_DEBUG")};
+		// Waituntil {!(isnil "REV_Debug")};
 		call ALIVE_fnc_reviveScript;
-		// call ALIVE_fnc_revive2;
-		// call ALIVE_fnc_reviveDrag;
 	};
 	case "destroy": {
 		if (isServer) then {

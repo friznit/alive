@@ -3,7 +3,10 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_REVIVE">
-	<English>Revive</English>
+	<English>ALiVE Wounding System</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_ERROR1">
+	<English>Only one revive module can be used</English>
 </Key>
 <Key ID="STR_ALIVE_REVIVE_DEBUG">
 	<English>Enable Debug:</English>
@@ -11,26 +14,79 @@
 <Key ID="STR_ALIVE_REVIVE_DEBUG_COMMENT">
 	<English>Enables Revive Module Debug</English>
 </Key>
-<Key ID="STR_ALIVE_REVIVE_ERROR1">
-	<English>Only one revive module can be used</English>
-</Key>
-<Key ID="STR_ALIVE_REVIVE_LANG">
+<!-- <Key ID="STR_ALIVE_REVIVE_LANG">
 	<English>Revive Language:</English>
 </Key>
+ -->
 <Key ID="STR_ALIVE_REVIVE_LANG_COMMENT">
-	<English>Choose your language to be displayed in game for the revive text</English>
+	<English>*** WIP *** - Choose your language to be displayed in game for the revive text.</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_MODE">
+	<English>Revive Mode:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_MODE_COMMENT">
+	<English>Medics can revive/stabilize || All players can revive only, no stabilize || All players can revive/stabilize with medkits/firstaid kits.</English>
+</Key>
+<Key ID="STR_ALIVE_BLEEDOUT_TIME">
+	<English>Bleedout Time:</English>
+</Key>
+<Key ID="STR_ALIVE_BLEEDOUT_TIME_COMMENT">
+	<English>Time it takes for an injured/unconscious player/AI unit to bleedout.</English>
+</Key>
+<Key ID="STR_ALIVE_BULLETPROOF">
+	<English>Unconscious Body Armor:</English>
+</Key>
+<Key ID="STR_ALIVE_BULLETPROOF_COMMENT">
+	<English>Allows the injured player/AI unit to be killed while unconscious via being shot/explosive damage/run over... you get the picture.</English>
+</Key>
+<Key ID="STR_ALIVE_NEUTRAL">
+	<English>Bullet Magnet:</English>
+</Key>
+<Key ID="STR_ALIVE_NEUTRAL_COMMENT">
+	<English>Allows the injured player/AI unit to be targeted by the enemy and killed while unconscious.</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYABLE">
+	<English>Playable AI Revivable:</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYABLE_COMMENT">
+	<English>Allows playable AI units to be revived either in single/multiplayer scenarios.</English>
+</Key>
+<Key ID="STR_ALIVE_NOTIFY_PLAYER">
+	<English>Teamkill Notifications:</English>
+</Key>
+<Key ID="STR_ALIVE_NOTIFY_PLAYER_COMMENT">
+	<English>Notify all players of teamkill related events.</English>
 </Key>
 <Key ID="STR_ALIVE_REVIVE_LIVES">
-	<English>Number of Revives:</English>
+	<English>Number of Revives Allowed:</English>
 </Key>
 <Key ID="STR_ALIVE_REVIVE_LIVES_COMMENT">
-	<English>The number of revives allowed before you are not able to be revived during your current game session</English>
+	<English>The total number of revives allowed before actual death and being forced to respawn at base/respawn point.</English>
 </Key>
-<Key ID="STR_ALIVE_REVIVE_ALLOW_RESPAWN">
-	<English>Allow Respawn:</English>
+<Key ID="STR_ALIVE_REVIVE_INJURED">
+	<English>Still Injured after Revive:</English>
 </Key>
-<Key ID="STR_ALIVE_REVIVE_ALLOW_RESPAWN_COMMENT">
-	<English>This will show a respawn button if allowed after being killed. Respawns back to the respawn_xxx marker for that faction</English>
+<Key ID="STR_ALIVE_REVIVE_INJURED_COMMENT">
+	<English>Leave a damaged amount on the player/AI unit based on whether they are revived/stablized.</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYER_SUICIDE">
+	<English>Allow Suicide:</English>
+</Key>
+<Key ID="STR_ALIVE_PLAYER_SUICIDE_COMMENT">
+	<English>Allows the player to commit suicide and respawn back to their respawn_xxx marker for that faction/side (player only).</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_DRAG">
+	<English>Drag Injured Units:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_DRAG_COMMENT">
+	<English>Allows a non injured player to drag an injured player/AI unit to a safe location before revive/stabilize.</English>
+</Key>
+<!-- 
+<Key ID="STR_ALIVE_REVIVE_CARRY">
+	<English>Carry Body:</English>
+</Key>
+<Key ID="STR_ALIVE_REVIVE_CARRY_COMMENT">
+	<English>Allows a player to carry an injured player/AI unit a safe location before being revived/Stabilized.</English>
 </Key>
 <Key ID="STR_ALIVE_REVIVE_SPECTATOR">
 	<English>Revive Spectator:</English>
@@ -38,28 +94,17 @@
 <Key ID="STR_ALIVE_REVIVE_SPECTATOR_COMMENT">
 	<English>*** WIP *** - If enabled, this will allow a third person view while waiting to be revived.</English>
 </Key>
+-->
+<Key ID="STR_ALIVE_BULLET_EFFECTS">
+	<English>Bullet Hit Effects:</English>
+</Key>
+<Key ID="STR_ALIVE_BULLET_EFFECTS_COMMENT">
+	<English>Bullet/explosion effects for the player. (player only/experimental/WIP)</English>
+</Key>
 <Key ID="STR_ALIVE_REVIVE_MARKER">
-	<English>Revive Marker:</English>
+	<English>Revive Markers/Indicators:</English>
 </Key>
 <Key ID="STR_ALIVE_REVIVE_MARKER_COMMENT">
-	<English>This will place a marker on the map where the unit to be revived is located</English>
-</Key>
-<Key ID="STR_ALIVE_REVIVE_INJURED">
-	<English>Injured after Revive:</English>
-</Key>
-<Key ID="STR_ALIVE_REVIVE_INJURED_COMMENT">
-	<English>if enabled, this will revive the unit but leave that unit still injured. Realism approach if turned on.</English>
-</Key>
-<Key ID="STR_ALIVE_REVIVE_DRAG">
-	<English>Drag Body:</English>
-</Key>
-<Key ID="STR_ALIVE_REVIVE_DRAG_COMMENT">
-	<English>Will allow the injured unit to be dragged to a safe location before being revived.</English>
-</Key>
-<Key ID="STR_ALIVE_REVIVE_CARRY">
-	<English>Carry Body:</English>
-</Key>
-<Key ID="STR_ALIVE_REVIVE_CARRY_COMMENT">
-	<English>*** WIP *** - Will allow the injured unit to be carried to a safe location before being revived.</English>
+	<English>Places a marker on the map where the player/AI unit was last located and needs to be revived.</English>
 </Key>
 </Container></Package></Project>

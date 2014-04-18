@@ -3,7 +3,3 @@
 #include <CfgPatches.hpp>
 #include <CfgVehicles.hpp>
 #include <CfgFunctions.hpp>
-
-/* revive dialog conifg */
-#include <revive_dialog.h>
-

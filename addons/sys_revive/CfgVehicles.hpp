@@ -11,7 +11,7 @@ class CfgVehicles {
 		picture = "\x\alive\addons\sys_revive\icon_sys_revive.paa";
 
 		class Arguments {
-			class revive_debug_setting {
+			class rev_debug_setting {
 				displayName = "$STR_ALIVE_REVIVE_DEBUG";
 				description = "$STR_ALIVE_REVIVE_DEBUG_COMMENT";
 				class Values {
@@ -26,62 +26,64 @@ class CfgVehicles {
 					};
 				};
 			};
-			class revive_language_setting {
-				displayName = "$STR_ALIVE_REVIVE_LANG";
-				description = "$STR_ALIVE_REVIVE_LANG_COMMENT";
+			// class rev_language_setting {
+				// displayName = "$STR_ALIVE_REVIVE_LANG";
+				// description = "$STR_ALIVE_REVIVE_LANG_COMMENT";
+				// class Values {
+					// class langEnglish {
+						// name = "English";
+						// value = "en";
+						// default = "en";
+					// };
+				// };
+			// };
+			class rev_mode_setting {
+				displayName = "$STR_ALIVE_REVIVE_MODE";
+				description = "$STR_ALIVE_REVIVE_MODE_COMMENT";
+				typeName = "NUMBER";
 				class Values {
-					class langEnglish {
-						name = "English";
+					class revModeSetting1 {
+						name = "Revive Only, no Stablize Option";
 						value = 1;
 						default = 1;
 					};
-					class langFrench {
-						name = "French";
+					class revModeSetting2 {
+						name = "Only Medics can Revive, Others can ONLY Stabilize";
+						value = 0;
+					};
+					class revModeSetting3 {
+						name = "Players can Revive/Stabilize with a MedKit/FirstAid Kit";
 						value = 2;
 					};
 				};
 			};
-			class revive_lives_setting {
-				displayName = "$STR_ALIVE_REVIVE_LIVES";
-				description = "$STR_ALIVE_REVIVE_LIVES_COMMENT";
+			class rev_bleedout_setting {
+				displayName = "$STR_ALIVE_BLEEDOUT_TIME";
+				description = "$STR_ALIVE_BLEEDOUT_TIME_COMMENT";
+				typeName = "NUMBER";
 				class Values {
-					class livesSetting1 {
-						name = "Unlimited";
+					class bleedoutSetting1 {
+						name = "Five Minutes";
+						value = 300;
+						default = 300;
+					};
+					class bleedoutSetting2 {
+						name = "Two Minutes";
+						value = 120;
+					};
+					class bleedoutSetting3 {
+						name = "One Minute";
+						value = 60;
+					};
+					class bleedoutSetting4 {
+						name = "Based on Amount of Damage Sustained";
 						value = 999;
-						default = 999;
-					};
-					class livesSetting2 {
-						name = "3";
-						value = 3;
-					};
-					class livesSetting3 {
-						name = "20";
-						value = 20;
-					};
-					class livesSetting4 {
-						name = "100";
-						value = 100;
 					};
 				};
 			};
-			class revive_allow_respawn {
-				displayName = "$STR_ALIVE_REVIVE_ALLOW_RESPAWN";
-				description = "$STR_ALIVE_REVIVE_ALLOW_RESPAWN_COMMENT";
-				class Values {
-					class Yes {
-						name = "Yes";
-						value = true;
-						default = true;
-					};
-					class No {
-						name = "No";
-						value = false;
-					};
-				};
-			};
-			class revive_spectator {
-				displayName = "$STR_ALIVE_REVIVE_SPECTATOR";
-				description = "$STR_ALIVE_REVIVE_SPECTATOR_COMMENT";
+			class rev_bulletproof_setting {
+				displayName = "$STR_ALIVE_BULLETPROOF";
+				description = "$STR_ALIVE_BULLETPROOF_COMMENT";
 				class Values {
 					class No {
 						name = "No";
@@ -94,9 +96,24 @@ class CfgVehicles {
 					};
 				};
 			};
-			class revive_player_marker {
-				displayName = "$STR_ALIVE_REVIVE_MARKER";
-				description = "$STR_ALIVE_REVIVE_MARKER_COMMENT";
+			class rev_neutral_setting {
+				displayName = "$STR_ALIVE_NEUTRAL";
+				description = "$STR_ALIVE_NEUTRAL_COMMENT";
+				class Values {
+					class No {
+						name = "No";
+						value = false;
+						default = false;
+					};
+					class Yes {
+						name = "Yes";
+						value = true;
+					};
+				};
+			};
+			class rev_playableunits_setting {
+				displayName = "$STR_ALIVE_PLAYABLE";
+				description = "$STR_ALIVE_PLAYABLE_COMMENT";
 				class Values {
 					class Yes {
 						name = "Yes";
@@ -109,7 +126,54 @@ class CfgVehicles {
 					};
 				};
 			};
-			class revive_injured {
+			class rev_notifyplayers_setting {
+				displayName = "$STR_ALIVE_NOTIFY_PLAYER";
+				description = "$STR_ALIVE_NOTIFY_PLAYER_COMMENT";
+				class Values {
+					class Yes {
+						name = "Yes";
+						value = true;
+						default = true;
+					};
+					class No {
+						name = "No";
+						value = false;
+					};
+				};
+			};
+			class rev_lives_setting {
+				displayName = "$STR_ALIVE_REVIVE_LIVES";
+				description = "$STR_ALIVE_REVIVE_LIVES_COMMENT";
+				typeName = "NUMBER";
+				class Values {
+					class livesSetting1 {
+						name = "Unlimited";
+						value = "999";
+						default = 999;
+					};
+					class livesSetting2 {
+						name = "3";
+						value = 3;
+					};
+					class livesSetting3 {
+						name = "5";
+						value = 5;
+					};
+					class livesSetting4 {
+						name = "10";
+						value = 10;
+					};
+					class livesSetting5 {
+						name = "20";
+						value = 20;
+					};
+					class livesSetting6 {
+						name = "100";
+						value = 100;
+					};
+				};
+			};
+			class rev_injured_setting {
 				displayName = "$STR_ALIVE_REVIVE_INJURED";
 				description = "$STR_ALIVE_REVIVE_INJURED_COMMENT";
 				class Values {
@@ -124,7 +188,22 @@ class CfgVehicles {
 					};
 				};
 			};
-			class revive_drag_body {
+			class rev_allow_suicide_setting {
+				displayName = "$STR_ALIVE_PLAYER_SUICIDE";
+				description = "$STR_ALIVE_PLAYER_SUICIDE_COMMENT";
+				class Values {
+					class Yes {
+						name = "Yes";
+						value = true;
+						default = true;
+					};
+					class No {
+						name = "No";
+						value = false;
+					};
+				};
+			};
+			class rev_drag_body_setting {
 				displayName = "$STR_ALIVE_REVIVE_DRAG";
 				description = "$STR_ALIVE_REVIVE_DRAG_COMMENT";
 				class Values {
@@ -139,9 +218,39 @@ class CfgVehicles {
 					};
 				};
 			};
-			class revive_carry_body {
-				displayName = "$STR_ALIVE_REVIVE_CARRY";
-				description = "$STR_ALIVE_REVIVE_CARRY_COMMENT";
+			// class rev_carry_body_setting {
+				// displayName = "$STR_ALIVE_REVIVE_CARRY";
+				// description = "$STR_ALIVE_REVIVE_CARRY_COMMENT";
+				// class Values {
+					// class No {
+						// name = "No";
+						// value = false;
+						// default = false;
+					// };
+					// class Yes {
+						// name = "Yes";
+						// value = true;
+					// };
+				// };
+			// };
+			// class rev_spectator_setting {
+				// displayName = "$STR_ALIVE_REVIVE_SPECTATOR";
+				// description = "$STR_ALIVE_REVIVE_SPECTATOR_COMMENT";
+				// class Values {
+					// class No {
+						// name = "No";
+						// value = false;
+						// default = false;
+					// };
+					// class Yes {
+						// name = "Yes";
+						// value = true;
+					// };
+				// };
+			// };
+			class rev_bullet_effects_setting {
+				displayName = "$STR_ALIVE_BULLET_EFFECTS";
+				description = "$STR_ALIVE_BULLET_EFFECTS_COMMENT";
 				class Values {
 					class No {
 						name = "No";
@@ -154,7 +263,21 @@ class CfgVehicles {
 					};
 				};
 			};
-
+			class rev_player_marker_setting {
+				displayName = "$STR_ALIVE_REVIVE_MARKER";
+				description = "$STR_ALIVE_REVIVE_MARKER_COMMENT";
+				class Values {
+					class Yes {
+						name = "Yes";
+						value = true;
+						default = true;
+					};
+					class No {
+						name = "No";
+						value = false;
+					};
+				};
+			};
 		};
 	};
 };

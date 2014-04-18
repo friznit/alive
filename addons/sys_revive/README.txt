@@ -11,8 +11,8 @@
 //  of this distribution removed or modified without express written consent   //
 //  of the developer. For further licensing details please refer to the End    //
 //  User License Agreement provided within this PBO file. Any questions or     //
-//  comments, please contact:             				       //
-//                    https://dev-heaven.net/projects/alive                    //
+//  comments, please contact:             				    				   //
+//                    https://dev.withsix.com/projects/alive                   //
 //                                                                             //
 ///////////////////////////////////////////////////////////////////////////////// 
 
@@ -26,7 +26,7 @@ ALiVE_sys_revive
 | Main author(s) |
 #================#
 
-ALiVE Team
+ALiVE Dev Team
 
 #===============#
 | Local credits |
@@ -44,5 +44,5 @@ Handles Player Revive
 | Contact details |
 #=================#
 
-Page:	http://dev-heaven.net/projects/alive
+Page:	https://dev.withsix.com/projects/alive
 

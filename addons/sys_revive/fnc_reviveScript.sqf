@@ -1,177 +1,292 @@
-#include "config.sqf"
-SYS_RevPath = "\x\alive\addons\sys_revive\";
+["ALIVE Wounding System Initialized..."] call ALIVE_fnc_dumpR;
 
-["ALIVE Revive starting..."] call ALIVE_fnc_dumpR;
+/* Will not initialize on a dedicated server */
+if (isDedicated) exitWith {};
 
-REV_FNCT_code_distant = {
-	private ["_unit", "_commande", "_parametre"];
-	_unit = _this select 1 select 0;
-	_commande = _this select 1 select 1;
-	_parametre = _this select 1 select 2;
+/* Compile revive functions */
+call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions.sqf";
+
+/* Revive Version */
+#define REV_VERSION "0.88"
+
+/* Debug mode */
+// REV_Debug = true;
+
+/* Debug mode */
+// REV_Language = "en";
+
+/* -------------------------------------------------------------------
+	Revive mode/type
+
+	0 = Medic units can revive/stabilize...(medkit is required to revive, all other units can just stabilize)
+	1 = All units can revive...(requires either a medkit or firstaid kit) - default setting
+	2 = All units can revive/stabilize...(requires a medikit to revive; a firstaidkit can only stabilize)
+------------------------------------------------------------------- */
+// REV_VAR_ReviveMode = 1;
+
+/* Set the bleed out time (certain death) - 30 seconds is for testing, default value should be 300 */
+// REV_VAR_BleedOutTime = 300;
+
+/* Allows units to still take damage when unconcious and during revive - true = invincible, false = bullet magnet */
+// REV_VAR_isBulletproof = true;
+
+/* Sets an injured unit to a captive state so the enemy will ignore and not fire on the injured unit */
+// REV_VAR_isNeutral = false;
+
+/* Makes playable units revivable both in SP and MP modes */
+// REV_VAR_SP_PlayableUnits = true;
+
+/* Enable teamkill notifications */
+// REV_VAR_TeamKillNotifications = true;
+
+/* Number of revives/lives allowed */
+// REV_VAR_NumRevivesAllowed = 12;  //TODO - This needs to be implemented
+
+/* Revive with damage, not full health when revived */
+// REV_VAR_ReviveDamage = true;  //TODO - This needs to be implemented
+
+/* Allows an injured player to commit suicide and respawn at base, deducts from number of revives */
+// REV_VAR_Suicide = true;  //TODO - This needs to be implemented
+
+/* Allow unit to be dragged or not */
+// REV_VAR_AllowDrag = true;  //TODO - This needs to be implemented
+
+/* Allow unit to be carried or not */
+// REV_VAR_AllowCarry = true;  //TODO - This needs to be implemented
+
+/* Allows downed player to view 3rd persion while waiting to be revived */
+// REV_VAR_Spectate = false;  //TODO - This needs to be implemented
+
+/* Adds screen effects to player from bullets */
+// REV_VAR_BulletEffects = true;
+
+/* Create marker to show on the map where the unconscious player is located */
+// REV_VAR_Show_Player_Marker = true; 
+
+/* -------------------------------------------------------------------
+	Player Init
+------------------------------------------------------------------- */
+[] spawn {
+    waitUntil {
+		sleep .25;
+		!isNull player;
+	};
+
+	/* Public event handlers */
+	"REV_VAR_isDragging_EH" addPublicVariableEventHandler REV_FNC_Public_EH;
+	"REV_VAR_isCarrying_EH" addPublicVariableEventHandler REV_FNC_Public_EH;
+	"REV_VAR_DeathMsg" addPublicVariableEventHandler REV_FNC_Public_EH;
 	
-	if (local _unit) then {
-		switch (_commande) do {
-			case "switchMove": {
-				_unit switchMove _parametre;
+	[] spawn REV_FNC_Player_Init;
+
+	hintSilent format["Revive v%1 has been initialized.", REV_VERSION];
+	
+	/* Damage Indication EH - adds bullet hit effects to player */
+	if (REV_VAR_BulletEffects) then {
+		player addEventHandler ["hit","
+			[_this select 1] spawn REV_FNC_BloodEffects;
+			'colorCorrections' ppEffectAdjust[1, 1.8, -0.2, [4.5 - ((damage player)*5), 3.5, 1.6, -0.02],[1.8 - ((damage player)*5), 1.6, 1.6, 1],[-1.5 + ((damage player)*5),0,-0.2,1]]; 
+			'colorCorrections' ppEffectCommit 0.05; 
+			addCamShake [1 + random 2, 0.4 + random 1, 15];
+		"];
+	};
+
+	/* Death EH - adds effects to the player when killed */
+	player addEventHandler ["killed",{
+		0 fadeSound .25; 0 fadeMusic 0; 
+		[] spawn {
+			sleep 3; 
+			"dynamicBlur" ppEffectAdjust[0];
+			"dynamicBlur" ppEffectCommit 2;
+		};
+	}];
+
+	/* Respawn EH - when player respawns, this reapplies revive to the new unit */
+	player addEventHandler ["Respawn",{
+		[] spawn REV_FNC_Player_Init;
+		1 fadeSound 1; 
+		1 fadeMusic 1;
+	}];
+	sleep 5;
+	hintSilent "";
+};
+
+/* -------------------------------------------------------------------
+	Player Initialization
+------------------------------------------------------------------- */
+REV_FNC_Player_Init = {
+
+	/* Store players side */
+	REV_VAR_PlayerSide = side player;
+	
+	player removeAllEventHandlers "HandleDamage";
+	player addEventHandler ["HandleDamage", REV_FNC_HandleDamage_EH];
+	player addEventHandler [
+		"Killed",{
+			_body = _this select 0;
+			[_body] spawn {
+				waitUntil {
+					alive player;
+				};
+				_body = _this select 0;
+				deleteVehicle _body;
+				[player] call REV_FNC_DeleteMarker;
+				terminate REV_Unconscious_Effect;
 			};
-			case "setDir": {
-				_unit setDir _parametre;
+		}
+	];
+	
+	player setVariable ["REV_VAR_isUnconscious", 0, true];
+	player setVariable ["REV_VAR_isStabilized", 0, true];
+	player setVariable ["REV_VAR_isDragged", 0, true];
+	player setVariable ["REV_VAR_isCarried", 0, true];
+	player setCaptive false;
+
+	REV_VAR_isDragging = false;
+	REV_VAR_isDragging_EH = [];
+	REV_VAR_isCarrying = false;
+	REV_VAR_isCarrying_EH = [];
+	REV_VAR_DeathMsg = [];
+	
+	/* fixes an issue with a sticky key(s) when respawned */
+	disableUserInput false;
+	disableUserInput true;
+		
+	/* Create actions for players */
+	[] spawn REV_FNC_Player_Actions;
+};
+
+/* -------------------------------------------------------------------
+	Drag & Carry animation fix
+------------------------------------------------------------------- */
+[] spawn {
+	waitUntil {
+		sleep 1;
+		if (animationState player == "acinpknlmstpsraswrfldnon_acinpercmrunsraswrfldnon" || animationState player == "helper_switchtocarryrfl" || animationState player == "AcinPknlMstpSrasWrflDnon") then {
+			if (REV_VAR_isDragging) then {
+				player switchMove "AcinPknlMstpSrasWrflDnon";
+			} else {
+				player switchMove "amovpknlmstpsraswrfldnon";
 			};
-			case "playMove": {
-				_unit playMove _parametre;
-			};
-			case "playMoveNow": {
-				_unit playMoveNow _parametre;
+			if (REV_VAR_isCarrying) then {
+				player switchMove "AcinPknlMstpSrasWrflDnon";
+			} else {
+				player switchMove "amovpknlmstpsraswrfldnon";
 			};
 		};
 	};
 };
 
-"REV_code_distant" addPublicVariableEventHandler REV_FNCT_code_distant;
-
-if !(isServer && isDedicated) then {
-	call compile preprocessFile format["\x\alive\addons\sys_revive\sys_revive\%1_strings_lang.sqf", REV_CFG_langage];
+/* -------------------------------------------------------------------
+	Health regeneration and bleedout effects
+------------------------------------------------------------------- */
+[] spawn {
+	private ["_fatigue","_oxygen","_hRegenRate"];
 	
-	[] spawn {
-		REV_Waiting_For_Revive = [] spawn {};
-		REV_Player_Respawn = [] spawn {};
-		REV_Unconscious_Effect = [] spawn {};
-		REV_New_Player_Unit = REV_CFG_Number_Revives;
-		REV_FNCT_onKilled = compile preprocessFile "\x\alive\addons\sys_revive\sys_revive\onKilled.sqf";
-		REV_FNCT_respawn_camp = compile preprocessFile "\x\alive\addons\sys_revive\sys_revive\respawn_camp.sqf";
+	playerBleedRate = 0;
+	playerRegenRate = 0;
+	playerDamage = 0;
+	
+	while {alive player} do {
+		/* Variables */
+		_fatigue = getFatigue player;
+		_oxygen = getOxygenRemaining player;
 		
-		REV_FNCT_Create_Unconscious_Marker = {
-			if (REV_CFG_Show_Player_Marker && alive player) then {
-				private ["_marqueur"];
-				_marqueur = createMarker [("REV_mark_" + name player), getPos player];
-				_marqueur setMarkerType "mil_triangle";
-				_marqueur setMarkerColor "colorRed";
-				_marqueur setMarkerText format [STR_REV_Waiting_For_Revive_marker, name player];
-			};
+		/* Health regeneration/bleedout */
+		_hRegenRate = 1 - _fatigue;
+		if (_hRegenRate == 0) then {
+			_hRegenRate = 1;
 		};
 		
-		REV_FNCT_Delete_Unconcious_Marker = {
-			if (REV_CFG_Show_Player_Marker && alive player) then {
-				deleteMarker ("REV_mark_" + name player);
-			};
-		};
+		/* Bleeding out */
+		waitUntil{player getVariable "REV_VAR_isUnconscious" == 1};
 		
-		if (isNil "REV_CFG_Classnames_That_Can_Revive") then {
-			REV_CFG_Classnames_That_Can_Revive = [];
-		};
-		if (isNil "REV_CFG_Player_Slots_That_Can_Revive") then {
-			REV_CFG_Player_Slots_That_Can_Revive = [];
-		};
-		if (isNil "REV_CFG_All_Medic_Can_Revive") then {
-			REV_CFG_All_Medic_Can_Revive = false;
-		};
-		if (isNil "REV_CFG_Allow_To_Drag_Body") then {
-			REV_CFG_Allow_To_Drag_Body = false;
-		};
-		
-		REV_FNCT_peut_revive = {
-			if (REV_CFG_All_Medic_Can_Revive && getNumber (configFile >> "CfgVehicles" >> (typeOf player) >> "attendant") == 1) then {
-				true;
-			} else {
-				if (player in REV_CFG_Player_Slots_That_Can_Revive) then {
-					true;
-				} else {
-					if (typeOf player in REV_CFG_Classnames_That_Can_Revive) then {
-						true;
-					} else {
-                        if (count REV_CFG_Classnames_That_Can_Revive < 1) then {
-							true;
-						} else {
-							false;
-						};
-                    };
-				};
-			};
-		};
-		
-		REV_FNCT_unconscious = {
-			private ["_unit", "_id_action"];
-			_unit = _this select 1;
-			
-			if !(isServer && isDedicated) then {
-				if !(isNull _unit) then {
-					player reveal _unit;
-					
-					// _id_action = _unit addAction [STR_REV_Action_Revive, "\x\alive\addons\sys_revive\sys_revive\revive.sqf", [], 10, false, true, "",
-					// "player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && call REV_FNCT_peut_revive && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
-					// _unit setVariable ["REV_id_action_revive", _id_action, false];
-					
-					// _id_action = _unit addAction [STR_REV_Action_Drag_Body, "\x\alive\addons\sys_revive\sys_revive\drag_body.sqf", [], 10, false, true, "",
-					// "player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && REV_CFG_Allow_To_Drag_Body && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
-					// _unit setVariable ["REV_id_action_trainer_corps", _id_action, false];
-					
-					_id_action = _unit addAction [STR_REV_Action_Revive, {call ALIVE_fnc_revive2;}, [], 10, false, true, "",
-					"player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && call REV_FNCT_peut_revive && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
-					_unit setVariable ["REV_id_action_revive", _id_action, false];
-					
-					_id_action = _unit addAction [STR_REV_Action_Drag_Body, {call ALIVE_fnc_reviveDrag;}, [], 10, false, true, "",
-					"player distance _target < 2 && !(player getVariable ""REV_Unconscious"") && REV_CFG_Allow_To_Drag_Body && alive _target && isPlayer _target && (_target getVariable ""REV_Unconscious"") && isNil {_target getVariable ""REV_Medical_Support_Unit""}"];
-					_unit setVariable ["REV_id_action_trainer_corps", _id_action, false];
-				};
-			};
-		};
-		"REV_Unconscious_Player" addPublicVariableEventHandler REV_FNCT_unconscious;
-		
-		REV_FNCT_End_Unconciousness = {
-			private ["_unit"];
-			_unit = _this select 1;
-			
-			if !(isServer && isDedicated) then {
-				if !(isNull _unit) then {
-					if !(isNil {_unit getVariable "REV_id_action_revive"}) then {
-						_unit removeAction (_unit getVariable "REV_id_action_revive");
-						_unit setVariable ["REV_id_action_revive", nil, false];
-					};
-					
-					if !(isNil {_unit getVariable "REV_id_action_trainer_corps"}) then {
-						_unit removeAction (_unit getVariable "REV_id_action_trainer_corps");
-						_unit setVariable ["REV_id_action_trainer_corps", nil, false];
-					};
-				};
-			};
-		};
-		"REV_End_Unconciousness" addPublicVariableEventHandler REV_FNCT_End_Unconciousness;
-		
-		waitUntil {
-			!(isNull player);
-		};
-		
-		REV_Dead_Body = player;
-		
-		REV_Revive_Position = getPosATL REV_Dead_Body;
-		
-		[] call REV_FNCT_Delete_Unconcious_Marker;
-		
-		player addEventHandler ["killed", REV_FNCT_onKilled];
-		
-		sleep (0.5 + random 0.5);
-		
-		player setVariable ["REV_Medical_Support_Unit", nil, true];
-		
-		if !(isNil {player getVariable "REV_Unconscious"}) then {
-			if (player getVariable "REV_Unconscious") then {
-				[player, player] call REV_FNCT_onKilled;
+		if (damage player >= 0.6) then {
+			player setDamage ((damage player) + ((1-(getFatigue player))*(0.000047)));
+			// player setDamage ((damage player) + ((1-(getFatigue player))/REV_VAR_BleedOutTime));
+			if (REV_Debug) then {
+				playerBleedRate = ((damage player) + ((1-(getFatigue player))*(0.00003)));
 			};
 		} else {
-			player setVariable ["REV_Unconscious", false, true];
-		};
-		
-		{
-			["REV_End_Unconciousness", _x] call REV_FNCT_End_Unconciousness;
-			
-			if (_x != player) then
-			{
-				if !(isNil {_x getVariable "REV_Unconscious"}) then {
-					if (_x getVariable "REV_Unconscious") then {
-						["REV_Unconscious_Player", _x] call REV_FNCT_unconscious;
-					};
+			/* Using regen, will allow a player to recover from lower amounts of damage. */
+			/* Regeneration */
+			if (damage player < 0.6 && damage player > 0.25) then {
+				player setDamage (damage player - ((random(0.0001)) + (getFatigue player/200)));
+				if (REV_Debug) then {
+					playerRegenRate = (damage player - ((random(0.0001)) + (getFatigue player/200)));
+				};
+			} else {
+				if (damage player <= 0.25) then {
+					/* reset variables */
+					player setVariable ["REV_VAR_isUnconscious", 0, true];
+					player setVariable ["REV_VAR_isDragged", 0, true];
+					player setVariable ["REV_VAR_isCarried", 0, true];
+					sleep 3;
+					
+					/* Closes any dialog that could be open during revive process */
+					// need code here to close any dialogs that may be present
+					// closeDialog 0; 
+					
+					/* Back to normal game, remove effects */
+					5 fadeSound 1;
+					ppEffectDestroy REV_Video_Blurr_Effect;
+					ppEffectDestroy REV_Video_Color_Effect;
+					sleep 0.2;
+					
+					/* remove map marker */
+					[player] call REV_FNC_DeleteMarker;
+					
+					/* Select primary of the weapon after being revived */
+					player selectWeapon (primaryWeapon player);
+					
+					/* set players conditions for captive and damage states */
+					player setCaptive false;
+					player allowDamage true;
+					
+					/* terminate all effects and exit */
+					terminate REV_Unconscious_Effect;
 				};
 			};
-		} forEach (playableUnits + switchableUnits + allUnits);
+		};
+		
+			if (REV_Debug) then {
+				playerDamage = (damage player);
+			};
+		
+		if (getPosASLW player select 2 > 0) then {
+		
+			/* Health/Fatigue ColorCorrection */
+			"colorCorrections" ppEffectAdjust[1, (1-(damage player)/4)+_fatigue/3, ((-0.02)-((damage player)/10)), [4.5 - ((damage player)*5) - _fatigue/2, 3.5, 1.6+_fatigue/3, -0.02],[1.8 - ((damage player)*5), 1.6, 1.6, 1],[-1.5 + ((damage player)*5),0,-0.2,1]];
+			"colorCorrections" ppEffectCommit 0.1;
+		
+			/* Health/Fatigue Blur */
+			"dynamicBlur" ppEffectEnable true;
+			"dynamicBlur" ppEffectAdjust[((damage player)/2) + _fatigue/3];
+			"dynamicBlur" ppEffectCommit 0.1;
+		} else {
+		
+			/* Blur underwater */
+			"RadialBlur" ppEffectEnable true; 
+			"RadialBlur" ppEffectAdjust[abs(speed player)/10000,abs(speed player)/20000 + _fatigue,0.3,0.1];
+			"RadialBlur" ppEffectCommit 0.1;
+			"dynamicBlur" ppEffectEnable true; 
+			"dynamicBlur" ppEffectAdjust[(1-_oxygen)*3];
+			"dynamicBlur" ppEffectCommit 0.1;
+		};
+		sleep 0.05;
 	};
 };
+
+/* -------------------------------------------------------------------
+	Add revive to playable AI units SP/MP (MP WiP)
+------------------------------------------------------------------- */
+if (!REV_VAR_SP_PlayableUnits || isMultiplayer) exitWith {};
+{
+	if (!isPlayer _x) then {
+		_x addEventHandler ["HandleDamage", REV_FNC_HandleDamage_EH];
+		_x setVariable ["REV_VAR_isUnconscious", 0, true];
+		_x setVariable ["REV_VAR_isStabilized", 0, true];
+		_x setVariable ["REV_VAR_isDragged", 0, true];
+		_x setVariable ["REV_VAR_isCarried", 0, true];
+	};
+} forEach switchableUnits;

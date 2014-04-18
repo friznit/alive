@@ -16,16 +16,6 @@
 				file = "\x\alive\addons\sys_revive\fnc_reviveScript.sqf";
 				recompile = RECOMPILE;
 			}; 
-			class revive2 {
-				description = "The module init script";
-				file = "\x\alive\addons\sys_revive\sys_revive\revive.sqf";
-				recompile = RECOMPILE;
-			}; 
-			class reviveDrag {
-				description = "The module init script";
-				file = "\x\alive\addons\sys_revive\sys_revive\drag_body.sqf";
-				recompile = RECOMPILE;
-			}; 
 		};
 	};
 };

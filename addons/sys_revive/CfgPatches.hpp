@@ -9,7 +9,7 @@ class CfgPatches {
 		versionAct = "['SYS_REVIVE',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
 		author[] = {"Raptor"};
-		authorUrl = "http://dev-heaven.net/projects/alive";
+		authorUrl = "https://dev.withsix.com/projects/alive";
 	};
 };
 
@@ -17,7 +17,7 @@ class CfgSounds {
 	sounds[] = {Vent,Para,REV_Heartbeat};
 	class REV_Heartbeat {
 		name = "REV_Wounded_Heartbeat";
-		sound[] = {"\x\alive\addons\sys_revive\sys_revive\Sounds\HEARTBEAT.ogg",db-11,1};
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\HEARTBEAT.ogg",db-11,1};
 		titles[] = {};
 	};
 };
@@ -36,7 +36,7 @@ class RscTitles {
 			idc=-1;
 			type=0;
 			style = 48;
-			text = "\x\alive\addons\sys_revive\sys_revive\Textures\Blood.paa";
+			text = "\x\alive\addons\sys_revive\_revive\Textures\Blood.paa";
 			colorBackground[] = {1,1,1,0.4 };
 			colorText[] = { 1, 1, 1, 1 };
 			font = "PuristaMedium";
@@ -60,7 +60,7 @@ class RscTitles {
 			idc=-1;
 			type=0;
 			style = 48;
-			text = "\x\alive\addons\sys_revive\sys_revive\Textures\EyeHurt.paa";
+			text = "\x\alive\addons\sys_revive\_revive\Textures\EyeHurt.paa";
 			colorBackground[] = { 1,1,1,0.4 };
 			colorText[] = { 1, 1, 1, 1 };
 			font = "PuristaMedium";
