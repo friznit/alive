@@ -145,7 +145,7 @@ class RscDisplayMPInterrupt: RscStandardDisplay
 		class ALiVEButtonServerSave: RscButtonMenu
 		{
 			idc = 195;
-			text = "SERVER SAVE & EXIT (Admin Only)";
+			text = "SERVER SAVE AND EXIT (Admin Only)";
 			x = "1 * 			(((safezoneW / safezoneH) min 1.2) /40) + safezoneX + (16 * (((safezoneW / safezoneH) min 1.2) /40))";
 			y = "18.6 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "15 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
