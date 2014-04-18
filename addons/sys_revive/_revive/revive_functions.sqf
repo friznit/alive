@@ -85,9 +85,9 @@ REV_FNC_Player_Unconscious = {
 	[_unit] call REV_FNC_CreateMarker;
 	
 	/* allows for a revive cam feature, 3rd person view */
-	if (REV_VAR_Spectate) then {
+	// if (REV_VAR_Spectate) then {
 		// need code to allow for 3rd person view of the injured body
-	};
+	// };
 
 	/* Death message */
 	if (REV_VAR_TeamKillNotifications && !isNil "_killer" && isPlayer _killer && _killer != _unit) then {
@@ -165,7 +165,13 @@ REV_FNC_Player_Unconscious = {
 		_bleedOut = time + REV_VAR_BleedOutTime;
 		
 		while {!isNull _unit && alive _unit && _unit getVariable "REV_VAR_isUnconscious" == 1 && _unit getVariable "REV_VAR_isStabilized" == 1 && (REV_VAR_BleedOutTime <= 0 || time < _bleedOut)} do {
-			[format["%1", round (_bleedOut - time), name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+			
+			if (damage player >= 0.6) then {
+				[format["Bleeding out in roughly %1 seconds", round (_bleedOut - time), name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+			} else {
+				[format["%1, you have been knocked unconscious...",name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+				sleep 3;
+			};
 			
 			/* debug */
 			if (REV_Debug) then {
