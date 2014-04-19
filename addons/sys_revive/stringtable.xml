@@ -39,10 +39,10 @@
 <Key ID="STR_ALIVE_BULLETPROOF_COMMENT">
 	<English>Allows the injured player/AI unit to be killed while unconscious via being shot/explosive damage/run over... you get the picture.</English>
 </Key>
-<Key ID="STR_ALIVE_NEUTRAL">
+<Key ID="STR_ALIVE_MAGNET">
 	<English>Bullet Magnet:</English>
 </Key>
-<Key ID="STR_ALIVE_NEUTRAL_COMMENT">
+<Key ID="STR_ALIVE_MAGNET_COMMENT">
 	<English>Allows the injured player/AI unit to be targeted by the enemy and killed while unconscious.</English>
 </Key>
 <Key ID="STR_ALIVE_PLAYABLE">

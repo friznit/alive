@@ -56,7 +56,7 @@ switch(_operation) do {
 		if (isServer && !(isNil QMOD(revive))) exitWith {
 			ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_REVIVE_ERROR1");
 		};
-		if ((isServer) and (!isDedicated)) then {
+		if (isServer) then {
 			MOD(revive) = _logic;
 			publicVariable QMOD(revive);
 
@@ -69,7 +69,7 @@ switch(_operation) do {
 			REV_VAR_ReviveMode = _logic getvariable ["rev_mode_setting",1];
 			REV_VAR_BleedOutTime = _logic getvariable ["rev_bleedout_setting",300];
 			REV_VAR_isBulletproof = call compile (_logic getvariable ["rev_bulletproof_setting","false"]);
-			REV_VAR_isNeutral = call compile (_logic getvariable ["rev_neutral_setting","true"]);
+			REV_VAR_isBulletMagnet = call compile (_logic getvariable ["rev_bulletmagenet_setting","true"]);
 			REV_VAR_SP_PlayableUnits = call compile (_logic getvariable ["rev_playableunits_setting","true"]);
 			REV_VAR_TeamKillNotifications = call compile (_logic getvariable ["rev_notifyplayers_setting","true"]);
 			REV_VAR_NumRevivesAllowed = _logic getvariable ["rev_lives_setting",999];
@@ -80,8 +80,24 @@ switch(_operation) do {
 			// REV_VAR_Spectate = call compile (_logic getvariable ["rev_spectator_setting","false"]);
 			REV_VAR_BulletEffects = call compile (_logic getvariable ["rev_bullet_effects_setting","true"]);
 			REV_VAR_Show_Player_Marker = call compile (_logic getvariable ["rev_player_marker_setting","true"]);
-			// and publicVariable to clients
-			// publicVariable "REV_Debug";
+			
+			/* publicVariable to clients */
+			publicVariable "REV_Debug";
+			// publicVariable "REV_Language";
+			publicVariable "REV_VAR_ReviveMode";
+			publicVariable "REV_VAR_BleedOutTime";
+			publicVariable "REV_VAR_isBulletproof";
+			publicVariable "REV_VAR_isBulletMagnet";
+			publicVariable "REV_VAR_SP_PlayableUnits";
+			publicVariable "REV_VAR_TeamKillNotifications";
+			publicVariable "REV_VAR_NumRevivesAllowed";
+			publicVariable "REV_VAR_ReviveDamage";
+			publicVariable "REV_VAR_Suicide";
+			publicVariable "REV_VAR_AllowDrag";
+			publicVariable "REV_VAR_BulletEffects";
+			// publicVariable "REV_VAR_AllowCarry";
+			// publicVariable "REV_VAR_Spectate";
+			publicVariable "REV_VAR_Show_Player_Marker";
 		} else {
 			// if client, clean up client side game logics as they will transfer to servers on client disconnect
 			// deleteVehicle _logic;
@@ -99,7 +115,7 @@ switch(_operation) do {
 		call ALIVE_fnc_reviveScript;
 	};
 	case "destroy": {
-		if ((isServer) and (!isDedicated)) then {
+		if (isServer) then {
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];

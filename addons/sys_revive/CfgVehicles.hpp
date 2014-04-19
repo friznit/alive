@@ -96,9 +96,9 @@ class CfgVehicles {
 					};
 				};
 			};
-			class rev_neutral_setting {
-				displayName = "$STR_ALIVE_NEUTRAL";
-				description = "$STR_ALIVE_NEUTRAL_COMMENT";
+			class rev_bulletmagenet_setting {
+				displayName = "$STR_ALIVE_MAGNET";
+				description = "$STR_ALIVE_MAGNET_COMMENT";
 				class Values {
 					class No {
 						name = "No";

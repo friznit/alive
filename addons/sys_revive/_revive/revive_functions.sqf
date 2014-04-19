@@ -76,7 +76,7 @@ REV_FNC_HandleDamage_EH = {
 	Make the player unconscious
 ------------------------------------------------------------------- */
 REV_FNC_Player_Unconscious = {
-	private["_unit", "_killer"];
+	private["_unit", "_killer","_reviveDamage"];
 	_unit = _this select 0;
 	_killer = _this select 1;
 
@@ -165,7 +165,7 @@ REV_FNC_Player_Unconscious = {
 	};
 	
 	/* makes the unit targetable or not targetable by the enemy - Bullet Magnet */
-	if (REV_VAR_isNeutral) then {
+	if (REV_VAR_isBulletMagnet) then {
 		_unit setCaptive false;
 	} else {
 		_unit setCaptive true;
@@ -232,8 +232,15 @@ REV_FNC_Player_Unconscious = {
 			_unit setVariable ["REV_VAR_isStabilized", 0, true];
 			sleep 6;
 			hintSilent "";
+			
+			/* sets damage after being revived or stabilized */
 			if (REV_VAR_ReviveDamage) then {
-				_unit setDamage 0.33;
+				if (damage _unit > 0.35) then {
+					_reviveDamage = 0.33;
+				} else {
+					_reviveDamage = (damage _unit);
+				};
+				_unit setDamage _reviveDamage;
 			} else {
 				_unit setDamage 0;
 			};

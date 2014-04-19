@@ -28,10 +28,10 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 // REV_VAR_BleedOutTime = 300;
 
 /* Allows units to still take damage when unconcious and during revive - true = invincible, false = bullet magnet */
-// REV_VAR_isBulletproof = true;
+// REV_VAR_isBulletproof = false;
 
 /* Sets an injured unit to a captive state so the enemy will ignore and not fire on the injured unit */
-// REV_VAR_isNeutral = false;
+// REV_VAR_isBulletMagnet = true;
 
 /* Makes playable units revivable both in SP and MP modes */
 // REV_VAR_SP_PlayableUnits = true;
@@ -132,6 +132,8 @@ REV_FNC_Player_Init = {
 				deleteVehicle _body;
 				[player] call REV_FNC_DeleteMarker;
 				terminate REV_Unconscious_Effect;
+				ppEffectDestroy REV_Video_Blurr_Effect;
+				ppEffectDestroy REV_Video_Color_Effect;
 			};
 		}
 	];
@@ -147,6 +149,9 @@ REV_FNC_Player_Init = {
 	REV_VAR_isCarrying = false;
 	REV_VAR_isCarrying_EH = [];
 	REV_VAR_DeathMsg = [];
+	REV_Unconscious_Effect = nil;
+	REV_Video_Blurr_Effect = nil;
+	REV_Video_Color_Effect = nil;
 	
 	/* fixes an issue with a sticky key(s) when respawned */
 	disableUserInput false;
