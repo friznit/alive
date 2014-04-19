@@ -1,35 +1,23 @@
-/*%FSM<COMPILE "G:\Program Files (x86)\Poseidon-SQF-Editor\Poseidon\Data\Packages\BIS_Arma\bin\fsmEditor\scriptedFSM.cfg, fnc_perfMonitor">*/
+/*%FSM<COMPILE "scriptedFSM.cfg, fnc_perfMonitor">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"wait",2,250,-75.000000,-350.000000,25.000000,-300.000000,0.000000,"wait"};
-item1[] = {"fps",4,218,50.000000,-350.000000,150.000000,-300.000000,0.000000,"fps"};
+item1[] = {"monitor",4,4314,50.000000,-350.000000,150.000000,-300.000000,0.000000,"monitor"};
 item2[] = {"init",0,250,-75.000000,-500.000000,25.000000,-450.000000,0.000000,"init"};
 item3[] = {"first",4,218,-75.000000,-425.000000,25.000000,-375.000000,0.000000,"first"};
-item4[] = {"units",4,218,-75.000000,-275.000000,25.000000,-225.000000,2.000000,"units"};
-item5[] = {"profiles",4,218,-200.000000,-350.000000,-100.000000,-300.000000,4.000000,"profiles"};
-item6[] = {"finit",1,250,-75.000000,-650.000000,25.000000,-600.000000,0.000000,"finit"};
-item7[] = {"already",4,218,-75.000000,-575.000000,25.000000,-525.000000,1.000000,"already"};
-item8[] = {"cps",4,218,50.000000,-275.000000,150.000000,-225.000000,1.000000,"cps"};
-item9[] = {"objects",4,218,-200.000000,-275.000000,-100.000000,-225.000000,3.000000,"objects"};
-item10[] = {"abort",4,4314,100.000000,-500.000000,200.000000,-450.000000,5.000000,"abort"};
+item4[] = {"finit",1,250,-75.000000,-650.000000,25.000000,-600.000000,0.000000,"finit"};
+item5[] = {"already",4,218,-75.000000,-575.000000,25.000000,-525.000000,1.000000,"already"};
+item6[] = {"abort",4,218,100.000000,-500.000000,200.000000,-450.000000,5.000000,"abort"};
 link0[] = {0,1};
-link1[] = {0,4};
-link2[] = {0,5};
-link3[] = {0,8};
-link4[] = {0,9};
-link5[] = {0,10};
-link6[] = {1,0};
-link7[] = {2,3};
-link8[] = {2,7};
-link9[] = {3,0};
-link10[] = {4,0};
-link11[] = {5,0};
-link12[] = {7,6};
-link13[] = {8,0};
-link14[] = {9,0};
-link15[] = {10,6};
+link1[] = {0,6};
+link2[] = {1,0};
+link3[] = {2,3};
+link4[] = {2,5};
+link5[] = {3,0};
+link6[] = {5,4};
+link7[] = {6,4};
 globals[] = {25.000000,1,0,0,0,640,480,1,20,6316128,1,-275.000000,250.000000,-140.000000,-735.000000,861,951,1};
-window[] = {2,-1,-1,-1,-1,916,150,1172,150,3,879};
+window[] = {2,-1,-1,-32000,-32000,866,100,1122,100,3,879};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -55,120 +43,56 @@ class FSM
           action=/*%FSM<ACTION""">*/"diag_log format[ ""perfMonitor.fsm is aborting. Abort :%1"", _abort] ;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "profiles">*/
-        class profiles
-        {
-          priority = 4.000000;
-          to="wait";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(diag_tickTime >= _NextPro && !(isnil ""Alive_ProfileHandler""))"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"private [""_active"",""_inactive"",""_unitCount"",""_activeCount"",""_inactiveCount"",""_unitCount"",""_vehicleCount""];" \n
-           "" \n
-           "if !(isnil ""Alive_ProfileHandler"") then {" \n
-           "_active = [ALIVE_profileHandler, ""getActiveEntities""] call ALIVE_fnc_profileHandler;" \n
-           " _activeCount = count _active;" \n
-           " " \n
-           "// not spawned" \n
-           "_inactive = [ALIVE_profileHandler, ""getInActiveEntities""] call ALIVE_fnc_profileHandler;" \n
-           "_inactiveCount = count _inactive;" \n
-           "" \n
-           "  // individual units" \n
-           " _unitCount = [ALIVE_profileHandler, ""getUnitCount""] call ALIVE_fnc_profileHandler;" \n
-           "" \n
-           "  // vehicles" \n
-           "   _vehicleCount = [ALIVE_profileHandler, ""getVehicleCount""] call ALIVE_fnc_profileHandler;" \n
-           " " \n
-           "_data = [ [""Type"", ""Profiles""],  [""Active"", _activeCount],  [""Inactive"", _inactiveCount], [""Units"", _unitCount], [""Vehicles"", _vehicleCount]];" \n
-           "					" \n
-           "// Send data to server to be written to DB" \n
-           "ALIVE_SYS_PERF_UPDATE_PERF = _data;" \n
-           "publicVariableServer ""ALIVE_SYS_PERF_UPDATE_PERF"";" \n
-           "};" \n
-           "_NextPro         = diag_TickTime + _INTERVAL_PRO;" \n
-           "" \n
-           "diag_log (""perfMonitor.fsm profile message sent"");"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "objects">*/
-        class objects
-        {
-          priority = 3.000000;
-          to="wait";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(diag_tickTime >= _NextObj)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"if (_countObjects) then {" \n
-           "        _MissObj = count allMissionObjects ""All"";" \n
-           "	_data = [ [""Type"", ""Objects""],  [""Objects"", _MissObj] ];" \n
-           "					" \n
-           "	// Send data to server to be written to DB" \n
-           "	ALIVE_SYS_PERF_UPDATE_PERF = _data;" \n
-           "	publicVariableServer ""ALIVE_SYS_PERF_UPDATE_PERF"";" \n
-           "};" \n
-           "" \n
-           "_NextObj         = diag_TickTime + _INTERVAL_OBJ;" \n
-           "" \n
-           "diag_log (""perfMonitor.fsm obj message sent"");"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "units">*/
-        class units
-        {
-          priority = 2.000000;
-          to="wait";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(diag_tickTime >= _NextUni)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_units = allUnits;" \n
-           "" \n
-           "_Players = {(alive _x)&&(isPlayer _x)} count _units;" \n
-           "_locAIs = {(alive _x)&&(local _x)} count _units;" \n
-           "_remAIs = ({alive _x} count _units) - _Players - _locAIs;" \n
-           "" \n
-           "_data = [ [""Type"", ""Units""], [""PLAYERS"", _Players],[""LOCAI"",_locAIs] , [""REMAI"",_remAIs ]];" \n
-           "					" \n
-           "// Send data to server to be written to DB" \n
-           "ALIVE_SYS_PERF_UPDATE_PERF = _data;" \n
-           "publicVariableServer ""ALIVE_SYS_PERF_UPDATE_PERF"";" \n
-           "" \n
-           "_NextUni         = diag_TickTime + _INTERVAL_UNI;" \n
-           "" \n
-           "diag_log (""perfMonitor.fsm units message sent"");"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "cps">*/
-        class cps
-        {
-          priority = 1.000000;
-          to="wait";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(diag_tickTime >= _NextCPS)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_data = [ [""Type"", ""CPS""],  [""CPS"",_c] ];" \n
-           "					" \n
-           "// Send data to server to be written to DB" \n
-           "ALIVE_SYS_PERF_UPDATE_PERF = _data;" \n
-           "publicVariableServer ""ALIVE_SYS_PERF_UPDATE_PERF"";" \n
-           "" \n
-           "_NextCPS = diag_TickTime + _INTERVAL_CPS;" \n
-           "_c = 0;" \n
-           "" \n
-           "diag_log (""perfMonitor.fsm cps message sent"");"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "fps">*/
-        class fps
+        /*%FSM<LINK "monitor">*/
+        class monitor
         {
           priority = 0.000000;
           to="wait";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(diag_tickTime >= _NextFPS)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_data = [ [""Type"", ""FPS""],  [""FPS"",round (diag_fps*1000)] , [""FPSMIN"", round (diag_fpsmin*1000)] ];" \n
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime >= _Next)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"// FPS & CPS" \n
+           "_data = [ [""Type"",""Data""],[""FPS"",round (diag_fps*1000)] , [""FPSMIN"", round (diag_fpsmin*1000)],  [""CPS"",(_c/_INTERVAL)] ];" \n
            "" \n
-           "diag_log (""perfMonitor.fsm fps message sent"");" \n
+           "// Units" \n
+           "_units = allUnits;" \n
+           "_Players = {(alive _x)&&(isPlayer _x)} count _units;" \n
+           "_locAIs = {(alive _x)&&(local _x)} count _units;" \n
+           "_remAIs = ({alive _x} count _units) - _Players - _locAIs;" \n
+           "_data = _data + [ [""PLAYERS"", _Players],[""LOCAI"",_locAIs] , [""REMAI"",_remAIs ]];" \n
+           "" \n
+           "//Objects" \n
+           "if (_countObjects) then {" \n
+           "        _MissObj = count allMissionObjects ""All"";" \n
+           "	_data = _data + [ [""Objects"", _MissObj] ];" \n
+           "};" \n
+           "" \n
+           "// Profiles" \n
+           "if !(isnil ""Alive_ProfileHandler"") then {" \n
+           "	private [""_active"",""_inactive"",""_unitCount"",""_activeCount"",""_inactiveCount"",""_unitCount"",""_vehicleCount""];" \n
+           "	_active = [ALIVE_profileHandler, ""getActiveEntities""] call ALIVE_fnc_profileHandler;" \n
+           "	 _activeCount = count _active;" \n
+           " " \n
+           "	// not spawned" \n
+           "	_inactive = [ALIVE_profileHandler, ""getInActiveEntities""] call ALIVE_fnc_profileHandler;" \n
+           "	_inactiveCount = count _inactive;" \n
+           "" \n
+           "	  // individual units" \n
+           "	 _unitCount = [ALIVE_profileHandler, ""getUnitCount""] call ALIVE_fnc_profileHandler;" \n
+           "" \n
+           "	  // vehicles" \n
+           "	   _vehicleCount = [ALIVE_profileHandler, ""getVehicleCount""] call ALIVE_fnc_profileHandler;" \n
+           " " \n
+           "	 _data = _data +  [ [""Active"", _activeCount],  [""Inactive"", _inactiveCount], [""Units"", _unitCount], [""Vehicles"", _vehicleCount]];" \n
+           "};" \n
+           "" \n
+           "diag_log format[""perfMonitor.fsm message sent: %1"", _data];" \n
            "					" \n
            "// Send data to server to be written to DB" \n
            "ALIVE_SYS_PERF_UPDATE_PERF = _data;" \n
            "publicVariableServer ""ALIVE_SYS_PERF_UPDATE_PERF"";" \n
            "" \n
-           "_NextFPS = diag_TickTime + _INTERVAL_FPS;"/*%FSM</ACTION""">*/;
+           "_Next = diag_TickTime + _INTERVAL;" \n
+           "_c = 0;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -187,7 +111,6 @@ class FSM
        "// options for ASM" \n
        "_options = [];" \n
        "_abort = false;" \n
-       "_server = [] call ALIVE_fnc_getServerName;" \n
        "" \n
        "// count Objects or not" \n
        "_countObjects = true;" \n
@@ -203,18 +126,9 @@ class FSM
        "_profiles = 0; // Number of virtual profiles" \n
        "" \n
        "// define the minimal time interval in seconds" \n
-       "_INTERVAL_FPS = 60;" \n
-       "_INTERVAL_CPS = 120;" \n
-       "_INTERVAL_UNI = 180;" \n
-       "_INTERVAL_PRO = 240;" \n
-       "_INTERVAL_OBJ = 300;" \n
+       "_INTERVAL = 60;" \n
        "" \n
-       "_NextFPS = diag_TickTime;" \n
-       "_NextCPS = diag_TickTime + 2;" \n
-       "_NextUni         = diag_TickTime;" \n
-       "_NextMiss         = diag_TickTime;" \n
-       "_NextObj         = diag_TickTime;" \n
-       "_NextPro = diag_TickTime;" \n
+       "_Next = diag_TickTime;" \n
        "" \n
        "_units =[];" \n
        "" \n
