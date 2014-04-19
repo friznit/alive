@@ -52,14 +52,17 @@ _instances = (ALiVE_CQB getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
 
 {[_x,"active",false] call ALiVE_fnc_CQB} foreach _instances;
 {
-	private ["_state","_logic","_CQB_instance"];
+	private ["_state","_logic"];
 	_logic  = _x;
-
+	_state = [_logic,"state"] call ALiVE_fnc_CQB;
+	
 	["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dumpMPH;
-    {[_logic,"state",_x] call ALiVE_fnc_CQB} foreach (_data select 2);
-
-	([_logic,"state"] call ALiVE_fnc_CQB) call ALIVE_fnc_inspectHash;
-} foreach _instances;
+	[_state,"houses",_data] call ALiVE_fnc_HashSet;
+	
+	_state call ALIVE_fnc_inspectHash;
+	
+	[_logic,"state",_state] call ALiVE_fnc_CQB;
+} foreach (ALiVE_CQB getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
 {[_x,"active",true] call ALiVE_fnc_CQB} foreach _instances;
 
 [false, "ALiVE CQB persistence load data completed and applied","cqbper"] call ALIVE_fnc_timer;

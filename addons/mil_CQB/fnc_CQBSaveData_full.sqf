@@ -43,13 +43,14 @@ _values = [];
 _data = [] call ALiVE_fnc_HashCreate;
 {
 	_state = [_x,"state"] call ALiVE_fnc_CQB;
-    _type = [_state,"instancetype"] call AliVE_fnc_HashGet;
-    _id = format["CQB_%1_%2",_type,_foreachIndex];
-    
-    [_state,"houses"] call ALiVE_fnc_HashRem;
+	_houses = [_state,"houses"] call ALiVE_fnc_HashGet;
 
-	[_data,_id,_state] call ALiVE_fnc_HashSet;
-} foreach (MOD(CQB) getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
+	_keys = _keys + (_houses select 1);
+	_values = _values + (_houses select 2);
+	
+	_data set [1,_keys];
+	_data set [2,_values];
+} foreach (ALiVE_CQB getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
 
 ["ALiVE SAVE CQB DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 

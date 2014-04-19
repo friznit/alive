@@ -64,7 +64,7 @@ for "_j" from 1 to _intensity do {
                             
                             _convoyLocs = _this;
                             _roadRadius = 500;
-                        
+
 	                        waituntil {
 	                            private ["_quit","_road","_list"];
 	                            
@@ -86,6 +86,8 @@ for "_j" from 1 to _intensity do {
 	                        _convoyLocs = _convoyLocs - [_loc];
                             _pos;
                         };
+                        
+                        if !((typeName _convoyLocs) == "ARRAY" && (count _convoyLocs > 3)) exitwith {["ALiVE MIL CONVOYS No convoy locationss found for faction %1! Exiting!",_factionsConvoy] call ALiVE_fnc_Dump;};
                         
                         _startpos = _convoyLocs call _fncSelectPos;
                         _destpos = _convoyLocs call _fncSelectPos;
