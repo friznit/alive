@@ -17,7 +17,7 @@ class CfgSounds {
 	sounds[] = {Vent,Para,REV_Heartbeat};
 	class REV_Heartbeat {
 		name = "REV_Wounded_Heartbeat";
-		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\HEARTBEAT.ogg",db-11,1};
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\HEARTBEAT.ogg",db-5,1};
 		titles[] = {};
 	};
 };

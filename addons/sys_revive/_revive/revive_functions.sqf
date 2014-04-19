@@ -1,3 +1,4 @@
+if ((isDedicated) && (isDedicated)) exitWith {};
 /* -------------------------------------------------------------------
 	Create player actions
 ------------------------------------------------------------------- */
@@ -142,8 +143,8 @@ REV_FNC_Player_Unconscious = {
 	};
 	
 	// _unit setDamage 0.85;
-	// sets the amount of damage of the unit, amount will vary based on severity of injury.
-	_unit setDamage (AmountDamage/2.5);
+	/* sets the amount of damage of the unit, amount will vary based on severity of injury. */
+	_unit setDamage (AmountDamage/2.87);
     _unit setVelocity [0,0,0];
 	_unit setCaptive true;
 	
@@ -155,8 +156,20 @@ REV_FNC_Player_Unconscious = {
 	_unit switchMove "AinjPpneMstpSnonWrflDnon";
 	_unit enableSimulation false;
 	// sleep 5;
-	_unit allowDamage REV_VAR_isBulletproof;
-	_unit setCaptive REV_VAR_isNeutral;
+
+	/* makes the unit take or not take damage when unconscious - Body Armor */
+	if (REV_VAR_isBulletproof) then {
+		_unit allowDamage false;
+	} else {
+		_unit allowDamage true;
+	};
+	
+	/* makes the unit targetable or not targetable by the enemy - Bullet Magnet */
+	if (REV_VAR_isNeutral) then {
+		_unit setCaptive false;
+	} else {
+		_unit setCaptive true;
+	};
 	
 	if (isPlayer _unit) then {
 		titleText ["", "BLACK IN", 0];
@@ -167,9 +180,9 @@ REV_FNC_Player_Unconscious = {
 		while {!isNull _unit && alive _unit && _unit getVariable "REV_VAR_isUnconscious" == 1 && _unit getVariable "REV_VAR_isStabilized" == 1 && (REV_VAR_BleedOutTime <= 0 || time < _bleedOut)} do {
 			
 			if (damage player >= 0.6) then {
-				[format["Bleeding out in roughly %1 seconds", round (_bleedOut - time), name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+				[format["%2, you are bleeding out and will die in %1 seconds", round (_bleedOut - time), name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
 			} else {
-				[format["%1, you have been knocked unconscious...",name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+				[format["%1, you are incapacitated...",name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
 				sleep 3;
 			};
 			
@@ -185,13 +198,17 @@ REV_FNC_Player_Unconscious = {
 		/* Unit has been stabilized */
 		if (_unit getVariable "REV_VAR_isStabilized" == 0) then {
 			while { !isNull _unit && alive _unit && _unit getVariable "REV_VAR_isUnconscious" == 1 } do {
-				hintSilent format["You have been stabilized\n\n%1", call REV_FNC_Friends_Chk];
-				sleep 0.5;
+				[format["%1, you have been stabilized.", name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+				if (REV_Debug) then {
+					hintSilent format["You have been stabilized\n\n%1", call REV_FNC_Friends_Chk];
+					sleep 0.5;
+				};
 			};
 		};
 		
 		/* Handle player bleedout */
 		if (REV_VAR_BleedOutTime > 0 && {time > _bleedOut} && {_unit getVariable ["REV_VAR_isStabilized",0] == 1}) then {
+			[format["%1, you have died from excessive blood loss.", name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
 		
 			/* Player bled out and died; reset variable */
 			_unit setVariable ["REV_VAR_isUnconscious", 0, true];
@@ -730,7 +747,7 @@ REV_FNC_Friends_Chk = {
 			_unitName	= name _unit;
 			_distance	= floor (player distance _unit);
 			_hintMsg = format["Closest Medic:\n%1 is %2m away.", _unitName, _distance];
-			hintSilent "This is where a AI unit will come and stablilize and heal you up.";
+			hintSilent "This is where an AI unit will come and revive/stabilize you up.";
 		};
 	} else {
 		_hintMsg = "No medic nearby.";

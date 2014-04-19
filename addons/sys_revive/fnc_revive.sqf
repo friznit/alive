@@ -56,7 +56,7 @@ switch(_operation) do {
 		if (isServer && !(isNil QMOD(revive))) exitWith {
 			ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_REVIVE_ERROR1");
 		};
-		if (isServer) then {
+		if ((isServer) and (!isDedicated)) then {
 			MOD(revive) = _logic;
 			publicVariable QMOD(revive);
 
@@ -69,7 +69,7 @@ switch(_operation) do {
 			REV_VAR_ReviveMode = _logic getvariable ["rev_mode_setting",1];
 			REV_VAR_BleedOutTime = _logic getvariable ["rev_bleedout_setting",300];
 			REV_VAR_isBulletproof = call compile (_logic getvariable ["rev_bulletproof_setting","false"]);
-			REV_VAR_isNeutral = call compile (_logic getvariable ["rev_neutral_setting","false"]);
+			REV_VAR_isNeutral = call compile (_logic getvariable ["rev_neutral_setting","true"]);
 			REV_VAR_SP_PlayableUnits = call compile (_logic getvariable ["rev_playableunits_setting","true"]);
 			REV_VAR_TeamKillNotifications = call compile (_logic getvariable ["rev_notifyplayers_setting","true"]);
 			REV_VAR_NumRevivesAllowed = _logic getvariable ["rev_lives_setting",999];
@@ -99,7 +99,7 @@ switch(_operation) do {
 		call ALIVE_fnc_reviveScript;
 	};
 	case "destroy": {
-		if (isServer) then {
+		if ((isServer) and (!isDedicated)) then {
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];

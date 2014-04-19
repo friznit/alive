@@ -1,7 +1,7 @@
 ["ALIVE Wounding System Initialized..."] call ALIVE_fnc_dumpR;
 
 /* Will not initialize on a dedicated server */
-if (isDedicated) exitWith {};
+if ((isDedicated) && (isDedicated)) exitWith {};
 
 /* Compile revive functions */
 call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions.sqf";
