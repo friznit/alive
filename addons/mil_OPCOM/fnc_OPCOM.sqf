@@ -184,9 +184,7 @@ switch(_operation) do {
                     private ["_objectives"];
                     
                     if ([_handler,"persistent",false] call ALIVE_fnc_HashGet) then {
-                        ["Loading obj..."] call ALiVE_fnc_DumpR;
                     	_objectives = [_handler,"loadObjectivesDB"] call ALiVE_fnc_OPCOM;
-                        ["Loaded obj...",_objectives] call ALiVE_fnc_DumpR;
                     };
                     
                     if (!(isnil "_objectives") && {count _objectives > 0}) then {
@@ -548,10 +546,7 @@ switch(_operation) do {
                         
                         //Exit if no loaded data
                         if (((typeName (GVAR(OBJECTIVES_DB_LOAD) select 0)) == "BOOL") && {!(GVAR(OBJECTIVES_DB_LOAD) select 0)}) exitwith {};
-
-                        {
-                            ["ALiVE LOAD OPCOM DATA OBJECTIVES LOADED FROM DB: %1",_x] call ALiVE_fnc_Dump;
-                        } foreach ((GVAR(OBJECTIVES_DB_LOAD) select 0) select 2);
+                        ["ALiVE LOAD OPCOM DATA %1 OBJECTIVES LOADED FROM DB!",count ((GVAR(OBJECTIVES_DB_LOAD) select 0) select 2)] call ALiVE_fnc_Dump;
                     } else {
                         ["ALiVE LOAD OPCOM DATA FROM CACHE!"] call ALiVE_fnc_DumpMPH;
                     };
@@ -658,7 +653,7 @@ switch(_operation) do {
                     ASSERT_TRUE(typeName _args == "ARRAY",str _args);
                     ASSERT_TRUE(count _args > 2,str _args);
                     
-                    private ["_debug","_params","_id","_pos","_size","_type","_priority","_opcom_state","_clusterID","_nodes","_target","_objectives"];
+                    private ["_debug","_params","_id","_pos","_size","_type","_priority","_opcom_state","_clusterID","_nodes","_target","_objectives","_opcomID"];
 
                     _debug = [_logic, "debug",false] call ALIVE_fnc_HashGet;
                     _params = _args;
@@ -679,6 +674,7 @@ switch(_operation) do {
                     if (isnil "_opcom_state") then {_opcom_state = "unassigned"};
                     if (isnil "_clusterID") then {_clusterID = "none"};
                     if (isnil "_nodes") then {_nodes = []};
+                    if (isnil "_opcomID") then {_opcomID = [_logic,"opcomID",""] call ALiVE_fnc_HashGet};
                     
                     _target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
                     [_target, "objectiveID",_id] call ALIVE_fnc_HashSet;

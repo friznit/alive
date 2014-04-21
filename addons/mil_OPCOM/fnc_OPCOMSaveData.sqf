@@ -43,7 +43,6 @@ _result = [];
 	} foreach OPCOM_INSTANCES;
 
 [false, "ALiVE OPCOM persistence save data complete","opper"] call ALIVE_fnc_timer;
-{["ALiVE OPCOM SAVE DATA RESULT: %1",_x] call ALiVE_fnc_Dump} foreach _result;
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
 
