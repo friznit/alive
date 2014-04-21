@@ -485,20 +485,19 @@ switch(_operation) do {
 			} forEach (_logic getVariable "houses");
 			
 			[_state, "houses", _data] call ALiVE_fnc_hashSet;
-			
+
 			_args = _state;
+            _args call AliVE_fnc_InspectHash;
 		} else {
 			private["_houses","_groups","_data"];
-            
-            _args call AliVE_fnc_InspectHash;
-            
+
             //Exit if wrong dataset is provided
             _typeIn = [_args, "instancetype","in"] call ALiVE_fnc_hashGet;
             _typeOut = _logic getvariable ["instancetype","out"];
-
-            ["in %1 out %2",_typeIn,_typeOut] call ALiVE_fnc_DumpR;
             
             if !(_typeIn == _typeOut) exitwith {};
+                        
+            _args call AliVE_fnc_InspectHash;
             
 			//Restore main state
             [_logic, "id", [_args, "id"] call ALiVE_fnc_hashGet] call ALiVE_fnc_CQB;
@@ -550,6 +549,7 @@ switch(_operation) do {
 			[_logic, "houses", _data] call ALiVE_fnc_CQB;
             
             _args = [_logic,"state"] call ALiVE_fnc_CQB;
+            _args call AliVE_fnc_InspectHash;
 		};
 	};
    
