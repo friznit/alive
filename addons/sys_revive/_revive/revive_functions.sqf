@@ -3,42 +3,42 @@
 /* -------------------------------------------------------------------
 	Create player actions
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Player_Actions) = {
+GVAR(FNC_Player_Actions) = {
 	if (alive player && player isKindOf "Man") then {
-		player addAction ["<t color=""#C90000"">" + "Revive" + "</t>", { call MOD(REV_FNC_Actions)}, ["actRevive"], 10, true, true, "", "call " + QMOD(REV_FNC_Revive_Chk)];
-		player addAction ["<t color=""#C90000"">" + "Suicide" + "</t>", { call MOD(REV_FNC_Actions)}, ["actSuicide"], 9, false, true, "", "call " + QMOD(REV_FNC_Suicide_Chk)];
-		player addAction ["<t color=""#C90000"">" + "Drag" + "</t>", {call MOD(REV_FNC_Actions)}, ["actDrag"], 9, false, true, "", "call " + QMOD(REV_FNC_Dragging_Chk)];
-		// player addAction ["<t color=""#C90000"">" + "Carry" + "</t>", { call MOD(REV_FNC_Actions)}, ["actCarry"], 9, false, true, "", "call " + QMOD(REV_FNC_Carrying_Chk)];
-		player addAction ["<t color=""#C90000"">" + "Stabilize" + "</t>", { call MOD(REV_FNC_Actions)}, ["actStabilize"], 11, true, true, "", "call " + QMOD(REV_FNC_Stabilize_Chk)];
+		player addAction ["<t color=""#C90000"">" + "Revive" + "</t>", { call GVAR(FNC_Actions)}, ["actRevive"], 10, true, true, "", "call " + QGVAR(FNC_Revive_Chk)];
+		player addAction ["<t color=""#C90000"">" + "Suicide" + "</t>", { call GVAR(FNC_Actions)}, ["actSuicide"], 9, false, true, "", "call " + QGVAR(FNC_Suicide_Chk)];
+		player addAction ["<t color=""#C90000"">" + "Drag" + "</t>", {call GVAR(FNC_Actions)}, ["actDrag"], 9, false, true, "", "call " + QGVAR(FNC_Dragging_Chk)];
+		// player addAction ["<t color=""#C90000"">" + "Carry" + "</t>", { call GVAR(FNC_Actions)}, ["actCarry"], 9, false, true, "", "call " + QGVAR(FNC_Carrying_Chk)];
+		player addAction ["<t color=""#C90000"">" + "Stabilize" + "</t>", { call GVAR(FNC_Actions)}, ["actStabilize"], 11, true, true, "", "call " + QGVAR(FNC_Stabilize_Chk)];
 	};
 };
 
 /* -------------------------------------------------------------------
 	Action Execution
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Actions) = {
+GVAR(FNC_Actions) = {
 	private ["_params", "_action"];
 	_params = _this select 3;
 	_action = _params select 0;
 
 	if (_action == "actStabilize") then {
-		[cursorTarget] spawn MOD(REV_FNC_Stabilize);
+		[cursorTarget] spawn GVAR(FNC_Stabilize);
 	};
 
 	if (_action == "actRevive") then {
-		[cursorTarget] spawn MOD(REV_FNC_Revive);
+		[cursorTarget] spawn GVAR(FNC_Revive);
 	};
 
 	if (_action == "actDrag") then {
-		[cursorTarget] spawn MOD(REV_FNC_Drag);
+		[cursorTarget] spawn GVAR(FNC_Drag);
 	};
 
 	// if (_action == "actCarry") then {
-		// [cursorTarget] spawn MOD(REV_FNC_Carry);
+		// [cursorTarget] spawn GVAR(FNC_Carry);
 	// };
 
 	if (_action == "actRelease") then {
-		[] spawn MOD(REV_FNC_Release);
+		[] spawn GVAR(FNC_Release);
 	};
 
 	if (_action == "actSuicide") then {
@@ -50,7 +50,7 @@ MOD(REV_FNC_Actions) = {
 /* -------------------------------------------------------------------
 	Handle the units death
 ------------------------------------------------------------------- */
-MOD(REV_FNC_HandleDamage_EH) = {
+GVAR(FNC_HandleDamage_EH) = {
 	private ["_unit", "_killer", "_amountOfDamage", "_isUnconscious"];
 
 	// if (_this select 1 == "") then {
@@ -60,15 +60,15 @@ MOD(REV_FNC_HandleDamage_EH) = {
 	_amountOfDamage = _this select 2;
 	_finalRound = _this select 1;
 	_killer = _this select 3;
-	_isUnconscious = _unit getVariable QMOD(REV_VAR_isUnconscious);
+	_isUnconscious = _unit getVariable QGVAR(VAR_isUnconscious);
 	
 	if (alive _unit && _amountOfDamage >= 0.9 && _isUnconscious == 0) then {
 		_unit setDamage 0;
 		_unit allowDamage false;
-		MOD(FinalRound) = _finalRound;
-		MOD(AmountDamage) = round _amountOfDamage;
+		GVAR(FinalRound) = _finalRound;
+		GVAR(AmountDamage) = round _amountOfDamage;
 		_amountOfDamage = 0;
-		[_unit, _killer] spawn MOD(REV_FNC_Player_Unconscious);
+		[_unit, _killer] spawn GVAR(FNC_Player_Unconscious);
 	};
 	_amountOfDamage;
 };
@@ -76,19 +76,19 @@ MOD(REV_FNC_HandleDamage_EH) = {
 /* -------------------------------------------------------------------
 	Make the player unconscious
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Player_Unconscious) = {
+GVAR(FNC_Player_Unconscious) = {
 	private["_unit", "_killer","_reviveDamage"];
 	_unit = _this select 0;
 	_killer = _this select 1;
 
-	_unit setVariable [QMOD(REV_VAR_isUnconscious), 1, true];
-	if (MOD(REV_VAR_ReviveMode) == 1) then {
-		_unit setVariable [QMOD(REV_VAR_isStabilized), 0, true];
+	_unit setVariable [QGVAR(VAR_isUnconscious), 1, true];
+	if (GVAR(VAR_ReviveMode) == 1) then {
+		_unit setVariable [QGVAR(VAR_isStabilized), 0, true];
 	} else {
-		_unit setVariable [QMOD(REV_VAR_isStabilized), 1, true];
+		_unit setVariable [QGVAR(VAR_isStabilized), 1, true];
 	};
 	
-	[_unit] call MOD(REV_FNC_CreateMarker);
+	[_unit] call GVAR(FNC_CreateMarker);
 	
 	/* allows for a revive cam feature, 3rd person view */
 	// if (REV_VAR_Spectate) then {
@@ -96,30 +96,30 @@ MOD(REV_FNC_Player_Unconscious) = {
 	// };
 
 	/* Death message */
-	if (MOD(REV_VAR_TeamKillNotifications) && !isNil "_killer" && isPlayer _killer && _killer != _unit) then {
-		MOD(REV_VAR_DeathMsg) = [_unit, _killer];
-		publicVariable QMOD(REV_VAR_DeathMsg);
-		[QMOD(REV_VAR_DeathMsg), [_unit, _killer]] call MOD(REV_FNC_Public_EH);
+	if (GVAR(VAR_TeamKillNotifications) && !isNil "_killer" && isPlayer _killer && _killer != _unit) then {
+		GVAR(VAR_DeathMsg) = [_unit, _killer];
+		publicVariable QGVAR(VAR_DeathMsg);
+		[QGVAR(VAR_DeathMsg), [_unit, _killer]] call GVAR(FNC_Public_EH);
 	};
 	
 	if (isPlayer _unit) then {
 		10 fadeSound 0.4;
-		MOD(REV_Unconscious_Effect) = [_unit] spawn {
+		GVAR(Unconscious_Effect) = [_unit] spawn {
 			_unit = _this select 0;
 			waitUntil {
-				if (!isNull _unit && alive _unit && _unit getVariable QMOD(REV_VAR_isUnconscious) == 1 ) then { 
-					for "_i" from 1 to MOD(REV_VAR_BleedOutTime) do  {
-						MOD(REV_Video_Color_Effect) = ppEffectCreate ["colorCorrections", 1554];
-						MOD(REV_Video_Blurr_Effect) = ppEffectCreate ["dynamicBlur", 454];
+				if (!isNull _unit && alive _unit && _unit getVariable QGVAR(VAR_isUnconscious) == 1 ) then { 
+					for "_i" from 1 to GVAR(VAR_BleedOutTime) do  {
+						GVAR(Video_Color_Effect) = ppEffectCreate ["colorCorrections", 1554];
+						GVAR(Video_Blurr_Effect) = ppEffectCreate ["dynamicBlur", 454];
 
-						MOD(REV_Video_Color_Effect) ppEffectEnable true;
-						MOD(REV_Video_Blurr_Effect) ppEffectEnable true;
+						GVAR(Video_Color_Effect) ppEffectEnable true;
+						GVAR(Video_Blurr_Effect) ppEffectEnable true;
 
-						MOD(REV_Video_Color_Effect) ppEffectAdjust [1, 1, 0, [1,0,0,0.25], [1,0,0,1], [1,0,0,1]]; 
-						MOD(REV_Video_Color_Effect) ppEffectCommit 0.01;
+						GVAR(Video_Color_Effect) ppEffectAdjust [1, 1, 0, [1,0,0,0.25], [1,0,0,1], [1,0,0,1]]; 
+						GVAR(Video_Color_Effect) ppEffectCommit 0.01;
 
-						MOD(REV_Video_Blurr_Effect) ppEffectAdjust [3];
-						MOD(REV_Video_Blurr_Effect) ppEffectCommit 0.01;
+						GVAR(Video_Blurr_Effect) ppEffectAdjust [3];
+						GVAR(Video_Blurr_Effect) ppEffectCommit 0.01;
 							
 						250 cutRsc ["REV_Wounded_EyePain","PLAIN",0];
 						251 cutRsc ["REV_Wounded_BloodSplash","PLAIN",0];
@@ -129,7 +129,7 @@ MOD(REV_FNC_Player_Unconscious) = {
 						sleep 1;
 					};
 				} else {
-					if (!isNull _unit && !(alive _unit) || _unit getVariable QMOD(REV_VAR_isUnconscious) == 0) then { 
+					if (!isNull _unit && !(alive _unit) || _unit getVariable QGVAR(VAR_isUnconscious) == 0) then { 
 						true;
 					};
 				};
@@ -149,7 +149,7 @@ MOD(REV_FNC_Player_Unconscious) = {
 	
 	// _unit setDamage 0.85;
 	/* sets the amount of damage of the unit, amount will vary based on severity of injury. */
-	_unit setDamage (MOD(AmountDamage)/2.87);
+	_unit setDamage (GVAR(AmountDamage)/2.87);
     _unit setVelocity [0,0,0];
 	_unit setCaptive true;
 	
@@ -163,14 +163,14 @@ MOD(REV_FNC_Player_Unconscious) = {
 	// sleep 5;
 
 	/* makes the unit take or not take damage when unconscious - Body Armor */
-	if (MOD(REV_VAR_isBulletproof)) then {
+	if (GVAR(VAR_isBulletproof)) then {
 		_unit allowDamage false;
 	} else {
 		_unit allowDamage true;
 	};
 	
 	/* makes the unit targetable or not targetable by the enemy - Bullet Magnet */
-	if (MOD(REV_VAR_isBulletMagnet)) then {
+	if (GVAR(VAR_isBulletMagnet)) then {
 		_unit setCaptive false;
 	} else {
 		_unit setCaptive true;
@@ -180,9 +180,9 @@ MOD(REV_FNC_Player_Unconscious) = {
 		titleText ["", "BLACK IN", 0];
 		disableUserInput false;
 
-		_bleedOut = time + MOD(REV_VAR_BleedOutTime);
+		_bleedOut = time + GVAR(VAR_BleedOutTime);
 		
-		while {!isNull _unit && alive _unit && _unit getVariable QMOD(REV_VAR_isUnconscious) == 1 && _unit getVariable QMOD(REV_VAR_isStabilized) == 1 && (MOD(REV_VAR_BleedOutTime) <= 0 || time < _bleedOut)} do {
+		while {!isNull _unit && alive _unit && _unit getVariable QGVAR(VAR_isUnconscious) == 1 && _unit getVariable QGVAR(VAR_isStabilized) == 1 && (GVAR(VAR_BleedOutTime) <= 0 || time < _bleedOut)} do {
 			
 			if (damage player >= 0.6) then {
 				[format["%2, you are bleeding out and will die in %1 seconds", round (_bleedOut - time), name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
@@ -192,8 +192,8 @@ MOD(REV_FNC_Player_Unconscious) = {
 			};
 			
 			/* debug */
-			if (MOD(REV_Debug)) then {
-				hintSilent format["Bleedout in %1 seconds\n\n%2\n\nBleedout rate: %3\n\nRegen Rate: %4\n\nPlayer Damage: %5\n\nDamage Amount: %6", round (_bleedOut - time), call MOD(REV_FNC_Friends_Chk), MOD(playerBleedRate),MOD(playerRegenRate),MOD(playerDamage),MOD(AmountDamage)];
+			if (GVAR(Debug)) then {
+				hintSilent format["Bleedout in %1 seconds\n\n%2\n\nBleedout rate: %3\n\nRegen Rate: %4\n\nPlayer Damage: %5\n\nDamage Amount: %6", round (_bleedOut - time), call GVAR(FNC_Friends_Chk), GVAR(playerBleedRate),GVAR(playerRegenRate),GVAR(playerDamage),GVAR(AmountDamage)];
 			};
 			/* end of debug */
 			
@@ -201,30 +201,30 @@ MOD(REV_FNC_Player_Unconscious) = {
 		};
 		
 		/* Unit has been stabilized */
-		if (_unit getVariable QMOD(REV_VAR_isStabilized) == 0) then {
-			while { !isNull _unit && alive _unit && _unit getVariable QMOD(REV_VAR_isUnconscious) == 1 } do {
+		if (_unit getVariable QGVAR(VAR_isStabilized) == 0) then {
+			while { !isNull _unit && alive _unit && _unit getVariable QGVAR(VAR_isUnconscious) == 1 } do {
 				[format["%1, you have been stabilized.", name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
-				if (MOD(REV_Debug)) then {
-					hintSilent format["You have been stabilized\n\n%1", call MOD(REV_FNC_Friends_Chk)];
+				if (GVAR(Debug)) then {
+					hintSilent format["You have been stabilized\n\n%1", call GVAR(FNC_Friends_Chk)];
 					sleep 0.5;
 				};
 			};
 		};
 		
 		/* Handle player bleedout */
-		if (MOD(REV_VAR_BleedOutTime) > 0 && {time > _bleedOut} && {_unit getVariable [QMOD(REV_VAR_isStabilized),0] == 1}) then {
+		if (GVAR(VAR_BleedOutTime) > 0 && {time > _bleedOut} && {_unit getVariable [QGVAR(VAR_isStabilized),0] == 1}) then {
 			[format["%1, you have died from excessive blood loss.", name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
 		
 			/* Player bled out and died; reset variable */
-			_unit setVariable [QMOD(REV_VAR_isUnconscious), 0, true];
+			_unit setVariable [QGVAR(VAR_isUnconscious), 0, true];
 			_unit setDamage 1;
 
 			/* Back to normal, remove effects */
 			if (_unit == player) then {
 				5 fadeSound 1;
-				terminate MOD(REV_Unconscious_Effect);
-				ppEffectDestroy MOD(REV_Video_Blurr_Effect);
-				ppEffectDestroy MOD(REV_Video_Color_Effect);
+				terminate GVAR(Unconscious_Effect);
+				ppEffectDestroy GVAR(Video_Blurr_Effect);
+				ppEffectDestroy GVAR(Video_Color_Effect);
 			};
 			
 			/* Closes any dialog that could be open during revive process */
@@ -234,12 +234,12 @@ MOD(REV_FNC_Player_Unconscious) = {
 		} else {
 		
 			/* Player was revived/stabilized */
-			_unit setVariable [QMOD(REV_VAR_isStabilized), 0, true];
+			_unit setVariable [QGVAR(VAR_isStabilized), 0, true];
 			sleep 6;
 			hintSilent "";
 			
 			/* sets damage after being revived or stabilized */
-			if (MOD(REV_VAR_ReviveDamage)) then {
+			if (GVAR(VAR_ReviveDamage)) then {
 				if (damage _unit > 0.35) then {
 					_reviveDamage = 0.33;
 				} else {
@@ -259,9 +259,9 @@ MOD(REV_FNC_Player_Unconscious) = {
 			/* Back to normal, remove effects */
 			if (_unit == player) then {
 				5 fadeSound 1;
-				terminate MOD(REV_Unconscious_Effect);
-				ppEffectDestroy MOD(REV_Video_Blurr_Effect);
-				ppEffectDestroy MOD(REV_Video_Color_Effect);
+				terminate GVAR(Unconscious_Effect);
+				ppEffectDestroy GVAR(Video_Blurr_Effect);
+				ppEffectDestroy GVAR(Video_Color_Effect);
 			};
 			
 			/* Closes any dialog that could be open during revive process */
@@ -275,24 +275,24 @@ MOD(REV_FNC_Player_Unconscious) = {
 	} else {
 	
 		/* Handle AI bleedout */
-		_bleedOut = time + MOD(REV_VAR_BleedOutTime);
+		_bleedOut = time + GVAR(VAR_BleedOutTime);
 		
-		while {!isNull _unit && alive _unit && _unit getVariable QMOD(REV_VAR_isUnconscious) == 1 && _unit getVariable QMOD(REV_VAR_isStabilized) == 1 && (MOD(REV_VAR_BleedOutTime) <= 0 || time < _bleedOut)} do {
+		while {!isNull _unit && alive _unit && _unit getVariable QGVAR(VAR_isUnconscious) == 1 && _unit getVariable QGVAR(VAR_isStabilized) == 1 && (GVAR(VAR_BleedOutTime) <= 0 || time < _bleedOut)} do {
 			sleep 0.5;
 		};
 		
-		if (_unit getVariable QMOD(REV_VAR_isStabilized) == 0) then {			
-			while { !isNull _unit && alive _unit && _unit getVariable QMOD(REV_VAR_isUnconscious) == 1 } do {
+		if (_unit getVariable QGVAR(VAR_isStabilized) == 0) then {			
+			while { !isNull _unit && alive _unit && _unit getVariable QGVAR(VAR_isUnconscious) == 1 } do {
 				sleep 0.5;
 			};
 		};
 		
 		/* AI has bled out, kill the AI unit, and reset */
-		if (MOD(REV_VAR_BleedOutTime) > 0 && {time > _bleedOut} && {_unit getVariable [QMOD(REV_VAR_isStabilized),0] == 1}) then {
-			_unit setVariable [QMOD(REV_VAR_isUnconscious), 0, true];
-			_unit setVariable [QMOD(REV_VAR_isStabilized), 0, true];
-			_unit setVariable [QMOD(REV_VAR_isDragged), 0, true];
-			_unit setVariable [QMOD(REV_VAR_isCarried), 0, true];
+		if (GVAR(VAR_BleedOutTime) > 0 && {time > _bleedOut} && {_unit getVariable [QGVAR(VAR_isStabilized),0] == 1}) then {
+			_unit setVariable [QGVAR(VAR_isUnconscious), 0, true];
+			_unit setVariable [QGVAR(VAR_isStabilized), 0, true];
+			_unit setVariable [QGVAR(VAR_isDragged), 0, true];
+			_unit setVariable [QGVAR(VAR_isCarried), 0, true];
 			_unit setDamage 1;
 		};
 	};
@@ -301,7 +301,7 @@ MOD(REV_FNC_Player_Unconscious) = {
 /* -------------------------------------------------------------------
 	Player Revive
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Revive) = {
+GVAR(FNC_Revive) = {
 	private ["_target"];
 	_target = _this select 0;
 	
@@ -324,14 +324,14 @@ MOD(REV_FNC_Revive) = {
 				detach _target;
 				
 				/* reset variables */
-				_target setVariable [QMOD(REV_VAR_isUnconscious), 0, true];
-				_target setVariable [QMOD(REV_VAR_isDragged), 0, true];
-				_target setVariable [QMOD(REV_VAR_isCarried), 0, true];
-				MOD(REV_VAR_BleedOutRate) = nil;
+				_target setVariable [QGVAR(VAR_isUnconscious), 0, true];
+				_target setVariable [QGVAR(VAR_isDragged), 0, true];
+				_target setVariable [QGVAR(VAR_isCarried), 0, true];
+				GVAR(VAR_BleedOutRate) = nil;
 				sleep 3;
 				
 				/* remove map marker */
-				[_target] call MOD(REV_FNC_DeleteMarker);
+				[_target] call GVAR(FNC_DeleteMarker);
 				
 				/* Select primary of the weapon after being revived */
 				sleep 0.2;
@@ -339,7 +339,7 @@ MOD(REV_FNC_Revive) = {
 		
 				/* AI revive code */
 				if (!isPlayer _target) then {
-					if (MOD(REV_VAR_ReviveDamage)) then {
+					if (GVAR(VAR_ReviveDamage)) then {
 						_target setDamage 0.33;
 					} else {
 						_target setDamage 0;
@@ -366,7 +366,7 @@ MOD(REV_FNC_Revive) = {
 /* -------------------------------------------------------------------
 	Stabilize Player
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Stabilize) = {
+GVAR(FNC_Stabilize) = {
 	private ["_target"];
 	_target = _this select 0;
 
@@ -396,7 +396,7 @@ MOD(REV_FNC_Stabilize) = {
 				};
 				
 				/* set varibale for stabilized state */
-				_target setVariable [QMOD(REV_VAR_isStabilized), 0, true];
+				_target setVariable [QGVAR(VAR_isStabilized), 0, true];
 				
 				/* set level of damage to half */
 				_target setDamage 0.33;
@@ -420,27 +420,27 @@ MOD(REV_FNC_Stabilize) = {
 /* -------------------------------------------------------------------
 	Drag injured player
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Drag) = {
+GVAR(FNC_Drag) = {
 	private ["_target", "_id","_player","_aniProne"];
 
 	_player = player;
 	_target = _this select 0;
 	_aniProne = ["amovppnemstpsraswrfldnon","amovppnemrunslowwrfldf","amovppnemsprslowwrfldfl","amovppnemsprslowwrfldfr","amovppnemrunslowwrfldb","amovppnemsprslowwrfldbl","amovppnemsprslowwrfldr","amovppnemstpsraswrfldnon_turnl","amovppnemstpsraswrfldnon_turnr","amovppnemrunslowwrfldl","amovppnemrunslowwrfldr","amovppnemsprslowwrfldb","amovppnemrunslowwrfldbl","amovppnemsprslowwrfldl","amovppnemsprslowwrfldbr"];
 	
-	MOD(REV_VAR_isDragging) = true;
+	GVAR(VAR_isDragging) = true;
 
 	/* Clear the hint message */
 	hintSilent "";
 	
 	/* Add release action and save its id so it can be removed */
-	_id = _player addAction ["<t color=""#C90000"">" + "Release" + "</t>", {call MOD(REV_FNC_Actions)}, ["actRelease"], 10, true, true, "", "true"];
+	_id = _player addAction ["<t color=""#C90000"">" + "Release" + "</t>", {call GVAR(FNC_Actions)}, ["actRelease"], 10, true, true, "", "true"];
 
 	if (animationState _player in _aniProne) then {
 		
 		/* Drag while prone */
 		_target attachTo [_player, [0, 1.5, 0.092]];
 		_target setDir 180;
-		_target setVariable [QMOD(REV_VAR_isDragged), 1, true];
+		_target setVariable [QGVAR(VAR_isDragged), 1, true];
 		_target switchMove "AinjPpneMstpSnonWrflDnon";
 		_target disableAI "Move";
 	} else {
@@ -448,7 +448,7 @@ MOD(REV_FNC_Drag) = {
 		/* Drag while crouched */
 		_target attachTo [_player, [0, 1.1, 0.092]];
 		_target setDir 180;
-		_target setVariable [QMOD(REV_VAR_isDragged), 1, true];
+		_target setVariable [QGVAR(VAR_isDragged), 1, true];
 		_target switchMove "AinjPpneMstpSnonWrflDb";
 		_target disableAI "Move";
 		_player playMoveNow "AcinPknlMstpSrasWrflDnon";
@@ -457,12 +457,12 @@ MOD(REV_FNC_Drag) = {
 	};
 
 	// Waiting for an event terminating the action of dragging
-	while {(MOD(REV_VAR_isDragging)) && (!isNull _player) && (alive _player) && (!isNull _target) && (alive _target)} do {
+	while {(GVAR(VAR_isDragging)) && (!isNull _player) && (alive _player) && (!isNull _target) && (alive _target)} do {
 		if !(animationState _player == "AcinPknlMwlkSrasWrflDb" || animationState _player == "AcinPknlMstpSrasWrflDnon" || animationState _player in _aniProne) then {
 			_target switchMove "AinjPpneMstpSnonWrflDnon";
 			_player removeAction _id;
 			detach _target;
-			MOD(REV_VAR_isDragging) = false;
+			GVAR(VAR_isDragging) = false;
 		};
 		sleep .5;
 	};
@@ -470,25 +470,25 @@ MOD(REV_FNC_Drag) = {
 	hint "I let go!";
 	
 	/* Rotation fix */
-	MOD(REV_VAR_isDragging_EH) = _target;
-	publicVariable QMOD(REV_VAR_isDragging_EH);
+	GVAR(VAR_isDragging_EH) = _target;
+	publicVariable QGVAR(VAR_isDragging_EH);
 	
 	waitUntil {
 		sleep .25;
-		!alive _player || _player getVariable QMOD(REV_VAR_isUnconscious) == 1 || !alive _target || _target getVariable QMOD(REV_VAR_isUnconscious) == 0 || !MOD(REV_VAR_isDragging) || _target getVariable QMOD(REV_VAR_isDragged) == 0
+		!alive _player || _player getVariable QGVAR(VAR_isUnconscious) == 1 || !alive _target || _target getVariable QGVAR(VAR_isUnconscious) == 0 || !GVAR(VAR_isDragging) || _target getVariable QGVAR(VAR_isDragged) == 0
 	};
 
 	/* Handle release action */
-	MOD(REV_VAR_isDragging) = false;
+	GVAR(VAR_isDragging) = false;
 	
 	if (animationState _player in _aniProne) then {
 		if (!isNull _target && alive _target) then {
-			_target setVariable [QMOD(REV_VAR_isDragged), 0, true];
+			_target setVariable [QGVAR(VAR_isDragged), 0, true];
 			detach _target;
 		};
 	} else {
 		_target switchMove "AinjPpneMstpSnonWrflDnon";
-		_target setVariable [QMOD(REV_VAR_isDragged), 0, true];
+		_target setVariable [QGVAR(VAR_isDragged), 0, true];
 		detach _target;
 	};
 	_player removeAction _id;
@@ -497,12 +497,12 @@ MOD(REV_FNC_Drag) = {
 /* -------------------------------------------------------------------
 	Carry injured player
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Carry) = { // WiP
+GVAR(FNC_Carry) = { // WiP
 	private ["_target", "_id","_player"];
 	_target = _this select 0;
 	_player = player;
 
-	MOD(REV_VAR_isCarrying) = true;
+	GVAR(VAR_isCarrying) = true;
 
 	waitUntil {
 		sleep .25;
@@ -510,34 +510,34 @@ MOD(REV_FNC_Carry) = { // WiP
 	};
 	
 	if (_target != _player) then {
-		_target setVariable [QMOD(REV_VAR_isCarried), 1, true];
+		_target setVariable [QGVAR(VAR_isCarried), 1, true];
 		_target switchMove "AinjPfalMstpSnonWnonDnon_carried_Up";
 		_target attachto [_player,[0.05, 1.1, 0]];
 		detach _target;
 		_target setPos [getPos _target select 0,getPos _target select 1,0.01];
 		[_target, (getDir _player + 180)] call INS_REV_FNCT_setDir;
 		[_player, "AcinPknlMstpSrasWrflDnon_AcinPercMrunSrasWrflDnon"] call INS_REV_FNCT_playMoveNow;
-		while {animationState _target == "ainjpfalmstpsnonwnondnon_carried_up" && alive _player && !MOD(REV_VAR_isCarrying) && vehicle _player == _player} do {
+		while {animationState _target == "ainjpfalmstpsnonwnondnon_carried_up" && alive _player && !GVAR(VAR_isCarrying) && vehicle _player == _player} do {
 			sleep 0.05;
 		};
 		_player playMove "manPosCarrying";
 		sleep 0.1;
 	};
 
-	_id = _player addAction ["<t color=""#C90000"">" + "Release" + "</t>", {call MOD(REV_FNC_Actions)}, ["actRelease"], 10, true, true, "", "true"];
+	_id = _player addAction ["<t color=""#C90000"">" + "Release" + "</t>", {call GVAR(FNC_Actions)}, ["actRelease"], 10, true, true, "", "true"];
 	
 	waitUntil {
 		sleep .25;
-		!alive _player || _player getVariable QMOD(REV_VAR_isUnconscious) == 1 || !alive _target || _target getVariable QMOD(REV_VAR_isUnconscious) == 0 || !MOD(REV_VAR_isCarrying) || _target getVariable QMOD(REV_VAR_isCarried) == 0
+		!alive _player || _player getVariable QGVAR(VAR_isUnconscious) == 1 || !alive _target || _target getVariable QGVAR(VAR_isUnconscious) == 0 || !GVAR(VAR_isCarrying) || _target getVariable QGVAR(VAR_isCarried) == 0
 	};
 	_player playMoveNow "AcinPknlMstpSrasWrflDnon";
 
 	/* Handle release action */
-	MOD(REV_VAR_isCarrying) = false;
+	GVAR(VAR_isCarrying) = false;
 	
 	if (!isNull _target && alive _target) then {
 		_target switchMove "AinjPpneMstpSnonWrflDnon";
-		_target setVariable [QMOD(REV_VAR_isCarried), 0, true];
+		_target setVariable [QGVAR(VAR_isCarried), 0, true];
 		detach _target;
 	};
 	_player removeAction _id;
@@ -546,7 +546,7 @@ MOD(REV_FNC_Carry) = { // WiP
 /* -------------------------------------------------------------------
 	Relase option for dragging or carrying an injured unit
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Release) = {
+GVAR(FNC_Release) = {
 	private ["_player"];
 	_player = player;
 	
@@ -556,14 +556,14 @@ MOD(REV_FNC_Release) = {
 	} else {
 		_player playMove "amovpknlmstpsraswrfldnon";
 	};
-	MOD(REV_VAR_isDragging) = false;
-	MOD(REV_VAR_isCarrying) = false;
+	GVAR(VAR_isDragging) = false;
+	GVAR(VAR_isCarrying) = false;
 };
 
 /* -------------------------------------------------------------------
 	EH variables
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Public_EH) = {
+GVAR(FNC_Public_EH) = {
 	private ["_target","_killed","_killer","_EH"];
 
 	if(count _this < 2) exitWith {};
@@ -571,20 +571,20 @@ MOD(REV_FNC_Public_EH) = {
 	_EH  = _this select 0;
 	_target = _this select 1;
 
-	if (_EH == QMOD(REV_VAR_isDragging_EH)) then {
+	if (_EH == QGVAR(VAR_isDragging_EH)) then {
 		_target setDir 180;
 	};
 	
-	if (_EH == QMOD(REV_VAR_isCarrying_EH)) then {
+	if (_EH == QGVAR(VAR_isCarrying_EH)) then {
 		_target setDir 180;
 	};
 	
-	if (_EH == QMOD(REV_VAR_DeathMsg)) then {
+	if (_EH == QGVAR(VAR_DeathMsg)) then {
 		_killed = _target select 0;
 		_killer = _target select 1;
 
 		if (isPlayer _killed && isPlayer _killer) then {
-			systemChat format["%1 took a shot in the %3 by %2 at %4:%5", name _killed, name _killer, MOD(FinalRound), (date select 3), (date select 4)];
+			systemChat format["%1 took a shot in the %3 by %2 at %4:%5", name _killed, name _killer, GVAR(FinalRound), (date select 3), (date select 4)];
 		};
 	};
 };
@@ -592,45 +592,45 @@ MOD(REV_FNC_Public_EH) = {
 /* -------------------------------------------------------------------
 	Check for revive action
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Revive_Chk) = {
+GVAR(FNC_Revive_Chk) = {
 	private ["_target", "_isTargetUnconscious", "_isDragged","_isPlayerUnconscious","_isMedic","_isCarried","_return","_isTargetStabilized","_action"];
 
 	/* Variables used */
 	_return = false;
 	_target = cursorTarget;
-	_isTargetUnconscious = _target getVariable QMOD(REV_VAR_isUnconscious);
-	_isTargetStabilized = _target getVariable QMOD(REV_VAR_isStabilized);
-	_isPlayerUnconscious = player getVariable QMOD(REV_VAR_isUnconscious);
-	_isDragged = _target getVariable QMOD(REV_VAR_isDragged); 
-	_isCarried = _target getVariable QMOD(REV_VAR_isCarried); 
+	_isTargetUnconscious = _target getVariable QGVAR(VAR_isUnconscious);
+	_isTargetStabilized = _target getVariable QGVAR(VAR_isStabilized);
+	_isPlayerUnconscious = player getVariable QGVAR(VAR_isUnconscious);
+	_isDragged = _target getVariable QGVAR(VAR_isDragged); 
+	_isCarried = _target getVariable QGVAR(VAR_isCarried); 
 	_isMedic = getNumber (configfile >> "CfgVehicles" >> typeOf player >> "attendant");
 	
 	/* Verifies player is alive, player is conscious, and that the player is close to target */
-	if(!alive player || _isPlayerUnconscious == 1 || MOD(REV_VAR_isDragging) || isNil "_target" || !alive _target || (!isPlayer _target && !MOD(REV_VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith {_return};
+	if(!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNil "_target" || !alive _target || (!isPlayer _target && !GVAR(VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith {_return};
 
 	/* Verifies revive mode and if the player has either medkit or FAK */
-	if ((MOD(REV_VAR_ReviveMode) >= 0) && !("Medikit" in (items player)) && !("FirstAidKit" in (items player))) exitWith {_return};
+	if ((GVAR(VAR_ReviveMode) >= 0) && !("Medikit" in (items player)) && !("FirstAidKit" in (items player))) exitWith {_return};
 
 	/* Verifies the target is alive, unconscious, stabilized, and not being dragged or carried */
 	/* Revive Menu Action */
 	if ((_isTargetUnconscious == 1) && (_isTargetStabilized == 0) && (_isDragged == 0) && (_isCarried == 0) && (alive _target)) then {
 	
 		/* mode one: default action */
-		if (MOD(REV_VAR_ReviveMode) == 1) then {
+		if (GVAR(VAR_ReviveMode) == 1) then {
 			if (("Medikit" in (items player)) || ("FirstAidKit" in (items player))) then {
 				_return = true;
 			};
 		};
 
 		/* mode two:  */
-		if (MOD(REV_VAR_ReviveMode) == 2) then {
+		if (GVAR(VAR_ReviveMode) == 2) then {
 			if ("Medikit" in (items player)) then {
 				_return = true;
 			};
 		};
 
 		/* mode zero: Medic only mode - units can stabilize only */
-		if ((MOD(REV_VAR_ReviveMode)) == 0) then {
+		if ((GVAR(VAR_ReviveMode)) == 0) then {
 			if (("Medikit" in (items player)) && (_isMedic == 1)) then {
 				_return = true;
 			};
@@ -642,43 +642,43 @@ MOD(REV_FNC_Revive_Chk) = {
 /* -------------------------------------------------------------------
 	Check for stabilize action
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Stabilize_Chk) = {
+GVAR(FNC_Stabilize_Chk) = {
 	private ["_target", "_isTargetUnconscious", "_isDragged","_isPlayerUnconscious","_isMedic","_isCarried","_return","_isTargetStabilized","_action"];
 
 	/* Variables used */
 	_return = false;
 	_target = cursorTarget;
-	_isTargetUnconscious = _target getVariable QMOD(REV_VAR_isUnconscious);
-	_isTargetStabilized = _target getVariable QMOD(REV_VAR_isStabilized);
-	_isPlayerUnconscious = player getVariable QMOD(REV_VAR_isUnconscious);
-	_isDragged = _target getVariable QMOD(REV_VAR_isDragged); 
-	_isCarried = _target getVariable QMOD(REV_VAR_isCarried); 
+	_isTargetUnconscious = _target getVariable QGVAR(VAR_isUnconscious);
+	_isTargetStabilized = _target getVariable QGVAR(VAR_isStabilized);
+	_isPlayerUnconscious = player getVariable QGVAR(VAR_isUnconscious);
+	_isDragged = _target getVariable QGVAR(VAR_isDragged); 
+	_isCarried = _target getVariable QGVAR(VAR_isCarried); 
 	_isMedic = getNumber (configfile >> "CfgVehicles" >> typeOf player >> "attendant");
 	
 	/* Verifies player is alive, player is conscious, and that the player is close to target */
-	if(!alive player || _isPlayerUnconscious == 1 || MOD(REV_VAR_isDragging) || isNil "_target" || !alive _target || (!isPlayer _target && !MOD(REV_VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith {_return};
+	if(!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNil "_target" || !alive _target || (!isPlayer _target && !GVAR(VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith {_return};
 
 	/* Verifies revive mode and if the player has either medkit or FAK */
-	if ((MOD(REV_VAR_ReviveMode) >= 0) && !("Medikit" in (items player)) && !("FirstAidKit" in (items player))) exitWith {_return};
+	if ((GVAR(VAR_ReviveMode) >= 0) && !("Medikit" in (items player)) && !("FirstAidKit" in (items player))) exitWith {_return};
 
 	/* Verifies the target is alive, unconscious, NOT stabilized, and not being dragged or carried */
 	/* Stabilize/Patch Menu Action */
 	if ((_isTargetUnconscious == 1) && (_isTargetStabilized == 1) && (_isDragged == 0) && (_isCarried == 0) && (alive _target)) then {
 		
 		/* mode one: default action - option not available - revive only */
-		if (MOD(REV_VAR_ReviveMode) == 1) then {
+		if (GVAR(VAR_ReviveMode) == 1) then {
 			_return;
 		};
 
 		/* mode two:  */
-		if (MOD(REV_VAR_ReviveMode) == 2) then {
+		if (GVAR(VAR_ReviveMode) == 2) then {
 			if (("Medikit" in (items player)) || ("FirstAidKit" in (items player))) then {
 				_return = true;
 			};
 		};
 
 		/* mode zero: Medic only mode - units can stabilize only */
-		if (MOD(REV_VAR_ReviveMode) == 0) then {
+		if (GVAR(VAR_ReviveMode) == 0) then {
 			if (("Medikit" in (items player)) || ("FirstAidKit" in (items player))) then {
 				_return = true;
 			};
@@ -690,10 +690,10 @@ MOD(REV_FNC_Stabilize_Chk) = {
 /* -------------------------------------------------------------------
 	Check for the suicide action
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Suicide_Chk) = {
+GVAR(FNC_Suicide_Chk) = {
 	private ["_return","_isPlayerUnconscious"];
 	_return = false;
-	_isPlayerUnconscious = player getVariable [QMOD(REV_VAR_isUnconscious),0];
+	_isPlayerUnconscious = player getVariable [QGVAR(VAR_isUnconscious),0];
 	
 	if (alive player && _isPlayerUnconscious == 1) then {
 		_return = true;
@@ -704,16 +704,16 @@ MOD(REV_FNC_Suicide_Chk) = {
 /* -------------------------------------------------------------------
 	Check for the drag action
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Dragging_Chk) = {
+GVAR(FNC_Dragging_Chk) = {
 	private ["_target", "_isPlayerUnconscious", "_isDragged","_return","_isTargetUnconscious"];
 	_return = false;
 	_target = cursorTarget;
-	_isPlayerUnconscious = player getVariable QMOD(REV_VAR_isUnconscious);
+	_isPlayerUnconscious = player getVariable QGVAR(VAR_isUnconscious);
 
-	if(!alive player || _isPlayerUnconscious == 1 || MOD(REV_VAR_isDragging) || isNil "_target" || !alive _target || (!isPlayer _target && !MOD(REV_VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith {_return;};
+	if(!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNil "_target" || !alive _target || (!isPlayer _target && !GVAR(VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith {_return;};
 	
-	_isTargetUnconscious = _target getVariable QMOD(REV_VAR_isUnconscious);
-	_isDragged = _target getVariable QMOD(REV_VAR_isDragged); 
+	_isTargetUnconscious = _target getVariable QGVAR(VAR_isUnconscious);
+	_isDragged = _target getVariable QGVAR(VAR_isDragged); 
 	
 	if(_isTargetUnconscious == 1 && _isDragged == 0) then {
 		_return = true;
@@ -724,16 +724,16 @@ MOD(REV_FNC_Dragging_Chk) = {
 /* -------------------------------------------------------------------
 	Check for the carry action
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Carrying_Chk) = {
+GVAR(FNC_Carrying_Chk) = {
 	private ["_target", "_isPlayerUnconscious", "_isCarried","_return","_isTargetUnconscious"];
 	_return = false;
 	_target = cursorTarget;
-	_isPlayerUnconscious = player getVariable QMOD(REV_VAR_isUnconscious);
+	_isPlayerUnconscious = player getVariable QGVAR(VAR_isUnconscious);
 
-	if( !alive player || _isPlayerUnconscious == 1 || MOD(REV_VAR_isCarrying) || isNil "_target" || !alive _target || (!isPlayer _target && !MOD(REV_VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith { _return;};
+	if( !alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isCarrying) || isNil "_target" || !alive _target || (!isPlayer _target && !GVAR(VAR_SP_PlayableUnits)) || (_target distance player) > 2 ) exitWith { _return;};
 	
-	_isTargetUnconscious = _target getVariable QMOD(REV_VAR_isUnconscious);
-	_isCarried = _target getVariable QMOD(REV_VAR_isCarried); 
+	_isTargetUnconscious = _target getVariable QGVAR(VAR_isUnconscious);
+	_isCarried = _target getVariable QGVAR(VAR_isCarried); 
 	
 	if(_isTargetUnconscious == 1 && _isCarried == 0) then {
 		_return = true;
@@ -744,7 +744,7 @@ MOD(REV_FNC_Carrying_Chk) = {
 /* -------------------------------------------------------------------
 	Find the closest "friendly" medic near the player
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Friends_Chk) = {
+GVAR(FNC_Friends_Chk) = {
 	private ["_unit", "_units", "_medics", "_hintMsg","_dist","_unitName","_distance"];
 	_units = nearestObjects [getpos player, ["Man", "Car", "Air", "Ship"], 800];
 	_medics = [];
@@ -757,14 +757,14 @@ MOD(REV_FNC_Friends_Chk) = {
 			if (_x isKindOf "Car" || _x isKindOf "Air" || _x isKindOf "Ship") then {
 				if (alive _x && count (crew _x) > 0) then {
 					{
-						if (_x call MOD(REV_FNC_Friendly_Medic)) then {
+						if (_x call GVAR(FNC_Friendly_Medic)) then {
 							_medics = _medics + [_x];
 							if (true) exitWith {};
 						};
 					} forEach crew _x;
 				};
 			} else {
-				if (_x call MOD(REV_FNC_Friendly_Medic)) then {
+				if (_x call GVAR(FNC_Friendly_Medic)) then {
 					_medics = _medics + [_x];
 				};
 			};
@@ -795,20 +795,20 @@ MOD(REV_FNC_Friends_Chk) = {
 /* -------------------------------------------------------------------
 	Friendly medic action near the player - WIP
 ------------------------------------------------------------------- */
-MOD(REV_FNC_Friendly_Medic) = {
+GVAR(FNC_Friendly_Medic) = {
 	private ["_unit","_return","_isMedic"];
 	_return = false;
 	_unit = _this;
 	_isMedic = getNumber (configfile >> "CfgVehicles" >> typeOf _unit >> "attendant");
 				
-	if ( alive _unit && (isPlayer _unit || MOD(REV_VAR_SP_PlayableUnits)) && side _unit == MOD(REV_VAR_PlayerSide) && _unit getVariable QMOD(REV_VAR_isUnconscious) == 0 && (_isMedic == 1 || MOD(REV_VAR_ReviveMode) > 0) ) then {_return = true;};
+	if ( alive _unit && (isPlayer _unit || GVAR(VAR_SP_PlayableUnits)) && side _unit == GVAR(VAR_PlayerSide) && _unit getVariable QGVAR(VAR_isUnconscious) == 0 && (_isMedic == 1 || GVAR(VAR_ReviveMode) > 0) ) then {_return = true;};
 	_return
 };
 
 /* -------------------------------------------------------------------
 	Visual and sound blood/bleeding effects for injured soldier - WIP
 ------------------------------------------------------------------- */
-MOD(REV_FNC_BloodEffects) = {
+GVAR(FNC_BloodEffects) = {
 	private ["_bloodSFX","_chooseSFX"];
 
 	/* creates effect for player when being shot */
@@ -824,11 +824,11 @@ MOD(REV_FNC_BloodEffects) = {
 /* -------------------------------------------------------------------
 	Create map marker at the injured units position
 ------------------------------------------------------------------- */
-MOD(REV_FNC_CreateMarker) = {
+GVAR(FNC_CreateMarker) = {
 	private ["_unit","_mkr"];
 	_unit = _this select 0;
 	
-	if (MOD(REV_VAR_Show_Player_Marker) && alive _unit) then {
+	if (GVAR(VAR_Show_Player_Marker) && alive _unit) then {
 		private ["_mkr"];
 		_mkr = createMarker [("REV_mark_" + name _unit), getPos _unit];
 		_mkr setMarkerType "mil_triangle";
@@ -840,11 +840,11 @@ MOD(REV_FNC_CreateMarker) = {
 /* -------------------------------------------------------------------
 	Remove the created map marker when injured unit is revived/dead
 ------------------------------------------------------------------- */
-MOD(REV_FNC_DeleteMarker) = {
+GVAR(FNC_DeleteMarker) = {
 	private ["_unit"];
 	_unit = _this select 0;
 	
-	if (MOD(REV_VAR_Show_Player_Marker) && alive _unit) then {
+	if (GVAR(VAR_Show_Player_Marker) && alive _unit) then {
 		deleteMarker ("REV_mark_" + name _unit);
 	};
 };
@@ -852,13 +852,13 @@ MOD(REV_FNC_DeleteMarker) = {
 /* -------------------------------------------------------------------
 	Create a bleedout rate to be used when the unit is unconscious
 ------------------------------------------------------------------- */
-MOD(REV_FNC_BleedOutRate) = {
+GVAR(FNC_BleedOutRate) = {
 	private ["_unit"];
 	_unit = _this select 0;
-	if (isNil QMOD(REV_VAR_BleedOutRate)) then {
-		if (!MOD(REV_VAR_BleedOutRate) && alive _unit) then {
-			MOD(REV_VAR_BleedRateValue) = ((damage _unit)/MOD(REV_VAR_BleedOutTime));
-			MOD(REV_VAR_BleedOutRate) = true;
+	if (isNil QGVAR(VAR_BleedOutRate)) then {
+		if (!GVAR(VAR_BleedOutRate) && alive _unit) then {
+			GVAR(VAR_BleedRateValue) = ((damage _unit)/GVAR(VAR_BleedOutTime));
+			GVAR(VAR_BleedOutRate) = true;
 		};
 	};
 };
