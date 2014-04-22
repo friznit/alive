@@ -648,6 +648,14 @@ switch(_operation) do {
 					deleteMarkerLocal format[MTEMPLATE, _x];
 				} forEach (_logic getVariable ["houses", []]);
 			};
+            
+            //Initialise SectorGrid if profile system is not present
+            if (isnil "ALIVE_sectorGrid") then {
+            			// create sector grid
+						ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
+						[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
+						[ALIVE_sectorGrid, "createGrid"] call ALIVE_fnc_sectorGrid;
+            };
 
             //Exclude houses in formerly cleared areas from input list and flag the rest with sectorID on server for persistence 
             {
