@@ -25,7 +25,7 @@
 	<English>Revive Mode:</English>
 </Key>
 <Key ID="STR_ALIVE_REVIVE_MODE_COMMENT">
-	<English>Medics can revive/stabilize || All players can revive only, no stabilize || All players can revive/stabilize with medkits/firstaid kits.</English>
+	<English>All players can revive only, no stabilize (default) -|- Medics can revive/stabilize -|- All players can revive/stabilize with medkits/firstaid kits.</English>
 </Key>
 <Key ID="STR_ALIVE_BLEEDOUT_TIME">
 	<English>Bleedout Time:</English>

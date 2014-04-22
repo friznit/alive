@@ -43,7 +43,7 @@ class CfgVehicles {
 				typeName = "NUMBER";
 				class Values {
 					class revModeSetting1 {
-						name = "Revive Only, no Stablize Option";
+						name = "All Players can Revive Only";
 						value = 1;
 						default = 1;
 					};
@@ -52,7 +52,7 @@ class CfgVehicles {
 						value = 0;
 					};
 					class revModeSetting3 {
-						name = "Players can Revive/Stabilize with a MedKit/FirstAid Kit";
+						name = "All Players can Revive/Stabilize";
 						value = 2;
 					};
 				};
@@ -76,7 +76,7 @@ class CfgVehicles {
 						value = 60;
 					};
 					class bleedoutSetting4 {
-						name = "Based on Amount of Damage Sustained";
+						name = "Bleedout Only(Damage Based)";
 						value = 999;
 					};
 				};
@@ -100,14 +100,14 @@ class CfgVehicles {
 				displayName = "$STR_ALIVE_MAGNET";
 				description = "$STR_ALIVE_MAGNET_COMMENT";
 				class Values {
-					class No {
-						name = "No";
-						value = false;
-						default = false;
-					};
 					class Yes {
 						name = "Yes";
 						value = true;
+						default = true;
+					};
+					class No {
+						name = "No";
+						value = false;
 					};
 				};
 			};
@@ -168,8 +168,8 @@ class CfgVehicles {
 						value = 20;
 					};
 					class livesSetting6 {
-						name = "100";
-						value = 100;
+						name = "50";
+						value = 50;
 					};
 				};
 			};
@@ -252,14 +252,14 @@ class CfgVehicles {
 				displayName = "$STR_ALIVE_BULLET_EFFECTS";
 				description = "$STR_ALIVE_BULLET_EFFECTS_COMMENT";
 				class Values {
-					class No {
-						name = "No";
-						value = false;
-						default = false;
-					};
 					class Yes {
 						name = "Yes";
 						value = true;
+						default = true;
+					};
+					class No {
+						name = "No";
+						value = false;
 					};
 				};
 			};

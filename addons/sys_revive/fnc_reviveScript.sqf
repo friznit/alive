@@ -1,14 +1,13 @@
-["ALIVE Wounding System Initialized..."] call ALIVE_fnc_dumpR;
-
-/* Will not initialize on a dedicated server */
-if ((isDedicated) && (isDedicated)) exitWith {};
+#include <\x\alive\addons\sys_revive\script_component.hpp>
 
 /* Compile revive functions */
 call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions.sqf";
 
 /* Revive Version */
-#define REV_VERSION "0.88"
+// #define REV_VERSION "v0.91"
+["ALIVE Wounding System Initialized...v0.91"] call ALIVE_fnc_dumpR;
 
+////////////////////////////// this is the script version variable section
 /* Debug mode */
 // REV_Debug = true;
 
@@ -63,6 +62,8 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 /* Create marker to show on the map where the unconscious player is located */
 // REV_VAR_Show_Player_Marker = true; 
 
+///////////////////////////// end of old script version variables section
+
 /* -------------------------------------------------------------------
 	Player Init
 ------------------------------------------------------------------- */
@@ -73,18 +74,18 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 	};
 
 	/* Public event handlers */
-	"REV_VAR_isDragging_EH" addPublicVariableEventHandler REV_FNC_Public_EH;
-	"REV_VAR_isCarrying_EH" addPublicVariableEventHandler REV_FNC_Public_EH;
-	"REV_VAR_DeathMsg" addPublicVariableEventHandler REV_FNC_Public_EH;
+	QMOD(REV_VAR_isDragging_EH) addPublicVariableEventHandler MOD(REV_FNC_Public_EH);
+	QMOD(REV_VAR_isCarrying_EH) addPublicVariableEventHandler MOD(REV_FNC_Public_EH);
+	QMOD(REV_VAR_DeathMsg) addPublicVariableEventHandler MOD(REV_FNC_Public_EH);
 	
-	[] spawn REV_FNC_Player_Init;
+	[] spawn MOD(REV_FNC_Player_Init);
 
-	hintSilent format["Revive v%1 has been initialized.", REV_VERSION];
+	// hintSilent format["Revive v%1 has been initialized.", REV_VERSION];
 	
 	/* Damage Indication EH - adds bullet hit effects to player */
-	if (REV_VAR_BulletEffects) then {
+	if (MOD(REV_VAR_BulletEffects)) then {
 		player addEventHandler ["hit","
-			[_this select 1] spawn REV_FNC_BloodEffects;
+			[_this select 1] spawn " + QMOD(REV_FNC_BloodEffects) + ";
 			'colorCorrections' ppEffectAdjust[1, 1.8, -0.2, [4.5 - ((damage player)*5), 3.5, 1.6, -0.02],[1.8 - ((damage player)*5), 1.6, 1.6, 1],[-1.5 + ((damage player)*5),0,-0.2,1]]; 
 			'colorCorrections' ppEffectCommit 0.05; 
 			addCamShake [1 + random 2, 0.4 + random 1, 15];
@@ -103,7 +104,7 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 
 	/* Respawn EH - when player respawns, this reapplies revive to the new unit */
 	player addEventHandler ["Respawn",{
-		[] spawn REV_FNC_Player_Init;
+		[] spawn MOD(REV_FNC_Player_Init);
 		1 fadeSound 1; 
 		1 fadeMusic 1;
 	}];
@@ -114,13 +115,13 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 /* -------------------------------------------------------------------
 	Player Initialization
 ------------------------------------------------------------------- */
-REV_FNC_Player_Init = {
+MOD(REV_FNC_Player_Init) = {
 
 	/* Store players side */
-	REV_VAR_PlayerSide = side player;
+	MOD(REV_VAR_PlayerSide) = side player;
 	
-	player removeAllEventHandlers "HandleDamage";
-	player addEventHandler ["HandleDamage", REV_FNC_HandleDamage_EH];
+	// player removeAllEventHandlers "HandleDamage";
+	player addEventHandler ["HandleDamage", MOD(REV_FNC_HandleDamage_EH)];
 	player addEventHandler [
 		"Killed",{
 			_body = _this select 0;
@@ -130,35 +131,39 @@ REV_FNC_Player_Init = {
 				};
 				_body = _this select 0;
 				deleteVehicle _body;
-				[player] call REV_FNC_DeleteMarker;
-				terminate REV_Unconscious_Effect;
-				ppEffectDestroy REV_Video_Blurr_Effect;
-				ppEffectDestroy REV_Video_Color_Effect;
+				[player] call MOD(REV_FNC_DeleteMarker);
+				terminate MOD(REV_Unconscious_Effect);
+				ppEffectDestroy MOD(REV_Video_Blurr_Effect);
+				ppEffectDestroy MOD(REV_Video_Color_Effect);
 			};
 		}
 	];
 	
-	player setVariable ["REV_VAR_isUnconscious", 0, true];
-	player setVariable ["REV_VAR_isStabilized", 0, true];
-	player setVariable ["REV_VAR_isDragged", 0, true];
-	player setVariable ["REV_VAR_isCarried", 0, true];
+	player setVariable [QMOD(REV_VAR_isUnconscious), 0, true];
+	player setVariable [QMOD(REV_VAR_isStabilized), 0, true];
+	player setVariable [QMOD(REV_VAR_isDragged), 0, true];
+	player setVariable [QMOD(REV_VAR_isCarried), 0, true];
 	player setCaptive false;
 
-	REV_VAR_isDragging = false;
-	REV_VAR_isDragging_EH = [];
-	REV_VAR_isCarrying = false;
-	REV_VAR_isCarrying_EH = [];
-	REV_VAR_DeathMsg = [];
-	REV_Unconscious_Effect = nil;
-	REV_Video_Blurr_Effect = nil;
-	REV_Video_Color_Effect = nil;
+	MOD(REV_VAR_isDragging) = false;
+	MOD(REV_VAR_isDragging_EH) = [];
+	MOD(REV_VAR_isCarrying) = false;
+	MOD(REV_VAR_isCarrying_EH) = [];
+	MOD(REV_VAR_DeathMsg) = [];
+	MOD(REV_Unconscious_Effect) = nil;
+	MOD(REV_Video_Blurr_Effect) = nil;
+	MOD(REV_Video_Color_Effect) = nil;
+	
+	/* Debug Variables */
+	MOD(REV_DBG_VAR_Stabilized_Menu) = [];
+	MOD(REV_DBG_VAR_Revive_Menu) = [];
 	
 	/* fixes an issue with a sticky key(s) when respawned */
 	disableUserInput false;
 	disableUserInput true;
 		
 	/* Create actions for players */
-	[] spawn REV_FNC_Player_Actions;
+	[] spawn MOD(REV_FNC_Player_Actions);
 };
 
 /* -------------------------------------------------------------------
@@ -168,12 +173,12 @@ REV_FNC_Player_Init = {
 	waitUntil {
 		sleep 1;
 		if (animationState player == "acinpknlmstpsraswrfldnon_acinpercmrunsraswrfldnon" || animationState player == "helper_switchtocarryrfl" || animationState player == "AcinPknlMstpSrasWrflDnon") then {
-			if (REV_VAR_isDragging) then {
+			if (MOD(REV_VAR_isDragging)) then {
 				player switchMove "AcinPknlMstpSrasWrflDnon";
 			} else {
 				player switchMove "amovpknlmstpsraswrfldnon";
 			};
-			if (REV_VAR_isCarrying) then {
+			if (MOD(REV_VAR_isCarrying)) then {
 				player switchMove "AcinPknlMstpSrasWrflDnon";
 			} else {
 				player switchMove "amovpknlmstpsraswrfldnon";
@@ -188,9 +193,9 @@ REV_FNC_Player_Init = {
 [] spawn {
 	private ["_fatigue","_oxygen","_hRegenRate"];
 	
-	playerBleedRate = 0;
-	playerRegenRate = 0;
-	playerDamage = 0;
+	MOD(playerBleedRate) = 0;
+	MOD(playerRegenRate) = 0;
+	MOD(playerDamage) = 0;
 	
 	while {alive player} do {
 		/* Variables */
@@ -204,28 +209,28 @@ REV_FNC_Player_Init = {
 		};
 		
 		/* Bleeding out */
-		waitUntil{player getVariable "REV_VAR_isUnconscious" == 1};
+		waitUntil{player getVariable QMOD(REV_VAR_isUnconscious) == 1};
 		
 		if (damage player >= 0.6) then {
 			player setDamage ((damage player) + ((1-(getFatigue player))*(0.000047)));
-			// player setDamage ((damage player) + ((1-(getFatigue player))/REV_VAR_BleedOutTime));
-			if (REV_Debug) then {
-				playerBleedRate = ((damage player) + ((1-(getFatigue player))*(0.00003)));
+			// player setDamage ((damage player) + ((1-(getFatigue player))/MOD(REV_VAR_BleedOutTime)));
+			if (MOD(REV_Debug)) then {
+				MOD(playerBleedRate) = ((damage player) + ((1-(getFatigue player))*(0.00003)));
 			};
 		} else {
 			/* Using regen, will allow a player to recover from lower amounts of damage. */
 			/* Regeneration */
 			if (damage player < 0.6 && damage player > 0.25) then {
 				player setDamage (damage player - ((random(0.0001)) + (getFatigue player/200)));
-				if (REV_Debug) then {
-					playerRegenRate = (damage player - ((random(0.0001)) + (getFatigue player/200)));
+				if (MOD(REV_Debug)) then {
+					MOD(playerRegenRate) = (damage player - ((random(0.0001)) + (getFatigue player/200)));
 				};
 			} else {
 				if (damage player <= 0.25) then {
 					/* reset variables */
-					player setVariable ["REV_VAR_isUnconscious", 0, true];
-					player setVariable ["REV_VAR_isDragged", 0, true];
-					player setVariable ["REV_VAR_isCarried", 0, true];
+					player setVariable [QMOD(REV_VAR_isUnconscious), 0, true];
+					player setVariable [QMOD(REV_VAR_isDragged), 0, true];
+					player setVariable [QMOD(REV_VAR_isCarried), 0, true];
 					sleep 3;
 					
 					/* Closes any dialog that could be open during revive process */
@@ -234,12 +239,12 @@ REV_FNC_Player_Init = {
 					
 					/* Back to normal game, remove effects */
 					5 fadeSound 1;
-					ppEffectDestroy REV_Video_Blurr_Effect;
-					ppEffectDestroy REV_Video_Color_Effect;
+					ppEffectDestroy MOD(REV_Video_Blurr_Effect);
+					ppEffectDestroy MOD(REV_Video_Color_Effect);
 					sleep 0.2;
 					
 					/* remove map marker */
-					[player] call REV_FNC_DeleteMarker;
+					[player] call MOD(REV_FNC_DeleteMarker);
 					
 					/* Select primary of the weapon after being revived */
 					player selectWeapon (primaryWeapon player);
@@ -249,13 +254,13 @@ REV_FNC_Player_Init = {
 					player allowDamage true;
 					
 					/* terminate all effects and exit */
-					terminate REV_Unconscious_Effect;
+					terminate MOD(REV_Unconscious_Effect);
 				};
 			};
 		};
 		
-			if (REV_Debug) then {
-				playerDamage = (damage player);
+			if (MOD(REV_Debug)) then {
+				MOD(playerDamage) = (damage player);
 			};
 		
 		if (getPosASLW player select 2 > 0) then {
@@ -285,13 +290,14 @@ REV_FNC_Player_Init = {
 /* -------------------------------------------------------------------
 	Add revive to playable AI units SP/MP (MP WiP)
 ------------------------------------------------------------------- */
-if (!REV_VAR_SP_PlayableUnits || isMultiplayer) exitWith {};
-{
-	if (!isPlayer _x) then {
-		_x addEventHandler ["HandleDamage", REV_FNC_HandleDamage_EH];
-		_x setVariable ["REV_VAR_isUnconscious", 0, true];
-		_x setVariable ["REV_VAR_isStabilized", 0, true];
-		_x setVariable ["REV_VAR_isDragged", 0, true];
-		_x setVariable ["REV_VAR_isCarried", 0, true];
-	};
-} forEach switchableUnits;
+if (MOD(REV_VAR_SP_PlayableUnits)) then {
+	{
+		if (!isPlayer _x) then {
+			_x addEventHandler ["HandleDamage", MOD(REV_FNC_HandleDamage_EH)];
+			_x setVariable [QMOD(REV_VAR_isUnconscious), 0, true];
+			_x setVariable [QMOD(REV_VAR_isStabilized), 0, true];
+			_x setVariable [QMOD(REV_VAR_isDragged), 0, true];
+			_x setVariable [QMOD(REV_VAR_isCarried), 0, true];
+		};
+	} forEach switchableUnits;
+};
