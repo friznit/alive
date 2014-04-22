@@ -65,24 +65,24 @@ if (isServer) then {};
 										_lightningProbability = 50;
 	
 											// Winter (December, January and February)
-					        		_minimumOvercast = 0.35;
+					        		_minimumOvercast = 0.45;
 					        		_maximumOvercast = 1;
 					        		_fogProbability = 15;
 	
 					        	if (_currentmonth >=3 && _currentmonth <=5) then {  // Spring (March, April and May)
 					        		_minimumOvercast = 0.2;
-					        		_maximumOvercast = 85;
+					        		_maximumOvercast = 0.55;
 					        		_fogProbability = 10;
 					        	};
 					        	if (_currentmonth >=6 && _currentmonth <=8) then {  // Summer (June, July and August)
 					        		_minimumOvercast = 0;
-					        		_maximumOvercast = 0.35;
+					        		_maximumOvercast = 0.50;
 					        		_fogProbability = 5;
 					        	};
 					        	if (_currentmonth >=9 && _currentmonth <=11) then {  // Autumn (September, October and November)
-					        		_minimumOvercast = 0.35;
-					        	  _maximumOvercast = 0.75;
-					        		_fogProbability = 15;
+					        		_minimumOvercast = 0.45;
+					        	  _maximumOvercast = 0.65;
+					        		_fogProbability = 10;
 					        	};
 				        	};
 								case 2: {  // Tropical - Climate zone where monsoon (June to September) rainfall is associated with large storms.
@@ -90,21 +90,21 @@ if (isServer) then {};
 										_lightningProbability = 95;
 	
 									   // post-monsoon period (October to December).
-					        	_minimumOvercast = 0.35;
+					        	_minimumOvercast = 0.45;
 					        	_maximumOvercast = 0.75;
 					        	_fogProbability = 10;
 	
 					        	if (_currentmonth >=6 && _currentmonth <=9) then {  // monsoon (June to September)
-					        		_minimumOvercast = 0.9;
+					        		_minimumOvercast = 0.90;
 					        		_maximumOvercast = 1;
 					        	};
 					        	if (_currentmonth >=1 && _currentmonth <=2) then {  // winter (January and February)
-					        		_minimumOvercast = 0.35;
+					        		_minimumOvercast = 0.45;
 					        		_maximumOvercast = 1;
 					        	};
 					        	if (_currentmonth >=3 && _currentmonth <=5) then {  // summer (March to May)
 					        		_minimumOvercast = 0;
-					        	  _maximumOvercast = 0.5;
+					        	  _maximumOvercast = 0.50;
 					        	};
 				        	};
 								case 3: {   // Mediterranean - The climate is characterized by hot, dry summers and cool, wet winters.
@@ -112,13 +112,13 @@ if (isServer) then {};
 									 _lightningProbability = 35;
 	
 					        	 // The rainy, and slightly cooler, winter period occurs in October, November, December, January, February and March.
-					        	_minimumOvercast = 0.5;
+					        	_minimumOvercast = 0.55;
 					        	_maximumOvercast = 0.85;
-					        	_fogProbability = 20;
+					        	_fogProbability = 10;
 	
 					        	if (_currentmonth >=4 && _currentmonth <=9) then {  // Summer ( April through May, June, July, August and September)
 					        		_minimumOvercast = 0;
-					        		_maximumOvercast = 0.35;
+					        		_maximumOvercast = 0.50;
 					        	};
 				        	};
 	
@@ -163,13 +163,13 @@ if (isServer) then {};
 								case 0: {};  
 								
 								case 1: {  // clear
-								  		_fogProbability = 0; 	_minimumOvercast = 0; _maximumOvercast = 0.30; 
+								  		_fogProbability = 0; 	_minimumOvercast = 0; _maximumOvercast = 0.40; 
 								};  
 								case 2: {  // overcast
-								  	  _fogProbability = 0; 	_minimumOvercast = 0.60; _maximumOvercast = 0.75;
+								  	  _fogProbability = 0; 	_minimumOvercast = 0.60; _maximumOvercast = 0.85;
 								};  
 								case 3: {  // stormy
-								  	   _fogProbability = 0; 	_minimumOvercast = 0.80; _maximumOvercast = 1; 
+								  	   _fogProbability = 0; 	_minimumOvercast = 0.85; _maximumOvercast = 1; 
 								};     
 								case 4: {  // foggy
 								  	   _fogProbability = 100; 	_minimumOvercast = 0.20; _maximumOvercast = 0.55;
