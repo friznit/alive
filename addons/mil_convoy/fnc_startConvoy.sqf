@@ -60,15 +60,19 @@ for "_j" from 1 to _intensity do {
 						// Select a start position outside of player safe zone and not near base
 						
                         _fncSelectPos = {
-                            private ["_pos","_loc"];
+                            private ["_pos","_loc","_exit"];
                             
                             _convoyLocs = _this;
                             _roadRadius = 500;
 
 	                        waituntil {
+                                ASSERT_TRUE(typeName _convoyLocs == "ARRAY", typeName _convoyLocs);
+                                
 	                            private ["_quit","_road","_list"];
-	                            
+                                
 	                            _loc = _convoyLocs call BIS_fnc_selectRandom;
+                                
+                                if (isnil "_loc") exitwith {_exit = true};
                                 
 								_list = (_loc nearRoads _roadRadius);
 	                            _quit = false;
@@ -83,16 +87,19 @@ for "_j" from 1 to _intensity do {
 	                            };
 	                            _quit;
 							};
+                            
+                            if !(isnil "_exit") exitwith {};
+                            
 	                        _convoyLocs = _convoyLocs - [_loc];
                             _pos;
                         };
                         
-                        if !((typeName _convoyLocs) == "ARRAY" && (count _convoyLocs > 3)) exitwith {["ALiVE MIL CONVOYS No convoy locationss found for faction %1! Exiting!",_factionsConvoy] call ALiVE_fnc_Dump;};
-                        
+                        if !(!(isnil "_convoyLocs") && {typeName _convoyLocs == "ARRAY"} && {count _convoyLocs > 3}) exitwith {["ALiVE MIL CONVOYS No convoy locations found for faction %1! Exiting!",_factionsConvoy] call ALiVE_fnc_Dump};
                         _startpos = _convoyLocs call _fncSelectPos;
                         _destpos = _convoyLocs call _fncSelectPos;
                         _endpos = _convoyLocs call _fncSelectPos;
-                        
+                        if !(!(isnil "_startpos") && {!isnil "_destpos"} && {!isnil "_destpos"}) exitwith {["ALiVE MIL CONVOYS Not enough positions found for faction %1! Exiting!",_factionsConvoy] call ALiVE_fnc_Dump};
+
                         ["ALiVE MIL CONVOYS Start: %1 Dest.: %2 End: %3", _startpos,_destpos,_endpos] call ALiVE_fnc_Dump;
                         
                         _startposList = [];
