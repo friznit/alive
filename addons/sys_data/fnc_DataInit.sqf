@@ -32,7 +32,6 @@ if (isDedicated) then {
 
 	TRACE_1("Group Name", GVAR(GROUP_ID));
 
-
 	// Setup data handler
 	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
 
@@ -49,6 +48,8 @@ if (isDedicated) then {
 		["CANNOT CONNECT TO DATABASE, DISABLING DATA MODULE"] call ALIVE_fnc_logger;
 		GVAR(DISABLED) = true;
 		publicVariable QGVAR(DISABLED);
+		MOD(sys_data) setvariable ["disableStats", "true"];
+		ALIVE_sys_statistics_ENABLED = false;
 	};
 
 	// Check to see if the service is off
