@@ -65,17 +65,22 @@ switch (_state) do {
 
         _target = _agent getVariable "ALIVE_agentMeetingTarget";
 
-        _position = getPosASL _target;
-        [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-        _agent doMove _position;
+        if(isNull _target) then {
+            _nextState = "done";
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        }else{
+            _position = getPosASL _target;
+            [_agent] call ALIVE_fnc_agentSelectSpeedMode;
+            _agent doMove _position;
 
-        _timeout = _minTimeout + floor(random _maxTimeout);
-        _timer = 0;
+            _timeout = _minTimeout + floor(random _maxTimeout);
+            _timer = 0;
 
-        _nextState = "travel";
-        _nextStateArgs = [_target, _timeout, _timer];
+            _nextState = "travel";
+            _nextStateArgs = [_target, _timeout, _timer];
 
-        [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        };
 	};
 	case "travel":{
         private ["_target","_fire"];
