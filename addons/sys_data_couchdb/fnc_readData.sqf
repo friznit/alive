@@ -64,7 +64,7 @@ _response = [_json] call ALIVE_fnc_sendToPlugIn;
 TRACE_1("COUCH RESPONSE", _response);
 
 // From response create key/value pair arrays
-if (_response != "ERROR" || _response != "UNAUTHORISED!") then {
+if (_response != "ERROR" && _response != "UNAUTHORISED!") then {
 
 	_result = [_logic, "restore", [_response]] call ALIVE_fnc_Data;
 
