@@ -34,7 +34,7 @@ if(isServer) then {
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
 	
 	_debug = _logic getVariable ["debug",false];
-	_persistent = _logic getVariable ["persistent",false];
+	_persistent = _logic getVariable ["persistent","false"];
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
@@ -47,6 +47,7 @@ if(isServer) then {
     }else{
         _debug = false;
     };
+
 
     if(_persistent == "true") then {
         _persistent = true;
