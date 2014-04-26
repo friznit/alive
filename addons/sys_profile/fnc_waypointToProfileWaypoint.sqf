@@ -29,6 +29,8 @@ private ["_waypoint","_currentWaypoint","_waypoint","_position","_radius","_type
 	
 _waypoint = _this select 0;
 
+if (isnil "_waypoint") exitwith {};
+
 _position = waypointPosition _waypoint;
 _radius = 0;
 _type = waypointType _waypoint;

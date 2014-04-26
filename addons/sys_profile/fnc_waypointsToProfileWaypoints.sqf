@@ -27,10 +27,12 @@ private ["_profile","_group","_isCycling","_waypoints","_profileWaypoint"];
 
 _profile = _this select 0;
 _group = _this select 1;
+if (isnil "_profile" || isnil "_group") exitwith {["ALiVE SYS PROFILE Warning: ALIVE_fnc_waypointsToProfileWaypoints has wrong inputs!"] call ALiVE_fnc_Dump};
 
 _isCycling = _profile select 2 select 25;
 
 _waypoints = waypoints _group;
+if !(count _waypoints > 0) exitwith {["ALiVE SYS PROFILE Warning: ALIVE_fnc_waypointsToProfileWaypoints has wrong inputs!"] call ALiVE_fnc_Dump};
 
 if(_isCycling) then {
 	// if the entity has a cycle waypoint need to get all completed waypoints and 
