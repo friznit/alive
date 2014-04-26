@@ -70,7 +70,7 @@ switch(_operation) do {
 			GVAR(VAR_BleedOutTime) = _logic getvariable ["rev_bleedout_setting",300];
 			GVAR(VAR_isBulletproof) = call compile (_logic getvariable ["rev_bulletproof_setting","false"]);
 			GVAR(VAR_isBulletMagnet) = call compile (_logic getvariable ["rev_bulletmagenet_setting","true"]);
-			GVAR(VAR_SP_PlayableUnits) = call compile (_logic getvariable ["rev_playableunits_setting","true"]);
+			GVAR(VAR_AI_PlayableUnits) = _logic getvariable ["rev_playableunits_setting",1];
 			GVAR(VAR_TeamKillNotifications) = call compile (_logic getvariable ["rev_notifyplayers_setting","true"]);
 			GVAR(VAR_NumRevivesAllowed) = _logic getvariable ["rev_lives_setting",999];
 			GVAR(VAR_ReviveDamage) = call compile (_logic getvariable ["rev_injured_setting","true"]);
@@ -88,7 +88,7 @@ switch(_operation) do {
 			publicVariable QGVAR(VAR_BleedOutTime);
 			publicVariable QGVAR(VAR_isBulletproof);
 			publicVariable QGVAR(VAR_isBulletMagnet);
-			publicVariable QGVAR(VAR_SP_PlayableUnits);
+			publicVariable QGVAR(VAR_AI_PlayableUnits);
 			publicVariable QGVAR(VAR_TeamKillNotifications);
 			publicVariable QGVAR(VAR_NumRevivesAllowed);
 			publicVariable QGVAR(VAR_ReviveDamage);

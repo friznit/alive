@@ -14,10 +14,45 @@ class CfgPatches {
 };
 
 class CfgSounds {
-	sounds[] = {Vent,Para,REV_Heartbeat};
+	sounds[] = {REV_Heartbeat,REV_Breathing,REV_Blood1,REV_Blood2,REV_Blood3,REV_Blood4,REV_Blood5,REV_DeafTone};
 	class REV_Heartbeat {
 		name = "REV_Wounded_Heartbeat";
-		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\HEARTBEAT.ogg",db-5,1};
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\HeartBeat_01_8.ogg",db-4.5,1};
+		titles[] = {};
+	};
+	class REV_Breathing {
+		name = "REV_Wounded_Breath";
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\Breathing_01_8.ogg",db-4.5,1};
+		titles[] = {};
+	};
+	class REV_Blood1 {
+		name = "REV_Wounded_Blood1";
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\blood1.ogg",db-5,1};
+		titles[] = {};
+	};
+	class REV_Blood2 {
+		name = "REV_Wounded_Blood2";
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\blood2.ogg",db-5,1};
+		titles[] = {};
+	};
+	class REV_Blood3 {
+		name = "REV_Wounded_Blood3";
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\blood3.ogg",db-5,1};
+		titles[] = {};
+	};
+	class REV_Blood4 {
+		name = "REV_Wounded_Blood4";
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\blood4.ogg",db-5,1};
+		titles[] = {};
+	};
+	class REV_Blood5 {
+		name = "REV_Wounded_Blood5";
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\blood5.ogg",db-5,1};
+		titles[] = {};
+	};
+	class REV_DeafTone {
+		name = "REV_Wounded_DeafTone";
+		sound[] = {"\x\alive\addons\sys_revive\_revive\Sounds\deafTone.ogg",db-5,1};
 		titles[] = {};
 	};
 };

@@ -113,15 +113,24 @@ class CfgVehicles {
 			class rev_playableunits_setting {
 				displayName = "$STR_ALIVE_PLAYABLE";
 				description = "$STR_ALIVE_PLAYABLE_COMMENT";
+				typeName = "NUMBER";
 				class Values {
-					class Yes {
-						name = "Yes";
-						value = true;
-						default = true;
+					class AIUnits0 {
+						name = "MP/SP - No AI Units";
+						value = 0;
+						default = 0;
 					};
-					class No {
-						name = "No";
-						value = false;
+					class AIUnits1 {
+						name = "SP - Switchable AI Units";
+						value = 1;
+					};
+					class AIUnits2 {
+						name = "MP/SP - All AI Units on the Players Side";
+						value = 2;
+					};
+					class AIUnits3 {
+						name = "MP/SP - All AI Units (Frendly, Enemy, Civillian)";
+						value = 3;
 					};
 				};
 			};

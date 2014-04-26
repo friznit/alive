@@ -33,7 +33,7 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 // REV_VAR_isBulletMagnet = true;
 
 /* Makes playable units revivable both in SP and MP modes */
-// REV_VAR_SP_PlayableUnits = true;
+// REV_VAR_AI_PlayableUnits = true;
 
 /* Enable teamkill notifications */
 // REV_VAR_TeamKillNotifications = true;
@@ -65,7 +65,7 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 ///////////////////////////// end of old script version variables section
 
 /* -------------------------------------------------------------------
-	Player Init
+	Player Event Handlers
 ------------------------------------------------------------------- */
 [] spawn {
     waitUntil {
@@ -77,68 +77,82 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 	QGVAR(VAR_isDragging_EH) addPublicVariableEventHandler GVAR(FNC_Public_EH);
 	QGVAR(VAR_isCarrying_EH) addPublicVariableEventHandler GVAR(FNC_Public_EH);
 	QGVAR(VAR_DeathMsg) addPublicVariableEventHandler GVAR(FNC_Public_EH);
+
+	player addEventHandler [
+		"HandleDamage", GVAR(FNC_HandleDamage_EH)
+	];
 	
-	[] spawn GVAR(FNC_Player_Init);
-
-	// hintSilent format["Revive v%1 has been initialized.", REV_VERSION];
-	
-	/* Damage Indication EH - adds bullet hit effects to player */
-	if (GVAR(VAR_BulletEffects)) then {
-		player addEventHandler ["hit","
-			[_this select 1] spawn " + QGVAR(FNC_BloodEffects) + ";
-			'colorCorrections' ppEffectAdjust[1, 1.8, -0.2, [4.5 - ((damage player)*5), 3.5, 1.6, -0.02],[1.8 - ((damage player)*5), 1.6, 1.6, 1],[-1.5 + ((damage player)*5),0,-0.2,1]]; 
-			'colorCorrections' ppEffectCommit 0.05; 
-			addCamShake [1 + random 2, 0.4 + random 1, 15];
-		"];
-	};
-
-	/* Death EH - adds effects to the player when killed */
-	player addEventHandler ["killed",{
-		0 fadeSound .25; 0 fadeMusic 0; 
-		[] spawn {
-			sleep 3; 
-			"dynamicBlur" ppEffectAdjust[0];
-			"dynamicBlur" ppEffectCommit 2;
-		};
-	}];
-
-	/* Respawn EH - when player respawns, this reapplies revive to the new unit */
-	player addEventHandler ["Respawn",{
-		[] spawn GVAR(FNC_Player_Init);
-		1 fadeSound 1; 
-		1 fadeMusic 1;
-	}];
-	sleep 5;
-	hintSilent "";
-};
-
-/* -------------------------------------------------------------------
-	Player Initialization
-------------------------------------------------------------------- */
-GVAR(FNC_Player_Init) = {
-
-	/* Store players side */
-	GVAR(VAR_PlayerSide) = side player;
-	
-	// player removeAllEventHandlers "HandleDamage";
-	player addEventHandler ["HandleDamage", GVAR(FNC_HandleDamage_EH)];
 	player addEventHandler [
 		"Killed",{
 			_body = _this select 0;
 			[_body] spawn {
+				0 fadeSound .25;
+				0 fadeMusic 0;
+				sleep 3;
+				"dynamicBlur" ppEffectAdjust[0];
+				"dynamicBlur" ppEffectCommit 2;
 				waitUntil {
+					sleep 0.025;
 					alive player;
 				};
 				_body = _this select 0;
 				deleteVehicle _body;
 				[player] call GVAR(FNC_DeleteMarker);
 				terminate GVAR(Unconscious_Effect);
+				250 cutText ["", "PLAIN"];
+				251 cutText ["", "PLAIN"];
 				ppEffectDestroy GVAR(Video_Blurr_Effect);
 				ppEffectDestroy GVAR(Video_Color_Effect);
 			};
 		}
 	];
 	
+	/* Damage Indication EH - adds bullet hit effects to player */
+	if (GVAR(VAR_BulletEffects)) then {
+		player addEventHandler ["hit",{
+			[_this select 1] spawn GVAR(FNC_BloodEffects);
+			"colorCorrections" ppEffectAdjust[1, 1.8, -0.2, [4.5 - ((damage player)*5), 3.5, 1.6, -0.02],[1.8 - ((damage player)*5), 1.6, 1.6, 1],[-1.5 + ((damage player)*5),0,-0.2,1]];
+			"colorCorrections" ppEffectCommit 0.05;
+			addCamShake [1 + random 2, 0.4 + random 1, 15];
+		}];
+	};
+
+	/* Death EH - adds effects to the player when killed */
+	// player addEventHandler ["killed",{
+		// 0 fadeSound .25;
+		// 0 fadeMusic 0;
+		// [] spawn {
+			// sleep 3;
+			// "dynamicBlur" ppEffectAdjust[0];
+			// "dynamicBlur" ppEffectCommit 2;
+		// };
+	// }];
+
+	/* Respawn EH - when player respawns, this reapplies revive to the new unit */
+	player addEventHandler [
+		"Respawn",{
+			[] spawn GVAR(FNC_Player_Init);
+			1 fadeSound 1;
+			1 fadeMusic 1;
+		}
+	];
+	
+	/* initialize the player */
+	[] spawn GVAR(FNC_Player_Init);
+};
+
+/* -------------------------------------------------------------------
+	Player Init Function
+------------------------------------------------------------------- */
+GVAR(FNC_Player_Init) = {
+
+	/* Store players side */
+	GVAR(VAR_PlayerSide) = side player;
+	
+	sleep 5;
+	hintSilent "";
+	
+	/* resetting variables and values */
 	player setVariable [QGVAR(VAR_isUnconscious), 0, true];
 	player setVariable [QGVAR(VAR_isStabilized), 0, true];
 	player setVariable [QGVAR(VAR_isDragged), 0, true];
@@ -150,19 +164,7 @@ GVAR(FNC_Player_Init) = {
 	GVAR(VAR_isCarrying) = false;
 	GVAR(VAR_isCarrying_EH) = [];
 	GVAR(VAR_DeathMsg) = [];
-    
-	GVAR(Unconscious_Effect) = nil;
-	GVAR(Video_Blurr_Effect) = nil;
-	GVAR(Video_Color_Effect) = nil;
 	
-	/* Debug Variables */
-	GVAR(DBG_VAR_Stabilized_Menu) = [];
-	GVAR(DBG_VAR_Revive_Menu) = [];
-	
-	/* fixes an issue with a sticky key(s) when respawned */
-	disableUserInput false;
-	disableUserInput true;
-		
 	/* Create actions for players */
 	[] spawn GVAR(FNC_Player_Actions);
 };
@@ -194,37 +196,45 @@ GVAR(FNC_Player_Init) = {
 [] spawn {
 	private ["_fatigue","_oxygen","_hRegenRate"];
 	
-	GVAR(playerBleedRate) = 0;
-	GVAR(playerRegenRate) = 0;
-	GVAR(playerDamage) = 0;
-	
 	while {alive player} do {
 		/* Variables */
 		_fatigue = getFatigue player;
 		_oxygen = getOxygenRemaining player;
 		
+		if (isNil QGVAR(playerBleedRate)) then {
+			GVAR(playerBleedRate) = 0;
+		};
+		if (isNil QGVAR(playerRegenRate)) then {
+			GVAR(playerRegenRate) = 0;
+		};
+		if (isNil QGVAR(playerDamage)) then {
+			GVAR(playerDamage) = 0;
+		};
+		
 		/* Health regeneration/bleedout */
-		_hRegenRate = 1 - _fatigue;
+		_hRegenRate = (1 - _fatigue);
 		if (_hRegenRate == 0) then {
 			_hRegenRate = 1;
 		};
 		
-		/* Bleeding out */
-		waitUntil{player getVariable QGVAR(VAR_isUnconscious) == 1};
+		waitUntil {player getVariable QGVAR(VAR_isUnconscious) == 1};
 		
 		if (damage player >= 0.6) then {
-			player setDamage ((damage player) + ((1-(getFatigue player))*(0.000047)));
+			
+			/* Bleeding out */
+			player setDamage ((damage player) + ((1-(getFatigue player))*(0.0017)));
 			// player setDamage ((damage player) + ((1-(getFatigue player))/GVAR(VAR_BleedOutTime)));
 			if (GVAR(Debug)) then {
-				GVAR(playerBleedRate) = ((damage player) + ((1-(getFatigue player))*(0.00003)));
+				GVAR(playerBleedRate) = ((damage player) + ((1-(getFatigue player))*(0.0017)));
 			};
 		} else {
-			/* Using regen, will allow a player to recover from lower amounts of damage. */
+
 			/* Regeneration */
 			if (damage player < 0.6 && damage player > 0.25) then {
-				player setDamage (damage player - ((random(0.0001)) + (getFatigue player/200)));
+				player setDamage (damage player - ((random(0.015)) + (getFatigue player/95)));
+				player setVariable [GVAR(isUnconscious),0,true];
 				if (GVAR(Debug)) then {
-					GVAR(playerRegenRate) = (damage player - ((random(0.0001)) + (getFatigue player/200)));
+					GVAR(playerRegenRate) = (damage player - ((random(0.015)) + (getFatigue player/95)));
 				};
 			} else {
 				if (damage player <= 0.25) then {
@@ -233,10 +243,6 @@ GVAR(FNC_Player_Init) = {
 					player setVariable [QGVAR(VAR_isDragged), 0, true];
 					player setVariable [QGVAR(VAR_isCarried), 0, true];
 					sleep 3;
-					
-					/* Closes any dialog that could be open during revive process */
-					// need code here to close any dialogs that may be present
-					// closeDialog 0; 
 					
 					/* Back to normal game, remove effects */
 					5 fadeSound 1;
@@ -247,22 +253,25 @@ GVAR(FNC_Player_Init) = {
 					/* remove map marker */
 					[player] call GVAR(FNC_DeleteMarker);
 					
-					/* Select primary of the weapon after being revived */
+					/* Select primary weapon after being revived */
 					player selectWeapon (primaryWeapon player);
 					
-					/* set players conditions for captive and damage states */
+					/* set players state for captive and damage */
 					player setCaptive false;
 					player allowDamage true;
 					
 					/* terminate all effects and exit */
 					terminate GVAR(Unconscious_Effect);
+					250 cutText ["", "PLAIN"];
+					251 cutText ["", "PLAIN"];
+
 				};
 			};
 		};
 		
-			if (GVAR(Debug)) then {
-				GVAR(playerDamage) = (damage player);
-			};
+		if (GVAR(Debug)) then {
+			GVAR(playerDamage) = (damage player);
+		};
 		
 		if (getPosASLW player select 2 > 0) then {
 		
@@ -284,21 +293,32 @@ GVAR(FNC_Player_Init) = {
 			"dynamicBlur" ppEffectAdjust[(1-_oxygen)*3];
 			"dynamicBlur" ppEffectCommit 0.1;
 		};
-		sleep 0.05;
+		sleep 1;
 	};
 };
 
 /* -------------------------------------------------------------------
-	Add revive to playable AI units SP/MP (MP WiP)
+	AI Unit Settings
 ------------------------------------------------------------------- */
-if (GVAR(VAR_SP_PlayableUnits)) then {
-	{
-		if (!isPlayer _x) then {
-			_x addEventHandler ["HandleDamage", GVAR(FNC_HandleDamage_EH)];
-			_x setVariable [QGVAR(VAR_isUnconscious), 0, true];
-			_x setVariable [QGVAR(VAR_isStabilized), 0, true];
-			_x setVariable [QGVAR(VAR_isDragged), 0, true];
-			_x setVariable [QGVAR(VAR_isCarried), 0, true];
-		};
-	} forEach switchableUnits;
+if (GVAR(VAR_AI_PlayableUnits) > 0) then {
+	/* Add revive to ALL Playable AI units */
+	if (GVAR(VAR_AI_PlayableUnits) == 1) then {
+		{
+			if (!isPlayer _x) then {
+				_x addEventHandler ["HandleDamage", GVAR(FNC_HandleDamage_EH)];
+				_x setVariable [QGVAR(VAR_isUnconscious), 0, true];
+				_x setVariable [QGVAR(VAR_isStabilized), 0, true];
+				_x setVariable [QGVAR(VAR_isDragged), 0, true];
+				_x setVariable [QGVAR(VAR_isCarried), 0, true];
+			};
+		} forEach switchableUnits;
+	};
+	/* Add revive to ALL AI units on side of player */
+	if (GVAR(VAR_AI_PlayableUnits) == 2) then {
+		[] call GVAR(FNC_UnitSideArray);
+	};
+	/* Add revive to ALL AI units (Friendly, Enemy, & Civillian */
+	if (GVAR(VAR_AI_PlayableUnits) == 3) then {
+		[] call GVAR(FNC_UnitArray);
+	};
 };
