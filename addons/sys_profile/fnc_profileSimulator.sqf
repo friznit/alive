@@ -361,7 +361,8 @@ _engaged = [0,0,0];
                  _newPosition = getPosATL _leader;
                  _position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
 
-                 if (!(isnil "_newPosition") && {count _newPosition > 0} && {!(isnil "_position")} && {count _position > 0}) then {
+				//Positions are valid
+				if (!(isnil "_newPosition") && {str(_newPosition) != "[0,0,0]"} && {!(isnil "_position")} && {str(_position) != "[0,0,0]"}) then {
 
                      _moveDistance = _newPosition distance _position;
 
@@ -390,7 +391,11 @@ _engaged = [0,0,0];
                              [_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
                          };
                      };
-                 };
+                     
+                //Positions are invalid (due to missing player object or corrupted profile)
+				} else {
+                     ["DISCONNECT"] call ALIVE_fnc_createProfilesFromPlayers;
+				};
             };
         };
 	};
