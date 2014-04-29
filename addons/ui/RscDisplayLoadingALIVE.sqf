@@ -28,13 +28,12 @@ switch _mode do {
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
-
 		//--- Hide start loading screen
-		_ctrlLoadingStart = _display displayctrl IDC_LOADINGSTART_LOADINGSTART;
+		//--- Needs Check IDC_LOADINGSTART_LOADINGSTART seems bugged since/in 1.18!
+		_ctrlLoadingStart = _display displayctrl IDC_LOADINGSTART;
 		_ctrlLoadingStart ctrlsetfade 1;
 		_ctrlLoadingStart ctrlcommit 0;
 		_pictureShot = "";
-
 		//--- Map
 		if (worldname != "") then {
 			_ctrlMap = _display displayctrl IDC_LOADING_MAP;
