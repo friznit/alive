@@ -154,7 +154,7 @@ switch(_operation) do {
                             _collection set [count _collection,[_pos,_size]];
                         } foreach _objectives;
                         
-                        ["ALiVE CQB Houses loaded from objectives!"] call ALiVE_fnc_DumpR;
+                        ["ALiVE CQB Houses loaded from objectives!"] call ALiVE_fnc_Dump;
                     } else {
                         switch (_CQB_Locations) do {
                             case ("towns") : {
@@ -174,7 +174,7 @@ switch(_operation) do {
                             default {};
                         };
                         
-                        ["ALiVE CQB Houses loaded from map!"] call ALiVE_fnc_DumpR;
+                        ["ALiVE CQB Houses loaded from map!"] call ALiVE_fnc_Dump;
                     };
                     
                     _houses_reg = [];
@@ -257,7 +257,7 @@ switch(_operation) do {
     						{[_cqb_logic,"state",_x] call ALiVE_fnc_CQB} foreach (_data select 2);
 						} foreach (MOD(CQB) getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
 	                    
-	                    ["ALiVE CQB DATA loaded from DB! CQB states were reset!"] call ALiVE_fnc_DumpR;
+	                    ["ALiVE CQB DATA loaded from DB! CQB states were reset!"] call ALiVE_fnc_Dump;
 	                };
                     
                     //Indicate startup is done on server
@@ -328,7 +328,7 @@ switch(_operation) do {
                     
                     //Set value
                     _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
-                    ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+                    ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_Dump;
 			};
 		};
 
@@ -754,7 +754,7 @@ switch(_operation) do {
                 
                 //Check if all CQB houses have been cleared in that sector!
                 if ({(_x getVariable ["sectorID","in"]) == _sectorID} count (MOD(CQB) getvariable ["houses",[]]) == 0) then {
-                    ["ALiVE MIL CQB Cleared sector %1!", _sectorID] call ALiVE_fnc_DumpR;
+                    ["ALiVE MIL CQB Cleared sector %1!", _sectorID] call ALiVE_fnc_Dump;
                     MOD(CQB) setvariable ["cleared",(MOD(CQB) getvariable ["cleared",[]]) + [_sectorID]];
                 };
 			} else {
