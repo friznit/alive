@@ -324,7 +324,7 @@ switch(_operation) do {
 					
 					_result = [_row, _column];
 				}else{
-					["!!!!!POS OUTSIDE GRID: %1", _position] call ALIVE_fnc_dump;
+					//["!!!!!POS OUTSIDE GRID: %1", _position] call ALIVE_fnc_dump;
 					_result = [0, 0];
 				};
         };

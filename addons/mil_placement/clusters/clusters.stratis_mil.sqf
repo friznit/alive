@@ -1620,3 +1620,4 @@ _nodes set [count _nodes, ["19311",[5027.25,5904.65,0.0154114]]];
 [_cluster,"priority",20] call ALIVE_fnc_hashSet;
 [_cluster,"debugColor","ColorYellow"] call ALIVE_fnc_hashSet;
 [ALIVE_clustersMilHeli,"c_26",_cluster] call ALIVE_fnc_hashSet;
+
