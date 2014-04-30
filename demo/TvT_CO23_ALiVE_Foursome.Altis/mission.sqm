@@ -127,7 +127,7 @@ class Mission
 	randomSeed=6813863;
 	class Intel
 	{
-		briefingName="ALiVE Showcase - Foursome v1.0 (ZEUS)";
+		briefingName="ALiVE Showcase - Foursome v1.05 (ZEUS)";
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -600,7 +600,7 @@ class Mission
 						};
 						class Item1
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="persistent";
 						};

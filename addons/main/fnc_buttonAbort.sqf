@@ -188,7 +188,8 @@ if (call ALiVE_fnc_isServerAdmin) then {
 
 		// Save server data
 		//[] call _saveServer;
-		["server",QMOD(main),[["SAVESERVERYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
+        [["SAVESERVERYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
+		//["server",QMOD(main),[["SAVESERVERYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
 		["server",QMOD(main),[[],{endMission "serversaved"}]] call ALIVE_fnc_BUS;
 
 	};
@@ -202,7 +203,8 @@ if (call ALiVE_fnc_isServerAdmin) then {
 		[["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
 
 		// exit server
-		["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
+        [["SERVERABORTYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
+		//["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
 		["server",QMOD(main),[[],{endMission "serverabort"}]] call ALIVE_fnc_BUS;
 	};
 };
