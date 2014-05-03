@@ -71,6 +71,8 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 	_test = MOD(sys_player) getVariable [_uid, false];
 	TRACE_1("REMOVING PLAYER GUID FROM LOGIC", _test);
 
+	TRACE_1("",MOD(player_count));
+
 };
 
 // ====================================================================================

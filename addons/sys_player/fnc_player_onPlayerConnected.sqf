@@ -50,7 +50,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 		_check = MOD(sys_player) getVariable ["init", false];
 		// Wait for player module to init
 		TRACE_1("Waiting for player module to init",_check);
-		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable ["init", false]; TRACE_1("Waiting for init",_check); _check};
+		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable ["init", false]; TRACE_2("Waiting for init",_check,_name); _check};
 		sleep 0.2;
 		TRACE_1("Player module init complete",_check);
 

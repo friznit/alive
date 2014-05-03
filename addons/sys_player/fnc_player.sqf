@@ -109,14 +109,18 @@ switch(_operation) do {
             	   MOD(sys_player) setVariable ["super", QUOTE(SUPERCLASS)];
             	   MOD(sys_player) setVariable ["class", QUOTE(MAINCLASS)];
 
-                  TRACE_1("SYS_PLAYER LOGIC", _logic);
-
-
+                    //Wait for data to init?
+                   // WaitUntil{sleep 0.3; !isNil "ALIVE_sys_data"};
+                   TRACE_3("SYS_PLAYER LOGIC", MOD(sys_player), ALIVE_sys_data, ALIVE_sys_data_DISABLED);
 
                     // Check to see if data module has been placed
-                    if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
+                    if (!isNil "ALIVE_sys_data") then {
                         // Grab Server ID and Mission ID
                         private ["_serverID","_missionName"];
+
+                        if (ALIVE_sys_data_DISABLED) exitWith {};
+
+                        WaitUntil{sleep 0.3; !isNil "ALIVE_sys_data_dictionaryLoaded"};
 
                         _serverID = [] call ALIVE_fnc_getServerName;
                         MOD(sys_player) setVariable ["serverID", _serverID];

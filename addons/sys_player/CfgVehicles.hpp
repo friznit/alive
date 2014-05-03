@@ -12,11 +12,11 @@ class CfgVehicles {
 				author = MODULE_AUTHOR;
 				class ModuleDescription
                 {
-                        description = "This module allows you to persist player state between reconnects and server restarts."; // Short description, will be formatted as structured text       
-                }; 
+                        description = "This module allows you to persist player state between reconnects and server restarts."; // Short description, will be formatted as structured text
+                };
                 class Arguments
                 {
-         
+
                         class allowReset
                         {
                                 displayName = "$STR_ALIVE_player_allowReset";
@@ -36,7 +36,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                     
+
                         class allowManualSave
                         {
                                 displayName = "$STR_ALIVE_player_allowManualSave";
@@ -75,7 +75,7 @@ class CfgVehicles {
                                                 default = 1;
                                         };
                                 };
-                        };  
+                        };
                         class saveLoadout
                         {
                                 displayName = "$STR_ALIVE_player_SAVELOADOUT";
@@ -105,7 +105,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = 1;       
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -177,11 +177,11 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_player_storeToDB_COMMENT";
                                 class Values
                                 {
- /*                                       class Yes
+                                        class Yes
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                        };*/
+                                        };
                                         class No
                                         {
                                                 name = "No";
@@ -196,8 +196,8 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_player_autoSaveTime";
                                 description = "$STR_ALIVE_player_autoSaveTime_COMMENT";
                                 defaultValue = "0";
-                        };    
+                        };
                 };
-                
+
         };
 };
