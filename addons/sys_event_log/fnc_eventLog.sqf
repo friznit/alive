@@ -102,7 +102,7 @@ switch(_operation) do {
                 _listeners = [_logic,"listeners"] call ALIVE_fnc_hashGet;
                 _filteredListeners = [_logic,"listenersByFilter"] call ALIVE_fnc_hashGet;
 
-                _listenerID = [_logic, "getNextlistenerInsertID"] call MAINCLASS;
+                _listenerID = [_logic, "getNextListenerInsertID"] call MAINCLASS;
 
                 // store the listener in a hash by filter type
 
@@ -243,39 +243,50 @@ switch(_operation) do {
                     _eventsByType call ALIVE_fnc_inspectHash;
                 };
 
-                // notify filtered listeners
+                // spawn the event dispatch
 
-                _filteredListeners = [_logic,"listenersByFilter"] call ALIVE_fnc_hashGet;
-                if(_type in (_filteredListeners select 1)) then {
-                    _listeners = [_filteredListeners,_type] call ALIVE_fnc_hashGet;
-                    {
-                        _listener = _x select 0;
-                        if(typeName _listener == "OBJECT") then {
-                            _class = _listener getVariable "class";
-                        }else{
-                            _class = [_listener,"class"] call ALIVE_fnc_hashGet;
-                        };
+                [_logic, _type, _event] spawn {
 
-                        [_listener,"handleEvent",_event] call _class;
-                    } forEach (_listeners select 2);
-                };
+                    private["_logic","_type","_event","_filteredListeners","_listeners","_listener","_class"];
 
-                // notify all filter listeners
+                    _logic = _this select 0;
+                    _type = _this select 1;
+                    _event = _this select 2;
 
-                _filteredListeners = [_logic,"listenersByFilter"] call ALIVE_fnc_hashGet;
-                if('ALL' in (_filteredListeners select 1)) then {
-                    _listeners = [_filteredListeners,'ALL'] call ALIVE_fnc_hashGet;
-                    {
-                        _listener = _x select 0;
+                    // notify filtered listeners
 
-                        if(typeName _listener == "OBJECT") then {
-                            _class = _listener getVariable "class";
-                        }else{
-                            _class = [_listener,"class"] call ALIVE_fnc_hashGet;
-                        };
+                    _filteredListeners = [_logic,"listenersByFilter"] call ALIVE_fnc_hashGet;
+                    if(_type in (_filteredListeners select 1)) then {
+                        _listeners = [_filteredListeners,_type] call ALIVE_fnc_hashGet;
+                        {
+                            _listener = _x select 0;
+                            if(typeName _listener == "OBJECT") then {
+                                _class = _listener getVariable "class";
+                            }else{
+                                _class = [_listener,"class"] call ALIVE_fnc_hashGet;
+                            };
 
-                        [_listener,"handleEvent",_event] call _class;
-                    } forEach (_listeners select 2);
+                            [_listener,"handleEvent",_event] call _class;
+                        } forEach (_listeners select 2);
+                    };
+
+                    // notify all filter listeners
+
+                    _filteredListeners = [_logic,"listenersByFilter"] call ALIVE_fnc_hashGet;
+                    if('ALL' in (_filteredListeners select 1)) then {
+                        _listeners = [_filteredListeners,'ALL'] call ALIVE_fnc_hashGet;
+                        {
+                            _listener = _x select 0;
+
+                            if(typeName _listener == "OBJECT") then {
+                                _class = _listener getVariable "class";
+                            }else{
+                                _class = [_listener,"class"] call ALIVE_fnc_hashGet;
+                            };
+
+                            [_listener,"handleEvent",_event] call _class;
+                        } forEach (_listeners select 2);
+                    };
                 };
 
                 _result = _eventID;
@@ -329,7 +340,7 @@ switch(_operation) do {
             _eventsByType = [] call ALIVE_fnc_hashCreate;
             [_logic,"eventsByType",_eventsByType] call ALIVE_fnc_hashSet;
         };
-        case "getNextlistenerInsertID": {
+        case "getNextListenerInsertID": {
             private["_listenerCount"];
 
             _listenerCount = [_logic, "listenerCount"] call ALIVE_fnc_hashGet;

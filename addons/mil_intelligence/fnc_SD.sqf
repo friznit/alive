@@ -77,9 +77,11 @@ switch(_operation) do {
 	};
 	case "runEvery": {
 	    if(typeName _args == "STRING") then {
-            _args = parseNumber(_args);
-            _args = floor(_args * 60);
+	        _args = parseNumber(_args);
 	    };
+	    if(typeName _args == "SCALAR") then {
+	        _args = floor(_args * 60);
+        };
         _result = [_logic,_operation,_args,DEFAULT_RUN_EVERY] call ALIVE_fnc_OOsimpleOperation;
     };
 	// Main process
