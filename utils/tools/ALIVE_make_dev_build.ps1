@@ -16,6 +16,7 @@ $bi_game = "arma 3";
 $make_pbo_exe = "mikero\MakePbo.exe";
 $dev_mod_folder = "@ALiVE_dev";
 $dev_repo_path = "\x\alive\addons";
+$include_pbo_prefix = $false;
 
 # Functions ------------------------------------#
 
@@ -104,7 +105,11 @@ if ($game_dir -ne $null) { # Check game path
 			};
 			
 			# Compile addon to PBO
-			& $make_pbo_exe -A -N -P -@="$dev_repo_path\$addon" "$addon_path";
+			if ($include_pbo_prefix) {
+				& $make_pbo_exe -A -N -P -@="$dev_repo_path\$addon" "$addon_path";
+			} else {
+				& $make_pbo_exe -A -N -P "$addon_path";
+			};
 			
 			# Remove addon folder
 			Remove-Item $addon_path -Force -Recurse;
