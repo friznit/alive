@@ -192,7 +192,7 @@ switch(_operation) do {
                         _houses_strat = _houses_strat + _houses_strat_tmp;
                     } foreach _collection;
                     
-                    _result = [_houses_reg + _houses_strat,_strategicTypes,_CQB_density,[_logic, "blacklist"] call ALiVE_fnc_CQB,[_logic, "whitelist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
+                    _result = [_houses_reg + _houses_strat,_strategicTypes,_CQB_density,_CQB_spawn,[_logic, "blacklist"] call ALiVE_fnc_CQB,[_logic, "whitelist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
                     _strategicHouses = _result select 0;
 					_nonStrategicHouses = _result select 1;
                     

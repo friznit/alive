@@ -27,11 +27,12 @@ See Also:
 - <ALIVE_fnc_getEnterableHouses>
 - <ALIVE_fnc_getAllEnterableHouses>
 
-Author:
+Authors:
+Naught
 Highhead
 Wolffy.au
 ---------------------------------------------------------------------------- */
-private ["_spawnhouses","_BuildingTypeStrategic","_nonstrathouses","_strathouses","_cqb_spawn_intensity","_triglist","_blackzone"];
+private ["_spawnhouses","_BuildingTypeStrategic","_density","_CQB_spawn","_blackzone","_whitezone","_nonstrathouses","_strathouses"];
 
 scopename "main";
 
@@ -39,10 +40,9 @@ PARAMS_1(_spawnhouses);
 ASSERT_TRUE(typeName _spawnhouses == "ARRAY",str _spawnhouses);
 DEFAULT_PARAM(1,_BuildingTypeStrategic,[]);
 DEFAULT_PARAM(2,_density,1000);
-DEFAULT_PARAM(3,_blackzone,[]);
-DEFAULT_PARAM(4,_whitezone,[]);
-
-_CQB_spawn = _logic getVariable ["CQB_spawn", 1];
+DEFAULT_PARAM(3,_CQB_spawn,1);
+DEFAULT_PARAM(4,_blackzone,[]);
+DEFAULT_PARAM(5,_whitezone,[]);
 
 _strathouses = [];
 _nonstrathouses = [];
