@@ -47,42 +47,65 @@ _CQB_spawn = _logic getVariable ["CQB_spawn", 1];
 _strathouses = [];
 _nonstrathouses = [];
 
-{
-    private ["_pos","_positions","_dist","_collect"];
-    _positions = [_x] call ALiVE_fnc_getBuildingPositions;
-    _collect = true;
+{ // forEach
+    private ["_obj", "_positions"];
+	_obj = _x;
+    _positions = [_obj] call ALiVE_fnc_getBuildingPositions;
     
-    if ((count _positions) > 0) then {
-		_pos = getPosATL _x;
-		//If spawn position is  within a whitelist trigger ignore blacklist trigger
-	    // Check if spawn position is NOT within a blacklist trigger
-		if ({[_x, _pos] call BIS_fnc_inTrigger} count _blackzone == 0) then {
-            
-            if (count _whitezone > 0) then {
-                if !({[_x, _pos] call BIS_fnc_inTrigger} count _whitezone > 0) then {_collect = false};
-            };
-            
-            if (_collect) then {
-				if (typeOf _x in _BuildingTypeStrategic) then {
-	                if ({_pos distance (getposATL _x) < _density} count _strathouses == 0) then {
-	                	_strathouses set [count _strathouses, _x];    
-	                } else {
-	                    if ({_pos distance (getposATL _x) < 60} count _strathouses == 0) then {
-							if (((random 1) < (_CQB_spawn / 30)) && {!(_x in _strathouses)}) then {
-								_strathouses set [count _strathouses, _x];
-							};
-	                    };
-	                };
-				} else {
-	                if ({_pos distance (getposATL _x) < _density} count _nonstrathouses == 0) then {
-	                	_nonstrathouses set [count _nonstrathouses, _x];    
-	                } else {
-						if (((random 1) < (_CQB_spawn / 100)) && {!(_x in _nonstrathouses)}) then {
-							_nonstrathouses set [count _nonstrathouses, _x];
-						};
-	                };
+    if !(_positions isEqualTo []) then {
+		private ["_pos", "_collect"];
+		_pos = getPosATL _obj;
+		_collect = true;
+		
+		if !(_whitezone isEqualTo []) then { // Ensure within white zone
+			_collect = false;
+			{ // forEach
+				if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {
+					_collect = true;
 				};
-            };
+			} forEach _whitezone;
+		} else { // Ensure not in black zone
+			{ // forEach
+				if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {
+					_collect = false;
+				};
+			} forEach _blackzone;
+		};
+		
+		if (_collect) then {
+			private ["_isStrategic", "_addHouse", "_houses"];
+			_isStrategic = (typeOf _obj) in _BuildingTypeStrategic;
+			_addHouse = true;
+			_houses = if (_isStrategic) then {_strathouses} else {_nonstrathouses};
+			
+			{ // forEach
+				if ((_pos distance (getposATL _x)) < _density) exitWith {
+					_addHouse = false;
+					
+					if (_isStrategic) then {
+						_addHouse = true;
+						
+						{ // forEach
+							if ((_pos distance (getposATL _x)) < 60) exitWith {
+								_addHouse = false;
+							};
+						} forEach _houses;
+						
+						if (_addHouse) then {
+							_addHouse = ((random 1) < (_CQB_spawn / 30)) && {!(_obj in _houses)}
+						};
+						
+					} else {
+						if (((random 1) < (_CQB_spawn / 100)) && {!(_obj in _houses)}) then {
+							_addHouse = true;
+						};
+					};
+				};
+			} forEach _houses;
+			
+			if (_addHouse) then {
+				_houses set [count _houses, _obj];
+			};
 		};
     };
 } forEach _spawnhouses;
