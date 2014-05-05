@@ -40,7 +40,7 @@ PARAMS_1(_spawnhouses);
 ASSERT_TRUE(typeName _spawnhouses == "ARRAY",str _spawnhouses);
 DEFAULT_PARAM(1,_BuildingTypeStrategic,[]);
 DEFAULT_PARAM(2,_density,1000);
-DEFAULT_PARAM(3,_CQB_spawn,1);
+DEFAULT_PARAM(3,_CQB_spawn,0.01);
 DEFAULT_PARAM(4,_blackzone,[]);
 DEFAULT_PARAM(5,_whitezone,[]);
 
@@ -48,11 +48,12 @@ _strathouses = [];
 _nonstrathouses = [];
 
 { // forEach
-    private ["_obj", "_positions"];
+    private ["_obj", "_isStrategic", "_houses"];
 	_obj = _x;
-    _positions = [_obj] call ALiVE_fnc_getBuildingPositions;
+	_isStrategic = (typeOf _obj) in _BuildingTypeStrategic;
+	_houses = if (_isStrategic) then {_strathouses} else {_nonstrathouses};
     
-    if !(_positions isEqualTo []) then {
+    if (!(([_obj] call ALiVE_fnc_getBuildingPositions) isEqualTo []) && {!(_obj in _houses)}) then {
 		private ["_pos", "_collect"];
 		_pos = getPosATL _obj;
 		_collect = true;
@@ -73,37 +74,18 @@ _nonstrathouses = [];
 		};
 		
 		if (_collect) then {
-			private ["_isStrategic", "_addHouse", "_houses"];
-			_isStrategic = (typeOf _obj) in _BuildingTypeStrategic;
-			_addHouse = true;
-			_houses = if (_isStrategic) then {_strathouses} else {_nonstrathouses};
+			private ["_weight"];
+			_weight = if (_isStrategic) then {3} else {1};
 			
 			{ // forEach
-				if ((_pos distance (getposATL _x)) < _density) exitWith {
-					_addHouse = false;
-					
-					if (_isStrategic) then {
-						_addHouse = true;
-						
-						{ // forEach
-							if ((_pos distance (getposATL _x)) < 60) exitWith {
-								_addHouse = false;
-							};
-						} forEach _houses;
-						
-						if (_addHouse) then {
-							_addHouse = ((random 1) < (_CQB_spawn / 30)) && {!(_obj in _houses)}
-						};
-						
-					} else {
-						if (((random 1) < (_CQB_spawn / 100)) && {!(_obj in _houses)}) then {
-							_addHouse = true;
-						};
-					};
+				private ["_dis"];
+				_dis = _pos distance (getposATL _x);
+				if ((_dis < _density) && {!_isStrategic || {_dis < 60}}) exitWith {
+					_collect = (random 1) < (_CQB_spawn * _weight);
 				};
 			} forEach _houses;
 			
-			if (_addHouse) then {
+			if (_collect) then {
 				_houses set [count _houses, _obj];
 			};
 		};

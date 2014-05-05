@@ -103,45 +103,45 @@ class CfgVehicles {
                                         class CQB_spawn_2
                                         {
                                                 name = "2%";
-                                                value = 2;
+                                                value = 0.02;
                                                 default = 1;
-												CQB_spawn = 2;
+												
                                         };                                
                                         class CQB_spawn_5
                                         {
                                                 name = "5%";
-                                                value = 5;
-												CQB_spawn = 5;
+                                                value = 0.05;
+												
                                         };
                                         class CQB_spawn_10
                                         {
                                                 name = "10%";
-                                                value = 10;
-												CQB_spawn = 10;
+                                                value = 0.10;
+												
                                         };
                                         class CQB_spawn_20
                                         {
                                                 name = "20%";
-                                                value = 20;
-                                                CQB_spawn = 20;
+                                                value = 0.20;
+                                                
                                         };
                                         class CQB_spawn_30
                                         {
                                                 name = "30%";
-                                                value = 30;
-                                                CQB_spawn = 30;
+                                                value = 0.30;
+                                                
                                         };
                                         class CQB_spawn_40
                                         {
                                                 name = "40%";
-                                                value = 40;
-                                                CQB_spawn = 40;
+                                                value = 0.40;
+                                                
                                         };
                                         class CQB_spawn_50
                                         {
                                                 name = "50%";
-                                                value = 50;
-                                                CQB_spawn = 50;
+                                                value = 0.50;
+                                                
                                         };
                                 };
                         };
@@ -177,7 +177,7 @@ class CfgVehicles {
                                         {
                                                 name = "low";
                                                 value = 2000;
-                                                CQB_spawn = 20;
+                                                
                                         };
                                 };
                         };
