@@ -6,6 +6,11 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data_couchdb\fnc_writeData.sqf";
 					recompile = RECOMPILE;
 				};
+				class bulkWriteData_couchdb {
+					description = "Writes a record/document to a data source";
+					file = "\x\alive\addons\sys_data_couchdb\fnc_bulkWriteData.sqf";
+					recompile = RECOMPILE;
+				};
 				class updateData_couchdb {
 					description = "Updates a record stored in a data source";
 					file = "\x\alive\addons\sys_data_couchdb\fnc_updateData.sqf";
@@ -29,6 +34,11 @@ class cfgFunctions {
 				class saveData_couchdb {
 					description = "Saves all records/documents to a data source";
 					file = "\x\alive\addons\sys_data_couchdb\fnc_saveData.sqf";
+					recompile = RECOMPILE;
+				};
+				class bulkSaveData_couchdb {
+					description = "Saves all records/documents to a data source";
+					file = "\x\alive\addons\sys_data_couchdb\fnc_bulkSaveData.sqf";
 					recompile = RECOMPILE;
 				};
 				class loadData_couchdb {
