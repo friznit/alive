@@ -120,8 +120,6 @@ switch(_operation) do {
 
                         if (ALIVE_sys_data_DISABLED) exitWith {};
 
-                        WaitUntil{sleep 0.3; !isNil "ALIVE_sys_data_dictionaryLoaded"};
-
                         _serverID = [] call ALIVE_fnc_getServerName;
                         MOD(sys_player) setVariable ["serverID", _serverID];
 

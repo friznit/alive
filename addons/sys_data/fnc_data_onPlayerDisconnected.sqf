@@ -36,6 +36,7 @@ if (_name == "__SERVER__") then {
 		if (MOD(sys_data) getVariable ["saveDateTime","true"] == "true") then {
 
 			[GVAR(mission_data), "date", date] call ALIVE_fnc_hashSet;
+			[GVAR(mission_data), "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
 
 			_missionName = format["%1_%2", GVAR(GROUP_ID), missionName];
 
