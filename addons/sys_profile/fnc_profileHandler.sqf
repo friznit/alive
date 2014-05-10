@@ -103,7 +103,7 @@ switch(_operation) do {
 
 						// set defaults
 						[_logic,"debug",false] call ALIVE_fnc_hashSet;
-						[_logic,"profiles",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;		
+						[_logic,"profiles",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByCompany",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profilesActive",[]] call ALIVE_fnc_hashSet;
 						[_logic,"profilesInActive",[]] call ALIVE_fnc_hashSet;
@@ -143,16 +143,16 @@ switch(_operation) do {
                         [_profilesInActiveBySide, "GUER", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                         [_profilesInActiveBySide, "CIV", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                         [_logic,"profilesInActiveBySide",_profilesInActiveBySide] call ALIVE_fnc_hashSet;
-						
+
 						[_logic,"profilesByFaction",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByFactionByType",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByFactionByVehicleType",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByType = [] call ALIVE_fnc_hashCreate;
 						[_profilesByType, "entity", []] call ALIVE_fnc_hashSet;
 						[_profilesByType, "vehicle", []] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByType",_profilesByType] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByVehicleType = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleType, "Car", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleType, "Tank", []] call ALIVE_fnc_hashSet;
@@ -163,7 +163,7 @@ switch(_operation) do {
 						[_profilesByVehicleType, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleType, "StaticWeapon", []] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByVehicleType",_profilesByVehicleType] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByVehicleTypeEAST = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleTypeEAST, "Car", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeEAST, "Tank", []] call ALIVE_fnc_hashSet;
@@ -173,7 +173,7 @@ switch(_operation) do {
 						[_profilesByVehicleTypeEAST, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeEAST, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeEAST, "StaticWeapon", []] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByVehicleTypeWEST = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleTypeWEST, "Car", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeWEST, "Tank", []] call ALIVE_fnc_hashSet;
@@ -183,7 +183,7 @@ switch(_operation) do {
 						[_profilesByVehicleTypeWEST, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeWEST, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeWEST, "StaticWeapon", []] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByVehicleTypeGUER = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleTypeGUER, "Car", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeGUER, "Tank", []] call ALIVE_fnc_hashSet;
@@ -193,7 +193,7 @@ switch(_operation) do {
 						[_profilesByVehicleTypeGUER, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeGUER, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeGUER, "StaticWeapon", []] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByVehicleTypeCIV = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleTypeCIV, "Car", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeCIV, "Tank", []] call ALIVE_fnc_hashSet;
@@ -203,39 +203,39 @@ switch(_operation) do {
 						[_profilesByVehicleTypeCIV, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeCIV, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeCIV, "StaticWeapon", []] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByTypeEAST = [] call ALIVE_fnc_hashCreate;
 						[_profilesByTypeEAST, "entity", []] call ALIVE_fnc_hashSet;
 						[_profilesByTypeEAST, "vehicle", []] call ALIVE_fnc_hashSet;
-												
+
 						_profilesByTypeWEST = [] call ALIVE_fnc_hashCreate;
 						[_profilesByTypeWEST, "entity", []] call ALIVE_fnc_hashSet;
 						[_profilesByTypeWEST, "vehicle", []] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByTypeGUER = [] call ALIVE_fnc_hashCreate;
 						[_profilesByTypeGUER, "entity", []] call ALIVE_fnc_hashSet;
 						[_profilesByTypeGUER, "vehicle", []] call ALIVE_fnc_hashSet;
-						
+
 						_profilesByTypeCIV = [] call ALIVE_fnc_hashCreate;
 						[_profilesByTypeCIV, "entity", []] call ALIVE_fnc_hashSet;
 						[_profilesByTypeCIV, "vehicle", []] call ALIVE_fnc_hashSet;
-						
+
 						_catagoriesEAST = [] call ALIVE_fnc_hashCreate;
 						[_catagoriesEAST, "type", _profilesByTypeEAST] call ALIVE_fnc_hashSet;
 						[_catagoriesEAST, "vehicleType", _profilesByVehicleTypeEAST] call ALIVE_fnc_hashSet;
 
 						_catagoriesWEST = [] call ALIVE_fnc_hashCreate;
 						[_catagoriesWEST, "type", _profilesByTypeWEST] call ALIVE_fnc_hashSet;
-						[_catagoriesWEST, "vehicleType", _profilesByVehicleTypeWEST] call ALIVE_fnc_hashSet;	
-						
+						[_catagoriesWEST, "vehicleType", _profilesByVehicleTypeWEST] call ALIVE_fnc_hashSet;
+
 						_catagoriesGUER = [] call ALIVE_fnc_hashCreate;
 						[_catagoriesGUER, "type", _profilesByTypeGUER] call ALIVE_fnc_hashSet;
-						[_catagoriesGUER, "vehicleType", _profilesByVehicleTypeGUER] call ALIVE_fnc_hashSet;	
-						
+						[_catagoriesGUER, "vehicleType", _profilesByVehicleTypeGUER] call ALIVE_fnc_hashSet;
+
 						_catagoriesCIV = [] call ALIVE_fnc_hashCreate;
 						[_catagoriesCIV, "type", _profilesByTypeCIV] call ALIVE_fnc_hashSet;
-						[_catagoriesCIV, "vehicleType", _profilesByVehicleTypeCIV] call ALIVE_fnc_hashSet;	
-						
+						[_catagoriesCIV, "vehicleType", _profilesByVehicleTypeCIV] call ALIVE_fnc_hashSet;
+
 						_profilesCatagorised = [] call ALIVE_fnc_hashCreate;
 						[_profilesCatagorised, "EAST", _catagoriesEAST] call ALIVE_fnc_hashSet;
 						[_profilesCatagorised, "WEST", _catagoriesWEST] call ALIVE_fnc_hashSet;
@@ -243,7 +243,7 @@ switch(_operation) do {
 						[_profilesCatagorised, "CIV", _catagoriesCIV] call ALIVE_fnc_hashSet;
 						[_logic,"profilesCatagorised",_profilesCatagorised] call ALIVE_fnc_hashSet;
 
-						
+
                 };
 
                 /*
@@ -271,7 +271,7 @@ switch(_operation) do {
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
 				_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
-				
+
 				if(count _profiles > 0) then {
 					{
 						_profileType = [_x, "type"] call ALIVE_fnc_hashGet;
@@ -297,7 +297,7 @@ switch(_operation) do {
 									};
 							};
 						} forEach (_profiles select 2);
-						
+
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_args) then {
 							//["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -307,7 +307,7 @@ switch(_operation) do {
 						};
 						// DEBUG -------------------------------------------------------------------------------------
 					};
-				};			
+				};
 
                 _result = _args;
         };
@@ -370,7 +370,7 @@ switch(_operation) do {
 						_profilesCatagorised = [_logic, "profilesCatagorised"] call ALIVE_fnc_hashGet;
 						_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
 						_playerEntities = [_logic, "playerEntities"] call ALIVE_fnc_hashGet;
-						
+
 						_profileSide = [_profile, "side"] call ALIVE_fnc_hashGet;
 						_profileFaction = [_profile, "faction"] call ALIVE_fnc_hashGet;
 						_profileID = [_profile, "profileID"] call ALIVE_fnc_hashGet;
@@ -378,26 +378,26 @@ switch(_operation) do {
 						_profileVehicleType = [_profile, "objectType"] call ALIVE_fnc_hashGet;
 						_profilePosition = [_profile, "position"] call ALIVE_fnc_hashGet;
 						_profileIsPlayer = [_profile, "isPlayer"] call ALIVE_fnc_hashGet;
-						
+
 						_profilesCatagorisedSide = [_profilesCatagorised, _profileSide] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedTypes = [_profilesCatagorisedSide, "type"] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedVehicleTypes = [_profilesCatagorisedSide, "vehicleType"] call ALIVE_fnc_hashGet;
 
-						// store on main profiles hash						
+						// store on main profiles hash
 						[_profiles, _profileID, _profile] call ALIVE_fnc_hashSet;
-						
+
 						// store the position in the position index
 						[_profilePositions, _profileID, _profilePosition] call ALIVE_fnc_hashSet;
 
-						// store reference to main profile on by type hash						
+						// store reference to main profile on by type hash
 						_profilesType = [_profilesByType, _profileType] call ALIVE_fnc_hashGet;
-						_profilesType set [count _profilesType, _profileID];		
-						
-						// store reference to main profile on by catagorised type hash	
+						_profilesType set [count _profilesType, _profileID];
+
+						// store reference to main profile on by catagorised type hash
 						_profilesCatagorisedType = [_profilesCatagorisedTypes, _profileType] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedType set [count _profilesCatagorisedType, _profileID];
-				
-						
+
+
 						// DEBUG -------------------------------------------------------------------------------------
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
 							switch(_profileType) do {
@@ -412,10 +412,10 @@ switch(_operation) do {
 							//_profile call ALIVE_fnc_inspectHash;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
-						
-						
+
+
 						if(_profileType == "entity" || _profileType == "civ" || _profileType == "vehicle") then {
-							
+
 							// store reference to main profile on by side hash
 							_profilesSide = [_profilesBySide, _profileSide] call ALIVE_fnc_hashGet;
 							_profilesSide set [count _profilesSide, _profileID];
@@ -425,7 +425,7 @@ switch(_operation) do {
 							[_profilesSideFull, _profileID, _profile] call ALIVE_fnc_hashSet;
 
 							private["_profilesFaction","_profilesFactionType","_profilesFactionVehicleType"];
-							
+
 							// store reference to main profile on by faction hash
 							if(_profileFaction in (_profilesByFaction select 1)) then {
 								_profilesFaction = [_profilesByFaction, _profileFaction] call ALIVE_fnc_hashGet;
@@ -453,7 +453,7 @@ switch(_operation) do {
 
                                 [_profilesByFactionByVehicleType, _profileFaction, _profilesFactionVehicleType] call ALIVE_fnc_hashSet;
 							};
-							
+
 							_profilesFaction set [count _profilesFaction, _profileID];
 
                             _profileFactionType = [_profilesFactionType, _profileType] call ALIVE_fnc_hashGet;
@@ -501,15 +501,15 @@ switch(_operation) do {
 										_profleByCompanyArray = [_profilesByCompany, _profileCompany] call ALIVE_fnc_hashGet;
 										_profleByCompanyArray set [count _profleByCompanyArray, _profileID];
 									};
-								};								
+								};
 							}else{
-								// vehicle type								
+								// vehicle type
 								_profilesVehicleType = [_profilesByVehicleType,_profileVehicleType] call ALIVE_fnc_hashGet;
 								_profilesVehicleType set [count _profilesVehicleType, _profileID];
 
 								_profileFactionVehicleType = [_profilesFactionVehicleType,_profileVehicleType] call ALIVE_fnc_hashGet;
                                 _profileFactionVehicleType set [count _profileFactionVehicleType, _profileID];
-								
+
 								_profilesCatagorisedVehicleType = [_profilesCatagorisedVehicleTypes, _profileVehicleType] call ALIVE_fnc_hashGet;
 								_profilesCatagorisedVehicleType set [count _profilesCatagorisedVehicleType, _profileID];
 							};
@@ -546,21 +546,21 @@ switch(_operation) do {
 						_profilesCatagorised = [_logic, "profilesCatagorised"] call ALIVE_fnc_hashGet;
 						_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
 						_playerEntities = [_logic, "playerEntities"] call ALIVE_fnc_hashGet;
-						
+
 						_profileSide = [_profile, "side"] call ALIVE_fnc_hashGet;
 						_profileFaction = [_profile, "faction"] call ALIVE_fnc_hashGet;
 						_profileID = [_profile, "profileID"] call ALIVE_fnc_hashGet;
 						_profileType = [_profile, "type"] call ALIVE_fnc_hashGet;
 						_profileVehicleType = [_profile, "objectType"] call ALIVE_fnc_hashGet;
 						_profileIsPlayer = [_profile, "isPlayer"] call ALIVE_fnc_hashGet;
-												
+
 						_profilesCatagorisedSide = [_profilesCatagorised, _profileSide] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedTypes = [_profilesCatagorisedSide, "type"] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedVehicleTypes = [_profilesCatagorisedSide, "vehicleType"] call ALIVE_fnc_hashGet;
 
 						// remove on main profiles hash
 						[_profiles, _profileID] call ALIVE_fnc_hashRem;
-						
+
 						// remove from position index
 						[_profilePositions, _profileID] call ALIVE_fnc_hashRem;
 
@@ -568,12 +568,12 @@ switch(_operation) do {
 						_profilesType = [_profilesByType, _profileType] call ALIVE_fnc_hashGet;
 						_profilesType = _profilesType - [_profileID];
 						[_profilesByType, _profileType, _profilesType] call ALIVE_fnc_hashSet;
-						
-						// remove reference to main profile on by catagorised type hash	
+
+						// remove reference to main profile on by catagorised type hash
 						_profilesCatagorisedType = [_profilesCatagorisedTypes, _profileType] call ALIVE_fnc_hashGet;
 						_profilesCatagorisedType = _profilesCatagorisedType - [_profileID];
 						[_profilesCatagorisedTypes, _profileType, _profilesCatagorisedType] call ALIVE_fnc_hashSet;
-						
+
 						// disable debugging on the profile
 						if([_profile, "debug"] call ALIVE_fnc_hashGet) then {
 							switch(_profileType) do {
@@ -587,15 +587,15 @@ switch(_operation) do {
 									_result = [_profile, "debug", false] call ALIVE_fnc_profileVehicle;
 								};
 							};
-						};						
-						
+						};
+
 						// DEBUG -------------------------------------------------------------------------------------
 						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
 							["ALIVE Profile Handler - Un-Register Profile [%1]",_profileID] call ALIVE_fnc_dump;
 							//_profile call ALIVE_fnc_inspectHash;
 						};
 						// DEBUG -------------------------------------------------------------------------------------
-						
+
 
 						if(_profileType == "entity" || _profileType == "mil" || _profileType == "vehicle") then {
 
@@ -608,7 +608,7 @@ switch(_operation) do {
                             _profilesSide = [_profilesBySideFull, _profileSide] call ALIVE_fnc_hashGet;
 							[_profilesSide, _profileID] call ALIVE_fnc_hashRem;
 							[_profilesBySideFull, _profileSide, _profilesSide] call ALIVE_fnc_hashSet;
-							
+
 							// remove reference to main profile on by faction hash
 							_profilesFaction = [_profilesByFaction, _profileFaction] call ALIVE_fnc_hashGet;
 							_profilesFaction = _profilesFaction - [_profileID];
@@ -674,7 +674,7 @@ switch(_operation) do {
                                 _profileFactionVehicleType = [_profilesFactionVehicleType, _profileVehicleType] call ALIVE_fnc_hashGet;
                                 _profileFactionVehicleType = _profileFactionVehicleType - [_profileID];
                                 [_profilesFactionVehicleType, _profileVehicleType, _profileFactionVehicleType] call ALIVE_fnc_hashSet;
-								
+
 								_profilesCatagorisedVehicleType = [_profilesCatagorisedVehicleTypes, _profileVehicleType] call ALIVE_fnc_hashGet;
 								_profilesCatagorisedVehicleType = _profilesCatagorisedVehicleType - [_profileID];
 								[_profilesCatagorisedVehicleTypes, _profileVehicleType, _profilesCatagorisedVehicleType] call ALIVE_fnc_hashSet;
@@ -684,7 +684,7 @@ switch(_operation) do {
         };
 		case "setActive": {
 				private["_profileID","_side","_profile","_profilesInActive","_profilesActive","_profilesActiveBySide","_profilesInActiveBySide","_profilesInActiveSide","_profilesActiveSide"];
-				
+
 				_profileID = _args select 0;
 				_side = _args select 1;
 				_profile = _args select 2;
@@ -697,7 +697,7 @@ switch(_operation) do {
 				};
 
 				_profilesActive set [count _profilesActive, _profileID];
-				
+
 				_profilesInActive = [_logic, "profilesInActive",_profilesInActive] call ALIVE_fnc_hashSet;
 				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
 
@@ -731,7 +731,7 @@ switch(_operation) do {
 				};
 
 				_profilesInActive set [count _profilesInActive, _profileID];
-				
+
 				_profilesInActive = [_logic, "profilesInActive",_profilesInActive] call ALIVE_fnc_hashSet;
 				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
 
@@ -835,11 +835,11 @@ switch(_operation) do {
 
 				_profileID = _args select 0;
 				_position = _args select 1;
-				
+
 				_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
 				[_profilePositions, _profileID, _position] call ALIVE_fnc_hashGet;
-				
-		};		
+
+		};
 		case "getProfile": {
 				private["_profileID","_profiles","_profileIndex"];
 
@@ -851,7 +851,7 @@ switch(_operation) do {
 						_result = [_profiles, _profileID] call ALIVE_fnc_hashGet;
 					}else{
 						_result = nil;
-					};		
+					};
 				};
 		};
 		case "getProfiles": {
@@ -864,7 +864,7 @@ switch(_operation) do {
 					_type = _args;
 
 					_profilesByType = [_logic, "profilesByType"] call ALIVE_fnc_hashGet;
-				
+
 					_result = [_profilesByType, _type] call ALIVE_fnc_hashGet;
 				};
 		};
@@ -965,7 +965,7 @@ switch(_operation) do {
 					_type = _args;
 
 					_profilesByVehicleType = [_logic, "profilesByVehicleType"] call ALIVE_fnc_hashGet;
-					
+
 					_result = [_profilesByVehicleType, _type] call ALIVE_fnc_hashGet;
 				};
 		};
@@ -982,13 +982,13 @@ switch(_operation) do {
 		};
 		case "getProfilesByCategory": {
 				private["_side","_type","_vehicleType","_profilesCatagorised"];
-				
+
 				_side = _args select 0;
 				_type = _args select 1;
 				_vehicleType = if(count _args > 2) then {_args select 2} else {"none"};
-				
+
 				_profilesCatagorised = [_logic, "profilesCatagorised"] call ALIVE_fnc_hashGet;
-				
+
 				if(_vehicleType == "none") then {
 					// return the sides type
 					_result = [[[_profilesCatagorised, _side] call ALIVE_fnc_hashGet, "type"] call ALIVE_fnc_hashGet, _type] call ALIVE_fnc_hashGet;
@@ -1008,7 +1008,7 @@ switch(_operation) do {
         };
 		case "getNextInsertEntityID": {
 			private["_entityCount"];
-			
+
 			_entityCount = [_logic, "profileEntityCount"] call ALIVE_fnc_hashGet;
 			_result = format["entity_%1",_entityCount];
 			_entityCount = _entityCount + 1;
@@ -1016,7 +1016,7 @@ switch(_operation) do {
 		};
 		case "getNextInsertVehicleID": {
 			private["_vehicleCount"];
-		
+
 			_vehicleCount = [_logic, "profileVehicleCount"] call ALIVE_fnc_hashGet;
 			_result = format["vehicle_%1",_vehicleCount];
 			_vehicleCount = _vehicleCount + 1;
@@ -1026,11 +1026,11 @@ switch(_operation) do {
 			private["_unitCount","_entities","_entity","_count"];
 			_unitCount = 0;
 			_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
-			
+
 			{
 				_profileType = _x select 2 select 5; //[_profile,"type"] call ALIVE_fnc_hashGet;
 				if(_profileType == "entity") then {
-					_count = [_x, "unitCount"] call ALIVE_fnc_profileEntity;				
+					_count = [_x, "unitCount"] call ALIVE_fnc_profileEntity;
 					_unitCount = _unitCount + _count;
 				}
 			} forEach (_profiles select 2);
@@ -1087,12 +1087,13 @@ switch(_operation) do {
             _exportProfiles = [_logic, "exportProfileData"] call MAINCLASS;
 
             _async = false; // Wait for response from server
-            _missionName = [missionName, " ","-"] call CBA_fnc_replace;
+            _missionName = [missionName, "%20", "-"] call CBA_fnc_replace;
+
             _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
             ["ALiVE SAVE PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-            _result = [_datahandler, "save", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
+            _result = [_datahandler, "bulkSave", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
             ["RESULT: %1",_result] call ALIVE_fnc_dump;
 
         };
@@ -1104,7 +1105,9 @@ switch(_operation) do {
             [_datahandler,"storeType",true] call ALIVE_fnc_Data;
 
             _async = false; // Wait for response from server
-            _missionName = [missionName, " ","-"] call CBA_fnc_replace;
+
+            _missionName = [missionName, "%20", "-"] call CBA_fnc_replace;
+
             _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
             ["ALiVE LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
