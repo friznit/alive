@@ -127,7 +127,7 @@ switch(_operation) do {
                     	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
                     	[GVAR(datahandler),"storeType",true] call ALIVE_fnc_Data;
 
-                        _missionName = [missionName, " ","-"] call CBA_fnc_replace;
+                        _missionName = [missionName, "%20", "-"] call CBA_fnc_replace;
 
                         // Set key to servername if group tag not available
                         MOD(sys_player) setVariable ["key", ([GVAR(datahandler),"key", [] call ALIVE_fnc_getServerName] call ALIVE_fnc_hashGet) + "_" + _missionName];
