@@ -161,11 +161,11 @@ switch(_operation) do {
 					_objectives = [];
 					
 					for "_i" from 0 to ((count synchronizedObjects _logic) - 1) do {
-						_objectives = _objectives + ([(synchronizedObjects _logic) select _i, "objectives", objNull, []] call ALIVE_fnc_OOsimpleOperation);
+						_objectives = _objectives + ([(synchronizedObjects _logic) select _i, "objectives", []] call ALIVE_fnc_OOsimpleOperation);
 					};
 					
 					{ // forEach
-						_collection set [count _collection,[([_x,"center"] call ALiVE_fnc_HashGet), ([_x,"size"] call ALiVE_fnc_HashGet)]];
+						_collection set [(count _collection), [([_x,"center"] call ALiVE_fnc_HashGet), ([_x,"size"] call ALiVE_fnc_HashGet)]];
 					} foreach _objectives;
 					
 					["ALiVE CQB Houses loaded from objectives!"] call ALiVE_fnc_Dump;
@@ -178,7 +178,7 @@ switch(_operation) do {
 						case ("towns") : {
 							_objectives = nearestLocations [_center, ["NameCityCapital","NameCity","NameVillage","NameLocal","Hill"], _radius];
 							{ // forEach
-								private [_size];
+								private ["_size"];
 								_size = size _x;
 								_collection set [(count _collection), [(getPos _x), ((_size select 0) max (_size select 1))]];
 							} foreach _objectives;
