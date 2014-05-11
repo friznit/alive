@@ -1,5 +1,12 @@
 #include <\x\alive\addons\sys_revive\script_component.hpp>
 
+/* TODO List
+	- marker monitor
+	- create three levels, Unconscious, Incapacitated, Injured
+	- create triage settings for hit areas, bleedout, damage to area, and overall stat level for unit to base values against
+*/
+
+
 /* -------------------------------------------------------------------
 	Create player actions
 ------------------------------------------------------------------- */
@@ -84,6 +91,7 @@ GVAR(FNC_Player_Unconscious) = {
 	_killer = _this select 1;
 
 	_injured setVariable [QGVAR(VAR_isUnconscious), 1, true];
+	
 	if (GVAR(VAR_ReviveMode) == 1) then {
 		_injured setVariable [QGVAR(VAR_isStabilized), 0, true];
 	} else {
@@ -104,12 +112,15 @@ GVAR(FNC_Player_Unconscious) = {
 		[QGVAR(VAR_DeathMsg), [_injured, _killer]] call GVAR(FNC_Public_EH);
 	};
 	
+	Video_Blurr_Effect = nil;
+	Video_Color_Effect = nil;
+	
 	if (isPlayer _injured) then {
 		10 fadeSound 0.4;
 		GVAR(Unconscious_Effect) = [_injured] spawn {
 			_injured = _this select 0;
 			waitUntil {
-				if (!isNull _injured && alive _injured && ((_injured getVariable QGVAR(VAR_isUnconscious) == 1 ) || (_injured getVariable QGVAR(VAR_isStabilized) == 1 ))) then {
+				if (!isNull _injured && alive _injured && (((_injured getVariable QGVAR(VAR_isUnconscious) == 1 ) && (_injured getVariable QGVAR(VAR_isStabilized) == 1 )) || ((_injured getVariable QGVAR(VAR_isUnconscious) == 0 ) && (_injured getVariable QGVAR(VAR_isStabilized) == 1 )))) then {
 					GVAR(Video_Color_Effect) = ppEffectCreate ["colorCorrections", 1554];
 					GVAR(Video_Blurr_Effect) = ppEffectCreate ["dynamicBlur", 454];
 
@@ -122,11 +133,13 @@ GVAR(FNC_Player_Unconscious) = {
 					GVAR(Video_Blurr_Effect) ppEffectAdjust [3];
 					GVAR(Video_Blurr_Effect) ppEffectCommit 0.01;
 						
-					if (_injured getVariable QGVAR(VAR_isStabilized) == 1 ) then {
-						250 cutRsc ["REV_Wounded_EyePain","PLAIN",8];
+					if (_injured getVariable QGVAR(VAR_isUnconscious) == 1 ) then {
 						251 cutRsc ["REV_Wounded_BloodSplash","PLAIN",8];
 					};
-					0 fadeSound 0.2;
+					if (_injured getVariable QGVAR(VAR_isStabilized) == 1 ) then {
+						250 cutRsc ["REV_Wounded_EyePain","PLAIN",8];
+					};
+					0 fadeSound random(0.35);
 					PlaySound "REV_Heartbeat";
 					PlaySound "REV_Breathing";
 					sleep 8;
@@ -134,7 +147,6 @@ GVAR(FNC_Player_Unconscious) = {
 					true;
 				};
 			};
-			terminate GVAR(Unconscious_Effect);
 		};
 		
 		titleText ["", "BLACK FADED",1];
@@ -184,24 +196,31 @@ GVAR(FNC_Player_Unconscious) = {
 	/*  */
 	if (isPlayer _injured) then {
 		titleText ["", "BLACK IN", 0];
-		// disableUserInput false;
-		// _injured enableSimulation false;
 		_bleedOut = time + GVAR(VAR_BleedOutTime);
 		
-		while {!isNull _injured && alive _injured && _injured getVariable QGVAR(VAR_isUnconscious) == 1 && _injured getVariable QGVAR(VAR_isStabilized) == 1 && (GVAR(VAR_BleedOutTime) <= 0 || time < _bleedOut)} do {
+		while {!isNull _injured && alive _injured && _injured getVariable QGVAR(VAR_isUnconscious) == 1 && _injured getVariable QGVAR(VAR_isStabilized) == 1 && (GVAR(VAR_BleedOutTime) >= 0 || time < _bleedOut)} do {
 			
-			if (damage player >= 0.6) then {
+			if (damage player >= 0.8) then {
 				[format["%2, you are bleeding out and will die in %1 seconds", round (_bleedOut - time), name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
 			} else {
-				[format["%1, you are incapacitated...",name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
-				sleep 3;
+				if (damage player >= 0.4 && damage player < 0.8) then {
+					[format["%1, you are incapacitated & need a medic",name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+					_injured setVariable [QGVAR(VAR_isUnconscious), 0, true];
+					sleep 3;
+				} else {
+					if (damage player < 0.4) then {
+						[format["%1, you are severely injured...",name player],0, 0.035 * safezoneH + safezoneY,5,0.3] spawn BIS_fnc_dynamicText;
+						_injured setVariable [QGVAR(VAR_isUnconscious), 0, true];
+						_injured setVariable [QGVAR(VAR_isStabilized), 0, true];
+						sleep 6;
+					};
+				};
 			};
 			
 			/* debug */
 			if (GVAR(Debug)) then {
 				hintSilent format["Bleedout in %1 seconds\n\n%2\n\nBleedout rate: %3\n\nRegen Rate: %4\n\nPlayer Damage: %5\n\nDamage Amount: %6", round (_bleedOut - time), call GVAR(FNC_Friends_Chk), GVAR(playerBleedRate),GVAR(playerRegenRate),GVAR(playerDamage),GVAR(AmountDamage)];
 			};
-			/* end of debug */
 			
 			sleep 1;
 		};
@@ -227,12 +246,15 @@ GVAR(FNC_Player_Unconscious) = {
 
 			/* Back to normal, remove effects */
 			if (_injured == player) then {
-				5 fadeSound 1;
-				terminate GVAR(Unconscious_Effect);
+				8 fadeSound 1;
+				[_injured] call GVAR(FNC_DeleteMarker);
 				250 cutText ["", "PLAIN"];
 				251 cutText ["", "PLAIN"];
-				ppEffectDestroy GVAR(Video_Blurr_Effect);
-				ppEffectDestroy GVAR(Video_Color_Effect);
+				GVAR(Video_Color_Effect) ppEffectEnable false;
+				GVAR(Video_Blurr_Effect) ppEffectEnable false;
+				if (!isNil QGVAR(Unconscious_Effect)) then {
+					terminate GVAR(Unconscious_Effect);
+				};
 			};
 			
 			/* Closes any dialog that could be open during revive process */
@@ -264,10 +286,17 @@ GVAR(FNC_Player_Unconscious) = {
 			
 			/* Back to normal, remove effects */
 			if (_injured == player) then {
-				5 fadeSound 1;
-				terminate GVAR(Unconscious_Effect);
-				ppEffectDestroy GVAR(Video_Blurr_Effect);
-				ppEffectDestroy GVAR(Video_Color_Effect);
+				8 fadeSound 1;
+				250 cutText ["", "PLAIN"];
+				251 cutText ["", "PLAIN"];
+				GVAR(Video_Color_Effect) ppEffectEnable false;
+				GVAR(Video_Blurr_Effect) ppEffectEnable false;
+				if (!isNil QGVAR(Unconscious_Effect)) then {
+					terminate GVAR(Unconscious_Effect);
+				};
+
+				/* remove map marker */
+				[_injured] call GVAR(FNC_DeleteMarker);
 			};
 			
 			/* Closes any dialog that could be open during revive process */
@@ -279,17 +308,45 @@ GVAR(FNC_Player_Unconscious) = {
 			_injured selectWeapon (primaryWeapon _injured);
 		};
 	} else {
-	
+
+		/* define the AI units name */
+		_injured setVariable ["InjuredUnitName", (name _injured), true];
+		
 		/* Handle AI bleedout */
 		_bleedOut = time + GVAR(VAR_BleedOutTime);
 		
-		// waitUntil {
-			// sleep 0.25;
-			// (!isNull _injured && alive _injured && (_injured getVariable QGVAR(VAR_isUnconscious) == 1) && (_injured getVariable QGVAR(VAR_isStabilized) == 1) && (GVAR(VAR_BleedOutTime) <= 0 || time < _bleedOut));
-		// }:
+		/* AI health Monitor */
+		_healthCheck = [_injured, _bleedOut] spawn {
+			_injured = _this select 0;
+
+			waitUntil {
+				sleep 0.5;
+				if (_injured getVariable "InjuredUnitName" != name _injured) then {
+					_injured enableSimulation true;
+					
+					/* remove map marker */
+					deleteMarker ("REV_mark_" + (_injured getVariable "InjuredUnitName"));
+
+					/* ends the wait loop */
+					true;
+				} else {
+					if (alive _injured && (_injured getVariable QGVAR(VAR_isUnconscious) == 0) && (_injured getVariable QGVAR(VAR_isStabilized) == 0)) then {
+
+						/* unit has been revived, end script */
+						true;
+					};
+				};
+			};
+		};
+
+
 		while {!isNull _injured && alive _injured && _injured getVariable QGVAR(VAR_isUnconscious) == 1 && _injured getVariable QGVAR(VAR_isStabilized) == 1 && (GVAR(VAR_BleedOutTime) <= 0 || time < _bleedOut)} do {
 			sleep 0.25;
 		};
+		// waitUntil {
+			// sleep 0.25;
+			// (!isNull _injured && alive _injured && _injured getVariable QGVAR(VAR_isUnconscious) == 1 && _injured getVariable QGVAR(VAR_isStabilized) == 1 && (GVAR(VAR_BleedOutTime) <= 0 || time < _bleedOut));
+		// };
 		
 		/* verify injured AI has been stabilized and then bring the unit conscious with damage */
 		if (_injured getVariable QGVAR(VAR_isStabilized) == 0) then {			
@@ -312,6 +369,7 @@ GVAR(FNC_Player_Unconscious) = {
 			_injured setVariable [QGVAR(VAR_isStabilized), 0, true];
 			_injured setVariable [QGVAR(VAR_isDragged), 0, true];
 			_injured setVariable [QGVAR(VAR_isCarried), 0, true];
+			_injured enableSimulation true;
 			_injured setDamage 1;
 			
 			/* remove map marker */
@@ -340,7 +398,7 @@ GVAR(FNC_Revive) = {
 		/* wait until either revive is complete or cancelled */
 		waitUntil {
 			sleep 1;
-			if (alive player && (player distance _injured) < 2 && (vehicle player == player) && (time > _sTime + 10) && (alive _injured)) then {
+			if (alive player && (player distance _injured) < 2 && (vehicle player == player) && (time > _sTime + random(20)) && (alive _injured)) then {
 				player playActionNow "medicstop";
 				hintSilent "Unit Revived";
 				detach _injured;
@@ -415,14 +473,19 @@ GVAR(FNC_Stabilize) = {
 				if (!("Medikit" in (items player))) then {
 					player removeItem "FirstAidKit";
 				};
-				
-				/* set varibale for stabilized state */
-				_injured setVariable [QGVAR(VAR_isStabilized), 0, true];
 
+				/* reset variables */
+				_injured setVariable [QGVAR(VAR_isUnconscious), 0, true];
+				_injured setVariable [QGVAR(VAR_isStabilized), 0, true];
+				_injured setVariable [QGVAR(VAR_isDragged), 0, true];
+				_injured setVariable [QGVAR(VAR_isCarried), 0, true];
+				GVAR(VAR_BleedOutRate) = nil;
+				sleep 3;
+				
 				/* remove map markers after being stablized | TODO add new marker for injured units */
 				[_injured] call GVAR(FNC_DeleteMarker);
 				
-				/* player  */
+				/* player */
 				_injured setDamage random(0.34);
 				_injured enableSimulation true;
 				_injured setCaptive false;
@@ -653,7 +716,7 @@ GVAR(FNC_Revive_Chk) = {
 	_isMedic = getNumber (configfile >> "CfgVehicles" >> typeOf player >> "attendant");
 	
 	/* Verifies player is alive, player is conscious, and that the player is close to target */
-	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (ALiVE_SYS_REVIVE_VAR_AI_PlayableUnits == 0)) || (_injured distance player) > 2 ) exitWith {_return};
+	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (GVAR(VAR_AI_PlayableUnits) == 0)) || (_injured distance player) > 2 ) exitWith {_return};
 
 	/* Verifies revive mode and if the player has either medkit or FAK */
 	if ((GVAR(VAR_ReviveMode) >= 0) && !("Medikit" in (items player)) && !("FirstAidKit" in (items player))) exitWith {_return};
@@ -703,7 +766,7 @@ GVAR(FNC_Stabilize_Chk) = {
 	_isMedic = getNumber (configfile >> "CfgVehicles" >> typeOf player >> "attendant");
 	
 	/* Verifies player is alive, player is conscious, and that the player is close to target */
-	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (ALiVE_SYS_REVIVE_VAR_AI_PlayableUnits == 0)) || (_injured distance player) > 2 ) exitWith {_return};
+	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (GVAR(VAR_AI_PlayableUnits) == 0)) || (_injured distance player) > 2 ) exitWith {_return};
 
 	/* Verifies revive mode and if the player has either medkit or FAK */
 	if ((GVAR(VAR_ReviveMode) >= 0) && !("Medikit" in (items player)) && !("FirstAidKit" in (items player))) exitWith {_return};
@@ -758,7 +821,7 @@ GVAR(FNC_Dragging_Chk) = {
 	_isPlayerUnconscious = player getVariable QGVAR(VAR_isUnconscious);
 
 	// if(!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNil "_injured" || !alive _injured || (!isPlayer _injured && !GVAR(VAR_AI_PlayableUnits)) || (_injured distance player) > 2 ) exitWith {_return;};
-	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (ALiVE_SYS_REVIVE_VAR_AI_PlayableUnits == 0)) || (_injured distance player) > 2 ) exitWith {_return};
+	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (GVAR(VAR_AI_PlayableUnits) == 0)) || (_injured distance player) > 2 ) exitWith {_return};
 	
 	_isTargetUnconscious = _injured getVariable QGVAR(VAR_isUnconscious);
 	_isDragged = _injured getVariable QGVAR(VAR_isDragged); 
@@ -778,7 +841,7 @@ GVAR(FNC_Carrying_Chk) = {
 	_injured = cursorTarget;
 	_isPlayerUnconscious = player getVariable QGVAR(VAR_isUnconscious);
 
-	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (ALiVE_SYS_REVIVE_VAR_AI_PlayableUnits == 0)) || (_injured distance player) > 2 ) exitWith {_return};
+	if (!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNull _injured || !alive _injured || (!isPlayer _injured && (GVAR(VAR_AI_PlayableUnits) == 0)) || (_injured distance player) > 2 ) exitWith {_return};
 	
 	_isTargetUnconscious = _injured getVariable QGVAR(VAR_isUnconscious);
 	_isCarried = _injured getVariable QGVAR(VAR_isCarried); 
@@ -877,13 +940,14 @@ GVAR(FNC_CreateMarker) = {
 	_injured = _this select 0;
 	_injuredSide = side _injured;
 
+	// TODO: create a way for the Alpha setting to display level of urgency... solid color, just happened, very faded, almost dead.
 	if (playerSide == _injuredSide) then {
 		if (GVAR(VAR_Show_Player_Marker) && alive _injured) then {
-			_mkr = createMarkerLocal [("REV_mark_" + name _injured), getPos _injured];
-			_mkr setMarkerTypeLocal "mil_triangle";
-			_mkr setMarkerColorLocal "colorRed";
-			_mkr setMarkerTextLocal format ["Unconscious: %1", (name _injured)];
-			_mkr setMarkerSizeLocal [.75,.75];
+			_mkr = createMarker [("REV_mark_" + name _injured), getPos _injured];
+			_mkr setMarkerType "mil_triangle";
+			_mkr setMarkerColor "colorRed";
+			_mkr setMarkerText format ["Unconscious: %1", (name _injured)];
+			_mkr setMarkerSize [.85,.85];
 		};
 	};
 };
@@ -915,7 +979,7 @@ GVAR(FNC_BleedOutRate) = {
 };
 
 /* -------------------------------------------------------------------
-	Builds and active player side array of units to add revive
+ Builds an active array for units on the player side to add revive to
 ------------------------------------------------------------------- */
 GVAR(FNC_UnitSideArray) = {
 	GVAR(EH_ActiveUnitSideList) = [] spawn {
@@ -948,6 +1012,12 @@ GVAR(FNC_UnitSideArray) = {
 						_x setVariable [QGVAR(VAR_isStabilized), 0, true];
 						_x setVariable [QGVAR(VAR_isDragged), 0, true];
 						_x setVariable [QGVAR(VAR_isCarried), 0, true];
+						// _x addEventHandler [
+							// "Killed",{
+								// _body = _this select 0;
+								// [_body] call GVAR(FNC_DeleteMarker);
+							// }
+						// ];
 						_f = _f + 1;
 					};
 				};
@@ -971,7 +1041,7 @@ GVAR(FNC_UnitSideArray) = {
 };
 
 /* -------------------------------------------------------------------
-	Builds and active array of all spawned units to add revive
+	Builds an active array of all spawned units to add revive to
 ------------------------------------------------------------------- */
 GVAR(FNC_UnitArray) = {
 	GVAR(EH_ActiveUnitList) = [] spawn {
@@ -1004,6 +1074,12 @@ GVAR(FNC_UnitArray) = {
 						_x setVariable [QGVAR(VAR_isStabilized), 0, true];
 						_x setVariable [QGVAR(VAR_isDragged), 0, true];
 						_x setVariable [QGVAR(VAR_isCarried), 0, true];
+						// _x addEventHandler [
+							// "Killed",{
+								// _body = _this select 0;
+								// [_body] call GVAR(FNC_DeleteMarker);
+							// }
+						// ];
 						_f = _f + 1;
 					};
 				};

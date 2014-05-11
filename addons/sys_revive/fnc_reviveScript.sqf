@@ -90,7 +90,7 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 				0 fadeMusic 0;
 				sleep 3;
 				"dynamicBlur" ppEffectAdjust[0];
-				"dynamicBlur" ppEffectCommit 2;
+				"dynamicBlur" ppEffectCommit 10;
 				waitUntil {
 					sleep 0.025;
 					alive player;
@@ -98,11 +98,13 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 				_body = _this select 0;
 				deleteVehicle _body;
 				[player] call GVAR(FNC_DeleteMarker);
-				terminate GVAR(Unconscious_Effect);
 				250 cutText ["", "PLAIN"];
 				251 cutText ["", "PLAIN"];
-				ppEffectDestroy GVAR(Video_Blurr_Effect);
-				ppEffectDestroy GVAR(Video_Color_Effect);
+				GVAR(Video_Color_Effect) ppEffectEnable false;
+				GVAR(Video_Blurr_Effect) ppEffectEnable false;
+				if (!isNil QGVAR(Unconscious_Effect)) then {
+					terminate GVAR(Unconscious_Effect);
+				};
 			};
 		}
 	];
@@ -116,17 +118,6 @@ call compile preprocessFile "\x\alive\addons\sys_revive\_revive\revive_functions
 			addCamShake [1 + random 2, 0.4 + random 1, 15];
 		}];
 	};
-
-	/* Death EH - adds effects to the player when killed */
-	// player addEventHandler ["killed",{
-		// 0 fadeSound .25;
-		// 0 fadeMusic 0;
-		// [] spawn {
-			// sleep 3;
-			// "dynamicBlur" ppEffectAdjust[0];
-			// "dynamicBlur" ppEffectCommit 2;
-		// };
-	// }];
 
 	/* Respawn EH - when player respawns, this reapplies revive to the new unit */
 	player addEventHandler [
@@ -237,7 +228,7 @@ GVAR(FNC_Player_Init) = {
 					GVAR(playerRegenRate) = (damage player - ((random(0.015)) + (getFatigue player/95)));
 				};
 			} else {
-				if (damage player <= 0.25) then {
+				if (damage player <= 0.28) then {
 					/* reset variables */
 					player setVariable [QGVAR(VAR_isUnconscious), 0, true];
 					player setVariable [QGVAR(VAR_isDragged), 0, true];
@@ -246,8 +237,8 @@ GVAR(FNC_Player_Init) = {
 					
 					/* Back to normal game, remove effects */
 					5 fadeSound 1;
-					ppEffectDestroy GVAR(Video_Blurr_Effect);
-					ppEffectDestroy GVAR(Video_Color_Effect);
+					// ppEffectDestroy GVAR(Video_Blurr_Effect);
+					// ppEffectDestroy GVAR(Video_Color_Effect);
 					sleep 0.2;
 					
 					/* remove map marker */
@@ -261,9 +252,11 @@ GVAR(FNC_Player_Init) = {
 					player allowDamage true;
 					
 					/* terminate all effects and exit */
-					terminate GVAR(Unconscious_Effect);
 					250 cutText ["", "PLAIN"];
 					251 cutText ["", "PLAIN"];
+					if (!isNil QGVAR(Unconscious_Effect)) then {
+						terminate GVAR(Unconscious_Effect);
+					};
 
 				};
 			};
@@ -273,27 +266,27 @@ GVAR(FNC_Player_Init) = {
 			GVAR(playerDamage) = (damage player);
 		};
 		
-		if (getPosASLW player select 2 > 0) then {
+		// if (getPosASLW player select 2 > 0) then {
 		
-			/* Health/Fatigue ColorCorrection */
-			"colorCorrections" ppEffectAdjust[1, (1-(damage player)/4)+_fatigue/3, ((-0.02)-((damage player)/10)), [4.5 - ((damage player)*5) - _fatigue/2, 3.5, 1.6+_fatigue/3, -0.02],[1.8 - ((damage player)*5), 1.6, 1.6, 1],[-1.5 + ((damage player)*5),0,-0.2,1]];
-			"colorCorrections" ppEffectCommit 0.1;
+			// /* Health/Fatigue ColorCorrection */
+			// "colorCorrections" ppEffectAdjust[1, (1-(damage player)/4)+_fatigue/3, ((-0.02)-((damage player)/10)), [4.5 - ((damage player)*5) - _fatigue/2, 3.5, 1.6+_fatigue/3, -0.02],[1.8 - ((damage player)*5), 1.6, 1.6, 1],[-1.5 + ((damage player)*5),0,-0.2,1]];
+			// "colorCorrections" ppEffectCommit 0.1;
 		
-			/* Health/Fatigue Blur */
-			"dynamicBlur" ppEffectEnable true;
-			"dynamicBlur" ppEffectAdjust[((damage player)/2) + _fatigue/3];
-			"dynamicBlur" ppEffectCommit 0.1;
-		} else {
+			// /* Health/Fatigue Blur */
+			// "dynamicBlur" ppEffectEnable true;
+			// "dynamicBlur" ppEffectAdjust[((damage player)/2) + _fatigue/3];
+			// "dynamicBlur" ppEffectCommit 0.1;
+		// } else {
 		
-			/* Blur underwater */
-			"RadialBlur" ppEffectEnable true; 
-			"RadialBlur" ppEffectAdjust[abs(speed player)/10000,abs(speed player)/20000 + _fatigue,0.3,0.1];
-			"RadialBlur" ppEffectCommit 0.1;
-			"dynamicBlur" ppEffectEnable true; 
-			"dynamicBlur" ppEffectAdjust[(1-_oxygen)*3];
-			"dynamicBlur" ppEffectCommit 0.1;
-		};
-		sleep 1;
+			// /* Blur underwater */
+			// "RadialBlur" ppEffectEnable true; 
+			// "RadialBlur" ppEffectAdjust[abs(speed player)/10000,abs(speed player)/20000 + _fatigue,0.3,0.1];
+			// "RadialBlur" ppEffectCommit 0.1;
+			// "dynamicBlur" ppEffectEnable true; 
+			// "dynamicBlur" ppEffectAdjust[(1-_oxygen)*3];
+			// "dynamicBlur" ppEffectCommit 0.1;
+		// };
+		// sleep 1;
 	};
 };
 
@@ -310,6 +303,13 @@ if (GVAR(VAR_AI_PlayableUnits) > 0) then {
 				_x setVariable [QGVAR(VAR_isStabilized), 0, true];
 				_x setVariable [QGVAR(VAR_isDragged), 0, true];
 				_x setVariable [QGVAR(VAR_isCarried), 0, true];
+				
+				// _x addEventHandler [
+					// "Killed",{
+						// _body = _this select 0;
+						// [_body] call GVAR(FNC_DeleteMarker);
+					// }
+				// ];
 			};
 		} forEach switchableUnits;
 	};

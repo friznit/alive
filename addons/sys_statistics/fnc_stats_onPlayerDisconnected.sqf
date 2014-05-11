@@ -30,7 +30,8 @@ if (GVAR(ENABLED)) then {
 
 	if (_name == "__SERVER__") exitWith {
 
-		_minutesPlayed = floor(( (dateToNumber date) - ( dateToNumber GVAR(timeStarted)) ) * 525600);
+		// _minutesPlayed = floor(( (dateToNumber date) - ( dateToNumber GVAR(timeStarted)) ) * 525600);
+		_minutesPlayed = round(( diag_tickTime - GVAR(timeStarted))/60);
 
 
 			// Format Data

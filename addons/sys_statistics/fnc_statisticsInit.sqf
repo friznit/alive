@@ -129,12 +129,12 @@ if (isDedicated && GVAR(ENABLED)) then {
 	publicVariableServer QGVAR(UPDATE_EVENTS);
 
 	// Set server start
-	GVAR(timeStarted) = date;
+	GVAR(timeStarted) = diag_tickTime;
 
 	// Create player start time hash
 	GVAR(PlayerStartTime) = []call ALIVE_fnc_hashCreate;
 
-	//diag_log format["TimeStarted: %1", GVAR(timeStarted)];
+	// diag_log format["TimeStarted: %1", GVAR(timeStarted)];
 
 	/* Test Live Feed
 	[] spawn {
@@ -219,21 +219,21 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	// Set up non eventhandler checks
 	[] spawn {
 		// Combat Dive - checks every 30 seconds for diving
-		private ["_diving", "_diveStartTime", "_diveTime"];
+		private ["_diving", "_diveStartTime","_diveEndTime", "_diveTime"];
 		while {true} do {
 			if (underwater player && isAbleToBreathe player) then {
 				_diving = player getVariable [QGVAR(isDiving),false];
 				if !(_diving) then {
 					// record dive start time
 					player setVariable [QGVAR(isDiving),true,false];
-					player setVariable [QGVAR(diveStartTime),time,false];
+					_diveStartTime = player getVariable [QGVAR(diveStartTime),diag_tickTime];
 				};
 			} else {
 				_diving = player getVariable [QGVAR(isDiving),false];
 				if (_diving) then {
 					// Player has exited from dive - they may have surfaced also?
-					_diveStartTime = player getVariable [QGVAR(diveStartTime),time];
-					_diveTime = ceil((time - _diveStartTime) / 60); // in minutes
+					_diveEndTime = player setVariable [QGVAR(diveEndTime),diag_tickTime,false];
+					_diveTime = round((_diveEndTime - _diveStartTime) / 60); // in minutes
 
 					// Record Combat Dive
 					[player,_diveTime] call GVAR(fnc_divingEH);

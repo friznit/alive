@@ -74,18 +74,11 @@ if (GVAR(ENABLED)) then {
 		_unitPos = mapgridposition _unit;
 		_unitGeoPos = position _unit;
 		_vehiclePos = mapgridposition _vehicle;
+		_unit setVariable [QGVAR(GetOutTime), diag_tickTime, true];
+
 
 		// Set Player time spent in vehicle
-		_vehMinutes = floor(( (dateToNumber date) - ( dateToNumber (_unit getVariable [QGVAR(GetInTime),time])) ) * 525600);
-
-		// Log data
-		_data = [ ["Event","GetOut"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",_unit] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes",_vehMinutes], ["vehicleConfig",_vehiclecfg]  ];
-
-		_data = _data + [ ["Player",getplayeruid _unit], ["playerGroup", [_unit] call ALiVE_fnc_getPlayerGroup] , ["PlayerName",name _unit] ];
-
-		// Send data to server to be written to DB
-		GVAR(UPDATE_EVENTS) = _data;
-		publicVariableServer QGVAR(UPDATE_EVENTS);
+		_vehMinutes = round(((_unit getVariable QGVAR(GetOutTime)) - (_unit getVariable QGVAR(GetInTime)))/60);
 
 		// Check to see if this is a para jump
 		_height = (getposATL _unit) select 2;
@@ -98,8 +91,16 @@ if (GVAR(ENABLED)) then {
 			// Send data to server to be written to DB
 			GVAR(UPDATE_EVENTS) = _data;
 			publicVariableServer QGVAR(UPDATE_EVENTS);
-		};
+		} else {
+			// Log data
+			_data = [ ["Event","GetOut"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",_unit] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes",_vehMinutes], ["vehicleConfig",_vehiclecfg]  ];
 
+			_data = _data + [ ["Player",getplayeruid _unit], ["playerGroup", [_unit] call ALiVE_fnc_getPlayerGroup] , ["PlayerName",name _unit] ];
+
+			// Send data to server to be written to DB
+			GVAR(UPDATE_EVENTS) = _data;
+			publicVariableServer QGVAR(UPDATE_EVENTS);
+		};
 	};
 };
 

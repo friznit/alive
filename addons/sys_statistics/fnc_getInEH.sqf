@@ -81,7 +81,7 @@ if (GVAR(ENABLED)) then {
 		_data = _data + [ ["Player",getplayeruid _unit],["playerGroup", [_unit] call ALiVE_fnc_getPlayerGroup] , ["PlayerName",name _unit] ];
 
 		// Set Player GetIn time
-		_unit setVariable [QGVAR(GetInTime), date, true];
+		_unit setVariable [QGVAR(GetInTime), diag_tickTime, true];
 
 		// Send data to server to be written to DB
 		GVAR(UPDATE_EVENTS) = _data;
