@@ -41,11 +41,6 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data\fnc_getGroupID.sqf";
 					recompile = RECOMPILE;
 				};
-				class parseJSON {
-					description = "Converts a JSON string into a CBA Hash";
-					file = "\x\alive\addons\sys_data\fnc_parseJSON.sqf";
-					recompile = RECOMPILE;
-				};
 				class data_OnPlayerDisconnected {
 						description = "The module onPlayerDisconnected handler";
 						file = "\x\alive\addons\sys_data\fnc_data_onPlayerDisconnected.sqf";

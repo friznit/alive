@@ -16,14 +16,14 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_convoy\fnc_addVehicle.sqf";
                 recompile = RECOMPILE;
                         };
-                          class findVehicleType {
-                                description = "Find Vehicle Types";
-                                file = "\x\alive\addons\mil_convoy\fnc_findVehicleType.sqf";
-                recompile = RECOMPILE;
-                        };
                          class inTrigger {
                                 description = "Random Group by Type";
                                 file = "\x\alive\addons\mil_convoy\fnc_inTrigger.sqf";
+								recompile = RECOMPILE;
+                        };
+						class findLocations {
+                                description = "Find Locations";
+                                file = "\x\alive\addons\mil_convoy\fnc_findLocations.sqf";
 								recompile = RECOMPILE;
                         };
                         class startConvoy {

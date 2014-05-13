@@ -141,34 +141,9 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorDataMerge.sqf";
 				recompile = RECOMPILE;
 			};
-			class getNearUnits {
-				description = "getNearUnits";
-				file = "\x\alive\addons\fnc_analysis\fnc_getNearUnits.sqf";
-				recompile = RECOMPILE;
-			};
-			class unitArrayFilterDead {
-				description = "unitArrayFilterDead";
-				file = "\x\alive\addons\fnc_analysis\fnc_unitArrayFilterDead.sqf";
-				recompile = RECOMPILE;
-			};
 			class unitArrayFilterInSector {
 				description = "unitArrayFilterInSector";
 				file = "\x\alive\addons\fnc_analysis\fnc_unitArrayFilterInSector.sqf";
-				recompile = RECOMPILE;
-			};
-			class unitArraySortSide {
-				description = "unitArraySortSide";
-				file = "\x\alive\addons\fnc_analysis\fnc_unitArraySortSide.sqf";
-				recompile = RECOMPILE;
-			};
-			class getMapBounds {
-				description = "getMapBounds";
-				file = "\x\alive\addons\fnc_analysis\fnc_getMapBounds.sqf";
-				recompile = RECOMPILE;
-			};
-			class shellSort {
-				description = "shellSort";
-				file = "\x\alive\addons\fnc_analysis\fnc_shellSort.sqf";
 				recompile = RECOMPILE;
 			};
 			class getClosestLand {

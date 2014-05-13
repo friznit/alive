@@ -61,16 +61,6 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_population\fnc_clientAddAmbientRoomLight.sqf";
                 recompile = RECOMPILE;
             };
-            class switchMove {
-                description = "switchMove";
-                file = "\x\alive\addons\amb_civ_population\fnc_switchMove.sqf";
-                recompile = RECOMPILE;
-            };
-            class clientSwitchMove {
-                description = "clientSwitchMove";
-                file = "\x\alive\addons\amb_civ_population\fnc_clientSwitchMove.sqf";
-                recompile = RECOMPILE;
-            };
             class agentSelectSpeedMode {
                 description = "agentSelectSpeedMode";
                 file = "\x\alive\addons\amb_civ_population\fnc_agentSelectSpeedMode.sqf";
