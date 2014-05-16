@@ -223,16 +223,19 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 		while {true} do {
 			if (underwater player && isAbleToBreathe player) then {
 				_diving = player getVariable [QGVAR(isDiving),false];
+
+				// record dive start time
 				if !(_diving) then {
-					// record dive start time
 					player setVariable [QGVAR(isDiving),true,false];
 					_diveStartTime = player getVariable [QGVAR(diveStartTime),diag_tickTime];
 				};
 			} else {
 				_diving = player getVariable [QGVAR(isDiving),false];
+
+				// Player has exited from dive - they may have surfaced also?
 				if (_diving) then {
-					// Player has exited from dive - they may have surfaced also?
-					_diveEndTime = player setVariable [QGVAR(diveEndTime),diag_tickTime,false];
+				
+					_diveEndTime = player getVariable [QGVAR(diveEndTime),diag_tickTime];
 					_diveTime = round((_diveEndTime - _diveStartTime) / 60); // in minutes
 
 					// Record Combat Dive
