@@ -17,6 +17,7 @@ GVAR(FNC_Player_Actions) = {
 		player addAction ["<t color=""#00800C"">" + "Drag" + "</t>", {call GVAR(FNC_Actions)}, ["actDrag"], 9, false, true, "", "call " + QGVAR(FNC_Dragging_Chk)];
 		// player addAction ["<t color=""#00800C"">" + "Carry" + "</t>", { call GVAR(FNC_Actions)}, ["actCarry"], 9, false, true, "", "call " + QGVAR(FNC_Carrying_Chk)];
 		player addAction ["<t color=""#A60400"">" + "Stabilize" + "</t>", { call GVAR(FNC_Actions)}, ["actStabilize"], 11, true, true, "", "call " + QGVAR(FNC_Stabilize_Chk)];
+		player addAction ["<t color=""#A60400"">" + "Hide Body" + "</t>", { call GVAR(FNC_Actions)}, ["actHideBody"], 11, true, true, "", "call " + QGVAR(FNC_HideBody_Chk)];
 	};
 };
 
@@ -51,6 +52,10 @@ GVAR(FNC_Actions) = {
 	if (_action == "actSuicide") then {
 		hintSilent "";
 		player setDamage 1;
+	};
+
+	if (_action == "actHideBody") then {
+		[cursorTarget] spawn GVAR(FNC_HideBody);
 	};
 };
 
@@ -833,6 +838,23 @@ GVAR(FNC_Dragging_Chk) = {
 };
 
 /* -------------------------------------------------------------------
+	Check the dead body
+------------------------------------------------------------------- */
+GVAR(FNC_HideBody_Chk) = {
+	private ["_injured", "_isPlayerUnconscious", "_isDragged","_return","_isTargetUnconscious"];
+	_return = false;
+	_deceased = cursorTarget;
+	_isPlayerUnconscious = player getVariable QGVAR(VAR_isUnconscious);
+
+	// if(!alive player || _isPlayerUnconscious == 1 || GVAR(VAR_isDragging) || isNil "_injured" || !alive _injured || (!isPlayer _injured && !GVAR(VAR_AI_PlayableUnits)) || (_injured distance player) > 2 ) exitWith {_return;};
+	if (!alive player || _isPlayerUnconscious == 1 || alive _deceased || ((_deceased distance player) > 2)) exitWith {_return};
+	
+	_return = true;
+	
+	_return
+};
+
+/* -------------------------------------------------------------------
 	Check for the carry action
 ------------------------------------------------------------------- */
 GVAR(FNC_Carrying_Chk) = {
@@ -976,6 +998,27 @@ GVAR(FNC_BleedOutRate) = {
 			GVAR(VAR_BleedOutRate) = true;
 		};
 	};
+};
+
+/* -------------------------------------------------------------------
+	Create option to hide dead bodies
+------------------------------------------------------------------- */
+GVAR(FNC_HideBody) = {
+	_deceased = _this select 0;
+	
+	/* need to add command to strip the unit and leave items on the ground - ie: Weapons, ammo, vest, items */
+	// code goes here
+	
+	/* action to hide the body */
+	hidebody _deceased;
+	
+	/* remove EH's from the dead unit */
+	// _deceased removeAllEventHandlers "killed";
+	
+	/* delete the unit */
+	sleep 20;
+	deletevehicle _deceased;
+	deletegroup (group _deceased);
 };
 
 /* -------------------------------------------------------------------
