@@ -159,9 +159,17 @@ switch(_operation) do {
 				if (count synchronizedObjects _logic > 0) then {
 					private ["_objectives"];
 					_objectives = [];
-					
+                    
 					for "_i" from 0 to ((count synchronizedObjects _logic) - 1) do {
-						_objectives = _objectives + ([(synchronizedObjects _logic) select _i, "objectives", []] call ALIVE_fnc_OOsimpleOperation);
+                        
+	                	_mod = (synchronizedObjects _logic) select _i;
+	                    
+	                    if ((typeof _mod) in ["ALiVE_mil_placement","ALiVE_civ_placement"]) then {
+	                        waituntil {_mod getVariable ["startupComplete", false]};
+	                        
+							_obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
+	                        _objectives = _objectives + _obj;
+	                    };
 					};
 					
 					{ // forEach
@@ -314,8 +322,12 @@ switch(_operation) do {
                 
 			TRACE_2("Waiting for CQB PV",isDedicated,isHC);
 				
-            //Client?
+            //Client
             if(!isDedicated && !isHC) then {
+
+				//As stated in the trace above the client needs to wait for the CQB module to be ready
+                waituntil {!isnil QMOD(CQB)};
+                
                 [CQB_Strategic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                 [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
                 
