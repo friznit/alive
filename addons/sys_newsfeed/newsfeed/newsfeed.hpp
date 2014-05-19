@@ -1,33 +1,19 @@
-#include "Common.hpp"
-#include "commonDefines.hpp"
-
-#define X_MOD 52 
-#define X_MODB 51.5
-#define Y_MOD 10
-#define SLIDER_START -19
-#define SLIDER_INTERVAL 4
-#define SLIDER_TITLE_SPACE 1.3
-#define GUI_GRID_WAbs			((safezoneW / safezoneH) min 1.2)
-#define GUI_GRID_HAbs			(GUI_GRID_WAbs / 1.2)
-#define GUI_GRID_W			(GUI_GRID_WAbs / 40)
-#define GUI_GRID_H			(GUI_GRID_HAbs / 25)
-#define GUI_GRID_X			(safezoneX)
-#define GUI_GRID_Y			(safezoneY + safezoneH - GUI_GRID_HAbs)
-
+class RscText;
+class RscHTML;
 
 class newsfeed_dialog
 {
-	idd = 660002; 
-	movingEnable = 1; 
+	idd = 660002;
+	movingEnable = 1;
 	enableSimulation = 1;
-	enableDisplay = 1; 
-	
-	onLoad = "newsfeed_dialog = _this; disableSerialization;"; 
-	
+	enableDisplay = 1;
 
-	class controls 
+	onLoad = "newsfeed_dialog = _this; disableSerialization;";
+
+
+	class controls
 	{
-			
+
 		class NewsTitle: RscText
 				{
 					colorBackground[] = {0.69,0.75,0.5,0.8};
@@ -56,7 +42,7 @@ class newsfeed_dialog
 					colorBackground[] = {0,0,0,0.4};
 				};
 				class NewsText: RscHTML
-				{	
+				{
 					shadow = 0;
 					class H1
 					{
@@ -82,6 +68,6 @@ class newsfeed_dialog
 					y = "-0.1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 					w = "14 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 					h = "19.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-				};	
+				};
 	};
 };
