@@ -470,12 +470,12 @@ switch(_operation) do {
 		            } forEach (GVAR(OBJECTIVES_DB_SAVE) select 0);
 
                     _async = false; // Wait for response from server
-                    _missionName = [missionName, " ","-"] call CBA_fnc_replace;
-                    _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
+                    _missionName = [missionName, "%20","-"] call CBA_fnc_replace;
+					_missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
                     ["ALiVE SAVE OPCOM DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-                    _result = [_datahandler, "save", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
+                    _result = [_datahandler, "bulkSave", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
 
                     ["ALiVE SAVE OPCOM DATA RESULT (maybe truncated in RPT, dont worry): %1",_result] call ALIVE_fnc_dump;
                     ["ALiVE SAVE OPCOM DATA SAVING COMPLETE!"] call ALIVE_fnc_dumpMPH;
@@ -527,7 +527,7 @@ switch(_operation) do {
 
                     //defaults
                 	_async = false;
-					_missionName = [missionName, " ","-"] call CBA_fnc_replace;
+					_missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 					_missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
                     
                     ["ALiVE LOAD OPCOM DATA - MISSION: %1",_missionName] call ALIVE_fnc_dumpMPH;
