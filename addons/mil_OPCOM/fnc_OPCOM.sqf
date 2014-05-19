@@ -238,7 +238,7 @@ switch(_operation) do {
 							};
 						};
                         
-                        ["ALiVE OPCOM created %1 new objectives!",count _objectives] call ALiVE_fnc_DumpMPH;
+                        ["ALiVE OPCOM created %1 new objectives!",count _objectives] call ALiVE_fnc_Dump;
                     };
 					
                     //Check if there are any objectives
