@@ -8,7 +8,7 @@
 // BUILD should be YYMMDDR eg 1311211
 #define BUILD 0
 
-#define CLUSTERBUILD "Arma 3","Arma3",116,123633,"Stable"
+#define CLUSTERBUILD "Arma 3","Arma3",118,124200,"Stable"
 
 #define VERSION MAJOR.MINOR.PATCHLVL.BUILD
 #define VERSION_AR MAJOR,MINOR,PATCHLVL,BUILD
@@ -21,7 +21,7 @@
  #ifndef DEBUG_MODE_NORMAL
  #define DEBUG_MODE_FULL
  #endif
- */
+*/
 
 // Set a default debug mode for the component here (See documentation on how to default to each of the modes).
 //	#define DEBUG_ENABLED_MAIN
