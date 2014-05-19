@@ -79,11 +79,14 @@ switch(_operation) do {
 			TRACE_1("After module init",_logic);
 
 			//Init further mandatory params on all localities
-			_CQB_spawn = _logic getvariable ["CQB_spawn_setting", 0.01];
+			_CQB_spawn = _logic getvariable ["CQB_spawn_setting", "0.01"];
 			if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
-			_logic setVariable ["CQB_spawn", _CQB_spawn];
+            //// For backward compatibility, remove after some months ////
+            if (_CQB_spawn >= 1) then {_CQB_spawn = _CQB_spawn / 100};
+            /////////////////////////////////////////////////////////////
+            _logic setVariable ["CQB_spawn", _CQB_spawn];
 			
-			_CQB_density = _logic getvariable ["CQB_DENSITY",1000];
+			_CQB_density = _logic getvariable ["CQB_DENSITY","1000"];
 			if (typename (_CQB_density) == "STRING") then {_CQB_density = call compile _CQB_density};
 			_logic setVariable ["CQB_DENSITY", _CQB_density];
 			
@@ -180,7 +183,7 @@ switch(_operation) do {
 				} else {
 					private ["_center", "_radius"];
 					_center = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-					_radius = ((_center select 0) max (_center select 1)) * sqrt(2);
+					_radius = (((_center select 0) max (_center select 1)) * sqrt(2))*2;
 					
 					switch (_CQB_Locations) do {
 						case ("towns") : {
@@ -1084,7 +1087,10 @@ switch(_operation) do {
 	                                                _faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom;
 	                                            };
 	                                            
-	                                            [_host,"CQB",[[_logic, "spawnGroup", [_house,_faction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
+                                                // Naught, ALiVE_fnc_BUS seems to be broken since movement into x_lib (Server to client calls fail)! Please check on dedicated server, switched to BIS_fnc_MP for now!
+	                                            //[_host,"CQB",[[_logic, "spawnGroup", [_house,_faction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
+                                                /////////////////////////////////////////////////////////////
+                                                [[_logic, "spawnGroup", [_house,_faction]],"ALiVE_fnc_CQB",_host,false,false] spawn BIS_fnc_MP;
 	                                            
 	                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
 	                                            sleep 0.1;

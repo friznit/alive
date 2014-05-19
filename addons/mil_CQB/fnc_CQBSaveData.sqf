@@ -35,7 +35,7 @@ if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)} 
 [true, "ALiVE CQB persistence save data started", "cqbper"] call ALIVE_fnc_timer;
 
 _async = false;
-_missionName = [missionName, " ","-"] call CBA_fnc_replace;
+_missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
 
 _keys = [];
@@ -57,7 +57,7 @@ _data call ALIVE_fnc_inspectHash;
 _datahandler = [nil, "create"] call ALIVE_fnc_Data;
 [_datahandler,"storeType",true] call ALIVE_fnc_Data;
 
-_result = [_datahandler, "save", ["mil_cqb", _data, _missionName, _async]] call ALIVE_fnc_Data;
+_result = [_datahandler, "bulkSave", ["mil_cqb", _data, _missionName, _async]] call ALIVE_fnc_Data;
 
 [false, "ALiVE CQB persistence save data complete","cqbper"] call ALIVE_fnc_timer;
 ["ALiVE CQB SAVE DATA RESULT: %1",_result] call ALiVE_fnc_Dump;

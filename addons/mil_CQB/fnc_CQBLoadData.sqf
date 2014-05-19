@@ -34,7 +34,7 @@ private ["_data","_instances"];
 [true, "ALiVE CQB persistence load data started", "cqbper"] call ALIVE_fnc_timer;
 
 _async = false;
-_missionName = [missionName, " ","-"] call CBA_fnc_replace;
+_missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
 
 _datahandler = [nil, "create"] call ALIVE_fnc_Data;
