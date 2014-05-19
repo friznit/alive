@@ -62,6 +62,7 @@ switch(_operation) do {
                 
                 //Create basics on server
                 if (isServer) then {
+
                         // if server, initialise module game logic
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", ALIVE_fnc_combatSupport];
@@ -83,9 +84,10 @@ switch(_operation) do {
 						     
 				        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 				            switch (typeOf ((synchronizedObjects _logic) select _i)) do {
-				                    case ("ALiVE_sup_cas") : {
-				                    private ["_position","_callsign","_type"];
-	
+
+                                case ("ALiVE_sup_cas") : {
+                                    private ["_position","_callsign","_type"];
+
                                     _position = getposATL ((synchronizedObjects _logic) select _i);
                                     _callsign = ((synchronizedObjects _logic) select _i) getvariable ["cas_callsign","EAGLE ONE"];
                                     _type = ((synchronizedObjects _logic) select _i) getvariable ["cas_type","B_Heli_Attack_01_F"];
@@ -94,65 +96,66 @@ switch(_operation) do {
                                     _id = [_position] call ALiVE_fnc_getNearestAirportID;
                                     _height = parsenumber(_heightset);
                                     _code =  ((synchronizedObjects _logic) select _i) getvariable ["cas_code",""];
-									_compiledcode = compile _code;
+                                    _compiledcode = compile _code;
                                     _casArray = [_position,_direction, _type, _callsign, _id,_compiledcode,_height];
                                     _casArrays set [count _casArrays,_casArray];
-				                                    };
-				                    case ("ALiVE_SUP_TRANSPORT") : {
-				                       private ["_position","_callsign","_type"];
-				                 
-				                        _position = getposATL ((synchronizedObjects _logic) select _i);
-				                        _callsign = ((synchronizedObjects _logic) select _i) getvariable ["transport_callsign","FRIZ ONE"];
-				                        _type = ((synchronizedObjects _logic) select _i) getvariable ["transport_type","B_Heli_Transport_01_camo_F"];
-				                        _heightset = ((synchronizedObjects _logic) select _i) getvariable ["transport_height","0"];
-				                        _height = parsenumber(_heightset);
-				                        _direction =  getDir ((synchronizedObjects _logic) select _i);
-				                        _code =  ((synchronizedObjects _logic) select _i) getvariable ["transport_code",""];
-										_compiledcode = compile _code;
-				             
-				                        _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_compiledcode,_height];
-				                        _transportArrays set [count _transportArrays,_transportArray];
-				                    };
-				                     case ("ALiVE_sup_artillery") : {
-				                       private ["_position","_callsign","_type"];
-				                 
-				                        _position = getposATL ((synchronizedObjects _logic) select _i);
-				                        _callsign = ((synchronizedObjects _logic) select _i) getvariable ["artillery_callsign","FRIZ ONE"];
-				                        _class = ((synchronizedObjects _logic) select _i) getvariable ["artillery_type","B_Mortar_01_F"];
-				                        _setherounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_he","30"];
-				                        _setillumrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_illum","30"];
-				                        _setsmokerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_smoke","30"];
-				                        _setguidedrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_guided","30"];
-				                        _setclusterrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_cluster","30"];
-				                        _setlgrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_lg","30"];
-				                        _setminerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_mine","30"];
-				                        _setatminerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_atmine","30"];
+                                };
 
-				                        _direction =  getDir ((synchronizedObjects _logic) select _i);
+                                case ("ALiVE_SUP_TRANSPORT") : {
+                                    private ["_position","_callsign","_type"];
 
-				                        _herounds = parsenumber(_setherounds);
-				                        _illumrounds = parsenumber(_setillumrounds);
-				                        _smokerounds = parsenumber(_setsmokerounds);
-				                        _guidedrounds = parsenumber(_setguidedrounds);
-				                        _clusterrounds = parsenumber(_setclusterrounds);
-				                        _lgrounds = parsenumber(_setlgrounds);
-				                        _minerounds = parsenumber(_setminerounds);
-				                        _atminerounds = parsenumber(_setatminerounds);
+                                    _position = getposATL ((synchronizedObjects _logic) select _i);
+                                    _callsign = ((synchronizedObjects _logic) select _i) getvariable ["transport_callsign","FRIZ ONE"];
+                                    _type = ((synchronizedObjects _logic) select _i) getvariable ["transport_type","B_Heli_Transport_01_camo_F"];
+                                    _heightset = ((synchronizedObjects _logic) select _i) getvariable ["transport_height","0"];
+                                    _height = parsenumber(_heightset);
+                                    _direction =  getDir ((synchronizedObjects _logic) select _i);
+                                    _code =  ((synchronizedObjects _logic) select _i) getvariable ["transport_code",""];
+                                    _compiledcode = compile _code;
 
-				                        _he = ["HE",_herounds];
-				                        _illum = ["ILLUM",_illumrounds];
-				                        _smoke = ["SMOKE",_smokerounds];
-				                        _guided = ["SADARM",_guidedrounds];
-				                        _cluster = ["CLUSTER",_clusterrounds];
-				                        _lg = ["LASER",_lgrounds];
-				                        _mine = ["MINE",_minerounds];
-				                        _atmine = ["AT MINE",_atminerounds];
-				                  
-				                       _ordnance = [_he,_illum,_smoke,_guided,_cluster,_lg,_mine,_atmine];
-				                    
-				                        _artyArray = [_position,_class, _callsign,2,_ordnance,{}];
-				                        _artyArrays set [count _artyArrays,_artyArray];
-				                    };
+                                    _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_compiledcode,_height];
+                                    _transportArrays set [count _transportArrays,_transportArray];
+                                };
+                                case ("ALiVE_sup_artillery") : {
+                                    private ["_position","_callsign","_type"];
+
+                                    _position = getposATL ((synchronizedObjects _logic) select _i);
+                                    _callsign = ((synchronizedObjects _logic) select _i) getvariable ["artillery_callsign","FRIZ ONE"];
+                                    _class = ((synchronizedObjects _logic) select _i) getvariable ["artillery_type","B_Mortar_01_F"];
+                                    _setherounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_he","30"];
+                                    _setillumrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_illum","30"];
+                                    _setsmokerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_smoke","30"];
+                                    _setguidedrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_guided","30"];
+                                    _setclusterrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_cluster","30"];
+                                    _setlgrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_lg","30"];
+                                    _setminerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_mine","30"];
+                                    _setatminerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_atmine","30"];
+
+                                    _direction =  getDir ((synchronizedObjects _logic) select _i);
+
+                                    _herounds = parsenumber(_setherounds);
+                                    _illumrounds = parsenumber(_setillumrounds);
+                                    _smokerounds = parsenumber(_setsmokerounds);
+                                    _guidedrounds = parsenumber(_setguidedrounds);
+                                    _clusterrounds = parsenumber(_setclusterrounds);
+                                    _lgrounds = parsenumber(_setlgrounds);
+                                    _minerounds = parsenumber(_setminerounds);
+                                    _atminerounds = parsenumber(_setatminerounds);
+
+                                    _he = ["HE",_herounds];
+                                    _illum = ["ILLUM",_illumrounds];
+                                    _smoke = ["SMOKE",_smokerounds];
+                                    _guided = ["SADARM",_guidedrounds];
+                                    _cluster = ["CLUSTER",_clusterrounds];
+                                    _lg = ["LASER",_lgrounds];
+                                    _mine = ["MINE",_minerounds];
+                                    _atmine = ["AT MINE",_atminerounds];
+
+                                   _ordnance = [_he,_illum,_smoke,_guided,_cluster,_lg,_mine,_atmine];
+
+                                    _artyArray = [_position,_class, _callsign,2,_ordnance,{}];
+                                    _artyArrays set [count _artyArrays,_artyArray];
+                                };
 				            };
 				        };
 					         
@@ -167,127 +170,145 @@ switch(_operation) do {
 						} foreach _sides;
 
 						private ["_t", "_c", "_a"];
-							_t = [];
-							_c = [];
-							_a = [];
+                        _t = [];
+                        _c = [];
+                        _a = [];
 
-						  {
-								private ["_pos", "_dir", "_type", "_callsign", "_tasks", "_code","_Height","_side"];
-								_pos = _x select 0; _pos set [2, 0];
-								_dir = _x select 1;
-								_type = _x select 2;
-								_callsign = toUpper (_x select 3);
-								_tasks = _x select 4;
-								_code = _x select 5;
-								_height = _x select 6;
-                                
-                                _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
-								_side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
-								
-			                    switch (_side) do {
-			                		case 0 : {_side = EAST};
-			                		case 1 : {_side = WEST};
-			                		case 2 : {_side = RESISTANCE};
-			                		default {_side = EAST};
-			            		};
-								
-								private ["_veh"];
-								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
-								_veh setDir _dir;
-								_veh setPosATL _pos;
-								
-								If(_height > 0) then {
-								_veh setposasl [getposASL _veh select 0, getposASL _veh select 1, _height];
-							} else {
-							_veh setPosATL _pos;
-							};
-								_veh setVelocity [0,0,-1];
 
-							
-								
-								private ["_grp"];
-								_grp = createGroup _side;
+                        // Transport
 
-								[_veh, _grp] call BIS_fnc_spawnCrew;
-								_veh lockDriver true;
-								{ _veh lockturret [[_x], true] } forEach [0,1,2];
-								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
-								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
-								[_veh] spawn _code;
-								_veh setVariable ["ALIVE_CombatSupport", true];
-								_veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
-						
-								_transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
-								[_veh, _grp, _callsign, _pos, _dir, _height, _type, CS_RESPAWN] execFSM _transportfsm;
-								
-								_t = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", _side];
-								_t set [count _t, [_veh, _grp, _callsign]];
-                                
-                                NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _side], _t,true];
-							} forEach SUP_TRANSPORTARRAYS;
-						
+                        {
+                            private ["_pos", "_dir", "_type", "_callsign", "_tasks", "_code","_Height","_side"];
+                            _pos = _x select 0; _pos set [2, 0];
+                            _dir = _x select 1;
+                            _type = _x select 2;
+                            _callsign = toUpper (_x select 3);
+                            _tasks = _x select 4;
+                            _code = _x select 5;
+                            _height = _x select 6;
+
+                            _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
+                            _side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
+
+                            switch (_side) do {
+                                case 0 : {_side = EAST};
+                                case 1 : {_side = WEST};
+                                case 2 : {_side = RESISTANCE};
+                                default {_side = EAST};
+                            };
+
+                            private ["_veh"];
+                            _veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
+                            _veh setDir _dir;
+                            _veh setPosATL _pos;
+
+                            If(_height > 0) then {
+                            _veh setposasl [getposASL _veh select 0, getposASL _veh select 1, _height];
+                            } else {
+                            _veh setPosATL _pos;
+                            };
+                            _veh setVelocity [0,0,-1];
+
+
+                            // set ownership flag for other modules
+                            _veh setVariable ["ALIVE_CombatSupport", true];
+
+
+                            private ["_grp"];
+                            _grp = createGroup _side;
+
+                            [_veh, _grp] call BIS_fnc_spawnCrew;
+                            _veh lockDriver true;
+                            { _veh lockturret [[_x], true] } forEach [0,1,2];
+                            [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
+                            //[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
+                            [_veh] spawn _code;
+                            _veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
+
+                            _transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
+                            [_veh, _grp, _callsign, _pos, _dir, _height, _type, CS_RESPAWN] execFSM _transportfsm;
+
+                            _t = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", _side];
+                            _t set [count _t, [_veh, _grp, _callsign]];
+
+                            NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _side], _t,true];
+
+                        } forEach SUP_TRANSPORTARRAYS;
+
+
+
+                        // CAS
+
 						{
-								private ["_pos", "_dir", "_type", "_callsign", "_airport", "_code","_side"];
-								_pos = _x select 0; _pos set [2, 0];
-								_dir = _x select 1;
-								_type = _x select 2;
-								_callsign = toUpper (_x select 3);
-								_airport = _x select 4;
-								_code = _x select 5;
-								_height = _x select 6;
-                                
-                                _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
-								_side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
+                            private ["_pos", "_dir", "_type", "_callsign", "_airport", "_code","_side"];
+                            _pos = _x select 0; _pos set [2, 0];
+                            _dir = _x select 1;
+                            _type = _x select 2;
+                            _callsign = toUpper (_x select 3);
+                            _airport = _x select 4;
+                            _code = _x select 5;
+                            _height = _x select 6;
 
-			                    switch (_side) do {
-			                		case 0 : {_side = EAST};
-			                		case 1 : {_side = WEST};
-			                		case 2 : {_side = RESISTANCE};
-			                		default {_side = EAST};
-			            		};
-								
-								private ["_veh"];
-		
-								_veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
-							
-								_veh setDir _dir;
-								_veh setPosATL _pos;
-															If(_height > 0) then {
-								_veh setposasl [getposASL _veh select 0, getposASL _veh select 1, _height];
+                            _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
+                            _side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
+
+                            switch (_side) do {
+                                case 0 : {_side = EAST};
+                                case 1 : {_side = WEST};
+                                case 2 : {_side = RESISTANCE};
+                                default {_side = EAST};
+                            };
+
+                            private ["_veh"];
+
+                            _veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
+
+                            _veh setDir _dir;
+                            _veh setPosATL _pos;
+
+                            if(_height > 0) then {
+                                _veh setposasl [getposASL _veh select 0, getposASL _veh select 1, _height];
 							} else {
-							_veh setPosATL _pos;
+							    _veh setPosATL _pos;
 							};
-								_veh setVelocity [0,0,-1];
 
-							
+                            _veh setVelocity [0,0,-1];
 
-								_veh setVariable ["ALIVE_CombatSupport", true];
-								
-								private ["_grp"];
-								_grp = createGroup _side;
-								if(getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
-								createVehicleCrew _veh;   
-								} else {
-								[_veh, _grp] call BIS_fnc_spawnCrew;
-								_veh lockDriver true;
-								{ _veh lockturret [[_x], true] } forEach [0,1,2];
-								
-								[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
-								//[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
-								[_veh] spawn _code; };
 
-								_casfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
-								
-								//FSM
-								[_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, CS_RESPAWN] execFSM _casfsm;
-								
-								_c = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", _side];
-								_c set [count _c, [_veh, _grp, _callsign]];
-                                
-                                NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _side], _c,true];
-							} forEach SUP_CASARRAYS;
-   
-							{
+                            // set ownership flag for other modules
+                            _veh setVariable ["ALIVE_CombatSupport", true];
+
+
+                            private ["_grp"];
+                            _grp = createGroup _side;
+                            if(getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
+                            createVehicleCrew _veh;
+                            } else {
+                            [_veh, _grp] call BIS_fnc_spawnCrew;
+                            _veh lockDriver true;
+                            { _veh lockturret [[_x], true] } forEach [0,1,2];
+
+                            [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
+                            //[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
+                            [_veh] spawn _code; };
+
+                            _casfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
+
+                            //FSM
+                            [_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, CS_RESPAWN] execFSM _casfsm;
+
+                            _c = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", _side];
+                            _c set [count _c, [_veh, _grp, _callsign]];
+
+                            NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _side], _c,true];
+
+                        } forEach SUP_CASARRAYS;
+
+
+
+                        // ARTY
+
+                        {
 							private ["_pos", "_class", "_callsign", "_unitCount", "_rounds", "_code", "_roundsUnit", "_roundsAvailable", "_canMove", "_units", "_grp", "_vehDir"];
 							_pos = _x select 0; _pos set [2, 0];
 							_class = _x select 1;
@@ -296,14 +317,14 @@ switch(_operation) do {
 							_rounds = _x select 4;
 							_code = _x select 5;
 
-							 	_side = getNumber(configfile >> "CfgVehicles" >> _class >> "side");
-								
-			                    switch (_side) do {
-			                		case 0 : {_side = EAST};
-			                		case 1 : {_side = WEST};
-			                		case 2 : {_side = RESISTANCE};
-			                		default {_side = EAST};
-			            		};
+                            _side = getNumber(configfile >> "CfgVehicles" >> _class >> "side");
+
+                            switch (_side) do {
+                                case 0 : {_side = EAST};
+                                case 1 : {_side = WEST};
+                                case 2 : {_side = RESISTANCE};
+                                default {_side = EAST};
+                            };
 
 							_roundsUnit = _class call NEO_fnc_artyUnitAvailableRounds;
 							_roundsAvailable = [];
@@ -324,6 +345,11 @@ switch(_operation) do {
 							_vehDir = _vehDir + 90;
 						
 							_units set [count _units, _veh];
+
+
+							// set ownership flag for other modules
+							_veh setVariable ["ALIVE_CombatSupport", true];
+
 							
 							{ _x setVariable ["NEO_radioArtyModule", [_veh, _callsign], true] } forEach _units;
 
@@ -352,6 +378,9 @@ switch(_operation) do {
 							NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _side], _a, true];
 
 						} forEach SUP_ARTYARRAYS;
+
+
+
 
 						for "_i" from 0 to ((count _sides)-1) do {
 							_sideIn = _sides select _i;
@@ -420,23 +449,23 @@ switch(_operation) do {
                 VIEW - purely visual
                 */
 				NEO_radioLogic setVariable ["NEO_radioPlayerActionArray",
-			   	 [ 
-					[
-				    	("<t color=""#700000"">" + ("Talk To Pilot") + "</t>"),
-				        {["talk"] call ALIVE_fnc_radioAction},
-				        "talk",
-				        -1,
-				        false,
-				        true,
-				        "",
-						"
-							({(_x select 0) == vehicle _this} count (NEO_radioLogic getVariable format ['NEO_radioTrasportArray_%1', playerSide]) > 0)
-							&&
-							{alive (driver (vehicle _this))}
-				        "
-				    ]
-			    ]
-	      	  ];
+                    [
+                        [
+                            ("<t color=""#700000"">" + ("Talk To Pilot") + "</t>"),
+                            {["talk"] call ALIVE_fnc_radioAction},
+                            "talk",
+                            -1,
+                            false,
+                            true,
+                            "",
+                            "
+                                ({(_x select 0) == vehicle _this} count (NEO_radioLogic getVariable format ['NEO_radioTrasportArray_%1', playerSide]) > 0)
+                                &&
+                                {alive (driver (vehicle _this))}
+                            "
+                        ]
+                    ]
+                ];
 
 	        	{player addAction _x} foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray");
 				player addEventHandler ["Respawn", { {(_this select 0) addAction _x } foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray") }];
@@ -453,7 +482,7 @@ switch(_operation) do {
 				    
 					// check if player has item defined in module TODO!
 
-				 		// initialise main menu
+                    // initialise main menu
 				    [
 				            "player",
 				            [SELF_INTERACTION_KEY],
