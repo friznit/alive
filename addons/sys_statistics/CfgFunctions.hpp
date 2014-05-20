@@ -41,6 +41,12 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_statistics\fnc_getPlayerGroup.sqf";
 								recompile = RECOMPILE;
                         };
+
+                        class addHandleHeal {
+                                description = "Adds a handleHeal EH to a player object on the local machine";
+                                file = "\x\alive\addons\sys_statistics\fnc_addHandleHeal.sqf";
+								recompile = RECOMPILE;
+                        };
 				};
         };
 };

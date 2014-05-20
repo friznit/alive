@@ -59,7 +59,11 @@ if (GVAR(ENABLED) && isDedicated) then {
 		TRACE_3("SENDING PROFILE DATA TO CLIENT", _owner, _data, _unit);
 
 		// Set player startTime
-		[GVAR(PlayerStartTime), getPlayerUID _unit, date] call ALIVE_fnc_hashSet;
+		[GVAR(PlayerStartTime), getPlayerUID _unit, diag_tickTime] call ALIVE_fnc_hashSet;
+
+		// Add an EH for your player object on everyone's locality - (Thanks BIS!)
+		// Call is persistent so that all players are synced to any JIPs
+		[[_unit], "ALIVE_fnc_addHandleHeal", true, true, true] spawn BIS_fnc_MP;
 
 	};
 

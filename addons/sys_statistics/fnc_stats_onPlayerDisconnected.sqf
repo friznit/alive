@@ -75,9 +75,13 @@ if (GVAR(ENABLED)) then {
 		_PlayerSide = side (group _unit); // group side is more reliable
 		_PlayerFaction = faction _unit;
 		_playerType = typeof _unit;
-		// Calculate Minutes Played
 
-		_minutesPlayed = floor( ( (dateToNumber date) - ( dateToNumber ([GVAR(PlayerStartTime), getPlayerUID _unit, GVAR(timeStarted)] call ALIVE_fnc_hashGet) )) * 525600);
+		// Calculate Minutes Played
+		private "_playertime";
+		_playertime = [GVAR(PlayerStartTime), getPlayerUID _unit, GVAR(timeStarted)] call ALIVE_fnc_hashGet;
+		_minutesPlayed = round((diag_tickTime - _playertime)/60);
+
+		//_minutesPlayed = floor( ( (dateToNumber date) - ( dateToNumber ([GVAR(PlayerStartTime), getPlayerUID _unit, GVAR(timeStarted)] call ALIVE_fnc_hashGet) )) * 525600);
 		//diag_log _minutesPlayed;
 
 		_score = score _unit;

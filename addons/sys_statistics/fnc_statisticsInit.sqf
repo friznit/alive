@@ -213,8 +213,8 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	// Set up hit handler
 	player addEventHandler ["hit", {_this call GVAR(fnc_hitEH);}];
 
-	// Set up handleHeal
-	player addEventHandler ["handleHeal", {_this call GVAR(fnc_handleHealEH);}];
+	// Set up handleHeal - now handled on connection and broadcast to all connected machines
+	//player addEventHandler ["handleHeal", {_this call GVAR(fnc_handleHealEH);}];
 
 	// Set up non eventhandler checks
 	[] spawn {
@@ -234,7 +234,7 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
 				// Player has exited from dive - they may have surfaced also?
 				if (_diving) then {
-				
+
 					_diveEndTime = player getVariable [QGVAR(diveEndTime),diag_tickTime];
 					_diveTime = round((_diveEndTime - _diveStartTime) / 60); // in minutes
 
