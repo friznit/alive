@@ -6,7 +6,7 @@ class CfgPatches {
 		requiredVersion = REQUIRED_VERSION;
 		requiredAddons[] = {};
 		versionDesc = "ALiVE";
-		versionAct = "['mil_GC',_this] execVM '\x\alive\addons\main\about.sqf';";
+		//versionAct = "['mil_GC',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
 		author[] = {"Highhead"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
