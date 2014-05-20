@@ -16,7 +16,7 @@ Side
 Examples:
 (begin example)
 // side number to text
-_result = 1 call ALIVE_fnc_sideNumberToText;
+_result = [1] call ALIVE_fnc_sideNumberToText;
 (end)
 
 See Also:
@@ -25,23 +25,13 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_side", "_result"];
-	
-_side = _this;
+if (typeName(_this) != "ARRAY") then {_this = [_this]};
 
-switch(_side) do {
-	case 0: {
-		_result = "EAST";
-	};
-	case 1: {
-		_result = "WEST";
-	};	
-	case 2: {
-		_result = "GUER";
-	};
-	case 3: {
-		_result = "CIV";
-	};
+switch (_this select 0) do
+{
+	case 0: {"EAST"};
+	case 1: {"WEST"};	
+	case 2: {"GUER"};
+	case 3: {"CIV"};
+	default {""};
 };
-
-_result
