@@ -44,7 +44,7 @@ _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 
 TRACE_3("SYS_DATA",_logic, _operation, _args);
 
-_ops = ["read","write","update","delete","load","save","convert","restore","bulkSave","bulkWrite"];
+_ops = ["read","write","update","delete","load","save","convert","restore","bulkSave","bulkWrite","bulkLoad","bulkRead"];
 
 _result = true;
 
