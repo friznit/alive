@@ -1369,7 +1369,7 @@ switch(_operation) do {
                         [_profileEntity, "ranks", _importRanks] call ALIVE_fnc_hashSet;
 
                         _side = [_profile,"side"] call ALIVE_fnc_hashGet;
-                        [_profileEntity, "side", _side call ALIVE_fnc_sideNumberToText] call ALIVE_fnc_profileEntity;
+                       // [_profileEntity, "side", [_side] call ALIVE_fnc_sideNumberToText] call ALIVE_fnc_profileEntity;
 
                         _unitClasses = [_profile,"unitClasses"] call ALIVE_fnc_hashGet;
                         _damages = [];
@@ -1423,7 +1423,7 @@ switch(_operation) do {
                         };
 
                         _side = [_profile,"side"] call ALIVE_fnc_hashGet;
-                        [_profileVehicle, "side", _side call ALIVE_fnc_sideNumberToText] call ALIVE_fnc_profileVehicle;
+                       // [_profileVehicle, "side", _side call ALIVE_fnc_sideNumberToText] call ALIVE_fnc_profileVehicle;
 
                         _profileVehicle call ALIVE_fnc_inspectHash;
 
