@@ -90,6 +90,11 @@ ALIVE_fnc_restore = {
 							case "GUER": {resistance;};
 							case "CIV": {civilian;};
 							case "LOGIC": {sideLogic;};
+							case "0": {"EAST"};
+							case "1": {"WEST"};
+							case "2": {"GUER"};
+							case "3": {"CIV"};
+							default {"WEST"};
 					};
 			};
 			case "ARRAY": {
