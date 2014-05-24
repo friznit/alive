@@ -410,7 +410,7 @@ switch(_operation) do {
 				};
 		};
 		case "spawn": {
-				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID"];
+				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID","_speed","_velocity"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_vehicleClass = _logic select 2 select 11; //[_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
@@ -452,6 +452,13 @@ switch(_operation) do {
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
 					//_vehicle setVehicleVarName _profileID;
+
+					if(_engineOn && (_vehicleType=="Plane")) then {
+					    _speed = 200;
+					    _velocity = velocity _vehicle;
+                        _vehicle setVelocity [(_velocity select 0)+(sin _direction*_speed),(_velocity select 1)+ (cos _direction*_speed),(_velocity select 2)];
+                    };
+
 
 					if(count _damage > 0) then {
 						[_vehicle, _damage] call ALIVE_fnc_vehicleSetDamage;

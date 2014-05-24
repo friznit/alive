@@ -176,13 +176,21 @@ switch(_type) do {
 						[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
 						
 						_vehicles = _vehicles - [_vehicleProfile];
-						
-						//[_spawnPosition,"LEAD",_profileID] call _createMarker;	
-					
+
+						//["LEAD POS: %1",_spawnPosition] call ALIVE_fnc_dump;
+						//[_spawnPosition,"LEAD",_profileID] call _createMarker;
+
 						{
-							_position = [_spawnPosition, (20 * _forEachIndex), _direction] call BIS_fnc_relPos;
-							
+
+						    if(_inAir) then {
+						        _position = [_spawnPosition, (100 * ((_forEachIndex)+1)), _direction] call BIS_fnc_relPos;
+						    }else{
+                                _position = [_spawnPosition, (20 * ((_forEachIndex)+1)), _direction] call BIS_fnc_relPos;
+						    };
+
+							//["GROUP POS: %1",_position] call ALIVE_fnc_dump;
 							//[_position,"SQ",_profileID] call _createMarker;
+
 							_vehicleProfile = _x;
 							[_vehicleProfile,"position",_position] call ALIVE_fnc_profileVehicle;
 							//[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
