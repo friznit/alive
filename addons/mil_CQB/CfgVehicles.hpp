@@ -181,6 +181,30 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_amount
+                        {
+                                displayName = "$STR_ALIVE_CQB_AMOUNT";
+                                description = "$STR_ALIVE_CQB_AMOUNT_COMMENT";
+                                class Values
+                                {
+                                        class Solo
+                                        {
+                                                name = "Solo";
+                                                value = 1;
+                                        };
+                                        class Pair
+                                        {
+                                                name = "Pair";
+                                                value = 3;
+                                                default = 1;
+                                        };
+                                        class Fireteam
+                                        {
+                                                name = "Fireteam";
+                                                value = 5;
+                                        };
+                                };
+                        };
                         class CQB_UseDominantFaction
                         {
                                 displayName = "$STR_ALIVE_CQB_USEDOMINANTFACTION";

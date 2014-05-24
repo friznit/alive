@@ -27,6 +27,12 @@
 <Key ID="STR_ALIVE_CQB_LOCALITY_COMMENT">
 	<English>Selects locality of hosted AI</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_AMOUNT">
+	<English>AI Amount:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_AMOUNT_COMMENT">
+	<English>Max. group size spawned per CQB location</English>
+</Key>
 <Key ID="STR_ALIVE_CQB_ENABLE">
 	<English>Enable CQB</English>
 </Key>
