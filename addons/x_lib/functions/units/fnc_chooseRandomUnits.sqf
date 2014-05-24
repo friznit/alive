@@ -40,7 +40,7 @@ if (!(typename _factions == "ARRAY") || !(typename _count == "SCALAR") || !(type
 
 _types = [0, _factions call BIS_fnc_selectRandom,"Man"] call ALiVE_fnc_findVehicleType;
 _unittypes = [];
-for "_i" from 0 to _count do {
+for "_i" from 1 to _count do {
 	while {_unittype = _types call BIS_fnc_selectRandom; (_unittype in _blacklist)} do {true};
 	_unittypes set [count _unittypes, _unittype];
 };
