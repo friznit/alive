@@ -1081,8 +1081,11 @@ switch(_operation) do {
 
             private ["_datahandler","_exportProfiles","_async","_missionName"];
 
-            _datahandler = [nil, "create"] call ALIVE_fnc_Data;
-            [_datahandler,"storeType",true] call ALIVE_fnc_Data;
+            if(isNil"ALIVE_profileDatahandler") then {
+                ["SAVE PROFILE, CREATE DATA HANDLER - NO!"] call ALIVE_fnc_dump;
+                ALIVE_profileDatahandler = [nil, "create"] call ALIVE_fnc_Data;
+                [ALIVE_profileDatahandler,"storeType",true] call ALIVE_fnc_Data;
+            };
 
             _exportProfiles = [_logic, "exportProfileData"] call MAINCLASS;
 
@@ -1093,7 +1096,7 @@ switch(_operation) do {
 
             ["ALiVE SAVE PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-            _result = [_datahandler, "bulkSave", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
+            _result = [ALIVE_profileDatahandler, "bulkSave", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
             ["RESULT: %1",_result] call ALIVE_fnc_dump;
 
         };
@@ -1101,8 +1104,11 @@ switch(_operation) do {
 
             private ["_datahandler","_importProfiles","_async","_missionName"];
 
-            _datahandler = [nil, "create"] call ALIVE_fnc_Data;
-            [_datahandler,"storeType",true] call ALIVE_fnc_Data;
+            if(isNil"ALIVE_profileDatahandler") then {
+                ["LOAD PROFILE, CREATE DATA HANDLER"] call ALIVE_fnc_dump;
+                ALIVE_profileDatahandler = [nil, "create"] call ALIVE_fnc_Data;
+                [ALIVE_profileDatahandler,"storeType",true] call ALIVE_fnc_Data;
+            };
 
             _async = false; // Wait for response from server
 
@@ -1112,7 +1118,7 @@ switch(_operation) do {
 
             ["ALiVE LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-            _result = [_datahandler, "load", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
+            _result = [ALIVE_profileDatahandler, "load", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
             ["RESULT: %1",_result] call ALIVE_fnc_dump;
 
         };
