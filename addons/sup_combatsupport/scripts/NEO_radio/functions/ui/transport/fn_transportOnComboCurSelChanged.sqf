@@ -27,7 +27,7 @@ switch (_cb) do
 			{
 				case 0 : { 100 };
 				case 1 : { 300 };
-				case DEFAULT { 600 };
+				case DEFAULT { 1000 };
 			};
 			
 			//Set Unit Behaviour Properties where they are local
