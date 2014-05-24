@@ -421,7 +421,7 @@ switch(_operation) do {
 
                 if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
-                    private ["_datahandler","_exportProfiles","_async","_missionName"];
+                    private ["_exportProfiles","_async","_missionName"];
                     
                     ["ALiVE SAVE OPCOM DATA TRIGGERED"] call ALIVE_fnc_dumpMPH;
 
@@ -448,8 +448,11 @@ switch(_operation) do {
                     //If I didnt send you to hell - go and save, the feck!
                     ["ALiVE SAVE OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
                     
-                    _datahandler = [nil, "create"] call ALIVE_fnc_Data;
-                    [_datahandler,"storeType",true] call ALIVE_fnc_Data;
+                    if (isNil QGVAR(DATAHANDLER)) then {
+		               ["SAVE OPCOM, CREATE DATA HANDLER!"] call ALIVE_fnc_dump;
+		               GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;
+		               [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
+		           	};
                     
 		            _exportObjectives = [] call ALIVE_fnc_hashCreate;
 		
@@ -475,7 +478,7 @@ switch(_operation) do {
 
                     ["ALiVE SAVE OPCOM DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-                    _result = [_datahandler, "bulkSave", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
+                    _result = [GVAR(DATAHANDLER), "bulkSave", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
 
                     ["ALiVE SAVE OPCOM DATA RESULT (maybe truncated in RPT, dont worry): %1",_result] call ALIVE_fnc_dump;
                     ["ALiVE SAVE OPCOM DATA SAVING COMPLETE!"] call ALIVE_fnc_dumpMPH;
@@ -523,7 +526,7 @@ switch(_operation) do {
             if (isDedicated) then {
 
                 if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
-                    private ["_datahandler","_importProfiles","_async","_missionName","_result","_stopped","_i"];
+                    private ["_importProfiles","_async","_missionName","_result","_stopped","_i"];
 
                     //defaults
                 	_async = false;
@@ -537,11 +540,14 @@ switch(_operation) do {
                         
                         ["ALiVE LOAD OPCOM DATA FROM DB, PLEASE WAIT..."] call ALIVE_fnc_dumpMPH;
                         
-						_datahandler = [nil, "create"] call ALIVE_fnc_Data;
-						[_datahandler,"storeType",true] call ALIVE_fnc_Data;
+                        if (isNil QGVAR(DATAHANDLER)) then {
+			               ["LOAD OPCOM, CREATE DATA HANDLER!"] call ALIVE_fnc_dump;
+			               GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;
+			               [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
+			           };
                         
                         [true] call ALIVE_fnc_timer;
-                        GVAR(OBJECTIVES_DB_LOAD) = [[_datahandler, "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data,time];
+                        GVAR(OBJECTIVES_DB_LOAD) = [[GVAR(DATAHANDLER), "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data,time];
                         [] call ALIVE_fnc_timer;
                         
                         //Exit if no loaded data

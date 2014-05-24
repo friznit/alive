@@ -54,10 +54,14 @@ _data = [] call ALiVE_fnc_HashCreate;
 ["ALiVE SAVE CQB DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
 _data call ALIVE_fnc_inspectHash;
-_datahandler = [nil, "create"] call ALIVE_fnc_Data;
-[_datahandler,"storeType",true] call ALIVE_fnc_Data;
 
-_result = [_datahandler, "bulkSave", ["mil_cqb", _data, _missionName, _async]] call ALIVE_fnc_Data;
+if (isNil QGVAR(DATAHANDLER)) then {
+   ["SAVE CQB, CREATE DATA HANDLER!"] call ALIVE_fnc_dump;
+   GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;
+   [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
+};
+
+_result = [GVAR(DATAHANDLER), "bulkSave", ["mil_cqb", _data, _missionName, _async]] call ALIVE_fnc_Data;
 
 [false, "ALiVE CQB persistence save data complete","cqbper"] call ALIVE_fnc_timer;
 ["ALiVE CQB SAVE DATA RESULT: %1",_result] call ALiVE_fnc_Dump;
