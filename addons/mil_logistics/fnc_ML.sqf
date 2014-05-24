@@ -203,7 +203,7 @@ switch(_operation) do {
             if !(["ALiVE_sys_profile","ALiVE_mil_opcom"] call ALiVE_fnc_isModuleAvailable) exitwith {
                 ["Profile module or OPCOM module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
-			waituntil {!(isnil "ALiVE_ProfileHandler")};
+			waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
 
 			_modules = [];
 					
