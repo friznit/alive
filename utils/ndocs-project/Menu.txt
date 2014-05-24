@@ -273,12 +273,6 @@ Group: ALiVE  {
          File: ALIVE_fnc_GCInit  (sys_GC/fnc_GCInit.sqf)
          }  # Group: Sys_GC
 
-      Group: Sys_HAC  {
-
-         File: ALIVE_fnc_HAC  (sys_HAC/fnc_HAC.sqf)
-         File: ALIVE_fnc_HACInit  (sys_HAC/fnc_HAC_Init.sqf)
-         }  # Group: Sys_HAC
-
       Group: Mil_logistics  {
 
          File: ALIVE_fnc_ML  (mil_logistics/fnc_ML.sqf)
