@@ -188,7 +188,7 @@ switch(_operation) do {
                     };
                     
                     if (!(isnil "_objectives") && {count _objectives > 0}) then {
-                        ["ALiVE OPCOM loaded %1 objectives from DB!",count _objectives] call ALiVE_fnc_DumpMPH;
+                        ["ALiVE OPCOM loaded %1 objectives from DB!",count _objectives] call ALiVE_fnc_Dump;
                     } else {
 	                    //If no data was loaded from DB then get objectives data from other modules or placed Location logics!
                     	_objectives = [];
@@ -380,7 +380,7 @@ switch(_operation) do {
 	        waituntil {sleep 1; isnil {[_logic, "TACOM_FSM"] call ALiVE_fnc_HashGet}};
             waituntil {sleep 1; isnil {[_logic, "OPCOM_FSM"] call ALiVE_fnc_HashGet}};
             
-            ["ALiVE OPCOM stopped..."] call ALIVE_fnc_dumpMPH;
+            ["ALiVE OPCOM stopped..."] call ALiVE_fnc_Dump;
             
             _result = true;
         };
@@ -423,7 +423,7 @@ switch(_operation) do {
 
                     private ["_exportProfiles","_async","_missionName"];
                     
-                    ["ALiVE SAVE OPCOM DATA TRIGGERED"] call ALIVE_fnc_dumpMPH;
+                    ["ALiVE SAVE OPCOM DATA TRIGGERED"] call ALiVE_fnc_Dump;
 
                     //Save only every 60 seconds, bad hack because of this http://dev.withsix.com/issues/74321
                     //For normal each instance would save their own objectives but the hack collects all objectives of all OPCOMs on one save, FIFO principle
@@ -442,8 +442,8 @@ switch(_operation) do {
                         } foreach (GVAR(OBJECTIVES_DB_SAVE) select 0);
                         _save = true;
                     };
-                    if (isnil "_save") exitwith {["ALiVE SAVE OPCOM DATA Please wait at least 5 minutes before saving again!"] call ALiVE_fnc_DumpMPH; _result = nil};
-                    if (count (GVAR(OBJECTIVES_DB_SAVE) select 0) == 0) exitwith {["ALiVE SAVE OPCOM DATA Dataset is empty, not saving...!"] call ALiVE_fnc_DumpMPH; _result = nil};
+                    if (isnil "_save") exitwith {["ALiVE SAVE OPCOM DATA Please wait at least 5 minutes before saving again!"] call ALiVE_fnc_Dump; _result = nil};
+                    if (count (GVAR(OBJECTIVES_DB_SAVE) select 0) == 0) exitwith {["ALiVE SAVE OPCOM DATA Dataset is empty, not saving...!"] call ALiVE_fnc_Dump; _result = nil};
                     
                     //If I didnt send you to hell - go and save, the feck!
                     ["ALiVE SAVE OPCOM DATA - SYS DATA EXISTS"] call ALIVE_fnc_dump;
@@ -476,12 +476,12 @@ switch(_operation) do {
                     _missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 					_missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-                    ["ALiVE SAVE OPCOM DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
+                    ["ALiVE SAVE OPCOM DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALiVE_fnc_Dump;
 
                     _result = [GVAR(DATAHANDLER), "bulkSave", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
 
                     ["ALiVE SAVE OPCOM DATA RESULT (maybe truncated in RPT, dont worry): %1",_result] call ALIVE_fnc_dump;
-                    ["ALiVE SAVE OPCOM DATA SAVING COMPLETE!"] call ALIVE_fnc_dumpMPH;
+                    ["ALiVE SAVE OPCOM DATA SAVING COMPLETE!"] call ALiVE_fnc_Dump;
                 };
             };
         };
@@ -501,7 +501,7 @@ switch(_operation) do {
 			[_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
 
 			//Restart OPCOM
-        	["ALiVE OPCOM and TACOM re-starting..."] call ALiVE_fnc_DumpMPH;
+        	["ALiVE OPCOM and TACOM re-starting..."] call ALiVE_fnc_Dump;
         	[_logic] call {
             	_handler = _this select 0;
             
@@ -512,7 +512,7 @@ switch(_operation) do {
             	[_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
         	};
 
-            ["ALiVE LOAD OPCOM DATA Imported %1 objectives from DB!",count ([_logic,"objectives",[]] call ALiVE_fnc_HashGet)] call ALIVE_fnc_dumpMPH;
+            ["ALiVE LOAD OPCOM DATA Imported %1 objectives from DB!",count ([_logic,"objectives",[]] call ALiVE_fnc_HashGet)] call ALiVE_fnc_Dump;
         
             _result = _objectives;
         };
@@ -533,12 +533,12 @@ switch(_operation) do {
 					_missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 					_missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
                     
-                    ["ALiVE LOAD OPCOM DATA - MISSION: %1",_missionName] call ALIVE_fnc_dumpMPH;
+                    ["ALiVE LOAD OPCOM DATA - MISSION: %1",_missionName] call ALiVE_fnc_Dump;
 
                     //Load only every 5 minutes
                     if (isnil QGVAR(OBJECTIVES_DB_LOAD) || {!(isnil QGVAR(OBJECTIVES_DB_LOAD)) && {time - (GVAR(OBJECTIVES_DB_LOAD) select 1) > 300}}) then {
                         
-                        ["ALiVE LOAD OPCOM DATA FROM DB, PLEASE WAIT..."] call ALIVE_fnc_dumpMPH;
+                        ["ALiVE LOAD OPCOM DATA FROM DB, PLEASE WAIT..."] call ALiVE_fnc_Dump;
                         
                         if (isNil QGVAR(DATAHANDLER)) then {
 			               ["LOAD OPCOM, CREATE DATA HANDLER!"] call ALIVE_fnc_dump;
@@ -554,7 +554,7 @@ switch(_operation) do {
                         if (((typeName (GVAR(OBJECTIVES_DB_LOAD) select 0)) == "BOOL") && {!(GVAR(OBJECTIVES_DB_LOAD) select 0)}) exitwith {};
                         ["ALiVE LOAD OPCOM DATA %1 OBJECTIVES LOADED FROM DB!",count ((GVAR(OBJECTIVES_DB_LOAD) select 0) select 2)] call ALiVE_fnc_Dump;
                     } else {
-                        ["ALiVE LOAD OPCOM DATA FROM CACHE!"] call ALiVE_fnc_DumpMPH;
+                        ["ALiVE LOAD OPCOM DATA FROM CACHE!"] call ALiVE_fnc_Dump;
                     };
                     
                     _result = GVAR(OBJECTIVES_DB_LOAD) select 0;
@@ -567,7 +567,7 @@ switch(_operation) do {
                             
                             if (_id == _opcomID) then {
                                 
-                                //["ALiVE LOAD OPCOM DATA RESETTING RESULT %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_DumpMPH;
+                                //["ALiVE LOAD OPCOM DATA RESETTING RESULT %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_Dump;
                                 
                                 _rev = [_x,"_rev",""] call ALiVE_fnc_HashGet;
 
@@ -584,7 +584,7 @@ switch(_operation) do {
                         {
                             private ["_keys","_values","_entry"];
                             
-                            //["ALiVE LOAD OPCOM DATA CLEANING HASH %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_DumpMPH;
+                            //["ALiVE LOAD OPCOM DATA CLEANING HASH %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_Dump;
                             
                             _entry = _x;
                             _values = [];
@@ -611,7 +611,7 @@ switch(_operation) do {
 
                             if (_i == 10) then {
                                 _i = 0;
-                            	["ALiVE LOAD OPCOM DATA REBUILDING OBJECTIVE %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_DumpMPH;
+                            	["ALiVE LOAD OPCOM DATA REBUILDING OBJECTIVE %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_Dump;
                             };
                             _i = _i + 1;
                             
@@ -629,9 +629,9 @@ switch(_operation) do {
 						[_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
                         _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
 
-	                    ["ALiVE LOAD OPCOM DATA IMPORTED %1 OBJECTIVES FROM DB!",count _objectives] call ALIVE_fnc_dumpMPH;
+	                    ["ALiVE LOAD OPCOM DATA IMPORTED %1 OBJECTIVES FROM DB!",count _objectives] call ALiVE_fnc_Dump;
                     } else {
-                        ["ALiVE LOAD OPCOM DATA LOADING FROM DB FAILED!"] call ALIVE_fnc_dumpR;
+                        ["ALiVE LOAD OPCOM DATA LOADING FROM DB FAILED!"] call ALIVE_fnc_dump;
                     };
                 } else {
                     ["ALiVE LOAD OPCOM DATA FROM DB NOT POSSIBLE! NO SYS DATA MODULE AVAILABLE!"] call ALIVE_fnc_dumpR;
