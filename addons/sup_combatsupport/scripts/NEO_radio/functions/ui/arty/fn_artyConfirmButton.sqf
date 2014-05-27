@@ -45,11 +45,11 @@ _callsign = _artyArray select (lbCurSel _artyUnitLb) select 2; if (!isNil { NEO_
 _callsignPlayer = (format ["%1", group player]) call NEO_fnc_callsignFix;
 
 //Dislog from player
-[[player,format["%1, this is %2. We need %5 %6 strike at position. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1, _type, _ordnanceType],"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+[[player,format["%1, this is %2. We need an %5 %7 round %6 strike at grid %3%4 with %8m dispersion. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1, _type, _ordnanceType, _count, _dispersion],"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
 
 
 //NEW TASK
-_battery setVariable ["NEO_radioArtyNewTask", [_type, _ordnanceType, _rate, _count, _dispersion, _pos,_unit,_ord], true];
+_battery setVariable ["NEO_radioArtyNewTask", [_type, _ordnanceType, _rate, _count, _dispersion, _pos, _unit, _ord, _callsignPlayer], true];
 
 //Interface
 [lbCurSel 655565] call NEO_fnc_radioRefreshUi;

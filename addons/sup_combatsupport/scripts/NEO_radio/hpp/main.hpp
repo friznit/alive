@@ -1,14 +1,14 @@
 #include "common.hpp"
- 
+
 class NEO_resourceRadio
 {
         idd = 655555;
         onLoad = "[] spawn NEO_fnc_radioOnLoad; ";
         onUnload = "_this call NEO_fnc_radioOnUnload";
-       
+
         class controls
         {
-                               
+
         //Background
                 class NEO_radioBackground : RscPicture
                 {
@@ -30,7 +30,7 @@ class NEO_resourceRadio
                         w = 0.216525 * safezoneW;
                         h = 0.42 * safezoneH;
                 };
-               
+
                 //Main Support Title
                 class NEO_radioMainTitle : NEO_RscText
                 {
@@ -50,9 +50,9 @@ class NEO_resourceRadio
                                 shadow = true;
                                 shadowColor = "#000000";
                                 size = 0.8;
-                        };             
+                        };
                 };
-               
+
                 //Abort Button
                 class NEO_radioAbort : NEO_RscButton
                 {
@@ -70,7 +70,7 @@ class NEO_resourceRadio
                         colorFocused[] = {0.706,0.706,0.706,1};
                         action = "closeDialog 0";
                 };
-               
+
                 //Main Support ListBox
                 class NEO_radioMainList : NEO_RscGUIListBox
                 {
@@ -84,7 +84,7 @@ class NEO_resourceRadio
                         sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
                         rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
                 };
-               
+
                 //=========================
                 //Transport Unit ListBox
                 class NEO_radioTransportUnitList : NEO_RscGUIListBox
@@ -98,7 +98,7 @@ class NEO_resourceRadio
                         h = 0.084 * safezoneH;
                         colorActive[] = {0.384,0.439,0.341,1};
                 };
- 
+
                 //Transport Task ListBox
                 class NEO_radioTransportTaskList : NEO_radioTransportUnitList
                 {
@@ -111,7 +111,7 @@ class NEO_resourceRadio
                         h = 0.084 * safezoneH;
                         colorActive[] = {0.384,0.439,0.341,1};
                 };
-               
+
                 //Transport Unit LB Text
                 class NEO_radioTransportUnitText : NEO_RscText
                 {
@@ -125,7 +125,7 @@ class NEO_resourceRadio
                         sizeEx = 0.8 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Transport Task LB Text
                 class NEO_radioTransportTaskText : NEO_radioTransportUnitText
                 {
@@ -139,7 +139,7 @@ class NEO_resourceRadio
                         sizeEx = 0.8 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Transport Help Unit Text
                 class NEO_radioTransportHelpUnitText : NEO_radioTransportUnitText
                 {
@@ -152,7 +152,7 @@ class NEO_resourceRadio
                         sizeEx = 0.6 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Transport Help Task Text
                 class NEO_radioTransportHelpTaskText : NEO_radioTransportHelpUnitText
                 {
@@ -165,7 +165,7 @@ class NEO_resourceRadio
                         sizeEx = 0.6 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Transport Confirm Button
                 class NEO_radioTransportConfirmButton : NEO_RscButton
                 {
@@ -180,7 +180,7 @@ class NEO_resourceRadio
                         colorBackgroundFocused[] = {0.706,0.706,0.706,1};
                         colorFocused[] = {0.706,0.706,0.706,1};
                 };
-               
+
                 //Transport Base Button
                 class NEO_radioTransportBaseButton : NEO_radioTransportConfirmButton
                 {
@@ -195,7 +195,7 @@ class NEO_resourceRadio
                         colorFocused[] = {0.706,0.706,0.706,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-               
+
                 //Transport Smoke Found Button
                 class NEO_radioTransportSmokeFoundButton : NEO_radioTransportConfirmButton
                 {
@@ -210,7 +210,7 @@ class NEO_resourceRadio
                         colorFocused[] = {0.706,0.706,0.706,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-               
+
                 //Transport Smoke Found Button same as return to base button
                 class NEO_radioTransportSmokeNotFoundButton : NEO_radioTransportBaseButton
                 {
@@ -225,7 +225,7 @@ class NEO_resourceRadio
                         colorFocused[] = {0.706,0.706,0.706,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-               
+
                 //Circle Slider
                 class NEO_radioTransportCircleSlider : NEO_RscSlider
                 {
@@ -240,8 +240,8 @@ class NEO_resourceRadio
                         colorDisabled[] = {10.384,0.439,0.341,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
- 
-               
+
+
                 //Circle Slider Text
                 class NEO_radioTransportCircleSliderText : NEO_radioTransportHelpUnitText
                 {
@@ -265,7 +265,7 @@ class NEO_resourceRadio
                                 size = "1";
                         };*/
                 };
-               
+
                 //Properties Text
                 class NEO_radioTransportPropertiesText : NEO_radioTransportCircleSliderText
                 {
@@ -279,7 +279,7 @@ class NEO_resourceRadio
                         colorBackground[] = {0,0,0,0};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-               
+
                 //FlyInHeight CB
                 class NEO_radioTransportHeightCb : NEO_RscComboBox
                 {
@@ -296,7 +296,7 @@ class NEO_resourceRadio
                         sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
                         rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
                 };
-               
+
                 //Speed CB
                 class NEO_radioTransportSpeedCb : NEO_radioTransportHeightCb
                 {
@@ -306,7 +306,7 @@ class NEO_resourceRadio
                         w = safeZoneW / 1000;
                         h = safeZoneH / 1000;
                 };
-               
+
                 //ROE
                 class NEO_radioTransportRoeCb : NEO_radioTransportHeightCb
                 {
@@ -316,7 +316,7 @@ class NEO_resourceRadio
                         w = safeZoneW / 1000;
                         h = safeZoneH / 1000;
                 };
-               
+
                 //=======================
                 //Cas Unit ListBox
                 class NEO_radioCasUnitList : NEO_RscGUIListBox
@@ -331,7 +331,7 @@ class NEO_resourceRadio
                         sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
                         rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
                 };
-               
+
                 //Cas Unit LB Text
                 class NEO_radioCasUnitText : NEO_RscText
                 {
@@ -345,7 +345,7 @@ class NEO_resourceRadio
                         sizeEx = 0.8 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Cas Help Unit Text
                 class NEO_radioCasHelpUnitText : NEO_radioCasUnitText
                 {
@@ -359,7 +359,7 @@ class NEO_resourceRadio
                         rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
                         text = "";
                 };
-               
+
                 //Cas Confirm Button
                 class NEO_radioCasConfirmButton : NEO_radioTransportConfirmButton
                 {
@@ -374,7 +374,7 @@ class NEO_resourceRadio
                         colorFocused[] = {0.706,0.706,0.706,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-               
+
                 //Cas Base Button
                 class NEO_radioCasBaseButton : NEO_radioCasConfirmButton
                 {
@@ -403,7 +403,7 @@ class NEO_resourceRadio
                         colorFocused[] = {0.706,0.706,0.706,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-               
+
                 //CAS Task LB
                 class NEO_radioCasTaskList : NEO_radioCasUnitList
                 {
@@ -417,7 +417,7 @@ class NEO_resourceRadio
                 sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
                         rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
                 };
-               
+
                 //Cas Task Text
                 class NEO_radioCasTaskText : NEO_radioCasUnitText
                 {
@@ -431,7 +431,7 @@ class NEO_resourceRadio
                         sizeEx = 0.8 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Cas Task Help Text
                 class NEO_radioCasHelpTaskText : NEO_radioCasHelpUnitText
                 {
@@ -444,7 +444,7 @@ class NEO_resourceRadio
                         sizeEx = 0.6 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Cas FlyInHeight Slider
                 class NEO_radioCasFlyHeightSlider : NEO_radioTransportCircleSlider
                 {
@@ -457,7 +457,7 @@ class NEO_resourceRadio
                         color[] = {0.384,0.439,0.341,1};
                         colorDisabled[] = {10.384,0.439,0.341,1};
                 };
-               
+
                 //Cas FlyInHeight Slider Text
                 class NEO_radioCasFlyHeightText : NEO_radioTransportCircleSliderText
                 {
@@ -471,7 +471,7 @@ class NEO_resourceRadio
                         sizeEx = 0.8 * GUI_GRID_H;
                         text = "";
                 };
-               
+
                 //Cas Radius Slider
                 class NEO_radioCasRadiusSlider : NEO_radioTransportCircleSlider
                 {
@@ -486,7 +486,7 @@ class NEO_resourceRadio
                         colorDisabled[] = {10.384,0.439,0.341,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-               
+
                 //Cas Radius Slider Text
                 class NEO_radioCasRadiusText : NEO_radioTransportCircleSliderText
                 {
@@ -549,7 +549,7 @@ class NEO_resourceRadio
                         colorFocused[] = {0.706,0.706,0.706,1};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
-                        class NEO_radioArtyBaseButton : NEO_radioArtyConfirmButton
+                class NEO_radioArtyBaseButton : NEO_radioArtyConfirmButton
                 {
                         idc = 655610;
                         x = 0.519796 * safezoneW + safezoneX;
@@ -594,7 +594,7 @@ class NEO_resourceRadio
                         w = 0.080931 * safezoneW;
                         h = 0.0280024 * safezoneH;
                 };
-               
+
                 //Arty Rate Of Fire Lb
                 class NEO_radioArtyRateOfFireLb : NEO_radioArtyOrdnanceTypeLb
                 {
@@ -604,7 +604,7 @@ class NEO_resourceRadio
                         w = 0.0859113 * safezoneW;
                         h = 0.0560048 * safezoneH;
                 };
-               
+
                 //Arty Round Count Text
                 class NEO_radioArtyRoundCountText : NEO_radioArtyOrdnanceTypeText
                 {
@@ -614,7 +614,7 @@ class NEO_resourceRadio
                         w = 0.080931 * safezoneW;
                         h = 0.0280024 * safezoneH;
                 };
-               
+
                 //Arty Round Count Lb
                 class NEO_radioArtyRoundCountLb : NEO_radioArtyOrdnanceTypeLb
                 {
@@ -631,7 +631,7 @@ class NEO_resourceRadio
                         colorBackgroundFocused[] = {0,0,0,0};
                         colorFocused[] = {0,0,0,0};
                 };
-               
+
                 //Arty Dont Move
                 class NEO_radioArtyDontMoveButton : NEO_radioTransportSmokeNotFoundButton
                 {
@@ -640,15 +640,15 @@ class NEO_resourceRadio
                         colorBackgroundFocused[] = {0,0,0,0};
                         colorFocused[] = {0,0,0,0};
                 };
-                        class NEO_radioArtyDispersionText : NEO_radioCasUnitText
+                class NEO_radioArtyDispersionText : NEO_radioCasUnitText
                 {
                         idc = 655608;
-                        text = "";
+                        text = "Dispersion";
                         x = 0.290824 * safezoneW + safezoneX;
                         y = 0.668014 * safezoneH + safezoneY;
                         w = safeZoneW / 1000;
                 };
-               
+
                 //Arty Dispersion Slider
                 class NEO_radioArtyDispersionSlider : NEO_radioCasRadiusSlider
                 {
@@ -658,6 +658,6 @@ class NEO_resourceRadio
                         w = safeZoneW / 1000;
                         h= safeZoneW / 1000;
                 };
-               
+
         };
 };

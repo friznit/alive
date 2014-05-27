@@ -40,7 +40,7 @@ if(_missionRoundCount == 1) then {
 
 } else {
 	{
-		_x DOArtilleryFire [_targetPos, _ordnance, _missionRoundCount/(count units _grp)];
+		_x DOArtilleryFire [_targetPos, _ordnance, _missionRoundCount/3];
 		sleep _rateOfFire;
 	} foreach units _grp;
 };
@@ -51,7 +51,7 @@ _battery setVariable ["ARTY_COMPLETE", true, true];
 _dummy = "Land_HelipadEmpty_F" createVehicleLocal _targetPos;
 _eta = (vehicle _battery) getArtilleryETA [getPos _dummy, _ordnance];
 deleteVehicle _dummy;
-diag_log format["BATTERY: %1 due in %2 seconds", _battery, _eta];
+//diag_log format["BATTERY: %1 due in %2 seconds", _battery, _eta];
 
 sleep _eta;
 
