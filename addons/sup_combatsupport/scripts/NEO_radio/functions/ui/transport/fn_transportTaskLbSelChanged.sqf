@@ -49,11 +49,11 @@ CASE "INSERTION" :
 {
 	_slider ctrlSetPosition [0.281002 * safezoneW + safezoneX, 0.5504 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.0196 * safezoneH)];
 	_slider ctrlCommit 0;
-	_sliderText ctrlSetText "Height: 20/40";
+	_sliderText ctrlSetText "Height: 20/50";
 	_sliderText ctrlSetPosition [0.280111 * safezoneW + safezoneX, 0.514 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)];
 	_sliderText ctrlCommit 0;
 
-	_slider sliderSetRange [5, 40];
+	_slider sliderSetRange [2, 50];
 	_slider sliderSetspeed [1, 10];
 	_slider sliderSetPosition 25;
 	_slider ctrlSetEventHandler ["SliderPosChanged", 
