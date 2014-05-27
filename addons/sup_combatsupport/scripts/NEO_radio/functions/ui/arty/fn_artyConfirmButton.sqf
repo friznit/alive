@@ -33,7 +33,6 @@ _rate = switch (_artyRateOfFireLb lbText (lbCurSel _artyRateOfFireLb)) do
 _count = switch (_artyRoundCountLb lbText (lbCurSel _artyRoundCountLb)) do
 {
 	case "1 ROUND" : { 1 };
-	case "2 ROUNDS" : { 2 };
 	case "3 ROUNDS" : { 3 };
 	case "6 ROUNDS" : { 6 };
 	case "12 ROUNDS" : { 12 };

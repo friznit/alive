@@ -24,7 +24,7 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_ARTILLERY_TYPE";
                                 description = "$STR_ALIVE_ARTILLERY_TYPE_DESC";
                                 defaultValue ="B_MBT_01_arty_F";
-                                };  
+                                };
                         class artillery_he
                                 {
                                 displayName = "$STR_ALIVE_ARTILLERY_HE";
@@ -73,6 +73,12 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_ARTILLERY_ATMINE_DESC";
                                 defaultValue= 30;
                                 };
-                };       
+                        class artillery_rockets
+                                {
+                                displayName = "$STR_ALIVE_ARTILLERY_ROCKETS";
+                                description = "$STR_ALIVE_ARTILLERY_ROCKETS_DESC";
+                                defaultValue= 16;
+                                };
+                };
         };
              };

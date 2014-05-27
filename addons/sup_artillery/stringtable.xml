@@ -8,6 +8,9 @@
 <Key ID="STR_ALIVE_ARTILLERY_COMMENT">
 	<English>XXXX</English>
 </Key>
+<Key ID="STR_ALIVE_ARTILLERY_USAGE">
+	<English>XXXX</English>
+</Key>
 <Key ID="STR_ALIVE_ARTILLERY_CALLSIGN">
 	<English>Callsign</English>
 </Key>
@@ -51,7 +54,7 @@
 	<English>Set the number of rounds of CLUSTERS available for the asset - Only used by MBT</English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_LG">
-	<English>Number of LG Rounds </English>
+	<English>Number of Laser Guided Rounds </English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_LG_DESC">
 	<English>Set the number of rounds of LG available for the asset - Only used by MBT</English>
@@ -68,5 +71,10 @@
 <Key ID="STR_ALIVE_ARTILLERY_ATMINE_DESC">
 	<English>Set the number of rounds of AT MINES available for the asset - Only used by MBT</English>
 </Key>
-
+<Key ID="STR_ALIVE_ARTILLERY_ROCKETS">
+	<English>Number of ROCKET Rounds </English>
+</Key>
+<Key ID="STR_ALIVE_ARTILLERY_ROCKETS_DESC">
+	<English>Set the number of rounds of 230mm Titan Missile available for the asset - Only used by MLRS</English>
+</Key>
 </Container></Package></Project>

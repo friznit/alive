@@ -45,21 +45,21 @@ DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,[]);
 
 switch(_operation) do {
-        case "init": {                
+        case "init": {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
 				- enabled/disabled
                 */
-                
+
                 // Ensure only one module is used
                 if (isServer && !(isNil "ALIVE_combatSupport")) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_CS_ERROR1");
                 };
-                
+
                 //Load Functions on all localities and wait for the init to have passed
 				call ALiVE_fnc_combatSupportFncInit;
-                
+
                 //Create basics on server
                 if (isServer) then {
 
@@ -76,12 +76,12 @@ switch(_operation) do {
                         CAS_RESPAWN_LIMIT = parsenumber(_CAS_SET_RESPAWN_LIMIT);
                         _TRANS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_transportrespawnlimit","3"];
                         TRANS_RESPAWN_LIMIT = parsenumber(_TRANS_SET_RESPAWN_LIMIT);
-                        
+
 						_transportArrays = [];
 						_casArrays = [];
 						_artyArrays = [];
 						_sides = [WEST,EAST,RESISTANCE,CIVILIAN];
-						     
+
 				        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 				            switch (typeOf ((synchronizedObjects _logic) select _i)) do {
 
@@ -120,7 +120,7 @@ switch(_operation) do {
                                     private ["_position","_callsign","_type"];
 
                                     _position = getposATL ((synchronizedObjects _logic) select _i);
-                                    _callsign = ((synchronizedObjects _logic) select _i) getvariable ["artillery_callsign","FRIZ ONE"];
+                                    _callsign = ((synchronizedObjects _logic) select _i) getvariable ["artillery_callsign","FOX ONE"];
                                     _class = ((synchronizedObjects _logic) select _i) getvariable ["artillery_type","B_Mortar_01_F"];
                                     _setherounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_he","30"];
                                     _setillumrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_illum","30"];
@@ -130,6 +130,7 @@ switch(_operation) do {
                                     _setlgrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_lg","30"];
                                     _setminerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_mine","30"];
                                     _setatminerounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_atmine","30"];
+                                    _setrocketrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_rockets","16"];
 
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
 
@@ -141,6 +142,7 @@ switch(_operation) do {
                                     _lgrounds = parsenumber(_setlgrounds);
                                     _minerounds = parsenumber(_setminerounds);
                                     _atminerounds = parsenumber(_setatminerounds);
+                                    _rocketrounds = parsenumber(_setrocketrounds);
 
                                     _he = ["HE",_herounds];
                                     _illum = ["ILLUM",_illumrounds];
@@ -150,19 +152,20 @@ switch(_operation) do {
                                     _lg = ["LASER",_lgrounds];
                                     _mine = ["MINE",_minerounds];
                                     _atmine = ["AT MINE",_atminerounds];
+                                    _rockets = ["ROCKETS", _rocketrounds];
 
-                                   _ordnance = [_he,_illum,_smoke,_guided,_cluster,_lg,_mine,_atmine];
+                                   _ordnance = [_he,_illum,_smoke,_guided,_cluster,_lg,_mine,_atmine, _rockets];
 
-                                    _artyArray = [_position,_class, _callsign,2,_ordnance,{}];
+                                    _artyArray = [_position,_class, _callsign,3,_ordnance,{}];
                                     _artyArrays set [count _artyArrays,_artyArray];
                                 };
 				            };
 				        };
-					         
+
 					    SUP_CASARRAYS  = _casArrays; PublicVariable "SUP_CASARRAYS";
 					    SUP_TRANSPORTARRAYS  = _transportArrays; PublicVariable "SUP_TRANSPORTARRAYS";
 					    SUP_ARTYARRAYS = _artyArrays; PublicVariable "SUP_ARTYARRAYS";
-								    
+
                         {
                         	NEO_radioLogic setVariable [format ["NEO_radioTrasportArray_%1", _x], [],true];
 							NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _x], [],true];
@@ -328,36 +331,48 @@ switch(_operation) do {
 
 							_roundsUnit = _class call NEO_fnc_artyUnitAvailableRounds;
 							_roundsAvailable = [];
-							_canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F"]) then { true } else { false };
+							_canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","BUS_MotInf_MortTeam"]) then { true } else { false };
 							_units = [];
 							_grp = createGroup _side;
 							_vehDir = 0;
 
+                            if (_side == WEST && _class == "BUS_MotInf_MortTeam") then {
+                                // Spawn a mortar team :)
+                                private ["_veh","_vehPos"];
+                                _vehPos = [_pos, 30, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
+                                _grp = [_vehPos, side _grp, (configFile >> "cfgGroups" >> "WEST" >> "BLU_F" >> "Motorized" >> "BUS_MotInf_MortTeam"),[],[],[],[],[],_vehDir] call BIS_fnc_spawnGroup;
+                                {
+                                    _units set [count _units, _x];
+                                    _x setVariable ["ALIVE_CombatSupport", true];
+                                } foreach units _grp;
 
-							private ["_vehPos", "_veh"];
-							_vehPos = [_pos, 15, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
-						
-							_veh = createVehicle [_class, _vehPos, [], 0, "CAN_COLLIDE"];
-							_veh setDir _vehDir;
-							_veh setPosATL _vehPos;
-							[_veh, _grp] call BIS_fnc_spawnCrew;
-							_veh lock true;
-							_vehDir = _vehDir + 90;
-						
-							_units set [count _units, _veh];
+                            } else {
+                                private ["_vehPos","_i"];
+                                for "_i" from 1 to _unitCount do
+                                {
+                                    private ["_veh"];
+                                    _vehPos = [_pos, 15, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
+        							_veh = createVehicle [_class, _vehPos, [], 0, "CAN_COLLIDE"];
+        							_veh setDir _vehDir;
+        							_veh setPosATL _vehPos;
+        							[_veh, _grp] call BIS_fnc_spawnCrew;
+        							_veh lock true;
+        							_vehDir = _vehDir + 90;
 
+        							_units set [count _units, _veh];
 
-							// set ownership flag for other modules
-							_veh setVariable ["ALIVE_CombatSupport", true];
+                                    // set ownership flag for other modules
+                                    _veh setVariable ["ALIVE_CombatSupport", true];
+                                };
+                            };
 
-							
-							{ _x setVariable ["NEO_radioArtyModule", [_veh, _callsign], true] } forEach _units;
+							{ _x setVariable ["NEO_radioArtyModule", [leader _grp, _callsign], true] } forEach _units;
 
 
 							[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 
 							//[_veh, _grp, _units, units _grp] spawn _code;
-							
+
 							//Validate rounds
 							{
 								if ((_x select 0) in _roundsUnit) then
@@ -365,15 +380,14 @@ switch(_operation) do {
 									_roundsAvailable set [count _roundsAvailable, _x];
 								};
 							} forEach _rounds;
-							
-							_veh setVariable ["NEO_radioArtyBatteryRounds", _roundsAvailable, true];
 
-						
+							leader _grp setVariable ["NEO_radioArtyBatteryRounds", _roundsAvailable, true];
+
 							//FSM
-							[_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _class, _veh] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
-							
+							[_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _class, leader _grp] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
+
 							_a = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", _side];
-							_a set [count _a, [_veh, _grp, _callsign, _units, _roundsAvailable]];
+							_a set [count _a, [leader _grp, _grp, _callsign, _units, _roundsAvailable]];
 
 							NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _side], _a, true];
 
@@ -405,7 +419,7 @@ switch(_operation) do {
 									private ["_sideInArray","_xArray"];
 									_sideInArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _sideIn];
 									_xArray = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _x];
-                                        
+
                                     if (count _xArray > 0) then {
                                         _add = [];
                                         {
@@ -420,7 +434,7 @@ switch(_operation) do {
 									private ["_sideInArray","_xArray"];
 									_sideInArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _sideIn];
 									_xArray = NEO_radioLogic getVariable format["NEO_radioArtyArray_%1", _x];
-                                        
+
                                     if (count _xArray > 0) then {
                                         _add = [];
                                         {
@@ -439,7 +453,7 @@ switch(_operation) do {
                         _logic setVariable ["init", true,true];
                         publicVariable "NEO_radioLogic";
                	};
-                
+
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
                 waitUntil {!isNil "NEO_radioLogic"};
@@ -469,17 +483,17 @@ switch(_operation) do {
 
 	        	{player addAction _x} foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray");
 				player addEventHandler ["Respawn", { {(_this select 0) addAction _x } foreach (NEO_radioLogic getVariable "NEO_radioPlayerActionArray") }];
-                
+
                 //if there is a real screen it must be a player so hand out the menu item
 				if (hasInterface) then {
 					//Initialise Functions and add respawn eventhandler
 					waituntil {(!(isnull player) && !(isnil "NEO_radioLogic"))};
-				
+
 					if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]]};
-					    
+
 					// if A2 - ACE spectator enabled, seto to allow exit
 					if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true};
-				    
+
 					// check if player has item defined in module TODO!
 
                     // initialise main menu
@@ -504,7 +518,7 @@ switch(_operation) do {
                         NEO_radioLogic = _logic;
                         publicVariable "NEO_radioLogic";
                 };
-                
+
                 if(!isDedicated && !isHC) then {
 
                 };

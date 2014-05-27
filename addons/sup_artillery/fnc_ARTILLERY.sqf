@@ -45,11 +45,11 @@ PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,nil);
 ALIVE_coreLogic = _logic;
-            _position = getposATL ALIVE_coreLogic;
-            _callsign = _logic getvariable ["artillery_callsign","EAGLE ONE"];
-            _type = _logic getvariable ["artillery_type","B_Heli_Attack_01_F"];
-            _ordnace = _logic getvariable ["artillery_ordnace",["HE", 30]];
-             ARTYPOS = _position; PublicVariable "ARTYPOS";
+_position = getposATL ALIVE_coreLogic;
+_callsign = _logic getvariable ["artillery_callsign","EAGLE ONE"];
+_type = _logic getvariable ["artillery_type","B_Heli_Attack_01_F"];
+_ordnace = _logic getvariable ["artillery_ordnace",["HE", 30]];
+ ARTYPOS = _position; PublicVariable "ARTYPOS";
 
 
 
