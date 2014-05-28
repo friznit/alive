@@ -38,7 +38,7 @@ if (count _countArray > 0) then
 	//Texts
 	_artyRateOfFireText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>RATE OF FIRE</t>";
 	_artyRoundCountText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>ROUND COUNT</t>";
-	_artyDispersionText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>DISPERSION - 0/500m</t>";
+	_artyDispersionText ctrlSetStructuredText parseText "<t color='#627057' size='0.8' font='PuristaMedium'>DISPERSION - 0/500m</t>";
 
 	//Rate Of Fire Type LB
 	_artyRateOfFireLb ctrlEnable true;

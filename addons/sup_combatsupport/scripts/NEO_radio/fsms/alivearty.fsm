@@ -6,8 +6,8 @@ item1[] = {"True",4,218,-42.781796,-125.724930,47.218204,-75.724922,0.000000,"Tr
 item2[] = {"main_loop",2,250,-43.161469,-20.598993,46.838547,29.401003,0.000000,"main loop"};
 item3[] = {"new_task",4,218,-38.938957,58.070740,51.061043,108.070747,0.000000,"new task"};
 item4[] = {"_",2,250,-39.730919,130.312286,50.269096,180.312286,0.000000,""};
-item5[] = {"proceed",4,218,-38.146973,229.671280,51.853027,279.671356,0.000000,"proceed"};
-item6[] = {"__1",2,4346,-40.522888,304.116425,49.477127,354.116425,0.000000,""};
+item5[] = {"proceed",4,4314,-38.146973,229.671280,51.853027,279.671356,0.000000,"proceed"};
+item6[] = {"__1",2,250,-40.522888,304.116425,49.477127,354.116425,0.000000,""};
 item7[] = {"Shoot",4,218,-38.938953,375.393738,51.061047,425.393738,0.000000,"Shoot"};
 item8[] = {"__2",2,250,-220.322266,425.625824,-130.322189,475.625824,0.000000,""};
 item9[] = {"splash",4,218,-25.917665,523.731567,64.082306,573.731567,1.000000,"splash"};
@@ -129,8 +129,8 @@ link60[] = {47,49};
 link61[] = {48,15};
 link62[] = {49,50};
 link63[] = {50,30};
-globals[] = {0.000000,0,0,0,0,640,480,1,57,6316128,1,-342.313965,792.727112,729.669250,-341.187927,1008,951,1};
-window[] = {2,-1,-1,-32000,-32000,1010,250,1690,250,3,1026};
+globals[] = {0.000000,0,0,0,0,640,480,1,57,6316128,1,-280.454224,730.867188,671.307434,-282.826233,1008,951,1};
+window[] = {2,-1,-1,-32000,-32000,910,150,1590,150,3,1026};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -338,7 +338,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"{ doStop _x } forEach _units;" \n
            "" \n
            "_battery setVariable [""NEO_radioArtyUnitStatus"", ""MISSION"", true];" \n
-           "[_battery, _target, _missionType, _ordnanceType, _rateOfFire, _durationOrCount, _class,_ordnance] spawn ALIVE_fnc_ExecuteMission;" \n
+           "[_battery, _target, _missionType, _ordnanceType, _rateOfFire, _durationOrCount, _class,_ordnance,_dispersion, _units] spawn ALIVE_fnc_ExecuteMission;" \n
            "" \n
            "//Update ammo" \n
            "_ammo = _battery getVariable ""NEO_radioArtyBatteryRounds"";" \n
@@ -872,7 +872,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"{ doStop _x } forEach _units;" \n
            "" \n
            "_battery setVariable [""NEO_radioArtyUnitStatus"", ""MISSION"", true];" \n
-           "[_battery, _target, _missionType, _ordnanceType, _rateOfFire, _durationOrCount, _class,_ordnance] spawn ALIVE_fnc_ExecuteMission;" \n
+           "[_battery, _target, _missionType, _ordnanceType, _rateOfFire, _durationOrCount, _class,_ordnance,_dispersion, _units] spawn ALIVE_fnc_ExecuteMission;" \n
            "" \n
            "//Update ammo" \n
            "_ammo = _battery getVariable ""NEO_radioArtyBatteryRounds"";" \n

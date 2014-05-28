@@ -5,4 +5,4 @@ _pos = round (_this select 1);
 _artyDispersionText = _display displayCtrl 655608;
 
 _slider sliderSetPosition _pos;
-_artyDispersionText ctrlSetStructuredText parseText format ["<t color='#627057' size='0.7' font='PuristaMedium'>DISPERSION - %1/500m</t>", _pos];
+_artyDispersionText ctrlSetStructuredText parseText format ["<t color='#627057' size='0.8' font='PuristaMedium'>DISPERSION - %1/500m</t>", _pos];

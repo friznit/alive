@@ -35,7 +35,7 @@ class NEO_resourceRadio
                 class NEO_radioMainTitle : NEO_RscText
                 {
                         idc = -1;
-                        text = "Support Available"; //--- ToDo: Localize;
+                        text = "Combat Support Available"; //--- ToDo: Localize;
                         x = 0.271103 * safezoneW + safezoneX;
                         y = 0.1584 * safezoneH + safezoneY;
                         w = 0.159596 * safezoneW;
@@ -589,8 +589,8 @@ class NEO_resourceRadio
                 class NEO_radioArtyRateOfFireText : NEO_radioArtyOrdnanceTypeText
                 {
                         idc = 655602;
-                        x = 0.284599 * safezoneW + safezoneX;
-                        y = 0.556006 * safezoneH + safezoneY;
+                        x = 0.271103 * safezoneW + safezoneX;
+                        y = 0.52 * safezoneH + safezoneY;
                         w = 0.080931 * safezoneW;
                         h = 0.0280024 * safezoneH;
                 };
@@ -600,7 +600,7 @@ class NEO_resourceRadio
                 {
                         idc = 655603;
                         x = 0.282108 * safezoneW + safezoneX;
-                        y = 0.598008 * safezoneH + safezoneY;
+                        y = 0.55 * safezoneH + safezoneY;
                         w = 0.0859113 * safezoneW;
                         h = 0.0560048 * safezoneH;
                 };
@@ -610,7 +610,7 @@ class NEO_resourceRadio
                 {
                         idc = 655604;
                         x = 0.406618 * safezoneW + safezoneX;
-                        y = 0.556005 * safezoneH + safezoneY;
+                        y = 0.52 * safezoneH + safezoneY;
                         w = 0.080931 * safezoneW;
                         h = 0.0280024 * safezoneH;
                 };
@@ -620,7 +620,7 @@ class NEO_resourceRadio
                 {
                         idc = 655605;
                         x = 0.404129 * safezoneW + safezoneX;
-                        y = 0.598008 * safezoneH + safezoneY;
+                        y = 0.55 * safezoneH + safezoneY;
                         w = 0.0859114 * safezoneW;
                         h = 0.140012 * safezoneH;
                 };
@@ -644,9 +644,10 @@ class NEO_resourceRadio
                 {
                         idc = 655608;
                         text = "Dispersion";
-                        x = 0.290824 * safezoneW + safezoneX;
-                        y = 0.668014 * safezoneH + safezoneY;
-                        w = safeZoneW / 1000;
+                        x = 0.270903 * safezoneW + safezoneX;
+                        y = 0.68 * safezoneH + safezoneY;
+                        w = 0.12 * safezoneW;
+                        h = 0.0280024 * safezoneH;
                 };
 
                 //Arty Dispersion Slider
@@ -655,8 +656,27 @@ class NEO_resourceRadio
                         idc = 655609;
                         x = 0.270903 * safezoneW + safezoneX;
                         y = 0.710018 * safezoneH + safezoneY;
-                        w = safeZoneW / 1000;
-                        h= safeZoneW / 1000;
+                        w = 0.12 * safezoneW;
+                        h = 0.028 * safezoneH;
+                };
+                class NEO_radioArtyRateDelayText : NEO_radioCasUnitText
+                {
+                        idc = 655611;
+                        text = "Delay";
+                        x = 0.404129 * safezoneW + safezoneX;
+                        y = 0.68 * safezoneH + safezoneY;
+                        w = 0.105833 * safezoneW;
+                        h = 0.0280024 * safezoneH;
+                };
+
+                //Arty Dispersion Slider
+                class NEO_radioArtyRateDelaySlider : NEO_radioCasRadiusSlider
+                {
+                        idc = 655612;
+                        x = 0.404129 * safezoneW + safezoneX;
+                        y = 0.710018 * safezoneH + safezoneY;
+                        w = 0.0859113 * safezoneW;
+                        h = 0.028 * safezoneH;
                 };
 
         };
