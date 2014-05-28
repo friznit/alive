@@ -643,7 +643,7 @@ class NEO_resourceRadio
                 class NEO_radioArtyDispersionText : NEO_radioCasUnitText
                 {
                         idc = 655608;
-                        text = "Dispersion";
+                        text = "";
                         x = 0.270903 * safezoneW + safezoneX;
                         y = 0.68 * safezoneH + safezoneY;
                         w = 0.12 * safezoneW;
@@ -656,13 +656,18 @@ class NEO_resourceRadio
                         idc = 655609;
                         x = 0.270903 * safezoneW + safezoneX;
                         y = 0.710018 * safezoneH + safezoneY;
-                        w = 0.12 * safezoneW;
-                        h = 0.028 * safezoneH;
+                        w = safeZoneW / 1000;
+                        h = safeZoneH / 1000;
+                        colorText[] = {0.384,0.439,0.341,1};
+                        colorActive[] = {0.384,0.439,0.341,1};
+                        color[] = {0.384,0.439,0.341,1};
+                        colorDisabled[] = {10.384,0.439,0.341,1};
+                        sizeEx = 0.8 * GUI_GRID_H;
                 };
                 class NEO_radioArtyRateDelayText : NEO_radioCasUnitText
                 {
                         idc = 655611;
-                        text = "Delay";
+                        text = "";
                         x = 0.404129 * safezoneW + safezoneX;
                         y = 0.68 * safezoneH + safezoneY;
                         w = 0.105833 * safezoneW;
@@ -675,8 +680,13 @@ class NEO_resourceRadio
                         idc = 655612;
                         x = 0.404129 * safezoneW + safezoneX;
                         y = 0.710018 * safezoneH + safezoneY;
-                        w = 0.0859113 * safezoneW;
-                        h = 0.028 * safezoneH;
+                        w = safeZoneW / 1000;
+                        h = safeZoneH / 1000;
+                        colorText[] = {0.384,0.439,0.341,1};
+                        colorActive[] = {0.384,0.439,0.341,1};
+                        color[] = {0.384,0.439,0.341,1};
+                        colorDisabled[] = {10.384,0.439,0.341,1};
+                        sizeEx = 0.8 * GUI_GRID_H;
                 };
 
         };
