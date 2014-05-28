@@ -444,7 +444,7 @@ switch(_operation) do {
 					}else{
 						_special = "NONE";
 						_position set [2,0];
-						_position = [_position,0,100,5,0,20,0,[],[[_position,0,100,5,0,20,0,[],[_position]] call BIS_fnc_findSafePos]] call BIS_fnc_findSafePos;
+						//_position = [_position,0,100,5,0,20,0,[],[[_position,0,100,5,0,20,0,[],[_position]] call BIS_fnc_findSafePos]] call BIS_fnc_findSafePos;
 					};
 
 					_vehicle = createVehicle [_vehicleClass, _position, [], 0, _special];
