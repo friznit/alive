@@ -50,16 +50,26 @@ switch (toUpper _task) do
 
 if (isnil "_asset") exitwith {};
 
-private ["_callSignPlayer","_pos","_assetpos","_ammo"];
+private ["_callSignPlayer","_pos","_assetpos","_ammoArray"];
 
 _callSignPlayer = (format ["%1", group player]) call NEO_fnc_callsignFix;
 _pos = getpos _asset;
 _assetpos = mapGridPosition _pos;
 
-private ["_damage","_fuel","_text"];
+private ["_damage","_fuel","_text","_ammo","_avail"];
 
 _damage= getDammage _asset;
 _fuel  = fuel _asset;
+_ammoArray = _asset call ALiVE_fnc_vehicleGetAmmo;
+_avail = 0;
+// Calculate % of ammo
+{
+	_avail = _avail + ((_x select 1)/(_x select 2));
+} foreach _ammoArray;
+_ammo = _avail/(count _ammoArray);
+// Calculate amcas as a combo of ammo and damage state
+_damage = ((1-_ammo) + _damage) / 2;
+
 _text = format ["%1 this is %2, send SITREP. Over.",_callsign, _callSignPlayer];
 
 [[player, _text, "side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
