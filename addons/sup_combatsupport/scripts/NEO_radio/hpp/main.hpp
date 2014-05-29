@@ -506,7 +506,7 @@ class NEO_resourceRadio
                         idc = 655613;
                         x = 0.269865 * safezoneW + safezoneX;
                         y = 0.615 * safezoneH + safezoneY;
-                        w = 0.242507 * safezoneW;
+                        w = 0.125 * safezoneW;
                         h = 0.084 * safezoneH;
                         colorBackground[] = {0,0,0,0};
                         colorActive[] = {0.384,0.439,0.341,1};
@@ -520,7 +520,34 @@ class NEO_resourceRadio
                         idc = 655614;
                         x = 0.271103 * safezoneW + safezoneX;
                         y = 0.59 * safezoneH + safezoneY;
-                        w = 0.0742373 * safezoneW;
+                        w = 0.028 * safezoneW;
+                        h = 0.0308 * safezoneH;
+                        colorText[] = {0.706,0.706,0.706,1};
+                        colorBackground[] = {0,0,0,0};
+                        sizeEx = 0.8 * GUI_GRID_H;
+                        text = "";
+                };
+                //CAS ROE LB
+                class NEO_radioCasROEList : NEO_radioCasUnitList
+                {
+                        idc = 655615;
+                        x = 0.392 * safezoneW + safezoneX;
+                        y = 0.615 * safezoneH + safezoneY;
+                        w = 0.125 * safezoneW;
+                        h = 0.084 * safezoneH;
+                        colorBackground[] = {0,0,0,0};
+                        colorActive[] = {0.384,0.439,0.341,1};
+                sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+                        rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+                };
+
+                //Cas ROE Text
+                class NEO_radioCasROEText : NEO_radioCasUnitText
+                {
+                        idc = 655616;
+                        x = 0.402708 * safezoneW + safezoneX;
+                        y = 0.59 * safezoneH + safezoneY;
+                        w = 0.028 * safezoneW;
                         h = 0.0308 * safezoneH;
                         colorText[] = {0.706,0.706,0.706,1};
                         colorBackground[] = {0,0,0,0};

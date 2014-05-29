@@ -79,7 +79,7 @@ link41[] = {31,16};
 link42[] = {32,11};
 link43[] = {32,28};
 globals[] = {0.000000,0,0,0,0,640,480,1,64,6316128,1,-846.787048,887.868530,1450.251587,-151.357803,1030,951,1};
-window[] = {2,-1,-1,-32000,-32000,923,497,1757,186,3,1048};
+window[] = {2,-1,-1,-1,-1,787,50,1310,50,3,1048};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -187,6 +187,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -245,6 +246,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -261,7 +263,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"_veh setVariable [""NEO_radioCASUnitStatus"", ""MISSION"", true];" \n
            "_veh flyInHeight _flyInHeight;" \n
            "_grp setBehaviour ""COMBAT"";" \n
-           "_grp setCombatMode ""BLUE"";" \n
+           "_grp setCombatMode _ROE;" \n
            "_grp setSpeedMode ""FULL"";" \n
            "_grp enableAttack false;" \n
            "_veh doMove _posCas;" \n
@@ -337,7 +339,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"_veh setVariable [""NEO_radioCasUnitStatus"", ""MISSION"", true];" \n
            "_veh flyInHeight _flyInHeight;" \n
            "_grp setBehaviour ""COMBAT"";" \n
-           "_grp setCombatMode ""RED"";" \n
+           "_grp setCombatMode _ROE;" \n
            "_grp setSpeedMode ""FULL"";" \n
            "_grp enableAttack true;" \n
            "{ _x enableAi ""TARGET""; _x enableAi ""AUTOTARGET""; } forEach units _grp;" \n
@@ -401,6 +403,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -527,6 +530,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -573,6 +577,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -639,6 +644,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -687,6 +693,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -745,6 +752,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -806,6 +814,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -864,6 +873,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -907,13 +917,14 @@ class FSM
     class __10
     {
       name = "__10";
-      init = /*%FSM<STATEINIT""">*/"[_veh,_callsign, _ammoCount,_grp] spawn" \n
+      init = /*%FSM<STATEINIT""">*/"[_veh,_callsign, _ammoCount,_grp,_ROE] spawn" \n
        "{" \n
        "private [""_veh"", ""_callsign""];" \n
        "		_veh = _this select 0;" \n
        "		_callsign = _this select 1;" \n
        "		_ammoCount = _this select 2;" \n
        "_grp = _this select 3;" \n
+       "_ROE = _this select 4;" \n
        "" \n
        "  sleep 60;" \n
        "_veh doMove _oldPos;" \n
@@ -925,7 +936,7 @@ class FSM
        "	_veh setAmmo [_x, _ammoCount select _foreachindex];" \n
        "} foreach weapons _veh;" \n
        "" \n
-       "_grp setCombatMode ""BLUE"";" \n
+       "_grp setCombatMode _ROE;" \n
        "_grp setSpeedMode ""FULL"";" \n
        "_grp enableAttack false;" \n
        "};" \n
@@ -966,6 +977,7 @@ class FSM
            "_radiusCas = _taskArray select 2;" \n
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
+           "_ROE = _taskArray select 5;" \n
            "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
            "" \n
            ""/*%FSM</ACTION""">*/;

@@ -10,6 +10,7 @@ _casTaskLb = _display displayCtrl 655587;
 _casFlyHeightSlider = _display displayCtrl 655590;
 _casRadiusSlider = _display displayCtrl 655592;
 _casAttackRunLB = _display displayCtrl 655613;
+_casROELb = _display displayCtrl 655615;
 
 _casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
 _veh = _casArray select (lbCurSel _casUnitLb) select 0;
@@ -30,9 +31,10 @@ _flyInHeight = switch (sliderPosition _casFlyHeightSlider) do
 };
 _coord = _pos call BIS_fnc_posToGrid;
 _weapon = (weapons _veh) select (lbCurSel _casAttackRunLB);
+_ROE = _casROELb lbData (lbCurSel _casROELb);
 
 //New Task
-_veh setVariable ["NEO_radioCasNewTask", [_task, _pos, _radius, _flyInHeight, _weapon], true];
+_veh setVariable ["NEO_radioCasNewTask", [_task, _pos, _radius, _flyInHeight, _weapon, _ROE], true];
 [[player,format["%1, this is %2. We need imediate CAS at %3%4. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1],"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
 
 //Interface

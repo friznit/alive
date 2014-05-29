@@ -20,6 +20,8 @@ _casTaskText = _display displayCtrl 655588;
 _casTaskHelpText = _display displayCtrl 655589;
 _casAttackRunText = _display displayCtrl 655614;
 _casAttackRunLB = _display displayCtrl 655613;
+_casROELb = _display displayCtrl 655615;
+_casROEText = _display displayCtrl 655616;
 
 _show = switch (toUpper (_lb lbText _index)) do
 {
@@ -59,6 +61,19 @@ if (toUpper (_lb lbText _index) == "SAD" || toUpper (_lb lbText _index) == "LOIT
 		_casRadiusSliderText ctrlSetText _text;
 	"];
 
+	_casROEText ctrlSetText "Rules of Engagment";
+	_casROEText ctrlSetPosition [0.402708 * safezoneW + safezoneX, 0.59 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)];
+	_casROEText ctrlCommit 0;
+
+	_casROELb ctrlEnable true;
+	lbClear _casROELb;
+	{
+		_casROELb lbAdd (_x select 0);
+		_casROELb lbSetData [_foreachIndex, (_x select 1)];
+	} forEach [["Hold Fire","BLUE"], ["Hold Fire - Defend","GREEN"], ["Hold fire, engage at will","WHITE"],["Fire at will","YELLOW"],["Fire at will, engage at will","RED"]];
+	_casROELb lbSetCurSel 4;
+
+
 	if (toUpper (_lb lbText _index) == "ATTACK RUN") then {
 		_casAttackRunText ctrlSetText "Choose Weapon";
 		_casAttackRunText ctrlSetPosition [0.280111 * safezoneW + safezoneX, 0.59 * safezoneH + safezoneY, (0.0927966 * safezoneW), (0.028 * safezoneH)];
@@ -91,10 +106,11 @@ else
 	_casRadiusSlider ctrlCommit 0;
 
 	_casAttackRunText ctrlSetText "";
-	_casAttackRunText ctrlSetPosition [safeZoneX + (safeZoneW / 2.255), safeZoneY + (safeZoneH / 1.48), (safeZoneW / 1000), (safeZoneH / 1000)];
 	_casAttackRunText ctrlCommit 0;
 
 	_casAttackRunLB ctrlEnable false;
+	_casROEText ctrlSetText "";
+	_casROELb ctrlEnable false;
 };
 
 //Help Text

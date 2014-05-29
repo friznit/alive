@@ -50,6 +50,8 @@ _casRadiusSlider = _display displayCtrl 655592;
 _casRadiusSliderText = _display displayCtrl 655593;
 _casAttackRunText = _display displayCtrl 655614;
 _casAttackRunLB = _display displayCtrl 655613;
+_casROELb = _display displayCtrl 655615;
+_casROEText = _display displayCtrl 655616;
 
 //ARTY Controls
 private
@@ -79,9 +81,9 @@ _artyRateDelaySlider = _display displayCtrl 655612;
 //Re-initialize Controls
 { (_x select 0) ctrlSetEventHandler [(_x select 1), ""] } forEach [[_map, "MouseButtonDown"]];
 { _x ctrlSetPosition [1, 1, (safeZoneW / 1000), (safeZoneH / 1000)]; _x ctrlCommit 0; } forEach [_transportConfirmButton, _transportBaseButton, _transportSmokeFoundButton, _transportSmokeNotFoundButton, _transportSlider, _transportSliderText, _casConfirmButton, _casBaseButton, _casFlyHeightSlider, _casRadiusSlider, _artyConfirmButton, _artyMoveButton, _artyDontMoveButton, _artyDispersionSlider, _artyBaseButton, _artyRateDelaySlider, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
-{ _x ctrlSetText "" } forEach [_transportUnitText, _transportTaskText, _transportHelpUnitText, _transportHelpTaskText, _transportSliderText, _casUnitText, _casHelpUnitText, _casTaskText, _casTaskHelpText, _casFlyHeighSliderText, _casRadiusSliderText, _casAttackRunText, _artyUnitText, _artyHelpUnitText, _artyOrdnanceTypeText, _artyRateOfFireText, _artyRoundCountText, _artyDispersionText, _artyRateDelayText, _transportComboText];
-{ _x ctrlEnable false; } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _casAttackRunLB, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
-{ lbClear _x } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _casAttackRunLB, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
+{ _x ctrlSetText "" } forEach [_transportUnitText, _transportTaskText, _transportHelpUnitText, _transportHelpTaskText, _transportSliderText, _casUnitText, _casHelpUnitText, _casTaskText, _casROEText,_casTaskHelpText, _casFlyHeighSliderText, _casRadiusSliderText, _casAttackRunText, _artyUnitText, _artyHelpUnitText, _artyOrdnanceTypeText, _artyRateOfFireText, _artyRoundCountText, _artyDispersionText, _artyRateDelayText, _transportComboText];
+{ _x ctrlEnable false; } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _casROELb, _casAttackRunLB, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
+{ lbClear _x } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _casROELb, _casAttackRunLB, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
 
 //Markers
 { uinamespace setVariable [_x, nil] } forEach ["NEO_transportMarkerCreated", "NEO_casMarkerCreated", "NEO_artyMarkerCreated"];

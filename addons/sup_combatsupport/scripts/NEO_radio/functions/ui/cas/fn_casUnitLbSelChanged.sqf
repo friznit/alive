@@ -24,6 +24,8 @@ _casRadiusSlider = _display displayCtrl 655592;
 _casRadiusSliderText = _display displayCtrl 655593;
 _casAttackRunText = _display displayCtrl 655614;
 _casAttackRunLB = _display displayCtrl 655613;
+_casROELb = _display displayCtrl 655615;
+_casROEText = _display displayCtrl 655616;
 _supportMarker = NEO_radioLogic getVariable "NEO_supportMarker";
 _veh = _casArray select (lbCurSel _casUnitLb) select 0;
 _status = _veh getVariable "NEO_radioCasUnitStatus";
@@ -53,8 +55,8 @@ else
 
 //Re-initialize Controls
 { _x ctrlSetPosition [1, 1, (safeZoneW / 1000), (safeZoneH / 1000)]; _x ctrlCommit 0; } forEach [_casFlyHeightSlider, _casRadiusSlider];
-{ _x ctrlSetText "" } forEach [_casTaskText, _casTaskHelpText, _casFlyHeighSliderText, _casRadiusSliderText, _casAttackRunText];
-{ lbClear _x } forEach [_casTaskLb,_casAttackRunLB];
+{ _x ctrlSetText "" } forEach [_casTaskText, _casTaskHelpText, _casROEText, _casFlyHeighSliderText, _casRadiusSliderText, _casAttackRunText];
+{ lbClear _x } forEach [_casTaskLb,_casAttackRunLB, _casROELb];
 
 if (_status != "KILLED") then
 {
