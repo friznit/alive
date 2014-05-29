@@ -7,10 +7,10 @@ _supportMarker = NEO_radioLogic getVariable "NEO_supportMarker";
 _artyMarkers = NEO_radioLogic getVariable "NEO_supportArtyMarkers";
 
 //Transport Controls
-private 
+private
 [
 	"_transportUnitLb", "_transportTaskLb", "_transportUnitText", "_transportTaskText", "_transportHelpUnitText", "_transportHelpTaskText",
-	"_transportConfirmButton", "_transportBaseButton", "_transportSmokeFoundButton", "_transportSmokeNotFoundButton", "_transportSlider", 
+	"_transportConfirmButton", "_transportBaseButton", "_transportSmokeFoundButton", "_transportSmokeNotFoundButton", "_transportSlider",
 	"_transportSliderText", "_transportHeightCombo", "_transportSpeedCombo", "_transportRoeCombo", "_transportComboText"
 ];
 _transportUnitLb = _display displayCtrl 655568;
@@ -31,10 +31,10 @@ _transportRoeCombo = _display displayCtrl 655632;
 _transportComboText = _display displayCtrl 655633;
 
 //CAS Controls
-private 
+private
 [
 	"_casUnitLb", "_casUnitText", "_casHelpUnitText", "_casConfirmButton", "_casBaseButton", "_casTaskLb", "_casTaskText", "_casTaskHelpText",
-	"_casFlyHeightSlider", "_casFlyHeighSliderText", "_casRadiusSlider", "_casRadiusSliderText"
+	"_casFlyHeightSlider", "_casFlyHeighSliderText", "_casRadiusSlider", "_casRadiusSliderText", "_casAttackRunText", "_casAttackRunLB"
 ];
 _casUnitLb = _display displayCtrl 655582;
 _casUnitText = _display displayCtrl 655583;
@@ -48,12 +48,14 @@ _casFlyHeightSlider = _display displayCtrl 655590;
 _casFlyHeighSliderText = _display displayCtrl 655591;
 _casRadiusSlider = _display displayCtrl 655592;
 _casRadiusSliderText = _display displayCtrl 655593;
+_casAttackRunText = _display displayCtrl 655614;
+_casAttackRunLB = _display displayCtrl 655613;
 
 //ARTY Controls
-private 
+private
 [
 	"_artyUnitLb", "_artyUnitText", "_artyHelpUnitText", "_artyConfirmButton", "_artyBaseButton", "_artyOrdnanceTypeText", "_artyOrdnanceTypeLb",
-	"_artyRateOfFireText", "_artyRateOfFireLb", "_artyRoundCountText", "_artyRoundCountLb", "_artyMoveButton", "_artyDontMoveButton", "_artyDispersionText", 
+	"_artyRateOfFireText", "_artyRateOfFireLb", "_artyRoundCountText", "_artyRoundCountLb", "_artyMoveButton", "_artyDontMoveButton", "_artyDispersionText",
 	"_artyDispersionSlider", "_artyRateDelayText", "_artyRateDelaySlider"
 ];
 _artyUnitLb = _display displayCtrl 655594;
@@ -77,9 +79,9 @@ _artyRateDelaySlider = _display displayCtrl 655612;
 //Re-initialize Controls
 { (_x select 0) ctrlSetEventHandler [(_x select 1), ""] } forEach [[_map, "MouseButtonDown"]];
 { _x ctrlSetPosition [1, 1, (safeZoneW / 1000), (safeZoneH / 1000)]; _x ctrlCommit 0; } forEach [_transportConfirmButton, _transportBaseButton, _transportSmokeFoundButton, _transportSmokeNotFoundButton, _transportSlider, _transportSliderText, _casConfirmButton, _casBaseButton, _casFlyHeightSlider, _casRadiusSlider, _artyConfirmButton, _artyMoveButton, _artyDontMoveButton, _artyDispersionSlider, _artyBaseButton, _artyRateDelaySlider, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
-{ _x ctrlSetText "" } forEach [_transportUnitText, _transportTaskText, _transportHelpUnitText, _transportHelpTaskText, _transportSliderText, _casUnitText, _casHelpUnitText, _casTaskText, _casTaskHelpText, _casFlyHeighSliderText, _casRadiusSliderText, _artyUnitText, _artyHelpUnitText, _artyOrdnanceTypeText, _artyRateOfFireText, _artyRoundCountText, _artyDispersionText, _artyRateDelayText, _transportComboText];
-{ _x ctrlEnable false; } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
-{ lbClear _x } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
+{ _x ctrlSetText "" } forEach [_transportUnitText, _transportTaskText, _transportHelpUnitText, _transportHelpTaskText, _transportSliderText, _casUnitText, _casHelpUnitText, _casTaskText, _casTaskHelpText, _casFlyHeighSliderText, _casRadiusSliderText, _casAttackRunText, _artyUnitText, _artyHelpUnitText, _artyOrdnanceTypeText, _artyRateOfFireText, _artyRoundCountText, _artyDispersionText, _artyRateDelayText, _transportComboText];
+{ _x ctrlEnable false; } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _casAttackRunLB, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
+{ lbClear _x } forEach [_transportUnitLb, _transportTaskLb, _casUnitLb, _casTaskLb, _casAttackRunLB, _artyUnitLb, _artyOrdnanceTypeLb, _artyRateOfFireLb, _artyRoundCountLb, _transportHeightCombo, _transportSpeedCombo, _transportRoeCombo];
 
 //Markers
 { uinamespace setVariable [_x, nil] } forEach ["NEO_transportMarkerCreated", "NEO_casMarkerCreated", "NEO_artyMarkerCreated"];
@@ -87,11 +89,11 @@ _artyRateDelaySlider = _display displayCtrl 655612;
 
 switch (toUpper (_lb lbText _index)) do
 {
-	case "TRANSPORT" : 
+	case "TRANSPORT" :
 	{
 		private ["_transportArray"];
 		_transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", playerSide];
-		
+
 		if (count _transportArray > 0) then
 		{
 			_transportUnitText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>UNIT</t>";
@@ -121,22 +123,22 @@ switch (toUpper (_lb lbText _index)) do
 					_transportUnitLb lbSetPicture [_forEachIndex, (getText (configFile >> "CfgVehicles" >> typeOf (_x select 0) >> "picture"))];
 				} forEach _transportArray;
 			};
-			
+
 			_transportUnitLb ctrlSetEventHandler ["LBSelChanged", "_this call NEO_fnc_transportUnitLbSelChanged"];
 			_transportConfirmButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_transportConfirmButton"];
 			_transportBaseButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_transportBaseButton"];
 			_transportSmokeFoundButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_transportSmokeFoundButton"];
 			_transportSmokeNotFoundButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_transportSmokeNotFoundButton"];
-			
+
 			if (count _transportArray < 2) then { lbSetCurSel [655568, 0] };
 		};
 	};
-	
-	case "CAS" : 
+
+	case "CAS" :
 	{
 		private ["_casArray"];
 		_casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
-		
+
 		if (count _casArray > 0) then
 		{
 			_casUnitText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>UNIT</t>";
@@ -144,29 +146,30 @@ switch (toUpper (_lb lbText _index)) do
 			//done
 			_casConfirmButton ctrlEnable false; _casConfirmButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.6848 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _casConfirmButton ctrlCommit 0;
 			_casBaseButton ctrlEnable false; _casBaseButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.6512 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _casBaseButton ctrlCommit 0;
-			
+
 			_casUnitLb ctrlEnable true;
 			lbClear _casUnitLb;
 			{
 				_casUnitLb lbAdd (_x select 2);
 				_casUnitLb lbSetPicture [_forEachIndex, (getText (configFile >> "CfgVehicles" >> typeOf (_x select 0) >> "picture"))];
 			} forEach _casArray;
-			
+
 			_casUnitLb ctrlSetEventHandler ["LBSelChanged", "_this call NEO_fnc_casUnitLbSelChanged"];
 			_casTaskLb ctrlSetEventHandler ["LBSelChanged", "_this call NEO_fnc_casTaskLbSelChanged"];
+
 			_casConfirmButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_casConfirmButton"];
 			_casBaseButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_casBaseButton"];
-			
+
 			if (count _casArray < 2) then { lbSetCurSel [655582, 0] };
 		};
 	};
-	
-	
+
+
 	case "ARTY" :
 	{
 		private ["_artyArray"];
 		_artyArray = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", playerSide];
-	
+
 		if (count _artyArray > 0) then
 		{
 			_artyUnitText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>BATTERY</t>";
@@ -174,7 +177,7 @@ switch (toUpper (_lb lbText _index)) do
 			//done
 			_artyConfirmButton ctrlEnable false; _artyConfirmButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.6848 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _artyConfirmButton ctrlCommit 0;
 			_artyBaseButton ctrlEnable false; _artyBaseButton ctrlSetPosition [0.519796 * safezoneW + safezoneX, 0.6512 * safezoneH + safezoneY, (0.216525 * safezoneW), (0.028 * safezoneH)]; _artyBaseButton ctrlCommit 0;
-			
+
 			if (!isNil { NEO_radioLogic getVariable "NEO_radioTalkWithArty" }) then
 			{
 				_artyUnitLb ctrlEnable true;
@@ -196,11 +199,11 @@ switch (toUpper (_lb lbText _index)) do
 					_artyUnitLb lbSetPicture [_forEachIndex, (getText (configFile >> "CfgVehicles" >> typeOf ((_x select 3) select 0) >> "picture"))];
 				} forEach _artyArray;
 			};
-			
+
 			_artyUnitLb ctrlSetEventHandler ["LBSelChanged", "_this call NEO_fnc_artyUnitLbSelChanged"];
 			_artyConfirmButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_artyConfirmButton"];
 			_artyBaseButton ctrlSetEventHandler ["ButtonClick", "_this call NEO_fnc_artyBaseButton"];
-			
+
 			if (count _artyArray < 2) then { lbSetCurSel [655594, 0] };
 		};
 	};

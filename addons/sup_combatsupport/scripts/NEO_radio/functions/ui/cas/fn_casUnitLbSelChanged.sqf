@@ -2,10 +2,10 @@ private ["_display", "_map"];
 _display = findDisplay 655555;
 _map = _display displayCtrl 655560;
 
-private 
+private
 [
-	"_casArray", "_casUnitLb", "_casUnitText", "_casHelpUnitText", "_casConfirmButton", "_casBaseButton", "_casTaskLb", "_casTaskText", 
-	"_casTaskHelpText", "_casFlyHeightSlider", "_casFlyHeighSliderText", "_casRadiusSlider", "_casRadiusSliderText", "_supportMarker", 
+	"_casArray", "_casUnitLb", "_casUnitText", "_casHelpUnitText", "_casConfirmButton", "_casBaseButton", "_casTaskLb", "_casTaskText",
+	"_casTaskHelpText", "_casFlyHeightSlider", "_casFlyHeighSliderText", "_casRadiusSlider", "_casRadiusSliderText", "_supportMarker",
 	"_veh", "_status"
 ];
 _casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", playerSide];
@@ -22,6 +22,8 @@ _casFlyHeightSlider = _display displayCtrl 655590;
 _casFlyHeighSliderText = _display displayCtrl 655591;
 _casRadiusSlider = _display displayCtrl 655592;
 _casRadiusSliderText = _display displayCtrl 655593;
+_casAttackRunText = _display displayCtrl 655614;
+_casAttackRunLB = _display displayCtrl 655613;
 _supportMarker = NEO_radioLogic getVariable "NEO_supportMarker";
 _veh = _casArray select (lbCurSel _casUnitLb) select 0;
 _status = _veh getVariable "NEO_radioCasUnitStatus";
@@ -51,27 +53,27 @@ else
 
 //Re-initialize Controls
 { _x ctrlSetPosition [1, 1, (safeZoneW / 1000), (safeZoneH / 1000)]; _x ctrlCommit 0; } forEach [_casFlyHeightSlider, _casRadiusSlider];
-{ _x ctrlSetText "" } forEach [_casTaskText, _casTaskHelpText, _casFlyHeighSliderText, _casRadiusSliderText];
-{ lbClear _x } forEach [_casTaskLb];
+{ _x ctrlSetText "" } forEach [_casTaskText, _casTaskHelpText, _casFlyHeighSliderText, _casRadiusSliderText, _casAttackRunText];
+{ lbClear _x } forEach [_casTaskLb,_casAttackRunLB];
 
 if (_status != "KILLED") then
 {
 	//Targets Text
 	_casTaskText ctrlSetStructuredText parseText "<t color='#B4B4B4' size='0.8' font='PuristaMedium'>TASK</t>";
 	_casTaskHelpText ctrlSetStructuredText parseText "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Select a task</t>";
-	
+
 	//Tasks LB
 	_casTaskLb ctrlEnable true;
 	_sitRepButton ctrlEnable true;
 	lbClear _casTaskLb;
 	{
 		_casTaskLb lbAdd _x;
-	} forEach ["SAD"];
-	
+	} forEach ["SAD","LOITER","ATTACK RUN"];
+
 	//GPS
 	uinamespace setVariable ["NEO_casMarkerCreated", nil];
 	_supportMarker setMarkerAlphaLocal 0;
-	
+
 	//Sliders
 	_casFlyHeighSliderText ctrlSetText "Altitude: Med";
 	_casFlyHeighSliderText ctrlSetPosition [0.397304 * safezoneW + safezoneX, 0.514 * safezoneH + safezoneY, (0.105169 * safezoneW), (0.028 * safezoneH)];
@@ -82,7 +84,7 @@ if (_status != "KILLED") then
 	_casFlyHeightSlider sliderSetRange [1, 3];
 	_casFlyHeightSlider sliderSetspeed [1, 1];
 	_casFlyHeightSlider sliderSetPosition 2;
-	_casFlyHeightSlider ctrlSetEventHandler ["SliderPosChanged", 
+	_casFlyHeightSlider ctrlSetEventHandler ["SliderPosChanged",
 	"
 		private [""_slider"", ""_pos"", ""_casFlyHeightSliderText"", ""_text""];
 		_slider = _this select 0;
@@ -94,11 +96,11 @@ if (_status != "KILLED") then
 			case 2 : { ""Altitude: Med"" };
 			case 3 : { ""Altitude: High"" };
 		};
-		
+
 		_slider sliderSetPosition _pos;
 		_casFlyHeightSliderText ctrlSetText _text;
 	"];
-	
+
 	//GPS
 	_map ctrlSetEventHandler ["MouseButtonDown", "_this call NEO_fnc_radioMapEvent"];
 };

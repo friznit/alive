@@ -500,6 +500,33 @@ class NEO_resourceRadio
                         colorBackground[] = {0,0,0,0};
                         sizeEx = 0.8 * GUI_GRID_H;
                 };
+                //CAS Attack Run LB
+                class NEO_radioCasWeaponList : NEO_radioCasUnitList
+                {
+                        idc = 655613;
+                        x = 0.269865 * safezoneW + safezoneX;
+                        y = 0.615 * safezoneH + safezoneY;
+                        w = 0.242507 * safezoneW;
+                        h = 0.084 * safezoneH;
+                        colorBackground[] = {0,0,0,0};
+                        colorActive[] = {0.384,0.439,0.341,1};
+                sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+                        rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+                };
+
+                //Cas Attack Run Text
+                class NEO_radioCasWeaponText : NEO_radioCasUnitText
+                {
+                        idc = 655614;
+                        x = 0.271103 * safezoneW + safezoneX;
+                        y = 0.59 * safezoneH + safezoneY;
+                        w = 0.0742373 * safezoneW;
+                        h = 0.0308 * safezoneH;
+                        colorText[] = {0.706,0.706,0.706,1};
+                        colorBackground[] = {0,0,0,0};
+                        sizeEx = 0.8 * GUI_GRID_H;
+                        text = "";
+                };
                 class NEO_radioArtyUnitList : NEO_RscGUIListBox
                 {
                         idc = 655594;
