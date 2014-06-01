@@ -759,7 +759,11 @@ switch(_operation) do {
 
             _civClasses = [0,_faction,"Man"] call ALiVE_fnc_findVehicleType;
 
-            //["CIV Classes: %1",_civClasses] call ALIVE_fnc_dump;
+            ["CIV Classes: %1",_civClasses] call ALIVE_fnc_dump;
+
+            _civClasses = _civClasses - ALIVE_unitBlackist;
+
+            ["CIV Classes: %1",_civClasses] call ALIVE_fnc_dump;
 
             if(count _civClasses > 0) then {
 

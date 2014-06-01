@@ -91,7 +91,19 @@ ALIVE_CQBunitBlackist =
 ALIVE_unitBlackist =
 [
 	"O_UAV_AI",
-	"B_UAV_AI"
+	"B_UAV_AI",
+	"C_Driver_1_black_F",
+	"C_Driver_1_blue_F",
+	"C_Driver_1_F",
+	"C_Driver_1_green_F",
+	"C_Driver_1_orange_F",
+	"C_Driver_1_random_base_F",
+	"C_Driver_1_red_F",
+	"C_Driver_1_white_F",
+	"C_Driver_1_yellow_F",
+	"C_Driver_2_F",
+	"C_Driver_3_F",
+	"C_Driver_4_F"
 ];
 
 ALIVE_vehicleBlacklist =
@@ -114,7 +126,14 @@ ALIVE_vehicleBlacklist =
 	"ParachuteBase",
 	"ParachuteEast",
 	"ParachuteG",
-	"ParachuteWest"
+	"ParachuteWest",
+	"C_Kart_01_Blu_F",
+	"C_Kart_01_F",
+	"C_Kart_01_F_Base",
+	"C_Kart_01_Fuel_F",
+	"C_Kart_01_Red_F",
+	"C_Kart_01_Vrana_F"
+
 ];
 
 ALIVE_groupBlacklist =
