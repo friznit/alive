@@ -44,7 +44,7 @@ _enterable = [];
 	if([_x] call ALIVE_fnc_isHouseEnterable) then{
 		_enterable set [count _enterable, _x];
 	};
-} forEach nearestObjects[_position, ["House"], _radius];
+} forEach (_position nearObjects ["House", _radius]);
 _err = "enterable array not valid";
 ASSERT_TRUE(typeName _enterable == "ARRAY",_err);
 
