@@ -75,6 +75,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_TYPE
+                        {
+                                displayName = "$STR_ALIVE_CQB_TYPE";
+                                description = "$STR_ALIVE_CQB_TYPE_COMMENT";
+                                class Values
+                                {
+                                        class MIL
+                                        {
+                                                name = "Strategic";
+                                                value = "strategic";
+                                        };
+                                        class CIV
+                                        {
+                                                name = "Civilian";
+                                                value = "regular";
+                                                default = 1;
+                                        };
+                                };
+                        };
                         class CQB_LOCATIONTYPE
                         {
                                 displayName = "$STR_ALIVE_CQB_LOCATIONTYPE";
@@ -242,16 +261,10 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_SPAWNDISTANCEJET_COMMENT";
                                 defaultValue = 0;
                         };
-                        class CQB_FACTIONS_STRAT
+                        class CQB_FACTIONS
                         {
-                                displayName = "$STR_ALIVE_CQB_FACTIONS_STRAT";
-                                description = "$STR_ALIVE_CQB_FACTIONS_STRAT_COMMENT";
-                                defaultValue = "OPF_F";
-                        };
-                        class CQB_FACTIONS_REG
-                        {
-                                displayName = "$STR_ALIVE_CQB_FACTIONS_REG";
-                                description = "$STR_ALIVE_CQB_FACTIONS_REG_COMMENT";
+                                displayName = "$STR_ALIVE_CQB_FACTIONS";
+                                description = "$STR_ALIVE_CQB_FACTIONS_COMMENT";
                                 defaultValue = "OPF_F";
                         };
                         class whitelist

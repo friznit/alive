@@ -27,7 +27,7 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)} && {call compile (MOD(CQB) getvariable ["CQB_persistent","false"])}) exitwith {};
+if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {};
 
 private ["_data","_instances"];
 
@@ -52,21 +52,24 @@ if (!(isnil "_this") && {typeName _this == "BOOL"} && {!_this}) exitwith {
 
 _data call ALIVE_fnc_inspectHash;
 
-_instances = (ALiVE_CQB getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
+_instances = (ALiVE_CQB getVariable ["instances",[]]);
 
 {[_x,"active",false] call ALiVE_fnc_CQB} foreach _instances;
 {
 	private ["_state","_logic"];
 	_logic  = _x;
-	_state = [_logic,"state"] call ALiVE_fnc_CQB;
-	
-	["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dumpMPH;
-	[_state,"houses",_data] call ALiVE_fnc_HashSet;
-	
-	_state call ALIVE_fnc_inspectHash;
-	
-	[_logic,"state",_state] call ALiVE_fnc_CQB;
-} foreach (ALiVE_CQB getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
+    
+    if (call compile (_logic getvariable ["CQB_persistent","false"])) then {
+		_state = [_logic,"state"] call ALiVE_fnc_CQB;
+		
+		["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dumpMPH;
+		[_state,"houses",_data] call ALiVE_fnc_HashSet;
+		
+		//_state call ALIVE_fnc_inspectHash;
+		
+		[_logic,"state",_state] call ALiVE_fnc_CQB;
+    };
+} foreach (ALiVE_CQB getVariable ["instances",[]]);
 {[_x,"active",true] call ALiVE_fnc_CQB} foreach _instances;
 
 [false, "ALiVE CQB persistence load data completed and applied","cqbper"] call ALIVE_fnc_timer;

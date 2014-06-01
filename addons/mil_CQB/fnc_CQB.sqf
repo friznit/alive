@@ -58,9 +58,10 @@ DEFAULT_PARAM(2,_args,nil);
 		{_tdString = _tdString + "; " + _x + "=" + format["%1", (call compile _x)]} forEach varArr; \
 		diag_log text _tdString; \
 		_intTime = diag_tickTime
-	private ["_intTime", "_traceCount", "_tdString"];
-	_intTime = diag_tickTime;
-	_traceCount = 0;
+        
+		private ["_intTime", "_traceCount", "_tdString"];
+		_intTime = diag_tickTime;
+		_traceCount = 0;
 #else
 	#define TRACE_TIME(comp,varArr) 
 #endif
@@ -79,6 +80,10 @@ switch(_operation) do {
 			TRACE_1("After module init",_logic);
 			
 			//Init further mandatory params on all localities
+            _debug = _logic getvariable ["CQB_debug_setting","false"];
+			if (typename (_debug) == "STRING") then {_debug = call compile _debug};
+			_logic setVariable ["debug", _debug];
+
 			_CQB_spawn = _logic getvariable ["CQB_spawn_setting", "0.01"];
 			if (typename (_CQB_spawn) == "STRING") then {_CQB_spawn = call compile _CQB_spawn};
 			//// For backward compatibility, remove after some months ////
@@ -105,47 +110,58 @@ switch(_operation) do {
 			_amount = _logic getvariable ["CQB_amount","2"];
 			if (typename (_amount) == "STRING") then {_amount = call compile _amount};
 			_logic setVariable ["CQB_amount", _amount];
-			
+
+			_type = _logic getvariable ["CQB_TYPE","regular"];
+			_logic setVariable ["type", _type];
+                        			
 			_locality = _logic getvariable ["CQB_locality_setting","client"];
 			_logic setVariable ["locality", _locality];
 			
-			_factionsStrat = _logic getvariable ["CQB_FACTIONS_STRAT","OPF_F"];
-			_factionsStrat = [_logic,"factions",_factionsStrat] call ALiVE_fnc_CQB;
-			
-			_factionsReg = _logic getvariable ["CQB_FACTIONS_REG","OPF_F"];
-			_factionsReg = [_logic,"factions",_factionsReg] call ALiVE_fnc_CQB;
+			_factions = _logic getvariable ["CQB_FACTIONS","OPF_F"];
+			_factions = [_logic,"factions",_factions] call ALiVE_fnc_CQB;
 			
 			_useDominantFaction = _logic getvariable ["CQB_UseDominantFaction","true"];
 			if (typename (_useDominantFaction) == "STRING") then {_useDominantFaction = call compile _useDominantFaction};
-			
+			_logic setVariable ["CQB_UseDominantFaction", _useDominantFaction];
+            
 			_CQB_Locations = _logic getvariable ["CQB_LOCATIONTYPE","towns"];
 			
 			[_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
 			[_logic, "whitelist", _logic getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
-			
-			CQB_GLOBALDEBUG = _logic getvariable ["CQB_debug_setting",false];
-			if (typename (CQB_GLOBALDEBUG) == "STRING") then {CQB_GLOBALDEBUG = call compile CQB_GLOBALDEBUG};
-			
+						
 			/*
 			MODEL - no visual just reference data
 			- server side object only
 			- enabled/disabled
 			*/
 			
+            /*
 			// Ensure only one module is used on server
 			if (isServer && {!(isNil QMOD(CQB))}) exitWith {
 					ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_CQB_ERROR1");
 			};
+            */
 			
 			if (isServer) then {
-				// if server, initialise module game logic
-				MOD(CQB) = _logic;
-				MOD(CQB) setVariable ["super", SUPERCLASS];
-				MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
 				
-				_logic setVariable ["startupComplete", false,true];
-			
-				if (isNil "ALIVE_CQBStrategicTypes") then {
+                //if server, and no CQB master logic present yet, then initialise CQB master game logic on server and inform all clients
+                if (isnil QMOD(CQB)) then {
+                    MOD(CQB) = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
+					MOD(CQB) setVariable ["super", SUPERCLASS];
+					MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
+                    MOD(CQB) setVariable ["startupComplete", false,true];
+
+                    publicVariable QMOD(CQB);
+                };
+                
+				//Set instance on main module
+				MOD(CQB) setVariable ["instances",(MOD(CQB) getVariable ["instances",[]]) + [_logic],true];                
+                
+                //Create ID
+                _id = (format["CQB_%1_%2",_type,count (MOD(CQB) getVariable ["instances",[]])]);
+                call compile (format["%1 = _logic;",_id]);
+				
+                if (isNil "ALIVE_CQBStrategicTypes") then {
 					_file = "\x\alive\addons\main\static\staticData.sqf";
 					call compile preprocessFileLineNumbers _file;
 				};
@@ -179,7 +195,7 @@ switch(_operation) do {
 			            };
 					};
 					
-					{ // forEach
+					{
 						_collection set [(count _collection), [([_x,"center"] call ALiVE_fnc_HashGet), ([_x,"size"] call ALiVE_fnc_HashGet)]];
 					} foreach _objectives;
 					
@@ -209,70 +225,49 @@ switch(_operation) do {
 				
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 2
 				
-				private ["_houses"];
-				_houses = [];
-				
-				{ // forEach
-					_houses = _houses + (nearestObjects [(_x select 0), (_strategicTypes + ["house"]), (_x select 1)]);
-				} foreach _collection;
-				
+				private ["_houses","_total","_result","_debugColor"];
+                
+                _houses = [];
+            	{
+					//_houses = _houses + (nearestObjects [(_x select 0), (_strategicTypes + ["house"]), (_x select 1)]);
+					_houses = _houses + ([_x select 0, _x select 1] call ALiVE_fnc_getEnterableHouses);
+                } foreach _collection;
+                
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 3
 				
-				_result = [_houses, _strategicTypes, _CQB_density, _CQB_spawn, [_logic, "blacklist"] call ALiVE_fnc_CQB, [_logic, "whitelist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
-				
+				_total = [_houses, _strategicTypes, _CQB_density, _CQB_spawn, [_logic, "blacklist"] call ALiVE_fnc_CQB, [_logic, "whitelist"] call ALiVE_fnc_CQB] call ALiVE_fnc_CQBsortStrategicHouses;
+                
+                switch (_type) do {
+                    case ("regular") : {_result = _total select 1; _debugColor = "ColorGreen"};
+                    case ("strategic") : {_result = _total select 0; _debugColor = "ColorRed"};
+                    default {_result = _total select 1; _debugColor = "ColorGreen"};
+                };
+                
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 4
 				
 				//set default values on main CQB instance
-				[MOD(CQB), "houses", ((_result select 0) + (_result select 1))] call ALiVE_fnc_CQB;
-				[MOD(CQB), "factions", _factionsStrat + _factionsReg] call ALiVE_fnc_CQB;
-				[MOD(CQB), "spawnDistance", _spawn] call ALiVE_fnc_CQB;
-				[MOD(CQB), "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
-				[MOD(CQB), "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
+                [MOD(CQB), "houses", (MOD(CQB) getvariable ["houses",[]]) + _result] call ALiVE_fnc_CQB;
+                [MOD(CQB), "factions", (MOD(CQB) getvariable ["factions",[]]) + _factions] call ALiVE_fnc_CQB;
 				
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 5
 			
-				// Create strategic CQB instance
-				_logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
+				// Create CQB instance
 				_logic setVariable ["class", ALiVE_fnc_CQB];
-				_logic setVariable ["instancetype", "strategic"];
+                _logic setVariable ["id",_id];
+				_logic setVariable ["instancetype",_type];
 				_logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
-				_logic setVariable ["locality", _locality,true];
-			    _logic setVariable ["amount", _amount];
-				_logic setVariable ["debugColor","ColorRed",true];
-				_logic setVariable ["debugPrefix","Strategic",true];
-				[_logic, "houses", (_result select 0)] call ALiVE_fnc_CQB;
-				[_logic, "factions", _factionsStrat] call ALiVE_fnc_CQB;
-				[_logic, "spawnDistance", (_spawn * 1.4)] call ALiVE_fnc_CQB;
-				[_logic, "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
-				[_logic, "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
-				[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-				
-				CQB_Strategic = _logic;
+				_logic setVariable ["locality",_locality,true];
+			    _logic setVariable ["amount",_amount];
+				_logic setVariable ["debugColor",_debugColor,true];
+				_logic setVariable ["debugPrefix",_type,true];
+				[_logic, "houses",_result] call ALiVE_fnc_CQB;
+				[_logic, "factions",_factions] call ALiVE_fnc_CQB;
+				[_logic, "spawnDistance",_spawn] call ALiVE_fnc_CQB;
+				[_logic, "spawnDistanceHeli",_spawnHeli] call ALiVE_fnc_CQB;
+				[_logic, "spawnDistanceJet",_spawnJet] call ALiVE_fnc_CQB;
+				[_logic, "debug",_debug] call ALiVE_fnc_CQB;
 				
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 6
-				
-				// Create nonstrategic CQB instance
-				_logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
-				_logic setVariable ["class", ALiVE_fnc_CQB];
-				_logic setVariable ["instancetype", "regular"];
-				_logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
-				_logic setVariable ["locality", _locality,true];
-			    _logic setVariable ["amount", _amount];
-				_logic setVariable ["debugColor","ColorGreen",true];
-				_logic setVariable ["debugPrefix","Regular",true];
-				[_logic, "houses", (_result select 1)] call ALiVE_fnc_CQB;
-				[_logic, "factions", _factionsReg] call ALiVE_fnc_CQB;
-				[_logic, "spawnDistance", _spawn] call ALiVE_fnc_CQB;
-				[_logic, "spawnDistanceHeli", _spawnHeli] call ALiVE_fnc_CQB;
-				[_logic, "spawnDistanceJet", _spawnJet] call ALiVE_fnc_CQB;
-				[_logic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-				
-				CQB_Regular = _logic;
-				
-				TRACE_TIME(QUOTE(COMPONENT),[]); // 7
-				
-				//Set all instances on main module
-				MOD(CQB) setVariable ["instances",[CQB_Regular,CQB_Strategic],true];
 				
 				//Check if there is data in DB
 				_data = false call ALiVE_fnc_CQBLoadData;
@@ -285,43 +280,40 @@ switch(_operation) do {
 						_cqb_logic = _x;
 						
 						{[_cqb_logic,"state",_x] call ALiVE_fnc_CQB} foreach (_data select 2);
-					} foreach (MOD(CQB) getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
+					} foreach (MOD(CQB) getVariable ["instances",[]]);
 					
 					["ALiVE CQB DATA loaded from DB! CQB states were reset!"] call ALiVE_fnc_Dump;
 				};
 				
-				TRACE_TIME(QUOTE(COMPONENT),[]); // 8
+				TRACE_TIME(QUOTE(COMPONENT),[]); // 7
+                
+                /*
+				CONTROLLER  - coordination
+				- Start CQB Controller on Server
+				*/
+
+			    [_logic, "GarbageCollecting", true] call ALiVE_fnc_CQB;
+				[_logic, "active", true] call ALiVE_fnc_CQB;
+
+				//Indicate startup is done on server for that instance
+				_logic setVariable ["init",true,true];
+                
+                if ({isnil {_x getVariable "init"}} count (MOD(CQB) getvariable ["instances",[]]) == 0) then {
+                	//Indicate all instances are initialised on server
+                	MOD(CQB) setVariable ["startupComplete",true,true];
+                };
 				
-				//Indicate startup is done on server
-				MOD(CQB) setVariable ["startupComplete", true,true];
-				MOD(CQB) setVariable ["init", true, true];
-				
-				//and publicVariable Main class and instances to clients
-				publicVariable QMOD(CQB);
-				Publicvariable "CQB_Regular";
-				Publicvariable "CQB_Strategic";
-			};
-			    
-			TRACE_2("After module init",MOD(CQB),MOD(CQB) getVariable "init");
-			
-			/*
-			CONTROLLER  - coordination
-			- Start CQB Controller on Server
-			*/
-			
-			if (isServer) then {
-			    [MOD(CQB), "GarbageCollecting", true] call ALiVE_fnc_CQB;
-			    
-				[CQB_Regular, "active", true] call ALiVE_fnc_CQB;
-				[CQB_Strategic, "active", true] call ALiVE_fnc_CQB;
-				
-				#ifdef DEBUG_MODE_FULL
-					diag_log ([CQB_Regular, "state"] call ALiVE_fnc_CQB);
-					diag_log ([CQB_Strategic, "state"] call ALiVE_fnc_CQB);
+				//and publicVariable instance to clients
+				Publicvariable _id;
+                
+                #ifdef DEBUG_MODE_FULL
+					["ALiVE CQB State: %1",([_logic, "state"] call ALiVE_fnc_CQB)] call ALiVE_fnc_Dump;
 				#endif
 			};
+			    
+			TRACE_2("After module init",_logic,_logic getVariable "init");
 			
-			TRACE_TIME(QUOTE(COMPONENT),[]); // 9
+			TRACE_TIME(QUOTE(COMPONENT),[]); // 7
 			
 			/*
 			VIEW - purely visual
@@ -335,19 +327,18 @@ switch(_operation) do {
 			if(!isDedicated && !isHC) then {
 			
 				//As stated in the trace above the client needs to wait for the CQB module to be ready
-			    waituntil {!isnil QMOD(CQB)};
+			    waituntil {_logic getVariable ["init",false]};
 			    
-			    [CQB_Strategic, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
-			    [CQB_Regular, "debug", CQB_GLOBALDEBUG] call ALiVE_fnc_CQB;
+			    [_logic, "debug", _debug] call ALiVE_fnc_CQB;
 			    
 			    //Delete markers
-			    [MOD(CQB), "blacklist", MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
-				{_x setMarkerAlpha 0} foreach (MOD(CQB) getVariable ["blacklist", DEFAULT_BLACKLIST]);
-			    [MOD(CQB), "whitelist", MOD(CQB) getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
-				{_x setMarkerAlpha 0} foreach (MOD(CQB) getVariable ["whitelist", DEFAULT_WHITELIST]);
+			    [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
+				{_x setMarkerAlpha 0} foreach (_logic getVariable ["blacklist", DEFAULT_BLACKLIST]);
+			    [_logic, "whitelist", _logic getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
+				{_x setMarkerAlpha 0} foreach (_logic getVariable ["whitelist", DEFAULT_WHITELIST]);
 			};
 			
-			TRACE_TIME(QUOTE(COMPONENT),[]); // 11
+			TRACE_TIME(QUOTE(COMPONENT),[]); // 8
         };
         
         case "pause": {
@@ -505,10 +496,8 @@ switch(_operation) do {
                     case ("regular") : {_type = "R"};
                     case ("strategic") : {_type = "S"};
                 };
-                
-                _id = format["CQB_%1%2",_type,_foreachIndex];
 
-				[_hash,"id",_id] call ALiVE_fnc_HashSet;
+				[_hash,"id",_logic getVariable "id"] call ALiVE_fnc_HashSet;
 				[_hash,"instancetype",_logic getVariable "instancetype"] call ALiVE_fnc_HashSet;
 				[_hash,"pos",[getPosATL _x select 0,getPosATL _x select 1]] call ALiVE_fnc_HashSet;
 				[_hash,"house",typeOf _x] call ALiVE_fnc_HashSet;
@@ -523,17 +512,17 @@ switch(_operation) do {
 			[_state, "houses", _data] call ALiVE_fnc_hashSet;
 
 			_args = _state;
-            _args call AliVE_fnc_InspectHash;
+            //_args call AliVE_fnc_InspectHash;
 		} else {
-			private["_houses","_groups","_data"];
+			private["_houses","_groups","_data","_idIn","_idOut"];
 
             //Exit if wrong dataset is provided
-            _typeIn = [_args, "instancetype","in"] call ALiVE_fnc_hashGet;
-            _typeOut = _logic getvariable ["instancetype","out"];
+            _idIn = [_args, "id","in"] call ALiVE_fnc_hashGet;
+            _idOut = _logic getvariable ["id","out"];
             
-            if !(_typeIn == _typeOut) exitwith {};
+            if !(_idIn == _idOut) exitwith {};
                         
-            _args call AliVE_fnc_InspectHash;
+            //_args call AliVE_fnc_InspectHash;
             
 			//Restore main state
             [_logic, "id", [_args, "id"] call ALiVE_fnc_hashGet] call ALiVE_fnc_CQB;
@@ -585,7 +574,7 @@ switch(_operation) do {
 			[_logic, "houses", _data] call ALiVE_fnc_CQB;
             
             _args = [_logic,"state"] call ALiVE_fnc_CQB;
-            _args call AliVE_fnc_InspectHash;
+            //_args call AliVE_fnc_InspectHash;
 		};
 	};
    
@@ -811,31 +800,28 @@ switch(_operation) do {
 	        	ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
 	            _logic setVariable ["GarbageCollecting", _args, true];
 				
-	            // if false then delete GC
-	            if !(_args) exitwith {GC = nil; Publicvariable "GC";};
+	            // if false then exit GC
+	            if !(_args) exitwith {};
 	            
 	            //else run a GC for each instance, until it is deleted
                 _spawn = _logic getVariable ["spawnDistance", 1000];
                 _spawnHeli = _logic getVariable ["spawnDistanceHeli", 0];
                 _spawnJet = _logic getVariable ["spawnDistanceJet", 0];
                 
-	            GC = _args;
-				{
-		            [_x,_spawn,_spawnHeli,_spawnJet] spawn {
-		                _logic = _this select 0;
-		                _spawn = _this select 1;
-                        _spawnHeli = _this select 2;
-                        _spawnJet = _this select 3;
-                        
-		                while {!(isnil "GC")} do {
-		                    sleep 30;
-							{
-			                   _lead = leader _x;
-								if ((local _lead) && {!([getposATL _lead, _spawn*3, _spawnJet*3,_spawnHeli*3] call ALiVE_fnc_anyPlayersInRangeIncludeAir)}) then {[_logic, "delGroup", _x] call ALiVE_fnc_CQB};
-							} forEach (_logic getVariable ["groups",[]]);
-		                };
-					};
-	            } foreach (_logic getVariable ["instances",[]]);
+	            _GC = [_logic,_spawn,_spawnHeli,_spawnJet] spawn {
+	                _logic = _this select 0;
+	                _spawn = _this select 1;
+                    _spawnHeli = _this select 2;
+                    _spawnJet = _this select 3;
+                    
+	                while {_logic getVariable ["GarbageCollecting",false]} do {
+	                    sleep 30;
+						{
+		                   _lead = leader _x;
+							if ((local _lead) && {!([getposATL _lead, _spawn*3, _spawnJet*3,_spawnHeli*3] call ALiVE_fnc_anyPlayersInRangeIncludeAir)}) then {[_logic, "delGroup", _x] call ALiVE_fnc_CQB};
+						} forEach (_logic getVariable ["groups",[]]);
+	                };
+				};
 		};
         _args;
     };
@@ -1029,11 +1015,9 @@ switch(_operation) do {
                         _spawnHeli = _logic getVariable ["spawnDistanceHeli", 0];
                         _spawnJet = _logic getVariable ["spawnDistanceJet", 0];
                         _locality = _logic getVariable ["locality", "client"];
-                        _pause = MOD(CQB) getVariable ["pause", false];
-                        
-                        _useDominantFaction = call compile (MOD(CQB) getvariable ["CQB_UseDominantFaction","true"]);
-                        
-                        if (!_pause) then {
+                        _useDominantFaction = _logic getvariable ["CQB_UseDominantFaction",false];
+
+                        if (!(MOD(CQB) getVariable ["pause", false])) then {
 							{
 								// if conditions are right, spawn a group and place them
 								_house = _x;

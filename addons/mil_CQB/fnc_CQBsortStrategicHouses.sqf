@@ -74,14 +74,12 @@ _nonstrathouses = [];
 		};
 		
 		if (_collect) then {
-			private ["_weight"];
-			_weight = if (_isStrategic) then {3} else {1};
 			
 			{ // forEach
 				private ["_dis"];
 				_dis = _pos distance (getposATL _x);
 				if ((_dis < _density) && {!_isStrategic || {_dis < 60}}) exitWith {
-					_collect = (random 1) < (_CQB_spawn * _weight);
+					_collect = (random 1) < _CQB_spawn;
 				};
 			} forEach _houses;
 			

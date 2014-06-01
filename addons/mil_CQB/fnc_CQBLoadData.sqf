@@ -27,7 +27,7 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)} && {call compile (MOD(CQB) getvariable ["CQB_persistent","false"])}) exitwith {};
+if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {};
 
 private ["_data","_instances"];
 
@@ -42,7 +42,6 @@ if (isNil QGVAR(DATAHANDLER)) then {
    GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;
    [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
 };
-
 _data = [GVAR(DATAHANDLER), "load", ["mil_cqb", _missionName, _async]] call ALIVE_fnc_Data;
 
 if (!(isnil "_this") && {typeName _this == "BOOL"} && {!_this}) exitwith {
@@ -52,17 +51,19 @@ if (!(isnil "_this") && {typeName _this == "BOOL"} && {!_this}) exitwith {
 
 _data call ALIVE_fnc_inspectHash;
 
-_instances = (ALiVE_CQB getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
+_instances = (MOD(CQB) getVariable ["instances",[]]);
 
 {[_x,"active",false] call ALiVE_fnc_CQB} foreach _instances;
 {
 	private ["_state","_logic","_CQB_instance"];
 	_logic  = _x;
-
-	["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dumpMPH;
-    {[_logic,"state",_x] call ALiVE_fnc_CQB} foreach (_data select 2);
-
-	([_logic,"state"] call ALiVE_fnc_CQB) call ALIVE_fnc_inspectHash;
+    
+    if (call compile (_logic getvariable ["CQB_persistent","false"])) then {
+		["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dump;
+	    {[_logic,"state",_x] call ALiVE_fnc_CQB} foreach (_data select 2);
+	
+		//([_logic,"state"] call ALiVE_fnc_CQB) call ALIVE_fnc_inspectHash;
+    };
 } foreach _instances;
 {[_x,"active",true] call ALiVE_fnc_CQB} foreach _instances;
 

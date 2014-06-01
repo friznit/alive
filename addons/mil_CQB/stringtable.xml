@@ -20,7 +20,6 @@
 <Key ID="STR_ALIVE_CQB_PERSISTENT_COMMENT">
 	<English>Enables CQB DB persistence (needs SYS DATA module and registration on ALiVE WarRoom)</English>
 </Key>
-</Key>
 <Key ID="STR_ALIVE_CQB_LOCALITY">
 	<English>Locality:</English>
 </Key>
@@ -36,20 +35,20 @@
 <Key ID="STR_ALIVE_CQB_ENABLE">
 	<English>Enable CQB</English>
 </Key>
-<Key ID="STR_ALIVE_CQB_FACTIONS_STRAT">
-	<English>Factions:</English>
-</Key>
-<Key ID="STR_ALIVE_CQB_FACTIONS_STRAT_COMMENT">
-	<English>Chooses the factions of strategic CQB units</English>
-</Key>
-<Key ID="STR_ALIVE_CQB_FACTIONS_REG">
-	<English>Factions:</English>
-</Key>
-<Key ID="STR_ALIVE_CQB_FACTIONS_REG_COMMENT">
-	<English>Chooses the factions of regular CQB units</English>
-</Key>
 <Key ID="STR_ALIVE_CQB_ENABLE_COMMENT">
 	<English>Enables CQB module</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS">
+	<English>Factions:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_FACTIONS_COMMENT">
+	<English>Chooses the factions of CQB units</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_TYPE">
+	<English>Type:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_TYPE_COMMENT">
+	<English>Chooses the type of buildings in which CQB will be present</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWN">
 	<English>Probability:</English>

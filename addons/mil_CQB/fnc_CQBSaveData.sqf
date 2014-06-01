@@ -29,7 +29,7 @@ Highhead
 
 private ["_result"];
 
-if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)} && {call compile (MOD(CQB) getvariable ["CQB_persistent","false"])}) exitwith {};
+if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {};
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
 [true, "ALiVE CQB persistence save data started", "cqbper"] call ALIVE_fnc_timer;
@@ -42,14 +42,20 @@ _keys = [];
 _values = [];
 _data = [] call ALiVE_fnc_HashCreate;
 {
-	_state = [_x,"state"] call ALiVE_fnc_CQB;
-    _type = [_state,"instancetype"] call AliVE_fnc_HashGet;
-    _id = format["CQB_%1_%2",_type,_foreachIndex];
-    
-    [_state,"houses"] call ALiVE_fnc_HashRem;
+    if (call compile (_x getvariable ["CQB_persistent","false"])) then {
+		_state = [_x,"state"] call ALiVE_fnc_CQB;
+	    _type = [_state,"instancetype"] call AliVE_fnc_HashGet;
+	    _id = format["CQB_%1_%2",_type,_foreachIndex];
+	
+	    [_state,"houses"] call ALiVE_fnc_HashRem;
+	
+		[_data,_id,_state] call ALiVE_fnc_HashSet;
+    };
+} foreach (MOD(CQB) getVariable ["instances",[]]);
 
-	[_data,_id,_state] call ALiVE_fnc_HashSet;
-} foreach (MOD(CQB) getVariable ["instances",[CQB_Regular,CQB_Strategic]]);
+if (count (_data select 1) == 0) exitwith {
+    [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+};
 
 ["ALiVE SAVE CQB DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
