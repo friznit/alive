@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+
+<Key ID="STR_ALIVE_LOGISTICS">
+	<English>Player Logistics</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_COMMENT">
+	<English>Enables the possibility to move, load, unload and tow objects!</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_DEBUG">
+	<English>Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_DEBUG_COMMENT">
+	<English>Enable Debug</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_ERROR1">
+	<English>Only one player logistics module allowed</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_USAGE">
+	<English>Place module in your mission, set the appropriate settings and sync to a SYS DATA module optionally if you want to save it to an external DB</English>
+</Key>
+</Container></Package></Project>
