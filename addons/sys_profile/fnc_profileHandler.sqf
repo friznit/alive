@@ -1118,7 +1118,7 @@ switch(_operation) do {
 
             ["ALiVE LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
-            _result = [ALIVE_profileDatahandler, "load", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
+            _result = [ALIVE_profileDatahandler, "bulkLoad", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
             ["RESULT: %1",_result] call ALIVE_fnc_dump;
 
         };
