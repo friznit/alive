@@ -368,7 +368,7 @@ switch(_operation) do {
         case "loadPlayers": {
                     // Load all players from external DB into player store
                     if (_logic getVariable ["storeToDB",DEFAULT_storeToDB]) then {
-                        _result = [GVAR(datahandler), "load", ["sys_player", _logic getvariable "key", _args select 0]] call ALIVE_fnc_Data;
+                        _result = [GVAR(datahandler), "bulkLoad", ["sys_player", _logic getvariable "key", _args select 0]] call ALIVE_fnc_Data;
                         TRACE_1("Loading player data", _result);
                     };
         };
@@ -380,7 +380,7 @@ switch(_operation) do {
                     TRACE_1("STORE TO DB",_check);
                     if (_check) then {
                         TRACE_1("",GVAR(player_data));
-                        _result = [GVAR(datahandler), "save", ["sys_player", GVAR(player_data), _logic getvariable "key", _ondisconnect]] call ALIVE_fnc_Data;
+                        _result = [GVAR(datahandler), "bulkSave", ["sys_player", GVAR(player_data), _logic getvariable "key", _ondisconnect]] call ALIVE_fnc_Data;
                     };
         };
         case "getGear": {
