@@ -24,7 +24,7 @@ Peer Reviewed:
 #include "script_component.hpp"
 SCRIPT(readData_couchdb);
 
-private ["_response","_result","_error","_module","_data","_pairs","_cmd","_json","_logic","_args","_convert","_db","_key"];
+private ["_response","_result","_error","_module","_data","_pairs","_cmd","_json","_logic","_args","_convert","_db","_key","_call"];
 
 // Avoided using the format command as it has a 2kb limt
 
@@ -42,7 +42,7 @@ _module = _args select 0;
 _key = _args select 1;
 _uids = _args select 2;
 
-_cmd = format ["SendJSON [""POST"", ""%1/_all_docs?include_docs=true""", _module];
+_cmd = format ["SendBulkJSON [""POST"", ""%1""", _module];
 
 // Add mission key to each doc
 {
@@ -69,18 +69,21 @@ _response = [_json] call ALIVE_fnc_sendToPlugIn;
 TRACE_1("COUCH RESPONSE", _response);
 
 // From response create key/value pair arrays
-if (_response != "ERROR" && _response != "UNAUTHORISED!") then {
+if (_response == "READY") then {
 
 	// Now poll data stack until all documents are collected
+	private "_data";
+	_data = "";
 	_result = [] call ALiVE_fnc_hashCreate;
-	_json = format ["pollDataStack [""%1""]", _module];
-	While {!isnull _response} do {
+	_json = format ["GetBulkJSON [""%1""]", _module];
+	While {_data != "END"} do {
 		private ["_tempDoc","_id"];
-		_response = [_json] call ALIVE_fnc_sendToPlugIn;
-		if (!isnull _response) then{
-			_tempDoc = [_logic, "restore", [_response]] call ALIVE_fnc_Data;
+		_data = [_json] call ALIVE_fnc_sendToPlugIn;
+		TRACE_1("COUCH DATA", _data);
+		if (_data != "END") then{
+			_tempDoc = [_logic, "restore", [_data]] call ALIVE_fnc_Data;
 			_id = [_tempDoc,"_id"] call ALiVE_fnc_hashGet;
-			[_result, _tempDoc, _id] call ALiVE_fnc_hashSet;
+			[_result, _id, _tempdoc] call ALiVE_fnc_hashSet;
 		};
 	};
 
