@@ -24,7 +24,7 @@ Peer Reviewed:
 #include "script_component.hpp"
 SCRIPT(readData_couchdb);
 
-private ["_response","_result","_error","_module","_data","_pairs","_cmd","_json","_logic","_args","_convert","_db","_key","_call"];
+private ["_response","_result","_error","_module","_data","_pairs","_cmd","_json","_logic","_args","_convert","_db","_key","_call","_dockeys"];
 
 // Avoided using the format command as it has a 2kb limt
 
@@ -41,6 +41,7 @@ ASSERT_OP(typeName _args, == ,"ARRAY", _err);
 _module = _args select 0;
 _key = _args select 1;
 _uids = _args select 2;
+_dockeys = [];
 
 _cmd = format ["SendBulkJSON [""POST"", ""%1""", _module];
 
@@ -48,11 +49,11 @@ _cmd = format ["SendBulkJSON [""POST"", ""%1""", _module];
 {
 	private ["_temp"];
 	_temp = _key + "-" + _x;
-	_uids set [_forEachIndex, _temp];
+	_dockeys set [_forEachIndex, _temp];
 } foreach _uids;
 
 // Use the index array to create a JSON string of doc ids
-_data = ", ""{""keys"":" + str(_uids) + "}""";
+_data = ", ""{""keys"":" + str(_dockeys) + "}""";
 _cmd = _cmd + _data;
 
 // Add databaseName
@@ -72,9 +73,9 @@ TRACE_1("COUCH RESPONSE", _response);
 if (_response == "READY") then {
 
 	// Now poll data stack until all documents are collected
-	private "_data";
+	private ["_data","_temp"];
 	_data = "";
-	_result = [] call ALiVE_fnc_hashCreate;
+	_temp = [] call ALiVE_fnc_hashCreate;
 	_json = format ["GetBulkJSON [""%1""]", _module];
 	While {_data != "END"} do {
 		private ["_tempDoc","_id"];
@@ -83,9 +84,19 @@ if (_response == "READY") then {
 		if (_data != "END") then{
 			_tempDoc = [_logic, "restore", [_data]] call ALIVE_fnc_Data;
 			_id = [_tempDoc,"_id"] call ALiVE_fnc_hashGet;
-			[_result, _id, _tempdoc] call ALiVE_fnc_hashSet;
+			[_temp, _id, _tempDoc] call ALiVE_fnc_hashSet;
 		};
 	};
+
+	// Restore original module index (without mission key) for each document
+	_result = [] call ALiVE_fnc_hashCreate;
+	{
+		private ["_mkey","_record"];
+		_mkey = _key + "-" + _x;
+		_record = [_temp, _mkey] call ALiVE_fnc_hashGet;
+		[_result, _x, _record] call ALiVE_fnc_hashSet;
+	} foreach _uids;
+
 
 } else {
 	_result = _response;
