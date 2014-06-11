@@ -17,7 +17,7 @@ item12[] = {"ready_for_smoke",4,218,-100.355843,530.731445,-10.355839,580.731445
 item13[] = {"__2",2,250,-100.094650,622.111084,-10.094629,672.111084,0.000000,""};
 item14[] = {"",7,210,-134.421387,455.318359,-126.421387,463.318359,0.000000,""};
 item15[] = {"",7,210,-134.421356,643.722168,-126.421371,651.722168,0.000000,""};
-item16[] = {"smoke_found_",4,218,-100.416473,715.152222,-10.416485,765.152222,1.000000,"smoke found?"};
+item16[] = {"smoke_found_",4,4314,-100.416473,715.152222,-10.416485,765.152222,1.000000,"smoke found?"};
 item17[] = {"rtb",4,218,706.732605,345.322205,796.732605,395.322205,0.000000,"rtb"};
 item18[] = {"__3",2,250,-99.639786,813.210999,-9.639786,863.210999,0.000000,""};
 item19[] = {"",7,210,-134.421402,835.788391,-126.421402,843.788391,0.000000,""};
@@ -45,7 +45,7 @@ item40[] = {"__12",2,250,307.148682,427.829742,397.148651,477.829926,0.000000,""
 item41[] = {"at_position",4,218,298.936066,530.764771,388.936066,580.764771,0.000000,"at position"};
 item42[] = {"__13",2,250,403.274445,854.036072,493.274445,904.036072,0.000000,""};
 item43[] = {"__14",2,250,506.656189,418.252380,596.656372,468.252380,0.000000,""};
-item44[] = {"circle_around",4,4314,505.904175,528.194092,595.904175,578.194092,0.000000,"circle around"};
+item44[] = {"circle_around",4,218,505.904175,528.194092,595.904175,578.194092,0.000000,"circle around"};
 item45[] = {"insertion",4,218,883.858765,349.619659,973.858765,399.619659,0.000000,"insertion"};
 item46[] = {"__15",2,250,876.583252,438.693390,966.583252,488.693451,0.000000,""};
 item47[] = {"at_insertion",4,218,885.664551,522.563660,975.664551,572.563660,0.000000,"at insertion"};
@@ -123,8 +123,8 @@ link67[] = {47,48};
 link68[] = {48,49};
 link69[] = {49,50};
 link70[] = {50,15};
-globals[] = {0.000000,0,0,0,0,640,480,1,19,6316128,1,-193.947403,1023.004272,1179.991455,-67.076080,889,951,1};
-window[] = {2,-1,-1,-1,-1,1043,459,1719,306,3,907};
+globals[] = {0.000000,0,0,0,0,640,480,1,19,6316128,1,-193.947403,1023.004272,1360.686157,58.862682,889,951,1};
+window[] = {2,-1,-1,-1,-1,937,200,1460,200,3,907};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -530,8 +530,14 @@ class FSM
        "{" \n
        "	_speechSaidSmoke = true;" \n
        "	" \n
-       "	[[_chopper,	format[""%1 has arrived at pickup point, pop smoke to confirm landing position. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
-       "	" \n
+       "	if (sunOrMoon == 0) then {" \n
+       "		[[_chopper,	format[""%1 has arrived at pickup point, deploy IR marker to confirm landing position. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	} else {" \n
+       "" \n
+       "		[[_chopper,	format[""%1 has arrived at pickup point, pop smoke to confirm landing position. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "" \n
+       "	};" \n
+       "" \n
        "	[_chopper, _callsign] spawn" \n
        "	{" \n
        "		private [""_chopper"", ""_callsign""];" \n
@@ -543,8 +549,11 @@ class FSM
        "		" \n
        "		while { (_chopper getVariable ""NEO_radioTrasportUnitStatus"") == ""SMOKE"" } do" \n
        "		{" \n
-       "			[[ _chopper, format[""%1 is still waiting for that smoke. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
-       "			" \n
+       "			if (sunOrMoon == 0) then {" \n
+       "				[[ _chopper, format[""%1 is still waiting for that IR marker. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "			} else {" \n
+       "				[[ _chopper, format[""%1 is still waiting for that smoke. Over."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "			};" \n
        "			sleep 75;" \n
        "		};" \n
        "	};" \n
@@ -591,11 +600,15 @@ class FSM
           priority = 1.000000;
           to="__3";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"{ getPosATL _x select 2 < 0.2 } count (_pos nearObjects [""SmokeShell"", 250]) > 0" \n
+          condition=/*%FSM<CONDITION""">*/"({ getPosATL _x select 2 < 0.2 } count (_pos nearObjects [""SmokeShell"", 250]) > 0 || { getPosATL _x select 2 < 0.2 } count (_pos nearObjects [""IRStrobeBase"", 250]) > 0)" \n
            "&&" \n
            "unitReady _chopper" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_smoke = _pos nearObjects [""SmokeShell"", 250] select 0;" \n
+          action=/*%FSM<ACTION""">*/"if (sunOrMoon == 0) then {" \n
+           "	_smoke = _pos nearObjects [""IRStrobeBase"", 250] select 0;" \n
+           "} else {" \n
+           "	_smoke = _pos nearObjects [""SmokeShell"", 250] select 0;" \n
+           "};" \n
            "_chopper doMove getPosATL _smoke;" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -674,7 +687,11 @@ class FSM
            "_posSmoke set [2, 0];" \n
            "" \n
            "//Smoke color" \n
-           "_smokeColor = _smoke call NEO_fnc_smokeColor;" \n
+           "if (sunOrMoon == 0) then {" \n
+           "	_smokeColor = ""Infrared"";" \n
+           "} else {" \n
+           "	_smokeColor = _smoke call NEO_fnc_smokeColor;" \n
+           "};" \n
            "" \n
            "//Move Chopper H to land position" \n
            "_h setPosATL _posSmoke;" \n
@@ -692,7 +709,11 @@ class FSM
     {
       name = "__4";
       init = /*%FSM<STATEINIT""">*/"//We see smoke" \n
-       "[[_chopper,	format [""We see %1 smoke, do you confirm? Over."", _smokeColor],	""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "if (sunOrMoon == 0) then {" \n
+       "	[[_chopper,	format [""We see %1 marker, do you confirm? Over."", _smokeColor],	""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "} else {" \n
+       "	[[_chopper,	format [""We see %1 smoke, do you confirm? Over."", _smokeColor],	""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "};" \n
        "" \n
        "[_chopper, _callsign, _smokeColor] spawn" \n
        "{" \n
@@ -705,8 +726,11 @@ class FSM
        "	" \n
        "	while { (_chopper getVariable ""NEO_radioTrasportUnitStatus"") == ""SMOKECONF"" } do" \n
        "	{" \n
-       "		[[_chopper, format [""This is %1, please respond, is that %1 smoke yours? Over."", _smokeColor],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
-       "		" \n
+       "		if (sunOrMoon == 0) then {" \n
+       "			[[_chopper, format [""This is %1, please respond, is that %1 marker yours? Over."", _smokeColor],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "		} else {" \n
+       "			[[_chopper, format [""This is %1, please respond, is that %1 smoke yours? Over."", _smokeColor],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "		};" \n
        "		sleep 75;" \n
        "	};" \n
        "};" \n
@@ -780,7 +804,7 @@ class FSM
        "		" \n
        "		if (!_goodToLand) then" \n
        "		{" \n
-       "			[[_chopper,""Copy that, pop another smoke to mark LZ. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "				[[_chopper,""Copy that, pop another marker to confirm LZ. Out."",""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "		}" \n
        "		else" \n
        "		{" \n
