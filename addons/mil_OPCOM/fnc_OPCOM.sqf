@@ -547,7 +547,7 @@ switch(_operation) do {
 			           };
                         
                         [true] call ALIVE_fnc_timer;
-                        GVAR(OBJECTIVES_DB_LOAD) = [[GVAR(DATAHANDLER), "load", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data,time];
+                        GVAR(OBJECTIVES_DB_LOAD) = [[GVAR(DATAHANDLER), "bulkLoad", ["mil_opcom", _missionName, _async]] call ALIVE_fnc_Data,time];
                         [] call ALIVE_fnc_timer;
                         
                         //Exit if no loaded data

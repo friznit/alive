@@ -42,7 +42,7 @@ if (isNil QGVAR(DATAHANDLER)) then {
    GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;
    [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
 };
-_data = [GVAR(DATAHANDLER), "load", ["mil_cqb", _missionName, _async]] call ALIVE_fnc_Data;
+_data = [GVAR(DATAHANDLER), "bulkLoad", ["mil_cqb", _missionName, _async]] call ALIVE_fnc_Data;
 
 if (!(isnil "_this") && {typeName _this == "BOOL"} && {!_this}) exitwith {
     [false, "ALiVE CQB persistence load data complete", "cqbper"] call ALIVE_fnc_timer;
