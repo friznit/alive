@@ -48,31 +48,56 @@ ASSERT_DEFINED(QMOD(SYS_LOGISTICS),_err);
 
 if (hasInterface) then {
 	STAT("Checking attach action on player");
-	_err = "Initialising attach failed";
+	_err = "Initialising carryObject failed";
     
-	_idA = [ALiVE_SYS_LOGISTICS,"addAction",[player,"attach"]] call ALiVE_fnc_logistics; 
+	_id_carryObject = [ALiVE_SYS_LOGISTICS,"addAction",[player,"carryObject"]] call ALiVE_fnc_logistics; 
 	ASSERT_TRUE(_idA > 0,_err);
 	
-	STAT("Checking detach action on player");
-	_err = "Initialising detach failed";
+	STAT("Checking dropObject action on player");
+	_err = "Initialising dropObject failed";
 	
-	_idD = [ALiVE_SYS_LOGISTICS,"addAction",[player,"detach"]] call ALiVE_fnc_logistics;
+	_id_dropObject = [ALiVE_SYS_LOGISTICS,"addAction",[player,"dropObject"]] call ALiVE_fnc_logistics;
 	ASSERT_TRUE(_idD > 0,_err);
 	
-	STAT("Checking loadIn action on player");
-	_err = "Initialising loadIn failed";
+	STAT("Checking stowObjects action on player");
+	_err = "Initialising stowObjects failed";
 	
-	_idLI = [ALiVE_SYS_LOGISTICS,"addAction",[player,"loadIn"]] call ALiVE_fnc_logistics;
+	_id_stowObjects = [ALiVE_SYS_LOGISTICS,"addAction",[player,"stowObjects"]] call ALiVE_fnc_logistics;
 	ASSERT_TRUE(_idLI > 0,_err);
 	
-	STAT("Checking loadOut action on player");
-	_err = "Initialising loadIn failed";
+	STAT("Checking unloadObjects action on player");
+	_err = "Initialising unloadObjects failed";
 	
-	_idLO = [ALiVE_SYS_LOGISTICS,"addAction",[player,"loadOut"]] call ALiVE_fnc_logistics;
+	_id_unloadObjects = [ALiVE_SYS_LOGISTICS,"addAction",[player,"unloadObjects"]] call ALiVE_fnc_logistics;
+	ASSERT_TRUE(_idLO > 0,_err);
+    
+    STAT("Checking towObject action on player");
+	_err = "Initialising towObject failed";
+    
+	_id_towObject = [ALiVE_SYS_LOGISTICS,"addAction",[player,"towObject"]] call ALiVE_fnc_logistics; 
+	ASSERT_TRUE(_idA > 0,_err);
+	
+	STAT("Checking untowObject action on player");
+	_err = "Initialising untowObject failed";
+	
+	_id_untowObject = [ALiVE_SYS_LOGISTICS,"addAction",[player,"untowObject"]] call ALiVE_fnc_logistics;
+	ASSERT_TRUE(_idD > 0,_err);
+	
+	STAT("Checking liftObject action on player");
+	_err = "Initialising liftObject failed";
+	
+	_id_liftObject = [ALiVE_SYS_LOGISTICS,"addAction",[player,"liftObject"]] call ALiVE_fnc_logistics;
+	ASSERT_TRUE(_idLI > 0,_err);
+	
+	STAT("Checking releaseObject action on player");
+	_err = "Initialising releaseObject failed";
+	
+	_id_releaseObject = [ALiVE_SYS_LOGISTICS,"addAction",[player,"releaseObject"]] call ALiVE_fnc_logistics;
 	ASSERT_TRUE(_idLO > 0,_err);
 	
 	STAT("Removing temp actions of player");
-	{player removeAction _x} foreach [_idA,_idD,_idLI,_idLO];
+	{player removeAction _x} foreach [_id_towObject,_id_untowObject,_id_liftObject,_id_releaseObject,_id_unloadObjects,_id_stowObjects,_id_dropObject,_id_carryObject];
+    
     GVAR(CLIENT_ACTION_TESTFINISHED) = true;
     publicVariable QGVAR(CLIENT_ACTION_TESTFINISHED);
 };

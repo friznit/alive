@@ -73,7 +73,7 @@ switch (_operation) do {
             TRACE_1("Creating data store",true);
 
             // Create logistics data storage in memory on all localities
-            GVAR(logistics_data) = [] call ALIVE_fnc_hashCreate;
+            GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
 
 			// Define module basics on server
 			if (isServer) then {
@@ -102,10 +102,19 @@ switch (_operation) do {
 			TRACE_1("Spawning clientside processes",hasInterface);
 
             if (hasInterface) then {
-                [ALiVE_SYS_LOGISTICS,"addAction",[player,"attach"]] call ALiVE_fnc_logistics;
-                [ALiVE_SYS_LOGISTICS,"addAction",[player,"detach"]] call ALiVE_fnc_logistics;
-                [ALiVE_SYS_LOGISTICS,"addAction",[player,"loadIn"]] call ALiVE_fnc_logistics;
-                [ALiVE_SYS_LOGISTICS,"addAction",[player,"loadOut"]] call ALiVE_fnc_logistics;
+                _fnc_addActions = {
+	                [MOD(SYS_LOGISTICS),"addAction",[player,"carryObject"]] call ALiVE_fnc_logistics;
+	                [MOD(SYS_LOGISTICS),"addAction",[player,"dropObject"]] call ALiVE_fnc_logistics;
+	                [MOD(SYS_LOGISTICS),"addAction",[player,"stowObjects"]] call ALiVE_fnc_logistics;
+	                [MOD(SYS_LOGISTICS),"addAction",[player,"unloadObjects"]] call ALiVE_fnc_logistics;
+                    [MOD(SYS_LOGISTICS),"addAction",[player,"towObject"]] call ALiVE_fnc_logistics;
+                    [MOD(SYS_LOGISTICS),"addAction",[player,"untowObject"]] call ALiVE_fnc_logistics;
+                    [MOD(SYS_LOGISTICS),"addAction",[player,"liftObject"]] call ALiVE_fnc_logistics;
+                    [MOD(SYS_LOGISTICS),"addAction",[player,"releaseObject"]] call ALiVE_fnc_logistics;
+                };
+                
+                player addEventhandler ["respawn", _fnc_addActions];
+                call _fnc_addActions;
             };
             
             /*
@@ -183,7 +192,7 @@ switch (_operation) do {
         };
         
         case "addAction": {
-	        private ["_object","_operation","_id","_condition","_text"];
+	        private ["_object","_operation","_id","_condition","_text","_input","_container"];
 	
 			_object = [_args, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 			_operation = [_args, 1, "", [""]] call BIS_fnc_param;
@@ -194,16 +203,60 @@ switch (_operation) do {
 			};
 			
 			switch (_operation) do {
-				case ("attach") : {_text = "Carry object"; _condition = "isnil {cursortarget getvariable 'ALiVE_SYS_LOGISTICS_ATTACHED'} && {cursortarget iskindof 'Static'} && {cursortarget distance _target < 5}"};
-			    case ("detach") : {_text = "Release object"; _condition = "({!(isnil {_x getvariable 'ALiVE_SYS_LOGISTICS_ATTACHED'})} count (attachedObjects _target)) > 0"};
-                case ("loadOut") : {_text = "Load out cargo"; _condition = "count (cursortarget getvariable ['ALiVE_SYS_LOGISTICS_CARGO',[]]) > 0"};
-                case ("loadIn") : {_text  = "Load in cargo"; _condition = "cursortarget isKindOf 'Truck_F' && {cursortarget distance _target < 5}"};
+				case ("carryObject") : {
+                    _text = "Carry object";
+                	_input = "cursortarget";
+                    _container = "_this select 1";
+                    _condition = "isnil {cursortarget getvariable 'ALiVE_SYS_LOGISTICS_CONTAINER'} && {cursortarget iskindof 'Static'} && {cursortarget distance _target < 5}";
+				};
+			    case ("dropObject") : {
+                    _text = "Drop object";
+                    _input = "(attachedObjects (_this select 1)) select 0";
+                    _container = "_this select 1";
+                    _condition = "({!(isnil {_x getvariable 'ALiVE_SYS_LOGISTICS_CONTAINER'})} count (attachedObjects _target)) > 0";
+                };
+                case ("unloadObjects") : {
+                    _text = "Load out cargo"; 
+                    _input = "cursortarget"; 
+                    _container = "((nearestObjects [_this select 1, ['Truck_F'], 8]) select 0)"; 
+                    _condition = "count (cursortarget getvariable ['ALiVE_SYS_LOGISTICS_CARGO',[]]) > 0";
+                };
+                case ("stowObjects") : {
+                    _text  = "Stow in cargo"; 
+                    _input = "objNull"; 
+                    _container = "cursortarget"; 
+                    _condition = "cursortarget isKindOf 'Truck_F' && {cursortarget distance _target < 5}";
+                };
+                case ("towObject") : {
+                    _text  = "Tow object";
+                    _input = "cursortarget";
+                    _container = "((nearestObjects [_this select 1, ['Truck_F'], 8]) select 0)";
+                    _condition = "cursortarget isKindOf 'Car' && {cursortarget distance _target < 5}";
+                };
+                case ("untowObject") : {
+                    _text  = "Untow object";
+                    _input = "cursortarget";
+                    _container = "objNull";
+                    _condition = "cursortarget isKindOf 'Car' && {cursortarget distance _target < 5} && {{_x == cursortarget} count ((attachedTo cursortarget) getvariable ['ALiVE_SYS_LOGISTICS_CARGO_TOW',[]]) > 0}";
+                };
+                case ("liftObject") : {
+                    _text  = "Lift object";
+                    _input = "((nearestObjects [vehicle (_this select 1), ['Static'], 15]) select 0)";
+                    _container = "vehicle (_this select 1)";
+                    _condition = "(vehicle _target) isKindOf 'Helicopter' && {count ((vehicle _target) getvariable ['ALiVE_SYS_LOGISTICS_CARGO_LIFT',[]]) == 0} && {(getposATL (vehicle _target) select 2) > 10} && {(getposATL (vehicle _target) select 2) < 50}";
+                };
+                case ("releaseObject") : {
+                    _text  = "Release object";
+                    _input = "attachedObjects (vehicle (_this select 1)) select 0";
+                    _container = "vehicle (_this select 1)";
+                    _condition = "(vehicle _target) isKindOf 'Helicopter' && {count ((vehicle _target) getvariable ['ALiVE_SYS_LOGISTICS_CARGO_LIFT',[]]) > 0} && {(getposATL (vehicle _target) select 2) > 10} && {(getposATL (vehicle _target) select 2) < 20}";
+            	};
 			};
 			
 			_id = _object addAction [
 				_text,
-				{[MOD(SYS_LOGISTICS),_this select 3,[cursortarget,_this select 1]] call ALiVE_fnc_logistics},
-				_operation,
+				{[MOD(SYS_LOGISTICS),(_this select 3 select 0),[call compile (_this select 3 select 1), call compile (_this select 3 select 2)]] call ALiVE_fnc_logistics},
+				[_operation,_input,_container],
 				1,
 				false,
 				true,
@@ -214,28 +267,39 @@ switch (_operation) do {
 			_result = _id;
         };
 
-        case "attach": {
+        case "carryObject": {
             if (isnil "_args") exitwith {};
+            
+            private ["_object","_container"];
 
             _object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
-			_caller = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
             
-            private ["_object","_caller"];
+            if (_object in (attachedObjects _container)) exitwith {};
             
-            if (({!isnil {_x getvariable QGVAR(ATTACHED)}} count (attachedObjects _caller)) > 0) exitwith {};
-            
-            _object setvariable [QGVAR(ATTACHED),_caller,true];
-            _object attachTo [_caller];
+            _object setvariable [QGVAR(CONTAINER),_container,true];
+            _object attachTo [_container];
         };
         
-        case "detach": {
+        case "dropObject": {
             if (isnil "_args") exitwith {};
             
-            private ["_object","_caller"];
+            private ["_object","_container"];
             
             _object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
-			_caller = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
             
+            if !(_object in (attachedObjects _container)) exitwith {};
+            
+            _object setvariable [QGVAR(CONTAINER),nil,true];
+            
+            //Detach and reposition for a save placement
+            detach _object;
+            _object setposATL [getposATL _object select 0, getposATL _object select 1,0];
+            _object setvelocity [0,0,-1];
+            _result = _object;
+            
+            /*
 			{
                 if (!isnil {_x getvariable QGVAR(ATTACHED)}) then {
                     _x setvariable [QGVAR(ATTACHED),nil,true];
@@ -245,62 +309,159 @@ switch (_operation) do {
                     _x setposATL [getposATL _x select 0, getposATL _x select 1,0];
                     _x setvelocity [0,0,-1];
 				};
-            } forEach (attachedObjects _caller);
+            } forEach (attachedObjects _container);
+            */
         };
         
-        case "loadIn": {
+		case "stowObject": {
+            if (isnil "_args") exitwith {};
+            
+            //Do it globally so all clients are updated correctly all the time
+            if (hasInterface) exitwith {
+            	[_logic,"dropObject",[_object,player]] call ALiVE_fnc_logistics;                
+                [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
+            };
+
+            private ["_object","_container","_nearObjects"];
+                       
+			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+            
+            if (_object in (_container getvariable [QGVAR(CARGO),[]])) exitwith {};
+            
+            _object setvariable [QGVAR(CONTAINER),_container,true];
+            _container setvariable [QGVAR(CARGO),(_container getvariable [QGVAR(CARGO),[]]) + [_object],true];
+
+			if (isMultiplayer && isServer) then {_object hideObjectGlobal true; _object enableSimulationGlobal false} else {_object hideObject true; _object enableSimulation false};
+
+            _result = _container;
+        };
+        
+        case "stowObjects": {
+            if (isnil "_args") exitwith {};
+            
+            private ["_object","_container","_nearObjects"];
+                       
+			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+ 
+            {[_logic,"stowObject",[_x,_container]] call ALiVE_fnc_logistics} foreach (nearestObjects [_container, ["Static"], 15]);
+            
+            _result = _container;
+        };
+        
+        case "unloadObject": {
             if (isnil "_args") exitwith {};
             
             //Do it globally so all clients are updated correctly all the time
             if (!isServer) exitwith {
                 [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
             };
-            
+
+            private ["_object","_container","_nearObjects"];
+                       
 			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
-			_caller = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
             
-            [_logic,"detach",_args] call ALiVE_fnc_logistics;
+            if !(_object in (_container getvariable [QGVAR(CARGO),[]])) exitwith {};
             
-            private ["_object","_caller","_nearObjects"];
+            _object setvariable [QGVAR(CONTAINER),nil,true];
+            _container setvariable [QGVAR(CARGO),(_container getvariable [QGVAR(CARGO),[]]) - [_object],true];
             
-            _nearObjects = _object getvariable [QGVAR(CARGO),[]];
-            {
-                if !(_x in _nearObjects) then {
-                    _nearObjects set [count _nearObjects,_x];
-                    
-	                _x hideObject true;
-	                _x hideObjectGlobal true;
-                    
-                    //_object setvariable [QGVAR(INCARGO),_object,true];
-                };
-            } foreach (nearestObjects [_object, ["Static"], 15]);
-            
-            _object setvariable [QGVAR(CARGO),_nearObjects,true];
-            _result = _nearObjects;
+			_object setpos ([getpos _container, 0, 15, 2, 0, 20, 0, [],[[getpos _container,20] call CBA_fnc_Randpos]] call BIS_fnc_findSafePos);
+			if (isMultiplayer && isServer) then {_object hideObjectGlobal false; _object enableSimulationGlobal true} else {_object hideObject false; _object enableSimulation true};
+
+            _result = _container;
         };
         
-        case "loadOut": {
+        case "unloadObjects": {
             if (isnil "_args") exitwith {};
             
-            if (!isServer) exitwith {
-                [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
-            };
+            private ["_object","_container","_cargo","_pos"];
+                     
+			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+            
+            {[_logic,"unloadObject",[_x,_container]] call ALiVE_fnc_logistics} foreach (_container getvariable [QGVAR(CARGO),[]]);
+            
+            _result = _container;
+        };
+        
+        case "towObject": {
+            if (isnil "_args") exitwith {};
+            
+            private ["_object","_container"];
             
 			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
-			_caller = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
             
-            private ["_object","_caller","_cargo","_pos"];
+            if (isnil "_container" || {_object == _container}) exitwith {};
+            
+            _object attachTo [_container, [
+				0,
+				(boundingBox _container select 0 select 1) + (boundingBox _container select 0 select 1) + 2,
+				(boundingBox _container select 0 select 2) - (boundingBox _container select 0 select 2) + 0.4
+			]];
+            
+            _object setvariable [QGVAR(CONTAINER),_container,true];
+            _container setvariable [QGVAR(CARGO_TOW),(_container getvariable [QGVAR(CARGO_TOW),[]]) + [_object],true];
 
-            {
-                _x setpos ([getpos _object, 0, 15, 2, 0, 20, 0, [],[[getpos _object,20] call CBA_fnc_Randpos]] call BIS_fnc_findSafePos);
-                
-                _x hideObject false;
-                _x hideObjectGlobal false;
-                
-                //_x setvariable [QGVAR(INCARGO),nil,true];
-            } foreach (_object getvariable [QGVAR(CARGO),[]]);
+            _result = _container;
+        };
+        
+        case "untowObject": {
+            if (isnil "_args") exitwith {};
             
-            _object setvariable [QGVAR(CARGO),nil,true];
+            private ["_object","_container"];
+            
+			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+            
+            _object setvariable [QGVAR(CONTAINER),nil,true];
+            _container setvariable [QGVAR(CARGO_TOW),(_container getvariable [QGVAR(CARGO_TOW),[]]) - [_object],true];
+                        
+            detach _object;
+            _object setposATL [getposATL _object select 0, getposATL _object select 1,0];
+            
+            _result = _container;
+        };
+        
+        case "liftObject": {
+            if (isnil "_args") exitwith {};
+            
+            private ["_object","_caller","_target"];
+            
+			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+
+            if (isnil "_object" || {isnil "_container"} || {!(_container isKindOf "Air")}) exitwith {};
+            
+			_object attachTo [
+            	_container,
+            	[0,0,(boundingBox _container select 0 select 2) - (boundingBox _object select 0 select 2) - (getPos _container select 2) + 0.5]
+			];
+            
+            _object setvariable [QGVAR(CONTAINER),_container,true];
+            _container setvariable [QGVAR(CARGO_LIFT),(_container getvariable [QGVAR(CARGO_LIFT),[]]) + [_object],true];
+            
+            _result = _container;
+        };
+        
+        case "releaseObject": {
+            if (isnil "_args") exitwith {};
+            
+            private ["_object","_caller","_target"];
+            
+			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+            
+            _object setvariable [QGVAR(CONTAINER),nil,true];
+            _container setvariable [QGVAR(CARGO_LIFT),(_container getvariable [QGVAR(CARGO_LIFT),[]]) - [_object],true];
+                        
+            detach _object;
+            _object setposATL [getposATL _object select 0, getposATL _object select 1,0];
+            
+            _result = _container;
         };
         
         //Obsolete and unused
