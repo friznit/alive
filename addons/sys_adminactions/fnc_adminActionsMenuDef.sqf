@@ -138,7 +138,7 @@ if (_menuName == "adminActions") then {
 				],
                 
                 [localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE",
-					{ MOD(adminActions) setVariable ["CQB_enabled", true]; [CQB_REGULAR,"debug",true] call ALiVE_fnc_CQB; [CQB_STRATEGIC,"debug",true] call ALiVE_fnc_CQB; },
+					{ MOD(adminActions) setVariable ["CQB_enabled", true]; {[_x,"debug",true] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE_COMMENT",
 					"",
@@ -147,7 +147,7 @@ if (_menuName == "adminActions") then {
 					!(MOD(adminActions) getVariable ["CQB_enabled", false])
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE",
-					{ MOD(adminActions) setVariable ["CQB_enabled", false]; [CQB_REGULAR,"debug",false] call ALiVE_fnc_CQB; [CQB_STRATEGIC,"debug",false] call ALiVE_fnc_CQB; },
+					{ MOD(adminActions) setVariable ["CQB_enabled", false]; {[_x,"debug",false] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE_COMMENT",
 					"",
