@@ -243,7 +243,7 @@ switch (_operation) do {
                     _text  = "Lift object";
                     _input = "((nearestObjects [vehicle (_this select 1), ['Static'], 15]) select 0)";
                     _container = "vehicle (_this select 1)";
-                    _condition = "(vehicle _target) isKindOf 'Helicopter' && {count ((vehicle _target) getvariable ['ALiVE_SYS_LOGISTICS_CARGO_LIFT',[]]) == 0} && {(getposATL (vehicle _target) select 2) > 10} && {(getposATL (vehicle _target) select 2) < 50}";
+                    _condition = "(vehicle _target) isKindOf 'Helicopter' && {count ((vehicle _target) getvariable ['ALiVE_SYS_LOGISTICS_CARGO_LIFT',[]]) == 0} && {(getposATL (vehicle _target) select 2) > 5} && {(getposATL (vehicle _target) select 2) < 15}";
                 };
                 case ("releaseObject") : {
                     _text  = "Release object";
@@ -317,18 +317,19 @@ switch (_operation) do {
             if (isnil "_args") exitwith {};
             
             //Do it globally so all clients are updated correctly all the time
-            if (hasInterface) exitwith {
-            	[_logic,"dropObject",[_object,player]] call ALiVE_fnc_logistics;                
+            if !(isServer) exitwith {
                 [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
             };
-
+            
             private ["_object","_container","_nearObjects"];
-                       
+       
 			_object = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
 			_container = [_args, 1, objNull, [objNull]] call BIS_fnc_param;
+
+            [_logic,"dropObject",[_object,player]] call ALiVE_fnc_logistics;
             
             if (_object in (_container getvariable [QGVAR(CARGO),[]])) exitwith {};
-            
+
             _object setvariable [QGVAR(CONTAINER),_container,true];
             _container setvariable [QGVAR(CARGO),(_container getvariable [QGVAR(CARGO),[]]) + [_object],true];
 
@@ -354,7 +355,7 @@ switch (_operation) do {
             if (isnil "_args") exitwith {};
             
             //Do it globally so all clients are updated correctly all the time
-            if (!isServer) exitwith {
+            if !(isServer) exitwith {
                 [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
             };
 
