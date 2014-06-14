@@ -24,36 +24,34 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_objects","_sum","_types"];
+private ["_objects","_sum","_types","_weight"];
 
 _objects = _this;
 _sum = 0;
 
-//Order of subclass before main class is important here
 _types = [
-	["Truck_F",600],
-	["Car",200],
-    ["Tank",3500],
-	["Helicopter",150],
-	["Ship",100],
-	["Static",200],
-	["Reammobox_F",50],
-	["ThingX",7]
+		["Truck_F",1],
+		["Car",1],
+		["Tank",1],
+		["Helicopter",1],
+		["Ship",1],
+		["Reammobox_F",1],
+		["Static",100],
+		["ThingX",7],
+		["Man",13]
 ];
 
 {
-    private ["_object","_factor","_weight"];
+    private ["_object","_weight"];
     
     _object = _x;
-    _factor = 100;
+    _weight = getMass _object;
     
-    {
-        if (_object isKindOf (_x select 0)) exitwith {_factor = _x select 1};
-    } foreach _types;
-    
-    _weight = (sizeOf (typeof _object))*_factor;
-    _sum = _sum + _weight;
+    if (_weight == 0) then {
+         {if (_object isKindOf (_x select 0)) exitwith {_weight = (sizeOf (typeof _object))*(_x select 1)}} foreach _types;
+    };
 
+    _sum = _sum + _weight;
 } foreach _objects;
 
 _sum;
