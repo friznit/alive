@@ -26,19 +26,58 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_object","_cargo","_weapons","_magazines","_items"];
+private ["_object","_cargo","_weapons","_magazines","_items","_hash"];
 
 _object = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_types = [QGVAR(CARGO),QGVAR(CARGO_TOW),QGVAR(CARGO_LIFT)];
 
-_cargo = [];
+_cargo = (_object getvariable [QGVAR(CARGO),[]]);
+_cargoTmp = [];
+{
+    private ["_id"];
+    
+    _id = [MOD(SYS_LOGISTICS),"id",_x] call ALiVE_fnc_logistics;
+    
+    if !(_id in _cargoTmp) then {
+    	_cargoTmp set [count _cargoTmp,_id];
+    };
+} foreach _cargo;
+_cargoReg = _cargoTmp;
+
+_cargo = (_object getvariable [QGVAR(CARGO_TOW),[]]);
+_cargoTmp = [];
+{
+    private ["_id"];
+    
+    _id = [MOD(SYS_LOGISTICS),"id",_x] call ALiVE_fnc_logistics;
+    
+    if !(_id in _cargoTmp) then {
+    	_cargoTmp set [count _cargoTmp,_id];
+    };
+} foreach _cargo;
+_cargoTow = _cargoTmp;
+
+_cargo = (_object getvariable [QGVAR(CARGO_LIFT),[]]);
+_cargoTmp = [];
+{
+    private ["_id"];
+    
+    _id = [MOD(SYS_LOGISTICS),"id",_x] call ALiVE_fnc_logistics;
+    
+    if !(_id in _cargoTmp) then {
+    	_cargoTmp set [count _cargoTmp,_id];
+    };
+} foreach _cargo;
+_cargoLift = _cargoTmp;
 
 _weapons = getWeaponCargo _object;
 _magazines = getMagazineCargo _object;
 _items = getItemCargo _object;
 
-_cargo set [0,(_object getvariable [QGVAR(CARGO),[]])];
-_cargo set [1,(_object getvariable [QGVAR(CARGO_TOW),[]])];
-_cargo set [2,(_object getvariable [QGVAR(CARGO_LIFT),[]])];
+_cargo = [];
+_cargo set [0,_cargoReg];
+_cargo set [1,_cargoTow];
+_cargo set [2,_cargoLift];
 _cargo set [3,[_weapons,_magazines,_items]];
 
 _cargo;
