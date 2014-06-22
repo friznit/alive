@@ -66,8 +66,11 @@ _typesLogistics = [[_cargoR,"stowObject"],[_cargoT,"towObject"],[_cargoL,"liftOb
         _id = _contents select _i;
 
         _pos = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"position"] call ALiVE_fnc_HashGet;
-        _type = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"type"] call ALiVE_fnc_HashGet;
+        _type = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"objectType"] call ALiVE_fnc_HashGet;
+        _cargo = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"cargo"] call ALiVE_fnc_HashGet;
         _object = (nearestObjects [_pos,[_type],3]) select 0;
+
+		[_object,_cargo] call ALiVE_fnc_setObjectCargo;
 
 		//Perform operation
         [MOD(SYS_LOGISTICS),_operation,[_object,_container]] call ALiVE_fnc_logistics;

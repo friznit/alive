@@ -48,7 +48,6 @@ if(isServer) then {
         _debug = false;
     };
 
-
     if(_persistent == "true") then {
         _persistent = true;
     }else{

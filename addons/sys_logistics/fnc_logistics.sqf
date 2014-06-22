@@ -112,18 +112,16 @@ switch (_operation) do {
                 //Wait for data to init?
                 //not yet, but do so once pers is on the way for this module
 
-                // Mock Data
-                //_state = ["#CBA_HASH#",["B_Truck_01_transport_F_2342818642","Box_IND_Support_F_2344918632","B_MRAP_01_gmg_F_2343718643","Box_NATO_AmmoVeh_F_2345218636","C_Van_01_transport_F_2341918643","Box_NATO_Wps_F_2346518637","Land_Can_V1_F_2345818641","Box_NATO_WpsLaunch_F_2346618627","B_Heli_Light_01_F_2346018631","B_Soldier_F_2345518625"],[["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo"],["B_Truck_01_transport_F_2342818642","B_Truck_01_transport_F",[23438.5,18723.3,-0.00120616],[[0.939248,0.343063,-0.0110239],[0.0103529,0.00378736,0.99994]],[[],["B_MRAP_01_gmg_F_2343718643"],[],[[[],[]],[[],[]],[["FirstAidKit"],[4]]]]],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["Box_IND_Support_F_2344918632","Box_IND_Support_F",[23425.5,18718.4,0],[[0.526442,-0.850212,4.44089e-016],[0,0,1]],[[],[],[],[[["Binocular","Rangefinder","Laserdesignator"],[1,1,1]],[["Laserbatteries"],[5]],[["FirstAidKit","Medikit","ToolKit","MineDetector","ItemGPS","acc_flashlight","acc_pointer_IR","muzzle_snds_acp","muzzle_snds_L","muzzle_snds_M","muzzle_snds_H_MG","muzzle_snds_B","ALIVE_Tablet"],[10,1,1,1,5,5,5,5,5,5,1,5,4]]]],"B_MRAP_01_gmg_F_2343718643"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["B_MRAP_01_gmg_F_2343718643","B_MRAP_01_gmg_F",[23426.9,18719,-0.0502141],[[0.939248,0.343063,-0.0110239],[0.0103529,0.00378736,0.99994]],[["Box_IND_Support_F_2344918632"],[],[],[[["arifle_MX_F"],[2]],[["30Rnd_65x39_caseless_mag","100Rnd_65x39_caseless_mag","HandGrenade","1Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","16Rnd_9x21_Mag","SmokeShell","SmokeShellGreen","SmokeShellOrange","SmokeShellBlue","NLAW_F"],[16,6,10,10,4,4,4,4,12,4,4,4,4,2]],[["FirstAidKit"],[10]]]],"B_Truck_01_transport_F_2342818642"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["Box_NATO_AmmoVeh_F_2345218636","Box_NATO_AmmoVeh_F",[23435.9,18719.6,0],[[-0.306149,0.951983,8.27181e-025],[0,0,1]],[[],[],[],[[[],[]],[[],[]],[[],[]]]],"B_Truck_01_transport_F_2342818642"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo"],["C_Van_01_transport_F_2341918643","C_Van_01_transport_F",[23419.9,18643.1,0.0307512],[[8.05002e-005,0.999702,-0.0244217],[0.000906534,0.0244216,0.999701]],[["Box_NATO_Wps_F_2346518637"],[],[],[[[],[]],[[],[]],[["FirstAidKit"],[2]]]]],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["Box_NATO_Wps_F_2346518637","Box_NATO_Wps_F",[23419.2,18642.8,0],[[-0.998517,0.054448,0],[0,0,1]],[[],[],[],[[["arifle_MX_F","arifle_MX_GL_F","arifle_MX_SW_F","arifle_MXC_F","SMG_01_F","hgun_P07_F","hgun_Pistol_heavy_01_F"],[4,2,2,2,1,1,1]],[["30Rnd_65x39_caseless_mag","16Rnd_9x21_Mag","11Rnd_45ACP_Mag","30Rnd_45ACP_Mag_SMG_01","100Rnd_65x39_caseless_mag_Tracer"],[8,1,1,1,2]],[[],[]]]],"C_Van_01_transport_F_2341918643"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["Land_Can_V1_F_2345818641","Land_Can_V1_F",[23459.9,18634.4,0],[[-0.00804819,0.999968,4.65663e-010],[0,0,1]],[[],[],[],[[[],[]],[[],[]],[[],[]]]],"B_Heli_Light_01_F_2346018631"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["Box_NATO_WpsLaunch_F_2346618627","Box_NATO_WpsLaunch_F",[23463.5,18625.3,0],[[-0.998493,0.0548821,0],[0,0,1]],[[],[],[],[[["launch_Titan_F","launch_Titan_short_F","launch_NLAW_F"],[1,1,1]],[["Titan_AA","Titan_AT","Titan_AP","NLAW_F"],[3,3,3,3]],[[],[]]]],"B_Heli_Light_01_F_2346018631"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo"],["B_Heli_Light_01_F_2346018631","B_Heli_Light_01_F",[23460,18631.5,0.00622153],[[-0.000393216,0.999999,0.00153543],[1.92159e-006,-0.00153543,0.999999]],[[],[],[],[[["arifle_MXC_F"],[2]],[["SmokeShell","SmokeShellBlue","30Rnd_65x39_caseless_mag"],[2,2,4]],[["FirstAidKit","ToolKit","ItemGPS"],[2,1,1]]]]],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo"],["B_Soldier_F_2345518625","B_Soldier_F",[23424.3,18720.1,0.00143886],[[0.526442,-0.850212,4.44089e-016],[0,0,1]],[[],[],[],[[[],[]],[[],[]],[[],[]]]]],""]],""];
-            	//_state = ["#CBA_HASH#",["B_Soldier_F_25395582","Box_IND_Support_F_25375583","C_Van_01_transport_F_25075594","Box_NATO_AmmoVeh_F_25405588","B_Truck_01_transport_F_25155594"],[["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo"],["B_Soldier_F_25395582","B_Soldier_F",[2513.03,5591.09,0.00120544],[[-0.0220995,0.999755,0],[0,0,1]],[[],[],[],[[[],[]],[[],[]],[[],[]]]]],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["Box_IND_Support_F_25375583","Box_IND_Support_F",[2509.87,5593.56,0.00128937],[[-0.983095,0.181101,-0.0269479],[-0.0374948,-0.0550684,0.997778]],[[],[],[],[[["Binocular","Rangefinder","Laserdesignator"],[1,1,1]],[["Laserbatteries"],[5]],[["FirstAidKit","Medikit","ToolKit","MineDetector","ItemGPS","acc_flashlight","acc_pointer_IR","muzzle_snds_acp","muzzle_snds_L","muzzle_snds_M","muzzle_snds_H_MG","muzzle_snds_B","ALIVE_Tablet"],[10,1,1,1,5,5,5,5,5,5,1,5,4]]]],"C_Van_01_transport_F_25075594"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo"],["C_Van_01_transport_F_25075594","C_Van_01_transport_F",[2548.58,5596.96,0.032753],[[0.995035,0.0947354,0.0305003],[-0.0444098,0.148383,0.987932]],[["Box_IND_Support_F_25375583"],[],[],[[[],[]],[[],[]],[["FirstAidKit"],[2]]]]],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo","container"],["Box_NATO_AmmoVeh_F_25405588","Box_NATO_AmmoVeh_F",[2513.15,5593.95,0.0366364],[[-0.0243607,0.999243,0.0303292],[-0.0846194,-0.0322904,0.99589]],[[],[],[],[[[],[]],[[],[]],[[],[]]]],"B_Truck_01_transport_F_25155594"],""],["#CBA_HASH#",["id","type","position","vectorDirAndUp","cargo"],["B_Truck_01_transport_F_25155594","B_Truck_01_transport_F",[2519.42,5672.47,0.00487518],[[-0.0269835,0.996654,-0.0771549],[-0.0441564,0.0759193,0.996136]],[["Box_NATO_AmmoVeh_F_25405588"],[],[],[[[],[]],[[],[]],[["FirstAidKit"],[4]]]]],""]],""];
-                
                 // Reset states with provided data;
-            	_state = call ALiVE_fnc_logisticsLoadData;
+                //_state = ["#CBA_HASH#",["Box_IND_Support_F_25375583","B_MRAP_01_gmg_F_25255595"],[["#CBA_HASH#",["id","objectType","position","vectorDirAndUp","cargo","container"],["Box_IND_Support_F_25375583","Box_IND_Support_F",[2520.39,5602.29,0.00431061],[[-0.998651,0.0212541,-0.047375],[-0.044576,0.116985,0.992133]],[[],[],[],[[[],[]],[["Laserbatteries"],[5]],[["FirstAidKit","Medikit","ToolKit","MineDetector","ItemGPS","acc_flashlight","acc_pointer_IR","muzzle_snds_acp","muzzle_snds_L","muzzle_snds_M","muzzle_snds_H_MG","muzzle_snds_B","ALIVE_Tablet"],[4,1,1,1,5,5,5,5,5,5,1,5,4]]]],"B_MRAP_01_gmg_F_25255595"],""],["#CBA_HASH#",["id","objectType","position","vectorDirAndUp","cargo"],["B_MRAP_01_gmg_F_25255595","B_MRAP_01_gmg_F",[2525.28,5595.46,0.0163345],[[0.0060596,0.996539,-0.0829125],[-0.0906044,0.0831201,0.992412]],[[],[],[],[[["arifle_MX_F"],[2]],[["30Rnd_65x39_caseless_mag","100Rnd_65x39_caseless_mag","HandGrenade","1Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","16Rnd_9x21_Mag","SmokeShell","SmokeShellGreen","SmokeShellOrange","SmokeShellBlue","NLAW_F"],[16,6,10,10,4,4,4,4,12,4,4,4,4,2]],[["FirstAidKit"],[7]]]]],""]],""];
+                _state = call ALiVE_fnc_logisticsLoadData;
+                
                 ["ALiVE SYS LOGISTICS STATE: %1",_state] call ALiVE_fnc_Dump;
-                if !(typeName _state == "BOOL") then {
-                    GVAR(STORE) = _state;
+                if (typeName _state == "BOOL") then {
+                    _state = GVAR(STORE);
                 };
             
-            	[_logic,"state",GVAR(STORE)] call ALiVE_fnc_logistics;
+            	[_logic,"state",_state] call ALiVE_fnc_logistics;
                 
                 //Hack for hideObjectGlobal not working prior to mission runtime, thanks BIS
                 [] spawn {
@@ -140,7 +138,9 @@ switch (_operation) do {
             CONTROLLER  - coordination
             - check if an object is currently moved (= nearObjects attached to player)
             */
-            
+
+            // Wait until server init is finished
+            waitUntil {!isNil QMOD(SYS_LOGISTICS)};                
             TRACE_1("Spawning Server processes",isServer);
             
             if (isServer) then {
@@ -151,9 +151,6 @@ switch (_operation) do {
 			TRACE_1("Spawning clientside processes",hasInterface);
 
             if (hasInterface) then {
-                // Add actions
-                call GVAR(ACTIONS);
-                
                 // Set eventhandlers for player
                 [_logic,"setEH",[player]] call ALiVE_fnc_logistics;
             };
@@ -169,8 +166,8 @@ switch (_operation) do {
 			// The machine has an interface? Must be a MP client, SP client or a client that acts as host!
             if (hasInterface) then {
                 
-                // Wait until server init is finished
-            	waitUntil {!isNil QMOD(SYS_LOGISTICS)};
+                // Add actions
+                call GVAR(ACTIONS);
             
                 // Initialise interaction key if undefined
                 if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
@@ -298,7 +295,7 @@ switch (_operation) do {
                 private ["_args","_object"];
 
                 _args = [GVAR(STORE),_x] call ALiVE_fnc_HashGet;
-                _type = ([_args,"type"] call ALiVE_fnc_hashGet);
+                _type = ([_args,"objectType"] call ALiVE_fnc_hashGet);
                 
                 if (({_type iskindOf _x} count _blacklist) == 0) then {
                     
@@ -357,10 +354,11 @@ switch (_operation) do {
 	            if (isServer) then {
 		            //apply these EHs on all objects
 		            _object setvariable [QGVAR(EH_KILLED), _object getvariable [QGVAR(EH_KILLED), _object addEventHandler ["Killed", {[ALiVE_SYS_LOGISTICS,"removeObject",_this select 0] call ALIVE_fnc_logistics}]]];
-		            
+		            _object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1]] call ALIVE_fnc_logistics}]]];
+
 		            //apply these EHs on vehicles
 		            if (_object isKindOf "LandVehicle" || {_object isKindOf "Air"}) then {
-		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if ((_this select 1) == "driver") then {[ALiVE_SYS_LOGISTICS,"updateObject",_this select 0] call ALIVE_fnc_logistics}}]]];
+		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if ((_this select 1) == "driver") then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics}}]]];
 		            };
 	            };
             } foreach _objects;
@@ -411,7 +409,7 @@ switch (_operation) do {
 	                
                     //Set static data
 	                [_args,"id",_id] call ALiVE_fnc_HashSet;
-		            [_args,"type",typeof _x] call ALiVE_fnc_HashSet;
+		            [_args,"objectType",typeof _x] call ALiVE_fnc_HashSet;
 		            [_args,"position",getposATL _x] call ALiVE_fnc_HashSet;
 		            [_args,"vectorDirAndUp",[vectorDir _x,vectorUp _x]] call ALiVE_fnc_HashSet;
                     [_args,"cargo",[_x] call ALiVE_fnc_getObjectCargo] call ALiVE_fnc_HashSet;
