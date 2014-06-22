@@ -66,6 +66,27 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_logistics\fnc_setObjectCargo.sqf";
 								recompile = RECOMPILE;
                         };
+                        class setObjectState {
+                                description = "Sets the given state of on an object";
+                                file = "\x\alive\addons\sys_logistics\fnc_setObjectState.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class getObjectState {
+                                description = "Gets the given state of an object";
+                                file = "\x\alive\addons\sys_logistics\fnc_getObjectState.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class logisticsSaveData {
+                                description = "Logistics save data to DB";
+                                file = "\x\alive\addons\sys_logistics\fnc_logisticsSaveData.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class logisticsLoadData {
+                                description = "Logistics load data to DB";
+                                file = "\x\alive\addons\sys_logistics\fnc_logisticsLoadData.sqf";
+								recompile = RECOMPILE;
+                        };
+                        
 				};
         };
 };

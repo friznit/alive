@@ -34,7 +34,7 @@ _allowedObjects = GVAR(STOWABLE) select 1;
 _canStow = false;
 
 // Basic checks
-if (isnil "_container" || {_object == _container} || {(getNumber (configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier")) < 2} || {(_object in (_container getvariable [QGVAR(CARGO),[]]))}) exitwith {_canStow};
+if (isnil "_container" || {_object == _container} || {getNumber(configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier") < 2} || {_object in (_container getvariable [QGVAR(CARGO),[]])} || {!isnil {_object getvariable QGVAR(CONTAINER)}}) exitwith {_canStow};
 
 {if (_container isKindOf _x) exitwith {_containerCanStow = true}} foreach _allowedContainers;
 {if (_object isKindOf _x) exitwith {_objectCanStow = true}} foreach _allowedObjects;
