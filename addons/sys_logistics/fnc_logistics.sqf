@@ -81,8 +81,8 @@ switch (_operation) do {
             
             TRACE_1("Creating data store",true);
 
-            // Create logistics data storage in memory on all localities
-            GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
+	        // Create logistics data storage in memory on all localities
+	        GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
             
             // Define logistics properties on all localities
             GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","ThingX"]];
@@ -113,15 +113,16 @@ switch (_operation) do {
                 //not yet, but do so once pers is on the way for this module
 
                 // Reset states with provided data;
-                //_state = ["#CBA_HASH#",["Box_IND_Support_F_25375583","B_MRAP_01_gmg_F_25255595"],[["#CBA_HASH#",["id","objectType","position","vectorDirAndUp","cargo","container"],["Box_IND_Support_F_25375583","Box_IND_Support_F",[2520.39,5602.29,0.00431061],[[-0.998651,0.0212541,-0.047375],[-0.044576,0.116985,0.992133]],[[],[],[],[[[],[]],[["Laserbatteries"],[5]],[["FirstAidKit","Medikit","ToolKit","MineDetector","ItemGPS","acc_flashlight","acc_pointer_IR","muzzle_snds_acp","muzzle_snds_L","muzzle_snds_M","muzzle_snds_H_MG","muzzle_snds_B","ALIVE_Tablet"],[4,1,1,1,5,5,5,5,5,5,1,5,4]]]],"B_MRAP_01_gmg_F_25255595"],""],["#CBA_HASH#",["id","objectType","position","vectorDirAndUp","cargo"],["B_MRAP_01_gmg_F_25255595","B_MRAP_01_gmg_F",[2525.28,5595.46,0.0163345],[[0.0060596,0.996539,-0.0829125],[-0.0906044,0.0831201,0.992412]],[[],[],[],[[["arifle_MX_F"],[2]],[["30Rnd_65x39_caseless_mag","100Rnd_65x39_caseless_mag","HandGrenade","1Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","16Rnd_9x21_Mag","SmokeShell","SmokeShellGreen","SmokeShellOrange","SmokeShellBlue","NLAW_F"],[16,6,10,10,4,4,4,4,12,4,4,4,4,2]],[["FirstAidKit"],[7]]]]],""]],""];
-                _state = call ALiVE_fnc_logisticsLoadData;
+                //_state = ["#CBA_HASH#",["B_Soldier_F_25385583","Box_IND_Support_F_25375583","B_MRAP_01_gmg_F_25255595","Box_NATO_Wps_F_25535589"],[["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo"],["B_Soldier_F_25385583","B_Soldier_F",[2527.97,5594.92,0.00180054],[[-0.837394,-0.546598,0],[0,0,1]],[[],[],[],[[[],[]],[[],[]],[[],[]]]]],""],["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo","container"],["Box_IND_Support_F_25375583","Box_IND_Support_F",[2525.98,5593.54,0],[[-0.994299,0.106634,-0],[-0,0,1]],[[],[],[],[[["Binocular","Rangefinder","Laserdesignator"],[1,1,1]],[["Laserbatteries"],[5]],[["FirstAidKit","Medikit","ToolKit","MineDetector","ItemGPS","acc_flashlight","acc_pointer_IR","muzzle_snds_acp","muzzle_snds_L","muzzle_snds_M","muzzle_snds_H_MG","muzzle_snds_B","ALIVE_Tablet"],[10,1,1,1,5,5,5,5,5,5,1,5,4]]]],"B_MRAP_01_gmg_F_25255595"],""],["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo"],["B_MRAP_01_gmg_F_25255595","B_MRAP_01_gmg_F",[2509.89,5635.08,0.11409],[[-0.159416,0.973705,-0.162742],[0.147743,0.186525,0.971278]],[["Box_IND_Support_F_25375583","Box_NATO_Wps_F_25535589"],[],[],[[["arifle_MX_F"],[2]],[["30Rnd_65x39_caseless_mag","100Rnd_65x39_caseless_mag","HandGrenade","1Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","16Rnd_9x21_Mag","SmokeShell","SmokeShellGreen","SmokeShellOrange","SmokeShellBlue","NLAW_F"],[16,6,10,10,4,4,4,4,12,4,4,4,4,2]],[["FirstAidKit"],[10]]]]],""],["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo","container"],["Box_NATO_Wps_F_25535589","Box_NATO_Wps_F",[2526.08,5593.73,0],[[-0.837394,-0.546598,0],[0,0,1]],[[],[],[],[[["arifle_MX_F","arifle_MX_GL_F","arifle_MX_SW_F","arifle_MXC_F","SMG_01_F","hgun_P07_F","hgun_Pistol_heavy_01_F"],[4,2,2,2,1,1,1]],[["30Rnd_65x39_caseless_mag","16Rnd_9x21_Mag","11Rnd_45ACP_Mag","30Rnd_45ACP_Mag_SMG_01","100Rnd_65x39_caseless_mag_Tracer"],[8,1,1,1,2]],[[],[]]]],"B_MRAP_01_gmg_F_25255595"],""]],""];
                 
-                ["ALiVE SYS LOGISTICS STATE: %1",_state] call ALiVE_fnc_Dump;
-                if (typeName _state == "BOOL") then {
-                    _state = GVAR(STORE);
+                _state = call ALiVE_fnc_logisticsLoadData;
+                if !(typeName _state == "BOOL") then {
+                    GVAR(STORE) = _state;
                 };
+                
+                GVAR(STORE) call ALIVE_fnc_inspectHash;
             
-            	[_logic,"state",_state] call ALiVE_fnc_logistics;
+            	[_logic,"state",GVAR(STORE)] call ALiVE_fnc_logistics;
                 
                 //Hack for hideObjectGlobal not working prior to mission runtime, thanks BIS
                 [] spawn {
@@ -190,7 +191,8 @@ switch (_operation) do {
             
             // Indicate Init is finished on server
             if (isServer) then {
-            	MOD(SYS_LOGISTICS) setVariable ["init", true, true];
+            	_logic setVariable ["init", true, true];
+                _logic setVariable ["startupComplete", true, true];
             };
             
             ["%1 - Initialisation Completed...",MOD(SYS_LOGISTICS)] call ALiVE_fnc_Dump;
@@ -282,8 +284,8 @@ switch (_operation) do {
 					TRACE_1("ALiVE SYS LOGISTICS Resetting state of existing object!",_x);
 
                     //apply values
-		            _x setposATL ([_args,"position"] call ALiVE_fnc_HashGet);
-                    _x setVectorDirAndUp ([_args,"vectorDirAndUp"] call ALiVE_fnc_HashGet);
+		            _x setposATL ([_args,QGVAR(POSITION)] call ALiVE_fnc_HashGet);
+                    _x setVectorDirAndUp ([_args,QGVAR(VECDIRANDUP)] call ALiVE_fnc_HashGet);
 
                     //remove in next step
 					_existing set [count _existing,_id];
@@ -295,16 +297,16 @@ switch (_operation) do {
                 private ["_args","_object"];
 
                 _args = [GVAR(STORE),_x] call ALiVE_fnc_HashGet;
-                _type = ([_args,"objectType"] call ALiVE_fnc_hashGet);
+                _type = ([_args,QGVAR(TYPE)] call ALiVE_fnc_hashGet);
                 
                 if (({_type iskindOf _x} count _blacklist) == 0) then {
                     
                     TRACE_1("ALiVE SYS LOGISTICS Creating non existing object from store!",_x);
                     
-					_object = _type createVehicle ([_args,"position"] call ALiVE_fnc_hashGet);
+					_object = _type createVehicle ([_args,QGVAR(POSITION)] call ALiVE_fnc_hashGet);
 	                _object setvariable [QGVAR(ID),_x,true];
-	            	_object setposATL ([_args,"position"] call ALiVE_fnc_HashGet);
-	                _object setVectorDirAndUp ([_args,"vectorDirAndUp"] call ALiVE_fnc_HashGet);
+	            	_object setposATL ([_args,QGVAR(POSITION)] call ALiVE_fnc_HashGet);
+	                _object setVectorDirAndUp ([_args,QGVAR(VECDIRANDUP)] call ALiVE_fnc_HashGet);
 	                
 	                _createdObjects set [count _createdObjects,_object];
                 } else {
@@ -321,7 +323,7 @@ switch (_operation) do {
                 if !(isnil "_args") then {
                     
                     TRACE_1("ALiVE SYS LOGISTICS Resetting cargo for object!",_x);
-                	[_x,([_args,"cargo"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_setObjectCargo;
+                	[_x,([_args,QGVAR(CARGO)] call ALiVE_fnc_HashGet)] call ALiVE_fnc_setObjectCargo;
                 };
              } foreach (_startObjects + _createdObjects);
 
@@ -408,15 +410,15 @@ switch (_operation) do {
 		            };
 	                
                     //Set static data
-	                [_args,"id",_id] call ALiVE_fnc_HashSet;
-		            [_args,"objectType",typeof _x] call ALiVE_fnc_HashSet;
-		            [_args,"position",getposATL _x] call ALiVE_fnc_HashSet;
-		            [_args,"vectorDirAndUp",[vectorDir _x,vectorUp _x]] call ALiVE_fnc_HashSet;
-                    [_args,"cargo",[_x] call ALiVE_fnc_getObjectCargo] call ALiVE_fnc_HashSet;
+	                [_args,QGVAR(ID),_id] call ALiVE_fnc_HashSet;
+		            [_args,QGVAR(TYPE),typeof _x] call ALiVE_fnc_HashSet;
+		            [_args,QGVAR(POSITION),getposATL _x] call ALiVE_fnc_HashSet;
+		            [_args,QGVAR(VECDIRANDUP),[vectorDir _x,vectorUp _x]] call ALiVE_fnc_HashSet;
+                    [_args,QGVAR(CARGO),[_x] call ALiVE_fnc_getObjectCargo] call ALiVE_fnc_HashSet;
 					
                     //Set dynamic data (to fight errors on loading back existing data from DB)
                     if (!isnil {_x getvariable QGVAR(CONTAINER)} && {!isnull (_x getvariable QGVAR(CONTAINER))}) then {
-                        [_args,"container",(_x getvariable QGVAR(CONTAINER)) getvariable QGVAR(ID)] call ALiVE_fnc_HashSet;
+                        [_args,QGVAR(CONTAINER),(_x getvariable QGVAR(CONTAINER)) getvariable QGVAR(ID)] call ALiVE_fnc_HashSet;
                     };
                     
 		            //_args call ALiVE_fnc_InspectHash;

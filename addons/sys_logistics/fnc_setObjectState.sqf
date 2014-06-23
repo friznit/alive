@@ -33,10 +33,10 @@ _state = [_this, 1, ["",[],[],""], [[]]] call BIS_fnc_param;
 _id = [MOD(SYS_LOGISTICS),"id",_object] call ALiVE_fnc_logistics;
 [GVAR(STORE),_id,_state] call ALiVE_fnc_HashSet;
 
-_object setposATL ([_state,"position"] call ALiVE_fnc_HashGet);
-_object setVectorDirAndUp ([_state,"vectorDirAndUp"] call ALiVE_fnc_HashGet);
+_object setposATL ([_state,QGVAR(POSITION)] call ALiVE_fnc_HashGet);
+_object setVectorDirAndUp ([_state,QGVAR(VECDIRANDUP)] call ALiVE_fnc_HashGet);
 
 [_logic,"setEH",[_object]] call ALiVE_fnc_logistics;
-[_object,([_state,"cargo"] call ALiVE_fnc_HashGet)] call ALiVE_fnc_setObjectCargo;
+[_object,([_state,QGVAR(CARGO)] call ALiVE_fnc_HashGet)] call ALiVE_fnc_setObjectCargo;
 
 _state;

@@ -35,7 +35,7 @@ if (count _this > 1) then {
     _cargo = [_this, 1, [], [[]]] call BIS_fnc_param;
     //["Using provided cargo set for %1: %2!",_input, _cargo] call ALiVE_fnc_DumpR;
 } else {
-    _cargo = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"cargo"] call ALiVE_fnc_HashGet;
+    _cargo = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,QGVAR(CARGO)] call ALiVE_fnc_HashGet;
     //["Using stored cargo set for %1: %2!",_input, _cargo] call ALiVE_fnc_DumpR;
 };
 
@@ -52,22 +52,22 @@ _cargoI = [_cargoWMI, 2, [], [[]]] call BIS_fnc_param;
 _typesLogistics = [[_cargoR,"stowObject"],[_cargoT,"towObject"],[_cargoL,"liftObject"]];
 
 {
-    private ["_content","_operation","_pos","_container"];
+    private ["_pos","_contents","_operation","_container"];
     
 	_contents = _x select 0;
     _operation = _x select 1;
     _container = _input;
     
-	for "_i" from 0 to (count _contents)-1 do {
+	for "_i" from 0 to ((count _contents)-1) do {
         private ["_id","_pos","_type","_content","_object"];
         
         if (_i > (count _contents)-1) exitwith {};
         
         _id = _contents select _i;
 
-        _pos = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"position"] call ALiVE_fnc_HashGet;
-        _type = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"objectType"] call ALiVE_fnc_HashGet;
-        _cargo = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,"cargo"] call ALiVE_fnc_HashGet;
+        _pos = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,QGVAR(POSITION)] call ALiVE_fnc_HashGet;
+        _type = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,QGVAR(TYPE)] call ALiVE_fnc_HashGet;
+        _cargo = [[GVAR(STORE),_id] call ALiVE_fnc_HashGet,QGVAR(CARGO)] call ALiVE_fnc_HashGet;
         _object = (nearestObjects [_pos,[_type],3]) select 0;
 
 		[_object,_cargo] call ALiVE_fnc_setObjectCargo;
@@ -78,11 +78,21 @@ _typesLogistics = [[_cargoR,"stowObject"],[_cargoT,"towObject"],[_cargoL,"liftOb
 } foreach _typesLogistics;
 
 //Weapons and items
-_typesWeapons = [[_cargoW,"addWeaponCargo"],[_cargoM,"addMagazineCargo"],[_cargoI,"addItemCargo"]];
 
-clearWeaponCargo _input;
-clearMagazineCargo _input;
-clearitemCargo _input;
+if (isMultiplayer && {isServer}) then {
+    _typesWeapons = [[_cargoW,"addWeaponCargoGlobal"],[_cargoM,"addMagazineCargoGlobal"],[_cargoI,"addItemCargoGlobal"]];
+    
+	clearWeaponCargoGlobal _input;
+	clearMagazineCargoGlobal _input;
+	clearitemCargoGlobal _input;
+
+} else {
+    _typesWeapons = [[_cargoW,"addWeaponCargo"],[_cargoM,"addMagazineCargo"],[_cargoI,"addItemCargo"]];
+    
+	clearWeaponCargo _input;
+	clearMagazineCargo _input;
+	clearitemCargo _input;
+};
 
 {
 	private ["_content","_operation","_pos"];
