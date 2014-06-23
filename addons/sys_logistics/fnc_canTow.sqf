@@ -35,6 +35,10 @@ _canTow = false;
 
 if (isnil "_container" || {_object == _container} || {(getNumber (configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier")) < 3} || {count attachedObjects _container > 0}) exitwith {_canTow};
 
+// Consider removing! How to handle profiles?
+if (!isnil {_container getVariable "profileID"}) exitwith {_canTow};
+if (!isnil {_object getVariable "profileID"}) exitwith {_canTow};
+
 {if (_container isKindOf _x) exitwith {_containerCanTow = true}} foreach _allowedContainers;
 {if (_object isKindOf _x) exitwith {_objectCanTow = true}} foreach _allowedObjects;
 

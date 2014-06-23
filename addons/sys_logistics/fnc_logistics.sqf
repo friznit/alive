@@ -246,12 +246,11 @@ switch (_operation) do {
             //Get all logistics objects
             TRACE_1("ALiVE SYS LOGISTICS Finding SYS_LOGISTICS objects!",_logic);
             
-			_startObjects = [_logic,"allObjects"] call ALiVE_fnc_logistics;
+            _startObjects = [_logic,"allObjects"] call ALiVE_fnc_logistics;
             
             //Set ID on all startobjects
-            TRACE_1("ALiVE SYS LOGISTICS Setting IDs on existing objects!",_logic);            
-                                    
-            _startObjects = [_logic,"allObjects"] call ALiVE_fnc_logistics;
+            TRACE_1("ALiVE SYS LOGISTICS Setting IDs an EH on existing objects!",_logic);
+
             {[_logic,"id",_x] call ALiVE_fnc_logistics; [_logic,"setEH",[_x]] call ALiVE_fnc_logistics} foreach _startObjects;
             
             //Check if provided data is valid
@@ -398,8 +397,8 @@ switch (_operation) do {
             {
             	private ["_args","_id","_cont"];
                 
-                //Ensure object is existing
-                if (!(isnil "_x") && {!(isNull _x)}) then {
+                //Ensure object is existing and not profiled
+                if (!(isnil "_x") && {!(isNull _x)} && {isnil {_x getVariable "profileID"}}) then {
 	                _id = [_logic,"id",_x] call ALiVE_fnc_logistics;
 					_args = [GVAR(STORE),_id] call ALiVE_fnc_HashGet;
 		            
