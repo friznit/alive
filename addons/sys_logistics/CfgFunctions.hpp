@@ -76,6 +76,26 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_logistics\fnc_getObjectState.sqf";
 								recompile = RECOMPILE;
                         };
+                        class getObjectFuel {
+                                description = "Gets the fuel of an object";
+                                file = "\x\alive\addons\sys_logistics\fnc_getObjectFuel.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class setObjectFuel {
+                                description = "Sets the given fuel oo an object";
+                                file = "\x\alive\addons\sys_logistics\fnc_setObjectFuel.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class getObjectDamage {
+                                description = "Gets the damage of an object";
+                                file = "\x\alive\addons\sys_logistics\fnc_getObjectDamage.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class setObjectDamage {
+                                description = "Sets the given damage on an object";
+                                file = "\x\alive\addons\sys_logistics\fnc_setObjectDamage.sqf";
+								recompile = RECOMPILE;
+                        };
                         class logisticsSaveData {
                                 description = "Logistics save data to DB";
                                 file = "\x\alive\addons\sys_logistics\fnc_logisticsSaveData.sqf";

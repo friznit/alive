@@ -113,9 +113,8 @@ switch (_operation) do {
                 //not yet, but do so once pers is on the way for this module
 
                 // Reset states with provided data;
-                //_state = ["#CBA_HASH#",["B_Soldier_F_25385583","Box_IND_Support_F_25375583","B_MRAP_01_gmg_F_25255595","Box_NATO_Wps_F_25535589"],[["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo"],["B_Soldier_F_25385583","B_Soldier_F",[2527.97,5594.92,0.00180054],[[-0.837394,-0.546598,0],[0,0,1]],[[],[],[],[[[],[]],[[],[]],[[],[]]]]],""],["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo","container"],["Box_IND_Support_F_25375583","Box_IND_Support_F",[2525.98,5593.54,0],[[-0.994299,0.106634,-0],[-0,0,1]],[[],[],[],[[["Binocular","Rangefinder","Laserdesignator"],[1,1,1]],[["Laserbatteries"],[5]],[["FirstAidKit","Medikit","ToolKit","MineDetector","ItemGPS","acc_flashlight","acc_pointer_IR","muzzle_snds_acp","muzzle_snds_L","muzzle_snds_M","muzzle_snds_H_MG","muzzle_snds_B","ALIVE_Tablet"],[10,1,1,1,5,5,5,5,5,5,1,5,4]]]],"B_MRAP_01_gmg_F_25255595"],""],["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo"],["B_MRAP_01_gmg_F_25255595","B_MRAP_01_gmg_F",[2509.89,5635.08,0.11409],[[-0.159416,0.973705,-0.162742],[0.147743,0.186525,0.971278]],[["Box_IND_Support_F_25375583","Box_NATO_Wps_F_25535589"],[],[],[[["arifle_MX_F"],[2]],[["30Rnd_65x39_caseless_mag","100Rnd_65x39_caseless_mag","HandGrenade","1Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","16Rnd_9x21_Mag","SmokeShell","SmokeShellGreen","SmokeShellOrange","SmokeShellBlue","NLAW_F"],[16,6,10,10,4,4,4,4,12,4,4,4,4,2]],[["FirstAidKit"],[10]]]]],""],["#CBA_HASH#",["id","objectType",QGVAR(POSITION),QGVAR(VECDIRANDUP),"cargo","container"],["Box_NATO_Wps_F_25535589","Box_NATO_Wps_F",[2526.08,5593.73,0],[[-0.837394,-0.546598,0],[0,0,1]],[[],[],[],[[["arifle_MX_F","arifle_MX_GL_F","arifle_MX_SW_F","arifle_MXC_F","SMG_01_F","hgun_P07_F","hgun_Pistol_heavy_01_F"],[4,2,2,2,1,1,1]],[["30Rnd_65x39_caseless_mag","16Rnd_9x21_Mag","11Rnd_45ACP_Mag","30Rnd_45ACP_Mag_SMG_01","100Rnd_65x39_caseless_mag_Tracer"],[8,1,1,1,2]],[[],[]]]],"B_MRAP_01_gmg_F_25255595"],""]],""];
-                
                 _state = call ALiVE_fnc_logisticsLoadData;
+                
                 if !(typeName _state == "BOOL") then {
                     GVAR(STORE) = _state;
                 };
@@ -322,7 +321,7 @@ switch (_operation) do {
                 if !(isnil "_args") then {
                     
                     TRACE_1("ALiVE SYS LOGISTICS Resetting cargo for object!",_x);
-                	[_x,([_args,QGVAR(CARGO)] call ALiVE_fnc_HashGet)] call ALiVE_fnc_setObjectCargo;
+                	[_x,_args] call ALiVE_fnc_setObjectState;
                 };
              } foreach (_startObjects + _createdObjects);
 
@@ -414,6 +413,8 @@ switch (_operation) do {
 		            [_args,QGVAR(POSITION),getposATL _x] call ALiVE_fnc_HashSet;
 		            [_args,QGVAR(VECDIRANDUP),[vectorDir _x,vectorUp _x]] call ALiVE_fnc_HashSet;
                     [_args,QGVAR(CARGO),[_x] call ALiVE_fnc_getObjectCargo] call ALiVE_fnc_HashSet;
+                    [_args,QGVAR(FUEL),[_x] call ALiVE_fnc_getObjectFuel] call ALiVE_fnc_HashSet;
+                    [_args,QGVAR(DAMAGE),[_x] call ALiVE_fnc_getObjectDamage] call ALiVE_fnc_HashSet;
 					
                     //Set dynamic data (to fight errors on loading back existing data from DB)
                     if (!isnil {_x getvariable QGVAR(CONTAINER)} && {!isnull (_x getvariable QGVAR(CONTAINER))}) then {

@@ -73,11 +73,13 @@ _cargoLift = _cargoTmp;
 _weapons = getWeaponCargo _object;
 _magazines = getMagazineCargo _object;
 _items = getItemCargo _object;
+_ammo = magazinesAmmo _object;
 
 _cargo = [];
 _cargo set [0,_cargoReg];
 _cargo set [1,_cargoTow];
 _cargo set [2,_cargoLift];
 _cargo set [3,[_weapons,_magazines,_items]];
+_cargo set [4,_ammo];
 
 _cargo;

@@ -48,6 +48,8 @@ _cargoW = [_cargoWMI, 0, [], [[]]] call BIS_fnc_param;
 _cargoM = [_cargoWMI, 1, [], [[]]] call BIS_fnc_param;
 _cargoI = [_cargoWMI, 2, [], [[]]] call BIS_fnc_param;
 
+_Ammo = [_cargo, 4, [], [[]]] call BIS_fnc_param;
+
 //non Weapons and items (static, boxes etc.)
 _typesLogistics = [[_cargoR,"stowObject"],[_cargoT,"towObject"],[_cargoL,"liftObject"]];
 
@@ -85,6 +87,9 @@ if (isMultiplayer && {isServer}) then {
 	clearWeaponCargoGlobal _input;
 	clearMagazineCargoGlobal _input;
 	clearitemCargoGlobal _input;
+    
+    {_input removeMagazineGlobal _x} forEach (magazines _input);
+    {_input addMagazineGlobal [_x select 0,_x select 1]} foreach _ammo;
 
 } else {
     _typesWeapons = [[_cargoW,"addWeaponCargo"],[_cargoM,"addMagazineCargo"],[_cargoI,"addItemCargo"]];
@@ -92,6 +97,9 @@ if (isMultiplayer && {isServer}) then {
 	clearWeaponCargo _input;
 	clearMagazineCargo _input;
 	clearitemCargo _input;
+    
+    {_input removeMagazine _x} forEach (magazines _input);
+    {_input addMagazine [_x select 0,_x select 1]} foreach _ammo;
 };
 
 {
