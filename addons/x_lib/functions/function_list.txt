@@ -52,6 +52,7 @@ conversions
 
 data
 
+	ALiVE_fnc_encodeJSON
 	ALiVE_fnc_hashCopy
 	ALiVE_fnc_hashCreate
 	ALiVE_fnc_hashGet

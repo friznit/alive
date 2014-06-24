@@ -251,6 +251,13 @@ class toString
 	recompile = RECOMPILE;
 };
 
+class encodeJSON
+{
+	file = "\x\alive\addons\x_lib\functions\data\fnc_encodeJSON.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class hashCopy
 {
 	file = "\x\alive\addons\x_lib\functions\data\fnc_hashCopy.sqf";
