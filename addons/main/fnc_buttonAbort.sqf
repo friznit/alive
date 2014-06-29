@@ -143,6 +143,11 @@ _saveServer = {
 	    ["ALIVE Abort - Server Save OPCOM State"] call ALIVE_fnc_dump;
 		call ALiVE_fnc_CQBSaveData;
 	};
+    
+    if (["ALiVE_sys_logistics"] call ALiVE_fnc_isModuleAvailable) then {
+	    ["ALIVE Abort - Server Save Logistics State"] call ALIVE_fnc_dump;
+		call ALiVE_fnc_logisticsSaveData;
+	};
 };
 
 // Function run on server
