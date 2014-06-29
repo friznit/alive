@@ -112,9 +112,13 @@ switch (_operation) do {
                 //Wait for data to init?
                 //not yet, but do so once pers is on the way for this module
 
-                // Reset states with provided data;
-                _state = call ALiVE_fnc_logisticsLoadData;
+				// Reset states with provided data;
+				
+                //_state = ["#CBA_HASH#",["Box_NATO_Grenades_F_2315218677","B_MRAP_01_gmg_F_2316618703"],[["#CBA_HASH#",["ALiVE_SYS_LOGISTICS_ID","ALiVE_SYS_LOGISTICS_TYPE","ALiVE_SYS_LOGISTICS_POSITION","ALiVE_SYS_LOGISTICS_VECDIRANDUP","ALiVE_SYS_LOGISTICS_CARGO","ALiVE_SYS_LOGISTICS_FUEL","ALiVE_SYS_LOGISTICS_DAMAGE","ALiVE_SYS_LOGISTICS_CONTAINER"],["Box_NATO_Grenades_F_2315218677","Box_NATO_Grenades_F",[23168.4,18704.4,0],[[-0.583157,0.81236,0],[0,0,1]],[[],[],[],[[[],[]],[["1Rnd_HE_Grenade_shell","3Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeRed_Grenade_shell","1Rnd_SmokeYellow_Grenade_shell","1Rnd_SmokePurple_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","HandGrenade","MiniGrenade","SmokeShell","SmokeShellRed","SmokeShellGreen","SmokeShellYellow","SmokeShellPurple","SmokeShellBlue","SmokeShellOrange","UGL_FlareWhite_F","UGL_FlareGreen_F","B_IR_Grenade"],[3,3,2,2,2,2,2,2,2,12,12,2,2,2,2,2,2,2,2,2,8]],[[],[]]],[["1Rnd_HE_Grenade_shell",1],["1Rnd_HE_Grenade_shell",1],["1Rnd_HE_Grenade_shell",1],["3Rnd_HE_Grenade_shell",3],["3Rnd_HE_Grenade_shell",3],["3Rnd_HE_Grenade_shell",3],["1Rnd_Smoke_Grenade_shell",1],["1Rnd_Smoke_Grenade_shell",1],["1Rnd_SmokeGreen_Grenade_shell",1],["1Rnd_SmokeGreen_Grenade_shell",1],["1Rnd_SmokeRed_Grenade_shell",1],["1Rnd_SmokeRed_Grenade_shell",1],["1Rnd_SmokeYellow_Grenade_shell",1],["1Rnd_SmokeYellow_Grenade_shell",1],["1Rnd_SmokePurple_Grenade_shell",1],["1Rnd_SmokePurple_Grenade_shell",1],["1Rnd_SmokeBlue_Grenade_shell",1],["1Rnd_SmokeBlue_Grenade_shell",1],["1Rnd_SmokeOrange_Grenade_shell",1],["1Rnd_SmokeOrange_Grenade_shell",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["SmokeShell",1],["SmokeShell",1],["SmokeShellRed",1],["SmokeShellRed",1],["SmokeShellGreen",1],["SmokeShellGreen",1],["SmokeShellYellow",1],["SmokeShellYellow",1],["SmokeShellPurple",1],["SmokeShellPurple",1],["SmokeShellBlue",1],["SmokeShellBlue",1],["SmokeShellOrange",1],["SmokeShellOrange",1],["UGL_FlareWhite_F",1],["UGL_FlareWhite_F",1],["UGL_FlareGreen_F",1],["UGL_FlareGreen_F",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1]]],1,0.00989117,"B_MRAP_01_gmg_F_2316618703"],""],["#CBA_HASH#",["ALiVE_SYS_LOGISTICS_ID","ALiVE_SYS_LOGISTICS_TYPE","ALiVE_SYS_LOGISTICS_POSITION","ALiVE_SYS_LOGISTICS_VECDIRANDUP","ALiVE_SYS_LOGISTICS_CARGO","ALiVE_SYS_LOGISTICS_FUEL","ALiVE_SYS_LOGISTICS_DAMAGE"],["B_MRAP_01_gmg_F_2316618703","B_MRAP_01_gmg_F",[23166.9,18703.2,-0.0250659],[[-0.60071,-0.799467,-0.000112584],[-0.00412993,0.00296236,0.999987]],[["Box_NATO_Grenades_F_2315218677"],[],[],[[["arifle_MX_F"],[2]],[["30Rnd_65x39_caseless_mag","100Rnd_65x39_caseless_mag","HandGrenade","1Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","16Rnd_9x21_Mag","SmokeShell","SmokeShellGreen","SmokeShellOrange","SmokeShellBlue","NLAW_F"],[16,6,10,10,4,4,4,4,12,4,4,4,4,2]],[["FirstAidKit"],[10]]],[["96Rnd_40mm_G_belt",96]]],1,0],""]],""];
+                //[_logic,"state",_state] call ALiVE_fnc_logistics;
                 
+                _state = call ALiVE_fnc_logisticsLoadData;
+
                 if !(typeName _state == "BOOL") then {
                     GVAR(STORE) = _state;
                 };
@@ -248,7 +252,7 @@ switch (_operation) do {
             _startObjects = [_logic,"allObjects"] call ALiVE_fnc_logistics;
             
             //Set ID on all startobjects
-            TRACE_1("ALiVE SYS LOGISTICS Setting IDs an EH on existing objects!",_logic);
+            TRACE_1("ALiVE SYS LOGISTICS Setting IDs and EHs on existing objects!",_logic);
 
             {[_logic,"id",_x] call ALiVE_fnc_logistics; [_logic,"setEH",[_x]] call ALiVE_fnc_logistics} foreach _startObjects;
             
@@ -272,9 +276,6 @@ switch (_operation) do {
 
                 _id = [MOD(SYS_LOGISTICS),"id",_x] call ALiVE_fnc_logistics;
                 _args = [GVAR(STORE),_id] call ALiVE_fnc_HashGet;
-                
-                //apply EHs on all objects
-				[_logic,"setEH",[_x]] call ALiVE_fnc_logistics;
 
                 if !(isnil "_args") then {
                     private ["_pos","_vDirUp","_container","_cargo"];
@@ -348,13 +349,13 @@ switch (_operation) do {
 	            if (hasInterface) then {
 	            	//apply these EHs on players
 	                _object setvariable [QGVAR(EH_RESPAWN), _object getvariable [QGVAR(EH_RESPAWN), _object addEventhandler ["Respawn", GVAR(ACTIONS)]]];
+                    _object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics}]]];
 	            };
-	            
+            
 	            //Serverside only section below
 	            if (isServer) then {
 		            //apply these EHs on all objects
 		            _object setvariable [QGVAR(EH_KILLED), _object getvariable [QGVAR(EH_KILLED), _object addEventHandler ["Killed", {[ALiVE_SYS_LOGISTICS,"removeObject",_this select 0] call ALIVE_fnc_logistics}]]];
-		            _object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1]] call ALIVE_fnc_logistics}]]];
 
 		            //apply these EHs on vehicles
 		            if (_object isKindOf "LandVehicle" || {_object isKindOf "Air"}) then {
@@ -384,6 +385,10 @@ switch (_operation) do {
 
         case "updateObject": {
             if (isnil "_args") exitwith {};
+            
+            if !(isServer) exitwith {
+                [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
+            };
             
             private ["_objects"];
 
@@ -419,6 +424,8 @@ switch (_operation) do {
                     //Set dynamic data (to fight errors on loading back existing data from DB)
                     if (!isnil {_x getvariable QGVAR(CONTAINER)} && {!isnull (_x getvariable QGVAR(CONTAINER))}) then {
                         [_args,QGVAR(CONTAINER),(_x getvariable QGVAR(CONTAINER)) getvariable QGVAR(ID)] call ALiVE_fnc_HashSet;
+                    } else {
+                        [_args,QGVAR(CONTAINER)] call ALiVE_fnc_HashRem;
                     };
                     
 		            //_args call ALiVE_fnc_InspectHash;
@@ -502,7 +509,7 @@ switch (_operation) do {
                     _text = "Load out cargo"; 
                     _input = "cursortarget"; 
                     _container = "((nearestObjects [_this select 1, ALiVE_SYS_LOGISTICS_STOWABLE select 0, 8]) select 0)"; 
-                    _condition = "count (cursortarget getvariable ['ALiVE_SYS_LOGISTICS_CARGO',[]]) > 0";
+                    _condition = "cursortarget distance _target < 5 && {count (cursortarget getvariable ['ALiVE_SYS_LOGISTICS_CARGO',[]]) > 0}";
                 };
                 case ("stowObjects") : {
                     _text  = "Stow in cargo"; 
@@ -606,7 +613,6 @@ switch (_operation) do {
             // Detach and reposition for a save placement
             detach _object;
             _object setposATL [getposATL _object select 0, getposATL _object select 1,0];
-            _object setvelocity [0,0,-1];
             
             [[_logic,"updateObject",[_container,_object]],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;         
             

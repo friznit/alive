@@ -12,6 +12,7 @@ ARRAY - select 0: Logistics Cargo (Array)
 ARRAY - select 1: Towed vehicles (Array)
 ARRAY - select 2: Lifted vehicles (Array)
 ARRAY - select 3: Weapons/Magazines/Items (Array)
+ARRAY - select 4: Current Ammo (Array)
 
 Returns:
 Cargo Array
@@ -26,7 +27,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_input","_id","_cargo","_cargoR","_cargoT","_cargoL","_cargoWMI","_cargoW","_cargoM","_cargoI","_typesLogistics","_typesWeapons"];
+private ["_input","_id","_cargo","_cargoR","_cargoT","_cargoL","_cargoWMI","_cargoW","_cargoM","_cargoI","_typesLogistics","_typesWeapons","_global"];
 
 _input = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _id = [MOD(SYS_LOGISTICS),"id",_input] call ALiVE_fnc_Logistics;
@@ -39,22 +40,57 @@ if (count _this > 1) then {
     //["Using stored cargo set for %1: %2!",_input, _cargo] call ALiVE_fnc_DumpR;
 };
 
+// Provided Data
 _cargoR = [_cargo, 0, [], [[]]] call BIS_fnc_param;
 _cargoT = [_cargo, 1, [], [[]]] call BIS_fnc_param;
 _cargoL = [_cargo, 2, [], [[]]] call BIS_fnc_param;
-
 _cargoWMI = [_cargo, 3, [], [[]]] call BIS_fnc_param;
+_Ammo = [_cargo, 4, [], [[]]] call BIS_fnc_param;
+
 _cargoW = [_cargoWMI, 0, [], [[]]] call BIS_fnc_param;
 _cargoM = [_cargoWMI, 1, [], [[]]] call BIS_fnc_param;
 _cargoI = [_cargoWMI, 2, [], [[]]] call BIS_fnc_param;
 
-_Ammo = [_cargo, 4, [], [[]]] call BIS_fnc_param;
+// Detect local/global commands
+if (isMultiplayer && {isServer}) then {_global = "Global"} else {_global = ""};
 
-//non Weapons and items (static, boxes etc.)
-_typesLogistics = [[_cargoR,"stowObject"],[_cargoT,"towObject"],[_cargoL,"liftObject"]];
+// Reset Magazines state
+call (compile format["
+			{_input removeMagazine%1 _x} forEach (magazines _input);
+			{_input addMagazine [_x select 0,_x select 1]} foreach _ammo;
+		",
+	    _global
+    ]
+);
 
+// Reset weapons and items state
+_typesWeapons = [[_cargoW,"WeaponCargo"],[_cargoM,"MagazineCargo"],[_cargoI,"ItemCargo"]];
 {
-    private ["_pos","_contents","_operation","_container"];
+	private ["_content","_current","_operation"];
+    
+	_content = _x select 0;
+    _operation = _x select 1;
+    _current = call (compile format["get%1 _input",_operation]);
+    
+	if !(str(_content) == str(_current)) then {
+        
+        if (count (_current select 0) > 0) then {call (compile format["clear%1%2 _input",_operation,_global])};
+        
+		for "_i" from 0 to (count (_content select 0))-1 do {
+	        private ["_type","_count"];
+	        
+		    _type = _content select 0 select _i;
+		    _count = _content select 1 select _i;
+	
+		    call (compile format["_input add%1%2 %3",_operation,_global,[_type,_count]]);
+		};
+    };
+} foreach _typesWeapons;
+
+//Reset non weapons and items (static, boxes, towed vehicles etc.)
+_typesLogistics = [[_cargoR,"stowObject"],[_cargoT,"towObject"],[_cargoL,"liftObject"]];
+{
+    private ["_contents","_operation","_container"];
     
 	_contents = _x select 0;
     _operation = _x select 1;
@@ -78,44 +114,5 @@ _typesLogistics = [[_cargoR,"stowObject"],[_cargoT,"towObject"],[_cargoL,"liftOb
         [MOD(SYS_LOGISTICS),_operation,[_object,_container]] call ALiVE_fnc_logistics;
 	};
 } foreach _typesLogistics;
-
-//Weapons and items
-
-if (isMultiplayer && {isServer}) then {
-    _typesWeapons = [[_cargoW,"addWeaponCargoGlobal"],[_cargoM,"addMagazineCargoGlobal"],[_cargoI,"addItemCargoGlobal"]];
-    
-	clearWeaponCargoGlobal _input;
-	clearMagazineCargoGlobal _input;
-	clearitemCargoGlobal _input;
-    
-    {_input removeMagazineGlobal _x} forEach (magazines _input);
-    {_input addMagazineGlobal [_x select 0,_x select 1]} foreach _ammo;
-
-} else {
-    _typesWeapons = [[_cargoW,"addWeaponCargo"],[_cargoM,"addMagazineCargo"],[_cargoI,"addItemCargo"]];
-    
-	clearWeaponCargo _input;
-	clearMagazineCargo _input;
-	clearitemCargo _input;
-    
-    {_input removeMagazine _x} forEach (magazines _input);
-    {_input addMagazine [_x select 0,_x select 1]} foreach _ammo;
-};
-
-{
-	private ["_content","_operation","_pos"];
-    
-	_content = _x select 0;
-    _operation = _x select 1;
-
-	for "_i" from 0 to (count (_content select 0))-1 do {
-        private ["_type","_count"];
-        
-	    _type = _content select 0 select _i;
-	    _count = _content select 1 select _i;
-	    
-	    call (compile format["_input %1 %2",_operation,[_type,_count]]);
-	};
-} foreach _typesWeapons;
 
 _cargo;
