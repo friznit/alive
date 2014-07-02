@@ -11,6 +11,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_logistics\fnc_logisticsInit.sqf";
 								recompile = RECOMPILE;
                         };
+                        class logisticsDisable {
+                                description = "Logistics load data to DB";
+                                file = "\x\alive\addons\sys_logistics\fnc_logisticsDisable.sqf";
+								recompile = RECOMPILE;
+                        };
                         class logisticsMenuDef {
                                 description = "The module menu definition";
                                 file = "\x\alive\addons\sys_logistics\fnc_logisticsMenuDef.sqf";

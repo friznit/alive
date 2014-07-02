@@ -53,16 +53,34 @@ TRACE_3("SYS_LOGISTICS",_logic, _operation, _args);
 switch (_operation) do {
     
     	case "create": {
-            _logic = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
-            _result = _logic;
+            if (isServer) then {
+	            // Ensure only one module is used
+	            if !(isNil QMOD(SYS_LOGISTICS)) exitWith {
+                    	_logic = MOD(SYS_LOGISTICS);
+	                    ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_LOGISTICS_ERROR1");
+	            };
+	
+	        	_logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_LOGISTICS", [0,0], [], 0, "NONE"];
+                
+                //Push to clients
+                MOD(SYS_LOGISTICS) = _logic;
+	            PublicVariable QMOD(SYS_LOGISTICS);
+            };
+            
+            TRACE_1("Waiting for object to be ready",true);
+            
+            waituntil {!isnil QMOD(SYS_LOGISTICS)};
+            
+            TRACE_1("Creating class on all localities",true);
+            
+			// initialise module game logic on all localities
+			MOD(SYS_LOGISTICS) setVariable ["super", QUOTE(SUPERCLASS)];
+			MOD(SYS_LOGISTICS) setVariable ["class", QUOTE(MAINCLASS)];
+            
+            _result = MOD(SYS_LOGISTICS);
         };
 
         case "init": {
-            
-            // Ensure only one module is used
-            if (isServer && !(isNil QMOD(SYS_LOGISTICS))) exitWith {
-                    ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_LOGISTICS_ERROR1");
-            };
             
             ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
@@ -72,12 +90,6 @@ switch (_operation) do {
             - Establish data handler on server
             - Establish data model on server and client
             */
-            
-            TRACE_1("Creating class on all localities",true);
-            
-			// initialise module game logic on all localities
-			_logic setVariable ["super", QUOTE(SUPERCLASS)];
-			_logic setVariable ["class", QUOTE(MAINCLASS)];
             
             TRACE_1("Creating data store",true);
 
@@ -92,35 +104,39 @@ switch (_operation) do {
             
             //Define actions on all localities
 			GVAR(ACTIONS) = {
-	                [MOD(SYS_LOGISTICS),"addAction",[player,"carryObject"]] call ALiVE_fnc_logistics;
-	                [MOD(SYS_LOGISTICS),"addAction",[player,"dropObject"]] call ALiVE_fnc_logistics;
-	                [MOD(SYS_LOGISTICS),"addAction",[player,"stowObjects"]] call ALiVE_fnc_logistics;
-	                [MOD(SYS_LOGISTICS),"addAction",[player,"unloadObjects"]] call ALiVE_fnc_logistics;
-                    [MOD(SYS_LOGISTICS),"addAction",[player,"towObject"]] call ALiVE_fnc_logistics;
-                    [MOD(SYS_LOGISTICS),"addAction",[player,"untowObject"]] call ALiVE_fnc_logistics;
-                    [MOD(SYS_LOGISTICS),"addAction",[player,"liftObject"]] call ALiVE_fnc_logistics;
-                    [MOD(SYS_LOGISTICS),"addAction",[player,"releaseObject"]] call ALiVE_fnc_logistics;
+                private ["_logic"];
+                
+                _logic = MOD(SYS_LOGISTICS);
+
+                if !(_logic getvariable ["DISABLECARRY",false]) then {[_logic,"addAction",[player,"carryObject"]] call ALiVE_fnc_logistics};
+                if !(_logic getvariable ["DISABLECARRY",false]) then {[_logic,"addAction",[player,"dropObject"]] call ALiVE_fnc_logistics};
+                if !(_logic getvariable ["DISABLELOAD",false]) then {[_logic,"addAction",[player,"stowObjects"]] call ALiVE_fnc_logistics};
+                if !(_logic getvariable ["DISABLELOAD",false]) then {[_logic,"addAction",[player,"unloadObjects"]] call ALiVE_fnc_logistics};
+                if !(_logic getvariable ["DISABLETOW",false]) then {[_logic,"addAction",[player,"towObject"]] call ALiVE_fnc_logistics};
+                if !(_logic getvariable ["DISABLETOW",false]) then {[_logic,"addAction",[player,"untowObject"]] call ALiVE_fnc_logistics};
+                if !(_logic getvariable ["DISABLELIFT",false]) then {[_logic,"addAction",[player,"liftObject"]] call ALiVE_fnc_logistics};
+                if !(_logic getvariable ["DISABLELIFT",false]) then {[_logic,"addAction",[player,"releaseObject"]] call ALiVE_fnc_logistics};
 			};
                                     
 			// Define module basics on server
 			if (isServer) then {
-                MOD(SYS_LOGISTICS) = _logic;
-                
-                // Set Module (default) parameters as correct types
-                MOD(SYS_LOGISTICS) setVariable ["debug", call compile (_logic getvariable ["debug","false"]), true];
 
-                //Wait for data to init?
-                //not yet, but do so once pers is on the way for this module
+                // Wait for disable log module  to set module parameters
+                if (["AliVE_SYS_LOGISTICSDISABLE"] call ALiVE_fnc_isModuleavailable) then {
+                    waituntil {!isnil {MOD(SYS_LOGISTICS) getvariable "DEBUG"}};
+                };
 
-				// Reset states with provided data;
-				
-                //_state = ["#CBA_HASH#",["Box_NATO_Grenades_F_2315218677","B_MRAP_01_gmg_F_2316618703"],[["#CBA_HASH#",["ALiVE_SYS_LOGISTICS_ID","ALiVE_SYS_LOGISTICS_TYPE","ALiVE_SYS_LOGISTICS_POSITION","ALiVE_SYS_LOGISTICS_VECDIRANDUP","ALiVE_SYS_LOGISTICS_CARGO","ALiVE_SYS_LOGISTICS_FUEL","ALiVE_SYS_LOGISTICS_DAMAGE","ALiVE_SYS_LOGISTICS_CONTAINER"],["Box_NATO_Grenades_F_2315218677","Box_NATO_Grenades_F",[23168.4,18704.4,0],[[-0.583157,0.81236,0],[0,0,1]],[[],[],[],[[[],[]],[["1Rnd_HE_Grenade_shell","3Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeRed_Grenade_shell","1Rnd_SmokeYellow_Grenade_shell","1Rnd_SmokePurple_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","HandGrenade","MiniGrenade","SmokeShell","SmokeShellRed","SmokeShellGreen","SmokeShellYellow","SmokeShellPurple","SmokeShellBlue","SmokeShellOrange","UGL_FlareWhite_F","UGL_FlareGreen_F","B_IR_Grenade"],[3,3,2,2,2,2,2,2,2,12,12,2,2,2,2,2,2,2,2,2,8]],[[],[]]],[["1Rnd_HE_Grenade_shell",1],["1Rnd_HE_Grenade_shell",1],["1Rnd_HE_Grenade_shell",1],["3Rnd_HE_Grenade_shell",3],["3Rnd_HE_Grenade_shell",3],["3Rnd_HE_Grenade_shell",3],["1Rnd_Smoke_Grenade_shell",1],["1Rnd_Smoke_Grenade_shell",1],["1Rnd_SmokeGreen_Grenade_shell",1],["1Rnd_SmokeGreen_Grenade_shell",1],["1Rnd_SmokeRed_Grenade_shell",1],["1Rnd_SmokeRed_Grenade_shell",1],["1Rnd_SmokeYellow_Grenade_shell",1],["1Rnd_SmokeYellow_Grenade_shell",1],["1Rnd_SmokePurple_Grenade_shell",1],["1Rnd_SmokePurple_Grenade_shell",1],["1Rnd_SmokeBlue_Grenade_shell",1],["1Rnd_SmokeBlue_Grenade_shell",1],["1Rnd_SmokeOrange_Grenade_shell",1],["1Rnd_SmokeOrange_Grenade_shell",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["HandGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["MiniGrenade",1],["SmokeShell",1],["SmokeShell",1],["SmokeShellRed",1],["SmokeShellRed",1],["SmokeShellGreen",1],["SmokeShellGreen",1],["SmokeShellYellow",1],["SmokeShellYellow",1],["SmokeShellPurple",1],["SmokeShellPurple",1],["SmokeShellBlue",1],["SmokeShellBlue",1],["SmokeShellOrange",1],["SmokeShellOrange",1],["UGL_FlareWhite_F",1],["UGL_FlareWhite_F",1],["UGL_FlareGreen_F",1],["UGL_FlareGreen_F",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1],["B_IR_Grenade",1]]],1,0.00989117,"B_MRAP_01_gmg_F_2316618703"],""],["#CBA_HASH#",["ALiVE_SYS_LOGISTICS_ID","ALiVE_SYS_LOGISTICS_TYPE","ALiVE_SYS_LOGISTICS_POSITION","ALiVE_SYS_LOGISTICS_VECDIRANDUP","ALiVE_SYS_LOGISTICS_CARGO","ALiVE_SYS_LOGISTICS_FUEL","ALiVE_SYS_LOGISTICS_DAMAGE"],["B_MRAP_01_gmg_F_2316618703","B_MRAP_01_gmg_F",[23166.9,18703.2,-0.0250659],[[-0.60071,-0.799467,-0.000112584],[-0.00412993,0.00296236,0.999987]],[["Box_NATO_Grenades_F_2315218677"],[],[],[[["arifle_MX_F"],[2]],[["30Rnd_65x39_caseless_mag","100Rnd_65x39_caseless_mag","HandGrenade","1Rnd_HE_Grenade_shell","1Rnd_Smoke_Grenade_shell","1Rnd_SmokeGreen_Grenade_shell","1Rnd_SmokeOrange_Grenade_shell","1Rnd_SmokeBlue_Grenade_shell","16Rnd_9x21_Mag","SmokeShell","SmokeShellGreen","SmokeShellOrange","SmokeShellBlue","NLAW_F"],[16,6,10,10,4,4,4,4,12,4,4,4,4,2]],[["FirstAidKit"],[10]]],[["96Rnd_40mm_G_belt",96]]],1,0],""]],""];
-                //[_logic,"state",_state] call ALiVE_fnc_logistics;
-                
-                _state = call ALiVE_fnc_logisticsLoadData;
-
-                if !(typeName _state == "BOOL") then {
-                    GVAR(STORE) = _state;
+                // Reset states with provided data;
+                if !(_logic getvariable ["DISABLEPERSISTENCE",false]) then {
+                    if (isDedicated && {[QMOD(SYS_DATA)] call ALiVE_fnc_isModuleavailable}) then {
+                        waituntil {!isnil QMOD(SYS_DATA) && {MOD(SYS_DATA) getvariable ["startupComplete",false]}};
+                    };
+                    
+	                _state = call ALiVE_fnc_logisticsLoadData;
+	
+	                if !(typeName _state == "BOOL") then {
+	                    GVAR(STORE) = _state;
+	                };
                 };
                 
                 GVAR(STORE) call ALIVE_fnc_inspectHash;
@@ -133,9 +149,8 @@ switch (_operation) do {
                     
                     {if !(simulationEnabled _x) then {_x hideObjectGlobal true}} foreach ([MOD(SYS_LOGISTICS),"allObjects"] call ALiVE_fnc_logistics);
                 };
-
-                // Push to clients
-                publicVariable QMOD(SYS_LOGISTICS);
+                
+                _logic setVariable ["init", true, true];
 			};
 
             /*
@@ -144,7 +159,8 @@ switch (_operation) do {
             */
 
             // Wait until server init is finished
-            waitUntil {!isNil QMOD(SYS_LOGISTICS)};                
+            waituntil {_logic getvariable ["init",false]};
+            
             TRACE_1("Spawning Server processes",isServer);
             
             if (isServer) then {
@@ -170,7 +186,7 @@ switch (_operation) do {
 			// The machine has an interface? Must be a MP client, SP client or a client that acts as host!
             if (hasInterface) then {
                 
-                // Add actions
+				// Add actions
                 call GVAR(ACTIONS);
             
                 // Initialise interaction key if undefined
@@ -194,7 +210,6 @@ switch (_operation) do {
             
             // Indicate Init is finished on server
             if (isServer) then {
-            	_logic setVariable ["init", true, true];
                 _logic setVariable ["startupComplete", true, true];
             };
             
