@@ -167,4 +167,8 @@ if (_logic getvariable ["disableStats","false"] == "false") then {
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
 
+if (isDedicated && {!isnil QMOD(SYS_DATA)}) then {
+	MOD(sys_data) setvariable ["startupComplete",true,true];
+};
+
 [_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
