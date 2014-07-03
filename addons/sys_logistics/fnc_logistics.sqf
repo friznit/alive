@@ -54,16 +54,17 @@ switch (_operation) do {
     
     	case "create": {
             if (isServer) then {
+                
 	            // Ensure only one module is used
-	            if !(isNil QMOD(SYS_LOGISTICS)) exitWith {
-                    	_logic = MOD(SYS_LOGISTICS);
-	                    ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_LOGISTICS_ERROR1");
-	            };
-	
-	        	_logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_LOGISTICS", [0,0], [], 0, "NONE"];
+	            if !(isNil QMOD(SYS_LOGISTICS)) then {
+                	_logic = MOD(SYS_LOGISTICS);
+                    ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_LOGISTICS_ERROR1");
+	            } else {
+	        		_logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_LOGISTICS", [0,0], [], 0, "NONE"];
+                    MOD(SYS_LOGISTICS) = _logic;
+                };
                 
                 //Push to clients
-                MOD(SYS_LOGISTICS) = _logic;
 	            PublicVariable QMOD(SYS_LOGISTICS);
             };
             
