@@ -45,6 +45,8 @@ if (isNil QGVAR(DATAHANDLER)) then {
 
 _data = [GVAR(DATAHANDLER), "bulkLoad", ["sys_logistics", _missionName, _async]] call ALIVE_fnc_Data;
 
+_data = [MOD(SYS_LOGISTICS),"convertData",_data] call ALiVE_fnc_logistics;
+
 if (!(isnil "_this") && {typeName _this == "BOOL"} && {!_this}) exitwith {
     [false, "ALiVE SYS LOGISTICS persistence load data complete", "logisticsper"] call ALIVE_fnc_timer;
     _data

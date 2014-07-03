@@ -46,6 +46,8 @@ if (count (_data select 1) == 0) exitwith {
 
 ["ALiVE SAVE SYS LOGISTICS DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
+_data = [MOD(SYS_LOGISTICS),"convertData",_data] call ALiVE_fnc_logistics;
+
 _data call ALIVE_fnc_inspectHash;
 
 if (isNil QGVAR(DATAHANDLER)) then {
