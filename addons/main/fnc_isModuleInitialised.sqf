@@ -31,8 +31,6 @@ private ["_waitModules","_initialising","_startupComplete"];
 _waitModules = _this;
 _initialising = false;
 
-if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiVE_ALLMODULES = +ALiVE_ALLMODULES};
-
 waitUntil {
     _initialising = true;
     {
@@ -43,7 +41,7 @@ waitUntil {
                 _initialising = false;
             };
         };
-    } foreach ALiVE_ALLMODULES;
+    } foreach (entities "Module_F");
 	_initialising
 };
 

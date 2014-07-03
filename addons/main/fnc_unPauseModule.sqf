@@ -31,8 +31,6 @@ if !(isServer) exitwith {
     ["server","ALiVE_PAUSE",[_modules,"ALiVE_fnc_unPauseModule"]] call ALiVE_fnc_BUS;
 };
 
-if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiVE_ALLMODULES = +ALiVE_ALLMODULES};
-
 {
     private ["_mod","_handler","_mainclass"];
     
@@ -60,4 +58,4 @@ if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiV
             };
 	    };
     };
-} foreach ALiVE_ALLMODULES;
+} foreach (entities "Module_F");

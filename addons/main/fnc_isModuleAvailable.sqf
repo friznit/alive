@@ -31,8 +31,6 @@ private ["_targets"];
 _targets = _this;
 _result = false;
 
-if (isnil "ALiVE_ALLMODULES") then {ALiVE_ALLMODULES = entities "Module_F"; ALiVE_ALLMODULES = +ALiVE_ALLMODULES};
-
 for "_i" from 0 to ((count _targets)-1) do {
 	private ["_mod"];
     if (count _targets == 0) exitwith {};
@@ -40,7 +38,7 @@ for "_i" from 0 to ((count _targets)-1) do {
     _mod = _targets select 0;
     
     if !(isnil "_mod") then {
-	    if ((({(typeof _x) == _mod} count ALiVE_ALLMODULES > 0))) then {
+	    if ((({(typeof _x) == _mod} count (entities "Module_F") > 0))) then {
 			_targets = _targets - [_mod];
 	    };
     };
