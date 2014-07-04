@@ -39,14 +39,16 @@ PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,nil);
 
-/* Listener for special purposes
-_blackOps = ["id"];
-if !(_operation in _blackOps) then {
-    _check = "nothing";
-    if !(isnil "_args") then {_check = _args};
-	["_operation %1 | _args %2",_operation,_check] call ALiVE_fnc_DumpR;
+if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {
+	//Listener for special purposes
+	_blackOps = ["id"];
+    
+	if !(_operation in _blackOps) then {
+	    _check = "nothing"; if !(isnil "_args") then {_check = _args};
+        
+		["op: %1 | args: %2",_operation,_check] call ALiVE_fnc_DumpR;
+	};
 };
-*/
 
 TRACE_3("SYS_LOGISTICS",_logic, _operation, _args);
 
@@ -661,17 +663,17 @@ switch (_operation) do {
 	            if (hasInterface) then {
 	            	//apply these EHs on players
 	                _object setvariable [QGVAR(EH_RESPAWN), _object getvariable [QGVAR(EH_RESPAWN), _object addEventhandler ["Respawn", GVAR(ACTIONS)]]];
-                    _object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics}]]];
+                    _object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH InventoryClosed firing"] call ALiVE_fnc_DumpR}}]]];
 	            };
             
 	            //Serverside only section below
 	            if (isServer) then {
 		            //apply these EHs on all objects
-		            _object setvariable [QGVAR(EH_KILLED), _object getvariable [QGVAR(EH_KILLED), _object addEventHandler ["Killed", {[ALiVE_SYS_LOGISTICS,"removeObject",_this select 0] call ALIVE_fnc_logistics}]]];
+		            _object setvariable [QGVAR(EH_KILLED), _object getvariable [QGVAR(EH_KILLED), _object addEventHandler ["Killed", {[ALiVE_SYS_LOGISTICS,"removeObject",_this select 0] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Killed firing"] call ALiVE_fnc_DumpR}}]]];
 
 		            //apply these EHs on vehicles
 		            if (_object isKindOf "LandVehicle" || {_object isKindOf "Air"}) then {
-		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if ((_this select 1) == "driver") then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics}}]]];
+		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if ((_this select 1) == "driver") then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Getout firing"] call ALiVE_fnc_DumpR}}}]]];
 		            };
 	            };
             } foreach _objects;
@@ -686,7 +688,7 @@ switch (_operation) do {
 
             _position = [_args, 0, getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition")] call BIS_fnc_param;
             _radius = [_args, 1, 30000] call BIS_fnc_param;
-            _list = [_args, 2, ["Reammobox_F","Static","ThingX","Truck_F","Car","Helicopter"]] call BIS_fnc_param;
+            _list = [_args, 2, ["Reammobox_F","Static","ThingX","LandVehicle","Air"]] call BIS_fnc_param;
             
             _objects = [];
             {
