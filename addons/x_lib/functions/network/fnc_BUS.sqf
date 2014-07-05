@@ -174,9 +174,14 @@ if (isnil "ALiVE_fnc_BUS_UpdateQueue") then {
 if (isnil "ALiVE_fnc_BUS_RetVal") then {
 	ALiVE_fnc_BUS_RetVal = {
 		private ["_this","_idxv","_idtmp","_retV","_timeOut"];
+        
 		_idtmp = _this call ALIVE_fnc_BUS;
 		_timeOut = time;
+        
 		while {_idxv = nil;_idxv = ([BUS_finished,_idtmp] call BIS_fnc_findNestedElement) select 0; (isnil "_idxv") && {(time - _timeOut) < 5}} do {};
+        
+        if (isNil "_idvx") exitwith {};
+        
 		while {_retV = nil;_retV = ((BUS_finished select _idxv) select 1) select 2; (isnil "_retV") && {(time - _timeOut) < 5}} do {};
 		
 		BUS_archived set [count BUS_archived,BUS_finished select _idxv];
