@@ -198,6 +198,7 @@ for "_j" from 1 to _intensity do {
 
 						// set a owner var on the group
 						_grp setVariable ["ALIVE_Convoy",true];
+                        {(vehicle _x) setVariable ["ALIVE_Convoy",true]} foreach (units _grp);
 												
 						_starttime = time;
                         _convoyTimeout = 3600;
