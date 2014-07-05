@@ -106,6 +106,7 @@ logging
 	ALiVE_fnc_dumpMP
 	ALiVE_fnc_dumpMPH
 	ALiVE_fnc_dumpR
+	ALiVE_fnc_dumpH
 	ALiVE_fnc_log
 	ALiVE_fnc_logger
 	ALiVE_fnc_setLogLevel

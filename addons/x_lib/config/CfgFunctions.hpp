@@ -524,6 +524,13 @@ class dumpR
 	recompile = RECOMPILE;
 };
 
+class dumpH
+{
+	file = "\x\alive\addons\x_lib\functions\logging\fnc_dumpH.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class log
 {
 	file = "\x\alive\addons\x_lib\functions\logging\fnc_log.sqf";
