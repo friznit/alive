@@ -67,7 +67,7 @@ private ["_m","_markers","_delay"];
 	if (isServer) then {
 		_inactiveEntities = [] call ALIVE_fnc_getInActiveEntitiesForMarking;
 	} else {
-		_inactiveEntities = ["server","Subject",[[1],{[] call ALIVE_fnc_getInActiveEntitiesForMarking}]] call ALiVE_fnc_BUS_RetVal;
+		_inactiveEntities = ["server","Subject",[[1],{[] call ALIVE_fnc_getInActiveEntitiesForMarking}]] call ALiVE_fnc_BUS;
 	};
     
     if !(!isnil "_inactiveEntities" && {typename _inactiveEntities == "ARRAY"}) then {_inactiveEntities = []};

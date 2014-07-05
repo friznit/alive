@@ -31,7 +31,7 @@ _input = [[_this], 0, ["CAManBase"], [[]]] call BIS_fnc_param;
 
 openmap true;
 
-hint format["Click on map to select the unit!"];
+["Click on map to select the unit!"] call ALiVE_fnc_DumpH;
 
 _input onmapsingleClick {GVAR(SELECTED_UNITS) = nearestObjects [_pos, _this, 50]};
 waituntil {!isnil QGVAR(SELECTED_UNITS)};
@@ -40,14 +40,14 @@ if (count GVAR(SELECTED_UNITS) == 0) exitwith {hint format["No unit in that area
 
 _unit = GVAR(SELECTED_UNITS) select 0; GVAR(SELECTED_UNITS) = nil;
 
-hint format["Unit %1 selected! Click on map to teleport the unit!",_unit];
+["Unit %1 selected! Click on map to teleport the unit!",_unit] call ALiVE_fnc_DumpH;
 onmapsingleClick {GVAR(SELECTED_POSITION) = _pos; onMapSingleClick ""};
 
 waituntil {!isnil QGVAR(SELECTED_POSITION)}; 
 _pos = GVAR(SELECTED_POSITION); GVAR(SELECTED_POSITION) = nil;
 
 (vehicle _unit) setposATL _pos;
-hint format["Unit %1 was teleported successfully to %2!",_unit,_pos];
+["Unit %1 was teleported successfully to %2!",_unit,_pos] call ALiVE_fnc_DumpH;
 
 sleep 1;
 
