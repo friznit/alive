@@ -147,7 +147,8 @@ ALIVE_fnc_restore = {
 	[_hash, _key, _data] call ALIVE_fnc_hashSet;
 };
 
-[_hash, ALIVE_fnc_restore] call CBA_fnc_hashEachPair;
+if (typeName _hash == "ARRAY") then {
+	[_hash, ALIVE_fnc_restore] call CBA_fnc_hashEachPair;
+};
 
 _hash;
-
