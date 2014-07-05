@@ -5,6 +5,9 @@
 <Key ID="STR_ALIVE_LOGISTICS">
 	<English>Player Logistics</English>
 </Key>
+<Key ID="STR_ALIVE_LOGISTICS_COMMENT">
+	<English>Enables the possibility to use the ALiVE Logistics system</English>
+</Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE">
 	<English>Disable Player Logistics</English>
 </Key>

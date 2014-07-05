@@ -39,8 +39,8 @@ PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,nil);
 
+//Listener for special purposes
 if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {
-	//Listener for special purposes
 	_blackOps = ["id"];
     
 	if !(_operation in _blackOps) then {
@@ -832,55 +832,44 @@ switch (_operation) do {
         case "convertData": {
     		if (isnil "_args") exitwith {};
     
-			private ["_data","_convertedData"];
+			private ["_data","_convertedData","_selection_1","_selection_2"];
             
 			_data = _args;
             
             if !(typeName _data == "ARRAY" && {count _data > 2} && {count (_data select 2) > 0}) exitwith {_result = _data};
             
+            _dataSet = [
+				[QGVAR(ID),"ASL_ID"],
+				[QGVAR(TYPE),"ASL_TY"],
+				[QGVAR(POSITION),"ASL_PO"],
+				[QGVAR(VECDIRANDUP),"ASL_VD"],
+				[QGVAR(CARGO),"ASL_CA"],
+				[QGVAR(FUEL),"ASL_FU"],
+				[QGVAR(DAMAGE),"ASL_DA"],
+				[QGVAR(CONTAINER),"ASL_CO"],
+				["_rev","_rev"]
+            ];
+            
             _convertedData = [] call ALIVE_fnc_hashCreate;
             
             if (isnil {[(_data select 2 select 1),"ASL_ID"] call ALiVE_fnc_HashGet}) then {
-                {
-                    private ["_convertedObject","_args"];
-                    
-                    _convertedObject = [] call ALIVE_fnc_hashCreate;
-                    
-                    _args = [_data,_x] call ALiVE_fnc_HashGet;
-
-                    [_convertedObject,"ASL_ID",[_args,QGVAR(ID)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"ASL_TY",[_args,QGVAR(TYPE)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"ASL_PO",[_args,QGVAR(POSITION)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"ASL_VD",[_args,QGVAR(VECDIRANDUP)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"ASL_CA",[_args,QGVAR(CARGO)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"ASL_FU",[_args,QGVAR(FUEL)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"ASL_DA",[_args,QGVAR(DAMAGE)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"ASL_CO",[_args,QGVAR(CONTAINER)] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"_rev",[_args,"_rev"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    
-                    [_convertedData,_x,_convertedObject] call ALiVE_fnc_HashSet;
-                } foreach (_data select 1);
-			} else {
-                {
-                    private ["_convertedObject","_args"];
-                    
-                    _convertedObject = [] call ALIVE_fnc_hashCreate;
-                    
-                    _args = [_data,_x] call ALiVE_fnc_HashGet;
-                    
-                    [_convertedObject,QGVAR(ID),[_args,"ASL_ID"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,QGVAR(TYPE),[_args,"ASL_TY"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,QGVAR(POSITION),[_args,"ASL_PO"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,QGVAR(VECDIRANDUP),[_args,"ASL_VD"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,QGVAR(CARGO),[_args,"ASL_CA"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,QGVAR(FUEL),[_args,"ASL_FU"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,QGVAR(DAMAGE),[_args,"ASL_DA"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,QGVAR(CONTAINER),[_args,"ASL_CO"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    [_convertedObject,"_rev",[_args,"_rev"] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet;
-                    
-                    [_convertedData,_x,_convertedObject] call ALiVE_fnc_HashSet;
-                } foreach (_data select 1);
+				_selection_1 = {_x select 1};
+				_selection_2 = {_x select 0};
+            } else {
+				_selection_1 = {_x select 0};
+				_selection_2 = {_x select 1};
             };
+            
+            {
+                private ["_convertedObject","_args"];
+                
+                _convertedObject = [] call ALIVE_fnc_hashCreate;
+                _args = [_data,_x] call ALiVE_fnc_HashGet;
+                
+                {[_convertedObject,call _selection_1,[_args,call _selection_2] call ALiVE_fnc_HashGet] call ALiVE_fnc_HashSet} foreach _dataSet;
+                
+                [_convertedData,_x,_convertedObject] call ALiVE_fnc_HashSet;
+            } foreach (_data select 1);
             
             _convertedData call ALiVE_fnc_InspectHash;
             
