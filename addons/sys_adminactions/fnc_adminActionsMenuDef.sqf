@@ -126,6 +126,16 @@ if (_menuName == "adminActions") then {
 					MOD(adminActions) getVariable ["teleport", 0],
 					(MOD(adminActions) getVariable ["teleport_enabled", false])
 				],
+                
+                [localize "STR_ALIVE_ADMINACTIONS_TELEPORTUNITS",
+					{ ["CAManBase"] spawn ALiVE_fnc_AdminActionsTeleportUnits },
+					"",
+					localize "STR_ALIVE_ADMINACTIONS_TELEPORTUNITS_COMMENT",
+					"",
+					-1,
+					MOD(adminActions) getVariable ["teleport", 0],
+					true
+				],
 
 				[localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_ENABLE",
 					{ [] call ALIVE_fnc_markUnits },

@@ -28,6 +28,12 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT_ENABLE">
 	<English>Enable Teleporting</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_TELEPORTUNITS">
+	<English>Teleport Units</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_TELEPORTUNITS_COMMENT">
+	<English>Teleports the given units to the desired position</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_TELEPORT_DISABLE">
 	<English>Disable Teleporting</English>
 </Key>

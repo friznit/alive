@@ -36,6 +36,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_adminactions\fnc_agentSystemDebug.sqf";
                                 recompile = RECOMPILE;
                         };
+                        class adminActionsTeleportUnits {
+                                description = "Teleports the nearest given unit to the desired spot";
+                                file = "\x\alive\addons\sys_adminactions\fnc_adminActionsTeleportUnits.sqf";
+                                recompile = RECOMPILE;
+                        };
                 };
         };
 };
