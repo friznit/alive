@@ -33,6 +33,29 @@ _profileEntity = _this select 0;
 _profileVehicle = _this select 1;
 _append = if(count _this > 2) then {_this select 2} else {false};
 
+waituntil {!isnil "ALIVE_profileHandler"};
+
+if (typeName _profileEntity == "OBJECT") then {
+    private ["_unit","_group"];
+    
+    _unit = _profileEntity; _profileEntity = nil;
+    _group = group _unit;
+
+	_profileEntity = [ALIVE_profileHandler, "getProfile", (_unit getVariable "profileID")] call ALIVE_fnc_profileHandler;
+    if (isnil "_profileEntity") then {_profileEntity = [false,[_group],[]] call ALiVE_fnc_CreateProfilesFromUnitsRuntime};
+};
+if (typeName _profileVehicle == "OBJECT") then {
+    private ["_vehicle"];
+    
+    _vehicle = _profileVehicle; _profileVehicle = nil;
+
+	_profileVehicle = [ALIVE_profileHandler, "getProfile", (_vehicle getVariable "profileID")] call ALIVE_fnc_profileHandler;
+    if (isnil "_profileVehicle") then {_profileVehicle = [false,[],[_vehicle]] call ALiVE_fnc_CreateProfilesFromUnitsRuntime};
+};
+
+if !(!isnil "_profileVehicle" && {(typeName _profileVehicle == "ARRAY")}) exitwith {};
+if !(!isnil "_profileEntity" && {(typeName _profileEntity == "ARRAY")}) exitwith {};
+
 _entityID = _profileEntity select 2 select 4; //[_profileEntity, "profileID"] call ALIVE_fnc_hashGet;
 _unitIndexes = [_profileEntity, "unitIndexes"] call ALIVE_fnc_profileEntity;
 _currentEntityAssignments = [_profileEntity, "vehicleAssignments"] call ALIVE_fnc_hashGet;

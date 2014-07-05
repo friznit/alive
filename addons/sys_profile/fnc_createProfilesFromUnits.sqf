@@ -28,12 +28,14 @@ private ["_createMode","_createModeObjects","_debug","_groups","_vehicles","_ent
 "_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
 "_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle","_unitBlackist","_vehicleBlacklist"];
 
-_createMode = if(count _this > 0) then {_this select 0} else {"NONE"};
-_createModeObjects = if(count _this > 1) then {_this select 1} else {[]};
-_debug = if(count _this > 2) then {_this select 2} else {false};
+if (isnil "_this") then {_this = []};
 
-_groups = allGroups;
-_vehicles = vehicles;
+_createMode = [_this, 0, "NONE", [""]] call BIS_fnc_param;
+_createModeObjects = [_this, 1, [], [[]]] call BIS_fnc_param;
+_debug = [_this, 2, false, [true]] call BIS_fnc_param;
+_groups = [_this, 3, allGroups, [[]]] call BIS_fnc_param;
+_vehicles = [_this, 4, vehicles, [[]]] call BIS_fnc_param;
+
 _entityCount = 0;
 _vehicleCount = 0;
 
@@ -227,7 +229,7 @@ if(_debug) then {
 						
 						[_profileEntity, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileEntity;
 						[_profileVehicle, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileVehicle;
-					};				
+					};
 				};		
 			} foreach (_units);
 			
@@ -363,7 +365,6 @@ if(_debug) then {
 	
 } forEach _vehicles;
 
-
 // DEBUG -------------------------------------------------------------------------------------
 if(_debug) then {
 	["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -371,3 +372,11 @@ if(_debug) then {
 	[] call ALIVE_fnc_timer;
 };
 // DEBUG -------------------------------------------------------------------------------------
+
+if !(isnil "_profileEntity") then {
+    _profileEntity;
+} else {
+    if !(isnil "_profileVehicle") then {
+        _profileVehicle;
+    };
+};

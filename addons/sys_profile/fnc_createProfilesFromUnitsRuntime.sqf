@@ -28,10 +28,12 @@ private ["_debug","_groups","_vehicles","_entityCount","_vehicleCount",
 "_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
 "_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle","_unitBlackist","_vehicleBlacklist"];
 
-_debug = if(count _this > 0) then {_this select 0} else {false};
+if (isnil "_this") then {_this = []};
 
-_groups = allGroups;
-_vehicles = vehicles;
+_debug = [_this, 0, false, [true]] call BIS_fnc_param;
+_groups = [_this, 1, allGroups, [[]]] call BIS_fnc_param;
+_vehicles = [_this, 2, vehicles, [[]]] call BIS_fnc_param;
+
 _entityCount = 0;
 _vehicleCount = 0;
 
@@ -194,8 +196,9 @@ if(_debug) then {
 			
 		};
 	
-	};
-	
+	} else {
+        _profileEntity = [ALIVE_profileHandler, "getProfile",_leader getVariable "profileID"] call ALIVE_fnc_profileHandler;
+    };
 } forEach _groups;
 
 // DEBUG -------------------------------------------------------------------------------------
@@ -297,13 +300,12 @@ _vehicleCount = 0;
 
 	//["CPR empty vehicle class: %1 kind: %2 isIgnored: %4 isBlacklisted: %3 ", _vehicleClass, _vehicleKind, _vehicleClass in _vehicleBlacklist, _vehicle getVariable ["ALIVE_profileIgnore",false]] call ALIVE_fnc_dump;
 	
-	if(
+	if (
 	    !(_vehicleClass in _vehicleBlacklist)
 	    && !(_vehicle getVariable ["ALIVE_CombatSupport",false])
 	    && !(_vehicle getVariable ["ALIVE_profileIgnore",false])
-	    && !(group _vehicle getVariable ["ALIVE_Convoy",false])
-	    )then {
-
+	    && !(_vehicle getVariable ["ALIVE_Convoy",false])
+	    ) then {
 		if((_vehicle getVariable ["profileID",""]) == "" && (_vehicle getVariable ["agentID",""]) == "" && _vehicleKind !="") then {
 		
 			{
@@ -311,7 +313,7 @@ _vehicleCount = 0;
 					_playerVehicle = true;
 				};
 			} forEach crew _vehicle;
-			
+
 			_position = getPosATL _vehicle;
 
 			_vehicleID = [ALIVE_profileHandler, "getNextInsertVehicleID"] call ALIVE_fnc_profileHandler;
@@ -349,9 +351,10 @@ _vehicleCount = 0;
 			[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 			
 			_vehicleCount = _vehicleCount + 1;	
-		};
+		} else {
+        	_profileVehicle = [ALIVE_profileHandler, "getProfile",_vehicle getVariable "profileID"] call ALIVE_fnc_profileHandler;
+        };
 	};
-	
 } forEach _vehicles;
 
 
@@ -362,3 +365,12 @@ if(_debug) then {
 	[] call ALIVE_fnc_timer;
 };
 // DEBUG -------------------------------------------------------------------------------------
+
+
+if !(isnil "_profileEntity") then {
+    _profileEntity;
+} else {
+    if !(isnil "_profileVehicle") then {
+        _profileVehicle;
+    };
+};
