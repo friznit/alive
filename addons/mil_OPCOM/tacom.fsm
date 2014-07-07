@@ -3,7 +3,7 @@
 /*
 item0[] = {"INIT",0,250,-191.791229,-248.493942,-101.791237,-198.494003,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-194.557098,-181.067123,-104.557114,-131.067123,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,250,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
+item2[] = {"ANALYZE",2,4346,-398.915314,190.635864,98.822098,238.500443,0.000000,"ANALYZE"};
 item3[] = {"RECEIVE",4,218,-194.508545,-19.777693,-104.508537,30.222303,0.000000,"RECEIVE"};
 item4[] = {"CAPTURE_Conditio",4,218,-296.383759,269.200836,-206.383591,319.200775,3.000000,"CAPTURE" \n "Conditions"};
 item5[] = {"",7,210,176.004105,761.434937,184.004105,769.434814,0.000000,""};
@@ -83,7 +83,7 @@ link36[] = {24,25};
 link37[] = {25,26};
 link38[] = {26,10};
 link39[] = {27,28};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-920.202332,424.945068,1107.777832,23.306810,934,753,1};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-800.595520,305.337952,1011.349609,119.735031,934,753,1};
 window[] = {0,-1,-1,-1,-1,906,22,1645,22,1,951};
 *//*%FSM</HEAD>*/
 class FSM
@@ -213,6 +213,7 @@ class FSM
        "			_objective = _DATA_VALUE;" \n
        "			_pos = [_objective,""center""] call AliVE_fnc_HashGet;" \n
        "			_opcom_orders = [_objective,""opcom_orders""] call AliVE_fnc_HashGet;" \n
+       "			_state = [_objective,""opcom_state""] call AliVE_fnc_HashGet;" \n
        "			_playertasks = [_OPCOM_HANDLER,""playertasks"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "			//Attack reported enemy directly" \n
@@ -251,16 +252,26 @@ class FSM
        "" \n
        "				case (""defend"") : {" \n
        "" \n
-       "					_nearEnemies = []; " \n
-       "					{private [""_nE""]; _nE = [_objective,""entitiesnearsector"",[_pos,_x,false]] call AliVE_fnc_OPCOM; _nearEnemies = _nearEnemies + _nE} foreach _sidesEnemy;" \n
-       "" \n
+       "					//Set HOLD player task" \n
        "					if (_tasksEnabled && {count _playertasks < 2}) then {[_OPCOM_HANDLER,""addplayertask"",[_objective,""objective_hold""]] call ALiVE_fnc_OPCOM};" \n
+       "					" \n
+       "					//Define defense conditions" \n
+       "					//Detect near enemies" \n
+       "					_nearEnemies = []; {private [""_nE""]; _nE = [_objective,""entitiesnearsector"",[_pos,_x,false]] call AliVE_fnc_OPCOM; _nearEnemies = _nearEnemies + _nE} foreach _sidesEnemy;" \n
+       "					" \n
+       "					//Defend until no enemies are near" \n
+       "					if (count _nearEnemies > 0) then {" \n
        "" \n
-       "					_size = _sectionsamount_defend;" \n
+       "						//Request CAS on ""defend"" order" \n
+       "						if !(_state == ""defending"") then {" \n
+       "							_attackers = [_OPCOM_HANDLER, ""attackentity"",[_nearEnemies select 0 select 0,1,""air""]] call ALIVE_fnc_OPCOM;" \n
+       "						};" \n
        "" \n
-       "					switch (count _nearEnemies > 0) do {" \n
-       "						case (true) : {_defend = [_objective,_size]};" \n
-       "						case (false) : {_reserve = [_objective,_size]};" \n
+       "						_size = _sectionsamount_defend;" \n
+       "						_defend = [_objective,_size];" \n
+       "					} else {" \n
+       "						_size = _sectionsamount_reserve;" \n
+       "						_reserve = [_objective,_size];" \n
        "					};" \n
        "				};" \n
        "		" \n
@@ -269,6 +280,7 @@ class FSM
        "" \n
        "					_reserve = [_objective,_size];" \n
        "				};" \n
+       "" \n
        "				case (""custom"") : {};" \n
        "				default {};" \n
        "			};" \n
