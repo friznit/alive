@@ -20,6 +20,12 @@
 <Key ID="STR_ALIVE_TRANS_LIMIT_COMMENT">
 	<English>Set the number of times Transport Asssets can be replenished</English>
 </Key>
+<Key ID="STR_ALIVE_ARTY_LIMIT">
+	<English>Arty Respawn Limit</English>
+</Key>
+<Key ID="STR_ALIVE_ARTY_LIMIT_COMMENT">
+	<English>Set the number of times Arty Asssets can be replenished</English>
+</Key>
 <Key ID="STR_ALIVE_TRANS_LIMIT">
 	<English>Trans Respawn Limit</English>
 </Key>

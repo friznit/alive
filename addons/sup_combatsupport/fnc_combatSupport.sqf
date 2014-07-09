@@ -76,6 +76,8 @@ switch(_operation) do {
                         CAS_RESPAWN_LIMIT = parsenumber(_CAS_SET_RESPAWN_LIMIT);
                         _TRANS_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_transportrespawnlimit","3"];
                         TRANS_RESPAWN_LIMIT = parsenumber(_TRANS_SET_RESPAWN_LIMIT);
+                        _ARTY_SET_RESPAWN_LIMIT = NEO_radioLogic getvariable ["combatsupport_artyrespawnlimit","3"];
+						ARTY_RESPAWN_LIMIT = parsenumber(_ARTY_SET_RESPAWN_LIMIT);
 
 						_transportArrays = [];
 						_casArrays = [];

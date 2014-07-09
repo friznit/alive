@@ -30,6 +30,12 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_TRANS_LIMIT_COMMENT";
                                 defaultValue = "3";
                         };
+                        class combatsupport_artyrespawnlimit
+                        {
+                                displayName = "$STR_ALIVE_ARTY_LIMIT";
+                                description = "$STR_ALIVE_ARTY_LIMIT_COMMENT";
+                                defaultValue = "3";
+                        };
                         class combatsupport_respawn
                         {
                                 displayName = "$STR_ALIVE_CS_RESPAWN";
