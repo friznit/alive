@@ -609,7 +609,7 @@ switch(_operation) do {
 			
 			// Load static data
 			
-			if(isNil "ALIVE_unitBlackist") then {
+			if(isNil "ALiVE_STATIC_DATA_LOADED") then {
 				_file = "\x\alive\addons\main\static\staticData.sqf";
 				call compile preprocessFileLineNumbers _file;
 			};
@@ -624,7 +624,7 @@ switch(_operation) do {
             if(_ambientVehicleAmount > 0) then {
 
                 _carClasses = [0,_ambientVehicleFaction,"Car"] call ALiVE_fnc_findVehicleType;
-                _landClasses = _carClasses - ALIVE_vehicleBlacklist;
+                _landClasses = _carClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 
                 _supportClasses = [ALIVE_factionDefaultSupports,_ambientVehicleFaction,[]] call ALIVE_fnc_hashGet;
 
@@ -761,7 +761,7 @@ switch(_operation) do {
 
             ["CIV Classes: %1",_civClasses] call ALIVE_fnc_dump;
 
-            _civClasses = _civClasses - ALIVE_unitBlackist;
+            _civClasses = _civClasses - ALIVE_PLACEMENT_UNITBLACKLIST;
 
             ["CIV Classes: %1",_civClasses] call ALIVE_fnc_dump;
 

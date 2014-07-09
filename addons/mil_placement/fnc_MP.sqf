@@ -543,7 +543,7 @@ switch(_operation) do {
 			
 			// Load static data
 			
-			if(isNil "ALIVE_unitBlackist") then {
+			if(isNil "ALiVE_STATIC_DATA_LOADED") then {
 				_file = "\x\alive\addons\main\static\staticData.sqf";
 				call compile preprocessFileLineNumbers _file;
 			};
@@ -611,7 +611,7 @@ switch(_operation) do {
 				    _supplyClasses = [ALIVE_sideDefaultSupplies,_side] call ALIVE_fnc_hashGet;
 				};
 
-				_supplyClasses = _supplyClasses - ALIVE_vehicleBlacklist;
+				_supplyClasses = _supplyClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 				
 				if(count _supplyClasses > 0) then {
 					{
@@ -664,7 +664,7 @@ switch(_operation) do {
 			if(_placeHelis) then {
 							
 				_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;	
-				_heliClasses = _heliClasses - ALIVE_vehicleBlacklist;
+				_heliClasses = _heliClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 				
 				if(count _heliClasses > 0) then {
 					{
@@ -705,7 +705,7 @@ switch(_operation) do {
 			if(_placeHelis) then {
 			
 				_airClasses = [0,_faction,"Plane"] call ALiVE_fnc_findVehicleType;			
-				_airClasses = _airClasses - ALIVE_vehicleBlacklist;
+				_airClasses = _airClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 
 				if(count _airClasses == 0) then {
 				    _airClasses = _airClasses + _heliClasses;
@@ -753,7 +753,7 @@ switch(_operation) do {
 				_carClasses = [0,_faction,"Car"] call ALiVE_fnc_findVehicleType;
 				_armorClasses = [0,_faction,"Tank"] call ALiVE_fnc_findVehicleType;
 				_landClasses = _carClasses + _armorClasses;
-				_landClasses = _landClasses - ALIVE_vehicleBlacklist;				
+				_landClasses = _landClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;				
 				
 				_supportClasses = [ALIVE_factionDefaultSupports,_faction,[]] call ALIVE_fnc_hashGet;
 
@@ -1030,7 +1030,7 @@ switch(_operation) do {
                 };
             };
 			
-			_groups = _groups - ALIVE_groupBlacklist;
+			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
 			// DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {

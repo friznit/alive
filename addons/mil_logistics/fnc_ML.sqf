@@ -296,7 +296,7 @@ switch(_operation) do {
 
 				// Load static data
 
-                if(isNil "ALIVE_unitBlackist") then {
+                if(isNil "ALiVE_STATIC_DATA_LOADED") then {
                     _file = "\x\alive\addons\main\static\staticData.sqf";
                     call compile preprocessFileLineNumbers _file;
                 };
@@ -409,7 +409,7 @@ switch(_operation) do {
                                                 };
                                             };
 
-                                            _groups = _groups - ALIVE_groupBlacklist;
+                                            _groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
                                             _groupCount = count _groups;
 

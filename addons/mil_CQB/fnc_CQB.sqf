@@ -161,15 +161,15 @@ switch(_operation) do {
                 _id = (format["CQB_%1_%2",_type,count (MOD(CQB) getVariable ["instances",[]])]);
                 call compile (format["%1 = _logic;",_id]);
 				
-                if (isNil "ALIVE_CQBStrategicTypes") then {
+                if (isNil QGVAR(STRATEGICHOUSES)) then {
 					_file = "\x\alive\addons\main\static\staticData.sqf";
 					call compile preprocessFileLineNumbers _file;
 				};
 				
 				private ["_strategicTypes","_UnitsBlackList","_data","_success"];
 
-				_strategicTypes = ALIVE_CQBStrategicTypes;
-				_UnitsBlackList = ALIVE_CQBunitBlackist;
+				_strategicTypes = GVAR(STRATEGICHOUSES);
+				_UnitsBlackList = GVAR(UNITBLACKLIST);
 						
 				//Get all enterable houses of strategic types below across the whole map (rest will be regular)
 				//_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;

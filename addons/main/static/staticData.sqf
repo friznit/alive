@@ -1,9 +1,19 @@
 /*
+ * Defaults
+ */
+
+if (isnil "ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES") then {ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES = []};
+if (isnil "ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST") then {ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST = []};
+if (isnil "ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST = []};
+if (isnil "ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST = []};
+if (isnil "ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST = []};
+
+/*
  * CQB Defaults
  */
 
 
-ALIVE_CQBStrategicTypes =
+ALiVE_MIL_CQB_STRATEGICHOUSES = ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES + 
 [
 	//A3
 	"Land_Cargo_Patrol_V1_F",
@@ -51,7 +61,7 @@ ALIVE_CQBStrategicTypes =
 	"Land_Ind_PowerStation"
 ];
 
-ALIVE_CQBunitBlackist =
+ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST + 
 [
 	//A3
 	"B_Helipilot_F",
@@ -88,7 +98,7 @@ ALIVE_CQBunitBlackist =
  */
 
 
-ALIVE_unitBlackist =
+ALiVE_PLACEMENT_UNITBLACKLIST = ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST +
 [
 	"O_UAV_AI",
 	"B_UAV_AI",
@@ -106,7 +116,7 @@ ALIVE_unitBlackist =
 	"C_Driver_4_F"
 ];
 
-ALIVE_vehicleBlacklist =
+ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +
 [
 	"O_UAV_02_F",
 	"O_UAV_02_CAS_F",
@@ -136,7 +146,7 @@ ALIVE_vehicleBlacklist =
 
 ];
 
-ALIVE_groupBlacklist =
+ALiVE_PLACEMENT_GROUPBLACKLIST = ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST + 
 [
 	"HAF_AttackTeam_UAV",
 	"HAF_ReconTeam_UAV",
@@ -3260,3 +3270,5 @@ LIB_US_TANK_TROOPS_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupports, "LIB_US_TANK_TROOPS", ["LIB_US_GMC_Tent","LIB_US_GMC_Open","LIB_US_Scout_m3","LIB_US_M3_Halftrack","LIB_US_Willys_MB","LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "LIB_US_TANK_TROOPS", ["LIB_BasicAmmunitionBox_US","LIB_BasicWeaponsBox_US","LIB_Mine_AmmoBox_US"]] call ALIVE_fnc_hashSet;
 // ---------------------------------------------------------------------------------------------------------------------
+
+ALiVE_STATIC_DATA_LOADED = true;
