@@ -100,10 +100,10 @@ switch (_operation) do {
 	        GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
             
             // Define logistics properties on all localities
-            GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","ThingX"]];
-            GVAR(TOWABLE) = [["Truck_F"],["Car"]];
-            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter"],(GVAR(CARRYABLE) select 1)];
-            GVAR(LIFTABLE) = [["Helicopter"],(GVAR(CARRYABLE) select 1) + (GVAR(TOWABLE) select 1)];
+            GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","ThingX"],["House"]];
+            GVAR(TOWABLE) = [["Truck_F"],["Car"],[]];
+            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter"],(GVAR(CARRYABLE) select 1),[]];
+            GVAR(LIFTABLE) = [["Helicopter"],(GVAR(CARRYABLE) select 1) + (GVAR(TOWABLE) select 1),[]];
             
             //Define actions on all localities
 			GVAR(ACTIONS) = {

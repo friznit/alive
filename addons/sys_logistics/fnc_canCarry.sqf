@@ -24,17 +24,18 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_object","_container","_containerCanCarry","_objectCanCarry","_canCarry"];
+private ["_object","_container","_containerCanCarry","_objectCanCarry","_canCarry","_blacklist"];
 
 _object = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _container = [_this, 1, objNull, [objNull]] call BIS_fnc_param;
 _allowedContainers = GVAR(CARRYABLE) select 0;
 _allowedObjects = GVAR(CARRYABLE) select 1;
+_blackList = GVAR(CARRYABLE) select 2;
 
 _canCarry = false;
 
-// Must not be the same
-if (_object == _container) exitwith {_canCarry};
+// Must not be the same or in blacklist
+if ((_object == _container) || {{_object isKindOf _x} count _blackList > 0}) exitwith {_canCarry};
 
 // Only one object may be carried at a time
 if (_object in (attachedObjects _container)) exitwith {_canCarry};

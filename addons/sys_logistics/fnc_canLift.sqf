@@ -24,16 +24,17 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_object","_container","_containerCanLift","_objectCanLift","_canLift"];
+private ["_object","_container","_containerCanLift","_objectCanLift","_canLift","_blacklist"];
 
 _object = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _container = [_this, 1, objNull, [objNull]] call BIS_fnc_param;
 _allowedContainers = GVAR(LIFTABLE) select 0;
 _allowedObjects = GVAR(LIFTABLE) select 1;
+_blacklist = GVAR(LIFTABLE) select 2;
 
 _canLift = false;
 
-if (isnil "_object" || {isnil "_container"} || {!(_container isKindOf "Air")} || {(getNumber (configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier")) < 6} || {count attachedObjects _container > 0}) exitwith {_canLift};
+if (isnil "_object" || {isnil "_container"} || {{_object isKindOf _x} count _blackList > 0} || {!(_container isKindOf "Air")} || {(getNumber (configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier")) < 6} || {count attachedObjects _container > 0}) exitwith {_canLift};
 
 // Consider removing! How to handle profiles?
 if (!isnil {_container getVariable "profileID"}) exitwith {_canLift};

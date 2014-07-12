@@ -24,17 +24,18 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_object","_container","_containerCanStow","_objectCanStow","_canStow"];
+private ["_object","_container","_containerCanStow","_objectCanStow","_canStow","_blacklist"];
 
 _object = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _container = [_this, 1, objNull, [objNull]] call BIS_fnc_param;
 _allowedContainers = GVAR(STOWABLE) select 0;
 _allowedObjects = GVAR(STOWABLE) select 1;
+_blacklist = GVAR(STOWABLE) select 2;
 
 _canStow = false;
 
 // Basic checks
-if (isnil "_container" || {_object == _container} || {getNumber(configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier") < 2} || {_object in (_container getvariable [QGVAR(CARGO),[]])} || {!isnil {_object getvariable QGVAR(CONTAINER)}}) exitwith {_canStow};
+if (isnil "_container" || {_object == _container} || {{_object isKindOf _x} count _blackList > 0} || {getNumber(configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier") < 2} || {_object in (_container getvariable [QGVAR(CARGO),[]])} || {!isnil {_object getvariable QGVAR(CONTAINER)}}) exitwith {_canStow};
 
 // Consider removing! How to handle profiles?
 if (!isnil {_container getVariable "profileID"}) exitwith {_canStow};

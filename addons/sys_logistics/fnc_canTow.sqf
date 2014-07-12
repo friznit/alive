@@ -24,16 +24,17 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_object","_container","_containerCanTow","_objectCanTow","_canTow"];
+private ["_object","_container","_containerCanTow","_objectCanTow","_canTow","_blacklist"];
 
 _object = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 _container = [_this, 1, objNull, [objNull]] call BIS_fnc_param;
 _allowedContainers = GVAR(TOWABLE) select 0;
 _allowedObjects = GVAR(TOWABLE) select 1;
+_blacklist = GVAR(TOWABLE) select 2;
 
 _canTow = false;
 
-if (isnil "_container" || {_object == _container} || {(getNumber (configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier")) < 3} || {count attachedObjects _container > 0}) exitwith {_canTow};
+if (isnil "_container" || {_object == _container} || {{_object isKindOf _x} count _blackList > 0} || {(getNumber (configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier")) < 3} || {count attachedObjects _container > 0}) exitwith {_canTow};
 
 // Consider removing! How to handle profiles?
 if (!isnil {_container getVariable "profileID"}) exitwith {_canTow};
