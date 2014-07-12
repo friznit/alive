@@ -436,12 +436,23 @@ switch(_operation) do {
 					//[] call ALIVE_fnc_timer;
 
 					// spawn the unit
-					if(_engineOn && (_vehicleType=="Helicopter" || _vehicleType=="Plane")) then {
-						if((_position select 2) < 50) then {
-							_position set [2,50];
-						};
-						_special = "FLY";
-					}else{
+					if (_vehicleType == "Helicopter" || {_vehicleType == "Plane"}) then {
+                        
+                        if (count (_vehicleAssignments select 1) > 0) then {
+                            _entityProfile = [ALiVE_ProfileHandler,"getProfile",_vehicleAssignments select 1 select 0] call ALiVE_fnc_ProfileHandler;
+                            _waypoints = [_entityProfile,"waypoints",[]] call ALiVE_fnc_HashGet;
+                            
+                            if (count _waypoints > 0) then {_engineOn = true};
+                        };
+                        
+                        if (_engineOn) then {
+							_special = "FLY";
+							if ((_position select 2) < 50) then {_position set [2,50]};
+                        } else {
+							_special = "NONE";
+							_position set [2,0];
+                        };
+					} else {
 						_special = "NONE";
 						_position set [2,0];
 						//_position = [_position,0,100,5,0,20,0,[],[[_position,0,100,5,0,20,0,[],[_position]] call BIS_fnc_findSafePos]] call BIS_fnc_findSafePos;
