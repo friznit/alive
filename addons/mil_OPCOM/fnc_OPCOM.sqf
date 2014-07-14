@@ -1368,8 +1368,11 @@ switch(_operation) do {
 		                        _waypoints = [_profile,"waypoints"] call ALIVE_fnc_hashGet;
 	                        
 		                        if (({!(isnil "_x") && {_profileID in (_x select 2)}} count _attackedE) < 1 && {count _waypoints <= 2}) then {
-		                            _profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
-									[_profile,"insertWaypoint",_profileWaypoint] call ALIVE_fnc_profileEntity;
+                                    
+                                    //Turn engine on all entity-controlled vehicles (important for Air vehicles to not spawn on ground - needs review, should be fixed in SYS PROFILE)
+                                    {[[ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler,"engineOn",true] call ALiVE_fnc_HashSet} foreach ([_profile,"vehiclesInCommandOf",[]] call ALiVE_fnc_HashGet);
+                                    
+									[_profile,"insertWaypoint",[_pos, 50] call ALIVE_fnc_createProfileWaypoint] call ALIVE_fnc_profileEntity;
 		                        	_section set [count _section, _profileID];
 		                        } else {
 		                            //player sidechat format["Entity %1 is already on attack mission...!",_profileID];
