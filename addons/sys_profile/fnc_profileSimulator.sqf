@@ -337,6 +337,12 @@ _engaged = [0,0,0];
                                     if !(isnil "_vehicleProfile") then {
                                         [_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
                                         [_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
+
+                                        // set engine on
+                                        if(_vehicleProfile select 2 select 15 == false) then {
+                                            [_vehicleProfile,"engineOn",true] call ALIVE_fnc_profileVehicle;
+                                        };
+
                                     };
                                 } forEach _vehiclesInCommandOf;
                             } else {

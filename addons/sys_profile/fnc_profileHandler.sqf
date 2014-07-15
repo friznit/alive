@@ -837,7 +837,7 @@ switch(_operation) do {
 				_position = _args select 1;
 
 				_profilePositions = [_logic, "profilePositions"] call ALIVE_fnc_hashGet;
-				[_profilePositions, _profileID, _position] call ALIVE_fnc_hashGet;
+				[_profilePositions, _profileID, _position] call ALIVE_fnc_hashSet;
 
 		};
 		case "getProfile": {
