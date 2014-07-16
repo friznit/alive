@@ -235,14 +235,19 @@ _engaged = [0,0,0];
 						};
 													
 						if(_vehicleCommander) then {
-							// if in command of vehicle move all entities within the vehicle						
-							// set the vehicle position and merge all assigned entities positions
+							// if entity is in command of a vehicle (not cargo)                            
 							[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 							{							
 								_vehicleProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 								
 								if !(isnil "_vehicleProfile") then {
+                                    
+	                                // turn engineOn virtually
+	                            	// move all entities within the vehicle
+									// set the vehicle position and merge all assigned entities positions
+                                    
 									[_vehicleProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
+									[_vehicleProfile,"engineOn",true] call ALIVE_fnc_profileVehicle;
 									[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
 									[_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 									[_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
@@ -337,12 +342,6 @@ _engaged = [0,0,0];
                                     if !(isnil "_vehicleProfile") then {
                                         [_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
                                         [_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
-
-                                        // set engine on
-                                        if(_vehicleProfile select 2 select 15 == false) then {
-                                            [_vehicleProfile,"engineOn",true] call ALIVE_fnc_profileVehicle;
-                                        };
-
                                     };
                                 } forEach _vehiclesInCommandOf;
                             } else {
