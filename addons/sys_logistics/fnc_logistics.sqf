@@ -567,9 +567,17 @@ switch (_operation) do {
 				};
 			    case ("dropObject") : {
                     _text = "Drop object";
-                    _input = "(attachedObjects (_this select 1)) select 0";
+                    _input = "
+	                    call {
+                            private ['_objs','_result'];
+                            
+	                        _objs = attachedObjects player;
+                            {if (!isnull _x) exitwith {_result = _x}} foreach _objs;
+                            _result;
+	                    };
+                    ";
                     _container = "_this select 1";
-                    _condition = "(count (attachedObjects _target)) > 0";
+                    _condition = "({!isnull _x} count (attachedObjects _target)) > 0";
                 };
                 case ("unloadObjects") : {
                     _text = "Load out cargo"; 
