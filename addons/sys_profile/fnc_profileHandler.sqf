@@ -1294,7 +1294,7 @@ switch(_operation) do {
         };
         case "importProfileData": {
             private["_profiles","_profile","_profileType","_vehicleAssignmentKeys","_vehicleAssignmentValues","_key","_value","_assignments","_assignment","_rebuiltHash",
-            "_position","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses"];
+            "_position","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses","_side"];
 
             if(typeName _args == "ARRAY") then {
 
@@ -1374,7 +1374,11 @@ switch(_operation) do {
 
                         [_profileEntity, "ranks", _importRanks] call ALIVE_fnc_hashSet;
 
-                       [_profileEntity, "side", [_profile,"side"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
+                        _side = [_profile,"side"] call ALIVE_fnc_hashGet;
+                        if(typeName _side == "SCALAR") then {
+                            _side = [_side] call ALIVE_fnc_sideNumberToText;
+                        };
+                        [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
 
                         _unitClasses = [_profile,"unitClasses"] call ALIVE_fnc_hashGet;
                         _damages = [];
@@ -1427,7 +1431,11 @@ switch(_operation) do {
                             [_profileVehicle, "spawnType", [_profile,"spawnType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         };
 
-                       [_profileVehicle, "side", [_profile,"side"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
+                        _side = [_profile,"side"] call ALIVE_fnc_hashGet;
+                        if(typeName _side == "SCALAR") then {
+                            _side = [_side] call ALIVE_fnc_sideNumberToText;
+                        };
+                        [_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
 
                         _profileVehicle call ALIVE_fnc_inspectHash;
 
