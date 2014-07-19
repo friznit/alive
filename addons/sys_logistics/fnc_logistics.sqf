@@ -555,9 +555,7 @@ switch (_operation) do {
 			    case ("ARRAY") : {_object = _object select 0};
 			    default {};
 			};
-            
-            _id = (_object getvariable [format["ALiVE_SYS_LOGISTICS_%1",_operation],-1]); if (_id > -1) exitwith {_result = _id};
-			
+
 			switch (_operation) do {
 				case ("carryObject") : {
                     _text = "Carry object";
@@ -567,15 +565,7 @@ switch (_operation) do {
 				};
 			    case ("dropObject") : {
                     _text = "Drop object";
-                    _input = "
-	                    call {
-                            private ['_objs','_result'];
-                            
-	                        _objs = attachedObjects player;
-                            {if (!isnull _x) exitwith {_result = _x}} foreach _objs;
-                            _result;
-	                    };
-                    ";
+                    _input = "call {private ['_objs','_result']; _objs = attachedObjects (_this select 1); {if (!isnull _x) exitwith {_result = _x}} foreach _objs; _result}";
                     _container = "_this select 1";
                     _condition = "({!isnull _x} count (attachedObjects _target)) > 0";
                 };
