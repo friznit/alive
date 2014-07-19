@@ -100,7 +100,7 @@ switch (_operation) do {
 	        GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
             
             // Define logistics properties on all localities
-            GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","ThingX"],["House"]];
+            GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","StaticWeapon","ThingX"],["House"]];
             GVAR(TOWABLE) = [["Truck_F"],["Car"],[]];
             GVAR(STOWABLE) = [["Car","Truck_F","Helicopter"],(GVAR(CARRYABLE) select 1),[]];
             GVAR(LIFTABLE) = [["Helicopter"],(GVAR(CARRYABLE) select 1) + (GVAR(TOWABLE) select 1),[]];
@@ -629,12 +629,12 @@ switch (_operation) do {
         case "removeAction": {
             if (isnil "_args") exitwith {};
             
-	        private ["_object","_action","_id"];
+	        private ["_object","_operation","_id"];
 	
 			_object = [_args, 0, objNull, [objNull,[]]] call BIS_fnc_param;
-			_action = [_args, 1, "", [""]] call BIS_fnc_param;
+			_operation = [_args, 1, "", [""]] call BIS_fnc_param;
 
-			_id = _object getvariable [format["ALiVE_SYS_LOGISTICS_%1",_action],-1];
+			_id = _object getvariable [format["ALiVE_SYS_LOGISTICS_%1",_operation],-1];
             _object setvariable [format["ALiVE_SYS_LOGISTICS_%1",_operation],nil];
             _object removeAction _id;
             
@@ -671,7 +671,7 @@ switch (_operation) do {
 
 		            //apply these EHs on vehicles
 		            if (_object isKindOf "LandVehicle" || {_object isKindOf "Air"}) then {
-		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if ((_this select 1) == "driver") then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Getout firing"] call ALiVE_fnc_DumpR}}}]]];
+		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if !((_this select 1) == "cargo") then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Getout firing"] call ALiVE_fnc_DumpR}}}]]];
 		            };
 	            };
             } foreach _objects;
