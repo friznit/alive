@@ -699,8 +699,9 @@ switch(_operation) do {
 			
 			// Spawn air units in hangars
 			
-			private ["_countAirUnits"];
-			_countAirUnits = 0;
+			private ["_countCrewedAir","_countUncrewedAir"];
+			_countCrewedAir = 0;
+            _countUncrewedAir = 0;
 			
 			if(_placeHelis) then {
 			
@@ -721,13 +722,22 @@ switch(_operation) do {
 						//[_x, "debug", true] call ALIVE_fnc_cluster;
 						{													
 							_position = position _x;
-							_direction = if(random 1 < 0.5) then {direction _x} else {direction _x - 180};
+
+							_direction = if(random 1 < 0.7) then {direction _x} else {direction _x - 180};
 							_vehicleClass = _airClasses call BIS_fnc_selectRandom;
-							if(random 1 > 0.6) then {
-								[_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
-								_countProfiles = _countProfiles + 1;
-								_countAirUnits = _countAirUnits + 1;
-							};
+							if(random 1 > 0.8) then {
+                                [_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
+                                _countProfiles = _countProfiles + 1;
+                                _countUncrewedAir =_countUncrewedAir + 1;
+                            };
+                                /*
+                            }else{
+                                _position = [_position,0,100,5,0,20,0,[],[[_position,0,100,5,0,20,0,[],[_position]] call BIS_fnc_findSafePos]] call BIS_fnc_findSafePos;
+                                [_vehicleClass,_side,_faction,"CAPTAIN",_position,_direction,false,_faction] call ALIVE_fnc_createProfilesCrewedVehicle;
+                                _countProfiles = _countProfiles + 2;
+                                _countCrewedAir = _countCrewedAir + 1;
+                            };
+                            */
 						} forEach _buildings;				
 					} forEach _airClusters;
 				};
@@ -736,7 +746,7 @@ switch(_operation) do {
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
-				["ALIVE MP [%1] - Air units placedin hangars: %2",_faction,_countAirUnits] call ALIVE_fnc_dump;
+				["ALIVE MP [%1] - Air units placed: crewed:%2 uncrewed:%3",_faction,_countCrewedAir,_countUncrewedAir] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 					

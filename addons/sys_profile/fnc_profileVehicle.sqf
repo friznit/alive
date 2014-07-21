@@ -410,7 +410,9 @@ switch(_operation) do {
 				};
 		};
 		case "spawn": {
-				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage","_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID","_speed","_velocity"];
+				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage",
+				"_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID",
+				"_speed","_velocity","_paraDrop","_parachute","_soundFlyover"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_vehicleClass = _logic select 2 select 11; //[_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
@@ -425,6 +427,7 @@ switch(_operation) do {
 				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
 				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				_paraDrop = false;
 
 				// not already active
 				if!(_active) then {
@@ -433,16 +436,26 @@ switch(_operation) do {
 					//["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
 					//[true] call ALIVE_fnc_timer;
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
+					_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
 					//[] call ALIVE_fnc_timer;
 
 					// spawn the unit
-					if (_engineOn && {_vehicleType == "Helicopter" || {_vehicleType == "Plane"}}) then {
-						_special = "FLY";
-						if ((_position select 2) < 50) then {_position set [2,50]};
+					if (_vehicleType == "Helicopter" || {_vehicleType == "Plane"}) then {
+					    if(_engineOn) then {
+					        _special = "FLY";
+                            if ((_position select 2) < 50) then {_position set [2,50]};
+					    }else{
+					        _special = "NONE";
+					        _position set [2,0];
+					    };
 					} else {
 						_special = "NONE";
-						_position set [2,0];
-						//_position = [_position,0,100,5,0,20,0,[],[[_position,0,100,5,0,20,0,[],[_position]] call BIS_fnc_findSafePos]] call BIS_fnc_findSafePos;
+						if ((_position select 2) > 300) then {
+						    ["!!!!!!!!!!!!!!!!!!PARADROP!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
+						    _paraDrop = true;
+						}else{
+						    _position set [2,0];
+						};
 					};
 
 					_vehicle = createVehicle [_vehicleClass, _position, [], 0, _special];
@@ -451,6 +464,30 @@ switch(_operation) do {
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
 					//_vehicle setVehicleVarName _profileID;
+
+					if(_paraDrop) then {
+					    _parachute = createvehicle ["B_Parachute_02_F",position _vehicle ,[],0,"none"];
+                        _vehicle attachto [_parachute,[0,0,(abs ((boundingbox _vehicle select 0) select 2))]];
+
+                        _parachute setpos position _vehicle;
+                        _parachute setdir direction _vehicle;
+                        _parachute setvelocity [0,0,-1];
+
+                        if (time - (missionnamespace getvariable ["bis_fnc_curatorobjectedited_paraSoundTime",0]) > 0) then {
+                            _soundFlyover = ["BattlefieldJet1","BattlefieldJet2"] call bis_fnc_selectrandom;
+                            [[_parachute,_soundFlyover,"say3d"],"bis_fnc_sayMessage"] call bis_fnc_mp;
+                            missionnamespace setvariable ["bis_fnc_curatorobjectedited_paraSoundTime",time + 10]
+                        };
+
+                        [_vehicle,_parachute] spawn {
+                            _vehicle = _this select 0;
+                            _parachute = _this select 1;
+
+                            waituntil {isnull _parachute || isnull _vehicle};
+                            _vehicle setdir direction _vehicle;
+                            deletevehicle _parachute;
+                        };
+					};
 
 					if(_engineOn && (_vehicleType=="Plane")) then {
 					    _speed = 200;

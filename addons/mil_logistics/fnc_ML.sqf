@@ -35,7 +35,14 @@ ARJay
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_ML
 #define MTEMPLATE "ALiVE_ML_%1"
-#define DEFAULT_INTEL_CHANCE "0.1"
+#define DEFAULT_FACTIONS []
+#define DEFAULT_OBJECTIVES []
+#define DEFAULT_EVENT_QUEUE []
+#define DEFAULT_REINFORCEMENT_ANALYSIS []
+#define DEFAULT_SIDE "EAST"
+#define DEFAULT_FORCE_POOL_TYPE "FIXED"
+#define DEFAULT_FORCE_POOL "1000"
+#define DEFAULT_ALLOW true
 
 private ["_logic","_operation","_args","_result"];
 
@@ -56,7 +63,6 @@ switch(_operation) do {
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];
-
 			_logic setVariable ["markers", []];
 
 			[_logic, "destroy"] call SUPERCLASS;
@@ -99,6 +105,7 @@ switch(_operation) do {
 
         _position = _args select 0;
         _faction = _args select 1;
+        _text = _args select 2;
 
         _markers = _logic getVariable ["markers", []];
 
@@ -137,39 +144,128 @@ switch(_operation) do {
             _m setMarkerSize [0.5, 0.5];
             _m setMarkerType "mil_join";
             _m setMarkerColor _debugColor;
-            _m setMarkerText "ML";
+            _m setMarkerText _text;
 
             _markers set [count _markers, _m];
         };
 
         _logic setVariable ["markers", _markers];
 	};
-	case "state": {
-		private["_state","_data","_nodes","_simple_operations"];
-		/*
-		_simple_operations = ["targets", "size","type","faction"];
-		
-		if(typeName _args != "ARRAY") then {
-			_state = [] call CBA_fnc_hashCreate;
-			// Save state
-			{
-				[_state, _x, _logic getVariable _x] call ALIVE_fnc_hashSet;
-			} forEach _simple_operations;
+	case "side": {
+        _result = [_logic,_operation,_args,DEFAULT_SIDE] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "factions": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTIONS] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "objectives": {
+        _result = [_logic,_operation,_args,DEFAULT_OBJECTIVES] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "eventQueue": {
+        _result = [_logic,_operation,_args,DEFAULT_EVENT_QUEUE] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "reinforcementAnalysis": {
+        _result = [_logic,_operation,_args,DEFAULT_REINFORCEMENT_ANALYSIS] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "forcePoolType": {
+        _result = [_logic,_operation,_args,DEFAULT_FORCE_POOL_TYPE] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "allowInfantryReinforcement": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["allowInfantryReinforcement", _args];
+        } else {
+            _args = _logic getVariable ["allowInfantryReinforcement", false];
+        };
+        if (typeName _args == "STRING") then {
+            if(_args == "true") then {_args = true;} else {_args = false;};
+            _logic setVariable ["allowInfantryReinforcement", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
-			if ([_logic, "debug"] call MAINCLASS) then {
-				diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_state);
-			};
-			_result = _state;
-		} else {
-			ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
-			
-			// Restore state
-			{
-				[_logic, _x, [_args, _x] call ALIVE_fnc_hashGet] call MAINCLASS;
-			} forEach _simple_operations;
-		};
-		*/		
-	};
+        _result = _args;
+    };
+    case "allowMechanisedReinforcement": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["allowMechanisedReinforcement", _args];
+        } else {
+            _args = _logic getVariable ["allowMechanisedReinforcement", false];
+        };
+        if (typeName _args == "STRING") then {
+            if(_args == "true") then {_args = true;} else {_args = false;};
+            _logic setVariable ["allowMechanisedReinforcement", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "allowMotorisedReinforcement": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["allowMotorisedReinforcement", _args];
+        } else {
+            _args = _logic getVariable ["allowMotorisedReinforcement", false];
+        };
+        if (typeName _args == "STRING") then {
+            if(_args == "true") then {_args = true;} else {_args = false;};
+            _logic setVariable ["allowMotorisedReinforcement", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "allowArmourReinforcement": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["allowArmourReinforcement", _args];
+        } else {
+            _args = _logic getVariable ["allowArmourReinforcement", false];
+        };
+        if (typeName _args == "STRING") then {
+            if(_args == "true") then {_args = true;} else {_args = false;};
+            _logic setVariable ["allowArmourReinforcement", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "allowHeliReinforcement": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["allowHeliReinforcement", _args];
+        } else {
+            _args = _logic getVariable ["allowHeliReinforcement", false];
+        };
+        if (typeName _args == "STRING") then {
+            if(_args == "true") then {_args = true;} else {_args = false;};
+            _logic setVariable ["allowHeliReinforcement", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "allowPlaneReinforcement": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["allowPlaneReinforcement", _args];
+        } else {
+            _args = _logic getVariable ["allowPlaneReinforcement", false];
+        };
+        if (typeName _args == "STRING") then {
+            if(_args == "true") then {_args = true;} else {_args = false;};
+            _logic setVariable ["allowPlaneReinforcement", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "forcePool": {
+        //_result = [_logic,_operation,_args,DEFAULT_FORCE_POOL] call ALIVE_fnc_OOsimpleOperation;
+
+        if(typeName _args == "STRING") then {
+            _logic setVariable [_operation, parseNumber _args];
+        };
+
+        if(typeName _args == "SCALAR") then {
+            _logic setVariable [_operation, _args];
+        };
+
+        _result = _logic getVariable [_operation, DEFAULT_FORCE_POOL];
+    };
 	// Main process
 	case "init": {
         if (isServer) then {
@@ -178,8 +274,10 @@ switch(_operation) do {
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_ML"];
 			_logic setVariable ["startupComplete", false];
+			_logic setVariable ["listenerID", ""];
+			_logic setVariable ["analysisInProgress", false];
+			_logic setVariable ["eventQueue", [] call ALIVE_fnc_hashCreate];
 
-			_logic setVariable ["intelligenceObtained", [] call ALIVE_fnc_hashCreate];
 			TRACE_1("After module init",_logic);
 
             [_logic,"start"] call MAINCLASS;
@@ -188,7 +286,7 @@ switch(_operation) do {
 	case "start": {
         if (isServer) then {
 		
-			private ["_debug","_modules","_module","_activeAnalysisJobs"];
+			private ["_debug","_modules","_module"];
 			
 			_debug = [_logic, "debug"] call MAINCLASS;			
 			
@@ -199,13 +297,34 @@ switch(_operation) do {
 				["ALIVE ML - Startup"] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
+
+
+			// check modules are available
             if !(["ALiVE_sys_profile","ALiVE_mil_opcom"] call ALiVE_fnc_isModuleAvailable) exitwith {
                 ["Profile module or OPCOM module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
 			waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
 
-			_modules = [];
+            // if civ cluster data not loaded, load it
+			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
+                _worldName = toLower(worldName);
+                _file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];
+                call compile preprocessFileLineNumbers _file;
+                ALIVE_loadedCIVClusters = true;
+            };
+            waituntil {!(isnil "ALIVE_loadedCIVClusters") && {ALIVE_loadedCIVClusters}};
+
+            // if mil cluster data not loaded, load it
+            if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
+                _worldName = toLower(worldName);
+                _file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
+                call compile preprocessFileLineNumbers _file;
+                ALIVE_loadedMilClusters = true;
+            };
+            waituntil {!(isnil "ALIVE_loadedMilClusters") && {ALIVE_loadedMilClusters}};
+
+            // get all synced modules
+            _modules = [];
 					
 			for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 				_moduleObject = (synchronizedObjects _logic) select _i;
@@ -214,8 +333,8 @@ switch(_operation) do {
                 _module = _moduleObject getVariable "handler";
 				_modules set [count _modules, _module];
 			};
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE ML - Startup completed"] call ALIVE_fnc_dump;
@@ -227,353 +346,1405 @@ switch(_operation) do {
 			_logic setVariable ["startupComplete", true];
 			
 			if(count _modules > 0) then {
-				[_logic, "monitor", _modules] call MAINCLASS;
+				[_logic, "initialAnalysis", _modules] call MAINCLASS;
 			}else{
 				["ALIVE ML - Warning no OPCOM modules synced to Military Logistics module, nothing to do.."] call ALIVE_fnc_dumpR;
 			};					
         };
 	};
-	// Main process
-	case "monitor": {
+	case "initialAnalysis": {
         if (isServer) then {
 		
-			private ["_debug","_modules","_module","_modulesObjectives","_moduleSide","_moduleFactions","_moduleFactionBreakdowns","_faction","_factionBreakdown","_objectives"];
-			
+			private ["_debug","_modules","_module","_modulesFactions","_moduleSide","_moduleFactions","_modulesObjectives","_moduleFactionBreakdowns",
+			"_faction","_factionBreakdown","_objectives","_forcePool"];
+
 			_modules = _args;
 			
 			_debug = [_logic, "debug"] call MAINCLASS;
+			_modulesFactions = [];
 			_modulesObjectives = [];
-			
+
 			// get objectives and modules settings from syncronised OPCOM instances
+			// should only be 1...
 			{
 				_module = _x;
 				_moduleSide = [_module,"side"] call ALiVE_fnc_HashGet;
 				_moduleFactions = [_module,"factions"] call ALiVE_fnc_HashGet;
-                _moduleFactionBreakdowns = [] call ALIVE_fnc_hashCreate;
 
-                // loop through module factions and get a breakdown of
-                // faction force composition from the profile handler
-                {
-				    _faction = _x;
+                // store side
+				[_logic, "side", _moduleSide] call MAINCLASS;
 
-				    _factionBreakdown = [ALIVE_profileHandler,"getFactionBreakdown",_faction] call ALIVE_fnc_profileHandler;
-                    [_moduleFactionBreakdowns, _faction, _factionBreakdown] call ALIVE_fnc_hashSet;
+                // get the objectives from the module
+				_objectives = [];
+
+                waituntil {
+                    sleep 10;
+                    _objectives = nil;
+                    _objectives = [_module,"objectives"] call ALIVE_fnc_hashGet;
+                    (!(isnil "_objectives") && {count _objectives > 0})
+                };
+
+                _modulesFactions set [count _modulesFactions, [_moduleSide,_moduleFactions]];
+                _modulesObjectives set [count _modulesObjectives, _objectives];
+
+			} forEach _modules;
+
+
+
+			[_logic, "factions", _modulesFactions] call MAINCLASS;
+			[_logic, "objectives", _modulesObjectives] call MAINCLASS;
+
+            // start listening for opcom events
+            [_logic,"listen"] call MAINCLASS;
+
+            // trigger main processing loop
+            [_logic, "monitor"] call MAINCLASS;
+		};		
+	};
+	case "listen": {
+        private["_listenerID"];
+
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGCOM_REQUEST"]]] call ALIVE_fnc_eventLog;
+        _logic setVariable ["listenerID", _listenerID];
+    };
+    case "handleEvent": {
+        private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_forcePool","_eventID",
+        "_eventData","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
+        "_eventForcePlane","_eventForceHeli","_forceMakeupTotal","_allowInfantry","_allowMechanised","_allowMotorised",
+        "_allowArmour","_allowHeli","_allowPlane"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _debug = [_logic, "debug"] call MAINCLASS;
+            _event = _args;
+
+            _side = [_logic, "side"] call MAINCLASS;
+            _factions = [_logic, "factions"] call MAINCLASS;
+
+            _eventFaction = ([_event, "data"] call ALIVE_fnc_hashGet) select 1;
+
+            // check if the faction in the event is handled
+            // by this module
+            _factionFound = false;
+
+            {
+                _moduleFactions = _x select 1;
+                if(_eventFaction in _moduleFactions) then {
+                    _factionFound = true;
+                };
+            } forEach _factions;
+
+
+            if(_factionFound) then {
+
+                _forcePool = [_logic, "forcePool"] call MAINCLASS;
+
+                if(typeName _forcePool == "STRING") then {
+                    _forcePool = parseNumber _forcePool;
+                };
+
+                // if there are still forces available
+                if(_forcePool > 0) then {
+
+                    _eventID = [_event, "id"] call ALIVE_fnc_hashGet;
+
+                    _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+                    _eventForceMakeup = _eventData select 3;
+                    _eventForceInfantry = _eventForceMakeup select 0;
+                    _eventForceMotorised = _eventForceMakeup select 1;
+                    _eventForceMechanised = _eventForceMakeup select 2;
+                    _eventForceArmour = _eventForceMakeup select 3;
+                    _eventForcePlane = _eventForceMakeup select 4;
+                    _eventForceHeli = _eventForceMakeup select 5;
+
+                    _forceMakeupTotal = _eventForceInfantry + _eventForceMotorised + _eventForceMechanised + _eventForceArmour + _eventForcePlane + _eventForceHeli;
+
+                    _allowInfantry = [_logic, "allowInfantryReinforcement"] call MAINCLASS;
+                    _allowMechanised = [_logic, "allowMechanisedReinforcement"] call MAINCLASS;
+                    _allowMotorised = [_logic, "allowMotorisedReinforcement"] call MAINCLASS;
+                    _allowArmour = [_logic, "allowArmourReinforcement"] call MAINCLASS;
+                    _allowHeli = [_logic, "allowHeliReinforcement"] call MAINCLASS;
+                    _allowPlane = [_logic, "allowPlaneReinforcement"] call MAINCLASS;
+
+                    //["CHECK AI: %1 AM: %2 AM: %3 AA: %4 AH: %5 AP: %6",_allowInfantry,_allowMechanised,_allowMotorised,_allowArmour,_allowHeli,_allowPlane] call ALIVE_fnc_dump;
+                    //["FORCE MAKEUP BEFORE: %1", _eventForceMakeup] call ALIVE_fnc_dump;
+
+                    if!(_allowInfantry) then {
+                        _forceMakeupTotal = _forceMakeupTotal - _eventForceInfantry;
+                        _eventForceMakeup set [0,0];
+                    };
+
+                    if!(_allowMotorised) then {
+                        _forceMakeupTotal = _forceMakeupTotal - _eventForceMotorised;
+                        _eventForceMakeup set [1,0];
+                    };
+
+                    if!(_allowMechanised) then {
+                        _forceMakeupTotal = _forceMakeupTotal - _eventForceMechanised;
+                        _eventForceMakeup set [2,0];
+                    };
+
+                    if!(_allowArmour) then {
+                        _forceMakeupTotal = _forceMakeupTotal - _eventForceArmour;
+                        _eventForceMakeup set [3,0];
+                    };
+
+                    if!(_allowPlane) then {
+                        _forceMakeupTotal = _forceMakeupTotal - _eventForcePlane;
+                        _eventForceMakeup set [4,0];
+                    };
+
+                    if!(_allowHeli) then {
+                        _forceMakeupTotal = _forceMakeupTotal - _eventForceHeli;
+                        _eventForceMakeup set [5,0];
+                    };
+
+                    _eventData set [3, _eventForceMakeup];
+                    [_event, "data", _eventData] call ALIVE_fnc_hashSet;
+
+                    //["FORCE MAKEUP AFTER: %1 FORCE MAKEUP TOTAL: %2", _eventForceMakeup, _forceMakeupTotal] call ALIVE_fnc_dump;
+                    //_event call ALIVE_fnc_inspectHash;
+
+                    if(_forceMakeupTotal > 0) then {
+
+                        // set the time the event was received
+                        [_event, "time", time] call ALIVE_fnc_hashSet;
+
+                        // set the state of the event
+                        [_event, "state", "requested"] call ALIVE_fnc_hashSet;
+
+                        // set the state data array of the event
+                        [_event, "stateData", []] call ALIVE_fnc_hashSet;
+
+                        // set the profiles array of the event
+                        [_event, "cargoProfiles", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+                        [_event, "transportProfiles", []] call ALIVE_fnc_hashSet;
+                        [_event, "transportVehiclesProfiles", []] call ALIVE_fnc_hashSet;
+
+                        // store the event on the event queue
+                        _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
+                        [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+
+                        // DEBUG -------------------------------------------------------------------------------------
+                        if(_debug) then {
+                            ["ALIVE ML - Reinforce event received current force pool for side: %2 available: %3", _side, _forcePool] call ALIVE_fnc_dump;
+                            _event call ALIVE_fnc_inspectHash;
+                        };
+                        // DEBUG -------------------------------------------------------------------------------------
+
+
+                        // trigger analysis
+                        [_logic,"onDemandAnalysis"] call MAINCLASS;
+
+                    }else{
+
+                        // nothing left after non allowed types ruled out
+
+                    };
+
+                }else{
 
 
                     // DEBUG -------------------------------------------------------------------------------------
                     if(_debug) then {
-                        ["ALIVE ML - [%1] Initial faction breakdown", _faction] call ALIVE_fnc_dump;
-				        _factionBreakdown call ALIVE_fnc_inspectHash;
-				    };
-				    // DEBUG -------------------------------------------------------------------------------------
+                        ["ALIVE ML - Reinforce event denied, force pool for side: %1 exhausted : %2", _side, _forcePool] call ALIVE_fnc_dump;
+                    };
+                    // DEBUG -------------------------------------------------------------------------------------
 
 
-				} forEach _moduleFactions;
-
-				_objectives = [];
-
-				waituntil {
-					sleep 10;
-					_objectives = nil;
-					_objectives = [_module,"objectives"] call ALIVE_fnc_hashGet;
-					(!(isnil "_objectives") && {count _objectives > 0})
-				};
-				
-				_modulesObjectives set [count _modulesObjectives, [_moduleSide,_moduleFactions,_moduleFactionBreakdowns,_objectives]];
-				
-			} forEach _modules;
-
-			// spawn monitoring loop
-			
-			[_logic, _debug, _modulesObjectives] spawn {
-			
-				private ["_debug","_modulesObjectives","_moduleSide","_moduleFactions","_initialFactionBreakdowns",
-				"_objectives","_reserve","_faction","_factionBreakdown","_initialFactionBreakdown","_currentTotalProfiles","_initialTotalProfiles","_profileDeficit"];
-				
-				_logic = _this select 0;
-				_debug = _this select 1;
-				_modulesObjectives = _this select 2;
-
-				// Load static data
-
-                if(isNil "ALiVE_STATIC_DATA_LOADED") then {
-                    _file = "\x\alive\addons\main\static\staticData.sqf";
-                    call compile preprocessFileLineNumbers _file;
                 };
 
-				waituntil {
-					sleep (10);
-
-					if!([_logic, "pause"] call MAINCLASS) then {
-
-                        {
-                            _moduleSide = _x select 0;
-                            _moduleFactions = _x select 1;
-                            _initialFactionBreakdowns = _x select 2;
-                            _objectives = _x select 3;
-
-                            {
-
-                                _reserve = [];
-
-                                // sort objective states
-                                {
-                                    _tacom_state = '';
-                                    if("tacom_state" in (_x select 1)) then {
-                                        _tacom_state = [_x,"tacom_state"] call ALIVE_fnc_hashGet;
-                                    };
-
-                                    /*
-                                    _id = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
-                                    _x call ALIVE_fnc_inspectHash;
-                                    ["OBJ: %1 state: %2",_id, _tacom_state] call ALIVE_fnc_dump;
-                                    */
-
-                                    switch(_tacom_state) do {
-                                        case "reserve":{
-                                            _reserve set [count _reserve, [_moduleSide, _x]];
-                                        };
-                                    };
+            }else{
 
-                                } forEach _objectives;
+                // faction not handled by this module, ignored..
 
-                                // side has reserved locations to resupply at
-                                if(count _reserve > 0) then {
+            };
 
-                                    // loop through module factions and get a breakdown of
-                                    // faction force composition from the profile handler
-                                    {
-                                        _faction = _x;
+        };
+    };
+    case "removeEvent": {
+        private["_debug","_eventID","_eventQueue"];
 
-                                        _factionBreakdown = [ALIVE_profileHandler,"getFactionBreakdown",_faction] call ALIVE_fnc_profileHandler;
-                                        _initialFactionBreakdown = [_initialFactionBreakdowns,_faction] call ALIVE_fnc_hashGet;
+        _eventID = _args;
+        _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
 
-                                        _currentTotalProfiles = [_factionBreakdown, "total"] call ALIVE_fnc_hashGet;
-                                        _initialTotalProfiles = [_initialFactionBreakdown, "total"] call ALIVE_fnc_hashGet;
+        [_eventQueue,_eventID] call ALIVE_fnc_hashRem;
 
+        [_logic, "eventQueue", _eventQueue] call MAINCLASS;
 
-                                        // the faction has suffered losses
-                                        if(_currentTotalProfiles < _initialTotalProfiles) then {
+    };
+    case "onDemandAnalysis": {
+        private["_debug","_analysisInProgress","_forcePoolType","_forcePool","_objectives"];
 
-                                            _profileDeficit = _initialTotalProfiles - _currentTotalProfiles;
+        if (isServer) then {
 
-                                            // DEBUG -------------------------------------------------------------------------------------
-                                            if(_debug) then {
-                                                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                                ["ALIVE ML - [%1] Has suffered losses. current force strength: %2 initial force strength: %3 ", _faction, _currentTotalProfiles, _initialTotalProfiles] call ALIVE_fnc_dump;
-                                            };
-                                            // DEBUG -------------------------------------------------------------------------------------
+            _debug = [_logic, "debug"] call MAINCLASS;
+            _analysisInProgress = _logic getVariable ["analysisInProgress", false];
 
-                                            private ["_entitiesDeficit","_vehiclesDeficit","_entitiesDeficit","_carDeficit","_tankDeficit","_armorDeficit","_truckDeficit",
-                                            "_group","_groups","_groupCount","_clusterCount","_groupPerCluster","_countProfiles","_totalCount"];
-
-                                            // calculate force deficit of current forces in comparison to initial forces
-                                            _entitiesDeficit = ([_initialFactionBreakdown, "entity"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "entity"] call ALIVE_fnc_hashGet);
-                                            _vehiclesDeficit = ([_initialFactionBreakdown, "vehicle"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "vehicle"] call ALIVE_fnc_hashGet);
-                                            _carDeficit = ([_initialFactionBreakdown, "car"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "car"] call ALIVE_fnc_hashGet);
-                                            _tankDeficit = ([_initialFactionBreakdown, "tank"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "tank"] call ALIVE_fnc_hashGet);
-                                            _armorDeficit = ([_initialFactionBreakdown, "armor"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "armor"] call ALIVE_fnc_hashGet);
-                                            _truckDeficit = ([_initialFactionBreakdown, "truck"] call ALIVE_fnc_hashGet) - ([_factionBreakdown, "truck"] call ALIVE_fnc_hashGet);
+            // if analysis not already underway
+            if!(_analysisInProgress) then {
 
-                                            //["Group deficits %1 Entities %2 Vehciles %3 Car %4 Tank %5 Armor %6 Truck",_entitiesDeficit,_vehiclesDeficit,_carDeficit,_tankDeficit,_armorDeficit,_truckDeficit] call ALIVE_fnc_dump;
+                _logic setVariable ["analysisInProgress", true];
 
-                                            // generate groups list
-                                            _groups = [];
-                                            _totalCount = 0;
+                _forcePoolType = [_logic, "forcePoolType"] call MAINCLASS;
+                _forcePool = [_logic, "forcePool"] call MAINCLASS;
+                if(typeName _forcePool == "STRING") then {
+                    _forcePool = parseNumber _forcePool;
+                };
 
-                                            for "_i" from 0 to _entitiesDeficit -1 do {
-                                                _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                                if!(_group == "FALSE") then {
-                                                    _groups set [count _groups, _group];
-                                                }
-                                            };
+                _objectives = [_logic, "objectives"] call MAINCLASS;
+                _objectives = _objectives select 0;
 
-                                            for "_i" from 0 to _tankDeficit -1 do {
-                                                _group = ["Armored",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                                if!(_group == "FALSE") then {
-                                                    _groups set [count _groups, _group];
-                                                };
-                                            };
 
-                                            for "_i" from 0 to _armorDeficit -1 do {
-                                                _group = ["Mechanized",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                                if!(_group == "FALSE") then {
-                                                    _groups set [count _groups, _group];
-                                                }
-                                            };
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["ALIVE ML - On demand analysis started"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
 
-                                            for "_i" from 0 to _carDeficit -1 do {
-                                                _group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
-                                                if!(_group == "FALSE") then {
-                                                    _groups set [count _groups, _group];
-                                                };
-                                            };
 
-                                            _groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                private["_reserve","_tacom_state","_priorityTotal","_priority"];
 
-                                            _groupCount = count _groups;
+                _reserve = [];
+                _priorityTotal = 0;
 
-                                            _clusterCount = count _reserve;
-                                            _groupPerCluster = floor(_groupCount / _clusterCount);
-                                            _countProfiles = 0;
-                                            _totalCount = 0;
+                // sort OPCOM objective states to find
+                // reserved objectives
+                {
+                    _tacom_state = '';
+                    if("tacom_state" in (_x select 1)) then {
+                        _tacom_state = [_x,"tacom_state"] call ALIVE_fnc_hashGet;
+                    };
 
-                                            // dont want to spawn too many groups on objectives if
-                                            // not many are held
-                                            if(_groupPerCluster > 5) then {
+                    switch(_tacom_state) do {
+                        case "reserve":{
 
+                            // increase the priority count by adding
+                            // all held objective priorities
+                            _priority = [_x,"priority"] call ALIVE_fnc_hashGet;
+                            _priorityTotal = _priorityTotal + _priority;
 
-                                                // DEBUG -------------------------------------------------------------------------------------
-                                                if(_debug) then {
-                                                    ["ALIVE ML - [%1] Group per cluster level %2 is high restrict to 2 groups per cluster", _faction, _groupPerCluster] call ALIVE_fnc_dump;
-                                                };
-                                                // DEBUG -------------------------------------------------------------------------------------
+                            // store the objective
+                            _reserve set [count _reserve, _x];
+                        };
+                    };
 
+                } forEach _objectives;
 
-                                                _groupPerCluster = 2;
+                private["_previousReinforcementAnalysis","_previousReinforcementAnalysisPriorityTotal"];
 
-                                            }else{
+                // if the force pool type is dynamic
+                // calculate the new pool
+                if(_forcePoolType == "DYNAMIC") then {
 
+                    //["DYNAMIC FORCE POOL"] call ALIVE_fnc_dump;
+                    //["CURRENT FORCE POOL: %1",_forcePool] call ALIVE_fnc_dump;
 
-                                                // DEBUG -------------------------------------------------------------------------------------
-                                                if(_debug) then {
-                                                    ["ALIVE ML - [%1] groupCount: %2 clusterCount: %3 groupPerCluster: %4", _faction, _groupCount, _clusterCount, _groupPerCluster] call ALIVE_fnc_dump;
-                                                };
-                                                // DEBUG -------------------------------------------------------------------------------------
+                    _previousReinforcementAnalysis = [_logic, "reinforcementAnalysis"] call MAINCLASS;
 
-                                            };
+                    // if there is a previous analysis
+                    if(count _previousReinforcementAnalysis > 0) then {
 
-                                            // place new groups around objectives
-                                            {
-                                                private ["_objective","_id","_center","_size","_playersInRange","_sector","_sectorData","_profiles",
-                                                "_profileCount","_sideProfiles","_sideProfile","_position"];
+                        //["PREVIOUS ANALYSIS FOUND"] call ALIVE_fnc_dump;
 
-                                                _objective = _x select 1;
-                                                _id = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
-                                                _center = [_objective,"center"] call ALIVE_fnc_hashGet;
-                                                _size = [_objective,"size"] call ALIVE_fnc_hashGet;
+                        _previousReinforcementAnalysisPriorityTotal = [_previousReinforcementAnalysis, "priorityTotal"] call ALIVE_fnc_hashGet;
 
-                                                // players near check
-                                                _playersInRange = [_center, 2000] call ALiVE_fnc_anyPlayersInRange;
+                        // if the current priority total is greater
+                        // than the previous priority total
+                        // objectives have been captured
+                        // increase the available pool
+                        if(_priorityTotal > _previousReinforcementAnalysisPriorityTotal) then {
 
-                                                // profiles near check
-                                                _sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-                                                _sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
+                            //["CURRENT PRIORITY TOTAL IS GREATER THAN PREVIOUS"] call ALIVE_fnc_dump;
 
-                                                _profileCount = 0;
-                                                if("entitiesBySide" in (_sectorData select 1)) then {
-                                                    _sideProfiles = [_sectorData, "entitiesBySide"] call ALIVE_fnc_hashGet;
-                                                    _sideProfile = [_sideProfiles, _moduleSide] call ALIVE_fnc_hashGet;
-                                                    _profileCount = count _sideProfile;
-                                                };
+                            _forcePool = _forcePool + (_priorityTotal - _previousReinforcementAnalysisPriorityTotal);
 
-                                                // do not reinforce if players are near and
-                                                // if there are more than 10 profiles in sector
-                                                if((_playersInRange == 0) && (_profileCount < 10)) then {
-                                                    if(_totalCount < _groupCount) then {
+                        }else{
 
-                                                        if(_groupPerCluster > 0) then {
+                            if(_priorityTotal < _previousReinforcementAnalysisPriorityTotal) then {
 
-                                                            for "_i" from 0 to _groupPerCluster -1 do {
-                                                                _group = _groups select _totalCount;
-                                                                _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+                                // objectives have been lost
+                                // reduce the force pool
 
-                                                                if!(surfaceIsWater _position) then {
-                                                                    _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                                if(_forcePool > 0) then {
 
+                                    //["CURRENT PRIORITY TOTAL IS LESS THAN PREVIOUS"] call ALIVE_fnc_dump;
 
-                                                                    // DEBUG -------------------------------------------------------------------------------------
-                                                                    if(_debug) then {
-                                                                        [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
-                                                                    };
-                                                                    // DEBUG -------------------------------------------------------------------------------------
-
-                                                                    // log event
-                                                                    _event = ['PROFILE_REINFORCE', [_position,_faction,_moduleSide],"ALIVE_ML"] call ALIVE_fnc_event;
-                                                                    _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-
-                                                                    _countProfiles = _countProfiles + count _profiles;
-                                                                    _totalCount = _totalCount + 1;
-                                                                };
-                                                            };
-
-                                                        }else{
-                                                            _group = _groups select _totalCount;
-                                                            _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
-
-                                                            if!(surfaceIsWater _position) then {
-                                                                _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-
-
-                                                                // DEBUG -------------------------------------------------------------------------------------
-                                                                if(_debug) then {
-                                                                    [_logic, "createMarker", [_position, _faction]] call MAINCLASS;
-                                                                };
-                                                                // DEBUG -------------------------------------------------------------------------------------
-
-                                                                // log event
-                                                                _event = ['PROFILE_REINFORCE', [_position,_faction,_moduleSide],"ALIVE_ML"] call ALIVE_fnc_event;
-                                                                _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-
-                                                                _countProfiles = _countProfiles + count _profiles;
-                                                                _totalCount = _totalCount + 1;
-                                                            };
-                                                        };
-                                                    };
-                                                }else{
-
-
-                                                    // DEBUG -------------------------------------------------------------------------------------
-                                                    if(_debug) then {
-                                                        ["ALIVE ML - [%1] Players near, or more than 10 profiles in sector - do not spawn reinforcements", _faction] call ALIVE_fnc_dump;
-                                                    };
-                                                    // DEBUG -------------------------------------------------------------------------------------
-
-
-                                                };
-                                            } forEach _reserve;
-
-
-                                            // DEBUG -------------------------------------------------------------------------------------
-                                            if(_debug) then {
-                                                ["ALIVE ML - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
-                                                ["ALIVE ML - Reinforcement completed"] call ALIVE_fnc_dump;
-                                                //[] call ALIVE_fnc_timer;
-                                                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                            };
-                                            // DEBUG -------------------------------------------------------------------------------------
-
-                                        };
-
-                                    } forEach _moduleFactions;
-
-
-                                }else{
-
-
-                                    // DEBUG -------------------------------------------------------------------------------------
-                                    if(_debug) then {
-                                        ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                        ["ALIVE ML - no reserved clusters for side, cannot reinforce %1", _moduleSide] call ALIVE_fnc_dump;
-                                    };
-                                    // DEBUG -------------------------------------------------------------------------------------
-
+                                    _forcePool = _forcePool - (_previousReinforcementAnalysisPriorityTotal - _priorityTotal);
 
                                 };
 
-                            } forEach _moduleFactions;
+                            };
 
-                        } forEach _modulesObjectives;
+                        };
+
+                    }else{
+
+                        //["NO PREVIOUS ANALYSIS"] call ALIVE_fnc_dump;
+
+                        // set the force pool as the
+                        // current total
+                        _forcePool = _priorityTotal;
 
                     };
-					
-					false 
-				};
-			};
-		};		
-	};
+
+                    //["NEW FORCE POOL: %1",_forcePool] call ALIVE_fnc_dump;
+
+                    [_logic, "forcePool", _forcePool] call MAINCLASS;
+
+                };
+
+
+                private["_primaryReinforcementObjective","_secondaryReinforcementObjective","_reinforcementType","_sortedClusters",
+                "_sortedObjectives","_primaryReinforcementObjectivePriority","_reinforcementAnalysis"];
+
+                _primaryReinforcementObjective = [] call ALIVE_fnc_hashCreate;
+                _secondaryReinforcementObjective = [] call ALIVE_fnc_hashCreate;
+                _reinforcementType = "";
+
+                //_reserve = [];
+
+                if(count _reserve > 0) then {
+
+                    // OPCOM controls some objectives
+                    // reinforcements can be delivered
+                    // directly assuming heli pads or
+                    // airstrips are available
+
+
+                    // sort reserved objectives by priority
+                    _sortedObjectives = [_reserve,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"ASCEND"] call BIS_fnc_sortBy;
+
+                    // get the highest priority objective
+                    _primaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-1);
+
+                    // get the second highest priority objective (if available)
+                    if(count _reserve > 1) then {
+                        _secondaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-2);
+                    };
+
+                    // determine the type of reinforcement according to priority
+                    _primaryReinforcementObjectivePriority = [_primaryReinforcementObjective,"priority"] call ALIVE_fnc_hashGet;
+
+                    _reinforcementType = "DROP";
+
+                    if(_primaryReinforcementObjectivePriority > 50) then {
+                        _reinforcementType = "AIR";
+                    };
+
+                    if(_primaryReinforcementObjectivePriority > 40 && _primaryReinforcementObjectivePriority < 51) then {
+                        _reinforcementType = "HELI";
+                    };
+
+
+                }else{
+
+                    // OPCOM controls no objectives
+                    // reinforcements must be delivered
+                    // via paradrops and or marine landings
+                    // near to location of any existing troops
+
+                    // randomly pick between marine and mil location for start position
+                    if(random 1 > 0.5) then {
+
+                        if(count(ALIVE_clustersCivMarine select 2) > 0) then {
+
+                            // there are marine objectives available
+
+                            // pick a primary one
+                            _primaryReinforcementObjective = (ALIVE_clustersCivMarine select 2) call BIS_fnc_selectRandom;
+
+                            // pick a secondary one
+                            if(count (ALIVE_clustersCivMarine select 2) > 1) then {
+                                _secondaryReinforcementObjective = (ALIVE_clustersCivMarine select 2) call BIS_fnc_selectRandom;
+                            };
+
+                            _reinforcementType = "MARINE";
+
+                        }else{
+
+                            // no marine objectives available
+                            // pick a low priority location for airdrops
+
+                            if(count(ALIVE_clustersMil select 2) > 0) then {
+
+                                _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call BIS_fnc_sortBy;
+
+                                // get the highest priority objective
+                                _primaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-1);
+
+                                // get the second highest priority objective (if available)
+                                if(count _sortedClusters > 1) then {
+                                    _secondaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-2);
+                                };
+
+                                _reinforcementType = "DROP";
+
+                            };
+
+                        };
+
+                    }else{
+
+                        // pick a low priority location for airdrops
+
+                        if(count(ALIVE_clustersMil select 2) > 0) then {
+
+                            _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call BIS_fnc_sortBy;
+
+                            // get the highest priority objective
+                            _primaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-1);
+
+                            // get the second highest priority objective (if available)
+                            if(count _sortedClusters > 1) then {
+                                _secondaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-2);
+                            };
+
+                            _reinforcementType = "DROP";
+
+                        };
+
+                    };
+
+                };
+
+                // store the analysis results
+                _reinforcementAnalysis = [] call ALIVE_fnc_hashCreate;
+                [_reinforcementAnalysis, "priorityTotal", _priorityTotal] call ALIVE_fnc_hashSet;
+                [_reinforcementAnalysis, "type", _reinforcementType] call ALIVE_fnc_hashSet;
+                [_reinforcementAnalysis, "primary", _primaryReinforcementObjective] call ALIVE_fnc_hashSet;
+                [_reinforcementAnalysis, "secondary", _secondaryReinforcementObjective] call ALIVE_fnc_hashSet;
+
+                [_logic, "reinforcementAnalysis", _reinforcementAnalysis] call MAINCLASS;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["ALIVE ML - On demand analysis complete"] call ALIVE_fnc_dump;
+                    ["ALIVE ML - Priority total: %1",_priorityTotal] call ALIVE_fnc_dump;
+                    ["ALIVE ML - Reinforcement type: %1",_reinforcementType] call ALIVE_fnc_dump;
+                    ["ALIVE ML - Primary reinforcement objective:"] call ALIVE_fnc_dump;
+                    _primaryReinforcementObjective call ALIVE_fnc_inspectHash;
+                    //[_logic, "createMarker", [[_primaryReinforcementObjective, "center"] call ALIVE_fnc_hashGet,"OPF_F"]] call MAINCLASS;
+                    ["ALIVE ML - Secondary reinforcement objective:"] call ALIVE_fnc_dump;
+                    _secondaryReinforcementObjective call ALIVE_fnc_inspectHash;
+                    //[_logic, "createMarker", [[_secondaryReinforcementObjective, "center"] call ALIVE_fnc_hashGet,"OPF_F"]] call MAINCLASS;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                _logic setVariable ["analysisInProgress", false];
+            };
+        };
+    };
+    case "monitor": {
+        if (isServer) then {
+
+            // spawn monitoring loop
+
+            [_logic] spawn {
+
+                private ["_logic","_debug"];
+
+                _logic = _this select 0;
+                _debug = [_logic, "debug"] call MAINCLASS;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["ALIVE ML - Monitoring loop started"] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                waituntil {
+
+                    sleep (10);
+
+                    if!([_logic, "pause"] call MAINCLASS) then {
+
+                        private ["_reinforcementAnalysis","_analysisInProgress","_eventQueue"];
+
+                        _reinforcementAnalysis = [_logic, "reinforcementAnalysis"] call MAINCLASS;
+
+                        // analysis has run
+                        if(count _reinforcementAnalysis > 0) then {
+
+                            _analysisInProgress = _logic getVariable ["analysisInProgress", false];
+
+                            // if analysis not processing
+                            if!(_analysisInProgress) then {
+
+                                // loop the event queue
+                                // and manage each event
+                                _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
+
+                                if((count (_eventQueue select 2)) > 0) then {
+
+                                    {
+                                        [_logic,"monitorEvent",[_x, _reinforcementAnalysis]] call MAINCLASS;
+                                    } forEach (_eventQueue select 2);
+
+                                };
+
+                            };
+
+                        };
+
+                    };
+
+                    false
+                };
+
+            };
+
+        };
+
+    };
+    case "monitorEvent": {
+
+         private ["_debug","_event","_reinforcementAnalysis","_side","_eventID","_eventData","_eventPosition","_eventSide","_eventFaction",
+         "_eventForceMakeup","_eventType","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
+         "_eventForcePlane","_eventForceHeli","_eventForceSpecOps","_eventTime","_eventState","_eventStateData","_eventCargoProfiles",
+         "_eventTransportProfiles","_eventTransportVehiclesProfiles","_reinforcementPriorityTotal"
+         ,"_reinforcementType","_reinforcementPrimaryObjective","_reinforcementSecondaryObjective","_event","_eventID","_eventQueue","_forcePool"];
+
+        _debug = [_logic, "debug"] call MAINCLASS;
+        _event = _args select 0;
+        _reinforcementAnalysis = _args select 1;
+
+        _side = [_logic, "side"] call MAINCLASS;
+        _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
+        _forcePool = [_logic, "forcePool"] call MAINCLASS;
+        if(typeName _forcePool == "STRING") then {
+            _forcePool = parseNumber _forcePool;
+        };
+
+        _eventID = [_event, "id"] call ALIVE_fnc_hashGet;
+        _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+        _eventPosition = _eventData select 0;
+        _eventFaction = _eventData select 1;
+        _eventSide = _eventData select 2;
+        _eventForceMakeup = _eventData select 3;
+        _eventType = _eventData select 4;
+        _eventForceInfantry = _eventForceMakeup select 0;
+        _eventForceMotorised = _eventForceMakeup select 1;
+        _eventForceMechanised = _eventForceMakeup select 2;
+        _eventForceArmour = _eventForceMakeup select 3;
+        _eventForcePlane = _eventForceMakeup select 4;
+        _eventForceHeli = _eventForceMakeup select 5;
+
+        _eventTime = [_event, "time"] call ALIVE_fnc_hashGet;
+        _eventState = [_event, "state"] call ALIVE_fnc_hashGet;
+        _eventStateData = [_event, "stateData"] call ALIVE_fnc_hashGet;
+        _eventCargoProfiles = [_event, "cargoProfiles"] call ALIVE_fnc_hashGet;
+        _eventTransportProfiles = [_event, "transportProfiles"] call ALIVE_fnc_hashGet;
+        _eventTransportVehiclesProfiles = [_event, "transportVehiclesProfiles"] call ALIVE_fnc_hashGet;
+
+        _reinforcementPriorityTotal = [_reinforcementAnalysis, "priorityTotal"] call ALIVE_fnc_hashGet;
+        _reinforcementType = [_reinforcementAnalysis, "type"] call ALIVE_fnc_hashGet;
+        _reinforcementPrimaryObjective = [_reinforcementAnalysis, "primary"] call ALIVE_fnc_hashGet;
+        _reinforcementSecondaryObjective = [_reinforcementAnalysis, "secondary"] call ALIVE_fnc_hashGet;
+
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            //["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
+            //_event call ALIVE_fnc_inspectHash;
+            //_reinforcementAnalysis call ALIVE_fnc_inspectHash;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+
+        // react according to current event state
+        switch(_eventState) do {
+
+            // the units have been requested
+            // spawn the units at the insertion point
+            case "requested": {
+
+                private ["_waitTime"];
+
+                // according to the type of reinforcement
+                // adjust wait time for creation of profiles
+
+                switch(_reinforcementType) do {
+                    case "AIR": {
+                        _waitTime = 10;
+                    };
+                    case "HELI": {
+                        _waitTime = 20;
+                    };
+                    case "MARINE": {
+                        _waitTime = 30;
+                    };
+                    case "DROP": {
+                        _waitTime = 40;
+                    };
+                };
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["ALIVE ML - Event state: %1 event timer: %2 wait time on event: %3 ",_eventState, (time - _eventTime), _waitTime] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                if((time - _eventTime) > _waitTime) then {
+
+                    private ["_reinforcementPosition","_playersInRange","_paraDrop"];
+
+                    if(_eventType == "STANDARD") then {
+                        _reinforcementPosition = [_reinforcementPrimaryObjective,"center"] call ALIVE_fnc_hashGet;
+                    }else{
+                        _reinforcementPosition = _eventPosition;
+                    };
+
+                    // players near check
+
+                    _playersInRange = [_reinforcementPosition, 1500] call ALiVE_fnc_anyPlayersInRange;
+
+                    // if players are in visible range
+                    // para drop groups instead of
+                    // spawning on the ground
+
+                    _paraDrop = false;
+                    if(_playersInRange > 0) then {
+                        _paraDrop = true;
+                    };
+
+
+                    // wait time complete create profiles
+                    // get groups according to requested force makeup
+
+                    private ["_infantryGroups","_infantryProfiles","_transportGroups","_transportProfiles",
+                    "_transportVehicleProfiles","_group","_groupCount","_totalCount","_vehicleClass"];
+
+                    _groupCount = 0;
+                    _totalCount = 0;
+
+
+                    // infantry
+
+                    _infantryGroups = [];
+                    _infantryProfiles = [];
+
+                    for "_i" from 0 to _eventForceInfantry -1 do {
+                        _group = ["Infantry",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                        if!(_group == "FALSE") then {
+                            _infantryGroups set [count _infantryGroups, _group];
+                        }
+                    };
+
+                    _infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                    _groupCount = count _infantryGroups;
+                    _totalCount = _totalCount + _groupCount;
+
+                    // create profiles
+
+                    for "_i" from 0 to _groupCount -1 do {
+
+                        _group = _infantryGroups select _i;
+
+                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                        if(_paraDrop) then {
+                            _position set [2,500];
+                        };
+
+                        if!(surfaceIsWater _position) then {
+
+                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                            _infantryProfiles set [count _infantryProfiles, _profiles];
+
+                        };
+                    };
+
+                    [_eventCargoProfiles, "infantry", _infantryProfiles] call ALIVE_fnc_hashSet;
+
+
+                    if(_eventType == "STANDARD") then {
+
+                        // create transport vehicles for the profiles
+
+                        _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                        _transportProfiles = [];
+                        _transportVehicleProfiles = [];
+
+                        if(count _transportGroups == 0) then {
+                            _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
+                        };
+
+                        if(count _transportGroups > 0) then {
+                            for "_i" from 0 to _groupCount -1 do {
+
+                                _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                if(_paraDrop) then {
+                                    _position set [2,500];
+                                };
+
+                                if(count _transportGroups > 0) then {
+
+                                    _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+
+                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                    _transportProfiles set [count _transportProfiles, _profiles select 0];
+                                    _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1];
+
+                                }
+
+                            };
+                        };
+
+                        _eventTransportProfiles = _transportProfiles;
+                        _eventTransportVehiclesProfiles = _transportVehicleProfiles;
+
+                    };
+
+
+                    // armour
+
+                    private ["_armourGroups","_armourProfiles"];
+
+                    _armourGroups = [];
+                    _armourProfiles = [];
+
+                    for "_i" from 0 to _eventForceArmour -1 do {
+                        _group = ["Armored",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                        if!(_group == "FALSE") then {
+                            _armourGroups set [count _armourGroups, _group];
+                        };
+                    };
+
+                    _armourGroups = _armourGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                    _groupCount = count _armourGroups;
+                    _totalCount = _totalCount + _groupCount;
+
+                    // create profiles
+
+                    for "_i" from 0 to _groupCount -1 do {
+
+                        _group = _armourGroups select _i;
+
+                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                        if(_paraDrop) then {
+                            _position set [2,500];
+                        };
+
+                        if!(surfaceIsWater _position) then {
+
+                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                            _armourProfiles set [count _armourProfiles, _profiles];
+
+                        };
+                    };
+
+                    [_eventCargoProfiles, "armour", _armourProfiles] call ALIVE_fnc_hashSet;
+
+
+                    // mechanised
+
+                    private ["_mechanisedGroups","_mechanisedProfiles"];
+
+                    _mechanisedGroups = [];
+                    _mechanisedProfiles = [];
+
+                    for "_i" from 0 to _eventForceMechanised -1 do {
+                        _group = ["Mechanized",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                        if!(_group == "FALSE") then {
+                            _mechanisedGroups set [count _mechanisedGroups, _group];
+                        }
+                    };
+
+                    _mechanisedGroups = _mechanisedGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                    _groupCount = count _mechanisedGroups;
+                    _totalCount = _totalCount + _groupCount;
+
+                    // create profiles
+
+                    for "_i" from 0 to _groupCount -1 do {
+
+                        _group = _mechanisedGroups select _i;
+
+                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                        if(_paraDrop) then {
+                            _position set [2,500];
+                        };
+
+                        if!(surfaceIsWater _position) then {
+
+                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                            _mechanisedProfiles set [count _mechanisedProfiles, _profiles];
+
+                        };
+                    };
+
+                    [_eventCargoProfiles, "mechanised", _mechanisedProfiles] call ALIVE_fnc_hashSet;
+
+
+                    // motorised
+
+                    private ["_motorisedGroups","_motorisedProfiles"];
+
+                    _motorisedGroups = [];
+                    _motorisedProfiles = [];
+
+                    for "_i" from 0 to _eventForceMotorised -1 do {
+                        _group = ["Motorized",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                        if!(_group == "FALSE") then {
+                            _motorisedGroups set [count _motorisedGroups, _group];
+                        };
+                    };
+
+                    _motorisedGroups = _motorisedGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                    _groupCount = count _motorisedGroups;
+                    _totalCount = _totalCount + _groupCount;
+
+                    // create profiles
+
+                    for "_i" from 0 to _groupCount -1 do {
+
+                        _group = _motorisedGroups select _i;
+
+                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                        if(_paraDrop) then {
+                            _position set [2,500];
+                        };
+
+                        if!(surfaceIsWater _position) then {
+
+                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                            _motorisedProfiles set [count _motorisedProfiles, _profiles];
+
+                        };
+                    };
+
+                    [_eventCargoProfiles, "motorised", _motorisedProfiles] call ALIVE_fnc_hashSet;
+
+
+                    // plane
+
+                    if(_eventType == "STANDARD") then {
+
+                        private ["_planeProfiles","_planeClasses","_motorisedProfiles","_vehicleClass"];
+
+                        _planeProfiles = [];
+                        _planeClasses = [0,_eventFaction,"Plane"] call ALiVE_fnc_findVehicleType;
+                        _planeClasses = _planeClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
+
+                        for "_i" from 0 to _eventForcePlane -1 do {
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                            _position set [2,1000];
+
+                            if(count _planeClasses > 0) then {
+
+                                _vehicleClass = _planeClasses call BIS_fnc_selectRandom;
+
+                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                _planeProfiles set [count _planeProfiles, _profiles];
+                            }
+                        };
+
+                        _groupCount = count _planeProfiles;
+                        _totalCount = _totalCount + _groupCount;
+
+                        [_eventCargoProfiles, "plane", _planeProfiles] call ALIVE_fnc_hashSet;
+
+                    };
+
+
+                    // heli
+
+                    if(_eventType == "STANDARD") then {
+
+                        private ["_heliProfiles","_heliClasses","_motorisedProfiles","_vehicleClass"];
+
+                        _heliProfiles = [];
+                        _heliClasses = [0,_eventFaction,"Helicopter"] call ALiVE_fnc_findVehicleType;
+                        _heliClasses = _heliClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
+
+                        for "_i" from 0 to _eventForceHeli -1 do {
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                            _position set [2,1000];
+
+                            if(count _heliClasses > 0) then {
+
+                                _vehicleClass = _heliClasses call BIS_fnc_selectRandom;
+
+                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                _heliProfiles set [count _heliProfiles, _profiles];
+                            }
+                        };
+
+                        _groupCount = count _heliProfiles;
+                        _totalCount = _totalCount + _groupCount;
+
+                        [_eventCargoProfiles, "heli", _heliProfiles] call ALIVE_fnc_hashSet;
+
+                    };
+
+
+                    // DEBUG -------------------------------------------------------------------------------------
+                    if(_debug) then {
+                        ["ALIVE ML - Profiles created: %1 ",_totalCount] call ALIVE_fnc_dump;
+                        if(_eventType == "STANDARD") then {
+                            [_logic, "createMarker", [_reinforcementPosition,_eventFaction,"ML INSERTION"]] call MAINCLASS;
+                        }else{
+                            [_logic, "createMarker", [_eventPosition,_eventFaction,"ML AIRDROP"]] call MAINCLASS;
+                        };
+                    };
+                    // DEBUG -------------------------------------------------------------------------------------
+
+
+                    // remove the created group count
+                    // from the force pool
+                    _forcePool = _forcePool - _totalCount;
+                    [_logic, "forcePool", _forcePool] call MAINCLASS;
+
+                    if(_eventType == "STANDARD") then {
+
+                        // update the state of the event
+                        // next state is transport load
+                        [_event, "state", "transportLoad"] call ALIVE_fnc_hashSet;
+
+                    }else{
+
+                        // update the state of the event
+                        // next state is aridrop wait
+                        [_event, "state", "airdropWait"] call ALIVE_fnc_hashSet;
+
+                    };
+
+                    [_event, "cargoProfiles", _eventCargoProfiles] call ALIVE_fnc_hashSet;
+                    [_event, "transportProfiles", _eventTransportProfiles] call ALIVE_fnc_hashSet;
+                    [_event, "transportVehiclesProfiles", _eventTransportVehiclesProfiles] call ALIVE_fnc_hashSet;
+
+                    [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+                };
+            };
+
+            case "airdropWait": {
+
+                private ["_waitIterations","_waitTotalIterations"];
+
+                _waitTotalIterations = 25;
+                _waitIterations = 0;
+                if(count _eventStateData > 0) then {
+                    _waitIterations = _eventStateData select 0;
+                };
+
+                _waitIterations = _waitIterations + 1;
+                _eventStateData set [0, _waitIterations];
+                [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
+
+                if(_waitIterations > _waitTotalIterations) then {
+
+                    _eventStateData set [0, 0];
+                    [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
+
+                    //["AIRDROP WAIT - ITERATIONS COMPLETE"] call ALIVE_fnc_dump;
+                    [_event, "state", "airdropComplete"] call ALIVE_fnc_hashSet;
+                    [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+                };
+
+            };
+
+            case "airdropComplete": {
+
+                [_logic, "removeEvent", _eventID] call MAINCLASS;
+
+            };
+
+            case "transportLoad": {
+
+                // for any infantry groups order
+                // them to load onto the transport vehicles
+
+                private ["_infantryProfiles","_processedProfiles","_infantryProfile","_transportProfile"];
+
+                _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
+                _processedProfiles = 0;
+
+                if(count _eventTransportVehiclesProfiles > 0) then {
+
+                    {
+                        _infantryProfile = _x select 0;
+                        _transportProfile = _eventTransportVehiclesProfiles select _processedProfiles;
+
+                        [_infantryProfile,_transportProfile] call ALIVE_fnc_createProfileVehicleAssignment;
+
+                        _processedProfiles = _processedProfiles + 1;
+
+                    } forEach _infantryProfiles;
+
+                };
+
+                [_event, "state", "transportLoadWait"] call ALIVE_fnc_hashSet;
+                [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+            };
+
+            case "transportLoadWait": {
+
+                private ["_infantryProfiles","_waitIterations","_waitTotalIterations","_loadedUnits","_notLoadedUnits",
+                "_infantryProfile","_active","_units","_vehicle","_vehicleClass"];
+
+                _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
+
+                // mechanism for aborting this state
+                // once set time limit has passed
+                // if all units havent loaded up
+                _waitTotalIterations = 35;
+                _waitIterations = 0;
+                if(count _eventStateData > 0) then {
+                    _waitIterations = _eventStateData select 0;
+                };
+
+                // if there are transport vehicles available
+
+                if(count _eventTransportVehiclesProfiles > 0) then {
+
+                    _loadedUnits = [];
+                    _notLoadedUnits = [];
+
+                    {
+                        _infantryProfile = _x select 0;
+                        _active = _infantryProfile select 2 select 1;
+
+                        // only need to worry about this is there are
+                        // players nearby
+
+                        if(_active) then {
+
+                            _units = _infantryProfile select 2 select 21;
+
+                            // catagorise units into loaded and not
+                            // loaded arrays
+                            {
+                                _vehicle = vehicle _x;
+                                _vehicleClass = typeOf _vehicle;
+                                if(_vehicleClass != "Steerable_Parachute_F") then {
+                                    if(vehicle _x == _x) then {
+                                        _notLoadedUnits set [count _notLoadedUnits, _x];
+                                    }else{
+                                        _loadedUnits set [count _loadedUnits, _x];
+                                    };
+                                }else{
+                                    _notLoadedUnits set [count _notLoadedUnits, _x];
+                                };
+
+                            } forEach _units;
+
+                        }else{
+
+                            // profiles are not active, can skip this wait
+                            // continue on to travel
+
+                            //["TRANSPORT LOAD WAIT - NO ACTIVE - CONTINUE"] call ALIVE_fnc_dump;
+                            [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
+                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                        };
+
+                    } forEach _infantryProfiles;
+
+                    /*
+                    ["LOADED: %1",_loadedUnits] call ALIVE_fnc_dump;
+                    ["NOT LOADED: %1",_notLoadedUnits] call ALIVE_fnc_dump;
+                    */
+
+                    // if there are units left to be loaded
+                    // wait for x iterations for loading to occur
+                    // once time is up delete all not loaded units
+
+                    if(count _notLoadedUnits > 0) then {
+
+                        //["TRANSPORT LOAD WAIT - NOT ALL LOADED - ITERATE"] call ALIVE_fnc_dump;
+
+                        _waitIterations = _waitIterations + 1;
+                        _eventStateData set [0, _waitIterations];
+                        [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
+
+                        if(_waitIterations > _waitTotalIterations) then {
+
+                            {
+                                deleteVehicle _x;
+                            } forEach _notLoadedUnits;
+
+                            _eventStateData set [0, 0];
+                            [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
+
+                            //["TRANSPORT LOAD WAIT - NOT ALL LOADED - ITERATIONS COMPLETE"] call ALIVE_fnc_dump;
+                            [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
+                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+                        };
+
+                    }else{
+
+                        // all units have loaded
+                        // continue on to travel
+
+                        //["TRANSPORT LOAD WAIT - ALL LOADED - CONTINUE"] call ALIVE_fnc_dump;
+                        [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
+                        [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                    };
+
+
+                }else{
+
+                    // no transport vehicles available
+                    // continue on to travel
+
+                    //["TRANSPORT LOAD WAIT - NO TRANSPORT - CONTINUE"] call ALIVE_fnc_dump;
+                    [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
+                    [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+                };
+
+            };
+
+            case "transportStart": {
+
+                private ["_transportProfiles","_infantryProfiles","_armourProfiles","_mechanisedProfiles","_motorisedProfiles",
+                "_planeProfiles","_heliProfiles","_profileWaypoint","_profile"];
+
+                // assign waypoints to all
+
+                _transportProfiles = _eventTransportProfiles;
+                _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
+                _armourProfiles = [_eventCargoProfiles, 'armour'] call ALIVE_fnc_hashGet;
+                _mechanisedProfiles = [_eventCargoProfiles, 'mechanised'] call ALIVE_fnc_hashGet;
+                _motorisedProfiles = [_eventCargoProfiles, 'motorised'] call ALIVE_fnc_hashGet;
+                _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
+                _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
+
+                _eventPosition = [_eventPosition] call ALIVE_fnc_getClosestRoad;
+
+                {
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    [_x, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                } forEach _transportProfiles;
+
+                {
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _profile = _x select 0;
+                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                } forEach _infantryProfiles;
+
+                {
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _profile = _x select 0;
+                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                } forEach _armourProfiles;
+
+                {
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _profile = _x select 0;
+                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                } forEach _mechanisedProfiles;
+
+                {
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _profile = _x select 0;
+                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                } forEach _motorisedProfiles;
+
+                {
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _profile = _x select 0;
+                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                } forEach _planeProfiles;
+
+                {
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _profile = _x select 0;
+                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                } forEach _heliProfiles;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    [_logic, "createMarker", [_eventPosition,_eventFaction,"ML DESTINATION"]] call MAINCLASS;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                [_event, "state", "transportTravel"] call ALIVE_fnc_hashSet;
+                [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+            };
+
+            case "transportTravel": {
+
+                private ["_waitTotalIterations","_waitIterations","_transportProfiles","_infantryProfiles",
+                "_armourProfiles","_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles",
+                "_waypointsCompleted","_waypointsNotCompleted","_profile","_waypoints"];
+
+                // mechanism for aborting this state
+                // once set time limit has passed
+                // if all units haven't reached objective
+                _waitTotalIterations = 400;
+                _waitIterations = 0;
+                if(count _eventStateData > 0) then {
+                    _waitIterations = _eventStateData select 0;
+                };
+
+                // check waypoints
+                // if all waypoints are complete
+                // trigger end of logistics control
+
+                _transportProfiles = _eventTransportProfiles;
+                _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
+                _armourProfiles = [_eventCargoProfiles, 'armour'] call ALIVE_fnc_hashGet;
+                _mechanisedProfiles = [_eventCargoProfiles, 'mechanised'] call ALIVE_fnc_hashGet;
+                _motorisedProfiles = [_eventCargoProfiles, 'motorised'] call ALIVE_fnc_hashGet;
+                _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
+                _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
+
+                _waypointsCompleted = 0;
+                _waypointsNotCompleted = 0;
+
+                {
+                    _waypoints = _x select 2 select 16;
+                    if(count _waypoints > 0) then {
+                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                    }else{
+                        _waypointsCompleted = _waypointsCompleted + 1;
+                    };
+
+                } forEach _transportProfiles;
+
+                if((_waypointsNotCompleted == 0) && (_waypointsCompleted == 0)) then {
+                    {
+                        _profile = _x select 0;
+                        _waypoints = _profile select 2 select 16;
+                        if(count _waypoints > 0) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
+                    } forEach _infantryProfiles;
+                };
+
+                {
+                    _profile = _x select 0;
+                    _waypoints = _profile select 2 select 16;
+                    if(count _waypoints > 0) then {
+                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                    }else{
+                        _waypointsCompleted = _waypointsCompleted + 1;
+                    };
+
+                } forEach _armourProfiles;
+
+                {
+                    _profile = _x select 0;
+                    _waypoints = _profile select 2 select 16;
+                    if(count _waypoints > 0) then {
+                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                    }else{
+                        _waypointsCompleted = _waypointsCompleted + 1;
+                    };
+
+                } forEach _mechanisedProfiles;
+
+                {
+                    _profile = _x select 0;
+                    _waypoints = _profile select 2 select 16;
+                    if(count _waypoints > 0) then {
+                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                    }else{
+                        _waypointsCompleted = _waypointsCompleted + 1;
+                    };
+
+                } forEach _motorisedProfiles;
+
+                {
+                    _profile = _x select 0;
+                    _waypoints = _profile select 2 select 16;
+                    if(count _waypoints > 0) then {
+                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                    }else{
+                        _waypointsCompleted = _waypointsCompleted + 1;
+                    };
+                } forEach _planeProfiles;
+
+                {
+                    _profile = _x select 0;
+                    _waypoints = _profile select 2 select 16;
+                    if(count _waypoints > 0) then {
+                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                    }else{
+                        _waypointsCompleted = _waypointsCompleted + 1;
+                    };
+
+                } forEach _heliProfiles;
+
+
+                //["TRANSPORT TRAVEL WP COMPLETE: %1 WP NOT COMPLETE: %2",_waypointsCompleted,_waypointsNotCompleted] call ALIVE_fnc_dump;
+
+                // all waypoints completed
+
+                if(_waypointsNotCompleted == 0) then {
+
+                    [_event, "state", "transportComplete"] call ALIVE_fnc_hashSet;
+                    [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                }else{
+
+                    // not all waypoints have been completed
+                    // to ensure control passes to OPCOM eventually
+                    // limited number of iterations in this
+                    // state are used.
+
+                    _waitIterations = _waitIterations + 1;
+                    _eventStateData set [0, _waitIterations];
+                    [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
+
+                    if(_waitIterations > _waitTotalIterations) then {
+
+                        _eventStateData set [0, 0];
+                        [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
+
+                        //["TRANSPORT TRAVEL WAIT - ITERATIONS COMPLETE"] call ALIVE_fnc_dump;
+                        [_event, "state", "transportComplete"] call ALIVE_fnc_hashSet;
+                        [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+
+                    };
+                };
+
+            };
+
+            case "transportComplete": {
+
+                [_logic, "removeEvent", _eventID] call MAINCLASS;
+
+            };
+        };
+    };
 };
 
 TRACE_1("ML - output",_result);

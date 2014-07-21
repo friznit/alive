@@ -81,6 +81,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterUnits.sqf";
 				recompile = RECOMPILE;
 			};
+			class sectorFilterClusters {
+                description = "sectorFilterClusters";
+                file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterClusters.sqf";
+                recompile = RECOMPILE;
+            };
 			class sectorAnalysisTerrain {
 				description = "sectorAnalysisTerrain";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisTerrain.sqf";

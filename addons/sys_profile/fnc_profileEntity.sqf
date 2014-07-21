@@ -686,7 +686,7 @@ switch(_operation) do {
 		case "spawn": {
 				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
 				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_activeCommands","_inactiveCommands","_group","_unitPosition","_eventID",
-				"_waypointCount","_unitCount","_units","_unit"];
+				"_waypointCount","_unitCount","_units","_unit","_vehiclesInCommandOf","_vehiclesInCargoOf","_paraDrop","_parachute","_soundFlyover"];
 				
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
@@ -703,6 +703,8 @@ switch(_operation) do {
 				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				_vehiclesInCommandOf = _profile select 2 select 8; //[_profile,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
+                _vehiclesInCargoOf = _profile select 2 select 9; //[_profile,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
 				
 				_unitCount = 0;
 				_units = [];
@@ -714,12 +716,19 @@ switch(_operation) do {
 					//["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
 					//[true] call ALIVE_fnc_timer;
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
+					_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
 					//[] call ALIVE_fnc_timer;
 
 					//["SPAWN POS:%1",_position] call ALIVE_fnc_dump;
 					//["SPAWN POSs:%1",_positions] call ALIVE_fnc_dump;
 
-					_group = createGroup _sideObject;				
+					_group = createGroup _sideObject;
+
+                    _paraDrop = false;
+                    if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0) && ((_position select 2) > 300)) then {
+                        _paraDrop = true;
+                        ["!!!!!!!!!!!!!!!!!!PARADROP!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
+                    };
 
                     //["Profile [%1] Spawn - Spawn Units",_profileID] call ALIVE_fnc_dump;
                     //[true] call ALIVE_fnc_timer;
@@ -744,6 +753,31 @@ switch(_operation) do {
 							_units set [_unitCount, _unit];
 	
 							_unitCount = _unitCount + 1;
+
+							if(_paraDrop) then {
+
+                                _parachute = createvehicle ["Steerable_Parachute_F",position _unit,[],0,"none"];
+                                _unit moveindriver _parachute;
+
+                                _parachute setpos position _unit;
+                                _parachute setdir direction _unit;
+                                _parachute setvelocity [0,0,-1];
+
+                                if (time - (missionnamespace getvariable ["bis_fnc_curatorobjectedited_paraSoundTime",0]) > 0) then {
+                                    _soundFlyover = ["BattlefieldJet1","BattlefieldJet2"] call bis_fnc_selectrandom;
+                                    [[_parachute,_soundFlyover,"say3d"],"bis_fnc_sayMessage"] call bis_fnc_mp;
+                                    missionnamespace setvariable ["bis_fnc_curatorobjectedited_paraSoundTime",time + 10]
+                                };
+
+                                [_unit,_parachute] spawn {
+                                    _unit = _this select 0;
+                                    _parachute = _this select 1;
+
+                                    waituntil {isnull _parachute || isnull _unit};
+                                    _unit setdir direction _unit;
+                                    deletevehicle _parachute;
+                                };
+                            };
                         };
 					} forEach _unitClasses;
 					//[] call ALIVE_fnc_timer;

@@ -31,6 +31,196 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class forcePoolType
+                        {
+                                displayName = "$STR_ALIVE_ML_FORCE_POOL_TYPE";
+                                description = "$STR_ALIVE_ML_FORCE_POOL_TYPE_COMMENT";
+                                class Values
+                                {
+                                        class Fixed
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_TYPE_FIXED";
+                                                value = "FIXED";
+                                        };
+                                        class Dynamic
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_TYPE_DYNAMIC";
+                                                value = "DYNAMIC";
+                                        };
+                                };
+                        };
+                        class forcePool
+                        {
+                                displayName = "$STR_ALIVE_ML_FORCE_POOL";
+                                description = "$STR_ALIVE_ML_FORCE_POOL_COMMENT";
+                                class Values
+                                {
+                                        class FPInfinite
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_INFINITE";
+                                                value = "100000";
+                                        };
+                                        class FP20000
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_20000";
+                                                value = "20000";
+                                        };
+                                        class FP10000
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_10000";
+                                                value = "10000";
+                                        };
+                                        class FP5000
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_5000";
+                                                value = "5000";
+                                        };
+                                        class FP2500
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_2500";
+                                                value = "2500";
+                                        };
+                                        class FP1000
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_1000";
+                                                value = "1000";
+                                        };
+                                        class FP500
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_500";
+                                                value = "500";
+                                        };
+                                        class FP200
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_200";
+                                                value = "200";
+                                        };
+                                        class FP100
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_100";
+                                                value = "100";
+                                        };
+                                        class FP50
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_50";
+                                                value = "50";
+                                        };
+                                };
+                        };
+                        class allowInfantryReinforcement
+                        {
+                                displayName = "$STR_ALIVE_ML_ALLOW_INF";
+                                description = "$STR_ALIVE_ML_ALLOW_INF_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class allowMechanisedReinforcement
+                        {
+                                displayName = "$STR_ALIVE_ML_ALLOW_MECH";
+                                description = "$STR_ALIVE_ML_ALLOW_MECH_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class allowMotorisedReinforcement
+                        {
+                                displayName = "$STR_ALIVE_ML_ALLOW_MOT";
+                                description = "$STR_ALIVE_ML_ALLOW_MOT_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class allowArmourReinforcement
+                        {
+                                displayName = "$STR_ALIVE_ML_ALLOW_ARM";
+                                description = "$STR_ALIVE_ML_ALLOW_ARM_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class allowHeliReinforcement
+                        {
+                                displayName = "$STR_ALIVE_ML_ALLOW_HELI";
+                                description = "$STR_ALIVE_ML_ALLOW_HELI_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class allowPlaneReinforcement
+                        {
+                                displayName = "$STR_ALIVE_ML_ALLOW_PLANE";
+                                description = "$STR_ALIVE_ML_ALLOW_PLANE_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
                 };
                 class ModuleDescription
                 {
