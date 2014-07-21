@@ -1,10 +1,6 @@
-TODO
+﻿TODO
 
 1. UI
-2. init automatically, "Disable Logistics" Module
-
-3. functions create/deletevehicle
-4. Methods buildObject, demolishObject
 
 ----------------------------------
 Methods
