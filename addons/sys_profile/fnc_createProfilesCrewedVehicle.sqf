@@ -29,7 +29,8 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_position","_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
+private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_prefix","_engineOn","_position",
+"_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
 
 _vehicleClass = _this select 0;
 _side = _this select 1;
@@ -39,6 +40,7 @@ _position = _this select 4;
 _direction = if(count _this > 5) then {_this select 5} else {0};
 _spawnGoodPosition = if(count _this > 6) then {_this select 6} else {true};
 _prefix = if(count _this > 7) then {_this select 7} else {""};
+_engineOn = if(count _this > 8) then {_this select 8} else {false};
 
 // get counts of current profiles
 
@@ -89,6 +91,10 @@ if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 
 if!(_spawnGoodPosition) then {
 	[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;
+};
+
+if(_engineOn) then {
+    [_profileVehicle, "engineOn", true] call ALIVE_fnc_profileVehicle;
 };
 
 _groupProfiles set [count _groupProfiles, _profileVehicle];	

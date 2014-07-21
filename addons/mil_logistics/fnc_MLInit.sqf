@@ -1,6 +1,5 @@
 #include <\x\alive\addons\mil_logistics\script_component.hpp>
 SCRIPT(MLInit);
-
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_MLInit
 Description:
@@ -22,7 +21,6 @@ ARJay
 Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
-
 private ["_logic","_moduleID"];
 
 PARAMS_1(_logic);

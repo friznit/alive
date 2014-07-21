@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\mil_logistics\script_component.hpp>
-SCRIPT(test_ML);
+SCRIPT(test_ML_AIRDROP);
 
-//execVM "\x\alive\addons\mil_logistics\tests\test_ML.sqf"
+//execVM "\x\alive\addons\mil_logistics\tests\test_ML_AIRDROP.sqf"
 
 // ----------------------------------------------------------------------------
 
@@ -43,7 +43,6 @@ _position = [getPos player, 20, 180] call BIS_fnc_relPos;
 _faction = "BLU_F";
 _side = "west";
 
-
 _forceMakeup = [
     floor(random(5)), // infantry
     floor(random(5)), // motorised
@@ -75,7 +74,7 @@ _forceMakeup = [
 ];
 */
 
-_event = ['LOGCOM_REQUEST', [_position,_faction,_side,_forceMakeup,"STANDARD"],"OPCOM"] call ALIVE_fnc_event;
+_event = ['LOGCOM_REQUEST', [_position,_faction,_side,_forceMakeup,"AIRDROP"],"OPCOM"] call ALIVE_fnc_event;
 _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
 nil;

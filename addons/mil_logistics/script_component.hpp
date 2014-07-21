@@ -5,7 +5,7 @@
 	#define DEBUG_MODE_FULL
 #endif
 
-#ifdef DEBUG_SETTINGS_mil_intelligence
+#ifdef DEBUG_SETTINGS_mil_logistics
 	#define DEBUG_SETTINGS DEBUG_ENABLED_MIL_LOGISTICS
 #endif
 
