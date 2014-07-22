@@ -277,6 +277,7 @@ ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 [ALIVE_mapBounds, "Celle", 11000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Takistan", 13000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "praa_av", 6000] call ALIVE_fnc_hashSet;
+[ALIVE_mapBounds, "tavi", 26000] call ALIVE_fnc_hashSet;
 
 
 /*
@@ -311,7 +312,7 @@ ALIVE_civilianConstructionBuildingTypes = [];
 ALIVE_civilianSettlementBuildingTypes = [];
 
 // Altis Stratis
-if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic") then {
+if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic" || _worldName == "sfp_wamako") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
     	"hangar"
@@ -843,7 +844,7 @@ if(_worldName == "thirsk" || _worldName == "thirskw" ) then {
 };
 
 // Chernarus
-if(_worldName == "Chernarus") then {
+if(_worldName == "Chernarus" || _worldName == "sfp_sturko" || _worldName == "tavi") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
         "hangar"
@@ -1576,7 +1577,119 @@ if(_worldName == "MCN_HazarKot") then {
 };
 
 // Isola Di Capraia
-if(_worldName == "isoladicapraia") then {
+if(_worldName == "isoladicapraia" || _worldName == "napf") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "bunker"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+        "ss_hangar",
+        "hangar_2",
+        "hangar",
+        "runway_beton",
+        "runway_end",
+        "runway_main",
+        "runway_secondary"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "deerstand",
+        "vez"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "a_office01",
+        "a_office02",
+        "a_municipaloffice"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+        "pec_",
+        "powerstation",
+        "trafostanica"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+        "illuminanttower",
+        "vysilac_fm",
+        "telek",
+        "tvtower"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "crane",
+        "lighthouse",
+        "nav_pier",
+        "pier_",
+        "pier"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+        "rail_house",
+        "rail_station",
+        "rail_platform",
+        "rails_bridge",
+        "stationhouse"
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+        "fuelstation",
+        "expedice",
+        "indpipe",
+        "komin",
+        "ind_stack_big",
+        "ind_tankbig",
+        "fuel_tank_big"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+        "ind_mlyn_01",
+        "ind_pec_01",
+        "wip",
+        "sawmillpen",
+        "workshop"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "hospital",
+        "houseblock",
+        "generalstore",
+        "house"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
+};
+
+// Caribou
+if(_worldName == "caribou") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
         "hangar"
@@ -2309,7 +2422,7 @@ if(_worldName == "utes") then {
 };
 
 // Nziwasogo
-if(_worldName == "pja305") then {
+if(_worldName == "pja305" || _worldName == "pja306" || _worldName == "pja307") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
         "hangar"

@@ -36,8 +36,14 @@ set arma=%_ARMA3PATH%
 set target=P:\x\alive\addons\fnc_strategic\indexes
 
 rem ----------------------------- A3 --------------------------------------
-%exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
-%exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
+rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
+rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
+
+rem %exe% "%arma%\@sfp_islands\addons\sfp_sturko.pbo" > %target%\objects.sturko.sqf
+rem %exe% "%arma%\@sfp_islands\addons\sfp_wamako.pbo" > %target%\objects.wamako.sqf
+
+rem %exe% "%arma%\@dariyah\addons\projeta3-07.pbo" > %target%\objects.dariyah.sqf
+rem %exe% "%arma%\@kalukhan\addons\projeta3-06.pbo" > %target%\objects.kalukhan.sqf
 
 rem ----------------------------- A2 --------------------------------------
 rem %exe% "%arma%\@a2\chernarus.pbo" > %target%\objects.chernarus.sqf
@@ -74,6 +80,9 @@ rem %exe% "%arma%\@a2co\@Nziwasogo_V03\addons\projeta3-05.pbo" > %target%\object
 rem %exe% "%arma%\@a2co\@Lingor\Addons\lingor.pbo" > %target%\objects.lingor.sqf
 rem %exe% "%arma%\@a2co\@isla_duala\Addons\isladuala.pbo" > %target%\objects.isladuala.sqf
 
+%exe% "%arma%\@a2co\@Tavi\Addons\tavi.pbo" > %target%\objects.taviana.sqf
+rem %exe% "%arma%\@a2co\@napf\Addons\napf.pbo" > %target%\objects.napf.sqf
+rem %exe% "%arma%\@a2co\@caribou\AddOns\caribou_summer_conf.pbo" > %target%\objects.caribou.sqf
 rem %exe% "%arma%\@a2co\@smd_sahrani_a2\addons\smd_sahrani_a2.pbo" > %target%\objects.smd_sahrani_a2.sqf
 rem %exe% "%arma%\@a2co\@MBG_Celle2\addons\mbg_celle2.pbo" > %target%\objects.mbg_celle2.sqf
 rem %exe% "%arma%\@a2co\@fata\addons\fata.pbo" > %target%\objects.fata.sqf

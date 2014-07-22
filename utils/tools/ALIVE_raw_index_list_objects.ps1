@@ -1,8 +1,15 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
-    'altis',
-    'stratis'
+    'taviana',
+    'napf'
+    #'sturko',
+    #'wamako'
+    #'dariyah',
+    #'kalukhan'
+    #'caribou',
+    #'altis',
+    #'stratis'
     #'baranow',
     #'france',
     #'ivachev',
