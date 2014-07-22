@@ -31,30 +31,17 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class forcePoolType
-                        {
-                                displayName = "$STR_ALIVE_ML_FORCE_POOL_TYPE";
-                                description = "$STR_ALIVE_ML_FORCE_POOL_TYPE_COMMENT";
-                                class Values
-                                {
-                                        class Fixed
-                                        {
-                                                name = "$STR_ALIVE_ML_FORCE_POOL_TYPE_FIXED";
-                                                value = "FIXED";
-                                        };
-                                        class Dynamic
-                                        {
-                                                name = "$STR_ALIVE_ML_FORCE_POOL_TYPE_DYNAMIC";
-                                                value = "DYNAMIC";
-                                        };
-                                };
-                        };
                         class forcePool
                         {
                                 displayName = "$STR_ALIVE_ML_FORCE_POOL";
                                 description = "$STR_ALIVE_ML_FORCE_POOL_COMMENT";
                                 class Values
                                 {
+                                        class Dynamic
+                                        {
+                                                name = "$STR_ALIVE_ML_FORCE_POOL_DYNAMIC";
+                                                value = "10";
+                                        };
                                         class FPInfinite
                                         {
                                                 name = "$STR_ALIVE_ML_FORCE_POOL_INFINITE";
@@ -84,6 +71,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_ML_FORCE_POOL_1000";
                                                 value = "1000";
+                                                default = true;
                                         };
                                         class FP500
                                         {

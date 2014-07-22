@@ -208,6 +208,36 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class customInfantryCount
+                        {
+                                displayName = "$STR_ALIVE_MP_CUSTOM_INFANTRY_COUNT";
+                                description = "$STR_ALIVE_MP_CUSTOM_INFANTRY_COUNT_COMMENT";
+                                defaultValue = "";
+                        };
+                        class customMotorisedCount
+                        {
+                                displayName = "$STR_ALIVE_MP_CUSTOM_MOTORISED_COUNT";
+                                description = "$STR_ALIVE_MP_CUSTOM_MOTORISED_COUNT_COMMENT";
+                                defaultValue = "";
+                        };
+                        class customMechanisedCount
+                        {
+                                displayName = "$STR_ALIVE_MP_CUSTOM_MECHANISED_COUNT";
+                                description = "$STR_ALIVE_MP_CUSTOM_MECHANISED_COUNT_COMMENT";
+                                defaultValue = "";
+                        };
+                        class customArmourCount
+                        {
+                                displayName = "$STR_ALIVE_MP_CUSTOM_ARMOUR_COUNT";
+                                description = "$STR_ALIVE_MP_CUSTOM_ARMOUR_COUNT_COMMENT";
+                                defaultValue = "";
+                        };
+                        class customSpecOpsCount
+                        {
+                                displayName = "$STR_ALIVE_MP_CUSTOM_SPECOPS_COUNT";
+                                description = "$STR_ALIVE_MP_CUSTOM_SPECOPS_COUNT_COMMENT";
+                                defaultValue = "";
+                        };
                         class faction
                         {
                                 displayName = "$STR_ALIVE_MP_FACTION";

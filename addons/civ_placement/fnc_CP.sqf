@@ -45,6 +45,7 @@ ARJay
 #define DEFAULT_TYPE QUOTE(RANDOM)
 #define DEFAULT_FACTION QUOTE(OPF_F)
 #define DEFAULT_CLUSTER_TYPE QUOTE(ALL)
+#define DEFAULT_NO_TEXT ""
 
 private ["_logic","_operation","_args","_result"];
 
@@ -121,6 +122,21 @@ switch(_operation) do {
 			_logic setVariable ["type", _result];
 		};
 	};
+	case "customInfantryCount": {
+        _result = [_logic,_operation,_args,DEFAULT_NO_TEXT] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "customMotorisedCount": {
+        _result = [_logic,_operation,_args,DEFAULT_NO_TEXT] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "customMechanisedCount": {
+        _result = [_logic,_operation,_args,DEFAULT_NO_TEXT] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "customArmourCount": {
+        _result = [_logic,_operation,_args,DEFAULT_NO_TEXT] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "customSpecOpsCount": {
+        _result = [_logic,_operation,_args,DEFAULT_NO_TEXT] call ALIVE_fnc_OOsimpleOperation;
+    };
 	// Determine force faction
 	case "faction": {
 		_result = [_logic,_operation,_args,DEFAULT_FACTION,[] call BIS_fnc_getFactions] call ALIVE_fnc_OOsimpleOperation;
@@ -527,7 +543,8 @@ switch(_operation) do {
 
 			private ["_debug","_clusters","_cluster","_size","_type",
 			"_faction","_ambientVehicleAmount","_placeHelis","_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass",
-			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node"];
+			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node",
+			"_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount"];
             
 		
 			_debug = [_logic, "debug"] call MAINCLASS;		
@@ -544,6 +561,46 @@ switch(_operation) do {
             //waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
+
+			_customInfantryCount = [_logic, "customInfantryCount"] call MAINCLASS;
+
+            if(_customInfantryCount == "") then {
+                _customInfantryCount = 666;
+            }else{
+                _customInfantryCount = parseNumber _customInfantryCount;
+            };
+
+            _customMotorisedCount = [_logic, "customMotorisedCount"] call MAINCLASS;
+
+            if(_customMotorisedCount == "") then {
+                _customMotorisedCount = 666;
+            }else{
+                _customMotorisedCount = parseNumber _customMotorisedCount;
+            };
+
+            _customMechanisedCount = [_logic, "customMechanisedCount"] call MAINCLASS;
+
+            if(_customMechanisedCount == "") then {
+                _customMechanisedCount = 666;
+            }else{
+                _customMechanisedCount = parseNumber _customMechanisedCount;
+            };
+
+            _customArmourCount = [_logic, "customArmourCount"] call MAINCLASS;
+
+            if(_customArmourCount == "") then {
+                _customArmourCount = 666;
+            }else{
+                _customArmourCount = parseNumber _customArmourCount;
+            };
+
+            _customSpecOpsCount = [_logic, "customSpecOpsCount"] call MAINCLASS;
+
+            if(_customSpecOpsCount == "") then {
+                _customSpecOpsCount = 666;
+            }else{
+                _customSpecOpsCount = parseNumber _customSpecOpsCount;
+            };
 			
 			_size = parseNumber([_logic, "size"] call MAINCLASS);
 			_type = [_logic, "type"] call MAINCLASS;
@@ -639,6 +696,26 @@ switch(_operation) do {
                     _countArmored = floor((_size / 20) * random(0.2));
                     _countSpecOps = floor((_size / 10) * 0.5);
                 };
+            };
+
+            if!(_customInfantryCount == 666) then {
+                _countInfantry = _customInfantryCount;
+            };
+
+            if!(_customMotorisedCount == 666) then {
+                _countMotorized = _customMotorisedCount;
+            };
+
+            if!(_customMechanisedCount == 666) then {
+                _countMechanized = _customMechanisedCount;
+            };
+
+            if!(_customArmourCount == 666) then {
+                _countArmored = _customArmourCount;
+            };
+
+            if!(_customSpecOpsCount == 666) then {
+                _countSpecOps = _customSpecOpsCount;
             };
 			
 			

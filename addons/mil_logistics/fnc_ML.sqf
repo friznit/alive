@@ -269,6 +269,9 @@ switch(_operation) do {
 	// Main process
 	case "init": {
         if (isServer) then {
+
+            private ["_debug","_forcePool","_allowInfantry","_allowMechanised","_allowMotorised","_allowArmour","_allowHeli","_allowPlane"];
+
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
@@ -277,6 +280,39 @@ switch(_operation) do {
 			_logic setVariable ["listenerID", ""];
 			_logic setVariable ["analysisInProgress", false];
 			_logic setVariable ["eventQueue", [] call ALIVE_fnc_hashCreate];
+
+			_debug = [_logic, "debug"] call MAINCLASS;
+			_forcePool = [_logic, "forcePool"] call MAINCLASS;
+
+			if(typeName _forcePool == "STRING") then {
+                _forcePool = parseNumber _forcePool;
+            };
+
+			if(_forcePool == 10) then {
+                [_logic, "forcePool", 1000] call MAINCLASS;
+                [_logic, "forcePoolType", "DYNAMIC"] call MAINCLASS;
+			};
+
+			_allowInfantry = [_logic, "allowInfantryReinforcement"] call MAINCLASS;
+            _allowMechanised = [_logic, "allowMechanisedReinforcement"] call MAINCLASS;
+            _allowMotorised = [_logic, "allowMotorisedReinforcement"] call MAINCLASS;
+            _allowArmour = [_logic, "allowArmourReinforcement"] call MAINCLASS;
+            _allowHeli = [_logic, "allowHeliReinforcement"] call MAINCLASS;
+            _allowPlane = [_logic, "allowPlaneReinforcement"] call MAINCLASS;
+
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                ["ALIVE ML - Init"] call ALIVE_fnc_dump;
+                ["ALIVE ML - Force pool type: %1 limit: %2",[_logic, "forcePool"] call MAINCLASS,[_logic, "forcePoolType"] call MAINCLASS] call ALIVE_fnc_dump;
+                ["ALIVE ML - Allow infantry requests: %1",_allowInfantry] call ALIVE_fnc_dump;
+                ["ALIVE ML - Allow mechanised requests: %1",_allowMechanised] call ALIVE_fnc_dump;
+                ["ALIVE ML - Allow motorised requests: %1",_allowMotorised] call ALIVE_fnc_dump;
+                ["ALIVE ML - Allow armour requests: %1",_allowArmour] call ALIVE_fnc_dump;
+                ["ALIVE ML - Allow heli requests: %1",_allowHeli] call ALIVE_fnc_dump;
+                ["ALIVE ML - Allow plane requests: %1",_allowPlane] call ALIVE_fnc_dump;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
 
 			TRACE_1("After module init",_logic);
 
@@ -528,7 +564,8 @@ switch(_operation) do {
 
                         // DEBUG -------------------------------------------------------------------------------------
                         if(_debug) then {
-                            ["ALIVE ML - Reinforce event received current force pool for side: %2 available: %3", _side, _forcePool] call ALIVE_fnc_dump;
+                            ["ALIVE ML - Reinforce event received"] call ALIVE_fnc_dump;
+                            ["ALIVE ML - Current force pool for side: %2 available: %3", _side, _forcePool] call ALIVE_fnc_dump;
                             _event call ALIVE_fnc_inspectHash;
                         };
                         // DEBUG -------------------------------------------------------------------------------------
@@ -997,7 +1034,15 @@ switch(_operation) do {
                     private ["_reinforcementPosition","_playersInRange","_paraDrop"];
 
                     if(_eventType == "STANDARD") then {
-                        _reinforcementPosition = [_reinforcementPrimaryObjective,"center"] call ALIVE_fnc_hashGet;
+
+                        // randomly choose between the primary and
+                        // secondary insertion objective
+                        if(random 1 > 0.4) then {
+                            _reinforcementPosition = [_reinforcementPrimaryObjective,"center"] call ALIVE_fnc_hashGet;
+                        }else{
+                            _reinforcementPosition = [_reinforcementSecondaryObjective,"center"] call ALIVE_fnc_hashGet;
+                        };
+
                     }else{
                         _reinforcementPosition = _eventPosition;
                     };
@@ -1311,30 +1356,39 @@ switch(_operation) do {
                     // DEBUG -------------------------------------------------------------------------------------
 
 
-                    // remove the created group count
-                    // from the force pool
-                    _forcePool = _forcePool - _totalCount;
-                    [_logic, "forcePool", _forcePool] call MAINCLASS;
+                    if(_totalCount > 0) then {
 
-                    if(_eventType == "STANDARD") then {
+                        // remove the created group count
+                        // from the force pool
+                        _forcePool = _forcePool - _totalCount;
+                        [_logic, "forcePool", _forcePool] call MAINCLASS;
 
-                        // update the state of the event
-                        // next state is transport load
-                        [_event, "state", "transportLoad"] call ALIVE_fnc_hashSet;
+                        if(_eventType == "STANDARD") then {
+
+                            // update the state of the event
+                            // next state is transport load
+                            [_event, "state", "transportLoad"] call ALIVE_fnc_hashSet;
+
+                        }else{
+
+                            // update the state of the event
+                            // next state is aridrop wait
+                            [_event, "state", "airdropWait"] call ALIVE_fnc_hashSet;
+
+                        };
+
+                        [_event, "cargoProfiles", _eventCargoProfiles] call ALIVE_fnc_hashSet;
+                        [_event, "transportProfiles", _eventTransportProfiles] call ALIVE_fnc_hashSet;
+                        [_event, "transportVehiclesProfiles", _eventTransportVehiclesProfiles] call ALIVE_fnc_hashSet;
+
+                        [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
                     }else{
 
-                        // update the state of the event
-                        // next state is aridrop wait
-                        [_event, "state", "airdropWait"] call ALIVE_fnc_hashSet;
-
+                        // no profiles were created
+                        // nothing to do so cancel..
+                        [_logic, "removeEvent", _eventID] call MAINCLASS;
                     };
-
-                    [_event, "cargoProfiles", _eventCargoProfiles] call ALIVE_fnc_hashSet;
-                    [_event, "transportProfiles", _eventTransportProfiles] call ALIVE_fnc_hashSet;
-                    [_event, "transportVehiclesProfiles", _eventTransportVehiclesProfiles] call ALIVE_fnc_hashSet;
-
-                    [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                 };
             };
 
@@ -1521,7 +1575,7 @@ switch(_operation) do {
             case "transportStart": {
 
                 private ["_transportProfiles","_infantryProfiles","_armourProfiles","_mechanisedProfiles","_motorisedProfiles",
-                "_planeProfiles","_heliProfiles","_profileWaypoint","_profile"];
+                "_planeProfiles","_heliProfiles","_profileWaypoint","_profile","_position"];
 
                 // assign waypoints to all
 
@@ -1536,48 +1590,62 @@ switch(_operation) do {
                 _eventPosition = [_eventPosition] call ALIVE_fnc_getClosestRoad;
 
                 {
-                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                     [_x, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
                 } forEach _transportProfiles;
 
                 {
-                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                     _profile = _x select 0;
                     [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
                 } forEach _infantryProfiles;
 
                 {
-                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                     _profile = _x select 0;
                     [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
                 } forEach _armourProfiles;
 
                 {
-                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                     _profile = _x select 0;
                     [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
                 } forEach _mechanisedProfiles;
 
                 {
-                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                     _profile = _x select 0;
                     [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
                 } forEach _motorisedProfiles;
 
                 {
-                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                     _profile = _x select 0;
                     [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
                 } forEach _planeProfiles;
 
                 {
-                    _profileWaypoint = [_eventPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                     _profile = _x select 0;
                     [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
@@ -1599,7 +1667,7 @@ switch(_operation) do {
 
                 private ["_waitTotalIterations","_waitIterations","_transportProfiles","_infantryProfiles",
                 "_armourProfiles","_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles",
-                "_waypointsCompleted","_waypointsNotCompleted","_profile","_waypoints"];
+                "_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance"];
 
                 // mechanism for aborting this state
                 // once set time limit has passed
@@ -1626,8 +1694,10 @@ switch(_operation) do {
                 _waypointsNotCompleted = 0;
 
                 {
-                    _waypoints = _x select 2 select 16;
-                    if(count _waypoints > 0) then {
+                    _position = _x select 2 select 2;
+                    _distance = _position distance _eventPosition;
+
+                    if(_distance > 600) then {
                         _waypointsNotCompleted = _waypointsNotCompleted + 1;
                     }else{
                         _waypointsCompleted = _waypointsCompleted + 1;
@@ -1638,8 +1708,11 @@ switch(_operation) do {
                 if((_waypointsNotCompleted == 0) && (_waypointsCompleted == 0)) then {
                     {
                         _profile = _x select 0;
-                        _waypoints = _profile select 2 select 16;
-                        if(count _waypoints > 0) then {
+
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
+
+                        if(_distance > 600) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -1650,8 +1723,11 @@ switch(_operation) do {
 
                 {
                     _profile = _x select 0;
-                    _waypoints = _profile select 2 select 16;
-                    if(count _waypoints > 0) then {
+
+                    _position = _profile select 2 select 2;
+                    _distance = _position distance _eventPosition;
+
+                    if(_distance > 600) then {
                         _waypointsNotCompleted = _waypointsNotCompleted + 1;
                     }else{
                         _waypointsCompleted = _waypointsCompleted + 1;
@@ -1661,8 +1737,11 @@ switch(_operation) do {
 
                 {
                     _profile = _x select 0;
-                    _waypoints = _profile select 2 select 16;
-                    if(count _waypoints > 0) then {
+
+                    _position = _profile select 2 select 2;
+                    _distance = _position distance _eventPosition;
+
+                    if(_distance > 600) then {
                         _waypointsNotCompleted = _waypointsNotCompleted + 1;
                     }else{
                         _waypointsCompleted = _waypointsCompleted + 1;
@@ -1672,8 +1751,11 @@ switch(_operation) do {
 
                 {
                     _profile = _x select 0;
-                    _waypoints = _profile select 2 select 16;
-                    if(count _waypoints > 0) then {
+
+                    _position = _profile select 2 select 2;
+                    _distance = _position distance _eventPosition;
+
+                    if(_distance > 600) then {
                         _waypointsNotCompleted = _waypointsNotCompleted + 1;
                     }else{
                         _waypointsCompleted = _waypointsCompleted + 1;
@@ -1683,18 +1765,25 @@ switch(_operation) do {
 
                 {
                     _profile = _x select 0;
-                    _waypoints = _profile select 2 select 16;
-                    if(count _waypoints > 0) then {
+
+                    _position = _profile select 2 select 2;
+                    _distance = _position distance _eventPosition;
+
+                    if(_distance > 600) then {
                         _waypointsNotCompleted = _waypointsNotCompleted + 1;
                     }else{
                         _waypointsCompleted = _waypointsCompleted + 1;
                     };
+
                 } forEach _planeProfiles;
 
                 {
                     _profile = _x select 0;
-                    _waypoints = _profile select 2 select 16;
-                    if(count _waypoints > 0) then {
+
+                    _position = _profile select 2 select 2;
+                    _distance = _position distance _eventPosition;
+
+                    if(_distance > 600) then {
                         _waypointsNotCompleted = _waypointsNotCompleted + 1;
                     }else{
                         _waypointsCompleted = _waypointsCompleted + 1;
@@ -1702,8 +1791,6 @@ switch(_operation) do {
 
                 } forEach _heliProfiles;
 
-
-                //["TRANSPORT TRAVEL WP COMPLETE: %1 WP NOT COMPLETE: %2",_waypointsCompleted,_waypointsNotCompleted] call ALIVE_fnc_dump;
 
                 // all waypoints completed
 
