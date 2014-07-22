@@ -510,6 +510,9 @@ switch(_operation) do {
 					// killed event handler
 					_eventID = _vehicle addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
 
+                    // getin event handler
+					_vehicle addEventHandler ["getIn", ALIVE_fnc_profileGetInEventHandler];
+
 					// set profile as active and store a reference to the unit on the profile
 					[_logic,"vehicle",_vehicle] call ALIVE_fnc_hashSet;
 					[_logic,"active",true] call ALIVE_fnc_hashSet;

@@ -570,9 +570,6 @@ switch(_operation) do {
                 _customSpecOpsCount = parseNumber _customSpecOpsCount;
 			};
 
-			["CUSTOM COUNT: INF: %1 MOT: %2 MEC: %3 ARM: %4 SPE: %5",_customInfantryCount,_customMotorisedCount,_customMechanisedCount,_customArmourCount,_customSpecOpsCount] call ALIVE_fnc_dump;
-
-			
 			_countHQClusters = count _HQClusters;
 			_countAirClusters = count _airClusters;
 			_countHeliClusters = count _heliClusters;

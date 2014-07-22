@@ -66,6 +66,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileKilledEventHandler.sqf";
 				recompile = RECOMPILE;
 			};
+			class profileGetInEventHandler {
+                description = "profileGetInEventHandler";
+                file = "\x\alive\addons\sys_profile\fnc_profileGetInEventHandler.sqf";
+                recompile = RECOMPILE;
+            };
 			class createProfileWaypoint {
 				description = "createProfileWaypoint";
 				file = "\x\alive\addons\sys_profile\fnc_createProfileWaypoint.sqf";

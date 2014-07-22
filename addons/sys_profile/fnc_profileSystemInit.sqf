@@ -72,7 +72,8 @@ if(isServer) then {
 };
 
 if(hasInterface) then {
-    player addEventHandler ["killed", {
+    player addEventHandler ["killed",
+    {
         []spawn {
             _uid = getPlayerUID player;
 
@@ -91,7 +92,6 @@ if(hasInterface) then {
             ["server","PS",[["RESPAWN",_uid,player],{call ALIVE_fnc_createProfilesFromPlayers}]] call ALiVE_fnc_BUS;
         };
     }];
-
 };
 
 [_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
