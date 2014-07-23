@@ -796,9 +796,8 @@ switch(_operation) do {
 					[_logic,"active", true] call ALIVE_fnc_hashSet;
 
                     // select a random formation
-					_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE", "LINE"];
+					_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE"];
 					_formation = _formations call BIS_fnc_selectRandom;
-					["FORMATION: %1",_formation] call ALIVE_fnc_dump;
 					_group setFormation _formation;
 
                     //["Profile [%1] Spawn - Create Waypoints",_profileID] call ALIVE_fnc_dump;
