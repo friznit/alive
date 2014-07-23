@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAlivePlayerBase;
+        class ADDON : ModuleAlivePlayerBase
         {
 				scope = 2;
 				displayName = "$STR_ALIVE_player";

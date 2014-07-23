@@ -11,8 +11,8 @@ class CfgFactionClasses {
 		priority = 102;
 		side = 7;
 	};
-	class AliveAmbient {
-		displayName = "$STR_ALIVE_AMBIENT";
+	class AlivePlayer {
+		displayName = "$STR_ALIVE_MPLAYER";
 		priority = 103;
 		side = 7;
 	};
@@ -53,10 +53,10 @@ class CfgVehicles {
 		displayName = "EditorAliveSupportBase";
 		category = "AliveSupport";
 	};
-	class ModuleAliveAmbientBase: Module_F {
+	class ModuleAlivePlayerBase: Module_F {
 		scope = 1;
-		displayName = "EditorAliveAmbientBase";
-		category = "AliveAmbient";
+		displayName = "EditorAlivePlayerBase";
+		category = "AlivePlayer";
 	};
 	class ModuleAliveEnemyBase: Module_F {
 		scope = 1;

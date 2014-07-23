@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_XSTREAM">
-    <English>ALiVE xStream</English>
+    <English>xStream</English>
 </Key>
 <Key ID="STR_ALIVE_XSTREAM_COMMENT">
     <English>ALiVE xStream service for streaming live operations to the ALiVE War Room</English>

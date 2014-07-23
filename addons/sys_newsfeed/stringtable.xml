@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_NEWSFEED">
-	<English>ALiVE Newsfeed</English>
+	<English>Newsfeed</English>
 </Key>
 <Key ID="STR_ALIVE_NEWSFEED_COMMENT">
 	<English>ALiVE Newsfeed direct to in Game</English>

@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAliveCivilianBase;
+        class ADDON : ModuleAliveCivilianBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_CIV_POP";

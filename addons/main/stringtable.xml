@@ -8,8 +8,8 @@
 <Key ID="STR_ALIVE_SUPPORT">
 	<Original>ALiVE Support</Original>
 </Key>
-<Key ID="STR_ALIVE_AMBIENT">
-	<Original>ALiVE Ambience</Original>
+<Key ID="STR_ALIVE_MPLAYER">
+	<Original>ALiVE Player</Original>
 </Key>
 <Key ID="STR_ALIVE_ENEMY">
 	<Original>ALiVE Enemy</Original>

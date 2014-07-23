@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveSupportBase;
-        class ADDON : ModuleAliveSupportBase
+        class ModuleAlivePlayerBase;
+        class ADDON : ModuleAlivePlayerBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_multispawn";

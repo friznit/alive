@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAlivePlayerBase;
+        class ADDON : ModuleAlivePlayerBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_CREWINFO";
@@ -45,7 +45,7 @@ class CfgVehicles {
 			                                        {
 			                                                name = "Right";
 			                                                value = 1;
-																											default = 1;
+                                                            default = 1;
 			                                        };
 			                                        class uiLeft
 			                                        {
