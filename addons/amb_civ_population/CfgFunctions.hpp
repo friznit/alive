@@ -36,6 +36,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_population\fnc_agentKilledEventHandler.sqf";
                 recompile = RECOMPILE;
             };
+            class agentGetInEventHandler {
+                description = "agentGetInEventHandler";
+                file = "\x\alive\addons\amb_civ_population\fnc_agentGetInEventHandler.sqf";
+                recompile = RECOMPILE;
+            };
             class agentHandler {
                 description = "agentHandler";
                 file = "\x\alive\addons\amb_civ_population\fnc_agentHandler.sqf";

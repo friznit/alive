@@ -321,6 +321,9 @@ switch(_operation) do {
             // killed event handler
             _eventID = _unit addEventHandler["Killed", ALIVE_fnc_agentKilledEventHandler];
 
+            // getin event handler
+            _eventID = _unit addEventHandler["getIn", ALIVE_fnc_agentGetInEventHandler];
+
             // set profile as active and store a reference to the unit on the profile
             [_logic,"unit",_unit] call ALIVE_fnc_hashSet;
             [_logic,"active",true] call ALIVE_fnc_hashSet;

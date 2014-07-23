@@ -21,7 +21,7 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_unit","_profileID","_profile","_profileType","_position","_faction","_side","_event","_eventID"];
+private ["_unit","_getInUnit","_profileID","_profile"];
 	
 _unit = _this select 0;
 _getInUnit = _this select 2;
