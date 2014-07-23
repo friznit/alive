@@ -686,7 +686,7 @@ switch(_operation) do {
 		case "spawn": {
 				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
 				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_activeCommands","_inactiveCommands","_group","_unitPosition","_eventID",
-				"_waypointCount","_unitCount","_units","_unit","_vehiclesInCommandOf","_vehiclesInCargoOf","_paraDrop","_parachute","_soundFlyover"];
+				"_waypointCount","_unitCount","_units","_unit","_vehiclesInCommandOf","_vehiclesInCargoOf","_paraDrop","_parachute","_soundFlyover","_formations"];
 				
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
@@ -725,10 +725,17 @@ switch(_operation) do {
 					_group = createGroup _sideObject;
 
                     _paraDrop = false;
-                    if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0) && ((_position select 2) > 300)) then {
-                        _paraDrop = true;
-                        ["!!!!!!!!!!!!!!!!!!PARADROP!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
+                    if((_position select 2) > 300) then {
+                        if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0)) then {
+                            _paraDrop = true;
+                            ["!!!!!!!!!!!!!!!!!!PARADROP!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
+                        };
+                    }else{
+                        if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0)) then {
+                            _position set [2,0];
+                        };
                     };
+
 
                     //["Profile [%1] Spawn - Spawn Units",_profileID] call ALIVE_fnc_dump;
                     //[true] call ALIVE_fnc_timer;
@@ -787,6 +794,12 @@ switch(_operation) do {
 					[_logic,"group", _group] call ALIVE_fnc_hashSet;
 					[_logic,"units", _units] call ALIVE_fnc_hashSet;
 					[_logic,"active", true] call ALIVE_fnc_hashSet;
+
+                    // select a random formation
+					_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE", "LINE"];
+					_formation = _formations call BIS_fnc_selectRandom;
+					["FORMATION: %1",_formation] call ALIVE_fnc_dump;
+					_group setFormation _formation;
 
                     //["Profile [%1] Spawn - Create Waypoints",_profileID] call ALIVE_fnc_dump;
                     //[true] call ALIVE_fnc_timer;
