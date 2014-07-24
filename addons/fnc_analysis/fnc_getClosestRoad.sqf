@@ -32,8 +32,6 @@ private ["_position","_radius","_result","_err", "_sector","_sectorData","_secto
 _position = _this select 0;
 //_radius = _this select 1;
 
-_result = _position;
-
 _err = format["get closest road requires a position array - %1",_position];
 ASSERT_TRUE(typeName _position == "ARRAY",_err);
 //_err = format["get closest sea requires a radius scalar - %1",_radius];
@@ -47,7 +45,7 @@ _roads = [_sectorRoads, "road"] call ALIVE_fnc_hashGet;
 if(count _roads > 0) then {
 	_roads = [_sectorData, "roads", [_position, "road"]] call ALIVE_fnc_sectorDataSort;
 	_road = _roads select 0;
-	_result = _road select 0;
+	_position = _road select 0;
 }else{
 	_sectors = [ALIVE_sectorGrid, "surroundingSectors", _position] call ALIVE_fnc_sectorGrid;	
 	_sectors = [_sectors] call ALIVE_fnc_sectorFilterRoads;
@@ -63,10 +61,12 @@ if(count _roads > 0) then {
 		}else{
 			_road = _roads select (floor(random((count _roads)-1)));
 		};
-		_result = _road select 0;
+		_position = _road select 0;
 	}else{
 	
 	};
 };
+
+_result = _position;
 
 _result

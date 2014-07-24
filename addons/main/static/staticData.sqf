@@ -200,6 +200,12 @@ ALIVE_sideDefaultTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultTransport, "GUER", ["I_Truck_02_covered_F","I_Truck_02_transport_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultTransport, "CIV", ["C_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
 
+ALIVE_sideDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
+[ALIVE_sideDefaultAirTransport, "EAST", ["O_Heli_Attack_02_F","O_Heli_Light_02_F"]] call ALIVE_fnc_hashSet; // ,"Box_East_AmmoVeh_F"
+[ALIVE_sideDefaultAirTransport, "WEST", ["B_Heli_Transport_01_camo_F","B_Heli_Transport_01_camo_F"]] call ALIVE_fnc_hashSet; // ,"Box_IND_AmmoVeh_F"
+[ALIVE_sideDefaultAirTransport, "GUER", ["I_Heli_light_03_unarmed_F","I_Heli_Transport_02_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_sideDefaultAirTransport, "CIV", []] call ALIVE_fnc_hashSet;
+
 ALIVE_factionDefaultSupports = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupports, "OPF_F", ["O_Truck_02_Ammo_F","O_Truck_02_box_F","O_Truck_02_fuel_F","O_Truck_02_medical_F","O_Truck_02_transport_F","O_Truck_02_covered_F"]] call ALIVE_fnc_hashSet; // ,"Box_East_AmmoVeh_F"
 [ALIVE_factionDefaultSupports, "OPF_G_F", ["O_G_Offroad_01_armed_F","O_G_Van_01_fuel_F","O_G_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
@@ -222,6 +228,14 @@ ALIVE_factionDefaultTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultTransport, "BLU_F", ["B_Truck_01_transport_F","B_Truck_01_covered_F"]] call ALIVE_fnc_hashSet; // ,"Box_NATO_AmmoVeh_F"
 [ALIVE_factionDefaultTransport, "BLU_G_F", ["B_G_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultTransport, "CIV_F", ["C_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
+
+ALIVE_factionDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
+[ALIVE_factionDefaultAirTransport, "OPF_F", ["O_Heli_Attack_02_F","O_Heli_Light_02_F"]] call ALIVE_fnc_hashSet; // ,"Box_East_AmmoVeh_F"
+[ALIVE_factionDefaultAirTransport, "OPF_G_F", ["I_Heli_light_03_unarmed_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "IND_F", ["I_Heli_light_03_unarmed_F","I_Heli_Transport_02_F"]] call ALIVE_fnc_hashSet; // ,"Box_IND_AmmoVeh_F"
+[ALIVE_factionDefaultAirTransport, "BLU_F", ["B_Heli_Transport_01_camo_F","B_Heli_Transport_01_camo_F"]] call ALIVE_fnc_hashSet; // ,"Box_NATO_AmmoVeh_F"
+[ALIVE_factionDefaultAirTransport, "BLU_G_F", ["I_Heli_light_03_unarmed_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "CIV_F", []] call ALIVE_fnc_hashSet;
 
 /*
  * Civ Pop Defaults

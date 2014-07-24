@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
 
 #include <\x\alive\addons\mil_logistics\script_component.hpp>
-SCRIPT(test_ML);
+SCRIPT(test_ML_HELI_INSERT);
 
-//execVM "\x\alive\addons\mil_logistics\tests\test_ML.sqf"
+//execVM "\x\alive\addons\mil_logistics\tests\test_ML_HELI_INSERT.sqf"
 
 // ----------------------------------------------------------------------------
 
@@ -44,37 +44,15 @@ _faction = "BLU_F";
 _side = "west";
 
 _forceMakeup = [
-    floor(random(5)), // infantry
-    floor(random(5)), // motorised
-    floor(random(5)), // mechanised
-    floor(random(5)), // armour
-    floor(random(2)), // plane
-    floor(random(2))  // heli
-];
-
-/*
-_forceMakeup = [
-    6, // infantry
+    5, // infantry
     0, // motorised
     0, // mechanised
     0, // armour
     0, // plane
     0  // heli
 ];
-*/
 
-/*
-_forceMakeup = [
-    3, // infantry
-    3, // motorised
-    4, // mechanised
-    2, // armour
-    2, // plane
-    2  // heli
-];
-*/
-
-_event = ['LOGCOM_REQUEST', [_position,_faction,_side,_forceMakeup,"STANDARD"],"OPCOM"] call ALIVE_fnc_event;
+_event = ['LOGCOM_REQUEST', [_position,_faction,_side,_forceMakeup,"HELI_INSERT"],"OPCOM"] call ALIVE_fnc_event;
 _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
 nil;

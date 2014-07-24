@@ -166,6 +166,21 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_analysis\fnc_getClosestRoad.sqf";
 				recompile = RECOMPILE;
 			};
+			class getClosestInActive {
+                description = "getClosestInActive";
+                file = "\x\alive\addons\fnc_analysis\fnc_getClosestInActive.sqf";
+                recompile = RECOMPILE;
+            };
+            class sectorFilterActive {
+                description = "sectorFilterActive";
+                file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterActive.sqf";
+                recompile = RECOMPILE;
+            };
+            class getPositionDistancePlayers {
+                description = "getPositionDistancePlayers";
+                file = "\x\alive\addons\fnc_analysis\fnc_getPositionDistancePlayers.sqf";
+                recompile = RECOMPILE;
+            };
 			class liveAnalysis {
 				description = "liveAnalysis";
 				file = "\x\alive\addons\fnc_analysis\fnc_liveAnalysis.sqf";
