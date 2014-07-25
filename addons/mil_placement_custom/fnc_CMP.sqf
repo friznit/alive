@@ -1,5 +1,5 @@
 //#define DEBUG_MPDE_FULL
-#include <\x\alive\addons\mil_placement\script_component.hpp>
+#include <\x\alive\addons\mil_placement_custom\script_component.hpp>
 SCRIPT(CMP);
 
 /* ----------------------------------------------------------------------------
@@ -26,10 +26,9 @@ Examples:
 [_logic, "faction", "OPF_F"] call ALiVE_fnc_CMP;
 
 See Also:
-- <ALIVE_fnc_MPInit>
+- <ALIVE_fnc_CMPInit>
 
 Author:
-Wolffy
 ARJay
 ---------------------------------------------------------------------------- */
 
@@ -40,6 +39,7 @@ ARJay
 #define DEFAULT_SIZE "50"
 #define DEFAULT_PRIORITY "50"
 #define DEFAULT_NO_TEXT "0"
+#define DEFAULT_COMPOSITION false
 
 private ["_logic","_operation","_args","_result"];
 
@@ -127,6 +127,18 @@ switch(_operation) do {
 	case "priority": {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY] call ALIVE_fnc_OOsimpleOperation;
 	};
+	case "composition": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["composition", _args];
+        } else {
+            _args = _logic getVariable ["composition", false];
+        };
+        if (typeName _args == "STRING") then {
+                _logic setVariable ["composition", _args];
+        };
+
+        _result = _args;
+    };
 	// Main process
 	case "init": {
         if (isServer) then {
@@ -176,7 +188,8 @@ switch(_operation) do {
         if (isServer) then {
 		
 			private ["_debug","_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount",
-			"_faction","_factionConfig","_factionSideNumber","_side","_countProfiles","_file","_size","_priority","_position","_moduleObject","_module","_objectiveName","_objective"];
+			"_faction","_factionConfig","_factionSideNumber","_side","_countProfiles","_file","_size","_priority",
+			"_position","_moduleObject","_module","_objectiveName","_objective","_composition","_bisCompositions","_configPath","_guardGroup","_guards"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;
 			
@@ -216,18 +229,37 @@ switch(_operation) do {
                 _priority = parseNumber _priority;
             };
 
+            _composition = [_logic, "composition"] call MAINCLASS;
 
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
 			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
 			_countProfiles = 0;
 			_position = position _logic;
+
+            // Spawn the composition
+
+			if (typeName _composition == "STRING") then {
+
+			    _bisCompositions = ["OutpostA","OutpostB","OutpostC","OutpostD","OutpostE","OutpostF"];
+
+			    if(_composition in _bisCompositions) then {
+                    _configPath = configFile >> "CfgGroups" >> "Empty" >> "Military" >> "Outposts";
+			    }else{
+                    _configPath = configFile >> "CfgGroups" >> "Empty" >> "Custom" >> "Camps";
+			    };
+
+			    _compositionGroup = _configPath >> _composition;
+
+			    [_position, WEST, (_compositionGroup)] call BIS_fnc_spawnGroup
+
+			};
 			
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 			    ["ALIVE CMP [%1] - Size: %1 Priority: %2",_size,_priority] call ALIVE_fnc_dump;
-				["ALIVE CMP [%1] - SideNum: %1 Side: %2 Faction: %3",_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;
+				["ALIVE CMP [%1] - SideNum: %1 Side: %2 Faction: %3 Composition: %4",_factionSideNumber,_side,_faction,_composition] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------			
 			
@@ -342,6 +374,18 @@ switch(_operation) do {
 			_totalCount = 0;
 
 			if(_groupCount > 0) then {
+
+			    if(count _infantryGroups > 0) then {
+                    _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
+                    _guards = [_guardGroup, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                    //ARJay, here we could place the default patrols/garrisons instead of the static garrisson if you like to (same is in CIV MP)
+                    {
+                        if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity;
+                        };
+                    } foreach _guards;
+                };
 			
                 for "_i" from 0 to _groupCount -1 do {
 
@@ -358,7 +402,8 @@ switch(_operation) do {
             }else{
                 ["ALIVE CMP - Warning no usable groups found to use the faction used may be faulty."] call ALIVE_fnc_dumpR;
             };
-            
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE CMP - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
@@ -368,6 +413,7 @@ switch(_operation) do {
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 
+
 			// set module as started
             _logic setVariable ["startupComplete", true];
 
@@ -375,5 +421,5 @@ switch(_operation) do {
 	};
 };
 
-TRACE_1("MP - output",_result);
+TRACE_1("CMP - output",_result);
 _result;

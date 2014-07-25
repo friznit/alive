@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="str_a3_cfggroups_east_opf_f_infantry_oia_infwepteam0">
+	<Original>Weapons Team</Original>
+</Key>
+</Container></Package></Project>

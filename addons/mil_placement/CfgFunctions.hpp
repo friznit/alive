@@ -11,16 +11,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_placement\fnc_MPInit.sqf";
                                 recompile = RECOMPILE;
                         };
-                        class CMP {
-                                description = "The main class";
-                                file = "\x\alive\addons\mil_placement\fnc_CMP.sqf";
-                                recompile = RECOMPILE;
-                        };
-                        class CMPInit {
-                                description = "The module initialisation function";
-                                file = "\x\alive\addons\mil_placement\fnc_CMPInit.sqf";
-                                recompile = RECOMPILE;
-                        };
 						class milClusterGeneration {
                                 description = "Generates static cluster output";
                                 file = "\x\alive\addons\mil_placement\fnc_milClusterGeneration.sqf";
