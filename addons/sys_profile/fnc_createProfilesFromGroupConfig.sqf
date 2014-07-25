@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_groupClass","_position","_direction","_spawnGoodPosition","_config","_groupName","_groupSide","_groupFaction",
+private ["_groupClass","_position","_direction","_spawnGoodPosition","_prefix","_busy","_config","_groupName","_groupSide","_groupFaction",
 "_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
 
 _groupClass = _this select 0;
@@ -35,6 +35,7 @@ _position = _this select 1;
 _direction = if(count _this > 2) then {_this select 2} else {0};
 _spawnGoodPosition = if(count _this > 3) then {_this select 3} else {true};
 _prefix = if(count _this > 4) then {_this select 4} else {""};
+_busy = if(count _this > 5) then {_this select 5} else {false};
 
 _groupProfiles = [];
 
@@ -121,6 +122,7 @@ if(count _config > 0) then {
 	[_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "faction", _groupFaction] call ALIVE_fnc_profileEntity;
 	[_profileEntity, "objectType", _groupClass] call ALIVE_fnc_profileEntity;
+	[_profileEntity, "busy", _busy] call ALIVE_fnc_profileEntity;
 
 	if!(_spawnGoodPosition) then {
 		[_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
@@ -156,6 +158,7 @@ if(count _config > 0) then {
 		[_profileVehicle, "faction", _groupFaction] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
+		[_profileVehicle, "busy", _busy] call ALIVE_fnc_profileVehicle;
 		
 		if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 			[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;

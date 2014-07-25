@@ -267,6 +267,7 @@ switch(_operation) do {
 					[_logic,"isPlayer",false] call ALIVE_fnc_hashSet; // select 2 select 30
 					[_logic,"_rev",""] call ALIVE_fnc_hashSet; // select 2 select 31
 					[_logic,"_id",""] call ALIVE_fnc_hashSet; // select 2 select 32
+					[_logic,"busy",false] call ALIVE_fnc_hashSet; // select 2 select 33
                 };
 
                 /*
@@ -411,6 +412,12 @@ switch(_operation) do {
                         [_logic,"isPlayer",_args] call ALIVE_fnc_hashSet;
                 };
                 _result = [_logic,"isPlayer"] call ALIVE_fnc_hashGet;
+        };
+        case "busy": {
+                if(typeName _args == "BOOL") then {
+                        [_logic,"busy",_args] call ALIVE_fnc_hashSet;
+                };
+                _result = [_logic,"busy"] call ALIVE_fnc_hashGet;
         };
 		case "unitCount": {
 				private ["_unitClasses","_unitCount"];

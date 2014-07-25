@@ -43,6 +43,7 @@ _position = [getPos player, 20, 180] call BIS_fnc_relPos;
 _faction = "BLU_F";
 _side = "west";
 
+/*
 _forceMakeup = [
     floor(random(5)), // infantry
     floor(random(5)), // motorised
@@ -51,8 +52,8 @@ _forceMakeup = [
     floor(random(2)), // plane
     floor(random(2))  // heli
 ];
+*/
 
-/*
 _forceMakeup = [
     3, // infantry
     0, // motorised
@@ -61,7 +62,6 @@ _forceMakeup = [
     0, // plane
     0  // heli
 ];
-*/
 
 /*
 _forceMakeup = [

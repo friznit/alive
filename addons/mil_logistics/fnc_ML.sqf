@@ -939,6 +939,66 @@ switch(_operation) do {
         };
 
     };
+
+    case "setEventProfilesAvailable": {
+
+        private ["_debug","_event","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
+        "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile"];
+
+        _debug = [_logic, "debug"] call MAINCLASS;
+        _event = _args;
+
+        _eventCargoProfiles = [_event, "cargoProfiles"] call ALIVE_fnc_hashGet;
+
+        _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
+        _armourProfiles = [_eventCargoProfiles, 'armour'] call ALIVE_fnc_hashGet;
+        _mechanisedProfiles = [_eventCargoProfiles, 'mechanised'] call ALIVE_fnc_hashGet;
+        _motorisedProfiles = [_eventCargoProfiles, 'motorised'] call ALIVE_fnc_hashGet;
+        _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
+        _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
+
+        {
+            _profile = _x select 0;
+            [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+        } forEach _infantryProfiles;
+
+        {
+            {
+                [_x,"busy",false] call ALIVE_fnc_hashSet;
+            } forEach _x;
+
+        } forEach _armourProfiles;
+
+        {
+            {
+                [_x,"busy",false] call ALIVE_fnc_hashSet;
+            } forEach _x;
+
+        } forEach _mechanisedProfiles;
+
+        {
+            {
+                [_x,"busy",false] call ALIVE_fnc_hashSet;
+            } forEach _x;
+
+        } forEach _motorisedProfiles;
+
+        {
+            {
+                [_x,"busy",false] call ALIVE_fnc_hashSet;
+            } forEach _x;
+
+        } forEach _planeProfiles;
+
+        {
+            {
+                [_x,"busy",false] call ALIVE_fnc_hashSet;
+            } forEach _x;
+
+        } forEach _heliProfiles;
+    };
+
     case "monitorEvent": {
 
          private ["_debug","_event","_reinforcementAnalysis","_side","_eventID","_eventData","_eventPosition","_eventSide","_eventFaction",
@@ -987,8 +1047,8 @@ switch(_operation) do {
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
-            //["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
-            //_event call ALIVE_fnc_inspectHash;
+            ["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
+            _event call ALIVE_fnc_inspectHash;
             //_reinforcementAnalysis call ALIVE_fnc_inspectHash;
         };
         // DEBUG -------------------------------------------------------------------------------------
@@ -1118,7 +1178,7 @@ switch(_operation) do {
 
                         if!(surfaceIsWater _position) then {
 
-                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
 
                             _infantryProfiles set [count _infantryProfiles, _profiles];
 
@@ -1153,7 +1213,7 @@ switch(_operation) do {
 
                                     _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
 
-                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction] call ALIVE_fnc_createProfilesCrewedVehicle;
+                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,false,true] call ALIVE_fnc_createProfilesCrewedVehicle;
 
                                     _transportProfiles set [count _transportProfiles, _profiles select 0];
                                     _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1];
@@ -1196,7 +1256,7 @@ switch(_operation) do {
 
                                     _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
 
-                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
 
                                     _transportProfiles set [count _transportProfiles, _profiles select 0];
                                     _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1];
@@ -1255,7 +1315,7 @@ switch(_operation) do {
 
                         if!(surfaceIsWater _position) then {
 
-                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
 
                             _armourProfiles set [count _armourProfiles, _profiles];
 
@@ -1297,7 +1357,7 @@ switch(_operation) do {
 
                         if!(surfaceIsWater _position) then {
 
-                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
 
                             _mechanisedProfiles set [count _mechanisedProfiles, _profiles];
 
@@ -1339,7 +1399,7 @@ switch(_operation) do {
 
                         if!(surfaceIsWater _position) then {
 
-                            _profiles = [_group, _position, random(360), false, _eventFaction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
 
                             _motorisedProfiles set [count _motorisedProfiles, _profiles];
 
@@ -1369,7 +1429,7 @@ switch(_operation) do {
 
                                 _vehicleClass = _planeClasses call BIS_fnc_selectRandom;
 
-                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
 
                                 _planeProfiles set [count _planeProfiles, _profiles];
 
@@ -1407,7 +1467,7 @@ switch(_operation) do {
 
                                 _vehicleClass = _heliClasses call BIS_fnc_selectRandom;
 
-                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
 
                                 _heliProfiles set [count _heliProfiles, _profiles];
 
@@ -1842,6 +1902,8 @@ switch(_operation) do {
 
                             [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
 
+                            [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
+
                             // set state to event complete
                             [_event, "state", "eventComplete"] call ALIVE_fnc_hashSet;
                             [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
@@ -1850,6 +1912,8 @@ switch(_operation) do {
                     } forEach _eventTransportVehiclesProfiles;
 
                     if(_anyActive > 0) then {
+
+                        [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
 
                         // there are active transport vehicles
                         // send them back to insertion point
@@ -1968,7 +2032,7 @@ switch(_operation) do {
 
                 private ["_waitIterations","_waitTotalIterations"];
 
-                _waitTotalIterations = 25;
+                _waitTotalIterations = 20;
                 _waitIterations = 0;
                 if(count _eventStateData > 0) then {
                     _waitIterations = _eventStateData select 0;
@@ -1991,6 +2055,10 @@ switch(_operation) do {
             };
 
             case "airdropComplete": {
+
+                ["COMPLETE!"] call ALIVE_fnc_dump;
+
+                [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
 
                 [_logic, "removeEvent", _eventID] call MAINCLASS;
 
@@ -2471,6 +2539,8 @@ switch(_operation) do {
 
                     if(_anyActive > 0) then {
 
+                        [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
+
                         // there are active transport vehicles
                         // send them back to insertion point
                         [_event, "state", "transportReturn"] call ALIVE_fnc_hashSet;
@@ -2579,6 +2649,8 @@ switch(_operation) do {
             };
 
             case "eventComplete": {
+
+                [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
 
                 [_logic, "removeEvent", _eventID] call MAINCLASS;
 

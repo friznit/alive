@@ -29,7 +29,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_prefix","_engineOn","_position",
+private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_prefix","_engineOn","_busy","_position",
 "_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
 
 _vehicleClass = _this select 0;
@@ -41,6 +41,7 @@ _direction = if(count _this > 5) then {_this select 5} else {0};
 _spawnGoodPosition = if(count _this > 6) then {_this select 6} else {true};
 _prefix = if(count _this > 7) then {_this select 7} else {""};
 _engineOn = if(count _this > 8) then {_this select 8} else {false};
+_busy = if(count _this > 9) then {_this select 9} else {false};
 
 // get counts of current profiles
 
@@ -60,6 +61,7 @@ _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity, "position", _position] call ALIVE_fnc_profileEntity;
 [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
 [_profileEntity, "faction", _faction] call ALIVE_fnc_profileEntity;
+[_profileEntity, "busy", _busy] call ALIVE_fnc_profileEntity;
 
 if!(_spawnGoodPosition) then {
 	[_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
@@ -84,6 +86,7 @@ _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "faction", _faction] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
+[_profileVehicle, "busy", _busy] call ALIVE_fnc_profileVehicle;
 
 if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 	[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;

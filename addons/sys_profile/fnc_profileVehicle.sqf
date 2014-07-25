@@ -228,6 +228,7 @@ switch(_operation) do {
 					[_logic,"faction",""] call ALIVE_fnc_hashSet; // select 2 select 23
 					[_logic,"_rev",""] call ALIVE_fnc_hashSet; // select 2 select 24
 					[_logic,"_id",""] call ALIVE_fnc_hashSet; // select 2 select 25
+					[_logic,"busy",false] call ALIVE_fnc_hashSet; // select 2 select 26
                 };
 
                 /*
@@ -377,6 +378,12 @@ switch(_operation) do {
 						[_logic,"spawnType",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"spawnType"] call ALIVE_fnc_hashGet;
+        };
+        case "busy": {
+                if(typeName _args == "BOOL") then {
+                        [_logic,"busy",_args] call ALIVE_fnc_hashSet;
+                };
+                _result = [_logic,"busy"] call ALIVE_fnc_hashGet;
         };
 		case "addVehicleAssignment": {
 				private ["_assignments","_key","_units","_unit","_group"];
