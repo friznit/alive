@@ -31,6 +31,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class type
+                        {
+                                displayName = "$STR_ALIVE_ML_TYPE";
+                                description = "$STR_ALIVE_ML_TYPE_COMMENT";
+                                class Values
+                                {
+                                        class Dynamic
+                                        {
+                                                name = "$STR_ALIVE_ML_TYPE_DYNAMIC";
+                                                value = "DYNAMIC";
+                                                default = true;
+                                        };
+                                        class FP1000
+                                        {
+                                                name = "$STR_ALIVE_ML_TYPE_STATIC";
+                                                value = "STATIC";
+                                        };
+                                };
+                        };
                         class forcePool
                         {
                                 displayName = "$STR_ALIVE_ML_FORCE_POOL";

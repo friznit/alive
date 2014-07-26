@@ -14,6 +14,18 @@
 <Key ID="STR_ALIVE_ML_DEBUG_COMMENT">
 	<English>Enables ML Module Debug</English>
 </Key>
+<Key ID="STR_ALIVE_ML_TYPE">
+    <English>Reinforcement Type:</English>
+</Key>
+<Key ID="STR_ALIVE_ML_TYPE_COMMENT">
+    <English>Select the type of logistics. Dynamic, will fall back to lower priority objectives if lost. Static will only select the closest objective to use as insertion point</English>
+</Key>
+<Key ID="STR_ALIVE_ML_TYPE_DYNAMIC">
+    <English>Dynamic</English>
+</Key>
+<Key ID="STR_ALIVE_ML_TYPE_STATIC">
+    <English>Static</English>
+</Key>
 <Key ID="STR_ALIVE_ML_FORCE_POOL">
     <English>Force Pool:</English>
 </Key>

@@ -43,6 +43,7 @@ ARJay
 #define DEFAULT_FORCE_POOL_TYPE "FIXED"
 #define DEFAULT_FORCE_POOL "1000"
 #define DEFAULT_ALLOW true
+#define DEFAULT_TYPE "DYNAMIC"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -253,9 +254,14 @@ switch(_operation) do {
 
         _result = _args;
     };
-    case "forcePool": {
-        //_result = [_logic,_operation,_args,DEFAULT_FORCE_POOL] call ALIVE_fnc_OOsimpleOperation;
+    case "type": {
+        if(typeName _args == "STRING") then {
+            _logic setVariable [_operation, parseNumber _args];
+        };
 
+        _result = _logic getVariable [_operation, DEFAULT_TYPE];
+    };
+    case "forcePool": {
         if(typeName _args == "STRING") then {
             _logic setVariable [_operation, parseNumber _args];
         };
@@ -270,7 +276,7 @@ switch(_operation) do {
 	case "init": {
         if (isServer) then {
 
-            private ["_debug","_forcePool","_allowInfantry","_allowMechanised","_allowMotorised","_allowArmour","_allowHeli","_allowPlane"];
+            private ["_debug","_forcePool","_type","_allowInfantry","_allowMechanised","_allowMotorised","_allowArmour","_allowHeli","_allowPlane"];
 
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
@@ -283,6 +289,7 @@ switch(_operation) do {
 
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_forcePool = [_logic, "forcePool"] call MAINCLASS;
+			_type = [_logic, "type"] call MAINCLASS;
 
 			if(typeName _forcePool == "STRING") then {
                 _forcePool = parseNumber _forcePool;
@@ -304,6 +311,7 @@ switch(_operation) do {
             if(_debug) then {
                 ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
                 ["ALIVE ML - Init"] call ALIVE_fnc_dump;
+                ["ALIVE ML - Type: %1",_type] call ALIVE_fnc_dump;
                 ["ALIVE ML - Force pool type: %1 limit: %2",[_logic, "forcePool"] call MAINCLASS,[_logic, "forcePoolType"] call MAINCLASS] call ALIVE_fnc_dump;
                 ["ALIVE ML - Allow infantry requests: %1",_allowInfantry] call ALIVE_fnc_dump;
                 ["ALIVE ML - Allow mechanised requests: %1",_allowMechanised] call ALIVE_fnc_dump;
@@ -426,7 +434,6 @@ switch(_operation) do {
 			} forEach _modules;
 
 
-
 			[_logic, "factions", _modulesFactions] call MAINCLASS;
 			[_logic, "objectives", _modulesObjectives] call MAINCLASS;
 
@@ -444,7 +451,7 @@ switch(_operation) do {
         _logic setVariable ["listenerID", _listenerID];
     };
     case "handleEvent": {
-        private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_forcePool","_eventID",
+        private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_forcePool","_type","_eventID",
         "_eventData","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
         "_eventForcePlane","_eventForceHeli","_forceMakeupTotal","_allowInfantry","_allowMechanised","_allowMotorised",
         "_allowArmour","_allowHeli","_allowPlane"];
@@ -474,6 +481,7 @@ switch(_operation) do {
             if(_factionFound) then {
 
                 _forcePool = [_logic, "forcePool"] call MAINCLASS;
+                _type = [_logic, "type"] call MAINCLASS;
 
                 if(typeName _forcePool == "STRING") then {
                     _forcePool = parseNumber _forcePool;
@@ -574,6 +582,7 @@ switch(_operation) do {
                         // trigger analysis
                         [_logic,"onDemandAnalysis"] call MAINCLASS;
 
+
                     }else{
 
                         // nothing left after non allowed types ruled out
@@ -600,19 +609,9 @@ switch(_operation) do {
 
         };
     };
-    case "removeEvent": {
-        private["_debug","_eventID","_eventQueue"];
 
-        _eventID = _args;
-        _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
-
-        [_eventQueue,_eventID] call ALIVE_fnc_hashRem;
-
-        [_logic, "eventQueue", _eventQueue] call MAINCLASS;
-
-    };
     case "onDemandAnalysis": {
-        private["_debug","_analysisInProgress","_forcePoolType","_forcePool","_objectives"];
+        private["_debug","_analysisInProgress","_type","_forcePoolType","_forcePool","_objectives"];
 
         if (isServer) then {
 
@@ -624,6 +623,7 @@ switch(_operation) do {
 
                 _logic setVariable ["analysisInProgress", true];
 
+                _type = [_logic, "type"] call MAINCLASS;
                 _forcePoolType = [_logic, "forcePoolType"] call MAINCLASS;
                 _forcePool = [_logic, "forcePool"] call MAINCLASS;
                 if(typeName _forcePool == "STRING") then {
@@ -636,7 +636,7 @@ switch(_operation) do {
 
                 // DEBUG -------------------------------------------------------------------------------------
                 if(_debug) then {
-                    ["ALIVE ML - On demand analysis started"] call ALIVE_fnc_dump;
+                    ["ALIVE ML - On demand dynamic analysis started"] call ALIVE_fnc_dump;
                 };
                 // DEBUG -------------------------------------------------------------------------------------
 
@@ -671,14 +671,14 @@ switch(_operation) do {
 
                 private["_previousReinforcementAnalysis","_previousReinforcementAnalysisPriorityTotal"];
 
+                _previousReinforcementAnalysis = [_logic, "reinforcementAnalysis"] call MAINCLASS;
+
                 // if the force pool type is dynamic
                 // calculate the new pool
                 if(_forcePoolType == "DYNAMIC") then {
 
                     //["DYNAMIC FORCE POOL"] call ALIVE_fnc_dump;
                     //["CURRENT FORCE POOL: %1",_forcePool] call ALIVE_fnc_dump;
-
-                    _previousReinforcementAnalysis = [_logic, "reinforcementAnalysis"] call MAINCLASS;
 
                     // if there is a previous analysis
                     if(count _previousReinforcementAnalysis > 0) then {
@@ -733,75 +733,158 @@ switch(_operation) do {
                 };
 
 
-                private["_primaryReinforcementObjective","_secondaryReinforcementObjective","_reinforcementType","_sortedClusters",
-                "_sortedObjectives","_primaryReinforcementObjectivePriority","_reinforcementAnalysis"];
+                private["_primaryReinforcementObjective","_reinforcementType","_sortedClusters",
+                "_sortedObjectives","_primaryReinforcementObjectivePriority","_reinforcementAnalysis",
+                "_previousPrimaryObjective","_available"];
 
                 _primaryReinforcementObjective = [] call ALIVE_fnc_hashCreate;
-                _secondaryReinforcementObjective = [] call ALIVE_fnc_hashCreate;
                 _reinforcementType = "";
+                _available = false;
 
-                //_reserve = [];
+                if(_type == "STATIC") then {
 
-                if(count _reserve > 0) then {
+                    // Static analysis, only one insertion point
+                    // may be held. This point is dictated
+                    // by the placement location
+                    // once lost the insertion point is
+                    // deactivated until recaptured
 
-                    // OPCOM controls some objectives
-                    // reinforcements can be delivered
-                    // directly assuming heli pads or
-                    // airstrips are available
+                    // if there is no previous analysis
+                    if(count _previousReinforcementAnalysis == 0) then {
 
+                        if(count _objectives > 0) then {
 
-                    // sort reserved objectives by priority
-                    _sortedObjectives = [_reserve,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"ASCEND"] call BIS_fnc_sortBy;
+                            // sort objectives by distance to module
+                            _sortedObjectives = [_objectives,[],{(position _logic) distance (_x select 2 select 1)},"DESCEND"] call BIS_fnc_sortBy;
 
-                    // get the highest priority objective
-                    _primaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-1);
+                            // get the highest priority objective
+                            _primaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-1);
 
-                    // get the second highest priority objective (if available)
-                    if(count _reserve > 1) then {
-                        _secondaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-2);
-                    };
+                            // determine the type of reinforcement according to priority
+                            _primaryReinforcementObjectivePriority = [_primaryReinforcementObjective,"priority"] call ALIVE_fnc_hashGet;
 
-                    // determine the type of reinforcement according to priority
-                    _primaryReinforcementObjectivePriority = [_primaryReinforcementObjective,"priority"] call ALIVE_fnc_hashGet;
-
-                    _reinforcementType = "DROP";
-
-                    if(_primaryReinforcementObjectivePriority > 50) then {
-                        _reinforcementType = "AIR";
-                    };
-
-                    if(_primaryReinforcementObjectivePriority > 40 && _primaryReinforcementObjectivePriority < 51) then {
-                        _reinforcementType = "HELI";
-                    };
-
-
-                }else{
-
-                    // OPCOM controls no objectives
-                    // reinforcements must be delivered
-                    // via paradrops and or marine landings
-                    // near to location of any existing troops
-
-                    // randomly pick between marine and mil location for start position
-                    if(random 1 > 0.5) then {
-
-                        if(count(ALIVE_clustersCivMarine select 2) > 0) then {
-
-                            // there are marine objectives available
-
-                            // pick a primary one
-                            _primaryReinforcementObjective = (ALIVE_clustersCivMarine select 2) call BIS_fnc_selectRandom;
-
-                            // pick a secondary one
-                            if(count (ALIVE_clustersCivMarine select 2) > 1) then {
-                                _secondaryReinforcementObjective = (ALIVE_clustersCivMarine select 2) call BIS_fnc_selectRandom;
+                            // if the state of the objective is reserved
+                            // objective is available for use
+                            _tacom_state = '';
+                            if("tacom_state" in (_primaryReinforcementObjective select 1)) then {
+                                _tacom_state = [_primaryReinforcementObjective,"tacom_state"] call ALIVE_fnc_hashGet;
                             };
 
-                            _reinforcementType = "MARINE";
+                            if(_tacom_state == "reserve") then {
+                                _available = true;
+                            };
+
+                            _reinforcementType = "DROP";
+
+                            if(_primaryReinforcementObjectivePriority > 50) then {
+                                _reinforcementType = "AIR";
+                            };
+
+                            if(_primaryReinforcementObjectivePriority > 40 && _primaryReinforcementObjectivePriority < 51) then {
+                                _reinforcementType = "HELI";
+                            };
 
                         }else{
 
-                            // no marine objectives available
+                            // no objectives nothing available
+                            _available = false;
+                        }
+
+                    }else{
+
+                        // there is previous analysis
+
+                        _primaryReinforcementObjective = [_previousReinforcementAnalysis, "primary"] call ALIVE_fnc_hashGet;
+                        _reinforcementType = [_previousReinforcementAnalysis, "type"] call ALIVE_fnc_hashGet;
+
+                        // if the state of the objective is reserved
+                        // objective is available for use
+                        _tacom_state = '';
+                        if("tacom_state" in (_primaryReinforcementObjective select 1)) then {
+                            _tacom_state = [_primaryReinforcementObjective,"tacom_state"] call ALIVE_fnc_hashGet;
+                        };
+
+                        if(_tacom_state == "reserve") then {
+                            _available = true;
+                        };
+
+                    };
+
+                }else{
+
+                    _available = true;
+
+                    // Dynamic analysis, primary insertion objective
+                    // will fall back to held objectives, finally
+                    // falling back to non held marine or bases
+
+                    if(count _reserve > 0) then {
+
+                        // OPCOM controls some objectives
+                        // reinforcements can be delivered
+                        // directly assuming heli pads or
+                        // airstrips are available
+
+
+                        // sort reserved objectives by priority
+                        _sortedObjectives = [_reserve,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"ASCEND"] call BIS_fnc_sortBy;
+
+                        // get the highest priority objective
+                        _primaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-1);
+
+                        // determine the type of reinforcement according to priority
+                        _primaryReinforcementObjectivePriority = [_primaryReinforcementObjective,"priority"] call ALIVE_fnc_hashGet;
+
+                        _reinforcementType = "DROP";
+
+                        if(_primaryReinforcementObjectivePriority > 50) then {
+                            _reinforcementType = "AIR";
+                        };
+
+                        if(_primaryReinforcementObjectivePriority > 40 && _primaryReinforcementObjectivePriority < 51) then {
+                            _reinforcementType = "HELI";
+                        };
+
+
+                    }else{
+
+                        // OPCOM controls no objectives
+                        // reinforcements must be delivered
+                        // via paradrops and or marine landings
+                        // near to location of any existing troops
+
+                        // randomly pick between marine and mil location for start position
+                        if(random 1 > 0.5) then {
+
+                            if(count(ALIVE_clustersCivMarine select 2) > 0) then {
+
+                                // there are marine objectives available
+
+                                // pick a primary one
+                                _primaryReinforcementObjective = (ALIVE_clustersCivMarine select 2) call BIS_fnc_selectRandom;
+
+                                _reinforcementType = "MARINE";
+
+                            }else{
+
+                                // no marine objectives available
+                                // pick a low priority location for airdrops
+
+                                if(count(ALIVE_clustersMil select 2) > 0) then {
+
+                                    _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call BIS_fnc_sortBy;
+
+                                    // get the highest priority objective
+                                    _primaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-1);
+
+                                    _reinforcementType = "DROP";
+
+                                };
+
+                            };
+
+                        }else{
+
                             // pick a low priority location for airdrops
 
                             if(count(ALIVE_clustersMil select 2) > 0) then {
@@ -811,47 +894,21 @@ switch(_operation) do {
                                 // get the highest priority objective
                                 _primaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-1);
 
-                                // get the second highest priority objective (if available)
-                                if(count _sortedClusters > 1) then {
-                                    _secondaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-2);
-                                };
-
                                 _reinforcementType = "DROP";
 
                             };
 
                         };
 
-                    }else{
-
-                        // pick a low priority location for airdrops
-
-                        if(count(ALIVE_clustersMil select 2) > 0) then {
-
-                            _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call BIS_fnc_sortBy;
-
-                            // get the highest priority objective
-                            _primaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-1);
-
-                            // get the second highest priority objective (if available)
-                            if(count _sortedClusters > 1) then {
-                                _secondaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-2);
-                            };
-
-                            _reinforcementType = "DROP";
-
-                        };
-
                     };
-
                 };
 
                 // store the analysis results
                 _reinforcementAnalysis = [] call ALIVE_fnc_hashCreate;
                 [_reinforcementAnalysis, "priorityTotal", _priorityTotal] call ALIVE_fnc_hashSet;
                 [_reinforcementAnalysis, "type", _reinforcementType] call ALIVE_fnc_hashSet;
+                [_reinforcementAnalysis, "available", _available] call ALIVE_fnc_hashSet;
                 [_reinforcementAnalysis, "primary", _primaryReinforcementObjective] call ALIVE_fnc_hashSet;
-                [_reinforcementAnalysis, "secondary", _secondaryReinforcementObjective] call ALIVE_fnc_hashSet;
 
                 [_logic, "reinforcementAnalysis", _reinforcementAnalysis] call MAINCLASS;
 
@@ -861,12 +918,9 @@ switch(_operation) do {
                     ["ALIVE ML - On demand analysis complete"] call ALIVE_fnc_dump;
                     ["ALIVE ML - Priority total: %1",_priorityTotal] call ALIVE_fnc_dump;
                     ["ALIVE ML - Reinforcement type: %1",_reinforcementType] call ALIVE_fnc_dump;
+                    ["ALIVE ML - Primary reinforcement objective available: %1",_available] call ALIVE_fnc_dump;
                     ["ALIVE ML - Primary reinforcement objective:"] call ALIVE_fnc_dump;
                     _primaryReinforcementObjective call ALIVE_fnc_inspectHash;
-                    //[_logic, "createMarker", [[_primaryReinforcementObjective, "center"] call ALIVE_fnc_hashGet,"OPF_F"]] call MAINCLASS;
-                    ["ALIVE ML - Secondary reinforcement objective:"] call ALIVE_fnc_dump;
-                    _secondaryReinforcementObjective call ALIVE_fnc_inspectHash;
-                    //[_logic, "createMarker", [[_secondaryReinforcementObjective, "center"] call ALIVE_fnc_hashGet,"OPF_F"]] call MAINCLASS;
                 };
                 // DEBUG -------------------------------------------------------------------------------------
 
@@ -875,6 +929,7 @@ switch(_operation) do {
             };
         };
     };
+
     case "monitor": {
         if (isServer) then {
 
@@ -940,72 +995,13 @@ switch(_operation) do {
 
     };
 
-    case "setEventProfilesAvailable": {
-
-        private ["_debug","_event","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
-        "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile"];
-
-        _debug = [_logic, "debug"] call MAINCLASS;
-        _event = _args;
-
-        _eventCargoProfiles = [_event, "cargoProfiles"] call ALIVE_fnc_hashGet;
-
-        _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
-        _armourProfiles = [_eventCargoProfiles, 'armour'] call ALIVE_fnc_hashGet;
-        _mechanisedProfiles = [_eventCargoProfiles, 'mechanised'] call ALIVE_fnc_hashGet;
-        _motorisedProfiles = [_eventCargoProfiles, 'motorised'] call ALIVE_fnc_hashGet;
-        _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
-        _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
-
-        {
-            _profile = _x select 0;
-            [_profile,"busy",false] call ALIVE_fnc_hashSet;
-
-        } forEach _infantryProfiles;
-
-        {
-            {
-                [_x,"busy",false] call ALIVE_fnc_hashSet;
-            } forEach _x;
-
-        } forEach _armourProfiles;
-
-        {
-            {
-                [_x,"busy",false] call ALIVE_fnc_hashSet;
-            } forEach _x;
-
-        } forEach _mechanisedProfiles;
-
-        {
-            {
-                [_x,"busy",false] call ALIVE_fnc_hashSet;
-            } forEach _x;
-
-        } forEach _motorisedProfiles;
-
-        {
-            {
-                [_x,"busy",false] call ALIVE_fnc_hashSet;
-            } forEach _x;
-
-        } forEach _planeProfiles;
-
-        {
-            {
-                [_x,"busy",false] call ALIVE_fnc_hashSet;
-            } forEach _x;
-
-        } forEach _heliProfiles;
-    };
-
     case "monitorEvent": {
 
          private ["_debug","_event","_reinforcementAnalysis","_side","_eventID","_eventData","_eventPosition","_eventSide","_eventFaction",
          "_eventForceMakeup","_eventType","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
          "_eventForcePlane","_eventForceHeli","_eventForceSpecOps","_eventTime","_eventState","_eventStateData","_eventCargoProfiles",
          "_eventTransportProfiles","_eventTransportVehiclesProfiles","_reinforcementPriorityTotal"
-         ,"_reinforcementType","_reinforcementPrimaryObjective","_reinforcementSecondaryObjective","_event","_eventID","_eventQueue","_forcePool"];
+         ,"_reinforcementType","_reinforcementAvailable","_reinforcementPrimaryObjective","_event","_eventID","_eventQueue","_forcePool"];
 
         _debug = [_logic, "debug"] call MAINCLASS;
         _event = _args select 0;
@@ -1041,8 +1037,8 @@ switch(_operation) do {
 
         _reinforcementPriorityTotal = [_reinforcementAnalysis, "priorityTotal"] call ALIVE_fnc_hashGet;
         _reinforcementType = [_reinforcementAnalysis, "type"] call ALIVE_fnc_hashGet;
+        _reinforcementAvailable = [_reinforcementAnalysis, "available"] call ALIVE_fnc_hashGet;
         _reinforcementPrimaryObjective = [_reinforcementAnalysis, "primary"] call ALIVE_fnc_hashGet;
-        _reinforcementSecondaryObjective = [_reinforcementAnalysis, "secondary"] call ALIVE_fnc_hashGet;
 
 
         // DEBUG -------------------------------------------------------------------------------------
@@ -1089,469 +1085,511 @@ switch(_operation) do {
                 // DEBUG -------------------------------------------------------------------------------------
 
 
-                if((time - _eventTime) > _waitTime) then {
+                // if the reinforcement objective is
+                // not available, cancel the event
+                if(_reinforcementAvailable) then {
 
-                    private ["_reinforcementPosition","_playersInRange","_paraDrop","_remotePosition"];
+                    if((time - _eventTime) > _waitTime) then {
 
-                    if(_eventType == "STANDARD" || _eventType == "HELI_INSERT") then {
+                        private ["_reinforcementPosition","_playersInRange","_paraDrop","_remotePosition"];
 
-                        // randomly choose between the primary and
-                        // secondary insertion objective
-                        if(random 1 > 0.1) then {
+                        if(_eventType == "STANDARD" || _eventType == "HELI_INSERT") then {
+
                             _reinforcementPosition = [_reinforcementPrimaryObjective,"center"] call ALIVE_fnc_hashGet;
+
                         }else{
-                            _reinforcementPosition = [_reinforcementSecondaryObjective,"center"] call ALIVE_fnc_hashGet;
+                            _reinforcementPosition = _eventPosition;
                         };
 
-                    }else{
-                        _reinforcementPosition = _eventPosition;
-                    };
+                        // if heli insert allow only air and
+                        // infantry groups
+                        if(_eventType == "HELI_INSERT") then {
+                            _eventForceMotorised = 0;
+                            _eventForceMechanised = 0;
+                            _eventForceArmour = 0;
+                        };
 
-                    // if heli insert allow only air and
-                    // infantry groups
-                    if(_eventType == "HELI_INSERT") then {
-                        _eventForceMotorised = 0;
-                        _eventForceMechanised = 0;
-                        _eventForceArmour = 0;
-                    };
+                        // players near check
 
-                    // players near check
+                        _playersInRange = [_reinforcementPosition, 1500] call ALiVE_fnc_anyPlayersInRange;
 
-                    _playersInRange = [_reinforcementPosition, 1500] call ALiVE_fnc_anyPlayersInRange;
+                        // if players are in visible range
+                        // para drop groups instead of
+                        // spawning on the ground
 
-                    // if players are in visible range
-                    // para drop groups instead of
-                    // spawning on the ground
+                        _paraDrop = false;
+                        if(_playersInRange > 0) then {
+                            _paraDrop = true;
 
-                    _paraDrop = false;
-                    if(_playersInRange > 0) then {
-                        _paraDrop = true;
-
-                        _remotePosition = [_reinforcementPosition, 2000] call ALIVE_fnc_getPositionDistancePlayers;
-                    }else{
-                        _remotePosition = _reinforcementPosition;
-                    };
+                            _remotePosition = [_reinforcementPosition, 2000] call ALIVE_fnc_getPositionDistancePlayers;
+                        }else{
+                            _remotePosition = _reinforcementPosition;
+                        };
 
 
-                    // wait time complete create profiles
-                    // get groups according to requested force makeup
+                        // wait time complete create profiles
+                        // get groups according to requested force makeup
 
-                    private ["_infantryGroups","_infantryProfiles","_transportGroups","_transportProfiles",
-                    "_transportVehicleProfiles","_group","_groupCount","_totalCount","_vehicleClass"];
+                        private ["_infantryGroups","_infantryProfiles","_transportGroups","_transportProfiles",
+                        "_transportVehicleProfiles","_group","_groupCount","_totalCount","_vehicleClass",
+                        "_profiles","_profileIDs","_profileID"];
 
-                    _groupCount = 0;
-                    _totalCount = 0;
+                        _groupCount = 0;
+                        _totalCount = 0;
 
-                    // infantry
+                        // infantry
 
-                    _infantryGroups = [];
-                    _infantryProfiles = [];
+                        _infantryGroups = [];
+                        _infantryProfiles = [];
 
-                    for "_i" from 0 to _eventForceInfantry -1 do {
-                        _group = ["Infantry",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
-                        if!(_group == "FALSE") then {
-                            _infantryGroups set [count _infantryGroups, _group];
-                        }
-                    };
+                        for "_i" from 0 to _eventForceInfantry -1 do {
+                            _group = ["Infantry",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                            if!(_group == "FALSE") then {
+                                _infantryGroups set [count _infantryGroups, _group];
+                            }
+                        };
 
-                    _infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
-                    _groupCount = count _infantryGroups;
-                    _totalCount = _totalCount + _groupCount;
+                        _infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                        _groupCount = count _infantryGroups;
+                        _totalCount = _totalCount + _groupCount;
 
-                    // create profiles
+                        // create profiles
 
-                    for "_i" from 0 to _groupCount -1 do {
+                        for "_i" from 0 to _groupCount -1 do {
 
-                        _group = _infantryGroups select _i;
+                            _group = _infantryGroups select _i;
 
-                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
-                        if(_paraDrop) then {
+                            if(_paraDrop) then {
 
 
-                            if(_eventType == "HELI_INSERT") then {
-                                _position = _remotePosition;
-                            }else{
+                                if(_eventType == "HELI_INSERT") then {
+                                    _position = _remotePosition;
+                                }else{
+                                    _position set [2,500];
+                                };
+                            };
+
+                            if!(surfaceIsWater _position) then {
+
+                                _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
+
+                                _infantryProfiles set [count _infantryProfiles, _profileIDs];
+
+                            };
+                        };
+
+                        [_eventCargoProfiles, "infantry", _infantryProfiles] call ALIVE_fnc_hashSet;
+
+
+                        if(_eventType == "STANDARD") then {
+
+                            // create ground transport vehicles for the profiles
+
+                            _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                            _transportProfiles = [];
+                            _transportVehicleProfiles = [];
+
+                            if(count _transportGroups == 0) then {
+                                _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
+                            };
+
+                            if(count _transportGroups > 0) then {
+                                for "_i" from 0 to _groupCount -1 do {
+
+                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                    if(_paraDrop) then {
+                                        _position set [2,500];
+                                    };
+
+                                    if(count _transportGroups > 0) then {
+
+                                        _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+
+                                        _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,false,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                        _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
+                                        _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
+
+                                    }
+
+                                };
+                            };
+
+                            _eventTransportProfiles = _transportProfiles;
+                            _eventTransportVehiclesProfiles = _transportVehicleProfiles;
+
+                        };
+
+                        if(_eventType == "HELI_INSERT") then {
+
+                            private ["_infantryProfileID","_infantryProfile","_profileWaypoint","_profile"];
+
+                            // create air transport vehicles for the profiles
+
+                            _transportGroups = [ALIVE_factionDefaultAirTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                            _transportProfiles = [];
+                            _transportVehicleProfiles = [];
+
+                            if(count _transportGroups == 0) then {
+                                _transportGroups = [ALIVE_sideDefaultAirTransport,_side] call ALIVE_fnc_hashGet;
+                            };
+
+                            if(count _transportGroups > 0) then {
+
+                                for "_i" from 0 to _groupCount -1 do {
+
+                                    _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                    if(_paraDrop) then {
+                                        _position set [2,500];
+                                    };
+
+                                    if(count _transportGroups > 0) then {
+
+                                        _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+
+                                        _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                        _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
+                                        _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
+
+                                        _infantryProfileID = _infantryProfiles select _i select 0;
+                                        _infantryProfile = [ALIVE_profileHandler, "getProfile", _infantryProfileID] call ALIVE_fnc_profileHandler;
+                                        if!(isNil "_infantryProfile") then {
+                                            [_infantryProfile,_profiles select 1] call ALIVE_fnc_createProfileVehicleAssignment;
+                                        };
+
+                                        _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                        _profile = _profiles select 0;
+                                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                                    };
+
+                                };
+
+                            };
+
+                            _eventTransportProfiles = _transportProfiles;
+                            _eventTransportVehiclesProfiles = _transportVehicleProfiles;
+
+                        };
+
+
+                        // armour
+
+                        private ["_armourGroups","_armourProfiles"];
+
+                        _armourGroups = [];
+                        _armourProfiles = [];
+
+                        for "_i" from 0 to _eventForceArmour -1 do {
+                            _group = ["Armored",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                            if!(_group == "FALSE") then {
+                                _armourGroups set [count _armourGroups, _group];
+                            };
+                        };
+
+                        _armourGroups = _armourGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                        _groupCount = count _armourGroups;
+                        _totalCount = _totalCount + _groupCount;
+
+                        // create profiles
+
+                        for "_i" from 0 to _groupCount -1 do {
+
+                            _group = _armourGroups select _i;
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if(_paraDrop) then {
                                 _position set [2,500];
                             };
-                        };
 
-                        if!(surfaceIsWater _position) then {
+                            if!(surfaceIsWater _position) then {
 
-                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+                                _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
 
-                            _infantryProfiles set [count _infantryProfiles, _profiles];
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
 
-                        };
-                    };
-
-                    [_eventCargoProfiles, "infantry", _infantryProfiles] call ALIVE_fnc_hashSet;
-
-
-                    if(_eventType == "STANDARD") then {
-
-                        // create ground transport vehicles for the profiles
-
-                        _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
-                        _transportProfiles = [];
-                        _transportVehicleProfiles = [];
-
-                        if(count _transportGroups == 0) then {
-                            _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
-                        };
-
-                        if(count _transportGroups > 0) then {
-                            for "_i" from 0 to _groupCount -1 do {
-
-                                _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
-
-                                if(_paraDrop) then {
-                                    _position set [2,500];
-                                };
-
-                                if(count _transportGroups > 0) then {
-
-                                    _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
-
-                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,false,true] call ALIVE_fnc_createProfilesCrewedVehicle;
-
-                                    _transportProfiles set [count _transportProfiles, _profiles select 0];
-                                    _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1];
-
-                                }
+                                _armourProfiles set [count _armourProfiles, _profileIDs];
 
                             };
                         };
 
-                        _eventTransportProfiles = _transportProfiles;
-                        _eventTransportVehiclesProfiles = _transportVehicleProfiles;
+                        [_eventCargoProfiles, "armour", _armourProfiles] call ALIVE_fnc_hashSet;
 
-                    };
 
-                    if(_eventType == "HELI_INSERT") then {
+                        // mechanised
 
-                        private ["_infantryProfile","_profileWaypoint","_profile"];
+                        private ["_mechanisedGroups","_mechanisedProfiles"];
 
-                        // create air transport vehicles for the profiles
+                        _mechanisedGroups = [];
+                        _mechanisedProfiles = [];
 
-                        _transportGroups = [ALIVE_factionDefaultAirTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
-                        _transportProfiles = [];
-                        _transportVehicleProfiles = [];
-
-                        if(count _transportGroups == 0) then {
-                            _transportGroups = [ALIVE_sideDefaultAirTransport,_side] call ALIVE_fnc_hashGet;
+                        for "_i" from 0 to _eventForceMechanised -1 do {
+                            _group = ["Mechanized",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                            if!(_group == "FALSE") then {
+                                _mechanisedGroups set [count _mechanisedGroups, _group];
+                            }
                         };
 
-                        if(count _transportGroups > 0) then {
+                        _mechanisedGroups = _mechanisedGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                        _groupCount = count _mechanisedGroups;
+                        _totalCount = _totalCount + _groupCount;
 
-                            for "_i" from 0 to _groupCount -1 do {
+                        // create profiles
+
+                        for "_i" from 0 to _groupCount -1 do {
+
+                            _group = _mechanisedGroups select _i;
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if(_paraDrop) then {
+                                _position set [2,500];
+                            };
+
+                            if!(surfaceIsWater _position) then {
+
+                                _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
+
+                                _mechanisedProfiles set [count _mechanisedProfiles, _profileIDs];
+
+                            };
+                        };
+
+                        [_eventCargoProfiles, "mechanised", _mechanisedProfiles] call ALIVE_fnc_hashSet;
+
+
+                        // motorised
+
+                        private ["_motorisedGroups","_motorisedProfiles"];
+
+                        _motorisedGroups = [];
+                        _motorisedProfiles = [];
+
+                        for "_i" from 0 to _eventForceMotorised -1 do {
+                            _group = ["Motorized",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
+                            if!(_group == "FALSE") then {
+                                _motorisedGroups set [count _motorisedGroups, _group];
+                            };
+                        };
+
+                        _motorisedGroups = _motorisedGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+                        _groupCount = count _motorisedGroups;
+                        _totalCount = _totalCount + _groupCount;
+
+                        // create profiles
+
+                        for "_i" from 0 to _groupCount -1 do {
+
+                            _group = _motorisedGroups select _i;
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if(_paraDrop) then {
+                                _position set [2,500];
+                            };
+
+                            if!(surfaceIsWater _position) then {
+
+                                _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
+
+                                _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
+
+                            };
+                        };
+
+                        [_eventCargoProfiles, "motorised", _motorisedProfiles] call ALIVE_fnc_hashSet;
+
+
+                        // plane
+
+                        private ["_planeProfiles","_planeClasses","_motorisedProfiles","_vehicleClass"];
+
+                        _planeProfiles = [];
+
+                        if(_eventType == "STANDARD" || _eventType == "HELI_INSERT") then {
+
+                            _planeClasses = [0,_eventFaction,"Plane"] call ALiVE_fnc_findVehicleType;
+                            _planeClasses = _planeClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
+
+                            for "_i" from 0 to _eventForcePlane -1 do {
 
                                 _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                                _position set [2,1000];
 
-                                if(_paraDrop) then {
-                                    _position set [2,500];
-                                };
+                                if(count _planeClasses > 0) then {
 
-                                if(count _transportGroups > 0) then {
-
-                                    _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+                                    _vehicleClass = _planeClasses call BIS_fnc_selectRandom;
 
                                     _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
 
-                                    _transportProfiles set [count _transportProfiles, _profiles select 0];
-                                    _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1];
+                                    _profileIDs = [];
+                                    {
+                                        _profileID = _x select 2 select 4;
+                                        _profileIDs set [count _profileIDs, _profileID];
+                                    } forEach _profiles;
 
-                                    _infantryProfile = _infantryProfiles select _i select 0;
-
-                                    if!(isNil "_infantryProfile") then {
-                                        [_infantryProfile,_profiles select 1] call ALIVE_fnc_createProfileVehicleAssignment;
-                                    };
+                                    _planeProfiles set [count _planeProfiles, _profileIDs];
 
                                     _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
                                     _profile = _profiles select 0;
                                     [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                                }
+                            };
+
+                            _groupCount = count _planeProfiles;
+                            _totalCount = _totalCount + _groupCount;
+
+                        };
+
+                        [_eventCargoProfiles, "plane", _planeProfiles] call ALIVE_fnc_hashSet;
+
+
+                        // heli
+
+                        private ["_heliProfiles","_heliClasses","_motorisedProfiles","_vehicleClass"];
+
+                        _heliProfiles = [];
+
+                        if(_eventType == "STANDARD" || _eventType == "HELI_INSERT") then {
+
+                            _heliClasses = [0,_eventFaction,"Helicopter"] call ALiVE_fnc_findVehicleType;
+                            _heliClasses = _heliClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
+
+                            for "_i" from 0 to _eventForceHeli -1 do {
+
+                                _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                                _position set [2,1000];
+
+                                if(count _heliClasses > 0) then {
+
+                                    _vehicleClass = _heliClasses call BIS_fnc_selectRandom;
+
+                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                    _profileIDs = [];
+                                    {
+                                        _profileID = _x select 2 select 4;
+                                        _profileIDs set [count _profileIDs, _profileID];
+                                    } forEach _profiles;
+
+                                    _heliProfiles set [count _heliProfiles, _profileIDs];
+
+                                    _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                    _profile = _profiles select 0;
+                                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                                }
+                            };
+
+                            _groupCount = count _heliProfiles;
+                            _totalCount = _totalCount + _groupCount;
+
+                        };
+
+                        [_eventCargoProfiles, "heli", _heliProfiles] call ALIVE_fnc_hashSet;
+
+
+                        // DEBUG -------------------------------------------------------------------------------------
+                        if(_debug) then {
+                            ["ALIVE ML - Profiles created: %1 ",_totalCount] call ALIVE_fnc_dump;
+                            switch(_eventType) do {
+                                case "STANDARD": {
+                                    [_logic, "createMarker", [_reinforcementPosition,_eventFaction,"ML INSERTION"]] call MAINCLASS;
+                                };
+                                case "HELI_INSERT": {
+                                    [_logic, "createMarker", [_reinforcementPosition,_eventFaction,"ML INSERTION"]] call MAINCLASS;
+                                };
+                                case "AIRDROP": {
+                                    [_logic, "createMarker", [_eventPosition,_eventFaction,"ML AIRDROP"]] call MAINCLASS;
+                                };
+                            };
+                        };
+                        // DEBUG -------------------------------------------------------------------------------------
+
+
+                        if(_totalCount > 0) then {
+
+                            // remove the created group count
+                            // from the force pool
+                            _forcePool = _forcePool - _totalCount;
+                            [_logic, "forcePool", _forcePool] call MAINCLASS;
+
+                            switch(_eventType) do {
+                                case "STANDARD": {
+
+                                    // update the state of the event
+                                    // next state is transport load
+                                    [_event, "state", "transportLoad"] call ALIVE_fnc_hashSet;
 
                                 };
+                                case "HELI_INSERT": {
 
+                                    // update the state of the event
+                                    // next state is transport load
+                                    [_event, "state", "heliTransportStart"] call ALIVE_fnc_hashSet;
+
+                                };
+                                case "AIRDROP": {
+
+                                    // update the state of the event
+                                    // next state is aridrop wait
+                                    [_event, "state", "airdropWait"] call ALIVE_fnc_hashSet;
+
+                                };
                             };
 
-                        };
+                            [_event, "cargoProfiles", _eventCargoProfiles] call ALIVE_fnc_hashSet;
+                            [_event, "transportProfiles", _eventTransportProfiles] call ALIVE_fnc_hashSet;
+                            [_event, "transportVehiclesProfiles", _eventTransportVehiclesProfiles] call ALIVE_fnc_hashSet;
 
-                        _eventTransportProfiles = _transportProfiles;
-                        _eventTransportVehiclesProfiles = _transportVehicleProfiles;
+                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
-                    };
+                        }else{
 
-
-                    // armour
-
-                    private ["_armourGroups","_armourProfiles"];
-
-                    _armourGroups = [];
-                    _armourProfiles = [];
-
-                    for "_i" from 0 to _eventForceArmour -1 do {
-                        _group = ["Armored",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
-                        if!(_group == "FALSE") then {
-                            _armourGroups set [count _armourGroups, _group];
+                            // no profiles were created
+                            // nothing to do so cancel..
+                            [_logic, "removeEvent", _eventID] call MAINCLASS;
                         };
                     };
+                }else{
 
-                    _armourGroups = _armourGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
-                    _groupCount = count _armourGroups;
-                    _totalCount = _totalCount + _groupCount;
+                    // no insertion point available
+                    // nothing to do so cancel..
+                    [_logic, "removeEvent", _eventID] call MAINCLASS;
 
-                    // create profiles
-
-                    for "_i" from 0 to _groupCount -1 do {
-
-                        _group = _armourGroups select _i;
-
-                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
-
-                        if(_paraDrop) then {
-                            _position set [2,500];
-                        };
-
-                        if!(surfaceIsWater _position) then {
-
-                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
-
-                            _armourProfiles set [count _armourProfiles, _profiles];
-
-                        };
-                    };
-
-                    [_eventCargoProfiles, "armour", _armourProfiles] call ALIVE_fnc_hashSet;
-
-
-                    // mechanised
-
-                    private ["_mechanisedGroups","_mechanisedProfiles"];
-
-                    _mechanisedGroups = [];
-                    _mechanisedProfiles = [];
-
-                    for "_i" from 0 to _eventForceMechanised -1 do {
-                        _group = ["Mechanized",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
-                        if!(_group == "FALSE") then {
-                            _mechanisedGroups set [count _mechanisedGroups, _group];
-                        }
-                    };
-
-                    _mechanisedGroups = _mechanisedGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
-                    _groupCount = count _mechanisedGroups;
-                    _totalCount = _totalCount + _groupCount;
-
-                    // create profiles
-
-                    for "_i" from 0 to _groupCount -1 do {
-
-                        _group = _mechanisedGroups select _i;
-
-                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
-
-                        if(_paraDrop) then {
-                            _position set [2,500];
-                        };
-
-                        if!(surfaceIsWater _position) then {
-
-                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
-
-                            _mechanisedProfiles set [count _mechanisedProfiles, _profiles];
-
-                        };
-                    };
-
-                    [_eventCargoProfiles, "mechanised", _mechanisedProfiles] call ALIVE_fnc_hashSet;
-
-
-                    // motorised
-
-                    private ["_motorisedGroups","_motorisedProfiles"];
-
-                    _motorisedGroups = [];
-                    _motorisedProfiles = [];
-
-                    for "_i" from 0 to _eventForceMotorised -1 do {
-                        _group = ["Motorized",_eventFaction] call ALIVE_fnc_configGetRandomGroup;
-                        if!(_group == "FALSE") then {
-                            _motorisedGroups set [count _motorisedGroups, _group];
-                        };
-                    };
-
-                    _motorisedGroups = _motorisedGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
-                    _groupCount = count _motorisedGroups;
-                    _totalCount = _totalCount + _groupCount;
-
-                    // create profiles
-
-                    for "_i" from 0 to _groupCount -1 do {
-
-                        _group = _motorisedGroups select _i;
-
-                        _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
-
-                        if(_paraDrop) then {
-                            _position set [2,500];
-                        };
-
-                        if!(surfaceIsWater _position) then {
-
-                            _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
-
-                            _motorisedProfiles set [count _motorisedProfiles, _profiles];
-
-                        };
-                    };
-
-                    [_eventCargoProfiles, "motorised", _motorisedProfiles] call ALIVE_fnc_hashSet;
-
-
-                    // plane
-
-                    private ["_planeProfiles","_planeClasses","_motorisedProfiles","_vehicleClass"];
-
-                    _planeProfiles = [];
-
-                    if(_eventType == "STANDARD" || _eventType == "HELI_INSERT") then {
-
-                        _planeClasses = [0,_eventFaction,"Plane"] call ALiVE_fnc_findVehicleType;
-                        _planeClasses = _planeClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
-
-                        for "_i" from 0 to _eventForcePlane -1 do {
-
-                            _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
-                            _position set [2,1000];
-
-                            if(count _planeClasses > 0) then {
-
-                                _vehicleClass = _planeClasses call BIS_fnc_selectRandom;
-
-                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
-
-                                _planeProfiles set [count _planeProfiles, _profiles];
-
-                                _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                                _profile = _profiles select 0;
-                                [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
-                            }
-                        };
-
-                        _groupCount = count _planeProfiles;
-                        _totalCount = _totalCount + _groupCount;
-
-                    };
-
-                    [_eventCargoProfiles, "plane", _planeProfiles] call ALIVE_fnc_hashSet;
-
-
-                    // heli
-
-                    private ["_heliProfiles","_heliClasses","_motorisedProfiles","_vehicleClass"];
-
-                    _heliProfiles = [];
-
-                    if(_eventType == "STANDARD" || _eventType == "HELI_INSERT") then {
-
-                        _heliClasses = [0,_eventFaction,"Helicopter"] call ALiVE_fnc_findVehicleType;
-                        _heliClasses = _heliClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
-
-                        for "_i" from 0 to _eventForceHeli -1 do {
-
-                            _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
-                            _position set [2,1000];
-
-                            if(count _heliClasses > 0) then {
-
-                                _vehicleClass = _heliClasses call BIS_fnc_selectRandom;
-
-                                _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
-
-                                _heliProfiles set [count _heliProfiles, _profiles];
-
-                                _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                                _profile = _profiles select 0;
-                                [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
-                            }
-                        };
-
-                        _groupCount = count _heliProfiles;
-                        _totalCount = _totalCount + _groupCount;
-
-                    };
-
-                    [_eventCargoProfiles, "heli", _heliProfiles] call ALIVE_fnc_hashSet;
-
-
-                    // DEBUG -------------------------------------------------------------------------------------
-                    if(_debug) then {
-                        ["ALIVE ML - Profiles created: %1 ",_totalCount] call ALIVE_fnc_dump;
-                        switch(_eventType) do {
-                            case "STANDARD": {
-                                [_logic, "createMarker", [_reinforcementPosition,_eventFaction,"ML INSERTION"]] call MAINCLASS;
-                            };
-                            case "HELI_INSERT": {
-                                [_logic, "createMarker", [_reinforcementPosition,_eventFaction,"ML INSERTION"]] call MAINCLASS;
-                            };
-                            case "AIRDROP": {
-                                [_logic, "createMarker", [_eventPosition,_eventFaction,"ML AIRDROP"]] call MAINCLASS;
-                            };
-                        };
-                    };
-                    // DEBUG -------------------------------------------------------------------------------------
-
-
-                    if(_totalCount > 0) then {
-
-                        // remove the created group count
-                        // from the force pool
-                        _forcePool = _forcePool - _totalCount;
-                        [_logic, "forcePool", _forcePool] call MAINCLASS;
-
-                        switch(_eventType) do {
-                            case "STANDARD": {
-
-                                // update the state of the event
-                                // next state is transport load
-                                [_event, "state", "transportLoad"] call ALIVE_fnc_hashSet;
-
-                            };
-                            case "HELI_INSERT": {
-
-                                // update the state of the event
-                                // next state is transport load
-                                [_event, "state", "heliTransportStart"] call ALIVE_fnc_hashSet;
-
-                            };
-                            case "AIRDROP": {
-
-                                // update the state of the event
-                                // next state is aridrop wait
-                                [_event, "state", "airdropWait"] call ALIVE_fnc_hashSet;
-
-                            };
-                        };
-
-                        [_event, "cargoProfiles", _eventCargoProfiles] call ALIVE_fnc_hashSet;
-                        [_event, "transportProfiles", _eventTransportProfiles] call ALIVE_fnc_hashSet;
-                        [_event, "transportVehiclesProfiles", _eventTransportVehiclesProfiles] call ALIVE_fnc_hashSet;
-
-                        [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
-
-                    }else{
-
-                        // no profiles were created
-                        // nothing to do so cancel..
-                        [_logic, "removeEvent", _eventID] call MAINCLASS;
-                    };
                 };
             };
 
             case "heliTransportStart": {
 
-                private ["_transportProfiles","_infantryProfiles","_planeProfiles","_heliProfiles","_position","_profileWaypoint"];
+                private ["_transportProfiles","_infantryProfiles","_planeProfiles","_heliProfiles","_position","_profileWaypoint","_profile"];
 
                 _transportProfiles = _eventTransportProfiles;
                 _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
@@ -1562,7 +1600,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    [_x, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _transportProfiles;
 
@@ -1570,8 +1612,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _infantryProfiles;
 
@@ -1579,8 +1624,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _planeProfiles;
 
@@ -1588,8 +1636,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _heliProfiles;
 
@@ -1632,29 +1683,36 @@ switch(_operation) do {
                 _waypointsNotCompleted = 0;
 
                 {
-                    _transportProfile = _x;
-                    _position = _transportProfile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                    _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_transportProfile") then {
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
-                    };
-
-                } forEach _transportProfiles;
-
-                if((_waypointsNotCompleted == 0) && (_waypointsCompleted == 0)) then {
-                    {
-                        _profile = _x select 0;
-
-                        _position = _profile select 2 select 2;
+                        _position = _transportProfile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
                         if(_distance > 600) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
+                    };
+
+                } forEach _transportProfiles;
+
+                if((_waypointsNotCompleted == 0) && (_waypointsCompleted == 0)) then {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+
+                            _position = _profile select 2 select 2;
+                            _distance = _position distance _eventPosition;
+
+                            if(_distance > 600) then {
+                                _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                            }else{
+                                _waypointsCompleted = _waypointsCompleted + 1;
+                            };
+
                         };
 
                     } forEach _infantryProfiles;
@@ -1671,29 +1729,35 @@ switch(_operation) do {
                 };
 
                 {
-                    _profile = _x select 0;
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
 
-                    _position = _profile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
+                        if(_distance > 600) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
                     };
 
                 } forEach _planeProfiles;
 
                 {
-                    _profile = _x select 0;
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
 
-                    _position = _profile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
+                        if(_distance > 600) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
                     };
 
                 } forEach _heliProfiles;
@@ -1739,13 +1803,17 @@ switch(_operation) do {
 
                     // set transport profiles to careless
                     {
-                        _transportProfile = _x;
-                        _active = _transportProfile select 2 select 1;
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
 
-                        if(_active) then {
+                            _active = _transportProfile select 2 select 1;
 
-                            _group = _transportProfile select 2 select 13;
-                            _group setBehaviour "CARELESS";
+                            if(_active) then {
+
+                                _group = _transportProfile select 2 select 13;
+                                _group setBehaviour "CARELESS";
+
+                            };
 
                         };
 
@@ -1753,19 +1821,23 @@ switch(_operation) do {
 
                     // unload any transport vehicles
                     {
-                        _transportProfile = _x;
-                        _inCargo = _transportProfile select 2 select 9;
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
 
-                        if(count _inCargo > 0) then {
-                            {
-                                _cargoProfileID = _x;
-                                _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
+                            _inCargo = _transportProfile select 2 select 9;
 
-                                if!(isNil "_cargoProfile") then {
-                                    [_cargoProfile,_transportProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
-                                };
+                            if(count _inCargo > 0) then {
+                                {
+                                    _cargoProfileID = _x;
+                                    _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
 
-                            } forEach _inCargo;
+                                    if!(isNil "_cargoProfile") then {
+                                        [_cargoProfile,_transportProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
+                                    };
+
+                                } forEach _inCargo;
+                            };
+
                         };
 
                     } forEach _eventTransportVehiclesProfiles;
@@ -1805,35 +1877,41 @@ switch(_operation) do {
                 _loadedUnits = [];
 
                 {
-                    _infantryProfile = _x select 0;
-                    _active = _infantryProfile select 2 select 1;
 
-                    // only need to worry about this is there are
-                    // players nearby
+                    _infantryProfile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_infantryProfile") then {
 
-                    if(_active) then {
+                        _infantryProfile call ALIVE_fnc_inspectHash;
 
-                        _units = _infantryProfile select 2 select 21;
+                        _active = _infantryProfile select 2 select 1;
 
-                        // catagorise units into loaded and not
-                        // loaded arrays
-                        {
-                            if(vehicle _x == _x) then {
-                                _notLoadedUnits set [count _notLoadedUnits, _x];
-                            }else{
-                                _loadedUnits set [count _loadedUnits, _x];
-                            };
+                        // only need to worry about this is there are
+                        // players nearby
 
-                        } forEach _units;
+                        if(_active) then {
 
-                    }else{
+                            _units = _infantryProfile select 2 select 21;
 
-                        // profiles are not active, can skip this wait
-                        // continue on to travel
+                            // catagorise units into loaded and not
+                            // loaded arrays
+                            {
+                                if(vehicle _x == _x) then {
+                                    _notLoadedUnits set [count _notLoadedUnits, _x];
+                                }else{
+                                    _loadedUnits set [count _loadedUnits, _x];
+                                };
 
-                        //["TRANSPORT LOAD WAIT - NO ACTIVE - CONTINUE"] call ALIVE_fnc_dump;
-                        [_event, "state", "heliTransportComplete"] call ALIVE_fnc_hashSet;
-                        [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+                            } forEach _units;
+
+                        }else{
+
+                            // profiles are not active, can skip this wait
+                            // continue on to travel
+
+                            [_event, "state", "heliTransportComplete"] call ALIVE_fnc_hashSet;
+                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                        };
 
                     };
 
@@ -1844,7 +1922,6 @@ switch(_operation) do {
                     // all unloaded
                     // continue on to travel
 
-                    //["TRANSPORT LOAD WAIT - NO ACTIVE - CONTINUE"] call ALIVE_fnc_dump;
                     [_event, "state", "heliTransportComplete"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
@@ -1859,7 +1936,6 @@ switch(_operation) do {
                     _eventStateData set [0, 0];
                     [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
 
-                    //["TRANSPORT TRAVEL WAIT - ITERATIONS COMPLETE"] call ALIVE_fnc_dump;
                     [_event, "state", "heliTransportComplete"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
@@ -1876,37 +1952,40 @@ switch(_operation) do {
                     _anyActive = 0;
 
                     {
-                        _transportProfile = _x;
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
 
-                        _active = _transportProfile select 2 select 1;
+                            _active = _transportProfile select 2 select 1;
 
-                        if(_active) then {
+                            if(_active) then {
 
-                            _anyActive = _anyActive + 1;
+                                _anyActive = _anyActive + 1;
 
-                        }else{
+                            }else{
 
-                            // if not active dispose of transport profiles
+                                // if not active dispose of transport profiles
 
-                            _inCommand = _transportProfile select 2 select 8;
+                                _inCommand = _transportProfile select 2 select 8;
 
-                            if(count _inCommand > 0) then {
-                                _commandProfileID = _inCommand select 0;
-                                _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
+                                if(count _inCommand > 0) then {
+                                    _commandProfileID = _inCommand select 0;
+                                    _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
-                                if!(isNil "_commandProfile") then {
-                                    [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                    if!(isNil "_commandProfile") then {
+                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                    };
+
                                 };
 
+                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
+
+                                [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
+
+                                // set state to event complete
+                                [_event, "state", "eventComplete"] call ALIVE_fnc_hashSet;
+                                [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                             };
 
-                            [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
-
-                            [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
-
-                            // set state to event complete
-                            [_event, "state", "eventComplete"] call ALIVE_fnc_hashSet;
-                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                         };
 
                     } forEach _eventTransportVehiclesProfiles;
@@ -1934,7 +2013,7 @@ switch(_operation) do {
 
             case "heliTransportReturn": {
 
-                private ["_position","_profileWaypoint","_reinforcementPosition"];
+                private ["_position","_profileWaypoint","_profile","_reinforcementPosition"];
 
                 if(count _eventTransportProfiles > 0) then {
 
@@ -1944,8 +2023,13 @@ switch(_operation) do {
                         _position = [_reinforcementPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                         _position = [_position] call ALIVE_fnc_getClosestRoad;
                         _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                        [_x, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+
+                            [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                        };
 
                     } forEach _eventTransportProfiles;
 
@@ -1975,37 +2059,40 @@ switch(_operation) do {
                     // once transport vehicles are inactive
                     // dispose of the profiles
                     {
-                        _transportProfile = _x;
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
 
-                        _active = _transportProfile select 2 select 1;
-                        _vehicle = _transportProfile select 2 select 10;
+                            _active = _transportProfile select 2 select 1;
+                            _vehicle = _transportProfile select 2 select 10;
 
-                        if([position _vehicle, 1500] call ALiVE_fnc_anyPlayersInRange == 0) then {
+                            if([position _vehicle, 1500] call ALiVE_fnc_anyPlayersInRange == 0) then {
 
-                            // if not active dispose of transport profiles
+                                // if not active dispose of transport profiles
 
-                            _inCommand = _transportProfile select 2 select 8;
+                                _inCommand = _transportProfile select 2 select 8;
 
-                            if(count _inCommand > 0) then {
-                                _commandProfileID = _inCommand select 0;
-                                _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
+                                if(count _inCommand > 0) then {
+                                    _commandProfileID = _inCommand select 0;
+                                    _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
-                                if!(isNil "_commandProfile") then {
-                                    [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
-                                    _commandUnits = _commandProfile select 2 select 21;
+                                    if!(isNil "_commandProfile") then {
+                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                        _commandUnits = _commandProfile select 2 select 21;
 
-                                    {
-                                        deleteVehicle _x;
-                                    } forEach _commandUnits;
+                                        {
+                                            deleteVehicle _x;
+                                        } forEach _commandUnits;
+                                    };
+
+                                    deleteVehicle _vehicle;
+
                                 };
 
-                                deleteVehicle _vehicle;
-
+                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
+                            }else{
+                                _anyActive = _anyActive + 1;
                             };
 
-                            [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
-                        }else{
-                            _anyActive = _anyActive + 1;
                         };
 
                     } forEach _eventTransportVehiclesProfiles;
@@ -2047,7 +2134,6 @@ switch(_operation) do {
                     _eventStateData set [0, 0];
                     [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
 
-                    //["AIRDROP WAIT - ITERATIONS COMPLETE"] call ALIVE_fnc_dump;
                     [_event, "state", "airdropComplete"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                 };
@@ -2069,7 +2155,7 @@ switch(_operation) do {
                 // for any infantry groups order
                 // them to load onto the transport vehicles
 
-                private ["_infantryProfiles","_processedProfiles","_infantryProfile","_transportProfile"];
+                private ["_infantryProfiles","_processedProfiles","_infantryProfile","_transportProfileID","_transportProfile"];
 
                 _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
                 _processedProfiles = 0;
@@ -2077,12 +2163,18 @@ switch(_operation) do {
                 if(count _eventTransportVehiclesProfiles > 0) then {
 
                     {
-                        _infantryProfile = _x select 0;
-                        _transportProfile = _eventTransportVehiclesProfiles select _processedProfiles;
+                        _infantryProfile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_infantryProfile") then {
 
-                        [_infantryProfile,_transportProfile] call ALIVE_fnc_createProfileVehicleAssignment;
+                            _transportProfileID = _eventTransportVehiclesProfiles select _processedProfiles;
+                            _transportProfile = [ALIVE_profileHandler, "getProfile", _transportProfileID] call ALIVE_fnc_profileHandler;
+                            if!(isNil "_transportProfile") then {
 
-                        _processedProfiles = _processedProfiles + 1;
+                                [_infantryProfile,_transportProfile] call ALIVE_fnc_createProfileVehicleAssignment;
+
+                                _processedProfiles = _processedProfiles + 1;
+                            };
+                        };
 
                     } forEach _infantryProfiles;
 
@@ -2117,58 +2209,53 @@ switch(_operation) do {
                     _notLoadedUnits = [];
 
                     {
-                        _infantryProfile = _x select 0;
-                        _active = _infantryProfile select 2 select 1;
+                        _infantryProfile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_infantryProfile") then {
+                            _active = _infantryProfile select 2 select 1;
 
-                        // only need to worry about this is there are
-                        // players nearby
+                            // only need to worry about this is there are
+                            // players nearby
 
-                        if(_active) then {
+                            if(_active) then {
 
-                            _units = _infantryProfile select 2 select 21;
+                                _units = _infantryProfile select 2 select 21;
 
-                            // catagorise units into loaded and not
-                            // loaded arrays
-                            {
-                                _vehicle = vehicle _x;
-                                _vehicleClass = typeOf _vehicle;
-                                if(_vehicleClass != "Steerable_Parachute_F") then {
-                                    if(vehicle _x == _x) then {
-                                        _notLoadedUnits set [count _notLoadedUnits, _x];
+                                // catagorise units into loaded and not
+                                // loaded arrays
+                                {
+                                    _vehicle = vehicle _x;
+                                    _vehicleClass = typeOf _vehicle;
+                                    if(_vehicleClass != "Steerable_Parachute_F") then {
+                                        if(vehicle _x == _x) then {
+                                            _notLoadedUnits set [count _notLoadedUnits, _x];
+                                        }else{
+                                            _loadedUnits set [count _loadedUnits, _x];
+                                        };
                                     }else{
-                                        _loadedUnits set [count _loadedUnits, _x];
+                                        _notLoadedUnits set [count _notLoadedUnits, _x];
                                     };
-                                }else{
-                                    _notLoadedUnits set [count _notLoadedUnits, _x];
-                                };
 
-                            } forEach _units;
+                                } forEach _units;
 
-                        }else{
+                            }else{
 
-                            // profiles are not active, can skip this wait
-                            // continue on to travel
+                                // profiles are not active, can skip this wait
+                                // continue on to travel
 
-                            //["TRANSPORT LOAD WAIT - NO ACTIVE - CONTINUE"] call ALIVE_fnc_dump;
-                            [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
-                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+                                [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
+                                [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                            };
 
                         };
 
                     } forEach _infantryProfiles;
-
-                    /*
-                    ["LOADED: %1",_loadedUnits] call ALIVE_fnc_dump;
-                    ["NOT LOADED: %1",_notLoadedUnits] call ALIVE_fnc_dump;
-                    */
 
                     // if there are units left to be loaded
                     // wait for x iterations for loading to occur
                     // once time is up delete all not loaded units
 
                     if(count _notLoadedUnits > 0) then {
-
-                        //["TRANSPORT LOAD WAIT - NOT ALL LOADED - ITERATE"] call ALIVE_fnc_dump;
 
                         _waitIterations = _waitIterations + 1;
                         _eventStateData set [0, _waitIterations];
@@ -2183,7 +2270,6 @@ switch(_operation) do {
                             _eventStateData set [0, 0];
                             [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
 
-                            //["TRANSPORT LOAD WAIT - NOT ALL LOADED - ITERATIONS COMPLETE"] call ALIVE_fnc_dump;
                             [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
                             [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                         };
@@ -2193,7 +2279,6 @@ switch(_operation) do {
                         // all units have loaded
                         // continue on to travel
 
-                        //["TRANSPORT LOAD WAIT - ALL LOADED - CONTINUE"] call ALIVE_fnc_dump;
                         [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
                         [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
@@ -2205,7 +2290,6 @@ switch(_operation) do {
                     // no transport vehicles available
                     // continue on to travel
 
-                    //["TRANSPORT LOAD WAIT - NO TRANSPORT - CONTINUE"] call ALIVE_fnc_dump;
                     [_event, "state", "transportStart"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                 };
@@ -2233,7 +2317,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    [_x, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _transportProfiles;
 
@@ -2241,8 +2329,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _infantryProfiles;
 
@@ -2250,8 +2341,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _armourProfiles;
 
@@ -2259,8 +2353,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _mechanisedProfiles;
 
@@ -2268,8 +2365,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _motorisedProfiles;
 
@@ -2277,8 +2377,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _planeProfiles;
 
@@ -2286,8 +2389,11 @@ switch(_operation) do {
                     _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                     _position = [_position] call ALIVE_fnc_getClosestRoad;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                    _profile = _x select 0;
-                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                    };
 
                 } forEach _heliProfiles;
 
@@ -2334,29 +2440,34 @@ switch(_operation) do {
                 _waypointsNotCompleted = 0;
 
                 {
-                    _transportProfile = _x;
-                    _position = _transportProfile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                    _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_transportProfile") then {
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
-                    };
-
-                } forEach _transportProfiles;
-
-                if((_waypointsNotCompleted == 0) && (_waypointsCompleted == 0)) then {
-                    {
-                        _profile = _x select 0;
-
-                        _position = _profile select 2 select 2;
+                        _position = _transportProfile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
                         if(_distance > 600) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
+                    };
+                } forEach _transportProfiles;
+
+                if((_waypointsNotCompleted == 0) && (_waypointsCompleted == 0)) then {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+
+                            _position = _profile select 2 select 2;
+                            _distance = _position distance _eventPosition;
+
+                            if(_distance > 600) then {
+                                _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                            }else{
+                                _waypointsCompleted = _waypointsCompleted + 1;
+                            };
                         };
 
                     } forEach _infantryProfiles;
@@ -2373,71 +2484,86 @@ switch(_operation) do {
                 };
 
                 {
-                    _profile = _x select 0;
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
 
-                    _position = _profile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
+                        if(_distance > 600) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
                     };
 
                 } forEach _armourProfiles;
 
                 {
-                    _profile = _x select 0;
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
 
-                    _position = _profile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
+                        if(_distance > 600) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
                     };
 
                 } forEach _mechanisedProfiles;
 
                 {
-                    _profile = _x select 0;
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
 
-                    _position = _profile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
+                        if(_distance > 600) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
                     };
 
                 } forEach _motorisedProfiles;
 
                 {
-                    _profile = _x select 0;
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
 
-                    _position = _profile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
+                        if(_distance > 600) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
                     };
 
                 } forEach _planeProfiles;
 
                 {
-                    _profile = _x select 0;
+                    _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
 
-                    _position = _profile select 2 select 2;
-                    _distance = _position distance _eventPosition;
+                        _position = _profile select 2 select 2;
+                        _distance = _position distance _eventPosition;
 
-                    if(_distance > 600) then {
-                        _waypointsNotCompleted = _waypointsNotCompleted + 1;
-                    }else{
-                        _waypointsCompleted = _waypointsCompleted + 1;
+                        if(_distance > 600) then {
+                            _waypointsNotCompleted = _waypointsNotCompleted + 1;
+                        }else{
+                            _waypointsCompleted = _waypointsCompleted + 1;
+                        };
+
                     };
 
                 } forEach _heliProfiles;
@@ -2466,7 +2592,6 @@ switch(_operation) do {
                         _eventStateData set [0, 0];
                         [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
 
-                        //["TRANSPORT TRAVEL WAIT - ITERATIONS COMPLETE"] call ALIVE_fnc_dump;
                         [_event, "state", "transportComplete"] call ALIVE_fnc_hashSet;
                         [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
@@ -2484,19 +2609,23 @@ switch(_operation) do {
 
                     // unload any transport vehicles
                     {
-                        _transportProfile = _x;
-                        _inCargo = _transportProfile select 2 select 9;
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
 
-                        if(count _inCargo > 0) then {
-                            {
-                                _cargoProfileID = _x;
-                                _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
+                            _inCargo = _transportProfile select 2 select 9;
 
-                                if!(isNil "_cargoProfile") then {
-                                    [_cargoProfile,_transportProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
-                                };
+                            if(count _inCargo > 0) then {
+                                {
+                                    _cargoProfileID = _x;
+                                    _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
 
-                            } forEach _inCargo;
+                                    if!(isNil "_cargoProfile") then {
+                                        [_cargoProfile,_transportProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
+                                    };
+
+                                } forEach _inCargo;
+                            };
+
                         };
 
                     } forEach _eventTransportVehiclesProfiles;
@@ -2504,35 +2633,38 @@ switch(_operation) do {
                     _anyActive = 0;
 
                     {
-                        _transportProfile = _x;
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
 
-                        _active = _transportProfile select 2 select 1;
+                            _active = _transportProfile select 2 select 1;
 
-                        if(_active) then {
+                            if(_active) then {
 
-                            _anyActive = _anyActive + 1;
+                                _anyActive = _anyActive + 1;
 
-                        }else{
+                            }else{
 
-                            // if not active dispose of transport profiles
+                                // if not active dispose of transport profiles
 
-                            _inCommand = _transportProfile select 2 select 8;
+                                _inCommand = _transportProfile select 2 select 8;
 
-                            if(count _inCommand > 0) then {
-                                _commandProfileID = _inCommand select 0;
-                                _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
+                                if(count _inCommand > 0) then {
+                                    _commandProfileID = _inCommand select 0;
+                                    _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
-                                if!(isNil "_commandProfile") then {
-                                    [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                    if!(isNil "_commandProfile") then {
+                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                    };
+
                                 };
 
+                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
+
+                                // set state to event complete
+                                [_event, "state", "eventComplete"] call ALIVE_fnc_hashSet;
+                                [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                             };
 
-                            [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
-
-                            // set state to event complete
-                            [_event, "state", "eventComplete"] call ALIVE_fnc_hashSet;
-                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
                         };
 
                     } forEach _eventTransportVehiclesProfiles;
@@ -2570,7 +2702,11 @@ switch(_operation) do {
                         _position = [_reinforcementPosition, (random(300)), random(360)] call BIS_fnc_relPos;
                         _position = [_position] call ALIVE_fnc_getClosestRoad;
                         _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                        [_x, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
+                            [_transportProfile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                        };
 
 
                     } forEach _eventTransportProfiles;
@@ -2601,31 +2737,34 @@ switch(_operation) do {
                     // once transport vehicles are inactive
                     // dispose of the profiles
                     {
-                        _transportProfile = _x;
+                        _transportProfile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_transportProfile") then {
 
-                        _active = _transportProfile select 2 select 1;
+                            _active = _transportProfile select 2 select 1;
 
-                        if(_active) then {
+                            if(_active) then {
 
-                            _anyActive = _anyActive + 1;
+                                _anyActive = _anyActive + 1;
 
-                        }else{
+                            }else{
 
-                            // if not active dispose of transport profiles
+                                // if not active dispose of transport profiles
 
-                            _inCommand = _transportProfile select 2 select 8;
+                                _inCommand = _transportProfile select 2 select 8;
 
-                            if(count _inCommand > 0) then {
-                                _commandProfileID = _inCommand select 0;
-                                _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
+                                if(count _inCommand > 0) then {
+                                    _commandProfileID = _inCommand select 0;
+                                    _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
-                                if!(isNil "_commandProfile") then {
-                                    [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                    if!(isNil "_commandProfile") then {
+                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                    };
+
                                 };
 
+                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
                             };
 
-                            [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
                         };
 
                     } forEach _eventTransportVehiclesProfiles;
@@ -2651,11 +2790,102 @@ switch(_operation) do {
             case "eventComplete": {
 
                 [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
-
                 [_logic, "removeEvent", _eventID] call MAINCLASS;
 
             };
         };
+    };
+
+    case "setEventProfilesAvailable": {
+
+        private ["_debug","_event","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
+        "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile"];
+
+        // set all cargo profiles as not busy
+
+        _debug = [_logic, "debug"] call MAINCLASS;
+        _event = _args;
+
+        _eventCargoProfiles = [_event, "cargoProfiles"] call ALIVE_fnc_hashGet;
+
+        _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
+        _armourProfiles = [_eventCargoProfiles, 'armour'] call ALIVE_fnc_hashGet;
+        _mechanisedProfiles = [_eventCargoProfiles, 'mechanised'] call ALIVE_fnc_hashGet;
+        _motorisedProfiles = [_eventCargoProfiles, 'motorised'] call ALIVE_fnc_hashGet;
+        _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
+        _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
+
+        {
+            _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+            if!(isNil "_profile") then {
+                [_profile,"busy",false] call ALIVE_fnc_hashSet;
+            };
+
+        } forEach _infantryProfiles;
+
+        {
+            {
+                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                if!(isNil "_profile") then {
+                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                };
+            } forEach _x;
+
+        } forEach _armourProfiles;
+
+        {
+            {
+                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                if!(isNil "_profile") then {
+                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                };
+            } forEach _x;
+
+        } forEach _mechanisedProfiles;
+
+        {
+            {
+                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                if!(isNil "_profile") then {
+                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                };
+            } forEach _x;
+
+        } forEach _motorisedProfiles;
+
+        {
+            {
+                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                if!(isNil "_profile") then {
+                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                };
+            } forEach _x;
+
+        } forEach _planeProfiles;
+
+        {
+            {
+                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                if!(isNil "_profile") then {
+                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                };
+            } forEach _x;
+
+        } forEach _heliProfiles;
+    };
+
+    case "removeEvent": {
+        private["_debug","_eventID","_eventQueue"];
+
+        // remove the event from the queue
+
+        _eventID = _args;
+        _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
+
+        [_eventQueue,_eventID] call ALIVE_fnc_hashRem;
+
+        [_logic, "eventQueue", _eventQueue] call MAINCLASS;
+
     };
 };
 

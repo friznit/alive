@@ -55,9 +55,9 @@ _forceMakeup = [
 /*
 _forceMakeup = [
     6, // infantry
-    0, // motorised
-    0, // mechanised
-    0, // armour
+    1, // motorised
+    1, // mechanised
+    1, // armour
     0, // plane
     0  // heli
 ];
