@@ -1,36 +1,41 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, opcom">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
-item2[] = {"ANALYZE",2,250,-919.749390,-484.558380,-422.012177,-436.693756,0.000000,"ANALYZE"};
-item3[] = {"OPCOM_FEEDER",4,218,-716.739197,-392.488068,-626.739258,-342.488068,1.000000,"OPCOM" \n "FEEDER"};
-item4[] = {"ATTACK_Condition",4,218,-929.164673,-375.286652,-839.164551,-325.286652,5.000000,"ATTACK" \n "Conditions"};
-item5[] = {"",7,210,-345.692139,-136.027100,-337.692108,-128.027069,0.000000,""};
+item2[] = {"ANALYZE",2,250,-915.210754,-306.293610,-417.475098,-258.428986,0.000000,"ANALYZE"};
+item3[] = {"OPCOM_FEEDER",4,218,-712.202148,-220.080902,-622.202209,-170.080902,1.000000,"OPCOM" \n "FEEDER"};
+item4[] = {"ATTACK_Condition",4,218,-924.627625,-202.879486,-834.627502,-152.879486,5.000000,"ATTACK" \n "Conditions"};
+item5[] = {"",7,210,-341.155090,36.380066,-333.155060,44.380096,0.000000,""};
 item6[] = {"",7,210,-347.610199,-817.749023,-339.610168,-809.749023,0.000000,""};
-item7[] = {"DEFEND_condition",4,218,-792.029785,-376.003082,-702.029785,-326.003082,4.000000,"DEFEND" \n "conditions"};
-item8[] = {"RESERVE_conditio",4,218,-647.107849,-374.023468,-557.107788,-324.023468,3.000000,"RESERVE" \n "conditions"};
+item7[] = {"DEFEND_condition",4,218,-787.492737,-203.595917,-697.492737,-153.595917,4.000000,"DEFEND" \n "conditions"};
+item8[] = {"RESERVE_conditio",4,218,-642.570801,-201.616302,-552.570740,-151.616302,3.000000,"RESERVE" \n "conditions"};
 item9[] = {"OPCOM_RECEIVER",4,218,-717.074463,-838.579346,-627.074646,-788.579346,1.000000,"OPCOM" \n "RECEIVER"};
-item10[] = {"CUSTOM_condition",4,218,-506.692078,-374.296844,-416.692169,-324.296844,2.000000,"CUSTOM" \n "conditions"};
-item11[] = {"ORDER_TACOM",2,250,-929.397888,-266.917206,-430.130585,-222.714111,0.000000,"ORDER" \n "TACOM"};
-item12[] = {"TACOM_CONFIRM",4,218,-656.219116,-157.584137,-566.219116,-107.584137,0.000000,"TACOM" \n "CONFIRM"};
-item13[] = {"TACOM_NOT_CONFIR",4,218,-772.502075,-158.670807,-682.502197,-108.670807,0.000000,"TACOM" \n "NOT CONFIRM"};
-item14[] = {"",7,210,-1035.794922,-137.497955,-1027.794678,-129.497955,0.000000,""};
-item15[] = {"_",-1,250,-437.714081,-121.191147,-434.628998,-121.191147,0.000000,""};
+item10[] = {"CUSTOM_condition",4,218,-502.155029,-201.889679,-412.155121,-151.889679,2.000000,"CUSTOM" \n "conditions"};
+item11[] = {"ORDER_TACOM",2,250,-924.860840,-94.510040,-425.593536,-50.306946,0.000000,"ORDER" \n "TACOM"};
+item12[] = {"TACOM_CONFIRM",4,218,-651.682068,14.823029,-561.682068,64.823029,0.000000,"TACOM" \n "CONFIRM"};
+item13[] = {"TACOM_NOT_CONFIR",4,218,-767.965027,13.736359,-677.965149,63.736359,0.000000,"TACOM" \n "NOT CONFIRM"};
+item14[] = {"",7,210,-1031.257935,34.909210,-1023.257385,42.909210,0.000000,""};
+item15[] = {"_",-1,250,-433.177032,51.216019,-430.091949,51.216019,0.000000,""};
 item16[] = {"",7,210,-1032.922607,-816.473755,-1024.922607,-808.473755,0.000000,""};
 item17[] = {"INITIALIZE",2,250,-721.197266,-875.105042,-625.643738,-851.020447,0.000000,"INITIALIZE"};
-item18[] = {"NOT_BUSY",2,250,-930.812866,-157.222656,-840.812866,-107.222656,0.000000,"NOT BUSY"};
-item19[] = {"NOT_BUSY_1",2,250,-525.478333,-156.136017,-435.478302,-106.136017,0.000000,"NOT BUSY"};
-item20[] = {"COLLECT_TO_QUEUE",2,250,-717.153931,-752.207458,-627.154053,-702.207458,0.000000,"COLLECT" \n "TO QUEUE"};
-item21[] = {"ENTRIES_IN_QUEUE",4,218,-716.046936,-682.136108,-626.046936,-632.136108,0.000000,"ENTRIES" \n "IN QUEUE"};
-item22[] = {"ANALYZE_Conditio",4,218,-1207.555176,-482.607452,-1117.554932,-432.607269,0.000000,"ANALYZE" \n "Conditions"};
-item23[] = {"PERFORM_ANALYSIS",2,250,-1209.390747,-710.863525,-1119.390747,-660.863525,0.000000,"PERFORM" \n "ANALYSIS"};
-item24[] = {"ANALYSIS_DONE",4,218,-1213.964233,-771.945801,-1123.964233,-721.945801,0.000000,"ANALYSIS" \n "DONE"};
+item18[] = {"NOT_BUSY",2,250,-926.275818,15.184509,-836.275818,65.184509,0.000000,"NOT BUSY"};
+item19[] = {"NOT_BUSY_1",2,250,-520.941284,16.271149,-430.941254,66.271149,0.000000,"NOT BUSY"};
+item20[] = {"COLLECT_TO_QUEUE",2,250,-712.616882,-579.800415,-622.617004,-529.800415,0.000000,"COLLECT" \n "TO QUEUE"};
+item21[] = {"ENTRIES_IN_QUEUE",4,218,-711.509888,-509.729004,-621.509888,-459.728912,0.000000,"ENTRIES" \n "IN QUEUE"};
+item22[] = {"ANALYZE_Conditio",4,218,-1203.018188,-310.200287,-1113.017944,-260.200104,0.000000,"ANALYZE" \n "Conditions"};
+item23[] = {"PERFORM_ANALYSIS",2,250,-1204.853882,-538.456421,-1114.853882,-488.456451,0.000000,"PERFORM" \n "ANALYSIS"};
+item24[] = {"ANALYSIS_DONE",4,218,-1209.427368,-599.538696,-1119.427368,-549.538696,0.000000,"ANALYSIS" \n "DONE"};
 item25[] = {"RESET",2,250,-1210.631958,-838.320801,-1120.631958,-788.320801,0.000000,"RESET"};
-item26[] = {"PERFORM_CLEANUP",2,250,-1206.501831,-555.380127,-1116.501831,-505.380127,0.000000,"PERFORM" \n "CLEANUP"};
-item27[] = {"CLEANUP_DONE",4,218,-1206.436401,-636.119812,-1116.436401,-586.119812,0.000000,"CLEANUP" \n "DONE"};
-item28[] = {"EXIT",4,218,-716.610535,-72.030029,-626.610535,-22.030073,99.000000,"EXIT"};
-item29[] = {"END",1,250,-716.626648,54.081299,-626.626587,104.081261,0.000000,"END"};
+item26[] = {"PERFORM_CLEANUP",2,250,-1201.964966,-382.972961,-1111.964966,-332.972961,0.000000,"PERFORM" \n "CLEANUP"};
+item27[] = {"CLEANUP_DONE",4,218,-1201.899536,-463.712677,-1111.899536,-413.712738,0.000000,"CLEANUP" \n "DONE"};
+item28[] = {"EXIT",4,218,-712.073486,100.377136,-622.073486,150.377090,99.000000,"EXIT"};
+item29[] = {"END",1,250,-712.089600,226.488464,-622.089539,276.488434,0.000000,"END"};
+item30[] = {"REEINFORCE_Condi",4,218,-269.226440,-306.737396,-179.226395,-256.737396,0.000000,"REEINFORCE" \n "Conditions"};
+item31[] = {"REQUEST_REEINFOR",2,250,-283.745728,-835.260864,-193.745712,-785.260864,0.000000,"REQUEST" \n "REEINFORCEMENTS"};
+item32[] = {"",7,210,-1164.081909,36.036972,-1156.081909,44.036972,0.000000,""};
+item33[] = {"PERFORM_POSTANAL",2,4346,-1209.788086,-683.964172,-1119.788086,-633.964172,0.000000,"PERFORM" \n "POSTANALYSIS"};
+item34[] = {"POST_ANALYSIS_DO",4,218,-1208.969116,-760.668579,-1118.969116,-710.668579,0.000000,"POST" \n "ANALYSIS" \n "DONE"};
 version=1;
 class LayoutItems
 {
@@ -54,38 +59,44 @@ link6[] = {2,9};
 link7[] = {2,10};
 link8[] = {2,22};
 link9[] = {2,28};
-link10[] = {3,2};
-link11[] = {4,11};
-link12[] = {5,6};
-link13[] = {5,28};
-link14[] = {6,9};
-link15[] = {7,11};
-link16[] = {8,11};
-link17[] = {9,20};
-link18[] = {10,11};
-link19[] = {11,12};
-link20[] = {11,13};
-link21[] = {12,19};
-link22[] = {13,18};
-link23[] = {14,16};
-link24[] = {14,28};
-link25[] = {16,9};
-link26[] = {17,9};
-link27[] = {18,14};
-link28[] = {19,5};
-link29[] = {20,9};
-link30[] = {20,21};
-link31[] = {21,2};
-link32[] = {22,26};
-link33[] = {23,24};
-link34[] = {23,28};
-link35[] = {24,25};
-link36[] = {25,16};
-link37[] = {26,27};
-link38[] = {27,23};
-link39[] = {28,29};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,78,6316128,1,-1191.236816,-275.441010,-341.807953,-1331.399780,757,818,1};
-window[] = {0,-1,-1,-1,-1,993,44,1814,44,1,774};
+link10[] = {2,30};
+link11[] = {3,2};
+link12[] = {4,11};
+link13[] = {5,6};
+link14[] = {5,28};
+link15[] = {6,9};
+link16[] = {7,11};
+link17[] = {8,11};
+link18[] = {9,20};
+link19[] = {10,11};
+link20[] = {11,12};
+link21[] = {11,13};
+link22[] = {12,19};
+link23[] = {13,18};
+link24[] = {14,16};
+link25[] = {14,28};
+link26[] = {16,9};
+link27[] = {17,9};
+link28[] = {18,14};
+link29[] = {19,5};
+link30[] = {20,9};
+link31[] = {20,21};
+link32[] = {21,2};
+link33[] = {22,26};
+link34[] = {23,24};
+link35[] = {23,32};
+link36[] = {24,33};
+link37[] = {25,16};
+link38[] = {26,27};
+link39[] = {27,23};
+link40[] = {28,29};
+link41[] = {30,31};
+link42[] = {31,6};
+link43[] = {32,28};
+link44[] = {33,34};
+link45[] = {34,25};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,87,6316128,1,-1304.547485,-106.084106,-45.874146,-1218.533325,836,818,1};
+window[] = {0,-1,-1,-1,-1,993,44,1824,44,1,853};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -117,10 +128,11 @@ class FSM
        "" \n
        "_OPCOM_QUEUE = [];" \n
        "_targets = [];" \n
-       "_cycleTime = 450;" \n
+       "_cycleTime = 60;" \n
        "_timestamp = time;" \n
        "_lastanalyze = 0;" \n
        "_orderFailed = false;" \n
+       "_reinforcementRatio = 0.9;" \n
        "" \n
        "_colorside = ""ColorRed"";" \n
        "switch (_side) do {" \n
@@ -269,8 +281,26 @@ class FSM
        "			_targetOccupation = [_OPCOM_HANDLER,""clusteroccupation"",[]] call ALiVE_fnc_HashGet;" \n
        "			if (((count _targetOccupation > 0) && {time - (_targetOccupation select 4) > _cycleTime}) || {count _targetOccupation == 0}) then {_analyze = ""analysis""};" \n
        "" \n
-       "			// Exit if analysis should happen" \n
+       "			//Exit if analysis should happen" \n
        "			if !(isnil ""_analyze"") exitwith {_busy = false};" \n
+       "" \n
+       "			//Exit if reeinforcements need to be requested" \n
+       "			if !(isnil ""_reinforce"") exitwith {{" \n
+       "	private [""_typeReinf""];" \n
+       "" \n
+       "	_typeReinf = _foreachIndex;" \n
+       "" \n
+       "	switch (_typeReinf) do {" \n
+       "		case 0 : {_typeReinf = ""infantry""};" \n
+       "		case 1 : {_typeReinf = ""motorised""};" \n
+       "		case 2 : {_typeReinf = ""mechanised""};" \n
+       "		case 3 : {_typeReinf= ""armour""};" \n
+       "		case 4 : {_typeReinf = ""plane""};" \n
+       "		case 5 : {_typeReinf = ""heli""};" \n
+       "	};" \n
+       "" \n
+       "	[""Reeinforcing side %3 %1x %2 units!"",_x,_typeReinf,_side] call ALiVE_fnc_DumpR;" \n
+       "} foreach _reinforce; _busy = false};" \n
        "" \n
        "			//Get objectives" \n
        "			_obj = ([_OPCOM_HANDLER,""objectives"",[]] call AliVE_fnc_HashGet);" \n
@@ -466,6 +496,16 @@ class FSM
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
+        /*%FSM<LINK "OPCOM_FEEDER">*/
+        class OPCOM_FEEDER
+        {
+          priority = 1.000000;
+          to="ANALYZE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"time - _lastAnalyze > _cycleTime"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
         /*%FSM<LINK "OPCOM_RECEIVER">*/
         class OPCOM_RECEIVER
         {
@@ -480,13 +520,13 @@ class FSM
           action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "OPCOM_FEEDER">*/
-        class OPCOM_FEEDER
+        /*%FSM<LINK "REEINFORCE_Condi">*/
+        class REEINFORCE_Condi
         {
-          priority = 1.000000;
-          to="ANALYZE";
+          priority = 0.000000;
+          to="REQUEST_REEINFOR";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"time - _lastAnalyze > _cycleTime"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!(isnil ""_reinforce"");"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -705,7 +745,6 @@ class FSM
        "		//ANALYSISDONE = false; [_OPCOM_HANDLER,_sidesFriendly,_sidesEnemy] execFSM ""\x\alive\addons\mil_opcom\analyze.fsm"";" \n
        "		_clusterOccupationAnalysis = [_OPCOM_HANDLER,_side,_sidesEnemy,_sidesFriendly] spawn {[_this select 0,""analyzeclusteroccupation"",[_this select 3,_this select 2]] call ALiVE_fnc_OPCOM};" \n
        "		_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
-       "		" \n
        "		_enemyScan = [_OPCOM_HANDLER,_factions] spawn {" \n
        "			private [""_profiles"",""_pos""];" \n
        "" \n
@@ -737,7 +776,7 @@ class FSM
         class ANALYSIS_DONE
         {
           priority = 0.000000;
-          to="RESET";
+          to="PERFORM_POSTANAL";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"scriptdone _troopsAnalysis && " \n
            "scriptdone _clusterOccupationAnalysis && " \n
@@ -839,6 +878,87 @@ class FSM
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "REQUEST_REEINFOR">*/
+    class REQUEST_REEINFOR
+    {
+      name = "REQUEST_REEINFOR";
+      init = /*%FSM<STATEINIT""">*/"private [""_position"",""_forceMakeup"",""_event"",""_eventID""];" \n
+       "" \n
+       "_position = [([_OPCOM_HANDLER,""position""] call ALiVE_fnc_HashGet), 20, 180] call BIS_fnc_relPos;" \n
+       "_faction = _factions call BIS_fnc_SelectRandom;" \n
+       "" \n
+       "_forceMakeup = [" \n
+       "    _reinforce select 0, // infantry" \n
+       "    _reinforce select 1, // motorised" \n
+       "    _reinforce select 2, // mechanised" \n
+       "    _reinforce select 3, // armour" \n
+       "    _reinforce select 4, // plane" \n
+       "    _reinforce select 4  // heli" \n
+       "];" \n
+       "_event = ['LOGCOM_REQUEST', [_position,_faction,_side,_forceMakeup,""STANDARD""],""OPCOM""] call ALIVE_fnc_event;" \n
+       "_eventID = [ALIVE_eventLog, ""addEvent"",_event] call ALIVE_fnc_eventLog;" \n
+       "" \n
+       "_reinforce = nil;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "OPCOM_RECEIVER">*/
+        class OPCOM_RECEIVER
+        {
+          priority = 1.000000;
+          to="COLLECT_TO_QUEUE";
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_failsafe = false; _failsafe = (time - _timestamp) > _cycleTime;" \n
+           ""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_OPCOM_status = ""waiting for data""; " \n
+           "" \n
+           "//See PreCondition and Action for _failsafe and _pause" \n
+           "(!(isnil ""_OPCOM_DATA"") || {_orderFailed} || {_failsafe}) && {!_pause};"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (_orderFailed || {_failsafe}) then {_orderFailed = false; _failsafe = false; _OPCOM_DATA= [""analyze"",nil]};"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "PERFORM_POSTANAL">*/
+    class PERFORM_POSTANAL
+    {
+      name = "PERFORM_POSTANAL";
+      init = /*%FSM<STATEINIT""">*/"private [""_reinforce""];" \n
+       "" \n
+       "//Analyze Forces State" \n
+       "_startForcesStrength = [_OPCOM_HANDLER,""startForceStrength"",[]] call ALiVE_fnc_HashGet;" \n
+       "_currentForceStrength = [_OPCOM_HANDLER,""currentForceStrength"",[]] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "_startCount = 0;" \n
+       "_currentCount = 0;" \n
+       "_diff = [];" \n
+       "" \n
+       "for ""_i"" from 0 to ((count _startForcesStrength)-1) do {" \n
+       "	_startCount = _startCount + (_startForcesStrength select _i);" \n
+       "	_currentCount = _currentCount + (_currentForceStrength select _i);" \n
+       "" \n
+       "	_diff set [count _diff,(_startForcesStrength select _i)-(_currentForceStrength select _i)];" \n
+       "};" \n
+       "" \n
+       "//[""Diff 1 %1 _start %2 _curr %3 CC %4 SC %5 _ratio %6"",_diff,_startForcesStrength,_currentForceStrength,_currentCount, _startCount, (_currentCount / _startCount)] call ALiVE_fnc_DumpR;" \n
+       "" \n
+       "if (_currentCount / _startCount < _reinforcementRatio) then {_reinforce = +_diff};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "POST_ANALYSIS_DO">*/
+        class POST_ANALYSIS_DO
+        {
+          priority = 0.000000;
+          to="RESET";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
       };
     };
     /*%FSM</STATE>*/
