@@ -72,7 +72,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class PLAYERTASKINGS
+                        class playertaskings
                         {
                                 displayName = "$STR_ALIVE_OPCOM_PLAYERTASKINGS";
                                 description = "$STR_ALIVE_OPCOM_PLAYERTASKINGS_COMMENT";
@@ -88,6 +88,30 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
+                                        };
+                                };
+                        };
+                        class reinforcements
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_REINFORCEMENTS";
+                                description = "$STR_ALIVE_OPCOM_REINFORCEMENTS_COMMENT";
+                                class Values
+                                {
+                                        class Constant
+                                        {
+                                                name = "Constant";
+                                                value = 0.9;
+                                                default = 1;
+                                        };
+                                        class Blocked
+                                        {
+                                                name = "Blocked";
+                                                value = 0.75;
+                                        };
+                                        class Seldom
+                                        {
+                                                name = "Seldom";
+                                                value = 0.5;
                                         };
                                 };
                         };

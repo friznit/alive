@@ -104,6 +104,7 @@ switch(_operation) do {
                     _debug = call compile (_logic getvariable ["debug","false"]);
                     _persistent = call compile (_logic getvariable ["persistent","false"]);
                     _tasksEnabled = call compile (_logic getvariable ["playertaskings","true"]);
+                    _reinforcements = call compile (_logic getvariable ["reinforcements","0.9"]);
                     
                     //Get position
                     _position = getposATL _logic;
@@ -158,6 +159,7 @@ switch(_operation) do {
 					[_handler, "debug",_debug] call ALiVE_fnc_HashSet;
 					[_handler, "persistent",_persistent] call ALiVE_fnc_HashSet;
 					[_handler, "module",_logic] call ALiVE_fnc_HashSet;
+                    [_handler, "reinforcements",_reinforcements] call ALiVE_fnc_HashSet;
                     
                     switch (_type) do {
 						case ("invasion") : {
@@ -1179,7 +1181,7 @@ switch(_operation) do {
             } foreach _objectives;
         };
 
-        case "NearestAvailableSectionSimple": {
+        case "NearestAvailableSection": {
             
             private ["_st","_troopsunsorted","_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
             
@@ -1216,20 +1218,12 @@ switch(_operation) do {
                     
                     _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
                     
-                    if !(isnil "_profile") then {
-                        
-                        _busy = [_profile,"busy",false] call ALiVE_fnc_HashGet;
-                        
-                        if (_busy) then {99999} else {
-                        	([_profile,"position",_pos] call ALiVE_fnc_HashGet) distance _pos;
-                        };
-                    } else {
-                        99999;
+                    if (isnil "_profile") then {99999} else {
+                        ([_profile,"position",_pos] call ALiVE_fnc_HashGet) distance _pos;
                     };
 				} else {
 					99999;
 				};
-
             },"ASCEND"] call BIS_fnc_sortBy;
             
             //Collect section
@@ -1241,26 +1235,17 @@ switch(_operation) do {
                 
                 _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
                 
-                if !(isnil "_profile") then {               
+                if !(isnil "_profile") then {
                 	_busy = [_profile,"busy",false] call ALiVE_fnc_HashGet;
                     
                     if !(_busy) then {_section set [count _section,_x]};
                 };
             } foreach _troops;
             
-            /*
-            //Collect section
-            _section = [];
-			{
-                if (count _section == _size) exitwith {};
-				_section set [count _section,_x];
-            } foreach _troops;
-            */
-            
 			_result = _section;
         };
         
-        case "NearestAvailableSection": {
+        case "NearestAvailableSectionBAK": {
             
             private ["_st","_troopsunsorted","_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
             
