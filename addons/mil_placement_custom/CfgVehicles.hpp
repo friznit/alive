@@ -91,6 +91,118 @@ class CfgVehicles {
                                                 value = false;
                                                 default = true;
                                         };
+
+                                        // autogen start
+
+                                        class AAF_Communication_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_AAF_Communication_Camp_1";
+                                        value = "AAF_Communication_Camp_1";
+                                        };
+                                        class AAF_Bunker_Light_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_AAF_Bunker_Light_1";
+                                        value = "AAF_Bunker_Light_1";
+                                        };
+                                        class AAF_Bunker_Light_2
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_AAF_Bunker_Light_2";
+                                        value = "AAF_Bunker_Light_2";
+                                        };
+                                        class AAF_AntiTank_Nest_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_AAF_AntiTank_Nest_1";
+                                        value = "AAF_AntiTank_Nest_1";
+                                        };
+                                        class AAF_Convoy_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_AAF_Convoy_Camp_1";
+                                        value = "AAF_Convoy_Camp_1";
+                                        };
+                                        class NATO_Supply_Bunker_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_NATO_Supply_Bunker_1";
+                                        value = "NATO_Supply_Bunker_1";
+                                        };
+                                        class NATO_HQ_Medical_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_NATO_HQ_Medical_1";
+                                        value = "NATO_HQ_Medical_1";
+                                        };
+                                        class NATO_Crashsite_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_NATO_Crashsite_1";
+                                        value = "NATO_Crashsite_1";
+                                        };
+                                        class NATO_Medium_Checkpoint_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_NATO_Medium_Checkpoint_1";
+                                        value = "NATO_Medium_Checkpoint_1";
+                                        };
+                                        class NATO_Light_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_NATO_Light_Camp_1";
+                                        value = "NATO_Light_Camp_1";
+                                        };
+                                        class CSAT_Light_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_CSAT_Light_Camp_1";
+                                        value = "CSAT_Light_Camp_1";
+                                        };
+                                        class CSAT_Checkpoint_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_CSAT_Checkpoint_1";
+                                        value = "CSAT_Checkpoint_1";
+                                        };
+                                        class CSAT_Heavy_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_CSAT_Heavy_Camp_1";
+                                        value = "CSAT_Heavy_Camp_1";
+                                        };
+                                        class CSAT_Mortar_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_CSAT_Mortar_Camp_1";
+                                        value = "CSAT_Mortar_Camp_1";
+                                        };
+                                        class CSAT_Medium_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_CSAT_Medium_Camp_1";
+                                        value = "CSAT_Medium_Camp_1";
+                                        };
+                                        class GENERIC_Garbage_Camp
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_GENERIC_Garbage_Camp";
+                                        value = "GENERIC_Garbage_Camp";
+                                        };
+                                        class GENEROC_Medium_Camp_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_GENEROC_Medium_Camp_1";
+                                        value = "GENEROC_Medium_Camp_1";
+                                        };
+                                        class GENERIC_Osprey_Crash
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_GENERIC_Osprey_Crash";
+                                        value = "GENERIC_Osprey_Crash";
+                                        };
+                                        class GENERIC_Medium_Crashsite_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_GENERIC_Medium_Crashsite_1";
+                                        value = "GENERIC_Medium_Crashsite_1";
+                                        };
+                                        class GENERIC_Roadblock_1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_GENERIC_Roadblock_1";
+                                        value = "GENERIC_Roadblock_1";
+                                        };
+                                        class GENERIC_Roadblock_2
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_GENERIC_Roadblock_2";
+                                        value = "GENERIC_Roadblock_2";
+                                        };
+
+
+                                        // autogen end
+
                                         class CompA
                                         {
                                                 name = "$STR_ALIVE_CMP_COMPOSITION_BIS_A";

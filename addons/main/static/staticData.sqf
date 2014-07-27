@@ -89,7 +89,15 @@ ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST +
 	"I_diver_exp_F",
 	"I_diver_TL_F",
 	"I_pilot_F",
-	"I_Story_Colonel_F"
+	"I_Story_Colonel_F",
+
+	"B_Soldier_VR_F",
+    "O_Soldier_VR_F",
+    "I_Soldier_VR_F",
+    "C_Soldier_VR_F",
+    "B_Protagonist_VR_F",
+    "O_Protagonist_VR_F",
+    "I_Protagonist_VR_F"
 ];
 
 
@@ -113,7 +121,14 @@ ALiVE_PLACEMENT_UNITBLACKLIST = ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST +
 	"C_Driver_1_yellow_F",
 	"C_Driver_2_F",
 	"C_Driver_3_F",
-	"C_Driver_4_F"
+	"C_Driver_4_F",
+	"B_Soldier_VR_F",
+    "O_Soldier_VR_F",
+    "I_Soldier_VR_F",
+    "C_Soldier_VR_F",
+    "B_Protagonist_VR_F",
+    "O_Protagonist_VR_F",
+    "I_Protagonist_VR_F"
 ];
 
 ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +

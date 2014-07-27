@@ -189,14 +189,14 @@ switch(_operation) do {
 		
 			private ["_debug","_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount",
 			"_faction","_factionConfig","_factionSideNumber","_side","_countProfiles","_file","_size","_priority",
-			"_position","_moduleObject","_module","_objectiveName","_objective","_composition","_bisCompositions","_configPath","_guardGroup","_guards"];
+			"_position","_moduleObject","_module","_objectiveName","_objective","_guardGroup","_guards","_composition"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-				["ALIVE MP - Placement"] call ALIVE_fnc_dump;
+				["ALIVE CMP - Placement"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
@@ -239,19 +239,27 @@ switch(_operation) do {
 
             // Spawn the composition
 
-			if (typeName _composition == "STRING") then {
+			if (typeName _composition == "STRING" && _composition != "false") then {
+
+			    private ["_bisCompositions"];
 
 			    _bisCompositions = ["OutpostA","OutpostB","OutpostC","OutpostD","OutpostE","OutpostF"];
 
 			    if(_composition in _bisCompositions) then {
+
                     _configPath = configFile >> "CfgGroups" >> "Empty" >> "Military" >> "Outposts";
+                    _composition = _configPath >> _composition;
+                     [_composition, _position, direction _logic] call ALIVE_fnc_spawnComposition;
+
 			    }else{
-                    _configPath = configFile >> "CfgGroups" >> "Empty" >> "Custom" >> "Camps";
+
+                    _composition = [_composition] call ALIVE_fnc_findComposition;
+
+                    if(count _composition > 0) then {
+                        [_composition, _position, direction _logic] call ALIVE_fnc_spawnComposition;
+                    };
+
 			    };
-
-			    _compositionGroup = _configPath >> _composition;
-
-			    [_position, WEST, (_compositionGroup)] call BIS_fnc_spawnGroup
 
 			};
 			
