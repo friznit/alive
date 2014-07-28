@@ -170,8 +170,11 @@ switch(_operation) do {
 					case "AgentKIAIntelligenceItem":{
                         [_logic, "cleanupAgentKIAIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
                     };
-					case "reinforceIntelligenceItem":{
-                        [_logic, "cleanupReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
+					case "logisticsInsertionIntelligenceItem":{
+                        [_logic, "cleanupLogisticsInsertionIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
+                    };
+                    case "logisticsDestinationIntelligenceItem":{
+                        [_logic, "cleanupLogisticsDestinationIntelligenceItemAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
                     };
                     case "showFriendlies":{
                         [_logic, "cleanupShowFriendliesAnalysis", [_jobID,_jobArgs]] call MAINCLASS;
@@ -250,8 +253,11 @@ switch(_operation) do {
                                         case "AgentKIAIntelligenceItem":{
                                             [_logic, "runAgentKIAIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
                                         };
-                                        case "reinforceIntelligenceItem":{
-                                            [_logic, "runReinforceIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        case "logisticsInsertionIntelligenceItem":{
+                                            [_logic, "runLogisticsInsertionIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
+                                        };
+                                        case "logisticsDestinationIntelligenceItem":{
+                                            [_logic, "runLogisticsDestinationIntelligenceItemAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
                                         };
                                         case "showFriendlies":{
                                             [_logic, "runShowFriendliesAnalysis", [_jobID,_jobArgs,_runCount]] call MAINCLASS;
@@ -850,7 +856,7 @@ switch(_operation) do {
 
             };
         };
-        case "runReinforceIntelligenceItemAnalysis": {
+        case "runLogisticsInsertionIntelligenceItemAnalysis": {
 
             private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side"];
 
@@ -866,7 +872,7 @@ switch(_operation) do {
                 // DEBUG -------------------------------------------------------------------------------------
                 if(_debug) then {
                     ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                    ["ALIVE Live Analysis - Reinforce intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - Logistics insertion item id: %1", _jobID] call ALIVE_fnc_dump;
                 };
                 // DEBUG -------------------------------------------------------------------------------------
 
@@ -907,10 +913,10 @@ switch(_operation) do {
                     _m = createMarker [format[MTEMPLATE, format["%1_type", _jobID]], _position];
                     _m setMarkerShape "ICON";
                     _m setMarkerSize [0.3, 0.3];
-                    _m setMarkerType "mil_join";
+                    _m setMarkerType "mil_start";
                     _m setMarkerColor _color;
                     _m setMarkerAlpha _alpha;
-                    _m setMarkerText " reinforce";
+                    _m setMarkerText " insertion";
 
                     _markers = _markers + [_m];
 
@@ -943,7 +949,7 @@ switch(_operation) do {
                 };
             };
         };
-        case "cleanupReinforceIntelligenceItemAnalysis": {
+        case "cleanupLogisticsInsertionIntelligenceItemAnalysis": {
 
             private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_side","_sides","_objective","_sector","_center","_type","_state"];
 
@@ -963,7 +969,135 @@ switch(_operation) do {
                 // DEBUG -------------------------------------------------------------------------------------
                 if(_debug) then {
                     ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                    ["ALIVE Live Analysis - KIA intelligence item id: %1", _jobID] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - Logistics insertion item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                private ["_markers"];
+
+                _markers = _jobArgs select 1 select 0;
+
+                {
+                    deleteMarker _x;
+                } forEach _markers;
+
+            };
+        };
+        case "runLogisticsDestinationIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+                _runCount = _args select 2;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - Logistics destination item id: %1", _jobID] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                _intelItem = _jobArgs select 0;
+
+                _position = _intelItem select 0;
+                _faction = _intelItem select 1;
+                _side = _intelItem select 2;
+
+                private ["_markers","_alpha","_marker","_color","_dir","_icon"];
+
+                // on the first run create all the markers
+                if(_runCount == 0) then {
+
+                    _markers = [];
+                    _alpha = 1;
+
+                    // set the side color
+                    switch(_side) do {
+                        case "EAST":{
+                            _color = "ColorRed";
+                        };
+                        case "WEST":{
+                            _color = "ColorBlue";
+                        };
+                        case "CIV":{
+                            _color = "ColorYellow";
+                        };
+                        case "GUER":{
+                            _color = "ColorGreen";
+                        };
+                        default {
+                            _color = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+                        };
+                    };
+
+                    // create type marker
+                    _m = createMarker [format[MTEMPLATE, format["%1_type", _jobID]], _position];
+                    _m setMarkerShape "ICON";
+                    _m setMarkerSize [0.3, 0.3];
+                    _m setMarkerType "mil_end";
+                    _m setMarkerColor _color;
+                    _m setMarkerAlpha _alpha;
+                    _m setMarkerText " destination";
+
+                    _markers = _markers + [_m];
+
+                    _jobArgs set [count _jobArgs, [_markers]];
+
+                // on subsequent runs lower marker alpha
+                } else {
+
+                    _markers = _jobArgs select 1 select 0;
+                    _profiles = _jobArgs select 1 select 1;
+
+                    // set alpha based on age of intel item
+                    if(_runCount <= 1) then {
+                        _alpha = 1;
+                    };
+                    if(_runCount == 2) then {
+                        _alpha = 0.75;
+                    };
+                    if(_runCount == 3) then {
+                        _alpha = 0.5;
+                    };
+                    if(_runCount > 3) then {
+                        _alpha = 0.2;
+                    };
+
+                    {
+                        _x setMarkerAlpha _alpha;
+                    } forEach _markers;
+
+                };
+            };
+        };
+        case "cleanupLogisticsDestinationIntelligenceItemAnalysis": {
+
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_side","_sides","_objective","_sector","_center","_type","_state"];
+
+            if(typeName _args == "ARRAY") then {
+
+                _jobID = _args select 0;
+                _jobArgs = _args select 1;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+                _intelItem = _jobArgs select 0;
+
+                // set item as completed
+                _intelItem set [5, true];
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE Live Analysis - Logistics destination item id: %1", _jobID] call ALIVE_fnc_dump;
                 };
                 // DEBUG -------------------------------------------------------------------------------------
 

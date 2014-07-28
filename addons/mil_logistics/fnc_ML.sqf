@@ -1001,7 +1001,8 @@ switch(_operation) do {
          "_eventForceMakeup","_eventType","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
          "_eventForcePlane","_eventForceHeli","_eventForceSpecOps","_eventTime","_eventState","_eventStateData","_eventCargoProfiles",
          "_eventTransportProfiles","_eventTransportVehiclesProfiles","_reinforcementPriorityTotal"
-         ,"_reinforcementType","_reinforcementAvailable","_reinforcementPrimaryObjective","_event","_eventID","_eventQueue","_forcePool"];
+         ,"_reinforcementType","_reinforcementAvailable","_reinforcementPrimaryObjective","_event",
+         "_eventID","_eventQueue","_forcePool","_logEvent"];
 
         _debug = [_logic, "debug"] call MAINCLASS;
         _event = _args select 0;
@@ -1548,6 +1549,10 @@ switch(_operation) do {
                                     // next state is transport load
                                     [_event, "state", "transportLoad"] call ALIVE_fnc_hashSet;
 
+                                    // dispatch event
+                                    _logEvent = ['LOGISTICS_INSERTION', [_reinforcementPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
                                 };
                                 case "HELI_INSERT": {
 
@@ -1555,12 +1560,20 @@ switch(_operation) do {
                                     // next state is transport load
                                     [_event, "state", "heliTransportStart"] call ALIVE_fnc_hashSet;
 
+                                    // dispatch event
+                                    _logEvent = ['LOGISTICS_INSERTION', [_reinforcementPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
                                 };
                                 case "AIRDROP": {
 
                                     // update the state of the event
                                     // next state is aridrop wait
                                     [_event, "state", "airdropWait"] call ALIVE_fnc_hashSet;
+
+                                    // dispatch event
+                                    _logEvent = ['LOGISTICS_DESTINATION', [_eventPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
 
                                 };
                             };
@@ -1644,11 +1657,17 @@ switch(_operation) do {
 
                 } forEach _heliProfiles;
 
+
                 // DEBUG -------------------------------------------------------------------------------------
                 if(_debug) then {
                     [_logic, "createMarker", [_eventPosition,_eventFaction,"ML DESTINATION"]] call MAINCLASS;
                 };
                 // DEBUG -------------------------------------------------------------------------------------
+
+
+                // dispatch event
+                _logEvent = ['LOGISTICS_DESTINATION', [_eventPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
 
 
                 [_event, "state", "heliTransport"] call ALIVE_fnc_hashSet;
@@ -2403,6 +2422,11 @@ switch(_operation) do {
                     [_logic, "createMarker", [_eventPosition,_eventFaction,"ML DESTINATION"]] call MAINCLASS;
                 };
                 // DEBUG -------------------------------------------------------------------------------------
+
+
+                // dispatch event
+                _logEvent = ['LOGISTICS_DESTINATION', [_eventPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
 
 
                 [_event, "state", "transportTravel"] call ALIVE_fnc_hashSet;

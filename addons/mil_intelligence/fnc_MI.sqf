@@ -131,7 +131,7 @@ switch(_operation) do {
     case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["PROFILE_REINFORCE","PROFILE_KILLED","AGENT_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGISTICS_INSERTION","LOGISTICS_DESTINATION","PROFILE_KILLED","AGENT_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE"]]] call ALIVE_fnc_eventLog;
         _logic setVariable ["listenerID", _listenerID];
     };
     case "handleEvent": {
@@ -158,8 +158,11 @@ switch(_operation) do {
                     case 'AGENT_KILLED': {
                         [_logic,"notifyAgentKIAIntelligenceItem",_event] call MAINCLASS;
                     };
-                    case 'PROFILE_REINFORCE': {
-                        [_logic,"notifyReinforceIntelligenceItem",_event] call MAINCLASS;
+                    case 'LOGISTICS_INSERTION': {
+                        [_logic,"notifyLogisticsInsertionIntelligenceItem",_event] call MAINCLASS;
+                    };
+                    case 'LOGISTICS_DESTINATION': {
+                        [_logic,"notifyLogisticsDestinationIntelligenceItem",_event] call MAINCLASS;
                     };
                     case 'OPCOM_RECON': {
                         [_logic,"notifyReconIntelligenceItem",_event] call MAINCLASS;
@@ -200,7 +203,7 @@ switch(_operation) do {
         [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "AgentKIAIntelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
 
     };
-    case "notifyReinforceIntelligenceItem": {
+    case "notifyLogisticsInsertionIntelligenceItem": {
         private["_event","_id","_data","_from"];
 
         _event = _args;
@@ -208,7 +211,18 @@ switch(_operation) do {
         _data = [_event, "data"] call ALIVE_fnc_hashGet;
         _from = [_event, "from"] call ALIVE_fnc_hashGet;
 
-        [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "reinforceIntelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
+        [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "logisticsInsertionIntelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
+
+    };
+    case "notifyLogisticsDestinationIntelligenceItem": {
+        private["_event","_id","_data","_from"];
+
+        _event = _args;
+        _id = [_event, "id"] call ALIVE_fnc_hashGet;
+        _data = [_event, "data"] call ALIVE_fnc_hashGet;
+        _from = [_event, "from"] call ALIVE_fnc_hashGet;
+
+        [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "logisticsDestinationIntelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
 
     };
     case "notifyReconIntelligenceItem": {
@@ -251,67 +265,6 @@ switch(_operation) do {
 
         [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "intelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
     };
-
-        /*
-        _side = _intelItem select 0;
-        _sides = _intelItem select 1;
-        _objective = _intelItem select 3;
-        _sector = _intelItem select 4;
-
-        _center = [_objective,"center"] call ALIVE_fnc_hashGet;
-        _type = [_objective,"type"] call ALIVE_fnc_hashGet;
-        _state = [_objective,"tacom_state"] call ALIVE_fnc_hashGet;
-        _grid = mapGridPosition _center;
-
-        // setup analysis and plotting job
-        // analysis job will run every 45 seconds for 5 times
-
-        [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "intelligenceItem", _intelItemID, [_intelItem]]] call ALIVE_fnc_liveAnalysis;
-
-        // compile radio message text
-
-        _details = "";
-
-        switch(_type) do {
-            case "MIL": {
-                _typeName = "military objective";
-            };
-            case "CIV": {
-                _typeName = "civilian objective";
-            };
-        };
-
-        _sideText = [_side] call ALIVE_fnc_sideTextToLong;
-        _details = format["New intel received, %1 forces ",_sideText];
-
-        switch(_state) do {
-            case "reserve": {
-                _details = _details + format["sighted occupying %1", _typeName];
-            };
-            case "recon": {
-                _details = _details + format["sighted near %1", _typeName];
-            };
-            case "capture": {
-                _details = _details + format["are attacking %1", _typeName];
-            };
-        };
-
-        _details = _details + format[" - coords: %1",_grid];
-
-
-        // DEBUG -------------------------------------------------------------------------------------
-        if(_debug) then {
-            ["Alive MI - Intel message: %1",_details] call ALIVE_fnc_dump;
-        };
-        // DEBUG -------------------------------------------------------------------------------------
-
-
-        {
-            _side = [_x] call ALIVE_fnc_sideTextToObject;
-            _command = [_side,"HQ"];
-            _command SideChat _details;
-        } forEach _sides;
-        */
 };
 
 TRACE_1("MI - output",_result);
