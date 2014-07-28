@@ -896,6 +896,29 @@ switch(_operation) do {
             _result = _args;
         };
 
+        case "findReinforcementBase": {
+	        	_AO = [];
+				_FOB = [];
+				{
+				    private ["_state","_orders"];
+				    
+				    _orders = [_x,"opcom_orders",""] call ALiVE_fnc_HashGet;
+				    _state = [_x,"opcom_state",""] call ALiVE_fnc_HashGet;
+				   
+				    if (_orders in ["attack","defend"]) then {_AO set [count _AO,_x]} else {
+				        if (_state in ["idle"]) then {
+				        	_FOB set [count _FOB,_x];
+				        };
+				    };
+				} foreach ([_logic,"objectives",[]] call ALiVE_fnc_HashGet);
+				
+				if (count _FOB == 0 || {count _AO == 0}) exitwith {};
+				
+				_FOB = [_FOB,[[_AO select 0,"center",[0,0,0]] call ALiVE_fnc_HashGet],{_input0 distance ([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
+       
+	            _result = _FOB select 0;
+        };
+
         case "addTask": {
             _operation = _args select 0;
             _pos = _args select 1;
@@ -1181,7 +1204,7 @@ switch(_operation) do {
             } foreach _objectives;
         };
 
-        case "NearestAvailableSection": {
+        case "NearestAvailableSectionNEW": {
             
             private ["_st","_troopsunsorted","_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
             
@@ -1245,8 +1268,8 @@ switch(_operation) do {
 			_result = _section;
         };
         
-        case "NearestAvailableSectionBAK": {
-            
+        case "NearestAvailableSection": {
+
             private ["_st","_troopsunsorted","_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
             
             _pos = _args select 0;
@@ -1270,9 +1293,7 @@ switch(_operation) do {
             } else {
                 _troops = _troops - (_busy + _reserved);
             };
-            
-            //["Busy %1 | Reserved %2 | Troops %3",count _busy, count _reserved,count _troops] call ALiVE_fnc_DumpR;
-            
+
             _st = 2000;
             waituntil
             {
@@ -1291,7 +1312,7 @@ switch(_operation) do {
             };
             
             //Sort by distance
-            _troops = [_troopsUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos} else {[0,0,0] distance _pos}} else {[0,0,0] distance _pos}},"ASCEND"] call BIS_fnc_sortBy;
+            _troops = [_troopsUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos} else {99999}} else {99999}},"ASCEND"] call BIS_fnc_sortBy;
             
             //Collect section
             _section = [];
@@ -1302,24 +1323,13 @@ switch(_operation) do {
                 
                 _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
                 
-                if !(isnil "_profile") then {               
+                if !(isnil "_profile") then {
                 	_busy = [_profile,"busy",false] call ALiVE_fnc_HashGet;
                     
                     if !(_busy) then {_section set [count _section,_x]};
                 };
             } foreach _troops;
-            
-            //["Count troops %1",count _troops] call ALiVE_fnc_DumpR;
-                        
-            /*
-            //Collect section
-            _section = [];
-            for "_i" from 0 to (_size - 1) do {
-                if (_i > ((count _troops)-1)) exitwith {};
-                _section set [count _section,_troops select _i];
-            };
-            */
-            
+                      
 			_result = _section;
         };
         

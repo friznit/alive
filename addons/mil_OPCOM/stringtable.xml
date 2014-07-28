@@ -42,7 +42,7 @@
 	<English>Reinforcements:</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_REINFORCEMENTS_COMMENT">
-	<English>Needs MIL LOGISTICS (LOGCOM)! Chooses threshold of reinforcement requests (90% / 75% / 50% of original forces)</English>
+	<English>Needs MIL LOGISTICS (LOGCOM)! Chooses threshold of OPCOMs reinforcement requests (90% / 75% / 50% of original forces)</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_FACTIONS">
 	<English>Override Factions:</English>
