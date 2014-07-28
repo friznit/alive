@@ -81,6 +81,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_population\fnc_getGlobalPosture.sqf";
                 recompile = RECOMPILE;
             };
+            class getAgentData {
+                description = "getAgentData";
+                file = "\x\alive\addons\amb_civ_population\fnc_getAgentData.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };
