@@ -46,8 +46,8 @@ if (!isnil {_object getVariable "profileID"}) exitwith {_canTow};
 if (!(isnil "_containerCanTow") && {!(isnil "_objectCanTow")}) then {_canTow = true};
 
 if (_canTow) then {
-    // Available weight must be free to tow the object
-	if (([_object] call ALiVE_fnc_getObjectWeight) > (([_container] call ALiVE_fnc_availableWeight))) exitwith {_canTow = false};
+    // Available weight must be free to tow the object, weight is taken by half as towing of a wheeled object is easier than stowing
+	if ((([_object] call ALiVE_fnc_getObjectWeight)/2) > (([_container] call ALiVE_fnc_availableWeight))) exitwith {_canTow = false};
 };
 
 _canTow;

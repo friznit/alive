@@ -64,7 +64,7 @@ _menus =
                 ["call ALiVE_fnc_logisticsMenuDef", "logistics", 1],
                 -1,
                 1,
-                MOD(SYS_LOGISTICS) getVariable ["debug", false]
+                [QMOD(SYS_LOGISTICS)] call ALiVE_fnc_isModuleAvailable
 			]
 		]
 	]
@@ -72,21 +72,30 @@ _menus =
 
 //-----------------------------------------------------------------------------
 
-TRACE_2("Menu setup",MOD(SYS_LOGISTICS),MOD(SYS_LOGISTICS) getVariable "ghost");
+TRACE_2("Menu setup",MOD(SYS_LOGISTICS),[QMOD(SYS_LOGISTICS)] call ALiVE_fnc_isModuleAvailable);
 
 if (_menuName == "logistics") then {
-	_menus set [count _menus,
+    	_menus set [count _menus,
 		[
-			["logistics", localize "STR_ALIVE_LOGISTICS", "popup"],
+        	["logistics", localize "STR_ALIVE_LOGISTICS", "popup"],
 			[
-				[localize "STR_ALIVE_LOGISTICS_DEBUG_COMMENT",
-					{["Debug set to %1",MOD(SYS_LOGISTICS) getVariable ["debug", false]] call ALiVE_fnc_DumpR},
+				[localize "STR_ALIVE_LOGISTICS_ENABLEACTIONS_COMMENT",
+					{[MOD(SYS_LOGISTICS),"addActions"] call ALiVE_fnc_Logistics},
 					"",
-					localize "STR_ALIVE_LOGISTICS_DEBUG_COMMENT",
+					localize "STR_ALIVE_LOGISTICS_ENABLEACTIONS_COMMENT",
 					"",
 					-1,
-					MOD(SYS_LOGISTICS) getVariable ["debug", false],
-					MOD(SYS_LOGISTICS) getVariable ["debug", false]
+					true,
+					(isnil {player getvariable [QGVAR(ACTIONS),nil]})
+				],
+                [localize "STR_ALIVE_LOGISTICS_DISABLEACTIONS_COMMENT",
+					{[MOD(SYS_LOGISTICS),"removeActions"] call ALiVE_fnc_Logistics},
+					"",
+					localize "STR_ALIVE_LOGISTICS_DISABLEACTIONS_COMMENT",
+					"",
+					-1,
+					true,
+					!(isnil {player getvariable [QGVAR(ACTIONS),nil]})
 				]
 			]
 		]

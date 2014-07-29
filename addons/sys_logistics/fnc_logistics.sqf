@@ -65,7 +65,7 @@ switch (_operation) do {
 	        		_logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_LOGISTICS", [0,0], [], 0, "NONE"];
                     MOD(SYS_LOGISTICS) = _logic;
                 };
-                
+                                
                 //Push to clients
 	            PublicVariable QMOD(SYS_LOGISTICS);
             };
@@ -101,11 +101,11 @@ switch (_operation) do {
             
             // Define logistics properties on all localities
             GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","StaticWeapon","ThingX"],["House"]];
-            GVAR(TOWABLE) = [["Truck_F"],["Car"],[]];
-            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter"],(GVAR(CARRYABLE) select 1),[]];
+            GVAR(TOWABLE) = [["Truck_F"],["Car","Ship"],[]];
+            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter","Ship"],(GVAR(CARRYABLE) select 1),[]];
             GVAR(LIFTABLE) = [["Helicopter"],(GVAR(CARRYABLE) select 1) + (GVAR(TOWABLE) select 1),[]];
             
-            //Define actions on all localities
+            //Define actions on all localities (just in case)
 			GVAR(ACTIONS) = {
                 private ["_logic"];
                 
@@ -119,8 +119,11 @@ switch (_operation) do {
                 if !(_logic getvariable ["DISABLETOW",false]) then {[_logic,"addAction",[player,"untowObject"]] call ALiVE_fnc_logistics};
                 if !(_logic getvariable ["DISABLELIFT",false]) then {[_logic,"addAction",[player,"liftObject"]] call ALiVE_fnc_logistics};
                 if !(_logic getvariable ["DISABLELIFT",false]) then {[_logic,"addAction",[player,"releaseObject"]] call ALiVE_fnc_logistics};
+                
+                player setvariable [QGVAR(ACTIONS),true];
+                true;
 			};
-                                    
+                  
 			// Define module basics on server
 			if (isServer) then {
 
@@ -131,7 +134,7 @@ switch (_operation) do {
 
                 // Reset states with provided data;
                 if !(_logic getvariable ["DISABLEPERSISTENCE",false]) then {
-                    if (isDedicated && {[QMOD(SYS_DATA)] call ALiVE_fnc_isModuleavailable}) then {
+                    if (isDedicated && {[QMOD(SYS_DATA)] call ALiVE_fnc_isModuleAvailable}) then {
                         waituntil {!isnil QMOD(SYS_DATA) && {MOD(SYS_DATA) getvariable ["startupComplete",false]}};
                     };
                     
@@ -188,10 +191,7 @@ switch (_operation) do {
 
 			// The machine has an interface? Must be a MP client, SP client or a client that acts as host!
             if (hasInterface) then {
-                
-				// Add actions
-                call GVAR(ACTIONS);
-            
+
                 // Initialise interaction key if undefined
                 if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
@@ -640,7 +640,30 @@ switch (_operation) do {
             
 			_result = _id;
         };
-             
+        
+        case "addActions": {
+            if !(hasInterface) exitwith {};
+            
+			_result = call GVAR(ACTIONS);
+        };
+        
+        case "removeActions": {
+			if !(hasInterface) exitwith {};
+
+            [_logic,"removeAction",[player,"carryObject"]] call ALiVE_fnc_logistics;
+            [_logic,"removeAction",[player,"dropObject"]] call ALiVE_fnc_logistics;
+            [_logic,"removeAction",[player,"stowObjects"]] call ALiVE_fnc_logistics;
+            [_logic,"removeAction",[player,"unloadObjects"]] call ALiVE_fnc_logistics;
+            [_logic,"removeAction",[player,"towObject"]] call ALiVE_fnc_logistics;
+            [_logic,"removeAction",[player,"untowObject"]] call ALiVE_fnc_logistics;
+            [_logic,"removeAction",[player,"liftObject"]] call ALiVE_fnc_logistics;
+            [_logic,"removeAction",[player,"releaseObject"]] call ALiVE_fnc_logistics;
+
+			player setvariable [QGVAR(ACTIONS),nil];
+
+			_result = false;
+        };
+        
         case "setEH" : {
             if (isnil "_args") exitwith {};
             
@@ -660,7 +683,6 @@ switch (_operation) do {
 	            //Clientside only section below
 	            if (hasInterface) then {
 	            	//apply these EHs on players
-	                _object setvariable [QGVAR(EH_RESPAWN), _object getvariable [QGVAR(EH_RESPAWN), _object addEventhandler ["Respawn", GVAR(ACTIONS)]]];
                     _object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH InventoryClosed firing"] call ALiVE_fnc_DumpR}}]]];
 	            };
             
@@ -670,7 +692,7 @@ switch (_operation) do {
 		            _object setvariable [QGVAR(EH_KILLED), _object getvariable [QGVAR(EH_KILLED), _object addEventHandler ["Killed", {[ALiVE_SYS_LOGISTICS,"removeObject",_this select 0] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Killed firing"] call ALiVE_fnc_DumpR}}]]];
 
 		            //apply these EHs on vehicles
-		            if (_object isKindOf "LandVehicle" || {_object isKindOf "Air"}) then {
+		            if ({_object isKindOf _x} count ["LandVehicle","Air","Ship"] > 0) then {
 		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if !((_this select 1) == "cargo") then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Getout firing"] call ALiVE_fnc_DumpR}}}]]];
 		            };
 	            };

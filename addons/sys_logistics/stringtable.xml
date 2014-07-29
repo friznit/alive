@@ -23,6 +23,12 @@
 <Key ID="STR_ALIVE_LOGISTICS_DEBUG_COMMENT">
 	<English>Enable Debug</English>
 </Key>
+<Key ID="STR_ALIVE_LOGISTICS_DISABLEACTIONS_COMMENT">
+	<English>Deactivate Actions</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_ENABLEACTIONS_COMMENT">
+	<English>Activate Actions</English>
+</Key>
 <Key ID="STR_ALIVE_LOGISTICS_ERROR1">
 	<English>Only one player logistics module allowed</English>
 </Key>
