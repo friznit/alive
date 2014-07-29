@@ -668,7 +668,7 @@ switch (_operation) do {
             if (isnil "_args") exitwith {};
             
             private ["_objects"];
-
+            
 			switch (typeName _args) do {
                 case ("OBJECT") : {_objects = [_args]};
                 case ("ARRAY") : {_objects = _args};
@@ -681,10 +681,10 @@ switch (_operation) do {
                 _object = _x;
                 
 	            //Clientside only section below
-	            if (hasInterface) then {
-	            	//apply these EHs on players
-                    _object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH InventoryClosed firing"] call ALiVE_fnc_DumpR}}]]];
-	            };
+				if (hasInterface) then {
+					//apply these EHs on players
+					_object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH InventoryClosed firing"] call ALiVE_fnc_DumpR}}]]];
+				};
             
 	            //Serverside only section below
 	            if (isServer) then {
