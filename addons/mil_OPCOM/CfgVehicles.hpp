@@ -100,18 +100,18 @@ class CfgVehicles {
                                         class Constant
                                         {
                                                 name = "Constant";
-                                                value = 0.9;
+                                                value = "0.9";
                                                 default = 1;
                                         };
                                         class Blocked
                                         {
                                                 name = "Blocked";
-                                                value = 0.75;
+                                                value = "0.75";
                                         };
                                         class Seldom
                                         {
                                                 name = "Seldom";
-                                                value = 0.5;
+                                                value = "0.5";
                                         };
                                 };
                         };
