@@ -1044,8 +1044,8 @@ switch(_operation) do {
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
-            ["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
-            _event call ALIVE_fnc_inspectHash;
+            //["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
+            //_event call ALIVE_fnc_inspectHash;
             //_reinforcementAnalysis call ALIVE_fnc_inspectHash;
         };
         // DEBUG -------------------------------------------------------------------------------------
@@ -1264,9 +1264,11 @@ switch(_operation) do {
                                         _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
 
                                         _infantryProfileID = _infantryProfiles select _i select 0;
-                                        _infantryProfile = [ALIVE_profileHandler, "getProfile", _infantryProfileID] call ALIVE_fnc_profileHandler;
-                                        if!(isNil "_infantryProfile") then {
-                                            [_infantryProfile,_profiles select 1] call ALIVE_fnc_createProfileVehicleAssignment;
+                                        if!(isNil "_infantryProfileID") then {
+                                            _infantryProfile = [ALIVE_profileHandler, "getProfile", _infantryProfileID] call ALIVE_fnc_profileHandler;
+                                            if!(isNil "_infantryProfile") then {
+                                                [_infantryProfile,_profiles select 1] call ALIVE_fnc_createProfileVehicleAssignment;
+                                            };
                                         };
 
                                         _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
