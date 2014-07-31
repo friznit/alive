@@ -160,7 +160,7 @@ _deleteMarkers = {
 
 _createMarkers = {
         private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha"
-		,"_profileID","_profileSide","_profileType","_profileActive","_typePrefix","_label"];
+		,"_profileID","_profileSide","_profileType","_profileActive","_profileWaypoints","_typePrefix","_label"];
         _logic = _this;
         _markers = [];
 
@@ -169,6 +169,7 @@ _createMarkers = {
 		_profileSide = [_logic,"side"] call ALIVE_fnc_hashGet;
 		_profileType = [_logic,"objectType"] call ALIVE_fnc_hashGet;
 		_profileActive = [_logic,"active"] call ALIVE_fnc_hashGet;
+		_profileWaypoints = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
 		
 		switch(_profileSide) do {
 			case "EAST":{
@@ -198,10 +199,32 @@ _createMarkers = {
 				_debugIcon = format["%1_inf",_typePrefix];
 			};
 		};
+
+		_label = [_profileID, "_"] call CBA_fnc_split;
 		
 		_debugAlpha = 0.5;
 		if(_profileActive) then {
 			_debugAlpha = 1;
+		}else{
+		    _waypointCount = 0;
+		    {
+		        _waypointPosition = [_x,"position"] call ALIVE_fnc_hashGet;
+
+		        _m = createMarker [format["SIM_MARKER_%1_%2",_profileID,_waypointCount], _waypointPosition];
+                _m setMarkerShape "ICON";
+                _m setMarkerSize [.6, .6];
+                _m setMarkerType "waypoint";
+                _m setMarkerColor _debugColor;
+                _m setMarkerAlpha 0.6;
+
+                _m setMarkerText format["%1",_label select ((count _label) - 1),_waypointCount];
+
+                _markers set [count _markers, _m];
+
+                [_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
+
+                _waypointCount = _waypointCount + 1;
+		    } forEach _profileWaypoints;
 		};
 
         if(count _position > 0) then {
@@ -211,8 +234,7 @@ _createMarkers = {
 				_m setMarkerType _debugIcon;
 				_m setMarkerColor _debugColor;
 				_m setMarkerAlpha _debugAlpha;
-				
-				_label = [_profileID, "_"] call CBA_fnc_split;
+
                 _m setMarkerText format["e%1",_label select ((count _label) - 1)];
 
 				_markers set [count _markers, _m];
