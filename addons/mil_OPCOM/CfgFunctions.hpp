@@ -26,6 +26,16 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_opcom\fnc_OPCOMSaveData.sqf";
                                 recompile = RECOMPILE;
                         };
+                        class OPCOMjoinNearestGroup {
+                                description = "Joins the given unit to the nearest group of given state (attacking/defending)";
+                                file = "\x\alive\addons\mil_opcom\fnc_OPCOMjoinNearestGroup.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class OPCOMJoinObjective {
+                                description = "Joins the given unit to a group that is attacking/defending the selected objective!";
+                                file = "\x\alive\addons\mil_opcom\fnc_OPCOMJoinObjective.sqf";
+								recompile = RECOMPILE;
+                        };
                 };
         };
 };
