@@ -1681,7 +1681,7 @@ switch(_operation) do {
 		case "joinEntity": {
             ASSERT_TRUE(typeName _args == "ARRAY" && {count _args >= 2},str _args);
 
-            private ["_unit","_state","_profile","_profileUnit","_logic"];
+            private ["_unit","_state","_profile","_profileUnit","_pos"];
 
 			_unit = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
 			_entityID = [_args, 1, "", [""]] call BIS_fnc_param;
@@ -1690,12 +1690,12 @@ switch(_operation) do {
 			
 			if !(isServer) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",false,false] call BIS_fnc_MP};
 
-			[{titleText ['Teleporting...', 'BLACK OUT',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;
-			
 			_profileID = _unit getvariable "profileID"; if (isnil "_profileID") exitwith {};
 			_profile = [ALiVE_ProfileHandler,"getProfile",_entityID] call ALiVE_fnc_ProfileHandler; if (isnil "_profile") exitwith {};
 			_profileUnit = [ALiVE_ProfileHandler,"getProfile",_profileID] call ALiVE_fnc_ProfileHandler; if (isnil "_profileUnit") exitwith {};
-			
+
+			[{titleText ['Preparing Insertion...', 'BLACK OUT',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;            
+                        			
 			_pos = [_profile,"position"] call ALiVE_fnc_HashGet;
 			_groupUnits = units (group _unit);
 			
@@ -1712,10 +1712,11 @@ switch(_operation) do {
 			_groupUnits join _group; 
             
             if ((vehicle leader _group) == (leader _group)) then {
-            	//{_x setposATL formationPosition _x} foreach _groupUnits;
+            	{_x setposATL formationPosition _x} foreach _groupUnits;
                 
-                _pos set [2,1000];
-                {_x setPosATL _pos; _x addBackpack "B_Parachute"} foreach _groupUnits;
+                //_x addBackpack "B_Parachute" is local - applause
+                //_pos set [2,1000];
+                //{_x addBackpack "B_Parachute"; _x setPosATL _pos} foreach _groupUnits;
             } else {
                 {_x moveInCargo (vehicle leader _group)} foreach _groupUnits;
             };
@@ -1723,7 +1724,7 @@ switch(_operation) do {
 			//Clone waypoints of joined entity
 			[_profileUnit, "clearWaypoints"] call ALIVE_fnc_profileEntity; {[_profileUnit, "addWaypoint", _x] call ALIVE_fnc_profileEntity} foreach ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet);
 
-			[{titleText ['Teleporting...', 'BLACK IN',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;
+			[{titleText ['Inserting...', 'BLACK IN',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;
 			
 			_result = _group;            
 		};
