@@ -129,31 +129,31 @@
     <English>Spec Ops</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_INFANTRY_COUNT">
-    <English>Override Infantry Count:</English>
+    <English>Override Infantry:</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_INFANTRY_COUNT_COMMENT">
     <English>Set a custom count of Infantry groups to be spawned, leave blank for no change, set to 0 for none</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_MOTORISED_COUNT">
-    <English>Override Motorised Count:</English>
+    <English>Override Motorised:</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_MOTORISED_COUNT_COMMENT">
     <English>Set a custom count of Motorised groups to be spawned, leave blank for no change, set to 0 for none</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_MECHANISED_COUNT">
-    <English>Override Mechanised Count:</English>
+    <English>Override Mechanised:</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_MECHANISED_COUNT_COMMENT">
     <English>Set a custom count of Mechanised groups to be spawned, leave blank for no change, set to 0 for none</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_ARMOUR_COUNT">
-    <English>Override Armour Count:</English>
+    <English>Override Armour:</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_ARMOUR_COUNT_COMMENT">
     <English>Set a custom count of Armour groups to be spawned, leave blank for no change, set to 0 for none</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_SPECOPS_COUNT">
-    <English>Override SpecOps Count:</English>
+    <English>Override SpecOps:</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CUSTOM_SPECOPS_COUNT_COMMENT">
     <English>Set a custom count of SpecOps groups to be spawned, leave blank for no change, set to 0 for none</English>
