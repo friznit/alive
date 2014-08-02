@@ -111,7 +111,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_logistics\fnc_logisticsLoadData.sqf";
 								recompile = RECOMPILE;
                         };
-                        
 				};
         };
 };

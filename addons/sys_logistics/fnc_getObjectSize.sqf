@@ -27,6 +27,19 @@ nil
 private ["_objects","_sum"];
 
 _objects = _this;
-_sum = 0; {_sum = _sum + (sizeOf (typeof _x))} foreach _objects;
+_sum = 0;
+
+{
+    private ["_object","_type"];
+    
+	_object = _x;
+    
+    switch (typeName _object) do {
+    	case ("OBJECT") : {_type = typeOf _object};
+        case ("STRING") : {_type = _object};
+    };
+    
+    _sum = _sum + (sizeOf _type);
+} foreach _objects;
 
 _sum;
