@@ -45,6 +45,9 @@ if (count _waypoints == 0) then {
                     [_profileWaypoint,"speed",_speed] call ALIVE_fnc_hashSet;
 					[_profileWaypoint,"formation",_formation] call ALIVE_fnc_hashSet;
                     [_profileWaypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
+                    [_profileWaypoint,"statements",["true","_disableSimulation = true;"]] call ALIVE_fnc_hashSet;
+
+                    //_profileWaypoint call ALIVE_fnc_inspectHash;
                     
 	                [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
                     sleep 0.2;

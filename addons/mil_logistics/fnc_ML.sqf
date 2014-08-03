@@ -451,8 +451,9 @@ switch(_operation) do {
         _logic setVariable ["listenerID", _listenerID];
     };
     case "handleEvent": {
+
         private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_forcePool","_type","_eventID",
-        "_eventData","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
+        "_eventData","_eventType","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
         "_eventForcePlane","_eventForceHeli","_forceMakeupTotal","_allowInfantry","_allowMechanised","_allowMotorised",
         "_allowArmour","_allowHeli","_allowPlane"];
 
@@ -491,60 +492,81 @@ switch(_operation) do {
                 if(_forcePool > 0) then {
 
                     _eventID = [_event, "id"] call ALIVE_fnc_hashGet;
-
                     _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
                     _eventForceMakeup = _eventData select 3;
-                    _eventForceInfantry = _eventForceMakeup select 0;
-                    _eventForceMotorised = _eventForceMakeup select 1;
-                    _eventForceMechanised = _eventForceMakeup select 2;
-                    _eventForceArmour = _eventForceMakeup select 3;
-                    _eventForcePlane = _eventForceMakeup select 4;
-                    _eventForceHeli = _eventForceMakeup select 5;
+                    _eventType = _eventData select 4;
 
-                    _forceMakeupTotal = _eventForceInfantry + _eventForceMotorised + _eventForceMechanised + _eventForceArmour + _eventForcePlane + _eventForceHeli;
+                    _forceMakeupTotal = 0;
 
-                    _allowInfantry = [_logic, "allowInfantryReinforcement"] call MAINCLASS;
-                    _allowMechanised = [_logic, "allowMechanisedReinforcement"] call MAINCLASS;
-                    _allowMotorised = [_logic, "allowMotorisedReinforcement"] call MAINCLASS;
-                    _allowArmour = [_logic, "allowArmourReinforcement"] call MAINCLASS;
-                    _allowHeli = [_logic, "allowHeliReinforcement"] call MAINCLASS;
-                    _allowPlane = [_logic, "allowPlaneReinforcement"] call MAINCLASS;
+                    if(_eventType == "STANDARD" || _eventType == "AIRDROP" || _eventType == "HELI_INSERT") then {
 
-                    //["CHECK AI: %1 AM: %2 AM: %3 AA: %4 AH: %5 AP: %6",_allowInfantry,_allowMechanised,_allowMotorised,_allowArmour,_allowHeli,_allowPlane] call ALIVE_fnc_dump;
-                    //["FORCE MAKEUP BEFORE: %1", _eventForceMakeup] call ALIVE_fnc_dump;
+                        _allowInfantry = [_logic, "allowInfantryReinforcement"] call MAINCLASS;
+                        _allowMechanised = [_logic, "allowMechanisedReinforcement"] call MAINCLASS;
+                        _allowMotorised = [_logic, "allowMotorisedReinforcement"] call MAINCLASS;
+                        _allowArmour = [_logic, "allowArmourReinforcement"] call MAINCLASS;
+                        _allowHeli = [_logic, "allowHeliReinforcement"] call MAINCLASS;
+                        _allowPlane = [_logic, "allowPlaneReinforcement"] call MAINCLASS;
 
-                    if!(_allowInfantry) then {
-                        _forceMakeupTotal = _forceMakeupTotal - _eventForceInfantry;
-                        _eventForceMakeup set [0,0];
+                        _eventForceInfantry = _eventForceMakeup select 0;
+                        _eventForceMotorised = _eventForceMakeup select 1;
+                        _eventForceMechanised = _eventForceMakeup select 2;
+                        _eventForceArmour = _eventForceMakeup select 3;
+                        _eventForcePlane = _eventForceMakeup select 4;
+                        _eventForceHeli = _eventForceMakeup select 5;
+
+                        _forceMakeupTotal = _eventForceInfantry + _eventForceMotorised + _eventForceMechanised + _eventForceArmour + _eventForcePlane + _eventForceHeli;
+
+                        //["CHECK AI: %1 AM: %2 AM: %3 AA: %4 AH: %5 AP: %6",_allowInfantry,_allowMechanised,_allowMotorised,_allowArmour,_allowHeli,_allowPlane] call ALIVE_fnc_dump;
+                        //["FORCE MAKEUP BEFORE: %1", _eventForceMakeup] call ALIVE_fnc_dump;
+
+                        if!(_allowInfantry) then {
+                            _forceMakeupTotal = _forceMakeupTotal - _eventForceInfantry;
+                            _eventForceMakeup set [0,0];
+                        };
+
+                        if!(_allowMotorised) then {
+                            _forceMakeupTotal = _forceMakeupTotal - _eventForceMotorised;
+                            _eventForceMakeup set [1,0];
+                        };
+
+                        if!(_allowMechanised) then {
+                            _forceMakeupTotal = _forceMakeupTotal - _eventForceMechanised;
+                            _eventForceMakeup set [2,0];
+                        };
+
+                        if!(_allowArmour) then {
+                            _forceMakeupTotal = _forceMakeupTotal - _eventForceArmour;
+                            _eventForceMakeup set [3,0];
+                        };
+
+                        if!(_allowPlane) then {
+                            _forceMakeupTotal = _forceMakeupTotal - _eventForcePlane;
+                            _eventForceMakeup set [4,0];
+                        };
+
+                        if!(_allowHeli) then {
+                            _forceMakeupTotal = _forceMakeupTotal - _eventForceHeli;
+                            _eventForceMakeup set [5,0];
+                        };
+
+                        _eventData set [3, _eventForceMakeup];
+                        [_event, "data", _eventData] call ALIVE_fnc_hashSet;
+
+                        // set the state of the event
+                        [_event, "state", "requested"] call ALIVE_fnc_hashSet;
+
+                    }else{
+
+                        // if it's a player request
+                        // accept automatically
+
+                        _forceMakeupTotal = 1;
+
+                        // set the state of the event
+                        [_event, "state", "playerRequested"] call ALIVE_fnc_hashSet;
+
                     };
 
-                    if!(_allowMotorised) then {
-                        _forceMakeupTotal = _forceMakeupTotal - _eventForceMotorised;
-                        _eventForceMakeup set [1,0];
-                    };
-
-                    if!(_allowMechanised) then {
-                        _forceMakeupTotal = _forceMakeupTotal - _eventForceMechanised;
-                        _eventForceMakeup set [2,0];
-                    };
-
-                    if!(_allowArmour) then {
-                        _forceMakeupTotal = _forceMakeupTotal - _eventForceArmour;
-                        _eventForceMakeup set [3,0];
-                    };
-
-                    if!(_allowPlane) then {
-                        _forceMakeupTotal = _forceMakeupTotal - _eventForcePlane;
-                        _eventForceMakeup set [4,0];
-                    };
-
-                    if!(_allowHeli) then {
-                        _forceMakeupTotal = _forceMakeupTotal - _eventForceHeli;
-                        _eventForceMakeup set [5,0];
-                    };
-
-                    _eventData set [3, _eventForceMakeup];
-                    [_event, "data", _eventData] call ALIVE_fnc_hashSet;
 
                     //["FORCE MAKEUP AFTER: %1 FORCE MAKEUP TOTAL: %2", _eventForceMakeup, _forceMakeupTotal] call ALIVE_fnc_dump;
                     //_event call ALIVE_fnc_inspectHash;
@@ -553,9 +575,6 @@ switch(_operation) do {
 
                         // set the time the event was received
                         [_event, "time", time] call ALIVE_fnc_hashSet;
-
-                        // set the state of the event
-                        [_event, "state", "requested"] call ALIVE_fnc_hashSet;
 
                         // set the state data array of the event
                         [_event, "stateData", []] call ALIVE_fnc_hashSet;
@@ -1002,7 +1021,8 @@ switch(_operation) do {
          "_eventForcePlane","_eventForceHeli","_eventForceSpecOps","_eventTime","_eventState","_eventStateData","_eventCargoProfiles",
          "_eventTransportProfiles","_eventTransportVehiclesProfiles","_reinforcementPriorityTotal"
          ,"_reinforcementType","_reinforcementAvailable","_reinforcementPrimaryObjective","_event",
-         "_eventID","_eventQueue","_forcePool","_logEvent"];
+         "_eventID","_eventQueue","_forcePool","_logEvent","_requestID","_payload","_emptyVehicles",
+         "_staticIndividuals","_joinIndividuals","_reinforceIndividuals","_staticGroups","_joinGroups","_reinforceGroups"];
 
         _debug = [_logic, "debug"] call MAINCLASS;
         _event = _args select 0;
@@ -1017,18 +1037,6 @@ switch(_operation) do {
 
         _eventID = [_event, "id"] call ALIVE_fnc_hashGet;
         _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
-        _eventPosition = _eventData select 0;
-        _eventFaction = _eventData select 1;
-        _eventSide = _eventData select 2;
-        _eventForceMakeup = _eventData select 3;
-        _eventType = _eventData select 4;
-        _eventForceInfantry = _eventForceMakeup select 0;
-        _eventForceMotorised = _eventForceMakeup select 1;
-        _eventForceMechanised = _eventForceMakeup select 2;
-        _eventForceArmour = _eventForceMakeup select 3;
-        _eventForcePlane = _eventForceMakeup select 4;
-        _eventForceHeli = _eventForceMakeup select 5;
-
         _eventTime = [_event, "time"] call ALIVE_fnc_hashGet;
         _eventState = [_event, "state"] call ALIVE_fnc_hashGet;
         _eventStateData = [_event, "stateData"] call ALIVE_fnc_hashGet;
@@ -1041,11 +1049,40 @@ switch(_operation) do {
         _reinforcementAvailable = [_reinforcementAnalysis, "available"] call ALIVE_fnc_hashGet;
         _reinforcementPrimaryObjective = [_reinforcementAnalysis, "primary"] call ALIVE_fnc_hashGet;
 
+        _eventPosition = _eventData select 0;
+        _eventFaction = _eventData select 1;
+        _eventSide = _eventData select 2;
+        _eventForceMakeup = _eventData select 3;
+        _eventType = _eventData select 4;
+
+        if(_eventType == "STANDARD" || _eventType == "AIRDROP" || _eventType == "HELI_INSERT") then {
+
+            _eventForceInfantry = _eventForceMakeup select 0;
+            _eventForceMotorised = _eventForceMakeup select 1;
+            _eventForceMechanised = _eventForceMakeup select 2;
+            _eventForceArmour = _eventForceMakeup select 3;
+            _eventForcePlane = _eventForceMakeup select 4;
+            _eventForceHeli = _eventForceMakeup select 5;
+
+        }else{
+
+            _requestID = _eventForceMakeup select 0;
+            _payload = _eventForceMakeup select 1;
+            _emptyVehicles = _eventForceMakeup select 2;
+            _staticIndividuals = _eventForceMakeup select 3;
+            _joinIndividuals = _eventForceMakeup select 4;
+            _reinforceIndividuals = _eventForceMakeup select 5;
+            _staticGroups = _eventForceMakeup select 6;
+            _joinGroups = _eventForceMakeup select 7;
+            _reinforceGroups = _eventForceMakeup select 8;
+
+        };
+
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
-            //["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
-            //_event call ALIVE_fnc_inspectHash;
+            ["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
+            _event call ALIVE_fnc_inspectHash;
             //_reinforcementAnalysis call ALIVE_fnc_inspectHash;
         };
         // DEBUG -------------------------------------------------------------------------------------
@@ -1053,6 +1090,8 @@ switch(_operation) do {
 
         // react according to current event state
         switch(_eventState) do {
+
+            // AI REQUEST ---------------------------------------------------------------------------------------------------------------------------------
 
             // the units have been requested
             // spawn the units at the insertion point
@@ -1602,6 +1641,8 @@ switch(_operation) do {
                 };
             };
 
+            // HELI INSERT ------------------------------------------------------------------------------------------------------------------------------
+
             case "heliTransportStart": {
 
                 private ["_transportProfiles","_infantryProfiles","_planeProfiles","_heliProfiles","_position","_profileWaypoint","_profile"];
@@ -2136,6 +2177,8 @@ switch(_operation) do {
 
             };
 
+            // AIR DROP ------------------------------------------------------------------------------------------------------------------------------
+
             case "airdropWait": {
 
                 private ["_waitIterations","_waitTotalIterations"];
@@ -2170,6 +2213,8 @@ switch(_operation) do {
                 [_logic, "removeEvent", _eventID] call MAINCLASS;
 
             };
+
+            // CONVOY ---------------------------------------------------------------------------------------------------------------------------------
 
             case "transportLoad": {
 
@@ -2818,6 +2863,715 @@ switch(_operation) do {
                 [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
                 [_logic, "removeEvent", _eventID] call MAINCLASS;
 
+            };
+
+            // PLAYER REQUEST ---------------------------------------------------------------------------------------------------------------------------------
+
+            // the units have been requested
+            // spawn the units at the insertion point
+            case "playerRequested": {
+
+                private ["_waitTime"];
+
+                // according to the type of reinforcement
+                // adjust wait time for creation of profiles
+
+                switch(_reinforcementType) do {
+                    case "AIR": {
+                        _waitTime = 10;
+                    };
+                    case "HELI": {
+                        _waitTime = 20;
+                    };
+                    case "MARINE": {
+                        _waitTime = 30;
+                    };
+                    case "DROP": {
+                        _waitTime = 40;
+                    };
+                };
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["ALIVE ML - Event state: %1 event timer: %2 wait time on event: %3 ",_eventState, (time - _eventTime), _waitTime] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                // if the reinforcement objective is
+                // not available, cancel the event
+                if(_reinforcementAvailable) then {
+
+                    if((time - _eventTime) > _waitTime) then {
+
+                        private ["_reinforcementPosition","_playersInRange","_paraDrop","_remotePosition","_totalCount"];
+
+                        if(_eventType == "PR_STANDARD" || _eventType == "PR_HELI_INSERT") then {
+
+                            _reinforcementPosition = [_reinforcementPrimaryObjective,"center"] call ALIVE_fnc_hashGet;
+
+                        }else{
+                            _reinforcementPosition = _eventPosition;
+                        };
+
+                        // players near check
+
+                        _playersInRange = [_reinforcementPosition, 1500] call ALiVE_fnc_anyPlayersInRange;
+
+                        // if players are in visible range
+                        // para drop groups instead of
+                        // spawning on the ground
+
+                        _paraDrop = false;
+                        if(_playersInRange > 0) then {
+                            _paraDrop = true;
+
+                            _remotePosition = [_reinforcementPosition, 2000] call ALIVE_fnc_getPositionDistancePlayers;
+                        }else{
+                            _remotePosition = _reinforcementPosition;
+                        };
+
+                        // wait time complete create profiles
+                        // get groups according to requested force makeup
+
+                        _totalCount = 0;
+
+                        /*
+                        _requestID = _eventForceMakeup select 0;
+                        _payload = _eventForceMakeup select 1;
+                        _emptyVehicles = _eventForceMakeup select 2;
+                        _staticIndividuals = _eventForceMakeup select 3;
+                        _joinIndividuals = _eventForceMakeup select 4;
+                        _reinforceIndividuals = _eventForceMakeup select 5;
+                        _staticGroups = _eventForceMakeup select 6;
+                        _joinGroups = _eventForceMakeup select 7;
+                        _reinforceGroups = _eventForceMakeup select 8;
+                        */
+
+                        /*
+                        ["Empty Vehicles: %1",_emptyVehicles] call ALIVE_fnc_dump;
+                        ["Payload: %1",_payload] call ALIVE_fnc_dump;
+                        ["Static Individuals: %1",_staticIndividuals] call ALIVE_fnc_dump;
+                        ["Join Individuals: %1",_joinIndividuals] call ALIVE_fnc_dump;
+                        ["Reinforce Individuals: %1",_reinforceIndividuals] call ALIVE_fnc_dump;
+                        ["Static Groups: %1",_staticGroups] call ALIVE_fnc_dump;
+                        ["Join Groups: %1",_joinGroups] call ALIVE_fnc_dump;
+                        ["Reinforce Groups: %1",_reinforceGroups] call ALIVE_fnc_dump;
+                        */
+
+
+                        // payload
+                        // spawn vehicles to fit the requested
+                        // payload items in
+
+                        private ["_itemClass"];
+
+                        {
+                            _itemClass = _x;
+
+                        } forEach _payload;
+
+
+                        private ["_position","_profiles","_profileID","_profileIDs","_emptyVehicleProfiles","_itemCategory","_infantryProfiles","_armourProfiles",
+                        "_mechanisedProfiles","_motorisedProfiles","_heliProfiles","_planeProfiles"];
+
+                        _infantryProfiles = [];
+                        _mechanisedProfiles = [];
+                        _motorisedProfiles = [];
+                        _armourProfiles = [];
+                        _heliProfiles = [];
+                        _planeProfiles = [];
+
+
+                        // empty vehicles
+
+                        _emptyVehicleProfiles = [];
+
+                        {
+                            _itemClass = _x select 0;
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if!(surfaceIsWater _position) then {
+
+                                _itemCategory = _x select 1 select 1;
+
+                                switch(_itemCategory) do {
+                                    case "Car":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Armored":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Air":{
+                                        _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                                        _position set [2,1000];
+                                    };
+                                };
+
+                                if(_eventType == "PR_AIRDROP") then {
+                                    _profiles = [_itemClass,_side,_eventFaction,_position] call ALIVE_fnc_createProfileVehicle;
+                                    _profiles = [_profiles];
+                                }else{
+                                    _profiles = [_itemClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+                                };
+
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
+
+                                _emptyVehicleProfiles set [count _emptyVehicleProfiles, _profileIDs];
+
+                                switch(_itemCategory) do {
+                                    case "Car":{
+                                        _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
+                                    };
+                                    case "Armored":{
+                                        _armourProfiles set [count _armourProfiles, _profileIDs];
+                                    };
+                                    case "Air":{
+                                        _heliProfiles set [count _heliProfiles, _profileIDs];
+
+                                        _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                        _profile = _profiles select 0;
+                                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                                    };
+                                };
+
+                                _totalCount = _totalCount + 1;
+
+                            };
+
+                        } forEach _emptyVehicles;
+
+
+                        // static individuals
+
+                        private ["_staticIndividualProfiles"];
+
+                        if(count _staticIndividuals > 0) then {
+
+                            _staticIndividualProfiles = [];
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if(_paraDrop) then {
+                                _position set [2,500];
+                            };
+
+                            _profile = [_staticIndividuals,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _profileID = _profile select 2 select 4;
+                            _staticIndividualProfiles set [count _staticIndividualProfiles, [_profileID]];
+                            _infantryProfiles set [count _infantryProfiles, [_profileID]];
+
+                            _totalCount = _totalCount + 1;
+
+                        };
+
+
+                        // join individuals
+
+                        private ["_joinIndividualProfiles"];
+
+                        if(count _joinIndividuals > 0) then {
+
+                            _joinIndividualProfiles = [];
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if(_paraDrop) then {
+                                _position set [2,500];
+                            };
+
+                            _profile = [_joinIndividuals,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _profileID = _profile select 2 select 4;
+                            _joinIndividualProfiles set [count _joinIndividualProfiles, [_profileID]];
+                            _infantryProfiles set [count _infantryProfiles, [_profileID]];
+
+                            _totalCount = _totalCount + 1;
+
+                        };
+
+                        // reinforce individuals
+
+                        private ["_reinforceIndividualProfiles"];
+
+                        if(count _reinforceIndividuals > 0) then {
+
+                            _reinforceIndividualProfiles = [];
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if(_paraDrop) then {
+                                _position set [2,500];
+                            };
+
+                            _profile = [_reinforceIndividuals,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _profileID = _profile select 2 select 4;
+                            _reinforceIndividualProfiles set [count _reinforceIndividualProfiles, [_profileID]];
+                            _infantryProfiles set [count _infantryProfiles, [_profileID]];
+
+                            _totalCount = _totalCount + 1;
+
+                        };
+
+
+                        // static groups
+
+                        private ["_staticGroupProfiles","_group"];
+
+                        _staticGroupProfiles = [];
+
+                        {
+
+                            _group = _x select 0;
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if!(surfaceIsWater _position) then {
+
+                                _itemCategory = _x select 1 select 2;
+
+                                switch(_itemCategory) do {
+                                    case "Infantry":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "SpecOps":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Armored":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Mechanised":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Motorised":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Air":{
+                                        _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                                        _position set [2,1000];
+                                    };
+                                };
+
+                                _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
+
+                                _staticGroupProfiles set [count _staticGroupProfiles, _profileIDs];
+
+                                switch(_itemCategory) do {
+                                    case "Infantry":{
+                                        _infantryProfiles set [count _infantryProfiles, _profileIDs];
+                                    };
+                                    case "SpecOps":{
+                                        _infantryProfiles set [count _infantryProfiles, _profileIDs];
+                                    };
+                                    case "Armored":{
+                                        _armourProfiles set [count _armourProfiles, _profileIDs];
+                                    };
+                                    case "Mechanised":{
+                                         _mechanisedProfiles set [count _mechanisedProfiles, _profileIDs];
+                                    };
+                                    case "Motorised":{
+                                         _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
+                                    };
+                                    case "Air":{
+                                        _heliProfiles set [count _heliProfiles, _profileIDs];
+
+                                        _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                        _profile = _profiles select 0;
+                                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                                    };
+                                };
+
+                                _totalCount = _totalCount + 1;
+
+                            };
+
+                        } forEach _staticGroups;
+
+
+                        // join groups
+
+                        {
+
+                            _group = _x select 0;
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if!(surfaceIsWater _position) then {
+
+                                _itemCategory = _x select 1 select 2;
+
+                                switch(_itemCategory) do {
+                                    case "Infantry":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "SpecOps":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Armored":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Mechanised":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Motorised":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Air":{
+                                        _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                                        _position set [2,1000];
+                                    };
+                                };
+
+                                _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
+
+                                _staticGroupProfiles set [count _staticGroupProfiles, _profileIDs];
+
+                                switch(_itemCategory) do {
+                                    case "Infantry":{
+                                        _infantryProfiles set [count _infantryProfiles, _profileIDs];
+                                    };
+                                    case "SpecOps":{
+                                        _infantryProfiles set [count _infantryProfiles, _profileIDs];
+                                    };
+                                    case "Armored":{
+                                        _armourProfiles set [count _armourProfiles, _profileIDs];
+                                    };
+                                    case "Mechanised":{
+                                         _mechanisedProfiles set [count _mechanisedProfiles, _profileIDs];
+                                    };
+                                    case "Motorised":{
+                                         _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
+                                    };
+                                    case "Air":{
+                                        _heliProfiles set [count _heliProfiles, _profileIDs];
+
+                                        _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                        _profile = _profiles select 0;
+                                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                                    };
+                                };
+
+                                _totalCount = _totalCount + 1;
+
+                            };
+
+                        } forEach _joinGroups;
+
+
+                        // reinforce groups
+
+                        {
+
+                            _group = _x select 0;
+
+                            _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                            if!(surfaceIsWater _position) then {
+
+                                _itemCategory = _x select 1 select 2;
+
+                                switch(_itemCategory) do {
+                                    case "Infantry":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "SpecOps":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Armored":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Mechanised":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Motorised":{
+                                        if(_paraDrop) then {
+                                            _position set [2,500];
+                                        };
+                                    };
+                                    case "Air":{
+                                        _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                                        _position set [2,1000];
+                                    };
+                                };
+
+                                _profiles = [_group, _position, random(360), false, _eventFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                                _profileIDs = [];
+                                {
+                                    _profileID = _x select 2 select 4;
+                                    _profileIDs set [count _profileIDs, _profileID];
+                                } forEach _profiles;
+
+                                _staticGroupProfiles set [count _staticGroupProfiles, _profileIDs];
+
+                                switch(_itemCategory) do {
+                                    case "Infantry":{
+                                        _infantryProfiles set [count _infantryProfiles, _profileIDs];
+                                    };
+                                    case "SpecOps":{
+                                        _infantryProfiles set [count _infantryProfiles, _profileIDs];
+                                    };
+                                    case "Armored":{
+                                        _armourProfiles set [count _armourProfiles, _profileIDs];
+                                    };
+                                    case "Mechanised":{
+                                         _mechanisedProfiles set [count _mechanisedProfiles, _profileIDs];
+                                    };
+                                    case "Motorised":{
+                                         _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
+                                    };
+                                    case "Air":{
+                                        _heliProfiles set [count _heliProfiles, _profileIDs];
+
+                                        _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                        _profile = _profiles select 0;
+                                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+                                    };
+                                };
+
+                                _totalCount = _totalCount + 1;
+
+                            };
+
+                        } forEach _reinforceGroups;
+
+
+                        if(_eventType == "PR_STANDARD") then {
+
+                            // create ground transport vehicles for the profiles
+
+                            _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                            _transportProfiles = [];
+                            _transportVehicleProfiles = [];
+
+                            if(count _transportGroups == 0) then {
+                                _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
+                            };
+
+                            if(count _transportGroups > 0) then {
+                                for "_i" from 0 to (count _infantryProfiles) -1 do {
+
+                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                    if(_paraDrop) then {
+                                        _position set [2,500];
+                                    };
+
+                                    if(count _transportGroups > 0) then {
+
+                                        _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+
+                                        _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,false,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                        _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
+                                        _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
+
+                                    }
+
+                                };
+                            };
+
+                            _eventTransportProfiles = _transportProfiles;
+                            _eventTransportVehiclesProfiles = _transportVehicleProfiles;
+
+                        };
+
+                        if(_eventType == "PR_HELI_INSERT") then {
+
+                            private ["_infantryProfileID","_infantryProfile","_profileWaypoint","_profile"];
+
+                            // create air transport vehicles for the profiles
+
+                            _transportGroups = [ALIVE_factionDefaultAirTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                            _transportProfiles = [];
+                            _transportVehicleProfiles = [];
+
+                            if(count _transportGroups == 0) then {
+                                _transportGroups = [ALIVE_sideDefaultAirTransport,_side] call ALIVE_fnc_hashGet;
+                            };
+
+                            if(count _transportGroups > 0) then {
+
+                                for "_i" from 0 to (count _infantryProfiles) -1 do {
+
+                                    _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                    if(_paraDrop) then {
+                                        _position set [2,500];
+                                    };
+
+                                    if(count _transportGroups > 0) then {
+
+                                        _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+
+                                        _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                        _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
+                                        _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
+
+                                        _infantryProfileID = _infantryProfiles select _i select 0;
+                                        if!(isNil "_infantryProfileID") then {
+                                            _infantryProfile = [ALIVE_profileHandler, "getProfile", _infantryProfileID] call ALIVE_fnc_profileHandler;
+                                            if!(isNil "_infantryProfile") then {
+                                                [_infantryProfile,_profiles select 1] call ALIVE_fnc_createProfileVehicleAssignment;
+                                            };
+                                        };
+
+                                        _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                        _profile = _profiles select 0;
+                                        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+                                    };
+
+                                };
+
+                            };
+
+                            _eventTransportProfiles = _transportProfiles;
+                            _eventTransportVehiclesProfiles = _transportVehicleProfiles;
+
+                        };
+
+
+                        [_eventCargoProfiles, "armour", _armourProfiles] call ALIVE_fnc_hashSet;
+                        [_eventCargoProfiles, "infantry", _infantryProfiles] call ALIVE_fnc_hashSet;
+                        [_eventCargoProfiles, "mechanised", _mechanisedProfiles] call ALIVE_fnc_hashSet;
+                        [_eventCargoProfiles, "motorised", _motorisedProfiles] call ALIVE_fnc_hashSet;
+                        [_eventCargoProfiles, "heli", _heliProfiles] call ALIVE_fnc_hashSet;
+                        [_eventCargoProfiles, "plane", _planeProfiles] call ALIVE_fnc_hashSet;
+
+
+                        // DEBUG -------------------------------------------------------------------------------------
+                        if(_debug) then {
+                            ["ALIVE ML - Profiles created: %1 ",_totalCount] call ALIVE_fnc_dump;
+                            switch(_eventType) do {
+                                case "PR_STANDARD": {
+                                    [_logic, "createMarker", [_reinforcementPosition,_eventFaction,"PR INSERTION"]] call MAINCLASS;
+                                };
+                                case "PR_HELI_INSERT": {
+                                    [_logic, "createMarker", [_reinforcementPosition,_eventFaction,"PR INSERTION"]] call MAINCLASS;
+                                };
+                                case "PR_AIRDROP": {
+                                    [_logic, "createMarker", [_eventPosition,_eventFaction,"PR AIRDROP"]] call MAINCLASS;
+                                };
+                            };
+                        };
+                        // DEBUG -------------------------------------------------------------------------------------
+
+
+                        if(_totalCount > 0) then {
+
+                            // remove the created group count
+                            // from the force pool
+                            _forcePool = _forcePool - _totalCount;
+                            [_logic, "forcePool", _forcePool] call MAINCLASS;
+
+                            switch(_eventType) do {
+                                case "PR_STANDARD": {
+
+                                    // update the state of the event
+                                    // next state is transport load
+                                    [_event, "state", "transportLoad"] call ALIVE_fnc_hashSet;
+
+                                    // dispatch event
+                                    _logEvent = ['LOGISTICS_INSERTION', [_reinforcementPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
+                                };
+                                case "PR_HELI_INSERT": {
+
+                                    // update the state of the event
+                                    // next state is transport load
+                                    [_event, "state", "heliTransportStart"] call ALIVE_fnc_hashSet;
+
+                                    // dispatch event
+                                    _logEvent = ['LOGISTICS_INSERTION', [_reinforcementPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
+                                };
+                                case "PR_AIRDROP": {
+
+                                    // update the state of the event
+                                    // next state is aridrop wait
+                                    [_event, "state", "airdropWait"] call ALIVE_fnc_hashSet;
+
+                                    // dispatch event
+                                    _logEvent = ['LOGISTICS_DESTINATION', [_eventPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
+                                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
+                                };
+                            };
+
+                            [_event, "cargoProfiles", _eventCargoProfiles] call ALIVE_fnc_hashSet;
+                            [_event, "transportProfiles", _eventTransportProfiles] call ALIVE_fnc_hashSet;
+                            [_event, "transportVehiclesProfiles", _eventTransportVehiclesProfiles] call ALIVE_fnc_hashSet;
+
+                            [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                        }else{
+
+                            // no profiles were created
+                            // nothing to do so cancel..
+                            [_logic, "removeEvent", _eventID] call MAINCLASS;
+                        };
+
+                    };
+                }else{
+
+                    // no insertion point available
+                    // nothing to do so cancel..
+                    [_logic, "removeEvent", _eventID] call MAINCLASS;
+
+                };
             };
         };
     };

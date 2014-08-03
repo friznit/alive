@@ -46,6 +46,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_createProfileVehicle.sqf";
 				recompile = RECOMPILE;
 			};
+			class createProfileEntity {
+                description = "createProfileEntity";
+                file = "\x\alive\addons\sys_profile\fnc_createProfileEntity.sqf";
+                recompile = RECOMPILE;
+            };
 			class createProfilesFromUnits {
 				description = "createProfilesFromUnits";
 				file = "\x\alive\addons\sys_profile\fnc_createProfilesFromUnits.sqf";

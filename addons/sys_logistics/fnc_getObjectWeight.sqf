@@ -38,11 +38,12 @@ _types = [
 		["Reammobox_F",1],
 		["Static",100],
 		["ThingX",7],
-		["Man",13]
+		["Man",13],
+		["StaticWeapon",1]
 ];
 
 {
-    private ["_object","_weight","_type"];
+    private ["_object","_weight","_type","_sizeOf"];
     
     _object = _x;
     
@@ -50,9 +51,20 @@ _types = [
 		case ("OBJECT") : {_type = typeOf _object; _weight = getMass _object};
 		case ("STRING") : {_type = _object; _weight = 0};
     };
-    
+
     if (_weight == 0) then {
-         {if (_type isKindOf (_x select 0)) exitwith {_weight = (sizeOf _type)*(_x select 1)}} foreach _types;
+        {
+            if (_type isKindOf (_x select 0)) exitwith {
+                _sizeOf = sizeOf _type;
+                if(_sizeOf > 0) then {
+                    _weight = _sizeOf * (_x select 1);
+                }else{
+                    _sizeOf = getNumber(configFile >> "CfgVehicles" >> _type >> "mapSize");
+                    _weight = _sizeOf * (_x select 1);
+                };
+
+            };
+        } foreach _types;
     };
 
     _sum = _sum + _weight;

@@ -172,7 +172,7 @@ class PRTablet
 
         class PRTablet_deliveryTitle : PRTablet_RscText
         {
-            idc = -1;
+            idc = 60017;
             text = "Delivery Type";
             x = 0.271203 * safezoneW + safezoneX;
             y = 0.1430 * safezoneH + safezoneY;
@@ -206,7 +206,7 @@ class PRTablet
 
         class PRTablet_supplyTitle : PRTablet_RscText
         {
-            idc = -1;
+            idc = 60018;
             text = "Supply List";
             x = 0.271203 * safezoneW + safezoneX;
             y = 0.2230 * safezoneH + safezoneY;
@@ -240,7 +240,7 @@ class PRTablet
 
         class PRTablet_reinforceTitle : PRTablet_RscText
         {
-            idc = -1;
+            idc = 60019;
             text = "Reinforce List";
             x = 0.271203 * safezoneW + safezoneX;
             y = 0.3730 * safezoneH + safezoneY;
@@ -274,7 +274,7 @@ class PRTablet
 
         class PRTablet_selectedTitle : PRTablet_RscText
         {
-            idc = -1;
+            idc = 60020;
             text = "Payload";
             x = 0.271203 * safezoneW + safezoneX;
             y = 0.5230 * safezoneH + safezoneY;
@@ -309,7 +309,7 @@ class PRTablet
         class PRTablet_selectedInfo : PRTablet_RscText
         {
             idc = 60009;
-            text = ""
+            text = "";
             x = 0.271203 * safezoneW + safezoneX;
             y = 0.6730 * safezoneH + safezoneY;
             w = 0.241271 * safezoneW;

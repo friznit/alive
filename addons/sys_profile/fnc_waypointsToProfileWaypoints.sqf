@@ -23,7 +23,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_profile","_group","_isCycling","_waypoints","_profileWaypoint"];
+private ["_profile","_group","_isCycling","_waypoints","_statements","_profileWaypoint"];
 
 _profile = _this select 0;
 _group = _this select 1;
@@ -42,7 +42,19 @@ if(_isCycling) then {
 	{
 		_profileWaypoint = [(_waypoints select _i)] call ALIVE_fnc_waypointToProfileWaypoint;
 		_profilePosition = [_profileWaypoint,"position"] call ALIVE_fnc_hashGet;
-		if(_profilePosition select 0 > 0 && _profilePosition select 1 > 0) then {
+
+		_statements = [_profileWaypoint,"statements"] call ALIVE_fnc_hashGet;
+
+		/*
+        ["STAMENTS :%1",_statements select 1] call ALIVE_fnc_dump;
+        if(_statements select 1 == "_disableSimulation = true;") then {
+            ["SIM DISABLED: TRUE"] call ALIVE_fnc_dump;
+        }else{
+            ["SIM DISABLED: FALSE"] call ALIVE_fnc_dump;
+        };
+        */
+
+		if(_profilePosition select 0 > 0 && _profilePosition select 1 > 0 && {(_statements select 1 != "_disableSimulation = true;")}) then {
 			[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 		};
 	};
@@ -50,7 +62,19 @@ if(_isCycling) then {
 	for "_i" from 1 to (currentWaypoint _group)-1 do {
 		_profileWaypoint = [(_waypoints select _i)] call ALIVE_fnc_waypointToProfileWaypoint;
 		_profilePosition = [_profileWaypoint,"position"] call ALIVE_fnc_hashGet;
-		if(_profilePosition select 0 > 0 && _profilePosition select 1 > 0) then {
+
+		_statements = [_profileWaypoint,"statements"] call ALIVE_fnc_hashGet;
+
+        /*
+        ["STAMENTS :%1",_statements select 1] call ALIVE_fnc_dump;
+        if(_statements select 1 == "_disableSimulation = true;") then {
+            ["SIM DISABLED: TRUE"] call ALIVE_fnc_dump;
+        }else{
+            ["SIM DISABLED: FALSE"] call ALIVE_fnc_dump;
+        };
+        */
+
+		if(_profilePosition select 0 > 0 && _profilePosition select 1 > 0 && {(_statements select 1 != "_disableSimulation = true;")}) then {
 			[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 		};
 	};
@@ -63,7 +87,19 @@ if(_isCycling) then {
 		{
 			_profileWaypoint = [(_waypoints select _i)] call ALIVE_fnc_waypointToProfileWaypoint;
 			_profilePosition = [_profileWaypoint,"position"] call ALIVE_fnc_hashGet;
-			if(_profilePosition select 0 > 0 && _profilePosition select 1 > 0) then {
+
+			_statements = [_profileWaypoint,"statements"] call ALIVE_fnc_hashGet;
+
+            /*
+            ["STAMENTS :%1",_statements select 1] call ALIVE_fnc_dump;
+            if(_statements select 1 == "_disableSimulation = true;") then {
+                ["SIM DISABLED: TRUE"] call ALIVE_fnc_dump;
+            }else{
+                ["SIM DISABLED: FALSE"] call ALIVE_fnc_dump;
+            };
+            */
+
+			if(_profilePosition select 0 > 0 && _profilePosition select 1 > 0 && {(_statements select 1 != "_disableSimulation = true;")}) then {
 				[_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 			};
 		};

@@ -10,7 +10,7 @@ Create profiles based on vehicle type including vehicle crew
 Parameters:
 String - Vehicle class name
 String - Side name
-String - Rank
+String - faction
 Array - position
 Scalar - direction
 
@@ -20,7 +20,7 @@ Array of created profiles
 Examples:
 (begin example)
 // create profiles for vehicle class
-_result = ["B_Heli_Light_01_F","WEST",getPosATL player] call ALIVE_fnc_createProfileVehicle;
+_result = ["B_Heli_Light_01_F","WEST","BLU_F",getPosATL player] call ALIVE_fnc_createProfileVehicle;
 (end)
 
 See Also:
