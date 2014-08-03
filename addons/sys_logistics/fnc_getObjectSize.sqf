@@ -30,16 +30,18 @@ _objects = _this;
 _sum = 0;
 
 {
-    private ["_object","_type"];
+    private ["_object","_size","_type"];
     
 	_object = _x;
-    
+
     switch (typeName _object) do {
-    	case ("OBJECT") : {_type = typeOf _object};
-        case ("STRING") : {_type = _object};
+		case ("OBJECT") : {_type = typeOf _object};
+		case ("STRING") : {_type = _object};
     };
     
-    _sum = _sum + (sizeOf _type);
+    _size = getNumber(configFile >> "CfgVehicles" >> _type >> "mapSize");
+    
+    _sum = _sum + _size;
 } foreach _objects;
 
 _sum;
