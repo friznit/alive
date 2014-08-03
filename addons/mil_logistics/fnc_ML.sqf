@@ -2937,29 +2937,6 @@ switch(_operation) do {
 
                         _totalCount = 0;
 
-                        /*
-                        _requestID = _eventForceMakeup select 0;
-                        _payload = _eventForceMakeup select 1;
-                        _emptyVehicles = _eventForceMakeup select 2;
-                        _staticIndividuals = _eventForceMakeup select 3;
-                        _joinIndividuals = _eventForceMakeup select 4;
-                        _reinforceIndividuals = _eventForceMakeup select 5;
-                        _staticGroups = _eventForceMakeup select 6;
-                        _joinGroups = _eventForceMakeup select 7;
-                        _reinforceGroups = _eventForceMakeup select 8;
-                        */
-
-                        /*
-                        ["Empty Vehicles: %1",_emptyVehicles] call ALIVE_fnc_dump;
-                        ["Payload: %1",_payload] call ALIVE_fnc_dump;
-                        ["Static Individuals: %1",_staticIndividuals] call ALIVE_fnc_dump;
-                        ["Join Individuals: %1",_joinIndividuals] call ALIVE_fnc_dump;
-                        ["Reinforce Individuals: %1",_reinforceIndividuals] call ALIVE_fnc_dump;
-                        ["Static Groups: %1",_staticGroups] call ALIVE_fnc_dump;
-                        ["Join Groups: %1",_joinGroups] call ALIVE_fnc_dump;
-                        ["Reinforce Groups: %1",_reinforceGroups] call ALIVE_fnc_dump;
-                        */
-
 
                         // payload
                         // spawn vehicles to fit the requested
@@ -3155,12 +3132,12 @@ switch(_operation) do {
                                             _position set [2,500];
                                         };
                                     };
-                                    case "Mechanised":{
+                                    case "Mechanized":{
                                         if(_paraDrop) then {
                                             _position set [2,500];
                                         };
                                     };
-                                    case "Motorised":{
+                                    case "Motorized":{
                                         if(_paraDrop) then {
                                             _position set [2,500];
                                         };
@@ -3191,10 +3168,10 @@ switch(_operation) do {
                                     case "Armored":{
                                         _armourProfiles set [count _armourProfiles, _profileIDs];
                                     };
-                                    case "Mechanised":{
+                                    case "Mechanized":{
                                          _mechanisedProfiles set [count _mechanisedProfiles, _profileIDs];
                                     };
-                                    case "Motorised":{
+                                    case "Motorized":{
                                          _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
                                     };
                                     case "Air":{
@@ -3241,12 +3218,12 @@ switch(_operation) do {
                                             _position set [2,500];
                                         };
                                     };
-                                    case "Mechanised":{
+                                    case "Mechanized":{
                                         if(_paraDrop) then {
                                             _position set [2,500];
                                         };
                                     };
-                                    case "Motorised":{
+                                    case "Motorized":{
                                         if(_paraDrop) then {
                                             _position set [2,500];
                                         };
@@ -3277,10 +3254,10 @@ switch(_operation) do {
                                     case "Armored":{
                                         _armourProfiles set [count _armourProfiles, _profileIDs];
                                     };
-                                    case "Mechanised":{
+                                    case "Mechanized":{
                                          _mechanisedProfiles set [count _mechanisedProfiles, _profileIDs];
                                     };
-                                    case "Motorised":{
+                                    case "Motorized":{
                                          _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
                                     };
                                     case "Air":{
@@ -3327,12 +3304,12 @@ switch(_operation) do {
                                             _position set [2,500];
                                         };
                                     };
-                                    case "Mechanised":{
+                                    case "Mechanized":{
                                         if(_paraDrop) then {
                                             _position set [2,500];
                                         };
                                     };
-                                    case "Motorised":{
+                                    case "Motorized":{
                                         if(_paraDrop) then {
                                             _position set [2,500];
                                         };
@@ -3363,10 +3340,10 @@ switch(_operation) do {
                                     case "Armored":{
                                         _armourProfiles set [count _armourProfiles, _profileIDs];
                                     };
-                                    case "Mechanised":{
+                                    case "Mechanized":{
                                          _mechanisedProfiles set [count _mechanisedProfiles, _profileIDs];
                                     };
-                                    case "Motorised":{
+                                    case "Motorized":{
                                          _motorisedProfiles set [count _motorisedProfiles, _profileIDs];
                                     };
                                     case "Air":{

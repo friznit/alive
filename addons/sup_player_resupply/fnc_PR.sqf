@@ -1044,7 +1044,7 @@ switch(_operation) do {
                                             _blacklistOptions = ["Armored","Support"];
                                         };
                                         case "PR_HELI_INSERT": {
-                                            _blacklistOptions = ["Armored","Mechanised","Motorised","SpecOps","Support"];
+                                            _blacklistOptions = ["Armored","Mechanized","Motorized","SpecOps","Support"];
                                         };
                                         case "PR_STANDARD": {
                                             _blacklistOptions = ["Support"];
