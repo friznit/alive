@@ -583,6 +583,7 @@ switch(_operation) do {
                         [_event, "cargoProfiles", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                         [_event, "transportProfiles", []] call ALIVE_fnc_hashSet;
                         [_event, "transportVehiclesProfiles", []] call ALIVE_fnc_hashSet;
+                        [_event, "playerRequestProfiles", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 
                         // store the event on the event queue
                         _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
@@ -1019,7 +1020,7 @@ switch(_operation) do {
          private ["_debug","_event","_reinforcementAnalysis","_side","_eventID","_eventData","_eventPosition","_eventSide","_eventFaction",
          "_eventForceMakeup","_eventType","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
          "_eventForcePlane","_eventForceHeli","_eventForceSpecOps","_eventTime","_eventState","_eventStateData","_eventCargoProfiles",
-         "_eventTransportProfiles","_eventTransportVehiclesProfiles","_reinforcementPriorityTotal"
+         "_eventTransportProfiles","_eventTransportVehiclesProfiles","_playerRequestProfiles","_reinforcementPriorityTotal"
          ,"_reinforcementType","_reinforcementAvailable","_reinforcementPrimaryObjective","_event",
          "_eventID","_eventQueue","_forcePool","_logEvent","_requestID","_payload","_emptyVehicles",
          "_staticIndividuals","_joinIndividuals","_reinforceIndividuals","_staticGroups","_joinGroups","_reinforceGroups"];
@@ -1043,6 +1044,7 @@ switch(_operation) do {
         _eventCargoProfiles = [_event, "cargoProfiles"] call ALIVE_fnc_hashGet;
         _eventTransportProfiles = [_event, "transportProfiles"] call ALIVE_fnc_hashGet;
         _eventTransportVehiclesProfiles = [_event, "transportVehiclesProfiles"] call ALIVE_fnc_hashGet;
+        _playerRequestProfiles = [_event, "playerRequestProfiles"] call ALIVE_fnc_hashGet;
 
         _reinforcementPriorityTotal = [_reinforcementAnalysis, "priorityTotal"] call ALIVE_fnc_hashGet;
         _reinforcementType = [_reinforcementAnalysis, "type"] call ALIVE_fnc_hashGet;
@@ -3031,7 +3033,9 @@ switch(_operation) do {
 
                         // static individuals
 
-                        private ["_staticIndividualProfiles"];
+                        private ["_staticIndividualProfiles","_unitClasses"];
+
+                        _staticIndividualProfiles = [];
 
                         if(count _staticIndividuals > 0) then {
 
@@ -3043,7 +3047,12 @@ switch(_operation) do {
                                 _position set [2,500];
                             };
 
-                            _profile = [_staticIndividuals,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _unitClasses = [];
+                            {
+                                _unitClasses set [count _unitClasses,_x select 0];
+                            } forEach _staticIndividuals;
+
+                            _profile = [_unitClasses,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
                             _profileID = _profile select 2 select 4;
                             _staticIndividualProfiles set [count _staticIndividualProfiles, [_profileID]];
                             _infantryProfiles set [count _infantryProfiles, [_profileID]];
@@ -3057,6 +3066,8 @@ switch(_operation) do {
 
                         private ["_joinIndividualProfiles"];
 
+                        _joinIndividualProfiles = [];
+
                         if(count _joinIndividuals > 0) then {
 
                             _joinIndividualProfiles = [];
@@ -3067,7 +3078,12 @@ switch(_operation) do {
                                 _position set [2,500];
                             };
 
-                            _profile = [_joinIndividuals,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _unitClasses = [];
+                            {
+                                _unitClasses set [count _unitClasses,_x select 0];
+                            } forEach _joinIndividuals;
+
+                            _profile = [_unitClasses,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
                             _profileID = _profile select 2 select 4;
                             _joinIndividualProfiles set [count _joinIndividualProfiles, [_profileID]];
                             _infantryProfiles set [count _infantryProfiles, [_profileID]];
@@ -3080,6 +3096,8 @@ switch(_operation) do {
 
                         private ["_reinforceIndividualProfiles"];
 
+                        _reinforceIndividualProfiles = [];
+
                         if(count _reinforceIndividuals > 0) then {
 
                             _reinforceIndividualProfiles = [];
@@ -3090,7 +3108,12 @@ switch(_operation) do {
                                 _position set [2,500];
                             };
 
-                            _profile = [_reinforceIndividuals,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _unitClasses = [];
+                            {
+                                _unitClasses set [count _unitClasses,_x select 0];
+                            } forEach _reinforceIndividuals;
+
+                            _profile = [_unitClasses,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
                             _profileID = _profile select 2 select 4;
                             _reinforceIndividualProfiles set [count _reinforceIndividualProfiles, [_profileID]];
                             _infantryProfiles set [count _infantryProfiles, [_profileID]];
@@ -3192,6 +3215,10 @@ switch(_operation) do {
 
                         // join groups
 
+                        private ["_joinGroupProfiles"];
+
+                        _joinGroupProfiles = [];
+
                         {
 
                             _group = _x select 0;
@@ -3242,7 +3269,7 @@ switch(_operation) do {
                                     _profileIDs set [count _profileIDs, _profileID];
                                 } forEach _profiles;
 
-                                _staticGroupProfiles set [count _staticGroupProfiles, _profileIDs];
+                                _joinGroupProfiles set [count _joinGroupProfiles, _profileIDs];
 
                                 switch(_itemCategory) do {
                                     case "Infantry":{
@@ -3278,6 +3305,10 @@ switch(_operation) do {
 
                         // reinforce groups
 
+                        private ["_reinforceGroupProfiles"];
+
+                        _reinforceGroupProfiles = [];
+
                         {
 
                             _group = _x select 0;
@@ -3328,7 +3359,7 @@ switch(_operation) do {
                                     _profileIDs set [count _profileIDs, _profileID];
                                 } forEach _profiles;
 
-                                _staticGroupProfiles set [count _staticGroupProfiles, _profileIDs];
+                                _reinforceGroupProfiles set [count _reinforceGroupProfiles, _profileIDs];
 
                                 switch(_itemCategory) do {
                                     case "Infantry":{
@@ -3361,6 +3392,8 @@ switch(_operation) do {
 
                         } forEach _reinforceGroups;
 
+
+                        private ["_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass"];
 
                         if(_eventType == "PR_STANDARD") then {
 
@@ -3457,6 +3490,16 @@ switch(_operation) do {
                             _eventTransportVehiclesProfiles = _transportVehicleProfiles;
 
                         };
+
+
+                        [_playerRequestProfiles,"empty",_emptyVehicleProfiles] call ALIVE_fnc_hashSet;
+                        [_playerRequestProfiles,"joinIndividuals",_joinIndividualProfiles] call ALIVE_fnc_hashSet;
+                        [_playerRequestProfiles,"staticIndividuals",_staticIndividualProfiles] call ALIVE_fnc_hashSet;
+                        [_playerRequestProfiles,"reinforceIndividuals",_reinforceIndividualProfiles] call ALIVE_fnc_hashSet;
+                        [_playerRequestProfiles,"joinGroups",_joinGroupProfiles] call ALIVE_fnc_hashSet;
+                        [_playerRequestProfiles,"staticGroups",_staticGroupProfiles] call ALIVE_fnc_hashSet;
+                        [_playerRequestProfiles,"reinforceGroups",_reinforceGroupProfiles] call ALIVE_fnc_hashSet;
+                        [_event, "playerRequestProfiles", _playerRequestProfiles] call ALIVE_fnc_hashSet;
 
 
                         [_eventCargoProfiles, "armour", _armourProfiles] call ALIVE_fnc_hashSet;
