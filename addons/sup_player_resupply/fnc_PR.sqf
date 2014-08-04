@@ -72,6 +72,7 @@ Peer Reviewed:
 #define PRTablet_CTRL_SupplyListTitle 60018
 #define PRTablet_CTRL_ReinforceListTitle 60019
 #define PRTablet_CTRL_PayloadListTitle 60020
+#define PRTablet_CTRL_RadioText 60021
 
 
 // Control Macros
@@ -269,9 +270,9 @@ switch(_operation) do {
 
              private ["_countAir","_countInsert","_countConvoy"];
 
-            _countAir = [100,3,3,10];
-            _countInsert = [50,2,1,10];
-            _countConvoy = [200,5,5,20];
+            _countAir = [1000,3,3,8];
+            _countInsert = [500,2,1,8];
+            _countConvoy = [10000,5,5,8];
 
             [_logic,"countsAir",_countAir] call MAINCLASS;
             [_logic,"countsInsert",_countInsert] call MAINCLASS;
@@ -382,7 +383,109 @@ switch(_operation) do {
         // set module as startup complete
         _logic setVariable ["startupComplete", true];
 
+        if(isServer) then {
+
+            // start listening for logcom events
+            [_logic,"listen"] call MAINCLASS;
+
+        };
+
 	};
+	case "listen": {
+        private["_listenerID"];
+
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGCOM_RESPONSE"]]] call ALIVE_fnc_eventLog;
+        _logic setVariable ["listenerID", _listenerID];
+    };
+    case "handleEvent": {
+
+        private["_debug","_event","_eventData"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _debug = [_logic, "debug"] call MAINCLASS;
+            _event = _args;
+
+            // a response event from LOGCOM has been received.
+            // if the we are a dedicated server,
+            // dispatch the event to the player who requested it
+            if(isDedicated) then {
+
+                private ["_eventData","_playerID","_player"];
+
+                _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+
+                _playerID = _eventData select 1;
+
+                _player = objNull;
+                {
+                    if (getPlayerUID _x == _playerID) exitWith {
+                        _player = _x;
+                    };
+                } forEach playableUnits;
+
+                if !(isNull _player) then {
+                    [_event,"ALIVE_fnc_PRTabletEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                };
+
+            }else{
+
+                // the player is the server
+
+                [_logic, "handleLOGCOMResponse", _event] call MAINCLASS;
+
+            };
+
+        };
+    };
+    case "handleLOGCOMResponse": {
+
+        private["_debug","_event","_eventData","_message","_requestID","_side","_sideObject"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _debug = [_logic, "debug"] call MAINCLASS;
+            _event = _args;
+            _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+            _message = [_event, "message"] call ALIVE_fnc_hashGet;
+
+            _requestID = _eventData select 0;
+
+            ["LOGCOM RESPONSE: %1",_message] call ALIVE_fnc_dump;
+
+            _side = [_logic,"side"] call MAINCLASS;
+            _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
+
+            switch(_message) do {
+                case "ACKNOWLEDGED":{
+
+                    // LOGCOM has received and accepted the request
+
+                    _radioMessage = "LOGCOM has received and accepted the request";
+
+                    [[player,_radioMessage,"side",_sideObject,true,true],"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                };
+                case "DENIED_FORCEPOOL":{
+
+                    // LOGCOM has denied the request due to insufficient forces
+
+                };
+                case "DENIED_NOT_AVAILABLE":{
+
+                    // LOGCOM has no insertion point to deliver from
+
+                };
+            };
+
+        };
+
+    };
+    case "displayRadioMessage": {
+
+
+
+    };
 	case "tabletOnLoad": {
 
         // on load of the tablet
@@ -831,8 +934,8 @@ switch(_operation) do {
                                                 _values = ["Back","Air"];
                                             };
                                             case "PR_STANDARD": {
-                                                _options = ["Back","Car","Armored","Air"];
-                                                _values = ["Back","Car","Armored","Air"];
+                                                _options = ["Back","Car","Armored"];
+                                                _values = ["Back","Car","Armored"];
                                             };
                                         };
 
@@ -1044,7 +1147,7 @@ switch(_operation) do {
                                             _blacklistOptions = ["Armored","Support"];
                                         };
                                         case "PR_HELI_INSERT": {
-                                            _blacklistOptions = ["Armored","Mechanized","Motorized","SpecOps","Support"];
+                                            _blacklistOptions = ["Armored","Mechanized","Motorized","Motorized_MTP","SpecOps","Support"];
                                         };
                                         case "PR_STANDARD": {
                                             _blacklistOptions = ["Support"];
@@ -1398,7 +1501,7 @@ switch(_operation) do {
                             private ["_side","_faction","_destination","_selectedDeliveryValue","_payloadListValues","_emptyVehicles",
                             "_payload","_staticIndividuals","_joinIndividuals","_reinforceIndividuals","_staticGroups","_joinGroups",
                             "_reinforceGroups","_payloadClass","_payloadInfo","_payloadType","_payloadOrders","_requestID","_forceMakeup",
-                            "_event","_eventID"];
+                            "_event","_eventID","_playerID"];
 
                             _side = [_logic,"side"] call MAINCLASS;
                             _faction = [_logic,"faction"] call MAINCLASS;
@@ -1472,21 +1575,32 @@ switch(_operation) do {
                             ["Reinforce Groups: %1",_reinforceGroups] call ALIVE_fnc_dump;
 
 
-                            _requestID = time;
+                            _requestID = floor(time);
 
                             _forceMakeup = [_requestID,_payload,_emptyVehicles,_staticIndividuals,_joinIndividuals,_reinforceIndividuals,_staticGroups,_joinGroups,_reinforceGroups];
 
                             // send the event
 
-                            _event = ['LOGCOM_REQUEST', [_destination,_faction,_side,_forceMakeup,_deliveryType],"PR"] call ALIVE_fnc_event;
+                            _playerID = getPlayerUID player;
 
-                            ["EVENT: %1",_event] call ALIVE_fnc_dump;
+                            _event = ['LOGCOM_REQUEST', [_destination,_faction,_side,_forceMakeup,_deliveryType,_playerID],"PR"] call ALIVE_fnc_event;
 
                             if(isServer) then {
-                                _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                             }else{
-                                [[ALIVE_eventLog, "addEvent",_event],"ALIVE_fnc_eventLog",false,true] spawn BIS_fnc_MP;
-                            }
+                                ["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                            };
+
+                            // display radio message
+
+                            private ["_side","_sideObject","_callSignPlayer","_radioMessage"];
+
+                            _side = [_logic,"side"] call MAINCLASS;
+                            _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
+                            _callSignPlayer = format ["%1", group player];
+                            _radioMessage = format ["%1 this is %2, send SITREP. Over.","CHEESE", _callSignPlayer];
+
+                            [[player,_radioMessage,"side",_sideObject,false,true],"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
                             //[_logic,"payloadRequested"] call MAINCLASS;
 

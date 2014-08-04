@@ -118,6 +118,27 @@ class uErase
 	recompile = RECOMPILE;
 };
 
+class exportComposition
+{
+	file = "\x\alive\addons\x_lib\functions\composition\fnc_exportComposition.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class findComposition
+{
+	file = "\x\alive\addons\x_lib\functions\composition\fnc_findComposition.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class spawnComposition
+{
+	file = "\x\alive\addons\x_lib\functions\composition\fnc_spawnComposition.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class configGetGroup
 {
 	file = "\x\alive\addons\x_lib\functions\config\fnc_configGetGroup.sqf";
@@ -195,9 +216,30 @@ class getConfigValue
 	recompile = RECOMPILE;
 };
 
+class sortCFGGroupsBySide
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_sortCFGGroupsBySide.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class sortCFGVehiclesByClass
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_sortCFGVehiclesByClass.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class sideNumberToText
 {
 	file = "\x\alive\addons\x_lib\functions\conversions\fnc_sideNumberToText.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class sideObjectToNumber
+{
+	file = "\x\alive\addons\x_lib\functions\conversions\fnc_sideObjectToNumber.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -419,6 +461,13 @@ class timer
 	recompile = RECOMPILE;
 };
 
+class addEventToServer
+{
+	file = "\x\alive\addons\x_lib\functions\events\fnc_addEventToServer.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class event
 {
 	file = "\x\alive\addons\x_lib\functions\events\fnc_event.sqf";
@@ -489,6 +538,13 @@ class dump
 	recompile = RECOMPILE;
 };
 
+class dumpH
+{
+	file = "\x\alive\addons\x_lib\functions\logging\fnc_dumpH.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class dumpLogo
 {
 	file = "\x\alive\addons\x_lib\functions\logging\fnc_dumpLogo.sqf";
@@ -520,13 +576,6 @@ class dumpMPH
 class dumpR
 {
 	file = "\x\alive\addons\x_lib\functions\logging\fnc_dumpR.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class dumpH
-{
-	file = "\x\alive\addons\x_lib\functions\logging\fnc_dumpH.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -877,6 +926,13 @@ class hint
 class hintS
 {
 	file = "\x\alive\addons\x_lib\functions\ui\fnc_hintS.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class radioBroadcast
+{
+	file = "\x\alive\addons\x_lib\functions\ui\fnc_radioBroadcast.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

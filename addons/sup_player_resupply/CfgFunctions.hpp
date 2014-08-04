@@ -31,21 +31,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\sup_player_resupply\fnc_PRTabletOnUnLoad.sqf";
                 recompile = RECOMPILE;
             };
-            class sortCFGVehiclesByClass {
-                description = "Sorts CFGVehicles config by vehicleClass";
-                file = "\x\alive\addons\sup_player_resupply\fnc_sortCFGVehiclesByClass.sqf";
+            class PRTabletEventToClient {
+                description = "Call the tablet on the client from the server";
+                file = "\x\alive\addons\sup_player_resupply\fnc_PRTabletEventToClient.sqf";
                 recompile = RECOMPILE;
             };
-            class sortCFGGroupsBySide{
-                description = "Sorts CFGGroups config by side";
-                file = "\x\alive\addons\sup_player_resupply\fnc_sortCFGGroupsBySide.sqf";
-                recompile = RECOMPILE;
-            };
-            class sideObjectToNumber {
-                description = "Return side number";
-                file = "\x\alive\addons\sup_player_resupply\fnc_sideObjectToNumber.sqf";
-                recompile = RECOMPILE;
-            };
-		};
+        };
 	};
 };

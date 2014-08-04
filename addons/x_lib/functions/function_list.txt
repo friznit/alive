@@ -25,6 +25,12 @@ arrays
 	ALiVE_fnc_shellSort
 	ALiVE_fnc_uErase
 
+composition
+
+	ALiVE_fnc_exportComposition
+	ALiVE_fnc_findComposition
+	ALiVE_fnc_spawnComposition
+
 config
 
 	ALiVE_fnc_configGetGroup
@@ -38,10 +44,13 @@ config
 	ALiVE_fnc_configGetVehicleTurrets
 	ALiVE_fnc_configGetWeaponMagazines
 	ALiVE_fnc_getConfigValue
+	ALiVE_fnc_sortCFGGroupsBySide
+	ALiVE_fnc_sortCFGVehiclesByClass
 
 conversions
 
 	ALiVE_fnc_sideNumberToText
+	ALiVE_fnc_sideObjectToNumber
 	ALiVE_fnc_sideTextToLong
 	ALiVE_fnc_sideTextToNumber
 	ALiVE_fnc_sideTextToObject
@@ -82,6 +91,7 @@ diagnostics
 
 events
 
+	ALiVE_fnc_addEventToServer
 	ALiVE_fnc_event
 	ALiVE_fnc_eventLog
 
@@ -101,12 +111,12 @@ logging
 
 	ALiVE_fnc_convertLogLevel
 	ALiVE_fnc_dump
+	ALiVE_fnc_dumpH
 	ALiVE_fnc_dumpLogo
 	ALiVE_fnc_dumpModuleInit
 	ALiVE_fnc_dumpMP
 	ALiVE_fnc_dumpMPH
 	ALiVE_fnc_dumpR
-	ALiVE_fnc_dumpH
 	ALiVE_fnc_log
 	ALiVE_fnc_logger
 	ALiVE_fnc_setLogLevel
@@ -181,6 +191,7 @@ ui
 
 	ALiVE_fnc_hint
 	ALiVE_fnc_hintS
+	ALiVE_fnc_radioBroadcast
 	ALiVE_fnc_sendHint
 	ALiVE_fnc_sideC
 
