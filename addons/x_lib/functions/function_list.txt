@@ -25,6 +25,10 @@ arrays
 	ALiVE_fnc_shellSort
 	ALiVE_fnc_uErase
 
+behaviour
+
+	ALiVE_fnc_groupGarrison
+
 composition
 
 	ALiVE_fnc_exportComposition

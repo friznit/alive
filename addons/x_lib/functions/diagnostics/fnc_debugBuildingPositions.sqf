@@ -38,6 +38,28 @@ for "_i" from 0 to (_count-1) do {
 	_positions set [count _positions, _building buildingPos _i];
 };
 
+/*
 {
 	[_x] call ALIVE_fnc_spawnDebugMarker;
+
 } forEach _positions;
+*/
+
+buildingPositions = _positions;
+
+onEachFrame {
+    {
+        drawIcon3D [
+            "",
+            [1,0,0,1],
+            _x,
+            1,
+            1,
+            45,
+            format["%1",_forEachIndex],
+            1,
+            0.03,
+            "PuristaMedium"
+        ];
+    } foreach buildingPositions;
+};

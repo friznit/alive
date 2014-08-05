@@ -1738,6 +1738,13 @@ switch(_operation) do {
                 _logEvent = ['LOGISTICS_DESTINATION', [_eventPosition,_eventFaction,_side],"Logistics"] call ALIVE_fnc_event;
                 [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
 
+                // respond to player request
+
+                if(_playerRequested) then {
+                    _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ENROUTE"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                };
+
 
                 [_event, "state", "heliTransport"] call ALIVE_fnc_hashSet;
                 [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
@@ -1857,6 +1864,15 @@ switch(_operation) do {
 
                     [_event, "state", "heliTransportUnload"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                    // respond to player request
+                    if(_playerRequested && _waypointsCompleted > 0) then {
+                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ARRIVED"] call ALIVE_fnc_event;
+                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                    }else{
+                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_LOST"] call ALIVE_fnc_event;
+                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                    };
 
                 }else{
 
@@ -2295,7 +2311,7 @@ switch(_operation) do {
 
                 private ["_waitIterations","_waitTotalIterations"];
 
-                _waitTotalIterations = 20;
+                _waitTotalIterations = 15;
                 _waitIterations = 0;
                 if(count _eventStateData > 0) then {
                     _waitIterations = _eventStateData select 0;
@@ -2312,13 +2328,12 @@ switch(_operation) do {
 
                     [_event, "state", "airdropComplete"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
                 };
 
             };
 
             case "airdropComplete": {
-
-                ["COMPLETE!"] call ALIVE_fnc_dump;
 
                 [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
 
@@ -2588,6 +2603,12 @@ switch(_operation) do {
                 [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
 
 
+                if(_playerRequested) then {
+                    _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ENROUTE"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                };
+
+
                 [_event, "state", "transportTravel"] call ALIVE_fnc_hashSet;
                 [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
             };
@@ -2758,6 +2779,15 @@ switch(_operation) do {
 
                     [_event, "state", "transportComplete"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
+
+                    // respond to player request
+                    if(_playerRequested && _waypointsCompleted > 0) then {
+                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ARRIVED"] call ALIVE_fnc_event;
+                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                    }else{
+                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_LOST"] call ALIVE_fnc_event;
+                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                    };
 
                 }else{
 
@@ -3221,7 +3251,7 @@ switch(_operation) do {
                                 _unitClasses set [count _unitClasses,_x select 0];
                             } forEach _staticIndividuals;
 
-                            _profile = [_unitClasses,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _profile = [_unitClasses,_side,_eventFaction,_position,0,_side,true] call ALIVE_fnc_createProfileEntity;
                             _profileID = _profile select 2 select 4;
                             _staticIndividualProfiles set [count _staticIndividualProfiles, [_profileID]];
                             _infantryProfiles set [count _infantryProfiles, [_profileID]];
@@ -3252,7 +3282,7 @@ switch(_operation) do {
                                 _unitClasses set [count _unitClasses,_x select 0];
                             } forEach _joinIndividuals;
 
-                            _profile = [_unitClasses,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _profile = [_unitClasses,_side,_eventFaction,_position,0,_side,true] call ALIVE_fnc_createProfileEntity;
                             _profileID = _profile select 2 select 4;
                             _joinIndividualProfiles set [count _joinIndividualProfiles, [_profileID]];
                             _infantryProfiles set [count _infantryProfiles, [_profileID]];
@@ -3282,7 +3312,7 @@ switch(_operation) do {
                                 _unitClasses set [count _unitClasses,_x select 0];
                             } forEach _reinforceIndividuals;
 
-                            _profile = [_unitClasses,_side,_eventFaction,_position] call ALIVE_fnc_createProfileEntity;
+                            _profile = [_unitClasses,_side,_eventFaction,_position,0,_side,true] call ALIVE_fnc_createProfileEntity;
                             _profileID = _profile select 2 select 4;
                             _reinforceIndividualProfiles set [count _reinforceIndividualProfiles, [_profileID]];
                             _infantryProfiles set [count _infantryProfiles, [_profileID]];
@@ -3812,7 +3842,15 @@ switch(_operation) do {
 
                             [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
+                            // respond to player request
+                            _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_INSERTION"] call ALIVE_fnc_event;
+                            [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
                         }else{
+
+                            // respond to player request
+                            _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","DENIED_FORCE_CREATION"] call ALIVE_fnc_event;
+                            [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
 
                             // no profiles were created
                             // nothing to do so cancel..
@@ -3837,14 +3875,14 @@ switch(_operation) do {
 
     case "setEventProfilesAvailable": {
 
-        private ["_debug","_event","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
+        private ["_debug","_event","_eventData","_eventPosition","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
         "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile"];
-
-        // set all cargo profiles as not busy
 
         _debug = [_logic, "debug"] call MAINCLASS;
         _event = _args;
 
+        _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+        _eventPosition = _eventData select 0;
         _eventCargoProfiles = [_event, "cargoProfiles"] call ALIVE_fnc_hashGet;
 
         _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
@@ -3854,63 +3892,321 @@ switch(_operation) do {
         _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
         _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
 
-        {
-            _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
-            if!(isNil "_profile") then {
-                [_profile,"busy",false] call ALIVE_fnc_hashSet;
+        if!(_playerRequested) then {
+
+            // set all cargo profiles as not busy
+
+            {
+                _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                if!(isNil "_profile") then {
+                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                };
+
+            } forEach _infantryProfiles;
+
+            {
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                    };
+                } forEach _x;
+
+            } forEach _armourProfiles;
+
+            {
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                    };
+                } forEach _x;
+
+            } forEach _mechanisedProfiles;
+
+            {
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                    };
+                } forEach _x;
+
+            } forEach _motorisedProfiles;
+
+            {
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                    };
+                } forEach _x;
+
+            } forEach _planeProfiles;
+
+            {
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                    };
+                } forEach _x;
+
+            } forEach _heliProfiles;
+
+        }else{
+
+            private ["_emptyProfiles","_joinIndividualProfiles","_staticIndividualProfiles","_reinforceIndividualProfiles",
+            "_joinGroupProfiles","_staticGroupProfiles","_reinforceGroupProfiles","_player"];
+
+            _emptyProfiles = [_playerRequestProfiles,"empty"] call ALIVE_fnc_hashGet;
+            _joinIndividualProfiles = [_playerRequestProfiles,"joinIndividuals"] call ALIVE_fnc_hashGet;
+            _staticIndividualProfiles = [_playerRequestProfiles,"staticIndividuals"] call ALIVE_fnc_hashGet;
+            _reinforceIndividualProfiles = [_playerRequestProfiles,"reinforceIndividuals"] call ALIVE_fnc_hashGet;
+            _joinGroupProfiles = [_playerRequestProfiles,"joinGroups"] call ALIVE_fnc_hashGet;
+            _staticGroupProfiles = [_playerRequestProfiles,"staticGroups"] call ALIVE_fnc_hashGet;
+            _reinforceGroupProfiles = [_playerRequestProfiles,"reinforceGroups"] call ALIVE_fnc_hashGet;
+
+            {
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                    };
+                } forEach _x;
+
+            } forEach _reinforceIndividualProfiles;
+
+            {
+                {
+                    _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                    if!(isNil "_profile") then {
+                        [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                    };
+                } forEach _x;
+
+            } forEach _reinforceGroupProfiles;
+
+
+            if(isDedicated) then {
+                _player = objNull;
+                {
+                    if (getPlayerUID _x == _playerID) exitWith {
+                        _player = _x;
+                    };
+                } forEach playableUnits;
+            }else{
+                 _player = player;
             };
 
-        } forEach _infantryProfiles;
+            if (!(isNull _player)) then {
 
-        {
-            {
-                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                if!(isNil "_profile") then {
-                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
-                };
-            } forEach _x;
+                private ["_active","_type","_units"];
 
-        } forEach _armourProfiles;
+                {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
 
-        {
-            {
-                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                if!(isNil "_profile") then {
-                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
-                };
-            } forEach _x;
+                            _active = _profile select 2 select 1;
+                            _type = _profile select 2 select 5;
 
-        } forEach _mechanisedProfiles;
+                            if(_type == "entity") then {
 
-        {
-            {
-                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                if!(isNil "_profile") then {
-                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
-                };
-            } forEach _x;
+                                if(_active) then {
 
-        } forEach _motorisedProfiles;
+                                    _units = _profile select 2 select 21;
 
-        {
-            {
-                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                if!(isNil "_profile") then {
-                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
-                };
-            } forEach _x;
+                                    _units joinSilent (group player);
 
-        } forEach _planeProfiles;
+                                    [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+                                }else{
 
-        {
-            {
-                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
-                if!(isNil "_profile") then {
-                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
-                };
-            } forEach _x;
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
 
-        } forEach _heliProfiles;
+                                };
+
+                            }else{
+
+                                if!(_active) then {
+
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+                                };
+
+                            };
+
+                        };
+                    } forEach _x;
+
+                } forEach _joinIndividualProfiles;
+
+                {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+
+                            _active = _profile select 2 select 1;
+                            _type = _profile select 2 select 5;
+
+                            if(_type == "entity") then {
+
+                                if(_active) then {
+
+                                    _units = _profile select 2 select 21;
+
+                                    _units joinSilent (group player);
+
+                                    [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
+                                }else{
+
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+                                };
+
+                            }else{
+
+                                if!(_active) then {
+
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+                                };
+
+                            };
+
+                        };
+                    } forEach _x;
+
+                } forEach _joinGroupProfiles;
+
+
+
+                {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+
+                            _active = _profile select 2 select 1;
+                            _type = _profile select 2 select 5;
+
+                            if(_type == "entity") then {
+
+                                if(_active) then {
+
+                                    [_profile, "setActiveCommand", ["ALIVE_fnc_managedGarrison","managed",[_eventPosition,200]]] call ALIVE_fnc_profileEntity;
+
+                                }else{
+
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+                                };
+
+                            }else{
+
+                                if!(_active) then {
+
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+                                };
+
+                            };
+
+                        };
+                    } forEach _x;
+
+                } forEach _staticIndividualProfiles;
+
+                {
+                    if(count _x < 2) then {
+
+                        _profile = [ALIVE_profileHandler, "getProfile", (_x select 0)] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+
+                            _active = _profile select 2 select 1;
+                            _type = _profile select 2 select 5;
+
+                            if(_type == "entity") then {
+
+                                if(_active) then {
+
+                                    [_profile, "setActiveCommand", ["ALIVE_fnc_managedGarrison","managed",[_eventPosition,200]]] call ALIVE_fnc_profileEntity;
+
+                                }else{
+
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+                                };
+
+                            }else{
+
+                                if!(_active) then {
+
+                                    [_profile,"busy",false] call ALIVE_fnc_hashSet;
+
+                                };
+
+                            };
+
+                        };
+
+                    };
+
+                } forEach _staticGroupProfiles;
+
+
+            }else{
+
+                {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+                            [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                        };
+                    } forEach _x;
+
+                } forEach _reinforceIndividualProfiles;
+
+                {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+                            [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                        };
+                    } forEach _x;
+
+                } forEach _reinforceGroupProfiles;
+
+                {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+                            [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                        };
+                    } forEach _x;
+
+                } forEach _staticIndividualProfiles;
+
+                {
+                    {
+                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                        if!(isNil "_profile") then {
+                            [_profile,"busy",false] call ALIVE_fnc_hashSet;
+                        };
+                    } forEach _x;
+
+                } forEach _staticGroupProfiles;
+
+            };
+
+
+
+            // respond to player request
+            if(_playerRequested) then {
+                _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_DELIVERED"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+            };
+
+        };
     };
 
     case "removeEvent": {

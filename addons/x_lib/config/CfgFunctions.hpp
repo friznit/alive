@@ -118,6 +118,13 @@ class uErase
 	recompile = RECOMPILE;
 };
 
+class groupGarrison
+{
+	file = "\x\alive\addons\x_lib\functions\behaviour\fnc_groupGarrison.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class exportComposition
 {
 	file = "\x\alive\addons\x_lib\functions\composition\fnc_exportComposition.sqf";

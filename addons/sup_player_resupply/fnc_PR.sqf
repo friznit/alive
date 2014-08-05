@@ -51,6 +51,7 @@ Peer Reviewed:
 #define DEFAULT_COUNT_INSERT []
 #define DEFAULT_COUNT_CONVOY []
 #define DEFAULT_PAYLOAD_READY false
+#define DEFAULT_REQUEST_STATUS []
 
 // Display components
 #define PRTablet_CTRL_MainDisplay 60001
@@ -72,7 +73,8 @@ Peer Reviewed:
 #define PRTablet_CTRL_SupplyListTitle 60018
 #define PRTablet_CTRL_ReinforceListTitle 60019
 #define PRTablet_CTRL_PayloadListTitle 60020
-#define PRTablet_CTRL_RadioText 60021
+#define PRTablet_CTRL_StatusTitle 60021
+#define PRTablet_CTRL_StatusText 60022
 
 
 // Control Macros
@@ -227,6 +229,9 @@ switch(_operation) do {
     };
     case "payloadReady": {
         _result = [_logic,_operation,_args,DEFAULT_PAYLOAD_READY] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "requestStatus": {
+        _result = [_logic,_operation,_args,DEFAULT_REQUEST_STATUS] call ALIVE_fnc_OOsimpleOperation;
     };
 
 	case "init": {
@@ -440,7 +445,8 @@ switch(_operation) do {
     };
     case "handleLOGCOMResponse": {
 
-        private["_debug","_event","_eventData","_message","_requestID","_side","_sideObject"];
+        private["_debug","_event","_eventData","_message","_requestID","_side","_sideObject","_selectedDeliveryValue",
+        "_radioMessage","_radioBroadcast"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -455,25 +461,191 @@ switch(_operation) do {
 
             _side = [_logic,"side"] call MAINCLASS;
             _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
+            _selectedDeliveryValue = [_logic,"selectedDeliveryListValue"] call MAINCLASS;
 
             switch(_message) do {
                 case "ACKNOWLEDGED":{
 
                     // LOGCOM has received and accepted the request
 
-                    _radioMessage = "LOGCOM has received and accepted the request";
+                    _radioMessage = "Request acknowledged, stand by";
 
-                    [[player,_radioMessage,"side",_sideObject,true,true],"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+
+                };
+                case "REQUEST_INSERTION":{
+
+                    // LOGCOM has selected insertion point for request
+
+                    switch(_selectedDeliveryValue) do {
+                        case "PR_AIRDROP": {
+                            _radioMessage = "Cargo lift in flight to requested destination";
+                        };
+                        case "PR_HELI_INSERT": {
+                            _radioMessage = "Rotary wing units have been loaded with requested payload";
+                        };
+                        case "PR_STANDARD": {
+                            _radioMessage = "Convoy units have been loaded with requested payload";
+                        };
+                    };
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+
+                };
+                case "REQUEST_ENROUTE":{
+
+                    // LOGCOM request has arrived at destination point
+
+                    switch(_selectedDeliveryValue) do {
+                        case "PR_HELI_INSERT": {
+                            _radioMessage = "Rotary wing units are on way to destination";
+                        };
+                        case "PR_STANDARD": {
+                            _radioMessage = "Convoy units are on way to destination";
+                        };
+                    };
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+
+                };
+                case "REQUEST_ARRIVED":{
+
+                    // LOGCOM request has arrived at destination point
+
+                    switch(_selectedDeliveryValue) do {
+                        case "PR_HELI_INSERT": {
+                            _radioMessage = "Rotary wing units have arrived at the destination. Commencing unloading";
+                        };
+                        case "PR_STANDARD": {
+                            _radioMessage = "Convoy units have arrived at the destination. Commencing unloading";
+                        };
+                    };
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+
+                };
+                case "REQUEST_DELIVERED":{
+
+                    // LOGCOM has delivered the request
+
+                    switch(_selectedDeliveryValue) do {
+                        case "PR_AIRDROP": {
+                            _radioMessage = "Airdrop request completed";
+                        };
+                        case "PR_HELI_INSERT": {
+                            _radioMessage = "Rotary wing insertion request completed";
+                        };
+                        case "PR_STANDARD": {
+                            _radioMessage = "Convoy request completed";
+                        };
+                    };
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
+
+
+                };
+                case "REQUEST_LOST":{
+
+                    // LOGCOM has delivered the request
+
+                    switch(_selectedDeliveryValue) do {
+                        case "PR_HELI_INSERT": {
+                            _radioMessage = "Rotary wing units have been destroyed enroute to destination";
+                        };
+                        case "PR_STANDARD": {
+                            _radioMessage = "Convoy units have been destroyed enroute to destination";
+                        };
+                    };
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
+
 
                 };
                 case "DENIED_FORCEPOOL":{
 
                     // LOGCOM has denied the request due to insufficient forces
 
+                    _radioMessage = "Your request for support has been deined. Insufficient resources available";
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
+
                 };
                 case "DENIED_NOT_AVAILABLE":{
 
                     // LOGCOM has no insertion point to deliver from
+
+                    _radioMessage = "Your request for support has been deined. No insertion point is available";
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
+
+                };
+                case "DENIED_FORCE_CREATION":{
+
+                    // LOGCOM has denied the request because the force pool did not result in any profiles created
+
+                    _radioMessage = "Your request for support has been deined. The forces requested are not available";
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
 
                 };
             };
@@ -481,9 +653,51 @@ switch(_operation) do {
         };
 
     };
-    case "displayRadioMessage": {
+    case "updateRequestStatus": {
 
+        private ["_message","_date","_hour","_minutes","_minutesArray","_time","_requestStatus"];
 
+        _message = _args;
+
+        _date = date;
+        _hour = _date select 3;
+        _minutes = _date select 4;
+        _minutesArray = toArray format["%1",_minutes];
+
+        if(count _minutesArray == 1) then {
+            _minutes = format["0%1",_minutes];
+        };
+
+        _time = format["%1:%2",_hour,_minutes];
+
+        _message = format["[%1] %2",_time,_message];
+
+        _requestStatus = [_logic,"requestStatus"] call MAINCLASS;
+
+        _requestStatus set [count _requestStatus,_message];
+
+        [_logic,"requestStatus",_requestStatus] call MAINCLASS;
+
+        [_logic,"displayRequestStatus"] call MAINCLASS;
+
+    };
+    case "displayRequestStatus": {
+
+        disableSerialization;
+
+        private ["_payloadStatusText","_requestText","_requestStatus"];
+
+        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+        _payloadStatusText ctrlShow true;
+
+        _requestStatus = [_logic,"requestStatus"] call MAINCLASS;
+        _requestText = "";
+
+        {
+            _requestText = format["%1\n%2",_requestText,_x];
+        } forEach _requestStatus;
+
+        _payloadStatusText ctrlSetText _requestText;
 
     };
 	case "tabletOnLoad": {
@@ -556,6 +770,17 @@ switch(_operation) do {
 
                         _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
                         _payloadRequestButton ctrlShow false;
+
+                        // disable the request status fields
+
+                        private ["_payloadStatusTitle","_payloadStatusText"];
+
+                        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
+                        _payloadStatusTitle ctrlShow false;
+
+                        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+                        _payloadStatusText ctrlShow false;
+
 
                     };
                     case "REQUEST":{
@@ -675,6 +900,16 @@ switch(_operation) do {
                         _payloadRequestButton ctrlShow true;
                         _payloadRequestButton ctrlSetEventHandler ["MouseButtonClick", "['PAYLOAD_REQUEST_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
 
+                        // disable the request status fields
+
+                        private ["_payloadStatusTitle","_payloadStatusText"];
+
+                        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
+                        _payloadStatusTitle ctrlShow false;
+
+                        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+                        _payloadStatusText ctrlShow false;
+
                         // set paylist
 
                         [_logic,"payloadUpdated"] call MAINCLASS;
@@ -685,8 +920,145 @@ switch(_operation) do {
 
                         // request has been sent
 
-
                         [_logic,"payloadRequested"] call MAINCLASS;
+
+                    };
+                    case "RESET":{
+
+                        // reset map marker
+
+                        private ["_markers"];
+
+                        _markers = [_logic,"marker"] call MAINCLASS;
+
+                        if(count _markers > 0) then {
+                            deleteMarkerLocal (_markers select 0);
+                        };
+
+                        [_logic,"marker",[]] call MAINCLASS;
+                        [_logic,"destination",[]] call MAINCLASS;
+
+                        // restore the delivery type list
+
+                        private ["_deliveryList","_deliveryListOptions","_deliveryListValues","_selectedDeliveryListIndex"];
+
+                        _deliveryList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryList);
+                        _deliveryListOptions = [_logic,"deliveryListOptions"] call MAINCLASS;
+                        _deliveryListValues = [_logic,"deliveryListValues"] call MAINCLASS;
+                        _selectedDeliveryListIndex = [_logic,"selectedDeliveryListIndex"] call MAINCLASS;
+
+                        lbClear _deliveryList;
+
+                        {
+                            _deliveryList lbAdd format["%1", _x];
+                        } forEach _deliveryListOptions;
+
+                        _deliveryList lbSetCurSel _selectedDeliveryListIndex;
+
+                        _deliveryList ctrlSetEventHandler ["LBSelChanged", "['DELIVERY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                        // reset the payload list
+
+                        private ["_payloadListOptions","_payloadListValues","_payloadList"];
+
+                        [_logic,"payloadListOptions",[]] call MAINCLASS;
+                        [_logic,"payloadListValues",[]] call MAINCLASS;
+
+                        _payloadList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadList);
+                        _payloadListOptions = [_logic,"payloadListOptions"] call MAINCLASS;
+                        _payloadListValues = [_logic,"payloadListValues"] call MAINCLASS;
+
+                        lbClear _payloadList;
+
+                        {
+                            _payloadList lbAdd format["%1", _x];
+                        } forEach _payloadListOptions;
+
+                        _payloadList ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                        // setup the supply list
+
+                        private ["_supplyList","_selectedSupplyListOptions","_selectedSupplyListValues","_selectedSupplyListDepth"];
+
+                        _supplyList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_SupplyList);
+
+                        _selectedSupplyListOptions = [_logic,"selectedSupplyListOptions"] call MAINCLASS;
+                        _selectedSupplyListValues = [_logic,"selectedSupplyListValues"] call MAINCLASS;
+                        [_logic,"selectedSupplyListDepth",0] call MAINCLASS;
+
+                        lbClear _supplyList;
+
+                        {
+                            _supplyList lbAdd format["%1", _x];
+                        } forEach (_selectedSupplyListOptions select 0);
+
+                        _supplyList ctrlSetEventHandler ["LBSelChanged", "['SUPPLY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                        // setup the reinforce list
+
+                        private ["_reinforceList","_selectedReinforceListOptions","_selectedReinforceListValues","_selectedReinforceListDepth"];
+
+                        _reinforceList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ReinforceList);
+
+                        _selectedReinforceListOptions = [_logic,"selectedReinforceListOptions"] call MAINCLASS;
+                        _selectedReinforceListValues = [_logic,"selectedReinforceListValues"] call MAINCLASS;
+                        [_logic,"selectedReinforceListDepth",0] call MAINCLASS;
+
+                        lbClear _reinforceList;
+
+                        {
+                            _reinforceList lbAdd format["%1", _x];
+                        } forEach (_selectedReinforceListOptions select 0);
+
+                        _reinforceList ctrlSetEventHandler ["LBSelChanged", "['REINFORCE_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                        // disable delete button
+
+                        private ["_payloadDeleteButton"];
+
+                        _payloadDeleteButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadDelete);
+
+                        _payloadDeleteButton ctrlShow false;
+
+                        // setup and disable payload selection combo
+
+                        private ["_payloadOptionsCombo","_payloadComboOptions","_payloadComboValues","_selectedPayloadComboIndex"];
+
+                        _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
+
+                        _payloadOptionsCombo ctrlShow false;
+
+                        _payloadComboOptions = [_logic,"payloadComboOptions"] call MAINCLASS;
+                        _payloadComboValues = [_logic,"payloadComboValues"] call MAINCLASS;
+                        _selectedPayloadComboIndex = [_logic,"payloadComboIndex"] call MAINCLASS;
+
+                        lbClear _payloadOptionsCombo;
+
+                        {
+                            _payloadOptionsCombo lbAdd format["%1", _x];
+                        } forEach _payloadComboOptions;
+
+                        _payloadOptionsCombo ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_COMBO_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                        // enable request button
+
+                        private ["_payloadRequestButton"];
+
+                        _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
+                        _payloadRequestButton ctrlShow true;
+                        _payloadRequestButton ctrlSetEventHandler ["MouseButtonClick", "['PAYLOAD_REQUEST_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                        // disable the request status fields
+
+                        private ["_payloadStatusTitle","_payloadStatusText"];
+
+                        [_logic,"requestStatus",[]] call MAINCLASS;
+
+                        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
+                        _payloadStatusTitle ctrlShow false;
+
+                        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+                        _payloadStatusText ctrlShow false;
 
                     };
                 };
@@ -1565,15 +1937,6 @@ switch(_operation) do {
 
                             } forEach _payloadListValues;
 
-                            ["Empty Vehicles: %1",_emptyVehicles] call ALIVE_fnc_dump;
-                            ["Payload: %1",_payload] call ALIVE_fnc_dump;
-                            ["Static Individuals: %1",_staticIndividuals] call ALIVE_fnc_dump;
-                            ["Join Individuals: %1",_joinIndividuals] call ALIVE_fnc_dump;
-                            ["Reinforce Individuals: %1",_reinforceIndividuals] call ALIVE_fnc_dump;
-                            ["Static Groups: %1",_staticGroups] call ALIVE_fnc_dump;
-                            ["Join Groups: %1",_joinGroups] call ALIVE_fnc_dump;
-                            ["Reinforce Groups: %1",_reinforceGroups] call ALIVE_fnc_dump;
-
 
                             _requestID = floor(time);
 
@@ -1598,11 +1961,19 @@ switch(_operation) do {
                             _side = [_logic,"side"] call MAINCLASS;
                             _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
                             _callSignPlayer = format ["%1", group player];
-                            _radioMessage = format ["%1 this is %2, send SITREP. Over.","CHEESE", _callSignPlayer];
+                            _radioMessage = "Requesting logistics support at the supplied location";
 
-                            [[player,_radioMessage,"side",_sideObject,false,true],"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+                            _radioBroadcast = [player,_radioMessage,"side",_sideObject,true,false,true,false,"HQ"];
 
-                            //[_logic,"payloadRequested"] call MAINCLASS;
+                            [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                            // update the request status
+
+                            [_logic,"updateRequestStatus","Requested"] call MAINCLASS;
+
+                            // set the interface state
+
+                            [_logic,"payloadRequested"] call MAINCLASS;
 
                         }else{
                             _status ctrlSetText "Payload refused adjust payload settings";
@@ -1746,7 +2117,7 @@ switch(_operation) do {
         if (hasInterface) then {
 
             private ["_deliveryTitle","_deliveryList","_supplyTitle","_supplyList","_reinforceTitle","_reinforceList",
-            "_payloadTitle","_payloadList","_payloadInfo","_payloadWeight","_payloadGroups","_payloadVehicles",
+            "_payloadTitle","_payloadList","_payloadInfo","_payloadStatus","_payloadWeight","_payloadGroups","_payloadVehicles",
             "_payloadIndividuals","_payloadDeleteButton","_payloadOptionsCombo","_payloadRequestButton"];
 
 
@@ -1777,6 +2148,9 @@ switch(_operation) do {
             _payloadInfo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadInfo);
             _payloadInfo ctrlShow false;
 
+            _payloadStatus = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadStatus);
+            _payloadStatus ctrlShow false;
+
             _payloadWeight = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
             _payloadWeight ctrlShow false;
 
@@ -1797,6 +2171,20 @@ switch(_operation) do {
 
             _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
             _payloadRequestButton ctrlShow false;
+
+
+            // display request status text
+
+            private ["_payloadStatusTitle","_payloadStatusText"];
+
+            _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
+            _payloadStatusTitle ctrlShow true;
+            _payloadStatusTitle ctrlSetText "Request Status";
+
+            _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+            _payloadStatusText ctrlShow true;
+
+            [_logic,"displayRequestStatus"] call MAINCLASS;
 
             [_logic,"state","REQUEST_SENT"] call MAINCLASS;
         };

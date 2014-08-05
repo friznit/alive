@@ -36,6 +36,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\mil_command\fnc_garrison.sqf";
 				recompile = RECOMPILE;
 			};
+			class managedGarrison {
+                description = "managedGarrison";
+                file = "\x\alive\addons\mil_command\fnc_managedGarrison.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

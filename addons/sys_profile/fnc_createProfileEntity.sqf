@@ -29,7 +29,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_entityClasses","_side","_faction","_direction","_spawnGoodPosition","_position","_entityID",
+private ["_entityClasses","_side","_faction","_direction","_prefix","_busy","_position","_entityID",
 "_profileEntity","_unitRanks","_positions","_ranks","_damages"];
 
 _entityClasses = _this select 0;
@@ -38,6 +38,7 @@ _faction = _this select 2;
 _position = _this select 3;
 _direction = if(count _this > 4) then {_this select 4} else {0};
 _prefix = if(count _this > 5) then {_this select 5} else {""};
+_busy = if(count _this > 6) then {_this select 6} else {false};
 
 // get counts of current profiles
 
@@ -69,6 +70,7 @@ _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity, "side", _side] call ALIVE_fnc_profileEntity;
 [_profileEntity, "faction", _faction] call ALIVE_fnc_profileEntity;
 [_profileEntity, "isPlayer", false] call ALIVE_fnc_profileEntity;
+[_profileEntity, "busy", _busy] call ALIVE_fnc_profileEntity;
 
 [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 

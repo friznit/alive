@@ -67,8 +67,8 @@ class PRTablet
 
         class PRTablet_payloadWeight : PRTablet_RscText
         {
-            idc = 60012;
             text = "";
+            idc = 60012;
             x = 0.519796 * safezoneW + safezoneX;
             y = 0.5700 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
@@ -88,8 +88,8 @@ class PRTablet
 
         class PRTablet_payloadGroups : PRTablet_RscText
         {
-            idc = 60013;
             text = "";
+            idc = 60013;
             x = 0.519796 * safezoneW + safezoneX;
             y = 0.5850 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
@@ -109,8 +109,8 @@ class PRTablet
 
         class PRTablet_payloadVehicles : PRTablet_RscText
         {
-            idc = 60014;
             text = "";
+            idc = 60014;
             x = 0.519796 * safezoneW + safezoneX;
             y = 0.6000 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
@@ -130,8 +130,8 @@ class PRTablet
 
         class PRTablet_payloadIndividuals : PRTablet_RscText
         {
-            idc = 60015;
             text = "";
+            idc = 60015;
             x = 0.519796 * safezoneW + safezoneX;
             y = 0.6150 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
@@ -151,8 +151,8 @@ class PRTablet
 
         class PRTablet_payloadStatus : PRTablet_RscText
         {
-            idc = 60016;
             text = "";
+            idc = 60016;
             x = 0.519796 * safezoneW + safezoneX;
             y = 0.6450 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
@@ -308,8 +308,8 @@ class PRTablet
 
         class PRTablet_selectedInfo : PRTablet_RscText
         {
-            idc = 60009;
             text = "";
+            idc = 60009;
             x = 0.271203 * safezoneW + safezoneX;
             y = 0.6730 * safezoneH + safezoneY;
             w = 0.241271 * safezoneW;
@@ -352,6 +352,49 @@ class PRTablet
             colorActive[] = {0.384,0.439,0.341,1};
             sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
             rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class PRTablet_requestedStatusTitle : PRTablet_RscText
+        {
+            text = "";
+            idc = 60021;
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.2000 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class PRTablet_requestedStatus : PRTablet_RscText
+        {
+            text = "";
+            idc = 60022;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.2200 * safezoneH + safezoneY;
+            w = 0.241271 * safezoneW;
+            h = 0.1 * safezoneH;
+            style = 528;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#a6a6a6";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
         };
 
     };
