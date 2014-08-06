@@ -44,6 +44,13 @@ ARJay
 #define DEFAULT_FORCE_POOL "1000"
 #define DEFAULT_ALLOW true
 #define DEFAULT_TYPE "DYNAMIC"
+#define PARADROP_HEIGHT 500
+#define DESTINATION_VARIANCE 150
+#define DESTINATION_RADIUS 300
+#define WAIT_TIME_AIR 10
+#define WAIT_TIME_HELI 20
+#define WAIT_TIME_MARINE 30
+#define WAIT_TIME_DROP 40
 
 private ["_logic","_operation","_args","_result"];
 
@@ -1130,16 +1137,16 @@ switch(_operation) do {
 
                 switch(_reinforcementType) do {
                     case "AIR": {
-                        _waitTime = 10;
+                        _waitTime = WAIT_TIME_AIR;
                     };
                     case "HELI": {
-                        _waitTime = 20;
+                        _waitTime = WAIT_TIME_HELI;
                     };
                     case "MARINE": {
-                        _waitTime = 30;
+                        _waitTime = WAIT_TIME_MARINE;
                     };
                     case "DROP": {
-                        _waitTime = 40;
+                        _waitTime = WAIT_TIME_DROP;
                     };
                 };
 
@@ -1229,11 +1236,10 @@ switch(_operation) do {
 
                             if(_paraDrop) then {
 
-
                                 if(_eventType == "HELI_INSERT") then {
                                     _position = _remotePosition;
                                 }else{
-                                    _position set [2,500];
+                                    _position set [2,PARADROP_HEIGHT];
                                 };
                             };
 
@@ -1273,7 +1279,7 @@ switch(_operation) do {
                                     _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                                     if(_paraDrop) then {
-                                        _position set [2,500];
+                                        _position set [2,PARADROP_HEIGHT];
                                     };
 
                                     if(count _transportGroups > 0) then {
@@ -1316,7 +1322,7 @@ switch(_operation) do {
                                     _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                                     if(_paraDrop) then {
-                                        _position set [2,500];
+                                        _position set [2,PARADROP_HEIGHT];
                                     };
 
                                     if(count _transportGroups > 0) then {
@@ -1379,7 +1385,7 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,500];
+                                _position set [2,PARADROP_HEIGHT];
                             };
 
                             if!(surfaceIsWater _position) then {
@@ -1427,7 +1433,7 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,500];
+                                _position set [2,PARADROP_HEIGHT];
                             };
 
                             if!(surfaceIsWater _position) then {
@@ -1475,7 +1481,7 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,500];
+                                _position set [2,PARADROP_HEIGHT];
                             };
 
                             if!(surfaceIsWater _position) then {
@@ -1682,9 +1688,8 @@ switch(_operation) do {
                 _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                    _profileWaypoint = [_position, 100, "MOVE", "NORMAL", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
@@ -1694,9 +1699,7 @@ switch(_operation) do {
                 } forEach _transportProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _profileWaypoint = [_eventPosition, 100, "MOVE", "NORMAL", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
@@ -1706,9 +1709,8 @@ switch(_operation) do {
                 } forEach _infantryProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                    _profileWaypoint = [_position, 100, "MOVE", "NORMAL", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
@@ -1718,9 +1720,8 @@ switch(_operation) do {
                 } forEach _planeProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                    _profileWaypoint = [_position, 100, "MOVE", "NORMAL", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
@@ -1788,7 +1789,7 @@ switch(_operation) do {
                         _position = _transportProfile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -1806,7 +1807,7 @@ switch(_operation) do {
                             _position = _profile select 2 select 2;
                             _distance = _position distance _eventPosition;
 
-                            if(_distance > 600) then {
+                            if(_distance > DESTINATION_RADIUS) then {
                                 _waypointsNotCompleted = _waypointsNotCompleted + 1;
                             }else{
                                 _waypointsCompleted = _waypointsCompleted + 1;
@@ -1834,7 +1835,7 @@ switch(_operation) do {
                         _position = _profile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -1851,7 +1852,7 @@ switch(_operation) do {
                         _position = _profile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -2060,7 +2061,7 @@ switch(_operation) do {
                 // have unloaded their cargo
 
                 private ["_waitTotalIterations","_waitIterations","_infantryProfile","_active","_units",
-                "_notLoadedUnits","_loadedUnits","_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance"];
+                "_unloadedUnits","_loadedUnits","_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance"];
 
                 // mechanism for aborting this state
                 // once set time limit has passed
@@ -2072,15 +2073,13 @@ switch(_operation) do {
                 };
 
                 _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
-                _notLoadedUnits = [];
+                _unloadedUnits = [];
                 _loadedUnits = [];
 
                 {
 
                     _infantryProfile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_infantryProfile") then {
-
-                        _infantryProfile call ALIVE_fnc_inspectHash;
 
                         _active = _infantryProfile select 2 select 1;
 
@@ -2094,12 +2093,13 @@ switch(_operation) do {
                             // catagorise units into loaded and not
                             // loaded arrays
                             {
-                                if(vehicle _x == _x) then {
-                                    _notLoadedUnits set [count _notLoadedUnits, _x];
-                                }else{
-                                    _loadedUnits set [count _loadedUnits, _x];
+                                if(alive _x) then {
+                                    if(vehicle _x == _x) then {
+                                        _unloadedUnits set [count _unloadedUnits, _x];
+                                    }else{
+                                        _loadedUnits set [count _loadedUnits, _x];
+                                    };
                                 };
-
                             } forEach _units;
 
                         }else{
@@ -2116,7 +2116,7 @@ switch(_operation) do {
 
                 } forEach _infantryProfiles;
 
-                if(count _notLoadedUnits == 0) then {
+                if(count _loadedUnits == 0) then {
 
                     // all unloaded
                     // continue on to travel
@@ -2509,7 +2509,7 @@ switch(_operation) do {
                 // vehicle commanders
 
                 private ["_transportProfiles","_infantryProfiles","_armourProfiles","_mechanisedProfiles","_motorisedProfiles",
-                "_planeProfiles","_heliProfiles","_profileWaypoint","_profile","_position"];
+                "_planeProfiles","_heliProfiles","_profileWaypoint","_profile","_position","_countProfiles","_positionSeries"];
 
                 _transportProfiles = _eventTransportProfiles;
                 _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
@@ -2519,24 +2519,39 @@ switch(_operation) do {
                 _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
                 _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
 
-                _eventPosition = [_eventPosition] call ALIVE_fnc_getClosestRoad;
+                _countProfiles = (count(_transportProfiles)) + (count(_armourProfiles)) + (count(_mechanisedProfiles)) + (count(_motorisedProfiles));
+
+
+                _position = [_eventPosition] call ALIVE_fnc_getClosestRoad;
+
+                _positionSeries = [_position,300,_countProfiles,false] call ALIVE_fnc_getSeriesRoadPositions;
+
+                if((count _positionSeries) == 0) then {
+                    for "_i" from 0 to _countProfiles -1 do {
+                        _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                        _positionSeries set [_i, _position];
+                    };
+                };
+
+                _seriesIndex = 0;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+
+                    _position = _positionSeries select _seriesIndex;
+                    _profileWaypoint = [_position, 1, "MOVE", "LIMITED", 2, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
                         [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
                     };
 
+                    _seriesIndex = _seriesIndex + 1;
+
                 } forEach _transportProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                    _profileWaypoint = [_position, 1, "MOVE", "LIMITED", 2, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
@@ -2546,44 +2561,46 @@ switch(_operation) do {
                 } forEach _infantryProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = _positionSeries select _seriesIndex;
+                    _profileWaypoint = [_position, 1, "MOVE", "NORMAL", 2, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
                         [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
                     };
+
+                    _seriesIndex = _seriesIndex + 1;
 
                 } forEach _armourProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = _positionSeries select _seriesIndex;
+                    _profileWaypoint = [_position, 1, "MOVE", "LIMITED", 2, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
                         [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
                     };
+
+                    _seriesIndex = _seriesIndex + 1;
 
                 } forEach _mechanisedProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
-                    _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                    _position = _positionSeries select _seriesIndex;
+                    _profileWaypoint = [_position, 1, "MOVE", "LIMITED", 2, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
                     if!(isNil "_profile") then {
                         [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
                     };
 
+                    _seriesIndex = _seriesIndex + 1;
+
                 } forEach _motorisedProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
@@ -2594,8 +2611,7 @@ switch(_operation) do {
                 } forEach _planeProfiles;
 
                 {
-                    _position = [_eventPosition, (random(300)), random(360)] call BIS_fnc_relPos;
-                    _position = [_position] call ALIVE_fnc_getClosestRoad;
+                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     _profileWaypoint = [_position, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
 
                     _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
@@ -2667,7 +2683,7 @@ switch(_operation) do {
                         _position = _transportProfile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -2684,7 +2700,7 @@ switch(_operation) do {
                             _position = _profile select 2 select 2;
                             _distance = _position distance _eventPosition;
 
-                            if(_distance > 600) then {
+                            if(_distance > DESTINATION_RADIUS) then {
                                 _waypointsNotCompleted = _waypointsNotCompleted + 1;
                             }else{
                                 _waypointsCompleted = _waypointsCompleted + 1;
@@ -2711,7 +2727,7 @@ switch(_operation) do {
                         _position = _profile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -2728,7 +2744,7 @@ switch(_operation) do {
                         _position = _profile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -2745,7 +2761,7 @@ switch(_operation) do {
                         _position = _profile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -2762,7 +2778,7 @@ switch(_operation) do {
                         _position = _profile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -2779,7 +2795,7 @@ switch(_operation) do {
                         _position = _profile select 2 select 2;
                         _distance = _position distance _eventPosition;
 
-                        if(_distance > 600) then {
+                        if(_distance > DESTINATION_RADIUS) then {
                             _waypointsNotCompleted = _waypointsNotCompleted + 1;
                         }else{
                             _waypointsCompleted = _waypointsCompleted + 1;
@@ -3115,16 +3131,16 @@ switch(_operation) do {
 
                 switch(_reinforcementType) do {
                     case "AIR": {
-                        _waitTime = 10;
+                        _waitTime = WAIT_TIME_AIR;
                     };
                     case "HELI": {
-                        _waitTime = 20;
+                        _waitTime = WAIT_TIME_HELI;
                     };
                     case "MARINE": {
-                        _waitTime = 30;
+                        _waitTime = WAIT_TIME_MARINE;
                     };
                     case "DROP": {
-                        _waitTime = 40;
+                        _waitTime = WAIT_TIME_DROP;
                     };
                 };
 
@@ -3202,12 +3218,12 @@ switch(_operation) do {
                                 switch(_itemCategory) do {
                                     case "Car":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Armored":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Air":{
@@ -3267,7 +3283,7 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,500];
+                                _position set [2,PARADROP_HEIGHT];
                             };
 
                             _unitClasses = [];
@@ -3298,7 +3314,7 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,500];
+                                _position set [2,PARADROP_HEIGHT];
                             };
 
                             _unitClasses = [];
@@ -3328,7 +3344,7 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,500];
+                                _position set [2,PARADROP_HEIGHT];
                             };
 
                             _unitClasses = [];
@@ -3365,32 +3381,32 @@ switch(_operation) do {
                                 switch(_itemCategory) do {
                                     case "Infantry":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "SpecOps":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Armored":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Mechanized":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Motorized":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Motorized_MTP":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Air":{
@@ -3463,32 +3479,32 @@ switch(_operation) do {
                                 switch(_itemCategory) do {
                                     case "Infantry":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "SpecOps":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Armored":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Mechanized":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Motorized":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Motorized_MTP":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Air":{
@@ -3561,32 +3577,32 @@ switch(_operation) do {
                                 switch(_itemCategory) do {
                                     case "Infantry":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "SpecOps":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Armored":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Mechanized":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Motorized":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Motorized_MTP":{
                                         if(_paraDrop) then {
-                                            _position set [2,500];
+                                            _position set [2,PARADROP_HEIGHT];
                                         };
                                     };
                                     case "Air":{
@@ -3702,7 +3718,7 @@ switch(_operation) do {
                                     _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                                     if(_paraDrop) then {
-                                        _position set [2,500];
+                                        _position set [2,PARADROP_HEIGHT];
                                     };
 
                                     if(count _transportGroups > 0) then {
@@ -3745,7 +3761,7 @@ switch(_operation) do {
                                     _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                                     if(_paraDrop) then {
-                                        _position set [2,500];
+                                        _position set [2,PARADROP_HEIGHT];
                                     };
 
                                     if(count _transportGroups > 0) then {
@@ -4201,6 +4217,10 @@ switch(_operation) do {
 
 
             }else{
+
+                // player not found just set
+                // the requested groups as
+                // reinforcements
 
                 {
                     {

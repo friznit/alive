@@ -713,6 +713,13 @@ class getRandomPositionLand
 	recompile = RECOMPILE;
 };
 
+class getSeriesRoadPositions
+{
+	file = "\x\alive\addons\x_lib\functions\map\fnc_getSeriesRoadPositions.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class isHouseEnterable
 {
 	file = "\x\alive\addons\x_lib\functions\map\fnc_isHouseEnterable.sqf";

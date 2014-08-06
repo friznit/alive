@@ -1286,7 +1286,7 @@ switch(_operation) do {
                     _selectedSupplyListParents set [_selectedSupplyListDepth,_selectedValue];
                     [_logic,"selectedSupplyListParents",_selectedSupplyListParents] call MAINCLASS;
 
-                    if(_selectedValue == "Back") then {
+                    if(_selectedValue == "<< Back") then {
 
                         // go back a level
 
@@ -1319,16 +1319,16 @@ switch(_operation) do {
 
                                         switch(_selectedDeliveryValue) do {
                                             case "PR_AIRDROP": {
-                                                _options = ["Back","Car","Ship"];
-                                                _values = ["Back","Car","Ship"];
+                                                _options = ["<< Back","Car","Ship"];
+                                                _values = ["<< Back","Car","Ship"];
                                             };
                                             case "PR_HELI_INSERT": {
-                                                _options = ["Back","Air"];
-                                                _values = ["Back","Air"];
+                                                _options = ["<< Back","Air"];
+                                                _values = ["<< Back","Air"];
                                             };
                                             case "PR_STANDARD": {
-                                                _options = ["Back","Car","Armored"];
-                                                _values = ["Back","Car","Armored"];
+                                                _options = ["<< Back","Car","Armored"];
+                                                _values = ["<< Back","Car","Armored"];
                                             };
                                         };
 
@@ -1336,14 +1336,14 @@ switch(_operation) do {
                                         _selectedSupplyListValues set [1,_values];
                                     };
                                     case "Defence Stores": {
-                                        _options = ["Back","Static","Fortifications","Tents","Military"];
-                                        _values = ["Back","Static","Fortifications","Tents","Structures_Military"];
+                                        _options = ["<< Back","Static","Fortifications","Tents","Military"];
+                                        _values = ["<< Back","Static","Fortifications","Tents","Structures_Military"];
                                         _selectedSupplyListOptions set [1,_options];
                                         _selectedSupplyListValues set [1,_values];
                                     };
                                     case "Combat Supplies": {
-                                        _options = ["Back","Ammo"];
-                                        _values = ["Back","Ammo"];
+                                        _options = ["<< Back","Ammo"];
+                                        _values = ["<< Back","Ammo"];
                                         _selectedSupplyListOptions set [1,_options];
                                         _selectedSupplyListValues set [1,_values];
                                     };
@@ -1357,8 +1357,8 @@ switch(_operation) do {
 
                                 _updateList = true;
 
-                                _options = ["Back"];
-                                _values = ["Back"];
+                                _options = ["<< Back"];
+                                _values = ["<< Back"];
 
                                 _vehicleClasses = [_sortedVehicles,_selectedValue] call ALIVE_fnc_hashGet;
                                 _vehicleClasses = _vehicleClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
@@ -1459,7 +1459,7 @@ switch(_operation) do {
                     _selectedReinforceListParents set [_selectedReinforceListDepth,_selectedValue];
                     [_logic,"selectedReinforceListParents",_selectedReinforceListParents] call MAINCLASS;
 
-                    if(_selectedValue == "Back") then {
+                    if(_selectedValue == "<< Back") then {
 
                         // go back a level
 
@@ -1492,16 +1492,16 @@ switch(_operation) do {
 
                                         switch(_selectedDeliveryValue) do {
                                             case "PR_AIRDROP": {
-                                                _options = ["Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
-                                                _values = ["Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
+                                                _options = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
+                                                _values = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
                                             };
                                             case "PR_HELI_INSERT": {
-                                                _options = ["Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
-                                                _values = ["Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
+                                                _options = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
+                                                _values = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
                                             };
                                             case "PR_STANDARD": {
-                                                _options = ["Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
-                                                _values = ["Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
+                                                _options = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
+                                                _values = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
                                             };
                                         };
 
@@ -1510,7 +1510,7 @@ switch(_operation) do {
                                     };
                                     case "Groups": {
 
-                                        _options = ["Back"];
+                                        _options = ["<< Back"];
                                         _factions = _sortedGroups select 1;
                                         _options = _options + _factions;
 
@@ -1530,7 +1530,7 @@ switch(_operation) do {
                                     // selected a group faction
                                     // display categories
 
-                                    _options = ["Back"];
+                                    _options = ["<< Back"];
                                     _categories = [_sortedGroups,_selectedValue] call ALIVE_fnc_hashGet;
                                     _categories = _categories select 1;
                                     _options = _options + _categories;
@@ -1557,8 +1557,8 @@ switch(_operation) do {
                                     // selected something from the second level
                                     // get vehicle classes for the selected category
 
-                                    _options = ["Back"];
-                                    _values = ["Back"];
+                                    _options = ["<< Back"];
+                                    _values = ["<< Back"];
 
                                     _vehicleClasses = [_sortedVehicles,_selectedValue] call ALIVE_fnc_hashGet;
                                     _vehicleClasses = _vehicleClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
@@ -1590,9 +1590,9 @@ switch(_operation) do {
                                     _groups = [_categories,_selectedReinforceListParents select 2] call ALIVE_fnc_hashGet;
 
                                     _options = _groups select 2;
-                                    _options = ["Back"] + _options;
+                                    _options = ["<< Back"] + _options;
                                     _values = _groups select 1;
-                                    _values = ["Back"] + _values;
+                                    _values = ["<< Back"] + _values;
 
                                     _selectedReinforceListOptions set [3,_options];
                                     _selectedReinforceListValues set [3,_values];

@@ -156,13 +156,15 @@ if(count _buildings > 0) then {
             _unit = _units select (count _units - _foreachIndex - 1);
 
             if(_moveInstantly) then {
-                _unit setposATL (_building buildingpos _x);
+                //_unit setposATL (_building buildingpos _x);
+                _unit setposATL _x;
                 _unit setdir (([_unit,_building] call BIS_fnc_DirTo)-180);
                 _unit setUnitPos "UP";
                 _unit disableAI "MOVE";
                 sleep 0.03;
             }else{
-                _position = (_building buildingpos _x);
+                //_position = (_building buildingpos _x);
+                _position = _x;
 
                 [_unit,_position] spawn {
 
