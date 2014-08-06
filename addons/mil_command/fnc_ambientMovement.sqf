@@ -1,3 +1,29 @@
+#include <\x\alive\addons\mil_command\script_component.hpp>
+SCRIPT(ambientMovement);
+
+/* ----------------------------------------------------------------------------
+Function: ALIVE_fnc_ambientMovement
+
+Description:
+Ambient movement command for active profiles
+
+Parameters:
+Profile - profile
+Args - array
+
+Returns:
+
+Examples:
+(begin example)
+[_profile, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
+(end)
+
+See Also:
+
+Author:
+Highhead
+---------------------------------------------------------------------------- */
+
 private ["_waypoints","_id","_unit","_profile","_vehiclesInCommandOf","_vehiclesInCargoOf","_obj","_leader","_pos","_radius","_positions","_assignments","_profileWaypoint","_savepos","_type","_speed","_formation","_behaviour","_type","_objs"];
 
 _profile = _this select 0;
@@ -30,26 +56,26 @@ if (_inAir) exitwith {};
 
 if (count _waypoints == 0) then {
 	for "_i" from 0 to 4 do {
-        			_pos = [_pos,_radius] call CBA_fnc_RandPos;
-                    _type = "MOVE";
-                    _speed = "LIMITED";
-                    _formation = "COLUMN";
-                    _behaviour = "SAFE";
+        _pos = [_pos,_radius] call CBA_fnc_RandPos;
+        _type = "MOVE";
+        _speed = "LIMITED";
+        _formation = "COLUMN";
+        _behaviour = "SAFE";
 
 
-                    if (_i == 0) then {_savepos = _pos};
-                    if (_i == 4) then {_pos = _savepos; _type = "CYCLE"};
-                                        
-                    _profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
-                    [_profileWaypoint,"type",_type] call ALIVE_fnc_hashSet;
-                    [_profileWaypoint,"speed",_speed] call ALIVE_fnc_hashSet;
-					[_profileWaypoint,"formation",_formation] call ALIVE_fnc_hashSet;
-                    [_profileWaypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
-                    [_profileWaypoint,"statements",["true","_disableSimulation = true;"]] call ALIVE_fnc_hashSet;
+        if (_i == 0) then {_savepos = _pos};
+        if (_i == 4) then {_pos = _savepos; _type = "CYCLE"};
 
-                    //_profileWaypoint call ALIVE_fnc_inspectHash;
-                    
-	                [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
-                    sleep 0.2;
+        _profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
+        [_profileWaypoint,"type",_type] call ALIVE_fnc_hashSet;
+        [_profileWaypoint,"speed",_speed] call ALIVE_fnc_hashSet;
+        [_profileWaypoint,"formation",_formation] call ALIVE_fnc_hashSet;
+        [_profileWaypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
+        [_profileWaypoint,"statements",["true","_disableSimulation = true;"]] call ALIVE_fnc_hashSet;
+
+        //_profileWaypoint call ALIVE_fnc_inspectHash;
+
+        [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+        sleep 0.2;
 	};
 };

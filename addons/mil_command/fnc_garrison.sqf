@@ -1,4 +1,30 @@
-private ["_waypoints","_id","_unit","_profile","_obj","_leader","_pos","_radius","_positions","_assignments","_profileWaypoint","_savepos","_type","_speed","_formation","_behaviour","_type","_objs"];
+#include <\x\alive\addons\mil_command\script_component.hpp>
+SCRIPT(garrison);
+
+/* ----------------------------------------------------------------------------
+Function: ALIVE_fnc_garrison
+
+Description:
+Garrison command for active units, run on spawn of profiles for guarding of objectives via placement modules
+
+Parameters:
+Profile - profile
+Args - array
+
+Returns:
+
+Examples:
+(begin example)
+[_profile, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity;
+(end)
+
+See Also:
+
+Author:
+Highhead
+---------------------------------------------------------------------------- */
+
+private ["_waypoints","_id","_unit","_profile","_obj","_leader","_pos","_radius","_positions","_assignments","_group"];
 
 _profile = _this select 0;
 _args = _this select 1;

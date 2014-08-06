@@ -9,6 +9,7 @@ Garrisons units in defensible structures and static weapons
 
 Parameters:
 Group - group
+Array - position
 Scalar - radius
 Boolean - move to position instantly (no animation)
 
@@ -46,8 +47,10 @@ if(isNil "ALiVE_STATIC_DATA_LOADED") then {
 };
 
 if(!_moveInstantly) then {
-    _group setCombatMode "RED";
+    _group lockWP true;
 };
+
+// find and garrison any static weapons
 
 private ["_staticWeapons","_weapon","_positionCount","_unit"];
 
@@ -85,7 +88,9 @@ if(count _staticWeapons > 0) then
 
 if (count _units == 0) exitwith {};
 
-private ["_buildings","_building","_class","_buildingPositions"];
+// find and garrison any predefined military buildings
+
+private ["_buildings","_building","_class","_buildingPositions","_position"];
 
 _buildings = nearestObjects [_position,ALIVE_garrisonPositions select 1,_radius];
 
@@ -108,8 +113,23 @@ if(count _buildings > 0) then {
                 _unit disableAI "MOVE";
                 sleep 0.03;
             }else{
-                doStop _unit;
-                _unit doMove (_building buildingpos _x);
+                _position = (_building buildingpos _x);
+
+                [_unit,_position] spawn {
+
+                    private ["_unit","_position"];
+
+                    _unit = _this select 0;
+                    _position = _this select 1;
+
+                    _unit doMove _position;
+
+                    waitUntil {sleep 0.5; unitReady _unit };
+
+                    doStop _unit;
+
+                };
+
             };
 
             _units = _units - [_unit];
@@ -120,6 +140,8 @@ if(count _buildings > 0) then {
     } forEach _buildings;
 
 }else{
+
+    // find and garrison any nearby buildings
 
     _buildings = [_position, _radius] call ALIVE_fnc_getEnterableHouses;
 
@@ -140,8 +162,22 @@ if(count _buildings > 0) then {
                 _unit disableAI "MOVE";
                 sleep 0.03;
             }else{
-                doStop _unit;
-                _unit doMove _x;
+                _position = (_building buildingpos _x);
+
+                [_unit,_position] spawn {
+
+                    private ["_unit","_position"];
+
+                    _unit = _this select 0;
+                    _position = _this select 1;
+
+                    _unit doMove _position;
+
+                    waitUntil {sleep 0.5; unitReady _unit };
+
+                    doStop _unit;
+
+                };
             };
 
             _units = _units - [_unit];

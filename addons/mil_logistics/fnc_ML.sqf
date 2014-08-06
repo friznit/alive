@@ -1671,6 +1671,9 @@ switch(_operation) do {
 
             case "heliTransportStart": {
 
+                // assign waypoints to all
+                // vehicle commanders
+
                 private ["_transportProfiles","_infantryProfiles","_planeProfiles","_heliProfiles","_position","_profileWaypoint","_profile"];
 
                 _transportProfiles = _eventTransportProfiles;
@@ -1739,7 +1742,6 @@ switch(_operation) do {
                 [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
 
                 // respond to player request
-
                 if(_playerRequested) then {
                     _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ENROUTE"] call ALIVE_fnc_event;
                     [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
@@ -1752,6 +1754,8 @@ switch(_operation) do {
             };
 
             case "heliTransport": {
+
+                // waypoint complete check stage
 
                 private ["_waitTotalIterations","_waitIterations","_waitDifference","_transportProfiles","_infantryProfiles",
                 "_planeProfiles","_heliProfiles","_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance"];
@@ -1900,6 +1904,8 @@ switch(_operation) do {
             };
 
             case "heliTransportUnload": {
+
+                // unload transport vehicles
 
                 private ["_transportProfile","_active","_group","_inCargo","_cargoProfileID","_cargoProfile","_profileCount","_countTransports"];
 
@@ -2050,6 +2056,9 @@ switch(_operation) do {
 
             case "heliTransportUnloadWait": {
 
+                // wait until all vehicles
+                // have unloaded their cargo
+
                 private ["_waitTotalIterations","_waitIterations","_infantryProfile","_active","_units",
                 "_notLoadedUnits","_loadedUnits","_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance"];
 
@@ -2134,6 +2143,11 @@ switch(_operation) do {
             };
 
             case "heliTransportComplete": {
+
+                // unloading complete
+                // if profiles are active move on
+                // to return to insertion point
+                // if not active destroy transport profiles
 
                 private ["_transportProfile","_inCargo","_cargoProfileID","_cargoProfile","_active","_inCommand","_commandProfileID","_commandProfile","_anyActive"];
 
@@ -2491,10 +2505,11 @@ switch(_operation) do {
 
             case "transportStart": {
 
+                // assign waypoints to all
+                // vehicle commanders
+
                 private ["_transportProfiles","_infantryProfiles","_armourProfiles","_mechanisedProfiles","_motorisedProfiles",
                 "_planeProfiles","_heliProfiles","_profileWaypoint","_profile","_position"];
-
-                // assign waypoints to all
 
                 _transportProfiles = _eventTransportProfiles;
                 _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
@@ -2614,6 +2629,8 @@ switch(_operation) do {
             };
 
             case "transportTravel": {
+
+                // waypoint complete check stage
 
                 private ["_waitTotalIterations","_waitIterations","_waitDifference","_transportProfiles","_infantryProfiles",
                 "_armourProfiles","_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles",
@@ -2816,6 +2833,8 @@ switch(_operation) do {
 
             case "transportComplete": {
 
+                // unload transport vehicles
+
                 private ["_profileCount","_countTransports","_transportProfile","_inCargo","_cargoProfileID","_cargoProfile",
                 "_active","_inCommand","_commandProfileID","_commandProfile","_anyActive"];
 
@@ -3012,6 +3031,11 @@ switch(_operation) do {
 
             case "transportReturnWait": {
 
+                // unloading complete
+                // if profiles are active move on
+                // to return to insertion point
+                // if not active destroy transport profiles
+
                 private ["_anyActive","_transportProfile","_active","_inCommand","_commandProfileID","_commandProfile"];
 
                 if(count _eventTransportProfiles > 0) then {
@@ -3080,7 +3104,7 @@ switch(_operation) do {
 
             // PLAYER REQUEST ---------------------------------------------------------------------------------------------------------------------------------
 
-            // the units have been requested
+            // the units have been requested by a player
             // spawn the units at the insertion point
             case "playerRequested": {
 
@@ -3875,6 +3899,12 @@ switch(_operation) do {
 
     case "setEventProfilesAvailable": {
 
+        // logistics event complete
+        // release profiles to OPCOM
+        // control if AI requested
+        // if player requested, it's more
+        // complicated
+
         private ["_debug","_event","_eventData","_eventPosition","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
         "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile"];
 
@@ -3894,6 +3924,7 @@ switch(_operation) do {
 
         if!(_playerRequested) then {
 
+            // AI requested
             // set all cargo profiles as not busy
 
             {
@@ -3954,7 +3985,10 @@ switch(_operation) do {
 
             } forEach _heliProfiles;
 
+
         }else{
+
+            // Player requested
 
             private ["_emptyProfiles","_joinIndividualProfiles","_staticIndividualProfiles","_reinforceIndividualProfiles",
             "_joinGroupProfiles","_staticGroupProfiles","_reinforceGroupProfiles","_player"];
@@ -3966,6 +4000,9 @@ switch(_operation) do {
             _joinGroupProfiles = [_playerRequestProfiles,"joinGroups"] call ALIVE_fnc_hashGet;
             _staticGroupProfiles = [_playerRequestProfiles,"staticGroups"] call ALIVE_fnc_hashGet;
             _reinforceGroupProfiles = [_playerRequestProfiles,"reinforceGroups"] call ALIVE_fnc_hashGet;
+
+            // reinforce profiles get released
+            // to OPCOM control
 
             {
                 {
@@ -3988,6 +4025,8 @@ switch(_operation) do {
             } forEach _reinforceGroupProfiles;
 
 
+            // find the player object
+
             if(isDedicated) then {
                 _player = objNull;
                 {
@@ -3999,9 +4038,14 @@ switch(_operation) do {
                  _player = player;
             };
 
+            // player found
+
             if (!(isNull _player)) then {
 
                 private ["_active","_type","_units"];
+
+                // join player profiles, if active
+                // join the player group
 
                 {
                     {
@@ -4079,7 +4123,9 @@ switch(_operation) do {
 
                 } forEach _joinGroupProfiles;
 
-
+                // static defence profiles
+                // if active set to garrison
+                // nearby structures
 
                 {
                     {

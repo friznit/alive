@@ -445,6 +445,9 @@ switch(_operation) do {
     };
     case "handleLOGCOMResponse": {
 
+        // event handler for LOGOM_RESPONSE
+        // events
+
         private["_debug","_event","_eventData","_message","_requestID","_side","_sideObject","_selectedDeliveryValue",
         "_radioMessage","_radioBroadcast"];
 
@@ -456,8 +459,6 @@ switch(_operation) do {
             _message = [_event, "message"] call ALIVE_fnc_hashGet;
 
             _requestID = _eventData select 0;
-
-            ["LOGCOM RESPONSE: %1",_message] call ALIVE_fnc_dump;
 
             _side = [_logic,"side"] call MAINCLASS;
             _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
@@ -574,7 +575,7 @@ switch(_operation) do {
                 };
                 case "REQUEST_LOST":{
 
-                    // LOGCOM has delivered the request
+                    // LOGCOM has lost the request enroute
 
                     switch(_selectedDeliveryValue) do {
                         case "PR_HELI_INSERT": {
@@ -655,6 +656,9 @@ switch(_operation) do {
     };
     case "updateRequestStatus": {
 
+        // adds a status message to the
+        // status array
+
         private ["_message","_date","_hour","_minutes","_minutesArray","_time","_requestStatus"];
 
         _message = _args;
@@ -682,6 +686,8 @@ switch(_operation) do {
 
     };
     case "displayRequestStatus": {
+
+        // updates the request status text
 
         disableSerialization;
 
@@ -720,7 +726,11 @@ switch(_operation) do {
                 _state = [_logic,"state"] call MAINCLASS;
 
                 switch(_state) do {
+
                     case "INIT":{
+
+                        // the interface is opened
+                        // for the first time
 
                         // setup the delivery type list
 
@@ -781,9 +791,13 @@ switch(_operation) do {
                         _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
                         _payloadStatusText ctrlShow false;
 
-
                     };
+
                     case "REQUEST":{
+
+                        // a request is in progress
+                        // but not yet sent
+                        // restore the values of the request
 
                         private ["_map"];
 
@@ -919,11 +933,17 @@ switch(_operation) do {
                     case "REQUEST_SENT":{
 
                         // request has been sent
+                        // display the status interface
 
                         [_logic,"payloadRequested"] call MAINCLASS;
 
                     };
                     case "RESET":{
+
+                        // load state init
+                        // the tablet has just made a request
+                        // and the request has been completed
+                        // reset the request interface objects
 
                         // reset map marker
 
@@ -1095,6 +1115,7 @@ switch(_operation) do {
             _args = _args select 1;
 
             switch(_action) do {
+
                 case "OPEN": {
 
                     createDialog "PRTablet";
@@ -1992,6 +2013,7 @@ switch(_operation) do {
         };
 
     };
+
     case "payloadUpdated": {
 
         // payload updated
@@ -2113,6 +2135,7 @@ switch(_operation) do {
 
         // payload requested
         // disable request inerface
+        // display the status interface
 
         if (hasInterface) then {
 

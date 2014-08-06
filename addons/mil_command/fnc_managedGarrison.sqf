@@ -15,8 +15,7 @@ Returns:
 
 Examples:
 (begin example)
-//
-_result = [_profile, []] call ALIVE_fnc_managedGarrison;
+[_profile, "setActiveCommand", ["ALIVE_fnc_managedGarrison","managed",[_eventPosition,200]]] call ALIVE_fnc_profileEntity;
 (end)
 
 See Also:
@@ -53,6 +52,9 @@ switch (_state) do {
 
 		_distanceToGarrison = _leader distance _garrisonPosition;
 
+		// if close to garrison position
+		// do garrison, if not move there
+
 		if(_distanceToGarrison > 50) then {
 		    _group addWaypoint [_garrisonPosition, 10];
 
@@ -74,6 +76,8 @@ switch (_state) do {
 		_waypoints = waypoints _group;
 		_waypointCount = count _waypoints;
 
+		// wait until waypoints completed
+
 		if(_currentWaypoint == _waypointCount) then {
             _nextState = "garrison";
             _nextStateArgs = _args;
@@ -83,6 +87,8 @@ switch (_state) do {
 
 	};
 	case "garrison":{
+
+	    // garrison units
 
 		[_group,_garrisonPosition,_garrisonRadius,false] call ALIVE_fnc_groupGarrison;
 		

@@ -258,10 +258,10 @@ ALIVE_factionDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
  */
 
 ALIVE_garrisonPositions = [] call ALIVE_fnc_hashCreate;
-[ALIVE_garrisonPositions, "Land_Cargo_HQ_V1_F", [4,6,7,8]] call ALIVE_fnc_hashSet;
-[ALIVE_garrisonPositions, "Land_Cargo_HQ_V2_F", [4,6,7,8]] call ALIVE_fnc_hashSet;
-[ALIVE_garrisonPositions, "Land_Cargo_HQ_V3_F", [4,6,7,8]] call ALIVE_fnc_hashSet;
-[ALIVE_garrisonPositions, "Land_Medevac_HQ_V1_F", [4,6,7,8]] call ALIVE_fnc_hashSet;
+[ALIVE_garrisonPositions, "Land_Cargo_HQ_V1_F", [6,7,8]] call ALIVE_fnc_hashSet;
+[ALIVE_garrisonPositions, "Land_Cargo_HQ_V2_F", [6,7,8]] call ALIVE_fnc_hashSet;
+[ALIVE_garrisonPositions, "Land_Cargo_HQ_V3_F", [6,7,8]] call ALIVE_fnc_hashSet;
+[ALIVE_garrisonPositions, "Land_Medevac_HQ_V1_F", [6,7,8]] call ALIVE_fnc_hashSet;
 [ALIVE_garrisonPositions, "Land_Cargo_Tower_V3_F", [15,12,8]] call ALIVE_fnc_hashSet;
 [ALIVE_garrisonPositions, "Land_Cargo_Tower_V2_F", [15,12,8]] call ALIVE_fnc_hashSet;
 [ALIVE_garrisonPositions, "Land_Cargo_Tower_V1_F", [15,12,8]] call ALIVE_fnc_hashSet;
