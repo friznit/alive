@@ -1871,12 +1871,14 @@ switch(_operation) do {
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
                     // respond to player request
-                    if(_playerRequested && _waypointsCompleted > 0) then {
-                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ARRIVED"] call ALIVE_fnc_event;
-                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
-                    }else{
-                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_LOST"] call ALIVE_fnc_event;
-                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                    if(_playerRequested) then {
+                        if(_waypointsCompleted > 0) then {
+                            _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ARRIVED"] call ALIVE_fnc_event;
+                            [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                        }else{
+                            _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_LOST"] call ALIVE_fnc_event;
+                            [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                        };
                     };
 
                 }else{
@@ -2814,12 +2816,14 @@ switch(_operation) do {
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
                     // respond to player request
-                    if(_playerRequested && _waypointsCompleted > 0) then {
-                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ARRIVED"] call ALIVE_fnc_event;
-                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
-                    }else{
-                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_LOST"] call ALIVE_fnc_event;
-                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                    if(_playerRequested) then {
+                        if(_waypointsCompleted > 0) then {
+                            _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_ARRIVED"] call ALIVE_fnc_event;
+                            [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                        }else{
+                            _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","REQUEST_LOST"] call ALIVE_fnc_event;
+                            [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                        };
                     };
 
                 }else{
@@ -3659,43 +3663,72 @@ switch(_operation) do {
                         // payload
                         // spawn vehicles to fit the requested
                         // payload items in
-
-                        /*
+                        // TODO FIX!
 
                         private ["_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass","_vehicle","_itemClass"];
 
-                        if(_eventType == "PR_STANDARD") then {
+                        if(_eventType == "PR_AIRDROP") then {
 
                             // create ground transport vehicles for the profiles
 
-                            _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
-                            _transportProfiles = [];
-                            _transportVehicleProfiles = [];
+                            //_transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                            //_transportProfiles = [];
+                            //_transportVehicleProfiles = [];
 
                             if(count _transportGroups == 0) then {
-                                _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
+                                //_transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
                             };
 
                             if(count _transportGroups > 0) then {
 
-                                _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
-                                _position = [0,0,50];
-                                _vehicle = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
-                                _vehicle hideObjectGlobal true;
-                                _vehicle enableSimulationGlobal false;
+                                //_vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+                                //_position = [0,0,50];
+                                //_position = position player;
+                                //_vehicle = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
+                                //_vehicle hideObjectGlobal true;
+                                //_vehicle enableSimulationGlobal false;
+
+                                /*
+                                _items = [];
 
                                 {
                                     _itemClass = _x;
+                                    _item = createVehicle [_itemClass, _position, [], 0, "NONE"];
+
+                                    //item hideObjectGlobal true;
+                                    //item enableSimulationGlobal false;
+
+                                    _items set [count _items,_item];
 
                                     ["ITEM: %1",_itemClass] call ALIVE_fnc_dump;
 
                                 } forEach _payload;
+                                */
+
+                                /*
+                                _state = _vehicle call ALIVE_fnc_getObjectState;
+
+                                _state call ALIVE_fnc_inspectHash;
+
+                                _cargo = [_state, "ALiVE_SYS_LOGISTICS_CARGO"] call ALIVE_fnc_hashGet;
+                                _cargo set [0,_payload];
+
+                                _state call ALIVE_fnc_inspectHash;
+
+                                [_vehicle,_state] call ALIVE_fnc_setObjectState;
+                                */
+
+                                /*
+                                [_vehicle,[_items]] call ALIVE_fnc_setObjectCargo;
+
+                                _state = _vehicle call ALIVE_fnc_getObjectState;
+
+                                _state call ALIVE_fnc_inspectHash;
+                                */
 
                             };
 
                         };
-
-                        */
 
 
                         private ["_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass"];
