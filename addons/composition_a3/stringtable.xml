@@ -24,6 +24,9 @@
 <Key ID="STR_ALIVE_COMPOSITION_smallMortarCamp1">
     <English>Mortar Camp 1 [Small]</English>
 </Key>
+<Key ID="STR_ALIVE_COMPOSITION_mediumAACamp1">
+    <English>AA Camp 1 [Medium]</English>
+</Key>
 <Key ID="STR_ALIVE_COMPOSITION_mediumMilitaryCamp1">
     <English>Mil Camp 1 [Medium]</English>
 </Key>
@@ -48,11 +51,32 @@
 <Key ID="STR_ALIVE_COMPOSITION_fuel">
     <English>Fuel</English>
 </Key>
+<Key ID="STR_ALIVE_COMPOSITION_smallFuelStation1">
+    <English>Fuel Station 1 [Small]</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_mediumFuelSilo1">
+    <English>Fuel Silo 1 [Medium]</English>
+</Key>
 <Key ID="STR_ALIVE_COMPOSITION_marine">
     <English>Marine</English>
 </Key>
 <Key ID="STR_ALIVE_COMPOSITION_constructionSupplies">
-    <English>Construction Supplies</English>
+    <English>Construct Supplies</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_bagFenceKit1">
+    <English>Bag Fence [KIT]</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_hbarrierKit1">
+    <English>H-Barrier [Kit 1]</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_hbarrierKit2">
+    <English>H-Barrier [Kit 2]</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_hbarrierWallKit1">
+    <English>H-Barrier Wall [Kit 1]</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_hbarrierWallKit2">
+    <English>H-Barrier Wall [Kit 2]</English>
 </Key>
 <Key ID="STR_ALIVE_COMPOSITION_settlement">
     <English>Settlement</English>
@@ -77,6 +101,12 @@
 </Key>
 <Key ID="STR_ALIVE_COMPOSITION_mediumMilitaryOutpost1">
     <English>Mil Outpost 1 [Medium]</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_hugeSupplyOutpost1">
+    <English>Sup Outpost 1 [Huge]</English>
+</Key>
+<Key ID="STR_ALIVE_COMPOSITION_hugeMilitaryOutpost1">
+    <English>Mil Outpost 1 [Huge]</English>
 </Key>
 <Key ID="STR_ALIVE_COMPOSITION_other">
     <English>Other</English>
