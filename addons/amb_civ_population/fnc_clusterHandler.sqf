@@ -126,7 +126,7 @@ switch(_operation) do {
         };
     };
     case "registerCluster": {
-        private["_cluster","_clusterID","_center","_size","_sectors","_sectorIDs","_sectorID","_clusters"];
+        private["_cluster","_clusterID","_center","_size","_eastHostility","_westHostility","_indepHostility","_sectors","_sectorIDs","_sectorID","_clusters"];
 
         if(typeName _args == "ARRAY") then {
             _cluster = _args;
@@ -134,6 +134,22 @@ switch(_operation) do {
             _clusterID = [_cluster, "clusterID"] call ALIVE_fnc_hashGet;
             _center = [_cluster, "center"] call ALIVE_fnc_hashGet;
             _size = [_cluster, "size"] call ALIVE_fnc_hashGet;
+
+            // get the global hostility levels
+            _eastHostility = [ALIVE_civilianHostility,"EAST"] call ALIVE_fnc_hashGet;
+            _westHostility = [ALIVE_civilianHostility,"WEST"] call ALIVE_fnc_hashGet;
+            _indepHostility = [ALIVE_civilianHostility,"INDEP"] call ALIVE_fnc_hashGet;
+
+            // set the local hostility levels
+            _localHostility = [] call ALIVE_fnc_hashCreate;
+            [_localHostility,"EAST",_eastHostility] call ALIVE_fnc_hashSet;
+            [_localHostility,"WEST",_westHostility] call ALIVE_fnc_hashSet;
+            [_localHostility,"INDEP",_indepHostility] call ALIVE_fnc_hashSet;
+
+            [_cluster, "hostility", _localHostility] call ALIVE_fnc_hashSet;
+
+            // set the casualty count
+            [_cluster, "casualties", 0] call ALIVE_fnc_hashSet;
 
             // determine which sectors the cluster is within
             _sectors = [ALIVE_sectorGrid, "sectorsInRadius", [_center, _size]] call ALIVE_fnc_sectorGrid;

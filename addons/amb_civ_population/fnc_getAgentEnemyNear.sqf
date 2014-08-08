@@ -8,6 +8,7 @@ Description:
 Find an agent enemy nearby
 
 Parameters:
+Array - cluster hash
 Array - position
 Scalar - distance
 
@@ -26,17 +27,20 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_position","_distance","_hostilitySettingsEAST","_hostilitySettingsWEST","_hostilitySettingsINDEP",
+private ["_cluster","_position","_distance","_clusterHostility","_hostilitySettingsEAST","_hostilitySettingsWEST","_hostilitySettingsINDEP",
 "_hostilitySides","_hostilityNumbers","_nearUnits","_highest","_highestIndex","_nearEAST","_nearWEST","_nearINDEP","_players","_mostHostileSide"];
 
-_position = _this select 0;
-_distance = _this select 1;
+_cluster = _this select 0;
+_position = _this select 1;
+_distance = _this select 2;
 
 _result = [];
 
-_hostilitySettingsEAST = [ALIVE_civilianHostility, "EAST"] call ALIVE_fnc_hashGet;
-_hostilitySettingsWEST = [ALIVE_civilianHostility, "WEST"] call ALIVE_fnc_hashGet;
-_hostilitySettingsINDEP = [ALIVE_civilianHostility, "INDEP"] call ALIVE_fnc_hashGet;
+_clusterHostility = [_cluster, "hostility"] call ALIVE_fnc_hashGet;
+
+_hostilitySettingsEAST = [_clusterHostility, "EAST"] call ALIVE_fnc_hashGet;
+_hostilitySettingsWEST = [_clusterHostility, "WEST"] call ALIVE_fnc_hashGet;
+_hostilitySettingsINDEP = [_clusterHostility, "INDEP"] call ALIVE_fnc_hashGet;
 
 _hostilitySides = ["EAST","WEST","INDEP"];
 _hostilityNumbers = [_hostilitySettingsEAST, _hostilitySettingsWEST, _hostilitySettingsINDEP];
@@ -53,7 +57,7 @@ _nearINDEP = [_nearUnits, "INDEP"] call ALIVE_fnc_hashGet;
 {
     if(_position distance position _x < _distance) then {
         if(alive _x) then {
-            switch(side _x) do {
+            switch(side (group _x)) do {
                 case west:{
                     _nearWEST set [count _nearWEST, _x];
                 };
@@ -74,7 +78,7 @@ _players = [] call BIS_fnc_listPlayers;
 {
     if(_position distance position _x < _distance) then {
         if(alive _x) then {
-            switch(side _x) do {
+            switch(side (group _x)) do {
                 case west:{
                     _nearWEST set [count _nearWEST, _x];
                 };

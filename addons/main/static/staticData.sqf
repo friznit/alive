@@ -128,7 +128,9 @@ ALiVE_PLACEMENT_UNITBLACKLIST = ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST +
     "C_Soldier_VR_F",
     "B_Protagonist_VR_F",
     "O_Protagonist_VR_F",
-    "I_Protagonist_VR_F"
+    "I_Protagonist_VR_F",
+    "C_Marshal_F",
+    "C_man_pilot_F"
 ];
 
 ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +

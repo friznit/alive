@@ -278,11 +278,19 @@ switch(_operation) do {
             _logic = _this select 0;
             _debug = _this select 1;
             _commandState = _this select 2;
+            _iterationCount = 0;
 
             // start the manager loop
             waituntil {
 
                 if!([_logic, "pause"] call MAINCLASS) then {
+
+                    // get current environment settings
+                    _env = call ALIVE_fnc_getEnvironment;
+
+                    // get current global civilian population posture
+                    [] call ALIVE_fnc_getGlobalPosture;
+
 
                     // for each of the internal commands
                     {
@@ -339,12 +347,6 @@ switch(_operation) do {
                     } forEach (_commandState select 2);
 
                 };
-
-                // get current environment settings
-                _env = call ALIVE_fnc_getEnvironment;
-
-                // get current global civilian population posture
-                [] call ALIVE_fnc_getGlobalPosture;
 
                 sleep 5;
 

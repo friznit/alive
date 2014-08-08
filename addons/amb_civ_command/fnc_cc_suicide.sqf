@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
     case "init":{
 
-        private ["_target","_homePosition","_positions","_position"];
+        private ["_agentClusterID","_agentCluster","_target","_homePosition","_positions","_position"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
@@ -60,7 +60,10 @@ switch (_state) do {
 
         _agent setVariable ["ALIVE_agentBusy", true, false];
 
-        _target = [getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
+        _agentClusterID = _agentData select 2 select 9;
+        _agentCluster = [ALIVE_clusterHandler,"getCluster",_agentClusterID] call ALIVE_fnc_clusterHandler;
+
+        _target = [_agentCluster,getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
 
         if(count _target > 0) then {
 
