@@ -86,12 +86,33 @@ class PRTablet
             };
         };
 
+        class PRTablet_payloadSize : PRTablet_RscText
+        {
+            text = "";
+            idc = 60023;
+            x = 0.519796 * safezoneW + safezoneX;
+            y = 0.5850 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
         class PRTablet_payloadGroups : PRTablet_RscText
         {
             text = "";
             idc = 60013;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.5850 * safezoneH + safezoneY;
+            y = 0.6000 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
             h = 0.0308 * safezoneH;
             colorBackground[] = {0,0,0,0};
@@ -112,7 +133,7 @@ class PRTablet
             text = "";
             idc = 60014;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.6000 * safezoneH + safezoneY;
+            y = 0.6150 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
             h = 0.0308 * safezoneH;
             colorBackground[] = {0,0,0,0};
@@ -133,7 +154,7 @@ class PRTablet
             text = "";
             idc = 60015;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.6150 * safezoneH + safezoneY;
+            y = 0.6300 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
             h = 0.0308 * safezoneH;
             colorBackground[] = {0,0,0,0};
@@ -154,7 +175,7 @@ class PRTablet
             text = "";
             idc = 60016;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.6450 * safezoneH + safezoneY;
+            y = 0.6500 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
             h = 0.0308 * safezoneH;
             colorBackground[] = {0,0,0,0};

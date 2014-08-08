@@ -65,6 +65,7 @@ Peer Reviewed:
 #define PRTablet_CTRL_PayloadDelete 60010
 #define PRTablet_CTRL_PayloadOptions 60011
 #define PRTablet_CTRL_PayloadWeight 60012
+#define PRTablet_CTRL_PayloadSize 60023
 #define PRTablet_CTRL_PayloadGroups 60013
 #define PRTablet_CTRL_PayloadVehicles 60014
 #define PRTablet_CTRL_PayloadIndividuals 60015
@@ -275,9 +276,9 @@ switch(_operation) do {
 
              private ["_countAir","_countInsert","_countConvoy"];
 
-            _countAir = [1000,3,3,8];
-            _countInsert = [500,2,1,8];
-            _countConvoy = [10000,5,5,8];
+            _countAir = [1000,3,3,8,100];
+            _countInsert = [500,2,1,8,40];
+            _countConvoy = [10000,5,5,8,200];
 
             [_logic,"countsAir",_countAir] call MAINCLASS;
             [_logic,"countsInsert",_countInsert] call MAINCLASS;
@@ -940,7 +941,6 @@ switch(_operation) do {
                     };
                     case "RESET":{
 
-                        // load state init
                         // the tablet has just made a request
                         // and the request has been completed
                         // reset the request interface objects
@@ -1146,9 +1146,10 @@ switch(_operation) do {
 
                     // set the counts
 
-                    private ["_weightText","_groupText","_vehiclesText","_individualsText","_counts","_countWeight","_countGroups","_countVehicles","_countIndividuals"];
+                    private ["_sizeText","_weightText","_groupText","_vehiclesText","_individualsText","_counts","_countWeight","_countGroups","_countVehicles","_countIndividuals"];
 
                     _weightText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
+                    _sizeText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadSize);
                     _groupText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadGroups);
                     _vehiclesText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadVehicles);
                     _individualsText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadIndividuals);
@@ -1169,7 +1170,9 @@ switch(_operation) do {
                     _countGroups = _counts select 1;
                     _countVehicles = _counts select 2;
                     _countIndividuals = _counts select 3;
+                    _countSize = _counts select 4;
 
+                    _sizeText ctrlSetText format["%1 of %2 size",0,_countSize];
                     _weightText ctrlSetText format["%1 of %2 weight",0,_countWeight];
                     _groupText ctrlSetText format["%1 of %2 groups",0,_countGroups];
                     _vehiclesText ctrlSetText format["%1 of %2 vehicles",0,_countVehicles];
@@ -2022,14 +2025,15 @@ switch(_operation) do {
 
         if (hasInterface) then {
 
-            private ["_payloadListOptions","_payloadListValues","_selectedDeliveryValue","_currentWeight",
-            "_currentGroups","_currentVehicles","_currentIndividuals","_payloadInfo","_payloadType","_payloadClass","_itemWeight"];
+            private ["_payloadListOptions","_payloadListValues","_selectedDeliveryValue","_currentWeight","_currentSize",
+            "_currentGroups","_currentVehicles","_currentIndividuals","_payloadInfo","_payloadType","_payloadClass","_itemWeight","_itemSize"];
 
             _payloadListOptions = [_logic,"payloadListOptions"] call MAINCLASS;
             _payloadListValues = [_logic,"payloadListValues"] call MAINCLASS;
             _selectedDeliveryValue = [_logic,"selectedDeliveryListValue"] call MAINCLASS;
 
             _currentWeight = 0;
+            _currentSize = 0;
             _currentGroups = 0;
             _currentVehicles = 0;
             _currentIndividuals = 0;
@@ -2047,11 +2051,19 @@ switch(_operation) do {
                         // get object weight
                         _itemWeight = [_payloadClass] call ALIVE_fnc_getObjectWeight;
                         _currentWeight = _currentWeight + _itemWeight;
+
+                        // get object size
+                        _itemSize = [_payloadClass] call ALIVE_fnc_getObjectSize;
+                        _currentSize = _currentSize + _itemSize;
                     };
                     case "Combat Supplies":{
                         // get object weight
                         _itemWeight = [_payloadClass] call ALIVE_fnc_getObjectWeight;
                         _currentWeight = _currentWeight + _itemWeight;
+
+                        // get object size
+                        _itemSize = [_payloadClass] call ALIVE_fnc_getObjectSize;
+                        _currentSize = _currentSize + _itemSize;
                     };
                     case "Individuals":{
                         _currentIndividuals = _currentIndividuals + 1;
@@ -2069,6 +2081,7 @@ switch(_operation) do {
             "_countVehicles","_countIndividuals","_payloadReady"];
 
             _weightText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
+            _sizeText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadSize);
             _groupText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadGroups);
             _vehiclesText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadVehicles);
             _individualsText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadIndividuals);
@@ -2089,8 +2102,10 @@ switch(_operation) do {
             _countGroups = _counts select 1;
             _countVehicles = _counts select 2;
             _countIndividuals = _counts select 3;
+            _countSize = _counts select 4;
 
             _weightText ctrlSetText format["%1 of %2 weight",_currentWeight,_countWeight];
+            _sizeText ctrlSetText format["%1 of %2 size",_currentSize,_countSize];
             _groupText ctrlSetText format["%1 of %2 groups",_currentGroups,_countGroups];
             _vehiclesText ctrlSetText format["%1 of %2 vehicles",_currentVehicles,_countVehicles];
             _individualsText ctrlSetText format["%1 of %2 individuals",_currentIndividuals,_countIndividuals];
@@ -2102,6 +2117,13 @@ switch(_operation) do {
                 _weightText ctrlSetTextColor [0.729,0.216,0.235,1];
             }else{
                 _weightText ctrlSetTextColor [0.384,0.439,0.341,1];
+            };
+
+            if(_currentSize > _countSize) then {
+                _payloadReady = false;
+                _sizeText ctrlSetTextColor [0.729,0.216,0.235,1];
+            }else{
+                _sizeText ctrlSetTextColor [0.384,0.439,0.341,1];
             };
 
             if(_currentGroups > _countGroups) then {
@@ -2176,6 +2198,9 @@ switch(_operation) do {
 
             _payloadWeight = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
             _payloadWeight ctrlShow false;
+
+            _payloadSize = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadSize);
+            _payloadSize ctrlShow false;
 
             _payloadGroups = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadGroups);
             _payloadGroups ctrlShow false;
