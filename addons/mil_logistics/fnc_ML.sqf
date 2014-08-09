@@ -296,12 +296,14 @@ switch(_operation) do {
         } forEach _moduleFactions;
 
         // DEBUG -------------------------------------------------------------------------------------
+        /*
         if(_debug) then {
             if!(isNil "ALIVE_globalForcePool") then {
                 ["ALIVE ML - Global force pool:"] call ALIVE_fnc_dump;
                 ALIVE_globalForcePool call ALIVE_fnc_inspectHash;
             };
         };
+        */
         // DEBUG -------------------------------------------------------------------------------------
 
         ["FORCE POOL: %1",_result] call ALIVE_fnc_dump;
@@ -3707,64 +3709,40 @@ switch(_operation) do {
 
                         private ["_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass","_vehicle","_itemClass"];
 
-                        if(_eventType == "PR_AIRDROP") then {
+                        if(count _payload > 0) then {
 
-                            // create ground transport vehicles for the profiles
+                            if(_eventType == "PR_STANDARD") then {
 
-                            //_transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
-                            //_transportProfiles = [];
-                            //_transportVehicleProfiles = [];
+                                // create ground transport vehicles for the payload
 
-                            if(count _transportGroups == 0) then {
-                                //_transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
-                            };
+                                _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                                _transportProfiles = [];
+                                _transportVehicleProfiles = [];
 
-                            if(count _transportGroups > 0) then {
+                                if(count _transportGroups == 0) then {
+                                    _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
+                                };
 
-                                //_vehicleClass = _transportGroups call BIS_fnc_selectRandom;
-                                //_position = [0,0,50];
-                                //_position = position player;
-                                //_vehicle = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
-                                //_vehicle hideObjectGlobal true;
-                                //_vehicle enableSimulationGlobal false;
+                                if(count _transportGroups > 0) then {
 
-                                /*
-                                _items = [];
+                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
-                                {
-                                    _itemClass = _x;
-                                    _item = createVehicle [_itemClass, _position, [], 0, "NONE"];
+                                    if(_paraDrop) then {
+                                        _position set [2,PARADROP_HEIGHT];
+                                    };
 
-                                    //item hideObjectGlobal true;
-                                    //item enableSimulationGlobal false;
+                                    if(count _transportGroups > 0) then {
 
-                                    _items set [count _items,_item];
+                                        _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
 
-                                    ["ITEM: %1",_itemClass] call ALIVE_fnc_dump;
+                                        _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,false,true,_payload] call ALIVE_fnc_createProfilesCrewedVehicle;
 
-                                } forEach _payload;
-                                */
+                                        _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
+                                        _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
 
-                                /*
-                                _state = _vehicle call ALIVE_fnc_getObjectState;
+                                    };
 
-                                _state call ALIVE_fnc_inspectHash;
-
-                                _cargo = [_state, "ALiVE_SYS_LOGISTICS_CARGO"] call ALIVE_fnc_hashGet;
-                                _cargo set [0,_payload];
-
-                                _state call ALIVE_fnc_inspectHash;
-
-                                [_vehicle,_state] call ALIVE_fnc_setObjectState;
-                                */
-
-                                /*
-                                [_vehicle,[_items]] call ALIVE_fnc_setObjectCargo;
-
-                                _state = _vehicle call ALIVE_fnc_getObjectState;
-
-                                _state call ALIVE_fnc_inspectHash;
-                                */
+                                };
 
                             };
 
