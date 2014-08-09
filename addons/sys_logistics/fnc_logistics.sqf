@@ -545,7 +545,7 @@ switch (_operation) do {
             _result = _container;
         };
         
-		case "fillContainer": {
+	case "fillContainer": {
 			if (isnil "_args") exitwith {};
 			
 			//Do it globally so all clients are updated correctly all the time
@@ -581,7 +581,7 @@ switch (_operation) do {
 			_result = _list;
         };
         
-		case "clearContainer": {
+	case "clearContainer": {
 			if (isnil "_args") exitwith {};
 			
 			//Do it globally so all clients are updated correctly all the time
