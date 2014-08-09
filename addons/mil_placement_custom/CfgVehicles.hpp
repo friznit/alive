@@ -119,6 +119,11 @@ class CfgVehicles {
                                         name = "$STR_ALIVE_COMPOSITION_smallMortarCamp1";
                                         value = "smallMortarCamp1";
                                         };
+                                        class mediumAACamp1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_mediumAACamp1";
+                                        value = "mediumAACamp1";
+                                        };
                                         class mediumMilitaryCamp1
                                         {
                                         name = "$STR_ALIVE_COMPOSITION_mediumMilitaryCamp1";
@@ -144,6 +149,41 @@ class CfgVehicles {
                                         name = "$STR_ALIVE_COMPOSITION_communicationCamp1";
                                         value = "communicationCamp1";
                                         };
+                                        class smallFuelStation1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_smallFuelStation1";
+                                        value = "smallFuelStation1";
+                                        };
+                                        class mediumFuelSilo1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_mediumFuelSilo1";
+                                        value = "mediumFuelSilo1";
+                                        };
+                                        class bagFenceKit1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_bagFenceKit1";
+                                        value = "bagFenceKit1";
+                                        };
+                                        class hbarrierKit1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_hbarrierKit1";
+                                        value = "hbarrierKit1";
+                                        };
+                                        class hbarrierKit2
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_hbarrierKit2";
+                                        value = "hbarrierKit2";
+                                        };
+                                        class hbarrierWallKit1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_hbarrierWallKit1";
+                                        value = "hbarrierWallKit1";
+                                        };
+                                        class hbarrierWallKit2
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_hbarrierWallKit2";
+                                        value = "hbarrierWallKit2";
+                                        };
                                         class smallOspreyCrashsite1
                                         {
                                         name = "$STR_ALIVE_COMPOSITION_smallOspreyCrashsite1";
@@ -168,6 +208,16 @@ class CfgVehicles {
                                         {
                                         name = "$STR_ALIVE_COMPOSITION_mediumMilitaryOutpost1";
                                         value = "mediumMilitaryOutpost1";
+                                        };
+                                        class hugeSupplyOutpost1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_hugeSupplyOutpost1";
+                                        value = "hugeSupplyOutpost1";
+                                        };
+                                        class hugeMilitaryOutpost1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_hugeMilitaryOutpost1";
+                                        value = "hugeMilitaryOutpost1";
                                         };
                                         class smallATNest1
                                         {

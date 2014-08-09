@@ -115,10 +115,10 @@ class PRTablet_RscGUIListBox : PRTablet_RscListBox {
     color[] = {1, 1, 1, 1};
     colorText[] = {1, 1, 1, 0.75};
     colorScrollbar[] = {0.023529, 0, 0.0313725, 1};
-    colorSelect[] = {0.95, 0.95, 0.95, 1};
-    colorSelect2[] = {0.95, 0.95, 0.95, 1};
-    colorSelectBackground[] = {0.6, 0.839, 0.47, 0.3};
-    colorSelectBackground2[] = {0.6, 0.839, 0.47, 1};
+    colorSelect[] = {0.694,0.78,0.624,1};
+    colorSelect2[] = {0.694,0.78,0.624,1};
+    colorSelectBackground[] = {0.333,0.333,0.333,1};
+    colorSelectBackground2[] = {0.333,0.333,0.333,1};
     period = 0;
     sizeEx = (safeZoneH / 100) + (safeZoneH / 100);
     class ListScrollBar

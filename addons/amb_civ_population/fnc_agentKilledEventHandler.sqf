@@ -21,12 +21,15 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_unit","_agentID","_agent","_position","_faction","_event","_eventID"];
+private ["_unit","_killer","_agentID","_agent","_killerSide","_position","_faction","_event","_eventID"];
 	
 _unit = _this select 0;
+_killer = _this select 1;
 
 _agentID = _unit getVariable "agentID";
 _agent = [ALIVE_agentHandler, "getAgent", _agentID] call ALIVE_fnc_agentHandler;
+
+_killerSide = str(side (group _killer));
 
 if (isnil "_agent") exitwith {};
 
@@ -39,5 +42,5 @@ if (isnil "_agent") exitwith {};
 _position = getPosASL _unit;
 _faction = _agent select 2 select 7;
 
-_event = ['AGENT_KILLED', [_position,_faction],"Agent"] call ALIVE_fnc_event;
+_event = ['AGENT_KILLED', [_position,_faction,_killerSide],"Agent"] call ALIVE_fnc_event;
 _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;

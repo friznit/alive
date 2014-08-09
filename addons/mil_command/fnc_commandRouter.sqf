@@ -304,39 +304,43 @@ switch(_operation) do {
                             _activeCommand = _x;
 
                             _profile = _activeCommand select 0;
-                            _profileID = _profile select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 
-                            _activeCommand = _activeCommand select 1;
-                            _commandType = _activeCommand select 1;
+                            if(typeName _profile == "ARRAY") then {
 
-                            // if we are a managed command
-                            if(_commandType == "managed") then {
-                                _commandName = _activeCommand select 0;
-                                _commandArgs = _activeCommand select 2;
+                                _profileID = _profile select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 
-                                // DEBUG -------------------------------------------------------------------------------------
-                                if(_debug) then {
-                                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                                    ["ALiVE Command Router - Manage Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
-                                };
-                                // DEBUG -------------------------------------------------------------------------------------
+                                _activeCommand = _activeCommand select 1;
+                                _commandType = _activeCommand select 1;
 
-                                // command state set, continue with the command
-                                if(count _activeCommand > 3) then {
-                                    _nextState = _activeCommand select 3;
-                                    _nextStateArgs = _activeCommand select 4;
+                                // if we are a managed command
+                                if(_commandType == "managed") then {
+                                    _commandName = _activeCommand select 0;
+                                    _commandArgs = _activeCommand select 2;
 
-                                    // if the managed command has not completed
-                                    if!(_nextState == "complete") then {
-                                        [_profile, _commandState, _commandName, _nextStateArgs, _nextState, true] call (call compile _commandName);
-                                    }else{
-                                        [_logic,"deactivate",_profile] call MAINCLASS;
+                                    // DEBUG -------------------------------------------------------------------------------------
+                                    if(_debug) then {
+                                        ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                                        ["ALiVE Command Router - Manage Command [%1] %2",_profileID,_activeCommand] call ALIVE_fnc_dump;
                                     };
-                                } else {
-                                    // no current command state set, must have just been activated
-                                    [_profile, _commandState, _commandName, _commandArgs, "init", true] call (call compile _commandName);
+                                    // DEBUG -------------------------------------------------------------------------------------
+
+                                    // command state set, continue with the command
+                                    if(count _activeCommand > 3) then {
+                                        _nextState = _activeCommand select 3;
+                                        _nextStateArgs = _activeCommand select 4;
+
+                                        // if the managed command has not completed
+                                        if!(_nextState == "complete") then {
+                                            [_profile, _commandState, _commandName, _nextStateArgs, _nextState, true] call (call compile _commandName);
+                                        }else{
+                                            [_logic,"deactivate",_profile] call MAINCLASS;
+                                        };
+                                    } else {
+                                        // no current command state set, must have just been activated
+                                        [_profile, _commandState, _commandName, _commandArgs, "init", true] call (call compile _commandName);
+                                    };
                                 };
-                            }
+                            };
                         } forEach (_commandState select 2);
 
                     };

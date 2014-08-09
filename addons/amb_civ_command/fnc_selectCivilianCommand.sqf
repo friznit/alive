@@ -24,7 +24,9 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_agentData","_debug","_agent","_dayState","_dayCommand","_eveningCommand","_nightCommand","_idleCommand","_commandName","_command","_probability","_timeProbability","_diceRoll","_args"];
+private ["_agentData","_debug","_agent","_dayState","_dayCommand","_eveningCommand","_nightCommand",
+"_idleCommand","_commandName","_command","_probability","_timeProbability","_diceRoll","_args",
+"_agentCluster","_clusterHostilityLevel","_agentID"];
 
 _agentData = _this select 0;
 _debug = if(count _this > 1) then {_this select 1} else {false};
@@ -46,14 +48,6 @@ if(isNil "ALIVE_civCommands") then {
 
     ALIVE_civCommands = [] call ALIVE_fnc_hashCreate;
 
-    /*
-    [ALIVE_civCommands, "randomMovement", ["ALIVE_fnc_cc_randomMovement", "managed", [0.35,0.01,0.01], [100]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "idle", ["ALIVE_fnc_cc_idle", "managed", [0.1,0.1,0.1], [10,30]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [1,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [1,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-    */
-
-    ///*
     [ALIVE_civCommands, "idle", ["ALIVE_fnc_cc_idle", "managed", [0.1,0.1,0.1], [10,30]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "randomMovement", ["ALIVE_fnc_cc_randomMovement", "managed", [0.35,0.01,0.01], [100]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "journey", ["ALIVE_fnc_cc_journey", "managed", [0.2,0.5,0.2], []]] call ALIVE_fnc_hashSet;
@@ -65,7 +59,6 @@ if(isNil "ALIVE_civCommands") then {
     [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "startMeeting", ["ALIVE_fnc_cc_startMeeting", "managed", [0.2,0.1,0.01], []]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "startGathering", ["ALIVE_fnc_cc_startGathering", "managed", [0.1,0.01,0], [30,90]]] call ALIVE_fnc_hashSet;
-    //*/
 
     // set available commands
     ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
@@ -94,45 +87,52 @@ if(count (ALIVE_civCommands select 1) > 0) then {
     [_agentData, "posture", _clusterHostilityLevel] call ALIVE_fnc_hashSet;
     _agent setVariable ["posture", _clusterHostilityLevel];
 
-	/*
-	_clusterHostilityLevel = 3;
-	["CLUSTER HOSTILITY: %1",_clusterHostilityLevel] call ALIVE_fnc_dump;
-	*/
+	//_clusterHostilityLevel = 3;
+	//["CLUSTER HOSTILITY: %1",_clusterHostilityLevel] call ALIVE_fnc_dump;
 
-    switch(_clusterHostilityLevel) do {
-        case 3: {
-            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
-            _dayCommand = "randomMovement";
-            _idleCommand = "idle";
-            ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
-            //ALIVE_availableCivCommands = ["suicide"];
-        };
-        case 2: {
-           [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
-           [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
-           [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
-           _dayCommand = "randomMovement";
-           _idleCommand = "idle";
-            ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
-        };
-        case 1: {
-            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
-            _dayCommand = "randomMovement";
-            _idleCommand = "idle";
-            ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
-        };
-        case 0: {
-            [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
-            [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.2,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-            _dayCommand = "randomMovement";
-            _idleCommand = "idle";
-            ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
-        };
+	if(_clusterHostilityLevel == 0) then {
+	    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.2,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+        _dayCommand = "randomMovement";
+        _idleCommand = "idle";
+        ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
+	};
+
+	if(_clusterHostilityLevel == 1) then {
+        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+        _dayCommand = "randomMovement";
+        _idleCommand = "idle";
+        ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
+    };
+
+    if(_clusterHostilityLevel == 2) then {
+        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+        _dayCommand = "randomMovement";
+        _idleCommand = "idle";
+        ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
+    };
+
+    if(_clusterHostilityLevel == 3) then {
+        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.9,0.9,0.9], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
+        _dayCommand = "randomMovement";
+        _idleCommand = "rogue";
+        ALIVE_availableCivCommands = ["housework","sleep","observe","suicide","rogue"];
+    };
+
+    if(_clusterHostilityLevel > 3) then {
+        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.9,0.9,0.9], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
+        _dayCommand = "rogue";
+        _idleCommand = "suicide";
+        ALIVE_availableCivCommands = ["housework","sleep","observe","suicide","rogue"];
     };
 
     // select a random command

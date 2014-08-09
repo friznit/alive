@@ -31,8 +31,6 @@ _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 if(isServer) then {
 	
-	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
-	
 	_debug = _logic getVariable ["debug",false];
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
     _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);

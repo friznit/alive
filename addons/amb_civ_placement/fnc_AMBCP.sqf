@@ -231,7 +231,7 @@ switch(_operation) do {
         if (isServer) then {
 		
 			private ["_debug","_clusterType","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
-			"_sizeFilter","_priorityFilter","_blacklistClusters","_center"];
+			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_error"];
 						
 			_debug = [_logic, "debug"] call MAINCLASS;
 			
@@ -554,7 +554,8 @@ switch(_operation) do {
 
 			private ["_debug","_clusters","_cluster","_clustersSettlement","_clustersHQ","_clustersPower","_clustersComms","_clustersMarine",
 			"_clustersRail","_clustersFuel","_clustersConstruction","_ambientVehicleAmount","_ambientVehicleFaction","_vehicleClass",
-			"_faction","_placementMultiplier","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings"];
+			"_faction","_placementMultiplier","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings",
+			"_env","_file"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;		
 			
@@ -617,7 +618,8 @@ switch(_operation) do {
 			// Spawn ambient vehicles
 
             private ["_countLandUnits","_carClasses","_landClasses","_supportCount","_supportMax","_supportClasses","_types",
-            "_countBuildings","_parkingChance","_usedPositions","_building","_parkingPosition","_positionOK","_supportPlacement"];
+            "_countBuildings","_parkingChance","_usedPositions","_building","_parkingPosition","_positionOK","_supportPlacement",
+            "_clusterID","_position","_buildingPosition"];
 
             _countLandUnits = 0;
 

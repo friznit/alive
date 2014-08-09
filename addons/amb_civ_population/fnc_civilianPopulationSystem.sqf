@@ -63,12 +63,14 @@ switch(_operation) do {
                 [_logic,"activeLimiter",30] call ALIVE_fnc_hashSet;
                 [_logic,"spawnCycleTime",5] call ALIVE_fnc_hashSet;
                 [_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
+                [_logic,"listenerID",""] call ALIVE_fnc_hashSet;
+
         };
     };
     case "start": {
 
         private["_debug","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius",
-        "_activeLimiter","_spawnCycleTime","_despawnCycleTime"];
+        "_activeLimiter","_spawnCycleTime","_despawnCycleTime","_clusterActivatorFSM"];
 
         if (isServer) then {
 
@@ -131,9 +133,81 @@ switch(_operation) do {
             _clusterActivatorFSM = [_logic,_spawnRadius,_spawnTypeJetRadius,_spawnTypeHeliRadius,_spawnCycleTime,_activeLimiter] execFSM "\x\alive\addons\amb_civ_population\clusterActivator_v2.fsm";
             [_logic,"activator_FSM",_clusterActivatorFSM] call ALIVE_fnc_hashSet;
 
+            // start listening for events
+            [_logic,"listen"] call MAINCLASS;
+
         };
     };
+    case "listen": {
+        private["_listenerID"];
+
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["AGENT_KILLED"]]] call ALIVE_fnc_eventLog;
+        [_logic,"listenerID", _listenerID] call ALIVE_fnc_hashSet;
+    };
+    case "handleEvent": {
+
+        private["_debug","_event","_eventData","_position","_killerSide"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _debug = [_logic, "debug"] call MAINCLASS;
+            _event = _args;
+            _eventData = [_event,"data"] call ALIVE_fnc_hashGet;
+
+            _position = _eventData select 0;
+            _killerSide = _eventData select 2;
+
+            // update nearby cluster hostility levels
+            // on agent killed
+
+            private["_sector","_sectors","_sectorData","_civClusters","_settlementClusters","_clusterID","_cluster",
+            "_clusterHostility","_clusterCasualties","_killerClusterHostility"];
+
+            _sector = [ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
+            _sectors = [ALIVE_sectorGrid, "surroundingSectors", _position] call ALIVE_fnc_sectorGrid;
+
+            _sectors = _sectors + [_sector];
+
+            {
+                _sectorData = [_x, "data"] call ALIVE_fnc_sector;
+                if("clustersCiv" in (_sectorData select 1)) then {
+                    _civClusters = [_sectorData,"clustersCiv"] call ALIVE_fnc_hashGet;
+                    _settlementClusters = [_civClusters,"settlement"] call ALIVE_fnc_hashGet;
+                    {
+                        _clusterID = _x select 1;
+                        _cluster = [ALIVE_clusterHandler, "getCluster", _clusterID] call ALIVE_fnc_clusterHandler;
+
+                        if!(isNil "_cluster") then {
+
+                            _clusterHostility = [_cluster, "hostility"] call ALIVE_fnc_hashGet;
+                            _clusterCasualties = [_cluster, "casualties"] call ALIVE_fnc_hashGet;
+
+                            _clusterCasualties = _clusterCasualties + 1;
+
+                            // update the casualty count
+                            [_cluster, "casualties", _clusterCasualties] call ALIVE_fnc_hashSet;
+
+                            // update the hostility level
+                            if(_killerSide in (_clusterHostility select 1)) then {
+                                _killerClusterHostility = [_clusterHostility, _killerSide] call ALIVE_fnc_hashGet;
+                                _killerClusterHostility = _killerClusterHostility + 1;
+                                [_clusterHostility,_killerSide,_killerClusterHostility] call ALIVE_fnc_hashSet;
+                                [_cluster,"hostility",_clusterHostility] call ALIVE_fnc_hashSet;
+                            };
+
+                        };
+
+                    } forEach _settlementClusters;
+                };
+            } forEach _sectors;
+
+        };
+
+    };
     case "pause": {
+
+            private ["_clusterActivatorFSM"];
+
             if(typeName _args != "BOOL") then {
                     _args = [_logic,"debug"] call ALIVE_fnc_hashGet;
             } else {
@@ -160,6 +234,9 @@ switch(_operation) do {
             _result = _args;
     };
     case "destroy": {
+
+        private ["_clusterActivatorFSM"];
+
         [_logic, "debug", false] call MAINCLASS;
         if (isServer) then {
             [_logic, "destroy"] call SUPERCLASS;

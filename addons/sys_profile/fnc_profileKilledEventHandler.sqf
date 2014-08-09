@@ -21,12 +21,15 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_unit","_profileID","_profile","_profileType","_position","_faction","_side","_event","_eventID"];
+private ["_unit","_killer","_profileID","_profile","_killerSide","_profileType","_position","_faction","_side","_event","_eventID"];
 	
 _unit = _this select 0;
+_killer = _this select 1;
 
 _profileID = _unit getVariable "profileID";
 _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+
+_killerSide = str(side _killer);
 
 if (isnil "_profile") exitwith {};
 
@@ -48,7 +51,7 @@ switch(_profileType) do {
 
 				// log event
 
-                _event = ['PROFILE_KILLED', [_position,_faction,_side],"Profile"] call ALIVE_fnc_event;
+                _event = ['PROFILE_KILLED', [_position,_faction,_side,_killerSide],"Profile"] call ALIVE_fnc_event;
                 _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 			};
 		};
