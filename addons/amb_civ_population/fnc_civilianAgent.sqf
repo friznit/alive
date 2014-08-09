@@ -286,7 +286,7 @@ switch(_operation) do {
         _result = [_logic,"homePosition"] call ALIVE_fnc_hashGet;
     };
     case "setActiveCommand": {
-        private ["_activeCommands","_type"];
+        private ["_activeCommands","_type","_active"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -329,7 +329,7 @@ switch(_operation) do {
         };
     };
     case "spawn": {
-        private ["_debug","_active","_position","_agentID","_agentClass","_side","_homePosition","_activeCommands","_unit","_eventID"];
+        private ["_debug","_active","_position","_agentID","_agentClass","_side","_homePosition","_activeCommands","_sideObject","_group","_unit","_eventID"];
 
         _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
         _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;

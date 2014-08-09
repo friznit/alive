@@ -278,6 +278,34 @@ switch(_operation) do {
         };
 
         _result = _logic getVariable [_operation, DEFAULT_FORCE_POOL];
+
+        ["FORCE POOL: %1",_result] call ALIVE_fnc_dump;
+
+        // update the global force pool
+
+        private["_moduleFactions","_debug","_factions"];
+
+        _moduleFactions = _logic getVariable ["factions", []];
+        _debug = _logic getVariable ["debug", false];
+
+        {
+            _factions = _x select 1;
+            {
+                [ALIVE_globalForcePool,_x,_result] call ALIVE_fnc_hashSet;
+            } forEach _factions;
+        } forEach _moduleFactions;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            if!(isNil "ALIVE_globalForcePool") then {
+                ["ALIVE ML - Global force pool:"] call ALIVE_fnc_dump;
+                ALIVE_globalForcePool call ALIVE_fnc_inspectHash;
+            };
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        ["FORCE POOL: %1",_result] call ALIVE_fnc_dump;
+
     };
 	// Main process
 	case "init": {
@@ -355,6 +383,11 @@ switch(_operation) do {
                 ["Profile module or OPCOM module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
 			waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
+
+			// set the global force pool
+			if(isNil "ALIVE_globalForcePool") then {
+                ALIVE_globalForcePool = [] call ALIVE_fnc_hashCreate;
+            };
 
             // if civ cluster data not loaded, load it
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
@@ -438,6 +471,11 @@ switch(_operation) do {
                 _modulesFactions set [count _modulesFactions, [_moduleSide,_moduleFactions]];
                 _modulesObjectives set [count _modulesObjectives, _objectives];
 
+                // set the faction force pools
+                {
+                    [ALIVE_globalForcePool,_x,0] call ALIVE_fnc_hashSet;
+                } forEach _moduleFactions;
+
 			} forEach _modules;
 
 
@@ -494,6 +532,8 @@ switch(_operation) do {
                 if(typeName _forcePool == "STRING") then {
                     _forcePool = parseNumber _forcePool;
                 };
+
+                ["FORCE POOL: %1",_forcePool] call ALIVE_fnc_dump;
 
                 // if there are still forces available
                 if(_forcePool > 0) then {
@@ -959,7 +999,6 @@ switch(_operation) do {
                 [_reinforcementAnalysis, "primary", _primaryReinforcementObjective] call ALIVE_fnc_hashSet;
 
                 [_logic, "reinforcementAnalysis", _reinforcementAnalysis] call MAINCLASS;
-
 
                 // DEBUG -------------------------------------------------------------------------------------
                 if(_debug) then {

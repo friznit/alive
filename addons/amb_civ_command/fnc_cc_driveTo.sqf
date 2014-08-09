@@ -140,7 +140,7 @@ switch (_state) do {
     };
 	case "travel":{
 
-        private ["_timeout","_timer"];
+        private ["_timeout","_timer","_vehicle","_destination"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {

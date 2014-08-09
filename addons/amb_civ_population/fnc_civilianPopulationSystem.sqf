@@ -70,7 +70,7 @@ switch(_operation) do {
     case "start": {
 
         private["_debug","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius",
-        "_activeLimiter","_spawnCycleTime","_despawnCycleTime"];
+        "_activeLimiter","_spawnCycleTime","_despawnCycleTime","_clusterActivatorFSM"];
 
         if (isServer) then {
 
@@ -205,6 +205,9 @@ switch(_operation) do {
 
     };
     case "pause": {
+
+            private ["_clusterActivatorFSM"];
+
             if(typeName _args != "BOOL") then {
                     _args = [_logic,"debug"] call ALIVE_fnc_hashGet;
             } else {
@@ -231,6 +234,9 @@ switch(_operation) do {
             _result = _args;
     };
     case "destroy": {
+
+        private ["_clusterActivatorFSM"];
+
         [_logic, "debug", false] call MAINCLASS;
         if (isServer) then {
             [_logic, "destroy"] call SUPERCLASS;

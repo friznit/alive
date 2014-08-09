@@ -740,7 +740,9 @@ switch(_operation) do {
 
 				// not already active
 				if!(_active) then {
-				
+
+				    _group = createGroup _sideObject;
+
 					// determine a suitable spawn position
 					//["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
 					//[true] call ALIVE_fnc_timer;
@@ -748,23 +750,16 @@ switch(_operation) do {
 					_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
 					//[] call ALIVE_fnc_timer;
 
-					//["SPAWN POS:%1",_position] call ALIVE_fnc_dump;
-					//["SPAWN POSs:%1",_positions] call ALIVE_fnc_dump;
-
-					_group = createGroup _sideObject;
-
                     _paraDrop = false;
                     if((_position select 2) > 300) then {
                         if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0)) then {
                             _paraDrop = true;
-                            ["!!!!!!!!!!!!!!!!!!PARADROP!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
                         };
                     }else{
                         if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0)) then {
                             _position set [2,0];
                         };
                     };
-
 
                     //["Profile [%1] Spawn - Spawn Units",_profileID] call ALIVE_fnc_dump;
                     //[true] call ALIVE_fnc_timer;
@@ -817,7 +812,8 @@ switch(_operation) do {
                         };
 					} forEach _unitClasses;
 					//[] call ALIVE_fnc_timer;
-					
+
+
 					// set group profile as active and store references to units on the profile
 					[_logic,"leader", leader _group] call ALIVE_fnc_hashSet;
 					[_logic,"group", _group] call ALIVE_fnc_hashSet;
@@ -871,6 +867,7 @@ switch(_operation) do {
 					// DEBUG -------------------------------------------------------------------------------------
 
 					//[] call ALIVE_fnc_timer;
+
 				};
 		};
 		case "despawn": {

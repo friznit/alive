@@ -24,7 +24,9 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_agentData","_debug","_agent","_dayState","_dayCommand","_eveningCommand","_nightCommand","_idleCommand","_commandName","_command","_probability","_timeProbability","_diceRoll","_args"];
+private ["_agentData","_debug","_agent","_dayState","_dayCommand","_eveningCommand","_nightCommand",
+"_idleCommand","_commandName","_command","_probability","_timeProbability","_diceRoll","_args",
+"_agentCluster","_clusterHostilityLevel","_agentID"];
 
 _agentData = _this select 0;
 _debug = if(count _this > 1) then {_this select 1} else {false};

@@ -69,7 +69,7 @@ switch(_operation) do {
         };
     };
     case "debug": {
-        private["_clusters"];
+        private["_clusters","_state"];
 
         if(typeName _args != "BOOL") then {
                 _args = [_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -126,7 +126,8 @@ switch(_operation) do {
         };
     };
     case "registerCluster": {
-        private["_cluster","_clusterID","_center","_size","_eastHostility","_westHostility","_indepHostility","_sectors","_sectorIDs","_sectorID","_clusters"];
+        private["_cluster","_clusterID","_center","_size","_eastHostility","_westHostility","_indepHostility","_localHostility",
+        "_sectors","_sectorIDs","_sectorID","_clusters","_clustersInActive"];
 
         if(typeName _args == "ARRAY") then {
             _cluster = _args;

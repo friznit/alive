@@ -112,7 +112,7 @@ switch (_state) do {
 	};
 	case "wait":{
 
-        private ["_timeout","_timer","_position"];
+        private ["_timeout","_timer","_position","_target"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {

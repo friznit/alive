@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_cluster","_position","_distance","_clusterHostility","_hostilitySettingsEAST","_hostilitySettingsWEST","_hostilitySettingsINDEP",
+private ["_cluster","_position","_distance","_result","_clusterHostility","_hostilitySettingsEAST","_hostilitySettingsWEST","_hostilitySettingsINDEP",
 "_hostilitySides","_hostilityNumbers","_nearUnits","_highest","_highestIndex","_nearEAST","_nearWEST","_nearINDEP","_players","_mostHostileSide"];
 
 _cluster = _this select 0;
@@ -122,6 +122,8 @@ _mostHostileSide = _hostilitySides select _highestIndex;
 ["hostile sides: %1",_hostilitySides] call ALIVE_fnc_dump;
 ["most hostile: %1",_mostHostileSide] call ALIVE_fnc_dump;
 */
+
+private ["_units","_unit"];
 
 if(count ([_nearUnits, _mostHostileSide] call ALIVE_fnc_hashGet) > 0) then {
     if(_highest > 0) then {

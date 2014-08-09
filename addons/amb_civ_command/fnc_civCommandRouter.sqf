@@ -129,7 +129,7 @@ switch(_operation) do {
         if(typeName _args == "ARRAY") then {
 
             private ["_agent","_commands","_agentID","_activeCommand","_commandName",
-            "_commandType","_commandArgs","_debug","_handle","_isManaging"];
+            "_commandType","_commandArgs","_debug","_commandState","_handle","_isManaging"];
 
             _agent = _args select 0;
             _commands = _args select 1;
@@ -256,7 +256,7 @@ switch(_operation) do {
     };
     case "startManagement": {
 
-        private ["_debug","_commandState","_handle"];
+        private ["_debug","_commandState","_handle","_env"];
 
         _debug = _logic select 2 select 0;
         _commandState = _logic select 2 select 1;
@@ -273,7 +273,7 @@ switch(_operation) do {
         // spawn the manager thread
         _handle = [_logic, _debug, _commandState] spawn {
 
-            private ["_debug","_commandState","_activeCommand","_agent","_agentID","_commandType","_commandName","_commandArgs","_env"];
+            private ["_debug","_commandState","_activeCommand","_agent","_agentID","_commandType","_commandName","_commandArgs","_iterationCount","_nextState","_nextStateArgs"];
 
             _logic = _this select 0;
             _debug = _this select 1;

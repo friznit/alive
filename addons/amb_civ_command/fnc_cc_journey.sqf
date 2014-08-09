@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
 	case "init":{
 
-	    private ["_sectors","_sector","_center","_destination","_activeAgents","_activeVehicles","_vehicle"];
+	    private ["_sectors","_sector","_center","_destination","_activeAgents","_activeVehicles","_vehicle","_type"];
 
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {

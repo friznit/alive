@@ -130,7 +130,7 @@ switch (_state) do {
     };
 	case "target":{
 
-	    private ["_target","_bomb1","_bomb2","_bomb3"];
+	    private ["_target","_bomb1","_bomb2","_bomb3","_handle"];
 
 		// DEBUG -------------------------------------------------------------------------------------
 		if(_debug) then {
@@ -149,7 +149,7 @@ switch (_state) do {
 
             _handle = [_agent, _target, _bomb1, _bomb2, _bomb3] spawn {
 
-                private ["_agent","_target","_bomb1","_bomb2","_bomb3","_diceRoll"];
+                private ["_agent","_target","_bomb1","_bomb2","_bomb3","_diceRoll","_object"];
 
                 _agent = _this select 0;
                 _target = _this select 1;
@@ -187,7 +187,7 @@ switch (_state) do {
 	};
 	case "travel":{
 
-        private ["_target"];
+        private ["_target","_handle"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {

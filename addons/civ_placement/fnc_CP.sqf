@@ -264,7 +264,7 @@ switch(_operation) do {
         if (isServer) then {
 		
 			private ["_debug","_clusterType","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
-			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_faction"];
+			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_faction","_error"];
 						
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
@@ -544,7 +544,7 @@ switch(_operation) do {
 			private ["_debug","_clusters","_cluster","_size","_type",
 			"_faction","_ambientVehicleAmount","_placeHelis","_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass",
 			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node",
-			"_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount"];
+			"_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount","_file"];
             
 		
 			_debug = [_logic, "debug"] call MAINCLASS;		

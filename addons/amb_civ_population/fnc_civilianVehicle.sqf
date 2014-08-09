@@ -289,7 +289,7 @@ switch(_operation) do {
         _result = [_logic,"fuel"] call ALIVE_fnc_hashGet;
     };
     case "spawn": {
-        private ["_debug","_active","_position","_agentID","_agentClass","_side","_homePosition","_direction","_fuel","_damage","_unit","_eventID"];
+        private ["_debug","_active","_position","_agentID","_agentClass","_side","_homePosition","_direction","_fuel","_damage","_unit","_eventID","_sideObject"];
 
         _debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
         _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
