@@ -668,7 +668,7 @@ switch (_operation) do {
             if (isnil "_args") exitwith {};
             
             private ["_objects"];
-            
+
 			switch (typeName _args) do {
                 case ("OBJECT") : {_objects = [_args]};
                 case ("ARRAY") : {_objects = _args};
