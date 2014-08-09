@@ -1,0 +1,150 @@
+[CENTER][URL="http://alivemod.com/"][IMG]https://lh3.googleusercontent.com/yaT923QqaWdy53Vc7Y7fSw51GNXD15VGGmpUpvlcYxY32Gwm3_-tTWji8k8SccpTk9NSRVkS_egZn2obtwGO68vGS4yBJDnR53osW  kazThm6mHBvkLfWBDB2[/IMG][/URL]
+
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+The next generation dynamic persistent campaign for ArmA3[/B]
+
+
+We are happy to release the latest and greatest version of ALiVE - 0.6.8!
+
+We have made significant improvements to [B]Load and Save times[/B] and a number of bug fixes to Player Stats. 
+[B]Combat Support has also received a lot of love[/B], in particular to the Close Air Support and Artillery modules!
+You can now run [B]several instances of CQB[/B] and define the TAORs with different settings in a highly detailed way! 
+We also have updated our ALiVE Plugin, so it is very important that [B]server admins download and update the plugin[/B]!
+
+
+Friznit setting up a campaing with thousands of AI within 5 minutes
+
+[video=youtube_share;hFcmU9u4uUI]http://youtu.be/hFcmU9u4uUI[/video]
+
+[/CENTER]
+
+[B][U]War Room[/U][/B]
+Our web platform continues to improve and grow! We have over 3000 players registered and over 450 groups, with some 650,000 events captured. Please register with us now and start taking advantage of our mission persistence and battlefield data. 
+
+Join up now! [url]http://alivemod.com/#ALiVEWarRoom[/url]
+
+[B][U]Download[/U][/B]
+Grab the latest version from ALiVEmod.com or PlayWithSix
+
+[B][U]Release Highlights[/U][/B]
+
+[LIST]
+[*] Complete Player and AI Persistence (for Profiles and CQB), vastly improved save & load time.
+[*] Updates to Combat Support.
+[*] Several instances of CQB are now possible
+[*] Important improvements in spawning of vehicles
+[*] Performance improvements on loading times
+[*] Support for current stable version of A3.
+[*] Major bug fixes, see all the tickets we resolved
+[/LIST]
+
+Changelog (don't click)
+
+[SPOILER]
+
+    [DEMO] Fixed up Dive & Rule to work with WarRoom, updated module settings
+    [DEMO] Updated Foursome demo mish with new module settings/params
+    [SYS_ADMINACTIONS] Fixed regression where markers were not shown when CQB debug was enabled
+    [MIL_CQB | MIL_OPCOM] Switched to bulkLoad mech, improving loading times by x100
+    [combat support] Added support for IR markers during night operations with transport choppers
+    [sys_player] Updated to use new bulk load and bulk save functions
+    [sys_data_couchdb] Fixed issue where hash id's where not being restored correctly
+    [sys_profile] Updated to use new bulkLoad function
+    [AddIns] Updated ALiVEPlugIn to support bulk read API calls to couchdb
+    [sys_data_couchdb] Improved loading times from minutes to seconds with new bulkRead function (WIP)
+    [MAIN] Updated versioning check to 1.20.124746
+    [X_LIB] Fixed and improved ALiVE_fnc_get(all)enterablehouses  as it didnt cover whole Altis
+    [MIL_CQB] [url]http://dev.withsix.com/issues/74364[/url] - Enabled multiple instances for CQB incl. switch for strategic/civilian, spawndistances, factions, TAORs, Blacklists etc.!
+    [amb_civilians] blacklisted kart dlc drivers and vehicles
+    [sup_combatsupport] Added ROE selection for CAS
+    [sup_combatsupport] Minor fix to CAS attack run
+    [sup_combatsupport] Added Loiter and Attack Run tasks for CAS. Attack Run still WIP.
+    [sup_combatsupport] Enhanced SITREP to include proper AMCAS.
+    [sys_profile] removed best places spawn. Will look into improvements to spawning in future iteration.
+    [sup_combatsupport] Minor UI fixes
+    [sup_combatsupport] Enhanced arty support, including rate of fire, delay, dispersion and minor bug fixes
+    [sup_combatsupport] Improved radio protocol, added SITREP support for ARTY
+    [sup_combatsupport] Fixed several issues with arty, now deploys group of 3 fire support assets per arty module.
+    [SUP_COMBATSUPPORT] Minimal insertion height of 2m is now possible (f.e. to be extracted from water by a hovering helicopter)
+    [SYS_PROFILE] BIS_fnc_findSafePos before spawning of a vehicle to exterminate exploding vehicles once for all (hopefully, though i doubt it. 2nd iteration of finding a safe pos happens in case it fails on the first one).
+    [MAIN] Updated version to 0.6.8.1405251
+    [MIL_OPCOM] Removed more MP hints!
+    [X_LIB] Fixed ALiVE_fnc_chooseRandomUnits to select the correct amount of units that has been passed to the function (has alsways been one to much)!
+    [MIL_CQB] Implemented max. groupsize switch (Solo, Pair, Fireteam) to give the mission editor the opportunity to limit AI, according to feature request [url]http://dev.withsix.com/issues/74415[/url]
+    [SUP_CS] Increased flyinheight from 600 to 1000 in CS to fit this need [url]http://dev.withsix.com/issues/74490[/url]
+    [MIL LOGISTICS] Fixed race condition if MIL ML initialised before SYS Profile was finished (_profilesCategorisedSide script error, classic)!
+    [MIL_CQB] [MIL OPCOM] Updated CQB and OPCOM with global datahandler per module to allow multiple saves
+    [SYS_PROFILE] Fixed side was still not restored correctly after loading from DB!
+    [VARIOUS] Removed HAC from modules
+    [sys_profile] had to make the datahandler for load and saving global to ensure index updates
+    [sys_profile] Air spawn and group vehicle spawn settings tweaked. Fix for [url]https://dev.withsix.com/issues/74534[/url] also [url]http://dev.withsix.com/issues/74337[/url]
+    [sys_profiles] Removed the side conversion call as its now handles by sys_data
+    [sys_data_couchdb] Added support for SIDE conversion, if a number is returned instead of text
+    [sys_data_couchdb] Added bulkLoad and bulkRead functions
+    [sys_statistics] Fixed issue where heals were not being recorded. Fixed issue where timeplayed was being reported incorrectly
+    [SYS_PROFILE] Increased despawnrange dynamically based on spawnrange (factor x1.2) to fix/reduce this issue [url]http://dev.withsix.com/issues/74435[/url]
+    [ALL] commented out about.sqf reference in cfgPatches
+    [X_LIB] Fix function "sideNumberToText"
+    [MIL_OPCOM] [url]http://dev.withsix.com/issues/74528[/url] (OPCOM objectives count was reported to players instead of rpt)
+    [X_LIB] Fixed error that sneaked in with a commit of Raps a few days ago
+    [MAIN | X_LIB] ALiVE_fnc_BUS! Fixed automated test to run also with only 1 connected client and moved x_lib
+    [MIL_OPCOM] Implemented BulkSave
+    [MIL_CQB] Implemented BulkSave and did mandatory fixes (ensure you pull)! See below for details:
+    [MAIN] Updated version check to current stable build 124200
+    [combat_support] adding arty units to profiler ignore
+    [main] Removed about page from config
+    [sys_newsfeed] Fixed changes to default UI scrollbars
+    [MIL_CQB] Fixed CQB errors
+    [SYS_ADMIN] Bug fixes and added a fade effect for the Mark All Units feature for the Admin, now you can see how long you have for the shown units as well as know that on the next update, those markers will most likely move. updates take  
+15-20 seconds. Try it... :D
+    [SYS_STATS]  should fix an issue that could happen under certain circumstances... ask me for more details... :D
+    [MAIN] Fix recompile of migrated function in postInit.
+    [ALL] Integrate central function library and migrate common and new functions.
+    [SYS REVIVE] bug fixes and changes [SYS STATISTICS] fixed issue with time not reporting correctly for vehicles and units when using stats on dedicated server. Issue before was that if the admin was to skipTime it would skew(seriously skew) the time recorded so when spending 30 mins in a vehicle could be 3hours, or 3 weeks... based on admin adjusting mission time. Tested with using SDV for fist time in MP game with stats. changes admin time several times. Time on record is correct, .3 hours... and not 3.3 or 10+ hours...
+    [MIL_CQB] Fix undefined variable error in CQB module init
+    [sys_profile] Updated profile handler to use BulkSave call and remove whitespaces from missionname.
+    [sys_player] Updated mission name processing to handle whitespaces
+    [sys_player] minor fixes
+    [sys_data_couchdb] Added BulkSave and BulkWrite functions to improve the save times for modules
+    [MIL_CQB] Further optimized initialization functions
+    [MIL_CQB] Update ALiVE_fnc_CQBsortStrategicHouses and related with small fixes
+    [UTILS] Update 'make_dev_build' script to accommodate unwanted PBO prefix applications
+    [MIL_CQB] Optimize ALiVE_fnc_CQBsortStrategicHouses function for module init
+    [sys_data] Removed 10kb limit for outgoing data :O
+    [sys_player] Fixed sys_player not saving to DB. Still requires that Player Persistence module be placed in mission SQM after sys_data. Updated abortButton to wait for players to be disconnected (alive_player_count) before saving or exiting server. Enabled "store to DB" in Player Persistence module. Added some additional traces for debugging purposes.
+    [mil_sectorDisplay] fix for update time [sys_event_log] made event dispatch spawn in a new thread
+    [UTILS] Update 'make_dev_build' script with stringtable support
+    [UTILS] Add 'make_dev_build' PowerShell script
+    [UI] Fix for loading screen issues
+    [VARIOUS] Fixed script error in buttonAbort by changing to BIS_fnc_MP (dont laugh Tup), Missed MIL_OPCOM persistent setting on one MIL_OPCOM in Foursome (was true, should be false)
+
+[/SPOILER]
+
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  It’s not pretty but all the info you need should be there.  If anything is missing or unclear, please let us know by submitting a ticket on our Development Tracker and we’ll look to fix it.
+
+[B][U]IMPORTANT NOTICES: [/U][/B]Be aware that ALiVE Persistence is still in ALPHA and subject to change.  We may also need to clear database data before major updates but we will let you know well in advance if this happens. Be aware you will not be able to load/save data from pre 0.6.8 missions with the latest plugin. Please create new missions (new name) for 0.6.8 persistence.
+
+Please check your CQB module and reset your preferred options! Be aware you can use several instances for civilian and or strategic locations, TAORs, factions, etc.!
+[B][U]
+Disclaimer[/U][/B]
+We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+[B][U]
+Work In Progress[/U][/B]
+Our next major design milestone is Logistics.  This includes a simple “Lift & Shift Objects” module and a Player “Replen Demand” dialogue.  We will do our best to ensure compatibility with other popular mods that provide similar functionality.
+
+The main focus is on an AI Battlefield Logistics system to support OPCOM.  This models realistic military supply lines including strategic lift and convoys.
+
+[B][U]Welcome To[/U][/B]
+We are always on the look out for talented individuals! We are lucky to have two new developers join the team, so we let them introduce themselves and say WELCOME!
+
+[B]Naught[/B]
+A college student studying at the University of Illinois at Urbana-Champaign, majoring in computer science with a researching focus on big-data software applications. Enjoys programming both in and out of school, favorite being native-level programming in C++, and regularly take-on hobby projects with the Real Virtuality engine. Known for several innovative mods and scripts such as SQF RCON.
+[B]
+AJCStriker[/B]
+A Web Programmer and Enthusiast from London, works on Machine Learning projects for a day job, and in my spare time works on Gesture Recognition projects and Virtual Reality game projects. Background in C++, PHP, node.js and software architecture, studying a degree in Artificial Intelligence.
+
+[B][U]Thanks To[/U][/B]
+Special thanks to everyone here for supporting us with donations to the War Room.  Database hosting isn’t free and the overwhelming popularity of ALiVE means we are using rather more data than we originally anticipated.  If you want to contribute to keep the War Room ALiVE (see what I did there) then please find the Donate button at ALiVEmod.com!
+
+Have fun!
