@@ -545,6 +545,68 @@ switch (_operation) do {
             _result = _container;
         };
         
+		case "fillContainer": {
+			if (isnil "_args") exitwith {};
+			
+			//Do it globally so all clients are updated correctly all the time
+			if !(isServer) exitwith {
+			    [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
+			};
+			
+			private ["_container","_containerID","_list"];
+			
+			_container = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_list = [_args, 1, [], [[]]] call BIS_fnc_param;
+			            
+			if (count _list == 0) exitwith {};
+			
+			_containerID = [_logic,"id",_container] call ALiVE_fnc_logistics;
+			
+			{
+			    private ["_object","_objectID"];
+			
+				_object = _x createVehicle ([getposATL _container,50] call CBA_fnc_RandPos);
+				_objectID = [_logic,"id",_object] call ALiVE_fnc_logistics;
+			    
+			    _object setvariable [QGVAR(CONTAINER),_container,true];
+				_container setvariable [QGVAR(CARGO),(_container getvariable [QGVAR(CARGO),[]]) + [_object],true];
+			
+				if (isMultiplayer && isServer) then {_object hideObjectGlobal true; _object enableSimulationGlobal false} else {_object hideObject true; _object enableSimulation false};
+			
+			    _list set [_foreachIndex,_object];
+			} foreach _list;
+			
+			[_logic,"updateObject",[_container] + _list] call ALIVE_fnc_logistics;
+			
+			_result = _list;
+        };
+        
+		case "clearContainer": {
+			if (isnil "_args") exitwith {};
+			
+			//Do it globally so all clients are updated correctly all the time
+			if !(isServer) exitwith {
+			    [[_logic, _operation, _args],"ALIVE_fnc_logistics", false, false] call BIS_fnc_MP;
+			};
+			
+			private ["_container","_containerID"];
+			
+			_container = [[_args], 0, objNull, [objNull]] call BIS_fnc_param;
+			_containerID = [_logic,"id",_container] call ALiVE_fnc_logistics;
+			
+			_list = _container getvariable [QGVAR(CARGO),[]];
+			
+			if (count _list == 0) exitwith {};
+			
+			{[_logic,"removeObject",_x] call ALIVE_fnc_logistics; deleteVehicle _x} foreach _list;
+			
+			_container setvariable [QGVAR(CARGO),[],true];
+			
+			[_logic,"updateObject",[_container]] call ALIVE_fnc_logistics;
+			
+			_result = _list;
+        };
+        
         case "addAction": {
 	        private ["_object","_operation","_id","_condition","_text","_input","_container","_die"];
 	
