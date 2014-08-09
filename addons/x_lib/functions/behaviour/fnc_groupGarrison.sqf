@@ -65,23 +65,27 @@ if(count _staticWeapons > 0) then
 
         _unit = _units select (count _units - _foreachIndex - 1);
 
-        if(_positionCount > 0) then
-        {
-            if(_moveInstantly) then {
+        if(!isNil "_unit") then {
 
-                _unit assignAsGunner _weapon;
-                _unit moveInGunner _weapon;
+            if(_positionCount > 0) then
+            {
+                if(_moveInstantly) then {
 
-            }else{
+                    _unit assignAsGunner _weapon;
+                    _unit moveInGunner _weapon;
 
-                _unit assignAsGunner _weapon;
-                [_unit] orderGetIn true;
+                }else{
+
+                    _unit assignAsGunner _weapon;
+                    [_unit] orderGetIn true;
+
+                };
 
             };
 
-        };
+            _units = _units - [_unit];
 
-        _units = _units - [_unit];
+        };
 
     } forEach _staticWeapons;
 };
