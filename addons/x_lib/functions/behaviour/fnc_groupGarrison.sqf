@@ -63,27 +63,31 @@ if(count _staticWeapons > 0) then
 
         _positionCount = [_weapon] call ALIVE_fnc_vehicleCountEmptyPositions;
 
-        _unit = _units select (count _units - _foreachIndex - 1);
+        if(count _units > 0) then {
 
-        if(!isNil "_unit") then {
+            _unit = _units select (count _units - _foreachIndex - 1);
 
-            if(_positionCount > 0) then
-            {
-                if(_moveInstantly) then {
+            if(!isNil "_unit") then {
 
-                    _unit assignAsGunner _weapon;
-                    _unit moveInGunner _weapon;
+                if(_positionCount > 0) then
+                {
+                    if(_moveInstantly) then {
 
-                }else{
+                        _unit assignAsGunner _weapon;
+                        _unit moveInGunner _weapon;
 
-                    _unit assignAsGunner _weapon;
-                    [_unit] orderGetIn true;
+                    }else{
+
+                        _unit assignAsGunner _weapon;
+                        [_unit] orderGetIn true;
+
+                    };
 
                 };
 
-            };
+                _units = _units - [_unit];
 
-            _units = _units - [_unit];
+            };
 
         };
 
@@ -108,38 +112,41 @@ if(count _buildings > 0) then {
         {
             if (_foreachIndex > ((count _units)-1)) exitwith {};
 
-            _unit = _units select (count _units - _foreachIndex - 1);
+            if(count _units > 0) then {
 
-            if(!isNil "_unit") then {
+                _unit = _units select (count _units - _foreachIndex - 1);
 
-                if(_moveInstantly) then {
-                    _unit setposATL (_building buildingpos _x);
-                    _unit setdir (([_unit,_building] call BIS_fnc_DirTo)-180);
-                    _unit setUnitPos "UP";
-                    _unit disableAI "MOVE";
-                    sleep 0.03;
-                }else{
-                    _position = (_building buildingpos _x);
+                if(!isNil "_unit") then {
 
-                    [_unit,_position] spawn {
+                    if(_moveInstantly) then {
+                        _unit setposATL (_building buildingpos _x);
+                        _unit setdir (([_unit,_building] call BIS_fnc_DirTo)-180);
+                        _unit setUnitPos "UP";
+                        _unit disableAI "MOVE";
+                        sleep 0.03;
+                    }else{
+                        _position = (_building buildingpos _x);
 
-                        private ["_unit","_position"];
+                        [_unit,_position] spawn {
 
-                        _unit = _this select 0;
-                        _position = _this select 1;
+                            private ["_unit","_position"];
 
-                        _unit doMove _position;
+                            _unit = _this select 0;
+                            _position = _this select 1;
 
-                        waitUntil {sleep 0.5; unitReady _unit };
+                            _unit doMove _position;
 
-                        doStop _unit;
+                            waitUntil {sleep 0.5; unitReady _unit };
+
+                            doStop _unit;
+
+                        };
 
                     };
 
+                    _units = _units - [_unit];
+
                 };
-
-                _units = _units - [_unit];
-
             };
 
         } foreach _buildingPositions;
@@ -161,38 +168,42 @@ if(count _buildings > 0) then {
         {
             if (_foreachIndex > ((count _units)-1)) exitwith {};
 
-            _unit = _units select (count _units - _foreachIndex - 1);
+            if(count _units > 0) then {
 
-            if(!isNil "_unit") then {
+                _unit = _units select (count _units - _foreachIndex - 1);
 
-                if(_moveInstantly) then {
-                    //_unit setposATL (_building buildingpos _x);
-                    _unit setposATL _x;
-                    _unit setdir (([_unit,_building] call BIS_fnc_DirTo)-180);
-                    _unit setUnitPos "UP";
-                    _unit disableAI "MOVE";
-                    sleep 0.03;
-                }else{
-                    //_position = (_building buildingpos _x);
-                    _position = _x;
+                if(!isNil "_unit") then {
 
-                    [_unit,_position] spawn {
+                    if(_moveInstantly) then {
+                        //_unit setposATL (_building buildingpos _x);
+                        _unit setposATL _x;
+                        _unit setdir (([_unit,_building] call BIS_fnc_DirTo)-180);
+                        _unit setUnitPos "UP";
+                        _unit disableAI "MOVE";
+                        sleep 0.03;
+                    }else{
+                        //_position = (_building buildingpos _x);
+                        _position = _x;
 
-                        private ["_unit","_position"];
+                        [_unit,_position] spawn {
 
-                        _unit = _this select 0;
-                        _position = _this select 1;
+                            private ["_unit","_position"];
 
-                        _unit doMove _position;
+                            _unit = _this select 0;
+                            _position = _this select 1;
 
-                        waitUntil {sleep 0.5; unitReady _unit };
+                            _unit doMove _position;
 
-                        doStop _unit;
+                            waitUntil {sleep 0.5; unitReady _unit };
 
+                            doStop _unit;
+
+                        };
                     };
-                };
 
-                _units = _units - [_unit];
+                    _units = _units - [_unit];
+
+                };
 
             };
 
