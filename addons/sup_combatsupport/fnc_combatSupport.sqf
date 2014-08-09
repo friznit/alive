@@ -229,7 +229,7 @@ switch(_operation) do {
                             //[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
                             [_veh] spawn _code;
                             _veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
-
+                            [_grp,0] setWaypointPosition [(getPos _veh),0];
                             _transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
                             [_veh, _grp, _callsign, _pos, _dir, _height, _type, CS_RESPAWN] execFSM _transportfsm;
 
@@ -279,10 +279,8 @@ switch(_operation) do {
 
                             _veh setVelocity [0,0,-1];
 
-
                             // set ownership flag for other modules
                             _veh setVariable ["ALIVE_CombatSupport", true];
-
 
                             private ["_grp"];
                             _grp = createGroup _side;
@@ -296,6 +294,7 @@ switch(_operation) do {
                             [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
                             //[nil, (units _grp select 0), "per", SETGROUPID, _callsign] spawn BIS_fnc_MP;
                             [_veh] spawn _code; };
+                            [_grp,0] setWaypointPosition [(getPos _veh),0];
 
                             _casfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
 
@@ -370,7 +369,7 @@ switch(_operation) do {
 
 							{ _x setVariable ["NEO_radioArtyModule", [leader _grp, _callsign], true] } forEach _units;
 
-
+                            [_grp,0] setWaypointPosition [(getPos _veh),0];
 							[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 
 							//[_veh, _grp, _units, units _grp] spawn _code;

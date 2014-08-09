@@ -27,12 +27,12 @@ item22[] = {"UAV",4,218,575.876282,501.508240,665.876404,551.508240,0.000000,"UA
 item23[] = {"__6",2,250,564.446228,770.174377,654.446350,820.174255,0.000000,""};
 item24[] = {"loiter",4,218,104.956596,324.702759,194.956772,374.702789,0.000000,"loiter"};
 item25[] = {"__7",2,250,99.448303,402.363922,189.448273,452.364075,0.000000,""};
-item26[] = {"at_position",4,218,104.708717,498.562134,194.708710,548.562134,0.000000,"at position"};
+item26[] = {"at_position",4,4314,104.708717,498.562134,194.708710,548.562134,0.000000,"at position"};
 item27[] = {"__8",2,250,102.770233,578.284058,192.770218,628.284058,0.000000,""};
 item28[] = {"Attack",4,218,236.318878,328.071045,326.319061,378.071075,0.000000,"Attack"};
 item29[] = {"__9",2,250,234.178848,409.100464,324.178833,459.100586,0.000000,""};
 item30[] = {"nr_position",4,218,236.070999,501.930420,326.070984,551.930481,0.000000,"nr position"};
-item31[] = {"__10",2,4346,230.764252,628.808105,320.764221,678.808105,0.000000,""};
+item31[] = {"__10",2,250,230.764252,628.808105,320.764221,678.808105,0.000000,""};
 item32[] = {"",7,210,270.519501,264.013885,278.519501,272.013885,0.000000,""};
 link0[] = {0,1};
 link1[] = {0,3};
@@ -78,8 +78,8 @@ link40[] = {30,31};
 link41[] = {31,16};
 link42[] = {32,11};
 link43[] = {32,28};
-globals[] = {0.000000,0,0,0,0,640,480,1,64,6316128,1,-846.787048,887.868530,1450.251587,-151.357803,1030,951,1};
-window[] = {2,-1,-1,-1,-1,787,50,1310,50,3,1048};
+globals[] = {0.000000,0,0,0,0,640,480,1,64,6316128,1,-533.129028,599.083130,993.755737,-139.555450,1030,1031,1};
+window[] = {2,-1,-1,-1,-1,862,125,1385,125,3,1048};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -188,9 +188,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -247,9 +245,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "loiter">*/
@@ -404,9 +400,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "circle">*/
@@ -531,9 +525,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -578,9 +570,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "at_base">*/
@@ -645,9 +635,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -694,9 +682,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -753,9 +739,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "at_position">*/
@@ -769,7 +753,10 @@ class FSM
           action=/*%FSM<ACTION""">*/"_dirCas = _dirCas + 90;" \n
            "_posCircle = [_posCas, _radiusCas, _dirCas] call BIS_fnc_relPos;" \n
            "" \n
-           "_veh doMove _posCircle;"/*%FSM</ACTION""">*/;
+           "_veh doMove _posCircle;" \n
+           "" \n
+           "// move the loiter point to here" \n
+           "[_grp,0] setWaypointPosition [_posCircle,0];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -815,9 +802,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -874,9 +859,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "nr_position">*/
@@ -917,17 +900,22 @@ class FSM
     class __10
     {
       name = "__10";
-      init = /*%FSM<STATEINIT""">*/"[_veh,_callsign, _ammoCount,_grp,_ROE] spawn" \n
+      init = /*%FSM<STATEINIT""">*/"" \n
+       "[_veh,_callsign, _ammoCount,_grp,_ROE,_oldPos] spawn" \n
        "{" \n
        "private [""_veh"", ""_callsign""];" \n
        "		_veh = _this select 0;" \n
        "		_callsign = _this select 1;" \n
        "		_ammoCount = _this select 2;" \n
-       "_grp = _this select 3;" \n
-       "_ROE = _this select 4;" \n
+       "		_grp = _this select 3;" \n
+       "		_ROE = _this select 4;" \n
+       "		_oldPos = _this select 5;" \n
        "" \n
        "  sleep 60;" \n
        "_veh doMove _oldPos;" \n
+       "// move the loiter point to here" \n
+       "[_grp,0] setWaypointPosition [_oldPos,0];" \n
+       "" \n
        "if (alive _veh) then {" \n
        "  [[_veh, format[""%1 has completed attack run, will loiter until further orders. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "" \n
@@ -978,9 +966,7 @@ class FSM
            "_flyInHeight = _taskArray select 3;" \n
            "_weapon =  _taskArray select 4;" \n
            "_ROE = _taskArray select 5;" \n
-           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];" \n
-           "" \n
-           ""/*%FSM</ACTION""">*/;
+           "_veh setVariable [""NEO_radioCasNewTask"", nil, true];"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
