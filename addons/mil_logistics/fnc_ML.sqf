@@ -109,7 +109,7 @@ switch(_operation) do {
         _result = _args;
     };
 	case "createMarker": {
-	    private["_position","_faction","_markers","_debugColor","_markerID","_m"];
+	    private["_position","_faction","_text","_markers","_debugColor","_markerID","_m"];
 
         _position = _args select 0;
         _faction = _args select 1;
@@ -365,7 +365,7 @@ switch(_operation) do {
 	case "start": {
         if (isServer) then {
 		
-			private ["_debug","_modules","_module"];
+			private ["_debug","_modules","_module","_worldName","_file","_moduleObject"];
 			
 			_debug = [_logic, "debug"] call MAINCLASS;			
 			
@@ -497,7 +497,7 @@ switch(_operation) do {
     };
     case "handleEvent": {
 
-        private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_forcePool","_type","_eventID",
+        private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_moduleFactions","_forcePool","_type","_eventID",
         "_eventData","_eventType","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
         "_eventForcePlane","_eventForceHeli","_forceMakeupTotal","_allowInfantry","_allowMechanised","_allowMotorised",
         "_allowArmour","_allowHeli","_allowPlane","_playerID","_requestID","_logEvent"];
@@ -1244,7 +1244,7 @@ switch(_operation) do {
 
                         private ["_infantryGroups","_infantryProfiles","_transportGroups","_transportProfiles",
                         "_transportVehicleProfiles","_group","_groupCount","_totalCount","_vehicleClass",
-                        "_profiles","_profileIDs","_profileID"];
+                        "_profiles","_profileIDs","_profileID","_position"];
 
                         _groupCount = 0;
                         _totalCount = 0;
@@ -1798,7 +1798,8 @@ switch(_operation) do {
                 // waypoint complete check stage
 
                 private ["_waitTotalIterations","_waitIterations","_waitDifference","_transportProfiles","_infantryProfiles",
-                "_planeProfiles","_heliProfiles","_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance"];
+                "_planeProfiles","_heliProfiles","_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance",
+                "_transportProfile"];
 
                 // mechanism for aborting this state
                 // once set time limit has passed
@@ -2000,7 +2001,7 @@ switch(_operation) do {
 
                 };
 
-                private ["_countEmpty","_emptyProfiles","_inCommand","_commandProfileID","_position"];
+                private ["_countEmpty","_emptyProfiles","_emptyProfile","_inCommand","_commandProfileID","_commandProfile","_position"];
 
                 _countEmpty = 0;
 
@@ -2295,7 +2296,7 @@ switch(_operation) do {
 
             case "heliTransportReturnWait": {
 
-                private ["_anyActive","_transportProfile","_active","_inCommand","_commandProfileID","_commandProfile","_commandUnits"];
+                private ["_anyActive","_transportProfile","_active","_inCommand","_commandProfileID","_commandProfile","_commandUnits","_vehicle"];
 
                 if(count _eventTransportProfiles > 0) then {
 
@@ -2550,7 +2551,7 @@ switch(_operation) do {
                 // vehicle commanders
 
                 private ["_transportProfiles","_infantryProfiles","_armourProfiles","_mechanisedProfiles","_motorisedProfiles",
-                "_planeProfiles","_heliProfiles","_profileWaypoint","_profile","_position","_countProfiles","_positionSeries"];
+                "_planeProfiles","_heliProfiles","_profileWaypoint","_profile","_position","_countProfiles","_positionSeries","_seriesIndex"];
 
                 _transportProfiles = _eventTransportProfiles;
                 _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
@@ -2963,7 +2964,7 @@ switch(_operation) do {
 
                 };
 
-                private ["_countEmpty","_emptyProfiles","_inCommand","_commandProfileID","_position"];
+                private ["_countEmpty","_emptyProfiles","_inCommand","_commandProfileID","_position","_emptyProfile"];
 
                 _countEmpty = 0;
 
@@ -3235,7 +3236,7 @@ switch(_operation) do {
 
 
                         private ["_position","_profiles","_profileID","_profileIDs","_emptyVehicleProfiles","_itemCategory","_infantryProfiles","_armourProfiles",
-                        "_mechanisedProfiles","_motorisedProfiles","_heliProfiles","_planeProfiles"];
+                        "_mechanisedProfiles","_motorisedProfiles","_heliProfiles","_planeProfiles","_itemClass"];
 
                         _infantryProfiles = [];
                         _mechanisedProfiles = [];
@@ -4079,7 +4080,7 @@ switch(_operation) do {
             // Player requested
 
             private ["_emptyProfiles","_joinIndividualProfiles","_staticIndividualProfiles","_reinforceIndividualProfiles",
-            "_joinGroupProfiles","_staticGroupProfiles","_reinforceGroupProfiles","_player"];
+            "_joinGroupProfiles","_staticGroupProfiles","_reinforceGroupProfiles","_player","_logEvent"];
 
             _emptyProfiles = [_playerRequestProfiles,"empty"] call ALIVE_fnc_hashGet;
             _joinIndividualProfiles = [_playerRequestProfiles,"joinIndividuals"] call ALIVE_fnc_hashGet;

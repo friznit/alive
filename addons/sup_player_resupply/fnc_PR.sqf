@@ -347,6 +347,7 @@ switch(_operation) do {
             [_logic,"payloadComboValues",_payloadComboValues] call MAINCLASS;
 
 
+            private ["_file"];
 
             // load static data
             if(isNil "ALiVE_STATIC_DATA_LOADED") then {
@@ -1146,7 +1147,7 @@ switch(_operation) do {
 
                     // set the counts
 
-                    private ["_sizeText","_weightText","_groupText","_vehiclesText","_individualsText","_counts","_countWeight","_countGroups","_countVehicles","_countIndividuals"];
+                    private ["_sizeText","_weightText","_groupText","_vehiclesText","_individualsText","_counts","_countWeight","_countSize","_countGroups","_countVehicles","_countIndividuals"];
 
                     _weightText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
                     _sizeText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadSize);
@@ -1894,7 +1895,7 @@ switch(_operation) do {
 
                             // prepare the payload
 
-                            private ["_side","_faction","_destination","_selectedDeliveryValue","_payloadListValues","_emptyVehicles",
+                            private ["_side","_faction","_destination","_deliveryType","_selectedDeliveryValue","_payloadListValues","_emptyVehicles",
                             "_payload","_staticIndividuals","_joinIndividuals","_reinforceIndividuals","_staticGroups","_joinGroups",
                             "_reinforceGroups","_payloadClass","_payloadInfo","_payloadType","_payloadOrders","_requestID","_forceMakeup",
                             "_event","_eventID","_playerID"];
@@ -1980,7 +1981,7 @@ switch(_operation) do {
 
                             // display radio message
 
-                            private ["_side","_sideObject","_callSignPlayer","_radioMessage"];
+                            private ["_side","_sideObject","_callSignPlayer","_radioMessage","_radioBroadcast"];
 
                             _side = [_logic,"side"] call MAINCLASS;
                             _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
@@ -2077,8 +2078,8 @@ switch(_operation) do {
 
             // set the counts
 
-            private ["_weightText","_groupText","_vehiclesText","_individualsText","_counts","_countWeight","_countGroups",
-            "_countVehicles","_countIndividuals","_payloadReady"];
+            private ["_weightText","_sizeText","_groupText","_vehiclesText","_individualsText","_counts","_countWeight","_countGroups",
+            "_countVehicles","_countIndividuals","_countSize","_payloadReady"];
 
             _weightText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
             _sizeText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadSize);
@@ -2162,7 +2163,7 @@ switch(_operation) do {
         if (hasInterface) then {
 
             private ["_deliveryTitle","_deliveryList","_supplyTitle","_supplyList","_reinforceTitle","_reinforceList",
-            "_payloadTitle","_payloadList","_payloadInfo","_payloadStatus","_payloadWeight","_payloadGroups","_payloadVehicles",
+            "_payloadTitle","_payloadList","_payloadInfo","_payloadStatus","_payloadWeight","_payloadSize","_payloadGroups","_payloadVehicles",
             "_payloadIndividuals","_payloadDeleteButton","_payloadOptionsCombo","_payloadRequestButton"];
 
 

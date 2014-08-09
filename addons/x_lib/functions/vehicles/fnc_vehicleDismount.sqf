@@ -30,7 +30,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_assignments", "_vehicle", "_gunnersDismount", "_driver", "_gunners", "_commander", "_cargo"];
+private ["_assignments", "_vehicle", "_gunnersDismount", "_driver", "_gunners", "_commander", "_cargo","_turret","_turrets","_unit"];
 	
 _assignments = _this select 0;
 _vehicle = _this select 1;

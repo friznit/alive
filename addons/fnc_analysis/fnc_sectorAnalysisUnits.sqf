@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_units"];
+private ["_sectors","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_units","_id","_detectionRadius"];
 
 _sectors = _this select 0;
 _err = format["sector analysis units requires an array of sectors - %1",_sectors];

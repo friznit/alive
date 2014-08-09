@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_worldName","_file","_sector","_result","_centerPosition","_id","_bounds","_dimensions",
+private ["_sectors","_err","_worldName","_file","_sector","_result","_centerPosition","_id","_bounds","_dimensions",
 "_cluster","_clusterCenter","_clusterID","_consolidated","_air","_heli"];
 
 _sectors = _this select 0;
@@ -53,6 +53,9 @@ if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
 	_id = [_sector, "id"] call ALIVE_fnc_sector;
 	_bounds = [_sector, "bounds"] call ALIVE_fnc_sector;
 	_dimensions = [_sector, "dimensions"] call ALIVE_fnc_sector;
+
+	private ["_consolidated","_power","_comms","_marine","_rail","_fuel","_construction","_settlement","_clusters"];
+
 	
 	_consolidated = [];
 	_power = [];

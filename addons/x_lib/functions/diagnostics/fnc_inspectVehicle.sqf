@@ -24,7 +24,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_cfg","_detailed","_item","_text"];
+private ["_cfg","_detailed","_item","_text","_class","_cargoSpec","_commanderOptics","_library"];
 
 _cfg = _this select 0;
 

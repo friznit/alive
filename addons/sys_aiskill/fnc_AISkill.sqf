@@ -303,7 +303,13 @@ switch(_operation) do {
 			_debug = [_logic, "debug"] call MAINCLASS;
 			
 			[_logic, _debug] spawn {
-				private ["_minSkill","_maxSkill","_diff","_factionSkill","_faction","_aimingAccuracy","_aimingShake","_aimingSpeed","_logic","_debug","_skillFactionsRecruit","_skillFactionsRegular","_skillFactionsVeteran","_customSkillFactions","_customSkillAbilityMin","_customSkillAbilityMax","_customSkillAimAccuracy","_customSkillAimShake","_customSkillAimSpeed","_customSkillEndurance","_customSkillSpotDistance","_customSkillSpotTime","_customSkillCourage","_customSkillReload","_customSkillCommanding","_customSkillGeneral","_recruitSkill","_regularSkill","_veteranSkill","_expertSkill","_customSkill","_factionSkills","_skillFactionsExpert","_countEffected"];
+				private ["_minSkill","_maxSkill","_diff","_factionSkill","_faction","_aimingAccuracy","_aimingShake","_aimingSpeed","_logic",
+				"_debug","_skillFactionsRecruit","_skillFactionsRegular","_skillFactionsVeteran","_customSkillFactions","_customSkillAbilityMin",
+				"_customSkillAbilityMax","_customSkillAimAccuracy","_customSkillAimShake","_customSkillAimSpeed","_customSkillEndurance",
+				"_customSkillSpotDistance","_customSkillSpotTime","_customSkillCourage","_customSkillReload","_customSkillCommanding",
+				"_customSkillGeneral","_recruitSkill","_regularSkill","_veteranSkill","_expertSkill","_customSkill","_factionSkills",
+				"_skillFactionsExpert","_countEffected","_side"];
+
 				_logic = _this select 0;
 				_debug = _this select 1;
 				

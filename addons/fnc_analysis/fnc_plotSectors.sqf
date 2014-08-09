@@ -103,7 +103,7 @@ switch(_operation) do {
 				_result = [_logic,"id"] call ALIVE_fnc_hashGet;
         };
 		case "plot": {
-				private["_sector","_key","_plots","_plot"];
+				private["_sectors","_sector","_key","_plotterID","_plots","_plot"];
 				
 				_sectors = _args select 0;
 				_key = _args select 1;

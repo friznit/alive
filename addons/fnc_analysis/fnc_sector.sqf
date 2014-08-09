@@ -69,7 +69,7 @@ nil
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_sector
 
-private ["_logic","_operation","_args","_result"];
+private ["_logic","_operation","_args","_result","_deleteMarkers","_createMarkers"];
 
 TRACE_1("sector - input",_this);
 
@@ -89,7 +89,7 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_id"];
+        private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_gridID","_id"];
         _logic = _this;
         _markers = [];
 		
@@ -238,6 +238,7 @@ switch(_operation) do {
 				_result = [_logic,"id"] call ALIVE_fnc_hashGet;
         };
 		case "data": {
+		        private ["_key","_value","_data"];
 				if(typeName _args == "ARRAY") then {
 					_key = _args select 0;
 					_value = _args select 1;		
@@ -269,7 +270,7 @@ switch(_operation) do {
 				_result = [_positionBL, _positionTL, _positionTR, _positionBR]
         };
 		case "within": {
-				private["_position","_bounds","_positionBL","_positionBLX","_positionBLY","_positionTR","_positionTRX","_positionTRY"];
+				private["_position","_positionX","_positionY","_bounds","_positionBL","_positionBLX","_positionBLY","_positionTR","_positionTRX","_positionTRY"];
 				ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
 				
 				_position = _args;

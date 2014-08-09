@@ -31,7 +31,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_isActive","_filteredSectors","_sector","_sectorData","_active"];
+private ["_sectors","_isActive","_err","_filteredSectors","_sector","_sectorData","_active"];
 	
 _sectors = _this select 0;
 _isActive = if(count _this > 1) then {_this select 1} else {true};

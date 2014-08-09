@@ -22,7 +22,7 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_side","_spawnDistance","_debug","_entityProfiles","_vehicleProfiles"];
+private ["_side","_spawnDistance","_debug","_profiles","_entityProfiles","_vehicleProfiles"];
 
 _side = _this select 0;
 _spawnDistance = if(count _this > 1) then {_this select 1} else {1000};

@@ -27,7 +27,7 @@ Author:
 ARJay, Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_group","_radius","_moveInstantly","_units","_leader","_units"];
+private ["_group","_position","_radius","_moveInstantly","_units","_file","_leader","_units"];
 
 _group = _this select 0;
 _position = _this select 1;

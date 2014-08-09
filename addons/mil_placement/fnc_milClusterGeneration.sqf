@@ -26,7 +26,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_obj_array","_types","_clusters","_clusters_tmp","_size"];
+private ["_file","_obj_array","_types","_clusters","_clusters_tmp","_size"];
 
 if(isNil "ALIVE_militaryHQBuildingTypes") then {
 	_file = "\x\alive\addons\main\static\staticData.sqf";
@@ -77,7 +77,7 @@ _clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 // Find mil heli locations
 // ------------------------------------------------------------------
-private ["_clusters_mil_heli","_clusters_civ_heli","_clusters_copy_heli"];
+private ["_clusters_mil_heli","_clusters_civ_heli","_clusters_heli","_clusters_copy_heli"];
 
 "MO - Searching helipad locations" call ALiVE_fnc_logger;
 _clusters_mil_heli = [ALIVE_militaryHeliBuildingTypes] call ALIVE_fnc_findTargets;
@@ -127,7 +127,7 @@ _clusters = [_clusters] call ALIVE_fnc_consolidateClusters;
 
 
 
-private ["_worldName","_objectivesName","_exportString","_result","_clusterCount"];
+private ["_worldName","_objectivesName","_exportString","_result","_clusterCount","_pV"];
 
 _worldName = toLower(worldName);
 

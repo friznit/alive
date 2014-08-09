@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_profileType","_profileSide","_filteredSectors","_sector","_sectorData","_sideProfiles","_sideProfile"];
+private ["_sectors","_profileType","_profileSide","_err","_filteredSectors","_sector","_sectorData","_sideProfiles","_sideProfile"];
 	
 _sectors = _this select 0;
 _profileType = _this select 1;

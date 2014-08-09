@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_units", "_aliveUnits"];
+private ["_units", "_aliveUnits","_err"];
 	
 _units = _this select 0;
 

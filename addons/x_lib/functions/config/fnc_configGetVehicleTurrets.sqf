@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_result","_findRecurse","_class"];
+private ["_type","_result","_findRecurse","_class"];
 
 _type = _this;
 

@@ -31,7 +31,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_group","_vehicle","_orderIn","_positionCount","_units","_assignments","_leader","_gunners","_vehicleTurrets","_turrets","_cargos","_unit"];
+private ["_group","_vehicle","_orderIn","_positionCount","_units","_assignments","_leader","_gunners","_vehicleTurrets","_turrets","_cargos","_unit","_turretPath"];
 	
 _group = _this select 0;
 _vehicle = _this select 1;

@@ -187,7 +187,7 @@ switch(_operation) do {
 	case "placement": {
         if (isServer) then {
 		
-			private ["_debug","_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount",
+			private ["_debug","_countInfantry","_countMotorized","_countMechanized","_countArmored","_countSpecOps",
 			"_faction","_factionConfig","_factionSideNumber","_side","_countProfiles","_file","_size","_priority",
 			"_position","_moduleObject","_module","_objectiveName","_objective","_guardGroup","_guards","_composition"];
 
@@ -241,7 +241,7 @@ switch(_operation) do {
 
 			if (typeName _composition == "STRING" && _composition != "false") then {
 
-			    private ["_bisCompositions"];
+			    private ["_bisCompositions","_configPath"];
 
 			    _bisCompositions = ["OutpostA","OutpostB","OutpostC","OutpostD","OutpostE","OutpostF"];
 

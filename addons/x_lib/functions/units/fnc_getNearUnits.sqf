@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_position","_radius","_units", "_vehicles"];
+private ["_position","_radius","_units","_vehicles","_err"];
 	
 _position = _this select 0;
 _radius = _this select 1;

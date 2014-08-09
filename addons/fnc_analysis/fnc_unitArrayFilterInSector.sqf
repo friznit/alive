@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_units", "_sector", "_inSectorUnits"];
+private ["_units","_sector","_err","_inSectorUnits"];
 
 _units = _this select 0;
 _sector = _this select 1;

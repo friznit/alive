@@ -53,7 +53,7 @@ _result = true;
 #define MTEMPLATE "ALiVE_SECTORPLOT_%1"
 
 _createMarker = {
-        private ["_markerID","_position","_dimensions","_alpha","_color","_shape","_m"];
+        private ["_markerID","_position","_dimensions","_alpha","_color","_shape","_m","_brush"];
 				
 		_markerID = _this select 0;
 		_position = _this select 1;
@@ -121,7 +121,7 @@ switch(_operation) do {
 				_result = [_logic,"plotterID"] call ALIVE_fnc_hashGet;
         };
 		case "plot": {
-				private["_sector","_key","_centerPosition","_id","_bounds","_dimensions","_sectorData","_markers","_plotData"];
+				private["_sector","_key","_plotterID","_centerPosition","_id","_bounds","_dimensions","_sectorData","_markers","_plotData"];
 				
 				_sector = _args select 0;
 				_key = _args select 1;

@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_indicators","_position","_type","_class","_result"];
+private ["_indicators","_position","_type","_err","_class","_result"];
 
 _indicators = ["Sign_Sphere100cm_F", "Sign_Sphere25cm_F", "Sign_Sphere10cm_F", "Sign_Pointer_Green_F", "Sign_Pointer_Blue_F", "Sign_Pointer_Pink_F", "Sign_Pointer_Yellow_F", "Sign_Pointer_Cyan_F"];
 	

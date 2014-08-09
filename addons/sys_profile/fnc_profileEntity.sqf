@@ -160,7 +160,8 @@ _deleteMarkers = {
 
 _createMarkers = {
         private ["_logic","_markers","_m","_position","_dimensions","_debugColor","_debugIcon","_debugAlpha"
-		,"_profileID","_profileSide","_profileType","_profileActive","_profileWaypoints","_typePrefix","_label"];
+		,"_profileID","_profileSide","_profileType","_profileActive","_profileWaypoints","_typePrefix","_label",
+		"_waypointCount","_waypointPosition","_waypointCount"];
         _logic = _this;
         _markers = [];
 
@@ -557,7 +558,7 @@ switch(_operation) do {
 				}
 		};
 		case "setActiveCommand": {
-                private ["_activeCommands","_type"];
+                private ["_activeCommands","_type","_active"];
 
                 if(typeName _args == "ARRAY") then {
 
@@ -1020,8 +1021,9 @@ switch(_operation) do {
             [_logic, "destroy"] call SUPERCLASS;
 		};
 		case "createMarker": {
-				private ["_markers","_m","_position","_dimensions","_color","_icon","_alpha"
-				,"_profileID","_profileSide","_profileType","_profileActive","_vehiclesInCommandOf","_typePrefix","_label"];
+				private ["_markers","_m","_position","_dimensions","_color","_icon","_alpha","_vehicleMarkers","_inCommand",
+				"_profileID","_profileSide","_profileType","_profileActive","_vehiclesInCommandOf","_typePrefix","_label",
+				"_vehicleProfile","_vehicleMarkers"];
 
 				_alpha = [_args, 0, 0.5, [1]] call BIS_fnc_param;
 				

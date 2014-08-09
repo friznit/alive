@@ -25,7 +25,8 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_waypoint","_currentWaypoint","_waypoint","_position","_radius","_type","_formation","_behaviour","_combatMode","_speed","_completionRadius","_timeout","_description"];
+private ["_waypoint","_currentWaypoint","_waypoint","_position","_radius","_type","_formation","_behaviour",
+"_combatMode","_speed","_completionRadius","_timeout","_description","_statements","_profileWaypoint"];
 	
 _waypoint = _this select 0;
 

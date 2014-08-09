@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_configPath","_sideNumber","_sortedVehicles","_item","_configName","_vehicleClass","_scope","_subSorted"];
+private ["_side","_configPath","_sideNumber","_sortedVehicles","_item","_configName","_vehicleClass","_scope","_subSorted"];
 
 _side = _this select 0;
 

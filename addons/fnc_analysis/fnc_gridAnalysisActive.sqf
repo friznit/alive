@@ -27,7 +27,7 @@ ARJay
 ---------------------------------------------------------------------------- */
 
 private ["_grid","_err","_sectors","_updatedSectors","_sector","_sectorData","_players",
-"_position","_active"];
+"_position","_active","_player"];
 
 _grid = _this select 0;
 

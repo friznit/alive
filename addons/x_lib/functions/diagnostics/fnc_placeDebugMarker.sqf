@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_indicators","_position","_type","_class","_result"];
+private ["_indicators","_position","_type","_err","_class","_result","_m"];
 
 _indicators = ["waypoint","mil_dot","mil_box","mil_triangle","mil_flag"];
 	

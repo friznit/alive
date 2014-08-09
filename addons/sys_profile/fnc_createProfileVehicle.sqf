@@ -29,7 +29,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleClass","_side","_faction","_direction","_spawnGoodPosition","_position","_vehicleID","_profileVehicle"];
+private ["_vehicleClass","_side","_faction","_direction","_spawnGoodPosition","_prefix","_position","_vehicleID","_vehicleKind","_profileVehicle"];
 
 _vehicleClass = _this select 0;
 _side = _this select 1;

@@ -29,7 +29,7 @@ BON INF
 Peer reviewed:
 HighHead
 ---------------------------------------------------------------------------- */
-private ["_position","_radius","_pos","_maxgradient","_gradientarea"];
+private ["_position","_radius","_pos","_maxgradient","_gradientarea","_debug"];
 _position = _this select 0;
 if(count _this > 1) then {_radius = _this select 1;} else {_radius = 2;};
 if(count _this > 2) then {_gradientarea = _this select 2} else {_gradientarea = 5};   // in metres

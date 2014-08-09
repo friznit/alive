@@ -33,7 +33,7 @@ NUKE_fnc_ExplosionClient = {
 	_radzone = _this select 1;
 	_fallouttime = _this select 2;
 
-	private ["_i","_on","_snow","_nukepos","_fallouttime","_expdist","_Cone","_top","_smoke","_Wave","_light","_top2","_top3","_nuclearrain","_fnc_nuke_ashCreate"];
+	private ["_i","_on","_snow","_nukepos","_fallouttime","_expdist","_VD","_Cone","_top","_smoke","_Wave","_light","_top2","_top3","_nuclearrain","_fnc_nuke_ashCreate"];
 	_nukepos = _this select 0;
 	//_radzone = _this select 1;
 	_fallouttime = _this select 2;
@@ -163,6 +163,8 @@ NUKE_fnc_ExplosionClient = {
 	
 	_Cone setDropInterval 0.02;
 	_Wave setDropInterval 0.01;
+
+	private ["_pos","_dirt"];
 	
     for "_i" from 0 to 10 do {
         	_pos = [_nukePos,_radzone/6] call CBA_fnc_RandPos;
@@ -203,6 +205,8 @@ NUKE_fnc_DamageServer = {
 	_fallouttime = _this select 2;
     
     sleep 1;
+
+    private ["_arrayObjects","_arrayUnits","_entry"];
 
 	//[_nukepos, 1000, 1138, [], true] call bis_fnc_destroyCity;
 	_arrayObjects = nearestObjects [_nukepos, [], 500];

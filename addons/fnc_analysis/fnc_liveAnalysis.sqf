@@ -106,7 +106,7 @@ switch(_operation) do {
             _result = _args;
         };
 		case "registerAnalysisJob": {
-			private ["_analysisJobs","_job","_jobID"];
+			private ["_analysisJobs","_job","_jobID","_debug"];
 			
 			_debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 		
@@ -132,7 +132,7 @@ switch(_operation) do {
                 
         };
 		case "cancelAnalysisJob": {
-			private ["_analysisJobs","_job","_jobID","_jobMethod","_jobArgs"];
+			private ["_analysisJobs","_job","_jobID","_jobMethod","_jobArgs","_debug"];
 			
 			_debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 		
@@ -189,14 +189,15 @@ switch(_operation) do {
 			_result = [_logic, "analysisJobs"] call ALIVE_fnc_hashGet;
 		};
 		case "start": {
-			private ["_analysisJobs"];
+			private ["_analysisJobs","_debug"];
 			
 			_debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 			_analysisJobs = [_logic,"analysisJobs"] call ALIVE_fnc_hashGet;
 			
 			[_logic, _analysisJobs, _debug] spawn { 
 			
-				private ["_analysisJobs","_debug","_job","_args","_lastRun","_runEvery","_jobID","_jobMethod","_jobArgs"];
+				private ["_analysisJobs","_debug","_job","_args","_lastRun","_runEvery","_jobID","_jobMethod","_jobArgs",
+				"_jobsToCancel","_runCount","_maxRunCount"];
 				
 				_logic = _this select 0;
 				_analysisJobs = _this select 1;
@@ -435,7 +436,7 @@ switch(_operation) do {
 				_section = [_objective,"section"] call ALIVE_fnc_hashGet;
 				_objectiveID = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
 				
-				private ["_profiles","_markers","_profileID","_profile","_alpha","_marker","_color","_dir","_position","_icon","_text"];
+				private ["_profiles","_markers","_profileID","_profile","_alpha","_marker","_color","_dir","_position","_icon","_text","_m"];
 				
 				// on the first run create all the markers
 				if(_runCount == 0) then {
@@ -645,7 +646,7 @@ switch(_operation) do {
                 _faction = _intelItem select 1;
                 _side = _intelItem select 2;
 
-                private ["_markers","_alpha","_marker","_color","_dir","_icon"];
+                private ["_markers","_alpha","_marker","_color","_dir","_icon","_profiles","_m"];
 
                 // on the first run create all the markers
                 if(_runCount == 0) then {
@@ -749,7 +750,7 @@ switch(_operation) do {
         };
         case "runAgentKIAIntelligenceItemAnalysis": {
 
-            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction"];
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_m","_profiles"];
 
             if(typeName _args == "ARRAY") then {
 
@@ -858,7 +859,7 @@ switch(_operation) do {
         };
         case "runLogisticsInsertionIntelligenceItemAnalysis": {
 
-            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side"];
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side","_m","_profiles"];
 
             if(typeName _args == "ARRAY") then {
 
@@ -986,7 +987,7 @@ switch(_operation) do {
         };
         case "runLogisticsDestinationIntelligenceItemAnalysis": {
 
-            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side"];
+            private ["_jobID","_jobArgs","_runCount","_debug","_intelItem","_position","_faction","_side","_m"];
 
             if(typeName _args == "ARRAY") then {
 
@@ -1010,7 +1011,7 @@ switch(_operation) do {
                 _faction = _intelItem select 1;
                 _side = _intelItem select 2;
 
-                private ["_markers","_alpha","_marker","_color","_dir","_icon"];
+                private ["_markers","_alpha","_marker","_color","_dir","_icon","_profiles"];
 
                 // on the first run create all the markers
                 if(_runCount == 0) then {
@@ -1115,7 +1116,7 @@ switch(_operation) do {
         case "runShowFriendliesAnalysis": {
 
             private ["_jobID","_jobArgs","_runCount","_radius","_debug","_sector","_side","_centerPosition","_sectorData","_profiles","_markers",
-            "_active","_sides","_player","_nearProfiles","_profile","_position","_centerPosition","_sectorData"];
+            "_active","_sides","_player","_nearProfiles","_profile","_position","_centerPosition","_sectorData","_marker"];
 
             if(typeName _args == "ARRAY") then {
 

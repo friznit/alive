@@ -28,7 +28,7 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_point","_cluster","_minDistance","_maxDistance","_minCluster","_distance","_err"];
+private ["_point","_cluster","_minDistance","_maxDistance","_minCluster","_pcenter","_distance","_err"];
 PARAMS_2(_point,_cluster);
 DEFAULT_PARAM(2,_maxDistance,999999);
 

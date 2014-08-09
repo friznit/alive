@@ -24,7 +24,7 @@ ARJay
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_debug","_cycleTime","_profiles","_markers","_deleteMarkers","_deleteMarker","_createMarker"];
+private ["_debug","_cycleTime","_profiles","_markers","_deleteMarkers","_deleteMarker","_createMarker","_profileIndex"];
 
 _markers = _this select 0;
 _cycleTime = _this select 1;

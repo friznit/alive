@@ -24,7 +24,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_result"];
+private ["_result","_profiles"];
 
 if !(isServer) exitwith {};
 

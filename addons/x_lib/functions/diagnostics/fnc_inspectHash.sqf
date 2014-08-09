@@ -23,7 +23,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_target","_text","_level"];
+private ["_target","_text","_level","_inspectRecurse"];
 	
 _target = _this;
 

@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_position","_getDistance","_sortedSectors","_sector"];
+private ["_sectors","_position","_err","_getDistance","_sortedSectors","_sector"];
 	
 _sectors = _this select 0;
 _position = _this select 1;

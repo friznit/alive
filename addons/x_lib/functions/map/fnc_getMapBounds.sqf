@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_result"];
+private ["_result","_err"];
 
 _result = getNumber(configFile >> "CfgWorlds" >> worldName >> "MapSize");
 

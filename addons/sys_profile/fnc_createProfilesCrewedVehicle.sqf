@@ -30,7 +30,7 @@ ARJay
 ---------------------------------------------------------------------------- */
 
 private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_prefix","_engineOn","_busy","_position",
-"_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType"];
+"_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType","_vehicleID","_entityID"];
 
 _vehicleClass = _this select 0;
 _side = _this select 1;
@@ -70,7 +70,7 @@ if!(_spawnGoodPosition) then {
 _groupProfiles set [count _groupProfiles, _profileEntity];
 [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
-private ["_vehicleID","_vehicleClass","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
+private ["_vehicleKind","_vehicleID","_vehicleClass","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
 
 _vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 

@@ -24,7 +24,9 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_waypoints","_id","_unit","_profile","_vehiclesInCommandOf","_vehiclesInCargoOf","_obj","_leader","_pos","_radius","_positions","_assignments","_profileWaypoint","_savepos","_type","_speed","_formation","_behaviour","_type","_objs"];
+private ["_args","_debug","_waypoints","_id","_unit","_profile","_vehiclesInCommandOf","_vehiclesInCargoOf","_obj",
+"_leader","_pos","_radius","_positions","_assignments","_profileWaypoint","_savepos","_type","_speed","_formation",
+"_behaviour","_type","_objs","_inAir","_vehicleProfile","_vehicleObjectType"];
 
 _profile = _this select 0;
 _args = _this select 1;

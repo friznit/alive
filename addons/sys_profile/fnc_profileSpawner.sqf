@@ -23,7 +23,7 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_side","_spawnDistance","_activeLimiter","_debug","_activeEntities","_activeEntityCount","_entityProfiles","_vehicleProfiles"];
+private ["_side","_spawnDistance","_activeLimiter","_debug","_activeEntities","_activeEntityCount","_profiles","_entityProfiles","_vehicleProfiles"];
 
 _side = _this select 0;
 _spawnDistance = if(count _this > 1) then {_this select 1} else {1000};
@@ -36,7 +36,7 @@ _activeEntityCount = count _activeEntities;
 _profiles = [ALIVE_profileHandler, "getProfilesBySideFull", _side] call ALIVE_fnc_profileHandler;
 
 {
-	private ["_profile","_profileID","_profileType","_position","_spawn","_active"];
+	private ["_profile","_profileID","_profileType","_position","_spawn","_active","_vehiclesInCommandOf","_vehicleProfile"];
 
 	_profile = _x;
 	_active = _profile select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;

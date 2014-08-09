@@ -23,7 +23,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_profile","_group","_isCycling","_waypoints","_statements","_profileWaypoint"];
+private ["_profile","_group","_isCycling","_waypoints","_statements","_profileWaypoint","_profilePosition"];
 
 _profile = _this select 0;
 _group = _this select 1;

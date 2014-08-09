@@ -26,7 +26,7 @@ Highhead
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
-private ["_targets"];
+private ["_targets","_result"];
 
 _targets = _this;
 _result = false;

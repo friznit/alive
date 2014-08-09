@@ -24,7 +24,7 @@ ARJay
 ---------------------------------------------------------------------------- */
 
 private ["_state","_uid","_player","_debug","_players","_entityCount","_playerProfiles","_profileIndex","_registeredProfile","_group","_leader","_units","_unitClasses","_positions","_ranks",
-"_damages","_unitCount","_profileID","_unit","_eventID","_profileID","_position","_side","_existingPlayers","_existingProfile"];
+"_damages","_unitCount","_profileID","_unit","_eventID","_profileID","_position","_side","_existingPlayers","_existingProfile","_profileEntity","_uuid","_index"];
 
 _state = _this select 0;
 _uid = if(count _this > 1) then {_this select 1} else {""};

@@ -23,7 +23,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_class"];
+private ["_class","_findRecurse"];
 
 ALIVE_groupConfig = [] call ALIVE_fnc_hashCreate;
 

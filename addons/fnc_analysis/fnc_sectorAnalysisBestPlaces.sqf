@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_id","_bounds","_dimensions","_radius","_precision","_sources","_bestPlaces",
+private ["_sectors","_array","_err","_sector","_result","_centerPosition","_id","_bounds","_dimensions","_radius","_precision","_sources","_bestPlaces",
 "_forestExpression","_exposedHillsExpression","_meadowExpression","_exposedTreesExpression","_housesExpression","_seaExpression",
 "_selectedForestPlaces","_selectedHillsPlaces","_selectedMeadowsPlaces","_selectedTreesPlaces","_selectedHousesPlaces","_selectedSeaPlaces",
 "_forestPositions","_hillsPositions","_meadowsPositions","_treesPositions","_housesPositions","_seaPositions","_pos","_cost"];

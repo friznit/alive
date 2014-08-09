@@ -29,7 +29,7 @@ nil
 ---------------------------------------------------------------------------- */
 
 
-private ["_clusters","_arrayName","_result","_state","_nodes"];
+private ["_clusters","_arrayName","_count","_result","_state","_nodes"];
 
 _clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
 _arrayName = [_this, 1, "", [""]] call BIS_fnc_param;

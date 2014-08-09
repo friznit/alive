@@ -824,6 +824,8 @@ switch(_operation) do {
                     } foreach _guards;
                 };
 
+                private ["_profiles"];
+
 				if(_totalCount < _groupCount) then {
 				
 					if(_groupPerCluster > 0) then {

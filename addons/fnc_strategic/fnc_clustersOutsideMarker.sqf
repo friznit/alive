@@ -28,7 +28,7 @@ nil
 ---------------------------------------------------------------------------- */
 
 
-private ["_clusters","_markers","_marker","_markerClusters","_center"];
+private ["_clusters","_markers","_marker","_markerClusters","_blacklistClusters","_center","_id"];
 
 _clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
 _markers = [_this, 1, [], [[]]] call BIS_fnc_param;

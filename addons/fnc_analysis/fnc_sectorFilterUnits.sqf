@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_side","_unitCountMin","_unitCountMax","_filteredSectors","_sector","_sectorData","_unitData","_units"];
+private ["_sectors","_side","_unitCountMin","_unitCountMax","_err","_filteredSectors","_sector","_sectorData","_unitData","_units"];
 	
 _sectors = _this select 0;
 _side = _this select 1;

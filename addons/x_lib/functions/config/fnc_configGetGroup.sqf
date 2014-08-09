@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_groupClass","_result","_groupData"];
+private ["_groupClass","_result","_groupData","_config"];
 
 _groupClass = _this;
 

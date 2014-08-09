@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectorData","_key","_args","_data","_sortedData"];
+private ["_sectors","_err","_sectorData","_key","_args","_data","_sortedData"];
 	
 _sectors = _this;
 
@@ -44,7 +44,7 @@ private ["_elevationSamples","_elevationSamplesLand","_elevationSamplesSea","_el
 "_sectorHeliClusters","_consolidatedCivClusters","_powerClusters","_commsClusters","_marineClusters","_railClusters","_fuelClusters",
 "_constructionClusters","_settlementClusters","_sectorCivClusters","_sectorConsolidatedCivClusters","_sectorConsolidatedCivClusters",
 "_sectorPowerClusters","_sectorCommsClusters","_sectorMarineClusters","_sectorFuelClusters","_sectorRailClusters","_sectorConstructionClusters",
-"_sectorSettlementClusters"];
+"_sectorSettlementClusters","_sectorElevationSamplesLand","_sectorElevationSamplesSea","_sectorRoads","_clustersMil","_clustersCiv","_mergedData"];
 
 _elevationSamples = [];
 _elevationSamplesLand = [];

@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_maxPositions","_vehicleClass","_sector","_result","_centerPosition","_dimensions","_radius","_emptyPositions","_position"];
+private ["_sectors","_maxPositions","_vehicleClass","_sector","_result","_centerPosition","_dimensions","_radius","_emptyPositions","_position","_err"];
 
 _sectors = _this select 0;
 _vehicleClass = if(count _this > 1) then {_this select 1} else {"false"};

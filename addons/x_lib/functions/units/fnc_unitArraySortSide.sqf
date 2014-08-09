@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_units","_sideUnits","_side","_sideUnitsArray"];
+private ["_units","_err","_sideUnits","_side","_sideUnitsArray"];
 	
 _units = _this select 0;
 

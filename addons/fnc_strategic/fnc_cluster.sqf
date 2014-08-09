@@ -162,7 +162,7 @@ switch(_operation) do {
 		_result = _args;
 	};        
 	case "state": {
-		private["_state","_data","_nodes"];
+		private["_state","_data","_nodes","_objID"];
 		
 		if(typeName _args != "ARRAY") then {
 			_state = [] call ALIVE_fnc_hashCreate;

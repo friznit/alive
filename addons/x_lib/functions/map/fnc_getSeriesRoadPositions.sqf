@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_position","_radius","_positionCount","_road","_series","_iterationCount","_findRecurse","_connectedRoads","_positions"];
+private ["_position","_radius","_positionCount","_road","_series","_iterationCount","_findRecurse","_connectedRoads","_positions","_debug"];
 
 /*
 _position = [position player] call ALIVE_fnc_getClosestRoad;

@@ -50,6 +50,9 @@ _result = true;
 
 switch(_operation) do {
         case "init": {
+
+            private ["_listenersByFilter","_eventsByType"];
+
             if (isServer) then {
                 // if server, initialise listener game logic
                 [_logic,"super"] call ALIVE_fnc_hashRem;
@@ -136,7 +139,7 @@ switch(_operation) do {
             };
         };
         case "removeListener": {
-            private["_listenerID","_listeners","_filteredListeners","_listener","_filter","_filters"];
+            private["_listenerID","_listeners","_filteredListeners","_filterListeners","_listener","_filter","_filters"];
 
             if(typeName _args == "STRING") then {
                 _listenerID = _args;

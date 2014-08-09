@@ -28,7 +28,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sector","_sectors","_err","_centerPosition","_id","_bounds","_dimensions","_gridPosition","_gridWidth","_sectorWidth"];
+private ["_sector","_sectors","_gridID","_err","_centerPosition","_id","_bounds","_dimensions","_gridPosition","_gridWidth","_sectorWidth","_grid"];
 
 _sector = _this select 0;
 _sectors = _this select 1;

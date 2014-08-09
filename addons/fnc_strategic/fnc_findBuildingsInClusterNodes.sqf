@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_nodes","_types","_err","_buildings","_node","_model","_isBuilding","_result"];
+private ["_nodes","_types","_err","_err1","_err2","_buildings","_node","_model","_isBuilding","_result"];
 
 _nodes = [_this, 0, [], [[]]] call BIS_fnc_param;
 _types = [_this, 1, [], [[]]] call BIS_fnc_param;

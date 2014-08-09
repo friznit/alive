@@ -508,7 +508,8 @@ switch(_operation) do {
 			"_countHQClusters","_countAirClusters","_countHeliClusters","_size","_type","_faction","_ambientVehicleAmount",
 			"_placeHelis","_placeSupplies","_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass",
 			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes",
-			"_airClasses","_node","_buildings","_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount"];
+			"_airClasses","_node","_buildings","_customInfantryCount","_customMotorisedCount","_customMechanisedCount",
+			"_customArmourCount","_customSpecOpsCount","_countVehicleClusters","_createHQ","_file"];
             
 		
 			_debug = [_logic, "debug"] call MAINCLASS;
@@ -624,26 +625,31 @@ switch(_operation) do {
                     _nodes = [_closestHQCluster, "nodes"] call ALIVE_fnc_hashGet;
 
                     _buildings = [_nodes, ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
-                    _hqBuilding = _buildings select 0;
+
+                    if(count _buildings > 0) then {
+                        _hqBuilding = _buildings select 0;
 
 
-                    // DEBUG -------------------------------------------------------------------------------------
-                    if(_debug) then {
-                        [position _hqBuilding, 4] call ALIVE_fnc_placeDebugMarker;
-                    };
-                    // DEBUG -------------------------------------------------------------------------------------
-
-
-                    {
-                        _nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
-
-                        if(_hqBuilding in _nodes) then {
-                            [_x, "priority",1000] call ALIVE_fnc_hashSet;
-                            [_logic, "HQCluster", _x] call MAINCLASS;
+                        // DEBUG -------------------------------------------------------------------------------------
+                        if(_debug) then {
+                            [position _hqBuilding, 4] call ALIVE_fnc_placeDebugMarker;
                         };
-                    } forEach _clusters;
+                        // DEBUG -------------------------------------------------------------------------------------
 
-                    [_logic, "HQBuilding", _hqBuilding] call MAINCLASS;
+
+                        {
+                            _nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+
+                            if(_hqBuilding in _nodes) then {
+                                [_x, "priority",1000] call ALIVE_fnc_hashSet;
+                                [_logic, "HQCluster", _x] call MAINCLASS;
+                            };
+                        } forEach _clusters;
+
+                        [_logic, "HQBuilding", _hqBuilding] call MAINCLASS;
+                    }else{
+                        ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dumpR;
+                    }
                 }else{
                     ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dumpR;
                 };
@@ -652,7 +658,7 @@ switch(_operation) do {
 			
 			// Spawn supplies in objectives
 			
-			private ["_countSupplies","_supplyClasses"];
+			private ["_countSupplies","_supplyClasses","_box"];
 			_countSupplies = 0;
 			
 			if(_placeSupplies) then {
@@ -1134,7 +1140,7 @@ switch(_operation) do {
 			if(_groupCount > 0) then {
 			
                 {
-                    private ["_guardGroup","_guards","_center","_size"];
+                    private ["_guardGroup","_guards","_center","_size","_profiles"];
 
                     _center = [_x, "center"] call ALIVE_fnc_hashGet;
                     _size = [_x, "size"] call ALIVE_fnc_hashGet;

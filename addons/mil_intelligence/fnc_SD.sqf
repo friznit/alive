@@ -101,7 +101,7 @@ switch(_operation) do {
 	case "start": {
         if (isServer) then {
 		
-			private ["_debug","_modules","_module","_activeAnalysisJobs","_gridProfileAnalysis","_args"];
+			private ["_debug","_runEvery","_modules","_module","_activeAnalysisJobs","_gridProfileAnalysis","_args"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;
             _runEvery = [_logic, "runEvery"] call MAINCLASS;

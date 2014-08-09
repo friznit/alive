@@ -233,7 +233,7 @@ switch(_operation) do {
 				_result = [_logic,"sectorType"] call ALIVE_fnc_hashGet;
         };
 		case "createGrid": {
-				private["_gridPosition","_gridSize","_sectorDimensions","_sectorType","_grid","_allSectors","_gridPositionX","_gridPositionY","_sectorWidth","_sectorHeight","_rows","_columns","_sectors","_row","_column","_sector","_position"];
+				private["_gridID","_gridPosition","_gridSize","_sectorDimensions","_sectorType","_grid","_allSectors","_gridPositionX","_gridPositionY","_sectorWidth","_sectorHeight","_rows","_columns","_sectors","_row","_column","_sector","_position"];
 				
 				_gridID = [_logic,"id"] call ALIVE_fnc_hashGet;
 				_gridPosition = [_logic,"gridPosition"] call ALIVE_fnc_hashGet;

@@ -27,7 +27,7 @@ ARJay
 
 [] spawn {
 
-	private ["_cfg","_pos","_exportString","_item","_class","_type","_scope","_vehicle","_countPositions","_positions"];
+	private ["_cfg","_pos","_exportString","_item","_class","_type","_scope","_vehicle","_countPositions","_positions","_count"];
 		
 	_cfg = configFile >> "CfgVehicles";
 	_pos = getPos player;

@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_filteredSectors","_sector","_sectorData","_flatEmpty"];
+private ["_sectors","_err","_filteredSectors","_sector","_sectorData","_flatEmpty"];
 	
 _sectors = _this select 0;
 

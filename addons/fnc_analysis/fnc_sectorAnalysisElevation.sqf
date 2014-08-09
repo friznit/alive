@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_elevation","_elevationData","_markers","_m"];
+private ["_sectors","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_elevation","_elevationData","_markers","_m","_id","_sectorData","_terrainData"];
 
 _sectors = _this select 0;
 _err = format["sector analysis elevation requires an array of sectors - %1",_sectors];

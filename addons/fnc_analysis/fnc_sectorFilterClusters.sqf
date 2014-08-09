@@ -33,7 +33,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_clusterCategory","_clusterType","_filteredSectors","_sector","_sectorData","_roads"];
+private ["_sectors","_clusterCategory","_clusterType","_err","_filteredSectors","_sector","_sectorData","_clusterData","_clusterTypeData"];
 
 _sectors = _this select 0;
 _clusterCategory = if(count _this > 1) then {_this select 1} else {'clustersMil'};

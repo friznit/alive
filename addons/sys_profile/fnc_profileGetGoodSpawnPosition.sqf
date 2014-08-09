@@ -24,7 +24,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_profile","_debug","_active","_position","_side","_profileID","_type","_objectType","_vehicleAssignments",
+private ["_profile","_markerCount","_createMarker","_debug","_active","_position","_side","_profileID","_type","_objectType","_vehicleAssignments",
 "_sector","_sectorData","_sectorTerrain","_sectorTerrainSamples","_samples","_sectors","_spawnPosition",
 "_vehicleProfile","_vehicleObjectType","_entitiesInCommandOf","_entitiesInCommandOf","_vehicleClass","_direction",
 "_vehicles","_fuel","_ammo","_engineOn","_damage","_despawnPosition","_vehiclesInCommandOf","_vehiclesInCargoOf",

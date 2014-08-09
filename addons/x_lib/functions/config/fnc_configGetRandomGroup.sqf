@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_type","_faction","_side","_factionConfig","_factionSide","_typeConfig","_groups","_class","_countUnits","_unit","_group","_groupName"];
+private ["_type","_faction","_side","_factionConfig","_factionSide","_typeConfig","_groups","_class","_countUnits","_unit","_group","_groupName","_customMappings","_groupFactionTypes"];
 
 _type = if(count _this > 0) then {_this select 0} else {"Infantry"};
 _faction = if(count _this > 1) then {_this select 1} else {"OPF_F"};

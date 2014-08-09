@@ -36,7 +36,7 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_menuDef", "_target", "_params", "_menuName", "_menuRsc", "_menus","_userItems","_items","_result"];
+private ["_menuDef","_target","_params","_menuName","_menuRsc","_menus","_backpacks","_userItems","_items","_result"];
 // _this==[_target, _menuNameOrParams]
 
 PARAMS_2(_target,_params);

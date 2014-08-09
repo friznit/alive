@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_result","_findRecurse","_class"];
+private ["_type","_ignoreGunner","_ignoreCommander","_result","_findRecurse","_class"];
 
 _type = _this select 0;
 _ignoreGunner = if(count _this > 1) then {_this select 1} else {false};

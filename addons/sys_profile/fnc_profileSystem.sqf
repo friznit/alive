@@ -73,7 +73,8 @@ switch(_operation) do {
         case "start": {
 		
 				private["_debug","_persistent","_plotSectors","_syncMode","_syncedUnits","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius",
-				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSMEast","_profileSpawnerFSMWest","_profileSpawnerFSMGuer","_profileSpawnerFSMCiv","_sectors","_persistent"];
+				"_activeLimiter","_spawnCycleTime","_despawnCycleTime","_profileSimulatorFSM","_profileSpawnerFSMEast","_profileSpawnerFSMWest",
+				"_profileSpawnerFSMGuer","_profileSpawnerFSMCiv","_sectors","_persistent","_file"];
                 
                 if (isServer) then {
 						
@@ -214,7 +215,10 @@ switch(_operation) do {
 						[ALIVE_liveAnalysis, "start"] call ALIVE_fnc_liveAnalysis;
                 };
         };
-        case "destroy": {                
+        case "destroy": {
+
+                private ["_profileSimulatorFSM","_profileSpawnerFSMEast","_profileSpawnerFSMWest","_profileSpawnerFSMGuer","_profileSpawnerFSMCiv"];
+
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
 					[_logic, "destroy"] call SUPERCLASS;

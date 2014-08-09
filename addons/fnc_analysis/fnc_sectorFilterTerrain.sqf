@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_terrainType","_filteredSectors","_sector","_sectorData","_terrainData"];
+private ["_sectors","_terrainType","_err","_filteredSectors","_sector","_sectorData","_terrainData"];
 	
 _sectors = _this select 0;
 _terrainType = _this select 1;

@@ -146,7 +146,7 @@ switch(_operation) do {
 				if(typeName _args == "ARRAY") then {
 				
 					private ["_profile","_commands","_profileID","_activeCommand","_commandName",
-					"_commandType","_commandArgs","_debug","_handle","_isManaging"];
+					"_commandType","_commandArgs","_debug","_commandState","_handle","_isManaging"];
 				
 					_profile = _args select 0;
 					_commands = _args select 1;
@@ -288,7 +288,7 @@ switch(_operation) do {
 			// spawn the manager thread
 			_handle = [_logic, _debug, _commandState] spawn {
 			
-				private ["_debug","_commandState","_activeCommand","_profile","_profileID","_commandType","_commandName","_commandArgs"];
+				private ["_debug","_commandState","_activeCommand","_profile","_profileID","_commandType","_commandName","_commandArgs","_nextState","_nextStateArgs"];
 			
 				_logic = _this select 0;
 				_debug = _this select 1;

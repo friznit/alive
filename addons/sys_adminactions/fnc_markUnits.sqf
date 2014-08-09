@@ -62,7 +62,7 @@ private ["_m","_markers","_delay"];
 	} forEach allUnits;
 
 	// not spawned
-	private["_inactiveEntities","_position","_side"];
+	private["_inactiveEntities","_position","_side","_i"];
 
 	if (isServer) then {
 		_inactiveEntities = [] call ALIVE_fnc_getInActiveEntitiesForMarking;

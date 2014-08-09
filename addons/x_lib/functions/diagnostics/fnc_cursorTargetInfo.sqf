@@ -25,7 +25,7 @@ ARJay
 
 [] spawn 
 {		
-	private ["_hold", "_text", "_instanceName", "_name", "_typeOf"];
+	private ["_hold", "_text", "_instanceName", "_name", "_typeOf","_model"];
 
 	_hold = 0;
 

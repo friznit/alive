@@ -34,7 +34,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectorData","_key","_args","_data","_sortedData"];
+private ["_sectorData","_key","_args","_err","_data","_sortedData"];
 	
 _sectorData = _this select 0;
 _key = _this select 1;
@@ -120,7 +120,7 @@ switch (_key) do {
 		_sortedData
 	};
 	case "entitiesBySide": {
-		private ["_position","_sideKey","_order","_placeData"];
+		private ["_position","_sideKey","_order","_placeData","_sideData"];
 		
 		_position = _args select 0;
 		_sideKey = _args select 1;
@@ -133,7 +133,7 @@ switch (_key) do {
 		_sortedData
 	};
 	case "vehiclesBySide": {
-		private ["_position","_sideKey","_order","_placeData"];
+		private ["_position","_sideKey","_order","_placeData","_sideData"];
 		
 		_position = _args select 0;
 		_sideKey = _args select 1;

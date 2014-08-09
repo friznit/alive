@@ -32,7 +32,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_roadType","_filteredSectors","_sector","_sectorData","_roads"];
+private ["_sectors","_roadType","_err","_filteredSectors","_sector","_sectorData","_roads","_roadData"];
 	
 _sectors = _this select 0;
 _roadType = if(count _this > 1) then {_this select 1} else {'road'};

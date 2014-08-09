@@ -28,7 +28,8 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleAssignment","_profile","_orderGetIn","_profileType","_vehicle","_units","_vehicleProfileID","_vehicleProfile"];
+private ["_vehicleAssignment","_profile","_orderGetIn","_profileType","_vehicle","_entityProfileID","_entityProfile",
+"_entityProfileActive","_units","_vehicleProfileID","_vehicleProfile","_indexes","_vehicleProfileActive"];
 
 _vehicleAssignment = _this select 0;
 _profile = _this select 1;

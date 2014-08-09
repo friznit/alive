@@ -33,7 +33,7 @@ Tupolov
 
 #include "script_component.hpp"
 
-private ["_mode","_savePlayer","_saveServer"];
+private ["_mode","_savePlayer","_saveServer","_exitPlayer","_exitServer"];
 
 _mode = _this select 0;
 

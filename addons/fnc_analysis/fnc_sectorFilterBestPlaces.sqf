@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_placeType","_filteredSectors","_sector","_sectorData","_bestPlaces"];
+private ["_sectors","_placeType","_filteredSectors","_sector","_sectorData","_bestPlaces","_err","_placesTypeData"];
 	
 _sectors = _this select 0;
 _placeType = _this select 1;

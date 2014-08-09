@@ -25,7 +25,8 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_err","_sector","_result","_centerPosition","_id","_bounds","_dimensions","_radius","_roads","_nearRoads","_road","_roadsConnectedTo","_connectedRoad","_direction"];
+private ["_sectors","_err","_sector","_result","_centerPosition","_id","_bounds","_dimensions","_radius","_roads","_nearRoads","_road","_roadsConnectedTo","_connectedRoad","_direction",
+"_standardRoads","_crossRoads","_terminusRoads","_position"];
 
 _sectors = _this select 0;
 _err = format["sector analysis terrain requires an array of sectors - %1",_sectors];

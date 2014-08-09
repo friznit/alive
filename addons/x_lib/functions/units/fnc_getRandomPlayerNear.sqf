@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_position","_distance","_near","_result","_player"];
+private ["_position","_distance","_players","_near","_result","_player"];
 
 _position = _this select 0;
 _distance = _this select 1;

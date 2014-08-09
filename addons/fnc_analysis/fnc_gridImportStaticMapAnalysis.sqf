@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_grid","_worldName","_sectors","_staticMapAnalysis","_sector","_sectorID"];
+private ["_grid","_worldName","_sectors","_staticMapAnalysis","_sector","_sectorID","_file"];
 
 _grid = _this select 0;
 

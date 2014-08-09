@@ -24,7 +24,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_cfg","_detailed","_item","_text"];
+private ["_cfg","_detailed","_item","_text","_result","_findRecurse","_className"];
 
 _cfg = _this select 0;
 

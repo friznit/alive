@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_array","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_quadrantWidth","_terrain","_terrainData","_countIsWater","_direction","_position"];
+private ["_sectors","_err","_sector","_result","_centerPosition","_bounds","_dimensions","_quadrantWidth","_terrain","_terrainData","_countIsWater","_direction","_position","_id"];
 
 _sectors = _this select 0;
 _err = format["sector analysis terrain requires an array of sectors - %1",_sectors];

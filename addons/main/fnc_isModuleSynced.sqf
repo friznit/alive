@@ -26,7 +26,7 @@ Highhead
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
-private ["_source","_target"];
+private ["_source","_target","_result"];
 
 _source = _this select 0;
 _target = _this select 1;

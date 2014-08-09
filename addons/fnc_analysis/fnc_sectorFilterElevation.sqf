@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_sectors","_elevationMin","_elevationMax","_filteredSectors","_sector","_sectorData","_elevationData"];
+private ["_sectors","_elevationMin","_elevationMax","_err","_filteredSectors","_sector","_sectorData","_elevationData"];
 	
 _sectors = _this select 0;
 _elevationMin = _this select 1;

@@ -24,7 +24,7 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_waypoints","_id","_unit","_profile","_obj","_leader","_pos","_radius","_positions","_assignments","_group"];
+private ["_waypoints","_args","_debug","_type","_id","_unit","_profile","_obj","_leader","_pos","_radius","_positions","_assignments","_group"];
 
 _profile = _this select 0;
 _args = _this select 1;

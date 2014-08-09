@@ -241,8 +241,8 @@ switch(_operation) do {
         if (isServer) then {
             [_logic, "destroy"] call SUPERCLASS;
 
-            _activatorFSM = [_logic, "activator_FSM"] call ALiVE_fnc_HashGet;
-            _activatorFSM setFSMVariable ["_destroy",true];
+            _clusterActivatorFSM = [_logic, "activator_FSM"] call ALiVE_fnc_HashGet;
+            _clusterActivatorFSM setFSMVariable ["_destroy",true];
 
         };
     };

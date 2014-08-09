@@ -26,7 +26,7 @@ Author:
 Wolffy, Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_pos","_type","_fac","_facs","_sidex","_side","_grpx","_grps","_grp","_fx","_facx","_s","_spawnGrp","_wp","_nonConfigs"];
+private ["_logic","_pos","_type","_fac","_facs","_sidex","_side","_grpx","_grps","_grp","_fx","_facx","_s","_spawnGrp","_wp","_nonConfigs","_factionInput"];
 
 _pos = _this select 0;
 _type = _this select 1;

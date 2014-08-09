@@ -123,6 +123,8 @@ switch(_operation) do {
 						[_profilesBySide, "CIV", []] call ALIVE_fnc_hashSet;
 						[_logic,"profilesBySide",_profilesBySide] call ALIVE_fnc_hashSet;
 
+						private["_profilesBySideFull","_profilesActiveBySide","_profilesInActiveBySide"];
+
 						_profilesBySideFull = [] call ALIVE_fnc_hashCreate;
                         [_profilesBySideFull, "EAST", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                         [_profilesBySideFull, "WEST", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
@@ -147,6 +149,9 @@ switch(_operation) do {
 						[_logic,"profilesByFaction",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByFactionByType",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByFactionByVehicleType",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+
+						private["_profilesByType","_profilesByVehicleType","_profilesByVehicleTypeEAST","_profilesByVehicleTypeWEST",
+						"_profilesByVehicleTypeGUER","_profilesByVehicleTypeCIV"];
 
 						_profilesByType = [] call ALIVE_fnc_hashCreate;
 						[_profilesByType, "entity", []] call ALIVE_fnc_hashSet;
@@ -204,6 +209,8 @@ switch(_operation) do {
 						[_profilesByVehicleTypeCIV, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeCIV, "StaticWeapon", []] call ALIVE_fnc_hashSet;
 
+						private ["_profilesByTypeEAST","_profilesByTypeWEST","_profilesByTypeGUER","_profilesByTypeCIV"];
+
 						_profilesByTypeEAST = [] call ALIVE_fnc_hashCreate;
 						[_profilesByTypeEAST, "entity", []] call ALIVE_fnc_hashSet;
 						[_profilesByTypeEAST, "vehicle", []] call ALIVE_fnc_hashSet;
@@ -219,6 +226,8 @@ switch(_operation) do {
 						_profilesByTypeCIV = [] call ALIVE_fnc_hashCreate;
 						[_profilesByTypeCIV, "entity", []] call ALIVE_fnc_hashSet;
 						[_profilesByTypeCIV, "vehicle", []] call ALIVE_fnc_hashSet;
+
+						private ["_catagoriesEAST","_catagoriesWEST","_catagoriesGUER","_catagoriesCIV","_profilesCatagorised"];
 
 						_catagoriesEAST = [] call ALIVE_fnc_hashCreate;
 						[_catagoriesEAST, "type", _profilesByTypeEAST] call ALIVE_fnc_hashSet;
@@ -261,7 +270,7 @@ switch(_operation) do {
                 };
         };
         case "debug": {
-				private["_profiles"];
+				private["_profiles","_profileType"];
 
                 if(typeName _args != "BOOL") then {
 						_args = [_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -424,7 +433,7 @@ switch(_operation) do {
                             _profilesSideFull = [_profilesBySideFull, _profileSide] call ALIVE_fnc_hashGet;
 							[_profilesSideFull, _profileID, _profile] call ALIVE_fnc_hashSet;
 
-							private["_profilesFaction","_profilesFactionType","_profilesFactionVehicleType"];
+							private["_profilesFaction","_profilesFactionType","_profilesFactionVehicleType","_profileFactionType","_profileFactionVehicleType"];
 
 							// store reference to main profile on by faction hash
 							if(_profileFaction in (_profilesByFaction select 1)) then {
@@ -523,7 +532,7 @@ switch(_operation) do {
 				"_profileFaction","_profilesSide","_profilesFaction","_profileActive","_profleByCompanyArray","_profileVehicleType",
 				"_profilesVehicleType","_profilesCatagorised","_profilesCatagorisedSide","_profilesCatagorisedTypes","_profilesCatagorisedVehicleTypes",
 				"_profilesCatagorisedType","_profilesCatagorisedVehicleType","_profilePositions","_profilesBySideFull","_profilesSideFull","_profilesActiveSide","_profilesInActiveSide",
-				"_playerEntities","_profileIsPlayer"];
+				"_playerEntities","_profileIsPlayer","_profilesFactionType","_profilesFactionVehicleType"];
 
 				if(typeName _args == "ARRAY") then {
 						_profile = _args;
@@ -925,7 +934,7 @@ switch(_operation) do {
         };
         case "getFactionBreakdown": {
                 private["_faction","_factionProfiles","_factionEntityProfiles","_factionVehicleProfiles","_factionVehicleCars","_factionVehicleTanks","_factionVehicleArmoured",
-                "_factionVehicleTruck","_factionVehicleShips","_factionVehicleHelicopters","_factionVehiclePlane","_breakdown"];
+                "_factionVehicleTruck","_factionVehicleShips","_factionVehicleHelicopters","_factionVehiclePlane","_breakdown","_factionVehicleArmored"];
 
                 if(typeName _args == "STRING") then {
                     _faction = _args;
@@ -1023,7 +1032,7 @@ switch(_operation) do {
 			[_logic, "profileVehicleCount", _vehicleCount] call ALIVE_fnc_hashSet;
 		};
 		case "getUnitCount": {
-			private["_unitCount","_entities","_entity","_count"];
+			private["_unitCount","_profiles","_profileType","_entities","_entity","_count"];
 			_unitCount = 0;
 			_profiles = [_logic, "profiles"] call ALIVE_fnc_hashGet;
 
@@ -1038,7 +1047,7 @@ switch(_operation) do {
 			_result = _unitCount;
 		};
 		case "getVehicleCount": {
-			private["_unitCount","_entities","_entity","_count"];
+			private["_unitCount","_vehicles"];
 			_vehicles = [_logic, "getProfilesByType", "vehicle"] call MAINCLASS;
 			_result = count _vehicles;
 		};
@@ -1294,7 +1303,7 @@ switch(_operation) do {
         };
         case "importProfileData": {
             private["_profiles","_profile","_profileType","_vehicleAssignmentKeys","_vehicleAssignmentValues","_key","_value","_assignments","_assignment","_rebuiltHash",
-            "_position","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses","_side"];
+            "_position","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses","_side","_profileEntity","_profileVehicle"];
 
             if(typeName _args == "ARRAY") then {
 
