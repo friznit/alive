@@ -65,7 +65,7 @@ if(count _staticWeapons > 0) then
 
         if(count _units > 0) then {
 
-            _unit = _units select (count _units - _foreachIndex - 1);
+            _unit = _units select 0;
 
             if(!isNil "_unit") then {
 
@@ -114,7 +114,7 @@ if(count _buildings > 0) then {
 
             if(count _units > 0) then {
 
-                _unit = _units select (count _units - _foreachIndex - 1);
+                _unit = _units select 0;
 
                 if(!isNil "_unit") then {
 
@@ -170,7 +170,7 @@ if(count _buildings > 0) then {
 
             if(count _units > 0) then {
 
-                _unit = _units select (count _units - _foreachIndex - 1);
+                _unit = _units select 0;
 
                 if(!isNil "_unit") then {
 
