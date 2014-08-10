@@ -1906,6 +1906,13 @@ switch(_operation) do {
 
                 };
 
+                case "MAP_CLICK_NULL": {
+
+                    // map click on status
+                    // do nothing
+
+                };
+
                 case "PAYLOAD_REQUEST_CLICK": {
 
                     // payload requested
@@ -2199,6 +2206,10 @@ switch(_operation) do {
             private ["_deliveryTitle","_deliveryList","_supplyTitle","_supplyList","_reinforceTitle","_reinforceList",
             "_payloadTitle","_payloadList","_payloadInfo","_payloadStatus","_payloadWeight","_payloadSize","_payloadGroups","_payloadVehicles",
             "_payloadIndividuals","_payloadDeleteButton","_payloadOptionsCombo","_payloadRequestButton"];
+
+            _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
+
+            _map ctrlSetEventHandler ["MouseButtonDown", "['MAP_CLICK_NULL',[_this]] call ALIVE_fnc_PRTabletOnAction"];
 
 
             _deliveryTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryTypeTitle);

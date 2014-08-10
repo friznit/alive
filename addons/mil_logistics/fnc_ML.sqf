@@ -2077,7 +2077,23 @@ switch(_operation) do {
 
                                     if!(isNil "_vehicle") then {
 
-                                        _vehicle land "LAND";
+                                        [_vehicle] spawn {
+
+                                            _vehicle = _this select 0;
+
+                                            sleep 3;
+
+                                            while { ( (alive _vehicle) && !(unitReady _vehicle) ) } do
+                                            {
+                                                   sleep 2;
+                                            };
+
+                                            if (alive _vehicle) then
+                                            {
+                                                   _vehicle land "LAND";
+                                            };
+
+                                        };
 
                                     };
 

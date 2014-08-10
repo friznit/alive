@@ -65,7 +65,7 @@ switch (_state) do {
 
         _target = _agent getVariable "ALIVE_agentMeetingTarget";
 
-        if(isNull _target) then {
+        if(isNil "_target") then {
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
