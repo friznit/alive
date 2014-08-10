@@ -229,6 +229,7 @@ switch(_operation) do {
 					[_logic,"_rev",""] call ALIVE_fnc_hashSet; // select 2 select 24
 					[_logic,"_id",""] call ALIVE_fnc_hashSet; // select 2 select 25
 					[_logic,"busy",false] call ALIVE_fnc_hashSet; // select 2 select 26
+					[_logic,"cargo",[]] call ALIVE_fnc_hashSet; // select 2 select 27
                 };
 
                 /*
@@ -385,6 +386,12 @@ switch(_operation) do {
                 };
                 _result = [_logic,"busy"] call ALIVE_fnc_hashGet;
         };
+        case "cargo": {
+                if(typeName _args == "ARRAY") then {
+                        [_logic,"cargo",_args] call ALIVE_fnc_hashSet;
+                };
+                _result = [_logic,"cargo"] call ALIVE_fnc_hashGet;
+        };
 		case "addVehicleAssignment": {
 				private ["_assignments","_key","_units","_unit","_group"];
 
@@ -418,7 +425,7 @@ switch(_operation) do {
 		};
 		case "spawn": {
 				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage",
-				"_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_special","_vehicle","_eventID",
+				"_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_cargo","_special","_vehicle","_eventID",
 				"_speed","_velocity","_paraDrop","_parachute","_soundFlyover"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -434,6 +441,7 @@ switch(_operation) do {
 				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
 				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+				_cargo = _logic select 2 select 27; //[_logic,"cargo"] call ALIVE_fnc_hashGet;
 				_paraDrop = false;
 
 				// not already active
@@ -458,7 +466,6 @@ switch(_operation) do {
 					} else {
 						_special = "NONE";
 						if ((_position select 2) > 300) then {
-						    ["!!!!!!!!!!!!!!!!!!PARADROP!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
 						    _paraDrop = true;
 						}else{
 						    _position set [2,0];
@@ -471,6 +478,10 @@ switch(_operation) do {
 					_vehicle setFuel _fuel;
 					_vehicle engineOn _engineOn;
 					//_vehicle setVehicleVarName _profileID;
+
+					if(count _cargo > 0) then {
+                        [ALiVE_SYS_LOGISTICS,"fillContainer",[_vehicle,_cargo]] call ALiVE_fnc_Logistics;
+					};
 
 					if(_paraDrop) then {
 					    _parachute = createvehicle ["B_Parachute_02_F",position _vehicle ,[],0,"none"];
@@ -539,13 +550,14 @@ switch(_operation) do {
 				};
 		};
 		case "despawn": {
-				private ["_debug","_active","_side","_vehicle","_profileID","_position","_despawnPrevented","_linked","_spawnType"];
+				private ["_debug","_active","_side","_vehicle","_profileID","_cargo","_position","_despawnPrevented","_linked","_spawnType"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet;
 				_side = _logic select 2 select 3; //[_logic,"side"] call ALIVE_fnc_hashGet;
 				_vehicle = _logic select 2 select 10; //[_logic,"vehicle"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+				_cargo = _logic select 2 select 27; //[_logic,"cargo"] call ALIVE_fnc_hashGet;
 
 				// not already inactive
 				if(_active) then {
@@ -587,6 +599,10 @@ switch(_operation) do {
 						[_logic,"canMove", canMove _vehicle] call ALIVE_fnc_hashSet;
 						[_logic,"needReload", needReload _vehicle] call ALIVE_fnc_hashSet;
 						[_logic,"vehicle",objNull] call ALIVE_fnc_hashSet;
+
+						if(count _cargo > 0) then {
+                            [ALiVE_SYS_LOGISTICS,"clearContainer",_vehicle] call ALiVE_fnc_Logistics;
+                        };
 
 						// delete
 						deleteVehicle _vehicle;

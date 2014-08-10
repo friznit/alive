@@ -45,6 +45,7 @@ Peer Reviewed:
 #define DEFAULT_SIDE "WEST"
 #define DEFAULT_FACTION "BLU_F"
 #define DEFAULT_MARKER []
+#define DEFAULT_DESTINATION_MARKER []
 #define DEFAULT_DESTINATION []
 #define DEFAULT_SCALAR 0
 #define DEFAULT_COUNT_AIR []
@@ -224,6 +225,9 @@ switch(_operation) do {
     };
     case "marker": {
         _result = [_logic,_operation,_args,DEFAULT_MARKER] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "destinationMarker": {
+        _result = [_logic,_operation,_args,DEFAULT_DESTINATION_MARKER] call ALIVE_fnc_OOsimpleOperation;
     };
     case "destination": {
         _result = [_logic,_operation,_args,DEFAULT_DESTINATION] call ALIVE_fnc_OOsimpleOperation;
@@ -551,23 +555,45 @@ switch(_operation) do {
 
                     // LOGCOM has delivered the request
 
+                    private ["_position","_isWaiting","_marker","_markerLabel"];
+
+                    _position = _eventData select 2;
+                    _isWaiting = _eventData select 3;
+                    _markerLabel = "";
+
                     switch(_selectedDeliveryValue) do {
                         case "PR_AIRDROP": {
                             _radioMessage = "Airdrop request completed";
+                            _markerLabel = "Airdrop destination";
                         };
                         case "PR_HELI_INSERT": {
                             _radioMessage = "Rotary wing insertion request completed";
+                            _markerLabel = "Insert destination";
                         };
                         case "PR_STANDARD": {
                             _radioMessage = "Convoy request completed";
+                            _markerLabel = "Convoy destination";
                         };
                     };
+
+                    if(_isWaiting) then {
+                        _radioMessage = format["%1, Payload transport vehicle will wait for 2 minutes for unloading before RTB.",_radioMessage];
+                    };
+
+                    _marker = createMarkerLocal ["PR_DESTINATION",_position];
+                    _marker setMarkerAlphaLocal 1;
+                    _marker setMarkerTextLocal _markerLabel;
+                    _marker setMarkerTypeLocal "hd_End";
+
+                    [_logic,"destinationMarker",[_marker]] call MAINCLASS;
 
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
                     [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    //
 
                     // set the tablet state to reset
 
@@ -948,7 +974,7 @@ switch(_operation) do {
 
                         // reset map marker
 
-                        private ["_markers"];
+                        private ["_markers","_destinationMarkers"];
 
                         _markers = [_logic,"marker"] call MAINCLASS;
 
@@ -958,6 +984,14 @@ switch(_operation) do {
 
                         [_logic,"marker",[]] call MAINCLASS;
                         [_logic,"destination",[]] call MAINCLASS;
+
+                        _destinationMarkers = [_logic,"destinationMarker"] call MAINCLASS;
+
+                        if(count _destinationMarkers > 0) then {
+                            deleteMarkerLocal (_destinationMarkers select 0);
+                        };
+
+                        [_logic,"destinationMarker",[]] call MAINCLASS;
 
                         // restore the delivery type list
 

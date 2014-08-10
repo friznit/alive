@@ -223,6 +223,12 @@ ALIVE_sideDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultAirTransport, "GUER", ["I_Heli_light_03_unarmed_F","I_Heli_Transport_02_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultAirTransport, "CIV", []] call ALIVE_fnc_hashSet;
 
+ALIVE_sideDefaultContainers = [] call ALIVE_fnc_hashCreate;
+[ALIVE_sideDefaultContainers, "EAST", ["ALIVE_O_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_sideDefaultContainers, "WEST", ["ALIVE_B_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_sideDefaultContainers, "GUER", ["ALIVE_I_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_sideDefaultContainers, "CIV", []] call ALIVE_fnc_hashSet;
+
 ALIVE_factionDefaultSupports = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupports, "OPF_F", ["O_Truck_02_Ammo_F","O_Truck_02_box_F","O_Truck_02_fuel_F","O_Truck_02_medical_F","O_Truck_02_transport_F","O_Truck_02_covered_F"]] call ALIVE_fnc_hashSet; // ,"Box_East_AmmoVeh_F"
 [ALIVE_factionDefaultSupports, "OPF_G_F", ["O_G_Offroad_01_armed_F","O_G_Van_01_fuel_F","O_G_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
@@ -253,6 +259,14 @@ ALIVE_factionDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultAirTransport, "BLU_F", ["B_Heli_Transport_01_camo_F","B_Heli_Transport_01_camo_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultAirTransport, "BLU_G_F", ["I_Heli_light_03_unarmed_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultAirTransport, "CIV_F", []] call ALIVE_fnc_hashSet;
+
+ALIVE_factionDefaultContainers = [] call ALIVE_fnc_hashCreate;
+[ALIVE_factionDefaultContainers, "OPF_F", ["ALIVE_O_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultContainers, "OPF_G_F", ["ALIVE_O_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultContainers, "IND_F", ["ALIVE_I_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultContainers, "BLU_F", ["ALIVE_B_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultContainers, "BLU_G_F", ["ALIVE_B_supplyCrate_F"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultContainers, "CIV_F", []] call ALIVE_fnc_hashSet;
 
 
 /*

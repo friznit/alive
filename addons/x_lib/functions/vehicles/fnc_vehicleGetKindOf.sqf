@@ -28,7 +28,7 @@ ARJay
 private ["_vehicle","_result"];
 	
 _vehicle = _this;
-_result = "";
+_result = "Vehicle";
 
 if(_vehicle isKindOf "Car") then {
 	_result = "Car";

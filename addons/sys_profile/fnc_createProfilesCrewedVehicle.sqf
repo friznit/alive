@@ -29,7 +29,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_prefix","_engineOn","_busy","_position",
+private ["_vehicleClass","_side","_faction","_rank","_direction","_spawnGoodPosition","_prefix","_engineOn","_busy","_cargo","_position",
 "_groupProfiles","_groupUnits","_groupVehicles","_class","_rank","_vehicle","_vehicleType","_vehicleID","_entityID"];
 
 _vehicleClass = _this select 0;
@@ -42,6 +42,7 @@ _spawnGoodPosition = if(count _this > 6) then {_this select 6} else {true};
 _prefix = if(count _this > 7) then {_this select 7} else {""};
 _engineOn = if(count _this > 8) then {_this select 8} else {false};
 _busy = if(count _this > 9) then {_this select 9} else {false};
+_cargo = if(count _this > 10) then {_this select 10} else {[]};
 
 // get counts of current profiles
 
@@ -87,6 +88,10 @@ _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
 [_profileVehicle, "busy", _busy] call ALIVE_fnc_profileVehicle;
+
+if(count _cargo > 0) then {
+    [_profileVehicle, "cargo", _cargo] call ALIVE_fnc_profileVehicle;
+};
 
 if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 	[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;

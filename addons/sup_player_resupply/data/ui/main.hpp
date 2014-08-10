@@ -403,7 +403,7 @@ class PRTablet
             x = 0.271102 * safezoneW + safezoneX;
             y = 0.2200 * safezoneH + safezoneY;
             w = 0.241271 * safezoneW;
-            h = 0.1 * safezoneH;
+            h = 0.2 * safezoneH;
             style = 528;
             colorBackground[] = {0,0,0,0};
             class Attributes

@@ -306,7 +306,7 @@ _vehicleCount = 0;
 	    && !(_vehicle getVariable ["ALIVE_profileIgnore",false])
 	    && !(_vehicle getVariable ["ALIVE_Convoy",false])
 	    ) then {
-		if((_vehicle getVariable ["profileID",""]) == "" && (_vehicle getVariable ["agentID",""]) == "" && _vehicleKind !="") then {
+		if((_vehicle getVariable ["profileID",""]) == "" && (_vehicle getVariable ["agentID",""]) == "" && _vehicleKind !="Vehicle") then {
 		
 			{
 				if(isPlayer _x) then {

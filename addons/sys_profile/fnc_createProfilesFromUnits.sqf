@@ -319,7 +319,7 @@ if(_debug) then {
 	
 	if(!(_vehicleClass in _vehicleBlacklist) && !(_vehicle getVariable ["ALIVE_CombatSupport",false]))then {
 
-		if((_vehicle getVariable ["profileID",""]) == "" && _vehicleKind !="") then {
+		if((_vehicle getVariable ["profileID",""]) == "" && _vehicleKind !="Vehicle") then {
 		
 			{
 				if(isPlayer _x) then {

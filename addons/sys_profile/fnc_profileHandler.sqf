@@ -167,6 +167,7 @@ switch(_operation) do {
 						[_profilesByVehicleType, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleType, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleType, "StaticWeapon", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleType, "Vehicle", []] call ALIVE_fnc_hashSet;
 						[_logic,"profilesByVehicleType",_profilesByVehicleType] call ALIVE_fnc_hashSet;
 
 						_profilesByVehicleTypeEAST = [] call ALIVE_fnc_hashCreate;
@@ -178,6 +179,7 @@ switch(_operation) do {
 						[_profilesByVehicleTypeEAST, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeEAST, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeEAST, "StaticWeapon", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleTypeEAST, "Vehicle", []] call ALIVE_fnc_hashSet;
 
 						_profilesByVehicleTypeWEST = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleTypeWEST, "Car", []] call ALIVE_fnc_hashSet;
@@ -188,6 +190,7 @@ switch(_operation) do {
 						[_profilesByVehicleTypeWEST, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeWEST, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeWEST, "StaticWeapon", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleTypeWEST, "Vehicle", []] call ALIVE_fnc_hashSet;
 
 						_profilesByVehicleTypeGUER = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleTypeGUER, "Car", []] call ALIVE_fnc_hashSet;
@@ -198,6 +201,7 @@ switch(_operation) do {
 						[_profilesByVehicleTypeGUER, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeGUER, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeGUER, "StaticWeapon", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleTypeGUER, "Vehicle", []] call ALIVE_fnc_hashSet;
 
 						_profilesByVehicleTypeCIV = [] call ALIVE_fnc_hashCreate;
 						[_profilesByVehicleTypeCIV, "Car", []] call ALIVE_fnc_hashSet;
@@ -208,6 +212,7 @@ switch(_operation) do {
 						[_profilesByVehicleTypeCIV, "Helicopter", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeCIV, "Plane", []] call ALIVE_fnc_hashSet;
 						[_profilesByVehicleTypeCIV, "StaticWeapon", []] call ALIVE_fnc_hashSet;
+						[_profilesByVehicleTypeCIV, "Vehicle", []] call ALIVE_fnc_hashSet;
 
 						private ["_profilesByTypeEAST","_profilesByTypeWEST","_profilesByTypeGUER","_profilesByTypeCIV"];
 
@@ -459,6 +464,7 @@ switch(_operation) do {
                                 [_profilesFactionVehicleType, "Helicopter", []] call ALIVE_fnc_hashSet;
                                 [_profilesFactionVehicleType, "Plane", []] call ALIVE_fnc_hashSet;
                                 [_profilesFactionVehicleType, "StaticWeapon", []] call ALIVE_fnc_hashSet;
+                                [_profilesFactionVehicleType, "Vehicle", []] call ALIVE_fnc_hashSet;
 
                                 [_profilesByFactionByVehicleType, _profileFaction, _profilesFactionVehicleType] call ALIVE_fnc_hashSet;
 							};
