@@ -34,6 +34,7 @@ Peer Reviewed:
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_PR
 #define MTEMPLATE "ALiVE_PR_%1"
+#define DEFAULT_PR_ITEM "LaserDesignator"
 #define DEFAULT_SELECTED_INDEX 0
 #define DEFAULT_SELECTED_VALUE ""
 #define DEFAULT_SELECTED_OPTIONS []
@@ -106,6 +107,10 @@ switch(_operation) do {
 			[_logic, "destroy"] call SUPERCLASS;
 		};
 	};
+
+	case "pr_item": {
+        _result = [_logic,_operation,_args,DEFAULT_PR_ITEM] call ALIVE_fnc_OOsimpleOperation;
+    };
 
 	case "countsAir": {
         _result = [_logic,_operation,_args,DEFAULT_COUNT_AIR] call ALIVE_fnc_OOsimpleOperation;

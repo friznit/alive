@@ -8,4 +8,10 @@
 <Key ID="STR_ALIVE_PR_COMMENT">
     <English>Resupply players with logistics requests</English>
 </Key>
+<Key ID="STR_ALIVE_PR_ALLOW">
+    <English>Item</English>
+</Key>
+<Key ID="STR_ALIVE_PR_ALLOW_COMMENT">
+    <English>Define the item the player must have to be able to use Player Resupply i.e "LaserDesignator"</English>
+</Key>
 </Container></Package></Project>
