@@ -35,11 +35,11 @@ _blacklist = GVAR(STOWABLE) select 2;
 _canStow = false;
 
 // Basic checks
-if (isnil "_container" || {_object == _container} || {{_object isKindOf _x} count _blackList > 0} || {getNumber(configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier") < 2} || {_object in (_container getvariable [QGVAR(CARGO),[]])} || {!isnil {_object getvariable QGVAR(CONTAINER)}}) exitwith {_canStow};
+if (isnil "_container" || {_object == _container} || {{_object isKindOf _x} count _blackList > 0} || {getNumber(configFile >> "cfgVehicles" >> typeof _container >> "transportSoldier") == 0} || {_object in (_container getvariable [QGVAR(CARGO),[]])} || {!isnil {_object getvariable QGVAR(CONTAINER)}}) exitwith {_canStow};
 
 // Consider removing! How to handle profiles?
-if (!isnil {_container getVariable "profileID"}) exitwith {_canStow};
-if (!isnil {_object getVariable "profileID"}) exitwith {_canStow};
+//if (!isnil {_container getVariable "profileID"}) exitwith {_canStow};
+//if (!isnil {_object getVariable "profileID"}) exitwith {_canStow};
 
 {if (_container isKindOf _x) exitwith {_containerCanStow = true}} foreach _allowedContainers;
 {if (_object isKindOf _x) exitwith {_objectCanStow = true}} foreach _allowedObjects;

@@ -629,7 +629,7 @@ switch (_operation) do {
                     _text = "Drop object";
                     _input = "call {private ['_objs','_result']; _objs = attachedObjects (_this select 1); {if (!isnull _x) exitwith {_result = _x}} foreach _objs; _result}";
                     _container = "_this select 1";
-                    _condition = "({!isnull _x} count (attachedObjects _target)) > 0";
+                    _condition = "vehicle _target == _target && {({!isnull _x} count (attachedObjects _target)) > 0}";
                 };
                 case ("unloadObjects") : {
                     _text = "Load out cargo"; 
@@ -638,7 +638,7 @@ switch (_operation) do {
                     _condition = "cursortarget distance _target < 5 && {count (cursortarget getvariable ['ALiVE_SYS_LOGISTICS_CARGO',[]]) > 0}";
                 };
                 case ("stowObjects") : {
-                    _text  = "Stow in cargo"; 
+                    _text  = "Stow in cargo";
                     _input = "objNull"; 
                     _container = "cursortarget"; 
                     _condition = "cursortarget distance _target < 5 && {[((nearestObjects [cursortarget, ALiVE_SYS_LOGISTICS_STOWABLE select 1, 8]) select 0),cursortarget] call ALiVE_fnc_canStow}";
@@ -646,8 +646,8 @@ switch (_operation) do {
                 case ("towObject") : {
                     _text  = "Tow object";
                     _input = "cursortarget";
-                    _container = "((nearestObjects [_this select 1, ALiVE_SYS_LOGISTICS_TOWABLE select 0, 8]) select 0)";
-                    _condition = "cursortarget distance player < 5 && {[cursortarget,(nearestObjects [cursortarget, ALiVE_SYS_LOGISTICS_TOWABLE select 0, 8]) select 0] call ALiVE_fnc_canTow}";
+                    _container = "((nearestObjects [_this select 1, ALiVE_SYS_LOGISTICS_TOWABLE select 0, 15]) select 0)";
+                    _condition = "cursortarget distance player < 5 && {[cursortarget,(nearestObjects [cursortarget, ALiVE_SYS_LOGISTICS_TOWABLE select 0, 15]) select 0] call ALiVE_fnc_canTow}";
                 };
                 case ("untowObject") : {
                     _text  = "Untow object";
