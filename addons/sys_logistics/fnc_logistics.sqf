@@ -103,7 +103,7 @@ switch (_operation) do {
             GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","StaticWeapon","ThingX"],["House"]];
             GVAR(TOWABLE) = [["Truck_F"],["Car","Ship"],[]];
             GVAR(STOWABLE) = [["Car","Truck_F","Helicopter","Ship","ALIVE_O_supplyCrate_F","ALIVE_I_supplyCrate_F","ALIVE_B_supplyCrate_F"],(GVAR(CARRYABLE) select 1),[]];
-            GVAR(LIFTABLE) = [["Helicopter"],(GVAR(CARRYABLE) select 1) + (GVAR(TOWABLE) select 1),[]];
+            GVAR(LIFTABLE) = [["Helicopter"],["Car","Ship","Truck_F"],[]];
             
             //Define actions on all localities (just in case)
 			GVAR(ACTIONS) = {
@@ -629,7 +629,7 @@ switch (_operation) do {
                     _text = "Drop object";
                     _input = "call {private ['_objs','_result']; _objs = attachedObjects (_this select 1); {if (!isnull _x) exitwith {_result = _x}} foreach _objs; _result}";
                     _container = "_this select 1";
-                    _condition = "vehicle _target == _target && {({!isnull _x} count (attachedObjects _target)) > 0}";
+                    _condition = "vehicle _this == _this && {({!isnull _x} count (attachedObjects _target)) > 0}";
                 };
                 case ("unloadObjects") : {
                     _text = "Load out cargo"; 
@@ -659,13 +659,13 @@ switch (_operation) do {
                     _text  = "Lift object";
                     _input = "((nearestObjects [vehicle (_this select 1), ALiVE_SYS_LOGISTICS_LIFTABLE select 1, 15]) select 0)";
                     _container = "vehicle (_this select 1)";
-                    _condition = "(getposATL (vehicle _target) select 2) > 5 && {(getposATL (vehicle _target) select 2) < 15} && {[(nearestObjects [vehicle (_target), ALiVE_SYS_LOGISTICS_LIFTABLE select 1, 15]) select 0, vehicle _target] call ALiVE_fnc_canLift}";
+                    _condition = "(getposATL (vehicle _target) select 2) > 10 && {(getposATL (vehicle _target) select 2) < 20} && {[(nearestObjects [vehicle (_target), ALiVE_SYS_LOGISTICS_LIFTABLE select 1, 20]) select 0, vehicle _target] call ALiVE_fnc_canLift}";
                 };
                 case ("releaseObject") : {
                     _text  = "Release object";
                     _input = "attachedObjects (vehicle (_this select 1)) select 0";
                     _container = "vehicle (_this select 1)";
-                    _condition = "(getposATL (vehicle _target) select 2) > 5 && {(getposATL (vehicle _target) select 2) < 15} && {count ((vehicle _target) getvariable ['ALiVE_SYS_LOGISTICS_CARGO_LIFT',[]]) > 0}";
+                    _condition = "(getposATL (vehicle _target) select 2) > 10 && {(getposATL (vehicle _target) select 2) < 20} && {count ((vehicle _target) getvariable ['ALiVE_SYS_LOGISTICS_CARGO_LIFT',[]]) > 0}";
             	};
                 default {_die = true};
 			};
