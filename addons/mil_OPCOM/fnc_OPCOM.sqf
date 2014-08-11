@@ -1963,8 +1963,6 @@ switch(_operation) do {
             
             private ["_inf","_mot","_mech","_arm","_air","_sea","_profileIDs","_artilleryClasses","_AAA","_AAAClasses"];
             
-            _artilleryClasses = ["B_MBT_01_arty_F","B_MBT_01_mlrs_F","O_MBT_02_arty_F"];
-            _AAAClasses = ["O_APC_Tracked_02_AA_F","B_APC_Tracked_01_AA_F"];
             _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
             
             _profileIDs = [];
@@ -2005,9 +2003,9 @@ switch(_operation) do {
 									};
 									case "tank":{
 	                                    if ((count (_assignments)) > 0) then {
-                                            if (_vehicleClass in (_artilleryClasses + _AAAClasses)) then {
-                                                if (_vehicleClass in _artilleryClasses) then {{if !(_x in _arty) then {_arty set [count _arty,_x]}} foreach _assignments};
-                                                if (_vehicleClass in _AAAClasses) then {{if !(_x in _AAA) then {_AAA set [count _AAA,_x]}} foreach _assignments};
+                                            if ([_vehicleClass] call ALiVE_fnc_isAA || {[_vehicleClass] call ALiVE_fnc_isArtillery}) then {
+                                                if ([_vehicleClass] call ALiVE_fnc_isArtillery) then {{if !(_x in _arty) then {_arty set [count _arty,_x]}} foreach _assignments};
+                                                if ([_vehicleClass] call ALiVE_fnc_isAA) then {{if !(_x in _AAA) then {_AAA set [count _AAA,_x]}} foreach _assignments};
                                             } else {
                                                 {if !(_x in _arm) then {_arm set [count _arm,_x]}} foreach _assignments;
                                             };
