@@ -128,7 +128,7 @@ switch (_state) do {
         _timeout = _args select 1;
         _timer = _args select 2;
 
-        if(isNull _target) then {
+        if(isNil "_target") then {
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{

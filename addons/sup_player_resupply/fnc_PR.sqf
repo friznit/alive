@@ -84,7 +84,7 @@ Peer Reviewed:
 #define PR_getSelData(ctrl) (lbData[##ctrl,(lbCurSel ##ctrl)])
 
 
-private ["_logic","_operation","_args","_result","_debug"];
+private ["_logic","_operation","_args","_result"];
 
 TRACE_1("PR - input",_this);
 
@@ -98,7 +98,6 @@ switch(_operation) do {
 		_result = [_logic, _operation, _args] call SUPERCLASS;
 	};
 	case "destroy": {
-		[_logic, "debug", false] call MAINCLASS;
 		if (isServer) then {
 			// if server
 			_logic setVariable ["super", nil];
@@ -410,11 +409,10 @@ switch(_operation) do {
     };
     case "handleEvent": {
 
-        private["_debug","_event","_eventData"];
+        private["_event","_eventData"];
 
         if(typeName _args == "ARRAY") then {
 
-            _debug = [_logic, "debug"] call MAINCLASS;
             _event = _args;
 
             // a response event from LOGCOM has been received.
@@ -454,12 +452,11 @@ switch(_operation) do {
         // event handler for LOGOM_RESPONSE
         // events
 
-        private["_debug","_event","_eventData","_message","_requestID","_side","_sideObject","_selectedDeliveryValue",
-        "_radioMessage","_radioBroadcast"];
+        private["_event","_eventData","_message","_requestID","_side","_sideObject","_selectedDeliveryValue",
+        "_radioMessage","_radioBroadcast","_markers"];
 
         if(typeName _args == "ARRAY") then {
 
-            _debug = [_logic, "debug"] call MAINCLASS;
             _event = _args;
             _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
             _message = [_event, "message"] call ALIVE_fnc_hashGet;
@@ -555,7 +552,7 @@ switch(_operation) do {
 
                     // LOGCOM has delivered the request
 
-                    private ["_position","_isWaiting","_marker","_markerLabel"];
+                    private ["_position","_isWaiting","_marker","_markers","_markerLabel"];
 
                     _position = _eventData select 2;
                     _isWaiting = _eventData select 3;
@@ -568,7 +565,7 @@ switch(_operation) do {
                         };
                         case "PR_HELI_INSERT": {
                             _radioMessage = "Rotary wing insertion request completed";
-                            _markerLabel = "Insert destination";
+                            _markerLabel = "Heli Insert destination";
                         };
                         case "PR_STANDARD": {
                             _radioMessage = "Convoy request completed";
@@ -580,20 +577,47 @@ switch(_operation) do {
                         _radioMessage = format["%1, Payload transport vehicle will wait for 2 minutes for unloading before RTB.",_radioMessage];
                     };
 
-                    _marker = createMarkerLocal ["PR_DESTINATION",_position];
-                    _marker setMarkerAlphaLocal 1;
-                    _marker setMarkerTextLocal _markerLabel;
-                    _marker setMarkerTypeLocal "hd_End";
-
-                    [_logic,"destinationMarker",[_marker]] call MAINCLASS;
-
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
                     [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
-                    //
+
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
+                    // display destination markers
+
+                    if(count _position > 0) then {
+
+                        _markers = [];
+
+                        _marker = createMarkerLocal ["PR_DESTINATION_M1", _position];
+                        _marker setMarkerShapeLocal "Icon";
+                        _marker setMarkerSizeLocal [0.75, 0.75];
+                        _marker setMarkerTypeLocal "mil_dot";
+                        _marker setMarkerColorLocal "ColorYellow";
+                        _marker setMarkerTextLocal _markerLabel;
+                        _markers set [count _markers, _marker];
+
+                        _marker = createMarkerLocal ["PR_DESTINATION_M2", _position];
+                        _marker setMarkerShape "Ellipse";
+                        _marker setMarkerSize [150, 150];
+                        _marker setMarkerColor "ColorYellow";
+                        _marker setMarkerAlpha 0.5;
+                        _markers set [count _markers, _marker];
+
+                        [_logic,"destinationMarker",_markers] call MAINCLASS;
+
+                    };
 
                     // set the tablet state to reset
 
@@ -620,6 +644,16 @@ switch(_operation) do {
 
                     [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
                     // set the tablet state to reset
 
                     [_logic,"state","RESET"] call MAINCLASS;
@@ -638,6 +672,16 @@ switch(_operation) do {
 
                     [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
                     // set the tablet state to reset
 
                     [_logic,"state","RESET"] call MAINCLASS;
@@ -655,6 +699,16 @@ switch(_operation) do {
 
                     [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
                     // set the tablet state to reset
 
                     [_logic,"state","RESET"] call MAINCLASS;
@@ -671,6 +725,16 @@ switch(_operation) do {
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
                     [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
 
                     // set the tablet state to reset
 
@@ -988,7 +1052,10 @@ switch(_operation) do {
                         _destinationMarkers = [_logic,"destinationMarker"] call MAINCLASS;
 
                         if(count _destinationMarkers > 0) then {
-                            deleteMarkerLocal (_destinationMarkers select 0);
+                            {
+                                deleteMarkerLocal _x;
+                            } forEach _destinationMarkers;
+
                         };
 
                         [_logic,"destinationMarker",[]] call MAINCLASS;

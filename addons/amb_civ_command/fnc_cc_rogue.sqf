@@ -152,7 +152,7 @@ switch (_state) do {
 
 		_target = _args select 0;
 
-        if!(isNull _target) then {
+        if!(isNil "_target") then {
 
             _agent setSkill 0.3 + random 0.5;
 
@@ -187,7 +187,7 @@ switch (_state) do {
 
         if(unitReady _agent) then {
 
-            if((isNull _target) || !(alive _target)) then {
+            if((isNil "_target") || !(alive _target)) then {
                 _nextState = "done";
                 [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
             };

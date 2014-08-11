@@ -143,7 +143,7 @@ switch (_state) do {
         _bomb2 = _args select 2;
         _bomb3 = _args select 3;
 
-        if!(isNull _target) then {
+        if!(isNil "_target") then {
 
             _agent setSpeedMode "FULL";
 
@@ -200,7 +200,7 @@ switch (_state) do {
 
         _nextStateArgs = _args;
 
-        if(!(alive _target) || !(alive _target)) then {
+        if(!(isNil "_target") || !(alive _target)) then {
             terminate _handle;
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;

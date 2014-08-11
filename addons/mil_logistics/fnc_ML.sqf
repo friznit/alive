@@ -279,14 +279,11 @@ switch(_operation) do {
 
         _result = _logic getVariable [_operation, DEFAULT_FORCE_POOL];
 
-        ["FORCE POOL: %1",_result] call ALIVE_fnc_dump;
-
         // update the global force pool
 
-        private["_moduleFactions","_debug","_factions"];
+        private["_moduleFactions","_factions"];
 
         _moduleFactions = _logic getVariable ["factions", []];
-        _debug = _logic getVariable ["debug", false];
 
         {
             _factions = _x select 1;
@@ -294,19 +291,6 @@ switch(_operation) do {
                 [ALIVE_globalForcePool,_x,_result] call ALIVE_fnc_hashSet;
             } forEach _factions;
         } forEach _moduleFactions;
-
-        // DEBUG -------------------------------------------------------------------------------------
-        /*
-        if(_debug) then {
-            if!(isNil "ALIVE_globalForcePool") then {
-                ["ALIVE ML - Global force pool:"] call ALIVE_fnc_dump;
-                ALIVE_globalForcePool call ALIVE_fnc_inspectHash;
-            };
-        };
-        */
-        // DEBUG -------------------------------------------------------------------------------------
-
-        ["FORCE POOL: %1",_result] call ALIVE_fnc_dump;
 
     };
 	// Main process
@@ -327,6 +311,11 @@ switch(_operation) do {
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_forcePool = [_logic, "forcePool"] call MAINCLASS;
 			_type = [_logic, "type"] call MAINCLASS;
+
+			// set the global force pool
+            if(isNil "ALIVE_globalForcePool") then {
+                ALIVE_globalForcePool = [] call ALIVE_fnc_hashCreate;
+            };
 
 			if(typeName _forcePool == "STRING") then {
                 _forcePool = parseNumber _forcePool;
@@ -385,11 +374,6 @@ switch(_operation) do {
                 ["Profile module or OPCOM module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
 			waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
-
-			// set the global force pool
-			if(isNil "ALIVE_globalForcePool") then {
-                ALIVE_globalForcePool = [] call ALIVE_fnc_hashCreate;
-            };
 
             // if civ cluster data not loaded, load it
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
@@ -480,9 +464,11 @@ switch(_operation) do {
 
 			} forEach _modules;
 
-
 			[_logic, "factions", _modulesFactions] call MAINCLASS;
 			[_logic, "objectives", _modulesObjectives] call MAINCLASS;
+
+			_forcePool = [_logic, "forcePool"] call MAINCLASS;
+			[_logic, "forcePool", _forcePool] call MAINCLASS;
 
             // start listening for logcom events
             [_logic,"listen"] call MAINCLASS;
@@ -528,14 +514,14 @@ switch(_operation) do {
 
             if(_factionFound) then {
 
-                _forcePool = [_logic, "forcePool"] call MAINCLASS;
                 _type = [_logic, "type"] call MAINCLASS;
 
-                if(typeName _forcePool == "STRING") then {
-                    _forcePool = parseNumber _forcePool;
-                };
+                _forcePool = [ALIVE_globalForcePool,_eventFaction] call ALIVE_fnc_hashGet;
 
-                ["FORCE POOL: %1",_forcePool] call ALIVE_fnc_dump;
+                if(_debug) then {
+                    ["ALIVE ML - Global force pool:"] call ALIVE_fnc_dump;
+                    ALIVE_globalForcePool call ALIVE_fnc_inspectHash;
+                };
 
                 // if there are still forces available
                 if(_forcePool > 0) then {
@@ -682,7 +668,16 @@ switch(_operation) do {
                     };
                     // DEBUG -------------------------------------------------------------------------------------
 
+
+                    _eventID = [_event, "id"] call ALIVE_fnc_hashGet;
+                    _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+                    _eventForceMakeup = _eventData select 3;
+                    _eventType = _eventData select 4;
+
                     if(_eventType == "PR_STANDARD" || _eventType == "PR_AIRDROP" || _eventType == "PR_HELI_INSERT") then {
+
+                        _playerID = _eventData select 5;
+                        _requestID = _eventForceMakeup select 0;
 
                         // respond to player request
                         _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","DENIED_FORCEPOOL"] call ALIVE_fnc_event;
@@ -2654,12 +2649,11 @@ switch(_operation) do {
 
                 _countProfiles = (count(_transportProfiles)) + (count(_armourProfiles)) + (count(_mechanisedProfiles)) + (count(_motorisedProfiles));
 
-
                 _position = [_eventPosition] call ALIVE_fnc_getClosestRoad;
 
                 _positionSeries = [_position,300,_countProfiles,false] call ALIVE_fnc_getSeriesRoadPositions;
 
-                if((count _positionSeries) == 0) then {
+                if((count _positionSeries) < _countProfiles) then {
                     for "_i" from 0 to _countProfiles -1 do {
                         _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                         _positionSeries set [_i, _position];
@@ -3832,143 +3826,6 @@ switch(_operation) do {
                         } forEach _reinforceGroups;
 
 
-                        // payload
-                        // spawn vehicles to fit the requested
-                        // payload items in
-
-                        private ["_payloadGroupProfiles","_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass","_vehicle","_itemClass"];
-
-                        _payloadGroupProfiles = [];
-
-                        if(count _payload > 0) then {
-
-                            if(_eventType == "PR_STANDARD") then {
-
-                                // create ground transport vehicles for the payload
-
-                                _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
-                                _transportProfiles = [];
-                                _transportVehicleProfiles = [];
-
-                                if(count _transportGroups == 0) then {
-                                    _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
-                                };
-
-                                if(count _transportGroups > 0) then {
-
-                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
-
-                                    if(_paraDrop) then {
-                                        _position set [2,PARADROP_HEIGHT];
-                                    };
-
-                                    _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
-
-                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,false,true,_payload] call ALIVE_fnc_createProfilesCrewedVehicle;
-
-                                    _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
-                                    _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
-
-                                    _profileIDs = [];
-                                    {
-                                        _profileID = _x select 2 select 4;
-                                        _profileIDs set [count _profileIDs, _profileID];
-                                    } forEach _profiles;
-
-                                    _payloadGroupProfiles set [count _payloadGroupProfiles, _profileIDs];
-
-                                };
-
-                                _totalCount = _totalCount + 1;
-
-                                _eventTransportProfiles = _transportProfiles;
-                                _eventTransportVehiclesProfiles = _transportVehicleProfiles;
-
-                            };
-
-                            if(_eventType == "PR_HELI_INSERT") then {
-
-                                // create heli transport vehicles for the payload
-
-                                _transportGroups = [ALIVE_factionDefaultAirTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
-                                _transportProfiles = [];
-                                _transportVehicleProfiles = [];
-
-                                if(count _transportGroups == 0) then {
-                                    _transportGroups = [ALIVE_sideDefaultAirTransport,_side] call ALIVE_fnc_hashGet;
-                                };
-
-                                if(count _transportGroups > 0) then {
-
-                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
-
-                                    if(_paraDrop) then {
-                                        _position set [2,PARADROP_HEIGHT];
-                                    };
-
-                                    _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
-
-                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true,_payload] call ALIVE_fnc_createProfilesCrewedVehicle;
-
-                                    _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
-                                    _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
-
-                                    _profileIDs = [];
-                                    {
-                                        _profileID = _x select 2 select 4;
-                                        _profileIDs set [count _profileIDs, _profileID];
-                                    } forEach _profiles;
-
-                                    _payloadGroupProfiles set [count _payloadGroupProfiles, _profileIDs];
-
-                                    _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
-                                    _profile = _profiles select 0;
-                                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
-
-
-                                };
-
-                                _totalCount = _totalCount + 1;
-
-                                _eventTransportProfiles = _transportProfiles;
-                                _eventTransportVehiclesProfiles = _transportVehicleProfiles;
-
-                            };
-
-                            /*
-                            * TODO FIX
-                            if(_eventType == "PR_AIRDROP") then {
-
-                                // create heli transport vehicles for the payload
-
-                                _containers = [ALIVE_factionDefaultContainers,_eventFaction,[]] call ALIVE_fnc_hashGet;
-
-                                if(count _containers == 0) then {
-                                    _containers = [ALIVE_sideDefaultContainers,_side] call ALIVE_fnc_hashGet;
-                                };
-
-                                if(count _containers > 0) then {
-
-                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
-
-                                    if(_paraDrop) then {
-                                        _position set [2,PARADROP_HEIGHT];
-                                    };
-
-
-                                    _vehicleClass = _containers call BIS_fnc_selectRandom;
-
-                                    _profile = [_vehicleClass,_side,_eventFaction,_position,random(360),false,_eventFaction,_payload] call ALIVE_fnc_createProfileVehicle;
-
-                                };
-
-                                _totalCount = _totalCount + 1;
-                            };
-                            */
-
-                        };
-
-
                         if(_eventType == "PR_STANDARD") then {
 
                             // create ground transport vehicles for the profiles
@@ -4062,6 +3919,139 @@ switch(_operation) do {
 
                             _eventTransportProfiles = _eventTransportProfiles + _transportProfiles;
                             _eventTransportVehiclesProfiles = _eventTransportVehiclesProfiles + _transportVehicleProfiles;
+
+                        };
+
+
+                        // payload
+                        // spawn vehicles to fit the requested
+                        // payload items in
+
+                        private ["_payloadGroupProfiles","_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass","_vehicle","_itemClass"];
+
+                        _payloadGroupProfiles = [];
+
+                        if(count _payload > 0) then {
+
+                            if(_eventType == "PR_STANDARD") then {
+
+                                // create ground transport vehicles for the payload
+
+                                _transportGroups = [ALIVE_factionDefaultTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                                _transportProfiles = [];
+                                _transportVehicleProfiles = [];
+
+                                if(count _transportGroups == 0) then {
+                                    _transportGroups = [ALIVE_sideDefaultTransport,_side] call ALIVE_fnc_hashGet;
+                                };
+
+                                if(count _transportGroups > 0) then {
+
+                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                    if(_paraDrop) then {
+                                        _position set [2,PARADROP_HEIGHT];
+                                    };
+
+                                    _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+
+                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,false,true,_payload] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                    _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
+                                    _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
+
+                                    _profileIDs = [];
+                                    {
+                                        _profileID = _x select 2 select 4;
+                                        _profileIDs set [count _profileIDs, _profileID];
+                                    } forEach _profiles;
+
+                                    _payloadGroupProfiles set [count _payloadGroupProfiles, _profileIDs];
+
+                                };
+
+                                _totalCount = _totalCount + 1;
+
+                                _eventTransportProfiles = _eventTransportProfiles + _transportProfiles;
+                                _eventTransportVehiclesProfiles = _eventTransportVehiclesProfiles + _transportVehicleProfiles;
+
+                            };
+
+                            if(_eventType == "PR_HELI_INSERT") then {
+
+                                // create heli transport vehicles for the payload
+
+                                _transportGroups = [ALIVE_factionDefaultAirTransport,_eventFaction,[]] call ALIVE_fnc_hashGet;
+                                _transportProfiles = [];
+                                _transportVehicleProfiles = [];
+
+                                if(count _transportGroups == 0) then {
+                                    _transportGroups = [ALIVE_sideDefaultAirTransport,_side] call ALIVE_fnc_hashGet;
+                                };
+
+                                if(count _transportGroups > 0) then {
+
+                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                    if(_paraDrop) then {
+                                        _position set [2,PARADROP_HEIGHT];
+                                    };
+
+                                    _vehicleClass = _transportGroups call BIS_fnc_selectRandom;
+
+                                    _profiles = [_vehicleClass,_side,_eventFaction,"CAPTAIN",_position,random(360),false,_eventFaction,true,true,_payload] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                                    _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
+                                    _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
+
+                                    _profileIDs = [];
+                                    {
+                                        _profileID = _x select 2 select 4;
+                                        _profileIDs set [count _profileIDs, _profileID];
+                                    } forEach _profiles;
+
+                                    _payloadGroupProfiles set [count _payloadGroupProfiles, _profileIDs];
+
+                                    _profileWaypoint = [_reinforcementPosition, 100, "MOVE", "LIMITED", 300, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                    _profile = _profiles select 0;
+                                    [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
+
+
+                                };
+
+                                _totalCount = _totalCount + 1;
+
+                                _eventTransportProfiles = _eventTransportProfiles + _transportProfiles;
+                                _eventTransportVehiclesProfiles = _eventTransportVehiclesProfiles + _transportVehicleProfiles;
+
+                            };
+
+                            if(_eventType == "PR_AIRDROP") then {
+
+                                // create heli transport vehicles for the payload
+
+                                _containers = [ALIVE_factionDefaultContainers,_eventFaction,[]] call ALIVE_fnc_hashGet;
+
+                                if(count _containers == 0) then {
+                                    _containers = [ALIVE_sideDefaultContainers,_side] call ALIVE_fnc_hashGet;
+                                };
+
+                                if(count _containers > 0) then {
+
+                                    _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
+
+                                    if(_paraDrop) then {
+                                        _position set [2,PARADROP_HEIGHT];
+                                    };
+
+                                    _vehicleClass = _containers call BIS_fnc_selectRandom;
+
+                                    _profile = [_vehicleClass,_side,_eventFaction,_position,random(360),false,_eventFaction,_payload] call ALIVE_fnc_createProfileVehicle;
+
+                                };
+
+                                _totalCount = _totalCount + 1;
+                            };
 
                         };
 

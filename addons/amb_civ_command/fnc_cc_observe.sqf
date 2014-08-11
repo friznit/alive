@@ -96,7 +96,7 @@ switch (_state) do {
 
         if(unitReady _agent) then {
 
-            if!(isNull _target) then {
+            if!(isNil "_target") then {
                 _agent doWatch _target;
             };
 

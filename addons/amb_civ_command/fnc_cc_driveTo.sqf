@@ -63,7 +63,7 @@ switch (_state) do {
         _vehicle = _args select 0;
 		_destination = _args select 1;
 
-		if!(isNull _vehicle) then {
+		if!(isNil "_vehicle") then {
 
 		    _vehicle setVariable ["ALIVE_vehicleInUse", true, false];
 
@@ -95,7 +95,7 @@ switch (_state) do {
 
         if(unitReady _agent) then {
 
-            if!(isNull _vehicle) then {
+            if!(isNil "_vehicle") then {
                 _agent assignAsDriver _vehicle;
                 [_agent] orderGetIn true;
 

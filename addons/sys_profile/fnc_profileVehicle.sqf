@@ -425,7 +425,7 @@ switch(_operation) do {
 		};
 		case "spawn": {
 				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage",
-				"_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_cargo","_special","_vehicle","_eventID",
+				"_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_cargo","_cargoItems","_special","_vehicle","_eventID",
 				"_speed","_velocity","_paraDrop","_parachute","_soundFlyover"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -480,7 +480,9 @@ switch(_operation) do {
 					//_vehicle setVehicleVarName _profileID;
 
 					if(count _cargo > 0) then {
-                        [ALiVE_SYS_LOGISTICS,"fillContainer",[_vehicle,_cargo]] call ALiVE_fnc_Logistics;
+					    _cargoItems = [];
+					    _cargoItems = _cargoItems + _cargo;
+                        [ALiVE_SYS_LOGISTICS,"fillContainer",[_vehicle,_cargoItems]] call ALiVE_fnc_Logistics;
 					};
 
 					if(_paraDrop) then {

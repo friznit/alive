@@ -62,7 +62,7 @@ switch (_state) do {
 
         _target = _agent getVariable ["ALIVE_agentGatheringTarget", objNull];
 
-        if!(isNull _target) then {
+        if!(isNil "_target") then {
             _position = [getPosASL _target, random 5, random 360] call BIS_fnc_relPos;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
             _agent doMove _position;
@@ -91,7 +91,7 @@ switch (_state) do {
 
         if(unitReady _agent) then {
 
-            if!(isNull _target) then {
+            if!(isNil "_target") then {
 
                 _agent lookAt _target;
                 _target lookAt _agent;

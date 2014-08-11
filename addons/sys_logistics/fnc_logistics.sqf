@@ -102,7 +102,7 @@ switch (_operation) do {
             // Define logistics properties on all localities
             GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","StaticWeapon","ThingX"],["House"]];
             GVAR(TOWABLE) = [["Truck_F"],["Car","Ship"],[]];
-            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter","Ship"],(GVAR(CARRYABLE) select 1),[]];
+            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter","Ship","ALIVE_O_supplyCrate_F","ALIVE_I_supplyCrate_F","ALIVE_B_supplyCrate_F"],(GVAR(CARRYABLE) select 1),[]];
             GVAR(LIFTABLE) = [["Helicopter"],(GVAR(CARRYABLE) select 1) + (GVAR(TOWABLE) select 1),[]];
             
             //Define actions on all localities (just in case)
@@ -438,7 +438,7 @@ switch (_operation) do {
             
             _objectID = [_logic,"id",_object] call ALiVE_fnc_logistics;
             _containerID = [_logic,"id",_container] call ALiVE_fnc_logistics;
-            
+
             {[_logic,"unloadObject",[_x,_container]] call ALiVE_fnc_logistics} foreach (_container getvariable [QGVAR(CARGO),[]]);
             
             _result = _container;
