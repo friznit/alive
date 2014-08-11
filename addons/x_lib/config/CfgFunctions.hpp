@@ -1181,3 +1181,17 @@ class vehicleSetDamage
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+
+class isAA
+{
+	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_isAA.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class isArtillery
+{
+	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_isArtillery.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
