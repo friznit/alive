@@ -424,7 +424,7 @@ switch(_operation) do {
             _troops = [_troops,[_pos],{
                 private ["_pos"];
                 
-                _pos = _this select 0;
+                _pos = _Input0;
                 
                 if !(isnil "_x") then {
                     private ["_profile"];
@@ -502,7 +502,7 @@ switch(_operation) do {
             };
             
             //Sort by distance
-            _troops = [_troopsUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos} else {99999}} else {99999}},"ASCEND"] call BIS_fnc_sortBy;
+            _troops = [_troopsUnsorted,[_pos],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_Input0] call ALiVE_fnc_HashGet) distance _Input0} else {99999}} else {99999}},"ASCEND"] call BIS_fnc_sortBy;
             
             //Collect section
             _section = [];
@@ -645,7 +645,7 @@ switch(_operation) do {
                 if (count _profiles > 0) then {
                     
                     _profilesUnsorted = _profiles;
-                    _profiles = [_profilesUnsorted,[],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_pos] call ALiVE_fnc_HashGet) distance _pos} else {[0,0,0] distance _pos}} else {[0,0,0] distance _pos}},"ASCEND"] call BIS_fnc_sortBy;
+                    _profiles = [_profilesUnsorted,[_pos],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_Input0] call ALiVE_fnc_HashGet) distance _Input0} else {[0,0,0] distance _Input0}} else {[0,0,0] distance _Input0}},"ASCEND"] call BIS_fnc_sortBy;
 
                     _i = 0;
 	                while {count _section < _size} do {
@@ -849,10 +849,10 @@ switch(_operation) do {
                 
                 switch (_type) do {
                             //by distance
-                            case ("distance") : {_objectives = [_objectives,[],{([_logic, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND"] call BIS_fnc_sortBy};
+                            case ("distance") : {_objectives = [_objectives,[_logic],{([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND"] call BIS_fnc_sortBy};
                             
                             //by size and height
-                            case ("strategic") : {_objectives = [_objectives,[],{_height = (ATLtoASL [(_x select 2 select 1) select 0,(_x select 2 select 1) select 1,0]) select 2; ((_x select 2 select 2) + (_x select 2 select 4) + (_height/2)) - ((([_logic, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10)},"DESCEND"] call BIS_fnc_sortBy};
+                            case ("strategic") : {_objectives = [_objectives,[_logic],{_height = (ATLtoASL [(_x select 2 select 1) select 0,(_x select 2 select 1) select 1,0]) select 2; ((_x select 2 select 2) + (_x select 2 select 4) + (_height/2)) - ((([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10)},"DESCEND"] call BIS_fnc_sortBy};
                             case ("size") : {};
                             default {};
                 };
@@ -1766,6 +1766,7 @@ switch(_operation) do {
 			sleep 5;
 
             _unit setposATL ([_profile,"position"] call ALiVE_fnc_HashGet);
+            
             waituntil {sleep 1; [_profile,"active"] call ALiVE_fnc_HashGet}; 
 
 			_units = [_profile,"units"] call ALIVE_fnc_hashGet;
@@ -1785,8 +1786,7 @@ switch(_operation) do {
                 {_x setposATL ([getposATL leader _group,50] call CBA_fnc_RandPos); _x moveInCargo (vehicle leader _group)} foreach (units (group _unit));
             };
 			
-			//Clone waypoints of joined entity
-			[_profileUnit, "clearWaypoints"] call ALIVE_fnc_profileEntity;
+            [_profileUnit, "clearWaypoints"] call ALIVE_fnc_profileEntity;
             {[_profileUnit, "addWaypoint", _x] call ALIVE_fnc_profileEntity} foreach ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet);
             
 			{[{titleText ['Inserting...', 'BLACK IN',2]},"BIS_fnc_Spawn",owner _x,false] call BIS_fnc_MP; sleep 0.2} foreach _players;
