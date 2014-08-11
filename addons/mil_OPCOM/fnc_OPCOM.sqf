@@ -1678,72 +1678,21 @@ switch(_operation) do {
             } foreach ([_objectives select 0,"section",[]] call ALiVE_fnc_HashGet);
 		};
         
-		case "joinEntity": {
-            ASSERT_TRUE(typeName _args == "ARRAY" && {count _args >= 2},str _args);
-
-            private ["_unit","_state","_profile","_profileUnit","_pos"];
-
-			_unit = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
-			_entityID = [_args, 1, "", [""]] call BIS_fnc_param;
-			
-			if (isNull _unit) exitwith {};
-			
-			if !(isServer) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",false,false] call BIS_fnc_MP};
-
-			_profileID = _unit getvariable "profileID"; if (isnil "_profileID") exitwith {};
-			_profile = [ALiVE_ProfileHandler,"getProfile",_entityID] call ALiVE_fnc_ProfileHandler; if (isnil "_profile") exitwith {};
-			_profileUnit = [ALiVE_ProfileHandler,"getProfile",_profileID] call ALiVE_fnc_ProfileHandler; if (isnil "_profileUnit") exitwith {};
-
-			[{titleText ['Preparing Insertion...', 'BLACK OUT',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;            
-                        			
-			_pos = [_profile,"position"] call ALiVE_fnc_HashGet;
-			_groupUnits = units (group _unit);
-			
-			sleep 4;
-			
-			{_x setposATL _pos} foreach _groupUnits;
-			waituntil {sleep 1; [_profile,"active"] call ALiVE_fnc_HashGet}; 
-			
-			sleep 1;
-			
-			_units = [_profile,"units"] call ALIVE_fnc_hashGet;
-			_group = group (_units select 0);
-			
-			_groupUnits join _group; 
-            
-            if ((vehicle leader _group) == (leader _group)) then {
-            	{_x setposATL formationPosition _x} foreach _groupUnits;
-                
-                //_x addBackpack "B_Parachute" is local - applause
-                //_pos set [2,1000];
-                //{_x addBackpack "B_Parachute"; _x setPosATL _pos} foreach _groupUnits;
-            } else {
-                {_x moveInCargo (vehicle leader _group)} foreach _groupUnits;
-            };
-			
-			//Clone waypoints of joined entity
-			[_profileUnit, "clearWaypoints"] call ALIVE_fnc_profileEntity; {[_profileUnit, "addWaypoint", _x] call ALIVE_fnc_profileEntity} foreach ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet);
-
-			[{titleText ['Inserting...', 'BLACK IN',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;
-			
-			_result = _group;            
-		};
-        
         case "joinObjectiveClient": {
             ASSERT_TRUE(typeName _args == "ARRAY",str _args);
         
 			private ["_positions","_color","_pos"];
-		
+            
+            // Execute Function on Clients only
+			if !(hasInterface) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",owner _unit,false] call BIS_fnc_MP};
+
 			_unit = [_args, 0, player, [objNull]] call BIS_fnc_param;
 			_objectives = [_args, 1, [], [[]]] call BIS_fnc_param;	
 			_color = [_args, 2, "COLORYELLOW", [""]] call BIS_fnc_param;
-            
+
 			// Only run function if objectives are provided  
-            if (count _objectives == 0) exitwith {};
-			
-            // Execute Function on Clients only
-			if !(hasInterface) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",owner _unit,false] call BIS_fnc_MP};
-            
+            if (count _objectives == 0) exitwith {hint "OPCOM currently has no assault objectives in his list!"};
+
             // Mark objectives, this handy function should be moved to x lib
             _fnc_createMarkerArray = {
 				private ["_positions","_color","_shape","_size","_type","_text","_alpha","_markers"];
@@ -1782,7 +1731,7 @@ switch(_operation) do {
 			waituntil {!isnil "ALiVE_MIL_OPCOM_CLICKPOS"}; _pos = ALiVE_MIL_OPCOM_CLICKPOS;
             ALiVE_MIL_OPCOM_CLICKPOS = nil; hint "Objective selected! Please wait while OPCOM is preparing the operation...";
 			
-            // Get neares objective from that position
+            // Get nearest objective from that position
             _objectives = [_objectives,[_pos],{_Input0 distance ([_x,"center"] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
 			
 			[_logic,"joinObjectiveServer",[_unit,_objectives select 0]] call ALiVE_fnc_OPCOM;
@@ -1794,155 +1743,188 @@ switch(_operation) do {
 		};
         
 		case "joinObjectiveServer": {
-            ASSERT_TRUE(typeName _args == "ARRAY",str _args);
-				private ["_unit","_pos"];
+        	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
 			
-				_unit = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
-				_objective = [_args, 1, [], [[]]] call BIS_fnc_param;	
-				
-                // Execute on Server only
-				if !(isServer) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",false,false] call BIS_fnc_MP};
+            private ["_unit","_objective","_section","_entityID","_profile","_error","_players"];
+            
+            // Execute on Server only
+			if !(isServer) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",false,false] call BIS_fnc_MP};
+		
+			_unit = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
+			_objective = [_args, 1, [], [[]]] call BIS_fnc_param;
+                                            
+            _section = ([_objective,"section",[]] call ALiVE_fnc_HashGet) - [_unit getvariable ["profileID",""]]; if (count _section <= 0) then {_error = "OPCOM responds that the select section is destroyed!"};
+            _profile = [ALiVE_ProfileHandler,"getProfile",_section select 0] call ALiVE_fnc_ProfileHandler; if (isnil "_profile") then {_error = "OPCOM reports that the assigned group is already dead!"};
+			_profileUnit = [ALiVE_ProfileHandler,"getProfile",_unit getvariable ["profileID",""]] call ALiVE_fnc_ProfileHandler; if (isnil "_profileUnit") then {_error = "OPCOM reports that players group cannot be assigned!"};
+            
+            if !(isnil "_error") exitwith {hint _error; ["%1",_error] call ALiVE_fnc_Dump};
+            
+            _players = []; {if (isPlayer _x) then {_players set [count _players,_x]}} foreach (units group _unit);
+			
+            {[{titleText ['Preparing Insertion...', 'BLACK OUT',2]},"BIS_fnc_Spawn",owner _x,false] call BIS_fnc_MP; sleep 0.2} foreach _players;
 
-				_section = [_objective,"section",[]] call ALiVE_fnc_HashGet;
+			sleep 5;
+
+            _unit setposATL ([_profile,"position"] call ALiVE_fnc_HashGet);
+            waituntil {sleep 1; [_profile,"active"] call ALiVE_fnc_HashGet}; 
+
+			_units = [_profile,"units"] call ALIVE_fnc_hashGet;
+			_group = group (_units select 0);
+
+			(units (group _unit)) join _group;
+            
+            sleep 5;
+        
+            if ((vehicle leader _group) == (leader _group)) then {
+            	{_x setposATL (formationPosition _x)} foreach (units (group _unit));
+                
+                //_x addBackpack "B_Parachute" is local - applause
+                //_pos set [2,1000];
+                //{_x addBackpack "B_Parachute"; _x setPosATL _pos} foreach _groupUnits;
+            } else {
+                {_x setposATL ([getposATL leader _group,50] call CBA_fnc_RandPos); _x moveInCargo (vehicle leader _group)} foreach (units (group _unit));
+            };
 			
-				if (count _section == 0) exitwith {};
-				
-				[_logic,"joinEntity",[_unit,_section select 0]] call ALiVE_fnc_OPCOM;
-		};
+			//Clone waypoints of joined entity
+			[_profileUnit, "clearWaypoints"] call ALIVE_fnc_profileEntity;
+            {[_profileUnit, "addWaypoint", _x] call ALIVE_fnc_profileEntity} foreach ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet);
+            
+			{[{titleText ['Inserting...', 'BLACK IN',2]},"BIS_fnc_Spawn",owner _x,false] call BIS_fnc_MP; sleep 0.2} foreach _players;
+    	};
 
         case "analyzeclusteroccupation": {
-            	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
-                
-                private ["_pos","_item","_type","_prios","_side","_sides","_id","_entArr","_ent","_sectors","_entities","_state","_controltype"];
+        	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
+            
+            private ["_pos","_item","_type","_prios","_side","_sides","_id","_entArr","_ent","_sectors","_entities","_state","_controltype"];
 
-				_sides = _args;
-                _sidesF = _sides select 0;
-                _sidesE = _sides select 1;
-                _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
-                _controltype = [_logic, "controltype","invasion"] call ALiVE_fnc_HashGet;
-                
-				//_distance = _args select 1;
-                _result_tmp = [];
-                for "_i" from 0 to ((count _sides)-1) do {
+			_sides = _args;
+            _sidesF = _sides select 0;
+            _sidesE = _sides select 1;
+            _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
+            _controltype = [_logic, "controltype","invasion"] call ALiVE_fnc_HashGet;
+            
+			//_distance = _args select 1;
+            _result_tmp = [];
+            for "_i" from 0 to ((count _sides)-1) do {
                     _sideX = _sides select _i;
                     _nearForces = [];
                     
                     {
   		                for "_z" from 0 to ((count _objectives)-1) do {
-		                    _item = _objectives select _z;
-							_pos = [_item,"center"] call ALiVE_fnc_HashGet;
-							_id = [_item,"objectiveID"] call ALiVE_fnc_HashGet;
-	                        _state = [_item,"opcom_state","unassigned"] call ALiVE_fnc_HashGet;
-	                        _size_reserve = [_logic,"sectionsamount_reserve",1] call ALiVE_fnc_HashGet;
-	                        _section = [_item,"section",[]] call ALiVE_fnc_HashGet;
-                            
-                            _type = "surroundingsectors";
-	                        _entArr = [];
-	                        _entities = [];
-	                        
-	                       if (count _section < 1) then {[_item,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_item,"opcom_orders","none"] call ALiVE_fnc_HashSet; [_item,"danger",-1] call ALiVE_fnc_HashSet};
-	
-	                       _profiles = [_pos, 500, [_x,"entity"]] call ALIVE_fnc_getNearProfiles;
-				            {
-				                if (typeName (_x select 2 select 4) == "STRING") then {
-				                	_entities set [count _entities,_x select 2 select 4];
-                                    
-                                    //player sidechat format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
-	                       			//diag_log format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
-				            	};
-	                            //sleep 0.03;
-				            } foreach _profiles;
-	                        
-	                    
-		                    if (count _entities > 0) then {_nearForces set [count _nearForces,[_id,_entities]]};
-	                    };
-                    } foreach _sideX;
-                    
-                    _result_tmp set [count _result_tmp,_nearForces];
-                };
-            
-	            _targetsTaken1 =  _result_tmp select 0;
-	            _targetsTaken2 =  _result_tmp select 1;
-	            
-	        	_targetsAttacked1 = [];
-                _remover1 = [];
-				{
-					_targetID = _x select 0;
-					_entities = _x select 1;
-					
-					if (({(_x select 0) == _targetID} count _targetsTaken2 > 0) && {(typename _x == "ARRAY")}) then {
-						_targetsAttacked1 set [count _targetsAttacked1,_x];
-						_remover1 set [count _remover1,_foreachIndex];
-					};
-                    //sleep 0.03;
-				} foreach _targetsTaken1;
-	
-				_targetsAttacked2 = [];
-                _remover2 = [];
-				{
-					_targetID = _x select 0;
-					_entities = _x select 1;
-					
-					if (({(_x select 0) == _targetID} count _targetsTaken1 > 0) && {(typename _x == "ARRAY")}) then {
-						_targetsAttacked2 set [count _targetsAttacked2,_x];
-						_remover2 set [count _remover2,_foreachIndex];
-					};
-                    //sleep 0.03;
-				} foreach _targetsTaken2;
-                
+	                    _item = _objectives select _z;
+						_pos = [_item,"center"] call ALiVE_fnc_HashGet;
+						_id = [_item,"objectiveID"] call ALiVE_fnc_HashGet;
+                        _state = [_item,"opcom_state","unassigned"] call ALiVE_fnc_HashGet;
+                        _size_reserve = [_logic,"sectionsamount_reserve",1] call ALiVE_fnc_HashGet;
+                        _section = [_item,"section",[]] call ALiVE_fnc_HashGet;
+                        
+                        _type = "surroundingsectors";
+                        _entArr = [];
+                        _entities = [];
+                        
+                       if (count _section < 1) then {[_item,"opcom_state","unassigned"] call ALiVE_fnc_HashSet; [_item,"opcom_orders","none"] call ALiVE_fnc_HashSet; [_item,"danger",-1] call ALiVE_fnc_HashSet};
 
-                {
-                	if !(_x > ((count _targetsTaken1)-1)) then {
-                   		_targetsTaken1 set [_x,"x"];
-                   		_targetsTaken1 = _targetsTaken1 - ["x"];
-                	};
-                    //sleep 0.03;
-                } foreach _remover1;
-                
-                _targetsTaken1 = _targetsTaken1 - [objNull];
-                
-                {
-                    if !(_x > ((count _targetsTaken2)-1)) then {
-                   		_targetsTaken2 set [_x,"x"];
-                   		_targetsTaken2 = _targetsTaken2 - ["x"];
-                    };
-                    //sleep 0.03;
-                } foreach _remover2;
-                
-                _targetsTaken2 = _targetsTaken2 - [objNull];
-               
-	            _result = [_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,time];
-                [_logic,"clusteroccupation",_result] call AliVE_fnc_HashSet;
-                
-        		_targetsTaken = _result select 0;
-				_targetsAttacked = _result select 1;
-				_targetsTakenEnemy = _result select 2;
-				_targetsAttackedEnemy = _result select 3;
-                
-                switch (_controltype) do {
-					case ("invasion") : {
-						_prios = [
-							[_targetsTaken,"reserve"],
-							[_targetsTakenEnemy,"attack"],
-							[_targetsAttackedEnemy,"defend"]
-						];
-                    };
+                       _profiles = [_pos, 500, [_x,"entity"]] call ALIVE_fnc_getNearProfiles;
+			            {
+			                if (typeName (_x select 2 select 4) == "STRING") then {
+			                	_entities set [count _entities,_x select 2 select 4];
+                                
+                                //player sidechat format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
+                       			//diag_log format["Entities: %1, count total %2 val %3",_entities,count _entities,(_x select 2 select 4)];
+			            	};
+                            //sleep 0.03;
+			            } foreach _profiles;
+                        
                     
-                    case ("occupation") : {
-						_prios = [
-							[_targetsTaken,"reserve"],
-							[_targetsTakenEnemy,"attack"],
-							[_targetsAttackedEnemy,"defend"]
-						];
+	                    if (count _entities > 0) then {_nearForces set [count _nearForces,[_id,_entities]]};
                     };
+                } foreach _sideX;
+                
+                _result_tmp set [count _result_tmp,_nearForces];
+            };
+        
+            _targetsTaken1 =  _result_tmp select 0;
+            _targetsTaken2 =  _result_tmp select 1;
+            
+        	_targetsAttacked1 = [];
+            _remover1 = [];
+			{
+				_targetID = _x select 0;
+				_entities = _x select 1;
+				
+				if (({(_x select 0) == _targetID} count _targetsTaken2 > 0) && {(typename _x == "ARRAY")}) then {
+					_targetsAttacked1 set [count _targetsAttacked1,_x];
+					_remover1 set [count _remover1,_foreachIndex];
 				};
+                //sleep 0.03;
+			} foreach _targetsTaken1;
+
+			_targetsAttacked2 = [];
+            _remover2 = [];
+			{
+				_targetID = _x select 0;
+				_entities = _x select 1;
+				
+				if (({(_x select 0) == _targetID} count _targetsTaken1 > 0) && {(typename _x == "ARRAY")}) then {
+					_targetsAttacked2 set [count _targetsAttacked2,_x];
+					_remover2 set [count _remover2,_foreachIndex];
+				};
+                //sleep 0.03;
+			} foreach _targetsTaken2;
+            
+
+            {
+            	if !(_x > ((count _targetsTaken1)-1)) then {
+               		_targetsTaken1 set [_x,"x"];
+               		_targetsTaken1 = _targetsTaken1 - ["x"];
+            	};
+                //sleep 0.03;
+            } foreach _remover1;
+            
+            _targetsTaken1 = _targetsTaken1 - [objNull];
+            
+            {
+                if !(_x > ((count _targetsTaken2)-1)) then {
+               		_targetsTaken2 set [_x,"x"];
+               		_targetsTaken2 = _targetsTaken2 - ["x"];
+                };
+                //sleep 0.03;
+            } foreach _remover2;
+            
+            _targetsTaken2 = _targetsTaken2 - [objNull];
+           
+            _result = [_targetsTaken1, _targetsAttacked1, _targetsTaken2, _targetsAttacked2,time];
+            [_logic,"clusteroccupation",_result] call AliVE_fnc_HashSet;
+            
+    		_targetsTaken = _result select 0;
+			_targetsAttacked = _result select 1;
+			_targetsTakenEnemy = _result select 2;
+			_targetsAttackedEnemy = _result select 3;
+            
+            switch (_controltype) do {
+				case ("invasion") : {
+					_prios = [
+						[_targetsTaken,"reserve"],
+						[_targetsTakenEnemy,"attack"],
+						[_targetsAttackedEnemy,"defend"]
+					];
+                };
                 
-				{
-					[_logic,"setstatebyclusteroccupation",[(_x select 0),(_x select 1)]] call ALiVE_fnc_OPCOM;
-				} foreach _prios;
-                
-                //diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken, _targetsAttackedEnemy, _targetsTakenEnemy, _targetsAttackedEnemy,_sidesF,_sidesE];
-                //player sidechat format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken, _targetsAttackedEnemy, _targetsTakenEnemy, _targetsAttackedEnemy,_sidesF,_sidesE];
+                case ("occupation") : {
+					_prios = [
+						[_targetsTaken,"reserve"],
+						[_targetsTakenEnemy,"attack"],
+						[_targetsAttackedEnemy,"defend"]
+					];
+                };
+			};
+            
+			{
+				[_logic,"setstatebyclusteroccupation",[(_x select 0),(_x select 1)]] call ALiVE_fnc_OPCOM;
+			} foreach _prios;
+            
+            //diag_log format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken, _targetsAttackedEnemy, _targetsTakenEnemy, _targetsAttackedEnemy,_sidesF,_sidesE];
+            //player sidechat format ["%5: Taken %1 | Attacked %2 // %6: Taken %3 | Attacked %4",_targetsTaken, _targetsAttackedEnemy, _targetsTakenEnemy, _targetsAttackedEnemy,_sidesF,_sidesE];
 		};
                 
         case "scanenemies": {
