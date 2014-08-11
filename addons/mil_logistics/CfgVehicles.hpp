@@ -260,14 +260,14 @@ class CfgVehicles {
         class Box_East_AmmoVeh_F;
         class ALIVE_O_supplyCrate_F : Box_East_AmmoVeh_F {
             transportSoldier = 3;
-            scope = 0;
+            scope = 1;
         };
         class ALIVE_I_supplyCrate_F : Box_IND_AmmoVeh_F {
             transportSoldier = 3;
-            scope = 0;
+            scope = 1;
         };
         class ALIVE_B_supplyCrate_F : Box_NATO_AmmoVeh_F {
             transportSoldier = 3;
-            scope = 0;
+            scope = 1;
         };
 };

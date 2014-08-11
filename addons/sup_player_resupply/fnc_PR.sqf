@@ -286,7 +286,7 @@ switch(_operation) do {
 
             _countAir = [1000,3,3,8,100];
             _countInsert = [500,2,1,8,40];
-            _countConvoy = [10000,5,5,8,200];
+            _countConvoy = [5000,5,5,8,200];
 
             [_logic,"countsAir",_countAir] call MAINCLASS;
             [_logic,"countsInsert",_countInsert] call MAINCLASS;

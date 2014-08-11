@@ -1949,7 +1949,7 @@ switch(_operation) do {
 
             case "heliTransportUnload": {
 
-                private ["_countEmpty","_emptyProfiles","_emptyProfile","_inCommand","_commandProfileID","_commandProfile","_position"];
+                private ["_countEmpty","_emptyProfiles","_emptyProfile","_inCommand","_commandProfileID","_commandProfile","_position","_active"];
 
                 _countEmpty = 0;
 
@@ -3927,11 +3927,24 @@ switch(_operation) do {
                         // spawn vehicles to fit the requested
                         // payload items in
 
-                        private ["_payloadGroupProfiles","_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass","_vehicle","_itemClass"];
+                        private ["_payloadGroupProfiles","_transportGroups","_transportProfiles","_transportVehicleProfiles","_vehicleClass","_vehicle","_itemClass",
+                        "_itemWeight","_payloadWeight"];
 
                         _payloadGroupProfiles = [];
 
                         if(count _payload > 0) then {
+
+                            _payloadWeight = 0;
+                            {
+                                _itemWeight = [_x] call ALIVE_fnc_getObjectWeight;
+                                _payloadWeight = _payloadWeight + _itemWeight;
+                            } forEach _payload;
+
+                            _payloadWeight = floor(_payloadWeight / 1000);
+                            if(_payloadWeight <= 0) then {
+                                _payloadWeight = 1;
+                            };
+                            _totalCount = _totalCount + _payloadWeight;
 
                             if(_eventType == "PR_STANDARD") then {
 
@@ -4025,6 +4038,8 @@ switch(_operation) do {
                                 _eventTransportVehiclesProfiles = _eventTransportVehiclesProfiles + _transportVehicleProfiles;
 
                             };
+
+                            private ["_containers"];
 
                             if(_eventType == "PR_AIRDROP") then {
 
@@ -4267,7 +4282,7 @@ switch(_operation) do {
             // Player requested
 
             private ["_emptyProfiles","_joinIndividualProfiles","_staticIndividualProfiles","_reinforceIndividualProfiles",
-            "_joinGroupProfiles","_staticGroupProfiles","_reinforceGroupProfiles","_payloadGroupProfiles","_player","_logEvent"];
+            "_joinGroupProfiles","_staticGroupProfiles","_reinforceGroupProfiles","_payloadGroupProfiles","_player","_logEvent","_finalDestination"];
 
             _emptyProfiles = [_playerRequestProfiles,"empty"] call ALIVE_fnc_hashGet;
             _joinIndividualProfiles = [_playerRequestProfiles,"joinIndividuals"] call ALIVE_fnc_hashGet;
