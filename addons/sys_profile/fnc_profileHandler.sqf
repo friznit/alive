@@ -641,6 +641,11 @@ switch(_operation) do {
 							_profileActive = [_profile, "active"] call ALIVE_fnc_hashGet;
 
 							if(_profileActive) then {
+
+                                // Remove ProfileID if any units are left
+                                _vehicle = [_profile,"vehicle"] call ALIVE_fnc_hashGet; if !(isnil "_vehicle") then {_vehicle setvariable ["ProfileID",nil]};
+                                _units = [_profile,"units",[]] call ALIVE_fnc_hashGet; if (count _units > 0) then {{_x setVariable ["ProfileID",nil]} foreach (units group (_units select 0))};
+
 								_profilesActive = _profilesActive - [_profileID];
 								[_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
 
@@ -667,7 +672,6 @@ switch(_operation) do {
 							};
 
 							if!(_profileType == "vehicle") then {
-
 							    if(_profileIsPlayer) then {
 							        [_playerEntities, _profileID] call ALIVE_fnc_hashRem;
 							    };

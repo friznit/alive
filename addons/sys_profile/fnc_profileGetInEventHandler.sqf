@@ -32,8 +32,6 @@ if(isPlayer _getInUnit) then {
 
     if (isnil "_profile") exitwith {};
 
-    _unit setVariable ["profileID",nil];
-
     [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
 };
 
