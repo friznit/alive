@@ -84,9 +84,7 @@ if (toUpper (_lb lbText _index) == "SAD" || toUpper (_lb lbText _index) == "LOIT
 		{
 			private "_weapon";
 			_weapon = [(configFile>>"CfgWeapons">>_x)] call bis_fnc_displayName;
-			if( _veh ammo _x > 0) then {
-				_casAttackRunLB lbAdd _weapon;
-			};
+			_casAttackRunLB lbAdd _weapon;
 		} forEach weapons _veh;
 
 	} else {
@@ -94,9 +92,7 @@ if (toUpper (_lb lbText _index) == "SAD" || toUpper (_lb lbText _index) == "LOIT
 		{
 			private "_weapon";
 			_weapon = [(configFile>>"CfgWeapons">>_x)] call bis_fnc_displayName;
-			if( _veh ammo _x > 0) then {
-				_casAttackRunLB lbAdd _weapon;
-			};
+			_casAttackRunLB lbAdd _weapon;
 		} forEach weapons _veh;
 		_casAttackRunLB lbSetCurSel 0;
 	};
