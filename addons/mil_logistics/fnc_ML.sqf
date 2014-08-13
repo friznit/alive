@@ -2416,7 +2416,9 @@ switch(_operation) do {
                                         } forEach _commandUnits;
                                     };
 
-                                    deleteVehicle _vehicle;
+                                    if!(isNil "_vehicle") then {
+                                        deleteVehicle _vehicle;
+                                    };
 
                                 };
 
