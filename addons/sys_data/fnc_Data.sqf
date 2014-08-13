@@ -42,7 +42,7 @@ _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 
-TRACE_3("SYS_DATA",_logic, _operation, _args);
+//TRACE_3("SYS_DATA",_logic, _operation, _args);
 
 _ops = ["read","write","update","delete","load","save","convert","restore","bulkSave","bulkWrite","bulkLoad","bulkRead"];
 
@@ -56,7 +56,7 @@ if (_operation in _ops) then {
 				_source = [_logic, "source"] call ALIVE_fnc_hashGet;
 				_script = format ["ALIVE_fnc_%1Data_%2", _operation, _source];
 				_function = call compile _script;
-				TRACE_2("SYS_DATA: Operation Request - ",_source, _script);
+				//TRACE_2("SYS_DATA: Operation Request - ",_source, _script);
 				_result = [_logic, _args] call _function;
 			} else {
 				private["_err"];
@@ -203,5 +203,5 @@ if (_operation in _ops) then {
         };
 	};
 };
-TRACE_1("SYS DATA - output",_result);
+// TRACE_1("SYS DATA - output",_result);
 _result;

@@ -50,17 +50,17 @@ _convert = {
 	switch(_type) do {
 		case "ARRAY": {
 			private ["_tmp","_i"];
-			TRACE_2("ARRAY CONVERSION DATA", _data, typeName _data);
+//			TRACE_2("ARRAY CONVERSION DATA", _data, typeName _data);
 			_tmp = "";
 			_i = 0;
 			{
 				private ["_tmpKey","_value"];
-				TRACE_2("ARRAY CONVERSION X", _x, typeName _x);
+//				TRACE_2("ARRAY CONVERSION X", _x, typeName _x);
 				_tmpKey = _key + "_" + str(_i);
 
 				// Convert Values
 				_value = [_tmpKey, _x] call _convert;
-				TRACE_2("ARRAY CONVERTED VALUE", typename _value, _value);
+//				TRACE_2("ARRAY CONVERTED VALUE", typename _value, _value);
 
 				_tmp = _tmp + "," + _value;
 
@@ -72,7 +72,7 @@ _convert = {
 			// Get rid of any left over commas
 			_result = [_result, "[,", "["] call CBA_fnc_replace;
 
-			TRACE_2("ARRAY CONVERSION RESULT", typename _result, _result);
+//			TRACE_2("ARRAY CONVERSION RESULT", typename _result, _result);
 		};
 		case "BOOL": {
 			private["_tmp"];

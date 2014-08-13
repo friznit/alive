@@ -89,12 +89,32 @@ if (isDedicated) then {
 	MOD(sys_data) setVariable ["EventLevel", ALIVE_sys_statistics_EventLevel, true];
 
 	// Load Data Dictionary from central public database
-
 	_dictionaryName = format["dictionary_%1_%2", GVAR(GROUP_ID), missionName];
+
+	GVAR(DictionaryRevs) = [];
+
 	// Try loading dictionary from db
 	_response = [GVAR(datahandler), "read", ["sys_data", [], _dictionaryName]] call ALIVE_fnc_Data;
 	if ( typeName _response != "STRING") then {
 		ALIVE_DataDictionary = _response;
+
+		// Capture Dictionary revision information
+		GVAR(DictionaryRevs) set [count GVAR(DictionaryRevs), [ALIVE_DataDictionary, "_rev"] call CBA_fnc_hashGet];
+
+		// Try loading more dictionary entries
+		private ["_i","_newresponse","_addResponse"];
+		_i = 1;
+		while {_dictionaryName = format["dictionary_%1_%2_%3", GVAR(GROUP_ID), missionName, _i]; _newresponse = [GVAR(datahandler), "read", ["sys_data", [], _dictionaryName]] call ALIVE_fnc_Data; typeName _newresponse != "STRING"} do {
+
+			_addResponse = {
+				[ALIVE_DataDictionary, _key, _value] call CBA_fnc_hashSet;
+			};
+
+			[_newresponse, _addResponse] call CBA_fnc_hashEachPair;
+			GVAR(DictionaryRevs) set [count GVAR(DictionaryRevs), [_newresponse, "_rev"] call CBA_fnc_hashGet];
+			_i = _i + 1;
+		};
+
 		GVAR(dictionaryLoaded) = true;
 		TRACE_1("DICTIONARY LOADED", ALIVE_DataDictionary);
 	} else {

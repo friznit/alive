@@ -24,7 +24,7 @@ Tupolov
 Peer Reviewed:
 
 ---------------------------------------------------------------------------- */
-private ["_result","_error","_module","_data","_async","_missionKey","_saveData", "_indexRev","_indexDoc","_index","_newIndexDoc","_createIndex","_indexArray"];
+private ["_result","_error","_module","_data","_async","_missionKey","_saveData", "_indexRev","_indexDoc","_index","_newIndexDoc","_createIndex","_indexArray","_tempIndexDoc","_indexCount","_indexRevs"];
 
 _logic = _this select 0;
 _args = _this select 1;
@@ -37,8 +37,6 @@ _async = _args select 3;
 TRACE_3("Saving data", _logic, _args);
 
 _result = "";
-
-// For each record in the store, save the data to a document in the module table, unique key is the mission key + document key
 
 // Save Docs
 TRACE_3("Saving Data", _data);
@@ -63,18 +61,85 @@ _createIndex = {
 _newIndexDoc = [] call CBA_fnc_hashCreate;
 [_newIndexDoc, "_id", _missionKey] call CBA_fnc_hashSet;
 
-// If exists, get revision number so we can overwrite it
-_indexRev = [_logic, "indexRev", ""] call CBA_fnc_hashGet;
-if (_indexRev != "") then {
-	[_newIndexDoc, "_rev", _indexRev] call CBA_fnc_hashSet;
-};
-
 [_newIndexDoc, "index", _indexArray] call CBA_fnc_hashSet;
 
-TRACE_1("Save Data new index", _newIndexDoc);
-// Write new index
-[_logic, "write", [_module, _newIndexDoc, _async, _missionKey]] call ALIVE_fnc_Data;
+// Handle indices greater than 10kb
+TRACE_2("INDEX SIZE ",_module, [str(_newIndexDoc)] call CBA_fnc_strLen);
 
+if ( ([str(_newIndexDoc)] call CBA_fnc_strLen) > DATA_INBOUND_LIMIT ) then {
+
+		private ["_tempIndex","_indexName","_i"];
+
+		_indexRevs = [_logic, "indexRevs", []] call CBA_fnc_hashGet;
+
+		_tempIndex = [];
+
+		_i = 0;
+
+		{
+			if ( ([str(_tempIndex)] call CBA_fnc_strLen) < DATA_INBOUND_LIMIT ) then {
+
+				TRACE_1("INDEX", [str(_tempIndex)] call CBA_fnc_strLen);
+				_tempIndex set [count _tempIndex, _indexArray select _foreachIndex];
+
+			} else {
+
+				if (_i == 0) then {
+					_indexName = _missionKey;
+				} else {
+					_indexName = format["%1_%2", _missionKey, _i];
+				};
+
+				_tempIndexDoc = [] call CBA_fnc_hashCreate;
+				[_tempIndexDoc, "_id", _indexName] call CBA_fnc_hashSet;
+				[_tempIndexDoc, "index", _tempIndex] call CBA_fnc_hashSet;
+
+				if (_i < count _indexRevs) then {
+					[_tempIndexDoc, "_rev", _indexRevs select _i] call CBA_fnc_hashSet;
+				};
+
+				_result = [_logic, "write", [_module, _tempIndexDoc, false, _indexName] ] call ALIVE_fnc_Data;
+				TRACE_2("SAVING DATA INDEX",_indexName,_result);
+				_tempIndex = [];
+				_tempIndex set [count _tempIndex, _indexArray select _foreachIndex];
+				_i = _i + 1;
+
+			};
+
+		} foreach _indexArray;
+
+		// Save the final index doc
+
+		if (_i == 0) then {
+			_indexName = _missionKey;
+		} else {
+			_indexName = format["%1_%2", _missionKey, _i];
+		};
+		_tempIndexDoc = [] call CBA_fnc_hashCreate;
+		[_tempIndexDoc, "_id", _indexName] call CBA_fnc_hashSet;
+		[_tempIndexDoc, "index", _tempIndex] call CBA_fnc_hashSet;
+		if (_i < count _indexRevs) then {
+			[_tempIndexDoc, "_rev", _indexRevs select _i] call CBA_fnc_hashSet;
+		};
+		_result = [_logic, "write", [_module, _tempIndexDoc, false, _indexName] ] call ALIVE_fnc_Data;
+
+//		[_logic, "indexRevs", _indexRevs] call CBA_fnc_hashSet;
+
+		TRACE_2("SAVING DATA INDEX ",_indexName,_result);
+
+
+} else {
+
+	// If exists, get revision number so we can overwrite it
+	_indexRevs = [_logic, "indexRevs", []] call CBA_fnc_hashGet;
+	if (count _indexRevs > 0) then {
+		[_newIndexDoc, "_rev", _indexRevs select 0] call CBA_fnc_hashSet;
+	};
+
+	TRACE_1("Save Data new index", _newIndexDoc);
+	// Write new index
+	[_logic, "write", [_module, _newIndexDoc, _async, _missionKey]] call ALIVE_fnc_Data;
+};
 //=============================================
 
 

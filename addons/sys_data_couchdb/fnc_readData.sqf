@@ -13,7 +13,7 @@ Array - Returns a response error or data in the form of key value pairs
 
 Examples:
 (begin example)
-	[ _logic, [ _module, _uid ] ] call ALIVE_fnc_readData;
+	[ _logic, [ _module, [_key,_key etc], _uid ] ] call ALIVE_fnc_readData;
 (end)
 
 Author:
