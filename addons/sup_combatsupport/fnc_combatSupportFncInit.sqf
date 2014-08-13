@@ -46,6 +46,9 @@ NEO_fnc_casTaskLbSelChanged = compile preprocessFileLineNumbers "x\alive\addons\
 NEO_fnc_casConfirmButton = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\ui\cas\fn_casConfirmButton.sqf";
 NEO_fnc_casBaseButton = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\ui\cas\fn_casBaseButton.sqf";
 NEO_fnc_casConfirmButtonEnable = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\ui\cas\fn_casConfirmButtonEnable.sqf";
+NEO_fnc_pickCasTarget = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_pickCasTarget.sqf";
+NEO_fnc_disableOtherWeapons = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_disableOtherWeapons.sqf";
+NEO_fnc_reenableWeapons = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_reenableWeapons.sqf";
 
 //ARTY
 NEO_fnc_artyUnitLbSelChanged = compile preprocessFileLineNumbers "x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\ui\arty\fn_artyUnitLbSelChanged.sqf";
