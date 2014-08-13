@@ -369,7 +369,7 @@ switch(_operation) do {
 
 							{ _x setVariable ["NEO_radioArtyModule", [leader _grp, _callsign], true] } forEach _units;
 
-                            [_grp,0] setWaypointPosition [(getPos _veh),0];
+                            [_grp,0] setWaypointPosition [_pos,0];
 							[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 
 							//[_veh, _grp, _units, units _grp] spawn _code;
