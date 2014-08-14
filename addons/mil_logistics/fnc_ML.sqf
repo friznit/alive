@@ -44,6 +44,7 @@ ARJay
 #define DEFAULT_FORCE_POOL "1000"
 #define DEFAULT_ALLOW true
 #define DEFAULT_TYPE "DYNAMIC"
+#define DEFAULT_REGISTRY_ID ""
 #define PARADROP_HEIGHT 500
 #define DESTINATION_VARIANCE 150
 #define DESTINATION_RADIUS 300
@@ -90,6 +91,20 @@ switch(_operation) do {
 
 		_result = _args;
 	};
+	case "persistent": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["persistent", _args];
+        } else {
+            _args = _logic getVariable ["persistent", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["persistent", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
 	case "pause": {
         if(typeName _args != "BOOL") then {
             // if no new value was provided return current setting
@@ -176,6 +191,9 @@ switch(_operation) do {
     };
     case "forcePoolType": {
         _result = [_logic,_operation,_args,DEFAULT_FORCE_POOL_TYPE] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "registryID": {
+        _result = [_logic,_operation,_args,DEFAULT_REGISTRY_ID] call ALIVE_fnc_OOsimpleOperation;
     };
     case "allowInfantryReinforcement": {
         if (typeName _args == "BOOL") then {
@@ -278,20 +296,6 @@ switch(_operation) do {
         };
 
         _result = _logic getVariable [_operation, DEFAULT_FORCE_POOL];
-
-        // update the global force pool
-
-        private["_moduleFactions","_factions"];
-
-        _moduleFactions = _logic getVariable ["factions", []];
-
-        {
-            _factions = _x select 1;
-            {
-                [ALIVE_globalForcePool,_x,_result] call ALIVE_fnc_hashSet;
-            } forEach _factions;
-        } forEach _moduleFactions;
-
     };
 	// Main process
 	case "init": {
@@ -305,17 +309,13 @@ switch(_operation) do {
 			_logic setVariable ["moduleType", "ALIVE_ML"];
 			_logic setVariable ["startupComplete", false];
 			_logic setVariable ["listenerID", ""];
+			_logic setVariable ["registryID", ""];
 			_logic setVariable ["analysisInProgress", false];
 			_logic setVariable ["eventQueue", [] call ALIVE_fnc_hashCreate];
 
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_forcePool = [_logic, "forcePool"] call MAINCLASS;
 			_type = [_logic, "type"] call MAINCLASS;
-
-			// set the global force pool
-            if(isNil "ALIVE_globalForcePool") then {
-                ALIVE_globalForcePool = [] call ALIVE_fnc_hashCreate;
-            };
 
 			if(typeName _forcePool == "STRING") then {
                 _forcePool = parseNumber _forcePool;
@@ -333,6 +333,7 @@ switch(_operation) do {
             _allowHeli = [_logic, "allowHeliReinforcement"] call MAINCLASS;
             _allowPlane = [_logic, "allowPlaneReinforcement"] call MAINCLASS;
 
+
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
                 ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -347,6 +348,14 @@ switch(_operation) do {
                 ["ALIVE ML - Allow plane requests: %1",_allowPlane] call ALIVE_fnc_dump;
             };
             // DEBUG -------------------------------------------------------------------------------------
+
+
+            // create the global registry
+            if(isNil "ALIVE_MLGlobalRegistry") then {
+                ALIVE_MLGlobalRegistry = [nil, "create"] call ALIVE_fnc_MLGlobalRegistry;
+                [ALIVE_MLGlobalRegistry, "init"] call ALIVE_fnc_MLGlobalRegistry;
+                [ALIVE_MLGlobalRegistry, "debug", _debug] call ALIVE_fnc_MLGlobalRegistry;
+            };
 
 			TRACE_1("After module init",_logic);
 
@@ -426,7 +435,7 @@ switch(_operation) do {
         if (isServer) then {
 		
 			private ["_debug","_modules","_module","_modulesFactions","_moduleSide","_moduleFactions","_modulesObjectives","_moduleFactionBreakdowns",
-			"_faction","_factionBreakdown","_objectives","_forcePool"];
+			"_faction","_factionBreakdown","_objectives"];
 
 			_modules = _args;
 			
@@ -467,8 +476,8 @@ switch(_operation) do {
 			[_logic, "factions", _modulesFactions] call MAINCLASS;
 			[_logic, "objectives", _modulesObjectives] call MAINCLASS;
 
-			_forcePool = [_logic, "forcePool"] call MAINCLASS;
-			[_logic, "forcePool", _forcePool] call MAINCLASS;
+            // register the module
+            [ALIVE_MLGlobalRegistry,"register",_logic] call ALIVE_fnc_MLGlobalRegistry;
 
             // start listening for logcom events
             [_logic,"listen"] call MAINCLASS;
@@ -518,10 +527,14 @@ switch(_operation) do {
 
                 _forcePool = [ALIVE_globalForcePool,_eventFaction] call ALIVE_fnc_hashGet;
 
+
+                // DEBUG -------------------------------------------------------------------------------------
                 if(_debug) then {
                     ["ALIVE ML - Global force pool:"] call ALIVE_fnc_dump;
                     ALIVE_globalForcePool call ALIVE_fnc_inspectHash;
                 };
+                // DEBUG -------------------------------------------------------------------------------------
+
 
                 // if there are still forces available
                 if(_forcePool > 0) then {
@@ -698,7 +711,7 @@ switch(_operation) do {
     };
 
     case "onDemandAnalysis": {
-        private["_debug","_analysisInProgress","_type","_forcePoolType","_forcePool","_objectives"];
+        private["_debug","_analysisInProgress","_type","_forcePoolType","_registryID","_forcePool","_objectives"];
 
         if (isServer) then {
 
@@ -712,7 +725,8 @@ switch(_operation) do {
 
                 _type = [_logic, "type"] call MAINCLASS;
                 _forcePoolType = [_logic, "forcePoolType"] call MAINCLASS;
-                _forcePool = [_logic, "forcePool"] call MAINCLASS;
+                _registryID = [_logic, "registryID"] call MAINCLASS;
+                _forcePool = [ALIVE_globalForcePool,_eventFaction] call ALIVE_fnc_hashGet;
                 if(typeName _forcePool == "STRING") then {
                     _forcePool = parseNumber _forcePool;
                 };
@@ -813,9 +827,8 @@ switch(_operation) do {
 
                     };
 
-                    //["NEW FORCE POOL: %1",_forcePool] call ALIVE_fnc_dump;
-
-                    [_logic, "forcePool", _forcePool] call MAINCLASS;
+                    // update the global force pool
+                    [ALIVE_MLGlobalRegistry,"updateGlobalForcePool",[_registryID,_forcePool]] call ALIVE_fnc_MLGlobalRegistry;
 
                 };
 
@@ -1083,7 +1096,7 @@ switch(_operation) do {
 
     case "monitorEvent": {
 
-         private ["_debug","_event","_reinforcementAnalysis","_side","_eventID","_eventData","_eventPosition","_eventSide","_eventFaction",
+         private ["_debug","_registryID","_event","_reinforcementAnalysis","_side","_eventID","_eventData","_eventPosition","_eventSide","_eventFaction",
          "_eventForceMakeup","_eventType","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
          "_eventForcePlane","_eventForceHeli","_eventForceSpecOps","_eventTime","_eventState","_eventStateData","_eventCargoProfiles",
          "_eventTransportProfiles","_eventTransportVehiclesProfiles","_playerRequested","_playerRequestProfiles","_reinforcementPriorityTotal"
@@ -1092,15 +1105,12 @@ switch(_operation) do {
          "_staticIndividuals","_joinIndividuals","_reinforceIndividuals","_staticGroups","_joinGroups","_reinforceGroups"];
 
         _debug = [_logic, "debug"] call MAINCLASS;
+        _registryID = [_logic, "registryID"] call MAINCLASS;
         _event = _args select 0;
         _reinforcementAnalysis = _args select 1;
 
         _side = [_logic, "side"] call MAINCLASS;
         _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
-        _forcePool = [_logic, "forcePool"] call MAINCLASS;
-        if(typeName _forcePool == "STRING") then {
-            _forcePool = parseNumber _forcePool;
-        };
 
         _eventID = [_event, "id"] call ALIVE_fnc_hashGet;
         _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
@@ -1123,6 +1133,8 @@ switch(_operation) do {
         _eventSide = _eventData select 2;
         _eventForceMakeup = _eventData select 3;
         _eventType = _eventData select 4;
+
+        _forcePool = [ALIVE_globalForcePool,_eventFaction] call ALIVE_fnc_hashGet;
 
 
         if(_playerRequested) then {
@@ -1152,8 +1164,8 @@ switch(_operation) do {
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
-            ["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
-            _event call ALIVE_fnc_inspectHash;
+            //["ALIVE ML - Monitoring Event"] call ALIVE_fnc_dump;
+            //_event call ALIVE_fnc_inspectHash;
             //_reinforcementAnalysis call ALIVE_fnc_inspectHash;
         };
         // DEBUG -------------------------------------------------------------------------------------
@@ -1651,7 +1663,8 @@ switch(_operation) do {
                             // remove the created group count
                             // from the force pool
                             _forcePool = _forcePool - _totalCount;
-                            [_logic, "forcePool", _forcePool] call MAINCLASS;
+                            // update the global force pool
+                            [ALIVE_MLGlobalRegistry,"updateGlobalForcePool",[_registryID,_forcePool]] call ALIVE_fnc_MLGlobalRegistry;
 
                             switch(_eventType) do {
                                 case "STANDARD": {
@@ -4115,7 +4128,8 @@ switch(_operation) do {
                             // remove the created group count
                             // from the force pool
                             _forcePool = _forcePool - _totalCount;
-                            [_logic, "forcePool", _forcePool] call MAINCLASS;
+                            // update the global force pool
+                            [ALIVE_MLGlobalRegistry,"updateGlobalForcePool",[_registryID,_forcePool]] call ALIVE_fnc_MLGlobalRegistry;
 
                             switch(_eventType) do {
                                 case "PR_STANDARD": {

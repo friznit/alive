@@ -148,6 +148,11 @@ _saveServer = {
 	    ["ALIVE Abort - Server Save Logistics State"] call ALIVE_fnc_dump;
 		call ALiVE_fnc_logisticsSaveData;
 	};
+
+	if (["ALiVE_mil_logistics"] call ALiVE_fnc_isModuleAvailable) then {
+        ["ALIVE Abort - Server Save ML State"] call ALIVE_fnc_dump;
+        call ALiVE_fnc_MLSaveData;
+    };
 };
 
 // Function run on server

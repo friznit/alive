@@ -14,6 +14,12 @@
 <Key ID="STR_ALIVE_ML_DEBUG_COMMENT">
 	<English>Enables ML Module Debug</English>
 </Key>
+<Key ID="STR_ALIVE_ML_PERSISTENT">
+    <English>Persistent:</English>
+</Key>
+<Key ID="STR_ALIVE_ML_PERSISTENT_COMMENT">
+    <English>Enables external Database persistence for military logistics</English>
+</Key>
 <Key ID="STR_ALIVE_ML_TYPE">
     <English>Reinforcement Type:</English>
 </Key>

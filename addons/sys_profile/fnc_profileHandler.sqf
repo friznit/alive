@@ -1210,8 +1210,10 @@ switch(_operation) do {
                         _exportRanks = [];
 
                         {
-                            if(typeName _x == "STRING") then {
-                                _exportRanks set [count _exportRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
+                            if(!isNil "_x") then {
+                                if(typeName _x == "STRING") then {
+                                    _exportRanks set [count _exportRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
+                                };
                             };
                         } forEach _ranks;
 
