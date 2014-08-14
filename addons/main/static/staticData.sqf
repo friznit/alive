@@ -97,7 +97,20 @@ ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST +
     "C_Soldier_VR_F",
     "B_Protagonist_VR_F",
     "O_Protagonist_VR_F",
-    "I_Protagonist_VR_F"
+    "I_Protagonist_VR_F",
+    
+    "C_Driver_1_black_F",
+	"C_Driver_1_blue_F",
+	"C_Driver_1_F",
+	"C_Driver_1_green_F",
+	"C_Driver_1_orange_F",
+	"C_Driver_1_random_base_F",
+	"C_Driver_1_red_F",
+	"C_Driver_1_white_F",
+	"C_Driver_1_yellow_F",
+	"C_Driver_2_F",
+	"C_Driver_3_F",
+	"C_Driver_4_F"
 ];
 
 
