@@ -81,7 +81,6 @@ class Mission
 		"A3_Soft_F_MRAP_01",
 		"A3_Structures_F_Items_Vessels",
 		"A3_Weapons_F_Ammoboxes",
-		"a3_weapons_f_beta_ammoboxes",
 		"A3_Soft_F_Offroad_01",
 		"A3_Soft_F_Quadbike",
 		"a3_map_altis"
@@ -570,7 +569,7 @@ class Mission
 					position[]={16082.614,23.311611,17769.807};
 					class args
 					{
-						items=13;
+						items=18;
 						class Item0
 						{
 							value="false";
@@ -621,29 +620,59 @@ class Mission
 						};
 						class Item8
 						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customInfantryCount";
+						};
+						class Item9
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customMotorisedCount";
+						};
+						class Item10
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customMechanisedCount";
+						};
+						class Item11
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customArmourCount";
+						};
+						class Item12
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customSpecOpsCount";
+						};
+						class Item13
+						{
 							value="IND_F";
 							parentCls="ALiVE_mil_placement";
 							typeName="faction";
 						};
-						class Item9
+						class Item14
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="createHQ";
 						};
-						class Item10
+						class Item15
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="placeHelis";
 						};
-						class Item11
+						class Item16
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="placeSupplies";
 						};
-						class Item12
+						class Item17
 						{
 							value="0.2";
 							parentCls="ALiVE_mil_placement";
@@ -970,7 +999,7 @@ class Mission
 					position[]={15565.209,20.286308,17815.619};
 					class args
 					{
-						items=9;
+						items=10;
 						class Item0
 						{
 							value="false";
@@ -993,33 +1022,39 @@ class Mission
 						{
 							value="false";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="PLAYERTASKINGS";
+							typeName="playertaskings";
 						};
 						class Item4
+						{
+							value="0.9";
+							parentCls="ALiVE_mil_OPCOM";
+							typeName="reinforcements";
+						};
+						class Item5
 						{
 							value="IND_F";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction1";
 						};
-						class Item5
+						class Item6
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction2";
 						};
-						class Item6
+						class Item7
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction3";
 						};
-						class Item7
+						class Item8
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction4";
 						};
-						class Item8
+						class Item9
 						{
 							value="";
 							parentCls="ALiVE_mil_OPCOM";
@@ -1132,7 +1167,7 @@ class Mission
 					position[]={11168.31,171.22977,8615.1738};
 					class args
 					{
-						items=9;
+						items=10;
 						class Item0
 						{
 							value="false";
@@ -1155,33 +1190,39 @@ class Mission
 						{
 							value="true";
 							parentCls="ALiVE_mil_OPCOM";
-							typeName="PLAYERTASKINGS";
+							typeName="playertaskings";
 						};
 						class Item4
+						{
+							value="0.9";
+							parentCls="ALiVE_mil_OPCOM";
+							typeName="reinforcements";
+						};
+						class Item5
 						{
 							value="BLU_F";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction1";
 						};
-						class Item5
+						class Item6
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction2";
 						};
-						class Item6
+						class Item7
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction3";
 						};
-						class Item7
+						class Item8
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction4";
 						};
-						class Item8
+						class Item9
 						{
 							value="";
 							parentCls="ALiVE_mil_OPCOM";

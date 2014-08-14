@@ -2,15 +2,15 @@
 class header {
 	gametype = COOP;
 	minplayers = 1;
-	maxplayers = 23;
+	maxplayers = 8;
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
 
 author = ALiVE Team | Mission by Highhead;
-onLoadMission = "Take the Airbase at Telos! You have CAS and air transport at your command! Try to survive!";
+onLoadMission = "Steal the prototype MI-48 from the airbase at Salakano and bring it to your Command base in the north! Try to survive!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;
-onLoadName = ALiVE | Airport Assault;
+onLoadName = ALiVE | Airport Assault v0.81;
 loadScreen = "x\alive\addons\mil_opcom\showcases\foursome.Altis\rsc\logo_alive.paa";
 
 aiKills = 0;

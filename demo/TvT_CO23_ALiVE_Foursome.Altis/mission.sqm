@@ -3386,7 +3386,7 @@ class Mission
 					position[]={26800.682,17.15106,24747.006};
 					class args
 					{
-						items=9;
+						items=10;
 						class Item0
 						{
 							value="false";
@@ -3395,47 +3395,53 @@ class Mission
 						};
 						class Item1
 						{
+							value="false";
+							parentCls="ALiVE_mil_logistics";
+							typeName="persistent";
+						};
+						class Item2
+						{
 							value="DYNAMIC";
 							parentCls="ALiVE_mil_logistics";
 							typeName="type";
 						};
-						class Item2
+						class Item3
 						{
 							value="1000";
 							parentCls="ALiVE_mil_logistics";
 							typeName="forcePool";
 						};
-						class Item3
+						class Item4
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowInfantryReinforcement";
 						};
-						class Item4
+						class Item5
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowMechanisedReinforcement";
 						};
-						class Item5
+						class Item6
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowMotorisedReinforcement";
 						};
-						class Item6
+						class Item7
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowArmourReinforcement";
 						};
-						class Item7
+						class Item8
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowHeliReinforcement";
 						};
-						class Item8
+						class Item9
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
@@ -3461,10 +3467,10 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={14766.319,17.882801,16529.078};
+					position[]={14760.026,17.869965,16552.152};
 					class args
 					{
-						items=9;
+						items=10;
 						class Item0
 						{
 							value="false";
@@ -3473,47 +3479,53 @@ class Mission
 						};
 						class Item1
 						{
+							value="false";
+							parentCls="ALiVE_mil_logistics";
+							typeName="persistent";
+						};
+						class Item2
+						{
 							value="DYNAMIC";
 							parentCls="ALiVE_mil_logistics";
 							typeName="type";
 						};
-						class Item2
+						class Item3
 						{
 							value="1000";
 							parentCls="ALiVE_mil_logistics";
 							typeName="forcePool";
 						};
-						class Item3
+						class Item4
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowInfantryReinforcement";
 						};
-						class Item4
+						class Item5
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowMechanisedReinforcement";
 						};
-						class Item5
+						class Item6
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowMotorisedReinforcement";
 						};
-						class Item6
+						class Item7
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowArmourReinforcement";
 						};
-						class Item7
+						class Item8
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
 							typeName="allowHeliReinforcement";
 						};
-						class Item8
+						class Item9
 						{
 							value="true";
 							parentCls="ALiVE_mil_logistics";
