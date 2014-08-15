@@ -38,7 +38,7 @@ _canCarry = false;
 if ((_object == _container) || {{_object isKindOf _x} count _blackList > 0}) exitwith {_canCarry};
 
 // Only one object may be carried at a time
-if (_object in (attachedObjects _container)) exitwith {_canCarry};
+if (count (_container getvariable [QGVAR(CARGO),[]]) > 0) exitwith {_canCarry};
 
 {if (_container isKindOf _x) exitwith {_containerCanCarry = true}} foreach _allowedContainers;
 {if (_object isKindOf _x) exitwith {_objectCanCarry = true}} foreach _allowedObjects;

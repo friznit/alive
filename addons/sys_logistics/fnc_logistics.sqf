@@ -323,6 +323,9 @@ switch (_operation) do {
             _containerID = [_logic,"id",_container] call ALiVE_fnc_logistics;
             
             if !([_object,_container] call ALiVE_fnc_canCarry) exitwith {};
+            
+            _object setvariable [QGVAR(CONTAINER),_container,true];
+            _container setvariable [QGVAR(CARGO),(_container getvariable [QGVAR(CARGO),[]]) + [_object],true];
 			
             _object attachTo [_container];
             
@@ -342,7 +345,8 @@ switch (_operation) do {
             _objectID = [_logic,"id",_object] call ALiVE_fnc_logistics;
             _containerID = [_logic,"id",_container] call ALiVE_fnc_logistics;
             
-            if ([_object,_container] call ALiVE_fnc_canCarry) exitwith {};
+            _object setvariable [QGVAR(CONTAINER),nil,true];
+            _container setvariable [QGVAR(CARGO),(_container getvariable [QGVAR(CARGO),[]]) - [_object],true];
             
             // Detach and reposition for a save placement
             detach _object;
@@ -623,7 +627,7 @@ switch (_operation) do {
                     _text = "Carry object";
                 	_input = "cursortarget";
                     _container = "_this select 1";
-                    _condition = "isnil {cursortarget getvariable 'ALiVE_SYS_LOGISTICS_CONTAINER'} && {cursortarget distance _target < 5} && {[cursortarget,_target] call ALiVE_fnc_canCarry}";
+                    _condition = "cursortarget distance _target < 5 && {isnil {cursortarget getvariable 'ALiVE_SYS_LOGISTICS_CONTAINER'}} && {[cursortarget,_target] call ALiVE_fnc_canCarry}";
 				};
 			    case ("dropObject") : {
                     _text = "Drop object";
