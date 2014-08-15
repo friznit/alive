@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PATH=$PATH:"/c/Program Files (x86)/NaturalDocs-1.52"
+PATH=$PATH:"/e/Applications/NaturalDocs"
 NATURALDOCS=`which NaturalDocs 2>/dev/null`
 
 if [ -z "$NATURALDOCS" ]
