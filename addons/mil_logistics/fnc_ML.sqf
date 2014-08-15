@@ -4054,7 +4054,7 @@ switch(_operation) do {
 
                             };
 
-                            private ["_containers"];
+                            private ["_containers","_vehicle","_parachute","_soundFlyover"];
 
                             if(_eventType == "PR_AIRDROP") then {
 
@@ -4076,7 +4076,34 @@ switch(_operation) do {
 
                                     _vehicleClass = _containers call BIS_fnc_selectRandom;
 
-                                    _profile = [_vehicleClass,_side,_eventFaction,_position,random(360),false,_eventFaction,_payload] call ALIVE_fnc_createProfileVehicle;
+                                    //_profile = [_vehicleClass,_side,_eventFaction,_position,random(360),false,_eventFaction,_payload] call ALIVE_fnc_createProfileVehicle;
+
+                                    _vehicle = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
+                                    [ALiVE_SYS_LOGISTICS,"fillContainer",[_vehicle,_payload]] call ALiVE_fnc_Logistics;
+
+                                    if(_paraDrop) then {
+                                        _parachute = createvehicle ["B_Parachute_02_F",position _vehicle ,[],0,"none"];
+                                        _vehicle attachto [_parachute,[0,0,(abs ((boundingbox _vehicle select 0) select 2))]];
+
+                                        _parachute setpos position _vehicle;
+                                        _parachute setdir direction _vehicle;
+                                        _parachute setvelocity [0,0,-1];
+
+                                        if (time - (missionnamespace getvariable ["bis_fnc_curatorobjectedited_paraSoundTime",0]) > 0) then {
+                                            _soundFlyover = ["BattlefieldJet1","BattlefieldJet2"] call bis_fnc_selectrandom;
+                                            [[_parachute,_soundFlyover,"say3d"],"bis_fnc_sayMessage"] call bis_fnc_mp;
+                                            missionnamespace setvariable ["bis_fnc_curatorobjectedited_paraSoundTime",time + 10]
+                                        };
+
+                                        [_vehicle,_parachute] spawn {
+                                            _vehicle = _this select 0;
+                                            _parachute = _this select 1;
+
+                                            waituntil {isnull _parachute || isnull _vehicle};
+                                            _vehicle setdir direction _vehicle;
+                                            deletevehicle _parachute;
+                                        };
+                                    };
 
                                 };
 
