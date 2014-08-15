@@ -2860,7 +2860,7 @@ switch(_operation) do {
                 if(_waypointsCompleted > 0) then {
                     _waitDifference = _waitTotalIterations - _waitIterations;
                     if(_waitDifference > 50) then {
-                        _waitIterations = _waitTotalIterations - 40;
+                        _waitIterations = _waitTotalIterations - 15;
                     };
                 };
 

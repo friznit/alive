@@ -9,9 +9,8 @@ if (isnil "ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST") then {ALiVE_PLACEMENT_CUSTO
 if (isnil "ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST = []};
 
 /*
- * CQB Defaults
+ * CQB houses
  */
-
 
 ALiVE_MIL_CQB_STRATEGICHOUSES = ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES + 
 [
@@ -60,6 +59,10 @@ ALiVE_MIL_CQB_STRATEGICHOUSES = ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES +
 	"Land_Ind_PowerStation_EP1",
 	"Land_Ind_PowerStation"
 ];
+
+/*
+ * CQB unit blacklist
+ */
 
 ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST + 
 [
@@ -113,11 +116,9 @@ ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST +
 	"C_Driver_4_F"
 ];
 
-
 /*
- * MP, CP, ML Defaults
+ * Mil placement / Ambient civilians / Mil logistics vehicle blacklist
  */
-
 
 ALiVE_PLACEMENT_UNITBLACKLIST = ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST +
 [
@@ -145,6 +146,10 @@ ALiVE_PLACEMENT_UNITBLACKLIST = ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST +
     "C_Marshal_F",
     "C_man_pilot_F"
 ];
+
+/*
+ * Mil placement / Ambient civilians / Mil logistics vehicle blacklist
+ */
 
 ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +
 [
@@ -175,6 +180,10 @@ ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +
 	"C_Kart_01_Vrana_F"
 
 ];
+
+/*
+ * Mil placement group blacklist
+ */
 
 ALiVE_PLACEMENT_GROUPBLACKLIST = ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST + 
 [
@@ -207,11 +216,14 @@ ALiVE_PLACEMENT_GROUPBLACKLIST = ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST +
 ];
 
 /*
- * Custom support and ammo classes for faction
- * Used by MP CP to place support vehicles and ammo boxes
+ * Custom transport,support, and ammo classes for factions
+ * Used by MP,MCP,ML to place support vehicles and ammo boxes
  * If no faction specific settings are found will fall back to side
  */
 
+/*
+ * Mil placement ambient vehicles for sides
+ */
 
 ALIVE_sideDefaultSupports = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultSupports, "EAST", ["O_Truck_02_Ammo_F","O_Truck_02_box_F","O_Truck_02_fuel_F","O_Truck_02_medical_F","O_Truck_02_transport_F","O_Truck_02_covered_F"]] call ALIVE_fnc_hashSet; // ,"Box_East_AmmoVeh_F"
@@ -219,10 +231,18 @@ ALIVE_sideDefaultSupports = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultSupports, "GUER", ["I_Truck_02_ammo_F","I_Truck_02_box_F","I_Truck_02_fuel_F","I_Truck_02_medical_F","I_Truck_02_covered_F","I_Truck_02_transport_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultSupports, "CIV", ["C_Van_01_box_F","C_Van_01_transport_F","C_Van_01_fuel_F"]] call ALIVE_fnc_hashSet;
 
+/*
+ * Mil placement random supply boxes for sides
+ */
+
 ALIVE_sideDefaultSupplies = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultSupplies, "EAST", ["Box_East_Ammo_F","Box_East_AmmoOrd_F","Box_East_Grenades_F","Box_East_Support_F","Box_East_Wps_F","Box_East_WpsLaunch_F","Box_East_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultSupplies, "WEST", ["Box_NATO_Ammo_F","Box_NATO_AmmoOrd_F","Box_NATO_Grenades_F","Box_NATO_Support_F","Box_NATO_Wps_F","Box_NATO_WpsLaunch_F","Box_NATO_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultSupplies, "GUER", ["Box_IND_Ammo_F","Box_IND_AmmoOrd_F","Box_IND_Grenades_F","Box_IND_Support_F","Box_IND_Wps_F","Box_IND_WpsLaunch_F","Box_IND_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
+
+/*
+ * Mil logistics convoy transport vehicles fallback for sides
+ */
 
 ALIVE_sideDefaultTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultTransport, "EAST", ["O_Truck_02_transport_F","O_Truck_02_covered_F"]] call ALIVE_fnc_hashSet;
@@ -230,17 +250,29 @@ ALIVE_sideDefaultTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultTransport, "GUER", ["I_Truck_02_covered_F","I_Truck_02_transport_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultTransport, "CIV", ["C_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
 
+/*
+ * Mil logistics air transport vehicles fallback for sides
+ */
+
 ALIVE_sideDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultAirTransport, "EAST", ["O_Heli_Attack_02_F","O_Heli_Light_02_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultAirTransport, "WEST", ["B_Heli_Transport_01_camo_F","B_Heli_Transport_01_camo_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultAirTransport, "GUER", ["I_Heli_light_03_unarmed_F","I_Heli_Transport_02_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultAirTransport, "CIV", []] call ALIVE_fnc_hashSet;
 
+/*
+ * Mil logistics airdrop containers fallback for sides
+ */
+
 ALIVE_sideDefaultContainers = [] call ALIVE_fnc_hashCreate;
 [ALIVE_sideDefaultContainers, "EAST", ["ALIVE_O_supplyCrate_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultContainers, "WEST", ["ALIVE_B_supplyCrate_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultContainers, "GUER", ["ALIVE_I_supplyCrate_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_sideDefaultContainers, "CIV", []] call ALIVE_fnc_hashSet;
+
+/*
+ * Mil placement ambient vehicles per faction
+ */
 
 ALIVE_factionDefaultSupports = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupports, "OPF_F", ["O_Truck_02_Ammo_F","O_Truck_02_box_F","O_Truck_02_fuel_F","O_Truck_02_medical_F","O_Truck_02_transport_F","O_Truck_02_covered_F"]] call ALIVE_fnc_hashSet; // ,"Box_East_AmmoVeh_F"
@@ -250,12 +282,20 @@ ALIVE_factionDefaultSupports = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupports, "BLU_G_F", ["B_G_Van_01_fuel_F","B_G_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupports, "CIV_F", ["C_Van_01_box_F","C_Van_01_transport_F","C_Van_01_fuel_F"]] call ALIVE_fnc_hashSet;
 
+/*
+ * Mil placement random supply boxes per faction
+ */
+
 ALIVE_factionDefaultSupplies = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupplies, "OPF_F", ["Box_East_Ammo_F","Box_East_AmmoOrd_F","Box_East_Grenades_F","Box_East_Support_F","Box_East_Wps_F","Box_East_WpsLaunch_F","Box_East_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "OPF_G_F", ["Box_East_Ammo_F","Box_East_AmmoOrd_F","Box_East_Grenades_F","Box_East_Support_F","Box_East_Wps_F","Box_East_WpsLaunch_F","Box_East_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "IND_F", ["Box_IND_Ammo_F","Box_IND_AmmoOrd_F","Box_IND_Grenades_F","Box_IND_Support_F","Box_IND_Wps_F","Box_IND_WpsLaunch_F","Box_IND_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "BLU_F", ["Box_NATO_Ammo_F","Box_NATO_AmmoOrd_F","Box_NATO_Grenades_F","Box_NATO_Support_F","Box_NATO_Wps_F","Box_NATO_WpsLaunch_F","Box_NATO_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "BLU_G_F", ["Box_IND_Ammo_F","Box_IND_AmmoOrd_F","Box_IND_Grenades_F","Box_IND_Support_F","Box_IND_Wps_F","Box_IND_WpsLaunch_F","Box_IND_WpsSpecial_F"]] call ALIVE_fnc_hashSet;
+
+/*
+ * Mil logistics convoy transport vehicles per faction
+ */
 
 ALIVE_factionDefaultTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultTransport, "OPF_F", ["O_Truck_02_transport_F","O_Truck_02_covered_F"]] call ALIVE_fnc_hashSet;
@@ -265,6 +305,10 @@ ALIVE_factionDefaultTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultTransport, "BLU_G_F", ["B_G_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultTransport, "CIV_F", ["C_Van_01_transport_F"]] call ALIVE_fnc_hashSet;
 
+/*
+ * Mil logistics air transport vehicles per faction
+ */
+
 ALIVE_factionDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultAirTransport, "OPF_F", ["O_Heli_Attack_02_F","O_Heli_Light_02_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultAirTransport, "OPF_G_F", ["I_Heli_light_03_unarmed_F"]] call ALIVE_fnc_hashSet;
@@ -272,6 +316,10 @@ ALIVE_factionDefaultAirTransport = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultAirTransport, "BLU_F", ["B_Heli_Transport_01_camo_F","B_Heli_Transport_01_camo_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultAirTransport, "BLU_G_F", ["I_Heli_light_03_unarmed_F"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultAirTransport, "CIV_F", []] call ALIVE_fnc_hashSet;
+
+/*
+ * Mil logistics airdrop containers per faction
+ */
 
 ALIVE_factionDefaultContainers = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultContainers, "OPF_F", ["ALIVE_O_supplyCrate_F"]] call ALIVE_fnc_hashSet;
