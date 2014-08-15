@@ -1187,13 +1187,13 @@ switch(_operation) do {
                             "waypoints",
                             "waypointsCompleted",
                             "units",
-                            "hasSimulated",
+                            /*"hasSimulated",*/
                             "isCycling",
                             "activeCommands",
                             "inactiveCommands",
                             "debugMarkers",
                             "speedPerSecond",
-                            "despawnPosition",
+                            /*"despawnPosition",*/
                             "vehicleAssignments",
                             "damages",
                             "positions",
@@ -1250,10 +1250,10 @@ switch(_operation) do {
                             "debug",
                             "active",
                             "vehicle",
-                            "hasSimulated",
+                            /*"hasSimulated",*/
                             "debugMarkers",
                             "speedPerSecond",
-                            "despawnPosition",
+                            /*"despawnPosition",*/
                             "vehicleAssignments",
                             "ammo",
                             "canMove",
@@ -1363,6 +1363,9 @@ switch(_operation) do {
                         [_profileEntity, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
                         [_profileEntity, "_id", [_profile,"_id"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 
+                        [_profileEntity, "hasSimulated", [_profile,"hasSimulated"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        [_profileEntity, "despawnPosition", [_profile,"despawnPosition"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+
                         /*
                         [_profileEntity, "objectType", [_profile,"objectType"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileEntity;
                         [_profileEntity, "unitCount", [_profile,"unitCount"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
@@ -1429,6 +1432,9 @@ switch(_operation) do {
                         [_profileVehicle, "engineOn", [_profile,"engineOn"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
                         [_profileVehicle, "_rev", [_profile,"_rev"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
                         [_profileVehicle, "_id", [_profile,"_id"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+
+                        [_profileVehicle, "hasSimulated", [_profile,"hasSimulated"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        [_profileVehicle, "despawnPosition", [_profile,"despawnPosition"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 
                         /*
                         [_profileVehicle, "damage", [_profile,"damage"] call ALIVE_fnc_hashGet] call ALIVE_fnc_profileVehicle;
