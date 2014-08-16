@@ -74,7 +74,7 @@ class C2Tablet
             text = "Close";
             style = 0x02;
             x = 0.4 * safezoneW + safezoneX;
-            y = 0.4000 * safezoneH + safezoneY;
+            y = 0.3900 * safezoneH + safezoneY;
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
@@ -91,7 +91,7 @@ class C2Tablet
             text = "Back";
             style = 0x02;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.6800 * safezoneH + safezoneY;
+            y = 0.7000 * safezoneH + safezoneY;
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
@@ -107,7 +107,7 @@ class C2Tablet
             text = "Close";
             style = 0x02;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.7200 * safezoneH + safezoneY;
+            y = 0.7350 * safezoneH + safezoneY;
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
