@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_C2ISTAR">
+    <English>C2ISTAR</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_COMMENT">
+    <English>Command and control</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_ALLOW">
+    <English>Item</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_ALLOW_COMMENT">
+    <English>Define the item the player must have to be able to use C2ISTAR i.e "LaserDesignator"</English>
+</Key>
+</Container></Package></Project>
