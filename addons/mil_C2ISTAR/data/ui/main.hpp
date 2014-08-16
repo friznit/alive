@@ -181,6 +181,19 @@ class C2Tablet
             };
         };
 
+        class C2Tablet_taskPlayerList : C2Tablet_RscGUIListBox
+        {
+            idc = 70011;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.2400 * safezoneH + safezoneY;
+            w = 0.241271 * safezoneW;
+            h = 0.13 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
 
         /*
         class C2Tablet_map : C2Tablet_RscMap

@@ -1007,6 +1007,13 @@ class getNearUnits
 	recompile = RECOMPILE;
 };
 
+class getPlayersDataSource
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getPlayersDataSource.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class getRandomManNear
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_getRandomManNear.sqf";
@@ -1066,6 +1073,20 @@ class anyAutonomousInRange
 class findVehicleType
 {
 	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_findVehicleType.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class isAA
+{
+	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_isAA.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class isArtillery
+{
+	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_isArtillery.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1178,20 +1199,6 @@ class vehicleSetAmmo
 class vehicleSetDamage
 {
 	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_vehicleSetDamage.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class isAA
-{
-	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_isAA.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class isArtillery
-{
-	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_isArtillery.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

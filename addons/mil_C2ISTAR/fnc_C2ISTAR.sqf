@@ -41,6 +41,7 @@ Peer Reviewed:
 #define DEFAULT_SELECTED_INDEX 0
 #define DEFAULT_SELECTED_VALUE ""
 #define DEFAULT_SCALAR 0
+#define DEFAULT_TASKING_STATE [] call ALIVE_fnc_hashCreate
 
 // Display components
 #define C2Tablet_CTRL_MainDisplay 70001
@@ -50,11 +51,22 @@ Peer Reviewed:
 #define C2Tablet_CTRL_MainMenuAAR 70003
 #define C2Tablet_CTRL_MainMenuISTAR 70004
 #define C2Tablet_CTRL_MainMenuAbort 70005
+
+// sub menu generic
 #define C2Tablet_CTRL_SubMenuBack 70006
-#define C2Tablet_CTRL_TaskTitle 70007
-#define C2Tablet_CTRL_AARTitle 70008
-#define C2Tablet_CTRL_ISTARTitle 70009
 #define C2Tablet_CTRL_SubMenuAbort 70010
+
+// tasking
+#define C2Tablet_CTRL_TaskTitle 70007
+#define C2Tablet_CTRL_TaskPlayerList 70011
+
+// AAR
+#define C2Tablet_CTRL_AARTitle 70008
+
+// ISTAR
+#define C2Tablet_CTRL_ISTARTitle 70009
+
+
 
 
 // Control Macros
@@ -98,6 +110,10 @@ switch(_operation) do {
         _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
     };
 
+    case "taskingState": {
+        _result = [_logic,_operation,_args,DEFAULT_TASKING_STATE] call ALIVE_fnc_OOsimpleOperation;
+    };
+
 
 	case "init": {
 
@@ -106,7 +122,7 @@ switch(_operation) do {
         _logic setVariable ["moduleType", "ALIVE_C2ISTAR"];
         _logic setVariable ["startupComplete", false];
 
-        ALIVE_SUP_PLAYER_RESUPPLY = _logic;
+        ALIVE_MIL_C2ISTAR = _logic;
 
         [_logic, "start"] call MAINCLASS;
 
@@ -133,6 +149,25 @@ switch(_operation) do {
             _playerFaction = faction player;
 
             [_logic,"faction",_playerFaction] call MAINCLASS;
+
+
+            // set the tasking state
+
+            //private ["_taskingState","_playerListOptions","_playerListValues"];
+
+            //_taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+            /*
+            _playerListOptions = ["Player 1","Player 2","Player 3"];
+            _playerListValues = ["p1","p2","p3"];
+
+            [_taskingState,"playerListOptions",_playerListOptions] call ALIVE_fnc_hashSet;
+            [_taskingState,"playerListValues",_playerListValues] call ALIVE_fnc_hashSet;
+            [_taskingState,"playerListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+            [_taskingState,"playerListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+
+            [_logic,"taskingState",_taskingState] call MAINCLASS;
+            */
 
 
             // Initialise interaction key if undefined
@@ -328,6 +363,31 @@ switch(_operation) do {
 
                 };
 
+                case "TASK_PLAYER_LIST_SELECT": {
+
+                    private ["_taskingState","_playerList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue"];
+
+                    _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+                    _playerList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+                    _listOptions = [_taskingState,"playerListOptions"] call ALIVE_fnc_hashGet;
+                    _listValues = [_taskingState,"playerListValues"] call ALIVE_fnc_hashGet;
+                    _selectedOption = _listOptions select _selectedIndex;
+                    _selectedValue = _listValues select _selectedIndex;
+
+                    [_taskingState,"playerListSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                    [_taskingState,"playerListSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                    [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+                    _taskingState call ALIVE_fnc_inspectHash;
+
+
+                };
+
+
+
             };
 
         };
@@ -380,7 +440,11 @@ switch(_operation) do {
     };
     case "enableTasking": {
 
-        private ["_tasksTitle","_backButton","_abortButton"];
+        private ["_taskingState","_tasksTitle","_backButton","_abortButton"];
+
+        _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+        _taskingState call ALIVE_fnc_inspectHash;
 
         _tasksTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskTitle);
         _tasksTitle ctrlShow true;
@@ -392,10 +456,31 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
 
+        private ["_playerList","_playerListOptions"];
+
+        _playerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskPlayerList);
+        _playerList ctrlShow true;
+
+        _playerDataSource = call ALiVE_fnc_getPlayersDataSource;
+        [_taskingState,"playerListOptions",_playerDataSource select 0] call ALIVE_fnc_hashSet;
+        [_taskingState,"playerListValues",_playerDataSource select 1] call ALIVE_fnc_hashSet;
+
+        [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+        _playerListOptions = [_taskingState,"playerListOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _playerList;
+
+        {
+            _playerList lbAdd format["%1", _x];
+        } forEach _playerListOptions;
+
+        _playerList ctrlSetEventHandler ["LBSelChanged", "['TASK_PLAYER_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
     };
     case "disableTasking": {
 
-        private ["_tasksTitle","_backButton","_abortButton"];
+        private ["_tasksTitle","_backButton","_abortButton","_playerList"];
 
         _tasksTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskTitle);
         _tasksTitle ctrlShow false;
@@ -405,6 +490,9 @@ switch(_operation) do {
 
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow false;
+
+        _playerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskPlayerList);
+        _playerList ctrlShow false;
 
     };
     case "enableAAR": {

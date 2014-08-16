@@ -208,6 +208,7 @@ units
 	ALiVE_fnc_anyPlayersInRangeIncludeAir
 	ALiVE_fnc_chooseRandomUnits
 	ALiVE_fnc_getNearUnits
+	ALiVE_fnc_getPlayersDataSource
 	ALiVE_fnc_getRandomManNear
 	ALiVE_fnc_getRandomManOrPlayerNear
 	ALiVE_fnc_getRandomPlayerNear
@@ -218,10 +219,10 @@ units
 
 vehicles
 
-	ALiVE_fnc_isAA
-	ALiVE_fnc_isArtillery
 	ALiVE_fnc_anyAutonomousInRange
 	ALiVE_fnc_findVehicleType
+	ALiVE_fnc_isAA
+	ALiVE_fnc_isArtillery
 	ALiVE_fnc_vehicleAssignGroup
 	ALiVE_fnc_vehicleCountEmptyPositions
 	ALiVE_fnc_vehicleDismount
