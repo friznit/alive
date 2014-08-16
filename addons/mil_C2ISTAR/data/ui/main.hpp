@@ -23,6 +23,166 @@ class C2Tablet
             colorBackground[] = {0,0,0,0};
         };
 
+        class C2Tablet_mainTaskButton : C2Tablet_RscButton
+        {
+            idc = 70002;
+            text = "Tasking";
+            style = 0x02;
+            x = 0.4 * safezoneW + safezoneX;
+            y = 0.2400 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
+        class C2Tablet_mainAARButton : C2Tablet_RscButton
+        {
+            idc = 70003;
+            text = "AAR";
+            style = 0x02;
+            x = 0.4 * safezoneW + safezoneX;
+            y = 0.2900 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
+        class C2Tablet_mainISTARButton : C2Tablet_RscButton
+        {
+            idc = 70004;
+            text = "ISTAR";
+            style = 0x02;
+            x = 0.4 * safezoneW + safezoneX;
+            y = 0.3400 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
+        class C2Tablet_mainAbortButton : C2Tablet_RscButton
+        {
+            idc = 70005;
+            text = "Close";
+            style = 0x02;
+            x = 0.4 * safezoneW + safezoneX;
+            y = 0.4000 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackground[] = {0.376,0.196,0.204,1};
+            colorText[] = {0.706,0.706,0.706,1};
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+            action = "closeDialog 0";
+        };
+
+        class C2Tablet_subMenuBackButton : C2Tablet_RscButton
+        {
+            idc = 70006;
+            text = "Back";
+            style = 0x02;
+            x = 0.519796 * safezoneW + safezoneX;
+            y = 0.6800 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackground[] = {0.376,0.196,0.204,1};
+            colorText[] = {0.706,0.706,0.706,1};
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
+        class C2Tablet_subMenuAbortButton : C2Tablet_RscButton
+        {
+            idc = 70010;
+            text = "Close";
+            style = 0x02;
+            x = 0.519796 * safezoneW + safezoneX;
+            y = 0.7200 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackground[] = {0.376,0.196,0.204,1};
+            colorText[] = {0.706,0.706,0.706,1};
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+            action = "closeDialog 0";
+        };
+
+        class C2Tablet_taskingTitle : C2Tablet_RscText
+        {
+            idc = 70007;
+            text = "Tasking";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.1430 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class C2Tablet_AARTitle : C2Tablet_RscText
+        {
+            idc = 70008;
+            text = "AAR";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.1430 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class C2Tablet_ISTARTitle : C2Tablet_RscText
+        {
+            idc = 70009;
+            text = "ISTAR";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.1430 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+
+        /*
         class C2Tablet_map : C2Tablet_RscMap
         {
             idc = 70002;
@@ -417,6 +577,7 @@ class C2Tablet
                 size = 0.8;
             };
         };
+        */
 
     };
 };
