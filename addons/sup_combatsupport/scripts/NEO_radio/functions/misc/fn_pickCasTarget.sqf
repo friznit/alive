@@ -6,12 +6,12 @@ _weapon = _this select 3;
 
 _parents = [ (configFile >> "CfgWeapons" >> _weapon),true] call BIS_fnc_returnParents;
 if("MissileLauncher" in _parents) then {
-    _classList = ["Tank", "Wheeled_apc"];
+    _classList = ["LaserTargetBase", "Tank", "Wheeled_apc"];
 } else {
     if("RocketPods" in _parents) then {
-        _classList = ["Man","Air","Car","Motorcycle","Tank", "Wheeled_apc"];
+        _classList = ["LaserTargetBase", "Man","Air","Car","Motorcycle","Tank", "Wheeled_apc"];
     } else {
-        _classList = ["Man","Air","Car","Motorcycle", "Wheeled_apc"];
+        _classList = ["LaserTargetBase", "Man","Air","Car","Motorcycle", "Wheeled_apc"];
     };
 };
 
@@ -20,6 +20,8 @@ _target = objNull;
 
 _enemySides = _veh call BIS_fnc_enemySides;
 {
+    if( (side _x) == (side _veh) && _x isKindOf "LaserTargetBase") exitWith { _target = _x; };
+
     if (alive _x && (side _x) in _enemySides ) then {
         if(isNull _target && random 1 > .5) then {
             (group (driver _veh)) reveal _x;
