@@ -33,7 +33,7 @@ _values = [];
 _players = call BIS_fnc_listPlayers;
 
 {
-    _options set [count _options,name _x];
+    _options set [count _options,format["%1 - %2",name _x, group _x]];
     _values set [count _values,getPlayerUID _x];
 } foreach _players;
 

@@ -30,6 +30,7 @@ class C2Tablet_RscEdit
 	colorText[] = {1,1,1,1};
 	autocomplete = 0;
 	colorSelection[] = {0,0,0,1};
+	colorDisabled[] = {};
 };
 
 class C2Tablet_RscText

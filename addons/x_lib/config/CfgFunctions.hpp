@@ -1007,9 +1007,23 @@ class getNearUnits
 	recompile = RECOMPILE;
 };
 
+class getPlayerByUID
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getPlayerByUID.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class getPlayersDataSource
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_getPlayersDataSource.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getPlayersInGroupDataSource
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getPlayersInGroupDataSource.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

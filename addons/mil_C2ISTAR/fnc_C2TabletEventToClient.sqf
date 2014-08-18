@@ -21,4 +21,4 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-[MOD(MIL_C2ISTAR),"handleSERVERResponse",_this] call ALIVE_fnc_C2ISTAR;
+[MOD(MIL_C2ISTAR),"handleServerResponse",_this] call ALIVE_fnc_C2ISTAR;
