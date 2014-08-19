@@ -304,14 +304,9 @@ switch(_operation) do {
 
                 _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
 
-                _playerID = _eventData select 1;
+                _playerID = _eventData select 0;
 
-                _player = objNull;
-                {
-                    if (getPlayerUID _x == _playerID) exitWith {
-                        _player = _x;
-                    };
-                } forEach playableUnits;
+                _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
                 if !(isNull _player) then {
                     [_event,"ALIVE_fnc_C2TabletEventToClient",_player,false,false] spawn BIS_fnc_MP;
@@ -1182,7 +1177,7 @@ switch(_operation) do {
             _listOptions set [count _listOptions, _title];
             _listValues set [count _listValues, _newTask];
 
-        } foreach (_taskState select 2);
+        } foreach _taskState;
 
         [_taskingState,"currentTaskListOptions",_listOptions] call ALIVE_fnc_hashSet;
         [_taskingState,"currentTaskListValues",_listValues] call ALIVE_fnc_hashSet;

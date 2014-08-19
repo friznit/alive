@@ -51,6 +51,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerEventToClient.sqf";
                 recompile = RECOMPILE;
             };
+            class C2OnPlayerConnected {
+                description = "On player connected handler";
+                file = "\x\alive\addons\mil_C2ISTAR\fnc_C2OnPlayerConnected.sqf";
+                recompile = RECOMPILE;
+            };
         };
 	};
 };

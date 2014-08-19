@@ -206,7 +206,7 @@ switch(_operation) do {
             // store in tasks by side hash
             _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
             _sideTasks = [_tasksBySide, _taskSide] call ALIVE_fnc_hashGet;
-            [_sideTasks, _taskID, _task] call ALIVE_fnc_hashSet;
+            [_sideTasks, _taskID, _taskID] call ALIVE_fnc_hashSet;
 
             // store in tasks by player hash
             _tasksByPlayer = [_logic, "tasksByPlayer"] call ALIVE_fnc_hashGet;
@@ -234,7 +234,7 @@ switch(_operation) do {
                 [_createTasks,_player,_task] call ALIVE_fnc_hashSet;
 
                 // store the task by player
-                [_playerTasks,_taskID,_task] call ALIVE_fnc_hashSet;
+                [_playerTasks,_taskID,_taskID] call ALIVE_fnc_hashSet;
                 [_tasksByPlayer, _player, _playerTasks] call ALIVE_fnc_hashSet;
 
             } forEach _taskPlayers;
@@ -262,7 +262,7 @@ switch(_operation) do {
 
                         };
 
-                        [_groupTasks,_taskID,_task] call ALIVE_fnc_hashSet;
+                        [_groupTasks,_taskID,_taskID] call ALIVE_fnc_hashSet;
                         [_tasksByGroup, _group, _groupTasks] call ALIVE_fnc_hashSet;
                     };
 
@@ -412,7 +412,7 @@ switch(_operation) do {
 
                 };
 
-                [_playerTasks,_taskID,_updatedTask] call ALIVE_fnc_hashSet;
+                [_playerTasks,_taskID,_taskID] call ALIVE_fnc_hashSet;
                 [_tasksByPlayer, _player, _playerTasks] call ALIVE_fnc_hashSet;
 
             } forEach _updatedTaskPlayers;
@@ -478,7 +478,7 @@ switch(_operation) do {
 
                             };
 
-                            [_groupTasks,_taskID,_updatedTask] call ALIVE_fnc_hashSet;
+                            [_groupTasks,_taskID,_taskID] call ALIVE_fnc_hashSet;
                             [_tasksByGroup, _group, _groupTasks] call ALIVE_fnc_hashSet;
 
                         };
@@ -495,7 +495,7 @@ switch(_operation) do {
             // update in tasks by side hash
             _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
             _sideTasks = [_tasksBySide, _taskSide] call ALIVE_fnc_hashGet;
-            [_sideTasks, _taskID, _updatedTask] call ALIVE_fnc_hashSet;
+            [_sideTasks, _taskID, _taskID] call ALIVE_fnc_hashSet;
 
         };
     };
@@ -568,7 +568,7 @@ switch(_operation) do {
             _taskSide = _task select 2;
 
             _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
-            _sideTasks = [_tasksBySide, _taskSide] call ALIVE_fnc_hashGet;
+            _sideTasks = [_logic, "getTasksBySide", _taskSide] call MAINCLASS;
             _tasksToDispatch = [_logic,"tasksToDispatch"] call ALIVE_fnc_hashGet;
             _createTasks = [_tasksToDispatch,"create"] call ALIVE_fnc_hashGet;
             _updateTasks = [_tasksToDispatch,"update"] call ALIVE_fnc_hashGet;
@@ -585,6 +585,7 @@ switch(_operation) do {
             _tasks call ALIVE_fnc_inspectHash;
             ["TASK BY SIDE STATE:"] call ALIVE_fnc_dump;
             _tasksBySide call ALIVE_fnc_inspectHash;
+            ["SIDE TASKS: %1",_sideTasks] call ALIVE_fnc_dump;
             ["TASK BY GROUP STATE:"] call ALIVE_fnc_dump;
             _tasksByGroup call ALIVE_fnc_inspectHash;
             ["TASK BY PLAYER STATE:"] call ALIVE_fnc_dump;
@@ -704,36 +705,58 @@ switch(_operation) do {
         _result = [_logic, "tasks"] call ALIVE_fnc_hashGet;
     };
     case "getTasksBySide": {
-        private["_side","_tasksBySide"];
+        private["_side","_tasksBySide","_sideTasks","_tasks"];
 
         if(typeName _args == "STRING") then {
             _side = _args;
 
             _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
+            _sideTasks = [_tasksBySide, _side] call ALIVE_fnc_hashGet;
 
-            _result = [_tasksBySide, _side] call ALIVE_fnc_hashGet;
+            _tasks = [];
+
+            {
+                _tasks set [count _tasks, [_logic,"getTask",_x] call MAINCLASS];
+            } forEach (_sideTasks select 1);
+
+            _result = _tasks;
         };
     };
     case "getTasksByPlayer": {
-        private["_player","_tasksByPlayer"];
+        private["_player","_tasksByPlayer","_playerTasks","_tasks"];
 
         if(typeName _args == "STRING") then {
             _player = _args;
 
             _tasksByPlayer = [_logic, "tasksByPlayer"] call ALIVE_fnc_hashGet;
+            _playerTasks = [_tasksByPlayer, _player] call ALIVE_fnc_hashGet;
 
-            _result = [_tasksByPlayer, _player] call ALIVE_fnc_hashGet;
+            _tasks = [];
+
+            {
+                _tasks set [count _tasks, [_logic,"getTask",_x] call MAINCLASS];
+            } forEach (_playerTasks select 1);
+
+            _result = _tasks;
+
         };
     };
     case "getTasksByGroup": {
-        private["_group","_tasksByGroup"];
+        private["_group","_tasksByGroup","_groupTasks","_tasks"];
 
         if(typeName _args == "STRING") then {
             _group = _args;
 
             _tasksByGroup = [_logic, "tasksByGroup"] call ALIVE_fnc_hashGet;
+            _groupTasks = [_tasksByGroup, _group] call ALIVE_fnc_hashGet;
 
-            _result = [_tasksByGroup, _group] call ALIVE_fnc_hashGet;
+            _tasks = [];
+
+            {
+                _tasks set [count _tasks, [_logic,"getTask",_x] call MAINCLASS];
+            } forEach (_groupTasks select 1);
+
+            _result = _tasks;
         };
     };
     default {
