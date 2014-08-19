@@ -75,7 +75,7 @@ switch(_operation) do {
     };
     case "init": {
         if (isServer) then {
-            private["_tasksBySide","_tasksByPlayer"];
+            private["_tasksBySide","_tasksToDispatch"];
 
             // if server, initialise module game logic
             [_logic,"super"] call ALIVE_fnc_hashRem;
@@ -88,6 +88,7 @@ switch(_operation) do {
             [_logic,"tasksBySide",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_logic,"tasksByPlayer",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_logic,"tasksByGroup",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_logic,"tasksToDispatch",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_logic,"listenerID",""] call ALIVE_fnc_hashSet;
 
             _tasksBySide = [] call ALIVE_fnc_hashCreate;
@@ -96,6 +97,12 @@ switch(_operation) do {
             [_tasksBySide, "GUER", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_tasksBySide, "CIV", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_logic,"tasksBySide",_tasksBySide] call ALIVE_fnc_hashSet;
+
+            _tasksToDispatch = [] call ALIVE_fnc_hashCreate;
+            [_tasksToDispatch, "create", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_tasksToDispatch, "update", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_tasksToDispatch, "delete", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_logic,"tasksToDispatch",_tasksToDispatch] call ALIVE_fnc_hashSet;
 
             [_logic,"listen"] call MAINCLASS;
         };
@@ -169,7 +176,7 @@ switch(_operation) do {
     };
     case "registerTask": {
         private["_task","_taskID","_taskSide","_taskPlayers","_taskApplyType","_tasks","_tasksBySide","_sideTasks",
-        "_tasksByPlayer","_tasksByGroup","_group","_groupTasks","_playerTasks","_player"];
+        "_tasksByPlayer","_tasksByGroup","_group","_groupTasks","_playerTasks","_player","_tasksToDispatch","_createTasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -204,6 +211,10 @@ switch(_operation) do {
             // store in tasks by player hash
             _tasksByPlayer = [_logic, "tasksByPlayer"] call ALIVE_fnc_hashGet;
 
+            // prepare tasks to dispatch
+            _tasksToDispatch = [_logic,"tasksToDispatch"] call ALIVE_fnc_hashGet;
+            _createTasks = [_tasksToDispatch,"create"] call ALIVE_fnc_hashGet;
+
             {
 
                 _player = _x;
@@ -219,6 +230,10 @@ switch(_operation) do {
 
                 };
 
+                // prepare task for dispatch to this player
+                [_createTasks,_player,_task] call ALIVE_fnc_hashSet;
+
+                // store the task by player
                 [_playerTasks,_taskID,_task] call ALIVE_fnc_hashSet;
                 [_tasksByPlayer, _player, _playerTasks] call ALIVE_fnc_hashSet;
 
@@ -259,7 +274,7 @@ switch(_operation) do {
     case "updateTask": {
         private["_updatedTask","_updatedTaskPlayers","_taskApplyType","_taskSide","_taskID","_task","_previousTaskPlayers",
         "_previousTaskApplyType","_tasks","_tasksBySide","_sideTasks","_tasksByPlayer","_player","_group","_countRemoved",
-        "_previousGroups","_updatedGroups"];
+        "_previousGroups","_updatedGroups","_tasksToDispatch","_updateTasks","_deleteTasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -272,6 +287,12 @@ switch(_operation) do {
             _task = [_logic, "getTask", _taskID] call MAINCLASS;
             _previousTaskPlayers = _task select 7 select 0;
             _previousTaskApplyType = _task select 9;
+
+            // prepare tasks to dispatch
+            _tasksToDispatch = [_logic,"tasksToDispatch"] call ALIVE_fnc_hashGet;
+            _createTasks = [_tasksToDispatch,"create"] call ALIVE_fnc_hashGet;
+            _updateTasks = [_tasksToDispatch,"update"] call ALIVE_fnc_hashGet;
+            _deleteTasks = [_tasksToDispatch,"delete"] call ALIVE_fnc_hashGet;
 
             private ["_playerTasks"];
 
@@ -289,6 +310,9 @@ switch(_operation) do {
                     _playerTasks = [_tasksByPlayer, _player] call ALIVE_fnc_hashGet;
                     [_playerTasks,_taskID] call ALIVE_fnc_hashRem;
                     [_tasksByPlayer, _player, _playerTasks] call ALIVE_fnc_hashSet;
+
+                    // prepare task for dispatch to this player
+                    [_deleteTasks,_player,_task] call ALIVE_fnc_hashSet;
 
                     _countRemoved = _countRemoved + 1;
 
@@ -375,14 +399,18 @@ switch(_operation) do {
 
                     _playerTasks = [_tasksByPlayer, _player] call ALIVE_fnc_hashGet;
 
+                    // prepare task for dispatch to this player
+                    [_updateTasks,_player,_updatedTask] call ALIVE_fnc_hashSet;
+
                 }else{
 
                     [_tasksByPlayer, _player, [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
                     _playerTasks = [_tasksByPlayer, _player] call ALIVE_fnc_hashGet;
 
-                };
+                    // prepare task for dispatch to this player
+                    [_createTasks,_player,_updatedTask] call ALIVE_fnc_hashSet;
 
-                _playerTasks call ALIVE_fnc_inspectHash;
+                };
 
                 [_playerTasks,_taskID,_updatedTask] call ALIVE_fnc_hashSet;
                 [_tasksByPlayer, _player, _playerTasks] call ALIVE_fnc_hashSet;
@@ -473,7 +501,7 @@ switch(_operation) do {
     };
     case "unregisterTask": {
         private["_taskData","_taskID","_task","_taskSide","_tasks","_tasksBySide","_sideTasks","_tasksByGroup","_group","_groupTasks",
-        "_tasksByPlayer","_player","_playerTasks"];
+        "_tasksByPlayer","_player","_playerTasks","_tasksToDispatch","_deleteTasks","_taskPlayers"];
 
         if(typeName _args == "STRING") then {
 
@@ -481,6 +509,20 @@ switch(_operation) do {
             _task = [_logic, "getTask", _taskID] call MAINCLASS;
 
             _taskSide = _task select 2;
+            _taskPlayers = _task select 7 select 0;
+
+            // prepare tasks to dispatch
+            _tasksToDispatch = [_logic,"tasksToDispatch"] call ALIVE_fnc_hashGet;
+            _deleteTasks = [_tasksToDispatch,"delete"] call ALIVE_fnc_hashGet;
+
+            {
+
+                _player = _x;
+
+                // prepare task for dispatch to this player
+                [_deleteTasks,_player,_task] call ALIVE_fnc_hashSet;
+
+            } forEach _taskPlayers;
 
             // remove from main tasks hash
             _tasks = [_logic, "tasks"] call ALIVE_fnc_hashGet;
@@ -516,7 +558,8 @@ switch(_operation) do {
         };
     };
     case "updateTaskState": {
-        private["_task","_taskID","_playerID","_taskSide","_tasksBySide","_sideTasks","_event"];
+        private["_task","_taskID","_playerID","_taskSide","_tasksBySide","_sideTasks","_event","_tasksToDispatch",
+        "_createTasks","_updateTasks","_deleteTasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -526,11 +569,14 @@ switch(_operation) do {
 
             _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
             _sideTasks = [_tasksBySide, _taskSide] call ALIVE_fnc_hashGet;
+            _tasksToDispatch = [_logic,"tasksToDispatch"] call ALIVE_fnc_hashGet;
+            _createTasks = [_tasksToDispatch,"create"] call ALIVE_fnc_hashGet;
+            _updateTasks = [_tasksToDispatch,"update"] call ALIVE_fnc_hashGet;
+            _deleteTasks = [_tasksToDispatch,"delete"] call ALIVE_fnc_hashGet;
 
             //////////
-            private ["_tasks","_tasksBySide","_tasksByGroup","_tasksByPlayer"];
+            private ["_tasks","_tasksByGroup","_tasksByPlayer"];
             _tasks = [_logic, "tasks"] call ALIVE_fnc_hashGet;
-            _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
             _tasksByGroup = [_logic, "tasksByGroup"] call ALIVE_fnc_hashGet;
             _tasksByPlayer = [_logic, "tasksByPlayer"] call ALIVE_fnc_hashGet;
 
@@ -543,7 +589,97 @@ switch(_operation) do {
             _tasksByGroup call ALIVE_fnc_inspectHash;
             ["TASK BY PLAYER STATE:"] call ALIVE_fnc_dump;
             _tasksByPlayer call ALIVE_fnc_inspectHash;
+            ["TASKS TO DISPATCH:"] call ALIVE_fnc_dump;
+            _tasksToDispatch call ALIVE_fnc_inspectHash;
             /////////
+
+            // dispatch create events
+            {
+
+                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+
+                _player = [_x] call ALIVE_fnc_getPlayerByUID;
+                _task = [_createTasks,_x] call ALIVE_fnc_hashGet;
+
+                _taskID = _task select 0;
+                _requestPlayerID = _task select 1;
+                _position = _task select 3;
+                _title = _task select 5;
+                _description = _task select 6;
+                _state = _task select 8;
+                _current = _task select 10;
+
+                _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+
+                if !(isNull _player) then {
+                    if(isDedicated) then {
+                        [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                    }else{
+                        _event call ALIVE_fnc_taskHandlerEventToClient;
+                    };
+                };
+
+            } forEach (_createTasks select 1);
+
+            // dispatch update events
+            {
+
+                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+
+                _player = [_x] call ALIVE_fnc_getPlayerByUID;
+                _task = [_updateTasks,_x] call ALIVE_fnc_hashGet;
+
+                _taskID = _task select 0;
+                _requestPlayerID = _task select 1;
+                _position = _task select 3;
+                _title = _task select 5;
+                _description = _task select 6;
+                _state = _task select 8;
+                _current = _task select 10;
+
+                _event = ["TASK_UPDATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+
+                if !(isNull _player) then {
+                    if(isDedicated) then {
+                        [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                    }else{
+                        _event call ALIVE_fnc_taskHandlerEventToClient;
+                    };
+                };
+
+            } forEach (_updateTasks select 1);
+
+            // dispatch delete events
+            {
+
+                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+
+                _player = [_x] call ALIVE_fnc_getPlayerByUID;
+                _task = [_deleteTasks,_x] call ALIVE_fnc_hashGet;
+
+                _taskID = _task select 0;
+                _requestPlayerID = _task select 1;
+                _position = _task select 3;
+                _title = _task select 5;
+                _description = _task select 6;
+                _state = _task select 8;
+                _current = _task select 10;
+
+                _event = ["TASK_DELETE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+
+                if !(isNull _player) then {
+                    if(isDedicated) then {
+                        [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                    }else{
+                        _event call ALIVE_fnc_taskHandlerEventToClient;
+                    };
+                };
+
+            } forEach (_deleteTasks select 1);
+
+            [_tasksToDispatch,"create",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_tasksToDispatch,"update",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_tasksToDispatch,"delete",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
 
             _event = ['TASKS_UPDATED', [_playerID,_sideTasks], "TASK_HANDLER"] call ALIVE_fnc_event;
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;

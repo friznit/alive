@@ -41,6 +41,16 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandler.sqf";
                 recompile = RECOMPILE;
             };
+            class taskHandlerClient {
+                description = "Task Handler Client";
+                file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerClient.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskHandlerEventToClient {
+                description = "Task Handler Event To Client";
+                file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerEventToClient.sqf";
+                recompile = RECOMPILE;
+            };
         };
 	};
 };

@@ -400,8 +400,7 @@ class C2Tablet
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
-            colorBackground[] = {0.376,0.196,0.204,1};
-            colorText[] = {0.706,0.706,0.706,1};
+            colorBackground[] = {0.384,0.439,0.341,1};
             colorBackgroundFocused[] = {0.706,0.706,0.706,1};
             colorFocused[] = {0.706,0.706,0.706,1};
         };
@@ -416,8 +415,7 @@ class C2Tablet
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
-            colorBackground[] = {0.376,0.196,0.204,1};
-            colorText[] = {0.706,0.706,0.706,1};
+            colorBackground[] = {0.384,0.439,0.341,1};
             colorBackgroundFocused[] = {0.706,0.706,0.706,1};
             colorFocused[] = {0.706,0.706,0.706,1};
         };
@@ -432,8 +430,7 @@ class C2Tablet
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
-            colorBackground[] = {0.376,0.196,0.204,1};
-            colorText[] = {0.706,0.706,0.706,1};
+            colorBackground[] = {0.384,0.439,0.341,1};
             colorBackgroundFocused[] = {0.706,0.706,0.706,1};
             colorFocused[] = {0.706,0.706,0.706,1};
         };
@@ -443,7 +440,7 @@ class C2Tablet
             idc = 70033;
             text = "Applied to players";
             x = 0.271203 * safezoneW + safezoneX;
-            y = 0.5000 * safezoneH + safezoneY;
+            y = 0.4800 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
             h = 0.0208 * safezoneH;
             colorBackground[] = {0,0,0,0};
@@ -463,9 +460,43 @@ class C2Tablet
         {
             idc = 70034;
             x = 0.271102 * safezoneW + safezoneX;
-            y = 0.5170 * safezoneH + safezoneY;
+            y = 0.4970 * safezoneH + safezoneY;
             w = 0.241271 * safezoneW;
-            h = 0.1 * safezoneH;
+            h = 0.05 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class C2Tablet_taskingAddTaskSetCurrent : C2Tablet_RscText
+        {
+            idc = 70035;
+            text = "Set Current";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.5500 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0208 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class C2Tablet_taskingAddTaskSetCurrentList : C2Tablet_RscGUIListBox
+        {
+            idc = 70036;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.5670 * safezoneH + safezoneY;
+            w = 0.241271 * safezoneW;
+            h = 0.05 * safezoneH;
             colorBackground[] = {0.173,0.173,0.173,1};
             colorActive[] = {0.384,0.439,0.341,1};
             sizeEx = (safeZoneW / 75) + (safeZoneH / 275);

@@ -82,6 +82,8 @@ Peer Reviewed:
 #define C2Tablet_CTRL_TaskEditManagePlayersButton 70032
 #define C2Tablet_CTRL_TaskAddApplyTitle 70033
 #define C2Tablet_CTRL_TaskAddApplyEdit 70034
+#define C2Tablet_CTRL_TaskAddCurrentTitle 70035
+#define C2Tablet_CTRL_TaskAddCurrentEdit 70036
 
 // AAR
 
@@ -156,6 +158,15 @@ switch(_operation) do {
 
         if (isServer) then {
 
+            /*
+            if!(isNil "ALIVE_eventLog") then {
+                // create event log
+                ALIVE_eventLog = [nil, "create"] call ALIVE_fnc_eventLog;
+                [ALIVE_eventLog, "init"] call ALIVE_fnc_eventLog;
+                [ALIVE_eventLog, "debug", false] call ALIVE_fnc_eventLog;
+            };
+            */
+
             // create the task handler
             ALIVE_taskHandler = [nil, "create"] call ALIVE_fnc_taskHandler;
             [ALIVE_taskHandler, "init"] call ALIVE_fnc_taskHandler;
@@ -166,6 +177,10 @@ switch(_operation) do {
         if (hasInterface) then {
 
             _logic setVariable ["startupComplete", true];
+
+            // create the client task handler
+            ALIVE_taskHandlerClient = [nil, "create"] call ALIVE_fnc_taskHandlerClient;
+            [ALIVE_taskHandlerClient, "init"] call ALIVE_fnc_taskHandlerClient;
 
             // set the player side
 
@@ -217,6 +232,11 @@ switch(_operation) do {
             [_taskingState,"currentTaskApplyValues",["Group","Individual"]] call ALIVE_fnc_hashSet;
             [_taskingState,"currentTaskApplySelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"currentTaskApplySelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+
+            [_taskingState,"currentTaskCurrentOptions",["Yes","No"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"currentTaskCurrentValues",["Y","N"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"currentTaskCurrentSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+            [_taskingState,"currentTaskCurrentSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
             [_taskingState,"currentTaskPlayerListOptions",[]] call ALIVE_fnc_hashSet;
             [_taskingState,"currentTaskPlayerListValues",[]] call ALIVE_fnc_hashSet;
@@ -492,10 +512,31 @@ switch(_operation) do {
                     _taskingState call ALIVE_fnc_inspectHash;
                 };
 
+                case "TASK_ADD_CURRENT_LIST_SELECT": {
+
+                    private ["_taskingState","_currentList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue"];
+
+                    _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+                    _currentList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+                    _listOptions = [_taskingState,"currentTaskCurrentOptions"] call ALIVE_fnc_hashGet;
+                    _listValues = [_taskingState,"currentTaskCurrentValues"] call ALIVE_fnc_hashGet;
+                    _selectedOption = _listOptions select _selectedIndex;
+                    _selectedValue = _listValues select _selectedIndex;
+
+                    [_taskingState,"currentTaskCurrentSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                    [_taskingState,"currentTaskCurrentSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                    [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+                    _taskingState call ALIVE_fnc_inspectHash;
+                };
+
                 case "TASK_ADD_CREATE_BUTTON_CLICK": {
 
                     private ["_taskingState","_titleEdit","_descriptionEdit","_title","_description","_marker","_destination",
-                    "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID","_playerID","_state","_apply"];
+                    "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID","_playerID","_state","_apply","_current"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -512,6 +553,7 @@ switch(_operation) do {
 
                     _state = [_taskingState,"currentTaskStateSelectedValue"] call ALIVE_fnc_hashGet;
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
+                    _current = [_taskingState,"currentTaskCurrentSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
                     _requestID = format["%1_%2",_faction,floor(time)];
@@ -529,7 +571,7 @@ switch(_operation) do {
                     _selectedPlayers set [0, _newSelectedPlayerValues];
                     _selectedPlayers set [1, _newSelectedPlayerOptions];
 
-                    _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply], "C2ISTAR"] call ALIVE_fnc_event;
+                    _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current], "C2ISTAR"] call ALIVE_fnc_event;
 
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -845,7 +887,7 @@ switch(_operation) do {
 
                     private ["_taskingState","_currentTask","_titleEdit","_descriptionEdit","_title","_description",
                     "_side","_faction","_marker","_destination","_selectedPlayers","_event","_taskID","_playerID","_state",
-                    "_selectedPlayerListOptions","_selectedPlayerListValues","_apply","_newSelectedPlayerListOptions","_newSelectedPlayerListValues"];
+                    "_selectedPlayerListOptions","_selectedPlayerListValues","_apply","_current","_newSelectedPlayerListOptions","_newSelectedPlayerListValues"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -864,6 +906,7 @@ switch(_operation) do {
 
                     _state = [_taskingState,"currentTaskStateSelectedValue"] call ALIVE_fnc_hashGet;
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
+                    _current = [_taskingState,"currentTaskCurrentSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
                     _taskID = _currentTask select 0;
@@ -880,7 +923,7 @@ switch(_operation) do {
                     _selectedPlayers set [0, _newSelectedPlayerListValues];
                     _selectedPlayers set [1, _newSelectedPlayerListOptions];
 
-                    _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply], "C2ISTAR"] call ALIVE_fnc_event;
+                    _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current], "C2ISTAR"] call ALIVE_fnc_event;
 
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1132,6 +1175,7 @@ switch(_operation) do {
             _newTask set [7,_newPlayers];
             _newTask set [8,_task select 8];
             _newTask set [9,_task select 9];
+            _newTask set [10,_task select 10];
 
             _title = _newTask select 5;
 
@@ -1341,6 +1385,24 @@ switch(_operation) do {
 
         _applyList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_APPLY_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
+        private ["_currentTitle","_currentList","_currentIndex","_currentListOptions"];
+
+        _currentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentTitle);
+        _currentTitle ctrlShow true;
+
+        _currentList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentEdit);
+        _currentList ctrlShow true;
+
+        _currentListOptions = [_taskingState,"currentTaskCurrentOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _currentList;
+
+        {
+            _currentList lbAdd format["%1", _x];
+        } forEach _currentListOptions;
+
+        _currentList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_CURRENT_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow true;
         _map ctrlSetEventHandler ["MouseButtonDown", "['TASK_ADD_MAP_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
@@ -1373,7 +1435,7 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow false;
 
-        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_stateTitle","_stateList","_managePlayersButton","_applyTitle","_applyList"];
+        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_stateTitle","_stateList","_managePlayersButton","_applyTitle","_applyList","_currentTitle","_currentList"];
 
         _editTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddTitleEditTitle);
         _editTitle ctrlShow false;
@@ -1398,6 +1460,12 @@ switch(_operation) do {
 
         _applyList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddApplyEdit);
         _applyList ctrlShow false;
+
+        _currentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentTitle);
+        _currentTitle ctrlShow false;
+
+        _currentList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentEdit);
+        _currentList ctrlShow false;
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow false;
@@ -1546,8 +1614,7 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
 
-        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_editButton","_stateTitle",
-        "_stateList","_stateListOptions","_stateIndex","_managePlayersButton","_applyTitle","_applyList","_applyIndex","_applyListOptions","_applyListValues"];
+        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_editButton"];
 
         _editTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddTitleEditTitle);
         _editTitle ctrlShow true;
@@ -1564,6 +1631,8 @@ switch(_operation) do {
         _descriptionEdit ctrlShow true;
 
         _descriptionEdit ctrlSetText (_currentTask select 6);
+
+        private ["_stateTitle","_stateList","_stateListOptions","_stateIndex"];
 
         _stateTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStateEditTitle);
         _stateTitle ctrlShow true;
@@ -1584,6 +1653,8 @@ switch(_operation) do {
 
         _stateList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_STATE_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
+        private ["_applyTitle","_applyList","_applyIndex","_applyListOptions","_applyListValues"];
+
         _applyTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddApplyTitle);
         _applyTitle ctrlShow true;
 
@@ -1603,6 +1674,28 @@ switch(_operation) do {
         _applyList lbSetCurSel _applyIndex;
 
         _applyList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_APPLY_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        private ["_currentTitle","_currentList","_currentIndex","_currentListOptions","_currentListValues"];
+
+        _currentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentTitle);
+        _currentTitle ctrlShow true;
+
+        _currentList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentEdit);
+        _currentList ctrlShow true;
+
+        _currentListOptions = [_taskingState,"currentTaskCurrentOptions"] call ALIVE_fnc_hashGet;
+        _currentListValues = [_taskingState,"currentTaskCurrentValues"] call ALIVE_fnc_hashGet;
+
+        lbClear _currentList;
+
+        {
+            _currentList lbAdd format["%1", _x];
+        } forEach _currentListOptions;
+
+        _currentIndex = _currentListValues find (_currentTask select 10);
+        _currentList lbSetCurSel _currentIndex;
+
+        _currentList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_CURRENT_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow true;
@@ -1662,7 +1755,7 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow false;
 
-        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_editButton","_stateTitle","_stateList","_managePlayersButton","_applyTitle","_applyList"];
+        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_editButton","_stateTitle","_stateList","_managePlayersButton","_applyTitle","_applyList","_currentTitle","_currentList"];
 
         _editTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddTitleEditTitle);
         _editTitle ctrlShow false;
@@ -1687,6 +1780,12 @@ switch(_operation) do {
 
         _applyList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddApplyEdit);
         _applyList ctrlShow false;
+
+        _currentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentTitle);
+        _currentTitle ctrlShow false;
+
+        _currentList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentEdit);
+        _currentList ctrlShow false;
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow false;
