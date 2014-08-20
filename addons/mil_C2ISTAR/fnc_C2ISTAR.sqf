@@ -154,8 +154,6 @@ switch(_operation) do {
 
         ALIVE_MIL_C2ISTAR = _logic;
 
-        [_logic, "start"] call MAINCLASS;
-
         if (isServer) then {
 
             /*
@@ -186,9 +184,17 @@ switch(_operation) do {
 
             private ["_playerSide","_sideNumber","_sideText"];
 
+            waitUntil {
+                sleep 1;
+                ["SIDE PLAYER: ",str side player] call ALIVE_fnc_dump;
+                ((str side player) != "UNKNOWN")
+            };
+
             _playerSide = side player;
             _sideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
             _sideText = [_sideNumber] call ALIVE_fnc_sideNumberToText;
+
+            ["C2 SET PLAYER SIDE: %1 SIDE: %2",_playerSide,_sideText] call ALIVE_fnc_dump;
 
             [_logic,"side",_sideText] call MAINCLASS;
 
@@ -267,6 +273,9 @@ switch(_operation) do {
                     ]
             ] call ALiVE_fnc_flexiMenu_Add;
         };
+
+        [_logic, "start"] call MAINCLASS;
+
 	};
 	case "start": {
 
@@ -483,7 +492,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
                 };
 
                 case "TASK_ADD_APPLY_LIST_SELECT": {
@@ -504,7 +513,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
                 };
 
                 case "TASK_ADD_CURRENT_LIST_SELECT": {
@@ -525,7 +534,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
                 };
 
                 case "TASK_ADD_CREATE_BUTTON_CLICK": {
@@ -571,7 +580,8 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        ["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
                     [_logic,"disableAddTask"] call MAINCLASS;
@@ -641,7 +651,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
 
                     _selectedPlayersClearButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayersClearButton);
                     _selectedPlayersClearButton ctrlShow true;
@@ -730,7 +740,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
 
                     private ["_selectedPlayerListDeleteButton","_selectedPlayersClearButton"];
 
@@ -822,7 +832,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
 
                     private ["_taskCurrentEditButton","_taskCurrentDeleteButton"];
 
@@ -860,7 +870,8 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        ["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
                     private ["_taskCurrentEditButton","_taskCurrentDeleteButton"];
@@ -923,7 +934,8 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        ["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
                     [_logic,"disableEditTask"] call MAINCLASS;
@@ -962,7 +974,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
 
                     private ["_selectedPlayerListOptions","_selectedPlayerListValues","_selectedPlayerList"];
 
@@ -1045,7 +1057,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
 
                     private ["_selectedPlayerListDeleteButton","_selectedPlayersClearButton"];
 
@@ -1111,15 +1123,17 @@ switch(_operation) do {
         private ["_side","_playerID","_event"];
 
         _side = [_logic,"side"] call MAINCLASS;
-
         _playerID = getPlayerUID player;
+
+        ["C2 LOAD INIT DATA FOR SIDE: %1 PLAYER: %2",_side,_playerID] call ALIVE_fnc_dump;
 
         _event = ['TASKS_UPDATE', ["",_playerID,_side], "C2ISTAR"] call ALIVE_fnc_event;
 
         if(isServer) then {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
-            ["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+            //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
         };
     };
     case "updateCurrentTaskList": {
@@ -1248,7 +1262,7 @@ switch(_operation) do {
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
-        _taskingState call ALIVE_fnc_inspectHash;
+        //_taskingState call ALIVE_fnc_inspectHash;
 
         _title = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_Title);
         _title ctrlShow true;
@@ -1317,7 +1331,7 @@ switch(_operation) do {
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
-        _taskingState call ALIVE_fnc_inspectHash;
+        //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];
 
@@ -1417,7 +1431,7 @@ switch(_operation) do {
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
-        _taskingState call ALIVE_fnc_inspectHash;
+        //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];
 
@@ -1478,7 +1492,7 @@ switch(_operation) do {
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
-        _taskingState call ALIVE_fnc_inspectHash;
+        //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];
 
@@ -1593,7 +1607,7 @@ switch(_operation) do {
 
         _currentTask = [_taskingState,"currentTaskListSelectedValue"] call ALIVE_fnc_hashGet;
 
-        _taskingState call ALIVE_fnc_inspectHash;
+        //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];
 
@@ -1737,7 +1751,7 @@ switch(_operation) do {
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
-        _taskingState call ALIVE_fnc_inspectHash;
+        //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];
 
@@ -1800,7 +1814,7 @@ switch(_operation) do {
 
         _currentTask = [_taskingState,"currentTaskListSelectedValue"] call ALIVE_fnc_hashGet;
 
-        _taskingState call ALIVE_fnc_inspectHash;
+        //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];
 

@@ -110,7 +110,7 @@ switch(_operation) do {
     case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["TASKS_UPDATE","TASK_CREATE","TASK_UPDATE","TASK_DELETE"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["TASKS_UPDATE","TASK_CREATE","TASK_UPDATE","TASK_DELETE","TASKS_SYNC"]]] call ALIVE_fnc_eventLog;
         [_logic,"listenerID",_listenerID] call ALIVE_fnc_hashSet;
     };
     case "handleEvent": {
@@ -172,6 +172,82 @@ switch(_operation) do {
         [_logic, "unregisterTask", _taskID] call MAINCLASS;
 
         [_logic, "updateTaskState", _eventData] call MAINCLASS;
+
+    };
+    case "TASKS_SYNC": {
+        private["_eventData","_taskID"];
+
+        _eventData = _args;
+
+        ["TASKS SYNC: %1",_eventData] call ALIVE_fnc_dump;
+
+        [_logic, "syncTasks", _eventData] call MAINCLASS;
+
+    };
+    case "syncTasks": {
+        private["_playerID","_groupID","_playerTasks","_groupTasks","_dispatchTasks","_player"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _playerID = _eventData select 0;
+            _groupID = _eventData select 0;
+
+            _playerTasks = [_logic, "getTasksByPlayer", _playerID] call MAINCLASS;
+            _groupTasks = [_logic, "getTasksByGroup", _groupID] call MAINCLASS;
+
+            _dispatchTasks = [];
+
+            if(count _playerTasks > 0) then {
+
+                {
+                    _dispatchTasks set [count _dispatchTasks,_x];
+                } forEach _playerTasks;
+
+            };
+
+            if(count _groupTasks > 0) then {
+
+                {
+                    if!(_x in _dispatchTasks) then {
+                        _dispatchTasks set [count _dispatchTasks,_x];
+                    };
+                } forEach _groupTasks;
+
+            };
+
+            if(count _dispatchTasks > 0) then {
+
+                _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                // dispatch tasks to player
+                {
+
+                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+
+                    _task = _x;
+                    _taskID = _task select 0;
+                    _requestPlayerID = _task select 1;
+                    _position = _task select 3;
+                    _title = _task select 5;
+                    _description = _task select 6;
+                    _state = _task select 8;
+                    _current = _task select 10;
+
+                    _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+
+                    if !(isNull _player) then {
+                        if(isDedicated) then {
+                            [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                        }else{
+                            _event call ALIVE_fnc_taskHandlerEventToClient;
+                        };
+                    };
+
+                } forEach _dispatchTasks;
+
+            };
+
+        };
 
     };
     case "registerTask": {
@@ -238,6 +314,7 @@ switch(_operation) do {
                 [_tasksByPlayer, _player, _playerTasks] call ALIVE_fnc_hashSet;
 
             } forEach _taskPlayers;
+
 
             // store in tasks by group hash
             if(_taskApplyType == "Group") then {
@@ -594,6 +671,7 @@ switch(_operation) do {
             _tasksToDispatch call ALIVE_fnc_inspectHash;
             /////////
 
+
             // dispatch create events
             {
 
@@ -715,15 +793,19 @@ switch(_operation) do {
 
             _tasks = [];
 
-            {
-                _tasks set [count _tasks, [_logic,"getTask",_x] call MAINCLASS];
-            } forEach (_sideTasks select 1);
+            if!(isNil "_sideTasks") then {
+
+                {
+                    _tasks set [count _tasks, [_logic,"getTask",_x] call MAINCLASS];
+                } forEach (_sideTasks select 1);
+
+            };
 
             _result = _tasks;
         };
     };
     case "getTasksByPlayer": {
-        private["_player","_tasksByPlayer","_playerTasks","_tasks"];
+        private["_player","_tasksByPlayer","_playerTasks","_tasks","_task"];
 
         if(typeName _args == "STRING") then {
             _player = _args;
@@ -733,16 +815,21 @@ switch(_operation) do {
 
             _tasks = [];
 
-            {
-                _tasks set [count _tasks, [_logic,"getTask",_x] call MAINCLASS];
-            } forEach (_playerTasks select 1);
+            if!(isNil "_playerTasks") then {
+
+                {
+                    _task = [_logic,"getTask",_x] call MAINCLASS;
+                    _tasks set [count _tasks, _task];
+                } forEach (_playerTasks select 1);
+
+            };
 
             _result = _tasks;
 
         };
     };
     case "getTasksByGroup": {
-        private["_group","_tasksByGroup","_groupTasks","_tasks"];
+        private["_group","_tasksByGroup","_groupTasks","_tasks","_task"];
 
         if(typeName _args == "STRING") then {
             _group = _args;
@@ -752,9 +839,14 @@ switch(_operation) do {
 
             _tasks = [];
 
-            {
-                _tasks set [count _tasks, [_logic,"getTask",_x] call MAINCLASS];
-            } forEach (_groupTasks select 1);
+            if!(isNil "_groupTasks") then {
+
+                {
+                    _task = [_logic,"getTask",_x] call MAINCLASS;
+                    _tasks set [count _tasks, _task];
+                } forEach (_groupTasks select 1);
+
+            };
 
             _result = _tasks;
         };

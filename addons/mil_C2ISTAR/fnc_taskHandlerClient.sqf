@@ -69,19 +69,19 @@ switch(_operation) do {
         _result = _args;
     };
     case "init": {
-        if (isServer) then {
-            private["_tasksBySide","_tasksToDispatch"];
+        private["_tasksBySide","_tasksToDispatch"];
 
-            // if server, initialise module game logic
-            [_logic,"super"] call ALIVE_fnc_hashRem;
-            [_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
-            TRACE_1("After module init",_logic);
+        // if server, initialise module game logic
+        [_logic,"super"] call ALIVE_fnc_hashRem;
+        [_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
+        TRACE_1("After module init",_logic);
 
-            // set defaults
-            [_logic,"debug",false] call ALIVE_fnc_hashSet;
-            [_logic,"tasks",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+        ["TASK HANDLER CLIENT INIT!!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
 
-        };
+        // set defaults
+        [_logic,"debug",false] call ALIVE_fnc_hashSet;
+        [_logic,"tasks",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+
     };
     case "handleEvent": {
         private["_event","_type"];
@@ -203,7 +203,7 @@ switch(_operation) do {
 
             switch(_state) do {
                 case "Created": {
-                    ["NewTask",["",_title]] call BIS_fnc_showNotification;
+                    ["TaskCreated",["",_title]] call BIS_fnc_showNotification;
                 };
                 case "Assigned": {
                     ["TaskAssigned",["",_title]] call BIS_fnc_showNotification;

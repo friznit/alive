@@ -1,6 +1,25 @@
 Generating Cluster Data
 ==========================================================================
 
+1) dewrp pbo containing map - this creates the index of map objects
+2) parse the index file removing junk like trees, rocks etc
+3) run a tool that reads the remaining object names and outputs them to a text file so you can see the main classes in use
+4) run a tool that generates the empty cluster files for the map name
+5) identify the building classnames and which categories they fit into in main/static/staticData.sqf
+6) run the game
+7) load the map
+8) run the mil clusters generation which reads the index and finds the classnames defined for the map in the staticData.sqf
+9) once mil cluster generation complete paste the results into the mil cluster file
+10) replace ; with ;\r\n
+11) repeat last 2 steps for civ clusters
+12) repbo + reload the game
+13) place down mil and civ modules with debug on, check if things look right
+14) run map analysis
+15) once complete paste analysis data in fnc_analysis/data/data.mapname.sqf
+16) close game repbo
+17) restart game
+18) run the cluster to analysis merger
+
 
 
 Indexes
