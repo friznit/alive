@@ -8,11 +8,17 @@
 <Key ID="STR_ALIVE_LOGISTICS_COMMENT">
 	<English>Enables the possibility to use the ALiVE Logistics system</English>
 </Key>
+<Key ID="STR_ALIVE_LOGISTICS_DISABLELOG">
+	<English>Disable Logistics:</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_DISABLELOG_COMMENT">
+	<English>Kills Player Logistics completely!</English>
+</Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE">
 	<English>Disable Player Logistics</English>
 </Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE_COMMENT">
-	<English>Disables the possibility to move, load, unload and tow objects!</English>
+	<English>Disables the possibility to move, load, unload and tow on all or specific objects (sync objects that you want to exclude completely)!</English>
 </Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE_USAGE">
 	<English>Place module in your mission, set the appropriate settings and if you want to disable certain player logistics features</English>
@@ -67,5 +73,11 @@
 </Key>
 <Key ID="STR_ALIVE_LOGISTICS_DISABLE3D_COMMENT">
 	<English>Disables 3D Editor (WIP)</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_BLACKLIST">
+	<English>Blacklist:</English>
+</Key>
+<Key ID="STR_ALIVE_LOGISTICS_BLACKLIST_COMMENT">
+	<English>Excludes given class from any ALiVE Logistics feature (f.e. "B_Soldier_F","Land")</English>
 </Key>
 </Container></Package></Project>

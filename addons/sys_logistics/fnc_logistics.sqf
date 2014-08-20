@@ -32,6 +32,7 @@ nil
 
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_logistics
+#define DEFAULT_BLACKLIST []
 
 private ["_result", "_operation", "_args", "_logic"];
 
@@ -85,6 +86,8 @@ switch (_operation) do {
 
         case "init": {
             
+            private ["_exit"];
+            
             ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
             /*
@@ -94,16 +97,24 @@ switch (_operation) do {
             - Establish data model on server and client
             */
             
+            TRACE_1("Getting Module Parameters",true);
+
+            // Wait for disable log module to set module parameters before moving on
+            if (["AliVE_SYS_LOGISTICSDISABLE"] call ALiVE_fnc_isModuleAvailable) then {waituntil {!isnil {_logic getvariable "DEBUG"}}};
+            
+            // Exit if disabled
+            if (_logic getvariable ["DISABLELOG",false]) exitwith {["ALiVE SYS LOGISTICS DISABLED! Exiting..."] call ALiVE_fnc_DumpR};
+            
             TRACE_1("Creating data store",true);
 
 	        // Create logistics data storage in memory on all localities
 	        GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
             
-            // Define logistics properties on all localities
-            GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","StaticWeapon","ThingX"],["House"]];
-            GVAR(TOWABLE) = [["Truck_F"],["Car","Ship"],[]];
-            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter","Ship","ALIVE_O_supplyCrate_F","ALIVE_I_supplyCrate_F","ALIVE_B_supplyCrate_F"],(GVAR(CARRYABLE) select 1),[]];
-            GVAR(LIFTABLE) = [["Helicopter"],["Car","Ship","Truck_F"],[]];
+            // Define logistics properties on all localities (containers: select 0 / objects: select 1 / exclude: select 2)
+            GVAR(CARRYABLE) = [["Man"],["Reammobox_F","Static","StaticWeapon","ThingX"],["House"] + (_logic getvariable ["BLACKLIST",[]])];
+            GVAR(TOWABLE) = [["Truck_F"],["Car","Ship"],[] + (_logic getvariable ["BLACKLIST",[]])];
+            GVAR(STOWABLE) = [["Car","Truck_F","Helicopter","Ship","ALIVE_O_supplyCrate_F","ALIVE_I_supplyCrate_F","ALIVE_B_supplyCrate_F"],(GVAR(CARRYABLE) select 1),[] + (_logic getvariable ["BLACKLIST",[]])];
+            GVAR(LIFTABLE) = [["Helicopter"],["Car","Ship","Truck_F"],[] + (_logic getvariable ["BLACKLIST",[]])];
             
             //Define actions on all localities (just in case)
 			GVAR(ACTIONS) = {
@@ -126,11 +137,6 @@ switch (_operation) do {
                   
 			// Define module basics on server
 			if (isServer) then {
-
-                // Wait for disable log module  to set module parameters
-                if (["AliVE_SYS_LOGISTICSDISABLE"] call ALiVE_fnc_isModuleavailable) then {
-                    waituntil {!isnil {MOD(SYS_LOGISTICS) getvariable "DEBUG"}};
-                };
 
                 // Reset states with provided data;
                 if !(_logic getvariable ["DISABLEPERSISTENCE",false]) then {
@@ -938,7 +944,7 @@ switch (_operation) do {
             
             _convertedData = [] call ALIVE_fnc_hashCreate;
             
-            if (isnil {[(_data select 2 select 1),"ASL_ID"] call ALiVE_fnc_HashGet}) then {
+            if (isnil {[(_data select 2 select 0),"ASL_ID"] call ALiVE_fnc_HashGet}) then {
 				_selection_1 = {_x select 1};
 				_selection_2 = {_x select 0};
             } else {
@@ -961,6 +967,35 @@ switch (_operation) do {
             
             _result = _convertedData;
         };
+        
+        case "blacklist": {
+            if !(isnil "_args") then {
+				if(typeName _args == "STRING") then {
+                    if !(_args == "") then {
+						_args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, "[", ""] call CBA_fnc_replace;
+                        _args = [_args, "]", ""] call CBA_fnc_replace;
+                        _args = [_args, "'", ""] call CBA_fnc_replace;
+                        _args = [_args, """", ""] call CBA_fnc_replace;
+						_args = [_args, ","] call CBA_fnc_split;
+
+						if(count _args > 0) then {
+							_logic setVariable [_operation, _args];
+						};
+                    } else {
+                        _logic setVariable [_operation, DEFAULT_BLACKLIST];
+                    };
+				} else {
+					if(typeName _args == "ARRAY") then {		
+						_logic setVariable [_operation, _args];
+					};
+	            };
+            } else {
+                _logic setVariable [_operation, DEFAULT_BLACKLIST];
+            };
+
+            _result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
+		};
                 
         default {
             _result = [_logic, _operation, _args] call SUPERCLASS;

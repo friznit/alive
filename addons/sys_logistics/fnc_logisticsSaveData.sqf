@@ -48,8 +48,6 @@ if (count (_data select 1) == 0) exitwith {
 
 _data = [MOD(SYS_LOGISTICS),"convertData",_data] call ALiVE_fnc_logistics;
 
-_data call ALIVE_fnc_inspectHash;
-
 if (isNil QGVAR(DATAHANDLER)) then {
    ["SAVE SYS LOGISTICS, CREATE DATA HANDLER!"] call ALIVE_fnc_dump;
    GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;

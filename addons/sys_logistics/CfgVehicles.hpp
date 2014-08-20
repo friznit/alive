@@ -31,20 +31,6 @@ class CfgVehicles {
 							"",
 							"$STR_ALIVE_LOGISTICSDISABLE_USAGE"
 					};
-					sync[] = {"ALiVE_sys_data"}; // Array of synced entities (can contain base classes)
-		 
-					class ALiVE_sys_data
-					{
-						description[] = { // Multi-line descriptions are supported
-							"$STR_ALIVE_Data_COMMENT",
-							"",
-							"$STR_ALIVE_Data_COMMENT"
-						};
-						position = 0; // Position is taken into effect
-						direction = 0; // Direction is taken into effect
-						optional = 1; // Synced entity is optional
-						duplicate = 1; // Multiple entities of this type can be synced
-					};
 				};
 				
                 class Arguments
@@ -54,6 +40,25 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_LOGISTICS_DEBUG";
                                 description = "$STR_ALIVE_LOGISTICS_DEBUG_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                                default = 1;
+                                        };
+                                };
+                        };
+                        class DISABLELOG
+                        {
+                                displayName = "$STR_ALIVE_LOGISTICS_DISABLELOG";
+                                description = "$STR_ALIVE_LOGISTICS_DISABLELOG_COMMENT";
                                 class Values
                                 {
                                         class Yes
@@ -182,6 +187,12 @@ class CfgVehicles {
                                                 default = 1;
                                         };
                                 };
+                        };
+                        class BLACKLIST
+                        {
+                                displayName = "$STR_ALIVE_LOGISTICS_BLACKLIST";
+                                description = "$STR_ALIVE_LOGISTICS_BLACKLIST_COMMENT";
+                                defaultValue = "";
                         };
                 };
         };

@@ -34,8 +34,8 @@ _blackList = GVAR(CARRYABLE) select 2;
 
 _canCarry = false;
 
-// Must not be the same or in blacklist
-if ((_object == _container) || {{_object isKindOf _x} count _blackList > 0}) exitwith {_canCarry};
+// Basic checks
+if ((_object == _container) || {{_object isKindOf _x} count _blackList > 0} || {!isnil {_object getvariable QGVAR(DISABLE)}}) exitwith {_canCarry};
 
 // Only one object may be carried at a time
 if (count (_container getvariable [QGVAR(CARGO),[]]) > 0) exitwith {_canCarry};
