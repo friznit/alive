@@ -147,10 +147,6 @@ switch(_operation) do {
             _taskObject setSimpleTaskDestination _position;
             _taskObject setTaskState _state;
 
-            if(_current == "Y") then {
-                player setCurrentTask _taskObject;
-            };
-
             switch(_state) do {
                 case "Created": {
                     ["TaskCreated",["",_title]] call BIS_fnc_showNotification;
@@ -160,13 +156,20 @@ switch(_operation) do {
                 };
                 case "Succeeded": {
                     ["TaskSucceeded",["",_title]] call BIS_fnc_showNotification;
+                    _current = "N";
                 };
                 case "Failed": {
                     ["TaskFailed",["",_title]] call BIS_fnc_showNotification;
+                    _current = "N";
                 };
                 case "Canceled": {
                     ["TaskCanceled",["",_title]] call BIS_fnc_showNotification;
+                    _current = "N";
                 };
+            };
+
+            if(_current == "Y") then {
+                player setCurrentTask _taskObject;
             };
 
             _task set [8,_taskObject];
