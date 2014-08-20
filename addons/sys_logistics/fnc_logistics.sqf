@@ -155,12 +155,14 @@ switch (_operation) do {
             
             	[_logic,"state",GVAR(STORE)] call ALiVE_fnc_logistics;
                 
+                /*
                 //Hack for hideObjectGlobal not working prior to mission runtime, thanks BIS
                 [] spawn {
                     waituntil {time > 0};
                     
                     {if !(simulationEnabled _x) then {_x hideObjectGlobal true}} foreach ([MOD(SYS_LOGISTICS),"allObjects"] call ALiVE_fnc_logistics);
                 };
+                */
                 
                 _logic setVariable ["init", true, true];
 			};
