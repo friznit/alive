@@ -76,8 +76,6 @@ switch(_operation) do {
         [_logic,"class",MAINCLASS] call ALIVE_fnc_hashSet;
         TRACE_1("After module init",_logic);
 
-        ["TASK HANDLER CLIENT INIT!!!!!!!!!!!!!!!!!!!"] call ALIVE_fnc_dump;
-
         // set defaults
         [_logic,"debug",false] call ALIVE_fnc_hashSet;
         [_logic,"tasks",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;

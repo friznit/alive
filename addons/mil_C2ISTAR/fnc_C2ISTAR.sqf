@@ -84,6 +84,7 @@ Peer Reviewed:
 #define C2Tablet_CTRL_TaskAddApplyEdit 70034
 #define C2Tablet_CTRL_TaskAddCurrentTitle 70035
 #define C2Tablet_CTRL_TaskAddCurrentEdit 70036
+#define C2Tablet_CTRL_TaskAddStatusText 70037
 
 // AAR
 
@@ -186,7 +187,6 @@ switch(_operation) do {
 
             waitUntil {
                 sleep 1;
-                ["SIDE PLAYER: ",str side player] call ALIVE_fnc_dump;
                 ((str side player) != "UNKNOWN")
             };
 
@@ -194,7 +194,6 @@ switch(_operation) do {
             _sideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
             _sideText = [_sideNumber] call ALIVE_fnc_sideNumberToText;
 
-            ["C2 SET PLAYER SIDE: %1 SIDE: %2",_playerSide,_sideText] call ALIVE_fnc_dump;
 
             [_logic,"side",_sideText] call MAINCLASS;
 
@@ -284,7 +283,7 @@ switch(_operation) do {
 
         if(isServer) then {
 
-            // start listening for logcom events
+            // start listening for events
             [_logic,"listen"] call MAINCLASS;
 
         };
@@ -304,7 +303,7 @@ switch(_operation) do {
 
             _event = _args;
 
-            // a response event from LOGCOM has been received.
+            // a response event from task handler has been received.
             // if the we are a dedicated server,
             // dispatch the event to the player who requested it
             if(isDedicated) then {
@@ -540,7 +539,8 @@ switch(_operation) do {
                 case "TASK_ADD_CREATE_BUTTON_CLICK": {
 
                     private ["_taskingState","_titleEdit","_descriptionEdit","_title","_description","_marker","_destination",
-                    "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID","_playerID","_state","_apply","_current"];
+                    "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID",
+                    "_playerID","_state","_apply","_current","_statusText","_errors","_errorMessage"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -575,17 +575,55 @@ switch(_operation) do {
                     _selectedPlayers set [0, _newSelectedPlayerValues];
                     _selectedPlayers set [1, _newSelectedPlayerOptions];
 
-                    _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current], "C2ISTAR"] call ALIVE_fnc_event;
+                    _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
 
-                    if(isServer) then {
-                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-                    }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                    _errors = false;
+
+                    if(count _newSelectedPlayerOptions == 0) then {
+                        _errors = true;
+                        _errorMessage = "You need to select some players";
                     };
 
-                    [_logic,"disableAddTask"] call MAINCLASS;
-                    [_logic,"enableTasking"] call MAINCLASS;
+                    if(count _destination == 0) then {
+                        _errors = true;
+                        _errorMessage = "You need to select a destination";
+                    };
+
+                    if(_state == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select a task state";
+                    };
+
+                    if(_apply == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select task application";
+                    };
+
+                    if(_current == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select if task is current";
+                    };
+
+                    if(_errors) then {
+
+                        _statusText ctrlSetText _errorMessage;
+                        _statusText ctrlSetTextColor [0.729,0.216,0.235,1];
+
+                    }else{
+
+                        _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current], "C2ISTAR"] call ALIVE_fnc_event;
+
+                        if(isServer) then {
+                            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                        }else{
+                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                        };
+
+                        [_logic,"disableAddTask"] call MAINCLASS;
+                        [_logic,"enableTasking"] call MAINCLASS;
+
+                    };
                 };
 
                 case "TASK_ADD_MAP_CLICK": {
@@ -893,7 +931,8 @@ switch(_operation) do {
 
                     private ["_taskingState","_currentTask","_titleEdit","_descriptionEdit","_title","_description",
                     "_side","_faction","_marker","_destination","_selectedPlayers","_event","_taskID","_playerID","_state",
-                    "_selectedPlayerListOptions","_selectedPlayerListValues","_apply","_current","_newSelectedPlayerListOptions","_newSelectedPlayerListValues"];
+                    "_selectedPlayerListOptions","_selectedPlayerListValues","_apply","_current","_newSelectedPlayerListOptions",
+                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -929,17 +968,56 @@ switch(_operation) do {
                     _selectedPlayers set [0, _newSelectedPlayerListValues];
                     _selectedPlayers set [1, _newSelectedPlayerListOptions];
 
-                    _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current], "C2ISTAR"] call ALIVE_fnc_event;
+                    _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
 
-                    if(isServer) then {
-                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-                    }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                    _errors = false;
+                    _errorMessage = "";
+
+                    if(count _newSelectedPlayerOptions == 0) then {
+                        _errors = true;
+                        _errorMessage = "You need to select some players";
                     };
 
-                    [_logic,"disableEditTask"] call MAINCLASS;
-                    [_logic,"enableTasking"] call MAINCLASS;
+                    if(count _destination == 0) then {
+                        _errors = true;
+                        _errorMessage = "You need to select a destination";
+                    };
+
+                    if(_state == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select a task state";
+                    };
+
+                    if(_apply == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select task application";
+                    };
+
+                    if(_current == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select if task is current";
+                    };
+
+                    if(_errors) then {
+
+                        _statusText ctrlSetText _errorMessage;
+                        _statusText ctrlSetTextColor [0.729,0.216,0.235,1];
+
+                    }else{
+
+                        _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current], "C2ISTAR"] call ALIVE_fnc_event;
+
+                        if(isServer) then {
+                            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                        }else{
+                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                        };
+
+                        [_logic,"disableEditTask"] call MAINCLASS;
+                        [_logic,"enableTasking"] call MAINCLASS;
+
+                    };
                 };
 
                 case "TASK_EDIT_MANAGE_PLAYERS_BUTTON_CLICK": {
@@ -1348,7 +1426,7 @@ switch(_operation) do {
         _abortButton ctrlShow true;
 
         private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_stateTitle",
-        "_stateList","_stateListOptions","_managePlayersButton","_applyTitle","_applyList","_applyListOptions"];
+        "_stateList","_stateListOptions","_managePlayersButton","_applyTitle","_applyList","_applyListOptions","_statusText"];
 
         _editTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddTitleEditTitle);
         _editTitle ctrlShow true;
@@ -1416,6 +1494,11 @@ switch(_operation) do {
         _map ctrlShow true;
         _map ctrlSetEventHandler ["MouseButtonDown", "['TASK_ADD_MAP_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
+        _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
+        _statusText ctrlShow true;
+
+        _statusText ctrlSetText "";
+
         _managePlayersButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskEditManagePlayersButton);
         _managePlayersButton ctrlShow true;
         _managePlayersButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_ADD_MANAGE_PLAYERS_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
@@ -1444,7 +1527,8 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow false;
 
-        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_stateTitle","_stateList","_managePlayersButton","_applyTitle","_applyList","_currentTitle","_currentList"];
+        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_stateTitle",
+        "_stateList","_managePlayersButton","_applyTitle","_applyList","_currentTitle","_currentList","_statusText"];
 
         _editTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddTitleEditTitle);
         _editTitle ctrlShow false;
@@ -1478,6 +1562,9 @@ switch(_operation) do {
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow false;
+
+        _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
+        _statusText ctrlShow false;
 
         _managePlayersButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskEditManagePlayersButton);
         _managePlayersButton ctrlShow false;
@@ -1684,7 +1771,7 @@ switch(_operation) do {
 
         _applyList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_APPLY_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
-        private ["_currentTitle","_currentList","_currentIndex","_currentListOptions","_currentListValues"];
+        private ["_currentTitle","_currentList","_currentIndex","_currentListOptions","_currentListValues","_statusText"];
 
         _currentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentTitle);
         _currentTitle ctrlShow true;
@@ -1709,6 +1796,11 @@ switch(_operation) do {
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow true;
         _map ctrlSetEventHandler ["MouseButtonDown", "['TASK_ADD_MAP_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
+        _statusText ctrlShow true;
+
+        _statusText ctrlSetText "";
 
         _managePlayersButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskEditManagePlayersButton);
         _managePlayersButton ctrlShow true;
@@ -1764,7 +1856,8 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow false;
 
-        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_editButton","_stateTitle","_stateList","_managePlayersButton","_applyTitle","_applyList","_currentTitle","_currentList"];
+        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_editButton","_stateTitle",
+        "_stateList","_managePlayersButton","_applyTitle","_applyList","_currentTitle","_currentList","_statusText"];
 
         _editTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddTitleEditTitle);
         _editTitle ctrlShow false;
@@ -1798,6 +1891,9 @@ switch(_operation) do {
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow false;
+
+        _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
+        _statusText ctrlShow false;
 
         _managePlayersButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskEditManagePlayersButton);
         _managePlayersButton ctrlShow false;

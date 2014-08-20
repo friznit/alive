@@ -264,6 +264,11 @@ switch(_operation) do {
 
             private ["_playerSide","_sideNumber","_sideText"];
 
+            waitUntil {
+                sleep 1;
+                ((str side player) != "UNKNOWN")
+            };
+
             _playerSide = side player;
             _sideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
             _sideText = [_sideNumber] call ALIVE_fnc_sideNumberToText;
@@ -2089,7 +2094,8 @@ switch(_operation) do {
                             if(isServer) then {
                                 [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                             }else{
-                                ["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                                [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                                //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                             };
 
                             // display radio message
