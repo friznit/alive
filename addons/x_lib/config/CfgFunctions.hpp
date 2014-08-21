@@ -1216,3 +1216,10 @@ class vehicleSetDamage
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+
+class dateToDTG
+{
+	file = "\x\alive\addons\x_lib\functions\strings\fnc_dateToDTG.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
