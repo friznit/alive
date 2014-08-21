@@ -1902,7 +1902,7 @@ switch(_operation) do {
                 if(_waypointsCompleted > 0) then {
                     _waitDifference = _waitTotalIterations - _waitIterations;
                     if(_waitDifference > 50) then {
-                        _waitIterations = _waitTotalIterations - 40;
+                        _waitIterations = _waitTotalIterations - 10;
                     };
                 };
 
@@ -2013,6 +2013,17 @@ switch(_operation) do {
                                     _group = _emptyProfile select 2 select 13;
                                     _group setBehaviour "CARELESS";
 
+                                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                                    _position = _position findEmptyPosition [10,200];
+                                    if(count _position == 0) then {
+                                        _position = _eventPosition isFlatEmpty[3,1,0.3,2,0,false];
+                                        if(count _position == 0) then {
+                                            _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                                        };
+                                    };
+                                    //[_position] call ALIVE_fnc_spawnDebugMarker;
+                                    _heliPad = "Land_HelipadEmpty_F" createVehicle _position;
+
                                 };
 
                             };
@@ -2107,6 +2118,17 @@ switch(_operation) do {
                                     _group = _payloadProfile select 2 select 13;
                                     _group setBehaviour "CARELESS";
 
+                                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                                    _position = _position findEmptyPosition [10,200];
+                                    if(count _position == 0) then {
+                                        _position = _eventPosition isFlatEmpty[3,1,0.3,2,0,false];
+                                        if(count _position == 0) then {
+                                            _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                                        };
+                                    };
+                                    //[_position] call ALIVE_fnc_spawnDebugMarker;
+                                    _heliPad = "Land_HelipadEmpty_F" createVehicle _position;
+
                                     if!(isNil "_vehicle") then {
 
                                         [_vehicle] spawn {
@@ -2169,11 +2191,23 @@ switch(_operation) do {
                                 _group = _transportProfile select 2 select 13;
                                 _group setBehaviour "CARELESS";
 
-                            };
+                                _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                                _position = _position findEmptyPosition [10,200];
+                                if(count _position == 0) then {
+                                    _position = _eventPosition isFlatEmpty[3,1,0.3,2,0,false];
+                                    if(count _position == 0) then {
+                                        _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+                                    };
+                                };
+                                //[_position] call ALIVE_fnc_spawnDebugMarker;
+                                _heliPad = "Land_HelipadEmpty_F" createVehicle _position;
 
+                            };
                         };
 
                     } forEach _eventTransportProfiles;
+
+
 
                     // unload any transport vehicles
                     {
