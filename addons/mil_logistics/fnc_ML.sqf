@@ -310,6 +310,7 @@ switch(_operation) do {
 			_logic setVariable ["startupComplete", false];
 			_logic setVariable ["listenerID", ""];
 			_logic setVariable ["registryID", ""];
+			_logic setVariable ["initialAnalysisComplete", false];
 			_logic setVariable ["analysisInProgress", false];
 			_logic setVariable ["eventQueue", [] call ALIVE_fnc_hashCreate];
 
@@ -425,6 +426,11 @@ switch(_operation) do {
 			_logic setVariable ["startupComplete", true];
 			
 			if(count _modules > 0) then {
+
+			    // start listening for logcom events
+                [_logic,"listen"] call MAINCLASS;
+
+			    // start initial analysis
 				[_logic, "initialAnalysis", _modules] call MAINCLASS;
 			}else{
 				["ALIVE ML - Warning no OPCOM modules synced to Military Logistics module, nothing to do.."] call ALIVE_fnc_dumpR;
@@ -479,8 +485,8 @@ switch(_operation) do {
             // register the module
             [ALIVE_MLGlobalRegistry,"register",_logic] call ALIVE_fnc_MLGlobalRegistry;
 
-            // start listening for logcom events
-            [_logic,"listen"] call MAINCLASS;
+            // set as initial analysis complete
+            _logic setVariable ["initialAnalysisComplete", true];
 
             // trigger main processing loop
             [_logic, "monitor"] call MAINCLASS;
@@ -503,6 +509,24 @@ switch(_operation) do {
 
             _debug = [_logic, "debug"] call MAINCLASS;
             _event = _args;
+            _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+            _eventType = _eventData select 4;
+
+            _initComplete = true;
+
+            if(_eventType == "PR_STANDARD" || _eventType == "PR_AIRDROP" || _eventType == "PR_HELI_INSERT") then {
+                _initComplete = _logic getVariable "initialAnalysisComplete";
+                if!(_initComplete) then {
+                    _eventForceMakeup = _eventData select 3;
+                    _playerID = _eventData select 5;
+                    _requestID = _eventForceMakeup select 0;
+                    // respond to player request
+                    _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","DENIED_WAITING_INIT"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                };
+            };
+
+            if!(_initComplete) exitWith {};
 
             _side = [_logic, "side"] call MAINCLASS;
             _factions = [_logic, "factions"] call MAINCLASS;

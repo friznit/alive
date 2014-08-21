@@ -265,7 +265,7 @@ switch(_operation) do {
             private ["_playerSide","_sideNumber","_sideText"];
 
             waitUntil {
-                sleep 1;
+                sleep 0.1;
                 ((str side player) != "UNKNOWN")
             };
 
@@ -729,6 +729,33 @@ switch(_operation) do {
                     // LOGCOM has denied the request because the force pool did not result in any profiles created
 
                     _radioMessage = "Your request for support has been deined. The forces requested are not available";
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
+
+                };
+                case "DENIED_WAITING_INIT":{
+
+                    // LOGCOM has denied the request because the force pool did not result in any profiles created
+
+                    _radioMessage = "Your request for support has been deined. LOGCOM is still setting up.";
 
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 

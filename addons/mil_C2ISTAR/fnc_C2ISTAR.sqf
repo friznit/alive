@@ -1728,7 +1728,7 @@ switch(_operation) do {
 
         _descriptionEdit ctrlSetText (_currentTask select 6);
 
-        private ["_stateTitle","_stateList","_stateListOptions","_stateIndex"];
+        private ["_stateTitle","_stateList","_stateListOptions","_stateListValues","_stateIndex"];
 
         _stateTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStateEditTitle);
         _stateTitle ctrlShow true;
@@ -1737,6 +1737,7 @@ switch(_operation) do {
         _stateList ctrlShow true;
 
         _stateListOptions = [_taskingState,"currentTaskStateOptions"] call ALIVE_fnc_hashGet;
+        _stateListValues = [_taskingState,"currentTaskStateValues"] call ALIVE_fnc_hashGet;
 
         lbClear _stateList;
 
@@ -1746,6 +1747,9 @@ switch(_operation) do {
 
         _stateIndex = _stateListOptions find (_currentTask select 8);
         _stateList lbSetCurSel _stateIndex;
+
+        [_taskingState,"currentTaskStateSelectedIndex",_stateIndex] call ALIVE_fnc_hashSet;
+        [_taskingState,"currentTaskStateSelectedValue",_stateListValues select _stateIndex] call ALIVE_fnc_hashSet;
 
         _stateList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_STATE_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
@@ -1769,6 +1773,9 @@ switch(_operation) do {
         _applyIndex = _applyListValues find (_currentTask select 9);
         _applyList lbSetCurSel _applyIndex;
 
+        [_taskingState,"currentTaskApplySelectedIndex",_applyIndex] call ALIVE_fnc_hashSet;
+        [_taskingState,"currentTaskApplySelectedValue",_applyListValues select _applyIndex] call ALIVE_fnc_hashSet;
+
         _applyList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_APPLY_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
         private ["_currentTitle","_currentList","_currentIndex","_currentListOptions","_currentListValues","_statusText"];
@@ -1791,6 +1798,9 @@ switch(_operation) do {
         _currentIndex = _currentListValues find (_currentTask select 10);
         _currentList lbSetCurSel _currentIndex;
 
+        [_taskingState,"currentTaskCurrentSelectedIndex",_currentIndex] call ALIVE_fnc_hashSet;
+        [_taskingState,"currentTaskCurrentSelectedValue",_currentListValues select _currentIndex] call ALIVE_fnc_hashSet;
+
         _currentList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_CURRENT_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
@@ -1809,6 +1819,8 @@ switch(_operation) do {
         _editButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskEditUpdateButton);
         _editButton ctrlShow true;
         _editButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_EDIT_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        [_logic,"taskingState",_taskingState] call MAINCLASS;
 
         private ["_posX","_posY","_markers","_position","_marker"];
 

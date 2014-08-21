@@ -66,6 +66,7 @@ _toHQ = if(count _this > 6) then {_this select 6} else {false};
 _fromHQ = if(count _this > 7) then {_this select 7} else {false};
 _hqClass = if(count _this > 8) then {_this select 8} else {"PAPA_BEAR"};
 
+if(isNil "_message") exitWith {};
 
 // if from unit get the callSign of the unit
 if(_fromUnit || _toUnit) then {
