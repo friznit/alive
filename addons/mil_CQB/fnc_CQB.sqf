@@ -328,7 +328,11 @@ switch(_operation) do {
 			
 				//As stated in the trace above the client needs to wait for the CQB module to be ready
 			    waituntil {_logic getVariable ["init",false]};
+                
+                //Report FPS
+                [_logic, "reportFPS", true] call ALiVE_fnc_CQB;
 			    
+                //Activate Debug
 			    [_logic, "debug", _debug] call ALiVE_fnc_CQB;
 			    
 			    //Delete markers
@@ -364,7 +368,12 @@ switch(_operation) do {
 				if(typeName _args == "STRING") then {
                     if !(_args == "") then {
 						_args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, "[", ""] call CBA_fnc_replace;
+                        _args = [_args, "]", ""] call CBA_fnc_replace;
+                        _args = [_args, "'", ""] call CBA_fnc_replace;
+                        _args = [_args, """", ""] call CBA_fnc_replace;
 						_args = [_args, ","] call CBA_fnc_split;
+                        
 						if(count _args > 0) then {
 							_logic setVariable [_operation, _args];
 						};
@@ -385,7 +394,12 @@ switch(_operation) do {
 				if(typeName _args == "STRING") then {
                     if !(_args == "") then {
 						_args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, "[", ""] call CBA_fnc_replace;
+                        _args = [_args, "]", ""] call CBA_fnc_replace;
+                        _args = [_args, "'", ""] call CBA_fnc_replace;
+                        _args = [_args, """", ""] call CBA_fnc_replace;
 						_args = [_args, ","] call CBA_fnc_split;
+                        
 						if(count _args > 0) then {
 							_logic setVariable [_operation, _args];
 						};
@@ -401,6 +415,50 @@ switch(_operation) do {
             _args = _logic getVariable [_operation, DEFAULT_WHITELIST];
 		};
         
+		case "reportFPS": {
+			if (!hasInterface || {isnil "_args"}) exitwith {};
+                
+            if !(_args) exitwith {
+                if !(isnil QGVAR(REPORTFPS)) exitwith {
+                    terminate GVAR(REPORTFPS); GVAR(REPORTFPS) = nil; _args = nil;
+                };
+            };
+            
+            if !(isnil QGVAR(REPORTFPS)) exitwith {_args = GVAR(REPORTFPS)};
+            
+            GVAR(REPORTFPS) = [] spawn {
+
+                _avgArr = [];
+                
+                player setvariable ["averageFPS",diag_fps,true];
+                
+                waituntil {
+                    private ["_avg"];
+                    
+                    //randomize to not broadcastStorm
+                    sleep (20 + (random 10));
+                    
+                    //Remove first entries after some iterations
+                    if (count _avgArr == 5) then {_avgArr set [0,0]; _avgArr = _avgArr - [0]};
+                    
+                    //Add current FPS
+                    _avgArr set [count _avgArr,diag_fps];
+                    
+                    //Calculate average
+                    _avg = 0; {_avg = _avg + _x} foreach _avgArr; _avg = _avg / (count _avgArr);
+                    
+                    //Set on player
+                    player setvariable ["averageFPS",_avg,true];
+                    
+                    //Exit if needed
+                    isnil QGVAR(REPORTFPS);
+                };
+                
+                GVAR(REPORTFPS) = nil;
+            };
+            
+            _args = GVAR(REPORTFPS);
+        };
                 
         case "destroy": {
                 if (isServer) then {
@@ -1025,42 +1083,20 @@ switch(_operation) do {
 								// Check: house doesn't already have AI AND
 								// Check: if any players within spawn distance
 	
-	                            _nearplayers = [getposATL _house,_spawn,_spawnJet,_spawnHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir;
-								if ((isNil {_house getVariable "group"}) && {_nearplayers}) then {
+	                            _nearplayers = [getposATL _house,_spawn,_spawnJet,_spawnHeli] call ALiVE_fnc_PlayersInRangeIncludeAir;
+								if ((isNil {_house getVariable "group"}) && {count _nearplayers > 0}) then {
 	                                        
 	                                    switch (_locality) do {
 	                                    	case ("server") : {
-	                                            _hosts = ["server"];
+	                                            _hosts = [false];
 	                                        };
 	                                    	case ("HC") : {
 	                                            _hosts = headlessClients;
 	                                        };
-	                                        case ("client") : {
-	
-			                                	_hosts = [];
-			                                    _players = [] call BIS_fnc_listPlayers;
-				                                for "_i" from 0 to (count _players - 1) do {
-				                                    _pl = _players select _i;
-			                                        
-			                                        //Choose players from List
-			                                        if !(isnull _pl) then {
-			                                            
-			                                            /* AI distribution not working properly yet
-			                                            _threshold = 10;
-			                                            _localunits = ({owner _x == owner _pl} count allUnits);
-			                                            _unitLimit = (ceil (count allUnits / count _players)) + _threshold;
-			                                            _canHost = (_localunits <= _unitLimit);
-			                                            diag_log format ["Local units %1 on %2 vs. Unitlimit %3 (near players %4) turns canhost %5 for house %6 on logic %7",_localunits,_pl,_unitLimit,_nearplayers,_canhost,_house,_logic];
-			                                            */
-					                                	_canhost = true;
-				                                        
-				                                        if (((getPosATL _house distance _pl < _spawn) && _canHost) || {(_i == (count _players)-1) && {(count _hosts == 0)}}) then {
-					                                        _hosts set [count _hosts,_pl];
-					                                    };
-			                                        } else {
-			                                            //diag_log format ["CQB Warning: Null object on host (%1) not selected",_pl];
-			                                        };
-				                                };
+                                            case ("client") : {
+                                                //Sort near players by FPS
+                                                _nearplayers = [_nearplayers,[],{_x getvariable ["averageFPS",30]},"DESCEND"] call BIS_fnc_sortBy;
+                                                _hosts = [_nearplayers select 0];
 	                                        };
 	                                    };
 	                                    
@@ -1080,12 +1116,12 @@ switch(_operation) do {
                                                 // Naught, ALiVE_fnc_BUS seems to be broken since movement into x_lib (Server to client calls fail)! Please check on dedicated server, switched to BIS_fnc_MP for now!
 	                                            //[_host,"CQB",[[_logic, "spawnGroup", [_house,_faction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
                                                 /////////////////////////////////////////////////////////////
-                                                [[_logic, "spawnGroup", [_house,_faction]],"ALiVE_fnc_CQB",_host,false,false] spawn BIS_fnc_MP;
+                                                [[_logic, "spawnGroup", [_house,_faction]],"ALiVE_fnc_CQB",_host,false] call BIS_fnc_MP;
 	                                            
 	                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
 	                                            sleep 0.1;
 		                                    } else {
-		                                        ["CQB ERROR: Null object on host %1",_host] call ALiVE_fnc_DumpR;
+		                                        ["CQB ERROR: Nil object on host %1",_host] call ALiVE_fnc_DumpR;
 		                                    };
 	                                	} else {
 	                                        ["CQB ERROR: No playerhosts for house %1!",_house] call ALiVE_fnc_DumpR;
