@@ -394,70 +394,6 @@ switch(_operation) do {
             } foreach _objectives;
         };
 
-        case "NearestAvailableSectionNEW": {
-            
-            private ["_st","_troopsunsorted","_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
-            
-            _pos = _args select 0;
-            _size = _args select 1; 
-            if (count _args > 2) then {_types = _args select 2} else {_types = ["infantry"]};
-
-			_troops = [];
-            {
-                _troops = _troops + ([_logic,_x,[]] call ALiVE_fnc_HashGet);
-            } foreach _types;
-
-            //subtract busy and reserved profiles
-            _busy = [];
-            {_busy set [count _busy,_x select 1]} foreach ([_logic,"pendingorders",[]] call ALiVE_fnc_HashGet);
-            {_busy = _busy + ([_x,"section",[]] call ALiVE_fnc_HashGet)} foreach ([_logic,"objectives",[]] call ALiVE_fnc_HashGet);
-            _reserved = [_logic,"ProfileIDsReserve",[]] call ALiVE_fnc_HashGet;
-            _busy = _busy - _reserved;
-            
-            if (_size >= 5) then {
-            	_troops = _troops - _reserved;
-            } else {
-                _troops = _troops - (_busy + _reserved);
-            };
-
-            //Sort by distance
-            _troops = [_troops,[_pos],{
-                private ["_pos"];
-                
-                _pos = _Input0;
-                
-                if !(isnil "_x") then {
-                    private ["_profile"];
-                    
-                    _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
-                    
-                    if (isnil "_profile") then {99999} else {
-                        ([_profile,"position",_pos] call ALiVE_fnc_HashGet) distance _pos;
-                    };
-				} else {
-					99999;
-				};
-            },"ASCEND"] call BIS_fnc_sortBy;
-            
-            //Collect section
-            _section = [];
-			{
-                private ["_profile","_busy"];
-                
-                if (count _section == _size) exitwith {};
-                
-                _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
-                
-                if !(isnil "_profile") then {
-                	_busy = [_profile,"busy",false] call ALiVE_fnc_HashGet;
-                    
-                    if !(_busy) then {_section set [count _section,_x]};
-                };
-            } foreach _troops;
-            
-			_result = _section;
-        };
-        
         case "NearestAvailableSection": {
 
             private ["_st","_troopsunsorted","_types","_pos","_size","_troops","_busy","_section","_reserved","_profileIDs","_profile"];
@@ -513,10 +449,8 @@ switch(_operation) do {
                 
                 _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
                 
-                if !(isnil "_profile") then {
-                	_busy = [_profile,"busy",false] call ALiVE_fnc_HashGet;
-                    
-                    if !(_busy) then {_section set [count _section,_x]};
+                if (!isnil "_profile" && {!([_profile,"isPlayer",false] call ALIVE_fnc_hashGet)} && {!([_profile,"busy",false] call ALiVE_fnc_HashGet)}) then {
+					_section set [count _section,_x];
                 };
             } foreach _troops;
                       
