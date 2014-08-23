@@ -993,6 +993,13 @@ class anyPlayersInRangeIncludeAir
 	recompile = RECOMPILE;
 };
 
+class PlayersInRangeIncludeAir
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_PlayersInRangeIncludeAir.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class chooseRandomUnits
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_chooseRandomUnits.sqf";

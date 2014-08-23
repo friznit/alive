@@ -206,6 +206,7 @@ units
 	ALiVE_fnc_anyPlayersInRange
 	ALiVE_fnc_anyPlayersInRangeExcludeAir
 	ALiVE_fnc_anyPlayersInRangeIncludeAir
+	ALiVE_fnc_PlayersInRangeIncludeAir
 	ALiVE_fnc_chooseRandomUnits
 	ALiVE_fnc_getNearUnits
 	ALiVE_fnc_getPlayerByUID
