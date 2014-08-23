@@ -407,8 +407,6 @@ switch(_operation) do {
 
                     };
                 };
-            }else{
-                ["ALIVE CMP - Warning no usable groups found to use the faction used may be faulty."] call ALIVE_fnc_dumpR;
             };
 
 
