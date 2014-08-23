@@ -4941,7 +4941,7 @@ switch(_operation) do {
 
                                     _units = _profile select 2 select 21;
 
-                                    _units joinSilent (group player);
+                                    _units joinSilent (group _player);
 
                                     [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
                                 }else{
@@ -4979,7 +4979,7 @@ switch(_operation) do {
 
                                     _units = _profile select 2 select 21;
 
-                                    _units joinSilent (group player);
+                                    _units joinSilent (group _player);
 
                                     [ALIVE_profileHandler, "unregisterProfile", _profile] call ALIVE_fnc_profileHandler;
                                 }else{
