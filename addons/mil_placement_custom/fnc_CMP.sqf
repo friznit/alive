@@ -294,6 +294,18 @@ switch(_operation) do {
             };
 
 
+            if(ALIVE_loadProfilesPersistent) exitWith {
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then { ["ALIVE CMP - Profiles are persistent, no creation of profiles"] call ALIVE_fnc_dump; };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                // set module as started
+                _logic setVariable ["startupComplete", true];
+
+            };
+
+
 			// Spawn the main force
 			
 			private ["_groups","_motorizedGroups","_infantryGroups","_group","_totalCount","_position",
