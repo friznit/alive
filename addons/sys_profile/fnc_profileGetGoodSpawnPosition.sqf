@@ -113,7 +113,7 @@ switch(_type) do {
 				};
 				
 				_spawnPosition = _position;
-				
+
 				//[_spawnPosition,"DEF",_profileID] call _createMarker;
 				
 				//["GGSP [%1] - command: %2 car: %3 air: %4 ship: %5",_profileID,_inCommand,_inCar,_inAir,_inShip] call ALIVE_fnc_dump;
@@ -129,8 +129,10 @@ switch(_type) do {
 
 						//[_spawnPosition,"LAND",_profileID] call _createMarker;
 					};
+
+
 				};
-				
+
 				// if the entity is in a ship
 				if(_inShip) then {
 				
@@ -143,7 +145,7 @@ switch(_type) do {
 						//[_spawnPosition,"SEA",_profileID] call _createMarker;
 					};
 				};
-				
+
 				// if the entity is in a car
 				if(_inCar) then {
 				
@@ -155,9 +157,11 @@ switch(_type) do {
 						_spawnPosition = [_position] call ALIVE_fnc_getClosestLand;
 					};
 
-					//[_spawnPosition,"ROAD",_profileID] call _createMarker;					
+					_spawnPosition set [2,0];
+
+					//[_spawnPosition,"ROAD",_profileID] call _createMarker;
 				};
-								
+
 				// update the entities position
 				[_profile,"position",_spawnPosition] call ALIVE_fnc_hashSet;
 				[_profile,"mergePositions"] call ALIVE_fnc_profileEntity;
