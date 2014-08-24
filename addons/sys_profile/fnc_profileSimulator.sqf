@@ -24,73 +24,6 @@ ARJay
 Highhead
 ---------------------------------------------------------------------------- */
 
-/* //Uncomment helperfunctions if needed
-_deleteMarkers = {
-	{
-		deleteMarker _x;
-	} forEach (_markers select 2);
-	_markers = [] call ALIVE_fnc_hashCreate;
-};
-
-_createMarker = {
-	private ["_profile","_waypoint","_m","_label","_position","_profileID","_debugColor","_profileSide","_markerLabel"];
-	_profile = _this select 0;
-	_waypoint = _this select 1;
-	
-	_entityProfile call _deleteMarker;
-
-	_position = [_waypoint,"position"] call ALIVE_fnc_hashGet;
-	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-	_profileSide = [_profile,"side"] call ALIVE_fnc_hashGet;
-	_markerLabel = format["%1 destination", _profileID];
-	
-	switch(_profileSide) do {
-		case "EAST":{
-			_debugColor = "ColorRed";
-		};
-		case "WEST":{
-			_debugColor = "ColorBlue";
-		};
-		case "CIV":{
-			_debugColor = "ColorYellow";
-		};
-		case "GUER":{
-			_debugColor = "ColorGreen";
-		};
-		default {
-			_debugColor = "ColorGreen";
-		};
-	};
-
-	if(count _position > 0) then {
-		_m = createMarker [format["SIM_MARKER_%1",_profileID], _position];
-		_m setMarkerShape "ICON";
-		_m setMarkerSize [1, 1];
-		_m setMarkerType "waypoint";
-		_m setMarkerColor _debugColor;
-		
-		_label = [_profileID, "_"] call CBA_fnc_split;
-		_m setMarkerText format["%1",_label select ((count _label) - 1)];
-
-		[_markers,_profileID,_m] call ALIVE_fnc_hashSet;
-	};
-};
-*/
-
-_deleteMarker = {
-	private ["_profile","_m","_profileID"];
-	_profile = _this;
-	
-	_profileID = [_profile,"profileID"] call ALIVE_fnc_hashGet;
-	
-	_profileIndex = _markers select 1;
-	if(_profileID in _profileIndex) then {	
-		_m = [_markers,_profileID] call ALIVE_fnc_hashGet;			
-		deleteMarker _m;		
-		[_markers,_profileID] call ALIVE_fnc_hashRem;
-	};
-};
-
 private ["_debug","_cycleTime","_profiles","_markers","_deleteMarkers","_deleteMarker","_createMarker","_profileIndex","_profiles","_profileBlock","_profile",
 	"_entityProfile","_profileType","_profileID","_active","_waypoints","_waypointsCompleted","_currentPosition","_vehiclesInCommandOf","_vehicleCommander",
     "_vehicleCargo","_vehiclesInCargoOf","_activeWaypoint","_type","_speed","_destination","_distance","_speedPerSecondArray","_speedPerSecond","_moveDistance",
@@ -217,13 +150,7 @@ _engaged = [0,0,0];
 						
 						// distance to wp destination within completion radius
 						if(_distance <= (_moveDistance * 2)) then {
-									
-							// DEBUG -------------------------------------------------------------------------------------
-							if(_debug) then {
-								_entityProfile call _deleteMarker;
-							};
-							// DEBUG -------------------------------------------------------------------------------------
-								
+
 							if(_isCycling) then {
 								_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
 							};

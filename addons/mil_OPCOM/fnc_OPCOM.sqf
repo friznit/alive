@@ -211,8 +211,6 @@ switch(_operation) do {
 	                        
 	                        _mod = (synchronizedObjects _logic) select _i;
 
-	                        ["TYPEOF :%1",(typeof _mod)] call ALIVE_fnc_dump;
-	                        
 	                        if ((typeof _mod) in ["ALiVE_mil_placement","ALiVE_civ_placement","ALiVE_mil_placement_custom"]) then {
                                 while {_startupComplete = _mod getVariable ["startupComplete", false]; !(_startupComplete)} do {};
                                 

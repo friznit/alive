@@ -672,6 +672,8 @@ switch(_operation) do {
 
                         [_event, "finalDestination", []] call ALIVE_fnc_hashSet;
 
+                        [_event, "eventAssets", []] call ALIVE_fnc_hashSet;
+
                         // store the event on the event queue
                         _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
                         [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
@@ -1877,6 +1879,7 @@ switch(_operation) do {
 
                 {
                     _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+
                     if!(isNil "_profile") then {
 
                         _completed = [_logic,"checkWaypointCompleted",_profile] call MAINCLASS;
@@ -2276,8 +2279,6 @@ switch(_operation) do {
                         };
 
                     } forEach _eventTransportVehiclesProfiles;
-
-                    ["WAIT ACTIVE: %1 ALIVE: %2",_anyActive,_anyAlive] call ALIVE_fnc_dump;
 
                     if(_anyActive == 0 || _anyAlive == 0) then {
                         // no transport vehicles
@@ -4381,7 +4382,7 @@ switch(_operation) do {
             _currentPosition = position _leader;
             _currentWaypoint = currentWaypoint _group;
             _waypoints = waypoints _group;
-            _currentWaypoint = _waypoints select _currentWaypoint;
+            _currentWaypoint = _waypoints select ((count _waypoints)-1);
 
             if!(isNil "_currentWaypoint") then {
 
@@ -4440,7 +4441,9 @@ switch(_operation) do {
                 _x disableAI "THREAT_PATH";
             } forEach (units _group);
 
-        };
+        }else{
+            [_entityProfile,"spawn"] call ALIVE_fnc_profileEntity;
+        }
 
     };
 
@@ -4521,7 +4524,24 @@ switch(_operation) do {
                         } forEach _inCargo;
                     };
 
-                };
+                }else{
+
+                     _inCargo = _vehicleProfile select 2 select 9;
+
+                     if(count _inCargo > 0) then {
+                         {
+                             _cargoProfileID = _x;
+                             _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
+
+                             if!(isNil "_cargoProfile") then {
+                                 [_cargoProfile,_vehicleProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
+                                 [_cargoProfile,"position",_position] call ALIVE_fnc_profileEntity;
+                             };
+
+                         } forEach _inCargo;
+                     };
+
+                 };
 
             };
             case "EMPTY":{
@@ -4573,7 +4593,7 @@ switch(_operation) do {
 
         private ["_entityProfile","_active","_profileID","_vehiclesInCommandOf","_debug","_eventID","_eventData","_eventCargoProfiles",
         "_eventTransportProfiles","_eventTransportVehiclesProfiles","_playerRequested","_playerRequestProfiles","_eventPosition",
-        "_eventType","_playerID","_requestID","_type","_emptyProfiles","_payloadProfiles","_vehicleProfileID","_vehicleProfile","_eventForceMakeup"];
+        "_eventType","_playerID","_requestID","_type","_emptyProfiles","_payloadProfiles","_vehicleProfileID","_vehicleProfile","_eventForceMakeup","_eventAssets"];
 
         _event = _args select 0;
         _entityProfile = _args select 1;
@@ -4599,6 +4619,8 @@ switch(_operation) do {
         _eventTransportVehiclesProfiles = [_event, "transportVehiclesProfiles"] call ALIVE_fnc_hashGet;
         _playerRequested = [_event, "playerRequested"] call ALIVE_fnc_hashGet;
         _playerRequestProfiles = [_event, "playerRequestProfiles"] call ALIVE_fnc_hashGet;
+
+        _eventAssets = [_event, "eventAssets"] call ALIVE_fnc_hashGet;
 
         _eventForceMakeup = _eventData select 3;
         _eventPosition = _eventData select 0;
@@ -4637,14 +4659,14 @@ switch(_operation) do {
 
                     _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     _position = _position findEmptyPosition [10,200];
+
                     if(count _position == 0) then {
-                        _position = _eventPosition isFlatEmpty[3,1,0.3,2,0,false];
-                        if(count _position == 0) then {
-                            _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
-                        };
+                        _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     };
-                    //[_position] call ALIVE_fnc_spawnDebugMarker;
                     _heliPad = "Land_HelipadEmpty_F" createVehicle _position;
+
+                    _eventAssets set [count _eventAssets, _heliPad];
+                    [_event, "eventAssets",_eventAssets] call ALIVE_fnc_hashSet;
 
                     _inCargo = _vehicleProfile select 2 select 9;
 
@@ -4655,6 +4677,26 @@ switch(_operation) do {
 
                             if!(isNil "_cargoProfile") then {
                                 [_cargoProfile,_vehicleProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
+                            };
+
+                        } forEach _inCargo;
+                    };
+
+                }else{
+
+                    private ["_position","_inCargo","_cargoProfileID","_cargoProfile"];
+
+                    _inCargo = _vehicleProfile select 2 select 9;
+                    _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
+
+                    if(count _inCargo > 0) then {
+                        {
+                            _cargoProfileID = _x;
+                            _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
+
+                            if!(isNil "_cargoProfile") then {
+                                [_cargoProfile,_vehicleProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
+                                [_cargoProfile,"position",_position] call ALIVE_fnc_profileEntity;
                             };
 
                         } forEach _inCargo;
@@ -4674,14 +4716,14 @@ switch(_operation) do {
 
                     _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     _position = _position findEmptyPosition [10,200];
+
                     if(count _position == 0) then {
-                        _position = _eventPosition isFlatEmpty[3,1,0.3,2,0,false];
-                        if(count _position == 0) then {
-                            _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
-                        };
+                        _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     };
-                    //[_position] call ALIVE_fnc_spawnDebugMarker;
                     _heliPad = "Land_HelipadEmpty_F" createVehicle _position;
+
+                    _eventAssets set [count _eventAssets, _heliPad];
+                    [_event, "eventAssets",_eventAssets] call ALIVE_fnc_hashSet;
 
                     [_entityProfile,_vehicleProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
 
@@ -4728,14 +4770,14 @@ switch(_operation) do {
 
                     _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     _position = _position findEmptyPosition [10,200];
+
                     if(count _position == 0) then {
-                        _position = _eventPosition isFlatEmpty[3,1,0.3,2,0,false];
-                        if(count _position == 0) then {
-                            _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
-                        };
+                        _position = [_eventPosition, (random(DESTINATION_VARIANCE)), random(360)] call BIS_fnc_relPos;
                     };
-                    //[_position] call ALIVE_fnc_spawnDebugMarker;
                     _heliPad = "Land_HelipadEmpty_F" createVehicle _position;
+
+                    _eventAssets set [count _eventAssets, _heliPad];
+                    [_event, "eventAssets",_eventAssets] call ALIVE_fnc_hashSet;
 
                     if!(isNil "_vehicle") then {
 
@@ -4785,7 +4827,7 @@ switch(_operation) do {
         // complicated
 
         private ["_debug","_event","_eventData","_eventPosition","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
-        "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile"];
+        "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile","_eventAssets"];
 
         _debug = [_logic, "debug"] call MAINCLASS;
         _event = _args;
@@ -4800,6 +4842,12 @@ switch(_operation) do {
         _motorisedProfiles = [_eventCargoProfiles, 'motorised'] call ALIVE_fnc_hashGet;
         _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
         _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
+
+        _eventAssets = [_event, "eventAssets"] call ALIVE_fnc_hashGet;
+
+        {
+            deleteVehicle _x;
+        } forEach _eventAssets;
 
         if!(_playerRequested) then {
 
