@@ -40,6 +40,7 @@ ARJay
 #define DEFAULT_PRIORITY "50"
 #define DEFAULT_NO_TEXT "0"
 #define DEFAULT_COMPOSITION false
+#define DEFAULT_OBJECTIVES []
 
 private ["_logic","_operation","_args","_result"];
 
@@ -138,6 +139,9 @@ switch(_operation) do {
         };
 
         _result = _args;
+    };
+    case "objectives": {
+        _result = [_logic,_operation,_args,DEFAULT_OBJECTIVES] call ALIVE_fnc_OOsimpleOperation;
     };
 	// Main process
 	case "init": {
@@ -280,6 +284,7 @@ switch(_operation) do {
 			};
 
 			// assign the objective to OPCOMS
+			/*
 
             for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
                 _moduleObject = (synchronizedObjects _logic) select _i;
@@ -292,6 +297,25 @@ switch(_operation) do {
 
                 [_module,"addObjective",_objective] call ALiVE_fnc_OPCOM;
             };
+            */
+
+            private ["_clusters","_cluster"];
+
+            _clusters = [];
+
+            _objectiveName = format["CUSTOM_%1",floor((_position select 0) + (_position select 1))];
+
+            _cluster = [nil, "create"] call ALIVE_fnc_cluster;
+            [_cluster,"nodes",[]] call ALIVE_fnc_hashSet;
+            [_cluster,"clusterID",_objectiveName] call ALIVE_fnc_hashSet;
+            [_cluster,"center",_position] call ALIVE_fnc_hashSet;
+            [_cluster,"size",_size] call ALIVE_fnc_hashSet;
+            [_cluster,"type","MIL"] call ALIVE_fnc_hashSet;
+            [_cluster,"priority",_priority] call ALIVE_fnc_hashSet;
+
+            _clusters set [0,_cluster];
+
+            [_logic, "objectives", _clusters] call MAINCLASS;
 
 
             if(ALIVE_loadProfilesPersistent) exitWith {

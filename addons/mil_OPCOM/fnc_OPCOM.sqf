@@ -210,8 +210,10 @@ switch(_operation) do {
 							private ["_obj","_mod","_size","_type","_priority"];
 	                        
 	                        _mod = (synchronizedObjects _logic) select _i;
+
+	                        ["TYPEOF :%1",(typeof _mod)] call ALIVE_fnc_dump;
 	                        
-	                        if ((typeof _mod) in ["ALiVE_mil_placement","ALiVE_civ_placement"]) then {
+	                        if ((typeof _mod) in ["ALiVE_mil_placement","ALiVE_civ_placement","ALiVE_mil_placement_custom"]) then {
                                 while {_startupComplete = _mod getVariable ["startupComplete", false]; !(_startupComplete)} do {};
                                 
 								_obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
