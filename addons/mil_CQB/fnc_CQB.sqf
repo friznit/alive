@@ -958,8 +958,8 @@ switch(_operation) do {
 			};
             
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceRemove;
+
 			{deleteVehicle _x} forEach units _grp;
-            
             deleteGroup _grp;
 	    };
 	};
@@ -972,19 +972,12 @@ switch(_operation) do {
 			// if a house and unit is provided start spawn process
 			ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
             
-            private ["_faction","_houseFaction"];
+            private ["_factions","_units","_blacklist","_faction","_houseFaction"];
             
             _house = _args select 0;
             _faction = _args select 1;
             
             _debug = _logic getVariable ["debug",false];
-            
-        	_createUnitTypes = {
-				private ["_factions","_units","_blacklist","_faction","_houseFaction"];
-				PARAMS_1(_factions);
-                _blacklist = _logic getVariable ["UnitsBlackList",[]];
-				[_factions,ceil(random(_logic getVariable ["amount",2])),_blacklist] call ALiVE_fnc_chooseRandomUnits;
-			};
             
             private ["_side"];
             
@@ -998,13 +991,12 @@ switch(_operation) do {
 			// Check: if no units already defined
 			if ((count _units == 0) || {!(_houseFaction == _faction)}) then {
 				// Action: identify AI unit types
-				_units = [[_faction]] call (_logic getVariable ["_createUnitTypes", _createUnitTypes]);
+				_units = [[_faction], ceil(random(_logic getVariable ["amount",2])), _logic getVariable ["UnitsBlackList",[]], true] call ALiVE_fnc_chooseRandomUnits;
 				_house setVariable ["unittypes", _units, true];
                 _house setVariable ["faction", _faction, true];
 			};
 
 			// Action: restore AI
-            
             switch (getNumber(configFile >> "Cfgvehicles" >> _units select 0 >> "side")) do {
                 case 0 : {_side = EAST};
                 case 1 : {_side = WEST};
@@ -1021,6 +1013,7 @@ switch(_operation) do {
 				};
 				[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
 			};
+            
 			// position AI
 			_positions = [_house] call ALiVE_fnc_getBuildingPositions;
             if (count _positions == 0) exitwith {_grp};
@@ -1061,7 +1054,7 @@ switch(_operation) do {
 			
 			// spawn loop
 			_logic spawn {
-				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_createUnitTypes","_despawnGroup","_host","_players","_hosts","_faction","_useDominantFaction","_inRange","_locality","_pause"];
+				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_despawnGroup","_host","_players","_hosts","_faction","_useDominantFaction","_inRange","_locality","_pause"];
 				_logic = _this;
 				
 				// default functions - can be overridden
