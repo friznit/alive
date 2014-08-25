@@ -1056,6 +1056,13 @@ class getRandomPlayerNear
 	recompile = RECOMPILE;
 };
 
+class isArmed
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_isArmed.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class unitArrayFilterDead
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_unitArrayFilterDead.sqf";

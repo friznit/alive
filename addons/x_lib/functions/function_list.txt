@@ -215,6 +215,7 @@ units
 	ALiVE_fnc_getRandomManNear
 	ALiVE_fnc_getRandomManOrPlayerNear
 	ALiVE_fnc_getRandomPlayerNear
+	ALiVE_fnc_isArmed
 	ALiVE_fnc_unitArrayFilterDead
 	ALiVE_fnc_unitArrayGetVehiclesWithin
 	ALiVE_fnc_unitArraySortByRank

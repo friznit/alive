@@ -25,7 +25,7 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_fac","_allvehs","_vehx","_fx","_cx","_cargoslots","_type","_nonconfigs","_nonsims","_err"];
+private ["_fac","_allvehs","_vehx","_fx","_cx","_cargoslots","_type","_noWeapons","_nonconfigs","_nonsims","_err"];
 
 PARAMS_1(_cargoslots);
 _err = "cargo slots not valid";
@@ -34,6 +34,8 @@ ASSERT_TRUE(typeName _cargoslots == "SCALAR",_err);
 
 DEFAULT_PARAM(1,_fac,nil);
 DEFAULT_PARAM(2,_type,nil);
+DEFAULT_PARAM(3,_noWeapons,false);
+
 _nonConfigs = ["StaticWeapon","CruiseMissile1","CruiseMissile2","Chukar_EP1","Chukar","Chukar_AllwaysEnemy_EP1"];
 _nonSims = ["parachute","house"];
 
@@ -52,10 +54,18 @@ for "_y" from 1 to count(configFile >> "CfgVehicles") - 1 do {
 								if(_fx == _fac) then {
 									if (!isnil "_type") then {
 										if (_cx isKindOf _type) then {
-											_allvehs set [count _allvehs, _cx];
+	                                        if (_noWeapons) then {
+	                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+	                                        } else {
+                                                _allvehs set [count _allvehs, _cx];
+                                            };
 										};
 									} else {
-										_allvehs set [count _allvehs, _cx];
+										if (_noWeapons) then {
+                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+                                        } else {
+                                            _allvehs set [count _allvehs, _cx];
+                                        };
 									};
 								};
 							};
@@ -63,10 +73,18 @@ for "_y" from 1 to count(configFile >> "CfgVehicles") - 1 do {
 								if(_fx in _fac) then {
 									if (!isnil "_type") then {
 										if (_cx isKindOf _type) then {
-											_allvehs set [count _allvehs, _cx];
+	                                        if (_noWeapons) then {
+	                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+	                                        } else {
+                                                _allvehs set [count _allvehs, _cx];
+                                            };
 										};
 									} else {
-										_allvehs set [count _allvehs, _cx];
+										if (_noWeapons) then {
+                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+                                        } else {
+                                            _allvehs set [count _allvehs, _cx];
+                                        };
 									};
 								};
 							};
