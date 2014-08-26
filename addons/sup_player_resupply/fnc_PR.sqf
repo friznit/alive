@@ -1469,8 +1469,8 @@ switch(_operation) do {
                                                 _values = ["<< Back","Air"];
                                             };
                                             case "PR_STANDARD": {
-                                                _options = ["<< Back","Car","Armored"];
-                                                _values = ["<< Back","Car","Armored"];
+                                                _options = ["<< Back","Car","Armored","Support"];
+                                                _values = ["<< Back","Car","Armored","Support"];
                                             };
                                         };
 
