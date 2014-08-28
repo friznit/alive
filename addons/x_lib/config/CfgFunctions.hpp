@@ -1237,3 +1237,10 @@ class dateToDTG
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+
+class createMarker
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createMarker.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
