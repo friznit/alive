@@ -23,12 +23,19 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_params","_display","_controls","_shape","_xm","_y","_h","_w","_idc","_index","_ctrl","_pos"];
+private ["_params","_display","_controls","_shape","_xm","_y","_h","_w","_idc","_index","_ctrl","_pos","_check","_markerName","_markersHash"];
 
 _display = findDisplay 80001;
 
-_markersHash = [] call ALIVE_fnc_hashCreate;
+_check = uiNamespace getVariable [QGVAR(edit), false];
+
 _markerName = "mkr" + str(random time + 1);
+_markersHash = [] call ALIVE_fnc_hashCreate;
+
+// If editing a marker, delete the old one and create a new one.
+if (typeName _check != "BOOL") then {
+	[MOD(sys_marker), "removeMarker", [_check]] call ALiVE_fnc_marker;
+};
 
 // Get all the marker info
 
@@ -48,7 +55,7 @@ if (_shapeIndex == 0) then {
 	_classIndex = lbCurSel CLASS_LIST;
 	_typeIndex = lbCurSel ICON_LIST;
 	_type = lbData [ICON_LIST, _typeIndex];
-	[_markersHash, QGVAR(classIndex), _typeIndex] call ALIVE_fnc_hashSet;
+	[_markersHash, QGVAR(classIndex), _classIndex] call ALIVE_fnc_hashSet;
 	[_markersHash, QGVAR(typeIndex), _typeIndex] call ALIVE_fnc_hashSet;
 	[_markersHash, QGVAR(type), _type] call ALIVE_fnc_hashSet;
 } else {

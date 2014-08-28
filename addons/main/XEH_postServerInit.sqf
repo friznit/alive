@@ -69,7 +69,7 @@ onPlayerConnected {
     };
 
     if !(isNil QMOD(SYS_MARKER)) then {
-        // C2ISTAR module onPlayerConnected call
+        // Marker module onPlayerConnected call
         [_id, _name, _uid] call ALIVE_fnc_markerOnPlayerConnected;
     };
 

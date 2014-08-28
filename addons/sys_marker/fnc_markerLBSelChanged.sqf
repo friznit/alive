@@ -36,6 +36,7 @@ if (_cursel == -1) then {_cursel = 0};
 _class = _ctrl lbdata _cursel;
 _Preview = _display displayctrl 801200;
 
+
 switch _idc do {
 	case 80104: { //Icon ComboBox
 		_type = gettext (configfile >> "cfgmarkers" >> _class >> "icon");

@@ -291,7 +291,7 @@ _sitrepCheck ctrladdeventhandler [
 
 ///--- Initial icon set (after delay to distinguish icon/brush)
 [] spawn {
-		private ["_ValueIcon","_ValueColorName","_pos","_marker"];
+		private ["_ValueIcon","_ValueColorName","_pos","_marker","_ValueClass"];
 		_pos = uiNamespace getVariable [QGVAR(pos),[0,0,0]];
 
 		_marker = uiNamespace getVariable [QGVAR(edit), false];
@@ -299,6 +299,7 @@ _sitrepCheck ctrladdeventhandler [
 		LOG(_marker);
 
 		disableSerialization;
+		_ValueClass = (findDisplay 80001) displayCtrl CLASS_LIST;
 		_ValueIcon = (findDisplay 80001) displayCtrl ICON_LIST;
 		_ValueColorName = (findDisplay 80001) displayCtrl COLOR_LIST;
 		_sitrepCheckbox = (findDisplay 80001) displayCtrl SITREP_CHECK;
@@ -329,41 +330,49 @@ _sitrepCheck ctrladdeventhandler [
 			// Load marker information into controls
 
 			private ["_markerInfo"];
-			_markerInfo = [ALIVE_SYS_marker, "getMarker", [_marker]] call ALIVE_fnc_marker;
+			_markerInfo = [GVAR(store), _marker] call ALIVE_fnc_hashGet;
+
+			_sitrepCheckbox ctrlSetChecked false;
+			[[_sitrepCheckbox,0], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
+
+			ctrlSetText [SIZEA_VALUE, str((getmarkerSize _marker) select 0)];
+			ctrlSetText [SIZEB_VALUE, str((getmarkerSize _marker) select 1)];
+			ctrlSetText [ANGLE_VALUE, str(markerDir _marker)];
+			ctrlSetText [LABEL_VALUE, markerText _marker];
+			lbSetCurSel [EYES_LIST, [_markerInfo, QGVAR(localityIndex)] call ALIVE_fnc_hashGet];
+
 
 			// check marker type and update toolbox - lnb?
-			if (markerType _marker == "ICON") then {
-				_ValueIcon ctrlShow true;
-				ctrlShow [FILL_LIST, false];
-				lbSetCurSel [CLASS_LIST,[_markerInfo, "markerClassIndex"] call ALIVE_fnc_hashGet];
-				ctrlSetText [TYPE_TEXT, 'TYPE:'];
-				lbSetCurSel [ICON_LIST,[_markerInfo, "markerIconIndex"] call ALIVE_fnc_hashGet];
+			if (markerShape _marker == "ICON") then {
+				ctrlShow [80104, true];
+				ctrlShow [80110, false];
+				ctrlShow [80120, true];
+				ctrlShow [80119, true];
+				ctrlSetText [80109, 'TYPE:'];
+				lbSetCurSel [CLASS_LIST,[_markerInfo, QGVAR(classIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [ICON_LIST,[_markerInfo, QGVAR(typeIndex)] call ALIVE_fnc_hashGet];
 			} else {
-				_ValueIcon ctrlShow false;
-				ctrlShow [FILL_LIST, true];
-				lbSetCurSel [FILL_LIST, [_markerInfo, "markerFillIndex"] call ALIVE_fnc_hashGet];
+				ctrlShow [80104, false];
+				ctrlShow [80110, true];
+				ctrlShow [80120, false];
+				ctrlShow [80119, false];
+				ctrlSetText [80109, 'FILL:'];
+				lbSetCurSel [FILL_LIST, [_markerInfo, QGVAR(brushIndex)] call ALIVE_fnc_hashGet];
 			};
 
-			ctrlSetText [SIZEA_VALUE, (markerSize _marker select 0)];
-			ctrlSetText [SIZEB_VALUE, (markerSize _marker select 1)];
-			ctrlSetText [ANGLE_VALUE, markerDir _marker];
-			ctrlSetText [LABEL_VALUE, markerText _marker];
-			lbSetCurSel [COLOR_LIST, [_markerInfo, "markerColorIndex"] call ALIVE_fnc_hashGet];
-			lbSetCurSel [EYES_LIST, [_markerInfo, "markerEyesOnlyIndex"] call ALIVE_fnc_hashGet];
+			lbSetCurSel [COLOR_LIST, [_markerInfo, QGVAR(colorIndex)] call ALIVE_fnc_hashGet];
 
 			// Check to see if marker has an associated SITREP
-			if ([_markerInfo, "hasSITREP", false] call ALIVE_fnc_hashGet) then {
+			if ([_markerInfo, QGVAR(hasSITREP), false] call ALIVE_fnc_hashGet) then {
 				_sitrepCheckbox ctrlSetChecked true;
 				[[_sitrepCheckbox,1], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
 				_sitrepInfo = [ALIVE_SYS_marker, "getSitRep", [_marker]] call ALIVE_fnc_marker;
 				ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
-				ctrlSetText [NAME_VALUE, [_sitrepInfo, "playerName"] call ALIVE_fnc_hashGet];
-				ctrlSetText [DATE_VALUE, [_sitrepInfo, "markerDate"] call ALIVE_fnc_hashGet];
+				ctrlSetText [NAME_VALUE, [_sitrepInfo, QGVAR(playerName)] call ALIVE_fnc_hashGet];
+				ctrlSetText [DATE_VALUE, [_sitrepInfo, QGVAR(markerDate)] call ALIVE_fnc_hashGet];
 				ctrlSetText [LOC_VALUE, mapGridPosition markerPos _marker];
 
 			};
-
-
 
 		};
 
