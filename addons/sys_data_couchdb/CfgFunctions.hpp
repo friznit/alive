@@ -56,13 +56,12 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data_couchdb\fnc_bulkLoadData.sqf";
 					recompile = RECOMPILE;
 				};
-/*
 				class deleteData_couchdb {
 					description = "Deletes a record stored in a data source";
 					file = "\x\alive\addons\sys_data_couchdb\fnc_deleteData.sqf";
 					recompile = RECOMPILE;
 				};
-*/
+
             };
         };
 };
