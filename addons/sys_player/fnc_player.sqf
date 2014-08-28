@@ -145,6 +145,8 @@ switch(_operation) do {
                         // Check load players returned a hash
                         if ([_res] call CBA_fnc_isHash) then {
                             GVAR(player_data) = _res;
+
+                            GVAR(player_data) call ALiVE_fnc_inspectHash;
                         };
 
                         // Set true that player data has been loaded
@@ -153,6 +155,7 @@ switch(_operation) do {
                         TRACE_1("LOADED PLAYER DATA", _res);
 
                         TRACE_3("SYS_PLAYER DATA", MOD(sys_player), GVAR(player_data),GVAR(datahandler));
+
                     };
 
                     MOD(sys_player) setVariable ["init", true, true];
