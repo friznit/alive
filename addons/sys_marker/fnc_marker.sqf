@@ -54,6 +54,8 @@ See Also:
 Author:
 Tupolov
 
+In memory of Peanut
+
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
@@ -395,11 +397,11 @@ switch (_operation) do {
                 _obj = "Land_Can_Rusty_F" createVehicleLocal _pos;
                 _result = [_obj, _markerName] call ALIVE_fnc_inArea;
                 deleteVehicle _obj;
-                if (_result) then {_result = _marker};
+                if (_result) then {_result = _markerName};
             } else {
                 _scale = ctrlMapScale ((findDisplay 12) displayCtrl 51);
-                if (_scale * 160 > ((getmarkerpos _marker) distance _pos)) then {
-                    _result = _marker;
+                if (_scale * 160 > ((getmarkerpos _markerName) distance _pos)) then {
+                    _result = _markerName;
                 };
             };
 

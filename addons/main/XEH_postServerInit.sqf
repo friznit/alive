@@ -68,6 +68,11 @@ onPlayerConnected {
         [_id, _name, _uid] call ALIVE_fnc_C2OnPlayerConnected;
     };
 
+    if !(isNil QMOD(SYS_MARKER)) then {
+        // C2ISTAR module onPlayerConnected call
+        [_id, _name, _uid] call ALIVE_fnc_markerOnPlayerConnected;
+    };
+
 	if (_name != "__SERVER__") then {
     	MOD(player_count) = MOD(player_count) + 1;
     };

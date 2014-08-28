@@ -36,6 +36,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_marker\fnc_markerOnLoad.sqf";
                                                                 recompile = RECOMPILE;
                         };
+                        class markerOnPlayerConnected{
+                                description = "Handles on player connected event";
+                                file = "\x\alive\addons\sys_marker\fnc_markerOnPlayerConnected.sqf";
+                                                                recompile = RECOMPILE;
+                        };
                         class markerLBSelChanged{
                                 description = "LBSelChanged for Dialog";
                                 file = "\x\alive\addons\sys_marker\fnc_markerLBSelChanged.sqf";
