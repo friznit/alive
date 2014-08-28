@@ -7,8 +7,9 @@ class RscToolbox;
 class RscCombo;
 class RscButtonMenuOK;
 class RscButtonMenuCancel;
+class RscCheckBox;
 
-class RscDisplayALiVEInsertMarker
+class RscDisplayALiVEAdvancedMarker
 {
 	idd = 80001;
 	movingEnable = 1;
@@ -16,11 +17,21 @@ class RscDisplayALiVEInsertMarker
 	onUnload = "";
 	class controlsBackground
 	{
+		class TitleBackgroundShort: RscText
+		{
+			colorBackground[] = {"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.69])","(profilenamespace getvariable ['GUI_BCG_RGB_G',0.75])","(profilenamespace getvariable ['GUI_BCG_RGB_B',0.5])","(profilenamespace getvariable ['GUI_BCG_RGB_A',0.8])"};
+			moving = 1;
+			idc = 801201;
+			x = "1 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
+			y = "1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
+			w = "13 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+		};
 		class TitleBackground: RscText
 		{
 			colorBackground[] = {"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.69])","(profilenamespace getvariable ['GUI_BCG_RGB_G',0.75])","(profilenamespace getvariable ['GUI_BCG_RGB_B',0.5])","(profilenamespace getvariable ['GUI_BCG_RGB_A',0.8])"};
 			moving = 1;
-			idc = -1;
+			idc = 801202;
 			x = "1 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
 			y = "1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
 			w = "31.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -38,7 +49,7 @@ class RscDisplayALiVEInsertMarker
 		class RightBackground: RscText
 		{
 			colorBackground[] = {0,0,0,0.7};
-			idc = -1;
+			idc = 801203;
 			x = "14.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
 			y = "2.1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
 			w = "18.4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -239,10 +250,13 @@ class RscDisplayALiVEInsertMarker
 		};
 		class ALIVE_ButtonOK: RscButtonMenuOK
 		{
-			x = "26.25 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
+			idc = 801197;
+			style = 1;
+			x = "7.75 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
 			y = "22.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
 			w = "6.25 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			action = "call ALiVE_fnc_markerButtonAction";
 		};
 		class ALIVE_ButtonCancel: RscButtonMenuCancel
 		{
@@ -259,6 +273,24 @@ class RscDisplayALiVEInsertMarker
 			y = "15.25 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
 			w = "4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "4 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+		};
+		// SITREP TOGGLE
+		class ALIVE_SITREPCHECKTEXT: ALIVE_TextName
+		{
+			idc = 801198;
+			text = "ADD SITREP"; //--- ToDo: Localize;
+			x = "7.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
+			y = "21.1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
+			w = "5.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+		};
+		class ALIVE_SITREPCHECK: RscCheckBox
+		{
+			idc = 801199;
+			x = "12.55 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
+			y = "21 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
+			w = "1.0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1.0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 		};
 		// SITREP SECTION
 		class ALIVE_SITREPTEXT: ALIVE_TextShape
@@ -297,7 +329,6 @@ class RscDisplayALiVEInsertMarker
 			y = "3.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
 			w = "5.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			colorBackground[] = {0,0,0,0.2};
 		};
 		class ALIVE_ValueCallsign: ALIVE_ValueName
 		{
@@ -477,6 +508,16 @@ class RscDisplayALiVEInsertMarker
 			y = "20.85 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
 			w = "12.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+		};
+		class ALIVE_ButtonSitRepOK: RscButtonMenuOK
+		{
+			idc = 801196;
+			style = 1;
+			x = "26.25 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
+			y = "22.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
+			w = "6.25 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			action = "call ALiVE_fnc_markerButtonAction";
 		};
 	};
 };

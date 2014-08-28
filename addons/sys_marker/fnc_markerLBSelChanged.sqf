@@ -1,4 +1,5 @@
 #include <\x\alive\addons\sys_marker\script_component.hpp>
+
 SCRIPT(markerLBSelChanged);
 
 /* ----------------------------------------------------------------------------
@@ -29,8 +30,9 @@ _display = ctrlparent (_params select 0);
 _idc = _this select 1;
 _ctrl = _display displayctrl _idc;
 
-_id = lbcursel _ctrl;
 _cursel = lbcursel _ctrl;
+
+if (_cursel == -1) then {_cursel = 0};
 _class = _ctrl lbdata _cursel;
 _Preview = _display displayctrl 801200;
 
@@ -75,11 +77,11 @@ switch _idc do {
 				if (_cock == "c_") then {
 					[0,0,0,1];
 				} else {
-					(configfile >> "cfgmarkers" >> (_ValueIcon lbdata (lbcursel _ValueIcon)) >> "color") call BIS_fnc_colorConfigToRGBA;
+						(configfile >> "cfgmarkers" >> (_ValueIcon lbdata (lbcursel _ValueIcon)) >> "color") call BIS_fnc_colorConfigToRGBA;
 				};
 			};
 		} else {
-			(configfile >> "cfgmarkercolors" >> _class >> "color") call bis_fnc_colorConfigToRGBA;
+				(configfile >> "cfgmarkercolors" >> _class >> "color") call bis_fnc_colorConfigToRGBA;
 		};
 		if (count _color == 0) then {_color = [0,0,0,1];};
 		_Preview ctrlsettextcolor _color;
@@ -136,7 +138,7 @@ switch _idc do {
 			_ValueIcon lbsetpicture [_i,_type];
 			lbsetcolor [80104,_i,(configfile >> "cfgmarkers" >> _icon >> "color") call bis_fnc_colorConfigToRGBA];
 		};
-				lbSetCurSel [80104, 0];
+		lbSetCurSel [ICON_LIST, 0];
 	};
 };
 

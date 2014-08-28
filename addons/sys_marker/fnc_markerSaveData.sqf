@@ -17,11 +17,11 @@ Boolean
 Examples:
 (begin example)
 //trigger marker save to DB
-call ALIVE_fnc_markerSaveSata;
+call ALIVE_fnc_markerSaveData;
 (end)
 
 See Also:
-ALIVE_fnc_markerSaveSata
+ALIVE_fnc_markerSaveData
 
 Author:
 Highhead

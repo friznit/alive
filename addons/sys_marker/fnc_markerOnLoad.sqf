@@ -1,7 +1,4 @@
 #include <\x\alive\addons\sys_marker\script_component.hpp>
-#define ICON_LIST 80104
-#define FILL_LIST 80110
-#define COLOR_LIST 80105
 
 SCRIPT(markerOnLoad);
 
@@ -78,7 +75,7 @@ _color set [3,1];
 _display = _params select 0;
 
 // Icon Classes ----------------------------------------------------------------------------
-_ValueClass = _display displayctrl 80120;
+_ValueClass = _display displayctrl CLASS_LIST;
 _ValueClass ctrladdeventhandler [
 	"lbselchanged",
 	"
@@ -160,10 +157,12 @@ for "_i" from 0 to (lbsize _ValueColorName - 1) do {
 };
 
 //--- Shape
-_Marker = _display displayctrl 80103;
+_Marker = _display displayctrl SHAPE_TOOLBOX;
+uiNamespace setVariable ['ALIVE_SYS_MARKER_SHAPE', 0];
 _Marker ctrladdeventhandler ["toolboxSelChanged",
 	"
 		_id = _this select 1;
+		uiNamespace setVariable ['ALIVE_SYS_MARKER_SHAPE', _id];
 			if (_id == 0) then {
 				ctrlShow [80104, true];
 				ctrlShow [80110, false];
@@ -279,37 +278,102 @@ _eyes = [
 	_eyesControl lbSetData [_index, (_x select 1)];
 } foreach _eyes;
 
-//--- Initial icon set (after delay to distinguish icon/brush)
+// SITREP check box
+_sitrepCheck = _display displayCtrl SITREP_CHECK;
+_sitrepCheck ctrladdeventhandler [
+	"CheckedChanged",
+	"
+			[_this, 801199] call ALIVE_fnc_markerCheckedChanged;
+
+	"
+];
+
+
+///--- Initial icon set (after delay to distinguish icon/brush)
 [] spawn {
-		private ["_ValueIcon","_ValueColorName","_pos"];
+		private ["_ValueIcon","_ValueColorName","_pos","_marker"];
 		_pos = uiNamespace getVariable [QGVAR(pos),[0,0,0]];
-		diag_log str _pos;
+
+		_marker = uiNamespace getVariable [QGVAR(edit), false];
+
+		LOG(_marker);
 
 		disableSerialization;
-		_ValueIcon = (findDisplay 80001) displayCtrl 80104;
-		_ValueColorName = (findDisplay 80001) displayCtrl 80105;
+		_ValueIcon = (findDisplay 80001) displayCtrl ICON_LIST;
+		_ValueColorName = (findDisplay 80001) displayCtrl COLOR_LIST;
+		_sitrepCheckbox = (findDisplay 80001) displayCtrl SITREP_CHECK;
 
-		_ValueIcon ctrlShow true;
-		ctrlShow [80110, false];
-		lbSetCurSel [80120, 5];
-		ctrlSetText [80109, 'TYPE:'];
-		ctrlSetText [80102, str(player)];
-		ctrlSetText [80111, [date] call ALIVE_fnc_dateToDTG];
-		ctrlSetText [80106,"20"];
-		ctrlSetText [80107,"20"];
-		ctrlSetText [80108,"0"];
-		ctrlSetText [801009, [date] call ALIVE_fnc_dateToDTG];
-		ctrlSetText [801011, mapGridPosition _pos];
-		lbSetCurSel [801019, 1];
+		if (typeName _marker == "BOOL") then {
 
-		[[_ValueIcon], if (ctrlshown _ValueIcon) then {80104} else {80110}] call ALIVE_fnc_markerlbselchanged;
-		[[_ValueColorName], 80105] call ALIVE_fnc_markerlbselchanged;
+			// Set UI controls to defaults
+
+			_ValueIcon ctrlShow true;
+			ctrlShow [FILL_LIST, false];
+			ctrlSetText [TYPE_TEXT, 'TYPE:'];
+			ctrlSetText [SIZEA_VALUE,"20"];
+			ctrlSetText [SIZEB_VALUE,"20"];
+			ctrlSetText [ANGLE_VALUE,"0"];
+
+			ctrlSetText [NAME_VALUE, str(player)];
+			ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
+			ctrlSetText [DATE_VALUE, [date] call ALIVE_fnc_dateToDTG];
+			ctrlSetText [LOC_VALUE, mapGridPosition _pos];
+			lbSetCurSel [EYES_LIST, 1];
+
+			_sitrepCheckbox ctrlSetChecked false;
+			[[_sitrepCheckbox,0], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
+			lbSetCurSel [CLASS_LIST, 5];
+
+		} else {
+
+			// Load marker information into controls
+
+			private ["_markerInfo"];
+			_markerInfo = [ALIVE_SYS_marker, "getMarker", [_marker]] call ALIVE_fnc_marker;
+
+			// check marker type and update toolbox - lnb?
+			if (markerType _marker == "ICON") then {
+				_ValueIcon ctrlShow true;
+				ctrlShow [FILL_LIST, false];
+				lbSetCurSel [CLASS_LIST,[_markerInfo, "markerClassIndex"] call ALIVE_fnc_hashGet];
+				ctrlSetText [TYPE_TEXT, 'TYPE:'];
+				lbSetCurSel [ICON_LIST,[_markerInfo, "markerIconIndex"] call ALIVE_fnc_hashGet];
+			} else {
+				_ValueIcon ctrlShow false;
+				ctrlShow [FILL_LIST, true];
+				lbSetCurSel [FILL_LIST, [_markerInfo, "markerFillIndex"] call ALIVE_fnc_hashGet];
+			};
+
+			ctrlSetText [SIZEA_VALUE, (markerSize _marker select 0)];
+			ctrlSetText [SIZEB_VALUE, (markerSize _marker select 1)];
+			ctrlSetText [ANGLE_VALUE, markerDir _marker];
+			ctrlSetText [LABEL_VALUE, markerText _marker];
+			lbSetCurSel [COLOR_LIST, [_markerInfo, "markerColorIndex"] call ALIVE_fnc_hashGet];
+			lbSetCurSel [EYES_LIST, [_markerInfo, "markerEyesOnlyIndex"] call ALIVE_fnc_hashGet];
+
+			// Check to see if marker has an associated SITREP
+			if ([_markerInfo, "hasSITREP", false] call ALIVE_fnc_hashGet) then {
+				_sitrepCheckbox ctrlSetChecked true;
+				[[_sitrepCheckbox,1], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
+				_sitrepInfo = [ALIVE_SYS_marker, "getSitRep", [_marker]] call ALIVE_fnc_marker;
+				ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
+				ctrlSetText [NAME_VALUE, [_sitrepInfo, "playerName"] call ALIVE_fnc_hashGet];
+				ctrlSetText [DATE_VALUE, [_sitrepInfo, "markerDate"] call ALIVE_fnc_hashGet];
+				ctrlSetText [LOC_VALUE, mapGridPosition markerPos _marker];
+
+			};
+
+
+
+		};
+
+		[[_ValueIcon], if (ctrlshown _ValueIcon) then {ICON_LIST} else {FILL_LIST}] call ALIVE_fnc_markerlbselchanged;
+		[[_ValueColorName], COLOR_LIST] call ALIVE_fnc_markerlbselchanged;
 
 };
 
-
 //Sets all static texts toUpper---------------------------------------------------------------------------------------------
-_classInsideControls = configfile >> "RscDisplayALIVEInsertMarker" >> "controls";
+_classInsideControls = configfile >> "RscDisplayALiVEAdvancedMarker" >> "controls";
 
 for "_i" from 0 to (count _classInsideControls - 1) do {   //go to all subclasses
 	_current = _classInsideControls select _i;
@@ -317,7 +381,8 @@ for "_i" from 0 to (count _classInsideControls - 1) do {   //go to all subclasse
 	//do not toUpper texts inserted by player
 	if ( (configName(inheritsFrom(_current)) != "RscEdit")
 		&& (configName(inheritsFrom(_current)) != "RscToolbox")
-		&& (configName(inheritsFrom(_current)) != "ALIVE_ValueName")  ) then
+		&& (configName(inheritsFrom(_current)) != "ALIVE_ValueName")
+		&& (configName(inheritsFrom(_current)) != "RscCheckBox")  ) then
 	{
 		//search inside main controls class
 		_idc = getnumber (_current >> "idc");

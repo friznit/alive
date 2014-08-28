@@ -1,0 +1,11 @@
+To do list
+
+1. Clean up bulkRead process. When deleting records the index becomes inconsistent if not saved. bulkRead should fail gracefully if doc does not exist
+2. SITREP, capture data from UI
+3. Add Sitrep to player diary
+4. Save sitrep to DB
+5. Add Sitrep menu item
+6. Add Sitrep table UI
+7. Edit marker details (ctrl left click on marker)
+8. Move, rotate marker (alt left click on marker to move, alt right click to rotate)
+9. JIP test - make sure latest GVAR(STORE) is sent to player on JIP.
