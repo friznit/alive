@@ -73,6 +73,11 @@ onPlayerConnected {
         [_id, _name, _uid] call ALIVE_fnc_markerOnPlayerConnected;
     };
 
+    if !(isNil QMOD(SYS_sitrep)) then {
+        // sitrep module onPlayerConnected call
+        [_id, _name, _uid] call ALIVE_fnc_sitrepOnPlayerConnected;
+    };
+
 	if (_name != "__SERVER__") then {
     	MOD(player_count) = MOD(player_count) + 1;
     };

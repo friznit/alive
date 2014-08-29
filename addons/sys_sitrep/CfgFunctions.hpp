@@ -31,12 +31,12 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_sitrep\fnc_sitrepDeleteData.sqf";
                                                                 recompile = RECOMPILE;
                         };
-                        class sitrepOnPlayerConnected{
+                        class sitrepOnPlayerConnected {
                                 description = "Handles on player connected event";
                                 file = "\x\alive\addons\sys_sitrep\fnc_sitrepOnPlayerConnected.sqf";
                                                                 recompile = RECOMPILE;
                         };
-                        class sitrepCreateDiaryRecord{
+                        class sitrepCreateDiaryRecord {
                                 description = "Adds a sitrep to a diary record";
                                 file = "\x\alive\addons\sys_sitrep\fnc_sitrepCreateDiaryRecord.sqf";
                                                                 recompile = RECOMPILE;

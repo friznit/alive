@@ -154,6 +154,11 @@ _saveServer = {
 		call ALiVE_fnc_markerSaveData;
 	};
 
+	if (["ALiVE_sys_sitrep"] call ALiVE_fnc_isModuleAvailable) then {
+	    ["ALIVE Abort - Server Save SITREP State"] call ALIVE_fnc_dump;
+		call ALiVE_fnc_sitrepSaveData;
+	};
+
 	if (["ALiVE_mil_logistics"] call ALiVE_fnc_isModuleAvailable) then {
         ["ALIVE Abort - Server Save ML State"] call ALIVE_fnc_dump;
         call ALiVE_fnc_MLSaveData;

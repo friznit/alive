@@ -107,6 +107,8 @@ switch _eyes do {
 [_markersHash, QGVAR(localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
 [_markersHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
 
+[_markersHash, QGVAR(hasSITREP), false] call ALIVE_fnc_hashSet;
+
 // SITREP DATA
 
 _sitrepCheck = _display displayCtrl SITREP_CHECK;
@@ -146,12 +148,12 @@ if (cbChecked _sitRepCheck) then {
 	[_sitRepHash, QMOD(SYS_sitrep_loc), _loc] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_factionIndex), _factionIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_faction), _faction] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_factionCfg), _factionCfg] call ALIVE_fnc_hashSet;
+	//[_sitRepHash, QMOD(SYS_sitrep_factionCfg), _factionCfg] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_sizeIndex), _sizeIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_size), _size] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_typeIndex), _typeIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_type), _type] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_typeCfg), _typeCfg] call ALIVE_fnc_hashSet;
+	//[_sitRepHash, QMOD(SYS_sitrep_typeCfg), _typeCfg] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_activityIndex), _activityIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_activity), _activity] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_factivityIndex), _factivityIndex] call ALIVE_fnc_hashSet;
@@ -161,8 +163,6 @@ if (cbChecked _sitRepCheck) then {
 	[_sitRepHash, QMOD(SYS_sitrep_locality), _eyes] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_player), getPlayerUID player] call ALIVE_fnc_hashSet;
-
-	_sitRepHash call ALIVE_fnc_inspectHash;
 
 	switch _eyes do {
 		case "SIDE" : {

@@ -1,5 +1,4 @@
 To do list
-1. edit sitreps
 2. delete diary entries
 3. Add Sitrep menu item
 4. Add Sitrep tablet UI
