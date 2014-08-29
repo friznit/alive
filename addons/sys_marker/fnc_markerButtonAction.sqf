@@ -34,7 +34,19 @@ _markersHash = [] call ALIVE_fnc_hashCreate;
 
 // If editing a marker, delete the old one and create a new one.
 if (typeName _check != "BOOL") then {
+
+	private "_tempHash";
+
+	_tempHash = [GVAR(STORE), _check] call ALIVE_fnc_hashGet;
+
+	if ([_tempHash, QGVAR(hasSITREP), false] call ALIVE_fnc_hashGet) then {
+		private "_sitrep";
+		_sitrep = [_tempHash, QGVAR(sitrep)] call ALIVE_fnc_hashGet;
+		[MOD(sys_sitrep), "removesitrep", [_sitrep]] call ALiVE_fnc_sitrep;
+	};
+
 	[MOD(sys_marker), "removeMarker", [_check]] call ALiVE_fnc_marker;
+
 };
 
 // Get all the marker info
@@ -95,19 +107,83 @@ switch _eyes do {
 [_markersHash, QGVAR(localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
 [_markersHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
 
+// SITREP DATA
 
 _sitrepCheck = _display displayCtrl SITREP_CHECK;
 if (cbChecked _sitRepCheck) then {
+
+	private ["_sitRepHash","_sitrepName","_callsign"];
+
+	_sitrepName = "SR" + str(random time + 1);
+
+	_sitrepName = [_sitrepName, ".", "N"] call CBA_fnc_replace;
+
 	[_markersHash, QGVAR(hasSITREP), true] call ALIVE_fnc_hashSet;
 
-	sitRepHash = [] call ALIVE_fnc_hashCreate;
+	_callSign = ctrlText NAME_VALUE;
+	_DTG = ctrlText DTG_VALUE;
+	_dateTime = ctrlText DATE_VALUE;
+	_loc = ctrlText LOC_VALUE;
+	_factionIndex = lbCurSel FACTION_LIST;
+	_faction = lbText [FACTION_LIST, _factionIndex];
+	_factionCfg = lbData [FACTION_LIST, _factionIndex];
+	_sizeIndex = lbCurSel SIZE_LIST;
+	_size = lbData [SIZE_LIST, _sizeIndex];
+	_typeIndex = lbCurSel TYPE_LIST;
+	_type = lbText [TYPE_LIST, _typeIndex];
+	_typeCfg = lbData [TYPE_LIST, _typeIndex];
+	_activityIndex = lbCurSel ACTIVITY_LIST;
+	_activity = lbText [ACTIVITY_LIST, _activityIndex];
+	_factivityIndex = lbCurSel FACTIVITY_LIST;
+	_factivity = lbText [FACTIVITY_LIST, _factivityIndex];
+	_remarks = ctrlText REMARKS_VALUE;
 
-	[ALIVE_SYS_marker, "createSitRep", _sitRepHash] call ALiVE_fnc_marker;
+	_sitRepHash = [] call ALIVE_fnc_hashCreate;
+
+	[_sitRepHash, QMOD(SYS_sitrep_callsign), _callsign] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_DTG), _DTG] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_dateTime), _dateTime] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_loc), _loc] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_factionIndex), _factionIndex] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_faction), _faction] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_factionCfg), _factionCfg] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_sizeIndex), _sizeIndex] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_size), _size] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_typeIndex), _typeIndex] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_type), _type] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_typeCfg), _typeCfg] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_activityIndex), _activityIndex] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_activity), _activity] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_factivityIndex), _factivityIndex] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_factivity), _factivity] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_remarks), _remarks] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_markername), _markerName] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_locality), _eyes] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_player), getPlayerUID player] call ALIVE_fnc_hashSet;
+
+	_sitRepHash call ALIVE_fnc_inspectHash;
+
+	switch _eyes do {
+		case "SIDE" : {
+			[_sitRepHash, QMOD(SYS_sitrep_localityValue), str(side (group player))] call ALIVE_fnc_hashSet;
+		};
+		case "GROUP" : {
+			[_sitRepHash, QMOD(SYS_sitrep_localityValue), str (group player)] call ALIVE_fnc_hashSet;
+		};
+		case "FACTION" : {
+			[_sitRepHash, QMOD(SYS_sitrep_localityValue), faction player] call ALIVE_fnc_hashSet;
+		};
+	};
+
+	[MOD(sys_sitrep), "addsitrep", [_sitrepName, _sitRepHash]] call ALiVE_fnc_sitrep;
+
+	[_markersHash, QGVAR(sitrep), _sitrepName] call ALIVE_fnc_hashSet;
 
 };
 
 // Create a marker
 
-[ALIVE_SYS_marker, "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
+[MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
 
 closeDialog 0;

@@ -341,7 +341,6 @@ _sitrepCheck ctrladdeventhandler [
 			ctrlSetText [LABEL_VALUE, markerText _marker];
 			lbSetCurSel [EYES_LIST, [_markerInfo, QGVAR(localityIndex)] call ALIVE_fnc_hashGet];
 
-
 			// check marker type and update toolbox - lnb?
 			if (markerShape _marker == "ICON") then {
 				ctrlShow [80104, true];
@@ -366,12 +365,18 @@ _sitrepCheck ctrladdeventhandler [
 			if ([_markerInfo, QGVAR(hasSITREP), false] call ALIVE_fnc_hashGet) then {
 				_sitrepCheckbox ctrlSetChecked true;
 				[[_sitrepCheckbox,1], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
-				_sitrepInfo = [ALIVE_SYS_marker, "getSitRep", [_marker]] call ALIVE_fnc_marker;
+				_sitrepInfo = [MOD(SYS_sitrep_store), [_markerInfo, QGVAR(sitrep)] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashGet;
 				ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
-				ctrlSetText [NAME_VALUE, [_sitrepInfo, QGVAR(playerName)] call ALIVE_fnc_hashGet];
-				ctrlSetText [DATE_VALUE, [_sitrepInfo, QGVAR(markerDate)] call ALIVE_fnc_hashGet];
-				ctrlSetText [LOC_VALUE, mapGridPosition markerPos _marker];
+				ctrlSetText [NAME_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_callsign)] call ALIVE_fnc_hashGet];
+				ctrlSetText [DATE_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_dateTime)] call ALIVE_fnc_hashGet];
+				ctrlSetText [LOC_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_loc)] call ALIVE_fnc_hashGet];
 
+				lbSetCurSel [FACTION_LIST, [_sitrepInfo, QMOD(SYS_sitrep_factionIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [SIZE_LIST, [_sitrepInfo, QMOD(SYS_sitrep_sizeIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [TYPE_LIST, [_sitrepInfo, QMOD(SYS_sitrep_typeIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [ACTIVITY_LIST, [_sitrepInfo, QMOD(SYS_sitrep_activityIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [FACTIVITY_LIST, [_sitrepInfo, QMOD(SYS_sitrep_factivityIndex)] call ALIVE_fnc_hashGet];
+				ctrlSetText [REMARKS_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_remarks)] call ALIVE_fnc_hashGet];
 			};
 
 		};

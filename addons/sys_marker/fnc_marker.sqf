@@ -569,6 +569,13 @@ switch (_operation) do {
 
             _markerHash = [GVAR(STORE),_markerName] call ALIVE_fnc_hashGet;
 
+            // Remove SITREP if necessary
+            if ([_markerHash, QGVAR(hasSITREP), false] call ALIVE_fnc_hashGet) then {
+                private "_sitrep";
+               _sitrep = [_markerHash, QGVAR(sitrep)] call ALIVE_fnc_hashGet;
+                [MOD(sys_sitrep), "removesitrep",[_sitrep]] call ALIVE_fnc_sitrep;
+            };
+
             _result = false;
 
             // Delete Marker

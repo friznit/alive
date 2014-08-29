@@ -1,11 +1,9 @@
 To do list
-2. SITREP, capture data from UI
-3. Add Sitrep to player diary
-4. Save sitrep to DB
-5. Move, rotate marker (alt left click on marker to move, alt right click to rotate)
-6. Add Sitrep menu item
-7. Add Sitrep tablet UI
-8. Clean up bulkRead process. When deleting records the index becomes inconsistent if not saved. bulkRead should fail gracefully if doc does not exist
+1. Move, rotate marker (alt left click on marker to move, alt right click to rotate)
+2. Clean up bulkRead process. When deleting records the index becomes inconsistent if not saved. bulkRead should fail gracefully if doc does not exist
+3. Integrate with C2ISTAR
+4. add to events
+5. draw line, ellipse, rectangle, arrow
 
 
 
