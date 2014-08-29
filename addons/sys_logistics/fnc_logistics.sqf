@@ -759,7 +759,7 @@ switch (_operation) do {
 					//apply these EHs on players
 					_object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH InventoryClosed firing"] call ALiVE_fnc_DumpR}}]]];
 				};
-            
+                
 	            //Serverside only section below
 	            if (isServer) then {
 		            //apply these EHs on all objects
@@ -767,7 +767,7 @@ switch (_operation) do {
 
 		            //apply these EHs on vehicles
 		            if ({_object isKindOf _x} count ["LandVehicle","Air","Ship"] > 0) then {
-		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if !((_this select 1) == "cargo") then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Getout firing"] call ALiVE_fnc_DumpR}}}]]];
+		            	_object setvariable [QGVAR(EH_GETOUT), _object getvariable [QGVAR(EH_GETOUT), _object addEventHandler ["GetOut", {if (isPlayer (_this select 2) && {!((_this select 1) == "cargo")}) then {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH Getout firing"] call ALiVE_fnc_DumpR}}}]]];
 		            };
 	            };
             } foreach _objects;
