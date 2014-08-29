@@ -449,7 +449,7 @@ switch(_operation) do {
                 
                 _profile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
                 
-                if (!isnil "_profile" && {!([_profile,"isPlayer",false] call ALIVE_fnc_hashGet)} && {!([_profile,"busy",false] call ALiVE_fnc_HashGet)}) then {
+                if (!isnil "_profile" && {!([_profile,"busy",false] call ALiVE_fnc_HashGet)}) then {
 					_section set [count _section,_x];
                 };
             } foreach _troops;
@@ -1925,63 +1925,56 @@ switch(_operation) do {
 	                _vehicleClass = [_profile,"vehicleClass"] call ALIVE_fnc_hashGet;
 
 	                switch (tolower _type) do {
-	                    case ("vehicle") : {
+                        
+						case ("vehicle") : {
                             
-                            	 _assignments = [_profile,"entitiesInCommandOf",[]] call ALIVE_fnc_hashGet;
-
-		                        switch (tolower _objectType) do {
-		                			case "car":{
-	                                    if ((count (_assignments)) > 0) then {
-	                                        {if !(_x in _mot) then {_mot set [count _mot,_x]}} foreach _assignments;
-	                                    };
+							_assignments = [_profile,"entitiesInCommandOf",[]] call ALIVE_fnc_hashGet;
+						
+						    if ((count (_assignments)) > 0) then {
+						        
+						        // Dont collect vehicles with player profiles assigned
+						        if ({(_x getvariable ["profileID",""]) in _assignments} count ([] call BIS_fnc_ListPlayers) > 0) exitwith {};
+						        
+								switch (tolower _objectType) do {
+									case "car": {
+						                    {if !(_x in _mot) then {_mot set [count _mot,_x]}} foreach _assignments;
 									};
-									case "tank":{
-	                                    if ((count (_assignments)) > 0) then {
-                                            if ([_vehicleClass] call ALiVE_fnc_isAA || {[_vehicleClass] call ALiVE_fnc_isArtillery}) then {
-                                                if ([_vehicleClass] call ALiVE_fnc_isArtillery) then {{if !(_x in _arty) then {_arty set [count _arty,_x]}} foreach _assignments};
-                                                if ([_vehicleClass] call ALiVE_fnc_isAA) then {{if !(_x in _AAA) then {_AAA set [count _AAA,_x]}} foreach _assignments};
-                                            } else {
-                                                {if !(_x in _arm) then {_arm set [count _arm,_x]}} foreach _assignments;
-                                            };
-	                                    };
-	                                };
-									case "armored":{
-	                                    if ((count (_assignments)) > 0) then {
+									case "tank": {
+						                    if ([_vehicleClass] call ALiVE_fnc_isAA || {[_vehicleClass] call ALiVE_fnc_isArtillery}) then {
+						                        if ([_vehicleClass] call ALiVE_fnc_isArtillery) then {{if !(_x in _arty) then {_arty set [count _arty,_x]}} foreach _assignments};
+						                        if ([_vehicleClass] call ALiVE_fnc_isAA) then {{if !(_x in _AAA) then {_AAA set [count _AAA,_x]}} foreach _assignments};
+						                    } else {
+						                        {if !(_x in _arm) then {_arm set [count _arm,_x]}} foreach _assignments;
+						                    };
+						            };
+									case "armored": {
 											{if !(_x in _mech) then {_mech set [count _mech,_x]}} foreach _assignments;
-	                                    };
 									};
-									case "truck":{
-	                                    if ((count (_assignments)) > 0) then {
-	                                    	{if !(_x in _mot) then {_mot set [count _mot,_x]}} foreach _assignments;
-	                                    };
+									case "truck": {
+						                	{if !(_x in _mot) then {_mot set [count _mot,_x]}} foreach _assignments;
 									};
-									case "ship":{
-	                                    if ((count (_assignments)) > 0) then {
+									case "ship": {
 											{if !(_x in _sea) then {_sea set [count _sea,_x]}} foreach _assignments;
-	                                    };
 									};
-									case "helicopter":{
-	                                    if ((count (_assignments)) > 0) then {
+									case "helicopter": {
 											{if !(_x in _air) then {_air set [count _air,_x]}} foreach _assignments;
-	                                    };
 									};
-									case "plane":{
-	                                    if ((count (_assignments)) > 0) then {
+									case "plane": {
 											{if !(_x in _air) then {_air set [count _air,_x]}} foreach _assignments;
-	                                    };
 									};
-		                        };
-	                        };
+						        };
+						    };
+						};
 	                        
-	                        case ("entity") : {
-                                
-                                _assignments = ([_profile,"vehicleAssignments"] call ALIVE_fnc_hashGet) select 1;
-                                
-	                            if ((count _assignments) == 0) then {
-	                                _inf set [count _inf,_x];
-	                            };
+	                    case ("entity") : {
+	                            
+	                        _assignments = ([_profile,"vehicleAssignments",["",[],[],""]] call ALIVE_fnc_hashGet) select 1;
+	
+	                        if (((count _assignments) == 0) && {!([_profile,"isPlayer",false] call ALIVE_fnc_hashGet)}) then {
+	                            _inf set [count _inf,_x];
 	                        };
-	                };
+	                    };
+					};
                 };
             } foreach _profileIDs;
             
