@@ -35,7 +35,7 @@ _min = _in select 4;
 _months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
 _year = [str _year, 2, 4] call bis_fnc_trimString;
-_month = _months select _month;
+_month = _months select (_month -1);
 _day = (if (_day <= 9) then {"0"} else {""}) + str _day;
 _hour = (if (_hour <= 9) then {"0"} else {""}) + str _hour;
 _min = (if (_min <= 9) then {"0"} else {""}) +  str _min;
