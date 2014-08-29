@@ -56,7 +56,7 @@ _color = lbData [COLOR_LIST, _colorIndex];
 _pos = uiNamespace getVariable [QGVAR(pos),[0,0,0]];
 _size = [parseNumber(ctrlText SIZEA_VALUE), parseNumber(ctrlText SIZEB_VALUE)];
 _dir = parseNumber(ctrlText ANGLE_VALUE);
-_text = ctrlText LABEL_VALUE;
+_text = [ctrlText LABEL_VALUE,"\","-"] call CBA_fnc_replace;
 _shapeIndex = uiNamespace getVariable [QGVAR(shape),0];
 _eyesIndex = lbCurSel EYES_LIST;
 _eyes = lbData [EYES_LIST,_eyesIndex];
@@ -122,23 +122,23 @@ if (cbChecked _sitRepCheck) then {
 
 	[_markersHash, QGVAR(hasSITREP), true] call ALIVE_fnc_hashSet;
 
-	_callSign = ctrlText NAME_VALUE;
+	_callSign = [ctrlText NAME_VALUE,"\","-"] call CBA_fnc_replace;
 	_DTG = ctrlText DTG_VALUE;
-	_dateTime = ctrlText DATE_VALUE;
-	_loc = ctrlText LOC_VALUE;
+	_dateTime = [ctrlText DATE_VALUE,"\","-"] call CBA_fnc_replace;
+	_loc = [ctrlText LOC_VALUE,"\","-"] call CBA_fnc_replace;
 	_factionIndex = lbCurSel FACTION_LIST;
 	_faction = lbText [FACTION_LIST, _factionIndex];
-	_factionCfg = lbData [FACTION_LIST, _factionIndex];
+	_factionCfg = [lbData [FACTION_LIST, _factionIndex],"\","\\"] call CBA_fnc_replace;
 	_sizeIndex = lbCurSel SIZE_LIST;
 	_size = lbData [SIZE_LIST, _sizeIndex];
 	_typeIndex = lbCurSel TYPE_LIST;
 	_type = lbText [TYPE_LIST, _typeIndex];
-	_typeCfg = lbData [TYPE_LIST, _typeIndex];
+	_typeCfg = [lbData [TYPE_LIST, _typeIndex],"\","\\"] call CBA_fnc_replace;
 	_activityIndex = lbCurSel ACTIVITY_LIST;
 	_activity = lbText [ACTIVITY_LIST, _activityIndex];
 	_factivityIndex = lbCurSel FACTIVITY_LIST;
 	_factivity = lbText [FACTIVITY_LIST, _factivityIndex];
-	_remarks = ctrlText REMARKS_VALUE;
+	_remarks = [ctrlText REMARKS_VALUE,"\","-"] call CBA_fnc_replace;
 
 	_sitRepHash = [] call ALIVE_fnc_hashCreate;
 
@@ -148,12 +148,12 @@ if (cbChecked _sitRepCheck) then {
 	[_sitRepHash, QMOD(SYS_sitrep_loc), _loc] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_factionIndex), _factionIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_faction), _faction] call ALIVE_fnc_hashSet;
-	//[_sitRepHash, QMOD(SYS_sitrep_factionCfg), _factionCfg] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_factionCfg), _factionCfg] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_sizeIndex), _sizeIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_size), _size] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_typeIndex), _typeIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_type), _type] call ALIVE_fnc_hashSet;
-	//[_sitRepHash, QMOD(SYS_sitrep_typeCfg), _typeCfg] call ALIVE_fnc_hashSet;
+	[_sitRepHash, QMOD(SYS_sitrep_typeCfg), _typeCfg] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_activityIndex), _activityIndex] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_activity), _activity] call ALIVE_fnc_hashSet;
 	[_sitRepHash, QMOD(SYS_sitrep_factivityIndex), _factivityIndex] call ALIVE_fnc_hashSet;

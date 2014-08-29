@@ -321,7 +321,7 @@ _sitrepCheck ctrladdeventhandler [
 			ctrlSetText [LOC_VALUE, mapGridPosition _pos];
 			lbSetCurSel [EYES_LIST, 1];
 
-			_sitrepCheckbox ctrlSetChecked false;
+			_sitrepCheckbox cbSetChecked false;
 			[[_sitrepCheckbox,0], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
 			lbSetCurSel [CLASS_LIST, 5];
 
@@ -332,7 +332,7 @@ _sitrepCheck ctrladdeventhandler [
 			private ["_markerInfo"];
 			_markerInfo = [GVAR(store), _marker] call ALIVE_fnc_hashGet;
 
-			_sitrepCheckbox ctrlSetChecked false;
+			_sitrepCheckbox cbSetChecked false;
 			[[_sitrepCheckbox,0], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
 
 			ctrlSetText [SIZEA_VALUE, str((getmarkerSize _marker) select 0)];
@@ -351,6 +351,7 @@ _sitrepCheck ctrladdeventhandler [
 				lbSetCurSel [CLASS_LIST,[_markerInfo, QGVAR(classIndex)] call ALIVE_fnc_hashGet];
 				lbSetCurSel [ICON_LIST,[_markerInfo, QGVAR(typeIndex)] call ALIVE_fnc_hashGet];
 			} else {
+				// need to set toolbox here :(
 				ctrlShow [80104, false];
 				ctrlShow [80110, true];
 				ctrlShow [80120, false];
@@ -363,8 +364,10 @@ _sitrepCheck ctrladdeventhandler [
 
 			// Check to see if marker has an associated SITREP
 			if ([_markerInfo, QGVAR(hasSITREP), false] call ALIVE_fnc_hashGet) then {
-				_sitrepCheckbox ctrlSetChecked true;
+
+				_sitrepCheckbox cbSetChecked true;
 				[[_sitrepCheckbox,1], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
+
 				_sitrepInfo = [MOD(SYS_sitrep_store), [_markerInfo, QGVAR(sitrep)] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashGet;
 				ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
 				ctrlSetText [NAME_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_callsign)] call ALIVE_fnc_hashGet];
@@ -377,6 +380,11 @@ _sitrepCheck ctrladdeventhandler [
 				lbSetCurSel [ACTIVITY_LIST, [_sitrepInfo, QMOD(SYS_sitrep_activityIndex)] call ALIVE_fnc_hashGet];
 				lbSetCurSel [FACTIVITY_LIST, [_sitrepInfo, QMOD(SYS_sitrep_factivityIndex)] call ALIVE_fnc_hashGet];
 				ctrlSetText [REMARKS_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_remarks)] call ALIVE_fnc_hashGet];
+			} else {
+				ctrlSetText [NAME_VALUE, str(player)];
+				ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
+				ctrlSetText [DATE_VALUE, [date] call ALIVE_fnc_dateToDTG];
+				ctrlSetText [LOC_VALUE, mapGridPosition _pos];
 			};
 
 		};
