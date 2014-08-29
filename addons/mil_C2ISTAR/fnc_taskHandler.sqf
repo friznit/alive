@@ -215,9 +215,18 @@ switch(_operation) do {
 
             };
 
+            ["JIP SYNC TASKS!!"] call ALIVE_fnc_dump;
+            ["PLAYER TASKS: %1",_playerTasks] call ALIVE_fnc_dump;
+            ["GROUP TASKS: %1",_groupTasks] call ALIVE_fnc_dump;
+            ["TASKS TO DISPATCH: %1",_dispatchTasks] call ALIVE_fnc_dump;
+
             if(count _dispatchTasks > 0) then {
 
+                ["THERE ARE TASKS TO DISPATCH..."] call ALIVE_fnc_dump;
+
                 _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                ["THE PLAYER TO DISPATCH TO: %1 %2",_player,_playerID] call ALIVE_fnc_dump;
 
                 // dispatch tasks to player
                 {
@@ -235,10 +244,15 @@ switch(_operation) do {
 
                     _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
 
+                    ["DISPATCH TASK EVENT: %1",_event] call ALIVE_fnc_dump;
+
                     if !(isNull _player) then {
+                        ["THE PLAYER EXISTS.."] call ALIVE_fnc_dump;
                         if(isDedicated) then {
+                            ["THE SERVER IS DEDICATED.. DISPATCH FOR MP"] call ALIVE_fnc_dump;
                             [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                         }else{
+                            ["THE SERVER IS LOCAL.. DISPATCH FOR LOCAL"] call ALIVE_fnc_dump;
                             _event call ALIVE_fnc_taskHandlerEventToClient;
                         };
                     };
