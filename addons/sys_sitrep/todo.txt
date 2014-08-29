@@ -1,0 +1,14 @@
+To do list
+1. edit sitreps
+2. delete diary entries
+3. Add Sitrep menu item
+4. Add Sitrep tablet UI
+5. Integrate with C2ISTAR
+6. add to events
+
+
+
+
+
+
+
