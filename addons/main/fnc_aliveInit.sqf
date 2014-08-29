@@ -32,33 +32,38 @@ PARAMS_1(_logic);
 
 _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
-//_moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
-
+// Only on Server
 if (isServer) then {
     //Sets global type of Versioning (Kick or Warn)
-	ALiVE_VERSIONING_TYPE = _logic getvariable ["ALiVE_Versioning","warning"];
-	Publicvariable "ALiVE_Versioning_Type";
+	MOD(VERSIONINGTYPE) = _logic getvariable [QMOD(VERSIONING),"warning"];
+	Publicvariable QMOD(VERSIONINGTYPE);
+    
+    //Enables/Disables SP saving possibility, default value true due to out of mem crashes
+    MOD(DISABLESAVE) = _logic getvariable [QMOD(DISABLESAVE),"true"];
+    Publicvariable QMOD(DISABLESAVE);
 
     //Waiting for the mandatory modules below, mind that not all modules need to be initialised before mission start
 	waitUntil {
 		[
-	        "ALiVE_amb_civ_placement",
-	        "ALiVE_mil_placement",
-	        "ALiVE_civ_placement"
+	        QMOD(AMB_CIV_PLACEMENT),
+	        QMOD(MIL_PLACEMENT),
+	        QMOD(CIV_PLACEMENT)
         ] call ALiVE_fnc_isModuleInitialised;
 	};
 
     //This is the last module init to be run, therefore indicates that init of the defined modules above has passed on server
-    ALiVE_REQUIRE_INITIALISED = true;
-    Publicvariable "ALiVE_REQUIRE_INITIALISED";
-
+    MOD(REQUIRE_INITIALISED) = true;
+    Publicvariable QMOD(REQUIRE_INITIALISED);
 };
 
+// Only on clients
+if (hasInterface) then {
+    waituntil {!isnil QMOD(DISABLESAVE)}; // Wait for global var to be set on Server
+    if (call compile MOD(DISABLESAVE)) then {enableSaving [false, false]};
+};
 
 [_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
 
 ["ALiVE Global INIT COMPLETE"] call ALIVE_fnc_dump;
 [false,"ALiVE Global Init Timer Complete","INIT"] call ALIVE_fnc_timer;
 [" "] call ALIVE_fnc_dump;
-
-//[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;

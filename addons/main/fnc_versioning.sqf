@@ -34,7 +34,5 @@ if !(hasInterface) exitwith {};
     hint format["Warning: Your ALiVE version %1.%2.%3.%4 doesnt match the servers version!",MAJOR,MINOR,PATCHLVL,BUILD];
     sleep 10;
     
-    if (!(isnil "ALiVE_Versioning_Type") && {ALiVE_Versioning_Type == "kick"}) then {
-    	["LOSER",false,true] call BIS_fnc_endMission;
-    };
+    if (!isnil QMOD(VERSIONINGTYPE) && {MOD(VERSIONINGTYPE) == "kick"}) then {["LOSER",false,true] call BIS_fnc_endMission};
 };

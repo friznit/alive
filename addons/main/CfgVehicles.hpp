@@ -93,7 +93,7 @@ class CfgVehicles {
 	                        {
 	                                name = "Warn players";
 	                                value = warning;
-	                                default = warning;
+	                                default = 1;
 	                        };
 	                        class kick
 	                        {
@@ -102,7 +102,26 @@ class CfgVehicles {
 	                        };
 	                };
 	        };
+	        
+	        class ALiVE_DISABLESAVE
+	        {
+	                displayName = "$STR_ALIVE_DISABLESAVE";
+	                description = "$STR_ALIVE_DISABLESAVE_COMMENT";
+	                class Values
+	                {
+	                        class warning
+	                        {
+	                                name = "Yes";
+	                                value = true;
+	                                default = 1;
+	                        };
+	                        class kick
+	                        {
+	                                name = "No";
+	                                value = false;
+	                        };
+	                };
+	        };
 		};
-		
 	};
 };
