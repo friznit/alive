@@ -1,4 +1,6 @@
 To do list
+1. If marker index is empty need to delete index on db
+1. handle special chars in remarks field, config bin string entry with / or \
 2. delete diary entries
 3. Add Sitrep menu item
 4. Add Sitrep tablet UI
