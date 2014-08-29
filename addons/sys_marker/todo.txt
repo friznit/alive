@@ -1,4 +1,5 @@
 To do list
+1. If marker index is empty need to delete index on db
 1. Move, rotate marker (alt left click on marker to move, alt right click to rotate)
 2. Clean up bulkRead process. When deleting records the index becomes inconsistent if not saved. bulkRead should fail gracefully if doc does not exist
 3. Integrate with C2ISTAR
