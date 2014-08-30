@@ -41,7 +41,7 @@ _uid = _this select 2;
 
         ["PLAYABLE UNIT UID: %1 - %2",_player,_playerGUID] call ALIVE_fnc_dump;
 
-        waitUntil {sleep 0.3; _playerGUID = getPlayerUID _player; _playerGUID != ""};
+        waitUntil {sleep 0.3; _playerGUID = getPlayerUID _player; ["WAITING FOR PLAYER UID... %1",_playerGUID] call ALIVE_fnc_dump; _playerGUID != ""};
         sleep 0.2;
 
         ["CHECKING UID AGAINST PLAYABLE UNITS: %1 - %2",_playerGUID,_uid] call ALIVE_fnc_dump;
