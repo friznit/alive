@@ -35,13 +35,20 @@ _uid = _this select 2;
 
     _unit = objNull;
 
+    _players = call BIS_fnc_listPlayers;
+
     {
         _player = _x;
         _playerGUID = getPlayerUID _player;
 
         ["PLAYABLE UNIT UID: %1 - %2",_player,_playerGUID] call ALIVE_fnc_dump;
 
-        waitUntil {sleep 0.3; _playerGUID = getPlayerUID _player; ["WAITING FOR PLAYER UID... %1",_playerGUID] call ALIVE_fnc_dump; _playerGUID != ""};
+        waitUntil {
+            sleep 0.3;
+            _playerGUID = getPlayerUID _player;
+            ["WAITING FOR PLAYER UID... %1",_playerGUID] call ALIVE_fnc_dump;
+            _playerGUID != ""
+        };
         sleep 0.2;
 
         ["CHECKING UID AGAINST PLAYABLE UNITS: %1 - %2",_playerGUID,_uid] call ALIVE_fnc_dump;
@@ -50,7 +57,7 @@ _uid = _this select 2;
             _unit = _player;
             ["UNIT FOUND IN PLAYABLE UNITS: %1 - %2 : %3",_playerGUID,_uid,_unit] call ALIVE_fnc_dump;
         };
-    } foreach playableUnits;
+    } foreach _players;
 
     if !(isNull _unit) then {
 
