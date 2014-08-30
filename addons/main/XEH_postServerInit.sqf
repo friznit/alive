@@ -63,8 +63,13 @@ onPlayerConnected {
         [_id, _name, _uid] call ALIVE_fnc_profile_onPlayerConnected;
     };
 
+    ["C2ISTAR ISNIL??: %1",(isNil QMOD(MIL_C2ISTAR))] call ALIVE_fnc_dump;
+
     if !(isNil QMOD(MIL_C2ISTAR)) then {
         // C2ISTAR module onPlayerConnected call
+
+        ["C2ISTAR EXISTS... RUN C2OPC"] call ALIVE_fnc_dump;
+
         [_id, _name, _uid] call ALIVE_fnc_C2OnPlayerConnected;
     };
 
