@@ -16,7 +16,7 @@ Scalar - side number
 Examples:
 (begin example)
 //
-_result = [] call ALIVE_fnc_sideObjectToNumber;
+_result = [WEST] call ALIVE_fnc_sideObjectToNumber;
 (end)
 
 See Also:

@@ -1575,9 +1575,10 @@ switch(_operation) do {
     };
     case "enableAddTaskManagePlayers": {
 
-        private ["_taskingState"];
+        private ["_taskingState","_side"];
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
+        _side = [_logic,"side"] call MAINCLASS;
 
         //_taskingState call ALIVE_fnc_inspectHash;
 
@@ -1600,7 +1601,7 @@ switch(_operation) do {
         _playerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskPlayerList);
         _playerList ctrlShow true;
 
-        _playerDataSource = call ALiVE_fnc_getPlayersDataSource;
+        _playerDataSource = [_side] call ALiVE_fnc_getPlayersDataSource;
         [_taskingState,"playerListOptions",_playerDataSource select 0] call ALIVE_fnc_hashSet;
         [_taskingState,"playerListValues",_playerDataSource select 1] call ALIVE_fnc_hashSet;
 
@@ -1916,9 +1917,10 @@ switch(_operation) do {
     };
     case "enableEditTaskManagePlayers": {
 
-        private ["_taskingState","_currentTask"];
+        private ["_taskingState","_side","_currentTask"];
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
+        _side = [_logic,"side"] call MAINCLASS;
 
         _currentTask = [_taskingState,"currentTaskListSelectedValue"] call ALIVE_fnc_hashGet;
 
@@ -1943,7 +1945,7 @@ switch(_operation) do {
         _playerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskPlayerList);
         _playerList ctrlShow true;
 
-        _playerDataSource = call ALiVE_fnc_getPlayersDataSource;
+        _playerDataSource = [_side] call ALiVE_fnc_getPlayersDataSource;
         [_taskingState,"currentTaskPlayerListOptions",_playerDataSource select 0] call ALIVE_fnc_hashSet;
         [_taskingState,"currentTaskPlayerListValues",_playerDataSource select 1] call ALIVE_fnc_hashSet;
 
