@@ -38,37 +38,40 @@ if (isServer) then {
 
     [_uid] spawn {
 
-        private ["_uid","_unit","_players","_player","_playerGUID","_groupID","_playerID"];
+        private ["_uid","_unit"];
 
         _uid = _this select 0;
 
         _unit = objNull;
 
-        //_players = call BIS_fnc_listPlayers;
+        waitUntil {
+            sleep 0.3;
 
-        {
-            _player = _x;
-            _playerGUID = getPlayerUID _player;
+            private ["_players","_found","_player","_playerGUID"];
 
-            ["C2 PLAYABLE UNIT UID: %1 - %2",_player,_playerGUID] call ALIVE_fnc_dump;
+            _players = call BIS_fnc_listPlayers;
+            _found = false;
 
-            waitUntil {
-                sleep 0.3;
+            {
+                _player = _x;
                 _playerGUID = getPlayerUID _player;
-                ["C2 WAITING FOR PLAYER UID... %1",_playerGUID] call ALIVE_fnc_dump;
-                _playerGUID != ""
-            };
-            sleep 0.2;
 
-            ["C2 CHECKING UID AGAINST PLAYABLE UNITS: %1 - %2",_playerGUID,_uid] call ALIVE_fnc_dump;
+                if (_playerGUID == _uid) exitwith {
+                    _unit = _player;
+                    _found = true;
+                    ["C2 UNIT FOUND IN PLAYABLE UNITS: %1 - %2",_uid,_unit] call ALIVE_fnc_dump;
+                };
+            } foreach _players;
 
-            if (_playerGUID == _uid ) exitwith {
-                _unit = _player;
-                ["C2 UNIT FOUND IN PLAYABLE UNITS: %1 - %2 : %3",_playerGUID,_uid,_unit] call ALIVE_fnc_dump;
-            };
-        } foreach playableUnits;
+            ["C2 UNIT FOUND IN PLAYABLE UNITS: %1",_found] call ALIVE_fnc_dump;
+
+            _found
+
+        };
 
         if !(isNull _unit) then {
+
+            private ["_groupID","_playerID","_event"];
 
             ["C2 UNIT NOT NULL: %1",_unit] call ALIVE_fnc_dump;
 
