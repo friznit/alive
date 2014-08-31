@@ -56,6 +56,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_C2OnPlayerConnected.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGenerator {
+                description = "Task Generator";
+                file = "\x\alive\addons\mil_C2ISTAR\fnc_taskGenerator.sqf";
+                recompile = RECOMPILE;
+            };
         };
 	};
 };

@@ -88,6 +88,9 @@ Peer Reviewed:
 #define C2Tablet_CTRL_TaskGenerateButton 70038
 #define C2Tablet_CTRL_TaskAddParentTitle 70039
 #define C2Tablet_CTRL_TaskAddParentEdit 70040
+#define C2Tablet_CTRL_TaskGenerateTypeTitle 70041
+#define C2Tablet_CTRL_TaskGenerateTypeEdit 70042
+#define C2Tablet_CTRL_TaskGenerateCreateButton 70043
 
 // AAR
 
@@ -172,6 +175,10 @@ switch(_operation) do {
             // create the task handler
             ALIVE_taskHandler = [nil, "create"] call ALIVE_fnc_taskHandler;
             [ALIVE_taskHandler, "init"] call ALIVE_fnc_taskHandler;
+
+            // create the task generator
+            ALIVE_taskGenerator = [nil, "create"] call ALIVE_fnc_taskGenerator;
+            [ALIVE_taskGenerator, "init"] call ALIVE_fnc_taskGenerator;
 
         };
 
@@ -260,6 +267,11 @@ switch(_operation) do {
             [_taskingState,"currentTaskSelectedPlayerListValues",[]] call ALIVE_fnc_hashSet;
             [_taskingState,"currentTaskSelectedPlayerListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"currentTaskSelectedPlayerListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+
+            [_taskingState,"generateTypeOptions",["Infantry"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateTypeValues",["Infantry"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateTypeListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateTypeListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
             [_logic,"taskingState",_taskingState] call MAINCLASS;
 
@@ -704,19 +716,6 @@ switch(_operation) do {
                     [_logic,"disableAddTaskManagePlayers"] call MAINCLASS;
                     [_logic,"enableAddTask"] call MAINCLASS;
 
-                };
-
-                case "TASK_GENERATE_BUTTON_CLICK": {
-
-                    [_logic,"disableTasking"] call MAINCLASS;
-                    [_logic,"enableGenerateTask"] call MAINCLASS;
-
-                };
-
-                case "TASK_GENERATE_BACK_BUTTON_CLICK": {
-
-                    [_logic,"disableGenerateTask"] call MAINCLASS;
-                    [_logic,"enableTasking"] call MAINCLASS;
                 };
 
                 case "TASK_PLAYER_LIST_SELECT": {
@@ -1245,6 +1244,121 @@ switch(_operation) do {
                     _deleteButton ctrlShow false;
                 };
 
+                case "TASK_GENERATE_BUTTON_CLICK": {
+
+                    [_logic,"disableTasking"] call MAINCLASS;
+                    [_logic,"enableGenerateTask"] call MAINCLASS;
+
+                };
+
+                case "TASK_GENERATE_BACK_BUTTON_CLICK": {
+
+                    [_logic,"disableGenerateTask"] call MAINCLASS;
+                    [_logic,"enableTasking"] call MAINCLASS;
+                };
+
+                case "TASK_GENERATE_TYPE_LIST_SELECT": {
+
+                    private ["_taskingState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue"];
+
+                    _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+                    _listOptions = [_taskingState,"generateTypeOptions"] call ALIVE_fnc_hashGet;
+                    _listValues = [_taskingState,"generateTypeValues"] call ALIVE_fnc_hashGet;
+                    _selectedOption = _listOptions select _selectedIndex;
+                    _selectedValue = _listValues select _selectedIndex;
+
+                    [_taskingState,"generateTypeListSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                    [_taskingState,"generateTypeListSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                    [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+                    _taskingState call ALIVE_fnc_inspectHash;
+
+                };
+
+                case "TASK_GENERATE_MANAGE_PLAYERS_BUTTON_CLICK": {
+
+                    [_logic,"disableGenerateTask"] call MAINCLASS;
+                    [_logic,"enableGenerateTaskManagePlayers"] call MAINCLASS;
+
+                };
+
+                case "TASK_GENERATE_MANAGE_PLAYERS_BACK_BUTTON_CLICK": {
+
+                    [_logic,"disableGenerateTaskManagePlayers"] call MAINCLASS;
+                    [_logic,"enableGenerateTask"] call MAINCLASS;
+
+                };
+
+                case "TASK_GENERATE_CREATE_BUTTON_CLICK": {
+
+                    private ["_taskingState","_side","_faction","_type","_selectedPlayers","_event","_taskID","_playerID","_requestID",
+                    "_selectedPlayerListOptions","_selectedPlayerListValues","_newSelectedPlayerListOptions",
+                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
+
+                    _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+                    _side = [_logic,"side"] call MAINCLASS;
+                    _faction = [_logic,"faction"] call MAINCLASS;
+
+                    _type = [_taskingState,"generateTypeListSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _selectedPlayers = [];
+                    _selectedPlayersValues = [_taskingState,"selectedPlayerListValues"] call ALIVE_fnc_hashGet;
+                    _selectedPlayersOptions = [_taskingState,"selectedPlayerListOptions"] call ALIVE_fnc_hashGet;
+
+                    _newSelectedPlayerValues = [];
+                    _newSelectedPlayerOptions = [];
+
+                    _newSelectedPlayerValues = _newSelectedPlayerValues + _selectedPlayersValues;
+                    _newSelectedPlayerOptions = _newSelectedPlayerOptions + _selectedPlayersOptions;
+
+                    _selectedPlayers set [0, _newSelectedPlayerValues];
+                    _selectedPlayers set [1, _newSelectedPlayerOptions];
+
+                    _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
+
+                    _errors = false;
+
+                    if(count _newSelectedPlayerOptions == 0) then {
+                        _errors = true;
+                        _errorMessage = "You need to select some players";
+                    };
+
+                    if(_type == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select a task state";
+                    };
+
+                    if(_errors) then {
+
+                        _statusText ctrlSetText _errorMessage;
+                        _statusText ctrlSetTextColor [0.729,0.216,0.235,1];
+
+                    }else{
+
+                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_type,_selectedPlayers], "C2ISTAR"] call ALIVE_fnc_event;
+
+                        if(isServer) then {
+                            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                        }else{
+                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                        };
+
+                        [_logic,"disableGenerateTask"] call MAINCLASS;
+                        [_logic,"enableTasking"] call MAINCLASS;
+
+                    };
+
+                };
+
             };
 
         };
@@ -1358,6 +1472,8 @@ switch(_operation) do {
         [_logic,"disableEditTask"] call MAINCLASS;
         [_logic,"disableAddTaskManagePlayers"] call MAINCLASS;
         [_logic,"disableEditTaskManagePlayers"] call MAINCLASS;
+        [_logic,"disableGenerateTask"] call MAINCLASS;
+        [_logic,"disableGenerateTaskManagePlayers"] call MAINCLASS;
 
     };
     case "enableMainMenu": {
@@ -1496,6 +1612,43 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
 
+        private ["_typeTitle","_typeList","_typeListOptions"];
+
+        _typeTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateTypeTitle);
+        _typeTitle ctrlShow true;
+
+        _typeList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateTypeEdit);
+        _typeList ctrlShow true;
+
+        _typeListOptions = [_taskingState,"generateTypeOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _typeList;
+
+        {
+            _typeList lbAdd format["%1", _x];
+        } forEach _typeListOptions;
+
+        _typeList ctrlSetEventHandler ["LBSelChanged", "['TASK_GENERATE_TYPE_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        private ["_createButton"];
+
+        _createButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateCreateButton);
+        _createButton ctrlShow true;
+        _createButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_GENERATE_CREATE_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        private ["_managePlayersButton"];
+
+        _managePlayersButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskEditManagePlayersButton);
+        _managePlayersButton ctrlShow true;
+        _managePlayersButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_GENERATE_MANAGE_PLAYERS_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        private ["_statusText"];
+
+        _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
+        _statusText ctrlShow true;
+
+        _statusText ctrlSetText "";
+
     };
     case "disableGenerateTask": {
 
@@ -1516,6 +1669,143 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow false;
 
+        private ["_typeTitle","_typeList"];
+
+        _typeTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateTypeTitle);
+        _typeTitle ctrlShow false;
+
+        _typeList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateTypeEdit);
+        _typeList ctrlShow false;
+
+        private ["_createButton"];
+
+        _createButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateCreateButton);
+        _createButton ctrlShow false;
+
+        private ["_managePlayersButton"];
+
+        _managePlayersButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskEditManagePlayersButton);
+        _managePlayersButton ctrlShow false;
+
+        private ["_statusText"];
+
+        _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
+        _statusText ctrlShow false;
+
+
+    };
+    case "enableGenerateTaskManagePlayers": {
+
+        private ["_taskingState","_side"];
+
+        _taskingState = [_logic,"taskingState"] call MAINCLASS;
+        _side = [_logic,"side"] call MAINCLASS;
+
+        //_taskingState call ALIVE_fnc_inspectHash;
+
+        private ["_title","_backButton","_abortButton"];
+
+        _title = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_Title);
+        _title ctrlShow true;
+
+        _title ctrlSetText "Assign players to this task";
+
+        _backButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuBack);
+        _backButton ctrlShow true;
+        _backButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_GENERATE_MANAGE_PLAYERS_BACK_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
+        _abortButton ctrlShow true;
+
+        private ["_playerList","_playerListOptions","_playerDataSource"];
+
+        _playerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskPlayerList);
+        _playerList ctrlShow true;
+
+        _playerDataSource = [_side] call ALiVE_fnc_getPlayersDataSource;
+        [_taskingState,"playerListOptions",_playerDataSource select 0] call ALIVE_fnc_hashSet;
+        [_taskingState,"playerListValues",_playerDataSource select 1] call ALIVE_fnc_hashSet;
+
+        [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+        _playerListOptions = [_taskingState,"playerListOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _playerList;
+
+        {
+            _playerList lbAdd format["%1", _x];
+        } forEach _playerListOptions;
+
+        _playerList ctrlSetEventHandler ["LBSelChanged", "['TASK_PLAYER_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        private ["_selectedPlayerTitle","_selectedPlayerList","_selectedPlayerListOptions"];
+
+        _selectedPlayerTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayerTitle);
+        _selectedPlayerTitle ctrlShow true;
+
+        _selectedPlayerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayerList);
+        _selectedPlayerList ctrlShow true;
+
+        _selectedPlayerListOptions = [_taskingState,"selectedPlayerListOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _selectedPlayerList;
+
+        {
+            _selectedPlayerList lbAdd format["%1", _x];
+        } forEach _selectedPlayerListOptions;
+
+        _selectedPlayerList ctrlSetEventHandler ["LBSelChanged", "['TASK_SELECTED_PLAYER_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        private ["_selectedPlayersAddTaskButton","_selectedPlayersClearButton"];
+
+        if(count _selectedPlayerListOptions > 0) then {
+
+            _selectedPlayersClearButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayersClearButton);
+            _selectedPlayersClearButton ctrlShow true;
+
+            _selectedPlayersClearButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_SELECTED_PLAYER_LIST_CLEAR_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        };
+    };
+    case "disableGenerateTaskManagePlayers": {
+
+        private ["_title","_backButton","_abortButton"];
+
+        _title = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_Title);
+        _title ctrlShow false;
+
+        _backButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuBack);
+        _backButton ctrlShow false;
+
+        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
+        _abortButton ctrlShow false;
+
+        private ["_playerList"];
+
+        _playerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskPlayerList);
+        _playerList ctrlShow false;
+
+        private ["_selectedPlayerTitle","_selectedPlayerList"];
+
+        _selectedPlayerTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayerTitle);
+        _selectedPlayerTitle ctrlShow false;
+
+        _selectedPlayerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayerList);
+        _selectedPlayerList ctrlShow false;
+
+        private ["_selectGroupButton","_selectedPlayerListDeleteButton","_selectedPlayersAddTaskButton","_selectedPlayersClearButton"];
+
+        _selectGroupButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectGroupButton);
+        _selectGroupButton ctrlShow false;
+
+        _selectedPlayerListDeleteButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayerListDeleteButton);
+        _selectedPlayerListDeleteButton ctrlShow false;
+
+        _selectedPlayersAddTaskButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayersAddTaskButton);
+        _selectedPlayersAddTaskButton ctrlShow false;
+
+        _selectedPlayersClearButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayersClearButton);
+        _selectedPlayersClearButton ctrlShow false;
 
     };
     case "enableAddTask": {

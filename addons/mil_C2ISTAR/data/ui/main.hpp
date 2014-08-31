@@ -572,5 +572,54 @@ class C2Tablet
             rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
         };
 
+        class C2Tablet_taskingGenerateTaskTypeEditTitle : C2Tablet_RscText
+        {
+            idc = 70041;
+            text = "Task Type";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class C2Tablet_taskingGenerateTaskTypeEdit : C2Tablet_RscGUIListBox
+        {
+            idc = 70042;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.1770 * safezoneH + safezoneY;
+            w = 0.241271 * safezoneW;
+            h = 0.11 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class C2Tablet_taskingGenerateTaskCreateButton : C2Tablet_RscButton
+        {
+            idc = 70043;
+            text = "Generate Task";
+            style = 0x02;
+            x = 0.519796 * safezoneW + safezoneX;
+            y = 0.6650 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
     };
 };
