@@ -8,10 +8,10 @@
 #define _BH 0.033*safeZoneH // button height
 #define _gapH 0.01*safeZoneH
 #define _buttonsBeforeCenter 7 // buttons above screen centre, allowing menu to appear centred.
-#define _captionColorBG 40/256, 40/256, 40/256 // BIS mid green (button over colour)
-#define _captionColorFG 255/256, 0, 0 // BIS greenish text
+#define _captionColorBG 1, 1, 1 // BIS mid green (button over colour)
+#define _captionColorFG 1, 1, 1 // BIS greenish text
 #define _captionHgt 0.75
-#define GUI_FONT_NORMAL	PuristaMedium
+#define GUI_FONT_NORMAL	PuristaLight
 
 class alive_flexiMenu_rscPopup { //: _flexiMenu_rscRose
 	idd = -1; //_flexiMenu_IDD;
@@ -39,11 +39,11 @@ class alive_flexiMenu_rscPopup { //: _flexiMenu_rscRose
 		sizeEx = _BH;
 		size = _BH*0.75;
 
-		color[] = {_captionColorFG, 1};
-		color2[] = {1, 1, 1, 0.8}; //{1, 1, 1, 0.4};
+		color[] = {1, 1, 1, 1};
+		color2[] = {1, 1, 1, 1}; //{1, 1, 1, 0.4};
 		colorBackground[] = {1, 1, 1, 1};
-		colorbackground2[] = {1, 1, 1, 1}; //{1, 1, 1, 0.4};
-		colorDisabled[] = {1, 1, 1, 0.25};
+		colorbackground2[] = {1, 1, 1, 0.4}; //{1, 1, 1, 0.4};
+		colorDisabled[] = {0.5, 0.5, 0.5, 0.4};
 		class TextPos {
 			left = 0.02;
 			top = 0.005;
@@ -52,9 +52,8 @@ class alive_flexiMenu_rscPopup { //: _flexiMenu_rscRose
 		};
 		class Attributes {
 			font = GUI_FONT_NORMAL;
-			color = "#E5E5E5";
+			color = "#FF0000";
 			align = "left";
-			shadow = "true";
 		};
 		animTextureNormal = "x\alive\addons\ui\flexiMenu\data\popup\normal.paa";
 		animTextureDisabled = "x\alive\addons\ui\flexiMenu\data\popup\disabled.paa";
@@ -73,8 +72,8 @@ class alive_flexiMenu_rscPopup { //: _flexiMenu_rscRose
 			w = _BW;
 			h = _BH*_captionHgt;
 			sizeEx = _BH*_captionHgt;
-			color[] = {_captionColorFG, 1};
-			colorBackground[] = {_captionColorBG, 1};
+			color[] = {1, 1, 1, 1};
+			colorBackground[] = {0, 0, 0, 0.7};
 			text = "";
 		};
 
