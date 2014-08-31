@@ -166,13 +166,27 @@ class C2Tablet
             colorFocused[] = {0.706,0.706,0.706,1};
         };
 
+        class C2Tablet_generateTaskButton : C2Tablet_RscButton
+        {
+            idc = 70038;
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.5480 * safezoneH + safezoneY;
+            w = 0.465 * safezoneW;
+            h = 0.028 * safezoneH;
+            text = "Select a dynamic task";
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
         class C2Tablet_taskingCurrentTaskListEditButton : C2Tablet_RscButton
         {
             idc = 70026;
             text = "Edit Task";
             style = 0x02;
             x = 0.271102 * safezoneW + safezoneX;
-            y = 0.5480 * safezoneH + safezoneY;
+            y = 0.5820 * safezoneH + safezoneY;
             w = 0.465 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
@@ -187,7 +201,7 @@ class C2Tablet
             text = "Delete Task";
             style = 0x02;
             x = 0.271102 * safezoneW + safezoneX;
-            y = 0.5820 * safezoneH + safezoneY;
+            y = 0.6150 * safezoneH + safezoneY;
             w = 0.465 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
@@ -522,6 +536,40 @@ class C2Tablet
                 shadowColor = "#000000";
                 size = 0.8;
             };
+        };
+
+        class C2Tablet_taskingAddTaskSelectParent : C2Tablet_RscText
+        {
+            idc = 70039;
+            text = "Select Parent Task";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.6250 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0208 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class C2Tablet_taskingCurrentParentTaskList : C2Tablet_RscGUIListBox
+        {
+            idc = 70040;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.6420 * safezoneH + safezoneY;
+            w = 0.241271 * safezoneW;
+            h = 0.11 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
         };
 
     };

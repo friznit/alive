@@ -128,7 +128,7 @@ switch(_operation) do {
 
     };
     case "registerTask": {
-        private["_task","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_taskObject","_tasks"];
+        private["_task","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_taskObject","_tasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -141,8 +141,16 @@ switch(_operation) do {
             _description = _task select 5;
             _state = _task select 6;
             _current = _task select 7;
+            _parent = _task select 8;
 
-            _taskObject = player createSimpleTask [_title];
+            if(_parent != "None") then {
+                _parentTask = [_logic,"getTask",_parent] call MAINCLASS;
+                _parentTaskObject = _parentTask select 8;
+                _taskObject = player createSimpleTask [_title,_parentTaskObject];
+            }else{
+                _taskObject = player createSimpleTask [_title];
+            };
+
             _taskObject setSimpleTaskDescription [_description,_title,_title];
             _taskObject setSimpleTaskDestination _position;
             _taskObject setTaskState _state;
@@ -181,7 +189,7 @@ switch(_operation) do {
         };
     };
     case "updateTask": {
-        private["_updatedTask","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_taskObject","_tasks"];
+        private["_updatedTask","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_taskObject","_tasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -194,6 +202,7 @@ switch(_operation) do {
             _description = _updatedTask select 5;
             _state = _updatedTask select 6;
             _current = _updatedTask select 7;
+            _parent = _updatedTask select 8;
 
             _task = [_logic, "getTask", _taskID] call MAINCLASS;
 

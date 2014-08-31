@@ -241,8 +241,9 @@ switch(_operation) do {
                     _description = _task select 6;
                     _state = _task select 8;
                     _current = _task select 10;
+                    _parent = _task select 11;
 
-                    _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+                    _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
 
                     ["DISPATCH TASK EVENT: %1",_event] call ALIVE_fnc_dump;
 
@@ -281,6 +282,8 @@ switch(_operation) do {
             _players = _task select 7;
             _state = _task select 8;
             _applyType = _task select 9;
+            _current = _task select 10;
+            _parent = _task select 11;
             */
 
             _task = _args;
@@ -689,7 +692,7 @@ switch(_operation) do {
             // dispatch create events
             {
 
-                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_parent"];
 
                 _player = [_x] call ALIVE_fnc_getPlayerByUID;
                 _task = [_createTasks,_x] call ALIVE_fnc_hashGet;
@@ -701,8 +704,9 @@ switch(_operation) do {
                 _description = _task select 6;
                 _state = _task select 8;
                 _current = _task select 10;
+                _parent = _task select 11;
 
-                _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+                _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
 
                 if !(isNull _player) then {
                     if(isDedicated) then {
@@ -717,7 +721,7 @@ switch(_operation) do {
             // dispatch update events
             {
 
-                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_parent"];
 
                 _player = [_x] call ALIVE_fnc_getPlayerByUID;
                 _task = [_updateTasks,_x] call ALIVE_fnc_hashGet;
@@ -729,8 +733,9 @@ switch(_operation) do {
                 _description = _task select 6;
                 _state = _task select 8;
                 _current = _task select 10;
+                _parent = _task select 11;
 
-                _event = ["TASK_UPDATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+                _event = ["TASK_UPDATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
 
                 if !(isNull _player) then {
                     if(isDedicated) then {
@@ -745,7 +750,7 @@ switch(_operation) do {
             // dispatch delete events
             {
 
-                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+                private ["_player","_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_parent"];
 
                 _player = [_x] call ALIVE_fnc_getPlayerByUID;
                 _task = [_deleteTasks,_x] call ALIVE_fnc_hashGet;
@@ -757,8 +762,9 @@ switch(_operation) do {
                 _description = _task select 6;
                 _state = _task select 8;
                 _current = _task select 10;
+                _parent = _task select 11;
 
-                _event = ["TASK_DELETE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current];
+                _event = ["TASK_DELETE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
 
                 if !(isNull _player) then {
                     if(isDedicated) then {
