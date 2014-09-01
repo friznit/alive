@@ -40,22 +40,24 @@ _inspectRecurse = {
 	_level = _level + 1;
 	
 	{
-		_value = _x;
-		
-		if(typeName _value == "ARRAY") then {
-			_indent = " ";
-			for "_i" from 0 to _level-1 do {
-				_indent = format["%1%2",_indent,_indent];
-			};
-			["%1 array",_indent] call ALIVE_fnc_dump;
-			[_value,_level] call _inspectRecurse;
-		} else {
-			_indent = " ";
-			for "_i" from 0 to _level-1 do {
-				_indent = format["%1%2",_indent,_indent];
-			};
-			["%1 [%3] v: %2",_indent,_value,_forEachIndex] call ALIVE_fnc_dump;
-		};		
+	    if!(isNil '_x')then {
+            _value = _x;
+
+            if(typeName _value == "ARRAY") then {
+                _indent = " ";
+                for "_i" from 0 to _level-1 do {
+                    _indent = format["%1%2",_indent,_indent];
+                };
+                ["%1 [%2] array",_indent,_forEachIndex] call ALIVE_fnc_dump;
+                [_value,_level] call _inspectRecurse;
+            } else {
+                _indent = " ";
+                for "_i" from 0 to _level-1 do {
+                    _indent = format["%1%2",_indent,_indent];
+                };
+                ["%1 [%3] v: %2",_indent,_value,_forEachIndex] call ALIVE_fnc_dump;
+            };
+        };
 	} forEach (_target);
 	
 	_level = _level - 1;

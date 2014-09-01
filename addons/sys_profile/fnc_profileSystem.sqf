@@ -135,6 +135,11 @@ switch(_operation) do {
                         ALIVE_eventLog = [nil, "create"] call ALIVE_fnc_eventLog;
                         [ALIVE_eventLog, "init"] call ALIVE_fnc_eventLog;
                         [ALIVE_eventLog, "debug", false] call ALIVE_fnc_eventLog;
+
+                        // create battlefield analysis
+                        ALIVE_battlefieldAnalysis = [nil, "create"] call ALIVE_fnc_battlefieldAnalysis;
+                        [ALIVE_battlefieldAnalysis, "init"] call ALIVE_fnc_battlefieldAnalysis;
+                        [ALIVE_battlefieldAnalysis, "debug", false] call ALIVE_fnc_battlefieldAnalysis;
 						
 						// create profiles for all players that dont have profiles
                         ["INIT"] call ALIVE_fnc_createProfilesFromPlayers;

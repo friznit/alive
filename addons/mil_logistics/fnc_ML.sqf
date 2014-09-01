@@ -4550,20 +4550,25 @@ switch(_operation) do {
 
                 }else{
 
-                     _inCargo = _vehicleProfile select 2 select 9;
+                    private ["_inCargo","_cargoProfileID","_cargoProfile","_position"];
 
-                     if(count _inCargo > 0) then {
-                         {
-                             _cargoProfileID = _x;
-                             _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
+                    _inCargo = _vehicleProfile select 2 select 9;
 
-                             if!(isNil "_cargoProfile") then {
-                                 [_cargoProfile,_vehicleProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
-                                 [_cargoProfile,"position",_position] call ALIVE_fnc_profileEntity;
-                             };
+                    if(count _inCargo > 0) then {
+                        {
+                            _cargoProfileID = _x;
+                            _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
 
-                         } forEach _inCargo;
-                     };
+                            _position = _vehicleProfile select 2 select 2;
+                            _position set [2,0];
+
+                            if!(isNil "_cargoProfile") then {
+                             [_cargoProfile,_vehicleProfile] call ALIVE_fnc_removeProfileVehicleAssignment;
+                             [_cargoProfile,"position",_position] call ALIVE_fnc_profileEntity;
+                            };
+
+                        } forEach _inCargo;
+                    };
 
                  };
 
