@@ -7,7 +7,7 @@ class CfgVehicles {
                 function = "ALIVE_fnc_multispawnInit";
                 author = MODULE_AUTHOR;
                 functionPriority = 2;
-                isGlobal = 1;
+                isGlobal = 2;
 				icon = "x\alive\addons\sup_multispawn\icon_sup_multispawn.paa";
 				picture = "x\alive\addons\sup_multispawn\icon_sup_multispawn.paa";
                 class Arguments
@@ -43,7 +43,20 @@ class CfgVehicles {
                                                 value = "forwardspawn";
                                                 default = 1;
                                         };
+                                        
+                                        class insertion
+                                        {
+                                                name = "Insertion";
+                                                value = "insertion";
+                                        };
+                                        
                                 };
+                        };
+                        class timeout
+                        {
+                                displayName = "$STR_ALIVE_MULTISPAWN_TIMEOUT";
+                                description = "$STR_ALIVE_MULTISPAWN_TIMEOUT_COMMENT";
+                                defaultValue = 60;
                         };
                         class spawningnearenemiesallowed
                         {

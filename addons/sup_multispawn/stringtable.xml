@@ -20,6 +20,12 @@
 <Key ID="STR_ALIVE_multispawn_TYPE_COMMENT">
 	<English>Type of respawn</English>
 </Key>
+<Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT">
+	<English>Timeout:</English>
+</Key>
+<Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT_COMMENT">
+	<English>Timeout until Respawn is possible!</English>
+</Key>
 <Key ID="STR_ALIVE_multispawn_DISABLED">
 	<English>Disable multispawn:</English>
 </Key>
