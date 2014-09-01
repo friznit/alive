@@ -621,5 +621,39 @@ class C2Tablet
             colorFocused[] = {0.706,0.706,0.706,1};
         };
 
+        class C2Tablet_taskingGenerateTaskLocationEditTitle : C2Tablet_RscText
+        {
+            idc = 70044;
+            text = "Task Location";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.2900 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class C2Tablet_taskingGenerateTaskLocationEdit : C2Tablet_RscGUIListBox
+        {
+            idc = 70045;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.3070 * safezoneH + safezoneY;
+            w = 0.241271 * safezoneW;
+            h = 0.11 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
     };
 };

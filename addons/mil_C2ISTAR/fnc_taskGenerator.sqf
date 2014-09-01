@@ -104,12 +104,44 @@ switch(_operation) do {
             _type = [_event, "type"] call ALIVE_fnc_hashGet;
             _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
 
-            ["TASK GENERATE EVENT!!!"] call ALIVE_fnc_dump;
-            _event call ALIVE_fnc_inspectHash;
-
-            //[_logic, _type, _eventData] call MAINCLASS;
+            [_logic, _type, _eventData] call MAINCLASS;
 
         };
+    };
+    case "TASK_GENERATE": {
+        private["_eventData"];
+
+        _eventData = _args;
+
+        ["TASK GENERATE"] call ALIVE_fnc_dump;
+
+        [_logic, "generateTask", _eventData] call MAINCLASS;
+
+    };
+    case "generateTask": {
+        private["_taskData","_taskID","_requestPlayerID","_taskSide","_taskType","_taskLocationType","_taskLocation","_taskPlayers"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _taskData = _args;
+
+            _taskData call ALIVE_fnc_inspectArray;
+
+            _taskID = _taskData select 0;
+            _requestPlayerID = _taskData select 1;
+            _taskSide = _task select 2;
+            _taskFaction = _task select 3;
+            _taskType = _task select 4;
+            _taskLocationType = _task select 5;
+            _taskLocation = _task select 6;
+            _taskPlayers = _task select 7;
+
+            /*
+            _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source], "C2ISTAR"] call ALIVE_fnc_event;
+            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+            */
+        };
+
     };
     default {
         _result = [_logic, _operation, _args] call SUPERCLASS;

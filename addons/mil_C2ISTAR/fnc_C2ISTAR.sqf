@@ -44,6 +44,7 @@ Peer Reviewed:
 #define DEFAULT_TASKING_STATE [] call ALIVE_fnc_hashCreate
 #define DEFAULT_TASKING_MARKER []
 #define DEFAULT_TASKING_DESTINATION []
+#define DEFAULT_TASKING_SOURCE "PLAYER"
 
 // Display components
 #define C2Tablet_CTRL_MainDisplay 70001
@@ -91,6 +92,8 @@ Peer Reviewed:
 #define C2Tablet_CTRL_TaskGenerateTypeTitle 70041
 #define C2Tablet_CTRL_TaskGenerateTypeEdit 70042
 #define C2Tablet_CTRL_TaskGenerateCreateButton 70043
+#define C2Tablet_CTRL_TaskGenerateLocationTitle 70044
+#define C2Tablet_CTRL_TaskGenerateLocationEdit 70045
 
 // AAR
 
@@ -149,6 +152,9 @@ switch(_operation) do {
     };
     case "taskDestination": {
         _result = [_logic,_operation,_args,DEFAULT_TASKING_DESTINATION] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "taskSource": {
+        _result = [_logic,_operation,_args,DEFAULT_TASKING_SOURCE] call ALIVE_fnc_OOsimpleOperation;
     };
 
 
@@ -272,6 +278,11 @@ switch(_operation) do {
             [_taskingState,"generateTypeValues",["Infantry"]] call ALIVE_fnc_hashSet;
             [_taskingState,"generateTypeListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"generateTypeListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+
+            [_taskingState,"generateLocationOptions",["From Map Selection","Short Distance","Medium Distance","Long Distance"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateLocationValues",["Map","Short","Medium","Long"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateLocationListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateLocationListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
             [_logic,"taskingState",_taskingState] call MAINCLASS;
 
@@ -426,8 +437,16 @@ switch(_operation) do {
         // The machine has an interface? Must be a MP client, SP client or a client that acts as host!
         if (hasInterface) then {
 
+            private ["_markers"];
+
             // Show GPS
             showGPS true;
+
+            _markers = [_logic,"taskMarker"] call MAINCLASS;
+
+            if(count _markers > 0) then {
+                deleteMarkerLocal (_markers select 0);
+            };
 
         };
 
@@ -581,7 +600,7 @@ switch(_operation) do {
 
                     private ["_taskingState","_titleEdit","_descriptionEdit","_title","_description","_marker","_destination",
                     "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID",
-                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage"];
+                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage","_source"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -595,6 +614,7 @@ switch(_operation) do {
                     _faction = [_logic,"faction"] call MAINCLASS;
                     _marker = [_logic,"taskMarker"] call MAINCLASS;
                     _destination = [_logic,"taskDestination"] call MAINCLASS;
+                    _source = [_logic,"taskSource"] call MAINCLASS;
 
                     _state = [_taskingState,"currentTaskStateSelectedValue"] call ALIVE_fnc_hashGet;
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
@@ -658,7 +678,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -979,7 +999,7 @@ switch(_operation) do {
                     private ["_taskingState","_currentTask","_titleEdit","_descriptionEdit","_title","_description",
                     "_side","_faction","_marker","_destination","_selectedPlayers","_event","_taskID","_playerID","_state",
                     "_selectedPlayerListOptions","_selectedPlayerListValues","_apply","_current","_parent","_newSelectedPlayerListOptions",
-                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
+                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage","_source"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -995,6 +1015,7 @@ switch(_operation) do {
                     _faction = [_logic,"faction"] call MAINCLASS;
                     _marker = [_logic,"taskMarker"] call MAINCLASS;
                     _destination = [_logic,"taskDestination"] call MAINCLASS;
+                    _source = [_logic,"taskSource"] call MAINCLASS;
 
                     _state = [_taskingState,"currentTaskStateSelectedValue"] call ALIVE_fnc_hashGet;
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
@@ -1058,7 +1079,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1279,6 +1300,59 @@ switch(_operation) do {
 
                 };
 
+                case "TASK_GENERATE_LOCATION_LIST_SELECT": {
+
+                    private ["_taskingState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue"];
+
+                    _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+                    _listOptions = [_taskingState,"generateLocationOptions"] call ALIVE_fnc_hashGet;
+                    _listValues = [_taskingState,"generateLocationValues"] call ALIVE_fnc_hashGet;
+                    _selectedOption = _listOptions select _selectedIndex;
+                    _selectedValue = _listValues select _selectedIndex;
+
+                    [_taskingState,"generateLocationListSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                    [_taskingState,"generateLocationListSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                    [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+                    _taskingState call ALIVE_fnc_inspectHash;
+
+                };
+
+                case "TASK_GENERATE_MAP_CLICK": {
+
+                    private ["_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
+
+                    _posX = _args select 0 select 2;
+                    _posY = _args select 0 select 3;
+
+                    _markers = [_logic,"taskMarker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
+
+                    _position = _map ctrlMapScreenToWorld [_posX, _posY];
+
+                    ctrlMapAnimClear _map;
+                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
+                    ctrlMapAnimCommit _map;
+
+                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
+                    _marker setMarkerAlphaLocal 1;
+                    _marker setMarkerTextLocal "Area of Operation";
+                    _marker setMarkerTypeLocal "hd_Objective";
+
+                    [_logic,"taskMarker",[_marker]] call MAINCLASS;
+                    [_logic,"taskDestination",_position] call MAINCLASS;
+
+                };
+
                 case "TASK_GENERATE_MANAGE_PLAYERS_BUTTON_CLICK": {
 
                     [_logic,"disableGenerateTask"] call MAINCLASS;
@@ -1295,16 +1369,19 @@ switch(_operation) do {
 
                 case "TASK_GENERATE_CREATE_BUTTON_CLICK": {
 
-                    private ["_taskingState","_side","_faction","_type","_selectedPlayers","_event","_taskID","_playerID","_requestID",
-                    "_selectedPlayerListOptions","_selectedPlayerListValues","_newSelectedPlayerListOptions",
-                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
+                    private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_selectedPlayers",
+                    "_event","_taskID","_playerID","_requestID","_selectedPlayerListOptions","_selectedPlayerListValues",
+                    "_newSelectedPlayerListOptions","_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
                     _side = [_logic,"side"] call MAINCLASS;
                     _faction = [_logic,"faction"] call MAINCLASS;
+                    _marker = [_logic,"taskMarker"] call MAINCLASS;
+                    _destination = [_logic,"taskDestination"] call MAINCLASS;
 
                     _type = [_taskingState,"generateTypeListSelectedValue"] call ALIVE_fnc_hashGet;
+                    _location = [_taskingState,"generateLocationListSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
                     _requestID = format["%1_%2",_faction,floor(time)];
@@ -1333,7 +1410,12 @@ switch(_operation) do {
 
                     if(_type == "") then {
                         _errors = true;
-                        _errorMessage = "You need to select a task state";
+                        _errorMessage = "You need to select a task type";
+                    };
+
+                    if(_location == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select a location";
                     };
 
                     if(_errors) then {
@@ -1343,7 +1425,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_type,_selectedPlayers], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_faction,_type,_location,_destination,_selectedPlayers], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1434,6 +1516,7 @@ switch(_operation) do {
             _newTask set [9,_task select 9];
             _newTask set [10,_task select 10];
             _newTask set [11,_task select 11];
+            _newTask set [12,_task select 12];
 
             _title = _newTask select 5;
 
@@ -1630,6 +1713,30 @@ switch(_operation) do {
 
         _typeList ctrlSetEventHandler ["LBSelChanged", "['TASK_GENERATE_TYPE_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
+        private ["_locationTitle","_locationList","_locationListOptions"];
+
+        _locationTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateLocationTitle);
+        _locationTitle ctrlShow true;
+
+        _locationList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateLocationEdit);
+        _locationList ctrlShow true;
+
+        _locationListOptions = [_taskingState,"generateLocationOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _locationList;
+
+        {
+            _locationList lbAdd format["%1", _x];
+        } forEach _locationListOptions;
+
+        _locationList ctrlSetEventHandler ["LBSelChanged", "['TASK_GENERATE_LOCATION_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        private ["_map"];
+
+        _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
+        _map ctrlShow true;
+        _map ctrlSetEventHandler ["MouseButtonDown", "['TASK_GENERATE_MAP_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
         private ["_createButton"];
 
         _createButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateCreateButton);
@@ -1677,6 +1784,14 @@ switch(_operation) do {
         _typeList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateTypeEdit);
         _typeList ctrlShow false;
 
+        private ["_locationTitle","_locationList"];
+
+        _locationTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateLocationTitle);
+        _locationTitle ctrlShow false;
+
+        _locationList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateLocationEdit);
+        _locationList ctrlShow false;
+
         private ["_createButton"];
 
         _createButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateCreateButton);
@@ -1691,6 +1806,11 @@ switch(_operation) do {
 
         _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
         _statusText ctrlShow false;
+
+        private ["_map"];
+
+        _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
+        _map ctrlShow false;
 
 
     };
@@ -2276,6 +2396,8 @@ switch(_operation) do {
         _editButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_EDIT_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
         [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+        [_logic,"taskSource",_currentTask select 12] call MAINCLASS;
 
         private ["_posX","_posY","_markers","_position","_marker"];
 

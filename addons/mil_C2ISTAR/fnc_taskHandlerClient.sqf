@@ -128,7 +128,7 @@ switch(_operation) do {
 
     };
     case "registerTask": {
-        private["_task","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_taskObject","_tasks"];
+        private["_task","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_source","_taskObject","_tasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -142,10 +142,11 @@ switch(_operation) do {
             _state = _task select 6;
             _current = _task select 7;
             _parent = _task select 8;
+            _source = _task select 9;
 
             if(_parent != "None") then {
                 _parentTask = [_logic,"getTask",_parent] call MAINCLASS;
-                _parentTaskObject = _parentTask select 8;
+                _parentTaskObject = _parentTask select 10;
                 _taskObject = player createSimpleTask [_title,_parentTaskObject];
             }else{
                 _taskObject = player createSimpleTask [_title];
@@ -180,7 +181,7 @@ switch(_operation) do {
                 player setCurrentTask _taskObject;
             };
 
-            _task set [8,_taskObject];
+            _task set [10,_taskObject];
 
             // store in main tasks hash
             _tasks = [_logic, "tasks"] call ALIVE_fnc_hashGet;
@@ -189,7 +190,7 @@ switch(_operation) do {
         };
     };
     case "updateTask": {
-        private["_updatedTask","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_taskObject","_tasks"];
+        private["_updatedTask","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_source","_taskObject","_tasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -203,10 +204,11 @@ switch(_operation) do {
             _state = _updatedTask select 6;
             _current = _updatedTask select 7;
             _parent = _updatedTask select 8;
+            _source = _updatedTask select 9;
 
             _task = [_logic, "getTask", _taskID] call MAINCLASS;
 
-            _taskObject = _task select 8;
+            _taskObject = _task select 10;
             _taskObject setSimpleTaskDescription [_description,_title,_title];
             _taskObject setSimpleTaskDestination _position;
             _taskObject setTaskState _state;
@@ -236,7 +238,7 @@ switch(_operation) do {
                 player setCurrentTask _taskObject;
             };
 
-            _updatedTask set [8,_taskObject];
+            _updatedTask set [10,_taskObject];
 
             // update in main tasks hash
             _tasks = [_logic, "tasks"] call ALIVE_fnc_hashGet;
@@ -253,7 +255,7 @@ switch(_operation) do {
 
             _task = [_logic, "getTask", _taskID] call MAINCLASS;
 
-            _taskObject = _task select 8;
+            _taskObject = _task select 10;
 
             player removeSimpleTask _taskObject;
 
