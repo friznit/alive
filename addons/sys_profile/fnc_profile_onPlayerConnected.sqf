@@ -29,6 +29,8 @@ _id = _this select 0;
 _name = _this select 1;
 _uid = _this select 2;
 
+if (_name == "__SERVER__" || _uid == "") exitWith {};
+
 if(isServer) then {
 
     [_uid] spawn {
@@ -37,23 +39,7 @@ if(isServer) then {
 
         _uid = _this select 0;
 
-        _unit = objNull;
-
-        {
-            _player = _x;
-            _playerGUID = getPlayerUID _player;
-
-            waitUntil {
-                sleep 0.3;
-                _playerGUID = getPlayerUID _player;
-                _playerGUID != ""
-            };
-            sleep 0.2;
-
-            if (_playerGUID == _uid ) exitwith {
-                _unit = _player;
-            };
-        } foreach playableUnits;
+        _unit = [_uid] call ALIVE_fnc_getPlayerByUIDOnConnect;
 
         if !(isNull _unit) then {
             //["ALIVE CONNECT: uid:%1",_uid] call ALIVE_fnc_dump;

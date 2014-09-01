@@ -391,6 +391,13 @@ class estimateMemoryUsage
 	recompile = RECOMPILE;
 };
 
+class inspectArray
+{
+	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_inspectArray.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class inspectClasses
 {
 	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_inspectClasses.sqf";
@@ -741,6 +748,13 @@ class createLink
 	recompile = RECOMPILE;
 };
 
+class createMarker
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createMarker.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class deleteLink
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_deleteLink.sqf";
@@ -902,6 +916,13 @@ class OOsimpleOperation
 	recompile = RECOMPILE;
 };
 
+class dateToDTG
+{
+	file = "\x\alive\addons\x_lib\functions\strings\fnc_dateToDTG.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class formatDate
 {
 	file = "\x\alive\addons\x_lib\functions\strings\fnc_formatDate.sqf";
@@ -993,13 +1014,6 @@ class anyPlayersInRangeIncludeAir
 	recompile = RECOMPILE;
 };
 
-class PlayersInRangeIncludeAir
-{
-	file = "\x\alive\addons\x_lib\functions\units\fnc_PlayersInRangeIncludeAir.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
 class chooseRandomUnits
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_chooseRandomUnits.sqf";
@@ -1017,6 +1031,13 @@ class getNearUnits
 class getPlayerByUID
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_getPlayerByUID.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getPlayerByUIDOnConnect
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getPlayerByUIDOnConnect.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1059,6 +1080,13 @@ class getRandomPlayerNear
 class isArmed
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_isArmed.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class PlayersInRangeIncludeAir
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_PlayersInRangeIncludeAir.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1227,20 +1255,6 @@ class vehicleSetAmmo
 class vehicleSetDamage
 {
 	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_vehicleSetDamage.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class dateToDTG
-{
-	file = "\x\alive\addons\x_lib\functions\strings\fnc_dateToDTG.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class createMarker
-{
-	file = "\x\alive\addons\x_lib\functions\markers\fnc_createMarker.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

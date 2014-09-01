@@ -215,20 +215,16 @@ switch(_operation) do {
 
             };
 
-            ["JIP SYNC TASKS!!"] call ALIVE_fnc_dump;
-            ["PLAYER TASKS: %1",_playerTasks] call ALIVE_fnc_dump;
-            ["GROUP TASKS: %1",_groupTasks] call ALIVE_fnc_dump;
-            ["TASKS TO DISPATCH: %1",_dispatchTasks] call ALIVE_fnc_dump;
-
             if(count _dispatchTasks > 0) then {
-
-                ["THERE ARE TASKS TO DISPATCH..."] call ALIVE_fnc_dump;
 
                 _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
-                ["THE PLAYER TO DISPATCH TO: %1 %2",_player,_playerID] call ALIVE_fnc_dump;
-
                 // dispatch tasks to player
+
+                // create the top level parent tasks first
+
+                _parentTasks = [];
+
                 {
 
                     private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
@@ -243,22 +239,143 @@ switch(_operation) do {
                     _current = _task select 10;
                     _parent = _task select 11;
 
-                    _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
+                    if(_parent == "None") then {
 
-                    ["DISPATCH TASK EVENT: %1",_event] call ALIVE_fnc_dump;
+                        _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
 
-                    if !(isNull _player) then {
-                        ["THE PLAYER EXISTS.."] call ALIVE_fnc_dump;
-                        if(isDedicated) then {
-                            ["THE SERVER IS DEDICATED.. DISPATCH FOR MP"] call ALIVE_fnc_dump;
-                            [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
-                        }else{
-                            ["THE SERVER IS LOCAL.. DISPATCH FOR LOCAL"] call ALIVE_fnc_dump;
-                            _event call ALIVE_fnc_taskHandlerEventToClient;
+                        if !(isNull _player) then {
+                            if(isDedicated) then {
+                                [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                            }else{
+                                _event call ALIVE_fnc_taskHandlerEventToClient;
+                            };
                         };
+
+                        _parentTasks set [count _parentTasks, _taskID];
+                        _dispatchTasks set [_forEachIndex,"DELETE"];
+
                     };
 
                 } forEach _dispatchTasks;
+
+                _dispatchTasks = _dispatchTasks - ["DELETE"];
+
+                ["DISPATCHED TOP LEVEL TASKS"] call ALIVE_fnc_dump;
+                _parentTasks call ALIVE_fnc_inspectArray;
+                _dispatchTasks call ALIVE_fnc_inspectArray;
+
+                {
+
+                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+
+                    _task = _x;
+                    _taskID = _task select 0;
+                    _requestPlayerID = _task select 1;
+                    _position = _task select 3;
+                    _title = _task select 5;
+                    _description = _task select 6;
+                    _state = _task select 8;
+                    _current = _task select 10;
+                    _parent = _task select 11;
+
+                    if(_parent in _parentTasks) then {
+
+                        _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
+
+                        if !(isNull _player) then {
+                            if(isDedicated) then {
+                                [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                            }else{
+                                _event call ALIVE_fnc_taskHandlerEventToClient;
+                            };
+                        };
+
+                        _parentTasks set [count _parentTasks, _taskID];
+                        _dispatchTasks set [_forEachIndex,"DELETE"];
+
+                    };
+
+                } forEach _dispatchTasks;
+
+                _dispatchTasks = _dispatchTasks - ["DELETE"];
+
+                ["DISPATCHED SUB LEVEL TASKS"] call ALIVE_fnc_dump;
+                _parentTasks call ALIVE_fnc_inspectArray;
+                _dispatchTasks call ALIVE_fnc_inspectArray;
+
+                {
+
+                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current"];
+
+                    _task = _x;
+
+                    if(_task != 'DELETE') then {
+
+                        _taskID = _task select 0;
+                        _requestPlayerID = _task select 1;
+                        _position = _task select 3;
+                        _title = _task select 5;
+                        _description = _task select 6;
+                        _state = _task select 8;
+                        _current = _task select 10;
+                        _parent = _task select 11;
+
+                        if!(_parent in _parentTasks) then {
+
+                            {
+                                private ["_fTask","_fTaskID","_fRequestPlayerID","_fPosition","_fTitle","_fDescription","_fState","_fCurrent","_fParent"];
+
+                                _fTask = _x;
+                                _fTaskID = _fTask select 0;
+
+                                if(_fTaskID == _parent) exitWith {
+                                    _fRequestPlayerID = _fTask select 1;
+                                    _fPosition = _fTask select 3;
+                                    _fTitle = _fTask select 5;
+                                    _fDescription = _fTask select 6;
+                                    _fState = _fTask select 8;
+                                    _fCurrent = _fTask select 10;
+                                    _fParent = _fTask select 11;
+
+                                    _fEvent = ["TASK_CREATE",_fTaskID,_fRequestPlayerID,_fPosition,_fTitle,_fDescription,_fState,_fCurrent,_fParent];
+
+                                    if !(isNull _player) then {
+                                        if(isDedicated) then {
+                                            [_fEvent,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                                        }else{
+                                            _fEvent call ALIVE_fnc_taskHandlerEventToClient;
+                                        };
+                                    };
+
+                                    _parentTasks set [count _parentTasks, _taskID];
+                                    _dispatchTasks set [_forEachIndex,"DELETE"];
+                                };
+
+                            } forEach _dispatchTasks;
+
+                        }else{
+
+                            _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent];
+
+                            if !(isNull _player) then {
+                                if(isDedicated) then {
+                                    [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                                }else{
+                                    _event call ALIVE_fnc_taskHandlerEventToClient;
+                                };
+                            };
+
+                        };
+
+                    };
+
+                } forEach _dispatchTasks;
+
+                _dispatchTasks = _dispatchTasks - ["DELETE"];
+
+                ["DISPATCHED REMAINING TASKS"] call ALIVE_fnc_dump;
+                _parentTasks call ALIVE_fnc_inspectArray;
+                _dispatchTasks call ALIVE_fnc_inspectArray;
 
             };
 

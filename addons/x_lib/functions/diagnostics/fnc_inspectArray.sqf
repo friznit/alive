@@ -1,11 +1,11 @@
 #include <\x\alive\addons\x_lib\script_component.hpp>
-SCRIPT(inspectHash);
+SCRIPT(inspectArray);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_inspectHash
+Function: ALIVE_fnc_inspectArray
 
 Description:
-Inspect an hash to the RPT
+Inspect an array to the RPT
 
 Parameters:
 
@@ -14,7 +14,7 @@ Returns:
 Examples:
 (begin example)
 // inspect config class
-_hash call ALIVE_fnc_inspectHash;
+_array call ALIVE_fnc_inspectArray;
 (end)
 
 See Also:
@@ -29,35 +29,34 @@ _target = _this;
 
 _level = 0;
 
-_text = " ------------------ Inspecting Hash -------------------- ";
+_text = " ------------------ Inspecting Array -------------------- ";
 [_text] call ALIVE_fnc_dump;
 
 _inspectRecurse = {
-	private ["_target","_level","_key","_value","_indent"];
+	private ["_target","_level","_value","_indent"];
 	
 	_target = _this select 0;
 	_level = _this select 1;
 	_level = _level + 1;
 	
 	{
-		_key = _x;
-		_value = [_target,_key] call ALIVE_fnc_hashGet;
+		_value = _x;
 		
-		if([_value] call CBA_fnc_isHash) then {			
+		if(typeName _value == "ARRAY") then {
 			_indent = " ";
 			for "_i" from 0 to _level-1 do {
 				_indent = format["%1%2",_indent,_indent];
 			};
-			["%1 k: %2",_indent,_key] call ALIVE_fnc_dump;
+			["%1 array",_indent] call ALIVE_fnc_dump;
 			[_value,_level] call _inspectRecurse;
 		} else {
 			_indent = " ";
 			for "_i" from 0 to _level-1 do {
 				_indent = format["%1%2",_indent,_indent];
 			};
-			["%1 k [%4]: %2 v: %3",_indent,_key,_value,_forEachIndex] call ALIVE_fnc_dump;
+			["%1 [%3] v: %2",_indent,_value,_forEachIndex] call ALIVE_fnc_dump;
 		};		
-	} forEach (_target select 1);
+	} forEach (_target);
 	
 	_level = _level - 1;
 };
