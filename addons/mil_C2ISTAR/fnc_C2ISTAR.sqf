@@ -1296,7 +1296,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
 
                 };
 
@@ -1318,7 +1318,7 @@ switch(_operation) do {
 
                     [_logic,"taskingState",_taskingState] call MAINCLASS;
 
-                    _taskingState call ALIVE_fnc_inspectHash;
+                    //_taskingState call ALIVE_fnc_inspectHash;
 
                 };
 

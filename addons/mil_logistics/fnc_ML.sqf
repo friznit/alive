@@ -3300,7 +3300,11 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,PARADROP_HEIGHT];
+                                if(_eventType == "PR_HELI_INSERT") then {
+                                    _position = _remotePosition;
+                                }else{
+                                    _position set [2,PARADROP_HEIGHT];
+                                };
                             };
 
                             _unitClasses = [];
@@ -3331,7 +3335,11 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,PARADROP_HEIGHT];
+                                if(_eventType == "PR_HELI_INSERT") then {
+                                    _position = _remotePosition;
+                                }else{
+                                    _position set [2,PARADROP_HEIGHT];
+                                };
                             };
 
                             _unitClasses = [];
@@ -3361,7 +3369,11 @@ switch(_operation) do {
                             _position = [_reinforcementPosition, (random(200)), random(360)] call BIS_fnc_relPos;
 
                             if(_paraDrop) then {
-                                _position set [2,PARADROP_HEIGHT];
+                                if(_eventType == "PR_HELI_INSERT") then {
+                                    _position = _remotePosition;
+                                }else{
+                                    _position set [2,PARADROP_HEIGHT];
+                                };
                             };
 
                             _unitClasses = [];
@@ -3398,7 +3410,11 @@ switch(_operation) do {
                                 switch(_itemCategory) do {
                                     case "Infantry":{
                                         if(_paraDrop) then {
-                                            _position set [2,PARADROP_HEIGHT];
+                                            if(_eventType == "PR_HELI_INSERT") then {
+                                                _position = _remotePosition;
+                                            }else{
+                                                _position set [2,PARADROP_HEIGHT];
+                                            };
                                         };
                                     };
                                     case "SpecOps":{
@@ -3496,7 +3512,11 @@ switch(_operation) do {
                                 switch(_itemCategory) do {
                                     case "Infantry":{
                                         if(_paraDrop) then {
-                                            _position set [2,PARADROP_HEIGHT];
+                                           if(_eventType == "PR_HELI_INSERT") then {
+                                               _position = _remotePosition;
+                                           }else{
+                                               _position set [2,PARADROP_HEIGHT];
+                                           };
                                         };
                                     };
                                     case "SpecOps":{
@@ -3594,7 +3614,11 @@ switch(_operation) do {
                                 switch(_itemCategory) do {
                                     case "Infantry":{
                                         if(_paraDrop) then {
-                                            _position set [2,PARADROP_HEIGHT];
+                                            if(_eventType == "PR_HELI_INSERT") then {
+                                                _position = _remotePosition;
+                                            }else{
+                                                _position set [2,PARADROP_HEIGHT];
+                                            };
                                         };
                                     };
                                     case "SpecOps":{

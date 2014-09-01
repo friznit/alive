@@ -119,7 +119,9 @@ switch(_operation) do {
 
     };
     case "generateTask": {
-        private["_taskData","_taskID","_requestPlayerID","_taskSide","_taskType","_taskLocationType","_taskLocation","_taskPlayers"];
+
+        private["_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskType","_taskLocationType",
+        "_taskLocation","_taskPlayers"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -129,12 +131,14 @@ switch(_operation) do {
 
             _taskID = _taskData select 0;
             _requestPlayerID = _taskData select 1;
-            _taskSide = _task select 2;
-            _taskFaction = _task select 3;
-            _taskType = _task select 4;
-            _taskLocationType = _task select 5;
-            _taskLocation = _task select 6;
-            _taskPlayers = _task select 7;
+            _taskSide = _taskData select 2;
+            _taskFaction = _taskData select 3;
+            _taskType = _taskData select 4;
+            _taskLocationType = _taskData select 5;
+            _taskLocation = _taskData select 6;
+            _taskPlayers = _taskData select 7;
+
+            _result = [getPos player,1000] call ALIVE_fnc_battlefieldAnalysis;
 
             /*
             _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source], "C2ISTAR"] call ALIVE_fnc_event;
