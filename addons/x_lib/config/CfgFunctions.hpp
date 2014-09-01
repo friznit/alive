@@ -825,6 +825,27 @@ class roundDecimal
 	recompile = RECOMPILE;
 };
 
+class allSides
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_allSides.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class classSide
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_classSide.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class compileReadableDate
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_compileReadableDate.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class factionSide
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_factionSide.sqf";

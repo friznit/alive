@@ -168,6 +168,9 @@ math
 misc
 
 	ALiVE_fnc_factionSide
+	ALiVE_fnc_allSides
+	ALiVE_fnc_classSide
+	ALiVE_fnc_compileReadableDate
 	ALiVE_fnc_getDominantFaction
 	ALiVE_fnc_getEnvironment
 	ALiVE_fnc_getPos
