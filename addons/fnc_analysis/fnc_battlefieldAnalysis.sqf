@@ -79,6 +79,7 @@ switch(_operation) do {
 
             // set defaults
             [_logic,"debug",false] call ALIVE_fnc_hashSet;
+            [_logic,"eventsInProgress",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_logic,"activeSectors",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_logic,"casualtySectors",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_logic,"listenerID",""] call ALIVE_fnc_hashSet;
@@ -92,6 +93,7 @@ switch(_operation) do {
         _listenerID = [ALIVE_eventLog, "addListener",[_logic, [
             "LOGISTICS_INSERTION",
             "LOGISTICS_DESTINATION",
+            "LOGISTICS_COMPLETE",
             "PROFILE_KILLED",
             "AGENT_KILLED",
             "OPCOM_RECON",
@@ -118,25 +120,68 @@ switch(_operation) do {
         };
     };
     case "LOGISTICS_INSERTION": {
-        private["_eventID","_eventData"];
+        private["_eventID","_eventData","_position","_side","_faction","_logEventID","_eventsInProgress","_logisticsEvent"];
 
         _eventID = _args select 0;
         _eventData = _args select 1;
 
-        ["LOGISTICS_INSERTION"] call ALIVE_fnc_dump;
+        _position = _eventData select 0;
+        _side = _eventData select 2;
+        _faction = _eventData select 1;
+        _logEventID = _eventData select 3;
 
-        _eventData call ALIVE_fnc_inspectArray;
+        _eventsInProgress = [_logic, "eventsInProgress"] call ALIVE_fnc_hashGet;
+
+        _logisticsEvent = [] call ALIVE_fnc_hashCreate;
+        [_logisticsEvent,"insertion",_position] call ALIVE_fnc_hashSet;
+        [_logisticsEvent,"destination",[]] call ALIVE_fnc_hashSet;
+        [_logisticsEvent,"side",_side] call ALIVE_fnc_hashSet;
+        [_logisticsEvent,"faction",_faction] call ALIVE_fnc_hashSet;
+
+        [_eventsInProgress, _logEventID, _logisticsEvent] call ALIVE_fnc_hashSet;
+
+        //_eventsInProgress call ALIVE_fnc_inspectHash;
 
     };
     case "LOGISTICS_DESTINATION": {
-        private["_eventID","_eventData"];
+        private["_eventID","_eventData","_position","_side","_faction","_logEventID","_eventsInProgress","_logisticsEvent"];
 
         _eventID = _args select 0;
         _eventData = _args select 1;
 
-        ["LOGISTICS_DESTINATION"] call ALIVE_fnc_dump;
+        _position = _eventData select 0;
+        _side = _eventData select 2;
+        _faction = _eventData select 1;
+        _logEventID = _eventData select 3;
 
-        _eventData call ALIVE_fnc_inspectArray;
+        _eventsInProgress = [_logic, "eventsInProgress"] call ALIVE_fnc_hashGet;
+
+        if(_logEventID in (_eventsInProgress select 1)) then {
+            _logisticsEvent = [_eventsInProgress,_logEventID] call ALIVE_fnc_hashGet;
+            [_logisticsEvent,"destination",_position] call ALIVE_fnc_hashSet;
+        };
+
+        //_eventsInProgress call ALIVE_fnc_inspectHash;
+
+    };
+    case "LOGISTICS_COMPLETE": {
+        private["_eventID","_eventData","_position","_side","_faction","_logEventID","_eventsInProgress","_logisticsEvent"];
+
+        _eventID = _args select 0;
+        _eventData = _args select 1;
+
+        _position = _eventData select 0;
+        _side = _eventData select 2;
+        _faction = _eventData select 1;
+        _logEventID = _eventData select 3;
+
+        _eventsInProgress = [_logic, "eventsInProgress"] call ALIVE_fnc_hashGet;
+
+        if(_logEventID in (_eventsInProgress select 1)) then {
+            [_eventsInProgress, _logEventID] call ALIVE_fnc_hashRem;
+        };
+
+        //_eventsInProgress call ALIVE_fnc_inspectHash;
 
     };
     case "PROFILE_KILLED": {
@@ -160,6 +205,7 @@ switch(_operation) do {
             _casualties = [] call ALIVE_fnc_hashCreate;
             [_casualties,"side",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
             [_casualties,"faction",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_casualties,"lastEvent",[]] call ALIVE_fnc_hashSet;
             [_sectorData,"casualties",_casualties] call ALIVE_fnc_hashSet;
         };
 
@@ -183,19 +229,61 @@ switch(_operation) do {
         _sideCasualtyCount = _sideCasualtyCount + 1;
         [_sideCasualties,_side,_sideCasualtyCount] call ALIVE_fnc_hashSet;
 
+        [_casualties,"lastEvent",[time,_faction,_side]] call ALIVE_fnc_hashSet;
+
         _casualtySectors = [_logic, "casualtySectors"] call ALIVE_fnc_hashGet;
         [_casualtySectors,_eventSectorID,_eventSector] call ALIVE_fnc_hashSet;
 
     };
     case "AGENT_KILLED": {
-        private["_eventID","_eventData"];
+        private["_eventID","_eventData","_position","_side","_faction","_eventSector","_eventSectorID",
+        "_sectorData","_casualties","_factionCasualties","_sideCasualties","_casualtySectors",
+        "_factionCasualtyCount","_sideCasualtyCount"];
 
         _eventID = _args select 0;
         _eventData = _args select 1;
 
-        ["AGENT_KILLED"] call ALIVE_fnc_dump;
+        _position = _eventData select 0;
+        _side = _eventData select 2;
+        _faction = _eventData select 1;
 
-        _eventData call ALIVE_fnc_inspectArray;
+        _eventSector = [ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
+        _eventSectorID = [_eventSector,"id"] call ALIVE_fnc_hashGet;
+
+        _sectorData = [_eventSector,"data"] call ALIVE_fnc_hashGet;
+
+        if!("casualties" in (_sectorData select 1)) then {
+            _casualties = [] call ALIVE_fnc_hashCreate;
+            [_casualties,"side",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_casualties,"faction",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+            [_casualties,"lastEvent",[]] call ALIVE_fnc_hashSet;
+            [_sectorData,"casualties",_casualties] call ALIVE_fnc_hashSet;
+        };
+
+        _casualties = [_sectorData,"casualties"] call ALIVE_fnc_hashGet;
+        _factionCasualties = [_casualties,"faction"] call ALIVE_fnc_hashGet;
+        _sideCasualties = [_casualties,"side"] call ALIVE_fnc_hashGet;
+
+        if!(_side in (_sideCasualties select 1)) then {
+            [_sideCasualties,_side,0] call ALIVE_fnc_hashSet;
+        };
+
+        if!(_faction in (_factionCasualties select 1)) then {
+            [_factionCasualties,_faction,0] call ALIVE_fnc_hashSet;
+        };
+
+        _factionCasualtyCount = [_factionCasualties,_faction] call ALIVE_fnc_hashGet;
+        _factionCasualtyCount = _factionCasualtyCount + 1;
+        [_factionCasualties,_faction,_factionCasualtyCount] call ALIVE_fnc_hashSet;
+
+        _sideCasualtyCount = [_sideCasualties,_side] call ALIVE_fnc_hashGet;
+        _sideCasualtyCount = _sideCasualtyCount + 1;
+        [_sideCasualties,_side,_sideCasualtyCount] call ALIVE_fnc_hashSet;
+
+        [_casualties,"lastEvent",[time,_faction,_side]] call ALIVE_fnc_hashSet;
+
+        _casualtySectors = [_logic, "casualtySectors"] call ALIVE_fnc_hashGet;
+        [_casualtySectors,_eventSectorID,_eventSector] call ALIVE_fnc_hashSet;
 
     };
     case "OPCOM_RECON": {
@@ -295,6 +383,7 @@ switch(_operation) do {
             };
             case "OPCOM_CAPTURE": {
                 _activeCluster = [_activeCluster,"lastEvent","capture"] call ALIVE_fnc_hashSet;
+                _activeCluster = [_activeCluster,"owner",_side] call ALIVE_fnc_hashSet;
             };
             case "OPCOM_DEFEND": {
                 _activeCluster = [_activeCluster,"lastEvent","defend"] call ALIVE_fnc_hashSet;
@@ -311,6 +400,8 @@ switch(_operation) do {
 
         _activeSectors = [_logic, "activeSectors"] call ALIVE_fnc_hashGet;
         [_activeSectors,_eventSectorID,_eventSector] call ALIVE_fnc_hashSet;
+
+        //_eventSector call ALIVE_fnc_inspectHash;
 
     };
     case "getActiveSectors": {

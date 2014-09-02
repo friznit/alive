@@ -41,6 +41,7 @@ if (isnil "_agent") exitwith {};
 
 _position = getPosASL _unit;
 _faction = _agent select 2 select 7;
+_side = _agent select 2 select 8;
 
-_event = ['AGENT_KILLED', [_position,_faction,_killerSide],"Agent"] call ALIVE_fnc_event;
+_event = ['AGENT_KILLED', [_position,_faction,_side,_killerSide],"Agent"] call ALIVE_fnc_event;
 _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;

@@ -47,7 +47,31 @@ diag_log format["Timer End %1",_timeEnd];
 
 private ["_activeSectors","_casualtySectors"];
 
+
+
+STAT("Sleeping before clear plot");
+sleep 5;
 [ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+sleep 5;
+
+
+
+STAT("Plot casualty sectors");
+
+_casualtySectors = [ALIVE_battlefieldAnalysis, "getCasualtySectors"] call ALIVE_fnc_battlefieldAnalysis;
+
+[ALIVE_sectorPlotter, "plot", [(_casualtySectors select 2), "casualties"]] call ALIVE_fnc_plotSectors;
+
+
+
+STAT("Sleeping before clear plot");
+sleep 20;
+[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+sleep 5;
+
+
+
+STAT("Plot active sectors");
 
 _activeSectors = [ALIVE_battlefieldAnalysis, "getActiveSectors"] call ALIVE_fnc_battlefieldAnalysis;
 
@@ -55,9 +79,8 @@ _activeSectors = [ALIVE_battlefieldAnalysis, "getActiveSectors"] call ALIVE_fnc_
 
 
 
-_casualtySectors = [ALIVE_battlefieldAnalysis, "getCasualtySectors"] call ALIVE_fnc_battlefieldAnalysis;
 
-[ALIVE_sectorPlotter, "plot", [(_casualtySectors select 2), "casualties"]] call ALIVE_fnc_plotSectors;
+
 
 
 nil;

@@ -155,7 +155,7 @@ switch(_operation) do {
             _eventData = [_event,"data"] call ALIVE_fnc_hashGet;
 
             _position = _eventData select 0;
-            _killerSide = _eventData select 2;
+            _killerSide = _eventData select 3;
 
             // update nearby cluster hostility levels
             // on agent killed

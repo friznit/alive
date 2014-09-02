@@ -708,8 +708,6 @@ switch(_operation) do {
 
                                 _sideCasualties = [_plotData,"side"] call ALIVE_fnc_hashGet;
 
-                                _sideCasualties call ALIVE_fnc_inspectHash;
-
                                 _eastCount = 0;
                                 _westCount = 0;
                                 _civCount = 0;
