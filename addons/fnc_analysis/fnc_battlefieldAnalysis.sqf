@@ -410,6 +410,52 @@ switch(_operation) do {
     case "getCasualtySectors": {
         _result = [_logic, "casualtySectors"] call ALIVE_fnc_hashGet;
     };
+    case "getClustersOwnedBySide": {
+        private["_side","_clustersOwnedBySide","_activeSectors","_clusters","_owner"];
+
+        _side = _args select 0;
+        _clustersOwnedBySide = [];
+
+        _activeSectors = [_logic, "activeSectors"] call ALIVE_fnc_hashGet;
+
+        {
+            _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
+            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
+
+            {
+                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
+                if(_owner == _side) then {
+                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
+                };
+            } forEach (_clusters select 2);
+        } forEach (_activeSectors select 2);
+
+        _result = _clustersOwnedBySide;
+    };
+    case "getSectorsContainingSide": {
+        private["_side","_sectorsContainingSide","_allSectors","_landSectors","_sectorData","_entities"];
+
+        _side = _args select 0;
+        _sectorsContainingSide = [];
+
+        [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileEntity;
+        _allSectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
+        _landSectors = [_allSectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
+
+        {
+            _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
+
+            if("entitiesBySide" in (_sectorData select 1)) then {
+                _entities = [_sectorData,"entitiesBySide"] call ALIVE_fnc_hashGet;
+                _sideEntities = [_entities,_side] call ALIVE_fnc_hashGet;
+                if(count _sideEntities > 0) then {
+                    _sectorsContainingSide set [count _sectorsContainingSide,_x];
+                };
+            };
+        } forEach _landSectors;
+
+        _result = _sectorsContainingSide;
+    };
     default {
         _result = [_logic, _operation, _args] call SUPERCLASS;
     };

@@ -223,6 +223,13 @@ class getConfigValue
 	recompile = RECOMPILE;
 };
 
+class getFactionsDataSource
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_getFactionsDataSource.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class sortCFGGroupsBySide
 {
 	file = "\x\alive\addons\x_lib\functions\config\fnc_sortCFGGroupsBySide.sqf";

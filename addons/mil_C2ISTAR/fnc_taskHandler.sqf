@@ -110,7 +110,7 @@ switch(_operation) do {
     case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["TASKS_UPDATE","TASK_CREATE","TASK_UPDATE","TASK_DELETE","TASKS_SYNC"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["TASKS_UPDATE","TASK_CREATE","TASK_UPDATE","TASK_DELETE","TASKS_SYNC","TASK_GENERATE"]]] call ALIVE_fnc_eventLog;
         [_logic,"listenerID",_listenerID] call ALIVE_fnc_hashSet;
     };
     case "handleEvent": {
@@ -182,6 +182,52 @@ switch(_operation) do {
         ["TASKS SYNC: %1",_eventData] call ALIVE_fnc_dump;
 
         [_logic, "syncTasks", _eventData] call MAINCLASS;
+
+    };
+    case "TASK_GENERATE": {
+        private["_eventData","_taskID"];
+
+        _eventData = _args;
+
+        ["TASKS SYNC: %1",_eventData] call ALIVE_fnc_dump;
+
+        [_logic, "generateTask", _eventData] call MAINCLASS;
+
+    };
+    case "generateTask": {
+
+        private["_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskType","_taskLocationType",
+        "_taskLocation","_taskPlayers","_taskEnemyFaction","_player","_position"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _taskData = _args;
+
+            _taskID = _taskData select 0;
+            _requestPlayerID = _taskData select 1;
+            _taskSide = _taskData select 2;
+            _taskFaction = _taskData select 3;
+            _taskType = _taskData select 4;
+            _taskLocationType = _taskData select 5;
+            _taskLocation = _taskData select 6;
+            _taskPlayers = _taskData select 7;
+            _taskEnemyFaction = _taskData select 8;
+
+            if((_taskLocationType == "Short") || (_taskLocationType == "Medium") || (_taskLocationType == "Long")) then {
+                _player = [_requestPlayerID] call ALIVE_fnc_getPlayerByUID;
+                _position = position _player;
+                _taskData set [6,_position];
+            };
+
+            _taskData call ALIVE_fnc_inspectArray;
+
+            _taskSet = ["init", _taskID, _taskData, false] call (call compile format["ALIVE_fnc_task%1",_taskType]);
+
+            /*
+            _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source], "C2ISTAR"] call ALIVE_fnc_event;
+            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+            */
+        };
 
     };
     case "syncTasks": {

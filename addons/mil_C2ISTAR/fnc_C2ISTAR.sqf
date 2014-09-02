@@ -88,6 +88,8 @@ Peer Reviewed:
 #define C2Tablet_CTRL_TaskGenerateCreateButton 70043
 #define C2Tablet_CTRL_TaskGenerateLocationTitle 70044
 #define C2Tablet_CTRL_TaskGenerateLocationEdit 70045
+#define C2Tablet_CTRL_TaskGenerateFactionTitle 70046
+#define C2Tablet_CTRL_TaskGenerateFactionEdit 70047
 
 
 // Control Macros
@@ -169,10 +171,6 @@ switch(_operation) do {
             // create the task handler
             ALIVE_taskHandler = [nil, "create"] call ALIVE_fnc_taskHandler;
             [ALIVE_taskHandler, "init"] call ALIVE_fnc_taskHandler;
-
-            // create the task generator
-            ALIVE_taskGenerator = [nil, "create"] call ALIVE_fnc_taskGenerator;
-            [ALIVE_taskGenerator, "init"] call ALIVE_fnc_taskGenerator;
 
         };
 
@@ -262,8 +260,8 @@ switch(_operation) do {
             [_taskingState,"currentTaskSelectedPlayerListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"currentTaskSelectedPlayerListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
-            [_taskingState,"generateTypeOptions",["Infantry"]] call ALIVE_fnc_hashSet;
-            [_taskingState,"generateTypeValues",["Infantry"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateTypeOptions",["Objective Assault"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateTypeValues",["Assault"]] call ALIVE_fnc_hashSet;
             [_taskingState,"generateTypeListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"generateTypeListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
@@ -271,6 +269,12 @@ switch(_operation) do {
             [_taskingState,"generateLocationValues",["Map","Short","Medium","Long"]] call ALIVE_fnc_hashSet;
             [_taskingState,"generateLocationListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"generateLocationListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+
+            _factionsDataSource = [] call ALiVE_fnc_getFactionsDataSource;
+            [_taskingState,"generateFactionOptions",_factionsDataSource select 0] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateFactionValues",_factionsDataSource select 1] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateFactionListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateFactionListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
             [_logic,"taskingState",_taskingState] call MAINCLASS;
 
@@ -1282,6 +1286,27 @@ switch(_operation) do {
 
                 };
 
+                case "TASK_GENERATE_FACTION_LIST_SELECT": {
+
+                    private ["_taskingState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue"];
+
+                    _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+                    _listOptions = [_taskingState,"generateFactionOptions"] call ALIVE_fnc_hashGet;
+                    _listValues = [_taskingState,"generateFactionValues"] call ALIVE_fnc_hashGet;
+                    _selectedOption = _listOptions select _selectedIndex;
+                    _selectedValue = _listValues select _selectedIndex;
+
+                    [_taskingState,"generateFactionListSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                    [_taskingState,"generateFactionListSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                    [_logic,"taskingState",_taskingState] call MAINCLASS;
+
+                    //_taskingState call ALIVE_fnc_inspectHash;
+                };
+
                 case "TASK_GENERATE_MAP_CLICK": {
 
                     private ["_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
@@ -1329,7 +1354,7 @@ switch(_operation) do {
 
                 case "TASK_GENERATE_CREATE_BUTTON_CLICK": {
 
-                    private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_selectedPlayers",
+                    private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_faction","_selectedPlayers",
                     "_event","_taskID","_playerID","_requestID","_selectedPlayerListOptions","_selectedPlayerListValues",
                     "_newSelectedPlayerListOptions","_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
 
@@ -1342,6 +1367,7 @@ switch(_operation) do {
 
                     _type = [_taskingState,"generateTypeListSelectedValue"] call ALIVE_fnc_hashGet;
                     _location = [_taskingState,"generateLocationListSelectedValue"] call ALIVE_fnc_hashGet;
+                    _faction = [_taskingState,"generateFactionListSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
                     _requestID = format["%1_%2",_faction,floor(time)];
@@ -1378,6 +1404,11 @@ switch(_operation) do {
                         _errorMessage = "You need to select a location";
                     };
 
+                    if(_faction == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select a faction";
+                    };
+
                     if(_errors) then {
 
                         _statusText ctrlSetText _errorMessage;
@@ -1385,7 +1416,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_faction,_type,_location,_destination,_selectedPlayers], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_faction,_type,_location,_destination,_selectedPlayers,_faction], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1650,6 +1681,24 @@ switch(_operation) do {
 
         _locationList ctrlSetEventHandler ["LBSelChanged", "['TASK_GENERATE_LOCATION_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
+        private ["_factionTitle","_locationList","_locationListOptions"];
+
+        _factionTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateFactionTitle);
+        _factionTitle ctrlShow true;
+
+        _factionList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateFactionEdit);
+        _factionList ctrlShow true;
+
+        _factionListOptions = [_taskingState,"generateFactionOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _factionList;
+
+        {
+            _factionList lbAdd format["%1", _x];
+        } forEach _factionListOptions;
+
+        _factionList ctrlSetEventHandler ["LBSelChanged", "['TASK_GENERATE_FACTION_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
         private ["_map"];
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
@@ -1710,6 +1759,14 @@ switch(_operation) do {
 
         _locationList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateLocationEdit);
         _locationList ctrlShow false;
+
+        private ["_factionTitle","_locationList"];
+
+        _factionTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateFactionTitle);
+        _factionTitle ctrlShow false;
+
+        _factionList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateFactionEdit);
+        _factionList ctrlShow false;
 
         private ["_createButton"];
 

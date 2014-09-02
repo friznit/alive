@@ -586,7 +586,41 @@ class C2Tablet
             x = 0.271102 * safezoneW + safezoneX;
             y = 0.3070 * safezoneH + safezoneY;
             w = 0.241271 * safezoneW;
-            h = 0.11 * safezoneH;
+            h = 0.08 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class C2Tablet_taskingGenerateTaskFactionEditTitle : C2Tablet_RscText
+        {
+            idc = 70046;
+            text = "Task Enemy Faction";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.4000 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0308 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class C2Tablet_taskingGenerateTaskFactionEdit : C2Tablet_RscGUIListBox
+        {
+            idc = 70047;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.4170 * safezoneH + safezoneY;
+            w = 0.241271 * safezoneW;
+            h = 0.12 * safezoneH;
             colorBackground[] = {0.173,0.173,0.173,1};
             colorActive[] = {0.384,0.439,0.341,1};
             sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
