@@ -49,12 +49,6 @@ Peer Reviewed:
 // Display components
 #define C2Tablet_CTRL_MainDisplay 70001
 
-// main menu
-#define C2Tablet_CTRL_MainMenuTasks 70002
-#define C2Tablet_CTRL_MainMenuAAR 70003
-#define C2Tablet_CTRL_MainMenuISTAR 70004
-#define C2Tablet_CTRL_MainMenuAbort 70005
-
 // sub menu generic
 #define C2Tablet_CTRL_SubMenuBack 70006
 #define C2Tablet_CTRL_SubMenuAbort 70010
@@ -94,12 +88,6 @@ Peer Reviewed:
 #define C2Tablet_CTRL_TaskGenerateCreateButton 70043
 #define C2Tablet_CTRL_TaskGenerateLocationTitle 70044
 #define C2Tablet_CTRL_TaskGenerateLocationEdit 70045
-
-// AAR
-
-// ISTAR
-
-
 
 
 // Control Macros
@@ -416,7 +404,7 @@ switch(_operation) do {
                         // the interface is opened
                         // for the first time
 
-                        [_logic,"enableMainMenu"] call MAINCLASS;
+                        [_logic,"enableTasking"] call MAINCLASS;
 
                         [_logic,"loadInitialData"] call MAINCLASS;
 
@@ -468,34 +456,6 @@ switch(_operation) do {
                 case "OPEN": {
 
                     createDialog "C2Tablet";
-
-                };
-
-                case "MAIN_MENU_TASKING_CLICK": {
-
-                    [_logic,"disableMainMenu"] call MAINCLASS;
-                    [_logic,"enableTasking"] call MAINCLASS;
-
-                };
-
-                case "MAIN_MENU_AAR_CLICK": {
-
-                    [_logic,"disableMainMenu"] call MAINCLASS;
-                    [_logic,"enableAAR"] call MAINCLASS;
-
-                };
-
-                case "MAIN_MENU_ISTAR_CLICK": {
-
-                    [_logic,"disableMainMenu"] call MAINCLASS;
-                    [_logic,"enableISTAR"] call MAINCLASS;
-
-                };
-
-                case "BACK_BUTTON_CLICK": {
-
-                    [_logic,"disableAll"] call MAINCLASS;
-                    [_logic,"enableMainMenu"] call MAINCLASS;
 
                 };
 
@@ -1559,43 +1519,6 @@ switch(_operation) do {
         [_logic,"disableGenerateTaskManagePlayers"] call MAINCLASS;
 
     };
-    case "enableMainMenu": {
-
-        private ["_tasksButton","_aarButton","_istarButton","_abortButton"];
-
-        _tasksButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuTasks);
-        _tasksButton ctrlShow true;
-        _tasksButton ctrlSetEventHandler ["MouseButtonClick", "['MAIN_MENU_TASKING_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-        _aarButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuAAR);
-        _aarButton ctrlShow true;
-        _aarButton ctrlSetEventHandler ["MouseButtonClick", "['MAIN_MENU_AAR_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-        _istarButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuISTAR);
-        _istarButton ctrlShow true;
-        _istarButton ctrlSetEventHandler ["MouseButtonClick", "['MAIN_MENU_ISTAR_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuAbort);
-        _abortButton ctrlShow true;
-
-    };
-    case "disableMainMenu": {
-
-        private ["_tasksButton","_aarButton","_istarButton","_abortButton"];
-
-        _tasksButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuTasks);
-        _tasksButton ctrlShow false;
-
-        _aarButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuAAR);
-        _aarButton ctrlShow false;
-
-        _istarButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuISTAR);
-        _istarButton ctrlShow false;
-
-        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_MainMenuAbort);
-        _abortButton ctrlShow false;
-
-    };
     case "enableTasking": {
 
         private ["_taskingState","_title","_backButton","_abortButton","_addTaskButton","_generateTaskButton"];
@@ -1608,10 +1531,6 @@ switch(_operation) do {
         _title ctrlShow true;
 
         _title ctrlSetText "Current Tasks";
-
-        _backButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuBack);
-        _backButton ctrlShow true;
-        _backButton ctrlSetEventHandler ["MouseButtonClick", "['BACK_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
@@ -2608,64 +2527,6 @@ switch(_operation) do {
 
         _selectedPlayersClearButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayersClearButton);
         _selectedPlayersClearButton ctrlShow false;
-
-    };
-    case "enableAAR": {
-
-        private ["_title","_backButton","_abortButton"];
-
-        _title = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_Title);
-        _title ctrlShow true;
-
-        _backButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuBack);
-        _backButton ctrlShow true;
-        _backButton ctrlSetEventHandler ["MouseButtonClick", "['BACK_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
-        _abortButton ctrlShow true;
-
-    };
-    case "disableAAR": {
-
-        private ["_title","_backButton","_abortButton"];
-
-        _title = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_Title);
-        _title ctrlShow false;
-
-        _backButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuBack);
-        _backButton ctrlShow false;
-
-        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
-        _abortButton ctrlShow false;
-
-    };
-    case "enableISTAR": {
-
-        private ["_title","_backButton","_abortButton"];
-
-        _title = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_Title);
-        _title ctrlShow true;
-
-        _backButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuBack);
-        _backButton ctrlShow true;
-        _backButton ctrlSetEventHandler ["MouseButtonClick", "['BACK_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
-        _abortButton ctrlShow true;
-
-    };
-    case "disableISTAR": {
-
-        private ["_title","_backButton","_abortButton"];
-
-        _title = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_Title);
-        _title ctrlShow false;
-
-        _backButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuBack);
-        _backButton ctrlShow false;
-
-        _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
-        _abortButton ctrlShow false;
 
     };
 };

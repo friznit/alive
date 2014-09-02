@@ -23,51 +23,6 @@ class C2Tablet
             colorBackground[] = {0,0,0,0};
         };
 
-        class C2Tablet_mainTaskButton : C2Tablet_RscButton
-        {
-            idc = 70002;
-            text = "Tasking";
-            style = 0x02;
-            x = 0.4 * safezoneW + safezoneX;
-            y = 0.2400 * safezoneH + safezoneY;
-            w = 0.216525 * safezoneW;
-            h = 0.028 * safezoneH;
-            colorBackground[] = {0.384,0.439,0.341,1};
-            sizeEx = 0.8 * GUI_GRID_H;
-            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
-            colorFocused[] = {0.706,0.706,0.706,1};
-        };
-
-        class C2Tablet_mainAARButton : C2Tablet_RscButton
-        {
-            idc = 70003;
-            text = "AAR";
-            style = 0x02;
-            x = 0.4 * safezoneW + safezoneX;
-            y = 0.2900 * safezoneH + safezoneY;
-            w = 0.216525 * safezoneW;
-            h = 0.028 * safezoneH;
-            colorBackground[] = {0.384,0.439,0.341,1};
-            sizeEx = 0.8 * GUI_GRID_H;
-            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
-            colorFocused[] = {0.706,0.706,0.706,1};
-        };
-
-        class C2Tablet_mainISTARButton : C2Tablet_RscButton
-        {
-            idc = 70004;
-            text = "ISTAR";
-            style = 0x02;
-            x = 0.4 * safezoneW + safezoneX;
-            y = 0.3400 * safezoneH + safezoneY;
-            w = 0.216525 * safezoneW;
-            h = 0.028 * safezoneH;
-            colorBackground[] = {0.384,0.439,0.341,1};
-            sizeEx = 0.8 * GUI_GRID_H;
-            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
-            colorFocused[] = {0.706,0.706,0.706,1};
-        };
-
         class C2Tablet_mainTitle : C2Tablet_RscText
         {
             idc = 70007;
@@ -87,23 +42,6 @@ class C2Tablet
                 shadowColor = "#000000";
                 size = 0.8;
             };
-        };
-
-        class C2Tablet_mainAbortButton : C2Tablet_RscButton
-        {
-            idc = 70005;
-            text = "Close";
-            style = 0x02;
-            x = 0.4 * safezoneW + safezoneX;
-            y = 0.3900 * safezoneH + safezoneY;
-            w = 0.216525 * safezoneW;
-            h = 0.028 * safezoneH;
-            sizeEx = 0.8 * GUI_GRID_H;
-            colorBackground[] = {0.376,0.196,0.204,1};
-            colorText[] = {0.706,0.706,0.706,1};
-            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
-            colorFocused[] = {0.706,0.706,0.706,1};
-            action = "closeDialog 0";
         };
 
         class C2Tablet_subMenuBackButton : C2Tablet_RscButton
