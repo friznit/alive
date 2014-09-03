@@ -8,6 +8,12 @@
 <Key ID="STR_ALIVE_C2ISTAR_COMMENT">
     <English>Command and control</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_DEBUG">
+    <English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_DEBUG_COMMENT">
+    <English>Enables Module Debug</English>
+</Key>
 <Key ID="STR_ALIVE_C2ISTAR_ALLOW">
     <English>Item</English>
 </Key>

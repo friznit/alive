@@ -34,6 +34,7 @@ Peer Reviewed:
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_C2ISTAR
 #define MTEMPLATE "ALiVE_C2_%1"
+#define DEFAULT_DEBUG false
 #define DEFAULT_C2_ITEM "LaserDesignator"
 #define DEFAULT_STATE "INIT"
 #define DEFAULT_SIDE "WEST"
@@ -120,6 +121,20 @@ switch(_operation) do {
 		};
 	};
 
+    case "debug": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["debug", _args];
+        } else {
+            _args = _logic getVariable ["debug", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["debug", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
 	case "c2_item": {
         _result = [_logic,_operation,_args,DEFAULT_C2_ITEM] call ALIVE_fnc_OOsimpleOperation;
     };
@@ -150,27 +165,23 @@ switch(_operation) do {
 
 	case "init": {
 
+	    private["_debug"];
+
         _logic setVariable ["super", SUPERCLASS];
         _logic setVariable ["class", MAINCLASS];
         _logic setVariable ["moduleType", "ALIVE_C2ISTAR"];
         _logic setVariable ["startupComplete", false];
 
+        _debug = [_logic, "debug"] call MAINCLASS;
+
         ALIVE_MIL_C2ISTAR = _logic;
 
         if (isServer) then {
 
-            /*
-            if!(isNil "ALIVE_eventLog") then {
-                // create event log
-                ALIVE_eventLog = [nil, "create"] call ALIVE_fnc_eventLog;
-                [ALIVE_eventLog, "init"] call ALIVE_fnc_eventLog;
-                [ALIVE_eventLog, "debug", false] call ALIVE_fnc_eventLog;
-            };
-            */
-
             // create the task handler
             ALIVE_taskHandler = [nil, "create"] call ALIVE_fnc_taskHandler;
             [ALIVE_taskHandler, "init"] call ALIVE_fnc_taskHandler;
+            [ALIVE_taskHandler, "debug", _debug] call ALIVE_fnc_taskHandler;
 
         };
 
@@ -1354,7 +1365,7 @@ switch(_operation) do {
 
                 case "TASK_GENERATE_CREATE_BUTTON_CLICK": {
 
-                    private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_faction","_selectedPlayers",
+                    private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_enemyFaction","_selectedPlayers",
                     "_event","_taskID","_playerID","_requestID","_selectedPlayerListOptions","_selectedPlayerListValues",
                     "_newSelectedPlayerListOptions","_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
 
@@ -1367,7 +1378,7 @@ switch(_operation) do {
 
                     _type = [_taskingState,"generateTypeListSelectedValue"] call ALIVE_fnc_hashGet;
                     _location = [_taskingState,"generateLocationListSelectedValue"] call ALIVE_fnc_hashGet;
-                    _faction = [_taskingState,"generateFactionListSelectedValue"] call ALIVE_fnc_hashGet;
+                    _enemyFaction = [_taskingState,"generateFactionListSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
                     _requestID = format["%1_%2",_faction,floor(time)];
@@ -1404,7 +1415,7 @@ switch(_operation) do {
                         _errorMessage = "You need to select a location";
                     };
 
-                    if(_faction == "") then {
+                    if(_enemyFaction == "") then {
                         _errors = true;
                         _errorMessage = "You need to select a faction";
                     };
@@ -1416,7 +1427,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_faction,_type,_location,_destination,_selectedPlayers,_faction], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_faction,_type,_location,_destination,_selectedPlayers,_enemyFaction], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -2220,6 +2231,7 @@ switch(_operation) do {
 
         _currentTask = [_taskingState,"currentTaskListSelectedValue"] call ALIVE_fnc_hashGet;
 
+        //_currentTask call ALIVE_fnc_inspectArray;
         //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];

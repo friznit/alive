@@ -1112,6 +1112,13 @@ class isArmed
 	recompile = RECOMPILE;
 };
 
+class isEnemyNear
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_isEnemyNear.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class PlayersInRangeIncludeAir
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_PlayersInRangeIncludeAir.sqf";

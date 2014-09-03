@@ -223,6 +223,7 @@ units
 	ALiVE_fnc_getRandomManOrPlayerNear
 	ALiVE_fnc_getRandomPlayerNear
 	ALiVE_fnc_isArmed
+	ALiVE_fnc_isEnemyNear
 	ALiVE_fnc_PlayersInRangeIncludeAir
 	ALiVE_fnc_unitArrayFilterDead
 	ALiVE_fnc_unitArrayGetVehiclesWithin
