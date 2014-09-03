@@ -258,7 +258,9 @@ BIS_fnc_establishingShot_logic3 = BIS_fnc_establishingShot_logic_group createUni
 		_coords set [2, _alt];
 
         if (count _mul > 0 && {time - _time > 20}) then {
-
+            
+            _mul = _mul - [objNull];
+            
             _tgt = (_mul call BIS_fnc_SelectRandom);
             _pos = position _tgt;
 

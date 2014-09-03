@@ -6,7 +6,10 @@
 	<English>Multispawn</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_COMMENT">
-	<English>XXXX</English>
+	<English>ALiVE Multispawn enables some handy Respawn functionalities! Please see our WiKi for more information!</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_USAGE">
+	<English>Markers: Insertion: ALiVE_SUP_MULTISPAWN_INSERTION_%SIDE% / ALiVE_SUP_MULTISPAWN_DESTINATION_%SIDE%! Faction based: ALiVE_SUP_MULTISPAWN_RESPAWN_%FACTION%! Spawn in vehicle: ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%FACTION%</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_DEBUG">
 	<English>Enable debug:</English>
@@ -18,7 +21,7 @@
 	<English>Type:</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_TYPE_COMMENT">
-	<English>Type of respawn</English>
+	<English>SoS: BF style respawn! Ins.: Simulates constant Air insertion! Fac.based: based on factions not sides! Click Show Info!</English>
 </Key>
 <Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT">
 	<English>Timeout:</English>

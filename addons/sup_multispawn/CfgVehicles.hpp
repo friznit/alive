@@ -31,6 +31,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        
                         class spawntype
                         {
                                 displayName = "$STR_ALIVE_multispawn_TYPE";
@@ -50,14 +51,27 @@ class CfgVehicles {
                                                 value = "insertion";
                                         };
                                         
+                                        class faction
+                                        {
+                                                name = "Faction based";
+                                                value = "faction";
+                                        };
+                                        
+                                        class vehicle
+                                        {
+                                                name = "Spawn in vehicle";
+                                                value = "vehicle";
+                                        };
                                 };
                         };
+                        
                         class timeout
                         {
                                 displayName = "$STR_ALIVE_MULTISPAWN_TIMEOUT";
                                 description = "$STR_ALIVE_MULTISPAWN_TIMEOUT_COMMENT";
                                 defaultValue = 60;
                         };
+                        
                         class spawningnearenemiesallowed
                         {
                                 displayName = "$STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED";
@@ -78,6 +92,14 @@ class CfgVehicles {
                                 };
                         };                          
                 };
+                class ModuleDescription
+				{
+					description[] = {
+							"$STR_ALIVE_MULTISPAWN_COMMENT",
+							"",
+							"$STR_ALIVE_MULTISPAWN_USAGE"
+					};
+				};
                 
         };
 };
