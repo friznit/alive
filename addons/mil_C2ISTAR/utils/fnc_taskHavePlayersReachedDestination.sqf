@@ -36,7 +36,7 @@ _destinationReached = false;
         _position = position _player;
         _distance = _position distance _taskPosition;
 
-        if(_distance <= 50) exitWith {
+        if(_distance <= _radius) exitWith {
 
             _destinationReached = true;
         };

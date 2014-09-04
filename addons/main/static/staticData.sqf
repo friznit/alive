@@ -372,6 +372,8 @@ private["_options","_optionsData"];
 
 ALIVE_generatedTasks = [] call ALIVE_fnc_hashCreate;
 
+// Assault Task
+
 _options = [];
 
 _optionsData = [] call ALIVE_fnc_hashCreate;
@@ -390,6 +392,17 @@ _options set [count _options,_optionsData];
 
 [ALIVE_generatedTasks, "Assault", ["Objective Assault",_options]] call ALIVE_fnc_hashSet;
 
+// HVT Task
+
+_options = [];
+
+_optionsData = [] call ALIVE_fnc_hashCreate;
+[_optionsData,"Parent",["Kill the HVT","Kill the high value target."]] call ALIVE_fnc_hashSet;
+[_optionsData,"Destroy",["Eliminate the target","Eliminate the high value target"]] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_optionsData];
+
+[ALIVE_generatedTasks, "Assassination", ["HVT Assassination",_options]] call ALIVE_fnc_hashSet;
 
 /*
  * Civ Pop Defaults

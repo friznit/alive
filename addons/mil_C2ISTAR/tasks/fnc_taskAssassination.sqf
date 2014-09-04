@@ -1,8 +1,8 @@
 #include <\x\alive\addons\mil_C2ISTAR\script_component.hpp>
-SCRIPT(taskAssault);
+SCRIPT(taskAssassination);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_taskAssault
+Function: ALIVE_fnc_taskAssassination
 
 Description:
 Assault Task
@@ -70,21 +70,17 @@ switch (_taskState) do {
 
         if!(isNil "_targetPosition") then {
 
-            private["_stagingPosition","_dialogOptions","_dialogOption"];
-
-            // establish the staging position for the task
-
-            _stagingPosition = [_targetPosition,"overwatch"] call ALIVE_fnc_taskGetSectorPosition;
+            private["_dialogOptions","_dialogOption"];
 
             // select the random text
 
-            _dialogOptions = [ALIVE_generatedTasks,"Assault"] call ALIVE_fnc_hashGet;
+            _dialogOptions = [ALIVE_generatedTasks,"Assassination"] call ALIVE_fnc_hashGet;
             _dialogOptions = _dialogOptions select 1;
             _dialogOption = _dialogOptions call BIS_fnc_selectRandom;
 
             // create the tasks
 
-            private["_state","_dialog","_parentTask","_childTask1ID","_childTask1","_childTask2ID","_childTask2","_taskParams"];
+            private["_state","_dialog","_parentTask","_childTask1ID","_childTask1","_taskParams"];
 
             if(_taskCurrent == 'Y')then {
                 _state = "Assigned";
@@ -95,29 +91,26 @@ switch (_taskState) do {
             _dialog = [_dialogOption,"Parent"] call ALIVE_fnc_hashGet;
             _parentTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,"None","Assault",false];
 
-            _dialog = [_dialogOption,"Travel"] call ALIVE_fnc_hashGet;
-            _childTask1ID = format["%1_c1",_taskID];
-            _taskSource = format["%1-Assault-Travel",_taskID];
-            _childTask1 = [_childTask1ID,_requestPlayerID,_taskSide,_stagingPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,false];
-
             _dialog = [_dialogOption,"Destroy"] call ALIVE_fnc_hashGet;
-            _childTask2ID = format["%1_c2",_taskID];
-            _taskSource = format["%1-Assault-Destroy",_taskID];
-            _childTask2 = [_childTask2ID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,"Created","Group","N",_taskID,_taskSource,true];
+            _childTask1ID = format["%1_c1",_taskID];
+            _taskSource = format["%1-Assassination-Destroy",_taskID];
+            _childTask1 = [_childTask1ID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,false];
 
             _taskParams = [] call ALIVE_fnc_hashCreate;
             [_taskParams,"nextTask",_childTask1ID] call ALIVE_fnc_hashSet;
-            [_taskParams,"taskIDs",[_taskID,_childTask1ID,_childTask2ID]] call ALIVE_fnc_hashSet;
+            [_taskParams,"taskIDs",[_taskID,_childTask1ID]] call ALIVE_fnc_hashSet;
+            [_taskParams,"enemyFaction",_taskEnemyFaction] call ALIVE_fnc_hashSet;
+            [_taskParams,"HVTSpawned",false] call ALIVE_fnc_hashSet;
 
-            _result = [[_parentTask,_childTask1,_childTask2],_taskParams];
+            _result = [[_parentTask,_childTask1],_taskParams];
 
         };
 
 	};
-	case "Travel":{
+	case "Destroy":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-	    "_destinationReached","_taskIDs"];
+	    "_destinationReached","_taskIDs","_HVTSpawned"];
 
 	    _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -128,43 +121,50 @@ switch (_taskState) do {
         _taskDescription = _task select 6;
         _taskPlayers = _task select 7 select 0;
 
-        _destinationReached = [_taskPosition,_taskPlayers,50] call ALIVE_fnc_taskHavePlayersReachedDestination;
+        _HVTSpawned = [_params,"HVTSpawned"] call ALIVE_fnc_hashGet;
 
-        if(_destinationReached) then {
+        if!(_HVTSpawned) then {
 
-            _taskIDs = [_params,"taskIDs"] call ALIVE_fnc_hashGet;
-            [_params,"nextTask",_taskIDs select 2] call ALIVE_fnc_hashSet;
+            _destinationReached = [_taskPosition,_taskPlayers,1000] call ALIVE_fnc_taskHavePlayersReachedDestination;
 
-            _task set [8,"Succeeded"];
-            _task set [10, "N"];
-            _result = _task;
+            if(_destinationReached) then {
 
-        };
+                private["_taskEnemyFaction","_taskEnemySide","_group","_unit"];
 
-    };
-    case "Destroy":{
+                // spawn the HVT
 
-        private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-        "_areaClear"];
+                _taskEnemyFaction = [_params,"enemyFaction"] call ALIVE_fnc_hashGet;
+                _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
 
-        _taskID = _task select 0;
-        _requestPlayerID = _task select 1;
-        _taskSide = _task select 2;
-        _taskPosition = _task select 3;
-        _taskFaction = _task select 4;
-        _taskTitle = _task select 5;
-        _taskDescription = _task select 6;
-        _taskPlayers = _task select 7 select 0;
+                _group = createGroup _taskEnemySide;
 
-        _areaClear = [_taskPosition,_taskPlayers,_taskSide,200] call ALIVE_fnc_taskIsAreaClearOfEnemies;
+                _unit = [[_taskEnemyFaction], 1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
 
-        if(_areaClear) then {
+                _unit = _group createUnit [_unit select 0, _taskPosition, [], 0 , "NONE"];
 
-            [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+                [_params,"HVTSpawned",true] call ALIVE_fnc_hashSet;
+                [_params,"target",_unit] call ALIVE_fnc_hashSet;
 
-            _task set [8,"Succeeded"];
-            _task set [10, "N"];
-            _result = _task;
+            };
+        }else{
+
+            private["_target"];
+
+            _target = [_params,"target"] call ALIVE_fnc_hashGet;
+
+            if!(alive _target) then {
+
+                [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+
+                _task set [8,"Succeeded"];
+                _task set [10, "N"];
+                _result = _task;
+
+            }else{
+
+                [_taskID,_target,_taskPlayers] call ALIVE_fnc_taskMarkTargetForPlayers;
+
+            }
 
         };
 
