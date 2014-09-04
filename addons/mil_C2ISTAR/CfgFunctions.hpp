@@ -36,6 +36,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_C2TabletEventToClient.sqf";
                 recompile = RECOMPILE;
             };
+            class C2OnPlayerConnected {
+                description = "On player connected handler";
+                file = "\x\alive\addons\mil_C2ISTAR\fnc_C2OnPlayerConnected.sqf";
+                recompile = RECOMPILE;
+            };
             class taskHandler {
                 description = "Task Handler";
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandler.sqf";
@@ -51,9 +56,24 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerEventToClient.sqf";
                 recompile = RECOMPILE;
             };
-            class C2OnPlayerConnected {
-                description = "On player connected handler";
-                file = "\x\alive\addons\mil_C2ISTAR\fnc_C2OnPlayerConnected.sqf";
+            class taskGetEnemyCluster {
+                description = "Utility get enemy cluster for tasks";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetEnemyCluster.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskGetEnemySectorCompositionPosition {
+                description = "Utility get enemy sector for tasks";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetEnemySectorCompositionPosition.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskHavePlayersReachedDestination {
+                description = "Utility check if players have reached the destination";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHavePlayersReachedDestination.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskIsAreaClearOfEnemies {
+                description = "Utility check if there are any enemies in the area";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskIsAreaClearOfEnemies.sqf";
                 recompile = RECOMPILE;
             };
             class taskAssault {

@@ -34,6 +34,7 @@ composition
 	ALiVE_fnc_exportComposition
 	ALiVE_fnc_findComposition
 	ALiVE_fnc_spawnComposition
+	ALiVE_fnc_spawnRandomPopulatedComposition
 
 config
 

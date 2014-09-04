@@ -146,6 +146,13 @@ class spawnComposition
 	recompile = RECOMPILE;
 };
 
+class spawnRandomPopulatedComposition
+{
+	file = "\x\alive\addons\x_lib\functions\composition\fnc_spawnRandomPopulatedComposition.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class configGetGroup
 {
 	file = "\x\alive\addons\x_lib\functions\config\fnc_configGetGroup.sqf";

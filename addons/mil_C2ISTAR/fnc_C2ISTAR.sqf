@@ -46,6 +46,7 @@ Peer Reviewed:
 #define DEFAULT_TASKING_MARKER []
 #define DEFAULT_TASKING_DESTINATION []
 #define DEFAULT_TASKING_SOURCE "PLAYER"
+#define DEFAULT_TASK_EDITING_DISABLED false
 
 // Display components
 #define C2Tablet_CTRL_MainDisplay 70001
@@ -160,6 +161,9 @@ switch(_operation) do {
     };
     case "taskSource": {
         _result = [_logic,_operation,_args,DEFAULT_TASKING_SOURCE] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "taskEditingDisabled": {
+        _result = [_logic,_operation,_args,DEFAULT_TASK_EDITING_DISABLED] call ALIVE_fnc_OOsimpleOperation;
     };
 
 
@@ -575,7 +579,7 @@ switch(_operation) do {
 
                     private ["_taskingState","_titleEdit","_descriptionEdit","_title","_description","_marker","_destination",
                     "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID",
-                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage","_source"];
+                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage","_source","_editingDisabled"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -589,7 +593,8 @@ switch(_operation) do {
                     _faction = [_logic,"faction"] call MAINCLASS;
                     _marker = [_logic,"taskMarker"] call MAINCLASS;
                     _destination = [_logic,"taskDestination"] call MAINCLASS;
-                    _source = [_logic,"taskSource"] call MAINCLASS;
+                    _source = "PLAYER";
+                    _editingDisabled = false;
 
                     _state = [_taskingState,"currentTaskStateSelectedValue"] call ALIVE_fnc_hashGet;
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
@@ -653,7 +658,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source,_editingDisabled], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -696,6 +701,11 @@ switch(_operation) do {
 
                     [_logic,"taskMarker",[_marker]] call MAINCLASS;
                     [_logic,"taskDestination",_position] call MAINCLASS;
+
+                };
+
+                case "TASK_ADD_MAP_CLICK_NULL": {
+
 
                 };
 
@@ -974,7 +984,7 @@ switch(_operation) do {
                     private ["_taskingState","_currentTask","_titleEdit","_descriptionEdit","_title","_description",
                     "_side","_faction","_marker","_destination","_selectedPlayers","_event","_taskID","_playerID","_state",
                     "_selectedPlayerListOptions","_selectedPlayerListValues","_apply","_current","_parent","_newSelectedPlayerListOptions",
-                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage","_source"];
+                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage","_source","_editingDisabled"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -991,6 +1001,7 @@ switch(_operation) do {
                     _marker = [_logic,"taskMarker"] call MAINCLASS;
                     _destination = [_logic,"taskDestination"] call MAINCLASS;
                     _source = [_logic,"taskSource"] call MAINCLASS;
+                    _editingDisabled = [_logic,"taskEditingDisabled"] call MAINCLASS;
 
                     _state = [_taskingState,"currentTaskStateSelectedValue"] call ALIVE_fnc_hashGet;
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
@@ -1054,7 +1065,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source,_editingDisabled], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1519,6 +1530,7 @@ switch(_operation) do {
             _newTask set [10,_task select 10];
             _newTask set [11,_task select 11];
             _newTask set [12,_task select 12];
+            _newTask set [13,_task select 13];
 
             _title = _newTask select 5;
 
@@ -2231,7 +2243,11 @@ switch(_operation) do {
 
         _currentTask = [_taskingState,"currentTaskListSelectedValue"] call ALIVE_fnc_hashGet;
 
-        //_currentTask call ALIVE_fnc_inspectArray;
+        [_logic,"taskSource",_currentTask select 12] call MAINCLASS;
+
+        [_logic,"taskEditingDisabled",_currentTask select 13] call MAINCLASS;
+
+        _currentTask call ALIVE_fnc_inspectArray;
         //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];
@@ -2248,7 +2264,7 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
 
-        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_map","_createButton","_editButton"];
+        private ["_editTitle","_titleEdit","_editDescription","_descriptionEdit","_taskEditingDisabled","_map","_createButton","_editButton"];
 
         _editTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddTitleEditTitle);
         _editTitle ctrlShow true;
@@ -2366,9 +2382,16 @@ switch(_operation) do {
 
         _parentList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_PARENT_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
+        _taskEditingDisabled = [_logic,"taskEditingDisabled"] call MAINCLASS;
+
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
         _map ctrlShow true;
-        _map ctrlSetEventHandler ["MouseButtonDown", "['TASK_ADD_MAP_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        if!(_taskEditingDisabled) then {
+            _map ctrlSetEventHandler ["MouseButtonDown", "['TASK_ADD_MAP_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+        }else{
+            _map ctrlSetEventHandler ["MouseButtonDown", "['TASK_ADD_MAP_CLICK_NULL',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+        };
 
         _statusText = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddStatusText);
         _statusText ctrlShow true;
@@ -2384,8 +2407,6 @@ switch(_operation) do {
         _editButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_EDIT_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
         [_logic,"taskingState",_taskingState] call MAINCLASS;
-
-        [_logic,"taskSource",_currentTask select 12] call MAINCLASS;
 
         private ["_posX","_posY","_markers","_position","_marker"];
 
