@@ -364,6 +364,32 @@ ALIVE_compositions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_compositions, "objectives", ["largeMilitaryOutpost1","mediumMilitaryOutpost1","hugeSupplyOutpost1","hugeMilitaryOutpost1"]] call ALIVE_fnc_hashSet;
 [ALIVE_compositions, "other", ["smallATNest1","smallMGNest1","smallCheckpoint1","smallRoadblock1","mediumCheckpoint1","largeGarbageCamp1"]] call ALIVE_fnc_hashSet;
 
+/*
+ * Genrated Tasks
+ */
+
+private["_options","_optionsData"];
+
+ALIVE_generatedTasks = [] call ALIVE_fnc_hashCreate;
+
+_options = [];
+
+_optionsData = [] call ALIVE_fnc_hashCreate;
+[_optionsData,"Parent",["Assault the base","Assault the enemy held position."]] call ALIVE_fnc_hashSet;
+[_optionsData,"Travel",["Proceed to overwatch","Proceed to the overwatch position prior to assaulting the base."]] call ALIVE_fnc_hashSet;
+[_optionsData,"Destroy",["Destroy the enemy","Destroy all enemy near the base, leave none alive!"]] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_optionsData];
+
+_optionsData = [] call ALIVE_fnc_hashCreate;
+[_optionsData,"Parent",["Attack the emplacement","Attack the enemy held position."]] call ALIVE_fnc_hashSet;
+[_optionsData,"Travel",["Travel to staging area","TRavel to the staging area before beginning your attack."]] call ALIVE_fnc_hashSet;
+[_optionsData,"Destroy",["Clear the base","Clear all enemy forces from the surrounding area."]] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_optionsData];
+
+[ALIVE_generatedTasks, "Assault", ["Objective Assault",_options]] call ALIVE_fnc_hashSet;
+
 
 /*
  * Civ Pop Defaults

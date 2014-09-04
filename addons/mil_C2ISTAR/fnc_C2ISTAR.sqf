@@ -226,6 +226,16 @@ switch(_operation) do {
 
             // set the tasking state
 
+             private ["_generateOptions","_generateValues","_task"];
+
+            _generateOptions = [];
+            _generateValues = [];
+            {
+                _task = [ALIVE_generatedTasks,_x] call ALIVE_fnc_hashGet;
+                _generateOptions set [count _generateOptions,_task select 0];
+                _generateValues set [count _generateValues,_x];
+            } forEach (ALIVE_generatedTasks select 1);
+
             private ["_taskingState","_playerListOptions","_playerListValues"];
 
             _taskingState = [_logic,"taskingState"] call MAINCLASS;
@@ -275,8 +285,8 @@ switch(_operation) do {
             [_taskingState,"currentTaskSelectedPlayerListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"currentTaskSelectedPlayerListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
-            [_taskingState,"generateTypeOptions",["Objective Assault"]] call ALIVE_fnc_hashSet;
-            [_taskingState,"generateTypeValues",["Assault"]] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateTypeOptions",_generateOptions] call ALIVE_fnc_hashSet;
+            [_taskingState,"generateTypeValues",_generateValues] call ALIVE_fnc_hashSet;
             [_taskingState,"generateTypeListSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_taskingState,"generateTypeListSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
@@ -1376,7 +1386,7 @@ switch(_operation) do {
 
                 case "TASK_GENERATE_CREATE_BUTTON_CLICK": {
 
-                    private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_enemyFaction","_selectedPlayers",
+                    private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_enemyFaction","_current","_selectedPlayers",
                     "_event","_taskID","_playerID","_requestID","_selectedPlayerListOptions","_selectedPlayerListValues",
                     "_newSelectedPlayerListOptions","_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
 
@@ -1390,6 +1400,7 @@ switch(_operation) do {
                     _type = [_taskingState,"generateTypeListSelectedValue"] call ALIVE_fnc_hashGet;
                     _location = [_taskingState,"generateLocationListSelectedValue"] call ALIVE_fnc_hashGet;
                     _enemyFaction = [_taskingState,"generateFactionListSelectedValue"] call ALIVE_fnc_hashGet;
+                    _current = [_taskingState,"currentTaskCurrentSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
                     _requestID = format["%1_%2",_faction,floor(time)];
@@ -1431,6 +1442,11 @@ switch(_operation) do {
                         _errorMessage = "You need to select a faction";
                     };
 
+                    if(_current == "") then {
+                        _errors = true;
+                        _errorMessage = "You need to select if task is current";
+                    };
+
                     if(_errors) then {
 
                         _statusText ctrlSetText _errorMessage;
@@ -1438,7 +1454,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_faction,_type,_location,_destination,_selectedPlayers,_enemyFaction], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_GENERATE', [_requestID,_playerID,_side,_faction,_type,_location,_destination,_selectedPlayers,_enemyFaction,_current], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1722,6 +1738,24 @@ switch(_operation) do {
 
         _factionList ctrlSetEventHandler ["LBSelChanged", "['TASK_GENERATE_FACTION_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
+        private ["_currentTitle","_currentList","_currentIndex","_currentListOptions"];
+
+        _currentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentTitle);
+        _currentTitle ctrlShow true;
+
+        _currentList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentEdit);
+        _currentList ctrlShow true;
+
+        _currentListOptions = [_taskingState,"currentTaskCurrentOptions"] call ALIVE_fnc_hashGet;
+
+        lbClear _currentList;
+
+        {
+            _currentList lbAdd format["%1", _x];
+        } forEach _currentListOptions;
+
+        _currentList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_CURRENT_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
         private ["_map"];
 
         _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
@@ -1790,6 +1824,14 @@ switch(_operation) do {
 
         _factionList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskGenerateFactionEdit);
         _factionList ctrlShow false;
+
+        private ["_currentTitle","_currentList"];
+
+        _currentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentTitle);
+        _currentTitle ctrlShow false;
+
+        _currentList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddCurrentEdit);
+        _currentList ctrlShow false;
 
         private ["_createButton"];
 
@@ -2247,7 +2289,7 @@ switch(_operation) do {
 
         [_logic,"taskEditingDisabled",_currentTask select 13] call MAINCLASS;
 
-        _currentTask call ALIVE_fnc_inspectArray;
+        //_currentTask call ALIVE_fnc_inspectArray;
         //_taskingState call ALIVE_fnc_inspectHash;
 
         private ["_title","_backButton","_abortButton"];

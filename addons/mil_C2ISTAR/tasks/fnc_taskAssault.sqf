@@ -33,7 +33,8 @@ _result = [];
 switch (_taskState) do {
 	case "init":{
 
-	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskEnemySide","_enemyClusters","_targetPosition"];
+	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
+	    "_taskEnemySide","_enemyClusters","_targetPosition"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -43,6 +44,7 @@ switch (_taskState) do {
         _taskLocation = _task select 6;
         _taskPlayers = _task select 7;
         _taskEnemyFaction = _task select 8;
+        _taskCurrent = _taskData select 9;
 
         _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideObjectToNumber;
@@ -68,17 +70,40 @@ switch (_taskState) do {
 
         if!(isNil "_targetPosition") then {
 
-            private["_parentTask","_childTask1ID","_childTask1","_childTask2ID","_childTask2","_taskParams"];
+            private["_stagingPosition","_dialogOptions","_dialogOption"];
 
-            _parentTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,"ASSAULT","ASSAULT",_taskPlayers,"Created","Group","N","None","Assault",false];
+            // establish the staging position for the task
 
-            _childTask1ID = format["%1_c1",_taskID];
-            _childTaskSource = format["%1-Assault-Travel",_taskID];
-            _childTask1 = [_childTask1ID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,"TRAVEL","TRAVEL",_taskPlayers,"Created","Group","N",_taskID,_childTaskSource,false];
+            _stagingPosition = [_targetPosition,"overwatch"] call ALIVE_fnc_taskGetSectorPosition;
 
-            _childTask2ID = format["%1_c2",_taskID];
-            _childTaskSource = format["%1-Assault-Destroy",_taskID];
-            _childTask2 = [_childTask2ID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,"DESTROY","DESTROY",_taskPlayers,"Created","Group","N",_taskID,_childTaskSource,true];
+            // select the random text
+
+            _dialogOptions = [ALIVE_generatedTasks,"Assault"] call ALIVE_fnc_hashGet;
+            _dialogOptions = _dialogOptions select 1;
+            _dialogOption = _dialogOptions call BIS_fnc_selectRandom;
+
+            // create the tasks
+
+            private["_state","_dialog","_parentTask","_childTaskID","_childTask1","_childTask2","_taskParams"];
+
+            if(_taskCurrent == 'Y')then {
+                _state = "Assigned";
+            }else{
+                _state = "Created";
+            };
+
+            _dialog = [_dialogOption,"Parent"] call ALIVE_fnc_hashGet;
+            _parentTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,"None","Assault",false];
+
+            _dialog = [_dialogOption,"Travel"] call ALIVE_fnc_hashGet;
+            _childTaskID = format["%1_c1",_taskID];
+            _taskSource = format["%1-Assault-Travel",_taskID];
+            _childTask1 = [_childTaskID,_requestPlayerID,_taskSide,_stagingPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,false];
+
+            _dialog = [_dialogOption,"Destroy"] call ALIVE_fnc_hashGet;
+            _childTaskID = format["%1_c2",_taskID];
+            _taskSource = format["%1-Assault-Destroy",_taskID];
+            _childTask2 = [_childTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,"Created","Group","N",_taskID,_taskSource,true];
 
             _taskParams = [] call ALIVE_fnc_hashCreate;
             [_taskParams,"nextTask",_childTask1ID] call ALIVE_fnc_hashSet;

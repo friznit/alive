@@ -66,6 +66,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetEnemySectorCompositionPosition.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetSectorPosition {
+                description = "Utility get position based on sector data";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSectorPosition.sqf";
+                recompile = RECOMPILE;
+            };
             class taskHavePlayersReachedDestination {
                 description = "Utility check if players have reached the destination";
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHavePlayersReachedDestination.sqf";

@@ -245,7 +245,7 @@ switch(_operation) do {
     case "generateTask": {
 
         private["_debug","_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskType","_taskLocationType",
-        "_taskLocation","_taskPlayers","_taskEnemyFaction","_player","_position","_taskSet"];
+        "_taskLocation","_taskPlayers","_taskEnemyFaction","_taskCurrent","_player","_position","_taskSet"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -262,6 +262,7 @@ switch(_operation) do {
             _taskLocation = _taskData select 6;
             _taskPlayers = _taskData select 7;
             _taskEnemyFaction = _taskData select 8;
+            _taskCurrent = _taskData select 9;
 
             if((_taskLocationType == "Short") || (_taskLocationType == "Medium") || (_taskLocationType == "Long")) then {
                 _player = [_requestPlayerID] call ALIVE_fnc_getPlayerByUID;
