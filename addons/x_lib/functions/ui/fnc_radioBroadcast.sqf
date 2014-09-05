@@ -54,7 +54,7 @@ See Also:
 Author:
 ARJay, Gunny
 ---------------------------------------------------------------------------- */
-private ["_unit","_message","_channel","_side","_fromUnit","_toUnit","_toHQ","_fromHQ","_hqClass"];
+private ["_unit","_message","_channel","_side","_fromUnit","_toUnit","_toHQ","_fromHQ","_hqClass","_fromGroup","_toGroup"];
 
 _unit = _this select 0;
 _message = _this select 1;
@@ -65,6 +65,8 @@ _toUnit = if(count _this > 5) then {_this select 5} else {false};
 _toHQ = if(count _this > 6) then {_this select 6} else {false};
 _fromHQ = if(count _this > 7) then {_this select 7} else {false};
 _hqClass = if(count _this > 8) then {_this select 8} else {"PAPA_BEAR"};
+_fromGroup = if(count _this > 9) then {_this select 9} else {false};
+_toGroup = if(count _this > 10) then {_this select 10} else {false};
 
 if(isNil "_message") exitWith {};
 
@@ -94,6 +96,21 @@ if(_fromUnit || _toUnit) then {
 
 };
 
+// if from group get the callSign of the group
+if(_fromGroup || _toGroup) then {
+
+    private ["_group","_groupArray","_fromCallSign"];
+
+    _group = format ["%1", group _unit];
+
+    if(_fromGroup) then {
+        _message = format["%1 %2",_group,_message];
+    }else{
+        _message = format["%1 %2",_group,_message];
+    };
+
+};
+
 // if to HQ get the callSign of the HQ identity
 if(_toHQ) then {
 
@@ -110,7 +127,7 @@ switch (_channel) do
         _unit globalChat _message
     };
     case "side" : {
-        if(_fromUnit) then {
+        if(_fromUnit || _fromGroup) then {
             _unit sideChat _message;
         };
 
@@ -118,7 +135,7 @@ switch (_channel) do
             [_side,_hqClass] sideChat _message;
         };
 
-        if(!(_fromUnit) && !(_fromHQ)) then {
+        if(!(_fromUnit) && !(_fromHQ) && !(_fromGroup)) then {
             _unit sideChat _message;
         };
     };

@@ -81,14 +81,29 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskIsAreaClearOfEnemies.sqf";
                 recompile = RECOMPILE;
             };
-            class taskMarkTargetForPlayers {
+            class taskCreateMarkersForPlayers {
                 description = "Utility mark target position on map";
-                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskMarkTargetForPlayers.sqf";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateMarkersForPlayers.sqf";
                 recompile = RECOMPILE;
             };
             class taskCreateMarker {
                 description = "Utility create a local marker";
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateMarker.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskDeleteMarkersForPlayers {
+                description = "Utility delete any markers for players";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskDeleteMarkersForPlayers.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskDeleteMarkers {
+                description = "Utility delete local markers";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskDeleteMarkers.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskCreateRadioBroadcastForPlayers {
+                description = "Utility broadcast radio message for players";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateRadioBroadcastForPlayers.sqf";
                 recompile = RECOMPILE;
             };
             class taskAssault {

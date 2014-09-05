@@ -84,7 +84,7 @@ switch (_taskState) do {
 
             // create the tasks
 
-            private["_state","_dialog","_parentTask","_childTask1ID","_childTask1","_childTask2ID","_childTask2","_taskParams"];
+            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams"];
 
             if(_taskCurrent == 'Y')then {
                 _state = "Assigned";
@@ -92,32 +92,66 @@ switch (_taskState) do {
                 _state = "Created";
             };
 
+            _tasks = [];
+            _taskIDs = [];
+
+            // create the parent task
+
             _dialog = [_dialogOption,"Parent"] call ALIVE_fnc_hashGet;
-            _parentTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,"None","Assault",false];
+            _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
+            _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _taskSource = format["%1-Assassination-Parent",_taskID];
+            _newTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,"Group","N","None",_taskSource,false];
+
+            _tasks set [count _tasks,_newTask];
+            _taskIDs set [count _taskIDs,_taskID];
+
+            // create the travel task
 
             _dialog = [_dialogOption,"Travel"] call ALIVE_fnc_hashGet;
-            _childTask1ID = format["%1_c1",_taskID];
+            _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
+            _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _newTaskID = format["%1_c1",_taskID];
             _taskSource = format["%1-Assault-Travel",_taskID];
-            _childTask1 = [_childTask1ID,_requestPlayerID,_taskSide,_stagingPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,false];
+            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_stagingPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,false];
+
+            _tasks set [count _tasks,_newTask];
+            _taskIDs set [count _taskIDs,_newTaskID];
+
+            // create the destroy task
 
             _dialog = [_dialogOption,"Destroy"] call ALIVE_fnc_hashGet;
-            _childTask2ID = format["%1_c2",_taskID];
+            _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
+            _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _newTaskID = format["%1_c2",_taskID];
             _taskSource = format["%1-Assault-Destroy",_taskID];
-            _childTask2 = [_childTask2ID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,"Created","Group","N",_taskID,_taskSource,true];
+            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,"Created","Group","N",_taskID,_taskSource,true];
+
+            _tasks set [count _tasks,_newTask];
+            _taskIDs set [count _taskIDs,_newTaskID];
+
+            // store task data in the params for this task set
 
             _taskParams = [] call ALIVE_fnc_hashCreate;
-            [_taskParams,"nextTask",_childTask1ID] call ALIVE_fnc_hashSet;
-            [_taskParams,"taskIDs",[_taskID,_childTask1ID,_childTask2ID]] call ALIVE_fnc_hashSet;
+            [_taskParams,"nextTask",_taskIDs select 1] call ALIVE_fnc_hashSet;
+            [_taskParams,"taskIDs",_taskIDs] call ALIVE_fnc_hashSet;
+            [_taskParams,"dialog",_dialogOption] call ALIVE_fnc_hashSet;
+            [_taskParams,"lastState",""] call ALIVE_fnc_hashSet;
 
-            _result = [[_parentTask,_childTask1,_childTask2],_taskParams];
+            // return the created tasks and params
+
+            _result = [_tasks,_taskParams];
 
         };
 
 	};
+	case "Parent":{
+
+    };
 	case "Travel":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-	    "_destinationReached","_taskIDs"];
+	    "_destinationReached","_taskIDs","_lastState","_taskDialog","_currentTaskDialog"];
 
 	    _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -127,6 +161,17 @@ switch (_taskState) do {
         _taskTitle = _task select 5;
         _taskDescription = _task select 6;
         _taskPlayers = _task select 7 select 0;
+
+        _lastState = [_params,"lastState"] call ALIVE_fnc_hashGet;
+        _taskDialog = [_params,"dialog"] call ALIVE_fnc_hashGet;
+        _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
+
+        if(_lastState != "Travel") then {
+
+            ["chat_start",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+
+            [_params,"lastState","Travel"] call ALIVE_fnc_hashSet;
+        };
 
         _destinationReached = [_taskPosition,_taskPlayers,50] call ALIVE_fnc_taskHavePlayersReachedDestination;
 
@@ -145,7 +190,7 @@ switch (_taskState) do {
     case "Destroy":{
 
         private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-        "_areaClear"];
+        "_areaClear","_lastState","_taskDialog","_currentTaskDialog"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -156,6 +201,17 @@ switch (_taskState) do {
         _taskDescription = _task select 6;
         _taskPlayers = _task select 7 select 0;
 
+        _lastState = [_params,"lastState"] call ALIVE_fnc_hashGet;
+        _taskDialog = [_params,"dialog"] call ALIVE_fnc_hashGet;
+        _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
+
+        if(_lastState != "Destroy") then {
+
+            ["chat_start",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+
+            [_params,"lastState","Destroy"] call ALIVE_fnc_hashSet;
+        };
+
         _areaClear = [_taskPosition,_taskPlayers,_taskSide,200] call ALIVE_fnc_taskIsAreaClearOfEnemies;
 
         if(_areaClear) then {
@@ -165,6 +221,8 @@ switch (_taskState) do {
             _task set [8,"Succeeded"];
             _task set [10, "N"];
             _result = _task;
+
+            ["chat_success",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
 
         };
 

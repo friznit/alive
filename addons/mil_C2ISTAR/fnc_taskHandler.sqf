@@ -366,9 +366,11 @@ switch(_operation) do {
 
                 _dispatchTasks = _dispatchTasks - ["DELETE"];
 
+                /*
                 ["DISPATCHED TOP LEVEL TASKS"] call ALIVE_fnc_dump;
                 _parentTasks call ALIVE_fnc_inspectArray;
                 _dispatchTasks call ALIVE_fnc_inspectArray;
+                */
 
                 {
 
@@ -406,9 +408,11 @@ switch(_operation) do {
 
                 _dispatchTasks = _dispatchTasks - ["DELETE"];
 
+                /*
                 ["DISPATCHED SUB LEVEL TASKS"] call ALIVE_fnc_dump;
                 _parentTasks call ALIVE_fnc_inspectArray;
                 _dispatchTasks call ALIVE_fnc_inspectArray;
+                */
 
                 {
 
@@ -482,9 +486,11 @@ switch(_operation) do {
 
                 _dispatchTasks = _dispatchTasks - ["DELETE"];
 
+                /*
                 ["DISPATCHED REMAINING TASKS"] call ALIVE_fnc_dump;
                 _parentTasks call ALIVE_fnc_inspectArray;
                 _dispatchTasks call ALIVE_fnc_inspectArray;
+                */
 
             };
 

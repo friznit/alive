@@ -1,11 +1,11 @@
 #include <\x\alive\addons\mil_C2ISTAR\script_component.hpp>
-SCRIPT(taskMarkTargetForPlayers);
+SCRIPT(taskCreateMarkersForPlayers);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_taskMarkTargetForPlayers
+Function: ALIVE_fnc_taskCreateMarkersForPlayers
 
 Description:
-Mark a target units position for players
+Mark a position for players
 
 Parameters:
 
@@ -21,16 +21,15 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskID","_target","_taskPlayers","_targetPosition","_targetSide","_colour","_player"];
+private ["_taskPosition","_taskSide","_taskID","_taskPlayers","_taskType","_colour","_markerDefinition","_player"];
 
-_taskID = _this select 0;
-_target = _this select 1;
+_taskPosition = _this select 0;
+_taskSide = _this select 1;
 _taskPlayers = _this select 2;
+_taskID = _this select 3;
+_taskType = _this select 4;
 
-_targetPosition = position _target;
-_targetSide = side _target;
-
-switch(_targetSide) do {
+switch(_taskSide) do {
     case EAST:{
         _colour = "ColorRed";
     };
@@ -45,14 +44,22 @@ switch(_targetSide) do {
     };
 };
 
+_markerDefinition = [];
+
+switch(_taskType) do {
+    case "HVT":{
+        _markerDefinition = [_taskPosition,_taskID,_colour,"HVT","mil_objective",[1,1],1,"ICON"];
+    };
+};
+
 {
     _player = [_x] call ALIVE_fnc_getPlayerByUID;
 
     if !(isNull _player) then {
         if(isDedicated) then {
-            [[_targetPosition,_taskID,_colour],"ALIVE_fnc_taskCreateMarker",_player,false,false] spawn BIS_fnc_MP;
+            [_markerDefinition,"ALIVE_fnc_taskCreateMarker",_player,false,false] spawn BIS_fnc_MP;
         }else{
-            [_targetPosition,_taskID,_colour] call ALIVE_fnc_taskCreateMarker;
+            _markerDefinition call ALIVE_fnc_taskCreateMarker;
         };
     };
 

@@ -80,7 +80,7 @@ switch (_taskState) do {
 
             // create the tasks
 
-            private["_state","_dialog","_parentTask","_childTask1ID","_childTask1","_taskParams"];
+            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams"];
 
             if(_taskCurrent == 'Y')then {
                 _state = "Assigned";
@@ -88,29 +88,56 @@ switch (_taskState) do {
                 _state = "Created";
             };
 
+            _tasks = [];
+            _taskIDs = [];
+
+            // create the parent task
+
             _dialog = [_dialogOption,"Parent"] call ALIVE_fnc_hashGet;
-            _parentTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,"None","Assault",false];
+            _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
+            _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _taskSource = format["%1-Assassination-Parent",_taskID];
+            _newTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,"Group","N","None",_taskSource,false];
+
+            _tasks set [count _tasks,_newTask];
+            _taskIDs set [count _taskIDs,_taskID];
+
+            // create the destroy task
 
             _dialog = [_dialogOption,"Destroy"] call ALIVE_fnc_hashGet;
-            _childTask1ID = format["%1_c1",_taskID];
+            _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
+            _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _newTaskID = format["%1_c1",_taskID];
             _taskSource = format["%1-Assassination-Destroy",_taskID];
-            _childTask1 = [_childTask1ID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_dialog select 0,_dialog select 1,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,false];
+            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,true];
+
+            _tasks set [count _tasks,_newTask];
+            _taskIDs set [count _taskIDs,_newTaskID];
+
+            // store task data in the params for this task set
 
             _taskParams = [] call ALIVE_fnc_hashCreate;
-            [_taskParams,"nextTask",_childTask1ID] call ALIVE_fnc_hashSet;
-            [_taskParams,"taskIDs",[_taskID,_childTask1ID]] call ALIVE_fnc_hashSet;
+            [_taskParams,"nextTask",_taskIDs select 1] call ALIVE_fnc_hashSet;
+            [_taskParams,"taskIDs",_taskIDs] call ALIVE_fnc_hashSet;
+            [_taskParams,"dialog",_dialogOption] call ALIVE_fnc_hashSet;
             [_taskParams,"enemyFaction",_taskEnemyFaction] call ALIVE_fnc_hashSet;
+            [_taskParams,"lastState",""] call ALIVE_fnc_hashSet;
             [_taskParams,"HVTSpawned",false] call ALIVE_fnc_hashSet;
 
-            _result = [[_parentTask,_childTask1],_taskParams];
+            // return the created tasks and params
+
+            _result = [_tasks,_taskParams];
 
         };
+
+	};
+	case "Parent":{
 
 	};
 	case "Destroy":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-	    "_destinationReached","_taskIDs","_HVTSpawned"];
+	    "_destinationReached","_taskIDs","_HVTSpawned","_lastState","_taskDialog","_currentTaskDialog"];
 
 	    _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -121,7 +148,17 @@ switch (_taskState) do {
         _taskDescription = _task select 6;
         _taskPlayers = _task select 7 select 0;
 
+        _lastState = [_params,"lastState"] call ALIVE_fnc_hashGet;
+        _taskDialog = [_params,"dialog"] call ALIVE_fnc_hashGet;
+        _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
         _HVTSpawned = [_params,"HVTSpawned"] call ALIVE_fnc_hashGet;
+
+        if(_lastState != "Destroy") then {
+
+            ["chat_start",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+
+            [_params,"lastState","Destroy"] call ALIVE_fnc_hashSet;
+        };
 
         if!(_HVTSpawned) then {
 
@@ -138,7 +175,7 @@ switch (_taskState) do {
 
                 _group = createGroup _taskEnemySide;
 
-                _unit = [[_taskEnemyFaction], 1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+                _unit = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
 
                 _unit = _group createUnit [_unit select 0, _taskPosition, [], 0 , "NONE"];
 
@@ -148,7 +185,7 @@ switch (_taskState) do {
             };
         }else{
 
-            private["_target"];
+            private["_target","_targetPosition","_targetSide"];
 
             _target = [_params,"target"] call ALIVE_fnc_hashGet;
 
@@ -160,9 +197,16 @@ switch (_taskState) do {
                 _task set [10, "N"];
                 _result = _task;
 
+                [_taskPlayers,_taskID] call ALIVE_fnc_taskDeleteMarkersForPlayers;
+
+                ["chat_success",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+
             }else{
 
-                [_taskID,_target,_taskPlayers] call ALIVE_fnc_taskMarkTargetForPlayers;
+                _targetPosition = position _target;
+                _targetSide = side _target;
+
+                [_targetPosition,_targetSide,_taskPlayers,_taskID,"HVT"] call ALIVE_fnc_taskCreateMarkersForPlayers;
 
             }
 
