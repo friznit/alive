@@ -1,7 +1,6 @@
 To do list
-1. If marker index is empty need to delete index on db
+1. MP Test
 2. Move, rotate marker (alt left click on marker to move, alt right click to rotate)
-3. Clean up bulkRead process. When deleting records the index becomes inconsistent if not saved. bulkRead should fail gracefully if doc does not exist
 4. Integrate with C2ISTAR
 5. add to events
 6. draw line, ellipse, rectangle, arrow

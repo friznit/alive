@@ -278,9 +278,9 @@ _eyes = [
 	_eyesControl lbSetData [_index, (_x select 1)];
 } foreach _eyes;
 
-// SITREP check box
-_sitrepCheck = _display displayCtrl SITREP_CHECK;
-_sitrepCheck ctrladdeventhandler [
+// spotrep check box
+_spotrepCheck = _display displayCtrl spotrep_CHECK;
+_spotrepCheck ctrladdeventhandler [
 	"CheckedChanged",
 	"
 			[_this, 801199] call ALIVE_fnc_markerCheckedChanged;
@@ -302,7 +302,7 @@ _sitrepCheck ctrladdeventhandler [
 		_ValueClass = (findDisplay 80001) displayCtrl CLASS_LIST;
 		_ValueIcon = (findDisplay 80001) displayCtrl ICON_LIST;
 		_ValueColorName = (findDisplay 80001) displayCtrl COLOR_LIST;
-		_sitrepCheckbox = (findDisplay 80001) displayCtrl SITREP_CHECK;
+		_spotrepCheckbox = (findDisplay 80001) displayCtrl spotrep_CHECK;
 
 		if (typeName _marker == "BOOL") then {
 
@@ -321,8 +321,8 @@ _sitrepCheck ctrladdeventhandler [
 			ctrlSetText [LOC_VALUE, mapGridPosition _pos];
 			lbSetCurSel [EYES_LIST, 1];
 
-			_sitrepCheckbox cbSetChecked false;
-			[[_sitrepCheckbox,0], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
+			_spotrepCheckbox cbSetChecked false;
+			[[_spotrepCheckbox,0], spotrep_CHECK] call ALIVE_fnc_markerCheckedChanged;
 			lbSetCurSel [CLASS_LIST, 5];
 
 		} else {
@@ -332,8 +332,8 @@ _sitrepCheck ctrladdeventhandler [
 			private ["_markerInfo"];
 			_markerInfo = [GVAR(store), _marker] call ALIVE_fnc_hashGet;
 
-			_sitrepCheckbox cbSetChecked false;
-			[[_sitrepCheckbox,0], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
+			_spotrepCheckbox cbSetChecked false;
+			[[_spotrepCheckbox,0], spotrep_CHECK] call ALIVE_fnc_markerCheckedChanged;
 
 			ctrlSetText [SIZEA_VALUE, str((getmarkerSize _marker) select 0)];
 			ctrlSetText [SIZEB_VALUE, str((getmarkerSize _marker) select 1)];
@@ -362,24 +362,24 @@ _sitrepCheck ctrladdeventhandler [
 
 			lbSetCurSel [COLOR_LIST, [_markerInfo, QGVAR(colorIndex)] call ALIVE_fnc_hashGet];
 
-			// Check to see if marker has an associated SITREP
-			if ([_markerInfo, QGVAR(hasSITREP), false] call ALIVE_fnc_hashGet) then {
+			// Check to see if marker has an associated spotrep
+			if ([_markerInfo, QGVAR(hasspotrep), false] call ALIVE_fnc_hashGet) then {
 
-				_sitrepCheckbox cbSetChecked true;
-				[[_sitrepCheckbox,1], SITREP_CHECK] call ALIVE_fnc_markerCheckedChanged;
+				_spotrepCheckbox cbSetChecked true;
+				[[_spotrepCheckbox,1], spotrep_CHECK] call ALIVE_fnc_markerCheckedChanged;
 
-				_sitrepInfo = [MOD(SYS_sitrep_store), [_markerInfo, QGVAR(sitrep)] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashGet;
+				_spotrepInfo = [MOD(SYS_spotrep_store), [_markerInfo, QGVAR(spotrep)] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashGet;
 				ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
-				ctrlSetText [NAME_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_callsign)] call ALIVE_fnc_hashGet];
-				ctrlSetText [DATE_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_dateTime)] call ALIVE_fnc_hashGet];
-				ctrlSetText [LOC_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_loc)] call ALIVE_fnc_hashGet];
+				ctrlSetText [NAME_VALUE, [_spotrepInfo, QMOD(SYS_spotrep_callsign)] call ALIVE_fnc_hashGet];
+				ctrlSetText [DATE_VALUE, [_spotrepInfo, QMOD(SYS_spotrep_dateTime)] call ALIVE_fnc_hashGet];
+				ctrlSetText [LOC_VALUE, [_spotrepInfo, QMOD(SYS_spotrep_loc)] call ALIVE_fnc_hashGet];
 
-				lbSetCurSel [FACTION_LIST, [_sitrepInfo, QMOD(SYS_sitrep_factionIndex)] call ALIVE_fnc_hashGet];
-				lbSetCurSel [SIZE_LIST, [_sitrepInfo, QMOD(SYS_sitrep_sizeIndex)] call ALIVE_fnc_hashGet];
-				lbSetCurSel [TYPE_LIST, [_sitrepInfo, QMOD(SYS_sitrep_typeIndex)] call ALIVE_fnc_hashGet];
-				lbSetCurSel [ACTIVITY_LIST, [_sitrepInfo, QMOD(SYS_sitrep_activityIndex)] call ALIVE_fnc_hashGet];
-				lbSetCurSel [FACTIVITY_LIST, [_sitrepInfo, QMOD(SYS_sitrep_factivityIndex)] call ALIVE_fnc_hashGet];
-				ctrlSetText [REMARKS_VALUE, [_sitrepInfo, QMOD(SYS_sitrep_remarks)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [FACTION_LIST, [_spotrepInfo, QMOD(SYS_spotrep_factionIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [SIZE_LIST, [_spotrepInfo, QMOD(SYS_spotrep_sizeIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [TYPE_LIST, [_spotrepInfo, QMOD(SYS_spotrep_typeIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [ACTIVITY_LIST, [_spotrepInfo, QMOD(SYS_spotrep_activityIndex)] call ALIVE_fnc_hashGet];
+				lbSetCurSel [FACTIVITY_LIST, [_spotrepInfo, QMOD(SYS_spotrep_factivityIndex)] call ALIVE_fnc_hashGet];
+				ctrlSetText [REMARKS_VALUE, [_spotrepInfo, QMOD(SYS_spotrep_remarks)] call ALIVE_fnc_hashGet];
 			} else {
 				ctrlSetText [NAME_VALUE, str(player)];
 				ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];

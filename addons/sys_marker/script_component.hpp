@@ -37,7 +37,7 @@
 
 #define EYES_LIST 801019
 
-#define SITREP_CHECK 801199
+#define spotrep_CHECK 801199
 
 #define BUTTON_OK 801197
-#define BUTTON_SITREP_OK 801196
+#define BUTTON_spotrep_OK 801196

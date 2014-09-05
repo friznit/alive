@@ -29,7 +29,7 @@ _display = findDisplay 80001;
 
 _check = uiNamespace getVariable [QGVAR(edit), false];
 
-_markerName = "mkr" + str(random time + 1);
+_markerName = "MKR" + str(random time + 1);
 _markersHash = [] call ALIVE_fnc_hashCreate;
 
 // If editing a marker, delete the old one and create a new one.
@@ -39,10 +39,10 @@ if (typeName _check != "BOOL") then {
 
 	_tempHash = [GVAR(STORE), _check] call ALIVE_fnc_hashGet;
 
-	if ([_tempHash, QGVAR(hasSITREP), false] call ALIVE_fnc_hashGet) then {
-		private "_sitrep";
-		_sitrep = [_tempHash, QGVAR(sitrep)] call ALIVE_fnc_hashGet;
-		[MOD(sys_sitrep), "removesitrep", [_sitrep]] call ALiVE_fnc_sitrep;
+	if ([_tempHash, QGVAR(hasspotrep), false] call ALIVE_fnc_hashGet) then {
+		private "_spotrep";
+		_spotrep = [_tempHash, QGVAR(spotrep)] call ALIVE_fnc_hashGet;
+		[MOD(sys_spotrep), "removespotrep", [_spotrep]] call ALiVE_fnc_spotrep;
 	};
 
 	[MOD(sys_marker), "removeMarker", [_check]] call ALiVE_fnc_marker;
@@ -107,20 +107,20 @@ switch _eyes do {
 [_markersHash, QGVAR(localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
 [_markersHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
 
-[_markersHash, QGVAR(hasSITREP), false] call ALIVE_fnc_hashSet;
+[_markersHash, QGVAR(hasspotrep), false] call ALIVE_fnc_hashSet;
 
-// SITREP DATA
+// spotrep DATA
 
-_sitrepCheck = _display displayCtrl SITREP_CHECK;
-if (cbChecked _sitRepCheck) then {
+_spotrepCheck = _display displayCtrl spotrep_CHECK;
+if (cbChecked _spotrepCheck) then {
 
-	private ["_sitRepHash","_sitrepName","_callsign"];
+	private ["_spotrepHash","_spotrepName","_callsign"];
 
-	_sitrepName = "SR" + str(random time + 1);
+	_spotrepName = "SP" + str(random time + 1);
 
-	_sitrepName = [_sitrepName, ".", "N"] call CBA_fnc_replace;
+	_spotrepName = [_spotrepName, ".", "N"] call CBA_fnc_replace;
 
-	[_markersHash, QGVAR(hasSITREP), true] call ALIVE_fnc_hashSet;
+	[_markersHash, QGVAR(hasspotrep), true] call ALIVE_fnc_hashSet;
 
 	_callSign = [ctrlText NAME_VALUE,"\","-"] call CBA_fnc_replace;
 	_DTG = ctrlText DTG_VALUE;
@@ -140,45 +140,45 @@ if (cbChecked _sitRepCheck) then {
 	_factivity = lbText [FACTIVITY_LIST, _factivityIndex];
 	_remarks = [ctrlText REMARKS_VALUE,"\","-"] call CBA_fnc_replace;
 
-	_sitRepHash = [] call ALIVE_fnc_hashCreate;
+	_spotrepHash = [] call ALIVE_fnc_hashCreate;
 
-	[_sitRepHash, QMOD(SYS_sitrep_callsign), _callsign] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_DTG), _DTG] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_dateTime), _dateTime] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_loc), _loc] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_factionIndex), _factionIndex] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_faction), _faction] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_factionCfg), _factionCfg] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_sizeIndex), _sizeIndex] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_size), _size] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_typeIndex), _typeIndex] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_type), _type] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_typeCfg), _typeCfg] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_activityIndex), _activityIndex] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_activity), _activity] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_factivityIndex), _factivityIndex] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_factivity), _factivity] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_remarks), _remarks] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_markername), _markerName] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_locality), _eyes] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
-	[_sitRepHash, QMOD(SYS_sitrep_player), getPlayerUID player] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_callsign), _callsign] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_DTG), _DTG] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_dateTime), _dateTime] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_loc), _loc] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_factionIndex), _factionIndex] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_faction), _faction] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_factionCfg), _factionCfg] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_sizeIndex), _sizeIndex] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_size), _size] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_typeIndex), _typeIndex] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_type), _type] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_typeCfg), _typeCfg] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_activityIndex), _activityIndex] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_activity), _activity] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_factivityIndex), _factivityIndex] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_factivity), _factivity] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_remarks), _remarks] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_markername), _markerName] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_locality), _eyes] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
+	[_spotrepHash, QMOD(SYS_spotrep_player), getPlayerUID player] call ALIVE_fnc_hashSet;
 
 	switch _eyes do {
 		case "SIDE" : {
-			[_sitRepHash, QMOD(SYS_sitrep_localityValue), str(side (group player))] call ALIVE_fnc_hashSet;
+			[_spotrepHash, QMOD(SYS_spotrep_localityValue), str(side (group player))] call ALIVE_fnc_hashSet;
 		};
 		case "GROUP" : {
-			[_sitRepHash, QMOD(SYS_sitrep_localityValue), str (group player)] call ALIVE_fnc_hashSet;
+			[_spotrepHash, QMOD(SYS_spotrep_localityValue), str (group player)] call ALIVE_fnc_hashSet;
 		};
 		case "FACTION" : {
-			[_sitRepHash, QMOD(SYS_sitrep_localityValue), faction player] call ALIVE_fnc_hashSet;
+			[_spotrepHash, QMOD(SYS_spotrep_localityValue), faction player] call ALIVE_fnc_hashSet;
 		};
 	};
 
-	[MOD(sys_sitrep), "addsitrep", [_sitrepName, _sitRepHash]] call ALiVE_fnc_sitrep;
+	[MOD(sys_spotrep), "addspotrep", [_spotrepName, _spotrepHash]] call ALiVE_fnc_spotrep;
 
-	[_markersHash, QGVAR(sitrep), _sitrepName] call ALIVE_fnc_hashSet;
+	[_markersHash, QGVAR(spotrep), _spotrepName] call ALIVE_fnc_hashSet;
 
 };
 

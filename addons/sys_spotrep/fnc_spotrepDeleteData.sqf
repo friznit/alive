@@ -1,11 +1,11 @@
-#include <\x\alive\addons\sys_marker\script_component.hpp>
-SCRIPT(markerDeleteData);
+#include <\x\alive\addons\sys_spotrep\script_component.hpp>
+SCRIPT(spotrepDeleteData);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_markerDeleteData
+Function: ALIVE_fnc_spotrepDeleteData
 
 Description:
-Triggers deleting Data on running SYS marker instances, triggers and ends Loadingscreen
+Triggers deleting Data on running SYS spotrep instances, triggers and ends Loadingscreen
 Needs to run serverside
 
 Parameters:
@@ -16,12 +16,12 @@ Boolean
 
 Examples:
 (begin example)
-//trigger SYS marker load from DB
-[] call ALIVE_fnc_markerDeleteData;
+//trigger SYS spotrep load from DB
+[] call ALIVE_fnc_spotrepDeleteData;
 (end)
 
 See Also:
-ALIVE_fnc_markerSaveData
+ALIVE_fnc_spotrepSaveData
 
 Author:
 Highhead
@@ -29,21 +29,21 @@ Highhead
 
 if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {false};
 
-private ["_data","_async","_missionName","_docid","_rev","_markerName","_markerHash","_indexName"];
+private ["_data","_async","_missionName","_docid","_rev","_spotrepName","_spotrepHash"];
 
-_markerName = _this select 0;
-_markerHash = _this select 1;
+_spotrepName = _this select 0;
+_spotrepHash = _this select 1;
 
 _async = true;
 _missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
-_docid = _missionName + "-" + _markerName;
+_docid = _missionName + "-" + _spotrepName;
 
-_rev = [_markerHash, "_rev", "MISSING"] call ALIVE_fnc_hashGet;
+_rev = [_spotrepHash, "_rev", "MISSING"] call ALIVE_fnc_hashGet;
 
 if (_rev == "MISSING") exitWith {false};
 
-_data = [GVAR(DATAHANDLER), "delete", ["sys_marker", _async, _docid, _rev]] call ALIVE_fnc_Data;
+_data = [GVAR(DATAHANDLER), "delete", ["sys_spotrep", _async, _docid, _rev]] call ALIVE_fnc_Data;
 
 _count = count (GVAR(STORE) select 1) - 1;
 LOG(_count);
@@ -61,10 +61,9 @@ if ( (count (GVAR(STORE) select 1) - 1) == 0 ) then {
 				} else {
 					_indexName = format["%1_%2_%3", ALIVE_SYS_DATA_GROUP_ID, missionName, _foreachIndex];
 				};
-				_response = [GVAR(DATAHANDLER), "delete", ["sys_marker", _async, _indexName, _indrevs select _foreachIndex]] call ALIVE_fnc_Data;
+				_response = [GVAR(DATAHANDLER), "delete", ["sys_spotrep", _async, _indexName, _indrevs select _foreachIndex]] call ALIVE_fnc_Data;
 			} foreach _indrevs;
 	};
 };
-
 
 _data

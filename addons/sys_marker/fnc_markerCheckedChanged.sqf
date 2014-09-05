@@ -58,11 +58,11 @@ _controls = [80003,
 			  801196];
 
 If (_index == 0) then {
-// if not checked hide sitrep section
+// if not checked hide spotrep section
 	ctrlShow [801202, false];
 	ctrlShow [801201, true];
 	ctrlShow [801197, true];
-	// hide the sitrep section
+	// hide the spotrep section
 	{
 		ctrlShow [_x,false];
 	 } foreach _controls;

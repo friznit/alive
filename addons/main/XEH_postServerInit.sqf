@@ -68,14 +68,24 @@ onPlayerConnected {
         [_id, _name, _uid] call ALIVE_fnc_C2OnPlayerConnected;
     };
 
-    if !(isNil QMOD(SYS_MARKER)) then {
+    if !(isNil QMOD(SYS_marker)) then {
         // Marker module onPlayerConnected call
         [_id, _name, _uid] call ALIVE_fnc_markerOnPlayerConnected;
+    };
+
+    if !(isNil QMOD(SYS_spotrep)) then {
+        // spotrep module onPlayerConnected call
+        [_id, _name, _uid] call ALIVE_fnc_spotrepOnPlayerConnected;
     };
 
     if !(isNil QMOD(SYS_sitrep)) then {
         // sitrep module onPlayerConnected call
         [_id, _name, _uid] call ALIVE_fnc_sitrepOnPlayerConnected;
+    };
+
+    if !(isNil QMOD(SYS_patrolrep)) then {
+        // patrolrep module onPlayerConnected call
+        [_id, _name, _uid] call ALIVE_fnc_patrolrepOnPlayerConnected;
     };
 
 	if (_name != "__SERVER__") then {
