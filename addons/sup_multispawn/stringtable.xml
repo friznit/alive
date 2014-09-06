@@ -9,7 +9,27 @@
 	<English>ALiVE Multispawn enables some handy Respawn functionalities! Please see our WiKi for more information!</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_USAGE">
-	<English>Markers: Insertion: ALiVE_SUP_MULTISPAWN_INSERTION_%FACTION% / ALiVE_SUP_MULTISPAWN_DESTINATION_%FACTION%! Faction based: ALiVE_SUP_MULTISPAWN_RESPAWN_%FACTION%! Spawn in vehicle: ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%FACTION%</English>
+	<English>
+Description&lt;br /&gt;
+&lt;br /&gt;
+Spawn on Squad: BF style respawn (groupwise)!&lt;br /&gt;
+Insertion: Simulates constant Air insertion (factionwise)!&lt;br /&gt;
+Faction based: Simple faction based Respawn!&lt;br /&gt;
+Group based: Spawns players of a group at their group respawn!&lt;br /&gt;
+Spawn in vehicle: Spawns players in synced HQ vehicle (factionwise)!&lt;br /&gt;
+Spawn in building: Spawns players in a building of choice (factionwise)!&lt;br /&gt;
+&lt;br /&gt;
+Markernames&lt;br /&gt;
+&lt;br /&gt;
+Insertion:&lt;br /&gt;
+ALiVE_SUP_MULTISPAWN_INSERTION_%FACTION%&lt;br /&gt;
+ALiVE_SUP_MULTISPAWN_DESTINATION_%FACTION%&lt;br /&gt;
+&lt;br /&gt;
+Faction based: ALiVE_SUP_MULTISPAWN_RESPAWN_%FACTION%&lt;br /&gt;
+Group based: ALiVE_SUP_MULTISPAWN_RESPAWNGROUP_%GROUPID%&lt;br /&gt;
+Spawn in vehicle: ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%FACTION%&lt;br /&gt;
+Spawn in building: ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%FACTION%&lt;br /&gt;
+	</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_DEBUG">
 	<English>Enable debug:</English>
@@ -21,7 +41,7 @@
 	<English>Type:</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_TYPE_COMMENT">
-	<English>SoS: BF style respawn! Ins.: Simulates constant Air insertion! Fac.based: regular faction based respawn! Click Show Info!</English>
+	<English>Click Show Info for description and marker names!</English>
 </Key>
 <Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT">
 	<English>Timeout:</English>

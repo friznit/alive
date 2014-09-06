@@ -141,7 +141,8 @@ switch(_operation) do {
                         	waituntil {!isnull player};
                         
                         	["ALiVE SUP MULTISPAWN - Forward Spawn EH placed at %1...", time] call ALiVE_fnc_Dump;
-                        	player addEventHandler ["killed", {if !(isnil "ALiVE_fnc_setGear") then {pLOADOUT = ["", [_this select 0]] call ALiVE_fnc_setGear}}];
+                        	
+                            player addEventHandler ["killed", {if !(isnil "ALiVE_fnc_setGear") then {pLOADOUT = ["", [_this select 0]] call ALiVE_fnc_setGear}}];
                             player addEventHandler ["respawn", {titleText ["Respawn in progress...", "BLACK IN", 9999]; [] spawn ALiVE_fnc_ForwardSpawn}];
                         };
                             
@@ -182,10 +183,30 @@ switch(_operation) do {
                             _respawnFaction = format["ALiVE_SUP_MULTISPAWN_RESPAWN_%1",faction player];
                             
                             if !(_respawn call ALiVE_fnc_markerExists) then {createMarkerLocal [_respawn, getposATL _logic]};
-                            if !(_respawnFaction call ALiVE_fnc_markerExists) exitwith {["ALiVE_SUP_MULTISPAWN - Please place a %1 marker... Exiting!",_respawnFaction] call ALiVE_fnc_DumpR};
+                            if !(_respawnFaction call ALiVE_fnc_markerExists) exitwith {["ALiVE_SUP_MULTISPAWN - Please place a ALiVE_SUP_MULTISPAWN_RESPAWN_%1 marker... Defaulting to regular respawn point!",_respawnFaction] call ALiVE_fnc_DumpR};
+
+							["ALiVE SUP MULTISPAWN - Faction Respawn placed at %1...", getmarkerPos _respawnFaction] call ALiVE_fnc_Dump;
 
                             // Set local respawn pos
                             _respawn setmarkerPosLocal (getmarkerPos _respawnFaction);
+                        };
+                        
+                        case ("group") : {
+                            
+                            private ["_respawn","_respawnGroup"];
+                            
+                            waituntil {!isnull player};
+                            
+                            _respawn = format["Respawn_%1",side player];
+                            _respawnGroup = format["ALiVE_SUP_MULTISPAWN_RESPAWNGROUP_%1",groupID (group player)];
+                            
+                            if !(_respawn call ALiVE_fnc_markerExists) then {createMarkerLocal [_respawn, getposATL _logic]};
+                            if !(_respawnGroup call ALiVE_fnc_markerExists) exitwith {["ALiVE_SUP_MULTISPAWN - For group-respawn place a ALiVE_SUP_MULTISPAWN_RESPAWNGROUP_%1 marker... Defaulting to regular respawn point!",groupID (group player)] call ALiVE_fnc_DumpR};
+
+							["ALiVE SUP MULTISPAWN - Group Respawn placed at %1...", getmarkerPos _respawnGroup] call ALiVE_fnc_Dump;
+
+                            // Set local respawn pos
+                            _respawn setmarkerPosLocal (getmarkerPos _respawnGroup);
                         };
                         
                         case ("vehicle") : {
@@ -198,7 +219,7 @@ switch(_operation) do {
                             _respawnVehicle = !isnil {call compile (format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player])};
                             
                             if !(_respawn call ALiVE_fnc_markerExists) then {createMarkerLocal [_respawn, getposATL _logic]};
-                            if !(!isnil "_respawnVehicle" && {_respawnVehicle}) exitwith {["ALiVE_SUP_MULTISPAWN - Please place a vehicle with name ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1... Exiting!",faction player] call ALiVE_fnc_DumpR};
+                            if !(!isnil "_respawnVehicle" && {_respawnVehicle}) exitwith {["ALiVE_SUP_MULTISPAWN - Please place a vehicle with name ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1... Defaulting to regular respawn point!",faction player] call ALiVE_fnc_DumpR};
 
 							["ALiVE SUP MULTISPAWN - Vehicle EH placed at %1...", time] call ALiVE_fnc_Dump;
 
@@ -225,6 +246,47 @@ switch(_operation) do {
                                 };
                             }];
                         };
+                        
+                        case ("building") : {
+                            
+                            private ["_respawn","_respawnBuilding"];
+                            
+                            waituntil {!isnull player};
+                            
+                            _respawn = format["Respawn_%1",side player];
+                            _respawnBuilding = nearestObject [getmarkerpos format["ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1",faction player], "Building"];
+                            
+                            if !(_respawn call ALiVE_fnc_markerExists) then {createMarkerLocal [_respawn, getposATL _logic]};
+                            if !(!isnil "_respawnBuilding" && {alive _respawnBuilding}) exitwith {["ALiVE_SUP_MULTISPAWN - Please place a ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1 marker near a building... Defaulting to regular respawn point!",faction player] call ALiVE_fnc_DumpR};
+
+							["ALiVE SUP MULTISPAWN - Building EH placed at %1...", getposATL _respawnBuilding] call ALiVE_fnc_Dump;
+
+							player addEventHandler ["killed", {
+                                [] spawn {
+                                    waituntil {playerRespawnTime <= 4};
+                                    
+                                    titleText ["Respawning...", "BLACK OUT", 3];
+                                };
+                            }];
+
+							player addEventHandler ["respawn", {
+                                
+                                _b = nearestObject [getmarkerpos format["ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1",faction player], "Building"];
+
+                                if (!isNil "_b" && {alive _b}) then {
+	                                _p = [_b] call ALIVE_fnc_getMaxBuildingPositions;
+	                                
+	                                if (_p > 0) then {player setpos (_b buildingpos (ceil random _p))} else {player setposATL [(getposATL _b), 20] call CBA_fnc_RandPos};
+                                } else {
+                                    ["ALiVE_SUP_MULTISPAWN - No ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1 available... Exiting!",faction player] call ALiVE_fnc_Dump;
+                                };
+                            
+                                [] spawn {
+                                    sleep 3;
+                                	titleText ["", "PLAIN"];
+                                };
+                            }];
+                        };                        
                         
                         default {};
                     };
@@ -413,6 +475,7 @@ switch(_operation) do {
             } else {
 	            _wp = _group addWaypoint [_StartPos, 0];
 	            _wp setWaypointSpeed "FULL";
+                _wp setWaypointBehaviour "CARELESS";
 	            _wp setWaypointStatements ["true", "
 	                _vehicle = vehicle this;
 	                _data = +(_vehicle getvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',[objNull,[],grpNull]]);

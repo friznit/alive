@@ -57,10 +57,22 @@ class CfgVehicles {
                                                 value = "faction";
                                         };
                                         
+                                        class group
+                                        {
+                                                name = "Group based";
+                                                value = "group";
+                                        };
+                                        
                                         class vehicle
                                         {
                                                 name = "Spawn in vehicle";
                                                 value = "vehicle";
+                                        };
+                                        
+                                        class building
+                                        {
+                                                name = "Spawn in building";
+                                                value = "building";
                                         };
                                 };
                         };
