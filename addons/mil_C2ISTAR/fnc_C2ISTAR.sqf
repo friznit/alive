@@ -206,6 +206,12 @@ switch(_operation) do {
             ALIVE_taskHandlerClient = [nil, "create"] call ALIVE_fnc_taskHandlerClient;
             [ALIVE_taskHandlerClient, "init"] call ALIVE_fnc_taskHandlerClient;
 
+            // load static data
+            if(isNil "ALiVE_STATIC_DATA_LOADED") then {
+                _file = "\x\alive\addons\main\static\staticData.sqf";
+                call compile preprocessFileLineNumbers _file;
+            };
+
             // set the player side
 
             private ["_playerSide","_sideNumber","_sideText"];
@@ -2574,7 +2580,7 @@ switch(_operation) do {
     };
     case "enableEditTask": {
 
-        private ["_taskingState","_currentTask"];
+        private ["_taskingState","_currentTask","_selectedPlayerListOptions","_selectedPlayerListValues"];
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -2583,6 +2589,12 @@ switch(_operation) do {
         [_logic,"taskSource",_currentTask select 12] call MAINCLASS;
 
         [_logic,"taskEditingDisabled",_currentTask select 13] call MAINCLASS;
+
+        _selectedPlayerListOptions = _currentTask select 7 select 1;
+        _selectedPlayerListValues = _currentTask select 7 select 0;
+
+        [_taskingState,"currentTaskSelectedPlayerListOptions",_selectedPlayerListOptions] call ALIVE_fnc_hashSet;
+        [_taskingState,"currentTaskSelectedPlayerListValues",_selectedPlayerListValues] call ALIVE_fnc_hashSet;
 
         //_currentTask call ALIVE_fnc_inspectArray;
         //_taskingState call ALIVE_fnc_inspectHash;
