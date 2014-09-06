@@ -1,8 +1,8 @@
 #include <\x\alive\addons\mil_C2ISTAR\script_component.hpp>
-SCRIPT(taskAssault);
+SCRIPT(taskMilAssault);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_taskAssault
+Function: ALIVE_fnc_taskMilAssault
 
 Description:
 Assault Task
@@ -54,7 +54,7 @@ switch (_taskState) do {
         // establish the location for the task
         // get enemy occupied cluster position
 
-        _targetPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetEnemyCluster;
+        _targetPosition = [_taskLocation,_taskLocationType,_taskEnemySide,"MIL"] call ALIVE_fnc_taskGetEnemyCluster;
 
         if(count _targetPosition == 0) then {
 
@@ -79,7 +79,7 @@ switch (_taskState) do {
 
             // select the random text
 
-            _dialogOptions = [ALIVE_generatedTasks,"Assault"] call ALIVE_fnc_hashGet;
+            _dialogOptions = [ALIVE_generatedTasks,"MilAssault"] call ALIVE_fnc_hashGet;
             _dialogOptions = _dialogOptions select 1;
             _dialogOption = _dialogOptions call BIS_fnc_selectRandom;
 
@@ -101,7 +101,7 @@ switch (_taskState) do {
             _dialog = [_dialogOption,"Parent"] call ALIVE_fnc_hashGet;
             _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
             _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
-            _taskSource = format["%1-Assassination-Parent",_taskID];
+            _taskSource = format["%1-MilAssault-Parent",_taskID];
             _newTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,_taskApplyType,"N","None",_taskSource,false];
 
             _tasks set [count _tasks,_newTask];
@@ -113,7 +113,7 @@ switch (_taskState) do {
             _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
             _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
             _newTaskID = format["%1_c1",_taskID];
-            _taskSource = format["%1-Assault-Travel",_taskID];
+            _taskSource = format["%1-MilAssault-Travel",_taskID];
             _newTask = [_newTaskID,_requestPlayerID,_taskSide,_stagingPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,_taskApplyType,_taskCurrent,_taskID,_taskSource,false];
 
             _tasks set [count _tasks,_newTask];
@@ -125,7 +125,7 @@ switch (_taskState) do {
             _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
             _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
             _newTaskID = format["%1_c2",_taskID];
-            _taskSource = format["%1-Assault-Destroy",_taskID];
+            _taskSource = format["%1-MilAssault-Destroy",_taskID];
             _newTask = [_newTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,"Created",_taskApplyType,"N",_taskID,_taskSource,true];
 
             _tasks set [count _tasks,_newTask];

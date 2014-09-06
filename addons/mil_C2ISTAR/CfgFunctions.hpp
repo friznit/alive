@@ -106,9 +106,14 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateRadioBroadcastForPlayers.sqf";
                 recompile = RECOMPILE;
             };
-            class taskAssault {
-                description = "Task Assault";
-                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskAssault.sqf";
+            class taskMilAssault {
+                description = "Task Mil Assault";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilAssault.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskCivAssault {
+                description = "Task Civ Assault";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskCivAssault.sqf";
                 recompile = RECOMPILE;
             };
             class taskAssassination {
