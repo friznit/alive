@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_multispawn">
+	<English>Multispawn</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_COMMENT">
+	<English>ALiVE Multispawn enables some handy Respawn functionalities! Please see our WiKi for more information!</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_USAGE">
+	<English>
+Description&lt;br /&gt;
+&lt;br /&gt;
+Spawn on Squad: BF style respawn (groupwise)!&lt;br /&gt;
+Insertion: Simulates constant Air insertion (factionwise)!&lt;br /&gt;
+Faction based: Simple faction based Respawn!&lt;br /&gt;
+Group based: Spawns players of a group at their group respawn!&lt;br /&gt;
+Spawn in vehicle: Spawns players in synced HQ vehicle (factionwise)!&lt;br /&gt;
+Spawn in building: Spawns players in a building of choice (factionwise)!&lt;br /&gt;
+&lt;br /&gt;
+Markernames&lt;br /&gt;
+&lt;br /&gt;
+Insertion:&lt;br /&gt;
+ALiVE_SUP_MULTISPAWN_INSERTION_%FACTION%&lt;br /&gt;
+ALiVE_SUP_MULTISPAWN_DESTINATION_%FACTION%&lt;br /&gt;
+&lt;br /&gt;
+Faction based: ALiVE_SUP_MULTISPAWN_RESPAWN_%FACTION%&lt;br /&gt;
+Group based: ALiVE_SUP_MULTISPAWN_RESPAWNGROUP_%GROUPID%&lt;br /&gt;
+Spawn in vehicle: ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%FACTION%&lt;br /&gt;
+Spawn in building: ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%FACTION%&lt;br /&gt;
+	</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_DEBUG">
+	<English>Enable debug:</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_DEBUG_COMMENT">
+	<English>Enables debug</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_TYPE">
+	<English>Type:</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_TYPE_COMMENT">
+	<English>Click Show Info for description and marker names!</English>
+</Key>
+<Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT">
+	<English>Timeout:</English>
+</Key>
+<Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT_COMMENT">
+	<English>Timeout until Respawn is possible!</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_DISABLED">
+	<English>Disable multispawn:</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_DISABLED_COMMENT">
+	<English>XXXX</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_ERROR1">
+	<English>Only one multispawn module can be used</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED">
+	<English>Enemy check:</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED_COMMENT">
+	<English>Allowed to spawn on squadmates even if enemies are near!</English>
+</Key>
+</Container></Package></Project>
