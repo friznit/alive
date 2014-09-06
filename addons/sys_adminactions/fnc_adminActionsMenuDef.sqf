@@ -90,22 +90,26 @@ if (_menuName == "adminActions") then {
 			["adminActions", localize "STR_ALIVE_ADMINACTIONS", "popup"],
 			[
 				[localize "STR_ALIVE_ADMINACTIONS_GHOST_ENABLE",
-					{ player setCaptive true },
+					//{ player setCaptive true },
+					{ MOD(adminActions) setVariable ["GHOST_enabled", true]; [player,true] call ALIVE_fnc_adminGhost; },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_GHOST_COMMENT",
 					"",
 					-1,
 					MOD(adminActions) getVariable ["ghost", 0],
-					!captive player
+					//!captive player
+					!(MOD(adminActions) getVariable ["GHOST_enabled", false])
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_GHOST_DISABLE",
-					{ player setCaptive false },
+				    { MOD(adminActions) setVariable ["GHOST_enabled", false]; [player,false] call ALIVE_fnc_adminGhost; },
+					//{ player setCaptive false },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_GHOST_COMMENT",
 					"",
 					-1,
 					MOD(adminActions) getVariable ["ghost", 0],
-					captive player
+					//captive player
+					(MOD(adminActions) getVariable ["GHOST_enabled", false])
 				],
 
 				[localize "STR_ALIVE_ADMINACTIONS_TELEPORT_ENABLE",

@@ -30,13 +30,21 @@ _taskID = _this select 0;
 
 // if the clients task markers hash exists
 if!(isNil "ALIVE_taskMarkers") then {
+
     // get the markers array for this task
     // on this client, delete any already existing markers
-    _taskMarkers = [ALIVE_taskMarkers,_taskID] call ALIVE_fnc_hashGet;
 
-    {
-        deleteMarkerLocal _x;
-    } forEach _taskMarkers;
+    if(_taskID in (ALIVE_taskMarkers select 1)) then {
 
-    [ALIVE_taskMarkers,_taskID] call ALIVE_fnc_hashRem;
+        _taskMarkers = [ALIVE_taskMarkers,_taskID] call ALIVE_fnc_hashGet;
+
+        {
+            deleteMarkerLocal _x;
+        } forEach _taskMarkers;
+
+        [ALIVE_taskMarkers,_taskID] call ALIVE_fnc_hashRem;
+
+    };
+
+
 };

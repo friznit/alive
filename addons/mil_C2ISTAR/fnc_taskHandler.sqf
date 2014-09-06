@@ -1237,8 +1237,6 @@ switch(_operation) do {
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
 
-                /*
-
                 private ["_tasks","_tasksByGroup","_tasksByPlayer","_activeTasks","_managedTasks"];
                 _tasks = [_logic, "tasks"] call ALIVE_fnc_hashGet;
                 _tasksByGroup = [_logic, "tasksByGroup"] call ALIVE_fnc_hashGet;
@@ -1264,8 +1262,6 @@ switch(_operation) do {
                 _managedTasks call ALIVE_fnc_inspectHash;
                 ["AUTO GENERATE SIDES:"] call ALIVE_fnc_dump;
                 _autoGenerateSides call ALIVE_fnc_inspectHash;
-
-                */
 
             };
             // DEBUG -------------------------------------------------------------------------------------

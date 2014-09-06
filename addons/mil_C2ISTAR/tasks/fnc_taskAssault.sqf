@@ -137,6 +137,7 @@ switch (_taskState) do {
             [_taskParams,"nextTask",_taskIDs select 1] call ALIVE_fnc_hashSet;
             [_taskParams,"taskIDs",_taskIDs] call ALIVE_fnc_hashSet;
             [_taskParams,"dialog",_dialogOption] call ALIVE_fnc_hashSet;
+            [_taskParams,"enemyFaction",_taskEnemyFaction] call ALIVE_fnc_hashSet;
             [_taskParams,"lastState",""] call ALIVE_fnc_hashSet;
 
             // return the created tasks and params
