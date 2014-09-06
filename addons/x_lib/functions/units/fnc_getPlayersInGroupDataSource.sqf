@@ -46,7 +46,7 @@ scopeName "main";
 
 if!(isNil "_group") then {
     {
-        if((isPlayer _x) && (_playerUID != getPlayerUID _x)) then {
+        if(isPlayer _x) then {
             _options set [count _options,format["%1 - %2",name _x, group _x]];
             _values set [count _values,getPlayerUID _x];
         };

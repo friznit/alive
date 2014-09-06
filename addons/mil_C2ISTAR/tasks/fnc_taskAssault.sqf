@@ -34,7 +34,7 @@ switch (_taskState) do {
 	case "init":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
-	    "_taskEnemySide","_enemyClusters","_targetPosition"];
+	    "_taskApplyType","_taskEnemySide","_enemyClusters","_targetPosition"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -45,6 +45,7 @@ switch (_taskState) do {
         _taskPlayers = _task select 7;
         _taskEnemyFaction = _task select 8;
         _taskCurrent = _taskData select 9;
+        _taskApplyType = _taskData select 10;
 
         _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideObjectToNumber;
@@ -101,7 +102,7 @@ switch (_taskState) do {
             _taskTitle = [_dialog,"title"] call ALIVE_fnc_hashGet;
             _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
             _taskSource = format["%1-Assassination-Parent",_taskID];
-            _newTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,"Group","N","None",_taskSource,false];
+            _newTask = [_taskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,_taskApplyType,"N","None",_taskSource,false];
 
             _tasks set [count _tasks,_newTask];
             _taskIDs set [count _taskIDs,_taskID];
@@ -113,7 +114,7 @@ switch (_taskState) do {
             _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
             _newTaskID = format["%1_c1",_taskID];
             _taskSource = format["%1-Assault-Travel",_taskID];
-            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_stagingPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,"Group",_taskCurrent,_taskID,_taskSource,false];
+            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_stagingPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,_state,_taskApplyType,_taskCurrent,_taskID,_taskSource,false];
 
             _tasks set [count _tasks,_newTask];
             _taskIDs set [count _taskIDs,_newTaskID];
@@ -125,7 +126,7 @@ switch (_taskState) do {
             _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
             _newTaskID = format["%1_c2",_taskID];
             _taskSource = format["%1-Assault-Destroy",_taskID];
-            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,"Created","Group","N",_taskID,_taskSource,true];
+            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,"Created",_taskApplyType,"N",_taskID,_taskSource,true];
 
             _tasks set [count _tasks,_newTask];
             _taskIDs set [count _taskIDs,_newTaskID];

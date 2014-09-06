@@ -269,7 +269,8 @@ switch(_operation) do {
 
     };
     case "autoGenerateTasks": {
-        private["_debug","_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskEnemyFaction","_taskAutoGenerate","_autoGenerateSides"];
+        private["_debug","_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskEnemyFaction","_taskAutoGenerate","_autoGenerateSides",
+        "_tasksBySide","_activeTasks","_countActive"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -287,114 +288,58 @@ switch(_operation) do {
             _autoGenerateSides = [_logic,"autoGenerateSides"] call ALIVE_fnc_hashGet;
             [_autoGenerateSides,_taskSide,[_taskAutoGenerate,_taskEnemyFaction]] call ALIVE_fnc_hashSet;
 
-        };
+            _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
+            _sideTasks = [_tasksBySide,_taskSide] call ALIVE_fnc_hashGet;
 
-        /*
+            _activeTasks = [_logic,"activeTasks"] call ALIVE_fnc_hashGet;
+            _countActive = 0;
 
-        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
-
-        _players = [] call BIS_fnc_listPlayers;
-
-        _playerSides = [];
-
-        {
-            _player = _x;
-
-            waitUntil {
-                sleep 1;
-                ((str side _player) != "UNKNOWN")
-            };
-
-            _playerSide = side _player;
-
-            _playerSide = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
-            _playerSide = [_playerSide] call ALIVE_fnc_sideNumberToText;
-
-            if!(_playerSide in _playerSides) then {
-                _playerSides set [count _playerSides,_playerSide];
-            };
-
-        } forEach _players;
-
-        private["_tasksBySide","_side","_sidesToGenerate","_sideTasks","_taskID","_activeTasks","_countActive"];
-
-        _tasksBySide = [_logic, "tasksBySide"] call ALIVE_fnc_hashGet;
-        _sidesToGenerate = [];
-
-        {
-            _side = _x;
-
-            if!(_side in (_tasksBySide select 1)) then {
-
-                ["SIDE: %1 has no tasks..",_side] call ALIVE_fnc_dump;
-
-                _sidesToGenerate set [count _sidesToGenerate, _side];
-            }else{
-                _sideTasks = [_tasksBySide,_side] call ALIVE_fnc_hashGet;
-                _activeTasks = [_logic,"activeTasks"] call ALIVE_fnc_hashGet;
-                _countActive = 0;
-
-                ["SIDE: %1 has tasks..",_side] call ALIVE_fnc_dump;
-
-                {
-                    _taskID = _x;
-                    if(_taskID in (_activeTasks select 1)) then {
-                        _countActive = _countActive + 1;
-
-                        ["SIDE: %1 has an active task: %2",_side,_taskID] call ALIVE_fnc_dump;
-                    };
-                } forEach (_sideTasks select 1);
-
-                if(_countActive == 0) then {
-
-                    ["SIDE: %1 has tasks, but none are active..",_side,_countActive] call ALIVE_fnc_dump;
-
-                    _sidesToGenerate set [count _sidesToGenerate, _side];
+            {
+                _taskID = _x;
+                if(_taskID in (_activeTasks select 1)) then {
+                    _countActive = _countActive + 1;
                 };
+            } forEach (_sideTasks select 1);
+
+            if(_countActive == 0) then {
+
+                private["_sidePlayers","_allGeneratedTasks","_taskType","_locationTypes","_taskLocationType","_taskLocation","_taskCurrent","_taskApplyType"];
+
+                _sidePlayers = [_taskSide] call ALiVE_fnc_getPlayersDataSource;
+                _sidePlayers = [_sidePlayers select 1,_sidePlayers select 0];
+
+                _allGeneratedTasks = ALIVE_generatedTasks select 1;
+                _taskType = _allGeneratedTasks call BIS_fnc_selectRandom;
+
+                _locationTypes = ["Short","Medium","Long"];
+                _taskLocationType = _locationTypes call BIS_fnc_selectRandom;
+                _taskLocation = [];
+
+                _taskCurrent = "Y";
+                _taskApplyType = "Side";
+
+                _task = [_taskID,_requestPlayerID,_taskSide,_taskFaction,_taskType,_taskLocationType,_taskLocation,_sidePlayers,_taskEnemyFaction,_taskCurrent,_taskApplyType];
+
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALiVE Task Handler - Auto generate task for side: %1",_taskSide] call ALIVE_fnc_dump;
+                    _task call ALIVE_fnc_inspectArray;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                [_logic,"generateTask",_task] call MAINCLASS;
             };
 
-        } forEach _playerSides;
-
-
-        // DEBUG -------------------------------------------------------------------------------------
-        if(_debug) then {
-            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-            ["ALiVE Task Handler - Auto generate tasks"] call ALIVE_fnc_dump;
-            ["PLAYER SIDES:"] call ALIVE_fnc_dump;
-            _playerSides call ALIVE_fnc_inspectArray;
-            ["SIDES tO GENERATE TASKS FOR:"] call ALIVE_fnc_dump;
-            _sidesToGenerate call ALIVE_fnc_inspectArray;
         };
-        // DEBUG -------------------------------------------------------------------------------------
-
-
-        private["_task","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskType","_taskLocationType",
-        "_taskLocation","_taskPlayers","_taskEnemyFaction","_taskCurrent"];
-
-        {
-            _taskID = _taskData select 0;
-            _requestPlayerID = _taskData select 1;
-            _taskSide = _x;
-            _taskFaction = _taskData select 3;
-            _taskType = _taskData select 4;
-            _taskLocationType = _taskData select 5;
-            _taskLocation = _taskData select 6;
-            _taskPlayers = _taskData select 7;
-            _taskEnemyFaction = _taskData select 8;
-            _taskCurrent = "Y";
-
-            _task = [_taskID,_requestPlayerID,_taskSide,_taskFaction,_taskType,_taskLocationType,_taskLocation,_taskPlayers,_taskEnemyFaction,_taskCurrent];
-
-            [_logic,"generateTask",_task] call MAINCLASS;
-
-        } forEach _sidesToGenerate;
-        */
 
     };
     case "generateTask": {
 
         private["_debug","_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskType","_taskLocationType",
-        "_taskLocation","_taskPlayers","_taskEnemyFaction","_taskCurrent","_player","_position","_taskSet"];
+        "_taskLocation","_taskPlayers","_taskEnemyFaction","_taskCurrent","_taskApplyType","_player","_position","_taskSet"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -416,8 +361,17 @@ switch(_operation) do {
 
             if((_taskLocationType == "Short") || (_taskLocationType == "Medium") || (_taskLocationType == "Long")) then {
                 _player = [_requestPlayerID] call ALIVE_fnc_getPlayerByUID;
-                _position = position _player;
-                _taskData set [6,_position];
+
+                if!(isNull _player) then {
+                    _position = position _player;
+                    _taskData set [6,_position];
+                }else{
+                    _player = (_taskPlayers select 0) call BIS_fnc_selectRandom;
+                    _player = [_player] call ALIVE_fnc_getPlayerByUID;
+                    _position = position _player;
+                    _taskData set [6,_position];
+                };
+
             };
 
             _taskSet = ["init", _taskID, _taskData, [], _debug] call (call compile format["ALIVE_fnc_task%1",_taskType]);
@@ -440,14 +394,14 @@ switch(_operation) do {
 
     };
     case "syncTasks": {
-        private["_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_autoGenerateSides","_autoGenerateSide","_autoGenerateOn","_dispatchTasks","_player"];
+        private["_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_player"];
 
         if(typeName _args == "ARRAY") then {
 
             _playerID = _eventData select 0;
             _groupID = _eventData select 0;
 
-            _player = [_requestPlayerID] call ALIVE_fnc_getPlayerByUID;
+            _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
             waitUntil {
                 sleep 1;
@@ -459,20 +413,21 @@ switch(_operation) do {
             _playerTasks = [_logic, "getTasksByPlayer", _playerID] call MAINCLASS;
             _groupTasks = [_logic, "getTasksByGroup", _groupID] call MAINCLASS;
             _sideTasks = [_logic, "getTasksBySide", _playerSide] call MAINCLASS;
-            _autoGenerateSides = [_logic,"autoGenerateSides"] call ALIVE_fnc_hashGet;
-            _autoGenerateSide = [_autoGenerateSides,_playerSide] call ALIVE_fnc_hashGet;
-            _autoGenerateOn = _autoGenerateSide select 0;
 
             _dispatchTasks = [];
 
-            if(_autoGenerateOn) then {
-                if(count _sideTasks > 0) then {
+            if(count _sideTasks > 0) then {
 
-                    {
+                {
+                    private ["_applyType"];
+                    _applyType = _x select 9;
+
+                    if(_applyType == "Side") then {
                         _dispatchTasks set [count _dispatchTasks,_x];
-                    } forEach _sideTasks;
+                    };
 
-                };
+                } forEach _sideTasks;
+
             };
 
             if(count _playerTasks > 0) then {
@@ -674,7 +629,7 @@ switch(_operation) do {
         private["_task","_taskID","_taskSide","_taskPlayers","_taskApplyType","_tasks","_tasksBySide","_sideTasks",
         "_tasksByPlayer","_tasksByGroup","_group","_groupTasks","_playerTasks","_player","_tasksToDispatch","_createTasks",
         "_taskCurrent","_activeTasks","_activeTasksToRemove","_activeTaskID","_activeTask","_taskSource","_managedTasks",
-        "_isManaging","_sidePlayers"];
+        "_isManaging","_sidePlayers","_groupPlayerOptions","_groupPlayerValues","_currentGroupPlayers","_currentGroupPlayerOptions","_currentGroupPlayerValues"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -709,7 +664,38 @@ switch(_operation) do {
                 _sidePlayers = [_taskSide] call ALiVE_fnc_getPlayersDataSource;
                 _task set [7, [_sidePlayers select 1,_sidePlayers select 0]];
                 _taskPlayers = _sidePlayers select 1;
-                ["APPLY SIDE!:%1",_taskPlayers] call ALIVE_fnc_dump;
+            };
+
+            // if the task is set to group application
+            // replace the current player list with all
+            // players from the groups
+            if(_taskApplyType == "Group") then {
+
+                _groupPlayerOptions = [];
+                _groupPlayerValues = [];
+
+                {
+                    _currentGroupPlayers = [_x] call ALiVE_fnc_getPlayersInGroupDataSource;
+                    _currentGroupPlayerOptions = _currentGroupPlayers select 0;
+                    _currentGroupPlayerValues = _currentGroupPlayers select 1;
+
+                    {
+                        if!(_x in _groupPlayerOptions) then {
+                            _groupPlayerOptions set [count _groupPlayerOptions, _x];
+                        };
+                    } forEach _currentGroupPlayerOptions;
+
+                    {
+                        if!(_x in _groupPlayerValues) then {
+                            _groupPlayerValues set [count _groupPlayerValues, _x];
+                        };
+                    } forEach _currentGroupPlayerValues;
+
+                } forEach _taskPlayers;
+
+                _task set [7, [_groupPlayerValues,_groupPlayerOptions]];
+                _taskPlayers = _groupPlayerValues;
+
             };
 
             // store in main tasks hash
@@ -831,7 +817,8 @@ switch(_operation) do {
         "_previousTaskApplyType","_tasks","_tasksBySide","_sideTasks","_tasksByPlayer","_player","_group","_countRemoved",
         "_previousGroups","_updatedGroups","_tasksToDispatch","_updateTasks","_deleteTasks",
         "_taskCurrent","_activeTasks","_activeTasksToRemove","_activeTaskID","_tasksBySide","_sideTasks",
-        "_activeTask","_previousTaskCurrent","_taskSource","_managedTasks","_isManaging","_sidePlayers"];
+        "_activeTask","_previousTaskCurrent","_taskSource","_managedTasks","_isManaging","_sidePlayers",
+        "_groupPlayerOptions","_groupPlayerValues","_currentGroupPlayers","_currentGroupPlayerOptions","_currentGroupPlayerValues"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -862,7 +849,38 @@ switch(_operation) do {
                 _sidePlayers = [_taskSide] call ALiVE_fnc_getPlayersDataSource;
                 _updatedTask set [7, [_sidePlayers select 1,_sidePlayers select 0]];
                 _updatedTaskPlayers = _sidePlayers select 1;
-                ["APPLY SIDE!:%1",_updatedTaskPlayers] call ALIVE_fnc_dump;
+            };
+
+            // if the task is set to group application
+            // replace the current player list with all
+            // players from the groups
+            if(_taskApplyType == "Group") then {
+
+                _groupPlayerOptions = [];
+                _groupPlayerValues = [];
+
+                {
+                    _currentGroupPlayers = [_x] call ALiVE_fnc_getPlayersInGroupDataSource;
+                    _currentGroupPlayerOptions = _currentGroupPlayers select 0;
+                    _currentGroupPlayerValues = _currentGroupPlayers select 1;
+
+                    {
+                        if!(_x in _groupPlayerOptions) then {
+                            _groupPlayerOptions set [count _groupPlayerOptions, _x];
+                        };
+                    } forEach _currentGroupPlayerOptions;
+
+                    {
+                        if!(_x in _groupPlayerValues) then {
+                            _groupPlayerValues set [count _groupPlayerValues, _x];
+                        };
+                    } forEach _currentGroupPlayerValues;
+
+                } forEach _updatedTaskPlayers;
+
+                _updatedTask set [7, [_groupPlayerValues,_groupPlayerOptions]];
+                _updatedTaskPlayers = _groupPlayerValues;
+
             };
 
             // if the task is set to group application
@@ -1219,6 +1237,8 @@ switch(_operation) do {
             // DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
 
+                /*
+
                 private ["_tasks","_tasksByGroup","_tasksByPlayer","_activeTasks","_managedTasks"];
                 _tasks = [_logic, "tasks"] call ALIVE_fnc_hashGet;
                 _tasksByGroup = [_logic, "tasksByGroup"] call ALIVE_fnc_hashGet;
@@ -1244,6 +1264,8 @@ switch(_operation) do {
                 _managedTasks call ALIVE_fnc_inspectHash;
                 ["AUTO GENERATE SIDES:"] call ALIVE_fnc_dump;
                 _autoGenerateSides call ALIVE_fnc_inspectHash;
+
+                */
 
             };
             // DEBUG -------------------------------------------------------------------------------------
@@ -1364,7 +1386,8 @@ switch(_operation) do {
         _handle = [_logic, _debug] spawn {
 
             private ["_logic","_debug","_managedTasks","_activeTasks","_managedTasksToRemove","_managedTaskID","_managedTaskParams",
-            "_taskSource","_taskParent","_taskParams","_taskID","_task","_nextTask","_taskState"];
+            "_taskSide","_taskSource","_taskParent","_taskParams","_taskID","_task","_nextTask","_taskState","_autoGenerateSides",
+            "_sideAutoGeneration"];
 
             _logic = _this select 0;
             _debug = _this select 1;
@@ -1395,6 +1418,7 @@ switch(_operation) do {
                     {
                         _taskID = _x;
                         _task = [_logic, "getTask", _taskID] call MAINCLASS;
+                        _taskSide = _task select 2;
                         _taskSource = _task select 12;
                         _taskSource = [_taskSource, "-"] call CBA_fnc_split;
 
@@ -1442,6 +1466,31 @@ switch(_operation) do {
 
                                 [_logic, "updateTask", _task] call MAINCLASS;
                                 [_logic, "updateTaskState", _task] call MAINCLASS;
+
+                                ["TASK COMPLETE!"] call ALIVE_fnc_dump;
+
+                                _autoGenerateSides = [_logic,"autoGenerateSides"] call ALIVE_fnc_hashGet;
+                                _sideAutoGeneration = [_autoGenerateSides,_taskSide] call ALIVE_fnc_hashGet;
+
+                                ["SIDE AUTO GENERATION: %1",_sideAutoGeneration] call ALIVE_fnc_dump;
+
+                                if(_sideAutoGeneration select 0) then {
+
+                                    ["GENERATE FUCKERS!"] call ALIVE_fnc_dump;
+
+                                    private ["_requestPlayerID","_taskFaction","_taskEnemyFaction","_generate"];
+
+                                    _requestPlayerID = _task select 1;
+                                    _taskFaction = _task select 4;
+                                    _taskEnemyFaction = [_taskParams,"enemyFaction"] call ALIVE_fnc_hashGet;
+
+                                    _generate = [format["%1_%2",_taskSide,time],_requestPlayerID,_taskSide,_taskFaction,_taskEnemyFaction,true];
+
+                                    ["GENERATE:"] call ALIVE_fnc_dump;
+                                    _generate call ALIVE_fnc_inspectArray;
+
+                                    [_logic,"autoGenerateTasks",_generate] call MAINCLASS;
+                                };
 
                             }
 

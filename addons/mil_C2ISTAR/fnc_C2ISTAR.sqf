@@ -792,6 +792,8 @@ switch(_operation) do {
                         _selectGroupButton ctrlShow true;
 
                         _selectGroupButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_SELECT_GROUP_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+                        [_logic,"taskingState",_taskingState] call MAINCLASS;
                     };
 
                 };
@@ -811,21 +813,28 @@ switch(_operation) do {
 
                     if(count (_playersInGroup select 0) > 0) then {
 
-                        private ["_selectedPlayerListOptions","_selectedPlayerListValues","_selectedPlayerList"];
+                        private ["_selectedPlayerListOptions","_selectedPlayerListValues","_selectedPlayerList","_currentGroupPlayers","_currentGroupPlayerOptions","_currentGroupPlayerValues"];
 
                         _selectedPlayerListOptions = [_taskingState,"selectedPlayerListOptions"] call ALIVE_fnc_hashGet;
                         _selectedPlayerListValues = [_taskingState,"selectedPlayerListValues"] call ALIVE_fnc_hashGet;
 
                         _selectedPlayerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayerList);
 
-                        {
-                            if!((_x select 0) in _selectedPlayerListOptions) then {
-                                _selectedPlayerListOptions set [count _selectedPlayerListOptions,_x select 0];
-                                _selectedPlayerListValues set [count _selectedPlayerListValues,_x select 1];
+                        _currentGroupPlayerOptions = _playersInGroup select 0;
+                        _currentGroupPlayerValues = _playersInGroup select 1;
 
-                                _selectedPlayerList lbAdd format["%1", _x select 0];
+                        {
+                            if!(_x in _selectedPlayerListOptions) then {
+                                _selectedPlayerListOptions set [count _selectedPlayerListOptions,_x];
+                                _selectedPlayerList lbAdd format["%1", _x];
                             };
-                        } foreach _playersInGroup;
+                        } forEach _currentGroupPlayerOptions;
+
+                        {
+                            if!(_x in _selectedPlayerListValues) then {
+                                _selectedPlayerListValues set [count _selectedPlayerListValues,_x];
+                            };
+                        } forEach _currentGroupPlayerValues;
 
                         [_taskingState,"selectedPlayerListOptions",_selectedPlayerListOptions] call ALIVE_fnc_hashSet;
                         [_taskingState,"selectedPlayerListValues",_selectedPlayerListValues] call ALIVE_fnc_hashSet;
@@ -1031,14 +1040,20 @@ switch(_operation) do {
 
                     _playerID = getPlayerUID player;
                     _taskID = _currentTask select 0;
+
+                    _selectedPlayersValues = [_taskingState,"currentTaskSelectedPlayerListOptions"] call ALIVE_fnc_hashGet;
+                    _selectedPlayersOptions = [_taskingState,"currentTaskSelectedPlayerListValues"] call ALIVE_fnc_hashGet;
+
+                    /*
                     _selectedPlayerListOptions = _currentTask select 7 select 1;
                     _selectedPlayerListValues = _currentTask select 7 select 0;
+                    */
 
                     _newSelectedPlayerListOptions = [];
-                    _newSelectedPlayerListOptions = _newSelectedPlayerListOptions + _selectedPlayerListOptions;
+                    _newSelectedPlayerListOptions = _newSelectedPlayerListOptions + _selectedPlayersValues;
 
                     _newSelectedPlayerListValues = [];
-                    _newSelectedPlayerListValues = _newSelectedPlayerListValues + _selectedPlayerListValues;
+                    _newSelectedPlayerListValues = _newSelectedPlayerListValues + _selectedPlayersOptions;
 
                     _selectedPlayers = [];
                     _selectedPlayers set [0, _newSelectedPlayerListValues];
@@ -1176,21 +1191,28 @@ switch(_operation) do {
 
                     if(count (_playersInGroup select 0) > 0) then {
 
-                        private ["_selectedPlayerListOptions","_selectedPlayerListValues","_selectedPlayerList"];
+                        private ["_selectedPlayerListOptions","_selectedPlayerListValues","_selectedPlayerList","_currentGroupPlayers","_currentGroupPlayerOptions","_currentGroupPlayerValues"];
 
                         _selectedPlayerListOptions = [_taskingState,"currentTaskSelectedPlayerListOptions"] call ALIVE_fnc_hashGet;
                         _selectedPlayerListValues = [_taskingState,"currentTaskSelectedPlayerListValues"] call ALIVE_fnc_hashGet;
 
                         _selectedPlayerList = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskSelectedPlayerList);
 
-                        {
-                            if!((_x select 0) in _selectedPlayerListOptions) then {
-                                _selectedPlayerListOptions set [count _selectedPlayerListOptions,_x select 0];
-                                _selectedPlayerListValues set [count _selectedPlayerListValues,_x select 1];
+                        _currentGroupPlayerOptions = _playersInGroup select 0;
+                        _currentGroupPlayerValues = _playersInGroup select 1;
 
-                                _selectedPlayerList lbAdd format["%1", _x select 0];
+                        {
+                            if!(_x in _selectedPlayerListOptions) then {
+                                _selectedPlayerListOptions set [count _selectedPlayerListOptions,_x];
+                                _selectedPlayerList lbAdd format["%1", _x];
                             };
-                        } foreach _playersInGroup;
+                        } forEach _currentGroupPlayerOptions;
+
+                        {
+                            if!(_x in _selectedPlayerListValues) then {
+                                _selectedPlayerListValues set [count _selectedPlayerListValues,_x];
+                            };
+                        } forEach _currentGroupPlayerValues;
 
                         [_taskingState,"currentTaskSelectedPlayerListOptions",_selectedPlayerListOptions] call ALIVE_fnc_hashSet;
                         [_taskingState,"currentTaskSelectedPlayerListValues",_selectedPlayerListValues] call ALIVE_fnc_hashSet;
@@ -1706,9 +1728,11 @@ switch(_operation) do {
     };
     case "enableTasking": {
 
-        private ["_taskingState","_title","_backButton","_abortButton","_addTaskButton","_generateTaskButton","_autoGenerateTaskButton"];
+        private ["_taskingState","_autoGenerate","_title","_backButton","_abortButton","_addTaskButton","_generateTaskButton","_autoGenerateTaskButton"];
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
+
+        _autoGenerate = [_taskingState,"autoGenerateTasks"] call ALIVE_fnc_hashGet;
 
         //_taskingState call ALIVE_fnc_inspectHash;
 
@@ -1732,6 +1756,12 @@ switch(_operation) do {
 
         _autoGenerateTaskButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAutoGenerateButton);
         _autoGenerateTaskButton ctrlShow true;
+
+        if(_autoGenerate) then {
+            _autoGenerateTaskButton ctrlSetText "Disable auto generated tasks for my side";
+        }else{
+            _autoGenerateTaskButton ctrlSetText "Auto generate tasks for my side";
+        };
 
         _autoGenerateTaskButton ctrlSetEventHandler ["MouseButtonClick", "['TASK_AUTO_GENERATE_BUTTON_CLICK',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
