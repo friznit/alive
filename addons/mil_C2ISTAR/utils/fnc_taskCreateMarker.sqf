@@ -103,7 +103,7 @@ _markerBrush = if(count _this > 8) then {_this select 8} else {"SOLID"};
 if(isNil "ALIVE_taskMarkers") then {
     ALIVE_taskMarkers = [] call ALIVE_fnc_hashCreate;
     [ALIVE_taskMarkers,_taskID,[]] call ALIVE_fnc_hashSet;
-}
+};
 
 if(_taskID in (ALIVE_taskMarkers select 1)) then {
 
@@ -119,7 +119,7 @@ if(_taskID in (ALIVE_taskMarkers select 1)) then {
 
     [ALIVE_taskMarkers,_taskID,[]] call ALIVE_fnc_hashSet;
 
-}
+};
 
 // create the marker
 _m = createMarkerLocal [format["%1_m1",_taskID], _position];

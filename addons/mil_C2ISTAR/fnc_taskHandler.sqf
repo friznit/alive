@@ -416,36 +416,42 @@ switch(_operation) do {
 
             _dispatchTasks = [];
 
-            if(count _sideTasks > 0) then {
+            if!(isNil "_sideTasks") then {
+                if(count _sideTasks > 0) then {
 
-                {
-                    private ["_applyType"];
-                    _applyType = _x select 9;
+                    {
+                        private ["_applyType"];
+                        _applyType = _x select 9;
 
-                    if(_applyType == "Side") then {
-                        _dispatchTasks set [count _dispatchTasks,_x];
-                    };
+                        if(_applyType == "Side") then {
+                            _dispatchTasks set [count _dispatchTasks,_x];
+                        };
 
-                } forEach _sideTasks;
+                    } forEach _sideTasks;
 
+                };
             };
 
-            if(count _playerTasks > 0) then {
+            if!(isNil "_playerTasks") then {
+                if(count _playerTasks > 0) then {
 
-                {
-                    _dispatchTasks set [count _dispatchTasks,_x];
-                } forEach _playerTasks;
+                    {
+                        _dispatchTasks set [count _dispatchTasks,_x];
+                    } forEach _playerTasks;
 
+                };
             };
 
-            if(count _groupTasks > 0) then {
+            if!(isNil "_groupTasks") then {
+                if(count _groupTasks > 0) then {
 
-                {
-                    if!(_x in _dispatchTasks) then {
-                        _dispatchTasks set [count _dispatchTasks,_x];
-                    };
-                } forEach _groupTasks;
+                    {
+                        if!(_x in _dispatchTasks) then {
+                            _dispatchTasks set [count _dispatchTasks,_x];
+                        };
+                    } forEach _groupTasks;
 
+                };
             };
 
             if(count _dispatchTasks > 0) then {
@@ -1463,16 +1469,12 @@ switch(_operation) do {
                                 [_logic, "updateTask", _task] call MAINCLASS;
                                 [_logic, "updateTaskState", _task] call MAINCLASS;
 
-                                ["TASK COMPLETE!"] call ALIVE_fnc_dump;
-
                                 _autoGenerateSides = [_logic,"autoGenerateSides"] call ALIVE_fnc_hashGet;
                                 _sideAutoGeneration = [_autoGenerateSides,_taskSide] call ALIVE_fnc_hashGet;
 
-                                ["SIDE AUTO GENERATION: %1",_sideAutoGeneration] call ALIVE_fnc_dump;
-
                                 if(_sideAutoGeneration select 0) then {
 
-                                    ["GENERATE FUCKERS!"] call ALIVE_fnc_dump;
+                                    sleep 10;
 
                                     private ["_requestPlayerID","_taskFaction","_taskEnemyFaction","_generate"];
 
@@ -1481,9 +1483,6 @@ switch(_operation) do {
                                     _taskEnemyFaction = [_taskParams,"enemyFaction"] call ALIVE_fnc_hashGet;
 
                                     _generate = [format["%1_%2",_taskSide,time],_requestPlayerID,_taskSide,_taskFaction,_taskEnemyFaction,true];
-
-                                    ["GENERATE:"] call ALIVE_fnc_dump;
-                                    _generate call ALIVE_fnc_inspectArray;
 
                                     [_logic,"autoGenerateTasks",_generate] call MAINCLASS;
                                 };
