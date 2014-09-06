@@ -372,7 +372,7 @@ private["_options","_taskData","_taskData"];
 
 ALIVE_generatedTasks = [] call ALIVE_fnc_hashCreate;
 
-// Assault Task
+// Military Objective Assault Task
 
 _options = [];
 
@@ -418,7 +418,29 @@ _taskData = [] call ALIVE_fnc_hashCreate;
 
 _options set [count _options,_tasksData];
 
-[ALIVE_generatedTasks, "Assault", ["Objective Assault",_options]] call ALIVE_fnc_hashSet;
+[ALIVE_generatedTasks, "MilAssault", ["Military Objective Assault",_options]] call ALIVE_fnc_hashSet;
+
+// Civilian Objective Assault Task
+
+_options = [];
+
+_tasksData = [] call ALIVE_fnc_hashCreate;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Attack the civilian objective"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Attack the enemy held civlian objective."] call ALIVE_fnc_hashSet;
+[_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Clear the town"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Clear all enemy forces from the town."] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["PLAYERS","At staging area"],["HQ","Clear the town"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","Town cleared of enemy forces"],["HQ","Well done!"]]] call ALIVE_fnc_hashSet;
+[_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_tasksData];
+
+[ALIVE_generatedTasks, "CivAssault", ["Civilian Objective Assault",_options]] call ALIVE_fnc_hashSet;
 
 // HVT Task
 

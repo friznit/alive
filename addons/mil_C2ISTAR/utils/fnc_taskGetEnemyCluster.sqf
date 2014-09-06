@@ -26,8 +26,14 @@ private ["_taskLocation","_taskLocationType","_side","_enemyClusters","_debug","
 _taskLocation = _this select 0;
 _taskLocationType = _this select 1;
 _side = _this select 2;
+_type = if(count _this > 3) then {_this select 3} else {""};
 
-_enemyClusters = [ALIVE_battlefieldAnalysis,"getClustersOwnedBySide",[_side]] call ALIVE_fnc_battlefieldAnalysis;
+if(_type != "") then {
+    _enemyClusters = [ALIVE_battlefieldAnalysis,"getClustersOwnedBySideAndType",[_side,_type]] call ALIVE_fnc_battlefieldAnalysis;
+}else{
+    _enemyClusters = [ALIVE_battlefieldAnalysis,"getClustersOwnedBySide",[_side]] call ALIVE_fnc_battlefieldAnalysis;
+};
+
 
 _targetPosition = [];
 

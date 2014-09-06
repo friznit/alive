@@ -287,31 +287,35 @@ switch(_operation) do {
 
     };
     case "OPCOM_RECON": {
-        private["_eventID","_eventData","_side","_position","_type","_clusterID"];
+        private["_eventID","_eventData","_side","_position","_size","_type","_priority","_clusterID"];
 
         _eventID = _args select 0;
         _eventData = _args select 1;
 
         _side = _eventData select 0;
         _position = _eventData select 1 select 2 select 1;
+        _size = _eventData select 1 select 2 select 2;
         _type = _eventData select 1 select 2 select 3;
+        _priority = _eventData select 1 select 2 select 4;
         _clusterID = _eventData select 1 select 2 select 6;
 
-        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type]]] call MAINCLASS;
+        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type,_size,_priority]]] call MAINCLASS;
 
     };
     case "OPCOM_CAPTURE": {
-        private["_eventID","_eventData","_side","_position","_type","_clusterID"];
+        private["_eventID","_eventData","_side","_position","_size","_type","_priority","_clusterID"];
 
         _eventID = _args select 0;
         _eventData = _args select 1;
 
         _side = _eventData select 0;
         _position = _eventData select 1 select 2 select 1;
+        _size = _eventData select 1 select 2 select 2;
         _type = _eventData select 1 select 2 select 3;
+        _priority = _eventData select 1 select 2 select 4;
         _clusterID = _eventData select 1 select 2 select 6;
 
-        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type]]] call MAINCLASS;
+        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type,_size,_priority]]] call MAINCLASS;
 
     };
     case "OPCOM_DEFEND": {
@@ -322,28 +326,32 @@ switch(_operation) do {
 
         _side = _eventData select 0;
         _position = _eventData select 1 select 2 select 1;
+        _size = _eventData select 1 select 2 select 2;
         _type = _eventData select 1 select 2 select 3;
+        _priority = _eventData select 1 select 2 select 4;
         _clusterID = _eventData select 1 select 2 select 6;
 
-        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type]]] call MAINCLASS;
+        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type,_size,_priority]]] call MAINCLASS;
 
     };
     case "OPCOM_RESERVE": {
-        private["_eventID","_eventData","_side","_position","_type","_clusterID"];
+        private["_eventID","_eventData","_side","_position","_size","_type","_priority","_clusterID"];
 
         _eventID = _args select 0;
         _eventData = _args select 1;
 
         _side = _eventData select 0;
         _position = _eventData select 1 select 2 select 1;
+        _size = _eventData select 1 select 2 select 2;
         _type = _eventData select 1 select 2 select 3;
+        _priority = _eventData select 1 select 2 select 4;
         _clusterID = _eventData select 1 select 2 select 6;
 
-        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type]]] call MAINCLASS;
+        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type,_size,_priority]]] call MAINCLASS;
 
     };
     case "storeClusterEventToSector": {
-        private["_clusterID","_eventData","_type","_position","_side","_clusterType","_eventSector","_eventSectorID",
+        private["_clusterID","_eventData","_type","_position","_side","_clusterType","_size","_priority","_eventSector","_eventSectorID",
         "_sectorData","_activeClusters","_activeCluster"];
 
         _clusterID = _args select 0;
@@ -353,6 +361,8 @@ switch(_operation) do {
         _position = _eventData select 2;
         _side = _eventData select 3;
         _clusterType = _eventData select 4;
+        _size = _eventData select 5;
+        _priority = _eventData select 6;
 
         _eventSector = [ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
         _eventSectorID = [_eventSector,"id"] call ALIVE_fnc_hashGet;
@@ -369,6 +379,8 @@ switch(_operation) do {
             _activeCluster = [] call ALIVE_fnc_hashCreate;
             _activeCluster = [_activeCluster,"position",_position] call ALIVE_fnc_hashSet;
             _activeCluster = [_activeCluster,"type",_clusterType] call ALIVE_fnc_hashSet;
+            _activeCluster = [_activeCluster,"size",_size] call ALIVE_fnc_hashSet;
+            _activeCluster = [_activeCluster,"priority",_priority] call ALIVE_fnc_hashSet;
             _activeCluster = [_activeCluster,"owner",""] call ALIVE_fnc_hashSet;
             _activeCluster = [_activeCluster,"lastEvent",""] call ALIVE_fnc_hashSet;
             _activeCluster = [_activeCluster,"lastEventTime",time] call ALIVE_fnc_hashSet;
@@ -425,6 +437,30 @@ switch(_operation) do {
             {
                 _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
                 if(_owner == _side) then {
+                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
+                };
+            } forEach (_clusters select 2);
+        } forEach (_activeSectors select 2);
+
+        _result = _clustersOwnedBySide;
+    };
+    case "getClustersOwnedBySideAndType": {
+        private["_side","_type","_clustersOwnedBySide","_activeSectors","_clusters","_owner","_clusterType"];
+
+        _side = _args select 0;
+        _type = _args select 1;
+        _clustersOwnedBySide = [];
+
+        _activeSectors = [_logic, "activeSectors"] call ALIVE_fnc_hashGet;
+
+        {
+            _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
+            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
+
+            {
+                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
+                _clusterType = [_x,"type"] call ALIVE_fnc_hashGet;
+                if(_owner == _side && _type == _clusterType) then {
                     _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
                 };
             } forEach (_clusters select 2);
