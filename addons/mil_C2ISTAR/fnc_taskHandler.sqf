@@ -394,14 +394,16 @@ switch(_operation) do {
 
     };
     case "syncTasks": {
-        private["_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_player"];
+        private["_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_dispatchIDs","_player"];
 
         if(typeName _args == "ARRAY") then {
 
             _playerID = _eventData select 0;
-            _groupID = _eventData select 0;
+            _groupID = _eventData select 1;
 
             _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+            _groupID = [_groupID, " ", "_"] call CBA_fnc_replace;
 
             waitUntil {
                 sleep 1;
@@ -409,22 +411,44 @@ switch(_operation) do {
             };
 
             _playerSide = side _player;
+            _playerSide = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
+            _playerSide = [_playerSide] call ALIVE_fnc_sideNumberToText;
 
             _playerTasks = [_logic, "getTasksByPlayer", _playerID] call MAINCLASS;
             _groupTasks = [_logic, "getTasksByGroup", _groupID] call MAINCLASS;
             _sideTasks = [_logic, "getTasksBySide", _playerSide] call MAINCLASS;
 
+
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                ["ALiVE Task Handler - Sync Connecting Player: %1 %2 %3 %4",_playerID,_groupID,_player,_playerSide] call ALIVE_fnc_dump;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
+
+
             _dispatchTasks = [];
+            _dispatchIDs = [];
 
             if!(isNil "_sideTasks") then {
+
                 if(count _sideTasks > 0) then {
 
                     {
-                        private ["_applyType"];
+                        private ["_taskID","_applyType"];
+                        _taskID = _x select 0;
                         _applyType = _x select 9;
 
                         if(_applyType == "Side") then {
                             _dispatchTasks set [count _dispatchTasks,_x];
+                            _dispatchIDs set [count _dispatchIDs,_taskID];
+
+                            // DEBUG -------------------------------------------------------------------------------------
+                            if(_debug) then {
+                                ["ALiVE Task Handler - Sync Side Task: %1",_x] call ALIVE_fnc_dump;
+                            };
+                            // DEBUG -------------------------------------------------------------------------------------
+
                         };
 
                     } forEach _sideTasks;
@@ -436,7 +460,25 @@ switch(_operation) do {
                 if(count _playerTasks > 0) then {
 
                     {
-                        _dispatchTasks set [count _dispatchTasks,_x];
+                        private ["_taskID","_taskSide"];
+                        _taskID = _x select 0;
+                        _taskSide = _x select 2;
+
+                        if(_playerSide == _taskSide) then {
+
+                            if!(_taskID in _dispatchIDs) then {
+                                _dispatchTasks set [count _dispatchTasks,_x];
+                                _dispatchIDs set [count _dispatchIDs,_taskID];
+
+                                // DEBUG -------------------------------------------------------------------------------------
+                                if(_debug) then {
+                                    ["ALiVE Task Handler - Sync Player Task: %1",_x] call ALIVE_fnc_dump;
+                                };
+                                // DEBUG -------------------------------------------------------------------------------------
+
+                            };
+
+                        };
                     } forEach _playerTasks;
 
                 };
@@ -446,8 +488,18 @@ switch(_operation) do {
                 if(count _groupTasks > 0) then {
 
                     {
-                        if!(_x in _dispatchTasks) then {
+                        private ["_taskID"];
+                        _taskID = _x select 0;
+
+                        if!(_taskID in _dispatchIDs) then {
                             _dispatchTasks set [count _dispatchTasks,_x];
+                            _dispatchIDs set [count _dispatchIDs,_taskID];
+
+                            // DEBUG -------------------------------------------------------------------------------------
+                            if(_debug) then {
+                                ["ALiVE Task Handler - Sync Group Task: %1",_x] call ALIVE_fnc_dump;
+                            };
+                            // DEBUG -------------------------------------------------------------------------------------
                         };
                     } forEach _groupTasks;
 
@@ -798,6 +850,8 @@ switch(_operation) do {
                     if !(isNull _player) then {
                         _group = group _player;
 
+                        _group = [format["%1",_group], " ", "_"] call CBA_fnc_replace;
+
                         if(_group in (_tasksByGroup select 1)) then {
 
                             _groupTasks = [_tasksByGroup, _group] call ALIVE_fnc_hashGet;
@@ -996,6 +1050,8 @@ switch(_operation) do {
                             if !(isNull _player) then {
                                 _group = group _player;
 
+                                _group = [format["%1",_group], " ", "_"] call CBA_fnc_replace;
+
                                 if!(_group in _previousGroups) then {
                                     _previousGroups set [count _previousGroups, _group];
                                 };
@@ -1012,6 +1068,8 @@ switch(_operation) do {
 
                             if !(isNull _player) then {
                                 _group = group _player;
+
+                                _group = [format["%1",_group], " ", "_"] call CBA_fnc_replace;
 
                                 if!(_group in _updatedGroups) then {
                                     _updatedGroups set [count _updatedGroups, _group];
@@ -1091,6 +1149,8 @@ switch(_operation) do {
                         if !(isNull _player) then {
                             _group = group _player;
 
+                            _group = [format["%1",_group], " ", "_"] call CBA_fnc_replace;
+
                             if(_group in (_tasksByGroup select 1)) then {
 
                                 // remove task
@@ -1123,6 +1183,8 @@ switch(_operation) do {
 
                         if !(isNull _player) then {
                             _group = group _player;
+
+                            _group = [format["%1",_group], " ", "_"] call CBA_fnc_replace;
 
                             if(_group in (_tasksByGroup select 1)) then {
 
@@ -1601,6 +1663,7 @@ switch(_operation) do {
             _group = _args;
 
             _tasksByGroup = [_logic, "tasksByGroup"] call ALIVE_fnc_hashGet;
+
             _groupTasks = [_tasksByGroup, _group] call ALIVE_fnc_hashGet;
 
             _tasks = [];
