@@ -37,6 +37,7 @@ class CfgVehicles {
                             description = "$STR_ALIVE_C2ISTAR_ALLOW_COMMENT";
                             defaultValue = "LaserDesignator";
                     };
+
                 };
 
         };

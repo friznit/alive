@@ -83,6 +83,12 @@ if(ALIVE_loadProfilesPersistent) then {
             */
 
             [false, "ALiVE Profile System persistence load data complete","psper"] call ALIVE_fnc_timer;
+        }else{
+
+            ["ALiVE LOAD PROFILE DATA SYS DATA DOES NOT EXIST"] call ALIVE_fnc_dumpMPH;
+
+            ALIVE_loadProfilesPersistent = false;
+
         };
     }else{
         ["ALiVE LOAD PROFILE DATA Not run on dedicated server exiting"] call ALIVE_fnc_dumpMPH;
