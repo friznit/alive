@@ -50,19 +50,7 @@ class CfgVehicles {
                                                 name = "Insertion";
                                                 value = "insertion";
                                         };
-                                        
-                                        class faction
-                                        {
-                                                name = "Faction based";
-                                                value = "faction";
-                                        };
-                                        
-                                        class group
-                                        {
-                                                name = "Group based";
-                                                value = "group";
-                                        };
-                                        
+
                                         class vehicle
                                         {
                                                 name = "Spawn in vehicle";
@@ -83,7 +71,7 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_MULTISPAWN_TIMEOUT_COMMENT";
                                 defaultValue = 60;
                         };
-                        
+
                         class spawningnearenemiesallowed
                         {
                                 displayName = "$STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED";

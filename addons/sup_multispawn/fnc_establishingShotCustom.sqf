@@ -49,7 +49,7 @@ _ang = [_this, 4, random 360, [0]] call BIS_fnc_param;
 _dir = [_this, 5, round random 1, [0]] call BIS_fnc_param;
 _condition = [_this, 8, [[],{true}], [[]]] call BIS_fnc_param;
 
-BIS_fnc_establishingShot_icons = [_this, 6, [], [[]]] call BIS_fnc_param;
+ALiVE_fnc_establishingShot_icons = [_this, 6, [], [[]]] call BIS_fnc_param;
 
 private ["_mode"];
 
@@ -57,17 +57,17 @@ _mode = [_this, 7, 0, [0]] call BIS_fnc_param;
 
 if (_mode == 0) then {
 	enableSaving [false, false];
-	BIS_missionStarted = nil;
+	ALiVE_missionStarted = nil;
 };
 
-["BIS_fnc_establishingShot",false] call BIS_fnc_blackOut;
+["ALiVE_fnc_establishingShot",false] call BIS_fnc_blackOut;
 
 // Create fake UAV
-if (isNil "BIS_fnc_establishingShot_fakeUAV" || {isnull BIS_fnc_establishingShot_fakeUAV}) then {
-	BIS_fnc_establishingShot_fakeUAV = "Camera" camCreate [10,10,10];
+if (isNil "ALiVE_fnc_establishingShot_fakeUAV" || {isnull ALiVE_fnc_establishingShot_fakeUAV}) then {
+	ALiVE_fnc_establishingShot_fakeUAV = "Camera" camCreate [10,10,10];
 };
 
-BIS_fnc_establishingShot_fakeUAV cameraEffect ["INTERNAL", "BACK"];
+ALiVE_fnc_establishingShot_fakeUAV cameraEffect ["INTERNAL", "BACK"];
 
 cameraEffectEnableHUD true;
 
@@ -94,13 +94,13 @@ diag_log _mul;
 _coords = [_pos, _rad, _ang] call BIS_fnc_relPos;
 _coords set [2, _alt];
 
-BIS_fnc_establishingShot_fakeUAV camPrepareTarget _tgt;
-BIS_fnc_establishingShot_fakeUAV camPreparePos _coords;
-BIS_fnc_establishingShot_fakeUAV camPrepareFOV 0.700;
-BIS_fnc_establishingShot_fakeUAV camCommitPrepared 0;
+ALiVE_fnc_establishingShot_fakeUAV camPrepareTarget _tgt;
+ALiVE_fnc_establishingShot_fakeUAV camPreparePos _coords;
+ALiVE_fnc_establishingShot_fakeUAV camPrepareFOV 0.700;
+ALiVE_fnc_establishingShot_fakeUAV camCommitPrepared 0;
 
 // Timeout the preload after 3 seconds
-BIS_fnc_establishingShot_fakeUAV camPreload 3;
+ALiVE_fnc_establishingShot_fakeUAV camPreload 3;
 
 // Apply post-process effects
 private ["_ppColor"];
@@ -143,27 +143,27 @@ if (_mode == 1) then {
 	_key = format ["BIS_%1.%2_establishingShot", missionName, worldName];
 
 	// Remove eventhandler if it exists (only happens when restarting)
-	if (!(isNil {uiNamespace getVariable "BIS_fnc_establishingShot_skipEH"})) then {
-		([] call BIS_fnc_displayMission) displayRemoveEventHandler ["KeyDown", uiNamespace getVariable "BIS_fnc_establishingShot_skipEH"];
-		uiNamespace setVariable ["BIS_fnc_establishingShot_skipEH", nil];
+	if (!(isNil {uiNamespace getVariable "ALiVE_fnc_establishingShot_skipEH"})) then {
+		([] call BIS_fnc_displayMission) displayRemoveEventHandler ["KeyDown", uiNamespace getVariable "ALiVE_fnc_establishingShot_skipEH"];
+		uiNamespace setVariable ["ALiVE_fnc_establishingShot_skipEH", nil];
 	};
 
 	// Add skipping eventhandler
 	private ["_skipEH"];
     
-    if (isnil {uiNamespace getVariable "BIS_fnc_establishingShot_skipEH"}) then {
+    if (isnil {uiNamespace getVariable "ALiVE_fnc_establishingShot_skipEH"}) then {
 		_skipEH = ([] call BIS_fnc_displayMission) displayAddEventHandler [
 			"KeyDown",
 			format [
 				"
 					if (_this select 1 == 57) then {
-						([] call BIS_fnc_displayMission) displayRemoveEventHandler ['KeyDown', uiNamespace getVariable 'BIS_fnc_establishingShot_skipEH'];
-						uiNamespace setVariable ['BIS_fnc_establishingShot_skipEH', nil];
+						([] call BIS_fnc_displayMission) displayRemoveEventHandler ['KeyDown', uiNamespace getVariable 'ALiVE_fnc_establishingShot_skipEH'];
+						uiNamespace setVariable ['ALiVE_fnc_establishingShot_skipEH', nil];
 	
 						playSound ['click', true];
 	
 						activateKey '%1';
-						BIS_fnc_establishingShot_skip = true;
+						ALiVE_fnc_establishingShot_skip = true;
 					};
 	
 					if (_this select 1 != 1) then {true};
@@ -171,7 +171,7 @@ if (_mode == 1) then {
 				_key
 			]
 		];
-        uiNamespace setVariable ["BIS_fnc_establishingShot_skipEH", _skipEH];
+        uiNamespace setVariable ["ALiVE_fnc_establishingShot_skipEH", _skipEH];
     };
     
 	// Create vignette & tiles
@@ -192,47 +192,47 @@ if (_mode == 1) then {
 };
 
 // Wait for the camera to load
-waitUntil {camPreloaded BIS_fnc_establishingShot_fakeUAV || !(isNil "BIS_fnc_establishingShot_skip")};
+waitUntil {camPreloaded ALiVE_fnc_establishingShot_fakeUAV || !(isNil "ALiVE_fnc_establishingShot_skip")};
 
 private ["_drawEH"];
 
-BIS_fnc_establishingShot_playing = true;
+ALiVE_fnc_establishingShot_playing = true;
 
 // Create logic to play sounds
-BIS_fnc_establishingShot_logic_group = createGroup sideLogic;
-BIS_fnc_establishingShot_logic1 = BIS_fnc_establishingShot_logic_group createUnit ["Logic", [10,10,10], [], 0, "NONE"];
-BIS_fnc_establishingShot_logic2 = BIS_fnc_establishingShot_logic_group createUnit ["Logic", [10,10,10], [], 0, "NONE"];
-BIS_fnc_establishingShot_logic3 = BIS_fnc_establishingShot_logic_group createUnit ["Logic", [10,10,10], [], 0, "NONE"];
+ALiVE_fnc_establishingShot_logic_group = createGroup sideLogic;
+ALiVE_fnc_establishingShot_logic1 = ALiVE_fnc_establishingShot_logic_group createUnit ["Logic", [10,10,10], [], 0, "NONE"];
+ALiVE_fnc_establishingShot_logic2 = ALiVE_fnc_establishingShot_logic_group createUnit ["Logic", [10,10,10], [], 0, "NONE"];
+ALiVE_fnc_establishingShot_logic3 = ALiVE_fnc_establishingShot_logic_group createUnit ["Logic", [10,10,10], [], 0, "NONE"];
 
 [] spawn {
-	scriptName "BIS_fnc_establishingShot: UAV sound loop";
+	scriptName "ALiVE_fnc_establishingShot: UAV sound loop";
 
 	// Determine duration
 	private ["_sound", "_duration"];
 	_sound = "UAV_loop";
 	_duration = getNumber (configFile >> "CfgSounds" >> _sound >> "duration");
 
-	while {!(isNull BIS_fnc_establishingShot_logic1)} do {
-		BIS_fnc_establishingShot_logic1 say _sound;
+	while {!(isNull ALiVE_fnc_establishingShot_logic1)} do {
+		ALiVE_fnc_establishingShot_logic1 say _sound;
 		sleep _duration;
 
-		if (!(isNull BIS_fnc_establishingShot_logic2)) then {
-			BIS_fnc_establishingShot_logic2 say _sound;
+		if (!(isNull ALiVE_fnc_establishingShot_logic2)) then {
+			ALiVE_fnc_establishingShot_logic2 say _sound;
 			sleep _duration;
 		};
 	};
 };
 
 [] spawn {
-	scriptName "BIS_fnc_establishingShot: random sounds control";
+	scriptName "ALiVE_fnc_establishingShot: random sounds control";
 
-	while {!(isNull BIS_fnc_establishingShot_logic3)} do {
+	while {!(isNull ALiVE_fnc_establishingShot_logic3)} do {
 		// Choose random sound
 		private ["_sound", "_duration"];
 		_sound = format ["UAV_0%1", round (1 + random 8)];
 		_duration = getNumber (configFile >> "CfgSounds" >> _sound >> "duration");
 
-		BIS_fnc_establishingShot_logic3 say _sound;
+		ALiVE_fnc_establishingShot_logic3 say _sound;
 
 		sleep (_duration + (5 + random 5));
 	};
@@ -240,7 +240,7 @@ BIS_fnc_establishingShot_logic3 = BIS_fnc_establishingShot_logic_group createUni
 
 // Move camera in a circle
 [_pos, _alt, _rad, _ang, _dir,_mul] spawn {
-	scriptName "BIS_fnc_establishingShot: camera control";
+	scriptName "ALiVE_fnc_establishingShot: camera control";
 
 	private ["_pos", "_alt", "_rad", "_ang", "_dir"];
 	_pos = _this select 0;
@@ -252,7 +252,7 @@ BIS_fnc_establishingShot_logic3 = BIS_fnc_establishingShot_logic_group createUni
     
     _time = time;
 
-	while {isNil "BIS_missionStarted"} do {
+	while {isNil "ALiVE_missionStarted"} do {
 		private ["_coords"];
 		_coords = [_pos, _rad, _ang] call BIS_fnc_relPos;
 		_coords set [2, _alt];
@@ -266,20 +266,20 @@ BIS_fnc_establishingShot_logic3 = BIS_fnc_establishingShot_logic_group createUni
 
             _coords = [_pos, _rad, _ang] call BIS_fnc_relPos; _coords set [2, _alt];
             
-            BIS_fnc_establishingShot_fakeUAV camPrepareTarget _tgt;
-			BIS_fnc_establishingShot_fakeUAV camPreparePos _coords;
-			BIS_fnc_establishingShot_fakeUAV camPrepareFOV 0.700;
-			BIS_fnc_establishingShot_fakeUAV camCommitPrepared 0;
+            ALiVE_fnc_establishingShot_fakeUAV camPrepareTarget _tgt;
+			ALiVE_fnc_establishingShot_fakeUAV camPreparePos _coords;
+			ALiVE_fnc_establishingShot_fakeUAV camPrepareFOV 0.700;
+			ALiVE_fnc_establishingShot_fakeUAV camCommitPrepared 0;
             
             // Update SITREP
-			BIS_fnc_establishingShot_SITREP = [
+			ALiVE_fnc_establishingShot_SITREP = [
 				[
 					[((call ALiVE_fnc_compileReadableDate) select 0) + " ", ""],
 					[((call ALiVE_fnc_compileReadableDate) select 1), "font = 'PuristaMedium'"],
 					["", "<br/>"],
                     ["Grid: " + (mapGridPosition _tgt),""],
                     ["", "<br/>"],
-                    ["Target: " + getText(configFile >> "cfgVehicles" >> typeof _tgt >> "displayName"),""],
+                    ["Target: " + getText(configFile >> "cfgVehicles" >> typeof (vehicle _tgt) >> "displayName"),""],
                     ["", "<br/>"],
 					[ALiVE_SUP_MULTISPAWN_TXT_LISTENER, ""]
 				],
@@ -292,21 +292,21 @@ BIS_fnc_establishingShot_logic3 = BIS_fnc_establishingShot_logic_group createUni
             _time = time;
         } else {
 
-			BIS_fnc_establishingShot_fakeUAV camPreparePos _coords;
-			BIS_fnc_establishingShot_fakeUAV camCommitPrepared 0.5;
+			ALiVE_fnc_establishingShot_fakeUAV camPreparePos _coords;
+			ALiVE_fnc_establishingShot_fakeUAV camCommitPrepared 0.5;
         };
 
-		waitUntil {camCommitted BIS_fnc_establishingShot_fakeUAV || !(isNil "BIS_missionStarted")};
+		waitUntil {camCommitted ALiVE_fnc_establishingShot_fakeUAV || !(isNil "ALiVE_missionStarted")};
 
-		BIS_fnc_establishingShot_fakeUAV camPreparePos _coords;
-		BIS_fnc_establishingShot_fakeUAV camCommitPrepared 0;
+		ALiVE_fnc_establishingShot_fakeUAV camPreparePos _coords;
+		ALiVE_fnc_establishingShot_fakeUAV camCommitPrepared 0;
 		
 		_ang = if (_dir == 0) then {_ang - 0.5} else {_ang + 0.5};
 	};
 };
 
 // Display SITREP
-BIS_fnc_establishingShot_SITREP = [
+ALiVE_fnc_establishingShot_SITREP = [
 	[
 		[((call ALiVE_fnc_compileReadableDate) select 0) + " ", ""],
 		[((call ALiVE_fnc_compileReadableDate) select 1), "font = 'PuristaMedium'"],
@@ -326,8 +326,8 @@ enableEnvironment true;
 
 // Static fade-in
 ("BIS_layerStatic" call BIS_fnc_rscLayer) cutRsc ["RscStatic", "PLAIN"];
-waitUntil {!(isNull (uiNamespace getVariable "RscStatic_display")) || !(isNil "BIS_fnc_establishingShot_skip")};
-waitUntil {isNull (uiNamespace getVariable "RscStatic_display")  || !(isNil "BIS_fnc_establishingShot_skip")};
+waitUntil {!(isNull (uiNamespace getVariable "RscStatic_display")) || !(isNil "ALiVE_fnc_establishingShot_skip")};
+waitUntil {isNull (uiNamespace getVariable "RscStatic_display")  || !(isNil "ALiVE_fnc_establishingShot_skip")};
 
 // Show interlacing
 ("BIS_layerInterlacing" call BIS_fnc_rscLayer) cutRsc ["RscInterlacing", "PLAIN"];
@@ -348,7 +348,7 @@ optionsMenuClosed = if (_mode == 0) then {
 };
 
 // Show icons
-if (count BIS_fnc_establishingShot_icons > 0) then {
+if (count ALiVE_fnc_establishingShot_icons > 0) then {
 	_drawEH = addMissionEventHandler [
 		"Draw3D",
 		{
@@ -386,7 +386,7 @@ if (count BIS_fnc_establishingShot_icons > 0) then {
 				if (_condition) then {
 					drawIcon3D [_icon, _color, _position, _sizeX, _sizeY, _angle, _text, _shadow];
 				};
-			} forEach BIS_fnc_establishingShot_icons;
+			} forEach ALiVE_fnc_establishingShot_icons;
 		}
 	];
 };
@@ -395,17 +395,17 @@ if (_mode == 0) then {
 
 	waitUntil {(_condition select 0) call (_condition select 1)};
 
-	BIS_fnc_establishingShot_UAVDone = true;
+	ALiVE_fnc_establishingShot_UAVDone = true;
 };
 
 
 if (_mode == 0) then {
-	waitUntil {{!(isNil _x)} count ["BIS_fnc_establishingShot_UAVDone"] > 0};
+	waitUntil {{!(isNil _x)} count ["ALiVE_fnc_establishingShot_UAVDone"] > 0};
 
 	// Remove skipping eventhandler if it wasn't removed already
-	if (!(isNil {uiNamespace getVariable "BIS_fnc_establishingShot_skipEH"})) then {
-		([] call BIS_fnc_displayMission) displayRemoveEventHandler ["KeyDown", uiNamespace getVariable "BIS_fnc_establishingShot_skipEH"];
-		uiNamespace setVariable ["BIS_fnc_establishingShot_skipEH", nil];
+	if (!(isNil {uiNamespace getVariable "ALiVE_fnc_establishingShot_skipEH"})) then {
+		([] call BIS_fnc_displayMission) displayRemoveEventHandler ["KeyDown", uiNamespace getVariable "ALiVE_fnc_establishingShot_skipEH"];
+		uiNamespace setVariable ["ALiVE_fnc_establishingShot_skipEH", nil];
 	};
 
 	// Static fade-out
@@ -416,14 +416,14 @@ if (_mode == 0) then {
 	waitUntil {isNull (uiNamespace getVariable "RscStatic_display")};
 	
 	// Remove SITREP
-	if (!(isNil "BIS_fnc_establishingShot_SITREP")) then {
-		terminate BIS_fnc_establishingShot_SITREP;
+	if (!(isNil "ALiVE_fnc_establishingShot_SITREP")) then {
+		terminate ALiVE_fnc_establishingShot_SITREP;
 		["", 0, 0, 5, 0, 0, 90] spawn BIS_fnc_dynamicText;
 	};
 
 	// Delete sound logics and group
-	{if (!(isNil _x)) then {deleteVehicle (missionNamespace getVariable _x)}} forEach ["BIS_fnc_establishingShot_logic1", "BIS_fnc_establishingShot_logic2", "BIS_fnc_establishingShot_logic3"];
-	if (!(isNil "BIS_fnc_establishingShot_logic_group")) then {deleteGroup BIS_fnc_establishingShot_logic_group};
+	{if (!(isNil _x)) then {deleteVehicle (missionNamespace getVariable _x)}} forEach ["ALiVE_fnc_establishingShot_logic1", "ALiVE_fnc_establishingShot_logic2", "ALiVE_fnc_establishingShot_logic3"];
+	if (!(isNil "ALiVE_fnc_establishingShot_logic_group")) then {deleteGroup ALiVE_fnc_establishingShot_logic_group};
 
 	// Remove HUD
 	optionsMenuOpened = nil;
@@ -451,23 +451,23 @@ if (_mode == 0) then {
 
 	enableSaving [true, true];
 
-	BIS_fnc_establishingShot_fakeUAV cameraEffect ["TERMINATE", "BACK"];
-	//camDestroy BIS_fnc_establishingShot_fakeUAV;
+	ALiVE_fnc_establishingShot_fakeUAV cameraEffect ["TERMINATE", "BACK"];
+	//camDestroy ALiVE_fnc_establishingShot_fakeUAV;
 
 	ppEffectDestroy _ppColor;
 	ppEffectDestroy _ppGrain;
 
 	// Clear existing global variables
-	BIS_fnc_establishingShot_icons = nil;
-	BIS_fnc_establishingShot_spaceEH = nil;
-	BIS_fnc_establishingShot_skip = nil;
-	BIS_fnc_establishingShot_UAVDone = nil;
+	ALiVE_fnc_establishingShot_icons = nil;
+	ALiVE_fnc_establishingShot_spaceEH = nil;
+	ALiVE_fnc_establishingShot_skip = nil;
+	ALiVE_fnc_establishingShot_UAVDone = nil;
 
-	["BIS_fnc_establishingShot"] call BIS_fnc_blackIn;
+	["ALiVE_fnc_establishingShot"] call BIS_fnc_blackIn;
 
 	// Start mission
-	BIS_missionStarted = true;
-	BIS_fnc_establishingShot_playing = false;
+	ALiVE_missionStarted = true;
+	ALiVE_fnc_establishingShot_playing = false;
 };
 
 true

@@ -14,8 +14,6 @@ Description&lt;br /&gt;
 &lt;br /&gt;
 Spawn on Squad: BF style respawn (groupwise)!&lt;br /&gt;
 Insertion: Simulates constant Air insertion (factionwise)!&lt;br /&gt;
-Faction based: Simple faction based Respawn!&lt;br /&gt;
-Group based: Spawns players of a group at their group respawn!&lt;br /&gt;
 Spawn in vehicle: Spawns players in synced HQ vehicle (factionwise)!&lt;br /&gt;
 Spawn in building: Spawns players in a building of choice (factionwise)!&lt;br /&gt;
 &lt;br /&gt;
@@ -26,9 +24,11 @@ ALiVE_SUP_MULTISPAWN_INSERTION_%FACTION%&lt;br /&gt;
 ALiVE_SUP_MULTISPAWN_DESTINATION_%FACTION%&lt;br /&gt;
 &lt;br /&gt;
 Faction based: ALiVE_SUP_MULTISPAWN_RESPAWN_%FACTION%&lt;br /&gt;
-Group based: ALiVE_SUP_MULTISPAWN_RESPAWNGROUP_%GROUPID%&lt;br /&gt;
-Spawn in vehicle: ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%FACTION%&lt;br /&gt;
+Group based (setGroupID): ALiVE_SUP_MULTISPAWN_RESPAWNGROUP_%GROUPID%&lt;br /&gt;
+Spawn in vehicle (name vehicle): ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%FACTION%&lt;br /&gt;
 Spawn in building: ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%FACTION%&lt;br /&gt;
+&lt;br /&gt;
+You can sync your custom vehicles of choice to the module! Keep in mind only vehicles of the same faction are used!
 	</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_DEBUG">
@@ -48,6 +48,12 @@ Spawn in building: ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%FACTION%&lt;br /&gt;
 </Key>
 <Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT_COMMENT">
 	<English>Timeout until Respawn is possible!</English>
+</Key>
+<Key ID="STR_ALIVE_MULTISPAWN_VEHICLETYPES">
+	<English>Vehicletypes:</English>
+</Key>
+<Key ID="STR_ALIVE_MULTISPAWN_VEHICLETYPES_COMMENT">
+	<English>Respawn vehicle classes for some dynamic respawn types (like "Insertion",...)!</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_DISABLED">
 	<English>Disable multispawn:</English>
