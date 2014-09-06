@@ -161,9 +161,11 @@ switch(_operation) do {
                             }];
                             
                             player addEventHandler ["respawn", {
-                                [[ALiVE_SUP_MULTISPAWN,"collect",_this select 0], "ALiVE_fnc_MultiSpawn", false, false] call BIS_fnc_MP;
-                                
                                 [] spawn {
+                                    waituntil {!isnull player};
+                                    
+                                    [[ALiVE_SUP_MULTISPAWN,"collect",player], "ALiVE_fnc_MultiSpawn", false, false] call BIS_fnc_MP;
+                                    
                                     sleep 3;
                                 	titleText ["", "PLAIN"];
                                 };
@@ -388,7 +390,6 @@ switch(_operation) do {
             };
 
             _factionData = [GVAR(STORE),_faction] call ALiVE_fnc_HashGet;
-            _queue = [_factionData, QGVAR(PLAYERQUEUE),[]] call ALiVE_fnc_HashGet;
             _cargoCount = getNumber(configFile >> "cfgVehicles" >> _TransportType >> "transportSoldier");
             
             if ([_factionData,QGVAR(INSERTING),false] call ALiVE_fnc_HashGet) exitwith {};
@@ -403,6 +404,7 @@ switch(_operation) do {
                 sleep 1;
                 
                 call compile format["ALiVE_SUP_MULTISPAWN_COUNTDOWN_%1 = (time - _time - _timeOut)",_faction];
+                _queue = [_factionData, QGVAR(PLAYERQUEUE),[]] call ALiVE_fnc_HashGet;
 
                 (
 	                (count _queue > 0 && // There are players waiting for respawn
@@ -512,6 +514,8 @@ switch(_operation) do {
             } else {
                 [_factionData,QGVAR(PLAYERQUEUE),([_factionData,QGVAR(PLAYERQUEUE),[]] call ALiVE_fnc_HashGet) + [_player]] call ALiVE_fnc_HashSet;
                 [_logic,"loader",_player] spawn ALiVE_fnc_MultiSpawn;
+                
+                if !(!isnil "_insertion" && {!isnil "_destination"} && {!isnil "_player"} && {!isnil "_timeout"}) exitwith {};
                 
                 [_logic,"insert",[_insertion,_destination,faction _player,_timeout]] spawn ALiVE_fnc_MultiSpawn;
             };
