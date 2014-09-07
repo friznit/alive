@@ -189,7 +189,6 @@ switch (_operation) do {
                     ((str side player) != "UNKNOWN")
                 };
 
-
             };
 
 
@@ -289,8 +288,6 @@ switch (_operation) do {
             _check = false;
             _result = false;
 
-            LOG(str QGVAR(callsign));
-
             if (hasInterface) then {
 
                 if (count _args > 2) then {
@@ -306,13 +303,19 @@ switch (_operation) do {
                         [_sitRepHash, QGVAR(DTG)] call ALIVE_fnc_hashGet,
                         [_sitRepHash, QGVAR(dateTime)] call ALIVE_fnc_hashGet,
                         [_sitRepHash, QGVAR(loc)] call ALIVE_fnc_hashGet,
-                        [_sitRepHash, QGVAR(faction)] call ALIVE_fnc_hashGet,
-                        [_sitRepHash, QGVAR(size)] call ALIVE_fnc_hashGet,
-                        [_sitRepHash, QGVAR(type)] call ALIVE_fnc_hashGet,
-                        [_sitRepHash, QGVAR(activity)] call ALIVE_fnc_hashGet,
-                        [_sitRepHash, QGVAR(factivity)] call ALIVE_fnc_hashGet,
-                        [_sitRepHash, QGVAR(remarks),"NONE"] call ALIVE_fnc_hashGet,
-                        [_sitRepHash, QGVAR(markername),"NONE"] call ALIVE_fnc_hashGet
+                        [_sitRepHash, QGVAR(ekia)] call ALIVE_fnc_hashGet,
+                        [_sitRepHash, QGVAR(en)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(civ)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(fkia)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(fwia)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(ff)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(ammo)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(cas)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(veh)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(cs)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(remarks)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(group)] call ALIVE_fnc_hashGet,
+                        [_sitrepHash, QGVAR(pos)] call ALIVE_fnc_hashGet
                     ] call ALIVE_fnc_sitrepCreateDiaryRecord;
 
                     _result = true;
@@ -422,7 +425,7 @@ switch (_operation) do {
                 if (_check) then {
                     LOG("Deleting sitrep...");
                     LOG(_sitrepName);
-     //               deletesitrepLocal _sitrepName;
+     //             BIS Y U NO COMMAND TO DELETE DIARY ENTRIES?
                 };
             };
 

@@ -1,8 +1,6 @@
 To do list
-1. If marker index is empty, need to delete index on db
-2. delete diary entries?
+1. MP Test
 3. Add Sitrep menu item
-4. Add Sitrep tablet UI
 5. Integrate with C2ISTAR
 6. add to events
 

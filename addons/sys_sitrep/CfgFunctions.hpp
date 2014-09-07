@@ -41,6 +41,21 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_sitrep\fnc_sitrepCreateDiaryRecord.sqf";
                                                                 recompile = RECOMPILE;
                         };
+                        class sitrepOnLoad {
+                                description = "sitrep on load for dialog";
+                                file = "\x\alive\addons\sys_sitrep\fnc_sitrepOnLoad.sqf";
+                                                                recompile = RECOMPILE;
+                        };
+                        class sitrepButtonAction {
+                                description = "sitrep button action for dialog";
+                                file = "\x\alive\addons\sys_sitrep\fnc_sitrepButtonAction.sqf";
+                                                                recompile = RECOMPILE;
+                        };
+                        class sitrepOnMapEvent {
+                                description = "sitrep on map event for dialog";
+                                file = "\x\alive\addons\sys_sitrep\fnc_sitrepOnMapEvent.sqf";
+                                                                recompile = RECOMPILE;
+                        };
                 };
         };
 };
