@@ -1,9 +1,6 @@
 To do list
-1. MP Test
-2. delete diary entries?
-3. Add spotrep menu item
-4. Add spotrep tablet UI
-5. Integrate with C2ISTAR
+1. MP bug  - tuplication
+2. dates on spotrep player diaries are incorrect
 6. add to events
 
 

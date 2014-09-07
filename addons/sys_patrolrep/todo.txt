@@ -1,7 +1,7 @@
 To do list
-1. MP Test
-3. Add patrolrep menu item
-5. Integrate with C2ISTAR
+1. UI
+2. data capture code
+3. MP test
 6. add to events
 
 
