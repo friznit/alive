@@ -60,13 +60,13 @@ if (typeName _params == typeName []) then {
 /*
         ["Menu Caption", "flexiMenu resource dialog", "optional icon folder", menuStayOpenUponSelect],
         [
-            ["caption", 
-                "action", 
-                "icon", 
-                "tooltip", 
-                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]}, 
+            ["caption",
+                "action",
+                "icon",
+                "tooltip",
+                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]},
                 -1 (shortcut DIK code),
-                {0|1/"0"|"1"/false|true} (enabled), 
+                {0|1/"0"|"1"/false|true} (enabled),
                 {-1|0|1/"-1"|"0"|"1"/false|true} (visible)
             ],
              ...
@@ -76,17 +76,55 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_C2ISTAR",
-				{["OPEN",[]] call ALIVE_fnc_C2TabletOnAction},
+			[localize "STR_ALIVE_C2ISTAR" + " >",
+				"",
 				"",
 				localize "STR_ALIVE_C2ISTAR_COMMENT",
-                 "",
-                 -1, 1, _result
+                ["call ALiVE_fnc_C2MenuDef", "C2ISTAR", 1],
+                -1,
+                true,
+                _result
 			]
 		]
 	]
 ];
 
+if (_menuName == "C2ISTAR") then {
+    	_menus set [count _menus,
+		[
+        	["C2ISTAR", localize "STR_ALIVE_C2ISTAR", "popup"],
+			[
+				["MANAGE TASKS",
+					{["OPEN",[]] call ALIVE_fnc_C2TabletOnAction},
+	                "",
+					localize "STR_ALIVE_C2ISTAR_COMMENT",
+	                 "",
+	                 -1,
+	                 true,
+	                 _result
+				],
+				["SEND SITREP",
+					{createDialog "RscDisplayALIVESITREP"},
+					"",
+					"",
+					"",
+	                 -1,
+	                 true,
+	                 _result
+				],
+                ["SEND PATROLREP",
+					{createDialog "RscDisplayALIVEPATROLREP"},
+					"",
+					"",
+					"",
+	                 -1,
+	                 true,
+	                 _result
+				]
+			]
+		]
+	];
+};
 
 //-----------------------------------------------------------------------------
 _menuDef = [];
