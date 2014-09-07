@@ -159,6 +159,16 @@ _saveServer = {
 		call ALiVE_fnc_spotrepSaveData;
 	};
 
+	if (["ALiVE_sys_sitrep"] call ALiVE_fnc_isModuleAvailable) then {
+	    ["ALIVE Abort - Server Save SITREP State"] call ALIVE_fnc_dump;
+		call ALiVE_fnc_sitrepSaveData;
+	};
+
+	if (["ALiVE_sys_patrolrep"] call ALiVE_fnc_isModuleAvailable) then {
+	    ["ALIVE Abort - Server Save PATROLREP State"] call ALIVE_fnc_dump;
+		call ALiVE_fnc_patrolrepSaveData;
+	};
+
 	if (["ALiVE_mil_logistics"] call ALiVE_fnc_isModuleAvailable) then {
         ["ALIVE Abort - Server Save ML State"] call ALIVE_fnc_dump;
         call ALiVE_fnc_MLSaveData;
