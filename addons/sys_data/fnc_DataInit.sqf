@@ -1,6 +1,8 @@
 #include <\x\alive\addons\sys_data\script_component.hpp>
 SCRIPT(DataInit);
 
+#define AAR_DEFAULT_INTERVAL 10
+
 // Sets up a system for data (separate from the fnc_data module = datahandler)
 
 LOG(MSG_INIT);
@@ -36,7 +38,7 @@ if (isDedicated) then {
 	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
 
 	// Setup Data Dictionary
-	ALIVE_DataDictionary = [] call CBA_fnc_hashCreate;
+	ALIVE_DataDictionary = [] call ALIVE_fnc_hashCreate;
 
 	// Get global config information
 	_config = [GVAR(datahandler), "read", ["sys_data", [], "config"]] call ALIVE_fnc_Data;
@@ -81,6 +83,13 @@ if (isDedicated) then {
 	if ([_config, "EventData","false"] call ALIVE_fnc_hashGet == "false") then {
 		["CONNECTED TO DATABASE, BUT STAT DATA HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
 		ALIVE_sys_statistics_ENABLED = false;
+	};
+
+	if ([_config, "AAR","false"] call ALIVE_fnc_hashGet == "false") then {
+		["CONNECTED TO DATABASE, BUT AAR HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
+		ALIVE_sys_AAR_ENABLED = false;
+	} else {
+		ALIVE_sys_AAR_ENABLED = true;
 	};
 
 	// Set event level on data module
@@ -180,7 +189,117 @@ if (isDedicated) then {
 	if (MOD(sys_data) getvariable ["disablePerf", "true"] == "false") then {
 		[MOD(sys_data)] call ALIVE_fnc_perfInit;
 	};
+
+	TRACE_2("SYS_DATA AAR VAR", MOD(sys_data) getVariable "disableAAR", ALIVE_sys_AAR_ENABLED);
+	// Start the AAR monitoring module
+	if (MOD(sys_data) getvariable ["disableAAR", "true"] == "false") then {
+
+		[] spawn {
+			// Thread running on server to report state/pos of every playable unit and group every 60 seconds
+			private ["_count","_docId","_missionName","_result","_year","_month","_day","_hour","_min","_datet"];
+
+			// Set up hash of unit positions for each minute
+			GVAR(AAR) = [] call ALIVE_fnc_hashCreate;
+
+			// Count minutes since last save to DB
+			_count = 0;
+
+			_datet = [] call ALIVE_fnc_getServerTime;
+			_day = parseNumber ([_datet, 1, 2] call bis_fnc_trimString);
+			_month = parseNumber ([_datet, 4, 5] call bis_fnc_trimString);
+			_year = parseNumber ([_datet, 7, 11] call bis_fnc_trimString);
+			_hour = parseNumber ([_datet, 13, 14] call bis_fnc_trimString);
+			_min = parseNumber ([_datet, 16, 17] call bis_fnc_trimString);
+
+			GVAR(AARdocId) = [[_year,_month,_day,_hour,_min]] call ALIVE_fnc_dateToDTG;
+
+			waitUntil {sleep 60; count playableUnits > 0};
+
+			while {MOD(sys_data) getVariable "disableAAR" == "false"} do {
+
+				private ["_hash","_dateTime","_currenttime","_minutes","_hours","_gametime"];
+
+				//diag_log format["Units: %1",count allUnits];
+
+				// Get local time and format please.
+				_currenttime = date;
+
+				// Work out time in 4 digits
+				if ((_currenttime select 4) < 10) then {
+					_minutes = "0" + str(_currenttime select 4);
+				} else {
+					_minutes = str(_currenttime select 4);
+					};
+				if ((_currenttime select 3) < 10) then {
+					_hours = "0" + str(_currenttime select 3);
+				} else {
+					_hours = str(_currenttime select 3);
+				};
+
+				_gametime = format["%1%2", _hours, _minutes];
+
+				_hash = [] call ALIVE_fnc_hashCreate;
+
+				{
+					private ["_unit"];
+					_unit = vehicle _x;
+					if (alive _unit && (isplayer _x || _unit == leader (group _unit))) then {
+						private ["_id","_playerHash","_icon"];
+
+						_id = netid _unit;
+
+						_playerHash = [] call ALIVE_fnc_hashCreate;
+
+						[_playerHash, "AAR_name", name _unit] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_pos", getpos _unit] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_weapon", primaryWeapon _unit] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_dir", ceil(getdir _unit)] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_class", getText (configFile >> "cfgVehicles" >> (typeof _unit) >> "displayName")] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_damage", damage _unit] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_side", side (group _unit)] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_fac", getText (configFile >> "cfgFactionClasses" >> (faction _unit) >> "displayName")] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_isLeader", _unit == leader (group _unit)] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_isPlayer", isPlayer _unit] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_group", str (group _unit)] call ALIVE_fnc_hashSet;
+						[_playerHash, "AAR_gametime", _gametime] call ALIVE_fnc_hashSet;
+
+						if (isPlayer _unit) then {
+							[_playerHash, "AAR_playerUID", getPlayerUID _unit] call ALIVE_fnc_hashSet;
+						};
+
+						[_hash, _id, _playerHash] call ALIVE_fnc_hashSet;
+
+					};
+				} forEach allUnits;
+
+				_dateTime = [] call ALIVE_fnc_getServerTime;
+
+				[GVAR(AAR), _dateTime, _hash] call ALIVE_fnc_hashSet;
+
+				if (_count > AAR_DEFAULT_INTERVAL) then {
+
+					// Send the data to DB
+					_missionName = format["%1_%2_%3", GVAR(GROUP_ID), missionName, GVAR(AARdocId)];
+
+					_result = [GVAR(datahandler), "write", ["sys_aar", GVAR(AAR), true, _missionName] ] call ALIVE_fnc_Data;
+					TRACE_1("SYS_AAR",_result);
+
+					// Reset
+					GVAR(AAR) = [] call ALIVE_fnc_hashCreate;
+					_count = 0;
+					GVAR(AARdocId) = [date] call ALIVE_fnc_dateToDTG;
+				};
+
+				sleep 60;
+
+				_count = _count + 1;
+
+			};
+			Diag_log "AAR system stopped";
+		};
+	};
 };
+
 TRACE_2("SYS_DATA STAT VAR", MOD(sys_data) getVariable "disableStats", ALIVE_sys_statistics_ENABLED);
 // Kickoff the stats module
 if (_logic getvariable ["disableStats","false"] == "false") then {

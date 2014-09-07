@@ -43,6 +43,15 @@ if (_name == "__SERVER__") then {
 			_result = [GVAR(datahandler), "write", ["sys_data", GVAR(mission_data), false, _missionName] ] call ALIVE_fnc_Data;
 		};
 
+		if (MOD(sys_data) getVariable ["disableAAR","true"] == "false") then {
+
+			// Send the data to DB
+			_missionName = format["%1_%2_%3", GVAR(GROUP_ID), missionName, GVAR(AARdocId)];
+
+			_result = [GVAR(datahandler), "write", ["sys_aar", GVAR(AAR), false, _missionName] ] call ALIVE_fnc_Data;
+			TRACE_1("SYS_AAR",_result);
+		};
+
 		// Save Data Dictionary
 		TRACE_2("DATA DICTIONARY SIZE ",_missionName, [str(ALIVE_DataDictionary)] call CBA_fnc_strLen);
 		if (([str(ALIVE_DataDictionary)] call CBA_fnc_strLen) > DATA_INBOUND_LIMIT) then {

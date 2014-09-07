@@ -12,8 +12,8 @@ class CfgVehicles {
                 author = MODULE_AUTHOR;
                 class ModuleDescription
                 {
-                        description = "This module allows you to persist mission data to an external database as well as enabling data storage for all other modules. This module is required for statistics too."; // Short description, will be formatted as structured text       
-                }; 
+                        description = "This module allows you to persist mission data to an external database as well as enabling data storage for all other modules. This module is required for statistics too."; // Short description, will be formatted as structured text
+                };
                  class Arguments
                 {
                         class source
@@ -69,6 +69,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class disableAAR
+                        {
+                                displayName = "$STR_ALIVE_data_disableAAR";
+                                description = "$STR_ALIVE_data_disableAAR_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = 1;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
                         class disablePerf
                         {
                                 displayName = "$STR_ALIVE_data_disablePerf";
@@ -89,6 +108,6 @@ class CfgVehicles {
                                 };
                         };
                 };
-                
+
         };
 };

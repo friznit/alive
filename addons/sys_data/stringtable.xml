@@ -53,6 +53,12 @@
 			<Key ID="STR_ALIVE_Data_disableStats_COMMENT">
 				<English>Disable the recording of player/operation stats to the website</English>
 			</Key>
+			<Key ID="STR_ALIVE_Data_disableAAR">
+				<English>Disable AAR:</English>
+			</Key>
+			<Key ID="STR_ALIVE_Data_disableAAR_COMMENT">
+				<English>Disable player tracking for AAR on War Room</English>
+			</Key>			
 			<Key ID="STR_ALIVE_Data_disablePerf">
 				<English>Disable PerfMon:</English>
 			</Key>
