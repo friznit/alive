@@ -61,7 +61,10 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 		sleep 0.2;
 		TRACE_1("Player connected",_check);
 
-		// If player connecting then get player data from memory and update player object
+		_unit = [_uid] call ALIVE_fnc_getPlayerByUIDOnConnect;
+		_owner = owner _unit;
+
+/*		// If player connecting then get player data from memory and update player object
 		{
 			private ["_playerGUID","_tmp"];
 			_tmp = _x;
@@ -76,7 +79,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 				TRACE_2("SYS_PLAYER: PLAYER UNIT FOUND IN PLAYABLEUNITS",_unit, _owner);
 			};
 		} foreach playableUnits;
-
+*/
 		if (isNull _unit) then {
 			diag_log[format["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS(%1)",_name]];
 
