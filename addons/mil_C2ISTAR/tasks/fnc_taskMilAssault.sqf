@@ -83,6 +83,26 @@ switch (_taskState) do {
             _dialogOptions = _dialogOptions select 1;
             _dialogOption = _dialogOptions call BIS_fnc_selectRandom;
 
+            // format the dialog options
+
+            private["_nearestTown","_dialog","_formatDescription","_formatChat","_formatMessage","_formatMessageText"];
+
+            _nearestTown = [_targetPosition] call ALIVE_fnc_taskGetNearestLocationName;
+
+            _dialog = [_dialogOption,"Travel"] call ALIVE_fnc_hashGet;
+
+            _formatDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _formatDescription = format[_formatDescription,_nearestTown];
+            [_dialog,"description",_formatDescription] call ALIVE_fnc_hashSet;
+
+            _formatChat = [_dialog,"chat_start"] call ALIVE_fnc_hashGet;
+            _formatMessage = _formatChat select 0;
+            _formatMessageText = _formatMessage select 1;
+            _formatMessageText = format[_formatMessageText,_nearestTown];
+            _formatMessage set [1,_formatMessageText];
+            _formatChat set [0,_formatMessage];
+            [_dialog,"chat_start",_formatChat] call ALIVE_fnc_hashGet;
+
             // create the tasks
 
             private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams"];
@@ -138,6 +158,7 @@ switch (_taskState) do {
             [_taskParams,"taskIDs",_taskIDs] call ALIVE_fnc_hashSet;
             [_taskParams,"dialog",_dialogOption] call ALIVE_fnc_hashSet;
             [_taskParams,"enemyFaction",_taskEnemyFaction] call ALIVE_fnc_hashSet;
+            [_taskParams,"supriseCreated",false] call ALIVE_fnc_hashSet;
             [_taskParams,"lastState",""] call ALIVE_fnc_hashSet;
 
             // return the created tasks and params
@@ -192,7 +213,7 @@ switch (_taskState) do {
     case "Destroy":{
 
         private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-        "_areaClear","_lastState","_taskDialog","_currentTaskDialog"];
+        "_areaClear","_lastState","_taskDialog","_supriseCreated","_supriseCreated","_currentTaskDialog","_taskEnemyFaction","_taskEnemySide"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -205,6 +226,7 @@ switch (_taskState) do {
 
         _lastState = [_params,"lastState"] call ALIVE_fnc_hashGet;
         _taskDialog = [_params,"dialog"] call ALIVE_fnc_hashGet;
+        _supriseCreated = [_params,"supriseCreated"] call ALIVE_fnc_hashGet;
         _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
 
         if(_lastState != "Destroy") then {
@@ -225,6 +247,29 @@ switch (_taskState) do {
             _result = _task;
 
             ["chat_success",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+
+        }else{
+
+            private["_taskEnemyFaction","_taskEnemySide","_diceRoll"];
+
+            if!(_supriseCreated) then {
+
+                _diceRoll = random 1;
+
+                ["SUPRISE DICE ROLL:%1",_diceRoll] call ALIVE_fnc_dump;
+
+                if(_diceRoll > 0.8) then {
+
+                    _taskEnemyFaction = [_params,"enemyFaction"] call ALIVE_fnc_hashGet;
+                    _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
+
+                    [_taskPosition,_taskEnemySide,_taskEnemyFaction] call ALIVE_fnc_taskCreateRandomMilLogisticsEvent;
+
+                    [_params,"supriseCreated",true] call ALIVE_fnc_hashSet;
+
+                };
+
+            };
 
         };
 

@@ -916,6 +916,13 @@ class param
 	recompile = RECOMPILE;
 };
 
+class pointAt
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_pointAt.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class wait
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_wait.sqf";

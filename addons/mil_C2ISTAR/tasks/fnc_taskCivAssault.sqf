@@ -83,6 +83,27 @@ switch (_taskState) do {
             _dialogOptions = _dialogOptions select 1;
             _dialogOption = _dialogOptions call BIS_fnc_selectRandom;
 
+            // format the dialog options
+
+            private["_nearestTown","_dialog","_formatDescription","_formatChat","_formatMessage","_formatMessageText"];
+
+            _nearestTown = [_targetPosition] call ALIVE_fnc_taskGetNearestLocationName;
+
+            _dialog = [_dialogOption,"Destroy"] call ALIVE_fnc_hashGet;
+
+            _formatDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _formatDescription = format[_formatDescription,_nearestTown];
+            [_dialog,"description",_formatDescription] call ALIVE_fnc_hashSet;
+
+            _formatChat = [_dialog,"chat_start"] call ALIVE_fnc_hashGet;
+            _formatMessage = _formatChat select 0;
+            _formatMessageText = _formatMessage select 1;
+            _formatMessageText = format[_formatMessageText,_nearestTown];
+            _formatMessage set [1,_formatMessageText];
+            _formatChat set [0,_formatMessage];
+            [_dialog,"chat_start",_formatChat] call ALIVE_fnc_hashGet;
+
+
             // create the tasks
 
             private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams"];

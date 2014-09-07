@@ -69,6 +69,9 @@ switch (_taskState) do {
 
         };
 
+        _targetPosition = position (nearestBuilding _targetPosition);
+        _targetPosition = _targetPosition findEmptyPosition [0,200];
+
         if!(isNil "_targetPosition") then {
 
             private["_dialogOptions","_dialogOption"];
@@ -78,6 +81,26 @@ switch (_taskState) do {
             _dialogOptions = [ALIVE_generatedTasks,"Assassination"] call ALIVE_fnc_hashGet;
             _dialogOptions = _dialogOptions select 1;
             _dialogOption = _dialogOptions call BIS_fnc_selectRandom;
+
+            // format the dialog options
+
+            private["_nearestTown","_dialog","_formatDescription","_formatChat","_formatMessage","_formatMessageText"];
+
+            _nearestTown = [_targetPosition] call ALIVE_fnc_taskGetNearestLocationName;
+
+            _dialog = [_dialogOption,"Destroy"] call ALIVE_fnc_hashGet;
+
+            _formatDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
+            _formatDescription = format[_formatDescription,_nearestTown];
+            [_dialog,"description",_formatDescription] call ALIVE_fnc_hashSet;
+
+            _formatChat = [_dialog,"chat_start"] call ALIVE_fnc_hashGet;
+            _formatMessage = _formatChat select 0;
+            _formatMessageText = _formatMessage select 1;
+            _formatMessageText = format[_formatMessageText,_nearestTown];
+            _formatMessage set [1,_formatMessageText];
+            _formatChat set [0,_formatMessage];
+            [_dialog,"chat_start",_formatChat] call ALIVE_fnc_hashGet;
 
             // create the tasks
 
@@ -167,30 +190,72 @@ switch (_taskState) do {
 
             if(_destinationReached) then {
 
-                private["_taskEnemyFaction","_taskEnemySide","_group","_unit"];
+                private["_taskEnemyFaction","_taskEnemySide","_taskObjects","_tables","_chairs","_electronics","_documents",
+                "_tableClass","_electronicClass","_documentClass","_table","_electronic","_document","_HVTGroup","_HVTClass","_HVTUnit","_HVT",
+                "_HVTGroup2","_HVTClass","_HVTUnit","_HVT2"];
 
                 // spawn the HVT
 
                 _taskEnemyFaction = [_params,"enemyFaction"] call ALIVE_fnc_hashGet;
                 _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
 
-                _group = createGroup _taskEnemySide;
+                _taskObjects = ALIVE_taskObjects;
+                _tables = [_taskObjects,"tables"] call ALIVE_fnc_hashGet;
+                _chairs = [_taskObjects,"chairs"] call ALIVE_fnc_hashGet;
+                _electronics = [_taskObjects,"electronics"] call ALIVE_fnc_hashGet;
+                _documents = [_taskObjects,"documents"] call ALIVE_fnc_hashGet;
 
-                _unit = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+                _tableClass = _tables call BIS_fnc_selectRandom;
+                _electronicClass = _electronics call BIS_fnc_selectRandom;
+                _documentClass = _documents call BIS_fnc_selectRandom;
 
-                _unit = _group createUnit [_unit select 0, _taskPosition, [], 0 , "NONE"];
+                _table = _tableClass createVehicle _taskPosition;
+                _table setdir 0;
+
+                _electronic = [_table,_electronicClass] call ALIVE_fnc_taskSpawnOnTopOf;
+                _document = [_table,_documentClass] call ALIVE_fnc_taskSpawnOnTopOf;
+
+                _HVTGroup = creategroup _taskEnemySide;
+                _HVTClass = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+                _HVTUnit = _HVTGroup createUnit [_HVTClass select 0, _taskPosition, [], 0 , "NONE"];
+                _HVT = leader _HVTGroup;
+                _HVT setformdir 0;
+                _HVT setpos [getpos _table select 0,(getpos _table select 1)-2,0];
+
+                _HVTGroup2 = creategroup _taskEnemySide;
+                _HVTClass = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+                _HVTUnit = _HVTGroup2 createUnit [_HVTClass select 0, _taskPosition, [], 0 , "NONE"];
+                _HVT2 = leader _HVTGroup2;
+                _HVT2 setformdir 180;
+                _HVT2 setpos [getpos _table select 0,(getpos _table select 1)+2,0];
+
 
                 [_params,"HVTSpawned",true] call ALIVE_fnc_hashSet;
-                [_params,"target",_unit] call ALIVE_fnc_hashSet;
+                [_params,"targets",[_HVT,_HVT2]] call ALIVE_fnc_hashSet;
+                [_params,"groups",[_HVTGroup,_HVTGroup2]] call ALIVE_fnc_hashSet;
 
             };
         }else{
 
-            private["_target","_targetPosition","_targetSide"];
+            private["_targets","_targetsDown","_targetPosition","_targetSide","_groups"];
 
-            _target = [_params,"target"] call ALIVE_fnc_hashGet;
+            _targets = [_params,"targets"] call ALIVE_fnc_hashGet;
 
-            if!(alive _target) then {
+            _targetsDown = true;
+
+            {
+                if(alive _x) then {
+                    _targetsDown = false;
+                };
+            } forEach _targets;
+
+            if(_targetsDown) then {
+
+                _groups = [_params,"groups"] call ALIVE_fnc_hashGet;
+
+                {
+                    deleteGroup _x;
+                } forEach _groups;
 
                 [_params,"nextTask",""] call ALIVE_fnc_hashSet;
 
@@ -204,8 +269,8 @@ switch (_taskState) do {
 
             }else{
 
-                _targetPosition = position _target;
-                _targetSide = side _target;
+                _targetPosition = position (_targets select 0);
+                _targetSide = side (_targets select 0);
 
                 [_targetPosition,_targetSide,_taskPlayers,_taskID,"HVT"] call ALIVE_fnc_taskCreateMarkersForPlayers;
 

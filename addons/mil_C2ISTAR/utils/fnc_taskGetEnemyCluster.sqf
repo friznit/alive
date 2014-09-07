@@ -48,7 +48,12 @@ if(count _enemyClusters > 0) then {
     _countClusters = count _sortedClusters;
 
     if(_taskLocationType == "Map" || _taskLocationType == "Short") then {
-        _targetCluster = _sortedClusters select 0;
+        if(count _sortedClusters > 1 && _taskLocationType == "Short") then {
+            _targetCluster = _sortedClusters select 1;
+        }else{
+            _targetCluster = _sortedClusters select 0;
+        };
+
     };
 
     if(_taskLocationType == "Medium") then {

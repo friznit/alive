@@ -106,6 +106,36 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateRadioBroadcastForPlayers.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetNearestLocationName {
+                description = "Utility get the nearest location name";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetNearestLocationName.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskCreateRandomMilLogisticsEvent {
+                description = "Utility call in a random mil logistics event";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateRandomMilLogisticsEvent.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskCreateVehicleInsertionForUnits {
+                description = "Utility create an insertion vehicle for units";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateVehicleInsertionForUnits.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskCreateExplosiveProjectile {
+                description = "Utility create an explosive projectile orientate towards an object";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateExplosiveProjectile.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskCreateBombardment {
+                description = "Utility create a bombardment of explosives";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateBombardment.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskSpawnOnTopOf {
+                description = "Utility spawn an object on top of another object";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskSpawnOnTopOf.sqf";
+                recompile = RECOMPILE;
+            };
             class taskMilAssault {
                 description = "Task Mil Assault";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilAssault.sqf";
