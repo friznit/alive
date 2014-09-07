@@ -37,6 +37,12 @@
 //	#define DEBUG_ENABLED_SYS_SIMULATION
 //	#define DEBUG_ENABLED_SYS_PLAYER
 //	#define DEBUG_ENABLED_SYS_PERF
+//	#define DEBUG_ENABLED_SYS_marker
+//	#define DEBUG_ENABLED_SYS_spotrep
+//	#define DEBUG_ENABLED_SYS_sitrep
+//	#define DEBUG_ENABLED_SYS_patrolrep
+//	#define DEBUG_ENABLED_SYS_AAR
+
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
 #define RECOMPILE 1
