@@ -54,14 +54,14 @@ switch (_taskState) do {
         // establish the location for the task
         // get enemy occupied cluster position
 
-        _targetPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetEnemyCluster;
+        _targetPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetSideCluster;
 
         if(count _targetPosition == 0) then {
 
             // no enemy occupied cluster found
             // try to get a position containing enemy
 
-            _targetPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetEnemySectorCompositionPosition;
+            _targetPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetSideSectorCompositionPosition;
 
             // spawn a populated composition
 

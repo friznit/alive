@@ -56,14 +56,14 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerEventToClient.sqf";
                 recompile = RECOMPILE;
             };
-            class taskGetEnemyCluster {
-                description = "Utility get enemy cluster for tasks";
-                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetEnemyCluster.sqf";
+            class taskGetSideCluster {
+                description = "Utility get side cluster for tasks";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideCluster.sqf";
                 recompile = RECOMPILE;
             };
-            class taskGetEnemySectorCompositionPosition {
-                description = "Utility get enemy sector for tasks";
-                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetEnemySectorCompositionPosition.sqf";
+            class taskGetSideSectorCompositionPosition {
+                description = "Utility get side sector for tasks";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideSectorCompositionPosition.sqf";
                 recompile = RECOMPILE;
             };
             class taskGetSectorPosition {
@@ -136,6 +136,31 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskSpawnOnTopOf.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetNearPlayerVehicles {
+                description = "Utility get near player vehicles";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetNearPlayerVehicles.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskDoVehiclesHaveRoomForGroup {
+                description = "Utility does any vehicle in an array of vehicles have room for a group";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskDoVehiclesHaveRoomForGroup.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskGetVehicleWithMaxRoom {
+                description = "Utility get the vehicle with the biggest amount of room for passengers";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetVehicleWithMaxRoom.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskHaveUnitsLoadedInVehicle {
+                description = "Utility have all the units loaded into the vehicle";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHaveUnitsLoadedInVehicle.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskHaveUnitsUnloadedFromVehicle {
+                description = "Utility have all the units unloaded from the vehicle";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHaveUnitsUnloadedFromVehicle.sqf";
+                recompile = RECOMPILE;
+            };
             class taskMilAssault {
                 description = "Task Mil Assault";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilAssault.sqf";
@@ -149,6 +174,11 @@ class CfgFunctions {
             class taskAssassination {
                 description = "Task Assassination";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskAssassination.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskTransportInsertion {
+                description = "Task Transport Insertion";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskTransportInsertion.sqf";
                 recompile = RECOMPILE;
             };
         };

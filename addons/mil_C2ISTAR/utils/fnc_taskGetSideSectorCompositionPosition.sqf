@@ -1,8 +1,8 @@
 #include <\x\alive\addons\mil_C2ISTAR\script_component.hpp>
-SCRIPT(taskGetEnemySectorCompositionPosition);
+SCRIPT(taskGetSideSectorCompositionPosition);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_taskGetEnemySectorCompositionPosition
+Function: ALIVE_fnc_taskGetSideSectorCompositionPosition
 
 Description:
 Get a enemy cluster for a task
@@ -21,7 +21,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskLocation","_taskLocationType","_side","_targetPosition","_enemySectors","_sortedSectors","_countSectors",
+private ["_taskLocation","_taskLocationType","_side","_targetPosition","_sideSectors","_sortedSectors","_countSectors",
 "_spawnSectors","_position","_targetSector","_sectorData","_bestPlaces","_flatEmpty","_exposedHills"];
 
 _taskLocation = _this select 0;
@@ -32,11 +32,11 @@ _targetPosition = [];
 
 // try to find sectors containing enemy profiles
 
-_enemySectors = [ALIVE_battlefieldAnalysis,"getSectorsContainingSide",[_side]] call ALIVE_fnc_battlefieldAnalysis;
+_sideSectors = [ALIVE_battlefieldAnalysis,"getSectorsContainingSide",[_side]] call ALIVE_fnc_battlefieldAnalysis;
 
 if(count _enemySectors > 0) then {
 
-    _sortedSectors = [_enemySectors, _taskLocation] call ALIVE_fnc_sectorSortDistance;
+    _sortedSectors = [_sideSectors, _taskLocation] call ALIVE_fnc_sectorSortDistance;
 
     _spawnSectors = [];
 

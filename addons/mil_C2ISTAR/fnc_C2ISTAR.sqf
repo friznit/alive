@@ -1634,7 +1634,8 @@ switch(_operation) do {
     case "updateCurrentTaskList": {
 
         private["_taskState","_autoGenerateState","_taskingState","_task","_newTask","_newPlayers","_newPlayerIDs","_newPlayerNames","_players",
-        "_playerIDs","_playerNames","_title","_listOptions","_listValues","_parentListOptions","_parentListValues","_taskCurrentList"];
+        "_playerIDs","_playerNames","_title","_listOptions","_listValues","_parentListOptions","_parentListValues","_taskCurrentList",
+        "_parent","_current","_currentText"];
 
         disableSerialization;
 
@@ -1652,6 +1653,23 @@ switch(_operation) do {
         _parentListValues = ["None"];
 
         {
+            /*
+            _taskID = _task select 0;
+            _requestPlayerID = _task select 1;
+            _side = _task select 2;
+            _position = _task select 3;
+            _faction = _task select 4;
+            _title = _task select 5;
+            _description = _task select 6;
+            _players = _task select 7;
+            _state = _task select 8;
+            _applyType = _task select 9;
+            _current = _task select 10;
+            _parent = _task select 11;
+            _source = _task select 12;
+            _allowMapEditing = _task select 13;
+            */
+
             _task = _x;
             _newTask = [];
 
@@ -1690,7 +1708,20 @@ switch(_operation) do {
             _newTask set [12,_task select 12];
             _newTask set [13,_task select 13];
 
-            _title = _newTask select 5;
+            _parent = _newTask select 11;
+            _current = _newTask select 10;
+
+            if(_current == "Y") then {
+                _currentText = "- Active";
+            }else{
+                _currentText = "";
+            };
+
+            if(_parent == "NONE") then {
+                _title = format["%1 - %2 %3",_newTask select 5,_newTask select 8,_currentText];
+            }else{
+                _title = format["-- %1 - %2 %3",_newTask select 5,_newTask select 8,_currentText];
+            };
 
             _listOptions set [count _listOptions, _title];
             _listValues set [count _listValues, _newTask];
