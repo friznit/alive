@@ -89,8 +89,14 @@ switch _eyes do {
 	};
 };
 
+if !(isNil QGVAR(mapStartMarker)) then {
+	deleteMarkerLocal GVAR(mapStartMarker);
+};
+
 // Create a sitrep
 
 [MOD(SYS_sitrep), "addsitrep", [_sitrepName, _sitrepHash]] call ALiVE_fnc_sitrep;
+
+
 
 closeDialog 0;

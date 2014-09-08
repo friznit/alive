@@ -64,15 +64,15 @@ player createDiaryRecord ["SITREP", [
         "Location: <marker name='%15'>%3</marker><br/>" +
         "<br/>" +
         "Enemy KIA: %4<br/>" +
-        "Enemy State: %5<br/><br/>" +
+        "Enemy Forces:<br/>%5<br/><br/>" +
         "Civilian Casualties: %6<br/><br/>" +
         "Friendly KIA: %7<br/>" +
         "Friendly WIA: %8<br/>" +
-        "Friendly State: %9<br/>" +
+        "Friendly Forces:<br/>%9<br/><br>" +
         "Ammo State: %10<br/>" +
         "Casualty State: %11<br/>" +
         "Vehicle State: %12<br/>" +
-        "Combat Support State: %13<br/>" +
+        "Combat Support State: %13<br/><br/>" +
         "Remarks:<br/>" +
         "%14<br/>",
          _params select 1,

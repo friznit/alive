@@ -6,7 +6,7 @@
 	<English>sitrep Module</English>
 </Key>
 <Key ID="STR_ALIVE_sitrep_COMMENT">
-	<English>Autostarting ALiVE Module template (uses additional module to configure parameters)</English>
+	<English>Send a SITREP to be stored in game and on War Room</English>
 </Key>
 <Key ID="STR_ALIVE_sitrepPARAMS">
 	<English>Template Parameters</English>

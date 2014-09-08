@@ -42,7 +42,7 @@ class RscDisplayALiVESITREP
 		{
 			idc = 3;
 			style = 2;
-			action = "closeDialog 0";
+			action = "if !(isNil 'ALIVE_SYS_sitrep_mapStartMarker') then {deleteMarkerLocal ALIVE_SYS_sitrep_mapStartMarker;}; closeDialog 0";
 			text = "CANCEL"; //--- ToDo: Localize;
 			x = 0.586496 * safezoneW + safezoneX;
 			y = 0.742019 * safezoneH + safezoneY;
