@@ -1,8 +1,9 @@
 class RscText;
+class RscListNBox;
 
 class RscDisplayALiVEPATROLREP
 {
-	idd = 90001;
+	idd = 90002;
 	movingEnable = 1;
 	onLoad = "[_this] call ALiVE_fnc_patrolrepOnLoad";
 	onUnload = "";
@@ -42,7 +43,7 @@ class RscDisplayALiVEPATROLREP
 		{
 			idc = 3;
 			style = 2;
-			action = "closeDialog 0";
+			action = "deleteMarkerLocal ALIVE_SYS_patrolrep_mapStartMarker; deleteMarkerLocal ALIVE_SYS_patrolrep_mapEndMarker; closeDialog 0";
 			text = "CANCEL"; //--- ToDo: Localize;
 			x = 0.586496 * safezoneW + safezoneX;
 			y = 0.742019 * safezoneH + safezoneY;
@@ -84,9 +85,9 @@ class RscDisplayALiVEPATROLREP
 			idc = 5;
 			sizeEx = "(			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 			style = 1;
-			x = 0.51 * safezoneW + safezoneX;
+			x = 0.5 * safezoneW + safezoneX;
 			y = 0.162713 * safezoneH + safezoneY;
-			w = 0.060421 * safezoneW;
+			w = 0.070421 * safezoneW;
 		    class Attributes
 		    {
 		        font = "PuristaMedium";
@@ -113,7 +114,7 @@ class RscDisplayALiVEPATROLREP
 			y = 0.225979 * safezoneH + safezoneY;
 			w = 0.154641 * safezoneW;
 		};
-		class patrolrep_TextText: patrolrep_RscText
+		class patrolrep_SDATEText: patrolrep_RscText
 		{
 			idc = 8;
 
@@ -122,7 +123,7 @@ class RscDisplayALiVEPATROLREP
 			y = 0.258982 * safezoneH + safezoneY;
 			w = 0.0680421 * safezoneW;
 		};
-		class patrolrep_ValueText: patrolrep_RscEdit
+		class patrolrep_SDATEVALUE: patrolrep_RscEdit
 		{
 			idc = 9;
 
@@ -148,11 +149,28 @@ class RscDisplayALiVEPATROLREP
 			y = 0.258982 * safezoneH + safezoneY;
 			w = 0.0680421 * safezoneW;
 		};
-		class patrolrep_ELOCTEXT: patrolrep_RscText
+		class patrolrep_EDATEText: patrolrep_RscText
+		{
+			idc = 40;
+
+			text = "END TIME:"; //--- ToDo: Localize;
+			x = 0.283812 * safezoneW + safezoneX;
+			y = 0.291984 * safezoneH + safezoneY;
+			w = 0.0680421 * safezoneW;
+		};
+		class patrolrep_EDATEVALUE: patrolrep_RscEdit
+		{
+			idc = 41;
+
+			x = 0.345668 * safezoneW + safezoneX;
+			y = 0.291984 * safezoneH + safezoneY;
+			w = 0.0680421 * safezoneW;
+		};
+		class patrolrep_ELOCTEXT: patrolrep_RscText_Right
 		{
 			idc = 12;
 			text = "END GRID:"; //--- ToDo: Localize;
-			x = 0.283812 * safezoneW + safezoneX;
+			x = 0.427834 * safezoneW + safezoneX;
 			y = 0.291984 * safezoneH + safezoneY;
 			w = 0.0680421 * safezoneW;
 		};
@@ -160,45 +178,46 @@ class RscDisplayALiVEPATROLREP
 		{
 			idc = 13;
 
-			x = 0.345668 * safezoneW + safezoneX;
+			x = 0.50 * safezoneW + safezoneX;
 			y = 0.291984 * safezoneH + safezoneY;
 			w = 0.0680421 * safezoneW;
+			h = 0.0176014 * safezoneH;
 		};
 		class PATCOMP_TEXT: patrolrep_RscText
 		{
 			idc = 14;
 
 			text = "PATROL COMPOSITION:"; //--- ToDo: Localize;
-			x = 0.43812 * safezoneW + safezoneX;
+			x = 0.283812 * safezoneW + safezoneX;
 			y = 0.35799 * safezoneH + safezoneY;
-			w = 0.127817 * safezoneW;
+			w = 0.2 * safezoneW;
 		};
 
 		class TASK_TEXT: patrolrep_RscText
 		{
 			idc = 18;
-			text = "TASK:"; //--- ToDo: Localize;
+			text = "TASK SUMMARY:"; //--- ToDo: Localize;
 			x = 0.283812 * safezoneW + safezoneX;
 			y = 0.324987 * safezoneH + safezoneY;
-			w = 0.068 * safezoneW;
+			w = 0.088 * safezoneW;
 		};
-		class SPOT_TEXT: patrolrep_RscText_Right
+		class SPOT_TEXT: patrolrep_RscText
 		{
 			idc = 20;
 
 			text = "SPOTREPS:"; //--- ToDo: Localize;
-			x = 0.427834 * safezoneW + safezoneX;
-			y = 0.291984 * safezoneH + safezoneY;
+			x = 0.49 * safezoneW + safezoneX;
+			y = 0.467998 * safezoneH + safezoneY;
 			w = 0.0680421 * safezoneW;
 
 		};
-		class SIT_TEXT: patrolrep_RscText_Right
+		class SIT_TEXT: patrolrep_RscText
 		{
 			idc = 22;
 
 			text = "SITREPS:"; //--- ToDo: Localize;
-			x = 0.417834 * safezoneW + safezoneX;
-			y = 0.324987 * safezoneH + safezoneY;
+			x = 0.49 * safezoneW + safezoneX;
+			y = 0.35799 * safezoneH + safezoneY;
 			w = 0.0780421 * safezoneW;
 
 		};
@@ -211,22 +230,29 @@ class RscDisplayALiVEPATROLREP
 			y = 0.467998 * safezoneH + safezoneY;
 			w = 0.138318 * safezoneW;
 		};
-		class SIT_VALUE: patrolrep_RscEdit
+		class SIT_VALUE: patrolrep_RscGUIListBox_multi
 		{
 			idc = 23;
-
-			x = 0.50 * safezoneW + safezoneX;
-			y = 0.324987 * safezoneH + safezoneY;
-			w = 0.0680421 * safezoneW;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+			x = 0.49 * safezoneW + safezoneX;
+			y = 0.38 * safezoneH + safezoneY;
+			w = 0.0780421 * safezoneW;
+			h = 0.087829 * safezoneH;
 		};
-		class SPOT_VALUE: patrolrep_RscEdit
+		class SPOT_VALUE: patrolrep_RscGUIListBox_multi
 		{
 			idc = 21;
-
-			x = 0.50 * safezoneW + safezoneX;
-			y = 0.291984 * safezoneH + safezoneY;
-			w = 0.0680421 * safezoneW;
-			h = 0.0176014 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+			x = 0.49 * safezoneW + safezoneX;
+			y = 0.49 * safezoneH + safezoneY;
+			w = 0.0780421 * safezoneW;
+			h = 0.087829 * safezoneH;
 		};
 		class patrolrep_PATCOMPVALUE: patrolrep_RscEdit
 		{
@@ -234,15 +260,15 @@ class RscDisplayALiVEPATROLREP
 
 			x = 0.283812 * safezoneW + safezoneX;
 			y = 0.38 * safezoneH + safezoneY;
-			w = 0.28826 * safezoneW;
+			w = 0.2 * safezoneW;
 			h = 0.087829 * safezoneH;
 		};
-		class patrolrep_ENDBAVALUE: patrolrep_RscEdit
+		class patrolrep_ENBDAVALUE: patrolrep_RscEdit
 		{
 			idc = 27;
 			x = 0.283812 * safezoneW + safezoneX;
 			y = 0.49 * safezoneH + safezoneY;
-			w = 0.28826 * safezoneW;
+			w = 0.2* safezoneW;
 			h = 0.087829 * safezoneH;
 		};
 		class patrolrep_RESULTSTEXT: patrolrep_RscText
@@ -258,9 +284,9 @@ class RscDisplayALiVEPATROLREP
 		{
 			idc = 19;
 
-			x = 0.345668 * safezoneW + safezoneX;
+			x = 0.365668 * safezoneW + safezoneX;
 			y = 0.324987 * safezoneH + safezoneY;
-			w = 0.0680421 * safezoneW;
+			w = 0.2 * safezoneW;
 			h = 0.0176014 * safezoneH;
 		};
 		class patrolrep_RESULTSVALUE: patrolrep_RscEdit

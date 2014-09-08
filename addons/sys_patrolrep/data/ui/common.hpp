@@ -153,6 +153,45 @@ class patrolrep_RscGUIListBox : patrolrep_RscListBox {
     };
 };
 
+class patrolrep_RscGUIListBox_multi
+{
+    style = 0x10 + 0x20;
+    type = 5;
+    font = "PuristaMedium";
+    sizeEx = (safeZoneH / 100) + (safeZoneH / 100);
+    x = "safeZoneX + (safeZoneW / 5)";
+    y = "safeZoneY + (safeZoneH / 2.25)";
+    w = "(safeZoneW / 10)";
+    h = "(safeZoneH / 17)";
+    color[] = {1, 1, 1, 1};
+    colorText[] = {1, 1, 1, 0.75};
+    colorScrollbar[] = {0.023529, 0, 0.0313725, 1};
+    colorSelect[] = {0.694,0.78,0.624,1};
+    colorSelect2[] = {0.694,0.78,0.624,1};
+    colorSelectBackground[] = {0.333,0.333,0.333,1};
+    colorSelectBackground2[] = {0.333,0.333,0.333,1};
+    period = 0;
+    colorBackground[] = {0,0,0,0};
+    maxHistoryDelay = 1.0;
+    autoScrollSpeed = -1;
+    autoScrollDelay = 5;
+    autoScrollRewind = 0;
+    soundSelect[] = {"", 0.0, 1};
+    soundExpand[] = {"", 0.0, 1};
+    soundCollapse[] = {"", 0.0, 1};
+    colorDisabled[] = {0,0,0,0};
+    class ListScrollBar
+    {
+        color[] = {1, 1, 1, 0.6};
+        colorActive[] = {1, 1, 1, 1};
+        colorDisabled[] = {1, 1, 1, 0.3};
+        arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa";
+        arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa";
+        border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa";
+        thumb = "\A3\ui_f\data\gui\cfg\scrollbar\thumb_ca.paa";
+    };
+};
+
 class patrolrep_RscComboBox
 {
     access = 0;

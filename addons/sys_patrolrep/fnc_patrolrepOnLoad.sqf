@@ -31,16 +31,13 @@ _params = _this select 0;
 
 _display = _params select 0;
 
-
-
 // Map
-_map = _display displayCtrl patrolrep_MAP;
+_map = _display displayCtrl PATROLREP_MAP;
 ctrlMapAnimClear _map;
 _map ctrlMapAnimAdd [0.5, 1, position player];
 ctrlMapAnimCommit _map;
 _map ctrlSetEventHandler ["MouseButtonDown", "_this call ALiVE_fnc_patrolrepOnMapEvent"];
 
-GVAR(spos) = position player;
 GVAR(epos) = position player;
 GVAR(mapState) = "START";
 
@@ -74,6 +71,28 @@ _state = [
 } foreach _state;
 
 
+// SPOTREPS
+private "_spotreps";
+_spotreps = {
+	private ["_spotControl"];
+	_spotControl = _display displayCtrl SPOT_LIST;
+	_spotControl lbAdd _key;
+};
+
+
+[[MOD(SYS_spotrep), "state"] call ALIVE_fnc_spotrep, _spotreps] call CBA_fnc_hashEachPair;
+
+// SITREPS
+private "_sitreps";
+_sitreps = {
+	private ["_sitControl"];
+	_sitControl = _display displayCtrl SIT_LIST;
+	_sitControl lbAdd _key;
+};
+
+[[MOD(SYS_sitrep), "state"] call ALIVE_fnc_sitrep, _sitreps] call CBA_fnc_hashEachPair;
+
+
 // Eyes Only
 _eyesControl = _display displayctrl EYES_LIST;
 _eyes = [
@@ -92,7 +111,7 @@ _eyes = [
 
 ///--- Initial icon set (after delay to distinguish icon/brush)
 [] spawn {
-		private ["_ammoControl","_casControl","_eyesControl"];
+		private ["_markere","_markers","_eyesControl","_markerName"];
 
 		disableSerialization;
 		_eyesControl = (findDisplay 90001) displayCtrl EYES_LIST;
@@ -100,21 +119,36 @@ _eyes = [
 		// Set UI controls to defaults
 		ctrlSetText [NAME_VALUE, str(player)];
 		ctrlSetText [DTG_VALUE, [date] call ALIVE_fnc_dateToDTG];
-		ctrlSetText [DATE_VALUE, [date] call ALIVE_fnc_dateToDTG];
-		ctrlSetText [LOC_VALUE, mapGridPosition (position player)];
+		ctrlSetText [SDATE_VALUE, [GVAR(sdate)] call ALIVE_fnc_dateToDTG];
+		ctrlSetText [SLOC_VALUE, mapGridPosition (GVAR(spos))];
+		ctrlSetText [EDATE_VALUE, [date] call ALIVE_fnc_dateToDTG];
+		ctrlSetText [ELOC_VALUE, mapGridPosition (position player)];
 		lbSetCurSel [EYES_LIST, 1];
 
+		_markerName = "PR" + str(random time + 1);
+		_markers = createMarkerLocal [_markerName + "START", GVAR(spos)];
+		_markers setMarkerAlphaLocal 1;
+		_markers setMarkerTextLocal "PATROLREP START";
+		_markers setMarkerTypeLocal "mil_marker";
+		GVAR(mapStartMarker) = _markers;
+
+		_markere = createMarkerLocal [_markerName + "END", (position player)];
+		_markere setMarkerAlphaLocal 1;
+		_markere setMarkerTextLocal "PATROLREP END";
+		_markere setMarkerTypeLocal "mil_marker";
+		GVAR(mapEndMarker) = _markere;
 };
 
 //Sets all static texts toUpper---------------------------------------------------------------------------------------------
-_classInsideControls = configfile >> "RscDisplayALiVEpatrolrep" >> "controls";
+_classInsideControls = configfile >> "RscDisplayALiVEPATROLREP" >> "controls";
 
 for "_i" from 0 to (count _classInsideControls - 1) do {   //go to all subclasses
 	_current = _classInsideControls select _i;
 
 	//do not toUpper texts inserted by player
 	if ( (configName(inheritsFrom(_current)) != "patrolrep_RscEdit")
-		&& (configName(inheritsFrom(_current)) != "patrolrep_RscText") ) then
+		&& (configName(inheritsFrom(_current)) != "patrolrep_RscText")
+		&& (configName(inheritsFrom(_current)) != "patrolrep_RscGUIListBox") ) then
 	{
 		//search inside main controls class
 		_idc = getnumber (_current >> "idc");

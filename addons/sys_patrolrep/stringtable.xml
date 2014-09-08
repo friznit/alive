@@ -6,7 +6,7 @@
 	<English>patrolrep Module</English>
 </Key>
 <Key ID="STR_ALIVE_patrolrep_COMMENT">
-	<English>Autostarting ALiVE Module template (uses additional module to configure parameters)</English>
+	<English>Send a PATROLREP to be stored in game and on War Room</English>
 </Key>
 <Key ID="STR_ALIVE_patrolrepPARAMS">
 	<English>Template Parameters</English>

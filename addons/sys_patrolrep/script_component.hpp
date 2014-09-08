@@ -14,18 +14,17 @@
 #define PATROLREP_MAP 1
 #define NAME_VALUE 7
 #define DTG_VALUE 5
-#define DATE_VALUE 9
-
+#define SDATE_VALUE 9
+#define EDATE_VALUE 41
 #define SLOC_VALUE 11
 #define ELOC_VALUE 13
 
 #define TASK_VALUE 19
-#define SPOT_VALUE 21
-#define SIT_VALUE 23
-
 #define PATCOMP_VALUE 15
 #define ENBDA_VALUE 27
 
+#define SPOT_LIST 21
+#define SIT_LIST 23
 #define CAS_LIST 29
 #define AMMO_LIST 31
 #define VEH_LIST 37

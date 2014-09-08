@@ -189,7 +189,8 @@ switch (_operation) do {
                     ((str side player) != "UNKNOWN")
                 };
 
-
+                GVAR(spos) = position player;
+                GVAR(sdate) = date;
             };
 
 
@@ -302,7 +303,8 @@ switch (_operation) do {
                         _patrolrepName,
                         [_patrolrepHash, QGVAR(callsign)] call ALIVE_fnc_hashGet,
                         [_patrolrepHash, QGVAR(DTG)] call ALIVE_fnc_hashGet,
-                        [_patrolrepHash, QGVAR(dateTime)] call ALIVE_fnc_hashGet,
+                        [_patrolrepHash, QGVAR(sdateTime)] call ALIVE_fnc_hashGet,
+                        [_patrolrepHash, QGVAR(edateTime)] call ALIVE_fnc_hashGet,
                         [_patrolrepHash, QGVAR(sloc)] call ALIVE_fnc_hashGet,
                         [_patrolrepHash, QGVAR(eloc)] call ALIVE_fnc_hashGet,
                         [_patrolrepHash, QGVAR(patcomp)] call ALIVE_fnc_hashGet,
