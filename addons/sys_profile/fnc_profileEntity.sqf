@@ -665,6 +665,7 @@ switch(_operation) do {
 				private ["_unitIndex","_unitClass","_damages","_ranks","_units","_unitClasses","_positions","_active"];
 
 				if(typeName _args == "SCALAR") then {
+
 						_unitIndex = _args;
 						_unitClasses = _logic select 2 select 11; //[_logic,"unitClasses"] call ALIVE_fnc_hashGet;
 						_positions = _logic select 2 select 18; //[_logic,"positions"] call ALIVE_fnc_hashGet;
@@ -713,6 +714,45 @@ switch(_operation) do {
 					} forEach _units;
 				};
 		};
+		case "resize": {
+                private ["_size","_unitClasses","_active","_units","_side","_sideObject","_newGroup","_unit","_removeIndexes"];
+
+                if(typeName _args == "SCALAR") then {
+                        _size = _args;
+
+                        _unitClasses = _logic select 2 select 11;
+                        _active = _logic select 2 select 1; //[_logic,"active"] call ALIVE_fnc_hashGet
+                        _units = _logic select 2 select 21; //[_logic,"units"] call ALIVE_fnc_hashGet;
+                        _side = _logic select 2 select 3; //[_logic, "side"] call MAINCLASS;
+                        _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
+
+                        if(_active) then {
+                            _newGroup = createGroup _sideObject;
+                        };
+
+                        _removeIndexes = [];
+
+                        {
+                            if((_forEachIndex + 1) > _size) then {
+
+                                if(_active) then {
+                                    _unit = _units select (_forEachIndex - 1);
+                                    [_unit] joinSilent _newGroup;
+                                };
+
+                                _removeIndexes set [count _removeIndexes, (_forEachIndex - 1)];
+
+                            };
+                        } forEach _unitClasses;
+
+                        reverse _removeIndexes;
+
+                        {
+                            [_logic, "removeUnit", _x] call MAINCLASS;
+                        } forEach _removeIndexes;
+
+                };
+        };
 		case "spawn": {
 				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
 				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_activeCommands","_inactiveCommands","_group","_unitPosition","_eventID",

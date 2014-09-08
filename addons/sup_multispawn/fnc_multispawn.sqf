@@ -235,12 +235,6 @@ switch(_operation) do {
                                 };
                             }];
                             
-                            //Set Dummy respawn point locally on clients in multiplayer to avoid flashing units at respawn_west marker. Orginial pos is stored in store
-                            if (isMultiplayer) then {
-	                            _respawn = format["Respawn_%1",side player];
-	                            _respawn setmarkerPosLocal [0,0,0];
-                            };
-
 							//Initial insertion, theoretically conflicts with SYS Player, TBD: make it an option to insert already on first start or only on respawn.
                             //[[ALiVE_SUP_MULTISPAWN,"collect",player], "ALiVE_fnc_MultiSpawn", false, false] call BIS_fnc_MP;
                         };
@@ -374,18 +368,27 @@ switch(_operation) do {
             
             [[_logic,"disablePlayer",_player], "ALiVE_fnc_MultiSpawn", owner _player, false] call BIS_fnc_MP;
             
-            sleep 2; _player setpos [0,0,1000];
+            sleep 2;
 			waituntil {
                 sleep 1;
                 
-                if (isnil "_timer" || {time - _timer > 30}) then {
-                    ALiVE_SUP_MULTISPAWN_TXT_LISTENER = format["Time to liftoff: T %1 minutes!",floor((call compile(format["ALiVE_SUP_MULTISPAWN_COUNTDOWN_%1",faction _player]))/60)];
-                    (owner _player) PublicVariableClient "ALiVE_SUP_MULTISPAWN_TXT_LISTENER";
-                    
-                    _timer = time;
-                };
+                _transport = [_factionData,QGVAR(INSERTION_TRANSPORT)] call ALiVE_fnc_HashGet;
                 
-                _transport = [_factionData,QGVAR(INSERTION_TRANSPORT)] call ALiVE_fnc_HashGet; !isnil "_transport" && {_player in _transport};
+                // Player obvject must be existing and alive
+                if (!isnil "_player" && {alive _player}) then {
+
+	                // Update every 30 seconds
+	                if (isnil "_timer" || {time - _timer > 30}) then {
+	                    ALiVE_SUP_MULTISPAWN_TXT_LISTENER = format["Time to liftoff: T %1 minutes!",floor((call compile(format["ALiVE_SUP_MULTISPAWN_COUNTDOWN_%1",faction _player]))/60)];
+	                    (owner _player) PublicVariableClient "ALiVE_SUP_MULTISPAWN_TXT_LISTENER";
+	                    
+	                    _timer = time;
+	                };
+                    !isnil "_transport" && {_player in _transport};
+                } else {
+                    diag_log "exiting";
+                    true;
+                };
             };
             sleep 2;
             
@@ -439,13 +442,15 @@ switch(_operation) do {
         case "insert": {
             if !(isServer) exitwith {};
 
-            private ["_StartPos","_EndPos","_transport","_TransportType","_side","_queue"];
+            private ["_StartPos","_EndPos","_transport","_TransportType","_side","_queue","_faction"];
             
             _startPos = [_args, 0, [0,0,100], [[]]] call BIS_fnc_param;
             _endPos = [_args, 1, getMarkerpos "Respawn_West", [[]]] call BIS_fnc_param;
             _faction = [_args, 2, "BLU_F", [""]] call BIS_fnc_param;
             _timeOut = [_args, 3, 30, [-1]] call BIS_fnc_param;
             _time = time;
+            
+            if (isnil "_faction") exitwith {["ALiVE_SUP_MULTISPAWN - faction not found when checking queue! Exiting queue..."]};
             
             //////////////////////////////////////////////
             // Pre Start Checks
@@ -467,10 +472,10 @@ switch(_operation) do {
                 
                 call compile format["ALiVE_SUP_MULTISPAWN_COUNTDOWN_%1 = (time - _time - _timeOut)",_faction];
                 _queue = [_factionData, QGVAR(PLAYERQUEUE),[]] call ALiVE_fnc_HashGet;
+                _queue = _queue - [objNull];
 
                 (
-	                (count _queue > 0 && // There are players waiting for respawn
-	                {time - _time > _timeOut}) // and timeout has passed
+	                (time - _time > _timeOut) // timeout has passed
 	                
 	                || // or
 	                
@@ -478,11 +483,13 @@ switch(_operation) do {
                 )
                 
                 && // and
-                
-                {isNil {[_factionData, QGVAR(INSERTION_TRANSPORT)] call ALiVE_fnc_HashGet}} // former insertion is finished
-			};
-            //////////////////////////////////////////////
 
+                {isNil {[_factionData, QGVAR(INSERTION_TRANSPORT)] call ALiVE_fnc_HashGet}} // former insertion is finished 
+			};
+            
+            [_factionData, QGVAR(PLAYERQUEUE),_queue] call ALiVE_fnc_HashSet;
+            
+            //////////////////////////////////////////////
                         
             //////////////////////////////////////////////
             // Start Insertion
@@ -514,7 +521,11 @@ switch(_operation) do {
             // Conditions for finished insertion            
             waituntil {
                 sleep 1;
-                !canMove _transport || 
+                
+                isNil "_transport" || {!alive _transport} || {!canMove _transport}
+                
+                ||
+                 
                 {
                     ((getpos _transport) select 2) < 1 && 
                     {{_x in _transport} count ([] call BIS_fnc_ListPlayers) == 0}
@@ -528,7 +539,7 @@ switch(_operation) do {
 
             [_factionData,QGVAR(INSERTING),false] call ALiVE_fnc_HashSet;
             
-            if !(canMove _transport) then {
+            if (isNil "_transport" || {!alive _transport} || {!canMove _transport}) then {
                 _data = +(_transport getvariable [QGVAR(INSERTION_TRANSPORT),[objNull,[],grpNull]]);
                 _factionData = [GVAR(STORE),_faction] call ALiVE_fnc_HashGet;
                 
@@ -577,14 +588,14 @@ switch(_operation) do {
             if ((format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",faction _player]) call ALiVE_fnc_markerExists) then {_insertion = getMarkerPos (format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",faction _player])} else {_insertion = [1000,1000,100]};
             if ((format["ALiVE_SUP_MULTISPAWN_DESTINATION_%1",faction _player]) call ALiVE_fnc_markerExists) then {_destination = getMarkerPos (format["ALiVE_SUP_MULTISPAWN_DESTINATION_%1",faction _player])} else {_destination = getMarkerPos format["Respawn_%1", (faction _player) call ALiVE_fnc_factionSide]};
 
+			if !(!isnil "_insertion" && {!isnil "_destination"} && {!isnil "_player" && {!isnull _player}} && {!isnil "_timeout"}) exitwith {};
+
 			if (!isnil "_transport" && {_inserting}) then {
                 [[[_player,_transport], {(_this select 0) moveInCargo (_this select 1)}], "BIS_fnc_spawn", owner _player, false] call BIS_fnc_MP;
             } else {
                 [_factionData,QGVAR(PLAYERQUEUE),([_factionData,QGVAR(PLAYERQUEUE),[]] call ALiVE_fnc_HashGet) + [_player]] call ALiVE_fnc_HashSet;
+                
                 [_logic,"loader",_player] spawn ALiVE_fnc_MultiSpawn;
-                
-                if !(!isnil "_insertion" && {!isnil "_destination"} && {!isnil "_player"} && {!isnil "_timeout"}) exitwith {};
-                
                 [_logic,"insert",[_insertion,_destination,faction _player,_timeout]] spawn ALiVE_fnc_MultiSpawn;
             };
         };

@@ -94,7 +94,7 @@ if (_menuName == "C2ISTAR") then {
 		[
         	["C2ISTAR", localize "STR_ALIVE_C2ISTAR", "popup"],
 			[
-				["MANAGE TASKS",
+				["Manage Tasks",
 					{["OPEN",[]] call ALIVE_fnc_C2TabletOnAction},
 	                "",
 					localize "STR_ALIVE_C2ISTAR_COMMENT",
@@ -103,7 +103,7 @@ if (_menuName == "C2ISTAR") then {
 	                 true,
 	                 _result
 				],
-				["SEND SITREP",
+				["Send SITREP",
 					{createDialog "RscDisplayALIVESITREP"},
 					"",
 					"",
@@ -112,7 +112,7 @@ if (_menuName == "C2ISTAR") then {
 	                 true,
 	                 _result
 				],
-                ["SEND PATROLREP",
+                ["Send PATROLREP",
 					{createDialog "RscDisplayALIVEPATROLREP"},
 					"",
 					"",

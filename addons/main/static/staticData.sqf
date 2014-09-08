@@ -478,6 +478,36 @@ _options set [count _options,_tasksData];
 
 [ALIVE_generatedTasks, "Assassination", ["HVT Assassination",_options]] call ALIVE_fnc_hashSet;
 
+// Troop Insertion Task
+
+_options = [];
+
+_tasksData = [] call ALIVE_fnc_hashCreate;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Troop Transport Insertion"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Provide insertion for troops."] call ALIVE_fnc_hashSet;
+[_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Pick up the troops"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Travel to the load in location near %1."] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","Travel to the load in location near %1"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_failed",[["HQ","Troops report you have no room in your vehicles for them!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_cancelled",[["HQ","Troops have been killed!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_tasksData,"Pickup",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Insert the troops"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Travel to the insertion point near %1."] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","Travel to the insertion point near %1"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_failed",[["HQ","Troops have been killed!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_tasksData,"Insertion",_taskData] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_tasksData];
+
+[ALIVE_generatedTasks, "TransportInsertion", ["Transport Insertion",_options]] call ALIVE_fnc_hashSet;
+
 /*
  * Civ Pop Defaults
  */

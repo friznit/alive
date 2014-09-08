@@ -44,7 +44,7 @@ _gunners = [];
 _turrets = [];
 _cargos = [];
 
-if(count _units > 1) then 
+if(count _units > 1) then
 {
 	
 	_leader = leader _group;
@@ -109,16 +109,18 @@ if(count _units > 1) then
 	if((_positionCount select 3) > 0) then {
 	
 		_vehicleTurrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
-		
-		for "_i" from 1 to (_positionCount select 3) do 
+
+		for "_i" from 1 to (_positionCount select 3) do
 		{
 			if(count _units > 0) then
 			{				
-				_unit = _units call BIS_fnc_arrayPop;				
 				_turretPath = _vehicleTurrets select _i;
-				_unit assignAsTurret [_vehicle, _turretPath];
-				if(_orderIn) then { [_unit] orderGetIn true; };
-				_turrets set [count _turrets, _unit];
+				if!(isNil "_turretPath") then {
+				    _unit = _units call BIS_fnc_arrayPop;
+                    _unit assignAsTurret [_vehicle, _turretPath];
+                    if(_orderIn) then { [_unit] orderGetIn true; };
+                    _turrets set [count _turrets, _unit];
+				};
 			};			
 		};
 		_assignments set [3, _turrets];

@@ -705,6 +705,7 @@ switch(_operation) do {
             _current = _task select 10;
             _parent = _task select 11;
             _source = _task select 12;
+            _allowMapEditing = _task select 13;
             */
 
             _task = _args;
