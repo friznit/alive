@@ -432,6 +432,34 @@ _options set [count _options,_tasksData];
 
 [ALIVE_generatedTasks, "MilAssault", ["Military Objective Assault",_options]] call ALIVE_fnc_hashSet;
 
+// Military Objective Defence Task
+
+_options = [];
+
+_tasksData = [] call ALIVE_fnc_hashCreate;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Defend the base"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Defend the friendly position."] call ALIVE_fnc_hashSet;
+[_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Proceed to the base"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Proceed to the base near %1, prepare your defence!"] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","Proceed to the base near %1, prepare your defence!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_tasksData,"Travel",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Defend against the enemy"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Survive the enemy assault!"] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["PLAYERS","At base"],["HQ","Defend the base"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","All enemy have been destroyed at the AO"],["HQ","Well done!"]]] call ALIVE_fnc_hashSet;
+[_tasksData,"DefenceWave",_taskData] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_tasksData];
+
+[ALIVE_generatedTasks, "MilDefence", ["Military Objective Defence",_options]] call ALIVE_fnc_hashSet;
+
 // Civilian Objective Assault Task
 
 _options = [];
@@ -507,6 +535,50 @@ _taskData = [] call ALIVE_fnc_hashCreate;
 _options set [count _options,_tasksData];
 
 [ALIVE_generatedTasks, "TransportInsertion", ["Transport Insertion",_options]] call ALIVE_fnc_hashSet;
+
+// Destroy Vehicles Task
+
+_options = [];
+
+_tasksData = [] call ALIVE_fnc_hashCreate;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Destroy the %1"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Intelligence suggests a group of %1 in the area near %2."] call ALIVE_fnc_hashSet;
+[_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Destroy the vehicles"] call ALIVE_fnc_hashSet;
+[_taskData,"description","We received intelligence about %1 vehicles near %2! Destroy the vehicles!"] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","We received intelligence about %1 vehicles near %2! Destroy the vehicles!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","Vehicles have been destroyed"],["HQ","Roger that, well done!"]]] call ALIVE_fnc_hashSet;
+[_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_tasksData];
+
+[ALIVE_generatedTasks, "DestroyVehicles", ["Destroy the vehicles",_options]] call ALIVE_fnc_hashSet;
+
+// Destroy Infantry Task
+
+_options = [];
+
+_tasksData = [] call ALIVE_fnc_hashCreate;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Destroy the infantry"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Intelligence suggests a group of infatry in the area near %1."] call ALIVE_fnc_hashSet;
+[_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Destroy the infantry"] call ALIVE_fnc_hashSet;
+[_taskData,"description","We received intelligence about infantry units near %1! Destroy the infantry!"] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","We received intelligence about infantry units near %1! Destroy the infantry!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","Infantry units have been destroyed"],["HQ","Roger that, well done!"]]] call ALIVE_fnc_hashSet;
+[_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_tasksData];
+
+[ALIVE_generatedTasks, "DestroyInfantry", ["Destroy the infantry units",_options]] call ALIVE_fnc_hashSet;
 
 /*
  * Civ Pop Defaults

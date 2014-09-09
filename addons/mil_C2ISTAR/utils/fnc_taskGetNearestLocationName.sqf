@@ -26,6 +26,8 @@ private ["_taskLocation","_distance","_nearLocations","_nearestLocation"];
 _taskLocation = _this select 0;
 _distance = if(count _this > 1) then {_this select 1} else {1000};
 
+if(count _taskLocation == 0) exitWith {""};
+
 _nearLocations = nearestLocations [_taskLocation, ["NameVillage","NameCity","NameCityCapital","NameLocal"], _distance];
 
 while {count _nearLocations < 1} do {

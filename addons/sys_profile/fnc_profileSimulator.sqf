@@ -202,8 +202,10 @@ _engaged = [0,0,0];
 						
 			// entity is spawned, update positions
 			} else {
-			
-				_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+
+			    _group = _entityProfile select 2 select 13;
+
+				_leader = leader _group; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 				_newPosition = getPosATL _leader;
 				_position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
 
@@ -217,7 +219,7 @@ _engaged = [0,0,0];
 							// if in command of vehicle move all entities within the vehicle						
 							// set the vehicle position and merge all assigned entities positions
 							
-							_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+							//_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 
 							_newPosition = getPosATL vehicle _leader;
 							
@@ -230,7 +232,7 @@ _engaged = [0,0,0];
 								};
 							} forEach _vehiclesInCommandOf;												
 						} else {
-							_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+							//_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 							_newPosition = getPosATL _leader;
 						
 							// set the entity position and merge all unit positions to group position
@@ -247,12 +249,12 @@ _engaged = [0,0,0];
             // the profile has no waypoints
 		    if(!(_vehicleCargo) && !(_isPlayer)) then {
 
-                _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
-                _group = group _leader;
+                _group = _entityProfile select 2 select 13; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                //_group = group _leader;
 
                 // but the profile has waypoints set, but not but ALiVE
                 // eg Zeus
-                if(currentWaypoint _group < count waypoints _group && currentWaypoint _group > 0) then {
+                if((!isNull _group) && {currentWaypoint _group < count waypoints _group && currentWaypoint _group > 0}) then {
                     //["S1: %1 %2", currentWaypoint _group, count waypoints _group] call ALIVE_fnc_dump;
 
                     _newPosition = getPosATL _leader;
@@ -268,7 +270,9 @@ _engaged = [0,0,0];
                                 // if in command of vehicle move all entities within the vehicle
                                 // set the vehicle position and merge all assigned entities positions
 
-                                _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                                //_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+
+                                _leader = leader _group;
 
                                 _newPosition = getPosATL vehicle _leader;
 
@@ -281,7 +285,11 @@ _engaged = [0,0,0];
                                     };
                                 } forEach _vehiclesInCommandOf;
                             } else {
-                                _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+
+                                //_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+
+                                _leader = leader _group;
+
                                 _newPosition = getPosATL _leader;
 
                                 // set the entity position and merge all unit positions to group position
@@ -298,9 +306,9 @@ _engaged = [0,0,0];
 		    // entity is player entity
             if(_isPlayer) then {
 
-                 _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
-                 _newPosition = getPosATL _leader;
-                 _position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
+                _leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
+                _newPosition = getPosATL _leader;
+                _position = _entityProfile select 2 select 2; //_leader = [_profile,"position"] call ALIVE_fnc_hashGet;
 
 				//Positions are valid
 				if (!(isnil "_newPosition") && {str(_newPosition) != "[0,0,0]"} && {!(isnil "_position")} && {str(_position) != "[0,0,0]"}) then {

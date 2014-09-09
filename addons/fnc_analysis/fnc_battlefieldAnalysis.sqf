@@ -469,7 +469,7 @@ switch(_operation) do {
         _result = _clustersOwnedBySide;
     };
     case "getSectorsContainingSide": {
-        private["_side","_sectorsContainingSide","_allSectors","_landSectors","_sectorData","_entities"];
+        private["_side","_sectorsContainingSide","_allSectors","_landSectors","_sectorData","_entities","_sideEntities"];
 
         _side = _args select 0;
         _sectorsContainingSide = [];
@@ -485,6 +485,30 @@ switch(_operation) do {
                 _entities = [_sectorData,"entitiesBySide"] call ALIVE_fnc_hashGet;
                 _sideEntities = [_entities,_side] call ALIVE_fnc_hashGet;
                 if(count _sideEntities > 0) then {
+                    _sectorsContainingSide set [count _sectorsContainingSide,_x];
+                };
+            };
+        } forEach _landSectors;
+
+        _result = _sectorsContainingSide;
+    };
+    case "getSectorsContainingSideVehicles": {
+        private["_side","_sectorsContainingSide","_allSectors","_landSectors","_sectorData","_vehicles","_sideVehicles"];
+
+        _side = _args select 0;
+        _sectorsContainingSide = [];
+
+        [ALIVE_sectorGrid] call ALIVE_fnc_gridAnalysisProfileVehicle;
+        _allSectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
+        _landSectors = [_allSectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
+
+        {
+            _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
+
+            if("vehiclesBySide" in (_sectorData select 1)) then {
+                _vehicles = [_sectorData,"vehiclesBySide"] call ALIVE_fnc_hashGet;
+                _sideVehicles = [_vehicles,_side] call ALIVE_fnc_hashGet;
+                if(count _sideVehicles > 0) then {
                     _sectorsContainingSide set [count _sectorsContainingSide,_x];
                 };
             };

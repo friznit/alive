@@ -62,8 +62,6 @@ if(count _roads > 0) then {
 			_road = _roads select (floor(random((count _roads)-1)));
 		};
 		_position = _road select 0;
-	}else{
-	
 	};
 };
 

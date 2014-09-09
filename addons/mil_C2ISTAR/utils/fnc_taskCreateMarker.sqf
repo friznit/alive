@@ -121,6 +121,8 @@ if(_taskID in (ALIVE_taskMarkers select 1)) then {
 
 };
 
+_taskMarkers = [ALIVE_taskMarkers,_taskID] call ALIVE_fnc_hashGet;
+
 // create the marker
 _m = createMarkerLocal [format["%1_m1",_taskID], _position];
 _m setMarkerSizeLocal _markerDimensions;

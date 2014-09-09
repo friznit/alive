@@ -300,17 +300,19 @@ switch(_operation) do {
 							_args set [count _args, 0];
 						};
 
-						//["SET VEH POS: %1",_args] call ALIVE_fnc_dump;
-				
-						[_logic,"position",_args] call ALIVE_fnc_hashSet;
-						
-						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
-							[_logic,"debug",true] call MAINCLASS;
-						};
-						
-						// store position on handler position index						
-						_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
-						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
+						if!(((_args select 0) + (_args select 1)) == 0) then {
+
+                            [_logic,"position",_args] call ALIVE_fnc_hashSet;
+
+                            if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
+                                [_logic,"debug",true] call MAINCLASS;
+                            };
+
+                            // store position on handler position index
+                            _profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
+                            [ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
+
+                        };
                 };
 				_result = [_logic,"position"] call ALIVE_fnc_hashGet;
         };

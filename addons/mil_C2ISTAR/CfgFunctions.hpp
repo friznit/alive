@@ -66,6 +66,26 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideSectorCompositionPosition.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetSideSectorVehicles {
+                description = "Utility get side sector that contains vehicles";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideSectorVehicles.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskGetRandomSideVehicleFromSector {
+                description = "Utility get a random vehicle for a side from a sector";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetRandomSideVehicleFromSector.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskGetSideSectorEntities {
+                description = "Utility get side sector that contains entities";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideSectorEntities.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskGetRandomSideEntityFromSector {
+                description = "Utility get a random vehicle for a side from a sector";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetRandomSideEntityFromSector.sqf";
+                recompile = RECOMPILE;
+            };
             class taskGetSectorPosition {
                 description = "Utility get position based on sector data";
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSectorPosition.sqf";
@@ -161,9 +181,24 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHaveUnitsUnloadedFromVehicle.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetStateOfVehicleProfiles {
+                description = "Utility have all the vehicle profiles been destroyed";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetStateOfVehicleProfiles.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskGetStateOfEntityProfiles {
+                description = "Utility have all the entity profiles been destroyed";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetStateOfEntityProfiles.sqf";
+                recompile = RECOMPILE;
+            };
             class taskMilAssault {
                 description = "Task Mil Assault";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilAssault.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskMilDefence {
+                description = "Task Mil Defence";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilDefence.sqf";
                 recompile = RECOMPILE;
             };
             class taskCivAssault {
@@ -179,6 +214,16 @@ class CfgFunctions {
             class taskTransportInsertion {
                 description = "Task Transport Insertion";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskTransportInsertion.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskDestroyVehicles {
+                description = "Task Destroy Vehicles";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskDestroyVehicles.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskDestroyInfantry {
+                description = "Task Destroy Infantry";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskDestroyInfantry.sqf";
                 recompile = RECOMPILE;
             };
         };

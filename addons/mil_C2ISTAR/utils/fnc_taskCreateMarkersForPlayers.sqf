@@ -21,26 +21,31 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskPosition","_taskSide","_taskID","_taskPlayers","_taskType","_colour","_markerDefinition","_player"];
+private ["_taskPosition","_taskSide","_taskID","_taskPlayers","_taskType","_vehicleType","_colour","_typePrefix","_icon","_markerDefinition","_player"];
 
 _taskPosition = _this select 0;
 _taskSide = _this select 1;
 _taskPlayers = _this select 2;
 _taskID = _this select 3;
 _taskType = _this select 4;
+_vehicleType = if(count _this > 5) then {_this select 5} else {""};
 
 switch(_taskSide) do {
     case EAST:{
         _colour = "ColorRed";
+        _typePrefix = "o";
     };
     case WEST:{
         _colour = "ColorBlue";
+        _typePrefix = "b";
     };
     case CIVILIAN:{
         _colour = "ColorYellow";
+        _typePrefix = "c";
     };
     case RESISTANCE:{
         _colour = "ColorGreen";
+        _typePrefix = "n";
     };
 };
 
@@ -49,6 +54,46 @@ _markerDefinition = [];
 switch(_taskType) do {
     case "HVT":{
         _markerDefinition = [_taskPosition,_taskID,_colour,"HVT","mil_objective",[1,1],1,"ICON"];
+    };
+    case "vehicle":{
+
+        switch(_vehicleType) do {
+            case "Car":{
+                _icon = format["%1_recon",_typePrefix];
+            };
+            case "Tank":{
+                _icon = format["%1_armor",_typePrefix];
+            };
+            case "Armored":{
+                _icon = format["%1_armor",_typePrefix];
+            };
+            case "Truck":{
+                _icon = format["%1_recon",_typePrefix];
+            };
+            case "Ship":{
+                _icon = format["%1_unknown",_typePrefix];
+            };
+            case "Helicopter":{
+                _icon = format["%1_air",_typePrefix];
+            };
+            case "Plane":{
+                _icon = format["%1_plane",_typePrefix];
+            };
+            case "StaticWeapon":{
+                _icon = format["%1_mortar",_typePrefix];
+            };
+            default {
+                _icon = "hd_dot";
+            };
+        };
+
+        _markerDefinition = [_taskPosition,_taskID,_colour,"Target Vehicle",_icon,[1,1],1,"ICON"];
+    };
+    case "entity":{
+
+        _icon = format["%1_inf",_typePrefix];
+
+        _markerDefinition = [_taskPosition,_taskID,_colour,"Target Infantry",_icon,[1,1],1,"ICON"];
     };
 };
 

@@ -270,7 +270,7 @@ switch(_operation) do {
 					[_logic,"leader",objNull] call ALIVE_fnc_hashSet; // select 2 select 10						
 					[_logic,"unitClasses",[]] call ALIVE_fnc_hashSet; // select 2 select 11
 					[_logic,"unitCount",0] call ALIVE_fnc_hashSet; // select 2 select 12
-					[_logic,"group",objNull] call ALIVE_fnc_hashSet; // select 2 select 13
+					[_logic,"group",grpNull] call ALIVE_fnc_hashSet; // select 2 select 13
 					[_logic,"companyID",""] call ALIVE_fnc_hashSet; // select 2 select 14			
 					[_logic,"groupID",""] call ALIVE_fnc_hashSet; // select 2 select 15
 					[_logic,"waypoints",[]] call ALIVE_fnc_hashSet; // select 2 select 16
@@ -368,17 +368,18 @@ switch(_operation) do {
 							_args set [count _args, 0];
 						};
 
-						//["SET ENT POS: %1",_args] call ALIVE_fnc_dump;
-				
-						[_logic,"position",_args] call ALIVE_fnc_hashSet;
-						
-						if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
-							[_logic,"debug",true] call MAINCLASS;
+						if!(((_args select 0) + (_args select 1)) == 0) then {
+						    [_logic,"position",_args] call ALIVE_fnc_hashSet;
+
+                            if([_logic,"debug"] call ALIVE_fnc_hashGet) then {
+                                [_logic,"debug",true] call MAINCLASS;
+                            };
+
+                            // store position on handler position index
+                            _profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
+                            [ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
 						};
-						
-						// store position on handler position index
-						_profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;					
-						[ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
+
                 };
 				_result = _logic select 2 select 2; //[_logic,"position"] call ALIVE_fnc_hashGet;
         };

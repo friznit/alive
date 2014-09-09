@@ -376,19 +376,53 @@ switch(_operation) do {
 
             _taskSet = ["init", _taskID, _taskData, [], _debug] call (call compile format["ALIVE_fnc_task%1",_taskType]);
 
-            if(count _taskSet > 0) then {
+            if!(isNil "_taskSet") then {
+                if(count _taskSet > 0) then {
 
-                _managedTaskParams = [_logic,"managedTaskParams"] call ALIVE_fnc_hashSet;
-                if!(_taskID in (_managedTaskParams select 1)) then {
-                    [_managedTaskParams,_taskID,_taskSet select 1] call ALIVE_fnc_hashSet;
+                    _managedTaskParams = [_logic,"managedTaskParams"] call ALIVE_fnc_hashSet;
+                    if!(_taskID in (_managedTaskParams select 1)) then {
+                        [_managedTaskParams,_taskID,_taskSet select 1] call ALIVE_fnc_hashSet;
+                    };
+
+                    {
+                        [_logic, "registerTask", _x] call MAINCLASS;
+                        [_logic, "updateTaskState", _x] call MAINCLASS;
+                    } forEach (_taskSet select 0);
+
+                }else{
+
+                    private["_autoGenerateSides","_sideAutoGeneration","_generate"];
+
+                    _autoGenerateSides = [_logic,"autoGenerateSides"] call ALIVE_fnc_hashGet;
+                    _sideAutoGeneration = [_autoGenerateSides,_taskSide] call ALIVE_fnc_hashGet;
+
+                    if(_sideAutoGeneration select 0) then {
+
+                        sleep 10;
+
+                        _generate = [format["%1_%2",_taskSide,(time+1)],_requestPlayerID,_taskSide,_taskFaction,_taskEnemyFaction,true];
+
+                        [_logic,"autoGenerateTasks",_generate] call MAINCLASS;
+                    };
+
+                };
+            }else{
+
+                private["_autoGenerateSides","_sideAutoGeneration","_generate"];
+
+                _autoGenerateSides = [_logic,"autoGenerateSides"] call ALIVE_fnc_hashGet;
+                _sideAutoGeneration = [_autoGenerateSides,_taskSide] call ALIVE_fnc_hashGet;
+
+                if(_sideAutoGeneration select 0) then {
+
+                    sleep 10;
+
+                    _generate = [format["%1_%2",_taskSide,(time+1)],_requestPlayerID,_taskSide,_taskFaction,_taskEnemyFaction,true];
+
+                    [_logic,"autoGenerateTasks",_generate] call MAINCLASS;
                 };
 
-                {
-                    [_logic, "registerTask", _x] call MAINCLASS;
-                    [_logic, "updateTaskState", _x] call MAINCLASS;
-                } forEach (_taskSet select 0);
-
-            };
+            }
 
         };
 

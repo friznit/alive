@@ -238,6 +238,7 @@ switch (_taskState) do {
         _pickupReached = [_params,"pickupReached"] call ALIVE_fnc_hashGet;
         _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
 
+        // first run of this task
         if(_lastState != "Pickup") then {
 
             ["chat_start",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
@@ -245,6 +246,8 @@ switch (_taskState) do {
             [_params,"lastState","Pickup"] call ALIVE_fnc_hashSet;
         };
 
+        // the players have not yet reached the
+        //  pickup location
         if!(_pickupReached) then {
 
             private["_infantryProfile","_destinationReached","_infantryGroup","_nearVehicles","_vehicles","_vehicle","_assignments","_maxRoomVehicle","_room"];
@@ -254,14 +257,16 @@ switch (_taskState) do {
 
                 _destinationReached = [_taskPosition,_taskPlayers,200] call ALIVE_fnc_taskHavePlayersReachedDestination;
 
+                // the players are at the pickup point
                 if(_destinationReached) then {
 
                     _infantryGroup = _infantryProfile select 2 select 13;
 
                     _nearVehicles = [_taskPosition,_taskPlayers,200] call ALIVE_fnc_taskGetNearPlayerVehicles;
-
                     _vehicles = [_nearVehicles,_infantryGroup] call ALIVE_fnc_taskDoVehiclesHaveRoomForGroup;
 
+                    // if there are nearby player vehicles with
+                    // room for the group assign it
                     if(count _vehicles > 0) then {
                         _vehicle = _vehicles select 0;
 
@@ -273,9 +278,12 @@ switch (_taskState) do {
                     }else{
 
                         _vehicle = [_nearVehicles] call ALIVE_fnc_taskGetVehicleWithMaxRoom;
-
                         _maxRoomVehicle = _vehicle select 0;
 
+                        // if there is a player vehicle that
+                        // has any available room
+                        // resize the profile group to fit in the vehicle
+                        // and then assign it
                         if!(isNull _maxRoomVehicle) then {
 
                             _room = _vehicle select 1;
@@ -291,6 +299,8 @@ switch (_taskState) do {
                             [_params,"assignments",_assignments] call ALIVE_fnc_hashSet;
 
                         }else{
+
+                            // no player vehicles have any room - fail
 
                             [_infantryProfile,"busy",false] call ALIVE_fnc_profileEntity;
 
@@ -310,6 +320,8 @@ switch (_taskState) do {
 
             }else{
 
+                // profile is missing - cancel
+
                 [_params,"nextTask",""] call ALIVE_fnc_hashSet;
 
                 _task set [8,"Cancelled"];
@@ -322,6 +334,8 @@ switch (_taskState) do {
 
         }else{
 
+            // the players have reached the pickup location
+
             private["_infantryProfile","_units","_loaded","_vehicle"];
 
             _infantryProfile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
@@ -330,6 +344,9 @@ switch (_taskState) do {
                 _units = _infantryProfile select 2 select 21;
 
                 _loaded = [_units] call ALIVE_fnc_taskHaveUnitsLoadedInVehicle;
+
+                // once all units in the group have loaded
+                // onto the next task..
 
                 if(_loaded) then {
 
@@ -343,6 +360,8 @@ switch (_taskState) do {
                 };
 
             }else{
+
+                // profile is missing - cancel
 
                 [_params,"nextTask",""] call ALIVE_fnc_hashSet;
 
@@ -376,6 +395,7 @@ switch (_taskState) do {
         _insertionReached = [_params,"insertionReached"] call ALIVE_fnc_hashGet;
         _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
 
+        // first run of this task
         if(_lastState != "Insertion") then {
 
             ["chat_start",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
@@ -383,12 +403,15 @@ switch (_taskState) do {
             [_params,"lastState","Insertion"] call ALIVE_fnc_hashSet;
         };
 
+        // the players have not yet reached the
+        // insertion location
         if!(_insertionReached) then {
 
             private["_profileID","_infantryProfile","_destinationReached","_infantryGroup","_assignments","_vehicle"];
 
             _vehicle = [_params,"vehicle"] call ALIVE_fnc_hashGet;
 
+            // the player vehicle has been destroyed enroute - fail
             if!(alive _vehicle) then {
 
                 [_params,"nextTask",""] call ALIVE_fnc_hashSet;
@@ -403,11 +426,15 @@ switch (_taskState) do {
 
                 _destinationReached = [_taskPosition,_taskPlayers,300] call ALIVE_fnc_taskHavePlayersReachedDestination;
 
+                // the players are at the insertion point
                 if(_destinationReached) then {
 
                     _profileID = [_params,"profileID"] call ALIVE_fnc_hashGet;
 
                     _infantryProfile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+
+                    // if the profile exists the group must be alive
+                    // set the group to dismount the vehicle
                     if!(isNil "_infantryProfile") then {
 
                         _infantryGroup = _infantryProfile select 2 select 13;
@@ -418,6 +445,8 @@ switch (_taskState) do {
                         [_params,"insertionReached",true] call ALIVE_fnc_hashSet;
 
                     }else{
+
+                        // profile is missing - fail
 
                         [_params,"nextTask",""] call ALIVE_fnc_hashSet;
 
@@ -435,6 +464,8 @@ switch (_taskState) do {
 
         }else{
 
+            // the players have reached the insertion location
+
             private["_profileID","_infantryProfile","_units","_unloaded"];
 
             _profileID = [_params,"profileID"] call ALIVE_fnc_hashGet;
@@ -446,6 +477,8 @@ switch (_taskState) do {
 
                 _unloaded = [_units] call ALIVE_fnc_taskHaveUnitsUnloadedFromVehicle;
 
+                // once all units have unloaded
+                // task is completed successfully
                 if(_unloaded) then {
 
                     [_infantryProfile,"busy",false] call ALIVE_fnc_profileEntity;
@@ -461,6 +494,8 @@ switch (_taskState) do {
                 };
 
             }else{
+
+                // profile is missing - fail
 
                 [_params,"nextTask",""] call ALIVE_fnc_hashSet;
 

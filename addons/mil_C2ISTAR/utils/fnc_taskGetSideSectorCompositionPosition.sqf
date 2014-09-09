@@ -34,7 +34,7 @@ _targetPosition = [];
 
 _sideSectors = [ALIVE_battlefieldAnalysis,"getSectorsContainingSide",[_side]] call ALIVE_fnc_battlefieldAnalysis;
 
-if(count _enemySectors > 0) then {
+if(count _sideSectors > 0) then {
 
     _sortedSectors = [_sideSectors, _taskLocation] call ALIVE_fnc_sectorSortDistance;
 

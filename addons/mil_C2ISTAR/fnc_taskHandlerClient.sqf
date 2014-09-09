@@ -208,6 +208,10 @@ switch(_operation) do {
 
             _task = [_logic, "getTask", _taskID] call MAINCLASS;
 
+            if(isNil "_task") exitWith {
+                [_logic, "registerTask", _updatedTask] call MAINCLASS;
+            };
+
             _taskObject = _task select 10;
             _taskObject setSimpleTaskDescription [_description,_title,_title];
             _taskObject setSimpleTaskDestination _position;
