@@ -73,6 +73,16 @@ if !(player diarySubjectExists "PATROLREP") then {
     player createDiarySubject ["PATROLREP","PATROLREP"];
 };
 
+_spotreps = "";
+{
+    _spotreps = _spotreps + _x + " ";
+} foreach (_params select 15);
+
+_sitreps = "";
+{
+    _sitreps = _sitreps + _x + " ";
+} foreach (_params select 16);
+
 player createDiaryRecord ["PATROLREP", [
     format ["DTG:%1 - %2", ( _params select 2), ( _params select 0)],
     format [
@@ -105,8 +115,8 @@ player createDiaryRecord ["PATROLREP", [
          _params select 12,
          _params select 13,
          _params select 14,
-         _params select 15,
-         _params select 16,
+         _spotreps,
+         _sitreps,
          _markers,
          _markere,
          _params select 17

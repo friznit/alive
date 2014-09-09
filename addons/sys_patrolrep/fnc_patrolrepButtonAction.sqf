@@ -25,7 +25,9 @@ nil
 
 private ["_params","_display","_patrolrepName","_patrolrepsHash"];
 
-_display = findDisplay 90001;
+_display = findDisplay 90002;
+_spotControl = _display displayCtrl SPOT_LIST;
+_sitControl = _display displayCtrl SIT_LIST;
 
 _patrolrepName = "PR" + str(random time + 1);
 
@@ -48,8 +50,18 @@ _task = [ctrlText TASK_VALUE,"\","-"] call CBA_fnc_replace;
 _enbda = [ctrlText ENBDA_VALUE,"\","-"] call CBA_fnc_replace;
 _results = [ctrlText RESULTS_VALUE,"\","-"] call CBA_fnc_replace;
 
-_spotreps = lbText [SPOT_LIST, lbCurSel SPOT_LIST]; //switch out to lbSelection
-_sitreps = lbText [SIT_LIST, lbCurSel SIT_LIST];
+_spotreps = [];
+_sitreps =[];
+
+_spotlist = lbSelection _spotControl;
+{
+	_spotreps set [count _spotreps, lbText [SPOT_LIST, _x]];
+} foreach _spotlist;
+
+_sitlist = lbSelection _sitControl;
+{
+	_sitreps set [count _sitreps, lbText [SIT_LIST, _x]];
+} foreach _sitlist;
 
 _ammo = lbText [AMMO_LIST, lbCurSel AMMO_LIST];
 _cas = lbText [CAS_LIST, lbCurSel CAS_LIST];
