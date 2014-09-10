@@ -55,23 +55,18 @@ _nonstrathouses = [];
     
     if (!(([_obj] call ALiVE_fnc_getBuildingPositions) isEqualTo []) && {!(_obj in _houses)}) then {
 		private ["_pos", "_collect"];
+        
 		_pos = getPosATL _obj;
 		_collect = true;
 		
-		if !(_whitezone isEqualTo []) then { // Ensure within white zone
-			_collect = false;
-			{ // forEach
-				if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {
-					_collect = true;
-				};
-			} forEach _whitezone;
-		} else { // Ensure not in black zone
-			{ // forEach
-				if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {
-					_collect = false;
-				};
-			} forEach _blackzone;
-		};
+        // Are there TAOR or Blacklist markers?
+        if (count (_whitezone + _blackzone) > 0) then {
+            // Filter Whitezone
+            {_collect = false; if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {_collect = true}} forEach _whitezone;
+            
+            // Filter Blackzone
+            {if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {_collect = false}} forEach _blackzone;
+        };
 		
 		if (_collect) then {
 			
