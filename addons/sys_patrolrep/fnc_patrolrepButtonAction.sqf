@@ -68,7 +68,7 @@ _cas = lbText [CAS_LIST, lbCurSel CAS_LIST];
 _veh = lbText [VEH_LIST, lbCurSel VEH_LIST];
 _cs = lbText [CS_LIST, lbCurSel CS_LIST];
 
-[_patrolrepsHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
+[_patrolrepHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
 [_patrolrepHash, QGVAR(callsign), _callsign] call ALIVE_fnc_hashSet;
 [_patrolrepHash, QGVAR(DTG), _DTG] call ALIVE_fnc_hashSet;
 [_patrolrepHash, QGVAR(sdateTime), _sdateTime] call ALIVE_fnc_hashSet;
@@ -90,6 +90,9 @@ _cs = lbText [CS_LIST, lbCurSel CS_LIST];
 
 [_patrolrepHash, QGVAR(spos), GVAR(spos)] call ALIVE_fnc_hashSet;
 [_patrolrepHash, QGVAR(epos), GVAR(epos)] call ALIVE_fnc_hashSet;
+
+_patrolrepHash = [_patrolrepHash] call ALIVE_fnc_hashAddWarRoomData;
+
 
 switch _eyes do {
 	case "SIDE" : {

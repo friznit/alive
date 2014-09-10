@@ -109,6 +109,8 @@ switch _eyes do {
 
 [_markersHash, QGVAR(hasspotrep), false] call ALIVE_fnc_hashSet;
 
+_markersHash = [_markersHash] call ALIVE_fnc_hashAddWarRoomData;
+
 // spotrep DATA
 
 _spotrepCheck = _display displayCtrl spotrep_CHECK;
@@ -163,6 +165,8 @@ if (cbChecked _spotrepCheck) then {
 	[_spotrepHash, QMOD(SYS_spotrep_locality), _eyes] call ALIVE_fnc_hashSet;
 	[_spotrepHash, QMOD(SYS_spotrep_localityIndex), _eyesIndex] call ALIVE_fnc_hashSet;
 	[_spotrepHash, QMOD(SYS_spotrep_player), getPlayerUID player] call ALIVE_fnc_hashSet;
+
+	_spotrepHash = [_spotrepHash] call ALIVE_fnc_hashAddWarRoomData;
 
 	switch _eyes do {
 		case "SIDE" : {
