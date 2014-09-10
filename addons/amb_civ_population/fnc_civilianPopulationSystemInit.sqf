@@ -30,8 +30,10 @@ ASSERT_DEFINED("ALIVE_fnc_civilianPopulationSystem","Main function missing");
 _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 if(isServer) then {
+    
+    MOD(amb_civ_population) = _logic;
 	
-	_debug = _logic getVariable ["debug",false];
+	_debug = call compile (_logic getVariable ["debug","false"]);
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
     _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
@@ -39,16 +41,11 @@ if(isServer) then {
 	_hostilityWest = parseNumber (_logic getVariable ["hostilityWest","0"]);
 	_hostilityEast = parseNumber (_logic getVariable ["hostilityEast","0"]);
 	_hostilityIndep = parseNumber (_logic getVariable ["hostilityIndep","0"]);
+    
 	ALIVE_civilianHostility = [] call ALIVE_fnc_hashCreate;
 	[ALIVE_civilianHostility, "WEST", _hostilityWest] call ALIVE_fnc_hashSet;
 	[ALIVE_civilianHostility, "EAST", _hostilityEast] call ALIVE_fnc_hashSet;
 	[ALIVE_civilianHostility, "INDEP", _hostilityIndep] call ALIVE_fnc_hashSet;
-
-    if(_debug == "true") then {
-        _debug = true;
-    }else{
-        _debug = false;
-    };
 
 	ALIVE_civilianPopulationSystem = [nil, "create"] call ALIVE_fnc_civilianPopulationSystem;
 	[ALIVE_civilianPopulationSystem, "init"] call ALIVE_fnc_civilianPopulationSystem;
@@ -59,6 +56,8 @@ if(isServer) then {
 	[ALIVE_civilianPopulationSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_civilianPopulationSystem;
 
 	_logic setVariable ["handler",ALIVE_civilianPopulationSystem];
+    
+    PublicVariable QMOD(amb_civ_population);
 
 	[ALIVE_civilianPopulationSystem,"start"] call ALIVE_fnc_civilianPopulationSystem;
 };

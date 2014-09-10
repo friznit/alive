@@ -32,27 +32,17 @@ _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 if(isServer) then {
 
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
-	
-	_debug = _logic getVariable ["debug",false];
-	_persistent = _logic getVariable ["persistent","false"];
+
+	MOD(SYS_PROFILE) = _logic;
+
+	_debug = call compile (_logic getVariable ["debug","false"]);
+	_persistent = call compile (_logic getVariable ["persistent","false"]);
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
 	_syncedUnits = synchronizedObjects _logic;
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
-    _spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
+	_spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
-
-    if(_debug == "true") then {
-        _debug = true;
-    }else{
-        _debug = false;
-    };
-
-    if(_persistent == "true") then {
-        _persistent = true;
-    }else{
-        _persistent = false;
-    };
 
 	ALIVE_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "init"] call ALIVE_fnc_profileSystem;
@@ -67,11 +57,15 @@ if(isServer) then {
 
 	_logic setVariable ["handler",ALIVE_profileSystem];
 
-	[ALIVE_profileSystem,"start"] call ALIVE_fnc_profileSystem;
+    PublicVariable QMOD(SYS_PROFILE);
 
+	[ALIVE_profileSystem,"start"] call ALIVE_fnc_profileSystem;
 };
 
 if(hasInterface) then {
+    
+    waituntil {!isnil QMOD(PROFILE)};
+    
     player addEventHandler ["killed",
     {
         []spawn {
