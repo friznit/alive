@@ -154,11 +154,13 @@ switch (_taskState) do {
             [_taskParams,"taskIDs",_taskIDs] call ALIVE_fnc_hashSet;
             [_taskParams,"dialog",_dialogOption] call ALIVE_fnc_hashSet;
             [_taskParams,"enemyFaction",_taskEnemyFaction] call ALIVE_fnc_hashSet;
-            [_taskParams,"supriseCreated",false] call ALIVE_fnc_hashSet;
+            [_taskParams,"missileStrikeCreated",false] call ALIVE_fnc_hashSet;
+            [_taskParams,"atmosphereCreated",false] call ALIVE_fnc_hashSet;
             [_taskParams,"currentWave",1] call ALIVE_fnc_hashSet;
             [_taskParams,"lastWave",0] call ALIVE_fnc_hashSet;
             [_taskParams,"totalWaves",1 + floor(random 5)] call ALIVE_fnc_hashSet;
             [_taskParams,"entityProfileIDs",[]] call ALIVE_fnc_hashSet;
+            [_taskParams,"cleanupObjects",[]] call ALIVE_fnc_hashSet;
             [_taskParams,"lastState",""] call ALIVE_fnc_hashSet;
 
             // return the created tasks and params
@@ -213,8 +215,8 @@ switch (_taskState) do {
     case "DefenceWave":{
 
         private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-        "_areaClear","_lastState","_taskDialog","_supriseCreated","_currentTaskDialog","_taskEnemyFaction","_taskEnemySide","_currentWave",
-        "_lastWave","_totalWaves","_enemyFaction","_entityProfileIDs"];
+        "_areaClear","_lastState","_taskDialog","_missileStrikeCreated","_atmosphereCreated","_currentTaskDialog","_taskEnemyFaction",
+        "_taskEnemySide","_currentWave","_lastWave","_totalWaves","_enemyFaction","_entityProfileIDs","_cleanupObjects"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -228,12 +230,14 @@ switch (_taskState) do {
         _lastState = [_params,"lastState"] call ALIVE_fnc_hashGet;
         _taskDialog = [_params,"dialog"] call ALIVE_fnc_hashGet;
         _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
-        _supriseCreated = [_params,"supriseCreated"] call ALIVE_fnc_hashGet;
+        _missileStrikeCreated = [_params,"missileStrikeCreated"] call ALIVE_fnc_hashGet;
+        _atmosphereCreated = [_params,"atmosphereCreated"] call ALIVE_fnc_hashGet;
         _currentWave = [_params,"currentWave"] call ALIVE_fnc_hashGet;
         _lastWave = [_params,"lastWave"] call ALIVE_fnc_hashGet;
         _totalWaves = [_params,"totalWaves"] call ALIVE_fnc_hashGet;
         _enemyFaction = [_params,"enemyFaction"] call ALIVE_fnc_hashGet;
         _entityProfileIDs = [_params,"entityProfileIDs"] call ALIVE_fnc_hashGet;
+        _cleanupObjects = [_params,"cleanupObjects"] call ALIVE_fnc_hashGet;
 
         if(_lastState != "DefenceWave") then {
 
@@ -268,10 +272,10 @@ switch (_taskState) do {
             _remotePosition = _remotePosition call BIS_fnc_selectRandom;
 
             {
-                _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                _position = [_remotePosition, (random(200)), random(200)] call BIS_fnc_relPos;
                 _profiles = [_x, _position, random(360), true, _enemyFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
                 _profileID = _profiles select 0 select 2 select 4;
-                _position = [_taskPosition, (random(40)), random(360)] call BIS_fnc_relPos;
+                _position = [_taskPosition, (random(40)), random(40)] call BIS_fnc_relPos;
                 _profileWaypoint = [_position, 100, "MOVE", "FULL", 100, [], "LINE", "NO CHANGE", "CARELESS"] call ALIVE_fnc_createProfileWaypoint;
                 [(_profiles select 0), "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
@@ -281,7 +285,7 @@ switch (_taskState) do {
 
             _diceRoll = random 1;
 
-            if(_diceRoll > 0.7) then {
+            if(_diceRoll > 0.5) then {
 
                 private["_vehicleGroupTypes","_vehicleGroup"];
 
@@ -300,10 +304,10 @@ switch (_taskState) do {
                 //["VEH GROUPS: %1",_groups] call ALIVE_fnc_dump;
 
                 {
-                    _position = [_remotePosition, (random(200)), random(360)] call BIS_fnc_relPos;
+                    _position = [_remotePosition, (random(200)), random(200)] call BIS_fnc_relPos;
                     _profiles = [_x, _position, random(360), true, _enemyFaction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
                     _profileID = _profiles select 0 select 2 select 4;
-                    _position = [_taskPosition, (random(40)), random(360)] call BIS_fnc_relPos;
+                    _position = [_taskPosition, (random(40)), random(40)] call BIS_fnc_relPos;
                     _profileWaypoint = [_position, 100, "MOVE", "FULL", 100, [], "LINE", "NO CHANGE", "CARELESS"] call ALIVE_fnc_createProfileWaypoint;
                     [(_profiles select 0), "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
 
@@ -319,7 +323,7 @@ switch (_taskState) do {
 
         }else{
 
-            private["_entitiesState","_allDestroyed"];
+            private["_entitiesState","_allDestroyed","_areaClear"];
 
             _entitiesState = [_entityProfileIDs] call ALIVE_fnc_taskGetStateOfEntityProfiles;
             _allDestroyed = [_entitiesState,"allDestroyed"] call ALIVE_fnc_hashGet;
@@ -332,57 +336,109 @@ switch (_taskState) do {
                     [_params,"currentWave",(_currentWave+1)] call ALIVE_fnc_hashSet;
                 }else{
 
-                    [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+                    _areaClear = [_taskPosition,_taskPlayers,_taskSide,200] call ALIVE_fnc_taskIsAreaClearOfEnemies;
 
-                    _task set [8,"Succeeded"];
-                    _task set [10, "N"];
-                    _result = _task;
+                    if(_areaClear) then {
 
-                    [_taskPlayers,_taskID] call ALIVE_fnc_taskDeleteMarkersForPlayers;
+                        {
+                            deleteVehicle _x;
+                        } forEach _cleanupObjects;
 
-                    ["chat_success",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+                        [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+
+                        _task set [8,"Succeeded"];
+                        _task set [10, "N"];
+                        _result = _task;
+
+                        [_taskPlayers,_taskID] call ALIVE_fnc_taskDeleteMarkersForPlayers;
+
+                        ["chat_success",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+
+                    };
 
                 };
 
             }else{
 
-                private["_entities","_entityCount","_totalDistance","_position","_distance","_averageDistance","_diceRoll"];
+                private["_entities","_entityCount","_totalDistance","_position","_distance","_averageDistance","_diceRoll","_object","_env","_dayState"];
 
-                if!(_supriseCreated) then {
+                _entities = [_entitiesState,"profiles"] call ALIVE_fnc_hashGet;
+                _entityCount = count _entities;
+                _totalDistance = 0;
 
-                    _entities = [_entitiesState,"profiles"] call ALIVE_fnc_hashGet;
-                    _entityCount = count _entities;
-                    _totalDistance = 0;
+                {
+                    _position = _x select 2 select 2;
+                    _distance = _position distance _taskPosition;
+                    _totalDistance = _totalDistance + _distance;
+                } forEach _entities;
 
-                    {
-                        _position = _x select 2 select 2;
-                        _distance = _position distance _taskPosition;
-                        _totalDistance = _totalDistance + _distance;
-                    } forEach _entities;
+                _averageDistance = floor(_totalDistance / _entityCount);
 
-                    _averageDistance = floor(_totalDistance / _entityCount);
+                if(_averageDistance > 500) then {
 
-                    //["AV DISTANCE: %1",_averageDistance] call ALIVE_fnc_dump;
-
-                    if(_averageDistance > 500) then {
+                    if!(_missileStrikeCreated) then {
 
                         _diceRoll = random 1;
 
-                        if(_diceRoll > 0.8) then {
+                        if(_diceRoll > 0.95) then {
 
-                            [_params,"supriseCreated",true] call ALIVE_fnc_hashGet;
+                            ["chat_missile_strike",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
 
-                            _position = [_taskPosition, (random(300)), random(360)] call BIS_fnc_relPos;
+                            sleep 10;
+
+                            [_params,"missileStrikeCreated",true] call ALIVE_fnc_hashSet;
+
+                            _position = [_taskPosition, (random(300)), random(300)] call BIS_fnc_relPos;
 
                             _object = "Sign_Sphere100cm_F" createVehicle _position;
                             _object setPos _position;
                             _object hideObjectGlobal true;
 
-                            [_object,"MISSILE_STRIKE_SMALL",10,30,true,10] call ALIVE_fnc_taskCreateBombardment;
+                            _cleanupObjects = _cleanupObjects + [_object];
+                            [_params,"cleanupObjects",_cleanupObjects] call ALIVE_fnc_hashSet;
+
+                            [_object,"MISSILE_STRIKE_SMALL",floor(2+(random 10)),floor(30+(random 50)),true,10] call ALIVE_fnc_taskCreateBombardment;
 
                         };
 
                     };
+
+                }else{
+
+                    if!(_atmosphereCreated) then {
+
+                        _diceRoll = random 1;
+
+                        if(_diceRoll > 0.9) then {
+
+                            [_params,"atmosphereCreated",true] call ALIVE_fnc_hashSet;
+
+                            _object = "Sign_Sphere100cm_F" createVehicle _position;
+                            _object setPos _taskPosition;
+                            _object hideObjectGlobal true;
+
+                            _cleanupObjects = _cleanupObjects + [_object];
+                            [_params,"cleanupObjects",_cleanupObjects] call ALIVE_fnc_hashSet;
+
+                            _env = call ALIVE_fnc_getEnvironment;
+                            _dayState = _env select 0;
+
+                            switch(_dayState) do {
+                                case "DAY":{
+                                    [_object,"SMOKE_SMALL",floor(2+(random 10)),floor(30+(random 50)),true,30] call ALIVE_fnc_taskCreateBombardment;
+                                };
+                                case "EVENING":{
+                                    [_object,"FLARE_LARGE",floor(2+(random 10)),floor(30+(random 50)),true,30] call ALIVE_fnc_taskCreateBombardment;
+                                };
+                                case "NIGHT":{
+                                    [_object,"FLARE_LARGE",floor(2+(random 10)),floor(30+(random 50)),true,30] call ALIVE_fnc_taskCreateBombardment;
+                                };
+                            };
+
+                        };
+
+                    };
+
                 };
 
             };

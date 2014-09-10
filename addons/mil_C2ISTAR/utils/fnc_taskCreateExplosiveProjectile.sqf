@@ -69,15 +69,15 @@ switch(_type) do {
         [_object,_target] call ALIVE_fnc_pointAt;
     };
     case "FLARE_SMALL": {
-        _object = "F_20mm_Red" createVehicle ((_target) modelToWorld [0,0,50]);
-        _object setVelocity [0,0,-10];
+        _object = "F_20mm_White" createVehicle ((_target) modelToWorld [0,0,200]);
+        _object setVelocity [0,0,-1];
     };
     case "FLARE_LARGE": {
-        _object = "F_40mm_Red" createVehicle ((_target) modelToWorld [0,0,50]);
-        _object setVelocity [0,0,-10];
+        _object = "F_40mm_White" createVehicle ((_target) modelToWorld [0,0,200]);
+        _object setVelocity [0,0,-1];
     };
     case "SMOKE_SMALL": {
-        _object = "G_40mm_Smoke" createVehicle ((_target) modelToWorld [0,0,100]);
+        _object = "G_40mm_Smoke" createVehicle ((_target) modelToWorld [0,0,300]);
         [_object,_target] call ALIVE_fnc_pointAt;
         _object setVelocity [0,0,-10];
     };

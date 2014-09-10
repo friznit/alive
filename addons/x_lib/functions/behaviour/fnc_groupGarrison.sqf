@@ -158,7 +158,7 @@ if(count _buildings > 0) then {
 
     // find and garrison any nearby buildings
 
-    _buildings = [_position, _radius] call ALIVE_fnc_getEnterableHouses;
+    _buildings = [_position, floor(_radius/2)] call ALIVE_fnc_getEnterableHouses;
 
     {
         _building = _x;

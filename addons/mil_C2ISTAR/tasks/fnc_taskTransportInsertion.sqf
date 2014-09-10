@@ -205,6 +205,7 @@ switch (_taskState) do {
             [_taskParams,"enemyFaction",_taskEnemyFaction] call ALIVE_fnc_hashSet;
             [_taskParams,"profileID",_profileID] call ALIVE_fnc_hashSet;
             [_taskParams,"pickupReached",false] call ALIVE_fnc_hashSet;
+            [_taskParams,"pickupMarkerCreated",false] call ALIVE_fnc_hashSet;
             [_taskParams,"insertionReached",false] call ALIVE_fnc_hashSet;
             [_taskParams,"lastState",""] call ALIVE_fnc_hashSet;
 
@@ -221,7 +222,7 @@ switch (_taskState) do {
 	case "Pickup":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-	    "_taskIDs","_lastState","_taskDialog","_profileID","_currentTaskDialog","_pickupReached"];
+	    "_taskIDs","_lastState","_taskDialog","_profileID","_currentTaskDialog","_pickupReached","_pickupMarkerCreated"];
 
 	    _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -236,6 +237,7 @@ switch (_taskState) do {
         _taskDialog = [_params,"dialog"] call ALIVE_fnc_hashGet;
         _profileID = [_params,"profileID"] call ALIVE_fnc_hashGet;
         _pickupReached = [_params,"pickupReached"] call ALIVE_fnc_hashGet;
+        _pickupMarkerCreated = [_params,"pickupMarkerCreated"] call ALIVE_fnc_hashGet;
         _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
 
         // first run of this task
@@ -250,10 +252,38 @@ switch (_taskState) do {
         //  pickup location
         if!(_pickupReached) then {
 
-            private["_infantryProfile","_destinationReached","_infantryGroup","_nearVehicles","_vehicles","_vehicle","_assignments","_maxRoomVehicle","_room"];
+            private["_infantryProfile","_destinationReached","_infantryGroup","_nearVehicles","_vehicles","_vehicle","_assignments",
+            "_maxRoomVehicle","_room","_env","_dayState","_distance"];
 
             _infantryProfile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
             if!(isNil "_infantryProfile") then {
+
+                if!(_pickupMarkerCreated) then {
+
+                    _distance = [_taskPosition,_taskPlayers] call ALIVE_fnc_taskGetClosestPlayerDistanceToDestination;
+
+                    if(_distance < 800) then {
+
+                        _env = call ALIVE_fnc_getEnvironment;
+                        _dayState = _env select 0;
+
+                        switch(_dayState) do {
+                            case "DAY":{
+                                _object = "SmokeShellOrange" createVehicle _taskPosition;
+                            };
+                            case "EVENING":{
+                                _object = "B_IRStrobe" createVehicle _taskPosition;
+                            };
+                            case "NIGHT":{
+                                _object = "B_IRStrobe" createVehicle _taskPosition;
+                            };
+                        };
+
+                        [_params,"pickupMarkerCreated",true] call ALIVE_fnc_hashSet;
+
+                    };
+
+                };
 
                 _destinationReached = [_taskPosition,_taskPlayers,200] call ALIVE_fnc_taskHavePlayersReachedDestination;
 

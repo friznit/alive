@@ -96,6 +96,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHavePlayersReachedDestination.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetClosestPlayerDistanceToDestination {
+                description = "Utility get the distance of the closest player to the destination";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetClosestPlayerDistanceToDestination.sqf";
+                recompile = RECOMPILE;
+            };
             class taskIsAreaClearOfEnemies {
                 description = "Utility check if there are any enemies in the area";
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskIsAreaClearOfEnemies.sqf";

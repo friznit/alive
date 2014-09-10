@@ -256,8 +256,6 @@ switch (_taskState) do {
 
                 _diceRoll = random 1;
 
-                ["SUPRISE DICE ROLL:%1",_diceRoll] call ALIVE_fnc_dump;
-
                 if(_diceRoll > 0.8) then {
 
                     _taskEnemyFaction = [_params,"enemyFaction"] call ALIVE_fnc_hashGet;
