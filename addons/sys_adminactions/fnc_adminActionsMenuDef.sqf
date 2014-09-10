@@ -152,41 +152,41 @@ if (_menuName == "adminActions") then {
 				],
                 
                 [localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE",
-					{ MOD(adminActions) setVariable ["CQB_enabled", true]; {[_x,"debug",true] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
+					{ ALiVE_CQB setVariable ["debug",true,true]; {[_x,"debug",true] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE_COMMENT",
 					"",
 					-1,
 					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
-					!(MOD(adminActions) getVariable ["CQB_enabled", false])
+					!isnil "ALiVE_CQB" && {!(ALiVE_CQB getVariable ["debug",false])}
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE",
-					{ MOD(adminActions) setVariable ["CQB_enabled", false]; {[_x,"debug",false] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
+					{ ALiVE_CQB setVariable ["debug",false,true]; {[_x,"debug",false] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE_COMMENT",
 					"",
 					-1,
 					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
-					(MOD(adminActions) getVariable ["CQB_enabled", false])
+					!isnil "ALiVE_CQB" && {ALiVE_CQB getVariable ["debug",false]}
 				],
                 
                 [localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE",
-					{ MOD(adminActions) setVariable ["PROFILES_enabled", true]; [] call ALIVE_fnc_profileSystemDebug; },
+					{ALiVE_SYS_PROFILE setVariable ["debug","true", true]; [] call ALIVE_fnc_profileSystemDebug; },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
 					"",
 					-1,
 					["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable,
-					!(MOD(adminActions) getVariable ["PROFILES_enabled", false])
+					!isnil "ALiVE_SYS_PROFILE" && {!(call compile (ALiVE_SYS_PROFILE getVariable ["debug","false"]))}
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_DISABLE",
-					{ MOD(adminActions) setVariable ["PROFILES_enabled", false]; [] call ALIVE_fnc_profileSystemDebug; },
+					{ALiVE_SYS_PROFILE setVariable ["debug","false", true]; [] call ALIVE_fnc_profileSystemDebug; },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
 					"",
 					-1,
 					["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable,
-					(MOD(adminActions) getVariable ["PROFILES_enabled", false])
+					!isnil "ALiVE_SYS_PROFILE" && {call compile (ALiVE_SYS_PROFILE getVariable ["debug","false"])}
 				],
 
 				[localize "STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_ENABLE",
@@ -200,22 +200,22 @@ if (_menuName == "adminActions") then {
                 ],
 
 				[localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_ENABLE",
-                    { MOD(adminActions) setVariable ["AGENTS_enabled", true]; [] call ALIVE_fnc_agentSystemDebug; },
+                    { ALiVE_amb_civ_population setVariable ["debug","true",true]; [] call ALIVE_fnc_agentSystemDebug; },
                     "",
                     localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_COMMENT",
                     "",
                     -1,
                     ["ALiVE_amb_civ_population"] call ALiVE_fnc_isModuleAvailable,
-                    !(MOD(adminActions) getVariable ["AGENTS_enabled", false])
+                    !isnil "ALiVE_amb_civ_population" && {!(call compile (ALiVE_amb_civ_population getVariable ["debug","false"]))}
                 ],
                 [localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_DISABLE",
-                    { MOD(adminActions) setVariable ["AGENTS_enabled", false]; [] call ALIVE_fnc_agentSystemDebug; },
+                    { ALiVE_amb_civ_population setVariable ["debug","false",true]; [] call ALIVE_fnc_agentSystemDebug; },
                     "",
                     localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
                     "",
                     -1,
                     ["ALiVE_amb_civ_population"] call ALiVE_fnc_isModuleAvailable,
-                    (MOD(adminActions) getVariable ["AGENTS_enabled", false])
+                    !isnil "ALiVE_amb_civ_population" && {(call compile (ALiVE_amb_civ_population getVariable ["debug","false"]))}
                 ],
 
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
