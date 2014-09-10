@@ -199,6 +199,9 @@ switch (_operation) do {
                     ((str side player) != "UNKNOWN")
                 };
 
+                waitUntil {LOG(str ((findDisplay 12) displayCtrl 51)); str ((findDisplay 12) displayCtrl 51) != "No control"};
+
+                LOG(str ((findDisplay 12) displayCtrl 51));
 
                 // Add eventhandler for creating markers
                 ((findDisplay 12) displayCtrl 51) ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_MARKER,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
