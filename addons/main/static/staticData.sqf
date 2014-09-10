@@ -391,41 +391,41 @@ _options = [];
 _tasksData = [] call ALIVE_fnc_hashCreate;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Assault the base"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Assault the enemy held position."] call ALIVE_fnc_hashSet;
+[_taskData,"title","Assault Objective"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Assault the objective, neutralising all enemy and denying any weapons and materiel."] call ALIVE_fnc_hashSet;
 [_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Proceed to overwatch"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Proceed to the overwatch position near %1 prior to assaulting the base."] call ALIVE_fnc_hashSet;
-[_taskData,"chat_start",[["HQ","Proceed to the overwatch position near %1 prior to assaulting the base"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"title","Establish Overwatch"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Proceed to an overwatch position near %1 in order to confirm enemy dispositions prior to assaulting the objective."] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","Establish overwatch at position near %1 and prepare to assault the objective, Over"],["PLAYERS","Roger Out"]]] call ALIVE_fnc_hashSet;
 [_tasksData,"Travel",_taskData] call ALIVE_fnc_hashSet;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Destroy the enemy"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Destroy all enemy near the base, leave none alive!"] call ALIVE_fnc_hashSet;
-[_taskData,"chat_start",[["PLAYERS","At overwatch position"],["HQ","Assault the base"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_success",[["PLAYERS","All enemy have been destroyed at the AO"],["HQ","Well done!"]]] call ALIVE_fnc_hashSet;
+[_taskData,"title","Neutralise Enemy"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Neutralise all enemy in the vicinity in order to secure the objective"] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["PLAYERS","My callsign established in overwatch position, Over"],["HQ","Assault Objective"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","All enemy area have been neutralised, objective is secure, Over"],["HQ","Roger, send SITREP and standby for further tasking, Out."]]] call ALIVE_fnc_hashSet;
 [_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
 
 _options set [count _options,_tasksData];
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Attack the emplacement"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Attack the enemy held position."] call ALIVE_fnc_hashSet;
+[_taskData,"title","Attack Emplacement"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Attack the enemy held position in order to deny mission critical assets."] call ALIVE_fnc_hashSet;
 [_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Travel to staging area"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Travel to the staging area near %1 before beginning your attack."] call ALIVE_fnc_hashSet;
-[_taskData,"chat_start",[["HQ","Travel to the staging area near %1 before beginning your attack"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"title","Move to Forming Up Point"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Move to an FUP near %1 in preparation for conducting an assault on the enemy held emplacement."] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","Move to an FUP near %1 and prepare to assault the emplacement, Over"],["PLAYERS","Roger Out"]]] call ALIVE_fnc_hashSet;
 [_tasksData,"Travel",_taskData] call ALIVE_fnc_hashSet;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Clear the base"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Clear all enemy forces from the surrounding area."] call ALIVE_fnc_hashSet;
-[_taskData,"chat_start",[["PLAYERS","At staging area"],["HQ","Clear the base"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_success",[["PLAYERS","Base cleared of enemy forces"],["HQ","Well done!"]]] call ALIVE_fnc_hashSet;
+[_taskData,"title","Attack Objective"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Attack the objective and neutralise all enemy forces in the vicinity."] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["PLAYERS","Am at FUP standing by, over."],["HQ","Attack Emplacement"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","Objective secure, standing by for further orders, over"],["HQ","Roger, send SITREP and await taskings, Out."]]] call ALIVE_fnc_hashSet;
 [_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
 
 _options set [count _options,_tasksData];
@@ -439,21 +439,21 @@ _options = [];
 _tasksData = [] call ALIVE_fnc_hashCreate;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Defend the base"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Defend the friendly position."] call ALIVE_fnc_hashSet;
+[_taskData,"title","Defend Objective"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Defend the friendly objective."] call ALIVE_fnc_hashSet;
 [_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Proceed to the base"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Proceed to the base near %1, prepare your defence!"] call ALIVE_fnc_hashSet;
-[_taskData,"chat_start",[["HQ","Proceed to the base near %1, prepare your defence!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"title","Proceed to the objective"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Proceed to the objective near %1, prepare your defence for incoming enemy forces"] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","Proceed to the objective near %1, prepare your defence for incoming enemy forces"],["PLAYERS","Roger, Out"]]] call ALIVE_fnc_hashSet;
 [_tasksData,"Travel",_taskData] call ALIVE_fnc_hashSet;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
-[_taskData,"title","Defend against the enemy"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Survive the enemy assault!"] call ALIVE_fnc_hashSet;
-[_taskData,"chat_start",[["PLAYERS","At base"],["HQ","Defend the base"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_success",[["PLAYERS","All enemy have been destroyed at the AO"],["HQ","Well done!"]]] call ALIVE_fnc_hashSet;
+[_taskData,"title","Hold the objective"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Survive the approaching enemy assault."] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["PLAYERS","My callsign established at objective position"],["HQ","Hold the objective"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","All enemy area have been neutralised, objective is secure, Over"],["HQ","Roger, send SITREP and standby for further tasking, Out."]]] call ALIVE_fnc_hashSet;
 [_tasksData,"DefenceWave",_taskData] call ALIVE_fnc_hashSet;
 
 _options set [count _options,_tasksData];
@@ -474,8 +474,8 @@ _taskData = [] call ALIVE_fnc_hashCreate;
 _taskData = [] call ALIVE_fnc_hashCreate;
 [_taskData,"title","Clear the town"] call ALIVE_fnc_hashSet;
 [_taskData,"description","Clear all enemy forces from the town near %1."] call ALIVE_fnc_hashSet;
-[_taskData,"chat_start",[["HQ","Clear all enemy forces from the town near %1"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_success",[["PLAYERS","Town cleared of enemy forces"],["HQ","Well done!"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","Clear all enemy forces from the town near %1"],["PLAYERS","Roger Out."]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","Town cleared of enemy forces, objective secure, over"],["HQ","Roger, reorg and send STIREP. Standby for further orders, Out."]]] call ALIVE_fnc_hashSet;
 [_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
 
 _options set [count _options,_tasksData];
@@ -497,9 +497,9 @@ _taskData = [] call ALIVE_fnc_hashCreate;
 [_taskData,"title","Eliminate the target"] call ALIVE_fnc_hashSet;
 [_taskData,"description","We received HUMINT of an High Value Target (HVT) near %1! Eliminate the target as quickly as possible!"] call ALIVE_fnc_hashSet;
 [_taskData,"chat_start",[["HQ","We received HUMINT of an High Value Target (HVT) near %1! Eliminate the target as quickly as possible!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_success",[["PLAYERS","HVT is confirmed down"],["HQ","Roger that, well done!"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_failed",[["PLAYERS","HVT has escaped"],["HQ","Unfortunate!"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_cancelled",[["PLAYERS","HVT has escaped"],["HQ","Unfortunate!"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","High Value Target neutralised, Over"],["HQ","Roger, well done, Out"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_failed",[["PLAYERS","Mission aborted, HVT has escaped, Over"],["HQ","Roger, better luck next time, Out"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_cancelled",[["PLAYERS","Callsign compromised, mission aborted, Over"],["HQ","Roger, break contact and withdraw. Send SITREP when ready, Out"]]] call ALIVE_fnc_hashSet;
 [_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
 
 _options set [count _options,_tasksData];
