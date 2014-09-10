@@ -356,6 +356,13 @@ class hashSet
 	recompile = RECOMPILE;
 };
 
+class hashAddWarRoomData
+{
+	file = "\x\alive\addons\x_lib\functions\data\fnc_hashAddWarRoomData.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class JSON
 {
 	file = "\x\alive\addons\x_lib\functions\data\fnc_JSON.sqf";
@@ -964,6 +971,14 @@ class dateToDTG
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+
+class realTimeToDTG
+{
+	file = "\x\alive\addons\x_lib\functions\strings\fnc_realTimeToDTG.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 
 class formatDate
 {

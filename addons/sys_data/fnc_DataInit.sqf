@@ -190,28 +190,30 @@ if (isDedicated) then {
 		[MOD(sys_data)] call ALIVE_fnc_perfInit;
 	};
 
+	// AAR system - should prob be its own module
+
 	TRACE_2("SYS_DATA AAR VAR", MOD(sys_data) getVariable "disableAAR", ALIVE_sys_AAR_ENABLED);
 	// Start the AAR monitoring module
 	if (MOD(sys_data) getvariable ["disableAAR", "true"] == "false") then {
 
 		[] spawn {
 			// Thread running on server to report state/pos of every playable unit and group every 60 seconds
-			private ["_count","_docId","_missionName","_result","_year","_month","_day","_hour","_min","_datet"];
+			private ["_count","_docId","_missionName","_result"];
 
 			// Set up hash of unit positions for each minute
 			GVAR(AAR) = [] call ALIVE_fnc_hashCreate;
+			GVAR(AAR_Array) = [];
+
+			GVAR(operation) = getText (missionConfigFile >> "OnLoadName");
+
+			if (GVAR(operation) == "") then {
+					GVAR(operation) = missionName;
+			};
 
 			// Count minutes since last save to DB
 			_count = 0;
 
-			_datet = [] call ALIVE_fnc_getServerTime;
-			_day = parseNumber ([_datet, 1, 2] call bis_fnc_trimString);
-			_month = parseNumber ([_datet, 4, 5] call bis_fnc_trimString);
-			_year = parseNumber ([_datet, 7, 11] call bis_fnc_trimString);
-			_hour = parseNumber ([_datet, 13, 14] call bis_fnc_trimString);
-			_min = parseNumber ([_datet, 16, 17] call bis_fnc_trimString);
-
-			GVAR(AARdocId) = [[_year,_month,_day,_hour,_min]] call ALIVE_fnc_dateToDTG;
+			GVAR(AARdocId) = [] call ALIVE_fnc_realTimeToDTG;
 
 			waitUntil {sleep 60; count playableUnits > 0};
 
@@ -237,16 +239,13 @@ if (isDedicated) then {
 				};
 
 				_gametime = format["%1%2", _hours, _minutes];
-
-				_hash = [] call ALIVE_fnc_hashCreate;
+				_realTime = [] call ALIVE_fnc_getServerTime;
 
 				{
 					private ["_unit"];
 					_unit = vehicle _x;
 					if (alive _unit && (isplayer _x || _unit == leader (group _unit))) then {
-						private ["_id","_playerHash","_icon"];
-
-						_id = netid _unit;
+						private ["_playerHash"];
 
 						_playerHash = [] call ALIVE_fnc_hashCreate;
 
@@ -261,22 +260,24 @@ if (isDedicated) then {
 						[_playerHash, "AAR_isLeader", _unit == leader (group _unit)] call ALIVE_fnc_hashSet;
 						[_playerHash, "AAR_isPlayer", isPlayer _unit] call ALIVE_fnc_hashSet;
 						[_playerHash, "AAR_group", str (group _unit)] call ALIVE_fnc_hashSet;
-						[_playerHash, "AAR_gametime", _gametime] call ALIVE_fnc_hashSet;
+						[_playerHash, "gameTime", _gametime] call ALIVE_fnc_hashSet;
+						[_playerHash, "realTime", _realTime] call ALIVE_fnc_hashSet;
+						[_playerHash, "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
+						[_playerHash, "Operation", GVAR(operation)] call ALIVE_fnc_hashSet;
+						[_playerHash, "Map", worldName] call ALIVE_fnc_hashSet;
 
 						if (isPlayer _unit) then {
 							[_playerHash, "AAR_playerUID", getPlayerUID _unit] call ALIVE_fnc_hashSet;
 						};
 
-						[_hash, _id, _playerHash] call ALIVE_fnc_hashSet;
+						GVAR(AAR_Array) set [count GVAR(AAR_Array), _playerHash];
 
 					};
 				} forEach allUnits;
 
-				_dateTime = [] call ALIVE_fnc_getServerTime;
-
-				[GVAR(AAR), _dateTime, _hash] call ALIVE_fnc_hashSet;
-
 				if (_count > AAR_DEFAULT_INTERVAL) then {
+
+					[GVAR(AAR), "AAR_data", GVAR(AAR_Array)] call ALIVE_fnc_hashSet;
 
 					// Send the data to DB
 					_missionName = format["%1_%2_%3", GVAR(GROUP_ID), missionName, GVAR(AARdocId)];
@@ -287,7 +288,8 @@ if (isDedicated) then {
 					// Reset
 					GVAR(AAR) = [] call ALIVE_fnc_hashCreate;
 					_count = 0;
-					GVAR(AARdocId) = [date] call ALIVE_fnc_dateToDTG;
+					GVAR(ARR_Array) = [];
+					GVAR(AARdocId) = [] call ALIVE_fnc_realTimeToDTG;
 				};
 
 				sleep 60;

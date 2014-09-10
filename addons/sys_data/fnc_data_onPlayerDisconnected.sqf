@@ -45,6 +45,8 @@ if (_name == "__SERVER__") then {
 
 		if (MOD(sys_data) getVariable ["disableAAR","true"] == "false") then {
 
+			[GVAR(AAR), "AAR_data", GVAR(AAR_Array)] call ALIVE_fnc_hashSet;
+
 			// Send the data to DB
 			_missionName = format["%1_%2_%3", GVAR(GROUP_ID), missionName, GVAR(AARdocId)];
 
