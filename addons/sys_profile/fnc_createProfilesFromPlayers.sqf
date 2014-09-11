@@ -33,7 +33,7 @@ _debug = if(count _this > 3) then {_this select 3} else {false};
 
 _players = [];
 if (isMultiplayer) then {
-	_players = playableUnits;
+	_players = [] call BIS_fnc_listPlayers;
 } else {
     _players = [player];
 };
