@@ -55,7 +55,10 @@ _vehicleBlacklist = ["O_UAV_02_F","O_UAV_02_CAS_F","O_UAV_01_F","O_UGV_01_F","O_
 	if!(isNull group _object) then {
 		if!(side _object == sideLogic) then {			
 			_group  = group _object;
-			_createModeGroups set [count _createModeGroups, _group];
+
+			if!(_group in _createModeGroups) then {
+			    _createModeGroups set [count _createModeGroups, _group];
+            };
 
 			if(_createMode == "IGNORE") then {
 			    _group setVariable ["ALIVE_profileIgnore", true];
