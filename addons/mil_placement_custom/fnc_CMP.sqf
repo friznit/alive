@@ -435,7 +435,7 @@ switch(_operation) do {
 
                     _group = _groups select _i;
 
-                    _position = [position _logic, (random(200)), random(360)] call BIS_fnc_relPos;
+                    _position = [position _logic, (random(500)), random(360)] call BIS_fnc_relPos;
 
                     if!(surfaceIsWater _position) then {
 

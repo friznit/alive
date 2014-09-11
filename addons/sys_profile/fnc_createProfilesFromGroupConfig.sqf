@@ -134,7 +134,7 @@ if(count _config > 0) then {
 
 	// if there are vehicles for this group
 
-	private ["_vehicleID","_vehicleClass","_vehicleRank","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
+	private ["_vehicleID","_vehicleClass","_vehicleRank","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions","_vehiclePosition"];
 
 	{
 		// create the profile for the vehicle
@@ -147,12 +147,14 @@ if(count _config > 0) then {
 	    //["V: %1 %2",_vehicle,_vehicleClass] call ALIVE_fnc_dump;
 		
 		_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
+
+		_vehiclePosition = [_position, (20 * ((_forEachIndex)+1)), random(360)] call BIS_fnc_relPos;
 										
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "profileID", format["%1-%2",_prefix,_vehicleID]] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "vehicleClass", _vehicleClass] call ALIVE_fnc_profileVehicle;
-		[_profileVehicle, "position", _position] call ALIVE_fnc_profileVehicle;
+		[_profileVehicle, "position", _vehiclePosition] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "direction", 0] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "faction", _groupFaction] call ALIVE_fnc_profileVehicle;
@@ -165,7 +167,7 @@ if(count _config > 0) then {
 		};
 		
 		if!(_spawnGoodPosition) then {
-			[_profileVehicle, "despawnPosition", _position] call ALIVE_fnc_profileVehicle;
+			[_profileVehicle, "despawnPosition", _vehiclePosition] call ALIVE_fnc_profileVehicle;
 		};
 		
 		_groupProfiles set [count _groupProfiles, _profileVehicle];	
