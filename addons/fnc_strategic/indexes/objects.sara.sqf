@@ -2,8 +2,9 @@
 /*opening pbo sara.pbo
 ======<HEADER>=======
 prefix=ca\sara
+Mikero=DePbo.dll
 Pbo Type is: Arma Addon
-Sha: 'DDBACFF2BEBF5CEE891758FF3CF7F2AF6CEC9814'
+Sha: '05FDB571071A4A7ABE1A1DBC04A545C651DA554A'
 ======</HEADER>============
 wrp= sara.wrp
 OPRW Version 20 (binarised)

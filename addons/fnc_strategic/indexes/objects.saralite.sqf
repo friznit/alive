@@ -2,8 +2,9 @@
 /*opening pbo saralite.pbo
 ======<HEADER>=======
 prefix=ca\saralite
+Mikero=DePbo.dll
 Pbo Type is: Arma Addon
-Sha: '1B80B74BAAFEF7F3687F2610E9F2CF628C354451'
+Sha: '6963C51124B4ECA539CD1F19DC37B40403C8414C'
 ======</HEADER>============
 wrp= SaraLite.wrp
 OPRW Version 18 (binarised)
@@ -39169,4 +39170,5 @@ wrp_objects=
 		[
 			[41491,[6102,7864]]
 		]
-	],
+	]
+]

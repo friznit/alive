@@ -45,6 +45,10 @@ rem %exe% "%arma%\@sfp_islands\addons\sfp_wamako.pbo" > %target%\objects.wamako.
 rem %exe% "%arma%\@dariyah\addons\projeta3-07.pbo" > %target%\objects.dariyah.sqf
 rem %exe% "%arma%\@kalukhan\addons\projeta3-06.pbo" > %target%\objects.kalukhan.sqf
 
+%exe% "%arma%\@allinarmaterrainpack\addons\sara.pbo" > %target%\objects.sara.sqf
+%exe% "%arma%\@allinarmaterrainpack\addons\sara_dbe1.pbo" > %target%\objects.sara_dbe1.sqf
+%exe% "%arma%\@allinarmaterrainpack\addons\saralite.pbo" > %target%\objects.saralite.sqf
+
 rem ----------------------------- A2 --------------------------------------
 rem %exe% "%arma%\@a2\chernarus.pbo" > %target%\objects.chernarus.sqf
 rem %exe% "%arma%\@a2\utes.pbo" > %target%\objects.utes.sqf
@@ -79,8 +83,7 @@ rem ----------------------------- User ------------------------------------
 rem %exe% "%arma%\@a2co\@Nziwasogo_V03\addons\projeta3-05.pbo" > %target%\objects.nziwasogo.sqf
 rem %exe% "%arma%\@a2co\@Lingor\Addons\lingor.pbo" > %target%\objects.lingor.sqf
 rem %exe% "%arma%\@a2co\@isla_duala\Addons\isladuala.pbo" > %target%\objects.isladuala.sqf
-
-%exe% "%arma%\@a2co\@Tavi\Addons\tavi.pbo" > %target%\objects.taviana.sqf
+rem %exe% "%arma%\@a2co\@Tavi\Addons\tavi.pbo" > %target%\objects.taviana.sqf
 rem %exe% "%arma%\@a2co\@napf\Addons\napf.pbo" > %target%\objects.napf.sqf
 rem %exe% "%arma%\@a2co\@caribou\AddOns\caribou_summer_conf.pbo" > %target%\objects.caribou.sqf
 rem %exe% "%arma%\@a2co\@smd_sahrani_a2\addons\smd_sahrani_a2.pbo" > %target%\objects.smd_sahrani_a2.sqf

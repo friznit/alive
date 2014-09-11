@@ -1,9 +1,10 @@
 /*=================*/
-/*opening pbo Sara_DBE1.pbo
+/*opening pbo sara_dbe1.pbo
 ======<HEADER>=======
 prefix=DBE1\Sara_DBE1
+Mikero=DePbo.dll
 Pbo Type is: Arma Addon
-Sha: '060F0BAC2ACBDDBCFB4B6FDB3666678375DE0D0F'
+Sha: 'FD3C587342707391FEB0363161D951911B7244CD'
 ======</HEADER>============
 wrp= sara_dbe1.wrp
 OPRW Version 18 (binarised)

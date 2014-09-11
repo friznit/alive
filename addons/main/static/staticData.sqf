@@ -636,6 +636,7 @@ ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 [ALIVE_mapBounds, "Takistan", 13000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "praa_av", 6000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "tavi", 26000] call ALIVE_fnc_hashSet;
+[ALIVE_mapBounds, "Woodland_ACR", 8000] call ALIVE_fnc_hashSet;
 
 
 /*
@@ -1056,7 +1057,7 @@ if(_worldName == "Namalsk") then {
 };
 
 // SMD Sahrani
-if(_worldName == "smd_sahrani_a2") then {
+if(_worldName == "smd_sahrani_a2" || _worldName == "Sara" || _worldName == "SaraLite" || _worldName == "Sara_dbe1") then {
 
     ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
         "army",
