@@ -312,7 +312,11 @@ GVAR(LOADOUT_DATA) = [
 				removeUniform (_this select 0);
 				//[0, {diag_log format['remove uniform: %1', uniform _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 
-				(_this select 0) addUniform (_this select 1);
+				if ((_this select 0) isUniformAllowed (_this select 1)) then {
+					(_this select 0) addUniform (_this select 1);
+				} else {
+					(_this select 0) forceAddUniform (_this select 1);
+				};
 				// Check to see uniform state on client and server
 				//[0, {diag_log format['add uniform: %1', uniform _this];},  (_this select 0)] call CBA_fnc_globalExecute;
 
