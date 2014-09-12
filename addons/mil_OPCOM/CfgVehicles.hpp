@@ -72,25 +72,6 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class playertaskings
-                        {
-                                displayName = "$STR_ALIVE_OPCOM_PLAYERTASKINGS";
-                                description = "$STR_ALIVE_OPCOM_PLAYERTASKINGS_COMMENT";
-                                class Values
-                                {
-                                        class Yes
-                                        {
-                                                name = "Yes";
-                                                value = true;
-                                                default = true;
-                                        };
-                                        class No
-                                        {
-                                                name = "No";
-                                                value = false;
-                                        };
-                                };
-                        };
                         class reinforcements
                         {
                                 displayName = "$STR_ALIVE_OPCOM_REINFORCEMENTS";
