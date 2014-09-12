@@ -151,15 +151,17 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
             
 			{
-                [_logic,"trashIt",_x] call ALiVE_fnc_GC;
-			    sleep 0.03;
+                if (!(_x in synchronizedObjects _logic) && {!(_x getvariable [QGVAR(IGNORE),false])}) then {
+                	[_logic,"trashIt",_x] call ALiVE_fnc_GC;
+                    sleep 0.03;
+                };
 			} forEach _ObjectsToTrash;
 			
 			{
 				if ((count units _x == 0) && {!(_x in _queue)}) then {
                     [_logic,"trashIt",_x] call ALiVE_fnc_GC;
+                    sleep 0.03;
 				};
-			    sleep 0.03;
 			} foreach allGroups;
 			
 			if ((count _individual) > 0) then {
@@ -167,8 +169,8 @@ switch(_operation) do {
 				{
 					if (((typeof _x) in _individual) && {((damage _x) == 1)} && {!(_x in _queue)}) then {
                         [_logic,"trashIt",_x] call ALiVE_fnc_GC;
+                        sleep 0.03;
 					};
-			        sleep 0.03;
 				} foreach _amo;
 			};
             
