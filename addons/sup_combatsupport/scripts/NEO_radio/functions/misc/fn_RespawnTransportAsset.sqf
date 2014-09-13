@@ -34,15 +34,12 @@ sleep _respawn;
 TRANS_RESPAWN_LIMIT = TRANS_RESPAWN_LIMIT - 1;
 
 //Remove from all side-lists
-_toDelete = [];
 {
 		private ["_sideArray","_sideIn"];
         _sideIn = _x;
 		_sideArray = NEO_radioLogic getVariable [format["NEO_radioTrasportArray_%1", _sideIn],[]];
         {
             if (isnull (_x select 0) || {((_x select 0) == _veh)}) then {
-                _toDelete set [count _toDelete,_x];
-                
                 _sideArray set [_foreachIndex, -1];
 				_sideArray = _sideArray - [-1];
             };
@@ -51,11 +48,9 @@ _toDelete = [];
 } foreach _sides;
 
 //Delete objects and groups
-{
-                {if !(isPlayer _x) then {deletevehicle _x}} forEach (crew (_x select 0)); 
-                deleteVehicle (_x select 0);
-                deletegroup (_x select 1);
-} foreach _toDelete;
+deletevehicle _veh;
+{deletevehicle _x} foreach units _grp;
+deletegroup _grp;
 
 sleep 5;
 
