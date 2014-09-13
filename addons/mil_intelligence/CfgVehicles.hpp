@@ -83,7 +83,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS";
                                 description = "$STR_ALIVE_MI_FRIENDLY_INTEL_RADIUS_COMMENT";
-                                defaultValue = 2000;
+                                defaultValue = "2000";
                         };
                 };
                 

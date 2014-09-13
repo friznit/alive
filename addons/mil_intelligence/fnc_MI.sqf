@@ -87,7 +87,17 @@ switch(_operation) do {
     };
     // Return the Friendly Intel
     case "friendlyIntelRadius": {
-        _result = [_logic,_operation,_args,DEFAULT_FRIENDLY_INTEL_RADIUS] call ALIVE_fnc_OOsimpleOperation;
+        ["FRIENDLY RADIUS GET SET: %1",_args] call ALIVE_fnc_dump;
+        if (typeName _args == "SCALAR") then {
+            _logic setVariable ["friendlyIntelRadius", DEFAULT_FRIENDLY_INTEL_RADIUS];
+        } else {
+            _args = _logic getVariable ["friendlyIntelRadius", DEFAULT_FRIENDLY_INTEL_RADIUS];
+        };
+        if (typeName _args == "STRING") then {
+            _logic setVariable ["friendlyIntelRadius", parseNumber _args];
+        };
+
+        _result = _args;
     };
 	// Main process
 	case "init": {
@@ -125,6 +135,8 @@ switch(_operation) do {
         private["_friendlyIntelRadius"];
 
 	    _friendlyIntelRadius = [_logic, "friendlyIntelRadius"] call MAINCLASS;
+
+	    _friendlyIntelRadius = parseNumber _friendlyIntelRadius;
 
         [ALIVE_liveAnalysis, "registerAnalysisJob", [10, 0, "showFriendlies", "showFriendlies", [_friendlyIntelRadius]]] call ALIVE_fnc_liveAnalysis;
     };
