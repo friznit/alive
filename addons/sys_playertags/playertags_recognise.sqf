@@ -1,3 +1,4 @@
+#include <\x\alive\addons\sys_playertags\script_component.hpp>
 
 if (!enable_playertags || visibleMap) exitWith {foundUnitsCount = 0;};
 
@@ -9,9 +10,13 @@ _ownSide = side _gen;
 _playerVehicle = vehicle _gen;
 _genPos = getPos _gen;
 _objects = [];
+_onView = {true};
 _i = 0;
+
+if (GVAR(ONVIEW)) then {_onView = {cursorTarget == _x}};
+
 {
-	if (side _x == _ownSide && _x != _gen) then {
+	if (side _x == _ownSide && {_x != _gen} && {call _onView}) then {
 		_objects set [_i, _x];
 		_i = _i + 1;
 	};

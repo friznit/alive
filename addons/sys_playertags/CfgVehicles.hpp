@@ -35,6 +35,48 @@ class CfgVehicles {
 			                                };
 			                        };
 			                        
+			                        class playertags_style_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_STYLE";
+			                                description = "$STR_ALIVE_PLAYERTAGS_STYLE_COMMENT";
+			                                class Values
+			                                {
+			                                	
+			                                        class modern
+			                                        {
+			                                                name = "Modern";
+			                                                value = "modern";
+			                                                default = 1;
+			                                        };
+			                                        class current
+			                                        {
+			                                                name = "Default";
+			                                                value = "default";
+			                                        };
+			                                };
+			                        };
+			                        
+			                        class playertags_onview_setting
+			                        {
+			                                displayName = "$STR_ALIVE_PLAYERTAGS_ONVIEW";
+			                                description = "$STR_ALIVE_PLAYERTAGS_ONVIEW_COMMENT";
+			                                class Values
+			                                {
+			                                	
+			                                        class No
+			                                        {
+			                                                name = "No";
+			                                                value = false;
+			                                                default = 1;
+			                                        };
+			                                        class Yes
+			                                        {
+			                                                name = "Yes";
+			                                                value = true;
+			                                        };
+			                                };
+			                        };
+			                        
 			                        class playertags_displayrank_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_RANK";
@@ -56,8 +98,7 @@ class CfgVehicles {
 			                                        };
 			                                };
 			                        };
-			                        
-			                        
+
 			                        class playertags_displaygroup_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_GROUP";

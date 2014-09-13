@@ -61,7 +61,7 @@ _menus =
 		[
 			[localize "STR_ALIVE_PLAYERTAGS" + " >",
 		  { 
-		  	0 cutRsc ["playertagsOverlayRsc", "PLAIN"];
+		  	if (GVAR(STYLE) == "default") then {0 cutRsc ["playertagsOverlayRsc", "PLAIN"]};
 		  },
 		  
 			"",
@@ -80,7 +80,7 @@ if (_menuName == "playertags") then {
 			["playertags", localize "STR_ALIVE_PLAYERTAGS", "popup"],
 			[
 				[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_ENABLE",
-					{ MOD(playertags) setVariable ["display_enabled", true]; enable_playertags = true; },
+					{ MOD(playertags) setVariable ["display_enabled", true]; true call GVAR(TRIGGER); },
 					"",
 					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
 					"",
@@ -90,7 +90,7 @@ if (_menuName == "playertags") then {
 				],
 				
 					[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_DISABLE",
-					 { 	MOD(playertags) setVariable ["display_enabled", false]; enable_playertags = false; },
+					 { 	MOD(playertags) setVariable ["display_enabled", false]; false call GVAR(TRIGGER); },
 					"",
 					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
 					"",
