@@ -2,7 +2,7 @@ class CfgVehicles {
         class ModuleAliveMilitaryBase;
         class ADDON : ModuleAliveMilitaryBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_CONVOY";
                 function = "ALIVE_fnc_convoyInit";
                 author = MODULE_AUTHOR;
