@@ -405,6 +405,8 @@ switch(_operation) do {
 
         if(isServer) then {
 
+            waituntil {!(isnil "ALIVE_profileSystemInit")};
+
             // start listening for logcom events
             [_logic,"listen"] call MAINCLASS;
 
