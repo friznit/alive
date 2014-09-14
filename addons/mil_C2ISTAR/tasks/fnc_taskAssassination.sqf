@@ -144,7 +144,6 @@ switch (_taskState) do {
 
             _spawnTypes = ["static","insertion","extraction"];
             _spawnType = _spawnTypes call BIS_fnc_selectRandom;
-            _spawnType = "extraction";
 
             // store task data in the params for this task set
 
