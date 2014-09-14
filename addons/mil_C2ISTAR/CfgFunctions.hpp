@@ -201,6 +201,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetStateOfEntityProfiles.sqf";
                 recompile = RECOMPILE;
             };
+            class taskCreateReward {
+                description = "Utility create a reward for task completion";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateReward.sqf";
+                recompile = RECOMPILE;
+            };
             class taskMilAssault {
                 description = "Task Mil Assault";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilAssault.sqf";

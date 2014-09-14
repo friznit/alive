@@ -521,6 +521,8 @@ switch (_taskState) do {
 
                     ["chat_success",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
 
+                    [_currentTaskDialog,_taskSide,_taskFaction] call ALIVE_fnc_taskCreateReward;
+
                 };
 
             }else{
