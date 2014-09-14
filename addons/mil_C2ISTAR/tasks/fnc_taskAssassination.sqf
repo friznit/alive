@@ -138,6 +138,14 @@ switch (_taskState) do {
             _tasks set [count _tasks,_newTask];
             _taskIDs set [count _taskIDs,_newTaskID];
 
+            // select the type of HVT spawn
+
+            private["_spawnTypes","_spawnType"];
+
+            _spawnTypes = ["static","insertion","extraction"];
+            _spawnType = _spawnTypes call BIS_fnc_selectRandom;
+            _spawnType = "extraction";
+
             // store task data in the params for this task set
 
             _taskParams = [] call ALIVE_fnc_hashCreate;
@@ -147,6 +155,7 @@ switch (_taskState) do {
             [_taskParams,"enemyFaction",_taskEnemyFaction] call ALIVE_fnc_hashSet;
             [_taskParams,"lastState",""] call ALIVE_fnc_hashSet;
             [_taskParams,"HVTSpawned",false] call ALIVE_fnc_hashSet;
+            [_taskParams,"HVTSpawnType",_spawnType] call ALIVE_fnc_hashSet;
 
             // return the created tasks and params
 
@@ -176,6 +185,7 @@ switch (_taskState) do {
         _taskDialog = [_params,"dialog"] call ALIVE_fnc_hashGet;
         _currentTaskDialog = [_taskDialog,_taskState] call ALIVE_fnc_hashGet;
         _HVTSpawned = [_params,"HVTSpawned"] call ALIVE_fnc_hashGet;
+        _HVTSpawnType = [_taskParams,"HVTSpawnType"] call ALIVE_fnc_hashGet;
 
         if(_lastState != "Destroy") then {
 
@@ -190,72 +200,125 @@ switch (_taskState) do {
 
             if(_destinationReached) then {
 
-                private["_taskEnemyFaction","_taskEnemySide","_taskObjects","_tables","_chairs","_electronics","_documents",
-                "_tableClass","_electronicClass","_documentClass","_table","_electronic","_document","_HVTGroup","_HVTClass","_HVTUnit","_HVT",
-                "_HVTGroup2","_HVTClass","_HVTUnit","_HVT2"];
-
-                // spawn the HVT
+                private["_taskEnemyFaction","_taskEnemySide"];
 
                 _taskEnemyFaction = [_params,"enemyFaction"] call ALIVE_fnc_hashGet;
                 _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
+                _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideObjectToNumber;
+                _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideNumberToText;
 
-                _taskObjects = ALIVE_taskObjects;
-                _tables = [_taskObjects,"tables"] call ALIVE_fnc_hashGet;
-                _chairs = [_taskObjects,"chairs"] call ALIVE_fnc_hashGet;
-                _electronics = [_taskObjects,"electronics"] call ALIVE_fnc_hashGet;
-                _documents = [_taskObjects,"documents"] call ALIVE_fnc_hashGet;
+                // spawn the HVT
 
-                _tableClass = _tables call BIS_fnc_selectRandom;
-                _electronicClass = _electronics call BIS_fnc_selectRandom;
-                _documentClass = _documents call BIS_fnc_selectRandom;
+                switch(_HVTSpawnType) do {
+                    case "static":{
 
-                _table = _tableClass createVehicle _taskPosition;
-                _table setdir 0;
+                        private["_taskObjects","_tables","_chairs","_electronics","_documents","_tableClass","_electronicClass",
+                        "_documentClass","_table","_electronic","_document"];
 
-                _electronic = [_table,_electronicClass] call ALIVE_fnc_taskSpawnOnTopOf;
-                _document = [_table,_documentClass] call ALIVE_fnc_taskSpawnOnTopOf;
+                        // spawn some objects
 
-                _HVTGroup = creategroup _taskEnemySide;
-                _HVTClass = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
-                _HVTUnit = _HVTGroup createUnit [_HVTClass select 0, _taskPosition, [], 0 , "NONE"];
-                _HVT = leader _HVTGroup;
-                _HVT setformdir 0;
-                _HVT setpos [getpos _table select 0,(getpos _table select 1)-2,0];
+                        _taskObjects = ALIVE_taskObjects;
+                        _tables = [_taskObjects,"tables"] call ALIVE_fnc_hashGet;
+                        _chairs = [_taskObjects,"chairs"] call ALIVE_fnc_hashGet;
+                        _electronics = [_taskObjects,"electronics"] call ALIVE_fnc_hashGet;
+                        _documents = [_taskObjects,"documents"] call ALIVE_fnc_hashGet;
 
-                _HVTGroup2 = creategroup _taskEnemySide;
-                _HVTClass = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
-                _HVTUnit = _HVTGroup2 createUnit [_HVTClass select 0, _taskPosition, [], 0 , "NONE"];
-                _HVT2 = leader _HVTGroup2;
-                _HVT2 setformdir 180;
-                _HVT2 setpos [getpos _table select 0,(getpos _table select 1)+2,0];
+                        _tableClass = _tables call BIS_fnc_selectRandom;
+                        _electronicClass = _electronics call BIS_fnc_selectRandom;
+                        _documentClass = _documents call BIS_fnc_selectRandom;
 
+                        _table = _tableClass createVehicle _taskPosition;
+                        _table setdir 0;
 
-                [_params,"HVTSpawned",true] call ALIVE_fnc_hashSet;
-                [_params,"targets",[_HVT,_HVT2]] call ALIVE_fnc_hashSet;
-                [_params,"groups",[_HVTGroup,_HVTGroup2]] call ALIVE_fnc_hashSet;
+                        _electronic = [_table,_electronicClass] call ALIVE_fnc_taskSpawnOnTopOf;
+                        _document = [_table,_documentClass] call ALIVE_fnc_taskSpawnOnTopOf;
+
+                        // create the profiles
+
+                        private["_units","_HVTProfile1","_HVTProfile1ID","_HVTProfile2","_HVTProfile1ID","_HVTGroup","_HVT","_HVTGroup2","_HVT2"];
+
+                        _units = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+
+                        _HVTProfile1 = [_units,_taskEnemySide,_taskEnemyFaction,_taskPosition,random(360),_taskEnemyFaction,true] call ALIVE_fnc_createProfileEntity;
+                        _HVTProfile1ID = _HVTProfile1 select 2 select 4;
+
+                        _units = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+
+                        _HVTProfile2 = [_units,_taskEnemySide,_taskEnemyFaction,_taskPosition,random(360),_taskEnemyFaction,true] call ALIVE_fnc_createProfileEntity;
+                        _HVTProfile2ID = _HVTProfile2 select 2 select 4;
+
+                        waitUntil {
+                            sleep 1;
+                            _HVT1Active = _HVTProfile1 select 2 select 1;
+                            _HVT2Active = _HVTProfile2 select 2 select 1;
+
+                            (_HVT1Active && _HVT2Active)
+                        };
+
+                        _HVTGroup = _HVTProfile1 select 2 select 13;
+                        _HVT = leader _HVTGroup;
+                        _HVT setformdir 0;
+                        _HVT setpos [getpos _table select 0,(getpos _table select 1)-2,0];
+
+                        _HVTGroup2 = _HVTProfile2 select 2 select 13;
+                        _HVT2 = leader _HVTGroup2;
+                        _HVT2 setformdir 180;
+                        _HVT2 setpos [getpos _table select 0,(getpos _table select 1)+2,0];
+
+                        // store the data on the params
+
+                        [_params,"HVTSpawned",true] call ALIVE_fnc_hashSet;
+                        [_params,"entityProfileIDs",[_HVTProfile1ID,_HVTProfile2ID]] call ALIVE_fnc_hashSet;
+
+                    };
+                    case "insertion":{
+
+                        private["_units","_HVTProfile1","_HVTProfile1ID","_remotePosition"];
+
+                        _units = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+
+                        _remotePosition = [_taskPosition, 2000, 1, true] call ALIVE_fnc_getPositionDistancePlayers;
+
+                        _HVTProfile1 = [_units,_taskEnemySide,_taskEnemyFaction,_remotePosition,random(360),_taskEnemyFaction,true] call ALIVE_fnc_createProfileEntity;
+                        _HVTProfile1ID = _HVTProfile1 select 2 select 4;
+
+                        [_remotePosition,_taskPosition,_taskEnemySide,_taskEnemyFaction,_HVTProfile1] call ALIVE_fnc_taskCreateVehicleInsertionForUnits;
+
+                        [_params,"HVTSpawned",true] call ALIVE_fnc_hashSet;
+                        [_params,"entityProfileIDs",[_HVTProfile1ID]] call ALIVE_fnc_hashSet;
+
+                    };
+                    case "extraction":{
+
+                        private["_units","_HVTProfile1","_HVTProfile1ID","_remotePosition","_extractionPosition"];
+
+                        _units = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
+
+                        _remotePosition = [_taskPosition, 2000, 1, true] call ALIVE_fnc_getPositionDistancePlayers;
+                        _extractionPosition = [_taskPosition, 4000, 1, true] call ALIVE_fnc_getPositionDistancePlayers;
+
+                        _HVTProfile1 = [_units,_taskEnemySide,_taskEnemyFaction,_taskPosition,random(360),_taskEnemyFaction,true] call ALIVE_fnc_createProfileEntity;
+                        _HVTProfile1ID = _HVTProfile1 select 2 select 4;
+
+                        [_remotePosition,_taskPosition,_extractionPosition,_taskEnemySide,_taskEnemyFaction,_HVTProfile1] call ALIVE_fnc_taskCreateVehicleExtractionForUnits;
+
+                        [_params,"HVTSpawned",true] call ALIVE_fnc_hashSet;
+                        [_params,"entityProfileIDs",[_HVTProfile1ID]] call ALIVE_fnc_hashSet;
+
+                    };
+                };
 
             };
         }else{
 
-            private["_targets","_targetsDown","_targetPosition","_targetSide","_groups"];
+            private["_entityProfiles","_entitiesState","_allDestroyed"];
 
-            _targets = [_params,"targets"] call ALIVE_fnc_hashGet;
+            _entityProfiles = [_params,"entityProfileIDs"] call ALIVE_fnc_hashGet;
 
-            _targetsDown = true;
+            _entitiesState = [_entityProfiles] call ALIVE_fnc_taskGetStateOfEntityProfiles;
+            _allDestroyed = [_entitiesState,"allDestroyed"] call ALIVE_fnc_hashGet;
 
-            {
-                if(alive _x) then {
-                    _targetsDown = false;
-                };
-            } forEach _targets;
-
-            if(_targetsDown) then {
-
-                _groups = [_params,"groups"] call ALIVE_fnc_hashGet;
-
-                {
-                    deleteGroup _x;
-                } forEach _groups;
+            if(_allDestroyed) then {
 
                 [_params,"nextTask",""] call ALIVE_fnc_hashSet;
 
@@ -269,10 +332,82 @@ switch (_taskState) do {
 
             }else{
 
-                _targetPosition = position (_targets select 0);
-                _targetSide = side (_targets select 0);
+                private["_taskEnemyFaction","_taskEnemySide","_profiles","_position","_profile","_active","_inCargo","_group","_cargoProfileID","_cargoProfile","_position","_distance"];
 
-                [_targetPosition,_targetSide,_taskPlayers,_taskID,"HVT"] call ALIVE_fnc_taskCreateMarkersForPlayers;
+                _taskEnemyFaction = [_params,"enemyFaction"] call ALIVE_fnc_hashGet;
+                _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
+
+                _profiles = [_entitiesState,"profiles"] call ALIVE_fnc_hashGet;
+
+                {
+
+                    _profile = _x;
+
+                    _active = _profile select 2 select 1;
+                    _inCargo = _profile select 2 select 9;
+
+                    if(_active) then {
+
+                        _group = _profile select 2 select 13;
+                        _position = getPos leader _group;
+                        [_position,_taskEnemySide,_taskPlayers,_taskID,"HVT"] call ALIVE_fnc_taskCreateMarkersForPlayers;
+
+                    }else{
+
+                        if(count _inCargo > 0) then {
+                            {
+                                _cargoProfileID = _x;
+                                _cargoProfile = [ALIVE_profileHandler, "getProfile", _cargoProfileID] call ALIVE_fnc_profileHandler;
+
+                                if!(isNil "_cargoProfile") then {
+                                    _position = _cargoProfile select 2 select 2;
+                                    [_position,_taskEnemySide,_taskPlayers,_taskID,"HVT"] call ALIVE_fnc_taskCreateMarkersForPlayers;
+
+                                    if(_HVTSpawnType == "extraction") then {
+                                        _distance = [_position,_taskPlayers] call ALIVE_fnc_taskGetClosestPlayerDistanceToDestination;
+
+                                        if(_distance > 2000) then {
+
+                                            [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+
+                                            _task set [8,"Failed"];
+                                            _task set [10, "N"];
+                                            _result = _task;
+
+                                            [_taskPlayers,_taskID] call ALIVE_fnc_taskDeleteMarkersForPlayers;
+
+                                            ["chat_failed",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+                                        };
+                                    };
+                                };
+
+                            } forEach _inCargo;
+                        }else{
+
+                            _position = _x select 2 select 2;
+                            [_position,_taskEnemySide,_taskPlayers,_taskID,"HVT"] call ALIVE_fnc_taskCreateMarkersForPlayers;
+
+                            if(_HVTSpawnType == "extraction") then {
+                                _distance = [_position,_taskPlayers] call ALIVE_fnc_taskGetClosestPlayerDistanceToDestination;
+
+                                if(_distance > 2000) then {
+
+                                    [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+
+                                    _task set [8,"Failed"];
+                                    _task set [10, "N"];
+                                    _result = _task;
+
+                                    [_taskPlayers,_taskID] call ALIVE_fnc_taskDeleteMarkersForPlayers;
+
+                                    ["chat_failed",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+                                };
+                            };
+
+                        };
+                    };
+
+                } forEach _profiles;
 
             }
 

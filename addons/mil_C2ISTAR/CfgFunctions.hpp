@@ -146,6 +146,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateVehicleInsertionForUnits.sqf";
                 recompile = RECOMPILE;
             };
+            class taskCreateVehicleExtractionForUnits {
+                description = "Utility create an extraction vehicle for units";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateVehicleExtractionForUnits.sqf";
+                recompile = RECOMPILE;
+            };
             class taskCreateExplosiveProjectile {
                 description = "Utility create an explosive projectile orientate towards an object";
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateExplosiveProjectile.sqf";

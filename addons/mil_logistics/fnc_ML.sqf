@@ -4405,7 +4405,8 @@ switch(_operation) do {
         _waypointCompleted = false;
 
         if(_active) then {
-            private ["_group","_leader","_currentWaypoint","_waypoints","_waypointCount"];
+            private ["_group","_leader","_currentPosition","_currentWaypoint","_waypoints","_waypointCount",
+            "_destination","_completionRadius","_distance"];
 
             _group = _entityProfile select 2 select 13;
             _leader = leader _group;

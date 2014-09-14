@@ -754,6 +754,80 @@ switch(_operation) do {
 
                 };
         };
+        case "checkWaypointComplete": {
+
+                private ["_debug","_active","_profileID","_waypointCompleted"];
+
+                _debug = [_logic, "debug"] call MAINCLASS;
+
+                _active = _logic select 2 select 1;
+                _profileID = _logic select 2 select 4;
+
+                _waypointCompleted = false;
+
+                if(_active) then {
+                    private ["_group","_leader","_currentPosition","_currentWaypoint","_waypoints","_waypointCount",
+                    "_destination","_completionRadius","_distance"];
+
+                    _group = _logic select 2 select 13;
+                    _leader = leader _group;
+                    _currentPosition = position _leader;
+                    _currentWaypoint = currentWaypoint _group;
+                    _waypoints = waypoints _group;
+                    _currentWaypoint = _waypoints select ((count _waypoints)-1);
+
+                    if!(isNil "_currentWaypoint") then {
+
+                        _destination = waypointPosition _currentWaypoint;
+                        _completionRadius = waypointCompletionRadius _currentWaypoint;
+
+                        _completionRadius = (_completionRadius * 2) + 20;
+
+                        _distance = _currentPosition distance _destination;
+
+                        if(_distance < _completionRadius) then {
+                            _waypointCompleted = true;
+                        };
+
+                    }else{
+                        _waypointCompleted = true;
+                    }
+
+                } else {
+                    private ["_waypoints"];
+
+                    _waypoints = [_logic,"waypoints"] call ALIVE_fnc_hashGet;
+
+                    if(count _waypoints == 0) then {
+                        _waypointCompleted = true;
+                    };
+                };
+
+                _result = _waypointCompleted;
+
+        };
+        case "setPosition": {
+
+            private ["_active","_group"];
+
+            if(typeName _args == "ARRAY") then {
+
+                [_logic,"position",_args] call ALIVE_fnc_hashSet;
+                [_logic,"mergePositions"] call ALIVE_fnc_hashSet;
+
+                _active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
+
+                if(_active) then {
+
+                    _group = _logic select 2 select 13;
+
+                    {
+                        _x setPos _args;
+                    } forEach (units _group);
+
+                };
+            };
+        };
 		case "spawn": {
 				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
 				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_activeCommands","_inactiveCommands","_group","_unitPosition","_eventID",
