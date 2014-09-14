@@ -44,7 +44,7 @@ _updatedSectors = [];
 	_sector = _x;
 	
 	_sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
-		
+
 	if("active" in (_sectorData select 1)) then {
 		[_sector, "data", ["active",[]]] call ALIVE_fnc_sector;
 	};
