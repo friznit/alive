@@ -2319,18 +2319,10 @@ switch(_operation) do {
                     _eventStateData set [0, 0];
                     [_event, "stateData", _eventStateData] call ALIVE_fnc_hashSet;
 
-                    [_event, "state", "airdropComplete"] call ALIVE_fnc_hashSet;
+                    [_event, "state", "eventComplete"] call ALIVE_fnc_hashSet;
                     [_eventQueue, _eventID, _event] call ALIVE_fnc_hashSet;
 
                 };
-
-            };
-
-            case "airdropComplete": {
-
-                [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
-
-                [_logic, "removeEvent", _eventID] call MAINCLASS;
 
             };
 
@@ -3130,7 +3122,21 @@ switch(_operation) do {
 
             case "eventComplete": {
 
+                private["_sideObject","_factionName","_forcePool","_message","_radioBroadcast"];
+
                 [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
+
+                // send radio broadcast
+                _sideObject = [_eventSide] call ALIVE_fnc_sideTextToObject;
+                _factionName = getText(configfile >> "CfgFactionClasses" >> _eventFaction >> "displayName");
+                _forcePool = [ALIVE_globalForcePool,_eventFaction] call ALIVE_fnc_hashGet;
+
+                // send a message to all side players from HQ
+                _message = format["%1 reinforcements have arrived. Available reinforcement level: %2",_factionName,_forcePool];
+                _radioBroadcast = [objNull,_message,"side",_sideObject,false,false,false,true,"HQ"];
+                [_eventSide,_radioBroadcast] call ALIVE_fnc_radioBroadcastToSide;
+
+                // remove the event
                 [_logic, "removeEvent", _eventID] call MAINCLASS;
 
             };

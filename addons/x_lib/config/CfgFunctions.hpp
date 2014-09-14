@@ -321,6 +321,13 @@ class encodeJSON
 	recompile = RECOMPILE;
 };
 
+class hashAddWarRoomData
+{
+	file = "\x\alive\addons\x_lib\functions\data\fnc_hashAddWarRoomData.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class hashCopy
 {
 	file = "\x\alive\addons\x_lib\functions\data\fnc_hashCopy.sqf";
@@ -352,13 +359,6 @@ class hashRem
 class hashSet
 {
 	file = "\x\alive\addons\x_lib\functions\data\fnc_hashSet.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class hashAddWarRoomData
-{
-	file = "\x\alive\addons\x_lib\functions\data\fnc_hashAddWarRoomData.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -972,14 +972,6 @@ class dateToDTG
 	recompile = RECOMPILE;
 };
 
-class realTimeToDTG
-{
-	file = "\x\alive\addons\x_lib\functions\strings\fnc_realTimeToDTG.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-
 class formatDate
 {
 	file = "\x\alive\addons\x_lib\functions\strings\fnc_formatDate.sqf";
@@ -990,6 +982,13 @@ class formatDate
 class formatNumber
 {
 	file = "\x\alive\addons\x_lib\functions\strings\fnc_formatNumber.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class realTimeToDTG
+{
+	file = "\x\alive\addons\x_lib\functions\strings\fnc_realTimeToDTG.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1025,6 +1024,13 @@ class hintS
 class radioBroadcast
 {
 	file = "\x\alive\addons\x_lib\functions\ui\fnc_radioBroadcast.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class radioBroadcastToSide
+{
+	file = "\x\alive\addons\x_lib\functions\ui\fnc_radioBroadcastToSide.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

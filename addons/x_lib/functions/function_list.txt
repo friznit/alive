@@ -68,6 +68,7 @@ conversions
 data
 
 	ALiVE_fnc_encodeJSON
+	ALiVE_fnc_hashAddWarRoomData
 	ALiVE_fnc_hashCopy
 	ALiVE_fnc_hashCreate
 	ALiVE_fnc_hashGet
@@ -198,6 +199,7 @@ strings
 	ALiVE_fnc_dateToDTG
 	ALiVE_fnc_formatDate
 	ALiVE_fnc_formatNumber
+	ALiVE_fnc_realTimeToDTG
 	ALiVE_fnc_selBinStr
 	ALiVE_fnc_timeToRead
 
@@ -206,6 +208,7 @@ ui
 	ALiVE_fnc_hint
 	ALiVE_fnc_hintS
 	ALiVE_fnc_radioBroadcast
+	ALiVE_fnc_radioBroadcastToSide
 	ALiVE_fnc_sendHint
 	ALiVE_fnc_sideC
 

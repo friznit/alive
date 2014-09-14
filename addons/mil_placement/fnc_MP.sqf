@@ -309,7 +309,7 @@ switch(_operation) do {
 			
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
-			
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
