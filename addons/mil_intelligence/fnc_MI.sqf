@@ -87,7 +87,6 @@ switch(_operation) do {
     };
     // Return the Friendly Intel
     case "friendlyIntelRadius": {
-        ["FRIENDLY RADIUS GET SET: %1",_args] call ALIVE_fnc_dump;
         if (typeName _args == "SCALAR") then {
             _logic setVariable ["friendlyIntelRadius", DEFAULT_FRIENDLY_INTEL_RADIUS];
         } else {

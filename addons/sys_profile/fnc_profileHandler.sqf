@@ -1182,6 +1182,8 @@ switch(_operation) do {
                             "active",
                             "leader",
                             "group",
+                            "cargo",
+                            "busy",
                             "companyID",
                             "groupID",
                             "waypoints",
@@ -1195,6 +1197,7 @@ switch(_operation) do {
                             "speedPerSecond",
                             /*"despawnPosition",*/
                             "vehicleAssignments",
+                            "markers",
                             "damages",
                             "positions",
                             "isPlayer",
@@ -1223,8 +1226,10 @@ switch(_operation) do {
                         _exportClasses = [];
 
                         {
-                            if(typeName _x == "STRING") then {
-                                _exportClasses set [count _exportClasses, _x];
+                            if!(isNil "_x") then {
+                                if(typeName _x == "STRING") then {
+                                    _exportClasses set [count _exportClasses, _x];
+                                };
                             };
                         } forEach _classes;
 
