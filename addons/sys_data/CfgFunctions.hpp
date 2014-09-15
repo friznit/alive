@@ -41,6 +41,11 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data\fnc_getGroupID.sqf";
 					recompile = RECOMPILE;
 				};
+				class startALiVEPLugIn {
+					description = "Starts the ALiVE Plugin for arma2net";
+					file = "\x\alive\addons\sys_data\fnc_startALiVEPlugIn.sqf";
+					recompile = RECOMPILE;
+				};
 				class data_OnPlayerDisconnected {
 						description = "The module onPlayerDisconnected handler";
 						file = "\x\alive\addons\sys_data\fnc_data_onPlayerDisconnected.sqf";

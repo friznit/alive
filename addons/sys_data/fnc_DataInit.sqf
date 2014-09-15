@@ -30,6 +30,11 @@ if (isDedicated) then {
 
 	GVAR(databaseName) = "arma3live";
 	GVAR(source) = MOD(sys_data) getVariable "source";
+
+	_initmsg = [] call ALIVE_fnc_startALiVEPlugIn;
+
+	["ALIVE_SYS_DATA_: %1", _initmsg] call ALIVE_fnc_dump;
+
 	GVAR(GROUP_ID) = [] call ALIVE_fnc_getGroupID;
 
 	TRACE_1("Group Name", GVAR(GROUP_ID));
