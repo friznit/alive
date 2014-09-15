@@ -56,6 +56,16 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerEventToClient.sqf";
                 recompile = RECOMPILE;
             };
+            class taskHandlerLoadData {
+                description = "Task Handler Load Data";
+                file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerLoadData.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskHandlerSaveData {
+                description = "Task Handler Save Data";
+                file = "\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerSaveData.sqf";
+                recompile = RECOMPILE;
+            };
             class taskGetSideCluster {
                 description = "Utility get side cluster for tasks";
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideCluster.sqf";

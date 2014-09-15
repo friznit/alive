@@ -47,6 +47,8 @@ Peer Reviewed:
 #define DEFAULT_TASKING_DESTINATION []
 #define DEFAULT_TASKING_SOURCE "PLAYER"
 #define DEFAULT_TASK_EDITING_DISABLED false
+#define DEFAULT_TASK_REVISION ""
+#define DEFAULT_TASK_ID ""
 
 // Display components
 #define C2Tablet_CTRL_MainDisplay 70001
@@ -144,6 +146,20 @@ switch(_operation) do {
 
         _result = _args;
     };
+    case "persistent": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["persistent", _args];
+        } else {
+            _args = _logic getVariable ["persistent", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["persistent", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
 	case "c2_item": {
         _result = [_logic,_operation,_args,DEFAULT_C2_ITEM] call ALIVE_fnc_OOsimpleOperation;
     };
@@ -173,6 +189,12 @@ switch(_operation) do {
     case "taskEditingDisabled": {
         _result = [_logic,_operation,_args,DEFAULT_TASK_EDITING_DISABLED] call ALIVE_fnc_OOsimpleOperation;
     };
+    case "taskRevision": {
+        _result = [_logic,_operation,_args,DEFAULT_TASK_REVISION] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "taskID": {
+        _result = [_logic,_operation,_args,DEFAULT_TASK_ID] call ALIVE_fnc_OOsimpleOperation;
+    };
 
 
 	case "init": {
@@ -190,10 +212,18 @@ switch(_operation) do {
 
         if (isServer) then {
 
+            private["_persistent"];
+
+            _persistent = [_logic,"persistent"] call MAINCLASS;
+
             // create the task handler
             ALIVE_taskHandler = [nil, "create"] call ALIVE_fnc_taskHandler;
             [ALIVE_taskHandler, "init"] call ALIVE_fnc_taskHandler;
             [ALIVE_taskHandler, "debug", _debug] call ALIVE_fnc_taskHandler;
+
+            if(_persistent) then {
+                [ALIVE_taskHandler, "loadTaskData", _persistent] call ALIVE_fnc_taskHandler;
+            };
 
         };
 
@@ -606,7 +636,7 @@ switch(_operation) do {
 
                     private ["_taskingState","_titleEdit","_descriptionEdit","_title","_description","_marker","_destination",
                     "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID",
-                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage","_source","_editingDisabled"];
+                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage","_source","_editingDisabled","_rev","_id"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -627,6 +657,9 @@ switch(_operation) do {
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
                     _current = [_taskingState,"currentTaskCurrentSelectedValue"] call ALIVE_fnc_hashGet;
                     _parent = [_taskingState,"currentTaskParentSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _rev = "";
+                    _id = "";
 
                     _playerID = getPlayerUID player;
                     _requestID = format["%1_%2",_faction,floor(time)];
@@ -685,7 +718,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source,_editingDisabled], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_CREATE', [_requestID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source,_editingDisabled,_rev,_id], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1020,7 +1053,7 @@ switch(_operation) do {
                     private ["_taskingState","_currentTask","_titleEdit","_descriptionEdit","_title","_description",
                     "_side","_faction","_marker","_destination","_selectedPlayers","_event","_taskID","_playerID","_state",
                     "_selectedPlayerListOptions","_selectedPlayerListValues","_apply","_current","_parent","_newSelectedPlayerListOptions",
-                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage","_source","_editingDisabled"];
+                    "_newSelectedPlayerListValues","_statusText","_errors","_errorMessage","_source","_rev","_id","_editingDisabled"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -1038,6 +1071,8 @@ switch(_operation) do {
                     _destination = [_logic,"taskDestination"] call MAINCLASS;
                     _source = [_logic,"taskSource"] call MAINCLASS;
                     _editingDisabled = [_logic,"taskEditingDisabled"] call MAINCLASS;
+                    _rev = [_logic,"taskRevision"] call MAINCLASS;
+                    _id = [_logic,"taskID"] call MAINCLASS;
 
                     _state = [_taskingState,"currentTaskStateSelectedValue"] call ALIVE_fnc_hashGet;
                     _apply = [_taskingState,"currentTaskApplySelectedValue"] call ALIVE_fnc_hashGet;
@@ -1107,7 +1142,7 @@ switch(_operation) do {
 
                     }else{
 
-                        _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source,_editingDisabled], "C2ISTAR"] call ALIVE_fnc_event;
+                        _event = ['TASK_UPDATE', [_taskID,_playerID,_side,_destination,_faction,_title,_description,_selectedPlayers,_state,_apply,_current,_parent,_source,_editingDisabled,_rev,_id], "C2ISTAR"] call ALIVE_fnc_event;
 
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -1707,6 +1742,8 @@ switch(_operation) do {
             _newTask set [11,_task select 11];
             _newTask set [12,_task select 12];
             _newTask set [13,_task select 13];
+            _newTask set [14,_task select 14];
+            _newTask set [15,_task select 15];
 
             _parent = _newTask select 11;
             _current = _newTask select 10;
@@ -2620,6 +2657,10 @@ switch(_operation) do {
         [_logic,"taskSource",_currentTask select 12] call MAINCLASS;
 
         [_logic,"taskEditingDisabled",_currentTask select 13] call MAINCLASS;
+
+        [_logic,"taskRevision",_currentTask select 14] call MAINCLASS;
+
+        [_logic,"taskID",_currentTask select 15] call MAINCLASS;
 
         _selectedPlayerListOptions = _currentTask select 7 select 1;
         _selectedPlayerListValues = _currentTask select 7 select 0;

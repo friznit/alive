@@ -20,4 +20,10 @@
 <Key ID="STR_ALIVE_C2ISTAR_ALLOW_COMMENT">
     <English>Define the item the player must have to be able to use C2ISTAR i.e "LaserDesignator"</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_PERSISTENT">
+    <English>Persistent:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_PERSISTENT_COMMENT">
+    <English>Enables external Database persistence for C2ISTAR player tasks</English>
+</Key>
 </Container></Package></Project>

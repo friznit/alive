@@ -117,6 +117,110 @@ switch(_operation) do {
             [_logic,"listen"] call MAINCLASS;
         };
     };
+    case "loadTaskData": {
+        private["_data","_taskID"];
+
+        if(_args) then {
+
+            _data = call ALIVE_fnc_taskHandlerLoadData;
+
+            if(typeName _data == "ARRAY") then {
+
+                {
+                    _taskID = _x;
+
+                    _task = _data select 2 select _forEachIndex;
+
+                    _newTask = [];
+                    _newTask set [0,_taskID];
+                    _newTask set [1,[_task,"c2req_id"] call ALIVE_fnc_hashGet];
+                    _newTask set [2,[_task,"c2task_side"] call ALIVE_fnc_hashGet];
+                    _newTask set [3,[_task,"c2task_pos"] call ALIVE_fnc_hashGet];
+                    _newTask set [4,[_task,"c2task_fac"] call ALIVE_fnc_hashGet];
+                    _newTask set [5,[_task,"c2task_tit"] call ALIVE_fnc_hashGet];
+                    _newTask set [6,[_task,"c2task_des"] call ALIVE_fnc_hashGet];
+                    _newTask set [7,[_task,"c2task_pla"] call ALIVE_fnc_hashGet];
+                    _newTask set [8,[_task,"c2task_sta"] call ALIVE_fnc_hashGet];
+                    _newTask set [9,[_task,"c2task_app"] call ALIVE_fnc_hashGet];
+                    _newTask set [10,[_task,"c2task_cur"] call ALIVE_fnc_hashGet];
+                    _newTask set [11,[_task,"c2task_par"] call ALIVE_fnc_hashGet];
+                    _newTask set [12,[_task,"c2task_sou"] call ALIVE_fnc_hashGet];
+                    _newTask set [13,[_task,"c2task_all"] call ALIVE_fnc_hashGet];
+                    _newTask set [14,[_task,"_rev"] call ALIVE_fnc_hashGet];
+                    _newTask set [15,[_task,"_id"] call ALIVE_fnc_hashGet];
+
+                    [_logic, "registerTask", _newTask] call MAINCLASS;
+
+
+                } forEach (_data select 1);
+            };
+
+        };
+    };
+    case "exportTaskData": {
+
+        private["_tasks","_data","_taskID","_task","_taskHash"];
+
+        _tasks = [_logic,"tasks"] call ALIVE_fnc_hashGet;
+
+        _data = [] call ALIVE_fnc_hashCreate;
+
+        {
+
+            /*
+            _taskID = _task select 0;
+            _requestPlayerID = _task select 1;
+            _side = _task select 2;
+            _position = _task select 3;
+            _faction = _task select 4;
+            _title = _task select 5;
+            _description = _task select 6;
+            _players = _task select 7;
+            _state = _task select 8;
+            _applyType = _task select 9;
+            _current = _task select 10;
+            _parent = _task select 11;
+            _source = _task select 12;
+            _allowMapEditing = _task select 13;
+            */
+
+            _taskID = _x;
+            _task = [_logic, "getTask", _taskID] call MAINCLASS;
+            _taskSource = _task select 12;
+
+            if(_taskSource == "PLAYER") then {
+
+                _taskHash = [] call ALIVE_fnc_hashCreate;
+
+                [_taskHash,"c2task_id",_taskID] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2req_id",_task select 1] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_side",_task select 2] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_pos",_task select 3] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_fac",_task select 4] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_tit",_task select 5] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_des",_task select 6] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_pla",_task select 7] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_sta",_task select 8] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_app",_task select 9] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_cur",_task select 10] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_par",_task select 11] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_sou",_task select 12] call ALIVE_fnc_hashSet;
+                [_taskHash,"c2task_all",_task select 13] call ALIVE_fnc_hashSet;
+
+                if!(_task select 14 == "") then {
+                    [_taskHash,"_rev",_task select 14] call ALIVE_fnc_hashSet;
+                    [_taskHash,"_id",_task select 15] call ALIVE_fnc_hashSet;
+                };
+
+                [_data,_taskID,_taskHash] call ALIVE_fnc_hashSet;
+
+            };
+
+        } forEach (_tasks select 1);
+
+        _result = _data;
+
+    };
     case "listen": {
         private["_listenerID"];
 

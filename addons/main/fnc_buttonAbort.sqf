@@ -173,6 +173,11 @@ _saveServer = {
         ["ALIVE Abort - Server Save ML State"] call ALIVE_fnc_dump;
         call ALiVE_fnc_MLSaveData;
     };
+
+    if (["ALiVE_mil_C2ISTAR"] call ALiVE_fnc_isModuleAvailable) then {
+        ["ALIVE Abort - Server Save Task State"] call ALIVE_fnc_dump;
+        call ALiVE_fnc_taskHandlerSaveData;
+    };
 };
 
 // Function run on server
