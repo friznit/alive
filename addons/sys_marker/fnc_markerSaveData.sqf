@@ -31,8 +31,7 @@ private ["_result"];
 
 if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {false};
 
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
-[true, "ALiVE SYS marker persistence save data started", "markerper"] call ALIVE_fnc_timer;
+[true, "ALiVE SYS MARKER - Save Data", "markerper"] call ALIVE_fnc_timer;
 
 _async = false;
 _missionName = [missionName, "%20","-"] call CBA_fnc_replace;
@@ -41,10 +40,10 @@ _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
 _data = [MOD(SYS_marker),"state"] call ALiVE_fnc_marker;
 
 if (count (_data select 1) == 0) exitwith {
-    [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+    //[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
 };
 
-["ALiVE SAVE SYS marker DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
+["ALiVE SAVE SYS MARKER DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
 
 _data call ALIVE_fnc_inspectHash;
 
@@ -56,9 +55,7 @@ if (isNil QGVAR(DATAHANDLER)) then {
 
 _result = [GVAR(DATAHANDLER), "bulkSave", ["sys_marker", _data, _missionName, _async]] call ALIVE_fnc_Data;
 
-[false, "ALiVE SYS marker persistence save data complete","markerper"] call ALIVE_fnc_timer;
-["ALiVE SYS marker SAVE DATA RESULT: %1",_result] call ALiVE_fnc_Dump;
-
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+[false, "ALiVE SYS MARKER - Save data complete","markerper"] call ALIVE_fnc_timer;
+["ALiVE SYS MARKER SAVE DATA RESULT: %1",_result] call ALiVE_fnc_Dump;
 
 _result

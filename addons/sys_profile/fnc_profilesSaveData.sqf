@@ -37,11 +37,7 @@ if(ALIVE_saveProfilesPersistent) then {
 
         if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
-            [["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
-            [true, "ALiVE Profile System persistence save data started", "psper"] call ALIVE_fnc_timer;
-
-
-            ["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_pauseModule;
+            [true, "ALiVE SYS PROFILE - Saving data", "psper"] call ALIVE_fnc_timer;
 
             if(isNil "ALiVE_sysProfileLastSaveTime" || {time - ALiVE_sysProfileLastSaveTime > 300}) then {
 
@@ -55,11 +51,8 @@ if(ALIVE_saveProfilesPersistent) then {
 
             };
 
-            ["ALIVE_SYS_PROFILE","ALIVE_MIL_OPCOM","ALIVE_AMB_CIV_POPULATION","ALIVE_MIL_LOGISTICS","ALIVE_SYS_AISKILL"] call ALiVE_fnc_unPauseModule;
+            [false, "ALiVE SYS PROFILE - Save data complete","psper"] call ALIVE_fnc_timer;
 
-
-            [false, "ALiVE Profile System persistence save data complete","psper"] call ALIVE_fnc_timer;
-            [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
         };
     };
 };

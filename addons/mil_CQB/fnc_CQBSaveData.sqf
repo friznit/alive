@@ -31,8 +31,7 @@ private ["_result"];
 
 if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {};
 
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
-[true, "ALiVE CQB persistence save data started", "cqbper"] call ALIVE_fnc_timer;
+[true, "ALiVE CQB - Saving data", "cqbper"] call ALIVE_fnc_timer;
 
 _async = false;
 _missionName = [missionName, "%20","-"] call CBA_fnc_replace;
@@ -54,7 +53,7 @@ _data = [] call ALiVE_fnc_HashCreate;
 } foreach (MOD(CQB) getVariable ["instances",[]]);
 
 if (count (_data select 1) == 0) exitwith {
-    [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
+    //[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
 };
 
 ["ALiVE SAVE CQB DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
@@ -69,9 +68,7 @@ if (isNil QGVAR(DATAHANDLER)) then {
 
 _result = [GVAR(DATAHANDLER), "bulkSave", ["mil_cqb", _data, _missionName, _async]] call ALIVE_fnc_Data;
 
-[false, "ALiVE CQB persistence save data complete","cqbper"] call ALIVE_fnc_timer;
+[false, "ALiVE CQB - Save data complete","cqbper"] call ALIVE_fnc_timer;
 ["ALiVE CQB SAVE DATA RESULT: %1",_result] call ALiVE_fnc_Dump;
-
-[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
 
 _result
