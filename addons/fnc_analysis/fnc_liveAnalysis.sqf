@@ -1167,11 +1167,12 @@ switch(_operation) do {
                         _sectorData = _sector select 2 select 0;
                         if("active" in (_sectorData select 1)) then {
                             _active = [_sectorData, "active"] call ALIVE_fnc_hashGet;
+
                             _sides = [];
                             {
                                 _player = _x select 0;
-                                if!((side player) in _sides) then {
-                                    _sides set [count _sides, side player];
+                                if!((side _player) in _sides) then {
+                                    _sides set [count _sides, side _player];
                                 };
 
                             } forEach _active;
