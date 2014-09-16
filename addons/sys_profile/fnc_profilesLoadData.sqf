@@ -36,7 +36,9 @@ if(ALIVE_loadProfilesPersistent) then {
 
         if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
-            [true, "ALiVE Profile System persistence load data started", "psper"] call ALIVE_fnc_timer;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                [true, "ALiVE Profile System persistence load data started", "psper"] call ALIVE_fnc_timer;
+            };
 
             /*
             [["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
@@ -50,8 +52,6 @@ if(ALIVE_loadProfilesPersistent) then {
 
                 _profiles = [ALIVE_profileHandler,"loadProfileData"] call ALIVE_fnc_profileHandler;
 
-                ["LOADED: %1",_profiles] call ALIVE_fnc_dump;
-
                 if (!(isnil "_profiles") && {typename _profiles == "ARRAY"} && {count _profiles > 0} && {count (_profiles select 2) > 0}) then {
 
                     ALiVE_sysProfileLastLoadTime = time;
@@ -64,7 +64,9 @@ if(ALIVE_loadProfilesPersistent) then {
 
                 }else{
 
-                    ["ALiVE LOAD PROFILE DATA No data loaded setting persistence false"] call ALIVE_fnc_dumpMPH;
+                    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                        ["ALiVE LOAD PROFILE DATA No data loaded setting persistence false"] call ALIVE_fnc_dumpMPH;
+                    };
 
                     ALIVE_loadProfilesPersistent = false;
 
@@ -72,7 +74,9 @@ if(ALIVE_loadProfilesPersistent) then {
 
             }else{
 
-                ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dumpMPH;
+                if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                    ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dumpMPH;
+                };
 
             };
 
@@ -82,16 +86,23 @@ if(ALIVE_loadProfilesPersistent) then {
             [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
             */
 
-            [false, "ALiVE Profile System persistence load data complete","psper"] call ALIVE_fnc_timer;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                [false, "ALiVE Profile System persistence load data complete","psper"] call ALIVE_fnc_timer;
+            };
         }else{
 
-            ["ALiVE LOAD PROFILE DATA SYS DATA DOES NOT EXIST"] call ALIVE_fnc_dumpMPH;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE LOAD PROFILE DATA SYS DATA DOES NOT EXIST"] call ALIVE_fnc_dumpMPH;
+            };
 
             ALIVE_loadProfilesPersistent = false;
 
         };
     }else{
-        ["ALiVE LOAD PROFILE DATA Not run on dedicated server exiting"] call ALIVE_fnc_dumpMPH;
+
+        if(ALiVE_SYS_DATA_DEBUG_ON) then {
+            ["ALiVE LOAD PROFILE DATA Not run on dedicated server exiting"] call ALIVE_fnc_dumpMPH;
+        };
 
         ALIVE_loadProfilesPersistent = false;
     };

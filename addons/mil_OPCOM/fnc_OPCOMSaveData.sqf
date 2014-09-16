@@ -33,7 +33,9 @@ if !(isServer) exitwith {};
 
 _result = [];
 
-[true, "ALiVE OPCOM - Saving data", "opper"] call ALIVE_fnc_timer;
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    [true, "ALiVE OPCOM - Saving data", "opper"] call ALIVE_fnc_timer;
+};
 
 	{
         if ([_x,"persistent",false] call ALIVE_fnc_HashGet) then {
@@ -41,6 +43,8 @@ _result = [];
         };
 	} foreach OPCOM_INSTANCES;
 
-[false, "ALiVE OPCOM - Save data complete","opper"] call ALIVE_fnc_timer;
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    [false, "ALiVE OPCOM - Save data complete","opper"] call ALIVE_fnc_timer;
+};
 
 _result

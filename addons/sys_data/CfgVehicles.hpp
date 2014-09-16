@@ -16,6 +16,25 @@ class CfgVehicles {
                 };
                  class Arguments
                 {
+                        class debug
+                        {
+                                displayName = "$STR_ALIVE_data_DEBUG";
+                                description = "$STR_ALIVE_data_DEBUG_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
                         class source
                         {
                                 displayName = "$STR_ALIVE_data_SOURCE";

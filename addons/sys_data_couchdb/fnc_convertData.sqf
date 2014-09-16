@@ -37,7 +37,7 @@ _convert = {
 
 	// Get the type we are dealing with
 	_type = typeName _data;
-	if ([_data] call CBA_fnc_isHash) then {
+	if ([_data] call ALIVE_fnc_isHash) then {
 		_type = "HASH";
 	};
 

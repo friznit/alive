@@ -291,13 +291,13 @@ switch (_mode) do {
 	case "SERVERSAVE": {
 		if (call ALiVE_fnc_isServerAdmin) then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
-			"serversaved" call BIS_fnc_endMission;
+			//"serversaved" call BIS_fnc_endMission;
 		};
 	};
 	case "SERVERABORT": {
 		if (call ALiVE_fnc_isServerAdmin) then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
-			//"serverabort" call BIS_fnc_endMission;
+			"serverabort" call BIS_fnc_endMission;
 		};
 	};
 	default {

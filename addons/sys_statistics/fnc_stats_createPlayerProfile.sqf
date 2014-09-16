@@ -30,7 +30,7 @@ TRACE_1("CREATING PLAYER PROFILE", _this);
 _data = _this select 0;
 _profile = "";
 
-if ([_data] call CBA_fnc_isHash) then {
+if ([_data] call ALIVE_fnc_isHash) then {
 
 	// Grab Player's serverGroup
 	_playerGroup = [_data, "ServerGroup", "Unknown"] call ALIVE_fnc_hashGet;

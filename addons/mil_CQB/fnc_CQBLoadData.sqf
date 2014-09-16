@@ -31,25 +31,37 @@ if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)})
 
 private ["_data","_instances"];
 
-[true, "ALiVE CQB persistence load data started", "cqbper"] call ALIVE_fnc_timer;
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    [true, "ALiVE CQB persistence load data started", "cqbper"] call ALIVE_fnc_timer;
+};
 
 _async = false;
 _missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName];
 
 if (isNil QGVAR(DATAHANDLER)) then {
-   ["LOAD CQB, CREATE DATA HANDLER!"] call ALIVE_fnc_dump;
-   GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;
-   [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
+
+    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+        ["LOAD CQB, CREATE DATA HANDLER!"] call ALIVE_fnc_dump;
+    };
+
+    GVAR(DATAHANDLER) = [nil, "create"] call ALIVE_fnc_Data;
+    [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
 };
 _data = [GVAR(DATAHANDLER), "bulkLoad", ["mil_cqb", _missionName, _async]] call ALIVE_fnc_Data;
 
 if (!(isnil "_this") && {typeName _this == "BOOL"} && {!_this}) exitwith {
-    [false, "ALiVE CQB persistence load data complete", "cqbper"] call ALIVE_fnc_timer;
+
+    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+        [false, "ALiVE CQB persistence load data complete", "cqbper"] call ALIVE_fnc_timer;
+    };
+
     _data
 };
 
-_data call ALIVE_fnc_inspectHash;
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    _data call ALIVE_fnc_inspectHash;
+};
 
 _instances = (MOD(CQB) getVariable ["instances",[]]);
 
@@ -59,7 +71,11 @@ _instances = (MOD(CQB) getVariable ["instances",[]]);
 	_logic  = _x;
     
     if (call compile (_logic getvariable ["CQB_persistent","false"])) then {
-		["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dump;
+
+        if(ALiVE_SYS_DATA_DEBUG_ON) then {
+		    ["ALiVE LOAD CQB DATA APPLYING STATE!"] call ALIVE_fnc_dump;
+        };
+
 	    {[_logic,"state",_x] call ALiVE_fnc_CQB} foreach (_data select 2);
 	
 		//([_logic,"state"] call ALiVE_fnc_CQB) call ALIVE_fnc_inspectHash;
@@ -67,6 +83,8 @@ _instances = (MOD(CQB) getVariable ["instances",[]]);
 } foreach _instances;
 {[_x,"active",true] call ALiVE_fnc_CQB} foreach _instances;
 
-[false, "ALiVE CQB persistence load data completed and applied","cqbper"] call ALIVE_fnc_timer;
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    [false, "ALiVE CQB persistence load data completed and applied","cqbper"] call ALIVE_fnc_timer;
+};
 
 _data

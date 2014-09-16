@@ -143,7 +143,7 @@ switch(_operation) do {
                         };
 
                         // Check load players returned a hash
-                        if ([_res] call CBA_fnc_isHash) then {
+                        if ([_res] call ALIVE_fnc_isHash) then {
                             GVAR(player_data) = _res;
 
                             GVAR(player_data) call ALiVE_fnc_inspectHash;
@@ -515,7 +515,7 @@ switch(_operation) do {
             _unit  = _args select 0;
 
             // Check that the hash is found
-             if ([_unit getVariable [QGVAR(player_data),[]]] call CBA_fnc_isHash) then {
+             if ([_unit getVariable [QGVAR(player_data),[]]] call ALIVE_fnc_isHash) then {
 
                     // Grab player data from local player object
                     _playerHash = _unit getVariable QGVAR(player_data);

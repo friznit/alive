@@ -1101,7 +1101,11 @@ switch(_operation) do {
             private ["_datahandler","_exportProfiles","_async","_missionName"];
 
             if(isNil"ALIVE_profileDatahandler") then {
-                ["SAVE PROFILE, CREATE DATA HANDLER - NO!"] call ALIVE_fnc_dump;
+
+                if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                    ["ALiVE SYS PROFILE - SAVE PROFILE, CREATE DATA HANDLER - NO!"] call ALIVE_fnc_dump;
+                };
+
                 ALIVE_profileDatahandler = [nil, "create"] call ALIVE_fnc_Data;
                 [ALIVE_profileDatahandler,"storeType",true] call ALIVE_fnc_Data;
             };
@@ -1113,10 +1117,15 @@ switch(_operation) do {
 
             _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-            ["ALiVE SAVE PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE SYS PROFILE - SAVE PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
+            };
 
             _result = [ALIVE_profileDatahandler, "bulkSave", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
-            ["RESULT: %1",_result] call ALIVE_fnc_dump;
+
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE SYS PROFILE - SAVE PROFILE DATA RESULT: %1",_result] call ALIVE_fnc_dump;
+            };
 
         };
         case "loadProfileData": {
@@ -1124,7 +1133,11 @@ switch(_operation) do {
             private ["_datahandler","_importProfiles","_async","_missionName"];
 
             if(isNil"ALIVE_profileDatahandler") then {
-                ["LOAD PROFILE, CREATE DATA HANDLER"] call ALIVE_fnc_dump;
+
+                if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                    ["LOAD PROFILE, CREATE DATA HANDLER"] call ALIVE_fnc_dump;
+                };
+
                 ALIVE_profileDatahandler = [nil, "create"] call ALIVE_fnc_Data;
                 [ALIVE_profileDatahandler,"storeType",true] call ALIVE_fnc_Data;
             };
@@ -1135,17 +1148,24 @@ switch(_operation) do {
 
             _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-            ["ALiVE LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE SYS PROFILE - LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
+            };
 
             _result = [ALIVE_profileDatahandler, "bulkLoad", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
-            ["RESULT: %1",_result] call ALIVE_fnc_dump;
+
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE SYS PROFILE - LOAD PROFILE DATA RESULT: %1",_result] call ALIVE_fnc_dump;
+            };
 
         };
 		case "exportProfileData": {
 		    private["_profiles","_exportProfiles","_profile","_profileID","_profileType","_isPlayer","_exportProfile","_isPlayer","_vehicleAssignments","_assignmentKeys",
 		    "_assignmentValues","_ranks","_side","_spawnType","_entitiesInCommandOf","_entitiesInCargoOf","_vehiclesInCommandOf","_vehiclesInCargoOf","_ranksMap","_exportRanks","_classes","_exportClasses"];
 
-		    ["ALiVE EXPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+		        ["ALiVE SYS PROFILE - EXPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
+            };
 
             _profiles = [_logic, "getProfiles"] call MAINCLASS;
             _exportProfiles = [] call ALIVE_fnc_hashCreate;
@@ -1309,7 +1329,10 @@ switch(_operation) do {
 
                     [_exportProfiles, _profileID, _exportProfile] call ALIVE_fnc_hashSet;
 
-                    _exportProfile call ALIVE_fnc_inspectHash;
+                    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                        ["ALiVE SYS PROFILE - EXPORT READY PROFILE:"] call ALIVE_fnc_dump;
+                        _exportProfile call ALIVE_fnc_inspectHash;
+                    };
 
                 };
 
@@ -1324,7 +1347,9 @@ switch(_operation) do {
 
             if(typeName _args == "ARRAY") then {
 
-                ["ALiVE IMPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
+                if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                    ["ALiVE SYS PROFILE - IMPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
+                };
 
                 _ranksMap = [] call ALIVE_fnc_hashCreate;
                 [_ranksMap, 0, "PRIVATE"] call ALIVE_fnc_hashSet;
@@ -1419,7 +1444,11 @@ switch(_operation) do {
 
                         [_profileEntity, "damages", _damages] call ALIVE_fnc_profileEntity;
 
-                        _profileEntity call ALIVE_fnc_inspectHash;
+
+                        if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                            ["ALiVE SYS PROFILE - RECREATED PROFILE ENTITY:"] call ALIVE_fnc_dump;
+                            _profileEntity call ALIVE_fnc_inspectHash;
+                        };
 
 
                         [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
@@ -1469,7 +1498,10 @@ switch(_operation) do {
                         };
                         [_profileVehicle, "side", _side] call ALIVE_fnc_profileVehicle;
 
-                        _profileVehicle call ALIVE_fnc_inspectHash;
+                        if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                            ["ALiVE SYS PROFILE - RECREATED PROFILE VEHICLE:"] call ALIVE_fnc_dump;
+                            _profileVehicle call ALIVE_fnc_inspectHash;
+                        };
 
 
                         [ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;

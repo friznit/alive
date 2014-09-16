@@ -37,7 +37,9 @@ if(ALIVE_saveProfilesPersistent) then {
 
         if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
-            [true, "ALiVE SYS PROFILE - Saving data", "psper"] call ALIVE_fnc_timer;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                [true, "ALiVE SYS PROFILE - Saving data", "psper"] call ALIVE_fnc_timer;
+            };
 
             if(isNil "ALiVE_sysProfileLastSaveTime" || {time - ALiVE_sysProfileLastSaveTime > 300}) then {
 
@@ -47,11 +49,15 @@ if(ALIVE_saveProfilesPersistent) then {
 
             }else{
 
-                ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dumpMPH;
+                if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                    ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dumpMPH;
+                };
 
             };
 
-            [false, "ALiVE SYS PROFILE - Save data complete","psper"] call ALIVE_fnc_timer;
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                [false, "ALiVE SYS PROFILE - Save data complete","psper"] call ALIVE_fnc_timer;
+            };
 
         };
     };

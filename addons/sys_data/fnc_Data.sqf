@@ -175,17 +175,14 @@ if (_operation in _ops) then {
 		};
 
 		case "debug": {
-                if(typeName _args != "BOOL") then {
-                        _args = [_logic, "debug", false] call ALIVE_fnc_hashGet;
-                } else {
-                        _result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
-                };
-                ASSERT_TRUE(typeName _args == "BOOL",str _args);
-
-                if(_args) then {
-
-                };
-                _result = _args;
+             ASSERT_TRUE(typeName _args == "BOOL", _args);
+            if(typeName _args == "BOOL") then {
+                _result = [_logic, _operation, _args] call ALIVE_fnc_hashSet;
+            } else {
+                private["_err"];
+                 _err = format["%1 %2 operation requires a BOOL as an argument not %3.", _logic, _operation, typeName _args];
+                 ERROR_WITH_TITLE(str _logic,_err);
+            };
         };
 
         case "destroy": {

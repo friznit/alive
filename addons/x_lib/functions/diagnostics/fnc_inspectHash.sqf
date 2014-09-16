@@ -42,8 +42,8 @@ _inspectRecurse = {
 	{
 		_key = _x;
 		_value = [_target,_key] call ALIVE_fnc_hashGet;
-		
-		if([_value] call CBA_fnc_isHash) then {			
+
+		if([_value] call ALIVE_fnc_isHash) then {
 			_indent = " ";
 			for "_i" from 0 to _level-1 do {
 				_indent = format["%1%2",_indent,_indent];

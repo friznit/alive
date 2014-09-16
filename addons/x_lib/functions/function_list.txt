@@ -74,6 +74,7 @@ data
 	ALiVE_fnc_hashGet
 	ALiVE_fnc_hashRem
 	ALiVE_fnc_hashSet
+	ALiVE_fnc_isHash
 	ALiVE_fnc_JSON
 	ALiVE_fnc_parseJSON
 	ALiVE_fnc_unorderedMap

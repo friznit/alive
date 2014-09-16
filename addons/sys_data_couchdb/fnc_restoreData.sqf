@@ -36,6 +36,13 @@ _input = (_this select 1) select 0;
 _hash = [_input] call ALIVE_fnc_parseJSON;
 TRACE_1("RESTORE DATA", _hash);
 
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - RESTORE DATA BEGIN:"] call ALIVE_fnc_dump;
+    _hash call ALIVE_fnc_inspectHash;
+};
+
+
+
 // Restore Data types in hash
 
 // for each pair, process key and value
@@ -149,6 +156,11 @@ ALIVE_fnc_restore = {
 
 if (typeName _hash == "ARRAY") then {
 	[_hash, ALIVE_fnc_restore] call CBA_fnc_hashEachPair;
+};
+
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - RESTORE DATA END:"] call ALIVE_fnc_dump;
+    _hash call ALIVE_fnc_inspectHash;
 };
 
 _hash;

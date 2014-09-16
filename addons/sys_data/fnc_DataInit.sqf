@@ -17,6 +17,12 @@ TRACE_2("SYS_DATA",isDedicated, _logic);
 
 _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
+if (_logic getvariable ["debug", "false"] == "true") then {
+	ALiVE_SYS_DATA_DEBUG_ON = true;
+}else{
+    ALiVE_SYS_DATA_DEBUG_ON = false;
+};
+
 if (isDedicated) then {
 
 	// Setup OPC and OPD events
@@ -37,7 +43,9 @@ if (isDedicated) then {
 
 	GVAR(GROUP_ID) = [] call ALIVE_fnc_getGroupID;
 
-	TRACE_1("Group Name", GVAR(GROUP_ID));
+    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+        ["ALiVE SYS_DATA - GROUP NAME: %1",GVAR(GROUP_ID)] call ALIVE_fnc_dump;
+	};
 
 	// Setup data handler
 	GVAR(datahandler) = [nil, "create"] call ALIVE_fnc_Data;
@@ -48,7 +56,9 @@ if (isDedicated) then {
 	// Get global config information
 	_config = [GVAR(datahandler), "read", ["sys_data", [], "config"]] call ALIVE_fnc_Data;
 
-	TRACE_1("Config",_config);
+	if(ALiVE_SYS_DATA_DEBUG_ON) then {
+        ["ALiVE SYS_DATA - CONFIG: %1",_config] call ALIVE_fnc_dump;
+    };
 
 	// Check that the config loaded ok, if not then stop the data module
 	if (typeName _config == "STRING") exitWith {
@@ -130,16 +140,24 @@ if (isDedicated) then {
 		};
 
 		GVAR(dictionaryLoaded) = true;
-		TRACE_1("DICTIONARY LOADED", ALIVE_DataDictionary);
+
+		if(ALiVE_SYS_DATA_DEBUG_ON) then {
+            ["ALiVE SYS_DATA - DICTIONARY LOADED: %1",ALIVE_DataDictionary] call ALIVE_fnc_dump;
+        };
+
 	} else {
-		TRACE_1("NO DICTIONARY AVAILABLE",_response);
+
+	    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+            ["ALiVE SYS_DATA - NO DICTIONARY AVAILABLE: %1",_response] call ALIVE_fnc_dump;
+        };
+
 		// Need to cancel loading data if there is no dictionary
 		GVAR(dictionaryLoaded) = false;
 	};
 
-	TRACE_2("DATA DICTIONARY", ALIVE_DataDictionary, _response);
-
-	TRACE_3("SYS_DATA MISSION", _logic, MOD(sys_data), MOD(sys_data) getVariable "saveDateTime");
+	if(ALiVE_SYS_DATA_DEBUG_ON) then {
+        ["ALiVE SYS_DATA - MISSION: %1 %2 %3",_logic, MOD(sys_data), MOD(sys_data) getVariable "saveDateTime"] call ALIVE_fnc_dump;
+    };
 
 	// Handle basic mission persistence - date/time
 	GVAR(mission_data) = [] call CBA_fnc_hashCreate;
@@ -150,13 +168,25 @@ if (isDedicated) then {
 		_response = [GVAR(datahandler), "read", ["sys_data", [], _missionName]] call ALIVE_fnc_Data;
 		if ( typeName _response != "STRING") then {
 			GVAR(mission_data) = _response;
-			TRACE_1("MISSION DATA LOADED", _response);
+
+			if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE SYS_DATA - MISSION DATA LOADED: %1",_response] call ALIVE_fnc_dump;
+            };
+
 			setdate ([GVAR(mission_data), "date", date] call CBA_fnc_hashGet);
 		} else {
-			TRACE_1("NO MISSION DATA AVAILABLE",_response);
+
+			if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE SYS_DATA - NO MISSION DATA AVAILABLE: %1",_response] call ALIVE_fnc_dump;
+            };
+
 		};
 	} else {
-		TRACE_1("EITHER DATA LOAD FAILED OR MISSION DATA PERSISTENCE TURNED OFF", GVAR(dictionaryLoaded));
+
+	    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+            ["ALiVE SYS_DATA - EITHER DATA LOAD FAILED OR MISSION DATA PERSISTENCE TURNED OFF: %1",GVAR(dictionaryLoaded)] call ALIVE_fnc_dump;
+        };
+
 	};
 
 

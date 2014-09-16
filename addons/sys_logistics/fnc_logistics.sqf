@@ -964,8 +964,10 @@ switch (_operation) do {
                 
                 [_convertedData,_x,_convertedObject] call ALiVE_fnc_HashSet;
             } foreach (_data select 1);
-            
-            _convertedData call ALiVE_fnc_InspectHash;
+
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                _convertedData call ALiVE_fnc_InspectHash;
+            };
             
             _result = _convertedData;
         };

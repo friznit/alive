@@ -130,11 +130,19 @@ _string = _string + format[", ""%1""]", _db];
 
 TRACE_1("COUCH WRITE DATA", _string);
 
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - BULK WRITE DATA: (%1) %2",[str(_string)] call CBA_fnc_strLen,_string] call ALIVE_fnc_dump;
+};
+
 // Send JSON to plugin
 if (!_async) then {
 	_response = [_string] call ALIVE_fnc_sendToPlugIn; // if you need a returned UID then you have to go with synchronous op
 } else {
 	_response = [_string] call ALIVE_fnc_sendToPlugInAsync; //SendJSON is an async addin function so does not return a response until asked for a second time.
+};
+
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - BULK WRITE DATA RESULT: %1",_response] call ALIVE_fnc_dump;
 };
 
 // Need to send the response to restore function

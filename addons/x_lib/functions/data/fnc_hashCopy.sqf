@@ -54,7 +54,7 @@ _hash = [] call ALIVE_fnc_hashCreate;
 
     if(_copy) then {
         if(typeName _value == "ARRAY") then {
-            if([_value] call CBA_fnc_isHash) then {
+            if([_value] call ALIVE_fnc_isHash) then {
                 _hashCopy = [_value, _whitelist, _blacklist] call ALiVE_fnc_hashCopy;
                 [_hash, _key, _hashCopy] call ALIVE_fnc_hashSet;
             } else {

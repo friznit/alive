@@ -363,6 +363,13 @@ class hashSet
 	recompile = RECOMPILE;
 };
 
+class isHash
+{
+	file = "\x\alive\addons\x_lib\functions\data\fnc_isHash.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class JSON
 {
 	file = "\x\alive\addons\x_lib\functions\data\fnc_JSON.sqf";

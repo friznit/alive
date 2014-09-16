@@ -179,7 +179,7 @@ switch(_operation) do {
 			
 			_result = [_state, "nodes", _data] call ALIVE_fnc_hashSet;
 		} else {
-			ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
+			ASSERT_TRUE([_args] call ALIVE_fnc_isHash,str _args);
 			
 			// Restore state
 			

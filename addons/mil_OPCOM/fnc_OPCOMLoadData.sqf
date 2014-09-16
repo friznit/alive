@@ -34,7 +34,10 @@ if !(isServer) exitwith {};
 _result = [];
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
-[true, "ALiVE OPCOM persistence load data started", "opper"] call ALIVE_fnc_timer;
+
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    [true, "ALiVE OPCOM persistence load data started", "opper"] call ALIVE_fnc_timer;
+};
 
 	{
         if ([_x,"persistent",false] call ALIVE_fnc_HashGet) then {
@@ -42,7 +45,9 @@ _result = [];
         };
 	} foreach OPCOM_INSTANCES;
 
-[false, "ALiVE OPCOM persistence load data complete","opper"] call ALIVE_fnc_timer;
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    [false, "ALiVE OPCOM persistence load data complete","opper"] call ALIVE_fnc_timer;
+};
 
 [["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
 

@@ -62,12 +62,16 @@ _db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 // Append cmd with db
 _json = _cmd + format[", ""%1""]", _db];
 
-TRACE_1("COUCH BULK READ DATA", _json);
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - BULK READ: %1",_json] call ALIVE_fnc_dump;
+};
 
 // Send JSON to plugin
 _response = [_json] call ALIVE_fnc_sendToPlugIn;
 
-TRACE_1("COUCH RESPONSE", _response);
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - COUCH RESPONSE: %1",_response] call ALIVE_fnc_dump;
+};
 
 // From response create key/value pair arrays
 if (_response == "READY") then {
@@ -93,15 +97,33 @@ if (_response == "READY") then {
 	{
 		private ["_mkey","_record"];
 		_mkey = _key + "-" + _x;
+
 		_record = [_temp, _mkey] call ALiVE_fnc_hashGet;
-		[_result, _x, _record] call ALiVE_fnc_hashSet;
+		if!(isNil "_record") then {
+		    [_result, _x, _record] call ALiVE_fnc_hashSet;
+        }else{
+
+            if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                ["ALiVE SYS_DATA_COUCHDB - RECORD IS NIL! LOOKING FOR KEY: %1 IN HASH:",_mkey] call ALIVE_fnc_dump;
+            };
+
+            (_temp select 1) call ALIVE_fnc_inspectArray;
+        };
 	} foreach _uids;
+
+    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+	    ["ALiVE SYS_DATA_COUCHDB - BULK READ RESULT: %1",[str(_result)] call CBA_fnc_strLen] call ALIVE_fnc_dump;
+    };
 
 
 } else {
 	_result = _response;
+
+    if(ALiVE_SYS_DATA_DEBUG_ON) then {
+	    ["ALiVE SYS_DATA_COUCHDB - BULK READ RESULT: %1",_result] call ALIVE_fnc_dump;
+    };
 };
-TRACE_2("COUCH BULK READ", _response, _result);
+
 
 /*
 	// Handle data error

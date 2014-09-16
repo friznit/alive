@@ -58,10 +58,16 @@ _json = _cmd + format[", ""%1""]", _db];
 
 TRACE_1("COUCH READ DATA", _json);
 
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - READ DATA: %1",_json] call ALIVE_fnc_dump;
+};
+
 // Send JSON to plugin
 _response = [_json] call ALIVE_fnc_sendToPlugIn;
 
-TRACE_1("COUCH RESPONSE", _response);
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - READ DATA RESPONSE: %1",_response] call ALIVE_fnc_dump;
+};
 
 // From response create key/value pair arrays
 if (_response != "ERROR" && _response != "UNAUTHORISED!") then {
@@ -71,7 +77,10 @@ if (_response != "ERROR" && _response != "UNAUTHORISED!") then {
 } else {
 	_result = _response;
 };
-TRACE_2("COUCH READ", _response, _result);
+
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - READ DATA RESULT: %1",_result] call ALIVE_fnc_dump;
+};
 
 /*
 	// Handle data error

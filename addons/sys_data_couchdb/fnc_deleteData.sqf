@@ -56,12 +56,20 @@ _db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 // Append cmd with db
 _json = _cmd + format[", ""%1""]", _db];
 
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - DELETE DATA: %1",_json] call ALIVE_fnc_dump;
+};
+
 TRACE_1("COUCH DELETE DATA", _json);
 
 // Send JSON to plugin
 _response = [_json] call ALIVE_fnc_sendToPlugInAsync;
 
 TRACE_1("COUCH RESPONSE", _response);
+
+if(ALiVE_SYS_DATA_DEBUG_ON) then {
+    ["ALiVE SYS_DATA_COUCHDB - DELETE DATA RESULT: %1",_response] call ALIVE_fnc_dump;
+};
 
 /*
 	// Handle data error
