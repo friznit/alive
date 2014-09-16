@@ -23,6 +23,7 @@ Parsing : P:\x\alive\addons\amb_civ_population\fnc_addAmbientRoomMusic.sqf
 Parsing : P:\x\alive\addons\amb_civ_population\fnc_agentGetInEventHandler.sqf
 Parsing : P:\x\alive\addons\amb_civ_population\fnc_agentHandler.sqf
 Parsing : P:\x\alive\addons\amb_civ_population\fnc_agentKilledEventHandler.sqf
+error line: [44] _side not defined
 Parsing : P:\x\alive\addons\amb_civ_population\fnc_agentSelectSpeedMode.sqf
 Parsing : P:\x\alive\addons\amb_civ_population\fnc_civilianAgent.sqf
 Parsing : P:\x\alive\addons\amb_civ_population\fnc_civilianPopulationSystem.sqf
@@ -40,6 +41,13 @@ Parsing : P:\x\alive\addons\civ_placement\fnc_civClusterGeneration.sqf
 Parsing : P:\x\alive\addons\civ_placement\fnc_CP.sqf
 Parsing : P:\x\alive\addons\civ_placement\fnc_CPInit.sqf
 Parsing : P:\x\alive\addons\civ_placement\XEH_postInit.sqf
+Parsing : P:\x\alive\addons\fnc_analysis\fnc_battlefieldAnalysis.sqf
+error line: [114] _id not defined
+error line: [329] _size not defined
+error line: [331] _priority not defined
+error line: [413] _activeSectors not defined
+error line: [434] _sectorData not defined
+error line: [457] _sectorData not defined
 Parsing : P:\x\alive\addons\fnc_analysis\fnc_getClosestInActive.sqf
 Parsing : P:\x\alive\addons\fnc_analysis\fnc_getClosestLand.sqf
 Parsing : P:\x\alive\addons\fnc_analysis\fnc_getClosestRoad.sqf
@@ -95,11 +103,22 @@ Parsing : P:\x\alive\addons\fnc_strategic\fnc_setTargets.sqf
 Parsing : P:\x\alive\addons\fnc_strategic\fnc_staticClusterOutput.sqf
 Parsing : P:\x\alive\addons\fnc_strategic\XEH_preInit.sqf
 Parsing : P:\x\alive\addons\main\static\staticData.sqf
+error line: [391] _tasksData not defined
+error line: [441] _tasksData not defined
+error line: [471] _tasksData not defined
+error line: [494] _tasksData not defined
+error line: [519] _tasksData not defined
+error line: [551] _tasksData not defined
+error line: [574] _tasksData not defined
 Parsing : P:\x\alive\addons\main\fnc_aliveInit.sqf
 Parsing : P:\x\alive\addons\main\fnc_buttonAbort.sqf
+error line: [117] _result not defined
+error line: [135] _admin not defined
 Parsing : P:\x\alive\addons\main\fnc_isModuleAvailable.sqf
 Parsing : P:\x\alive\addons\main\fnc_isModuleInitialised.sqf
 Parsing : P:\x\alive\addons\main\fnc_isModuleSynced.sqf
+Parsing : P:\x\alive\addons\main\fnc_mainTablet.sqf
+error line: [105] _option not defined
 Parsing : P:\x\alive\addons\main\fnc_Nuke.sqf
 Parsing : P:\x\alive\addons\main\fnc_pauseModule.sqf
 Parsing : P:\x\alive\addons\main\fnc_unPauseModule.sqf
@@ -108,19 +127,144 @@ Parsing : P:\x\alive\addons\main\fnc_ZEUSinit.sqf
 Parsing : P:\x\alive\addons\main\XEH_postInit.sqf
 Parsing : P:\x\alive\addons\main\XEH_postServerInit.sqf
 Parsing : P:\x\alive\addons\main\XEH_preInit.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskAssassination.sqf
+error line: [45] _taskPlayers not defined
+error line: [123] _taskSource not defined
+error line: [135] _taskSource not defined
+error line: [187] _HVTSpawnType not defined
+error line: [247] _HVTProfile2ID not defined
+error line: [251] _HVT1Active not defined
+error line: [252] _HVT2Active not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskCivAssault.sqf
+error line: [45] _taskPlayers not defined
+error line: [125] _taskSource not defined
+error line: [137] _taskSource not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskDestroyInfantry.sqf
+error line: [45] _taskPlayers not defined
+error line: [121] _taskSource not defined
+error line: [133] _taskSource not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskDestroyVehicles.sqf
+error line: [45] _taskPlayers not defined
+error line: [127] _taskSource not defined
+error line: [139] _taskSource not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilAssault.sqf
+error line: [45] _taskPlayers not defined
+error line: [124] _taskSource not defined
+error line: [136] _taskSource not defined
+error line: [148] _taskSource not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilDefence.sqf
+error line: [45] _taskPlayers not defined
+error line: [120] _taskSource not defined
+error line: [132] _taskSource not defined
+error line: [144] _taskSource not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskTransportInsertion.sqf
+error line: [45] _taskPlayers not defined
+error line: [107] _profileID not defined
+error line: [169] _taskSource not defined
+error line: [181] _taskSource not defined
+error line: [193] _taskSource not defined
+error line: [272] _object not defined
+error line: [275] _object not defined
+error line: [278] _object not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateBombardment.sqf
+error line: [40] _args not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateExplosiveProjectile.sqf
+error line: [27] _target not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateMarker.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateMarkersForPlayers.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateRadioBroadcastForPlayers.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateRandomMilLogisticsEvent.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateReward.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateVehicleExtractionForUnits.sqf
+error line: [29] _args not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateVehicleInsertionForUnits.sqf
+error line: [28] _args not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskDeleteMarkers.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskDeleteMarkersForPlayers.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskDoVehiclesHaveRoomForGroup.sqf
+error line: [26] _taskVehicles not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetClosestPlayerDistanceToDestination.sqf
+error line: [26] _taskPosition not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetNearestLocationName.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetNearPlayerVehicles.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetRandomSideEntityFromSector.sqf
+error line: [29] _ignoreInVehicle not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetRandomSideVehicleFromSector.sqf
+error line: [30] _targetVehicles not defined
+error line: [58] _vehiclesInCommandOf not defined
+error line: [60] _targetVehicles not defined
+error line: [66] _targetVehicles not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSectorPosition.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideCluster.sqf
+error line: [29] _type not defined
+error line: [38] _targetPosition not defined
+error line: [46] _sortedClusters not defined
+error line: [67] _targetPosition not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideSectorCompositionPosition.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideSectorEntities.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetSideSectorVehicles.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetStateOfEntityProfiles.sqf
+error line: [43] _units not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetStateOfVehicleProfiles.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetVehicleWithMaxRoom.sqf
+error line: [32] _emptyCount not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHavePlayersReachedDestination.sqf
+error line: [26] _taskPosition not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHaveUnitsLoadedInVehicle.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskHaveUnitsUnloadedFromVehicle.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskIsAreaClearOfEnemies.sqf
+error line: [27] _taskPosition not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\utils\fnc_taskSpawnOnTopOf.sqf
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2ISTAR.sqf
-error line: [1629] _selectedPlayerListValues not defined
+error line: [241] _file not defined
+error line: [342] _factionsDataSource not defined
+error line: [671] _newSelectedPlayerValues not defined
+error line: [672] _newSelectedPlayerOptions not defined
+error line: [674] _newSelectedPlayerValues not defined
+error line: [675] _newSelectedPlayerOptions not defined
+error line: [1487] _newSelectedPlayerValues not defined
+error line: [1488] _newSelectedPlayerOptions not defined
+error line: [1490] _newSelectedPlayerValues not defined
+error line: [1491] _newSelectedPlayerOptions not defined
+error line: [1934] _factionIndex not defined
+error line: [2822] _managePlayersButton not defined
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2ISTARInit.sqf
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2MenuDef.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2OnPlayerConnected.sqf
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2TabletEventToClient.sqf
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2TabletOnAction.sqf
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2TabletOnLoad.sqf
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_C2TabletOnUnLoad.sqf
 Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_taskHandler.sqf
-error line: [254] _event not defined
-error line: [263] _taskID not defined
-error line: [264] _tasks not defined
-error line: [265] _taskIndex not defined
+error line: [132] _task not defined
+error line: [134] _newTask not defined
+error line: [189] _taskSource not defined
+error line: [398] _sideTasks not defined
+error line: [427] _task not defined
+error line: [488] _managedTaskParams not defined
+error line: [553] _playerSide not defined
+error line: [554] _playerSide not defined
+error line: [555] _playerSide not defined
+error line: [657] _parentTasks not defined
+error line: [671] _parent not defined
+error line: [713] _parent not defined
+error line: [758] _parent not defined
+error line: [779] _fEvent not defined
+error line: [1042] _createTasks not defined
+error line: [1223] _tasksByGroup not defined
+error line: [1232] _groupTasks not defined
+error line: [1284] _tasksByGroup not defined
+error line: [1298] _groupTasks not defined
+error line: [1319] _tasksByGroup not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerClient.sqf
+error line: [148] _parentTask not defined
+error line: [149] _parentTaskObject not defined
+error line: [209] _task not defined
+Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerEventToClient.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerLoadData.sqf
+Parsing : P:\x\alive\addons\mil_C2ISTAR\fnc_taskHandlerSaveData.sqf
+error line: [48] _message not defined
+error line: [69] _message not defined
 Parsing : P:\x\alive\addons\mil_C2ISTAR\XEH_postInit.sqf
 Parsing : P:\x\alive\addons\mil_command\fnc_ambientMovement.sqf
 Parsing : P:\x\alive\addons\mil_command\fnc_buildingPatrol.sqf
@@ -176,49 +320,44 @@ error line: [161] _id not defined
 error line: [165] _file not defined
 error line: [188] _mod not defined
 error line: [193] _obj not defined
-error line: [807] _spawn not defined
-error line: [808] _spawnHeli not defined
-error line: [809] _spawnJet not defined
-error line: [811] _GC not defined
-error line: [813] _spawn not defined
-error line: [814] _spawnHeli not defined
-error line: [815] _spawnJet not defined
-error line: [820] _lead not defined
-error line: [884] _leader not defined
-error line: [919] _house not defined
-error line: [922] _debug not defined
-error line: [924] _createUnitTypes not defined
-error line: [958] _grp not defined
-error line: [967] _positions not defined
-error line: [971] _pos not defined
-error line: [978] _fsm not defined
-error line: [979] _hdl not defined
-error line: [1028] _nearplayers not defined
-error line: [1043] _pl not defined
-error line: [1055] _canhost not defined
-error line: [1140] _remaincount not defined
-error line: [1141] _housesempty not defined
-error line: [1142] _activecount not defined
-error line: [1143] _groupsempty not defined
+error line: [431] _avgArr not defined
+error line: [865] _spawn not defined
+error line: [866] _spawnHeli not defined
+error line: [867] _spawnJet not defined
+error line: [869] _GC not defined
+error line: [871] _spawn not defined
+error line: [872] _spawnHeli not defined
+error line: [873] _spawnJet not defined
+error line: [878] _lead not defined
+error line: [942] _leader not defined
+error line: [977] _house not defined
+error line: [980] _debug not defined
+error line: [1008] _grp not defined
+error line: [1018] _positions not defined
+error line: [1022] _pos not defined
+error line: [1029] _fsm not defined
+error line: [1030] _hdl not defined
+error line: [1079] _nearplayers not defined
+error line: [1091] _nearplayers not defined
+error line: [1169] _remaincount not defined
+error line: [1170] _housesempty not defined
+error line: [1171] _activecount not defined
+error line: [1172] _groupsempty not defined
 Parsing : P:\x\alive\addons\mil_CQB\fnc_CQBInit.sqf
 Parsing : P:\x\alive\addons\mil_CQB\fnc_CQBLoadData.sqf
-error line: [36] _async not defined
-error line: [37] _missionName not defined
-error line: [38] _missionName not defined
+error line: [38] _async not defined
+error line: [39] _missionName not defined
+error line: [40] _missionName not defined
 Parsing : P:\x\alive\addons\mil_CQB\fnc_CQBLoadData_full.sqf
 error line: [36] _async not defined
 error line: [37] _missionName not defined
 error line: [38] _missionName not defined
 Parsing : P:\x\alive\addons\mil_CQB\fnc_CQBSaveData.sqf
-error line: [37] _async not defined
-error line: [38] _missionName not defined
-error line: [39] _missionName not defined
-error line: [41] _keys not defined
-error line: [42] _values not defined
-error line: [43] _data not defined
-error line: [46] _state not defined
-error line: [47] _type not defined
-error line: [48] _id not defined
+error line: [44] _keys not defined
+error line: [45] _values not defined
+error line: [49] _state not defined
+error line: [50] _type not defined
+error line: [51] _id not defined
 Parsing : P:\x\alive\addons\mil_CQB\fnc_CQBSaveData_full.sqf
 error line: [37] _async not defined
 error line: [38] _missionName not defined
@@ -240,6 +379,36 @@ Parsing : P:\x\alive\addons\mil_intelligence\fnc_SD.sqf
 Parsing : P:\x\alive\addons\mil_intelligence\fnc_SDInit.sqf
 Parsing : P:\x\alive\addons\mil_intelligence\XEH_postInit.sqf
 Parsing : P:\x\alive\addons\mil_logistics\fnc_ML.sqf
+error line: [515] _initComplete not defined
+error line: [518] _initComplete not defined
+error line: [1885] _completed not defined
+error line: [1916] _completed not defined
+error line: [1932] _completed not defined
+error line: [2669] _completed not defined
+error line: [2696] _completed not defined
+error line: [2714] _completed not defined
+error line: [2732] _completed not defined
+error line: [2750] _completed not defined
+error line: [2767] _completed not defined
+error line: [4225] _x not defined
+error line: [4235] _x not defined
+error line: [4245] _x not defined
+error line: [4255] _x not defined
+error line: [4265] _x not defined
+error line: [4275] _x not defined
+error line: [4289] _x not defined
+error line: [4299] _x not defined
+error line: [4309] _x not defined
+error line: [4319] _x not defined
+error line: [4329] _x not defined
+error line: [4339] _x not defined
+error line: [4349] _x not defined
+error line: [4359] _x not defined
+error line: [4487] _event not defined
+error line: [4634] _event not defined
+error line: [4873] _eventID not defined
+error line: [4958] _finalDestination not defined
+error line: [4959] _logEvent not defined
 Parsing : P:\x\alive\addons\mil_logistics\fnc_MLGlobalRegistry.sqf
 Parsing : P:\x\alive\addons\mil_logistics\fnc_MLInit.sqf
 Parsing : P:\x\alive\addons\mil_logistics\fnc_MLLoadData.sqf
@@ -260,192 +429,147 @@ error line: [101] _faction4 not defined
 error line: [102] _factions not defined
 error line: [104] _debug not defined
 error line: [105] _persistent not defined
-error line: [106] _tasksEnabled not defined
-error line: [107] _reinforcements not defined
-error line: [110] _position not defined
-error line: [118] _side not defined
-error line: [129] _sides not defined
-error line: [130] _sidesEnemy not defined
-error line: [131] _sidesFriendly not defined
-error line: [141] _handler not defined
-error line: [148] _opcomID not defined
-error line: [186] _errorMessage not defined
-error line: [187] _error1 not defined
-error line: [257] _errorMessage not defined
-error line: [258] _error1 not defined
-error line: [264] _errorMessage not defined
-error line: [265] _error1 not defined
-error line: [271] _clusterOccupationAnalysis not defined
-error line: [272] _forcesInit not defined
-error line: [276] _errorMessage not defined
-error line: [277] _error1 not defined
-error line: [278] _profiles_count not defined
-error line: [280] _profiles_count_tmp not defined
-error line: [288] _OPCOMS not defined
-error line: [289] _errorMessage not defined
-error line: [290] _error1 not defined
-error line: [292] _Selected_OPCOM not defined
-error line: [296] _pos_OPCOM_selected not defined
-error line: [297] _side_OPCOM_selected not defined
-error line: [298] _factions_OPCOM_selected not defined
-error line: [303] _own_faction not defined
-error line: [305] _exit not defined
-error line: [315] _errorMessage not defined
-error line: [316] _error1 not defined
-error line: [317] _exit not defined
+error line: [106] _reinforcements not defined
+error line: [109] _position not defined
+error line: [117] _side not defined
+error line: [128] _sides not defined
+error line: [129] _sidesEnemy not defined
+error line: [130] _sidesFriendly not defined
+error line: [140] _handler not defined
+error line: [147] _opcomID not defined
+error line: [184] _errorMessage not defined
+error line: [185] _error1 not defined
+error line: [254] _errorMessage not defined
+error line: [255] _error1 not defined
+error line: [261] _errorMessage not defined
+error line: [262] _error1 not defined
+error line: [268] _clusterOccupationAnalysis not defined
+error line: [269] _forcesInit not defined
+error line: [273] _errorMessage not defined
+error line: [274] _error1 not defined
+error line: [275] _profiles_count not defined
+error line: [277] _profiles_count_tmp not defined
+error line: [285] _OPCOMS not defined
+error line: [286] _errorMessage not defined
+error line: [287] _error1 not defined
+error line: [289] _Selected_OPCOM not defined
+error line: [293] _pos_OPCOM_selected not defined
+error line: [294] _side_OPCOM_selected not defined
+error line: [295] _factions_OPCOM_selected not defined
+error line: [300] _own_faction not defined
+error line: [302] _exit not defined
+error line: [312] _errorMessage not defined
+error line: [313] _error1 not defined
+error line: [314] _exit not defined
+error line: [330] _OPCOM not defined
+error line: [331] _handler not defined
 error line: [333] _OPCOM not defined
-error line: [334] _handler not defined
-error line: [336] _OPCOM not defined
-error line: [337] _TACOM not defined
-error line: [360] _factions not defined
-error line: [491] _nearProfiles not defined
-error line: [494] _pi not defined
-error line: [495] _pp not defined
-error line: [533] _canSee not defined
-error line: [537] _seeArr not defined
-error line: [579] _side not defined
-error line: [580] _factions not defined
-error line: [647] _profilesUnsorted not defined
-error line: [700] _TACOM_FSM not defined
-error line: [713] _pending_orders_tmp not defined
-error line: [725] _profileWaypoint not defined
-error line: [727] _var not defined
-error line: [728] _statements not defined
-error line: [735] _ordersFull not defined
-error line: [757] _pos not defined
-error line: [760] _time not defined
-error line: [761] _dead not defined
-error line: [762] _timeout not defined
-error line: [765] _orders_pendingset[_i,"x"];_orders_pending not defined
-error line: [873] _debug not defined
-error line: [899] _objectives not defined
-error line: [903] _oID not defined
-error line: [917] _objectives not defined
-error line: [932] _AO not defined
-error line: [933] _FOB not defined
-error line: [949] _FOB not defined
-error line: [956] _pos not defined
-error line: [957] _section not defined
-error line: [958] _TACOM_FSM not defined
-error line: [960] _objective not defined
-error line: [968] _recon not defined
-error line: [972] _capture not defined
-error line: [976] _defend not defined
-error line: [980] _reserve not defined
-error line: [1000] _side not defined
-error line: [1001] _tasks not defined
-error line: [1007] _timeout not defined
-error line: [1021] _nodes not defined
-error line: [1022] _buildings not defined
-error line: [1033] _objectType not defined
-error line: [1052] _timeout not defined
-error line: [1059] _ostateOld not defined
-error line: [1060] _ostateNew not defined
-error line: [1075] _center not defined
-error line: [1078] _sector not defined
-error line: [1079] _sectorData not defined
-error line: [1080] _sectorTerrainSamples not defined
-error line: [1081] _milClusters not defined
-error line: [1082] _civClusters not defined
-error line: [1084] _highest not defined
-error line: [1085] _lowest not defined
-error line: [1086] _shore not defined
-error line: [1088] _messageIntel not defined
-error line: [1091] _consolidated not defined
-error line: [1092] _power not defined
-error line: [1093] _comms not defined
-error line: [1094] _marine not defined
-error line: [1095] _fuel not defined
-error line: [1096] _rail not defined
-error line: [1097] _construction not defined
-error line: [1098] _settlement not defined
-error line: [1102] _messageIntel not defined
-error line: [1105] _messageIntel not defined
-error line: [1108] _messageIntel not defined
-error line: [1111] _messageIntel not defined
-error line: [1116] _enemies not defined
-error line: [1118] _enemies not defined
-error line: [1121] _strength not defined
-error line: [1126] _messageIntel not defined
-error line: [1131] _taskParams not defined
-error line: [1146] _handle not defined
-error line: [1149] _taskParams not defined
-error line: [1152] _conditionWinParams not defined
-error line: [1153] _conditionWinCode not defined
-error line: [1157] _conditionFailParams not defined
-error line: [1158] _conditionFailCode not defined
-error line: [1161] _timeout not defined
-error line: [1163] _tasks not defined
-error line: [1164] _time not defined
-error line: [1211] _OPCOM_FSM not defined
-error line: [1212] _TACOM_FSM not defined
-error line: [1352] _objectives not defined
-error line: [1360] _handler not defined
-error line: [1362] _OPCOM not defined
-error line: [1363] _TACOM not defined
-error line: [1377] _opcomID not defined
-error line: [1420] _id not defined
-error line: [1426] _rev not defined
-error line: [1552] _m not defined
-error line: [1558] _m not defined
-error line: [1594] _factions not defined
-error line: [1598] _objectives_unsorted not defined
-error line: [1607] _nodes not defined
-error line: [1625] _nodes not defined
-error line: [1662] _unit not defined
-error line: [1665] _pos not defined
-error line: [1666] _faction not defined
-error line: [1689] _unit not defined
-error line: [1690] _objectives not defined
-error line: [1697] _fnc_createMarkerArray not defined
-error line: [1706] _brush not defined
-error line: [1711] _m not defined
-error line: [1735] _objectives not defined
-error line: [1758] _profileUnit not defined
-error line: [1772] _units not defined
-error line: [1773] _group not defined
-error line: [1801] _sidesF not defined
-error line: [1802] _sidesE not defined
-error line: [1803] _objectives not defined
-error line: [1807] _result_tmp not defined
-error line: [1809] _sideX not defined
-error line: [1810] _nearForces not defined
-error line: [1818] _size_reserve not defined
-error line: [1819] _section not defined
-error line: [1827] _profiles not defined
-error line: [1846] _targetsTaken1 not defined
-error line: [1847] _targetsTaken2 not defined
-error line: [1849] _targetsAttacked1 not defined
-error line: [1850] _remover1 not defined
-error line: [1852] _targetID not defined
-error line: [1862] _targetsAttacked2 not defined
-error line: [1863] _remover2 not defined
-error line: [1865] _targetID not defined
-error line: [1879] _targetsTaken1 not defined
-error line: [1884] _targetsTaken1 not defined
-error line: [1889] _targetsTaken2 not defined
-error line: [1894] _targetsTaken2 not defined
-error line: [1899] _targetsTaken not defined
-error line: [1900] _targetsAttacked not defined
-error line: [1901] _targetsTakenEnemy not defined
-error line: [1902] _targetsAttackedEnemy not defined
-error line: [1966] _factions not defined
-error line: [1980] _arty not defined
-error line: [2063] _count not defined
-error line: [2066] _currentForceStrength not defined
-error line: [2087] _id not defined
-error line: [2092] _pos not defined
-error line: [2203] _hdl not defined
-error line: [2209] _hdl not defined
-error line: [2216] _FSM_OPCOM not defined
-error line: [2217] _FSM_TACOM not defined
-error line: [2221] _state not defined
-error line: [2222] _state_TACOM not defined
-error line: [2223] _side not defined
-error line: [2224] _cycleTime not defined
-error line: [2225] _timestamp not defined
-error line: [2230] _maxLimit not defined
-error line: [2236] _message not defined
+error line: [334] _TACOM not defined
+error line: [357] _factions not defined
+error line: [424] _nearProfiles not defined
+error line: [427] _pi not defined
+error line: [428] _pp not defined
+error line: [464] _canSee not defined
+error line: [468] _seeArr not defined
+error line: [510] _side not defined
+error line: [511] _factions not defined
+error line: [578] _profilesUnsorted not defined
+error line: [631] _TACOM_FSM not defined
+error line: [644] _pending_orders_tmp not defined
+error line: [656] _profileWaypoint not defined
+error line: [658] _var not defined
+error line: [659] _statements not defined
+error line: [666] _ordersFull not defined
+error line: [688] _pos not defined
+error line: [691] _time not defined
+error line: [692] _dead not defined
+error line: [693] _timeout not defined
+error line: [696] _orders_pendingset[_i,"x"];_orders_pending not defined
+error line: [804] _debug not defined
+error line: [830] _objectives not defined
+error line: [834] _oID not defined
+error line: [848] _objectives not defined
+error line: [863] _AO not defined
+error line: [864] _FOB not defined
+error line: [880] _FOB not defined
+error line: [887] _pos not defined
+error line: [888] _section not defined
+error line: [889] _TACOM_FSM not defined
+error line: [891] _objective not defined
+error line: [899] _recon not defined
+error line: [903] _capture not defined
+error line: [907] _defend not defined
+error line: [911] _reserve not defined
+error line: [932] _OPCOM_FSM not defined
+error line: [933] _TACOM_FSM not defined
+error line: [997] _admin not defined
+error line: [1067] _message not defined
+error line: [1081] _message not defined
+error line: [1101] _objectives not defined
+error line: [1109] _handler not defined
+error line: [1111] _OPCOM not defined
+error line: [1112] _TACOM not defined
+error line: [1128] _opcomID not defined
+error line: [1185] _id not defined
+error line: [1191] _rev not defined
+error line: [1322] _m not defined
+error line: [1328] _m not defined
+error line: [1364] _factions not defined
+error line: [1368] _objectives_unsorted not defined
+error line: [1430] _unit not defined
+error line: [1433] _pos not defined
+error line: [1434] _faction not defined
+error line: [1457] _unit not defined
+error line: [1458] _objectives not defined
+error line: [1465] _fnc_createMarkerArray not defined
+error line: [1474] _brush not defined
+error line: [1479] _m not defined
+error line: [1503] _objectives not defined
+error line: [1526] _profileUnit not defined
+error line: [1540] _units not defined
+error line: [1541] _group not defined
+error line: [1569] _sidesF not defined
+error line: [1570] _sidesE not defined
+error line: [1571] _objectives not defined
+error line: [1575] _result_tmp not defined
+error line: [1577] _sideX not defined
+error line: [1578] _nearForces not defined
+error line: [1586] _size_reserve not defined
+error line: [1587] _section not defined
+error line: [1595] _profiles not defined
+error line: [1614] _targetsTaken1 not defined
+error line: [1615] _targetsTaken2 not defined
+error line: [1617] _targetsAttacked1 not defined
+error line: [1618] _remover1 not defined
+error line: [1620] _targetID not defined
+error line: [1630] _targetsAttacked2 not defined
+error line: [1631] _remover2 not defined
+error line: [1633] _targetID not defined
+error line: [1647] _targetsTaken1 not defined
+error line: [1652] _targetsTaken1 not defined
+error line: [1657] _targetsTaken2 not defined
+error line: [1662] _targetsTaken2 not defined
+error line: [1667] _targetsTaken not defined
+error line: [1668] _targetsAttacked not defined
+error line: [1669] _targetsTakenEnemy not defined
+error line: [1670] _targetsAttackedEnemy not defined
+error line: [1734] _factions not defined
+error line: [1748] _arty not defined
+error line: [1824] _count not defined
+error line: [1827] _currentForceStrength not defined
+error line: [1848] _id not defined
+error line: [1853] _pos not defined
+error line: [1964] _hdl not defined
+error line: [1970] _hdl not defined
+error line: [1977] _FSM_OPCOM not defined
+error line: [1978] _FSM_TACOM not defined
+error line: [1982] _state not defined
+error line: [1983] _state_TACOM not defined
+error line: [1984] _side not defined
+error line: [1985] _cycleTime not defined
+error line: [1986] _timestamp not defined
+error line: [1991] _maxLimit not defined
+error line: [1997] _message not defined
 Parsing : P:\x\alive\addons\mil_OPCOM\fnc_OPCOMInit.sqf
 Parsing : P:\x\alive\addons\mil_OPCOM\fnc_OPCOMjoinNearestGroup.sqf
 error line: [43] _faction not defined
@@ -518,16 +642,14 @@ Parsing : P:\x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\f
 error line: [15] _tasks not defined
 error line: [16] _faction not defined
 error line: [29] _replen not defined
-error line: [38] _toDelete not defined
-error line: [88] _hdl not defined
-error line: [93] _casfsm not defined
-error line: [109] _replen not defined
+error line: [83] _hdl not defined
+error line: [88] _casfsm not defined
+error line: [104] _replen not defined
 Parsing : P:\x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_RespawnTransportAsset.sqf
 error line: [28] _replen not defined
-error line: [37] _toDelete not defined
-error line: [81] _hdl not defined
-error line: [102] _transportfsm not defined
-error line: [106] _replen not defined
+error line: [76] _hdl not defined
+error line: [97] _transportfsm not defined
+error line: [101] _replen not defined
 Parsing : P:\x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setFlyInHeight.sqf
 Parsing : P:\x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setGroupID.sqf
 Parsing : P:\x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_setROE.sqf
@@ -622,61 +744,88 @@ error line: [82] _transportArrays not defined
 error line: [83] _casArrays not defined
 error line: [84] _artyArrays not defined
 error line: [85] _sides not defined
-error line: [96] _heightset not defined
-error line: [97] _direction not defined
-error line: [98] _id not defined
+error line: [89] _entry not defined
+error line: [90] _type not defined
+error line: [91] _cargoCount not defined
 error line: [99] _height not defined
 error line: [100] _code not defined
-error line: [101] _compiledcode not defined
-error line: [102] _casArray not defined
-error line: [112] _heightset not defined
-error line: [113] _height not defined
-error line: [114] _direction not defined
-error line: [115] _code not defined
-error line: [116] _compiledcode not defined
-error line: [118] _transportArray not defined
-error line: [126] _class not defined
-error line: [127] _setherounds not defined
-error line: [128] _setillumrounds not defined
-error line: [129] _setsmokerounds not defined
-error line: [130] _setguidedrounds not defined
-error line: [131] _setclusterrounds not defined
-error line: [132] _setlgrounds not defined
-error line: [133] _setminerounds not defined
-error line: [134] _setatminerounds not defined
-error line: [135] _setrocketrounds not defined
-error line: [137] _direction not defined
-error line: [139] _herounds not defined
-error line: [140] _illumrounds not defined
-error line: [141] _smokerounds not defined
-error line: [142] _guidedrounds not defined
-error line: [143] _clusterrounds not defined
-error line: [144] _lgrounds not defined
-error line: [145] _minerounds not defined
-error line: [146] _atminerounds not defined
-error line: [147] _rocketrounds not defined
-error line: [149] _he not defined
-error line: [150] _illum not defined
-error line: [151] _smoke not defined
-error line: [152] _guided not defined
-error line: [153] _cluster not defined
-error line: [154] _lg not defined
-error line: [155] _mine not defined
-error line: [156] _atmine not defined
-error line: [157] _rockets not defined
-error line: [159] _ordnance not defined
-error line: [161] _artyArray not defined
-error line: [195] _faction not defined
-error line: [233] _transportfsm not defined
-error line: [257] _faction not defined
-error line: [299] _casfsm not defined
-error line: [401] _sideIn not defined
-error line: [410] _add not defined
-error line: [412] _vehicle not defined
-error line: [425] _add not defined
-error line: [427] _vehicle not defined
-error line: [440] _add not defined
-error line: [442] _vehicle not defined
+error line: [103] _id not defined
+error line: [105] _direction not defined
+error line: [107] _casArray not defined
+error line: [115] _height not defined
+error line: [116] _code not defined
+error line: [119] _id not defined
+error line: [121] _direction not defined
+error line: [123] _transportArray not defined
+error line: [133] _direction not defined
+error line: [134] _class not defined
+error line: [138] _he not defined
+error line: [139] _illum not defined
+error line: [140] _smoke not defined
+error line: [141] _guided not defined
+error line: [142] _cluster not defined
+error line: [143] _lg not defined
+error line: [144] _mine not defined
+error line: [145] _atmine not defined
+error line: [146] _rockets not defined
+error line: [148] _ordnance not defined
+error line: [150] _artyArray not defined
+error line: [163] _heightset not defined
+error line: [164] _direction not defined
+error line: [165] _id not defined
+error line: [166] _height not defined
+error line: [167] _code not defined
+error line: [168] _compiledcode not defined
+error line: [169] _casArray not defined
+error line: [178] _heightset not defined
+error line: [179] _height not defined
+error line: [180] _direction not defined
+error line: [181] _code not defined
+error line: [182] _compiledcode not defined
+error line: [184] _transportArray not defined
+error line: [192] _class not defined
+error line: [193] _setherounds not defined
+error line: [194] _setillumrounds not defined
+error line: [195] _setsmokerounds not defined
+error line: [196] _setguidedrounds not defined
+error line: [197] _setclusterrounds not defined
+error line: [198] _setlgrounds not defined
+error line: [199] _setminerounds not defined
+error line: [200] _setatminerounds not defined
+error line: [201] _setrocketrounds not defined
+error line: [203] _direction not defined
+error line: [205] _herounds not defined
+error line: [206] _illumrounds not defined
+error line: [207] _smokerounds not defined
+error line: [208] _guidedrounds not defined
+error line: [209] _clusterrounds not defined
+error line: [210] _lgrounds not defined
+error line: [211] _minerounds not defined
+error line: [212] _atminerounds not defined
+error line: [213] _rocketrounds not defined
+error line: [215] _he not defined
+error line: [216] _illum not defined
+error line: [217] _smoke not defined
+error line: [218] _guided not defined
+error line: [219] _cluster not defined
+error line: [220] _lg not defined
+error line: [221] _mine not defined
+error line: [222] _atmine not defined
+error line: [223] _rockets not defined
+error line: [225] _ordnance not defined
+error line: [227] _artyArray not defined
+error line: [261] _transportfsm not defined
+error line: [262] _faction not defined
+error line: [326] _faction not defined
+error line: [328] _casfsm not defined
+error line: [419] _vehPos not defined
+error line: [487] _sideIn not defined
+error line: [496] _add not defined
+error line: [498] _vehicle not defined
+error line: [511] _add not defined
+error line: [513] _vehicle not defined
+error line: [526] _add not defined
+error line: [528] _vehicle not defined
 Parsing : P:\x\alive\addons\sup_combatsupport\fnc_combatSupportFncInit.sqf
 Parsing : P:\x\alive\addons\sup_combatsupport\fnc_combatSupportInit.sqf
 Parsing : P:\x\alive\addons\sup_combatsupport\fnc_combatSupportMenuDef.sqf
@@ -690,7 +839,11 @@ error line: [1] _unitType not defined
 error line: [2] _faction not defined
 error line: [3] _side not defined
 Parsing : P:\x\alive\addons\sup_combatsupport\XEH_preInit.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_forwardSpawn.sqf
+Parsing : P:\x\alive\addons\sup_multispawn\fnc_establishingShotCustom.sqf
+error line: [50] _condition not defined
+error line: [253] _time not defined
+error line: [292] _time not defined
+Parsing : P:\x\alive\addons\sup_multispawn\fnc_forwardSpawn.sqf
 error line: [11] _key not defined
 error line: [40] _distance not defined
 error line: [41] _refresh not defined
@@ -711,26 +864,39 @@ error line: [118] _freePosGunner not defined
 error line: [119] _freePosCommander not defined
 error line: [120] _freePosCargo not defined
 error line: [121] _freePosDriver not defined
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnAddAction.sqf
-error line: [37] _hqObjectaddAction[("<tcolor not defined
-error line: [38] _hqObjectaddAction[("<tcolor not defined
-error line: [39] _hqObjectaddAction[("<tcolor not defined
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnConvert.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnDeploy.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnMHQType.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnPlayerSetSpawn.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnRelocatePlayer.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnSyncState.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\functions\fnc_multispawnUndeploy.sqf
-Parsing : P:\x\alive\addons\sup_multispawn\scripts\init_Server_MHQs.sqf
 Parsing : P:\x\alive\addons\sup_multispawn\fnc_multispawn.sqf
-error line: [59] _revive not defined
-error line: [60] _allLogics not defined
-error line: [76] _debug not defined
+error line: [52] _blackOps not defined
+error line: [55] _check not defined
+error line: [88] _id not defined
+error line: [96] _factionData not defined
+error line: [107] _vehicle not defined
+error line: [174] _respawnGroup not defined
+error line: [267] _v not defined
+error line: [304] _b not defined
+error line: [307] _p not defined
+error line: [367] _factionData not defined
+error line: [429] _loader not defined
+error line: [450] _timeOut not defined
+error line: [451] _time not defined
+error line: [458] _factionData not defined
+error line: [460] _cargoCount not defined
+error line: [497] _dataSet not defined
+error line: [499] _units not defined
+error line: [500] _group not defined
+error line: [507] _heliPad not defined
+error line: [509] _wp not defined
+error line: [543] _data not defined
+error line: [544] _factionData not defined
+error line: [555] _wp not defined
+error line: [559] _vehicle not defined
+error line: [560] _data not defined
+error line: [561] _factionData not defined
+error line: [583] _factionData not defined
+error line: [585] _inserting not defined
 Parsing : P:\x\alive\addons\sup_multispawn\fnc_multispawnInit.sqf
 Parsing : P:\x\alive\addons\sup_multispawn\fnc_multispawnMenuDef.sqf
 Parsing : P:\x\alive\addons\sup_player_resupply\fnc_PR.sqf
-error line: [2282] _map not defined
+error line: [2317] _map not defined
 Parsing : P:\x\alive\addons\sup_player_resupply\fnc_PRInit.sqf
 Parsing : P:\x\alive\addons\sup_player_resupply\fnc_PRMenuDef.sqf
 Parsing : P:\x\alive\addons\sup_player_resupply\fnc_PRTabletEventToClient.sqf
@@ -750,6 +916,7 @@ Parsing : P:\x\alive\addons\sys_adminactions\fnc_adminActionsMenuDef.sqf
 Parsing : P:\x\alive\addons\sys_adminactions\fnc_adminActionsTeleportUnits.sqf
 error line: [36] _inputonmapsingleClick{GVAR(SELECTED_UNITS) not defined
 Parsing : P:\x\alive\addons\sys_adminactions\fnc_adminCreateProfiles.sqf
+Parsing : P:\x\alive\addons\sys_adminactions\fnc_adminGhost.sqf
 Parsing : P:\x\alive\addons\sys_adminactions\fnc_agentSystemDebug.sqf
 Parsing : P:\x\alive\addons\sys_adminactions\fnc_markUnits.sqf
 Parsing : P:\x\alive\addons\sys_adminactions\fnc_profileSystemDebug.sqf
@@ -785,14 +952,18 @@ Parsing : P:\x\alive\addons\sys_crewinfo\fnc_crewinfoInit.sqf
 Parsing : P:\x\alive\addons\sys_data\fnc_Data.sqf
 error line: [56] _source not defined
 Parsing : P:\x\alive\addons\sys_data\fnc_DataInit.sqf
+error line: [40] _initmsg not defined
+error line: [277] _realTime not defined
 Parsing : P:\x\alive\addons\sys_data\fnc_data_onPlayerDisconnected.sqf
-error line: [41] _missionName not defined
+error line: [45] _missionName not defined
+error line: [59] _missionName not defined
 Parsing : P:\x\alive\addons\sys_data\fnc_getGroupID.sqf
 Parsing : P:\x\alive\addons\sys_data\fnc_getServerIP.sqf
 Parsing : P:\x\alive\addons\sys_data\fnc_getServerName.sqf
 Parsing : P:\x\alive\addons\sys_data\fnc_getServerTime.sqf
 Parsing : P:\x\alive\addons\sys_data\fnc_sendToPlugIn.sqf
 Parsing : P:\x\alive\addons\sys_data\fnc_sendToPlugInAsync.sqf
+Parsing : P:\x\alive\addons\sys_data\fnc_startALiVEPlugIn.sqf
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_bulkLoadData.sqf
 error line: [29] _logic not defined
 error line: [30] _args not defined
@@ -802,20 +973,23 @@ error line: [43] _uids not defined
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_bulkSaveData.sqf
 error line: [29] _logic not defined
 error line: [30] _args not defined
-error line: [43] _response not defined
+error line: [47] _response not defined
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_bulkWriteData.sqf
 error line: [103] _parse not defined
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_convertData.sqf
 error line: [115] _string not defined
+Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_deleteData.sqf
+error line: [42] _async not defined
+error line: [43] _uid not defined
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_loadData.sqf
 error line: [29] _logic not defined
 error line: [30] _args not defined
-error line: [46] _indexRev not defined
+error line: [50] _indexRev not defined
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_readData.sqf
 error line: [42] _keys not defined
 error line: [43] _uid not defined
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_restoreData.sqf
-error line: [55] _value not defined
+error line: [62] _value not defined
 Parsing : P:\x\alive\addons\sys_data_couchdb\fnc_saveData.sqf
 error line: [29] _logic not defined
 error line: [30] _args not defined
@@ -836,13 +1010,13 @@ error line: [139] _debug not defined
 error line: [141] _dead not defined
 error line: [143] _time not defined
 error line: [144] _ObjectsToTrash not defined
-error line: [166] _amo not defined
-error line: [188] _debug not defined
-error line: [232] _instant not defined
-error line: [233] _queue not defined
-error line: [234] _debug not defined
-error line: [235] _timeCheck not defined
-error line: [287] _queue not defined
+error line: [168] _amo not defined
+error line: [190] _debug not defined
+error line: [234] _instant not defined
+error line: [235] _queue not defined
+error line: [236] _debug not defined
+error line: [237] _timeCheck not defined
+error line: [289] _queue not defined
 Parsing : P:\x\alive\addons\sys_GC\fnc_GCInit.sqf
 Parsing : P:\x\alive\addons\sys_GC\XEH_postInit.sqf
 Parsing : P:\x\alive\addons\sys_logistics\fnc_AvailableCargo.sqf
@@ -867,42 +1041,115 @@ Parsing : P:\x\alive\addons\sys_logistics\fnc_getObjectState.sqf
 error line: [38] _state not defined
 Parsing : P:\x\alive\addons\sys_logistics\fnc_getObjectWeight.sqf
 Parsing : P:\x\alive\addons\sys_logistics\fnc_logistics.sqf
-error line: [44] _blackOps not defined
-error line: [47] _check not defined
-error line: [141] _state not defined
-error line: [601] _list not defined
-error line: [762] _objectsetvariable[QGVAR(EH_GETOUT),_objectgetvariable[QGVAR(EH_GETOUT),_objectaddEventHandler["GetOut",{if!((_thisselect1) not defined
-error line: [855] _createdObjects not defined
-error line: [856] _existing not defined
-error line: [857] _blacklist not defined
-error line: [885] _type not defined
-error line: [927] _dataSet not defined
+error line: [45] _blackOps not defined
+error line: [48] _check not defined
+error line: [147] _state not defined
+error line: [609] _list not defined
+error line: [770] _objectsetvariable[QGVAR(EH_GETOUT),_objectgetvariable[QGVAR(EH_GETOUT),_objectaddEventHandler["GetOut",{if(isPlayer(_thisselect2)&&{!((_thisselect1) not defined
+error line: [863] _createdObjects not defined
+error line: [864] _existing not defined
+error line: [865] _blacklist not defined
+error line: [893] _type not defined
+error line: [935] _dataSet not defined
 Parsing : P:\x\alive\addons\sys_logistics\fnc_logisticsDisable.sqf
-error line: [31] _debug not defined
-error line: [32] _disableCarry not defined
-error line: [33] _disablePersistence not defined
-error line: [34] _disableTow not defined
-error line: [35] _disableLift not defined
-error line: [36] _disableLoad not defined
-error line: [37] _disable3D not defined
+error line: [34] _debug not defined
+error line: [35] _exit not defined
+error line: [36] _disableCarry not defined
+error line: [37] _disablePersistence not defined
+error line: [38] _disableTow not defined
+error line: [39] _disableLift not defined
+error line: [40] _disableLoad not defined
+error line: [41] _disable3D not defined
+error line: [42] _blacklist not defined
 Parsing : P:\x\alive\addons\sys_logistics\fnc_logisticsInit.sqf
 Parsing : P:\x\alive\addons\sys_logistics\fnc_logisticsLoadData.sqf
-error line: [36] _async not defined
-error line: [37] _missionName not defined
-error line: [38] _missionName not defined
+error line: [38] _async not defined
+error line: [39] _missionName not defined
+error line: [40] _missionName not defined
 Parsing : P:\x\alive\addons\sys_logistics\fnc_logisticsMenuDef.sqf
 Parsing : P:\x\alive\addons\sys_logistics\fnc_logisticsSaveData.sqf
-error line: [37] _async not defined
-error line: [38] _missionName not defined
-error line: [39] _missionName not defined
-error line: [41] _data not defined
-error line: [49] _data not defined
 Parsing : P:\x\alive\addons\sys_logistics\fnc_setObjectCargo.sqf
 error line: [48] _Ammo not defined
 Parsing : P:\x\alive\addons\sys_logistics\fnc_setObjectDamage.sqf
 Parsing : P:\x\alive\addons\sys_logistics\fnc_setObjectFuel.sqf
 Parsing : P:\x\alive\addons\sys_logistics\fnc_setObjectState.sqf
 Parsing : P:\x\alive\addons\sys_logistics\XEH_postInit.sqf
+error line: [3] _id not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_marker.sqf
+error line: [133] _errorMessage not defined
+error line: [134] _error1 not defined
+error line: [155] _state not defined
+error line: [231] _params not defined
+error line: [232] _button not defined
+error line: [283] _params not defined
+error line: [405] _scale not defined
+error line: [538] _markersHash not defined
+error line: [641] _markerHash not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerButtonAction.sqf
+error line: [54] _colorIndex not defined
+error line: [55] _color not defined
+error line: [57] _size not defined
+error line: [58] _dir not defined
+error line: [59] _text not defined
+error line: [60] _shapeIndex not defined
+error line: [61] _eyesIndex not defined
+error line: [62] _eyes not defined
+error line: [66] _size not defined
+error line: [67] _classIndex not defined
+error line: [68] _typeIndex not defined
+error line: [69] _type not defined
+error line: [75] _brushIndex not defined
+error line: [76] _brush not defined
+error line: [116] _spotrepCheck not defined
+error line: [128] _DTG not defined
+error line: [129] _dateTime not defined
+error line: [130] _loc not defined
+error line: [131] _factionIndex not defined
+error line: [132] _faction not defined
+error line: [133] _factionCfg not defined
+error line: [134] _sizeIndex not defined
+error line: [135] _size not defined
+error line: [136] _typeIndex not defined
+error line: [137] _type not defined
+error line: [138] _typeCfg not defined
+error line: [139] _activityIndex not defined
+error line: [140] _activity not defined
+error line: [141] _factivityIndex not defined
+error line: [142] _factivity not defined
+error line: [143] _remarks not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerCheckedChanged.sqf
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerDeleteData.sqf
+error line: [48] _count not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerInit.sqf
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerLBSelChanged.sqf
+error line: [103] _index not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerLoadData.sqf
+error line: [38] _async not defined
+error line: [39] _missionName not defined
+error line: [40] _missionName not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerOnLoad.sqf
+error line: [138] _ValueColorName not defined
+error line: [164] _id not defined
+error line: [186] _enemyGroup not defined
+error line: [233] _activityControl not defined
+error line: [234] _activity not defined
+error line: [250] _actionControl not defined
+error line: [251] _action not defined
+error line: [267] _eyesControl not defined
+error line: [268] _eyes not defined
+error line: [282] _spotrepCheck not defined
+error line: [305] _spotrepCheckbox not defined
+error line: [371] _spotrepInfo not defined
+error line: [398] _classInsideControls not defined
+error line: [401] _current not defined
+error line: [410] _idc not defined
+error line: [411] _control not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerOnPlayerConnected.sqf
+error line: [47] _msg not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerParams.sqf
+error line: [31] _debug not defined
+Parsing : P:\x\alive\addons\sys_marker\fnc_markerSaveData.sqf
+Parsing : P:\x\alive\addons\sys_marker\XEH_postInit.sqf
 error line: [3] _id not defined
 Parsing : P:\x\alive\addons\sys_moduletemplate\fnc_moduletemplate.sqf
 error line: [44] _blackOps not defined
@@ -918,6 +1165,76 @@ Parsing : P:\x\alive\addons\sys_newsfeed\newsfeed\newsfeed_init.sqf
 Parsing : P:\x\alive\addons\sys_newsfeed\fnc_newsFeed.sqf
 Parsing : P:\x\alive\addons\sys_newsfeed\fnc_newsFeedInit.sqf
 Parsing : P:\x\alive\addons\sys_newsfeed\fnc_newsFeedMenuDef.sqf
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrep.sqf
+error line: [123] _errorMessage not defined
+error line: [124] _error1 not defined
+error line: [145] _state not defined
+error line: [442] _patrolrepHash not defined
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepButtonAction.sqf
+error line: [29] _spotControl not defined
+error line: [30] _sitControl not defined
+error line: [36] _patrolrepHash not defined
+error line: [39] _DTG not defined
+error line: [40] _sdateTime not defined
+error line: [41] _edateTime not defined
+error line: [42] _sloc not defined
+error line: [43] _eloc not defined
+error line: [44] _eyesIndex not defined
+error line: [45] _eyes not defined
+error line: [46] _callSign not defined
+error line: [48] _patcomp not defined
+error line: [49] _task not defined
+error line: [50] _enbda not defined
+error line: [51] _results not defined
+error line: [53] _spotreps not defined
+error line: [54] _sitreps not defined
+error line: [56] _spotlist not defined
+error line: [61] _sitlist not defined
+error line: [66] _ammo not defined
+error line: [67] _cas not defined
+error line: [68] _veh not defined
+error line: [69] _cs not defined
+error line: [94] _patrolrepHash not defined
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepCreateDiaryRecord.sqf
+error line: [50] _params not defined
+error line: [54] _markerName not defined
+error line: [56] _markers not defined
+error line: [64] _markere not defined
+error line: [76] _spotreps not defined
+error line: [78] _spotreps not defined
+error line: [81] _sitreps not defined
+error line: [83] _sitreps not defined
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepDeleteData.sqf
+error line: [48] _count not defined
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepInit.sqf
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepLoadData.sqf
+error line: [38] _async not defined
+error line: [39] _missionName not defined
+error line: [40] _missionName not defined
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepOnLoad.sqf
+error line: [45] _ammoControl not defined
+error line: [48] _casControl not defined
+error line: [51] _vehControl not defined
+error line: [54] _csControl not defined
+error line: [56] _state not defined
+error line: [63] _index not defined
+error line: [65] _index not defined
+error line: [67] _index not defined
+error line: [69] _index not defined
+error line: [97] _eyesControl not defined
+error line: [98] _eyes not defined
+error line: [107] _index not defined
+error line: [143] _classInsideControls not defined
+error line: [146] _current not defined
+error line: [154] _idc not defined
+error line: [155] _control not defined
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepOnMapEvent.sqf
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepOnPlayerConnected.sqf
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepParams.sqf
+error line: [31] _debug not defined
+Parsing : P:\x\alive\addons\sys_patrolrep\fnc_patrolrepSaveData.sqf
+Parsing : P:\x\alive\addons\sys_patrolrep\XEH_postInit.sqf
+error line: [3] _id not defined
 Parsing : P:\x\alive\addons\sys_perf\fnc_perf.sqf
 Parsing : P:\x\alive\addons\sys_perf\fnc_perfDisable.sqf
 Parsing : P:\x\alive\addons\sys_perf\fnc_perfInit.sqf
@@ -932,7 +1249,7 @@ Parsing : P:\x\alive\addons\sys_player\fnc_getGear.sqf
 Parsing : P:\x\alive\addons\sys_player\fnc_getPlayer.sqf
 error line: [58] _saveAmmo not defined
 Parsing : P:\x\alive\addons\sys_player\fnc_player.sqf
-error line: [436] _owner not defined
+error line: [439] _owner not defined
 Parsing : P:\x\alive\addons\sys_player\fnc_playerInit.sqf
 Parsing : P:\x\alive\addons\sys_player\fnc_playerMenuDef.sqf
 Parsing : P:\x\alive\addons\sys_player\fnc_player_onPlayerConnected.sqf
@@ -943,6 +1260,10 @@ error line: [55] _saveAmmo not defined
 Parsing : P:\x\alive\addons\sys_player\fnc_vehicleInit.sqf
 error line: [47] _vehiclecallcompileformat["%1 not defined
 Parsing : P:\x\alive\addons\sys_playertags\fnc_playertags.sqf
+error line: [163] _onView not defined
+error line: [170] _pos not defined
+error line: [171] _width not defined
+error line: [172] _name not defined
 Parsing : P:\x\alive\addons\sys_playertags\fnc_playertagsInit.sqf
 Parsing : P:\x\alive\addons\sys_playertags\fnc_playertagsMenuDef.sqf
 Parsing : P:\x\alive\addons\sys_playertags\playertags_generateLabelText.sqf
@@ -983,41 +1304,42 @@ error line: [101] _thisgroup not defined
 error line: [103] _tmpText not defined
 error line: [104] _lineCount not defined
 Parsing : P:\x\alive\addons\sys_playertags\playertags_recognise.sqf
-error line: [4] _gen not defined
-error line: [5] _tolerance not defined
-error line: [6] _maxDistance not defined
-error line: [7] _possibleVehicles not defined
-error line: [8] _ownSide not defined
-error line: [9] _playerVehicle not defined
-error line: [10] _genPos not defined
-error line: [11] _objects not defined
-error line: [12] _i not defined
-error line: [16] _i not defined
-error line: [19] _objCount not defined
-error line: [23] _i not defined
-error line: [24] _shownObjects not defined
-error line: [27] _obj not defined
-error line: [29] _objPos not defined
-error line: [30] _bb not defined
-error line: [31] _bbZMin not defined
-error line: [32] _bbZMax not defined
-error line: [33] _bbZDiff not defined
-error line: [36] _scrPos not defined
-error line: [38] _scrX not defined
-error line: [39] _scrY not defined
-error line: [41] _distToCenter not defined
-error line: [42] _objSizeMod not defined
-error line: [43] _objDist not defined
-error line: [44] _objDistMod not defined
-error line: [47] _shownObjects not defined
-error line: [53] _i not defined
+error line: [5] _gen not defined
+error line: [6] _tolerance not defined
+error line: [7] _maxDistance not defined
+error line: [8] _possibleVehicles not defined
+error line: [9] _ownSide not defined
+error line: [10] _playerVehicle not defined
+error line: [11] _genPos not defined
+error line: [12] _objects not defined
+error line: [13] _onView not defined
+error line: [14] _i not defined
+error line: [21] _i not defined
+error line: [24] _objCount not defined
+error line: [28] _i not defined
+error line: [29] _shownObjects not defined
+error line: [32] _obj not defined
+error line: [34] _objPos not defined
+error line: [35] _bb not defined
+error line: [36] _bbZMin not defined
+error line: [37] _bbZMax not defined
+error line: [38] _bbZDiff not defined
+error line: [41] _scrPos not defined
+error line: [43] _scrX not defined
+error line: [44] _scrY not defined
+error line: [46] _distToCenter not defined
+error line: [47] _objSizeMod not defined
+error line: [48] _objDist not defined
+error line: [49] _objDistMod not defined
+error line: [52] _shownObjects not defined
+error line: [58] _i not defined
 Parsing : P:\x\alive\addons\sys_playertags\playertags_recogniseHandler.sqf
 Parsing : P:\x\alive\addons\sys_playertags\playertags_recogniseOverlayCtrl.sqf
-error line: [14] _i not defined
-error line: [17] _i not defined
-error line: [22] _i not defined
-error line: [43] _i not defined
-error line: [49] _i not defined
+error line: [13] _i not defined
+error line: [16] _i not defined
+error line: [21] _i not defined
+error line: [42] _i not defined
+error line: [48] _i not defined
 Parsing : P:\x\alive\addons\sys_playertags\XEH_preInit.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_createProfileEntity.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_createProfilesCrewedVehicle.sqf
@@ -1063,40 +1385,42 @@ error line: [693] _profileFactionVehicleType not defined
 error line: [694] _profileFactionVehicleType not defined
 Parsing : P:\x\alive\addons\sys_profile\fnc_profileKilledEventHandler.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_profileSimulator.sqf
-error line: [80] _deleteMarker not defined
-error line: [86] _profileIndex not defined
-error line: [107] _clash not defined
-error line: [108] _engaged not defined
-error line: [125] _side not defined
-error line: [126] _positions not defined
-error line: [130] _isAir not defined
-error line: [131] _collect not defined
-error line: [419] _engagedTotal not defined
-error line: [422] _toBekilled not defined
-error line: [428] _side not defined
-error line: [431] _factor1 not defined
-error line: [432] _factor2 not defined
-error line: [440] _killFactor not defined
-error line: [465] _units not defined
-error line: [466] _deathToll not defined
-error line: [479] _faction not defined
-error line: [480] _side not defined
-error line: [481] _event not defined
-error line: [482] _eventID not defined
+error line: [40] _clash not defined
+error line: [41] _engaged not defined
+error line: [58] _side not defined
+error line: [59] _positions not defined
+error line: [63] _isAir not defined
+error line: [64] _collect not defined
+error line: [210] _position not defined
+error line: [261] _position not defined
+error line: [311] _position not defined
+error line: [354] _engagedTotal not defined
+error line: [357] _toBekilled not defined
+error line: [363] _side not defined
+error line: [366] _factor1 not defined
+error line: [367] _factor2 not defined
+error line: [375] _killFactor not defined
+error line: [400] _units not defined
+error line: [401] _deathToll not defined
+error line: [413] _position not defined
+error line: [414] _faction not defined
+error line: [415] _side not defined
+error line: [416] _event not defined
+error line: [417] _eventID not defined
 Parsing : P:\x\alive\addons\sys_profile\fnc_profilesLoadData.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_profileSpawner.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_profilesSaveData.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_profileSystem.sqf
-error line: [255] _profileSimulatorFSM not defined
-error line: [258] _profileSpawnerFSMEast not defined
-error line: [261] _profileSpawnerFSMWest not defined
-error line: [264] _profileSpawnerFSMGuer not defined
-error line: [267] _profileSpawnerFSMCiv not defined
-error line: [275] _profileSimulatorFSM not defined
-error line: [278] _profileSpawnerFSMEast not defined
-error line: [281] _profileSpawnerFSMWest not defined
-error line: [284] _profileSpawnerFSMGuer not defined
-error line: [287] _profileSpawnerFSMCiv not defined
+error line: [260] _profileSimulatorFSM not defined
+error line: [263] _profileSpawnerFSMEast not defined
+error line: [266] _profileSpawnerFSMWest not defined
+error line: [269] _profileSpawnerFSMGuer not defined
+error line: [272] _profileSpawnerFSMCiv not defined
+error line: [280] _profileSimulatorFSM not defined
+error line: [283] _profileSpawnerFSMEast not defined
+error line: [286] _profileSpawnerFSMWest not defined
+error line: [289] _profileSpawnerFSMGuer not defined
+error line: [292] _profileSpawnerFSMCiv not defined
 Parsing : P:\x\alive\addons\sys_profile\fnc_profileSystemInit.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_profileVehicle.sqf
 Parsing : P:\x\alive\addons\sys_profile\fnc_profileVehicleAssignmentGetEmptyPositions.sqf
@@ -1158,6 +1482,86 @@ Parsing : P:\x\alive\addons\sys_revive\fnc_reviveInit.sqf
 Parsing : P:\x\alive\addons\sys_revive\fnc_reviveScript.sqf
 error line: [87] _body not defined
 error line: [98] _body not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrep.sqf
+error line: [123] _errorMessage not defined
+error line: [124] _error1 not defined
+error line: [145] _state not defined
+error line: [438] _sitrepHash not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepButtonAction.sqf
+error line: [34] _sitrepHash not defined
+error line: [37] _DTG not defined
+error line: [38] _dateTime not defined
+error line: [39] _loc not defined
+error line: [40] _remarks not defined
+error line: [41] _eyesIndex not defined
+error line: [42] _eyes not defined
+error line: [43] _callSign not defined
+error line: [45] _ekia not defined
+error line: [46] _en not defined
+error line: [47] _civ not defined
+error line: [48] _fkia not defined
+error line: [49] _fwia not defined
+error line: [50] _ff not defined
+error line: [53] _ammo not defined
+error line: [54] _cas not defined
+error line: [55] _veh not defined
+error line: [56] _cs not defined
+error line: [80] _sitrepHash not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepCreateDiaryRecord.sqf
+error line: [49] _params not defined
+error line: [53] _markerName not defined
+error line: [97] _marker not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepDeleteData.sqf
+error line: [48] _count not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepInit.sqf
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepLoadData.sqf
+error line: [38] _async not defined
+error line: [39] _missionName not defined
+error line: [40] _missionName not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepOnLoad.sqf
+error line: [46] _ammoControl not defined
+error line: [49] _casControl not defined
+error line: [52] _vehControl not defined
+error line: [56] _csControl not defined
+error line: [58] _state not defined
+error line: [65] _index not defined
+error line: [67] _index not defined
+error line: [69] _index not defined
+error line: [71] _index not defined
+error line: [77] _eyesControl not defined
+error line: [78] _eyes not defined
+error line: [87] _index not defined
+error line: [109] _classInsideControls not defined
+error line: [112] _current not defined
+error line: [119] _idc not defined
+error line: [120] _control not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepOnMapEvent.sqf
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepOnPlayerConnected.sqf
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepParams.sqf
+error line: [31] _debug not defined
+Parsing : P:\x\alive\addons\sys_sitrep\fnc_sitrepSaveData.sqf
+Parsing : P:\x\alive\addons\sys_sitrep\XEH_postInit.sqf
+error line: [3] _id not defined
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrep.sqf
+error line: [123] _errorMessage not defined
+error line: [124] _error1 not defined
+error line: [145] _state not defined
+error line: [435] _spotrepHash not defined
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrepCreateDiaryRecord.sqf
+error line: [41] _params not defined
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrepDeleteData.sqf
+error line: [48] _count not defined
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrepInit.sqf
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrepLoadData.sqf
+error line: [38] _async not defined
+error line: [39] _missionName not defined
+error line: [40] _missionName not defined
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrepOnPlayerConnected.sqf
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrepParams.sqf
+error line: [31] _debug not defined
+Parsing : P:\x\alive\addons\sys_spotrep\fnc_spotrepSaveData.sqf
+Parsing : P:\x\alive\addons\sys_spotrep\XEH_postInit.sqf
+error line: [3] _id not defined
 Parsing : P:\x\alive\addons\sys_statistics\fnc_addHandleHeal.sqf
 Parsing : P:\x\alive\addons\sys_statistics\fnc_divingEH.sqf
 error line: [58] _unitGeoPos not defined
@@ -1430,6 +1834,14 @@ Parsing : P:\x\alive\addons\x_lib\functions\behaviour\fnc_groupGarrison.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\composition\fnc_exportComposition.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\composition\fnc_findComposition.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\composition\fnc_spawnComposition.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\composition\fnc_spawnRandomPopulatedComposition.sqf
+error line: [57] _group not defined
+error line: [64] _group not defined
+error line: [75] _group not defined
+error line: [83] _group not defined
+error line: [95] _group not defined
+error line: [104] _group not defined
+error line: [131] _group not defined
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_configGetGroup.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_configGetRandomGroup.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_configGetVehicleClass.sqf
@@ -1441,6 +1853,7 @@ Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_configGetVehicleTurretPos
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_configGetVehicleTurrets.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_configGetWeaponMagazines.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_getConfigValue.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_getFactionsDataSource.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_sortCFGGroupsBySide.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\config\fnc_sortCFGVehiclesByClass.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\conversions\fnc_sideNumberToText.sqf
@@ -1456,6 +1869,7 @@ Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_cursorTargetInfo.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_debugBuildingPositions.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_debugHandler.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_estimateMemoryUsage.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_inspectArray.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_inspectClasses.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_inspectConfig.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\diagnostics\fnc_inspectConfigItem.sqf
@@ -1508,6 +1922,7 @@ Parsing : P:\x\alive\addons\x_lib\functions\map\fnc_processTerrain.sqf
 error line: [43] _multiProcess not defined
 error line: [116] _count< not defined
 Parsing : P:\x\alive\addons\x_lib\functions\markers\fnc_createLink.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\markers\fnc_createMarker.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\markers\fnc_deleteLink.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\markers\fnc_inArea.sqf
 error line: [35] _angle not defined
@@ -1519,6 +1934,9 @@ Parsing : P:\x\alive\addons\x_lib\functions\math\fnc_dirTo.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\math\fnc_modDegrees.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\math\fnc_random.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\math\fnc_roundDecimal.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_allSides.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_classSide.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_compileReadableDate.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_factionSide.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_getDominantFaction.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_getEnvironment.sqf
@@ -1527,6 +1945,7 @@ Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_isAbleToHost.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_isHC.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_isServerAdmin.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_param.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_pointAt.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\misc\fnc_wait.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\network\fnc_BUS.sqf
 error line: [53] _dataTmp not defined
@@ -1535,13 +1954,18 @@ error line: [47] _this not defined
 Parsing : P:\x\alive\addons\x_lib\functions\oop\fnc_BaseClassHash.sqf
 error line: [47] _this not defined
 Parsing : P:\x\alive\addons\x_lib\functions\oop\fnc_OOsimpleOperation.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\strings\fnc_dateToDTG.sqf
+error line: [35] _months not defined
 Parsing : P:\x\alive\addons\x_lib\functions\strings\fnc_formatDate.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\strings\fnc_formatNumber.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\strings\fnc_realTimeToDTG.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\strings\fnc_selBinStr.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\strings\fnc_timeToRead.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\ui\fnc_hint.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\ui\fnc_hintS.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\ui\fnc_radioBroadcast.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\ui\fnc_radioBroadcastToSide.sqf
+error line: [34] _radioBroadcast not defined
 Parsing : P:\x\alive\addons\x_lib\functions\ui\fnc_sendHint.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\ui\fnc_sideC.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_addToEnemyGroup.sqf
@@ -1550,12 +1974,23 @@ Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_anyPlayersInRangeExcludeAi
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_anyPlayersInRangeIncludeAir.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_chooseRandomUnits.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getNearUnits.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getPlayerByUID.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getPlayerByUIDOnConnect.sqf
+error line: [32] _unit not defined
+error line: [44] _currentUID not defined
+error line: [47] _unit not defined
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getPlayersDataSource.sqf
+error line: [32] _sideNumber not defined
+error line: [39] _playerSide not defined
+error line: [40] _playerSideNumber not defined
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getPlayersInGroupDataSource.sqf
 error line: [31] _playerUID not defined
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getRandomManNear.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getRandomManOrPlayerNear.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_getRandomPlayerNear.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_isArmed.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_isEnemyNear.sqf
+Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_PlayersInRangeIncludeAir.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_unitArrayFilterDead.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_unitArrayGetVehiclesWithin.sqf
 Parsing : P:\x\alive\addons\x_lib\functions\units\fnc_unitArraySortByRank.sqf
