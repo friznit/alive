@@ -1098,7 +1098,9 @@ switch(_operation) do {
         };
 		case "saveProfileData": {
 
-            private ["_datahandler","_exportProfiles","_async","_missionName"];
+            private ["_admin","_datahandler","_exportProfiles","_async","_missionName","_message"];
+
+            _admin = _args;
 
             if(isNil"ALIVE_profileDatahandler") then {
 
@@ -1112,16 +1114,18 @@ switch(_operation) do {
 
             _exportProfiles = [_logic, "exportProfileData"] call MAINCLASS;
 
+            _message = format["ALiVE Profile System - Preparing to save %1 profiles..",count(_exportProfiles select 1)];
+            [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+
             _async = false; // Wait for response from server
             _missionName = [missionName, "%20", "-"] call CBA_fnc_replace;
 
             _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-            if(ALiVE_SYS_DATA_DEBUG_ON) then {
-                ["ALiVE SYS PROFILE - SAVE PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
-            };
-
             _result = [ALIVE_profileDatahandler, "bulkSave", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
+
+            _message = format["ALiVE Profile System - Save Result: %1",_result];
+            [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
 
             if(ALiVE_SYS_DATA_DEBUG_ON) then {
                 ["ALiVE SYS PROFILE - SAVE PROFILE DATA RESULT: %1",_result] call ALIVE_fnc_dump;
@@ -1164,7 +1168,7 @@ switch(_operation) do {
 		    "_assignmentValues","_ranks","_side","_spawnType","_entitiesInCommandOf","_entitiesInCargoOf","_vehiclesInCommandOf","_vehiclesInCargoOf","_ranksMap","_exportRanks","_classes","_exportClasses"];
 
             if(ALiVE_SYS_DATA_DEBUG_ON) then {
-		        ["ALiVE SYS PROFILE - EXPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
+		        ["ALiVE SYS PROFILE - EXPORT PROFILE DATA..."] call ALIVE_fnc_dump;
             };
 
             _profiles = [_logic, "getProfiles"] call MAINCLASS;
@@ -1348,7 +1352,7 @@ switch(_operation) do {
             if(typeName _args == "ARRAY") then {
 
                 if(ALiVE_SYS_DATA_DEBUG_ON) then {
-                    ["ALiVE SYS PROFILE - IMPORT PROFILE DATA..."] call ALIVE_fnc_dumpMPH;
+                    ["ALiVE SYS PROFILE - IMPORT PROFILE DATA..."] call ALIVE_fnc_dump;
                 };
 
                 _ranksMap = [] call ALIVE_fnc_hashCreate;

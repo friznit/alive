@@ -5,6 +5,7 @@
 class C2Tablet
 {
     idd = 70001;
+    movingEnable = true;
     onLoad = "[] call ALIVE_fnc_C2TabletOnLoad;";
     onUnload = "[] call ALIVE_fnc_C2TabletOnUnLoad;";
 

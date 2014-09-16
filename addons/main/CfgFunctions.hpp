@@ -51,6 +51,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\main\fnc_ZEUSinit.sqf";
 				recompile = RECOMPILE;
 			};
+			class mainTablet {
+                description = "ALiVE Main Tablet";
+                file = "\x\alive\addons\main\fnc_mainTablet.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

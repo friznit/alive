@@ -25,7 +25,9 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_result"];
+private ["_admin","_result"];
+
+_admin = _this select 0;
 
 if !(isServer) exitwith {};
 
@@ -45,7 +47,7 @@ if(ALIVE_saveProfilesPersistent) then {
 
                 ALiVE_sysProfileLastSaveTime = time;
 
-                [ALIVE_profileHandler,"saveProfileData"] call ALIVE_fnc_profileHandler;
+                [ALIVE_profileHandler,"saveProfileData",_admin] call ALIVE_fnc_profileHandler;
 
             }else{
 

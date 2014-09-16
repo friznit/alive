@@ -994,6 +994,8 @@ switch(_operation) do {
 
             if (isDedicated) then {
 
+                _admin = _args;
+
                 if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
                     private ["_exportProfiles","_async","_missionName"];
@@ -1040,7 +1042,7 @@ switch(_operation) do {
 		           	};
                     
 		            _exportObjectives = [] call ALIVE_fnc_hashCreate;
-		
+
 		            {
 		                _objective = _x;
 		                _objectiveID = [_objective,"objectiveID",""] call ALiVE_fnc_HashGet;
@@ -1061,6 +1063,11 @@ switch(_operation) do {
 
 		            } forEach (GVAR(OBJECTIVES_DB_SAVE) select 0);
 
+
+		            _message = format["ALiVE OPCOM - Preparing to save %1 objectives..",count(_exportObjectives select 1)];
+                    [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+
+
                     _async = false; // Wait for response from server
                     _missionName = [missionName, "%20","-"] call CBA_fnc_replace;
 					_missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
@@ -1070,6 +1077,9 @@ switch(_operation) do {
                     };
 
                     _result = [GVAR(DATAHANDLER), "bulkSave", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
+
+                    _message = format["ALiVE OPCOM - Save Result: %1",_result];
+                    [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
 
                     if(ALiVE_SYS_DATA_DEBUG_ON) then {
                         ["ALiVE OPCOM - SAVE DATA RESULT (maybe truncated in RPT, dont worry): %1",_result] call ALIVE_fnc_dump;

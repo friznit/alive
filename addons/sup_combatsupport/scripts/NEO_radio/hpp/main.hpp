@@ -3,6 +3,7 @@
 class NEO_resourceRadio
 {
         idd = 655555;
+        movingEnable = true;
         onLoad = "[] spawn NEO_fnc_radioOnLoad; ";
         onUnload = "_this call NEO_fnc_radioOnUnload";
 

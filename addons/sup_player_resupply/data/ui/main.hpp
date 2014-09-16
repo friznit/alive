@@ -5,6 +5,7 @@
 class PRTablet
 {
     idd = 60001;
+    movingEnable = true;
     onLoad = "[] call ALIVE_fnc_PRTabletOnLoad;";
     onUnload = "[] call ALIVE_fnc_PRTabletOnUnLoad;";
 

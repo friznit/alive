@@ -27,7 +27,9 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_result"];
+private ["_admin","_result"];
+
+_admin = _this select 0;
 
 if !(isServer) exitwith {};
 
@@ -39,7 +41,7 @@ if(ALiVE_SYS_DATA_DEBUG_ON) then {
 
 	{
         if ([_x,"persistent",false] call ALIVE_fnc_HashGet) then {
-			_result set [count _result,[([_x,"saveData"] call ALIVE_fnc_OPCOM)]];
+			_result set [count _result,[([_x,"saveData",_admin] call ALIVE_fnc_OPCOM)]];
         };
 	} foreach OPCOM_INSTANCES;
 
