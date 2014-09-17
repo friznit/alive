@@ -93,12 +93,19 @@ TRACE_5("SYS_PLAYER SET",_saveLoadout,_saveHealth,_savePosition,_saveScores, cou
 
 // Add gear data to player's hash
 private ["_gearHash","_addGear"];
-_gearHash = [GVAR(gear_data), getPlayerUID _player] call ALIVE_fnc_hashGet;
+_gearHash = [GVAR(gear_data), getPlayerUID _player, "NONE"] call ALIVE_fnc_hashGet;
+
 _addGear = {
 	[_playerHash, _key, _value] call ALIVE_fnc_hashSet;
 	TRACE_3("SYS_PLAYER SET PLAYER DATA",_player, _key, _value);
 };
-[_gearHash, _addGear] call CBA_fnc_hashEachPair;
+
+if ([_gearHash] call ALIVE_fnc_isHash) then {
+	[_gearHash, _addGear] call CBA_fnc_hashEachPair;
+} else {
+	["No gear found for %1", _player] call ALivE_fnc_dump;
+	_playerHash call ALIVE_fnc_inspectHash;
+};
 
 
 // Add player hash to player data
