@@ -166,7 +166,7 @@ _saveServer = {
 
 		_result = [] call ALiVE_fnc_profilesSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -189,7 +189,7 @@ _saveServer = {
 
 		_results = [] call ALiVE_fnc_OPCOMSaveData;
 
-		if!(isNil "_admin") then {
+		if(!(isNil "_admin") && !(isNil "_results")) then {
             {
                 _result = _x;
 
@@ -218,7 +218,7 @@ _saveServer = {
 
 		_result = [] call ALiVE_fnc_CQBSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -242,7 +242,7 @@ _saveServer = {
 
 		_result = [] call ALiVE_fnc_logisticsSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -266,7 +266,7 @@ _saveServer = {
 
 		_result = [] call ALiVE_fnc_markerSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -289,7 +289,7 @@ _saveServer = {
 
 		_result = [] call ALiVE_fnc_spotrepSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -312,7 +312,7 @@ _saveServer = {
 
 		_result = [] call ALiVE_fnc_sitrepSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -335,7 +335,7 @@ _saveServer = {
 
 		_result = [] call ALiVE_fnc_patrolrepSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -358,7 +358,7 @@ _saveServer = {
 
         _result = [] call ALiVE_fnc_MLSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
@@ -381,7 +381,7 @@ _saveServer = {
 
         _result = [] call ALiVE_fnc_taskHandlerSaveData;
 
-        if!(isNil "_admin") then {
+        if(!(isNil "_admin") && !(isNil "_result")) then {
             _messages = _result select 1;
             if(count _messages > 0) then {
                 reverse _messages;
