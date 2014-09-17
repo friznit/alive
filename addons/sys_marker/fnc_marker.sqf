@@ -71,8 +71,9 @@ In memory of Peanut
 
 To Do:
 - isauthorized
+- Briefing screen
 - edit drawn markers
-- persist edit arrow markers
+- persist/edit arrow markers
 - free draw (create,edit,delete,MP)
 - deleteAll
 
@@ -96,6 +97,8 @@ nil
 #define MAP_CONTROL 51
 #define BRIEFING_DISPLAY_SERVER 52
 #define BRIEFING_DISPLAY_CLIENT 53
+
+#define SYS_MARKER_MAP_TEXT 5999
 
 
 private ["_result", "_operation", "_args", "_logic"];
@@ -152,7 +155,7 @@ switch (_operation) do {
              [_logic, "drawToggle", DEFAULT_TOGGLE] call ALIVE_fnc_marker;
              [_logic, "drawing", false] call ALIVE_fnc_marker;
 
-             diag_log format["TOGGLE: %1", [_logic, "drawToggle",[]] call MAINCLASS];
+//             diag_log format["TOGGLE: %1", [_logic, "drawToggle",[]] call MAINCLASS];
 
             // Define module basics on server
 			if (isServer) then {
@@ -220,51 +223,6 @@ switch (_operation) do {
                 // Restore Markers on map
                 [_logic, "restoreMarkers", [GVAR(STORE)]] call ALiVE_fnc_marker;
 
-                waitUntil {
-                    sleep 1;
-                    ((str side player) != "UNKNOWN")
-                };
-
-
-  				[] spawn {
-  					// Install handlers on briefing screen
-  					_display = BRIEFING_DISPLAY_CLIENT;
-  					_control = MAP_CONTROL;
-  					if (isServer && isMultiplayer) then {
-  						_display = BRIEFING_DISPLAY_SERVER;
-  					};
-  					waitUntil {
-                        LOG ( str ( (findDisplay _display) displayCtrl _control ) );
-                        str ((findDisplay _display) displayCtrl _control) != "No control";
-                    };
-  					 // Add eventhandler for creating markers
-
-                    disableSerialization;
-
-                	_control = ((findDisplay _display) displayCtrl _control);
-					_control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
-                	_control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
-   					_control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
-                    _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
-
-   					_display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
-
-  				};
-
-                waitUntil {LOG(str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL)); str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL) != "No control"};
-
-                LOG(str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL));
-                disableSerialization;
-                // Add eventhandler for creating markers
-                _display = findDisplay MAP_DISPLAY;
-                _control = _display displayCtrl MAP_CONTROL;
-				_control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
-                _control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
-   				_control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
-                _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
-
-                _display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
-
                 GVAR(arrowList) = [];
                 GVAR(colorChoice) = 0;
                 GVAR(colorList) = [
@@ -293,6 +251,54 @@ switch (_operation) do {
                     "ColorIndependent",
                     "ColorOPFOR"
                 ];
+
+
+                [] spawn {
+                    // Install handlers on briefing screen
+                    private ["_display","_control"];
+
+                    _display = BRIEFING_DISPLAY_CLIENT;
+                    if (isServer && isMultiplayer) then {
+                        _display = BRIEFING_DISPLAY_SERVER;
+                    };
+                    waitUntil {
+                        LOG(str ( (findDisplay _display) displayCtrl MAP_CONTROL ));
+                        str ((findDisplay _display) displayCtrl MAP_CONTROL) != "No control";
+                    };
+                     // Add eventhandler for creating markers
+
+ //                   diag_log _display;
+                    disableSerialization;
+                    _display = findDisplay _display;
+                    _control = _display displayCtrl MAP_CONTROL;
+                    _control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
+                    _control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
+                    _control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
+                    _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
+
+                    _display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
+
+                };
+
+                waitUntil {
+                    sleep 1;
+                    ((str side player) != "UNKNOWN")
+                };
+
+                waitUntil {LOG(str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL)); str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL) != "No control"};
+
+                LOG(str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL));
+                disableSerialization;
+                // Add eventhandler for creating markers
+                _display = findDisplay MAP_DISPLAY;
+                _control = _display displayCtrl MAP_CONTROL;
+				_control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
+                _control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
+   				_control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
+                _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
+
+                _display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
+
             };
 
 
@@ -328,7 +334,7 @@ switch (_operation) do {
 				private ["_side","_xy","_pos","_check"];
 				_xy = [_params select 2, _params select 3];
 
-				_pos = ((findDisplay 12) displayCtrl 51) ctrlMapScreenToWorld _xy;
+				_pos = _control ctrlMapScreenToWorld _xy;
 				uiNamespace setVariable [QGVAR(pos), _pos];
 
 				// Check to see if Marker exists at location, if so change the mode
@@ -341,10 +347,17 @@ switch (_operation) do {
 
                         if (_toggle == NO_DRAW || typeName _check != "BOOL") then {
 							// Open Dialog
-							_ok = createDialog "RscDisplayALiVEAdvancedMarker";
-							if !(_ok) then {
-								hint "Could not open Marker Dialog!";
-							};
+                            _display = ctrlParent _control;
+                            if (str _display == "Display #12") then {
+    							_ok = createDialog "RscDisplayALiVEAdvancedMarker";
+    							if !(_ok) then {
+    								diag_log "Could not open Marker Dialog!";
+    							};
+                            } else {
+                                private "_tcontrol";
+                                _tcontrol = _display displayCtrl SYS_MARKER_MAP_TEXT;
+                                _tcontrol ctrlSetText "Add Marker Not Available";
+                            };
                         } else {
 
                              // drawToggle is on
@@ -387,7 +400,7 @@ switch (_operation) do {
                                             [_markersHash, QGVAR(size), [abs ((GVAR(endpoint) select 0) - (GVAR(startpoint) select 0)), abs ((GVAR(endpoint) select 1) - (GVAR(startpoint) select 1))]] call ALIVE_fnc_hashSet;
                                             [_markersHash, QGVAR(pos), GVAR(startpoint)] call ALIVE_fnc_hashSet;
                                             // Create Marker
-                                            _markerName = "ELLIPSE" + str(random time + 1);
+                                            _markerName = "ELLIPSE" + str(random 5000 + 1);
                                             [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
 
                                         };
@@ -397,7 +410,7 @@ switch (_operation) do {
                                             [_markersHash, QGVAR(size), [abs ((GVAR(endpoint) select 0) - (GVAR(startpoint) select 0)), abs ((GVAR(endpoint) select 1) - (GVAR(startpoint) select 1))]] call ALIVE_fnc_hashSet;
                                             [_markersHash, QGVAR(pos), GVAR(startpoint)] call ALIVE_fnc_hashSet;
                                             // Create Marker
-                                            _markerName = "RECT" + str(random time + 1);
+                                            _markerName = "RECT" + str(random 5000 + 1);
                                             [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
 
                                         };
@@ -408,7 +421,7 @@ switch (_operation) do {
                                             _pos = [
                                                 ((GVAR(startpoint) select 0) + (GVAR(endpoint) select 0)) / 2,
                                                 ((GVAR(startpoint) select 1) + (GVAR(endpoint) select 1)) / 2,
-                                                ((GVAR(startpoint) select 2) + (GVAR(endpoint) select 2)) / 2
+                                                0
                                             ];
 
                                             _tmp = [
@@ -423,8 +436,9 @@ switch (_operation) do {
                                             [_markersHash, QGVAR(dir), _dir] call ALIVE_fnc_hashSet;
                                             [_markersHash, QGVAR(size), [_width,_length/2]] call ALIVE_fnc_hashSet;
                                             [_markersHash, QGVAR(pos), _pos] call ALIVE_fnc_hashSet;
+                                            _markersHash call ALIVE_fnc_inspectHash;
                                             // Create Marker
-                                            _markerName = "LINE" + str(random time + 1);
+                                            _markerName = "LINE" + str(random 5000 + 1);
                                             [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
                                         };
                                         default {
@@ -466,12 +480,13 @@ switch (_operation) do {
 
 		case "keyDown": {
 			// Handles pressing of certain keys on map
-            private ["_player","_shift","_alt","_ctr","_key","_toggle","_width","_angle"];
+            private ["_player","_shift","_alt","_ctr","_key","_toggle","_width","_angle","_display"];
 
- //           hint str _this;
+//            diag_log str _this;
 
 			_params = _args select 1;
 
+            _display = _params select 0;
 			_key = _params select 1;
 			_shift = _params select 2;
             _ctr = _params select 3;
@@ -485,20 +500,78 @@ switch (_operation) do {
 
 			switch _key do {
 				case 52: { 			// Press . to place a dot icon
-                	hint "dot pressed";
-                    _result = true;
+                    private ["_color","_markersHash","_markerName"];
+                    if (_ctr) then {
+                        _color = [_logic, "color"] call ALIVE_fnc_marker;
+                        _markersHash = [] call ALIVE_fnc_hashCreate;
+                        [_markersHash, QGVAR(shape), "ICON"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(type), "mil_dot"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(size), [1,1]] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(pos), GVAR(mousePosition)] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(color), _color] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(alpha), 0.9] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(dir), _angle] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(locality), "SIDE"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(localityValue), str(side (group player))] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(hasspotrep), false] call ALIVE_fnc_hashSet;
+                        _markerName = "DOT" + str(random 5000 + 1);
+                        [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
+                        _result = true;
+                    };
 				};
 				case 45: { 			// Press x to place objective marker
-                    hint "x pressed";
-                    _result = true;
+                    private ["_color","_markersHash","_markerName"];
+                    if (_ctr) then {
+                        _color = [_logic, "color"] call ALIVE_fnc_marker;
+                        _markersHash = [] call ALIVE_fnc_hashCreate;
+                        [_markersHash, QGVAR(shape), "ICON"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(type), "mil_objective"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(size), [1,1]] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(pos), GVAR(mousePosition)] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(color), _color] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(alpha), 0.9] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(dir), _angle] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(locality), "SIDE"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(localityValue), str(side (group player))] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(hasspotrep), false] call ALIVE_fnc_hashSet;
+                        _markerName = "OBJ" + str(random 5000 + 1);
+                        [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
+                        _result = true;
+                    };
 				};
-
+                case 53: {          // Press ? to place unknown marker
+                    private ["_color","_markersHash","_markerName"];
+                    if (_shift && _ctr) then {
+                        _color = [_logic, "color"] call ALIVE_fnc_marker;
+                        _markersHash = [] call ALIVE_fnc_hashCreate;
+                        [_markersHash, QGVAR(shape), "ICON"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(type), "mil_unknown"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(size), [1,1]] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(pos), GVAR(mousePosition)] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(color), _color] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(alpha), 0.9] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(dir), _angle] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(locality), "SIDE"] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(localityValue), str(side (group player))] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
+                        [_markersHash, QGVAR(hasspotrep), false] call ALIVE_fnc_hashSet;
+                        _markerName = "UNKN" + str(random 5000 + 1);
+                        [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
+                        _result = true;
+                    };
+                };
 				case 26:{ 			// Press [ to cycle drawing mode
                     if (_toggle == ELLIPSE_DRAW) then {
+                        private ["_title","_control"];
                     	[_logic, "drawToggle", NO_DRAW] call ALIVE_fnc_marker;
-                        hintSilent "DRAW MODE OFF";
+                        _title =  "DRAW MODE OFF";
+                        hintSilent _title;
+                        _control = _display displayCtrl SYS_MARKER_MAP_TEXT;
+                        _control ctrlSetText _title;
                     } else {
-                        private ["_title","_msg"];
+                        private ["_title","_msg","_control"];
                     	[_logic, "drawToggle", _toggle + 1] call ALIVE_fnc_marker;
                         switch (_toggle + 1) do {
                             case FREE_DRAW: {           // Free Draw
@@ -526,13 +599,20 @@ switch (_operation) do {
                             };
                         };
                         [_title, _msg] call ALIVE_fnc_sendHint;
+                        // Update the map screen to show the mode
+                        _control = _display displayCtrl SYS_MARKER_MAP_TEXT;
+                        _control ctrlSetText _title;
                     };
                     _result = true;
 				};
 				case 207:{ 			// Press END to stop drawing
+                    private ["_title","_control"];
                     [_logic, "drawToggle", NO_DRAW] call ALIVE_fnc_marker;
 					[_logic, "drawing", false] call ALIVE_fnc_marker;
-                    hint "DRAW MODE OFF";
+                    _title =  "DRAW MODE OFF";
+                    hintSilent _title;
+                    _control = _display displayCtrl SYS_MARKER_MAP_TEXT;
+                    _control ctrlSetText _title;
                     _result = true;
 				};
 				case 200:{ 			// Press up arrow to increase width
@@ -560,7 +640,7 @@ switch (_operation) do {
                         };
                     } else {
     					if (_width == 1) then {
-    					   [_logic, "width", 1] call ALIVE_fnc_marker;
+    					   [_logic, "width", 20] call ALIVE_fnc_marker;
     					} else {
     						[_logic, "width", _width - 1] call ALIVE_fnc_marker;
     					};
@@ -568,12 +648,20 @@ switch (_operation) do {
                     _result = true;
 				};
 				case 203:{ 			// Press left arrow to change color
+                    private "_colorRGBA";
                     if (GVAR(colorChoice) == count GVAR(colorList)) then {
                         GVAR(colorChoice) = 0;
                     } else {
                         GVAR(colorChoice) = GVAR(colorChoice) + 1;
                     };
                     [_logic, "color", GVAR(colorList) select GVAR(colorChoice)] call ALIVE_fnc_marker;
+
+                    // Update the fill too
+                     if ([_logic, "fill"] call ALIVE_fnc_marker != "") then {
+                         _colorRGBA = (configfile >> "cfgmarkercolors" >> (GVAR(colorList) select GVAR(colorChoice)) >> "color") call BIS_fnc_colorConfigToRGBA;
+                        [_logic, "fill", (_colorRGBA) call bis_fnc_colorRGBAtoTexture] call ALIVE_fnc_marker;
+                    };
+
                     _result = true;
 				};
 				case 205:{ 			// Press right arrow to fill
@@ -600,6 +688,8 @@ switch (_operation) do {
 			_yPos = _params select 2;
 
             _pos = _control ctrlMapScreenToWorld [_xPos, _yPos];
+
+            GVAR(mousePosition) = _pos;
 
 			// Handles drawing
 			_drawing = [_logic, "drawing"] call ALIVE_fnc_marker;

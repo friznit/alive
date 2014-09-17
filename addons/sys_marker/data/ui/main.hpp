@@ -8,6 +8,84 @@ class RscCombo;
 class RscButtonMenuOK;
 class RscButtonMenuCancel;
 class RscCheckBox;
+class RscControlsGroup;
+class RscDisplayGetReady;
+
+class RscDisplayServerGetReady : RscDisplayGetReady
+{
+	class controls
+	{
+		class TopRight: RscControlsGroup
+		{
+			class controls
+			{
+				class ALIVE_SYS_MARKER_MAP_TEXT: RscText
+				{
+					idc = 5999;
+					style = 1;
+					font = "PuristaLight";
+					text = "";
+					x = "5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+					y = "0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					w = "7 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+					h = "1.5 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					sizeEx = "0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+				};
+			};
+		};
+	};
+};
+
+
+class RscDisplayClientGetReady : RscDisplayGetReady
+{
+	class controls
+	{
+		class TopRight: RscControlsGroup
+		{
+			class controls
+			{
+				class ALIVE_SYS_MARKER_MAP_TEXT: RscText
+				{
+					idc = 5999;
+					style = 1;
+					font = "PuristaLight";
+					text = "";
+					x = "4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+					y = "0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					w = "7 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+					h = "1.5 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					sizeEx = "0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+				};
+			};
+		};
+	};
+};
+
+class RscDisplayMainMap
+{
+	class controls
+	{
+		class TopRight: RscControlsGroup
+		{
+			class controls
+			{
+				class ALIVE_SYS_MARKER_MAP_TEXT: RscText
+				{
+					idc = 5999;
+					style = 1;
+					font = "PuristaLight";
+					text = "";
+					x = "4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+					y = "0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					w = "7 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+					h = "1.5 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					sizeEx = "0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+				};
+			};
+		};
+	};
+};
 
 class RscDisplayALiVEAdvancedMarker
 {
