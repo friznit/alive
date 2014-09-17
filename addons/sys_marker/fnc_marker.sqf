@@ -4,7 +4,19 @@ SCRIPT(marker);
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_marker
 Description:
-Creates the server side object to store settings
+Allows users to mark the map with advanced markers that are persisted, with or without a SPOTREP.
+Press CTRL and Left Mouse button to add a marker. Press CTRL and Right Mouse button to delete a marker.
+Press CTRL and left mouse button on an existing marker to edit it.
+
+Users may also draw lines, rectangles, arrows, ellipses. By default drawing on the map is broadcast to all players on your side.
+Press the [ button to cycle through drawing modes. Press the END button to exit drawing mode.
+Press the up arrow to increase the width of a line or angle of a box/ellipse, press the down arrow to decrease the width of the line or angle of box/ellipse.
+Press the left arrow to change color. Press the right arrow to change fill (if appropriate).
+Press CTRL and the left mouse button to start drawing, press CTRL and the left mouse button again to stop drawing.
+
+CTRL and mouse buttons to edit or delete markers drawn.
+
+Arrows are not persisted (use an arrow icon marker to persist).
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -15,7 +27,8 @@ Returns:
 Array, String, Number, Any - The expected return value
 
 Properties:
-drawToggle - returns the map drawing toggle state
+drawToggle - sets or gets the map drawing toggle state [OFF, LINE, ARROW, BOX, ELLIPSE, FREE]
+drawing - sets or gets whether or not a marker is being drawn
 
 EventHandlers:
 keyDown - handles key press while on map screen
@@ -56,6 +69,13 @@ Tupolov
 
 In memory of Peanut
 
+To Do:
+- isauthorized
+- edit drawn markers
+- persist edit arrow markers
+- free draw (create,edit,delete,MP)
+- deleteAll
+
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
@@ -64,18 +84,26 @@ nil
 #define MAINCLASS ALIVE_fnc_marker
 
 #define NO_DRAW 0
-#define FREE_DRAW 1
+#define FREE_DRAW 5
 #define ARROW_DRAW 2
-#define ELLIPSE_DRAW 3
-#define RECTANGLE_DRAW 4
+#define ELLIPSE_DRAW 4
+#define RECTANGLE_DRAW 3
+#define LINE_DRAW 1
 
 #define DEFAULT_TOGGLE 0
 
+#define MAP_DISPLAY 12
+#define MAP_CONTROL 51
+#define BRIEFING_DISPLAY_SERVER 52
+#define BRIEFING_DISPLAY_CLIENT 53
+
+
 private ["_result", "_operation", "_args", "_logic"];
 
-PARAMS_1(_logic);
-DEFAULT_PARAM(1,_operation,"");
-DEFAULT_PARAM(2,_args,nil);
+_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_operation = [_this, 1, "", [""]] call BIS_fnc_param;
+_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+
 
 TRACE_3("SYS_marker",_logic, _operation, _args);
 
@@ -121,16 +149,14 @@ switch (_operation) do {
             - Establish data model on server and client
             */
 
-            TRACE_1("Creating data store",true);
-
-	        // Create logistics data storage in memory on all localities
-	        //GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
-
              [_logic, "drawToggle", DEFAULT_TOGGLE] call ALIVE_fnc_marker;
+             [_logic, "drawing", false] call ALIVE_fnc_marker;
+
+             diag_log format["TOGGLE: %1", [_logic, "drawToggle",[]] call MAINCLASS];
 
             // Define module basics on server
 			if (isServer) then {
-                _errorMessage = "Please include either the Requires ALiVE module! %1 %2";
+                _errorMessage = "Please include the Requires ALiVE module! %1 %2";
                 _error1 = ""; _error2 = ""; //defaults
                 if(
                     !(["ALiVE_require"] call ALiVE_fnc_isModuleavailable)
@@ -190,7 +216,7 @@ switch (_operation) do {
             if (hasInterface) then {
                 // Start any client-side processes that are needed
 
-                 waituntil {!isnil QGVAR(store)};
+                 waituntil {!isnil QGVAR(STORE)};
                 // Restore Markers on map
                 [_logic, "restoreMarkers", [GVAR(STORE)]] call ALiVE_fnc_marker;
 
@@ -199,16 +225,74 @@ switch (_operation) do {
                     ((str side player) != "UNKNOWN")
                 };
 
-                waitUntil {LOG(str ((findDisplay 12) displayCtrl 51)); str ((findDisplay 12) displayCtrl 51) != "No control"};
 
-                LOG(str ((findDisplay 12) displayCtrl 51));
+  				[] spawn {
+  					// Install handlers on briefing screen
+  					_display = BRIEFING_DISPLAY_CLIENT;
+  					_control = MAP_CONTROL;
+  					if (isServer && isMultiplayer) then {
+  						_display = BRIEFING_DISPLAY_SERVER;
+  					};
+  					waitUntil {
+                        LOG ( str ( (findDisplay _display) displayCtrl _control ) );
+                        str ((findDisplay _display) displayCtrl _control) != "No control";
+                    };
+  					 // Add eventhandler for creating markers
 
+                    disableSerialization;
+
+                	_control = ((findDisplay _display) displayCtrl _control);
+					_control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
+                	_control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
+   					_control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
+                    _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
+
+   					_display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
+
+  				};
+
+                waitUntil {LOG(str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL)); str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL) != "No control"};
+
+                LOG(str ((findDisplay MAP_DISPLAY) displayCtrl MAP_CONTROL));
+                disableSerialization;
                 // Add eventhandler for creating markers
-                ((findDisplay 12) displayCtrl 51) ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_MARKER,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
-                ((findDisplay 12) displayCtrl 51) ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
+                _display = findDisplay MAP_DISPLAY;
+                _control = _display displayCtrl MAP_CONTROL;
+				_control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
+                _control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
+   				_control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
+                _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
 
- //   			((findDisplay 12) displayCtrl 51) ctrlAddEventHandler ["keyDown", "[ALiVE_SYS_MARKER,'keyDown',[player, _this]] call ALiVE_fnc_marker;"];
-//				((findDisplay 12) displayCtrl 51) ctrlAddEventHandler ["MouseMoving", "[ALiVE_SYS_MARKER,'mouseMoving',[player, _this]] call ALiVE_fnc_marker;"];
+                _display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
+
+                GVAR(arrowList) = [];
+                GVAR(colorChoice) = 0;
+                GVAR(colorList) = [
+                    "ColorBlack",
+                    "ColorGrey",
+                    "ColorRed",
+                    "ColorGreen",
+                    "ColorBlue",
+                    "ColorYellow",
+                    "ColorOrange",
+                    "ColorWhite",
+                    "ColorPink",
+                    "ColorBrown",
+                    "ColorKhaki",
+                    "ColorWEST",
+                    "ColorEAST",
+                    "ColorGUER",
+                    "ColorCIV",
+                    "ColorUNKNOWN",
+                    "Color1_FD_F",
+                    "Color2_FD_F",
+                    "Color3_FD_F",
+                    "Color4_FD_F",
+                    "ColorBLUFOR",
+                    "ColorCivilian",
+                    "ColorIndependent",
+                    "ColorOPFOR"
+                ];
             };
 
 
@@ -226,60 +310,166 @@ switch (_operation) do {
 
          case "mouseButton": { // Runs locally on client
 
-            private ["_player","_shift","_alt","_ctr","_ok"];
+            private ["_player","_shift","_alt","_ctr","_ok","_control","_xPos","_yPos","_toggle"];
             _player = player;
             _params = _args select 1;
+            _control = _params select 0;
             _button = _params select 1;
+   			_xPos = _params select 2;
+			_yPos = _params select 3;
             _shift = _params select 4;
             _ctr = _params select 5;
             _alt = _params select 6;
 
-            // Check to see if CTRL is held down
-            if (_ctr && !_shift && !_alt) then {
-                private ["_side","_xy","_pos","_check"];
-                _xy = [_params select 2, _params select 3];
+            _toggle = [_logic, "drawToggle"] call MAINCLASS;
 
-                _pos = ((findDisplay 12) displayCtrl 51) ctrlMapScreenToWorld _xy;
-                uiNamespace setVariable [QGVAR(pos), _pos];
+			// Check to see if CTRL is held down
+			if (_ctr && !_shift && !_alt) then {
+				private ["_side","_xy","_pos","_check"];
+				_xy = [_params select 2, _params select 3];
 
-                // Check to see if Marker exists at location, if so change the mode
-                _check = [_logic, "onMarker", [_pos]] call ALIVE_fnc_marker;
+				_pos = ((findDisplay 12) displayCtrl 51) ctrlMapScreenToWorld _xy;
+				uiNamespace setVariable [QGVAR(pos), _pos];
 
-                if (_button == 0) then {
-                    uiNamespace setVariable [QGVAR(edit), _check];
+				// Check to see if Marker exists at location, if so change the mode
+				_check = [_logic, "onMarker", [_pos]] call ALIVE_fnc_marker;
 
-    				if ([_logic, "isAuthorized", [_check]] call ALIVE_fnc_marker) then {
-    					// Open Dialog
-    					_ok = createDialog "RscDisplayALiVEAdvancedMarker";
-    					if !(_ok) then {
-    						hint "Could not open Marker Dialog!";
-    					};
-    				} else {
-    					hint "You are not authorized to add/edit this marker";
-    				};
-                } else {
-                    if (typeName _check != "BOOL") then {
-                        if ([_logic, "isAuthorized", [_check]] call ALIVE_fnc_marker) then {
-                            // delete marker
-                            [_logic, "removeMarker",[_check]] call ALIVE_fnc_marker;
+				if (_button == 0) then {
+					uiNamespace setVariable [QGVAR(edit), _check];
+
+					if ([_logic, "isAuthorized", [_check]] call ALIVE_fnc_marker) then {
+
+                        if (_toggle == NO_DRAW || typeName _check != "BOOL") then {
+							// Open Dialog
+							_ok = createDialog "RscDisplayALiVEAdvancedMarker";
+							if !(_ok) then {
+								hint "Could not open Marker Dialog!";
+							};
                         } else {
-                            hint "You are not authorized to delete this marker";
+
+                             // drawToggle is on
+                            if (_ctr && _button == 0) then {
+                                private "_drawing";
+
+                                _drawing = [_logic, "drawing"] call ALIVE_fnc_marker;
+
+                                if (_drawing) then {
+                                    private ["_markersHash","_width","_color","_angle","_fill"];
+                                    [_logic, "drawing", false] call ALIVE_fnc_marker;
+                                    _width = [_logic, "width"] call ALIVE_fnc_marker;
+                                    _color = [_logic, "color"] call ALIVE_fnc_marker;
+                                    _angle = [_logic, "angle"] call ALIVE_fnc_marker;
+                                    _fill = [_logic, "fill"] call ALIVE_fnc_marker;
+
+                                    if (_fill == "") then {_fill = "Border"} else {_fill = "Solid"};
+
+                                    _markersHash = [] call ALIVE_fnc_hashCreate;
+                                    [_markersHash, QGVAR(color), _color] call ALIVE_fnc_hashSet;
+                                    [_markersHash, QGVAR(alpha), 0.9] call ALIVE_fnc_hashSet;
+                                    [_markersHash, QGVAR(dir), _angle] call ALIVE_fnc_hashSet;
+                                    [_markersHash, QGVAR(locality), "SIDE"] call ALIVE_fnc_hashSet;
+                                    [_markersHash, QGVAR(localityValue), str(side (group player))] call ALIVE_fnc_hashSet;
+                                    [_markersHash, QGVAR(player), getPlayerUID player] call ALIVE_fnc_hashSet;
+                                    [_markersHash, QGVAR(hasspotrep), false] call ALIVE_fnc_hashSet;
+
+                                    switch (_toggle) do {
+                                        case FREE_DRAW: {           // Free Draw
+                                            hintSilent "Free Draw Mode";
+                                       };
+                                        case ARROW_DRAW: {          // Free Arrow Draw
+                                            // Create Add to the arrow list
+                                            GVAR(arrowList) set [count GVAR(arrowList), [GVAR(startpoint), GVAR(endpoint), (configfile >> "cfgmarkercolors" >> _color >> "color") call BIS_fnc_colorConfigToRGBA]];
+                                            publicVariable QGVAR(arrowList);
+                                        };
+                                        case ELLIPSE_DRAW: {            // Free Ellipse Draw
+                                            [_markersHash, QGVAR(brush), _fill] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(shape), "ELLIPSE"] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(size), [abs ((GVAR(endpoint) select 0) - (GVAR(startpoint) select 0)), abs ((GVAR(endpoint) select 1) - (GVAR(startpoint) select 1))]] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(pos), GVAR(startpoint)] call ALIVE_fnc_hashSet;
+                                            // Create Marker
+                                            _markerName = "ELLIPSE" + str(random time + 1);
+                                            [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
+
+                                        };
+                                        case RECTANGLE_DRAW: {          // Free Rectangle Draw
+                                            [_markersHash, QGVAR(brush), _fill] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(shape), "RECTANGLE"] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(size), [abs ((GVAR(endpoint) select 0) - (GVAR(startpoint) select 0)), abs ((GVAR(endpoint) select 1) - (GVAR(startpoint) select 1))]] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(pos), GVAR(startpoint)] call ALIVE_fnc_hashSet;
+                                            // Create Marker
+                                            _markerName = "RECT" + str(random time + 1);
+                                            [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
+
+                                        };
+                                        case LINE_DRAW: {           // Free Line Draw
+                                            private ["_pos","_tmp","_length","_dir"];
+                                            [_markersHash, QGVAR(brush), "Solid"] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(shape), "RECTANGLE"] call ALIVE_fnc_hashSet;
+                                            _pos = [
+                                                ((GVAR(startpoint) select 0) + (GVAR(endpoint) select 0)) / 2,
+                                                ((GVAR(startpoint) select 1) + (GVAR(endpoint) select 1)) / 2,
+                                                ((GVAR(startpoint) select 2) + (GVAR(endpoint) select 2)) / 2
+                                            ];
+
+                                            _tmp = [
+                                                ((GVAR(endpoint) select 0) - (GVAR(startpoint) select 0)),
+                                                ((GVAR(endpoint) select 1) - (GVAR(startpoint) select 1))
+                                            ];
+
+                                            _length = (_tmp select 0) * (_tmp select 0) + (_tmp select 1) * (_tmp select 1);
+                                            _length = sqrt _length;
+
+                                            _dir = _tmp call CBA_fnc_vectDir;
+                                            [_markersHash, QGVAR(dir), _dir] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(size), [_width,_length/2]] call ALIVE_fnc_hashSet;
+                                            [_markersHash, QGVAR(pos), _pos] call ALIVE_fnc_hashSet;
+                                            // Create Marker
+                                            _markerName = "LINE" + str(random time + 1);
+                                            [MOD(SYS_marker), "addMarker", [_markerName, _markersHash]] call ALiVE_fnc_marker;
+                                        };
+                                        default {
+                                            // NO DRAW
+                                        };
+                                    };
+                                } else {
+                                    [_logic, "drawing", true] call ALIVE_fnc_marker;
+                                    GVAR(freeDrawCount) = 0;
+                                     GVAR(startpoint) = _control ctrlMapScreenToWorld [_xPos, _yPos];
+                                     GVAR(endpoint) = GVAR(startpoint);
+                                    [_logic, "width",1] call ALIVE_fnc_marker;
+                                    [_logic, "angle",0] call ALIVE_fnc_marker;
+                                };
+                            };
+
                         };
-                        _result = false;
-                    };
-                };
+					} else {
+						hint "You are not authorized to add/edit this marker";
+					};
+				} else {
+					if (typeName _check != "BOOL") then {
+						if ([_logic, "isAuthorized", [_check]] call ALIVE_fnc_marker) then {
+							// delete marker
+							[_logic, "removeMarker",[_check]] call ALIVE_fnc_marker;
+						} else {
+							hint "You are not authorized to delete this marker";
+						};
+						_result = false;
+					};
+				};
 
-                _result = false;
+				_result = false;
 
-            } else {
-
-                _result = true;
-            };
+			} else {
+				_result = true;
+			};
         };
 
 		case "keyDown": {
 			// Handles pressing of certain keys on map
-            private ["_player","_shift","_alt","_ctr","_key","_toggle"];
+            private ["_player","_shift","_alt","_ctr","_key","_toggle","_width","_angle"];
+
+ //           hint str _this;
+
 			_params = _args select 1;
 
 			_key = _params select 1;
@@ -287,60 +477,223 @@ switch (_operation) do {
             _ctr = _params select 3;
             _alt = _params select 4;
 
-            _result = true;
+            _result = false;
 
- //           _toggle = [_logic, "drawToggle"] call ALIVE_fnc_marker;
+            _toggle = [_logic, "drawToggle"] call ALIVE_fnc_marker;
+            _width = [_logic, "width"] call ALIVE_fnc_marker;
+            _angle = [_logic, "angle"] call ALIVE_fnc_marker;
 
 			switch _key do {
 				case 52: { 			// Press . to place a dot icon
-                    hint "dot pressed";
-                                    _result = false;
+                	hint "dot pressed";
+                    _result = true;
 				};
 				case 45: { 			// Press x to place objective marker
-                                    hint "x pressed";
-                                    _result = false;
+                    hint "x pressed";
+                    _result = true;
 				};
 
-	/*			case "57":{ 			// Press Space bar to toggle free drawing
-                                    hint "space bar pressed";
-                    if (_toggle == FREE_DRAW) then {[_logic, "drawToggle", [NO_DRAW]] call ALIVE_fnc_marker;} else {[_logic, "drawToggle", [FREE_DRAW]] call ALIVE_fnc_marker;};
+				case 26:{ 			// Press [ to cycle drawing mode
+                    if (_toggle == ELLIPSE_DRAW) then {
+                    	[_logic, "drawToggle", NO_DRAW] call ALIVE_fnc_marker;
+                        hintSilent "DRAW MODE OFF";
+                    } else {
+                        private ["_title","_msg"];
+                    	[_logic, "drawToggle", _toggle + 1] call ALIVE_fnc_marker;
+                        switch (_toggle + 1) do {
+                            case FREE_DRAW: {           // Free Draw
+                                hintSilent "Free Draw Mode";
+                           };
+                            case ARROW_DRAW: {          // Free Arrow Draw
+                                _title = "Arrow Draw Mode";
+                                 _msg = "Press [Left Ctrl] + [LMB] to select start point.<br/>Press [Left Arrow] to change color.<br/>Press [Right Arrow] to toggle fill<br/>Press [Left Ctrl] + [LMB] again to finish.<br/>Press [END] to cancel.<br/>Press [Left Bracket] to cycle draw mode.";
+                            };
+                            case ELLIPSE_DRAW: {            // Free Ellipse Draw
+                                _title =  "Ellipse Draw Mode";
+                                _msg = "Press [Left Ctrl] + [LMB] to select start point.<br/>Press [Left Arrow] to change color.<br/>Press [Right Arrow] to toggle fill<br/>Press [Up Arrow] to rotate clockwise<br/>Press [Down Arrow] to rotate counter-clockwise<br/>Press [Left Ctrl] + [LMB] again to finish.<br/>Press [END] to cancel.<br/>Press [Left Bracket] to cycle draw mode.<br/>Press [Left Ctrl] + [RMB] to delete"
+                            };
+                            case RECTANGLE_DRAW: {          // Free Rectangle Draw
+                                _title =  "Rectangle Draw Mode";
+                                _msg = "Press [Left Ctrl] + [LMB] to select start point.<br/>Press [Left Arrow] to change color.<br/>Press [Right Arrow] to toggle fill<br/>Press [Up Arrow] to rotate clockwise<br/>Press [Down Arrow] to rotate counter-clockwise<br/>Press [Left Ctrl] + [LMB] again to finish.<br/>Press [END] to cancel.<br/>Press [Left Bracket] to cycle draw mode.<br/>Press [Left Ctrl] + [RMB] to delete"
+                            };
+                            case LINE_DRAW: {           // Free Line Draw
+                                _title =  "Line Draw Mode";
+                                _msg = "Press [Left Ctrl] + [LMB] to select start point.<br/>Press [Left Arrow] to change color.<br/>Press [Right Arrow] to toggle fill<br/>Press [Up Arrow] to increase width<br/>Press [Down Arrow] to decrease width<br/>Press [Left Ctrl] + [LMB] again to finish.<br/>Press [END] to cancel.<br/>Press [Left Bracket] to cycle draw mode.<br/>Press [Left Ctrl] + [RMB] to delete"
+                            };
+                            default {
+                                _title =  "DRAW MODE OFF";
+                                _msg = "";
+                            };
+                        };
+                        [_title, _msg] call ALIVE_fnc_sendHint;
+                    };
+                    _result = true;
 				};
-				case "30":{ 			// Press a to toggle arrow drawing
-                                    hint "a pressed";
-                    if (_toggle == ARROW_DRAW) then {[_logic, "drawToggle", [NO_DRAW]] call ALIVE_fnc_marker;} else {[_logic, "drawToggle", [ARROW_DRAW]] call ALIVE_fnc_marker;};
+				case 207:{ 			// Press END to stop drawing
+                    [_logic, "drawToggle", NO_DRAW] call ALIVE_fnc_marker;
+					[_logic, "drawing", false] call ALIVE_fnc_marker;
+                    hint "DRAW MODE OFF";
+                    _result = true;
 				};
-				case "18":{ 			// Press e to toggle ellipse drawing
-                    if (_toggle == ELLIPSE_DRAW) then {[_logic, "drawToggle", [NO_DRAW]] call ALIVE_fnc_marker;} else {[_logic, "drawToggle", [ELLIPSE_DRAW]] call ALIVE_fnc_marker;};
-                                    hint "e pressed";
+				case 200:{ 			// Press up arrow to increase width
+                    if (_toggle == RECTANGLE_DRAW || _toggle == ELLIPSE_DRAW) then {
+                        if (_angle == 360) then {
+                           [_logic, "angle", 0] call ALIVE_fnc_marker;
+                        } else {
+                            [_logic, "angle", _angle + 5] call ALIVE_fnc_marker;
+                        };
+                    } else {
+    					if (_width == 20) then {
+    					   [_logic, "width", 1] call ALIVE_fnc_marker;
+    					} else {
+    						[_logic, "width", _width + 1] call ALIVE_fnc_marker;
+    					};
+                    };
+                    _result = true;
 				};
-				case "19":{ 			// Press r to toggle rectangle drawing
-                    if (_toggle == RECTANGLE_DRAW) then {[_logic, "drawToggle", [NO_DRAW]] call ALIVE_fnc_marker;} else {[_logic, "drawToggle", [RECTANGLE_DRAW]] call ALIVE_fnc_marker;};
-                                    hint "r pressed";
-				};*/
+				case 208:{ 			// Press down arrow to decrease width
+                    if (_toggle == RECTANGLE_DRAW || _toggle == ELLIPSE_DRAW) then {
+                        if (_angle == 0) then {
+                           [_logic, "angle", 360] call ALIVE_fnc_marker;
+                        } else {
+                            [_logic, "angle", _angle - 5] call ALIVE_fnc_marker;
+                        };
+                    } else {
+    					if (_width == 1) then {
+    					   [_logic, "width", 1] call ALIVE_fnc_marker;
+    					} else {
+    						[_logic, "width", _width - 1] call ALIVE_fnc_marker;
+    					};
+                    };
+                    _result = true;
+				};
+				case 203:{ 			// Press left arrow to change color
+                    if (GVAR(colorChoice) == count GVAR(colorList)) then {
+                        GVAR(colorChoice) = 0;
+                    } else {
+                        GVAR(colorChoice) = GVAR(colorChoice) + 1;
+                    };
+                    [_logic, "color", GVAR(colorList) select GVAR(colorChoice)] call ALIVE_fnc_marker;
+                    _result = true;
+				};
+				case 205:{ 			// Press right arrow to fill
+                    private ["_color","_colorClass"];
+                    if ([_logic, "fill"] call ALIVE_fnc_marker == "") then {
+                         _colorClass = [_logic,"color"] call ALiVE_fnc_marker;
+                        _color = (configfile >> "cfgmarkercolors" >> _colorClass >> "color") call BIS_fnc_colorConfigToRGBA;
+					   [_logic, "fill", (_color) call bis_fnc_colorRGBAtoTexture] call ALIVE_fnc_marker;
+                    } else {
+                       [_logic, "fill", ""] call ALIVE_fnc_marker;
+                    };
+                    _result = true;
+				};
 				default { _result = false };
 			};
 		};
 
 		case "mouseMoving": {
-            private "_toggle";
-			// Handles free draw on map
-			_toggle = [_logic, "drawToggle", []] call ALIVE_fnc_marker;
+            private ["_control", "_xPos", "_yPos", "_start", "_end","_toggle","_params","_pos"];
 
-			// Check drawing toggle
-			switch _toggle do {
-				case FREE_DRAW: {			// Free Draw
-                    hint "free draw";
+            _params = _args select 1;
+			_control = _params select 0;
+			_xPos = _params select 1;
+			_yPos = _params select 2;
+
+            _pos = _control ctrlMapScreenToWorld [_xPos, _yPos];
+
+			// Handles drawing
+			_drawing = [_logic, "drawing"] call ALIVE_fnc_marker;
+
+            if (_drawing) then {
+    			// Check drawing toggle
+                _toggle = [_logic, "drawToggle"] call ALIVE_fnc_marker;
+    			switch _toggle do {
+    				case FREE_DRAW: {			// Free Draw
+                        hintSilent "Free Draw Mode";
+                        GVAR(endpoint) = _pos;
+    				};
+    				case ARROW_DRAW: {			// Free Arrow Draw
+
+                        GVAR(endpoint) = _pos;
+    				};
+    				case ELLIPSE_DRAW: {			// Free Ellipse Draw
+
+                        GVAR(endpoint) = _pos;
+    				};
+    				case RECTANGLE_DRAW: {			// Free Rectangle Draw
+
+                        GVAR(endpoint) = _pos;
+    				};
+    				case LINE_DRAW: {			// Free Line Draw
+
+                        GVAR(endpoint) = _pos;
+    				};
+    				default {
+    					// NO DRAW
+    				};
+    			};
+            };
+		};
+
+		case "draw": {
+			private ["_control", "_toggle","_drawing"];
+			_control = (_args select 1) select 0;
+			_toggle = [_logic, "drawToggle"] call ALIVE_fnc_marker;
+			_drawing = [_logic, "drawing"] call ALIVE_fnc_marker;
+
+            if (_toggle != NO_DRAW  && _drawing) then {
+                private ["_width","_colorClass","_angle","_fill","_color"];
+                _width = [_logic, "width"] call ALIVE_fnc_marker;
+                _colorClass = [_logic, "color"] call ALIVE_fnc_marker;
+                _angle = [_logic, "angle"] call ALIVE_fnc_marker;
+                _fill = [_logic, "fill"] call ALIVE_fnc_marker;
+
+                _color = (configfile >> "cfgmarkercolors" >> _colorClass >> "color") call BIS_fnc_colorConfigToRGBA;
+
+				// Check drawing toggle
+				switch _toggle do {
+					case FREE_DRAW: {
+						_control drawLine [GVAR(startpoint), GVAR(endpoint), _color];
+                        GVAR(freeDrawCount) = GVAR(freeDrawCount) + 1;
+                        if (GVAR(freeDrawCount) > 10) then {
+                            if !( [GVAR(startpoint),GVAR(endpoint)] call BIS_fnc_areEqual ) then {
+                                private "_mkrname";
+                                // create a rectangle marker from the line info
+                                _mkrname = "FREE" + str(random time + 1);
+                                [_mkrname, GVAR(startpoint), GVAR(endpoint), _width, _color, 0.8] call ALiVE_fnc_createLineMarker;
+
+                            };
+                            GVAR(freeDrawCount) = 0;
+                            GVAR(startpoint) = GVAR(endpoint);
+                        };
+					};
+					case ARROW_DRAW: {
+                        _control drawArrow [GVAR(startpoint), GVAR(endpoint), _color];
+    				};
+					case ELLIPSE_DRAW: {
+                        _control drawEllipse [GVAR(startpoint), abs ((GVAR(endpoint) select 0) - (GVAR(startpoint) select 0)), abs ((GVAR(endpoint) select 1) - (GVAR(startpoint) select 1)), _angle, _color, _fill];
+					};
+					case RECTANGLE_DRAW: {
+                        _control drawRectangle [GVAR(startpoint), abs ((GVAR(endpoint) select 0) - (GVAR(startpoint) select 0)), abs ((GVAR(endpoint) select 1) - (GVAR(startpoint) select 1)), _angle, _color, _fill];
+					};
+					case LINE_DRAW: {
+                        for "_i" from 0 to _width do {
+                            private ["_sx","_sy","_ex","_ey"];
+                            _sx = (GVAR(startpoint) select 0) + _i;
+                            _sy = (GVAR(startpoint) select 1) + _i;
+                            _ex = (GVAR(endpoint) select 0) + _i;
+                            _ey = (GVAR(endpoint) select 1) + _i;
+                            _control drawLine [[_sx, _sy], [_ex, _ey], _color];
+                        };
+
+					};
 				};
-				case ARROW_DRAW: {			// Free Arrow Draw
-                    hint "arrow draw";
-				};
-				case ELLIPSE_DRAW: {			// Free Ellipse Draw
-                    hint "ellipse draw";
-				};
-				case RECTANGLE_DRAW: {			// Free Rectangle Draw
-                    hint "rectangle draw";
-				};
-			};
+            };
+
+            {
+                _control drawArrow [_x select 0, _x select 1, _x select 2];
+            } foreach GVAR(arrowList);
+
 		};
 
        case "state": {
@@ -360,6 +713,29 @@ switch (_operation) do {
             _result = [_logic,_operation,_args,DEFAULT_TOGGLE] call ALIVE_fnc_OOsimpleOperation;
         };
 
+        case "drawing": {
+            _result = [_logic,_operation,_args,false] call ALIVE_fnc_OOsimpleOperation;
+        };
+
+        case "color": {
+            _result = [_logic,_operation,_args, "ColorBLUFOR"] call ALIVE_fnc_OOsimpleOperation;
+        };
+
+        case "angle": {
+            _result = [_logic,_operation,_args,0] call ALIVE_fnc_OOsimpleOperation;
+        };
+
+        case "width": {
+            _result = [_logic,_operation,_args,1] call ALIVE_fnc_OOsimpleOperation;
+        };
+
+        case "fill": {
+            private ["_color","_colorClass"];
+            _colorClass = [_logic,"color"] call ALiVE_fnc_marker;
+            _color = (configfile >> "cfgmarkercolors" >> _colorClass >> "color") call BIS_fnc_colorConfigToRGBA;
+            _result = [_logic,_operation,_args,(_color) call bis_fnc_colorRGBAtoTexture] call ALIVE_fnc_OOsimpleOperation;
+        };
+
         case "isAuthorized": {
             private "_marker";
             _marker = _args select 0;
@@ -370,8 +746,6 @@ switch (_operation) do {
                 // If player owns marker, or player is admin or player is higher rank than owner
                 _result = true;
             };
-
-
         };
 
         case "onMarker": {

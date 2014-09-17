@@ -783,6 +783,13 @@ class createMarker
 	recompile = RECOMPILE;
 };
 
+class createLineMarker
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLineMarker.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class deleteLink
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_deleteLink.sqf";
