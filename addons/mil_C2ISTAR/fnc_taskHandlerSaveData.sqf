@@ -25,9 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_admin","_result","_data","_async","_missionName","_message"];
-
-_admin = _this select 0;
+private ["_result","_data","_async","_missionName","_message","_messages","_saveResult"];
 
 if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {false};
 
@@ -45,8 +43,11 @@ if (count (_data select 1) == 0) exitwith {
     //[["ALiVE_LOADINGSCREEN"],"BIS_fnc_endLoadingScreen",true,false] call BIS_fnc_MP;
 };
 
+_result = [false,[]];
+
 _message = format["ALiVE C2ISTAR - Preparing to save %1 tasks..",count(_data select 1)];
-[["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+_messages = _result select 1;
+_messages set [count _messages,_message];
 
 if(ALiVE_SYS_DATA_DEBUG_ON) then {
     ["ALiVE SAVE TASK HANDLER DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dump;
@@ -63,16 +64,17 @@ if (isNil QGVAR(DATAHANDLER)) then {
     [GVAR(DATAHANDLER),"storeType",true] call ALIVE_fnc_Data;
 };
 
-_result = [GVAR(DATAHANDLER), "bulkSave", ["sys_tasks", _data, _missionName, _async]] call ALIVE_fnc_Data;
+_saveResult = [GVAR(DATAHANDLER), "bulkSave", ["sys_tasks", _data, _missionName, _async]] call ALIVE_fnc_Data;
+_result set [0,_saveResult];
 
-
-_message = format["ALiVE C2ISTAR - Save Result: %1",_result];
-[["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+_message = format["ALiVE C2ISTAR - Save Result: %1",_saveResult];
+_messages = _result select 1;
+_messages set [count _messages,_message];
 
 
 if(ALiVE_SYS_DATA_DEBUG_ON) then {
     [false, "ALiVE TASK HANDLER - Save data complete","taskHandlerper"] call ALIVE_fnc_timer;
-    ["ALiVE TASK HANDLER SAVE DATA RESULT: %1",_result] call ALiVE_fnc_Dump;
+    ["ALiVE TASK HANDLER SAVE DATA RESULT: %1",_saveResult] call ALiVE_fnc_Dump;
 };
 
 

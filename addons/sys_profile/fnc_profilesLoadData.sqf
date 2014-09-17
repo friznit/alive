@@ -65,7 +65,7 @@ if(ALIVE_loadProfilesPersistent) then {
                 }else{
 
                     if(ALiVE_SYS_DATA_DEBUG_ON) then {
-                        ["ALiVE LOAD PROFILE DATA No data loaded setting persistence false"] call ALIVE_fnc_dumpMPH;
+                        ["ALiVE LOAD PROFILE DATA No data loaded setting persistence false"] call ALIVE_fnc_dump;
                     };
 
                     ALIVE_loadProfilesPersistent = false;
@@ -75,7 +75,7 @@ if(ALIVE_loadProfilesPersistent) then {
             }else{
 
                 if(ALiVE_SYS_DATA_DEBUG_ON) then {
-                    ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dumpMPH;
+                    ["ALiVE SAVE PROFILE DATA Please wait at least 5 minutes before saving again!"] call ALIVE_fnc_dump;
                 };
 
             };
@@ -101,7 +101,7 @@ if(ALIVE_loadProfilesPersistent) then {
     }else{
 
         if(ALiVE_SYS_DATA_DEBUG_ON) then {
-            ["ALiVE LOAD PROFILE DATA Not run on dedicated server exiting"] call ALIVE_fnc_dumpMPH;
+            ["ALiVE LOAD PROFILE DATA Not run on dedicated server exiting"] call ALIVE_fnc_dump;
         };
 
         ALIVE_loadProfilesPersistent = false;

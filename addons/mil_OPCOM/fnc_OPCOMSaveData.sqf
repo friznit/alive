@@ -27,13 +27,11 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_admin","_result"];
-
-_admin = _this select 0;
+private ["_results"];
 
 if !(isServer) exitwith {};
 
-_result = [];
+_results = [];
 
 if(ALiVE_SYS_DATA_DEBUG_ON) then {
     [true, "ALiVE OPCOM - Saving data", "opper"] call ALIVE_fnc_timer;
@@ -41,7 +39,7 @@ if(ALiVE_SYS_DATA_DEBUG_ON) then {
 
 	{
         if ([_x,"persistent",false] call ALIVE_fnc_HashGet) then {
-			_result set [count _result,[([_x,"saveData",_admin] call ALIVE_fnc_OPCOM)]];
+			_results set [count _results,[_x,"saveData"] call ALIVE_fnc_OPCOM];
         };
 	} foreach OPCOM_INSTANCES;
 
@@ -49,4 +47,4 @@ if(ALiVE_SYS_DATA_DEBUG_ON) then {
     [false, "ALiVE OPCOM - Save data complete","opper"] call ALIVE_fnc_timer;
 };
 
-_result
+_results

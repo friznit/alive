@@ -990,11 +990,9 @@ switch(_operation) do {
 		};
 
         case "saveData": {
-            private ["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective","_objectivesGlobal","_save"];
+            private ["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective","_objectivesGlobal","_save","_messages","_message","_saveResult"];
 
             if (isDedicated) then {
-
-                _admin = _args;
 
                 if (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) then {
 
@@ -1003,6 +1001,8 @@ switch(_operation) do {
                     if(ALiVE_SYS_DATA_DEBUG_ON) then {
                         ["ALiVE OPCOM - SAVE DATA TRIGGERED"] call ALiVE_fnc_Dump;
                     };
+
+                    _result = [false,[]];
 
                     //Save only every 60 seconds, bad hack because of this http://dev.withsix.com/issues/74321
                     //For normal each instance would save their own objectives but the hack collects all objectives of all OPCOMs on one save, FIFO principle
@@ -1023,8 +1023,8 @@ switch(_operation) do {
                         } foreach (GVAR(OBJECTIVES_DB_SAVE) select 0);
                         _save = true;
                     };
-                    if (isnil "_save") exitwith {["ALiVE OPCOM - SAVE DATA Please wait at least 5 minutes before saving again!"] call ALiVE_fnc_Dump; _result = nil};
-                    if (count (GVAR(OBJECTIVES_DB_SAVE) select 0) == 0) exitwith {["ALiVE SAVE OPCOM DATA Dataset is empty, not saving...!"] call ALiVE_fnc_Dump; _result = nil};
+                    if (isnil "_save") exitwith {["ALiVE OPCOM - SAVE DATA Please wait at least 5 minutes before saving again!"] call ALiVE_fnc_Dump;};
+                    if (count (GVAR(OBJECTIVES_DB_SAVE) select 0) == 0) exitwith {["ALiVE SAVE OPCOM DATA Dataset is empty, not saving...!"] call ALiVE_fnc_Dump;};
                     
                     //If I didnt send you to hell - go and save, the feck!
                     if(ALiVE_SYS_DATA_DEBUG_ON) then {
@@ -1065,7 +1065,8 @@ switch(_operation) do {
 
 
 		            _message = format["ALiVE OPCOM - Preparing to save %1 objectives..",count(_exportObjectives select 1)];
-                    [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+                    _messages = _result select 1;
+                    _messages set [count _messages,_message];
 
 
                     _async = false; // Wait for response from server
@@ -1076,13 +1077,15 @@ switch(_operation) do {
                         ["ALiVE OPCOM - SAVE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALiVE_fnc_Dump;
                     };
 
-                    _result = [GVAR(DATAHANDLER), "bulkSave", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
+                    _saveResult = [GVAR(DATAHANDLER), "bulkSave", ["mil_opcom", _exportObjectives, _missionName, _async]] call ALIVE_fnc_Data;
+                    _result set [0,_saveResult];
 
-                    _message = format["ALiVE OPCOM - Save Result: %1",_result];
-                    [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+                    _message = format["ALiVE OPCOM - Save Result: %1",_saveResult];
+                    _messages = _result select 1;
+                    _messages set [count _messages,_message];
 
                     if(ALiVE_SYS_DATA_DEBUG_ON) then {
-                        ["ALiVE OPCOM - SAVE DATA RESULT (maybe truncated in RPT, dont worry): %1",_result] call ALIVE_fnc_dump;
+                        ["ALiVE OPCOM - SAVE DATA RESULT (maybe truncated in RPT, dont worry): %1",_saveResult] call ALIVE_fnc_dump;
                         ["ALiVE OPCOM - SAVE DATA SAVING COMPLETE!"] call ALiVE_fnc_Dump;
                     };
                 };

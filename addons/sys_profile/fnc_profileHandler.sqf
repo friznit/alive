@@ -1098,9 +1098,9 @@ switch(_operation) do {
         };
 		case "saveProfileData": {
 
-            private ["_admin","_datahandler","_exportProfiles","_async","_missionName","_message"];
+            private ["_message","_messages","_saveResult","_datahandler","_exportProfiles","_async","_missionName","_message"];
 
-            _admin = _args;
+            _result = [false,[]];
 
             if(isNil"ALIVE_profileDatahandler") then {
 
@@ -1115,20 +1115,23 @@ switch(_operation) do {
             _exportProfiles = [_logic, "exportProfileData"] call MAINCLASS;
 
             _message = format["ALiVE Profile System - Preparing to save %1 profiles..",count(_exportProfiles select 1)];
-            [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+            _messages = _result select 1;
+            _messages set [count _messages,_message];
 
             _async = false; // Wait for response from server
             _missionName = [missionName, "%20", "-"] call CBA_fnc_replace;
 
             _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
-            _result = [ALIVE_profileDatahandler, "bulkSave", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
+            _saveResult = [ALIVE_profileDatahandler, "bulkSave", ["sys_profile", _exportProfiles, _missionName, _async]] call ALIVE_fnc_Data;
+            _result set [0,_saveResult];
 
-            _message = format["ALiVE Profile System - Save Result: %1",_result];
-            [["updateList",_message],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+            _message = format["ALiVE Profile System - Save Result: %1",_saveResult];
+            _messages = _result select 1;
+            _messages set [count _messages,_message];
 
             if(ALiVE_SYS_DATA_DEBUG_ON) then {
-                ["ALiVE SYS PROFILE - SAVE PROFILE DATA RESULT: %1",_result] call ALIVE_fnc_dump;
+                ["ALiVE SYS PROFILE - SAVE PROFILE DATA RESULT: %1",_saveResult] call ALIVE_fnc_dump;
             };
 
         };

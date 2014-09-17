@@ -25,13 +25,11 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_admin","_result"];
-
-_admin = _this select 0;
+private ["_result"];
 
 if !(isServer) exitwith {};
 
-_result = false;
+_result = [false,[]];
 
 if(ALIVE_saveProfilesPersistent) then {
 
@@ -47,7 +45,7 @@ if(ALIVE_saveProfilesPersistent) then {
 
                 ALiVE_sysProfileLastSaveTime = time;
 
-                [ALIVE_profileHandler,"saveProfileData",_admin] call ALIVE_fnc_profileHandler;
+                _result = [ALIVE_profileHandler,"saveProfileData"] call ALIVE_fnc_profileHandler;
 
             }else{
 
