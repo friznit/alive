@@ -380,7 +380,7 @@ ALIVE_taskObjects = [] call ALIVE_fnc_hashCreate;
  * Genrated Tasks
  */
 
-private["_options","_taskData","_taskData"];
+private["_options","_tasksData","_taskData","_taskData"];
 
 ALIVE_generatedTasks = [] call ALIVE_fnc_hashCreate;
 

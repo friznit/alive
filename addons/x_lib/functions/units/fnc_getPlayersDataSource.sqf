@@ -25,7 +25,7 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_side","_data","_options","_values","_players"];
+private ["_side","_sideNumber","_playerSide","_playerSideNumber","_data","_options","_values","_players"];
 
 _side = _this select 0;
 

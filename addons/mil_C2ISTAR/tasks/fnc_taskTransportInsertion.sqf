@@ -34,7 +34,7 @@ switch (_taskState) do {
 	case "init":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
-	    "_taskApplyType","_taskEnemySide","_enemyClusters","_pickupPosition","_insertionPosition"];
+	    "_taskApplyType","_taskEnemySide","_enemyClusters","_pickupPosition","_insertionPosition","_taskPlayers"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -91,7 +91,7 @@ switch (_taskState) do {
 
         if(!(isNil "_pickupPosition") && !(isNil "_insertionPosition")) then {
 
-            private["_stagingPosition","_dialogOptions","_dialogOption","_group","_profile"];
+            private["_stagingPosition","_dialogOptions","_dialogOption","_group","_profile","_profileID"];
 
             // establish the staging position for the task
 
@@ -150,7 +150,7 @@ switch (_taskState) do {
 
             // create the tasks
 
-            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams"];
+            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams","_taskSource"];
 
             if(_taskCurrent == 'Y')then {
                 _state = "Assigned";
@@ -253,7 +253,7 @@ switch (_taskState) do {
         if!(_pickupReached) then {
 
             private["_infantryProfile","_destinationReached","_infantryGroup","_nearVehicles","_vehicles","_vehicle","_assignments",
-            "_maxRoomVehicle","_room","_env","_dayState","_distance"];
+            "_maxRoomVehicle","_room","_env","_dayState","_distance","_object"];
 
             _infantryProfile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
             if!(isNil "_infantryProfile") then {

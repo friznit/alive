@@ -21,7 +21,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskVehicles","_vehicleWithMaxRoom","_vehicleMaxRoom"];
+private ["_taskVehicles","_vehicleWithMaxRoom","_vehicleMaxRoom","_emptyCount"];
 
 _taskVehicles = _this select 0;
 

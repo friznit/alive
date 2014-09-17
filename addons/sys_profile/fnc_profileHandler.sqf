@@ -538,7 +538,7 @@ switch(_operation) do {
 				"_profileFaction","_profilesSide","_profilesFaction","_profileActive","_profleByCompanyArray","_profileVehicleType",
 				"_profilesVehicleType","_profilesCatagorised","_profilesCatagorisedSide","_profilesCatagorisedTypes","_profilesCatagorisedVehicleTypes",
 				"_profilesCatagorisedType","_profilesCatagorisedVehicleType","_profilePositions","_profilesBySideFull","_profilesSideFull","_profilesActiveSide","_profilesInActiveSide",
-				"_playerEntities","_profileIsPlayer","_profilesFactionType","_profilesFactionVehicleType"];
+				"_playerEntities","_profileIsPlayer","_profilesFactionType","_profilesFactionVehicleType","_profileFactionType","_vehicle","_units","_profileCompany","_profilesFactionVehicleType"];
 
 				if(typeName _args == "ARRAY") then {
 						_profile = _args;

@@ -28,7 +28,7 @@ ARJay
 ---------------------------------------------------------------------------- */
 
 private ["_position","_category","_faction","_countInfantry","_countMotorized","_countMechanized","_countArmored","_countSpecOps",
-"_compositions","_composition","_groups","_motorizedGroups","_infantryGroups","_groupCount","_totalCount","_guardGroup","_guards"];
+"_compositions","_composition","_groups","_motorizedGroups","_infantryGroups","_groupCount","_totalCount","_guardGroup","_guards","_group"];
 
 _position = _this select 0;
 _category = _this select 1;

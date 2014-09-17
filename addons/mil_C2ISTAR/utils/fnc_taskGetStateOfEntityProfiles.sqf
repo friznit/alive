@@ -21,7 +21,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskProfiles","_profiles","_state","_entityProfile","_active","_vehicle"];
+private ["_taskProfiles","_profiles","_state","_entityProfile","_active","_vehicle","_units"];
 
 _taskProfiles = _this select 0;
 

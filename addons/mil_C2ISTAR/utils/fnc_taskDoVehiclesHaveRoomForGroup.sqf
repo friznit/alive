@@ -21,7 +21,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskPosition","_taskGroup","_groupCount","_vehiclesWithRoom","_emptyCount"];
+private ["_taskVehicles","_taskGroup","_groupCount","_vehiclesWithRoom","_emptyCount"];
 
 _taskVehicles = _this select 0;
 _taskGroup = _this select 1;

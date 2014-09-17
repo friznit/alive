@@ -232,6 +232,8 @@ switch(_operation) do {
 
             _logic setVariable ["startupComplete", true];
 
+            private ["_file"];
+
             // create the client task handler
             ALIVE_taskHandlerClient = [nil, "create"] call ALIVE_fnc_taskHandlerClient;
             [ALIVE_taskHandlerClient, "init"] call ALIVE_fnc_taskHandlerClient;
@@ -280,7 +282,7 @@ switch(_operation) do {
                 _generateValues set [count _generateValues,_x];
             } forEach (ALIVE_generatedTasks select 1);
 
-            private ["_taskingState","_playerListOptions","_playerListValues"];
+            private ["_taskingState","_playerListOptions","_playerListValues","_factionsDataSource"];
 
             _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -636,7 +638,8 @@ switch(_operation) do {
 
                     private ["_taskingState","_titleEdit","_descriptionEdit","_title","_description","_marker","_destination",
                     "_side","_faction","_selectedPlayers","_selectedPlayersValues","_selectedPlayersOptions","_event","_requestID",
-                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage","_source","_editingDisabled","_rev","_id"];
+                    "_playerID","_state","_apply","_current","_parent","_statusText","_errors","_errorMessage","_source","_editingDisabled",
+                    "_rev","_id","_newSelectedPlayerValues","_newSelectedPlayerOptions"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -1462,7 +1465,7 @@ switch(_operation) do {
 
                     private ["_taskingState","_side","_faction","_marker","_destination","_type","_location","_enemyFaction","_current","_apply","_selectedPlayers",
                     "_event","_taskID","_playerID","_requestID","_selectedPlayerListOptions","_selectedPlayerListValues",
-                    "_newSelectedPlayerListOptions","_newSelectedPlayerListValues","_statusText","_errors","_errorMessage"];
+                    "_newSelectedPlayerListOptions","_newSelectedPlayerListValues","_statusText","_errors","_errorMessage","_newSelectedPlayerValues","_newSelectedPlayerOptions"];
 
                     _taskingState = [_logic,"taskingState"] call MAINCLASS;
 
@@ -1914,7 +1917,7 @@ switch(_operation) do {
         _abortButton = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
 
-        private ["_factionTitle","_factionList","_factionListOptions","_factionListValues"];
+        private ["_factionTitle","_factionList","_factionIndex","_factionListOptions","_factionListValues"];
 
         _factionTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAutoGenerateFactionTitle);
         _factionTitle ctrlShow true;
@@ -2778,7 +2781,7 @@ switch(_operation) do {
 
         _currentList ctrlSetEventHandler ["LBSelChanged", "['TASK_ADD_CURRENT_LIST_SELECT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
 
-        private ["_parentTitle","_parentList","_parentListOptions","_parentListValues","_parentIndex"];
+        private ["_parentTitle","_parentList","_parentListOptions","_parentListValues","_parentIndex","_managePlayersButton"];
 
         _parentTitle = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddParentTitle);
         _parentTitle ctrlShow true;

@@ -25,7 +25,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_admin","_result","_data","_async","_missionName"];
+private ["_admin","_result","_data","_async","_missionName","_message"];
 
 _admin = _this select 0;
 

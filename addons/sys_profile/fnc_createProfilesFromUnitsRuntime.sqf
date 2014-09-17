@@ -26,7 +26,8 @@ Highhead
 private ["_debug","_groups","_vehicles","_entityCount","_vehicleCount",
 "_group","_leader","_units","_ignore","_inVehicle","_unitClasses","_positions","_ranks","_damages",
 "_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
-"_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle","_unitBlackist","_vehicleBlacklist"];
+"_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle","_unitBlackist",
+"_vehicleBlacklist","_unitBlacklisted","_initCommand","_deleteEntityCount","_deleteVehicleCount"];
 
 if (isnil "_this") then {_this = []};
 

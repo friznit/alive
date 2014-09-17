@@ -22,7 +22,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskPosition","_type","_object"];
+private ["_target","_type","_object"];
 
 _target = _this select 0;
 _type = _this select 1;

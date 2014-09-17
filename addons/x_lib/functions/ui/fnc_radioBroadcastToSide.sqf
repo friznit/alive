@@ -28,7 +28,7 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_side","_message","_sideNumber","_players","_playerSide","_playerSideNumber"];
+private ["_side","_radioBroadcast","_sideNumber","_players","_playerSide","_playerSideNumber"];
 
 _side = _this select 0;
 _radioBroadcast = _this select 1;

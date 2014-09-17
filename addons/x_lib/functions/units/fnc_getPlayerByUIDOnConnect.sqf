@@ -25,7 +25,7 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_playerUID","_player","_players"];
+private ["_playerUID","_unit"];
 
 _playerUID = _this select 0;
 
@@ -34,7 +34,7 @@ _unit = objNull;
 waitUntil {
     sleep 0.3;
 
-    private ["_players","_found","_player","_playerGUID"];
+    private ["_players","_found","_player","_playerGUID","_currentUID"];
 
     _players = call BIS_fnc_listPlayers;
     _found = false;

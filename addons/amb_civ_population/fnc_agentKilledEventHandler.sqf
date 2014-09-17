@@ -21,7 +21,7 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
-private ["_unit","_killer","_agentID","_agent","_killerSide","_position","_faction","_event","_eventID"];
+private ["_unit","_killer","_agentID","_agent","_killerSide","_position","_faction","_event","_eventID","_side"];
 	
 _unit = _this select 0;
 _killer = _this select 1;

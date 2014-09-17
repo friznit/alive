@@ -35,7 +35,7 @@ ARJay
 
 [_this] spawn {
 
-    private ["_target","_type","_count","_distance","_randomTiming","_randomTimingMax","_position","_object"];
+    private ["_args","_target","_type","_count","_distance","_randomTiming","_randomTimingMax","_position","_object"];
 
     _args = _this select 0;
     _target = _args select 0;

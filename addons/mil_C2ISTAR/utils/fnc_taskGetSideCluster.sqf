@@ -21,7 +21,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskLocation","_taskLocationType","_side","_sideClusters","_debug","_result","_nextState"];
+private ["_taskLocation","_taskLocationType","_side","_type","_sideClusters","_targetPosition","_debug","_result","_nextState","_sortedClusters"];
 
 _taskLocation = _this select 0;
 _taskLocationType = _this select 1;

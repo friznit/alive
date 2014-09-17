@@ -94,7 +94,7 @@ _exitPlayer = {
 
 // FUNCTION THAT HANDLES SERVER EXIT
 _exitServer = {
-	private ["_uid","_id"];
+	private ["_uid","_id","_result"];
 	_id = "";
 	_uid = "";
 
@@ -124,7 +124,7 @@ _exitServer = {
 
 // FUNCTION THAT HANDLES SERVER SAVE
 _saveServer = {
-	private ["_uid","_id"];
+	private ["_uid","_id","_admin"];
 	_id = "";
 	_uid = "";
 

@@ -47,7 +47,7 @@ _config = _groupClass call ALIVE_fnc_configGetGroup;
 
 if(count _config > 0) then {
 
-    private ["_entityID","_side","_profileEntity","_classes","_positions","_damages","_ranks","_unit"];
+    private ["_entityID","_side","_profileEntity","_classes","_positions","_damages","_ranks","_unit","_customMappings"];
 
 	//["CFG: %1",_config] call ALIVE_fnc_dump;
 
@@ -134,7 +134,7 @@ if(count _config > 0) then {
 
 	// if there are vehicles for this group
 
-	private ["_vehicleID","_vehicleClass","_vehicleRank","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions","_vehiclePosition"];
+	private ["_vehicleID","_vehicleClass","_vehicleRank","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions","_vehiclePosition","_vehicleKind"];
 
 	{
 		// create the profile for the vehicle

@@ -118,7 +118,7 @@ switch(_operation) do {
         };
     };
     case "loadTaskData": {
-        private["_data","_taskID"];
+        private["_data","_taskID","_task","_newTask"];
 
         if(_args) then {
 
@@ -159,7 +159,7 @@ switch(_operation) do {
     };
     case "exportTaskData": {
 
-        private["_tasks","_data","_taskID","_task","_taskHash"];
+        private["_tasks","_data","_taskID","_task","_taskHash","_taskSource"];
 
         _tasks = [_logic,"tasks"] call ALIVE_fnc_hashGet;
 
@@ -376,7 +376,7 @@ switch(_operation) do {
     };
     case "autoGenerateTasks": {
         private["_debug","_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskEnemyFaction","_taskAutoGenerate","_autoGenerateSides",
-        "_tasksBySide","_activeTasks","_countActive"];
+        "_tasksBySide","_activeTasks","_countActive","_sideTasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -409,7 +409,7 @@ switch(_operation) do {
 
             if(_countActive == 0) then {
 
-                private["_sidePlayers","_allGeneratedTasks","_taskType","_locationTypes","_taskLocationType","_taskLocation","_taskCurrent","_taskApplyType"];
+                private["_sidePlayers","_allGeneratedTasks","_taskType","_locationTypes","_taskLocationType","_taskLocation","_taskCurrent","_taskApplyType","_task"];
 
                 _sidePlayers = [_taskSide] call ALiVE_fnc_getPlayersDataSource;
                 _sidePlayers = [_sidePlayers select 1,_sidePlayers select 0];
@@ -445,7 +445,8 @@ switch(_operation) do {
     case "generateTask": {
 
         private["_debug","_taskData","_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskType","_taskLocationType",
-        "_taskLocation","_taskPlayers","_taskEnemyFaction","_taskCurrent","_taskApplyType","_player","_position","_taskSet"];
+        "_taskLocation","_taskPlayers","_taskEnemyFaction","_taskCurrent","_taskApplyType","_player","_position","_taskSet",
+        "_managedTaskParams"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -534,7 +535,7 @@ switch(_operation) do {
 
     };
     case "syncTasks": {
-        private["_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_dispatchIDs","_player"];
+        private["_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_dispatchIDs","_player","_playerSide","_parentTasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -658,7 +659,7 @@ switch(_operation) do {
 
                 {
 
-                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source"];
+                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
 
                     _task = _x;
                     _taskID = _task select 0;
@@ -700,7 +701,7 @@ switch(_operation) do {
 
                 {
 
-                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source"];
+                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
 
                     _task = _x;
                     _taskID = _task select 0;
@@ -742,7 +743,7 @@ switch(_operation) do {
 
                 {
 
-                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source"];
+                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
 
                     _task = _x;
 
@@ -761,7 +762,7 @@ switch(_operation) do {
                         if!(_parent in _parentTasks) then {
 
                             {
-                                private ["_fTask","_fTaskID","_fRequestPlayerID","_fPosition","_fTitle","_fDescription","_fState","_fCurrent","_fParent","_fSource"];
+                                private ["_fTask","_fTaskID","_fRequestPlayerID","_fPosition","_fTitle","_fDescription","_fState","_fCurrent","_fParent","_fSource","_fEvent"];
 
                                 _fTask = _x;
                                 _fTaskID = _fTask select 0;
@@ -1019,7 +1020,8 @@ switch(_operation) do {
         "_previousGroups","_updatedGroups","_tasksToDispatch","_updateTasks","_deleteTasks",
         "_taskCurrent","_activeTasks","_activeTasksToRemove","_activeTaskID","_tasksBySide","_sideTasks",
         "_activeTask","_previousTaskCurrent","_taskSource","_managedTasks","_isManaging","_sidePlayers",
-        "_groupPlayerOptions","_groupPlayerValues","_currentGroupPlayers","_currentGroupPlayerOptions","_currentGroupPlayerValues"];
+        "_groupPlayerOptions","_groupPlayerValues","_currentGroupPlayers","_currentGroupPlayerOptions",
+        "_currentGroupPlayerValues","_createTasks"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -1172,7 +1174,7 @@ switch(_operation) do {
 
             } forEach _previousTaskPlayers;
 
-            private ["_group"];
+            private ["_group","_tasksByGroup","_groupTasks"];
 
             // if some players have been removed need to also remove
             // the group if no other players from that group are selected
@@ -1273,7 +1275,7 @@ switch(_operation) do {
 
             } forEach _updatedTaskPlayers;
 
-            private ["_playerTasks","_group"];
+            private ["_playerTasks","_group","_tasksByGroup","_groupTasks"];
 
             // if the previous version of the task was for groups
             // and now has been set to individuals
@@ -1308,7 +1310,7 @@ switch(_operation) do {
                 };
             };
 
-            private ["_groupTasks","_group"];
+            private ["_tasksByGroup","_groupTasks","_group"];
 
             // if the previous version of the task was for individuals
             // and now has been set to groups

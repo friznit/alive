@@ -34,7 +34,7 @@ switch (_taskState) do {
 	case "init":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
-	    "_taskApplyType","_taskEnemySide","_enemyClusters","_targetPosition"];
+	    "_taskApplyType","_taskEnemySide","_enemyClusters","_targetPosition","_taskPlayers"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -101,7 +101,7 @@ switch (_taskState) do {
 
             // create the tasks
 
-            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams"];
+            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams","_taskSource"];
 
             if(_taskCurrent == 'Y')then {
                 _state = "Assigned";

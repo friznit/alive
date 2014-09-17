@@ -33,7 +33,7 @@ _result = [];
 switch (_taskState) do {
 	case "init":{
 
-	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
+	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskPlayers","_taskEnemyFaction","_taskCurrent",
 	    "_taskApplyType","_taskEnemySide","_enemyClusters","_targetPosition"];
 
         _taskID = _task select 0;
@@ -104,7 +104,7 @@ switch (_taskState) do {
 
             // create the tasks
 
-            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams"];
+            private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_taskSource","_newTask","_newTaskID","_taskParams"];
 
             if(_taskCurrent == 'Y')then {
                 _state = "Assigned";
@@ -169,7 +169,7 @@ switch (_taskState) do {
 	case "Destroy":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskPosition","_taskFaction","_taskTitle","_taskDescription","_taskPlayers",
-	    "_destinationReached","_taskIDs","_HVTSpawned","_lastState","_taskDialog","_currentTaskDialog"];
+	    "_destinationReached","_taskIDs","_HVTSpawned","_HVTSpawnType","_lastState","_taskDialog","_currentTaskDialog"];
 
 	    _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -234,7 +234,7 @@ switch (_taskState) do {
 
                         // create the profiles
 
-                        private["_units","_HVTProfile1","_HVTProfile1ID","_HVTProfile2","_HVTProfile1ID","_HVTGroup","_HVT","_HVTGroup2","_HVT2"];
+                        private["_units","_HVTProfile1","_HVTProfile1ID","_HVTProfile2","_HVTProfile1ID","_HVTProfile2ID","_HVTGroup","_HVT","_HVTGroup2","_HVT2","_HVT1Active","_HVT2Active"];
 
                         _units = [[_taskEnemyFaction],1,ALiVE_MIL_CQB_UNITBLACKLIST,true] call ALiVE_fnc_chooseRandomUnits;
 

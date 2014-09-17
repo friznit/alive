@@ -100,7 +100,7 @@ switch(_action) do {
 
         disableSerialization;
 
-        private["_currentListOptions","_list"];
+        private["_currentListOptions","_option","_list"];
 
         _option = _args;
 

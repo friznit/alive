@@ -23,7 +23,7 @@ ARJay
 
 [_this] spawn {
 
-    private ["_insertionPosition","_taskPosition","_taskSide","_taskFaction","_taskProfile","_taskProfileID","_insertionTypes","_countUnits","_insertionType","_carClasses","_heliClasses"];
+    private ["_args","_insertionPosition","_taskPosition","_taskSide","_taskFaction","_taskProfile","_taskProfileID","_insertionTypes","_countUnits","_insertionType","_carClasses","_heliClasses"];
 
     _args = _this select 0;
 

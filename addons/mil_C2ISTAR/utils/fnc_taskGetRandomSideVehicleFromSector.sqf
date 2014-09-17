@@ -21,8 +21,8 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskSector","_side","_targetVehicle","_sectorData","_vehiclesInSector","_sideVehicles","_targetVehicleID",
-"_vehicleProfile","_inCommand","_commandProfileID","_commandProfile"];
+private ["_taskSector","_side","_targetVehicles","_targetVehicle","_sectorData","_vehiclesInSector","_sideVehicles","_targetVehicleID",
+"_vehicleProfile","_inCommand","_commandProfileID","_commandProfile","_vehiclesInCommandOf"];
 
 _taskSector = _this select 0;
 _side = _this select 1;

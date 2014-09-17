@@ -21,7 +21,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskSector","_side","_targetEntity","_sectorData","_entitiesInSector","_sideEntities","_targetEntityID",
+private ["_taskSector","_side","_ignoreInVehicle","_targetEntity","_sectorData","_entitiesInSector","_sideEntities","_targetEntityID",
 "_entityProfile","_vehiclesInCommandOf","_vehiclesInCargoOf"];
 
 _taskSector = _this select 0;

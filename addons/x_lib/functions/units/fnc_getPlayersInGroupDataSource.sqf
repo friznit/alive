@@ -26,7 +26,7 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_data","_options","_values","_players","_group"];
+private ["_playerUID","_data","_options","_values","_players","_group"];
 
 _playerUID = _this select 0;
 

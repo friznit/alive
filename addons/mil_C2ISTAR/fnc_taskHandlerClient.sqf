@@ -128,7 +128,7 @@ switch(_operation) do {
 
     };
     case "registerTask": {
-        private["_task","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_source","_taskObject","_tasks"];
+        private["_task","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_source","_taskObject","_tasks","_parentTask","_parentTaskObject"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -190,7 +190,7 @@ switch(_operation) do {
         };
     };
     case "updateTask": {
-        private["_updatedTask","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_source","_taskObject","_tasks"];
+        private["_updatedTask","_taskID","_requestingPlayer","_position","_title","_description","_state","_current","_parent","_source","_taskObject","_tasks","_task"];
 
         if(typeName _args == "ARRAY") then {
 

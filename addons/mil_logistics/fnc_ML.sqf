@@ -503,7 +503,7 @@ switch(_operation) do {
         private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_moduleFactions","_forcePool","_type","_eventID",
         "_eventData","_eventType","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
         "_eventForcePlane","_eventForceHeli","_forceMakeupTotal","_allowInfantry","_allowMechanised","_allowMotorised",
-        "_allowArmour","_allowHeli","_allowPlane","_playerID","_requestID","_logEvent"];
+        "_allowArmour","_allowHeli","_allowPlane","_playerID","_requestID","_logEvent","_initComplete"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -1846,7 +1846,7 @@ switch(_operation) do {
 
                 // waypoint complete check stage
 
-                private ["_waitTotalIterations","_waitIterations","_waitDifference","_transportProfiles","_infantryProfiles",
+                private ["_waitTotalIterations","_waitIterations","_waitDifference","_transportProfiles","_infantryProfiles","_completed",
                 "_planeProfiles","_heliProfiles","_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance","_count"];
 
                 _count = [_logic, "checkEvent", _event] call MAINCLASS;
@@ -2629,7 +2629,7 @@ switch(_operation) do {
 
                 private ["_waitTotalIterations","_waitIterations","_waitDifference","_transportProfiles","_infantryProfiles",
                 "_armourProfiles","_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles",
-                "_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance","_count"];
+                "_waypointsCompleted","_waypointsNotCompleted","_profile","_position","_distance","_count","_completed"];
 
                 _count = [_logic, "checkEvent", _event] call MAINCLASS;
                 if(_count == 0) exitWith {
@@ -4480,7 +4480,7 @@ switch(_operation) do {
 
     case "unloadTransport": {
 
-        private ["_entityProfile","_active","_profileID","_vehiclesInCommandOf","_debug","_eventID","_eventData","_eventCargoProfiles",
+        private ["_event","_entityProfile","_active","_profileID","_vehiclesInCommandOf","_debug","_eventID","_eventData","_eventCargoProfiles",
         "_eventTransportProfiles","_eventTransportVehiclesProfiles","_playerRequested","_playerRequestProfiles","_eventPosition",
         "_eventType","_playerID","_requestID","_type","_emptyProfiles","_payloadProfiles","_vehicleProfileID","_vehicleProfile","_eventForceMakeup"];
 
@@ -4627,7 +4627,7 @@ switch(_operation) do {
 
     case "unloadTransportHelicopter": {
 
-        private ["_entityProfile","_active","_profileID","_vehiclesInCommandOf","_debug","_eventID","_eventData","_eventCargoProfiles",
+        private ["_event","_entityProfile","_active","_profileID","_vehiclesInCommandOf","_debug","_eventID","_eventData","_eventCargoProfiles",
         "_eventTransportProfiles","_eventTransportVehiclesProfiles","_playerRequested","_playerRequestProfiles","_eventPosition",
         "_eventType","_playerID","_requestID","_type","_emptyProfiles","_payloadProfiles","_vehicleProfileID","_vehicleProfile","_eventForceMakeup","_eventAssets"];
 
@@ -4862,8 +4862,8 @@ switch(_operation) do {
         // if player requested, it's more
         // complicated
 
-        private ["_debug","_event","_eventData","_eventFaction","_side","_eventPosition","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
-        "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile","_eventAssets"];
+        private ["_debug","_event","_eventData","_eventID","_eventFaction","_side","_eventPosition","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
+        "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_profile","_eventAssets","_finalDestination","_logEvent"];
 
         _debug = [_logic, "debug"] call MAINCLASS;
         _event = _args;

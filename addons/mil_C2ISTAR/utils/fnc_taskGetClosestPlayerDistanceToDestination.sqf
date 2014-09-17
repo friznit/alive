@@ -21,7 +21,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskLocation","_taskPlayers","_radius","_closest","_player","_position","_distance"];
+private ["_taskPosition","_taskPlayers","_radius","_closest","_player","_position","_distance"];
 
 _taskPosition = _this select 0;
 _taskPlayers = _this select 1;

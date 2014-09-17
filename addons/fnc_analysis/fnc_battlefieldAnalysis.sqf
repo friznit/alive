@@ -105,7 +105,7 @@ switch(_operation) do {
         [_logic,"listenerID",_listenerID] call ALIVE_fnc_hashSet;
     };
     case "handleEvent": {
-        private["_event","_type","_eventData"];
+        private["_event","_id","_type","_eventData"];
 
         if(typeName _args == "ARRAY") then {
 
@@ -319,7 +319,7 @@ switch(_operation) do {
 
     };
     case "OPCOM_DEFEND": {
-        private["_eventID","_eventData","_side","_position","_type","_clusterID"];
+        private["_eventID","_eventData","_side","_position","_size","_type","_priority","_clusterID"];
 
         _eventID = _args select 0;
         _eventData = _args select 1;
@@ -352,7 +352,7 @@ switch(_operation) do {
     };
     case "storeClusterEventToSector": {
         private["_clusterID","_eventData","_type","_position","_side","_clusterType","_size","_priority","_eventSector","_eventSectorID",
-        "_sectorData","_activeClusters","_activeCluster"];
+        "_sectorData","_activeClusters","_activeCluster","_activeSectors"];
 
         _clusterID = _args select 0;
         _eventData = _args select 1;
@@ -423,7 +423,7 @@ switch(_operation) do {
         _result = [_logic, "casualtySectors"] call ALIVE_fnc_hashGet;
     };
     case "getClustersOwnedBySide": {
-        private["_side","_clustersOwnedBySide","_activeSectors","_clusters","_owner"];
+        private["_side","_clustersOwnedBySide","_activeSectors","_clusters","_owner","_sectorData"];
 
         _side = _args select 0;
         _clustersOwnedBySide = [];
@@ -445,7 +445,7 @@ switch(_operation) do {
         _result = _clustersOwnedBySide;
     };
     case "getClustersOwnedBySideAndType": {
-        private["_side","_type","_clustersOwnedBySide","_activeSectors","_clusters","_owner","_clusterType"];
+        private["_side","_type","_clustersOwnedBySide","_activeSectors","_clusters","_owner","_clusterType","_sectorData"];
 
         _side = _args select 0;
         _type = _args select 1;
