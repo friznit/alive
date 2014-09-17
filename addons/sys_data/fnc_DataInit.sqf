@@ -296,10 +296,6 @@ if (isDedicated) then {
 						[_playerHash, "AAR_isPlayer", isPlayer _unit] call ALIVE_fnc_hashSet;
 						[_playerHash, "AAR_group", str (group _unit)] call ALIVE_fnc_hashSet;
 						[_playerHash, "gameTime", _gametime] call ALIVE_fnc_hashSet;
-						[_playerHash, "realTime", _realTime] call ALIVE_fnc_hashSet;
-						[_playerHash, "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
-						[_playerHash, "Operation", GVAR(operation)] call ALIVE_fnc_hashSet;
-						[_playerHash, "Map", worldName] call ALIVE_fnc_hashSet;
 
 						if (isPlayer _unit) then {
 							[_playerHash, "AAR_playerUID", getPlayerUID _unit] call ALIVE_fnc_hashSet;
@@ -312,6 +308,11 @@ if (isDedicated) then {
 
 				if (_count > AAR_DEFAULT_INTERVAL) then {
 
+
+					[GVAR(AAR), "realTime", _realTime] call ALIVE_fnc_hashSet;
+					[GVAR(AAR), "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
+					[GVAR(AAR), "Operation", GVAR(operation)] call ALIVE_fnc_hashSet;
+					[GVAR(AAR), "Map", worldName] call ALIVE_fnc_hashSet;
 					[GVAR(AAR), "AAR_data", GVAR(AAR_Array)] call ALIVE_fnc_hashSet;
 
 					// Send the data to DB

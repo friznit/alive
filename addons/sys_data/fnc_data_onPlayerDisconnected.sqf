@@ -52,7 +52,12 @@ if (_name == "__SERVER__") then {
 		};
 
 		if (MOD(sys_data) getVariable ["disableAAR","true"] == "false") then {
-
+			private "_realTime";
+			_realTime = [] call ALIVE_fnc_getServerTime;
+			[GVAR(AAR), "realTime", _realTime] call ALIVE_fnc_hashSet;
+			[GVAR(AAR), "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
+			[GVAR(AAR), "Operation", GVAR(operation)] call ALIVE_fnc_hashSet;
+			[GVAR(AAR), "Map", worldName] call ALIVE_fnc_hashSet;
 			[GVAR(AAR), "AAR_data", GVAR(AAR_Array)] call ALIVE_fnc_hashSet;
 
 			// Send the data to DB
