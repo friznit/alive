@@ -5,7 +5,12 @@
 <Key ID="STR_ALIVE_WEATHER">
 	<English>Dynamic Weather</English>
 </Key>
-
+<Key ID="STR_ALIVE_WEATHER_COMMENT">
+	<English>Dynamic Weather module</English>
+</Key>
+<Key ID="STR_ALIVE_WEATHER_USAGE">
+	<English>Place the Dynamic Weather module and choose between different climates! Find a high detailed set of adjustment options on the module to refine your mission!</English>
+</Key>
 <Key ID="STR_ALIVE_WEATHER_DEBUG">
 	<English>Enable Debug:</English>
 </Key>

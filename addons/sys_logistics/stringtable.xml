@@ -18,10 +18,10 @@
 	<English>Disable Player Logistics</English>
 </Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE_COMMENT">
-	<English>Disables the possibility to move, load, unload and tow on all or specific objects (sync objects that you want to exclude completely)!</English>
+	<English>Disables the possibility to move, load, unload and tow on all or specific objects ()!</English>
 </Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE_USAGE">
-	<English>Place module in your mission, set the appropriate settings and if you want to disable certain player logistics features</English>
+	<English>Place 'Disable Player Logistics'-module in your mission and set the appropriate settings and if you want to disable certain player logistics features or sync objects that you want to exclude completely!</English>
 </Key>
 <Key ID="STR_ALIVE_LOGISTICS_DEBUG">
 	<English>Debug:</English>

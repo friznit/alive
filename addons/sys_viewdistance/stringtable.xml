@@ -8,6 +8,9 @@
 <Key ID="STR_ALIVE_VDIST_COMMENT">
 	<English>View Distance Settings in Game</English>
 </Key>
+<Key ID="STR_ALIVE_VDIST_USAGE">
+	<English>View Settings module allows you to dynamically change the appropriate view and terrain grid distance in game. You can also force a fixed View Distance by setting max and min values the same!</English>
+</Key>
 <Key ID="STR_ALIVE_VDIST_MAX">
 	<English>Max VD:</English>
 </Key>
