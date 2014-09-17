@@ -111,7 +111,12 @@ _convert = {
 private "_convertHash";
 _convertHash = {
 	private ["_convertedValue"];
-	_convertedValue = [_key, _value] call _convert;
+	if (isNil "_value") then {
+		["NULL VALUE! For the key %1", _key] call ALiVE_fnc_dump;
+		_convertedValue = """""""""";
+	} else {
+		_convertedValue = [_key, _value] call _convert;
+	};
 	_string = _string + "," + """""" +_key + """""" + ":" + _convertedValue;
 };
 
