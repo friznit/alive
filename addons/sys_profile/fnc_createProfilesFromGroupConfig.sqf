@@ -39,17 +39,17 @@ _busy = if(count _this > 5) then {_this select 5} else {false};
 
 _groupProfiles = [];
 
-["Group Class: %1",_groupClass] call ALIVE_fnc_dump;
+//["Group Class: %1",_groupClass] call ALIVE_fnc_dump;
 
 _config = _groupClass call ALIVE_fnc_configGetGroup;
 
-["Group Config: %1 %2",_config,_groupClass] call ALIVE_fnc_dump;
+//["Group Config: %1 %2",_config,_groupClass] call ALIVE_fnc_dump;
 
 if(count _config > 0) then {
 
     private ["_entityID","_side","_profileEntity","_classes","_positions","_damages","_ranks","_unit","_customMappings"];
 
-	["CFG: %1",_config] call ALIVE_fnc_dump;
+	//["CFG: %1",_config] call ALIVE_fnc_dump;
 
 	_groupName = getText(_config >> "name");
 	_groupSide = getNumber(_config >> "side");
@@ -60,11 +60,11 @@ if(count _config > 0) then {
         _groupSide = [_groupSide] call ALIVE_fnc_sideObjectToNumber;
     };
 
-    ///*
+    /*
 	["CFG Name: %1",_groupName] call ALIVE_fnc_dump;
     ["CFG Side: %1",_groupSide] call ALIVE_fnc_dump;
     ["CFG Faction: %1",_groupFaction] call ALIVE_fnc_dump;
-    //*/
+    */
 
 	if(!isNil "ALIVE_factionCustomMappings") then {
         if(_groupFaction in (ALIVE_factionCustomMappings select 1)) then {
@@ -81,11 +81,11 @@ if(count _config > 0) then {
 	_groupUnits = [];
 	_groupVehicles = [];
 
-    ///*
+    /*
 	["CFG Name: %1",_groupName] call ALIVE_fnc_dump;
     ["CFG Side: %1",_side] call ALIVE_fnc_dump;
     ["CFG Faction: %1",_groupFaction] call ALIVE_fnc_dump;
-    //*/
+    */
 
     if(_side == "INDEP") then {
     	_side = "GUER";
