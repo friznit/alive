@@ -151,6 +151,8 @@ switch(_operation) do {
 
                     [_logic, "registerTask", _newTask] call MAINCLASS;
 
+                    [_logic, "updateTaskState", _newTask] call MAINCLASS;
+
 
                 } forEach (_data select 1);
             };
