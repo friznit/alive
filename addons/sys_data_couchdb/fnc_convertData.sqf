@@ -35,6 +35,12 @@ _convert = {
 	_key = _this select 0;
 	_data = _this select 1;
 
+	if (isNil "_data") exitWith {
+		["NULL DATA! For the key %1", _key] call ALiVE_fnc_dump;
+		_result = """""""""";
+		_result;
+	};
+
 	// Get the type we are dealing with
 	_type = typeName _data;
 	if ([_data] call ALIVE_fnc_isHash) then {
