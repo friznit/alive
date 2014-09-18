@@ -114,6 +114,8 @@ ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST +
 	"C_Driver_2_F",
 	"C_Driver_3_F",
 	"C_Driver_4_F"
+	"C_Marshal_F",
+    "C_man_pilot_F"
 ];
 
 /*
