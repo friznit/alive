@@ -3,10 +3,10 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_CONVOY">
-	<English>MIlitary Convoy's</English>
+	<English>MIlitary Convoy's - DEPRECIATED! REMOVE FROM YOUR MISSIONS</English>
 </Key>
 <Key ID="STR_ALIVE_CONVOY_COMMENT">
-	<English>Military Convoy Module</English>
+	<English>Military Convoy Module - DEPRECIATED! REMOVE FROM YOUR MISSIONS</English>
 </Key>
 <Key ID="STR_ALIVE_CONVOY_DEBUG">
 	<English>Enable Debug:</English>

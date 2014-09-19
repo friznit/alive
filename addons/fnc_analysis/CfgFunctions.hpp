@@ -191,6 +191,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\fnc_analysis\fnc_battlefieldAnalysis.sqf";
                 recompile = RECOMPILE;
             };
+            class militaryIntel {
+                description = "militaryIntel";
+                file = "\x\alive\addons\fnc_analysis\fnc_militaryIntel.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

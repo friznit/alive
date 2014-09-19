@@ -25,6 +25,9 @@ nil
 
 private ["_logic","_moduleID"];
 
+// DEPRECIATED
+if(true) exitWith {};
+
 PARAMS_1(_logic);
 //DEFAULT_PARAM(1,_syncunits, []);
 

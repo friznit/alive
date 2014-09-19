@@ -50,6 +50,14 @@ Peer Reviewed:
 #define DEFAULT_TASK_REVISION ""
 #define DEFAULT_TASK_ID ""
 
+#define DEFAULT_DISPLAY_INTEL false
+#define DEFAULT_INTEL_CHANCE "0.1"
+#define DEFAULT_FRIENDLY_INTEL false
+#define DEFAULT_FRIENDLY_INTEL_RADIUS 2000
+#define DEFAULT_DISPLAY_PLAYER_SECTORS false
+#define DEFAULT_DISPLAY_MIL_SECTORS false
+#define DEFAULT_RUN_EVERY 120
+
 // Display components
 #define C2Tablet_CTRL_MainDisplay 70001
 
@@ -163,6 +171,92 @@ switch(_operation) do {
 	case "c2_item": {
         _result = [_logic,_operation,_args,DEFAULT_C2_ITEM] call ALIVE_fnc_OOsimpleOperation;
     };
+    case "displayIntel": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["displayIntel", _args];
+        } else {
+            _args = _logic getVariable ["displayIntel", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["displayIntel", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "intelChance": {
+        _result = [_logic,_operation,_args,DEFAULT_INTEL_CHANCE] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "friendlyIntel": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["friendlyIntel", _args];
+        } else {
+            _args = _logic getVariable ["friendlyIntel", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["friendlyIntel", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "friendlyIntelRadius": {
+        if (typeName _args == "SCALAR") then {
+            _logic setVariable ["friendlyIntelRadius", DEFAULT_FRIENDLY_INTEL_RADIUS];
+        } else {
+            _args = _logic getVariable ["friendlyIntelRadius", DEFAULT_FRIENDLY_INTEL_RADIUS];
+        };
+        if (typeName _args == "STRING") then {
+            _logic setVariable ["friendlyIntelRadius", parseNumber _args];
+        };
+
+        _result = _args;
+    };
+    case "displayPlayerSectors": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["displayPlayerSectors", _args];
+        } else {
+            _args = _logic getVariable ["displayPlayerSectors", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["displayPlayerSectors", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "displayMilitarySectors": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["displayMilitarySectors", _args];
+        } else {
+            _args = _logic getVariable ["displayMilitarySectors", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["displayMilitarySectors", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "runEvery": {
+        if(typeName _args == "STRING") then {
+            _args = parseNumber(_args);
+        };
+        if(typeName _args == "SCALAR") then {
+            _args = floor(_args * 60);
+            _logic setVariable ["runEvery", _args];
+        };
+        _result = _logic getVariable ["runEvery", DEFAULT_RUN_EVERY];
+        if(_result < 10) then {
+            _result = floor(_result * 60);
+        };
+    };
+
+
 	case "state": {
         _result = [_logic,_operation,_args,DEFAULT_STATE] call ALIVE_fnc_OOsimpleOperation;
     };
@@ -223,6 +317,32 @@ switch(_operation) do {
 
             if(_persistent) then {
                 [ALIVE_taskHandler, "loadTaskData", _persistent] call ALIVE_fnc_taskHandler;
+            };
+
+            private["_displayIntel","_intelChance","_friendlyIntel","_friendlyIntelRadius","_displayMilitarySectors","_displayPlayerSectors","_displayIntel","_runEvery"];
+
+            _displayIntel = [_logic, "displayIntel"] call MAINCLASS;
+            _intelChance = [_logic, "intelChance"] call MAINCLASS;
+            _friendlyIntel = [_logic, "friendlyIntel"] call MAINCLASS;
+            _friendlyIntelRadius = [_logic, "friendlyIntelRadius"] call MAINCLASS;
+            _displayMilitarySectors = [_logic, "displayMilitarySectors"] call MAINCLASS;
+            _displayPlayerSectors = [_logic, "displayPlayerSectors"] call MAINCLASS;
+            _runEvery = [_logic, "runEvery"] call MAINCLASS;
+
+            _friendlyIntelRadius = parseNumber _friendlyIntelRadius;
+
+            if(_displayIntel || _displayPlayerSectors || _displayMilitarySectors || _friendlyIntel) then {
+
+                _intel = [nil, "create"] call ALIVE_fnc_militaryIntel;
+                [_intel, "displayIntel",_displayIntel] call ALIVE_fnc_militaryIntel;
+                [_intel, "intelChance",_intelChance] call ALIVE_fnc_militaryIntel;
+                [_intel, "friendlyIntel",_friendlyIntel] call ALIVE_fnc_militaryIntel;
+                [_intel, "friendlyIntelRadius",_friendlyIntelRadius] call ALIVE_fnc_militaryIntel;
+                [_intel, "displayMilitarySectors",_displayMilitarySectors] call ALIVE_fnc_militaryIntel;
+                [_intel, "displayPlayerSectors",_displayPlayerSectors] call ALIVE_fnc_militaryIntel;
+                [_intel, "runEvery",_runEvery] call ALIVE_fnc_militaryIntel;
+                [_intel, "init"] call ALIVE_fnc_militaryIntel;
+
             };
 
         };

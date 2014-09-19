@@ -26,4 +26,58 @@
 <Key ID="STR_ALIVE_C2ISTAR_PERSISTENT_COMMENT">
     <English>Enables external Database persistence for C2ISTAR player tasks</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_INTEL">
+    <English>Display Map Intel:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_INTEL_COMMENT">
+    <English>Displays current events on the battlefield on the map</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_INTEL_CHANCE">
+    <English>Intel Coverage:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_INTEL_CHANCE_COMMENT">
+    <English>Amount of intel reports generated</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_INTEL_CHANCE_LOW">
+    <English>Low coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_INTEL_CHANCE_MEDIUM">
+    <English>Medium coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_INTEL_CHANCE_HIGH">
+    <English>High coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_INTEL_CHANCE_TOTAL">
+    <English>Total coverage of intel</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_FRIENDLY_INTEL">
+    <English>Friendly Coverage:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_FRIENDLY_INTEL_COMMENT">
+    <English>Display nearby friendly units</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_FRIENDLY_INTEL_RADIUS">
+    <English>Friendly Radius:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_FRIENDLY_INTEL_RADIUS_COMMENT">
+    <English>Display friendly units within this radius around players</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_MIL_SECTORS">
+    <English>Display military map secotrs</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_MIL_SECTORS_COMMENT">
+    <English>Display map sectors containing military units on the map</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_PLAYER_SECTORS">
+    <English>Display player map secotrs</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_PLAYER_SECTORS_COMMENT">
+    <English>Display map sectors containing players on the map</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_RUN_EVERY">
+    <English>Sector Update time</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_RUN_EVERY_COMMENT">
+    <English>Update sector markings every number of minutes entered</English>
+</Key>
 </Container></Package></Project>

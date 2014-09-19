@@ -3,10 +3,10 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_MI">
-	<English>Military Intelligence</English>
+	<English>Military Intelligence - DEPRECIATED! REMOVE FROM YOUR MISSIONS</English>
 </Key>
 <Key ID="STR_ALIVE_MI_COMMENT">
-	<English>Strategic Military Intelligence</English>
+	<English>Strategic Military Intelligence - DEPRECIATED! REMOVE FROM YOUR MISSIONS</English>
 </Key>
 <Key ID="STR_ALIVE_MI_DEBUG">
 	<English>Enable Debug:</English>
@@ -48,7 +48,7 @@
     <English>place 1 Mil_Int module only per mission. Select the level of detail and frequency of intel received in the options. It is also possible to show Friendly Intel to track units friendly to players.</English>
 </Key>
 <Key ID="STR_ALIVE_SD">
-    <English>Military Sector Display</English>
+    <English>Military Sector Display - DEPRECIATED! REMOVE FROM YOUR MISSIONS</English>
 </Key>
 <Key ID="STR_ALIVE_SD_RUN_EVERY">
     <English>Update time</English>
@@ -57,6 +57,6 @@
     <English>Update sector markings every number of minutes entered</English>
 </Key>
 <Key ID="STR_ALIVE_PSD">
-    <English>Player Sector Display</English>
+    <English>Player Sector Display - DEPRECIATED! REMOVE FROM YOUR MISSIONS</English>
 </Key>
 </Container></Package></Project>

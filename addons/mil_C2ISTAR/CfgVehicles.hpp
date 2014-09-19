@@ -56,6 +56,124 @@ class CfgVehicles {
                                     };
                             };
                     };
+                    class displayIntel
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_DISPLAY_INTEL";
+                            description = "$STR_ALIVE_C2ISTAR_DISPLAY_INTEL_COMMENT";
+                            class Values
+                            {
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                    };
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            default = true;
+                                    };
+                            };
+                    };
+                    class intelChance
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_INTEL_CHANCE";
+                            description = "$STR_ALIVE_C2ISTAR_INTEL_CHANCE_COMMENT";
+                            class Values
+                            {
+                                    class LOW
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_INTEL_CHANCE_LOW";
+                                            value = "0.1";
+                                    };
+                                    class MEDIUM
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_INTEL_CHANCE_MEDIUM";
+                                            value = "0.2";
+                                    };
+                                    class HIGH
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_INTEL_CHANCE_HIGH";
+                                            value = "0.4";
+                                    };
+                                    class TOTAL
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_INTEL_CHANCE_TOTAL";
+                                            value = "1";
+                                            default = true;
+                                    };
+                            };
+                    };
+                    class friendlyIntel
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_FRIENDLY_INTEL";
+                            description = "$STR_ALIVE_C2ISTAR_FRIENDLY_INTEL_COMMENT";
+                            class Values
+                            {
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                    };
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            default = true;
+                                    };
+                            };
+                    };
+                    class friendlyIntelRadius
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_FRIENDLY_INTEL_RADIUS";
+                            description = "$STR_ALIVE_C2ISTAR_FRIENDLY_INTEL_RADIUS_COMMENT";
+                            defaultValue = "2000";
+                    };
+                    class displayMilitarySectors
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_DISPLAY_MIL_SECTORS";
+                            description = "$STR_ALIVE_C2ISTAR_DISPLAY_MIL_SECTORS_COMMENT";
+                            class Values
+                            {
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                    };
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            default = true;
+                                    };
+                            };
+                    };
+                    class displayPlayerSectors
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_DISPLAY_PLAYER_SECTORS";
+                            description = "$STR_ALIVE_C2ISTAR_DISPLAY_PLAYER_SECTORS_COMMENT";
+                            class Values
+                            {
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                    };
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            default = true;
+                                    };
+                            };
+                    };
+                    class runEvery
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_RUN_EVERY";
+                            description = "$STR_ALIVE_C2ISTAR_RUN_EVERY_COMMENT";
+                            defaultValue = 2;
+                            typeName = "NUMBER";
+                    };
                 };
 
         };

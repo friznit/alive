@@ -59,6 +59,12 @@ switch(_operation) do {
 					
 					[_logic,"debug", false] call ALIVE_fnc_hashSet;
 					[_logic,"analysisJobs", [] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
+
+					ALIVE_sectorPlotterEntities = [nil, "create"] call ALIVE_fnc_plotSectors;
+                    [ALIVE_sectorPlotterEntities, "init"] call ALIVE_fnc_plotSectors;
+
+                    ALIVE_sectorPlotterActive = [nil, "create"] call ALIVE_fnc_plotSectors;
+                    [ALIVE_sectorPlotterActive, "init"] call ALIVE_fnc_plotSectors;
 			};
                
         };
@@ -309,10 +315,10 @@ switch(_operation) do {
 
 				if(_plotSectors) then {
 					// clear the sector data plot
-					[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+					[ALIVE_sectorPlotterEntities, "clear"] call ALIVE_fnc_plotSectors;
 
 					// plot the sector data
-					[ALIVE_sectorPlotter, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
+					[ALIVE_sectorPlotterEntities, "plot", [_sectors, "entitiesBySide"]] call ALIVE_fnc_plotSectors;
 				};
 
 			};
@@ -338,7 +344,7 @@ switch(_operation) do {
 
 
 				// clear the sector data plot
-				[ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+				[ALIVE_sectorPlotterEntities, "clear"] call ALIVE_fnc_plotSectors;
 
 			};
         };
@@ -368,10 +374,10 @@ switch(_operation) do {
 
                 if(_plotSectors) then {
                     // clear the sector data plot
-                    [ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+                    [ALIVE_sectorPlotterActive, "clear"] call ALIVE_fnc_plotSectors;
 
                     // plot the sector data
-                    [ALIVE_sectorPlotter, "plot", [ALIVE_activeSectors, "active"]] call ALIVE_fnc_plotSectors;
+                    [ALIVE_sectorPlotterActive, "plot", [ALIVE_activeSectors, "active"]] call ALIVE_fnc_plotSectors;
                 };
 
             };
@@ -397,7 +403,7 @@ switch(_operation) do {
 
 
                 // clear the sector data plot
-                [ALIVE_sectorPlotter, "clear"] call ALIVE_fnc_plotSectors;
+                [ALIVE_sectorPlotterActive, "clear"] call ALIVE_fnc_plotSectors;
 
             };
         };
