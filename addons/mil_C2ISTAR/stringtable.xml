@@ -21,7 +21,7 @@
     <English>Define the item the player must have to be able to use C2ISTAR i.e "LaserDesignator"</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_PERSISTENT">
-    <English>Persistent:</English>
+    <English>Persistent Tasks:</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_PERSISTENT_COMMENT">
     <English>Enables external Database persistence for C2ISTAR player tasks</English>
@@ -63,19 +63,19 @@
     <English>Display friendly units within this radius around players</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_MIL_SECTORS">
-    <English>Display military map secotrs</English>
+    <English>Military Map Sectors:</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_MIL_SECTORS_COMMENT">
     <English>Display map sectors containing military units on the map</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_PLAYER_SECTORS">
-    <English>Display player map secotrs</English>
+    <English>Player Map Sectors:</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_PLAYER_SECTORS_COMMENT">
     <English>Display map sectors containing players on the map</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_RUN_EVERY">
-    <English>Sector Update time</English>
+    <English>Sector Update time:</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_RUN_EVERY_COMMENT">
     <English>Update sector markings every number of minutes entered</English>
