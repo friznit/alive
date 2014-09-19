@@ -95,6 +95,13 @@ switch(_operation) do {
 	};
 	// Main process
 	case "init": {
+        
+        //Only one init per instance is allowed
+    	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS XSTREAM - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
+    
+    	//Start init
+    	_logic setVariable ["initGlobal", false];
+        
 		if (isServer) then {
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
@@ -119,8 +126,7 @@ switch(_operation) do {
 
 			[_logic, "register"] call MAINCLASS;
 
-
-
+			_logic setVariable ["init",true,true];
 		};
 		 /*
         VIEW - purely visual

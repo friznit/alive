@@ -73,6 +73,13 @@ switch(_operation) do {
             ERROR_WITH_TITLE(str _logic,_err);
         };
         case "init": {
+            
+            //Only one init per instance is allowed
+            if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE MIL CQB - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
+            
+            //Start init
+            _logic setVariable ["initGlobal", false];
+            
 			//Initialise module game logic on all localities (clientside spawn)
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
@@ -298,7 +305,7 @@ switch(_operation) do {
 				//Indicate startup is done on server for that instance
 				_logic setVariable ["init",true,true];
                 
-                if ({isnil {_x getVariable "init"}} count (MOD(CQB) getvariable ["instances",[]]) == 0) then {
+                if ({!(_x getVariable ["init",false])} count (MOD(CQB) getvariable ["instances",[]]) == 0) then {
                 	//Indicate all instances are initialised on server
                 	MOD(CQB) setVariable ["startupComplete",true,true];
                 };

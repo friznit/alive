@@ -56,6 +56,12 @@ switch(_operation) do {
                 if (isServer && !(isNil "ALIVE_combatSupport")) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_CS_ERROR1");
                 };
+                
+                //Only one init per instance is allowed
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP COMBATSUPPORT - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
+            
+            	//Start init
+            	_logic setVariable ["initGlobal", false];
 
                 //Load Functions on all localities and wait for the init to have passed
 				call ALiVE_fnc_combatSupportFncInit;

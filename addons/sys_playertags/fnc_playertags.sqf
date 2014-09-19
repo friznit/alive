@@ -66,6 +66,12 @@ switch(_operation) do {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_PLAYERTAGS_ERROR1");
                 };
                 
+                //Only one init per instance is allowed
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYERTAGS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
+            
+            	//Start init
+            	_logic setVariable ["initGlobal", false];
+                
                 // Server init
                 if (isServer) then {
                     

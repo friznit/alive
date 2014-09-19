@@ -88,6 +88,12 @@ switch (_operation) do {
             
             private ["_exit"];
             
+            //Only one init per instance is allowed
+        	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS LOGISTICS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
+        
+        	//Start init
+        	_logic setVariable ["initGlobal", false];
+            
             ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
             /*
@@ -152,7 +158,7 @@ switch (_operation) do {
                 };
                 
                 GVAR(STORE) call ALIVE_fnc_inspectHash;
-            
+
             	[_logic,"state",GVAR(STORE)] call ALiVE_fnc_logistics;
                 
                 /*
