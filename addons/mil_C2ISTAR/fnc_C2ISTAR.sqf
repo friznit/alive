@@ -329,7 +329,9 @@ switch(_operation) do {
             _displayPlayerSectors = [_logic, "displayPlayerSectors"] call MAINCLASS;
             _runEvery = [_logic, "runEvery"] call MAINCLASS;
 
-            _friendlyIntelRadius = parseNumber _friendlyIntelRadius;
+            if(typeName _friendlyIntelRadius == "STRING") then {
+                _friendlyIntelRadius = parseNumber _friendlyIntelRadius;
+            };
 
             if(_displayIntel || _displayPlayerSectors || _displayMilitarySectors || _friendlyIntel) then {
 
