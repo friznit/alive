@@ -31,6 +31,8 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_AISkill","Main function missing");
 
+if (isnil "_logic") then {_logic = [nil, "create"] call ALIVE_fnc_AISkill};
+
 _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
 [_logic, "init"] call ALIVE_fnc_AISkill;

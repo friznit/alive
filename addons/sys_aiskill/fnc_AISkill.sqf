@@ -55,9 +55,9 @@ Wolffy.au 20131113
 
 /*
 * Does this mean that skill of every unit of the faction is identically set?
-* Does this impact the allocation of skill based upon rank? If so, my 
-* preference is to keep the BI model, that different ranks get different skill 
-* levels, which means team leaders are more skilled and more important to kill 
+* Does this impact the allocation of skill based upon rank? If so, my
+* preference is to keep the BI model, that different ranks get different skill
+* levels, which means team leaders are more skilled and more important to kill
 * during game play.
 */
 
@@ -78,13 +78,43 @@ switch(_operation) do {
 	default {
 		_result = [_logic, _operation, _args] call SUPERCLASS;
 	};
+
+	case "create": {
+            if (isServer) then {
+
+	            // Ensure only one module is used
+	            if !(isNil QMOD(ADDON)) then {
+                	_logic = MOD(ADDON);
+                    ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_AISKILL_ERROR1");
+	            } else {
+	        		_logic = (createGroup sideLogic) createUnit [QMOD(ADDON), [0,0], [], 0, "NONE"];
+                    MOD(ADDON) = _logic;
+                };
+
+                //Push to clients
+	            PublicVariable QMOD(ADDON);
+            };
+
+            TRACE_1("Waiting for object to be ready",true);
+
+            waituntil {!isnil QMOD(ADDON)};
+
+            TRACE_1("Creating class on all localities",true);
+
+			// initialise module game logic on all localities
+			MOD(ADDON) setVariable ["super", QUOTE(SUPERCLASS)];
+			MOD(ADDON) setVariable ["class", QUOTE(MAINCLASS)];
+
+            _result = MOD(ADDON);
+    };
+
 	case "destroy": {
 		[_logic, "debug", false] call MAINCLASS;
 		if (isServer) then {
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];
-			
+
 			[_logic, "destroy"] call SUPERCLASS;
 		};
 	};
@@ -103,7 +133,7 @@ switch(_operation) do {
 			_logic setVariable ["debug", _args];
 		};
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
-		
+
 		_result = _args;
 	};
 	case "pause": {
@@ -130,31 +160,31 @@ switch(_operation) do {
 		private["_state","_data","_nodes","_simple_operations"];
 		/*
 		_simple_operations = ["targets", "size","type","faction"];
-		
+
 		if(typeName _args != "ARRAY") then {
 			_state = [] call CBA_fnc_hashCreate;
 			// Save state
 			{
 				[_state, _x, _logic getVariable _x] call ALIVE_fnc_hashSet;
 			} forEach _simple_operations;
-			
+
 			if ([_logic, "debug"] call MAINCLASS) then {
 				diag_log PFORMAT_2(QUOTE(MAINCLASS), _operation,_state);
 			};
 			_result = _state;
 		} else {
 			ASSERT_TRUE([_args] call CBA_fnc_isHash,str _args);
-			
+
 			// Restore state
 			{
 				[_logic, _x, [_args, _x] call ALIVE_fnc_hashGet] call MAINCLASS;
 			} forEach _simple_operations;
 		};
-		*/		
+		*/
 	};
 	// Main process
 	case "init": {
-		// Using isGlobal = 0 to ensure it is only run on server anyway 
+		// Using isGlobal = 0 to ensure it is only run on server anyway
 		// If setSkill is locality sensitive, we need to run this everywhere
 		if (isServer) then {
 			// if server, initialise module game logic
@@ -162,17 +192,17 @@ switch(_operation) do {
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_AISKill"];
 			_logic setVariable ["startupComplete", false];
-			
+
 			[_logic, "skillFactionsRecruit", _logic getVariable ["skillFactionsRecruit", []]] call MAINCLASS;
 			[_logic, "skillFactionsRegular", _logic getVariable ["skillFactionsRegular", []]] call MAINCLASS;
 			[_logic, "skillFactionsVeteran", _logic getVariable ["skillFactionsVeteran", []]] call MAINCLASS;
 			[_logic, "skillFactionsExpert", _logic getVariable ["skillFactionsExpert", []]] call MAINCLASS;
 			[_logic, "customSkillFactions", _logic getVariable ["customSkillFactions", []]] call MAINCLASS;
-			
+
 			// FIXME - potentially move this below the last command to signify
 			// init has completed
 			TRACE_1("After module init",_logic);
-			
+
 			[_logic, "start"] call MAINCLASS;
 		};
 	};
@@ -289,11 +319,11 @@ switch(_operation) do {
 	case "customSkillGeneral": {
 		_result = [_logic,_operation,_args,0] call ALIVE_fnc_OOsimpleOperation;
 	};
-	
-	/* As a component, I would expect that the spawn process can be started and 
-	* stopped as required. Personally, I would create an "active"(bool) 
-	* operation to stop and start the process. I would check for a getVariable 
-	* at the end of every waitUntil, which can be set remote by a call to 
+
+	/* As a component, I would expect that the spawn process can be started and
+	* stopped as required. Personally, I would create an "active"(bool)
+	* operation to stop and start the process. I would check for a getVariable
+	* at the end of every waitUntil, which can be set remote by a call to
 	* active(false).
 	*/
 	// Main process
@@ -301,7 +331,7 @@ switch(_operation) do {
 		if (isServer) then {
 			// FIXME - maybe being pedantic, but can't you move this into the spawn?
 			_debug = [_logic, "debug"] call MAINCLASS;
-			
+
 			[_logic, _debug] spawn {
 				private ["_minSkill","_maxSkill","_diff","_factionSkill","_faction","_aimingAccuracy","_aimingShake","_aimingSpeed","_logic",
 				"_debug","_skillFactionsRecruit","_skillFactionsRegular","_skillFactionsVeteran","_customSkillFactions","_customSkillAbilityMin",
@@ -312,7 +342,7 @@ switch(_operation) do {
 
 				_logic = _this select 0;
 				_debug = _this select 1;
-				
+
 				_skillFactionsRecruit = [_logic, "skillFactionsRecruit"] call MAINCLASS;
 				_skillFactionsRegular = [_logic, "skillFactionsRegular"] call MAINCLASS;
 				_skillFactionsVeteran = [_logic, "skillFactionsVeteran"] call MAINCLASS;
@@ -330,8 +360,8 @@ switch(_operation) do {
 				_customSkillReload = [_logic, "customSkillReload"] call MAINCLASS;
 				_customSkillCommanding = [_logic, "customSkillCommanding"] call MAINCLASS;
 				_customSkillGeneral = [_logic, "customSkillGeneral"] call MAINCLASS;
-				
-				
+
+
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["ALiVE AISKILL Recruit:[%1] Regular:[%2] Veteran:[%3] Expert:[%4]",_skillFactionsRecruit,_skillFactionsRegular,_skillFactionsVeteran,_skillFactionsExpert] call ALIVE_fnc_dump;
@@ -352,8 +382,8 @@ switch(_operation) do {
 				) then {
                     _skillFactionsRegular = ["OPF_F","BLU_F","BLU_GL_F","IND_F"];
 				};
-				
-				
+
+
 				// min abil, max abil, aim acc, aim shake, aim speed, end, sdist, stime, cour, reload, comm, gen
 				_recruitSkill = [0.2,0.21,0.01,1,0.05,0.05,0.2,0.2,0.05,0.05,1,0.2];
 				_regularSkill = [0.2,0.25,0.05,0.9,0.1,0.1,0.5,0.4,0.1,0.1,1,0.5];
@@ -361,38 +391,38 @@ switch(_operation) do {
 				_expertSkill = [0.3,0.4,0.2,0.55,0.45,0.45,0.85,0.7,0.45,0.45,1,0.75];
 				_customSkill = [_customSkillAbilityMin,_customSkillAbilityMax,_customSkillAimAccuracy,_customSkillAimShake,_customSkillAimSpeed,_customSkillEndurance,
 				_customSkillSpotDistance,_customSkillSpotTime,_customSkillCourage,_customSkillReload,_customSkillCommanding,_customSkillGeneral];
-				
+
 				_factionSkills = [] call ALIVE_fnc_hashCreate;
-				
+
 				{
 					[_factionSkills, _x, _recruitSkill] call ALIVE_fnc_hashSet;
 				} forEach _skillFactionsRecruit;
-				
+
 				{
 					[_factionSkills, _x, _regularSkill] call ALIVE_fnc_hashSet;
 				} forEach _skillFactionsRegular;
-				
+
 				{
 					[_factionSkills, _x, _veteranSkill] call ALIVE_fnc_hashSet;
 				} forEach _skillFactionsVeteran;
-				
+
 				{
 					[_factionSkills, _x, _expertSkill] call ALIVE_fnc_hashSet;
 				} forEach _skillFactionsExpert;
-				
+
 				{
 					[_factionSkills, _x, _customSkill] call ALIVE_fnc_hashSet;
 				} forEach _customSkillFactions;
-				
-				
+
+
 				// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["ALiVE AISKILL Faction Skill Hash:"] call ALIVE_fnc_dump;
 					_factionSkills call ALIVE_fnc_inspectHash;
 				};
 				// DEBUG -------------------------------------------------------------------------------------
-				
-				
+
+
 				waituntil {
 
 				    if!([_logic, "pause"] call MAINCLASS) then {
@@ -446,10 +476,10 @@ switch(_operation) do {
                         };
                     };
                     // DEBUG -------------------------------------------------------------------------------------
-					
-					
+
+
 					sleep (30);
-					
+
 					false
 				};
 			};
