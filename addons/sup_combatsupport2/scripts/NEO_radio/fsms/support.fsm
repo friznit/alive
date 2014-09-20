@@ -1,0 +1,585 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, Support">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"init",0,250,-246.282410,-260.555298,-178.737518,-229.417542,0.000000,"init"};
+item1[] = {"init_done",4,218,-255.628784,-197.904205,-165.628738,-147.904205,0.000000,"init" \n "done"};
+item2[] = {"waiting_for_task",2,250,-257.874268,-119.311378,-167.874252,-69.311378,0.000000,"waiting" \n "for task"};
+item3[] = {"task_assigned",4,218,-258.248627,-38.650810,-168.248627,11.349190,0.000000,"task" \n "assigned"};
+item4[] = {"combat_ineffecti",4,218,229.876984,-57.587967,319.877075,-7.587927,0.000000,"combat" \n "ineffective"};
+item5[] = {"respawn",1,250,230.952942,-229.180130,320.953064,-179.180130,0.000000,"respawn"};
+item6[] = {"defining_task",2,250,-261.267639,47.357315,-171.267624,97.357315,0.000000,"defining task"};
+item7[] = {"requires_move",4,218,-134.101334,44.064796,-44.101254,94.064789,0.000000,"requires" \n "move"};
+item8[] = {"moving",2,250,-139.314621,136.929840,-49.314529,186.929825,0.000000,"moving"};
+item9[] = {"at_destination",4,218,-260.934998,138.878418,-170.935013,188.878418,1.000000,"at" \n "destination"};
+item10[] = {"veering",4,218,28.959576,136.621582,118.959602,186.621658,0.000000,"veering"};
+item11[] = {"starting_task",2,250,-258.831848,287.301453,-168.831818,337.301422,0.000000,"starting" \n "task"};
+item12[] = {"",7,210,-215.737976,406.743073,-207.737976,414.743073,0.000000,""};
+item13[] = {"",7,210,-216.898590,627.604065,-208.898590,635.604065,0.000000,""};
+item14[] = {"",7,210,-216.898590,739.908691,-208.898590,747.908691,0.000000,""};
+item15[] = {"",7,210,-216.898590,834.800720,-208.898590,842.800720,0.000000,""};
+item16[] = {"",7,210,-218.087906,941.519348,-210.087906,949.519348,0.000000,""};
+item17[] = {"LAND",4,218,-133.111908,383.738403,-43.111916,433.738403,0.000000,"LAND"};
+item18[] = {"finding_LZ",2,250,-2.850349,379.388794,87.149689,429.388916,0.000000,"finding" \n "LZ"};
+item19[] = {"LZ_found",4,218,129.163757,379.388794,219.163757,429.388794,0.000000,"LZ" \n "found"};
+item20[] = {"no_LZ",4,218,0.717590,453.126373,90.717590,503.126373,0.000000,"no" \n "LZ"};
+item21[] = {"landing",2,250,251.663361,379.388763,341.663361,429.388763,0.000000,"landing"};
+item22[] = {"task_complete",4,218,529.490845,379.032043,619.490906,429.032013,0.000000,"task" \n "complete"};
+item23[] = {"",7,210,562.486450,-294.828247,570.486450,-286.828247,0.000000,""};
+item24[] = {"",7,210,15.206793,-293.773804,23.206793,-285.773804,0.000000,""};
+item25[] = {"",7,210,672.416687,-38.193535,680.416687,-30.193529,0.000000,""};
+item26[] = {"updating_status",2,250,250.069122,451.384674,340.069122,501.384674,0.000000,"updating" \n "status"};
+item27[] = {"LOITER",4,218,-119.210808,608.570007,-29.210808,658.570007,0.000000,"LOITER"};
+item28[] = {"set_loiter_state",2,250,243.173660,606.532532,333.173645,656.532532,0.000000,"set" \n "loiter state"};
+item29[] = {"SAD",4,218,-114.039223,718.897400,-24.039215,768.897400,0.000000,"SAD"};
+item30[] = {"ATTACK",4,218,-119.210823,813.710022,-29.210808,863.710022,0.000000,"ATTACK"};
+item31[] = {"PICKUP",4,218,-119.210823,922.313416,-29.210808,972.313416,0.000000,"PICKUP"};
+item32[] = {"",7,210,-220.918716,1055.051147,-212.918716,1063.051147,0.000000,""};
+item33[] = {"RTB",4,218,-117.486748,1032.640869,-27.486759,1082.640869,0.000000,"RTB"};
+item34[] = {"",7,210,296.613617,284.169312,304.613617,292.169312,0.000000,""};
+item35[] = {"",7,210,273.830627,74.171181,281.830627,82.171188,0.000000,""};
+item36[] = {"land",2,250,58.720482,1030.604492,148.720490,1080.604492,0.000000,"land"};
+item37[] = {"unit_ready",4,218,201.801498,1030.604492,291.801514,1080.604492,0.000000,"unit ready"};
+item38[] = {"refuel_rearm_rep",2,250,353.501892,1030.604492,443.501892,1080.604492,0.000000,"refuel" \n "rearm" \n "repair"};
+item39[] = {"",7,210,672.416748,897.866638,680.416748,905.866577,0.000000,""};
+item40[] = {"",7,210,672.044617,575.817017,680.044617,583.817017,0.000000,""};
+item41[] = {"MOVE",4,218,-376.322937,293.757263,-286.322937,343.757263,0.000000,"MOVE"};
+item42[] = {"",7,210,-332.163422,-101.413643,-324.163422,-93.413635,0.000000,""};
+item43[] = {"____FAKE____",9,1720,0.000000,0.000000,0.000000,0.000000,0.000000,"____FAKE____"};
+link0[] = {0,1};
+link1[] = {1,2};
+link2[] = {2,3};
+link3[] = {2,4};
+link4[] = {3,6};
+link5[] = {4,5};
+link6[] = {6,7};
+link7[] = {6,9};
+link8[] = {7,8};
+link9[] = {8,4};
+link10[] = {8,9};
+link11[] = {8,10};
+link12[] = {9,11};
+link13[] = {10,8};
+link14[] = {11,12};
+link15[] = {11,41};
+link16[] = {12,13};
+link17[] = {12,17};
+link18[] = {13,14};
+link19[] = {13,27};
+link20[] = {14,15};
+link21[] = {14,29};
+link22[] = {15,16};
+link23[] = {15,30};
+link24[] = {16,31};
+link25[] = {16,32};
+link26[] = {17,18};
+link27[] = {18,19};
+link28[] = {18,20};
+link29[] = {18,34};
+link30[] = {19,21};
+link31[] = {20,26};
+link32[] = {21,22};
+link33[] = {21,34};
+link34[] = {22,23};
+link35[] = {23,24};
+link36[] = {24,2};
+link37[] = {25,4};
+link38[] = {25,35};
+link39[] = {26,22};
+link40[] = {27,28};
+link41[] = {28,22};
+link42[] = {32,33};
+link43[] = {33,36};
+link44[] = {34,25};
+link45[] = {35,3};
+link46[] = {36,37};
+link47[] = {36,39};
+link48[] = {37,38};
+link49[] = {38,22};
+link50[] = {38,39};
+link51[] = {39,40};
+link52[] = {40,25};
+link53[] = {41,42};
+link54[] = {42,2};
+link55[] = {29,43};
+link56[] = {30,43};
+link57[] = {31,43};
+globals[] = {0.000000,0,0,0,0,640,480,1,53,6316128,1,-583.824890,567.718933,1508.343140,-34.516205,1017,1031,1};
+window[] = {2,-1,-1,-1,-1,967,397,1837,117,3,1035};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "Support";
+  class States
+  {
+    /*%FSM<STATE "init">*/
+    class init
+    {
+      name = "init";
+      init = /*%FSM<STATEINIT""">*/"private[""_grp"",""_base"",""_vehicles"",""_distThreshold""];" \n
+       "" \n
+       "_grp = _this select 0;" \n
+       "_base = _this select 1;" \n
+       "" \n
+       "[_grp, _base] call ALiVE_fnc_supportResetLoiterPoint;" \n
+       "" \n
+       "_distThreshold = 150;" \n
+       "" \n
+       "_vehicles = [];" \n
+       "{" \n
+       "	if !( (vehicle _x) in _vehicles) then {" \n
+       "		_vehicles set[count _vehicles,_x];" \n
+       "	};" \n
+       "} forEach (units _grp);"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "init_done">*/
+        class init_done
+        {
+          priority = 0.000000;
+          to="waiting_for_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "waiting_for_task">*/
+    class waiting_for_task
+    {
+      name = "waiting_for_task";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "combat_ineffecti">*/
+        class combat_ineffecti
+        {
+          priority = 0.000000;
+          to="respawn";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "task_assigned">*/
+        class task_assigned
+        {
+          priority = 0.000000;
+          to="defining_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNil {(leader _grp) getVariable[""ALIVE_supportTask"",nil]}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "respawn">*/
+    class respawn
+    {
+      name = "respawn";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "defining_task">*/
+    class defining_task
+    {
+      name = "defining_task";
+      init = /*%FSM<STATEINIT""">*/"" \n
+       "_taskArray = (leader _grp) getVariable[""ALIVE_supportTask"",[]];" \n
+       "_task = _taskArray select 0;" \n
+       "_dest = _taskArray select 1;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "at_destination">*/
+        class at_destination
+        {
+          priority = 1.000000;
+          to="starting_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_dest distance (getPos (leader _grp)) <= _distThreshold"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "requires_move">*/
+        class requires_move
+        {
+          priority = 0.000000;
+          to="moving";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "moving">*/
+    class moving
+    {
+      name = "moving";
+      init = /*%FSM<STATEINIT""">*/"// neuter the group to get the moving" \n
+       "(leader _grp) doMove _dest;" \n
+       "" \n
+       "// re-establish ROE"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "at_destination">*/
+        class at_destination
+        {
+          priority = 1.000000;
+          to="starting_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_dest distance (getPos (leader _grp)) <= _distThreshold"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "veering">*/
+        class veering
+        {
+          priority = 0.000000;
+          to="moving";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((expectedDestination (leader _grp)) select 0) distance _dest <= _distThreshold"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "combat_ineffecti">*/
+        class combat_ineffecti
+        {
+          priority = 0.000000;
+          to="respawn";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "starting_task">*/
+    class starting_task
+    {
+      name = "starting_task";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "LAND">*/
+        class LAND
+        {
+          priority = 0.000000;
+          to="finding_LZ";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_task == ""LAND"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "LOITER">*/
+        class LOITER
+        {
+          priority = 0.000000;
+          to="set_loiter_state";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_task == ""LOITER"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "SAD">*/
+        class SAD
+        {
+          priority = 0.000000;
+          to="____FAKE____";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_task == ""SAD"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "ATTACK">*/
+        class ATTACK
+        {
+          priority = 0.000000;
+          to="____FAKE____";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_task == ""ATTACK RUN"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "PICKUP">*/
+        class PICKUP
+        {
+          priority = 0.000000;
+          to="____FAKE____";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_task == ""PICKUP"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "RTB">*/
+        class RTB
+        {
+          priority = 0.000000;
+          to="land";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_task == ""RTB"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "MOVE">*/
+        class MOVE
+        {
+          priority = 0.000000;
+          to="waiting_for_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_task == ""MOVE"""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "finding_LZ">*/
+    class finding_LZ
+    {
+      name = "finding_LZ";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "no_LZ">*/
+        class no_LZ
+        {
+          priority = 0.000000;
+          to="updating_status";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "combat_ineffecti">*/
+        class combat_ineffecti
+        {
+          priority = 0.000000;
+          to="respawn";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "task_assigned">*/
+        class task_assigned
+        {
+          priority = 0.000000;
+          to="defining_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNil {(leader _grp) getVariable[""ALIVE_supportTask"",nil]}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "LZ_found">*/
+        class LZ_found
+        {
+          priority = 0.000000;
+          to="landing";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "landing">*/
+    class landing
+    {
+      name = "landing";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "combat_ineffecti">*/
+        class combat_ineffecti
+        {
+          priority = 0.000000;
+          to="respawn";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "task_assigned">*/
+        class task_assigned
+        {
+          priority = 0.000000;
+          to="defining_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNil {(leader _grp) getVariable[""ALIVE_supportTask"",nil]}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "task_complete">*/
+        class task_complete
+        {
+          priority = 0.000000;
+          to="waiting_for_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "updating_status">*/
+    class updating_status
+    {
+      name = "updating_status";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "task_complete">*/
+        class task_complete
+        {
+          priority = 0.000000;
+          to="waiting_for_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "set_loiter_state">*/
+    class set_loiter_state
+    {
+      name = "set_loiter_state";
+      init = /*%FSM<STATEINIT""">*/"" \n
+       "[_grp, _dest] call ALiVE_fnc_supportResetLoiterPoint;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "task_complete">*/
+        class task_complete
+        {
+          priority = 0.000000;
+          to="waiting_for_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "land">*/
+    class land
+    {
+      name = "land";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "combat_ineffecti">*/
+        class combat_ineffecti
+        {
+          priority = 0.000000;
+          to="respawn";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "task_assigned">*/
+        class task_assigned
+        {
+          priority = 0.000000;
+          to="defining_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNil {(leader _grp) getVariable[""ALIVE_supportTask"",nil]}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "unit_ready">*/
+        class unit_ready
+        {
+          priority = 0.000000;
+          to="refuel_rearm_rep";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "refuel_rearm_rep">*/
+    class refuel_rearm_rep
+    {
+      name = "refuel_rearm_rep";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "combat_ineffecti">*/
+        class combat_ineffecti
+        {
+          priority = 0.000000;
+          to="respawn";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "task_assigned">*/
+        class task_assigned
+        {
+          priority = 0.000000;
+          to="defining_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNil {(leader _grp) getVariable[""ALIVE_supportTask"",nil]}"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "task_complete">*/
+        class task_complete
+        {
+          priority = 0.000000;
+          to="waiting_for_task";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "____FAKE____">*/
+    class ____FAKE____
+    {
+      name = "____FAKE____";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="init";
+  finalStates[] =
+  {
+    "respawn",
+  };
+};
+/*%FSM</COMPILE>*/
