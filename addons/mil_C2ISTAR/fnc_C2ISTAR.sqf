@@ -1873,8 +1873,11 @@ switch(_operation) do {
             _newTask set [11,_task select 11];
             _newTask set [12,_task select 12];
             _newTask set [13,_task select 13];
-            _newTask set [14,_task select 14];
-            _newTask set [15,_task select 15];
+
+            if(count _task > 14) then {
+                _newTask set [14,_task select 14];
+                _newTask set [15,_task select 15];
+            };
 
             _parent = _newTask select 11;
             _current = _newTask select 10;
