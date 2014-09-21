@@ -34,7 +34,7 @@ if ([_data] call ALIVE_fnc_isHash) then {
 
 	// Grab Player's serverGroup
 	_playerGroup = [_data, "ServerGroup", "Unknown"] call ALIVE_fnc_hashGet;
-	_username = [_data, "username", "Unknown"] call ALIVE_fnc_h
+	_username = [_data, "username", "Unknown"] call ALIVE_fnc_hashGet;
 
 	player setVariable [QGVAR(playerGroup), _playerGroup, true];
 
