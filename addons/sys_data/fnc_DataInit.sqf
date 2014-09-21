@@ -2,6 +2,8 @@
 SCRIPT(DataInit);
 
 #define AAR_DEFAULT_INTERVAL 10
+#define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_Data
 
 // Sets up a system for data (separate from the fnc_data module = datahandler)
 
@@ -12,6 +14,37 @@ PARAMS_1(_logic);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_Data","Main function missing");
+
+// Check to see if module was placed... (might be auto enabled)
+if (isnil "_logic") then {
+    if (isServer) then {
+
+        // Ensure only one module is used
+        if !(isNil QMOD(sys_data)) then {
+            _logic = MOD(sys_data);
+            ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_DATA_ERROR1");
+        } else {
+            _logic = (createGroup sideLogic) createUnit ["ALiVE_sys_data", [0,0], [], 0, "NONE"];
+            MOD(sys_data) = _logic;
+        };
+
+        //Push to clients
+        PublicVariable QMOD(sys_data);
+    };
+
+    TRACE_1("Waiting for object to be ready",true);
+
+    waituntil {!isnil QMOD(sys_data)};
+
+    TRACE_1("Creating class on all localities",true);
+
+    // initialise module game logic on all localities
+    MOD(sys_data) setVariable ["super", QUOTE(SUPERCLASS)];
+    MOD(sys_data) setVariable ["class", QUOTE(MAINCLASS)];
+
+    _logic = MOD(sys_data);
+
+};
 
 TRACE_2("SYS_DATA",isDedicated, _logic);
 
@@ -35,7 +68,7 @@ if (isDedicated) then {
 	publicVariable QGVAR(DISABLED);
 
 	GVAR(databaseName) = "arma3live";
-	GVAR(source) = MOD(sys_data) getVariable "source";
+	GVAR(source) = MOD(sys_data) getVariable ["source","CouchDB"];
 
 	_initmsg = [] call ALIVE_fnc_startALiVEPlugIn;
 
