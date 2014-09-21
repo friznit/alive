@@ -23,7 +23,7 @@ Peer Reviewed:
 #include "script_component.hpp"
 SCRIPT(stats_createPlayerProfile);
 
-private ["_result","_profile","_data","_msg","_profile","_playerGroup"];
+private ["_result","_profile","_data","_msg","_profile","_playerGroup","_username"];
 
 TRACE_1("CREATING PLAYER PROFILE", _this);
 
@@ -34,6 +34,7 @@ if ([_data] call ALIVE_fnc_isHash) then {
 
 	// Grab Player's serverGroup
 	_playerGroup = [_data, "ServerGroup", "Unknown"] call ALIVE_fnc_hashGet;
+	_username = [_data, "username", "Unknown"] call ALIVE_fnc_h
 
 	player setVariable [QGVAR(playerGroup), _playerGroup, true];
 
@@ -41,12 +42,14 @@ if ([_data] call ALIVE_fnc_isHash) then {
 	player createDiarySubject ["statsPage","ALiVE"];
 
 	_prof = {
-		_profile = _profile + _key + " : " + _value + "<br />";
+		_profile = _profile + _key + " : " + str _value + "<br />";
 	};
 
 	[_data, _prof] call CBA_fnc_hashEachPair;
 
-	player createDiaryRecord ["statsPage", ["Profile", _profile]];
+	player createDiaryRecord ["statsPage", ["Profile",
+	"<br/><img size='7' image='\x\alive\addons\UI\logo_alive_crop.paa' /><br/><br/><t color='#ffff00' size='1.0' shadow='1' shadowColor='#000000' align='center'>ALiVE War Room Profile: " + _username + "</t><br/><br/><t align='left'>" + _profile + "</t><br/><br/>"
+	]];
 
 	_msg = format["Welcome %1!", name player];
 

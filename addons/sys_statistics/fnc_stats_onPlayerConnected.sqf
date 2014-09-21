@@ -46,8 +46,29 @@ if (GVAR(ENABLED) && isDedicated) then {
 			/// Hmmmm connecting player isn't found...
 
 		} else {
+			private ["_profile","_stats","_tmp","_call","_cmd"];
+			_profile = [GVAR(datahandler), "read", [_module, [], _uid]] call ALIVE_fnc_data;
 
-			_data = [GVAR(datahandler), "read", [_module, [], _uid] ] call ALIVE_fnc_data;
+			// CRAZY CALL TO GET STATS
+
+			_call = format["events/_design/playerPage/_view/playerTotals?group_level=1&key=""""%1""""&stale=ok",_uid];
+			_cmd = format ["SendJSON [""GET"", ""%1"", """" ", _call] + ", ""arma3live""]";
+
+			_stats = [_cmd] call ALIVE_fnc_sendToPlugIn;
+
+			_data = ((([nil,"decode", _stats] call ALIVE_fnc_JSON) select 1) select 0) select 3;
+
+			_tmp = [] call CBA_fnc_hashCreate;
+			for "_i" from 0 to ((count _data) - 1) step 2 do {
+				private ["_key","_value"];
+				_key = _data select _i;
+				_value = _data select (_i + 1);
+				[_tmp, _key, _value] call CBA_fnc_hashSet;
+			};
+			_data = _tmp;
+
+			[_data, "ServerGroup", [_profile, "ServerGroup","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+			[_data, "username", [_profile, "Username","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 
 			// Send Data
 			STATS_PLAYER_PROFILE = _data;
@@ -68,3 +89,4 @@ if (GVAR(ENABLED) && isDedicated) then {
 };
 
 // ====================================================================================
+
