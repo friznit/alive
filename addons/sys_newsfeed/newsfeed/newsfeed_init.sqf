@@ -18,7 +18,7 @@ createDialog "newsfeed_dialog";
 	_ctrlHTML = _display displayCtrl 10042;
 	_ctrlHTML htmlLoad _newsOnline;
 
-diag_log format["Map: %1",  _map];
-diag_log format["Mission: %1",  _mission];
-diag_log format["Player: %1",  _player];
-diag_log format["URL: %1",  _newsOnline];	
+//diag_log format["Map: %1",  _map];
+//diag_log format["Mission: %1",  _mission];
+//diag_log format["Player: %1",  _player];
+//diag_log format["URL: %1",  _newsOnline];

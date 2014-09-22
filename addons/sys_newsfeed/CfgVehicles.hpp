@@ -2,7 +2,7 @@ class CfgVehicles {
         class ModuleAlivePlayerBase;
         class ADDON : ModuleAlivePlayerBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_NEWSFEED";
                 function = "ALIVE_fnc_newsFeedInit";
                 functionPriority = 2;
@@ -36,8 +36,9 @@ class CfgVehicles {
                                 displayName = "Condition:";
                                 description = "";
                                 defaultValue = "true";
-                        };                        
+                        };
                 };
-                
+
         };
 };
+

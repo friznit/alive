@@ -36,78 +36,118 @@ Author:
 Gunny
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS nil
+#define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_newsFeed
 
-private ["_logic","_operation","_args"];
+private ["_logic","_operation","_args","_result"];
 
-PARAMS_1(_logic);
-DEFAULT_PARAM(1,_operation,"");
-DEFAULT_PARAM(2,_args,[]);
+_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_operation = [_this, 1, "", [""]] call BIS_fnc_param;
+_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+_result = true;
+
+TRACE_3("SYS_NEWSFEED",_logic, _operation, _args);
 
 switch(_operation) do {
-        case "init": {                
-                /*
-                MODEL - no visual just reference data
-                - server side object only
-                                - enabled/disabled
-                */
-                
-                // Ensure only one module is used
-                if (isServer && !(isNil QMOD(newsfeed))) exitWith {
-                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_NEWSFEED_ERROR1");
-                };
-                
-                //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS NEWSFEED - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
-            
-            	//Start init
-            	_logic setVariable ["initGlobal", false];
-                
+        case "create": {
                 if (isServer) then {
-                        MOD(newsfeed) = _logic;
-                        publicVariable QMOD(newsfeed);
 
-                        // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", ALIVE_fnc_newsfeed];
-                        _logic setVariable ["init", true, true];
-                        // and publicVariable to clients
-                       
-                } else {
-                        // if client clean up client side game logics as they will transfer
-                        // to servers on client disconnect
-                       // deleteVehicle _logic;
-                };
-                
-                // and wait for game logic to initialise
-                // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(newsfeed)};
-                waitUntil {MOD(newsfeed) getVariable ["init", false]};        
+                    // Ensure only one module is used
+                    if !(isNil QUOTE(ADDON)) then {
+                        _logic = ADDON;
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_NEWSFEED_ERROR1");
+                    } else {
+                        _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+                        ADDON = _logic;
+                    };
 
-                /*
-                VIEW - purely visual
-                - initialise menu
-                - frequent check to modify menu and display status (ALIVE_fnc_newsfeedmenuDef)
-                */
-                
-                if(!isDedicated && !isHC) then {
-                        // Initialise interaction key if undefined
-                        if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
-                        // if ACE spectator enabled, seto to allow exit
-                        if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
-                        // initialise main menu
-                        [
-                                "player",
-                                [SELF_INTERACTION_KEY],
-                                -9500,
-                                [
-                                        "call ALIVE_fnc_newsFeedMenuDef",
-                                        "main"
-                                ]
-                        ] call ALIVE_fnc_flexiMenu_Add;
+                    //Push to clients
+                    PublicVariable QUOTE(ADDON);
                 };
-                
+
+                TRACE_1("Waiting for object to be ready",true);
+
+                waituntil {!isnil QUOTE(ADDON)};
+
+                TRACE_1("Creating class on all localities",true);
+
+                // initialise module game logic on all localities
+                ADDON setVariable ["super", QUOTE(SUPERCLASS)];
+                ADDON setVariable ["class", QUOTE(MAINCLASS)];
+
+                _result = ADDON;
         };
+
+        case "init": {
+
+            ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
+
+           //Only one init per instance is allowed
+            if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS NEWSFEED - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR};
+
+            //Start init
+            _logic setVariable ["initGlobal", false];
+
+            /*
+            MODEL - no visual just reference data
+            - module object datastorage parameters
+            - Establish data handler on server
+            - Establish data model on server and client
+            */
+
+            // Define module basics on server
+            if (isServer) then {
+
+                _logic setVariable ["init", true, true];
+            };
+
+            /*
+            CONTROLLER  - coordination
+            */
+
+            // Wait until server init is finished
+            waituntil {_logic getvariable ["init",false]};
+
+            TRACE_1("Spawning Server processes",isServer);
+
+            if (isServer) then {
+                // Start any server-side processes that are needed
+            };
+
+            TRACE_1("Spawning clientside processes",hasInterface);
+
+            if (hasInterface) then {
+                // Start any client-side processes that are needed
+                // Initialise interaction key if undefined
+                if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+                // if ACE spectator enabled, seto to allow exit
+                if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
+                // initialise main menu
+                [
+                        "player",
+                        [SELF_INTERACTION_KEY],
+                        -9500,
+                        [
+                                "call ALIVE_fnc_newsFeedMenuDef",
+                                "main"
+                        ]
+
+                ] call ALIVE_fnc_flexiMenu_Add;
+            };
+
+
+            TRACE_1("After module init",_logic);
+
+            // Indicate Init is finished on server
+            if (isServer) then {
+                _logic setVariable ["startupComplete", true, true];
+            };
+
+            ["%1 - Initialisation Completed...",ADDON] call ALiVE_fnc_Dump;
+
+            _result = ADDON;
+        };
+
         case "destroy": {
                 if (isServer) then {
                         // if server
@@ -115,10 +155,10 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        MOD(newsfeed) = _logic;
-                        publicVariable QMOD(newsfeed);
+                        ADDON = _logic;
+                        publicVariable QUOTE(ADDON);
                 };
-                
+
                 if(!isDedicated && !isHC) then {
                         // remove main menu
                         [
@@ -139,4 +179,5 @@ switch(_operation) do {
         };
 };
 
-
+TRACE_1("NEWSFEED - output",_result);
+_result;

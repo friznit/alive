@@ -20,7 +20,7 @@
 | Component |
 #===========#
 
-ALiVE_sys_viewdistance
+ALiVE_sys_newsfeed
 
 #================#
 | Main author(s) |
@@ -33,12 +33,13 @@ ALiVE Team
 #===============#
 
 Gunny
+Tupolov
 
 #=============================#
 | Rough component description |
 #=============================#
 
-Enables players to set their View Distance in Game
+Downloads the latest news from the Alivemod.com website
 
 #=================#
 | Contact details |
