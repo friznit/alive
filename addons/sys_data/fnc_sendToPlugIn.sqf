@@ -41,7 +41,7 @@ if (typeName _response == "ARRAY") then {
 // Need to check for errors here
 if ([_response, "throw"] call CBA_fnc_find != -1) then {
 // _response may include quotes... need to remove
-	_response = format["SYS_DATA_ERROR", _response];
+	_response = "SYS_DATA_ERROR";
 };
 
 _response;
