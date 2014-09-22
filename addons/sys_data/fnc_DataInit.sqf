@@ -72,7 +72,7 @@ if (isDedicated) then {
 
 	_initmsg = [] call ALIVE_fnc_startALiVEPlugIn;
 
-	["ALIVE_SYS_DATA_: %1", _initmsg] call ALIVE_fnc_dump;
+	["ALIVE_SYS_DATA START PLUGIN: %1", _initmsg] call ALIVE_fnc_dump;
 
 	GVAR(GROUP_ID) = [] call ALIVE_fnc_getGroupID;
 
@@ -268,6 +268,10 @@ if (isDedicated) then {
 			// Thread running on server to report state/pos of every playable unit and group every 60 seconds
 			private ["_count","_docId","_missionName","_result"];
 
+			// Setup data handler
+			GVAR(aar_datahandler) = [nil, "create"] call ALIVE_fnc_Data;
+           [GVAR(aar_datahandler),"storeType",false] call ALIVE_fnc_Data;
+
 			// Set up hash of unit positions for each minute
 			GVAR(AAR) = [] call ALIVE_fnc_hashCreate;
 			GVAR(AAR_Array) = [];
@@ -351,7 +355,7 @@ if (isDedicated) then {
 					// Send the data to DB
 					_missionName = format["%1_%2_%3", GVAR(GROUP_ID), missionName, GVAR(AARdocId)];
 
-					_result = [GVAR(datahandler), "write", ["sys_aar", GVAR(AAR), true, _missionName] ] call ALIVE_fnc_Data;
+					_result = [GVAR(aar_datahandler), "write", ["sys_aar", GVAR(AAR), true, _missionName] ] call ALIVE_fnc_Data;
 					TRACE_1("SYS_AAR",_result);
 
 					// Reset
