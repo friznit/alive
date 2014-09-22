@@ -70,7 +70,7 @@ _newIndexDoc = [] call CBA_fnc_hashCreate;
 // Handle indices greater than 10kb
 
 if(ALiVE_SYS_DATA_DEBUG_ON) then {
-    ["ALiVE SYS_DATA_COUCHDB - BULK SAVE INDEX SIZE: %1",_module, [str(_newIndexDoc)] call CBA_fnc_strLen] call ALIVE_fnc_dump;
+    ["ALiVE SYS_DATA_COUCHDB - BULK SAVE INDEX SIZE: %1 : %2",_module, [str(_newIndexDoc)] call CBA_fnc_strLen] call ALIVE_fnc_dump;
 };
 
 if ( ([str(_newIndexDoc)] call CBA_fnc_strLen) > DATA_INBOUND_LIMIT ) then {
@@ -87,7 +87,7 @@ if ( ([str(_newIndexDoc)] call CBA_fnc_strLen) > DATA_INBOUND_LIMIT ) then {
 			if ( ([str(_tempIndex)] call CBA_fnc_strLen) < DATA_INBOUND_LIMIT ) then {
 
                 if(ALiVE_SYS_DATA_DEBUG_ON) then {
-				    ["ALiVE SYS_DATA_COUCHDB - BULK SAVE TEMP INDEX SIZE: %1",[str(_tempIndex)] call CBA_fnc_strLen] call ALIVE_fnc_dump;
+//				    ["ALiVE SYS_DATA_COUCHDB - BULK SAVE TEMP INDEX SIZE: %1",[str(_tempIndex)] call CBA_fnc_strLen] call ALIVE_fnc_dump;
                 };
 
 				_tempIndex set [count _tempIndex, _indexArray select _foreachIndex];
@@ -111,7 +111,7 @@ if ( ([str(_newIndexDoc)] call CBA_fnc_strLen) > DATA_INBOUND_LIMIT ) then {
 				_result = [_logic, "write", [_module, _tempIndexDoc, false, _indexName] ] call ALIVE_fnc_Data;
 
                 if(ALiVE_SYS_DATA_DEBUG_ON) then {
-				    ["ALiVE SYS_DATA_COUCHDB - SAVING DATA INDEX: %1",_indexName,_result] call ALIVE_fnc_dump;
+				    ["ALiVE SYS_DATA_COUCHDB - SAVING DATA INDEX: %1 : %2",_indexName,_result] call ALIVE_fnc_dump;
                 };
 
 				_tempIndex = [];

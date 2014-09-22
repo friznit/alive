@@ -70,7 +70,7 @@ if(ALiVE_SYS_DATA_DEBUG_ON) then {
 };
 
 // From response create key/value pair arrays
-if (_response != "ERROR" && _response != "UNAUTHORISED!") then {
+if (([_response, "SYS_DATA_ERROR"] call CBA_fnc_find == -1) && _response != "UNAUTHORISED!") then {
 
 	_result = [_logic, "restore", [_response]] call ALIVE_fnc_Data;
 

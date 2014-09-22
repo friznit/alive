@@ -42,7 +42,7 @@ if (typeName _response == "ARRAY") then {
 
 // Need to check for errors here
 if ([_response, "throw"] call CBA_fnc_find != -1) then {
-	_response = "ERROR";
+	_response = format["SYS_DATA_ERROR: %1", _response];
 };
 
 _response;
