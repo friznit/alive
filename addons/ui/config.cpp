@@ -45,12 +45,14 @@ class _flexiMenu_RscShortcutButton: RscShortcutButton
 class RscStandardDisplay;
 class RscPicture;
 class RscPictureKeepAspect;
+class RscStructuredText;
 class RscControlsGroup;
 class RscControlsGroupNoScrollbars;
 class RscButtonMenu;
 class RscButtonMenuCancel;
 class RscTitle;
 class RscDebugConsole;
+class RscScrollBar;
 
 class cfgScriptPaths
 {
@@ -203,4 +205,17 @@ class CfgDebriefing
 		picture = "b_hq";
 		pictureColor[] = {0.0,0.3,0.6,1};
 	};
+};
+
+#include <\x\alive\addons\ui\menu\data\menu_common.hpp>
+#include <\x\alive\addons\ui\menu\data\menu_full.hpp>
+#include <\x\alive\addons\ui\menu\data\menu_full_map.hpp>
+#include <\x\alive\addons\ui\menu\data\menu_modal.hpp>
+#include <\x\alive\addons\ui\menu\data\menu_wide.hpp>
+
+class RscTitles {
+    #include <\x\alive\addons\ui\menu\data\splash.hpp>
+    #include <\x\alive\addons\ui\menu\data\menu_side.hpp>
+    #include <\x\alive\addons\ui\menu\data\menu_side_small.hpp>
+    #include <\x\alive\addons\ui\menu\data\menu_side_top.hpp>
 };
