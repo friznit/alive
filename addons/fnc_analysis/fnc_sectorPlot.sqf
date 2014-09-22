@@ -381,7 +381,7 @@ switch(_operation) do {
 								_shorePositions = [_plotData,"shore"] call ALIVE_fnc_hashGet;
 								_seaPositions = [_plotData,"sea"] call ALIVE_fnc_hashGet;
 								
-								_dimensions = [25,25];
+								_dimensions = [15,15];
 								_alpha = 1;
 								
 								{
@@ -453,7 +453,7 @@ switch(_operation) do {
 								_seaPositions = [_plotData,"sea"] call ALIVE_fnc_hashGet;
 								*/
 								
-								_dimensions = [5,5];
+								_dimensions = [20,20];
 								_alpha = 1;
 								
 								{
@@ -507,7 +507,7 @@ switch(_operation) do {
 							if(_key in (_sectorData select 1)) then {
 								_plotData = [_sectorData, _key] call ALIVE_fnc_hashGet;								
 								
-								_dimensions = [5,5];
+								_dimensions = [20,20];
 								_alpha = 1;
 								
 								{
@@ -531,13 +531,13 @@ switch(_operation) do {
 								_crossroadPositions = [_plotData,"crossroad"] call ALIVE_fnc_hashGet;
 								_terminusPositions = [_plotData,"terminus"] call ALIVE_fnc_hashGet;
 								
-								_dimensions = [5,5];
+								_dimensions = [8,8];
 								_alpha = 1;
 								
 								{
 									_position = _x select 0;
 									_markerID = format["RO_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBrown"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _roadPositions;	
 								
@@ -566,27 +566,27 @@ switch(_operation) do {
 								_airPositions = [_plotData,"air"] call ALIVE_fnc_hashGet;
 								_heliPositions = [_plotData,"heli"] call ALIVE_fnc_hashGet;
 								
-								_dimensions = [60,60];
+								_dimensions = [100,100];
 								_alpha = 1;
 								
 								{
 									_position = _x select 0;
 									_markerID = format["MCC_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _consolidatedPositions;
 								
 								{
 									_position = _x select 0;
 									_markerID = format["MCA_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlue","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _airPositions;
 								
 								{
 									_position = _x select 0;
 									_markerID = format["MCH_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorOrange"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorOrange","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _heliPositions;
 							};
@@ -607,55 +607,55 @@ switch(_operation) do {
 								_constructionPositions = [_plotData,"construction"] call ALIVE_fnc_hashGet;
 								_settlementPositions = [_plotData,"settlement"] call ALIVE_fnc_hashGet;
 
-								_dimensions = [60,60];
+								_dimensions = [100,100];
 								_alpha = 1;
 
 								{
 									_position = _x select 0;
 									_markerID = format["CCC_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlack"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlack","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _consolidatedPositions;
 
 								{
 									_position = _x select 0;
 									_markerID = format["CCP_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorYellow"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorYellow","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _powerPositions;
 
 								{
 									_position = _x select 0;
 									_markerID = format["CCC_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorWhite"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorWhite","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _commsPositions;
 
 								{
 									_position = _x select 0;
 									_markerID = format["CCM_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlue"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorBlue","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _marinePositions;
 
 								{
 									_position = _x select 0;
 									_markerID = format["CCF_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorOrange"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorOrange","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _fuelPositions;
 
 								{
 									_position = _x select 0;
 									_markerID = format["CCCO_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorPink"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorPink","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _constructionPositions;
 
 								{
 									_position = _x select 0;
 									_markerID = format["CCS_%1_%2",_id,_forEachIndex];
-									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen"] call _createMarker;
+									_m = [_markerID,_position,_dimensions,_alpha,"ColorGreen","ELLIPSE"] call _createMarker;
 									_markers set [count _markers, _m];
 								} forEach _settlementPositions;
 							};
@@ -671,7 +671,7 @@ switch(_operation) do {
 
                                     _position = [_cluster,"position"] call ALIVE_fnc_hashGet;
                                     _owner = [_cluster,"owner"] call ALIVE_fnc_hashGet;
-                                    _dimensions = [60,60];
+                                    _dimensions = [100,100];
                                     _alpha = 1;
 
                                     switch(_owner) do {
@@ -693,7 +693,7 @@ switch(_operation) do {
                                     };
 
                                     _markerID = format["ACC_%1_%2",_id,_forEachIndex];
-                                    _m = [_markerID,_position,_dimensions,_alpha,_color] call _createMarker;
+                                    _m = [_markerID,_position,_dimensions,_alpha,_color,"ELLIPSE"] call _createMarker;
                                     _markers set [count _markers, _m];
 
                                 } forEach (_plotData select 2);

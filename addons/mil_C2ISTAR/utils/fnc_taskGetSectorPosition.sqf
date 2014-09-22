@@ -31,8 +31,6 @@ _targetPosition = [];
 _sector = [ALIVE_sectorGrid, "positionToSector", _taskLocation] call ALIVE_fnc_sectorGrid;
 _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
 
-_sectorData call ALIVE_fnc_inspectHash;
-
 _sectorTerrain = [_sectorData, "terrain"] call ALIVE_fnc_hashGet;
 _bestPlaces = [_sectorData,"bestPlaces"] call ALIVE_fnc_hashGet;
 _flatEmpty = [_sectorData,"flatEmpty"] call ALIVE_fnc_hashGet;

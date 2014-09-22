@@ -203,7 +203,7 @@ _createMarkers = {
 
 		_label = [_profileID, "_"] call CBA_fnc_split;
 		
-		_debugAlpha = 0.5;
+		_debugAlpha = 0.3;
 		if(_profileActive) then {
 			_debugAlpha = 1;
 		}else{
