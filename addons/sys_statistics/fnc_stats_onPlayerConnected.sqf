@@ -67,8 +67,8 @@ if (GVAR(ENABLED) && isDedicated) then {
 			};
 			_data = _tmp;
 
-			[_data, "ServerGroup", [_profile, "ServerGroup","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-			[_data, "username", [_profile, "Username","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+			[_data, "Server Group", [_profile, "ServerGroup","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+			[_data, "Username", [_profile, "username","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 
 			// Send Data
 			STATS_PLAYER_PROFILE = _data;
