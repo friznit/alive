@@ -237,63 +237,63 @@ switch(_operation) do {
 
         [_profileSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_profiles.paa"] call ALIVE_fnc_hashSet;
         [_profileSelection,"inactiveLabel","Virtual AI"] call ALIVE_fnc_hashSet;
-        [_profileSelection,"activeLabel","Virtual AI module usage"] call ALIVE_fnc_hashSet;
+        [_profileSelection,"activeLabel","The virtual AI module"] call ALIVE_fnc_hashSet;
         [_profileSelection,"iconState",["ModuleProfiles",0,0]] call ALIVE_fnc_hashSet;
 
         _opcomSelection = [] call ALIVE_fnc_hashCreate;
 
         [_opcomSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_opcom.paa"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"inactiveLabel","OPCOM"] call ALIVE_fnc_hashSet;
-        [_opcomSelection,"activeLabel","OPCOM module usage"] call ALIVE_fnc_hashSet;
+        [_opcomSelection,"activeLabel","The OPCOM module"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"iconState",["ModuleOPCOM",0,0]] call ALIVE_fnc_hashSet;
 
         _placementSelection = [] call ALIVE_fnc_hashCreate;
 
         [_placementSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_mil_placement.paa"] call ALIVE_fnc_hashSet;
         [_placementSelection,"inactiveLabel","Force Placement"] call ALIVE_fnc_hashSet;
-        [_placementSelection,"activeLabel","View force placement module usage "] call ALIVE_fnc_hashSet;
+        [_placementSelection,"activeLabel","The force placement modules"] call ALIVE_fnc_hashSet;
         [_placementSelection,"iconState",["ModulePlacement",0,0]] call ALIVE_fnc_hashSet;
 
         _logisticsSelection = [] call ALIVE_fnc_hashCreate;
 
         [_logisticsSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_logistics.paa"] call ALIVE_fnc_hashSet;
         [_logisticsSelection,"inactiveLabel","Logistics"] call ALIVE_fnc_hashSet;
-        [_logisticsSelection,"activeLabel","View logistics module usage "] call ALIVE_fnc_hashSet;
+        [_logisticsSelection,"activeLabel","The logistics module"] call ALIVE_fnc_hashSet;
         [_logisticsSelection,"iconState",["ModuleLogistics",0,0]] call ALIVE_fnc_hashSet;
 
         _cqbSelection = [] call ALIVE_fnc_hashCreate;
 
         [_cqbSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_cqb.paa"] call ALIVE_fnc_hashSet;
         [_cqbSelection,"inactiveLabel","Close Quarters Battle"] call ALIVE_fnc_hashSet;
-        [_cqbSelection,"activeLabel","View CQB module usage "] call ALIVE_fnc_hashSet;
+        [_cqbSelection,"activeLabel","The close quarters battle module"] call ALIVE_fnc_hashSet;
         [_cqbSelection,"iconState",["ModuleCQB",0,0]] call ALIVE_fnc_hashSet;
 
         _civilianSelection = [] call ALIVE_fnc_hashCreate;
 
         [_civilianSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_civ.paa"] call ALIVE_fnc_hashSet;
         [_civilianSelection,"inactiveLabel","Civilian Population"] call ALIVE_fnc_hashSet;
-        [_civilianSelection,"activeLabel","View civilian population module usage "] call ALIVE_fnc_hashSet;
+        [_civilianSelection,"activeLabel","The civilian population module"] call ALIVE_fnc_hashSet;
         [_civilianSelection,"iconState",["ModuleCivilian",0,0]] call ALIVE_fnc_hashSet;
 
         _supportSelection = [] call ALIVE_fnc_hashCreate;
 
         [_supportSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_cs.paa"] call ALIVE_fnc_hashSet;
         [_supportSelection,"inactiveLabel","Combat Support"] call ALIVE_fnc_hashSet;
-        [_supportSelection,"activeLabel","View combat support module usage"] call ALIVE_fnc_hashSet;
+        [_supportSelection,"activeLabel","The combat support module"] call ALIVE_fnc_hashSet;
         [_supportSelection,"iconState",["ModuleCombatSupport",0,0]] call ALIVE_fnc_hashSet;
 
         _resupplySelection = [] call ALIVE_fnc_hashCreate;
 
         [_resupplySelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_logistics.paa"] call ALIVE_fnc_hashSet;
         [_resupplySelection,"inactiveLabel","Player Resupply"] call ALIVE_fnc_hashSet;
-        [_resupplySelection,"activeLabel","View player resupply module usage"] call ALIVE_fnc_hashSet;
+        [_resupplySelection,"activeLabel","The player resupply module"] call ALIVE_fnc_hashSet;
         [_resupplySelection,"iconState",["ModuleResupply",0,0]] call ALIVE_fnc_hashSet;
 
         _c2Selection = [] call ALIVE_fnc_hashCreate;
 
         [_c2Selection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_intel.paa"] call ALIVE_fnc_hashSet;
         [_c2Selection,"inactiveLabel","C2ISTAR"] call ALIVE_fnc_hashSet;
-        [_c2Selection,"activeLabel","View C2ISTAR module usage"] call ALIVE_fnc_hashSet;
+        [_c2Selection,"activeLabel","The C2ISTAR module"] call ALIVE_fnc_hashSet;
         [_c2Selection,"iconState",["ModuleC2",0,0]] call ALIVE_fnc_hashSet;
 
         _backSelection = [] call ALIVE_fnc_hashCreate;
@@ -359,7 +359,7 @@ switch(_operation) do {
 
     case "displayStartLoadingScreen": {
 
-         private["_line1","_line2","_line3","_line4","_text"];
+        private["_line1","_line2","_line3","_line4","_text"];
 
         call BIS_fnc_VRFadeIn;
 
@@ -1606,26 +1606,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Virtual AI</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'></t><br/><br/>";
+            _line5 = "<t size='1'></t><br/><br/>";
+            _line6 = "<t size='1'></t><br/><br/>";
+            _line7 = "<t size='1'></t><br/><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleProfiles"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openFull",[_logic,"handleMenuCallback","ModuleProfiles"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1638,8 +1630,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -1657,26 +1647,135 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>OPCOM</t><br/><br/>";
+            _line2 = "<t size='1'>The OPCOM module gives a faction a battlefield commander to devise a strategy to attack, reserve, and defend objectives in their area of operation</t><br/><br/>";
+            _line3 = "<t size='1'>When synced to placement modules OPCOM will take control of the troops and send them against enemy objectives and forces.</t><br/><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleOPCOM"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["openFull",[_logic,"handleMenuCallback","ModuleOPCOM"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
-            private["_mapSize","_mapCenter"];
+            private["_moduleType","_handler","_objectives","_side","_sideDisplay"];
 
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
+            {
+                _moduleType = _x getVariable "moduleType";
+                if!(isNil "_moduleType") then {
 
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+                    if(_moduleType == "ALIVE_OPCOM") then {
+
+                        _handler = _x getVariable "handler";
+                        _objectives = [_handler,"objectives"] call ALIVE_fnc_hashGet;
+                        _side = [_handler,"side"] call ALIVE_fnc_hashGet;
+                        _sideDisplay = [_side] call ALIVE_fnc_sideTextToLong;
+
+                        {
+                            private["_center","_size","_priority","_type","_state","_section","_objectiveID","_action","_nearestTownToObjective"];
+
+                            _center = [_x,"center"] call ALIVE_fnc_hashGet;
+                            _size = [_x,"size"] call ALIVE_fnc_hashGet;
+                            _priority = [_x,"priority"] call ALIVE_fnc_hashGet;
+                            _type = [_x,"type"] call ALIVE_fnc_hashGet;
+                            _orders = [_x,"opcom_orders"] call ALIVE_fnc_hashGet;
+                            _section = [_x,"section"] call ALIVE_fnc_hashGet;
+                            _objectiveID = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
+
+                            _x call ALIVE_fnc_inspectHash;
+
+                            _action = "";
+                            _objective = "";
+                            _nearestTownToObjective = [_center] call ALIVE_fnc_taskGetNearestLocationName;
+
+                            if(_type == "MIL") then {
+                                _objective = "Military objective";
+                            }else{
+                                _objective = "Civillian objective";
+                            };
+
+                            if!(isNil "_orders") then {
+                                switch(_orders) do {
+                                    case "attack":{
+                                        _action = format["<t>Ordered by OPCOM to attack %1 near %2</t>",_objective,_nearestTownToObjective];
+                                    };
+                                    case "defend":{
+                                        _action = format["<t>Ordered by OPCOM to defend %1 near %2</t>",_objective,_nearestTownToObjective];
+                                    };
+                                    case "recon":{
+                                        _action = format["<t>Ordered by OPCOM to recon %1 near %2</t>",_objective,_nearestTownToObjective];
+                                    };
+                                };
+                            };
+
+                            if!(isNil "_section") then {
+
+                                {
+
+                                    private["_profileID","_profile","_position","_faction","_line1","_group","_unit","_nearestTown","_factionName","_title","_text"];
+
+                                    _profileID = _x;
+                                    _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+
+                                    if !(isnil "_profile") then {
+
+                                        _position = _profile select 2 select 2;
+                                        _faction = _profile select 2 select 29;
+
+
+                                        call BIS_fnc_VRFadeIn;
+
+                                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                                        ["openSplash",0.2] call ALIVE_fnc_displayMenu;
+                                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                                        player setPos _position;
+
+                                        sleep 3;
+
+                                        waitUntil{_profile select 2 select 1};
+
+                                        _group = _profile select 2 select 13;
+                                        _unit = (units _group) call BIS_fnc_selectRandom;
+
+                                        /*
+                                        ALIVE_tourCamera = [_unit,true,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+
+                                        [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+
+                                        [ALIVE_tourCamera,_unit,30] call ALIVE_fnc_chaseShot;
+                                        */
+
+                                        [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
+
+
+                                        _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+                                        _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
+
+                                        _title = "<t size='1.5' color='#68a7b7' shadow='1'>OPCOM Troops</t><br/>";
+                                        _text = format["%1<t>%2 group %3 near %4</t><br/>%5",_title,_factionName,_group,_nearestTown,_action];
+
+                                        ["openSideSmall"] call ALIVE_fnc_displayMenu;
+                                        ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
+                                        sleep 20;
+
+                                        [true] call ALIVE_fnc_revertCamera;
+
+                                        //[ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
+                                       // [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
+
+
+                                    };
+                                } forEach _section;
+                            };
+
+                        } forEach _objectives;
+
+                    };
+
+                };
+
+            } forEach (entities "Module_F");
 
         };
 
@@ -1690,7 +1789,12 @@ switch(_operation) do {
             };
         };
 
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
+        if!(isNil "ALIVE_tourCamera") then {
+            [ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
+            [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
+        };
+
+        [true] call ALIVE_fnc_revertCamera;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -1706,28 +1810,143 @@ switch(_operation) do {
 
             _logic = _this select 0;
 
-            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+            private["_moduleType","_placementModules"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _placementModules = [];
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            {
+                _moduleType = _x getVariable "moduleType";
+                if!(isNil "_moduleType") then {
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModulePlacement"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
+                    ["TYPE: %1",_moduleType] call ALIVE_fnc_dump;
+                    if(_moduleType == "ALIVE_MP" || _moduleType == "ALIVE_CMP") then {
+                        _placementModules set [count _placementModules, _x];
+                    };
+                };
+            } forEach (entities "Module_F");
 
-            private["_mapSize","_mapCenter"];
+            private["_module","_moduleType","_objectives","_faction","_position","_size","_playerPosition","_emptyPosition",
+            "_camera","_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_nearestTown","_factionName",
+            "_target","_title","_text"];
 
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Military Placement</t><br/><br/>";
+            _line2 = "<t size='1'>The military placement modules place starting forces in areas defined by the mission maker.</t><br/><br/>";
+            _line3 = "<t size='1'>Based on the given area defined by the mission maker ALiVE will create forces in and around key objectives.</t><br/><br/>";
+            _line4 = "<t size='1'>These modules can spawn ambient vehicles, and ammo crates. If static weapons are near, the modules will man them with units, and also garrison units in defensible positions.</t><br/><br/>";
+            _line5 = "<t size='1'>The custom military placement module can also spawn ALiVE predfined compositions to give maps a fresh layout.</t><br/><br/>";
 
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5];
+
+            ["openFull",[_logic,"handleMenuCallback","ModulePlacement"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            {
+                _module = _x;
+                _moduleType = _module getVariable "moduleType";
+
+                if(_moduleType == "ALIVE_MP") then {
+
+                    _objectives = _module getVariable "objectives";
+                    _faction = _module getVariable "faction";
+
+                    _objective = _objectives call BIS_fnc_selectRandom;
+
+                    _position = [_objective,"center"] call ALIVE_fnc_hashGet;
+                    _size = [_objective,"size"] call ALIVE_fnc_hashGet;
+
+                    _playerPosition = [_position, random 360, _size] call BIS_fnc_relPos;
+
+                    _emptyPosition = _playerPosition findEmptyPosition [1,100];
+
+                    if(count _emptyPosition > 0) then {
+                        _playerPosition = _emptyPosition;
+                    };
+
+                    call BIS_fnc_VRFadeIn;
+
+                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                    ["openSplash",0.2] call ALIVE_fnc_displayMenu;
+                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                    player setPos _playerPosition;
+
+                    sleep 3;
+
+
+
+                    ALIVE_tourCamera = [player,true,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+
+                    [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+
+                    _target = "RoadCone_L_F" createVehicle _position;
+
+                    [ALIVE_tourCamera,_target,35,true] call ALIVE_fnc_flyInShot;
+
+
+                    _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+                    _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
+
+                    _title = "<t size='1.5' color='#68a7b7' shadow='1'>Military Objective</t><br/>";
+                    _text = format["%1<t>Objective near %2 initially held by: %3</t>",_title,_nearestTown,_factionName];
+
+                    ["openSideSmall"] call ALIVE_fnc_displayMenu;
+                    ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
+
+                }else{
+
+                    _objectives = _module getVariable "objectives";
+                    _faction = _module getVariable "faction";
+
+                    _objective = _objectives call BIS_fnc_selectRandom;
+
+                    _position = [_objective,"center"] call ALIVE_fnc_hashGet;
+                    _size = [_objective,"size"] call ALIVE_fnc_hashGet;
+
+                    _playerPosition = [_position, random 360, _size] call BIS_fnc_relPos;
+
+                    _emptyPosition = _playerPosition findEmptyPosition [1,100];
+
+                    if(count _emptyPosition > 0) then {
+                        _playerPosition = _emptyPosition;
+                    };
+
+
+                    call BIS_fnc_VRFadeIn;
+
+                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                    ["openSplash",0.2] call ALIVE_fnc_displayMenu;
+                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                    player setPos _playerPosition;
+
+                    sleep 3;
+
+                    ALIVE_tourCamera = [player,true,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+
+                    [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+
+                    _target = "RoadCone_L_F" createVehicle _position;
+
+                    [ALIVE_tourCamera,_target,35,true] call ALIVE_fnc_flyInShot;
+
+
+                    _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+                    _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
+
+                    _title = "<t size='1.5' color='#68a7b7' shadow='1'>Military Objective</t><br/>";
+                    _text = format["%1<t>Objective near %2 initially held by: %3</t>",_title,_nearestTown,_factionName];
+
+                    ["openSideSmall"] call ALIVE_fnc_displayMenu;
+                    ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
+                };
+
+                sleep 30;
+
+            } forEach _placementModules;
 
         };
 
@@ -1741,7 +1960,10 @@ switch(_operation) do {
             };
         };
 
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
+        if!(isNil "ALIVE_tourCamera") then {
+            [ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
+            [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
+        };
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -1759,26 +1981,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Logistics</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'></t><br/><br/>";
+            _line5 = "<t size='1'></t><br/><br/>";
+            _line6 = "<t size='1'></t><br/><br/>";
+            _line7 = "<t size='1'></t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleLogistics"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openFull",[_logic,"handleMenuCallback","ModuleLogistics"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1791,8 +2005,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -1810,26 +2022,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>CQB</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'></t><br/><br/>";
+            _line5 = "<t size='1'></t><br/><br/>";
+            _line6 = "<t size='1'></t><br/><br/>";
+            _line7 = "<t size='1'></t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleCQB"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openFull",[_logic,"handleMenuCallback","ModuleCQB"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1842,8 +2046,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -1861,26 +2063,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Civilian Settlement</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'></t><br/><br/>";
+            _line5 = "<t size='1'></t><br/><br/>";
+            _line6 = "<t size='1'></t><br/><br/>";
+            _line7 = "<t size='1'></t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleCivilian"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openFull",[_logic,"handleMenuCallback","ModuleCivilian"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1893,8 +2087,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -1912,26 +2104,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'></t><br/><br/>";
+            _line5 = "<t size='1'></t><br/><br/>";
+            _line6 = "<t size='1'></t><br/><br/>";
+            _line7 = "<t size='1'></t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleCombatSupport"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openFull",[_logic,"handleMenuCallback","ModuleCombatSupport"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1945,15 +2129,13 @@ switch(_operation) do {
             };
         };
 
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
-
         _logic setVariable ["selectionState","Modules"];
 
         [_logic,"displaySelectionState"] call MAINCLASS;
 
     };
 
-    case "activateSelectionModuleModuleResupply": {
+    case "activateSelectionModuleResupply": {
 
         ALIVE_tourActiveScript = [_logic] spawn {
 
@@ -1963,26 +2145,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Resupply</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'></t><br/><br/>";
+            _line5 = "<t size='1'></t><br/><br/>";
+            _line6 = "<t size='1'></t><br/><br/>";
+            _line7 = "<t size='1'></t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleResupply"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openFull",[_logic,"handleMenuCallback","ModuleResupply"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1995,8 +2169,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -2014,26 +2186,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>C2ISTAR</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'></t><br/><br/>";
+            _line5 = "<t size='1'></t><br/><br/>";
+            _line6 = "<t size='1'></t><br/><br/>";
+            _line7 = "<t size='1'></t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openMapFull",[_logic,"handleMenuCallback","ModuleC2"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openFull",[_logic,"handleMenuCallback","ModuleC2"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -2046,8 +2210,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Modules"];
 
