@@ -1475,26 +1475,16 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>What is ALiVE?</t><br/><br/>";
+            _line2 = "<t size='1'>ALIVE is a missions makers framework. Developed by Arma community veterans, the easy to use modular system provides everything that players and mission makers need to set up and run realistic military operations in almost any scenario up to Company level, including command, combat support, service support and logistics.</t><br/><br/>";
+            _line3 = "<t size='1'>The editor placed modules are designed to be intuitive but highly flexible so you can create a huge range of different scenarios by simply placing a few modules and markers. The AI Commanders have an overall mission and a prioritised list of objectives that they will work through autonomously. Players can choose to tag along with the AI and join the fight, take your own squad of AI or other players and tackle your own objectives or just sit back and watch it all unfold.</t><br/><br/>";
+            _line4 = "<t size='1'>Mission makers may wish to use ALiVE modules as a backdrop for dynamic missions and campaigns, enhancing scenarios created with traditional editing techniques. ALiVE can significantly reduce the effort required to make a complex mission by adding ambience, support and persistence at the drop of a module.</t><br/><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
 
-            ["openMapFull",[_logic,"handleMenuCallback","What"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openImageFull",[_logic,"handleMenuCallback","What"]] call ALIVE_fnc_displayMenu;
+            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["setFullImage","x\alive\addons\ui\logo_alive_square.paa"] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1507,8 +1497,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Overview"];
 
@@ -1526,26 +1514,18 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Why ALiVE?</t><br/><br/>";
+            _line2 = "<t size='1'>ALiVE was designed to enhance the ARMA 3 experience for groups and players who want to create a credibly realistc mission or campaign.</t><br/><br/>";
+            _line3 = "<t size='1'>Coming from development of the MSO mod in ARMA 2, the lessons learned there have influenced the development of ALiVE:</t><br/><br/>";
+            _line4 = "<t size='1'>Moving from an entirely script based platform to taking advantage of the ARMA module framework to enable much easier usage by mission editors</t><br/><br/>";
+            _line5 = "<t size='1'>Opting for a centralised database as opposed to supporting individual group database installations.</t><br/><br/>";
+            _line6 = "<t size='1'>Going from largely random in game events to a much more environment and event driven AI and generation systems.</t><br/><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6];
 
-            ["openMapFull",[_logic,"handleMenuCallback","Why"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openImageFull",[_logic,"handleMenuCallback","Why"]] call ALIVE_fnc_displayMenu;
+            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["setFullImage","x\alive\addons\ui\logo_alive_square.paa"] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1558,8 +1538,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Overview"];
 
@@ -1575,28 +1553,30 @@ switch(_operation) do {
 
             _logic = _this select 0;
 
-            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_line8","_line9","_line10","_line11","_line12","_line13","_line14","_line15","_line16","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7' >Profile System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Who are the dev's?</t><br/><br/>";
+            _line2 = "<t size='1'>ALiVE has been in constant development since the release of ARMA 3 early access.</t><br/><br/>";
+            _line3 = "<t size='1'>Developed by a global team from 5 countries, ALiVE continues to be a compelling hobby project for the largely IT professional developers.</t><br/><br/>";
+            _line4 = "<t size='1'>ARJay</t><br/>";
+            _line5 = "<t size='1'>Cameroon</t><br/>";
+            _line6 = "<t size='1'>Friznit</t><br/>";
+            _line7 = "<t size='1'>Gunny</t><br/>";
+            _line8 = "<t size='1'>Haze</t><br/>";
+            _line9 = "<t size='1'>Highhead</t><br/>";
+            _line10 = "<t size='1'>Jman</t><br/>";
+            _line11 = "<t size='1'>Naught</t><br/>";
+            _line12 = "<t size='1'>Raptor</t><br/>";
+            _line13 = "<t size='1'>Rye</t><br/>";
+            _line14 = "<t size='1'>Tupolov</t><br/>";
+            _line15 = "<t size='1'>WobblyHeadedBob</t><br/>";
+            _line16 = "<t size='1'>Wolffy.au</t><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            _baseCopy = format["%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16",_line1,_line2,_line3,_line4,_line5,_line6,_line7,_line8,_line9,_line10,_line11,_line12,_line13,_line14,_line15,_line16];
 
-            ["openMapFull",[_logic,"handleMenuCallback","Who"]] call ALIVE_fnc_displayMenu;
-            ["setFullMapText",_baseCopy] call ALIVE_fnc_displayMenu;
-
-            private["_mapSize","_mapCenter"];
-
-            _mapSize = [] call ALIVE_fnc_getMapBounds;
-            _mapCenter = [(_mapSize/2),(_mapSize/2)];
-            ["setFullMapAnimation",[0.5,0.7,_mapCenter]] call ALIVE_fnc_displayMenu;
-
-            [ALIVE_profileHandler, "debug", true] call ALIVE_fnc_profileHandler;
+            ["openImageFull",[_logic,"handleMenuCallback","Who"]] call ALIVE_fnc_displayMenu;
+            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["setFullImage","x\alive\addons\sys_tour\data\devteam.paa"] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1609,8 +1589,6 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
-
-        [ALIVE_profileHandler, "debug", false] call ALIVE_fnc_profileHandler;
 
         _logic setVariable ["selectionState","Overview"];
 
