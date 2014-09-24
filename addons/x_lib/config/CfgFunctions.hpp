@@ -125,6 +125,160 @@ class groupGarrison
 	recompile = RECOMPILE;
 };
 
+class addCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_addCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class chaseAngleShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_chaseAngleShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class chaseShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_chaseShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class chaseSideShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_chaseSideShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class chaseWheelShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_chaseWheelShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class createLiveFeedCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_createLiveFeedCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class createLiveFeedEffect
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_createLiveFeedEffect.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class flyInShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_flyInShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class lowerCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_lowerCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class moveCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_moveCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class noTargetShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_noTargetShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class panShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_panShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class raiseCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_raiseCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class removeCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_removeCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class removeLiveFeedCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_removeLiveFeedCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class revertCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_revertCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class setCameraAngle
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_setCameraAngle.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class startCinematic
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_startCinematic.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class staticShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_staticShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class stopCinematic
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_stopCinematic.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class switchCamera
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_switchCamera.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class zoomShot
+{
+	file = "\x\alive\addons\x_lib\functions\camera\fnc_zoomShot.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class exportComposition
 {
 	file = "\x\alive\addons\x_lib\functions\composition\fnc_exportComposition.sqf";
@@ -769,6 +923,13 @@ class processTerrain
 	recompile = RECOMPILE;
 };
 
+class createLineMarker
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLineMarker.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class createLink
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLink.sqf";
@@ -779,13 +940,6 @@ class createLink
 class createMarker
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_createMarker.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class createLineMarker
-{
-	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLineMarker.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

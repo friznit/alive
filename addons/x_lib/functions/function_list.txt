@@ -29,6 +29,31 @@ behaviour
 
 	ALiVE_fnc_groupGarrison
 
+camera
+
+	ALiVE_fnc_addCamera
+	ALiVE_fnc_chaseAngleShot
+	ALiVE_fnc_chaseShot
+	ALiVE_fnc_chaseSideShot
+	ALiVE_fnc_chaseWheelShot
+	ALiVE_fnc_createLiveFeedCamera
+	ALiVE_fnc_createLiveFeedEffect
+	ALiVE_fnc_flyInShot
+	ALiVE_fnc_lowerCamera
+	ALiVE_fnc_moveCamera
+	ALiVE_fnc_noTargetShot
+	ALiVE_fnc_panShot
+	ALiVE_fnc_raiseCamera
+	ALiVE_fnc_removeCamera
+	ALiVE_fnc_removeLiveFeedCamera
+	ALiVE_fnc_revertCamera
+	ALiVE_fnc_setCameraAngle
+	ALiVE_fnc_startCinematic
+	ALiVE_fnc_staticShot
+	ALiVE_fnc_stopCinematic
+	ALiVE_fnc_switchCamera
+	ALiVE_fnc_zoomShot
+
 composition
 
 	ALiVE_fnc_exportComposition
@@ -153,6 +178,7 @@ map
 
 markers
 
+	ALiVE_fnc_createLineMarker
 	ALiVE_fnc_createLink
 	ALiVE_fnc_createMarker
 	ALiVE_fnc_deleteLink
