@@ -1,6 +1,5 @@
 #include <\x\alive\addons\mil_C2ISTAR\script_component.hpp>
 SCRIPT(C2ISTARInit);
-
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_C2ISTARInit
 Description:
@@ -35,4 +34,3 @@ _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 [_logic, "init"] call ALIVE_fnc_C2ISTAR;
 
 [_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
-
