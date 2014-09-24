@@ -1710,7 +1710,7 @@ switch(_operation) do {
 
                                 {
 
-                                    private["_profileID","_profile","_position","_faction","_line1","_group","_unit","_nearestTown","_factionName","_title","_text"];
+                                    private["_profileID","_profile","_position","_faction","_line1","_group","_unit","_nearestTown","_factionName","_title","_text","_chaseCamera"];
 
                                     _profileID = _x;
                                     _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
@@ -1737,16 +1737,21 @@ switch(_operation) do {
                                         _group = _profile select 2 select 13;
                                         _unit = (units _group) call BIS_fnc_selectRandom;
 
-                                        /*
-                                        ALIVE_tourCamera = [_unit,true,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+                                        _chaseCamera = false;
 
-                                        [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+                                        if(vehicle _unit != _unit) then {
 
-                                        [ALIVE_tourCamera,_unit,30] call ALIVE_fnc_chaseShot;
-                                        */
+                                            _chaseCamera = true;
 
-                                        [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
+                                            ALIVE_tourCamera = [_unit,true,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+                                            [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+                                            [ALIVE_tourCamera,_unit,300] call ALIVE_fnc_chaseShot;
 
+                                        }else{
+
+                                            [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
+
+                                        };
 
                                         _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
                                         _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
@@ -1759,11 +1764,16 @@ switch(_operation) do {
 
                                         sleep 20;
 
-                                        [true] call ALIVE_fnc_revertCamera;
+                                        if(_chaseCamera) then {
 
-                                        //[ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
-                                       // [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
+                                            [ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
+                                            [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
 
+                                        } else {
+
+                                            [true] call ALIVE_fnc_revertCamera;
+
+                                        };
 
                                     };
                                 } forEach _section;
