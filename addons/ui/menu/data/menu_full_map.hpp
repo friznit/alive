@@ -9,33 +9,22 @@ class AliveMenuMapFull
     class controls
     {
 
-        class AliveMenuFullMap_background : AliveUI_RscBackground
-        {
-            idc = -1;
-            x = safezoneX;
-            y = safezoneY + (0.028 * safezoneH);
-            w = 0.3 * safezoneW;
-            h = 0.941 * safezoneH;
-            text="";
-            colorBackground[] = {0.271,0.278,0.278,1};
-        };
-
-        class AliveMenuFullMap_header : AliveUI_RscBackground
+        class AliveMenuFullMap_background : RscPicture
         {
             idc = -1;
             x = safezoneX;
             y = safezoneY;
-            w = 0.3 * safezoneW;
-            h = 0.025 * safezoneH;
-            text="";
-            colorBackground[] = {0.145,0.204,0.22,1};
+            w = safezoneW;
+            h = safezoneH;
+            colorText[] = {1,1,1,1};
+            text = "x\alive\addons\ui\alive_bg.paa";
         };
 
         class AliveMenuFullMap_logo : RscPictureKeepAspect
         {
             idc = -1;
-            x = safezoneX + (0.004 * safezoneW);
-            y = safezoneY - (safezoneH * 0.007);
+            x = safezoneX + (0.019 * safezoneW);
+            y = safezoneY - (safezoneH * 0.01);
             w = 0.04 * safezoneW;
             h = 0.04 * safezoneH;
             colorText[] = {1,1,1,1};
@@ -45,12 +34,13 @@ class AliveMenuMapFull
         class AliveMenuFullMap_structuredText: AliveUI_RscStructuredText
         {
             idc = 13802;
-            x = safezoneX + (0.004 * safezoneW);
+            x = safezoneX + (0.016 * safezoneW);
             y = safezoneY + (0.028 * safezoneH);
-            w = 0.29 * safezoneW;
+            w = 0.25 * safezoneW;
             h = 0.941 * safezoneH;
             sizeEx = 0.1;
             colorBackground[] = {0,0,0,0};
+            colorText[] = {0.616,0.812,0.894,1};
         };
 
         class AliveMenuFullMap_subMenuAbortButton : AliveUI_RscButton

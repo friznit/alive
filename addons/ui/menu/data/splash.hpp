@@ -43,6 +43,7 @@ class AliveSplash
             h = 0.4 * safezoneH;
             sizeEx = 0.1;
             colorBackground[] = {0,0,0,0};
+            colorText[] = {0.616,0.812,0.894,1};
         };
 
     };

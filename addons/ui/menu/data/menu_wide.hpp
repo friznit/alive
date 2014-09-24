@@ -51,6 +51,7 @@ class AliveMenuWide
             h = 0.5 * safezoneH;
             sizeEx = 0.1;
             colorBackground[] = {0,0,0,0};
+            colorText[] = {0.616,0.812,0.894,1};
         };
 
         class AliveMenuFull_subMenuAbortButton : AliveUI_RscButton

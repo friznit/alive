@@ -81,6 +81,11 @@ nil
 #define FullMenuMap_CTRL_Back 13803
 #define FullMenuMap_CTRL_Map 13804
 
+#define FullMenuImage_CTRL_MainDisplay 13601
+#define FullMenuImage_CTRL_Text 13602
+#define FullMenuImage_CTRL_Back 13603
+#define FullMenuImage_CTRL_Image 13604
+
 #define ModalMenu_CTRL_MainDisplay 13101
 #define ModalMenu_CTRL_Text 13102
 #define ModalMenu_CTRL_Back 13103
@@ -223,6 +228,74 @@ switch(_action) do {
             ctrlMapAnimClear _map;
             _map ctrlMapAnimAdd _args;//[0.5, ctrlMapScale _map, _position];
             ctrlMapAnimCommit _map;
+
+        };
+
+    };
+
+    case "openImageFull":{
+
+        [_args] spawn {
+
+            private["_args","_display","_closeButton"];
+
+            _args = _this select 0;
+
+            disableSerialization;
+
+            createDialog "AliveMenuImageFull";
+
+            waitUntil {sleep 0.01; (!(isNull (findDisplay FullMenuImage_CTRL_MainDisplay)))};
+            _display = findDisplay FullMenuImage_CTRL_MainDisplay;
+            _display displayAddEventHandler ["KeyDown","['keyHandler',_this] call ALIVE_fnc_displayMenu"];
+
+            if(count _args > 0 ) then {
+                ALiVE_displayMenuCallback = _args;
+            }else{
+                ALiVE_displayMenuCallback = nil;
+            };
+
+            _closeButton = Menu_getControl(FullMenuImage_CTRL_MainDisplay,FullMenuImage_CTRL_Back);
+            _closeButton ctrlShow true;
+            _closeButton ctrlSetEventHandler ["MouseButtonClick", "['handleClose'] call ALIVE_fnc_displayMenu"];
+
+        };
+    };
+
+    case "setFullImageText":{
+
+        [_args] spawn {
+
+            private["_text"];
+
+            _args = _this select 0;
+
+            disableSerialization;
+
+            waitUntil {sleep 0.01; (!(isNull (findDisplay FullMenuImage_CTRL_MainDisplay)))};
+
+            _text = Menu_getControl(FullMenuImage_CTRL_MainDisplay,FullMenuImage_CTRL_Text);
+            _text ctrlShow true;
+
+            _text ctrlSetStructuredText (parseText _args);
+
+        };
+
+    };
+
+    case "setFullImage":{
+
+        [_args] spawn {
+
+            _args = _this select 0;
+
+            disableSerialization;
+
+            waitUntil {sleep 0.01; (!(isNull (findDisplay FullMenuImage_CTRL_MainDisplay)))};
+
+            _image = Menu_getControl(FullMenuImage_CTRL_MainDisplay,FullMenuImage_CTRL_Image);
+
+            _image ctrlSetText _args;
 
         };
 

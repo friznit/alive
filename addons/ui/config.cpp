@@ -209,6 +209,7 @@ class CfgDebriefing
 
 #include <\x\alive\addons\ui\menu\data\menu_common.hpp>
 #include <\x\alive\addons\ui\menu\data\menu_full.hpp>
+#include <\x\alive\addons\ui\menu\data\menu_full_image.hpp>
 #include <\x\alive\addons\ui\menu\data\menu_full_map.hpp>
 #include <\x\alive\addons\ui\menu\data\menu_modal.hpp>
 #include <\x\alive\addons\ui\menu\data\menu_wide.hpp>
