@@ -39,15 +39,17 @@ rem ----------------------------- A3 --------------------------------------
 rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
 rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
+%exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
+
 rem %exe% "%arma%\@sfp_islands\addons\sfp_sturko.pbo" > %target%\objects.sturko.sqf
 rem %exe% "%arma%\@sfp_islands\addons\sfp_wamako.pbo" > %target%\objects.wamako.sqf
 
 rem %exe% "%arma%\@dariyah\addons\projeta3-07.pbo" > %target%\objects.dariyah.sqf
 rem %exe% "%arma%\@kalukhan\addons\projeta3-06.pbo" > %target%\objects.kalukhan.sqf
 
-%exe% "%arma%\@allinarmaterrainpack\addons\sara.pbo" > %target%\objects.sara.sqf
-%exe% "%arma%\@allinarmaterrainpack\addons\sara_dbe1.pbo" > %target%\objects.sara_dbe1.sqf
-%exe% "%arma%\@allinarmaterrainpack\addons\saralite.pbo" > %target%\objects.saralite.sqf
+rem %exe% "%arma%\@allinarmaterrainpack\addons\sara.pbo" > %target%\objects.sara.sqf
+rem %exe% "%arma%\@allinarmaterrainpack\addons\sara_dbe1.pbo" > %target%\objects.sara_dbe1.sqf
+rem %exe% "%arma%\@allinarmaterrainpack\addons\saralite.pbo" > %target%\objects.saralite.sqf
 
 rem ----------------------------- A2 --------------------------------------
 rem %exe% "%arma%\@a2\chernarus.pbo" > %target%\objects.chernarus.sqf
