@@ -1410,11 +1410,15 @@ switch(_operation) do {
                                         _transportProfiles set [count _transportProfiles, _profiles select 0 select 2 select 4];
                                         _transportVehicleProfiles set [count _transportVehicleProfiles, _profiles select 1 select 2 select 4];
 
-                                        _infantryProfileID = _infantryProfiles select _i select 0;
-                                        if!(isNil "_infantryProfileID") then {
-                                            _infantryProfile = [ALIVE_profileHandler, "getProfile", _infantryProfileID] call ALIVE_fnc_profileHandler;
-                                            if!(isNil "_infantryProfile") then {
-                                                [_infantryProfile,_profiles select 1] call ALIVE_fnc_createProfileVehicleAssignment;
+                                        if(count _infantryProfiles >= _i) then {
+                                            if(count (_infantryProfiles select _i) > 0) then {
+                                                _infantryProfileID = _infantryProfiles select _i select 0;
+                                                if!(isNil "_infantryProfileID") then {
+                                                    _infantryProfile = [ALIVE_profileHandler, "getProfile", _infantryProfileID] call ALIVE_fnc_profileHandler;
+                                                    if!(isNil "_infantryProfile") then {
+                                                        [_infantryProfile,_profiles select 1] call ALIVE_fnc_createProfileVehicleAssignment;
+                                                    };
+                                                };
                                             };
                                         };
 
