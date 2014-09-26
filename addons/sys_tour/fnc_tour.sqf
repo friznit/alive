@@ -1650,8 +1650,6 @@ switch(_operation) do {
                     _section = [_x,"section"] call ALIVE_fnc_hashGet;
                     _objectiveID = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
 
-                    _x call ALIVE_fnc_inspectHash;
-
                     _action = "";
                     _objective = "";
                     _nearestTownToObjective = [_center] call ALIVE_fnc_taskGetNearestLocationName;
@@ -1659,7 +1657,7 @@ switch(_operation) do {
                     if(_type == "MIL") then {
                         _objective = "Military objective";
                     }else{
-                        _objective = "Civillian objective";
+                        _objective = "Civilian objective";
                     };
 
                     if!(isNil "_orders") then {
@@ -1694,16 +1692,19 @@ switch(_operation) do {
 
                                 _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
 
-                                ["openSplash",0.2] call ALIVE_fnc_displayMenu;
+                                ["openSplash",0.3] call ALIVE_fnc_displayMenu;
                                 ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
-
-                                sleep 3;
-
-                                waitUntil{_profile select 2 select 1};
 
                                 _position = _profile select 2 select 2;
 
+                                if(surfaceIsWater _position) then {
+                                    _position = [_position] call ALIVE_fnc_getClosestLand;
+                                };
+
                                 player setPos _position;
+                                hideObject player;
+
+                                waitUntil{_profile select 2 select 1};
 
                                 _group = _profile select 2 select 13;
                                 _unit = (units _group) call BIS_fnc_selectRandom;
@@ -1713,23 +1714,26 @@ switch(_operation) do {
                                 _target = "RoadCone_L_F" createVehicle _center;
                                 hideObject _target;
 
-                                [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
+                                if!(isNil "_unit") then {
+
+                                    [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
 
 
-                                _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
-                                _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
+                                    _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+                                    _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
 
-                                _title = "<t size='1.5' color='#68a7b7' shadow='1'>OPCOM Troops</t><br/>";
-                                _text = format["%1<t>%2 group %3 near %4</t><br/>%5",_title,_factionName,_group,_nearestTown,_action];
+                                    _title = "<t size='1.5' color='#68a7b7' shadow='1'>OPCOM Troops</t><br/>";
+                                    _text = format["%1<t>%2 group %3 near %4</t><br/>%5",_title,_factionName,_group,_nearestTown,_action];
 
-                                ["openSideSmall"] call ALIVE_fnc_displayMenu;
-                                ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+                                    ["openSideSmall"] call ALIVE_fnc_displayMenu;
+                                    ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
 
-                                sleep _duration;
+                                    sleep _duration;
 
-                                deleteVehicle _target;
+                                    deleteVehicle _target;
 
-                                [_logic, "deleteDynamicCamera"] call MAINCLASS;
+                                    [_logic, "deleteDynamicCamera"] call MAINCLASS;
+                                };
 
                             };
 
@@ -1858,6 +1862,8 @@ switch(_operation) do {
             [true] call ALIVE_fnc_revertCamera;
 
         };
+
+        player hideObject false;
 
     };
 
@@ -2199,14 +2205,14 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>CQB</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
-            _line3 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>The close quarters combat module automatically populates a civilian and military buidlings with dismounted infantry units when a player moves within range. The groups occupy buildings, patrol the streets and react to enemy presence.</t><br/><br/>";
+            _line3 = "<t size='1'>CQB detects the dominant AI faction in the area (ignoring players) and spawns the appropriate units accordingly.</t><br/><br/>";
             _line4 = "<t size='1'></t><br/><br/>";
             _line5 = "<t size='1'></t><br/><br/>";
             _line6 = "<t size='1'></t><br/><br/>";
             _line7 = "<t size='1'></t><br/><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
             ["openFull",[_logic,"handleMenuCallback","ModuleCQB"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
@@ -2226,36 +2232,43 @@ switch(_operation) do {
                 _factions = _CQBModule getVariable "factions";
                 _houses = _CQBModule getVariable "houses";
 
-                ["FACTIONS: %1",_factions] call ALIVE_fnc_dump;
-
-                _houses call ALIVE_fnc_inspectArray;
-
                 {
 
-                    call BIS_fnc_VRFadeIn;
+                    if ([_x] call ALiVE_fnc_isHouseEnterable) then {
 
-                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+                        call BIS_fnc_VRFadeIn;
 
-                    ["openSplash",0.2] call ALIVE_fnc_displayMenu;
-                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
 
-                    _position = position _x;
+                        ["openSplash",0.2] call ALIVE_fnc_displayMenu;
+                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
-                    player setPos _position;
+                        _position = position _x;
 
-                    sleep 3;
+                        player setPos _position;
+                        hideObject player;
 
-                    waitUntil {
+                        sleep 3;
+
+                        waitUntil {
+                            _group = _x getVariable "group";
+                            !(isNil "_group")
+                        };
+
                         _group = _x getVariable "group";
-                        !(isNil "_group")
+
+                        waitUntil {
+                            _group = _x getVariable "group";
+                            (typeName _group == "GROUP")
+                        };
+
+                        _leader = leader _group;
+
+                        [_leader,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
+
+                        sleep 30;
+
                     };
-
-                    _group = _x getVariable "group";
-                    _leader = leader _group;
-
-                    [_leader,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
-
-                    sleep 30;
 
                 } forEach _houses;
 
@@ -2272,6 +2285,8 @@ switch(_operation) do {
                 terminate ALIVE_tourActiveScript;
             };
         };
+
+        player hideObject false;
 
         [true] call ALIVE_fnc_revertCamera;
 
@@ -2304,6 +2319,78 @@ switch(_operation) do {
             ["openFull",[_logic,"handleMenuCallback","ModuleCivilian"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
+            private["_civilianAgents","_activeCommands","_profile","_type","_line1","_position","_unit",
+            "_faction","_id","_duration","_nearestTown","_factionName","_title","_text","_command"];
+
+
+
+            if!(isNil "ALIVE_agentHandler") then {
+                _civilianAgents = [ALIVE_agentHandler,"getAgents"] call ALIVE_fnc_agentHandler;
+                _activeCommands = [ALIVE_civCommandRouter,"commandState"] call ALIVE_fnc_hashGet;
+
+                {
+                    _profile = _x;
+
+                    _type = _profile select 2 select 4;
+
+                    if(_type == "agent") then {
+
+                        call BIS_fnc_VRFadeIn;
+
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                        ["openSplash",0.3] call ALIVE_fnc_displayMenu;
+                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                        _position = _profile select 2 select 2;
+
+                        if(surfaceIsWater _position) then {
+                            _position = [_position] call ALIVE_fnc_getClosestLand;
+                        };
+
+                        player setPos _position;
+                        hideObject player;
+
+                        waitUntil{_profile select 2 select 1};
+
+                        _unit = _profile select 2 select 5;
+                        _faction = _profile select 2 select 7;
+                        _id = _profile select 2 select 3;
+
+                        _duration = 20;
+
+                        _target = "RoadCone_L_F" createVehicle _position;
+                        hideObject _target;
+
+                        if!(isNil "_unit") then {
+
+                            _command = [_activeCommands,_id] call ALIVE_fnc_hashGet;
+                            _command = _command select 1;
+                            _command call ALIVE_fnc_inspectArray;
+
+                            [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
+
+                            _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+                            _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
+
+                            _title = "<t size='1.5' color='#68a7b7' shadow='1'>Civilian</t><br/>";
+                            _text = format["%1<t>%3 near %2</t><br/>%5",_title,_nearestTown,_factionName];
+
+                            ["openSideSmall"] call ALIVE_fnc_displayMenu;
+                            ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
+                            sleep _duration;
+
+                            deleteVehicle _target;
+
+                            [_logic, "deleteDynamicCamera"] call MAINCLASS;
+                        };
+                    };
+
+                } forEach (_civilianAgents select 2);
+
+            };
+
         };
 
     };
@@ -2313,6 +2400,17 @@ switch(_operation) do {
         if!(isNil "ALIVE_tourActiveScript") then {
             if!(scriptDone ALIVE_tourActiveScript) then {
                 terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        if!(isNil "ALIVE_cameraType") then {
+            if(ALIVE_cameraType == "CAMERA") then {
+                if!(isNil "ALIVE_tourCamera") then {
+                    [ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
+                    [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
+                };
+            }else{
+                [true] call ALIVE_fnc_revertCamera;
             };
         };
 
