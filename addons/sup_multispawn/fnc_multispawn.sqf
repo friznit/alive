@@ -203,6 +203,10 @@ switch(_operation) do {
 
 					// Apply Params
                     switch (GVAR(MULTISPAWN_TYPE)) do {
+                        
+                        //Nothing
+                        case ("none") : {};
+                        
                         //Initialise a local "killed"-EH
                         case ("forwardspawn") : {
                         	//Not compatible with revive

@@ -62,6 +62,12 @@ class CfgVehicles {
                                                 name = "Spawn in building";
                                                 value = "building";
                                         };
+                                        
+                                        class none
+                                        {
+                                                name = "None";
+                                                value = "none";
+                                        };
                                 };
                         };
                         
