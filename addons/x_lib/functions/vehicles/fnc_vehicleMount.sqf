@@ -30,7 +30,7 @@ private ["_assignments","_vehicle","_driver","_gunners","_commander","_cargo","_
 	
 _assignments = _this select 0;
 _vehicle = _this select 1;
-	
+
 // driver
 _driver = _assignments select 0;	
 {
@@ -58,12 +58,12 @@ _turret = _assignments select 3;
 if(count _turret > 0) then {
 	// get turrets for this class ignoring gunner and commander turrets
 	_turrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
-	
+
 	for "_i" from 0 to (count _turret)-1 do {
 		_unit = _turret select _i;
 		_turretPath = _turrets call BIS_fnc_arrayPop;
 		_unit assignAsTurret [_vehicle, _turretPath];
-		_unit orderGetIn true;
+		[_unit] orderGetIn true;
 	};
 };
 

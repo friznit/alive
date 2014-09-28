@@ -53,7 +53,7 @@ _findRecurse = {
 			
 			_primaryGunner = false;
 			_primaryObserver = false;
-			
+
 			if(getNumber(_turret >> "primaryGunner") == 1) then {
 				_primaryGunner = true;
 				_positions set [1, 1];
@@ -63,7 +63,7 @@ _findRecurse = {
 				_primaryObserver = true;
 				_positions set [2, 1];
 			};
-			
+
 			if(!(_primaryGunner) && !(_primaryObserver)) then {
 				_turretEmptyCount = _turretEmptyCount +1;
 			};
