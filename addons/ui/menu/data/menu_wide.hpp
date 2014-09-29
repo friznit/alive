@@ -58,12 +58,10 @@ class AliveMenuWide
         {
             idc = 13303;
             text = "Close";
-            style = 0x02;
             x = 0.2 * safezoneW + safezoneX;
             y = (0.7 + 0.031) * safezoneH + safezoneY;
             w = 0.6 * safezoneW;
             h = 0.028 * safezoneH;
-            sizeEx = 0.8 * GUI_GRID_H;
             colorBackground[] = {0.376,0.196,0.204,1};
             colorText[] = {0.706,0.706,0.706,1};
             colorBackgroundFocused[] = {0.706,0.706,0.706,1};

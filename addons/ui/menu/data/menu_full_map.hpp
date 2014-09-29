@@ -20,6 +20,28 @@ class AliveMenuMapFull
             text = "x\alive\addons\ui\alive_bg.paa";
         };
 
+        class AliveMenuFullMap_textBackground : AliveUI_RscBackground
+        {
+            idc = -1;
+            x = safezoneX;
+            y = safezoneY + (0.028 * safezoneH);
+            w = 0.3 * safezoneW;
+            h = 0.941 * safezoneH;
+            text="";
+            colorBackground[] = {0.271,0.278,0.278,0.4};
+        };
+
+        class AliveMenuFullMap_header : AliveUI_RscBackground
+        {
+            idc = -1;
+            x = safezoneX;
+            y = safezoneY;
+            w = 0.3 * safezoneW;
+            h = 0.025 * safezoneH;
+            text="";
+            colorBackground[] = {0.145,0.204,0.22,0.9};
+        };
+
         class AliveMenuFullMap_logo : RscPictureKeepAspect
         {
             idc = -1;
@@ -47,12 +69,10 @@ class AliveMenuMapFull
         {
             idc = 13803;
             text = "Close";
-            style = 0x02;
             x = safezoneX;
             y = safezoneY + (safezoneH - (0.028 * safezoneH));
             w = 0.3 * safezoneW;
             h = 0.028 * safezoneH;
-            sizeEx = 0.8 * GUI_GRID_H;
             colorBackground[] = {0.376,0.196,0.204,1};
             colorText[] = {0.706,0.706,0.706,1};
             colorBackgroundFocused[] = {0.706,0.706,0.706,1};

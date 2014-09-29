@@ -73,8 +73,12 @@ nil
 // Display components
 
 #define FullMenu_CTRL_MainDisplay 13901
-#define FullMenu_CTRL_Text 13902
-#define FullMenu_CTRL_Back 13903
+#define FullMenu_CTRL_Background 13902
+#define FullMenu_CTRL_Header 13903
+#define FullMenu_CTRL_Logo 13904
+#define FullMenu_CTRL_Text 13905
+#define FullMenu_CTRL_Hide 13906
+#define FullMenu_CTRL_Back 13907
 
 #define FullMenuMap_CTRL_MainDisplay 13801
 #define FullMenuMap_CTRL_Text 13802
@@ -100,7 +104,11 @@ nil
 
 #define SideMenuSmall_CTRL_Text 13502
 
+#define SideSubtitleSmall_CTRL_Text 14202
+
 #define SplashMenu_CTRL_Text 14102
+
+#define SideMenuFull_CTRL_Text 14302
 
 #define Menu_getControl(disp,ctrl) ((findDisplay ##disp) displayCtrl ##ctrl)
 
@@ -139,6 +147,10 @@ switch(_action) do {
             _closeButton = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Back);
             _closeButton ctrlShow true;
             _closeButton ctrlSetEventHandler ["MouseButtonClick", "['handleClose'] call ALIVE_fnc_displayMenu"];
+
+            _hideButton = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Hide);
+            _hideButton ctrlShow true;
+            _hideButton ctrlSetEventHandler ["MouseButtonClick", "['handleHide'] call ALIVE_fnc_displayMenu"];
         };
     };
 
@@ -160,6 +172,52 @@ switch(_action) do {
             _text ctrlSetStructuredText (parseText _args);
 
         };
+
+    };
+
+    case "handleHide":{
+
+        private["_hideButton","_background","_header","_logo","_text"];
+
+        _hideButton = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Hide);
+        _hideButton ctrlShow true;
+        _hideButton ctrlSetText "Show";
+        _hideButton ctrlSetEventHandler ["MouseButtonClick", "['handleShow'] call ALIVE_fnc_displayMenu"];
+
+        _background = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Background);
+        _background ctrlShow false;
+
+        _header = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Header);
+        _header ctrlShow false;
+
+        _logo = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Logo);
+        _logo ctrlShow false;
+
+        _text = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Text);
+        _text ctrlShow false;
+
+    };
+
+    case "handleShow":{
+
+        private["_hideButton","_background","_header","_logo","_text"];
+
+        _hideButton = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Hide);
+        _hideButton ctrlShow true;
+        _hideButton ctrlSetText "Hide";
+        _hideButton ctrlSetEventHandler ["MouseButtonClick", "['handleHide'] call ALIVE_fnc_displayMenu"];
+
+        _background = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Background);
+        _background ctrlShow true;
+
+        _header = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Header);
+        _header ctrlShow true;
+
+        _logo = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Logo);
+        _logo ctrlShow true;
+
+        _text = Menu_getControl(FullMenu_CTRL_MainDisplay,FullMenu_CTRL_Text);
+        _text ctrlShow true;
 
     };
 
@@ -480,6 +538,28 @@ switch(_action) do {
         _text ctrlSetStructuredText (parseText _args);
     };
 
+    case "openSideSubtitle":{
+        if!(isNil "_args") then {
+            1001 cutRsc ["AliveSubtitleSideSmall","PLAIN",_args];
+        }else{
+            1001 cutRsc ["AliveSubtitleSideSmall","PLAIN"];
+        }
+    };
+
+    case "setSideSubtitleSmallText":{
+
+        disableSerialization;
+
+        private["_text","_sideDisplay"];
+
+        _sideDisplay = uiNameSpace getVariable "AliveSubtitleSideSmall";
+
+        _text = _sideDisplay displayCtrl SideSubtitleSmall_CTRL_Text;
+        _text ctrlShow true;
+
+        _text ctrlSetStructuredText (parseText _args);
+    };
+
     case "openSideTop":{
         if!(isNil "_args") then {
             1001 cutRsc ["AliveMenuSideTop","PLAIN",_args];
@@ -519,6 +599,28 @@ switch(_action) do {
         _splashDisplay = uiNameSpace getVariable "AliveSplash";
 
         _text = _splashDisplay displayCtrl SplashMenu_CTRL_Text;
+        _text ctrlShow true;
+
+        _text ctrlSetStructuredText (parseText _args);
+    };
+
+    case "openSideFull":{
+        if!(isNil "_args") then {
+            1005 cutRsc ["AliveMenuSideFull","PLAIN",_args];
+        }else{
+            1005 cutRsc ["AliveMenuSideFull","PLAIN"];
+        }
+    };
+
+    case "setSideFullText":{
+
+        disableSerialization;
+
+        private["_text","_sideFullDisplay"];
+
+        _sideFullDisplay = uiNameSpace getVariable "AliveMenuSideFull";
+
+        _text = _sideFullDisplay displayCtrl SideMenuFull_CTRL_Text;
         _text ctrlShow true;
 
         _text ctrlSetStructuredText (parseText _args);

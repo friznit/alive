@@ -205,72 +205,43 @@ class AliveUI_RscComboBox
 
 class AliveUI_RscButton
 {
-	idc = -1;
-	type = 16;
-	style = 0x00;
-	default = 0;
-	shadow = 2;
-	x = "safeZoneX + (safeZoneW / 5)";
-	y = "safeZoneY + (safeZoneH / 1.525)";
-	w = "(safeZoneW / 12.5)";
-	h = "(safeZoneH / 20)";
-	color[] = {0.8784, 0.8471, 0.651, 1.0};
-	color2[] = {0.95, 0.95, 0.95, 1};
-	colorBackground[] = {1, 1, 1, 1};
-	colorbackground2[] = {1, 1, 1, 0.4};
-	colorDisabled[] = {1, 1, 1, 0.25};
-	periodFocus = 1.2;
-	periodOver = 0.8;
-	class HitZone
-	{
-        left = 0;
-        top = 0;
-        right = 0;
-        bottom = 0;
-	};
-	class ShortcutPos
-	{
-		left = "safeZoneW / 100";
-		top = "safeZoneH / 100";
-		w = "safeZoneW / 100";
-		h = "safeZoneH / 100";
-	};
-	class TextPos
-	{
-        left = "(((1 / 1.2) / 20) * 0.9) * (3/4)";
-        top = "(      (     (1 / 1.2) / 20) -     (     (     (1 / 1.2) / 20) * 0.9)) / 2";
-        right = 0.005;
-        bottom = 0;
-	};
-	animTextureDefault = "#(argb,8,8,3)color(1,1,1,1)";
-    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,1)";
-    animTextureFocused = "#(argb,8,8,3)color(1,1,1,1)";
-    animTextureNormal = "#(argb,8,8,3)color(1,1,1,1)";
-    animTextureOver = "#(argb,8,8,3)color(1,1,1,0.5)";
-    animTexturePressed = "#(argb,8,8,3)color(1,1,1,1)";
-	period = 0.4;
-	font = "PuristaMedium";
-	size = "(safeZoneW / 125) + (safeZoneH / 125)";
-	text = "";
+    deletable = 0;
+    fade = 0;
+    access = 0;
+    type = 1;
+    text = "";
+    colorText[] = {0.706,0.706,0.706,1};
+    colorDisabled[] = {1, 1, 1, 0.25};
+    colorBackground[] = {1, 1, 1, 1};
+    colorBackgroundDisabled[] = {1, 1, 1, 0.25};
+    colorBackgroundActive[] = {1, 1, 1, 0.25};
+    colorFocused[] = {1, 1, 1, 0.25};
+    colorShadow[] = {1, 1, 1, 0.25};
+    colorBorder[] = {1, 1, 1, 0.25};
     soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1};
     soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush",0.09,1};
     soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick",0.09,1};
     soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1};
-	textureNoShortcut = "";
-	action = "";
-	class Attributes
-	{
-		font = "PuristaMedium";
-		color = "#E5E5E5";
-		align = "left";
-		shadow = "true";
-	};
-	class AttributesImage
-	{
-		font = "PuristaMedium";
-		color = "#E5E5E5";
-		align = "left";
-	};
+    style = 2;
+    x = "safeZoneX + (safeZoneW / 5)";
+    y = "safeZoneY + (safeZoneH / 1.525)";
+    w = "(safeZoneW / 12.5)";
+    h = "(safeZoneH / 20)";
+    shadow = 2;
+    font = "PuristaMedium";
+    sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+    offsetX = 0;
+    offsetY = 0;
+    offsetPressedX = 0;
+    offsetPressedY = 0;
+    borderSize = 0;
+    class Attributes
+    {
+        font = "PuristaMedium";
+        color = "#E5E5E5";
+        align = "left";
+        shadow = "true";
+    };
 };
 
 class AliveUI_RscMap

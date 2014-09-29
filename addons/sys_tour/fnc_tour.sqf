@@ -486,7 +486,7 @@ switch(_operation) do {
 
                     if(_position select 2 == 3) then {
                         _soundSource = "RoadCone_L_F" createVehicle _position;
-                        hideObject _soundSource;
+                        hideObjectGlobal _soundSource;
                         _soundSource say3d "FD_Finish_F";
                     };
                 }else{
@@ -507,7 +507,7 @@ switch(_operation) do {
                         if(_iconActiveTime > 130) then {
 
                             _soundSource = "RoadCone_L_F" createVehicle _position;
-                            hideObject _soundSource;
+                            hideObjectGlobal _soundSource;
                             _soundSource say3d "FD_CP_Not_Clear_F";
 
                             [ALIVE_tourInstance,"handleIconActivated",_iconID] call ALIVE_fnc_tour;
@@ -1702,7 +1702,7 @@ switch(_operation) do {
                                 };
 
                                 player setPos _position;
-                                hideObject player;
+                                hideObjectGlobal player;
 
                                 waitUntil{_profile select 2 select 1};
 
@@ -1712,12 +1712,11 @@ switch(_operation) do {
                                 _duration = 20;
 
                                 _target = "RoadCone_L_F" createVehicle _center;
-                                hideObject _target;
+                                hideObjectGlobal _target;
 
                                 if!(isNil "_unit") then {
 
                                     [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
-
 
                                     _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
                                     _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
@@ -1832,13 +1831,13 @@ switch(_operation) do {
                     [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_chaseShot;
                 };
                 case "CHASE_SIDE":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_chaseSideShot;
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseSideShot;
                 };
                 case "CHASE_WHEEL":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_chaseWheelShot;
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseWheelShot;
                 };
                 case "CHASE_ANGLE":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_chaseAngleShot;
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseAngleShot;
                 };
             };
 
@@ -1863,7 +1862,7 @@ switch(_operation) do {
 
         };
 
-        player hideObject false;
+        player hideObjectGlobal false;
 
     };
 
@@ -1964,7 +1963,7 @@ switch(_operation) do {
                     sleep 3;
 
                     _target = "RoadCone_L_F" createVehicle _position;
-                    _target hideObject true;
+                    _target hideObjectGlobal true;
 
                     _duration = 35;
 
@@ -2012,7 +2011,7 @@ switch(_operation) do {
                     sleep 3;
 
                     _target = "RoadCone_L_F" createVehicle _position;
-                    _target hideObject true;
+                    _target hideObjectGlobal true;
 
                     _duration = 35;
 
@@ -2246,7 +2245,7 @@ switch(_operation) do {
                         _position = position _x;
 
                         player setPos _position;
-                        hideObject player;
+                        hideObjectGlobal player;
 
                         sleep 3;
 
@@ -2286,7 +2285,7 @@ switch(_operation) do {
             };
         };
 
-        player hideObject false;
+        player hideObjectGlobal false;
 
         [true] call ALIVE_fnc_revertCamera;
 
@@ -2349,7 +2348,7 @@ switch(_operation) do {
                         };
 
                         player setPos _position;
-                        hideObject player;
+                        hideObjectGlobal player;
 
                         waitUntil{_profile select 2 select 1};
 
@@ -2360,7 +2359,7 @@ switch(_operation) do {
                         _duration = 20;
 
                         _target = "RoadCone_L_F" createVehicle _position;
-                        hideObject _target;
+                        hideObjectGlobal _target;
 
                         if!(isNil "_unit") then {
 
@@ -2376,8 +2375,8 @@ switch(_operation) do {
                             _title = "<t size='1.5' color='#68a7b7' shadow='1'>Civilian</t><br/>";
                             _text = format["%1<t>%3 near %2</t><br/>%5",_title,_nearestTown,_factionName];
 
-                            ["openSideSmall"] call ALIVE_fnc_displayMenu;
-                            ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+                            ["openSideSubtitle"] call ALIVE_fnc_displayMenu;
+                            ["setSideSubtitleSmallText",_text] call ALIVE_fnc_displayMenu;
 
                             sleep _duration;
 
@@ -2440,8 +2439,18 @@ switch(_operation) do {
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openFull",[_logic,"handleMenuCallback","ModuleCombatSupport"]] call ALIVE_fnc_displayMenu;
-            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            ["radio"] call ALIVE_fnc_radioAction;
+
+            sleep 1;
+
+            waitUntil { sleep 1; _display = findDisplay 655555;(isNull _display)};
+
+            1005 cutText ["", "PLAIN"];
+
+            [_logic,"deactivateSelectionModuleCombatSupport"] call MAINCLASS;
 
         };
 
@@ -2481,8 +2490,18 @@ switch(_operation) do {
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openFull",[_logic,"handleMenuCallback","ModuleResupply"]] call ALIVE_fnc_displayMenu;
-            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            ["OPEN",[]] call ALIVE_fnc_PRTabletOnAction;
+
+            sleep 1;
+
+            waitUntil { sleep 1; _display = findDisplay 60001;(isNull _display)};
+
+            1005 cutText ["", "PLAIN"];
+
+            [_logic,"deactivateSelectionModuleResupply"] call MAINCLASS;
 
         };
 
@@ -2502,7 +2521,7 @@ switch(_operation) do {
 
     };
 
-    case "activateSelectionModuleModuleC2": {
+    case "activateSelectionModuleC2": {
 
         ALIVE_tourActiveScript = [_logic] spawn {
 
@@ -2522,8 +2541,18 @@ switch(_operation) do {
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
-            ["openFull",[_logic,"handleMenuCallback","ModuleC2"]] call ALIVE_fnc_displayMenu;
-            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            ["OPEN",[]] call ALIVE_fnc_C2TabletOnAction;
+
+            sleep 1;
+
+            waitUntil { sleep 1; _display = findDisplay 70001;(isNull _display)};
+
+            1005 cutText ["", "PLAIN"];
+
+            [_logic,"deactivateSelectionModuleC2"] call MAINCLASS;
 
         };
 
