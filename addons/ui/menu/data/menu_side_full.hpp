@@ -17,7 +17,7 @@ class AliveMenuSideFull
             idc = -1;
             x = safezoneX;
             y = safezoneY + (0.028 * safezoneH);
-            w = 0.3 * safezoneW;
+            w = 0.2 * safezoneW;
             h = 1 * safezoneH;
             text="";
             colorBackground[] = {0.271,0.278,0.278,0.6};
@@ -28,7 +28,7 @@ class AliveMenuSideFull
             idc = -1;
             x = safezoneX;
             y = safezoneY;
-            w = 0.3 * safezoneW;
+            w = 0.2 * safezoneW;
             h = 0.025 * safezoneH;
             text="";
             colorBackground[] = {0.145,0.204,0.22,0.9};
@@ -50,7 +50,7 @@ class AliveMenuSideFull
             idc = 14302;
             x = safezoneX + (0.016 * safezoneW);
             y = safezoneY + (0.028 * safezoneH);
-            w = 0.25 * safezoneW;
+            w = 0.15 * safezoneW;
             h = 0.908 * safezoneH;
             sizeEx = 0.1;
             colorBackground[] = {0,0,0,0};

@@ -219,6 +219,7 @@ class RscTitles {
     #include <\x\alive\addons\ui\menu\data\menu_side.hpp>
     #include <\x\alive\addons\ui\menu\data\menu_side_small.hpp>
     #include <\x\alive\addons\ui\menu\data\menu_side_top.hpp>
+    #include <\x\alive\addons\ui\menu\data\menu_side_top_small.hpp>
     #include <\x\alive\addons\ui\menu\data\menu_side_full.hpp>
     #include <\x\alive\addons\ui\menu\data\subtitle_side_small.hpp>
 };

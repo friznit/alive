@@ -102,6 +102,8 @@ nil
 
 #define SideMenuTop_CTRL_Text 13402
 
+#define SideMenuTopSmall_CTRL_Text 13702
+
 #define SideMenuSmall_CTRL_Text 13502
 
 #define SideSubtitleSmall_CTRL_Text 14202
@@ -518,9 +520,9 @@ switch(_action) do {
 
     case "openSideSmall":{
         if!(isNil "_args") then {
-            1001 cutRsc ["AliveMenuSideSmall","PLAIN",_args];
+            1002 cutRsc ["AliveMenuSideSmall","PLAIN",_args];
         }else{
-            1001 cutRsc ["AliveMenuSideSmall","PLAIN"];
+            1002 cutRsc ["AliveMenuSideSmall","PLAIN"];
         }
     };
 
@@ -540,10 +542,14 @@ switch(_action) do {
 
     case "openSideSubtitle":{
         if!(isNil "_args") then {
-            1001 cutRsc ["AliveSubtitleSideSmall","PLAIN",_args];
+            1003 cutRsc ["AliveSubtitleSideSmall","PLAIN",_args];
         }else{
-            1001 cutRsc ["AliveSubtitleSideSmall","PLAIN"];
+            1003 cutRsc ["AliveSubtitleSideSmall","PLAIN"];
         }
+    };
+
+    case "closeSideSubtitle":{
+        1003 cutText ["", "PLAIN"];
     };
 
     case "setSideSubtitleSmallText":{
@@ -562,9 +568,9 @@ switch(_action) do {
 
     case "openSideTop":{
         if!(isNil "_args") then {
-            1001 cutRsc ["AliveMenuSideTop","PLAIN",_args];
+            1004 cutRsc ["AliveMenuSideTop","PLAIN",_args];
         }else{
-            1001 cutRsc ["AliveMenuSideTop","PLAIN"];
+            1004 cutRsc ["AliveMenuSideTop","PLAIN"];
         }
     };
 
@@ -582,12 +588,42 @@ switch(_action) do {
         _text ctrlSetStructuredText (parseText _args);
     };
 
+    case "openSideTopSmall":{
+        if!(isNil "_args") then {
+            1007 cutRsc ["AliveMenuSideTopSmall","PLAIN",_args];
+        }else{
+            1007 cutRsc ["AliveMenuSideTopSmall","PLAIN"];
+        }
+    };
+
+    case "setSideTopSmallText":{
+
+        disableSerialization;
+
+        private["_text","_sideDisplay"];
+
+        _sideDisplay = uiNameSpace getVariable "AliveMenuSideTopSmall";
+
+        _text = _sideDisplay displayCtrl SideMenuTopSmall_CTRL_Text;
+        _text ctrlShow true;
+
+        _text ctrlSetStructuredText (parseText _args);
+    };
+
+    case "closeSideTopSmall":{
+        1007 cutText ["", "PLAIN"];
+    };
+
     case "openSplash":{
         if!(isNil "_args") then {
-            1001 cutRsc ["AliveSplash","PLAIN",_args];
+            1005 cutRsc ["AliveSplash","PLAIN",_args];
         }else{
-            1001 cutRsc ["AliveSplash","PLAIN"];
+            1005 cutRsc ["AliveSplash","PLAIN"];
         }
+    };
+
+    case "closeSplash":{
+        1005 cutText ["", "PLAIN"];
     };
 
     case "setSplashText":{
@@ -606,10 +642,14 @@ switch(_action) do {
 
     case "openSideFull":{
         if!(isNil "_args") then {
-            1005 cutRsc ["AliveMenuSideFull","PLAIN",_args];
+            1006 cutRsc ["AliveMenuSideFull","PLAIN",_args];
         }else{
-            1005 cutRsc ["AliveMenuSideFull","PLAIN"];
+            1006 cutRsc ["AliveMenuSideFull","PLAIN"];
         }
+    };
+
+    case "closeSideFull":{
+        1006 cutText ["", "PLAIN"];
     };
 
     case "setSideFullText":{

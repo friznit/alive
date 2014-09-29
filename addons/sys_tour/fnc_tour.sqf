@@ -1722,14 +1722,16 @@ switch(_operation) do {
                                     _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
 
                                     _title = "<t size='1.5' color='#68a7b7' shadow='1'>OPCOM Troops</t><br/>";
-                                    _text = format["%1<t>%2 group %3 near %4</t><br/>%5",_title,_factionName,_group,_nearestTown,_action];
+                                    _text = format["%1<t>%2 group %3 near %4</t> %5",_title,_factionName,_group,_nearestTown,_action];
 
-                                    ["openSideSmall"] call ALIVE_fnc_displayMenu;
-                                    ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+                                    ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
+                                    ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
                                     sleep _duration;
 
                                     deleteVehicle _target;
+
+                                    ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
                                     [_logic, "deleteDynamicCamera"] call MAINCLASS;
                                 };
@@ -1744,125 +1746,6 @@ switch(_operation) do {
             } forEach _shuffledModules;
 
         };
-
-    };
-
-    case "createDynamicCamera": {
-
-        private ["_source","_target1","_target2","_duration","_targetIsPlayer","_targetIsMan","_targetInVehicle","_cameraAngles",
-        "_initialAngle","_diceRoll","_cameraShots","_shot","_target2","_randomPosition"];
-
-        _duration = _args select 0;
-        _source = _args select 1;
-        _target1 = _args select 2;
-        _target2 = if(count _this > 3) then {_this select 3} else {nil};
-
-        _sourceIsPlayer = false;
-        if(isPlayer _source) then {
-            _sourceIsPlayer = true;
-        };
-
-        _targetIsMan = false;
-        _targetInVehicle = false;
-        if(_target1 isKindOf "Man" && alive _target1) then {
-            _targetIsMan = true;
-            if(vehicle _target1 != _target1) then {
-                _targetInVehicle = true;
-                _target1 = vehicle _target1;
-            };
-        };
-
-        _cameraAngles = ["DEFAULT","LOW","EYE","HIGH","BIRDS_EYE","UAV","SATELITE"];
-        _initialAngle = _cameraAngles call BIS_fnc_selectRandom;
-
-        ["CINEMATIC DURATION: %1",_duration] call ALIVE_fnc_dump;
-        ["SOURCE IS PLAYER: %1",_sourceIsPlayer] call ALIVE_fnc_dump;
-        ["TARGET IS MAN: %1",_targetIsMan] call ALIVE_fnc_dump;
-        ["TARGET IS IN VEHICLE: %1",_targetInVehicle] call ALIVE_fnc_dump;
-
-        ALIVE_cameraType = "CAMERA";
-
-        if(_targetIsMan && !(_targetInVehicle)) then {
-            _diceRoll = random 1;
-            if(_diceRoll > 0.5) then {
-                ALIVE_cameraType = "SWITCH";
-            };
-        };
-
-        ["CAMERA TYPE IS: %1",ALIVE_cameraType] call ALIVE_fnc_dump;
-
-        _cameraShots = ["FLY_IN","PAN","STATIC"];
-
-        if(_targetIsMan && _targetInVehicle) then {
-            _cameraShots = ["CHASE","CHASE_SIDE","CHASE_WHEEL","CHASE_ANGLE"];
-        };
-
-        _shot = _cameraShots call BIS_fnc_selectRandom;
-
-        ["CAMERA SHOT IS: %1",_shot] call ALIVE_fnc_dump;
-        ["CAMERA ANGLE IS: %1",_initialAngle] call ALIVE_fnc_dump;
-
-        if(ALIVE_cameraType == "CAMERA") then {
-
-            if!(_shot == "PAN") then {
-                ALIVE_tourCamera = [_source,false,_initialAngle] call ALIVE_fnc_addCamera;
-                [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
-            };
-
-            switch(_shot) do {
-                case "FLY_IN":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_flyInShot;
-                };
-                case "PAN":{
-
-                    if(isNil "_target2") then {
-                        _randomPosition = [position _source, (random(400)), random(360)] call BIS_fnc_relPos;
-                        _target2 = "RoadCone_L_F" createVehicle _randomPosition;
-                    };
-
-                    ALIVE_tourCamera = [_source,false,_initialAngle] call ALIVE_fnc_addCamera;
-                    [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
-                    [ALIVE_tourCamera,_target1,_target2,_duration] call ALIVE_fnc_panShot;
-                };
-                case "STATIC":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_staticShot;
-                };
-                case "CHASE":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_chaseShot;
-                };
-                case "CHASE_SIDE":{
-                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseSideShot;
-                };
-                case "CHASE_WHEEL":{
-                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseWheelShot;
-                };
-                case "CHASE_ANGLE":{
-                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseAngleShot;
-                };
-            };
-
-        }else{
-
-            [_target1,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
-
-        };
-
-    };
-
-    case "deleteDynamicCamera": {
-
-        if(ALIVE_cameraType == "CAMERA") then {
-
-            [ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
-            [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
-
-        }else{
-
-            [true] call ALIVE_fnc_revertCamera;
-
-        };
-
-        player hideObjectGlobal false;
 
     };
 
@@ -1881,9 +1764,12 @@ switch(_operation) do {
                     [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
                 };
             }else{
+
                 [true] call ALIVE_fnc_revertCamera;
             };
         };
+
+        ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -1976,8 +1862,8 @@ switch(_operation) do {
                     _title = "<t size='1.5' color='#68a7b7' shadow='1'>Military Objective</t><br/>";
                     _text = format["%1<t>Objective near %2 initially held by: %3</t>",_title,_nearestTown,_factionName];
 
-                    ["openSideSmall"] call ALIVE_fnc_displayMenu;
-                    ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+                    ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
+                    ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
 
                 }else{
@@ -2024,14 +1910,15 @@ switch(_operation) do {
                     _title = "<t size='1.5' color='#68a7b7' shadow='1'>Military Objective</t><br/>";
                     _text = format["%1<t>Objective near %2 initially held by: %3</t>",_title,_nearestTown,_factionName];
 
-                    ["openSideSmall"] call ALIVE_fnc_displayMenu;
-                    ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+                    ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
+                    ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
                 };
 
                 sleep _duration;
 
                 deleteVehicle _target;
+                ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
                 [_logic, "deleteDynamicCamera"] call MAINCLASS;
 
             } forEach _placementModules;
@@ -2055,9 +1942,12 @@ switch(_operation) do {
                     [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
                 };
             }else{
+
                 [true] call ALIVE_fnc_revertCamera;
             };
         };
+
+        ["closeSideSubtitle"] call ALIVE_fnc_displayMenu;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -2187,6 +2077,8 @@ switch(_operation) do {
             [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
         };
 
+        ["closeSideSubtitle"] call ALIVE_fnc_displayMenu;
+
         _logic setVariable ["selectionState","Modules"];
 
         [_logic,"displaySelectionState"] call MAINCLASS;
@@ -2263,6 +2155,9 @@ switch(_operation) do {
 
                         _leader = leader _group;
 
+                        ALIVE_tourCamera = [player,false,"HIGH"] call ALIVE_fnc_addCamera;
+                        [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+
                         [_leader,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
 
                         sleep 30;
@@ -2288,6 +2183,8 @@ switch(_operation) do {
         player hideObjectGlobal false;
 
         [true] call ALIVE_fnc_revertCamera;
+
+        ["closeSideSubtitle"] call ALIVE_fnc_displayMenu;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -2319,9 +2216,8 @@ switch(_operation) do {
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
             private["_civilianAgents","_activeCommands","_profile","_type","_line1","_position","_unit",
-            "_faction","_id","_duration","_nearestTown","_factionName","_title","_text","_command"];
-
-
+            "_faction","_id","_duration","_nearestTown","_factionName","_title","_text","_command",
+            "_commandName","_action"];
 
             if!(isNil "ALIVE_agentHandler") then {
                 _civilianAgents = [ALIVE_agentHandler,"getAgents"] call ALIVE_fnc_agentHandler;
@@ -2367,21 +2263,70 @@ switch(_operation) do {
                             _command = _command select 1;
                             _command call ALIVE_fnc_inspectArray;
 
+                            _commandName = _command select 0;
+
+                            _action = "";
+                            switch(_commandName) do {
+                                case "ALIVE_fnc_cc_idle":{
+                                    _action = "resting";
+                                };
+                                case "ALIVE_fnc_cc_campfire":{
+                                    _action = "preparing campfire";
+                                };
+                                case "ALIVE_fnc_cc_driveTo":{
+                                    _action = "driving";
+                                };
+                                case "ALIVE_fnc_cc_housework":{
+                                    _action = "housework";
+                                };
+                                case "ALIVE_fnc_cc_joinGathering":{
+                                    _action = "joining gathering";
+                                };
+                                case "ALIVE_fnc_cc_joinMeeting":{
+                                    _action = "joining meeting";
+                                };
+                                case "ALIVE_fnc_cc_journey":{
+                                    _action = "starting a journey";
+                                };
+                                case "ALIVE_fnc_cc_observe":{
+                                    _action = "observing";
+                                };
+                                case "ALIVE_fnc_cc_randomMovement":{
+                                    _action = "walking";
+                                };
+                                case "ALIVE_fnc_cc_rogue":{
+                                    _action = "going rogue";
+                                };
+                                case "ALIVE_fnc_cc_sleep":{
+                                    _action = "sleeping";
+                                };
+                                case "ALIVE_fnc_cc_startGathering":{
+                                    _action = "starting a gathering";
+                                };
+                                case "ALIVE_fnc_cc_startMeeting":{
+                                    _action = "starting a meeting";
+                                };
+                                case "ALIVE_fnc_cc_suicide":{
+                                    _action = "planning a suicide bombing";
+                                };
+                            };
+
                             [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
 
                             _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
                             _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
 
                             _title = "<t size='1.5' color='#68a7b7' shadow='1'>Civilian</t><br/>";
-                            _text = format["%1<t>%3 near %2</t><br/>%5",_title,_nearestTown,_factionName];
+                            _text = format["%1<t>%2 is %3 near %4</t><br/>",_title,name _unit,_action,_nearestTown];
 
-                            ["openSideSubtitle"] call ALIVE_fnc_displayMenu;
-                            ["setSideSubtitleSmallText",_text] call ALIVE_fnc_displayMenu;
+                            ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
+                            ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
                             sleep _duration;
 
                             deleteVehicle _target;
 
+                            ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
                             [_logic, "deleteDynamicCamera"] call MAINCLASS;
                         };
                     };
@@ -2409,9 +2354,12 @@ switch(_operation) do {
                     [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
                 };
             }else{
+
                 [true] call ALIVE_fnc_revertCamera;
             };
         };
+
+        ["closeSideSubtitle"] call ALIVE_fnc_displayMenu;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -2448,7 +2396,7 @@ switch(_operation) do {
 
             waitUntil { sleep 1; _display = findDisplay 655555;(isNull _display)};
 
-            1005 cutText ["", "PLAIN"];
+            ["closeSideFull"] call ALIVE_fnc_displayMenu;
 
             [_logic,"deactivateSelectionModuleCombatSupport"] call MAINCLASS;
 
@@ -2499,7 +2447,7 @@ switch(_operation) do {
 
             waitUntil { sleep 1; _display = findDisplay 60001;(isNull _display)};
 
-            1005 cutText ["", "PLAIN"];
+            ["closeSideFull"] call ALIVE_fnc_displayMenu;
 
             [_logic,"deactivateSelectionModuleResupply"] call MAINCLASS;
 
@@ -2550,7 +2498,7 @@ switch(_operation) do {
 
             waitUntil { sleep 1; _display = findDisplay 70001;(isNull _display)};
 
-            1005 cutText ["", "PLAIN"];
+            ["closeSideFull"] call ALIVE_fnc_displayMenu;
 
             [_logic,"deactivateSelectionModuleC2"] call MAINCLASS;
 
@@ -2569,6 +2517,125 @@ switch(_operation) do {
         _logic setVariable ["selectionState","Modules"];
 
         [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "createDynamicCamera": {
+
+        private ["_source","_target1","_target2","_duration","_targetIsPlayer","_targetIsMan","_targetInVehicle","_cameraAngles",
+        "_initialAngle","_diceRoll","_cameraShots","_shot","_target2","_randomPosition"];
+
+        _duration = _args select 0;
+        _source = _args select 1;
+        _target1 = _args select 2;
+        _target2 = if(count _this > 3) then {_this select 3} else {nil};
+
+        _sourceIsPlayer = false;
+        if(isPlayer _source) then {
+            _sourceIsPlayer = true;
+        };
+
+        _targetIsMan = false;
+        _targetInVehicle = false;
+        if(_target1 isKindOf "Man" && alive _target1) then {
+            _targetIsMan = true;
+            if(vehicle _target1 != _target1) then {
+                _targetInVehicle = true;
+                _target1 = vehicle _target1;
+            };
+        };
+
+        _cameraAngles = ["DEFAULT","LOW","EYE","HIGH","BIRDS_EYE","UAV","SATELITE"];
+        _initialAngle = _cameraAngles call BIS_fnc_selectRandom;
+
+        ["CINEMATIC DURATION: %1",_duration] call ALIVE_fnc_dump;
+        ["SOURCE IS PLAYER: %1",_sourceIsPlayer] call ALIVE_fnc_dump;
+        ["TARGET IS MAN: %1",_targetIsMan] call ALIVE_fnc_dump;
+        ["TARGET IS IN VEHICLE: %1",_targetInVehicle] call ALIVE_fnc_dump;
+
+        ALIVE_cameraType = "CAMERA";
+
+        if(_targetIsMan && !(_targetInVehicle)) then {
+            _diceRoll = random 1;
+            if(_diceRoll > 0.5) then {
+                ALIVE_cameraType = "SWITCH";
+            };
+        };
+
+        ["CAMERA TYPE IS: %1",ALIVE_cameraType] call ALIVE_fnc_dump;
+
+        _cameraShots = ["FLY_IN","PAN","STATIC"];
+
+        if(_targetIsMan && _targetInVehicle) then {
+            _cameraShots = ["CHASE","CHASE_SIDE","CHASE_WHEEL","CHASE_ANGLE"];
+        };
+
+        _shot = _cameraShots call BIS_fnc_selectRandom;
+
+        ["CAMERA SHOT IS: %1",_shot] call ALIVE_fnc_dump;
+        ["CAMERA ANGLE IS: %1",_initialAngle] call ALIVE_fnc_dump;
+
+        if(ALIVE_cameraType == "CAMERA") then {
+
+            if!(_shot == "PAN") then {
+                ALIVE_tourCamera = [_source,false,_initialAngle] call ALIVE_fnc_addCamera;
+                [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+            };
+
+            switch(_shot) do {
+                case "FLY_IN":{
+                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_flyInShot;
+                };
+                case "PAN":{
+
+                    if(isNil "_target2") then {
+                        _randomPosition = [position _source, (random(400)), random(360)] call BIS_fnc_relPos;
+                        _target2 = "RoadCone_L_F" createVehicle _randomPosition;
+                    };
+
+                    ALIVE_tourCamera = [_source,false,_initialAngle] call ALIVE_fnc_addCamera;
+                    [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+                    [ALIVE_tourCamera,_target1,_target2,_duration] call ALIVE_fnc_panShot;
+                };
+                case "STATIC":{
+                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_staticShot;
+                };
+                case "CHASE":{
+                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_chaseShot;
+                };
+                case "CHASE_SIDE":{
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseSideShot;
+                };
+                case "CHASE_WHEEL":{
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseWheelShot;
+                };
+                case "CHASE_ANGLE":{
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseAngleShot;
+                };
+            };
+
+        }else{
+
+            [_target1,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
+
+        };
+
+    };
+
+    case "deleteDynamicCamera": {
+
+        if(ALIVE_cameraType == "CAMERA") then {
+
+            [ALIVE_tourCamera,true] call ALIVE_fnc_stopCinematic;
+            [ALIVE_tourCamera] call ALIVE_fnc_removeCamera;
+
+        }else{
+
+            [true] call ALIVE_fnc_revertCamera;
+
+        };
+
+        player hideObjectGlobal false;
 
     };
 

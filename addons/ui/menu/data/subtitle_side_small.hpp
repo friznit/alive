@@ -16,7 +16,8 @@ class AliveSubtitleSideSmall
         {
             idc = 14202;
             x = safeZoneX + safeZoneW - 0.51 * 3 / 4;
-            y = safeZoneY + safeZoneH - 0.2;
+            //y = safeZoneY + safeZoneH - 0.2;
+            y = safezoneY + (0.014 * safezoneH);
             h = 0.20;
             w = 0.51 * 3 / 4; //w == h
             sizeEx = 0.1;
