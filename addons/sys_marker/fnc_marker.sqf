@@ -71,8 +71,6 @@ In memory of Peanut
 
 To Do:
 - isauthorized
-- Briefing screen
-- edit drawn markers
 - persist/edit arrow markers
 - free draw (create,edit,delete,MP)
 - deleteAll

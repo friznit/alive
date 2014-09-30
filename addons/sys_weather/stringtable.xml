@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_WEATHER">
-	<English>Dynamic Weather</English>
+	<English>Ambient Dynamic Weather</English>
 </Key>
 <Key ID="STR_ALIVE_WEATHER_COMMENT">
 	<English>Dynamic Weather module</English>

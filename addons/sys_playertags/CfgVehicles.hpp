@@ -1,16 +1,16 @@
 class CfgVehicles {
-        class ModuleAlivePlayerBase;
-        class ADDON : ModuleAlivePlayerBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_PLAYERTAGS";
-                function = "ALIVE_fnc_playertagsInit";
-                functionPriority = 2;
+   //             function = "ALIVE_fnc_playertagsInit";
+                functionPriority = 204;
                 isGlobal = 1;
                 isPersistent = 1;
 								icon = "x\alive\addons\sys_playertags\icon_sys_playertags.paa";
 								picture = "x\alive\addons\sys_playertags\icon_sys_playertags.paa";
-								
+
 								class Arguments
 			          {
 			                        class playertags_debug_setting
@@ -19,7 +19,7 @@ class CfgVehicles {
 			                                description = "$STR_ALIVE_PLAYERTAGS_DEBUG_COMMENT";
 			                                class Values
 			                                {
-			                                	
+
 			                                        class No
 			                                        {
 			                                                name = "No";
@@ -30,18 +30,18 @@ class CfgVehicles {
 			                                        {
 			                                                name = "Yes";
 			                                                value = true;
-			                                               
+
 			                                        };
 			                                };
 			                        };
-			                        
+
 			                        class playertags_style_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_STYLE";
 			                                description = "$STR_ALIVE_PLAYERTAGS_STYLE_COMMENT";
 			                                class Values
 			                                {
-			                                	
+
 			                                        class modern
 			                                        {
 			                                                name = "Modern";
@@ -55,14 +55,14 @@ class CfgVehicles {
 			                                        };
 			                                };
 			                        };
-			                        
+
 			                        class playertags_onview_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_ONVIEW";
 			                                description = "$STR_ALIVE_PLAYERTAGS_ONVIEW_COMMENT";
 			                                class Values
 			                                {
-			                                	
+
 			                                        class No
 			                                        {
 			                                                name = "No";
@@ -76,14 +76,14 @@ class CfgVehicles {
 			                                        };
 			                                };
 			                        };
-			                        
+
 			                        class playertags_displayrank_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_RANK";
 			                                description = "$STR_ALIVE_PLAYERTAGS_RANK_COMMENT";
 			                                class Values
 			                                {
-			                                	
+
 			                                        class No
 			                                        {
 			                                                name = "No";
@@ -94,7 +94,7 @@ class CfgVehicles {
 			                                                name = "Yes";
 			                                                value = true;
 			                                                default = true;
-			                                               
+
 			                                        };
 			                                };
 			                        };
@@ -105,7 +105,7 @@ class CfgVehicles {
 			                                description = "$STR_ALIVE_PLAYERTAGS_GROUP_COMMENT";
 			                                class Values
 			                                {
-			                                	
+
 			                                        class No
 			                                        {
 			                                                name = "No";
@@ -116,18 +116,18 @@ class CfgVehicles {
 			                                                name = "Yes";
 			                                                value = true;
 			                                                default = true;
-			                                               
+
 			                                        };
 			                                };
 			                        };
-			                        
+
                        				 class playertags_invehicle_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_INVEHICLE";
 			                                description = "$STR_ALIVE_PLAYERTAGS_INVEHICLE_COMMENT";
  																			class Values
 			                                {
-			                                	
+
 			                                        class No
 			                                        {
 			                                                name = "No";
@@ -137,12 +137,12 @@ class CfgVehicles {
 			                                        class Yes
 			                                        {
 			                                                name = "Yes";
-			                                                value = true;    
-			                                               
+			                                                value = true;
+
 			                                        };
 			                                };
 			                        };
-			                        
+
 			                        class playertags_targets_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_TARGETS";
@@ -150,7 +150,7 @@ class CfgVehicles {
                                			  defaultValue = "[""CAManBase"", ""Car"", ""Tank"", ""StaticWeapon"", ""Helicopter"", ""Plane""]";
                                       typeName = "ARRAY";
 			                        };
-			                        
+
 			                        class playertags_distance_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_DISTANCE";
@@ -158,7 +158,7 @@ class CfgVehicles {
                                			  defaultValue = 20;
                                       typeName = "NUMBER";
 			                        };
-			                        
+
 			                        class playertags_tolerance_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_TOLERANCE";
@@ -166,7 +166,7 @@ class CfgVehicles {
                                			  defaultValue = 0.75;
                                       typeName = "NUMBER";
 			                        };
-			                        
+
 			                        class playertags_scale_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_SCALE";
@@ -174,8 +174,8 @@ class CfgVehicles {
                                			  defaultValue = 0.65;
                                       typeName = "NUMBER";
 			                        };
-			                        
-			                        
+
+
 			                        class playertags_height_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_HEIGHT";
@@ -183,8 +183,8 @@ class CfgVehicles {
                                			  defaultValue = 1.1;
                                       typeName = "NUMBER";
 			                        };
-			                        
-			                        
+
+
 			                        class playertags_namecolour_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_NAMECOLOUR";
@@ -192,7 +192,7 @@ class CfgVehicles {
                                			  defaultValue = "#FFFFFF"; // white
                                       typeName = "STRING";
 			                        };
-			                        
+
 			                        class playertags_groupcolour_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_GROUPCOLOUR";
@@ -200,7 +200,7 @@ class CfgVehicles {
                                			  defaultValue = "#A8F000"; // green
                                       typeName = "STRING";
 			                        };
-			                        
+
 			                        class playertags_thisgroupleadernamecolour_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_THISGROUPLEADERNAMECOLOUR";
@@ -208,7 +208,7 @@ class CfgVehicles {
                                			  defaultValue = "#FFB300"; // yellow
                                       typeName = "STRING";
 			                        };
-			                        
+
 			                        class playertags_thisgroupcolour_setting
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_THISGROUPCOLOUR";

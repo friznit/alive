@@ -1,6 +1,6 @@
 class CfgVehicles {
-	class ModuleAliveSystemBase;
-	class ADDON: ModuleAliveSystemBase {
+	class ModuleAliveBase;
+	class ADDON: ModuleAliveBase {
 		author = MODULE_AUTHOR;
 		// Editor visibility; 2 will show it in the menu, 1 will hide it.
 		scope = 2;
@@ -11,7 +11,7 @@ class CfgVehicles {
 		// Name of function triggered once conditions are met
 		function = "ALIVE_fnc_AISkillInit";
 		// Execution priority, modules with lower number are executed first. 0 is used when the attribute is undefined
-		functionPriority = 21;
+		functionPriority = 50;
 		// 1 for remote execution on all clients, 0 for server only execution
 		isGlobal = 0;
 		// 1 for module waiting until all synced triggers are activated
@@ -23,7 +23,7 @@ class CfgVehicles {
 		class ModuleDescription
 		{
 			// Short description, will be formatted as structured text
-			description = "$STR_ALIVE_AISKILL_COMMENT";	 
+			description = "$STR_ALIVE_AISKILL_COMMENT";
 		};
 
 		// Module arguments

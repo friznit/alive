@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_marker">
-	<English>Marker Module</English>
+	<English>Advanced Markers</English>
 </Key>
 <Key ID="STR_ALIVE_marker_COMMENT">
 	<English>Autostarting ALiVE Module template (uses additional module to configure parameters)</English>

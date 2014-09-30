@@ -60,14 +60,14 @@ _menus =
 		["main", "ALiVE", _menuRsc],
 		[
 			[localize "STR_ALIVE_PLAYERTAGS" + " >",
-		  { 
+		  {
 		  	if (GVAR(STYLE) == "default") then {0 cutRsc ["playertagsOverlayRsc", "PLAIN"]};
 		  },
-		  
+
 			"",
 				localize "STR_ALIVE_PLAYERTAGS_COMMENT",
                   ["call ALiVE_fnc_playertagsMenuDef", "playertags", 1],
-                 -1, 1, true              
+                 -1, 1, true
 			]
 		]
 	]
@@ -80,23 +80,23 @@ if (_menuName == "playertags") then {
 			["playertags", localize "STR_ALIVE_PLAYERTAGS", "popup"],
 			[
 				[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_ENABLE",
-					{ MOD(playertags) setVariable ["display_enabled", true]; true call GVAR(TRIGGER); },
+					{ ADDON setVariable ["display_enabled", true]; true call GVAR(TRIGGER); },
 					"",
 					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
 					"",
 					-1,
 				  true,
-					!(MOD(playertags) getVariable ["display_enabled", false])
+					!(ADDON getVariable ["display_enabled", false])
 				],
-				
+
 					[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_DISABLE",
-					 { 	MOD(playertags) setVariable ["display_enabled", false]; false call GVAR(TRIGGER); },
+					 { 	ADDON setVariable ["display_enabled", false]; false call GVAR(TRIGGER); },
 					"",
 					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
 					"",
 					-1,
 				  true,
-					(MOD(playertags) getVariable ["display_enabled", false])
+					(ADDON getVariable ["display_enabled", false])
 				]
 			]
 			]

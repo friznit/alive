@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_REVIVE">
-	<English>Wounding System</English>
+	<English>Player Wounding System</English>
 </Key>
 <Key ID="STR_ALIVE_REVIVE_ERROR1">
 	<English>Only one revive module can be used</English>

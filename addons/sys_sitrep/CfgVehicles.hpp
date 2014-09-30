@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
+        class ModuleAliveBase;
 
-        class ADDON : ModuleAliveSystemBase
+        class ADDON : ModuleAliveBase
         {
         		scope = 1;
 				displayName = "$STR_ALIVE_sitrep";
 				//function = "";
-				functionPriority = 10;
+				functionPriority = 151;
 				isGlobal = 2;
 				icon = "x\alive\addons\sys_sitrep\icon_sys_sitrep.paa";
 				picture = "x\alive\addons\sys_sitrep\icon_sys_sitrep.paa";

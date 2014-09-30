@@ -1,8 +1,8 @@
 class CfgVehicles {
-        class ModuleAliveSupportBase;
-        class ADDON : ModuleAliveSupportBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_ARTILLERY";
                 function = "ALIVE_fnc_ARTILLERYInit";
                 author = MODULE_AUTHOR;

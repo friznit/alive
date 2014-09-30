@@ -1,8 +1,8 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_DISABLE_STATISTICS";
                 isGlobal = 2;
                 functionPriority = 2;
@@ -16,13 +16,13 @@ class CfgVehicles {
                                 displayName = "Condition:";
                                 description = "";
                                 defaultValue = "true";
-                        };                        
+                        };
                 };
-				
+
 				class Eventhandlers
 				{
 					init = "call ALIVE_fnc_statisticsDisable;";
 				};
-                
+
         };
 };

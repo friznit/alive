@@ -1,11 +1,11 @@
 class CfgVehicles {
-        class ModuleAlivePlayerBase;
-        class ADDON : ModuleAlivePlayerBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_NEWSFEED";
   //              function = "ALIVE_fnc_newsFeedInit";
-                functionPriority = 2;
+                functionPriority = 41;
                 isGlobal = 1;
                 isPersistent = 1;
                 icon = "x\alive\addons\sys_newsfeed\icon_sys_newsfeed.paa";

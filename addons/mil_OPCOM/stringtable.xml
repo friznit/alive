@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_OPCOM">
-	<English>OPCOM</English>
+	<English>Military AI Commander</English>
 </Key>
 <Key ID="STR_ALIVE_OPCOM_COMMENT">
 	<English>Virtual AI High Command</English>

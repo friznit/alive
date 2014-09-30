@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveMilitaryBase;
-        class ADDON : ModuleAliveMilitaryBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_CP";
                 function = "ALIVE_fnc_CPInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 6;
+				functionPriority = 80;
                 isGlobal = 1;
 				icon = "x\alive\addons\civ_placement\icon_civ_CP.paa";
 				picture = "x\alive\addons\civ_placement\icon_civ_CP.paa";

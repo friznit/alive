@@ -58,21 +58,48 @@ _logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 
-TRACE_3("SYS_PLAYER",_logic, _operation, _args);
+TRACE_3(QUOTE(ADDON),_logic, _operation, _args);
+
 
 _result = true;
 
 switch(_operation) do {
-        case "init": {
-            
-                // Ensure only one module is used
-                if (isServer && !(isNil QMOD(sys_player))) exitWith {
+        case "create": {
+                if (isServer) then {
+
+                    // Ensure only one module is used
+                    if !(isNil QUOTE(ADDON)) then {
+                        _logic = ADDON;
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_player_ERROR1");
+                    } else {
+                        _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+                        ADDON = _logic;
+                    };
+
+                    //Push to clients
+                    PublicVariable QUOTE(ADDON);
                 };
-                
+
+                TRACE_1("Waiting for object to be ready",true);
+
+                waituntil {!isnil QUOTE(ADDON)};
+
+                TRACE_1("Creating class on all localities",true);
+
+                // initialise module game logic on all localities
+                ADDON setVariable ["super", QUOTE(SUPERCLASS)];
+                ADDON setVariable ["class", QUOTE(MAINCLASS)];
+
+
+                _result = ADDON;
+        };
+        case "init": {
+
+                if (_logic getVariable ["enablePlayerPersistence","true"] == "false") exitWith {["ALiVE SYS PLAYER - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
+
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYER - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
-            
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYER - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
+
             	//Start init
             	_logic setVariable ["initGlobal", false];
 
@@ -83,6 +110,26 @@ switch(_operation) do {
                 - Establish data model on server and client
                 */
 
+                MOD(sys_player) = _logic;
+
+                // Set Module Parameters as booleans
+                MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
+                MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
+                MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
+                MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
+                MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
+
+                MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
+                MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
+                MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth"), true];
+                MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition"), true];
+                MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores"), true];
+
+                MOD(sys_player) setVariable ["saved", false];
+
+               MOD(sys_player) setVariable ["super", QUOTE(SUPERCLASS)];
+               MOD(sys_player) setVariable ["class", QUOTE(MAINCLASS)];
+
                 // DEFINE PLAYER DATA
                 #include <playerData.hpp>
 
@@ -90,31 +137,15 @@ switch(_operation) do {
                 GVAR(player_data) = [] call ALIVE_fnc_hashCreate;
                 GVAR(gear_data) = [] call ALIVE_fnc_hashCreate;
 
+                 TRACE_4("SYS_PLAYER1", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
+
+
              if (isDedicated) then {
-
-                    MOD(sys_player) = _logic;
-
-                    // Set Module Parameters as booleans
-                    MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
-                    MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
-                    MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
-                    MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
-                    MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
-
-                    MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
-                    MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
-                    MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth"), true];
-                    MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition"), true];
-                    MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores"), true];
-
-                    MOD(sys_player) setVariable ["saved", false];
 
                     // Push to clients
                     publicVariable QMOD(sys_player);
 
-                	// if server, initialise module game logic
-            	   MOD(sys_player) setVariable ["super", QUOTE(SUPERCLASS)];
-            	   MOD(sys_player) setVariable ["class", QUOTE(MAINCLASS)];
+ TRACE_4("SYS_PLAYER2", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
 
                     //Wait for data to init?
                    // WaitUntil{sleep 0.3; !isNil "ALIVE_sys_data"};
@@ -166,6 +197,7 @@ switch(_operation) do {
                     };
 
                     MOD(sys_player) setVariable ["init", true, true];
+
 
                     // Setup OPC and OPD events
                     //[QGVAR(OPC), "OnPlayerConnected","ALIVE_fnc_player_OnPlayerConnected"] call BIS_fnc_addStackedEventHandler;
@@ -323,6 +355,9 @@ switch(_operation) do {
             			sleep DEFAULT_INTERVAL;
 
             		};
+
+                     TRACE_4("SYS_PLAYER3", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
+
             	   };
                 };
 
@@ -336,7 +371,7 @@ switch(_operation) do {
                 };
 
             //TRACE_4("SYS_PLAYER", _logic getvariable "allowReset", _logic getvariable "allowDiffClass",_logic getvariable "allowManualSave",_logic getvariable "storeToDB" );
-            TRACE_4("SYS_PLAYER", MOD(sys_player) getvariable "allowReset", MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
+            TRACE_4("SYS_PLAYER4", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
 
             TRACE_1("After module init",_logic);
             "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;

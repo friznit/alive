@@ -76,7 +76,7 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_C2ISTAR" + " >",
+			[localize "STR_ALIVE_C2ISTAR_MENU" + " >",
 				"",
 				"",
 				localize "STR_ALIVE_C2ISTAR_COMMENT",

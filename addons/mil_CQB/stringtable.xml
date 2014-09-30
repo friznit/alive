@@ -3,10 +3,10 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_CQB">
-	<English>CQB</English>
+	<English>Enemy: Close Quarters Battle</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_COMMENT">
-	<English>ALiVE Close Quarter Battles</English>
+	<English>ALiVE Enemy: Close Quarters Battle</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_DEBUG">
 	<English>Enable Debug:</English>

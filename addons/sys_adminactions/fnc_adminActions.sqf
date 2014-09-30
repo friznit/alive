@@ -44,16 +44,49 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS nil
+#define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_adminActions
 
-private ["_logic","_operation","_args"];
+private ["_logic","_operation","_args","_result"];
 
-PARAMS_1(_logic);
-DEFAULT_PARAM(1,_operation,"");
-DEFAULT_PARAM(2,_args,[]);
+_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_operation = [_this, 1, "", [""]] call BIS_fnc_param;
+_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+_result = true;
+
+TRACE_3(QUOTE(ADDON),_logic, _operation, _args);
 
 switch(_operation) do {
-        case "init": {                
+
+        case "create": {
+                if (isServer) then {
+
+                    // Ensure only one module is used
+                    if !(isNil QUOTE(ADDON)) then {
+                        _logic = ADDON;
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_ADMINACTIONS_ERROR1");
+                    } else {
+                        _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+                        ADDON = _logic;
+                    };
+
+                    //Push to clients
+                    PublicVariable QUOTE(ADDON);
+                };
+
+                TRACE_1("Waiting for object to be ready",true);
+
+                waituntil {!isnil QUOTE(ADDON)};
+
+                TRACE_1("Creating class on all localities",true);
+
+                // initialise module game logic on all localities
+                ADDON setVariable ["super", QUOTE(SUPERCLASS)];
+                ADDON setVariable ["class", QUOTE(MAINCLASS)];
+
+                _result = ADDON;
+        };
+        case "init": {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
@@ -62,47 +95,46 @@ switch(_operation) do {
                 - mark units enabled
                 - Debug console enabled
                 */
-                
-                // Ensure only one module is used
-                if (isServer && !(isNil QMOD(adminactions))) exitWith {
-                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_ADMINACTIONS_ERROR1");
-                };
-                
-                //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS ADMINACTIONS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
-            
-            	//Start init
-            	_logic setVariable ["initGlobal", false];
-                
-                if (isServer) then {
-                        // and publicVariable to clients
-                        MOD(adminActions) = _logic;
-                        publicVariable QMOD(adminActions);
 
-                        // if server, initialise module game logic
-                        MOD(adminActions) setVariable ["super", SUPERCLASS];
-                        MOD(adminActions) setVariable ["class", ALiVE_fnc_adminActions];
-                        MOD(adminActions) setVariable ["init", true, true];
+                ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
+
+               //Only one init per instance is allowed
+                if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS ADMINACTIONS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
+
+                //Start init
+                _logic setVariable ["initGlobal", false];
+
+                if (isServer) then {
+                        _logic setVariable ["init", true, true];
                 } else {
                         // any client side logic
                 };
 
-		TRACE_2("After module init",MOD(adminActions),MOD(adminActions) getVariable "init");
+                TRACE_2("After module init",ADDON,ADDON getVariable "init");
 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(adminActions)};
-                waitUntil {MOD(adminActions) getVariable ["init", false]};        
+                waitUntil {!isNil QUOTE(ADDON)};
+                waitUntil {_logic getVariable ["init", false]};
+
+                TRACE_1("Spawning Server processes",isServer);
+
+                if (isServer) then {
+                        // Do Something
+                };
+
+                TRACE_1("Spawning clientside processes",hasInterface);
+
 
                 /*
                 VIEW - purely visual
                 - initialise menu
-                - frequent check to modify menu and display status (ALIVE_fnc_adminActoinsmenuDef)
+                - frequent check to modify menu and display status (ALIVE_fnc_logisticsmenuDef)
                 */
-                
-		TRACE_2("Adding menu",isDedicated,isHC);
 
-                if(!isDedicated && !isHC) then {
+                TRACE_2("Adding menu",hasInterface);
+
+                if(hasInterface) then {
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
@@ -112,7 +144,7 @@ switch(_operation) do {
                         // Initialise default map click command if undefined
                         ISNILS(DEFAULT_MAPCLICK,"");
 
-			TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
+                TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
 
                         // initialise main menu
                         [
@@ -125,11 +157,16 @@ switch(_operation) do {
                                 ]
                         ] call ALIVE_fnc_flexiMenu_Add;
                 };
-                
-                /*
-                CONTROLLER  - coordination
-                - frequent check if player is server admin (ALIVE_fnc_adminActoinsmenuDef)
-                */
+
+                TRACE_1("After module init",_logic);
+
+                // Indicate Init is finished on server
+                if (isServer) then {
+                    _logic setVariable ["startupComplete", true, true];
+                };
+
+                ["%1 - Initialisation Completed...",ADDON] call ALiVE_fnc_Dump;
+
         };
         case "destroy": {
                 if (isServer) then {
@@ -138,10 +175,10 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        MOD(adminactions) = _logic;
-                        publicVariable QMOD(adminactions);
+                        ADDON = _logic;
+                        publicVariable QADDON;
                 };
-                
+
                 if(!isDedicated && !isHC) then {
                         // remove main menu
                         [
@@ -161,3 +198,10 @@ switch(_operation) do {
                 ERROR_WITH_TITLE(str _logic,_err);
         };
 };
+
+TRACE_1("ALiVE SYS ADMINACTIONS - output",_result);
+
+if !(isnil "_result") then {
+    _result;
+};
+

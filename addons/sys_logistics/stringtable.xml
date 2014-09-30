@@ -15,7 +15,7 @@
 	<English>Kills Player Logistics completely!</English>
 </Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE">
-	<English>Disable Player Logistics</English>
+	<English>X - Disable Player Logistics</English>
 </Key>
 <Key ID="STR_ALIVE_LOGISTICSDISABLE_COMMENT">
 	<English>Disables the possibility to move, load, unload and tow on all or specific objects ()!</English>

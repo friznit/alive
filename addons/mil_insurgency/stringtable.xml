@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_insurgency">
+	<English>Enemy: Insurgency</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_COMMENT">
+	<English>ALiVE Enemy: Insurgency</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_DEBUG">
+	<English>Enable Debug:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_DEBUG_COMMENT">
+	<English>Enables insurgency Module Debug</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_PERSISTENT">
+	<English>Persistent:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_PERSISTENT_COMMENT">
+	<English>Enables insurgency DB persistence (needs SYS DATA module and registration on ALiVE WarRoom)</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_LOCALITY">
+	<English>Locality:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_LOCALITY_COMMENT">
+	<English>Selects locality of hosted AI</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_AMOUNT">
+	<English>AI Amount:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_AMOUNT_COMMENT">
+	<English>Max. group size spawned per insurgency location</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_ENABLE">
+	<English>Enable insurgency</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_ENABLE_COMMENT">
+	<English>Enables insurgency module</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_FACTIONS">
+	<English>Factions:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_FACTIONS_COMMENT">
+	<English>Chooses the factions of insurgency units</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_TYPE">
+	<English>Type:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_TYPE_COMMENT">
+	<English>Chooses the type of buildings in which insurgency will be present</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWN">
+	<English>Probability:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWN_COMMENT">
+	<English>Probability in % that a house will be occupied</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_DISABLE">
+	<English>Disable insurgency:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_DISABLE_COMMENT">
+	<English>Disables insurgency module</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_ERROR1">
+	<English>Only one insurgency module can be used</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_USAGE">
+	<English>Place the insurgency module and select the preferred intensity. insurgency can be synchronised (F5) to a Mil_MP or CIV_CP module (optionally).</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_LOCATIONTYPE">
+	<English>insurgency locations:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_LOCATIONTYPE_COMMENT">
+	<English>Selects the type of area in which insurgency will be available, if synced to a MIL/CIV MP module this setting will be overwritten</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_BLACKLIST">
+	<English>Blacklist Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_BLACKLIST_COMMENT">
+	<English>Markers where no insurgency will be present (optional)</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_WHITELIST">
+	<English>TAOR Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_WHITELIST_COMMENT">
+	<English>Markers where insurgency will be present (optional, opposite to Blacklist)</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_USEDOMINANTFACTION">
+	<English>Placement:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_USEDOMINANTFACTION_COMMENT">
+	<English>insurgency will determine the dominant faction or use static factions from the faction param fields</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_DENSITY">
+	<English>Density:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_DENSITY_COMMENT">
+	<English>Density of additional insurgency placements</English>
+</Key>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWNDISTANCE">
+	<English>Spawn Ground:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWNDISTANCE_COMMENT">
+	<English>Spawn distance for grunts! Note that spawn distance for strategic placements is factor 1.4 of this value</English>
+</Key>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWNDISTANCEHELI">
+	<English>Spawn Heli:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWNDISTANCEHELI_COMMENT">
+	<English>Spawn distance for helicopters (0 is no spawning)! Note that spawn distance for strategic placements is factor 1.4 of this value</English>
+</Key>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWNDISTANCEJET">
+	<English>Spawn Jet:</English>
+</Key>
+<Key ID="STR_ALIVE_insurgency_SPAWNDISTANCEJET_COMMENT">
+	<English>Spawn distance for jets (0 is no spawning)! Note that spawn distance for strategic placements is factor 1.4 of this value</English>
+</Key>
+</Container></Package></Project>

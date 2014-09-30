@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_AMBCP">
-	<English>Ambient Civilian Placement</English>
+	<English>Civilian Placement</English>
 </Key>
 <Key ID="STR_ALIVE_AMBCP_COMMENT">
 	<English>Ambient Civilian Placement</English>

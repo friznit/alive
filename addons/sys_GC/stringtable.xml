@@ -15,19 +15,19 @@
 	<English>Enables GC Module Debug</English>
 </Key>
 <Key ID="STR_ALIVE_GC_INDIVIDUALTYPES">
-	<English>Individual objects:</English>
+	<English>Garbace Collector Objects:</English>
 </Key>
 <Key ID="STR_ALIVE_GC_INDIVIDUALTYPES_COMMENT">
 	<English>f.e. ["Box_NATO_Wps_F","Box_NATO_AmmoOrd_F"]</English>
 </Key>
 <Key ID="STR_ALIVE_GC_INTERVAL">
-	<English>Interval:</English>
+	<English>Garbage Collector Interval:</English>
 </Key>
 <Key ID="STR_ALIVE_GC_INTERVAL_COMMENT">
 	<English>Interval in which to clean killed objects</English>
 </Key>
 <Key ID="STR_ALIVE_GC_THRESHHOLD">
-	<English>Limiter:</English>
+	<English>Garbage Collector Limiter:</English>
 </Key>
 <Key ID="STR_ALIVE_GC_THRESHHOLD_COMMENT">
 	<English>Will remove all dead objects and groups if this limit is met (count allDead)</English>

@@ -3,10 +3,10 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_PROFILE_SYSTEM">
-	<English>Virtual AI System</English>
+	<English>ALiVE Virtual AI System</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_COMMENT">
-	<English>Virtual AI System</English>
+	<English>Virtual AI System (Profiles)</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG">
 	<English>Enable Debug:</English>

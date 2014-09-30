@@ -26,7 +26,6 @@ Types of Shots / Trigger:
 - medium shot - explosion, killed, getin, getout
 - establishing shot - entering location
 
-
 Priority of triggers
 - Fired - Missile, AA, AT, AP, Grenade round, heavy calibre, LRR, MG, Rifle, SMG, HandGrenade, Pistol, Artillery
 - Killed - Aircraft, Tank, Ship, Car, Static
@@ -105,3 +104,56 @@ Admin or player stops Camera Client, logic is set to "OFF"
 
 
 
+// Sys_Camera
+//
+// fnc_ALiVECamera.sqf
+
+Logic Properties
+- Sync playable unit to logic (or all are available)
+- Camera settings etc
+- Enabled/Disabled
+- Camera Client ID
+
+Logic Methods
+- Enable
+- Disable
+- setCameraClient (clientID)
+- SetCameraSetting (setting, setting value)
+- addClient (clientID)
+- removeClient (clientID)
+- startClient (clientID) - initiates camera
+- stopClient (clientID)
+- processEH (EH) - function that stacks EHs
+- processCamera - function that looks for stack, calls shots, logic for choosing shot
+- getShot - processes shot functio
+
+Server Side Process
+- Any additional EH
+- Set logic up
+- PV logic
+
+Client Side Process
+- Any additional EH
+
+Client Side Menu/Interaction
+- Check for Admin - Enable/Disable Camera
+- Check for Admin - Select client
+- Check admin - force client start
+- Player check for rights - Start/Stop Camera
+
+Init
+Set each relevant EH for all vehicle classes
+- sent event info to camera client using BUS (get clientID from logic)
+
+Shots
+- Create set camera positions relative to objects (arj functions +)
+- Face shot
+- over the shoulder
+- behind aircraft
+- side track of vehicle
+- pilot/driver shot
+- cameraman shot, eye level, following group leader/random squad member, head bob
+- establishing shot - high above
+- view from target - just in front
+- bullet cam
+- 

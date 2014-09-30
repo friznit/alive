@@ -1,16 +1,16 @@
 class CfgVehicles {
-        class ModuleAliveSupportBase;
-        class ADDON : ModuleAliveSupportBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
         	scope = 2;
         	displayName = "$STR_ALIVE_COMBATSUPPORT2";
         	function = "ALIVE_fnc_combatsupport2Init";
-        	functionPriority = 0;
+        	functionPriority = 160;
         	isGlobal = 2;
         	icon = "x\alive\addons\sup_combatsupport2\icon_sup_combatsupport.paa";
         	picture = "x\alive\addons\sup_combatsupport2\icon_sup_combatsupport.paa";
         	author = MODULE_AUTHOR;
-				
+
                 class ModuleDescription
 		{
         		description[] = {
@@ -19,7 +19,7 @@ class CfgVehicles {
 				"$STR_ALIVE_CS2_USAGE"
         		};
 		};
-				
+
                 class Arguments
                 {
 

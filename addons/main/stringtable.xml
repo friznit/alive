@@ -2,43 +2,37 @@
 <Project name="Arma3">
 <Package name="ALiVE">
 <Container name="STR_DN">
-<Key ID="STR_ALIVE_SYS">
-	<Original>ALiVE Systems</Original>
+<Key ID="STR_ALIVE_MODULE">
+	<Original>ALiVE Modules</Original>
 </Key>
-<Key ID="STR_ALIVE_SUPPORT">
-	<Original>ALiVE Support</Original>
+<Key ID="STR_ALIVE_SYSTEM">
+	<Original>ALiVE System</Original>
 </Key>
-<Key ID="STR_ALIVE_MPLAYER">
-	<Original>ALiVE Player</Original>
+<Key ID="STR_ALIVE_DEBUG">
+	<English>Enable Debug:</English>
 </Key>
-<Key ID="STR_ALIVE_ENEMY">
-	<Original>ALiVE Enemy</Original>
-</Key>
-<Key ID="STR_ALIVE_MILITARY">
-	<Original>ALiVE Military</Original>
-</Key>
-<Key ID="STR_ALIVE_CIVILIAN">
-	<Original>ALiVE Civilian</Original>
+<Key ID="STR_ALIVE_DEBUG_COMMENT">
+	<English>Enables Debug for ALiVE Base Systems</English>
 </Key>
 <Key ID="STR_ALIVE_REQUIRES_ALIVE">
-	<Original>Requires ALiVE</Original>
-	<German>Erfordern ALiVE</German>
-	<Italian>Richiedono ALiVE</Italian>
-	<Spanish>Requieren ALiVE</Spanish>
-	<French>Exiger ALiVE</French>
-	<Czech>Vyžadovat ALiVE</Czech>
-	<Russian>Требовать ALiVE</Russian>
-	<Polish>Wymagaj ALiVE</Polish>
-	<Hungarian>Igénylése ALiVE</Hungarian>
+	<Original>ALiVE (Required)</Original>
+	<German>ALiVE Erfordern</German>
+	<Italian>ALiVE Richiedono</Italian>
+	<Spanish>ALiVE Requieren </Spanish>
+	<French>ALiVE Exiger</French>
+	<Czech>ALiVE Vyžadovat</Czech>
+	<Russian>ALiVE Требовать</Russian>
+	<Polish>ALiVE Wymagaj</Polish>
+	<Hungarian>ALiVE Igénylése</Hungarian>
 </Key>
 <Key ID="STR_ALIVE_REQUIRES_ALIVE_VERSIONING">
-	<Original>Versioning:</Original>
+	<Original>ALiVE Versioning:</Original>
 </Key>
 <Key ID="STR_ALIVE_REQUIRES_ALIVE_VERSIONING_COMMENT">
 	<Original>Will output a warning or kick players on version mismatch</Original>
 </Key>
 <Key ID="STR_ALIVE_DISABLESAVE">
-	<Original>Disable Save:</Original>
+	<Original>Disable SP Save:</Original>
 </Key>
 <Key ID="STR_ALIVE_DISABLESAVE_COMMENT">
 	<Original>SP saving can lead due to out of memory crashes! Enable on own risks!</Original>

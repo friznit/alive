@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveMilitaryBase;
-        class ADDON : ModuleAliveMilitaryBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_MP";
                 function = "ALIVE_fnc_MPInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 5;
+				functionPriority = 70;
                 isGlobal = 1;
 				icon = "x\alive\addons\mil_placement\icon_mil_MP.paa";
 				picture = "x\alive\addons\mil_placement\icon_mil_MP.paa";

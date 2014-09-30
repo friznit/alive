@@ -1,17 +1,17 @@
 class CfgVehicles {
-        class ModuleAlivePlayerBase;
-        class ADDON : ModuleAlivePlayerBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_CREWINFO";
-                function = "ALIVE_fnc_crewinfoInit";
+  //              function = "ALIVE_fnc_crewinfoInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 2;
+                functionPriority = 203;
                 isGlobal = 1;
                 isPersistent = 1;
                 icon = "\x\alive\addons\sys_crewinfo\icon_sys_crewinfo.paa";
                 picture = "\x\alive\addons\sys_crewinfo\icon_sys_crewinfo.paa";
-                
+
 			         	class Arguments
 			          {
 			                        class crewinfo_debug_setting
@@ -20,7 +20,7 @@ class CfgVehicles {
 			                                description = "$STR_ALIVE_CREWINFO_DEBUG_COMMENT";
 			                                class Values
 			                                {
-			                                	
+
 			                                        class No
 			                                        {
 			                                                name = "No";
@@ -31,7 +31,7 @@ class CfgVehicles {
 			                                        {
 			                                                name = "Yes";
 			                                                value = true;
-			                                               
+
 			                                        };
 			                                };
 			                        };
@@ -45,7 +45,7 @@ class CfgVehicles {
 			                                        {
 			                                                name = "Right";
 			                                                value = 1;
-                                                            default = 1;
+			                                                default = 1;
 			                                        };
 			                                        class uiLeft
 			                                        {
@@ -56,6 +56,6 @@ class CfgVehicles {
 			                                };
 			                        };
 			          };
-			                
+
 			  };
 };

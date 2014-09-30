@@ -3,7 +3,7 @@
 	<Package name="ALiVE">
 		<Container name="STR_DN">
 			<Key ID="STR_ALIVE_Data">
-				<English>Database</English>
+				<English>ALiVE Database</English>
 			</Key>
 			<Key ID="STR_ALIVE_Data_COMMENT">
 				<English>Database module for persistence</English>

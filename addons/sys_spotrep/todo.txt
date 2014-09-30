@@ -1,6 +1,5 @@
 To do list
-1. MP bug  - tuplication
-2. dates on spotrep player diaries are incorrect
+
 6. add to events
 
 

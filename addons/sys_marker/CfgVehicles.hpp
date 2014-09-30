@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
+        class ModuleAliveBase;
 
-        class ADDON : ModuleAliveSystemBase
+        class ADDON : ModuleAliveBase
         {
         		scope = 1;
 				displayName = "$STR_ALIVE_MARKER";
 				//function = "";
-				functionPriority = 10;
+				functionPriority = 44;
 				isGlobal = 2;
 				icon = "x\alive\addons\sys_marker\icon_sys_marker.paa";
 				picture = "x\alive\addons\sys_marker\icon_sys_marker.paa";

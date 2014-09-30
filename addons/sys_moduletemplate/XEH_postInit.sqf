@@ -1,3 +1,3 @@
 #include "script_component.hpp"
 
-_id = [] spawn ALiVE_fnc_moduletemplateInit;
+// _id = [] spawn ALiVE_fnc_moduletemplateInit;

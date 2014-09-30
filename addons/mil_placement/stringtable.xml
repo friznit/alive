@@ -3,10 +3,10 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_MP">
-	<English>Military Placement</English>
+	<English>Military Placement (Mil. Obj.)</English>
 </Key>
 <Key ID="STR_ALIVE_MP_COMMENT">
-	<English>Strategic Military Placement</English>
+	<English>Strategic Military Placement at Military Objectives</English>
 </Key>
 <Key ID="STR_ALIVE_MP_DEBUG">
 	<English>Enable Debug:</English>

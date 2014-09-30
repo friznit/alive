@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveMilitaryBase;
-        class ADDON : ModuleAliveMilitaryBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_ML";
                 function = "ALIVE_fnc_MLInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 13;
+				functionPriority = 190;
                 isGlobal = 1;
 				icon = "x\alive\addons\mil_logistics\icon_mil_ML.paa";
 				picture = "x\alive\addons\mil_logistics\icon_mil_ML.paa";
@@ -272,7 +272,7 @@ class CfgVehicles {
                     };
 
                 };
-                
+
         };
         class Box_IND_AmmoVeh_F;
         class Box_NATO_AmmoVeh_F;

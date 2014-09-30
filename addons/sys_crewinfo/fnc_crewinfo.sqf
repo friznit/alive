@@ -38,57 +38,95 @@ Jman
 
 #define SUPERCLASS nil
 
-private ["_logic","_operation","_args"];
+private ["_logic","_operation","_args","_result"];
 
 PARAMS_1(_logic);
 DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,[]);
 
+TRACE_3(QUOTE(ADDON),_logic, _operation, _args);
+
+
 switch(_operation) do {
-        case "init": {                
+        case "create": {
+                if (isServer) then {
+
+                    // Ensure only one module is used
+                    if !(isNil QUOTE(ADDON)) then {
+                        _logic = ADDON;
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_CREWINFO_ERROR1");
+                    } else {
+                        _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+                        ADDON = _logic;
+                    };
+
+                    //Push to clients
+                    PublicVariable QUOTE(ADDON);
+                };
+
+                TRACE_1("Waiting for object to be ready",true);
+
+                waituntil {!isnil QUOTE(ADDON)};
+
+                TRACE_1("Creating class on all localities",true);
+
+                // initialise module game logic on all localities
+                ADDON setVariable ["super", QUOTE(SUPERCLASS)];
+                ADDON setVariable ["class", QUOTE(MAINCLASS)];
+
+                _result = ADDON;
+        };
+        case "init": {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
                                 - enabled/disabled
                 */
-                
-                // Ensure only one module is used
-                if (isServer && !(isNil QMOD(crewinfo))) exitWith {
-                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_CREWINFO_ERROR1");
-                };
-                
-                if (isServer) then {
-                        MOD(crewinfo) = _logic;
-                        publicVariable QMOD(crewinfo);
+                if (_logic getVariable ["crewinfo_ui_setting","Left"] == "None") exitWith {["ALiVE SYS CREWINFO - Feature turned off! Exiting..."] call ALiVE_fnc_DumpR};
 
-                        // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", ALIVE_fnc_crewinfo];
-                        _logic setVariable ["init", true, true];
+                //Only one init per instance is allowed
+                if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS CREWINFO - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
+
+                //Start init
+                _logic setVariable ["initGlobal", false];
+
+                // Server init
+                if (isServer) then {
+
+                    //Define logic
+                    ADDON = _logic;
+
+                    // if server, initialise module game logic
+                    _logic setVariable ["super", SUPERCLASS];
+                    _logic setVariable ["class", ALIVE_fnc_crewinfo];
+                    _logic setVariable ["init", true, true];
+
+                    // and publicVariable to clients
+                    publicVariable QUOTE(ADDON);
+
+                // Client init
                 } else {
-                        // if client clean up client side game logics as they will transfer
-                        // to servers on client disconnect
-                       // deleteVehicle _logic;
+                        // any client side logic
                 };
-                
+
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(crewinfo)};
-                waitUntil {MOD(crewinfo) getVariable ["init", false]};        
+                waitUntil {!isNil QUOTE(ADDON)};
+                waitUntil {ADDON getVariable ["init", false]};
 
                 /*
                 VIEW - purely visual
-                - initialise 
+                - initialise
                 */
-               
-                
+
+
                 if(!isDedicated && !isHC) then {
-                	    CREWINFO_DEBUG = call compile (_logic getvariable ["crewinfo_debug_setting","false"]);
+                	    CREWINFO_DEBUG = call compile (_logic getvariable ["debug","false"]);
                       CREWINFO_UILOC = call compile (_logic getvariable ["crewinfo_ui_setting",1]);
                 	 		Waituntil {!(isnil "CREWINFO_DEBUG")};
                 	 		Waituntil {!(isnil "CREWINFO_UILOC")};
                 	 		private ["_ui","_HudNames","_vehicleID","_picture","_vehicle","_vehname","_weapname","_weap","_wepdir","_Azimuth"];
-                				
+
                 				// DEBUG -------------------------------------------------------------------------------------
 													if(CREWINFO_DEBUG) then {
 														["ALIVE Crew Info - Starting..."] call ALIVE_fnc_dump;
@@ -102,7 +140,8 @@ switch(_operation) do {
 
    										[] call ALIVE_fnc_crewinfoClient;
                 };
-                
+                _result = ADDON;
+
         };
         case "destroy": {
                 if (isServer) then {
@@ -111,8 +150,8 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        MOD(crewinfo) = _logic;
-                        publicVariable QMOD(crewinfo);
+                        ADDON = _logic;
+                        publicVariable QUOTE(ADDON);
                 };
         };
         default {
@@ -121,4 +160,8 @@ switch(_operation) do {
                 ERROR_WITH_TITLE(str _logic,_err);
         };
 };
+TRACE_1("ALiVE SYS CREWINFO - output",_result);
 
+if !(isnil "_result") then {
+    _result;
+};

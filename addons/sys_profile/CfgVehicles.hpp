@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_PROFILE_SYSTEM";
                 function = "ALIVE_fnc_profileSystemInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 3;
+                functionPriority = 60;
                 isGlobal = 2;
 				icon = "x\alive\addons\sys_profile\icon_sys_profile.paa";
 				picture = "x\alive\addons\sys_profile\icon_sys_profile.paa";
@@ -93,6 +93,6 @@ class CfgVehicles {
                                 defaultvalue = "50";
                         };
                 };
-                
+
         };
 };

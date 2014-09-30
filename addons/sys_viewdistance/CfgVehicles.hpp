@@ -1,14 +1,14 @@
 class CfgVehicles {
-        class ModuleAlivePlayerBase;
-        class ADDON : ModuleAlivePlayerBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_VDIST";
-                function = "ALIVE_fnc_vDistInit";
+ //               function = "ALIVE_fnc_vDistInit";
                 author = MODULE_AUTHOR;
                 isGlobal = 1;
                 isPersistent = 1;
-                functionPriority = 2;
+                functionPriority = 201;
                 icon = "x\alive\addons\sys_viewdistance\icon_sys_viewdistance.paa";
                 picture = "x\alive\addons\sys_viewdistance\icon_sys_viewdistance.paa";
                 class Arguments
@@ -38,6 +38,6 @@ class CfgVehicles {
                                 defaultvalue = "1";
                         };
                 };
-                
+
         };
 };

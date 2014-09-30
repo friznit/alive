@@ -1,7 +1,7 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAliveBase;
+
+        class ADDON : ModuleAliveBase
         {
         		scope = 1;
 				displayName = "$STR_ALIVE_MODULETEMPLATE";
@@ -13,9 +13,9 @@ class CfgVehicles {
 				author = MODULE_AUTHOR;
         };
 
-        class ALiVE_SYS_MODULETEMPLATEPARAMS : ModuleAliveSystemBase
+        class ALiVE_SYS_MODULETEMPLATEPARAMS : ModuleAliveBase
         {
-				scope = 2;
+				scope = 1;
 				displayName = "$STR_ALIVE_MODULETEMPLATEPARAMS";
 				function = "ALIVE_fnc_moduleTemplateParams";
 				functionPriority = 0;
@@ -23,7 +23,7 @@ class CfgVehicles {
 				icon = "x\alive\addons\sys_moduletemplate\icon_sys_moduletemplate.paa";
 				picture = "x\alive\addons\sys_moduletemplate\icon_sys_moduletemplate.paa";
 				author = MODULE_AUTHOR;
-				
+
                 class ModuleDescription
 				{
 					description[] = {
@@ -32,7 +32,7 @@ class CfgVehicles {
 							"$STR_ALIVE_MODULETEMPLATEPARAMS_USAGE"
 					};
 				};
-				
+
                 class Arguments
                 {
 

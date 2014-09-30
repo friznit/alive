@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_ADMINACTIONS";
-                function = "ALIVE_fnc_adminActionsInit";
+//                function = "ALIVE_fnc_adminActionsInit";
                 author = MODULE_AUTHOR;
-				functionPriority = 2;
+				functionPriority = 42;
                 isGlobal = 2;
                 icon = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";
                 picture = "x\alive\addons\sys_adminactions\icon_sys_adminactions.paa";
@@ -156,6 +156,6 @@ class CfgVehicles {
                     };
 
                 };
-                
+
         };
 };

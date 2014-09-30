@@ -4,7 +4,7 @@
 class vdist_Slider: RscSlider {
 };
 
-#define X_MOD 52 
+#define X_MOD 52
 #define X_MODB 51.5
 #define Y_MOD 10
 #define SLIDER_START -19

@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_CMP">
-    <English>Custom Military Objective</English>
+    <English>Military Custom Objective</English>
 </Key>
 <Key ID="STR_ALIVE_CMP_COMMENT">
     <English>Custom Military Objective</English>

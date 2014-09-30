@@ -1,8 +1,8 @@
 class CfgVehicles {
-        class ModuleAliveSupportBase;
-        class ADDON : ModuleAliveSupportBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
-                scope = 2;
+                scope = 1;
                 displayName = "$STR_ALIVE_CAS";
                 function = "ALIVE_fnc_CASInit";
                 author = MODULE_AUTHOR;
@@ -24,7 +24,7 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_CAS_TYPE";
                                 description = "$STR_ALIVE_CAS_TYPE_DESC";
                                 defaultValue ="B_Heli_Attack_01_F";
-                                };  
+                                };
                         class cas_height
                                 {
                                 displayName = "$STR_ALIVE_CAS_HEIGHT";
@@ -32,5 +32,5 @@ class CfgVehicles {
                                 defaultValue=0;
                                 };
                         };
-                };       
+                };
         };

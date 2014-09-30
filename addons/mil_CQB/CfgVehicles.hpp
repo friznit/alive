@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveMilitaryBase;
-        class ADDON : ModuleAliveMilitaryBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_CQB";
                 function = "ALIVE_fnc_CQBInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 8;
+                functionPriority = 120;
                 isGlobal = 2;
 				icon = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
 				picture = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
@@ -35,7 +35,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_CQB_PERSISTENT";
                                 description = "$STR_ALIVE_CQB_PERSISTENT_COMMENT";
-                                
+
                                 class Values
                                 {
                                         class Yes
@@ -124,43 +124,43 @@ class CfgVehicles {
                                                 name = "2%";
                                                 value = 0.02;
                                                 default = 1;
-												
-                                        };                                
+
+                                        };
                                         class CQB_spawn_5
                                         {
                                                 name = "5%";
                                                 value = 0.05;
-												
+
                                         };
                                         class CQB_spawn_10
                                         {
                                                 name = "10%";
                                                 value = 0.10;
-												
+
                                         };
                                         class CQB_spawn_20
                                         {
                                                 name = "20%";
                                                 value = 0.20;
-                                                
+
                                         };
                                         class CQB_spawn_30
                                         {
                                                 name = "30%";
                                                 value = 0.30;
-                                                
+
                                         };
                                         class CQB_spawn_40
                                         {
                                                 name = "40%";
                                                 value = 0.40;
-                                                
+
                                         };
                                         class CQB_spawn_50
                                         {
                                                 name = "50%";
                                                 value = 0.50;
-                                                
+
                                         };
                                 };
                         };
@@ -180,8 +180,8 @@ class CfgVehicles {
                                         {
                                                 name = "very high";
                                                 value = 300;
-                                                
-                                        };                                
+
+                                        };
                                         class CQB_DENSITY_5
                                         {
                                                 name = "high";
@@ -196,7 +196,7 @@ class CfgVehicles {
                                         {
                                                 name = "low";
                                                 value = 2000;
-                                                
+
                                         };
                                 };
                         };
@@ -272,7 +272,7 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_CQB_WHITELIST";
                                 description = "$STR_ALIVE_CQB_WHITELIST_COMMENT";
                                 defaultValue = "";
-                        };                        
+                        };
                         class blacklist
                         {
                                 displayName = "$STR_ALIVE_CQB_BLACKLIST";
@@ -289,7 +289,7 @@ class CfgVehicles {
 							"$STR_ALIVE_CQB_USAGE"
 					};
 					sync[] = {"ALiVE_civ_placement","ALiVE_mil_placement"}; // Array of synced entities (can contain base classes)
-		 
+
 					class ALiVE_civ_placement
 					{
 						description[] = { // Multi-line descriptions are supported
@@ -315,6 +315,6 @@ class CfgVehicles {
 						duplicate = 1; // Multiple entities of this type can be synced
 					};
 				};
-                
+
         };
 };

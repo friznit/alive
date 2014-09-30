@@ -1,6 +1,6 @@
 class CfgVehicles {
-	class ModuleAlivePlayerBase;
-	class ADDON : ModuleAlivePlayerBase {
+	class ModuleAliveBase;
+	class ADDON : ModuleAliveBase {
 		scope = 2;
 		displayName = "$STR_ALIVE_REVIVE";
 		function = "ALIVE_fnc_reviveInit";

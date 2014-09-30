@@ -79,34 +79,34 @@ switch(_operation) do {
 		_result = [_logic, _operation, _args] call SUPERCLASS;
 	};
 
-	case "create": {
-            if (isServer) then {
+        case "create": {
+                if (isServer) then {
 
-	            // Ensure only one module is used
-	            if !(isNil QMOD(ADDON)) then {
-                	_logic = MOD(ADDON);
-                    ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_AISKILL_ERROR1");
-	            } else {
-	        		_logic = (createGroup sideLogic) createUnit [QMOD(ADDON), [0,0], [], 0, "NONE"];
-                    MOD(ADDON) = _logic;
+                    // Ensure only one module is used
+                    if !(isNil QUOTE(ADDON)) then {
+                        _logic = ADDON;
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_AISKILL_ERROR1");
+                    } else {
+                        _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+                        ADDON = _logic;
+                    };
+
+                    //Push to clients
+                    PublicVariable QUOTE(ADDON);
                 };
 
-                //Push to clients
-	            PublicVariable QMOD(ADDON);
-            };
+                TRACE_1("Waiting for object to be ready",true);
 
-            TRACE_1("Waiting for object to be ready",true);
+                waituntil {!isnil QUOTE(ADDON)};
 
-            waituntil {!isnil QMOD(ADDON)};
+                TRACE_1("Creating class on all localities",true);
 
-            TRACE_1("Creating class on all localities",true);
+                // initialise module game logic on all localities
+                ADDON setVariable ["super", QUOTE(SUPERCLASS)];
+                ADDON setVariable ["class", QUOTE(MAINCLASS)];
 
-			// initialise module game logic on all localities
-			MOD(ADDON) setVariable ["super", QUOTE(SUPERCLASS)];
-			MOD(ADDON) setVariable ["class", QUOTE(MAINCLASS)];
-
-            _result = MOD(ADDON);
-    };
+                _result = ADDON;
+        };
 
 	case "destroy": {
 		[_logic, "debug", false] call MAINCLASS;
@@ -150,7 +150,7 @@ switch(_operation) do {
 
                 //Set value
                 _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
-                ["ALiVE Pausing state of %1 instance set to %2!",QMOD(ADDON),_args] call ALiVE_fnc_DumpR;
+                ["ALiVE Pausing state of %1 instance set to %2!",QUOTE(ADDON),_args] call ALiVE_fnc_DumpR;
         };
         _result = _args;
     };

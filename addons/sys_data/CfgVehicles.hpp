@@ -1,11 +1,11 @@
 class CfgVehicles {
-	    class ModuleAliveSystemBase;
-        class ADDON : ModuleAliveSystemBase
+	    class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_DATA";
                 function = "ALIVE_fnc_dataInit";
-                functionPriority = 1;
+                functionPriority = 30;
                 isGlobal = 2;
                 icon = "x\alive\addons\sys_data\icon_sys_data.paa";
                 picture = "x\alive\addons\sys_data\icon_sys_data.paa";

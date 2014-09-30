@@ -49,31 +49,31 @@ DEFAULT_PARAM(1,_operation,"");
 DEFAULT_PARAM(2,_args,[]);
 
 switch(_operation) do {
-        case "init": {                
+        case "init": {
                 /*
                 MODEL - no visual just reference data
                 - server side object only
                 - statistics enabled
                 */
-                
+
                 // Ensure only one module is used
                 if (isServer && !(isNil _logic)) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_statistics_ERROR1");
                 };
-                
+
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS STATISTICS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
-            
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS STATISTICS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
+
             	//Start init
             	_logic setVariable ["initGlobal", false];
-                
+
                 if (isServer) then {
 
                         // if server, initialise module game logic
                         _logic setVariable ["super", SUPERCLASS];
                         _logic setVariable ["class", MAINCLASS];
                         _logic setVariable ["init", true, true];
-						
+
 						// and publicVariable to clients
                         MOD(statistics) = _logic;
                         publicVariable QMOD(statistics);
@@ -86,14 +86,14 @@ switch(_operation) do {
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
                 waitUntil {!isNil _logic};
-                waitUntil {_logic getVariable ["init", false]};        
+                waitUntil {_logic getVariable ["init", false]};
 
                 /*
                 VIEW - purely visual
                 - initialise menu
                 - frequent check to modify menu and display status (ALIVE_fnc_adminActoinsmenuDef)
                 */
-                
+
 				TRACE_2("Adding menu",isDedicated,isHC);
 
                 if(!isDedicated && !isHC) then {
@@ -119,7 +119,7 @@ switch(_operation) do {
                                 ]
                         ] call ALIVE_fnc_flexiMenu_Add;
                 };
-                
+
                 /*
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_statisticsmenuDef)
@@ -135,7 +135,7 @@ switch(_operation) do {
                         MOD(statistics) = _logic;
                         publicVariable QMOD(statistics);
                 };
-                
+
                 if(!isDedicated && !isHC) then {
                         // remove main menu
                         [

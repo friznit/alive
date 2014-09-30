@@ -12,10 +12,10 @@
 	<English>Enables Crew Info Module Debug</English>
 </Key>
 <Key ID="STR_ALIVE_CREWINFO_UI">
-	<English>Screen Position</English>
+	<English>Crew Info (Position):</English>
 </Key>
 <Key ID="STR_ALIVE_CREWINFO_UI_COMMENT">
-	<English>Crew Info Interface Location</English>
+	<English>Crew Info Interface Location - select none to turn off</English>
 </Key>
 <Key ID="STR_ALIVE_CREWINFO_ERROR1">
 	<English>Only one crew info module can be used</English>

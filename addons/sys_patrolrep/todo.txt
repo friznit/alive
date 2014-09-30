@@ -1,7 +1,5 @@
 To do list
-1. UI
-2. data capture code
-3. MP test
+
 6. add to events
 
 

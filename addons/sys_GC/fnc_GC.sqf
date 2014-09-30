@@ -51,13 +51,42 @@ _result = nil;
 #define MTEMPLATE "ALiVE_GC_%1"
 
 switch(_operation) do {
+
+    	case "create": {
+            if (isServer) then {
+
+	            // Ensure only one module is used
+	            if !(isNil QUOTE(ADDON)) then {
+                	_logic = ADDON;
+                    ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_GC_ERROR1");
+	            } else {
+	        		_logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_GC", [0,0], [], 0, "NONE"];
+                    ADDON = _logic;
+                };
+
+                //Push to clients
+	            PublicVariable QUOTE(ADDON);
+            };
+
+            TRACE_1("Waiting for object to be ready",true);
+
+            waituntil {!isnil QUOTE(ADDON)};
+
+            TRACE_1("Creating class on all localities",true);
+
+			// initialise module game logic on all localities
+			ADDON setVariable ["super", QUOTE(SUPERCLASS)];
+			ADDON setVariable ["class", QUOTE(MAINCLASS)];
+
+            _result = ADDON;
+        };
         // Main process
 		case "init": {
 			if (isServer) then {
 				// if server, initialise module game logic
 				_logic setVariable ["super", SUPERCLASS];
 				_logic setVariable ["class", MAINCLASS];
-                
+
                 //Registering disabled for now
 				_logic setVariable ["moduleType", "ALIVE_GC"];
 				_logic setVariable ["startupComplete", false];
@@ -65,7 +94,7 @@ switch(_operation) do {
 
                 //Start GC
                 [_logic,"start"] call MAINCLASS;
-                
+
 			};
 		};
 		case "start": {
@@ -75,19 +104,19 @@ switch(_operation) do {
                 - center
                 - size
                 */
-                
+
                 if (isServer) then {
                     //identify Garbage Collector
-                    ALiVE_GC = _logic; 
+                    ALiVE_GC = _logic;
                     //transmit to clients
                     Publicvariable "ALiVE_GC";
-                    
+
 					//Retrieve module-object variables
                     _logic setvariable ["ALiVE_GC_INDIVIDUALTYPES",([_logic,"convert",(_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]])] call ALiVE_fnc_GC),true];
                     _debug = call compile (_logic getvariable ["debug","false"]);
                     _logic setvariable ["debug",_debug,true];
 					_logic setVariable ["auto", true];
-                    
+
                     /*
                 	CONTROLLER  - coordination
                 	*/
@@ -97,20 +126,20 @@ switch(_operation) do {
 							["ALIVE Garbage Collector starting..."] call ALIVE_fnc_dumpR;
 						};
 					// DEBUG -------------------------------------------------------------------------------------
-					
+
                     _fsm = _logic execfsm "\x\alive\addons\sys_GC\garbagecollector.fsm";
                     _logic setVariable ["ALiVE_GC_FSM", _fsm];
 
                     // set module as startup complete
                     _logic setVariable ["startupComplete",true];
-                    
+
 				};
 
                 /*
                 VIEW - purely visual
                 */
         };
-        
+
         case "convert": {
 	    	if !(isNil "_args") then {
 				if(typeName _args == "STRING") then {
@@ -120,7 +149,7 @@ switch(_operation) do {
 	                    _args = [_args, "]", ""] call CBA_fnc_replace;
 	                    _args = [_args, """", ""] call CBA_fnc_replace;
 						_args = [_args, ","] call CBA_fnc_split;
-                        
+
 						if !(count _args > 0) then {
 							_args = [];
 		            	};
@@ -131,39 +160,39 @@ switch(_operation) do {
             };
             _result = _args;
 		};
-        
-        case "collect": { 
+
+        case "collect": {
         private ["_queue"];
-        
+
 	        _individual = _logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]];
             _debug = _logic getvariable ["debug",false];
             _queue = _logic getVariable ["queue",[]];
             _dead = +allDead;
-            
+
             _time = time;
             _ObjectsToTrash = _dead - _queue;
-            
+
             // DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 					["ALIVE Garbage Collector started collecting at %1...",_time] call ALIVE_fnc_dumpR;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
-            
+
 			{
                 if (!(_x in synchronizedObjects _logic) && {!(_x getvariable [QGVAR(IGNORE),false])}) then {
                 	[_logic,"trashIt",_x] call ALiVE_fnc_GC;
                     sleep 0.03;
                 };
 			} forEach _ObjectsToTrash;
-			
+
 			{
 				if ((count units _x == 0) && {!(_x in _queue)}) then {
                     [_logic,"trashIt",_x] call ALiVE_fnc_GC;
                     sleep 0.03;
 				};
 			} foreach allGroups;
-			
+
 			if ((count _individual) > 0) then {
 			    _amo = (allmissionObjects ""); _amo = +_amo;
 				{
@@ -173,7 +202,7 @@ switch(_operation) do {
 					};
 				} foreach _amo;
 			};
-            
+
             // DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["ALIVE Garbage Collector collection finished at %1! Time taken %2...",_time,(time - _time)] call ALIVE_fnc_dumpR;
@@ -181,15 +210,15 @@ switch(_operation) do {
 				};
 			// DEBUG -------------------------------------------------------------------------------------
         };
-        
-        case "trashIt": { 
+
+        case "trashIt": {
 	        if (isNil "_args") exitWith {debugLog "Log: [trashIt] There should be 1 mandatory parameter!"; false};
-	
+
 			private ["_object", "_queue", "_timeToDie"];
 			_object = _args;
             _debug = _logic getvariable ["debug",false];
 			_queue = _logic getVariable ["queue",[]];
-            
+
             if ((isnil "_object") || {isnull _object}) exitwith {};
 
 			switch (typeName _object) do
@@ -205,12 +234,12 @@ switch(_operation) do {
 						_timeToDie = time + 60;
 					};
 				};
-			
+
 				case (typeName grpNull):
 				{
 					_timeToDie = time + 60;
 				};
-			
+
 				default
 				{
 					_timeToDie = time;
@@ -221,41 +250,41 @@ switch(_operation) do {
 					["ALIVE GC trashed %1! Time to die %2...",_object,_timeToDie] call ALIVE_fnc_dumpR;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
-            
+
             _object setvariable ["timeToDie",_timeToDie];
 			_queue set [count _queue,_object];
-            
+
 			_logic setVariable ["queue", _queue];
         };
-        
+
         case "process": {
             if (isnil "_args") then {_args = false};
-            
+
             _instant = _args;
 			_queue = _logic getVariable ["queue",[]];
             _debug = _logic getvariable ["debug",false];
             _timeCheck = time;
-            
+
             // DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 					["ALIVE Garbage Collector deletion started at %1 for %2 objects...",_timeCheck,(count _queue)] call ALIVE_fnc_dumpR;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
-			
+
 			{
 				private ["_object", "_time"];
-                
+
 				_object = _x;
 
                 if (!(isnil "_object") && {!(isnull _object)}) then {
-                    
+
                     _time = _object getvariable ["timeToDie",0];
-                    
+
 					//Check the object was in the queue for at least the assigned time (expiry date).
 	                //If instant parameter is set to true, then it will be directly deleted
 					if ((_time <= time) || {_instant}) then {
-			
+
 						switch (typeName _object) do {
 							case (typeName objNull):
 							{
@@ -267,7 +296,7 @@ switch(_operation) do {
 	                                _queue set [_foreachIndex, -1];
 								};
 							};
-			
+
 							case (typeName grpNull):
 							{
 								//Make sure the group is empty.
@@ -277,7 +306,7 @@ switch(_operation) do {
 	                                _queue set [_foreachIndex, -1];
 								};
 							};
-			
+
 							default {};
 						};
 					};
@@ -285,10 +314,10 @@ switch(_operation) do {
                 	_queue set [_foreachIndex, -1];
                 };
 			} forEach _queue;
-            
+
             _queue = _queue - [-1];
             _logic setVariable ["queue", _queue];
-            
+
     		// DEBUG -------------------------------------------------------------------------------------
 				if(_debug) then {
 					["ALIVE Garbage Collector deletion processed at %1! Time taken: %2! Objects left in queue: %3",_timeCheck,(time - _timeCheck),(count _queue)] call ALIVE_fnc_dumpR;
@@ -297,11 +326,11 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
         };
 
-        case "destroy": {                
+        case "destroy": {
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
 					[_logic, "destroy"] call SUPERCLASS;
-                };                
+                };
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {
@@ -310,35 +339,35 @@ switch(_operation) do {
 						[_logic,"debug",_args] call ALIVE_fnc_hashSet;
                 };
                 ASSERT_TRUE(typeName _args == "BOOL",str _args);
-                
+
                 _result = _args;
         };
 
 		case "state": {
 				private["_state"];
-                
+
 				if(typeName _args != "ARRAY") then {
-						
+
 						// Save state
-				
+
                         _state = [] call ALIVE_fnc_hashCreate;
-						
-						// BaseClassHash CHANGE 
+
+						// BaseClassHash CHANGE
 						// loop the class hash and set vars on the state hash
 						{
 							if(!(_x == "super") && !(_x == "class")) then {
 								[_state,_x,[_logic,_x] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
 							};
 						} forEach (_logic select 1);
-                       
+
                         _result = _state;
-						
+
                 } else {
 						ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
 
                         // Restore state
-						
-						// BaseClassHash CHANGE 
+
+						// BaseClassHash CHANGE
 						// loop the passed hash and set vars on the class hash
                         {
 							[_logic,_x,[_args,_x] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;

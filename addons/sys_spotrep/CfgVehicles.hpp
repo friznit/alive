@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
+        class ModuleAliveBase;
 
-        class ADDON : ModuleAliveSystemBase
+        class ADDON : ModuleAliveBase
         {
         		scope = 1;
 				displayName = "$STR_ALIVE_spotrep";
 				//function = "";
-				functionPriority = 10;
+				functionPriority = 43;
 				isGlobal = 2;
 				icon = "x\alive\addons\sys_spotrep\icon_sys_spotrep.paa";
 				picture = "x\alive\addons\sys_spotrep\icon_sys_spotrep.paa";

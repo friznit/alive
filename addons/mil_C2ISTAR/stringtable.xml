@@ -3,10 +3,13 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_C2ISTAR">
-    <English>C2ISTAR</English>
+    <English>Player Command/Control (C2ISTAR)</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_MENU">
+    <English>Player C2ISTAR</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_COMMENT">
-    <English>Command and control</English>
+    <English>Command, Control, Intelligence, Surveillance, Target Aquisition and Reconnaisance</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_DEBUG">
     <English>Enable Debug:</English>

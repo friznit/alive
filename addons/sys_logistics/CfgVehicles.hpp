@@ -1,38 +1,38 @@
 class CfgVehicles {
-        class ModuleAliveSystemBase;
-        
-        class ADDON : ModuleAliveSystemBase
+        class ModuleAliveBase;
+
+        class ADDON : ModuleAliveBase
         {
-        		scope = 1;
-				displayName = "$STR_ALIVE_LOGISTICS";
-				//function = "";
-				functionPriority = 0;
-				isGlobal = 2;
-				icon = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
-				picture = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
-				author = MODULE_AUTHOR;
+        	scope = 1;
+		displayName = "$STR_ALIVE_LOGISTICS";
+		//function = "";
+		functionPriority = 45;
+		isGlobal = 2;
+		icon = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
+		picture = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
+		author = MODULE_AUTHOR;
         };
-        
-        class ALiVE_SYS_LOGISTICSDISABLE : ModuleAliveSystemBase
+
+        class ALiVE_SYS_LOGISTICSDISABLE : ModuleAliveBase
         {
-				scope = 2;
-				displayName = "$STR_ALIVE_LOGISTICSDISABLE";
-				function = "ALIVE_fnc_logisticsDisable";
-				functionPriority = 0;
-				isGlobal = 2;
-				icon = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
-				picture = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
-				author = MODULE_AUTHOR;
-				
+		scope = 2;
+		displayName = "$STR_ALIVE_LOGISTICSDISABLE";
+		function = "ALIVE_fnc_logisticsDisable";
+		functionPriority = 10;
+		isGlobal = 2;
+		icon = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
+		picture = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";
+		author = MODULE_AUTHOR;
+
                 class ModuleDescription
-				{
-					description[] = {
-							"$STR_ALIVE_LOGISTICSDISABLE_COMMENT",
-							"",
-							"$STR_ALIVE_LOGISTICSDISABLE_USAGE"
-					};
-				};
-				
+		{
+			description[] = {
+					"$STR_ALIVE_LOGISTICSDISABLE_COMMENT",
+					"",
+					"$STR_ALIVE_LOGISTICSDISABLE_USAGE"
+			};
+		};
+
                 class Arguments
                 {
 

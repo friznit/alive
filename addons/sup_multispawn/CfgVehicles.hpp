@@ -1,12 +1,12 @@
 class CfgVehicles {
-        class ModuleAlivePlayerBase;
-        class ADDON : ModuleAlivePlayerBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 2;
                 displayName = "$STR_ALIVE_multispawn";
                 function = "ALIVE_fnc_multispawnInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 2;
+                functionPriority = 210;
                 isGlobal = 2;
 				icon = "x\alive\addons\sup_multispawn\icon_sup_multispawn.paa";
 				picture = "x\alive\addons\sup_multispawn\icon_sup_multispawn.paa";
@@ -31,7 +31,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        
+
                         class spawntype
                         {
                                 displayName = "$STR_ALIVE_multispawn_TYPE";
@@ -44,7 +44,7 @@ class CfgVehicles {
                                                 value = "forwardspawn";
                                                 default = 1;
                                         };
-                                        
+
                                         class insertion
                                         {
                                                 name = "Insertion";
@@ -56,7 +56,7 @@ class CfgVehicles {
                                                 name = "Spawn in vehicle";
                                                 value = "vehicle";
                                         };
-                                        
+
                                         class building
                                         {
                                                 name = "Spawn in building";
@@ -64,7 +64,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        
+
                         class timeout
                         {
                                 displayName = "$STR_ALIVE_MULTISPAWN_TIMEOUT";
@@ -90,7 +90,7 @@ class CfgVehicles {
                                                 value = true;
                                         };
                                 };
-                        };                          
+                        };
                 };
                 class ModuleDescription
 				{
@@ -100,6 +100,6 @@ class CfgVehicles {
 							"$STR_ALIVE_MULTISPAWN_USAGE"
 					};
 				};
-                
+
         };
 };

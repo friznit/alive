@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveMilitaryBase;
-        class ADDON : ModuleAliveMilitaryBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_MI";
@@ -86,9 +86,9 @@ class CfgVehicles {
                                 defaultValue = "2000";
                         };
                 };
-                
+
         };
-        class ADDON2 : ModuleAliveMilitaryBase
+        class ADDON2 : ModuleAliveBase
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_SD";
@@ -109,7 +109,7 @@ class CfgVehicles {
                     };
                 };
         };
-        class ADDON3 : ModuleAliveMilitaryBase
+        class ADDON3 : ModuleAliveBase
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_PSD";

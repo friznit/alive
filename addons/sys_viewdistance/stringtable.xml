@@ -12,7 +12,7 @@
 	<English>View Settings module allows you to dynamically change the appropriate view and terrain grid distance in game. You can also force a fixed View Distance by setting max and min values the same!</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_MAX">
-	<English>Max VD:</English>
+	<English>Max View Distance:</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_MAX_COMMENT">
 	<English>Maximum view distance allowed in Game</English>
@@ -24,7 +24,7 @@
 	<English>Set you View distance in Game</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_MIN">
-	<English>Min VD:</English>
+	<English>Min View Distance:</English>
 </Key>
 <Key ID="STR_ALIVE_VDIST_MIN_COMMENT">
 	<English>Minimum view distance allowed in Game</English>
@@ -36,13 +36,13 @@
 	<English>Terrain Grid Settings in Game</English>
 </Key>
 <Key ID="STR_ALIVE_TGRID_MAX">
-	<English>Max TG:</English>
+	<English>Max Terrain Grid:</English>
 </Key>
 <Key ID="STR_ALIVE_TGRID_MAX_COMMENT">
 	<English>Maximum Terrain Grid allowed in Game 1 Low -> 5 High</English>
 </Key>
 <Key ID="STR_ALIVE_TGRID_MIN">
-	<English>Min TG:</English>
+	<English>Min Terrain Grid:</English>
 </Key>
 <Key ID="STR_ALIVE_TGRID_MIN_COMMENT">
 	<English>Minimum Terrain Grid allowed in Game 1 Low -> 5 High</English>

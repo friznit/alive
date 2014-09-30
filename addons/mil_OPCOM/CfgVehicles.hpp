@@ -1,16 +1,16 @@
 class CfgVehicles {
-        class ModuleAliveMilitaryBase;
-        class ADDON : ModuleAliveMilitaryBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
 				scope = 2;
 				displayName = "$STR_ALIVE_OPCOM";
 				function = "ALIVE_fnc_OPCOMInit";
 				author = MODULE_AUTHOR;
-				functionPriority = 9;
+				functionPriority = 180;
 				isGlobal = 1;
 				icon = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
 				picture = "x\alive\addons\mil_opcom\icon_mil_opcom.paa";
-				
+
 				class Arguments
                 {
                         class debug
@@ -51,8 +51,8 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        
-                        
+
+
                         class controltype
                         {
                                 displayName = "$STR_ALIVE_OPCOM_CONTROLTYPE";
@@ -272,7 +272,7 @@ class CfgVehicles {
 							"$STR_ALIVE_OPCOM_USAGE"
 					};
 					sync[] = {"ALiVE_civ_placement","ALiVE_mil_placement","ALiVE_mil_intelligence","ALiVE_mil_logistics"}; // Array of synced entities (can contain base classes)
-		 
+
 					class ALiVE_civ_placement
 					{
 						description[] = { // Multi-line descriptions are supported

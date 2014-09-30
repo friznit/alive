@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_multispawn">
-	<English>Multispawn</English>
+	<English>ALiVE Multispawn</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_COMMENT">
 	<English>ALiVE Multispawn enables some handy Respawn functionalities! Please see our WiKi for more information!</English>
@@ -38,16 +38,16 @@ You can sync your custom vehicles of choice to the module! Keep in mind only veh
 	<English>Enables debug</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_TYPE">
-	<English>Type:</English>
+	<English>Respawn Type:</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_TYPE_COMMENT">
-	<English>Click Show Info for description and marker names!</English>
+	<English>Select where players will be respawned</English>
 </Key>
 <Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT">
-	<English>Timeout:</English>
+	<English>Respawn Timeout:</English>
 </Key>
 <Key ID="STR_ALIVE_MULTISPAWN_TIMEOUT_COMMENT">
-	<English>Timeout until Respawn is possible!</English>
+	<English>Add a wait time to respawn</English>
 </Key>
 <Key ID="STR_ALIVE_MULTISPAWN_VEHICLETYPES">
 	<English>Vehicletypes:</English>
@@ -65,7 +65,7 @@ You can sync your custom vehicles of choice to the module! Keep in mind only veh
 	<English>Only one multispawn module can be used</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED">
-	<English>Enemy check:</English>
+	<English>Respawn Enemy Check:</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED_COMMENT">
 	<English>Allowed to spawn on squadmates even if enemies are near!</English>

@@ -56,10 +56,10 @@ switch(_operation) do {
                 if (isServer && !(isNil "ALIVE_combatSupport")) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_CS_ERROR1");
                 };
-                
+
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP COMBATSUPPORT - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_DumpR}; 
-            
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP COMBATSUPPORT - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
+
             	//Start init
             	_logic setVariable ["initGlobal", false];
 
@@ -91,7 +91,7 @@ switch(_operation) do {
 						_sides = [WEST,EAST,RESISTANCE,CIVILIAN];
 
 				        for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
-                            
+
                             _entry = vehicle ((synchronizedObjects _logic) select _i);
                             _type = _entry getvariable ["CS_TYPE","CAS"];
                             _cargoCount = getNumber(configFile >> "cfgVehicles" >> typeOf _entry >> "transportSoldier");
@@ -100,32 +100,32 @@ switch(_operation) do {
                             	switch (toLower(_type)) do {
                                     case ("cas") : {
                                         private ["_position","_callsign","_type"];
-                                        
+
                                         _callsign = _entry getvariable ["CS_CALLSIGN",groupID (group _entry)];
 	                                    _height = _entry getvariable ["CS_HEIGHT",0];
 	                                    _code = compile(_entry getvariable ["CS_CODE",""]);
-	                                    
+
 	                                    _position = getposATL _entry;
 	                                    _id = [_position] call ALiVE_fnc_getNearestAirportID;
 	                                    _type = typeOf _entry;
 	                                    _direction =  getDir _entry;
-	                                    
+
 	                                    _casArray = [_position,_direction, _type, _callsign, _id,_code,_height];
 	                                    _casArrays set [count _casArrays,_casArray];
                                     };
-                                    
+
                                     case ("transport") : {
 	                                    private ["_position","_callsign","_type"];
-	
+
                                         _callsign = _entry getvariable ["CS_CALLSIGN",groupID (group _entry)];
 	                                    _height = _entry getvariable ["CS_HEIGHT",0];
 	                                    _code = compile(_entry getvariable ["CS_CODE",""]);
-	                                    
+
 	                                    _position = getposATL _entry;
 	                                    _id = [_position] call ALiVE_fnc_getNearestAirportID;
 	                                    _type = typeOf _entry;
 	                                    _direction =  getDir _entry;
-	
+
 	                                    _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_code,_height];
 	                                    _transportArrays set [count _transportArrays,_transportArray];
                                     };
@@ -138,9 +138,9 @@ switch(_operation) do {
 	                                    _position = getposATL _entry;
 					    				_direction =  getDir _entry;
 	                                    _class = typeOf _entry;
-	
+
 					   					_callsign = _entry getvariable ["CS_CALLSIGN",groupID (group _entry)];
-	
+
 	                                    _he = ["HE",parsenumber(_entry getvariable ["CS_artillery_he","30"])];
 	                                    _illum = ["ILLUM",parsenumber(_entry getvariable ["CS_artillery_illum","30"])];
 	                                    _smoke = ["SMOKE",parsenumber(_entry getvariable ["CS_artillery_smoke","30"])];
@@ -150,15 +150,15 @@ switch(_operation) do {
 	                                    _mine = ["MINE",parsenumber(_entry getvariable ["CS_artillery_atmine","30"])];
 	                                    _atmine = ["AT MINE",parsenumber(_entry getvariable ["CS_artillery_atmine","30"])];
 	                                    _rockets = ["ROCKETS",parsenumber(_entry getvariable ["CS_artillery_rockets","16"])];
-	
+
 	                                    _ordnance = [_he,_illum,_smoke,_guided,_cluster,_lg,_mine,_atmine, _rockets];
-	
+
 	                                    _artyArray = [_position,_class, _callsign,3,_ordnance,{}];
-	                                    _artyArrays set [count _artyArrays,_artyArray];                                    
+	                                    _artyArrays set [count _artyArrays,_artyArray];
                                     };
                                 };
                             };
-                            
+
 				            switch (typeOf ((synchronizedObjects _logic) select _i)) do {
                                 case ("ALiVE_sup_cas") : {
                                     private ["_position","_callsign","_type"];
@@ -263,7 +263,7 @@ switch(_operation) do {
                             _tasks = _x select 4;
                             _code = _x select 5;
                             _height = _x select 6;
-                            
+
 							_transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
                             _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
                             _side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
@@ -274,31 +274,31 @@ switch(_operation) do {
                                 case 2 : {_side = RESISTANCE};
                                 default {_side = EAST};
                             };
-                            
+
                             private ["_veh","_grp"];
-                            
+
                             _veh = nearestObjects [_pos, [_type], 5];
-                            
+
                             if (count _veh == 0) then {
 	                            _grp = createGroup _side;
 	                            _veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
 	                            _veh setDir _dir;
 	                            _veh setPosATL _pos;
-	
+
 	                            If(_height > 0) then {_veh setposasl [getposASL _veh select 0, getposASL _veh select 1, _height]; _veh setVelocity [0,0,-1]} else {_veh setPosATL _pos};
-	                            
+
 	                            [_veh, _grp] call BIS_fnc_spawnCrew;
  							} else {
                                 _veh = _veh select 0;
                                 _grp = group (driver _veh);
                             };
- 
+
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
-                            
+
                             //Execute passed code;
                             [_veh] spawn _code;
-							
+
                             //Set Group ID
                             [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 
@@ -341,9 +341,9 @@ switch(_operation) do {
                             };
 
                             private ["_veh","_grp"];
-                            
+
                             _veh = nearestObjects [_pos, [_type], 5];
-                            
+
                             if (count _veh == 0) then {
 	                            _grp = createGroup _side;
 	                            _veh = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
@@ -365,13 +365,13 @@ switch(_operation) do {
                             _veh lockDriver true;
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
-                            
+
                             //Spawn passed code
                             [_veh] spawn _code;
-                            
+
 							// Set Group ID
                             [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
-                            
+
                             // set ownership flag for other modules
                             _veh setVariable ["ALIVE_CombatSupport", true];
 
@@ -382,7 +382,7 @@ switch(_operation) do {
                             _c set [count _c, [_veh, _grp, _callsign]];
 
                             NEO_radioLogic setVariable [format ["NEO_radioCasArray_%1", _side], _c,true];
-                        
+
                         } forEach SUP_CASARRAYS;
 
 
@@ -412,16 +412,16 @@ switch(_operation) do {
 							_canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","BUS_MotInf_MortTeam"]) then { true } else { false };
 							_units = [];
                             _vehDir = 0;
-                            
+
                             private ["_veh","_grp"];
-                            
+
                             _veh = nearestObjects [_pos, [_class], 5];
 
                             if (count _veh > 0) then {_veh = _veh select 0; _grp = group _veh} else {_veh = nil; _grp = createGroup _side};
 
                             if (_side == WEST && _class == "BUS_MotInf_MortTeam") then {
                                 // Spawn a mortar team :)
-                                
+
                                 _vehPos = [_pos, 30, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
                                 _grp = [_vehPos, side _grp, (configFile >> "cfgGroups" >> "WEST" >> "BLU_F" >> "Motorized" >> "BUS_MotInf_MortTeam"),[],[],[],[],[],_vehDir] call BIS_fnc_spawnGroup;
                                 {
@@ -431,29 +431,29 @@ switch(_operation) do {
 
                             } else {
                                 private ["_vehPos","_i"];
-                                
+
                                 if (isnil "_veh") then {
 	                                for "_i" from 1 to _unitCount do
 	                                {
 	                                    private ["_veh"];
 	                                    _vehPos = [_pos, 15, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
-	        							
+
 	                                    _veh = createVehicle [_class, _vehPos, [], 0, "CAN_COLLIDE"];
 	                                    _veh setDir _vehDir;
 	        							_veh setPosATL _vehPos;
                                         _veh lock true;
                                         _vehDir = _vehDir + 90;
-                                        
+
                                         // set ownership flag for other modules
 	                            		_veh setVariable ["ALIVE_CombatSupport", true];
-                                        
+
 	        							[_veh, _grp] call BIS_fnc_spawnCrew;
                                         _units set [count _units, _veh];
 	                                };
                                 } else {
                                     _units set [count _units, _veh];
                                     _veh lock true;
-                                    
+
                                     // set ownership flag for other modules
 	                            	_veh setVariable ["ALIVE_CombatSupport", true];
                                 };

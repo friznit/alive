@@ -55,13 +55,13 @@ if (typeName _params == typeName []) then {
 /*
         ["Menu Caption", "flexiMenu resource dialog", "optional icon folder", menuStayOpenUponSelect],
         [
-            ["caption", 
-                "action", 
-                "icon", 
-                "tooltip", 
-                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]}, 
+            ["caption",
+                "action",
+                "icon",
+                "tooltip",
+                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]},
                 -1 (shortcut DIK code),
-                {0|1/"0"|"1"/false|true} (enabled), 
+                {0|1/"0"|"1"/false|true} (enabled),
                 {-1|0|1/"-1"|"0"|"1"/false|true} (visible)
             ],
              ...
@@ -82,7 +82,7 @@ _menus =
 	]
 ];
 
-TRACE_4("Menu setup",MOD(adminActions),MOD(adminActions) getVariable "ghost",MOD(adminActions) getVariable "teleport",MOD(adminActions) getVariable "mark_units");
+TRACE_4("Menu setup",ADDON,ADDON getVariable "ghost",ADDON getVariable "teleport",ADDON getVariable "mark_units");
 
 if (_menuName == "adminActions") then {
 	_menus set [count _menus,
@@ -91,53 +91,53 @@ if (_menuName == "adminActions") then {
 			[
 				[localize "STR_ALIVE_ADMINACTIONS_GHOST_ENABLE",
 					//{ player setCaptive true },
-					{ MOD(adminActions) setVariable ["GHOST_enabled", true]; [player,true] call ALIVE_fnc_adminGhost; },
+					{ ADDON setVariable ["GHOST_enabled", true]; [player,true] call ALIVE_fnc_adminGhost; },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_GHOST_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["ghost", 0],
+					1,
 					//!captive player
-					!(MOD(adminActions) getVariable ["GHOST_enabled", false])
+					!(ADDON getVariable ["GHOST_enabled", false])
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_GHOST_DISABLE",
-				    { MOD(adminActions) setVariable ["GHOST_enabled", false]; [player,false] call ALIVE_fnc_adminGhost; },
+				    { ADDON setVariable ["GHOST_enabled", false]; [player,false] call ALIVE_fnc_adminGhost; },
 					//{ player setCaptive false },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_GHOST_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["ghost", 0],
+					1,
 					//captive player
-					(MOD(adminActions) getVariable ["GHOST_enabled", false])
+					(ADDON getVariable ["GHOST_enabled", false])
 				],
 
 				[localize "STR_ALIVE_ADMINACTIONS_TELEPORT_ENABLE",
-					{ MOD(adminActions) setVariable ["teleport_enabled", true]; onMapSingleClick {vehicle player setPos _pos;} },
+					{ ADDON setVariable ["teleport_enabled", true]; onMapSingleClick {vehicle player setPos _pos;} },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["teleport", 0],
-					!(MOD(adminActions) getVariable ["teleport_enabled", false])
+					1,
+					!(ADDON getVariable ["teleport_enabled", false])
 				],
 				[localize "STR_ALIVE_ADMINACTIONS_TELEPORT_DISABLE",
-					{ MOD(adminActions) setVariable ["teleport_enabled", false]; onMapSingleClick DEFAULT_MAPCLICK; },
+					{ ADDON setVariable ["teleport_enabled", false]; onMapSingleClick DEFAULT_MAPCLICK; },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_TELEPORT_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["teleport", 0],
-					(MOD(adminActions) getVariable ["teleport_enabled", false])
+					1,
+					(ADDON getVariable ["teleport_enabled", false])
 				],
-                
+
                 [localize "STR_ALIVE_ADMINACTIONS_TELEPORTUNITS",
 					{ ["CAManBase"] spawn ALiVE_fnc_AdminActionsTeleportUnits },
 					"",
 					localize "STR_ALIVE_ADMINACTIONS_TELEPORTUNITS_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["teleport", 0],
+					1,
 					true
 				],
 
@@ -147,10 +147,10 @@ if (_menuName == "adminActions") then {
 					localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["mark_units", 0],
+					1,
 					true
 				],
-                
+
                 [localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE",
 					{ ALiVE_CQB setVariable ["debug",true,true]; {[_x,"debug",true] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
 					"",
@@ -169,7 +169,7 @@ if (_menuName == "adminActions") then {
 					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
 					!isnil "ALiVE_CQB" && {ALiVE_CQB getVariable ["debug",false]}
 				],
-                
+
                 [localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE",
 					{ALiVE_SYS_PROFILE setVariable ["debug","true", true]; [] call ALIVE_fnc_profileSystemDebug; },
 					"",
@@ -195,7 +195,7 @@ if (_menuName == "adminActions") then {
                     localize "STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_COMMENT",
                     "",
                     -1,
-                    MOD(adminActions) getVariable ["profiles_create", 0],
+                    1,
                     true
                 ],
 
@@ -224,7 +224,7 @@ if (_menuName == "adminActions") then {
 					localize "STR_ALIVE_ADMINACTIONS_CONSOLE_COMMENT",
 					"",
 					-1,
-					MOD(adminActions) getVariable ["console", 0],
+					1,
 					true
 				]
 			]
