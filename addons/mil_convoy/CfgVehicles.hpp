@@ -1,6 +1,6 @@
 class CfgVehicles {
-        class ModuleAliveMilitaryBase;
-        class ADDON : ModuleAliveMilitaryBase
+        class ModuleAliveBase;
+        class ADDON : ModuleAliveBase
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_CONVOY";
@@ -66,6 +66,6 @@ class CfgVehicles {
                                 defaultValue = "OPF_F";
                         };
                 };
-                
+
         };
 };
