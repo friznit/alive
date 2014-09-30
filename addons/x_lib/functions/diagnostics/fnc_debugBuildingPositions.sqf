@@ -38,13 +38,6 @@ for "_i" from 0 to (_count-1) do {
 	_positions set [count _positions, _building buildingPos _i];
 };
 
-/*
-{
-	[_x] call ALIVE_fnc_spawnDebugMarker;
-
-} forEach _positions;
-*/
-
 buildingPositions = _positions;
 
 onEachFrame {

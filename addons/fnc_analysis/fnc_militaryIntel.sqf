@@ -157,7 +157,7 @@ switch(_operation) do {
     };
     case "showPlayerSectors": {
 
-        private ["_debug","_modules","_module","_activeAnalysisJobs","_activeAnalysis","_args"];
+        private ["_debug","_runEvery","_modules","_module","_activeAnalysisJobs","_activeAnalysis","_args"];
 
         _debug = [_logic, "debug"] call MAINCLASS;
         _runEvery = [_logic, "runEvery"] call MAINCLASS;
