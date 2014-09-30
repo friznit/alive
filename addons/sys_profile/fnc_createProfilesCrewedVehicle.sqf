@@ -20,7 +20,7 @@ Array of created profiles
 Examples:
 (begin example)
 // create profiles for vehicle class
-_result = ["B_Heli_Light_01_F","WEST",getPosATL player] call ALIVE_fnc_createProfilesCrewedVehicle;
+_result = ["B_Heli_Light_01_F","WEST","BLU_F","CAPTAIN",getPosATL player] call ALIVE_fnc_createProfilesCrewedVehicle;
 (end)
 
 See Also:

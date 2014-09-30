@@ -563,7 +563,7 @@ class RscDisplayALiVEAdvancedMarker
 		{
 			idc = 801016;
 			style = 24;
-			text = "Do not use double quotes in your text here."; //--- ToDo: Localize;
+			text = "Do not use special characters in your text!"; //--- ToDo: Localize;
 			x = "14.35 * 					(			((safezoneW / safezoneH) min 1.2) / 40) + 		(safezoneX + (safezoneW - 					((safezoneW / safezoneH) min 1.2))/2)";
 			y = "15.7 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 		(safezoneY + (safezoneH - 					(			((safezoneW / safezoneH) min 1.2) / 1.2))/2)";
 			w = "18 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";

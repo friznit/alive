@@ -81,7 +81,11 @@ _class = (configFile >> "CfgVehicles" >> _type >> "turrets");
 [_class, []] call _findRecurse;
 
 // seriously?
-if(_type == "B_Heli_Light_01_F" || _type == "B_Heli_Light_01_armed_F") then {
+if(_type == "B_Heli_Light_01_F") then {
+    _result = [_result select 1, _result select 2, _result select 3, _result select 4];
+};
+
+if(_type == "B_Heli_Light_01_armed_F") then {
     _result = [];
 };
 

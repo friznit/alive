@@ -27,24 +27,31 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_camera", "_target", "_hideTarget", "_duration", "_i"];
+private ["_camera", "_target", "_hideTarget", "_duration", "_startTime", "_currentTime", "_eventID"];
 
 _camera = _this select 0;
 _target = _this select 1;
-_duration = if(count _this > 3) then {_this select 3} else {5};
-_hideTarget = if(count _this > 4) then {_this select 4} else {false};
+_duration = if(count _this > 2) then {_this select 2} else {5};
+_hideTarget = if(count _this > 3) then {_this select 3} else {false};
 
 if(_hideTarget) then
 {
     hideObject _target;
 };
 
-_i = 0;
-while {_i < _duration / 0.1} do
-{
-    _i = _i + 1;
-    _camera attachTo [_target, [-5,0,2]];
-    _camera camPrepareTarget _target;
-    _camera camCommitPrepared 0;
-    sleep 0.1;
-};
+_startTime = time;
+_currentTime = _startTime;
+
+CHASE_camera = _camera;
+CHASE_target = _target;
+
+_eventID = addMissionEventHandler ["Draw3D", {
+    CHASE_camera camSetTarget CHASE_target;
+    CHASE_camera camSetRelPos [-10,0,2];
+    CHASE_camera camCommit 0;
+
+}];
+
+waitUntil { sleep 1; _currentTime = time; ((_currentTime - _startTime) >= _duration)};
+
+removeMissionEventHandler ["Draw3D",_eventID];

@@ -141,6 +141,8 @@ if (cbChecked _spotrepCheck) then {
 	_factivityIndex = lbCurSel FACTIVITY_LIST;
 	_factivity = lbText [FACTIVITY_LIST, _factivityIndex];
 	_remarks = [ctrlText REMARKS_VALUE,"\","-"] call CBA_fnc_replace;
+	_remarks = [_remarks, """", ""] call CBA_fnc_replace;
+	_remarks = [_remarks, "'", ""] call CBA_fnc_replace;
 
 	_spotrepHash = [] call ALIVE_fnc_hashCreate;
 

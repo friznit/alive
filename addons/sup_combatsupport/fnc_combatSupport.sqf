@@ -58,7 +58,7 @@ switch(_operation) do {
                 };
 
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP COMBATSUPPORT - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP COMBATSUPPORT - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
 
             	//Start init
             	_logic setVariable ["initGlobal", false];
