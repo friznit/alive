@@ -329,7 +329,7 @@ switch(_operation) do {
                 [ALIVE_taskHandler, "loadTaskData", _persistent] call ALIVE_fnc_taskHandler;
             };
 
-            private["_displayIntel","_intelChance","_friendlyIntel","_friendlyIntelRadius","_displayMilitarySectors","_displayPlayerSectors","_displayIntel","_runEvery"];
+            private["_displayIntel","_intelChance","_friendlyIntel","_friendlyIntelRadius","_displayMilitarySectors","_displayPlayerSectors","_displayIntel","_runEvery","_intel"];
 
             _displayIntel = [_logic, "displayIntel"] call MAINCLASS;
             _intelChance = [_logic, "intelChance"] call MAINCLASS;

@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_camera", "_target", "_hideTarget", "_duration"];
+private ["_camera", "_target", "_hideTarget", "_duration","_cameraPosition","_targetPosition"];
 
 _camera = _this select 0;
 _target = _this select 1;
@@ -39,8 +39,15 @@ if(_hideTarget) then
     hideObject _target;
 };
 
+_cameraPosition = getPosATL _camera;
+_targetPosition = getPosATL _target;
+
+if((_targetPosition select 2) > (_cameraPosition select 2)) then {
+    _cameraPosition set [2,(_targetPosition select 2) + (_cameraPosition select 2)];
+};
+
 _camera camPrepareTarget _target;
-_camera camPreparePos [(getpos _target select 0)- 40,(getpos _target select 1)+40, 12];
+_camera camPreparePos [(_targetPosition select 0)- 40,(_targetPosition select 1)+40, _cameraPosition select 2];
 _camera camCommitPrepared 0;
-_camera camPreparePos [(getpos _target select 0)- 3,(getpos _target select 1)+3, 2];
+_camera camPreparePos [(_targetPosition select 0)- 3,(_targetPosition select 1)+3, 2];
 _camera camCommitPrepared _duration;

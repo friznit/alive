@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_camera", "_cinemaBorder"];
+private ["_camera", "_instant", "_cinemaBorder"];
 
 _camera = _this select 0;
 _instant = if(count _this > 1) then {_this select 1} else {false};

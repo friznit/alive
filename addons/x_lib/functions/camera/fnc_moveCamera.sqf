@@ -41,7 +41,7 @@ if(_hideTargets) then
     hideObject _target;
 };
 
-_position = position _target;
+_position = getPosATL _target;
 _position = [_position, _angle] call ALIVE_fnc_setCameraAngle;
 
 _camera camPreparePos _position;

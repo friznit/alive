@@ -58,6 +58,7 @@ ALIVE_profileHandler = [nil, "create"] call ALIVE_fnc_profileHandler;
 [ALIVE_profileHandler, "init"] call ALIVE_fnc_profileHandler;
 
 
+/*
 STAT("Create Entity Profile 1");
 _profileEntity1 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "init"] call ALIVE_fnc_profileEntity;
@@ -126,10 +127,9 @@ SLEEP 20;
 
 STAT("Assign entity 2 to vehicle 2");
 [_profileEntity3,_profileVehicle1] call ALIVE_fnc_createProfileVehicleAssignment;
+*/
 
 
-
-/*
 STAT("Create Entity Profile 1");
 _profileEntity1 = [nil, "create"] call ALIVE_fnc_profileEntity;
 [_profileEntity1, "init"] call ALIVE_fnc_profileEntity;
@@ -252,7 +252,6 @@ SLEEP 20;
 
 STAT("De-Spawn the vehicle via the profile");
 [_profileVehicle1, "despawn"] call ALIVE_fnc_profileVehicle;
-*/
 
 DEBUGON
 

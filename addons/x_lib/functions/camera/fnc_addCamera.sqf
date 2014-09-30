@@ -42,7 +42,7 @@ if(_hideSource) then
     hideObject _source;
 };
 
-_position = position _source;
+_position = getPosATL _source;
 _position = [_position, _angle] call ALIVE_fnc_setCameraAngle;
 
 _camera = "camera" camCreate (_position);
