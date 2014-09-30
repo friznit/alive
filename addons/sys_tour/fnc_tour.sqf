@@ -167,6 +167,33 @@ switch(_operation) do {
 
         [_selectionOptions,"Overview",[_whatSelection,_whySelection,_whoSelection,_backSelection]] call ALIVE_fnc_hashSet;
 
+        // action selections
+
+        private["_joinRandomSelection","_freeRoam","_backSelection"];
+
+        _joinRandomSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_joinRandomSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_what.paa"] call ALIVE_fnc_hashSet;
+        [_joinRandomSelection,"inactiveLabel","Join Group"] call ALIVE_fnc_hashSet;
+        [_joinRandomSelection,"activeLabel","Join a group"] call ALIVE_fnc_hashSet;
+        [_joinRandomSelection,"iconState",["Join",0,0]] call ALIVE_fnc_hashSet;
+
+        _freeRoam = [] call ALIVE_fnc_hashCreate;
+
+        [_freeRoam,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_what.paa"] call ALIVE_fnc_hashSet;
+        [_freeRoam,"inactiveLabel","Free Roam"] call ALIVE_fnc_hashSet;
+        [_freeRoam,"activeLabel","Free roam the mission"] call ALIVE_fnc_hashSet;
+        [_freeRoam,"iconState",["Roam",0,0]] call ALIVE_fnc_hashSet;
+
+        _backSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_backSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_back.paa"] call ALIVE_fnc_hashSet;
+        [_backSelection,"inactiveLabel","Go Back"] call ALIVE_fnc_hashSet;
+        [_backSelection,"activeLabel","Go back to the previous menu"] call ALIVE_fnc_hashSet;
+        [_backSelection,"iconState",["Back",0,0]] call ALIVE_fnc_hashSet;
+
+        [_selectionOptions,"Action",[_joinRandomSelection,_freeRoam,_backSelection]] call ALIVE_fnc_hashSet;
+
         // technology selections
 
         private["_mapAnalysisSelection","_objectivesSelection","_battlefieldSelection","_profileSelection","_opcomSelection","_dataSelection","_warroomSelection","_backSelection"];
@@ -333,6 +360,7 @@ switch(_operation) do {
             [_logic,"listen"] call MAINCLASS;
 
             player setCaptive true;
+            player enableFatigue false;
             player addEventHandler ["HandleDamage", {(_this select 2) / 100}];
 
             // display loading
@@ -1765,6 +1793,169 @@ switch(_operation) do {
 
     };
 
+    case "activateSelectionJoin": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_opcomModules","_moduleType","_handler","_objectives","_side","_sideDisplay","_shuffledModules","_line1"];
+
+            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+            ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+            _opcomModules = [];
+
+            {
+                _moduleType = _x getVariable "moduleType";
+                if!(isNil "_moduleType") then {
+
+                    if(_moduleType == "ALIVE_OPCOM") then {
+                        _opcomModules set [count _opcomModules,_x];
+                    };
+                };
+            } forEach (entities "Module_F");
+
+            _shuffledModules = [_opcomModules] call CBA_fnc_shuffle;
+
+            scopeName "main";
+
+            {
+
+                _handler = _x getVariable "handler";
+                _objectives = [_handler,"objectives"] call ALIVE_fnc_hashGet;
+                _side = [_handler,"side"] call ALIVE_fnc_hashGet;
+                _sideDisplay = [_side] call ALIVE_fnc_sideTextToLong;
+
+                {
+                    private["_center","_size","_priority","_type","_orders","_section","_objectiveID","_action","_objective","_nearestTownToObjective"];
+
+                    _x call ALIVE_fnc_inspectHash;
+
+                    _center = [_x,"center"] call ALIVE_fnc_hashGet;
+                    _size = [_x,"size"] call ALIVE_fnc_hashGet;
+                    _priority = [_x,"priority"] call ALIVE_fnc_hashGet;
+                    _type = [_x,"type"] call ALIVE_fnc_hashGet;
+                    _orders = [_x,"opcom_orders"] call ALIVE_fnc_hashGet;
+                    _section = [_x,"section"] call ALIVE_fnc_hashGet;
+                    _objectiveID = [_x,"objectiveID"] call ALIVE_fnc_hashGet;
+
+                    _action = "";
+                    _objective = "";
+
+                    if(_orders == "attack") then {
+                        if!(isNil "_section") then {
+
+                            private["_profileID","_profile","_position","_faction","_line1","_group","_unit","_nearestTown","_factionName","_title","_text","_target","_duration"];
+
+                            _profileID = _section call BIS_fnc_selectRandom;
+                            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+
+                            if !(isnil "_profile") then {
+
+                                _faction = _profile select 2 select 29;
+
+                                _position = _profile select 2 select 2;
+
+                                _position = [_position, 50, random 360] call BIS_fnc_relPos;
+
+                                if(surfaceIsWater _position) then {
+                                    _position = [_position] call ALIVE_fnc_getClosestLand;
+                                };
+
+                                ["FOUND PROFILE:"] call ALIVE_fnc_dump;
+                                _profile call ALIVE_fnc_inspectHash;
+
+                                player setPos _position;
+
+                                waitUntil{_profile select 2 select 1};
+
+                                ["PROFILE IS ACTIVE"] call ALIVE_fnc_dump;
+
+                                sleep 2;
+
+                                _group = _profile select 2 select 13;
+                                _unit = (units _group) call BIS_fnc_selectRandom;
+
+                                ["GROUP: %1 UNIT: %2",_group, _unit] call ALIVE_fnc_dump;
+
+                                _duration = 1000;
+
+                                if!(isNil "_unit") then {
+
+                                    ["closeSplash"] call ALIVE_fnc_displayMenu;
+
+                                    ["UNIT NOT NULL"] call ALIVE_fnc_dump;
+
+                                    _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+                                    _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
+
+                                    _title = "<t size='1.5' color='#68a7b7' shadow='1'>Joining Group</t><br/>";
+                                    _text = format["%1<t>%2 group %3 near %4</t> %5",_title,_factionName,_group,_nearestTown,_action];
+
+                                    ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
+                                    ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
+
+                                    player remoteControl _unit;
+
+                                    [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
+
+                                    ["REMOTE CONTROLLED!"] call ALIVE_fnc_dump;
+
+                                    waitUntil{
+                                        sleep 1;
+                                        if((player distance _unit) > 100) then {
+                                            player setPos (position _unit);
+                                        };
+                                        !(alive _unit)
+                                    };
+
+                                    ["UNIT KILLED - REVERTING!"] call ALIVE_fnc_dump;
+
+                                    objNull remoteControl _unit;
+
+                                    [true] call ALIVE_fnc_revertCamera;
+
+                                    breakTo "main";
+
+                                };
+
+                            };
+
+                        };
+                    };
+
+                } forEach _objectives;
+
+            } forEach _shuffledModules;
+
+            [_logic,"deactivateSelectionJoin"] call MAINCLASS;
+        };
+
+    };
+
+    case "deactivateSelectionJoin": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        player hideObjectGlobal false;
+
+        ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
+
+        _logic setVariable ["selectionState","Action"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
     case "deactivateSelectionModuleOPCOM": {
 
         if!(isNil "ALIVE_tourActiveScript") then {
@@ -2714,6 +2905,9 @@ switch(_operation) do {
         private["_listenerID"];
 
         _listenerID = [ALIVE_eventLog, "addListener",[_logic, [
+            "LOGISTICS_INSERTION",
+            "LOGISTICS_COMPLETE",
+            "PROFILE_KILLED",
             "OPCOM_RECON",
             "OPCOM_CAPTURE",
             "OPCOM_DEFEND",
@@ -2735,6 +2929,99 @@ switch(_operation) do {
             [_logic, _type, [_id,_eventData]] call MAINCLASS;
 
         };
+    };
+    case "LOGISTICS_INSERTION": {
+        private["_eventID","_eventData","_position","_side","_faction","_nearestTown","_title","_text"];
+
+        _eventID = _args select 0;
+        _eventData = _args select 1;
+
+        _position = _eventData select 0;
+        _side = _eventData select 2;
+        _faction = _eventData select 1;
+        _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+
+        switch(_side) do {
+            case "EAST":{
+                _side = "OPFOR";
+            };
+            case "WEST":{
+                _side = "BLUFOR";
+            };
+            case "GUER":{
+                _side = "INDEP";
+            };
+        };
+
+        _title = "<t size='1.5' color='#68a7b7'  shadow='1'>REINFORCEMENTS</t><br/>";
+        _text = format["%1<t>%2 battlefield reinforcement requested by OPCOM. Insertion point near %3</t>",_title,_side,_nearestTown];
+
+        ["openSideSmall",0.3] call ALIVE_fnc_displayMenu;
+        ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
+    };
+    case "LOGISTICS_COMPLETE": {
+        private["_eventID","_eventData","_position","_side","_faction","_nearestTown","_title","_text"];
+
+        _eventID = _args select 0;
+        _eventData = _args select 1;
+
+        _position = _eventData select 0;
+        _side = _eventData select 2;
+        _faction = _eventData select 1;
+
+        _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+
+        switch(_side) do {
+            case "EAST":{
+                _side = "OPFOR";
+            };
+            case "WEST":{
+                _side = "BLUFOR";
+            };
+            case "GUER":{
+                _side = "INDEP";
+            };
+        };
+
+        _title = "<t size='1.5' color='#68a7b7'  shadow='1'>REINFORCEMENTS</t><br/>";
+        _text = format["%1<t>%2 battlefield reinforcement delivered to staging area near %3</t>",_title,_side,_nearestTown];
+
+        ["openSideSmall",0.3] call ALIVE_fnc_displayMenu;
+        ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
+
+    };
+    case "PROFILE_KILLED": {
+        private["_eventID","_eventData","_position","_side","_faction","_nearestTown","_title","_text"];
+
+        _eventID = _args select 0;
+        _eventData = _args select 1;
+
+        _position = _eventData select 0;
+        _side = _eventData select 2;
+        _faction = _eventData select 1;
+
+        _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+
+        switch(_side) do {
+            case "EAST":{
+                _side = "OPFOR";
+            };
+            case "WEST":{
+                _side = "BLUFOR";
+            };
+            case "GUER":{
+                _side = "INDEP";
+            };
+        };
+
+        _title = "<t size='1.5' color='#68a7b7'  shadow='1'>CASUALTY REPORT</t><br/>";
+        _text = format["%1<t>%2 units KIA near %3</t>",_title,_side,_nearestTown];
+
+        ["openSideSmall",0.3] call ALIVE_fnc_displayMenu;
+        ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
     };
     case "OPCOM_RECON": {
         private["_eventID","_eventData","_side","_position","_size","_type","_priority","_clusterID","_nearestTown","_title","_text"];
