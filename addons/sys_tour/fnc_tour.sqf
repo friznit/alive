@@ -333,6 +333,7 @@ switch(_operation) do {
             [_logic,"listen"] call MAINCLASS;
 
             player setCaptive true;
+            player addEventHandler ["HandleDamage", {(_this select 2) / 100}];
 
             // display loading
             [_logic,"displayStartLoadingScreen"] call MAINCLASS;
@@ -1615,10 +1616,14 @@ switch(_operation) do {
             ["openFull",[_logic,"handleMenuCallback","ModuleOPCOM"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
+            call BIS_fnc_VRFadeIn;
+
             _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
 
-            ["openSplash",2] call ALIVE_fnc_displayMenu;
+            ["openSplash",0.25] call ALIVE_fnc_displayMenu;
             ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+            hideObjectGlobal player;
 
             private["_opcomModules","_moduleType","_handler","_objectives","_side","_sideDisplay","_shuffledModules"];
 
@@ -1692,18 +1697,15 @@ switch(_operation) do {
 
                                 _faction = _profile select 2 select 29;
 
-                                call BIS_fnc_VRFadeIn;
-
                                 _position = _profile select 2 select 2;
+
+                                _position = [_position, 50, random 360] call BIS_fnc_relPos;
 
                                 if(surfaceIsWater _position) then {
                                     _position = [_position] call ALIVE_fnc_getClosestLand;
                                 };
 
-                                _position = [_position, random 360, 30] call BIS_fnc_relPos;
-
                                 player setPos _position;
-                                hideObjectGlobal player;
 
                                 waitUntil{_profile select 2 select 1};
 
@@ -1730,7 +1732,14 @@ switch(_operation) do {
                                     ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
                                     ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
-                                    sleep _duration;
+                                    sleep (_duration-2);
+
+                                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                                    call BIS_fnc_VRFadeIn;
+
+                                    ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+                                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
                                     deleteVehicle _target;
 
@@ -1738,10 +1747,9 @@ switch(_operation) do {
 
                                     [_logic, "deleteDynamicCamera"] call MAINCLASS;
 
-                                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
 
-                                    ["openSplash",2] call ALIVE_fnc_displayMenu;
-                                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+
                                 };
 
                             };
@@ -1777,6 +1785,8 @@ switch(_operation) do {
             };
         };
 
+        player hideObjectGlobal false;
+
         ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
         _logic setVariable ["selectionState","Modules"];
@@ -1806,6 +1816,7 @@ switch(_operation) do {
                 };
             } forEach (entities "Module_F");
 
+
             private["_module","_moduleType","_objectives","_faction","_objective","_position","_size","_playerPosition","_emptyPosition",
             "_camera","_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_nearestTown","_factionName",
             "_target","_title","_text","_duration"];
@@ -1813,13 +1824,22 @@ switch(_operation) do {
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Military Placement</t><br/><br/>";
             _line2 = "<t size='1'>The military placement modules place starting forces in areas defined by the mission maker.</t><br/><br/>";
             _line3 = "<t size='1'>Based on the given area defined by the mission maker ALiVE will create forces in and around key objectives.</t><br/><br/>";
-            _line4 = "<t size='1'>These modules can spawn ambient vehicles, and ammo crates. If static weapons are near, the modules will man them with units, and also garrison units in defensible positions.</t><br/><br/>";
+            _line4 = "<t size='1'>Besides spawning forces defined by the mission maker, these modules can spawn ambient vehicles, and ammo crates. If static weapons are near, the modules will man them with units, and also garrison units in defensible positions.</t><br/><br/>";
             _line5 = "<t size='1'>The custom military placement module can also spawn ALiVE predfined compositions to give maps a fresh layout.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5];
 
             ["openFull",[_logic,"handleMenuCallback","ModulePlacement"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+            //call BIS_fnc_VRFadeIn;
+
+            ["openSplash",2] call ALIVE_fnc_displayMenu;
+            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+            player hideObjectGlobal true;
 
             {
                 _module = _x;
@@ -1837,27 +1857,20 @@ switch(_operation) do {
                         _position = [_objective,"center"] call ALIVE_fnc_hashGet;
                         _size = [_objective,"size"] call ALIVE_fnc_hashGet;
 
-                        _playerPosition = [_position, random 360, _size] call BIS_fnc_relPos;
+                        _playerPosition = [_position, 50, random 360] call BIS_fnc_relPos;
 
-                        _emptyPosition = _playerPosition findEmptyPosition [1,100];
-
-                        if(count _emptyPosition > 0) then {
-                            _playerPosition = _emptyPosition;
+                        if(surfaceIsWater _playerPosition) then {
+                            _playerPosition = [_playerPosition] call ALIVE_fnc_getClosestLand;
                         };
-
-                        call BIS_fnc_VRFadeIn;
-
-                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
-
-                        ["openSplash",0.2] call ALIVE_fnc_displayMenu;
-                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
                         player setPos _playerPosition;
 
-                        sleep 3;
+                        sleep 4;
 
                         _target = "RoadCone_L_F" createVehicle _position;
                         _target hideObjectGlobal true;
+
+                        ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                         _duration = 20;
 
@@ -1873,6 +1886,20 @@ switch(_operation) do {
                         ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
                         ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
+                        sleep (_duration-4);
+
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                        call BIS_fnc_VRFadeIn;
+
+                        ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                        deleteVehicle _target;
+                        ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
+                        [_logic, "deleteDynamicCamera"] call MAINCLASS;
+
+
                     } forEach _objectives;
 
                 }else{
@@ -1885,30 +1912,22 @@ switch(_operation) do {
                     _position = [_objective,"center"] call ALIVE_fnc_hashGet;
                     _size = [_objective,"size"] call ALIVE_fnc_hashGet;
 
-                    _playerPosition = [_position, random 360, _size] call BIS_fnc_relPos;
+                    _playerPosition = [_position, 50, random 360] call BIS_fnc_relPos;
 
-                    _emptyPosition = _playerPosition findEmptyPosition [1,100];
-
-                    if(count _emptyPosition > 0) then {
-                        _playerPosition = _emptyPosition;
+                    if(surfaceIsWater _playerPosition) then {
+                        _playerPosition = [_playerPosition] call ALIVE_fnc_getClosestLand;
                     };
-
-
-                    call BIS_fnc_VRFadeIn;
-
-                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
-
-                    ["openSplash",0.2] call ALIVE_fnc_displayMenu;
-                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
                     player setPos _playerPosition;
 
-                    sleep 3;
+                    sleep 4;
 
                     _target = "RoadCone_L_F" createVehicle _position;
                     _target hideObjectGlobal true;
 
-                    _duration = 35;
+                    ["closeSplash"] call ALIVE_fnc_displayMenu;
+
+                    _duration = 20;
 
                     [_logic, "createDynamicCamera", [_duration,player,_target]] call MAINCLASS;
 
@@ -1922,15 +1941,24 @@ switch(_operation) do {
                     ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
                     ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
+                    sleep (_duration-4);
+
+                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                    call BIS_fnc_VRFadeIn;
+
+                    ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                    deleteVehicle _target;
+                    ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
+                    [_logic, "deleteDynamicCamera"] call MAINCLASS;
+
                 };
 
-                sleep _duration;
-
-                deleteVehicle _target;
-                ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
-                [_logic, "deleteDynamicCamera"] call MAINCLASS;
-
             } forEach _placementModules;
+
+            ["closeSplash"] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -1955,6 +1983,8 @@ switch(_operation) do {
                 [true] call ALIVE_fnc_revertCamera;
             };
         };
+
+        player hideObjectGlobal false;
 
         ["closeSideSubtitle"] call ALIVE_fnc_displayMenu;
 
@@ -1983,6 +2013,13 @@ switch(_operation) do {
 
             ["openFull",[_logic,"handleMenuCallback","ModuleLogistics"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Finding logistics insertion...</t><br/><br/>";
+
+            //call BIS_fnc_VRFadeIn;
+
+            ["openSplash",2] call ALIVE_fnc_displayMenu;
+            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
             private["_position","_faction","_side","_forceMakeup","_event","_eventID","_logisticsModules","_logisticsModule","_moduleType",
             "_logisticsEvent","_eventState","_transportProfiles","_transportProfile","_position","_group","_leader","_vehicle","_factions",
@@ -2046,13 +2083,6 @@ switch(_operation) do {
                         if!(isNil "_transportProfile") then {
                             _position = _transportProfile select 2 select 2;
 
-                            call BIS_fnc_VRFadeIn;
-
-                            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
-
-                            ["openSplash",0.2] call ALIVE_fnc_displayMenu;
-                            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
-
                             player setPos _position;
 
                             waitUntil {(_transportProfile select 2 select 1)};
@@ -2061,6 +2091,8 @@ switch(_operation) do {
                             _leader = leader _group;
                             _vehicle = vehicle _leader;
 
+                            ["closeSplash"] call ALIVE_fnc_displayMenu;
+
                             ALIVE_tourCamera = [player,false,"UAV"] call ALIVE_fnc_addCamera;
                             [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
                             [ALIVE_tourCamera,_vehicle,100] call ALIVE_fnc_chaseShot;
@@ -2068,6 +2100,8 @@ switch(_operation) do {
                     };
                 };
             };
+
+            ["closeSplash"] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -2106,17 +2140,24 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>CQB</t><br/><br/>";
-            _line2 = "<t size='1'>The close quarters combat module automatically populates a civilian and military buidlings with dismounted infantry units when a player moves within range. The groups occupy buildings, patrol the streets and react to enemy presence.</t><br/><br/>";
+            _line2 = "<t size='1'>The close quarters battle module automatically populates a civilian and military buidlings with dismounted infantry units when a player moves within range. The groups occupy buildings, patrol the streets and react to enemy presence.</t><br/><br/>";
             _line3 = "<t size='1'>CQB detects the dominant AI faction in the area (ignoring players) and spawns the appropriate units accordingly.</t><br/><br/>";
-            _line4 = "<t size='1'></t><br/><br/>";
+            _line4 = "<t size='1'>CQB units are not under control of OPCOM, they exist to provide exciting urban combat, building clearance, and general feeling of unease in built up areas controlled by enemy forces.</t><br/><br/>";
             _line5 = "<t size='1'></t><br/><br/>";
             _line6 = "<t size='1'></t><br/><br/>";
             _line7 = "<t size='1'></t><br/><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
 
             ["openFull",[_logic,"handleMenuCallback","ModuleCQB"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            call BIS_fnc_VRFadeIn;
+
+            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+            ["openSplash",0.2] call ALIVE_fnc_displayMenu;
+            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
             private["_position","_faction","_side","_CQBModules","_CQBModule","_factions","_houses","_position","_group","_leader"];
 
@@ -2136,13 +2177,6 @@ switch(_operation) do {
                 {
 
                     if ([_x] call ALiVE_fnc_isHouseEnterable) then {
-
-                        call BIS_fnc_VRFadeIn;
-
-                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
-
-                        ["openSplash",0.2] call ALIVE_fnc_displayMenu;
-                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
                         _position = position _x;
 
@@ -2165,18 +2199,28 @@ switch(_operation) do {
 
                         _leader = leader _group;
 
-                        ALIVE_tourCamera = [player,false,"HIGH"] call ALIVE_fnc_addCamera;
-                        [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
-
                         [_leader,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
 
+                        ["closeSplash"] call ALIVE_fnc_displayMenu;
+
                         sleep 30;
+
+                        call BIS_fnc_VRFadeIn;
+
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                        ["openSplash",0.2] call ALIVE_fnc_displayMenu;
+                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                        [true] call ALIVE_fnc_revertCamera;
 
                     };
 
                 } forEach _houses;
 
             };
+
+            ["closeSplash"] call ALIVE_fnc_displayMenu;
 
         };
 
@@ -2212,11 +2256,11 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7'>Civilian Settlement</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
-            _line3 = "<t size='1'></t><br/><br/>";
-            _line4 = "<t size='1'></t><br/><br/>";
-            _line5 = "<t size='1'></t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Civilian Population</t><br/><br/>";
+            _line2 = "<t size='1'>The ambient civilian population modules allow mission designers to give some life to the empty settlements in the ARMA world.</t><br/><br/>";
+            _line3 = "<t size='1'>The modules spawn civilian units and ambient vehicles when players are near towns and settlements large and small.</t><br/><br/>";
+            _line4 = "<t size='1'>More than just a randomised movement simulator, the civilian agents all have tasks they are currently performing, which will change according to time of day, hostility levels and according to the whims of the civilian in question.</t><br/><br/>";
+            _line5 = "<t size='1'>Killing civilians will adjust the settlements hostility to the player (or AI) faction. To much collateral damage and civilians may take up arms against their enemies.</t><br/><br/>";
             _line6 = "<t size='1'></t><br/><br/>";
             _line7 = "<t size='1'></t><br/><br/>";
 
@@ -2224,6 +2268,13 @@ switch(_operation) do {
 
             ["openFull",[_logic,"handleMenuCallback","ModuleCivilian"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            call BIS_fnc_VRFadeIn;
+
+            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+            ["openSplash",0.3] call ALIVE_fnc_displayMenu;
+            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
             private["_civilianAgents","_activeCommands","_profile","_type","_line1","_position","_unit",
             "_faction","_id","_duration","_nearestTown","_factionName","_title","_text","_command",
@@ -2239,13 +2290,6 @@ switch(_operation) do {
                     _type = _profile select 2 select 4;
 
                     if(_type == "agent") then {
-
-                        call BIS_fnc_VRFadeIn;
-
-                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
-
-                        ["openSplash",0.3] call ALIVE_fnc_displayMenu;
-                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
                         _position = _profile select 2 select 2;
 
@@ -2321,6 +2365,8 @@ switch(_operation) do {
                                 };
                             };
 
+                            ["closeSplash"] call ALIVE_fnc_displayMenu;
+
                             [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
 
                             _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
@@ -2334,6 +2380,13 @@ switch(_operation) do {
 
                             sleep _duration;
 
+                            call BIS_fnc_VRFadeIn;
+
+                            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Moving position...</t><br/><br/>";
+
+                            ["openSplash",0.3] call ALIVE_fnc_displayMenu;
+                            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
                             deleteVehicle _target;
 
                             ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
@@ -2342,6 +2395,8 @@ switch(_operation) do {
                     };
 
                 } forEach (_civilianAgents select 2);
+
+                ["closeSplash"] call ALIVE_fnc_displayMenu;
 
             };
 
@@ -2388,12 +2443,12 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
-            _line3 = "<t size='1'></t><br/><br/>";
-            _line4 = "<t size='1'></t><br/><br/>";
-            _line5 = "<t size='1'></t><br/><br/>";
-            _line6 = "<t size='1'></t><br/><br/>";
-            _line7 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>The combat support modules allow mission makers to define the support vehicles available to players in their missions.</t><br/><br/>";
+            _line3 = "<t size='1'>Combat support types include:</t><br/><br/>";
+            _line4 = "<t size='1'>CAS - Close air support attack helicopters or fast air</t><br/><br/>";
+            _line5 = "<t size='1'>Transport - On demand helicopter transport and logistics</t><br/><br/>";
+            _line6 = "<t size='1'>Artillery - Fire support from artillery units and mortar emplacements</t><br/><br/>";
+            _line7 = "<t size='1'>In mission these various support types are requested via the Combat Support tablet.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
@@ -2439,8 +2494,8 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Resupply</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
-            _line3 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>The support player resupply module allows players to make resupply requests from the LOGCOM (in the same way that OPCOM will request reinforcements)</t><br/><br/>";
+            _line3 = "<t size='1'>Providing an interface for players to request new vehicles, weapons, defence stores and AI teams from the logistics Force Pool, the resupply module provides realistic convoy and air insertion of supplies and forces as directed by players.</t><br/><br/>";
             _line4 = "<t size='1'></t><br/><br/>";
             _line5 = "<t size='1'></t><br/><br/>";
             _line6 = "<t size='1'></t><br/><br/>";
@@ -2487,17 +2542,18 @@ switch(_operation) do {
 
             _logic = _this select 0;
 
-            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_line8","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>C2ISTAR</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
-            _line3 = "<t size='1'></t><br/><br/>";
-            _line4 = "<t size='1'></t><br/><br/>";
-            _line5 = "<t size='1'></t><br/><br/>";
-            _line6 = "<t size='1'></t><br/><br/>";
-            _line7 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>The C2ISTAR module provides a set of tools for the player to use for Command and Control as well as various Intelligence, Surveillance, Target Acquisition and Reconnaissance functions.</t><br/><br/>";
+            _line3 = "<t size='1'>Functions include:</t><br/><br/>";
+            _line4 = "<t size='1'>Player created and managed tasks.</t><br/><br/>";
+            _line5 = "<t size='1'>OPCOM generated tasks.</t><br/><br/>";
+            _line6 = "<t size='1'>SITREP reporting</t><br/><br/>";
+            _line7 = "<t size='1'>PATROLREP reporting</t><br/><br/>";
+            _line8 = "<t size='1'>Tasks, and reports can be persisted by the ALiVE persistence system so they are recreated on server restart and join in progress players.</t><br/>";
 
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7,_line8];
 
             ["openSideFull"] call ALIVE_fnc_displayMenu;
             ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
@@ -2575,11 +2631,10 @@ switch(_operation) do {
 
         ["CAMERA TYPE IS: %1",ALIVE_cameraType] call ALIVE_fnc_dump;
 
-        //_cameraShots = ["FLY_IN","PAN","STATIC"];
-        _cameraShots = ["FLY_IN","PAN","STATIC","CHASE","CHASE_SIDE"];
+        _cameraShots = ["FLY_IN","PAN","ZOOM"];
 
-        if(_targetIsMan && _targetInVehicle) then {
-            _cameraShots = ["CHASE","CHASE_SIDE","CHASE_WHEEL","CHASE_ANGLE"];
+        if(_targetIsMan || _targetInVehicle) then {
+            _cameraShots = _cameraShots + ["CHASE","CHASE_SIDE","CHASE_ANGLE"];
         };
 
         _shot = _cameraShots call BIS_fnc_selectRandom;
@@ -2596,24 +2651,28 @@ switch(_operation) do {
 
             switch(_shot) do {
                 case "FLY_IN":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_flyInShot;
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_flyInShot;
+                };
+                case "ZOOM":{
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_zoomShot;
                 };
                 case "PAN":{
 
                     if(isNil "_target2") then {
-                        _randomPosition = [position _source, (random(400)), random(360)] call BIS_fnc_relPos;
+                        _randomPosition = [position _source, (random(50)), random(360)] call BIS_fnc_relPos;
                         _target2 = "RoadCone_L_F" createVehicle _randomPosition;
+                        _target2 hideObjectGlobal true;
                     };
 
                     ALIVE_tourCamera = [_source,false,_initialAngle] call ALIVE_fnc_addCamera;
                     [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
-                    [ALIVE_tourCamera,_target1,_target2,_duration] call ALIVE_fnc_panShot;
+                    [ALIVE_tourCamera,_target2,_target1,_duration] spawn ALIVE_fnc_panShot;
                 };
                 case "STATIC":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_staticShot;
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_staticShot;
                 };
                 case "CHASE":{
-                    [ALIVE_tourCamera,_target1,_duration] call ALIVE_fnc_chaseShot;
+                    [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseShot;
                 };
                 case "CHASE_SIDE":{
                     [ALIVE_tourCamera,_target1,_duration] spawn ALIVE_fnc_chaseSideShot;

@@ -32,7 +32,7 @@ _camera = _this select 0;
 _height = _this select 1;
 _duration = if(count _this > 2) then {_this select 2} else {5};
 
-_position = position _camera;
+_position = getPosATL _camera;
 _Y = _position select 2;
 _position set [2,_Y+_height];
 
