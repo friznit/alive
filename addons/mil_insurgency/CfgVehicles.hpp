@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_insurgency";
                 function = "ALIVE_fnc_insurgencyInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 130;
+                functionPriority = 140;
                 isGlobal = 2;
                 icon = "x\alive\addons\mil_insurgency\icon_mil_insurgency.paa";
                 picture = "x\alive\addons\mil_insurgency\icon_mil_insurgency.paa";
