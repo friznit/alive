@@ -27,9 +27,9 @@ nil
 #define SUPERCLASS ALIVE_fnc_baseClass
 #define MAINCLASS ALIVE_fnc_aliveInit
 
-#define DEFAULT_DEBUG false
-#define DEFAULT_GC_THRESHOLD 100
-#define DEFAULT_GC_INTERVAL 300
+#define DEFAULT_DEBUG "false"
+#define DEFAULT_GC_THRESHOLD "100"
+#define DEFAULT_GC_INTERVAL "300"
 #define DEFAULT_GC_INDIVIDUALTYPES ""
 
 private ["_logic","_moduleID"];
