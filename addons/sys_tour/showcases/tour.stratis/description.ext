@@ -1,0 +1,16 @@
+author = ALiVE Studios || Mission by ARJay;
+onLoadMission = "Discover the features and functions of ALiVE";
+onLoadIntroTime = true;
+onLoadMissionTime = true;
+onLoadName = ALiVE | Tour;
+loadScreen = "x\alive\addons\mil_opcom\showcases\foursome.Altis\rsc\logo_alive.paa";
+
+aiKills = 0;
+briefing = 1;
+debriefing = 1;
+respawn = 3;
+respawnDelay = 15;
+respawnDialog = 0;
+disabledAI = 1;
+enableDebugConsole = 1;
+allowFunctionsRecompile = 1;

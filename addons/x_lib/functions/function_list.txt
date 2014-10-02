@@ -106,6 +106,7 @@ data
 
 diagnostics
 
+	ALiVE_fnc_checkConfigCompatibility
 	ALiVE_fnc_cursorTargetInfo
 	ALiVE_fnc_debugBuildingPositions
 	ALiVE_fnc_debugHandler

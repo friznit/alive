@@ -3,3 +3,4 @@
 #include <CfgVehicles.hpp>
 #include <CfgFunctions.hpp>
 #include <CfgGroupIcons.hpp>
+#include <CfgMissions.hpp>

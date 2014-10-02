@@ -545,6 +545,13 @@ class unorderedMap
 	recompile = RECOMPILE;
 };
 
+class checkConfigCompatibility
+{
+	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_checkConfigCompatibility.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class cursorTargetInfo
 {
 	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_cursorTargetInfo.sqf";

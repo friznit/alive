@@ -230,13 +230,13 @@ switch(_operation) do {
 
         [_opcomSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_opcom.paa"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"inactiveLabel","OPCOM"] call ALIVE_fnc_hashSet;
-        [_opcomSelection,"activeLabel","The operation commanders"] call ALIVE_fnc_hashSet;
+        [_opcomSelection,"activeLabel","The military commanders"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"iconState",["Opcom",0,0]] call ALIVE_fnc_hashSet;
 
         _dataSelection = [] call ALIVE_fnc_hashCreate;
 
         [_dataSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_data.paa"] call ALIVE_fnc_hashSet;
-        [_dataSelection,"inactiveLabel","Persistence"] call ALIVE_fnc_hashSet;
+        [_dataSelection,"inactiveLabel","Database"] call ALIVE_fnc_hashSet;
         [_dataSelection,"activeLabel","The central persistence database"] call ALIVE_fnc_hashSet;
         [_dataSelection,"iconState",["Data",0,0]] call ALIVE_fnc_hashSet;
 
@@ -264,21 +264,21 @@ switch(_operation) do {
 
         [_opcomSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_opcom.paa"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"inactiveLabel","OPCOM"] call ALIVE_fnc_hashSet;
-        [_opcomSelection,"activeLabel","The OPCOM module"] call ALIVE_fnc_hashSet;
+        [_opcomSelection,"activeLabel","The military AI commander (OPCOM) module"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"iconState",["ModuleOPCOM",0,0]] call ALIVE_fnc_hashSet;
 
         _placementSelection = [] call ALIVE_fnc_hashCreate;
 
         [_placementSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_mil_placement.paa"] call ALIVE_fnc_hashSet;
         [_placementSelection,"inactiveLabel","Force Placement"] call ALIVE_fnc_hashSet;
-        [_placementSelection,"activeLabel","The force placement modules"] call ALIVE_fnc_hashSet;
+        [_placementSelection,"activeLabel","The military force placement modules"] call ALIVE_fnc_hashSet;
         [_placementSelection,"iconState",["ModulePlacement",0,0]] call ALIVE_fnc_hashSet;
 
         _logisticsSelection = [] call ALIVE_fnc_hashCreate;
 
         [_logisticsSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_logistics.paa"] call ALIVE_fnc_hashSet;
         [_logisticsSelection,"inactiveLabel","Logistics"] call ALIVE_fnc_hashSet;
-        [_logisticsSelection,"activeLabel","The logistics module"] call ALIVE_fnc_hashSet;
+        [_logisticsSelection,"activeLabel","The military AI logistics module"] call ALIVE_fnc_hashSet;
         [_logisticsSelection,"iconState",["ModuleLogistics",0,0]] call ALIVE_fnc_hashSet;
 
         _cqbSelection = [] call ALIVE_fnc_hashCreate;
@@ -305,7 +305,7 @@ switch(_operation) do {
         _resupplySelection = [] call ALIVE_fnc_hashCreate;
 
         [_resupplySelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_logistics.paa"] call ALIVE_fnc_hashSet;
-        [_resupplySelection,"inactiveLabel","Player Resupply"] call ALIVE_fnc_hashSet;
+        [_resupplySelection,"inactiveLabel","Combat Logistics"] call ALIVE_fnc_hashSet;
         [_resupplySelection,"activeLabel","The player resupply module"] call ALIVE_fnc_hashSet;
         [_resupplySelection,"iconState",["ModuleResupply",0,0]] call ALIVE_fnc_hashSet;
 
@@ -313,7 +313,7 @@ switch(_operation) do {
 
         [_c2Selection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_intel.paa"] call ALIVE_fnc_hashSet;
         [_c2Selection,"inactiveLabel","C2ISTAR"] call ALIVE_fnc_hashSet;
-        [_c2Selection,"activeLabel","The C2ISTAR module"] call ALIVE_fnc_hashSet;
+        [_c2Selection,"activeLabel","The command and control (C2ISTAR) module"] call ALIVE_fnc_hashSet;
         [_c2Selection,"iconState",["ModuleC2",0,0]] call ALIVE_fnc_hashSet;
 
         _backSelection = [] call ALIVE_fnc_hashCreate;
@@ -943,12 +943,12 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7' >Virtual AI System</t><br/><br/>";
-            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team have developed a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
-            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond previous unit caching systems, to store a representantive data structure describing units.</t><br/><br/>";
-            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system, another is simulation of the virtualised profiles.</t><br/><br/>";
-            _line5 = "<t size='1'>The map is now displaying the profile system at work, full opacity markers denote spawned real groups and vehicles. Transparent markers display virtualised, and simulated units.</t><br/><br/>";
-            _line6 = "<t size='1'>Virtual waypoints are display using x markers, the profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
-            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convienient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
+            _line2 = "<t size='1'>To enable truly whole map operations, the ALiVE development team has created a group and vehicle profiling system that stores the complete state of in game AI objects.</t><br/><br/>";
+            _line3 = "<t size='1'>These objects can then be spawned or despawned depending on distance to players. This system goes beyond traditional unit caching systems, to store a representative data structure describing units.</t><br/><br/>";
+            _line4 = "<t size='1'>Caching for performance is one obvious benefit of the profile system but it also enables continued simulation of the virtualised profiles.</t><br/><br/>";
+            _line5 = "<t size='1'>The map is now displaying the profile system at work. Full opacity markers denote spawned or visual groups and vehicles. Transparent markers represent virtualised, simulated units.</t><br/><br/>";
+            _line6 = "<t size='1'>Virtual waypoints are display using x markers. The profile system seamlessly translates virtual waypoints to in game waypoints when profiles are spawned and despawned.</t><br/><br/>";
+            _line7 = "<t size='1'>Another benefit to the profile system is that it provides a convenient format for saving the state of the game using the ALiVE persistent central database.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
 
@@ -994,7 +994,7 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7' >OPCOM</t><br/><br/>";
-            _line2 = "<t size='1'>The AI Operation Commanders (OPCOM) are intelligent battlefield commanders that controls an entire sides strategy, tactics, and logistics.</t><br/><br/>";
+            _line2 = "<t size='1'>The AI Operation Commanders (OPCOM) are intelligent battlefield commanders that control an entire factions strategy, tactics and logistics.</t><br/><br/>";
             _line3 = "<t size='1'>OPCOM prioritises a list of objectives and then plans and executes missions with available units. Op Commanders will react to the changing environment and attack, defend, withdraw or resupply depending on the current tactical situation. OPCOM continues to work with profiled groups, controlling a virtual battlefield out of visual range of players.</t><br/><br/>";
             _line4 = "<t size='1'>OPCOM consists of two core elements: Operational Command (OPCOM) and Tactical Command (TACOM). OPCOM takes the objectives of any synced Military or Civilian Placement modules and prioritises them depending on the user defined variables. It also regularly analyses the map, relative troop strengths and available assets required to capture and hold objectives in its area of operations. OPCOM gives missions to TACOM, which in turn executes the tactical level orders to units and reports back its state once that mission is complete.</t><br/><br/>";
             _line5 = "<t size='1'>OPCOM is a Virtual AI Commander, as it controls only profiled groups. TACOM is a low level tactical commander that deals with Visual AI groups when players are nearby. This means it is possible to transfer the status of groups and objectives seamlessly between the Visual (spawned) Layer and the Virtual (unspawned or cached) Layer. This allows huge ongoing virtual battles, from offensive operations with blazing battlefronts to insurgency deployments with a high degree of realism and minimal impact on performance.</t><br/><br/>";
@@ -1400,7 +1400,7 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Central Persistence Database</t><br/><br/>";
-            _line2 = "<t size='1'>In order to store in game statistics, live operation feeds, player gear, and all other persistence layer operations, the ALiVE dev team have developed technology to store data in a central database.</t><br/><br/>";
+            _line2 = "<t size='1'>In order to store in game statistics, live operation feeds, player gear, and all other persistence layer operations, the ALiVE team has developed technology to store data in a central database.</t><br/><br/>";
             _line3 = "<t size='1'>Built using modern data transfer and storage technologies (JSON,NoSQL) the ALiVE data tech provides seamless transfer from in game to storage and storage back to game.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
@@ -1853,7 +1853,7 @@ switch(_operation) do {
             _line2 = "<t size='1'>The military placement modules place starting forces in areas defined by the mission maker.</t><br/><br/>";
             _line3 = "<t size='1'>Based on the given area defined by the mission maker ALiVE will create forces in and around key objectives.</t><br/><br/>";
             _line4 = "<t size='1'>Besides spawning forces defined by the mission maker, these modules can spawn ambient vehicles, and ammo crates. If static weapons are near, the modules will man them with units, and also garrison units in defensible positions.</t><br/><br/>";
-            _line5 = "<t size='1'>The custom military placement module can also spawn ALiVE predfined compositions to give maps a fresh layout.</t><br/><br/>";
+            _line5 = "<t size='1'>The custom military placement module can also spawn ALiVE predefined compositions to give maps a fresh layout.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5];
 
@@ -2168,7 +2168,7 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>CQB</t><br/><br/>";
-            _line2 = "<t size='1'>The close quarters battle module automatically populates a civilian and military buidlings with dismounted infantry units when a player moves within range. The groups occupy buildings, patrol the streets and react to enemy presence.</t><br/><br/>";
+            _line2 = "<t size='1'>The close quarters battle module automatically populates a civilian and military buildings with dismounted infantry units when a player moves within range. The groups occupy buildings, patrol the streets and react to enemy presence.</t><br/><br/>";
             _line3 = "<t size='1'>CQB detects the dominant AI faction in the area (ignoring players) and spawns the appropriate units accordingly.</t><br/><br/>";
             _line4 = "<t size='1'>CQB units are not under control of OPCOM, they exist to provide exciting urban combat, building clearance, and general feeling of unease in built up areas controlled by enemy forces.</t><br/><br/>";
             _line5 = "<t size='1'></t><br/><br/>";
@@ -2471,11 +2471,11 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'>The combat support modules allow mission makers to define the support vehicles available to players in their missions.</t><br/><br/>";
+            _line2 = "<t size='1'>The combat support modules allow mission makers to add a variety of AI piloted support vehicles available to players in their missions via an immersive and intuitive interface in game.</t><br/><br/>";
             _line3 = "<t size='1'>Combat support types include:</t><br/><br/>";
-            _line4 = "<t size='1'>CAS - Close air support attack helicopters or fast air</t><br/><br/>";
+            _line4 = "<t size='1'>CAS - Close Air Support attack helicopters or fast air</t><br/><br/>";
             _line5 = "<t size='1'>Transport - On demand helicopter transport and logistics</t><br/><br/>";
-            _line6 = "<t size='1'>Artillery - Fire support from artillery units and mortar emplacements</t><br/><br/>";
+            _line6 = "<t size='1'>Artillery - Offensive support from artillery units and mortar emplacements</t><br/><br/>";
             _line7 = "<t size='1'>In mission these various support types are requested via the Combat Support tablet.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6,_line7];
@@ -2522,7 +2522,7 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Resupply</t><br/><br/>";
-            _line2 = "<t size='1'>The support player resupply module allows players to make resupply requests from the LOGCOM (in the same way that OPCOM will request reinforcements)</t><br/><br/>";
+            _line2 = "<t size='1'>The player resupply module allows players to make resupply requests from LOGCOM in the same way that OPCOM will request reinforcements (and from the same reinforcement pool)</t><br/><br/>";
             _line3 = "<t size='1'>Providing an interface for players to request new vehicles, weapons, defence stores and AI teams from the logistics Force Pool, the resupply module provides realistic convoy and air insertion of supplies and forces as directed by players.</t><br/><br/>";
             _line4 = "<t size='1'></t><br/><br/>";
             _line5 = "<t size='1'></t><br/><br/>";
@@ -2724,13 +2724,14 @@ switch(_operation) do {
                                         ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
                                         player remoteControl _unit;
+                                        _unit enableFatigue false;
 
                                         if(vehicle _unit != _unit) then {
                                             [_unit,"THIRD_PERSON"] call ALIVE_fnc_switchCamera;
                                         }else{
                                             [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
                                         };
-    
+
                                         player hideObjectGlobal true;
 
                                         ["REMOTE CONTROLLED!"] call ALIVE_fnc_dump;
