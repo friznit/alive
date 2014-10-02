@@ -133,12 +133,11 @@ if (isServer) then {
     //Waiting for the mandatory modules below, mind that not all modules need to be initialised before mission start
 	waitUntil {
 		[
-	        QMOD(AMB_CIV_PLACEMENT),
-	        QMOD(MIL_PLACEMENT),
-	        QMOD(CIV_PLACEMENT)
+	        QMOD(amb_civ_placement),
+	        QMOD(mil_placement),
+	        QMOD(civ_placement)
         ] call ALiVE_fnc_isModuleInitialised;
 	};
-
     //This is the last module init to be run, therefore indicates that init of the defined modules above has passed on server
     MOD(REQUIRE_INITIALISED) = true;
     Publicvariable QMOD(REQUIRE_INITIALISED);
@@ -153,7 +152,7 @@ if (hasInterface) then {
     if (call compile MOD(DISABLESAVE)) then {enableSaving [false, false]};
 };
 
-waitUntil {MOD(REQUIRE_INITIALISED)};
+waitUntil {!(isNil QMOD(REQUIRE_INITIALISED))};
 
 // Indicate Init is finished on server
 if (isServer) then {

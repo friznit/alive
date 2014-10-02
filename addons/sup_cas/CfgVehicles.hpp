@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_CAS";
                 function = "ALIVE_fnc_CASInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 16;
+                functionPriority = 162;
                 isGlobal = 2;
 				icon = "x\alive\addons\sup_cas\icon_sup_cas.paa";
 				picture = "x\alive\addons\sup_cas\icon_sup_cas.paa";
