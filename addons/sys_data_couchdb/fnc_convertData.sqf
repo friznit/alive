@@ -65,8 +65,13 @@ _convert = {
 				_tmpKey = _key + "_" + str(_i);
 
 				// Convert Values
-				_value = [_tmpKey, _x] call _convert;
-//				TRACE_2("ARRAY CONVERTED VALUE", typename _value, _value);
+				if !(isNil "_x") then {
+					_value = [_tmpKey, _x] call _convert;
+	//				TRACE_2("ARRAY CONVERTED VALUE", typename _value, _value);
+				} else {
+					["NULL DATA! For the value %1", _x] call ALiVE_fnc_dump;
+					_value = """""""""";
+				};
 
 				_tmp = _tmp + "," + _value;
 
