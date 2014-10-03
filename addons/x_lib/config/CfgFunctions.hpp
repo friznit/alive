@@ -580,6 +580,13 @@ class estimateMemoryUsage
 	recompile = RECOMPILE;
 };
 
+class factionCreateStaticData
+{
+	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_factionCreateStaticData.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class inspectArray
 {
 	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_inspectArray.sqf";

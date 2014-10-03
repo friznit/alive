@@ -111,6 +111,7 @@ diagnostics
 	ALiVE_fnc_debugBuildingPositions
 	ALiVE_fnc_debugHandler
 	ALiVE_fnc_estimateMemoryUsage
+	ALiVE_fnc_factionCreateStaticData
 	ALiVE_fnc_inspectArray
 	ALiVE_fnc_inspectClasses
 	ALiVE_fnc_inspectConfig

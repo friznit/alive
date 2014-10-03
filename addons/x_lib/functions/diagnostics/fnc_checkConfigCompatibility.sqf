@@ -378,4 +378,134 @@ if(_groupToFactionMappingOK || _factionToGroupMappingOK && (count _factionGroups
 
     } forEach _factionGroups;
 
-}
+};
+
+// vehicles now..
+
+private ["_factionVehicles","_factionMen","_class","_configName","_currentFaction","_vehicleType","_factionVehicleTypes"];
+
+_factionVehicles = [] call ALIVE_fnc_hashCreate;
+_factionMen = [];
+
+_config = configfile >> "CfgVehicles";
+
+for "_i" from 0 to count _config -1 do {
+    _class = _config select _i;
+    if (isClass _class) then {
+        _configName = configName _class;
+        _currentFaction = [_class >> "faction"] call _cfgValue;
+        if!(isNil "_currentFaction") then {
+            if(_currentFaction == _faction) then {
+                if(_configName isKindOf "Man") then {
+                    if([_class >> "scope"] call _cfgValue == 2) then {
+                        _factionMen set [count _factionMen, _class];
+                    };
+                }else{
+                    if([_class >> "scope"] call _cfgValue == 2) then {
+                        _vehicleType = [_class >> "vehicleClass"] call _cfgValue;
+
+                        if!(_vehicleType in (_factionVehicles select 1)) then {
+                            [_factionVehicles,_vehicleType,[]] call ALIVE_fnc_hashSet;
+                        };
+
+                        _factionVehicleTypes = [_factionVehicles,_vehicleType] call ALIVE_fnc_hashGet;
+                        _factionVehicleTypes set [count _factionVehicleTypes, _class];
+
+                        [_factionVehicles,_vehicleType,_factionVehicleTypes] call ALIVE_fnc_hashSet;
+                    };
+                };
+            };
+        };
+    };
+};
+
+
+[""] call _dump;
+_text = " ----------- CfgVehicles Vehicles ----------- ";
+[_text] call _dump;
+[""] call _dump;
+
+private ["_spawnPosition","_vehicleType"];
+
+_spawnPosition = [getPosATL player, 10, 0] call BIS_fnc_relPos;
+
+
+[_factionVehicles,_side,_faction,_spawnPosition] spawn {
+
+    private ["_factionVehicles","_vehicleClasses","_side","_faction","_spawnPosition","_vehicleClass","_configName","_vehicleCrew","_profiles"];
+
+    _factionVehicles = _this select 0;
+    _side = _this select 1;
+    _faction = _this select 2;
+    _spawnPosition = _this select 3;
+
+    _side = [_side] call ALIVE_fnc_sideNumberToText;
+
+    {
+
+        _vehicleType = _x;
+
+        _vehicleClasses = [_factionVehicles,_vehicleType] call ALIVE_fnc_hashGet;
+
+        ["-- Type: %1",_vehicleType] call ALIVE_fnc_dump;
+
+        {
+
+            _vehicleClass = _x;
+
+            _configName = configName _vehicleClass;
+
+            [_configName] call ALIVE_fnc_dump;
+
+            _vehicleCrew = [_vehicleClass >> "crew"] call ALIVE_fnc_getConfigValue;
+
+            if!(isNil "_vehicleCrew") then {
+
+                sleep 1;
+
+                _profiles = [_configName,_side,_faction,"CAPTAIN",_spawnPosition,0,false] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+                sleep 10;
+
+                {
+                    _profileType = _x select 2 select 5;
+
+                    if(_profileType == "entity") then {
+                        [_x, "destroy"] call ALIVE_fnc_profileEntity;
+                    }else{
+                        [_x, "destroy"] call ALIVE_fnc_profileVehicle;
+                    };
+
+                } forEach _profiles;
+
+                sleep 5;
+
+            };
+
+        } forEach _vehicleClasses;
+
+    } forEach (_factionVehicles select 1);
+
+};
+
+
+[""] call _dump;
+_text = " ----------- CfgVehicles Men ----------- ";
+[_text] call _dump;
+[""] call _dump;
+
+
+{
+
+    _vehicleClass = _x;
+
+    _configName = configName _vehicleClass;
+
+    [_configName] call _dump;
+
+    _vehicleType = [_vehicleClass >> "vehicleClass"] call _cfgValue;
+
+    //["-- Type: %1",_vehicleType] call _dump;
+
+
+} forEach _factionMen;

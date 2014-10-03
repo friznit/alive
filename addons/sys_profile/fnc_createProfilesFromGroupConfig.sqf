@@ -102,7 +102,8 @@ if(count _config > 0) then {
 			//["CGROUP Name: %1 VehicleType: %2 vehicle: %3",_groupName,_vehicleType,_vehicle] call ALIVE_fnc_dump;
 			
 			// seperate vehicles and units in the group
-			if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Armored")||(_vehicleType == "Ship")||(_vehicleType == "Air")||(_vehicleType == "LIB_Medium_Tanks")||(_vehicleType == "LIB_Heavy_Tanks")) then {
+			//if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Armored")||(_vehicleType == "Ship")||(_vehicleType == "Air")||(_vehicleType == "LIB_Medium_Tanks")||(_vehicleType == "LIB_Heavy_Tanks")) then {
+			if!(_vehicle isKindOf "Man") then {
 				_groupVehicles set [count _groupVehicles, [_vehicle,_rank]];			
 			} else {
 				_groupUnits set [count _groupUnits, [_vehicle,_rank]];

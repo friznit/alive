@@ -2726,11 +2726,7 @@ switch(_operation) do {
                                         player remoteControl _unit;
                                         _unit enableFatigue false;
 
-                                        if(vehicle _unit != _unit) then {
-                                            [_unit,"THIRD_PERSON"] call ALIVE_fnc_switchCamera;
-                                        }else{
-                                            [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
-                                        };
+                                        [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
 
                                         player hideObjectGlobal true;
 
@@ -2747,9 +2743,16 @@ switch(_operation) do {
 
                                         ["UNIT KILLED - REVERTING!"] call ALIVE_fnc_dump;
 
+                                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>You have been killed...</t><br/><br/>";
+
+                                        ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+                                        ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
                                         objNull remoteControl _unit;
 
                                         [true] call ALIVE_fnc_revertCamera;
+
+                                        sleep 2;
 
                                         breakTo "main";
 

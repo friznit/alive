@@ -1003,6 +1003,12 @@ switch(_operation) do {
                 _house setVariable ["faction", _faction, true];
 			};
 
+			if (count _units == 0) exitWith {
+                if (_debug) then {
+                    ["CQB Population: no units..."] call ALiVE_fnc_Dump;
+                };
+            };
+
 			// Action: restore AI
             switch (getNumber(configFile >> "Cfgvehicles" >> _units select 0 >> "side")) do {
                 case 0 : {_side = EAST};
