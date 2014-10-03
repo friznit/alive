@@ -7,7 +7,7 @@ class CfgPatches {
 		requiredAddons[] = {"ALIVE_main","cba_ui"};
 		versionDesc = "ALiVE";
 		VERSION_CONFIG;
-		author[] = {"Cameroon"};
+		author[] = {"Tupolov"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };

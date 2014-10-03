@@ -11,19 +11,19 @@ class CfgVehicles {
                 functionPriority = 20;
                 function = "ALiVE_fnc_quickstartInit";
 
-                class Arguments
+            class Arguments
+              {
+                class debug
                 {
-                    // DATABASE
-                    class Database {
-                        displayName = "$STR_ALIVE_QUICKSTART_DATABASE";
-                        description = "$STR_ALIVE_QUICKSTART_DATABASE_COMMENT";
+                        displayName = "$STR_ALIVE_DEBUG";
+                        description = "$STR_ALIVE_DEBUG_COMMENT";
                         class Values
                         {
                                 class Yes
                                 {
                                         name = "Yes";
                                         value = true;
-                                        default = 1;
+                                        default = true;
                                 };
                                 class No
                                 {
@@ -64,7 +64,7 @@ class CfgVehicles {
                                         name = "Yes";
                                         value = true;
                                         default = 1;
-                                                                        typeName = "BOOL";
+                                        typeName = "BOOL";
                                 };
                                 class No
                                 {
@@ -98,6 +98,7 @@ class CfgVehicles {
                         description = "$STR_ALIVE_AISKILL_EXPERT_COMMENT";
                         defaultValue = "";
                 };
+                // CIVILIANS
                 class CIVILIANS {
                         displayName = "Civilians                ";
                 };

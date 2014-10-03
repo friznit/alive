@@ -11,11 +11,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_quickstart\fnc_quickstartInit.sqf";
 								recompile = RECOMPILE;
                         };
-                        class quickstartParams {
-                                description = "Template parameters";
-                                file = "\x\alive\addons\sys_quickstart\fnc_quickstartParams.sqf";
-								recompile = RECOMPILE;
-                        };
                 };
         };
 };

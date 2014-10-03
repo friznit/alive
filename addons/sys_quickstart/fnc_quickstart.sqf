@@ -54,33 +54,33 @@ TRACE_3("SYS_quickstart",_logic, _operation, _args);
 
 switch (_operation) do {
 
-    	case "create": {
+case "create": {
             if (isServer) then {
 
-	            // Ensure only one module is used
-	            if !(isNil QMOD(SYS_quickstart)) then {
-                	_logic = MOD(SYS_quickstart);
+                // Ensure only one module is used
+                if !(isNil QUOTE(ADDON)) then {
+                    _logic = ADDON;
                     ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_quickstart_ERROR1");
-	            } else {
-	        		_logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_quickstart", [0,0], [], 0, "NONE"];
-                    MOD(SYS_quickstart) = _logic;
+                } else {
+                    _logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_quickstart", [0,0], [], 0, "NONE"];
+                    ADDON = _logic;
                 };
 
                 //Push to clients
-	            PublicVariable QMOD(SYS_quickstart);
+                PublicVariable QUOTE(ADDON);
             };
 
             TRACE_1("Waiting for object to be ready",true);
 
-            waituntil {!isnil QMOD(SYS_quickstart)};
+            waituntil {!isnil QUOTE(ADDON)};
 
             TRACE_1("Creating class on all localities",true);
 
-			// initialise module game logic on all localities
-			MOD(SYS_quickstart) setVariable ["super", QUOTE(SUPERCLASS)];
-			MOD(SYS_quickstart) setVariable ["class", QUOTE(MAINCLASS)];
+            // initialise module game logic on all localities
+            ADDON setVariable ["super", QUOTE(SUPERCLASS)];
+            ADDON setVariable ["class", QUOTE(MAINCLASS)];
 
-            _result = MOD(SYS_quickstart);
+            _result = ADDON;
         };
 
         case "init": {
@@ -94,33 +94,12 @@ switch (_operation) do {
             - Establish data model on server and client
             */
 
-            TRACE_1("Creating data store",true);
-
-	        // Create logistics data storage in memory on all localities
-	        GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
+            ADDON = _logic;
 
             // Define module basics on server
-			if (isServer) then {
-                _errorMessage = "Please include either the Requires ALiVE module or the Profiles module! %1 %2";
-                _error1 = ""; _error2 = ""; //defaults
-                if(
-                    !(["ALiVE_require"] call ALiVE_fnc_isModuleavailable)
-                    && !(["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable)
-                    ) exitwith {
-                    [_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
-                };
-
-				// Wait for disable log module  to set module parameters
-                if (["AliVE_SYS_quickstartPARAMS"] call ALiVE_fnc_isModuleavailable) then {
-                    waituntil {!isnil {MOD(SYS_quickstart) getvariable "DEBUG"}};
-                };
-
-                GVAR(STORE) call ALIVE_fnc_inspectHash;
-
-            	[_logic,"state",GVAR(STORE)] call ALiVE_fnc_quickstart;
-
+            if (isServer) then {
                 _logic setVariable ["init", true, true];
-			};
+            };
 
             /*
             CONTROLLER  - coordination
@@ -129,18 +108,49 @@ switch (_operation) do {
             // Wait until server init is finished
             waituntil {_logic getvariable ["init",false]};
 
-            TRACE_1("Spawning Server processes",isServer);
+            // Create and init the quick start modules on client and server
+            private ["_logicVariables","_quickStartLogics"];
+            // Get all logic variables
+            _logicVariables = (configFile >> "CfgVehicles" >> "ALiVE_SYS_quickstart" >> "Arguments") call BIS_fnc_getCfgSubClasses;
 
-            if (isServer) then {
-                // Start any server-side processes that are needed
-            };
+            TRACE_1("Logic Parameters",_logicVariables);
 
-			TRACE_1("Spawning clientside processes",hasInterface);
+            _quickStartLogics = [
+                ["ALiVE_fnc_AISkill",[0,3,4,5,6]],
+                ["ALiVE_fnc_profile",[0]],
+                ["ALiVE_fnc_civilianPopulationSystem",[0,7,8,9]],
+                ["ALiVE_fnc_ambcp",[0]],
+                ["ALiVE_fnc_mp",[0]],
+                ["ALiVE_fnc_cp",[0]],
+                ["ALiVE_fnc_OPCOM",[0]],
+                ["ALiVE_fnc_cqb",[0]],
+                ["ALiVE_fnc_C2ISTAR",[0]],
+                ["ALiVE_fnc_combatsupport",[0]],
+                ["ALiVE_fnc_aliveInit",[1,2]]
+            ];
 
-            if (hasInterface) then {
-                // Start any client-side processes that are needed
-            };
+            {
+                private ["_module","_fnc","_vars","_moduleLogic"];
+                _fnc = _x select 0;
+                _vars = _x select 1;
+                _code = missionNamespace getVariable format ["%1", _fnc];
+                // Create
+                TRACE_1("Create Logic",_x select 0);
+                _moduleLogic = [nil,"create"] call _code;
+                TRACE_1("Module Created",_moduleLogic);
+                // Set
+                {
+                    _value = _logic getVariable (_logicVariables select _x);
+                    TRACE_2("Logic Variable ",(_logicVariables select _x), _value);
+                    _moduleLogic setVariable [(_logicVariables select _x), _value];
+                } foreach _vars;
 
+                // Init
+                TRACE_1("Init Logic",_moduleLogic);
+                _code = missionNamespace getVariable format ["%1Init", _fnc];
+                [_moduleLogic,"init"] spawn _code;
+
+            } forEach quickStartLogics;
 
             TRACE_1("After module init",_logic);
 
@@ -149,9 +159,9 @@ switch (_operation) do {
                 _logic setVariable ["startupComplete", true, true];
             };
 
-            ["%1 - Initialisation Completed...",MOD(SYS_quickstart)] call ALiVE_fnc_Dump;
+            ["%1 - Initialisation Completed...", _logic] call ALiVE_fnc_Dump;
 
-            _result = MOD(SYS_quickstart);
+            _result = _logic;
         };
 
         case "state": {

@@ -11,11 +11,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_playeroptions\fnc_playeroptionsInit.sqf";
 								recompile = RECOMPILE;
                         };
-                        class playeroptionsParams {
-                                description = "Template parameters";
-                                file = "\x\alive\addons\sys_playeroptions\fnc_playeroptionsParams.sqf";
-								recompile = RECOMPILE;
-                        };
                 };
         };
 };
