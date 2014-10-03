@@ -316,7 +316,7 @@ if (isDedicated) then {
 				{
 					private ["_unit"];
 					_unit = vehicle _x;
-					if (alive _unit && (isplayer _x || (_unit == leader (group _unit) && side _unit != "CIV"))) then {
+					if (alive _unit && (isplayer _x || (_unit == leader (group _unit) && (side _unit != civilian)))) then {
 						private ["_playerHash"];
 
 						_playerHash = [] call ALIVE_fnc_hashCreate;
