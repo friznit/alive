@@ -98,7 +98,7 @@ switch(_operation) do {
                 if (_logic getVariable ["enablePlayerPersistence","true"] == "false") exitWith {["ALiVE SYS PLAYER - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
 
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYER - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYER - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
             	//Start init
             	_logic setVariable ["initGlobal", false];
@@ -113,17 +113,17 @@ switch(_operation) do {
                 MOD(sys_player) = _logic;
 
                 // Set Module Parameters as booleans
-                MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
-                MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
-                MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
-                MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
-                MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
+                MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset")];
+                MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass")];
+                MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave")];
+                MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB")];
+                MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime")];
 
-                MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
-                MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
-                MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth"), true];
-                MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition"), true];
-                MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores"), true];
+                MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout")];
+                MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo")];
+                MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth")];
+                MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition")];
+                MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores")];
 
                 MOD(sys_player) setVariable ["saved", false];
 
