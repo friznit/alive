@@ -75,8 +75,10 @@ config
 	ALiVE_fnc_configGetWeaponMagazines
 	ALiVE_fnc_getConfigValue
 	ALiVE_fnc_getFactionsDataSource
+	ALiVE_fnc_sortCFGGroupsByFaction
 	ALiVE_fnc_sortCFGGroupsBySide
 	ALiVE_fnc_sortCFGVehiclesByClass
+	ALiVE_fnc_sortCFGVehiclesByFactionClass
 
 conversions
 

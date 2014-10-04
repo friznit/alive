@@ -35,6 +35,7 @@ Peer Reviewed:
 #define MAINCLASS ALIVE_fnc_PR
 #define MTEMPLATE "ALiVE_PR_%1"
 #define DEFAULT_PR_ITEM "LaserDesignator"
+#define DEFAULT_RESTRICTION_TYPE "SIDE"
 #define DEFAULT_SELECTED_INDEX 0
 #define DEFAULT_SELECTED_VALUE ""
 #define DEFAULT_SELECTED_OPTIONS []
@@ -110,6 +111,9 @@ switch(_operation) do {
 
 	case "pr_item": {
         _result = [_logic,_operation,_args,DEFAULT_PR_ITEM] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "pr_restrictionType": {
+        _result = [_logic,_operation,_args,DEFAULT_RESTRICTION_TYPE] call ALIVE_fnc_OOsimpleOperation;
     };
 
 	case "countsAir": {
@@ -266,6 +270,12 @@ switch(_operation) do {
 
             _logic setVariable ["startupComplete", true];
 
+            // load static data
+            if(isNil "ALiVE_STATIC_DATA_LOADED") then {
+                _file = "\x\alive\addons\main\static\staticData.sqf";
+                call compile preprocessFileLineNumbers _file;
+            };
+
             // set the player side
 
             private ["_playerSide","_sideNumber","_sideText"];
@@ -281,7 +291,6 @@ switch(_operation) do {
 
             [_logic,"side",_sideText] call MAINCLASS;
 
-
             // set the player faction
 
             private ["_playerFaction"];
@@ -290,6 +299,11 @@ switch(_operation) do {
 
             [_logic,"faction",_playerFaction] call MAINCLASS;
 
+            // get the restriction type
+
+            private ["_restrictionType"];
+
+            _restrictionType = _logic getVariable ["pr_restrictionType","SIDE"];
 
             // set the counts
 
@@ -378,12 +392,24 @@ switch(_operation) do {
             private ["_sortedGroups","_sortedVehicles"];
 
             // get sorted config data
-            _sortedVehicles = [_sideText] call ALIVE_fnc_sortCFGVehiclesByClass;
+
+            if(_restrictionType == "SIDE") then {
+                _sortedVehicles = [_sideText] call ALIVE_fnc_sortCFGVehiclesByClass;
+            }else{
+                _sortedVehicles = [_playerFaction] call ALIVE_fnc_sortCFGVehiclesByFactionClass;
+            };
+
             [_logic,"sortedVehicles",_sortedVehicles] call MAINCLASS;
 
 
             // get sorted group data
-            _sortedGroups = [_sideText] call ALIVE_fnc_sortCFGGroupsBySide;
+
+            if(_restrictionType == "SIDE") then {
+                _sortedGroups = [_sideText] call ALIVE_fnc_sortCFGGroupsBySide;
+            }else{
+                _sortedGroups = [_sideText,_playerFaction] call ALIVE_fnc_sortCFGGroupsByFaction;
+            };
+
             [_logic,"sortedGroups",_sortedGroups] call MAINCLASS;
 
 
@@ -1416,7 +1442,7 @@ switch(_operation) do {
 
                     private ["_supplyList","_selectedIndex","_selectedDeliveryValue","_selectedSupplyListOptions","_selectedSupplyListValues","_selectedSupplyListDepth",
                     "_selectedSupplyListParents","_selectedListOptions","_selectedListValues","_selectedOption","_selectedValue","_sortedVehicles",
-                    "_updateList","_options","_values","_vehicleClasses","_displayName"];
+                    "_updateList","_options","_values","_vehicleClasses","_displayName","_faction","_side"];
 
                     _supplyList = _args select 0 select 0;
                     _selectedIndex = _args select 0 select 1;
@@ -1430,6 +1456,8 @@ switch(_operation) do {
                     _selectedOption = _selectedListOptions select _selectedIndex;
                     _selectedValue = _selectedListValues select _selectedIndex;
                     _sortedVehicles = [_logic,"sortedVehicles"] call MAINCLASS;
+                    _faction = [_logic,"faction"] call MAINCLASS;
+                    _side = [_logic,"side"] call MAINCLASS;
 
                     _updateList = false;
 
@@ -1467,6 +1495,22 @@ switch(_operation) do {
                                 switch(_selectedValue) do {
                                     case "Vehicles": {
 
+                                        private ["_staticOptions"];
+
+                                        // attempt to get options by faction
+                                        _staticOptions = [ALIVE_factionDefaultResupplyVehicleOptions,_faction,[]] call ALIVE_fnc_hashGet;
+
+                                        // if no options found for the faction use side options
+                                        if(count _staticOptions == 0) then {
+                                            _staticOptions = [ALIVE_sideDefaultResupplyVehicleOptions,_side] call ALIVE_fnc_hashGet;
+                                        };
+
+                                        _staticOptions = [_staticOptions,_selectedDeliveryValue] call ALIVE_fnc_hashGet;
+
+                                        _options = _staticOptions select 0;
+                                        _values = _staticOptions select 1;
+
+                                        /*
                                         switch(_selectedDeliveryValue) do {
                                             case "PR_AIRDROP": {
                                                 _options = ["<< Back","Car","Ship"];
@@ -1481,19 +1525,58 @@ switch(_operation) do {
                                                 _values = ["<< Back","Car","Armored","Support"];
                                             };
                                         };
+                                        */
 
                                         _selectedSupplyListOptions set [1,_options];
                                         _selectedSupplyListValues set [1,_values];
                                     };
                                     case "Defence Stores": {
+
+                                        private ["_staticOptions"];
+
+                                        // attempt to get options by faction
+                                        _staticOptions = [ALIVE_factionDefaultResupplyDefenceStoreOptions,_faction,[]] call ALIVE_fnc_hashGet;
+
+                                        // if no options found for the faction use side options
+                                        if(count _staticOptions == 0) then {
+                                            _staticOptions = [ALIVE_sideDefaultResupplyDefenceStoreOptions,_side] call ALIVE_fnc_hashGet;
+                                        };
+
+                                        _staticOptions = [_staticOptions,_selectedDeliveryValue] call ALIVE_fnc_hashGet;
+
+                                        _options = _staticOptions select 0;
+                                        _values = _staticOptions select 1;
+
+                                        /*
                                         _options = ["<< Back","Static","Fortifications","Tents","Military"];
                                         _values = ["<< Back","Static","Fortifications","Tents","Structures_Military"];
+                                        */
+
                                         _selectedSupplyListOptions set [1,_options];
                                         _selectedSupplyListValues set [1,_values];
                                     };
                                     case "Combat Supplies": {
+
+                                        private ["_staticOptions"];
+
+                                        // attempt to get options by faction
+                                        _staticOptions = [ALIVE_factionDefaultResupplyCombatSuppliesOptions,_faction,[]] call ALIVE_fnc_hashGet;
+
+                                        // if no options found for the faction use side options
+                                        if(count _staticOptions == 0) then {
+                                            _staticOptions = [ALIVE_sideDefaultResupplyCombatSuppliesOptions,_side] call ALIVE_fnc_hashGet;
+                                        };
+
+                                        _staticOptions = [_staticOptions,_selectedDeliveryValue] call ALIVE_fnc_hashGet;
+
+                                        _options = _staticOptions select 0;
+                                        _values = _staticOptions select 1;
+
+                                        /*
                                         _options = ["<< Back","Ammo"];
                                         _values = ["<< Back","Ammo"];
+                                        */
+
                                         _selectedSupplyListOptions set [1,_options];
                                         _selectedSupplyListValues set [1,_values];
                                     };
@@ -1588,7 +1671,7 @@ switch(_operation) do {
 
                     private ["_reinforceList","_selectedIndex","_selectedDeliveryValue","_selectedReinforceListOptions","_selectedReinforceListValues","_selectedReinforceListDepth",
                     "_selectedReinforceListParents","_selectedListOptions","_selectedListValues","_selectedOption","_selectedValue","_sortedVehicles","_sortedGroups",
-                    "_updateList","_options","_values","_vehicleClasses","_displayName","_factions","_categories","_groups","_blacklistOptions"];
+                    "_updateList","_options","_values","_vehicleClasses","_displayName","_factions","_categories","_groups","_blacklistOptions","_faction","_side"];
 
                     _reinforceList = _args select 0 select 0;
                     _selectedIndex = _args select 0 select 1;
@@ -1603,6 +1686,8 @@ switch(_operation) do {
                     _selectedValue = _selectedListValues select _selectedIndex;
                     _sortedVehicles = [_logic,"sortedVehicles"] call MAINCLASS;
                     _sortedGroups = [_logic,"sortedGroups"] call MAINCLASS;
+                    _faction = [_logic,"faction"] call MAINCLASS;
+                    _side = [_logic,"side"] call MAINCLASS;
 
                     _updateList = false;
 
@@ -1640,6 +1725,22 @@ switch(_operation) do {
                                 switch(_selectedValue) do {
                                     case "Individuals": {
 
+                                        private ["_staticOptions"];
+
+                                        // attempt to get options by faction
+                                        _staticOptions = [ALIVE_factionDefaultResupplyIndividualOptions,_faction,[]] call ALIVE_fnc_hashGet;
+
+                                        // if no options found for the faction use side options
+                                        if(count _staticOptions == 0) then {
+                                            _staticOptions = [ALIVE_sideDefaultResupplyIndividualOptions,_side] call ALIVE_fnc_hashGet;
+                                        };
+
+                                        _staticOptions = [_staticOptions,_selectedDeliveryValue] call ALIVE_fnc_hashGet;
+
+                                        _options = _staticOptions select 0;
+                                        _values = _staticOptions select 1;
+
+                                        /*
                                         switch(_selectedDeliveryValue) do {
                                             case "PR_AIRDROP": {
                                                 _options = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
@@ -1654,6 +1755,7 @@ switch(_operation) do {
                                                 _values = ["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport"];
                                             };
                                         };
+                                        */
 
                                         _selectedReinforceListOptions set [1,_options];
                                         _selectedReinforceListValues set [1,_values];
@@ -1685,6 +1787,19 @@ switch(_operation) do {
                                     _categories = _categories select 1;
                                     _options = _options + _categories;
 
+                                    private ["_staticOptions"];
+
+                                    // attempt to get options by faction
+                                    _staticOptions = [ALIVE_factionDefaultResupplyGroupOptions,_faction,[]] call ALIVE_fnc_hashGet;
+
+                                    // if no options found for the faction use side options
+                                    if(count _staticOptions == 0) then {
+                                        _staticOptions = [ALIVE_sideDefaultResupplyGroupOptions,_side] call ALIVE_fnc_hashGet;
+                                    };
+
+                                    _blacklistOptions = [_staticOptions,_selectedDeliveryValue] call ALIVE_fnc_hashGet;
+
+                                    /*
                                     switch(_selectedDeliveryValue) do {
                                         case "PR_AIRDROP": {
                                             _blacklistOptions = ["Armored","Support"];
@@ -1696,6 +1811,7 @@ switch(_operation) do {
                                             _blacklistOptions = ["Support"];
                                         };
                                     };
+                                    */
 
                                     _options = _options - _blacklistOptions;
 

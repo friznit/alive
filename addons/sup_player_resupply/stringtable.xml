@@ -14,4 +14,16 @@
 <Key ID="STR_ALIVE_PR_ALLOW_COMMENT">
     <English>Define the item the player must have to be able to use Player Resupply i.e "LaserDesignator"</English>
 </Key>
+<Key ID="STR_ALIVE_PR_RESTRICTION_TYPE">
+    <English>Restrict to:</English>
+</Key>
+<Key ID="STR_ALIVE_PR_RESTRICTION_TYPE_COMMENT">
+    <English>Restrict the player selection to items from own side, or own faction</English>
+</Key>
+<Key ID="STR_ALIVE_PR_RESTRICTION_TYPE_SIDE">
+    <English>Side</English>
+</Key>
+<Key ID="STR_ALIVE_PR_RESTRICTION_TYPE_FACTION">
+    <English>Faction</English>
+</Key>
 </Container></Package></Project>

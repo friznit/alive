@@ -5,7 +5,7 @@ SCRIPT(sortCFGGroupsBySide);
 Function: ALIVE_fnc_sortCFGGroupsBySide
 
 Description:
-Sorts CFGVehicles into a hash categorised by vehicleClass
+Sorts CFGGroups into a hash by side
 
 Parameters:
 

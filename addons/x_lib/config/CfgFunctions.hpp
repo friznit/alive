@@ -391,6 +391,13 @@ class getFactionsDataSource
 	recompile = RECOMPILE;
 };
 
+class sortCFGGroupsByFaction
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_sortCFGGroupsByFaction.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class sortCFGGroupsBySide
 {
 	file = "\x\alive\addons\x_lib\functions\config\fnc_sortCFGGroupsBySide.sqf";
@@ -401,6 +408,13 @@ class sortCFGGroupsBySide
 class sortCFGVehiclesByClass
 {
 	file = "\x\alive\addons\x_lib\functions\config\fnc_sortCFGVehiclesByClass.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class sortCFGVehiclesByFactionClass
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_sortCFGVehiclesByFactionClass.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
