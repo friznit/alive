@@ -83,10 +83,12 @@ switch(_operation) do {
                 */
 
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS VIEWDISTANCE - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS VIEWDISTANCE - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
             	//Start init
             	_logic setVariable ["initGlobal", false];
+
+                _logic setVariable ["init", false];
 
                 if (isServer) then {
                         ADDON = _logic;
@@ -119,10 +121,10 @@ switch(_operation) do {
 
                 if(!isDedicated && !isHC) then {
                     private ["_mingettg","_minsettg","_maxsettg","_maxgettg","_tgvalue","_settg","_maxsetvd","_maxgetvd"];
-                    _mingettg = ADDON getvariable["minTG", 2]; // get the minimum terrain grid set in themodule
+                    _mingettg = ADDON getvariable["minTG", "2"]; // get the minimum terrain grid set in themodule
                     _minsettg = parseNumber _mingettg; // convert the minimum variable to a number
                     if (_minsettg == 0) then {_minsettg = 1;}; //if the minimum terrain grid has not been set i.e blank, then set it to 1
-                    _maxgettg = (ADDON getVariable ["maxTG", 2]); // get the maximum terrain grid set in the module
+                    _maxgettg = (ADDON getVariable ["maxTG", "2"]); // get the maximum terrain grid set in the module
                     _maxsettg = parseNumber _maxgettg; // convert the maximum variable to a number
                     if (_maxsettg == 0) then {_maxsettg = 5;}; //if the maximum terrain grid has not been set i.e blank, then set it to  5
 

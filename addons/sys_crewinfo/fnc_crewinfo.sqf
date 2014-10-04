@@ -82,13 +82,15 @@ switch(_operation) do {
                 - server side object only
                                 - enabled/disabled
                 */
-                if (_logic getVariable ["crewinfo_ui_setting","Left"] == "None") exitWith {["ALiVE SYS CREWINFO - Feature turned off! Exiting..."] call ALiVE_fnc_DumpR};
+                if (_logic getVariable ["crewinfo_ui_setting","Left"] == "None") exitWith {["ALiVE SYS CREWINFO - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
 
                 //Only one init per instance is allowed
                 if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS CREWINFO - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
                 //Start init
                 _logic setVariable ["initGlobal", false];
+
+                _logic setVariable ["init", false];
 
                 // Server init
                 if (isServer) then {
@@ -122,7 +124,7 @@ switch(_operation) do {
 
                 if(!isDedicated && !isHC) then {
                 	    CREWINFO_DEBUG = call compile (_logic getvariable ["debug","false"]);
-                      CREWINFO_UILOC = call compile (_logic getvariable ["crewinfo_ui_setting",1]);
+                      CREWINFO_UILOC = call compile (_logic getvariable ["crewinfo_ui_setting","1"]);
                 	 		Waituntil {!(isnil "CREWINFO_DEBUG")};
                 	 		Waituntil {!(isnil "CREWINFO_UILOC")};
                 	 		private ["_ui","_HudNames","_vehicleID","_picture","_vehicle","_vehname","_weapname","_weap","_wepdir","_Azimuth"];
