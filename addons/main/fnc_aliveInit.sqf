@@ -74,7 +74,7 @@ if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE Require - Only o
 //Start init
 _logic setVariable ["initGlobal", false];
 
-["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
+//["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
 //Start ALiVE Requires init
 _logic setVariable ["init", false];
@@ -135,7 +135,8 @@ if (isServer) then {
 		[
 	        QMOD(amb_civ_placement),
 	        QMOD(mil_placement),
-	        QMOD(civ_placement)
+	        QMOD(civ_placement),
+	        QMOD(mil_placement_custom)
         ] call ALiVE_fnc_isModuleInitialised;
 	};
     //This is the last module init to be run, therefore indicates that init of the defined modules above has passed on server
@@ -159,7 +160,7 @@ if (isServer) then {
     _logic setVariable ["startupComplete", true, true];
 };
 
-["%1 - Initialisation Completed...",MOD(require)] call ALiVE_fnc_Dump;
+//["%1 - Initialisation Completed...",MOD(require)] call ALiVE_fnc_Dump;
 
 [_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
 

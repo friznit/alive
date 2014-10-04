@@ -208,7 +208,7 @@ switch (_operation) do {
         };
         case "init": {
             private["_obj","_obj2"];
-            ["CS2 %1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
+            //["CS2 %1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
             MOD(SUP_COMBATSUPPORT2) = _logic;
 
             /*
@@ -656,7 +656,7 @@ switch (_operation) do {
                 _logic setVariable ["startupComplete", true, true];
             };
             
-            ["%1 - Initialisation Completed...",MOD(SUP_COMBATSUPPORT2)] call ALiVE_fnc_Dump;
+            //["%1 - Initialisation Completed...",MOD(SUP_COMBATSUPPORT2)] call ALiVE_fnc_Dump;
             
             _result = MOD(SUP_COMBATSUPPORT2);
         };

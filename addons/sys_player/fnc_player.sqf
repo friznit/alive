@@ -374,7 +374,7 @@ switch(_operation) do {
             TRACE_4("SYS_PLAYER4", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
 
             TRACE_1("After module init",_logic);
-            "Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
+            //"Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
         };
 
         case "allowReset": {

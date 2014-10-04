@@ -85,7 +85,7 @@ case "create": {
 
         case "init": {
 
-            ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
+            //["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
             /*
             MODEL - no visual just reference data
@@ -159,7 +159,7 @@ case "create": {
                 _logic setVariable ["startupComplete", true, true];
             };
 
-            ["%1 - Initialisation Completed...", _logic] call ALiVE_fnc_Dump;
+            //["%1 - Initialisation Completed...", _logic] call ALiVE_fnc_Dump;
 
             _result = _logic;
         };

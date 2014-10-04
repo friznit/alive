@@ -141,7 +141,7 @@ switch (_operation) do {
 
         case "init": {
 
-            ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
+            //["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
             /*
             MODEL - no visual just reference data
@@ -307,7 +307,7 @@ switch (_operation) do {
                 _logic setVariable ["startupComplete", true, true];
             };
 
-            ["%1 - Initialisation Completed...",MOD(SYS_marker)] call ALiVE_fnc_Dump;
+            //["%1 - Initialisation Completed...",MOD(SYS_marker)] call ALiVE_fnc_Dump;
 
             _result = MOD(SYS_marker);
         };
