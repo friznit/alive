@@ -679,7 +679,7 @@ switch(_operation) do {
                         _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
 
                         if !(isNull _player) then {
-                            if(isDedicated) then {
+                            if((isServer && isMultiplayer) || isDedicated) then {
                                 [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                             }else{
                                 _event call ALIVE_fnc_taskHandlerEventToClient;
@@ -721,7 +721,7 @@ switch(_operation) do {
                         _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
 
                         if !(isNull _player) then {
-                            if(isDedicated) then {
+                            if((isServer && isMultiplayer) || isDedicated) then {
                                 [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                             }else{
                                 _event call ALIVE_fnc_taskHandlerEventToClient;
@@ -782,7 +782,7 @@ switch(_operation) do {
                                     _fEvent = ["TASK_CREATE",_fTaskID,_fRequestPlayerID,_fPosition,_fTitle,_fDescription,_fState,_fCurrent,_fParent,_fSource];
 
                                     if !(isNull _player) then {
-                                        if(isDedicated) then {
+                                        if((isServer && isMultiplayer) || isDedicated) then {
                                             [_fEvent,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                                         }else{
                                             _fEvent call ALIVE_fnc_taskHandlerEventToClient;
@@ -800,7 +800,7 @@ switch(_operation) do {
                             _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
 
                             if !(isNull _player) then {
-                                if(isDedicated) then {
+                                if((isServer && isMultiplayer) || isDedicated) then {
                                     [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                                 }else{
                                     _event call ALIVE_fnc_taskHandlerEventToClient;
@@ -1500,7 +1500,7 @@ switch(_operation) do {
                 _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
 
                 if !(isNull _player) then {
-                    if(isDedicated) then {
+                    if((isServer && isMultiplayer) || isDedicated) then {
                         [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                     }else{
                         _event call ALIVE_fnc_taskHandlerEventToClient;
@@ -1530,7 +1530,7 @@ switch(_operation) do {
                 _event = ["TASK_UPDATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
 
                 if !(isNull _player) then {
-                    if(isDedicated) then {
+                    if((isServer && isMultiplayer) || isDedicated) then {
                         [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                     }else{
                         _event call ALIVE_fnc_taskHandlerEventToClient;
@@ -1560,7 +1560,7 @@ switch(_operation) do {
                 _event = ["TASK_DELETE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
 
                 if !(isNull _player) then {
-                    if(isDedicated) then {
+                    if((isServer && isMultiplayer) || isDedicated) then {
                         [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
                     }else{
                         _event call ALIVE_fnc_taskHandlerEventToClient;

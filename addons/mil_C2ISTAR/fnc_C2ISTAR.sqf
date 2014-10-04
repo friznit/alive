@@ -297,7 +297,7 @@ switch(_operation) do {
     	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE MIL C2ISTAR - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
 
     	//Start init
-    	_logic setVariable ["init", false];
+        _logic setVariable ["initGlobal", false];
 
         // Call SITREP and PATROLREP
         [] spawn ALIVE_fnc_sitrepInit;
@@ -535,7 +535,7 @@ switch(_operation) do {
             // a response event from task handler has been received.
             // if the we are a dedicated server,
             // dispatch the event to the player who requested it
-            if(isDedicated) then {
+            if((isServer && isMultiplayer) || isDedicated) then {
 
                 private ["_eventData","_playerID","_player"];
 

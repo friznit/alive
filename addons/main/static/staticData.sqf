@@ -335,7 +335,6 @@ ALIVE_factionDefaultContainers = [] call ALIVE_fnc_hashCreate;
  * Player resupply
  */
 
-
 ALIVE_globalDefaultResupplyVehicleOptions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_globalDefaultResupplyVehicleOptions, "PR_AIRDROP", [["<< Back","Car","Ship"],["<< Back","Car","Ship"]]] call ALIVE_fnc_hashSet;
 [ALIVE_globalDefaultResupplyVehicleOptions, "PR_HELI_INSERT", [["<< Back","Air"],["<< Back","Air"]]] call ALIVE_fnc_hashSet;

@@ -5017,7 +5017,8 @@ switch(_operation) do {
 
             // find the player object
 
-            if(isDedicated) then {
+            if((isServer && isMultiplayer) || isDedicated) then {
+
                 _player = objNull;
                 {
                     if (getPlayerUID _x == _playerID) exitWith {
@@ -5025,6 +5026,7 @@ switch(_operation) do {
                     };
                 } forEach playableUnits;
             }else{
+
                  _player = player;
             };
 

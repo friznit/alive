@@ -29,7 +29,7 @@ private ["_target","_move"];
 _target = _this select 0;
 _move = _this select 1;
 
-if(isMultiplayer && !(isDedicated)) then
+if((isServer && isMultiplayer) || isDedicated) then
 {
     [[_target, _move],"ALIVE_fnc_clientSwitchMove"] call BIS_fnc_MP;
 }

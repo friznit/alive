@@ -462,7 +462,7 @@ switch(_operation) do {
             // a response event from LOGCOM has been received.
             // if the we are a dedicated server,
             // dispatch the event to the player who requested it
-            if(isDedicated) then {
+            if((isServer && isMultiplayer) || isDedicated) then {
 
                 private ["_eventData","_playerID","_player"];
 
