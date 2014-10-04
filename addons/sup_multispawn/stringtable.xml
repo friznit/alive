@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_multispawn">
-	<English>ALiVE Multispawn</English>
+	<English>Player Multispawn</English>
 </Key>
 <Key ID="STR_ALIVE_multispawn_COMMENT">
 	<English>ALiVE Multispawn enables some handy Respawn functionalities! Please see our WiKi for more information!</English>

@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_TRANSPORT">
-	<English>Combat Support Transport</English>
+	<English>Player Combat Support (Transport)</English>
 </Key>
 <Key ID="STR_ALIVE_TRANSPORT_COMMENT">
 	<English>Transport Module for ALiVE Combat Support</English>

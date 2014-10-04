@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_ARTILLERY">
-	<English>Combat Support ARTY/Mortars</English>
+	<English>Player Combat Support (Artillery)</English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_COMMENT">
 	<English>XXXX</English>

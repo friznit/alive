@@ -2,7 +2,7 @@ class CfgVehicles {
         class ModuleAliveBase;
         class ADDON : ModuleAliveBase
         {
-                scope = 1;
+                scope = 2;
                 displayName = "$STR_ALIVE_TRANSPORT";
                 function = "ALIVE_fnc_TRANSPORTInit";
                 author = MODULE_AUTHOR;

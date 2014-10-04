@@ -3,10 +3,10 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_insurgency">
-	<English>Enemy: Insurgency</English>
+	<English>Military Insurgency</English>
 </Key>
 <Key ID="STR_ALIVE_insurgency_COMMENT">
-	<English>ALiVE Enemy: Insurgency</English>
+	<English>ALiVE Military Insurgency</English>
 </Key>
 <Key ID="STR_ALIVE_insurgency_DEBUG">
 	<English>Enable Debug:</English>

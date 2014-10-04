@@ -43,6 +43,18 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        // VIEW DISTANCE
+                        class VIEW_DISTANCE {
+                                displayName = "";
+                                class Values
+                                {
+                                        class Divider
+                                        {
+                                                name = "----- View Distance ------------------------------------------------------";
+                                                value = "";
+                                        };
+                                };
+                        };
                         class maxVD
                         {
                                 displayName = "$STR_ALIVE_VDIST_MAX";
@@ -66,6 +78,18 @@ class CfgVehicles {
                                 displayName = "$STR_ALIVE_TGRID_MIN";
                                 description = "$STR_ALIVE_TGRID_MIN_COMMENT";
                                 defaultvalue = "1";
+                        };
+                        // PERSISTENCE
+                        class PERSISTENCE {
+                                displayName = "";
+                                class Values
+                                {
+                                        class Divider
+                                        {
+                                                name = "----- Player Persistence ------------------------------------------------------";
+                                                value = "";
+                                        };
+                                };
                         };
                         class enablePlayerPersistence
                         {
@@ -266,6 +290,18 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_player_autoSaveTime_COMMENT";
                                 defaultValue = "0";
                         };
+                        // CREW INFO
+                        class CREW_INFO {
+                                displayName = "";
+                                class Values
+                                {
+                                        class Divider
+                                        {
+                                                name = "----- Crew Info ------------------------------------------------------";
+                                                value = "";
+                                        };
+                                };
+                        };
                         class crewinfo_ui_setting
                         {
                                 displayName = "$STR_ALIVE_CREWINFO_UI";
@@ -289,6 +325,18 @@ class CfgVehicles {
                                                 value = 2;
                                         };
 
+                                };
+                        };
+                        // PLAYER TAGS
+                        class PLAYER_TAGS {
+                                displayName = "";
+                                class Values
+                                {
+                                        class Divider
+                                        {
+                                                name = "----- Player Tags ------------------------------------------------------";
+                                                value = "";
+                                        };
                                 };
                         };
                         class playertags_style_setting
@@ -407,32 +455,32 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_TARGETS";
                                 description = "$STR_ALIVE_PLAYERTAGS_TARGETS_COMMENT";
-                          defaultValue = "[""CAManBase"", ""Car"", ""Tank"", ""StaticWeapon"", ""Helicopter"", ""Plane""]";
-              typeName = "ARRAY";
+                                defaultValue = "[""CAManBase"", ""Car"", ""Tank"", ""StaticWeapon"", ""Helicopter"", ""Plane""]";
+                                typeName = "ARRAY";
                         };
 
                         class playertags_distance_setting
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_DISTANCE";
                                 description = "$STR_ALIVE_PLAYERTAGS_DISTANCE_COMMENT";
-                          defaultValue = 20;
-              typeName = "NUMBER";
+                                defaultValue = 20;
+                                typeName = "NUMBER";
                         };
 
                         class playertags_tolerance_setting
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_TOLERANCE";
                                 description = "$STR_ALIVE_PLAYERTAGS_TOLERANCE_COMMENT";
-                          defaultValue = 0.75;
-              typeName = "NUMBER";
+                                defaultValue = 0.75;
+                                typeName = "NUMBER";
                         };
 
                         class playertags_scale_setting
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_SCALE";
                                 description = "$STR_ALIVE_PLAYERTAGS_SCALE_COMMENT";
-                          defaultValue = 0.65;
-              typeName = "NUMBER";
+                                defaultValue = 0.65;
+                                typeName = "NUMBER";
                         };
 
 
@@ -440,8 +488,8 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_HEIGHT";
                                 description = "$STR_ALIVE_PLAYERTAGS_HEIGHT_COMMENT";
-                          defaultValue = 1.1;
-              typeName = "NUMBER";
+                                defaultValue = 1.1;
+                                typeName = "NUMBER";
                         };
 
 
@@ -449,32 +497,32 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_NAMECOLOUR";
                                 description = "$STR_ALIVE_PLAYERTAGS_NAMECOLOUR_COMMENT";
-                          defaultValue = "#FFFFFF"; // white
-              typeName = "STRING";
+                                defaultValue = "#FFFFFF"; // white
+                                typeName = "STRING";
                         };
 
                         class playertags_groupcolour_setting
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_GROUPCOLOUR";
                                 description = "$STR_ALIVE_PLAYERTAGS_GROUPCOLOUR_COMMENT";
-                          defaultValue = "#A8F000"; // green
-              typeName = "STRING";
+                                defaultValue = "#A8F000"; // green
+                                typeName = "STRING";
                         };
 
                         class playertags_thisgroupleadernamecolour_setting
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_THISGROUPLEADERNAMECOLOUR";
                                 description = "$STR_ALIVE_PLAYERTAGS_THISGROUPLEADERNAMECOLOUR_COMMENT";
-                          defaultValue = "#FFB300"; // yellow
-              typeName = "STRING";
+                                defaultValue = "#FFB300"; // yellow
+                                typeName = "STRING";
                         };
 
                         class playertags_thisgroupcolour_setting
                         {
                                 displayName = "$STR_ALIVE_PLAYERTAGS_THISGROUPCOLOUR";
                                 description = "$STR_ALIVE_PLAYERTAGS_THISGROUPCOLOUR_COMMENT";
-                          defaultValue = "#009D91"; // cyan
-              typeName = "STRING";
+                                defaultValue = "#009D91"; // cyan
+                                typeName = "STRING";
                         };
                 };
         };

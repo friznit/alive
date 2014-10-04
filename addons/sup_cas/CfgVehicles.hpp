@@ -2,7 +2,7 @@ class CfgVehicles {
         class ModuleAliveBase;
         class ADDON : ModuleAliveBase
         {
-                scope = 1;
+                scope = 2;
                 displayName = "$STR_ALIVE_CAS";
                 function = "ALIVE_fnc_CASInit";
                 author = MODULE_AUTHOR;

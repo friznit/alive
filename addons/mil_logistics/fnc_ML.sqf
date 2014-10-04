@@ -2135,12 +2135,14 @@ switch(_operation) do {
                                     _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
                                     if!(isNil "_commandProfile") then {
-                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                        [_commandProfile, "destroy"] call ALIVE_fnc_profileEntity;
+                                        //[ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
                                     };
 
                                 };
 
-                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
+                                [_transportProfile, "destroy"] call ALIVE_fnc_profileVehicle;
+                                //[ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
 
                                 [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
 
@@ -2261,7 +2263,9 @@ switch(_operation) do {
                                     _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
                                     if!(isNil "_commandProfile") then {
-                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+
+                                        [_commandProfile, "destroy"] call ALIVE_fnc_profileEntity;
+                                        //[ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
                                         _commandUnits = _commandProfile select 2 select 21;
 
                                         {
@@ -2275,7 +2279,8 @@ switch(_operation) do {
 
                                 };
 
-                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
+                                [_transportProfile, "destroy"] call ALIVE_fnc_profileVehicle;
+                                //[ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
                             }else{
                                 _anyActive = _anyActive + 1;
                             };
@@ -2963,12 +2968,14 @@ switch(_operation) do {
                                     _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
                                     if!(isNil "_commandProfile") then {
-                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                        [_commandProfile, "destroy"] call ALIVE_fnc_profileEntity;
+                                        //[ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
                                     };
 
                                 };
 
-                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
+                                [_transportProfile, "destroy"] call ALIVE_fnc_profileVehicle;
+                                //[ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
 
                                 [_logic, "setEventProfilesAvailable", _event] call MAINCLASS;
 
@@ -3094,12 +3101,14 @@ switch(_operation) do {
                                     _commandProfile = [ALIVE_profileHandler, "getProfile", _commandProfileID] call ALIVE_fnc_profileHandler;
 
                                     if!(isNil "_commandProfile") then {
-                                        [ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+                                        [_commandProfile, "destroy"] call ALIVE_fnc_profileEntity;
+                                        //[ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
                                     };
 
                                 };
 
-                                [ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
+                                [_transportProfile, "destroy"] call ALIVE_fnc_profileVehicle;
+                                //[ALIVE_profileHandler, "unregisterProfile", _transportProfile] call ALIVE_fnc_profileHandler;
                             };
 
                         };
@@ -4599,7 +4608,8 @@ switch(_operation) do {
                     [_vehicleProfile,"engineOn",false] call ALIVE_fnc_profileVehicle;
                     [_vehicleProfile,"despawnPosition",_position] call ALIVE_fnc_profileVehicle;
 
-                    [ALIVE_profileHandler, "unregisterProfile", _entityProfile] call ALIVE_fnc_profileHandler;
+                    [_entityProfile, "destroy"] call ALIVE_fnc_profileEntity;
+                    //[ALIVE_profileHandler, "unregisterProfile", _entityProfile] call ALIVE_fnc_profileHandler;
 
 
                 }else{
@@ -4780,7 +4790,8 @@ switch(_operation) do {
                     [_vehicleProfile,"engineOn",false] call ALIVE_fnc_profileVehicle;
                     [_vehicleProfile,"despawnPosition",_position] call ALIVE_fnc_profileVehicle;
 
-                    [ALIVE_profileHandler, "unregisterProfile", _entityProfile] call ALIVE_fnc_profileHandler;
+                    [_entityProfile, "destroy"] call ALIVE_fnc_profileEntity;
+                    //[ALIVE_profileHandler, "unregisterProfile", _entityProfile] call ALIVE_fnc_profileHandler;
 
                 };
 
@@ -5262,8 +5273,11 @@ switch(_operation) do {
 
                                         if([position _vehicle, 1500] call ALiVE_fnc_anyPlayersInRange == 0) then {
 
-                                            [ALIVE_profileHandler, "unregisterProfile", _payloadProfile] call ALIVE_fnc_profileHandler;
-                                            [ALIVE_profileHandler, "unregisterProfile", _payloadVehicle] call ALIVE_fnc_profileHandler;
+                                            [_payloadProfile, "destroy"] call ALIVE_fnc_profileEntity;
+                                            [_payloadVehicle, "destroy"] call ALIVE_fnc_profileVehicle;
+
+                                            //[ALIVE_profileHandler, "unregisterProfile", _payloadProfile] call ALIVE_fnc_profileHandler;
+                                            //[ALIVE_profileHandler, "unregisterProfile", _payloadVehicle] call ALIVE_fnc_profileHandler;
 
                                         }else{
 

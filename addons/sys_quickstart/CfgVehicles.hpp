@@ -76,7 +76,15 @@ class CfgVehicles {
                 };
                 // AI SKILL
                 class AISKILL {
-                        displayName = "AI Skill Levels          ";
+                        displayName = "";
+                        class Values
+                        {
+                                class Divider
+                                {
+                                        name = "----- AI Skill Levels ------------------------------------------------";
+                                        value = "";
+                                };
+                        };
                 };
                 class skillFactionsRecruit {
                         displayName = "$STR_ALIVE_AISKILL_RECRUIT";
@@ -100,7 +108,15 @@ class CfgVehicles {
                 };
                 // CIVILIANS
                 class CIVILIANS {
-                        displayName = "Civilians                ";
+                        displayName = "";
+                        class Values
+                        {
+                                class Divider
+                                {
+                                        name = "----- Civilians ------------------------------------------------------";
+                                        value = "";
+                                };
+                        };
                 };
                 class hostilityWest
                 {

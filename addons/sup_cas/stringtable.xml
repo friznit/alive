@@ -3,7 +3,7 @@
 <Package name="ALiVE">
 <Container name="STR_DN">
 <Key ID="STR_ALIVE_CAS">
-	<English>Combat Support CAS</English>
+	<English>Player Combat Support (CAS)</English>
 </Key>
 <Key ID="STR_ALIVE_CAS_COMMENT">
 	<English>XXXX</English>

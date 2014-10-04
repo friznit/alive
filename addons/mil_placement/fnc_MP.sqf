@@ -725,7 +725,7 @@ switch(_operation) do {
 			
 			if(_placeHelis) then {
 							
-				_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;	
+				_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;
 				_heliClasses = _heliClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 				
 				if(count _heliClasses > 0) then {

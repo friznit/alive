@@ -2,7 +2,7 @@ class CfgVehicles {
         class ModuleAliveBase;
         class ADDON : ModuleAliveBase
         {
-                scope = 1;
+                scope = 2;
                 displayName = "$STR_ALIVE_ARTILLERY";
                 function = "ALIVE_fnc_ARTILLERYInit";
                 author = MODULE_AUTHOR;
