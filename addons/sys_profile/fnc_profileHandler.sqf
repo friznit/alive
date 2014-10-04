@@ -1156,7 +1156,7 @@ switch(_operation) do {
             _missionName = format["%1_%2", ALIVE_sys_data_GROUP_ID, _missionName]; // must include group_id to ensure mission reference is unique across groups
 
             if(ALiVE_SYS_DATA_DEBUG_ON) then {
-                ["ALiVE SYS PROFILE - LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dumpMPH;
+                ["ALiVE SYS PROFILE - LOAD PROFILE DATA NOW - MISSION NAME: %1! PLEASE WAIT...",_missionName] call ALIVE_fnc_dump;
             };
 
             _result = [ALIVE_profileDatahandler, "bulkLoad", ["sys_profile", _missionName, _async]] call ALIVE_fnc_Data;
@@ -1168,7 +1168,8 @@ switch(_operation) do {
         };
 		case "exportProfileData": {
 		    private["_profiles","_exportProfiles","_profile","_profileID","_profileType","_isPlayer","_exportProfile","_isPlayer","_vehicleAssignments","_assignmentKeys",
-		    "_assignmentValues","_ranks","_side","_spawnType","_entitiesInCommandOf","_entitiesInCargoOf","_vehiclesInCommandOf","_vehiclesInCargoOf","_ranksMap","_exportRanks","_classes","_exportClasses"];
+		    "_assignmentValues","_ranks","_side","_spawnType","_entitiesInCommandOf","_entitiesInCargoOf","_vehiclesInCommandOf","_vehiclesInCargoOf","_ranksMap",
+		    "_exportRanks","_classes","_exportClasses","_rankMap"];
 
             if(ALiVE_SYS_DATA_DEBUG_ON) then {
 		        ["ALiVE SYS PROFILE - EXPORT PROFILE DATA..."] call ALIVE_fnc_dump;
@@ -1242,8 +1243,17 @@ switch(_operation) do {
                         {
                             if(!isNil "_x") then {
                                 if(typeName _x == "STRING") then {
-                                    _exportRanks set [count _exportRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
-                                };
+                                    _rankMap = [_ranksMap, _x] call ALIVE_fnc_hashGet;
+                                    if(typeName _rankMap == "SCALAR") then {
+                                        _exportRanks set [count _exportRanks, _rankMap];
+                                    }else{
+                                        _exportRanks set [count _exportRanks, 0];
+                                    };
+                                }else{
+                                     _exportRanks set [count _exportRanks, 0];
+                                 };
+                            }else{
+                                _exportRanks set [count _exportRanks, 0];
                             };
                         } forEach _ranks;
 
