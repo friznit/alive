@@ -29,6 +29,8 @@ _killer = _this select 1;
 _agentID = _unit getVariable "agentID";
 _agent = [ALIVE_agentHandler, "getAgent", _agentID] call ALIVE_fnc_agentHandler;
 
+[_unit,""] call ALIVE_fnc_switchMove;
+
 _killerSide = str(side (group _killer));
 
 if (isnil "_agent") exitwith {};
