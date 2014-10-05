@@ -501,7 +501,7 @@ switch(_operation) do {
         case "attackentity": {
             ASSERT_TRUE(typeName _args == "ARRAY",str _args);
             
-            private ["_target","_reserved","_sides","_size","_type","_proIDs","_knownE","_attackedE","_pos","_profiles","_profileIDs","_profile","_section","_profileID","_i","_waypoints","_posAttacker","_dist"];
+            private ["_target","_reserved","_sides","_size","_type","_proIDs","_knownE","_attackedE","_pos","_profiles","_profileIDs","_profile","_section","_profileID","_i","_waypoints","_posAttacker","_dist","_rtb"];
             
             _target = _args select 0;
             _size = _args select 1;
@@ -570,6 +570,7 @@ switch(_operation) do {
 	                case ("air") : {
                         _profiles = [_logic,"air"] call ALiVE_fnc_HashGet;
                         _dist = 15000;
+                        _rtb = true;
                     };
 	            };
                 
@@ -595,7 +596,34 @@ switch(_operation) do {
 		                        _waypoints = [_profile,"waypoints"] call ALIVE_fnc_hashGet;
 	                        
 		                        if (({!(isnil "_x") && {_profileID in (_x select 2)}} count _attackedE) < 1 && {count _waypoints <= 2}) then {
-									[_profile,"insertWaypoint",[_pos, 50] call ALIVE_fnc_createProfileWaypoint] call ALIVE_fnc_profileEntity;
+                                    if (!isnil "_rtb") then {
+                                        _profileWaypoint = [_posAttacker, 50] call ALIVE_fnc_createProfileWaypoint;
+								        [_profileWaypoint,"statements",["true",
+											format["
+	                                        	_profile = [ALiVE_ProfileHandler,'getProfile',%1] call ALiVE_fnc_profileHandler;
+	                                            _active = [_profile,'active',false] call ALiVE_fnc_HashGet;
+	                                            
+	                                            if (_active) then {
+	                                                _group = _profile select 2 select 13;
+	                                                _group setSpeedmode 'LIMITED';
+	                                                {(vehicle _x) land 'LAND'} foreach (units _group);
+	                                            } else {
+                                                    _vehicleProfiles = [_profile,'vehiclesInCommandOf',[]] call ALIVE_fnc_hashGet;
+
+                                                    {
+                                                    	_vehicleProfile = [ALiVE_ProfileHandler,'getProfile',_x] call ALiVE_fnc_ProfileHandler;
+                                                    	[_vehicleProfile,'engineOn',false] call ALIVE_fnc_HashSet;
+                                                    } foreach _vehicleProfiles;
+                                                };
+	                                        ",str(_profileID)]
+                                        ]] call ALIVE_fnc_hashSet;
+                                        
+                                        [_profile,"insertWaypoint",_profileWaypoint] call ALIVE_fnc_profileEntity;
+                                    };
+                                    
+                                    _profileWaypoint = [_pos, 50, "MOVE", "FULL", 50, [], "LINE"] call ALIVE_fnc_createProfileWaypoint;
+                                    [_profile,"insertWaypoint",_profileWaypoint] call ALIVE_fnc_profileEntity;
+                                    
 		                        	_section set [count _section, _profileID];
 		                        } else {
 		                            //player sidechat format["Entity %1 is already on attack mission...!",_profileID];

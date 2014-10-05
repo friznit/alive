@@ -126,6 +126,7 @@ _engaged = [0,0,0];
 						//Match 2D since some profiles dont have a _pos select 2 defined
 						_currentPosition set [2,0];
 						_destination set [2,0];
+						_executeStatements = false;
 						
 						switch (_type) do {
 							case "MOVE" : {
@@ -158,10 +159,7 @@ _engaged = [0,0,0];
 							_waypoints set [0,objNull];
 							_waypoints = _waypoints - [objNull];
 										
-							//Needs review of any variables in hashes
-							if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)};
-										
-							[] call _handleWPcomplete;			
+							[] call _handleWPcomplete; _executeStatements = true;
 							
 							[_entityProfile,"waypoints",_waypoints] call ALIVE_fnc_hashSet;
 							
@@ -195,6 +193,9 @@ _engaged = [0,0,0];
 							[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
 							[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
 						};
+                        
+                        // Execute statements at the end, needs review of any variables in hashes
+                        if (_executeStatements) then {if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)}};
 					};
 				} else {
 					diag_log format ["Profile-Simulator corrupted profile detected %3: _currentPosition %1 _destination %2",_currentPosition,_destination,_entityProfile];

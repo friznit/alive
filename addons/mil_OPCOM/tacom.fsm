@@ -83,8 +83,8 @@ link36[] = {24,25};
 link37[] = {25,26};
 link38[] = {26,10};
 link39[] = {27,28};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-681.828247,308.355530,341.369568,-456.926331,934,753,1};
-window[] = {0,-1,-1,-1,-1,1082,198,1821,198,1,951};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-667.123535,293.650696,329.514404,-445.071259,934,753,1};
+window[] = {0,-1,-1,-1,-1,928,44,1667,44,1,951};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -128,25 +128,25 @@ class FSM
        "	default {_colorside = ""ColorRed""};" \n
        "};" \n
        "" \n
-       "/*" \n
-       "//Add random movement to profiles so they dont stand still if no waypoints" \n
-       "_profIDs = [];" \n
-       "{" \n
-       "	_profIDsTMP = ([ALIVE_profileHandler, ""getProfilesByFaction"",_x] call ALIVE_fnc_profileHandler);" \n
-       "	_profIDs = _profIDs + _profIDsTMP;" \n
-       "} foreach _factions;" \n
-       "{" \n
-       "                        private [""_prof"",""_type""];" \n
-       "                        _prof = [ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler;" \n
-       "                        [_prof, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",200]] call ALIVE_fnc_profileEntity;" \n
-       "} foreach _profIDs;" \n
+       "// Get all controlled profiles" \n
+       "_inf = [_OPCOM_HANDLER,""infantry"",[]] call ALiVE_fnc_HashGet;" \n
+       "_mot = [_OPCOM_HANDLER,""motorized"",[]] call ALiVE_fnc_HashGet;" \n
+       "_mech = [_OPCOM_HANDLER,""mechanized"",[]] call ALiVE_fnc_HashGet;" \n
+       "_armored = [_OPCOM_HANDLER,""armored"",[]] call ALiVE_fnc_HashGet;" \n
+       "_artillery = [_OPCOM_HANDLER,""artillery"",[]] call ALiVE_fnc_HashGet;" \n
+       "_AAA = [_OPCOM_HANDLER,""AAA"",[]] call ALiVE_fnc_HashGet;" \n
+       "_air = [_OPCOM_HANDLER,""air"",[]] call ALiVE_fnc_HashGet;" \n
+       "_sea = [_OPCOM_HANDLER,""sea"",[]] call ALiVE_fnc_HashGet;" \n
+       "_profiles = _inf + _mot + _mech + _armored + _artillery + _AAA + _air + _sea;" \n
+       "" \n
+       "//Reset ambient movement on all controlled profiles" \n
+       "{[[ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",200]] call ALIVE_fnc_profileEntity} foreach _profiles;" \n
        "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
-       "	[""%1 profiles for %2"",count _profIDs,_factions] call ALIVE_fnc_dumpR;" \n
+       "	[""MIL OPCOM - Counting %1 profiles for faction %2"",count _profiles,_factions] call ALIVE_fnc_dumpR;" \n
        "};" \n
-       "// debug ---------------------------------------" \n
-       "*/"/*%FSM</STATEINIT""">*/;
+       "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
