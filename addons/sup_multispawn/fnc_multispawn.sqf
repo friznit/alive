@@ -143,19 +143,16 @@ switch(_operation) do {
                                     if (faction _vehicle == _id) then {
                                         switch (GVAR(MULTISPAWN_TYPE)) do {
                                             case ("insertion") : {
-                                                if (_vehicle isKindOf "Air") exitwith {
+                                                // Create / position insertion marker
+                                                if !((format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]) call ALiVE_fnc_markerExists) then {_m = (format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]); createMarker [_m, getposATL _x]} else {_m setmarkerpos (getposASL (vehicle _x))};
 
-                                                    // Create / position insertion marker
-                                                    if !((format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]) call ALiVE_fnc_markerExists) then {_m = (format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]); createMarker [_m, getposATL _x]} else {_m setmarkerpos (getposASL (vehicle _x))};
+					                            [_factionData,QGVAR(PLAYERQUEUE), []] call ALiVE_fnc_HashSet;
+					                            [_factionData,QGVAR(INSERTING), false] call ALiVE_fnc_HashSet;
+					                            [_factionData,QGVAR(INSERTION_TRANSPORT), nil] call ALiVE_fnc_HashSet;
 
-						                            [_factionData,QGVAR(PLAYERQUEUE), []] call ALiVE_fnc_HashSet;
-						                            [_factionData,QGVAR(INSERTING), false] call ALiVE_fnc_HashSet;
-						                            [_factionData,QGVAR(INSERTION_TRANSPORT), nil] call ALiVE_fnc_HashSet;
+                                                [_factionData,QGVAR(VEHICLETYPE), typeOf _vehicle] call ALiVE_fnc_HashSet;
 
-                                                    [_factionData,QGVAR(VEHICLETYPE), typeOf _vehicle] call ALiVE_fnc_HashSet;
-
-                                                    deletevehicle (vehicle _x);
-                                                };
+                                                deletevehicle (vehicle _x);
                                             };
                                             case ("vehicle") : {
                                                 if ((vehicle _x) isKindOf "Car") exitwith {
@@ -550,7 +547,7 @@ switch(_operation) do {
             _wp setWaypointSpeed "FULL";
             _wp setWaypointStatements ["true", "
             	(group this) setspeedmode 'LIMITED';
-            	(vehicle this) land 'land';
+            	if ((vehicle this) iskindof 'Air') then {(vehicle this) land 'land'};
 			"];
             //////////////////////////////////////////////
 
@@ -590,21 +587,24 @@ switch(_operation) do {
                 deleteGroup (_data select 2);
                 deleteVehicle (_data select 0);
             } else {
-	            _wp = _group addWaypoint [_StartPos, 0];
-	            _wp setWaypointSpeed "FULL";
-                _wp setWaypointBehaviour "CARELESS";
-	            _wp setWaypointStatements ["true", "
-	                _vehicle = vehicle this;
-	                _data = +(_vehicle getvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',[objNull,[],grpNull]]);
-	                _factionData = [ALiVE_SUP_MULTISPAWN_STORE,faction this] call ALiVE_fnc_HashGet;
-
-	                _vehicle setvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',nil];
-	                [_factionData,'ALiVE_sup_multispawn_INSERTION_TRANSPORT'] call ALiVE_fnc_HashRem;
-
-	            	{deleteVehicle _x} foreach (_data select 1);
-	                deleteGroup (_data select 2);
-	                deleteVehicle (_data select 0);
+				_wp = _group addWaypoint [_StartPos, 0];
+				_wp setWaypointType "MOVE";
+				_wp setWaypointSpeed "FULL";
+				_wp setWaypointBehaviour "CARELESS";
+				_wp setWaypointStatements ["true", "
+				    _vehicle = vehicle this;
+				    _data = +(_vehicle getvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',[objNull,[],grpNull]]);
+				    _factionData = [ALiVE_SUP_MULTISPAWN_STORE,faction this] call ALiVE_fnc_HashGet;
+				
+				    _vehicle setvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',nil];
+				    [_factionData,'ALiVE_sup_multispawn_INSERTION_TRANSPORT'] call ALiVE_fnc_HashRem;
+				
+					{deleteVehicle _x} foreach (_data select 1);
+				    deleteGroup (_data select 2);
+				    deleteVehicle (_data select 0);
 				"];
+                
+                _group setCurrentWaypoint _wp;
         	};
 
             deleteVehicle _heliPad;
