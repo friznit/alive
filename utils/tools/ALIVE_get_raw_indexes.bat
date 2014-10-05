@@ -39,7 +39,9 @@ rem ----------------------------- A3 --------------------------------------
 rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
 rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
-%exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
+rem %exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
+
+%exe% "%arma%\@everon2013\addons\everon2014.pbo" > %target%\objects.everon2014.sqf
 
 rem %exe% "%arma%\@sfp_islands\addons\sfp_sturko.pbo" > %target%\objects.sturko.sqf
 rem %exe% "%arma%\@sfp_islands\addons\sfp_wamako.pbo" > %target%\objects.wamako.sqf
