@@ -153,7 +153,7 @@ switch(_operation) do {
 
                 //if server, and no CQB master logic present yet, then initialise CQB master game logic on server and inform all clients
                 if (isnil QMOD(CQB)) then {
-                    MOD(CQB) = (createGroup sideLogic) createUnit ["LOGIC", [0,0], [], 0, "NONE"];
+                    MOD(CQB) = (createGroup sideLogic) createUnit ["ALiVE_mil_cqb", [0,0], [], 0, "NONE"];
 					MOD(CQB) setVariable ["super", SUPERCLASS];
 					MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
                     MOD(CQB) setVariable ["startupComplete", false,true];
@@ -304,6 +304,7 @@ switch(_operation) do {
 
 				//Indicate startup is done on server for that instance
 				_logic setVariable ["init",true,true];
+                _logic setVariable ["startupComplete",true,true];
 
                 if ({!(_x getVariable ["init",false])} count (MOD(CQB) getvariable ["instances",[]]) == 0) then {
                 	//Indicate all instances are initialised on server
