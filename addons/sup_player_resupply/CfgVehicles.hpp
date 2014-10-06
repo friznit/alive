@@ -37,6 +37,69 @@ class CfgVehicles {
                                     };
                             };
                     };
+                    class pr_restrictionDeliveryAirDrop
+                    {
+                            displayName = "$STR_ALIVE_PR_RESTRICTION_DELIVERY_AIRDROP";
+                            description = "$STR_ALIVE_PR_RESTRICTION_DELIVERY_AIRDROP_COMMENT";
+                            class Values
+                            {
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                            default = true;
+                                            typeName = "BOOL";
+                                    };
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            typeName = "BOOL";
+                                    };
+                            };
+                    };
+                    class pr_restrictionDeliveryInsert
+                    {
+                            displayName = "$STR_ALIVE_PR_RESTRICTION_DELIVERY_INSERT";
+                            description = "$STR_ALIVE_PR_RESTRICTION_DELIVERY_INSERT_COMMENT";
+                            class Values
+                            {
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                            default = true;
+                                            typeName = "BOOL";
+                                    };
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            typeName = "BOOL";
+                                    };
+                            };
+                    };
+                    class pr_restrictionDeliveryConvoy
+                    {
+                            displayName = "$STR_ALIVE_PR_RESTRICTION_DELIVERY_CONVOY";
+                            description = "$STR_ALIVE_PR_RESTRICTION_DELIVERY_CONVOY_COMMENT";
+                            class Values
+                            {
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                            default = true;
+                                            typeName = "BOOL";
+                                    };
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            typeName = "BOOL";
+                                    };
+                            };
+                    };
                 };
 
         };

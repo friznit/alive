@@ -115,6 +115,48 @@ switch(_operation) do {
     case "pr_restrictionType": {
         _result = [_logic,_operation,_args,DEFAULT_RESTRICTION_TYPE] call ALIVE_fnc_OOsimpleOperation;
     };
+    case "pr_restrictionDeliveryAirDrop": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["pr_restrictionDeliveryAirDrop", _args];
+        } else {
+            _args = _logic getVariable ["pr_restrictionDeliveryAirDrop", true];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["pr_restrictionDeliveryAirDrop", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "pr_restrictionDeliveryInsert": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["pr_restrictionDeliveryInsert", _args];
+        } else {
+            _args = _logic getVariable ["pr_restrictionDeliveryInsert", true];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["pr_restrictionDeliveryInsert", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "pr_restrictionDeliveryConvoy": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["pr_restrictionDeliveryConvoy", _args];
+        } else {
+            _args = _logic getVariable ["pr_restrictionDeliveryConvoy", true];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["pr_restrictionDeliveryConvoy", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
 
 	case "countsAir": {
         _result = [_logic,_operation,_args,DEFAULT_COUNT_AIR] call ALIVE_fnc_OOsimpleOperation;
@@ -301,7 +343,28 @@ switch(_operation) do {
 
             // get the restriction type
 
-            private ["_restrictionType"];
+            private ["_restrictionType","_restrictionTypeAirDrop","_restrictionTypeHeliInsert","_restrictionTypeConvoy"];
+
+            _restrictionTypeAirDrop = _logic getVariable ["pr_restrictionDeliveryAirDrop",true];
+            _restrictionTypeHeliInsert = _logic getVariable ["pr_restrictionDeliveryInsert",true];
+            _restrictionTypeConvoy = _logic getVariable ["pr_restrictionDeliveryConvoy",true];
+
+            if (typeName _restrictionTypeAirDrop == "STRING") then {
+                    if(_restrictionTypeAirDrop == "true") then {_restrictionTypeAirDrop = true;} else {_restrictionTypeAirDrop = false;};
+                    _logic setVariable ["pr_restrictionDeliveryAirDrop", _restrictionTypeAirDrop];
+            };
+
+            if (typeName _restrictionTypeHeliInsert == "STRING") then {
+                    if(_restrictionTypeHeliInsert == "true") then {_restrictionTypeHeliInsert = true;} else {_restrictionTypeHeliInsert = false;};
+                    _logic setVariable ["pr_restrictionDeliveryInsert", _restrictionTypeHeliInsert];
+            };
+
+            if (typeName _restrictionTypeConvoy == "STRING") then {
+                    if(_restrictionTypeConvoy == "true") then {_restrictionTypeConvoy = true;} else {_restrictionTypeConvoy = false;};
+                    _logic setVariable ["pr_restrictionDeliveryConvoy", _restrictionTypeConvoy];
+            };
+
+            ["DROP: %1 INSERT: %2 CONV: %3",typeName _restrictionTypeAirDrop,typeName _restrictionTypeHeliInsert,typeName _restrictionTypeConvoy] call ALIVE_fnc_dump;
 
             _restrictionType = _logic getVariable ["pr_restrictionType","SIDE"];
 
@@ -322,8 +385,32 @@ switch(_operation) do {
 
             private ["_deliveryListOptions","_deliveryListValues"];
 
+            _deliveryListOptions = [];
+            _deliveryListValues = [];
+
+            if(_restrictionTypeAirDrop) then {
+                _deliveryListOptions set [count _deliveryListOptions,"Air Drop"];
+                _deliveryListValues set [count _deliveryListValues,"PR_AIRDROP"];
+            };
+
+            if(_restrictionTypeHeliInsert) then {
+                _deliveryListOptions set [count _deliveryListOptions,"Heli Insertion"];
+                _deliveryListValues set [count _deliveryListValues,"PR_HELI_INSERT"];
+            };
+
+            if(_restrictionTypeConvoy) then {
+                _deliveryListOptions set [count _deliveryListOptions,"Convoy"];
+                _deliveryListValues set [count _deliveryListValues,"PR_STANDARD"];
+            };
+
+            if(count _deliveryListOptions == 0) then {
+                ["There are no delivery methods allowed, enable a delivery method on the Player Combat Logistics module!"] call ALIVE_fnc_dumpR;
+            };
+
+            /*
             _deliveryListOptions = ["Air Drop","Heli Insertion","Convoy"];
             _deliveryListValues = ["PR_AIRDROP","PR_HELI_INSERT","PR_STANDARD"];
+            */
 
             [_logic,"deliveryListOptions",_deliveryListOptions] call MAINCLASS;
 
