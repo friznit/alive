@@ -45,7 +45,7 @@ _menuName = "";
 _menuRsc = "popup";
 _items = assignedItems player + items player;
 _backpacks = Backpack player;
-_userItems = [[MOD(SUP_PLAYER_RESUPPLY),"c2_item"] call ALIVE_fnc_C2ISTAR,"ALIVE_Tablet"];
+_userItems = [[MOD(MIL_C2ISTAR),"c2_item"] call ALIVE_fnc_C2ISTAR,"ALIVE_Tablet"];
 //Finds selected userItem-string(s) in assignedItems
 _result = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _userItems) > 0);
 
