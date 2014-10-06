@@ -110,7 +110,16 @@ _engaged = [0,0,0];
 				if (!(isnil "_currentPosition") && {count _currentPosition > 0} && {!(isnil "_destination")} && {count _destination > 0}) then {
 
 					// if other profiles of enemy sides are near collect to clashing groups and do not simulate them
-                    {if !(isnil "_x") then {if (((_x select 2 select 2) distance _currentPosition < 200) && {!((_x select 2 select 3) == _side)} && {(_x select 2 select 5) == "entity"}) exitwith {_collect = true}}} foreach (_profiles select 2);
+                    {
+                        if !(isnil "_x") then {
+	                        if (
+								((_x select 2 select 2) distance _currentPosition < 200) &&
+								{(_x select 2 select 5) == "entity"} &&
+								{!((_x select 2 select 3) == _side)} && 
+								{!((_side == "CIV"))}
+	                        ) exitwith {_collect = true};
+                         };
+                     } foreach (_profiles select 2);
                     
 					if (isnil "_isAir" && {!isnil "_collect"}) then {
 					   
