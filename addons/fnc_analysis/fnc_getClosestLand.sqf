@@ -27,7 +27,43 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_position","_radius","_result","_err", "_sector","_sectorData","_sectorTerrain","_sectorTerrainSamples","_samples","_sectors"];
+private ["_getClosestLandFromSectors","_position","_radius","_result","_err", "_sector","_sectorData","_sectorTerrain","_sectorTerrainSamples","_samples","_sectors","_landPosition"];
+
+_getClosestLandFromSectors = {
+
+    private ["_sectors","_position","_sector","_sectorData","_sectorTerrainSamples","_samples"];
+
+    _sectors = _this select 0;
+    _position = _this select 1;
+
+    _sectors = [_sectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
+
+    _result = [];
+
+    if(count _sectors > 0) then {
+
+        _sectors = [_sectors,_position] call ALIVE_fnc_sectorSortDistance;
+
+        {
+            _sector = _x;
+            _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+
+            _sectorData call ALIVE_fnc_inspectHash;
+
+            _sectorTerrainSamples = [_sectorData, "terrainSamples"] call ALIVE_fnc_hashGet;
+            _samples = [_sectorTerrainSamples, "land"] call ALIVE_fnc_hashGet;
+
+            if(count _samples > 0) exitWith {
+                _result = _samples select (floor(random((count _samples)-1)));
+            };
+
+        } forEach _sectors;
+
+    };
+
+    _result
+
+};
 	
 _position = _this select 0;
 //_radius = _this select 1;
@@ -60,51 +96,38 @@ if(_sectorTerrain == "SHORE") then {
 // if so spawn on a random land position
 if(_sectorTerrain == "SEA") then {
 
-	//["GCL - sector terrain is sea"] call ALIVE_fnc_dump;
-	_sectors = [ALIVE_sectorGrid, "surroundingSectors", _position] call ALIVE_fnc_sectorGrid;
-	//_sectors = [_sectors, "land"] call ALIVE_fnc_sectorFilterBestPlaces;
-	_sectors = [_sectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
-	
-	//["GCL - lands sectors count %1",count _sectors] call ALIVE_fnc_dump;
-	
-	if(count _sectors > 0) then {
-		_sectors = [_sectors,_position] call ALIVE_fnc_sectorSortDistance;
-		_sector = _sectors select 0;
-		_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
-		_sectorTerrainSamples = [_sectorData, "terrainSamples"] call ALIVE_fnc_hashGet;
-		_samples = [_sectorTerrainSamples, "land"] call ALIVE_fnc_hashGet;
-		
-		if(count _samples > 0) then {
-			//["GCL got land samples: %1",_samples] call ALIVE_fnc_dump;
-			_result = _samples select (floor(random((count _samples)-1)));
-		};
-	}else{
-	
-		//["GCL - no land in surrounding sectors"] call ALIVE_fnc_dump;
-		
-		// no land within surrounding sectors use radius to find larger area
-		_sectors = [ALIVE_sectorGrid, "sectorsInRadius", [_position, 3000]] call ALIVE_fnc_sectorGrid;
-		//_sectors = [_sectors, "land"] call ALIVE_fnc_sectorFilterBestPlaces;
-		_sectors = [_sectors, "SEA"] call ALIVE_fnc_sectorFilterTerrain;
-		
-		if(count _sectors > 0) then {
-		
-			//["GCL - no land in radius sectors"] call ALIVE_fnc_dump;
-		
-			_sectors = [_sectors,_position] call ALIVE_fnc_sectorSortDistance;
-			_sector = _sectors select 0;
-			_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
-			_sectorTerrainSamples = [_sectorData, "terrainSamples"] call ALIVE_fnc_hashGet;
-			_samples = [_sectorTerrainSamples, "land"] call ALIVE_fnc_hashGet;
-			
-			if(count _samples > 0) then {
-				//["GCL got land samples: %1",_samples] call ALIVE_fnc_dump;
-				_result = _samples select (floor(random((count _samples)-1)));
-			};
-		}else{
-			// not sure what to do here, they are out to sea...
-		}
-	};
+    _sectors = [ALIVE_sectorGrid, "surroundingSectors", _position] call ALIVE_fnc_sectorGrid;
+
+    _landPosition = [_sectors,_position] call _getClosestLandFromSectors;
+
+    if(count _landPosition == 0) then {
+
+        //["GCL - no land found in surrounding sectors, expanding search"] call ALIVE_fnc_dump;
+
+        _sectors = [ALIVE_sectorGrid, "sectorsInRadius", [_position, 3000]] call ALIVE_fnc_sectorGrid;
+
+        _landPosition = [_sectors,_position] call _getClosestLandFromSectors;
+
+        if(count _landPosition == 0) then {
+
+            //["GCL - no land found within 3000m, expanding search"] call ALIVE_fnc_dump;
+
+            _sectors = [ALIVE_sectorGrid, "sectorsInRadius", [_position, 5000]] call ALIVE_fnc_sectorGrid;
+
+            _landPosition = [_sectors,_position] call _getClosestLandFromSectors;
+
+            if(count _landPosition == 0) then {
+
+                //["GCL - no land found within 5000m, expanding search"] call ALIVE_fnc_dump;
+
+                _sectors = [ALIVE_sectorGrid, "sectorsInRadius", [_position, 10000]] call ALIVE_fnc_sectorGrid;
+
+                _landPosition = [_sectors,_position] call _getClosestLandFromSectors;
+
+            };
+        };
+    };
+
 };			
 
-if !(isnil "_result") then {_result set [2,0]; _result} else {_position};
+if !(isnil "_landPosition") then {_landPosition set [2,0]; _landPosition} else {_position};
