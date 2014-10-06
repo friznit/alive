@@ -333,7 +333,7 @@ switch(_operation) do {
 			// Spawn the main force
 			
 			private ["_groups","_motorizedGroups","_infantryGroups","_group","_totalCount","_position",
-			"_groupCount"];
+			"_groupCount","_profiles"];
 			
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
@@ -394,15 +394,16 @@ switch(_operation) do {
 					_infantryGroups set [count _infantryGroups, _group];
 				}
 			};
-
-			_groups = _groups + _infantryGroups;
-
+			
 			for "_i" from 0 to _countSpecOps -1 do {
                 _group = ["SpecOps",_faction] call ALIVE_fnc_configGetRandomGroup;
                 if!(_group == "FALSE") then {
-                    _groups set [count _groups, _group];
+                    _infantryGroups set [count _infantryGroups, _group];
                 };
             };
+
+			_groups = _groups + _infantryGroups;
+	
 			
 			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
@@ -439,7 +440,15 @@ switch(_operation) do {
 
                     if!(surfaceIsWater _position) then {
 
-                        [_group, _position, random(360), false, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+                        _profiles = [_group, _position, random(360), false, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+						
+						{
+							if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+								[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;
+							};
+						} foreach _profiles;
+						
+						_countProfiles = _countProfiles + count _profiles;
 
                     };
                 };

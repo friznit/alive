@@ -1105,6 +1105,13 @@ switch(_operation) do {
 					_infantryGroups set [count _infantryGroups, _group];
 				}
 			};
+			
+			for "_i" from 0 to _countSpecOps -1 do {
+                _group = ["SpecOps",_faction] call ALIVE_fnc_configGetRandomGroup;
+                if!(_group == "FALSE") then {
+                    _infantryGroups set [count _infantryGroups, _group];
+                };
+            };
 
 			_groups = _groups + _infantryGroups;
 			
@@ -1113,14 +1120,7 @@ switch(_operation) do {
 				if!(_group == "FALSE") then {
 					_groups set [count _groups, _group];
 				};
-			};
-
-			for "_i" from 0 to _countSpecOps -1 do {
-                _group = ["SpecOps",_faction] call ALIVE_fnc_configGetRandomGroup;
-                if!(_group == "FALSE") then {
-                    _groups set [count _groups, _group];
-                };
-            };
+			};			
 			
 			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
