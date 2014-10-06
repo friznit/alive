@@ -89,13 +89,9 @@ _faction = _this select 0;
 
 [""] call ALIVE_fnc_dump;
 [""] call ALIVE_fnc_dump;
-_text = " ----------------------------------------------------------------------------------------------------------- ";
-[_text] call ALIVE_fnc_dump;
+["// %1",_faction] call ALIVE_fnc_dump;
 [""] call ALIVE_fnc_dump;
 [""] call ALIVE_fnc_dump;
-_text = " ----------- Faction Static Data Generation ----------- ";
-[_text] call ALIVE_fnc_dump;
-["Creating static data entries for faction: %1",_faction] call ALIVE_fnc_dump;
 
 
 
@@ -149,51 +145,90 @@ if!(_factionToGroupMappingOK) then {
 
 // found some groups for the faction - investigate them
 
-private ["_standardVehicleTypes","_groupSide","_groupFaction","_groupConfigName","_unitConfigName","_unitSide","_unitVehicle",
-"_unitRank","_vehicleConfigName","_vehicleType","_vehicleCrew","_crewConfig","_crewConfigName","_crewFaction","_crewSide"];
+private ["_factionCategoryGroups","_config","_class","_categoryName","_aliveCategory","_groups","_factionGroupCategory"];
 
-if(_groupToFactionMappingOK || _factionToGroupMappingOK && (count _factionGroups > 0)) then {
+_factionCategoryGroups = [] call ALIVE_fnc_hashCreate;
 
-    {
-        _groupSide = [_x >> "side"] call ALIVE_fnc_getConfigValue;
-        _groupFaction = [_x >> "faction"] call ALIVE_fnc_getConfigValue;
-        _groupConfigName = configName _x;
+if(_factionToGroupMappingOK) then {
 
-        for "_i" from 0 to count _x -1 do {
+    _config = configfile >> "CfgGroups" >> _sideToText >> _faction;
 
-            _class = _x select _i;
+    for "_i" from 0 to count _config -1 do {
 
-            if (isClass _class) then {
+        _class = _config select _i;
 
-                _unitConfigName = configName _class;
-                _unitSide = [_class >> "side"] call ALIVE_fnc_getConfigValue;
-                _unitVehicle = [_class >> "vehicle"] call ALIVE_fnc_getConfigValue;
-                _unitRank = [_class >> "rank"] call ALIVE_fnc_getConfigValue;
+        if (isClass _class) then {
+            _categoryName = configName _class;
+            _aliveCategory = [_class >> "aliveCategory"] call ALIVE_fnc_getConfigValue;
 
-                if!(isNil "_unitVehicle") then {
+            if!(isNil "_aliveCategory") then {
 
-                    _vehicleConfig = configfile >> "CfgVehicles" >> _unitVehicle;
+                _groups = [];
 
-                    if(count _vehicleConfig > 0) then {
+                for "_o" from 0 to count _class -1 do {
 
-                        _vehicleConfigName = configName _vehicleConfig;
+                    _group = _class select _o;
 
-                        if(_vehicleConfigName isKindOf "Man") then {
+                    if (isClass _group) then {
+                        _groupName = configName _group;
 
-                        }else{
-
-                            _vehicleType = [_vehicleConfig >> "vehicleClass"] call ALIVE_fnc_getConfigValue;
-                            _vehicleCrew = [_vehicleConfig >> "crew"] call ALIVE_fnc_getConfigValue;
-
-                        };
+                        _groups set [count _groups, _groupName];
                     };
                 };
+
+                [_factionCategoryGroups,_aliveCategory,_groups] call ALIVE_fnc_hashSet;
+
             };
         };
-
-    } forEach _factionGroups;
-
+    };
 };
+
+
+private ["_groupCategory","_categoryGroups","_arrayContent","_groupClass","_configName","_delimit"];
+
+['%1_mappings = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dump;
+['%1_factionCustomGroups = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dump;
+['[%1_mappings, "Side", "%2"] call ALIVE_fnc_hashSet;',_faction,_sideToText] call ALIVE_fnc_dump;
+['[%1_mappings, "GroupSideName", "%2"] call ALIVE_fnc_hashSet;',_faction,_sideToText] call ALIVE_fnc_dump;
+['[%1_mappings, "FactionName", "%1"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
+['[%1_mappings, "GroupFactionName", "%1"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dump;
+['%1_typeMappings = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dump;
+['[%1_mappings, "GroupFactionTypes", %1_typeMappings] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dump;
+{
+
+    _groupCategory = _x;
+
+    _categoryGroups = [_factionCategoryGroups,_groupCategory] call ALIVE_fnc_hashGet;
+
+    _arrayContent = "";
+
+    _delimit = "";
+
+    {
+        if(_forEachIndex == 0) then {
+            _delimit = "";
+        }else{
+            _delimit = ",";
+        };
+
+        _arrayContent = format['%1%2"%3"',_arrayContent,_delimit,_x];
+
+    } forEach _categoryGroups;
+
+    ['[%1_factionCustomGroups, "%2", [%3]] call ALIVE_fnc_hashSet;',_faction,_groupCategory,_arrayContent] call ALIVE_fnc_dump;
+
+} forEach (_factionCategoryGroups select 1);
+
+[''] call ALIVE_fnc_dump;
+['[%1_mappings, "Groups", %1_factionCustomGroups] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dump;
+['[ALIVE_factionCustomMappings, "%1", %1_mappings] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
+
 
 
 private ["_factionVehicles","_factionMen","_class","_configName","_currentFaction","_vehicleType","_factionVehicleTypes"];
@@ -234,7 +269,7 @@ for "_i" from 0 to count _config -1 do {
 };
 
 
-private ["_vehicleType","_vehicleClasses","_array","_vehicleClass","_configName"];
+private ["_vehicleType","_vehicleClasses","_array","_vehicleClass","_configName","_delimit"];
 
 {
 
@@ -243,9 +278,10 @@ private ["_vehicleType","_vehicleClasses","_array","_vehicleClass","_configName"
     _vehicleClasses = [_factionVehicles,_vehicleType] call ALIVE_fnc_hashGet;
 
     [" "] call ALIVE_fnc_dump;
-    ["-- Type: %1",_vehicleType] call ALIVE_fnc_dump;
+    ["// %1",_vehicleType] call ALIVE_fnc_dump;
 
     _arrayContent = "";
+    _delimit = "";
 
     {
 
@@ -253,13 +289,15 @@ private ["_vehicleType","_vehicleClasses","_array","_vehicleClass","_configName"
 
         _configName = configName _vehicleClass;
 
-        _arrayContent = format['%1,"%2"',_arrayContent,_configName];
+        if(_forEachIndex == 0) then {
+            _delimit = "";
+        }else{
+            _delimit = ",";
+        };
+
+        _arrayContent = format['%1%2"%3"',_arrayContent,_delimit,_configName];
 
     } forEach _vehicleClasses;
-
-    {
-
-    } forEach _array;
 
     _supports = format['[ALIVE_factionDefaultSupports, "%1", [%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent];
     _supplies = format['[ALIVE_factionDefaultSupplies, "%1", [%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent];

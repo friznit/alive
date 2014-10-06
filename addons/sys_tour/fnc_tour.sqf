@@ -229,8 +229,8 @@ switch(_operation) do {
         _opcomSelection = [] call ALIVE_fnc_hashCreate;
 
         [_opcomSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_opcom.paa"] call ALIVE_fnc_hashSet;
-        [_opcomSelection,"inactiveLabel","OPCOM"] call ALIVE_fnc_hashSet;
-        [_opcomSelection,"activeLabel","The military commanders"] call ALIVE_fnc_hashSet;
+        [_opcomSelection,"inactiveLabel","AI Commander"] call ALIVE_fnc_hashSet;
+        [_opcomSelection,"activeLabel","The military AI commanders"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"iconState",["Opcom",0,0]] call ALIVE_fnc_hashSet;
 
         _dataSelection = [] call ALIVE_fnc_hashCreate;
@@ -243,7 +243,7 @@ switch(_operation) do {
         _warroomSelection = [] call ALIVE_fnc_hashCreate;
 
         [_warroomSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_task.paa"] call ALIVE_fnc_hashSet;
-        [_warroomSelection,"inactiveLabel","WarRoom"] call ALIVE_fnc_hashSet;
+        [_warroomSelection,"inactiveLabel","WarRoom Web Integration"] call ALIVE_fnc_hashSet;
         [_warroomSelection,"activeLabel","The WarRoom web system"] call ALIVE_fnc_hashSet;
         [_warroomSelection,"iconState",["Warroom",0,0]] call ALIVE_fnc_hashSet;
 
@@ -263,21 +263,21 @@ switch(_operation) do {
         _opcomSelection = [] call ALIVE_fnc_hashCreate;
 
         [_opcomSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_opcom.paa"] call ALIVE_fnc_hashSet;
-        [_opcomSelection,"inactiveLabel","OPCOM"] call ALIVE_fnc_hashSet;
+        [_opcomSelection,"inactiveLabel","AI Commander"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"activeLabel","The military AI commander (OPCOM) module"] call ALIVE_fnc_hashSet;
         [_opcomSelection,"iconState",["ModuleOPCOM",0,0]] call ALIVE_fnc_hashSet;
 
         _placementSelection = [] call ALIVE_fnc_hashCreate;
 
         [_placementSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_mil_placement.paa"] call ALIVE_fnc_hashSet;
-        [_placementSelection,"inactiveLabel","Force Placement"] call ALIVE_fnc_hashSet;
+        [_placementSelection,"inactiveLabel","Military Placement"] call ALIVE_fnc_hashSet;
         [_placementSelection,"activeLabel","The military force placement modules"] call ALIVE_fnc_hashSet;
         [_placementSelection,"iconState",["ModulePlacement",0,0]] call ALIVE_fnc_hashSet;
 
         _logisticsSelection = [] call ALIVE_fnc_hashCreate;
 
         [_logisticsSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_logistics.paa"] call ALIVE_fnc_hashSet;
-        [_logisticsSelection,"inactiveLabel","Logistics"] call ALIVE_fnc_hashSet;
+        [_logisticsSelection,"inactiveLabel","Military Logistics"] call ALIVE_fnc_hashSet;
         [_logisticsSelection,"activeLabel","The military AI logistics module"] call ALIVE_fnc_hashSet;
         [_logisticsSelection,"iconState",["ModuleLogistics",0,0]] call ALIVE_fnc_hashSet;
 
@@ -298,21 +298,21 @@ switch(_operation) do {
         _supportSelection = [] call ALIVE_fnc_hashCreate;
 
         [_supportSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_cs.paa"] call ALIVE_fnc_hashSet;
-        [_supportSelection,"inactiveLabel","Combat Support"] call ALIVE_fnc_hashSet;
-        [_supportSelection,"activeLabel","The combat support module"] call ALIVE_fnc_hashSet;
+        [_supportSelection,"inactiveLabel","Player Combat Support"] call ALIVE_fnc_hashSet;
+        [_supportSelection,"activeLabel","The player combat support module"] call ALIVE_fnc_hashSet;
         [_supportSelection,"iconState",["ModuleCombatSupport",0,0]] call ALIVE_fnc_hashSet;
 
         _resupplySelection = [] call ALIVE_fnc_hashCreate;
 
         [_resupplySelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_logistics.paa"] call ALIVE_fnc_hashSet;
-        [_resupplySelection,"inactiveLabel","Combat Logistics"] call ALIVE_fnc_hashSet;
-        [_resupplySelection,"activeLabel","The player resupply module"] call ALIVE_fnc_hashSet;
+        [_resupplySelection,"inactiveLabel","Player Combat Logistics"] call ALIVE_fnc_hashSet;
+        [_resupplySelection,"activeLabel","The player combat logistics module"] call ALIVE_fnc_hashSet;
         [_resupplySelection,"iconState",["ModuleResupply",0,0]] call ALIVE_fnc_hashSet;
 
         _c2Selection = [] call ALIVE_fnc_hashCreate;
 
         [_c2Selection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_intel.paa"] call ALIVE_fnc_hashSet;
-        [_c2Selection,"inactiveLabel","C2ISTAR"] call ALIVE_fnc_hashSet;
+        [_c2Selection,"inactiveLabel","Player Command and Control"] call ALIVE_fnc_hashSet;
         [_c2Selection,"activeLabel","The command and control (C2ISTAR) module"] call ALIVE_fnc_hashSet;
         [_c2Selection,"iconState",["ModuleC2",0,0]] call ALIVE_fnc_hashSet;
 
@@ -338,8 +338,6 @@ switch(_operation) do {
 
 	    _selectionOptions = _logic getVariable "selectionOptions";
 
-	    _selectionOptions call ALIVE_fnc_inspectHash;
-
 	    {
             {
                 _iconState = _x select 2 select 3;
@@ -347,8 +345,6 @@ switch(_operation) do {
                 _iconState set [2,0];
             } forEach _x;
 	    } forEach (_selectionOptions select 2);
-
-	    _selectionOptions call ALIVE_fnc_inspectHash;
 
 	};
 
@@ -508,6 +504,11 @@ switch(_operation) do {
                     _label = _inactiveLabel;
                     _iconActiveTime = 0;
 
+                    if(_distance > 40) then {
+                        _size = 0.5;
+                        _label = "";
+                    };
+
                     if(_position select 2 > 2) then {
                         _position set [2, (_position select 2) - 1];
                         ALIVE_tourIconPositions set [_forEachIndex,_position];
@@ -595,8 +596,6 @@ switch(_operation) do {
     case "handleMenuCallback": {
 
         private["_action","_id"];
-
-        ["HANDLE MENU CALLBACK: %1",_args] call ALIVE_fnc_dump;
 
         _action = _args select 0;
         _id = _args select 1;
@@ -1635,7 +1634,7 @@ switch(_operation) do {
 
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
-            _line1 = "<br/><t size='1.5' color='#68a7b7'>OPCOM</t><br/><br/>";
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>AI Operation Commanders (OPCOM)</t><br/><br/>";
             _line2 = "<t size='1'>The OPCOM module prioritises a list of objectives and then plans and executes missions with available units. Op Commanders will react to the changing environment and attack, defend, withdraw or resupply depending on the current tactical situation. OPCOM continues to work with virtualised groups, controlling a virtual battlefield out of visual range of players.</t><br/><br/>";
             _line3 = "<t size='1'>OPCOM consists of two core elements: Operational Command (OPCOM) and Tactical Command (TACOM). OPCOM takes the objectives of any synced Military or Civilian Placement modules and prioritises them depending on the user defined variables. It also regularly analyses the map, relative troop strengths and available assets required to capture and hold objectives in its area of operations. OPCOM gives missions to TACOM, which in turn executes the tactical level orders to units and reports back its state once that mission is complete.</t><br/><br/>";
 
