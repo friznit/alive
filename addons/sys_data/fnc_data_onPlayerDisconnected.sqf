@@ -51,25 +51,6 @@ if (_name == "__SERVER__") then {
             };
 		};
 
-		if (MOD(sys_data) getVariable ["disableAAR","true"] == "false") then {
-			private "_realTime";
-			_realTime = [] call ALIVE_fnc_getServerTime;
-			[GVAR(AAR), "realTime", _realTime] call ALIVE_fnc_hashSet;
-			[GVAR(AAR), "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
-			[GVAR(AAR), "Operation", GVAR(operation)] call ALIVE_fnc_hashSet;
-			[GVAR(AAR), "Map", worldName] call ALIVE_fnc_hashSet;
-			[GVAR(AAR), "AAR_data", GVAR(AAR_Array)] call ALIVE_fnc_hashSet;
-
-			// Send the data to DB
-			_missionName = format["%1_%2_%3", GVAR(GROUP_ID), missionName, GVAR(AARdocId)];
-
-			_result = [GVAR(datahandler), "write", ["sys_aar", GVAR(AAR), false, _missionName] ] call ALIVE_fnc_Data;
-
-            if(ALiVE_SYS_DATA_DEBUG_ON) then {
-			    ["ALiVE SYS_DATA - SAVED AAR: %1",_result] call ALIVE_fnc_dump;
-            };
-		};
-
 		// Save Data Dictionary
 		if(ALiVE_SYS_DATA_DEBUG_ON) then {
 		    ["ALiVE SYS_DATA: DATA DICTIONARY SIZE: %1",[str(ALIVE_DataDictionary)] call CBA_fnc_strLen] call ALIVE_fnc_dump;
