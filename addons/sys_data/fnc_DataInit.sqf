@@ -263,7 +263,7 @@ if (isDedicated) then {
 
 	TRACE_2("SYS_DATA AAR VAR", MOD(sys_data) getVariable "disableAAR", ALIVE_sys_AAR_ENABLED);
 	// Start the AAR monitoring module
-	if (MOD(sys_data) getvariable ["disableAAR", "true"] == "false" && ALIVE_sys_AAR_ENABLED) then {
+	if (MOD(sys_data) getvariable ["disableAAR", "true"] == "false") then { //  && ALIVE_sys_AAR_ENABLED
 
 		[] spawn {
 			// Thread running on server to report state/pos of every playable unit and group every 60 seconds
@@ -294,7 +294,7 @@ if (isDedicated) then {
 				TRACE_1("SYS_DATA AAR", _tickt);
 				TRACE_1("SYS_DATA AAR", _ttm);
 
-				if ( (count playableUnits > 0) && (_ttm > (_tickt + 60) ) ) then {
+				if ( (count playableUnits > 0) && (_ttm > (_tickt + AAR_DEFAULT_SAMPLE_RATE) ) ) then {
 
 					GVAR(AARdocId) = [] call ALIVE_fnc_realTimeToDTG;
 
@@ -315,13 +315,13 @@ if (isDedicated) then {
 
 					_gametime = format["%1%2", _hours, _minutes];
 					_realTime = [] call ALIVE_fnc_getServerTime;
-
+					TRACE_1("SYS_DATA AAR", allUnits);
 					{
 						private ["_unit"];
 						_unit = vehicle _x;
 						if (alive _unit && (isplayer _x || (_unit == leader (group _unit) && (side _unit != civilian)))) then {
 							private ["_playerHash"];
-
+							TRACE_1("SYS_DATA AAR", _unit);
 							_playerHash = [] call ALIVE_fnc_hashCreate;
 
 							[_playerHash, "AAR_name", name _unit] call ALIVE_fnc_hashSet;
@@ -345,6 +345,7 @@ if (isDedicated) then {
 						};
 					} forEach allUnits;
 
+					[GVAR(AAR), "gameTime", _gametime] call ALIVE_fnc_hashSet;
 					[GVAR(AAR), "realTime", _realTime] call ALIVE_fnc_hashSet;
 					[GVAR(AAR), "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;
 					[GVAR(AAR), "Operation", GVAR(operation)] call ALIVE_fnc_hashSet;
@@ -360,7 +361,8 @@ if (isDedicated) then {
 
 					// Reset
 					GVAR(AAR) = [] call ALIVE_fnc_hashCreate;
-					GVAR(ARR_Array) = [];
+					GVAR(AAR_Array) resize 0;
+					TRACE_1("SYS_AAR",GVAR(AAR_Array));
 					_tickt = diag_tickTime;
 
 				};
