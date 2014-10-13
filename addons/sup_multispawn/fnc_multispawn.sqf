@@ -241,8 +241,23 @@ switch(_operation) do {
 
                         	["ALiVE SUP MULTISPAWN - Forward Spawn EH placed at %1...", time] call ALiVE_fnc_Dump;
 
-                            player addEventHandler ["killed", {if !(isnil "ALiVE_fnc_setGear") then {pLOADOUT = ["", [_this select 0]] call ALiVE_fnc_setGear}}];
-                            player addEventHandler ["respawn", {titleText ["Respawn in progress...", "BLACK IN", 9999]; [] spawn ALiVE_fnc_ForwardSpawn}];
+							player addEventHandler ["KILLED",{
+                                if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+                            }];
+                            
+                            player addEventHandler ["RESPAWN", {
+                                [] spawn {
+                                    waituntil {!isnull player};
+                                    
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
+
+                                    sleep 3;
+                                	titleText ["", "PLAIN"];
+                                };                              
+                                
+
+                                [] spawn ALiVE_fnc_ForwardSpawn;
+                            }];
                         };
 
                         case ("insertion") : {
@@ -251,17 +266,21 @@ switch(_operation) do {
 
                             ["ALiVE SUP MULTISPAWN - Insertion EH placed at %1...", time] call ALiVE_fnc_Dump;
 
-                            player addEventHandler ["killed", {
+                            player addEventHandler ["KILLED", {
+                                if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+                                    
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 3};
-
+                                    
                                     titleText ["Respawning...", "BLACK OUT", 2];
                                 };
                             }];
 
-                            player addEventHandler ["respawn", {
+                            player addEventHandler ["RESPAWN", {
                                 [] spawn {
                                     waituntil {!isnull player};
+                                    
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
 
                                     [[ALiVE_SUP_MULTISPAWN,"collect",player], "ALiVE_fnc_MultiSpawn", false, false] call BIS_fnc_MP;
 
@@ -288,24 +307,29 @@ switch(_operation) do {
 
 							["ALiVE SUP MULTISPAWN - Vehicle EH placed at %1...", time] call ALiVE_fnc_Dump;
 
-							player addEventHandler ["killed", {
+							player addEventHandler ["KILLED", {
+								if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+                                    
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 3};
-
+                                    
                                     titleText ["Respawning...", "BLACK OUT", 2];
                                 };
                             }];
 
-							player addEventHandler ["respawn", {
-
-                                if !(isnil {call compile (format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player])}) then {
-	                                _v = call compile format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player];
-
-	                                if !(alive _v) exitwith {["ALiVE_SUP_MULTISPAWN - No ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1 available... Exiting!",faction player] call ALiVE_fnc_Dump};
-	                                if ([_v] call ALIVE_fnc_vehicleCountEmptyPositions > 0) then {player moveInCargo _v} else {player setposATL [(getposATL _v), 10] call CBA_fnc_RandPos};
-                                };
-
+                            player addEventHandler ["RESPAWN", {
                                 [] spawn {
+                                    waituntil {!isnull player};
+                                    
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
+                            
+	                                if !(isnil {call compile (format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player])}) then {
+		                                _v = call compile format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player];
+	
+		                                if !(alive _v) exitwith {["ALiVE_SUP_MULTISPAWN - No ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1 available... Exiting!",faction player] call ALiVE_fnc_Dump};
+		                                if ([_v] call ALIVE_fnc_vehicleCountEmptyPositions > 0) then {player moveInCargo _v} else {player setposATL [(getposATL _v), 10] call CBA_fnc_RandPos};
+	                                };
+
                                     sleep 3;
                                 	titleText ["", "PLAIN"];
                                 };
@@ -326,7 +350,9 @@ switch(_operation) do {
 
 							["ALiVE SUP MULTISPAWN - Building EH placed at %1...", getposATL _respawnBuilding] call ALiVE_fnc_Dump;
 
-							player addEventHandler ["killed", {
+							player addEventHandler ["KILLED", {
+                                if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+                                    
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 4};
 
@@ -334,19 +360,22 @@ switch(_operation) do {
                                 };
                             }];
 
-							player addEventHandler ["respawn", {
-
-                                _b = nearestObject [getmarkerpos format["ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1",faction player], "Building"];
-
-                                if (!isNil "_b" && {alive _b}) then {
-	                                _p = [_b] call ALIVE_fnc_getMaxBuildingPositions;
-
-	                                if (_p > 0) then {player setpos (_b buildingpos (ceil random _p))} else {player setposATL [(getposATL _b), 20] call CBA_fnc_RandPos};
-                                } else {
-                                    ["ALiVE_SUP_MULTISPAWN - No ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1 available... Exiting!",faction player] call ALiVE_fnc_Dump;
-                                };
-
+                            player addEventHandler ["RESPAWN", {
                                 [] spawn {
+                                    waituntil {!isnull player};
+                                    
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
+                            
+	                                _b = nearestObject [getmarkerpos format["ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1",faction player], "Building"];
+	
+	                                if (!isNil "_b" && {alive _b}) then {
+		                                _p = [_b] call ALIVE_fnc_getMaxBuildingPositions;
+	
+		                                if (_p > 0) then {player setpos (_b buildingpos (ceil random _p))} else {player setposATL [(getposATL _b), 20] call CBA_fnc_RandPos};
+	                                } else {
+	                                    ["ALiVE_SUP_MULTISPAWN - No ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1 available... Exiting!",faction player] call ALiVE_fnc_Dump;
+	                                };
+
                                     sleep 3;
                                 	titleText ["", "PLAIN"];
                                 };

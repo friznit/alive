@@ -1,8 +1,10 @@
+#include <\x\alive\addons\sup_multispawn\script_component.hpp>
+
 #define __NMEDISTANCE 50
 
 private ["_reset","_hdl"];
 
-titleText ["Respawn in progress...", "BLACK IN",999];
+titleText ["Respawn in progress...", "BLACK IN",9999];
 disableUserInput true;
 
 if (isDedicated) exitwith {};
@@ -29,9 +31,6 @@ if (isnil "keyspressed") then {
 };
 
 waituntil {alive player}; _unit = player;
-
-//Setting gear
-if !(isnil "pLOADOUT") then {_hdl = ["", [_unit,pLOADOUT]] spawn ALiVE_fnc_getGear};
 
 aliveUnits = []; {if (alive _x and _x != player) then {aliveUnits set [count aliveUnits,_x]};} foreach units (group player); if (count aliveUnits == 0) exitwith {TitleText[format["There are no units in your group %1!",group player],"PLAIN DOWN"]; disableUserInput false};
 
