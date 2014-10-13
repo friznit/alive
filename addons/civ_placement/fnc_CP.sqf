@@ -797,6 +797,7 @@ switch(_operation) do {
             };
 			
 			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+			_infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
 
 			// Position and create groups

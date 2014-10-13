@@ -139,14 +139,14 @@ ALiVE_PLACEMENT_UNITBLACKLIST = ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST +
 	"C_Driver_3_F",
 	"C_Driver_4_F",
 	"B_Soldier_VR_F",
-    "O_Soldier_VR_F",
-    "I_Soldier_VR_F",
-    "C_Soldier_VR_F",
-    "B_Protagonist_VR_F",
-    "O_Protagonist_VR_F",
-    "I_Protagonist_VR_F",
-    "C_Marshal_F",
-    "C_man_pilot_F"
+	"O_Soldier_VR_F",
+	"I_Soldier_VR_F",
+	"C_Soldier_VR_F",
+	"B_Protagonist_VR_F",
+	"O_Protagonist_VR_F",
+	"I_Protagonist_VR_F",
+	"C_Marshal_F",
+	"C_man_pilot_F"
 ];
 
 /*
@@ -160,14 +160,19 @@ ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +
 	"O_UAV_01_F",
 	"O_UGV_01_F",
 	"O_UGV_01_rcws_F",
+	"O_Parachute_02_F",
 	"B_UAV_01_F",
 	"B_UAV_02_F",
 	"B_UAV_02_CAS_F",
 	"B_UGV_01_F",
 	"B_UGV_01_rcws_F",
 	"B_Parachute_02_F",
+	"I_UAV_02_F",
+	"I_UAV_02_CAS_F",
+	"I_UAV_01_F",
+	"I_UGV_01_F",
+	"I_UGV_01_rcws_F",
 	"I_Parachute_02_F",
-	"O_Parachute_02_F",
 	"Parachute",
 	"Parachute_02_base_F",
 	"ParachuteBase",
@@ -180,7 +185,6 @@ ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +
 	"C_Kart_01_Fuel_F",
 	"C_Kart_01_Red_F",
 	"C_Kart_01_Vrana_F"
-
 ];
 
 /*

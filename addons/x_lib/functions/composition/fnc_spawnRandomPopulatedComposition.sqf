@@ -108,6 +108,7 @@ for "_i" from 0 to _countSpecOps -1 do {
 };
 
 _groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+_infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
 // Position and create groups
 _groupCount = count _groups;

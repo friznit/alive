@@ -401,11 +401,10 @@ switch(_operation) do {
                     _infantryGroups set [count _infantryGroups, _group];
                 };
             };
-
+            
 			_groups = _groups + _infantryGroups;
-	
-			
 			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
+			_infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
 			// DEBUG -------------------------------------------------------------------------------------
             if(_debug) then {
