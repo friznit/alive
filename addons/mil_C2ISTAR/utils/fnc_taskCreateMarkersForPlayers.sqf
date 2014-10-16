@@ -21,14 +21,14 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_taskPosition","_taskSide","_taskID","_taskPlayers","_taskType","_vehicleType","_colour","_typePrefix","_icon","_markerDefinition","_player"];
+private ["_taskPosition","_taskSide","_taskID","_taskPlayers","_taskType","_type","_colour","_typePrefix","_icon","_markerDefinition","_player"];
 
 _taskPosition = _this select 0;
 _taskSide = _this select 1;
 _taskPlayers = _this select 2;
 _taskID = _this select 3;
 _taskType = _this select 4;
-_vehicleType = if(count _this > 5) then {_this select 5} else {""};
+_type = if(count _this > 5) then {_this select 5} else {""};
 
 switch(_taskSide) do {
     case EAST:{
@@ -57,7 +57,7 @@ switch(_taskType) do {
     };
     case "vehicle":{
 
-        switch(_vehicleType) do {
+        switch(_type) do {
             case "Car":{
                 _icon = format["%1_recon",_typePrefix];
             };
@@ -94,6 +94,14 @@ switch(_taskType) do {
         _icon = format["%1_inf",_typePrefix];
 
         _markerDefinition = [_taskPosition,_taskID,_colour,"Target Infantry",_icon,[1,1],1,"ICON"];
+    };
+    
+    case "building":{
+
+        _icon = format["%1_inf",_typePrefix];
+        _type = format["Target %1",_type];
+
+        _markerDefinition = [_taskPosition,_taskID,_colour,_type,_icon,[1,1],1,"ICON"];
     };
 };
 

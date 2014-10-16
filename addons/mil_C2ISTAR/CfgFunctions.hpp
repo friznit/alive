@@ -211,6 +211,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetStateOfEntityProfiles.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetStateOfObjects {
+                description = "Utility have all the entity profiles been destroyed";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetStateOfObjects.sqf";
+                recompile = RECOMPILE;
+            };            
             class taskCreateReward {
                 description = "Utility create a reward for task completion";
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateReward.sqf";
@@ -249,6 +254,11 @@ class CfgFunctions {
             class taskDestroyInfantry {
                 description = "Task Destroy Infantry";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskDestroyInfantry.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskSabotageBuilding {
+                description = "Task Destroy Infantry";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskSabotageBuilding.sqf";
                 recompile = RECOMPILE;
             };
         };
