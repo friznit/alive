@@ -44,19 +44,23 @@ _assignments = [[],[],[],[],[]];
 	
 		_assignedRole = assignedVehicleRole _x;
 		_assignedRoleName = _assignedRole select 0;
+
+		//["ASS ROLE: %1",_assignedRoleName] call ALIVE_fnc_dump;
         
         if !(isnil "_assignedRoleName") then {
+
+            _assignedRoleName = toLower(_assignedRoleName);
 	
 			switch(_assignedRoleName) do {
-				case "Driver":{
+				case "driver":{
 					_assignments set [0, [_unitIndex]];
 				};
-				case "Cargo":{
+				case "cargo":{
 					_cargo = _assignments select 4;
 					_cargo set [count _cargo,_unitIndex];
 					_assignments set [4, _cargo];
 				};
-				case "Turret":{
+				case "turret":{
 					_assignedTurret = _assignedRole select 1;
 					_turretConfig = [_vehicle, _assignedTurret] call CBA_fnc_getTurret;
 					_turretIsGunner = getNumber(_turretConfig >> "primaryGunner");

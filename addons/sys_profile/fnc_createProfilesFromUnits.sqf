@@ -229,7 +229,7 @@ if(_debug) then {
 						_assignments = [_vehicle,_group] call ALIVE_fnc_vehicleAssignmentToProfileVehicleAssignment;
 						
 						_vehicleAssignments = [_vehicleID,_entityID,_assignments];
-						
+
 						[_profileEntity, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileEntity;
 						[_profileVehicle, "addVehicleAssignment", _vehicleAssignments] call ALIVE_fnc_profileVehicle;
 					};

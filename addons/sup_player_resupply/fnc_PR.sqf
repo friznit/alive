@@ -364,8 +364,6 @@ switch(_operation) do {
                     _logic setVariable ["pr_restrictionDeliveryConvoy", _restrictionTypeConvoy];
             };
 
-            ["DROP: %1 INSERT: %2 CONV: %3",typeName _restrictionTypeAirDrop,typeName _restrictionTypeHeliInsert,typeName _restrictionTypeConvoy] call ALIVE_fnc_dump;
-
             _restrictionType = _logic getVariable ["pr_restrictionType","SIDE"];
 
             // set the counts
@@ -404,13 +402,8 @@ switch(_operation) do {
             };
 
             if(count _deliveryListOptions == 0) then {
-                ["There are no delivery methods allowed, enable a delivery method on the Player Combat Logistics module!"] call ALIVE_fnc_dumpR;
+                ["There are no delivery methods allowed, enable one or more delivery methods on the Player Combat Logistics module!"] call ALIVE_fnc_dumpR;
             };
-
-            /*
-            _deliveryListOptions = ["Air Drop","Heli Insertion","Convoy"];
-            _deliveryListValues = ["PR_AIRDROP","PR_HELI_INSERT","PR_STANDARD"];
-            */
 
             [_logic,"deliveryListOptions",_deliveryListOptions] call MAINCLASS;
 
