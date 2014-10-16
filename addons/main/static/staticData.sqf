@@ -697,7 +697,7 @@ _tasksData = [] call ALIVE_fnc_hashCreate;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
 [_taskData,"title","Destroy the infantry"] call ALIVE_fnc_hashSet;
-[_taskData,"description","Intelligence suggests a group of infatry in the area near %1."] call ALIVE_fnc_hashSet;
+[_taskData,"description","Intelligence suggests a group of infantry in the area near %1."] call ALIVE_fnc_hashSet;
 [_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
 
 _taskData = [] call ALIVE_fnc_hashCreate;
@@ -711,6 +711,29 @@ _taskData = [] call ALIVE_fnc_hashCreate;
 _options set [count _options,_tasksData];
 
 [ALIVE_generatedTasks, "DestroyInfantry", ["Destroy the infantry units",_options]] call ALIVE_fnc_hashSet;
+
+// Sabotage Building Task
+
+_options = [];
+
+_tasksData = [] call ALIVE_fnc_hashCreate;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Sabotage in %1"] call ALIVE_fnc_hashSet;
+[_taskData,"description","Destroy the %2 in %1!"] call ALIVE_fnc_hashSet;
+[_tasksData,"Parent",_taskData] call ALIVE_fnc_hashSet;
+
+_taskData = [] call ALIVE_fnc_hashCreate;
+[_taskData,"title","Destroy %1"] call ALIVE_fnc_hashSet;
+[_taskData,"description","We received intelligence about a strategically important %3 near %1! Destroy the %2!"] call ALIVE_fnc_hashSet;
+[_taskData,"chat_start",[["HQ","We received intelligence about a strategically relevant position near %1! Destroy the objective!"],["PLAYERS","Roger that"]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","The objective has been destroyed!"],["HQ","Roger that, well done!"]]] call ALIVE_fnc_hashSet;
+[_taskData,"reward",["forcePool",10]] call ALIVE_fnc_hashSet;
+[_tasksData,"Destroy",_taskData] call ALIVE_fnc_hashSet;
+
+_options set [count _options,_tasksData];
+
+[ALIVE_generatedTasks, "SabotageBuilding", ["Sabotage installation",_options]] call ALIVE_fnc_hashSet;
 
 /*
  * Civ Pop Defaults
