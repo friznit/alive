@@ -31,8 +31,8 @@ _available = 0;
 
 _types = [
 	["Man",0.5],
-	["Truck_F",0.8],
-	["Car",0.3],
+	["Truck_F",0.9],
+	["Car",0.7],
     ["Tank",0.1],
 	["Helicopter",0.9],
 	["Ship",0.3],
