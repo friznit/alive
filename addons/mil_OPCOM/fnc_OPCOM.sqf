@@ -600,6 +600,8 @@ switch(_operation) do {
                                         _profileWaypoint = [_posAttacker, 50] call ALIVE_fnc_createProfileWaypoint;
 								        [_profileWaypoint,"statements",["true",
 											format["
+                                            	if !(isServer) exitwith {};
+                                            
 	                                        	_profile = [ALiVE_ProfileHandler,'getProfile',%1] call ALiVE_fnc_profileHandler;
 	                                            _active = [_profile,'active',false] call ALiVE_fnc_HashGet;
 	                                            
