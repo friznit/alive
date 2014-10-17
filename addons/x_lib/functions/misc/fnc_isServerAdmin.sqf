@@ -28,7 +28,9 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-if (isServer) exitwith {};
+if (isServer && isDedicated) exitwith { false };
+
+if !(isMultiplayer) exitwith { true };
 
 ////serverCommandAvailable "#kick" || !isMultiplayer;
 
