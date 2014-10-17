@@ -49,6 +49,7 @@ Peer Reviewed:
 #define DEFAULT_TASK_EDITING_DISABLED false
 #define DEFAULT_TASK_REVISION ""
 #define DEFAULT_TASK_ID ""
+#define DEFAULT_FACTION ""
 
 #define DEFAULT_DISPLAY_INTEL false
 #define DEFAULT_INTEL_CHANCE "0.1"
@@ -170,6 +171,66 @@ switch(_operation) do {
     };
 	case "c2_item": {
         _result = [_logic,_operation,_args,DEFAULT_C2_ITEM] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "autoGenerateBlufor": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["autoGenerateBlufor", _args];
+        } else {
+            _args = _logic getVariable ["autoGenerateBlufor", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["autoGenerateBlufor", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "autoGenerateBluforFaction": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "autoGenerateBluforEnemyFaction": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "autoGenerateIndfor": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["autoGenerateIndfor", _args];
+        } else {
+            _args = _logic getVariable ["autoGenerateIndfor", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["autoGenerateIndfor", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "autoGenerateIndforFaction": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "autoGenerateIndforEnemyFaction": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "autoGenerateOpfor": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["autoGenerateOpfor", _args];
+        } else {
+            _args = _logic getVariable ["autoGenerateOpfor", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["autoGenerateOpfor", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "autoGenerateOpforFaction": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "autoGenerateOpforEnemyFaction": {
+        _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
     };
     case "displayIntel": {
         if (typeName _args == "BOOL") then {
@@ -327,6 +388,68 @@ switch(_operation) do {
 
             if(_persistent) then {
                 [ALIVE_taskHandler, "loadTaskData", _persistent] call ALIVE_fnc_taskHandler;
+            };
+
+            [_logic] spawn {
+
+                private["_logic","_autoGenerateBLUFOR","_autoGenerateBLUFORFaction","_autoGenerateBLUFOREnemyFaction",
+                "_autoGenerateOPFOR","_autoGenerateOPFORFaction","_autoGenerateOPFOREnemyFaction",
+                "_autoGenerateINDFOR","_autoGenerateINDFORFaction","_autoGenerateINDFOREnemyFaction"];
+
+                _logic = _this select 0;
+
+                _autoGenerateBLUFOR = [_logic, "autoGenerateBlufor"] call MAINCLASS;
+                _autoGenerateBLUFORFaction = [_logic, "autoGenerateBluforFaction"] call MAINCLASS;
+                _autoGenerateBLUFOREnemyFaction = [_logic, "autoGenerateBluforEnemyFaction"] call MAINCLASS;
+
+                _autoGenerateOPFOR = [_logic, "autoGenerateOpfor"] call MAINCLASS;
+                _autoGenerateOPFORFaction = [_logic, "autoGenerateOpforFaction"] call MAINCLASS;
+                _autoGenerateOPFOREnemyFaction = [_logic, "autoGenerateOpforEnemyFaction"] call MAINCLASS;
+
+                _autoGenerateINDFOR = [_logic, "autoGenerateIndfor"] call MAINCLASS;
+                _autoGenerateINDFORFaction = [_logic, "autoGenerateIndforFaction"] call MAINCLASS;
+                _autoGenerateINDFOREnemyFaction = [_logic, "autoGenerateIndforEnemyFaction"] call MAINCLASS;
+
+                sleep 120;
+
+                if(_autoGenerateBLUFOR) then {
+
+                    _taskData = [];
+                    _taskData set [0,"BLUFOR_TASK1"];
+                    _taskData set [1,"1"];
+                    _taskData set [2,"WEST"];
+                    _taskData set [3,_autoGenerateBLUFORFaction];
+                    _taskData set [4,_autoGenerateBLUFOREnemyFaction];
+                    _taskData set [5,true];
+
+                    [ALIVE_taskHandler, "autoGenerateTasks", _taskData] call ALIVE_fnc_taskHandler;
+                };
+
+                if(_autoGenerateOPFOR) then {
+
+                    _taskData = [];
+                    _taskData set [0,"OPFOR_TASK1"];
+                    _taskData set [1,"1"];
+                    _taskData set [2,"EAST"];
+                    _taskData set [3,_autoGenerateOPFORFaction];
+                    _taskData set [4,_autoGenerateOPFOREnemyFaction];
+                    _taskData set [5,true];
+
+                    [ALIVE_taskHandler, "autoGenerateTasks", _taskData] call ALIVE_fnc_taskHandler;
+                };
+
+                if(_autoGenerateINDFOR) then {
+
+                    _taskData = [];
+                    _taskData set [0,"INDFOR_TASK1"];
+                    _taskData set [1,"1"];
+                    _taskData set [2,"GUER"];
+                    _taskData set [3,_autoGenerateINDFORFaction];
+                    _taskData set [4,_autoGenerateINDFOREnemyFaction];
+                    _taskData set [5,true];
+
+                    [ALIVE_taskHandler, "autoGenerateTasks", _taskData] call ALIVE_fnc_taskHandler;
+                };
             };
 
             private["_displayIntel","_intelChance","_friendlyIntel","_friendlyIntelRadius","_displayMilitarySectors","_displayPlayerSectors","_displayIntel","_runEvery","_intel"];

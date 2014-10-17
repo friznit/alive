@@ -37,6 +37,18 @@ class CfgVehicles {
                             description = "$STR_ALIVE_C2ISTAR_ALLOW_COMMENT";
                             defaultValue = "LaserDesignator";
                     };
+                    // TASKING
+                    class TASKING {
+                            displayName = "";
+                            class Values
+                            {
+                                    class Divider
+                                    {
+                                            name = "----- Tasking --------------------------------------------------------";
+                                            value = "";
+                                    };
+                            };
+                    };
                     class persistent
                     {
                             displayName = "$STR_ALIVE_C2ISTAR_PERSISTENT";
@@ -53,6 +65,111 @@ class CfgVehicles {
                                     {
                                             name = "Yes";
                                             value = true;
+                                    };
+                            };
+                    };
+                    class autoGenerateBlufor
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_BLUFOR";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_BLUFOR_COMMENT";
+                            class Values
+                            {
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            default = 1;
+                                    };
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                    };
+                            };
+                    };
+                    class autoGenerateBluforFaction
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_BLUFOR_FACTION";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_BLUFOR_FACTION_COMMENT";
+                            defaultValue = "BLU_F";
+                    };
+                    class autoGenerateBluforEnemyFaction
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_BLUFOR_ENEMY_FACTION";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_BLUFOR_ENEMY_FACTION_COMMENT";
+                            defaultValue = "OPF_F";
+                    };
+                    class autoGenerateOpfor
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_OPFOR";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_OPFOR_COMMENT";
+                            class Values
+                            {
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            default = 1;
+                                    };
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                    };
+                            };
+                    };
+                    class autoGenerateOpforFaction
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_OPFOR_FACTION";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_OPFOR_FACTION_COMMENT";
+                            defaultValue = "OPF_F";
+                    };
+                    class autoGenerateOpforEnemyFaction
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_OPFOR_ENEMY_FACTION";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_OPFOR_ENEMY_FACTION_COMMENT";
+                            defaultValue = "BLU_F";
+                    };
+                    class autoGenerateIndfor
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR_COMMENT";
+                            class Values
+                            {
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                            default = 1;
+                                    };
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                    };
+                            };
+                    };
+                    class autoGenerateIndforFaction
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR_FACTION";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR_FACTION_COMMENT";
+                            defaultValue = "IND_F";
+                    };
+                    class autoGenerateIndforEnemyFaction
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR_ENEMY_FACTION";
+                            description = "$STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR_ENEMY_FACTION_COMMENT";
+                            defaultValue = "OPF_F";
+                    };
+                    // INTEL
+                    class INTEL {
+                            displayName = "";
+                            class Values
+                            {
+                                    class Divider
+                                    {
+                                            name = "----- Intel --------------------------------------------------------";
+                                            value = "";
                                     };
                             };
                     };
