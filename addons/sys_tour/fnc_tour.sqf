@@ -1901,7 +1901,21 @@ switch(_operation) do {
 
                         _duration = 20;
 
-                        [_logic, "createDynamicCamera", [_duration,player,_target]] call MAINCLASS;
+                        //[_logic, "createDynamicCamera", [_duration,player,_target]] call MAINCLASS;
+
+
+
+                        ALIVE_cameraType = "CAMERA";
+
+                        _randomPosition = [_position, 500, random(360)] call BIS_fnc_relPos;
+                        _target2 = "RoadCone_L_F" createVehicle _randomPosition;
+                        _target2 hideObjectGlobal true;
+
+                        ALIVE_tourCamera = [_target2,false,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+                        [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+                        //[ALIVE_tourCamera,_target2,_target,_duration] spawn ALIVE_fnc_panShot;
+                        [ALIVE_tourCamera,_target,_duration] spawn ALIVE_fnc_flyInShot;
+
 
 
                         _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
@@ -1956,7 +1970,21 @@ switch(_operation) do {
 
                     _duration = 20;
 
-                    [_logic, "createDynamicCamera", [_duration,player,_target]] call MAINCLASS;
+                    //[_logic, "createDynamicCamera", [_duration,player,_target]] call MAINCLASS;
+
+
+
+                    ALIVE_cameraType = "CAMERA";
+
+                    _randomPosition = [_position, 500, random(360)] call BIS_fnc_relPos;
+                    _target2 = "RoadCone_L_F" createVehicle _randomPosition;
+                    _target2 hideObjectGlobal true;
+
+                    ALIVE_tourCamera = [_target2,false,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+                    [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
+                    //[ALIVE_tourCamera,_target2,_target,_duration] spawn ALIVE_fnc_panShot;
+                    [ALIVE_tourCamera,_target,_duration] spawn ALIVE_fnc_flyInShot;
+
 
 
                     _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
@@ -2689,29 +2717,22 @@ switch(_operation) do {
                                         _position = [_position] call ALIVE_fnc_getClosestLand;
                                     };
 
-                                    ["FOUND PROFILE:"] call ALIVE_fnc_dump;
                                     _profile call ALIVE_fnc_inspectHash;
 
                                     player setPos _position;
 
                                     waitUntil{_profile select 2 select 1};
 
-                                    ["PROFILE IS ACTIVE"] call ALIVE_fnc_dump;
-
                                     sleep 2;
 
                                     _group = _profile select 2 select 13;
                                     _unit = (units _group) call BIS_fnc_selectRandom;
-
-                                    ["GROUP: %1 UNIT: %2",_group, _unit] call ALIVE_fnc_dump;
 
                                     _duration = 1000;
 
                                     if!(isNil "_unit") then {
 
                                         ["closeSplash"] call ALIVE_fnc_displayMenu;
-
-                                        ["UNIT NOT NULL"] call ALIVE_fnc_dump;
 
                                         _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
                                         _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
@@ -2729,8 +2750,6 @@ switch(_operation) do {
 
                                         player hideObjectGlobal true;
 
-                                        ["REMOTE CONTROLLED!"] call ALIVE_fnc_dump;
-
                                         waitUntil{
                                             sleep 1;
                                             if((player distance _unit) > 100) then {
@@ -2739,8 +2758,6 @@ switch(_operation) do {
                                             };
                                             !(alive _unit)
                                         };
-
-                                        ["UNIT KILLED - REVERTING!"] call ALIVE_fnc_dump;
 
                                         _line1 = "<t size='1.5' color='#68a7b7' align='center'>You have been killed...</t><br/><br/>";
 
@@ -2821,10 +2838,12 @@ switch(_operation) do {
         _cameraAngles = ["EYE","HIGH","BIRDS_EYE","UAV"];
         _initialAngle = _cameraAngles call BIS_fnc_selectRandom;
 
+        /*
         ["CINEMATIC DURATION: %1",_duration] call ALIVE_fnc_dump;
         ["SOURCE IS PLAYER: %1",_sourceIsPlayer] call ALIVE_fnc_dump;
         ["TARGET IS MAN: %1",_targetIsMan] call ALIVE_fnc_dump;
         ["TARGET IS IN VEHICLE: %1",_targetInVehicle] call ALIVE_fnc_dump;
+        */
 
         ALIVE_cameraType = "CAMERA";
 
@@ -2835,7 +2854,7 @@ switch(_operation) do {
             };
         };
 
-        ["CAMERA TYPE IS: %1",ALIVE_cameraType] call ALIVE_fnc_dump;
+        //["CAMERA TYPE IS: %1",ALIVE_cameraType] call ALIVE_fnc_dump;
 
         _cameraShots = ["FLY_IN","PAN","ZOOM"];
 
@@ -2845,8 +2864,10 @@ switch(_operation) do {
 
         _shot = _cameraShots call BIS_fnc_selectRandom;
 
+        /*
         ["CAMERA SHOT IS: %1",_shot] call ALIVE_fnc_dump;
         ["CAMERA ANGLE IS: %1",_initialAngle] call ALIVE_fnc_dump;
+        */
 
         if(ALIVE_cameraType == "CAMERA") then {
 
