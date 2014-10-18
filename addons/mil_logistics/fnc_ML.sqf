@@ -2266,11 +2266,14 @@ switch(_operation) do {
 
                                         [_commandProfile, "destroy"] call ALIVE_fnc_profileEntity;
                                         //[ALIVE_profileHandler, "unregisterProfile", _commandProfile] call ALIVE_fnc_profileHandler;
+
+                                        /*
                                         _commandUnits = _commandProfile select 2 select 21;
 
                                         {
                                             deleteVehicle _x;
                                         } forEach _commandUnits;
+                                        */
                                     };
 
                                     if!(isNil "_vehicle") then {
