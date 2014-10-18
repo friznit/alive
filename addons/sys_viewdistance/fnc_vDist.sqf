@@ -49,7 +49,6 @@ TRACE_3(QUOTE(ADDON),_logic, _operation, _args);
 switch(_operation) do {
         case "create": {
                 if (isServer) then {
-
                     // Ensure only one module is used
                     if !(isNil QUOTE(ADDON)) then {
                         _logic = ADDON;
@@ -64,7 +63,6 @@ switch(_operation) do {
                 };
 
                 TRACE_1("Waiting for object to be ready",true);
-
                 waituntil {!isnil QUOTE(ADDON)};
 
                 TRACE_1("Creating class on all localities",true);
@@ -76,42 +74,25 @@ switch(_operation) do {
                 _result = ADDON;
         };
         case "init": {
+            
                 /*
                 MODEL - no visual just reference data
                 - server side object only
                                 - enabled/disabled
                 */
+                
+				//Create or assign existing Logic
+                _logic = [_logic,"create"] call ALiVE_fnc_vDist;
 
                 //Only one init per instance is allowed
             	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS VIEWDISTANCE - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
-            	//Start init
-            	_logic setVariable ["initGlobal", false];
-
-                _logic setVariable ["init", false];
-
-                if (isServer) then {
-                        ADDON = _logic;
-                        publicVariable QUOTE(ADDON);
-
-                        // if server, initialise module game logic
-                        _logic setVariable ["super", SUPERCLASS];
-                        _logic setVariable ["class", ALIVE_fnc_vdist];
-                        _logic setVariable ["init", true, true];
-
-                        // and publicVariable to clients
-
-                } else {
-                        // if client clean up client side game logics as they will transfer
-                        // to servers on client disconnect
-                       // deleteVehicle _logic;
-                };
+				//Start init
+				_logic setVariable ["initGlobal", false];
 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
                 waitUntil {!isNil QUOTE(ADDON)};
-
-                waitUntil {ADDON getVariable ["init", false]};
 
                 /*
                 VIEW - purely visual
@@ -162,7 +143,6 @@ switch(_operation) do {
                         setViewDistance _maxsetvd;
                     };
 
-
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
                         // if ACE spectator enabled, seto to allow exit
@@ -178,8 +158,11 @@ switch(_operation) do {
                                 ]
                         ] call ALIVE_fnc_flexiMenu_Add;
                 };
+                
+                //End init
+            	_logic setVariable ["initGlobal", true];
+                
                 _result = ADDON;
-
         };
         case "destroy": {
                 if (isServer) then {
