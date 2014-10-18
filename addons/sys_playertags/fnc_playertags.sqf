@@ -224,8 +224,6 @@ switch(_operation) do {
 					                    default {_icon = "a3\UI_F\data\GUI\Cfg\Ranks\private_gs.paa"};
 					                };
 
-                                    diag_log _color;
-
 									drawIcon3D [_icon,_color,_pos,_width,_height,0,_name,0,0.04];
 								};
 						} foreach (getPosATL player nearEntities ["CAManBase",GVAR(RADIUS)]);
