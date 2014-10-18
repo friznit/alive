@@ -537,77 +537,108 @@ switch(_operation) do {
 
     };
     case "syncTasks": {
-        private["_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_dispatchIDs","_player","_playerSide","_parentTasks"];
 
         if(typeName _args == "ARRAY") then {
 
-            _playerID = _eventData select 0;
-            _groupID = _eventData select 1;
+            [_logic,_args] spawn {
 
-            _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+                private["_eventData","_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_dispatchIDs","_player","_playerSide","_parentTasks"];
 
-            _groupID = [_groupID, " ", "_"] call CBA_fnc_replace;
+                _logic = _this select 0;
+                _eventData = _this select 1;
 
-            waitUntil {
-                sleep 1;
-                ((str side _player) != "UNKNOWN")
-            };
+                _playerID = _eventData select 0;
+                _groupID = _eventData select 1;
 
-            _playerSide = side _player;
-            _playerSide = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
-            _playerSide = [_playerSide] call ALIVE_fnc_sideNumberToText;
+                _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
-            _playerTasks = [_logic, "getTasksByPlayer", _playerID] call MAINCLASS;
-            _groupTasks = [_logic, "getTasksByGroup", _groupID] call MAINCLASS;
-            _sideTasks = [_logic, "getTasksBySide", _playerSide] call MAINCLASS;
+                _groupID = [_groupID, " ", "_"] call CBA_fnc_replace;
 
-
-            // DEBUG -------------------------------------------------------------------------------------
-            if(_debug) then {
-                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-                ["ALiVE Task Handler - Sync Connecting Player: %1 %2 %3 %4",_playerID,_groupID,_player,_playerSide] call ALIVE_fnc_dump;
-            };
-            // DEBUG -------------------------------------------------------------------------------------
-
-
-            _dispatchTasks = [];
-            _dispatchIDs = [];
-
-            if!(isNil "_sideTasks") then {
-
-                if(count _sideTasks > 0) then {
-
-                    {
-                        private ["_taskID","_applyType"];
-                        _taskID = _x select 0;
-                        _applyType = _x select 9;
-
-                        if(_applyType == "Side") then {
-                            _dispatchTasks set [count _dispatchTasks,_x];
-                            _dispatchIDs set [count _dispatchIDs,_taskID];
-
-                            // DEBUG -------------------------------------------------------------------------------------
-                            if(_debug) then {
-                                ["ALiVE Task Handler - Sync Side Task: %1",_x] call ALIVE_fnc_dump;
-                            };
-                            // DEBUG -------------------------------------------------------------------------------------
-
-                        };
-
-                    } forEach _sideTasks;
-
+                waitUntil {
+                    sleep 1;
+                    ((str side _player) != "UNKNOWN")
                 };
-            };
 
-            if!(isNil "_playerTasks") then {
-                if(count _playerTasks > 0) then {
+                _playerSide = side _player;
+                _playerSide = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
+                _playerSide = [_playerSide] call ALIVE_fnc_sideNumberToText;
 
-                    {
-                        private ["_taskID","_taskSide"];
-                        _taskID = _x select 0;
-                        _taskSide = _x select 2;
+                _playerTasks = [_logic, "getTasksByPlayer", _playerID] call MAINCLASS;
+                _groupTasks = [_logic, "getTasksByGroup", _groupID] call MAINCLASS;
+                _sideTasks = [_logic, "getTasksBySide", _playerSide] call MAINCLASS;
 
-                        if(_playerSide == _taskSide) then {
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALiVE Task Handler - Sync Connecting Player: %1 %2 %3 %4",_playerID,_groupID,_player,_playerSide] call ALIVE_fnc_dump;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+
+                _dispatchTasks = [];
+                _dispatchIDs = [];
+
+                if!(isNil "_sideTasks") then {
+
+                    if(count _sideTasks > 0) then {
+
+                        {
+                            private ["_taskID","_applyType"];
+                            _taskID = _x select 0;
+                            _applyType = _x select 9;
+
+                            if(_applyType == "Side") then {
+                                _dispatchTasks set [count _dispatchTasks,_x];
+                                _dispatchIDs set [count _dispatchIDs,_taskID];
+
+                                // DEBUG -------------------------------------------------------------------------------------
+                                if(_debug) then {
+                                    ["ALiVE Task Handler - Sync Side Task: %1",_x] call ALIVE_fnc_dump;
+                                };
+                                // DEBUG -------------------------------------------------------------------------------------
+
+                            };
+
+                        } forEach _sideTasks;
+
+                    };
+                };
+
+                if!(isNil "_playerTasks") then {
+                    if(count _playerTasks > 0) then {
+
+                        {
+                            private ["_taskID","_taskSide"];
+                            _taskID = _x select 0;
+                            _taskSide = _x select 2;
+
+                            if(_playerSide == _taskSide) then {
+
+                                if!(_taskID in _dispatchIDs) then {
+                                    _dispatchTasks set [count _dispatchTasks,_x];
+                                    _dispatchIDs set [count _dispatchIDs,_taskID];
+
+                                    // DEBUG -------------------------------------------------------------------------------------
+                                    if(_debug) then {
+                                        ["ALiVE Task Handler - Sync Player Task: %1",_x] call ALIVE_fnc_dump;
+                                    };
+                                    // DEBUG -------------------------------------------------------------------------------------
+
+                                };
+
+                            };
+                        } forEach _playerTasks;
+
+                    };
+                };
+
+                if!(isNil "_groupTasks") then {
+                    if(count _groupTasks > 0) then {
+
+                        {
+                            private ["_taskID"];
+                            _taskID = _x select 0;
 
                             if!(_taskID in _dispatchIDs) then {
                                 _dispatchTasks set [count _dispatchTasks,_x];
@@ -615,142 +646,30 @@ switch(_operation) do {
 
                                 // DEBUG -------------------------------------------------------------------------------------
                                 if(_debug) then {
-                                    ["ALiVE Task Handler - Sync Player Task: %1",_x] call ALIVE_fnc_dump;
+                                    ["ALiVE Task Handler - Sync Group Task: %1",_x] call ALIVE_fnc_dump;
                                 };
                                 // DEBUG -------------------------------------------------------------------------------------
-
                             };
+                        } forEach _groupTasks;
 
-                        };
-                    } forEach _playerTasks;
-
+                    };
                 };
-            };
 
-            if!(isNil "_groupTasks") then {
-                if(count _groupTasks > 0) then {
+                if(count _dispatchTasks > 0) then {
+
+                    _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                    // dispatch tasks to player
+
+                    // create the top level parent tasks first
+
+                    _parentTasks = [];
 
                     {
-                        private ["_taskID"];
-                        _taskID = _x select 0;
 
-                        if!(_taskID in _dispatchIDs) then {
-                            _dispatchTasks set [count _dispatchTasks,_x];
-                            _dispatchIDs set [count _dispatchIDs,_taskID];
+                        private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
 
-                            // DEBUG -------------------------------------------------------------------------------------
-                            if(_debug) then {
-                                ["ALiVE Task Handler - Sync Group Task: %1",_x] call ALIVE_fnc_dump;
-                            };
-                            // DEBUG -------------------------------------------------------------------------------------
-                        };
-                    } forEach _groupTasks;
-
-                };
-            };
-
-            if(count _dispatchTasks > 0) then {
-
-                _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
-
-                // dispatch tasks to player
-
-                // create the top level parent tasks first
-
-                _parentTasks = [];
-
-                {
-
-                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
-
-                    _task = _x;
-                    _taskID = _task select 0;
-                    _requestPlayerID = _task select 1;
-                    _position = _task select 3;
-                    _title = _task select 5;
-                    _description = _task select 6;
-                    _state = _task select 8;
-                    _current = _task select 10;
-                    _parent = _task select 11;
-                    _source = _task select 12;
-
-                    if(_parent == "None") then {
-
-                        _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
-
-                        if !(isNull _player) then {
-                            if((isServer && isMultiplayer) || isDedicated) then {
-                                [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
-                            }else{
-                                _event call ALIVE_fnc_taskHandlerEventToClient;
-                            };
-                        };
-
-                        _parentTasks set [count _parentTasks, _taskID];
-                        _dispatchTasks set [_forEachIndex,"DELETE"];
-
-                    };
-
-                } forEach _dispatchTasks;
-
-                _dispatchTasks = _dispatchTasks - ["DELETE"];
-
-                /*
-                ["DISPATCHED TOP LEVEL TASKS"] call ALIVE_fnc_dump;
-                _parentTasks call ALIVE_fnc_inspectArray;
-                _dispatchTasks call ALIVE_fnc_inspectArray;
-                */
-
-                {
-
-                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
-
-                    _task = _x;
-                    _taskID = _task select 0;
-                    _requestPlayerID = _task select 1;
-                    _position = _task select 3;
-                    _title = _task select 5;
-                    _description = _task select 6;
-                    _state = _task select 8;
-                    _current = _task select 10;
-                    _parent = _task select 11;
-                    _source = _task select 12;
-
-                    if(_parent in _parentTasks) then {
-
-                        _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
-
-                        if !(isNull _player) then {
-                            if((isServer && isMultiplayer) || isDedicated) then {
-                                [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
-                            }else{
-                                _event call ALIVE_fnc_taskHandlerEventToClient;
-                            };
-                        };
-
-                        _parentTasks set [count _parentTasks, _taskID];
-                        _dispatchTasks set [_forEachIndex,"DELETE"];
-
-                    };
-
-                } forEach _dispatchTasks;
-
-                _dispatchTasks = _dispatchTasks - ["DELETE"];
-
-                /*
-                ["DISPATCHED SUB LEVEL TASKS"] call ALIVE_fnc_dump;
-                _parentTasks call ALIVE_fnc_inspectArray;
-                _dispatchTasks call ALIVE_fnc_inspectArray;
-                */
-
-                {
-
-                    private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
-
-                    _task = _x;
-
-                    if(_task != 'DELETE') then {
-
+                        _task = _x;
                         _taskID = _task select 0;
                         _requestPlayerID = _task select 1;
                         _position = _task select 3;
@@ -761,41 +680,7 @@ switch(_operation) do {
                         _parent = _task select 11;
                         _source = _task select 12;
 
-                        if!(_parent in _parentTasks) then {
-
-                            {
-                                private ["_fTask","_fTaskID","_fRequestPlayerID","_fPosition","_fTitle","_fDescription","_fState","_fCurrent","_fParent","_fSource","_fEvent"];
-
-                                _fTask = _x;
-                                _fTaskID = _fTask select 0;
-
-                                if(_fTaskID == _parent) exitWith {
-                                    _fRequestPlayerID = _fTask select 1;
-                                    _fPosition = _fTask select 3;
-                                    _fTitle = _fTask select 5;
-                                    _fDescription = _fTask select 6;
-                                    _fState = _fTask select 8;
-                                    _fCurrent = _fTask select 10;
-                                    _fParent = _fTask select 11;
-                                    _fSource = _fTask select 12;
-
-                                    _fEvent = ["TASK_CREATE",_fTaskID,_fRequestPlayerID,_fPosition,_fTitle,_fDescription,_fState,_fCurrent,_fParent,_fSource];
-
-                                    if !(isNull _player) then {
-                                        if((isServer && isMultiplayer) || isDedicated) then {
-                                            [_fEvent,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
-                                        }else{
-                                            _fEvent call ALIVE_fnc_taskHandlerEventToClient;
-                                        };
-                                    };
-
-                                    _parentTasks set [count _parentTasks, _taskID];
-                                    _dispatchTasks set [_forEachIndex,"DELETE"];
-                                };
-
-                            } forEach _dispatchTasks;
-
-                        }else{
+                        if(_parent == "None") then {
 
                             _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
 
@@ -807,19 +692,146 @@ switch(_operation) do {
                                 };
                             };
 
+                            _parentTasks set [count _parentTasks, _taskID];
+                            _dispatchTasks set [_forEachIndex,"DELETE"];
+
                         };
 
-                    };
+                    } forEach _dispatchTasks;
 
-                } forEach _dispatchTasks;
+                    _dispatchTasks = _dispatchTasks - ["DELETE"];
 
-                _dispatchTasks = _dispatchTasks - ["DELETE"];
+                    /*
+                    ["DISPATCHED TOP LEVEL TASKS"] call ALIVE_fnc_dump;
+                    _parentTasks call ALIVE_fnc_inspectArray;
+                    _dispatchTasks call ALIVE_fnc_inspectArray;
+                    */
 
-                /*
-                ["DISPATCHED REMAINING TASKS"] call ALIVE_fnc_dump;
-                _parentTasks call ALIVE_fnc_inspectArray;
-                _dispatchTasks call ALIVE_fnc_inspectArray;
-                */
+                    sleep 4;
+
+                    {
+
+                        private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
+
+                        _task = _x;
+                        _taskID = _task select 0;
+                        _requestPlayerID = _task select 1;
+                        _position = _task select 3;
+                        _title = _task select 5;
+                        _description = _task select 6;
+                        _state = _task select 8;
+                        _current = _task select 10;
+                        _parent = _task select 11;
+                        _source = _task select 12;
+
+                        if(_parent in _parentTasks) then {
+
+                            _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
+
+                            if !(isNull _player) then {
+                                if((isServer && isMultiplayer) || isDedicated) then {
+                                    [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                                }else{
+                                    _event call ALIVE_fnc_taskHandlerEventToClient;
+                                };
+                            };
+
+                            _parentTasks set [count _parentTasks, _taskID];
+                            _dispatchTasks set [_forEachIndex,"DELETE"];
+
+                        };
+
+                    } forEach _dispatchTasks;
+
+                    _dispatchTasks = _dispatchTasks - ["DELETE"];
+
+                    /*
+                    ["DISPATCHED SUB LEVEL TASKS"] call ALIVE_fnc_dump;
+                    _parentTasks call ALIVE_fnc_inspectArray;
+                    _dispatchTasks call ALIVE_fnc_inspectArray;
+                    */
+
+                    sleep 4;
+
+                    {
+
+                        private ["_task","_taskID","_requestPlayerID","_position","_title","_description","_state","_event","_current","_source","_parent"];
+
+                        _task = _x;
+
+                        if(_task != 'DELETE') then {
+
+                            _taskID = _task select 0;
+                            _requestPlayerID = _task select 1;
+                            _position = _task select 3;
+                            _title = _task select 5;
+                            _description = _task select 6;
+                            _state = _task select 8;
+                            _current = _task select 10;
+                            _parent = _task select 11;
+                            _source = _task select 12;
+
+                            if!(_parent in _parentTasks) then {
+
+                                {
+                                    private ["_fTask","_fTaskID","_fRequestPlayerID","_fPosition","_fTitle","_fDescription","_fState","_fCurrent","_fParent","_fSource","_fEvent"];
+
+                                    _fTask = _x;
+                                    _fTaskID = _fTask select 0;
+
+                                    if(_fTaskID == _parent) exitWith {
+                                        _fRequestPlayerID = _fTask select 1;
+                                        _fPosition = _fTask select 3;
+                                        _fTitle = _fTask select 5;
+                                        _fDescription = _fTask select 6;
+                                        _fState = _fTask select 8;
+                                        _fCurrent = _fTask select 10;
+                                        _fParent = _fTask select 11;
+                                        _fSource = _fTask select 12;
+
+                                        _fEvent = ["TASK_CREATE",_fTaskID,_fRequestPlayerID,_fPosition,_fTitle,_fDescription,_fState,_fCurrent,_fParent,_fSource];
+
+                                        if !(isNull _player) then {
+                                            if((isServer && isMultiplayer) || isDedicated) then {
+                                                [_fEvent,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                                            }else{
+                                                _fEvent call ALIVE_fnc_taskHandlerEventToClient;
+                                            };
+                                        };
+
+                                        _parentTasks set [count _parentTasks, _taskID];
+                                        _dispatchTasks set [_forEachIndex,"DELETE"];
+                                    };
+
+                                } forEach _dispatchTasks;
+
+                            }else{
+
+                                _event = ["TASK_CREATE",_taskID,_requestPlayerID,_position,_title,_description,_state,_current,_parent,_source];
+
+                                if !(isNull _player) then {
+                                    if((isServer && isMultiplayer) || isDedicated) then {
+                                        [_event,"ALIVE_fnc_taskHandlerEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                                    }else{
+                                        _event call ALIVE_fnc_taskHandlerEventToClient;
+                                    };
+                                };
+
+                            };
+
+                        };
+
+                    } forEach _dispatchTasks;
+
+                    _dispatchTasks = _dispatchTasks - ["DELETE"];
+
+                    /*
+                    ["DISPATCHED REMAINING TASKS"] call ALIVE_fnc_dump;
+                    _parentTasks call ALIVE_fnc_inspectArray;
+                    _dispatchTasks call ALIVE_fnc_inspectArray;
+                    */
+
+                };
 
             };
 

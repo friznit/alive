@@ -91,7 +91,7 @@ switch(_operation) do {
 
             [_logic, _type, _event] call MAINCLASS;
 
-            //["CLIENT TASK HANDLER HANDLE EVENT: %1",_event] call ALIVE_fnc_dump;
+            ["CLIENT TASK HANDLER HANDLE EVENT: %1",_event] call ALIVE_fnc_dump;
 
         };
     };
@@ -100,7 +100,7 @@ switch(_operation) do {
 
         _eventData = _args;
 
-        //["TASK CREATE: %1",_eventData] call ALIVE_fnc_dump;
+        ["TASK CREATE: %1",_eventData] call ALIVE_fnc_dump;
 
         [_logic, "registerTask", _eventData] call MAINCLASS;
 
@@ -110,7 +110,7 @@ switch(_operation) do {
 
         _eventData = _args;
 
-        //["TASK UPDATE: %1",_eventData] call ALIVE_fnc_dump;
+        ["TASK UPDATE: %1",_eventData] call ALIVE_fnc_dump;
 
         [_logic, "updateTask", _eventData] call MAINCLASS;
 
@@ -122,7 +122,7 @@ switch(_operation) do {
 
         _taskID = _eventData select 1;
 
-        //["TASK DELETE: %1",_eventData] call ALIVE_fnc_dump;
+        ["TASK DELETE: %1",_eventData] call ALIVE_fnc_dump;
 
         [_logic, "unregisterTask", _taskID] call MAINCLASS;
 
