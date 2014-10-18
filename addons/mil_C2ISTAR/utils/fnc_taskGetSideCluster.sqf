@@ -13,6 +13,7 @@ Returns:
 
 Examples:
 (begin example)
+_position = [_position, "Medium", "EAST", "MIL"] call ALIVE_fnc_taskGetSideCluster;
 (end)
 
 See Also:
