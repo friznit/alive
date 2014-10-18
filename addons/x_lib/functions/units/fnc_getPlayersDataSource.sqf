@@ -36,11 +36,13 @@ _values = [];
 _players = call BIS_fnc_listPlayers;
 
 {
-    _playerSide = side _x;
-    _playerSideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
-    if(_sideNumber == _playerSideNumber) then {
-        _options set [count _options,format["%1 - %2",name _x, group _x]];
-        _values set [count _values,getPlayerUID _x];
+    if !(isnull _x) then {
+	    _playerSide = (faction _x) call ALiVE_fnc_FactionSide;
+	    _playerSideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
+	    if(_sideNumber == _playerSideNumber) then {
+	        _options set [count _options,format["%1 - %2",name _x, group _x]];
+	        _values set [count _values,getPlayerUID _x];
+	    };
     };
 } foreach _players;
 
