@@ -124,6 +124,13 @@ switch(_operation) do {
         [_modulesSelection,"activeLabel","Learn about the ALiVE modules"] call ALIVE_fnc_hashSet;
         [_modulesSelection,"iconState",["Modules",0,0]] call ALIVE_fnc_hashSet;
 
+        _usageSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_usageSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_usageSelection,"inactiveLabel","Player Tutorial"] call ALIVE_fnc_hashSet;
+        [_usageSelection,"activeLabel","Learn about using ALiVE systems in game"] call ALIVE_fnc_hashSet;
+        [_usageSelection,"iconState",["Usage",0,0]] call ALIVE_fnc_hashSet;
+
         _actionSelection = [] call ALIVE_fnc_hashCreate;
 
         [_actionSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_weapon.paa"] call ALIVE_fnc_hashSet;
@@ -131,7 +138,7 @@ switch(_operation) do {
         [_actionSelection,"activeLabel","Get into the action"] call ALIVE_fnc_hashSet;
         [_actionSelection,"iconState",["Action",0,0]] call ALIVE_fnc_hashSet;
 
-        [_selectionOptions,"start",[_overview,_technologySelection,_modulesSelection,_actionSelection]] call ALIVE_fnc_hashSet;
+        [_selectionOptions,"start",[_overview,_technologySelection,_modulesSelection,_usageSelection,_actionSelection]] call ALIVE_fnc_hashSet;
 
         // overview selections
 
@@ -158,6 +165,13 @@ switch(_operation) do {
         [_whoSelection,"activeLabel","Who is ALiVE"] call ALIVE_fnc_hashSet;
         [_whoSelection,"iconState",["Who",0,0]] call ALIVE_fnc_hashSet;
 
+        _moreSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_moreSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_what.paa"] call ALIVE_fnc_hashSet;
+        [_moreSelection,"inactiveLabel","More"] call ALIVE_fnc_hashSet;
+        [_moreSelection,"activeLabel","More Information"] call ALIVE_fnc_hashSet;
+        [_moreSelection,"iconState",["More",0,0]] call ALIVE_fnc_hashSet;
+
         _backSelection = [] call ALIVE_fnc_hashCreate;
 
         [_backSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_back.paa"] call ALIVE_fnc_hashSet;
@@ -165,7 +179,7 @@ switch(_operation) do {
         [_backSelection,"activeLabel","Go back to the previous menu"] call ALIVE_fnc_hashSet;
         [_backSelection,"iconState",["Back",0,0]] call ALIVE_fnc_hashSet;
 
-        [_selectionOptions,"Overview",[_whatSelection,_whySelection,_whoSelection,_backSelection]] call ALIVE_fnc_hashSet;
+        [_selectionOptions,"Overview",[_whatSelection,_whySelection,_whoSelection,_moreSelection,_backSelection]] call ALIVE_fnc_hashSet;
 
         // action selections
 
@@ -178,14 +192,12 @@ switch(_operation) do {
         [_joinRandomSelection,"activeLabel","Join a group"] call ALIVE_fnc_hashSet;
         [_joinRandomSelection,"iconState",["Join",0,0]] call ALIVE_fnc_hashSet;
 
-        /*
         _freeRoam = [] call ALIVE_fnc_hashCreate;
 
         [_freeRoam,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_what.paa"] call ALIVE_fnc_hashSet;
         [_freeRoam,"inactiveLabel","Free Roam"] call ALIVE_fnc_hashSet;
         [_freeRoam,"activeLabel","Free roam the mission"] call ALIVE_fnc_hashSet;
         [_freeRoam,"iconState",["Roam",0,0]] call ALIVE_fnc_hashSet;
-        */
 
         _backSelection = [] call ALIVE_fnc_hashCreate;
 
@@ -194,8 +206,7 @@ switch(_operation) do {
         [_backSelection,"activeLabel","Go back to the previous menu"] call ALIVE_fnc_hashSet;
         [_backSelection,"iconState",["Back",0,0]] call ALIVE_fnc_hashSet;
 
-        //[_selectionOptions,"Action",[_joinRandomSelection,_freeRoam,_backSelection]] call ALIVE_fnc_hashSet;
-        [_selectionOptions,"Action",[_joinRandomSelection,_backSelection]] call ALIVE_fnc_hashSet;
+        [_selectionOptions,"Action",[_joinRandomSelection,_freeRoam,_backSelection]] call ALIVE_fnc_hashSet;
 
         // technology selections
 
@@ -326,8 +337,76 @@ switch(_operation) do {
         [_backSelection,"activeLabel","Go back to the previous menu"] call ALIVE_fnc_hashSet;
         [_backSelection,"iconState",["Back",0,0]] call ALIVE_fnc_hashSet;
 
-
         [_selectionOptions,"Modules",[_opcomSelection,_placementSelection,_logisticsSelection,_cqbSelection,_civilianSelection,_supportSelection,_resupplySelection,_c2Selection,_backSelection]] call ALIVE_fnc_hashSet;
+
+        // usage selections
+
+        private["_aliveMenuSelection","_adminActionsSelection","_playerOptionsSelection","_playerLogisticsSelection","_playerCombatLogisticsSelection","_playerC2","_playerCombatSupport","_playerMarkers","_backSelection"];
+
+        _aliveMenuSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_aliveMenuSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_aliveMenuSelection,"inactiveLabel","ALiVE Menu System"] call ALIVE_fnc_hashSet;
+        [_aliveMenuSelection,"activeLabel","Using the ALiVE menu system"] call ALIVE_fnc_hashSet;
+        [_aliveMenuSelection,"iconState",["UsageMenu",0,0]] call ALIVE_fnc_hashSet;
+
+        _adminActionsSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_adminActionsSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_adminActionsSelection,"inactiveLabel","Admin Actions"] call ALIVE_fnc_hashSet;
+        [_adminActionsSelection,"activeLabel","Actions for server administrators"] call ALIVE_fnc_hashSet;
+        [_adminActionsSelection,"iconState",["UsageAdmin",0,0]] call ALIVE_fnc_hashSet;
+
+        _playerOptionsSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_playerOptionsSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_playerOptionsSelection,"inactiveLabel","Player Options"] call ALIVE_fnc_hashSet;
+        [_playerOptionsSelection,"activeLabel","Options available to players"] call ALIVE_fnc_hashSet;
+        [_playerOptionsSelection,"iconState",["UsagePlayer",0,0]] call ALIVE_fnc_hashSet;
+
+        _playerLogisticsSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_playerLogisticsSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_playerLogisticsSelection,"inactiveLabel","Logistics"] call ALIVE_fnc_hashSet;
+        [_playerLogisticsSelection,"activeLabel","Lift and shift logistics"] call ALIVE_fnc_hashSet;
+        [_playerLogisticsSelection,"iconState",["UsagePlayerLogistics",0,0]] call ALIVE_fnc_hashSet;
+
+        _playerCombatLogisticsSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_playerCombatLogisticsSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_playerCombatLogisticsSelection,"inactiveLabel","Combat Logistics"] call ALIVE_fnc_hashSet;
+        [_playerCombatLogisticsSelection,"activeLabel","Resuply combat logistics"] call ALIVE_fnc_hashSet;
+        [_playerCombatLogisticsSelection,"iconState",["UsagePlayerCombatLogistics",0,0]] call ALIVE_fnc_hashSet;
+
+        _playerC2 = [] call ALIVE_fnc_hashCreate;
+
+        [_playerC2,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_playerC2,"inactiveLabel","Command and Control"] call ALIVE_fnc_hashSet;
+        [_playerC2,"activeLabel","Command and control"] call ALIVE_fnc_hashSet;
+        [_playerC2,"iconState",["UsagePlayerC2",0,0]] call ALIVE_fnc_hashSet;
+
+        _playerCombatSupport = [] call ALIVE_fnc_hashCreate;
+
+        [_playerCombatSupport,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_playerCombatSupport,"inactiveLabel","Combat Support"] call ALIVE_fnc_hashSet;
+        [_playerCombatSupport,"activeLabel","Combat Support"] call ALIVE_fnc_hashSet;
+        [_playerCombatSupport,"iconState",["UsagePlayerCombatSupport",0,0]] call ALIVE_fnc_hashSet;
+
+        _playerMarkers = [] call ALIVE_fnc_hashCreate;
+
+        [_playerMarkers,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_info.paa"] call ALIVE_fnc_hashSet;
+        [_playerMarkers,"inactiveLabel","Advanced Markers"] call ALIVE_fnc_hashSet;
+        [_playerMarkers,"activeLabel","Advanced markers"] call ALIVE_fnc_hashSet;
+        [_playerMarkers,"iconState",["UsageAdvancedMarkers",0,0]] call ALIVE_fnc_hashSet;
+
+        _backSelection = [] call ALIVE_fnc_hashCreate;
+
+        [_backSelection,"icon","x\alive\addons\sys_tour\data\alive_icons_tour_back.paa"] call ALIVE_fnc_hashSet;
+        [_backSelection,"inactiveLabel","Go Back"] call ALIVE_fnc_hashSet;
+        [_backSelection,"activeLabel","Go back to the previous menu"] call ALIVE_fnc_hashSet;
+        [_backSelection,"iconState",["Back",0,0]] call ALIVE_fnc_hashSet;
+
+        [_selectionOptions,"Usage",[_aliveMenuSelection,_adminActionsSelection,_playerOptionsSelection,_playerLogisticsSelection,_playerCombatLogisticsSelection,_playerC2,_playerCombatSupport,_playerMarkers,_backSelection]] call ALIVE_fnc_hashSet;
 
         // store all the selection options
 
@@ -614,6 +693,180 @@ switch(_operation) do {
 
     };
 
+    case "activateSelectionWhat": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>What is ALiVE?</t><br/><br/>";
+            _line2 = "<t size='1'>ALIVE is a missions makers framework. Developed by Arma community veterans, the easy to use modular system provides everything that players and mission makers need to set up and run realistic military operations in almost any scenario up to Company level, including command, combat support, service support and logistics.</t><br/><br/>";
+            _line3 = "<t size='1'>The editor placed modules are designed to be intuitive but highly flexible so you can create a huge range of different scenarios by simply placing a few modules and markers. The AI Commanders have an overall mission and a prioritised list of objectives that they will work through autonomously. Players can choose to tag along with the AI and join the fight, take your own squad of AI or other players and tackle your own objectives or just sit back and watch it all unfold.</t><br/><br/>";
+            _line4 = "<t size='1'>Mission makers may wish to use ALiVE modules as a backdrop for dynamic missions and campaigns, enhancing scenarios created with traditional editing techniques. ALiVE can significantly reduce the effort required to make a complex mission by adding ambience, support and persistence at the drop of a module.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
+
+            ["openImageFull",[_logic,"handleMenuCallback","What"]] call ALIVE_fnc_displayMenu;
+            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["setFullImage","x\alive\addons\ui\logo_alive_square.paa"] call ALIVE_fnc_displayMenu;
+
+        };
+
+    };
+
+    case "deactivateSelectionWhat": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        _logic setVariable ["selectionState","Overview"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionWhy": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Why ALiVE?</t><br/><br/>";
+            _line2 = "<t size='1'>ALiVE was designed to enhance the ARMA 3 experience for groups and players who want to create a credibly realistc mission or campaign.</t><br/><br/>";
+            _line3 = "<t size='1'>Coming from development of the MSO mod in ARMA 2, the lessons learned there have influenced the development of ALiVE:</t><br/><br/>";
+            _line4 = "<t size='1'>Moving from an entirely script based platform to taking advantage of the ARMA module framework to enable much easier usage by mission editors</t><br/><br/>";
+            _line5 = "<t size='1'>Opting for a centralised database as opposed to supporting individual group database installations.</t><br/><br/>";
+            _line6 = "<t size='1'>Going from largely random in game events to a much more environment and event driven AI and generation systems.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6];
+
+            ["openImageFull",[_logic,"handleMenuCallback","Why"]] call ALIVE_fnc_displayMenu;
+            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["setFullImage","x\alive\addons\ui\logo_alive_square.paa"] call ALIVE_fnc_displayMenu;
+
+        };
+
+    };
+
+    case "deactivateSelectionWhy": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        _logic setVariable ["selectionState","Overview"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionWho": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_line8","_line9","_line10","_line11","_line12","_line13","_line14","_line15","_line16","_baseCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Who are the dev's?</t><br/><br/>";
+            _line2 = "<t size='1'>ALiVE has been in constant development since the release of ARMA 3 early access.</t><br/><br/>";
+            _line3 = "<t size='1'>Developed by a global team from 5 countries, ALiVE continues to be a compelling hobby project for the largely IT professional developers.</t><br/><br/>";
+            _line4 = "<t size='1'>ARJay</t><br/>";
+            _line5 = "<t size='1'>Cameroon</t><br/>";
+            _line6 = "<t size='1'>Friznit</t><br/>";
+            _line7 = "<t size='1'>Gunny</t><br/>";
+            _line8 = "<t size='1'>Haze</t><br/>";
+            _line9 = "<t size='1'>Highhead</t><br/>";
+            _line10 = "<t size='1'>Jman</t><br/>";
+            _line11 = "<t size='1'>Naught</t><br/>";
+            _line12 = "<t size='1'>Raptor</t><br/>";
+            _line13 = "<t size='1'>Rye</t><br/>";
+            _line14 = "<t size='1'>Tupolov</t><br/>";
+            _line15 = "<t size='1'>WobblyHeadedBob</t><br/>";
+            _line16 = "<t size='1'>Wolffy.au</t><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16",_line1,_line2,_line3,_line4,_line5,_line6,_line7,_line8,_line9,_line10,_line11,_line12,_line13,_line14,_line15,_line16];
+
+            ["openImageFull",[_logic,"handleMenuCallback","Who"]] call ALIVE_fnc_displayMenu;
+            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["setFullImage","x\alive\addons\sys_tour\data\devteam.paa"] call ALIVE_fnc_displayMenu;
+
+        };
+
+    };
+
+    case "deactivateSelectionWho": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        _logic setVariable ["selectionState","Overview"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionMore": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_line8","_baseCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>More Information</t><br/><br/>";
+            _line2 = "<t size='1'>The ALiVE community and resources are available for players seeking support, tutorials, and missions.</t><br/><br/>";
+            _line3 = "<t size='1'><a href='http://alivemod.com'>The ALiVE website</a></t><br/><br/>";
+            _line4 = "<t size='1'><a href='http://alivemod.com/wiki'>The ALiVE wiki</a></t><br/><br/>";
+            _line5 = "<t size='1'><a href='http://alivemod.com/forum'>The ALiVE forum</a></t><br/><br/>";
+            _line6 = "<t size='1'><a href='https://www.youtube.com/user/ALIVEARMA3'>The ALiVE Youtube channel</a></t><br/><br/>";
+            _line7 = "<t size='1'><a href='https://www.facebook.com/alivemod'>The ALiVE Facebook page</a></t><br/><br/>";
+            _line8 = "<t size='1'><a href='http://forums.bistudio.com/showthread.php?169350-ALiVE-Advanced-Light-Infantry-Virtual-Environment'>The ALiVE BI forum thread</a></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7%8",_line1,_line2,_line3,_line4,_line5,_line6,_line7,_line8];
+
+            ["openImageFull",[_logic,"handleMenuCallback","More"]] call ALIVE_fnc_displayMenu;
+            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["setFullImage","x\alive\addons\ui\logo_alive_square.paa"] call ALIVE_fnc_displayMenu;
+
+        };
+
+    };
+
+    case "deactivateSelectionMore": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        _logic setVariable ["selectionState","Overview"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
     case "activateSelectionAnalysis": {
 
         ALIVE_tourActiveScript = [_logic] spawn {
@@ -795,7 +1048,7 @@ switch(_operation) do {
 
             if(count _sortedForestPositions > 0) then {
                 _nearestForestPosition = _sortedForestPositions select 0;
-                _m1 = ["Nearest Forest",_nearestForestPosition,[1,1],"ColorGreen"] call _createMarker;
+                _m1 = ["Nearest Vegetation",_nearestForestPosition,[1,1],"ColorGreen"] call _createMarker;
 
                 _line = "<t size='1'>Current analysis: nearest vegetation</t><br/><br/>";
                 _currentCopy = format["%1%2",_baseCopy,_line];
@@ -838,7 +1091,7 @@ switch(_operation) do {
 
             if(count _sortedFlatEmptyPositions > 0) then {
             	_nearestFlatEmptyPosition = _sortedFlatEmptyPositions select 0;
-            	_m = ["Nearest Flat Empty",_nearestFlatEmptyPosition,[1,1],"ColorRed"] call _createMarker;
+            	_m = ["Nearest Empty Space",_nearestFlatEmptyPosition,[1,1],"ColorRed"] call _createMarker;
 
             	_line = "<t size='1'>Current analysis: nearest empty space</t><br/><br/>";
                 _currentCopy = format["%1%2",_baseCopy,_line];
@@ -1496,137 +1749,6 @@ switch(_operation) do {
 
     };
 
-    case "activateSelectionWhat": {
-
-        ALIVE_tourActiveScript = [_logic] spawn {
-
-            private["_logic"];
-
-            _logic = _this select 0;
-
-            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
-
-            _line1 = "<br/><t size='1.5' color='#68a7b7'>What is ALiVE?</t><br/><br/>";
-            _line2 = "<t size='1'>ALIVE is a missions makers framework. Developed by Arma community veterans, the easy to use modular system provides everything that players and mission makers need to set up and run realistic military operations in almost any scenario up to Company level, including command, combat support, service support and logistics.</t><br/><br/>";
-            _line3 = "<t size='1'>The editor placed modules are designed to be intuitive but highly flexible so you can create a huge range of different scenarios by simply placing a few modules and markers. The AI Commanders have an overall mission and a prioritised list of objectives that they will work through autonomously. Players can choose to tag along with the AI and join the fight, take your own squad of AI or other players and tackle your own objectives or just sit back and watch it all unfold.</t><br/><br/>";
-            _line4 = "<t size='1'>Mission makers may wish to use ALiVE modules as a backdrop for dynamic missions and campaigns, enhancing scenarios created with traditional editing techniques. ALiVE can significantly reduce the effort required to make a complex mission by adding ambience, support and persistence at the drop of a module.</t><br/><br/>";
-
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
-
-            ["openImageFull",[_logic,"handleMenuCallback","What"]] call ALIVE_fnc_displayMenu;
-            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
-            ["setFullImage","x\alive\addons\ui\logo_alive_square.paa"] call ALIVE_fnc_displayMenu;
-
-        };
-
-    };
-
-    case "deactivateSelectionWhat": {
-
-        if!(isNil "ALIVE_tourActiveScript") then {
-            if!(scriptDone ALIVE_tourActiveScript) then {
-                terminate ALIVE_tourActiveScript;
-            };
-        };
-
-        _logic setVariable ["selectionState","Overview"];
-
-        [_logic,"displaySelectionState"] call MAINCLASS;
-
-    };
-
-    case "activateSelectionWhy": {
-
-        ALIVE_tourActiveScript = [_logic] spawn {
-
-            private["_logic"];
-
-            _logic = _this select 0;
-
-            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
-
-            _line1 = "<br/><t size='1.5' color='#68a7b7'>Why ALiVE?</t><br/><br/>";
-            _line2 = "<t size='1'>ALiVE was designed to enhance the ARMA 3 experience for groups and players who want to create a credibly realistc mission or campaign.</t><br/><br/>";
-            _line3 = "<t size='1'>Coming from development of the MSO mod in ARMA 2, the lessons learned there have influenced the development of ALiVE:</t><br/><br/>";
-            _line4 = "<t size='1'>Moving from an entirely script based platform to taking advantage of the ARMA module framework to enable much easier usage by mission editors</t><br/><br/>";
-            _line5 = "<t size='1'>Opting for a centralised database as opposed to supporting individual group database installations.</t><br/><br/>";
-            _line6 = "<t size='1'>Going from largely random in game events to a much more environment and event driven AI and generation systems.</t><br/><br/>";
-
-            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6];
-
-            ["openImageFull",[_logic,"handleMenuCallback","Why"]] call ALIVE_fnc_displayMenu;
-            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
-            ["setFullImage","x\alive\addons\ui\logo_alive_square.paa"] call ALIVE_fnc_displayMenu;
-
-        };
-
-    };
-
-    case "deactivateSelectionWhy": {
-
-        if!(isNil "ALIVE_tourActiveScript") then {
-            if!(scriptDone ALIVE_tourActiveScript) then {
-                terminate ALIVE_tourActiveScript;
-            };
-        };
-
-        _logic setVariable ["selectionState","Overview"];
-
-        [_logic,"displaySelectionState"] call MAINCLASS;
-
-    };
-
-    case "activateSelectionWho": {
-
-        ALIVE_tourActiveScript = [_logic] spawn {
-
-            private["_logic"];
-
-            _logic = _this select 0;
-
-            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_line8","_line9","_line10","_line11","_line12","_line13","_line14","_line15","_line16","_baseCopy"];
-
-            _line1 = "<br/><t size='1.5' color='#68a7b7'>Who are the dev's?</t><br/><br/>";
-            _line2 = "<t size='1'>ALiVE has been in constant development since the release of ARMA 3 early access.</t><br/><br/>";
-            _line3 = "<t size='1'>Developed by a global team from 5 countries, ALiVE continues to be a compelling hobby project for the largely IT professional developers.</t><br/><br/>";
-            _line4 = "<t size='1'>ARJay</t><br/>";
-            _line5 = "<t size='1'>Cameroon</t><br/>";
-            _line6 = "<t size='1'>Friznit</t><br/>";
-            _line7 = "<t size='1'>Gunny</t><br/>";
-            _line8 = "<t size='1'>Haze</t><br/>";
-            _line9 = "<t size='1'>Highhead</t><br/>";
-            _line10 = "<t size='1'>Jman</t><br/>";
-            _line11 = "<t size='1'>Naught</t><br/>";
-            _line12 = "<t size='1'>Raptor</t><br/>";
-            _line13 = "<t size='1'>Rye</t><br/>";
-            _line14 = "<t size='1'>Tupolov</t><br/>";
-            _line15 = "<t size='1'>WobblyHeadedBob</t><br/>";
-            _line16 = "<t size='1'>Wolffy.au</t><br/>";
-
-            _baseCopy = format["%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16",_line1,_line2,_line3,_line4,_line5,_line6,_line7,_line8,_line9,_line10,_line11,_line12,_line13,_line14,_line15,_line16];
-
-            ["openImageFull",[_logic,"handleMenuCallback","Who"]] call ALIVE_fnc_displayMenu;
-            ["setFullImageText",_baseCopy] call ALIVE_fnc_displayMenu;
-            ["setFullImage","x\alive\addons\sys_tour\data\devteam.paa"] call ALIVE_fnc_displayMenu;
-
-        };
-
-    };
-
-    case "deactivateSelectionWho": {
-
-        if!(isNil "ALIVE_tourActiveScript") then {
-            if!(scriptDone ALIVE_tourActiveScript) then {
-                terminate ALIVE_tourActiveScript;
-            };
-        };
-
-        _logic setVariable ["selectionState","Overview"];
-
-        [_logic,"displaySelectionState"] call MAINCLASS;
-
-    };
-
     case "activateSelectionModuleOPCOM": {
 
         ALIVE_tourActiveScript = [_logic] spawn {
@@ -1884,9 +2006,9 @@ switch(_operation) do {
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Military Placement</t><br/><br/>";
             _line2 = "<t size='1'>The military placement modules place starting forces in areas defined by the mission maker.</t><br/><br/>";
-            _line3 = "<t size='1'>Based on the given areas defined by the mission maker ALiVE will create forces in and around key objectives.</t><br/><br/>";
-            _line4 = "<t size='1'>Besides spawning forces defined by the mission maker, these modules can spawn ambient vehicles, and ammo crates. If static weapons are near, the modules will man them with units, and also garrison units in defensible positions.</t><br/><br/>";
-            _line5 = "<t size='1'>The custom military placement module can also spawn ALiVE predefined compositions to give maps a fresh layout.</t><br/><br/>";
+            _line3 = "<t size='1'>Based on the given areas defined by the mission maker ALiVE will create forces in and around key military, civilian, or custom objectives.</t><br/><br/>";
+            _line4 = "<t size='1'>Besides spawning forces defined by the mission maker, these modules can spawn land and air vehicles, ammo crates, and other ambient details. If static weapons are near, the modules will man them with units, and also garrison units in defensible positions.</t><br/><br/>";
+            _line5 = "<t size='1'>The custom military placement module can also spawn ALiVE predefined compositions to give maps a fresh layout, or to populate baren map regions.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5];
 
@@ -2238,7 +2360,7 @@ switch(_operation) do {
             ["openSplash",0.2] call ALIVE_fnc_displayMenu;
             ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
-            private["_position","_faction","_side","_CQBModules","_CQBModule","_factions","_houses","_position","_group","_leader"];
+            private["_position","_faction","_side","_CQBModules","_CQBModule","_factions","_houses","_position","_group","_leader","_nearestTown","_factionName","_title","_text"];
 
             _CQBModules = [];
 
@@ -2278,9 +2400,20 @@ switch(_operation) do {
 
                         _leader = leader _group;
 
+                        _faction = faction _leader;
+
                         [_leader,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
 
                         ["closeSplash"] call ALIVE_fnc_displayMenu;
+
+                        _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+                        _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
+
+                        _title = "<t size='1.5' color='#68a7b7' shadow='1'>CQB Units</t><br/>";
+                        _text = format["%1<t>%2 units near %4</t><br/>",_title,_factionName,_nearestTown];
+
+                        ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
+                        ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
                         sleep 30;
 
@@ -2292,6 +2425,8 @@ switch(_operation) do {
                         ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
                         [true] call ALIVE_fnc_revertCamera;
+
+                        ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
                     };
 
@@ -2318,6 +2453,7 @@ switch(_operation) do {
         [true] call ALIVE_fnc_revertCamera;
 
         ["closeSideSubtitle"] call ALIVE_fnc_displayMenu;
+        ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
         _logic setVariable ["selectionState","Modules"];
 
@@ -2827,6 +2963,855 @@ switch(_operation) do {
         ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
         _logic setVariable ["selectionState","Action"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionRoam": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_opcomModules","_moduleType","_handler","_objectives","_side","_sideDisplay","_shuffledModules","_line1"];
+
+            _line1 = "<t size='1.5' color='#68a7b7' align='center'>Returning to base...</t><br/><br/>";
+
+            ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+            ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+            _initialPosition = position _logic;
+
+            player setPos _initialPosition;
+
+            sleep 2;
+
+            [_logic,"deactivateSelectionRoam"] call MAINCLASS;
+
+        };
+
+    };
+
+    case "deactivateSelectionRoam": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        player hideObjectGlobal false;
+
+        ["closeSplash"] call ALIVE_fnc_displayMenu;
+        ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
+
+        _logic setVariable ["selectionState","Action"];
+
+    };
+
+    case "activateSelectionUsageMenu": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>ALiVE Menu</t><br/><br/>";
+            _line2 = "<t size='1'>All actions available in game to players are accessible via the ALiVE menu. To open the menu use your <a href='http://en.wikipedia.org/wiki/Menu_key' color='#68a7b7'>keyboards menu key (if existing)</a></t><br/><br/>";
+            _line3 = "<t size='1'>If you wish to remap the ALiVE menu key to an alternate binding in Custom Controls - Use Action 20 in the control options menu of the game. Do not use a modifier (CTRL, ALT or SHIFT). You will need to restart ArmA for this to take effect.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openFull",[_logic,"handleMenuCallback","UsageMenu"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+        };
+
+    };
+
+    case "deactivateSelectionUsageMenu": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        _logic setVariable ["selectionState","Usage"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionUsageAdmin": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_currentCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>A range of actions for interacting and debugging ALiVE modules are available via the ALiVE menu submenu admin actions.</t><br/><br/>";
+            _line3 = "<t size='1'>This menu is available in single player missions, and in multiplayer missions when logged in as the server admin.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the ALiVE menu (see ALiVE menu option in this tutorial for details) and select admin actions.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Enable Ghosting</t><br/><br/>";
+            _line3 = "<t size='1'>Ghosting will hide the player object from all forces, allowing admins to test and observe other players or enemy forces safely.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Enable Teleporting</t><br/><br/>";
+            _line3 = "<t size='1'>Teleporting will allow the admin to click the map to move around, useful for testing missions or checking on players.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Teleport Units</t><br/><br/>";
+            _line3 = "<t size='1'>Teleport units allows the server admin to select players to teleport.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Activate Marking Units</t><br/><br/>";
+            _line3 = "<t size='1'>Marking units will display all units on the map for a limited time.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Activate CQB Debug</t><br/><br/>";
+            _line3 = "<t size='1'>CQB debug will display all CQB selected buildings on the map. Buildings designated with a X merker denotes spawned CQB units, and buildings designated with a circle denotes non spawned CQB positions.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Activate Profiles Debug</t><br/><br/>";
+            _line3 = "<t size='1'>Profiles debug will display all virtual group profiles on the map, full opactiy markers denote spawned groups, and transparent markers denote virtualised groups. Waypoints for virtualised groups are designated with an X marker.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Activate Civilian Debug</t><br/><br/>";
+            _line3 = "<t size='1'>Civilian debug will display all civilian agent positions on the map.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Profile non profiled units</t><br/><br/>";
+            _line3 = "<t size='1'>Profiling non profiled units will create virtual profiles for any units on the map that have not already been virtualised, this can be useful for units spawned by other systems eg Zeus.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Admin Actions</t><br/><br/>";
+            _line2 = "<t size='1'>Admin action option: Debug Console</t><br/><br/>";
+            _line3 = "<t size='1'>Debug console allows debug console access for server admins on servers where debug console is disabled.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            [_logic,"deactivateSelectionUsageAdmin"] call MAINCLASS;
+
+
+        };
+
+    };
+
+    case "deactivateSelectionUsageAdmin": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        ["closeSideFull"] call ALIVE_fnc_displayMenu;
+
+        _logic setVariable ["selectionState","Usage"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionUsagePlayer": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_currentCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Options</t><br/><br/>";
+            _line2 = "<t size='1'>Various options for players are made available when the Player Options module is placed in a mission.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the ALiVE menu (see ALiVE menu option in this tutorial for details).</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>View Settings</t><br/><br/>";
+            _line2 = "<t size='1'>The view settings player option will open a small tablet to adjust the view distance and detail in multiplayer missions where view distance is defined by the server.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Tags</t><br/><br/>";
+            _line2 = "<t size='1'>The player tags entry in the ALiVE menu allows players to turn on or off the player tag system (if enabled on the Player Options module).</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Persistence</t><br/><br/>";
+            _line2 = "<t size='1'>The Player Persistence option is available on dedicated servers that are connected to the ALiVE WarRoom for campaign persistence.</t><br/><br/>";
+            _line3 = "<t size='1'>This menu contains options for the player to control saving of their character.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            [_logic,"deactivateSelectionUsagePlayer"] call MAINCLASS;
+
+        };
+
+    };
+
+    case "deactivateSelectionUsagePlayer": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        ["closeSideFull"] call ALIVE_fnc_displayMenu;
+
+        _logic setVariable ["selectionState","Usage"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionUsagePlayerLogistics": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic","_initialPosition"];
+
+            _logic = _this select 0;
+
+            ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+            ["setSplashText","<t size='1.5' color='#68a7b7' align='center'>Returning to base...</t><br/><br/>"] call ALIVE_fnc_displayMenu;
+
+            _initialPosition = position _logic;
+
+            player setPos _initialPosition;
+
+            sleep 5;
+
+            ["closeSplash"] call ALIVE_fnc_displayMenu;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_currentCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Logistics (lift and shift)</t><br/><br/>";
+            _line2 = "<t size='1'>Player logistics allows players to lift, shift, and store objects, it also allows for vehicle towing and vehicle storage.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the ALiVE menu (see ALiVE menu option in this tutorial for details).</t><br/><br/>";
+            _line4 = "<t size='1'>Select Player Logistics and Activate Actions, this will enable player logistics actions on objects and vehicles. It is advised to deactivate this when not needed to reduce script processing.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 10;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Logistics (lift and shift)</t><br/><br/>";
+            _line2 = "<t size='1'>Nearby are some ammo crates, approach the crates and use the action menu to select Carry object to lift the ammo box.</t><br/><br/>";
+            _line3 = "<t size='1'>You can move ammo crates near the nearby transport truck, drop the ammo crates near the truck.</t><br/><br/>";
+            _line4 = "<t size='1'>Use your action menu on the truck and select Stow in cargo to load all nearby objects into the vehicles cargo.</t><br/><br/>";
+            _line5 = "<t size='1'>Select Load out cargo to unload objects from the truck.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            [_logic,"deactivateSelectionUsagePlayerLogistics"] call MAINCLASS;
+
+        };
+
+    };
+
+    case "deactivateSelectionUsagePlayerLogistics": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        ["closeSideFull"] call ALIVE_fnc_displayMenu;
+
+        _logic setVariable ["selectionState","Usage"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionUsagePlayerCombatLogistics": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            player setCaptive false;
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_currentCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Logistics</t><br/><br/>";
+            _line2 = "<t size='1'>If the mission maker has placed the Player Combat Logisitcs module, the Player Combat Logistics tablet interface will be accessible via the ALiVE menu.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the ALiVE menu (see ALiVE menu option in this tutorial for details).</t><br/><br/>";
+            _line4 = "<t size='1'>Select the Player Combat Logistics option to open the tablet (note you must have the object required to access the tablet in your inventory - by default the ALiVE tablet, or the laser designator).</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 30;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Logistics</t><br/><br/>";
+            _line2 = "<t size='1'>Select the delivery method for your logistics request.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Logistics</t><br/><br/>";
+            _line2 = "<t size='1'>Select any supplies or reinforcements you require. Note that your payload must be within the constraints listed under the map.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Logistics</t><br/><br/>";
+            _line2 = "<t size='1'>You can adjust the payload by selecting payload items from the payload list.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Logistics</t><br/><br/>";
+            _line2 = "<t size='1'>Select the location for the logistics delivery on the map.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Logistics</t><br/><br/>";
+            _line2 = "<t size='1'>Request the logistics delivery.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Logistics</t><br/><br/>";
+            _line2 = "<t size='1'>Your delivery will be made in due time, you can follow it's progress on the tablet, or monitor radio messages from command.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            [_logic,"deactivateSelectionUsagePlayerCombatLogistics"] call MAINCLASS;
+
+        };
+
+    };
+
+    case "deactivateSelectionUsagePlayerCombatLogistics": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        ["closeSideFull"] call ALIVE_fnc_displayMenu;
+
+        player setCaptive true;
+
+        _logic setVariable ["selectionState","Usage"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionUsagePlayerC2": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            player setCaptive false;
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_currentCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>If the mission maker has placed the C2ISTAR module, the Command and control submenu will be available via the ALiVE menu.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the ALiVE menu (see ALiVE menu option in this tutorial for details).</t><br/><br/>";
+            _line4 = "<t size='1'>Select the Player C2ISTAR option.</t><br/><br/>";
+            _line5 = "<t size='1'>Select the Manage Tasks sub option.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 30;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select create task to create a player defined task.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Enter task details, set the task state, application, current and parent.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select a location on the map for the task destination.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select assign players to select the players to assign the task to, once done assigning players, select Back to return to the Create Task screen. Create the task.</t><br/><br/>";
+            _line3 = "<t size='1'>Select Create Task to create the task.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>The created task will be issued to the selected players, and will now appear in the Current Tasks list, you can select the task in the list and Edit it to alter task details, or delete it.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select Generate a task to create a dynamic task.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select the type of task to create.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select the task distance from your player, if you choose from map, select a location on the map to use as a reference point.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select the enemy faction for the generated task.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select the application and current state of the generated task.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Select assign players to select the players to assign the task to, once done assigning players, select Back to return to the Generate Task screen.</t><br/><br/>";
+            _line3 = "<t size='1'>Select Generate Task to create the task.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>The generated tasks will be issued to the selected players, and will now appear in the Current Tasks list, you can select the task in the list and Edit it to alter task details, or delete it.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            [_logic,"deactivateSelectionUsagePlayerC2"] call MAINCLASS;
+
+        };
+
+    };
+
+    case "deactivateSelectionUsagePlayerC2": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        ["closeSideFull"] call ALIVE_fnc_displayMenu;
+
+        player setCaptive true;
+
+        _logic setVariable ["selectionState","Usage"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionUsagePlayerCombatSupport": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            player setCaptive false;
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_currentCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>If the mission maker has placed Combat support modules, the Combat Support submenu will be available via the ALiVE menu.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the ALiVE menu (see ALiVE menu option in this tutorial for details).</t><br/><br/>";
+            _line4 = "<t size='1'>Select the Player Combat Support option.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 30;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>Select the support type you require.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            [_logic,"deactivateSelectionUsagePlayerC2"] call MAINCLASS;
+
+        };
+
+    };
+
+    case "deactivateSelectionUsagePlayerCombatSupport": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        ["closeSideFull"] call ALIVE_fnc_displayMenu;
+
+        _logic setVariable ["selectionState","Usage"];
+
+        [_logic,"displaySelectionState"] call MAINCLASS;
+
+    };
+
+    case "activateSelectionUsageAdvancedMarkers": {
+
+        ALIVE_tourActiveScript = [_logic] spawn {
+
+            private["_logic"];
+
+            _logic = _this select 0;
+
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Advanced Markers</t><br/><br/>";
+            _line2 = "<t size='1'></t><br/><br/>";
+            _line3 = "<t size='1'></t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openFull",[_logic,"handleMenuCallback","UsageAdvancedMarkers"]] call ALIVE_fnc_displayMenu;
+            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+        };
+
+    };
+
+    case "deactivateSelectionUsageAdvancedMarkers": {
+
+        if!(isNil "ALIVE_tourActiveScript") then {
+            if!(scriptDone ALIVE_tourActiveScript) then {
+                terminate ALIVE_tourActiveScript;
+            };
+        };
+
+        _logic setVariable ["selectionState","Usage"];
 
         [_logic,"displaySelectionState"] call MAINCLASS;
 

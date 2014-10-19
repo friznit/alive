@@ -52,6 +52,8 @@ class Mission
 		"alive_sys_tour",
 		"alive_amb_civ_population",
 		"alive_amb_civ_placement",
+		"A3_Weapons_F_Ammoboxes",
+		"A3_Soft_F_HEMTT",
 		"a3_map_stratis"
 	};
 	randomSeed=10015019;
@@ -3469,8 +3471,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={6464.5039,7.34126,5405.6055};
-					azimut=-60.572201;
+					position[]={6397.2637,7.5931063,5420.0767};
+					azimut=-0.64377117;
 					class args
 					{
 						items=1;
@@ -3635,6 +3637,37 @@ class Mission
 					skill=0.60000002;
 				};
 			};
+		};
+	};
+	class Vehicles
+	{
+		items=3;
+		class Item0
+		{
+			position[]={6396.0444,7.5714884,5423.772};
+			azimut=-49.02367;
+			id=44;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item1
+		{
+			position[]={6396.9624,7.5729222,5422.9688};
+			azimut=-49.023701;
+			id=45;
+			side="EMPTY";
+			vehicle="Box_NATO_AmmoOrd_F";
+			skill=0.60000002;
+		};
+		class Item2
+		{
+			position[]={6429.9375,7.1793947,5446.1016};
+			azimut=-49.023701;
+			id=46;
+			side="EMPTY";
+			vehicle="B_Truck_01_transport_F";
+			skill=0.60000002;
 		};
 	};
 	class Markers

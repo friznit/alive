@@ -331,6 +331,10 @@ switch(_operation) do {
             _sideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
             _sideText = [_sideNumber] call ALIVE_fnc_sideNumberToText;
 
+            if(_sideText == "CIV") then {
+                _sideText = "WEST";
+            };
+
             [_logic,"side",_sideText] call MAINCLASS;
 
             // set the player faction
