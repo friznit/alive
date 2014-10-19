@@ -4453,9 +4453,13 @@ switch(_operation) do {
 
             _waypoints = [_entityProfile,"waypoints"] call ALIVE_fnc_hashGet;
 
-            if(count _waypoints == 0) then {
+            if!(isNil "_waypoints") then {
+                if(count _waypoints == 0) then {
+                    _waypointCompleted = true;
+                };
+            }else{
                 _waypointCompleted = true;
-            };
+            }
         };
 
         _result = _waypointCompleted;

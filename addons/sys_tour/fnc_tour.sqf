@@ -1784,12 +1784,12 @@ switch(_operation) do {
 
                     if!(isNil "_unit") then {
 
-                        ["closeSplash"] call ALIVE_fnc_displayMenu;
-
                         _target = "RoadCone_L_F" createVehicle _center;
                         hideObjectGlobal _target;
 
                         [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
+
+                        ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                         _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
                         _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
@@ -1884,7 +1884,7 @@ switch(_operation) do {
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Military Placement</t><br/><br/>";
             _line2 = "<t size='1'>The military placement modules place starting forces in areas defined by the mission maker.</t><br/><br/>";
-            _line3 = "<t size='1'>Based on the given area defined by the mission maker ALiVE will create forces in and around key objectives.</t><br/><br/>";
+            _line3 = "<t size='1'>Based on the given areas defined by the mission maker ALiVE will create forces in and around key objectives.</t><br/><br/>";
             _line4 = "<t size='1'>Besides spawning forces defined by the mission maker, these modules can spawn ambient vehicles, and ammo crates. If static weapons are near, the modules will man them with units, and also garrison units in defensible positions.</t><br/><br/>";
             _line5 = "<t size='1'>The custom military placement module can also spawn ALiVE predefined compositions to give maps a fresh layout.</t><br/><br/>";
 
@@ -1931,13 +1931,7 @@ switch(_operation) do {
                         _target = "RoadCone_L_F" createVehicle _position;
                         _target hideObjectGlobal true;
 
-                        ["closeSplash"] call ALIVE_fnc_displayMenu;
-
                         _duration = 20;
-
-                        //[_logic, "createDynamicCamera", [_duration,player,_target]] call MAINCLASS;
-
-
 
                         ALIVE_cameraType = "CAMERA";
 
@@ -1945,11 +1939,13 @@ switch(_operation) do {
                         _target2 = "RoadCone_L_F" createVehicle _randomPosition;
                         _target2 hideObjectGlobal true;
 
-                        ALIVE_tourCamera = [_target2,false,"BIRDS_EYE"] call ALIVE_fnc_addCamera;
+                        ALIVE_tourCamera = [_target2,false,"SATELITE"] call ALIVE_fnc_addCamera;
                         [ALIVE_tourCamera,true] call ALIVE_fnc_startCinematic;
                         //[ALIVE_tourCamera,_target2,_target,_duration] spawn ALIVE_fnc_panShot;
                         [ALIVE_tourCamera,_target,_duration] spawn ALIVE_fnc_flyInShot;
 
+
+                        ["closeSplash"] call ALIVE_fnc_displayMenu;
 
 
                         _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
@@ -2000,13 +1996,7 @@ switch(_operation) do {
                     _target = "RoadCone_L_F" createVehicle _position;
                     _target hideObjectGlobal true;
 
-                    ["closeSplash"] call ALIVE_fnc_displayMenu;
-
                     _duration = 20;
-
-                    //[_logic, "createDynamicCamera", [_duration,player,_target]] call MAINCLASS;
-
-
 
                     ALIVE_cameraType = "CAMERA";
 
@@ -2019,7 +2009,7 @@ switch(_operation) do {
                     //[ALIVE_tourCamera,_target2,_target,_duration] spawn ALIVE_fnc_panShot;
                     [ALIVE_tourCamera,_target,_duration] spawn ALIVE_fnc_flyInShot;
 
-
+                    ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                     _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
                     _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
@@ -2229,7 +2219,7 @@ switch(_operation) do {
             private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>CQB</t><br/><br/>";
-            _line2 = "<t size='1'>The close quarters battle module automatically populates a civilian and military buildings with dismounted infantry units when a player moves within range. The groups occupy buildings, patrol the streets and react to enemy presence.</t><br/><br/>";
+            _line2 = "<t size='1'>The close quarters battle module automatically populates civilian and military buildings with dismounted infantry units when a player moves within range. The groups occupy buildings, patrol the streets and react to enemy presence.</t><br/><br/>";
             _line3 = "<t size='1'>CQB detects the dominant AI faction in the area (ignoring players) and spawns the appropriate units accordingly.</t><br/><br/>";
             _line4 = "<t size='1'>CQB units are not under control of OPCOM, they exist to provide exciting urban combat, building clearance, and general feeling of unease in built up areas controlled by enemy forces.</t><br/><br/>";
             _line5 = "<t size='1'></t><br/><br/>";
@@ -2404,7 +2394,6 @@ switch(_operation) do {
 
                             _command = [_activeCommands,_id] call ALIVE_fnc_hashGet;
                             _command = _command select 1;
-                            _command call ALIVE_fnc_inspectArray;
 
                             _commandName = _command select 0;
 
@@ -2454,8 +2443,6 @@ switch(_operation) do {
                                 };
                             };
 
-                            ["closeSplash"] call ALIVE_fnc_displayMenu;
-
                             [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
 
                             _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
@@ -2466,6 +2453,8 @@ switch(_operation) do {
 
                             ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
                             ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
+
+                            ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                             sleep _duration;
 
@@ -2766,8 +2755,6 @@ switch(_operation) do {
 
                                     if!(isNil "_unit") then {
 
-                                        ["closeSplash"] call ALIVE_fnc_displayMenu;
-
                                         _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
                                         _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
 
@@ -2783,6 +2770,8 @@ switch(_operation) do {
                                         [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
 
                                         player hideObjectGlobal true;
+
+                                        ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                                         waitUntil{
                                             sleep 1;

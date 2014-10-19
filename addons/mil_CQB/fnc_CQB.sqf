@@ -525,7 +525,7 @@ switch(_operation) do {
 					_cqbai = _cqbai + count units _x;
 				};
 			} forEach (_logic getVariable ["groups",[]]);
-			["CQB Population: %1 remaing positions | %2 active positions | %3 local CQB AI...", _remaincount, _activecount, _cqbai] call ALiVE_fnc_Dump;
+			//["CQB Population: %1 remaing positions | %2 active positions | %3 local CQB AI...", _remaincount, _activecount, _cqbai] call ALiVE_fnc_Dump;
 		};
 		_args;
 	};
@@ -1125,13 +1125,13 @@ switch(_operation) do {
                                                 /////////////////////////////////////////////////////////////
                                                 [[_logic, "spawnGroup", [_house,_faction]],"ALiVE_fnc_CQB",_host,false] call BIS_fnc_MP;
 
-	                                            ["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
+	                                            //["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
 	                                            sleep 0.1;
 		                                    } else {
-		                                        ["CQB ERROR: Nil object on host %1",_host] call ALiVE_fnc_DumpR;
+		                                        //["CQB ERROR: Nil object on host %1",_host] call ALiVE_fnc_DumpR;
 		                                    };
 	                                	} else {
-	                                        ["CQB ERROR: No playerhosts for house %1!",_house] call ALiVE_fnc_DumpR;
+	                                        //["CQB ERROR: No playerhosts for house %1!",_house] call ALiVE_fnc_DumpR;
 	                                    };
 	                            };
 							} forEach (_logic getVariable ["houses", []]);

@@ -542,10 +542,12 @@ switch(_operation) do {
 
             [_logic,_args] spawn {
 
-                private["_eventData","_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_dispatchIDs","_player","_playerSide","_parentTasks"];
+                private["_eventData","_debug","_playerID","_groupID","_player","_playerTasks","_groupTasks","_sideTasks","_dispatchTasks","_dispatchIDs","_player","_playerSide","_parentTasks"];
 
                 _logic = _this select 0;
                 _eventData = _this select 1;
+
+                _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
                 _playerID = _eventData select 0;
                 _groupID = _eventData select 1;
