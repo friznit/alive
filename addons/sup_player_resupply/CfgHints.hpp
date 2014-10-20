@@ -7,14 +7,14 @@ class CfgHints
 		class ADDON
 		{
 			// Hint title, filled by arguments from 'arguments' param
-			displayName = "$STR_ALIVE_LOGISTICS";
+			displayName = "Logistics - Resupply";
             // Optional hint subtitle, filled by arguments from 'arguments' param
-			displayNameShort = "$STR_ALIVE_LOGISTICS";
+			displayNameShort = "Player Resupply Requests";
 			// Structured text, filled by arguments from 'arguments' param
-			description = "ALiVE Player Logistics is %3ON by default%4.  This allows players to lift, move and stow objects in cargo vehicles as well as tow or heli lift light vehicles and boats.  Player Logistics can be completely disabled by placing the %3Disable Logistics%4 module in the editor. The logistics actions must be enabled by the player in game.%1%2Open the %3ALiVE Action Menu%4 and select %3Player Logistics%4 from the list%2Approach a movable object such as an ammo crate and use the BIS Action Menu item to lift it%2Drop the object within 2m of a suitable cargo vehicle.%2Approach the cargo vehicle and select Load from the BIS Action Menu%1%1Use the same technique for towing or heli lifting vehicles.  Take care to ensure the area around the cargo vehicle is clear of undeeded objectives before loading.";
+			description = "Allows players to submit requests for vehicles, equipment, combat supplies and reinforcements from the Logistics Commander (LOGCOM).  Supplies are sourced from a common Force Pool used by all friendly Operational Commanders (OPCOM).%1%2Open the %3ALiVE Action Menu%4 and select %3Resupply Requests%4 from the list%2Find the desired items and add to the current consignment%2Choose a delivery method, select a drop off point on the minimap and Send%1%1AI reinforcements can be added to the consignment either in groups or as individuals.  AI must be given an assignment after they arrive at the drop off location%1%2Join - will join the player group%2Defend - will occupy defensive positions and remain at that location%2Patrol - will commence patrolling and can be tasked by OPCOM.";
             // Optional structured text, filled by arguments from 'arguments' param (first argument is %11, see notes bellow), grey color of text
-            tip = "$STR_ALIVE_LOGISTICSDISABLE_USAGE";
-            arguments[] = {
+            tip = "The delivery type determines available capacity.  Land convoys have a much higher capacity than transport planes and you can not airlift tanks!";
+			arguments[] = {
 				{{"getOver"}},  // Double nested array means assigned key (will be specially formatted)
                 {"name"},       // Nested array means element (specially formatted part of text)
 				"name player"   // Simple string will be simply compiled and called

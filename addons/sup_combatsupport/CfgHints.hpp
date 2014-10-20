@@ -7,14 +7,14 @@ class CfgHints
 		class ADDON
 		{
 			// Hint title, filled by arguments from 'arguments' param
-			displayName = "$STR_ALIVE_LOGISTICS";
+			displayName = "Logistics - Resupply";
             // Optional hint subtitle, filled by arguments from 'arguments' param
-			displayNameShort = "$STR_ALIVE_LOGISTICS";
+			displayNameShort = "Player Resupply Requests";
 			// Structured text, filled by arguments from 'arguments' param
-			description = "ALiVE Player Logistics is %3ON by default%4.  This allows players to lift, move and stow objects in cargo vehicles as well as tow or heli lift light vehicles and boats.  Player Logistics can be completely disabled by placing the %3Disable Logistics%4 module in the editor. The logistics actions must be enabled by the player in game.%1%2Open the %3ALiVE Action Menu%4 and select %3Player Logistics%4 from the list%2Approach a movable object such as an ammo crate and use the BIS Action Menu item to lift it%2Drop the object within 2m of a suitable cargo vehicle.%2Approach the cargo vehicle and select Load from the BIS Action Menu%1%1Use the same technique for towing or heli lifting vehicles.  Take care to ensure the area around the cargo vehicle is clear of undeeded objectives before loading.";
+			description = "Combat Support provides an interface for players to request AI piloted Close Air Support from helicopters and aircraft, Offensive Support from artillery and mortars, and battlefield transport from Support Helicopters.%1%2Open the %3ALiVE Action Menu%4 and select %3Combat Support%4%2Choose from one of the available support elements%2Select an available support type and associated options%2Click the minimap to set the area of operations%2Submit the request to HQ%1%1For best results, order CAS aircraft to loiter at a safe holding area before commencing an attack run as they will return to this location afterwards.%1Aircraft on %3Attack%4 or %3Search & Destroy%4 tasks will engage laser designator spots as a priority.%1Support Helicopters will attempt to land at the nearest clear area to the indicated landing site.  For greater control, use the Pick Up option and mark the LZ with smoke.";
             // Optional structured text, filled by arguments from 'arguments' param (first argument is %11, see notes bellow), grey color of text
-            tip = "$STR_ALIVE_LOGISTICSDISABLE_USAGE";
-            arguments[] = {
+            tip = "Support may take some time to arrive on station.  Users can click the %3SITREP%4 button to get a report from Support on location and state.";
+			arguments[] = {
 				{{"getOver"}},  // Double nested array means assigned key (will be specially formatted)
                 {"name"},       // Nested array means element (specially formatted part of text)
 				"name player"   // Simple string will be simply compiled and called

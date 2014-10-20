@@ -7,14 +7,14 @@ class CfgHints
 		class ADDON
 		{
 			// Hint title, filled by arguments from 'arguments' param
-			displayName = "$STR_ALIVE_LOGISTICS";
+			displayName = "C2ISTAR - Reports";
             // Optional hint subtitle, filled by arguments from 'arguments' param
-			displayNameShort = "$STR_ALIVE_LOGISTICS";
+			displayNameShort = "SITREP and PATROLREP";
 			// Structured text, filled by arguments from 'arguments' param
-			description = "ALiVE Player Logistics is %3ON by default%4.  This allows players to lift, move and stow objects in cargo vehicles as well as tow or heli lift light vehicles and boats.  Player Logistics can be completely disabled by placing the %3Disable Logistics%4 module in the editor. The logistics actions must be enabled by the player in game.%1%2Open the %3ALiVE Action Menu%4 and select %3Player Logistics%4 from the list%2Approach a movable object such as an ammo crate and use the BIS Action Menu item to lift it%2Drop the object within 2m of a suitable cargo vehicle.%2Approach the cargo vehicle and select Load from the BIS Action Menu%1%1Use the same technique for towing or heli lifting vehicles.  Take care to ensure the area around the cargo vehicle is clear of undeeded objectives before loading.";
+			description = "Allows commanders to submit Situation Reports and Patrol Reports to HQ.  Reports are saved to the database and restored at the beginning of each mission.%1%2Open the %3ALiVE Action Menu%4 and select %3C2ISTAR%4 from the list%2Select Send SITREP% or %2Select Send PATROLREP%2 Fill out the appropriate details, including a SITREP position on the map or start/end positions for the PATROLREP.%2%3Press SEND%4 to send your report to HQ.";
             // Optional structured text, filled by arguments from 'arguments' param (first argument is %11, see notes bellow), grey color of text
-            tip = "$STR_ALIVE_LOGISTICSDISABLE_USAGE";
-            arguments[] = {
+            tip = "Reports automatically record your Grid, Callsign and the Date Time Group in the military format (DDHHmmMMMYY)";
+			arguments[] = {
 				{{"getOver"}},  // Double nested array means assigned key (will be specially formatted)
                 {"name"},       // Nested array means element (specially formatted part of text)
 				"name player"   // Simple string will be simply compiled and called

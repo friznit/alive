@@ -1,0 +1,137 @@
+[CENTER][URL="http://alivemod.com/"][IMG]https://lh3.googleusercontent.com/yaT923QqaWdy53Vc7Y7fSw51GNXD15VGGmpUpvlcYxY32Gwm3_-tTWji8k8SccpTk9NSRVkS_egZn2obtwGO68vGS4yBJDnR53osW  kazThm6mHBvkLfWBDB2[/IMG][/URL]
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+[SIZE=4]The next generation dynamic persistent campaign for ArmA3
+Release 0.7[/SIZE][/B]
+
+[video=youtube_share;5_UittAx5W8]https://www.youtube.com/watch?v=5_UittAx5W8[/CENTER]
+
+[B][U]Logistics[/U][/B]
+Logistics is a critical feature of warfare and no battlefield would be complete without it.  We have built a fully functioning battlefield logistics system that reflects the continual demand for supplies and battle casualty replacements required to maintain operational effectiveness of front line fighting forces.  Our credibly realistic, fully autonomous [b]Military Logistics[/b] system assesses the tactical situation and delivers BCRs and vehicles to the front line Operational Commanders (OPCOM) on demand.  Of course these supply routes are vulnerable to interdiction, allowing players to disrupt enemy supply lines by ambushing logistics convoys, choking off the vital flow of supplies and having an actual, meaningful impact on the enemy’s fighting power.
+
+Recognising that players need logistics too, we have added a simple “lift & shift” system that allows players to move objects and ammo crates in cargo and tow vehicles.  When using the Database module, you can now benefit from full persistence of every object the player interacts with.  [b]ALiVE Player Logistics[/b] is On by default when running ALiVE but can easily be enabled or disabled with a module in the editor or in game from the ALiVE menu.  This is useful if you prefer to use one of the other logistics systems made by the community.  Note that Persistence should work with them too but there may be some conflicts - please provide us with feedback!  Additionally, there is an [b]ALiVE Player Resupply[/b] tablet to request new vehicles, equipment and AI units from the same logistics force pool as OPCOM.
+
+We didn’t feel that was quite enough for an incremental update (!) so we have also developed a [b]Custom Objectives Module[/b].  This neat module can be placed anywhere on the map to quickly and easily create pre-populated military objectives, complete with one of several custom compositions.  It can be used standalone or integrated into the operational planning layer by syncing to OPCOM.
+
+The Logistics Update is a major milestone for us and it has been a massive effort turning our original concepts into reality.  Here are some videos demonstrating Logistics and Custom Objectives in action:
+
+[CENTER]
+[video=youtube_share;MMwMqpUIr1o]http://www.youtube.com/watch?v=MMwMqpUIr1o[/video] [video=youtube_share;2ntP6RLif6U]http://www.youtube.com/watch?v=2ntP6RLif6U[/video]
+
+[video=youtube_share;1AymQUfawP4]http://www.youtube.com/watch?v=1AymQUfawP4[/video] [video=youtube_share;YKvVOCHS0D4]http://www.youtube.com/watch?v=YKvVOCHS0D4[/video]
+[/CENTER]
+
+[B][U]War Room[/U][/B]
+We have made some major performance improvements to our web platform as it continues to improve and grow well beyond our initial expectations! We have over 5000 players registered from 550 groups and over a million events captured. We will be adding new functionality to War Room over the coming months.  Register with us now and start taking advantage of ALiVE mission persistence and battlefield data feeds.
+
+[url=http://alivemod.com/#ALiVEWarRoom]Join up now![/url]
+
+[B][U]New Support Forum[/U][/B]
+We have added a forum to the website to enable easier support for our users. Create an account and get feedback from the dev team and moderators: http://alivemod.com/forum/
+
+[B][U]Download[/U][/B]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+
+Also available from PlayWithSix and ArmAholic
+
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  It’s not the prettiest but all the info you need should be there.  If anything is missing or unclear, please let us know by submitting a ticket on our Development Tracker and we’ll look to fix it.
+
+[B][U]Release Highlights[/U][/B]
+
+[LIST]
+[*] Battlefield Logistics System
+[*] Player Logistics System
+[*] Player Resupply
+[*] Custom Military Objectives Module
+[*] Persistent Player Vehicles and Object
+[*] Combat Support Enhancements and Fixes
+[*] Support for current stable version of A3
+[*] Indexed several new community maps
+[*] Lots of bug fixes
+[/LIST]
+
+Changelog (Don't Click!)
+[SPOILER]
+[CIV COMMAND] added more isNil checks to avoid potential script errors
+[CIV POPULATION] created get agent data function to enable CSE integration
+[CIV POPULATION] getAgentData function
+[CIV POPULATION] made hostility levels more hostile. Made clusters store hostility levels, so that civilians killed will add up to hostile surrounding areas
+[CIV PROFILE] added getIn event handling to remove from civ vehicles also
+[CODE CLEANUP] fixed some undef vars
+[COMPOSITIONS] Added Hazeys Custom ALiVE MIL Compositions to be used with Custom Objectives!
+[CUSTOM PLACEMENT] Added new module! Custom Objective and Placement!
+[DEMOS] Added ALiVE - Air Assault!
+[DEMOS] Updated Divide & Rule, Foursome and Air Assault with new module settings
+[GENERAL] code cleanup!
+[MAIN] Changed method of detecting modules to grab modules created during runtime
+[MAIN] changed the zeus event handler to AllVehicle class so that vehicles are editable in zeus mode
+[MIL COMMAND] modified garrison command to also include nearby static weapons
+[MIL CONVOY] Flag convoy vehicles with ALiVE_Convoy flag so ProfileHandler doesnt throw a group related script error if profiing an empty vehicle
+[MIL LOGISTICS] Added LOGCOM! Please refer to the WIKI for further instructions!
+[MIL OPCOM | SYS PROFILE] ProfileSimulator change for Air was on wrong position, cleaned up code of former Air changes
+[MIL OPCOM] Added dynamic destination point for reinforcements! Nearest secured objective of an attacked or defended objective is chosen as LOGCOM destination point for reinforcments! When the troops arrive at the deployment base OPCOM takes over!
+[MIL OPCOM] Added LOGCOM implementation for OPCOM!
+[MIL OPCOM] ALiVE_fnc_OPCOMJoinObjective was not working as intended on dedicated! Excluded already assigned playergroups, Ensured Fadescreens are activated on all player units and not only leader!
+[MIL OPCOM] Fixed bug where potentially sorting with BIS_fnc_SortBy was affected
+[MIL OPCOM] Foursome Showcase updated with new modulesettings
+[MIL OPCOM] Hotfix Removed HALO insertion - since adbackpack is not global, changed to regular teleport!
+[MIL OPCOM] Implemented generic AA/Artillery functions
+[MIL OPCOM] Implemented QRF Helicopter Insertion for Infantry groups
+[MIL OPCOM] Oh yeah... They DO use chopperZ & planeZ! http://dev.withsix.com/issues/74095 - Improved OPCOMs behaviour in order to use all the Air assets!
+[MIL OPCOM] Replaced AMB CIV Populator, vanished somehow
+[MIL/CIV PLACEMENT, MIL CQB, SYS PROFILE, MIL ML, AMB CIV] http://dev.withsix.com/issues/73754 - Implemented custom blacklists for mission editors to allow for a higher grade of force composition-details http://dev.withsix.com/issues/73754
+[PLACMENT MODULES] made customer override module options so users can exactly specify group counts created by placement modules
+[PLACMENT MODULES] removed count from label
+[SUP COMBATSUPPORT] Implemented Respawn for Artillery module http://dev.withsix.com/issues/74747
+[SUP CS] Add misc functions for interim CAS updates
+[SUP CS] Fix Combat Support units moving to [0,0,0]
+[SUP CS] Fix to artillery spawn using different variables
+[SUP CS] Major interim CAS FSM updates
+[SUP CS] Shift attack run/targeting/timeout conditions
+[SUP PLAYER RESUPPLY] Added Player Resupply Module! Please refer to Wiki for further instructions
+[SYS ADMINACTIONS] Changed to DumpH and using async call of ALiVE_fnc_BUS
+[SYS ADMINACTIONS] Fix for http://dev.withsix.com/issues/74752 and also in "Mark units" we changed the color of playerunits to colorBlack
+[SYS ADMINACTIONS] Implemented Feature Request: http://dev.withsix.com/issues/74587 ("Teleport Units" option for admins)
+[SYS DATA / SYS DATA COUCHDB / MIL LOGISTICS / SYS PROFILE / MAIN] Updated Version to 0.7.0.1408141! Changelog:
+[SYS DATA] Fix for issue where data dictionaries and module indexes that were greater than 10kb could not be loaded back into game. Set data inbound limit to 9.5kb. Reduced TRACE output for sys DATA for easier reading. http://dev.withsix.com/issues/74739, http://dev.withsix.com/issues/74740
+[SYS DATA] Set "startupComplete" to indicate sys data has finished initialising fully
+[SYS DATA_COUCHDB] Fixed http://dev.withsix.com/issues/74598 - Ungraceful error when data failed to load (e.g. if @ArmA2NET was not loaded)
+[SYS LOGISTICS] Player Logistics implemented!! please refer to WIKI for further instructions
+[SYS PROFILE] added check to tell if incoming side value from load profiles from data is a number, if so then convert to side string
+[SYS PROFILE] added vehicle event handler for unregistering profile when player gets in
+[SYS PROFILE] Allow custom definements for groups to use a special vehicle! This change fulfills http://dev.withsix.com/issues/73890 and also is a good preparationfor LOGCOM! This will virtualise a group and vehicle and put that custom group (any group created individually or editor spawned, only picks the leader) in the vehicle (again, any vehicle you want): [your_editor_unit, your_editor_vehicle] spawn ALiVE_fnc_createProfileVehicleAssignment"
+[SYS PROFILE] Excluded air units from simulated combat to prevent Battlefield Logistics getting stuck
+[SYS PROFILE] Fix for exportData error on saving to DB if profile was nil
+[SYS PROFILE] Fixed bug where moving virtual air assets were spawned on ground instead of air
+[SYS PROFILE] made a formation randomiser for spawn to mix up formations
+[SYS PROFILE] nilled profile id on get in event handler
+[SYS PROFILE] Switched "NIL-out ProfileID" to "unregisterProfile" operation in ProfileHandler
+[SYS PROFILE] waypoint map markers improved
+[TOOLS] made powershell script to parse alive codebase for undef vars
+[VARIOUS] changed module categories to include new ALiVE player category
+[VARIOUS] Pushed BIF Releasepost from local to GIT
+[X LIB] Add alive_fnc_encodeJSON function
+[X LIB] Added ALiVE_fnc_DumpH, Displays a Debug message as "hint"
+[X LIB] Added ALiVE_fnc_isAA and ALiVE_fnc_Artillery (detects if a vehicle is AA/AAA or Artillery)
+[X LIB] fix to group garrison
+[X LIB] Fixed error in BUS
+[X LIB] Fixed for http://dev.withsix.com/issues/73115 (_idvx error if no entry was found in BUS queue)
+[X LIB] moved all my latest general functions into the xlib
+[X LIB] new radio broadcast function with callsigns. Improved building pos debug. Added group garrison.
+[/SPOILER]
+
+[B][U]Disclaimer[/U][/B]
+ALiVE is still in ALPHA and subject to change.  We may need to clear database data before major updates but we will let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+
+NOTE:  mil_convoys is now deprecated and will be removed in a future release.  We'll leave it in for the moment so it doesn't break missions but it will be gone in the future.  Fair warning!
+
+[B][U]Work In Progress[/U][/B]
+Our focus is now shifting to enhancing OPCOM and improving Command & Control.  We are reworking Combat Support from scratch to be more stable, flexible and intuitive.  This will also enable users to add init lines on CS units, which is a regular request.  We are also exploring more in depth game integration with War Room to provide two-way data for reporting, tasks and mission logs.  Finally, we are starting work on the design of a full Insurgency Module.
+
+[B][U]Welcome To[/U][/B]
+We are always on the look out for talented individuals who are committed to contributing quality addons to the community.  Our associate dev team members have already added a huge amount of value to ALiVE and we are working closely with other leading mod teams to maximise compatibility.  In particular, we would like to welcome Cameroon and Haze onto the team.  Cameroon is working on improvements to Combat Support and Logistics.  Haze is hard at work building custom compositions for the Objectives Module.
+
+[B][U]Thanks To[/U][/B]
+Special thanks to everyone here for supporting us with donations to the War Room.  Database hosting isn’t free and the overwhelming popularity of ALiVE means we are using rather more data than we originally anticipated.  If you want to contribute to keep the War Room ALiVE (see what I did there) then please find the Donate button at ALiVEmod.com!
+
+Have fun!
