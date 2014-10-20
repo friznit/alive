@@ -3999,6 +3999,7 @@ ALIVE_RHSResupplyVehicleOptions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_rva", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
 
 
+
 ALIVE_RHSResupplyIndividualOptions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_RHSResupplyIndividualOptions, "PR_AIRDROP", [["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","RHS Infantry"],["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","rhs_vehclass_infantry"]]] call ALIVE_fnc_hashSet;
 [ALIVE_RHSResupplyIndividualOptions, "PR_HELI_INSERT", [["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","RHS Infantry"],["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","rhs_vehclass_infantry"]]] call ALIVE_fnc_hashSet;
@@ -4019,6 +4020,29 @@ ALIVE_RHSResupplyIndividualOptions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vvs", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vvs_c", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_rva", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+
+
+
+ALIVE_RHSResupplyGroupOptions = [] call ALIVE_fnc_hashCreate;
+[ALIVE_RHSResupplyGroupOptions, "PR_AIRDROP", ["Armored","Support","rhs_group_nato_usarmy_wd_m1a1","rhs_group_nato_usarmy_wd_M1A2","rhs_group_nato_usarmy_wd_M109","rhs_group_nato_usarmy_d_m1a1","rhs_group_nato_usarmy_d_M1A2","rhs_group_nato_usarmy_d_M109","rhs_group_rus_msv_bm21","rhs_group_rus_vdv_mi8","rhs_group_rus_vdv_mi24","rhs_group_rus_vdv_bm21","rhs_group_rus_tv_72","rhs_group_rus_tv_80","rhs_group_rus_tv_2s3"]] call ALIVE_fnc_hashSet;
+[ALIVE_RHSResupplyGroupOptions, "PR_HELI_INSERT", ["Armored","Mechanized","Motorized","Motorized_MTP","SpecOps","Support","Motorized_MTP","SpecOps","Support","rhs_group_nato_usarmy_wd_M113","rhs_group_nato_usarmy_wd_bradley","rhs_group_nato_usarmy_wd_bradleyA3","rhs_group_nato_usarmy_wd_m1a1","rhs_group_nato_usarmy_wd_M1A2","rhs_group_nato_usarmy_wd_M109","rhs_group_nato_usarmy_d_M113","rhs_group_nato_usarmy_d_bradley","rhs_group_nato_usarmy_d_bradleyA3","rhs_group_nato_usarmy_d_m1a1","rhs_group_nato_usarmy_d_M1A2","rhs_group_nato_usarmy_d_M109","rhs_group_rus_msv_Ural","rhs_group_rus_msv_gaz66","rhs_group_rus_msv_btr70","rhs_group_rus_msv_BTR80","rhs_group_rus_msv_BTR80a","rhs_group_rus_msv_bmp1","rhs_group_rus_msv_bmp2","rhs_group_rus_MSV_BMP3","rhs_group_rus_msv_bm21","rhs_group_rus_vdv_Ural","rhs_group_rus_vdv_gaz66","rhs_group_rus_vdv_btr60","rhs_group_rus_vdv_btr70","rhs_group_rus_vdv_BTR80","rhs_group_rus_vdv_BTR80a","rhs_group_rus_vdv_bmp1","rhs_group_rus_vdv_bmp2","rhs_group_rus_vdv_bmd1","rhs_group_rus_vdv_bmd2","rhs_group_rus_vdv_bmd4","rhs_group_rus_vdv_bmd4m","rhs_group_rus_vdv_bmd4ma","rhs_group_rus_vdv_mi8","rhs_group_rus_vdv_mi24","rhs_group_rus_vdv_bm21","rhs_group_rus_tv_72","rhs_group_rus_tv_80","rhs_group_rus_tv_2s3"]] call ALIVE_fnc_hashSet;
+[ALIVE_RHSResupplyGroupOptions, "PR_STANDARD", ["Support"]] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_usarmy_wd", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_usarmy_d", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_msv", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_vdv", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_tv", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_usmc_wd", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_usmc_d", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_usaf", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_usn", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_vmf", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_vv", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_vpvo", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_vvs", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_vvs_c", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyGroupOptions, "rhs_faction_rva", ALIVE_RHSResupplyGroupOptions] call ALIVE_fnc_hashSet;
 
 
 

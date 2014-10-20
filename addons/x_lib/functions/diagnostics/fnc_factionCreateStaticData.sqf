@@ -25,7 +25,7 @@ for "_i" from 0 to count _factions -1 do {
     if(isClass _faction) then {
         _configName = configName _faction;
         _side = getNumber(_faction >> "side");
-        if(_side < 3) then {
+        if((_side < 3) && !(_configName == "Default") && !(_configName == "None") && !(_configName == "OPF_G_F") && !(_configName == "BLU_G_F") && !(_configName == "IND_G_F") && !(_configName == "IND_F") && !(_configName == "OPF_F") && !(_configName == "BLU_F")) then {
             [configName (_factions select _i)] call ALIVE_fnc_factionCreateStaticData;
         };
     };
@@ -145,13 +145,15 @@ if!(_factionToGroupMappingOK) then {
 
 // found some groups for the faction - investigate them
 
-private ["_factionCategoryGroups","_config","_class","_categoryName","_aliveCategory","_groups","_factionGroupCategory"];
+private ["_factionCategoryGroups","_config","_class","_categoryName","_aliveCategory","_groups","_factionGroupCategory","_arrayContent","_delimit"];
 
 _factionCategoryGroups = [] call ALIVE_fnc_hashCreate;
 
 if(_factionToGroupMappingOK) then {
 
     _config = configfile >> "CfgGroups" >> _sideToText >> _faction;
+
+    _arrayContent = "";
 
     for "_i" from 0 to count _config -1 do {
 
@@ -160,6 +162,16 @@ if(_factionToGroupMappingOK) then {
         if (isClass _class) then {
             _categoryName = configName _class;
             _aliveCategory = [_class >> "aliveCategory"] call ALIVE_fnc_getConfigValue;
+
+            if(_i == 0) then {
+                _delimit = "";
+            }else{
+                _delimit = ",";
+            };
+
+            _arrayContent = format['%1%2"%3"',_arrayContent,_delimit,_categoryName];
+
+            ['cat: %1 cat: %2',_categoryName,_aliveCategory] call ALIVE_fnc_dump;
 
             if!(isNil "_aliveCategory") then {
 
@@ -181,7 +193,19 @@ if(_factionToGroupMappingOK) then {
             };
         };
     };
+
+    [''] call ALIVE_fnc_dump;
+
+    ['ALIVE_RHSResupplyGroupOptions_%1 = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
+    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_AIRDROP", ["Armored","Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dump;
+    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_HELI_INSERT", ["Armored","Mechanized","Motorized","Motorized_MTP","SpecOps","Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dump;
+    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_STANDARD", ["Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dump;
+
+    ['[ALIVE_factionDefaultResupplyGroupOptions, "%1", ALIVE_RHSResupplyGroupOptions_%1] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
 };
+
+[''] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dump;
 
 
 private ["_groupCategory","_categoryGroups","_arrayContent","_groupClass","_configName","_delimit"];
