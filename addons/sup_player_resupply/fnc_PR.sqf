@@ -2276,6 +2276,65 @@ switch(_operation) do {
                                 _payloadInfo = _x select 1;
                                 _payloadType = _payloadInfo select 0;
 
+                                private ["_faction","_vehicleType","_customMappings","_groups","_groupNames"];
+
+                                _faction = _payloadInfo select 1;
+
+                                // hacks for RHS support..
+                                // ------------------------------------------------------------------------
+
+                                if!([_faction, "rhs_"] call CBA_fnc_find == -1) then {
+
+                                    if(_payloadType == "Vehicles") then {
+
+                                        _vehicleType = _payloadInfo select 1;
+                                        switch(_vehicleType) do {
+                                            case "rhs_vehclass_car":{
+                                                _payloadInfo set [1,"Car"];
+                                            };
+                                            case "rhs_vehclass_truck":{
+                                                _payloadInfo set [1,"Car"];
+                                            };
+                                            case "rhs_vehclass_ifv":{
+                                                _payloadInfo set [1,"Armored"];
+                                            };
+                                            case "rhs_vehclass_apc":{
+                                                _payloadInfo set [1,"Armored"];
+                                            };
+                                            case "rhs_vehclass_tank":{
+                                                _payloadInfo set [1,"Armored"];
+                                            };
+                                            case "rhs_vehclass_helicopter":{
+                                                _payloadInfo set [1,"Air"];
+                                            };
+                                        };
+
+                                    };
+
+                                    if(_payloadType == "Groups") then {
+
+                                        _customMappings = [ALIVE_factionCustomMappings, _faction] call ALIVE_fnc_hashGet;
+                                        _groups = [_customMappings, "Groups"] call ALIVE_fnc_hashGet;
+
+                                        _groups call ALIVE_fnc_inspectHash;
+
+                                        {
+                                            _groupNames = [_groups, _x] call ALIVE_fnc_hashGet;
+
+                                            _groupNames call ALIVE_fnc_inspectArray;
+
+                                            if(_payloadClass in _groupNames) then {
+                                                _payloadInfo set [2,_x];
+                                            };
+                                        } forEach (_groups select 1);
+
+                                    };
+
+                                };
+
+                                // end hacks for RHS support..
+                                // ------------------------------------------------------------------------
+
                                 switch(_payloadType) do {
                                     case "Vehicles":{
                                         _emptyVehicles set [count _emptyVehicles,[_payloadClass,_payloadInfo]];

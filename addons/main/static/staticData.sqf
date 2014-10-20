@@ -3977,6 +3977,51 @@ SUD_RU_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 
 
+ALIVE_RHSResupplyVehicleOptions = [] call ALIVE_fnc_hashCreate;
+[ALIVE_RHSResupplyVehicleOptions, "PR_AIRDROP", [["<< Back","Car","Ship","RHS Car","RHS Truck"],["<< Back","Car","Ship","rhs_vehclass_car","rhs_vehclass_truck"]]] call ALIVE_fnc_hashSet;
+[ALIVE_RHSResupplyVehicleOptions, "PR_HELI_INSERT", [["<< Back","Air","RHS Helicopter"],["<< Back","Air","rhs_vehclass_helicopter"]]] call ALIVE_fnc_hashSet;
+[ALIVE_RHSResupplyVehicleOptions, "PR_STANDARD", [["<< Back","Car","Armored","Support","RHS Car","RHS Truck","RHS IFV","RHS APC","RHS Tank","RHS AA","RHS Artillery"],["<< Back","Car","Armored","Support","rhs_vehclass_car","rhs_vehclass_truck","rhs_vehclass_ifv","rhs_vehclass_apc","rhs_vehclass_tank","rhs_vehclass_aa","rhs_vehclass_artillery"]]] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_usarmy_wd", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_usarmy_d", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_usmc_wd", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_usmc_d", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_usaf", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_usn", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_msv", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_vdv", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_vmf", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_vv", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_tv", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_vpvo", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_vvs", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_vvs_c", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyVehicleOptions, "rhs_faction_rva", ALIVE_RHSResupplyVehicleOptions] call ALIVE_fnc_hashSet;
+
+
+ALIVE_RHSResupplyIndividualOptions = [] call ALIVE_fnc_hashCreate;
+[ALIVE_RHSResupplyIndividualOptions, "PR_AIRDROP", [["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","RHS Infantry"],["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","rhs_vehclass_infantry"]]] call ALIVE_fnc_hashSet;
+[ALIVE_RHSResupplyIndividualOptions, "PR_HELI_INSERT", [["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","RHS Infantry"],["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","rhs_vehclass_infantry"]]] call ALIVE_fnc_hashSet;
+[ALIVE_RHSResupplyIndividualOptions, "PR_STANDARD", [["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","RHS Infantry"],["<< Back","Men","MenDiver","MenRecon","MenSniper","MenSupport","rhs_vehclass_infantry"]]] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_usarmy_wd", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_usarmy_d", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_usmc_wd", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_usmc_d", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_usaf", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_usn", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_msv", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vdv", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vmf", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vv", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_tv", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vpvo", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vvs", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_vvs_c", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultResupplyIndividualOptions, "rhs_faction_rva", ALIVE_RHSResupplyIndividualOptions] call ALIVE_fnc_hashSet;
+
+
+
 // rhs_faction_usarmy_wd
 
 
@@ -4003,7 +4048,7 @@ rhs_faction_usarmy_wd_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionCustomMappings, "rhs_faction_usarmy_wd", rhs_faction_usarmy_wd_mappings] call ALIVE_fnc_hashSet;
 
 [ALIVE_factionDefaultTransport, "rhs_faction_usarmy_wd", ["rhsusf_m998_w_2dr","rhsusf_m998_w_2dr_halftop","rhsusf_m998_w_2dr_fulltop","rhsusf_m998_w_4dr","rhsusf_m998_w_4dr_halftop","rhsusf_m998_w_4dr_fulltop","rhsusf_m1025_w"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultAirTransport, "rhs_faction_usarmy_wd", ["RHS_AH64D_wd","RHS_CH_47F","RHS_UH60M","RHS_UH60M_MEV"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "rhs_faction_usarmy_wd", ["RHS_CH_47F","RHS_UH60M","RHS_UH60M_MEV"]] call ALIVE_fnc_hashSet;
 
 /*
 // rhs_vehclass_apc
@@ -4076,7 +4121,7 @@ rhs_faction_usarmy_d_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionCustomMappings, "rhs_faction_usarmy_d", rhs_faction_usarmy_d_mappings] call ALIVE_fnc_hashSet;
 
 [ALIVE_factionDefaultTransport, "rhs_faction_usarmy_d", ["rhsusf_m998_d_2dr","rhsusf_m998_d_2dr_halftop","rhsusf_m998_d_2dr_fulltop","rhsusf_m998_d_4dr","rhsusf_m998_d_4dr_halftop","rhsusf_m998_d_4dr_fulltop","rhsusf_m1025_d"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultAirTransport, "rhs_faction_usarmy_d", ["RHS_AH64D","RHS_CH_47F_light","RHS_UH60M_d","RHS_UH60M_MEV_d"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "rhs_faction_usarmy_d", ["RHS_CH_47F_light","RHS_UH60M_d","RHS_UH60M_MEV_d"]] call ALIVE_fnc_hashSet;
 
 /*
 // rhs_vehclass_apc
@@ -4324,7 +4369,7 @@ rhs_faction_vdv_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 [ALIVE_factionDefaultSupports, "rhs_faction_vdv", ["rhs_zsu234_aa","rhs_p37","rhs_prv13","rhs_2P3_1","rhs_2P3_2","rhs_v2","rhs_v3","RHS_Ural_VMF_01","RHS_Ural_Open_VMF_01","RHS_Ural_Fuel_VMF_01","RHS_BM21_VMF_01","rhs_gaz66_vmf","rhs_gaz66o_vmf","rhs_gaz66_r142_vmf","rhs_gaz66_repair_vmf","rhs_gaz66_ap2_vmf"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultTransport, "rhs_faction_vdv", ["RHS_Ural_VMF_01","RHS_Ural_Open_VMF_01","rhs_tigr_vdv","rhs_uaz_vdv","rhs_uaz_open_vdv","rhs_gaz66_vmf","rhs_gaz66o_vmf","rhs_gaz66_r142_vmf","rhs_gaz66_ap2_vmf"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultAirTransport, "rhs_faction_vdv", ["RHS_Mi8mt_vv","RHS_Mi24P_vvsc","RHS_Mi24V_vvsc","RHS_Mi8mt_vvsc","RHS_Mi8MTV3_vvsc","RHS_Mi8AMT_vvsc","RHS_Mi8AMTSh_vvsc","RHS_Ka52_vvsc","rhs_ka60_c"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "rhs_faction_vdv", ["RHS_Mi8mt_vv","RHS_Mi24P_vvsc","RHS_Mi24V_vvsc","RHS_Mi8mt_vvsc","RHS_Mi8MTV3_vvsc","RHS_Mi8AMT_vvsc","RHS_Mi8AMTSh_vvsc","rhs_ka60_c"]] call ALIVE_fnc_hashSet;
 
 /*
 
