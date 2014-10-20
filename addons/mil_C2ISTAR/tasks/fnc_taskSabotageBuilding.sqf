@@ -132,7 +132,7 @@ switch (_taskState) do {
         _targetBuildings = [_targetBuildings,[],{
             
             _maxHeight = -999;
-            if !((typeOf _x) isKindOf "House_Small_F") then {
+			if (alive _x && {!((typeOf _x) isKindOf "House_Small_F")}) then {
                 
                 if !((getText(configfile >> "CfgVehicles" >> (typeOf _x) >> "destrType")) == "DestructNo") then {
 	                _bbr = boundingBoxReal _x;
