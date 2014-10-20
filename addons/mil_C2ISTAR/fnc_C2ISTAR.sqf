@@ -501,7 +501,7 @@ switch(_operation) do {
 
             // set the player side
 
-            private ["_playerSide","_sideNumber","_sideText"];
+            private ["_playerSide","_sideNumber","_sideText","_playerFaction"];
 
             waitUntil {
                 sleep 1;
@@ -513,15 +513,16 @@ switch(_operation) do {
             _sideText = [_sideNumber] call ALIVE_fnc_sideNumberToText;
 
             if(_sideText == "CIV") then {
-                _sideText = "WEST";
+                _playerFaction = faction player;
+                _playerSide = _playerFaction call ALiVE_fnc_factionSide;
+                _sideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
+                _sideText = [_sideNumber] call ALIVE_fnc_sideNumberToText;
             };
 
             [_logic,"side",_sideText] call MAINCLASS;
 
 
             // set the player faction
-
-            private ["_playerFaction"];
 
             _playerFaction = faction player;
 

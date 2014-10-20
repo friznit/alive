@@ -2410,7 +2410,7 @@ switch(_operation) do {
                         _factionName = getText(configfile >> "CfgFactionClasses" >> _faction >> "displayName");
 
                         _title = "<t size='1.5' color='#68a7b7' shadow='1'>CQB Units</t><br/>";
-                        _text = format["%1<t>%2 units near %4</t><br/>",_title,_factionName,_nearestTown];
+                        _text = format["%1<t>%2 units near %3</t><br/>",_title,_factionName,_nearestTown];
 
                         ["openSideTopSmall"] call ALIVE_fnc_displayMenu;
                         ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
@@ -3590,6 +3590,74 @@ switch(_operation) do {
 
             sleep 20;
 
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Close the player tasks tablet.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the ALiVE menu.</t><br/><br/>";
+            _line4 = "<t size='1'>Select the Player C2ISTAR option.</t><br/><br/>";
+            _line5 = "<t size='1'>Select the Send SITREP sub option.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>The SITREP functionality allows players in multiplayer missions to send situation reports to other players.</t><br/><br/>";
+            _line3 = "<t size='1'>Enter some report details and select Send SITREP once done.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>The submitted SITREP will be available via the map and diary for all players who match the eyes only setting on the report.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>Open the ALiVE menu.</t><br/><br/>";
+            _line3 = "<t size='1'>Select the Player C2ISTAR option.</t><br/><br/>";
+            _line4 = "<t size='1'>Select the Send PATROLREP sub option.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>The PATROL functionality allows players in multiplayer missions to send patrol reports to other players.</t><br/><br/>";
+            _line3 = "<t size='1'>Enter some report details and select the start and end points for the patrol on the map.</t><br/><br/>";
+            _line4 = "<t size='1'Select Send PATROLREP once done.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Command and Control (C2ISTAR)</t><br/><br/>";
+            _line2 = "<t size='1'>The submitted PATROLREP will be available via the map and diary for all players who match the eyes only setting on the report.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
             [_logic,"deactivateSelectionUsagePlayerC2"] call MAINCLASS;
 
         };
@@ -3618,9 +3686,20 @@ switch(_operation) do {
 
         ALIVE_tourActiveScript = [_logic] spawn {
 
-            private["_logic"];
+            private["_logic","_initialPosition"];
 
-            player setCaptive false;
+            _logic = _this select 0;
+
+            ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+            ["setSplashText","<t size='1.5' color='#68a7b7' align='center'>Returning to base...</t><br/><br/>"] call ALIVE_fnc_displayMenu;
+
+            _initialPosition = position _logic;
+
+            player setPos _initialPosition;
+
+            sleep 5;
+
+            ["closeSplash"] call ALIVE_fnc_displayMenu;
 
             _logic = _this select 0;
 
@@ -3639,7 +3718,7 @@ switch(_operation) do {
             sleep 30;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'>Select the support type you require.</t><br/><br/>";
+            _line2 = "<t size='1'>Select the TRANSPORT option.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3649,7 +3728,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Select the transport unit to request support from, and select PICKUP.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3659,7 +3738,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>You can also select the height, speed and rules of engagement for the transport vehicle.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3669,7 +3748,18 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Select the location on the map for the destination of the transport vehicle.</t><br/><br/>";
+            _line3 = "<t size='1'>Once pickup point selected, press the Confirm button.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>You can request a SITREP of the transport vehicle to determine it's current position, health, ammo levels and availability.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3679,7 +3769,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>The transport vehicle will now move to the requested position.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3689,7 +3779,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Once the transport vehicle has arrived at the pickup point you will be request to pop a smoke grenade to designate where the transport should land. Once the smoke has been sighted by the transport vehicle, open the Combat Support tablet again to confirm the smoke as the LZ.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3699,7 +3789,34 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Once the vehicle has landed you can board and then use the Combat Support tablet to issue futhers orders to the transport.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+
+
+            ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+            ["setSplashText","<t size='1.5' color='#68a7b7' align='center'>Moving Position...</t><br/><br/>"] call ALIVE_fnc_displayMenu;
+
+            _position = [_initialPosition, "Map", "EAST", "MIL"] call ALIVE_fnc_taskGetSideCluster;
+
+            _position = [_position,"overwatch"] call ALIVE_fnc_taskGetSectorPosition;
+
+            player setPos _position;
+
+            sleep 5;
+
+            ["closeSplash"] call ALIVE_fnc_displayMenu;
+
+
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>Open the Combat Support tablet, and select the CAS option.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3709,7 +3826,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Select the CAS unit to request support from, and select SAD (Search and Destroy).</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3719,7 +3836,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Define the radius, altitude and rules of engagement for the search and destroy mission</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3729,7 +3846,29 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Select the location on the map for the search and destroy mission.</t><br/><br/>";
+            _line3 = "<t size='1'>Once location selected, press the Confirm button.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>The CAS vehicle will now move to the search and destroy mission and attack targets unitl ordered to return to base.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>Open the Combat Support tablet, and select the ARTY option.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3739,7 +3878,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Select the artillery battery to request support from, and select the ordnance to use.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3749,7 +3888,7 @@ switch(_operation) do {
             sleep 20;
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Define the rate of fire, number of rounds, and the dispersion of the fire mission.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
 
@@ -3758,7 +3897,28 @@ switch(_operation) do {
 
             sleep 20;
 
-            [_logic,"deactivateSelectionUsagePlayerC2"] call MAINCLASS;
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>Select the location on the map for the fire mission.</t><br/><br/>";
+            _line3 = "<t size='1'>Once location selected, press the Confirm button.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Player Combat Support</t><br/><br/>";
+            _line2 = "<t size='1'>The artillery battery will now commence firing on the selected location.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            [_logic,"deactivateSelectionUsagePlayerCombatSupport"] call MAINCLASS;
 
         };
 
@@ -3788,16 +3948,58 @@ switch(_operation) do {
 
             _logic = _this select 0;
 
-            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy"];
+            private["_line1","_line2","_line3","_line4","_line5","_line6","_line7","_baseCopy","_currentCopy"];
 
             _line1 = "<br/><t size='1.5' color='#68a7b7'>Advanced Markers</t><br/><br/>";
-            _line2 = "<t size='1'></t><br/><br/>";
-            _line3 = "<t size='1'></t><br/><br/>";
+            _line2 = "<t size='1'>Advanced markers allow players to create, add SPOTREP, draw and persist markers.</t><br/><br/>";
+            _line3 = "<t size='1'>Open the map.</t><br/><br/>";
+            _line4 = "<t size='1'>Hold the control key and left click to create an advanced marker.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 30;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Advanced Markers</t><br/><br/>";
+            _line2 = "<t size='1'>Select the marker options as desired.</t><br/><br/>";
+            _line3 = "<t size='1'>You can opt to add a SPOTREP to the marker, which will add the report to the map and diary.</t><br/><br/>";
+            _line4 = "<t size='1'>Click Ok once done.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Advanced Markers</t><br/><br/>";
+            _line2 = "<t size='1'>You can edit a created marker by holding the control key and left clicking on the marker.</t><br/><br/>";
+            _line3 = "<t size='1'>You can delete a created marker by holding the control key and right clicking on the marker.</t><br/><br/>";
 
             _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3];
 
-            ["openFull",[_logic,"handleMenuCallback","UsageAdvancedMarkers"]] call ALIVE_fnc_displayMenu;
-            ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            _line1 = "<br/><t size='1.5' color='#68a7b7'>Advanced Markers</t><br/><br/>";
+            _line2 = "<t size='1'>You can also draw lines, rectangles, arrows, ellipses. By default drawing on the map is broadcast to all players on your side.</t><br/><br/>";
+            _line3 = "<t size='1'>Press the [ button to cycle through drawing modes. Press the END button to exit drawing mode.</t><br/><br/>";
+            _line4 = "<t size='1'>Press the up arrow to increase the width of a line or angle of a box/ellipse, press the down arrow to decrease the width of the line or angle of box/ellipse.</t><br/><br/>";
+            _line5 = "<t size='1'>Press the left arrow to change color. Press the right arrow to change fill (if appropriate).</t><br/><br/>";
+            _line6 = "<t size='1'>Press CTRL and the left mouse button to start drawing, press CTRL and the left mouse button again to stop drawing.</t><br/><br/>";
+
+            _baseCopy = format["%1%2%3%4%5%6%7",_line1,_line2,_line3,_line4,_line5,_line6];
+
+            ["openSideFull"] call ALIVE_fnc_displayMenu;
+            ["setSideFullText",_baseCopy] call ALIVE_fnc_displayMenu;
+
+            sleep 20;
+
+            [_logic,"deactivateSelectionUsageAdvancedMarkers"] call MAINCLASS;
 
         };
 
