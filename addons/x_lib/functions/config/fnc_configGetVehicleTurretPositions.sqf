@@ -61,7 +61,7 @@ _findRecurse = {
 				_ignore = true;
 			};
 			
-			["class: %1 ignore: %2 gunner: %3 observer: %4",_class,_ignore,getNumber(_class >> "primaryGunner"),getNumber(_class >> "primaryObserver")] call ALIVE_fnc_dump;
+			//["class: %1 ignore: %2 gunner: %3 observer: %4",_class,_ignore,getNumber(_class >> "primaryGunner"),getNumber(_class >> "primaryObserver")] call ALIVE_fnc_dump;
 			
 			if!(_ignore) then {
 				_result set [count _result, _currentPath];
