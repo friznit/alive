@@ -34,12 +34,12 @@ with uinamespace do {
 			//--- Remove null displays
 			{
 				if (isnull _x) then {
-					_displays set [_foreachindex,-1];
-					_classes set [_foreachindex,-1];
+					_displays set [_foreachindex,displaynull];
+					_classes set [_foreachindex,""];
 				};
 			} foreach _displays;
-			_displays = _displays - [-1];
-			_classes = _classes - [-1];
+			_displays = _displays - [displaynull];
+			_classes = _classes - [""];
 			_classes resize (count _displays);
 
 			//--- Register current display
@@ -49,7 +49,7 @@ with uinamespace do {
 
 			if (_path == "GUI") then {
 				if (isnil "BIS_initGame") then {
-					if (count _displays > 1) then {
+					if ({ctrlidd _x >= 0} count _displays > 1) then {
 						BIS_initGame = true;
 					};
 				};
@@ -74,10 +74,10 @@ with uinamespace do {
 		};
 	};
 
-	if (_class == "RscDisplayLoadingALIVE") then {
+	if (_class == "RscDisplayLoadingALIVE" || _class == "RscDisplayMPInterruptALIVE") then {
 		_path = "alive";
 	};
-	
+
 	//--- Register script for the first time
 	_fncName = _class + "_script";
 	if (isnil _fncName || cheatsEnabled) then {
@@ -90,7 +90,7 @@ with uinamespace do {
 		_fncFile = format ["scriptname '%1_%2'; _fnc_scriptName = '%1_%2';",_class,_mode] + _fncFile;
 		uinamespace setvariable [
 			_fncName,
-			compile _fncFile
+			compileFinal _fncFile
 		];
 	};
 
@@ -98,4 +98,11 @@ with uinamespace do {
 	if (!cheatsEnabled || (cheatsEnabled && !(uinamespace getvariable ["BIS_disableUIscripts",false]))) then {
 		[_mode,_params,_class] call (uinamespace getvariable _fncName);
 	};
+
+	//--- Call custom scripts
+/*
+	if (_class != "") then {
+		[missionnamespace,_class,[_display]] spawn BIS_fnc_callScriptedEventHandler;
+	};
+*/
 };

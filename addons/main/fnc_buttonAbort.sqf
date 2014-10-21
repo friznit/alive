@@ -434,6 +434,7 @@ if (_mode == "SERVERABORTYO" && isDedicated) exitwith {
 
 };
 
+
 // Function run on client
 if ((_mode == "SAVE" || _mode == "REMSAVE") && !isDedicated) then {
     // Save player data
@@ -447,42 +448,46 @@ if (_mode == "ABORT" && !isDedicated) then {
 	[player] call _exitPlayer;
 };
 
-// Check client for admin
-if (call ALiVE_fnc_isServerAdmin) then {
+// Check client for admin (in UI now due to bug in 1.32)
 
-	if (_mode == "SERVERSAVE") then {
 
-	    ["ALiVE Abort - Abort / Save by Admin"] call ALIVE_fnc_dump;
+if (_mode == "SERVERSAVE") then {
 
-	    ["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
+    ISADMIN = true;
 
-		// Save all players
-		[["REMSAVE"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
+    ["ALiVE Abort - Abort / Save by Admin"] call ALIVE_fnc_dump;
 
-		["ALiVE Abort - Trigger Server abort call"] call ALIVE_fnc_dump;
+    ["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
 
-		// Save server data
-		//[] call _saveServer;
-        [["SAVESERVERYO",getPlayerUID player],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
-		//["server",QMOD(main),[["SAVESERVERYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
+	// Save all players
+	[["REMSAVE"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
 
-	};
-	if (_mode == "SERVERABORT") then {
+	["ALiVE Abort - Trigger Server abort call"] call ALIVE_fnc_dump;
 
-	    ["ALiVE Abort - Abort by Admin"] call ALIVE_fnc_dump;
+	// Save server data
+	//[] call _saveServer;
+    [["SAVESERVERYO",getPlayerUID player],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
+	//["server",QMOD(main),[["SAVESERVERYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
 
-		["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
-
-		// abort all players
-		[["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
-
-		["ALiVE Abort - Trigger Server abort call"] call ALIVE_fnc_dump;
-
-		// exit server
-        [["SERVERABORTYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
-		//["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
-	};
 };
+if (_mode == "SERVERABORT") then {
+
+    ISADMIN = true;
+
+    ["ALiVE Abort - Abort by Admin"] call ALIVE_fnc_dump;
+
+	["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
+
+	// abort all players
+	[["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
+
+	["ALiVE Abort - Trigger Server abort call"] call ALIVE_fnc_dump;
+
+	// exit server
+    [["SERVERABORTYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
+	//["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
+};
+
 
 switch (_mode) do {
 	case "SAVE": {
@@ -494,19 +499,19 @@ switch (_mode) do {
 	    "abort" call BIS_fnc_endMission;
     };
 	case "REMSAVE" : {
-	    if !(call ALiVE_fnc_isServerAdmin) then {
+	    if (isNil "ISADMIN") then {
 	        ["ALiVE Abort - [%1] !(Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			"saved" call BIS_fnc_endMission;
 		};
 	};
 	case "SERVERSAVE": {
-		if (call ALiVE_fnc_isServerAdmin) then {
+		if !(isNil "ISADMIN") then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			//"serversaved" call BIS_fnc_endMission;
 		};
 	};
 	case "SERVERABORT": {
-		if (call ALiVE_fnc_isServerAdmin) then {
+		if !(isNil "ISADMIN") then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			"serverabort" call BIS_fnc_endMission;
 		};
