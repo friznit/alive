@@ -453,7 +453,7 @@ if (_mode == "ABORT" && !isDedicated) then {
 
 if (_mode == "SERVERSAVE") then {
 
-    ISADMIN = true;
+    player setVariable ["isAdmin",true];
 
     ["ALiVE Abort - Abort / Save by Admin"] call ALIVE_fnc_dump;
 
@@ -472,7 +472,7 @@ if (_mode == "SERVERSAVE") then {
 };
 if (_mode == "SERVERABORT") then {
 
-    ISADMIN = true;
+    player setVariable ["isAdmin",true];
 
     ["ALiVE Abort - Abort by Admin"] call ALIVE_fnc_dump;
 
@@ -490,6 +490,8 @@ if (_mode == "SERVERABORT") then {
 
 
 switch (_mode) do {
+
+
 	case "SAVE": {
 	    ["ALiVE Abort - [%1] Ending mission",_mode] call ALIVE_fnc_dump;
 	    "saved" call BIS_fnc_endMission;
@@ -499,19 +501,19 @@ switch (_mode) do {
 	    "abort" call BIS_fnc_endMission;
     };
 	case "REMSAVE" : {
-	    if (isNil "ISADMIN") then {
+	    if !(player getVariable ["isAdmin",false]) then {
 	        ["ALiVE Abort - [%1] !(Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			"saved" call BIS_fnc_endMission;
 		};
 	};
 	case "SERVERSAVE": {
-		if !(isNil "ISADMIN") then {
+		if (player getVariable ["isAdmin",false]) then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			//"serversaved" call BIS_fnc_endMission;
 		};
 	};
 	case "SERVERABORT": {
-		if !(isNil "ISADMIN") then {
+		if (player getVariable ["isAdmin",false]) then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			"serverabort" call BIS_fnc_endMission;
 		};
