@@ -5,4 +5,5 @@
 #include <CfgVehicles.hpp>
 #include <CfgFunctions.hpp>
 #include <Eventhandlers.hpp>
+#include <CfgHints.hpp>
 #include <\x\alive\addons\main\data\ui\main.hpp>
