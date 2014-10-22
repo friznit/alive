@@ -150,7 +150,7 @@ SABOTAGE_fnc_establishHideout = {
     _building setvariable ["SABOTAGE_DETECTOR",_trigger];
     
     //Add to store
-    [[getplayerUID _unit,"SABOTAGE_HIDEOUTS",[typeOf _building,getposATL _building]],"Sabotage_fnc_SaveData",false,false] call BIS_fnc_MP;
+    [[getplayerUID _unit,"SABOTAGE_HIDEOUTS",[[typeOf _building,getposATL _building]]],"Sabotage_fnc_SaveData",false,false] call BIS_fnc_MP;
     
 	_building addEventhandler ["killed",{
         _building = _this select 0;
@@ -167,7 +167,7 @@ SABOTAGE_fnc_establishHideout = {
         _unit setvariable ["SABOTAGE_HIDEOUTS",_hideOuts,true];
         _building setvariable ["SABOTAGE_DETECTOR",nil];
        
-		[[getplayerUID _unit,"SABOTAGE_DESTROYED",[_building]],"Sabotage_fnc_SaveData",false,false] call BIS_fnc_MP;
+		[[getplayerUID _unit,"SABOTAGE_DESTROYED",[[typeOf _building,getposATL _building]]],"Sabotage_fnc_SaveData",false,false] call BIS_fnc_MP;
         [[getplayerUID _unit,"SABOTAGE_HIDEOUTS",_data,true],"Sabotage_fnc_SaveData",false,false] call BIS_fnc_MP;
         
         deletevehicle _trigger;
@@ -329,22 +329,39 @@ Sabotage_fnc_RequestData = {
 	_playerUID = [_this, 0, "", [""]] call BIS_fnc_param;
 	_type = [_this, 1, "", [""]] call BIS_fnc_param;
     
-    if (isnil "SABOTAGE_STORE") exitwith {};
+    _unit = [_playerUID] call ALiVE_fnc_getPlayerByUID;
     
-	_unit = [_playerUID] call ALiVE_fnc_getPlayerByUID;
-    _data = [SABOTAGE_STORE,_playerUID] call ALiVE_fnc_HashGet;
-    
-    diag_log "in";
-    
-    if (isnil "_data") exitwith {};
-    
-    _data = [_data,_type] call ALiVE_fnc_HashGet;
+    if (isnil "SABOTAGE_STORE" || {isnull _unit}) exitwith {};
+
+    _data = [_type,[[SABOTAGE_STORE,_playerUID] call ALiVE_fnc_HashGet,_type] call ALiVE_fnc_HashGet] call Sabotage_fnc_convertData;
 
     if (isnil "_data") exitwith {};
     
-    diag_log _data;
+    _unit setvariable [_type,_data,true];
+};
+
+Sabotage_fnc_convertData = {
     
-    _unit setvariable [_type,_data,true]; 
+    private ["_playerUID","_type","_data","_unit"];
+
+	_type = [_this, 0, "", [""]] call BIS_fnc_param;
+    _data = [_this, 1, [], [[]]] call BIS_fnc_param;
+    
+    //Safety
+    if !(!(_type == "") && {count _data > 0}) exitwith {};
+
+    _dataConverted = [];
+    
+    switch (_type) do {
+        case ("SABOTAGE_HIDEOUTS") : {
+            {_dataConverted set [count _dataConverted,((_x select 1)) nearestObject ((_x select 0))]} foreach _data;
+        };
+        default {_dataConverted = _data};
+    };
+    
+    if (isnil "_dataConverted") exitwith {};
+
+	_dataConverted;
 };
 
 Sabotage_fnc_SaveData = {
@@ -530,8 +547,8 @@ SABOTAGE_fnc_initPlayer = {
     _unit = _this;
 	_pos = getposATL _unit;
     
-    //[[getPlayerUID _unit,"SABOTAGE_HIDEOUTS"],"Sabotage_fnc_RequestData",false,false] call BIS_fnc_MP;
-    //[[getPlayerUID _unit,"SABOTAGE_DESTROYED"],"Sabotage_fnc_RequestData",false,false] call BIS_fnc_MP;
+    [[getPlayerUID _unit,"SABOTAGE_HIDEOUTS"],"Sabotage_fnc_RequestData",false,false] call BIS_fnc_MP;
+    [[getPlayerUID _unit,"SABOTAGE_DESTROYED"],"Sabotage_fnc_RequestData",false,false] call BIS_fnc_MP;
     
 	_id = _unit addAction [
 		"Establish safehouse",
