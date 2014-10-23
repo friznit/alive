@@ -17,23 +17,16 @@ switch _mode do {
 		//Hide chat
 		showChat false;
 
+		//--- Disable message box
+		(_display displayctrl 235106) ctrlenable false;
+		(_display displayctrl 235107) ctrlenable false;
+
 		//--- set player's name
 		(_display displayctrl 109) ctrlSetText profileName;
 		[_display, 109] call (uinamespace getvariable 'BIS_fnc_setIDCStreamFriendly');
 
 		//Sets all texts toUpper
-		_classInsideControls = configfile >> "RscDisplayMPInterrupt" >> "controls";
-
-		for "_i" from 0 to (count _classInsideControls - 1) do {   //go to all subclasses
-			_current = _classInsideControls select _i;
-
-			if ( (isclass _current) && (configName(_current) != "PlayersName") ) then { //do not toUpper Player's name
-				//search inside main controls class
-				_idc = getnumber (_current >> "idc");
-				_control = _display displayctrl _idc;
-				_control ctrlSetText (toUpper (ctrlText _control));
-			};
-		};
+		["RscDisplayMPInterrupt",["RscText","RscTitle"],["PlayersName"]] call bis_fnc_toUpperDisplayTexts;
 
 		//Variable for tracking state of Options accordion (expanded/collapsed)
 		uiNamespace setVariable ["BIS_DisplayInterrupt_isOptionsExpanded", false];
@@ -55,15 +48,15 @@ switch _mode do {
 		} else {
 			if (isnumber _cfgRespawnType) then {getnumber _cfgRespawnType} else {-1};
 		};
-		if ((_respawnType in [-1,0,1] && _respawnButton != 1) || _respawnButton == 0) then {
-			//--- Disable in missions without respawn or when mission designer chose to
+		//--- Disable in missions without respawn, when player is virtual, or when mission designer chose to
+		if ((_respawnType in [-1,0,1] && _respawnButton != 1) || _respawnButton == 0 || side group player == sidelogic) then {
 			_buttonRespawn ctrlenable false;
 		};
 		_buttonRespawn ctrlseteventhandler ["buttonclick","with uinamespace do {['buttonRespawn',_this,''] spawn RscDisplayMPInterrupt_script;}; true"];
 
 		//--- Options button
 		_button = _display displayctrl 101;
-		_button ctrladdeventhandler ["buttonclick","with uinamespace do {['optionsButton',_this,''] call RscDisplayMPInterrupt_script};"];
+		_button ctrladdeventhandler ["buttonclick","with uinamespace do {['optionsButton',_this,''] spawn RscDisplayMPInterrupt_script};"];
 
 		//TODO - implementovat promennou, ktera si bude pamatovat stav akordeonu (je potreba pri navratu z jineho dialogu do main menu)
 		(_display displayctrl 301) ctrlSetFade 1;	//Video
@@ -91,66 +84,72 @@ switch _mode do {
 
 		//if options are expanded (Video Options button is shown), collapse it and vice versa
 		//if(ctrlFade (_display displayCtrl 301) < 0.5) then
+		_upperPartTime = 0.2; //0.05 for each button
+		_buttonsTime = 0.05;
+
 		if(uiNamespace getvariable "BIS_DisplayInterrupt_isOptionsExpanded") then
 		{
 			//hide buttons and collapse accordion
-			(_display displayctrl 301) ctrlSetFade 1;	//Video
-			(_display displayctrl 302) ctrlSetFade 1;	//Audio
-			(_display displayctrl 303) ctrlSetFade 1;	//Controls
-			(_display displayctrl 307) ctrlSetFade 1;	//Game Options
-
-			(_display displayctrl 301) ctrlCommit 0;
-			(_display displayctrl 302) ctrlCommit 0;
-			(_display displayctrl 303) ctrlCommit 0;
-			(_display displayctrl 307) ctrlCommit 0;
-
-			(_display displayctrl 301) ctrlEnable false;	//Video
-			(_display displayctrl 302) ctrlEnable false;	//Audio
-			(_display displayctrl 303) ctrlEnable false;	//Controls
-			(_display displayctrl 307) ctrlEnable false;	//Game Options
-
-
 			//move down - background, title, player's name, play, editor, profile, options
 
 			//Title background
 			_control = _display displayctrl 1050;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (14.2 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Title - same position as title background
 			_control = _display displayctrl 523;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (14.2 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Player's name - same position as title background
 			_control = _display displayctrl 109;
 			_control ctrlSetPosition [(6 * GUI_GRID_W + GUI_GRID_X), (14.2 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Continue button
 			_control = _display displayctrl 2;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (15.3 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Save button
 			_control = _display displayctrl 103;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (16.4 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Skip button - same position as Save
 			_control = _display displayctrl 1002;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (16.4 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Respawn
 			_control = _display displayctrl 1010;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (17.5 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Options button
 			_control = _display displayctrl 101;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (18.6 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
+
+
+			(_display displayctrl 301) ctrlSetFade 1;		//Video
+			(_display displayctrl 302) ctrlSetFade 1;		//Audio
+			(_display displayctrl 303) ctrlSetFade 1;		//Controls
+			(_display displayctrl 307) ctrlSetFade 1;		//Game Options
+
+			(_display displayctrl 301) ctrlCommit _buttonsTime;	//Video
+			uiSleep _buttonsTime;
+			(_display displayctrl 302) ctrlCommit _buttonsTime;	//Audio
+			uiSleep _buttonsTime;
+			(_display displayctrl 303) ctrlCommit _buttonsTime;	//Controls
+			uiSleep _buttonsTime;
+			(_display displayctrl 307) ctrlCommit _buttonsTime;	//Game
+
+			(_display displayctrl 301) ctrlEnable false;		//Video
+			(_display displayctrl 302) ctrlEnable false;		//Audio
+			(_display displayctrl 303) ctrlEnable false;		//Controls
+			(_display displayctrl 307) ctrlEnable false;		//Game Options
 
 			uiNamespace setVariable ["BIS_DisplayInterrupt_isOptionsExpanded", false];
 			//set focus to Options button
@@ -163,42 +162,42 @@ switch _mode do {
 			//Title background
 			_control = _display displayctrl 1050;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (9.8 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Title - same position as title background
 			_control = _display displayctrl 523;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (9.8 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Player's name - same position as title background
 			_control = _display displayctrl 109;
 			_control ctrlSetPosition [(6 * GUI_GRID_W + GUI_GRID_X), (9.8 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Continue button
 			_control = _display displayctrl 2;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (10.9 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Save button
 			_control = _display displayctrl 103;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (12 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Skip button - same position as Save
 			_control = _display displayctrl 1002;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (12 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Respawn
 			_control = _display displayctrl 1010;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (13.1 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 			//Options button
 			_control = _display displayctrl 101;
 			_control ctrlSetPosition [(1 * GUI_GRID_W + GUI_GRID_X), (14.2 * GUI_GRID_H + GUI_GRID_Y)];
-			_control ctrlCommit 0;
+			_control ctrlCommit _upperPartTime;
 
 
 			//Enable and show buttons
@@ -213,10 +212,16 @@ switch _mode do {
 			(_display displayctrl 303) ctrlSetFade 0;	//Controls
 			(_display displayctrl 307) ctrlSetFade 0;	//Game Options
 
-			(_display displayctrl 301) ctrlCommit 0;
-			(_display displayctrl 302) ctrlCommit 0;
-			(_display displayctrl 303) ctrlCommit 0;
-			(_display displayctrl 307) ctrlCommit 0;
+			uiSleep 0.05;
+
+			//From bottom to top
+			(_display displayctrl 307) ctrlCommit 0.15;	//Game
+			uiSleep _buttonsTime;
+			(_display displayctrl 303) ctrlCommit 0.15;	//Controls
+			uiSleep _buttonsTime;
+			(_display displayctrl 302) ctrlCommit 0.15;	//Audio
+			uiSleep _buttonsTime;
+			(_display displayctrl 301) ctrlCommit 0.15;	//Video
 
 			uiNamespace setVariable ["BIS_DisplayInterrupt_isOptionsExpanded", true];
 			//set focus to Options button
