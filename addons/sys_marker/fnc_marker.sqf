@@ -218,8 +218,17 @@ switch (_operation) do {
                 // Start any client-side processes that are needed
 
                  waituntil {!isnil QGVAR(STORE)};
-                // Restore Markers on map
-                [_logic, "restoreMarkers", [GVAR(STORE)]] call ALiVE_fnc_marker;
+
+                if (SLX_XEH_MACHINE select 1) then { // If JIP then also restore when STORE is rebroadcast
+                    QGVAR(STORE) addPublicVariableEventHandler {
+                        // Restore Markers on map for JIP
+                        [ADDON, "restoreMarkers", [GVAR(STORE)]] call ALiVE_fnc_marker;
+                    };
+                } else {
+                      // Restore Markers on map based on initial store
+                    [_logic, "restoreMarkers", [GVAR(STORE)]] call ALiVE_fnc_marker;
+                };
+                 TRACE_1("Initial STORE", GVAR(STORE));
 
                 GVAR(arrowList) = [];
                 GVAR(colorChoice) = 0;
@@ -250,32 +259,33 @@ switch (_operation) do {
                     "ColorOPFOR"
                 ];
 
+                if !(SLX_XEH_MACHINE select 1) then { // Don't run if JIP as no briefing screen appears
+                    [] spawn {
+                        // Install handlers on briefing screen
+                        private ["_display","_control"];
 
-                [] spawn {
-                    // Install handlers on briefing screen
-                    private ["_display","_control"];
+                        _display = BRIEFING_DISPLAY_CLIENT;
+                        if (isServer && isMultiplayer) then {
+                            _display = BRIEFING_DISPLAY_SERVER;
+                        };
+                        waitUntil {
+                            LOG(str ( (findDisplay _display) displayCtrl MAP_CONTROL ));
+                            str ((findDisplay _display) displayCtrl MAP_CONTROL) != "No control";
+                        };
+                         // Add eventhandler for creating markers
 
-                    _display = BRIEFING_DISPLAY_CLIENT;
-                    if (isServer && isMultiplayer) then {
-                        _display = BRIEFING_DISPLAY_SERVER;
+     //                   diag_log _display;
+                        disableSerialization;
+                        _display = findDisplay _display;
+                        _control = _display displayCtrl MAP_CONTROL;
+                        _control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
+                        _control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
+                        _control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
+                        _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
+
+                        _display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
+
                     };
-                    waitUntil {
-                        LOG(str ( (findDisplay _display) displayCtrl MAP_CONTROL ));
-                        str ((findDisplay _display) displayCtrl MAP_CONTROL) != "No control";
-                    };
-                     // Add eventhandler for creating markers
-
- //                   diag_log _display;
-                    disableSerialization;
-                    _display = findDisplay _display;
-                    _control = _display displayCtrl MAP_CONTROL;
-                    _control ctrlAddEventHandler ["MouseButtonClick", "[ALiVE_SYS_marker,'mouseButton',[player, _this]] call ALiVE_fnc_marker;"];
-                    _control ctrlAddEventHandler ["MouseButtonDblClick", "hint 'Only ALIVE Advanced Markers will be stored. Default BIS markers are not supported by ALIVE. CTRL-MOUSE BUTTON to create an Advanced Marker.'"];
-                    _control ctrlAddEventHandler ["draw", "[ALiVE_SYS_marker,'draw',[player, _this]] call ALiVE_fnc_marker;"];
-                    _control ctrlAddEventHandler ["MouseMoving", {[ALiVE_SYS_marker,"mouseMoving",[player, _this]] call ALiVE_fnc_marker;}];
-
-                    _display displayAddEventHandler ["keyDown", {[ALiVE_SYS_marker,"keyDown",[player, _this]] call ALiVE_fnc_marker;}];
-
                 };
 
                 waitUntil {

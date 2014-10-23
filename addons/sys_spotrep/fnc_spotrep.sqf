@@ -180,9 +180,18 @@ switch (_operation) do {
             if (hasInterface) then {
                 // Start any client-side processes that are needed
 
-                 waituntil {!isnil QGVAR(store)};
-                // Restore spotreps on map
-                [_logic, "restorespotreps", [GVAR(STORE)]] call ALiVE_fnc_spotrep;
+                 waituntil {!isnil QGVAR(STORE)};
+
+                if (SLX_XEH_MACHINE select 1) then { // If JIP then also restore when STORE is rebroadcast
+                    QGVAR(STORE) addPublicVariableEventHandler {
+                        // Restore Markers on map for JIP
+                        [ADDON, "restorespotreps", [GVAR(STORE)]] call ALiVE_fnc_spotrep;
+                    };
+                } else {
+                      // Restore Markers on map based on initial store
+                    [_logic, "restorespotreps", [GVAR(STORE)]] call ALiVE_fnc_spotrep;
+                };
+                 TRACE_1("Initial STORE", GVAR(STORE));
 
                 waitUntil {
                     sleep 1;

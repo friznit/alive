@@ -43,7 +43,7 @@ _uid = _this select 2;
         waituntil {MOD(sys_marker) getvariable ["init",false]};
 
         waitUntil{sleep 1; !(isNil QGVAR(store))};
-
+        TRACE_1("Send STORE", GVAR(STORE));
         _msg = format["Sending STORE to %1", _owner];
         LOG(_msg);
 
