@@ -85,11 +85,12 @@ if (_response == "READY") then {
 		private ["_tempDoc","_id"];
 		_data = [_json] call ALIVE_fnc_sendToPlugIn;
 		TRACE_1("COUCH DATA", _data);
-		if (_data != "END") then{
-			_tempDoc = [_logic, "restore", [_data]] call ALIVE_fnc_Data;
-			_id = [_tempDoc,"_id"] call ALiVE_fnc_hashGet;
-			[_temp, _id, _tempDoc] call ALiVE_fnc_hashSet;
-		};
+		if (_data == "SYS_DATA_ERROR") exitWith {diag_log format["There was an error loading data! Report it to ALiVE Devs. Module: %1, Key: %2, Records: %3",_module, _key, _uids];};
+			if (_data != "END") then{
+				_tempDoc = [_logic, "restore", [_data]] call ALIVE_fnc_Data;
+				_id = [_tempDoc,"_id"] call ALiVE_fnc_hashGet;
+				[_temp, _id, _tempDoc] call ALiVE_fnc_hashSet;
+			};
 	};
 
 	// Restore original module index (without mission key) for each document
