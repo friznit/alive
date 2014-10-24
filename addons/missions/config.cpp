@@ -64,7 +64,7 @@ class CfgMissions
 		class MP_COOP_Air_Assault
 		{
 			briefingName = "ALiVE | Air Assault (COOP 8)";
-			directory = "x\alive\missions\mpscenarios\ALiVE_Air_Assault.Altis";
+			directory = "x\alive\addons\missions\mpscenarios\ALiVE_Air_Assault.Altis";
             overviewPicture = "x\alive\addons\missions\showcases\foursome.altis\rsc\logo_alive.paa";	
             overviewText = "Steal the prototype MI-48 from the airbase at Salakano and bring it to your Command base in the north! Try to survive!";		
 			author = "ALiVE Mod Team";   
@@ -72,7 +72,7 @@ class CfgMissions
 		class MP_COOP_Sabotage
 		{
 			briefingName = "ALiVE | Sabotage (COOP 12)";
-			directory = "x\alive\missions\mpscenarios\ALiVE_Sabotage.Altis";
+			directory = "x\alive\addons\missions\mpscenarios\ALiVE_Sabotage.Altis";
             overviewPicture = "x\alive\addons\missions\showcases\foursome.altis\rsc\logo_alive.paa";	
             overviewText = "Lead an insurgency on Altis, use sabotage and subterfuge to capture weapons and establish safe houses across the island. ";            		
 			author = "ALiVE Mod Team";   
