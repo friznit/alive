@@ -111,7 +111,7 @@ class CfgVehicles {
                                         };
                                         class IRAN
                                         {
-                                                name = "IRAN";
+                                                name = "CSAT";
                                                 value = "OPF_F";
                                         };
                                         class GREEKARMY
@@ -156,7 +156,7 @@ class CfgVehicles {
                                         };
                                         class IRAN
                                         {
-                                                name = "IRAN";
+                                                name = "CSAT";
                                                 value = "OPF_F";
                                         };
                                         class GREEKARMY
@@ -196,7 +196,7 @@ class CfgVehicles {
                                         };
                                         class IRAN
                                         {
-                                                name = "IRAN";
+                                                name = "CSAT";
                                                 value = "OPF_F";
                                         };
                                         class GREEKARMY
@@ -236,7 +236,7 @@ class CfgVehicles {
                                         };
                                         class IRAN
                                         {
-                                                name = "IRAN";
+                                                name = "CSAT";
                                                 value = "OPF_F";
                                         };
                                         class GREEKARMY
