@@ -4,7 +4,6 @@ onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Tour;
 loadScreen = "x\alive\addons\missions\showcases\foursome.Altis\rsc\logo_alive.paa";
-overviewText = ALiVE Tour will take you through the different modules, technology and gameplay offered by ALiVE.;
 aiKills = 0;
 briefing = 0;
 debriefing = 1;

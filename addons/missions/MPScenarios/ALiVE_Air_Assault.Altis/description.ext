@@ -10,7 +10,7 @@ author = ALiVE Mod Team | Mission by Highhead;
 onLoadMission = "Steal the prototype MI-48 from the airbase at Salakano and bring it to your Command base in the north! Try to survive!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;
-onLoadName = ALiVE | Airport Assault v1.00;
+onLoadName = ALiVE | Airport Assault;
 loadScreen = "x\alive\addons\missions\showcases\foursome.Altis\rsc\logo_alive.paa";
 
 aiKills = 0;

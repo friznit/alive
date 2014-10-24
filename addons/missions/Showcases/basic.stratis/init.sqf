@@ -6,11 +6,13 @@
 
 titleText ["The ALiVE Mod Team presents...", "BLACK IN",9999];
 
-sleep 1;
-
-titleText ["A L i V E   |   G e t t in g  S t a r t e d", "BLACK IN",9999];
-
 sleep 5;
+
+titleText ["A L i V E   |   G e t t i n g  S t a r t e d", "BLACK IN",9999];
+
+sleep 10;
+
+titleText ["A L i V E   |   G e t t i n g  S t a r t e d", "BLACK IN",15];
 
 15 fadesound 1;
 
@@ -31,7 +33,7 @@ _cam CamCommit 10;
 // disable AI slots
 disabledAI = 1;
 
-sleep 20;
+sleep 7;
 
 _cam CameraEffect ["Terminate","Back"];
 CamDestroy _cam;

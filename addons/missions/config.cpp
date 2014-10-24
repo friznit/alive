@@ -20,6 +20,7 @@ class CfgMissions
 			briefingName = "ALiVE | Quick Start";
 			directory = "x\alive\addons\missions\showcases\basic.stratis";
             overviewPicture = "x\alive\addons\missions\showcases\foursome.altis\rsc\logo_alive.paa";
+			overviewText = This is the basic quick start mission featured in the ALiVE documentation and Wiki (alivemod.com);            
 			author = "ALiVE Mod Team";            		
 		};
 
@@ -28,6 +29,7 @@ class CfgMissions
 			briefingName = "ALiVE | Foursome";
 			directory = "x\alive\addons\missions\showcases\foursome.altis";
             overviewPicture = "x\alive\addons\missions\showcases\foursome.altis\rsc\logo_alive.paa";	
+			overviewText = Four factions battle it out for control of Altis!;            
 			author = "ALiVE Mod Team";               		
 		};
 
@@ -36,6 +38,7 @@ class CfgMissions
             briefingName = "ALiVE | Tour";
             directory = "x\alive\addons\missions\showcases\tour.stratis";
             overviewPicture = "x\alive\addons\missions\showcases\foursome.altis\rsc\logo_alive.paa";
+			overviewText = ALiVE Tour will take you through the different modules, technology and gameplay offered by ALiVE.;            
 			author = "ALiVE Mod Team";   
         };		
 	};
