@@ -8,7 +8,7 @@
 // BUILD should be YYMMDDR eg 1311211
 #define BUILD 0
 
-#define CLUSTERBUILD "Arma 3","Arma3",126,126789,"Stable"
+#define CLUSTERBUILD "Arma 3","Arma3",132,127785,"Stable"
 
 #define VERSION MAJOR.MINOR.PATCHLVL.BUILD
 #define VERSION_AR MAJOR,MINOR,PATCHLVL,BUILD
@@ -29,6 +29,7 @@
 //	#define DEBUG_ENABLED_FNC_STRATEGIC
 //	#define DEBUG_ENABLED_mil_cqb
 //	#define DEBUG_ENABLED_SYS_NEWSFEED
+//	#define DEBUG_ENABLED_SYS_LOGISTICS
 //	#define DEBUG_ENABLED_SYS_DATA
 //	#define DEBUG_ENABLED_SYS_DATA_COUCHDB
 //	#define DEBUG_ENABLED_SYS_STATISTICS
@@ -36,12 +37,16 @@
 //	#define DEBUG_ENABLED_SYS_PROFILE
 //	#define DEBUG_ENABLED_SYS_SIMULATION
 //	#define DEBUG_ENABLED_SYS_PLAYER
+//	#define DEBUG_ENABLED_SYS_playeroptions
+//	#define DEBUG_ENABLED_SYS_viewdistance
+//	#define DEBUG_ENABLED_SYS_playertags
+//	#define DEBUG_ENABLED_SYS_crewinfo
 //	#define DEBUG_ENABLED_SYS_PERF
 //	#define DEBUG_ENABLED_SYS_marker
 //	#define DEBUG_ENABLED_SYS_spotrep
 //	#define DEBUG_ENABLED_SYS_sitrep
 //	#define DEBUG_ENABLED_SYS_patrolrep
-//	#define DEBUG_ENABLED_SYS_AAR
+//	#define DEBUG_ENABLED_X_LIB
 
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
