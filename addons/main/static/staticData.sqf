@@ -781,6 +781,7 @@ ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 [ALIVE_mapBounds, "Thirsk", 6000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "ThirskW", 6000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Chernarus", 16000] call ALIVE_fnc_hashSet;
+[ALIVE_mapBounds, "Chernarus_Summer", 16000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "FDF_Isle1_a", 21000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Takistan", 13000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "IsolaDiCapraia", 11000] call ALIVE_fnc_hashSet;
@@ -1682,7 +1683,7 @@ if(_worldName == "thirsk" || _worldName == "thirskw" ) then {
 };
 
 // Chernarus
-if(_worldName == "Chernarus" || _worldName == "sfp_sturko" || _worldName == "tavi") then {
+if(_worldName == "Chernarus" || _worldName == "Chernarus_Summer" || _worldName == "sfp_sturko" || _worldName == "tavi") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
         "hangar"
