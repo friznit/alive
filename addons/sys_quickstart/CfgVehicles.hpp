@@ -4,7 +4,7 @@ class CfgVehicles {
 
         class ALiVE: ModuleAliveBase {
                 author = MODULE_AUTHOR;
-                scope = 2;
+                scope = 1;
                 displayName = "ALiVE Quick Start";
                 icon = "x\alive\addons\sys_quickstart\icon_sys_quickstart.paa";
                 picture = "x\alive\addons\sys_quickstart\icon_sys_quickstart.paa";

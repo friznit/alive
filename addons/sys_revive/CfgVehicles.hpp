@@ -1,7 +1,7 @@
 class CfgVehicles {
 	class ModuleAliveBase;
 	class ADDON : ModuleAliveBase {
-		scope = 2;
+		scope = 1;
 		displayName = "$STR_ALIVE_REVIVE";
 		function = "ALIVE_fnc_reviveInit";
 		functionPriority = 2;
