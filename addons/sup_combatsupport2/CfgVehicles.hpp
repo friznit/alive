@@ -2,7 +2,7 @@ class CfgVehicles {
         class ModuleAliveBase;
         class ADDON : ModuleAliveBase
         {
-        	scope = 2;
+        	scope = 1;
         	displayName = "$STR_ALIVE_COMBATSUPPORT2";
         	function = "ALIVE_fnc_combatsupport2Init";
         	functionPriority = 160;
