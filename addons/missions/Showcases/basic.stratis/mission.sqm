@@ -19,7 +19,9 @@ class Mission
 		"alive_sup_combatsupport",
 		"a3_map_stratis",
 		"A3_Weapons_F_Ammoboxes",
-		"A3_Structures_F_Mil_Shelters"
+		"A3_Structures_F_Mil_Shelters",
+		"A3_Soft_F_MRAP_01",
+		"A3_Air_F_Heli_Light_01"
 	};
 	addOnsAuto[]=
 	{
@@ -39,6 +41,8 @@ class Mission
 		"alive_sup_combatsupport",
 		"A3_Weapons_F_Ammoboxes",
 		"A3_Structures_F_Mil_Shelters",
+		"A3_Soft_F_MRAP_01",
+		"A3_Air_F_Heli_Light_01",
 		"a3_map_stratis"
 	};
 	randomSeed=10556263;
@@ -70,7 +74,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={1885.5791,-12.540085,4640.2588};
+					position[]={1783.1119,0.039154299,4653.0615};
 					class args
 					{
 						items=6;
@@ -128,7 +132,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={1629.4122,-2.834924,4659.4624};
+					position[]={3050.5293,160.0681,1923.4282};
 					class args
 					{
 						items=7;
@@ -181,6 +185,8 @@ class Mission
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
+					syncId=0;
+					synchronizations[]={11,10,12};
 				};
 			};
 		};
@@ -192,7 +198,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={1354.0323,-0.002515696,4627.4561};
+					position[]={1565.3699,-0.001121985,4653.0605};
 					class args
 					{
 						items=35;
@@ -620,8 +626,8 @@ class Mission
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=0;
-					synchronizations[]={1};
+					syncId=1;
+					synchronizations[]={2};
 				};
 				class Item1
 				{
@@ -689,12 +695,13 @@ class Mission
 					vehicle="ALiVE_mil_OPCOM";
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=1;
-					synchronizations[]={0,5,4};
+					syncId=2;
+					synchronizations[]={1,6,5};
 				};
 				class Item2
 				{
-					position[]={2970.4995,171.39999,1874.7856};
+					position[]={2965.1394,171.39999,1871.4365};
+					azimut=30.81881;
 					class args
 					{
 						items=3;
@@ -722,12 +729,12 @@ class Mission
 					vehicle="ALiVE_SUP_TRANSPORT";
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=2;
-					synchronizations[]={8};
+					syncId=3;
+					synchronizations[]={9};
 				};
 				class Item3
 				{
-					position[]={2986.6729,171.39331,1869.4565};
+					position[]={2989.219,171.34683,1859.6118};
 					class args
 					{
 						items=3;
@@ -755,8 +762,8 @@ class Mission
 					vehicle="ALiVE_sup_cas";
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=3;
-					synchronizations[]={8};
+					syncId=4;
+					synchronizations[]={9};
 				};
 			};
 		};
@@ -887,8 +894,8 @@ class Mission
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=4;
-					synchronizations[]={6,1};
+					syncId=5;
+					synchronizations[]={7,2};
 				};
 			};
 		};
@@ -1001,8 +1008,8 @@ class Mission
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=5;
-					synchronizations[]={6,7,1};
+					syncId=6;
+					synchronizations[]={7,8,2};
 				};
 			};
 		};
@@ -1079,8 +1086,8 @@ class Mission
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=6;
-					synchronizations[]={5,4};
+					syncId=7;
+					synchronizations[]={6,5};
 				};
 			};
 		};
@@ -1193,8 +1200,8 @@ class Mission
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=7;
-					synchronizations[]={5};
+					syncId=8;
+					synchronizations[]={6};
 				};
 			};
 		};
@@ -1212,7 +1219,7 @@ class Mission
 						items=21;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_MIL_C2ISTAR";
 							typeName="debug";
 						};
@@ -1230,13 +1237,13 @@ class Mission
 						};
 						class Item3
 						{
-							value="false";
+							value="true";
 							parentCls="ALiVE_MIL_C2ISTAR";
 							typeName="persistent";
 						};
 						class Item4
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_MIL_C2ISTAR";
 							typeName="autoGenerateBlufor";
 						};
@@ -1395,8 +1402,8 @@ class Mission
 					leader=1;
 					lock="UNLOCKED";
 					skill=0.60000002;
-					syncId=8;
-					synchronizations[]={2,3};
+					syncId=9;
+					synchronizations[]={3,4};
 				};
 			};
 		};
@@ -1496,7 +1503,7 @@ class Mission
 	};
 	class Vehicles
 	{
-		items=8;
+		items=11;
 		class Item0
 		{
 			position[]={3003.6626,171.252,1867.2202};
@@ -1576,6 +1583,39 @@ class Mission
 			vehicle="CamoNet_BLUFOR_open_F";
 			leader=1;
 			skill=0.60000002;
+		};
+		class Item8
+		{
+			position[]={2999.8291,171.12405,1882.8071};
+			azimut=-115.79251;
+			id=31;
+			side="EMPTY";
+			vehicle="B_MRAP_01_hmg_F";
+			skill=0.60000002;
+			syncId=10;
+			synchronizations[]={0};
+		};
+		class Item9
+		{
+			position[]={2997.2737,171.02893,1887.3193};
+			azimut=-115.793;
+			id=32;
+			side="EMPTY";
+			vehicle="B_MRAP_01_gmg_F";
+			skill=0.60000002;
+			syncId=11;
+			synchronizations[]={0};
+		};
+		class Item10
+		{
+			position[]={2981.0498,171.39999,1876.2769};
+			azimut=-322.66513;
+			id=33;
+			side="EMPTY";
+			vehicle="B_Heli_Light_01_F";
+			skill=0.60000002;
+			syncId=12;
+			synchronizations[]={0};
 		};
 	};
 	class Markers

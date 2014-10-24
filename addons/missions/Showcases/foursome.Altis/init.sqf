@@ -13,18 +13,18 @@ titleText ["A L i V E   |   F o u r s o m e", "BLACK IN",9999];
 sleep 5;
 
 titleText ["
-Following a surprise invasion of Altis by CSAT forces in recent weeks, a BLUFOR Task Force has arrived in theatre with the intention of 
+Following a surprise invasion of Altis by CSAT forces in recent weeks, a BLUFOR Task Force has arrived in theatre with the intention of
 linking up with local militia and removing the hostile threat. CIVPOP has been removed to Agia Marina where they are being held under martial law.
-REDFOR troops have occupied key strategic points across the Area of Operations.  Strength and dispositions include at least 1 Combined 
-Arms Motor Rifle Battalion, 1 Light Infantry Battalion and support units including possible attack helicopters, artillery and special forces. 
+REDFOR troops have occupied key strategic points across the Area of Operations.  Strength and dispositions include at least 1 Combined
+Arms Motor Rifle Battalion, 1 Light Infantry Battalion and support units including possible attack helicopters, artillery and special forces.
 ", "BLACK IN",9999];
 
 sleep 15;
 
 titleText ["
-A mobile reserve in the South of the Island is poised to react any hostile threat! BLUFOR troops are approaching from the North East to link up with the struggling guerilla factions and to assist Greek forces regaining control over the 
-island.  BLUFOR have a formidable array of equipment and support assets at a Forward Operating Base near the Salt Flats, however numbers are limited, 
-defences are weak and resupply is difficult. GREENFOR have retreated to a few small strongholds in the mountainous North of the island. Only a few guerillas survived the brutal Iranian assault 
+A mobile reserve in the South of the Island is poised to react any hostile threat! BLUFOR troops are approaching from the North East to link up with the struggling guerilla factions and to assist Greek forces regaining control over the
+island.  BLUFOR have a formidable array of equipment and support assets at a Forward Operating Base near the Salt Flats, however numbers are limited,
+defences are weak and resupply is difficult. GREENFOR have retreated to a few small strongholds in the mountainous North of the island. Only a few guerillas survived the brutal Iranian assault
 but they are well placed to harass REDFOR rear echelons and supply lines.
 ", "BLACK IN",9999];
 
@@ -56,34 +56,9 @@ _cam CamCommit 10;
 
 // disable AI slots
 disabledAI = 1;
-		
+
 sleep 20;
-		
+
 _cam CameraEffect ["Terminate","Back"];
 CamDestroy _cam;
-   
-/* 
-if (isServer) then {
 
-	//Allmissionobjects analyzer
-	ABORTCHECK = false;
-	[] spawn {
-		_lastexport = time;
-		waituntil {
-			private ["_cnt"];
-
-			sleep 60;
-			_cnt = count (allmissionobjects "");
-		
-			if (time-_lastexport > 1800) then {
-			{diag_log format["Total count: %4 | %1 | %2 | %3", _x,getposATL _x,typeof _x,_cnt]} foreach (allmissionobjects "");
-			_lastexport = time;
-		};
-
-		diag_log format["Count allmissionobjects %1",_cnt];
-		player sidechat format["Count allmissionobjects %1",_cnt];
-		(ABORTCHECK);
-	};
-	};
-};
-*/
