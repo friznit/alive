@@ -7,11 +7,11 @@ class CfgHints
 		class ADDON
 		{
 			// Hint title, filled by arguments from 'arguments' param
-			displayName = "Logistics - Resupply";
+			displayName = "Combat Support";
             // Optional hint subtitle, filled by arguments from 'arguments' param
-			displayNameShort = "Player Resupply Requests";
+			displayNameShort = "CAS, OS, Transport";
 			// Structured text, filled by arguments from 'arguments' param
-			description = "Combat Support provides an interface for players to request AI piloted Close Air Support from helicopters and aircraft, Offensive Support from artillery and mortars, and battlefield transport from Support Helicopters.%1%1%2Open the %3ALiVE Action Menu%4 and select %3Combat Support%4%2Choose from one of the available support elements%2Select an available support type and associated options%1%2Click the minimap to set the area of operations%1%2Submit the request to HQ%1%1For best results, order CAS aircraft to loiter at a safe holding area before commencing an attack run as they will return to this location afterwards.%1Aircraft on %3Attack%4 or %3Search & Destroy%4 tasks will engage laser designator spots as a priority.%1Support Helicopters will attempt to land at the nearest clear area to the indicated landing site.  For greater control, use the Pick Up option and mark the LZ with smoke.";
+			description = "Combat Support provides an interface for players to request AI piloted Close Air Support from helicopters and aircraft, Offensive Support from artillery and mortars, and battlefield transport from Support Helicopters.%1%1%2Open the %3ALiVE Action Menu%4 and select %3Combat Support%4%%12Choose from one of the available support elements%1%2Select an available support type and associated options%1%2Click the minimap to set the area of operations%1%2Submit the request to HQ%1%1For best results, order CAS aircraft to loiter at a safe holding area before commencing an attack run as they will return to this location afterwards.%1Aircraft on %3Attack%4 or %3Search and Destroy%4 tasks will engage laser designator spots as a priority.%1Support Helicopters will attempt to land at the nearest clear area to the indicated landing site.  For greater control, use the Pick Up option and mark the LZ with smoke.";
             // Optional structured text, filled by arguments from 'arguments' param (first argument is %11, see notes bellow), grey color of text
             tip = "Support may take some time to arrive on station.  Users can click the %3SITREP%4 button to get a report from Support on location and state.";
 			arguments[] = {
