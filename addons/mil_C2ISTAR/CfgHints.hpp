@@ -7,7 +7,7 @@ class CfgHints
 		class ADDON
 		{
 			// Hint title, filled by arguments from 'arguments' param
-			displayName = "C2ISTAR";
+			displayName = "C2ISTAR - Command";
             // Optional hint subtitle, filled by arguments from 'arguments' param
 			displayNameShort = "Missions and Tasks";
 			// Structured text, filled by arguments from 'arguments' param
