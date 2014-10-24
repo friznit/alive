@@ -2215,6 +2215,7 @@ switch(_operation) do {
             ["openFull",[_logic,"handleMenuCallback","ModuleLogistics"]] call ALIVE_fnc_displayMenu;
             ["setFullText",_baseCopy] call ALIVE_fnc_displayMenu;
 
+            /*
             _line1 = "<t size='1.5' color='#68a7b7' align='center'>Finding logistics insertion...</t><br/><br/>";
 
             //call BIS_fnc_VRFadeIn;
@@ -2301,8 +2302,9 @@ switch(_operation) do {
                     };
                 };
             };
-
+            
             ["closeSplash"] call ALIVE_fnc_displayMenu;
+            */
 
         };
 
