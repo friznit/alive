@@ -35,7 +35,7 @@ class CfgRespawnInventory
 	};
 };
 
-author = ALiVE Mod Team || Mission by Highhead;
+author = ALiVE Mod Team | Mission by Highhead;
 onLoadMission = "INTEL has been received about a nuclear device beeing built by a scientist named Ahelef Mahmoud in an hideout in Zaros! Locate Mahmoud, disable the bomb, and return home safely!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;

@@ -50,7 +50,7 @@ if (hasInterface) then {
 
 		_cam camsetpos [_camx -15 ,_camy + 15,_camz+3];
 
-		titleText ["A L i V E   |   D I V I D E  A N D  R U L E", "BLACK IN",10];
+		titleText ["A L i V E   |   D I V I D E   A N D   R U L E", "BLACK IN",10];
 		10 fadesound 0.9;
 		_cam CamCommit 20;
 		sleep 5;
