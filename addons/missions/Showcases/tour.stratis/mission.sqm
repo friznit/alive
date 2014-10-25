@@ -15,7 +15,6 @@ class Mission
 		"alive_amb_civ_placement",
 		"alive_civ_placement",
 		"alive_mil_intelligence",
-		"alive_sys_data",
 		"alive_mil_cqb",
 		"A3_Soft_F_HEMTT",
 		"A3_Weapons_F_Ammoboxes",
@@ -90,12 +89,42 @@ class Mission
 					position[]={395.82877,0.27188075,7301.4658};
 					class args
 					{
-						items=1;
+						items=6;
 						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_require";
+							typeName="debug";
+						};
+						class Item1
 						{
 							value="warning";
 							parentCls="ALiVE_require";
 							typeName="ALiVE_Versioning";
+						};
+						class Item2
+						{
+							value="true";
+							parentCls="ALiVE_require";
+							typeName="ALiVE_DISABLESAVE";
+						};
+						class Item3
+						{
+							value="300";
+							parentCls="ALiVE_require";
+							typeName="ALiVE_GC_INTERVAL";
+						};
+						class Item4
+						{
+							value="100";
+							parentCls="ALiVE_require";
+							typeName="ALiVE_GC_THRESHHOLD";
+						};
+						class Item5
+						{
+							value="";
+							parentCls="ALiVE_require";
+							typeName="ALiVE_GC_INDIVIDUALTYPES";
 						};
 					};
 					id=0;

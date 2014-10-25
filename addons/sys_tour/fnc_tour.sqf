@@ -84,6 +84,8 @@ switch(_operation) do {
 			_logic setVariable ["selectionState", "start"];
 			_logic setVariable ["drawEventID", -1];
 
+			ALiVE_tourStarted = false;
+
 			ALIVE_tourInstance = _logic;
 
 			[_logic, "setSelectionOptions"] call MAINCLASS;
@@ -440,6 +442,8 @@ switch(_operation) do {
             player setCaptive true;
             player enableFatigue false;
             player addEventHandler ["HandleDamage", {(_this select 2) / 100}];
+
+            ALiVE_tourStarted = true;
 
             // display loading
             [_logic,"displayStartLoadingScreen"] call MAINCLASS;

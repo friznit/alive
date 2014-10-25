@@ -1292,26 +1292,38 @@ class Mission
 					position[]={15520.598,-0.11834811,14546.269};
 					class args
 					{
-						items=4;
+						items=6;
 						class Item0
+						{
+							value="false";
+							parentCls="ALiVE_sys_data";
+							typeName="debug";
+						};
+						class Item1
 						{
 							value="CouchDB";
 							parentCls="ALiVE_sys_data";
 							typeName="source";
 						};
-						class Item1
+						class Item2
 						{
 							value="true";
 							parentCls="ALiVE_sys_data";
 							typeName="saveDateTime";
 						};
-						class Item2
+						class Item3
 						{
 							value="false";
 							parentCls="ALiVE_sys_data";
 							typeName="disableStats";
 						};
-						class Item3
+						class Item4
+						{
+							value="true";
+							parentCls="ALiVE_sys_data";
+							typeName="disableAAR";
+						};
+						class Item5
 						{
 							value="true";
 							parentCls="ALiVE_sys_data";
@@ -1803,7 +1815,7 @@ class Mission
 						items=10;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_mil_placement_custom";
 							typeName="debug";
 						};
@@ -2314,7 +2326,7 @@ class Mission
 						items=4;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_sup_multispawn";
 							typeName="debug";
 						};
@@ -2362,7 +2374,7 @@ class Mission
 						items=21;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_MIL_C2ISTAR";
 							typeName="debug";
 						};
@@ -2530,7 +2542,7 @@ class Mission
 						items=18;
 						class Item0
 						{
-							value="1";
+							value="0";
 							parentCls="ALiVE_sys_aiskill";
 							typeName="debug";
 						};

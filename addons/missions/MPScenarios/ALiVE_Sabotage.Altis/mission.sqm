@@ -6,7 +6,6 @@ class Mission
 		"alive_main",
 		"alive_sys_profile",
 		"alive_sys_viewdistance",
-		"alive_sys_weather",
 		"alive_sys_gc",
 		"alive_sys_crewinfo",
 		"alive_sup_multispawn",
@@ -21,8 +20,6 @@ class Mission
 		"A3_Structures_F_Civ_Camping",
 		"A3_Structures_F_Civ_Accessories",
 		"A3_Soft_F_Offroad_01",
-		"alive_sup_combatsupport",
-		"alive_sup_transport",
 		"alive_sup_cas",
 		"alive_sys_data",
 		"a3_characters_f",
@@ -1769,7 +1766,7 @@ class Mission
 						items=18;
 						class Item0
 						{
-							value="1";
+							value="0";
 							parentCls="ALiVE_sys_aiskill";
 							typeName="debug";
 						};
@@ -2045,7 +2042,7 @@ class Mission
 						items=21;
 						class Item0
 						{
-							value="true";
+							value="false";
 							parentCls="ALiVE_MIL_C2ISTAR";
 							typeName="debug";
 						};
@@ -2057,15 +2054,15 @@ class Mission
 						};
 						class Item2
 						{
-							value="false";
-							parentCls="ALiVE_MIL_C2ISTAR";
-							typeName="persistent";
-						};
-						class Item3
-						{
 							value="";
 							parentCls="ALiVE_MIL_C2ISTAR";
 							typeName="TASKING";
+						};
+						class Item3
+						{
+							value="false";
+							parentCls="ALiVE_MIL_C2ISTAR";
+							typeName="persistent";
 						};
 						class Item4
 						{

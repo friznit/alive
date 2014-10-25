@@ -6,12 +6,12 @@ class header {
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
 
-author = ALiVE Mod Team | Mission by Highhead;
+author = ALiVE Mod Team ||  Mission by Highhead;
 onLoadMission = "Steal the prototype MI-48 from the airbase at Salakano and bring it to your Command base in the north! Try to survive!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Airport Assault;
-loadScreen = "x\alive\addons\missions\showcases\foursome.Altis\rsc\logo_alive.paa";
+loadScreen = "x\alive\addons\missions\logo_alive.paa";
 
 aiKills = 0;
 briefing = 1;

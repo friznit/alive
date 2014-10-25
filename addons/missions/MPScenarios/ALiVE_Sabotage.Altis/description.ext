@@ -6,12 +6,12 @@ class header {
 	playerCountMultipleOf = 1;  //Coop type missions use 1, Team type missions use 2
 };
 
-author = ALiVE Mod Team| Mission by Highhead;
+author = ALiVE Mod Team ||  Mission by Highhead;
 onLoadMission = "2014 - Greece has failed to solve its financial crisis! The government has sent out military forces to keep local civilians under control! As a loyal Altis citizen you have to defend your island! Loot as many weapons as you can and bring them to your guerilla camp!";
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Sabotage;
-loadScreen = "x\alive\addons\missions\showcases\foursome.Altis\rsc\logo_alive.paa";
+loadScreen = "x\alive\addons\missions\logo_alive.paa";
 
 aiKills = 0;
 briefing = 1;

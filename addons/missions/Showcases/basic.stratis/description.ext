@@ -11,7 +11,7 @@ onLoadMission = "Stratis is occupied by CSAT forces, your pathfinding unit suppo
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Getting Started;
-loadScreen = "x\alive\addons\missions\showcases\foursome.Altis\rsc\logo_alive.paa";
+loadScreen = "x\alive\addons\missions\logo_alive.paa";
 
 aiKills = 0;
 briefing = 1;
