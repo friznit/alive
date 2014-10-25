@@ -13,7 +13,7 @@ onLoadMissionTime = true;
 onLoadName = ALiVE | Getting Started;
 loadScreen = "x\alive\addons\missions\logo_alive.paa";
 overviewPicture = "x\alive\addons\missions\logo_alive.paa";
-overviewText = "This is the basic quick start mission featured in the ALiVE documentation and Wiki (alivemod.com)";
+overviewText = "This is the basic quick start mission featured in the ALiVE documentation and Wiki (alivemod.com). CSAT have occupied Stratis, use your Combat Support assets to assist the BLUFOR pathfinding unit in driving back occupying forces!";
 
 aiKills = 0;
 briefing = 1;

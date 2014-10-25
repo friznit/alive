@@ -70,7 +70,7 @@ if (hasInterface) then {
         sleep 15;
 
         _title = "<t size='1.5' color='#68a7b7' shadow='1'>GETTING STARTED</t><br/>";
-        _text = format["%1<t>Combat support CAS and Transport is availbale, grab an ALiVE tablet item from a support supply box to access combat support and C2ISTAR assets.</t>",_title];
+        _text = format["%1<t>Combat support CAS and Transport is available, grab an ALiVE tablet item from a support supply box to access combat support and C2ISTAR assets.</t>",_title];
 
         ["openSideSmall",0.4] call ALIVE_fnc_displayMenu;
         ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
