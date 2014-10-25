@@ -1,0 +1,171 @@
+[CENTER][URL="http://alivemod.com/"][IMG]http://alivemod.com/img/alive_logo_bif.jpg[/IMG][/URL]
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+[SIZE=4]The next generation dynamic persistent campaign for ArmA3
+[U]Release 0.9[/U][/SIZE][/B]
+
+[B][U]Consolidate, Simplify, Stabilise, Enhance[/U][/B]
+Our goal for this sprint was to review the current state of our code!
+We fixed and stabilised where necessary and ensured that ALiVE remains aligned with our aim to provide an intuitive modular mission framework.
+Feedback from users suggested ALiVE wasn’t as easy to use as we would like, so we have made some changes to how the modules are structured.
+We have renamed and combined several, added guidance to the module “Show Info” tabs as well as the in game Field Manual. Full details are on the wiki.
+[IMG]http://alivemod.com/img/tour2.jpg[/IMG]
+Please note, in case you have an issue loading a mission done with a previous version of ALiVE, update the modules in that mission.
+We have left the old modules hidden in the background to give you time to transition over but please update your missions as soon as possible.
+The legacy modules will be removed in an upcoming release!
+[IMG]http://alivemod.com/img/tour.jpg[/IMG]
+[B][U]War Room[/U][/B]
+The team has been working hard on preparing the Operations Centre! It will enable commanders to track and manage campaigns from the War Room.
+This plans to include near real time tracking of players, live intel feeds and an After Action Review feature as well as web based Command & Control tools
+integrated with those we already have in game. If you’ve not done so already register with us now and start taking advantage of ALiVE mission persistence
+and battlefield data feeds. Please note, that the former @Arma2NET folder for registered servers is now consolidated to @ALiVEServer!
+We recommend updating your server with the shipped folder from the release package or re-downloading it from WarRoom/Server-Setup!
+[url=http://alivemod.com/#ALiVEWarRoom]Join Up Now![/url]
+
+[B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix and ArmAholic.
+[/CENTER]
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  It’s not the prettiest but all the info you need should be there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we’ll look to fix it.
+
+[B][U]Support Forum[/U][/B]
+For direct support and feedback from the ALiVE dev team, join us on Skype or sign up to the forum on our website: [URL="http://alivemod.com/forum/"]http://alivemod.com/forum/[/URL]
+[B][U]Release Highlights[/U][/B]
+[LIST]
+[*]Module Consolidation.  Several modules have had name changes or been combined into a single module.
+[*]ALiVE (Required) - now includes the Garbage Collector and Single Player Save options.
+[*]Profiles has been renamed Virtual AI System, otherwise remains the same.
+[*]ALiVE Player Options now includes View Distance, Tags, Crew Info, Player Persistence and Admin Actions
+[*]Military Placement modules have all been renamed to be more consistent.
+[*]OPCOM has been promoted to a Military AI Commander.
+[*]Player Resupply has been renamed Player Combat Logistics to more closely align it to the Military Logistics system.
+[*]ALiVE Tour is a new showcase that provides an in game tour of ALiVE features in a live environment.
+[*]Field Manual now has several new entries with notes on how to use ALiVE features in game.
+[*]Compatibility for RHS.
+[*]Indexed Bornholm terrain.
+[/LIST]
+Changelog
+[SPOILER]
+[aliveserver] rebranded arma2net component as @aliveserver, removed unneeded components. scott_nz has agreed to inclusion of code and license.
+[aliveserver] updated logging folder to avoid clash with plugin checks
+[all] added field manual entries for modules with in game user elements
+[all] couple more fixed for field manual
+[all] editor module consolidation
+[all] fixed field manual entries
+[c2istar] added sabotage task
+[c2istar] changed only un-destroyed buildings are selected for sabotage task
+[c2istar] improved sabotage building task, with autodetection of enemy opcom objectives by distance/setting chosen and better selection of buildings to destroy
+[civ_population] fix for [url]https://dev.withsix.com/issues/75143[/url]
+[clusters] chernarus summer added for aiatp
+[clusters] indexed bornholm [url]http://forums.bistudio.com/showthread.php?184446-bornholm-denmark-terrain[/url]
+[clusters] indexes for everon2014 [url]http://www.armaholic.com/page.php?id=24569[/url]
+[clusters] re-indexed bornholm for 1.1 version
+[demo] added sabotage to demos. added ui calls and c2istar generation settings to mission
+[demo] sabotage mp demo! fixes! and persisted hideouts!
+[demo] updated sabotage mp demo with awesomeness!
+[fnc_analysis] refactored get closest land!
+[images] added manw dir in images to store submission assets. added manw alive header jpg and template.
+[init] minor fixes to init
+[main | placements] fixed: group-blacklist was not taken into account for guards leading to boats/sdvs beeing spawned around clusters
+[main] added cqb to loading screen
+[main] added staticdata for c2istar sabotage task
+[main] changed default variables of gc to strings to make existing missions not break
+[main] descoped mil_insurgency and combatsupport2 for 0.9
+[main] descoped quick start and revive for 0.9
+[main] fixed issue with saving when logging off and back in as admin did not complete save properly
+[main] static data fixes for rhs
+[main] updated alive to support arma 3 stable 1.32
+[main] updated init order
+[main] updated init process and function priority
+[manw] added special manw plugin and alive.cfg - not for general/public use
+[mil opcom | mil command | sys profile] opcom orders air vehicles to rtb land after attack mission, fixes helicopters hovering in air!
+[mil opcom] fix for recon waypoints were placed over water on some occasions
+[mil opcom] fixed hashget script error on waypointcreation.
+[mil_c2istar] added options to enable auto gen tasks on module. added autogen tasks to static data to allow possiblity to override at mission level.
+[mil_c2istar] fix for allowed item to use c2
+[mil_c2istar] possible fix for missing parent task on client task creation
+[mil_convoy] updated deprecated module
+[mil_opcom] moved showcase mission
+[missions] added mission pbo that includes all showcase and mp missions
+[missions] added mp overview pic and text for mp scenarios
+[missions] added pic to sabotage
+[missions] alive | divide & rule finalized
+[missions] alive | sabotage finalised
+[missions] config updates and removed foursome
+[missions] fixed scripting issue with quick start and updated configs
+[missions] small fix to tour
+[missions] tidy up, removed vas from divide and rule. added standardised to init.sqf's for all missions. added briefings. added new alive logo image after removal of foursome. turned off debug on all modules in all missions.
+[missions] updated descriptions for quick start mission
+[missions] updated divide and rule mission name, quick start briefing
+[missions} updated configs and missions. initial addition of divide and rule (needs updating).
+[placement] added specops to guard groups. added ambient movement for cmp
+[playeroptions] module clean up
+[readme] updated readme
+[root] cleaned up root directory. added readme.txt
+[root] moved qc notes
+[root] updated readme, added mod logo for mod.cpp
+[sup multispawn] added possibility to use every vehicle as insertion vehicle (boats, trucks, etc.)
+[sup multispawn] fixed getgear/setgear script error if no "player options"-module was placed! gear didnt persist on respawn for all new types (insertion, building, etc.)...
+[sup_combatsupport] added radio message for sad mission
+[sup_player_resupply] added module options to disable certain delivery types
+[sup_player_resupply] added option to module to restrict supply selections to player faction or player side. also added options to static data for more fine grain options for mission makers to enable or disable categories, also caters to 3rd party factions.
+[sup_player_resupply] some hacks to support rhs in resupply
+[sys logistics] fine tweaking of available weight function since some cars couldn't load a single box (as an example: an ammo box has an average weight of 500kg, but max. additional weight for a hatchback was 484kg)
+[sys playertags] fixed rpt spam
+[sys profile] fix for script error with profiled civilians [url]http://dev.withsix.com/issues/75345[/url]
+[sys viewdistance] fixed vd wasnt initialising properly since autoinit. fixed issue with instantiating mutliple logics! ensured this is covered [url]http://dev.withsix.com/issues/75394[/url]
+[sys_aar] minor fixes
+[sys_aar] updated sys_aar to report every minute
+[sys_data] handle null value in array
+[sys_data] stop aar collecting data on civs
+[sys_data_couchdb] catch error if records are missing from db
+[sys_markers] fixed jip issue with markers and reports
+[sys_player] fixed init, to avoid network ping pong
+[sys_playeroptions] fix module parameter issue
+[sys_playeroptions] init sys_player earlier
+[sys_profile] added extra checks for null ranks on profile export
+[sys_profile] couple of fixes to ensure release works on helicopters dlc
+[sys_profile] fix for change to driver case change in assignedvehiclerole - thanks bis!
+[sys_profile] fixed a couple of outstanding bugs
+[sys_tour] added cs tutorial, added advanced marker tutorial
+[sys_tour] added player tutorial section to the tour. more clean up. adjusted tour mission in the showcases for new options.
+[sys_tour] couple of updates and fixes
+[sys_tour] made copy adjustments per gdoc. stuck an initial tour mission in the game showcases menu
+[sys_tour] made first action selection option, join random group
+[sys_tour] made the mil logistics module part only display text.
+[sys_tour] more camera fixes, more copy added.
+[sys_tour] more tidy up and updates to the tour. couple of other bug fixes
+[sys_tour] more ui improvements
+[sys_tour] more ui improvements
+[sys_tour] moved showcase mission
+[sys_tour] some cleaning up
+[sys_tour] updated mission overview text
+[sys_tour] some bugfixes
+[ui] fixed error with ui when pressing esc in mp play and trying to configure settings
+[ui] more fixes for saving when admin locality can change (thanks bis!)
+[ui] updated alive server save/exit ui functionality to follow bis approach to executing certain admin commands.
+[various] added mil_placement_custom to waiters list in main init.
+[various] fixes for [url]https://dev.withsix.com/issues/75352[/url]
+[various] module consolidation naming and usability
+[various] private var cleaning
+[various] some sanity checks and preperations for rhs support
+[various] some spelling fixes
+[various] switched debug mode to default false on all modules
+[x_lib] couple of tweaks to allow rhs groups to work
+[x_lib] fix for b_heli_light turrets
+[x_lib] isserveradmin fix for single player
+[x_lib] removed debug output
+[x_lib] fixed c2istar error on taskcreation if player was civilian (or captive)
+[_xlib] funny workaround for admin-detection broken [url]http://feedback.arma3.com/view.php?id=21137[/url]! remove when in stable!
+[/SPOILER]
+[B][U]Disclaimer[/U][/B]
+ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+[B][U]Work In Progress[/U][/B]
+We have an early version of the Insurgency Module working but there is quite a long way to go before it achieves our vision of delivering an intelligent asymmetric warfare simulator.  Meanwhile we’re working on a number of feature requests and enhancements across the board.  We will most likely provide a feature complete interim update prior to baselining for Release 1.0 in a couple of months time.
+[B][U]Make ArmA not War[/U][/B]
+Please support our entry in the Make ArmA not War contest here: [URL="http://makearmanotwar.com/entry/0MI2rqQ5aQ#.VEuZjRYsHpD"]MANW Entry[/URL]!
+Its really quickly done and helps us getting ALiVE out to the community!
+
+[B][U]Thanks To[/U][/B]
+Special thanks to everyone here for supporting us with donations to the War Room.  Database hosting isn’t free and the overwhelming popularity of ALiVE means we are using rather more data than we originally anticipated.  If you want to contribute to keep the War Room ALiVE (see what I did there) then please find the Donate button at ALiVEmod.com!
+Have fun!
