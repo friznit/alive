@@ -22,12 +22,12 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
                                         };
                                         class No
                                         {
                                                 name = "No";
                                                 value = false;
+                                                default = true;
                                         };
                                 };
                         };
