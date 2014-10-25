@@ -211,7 +211,7 @@ In order to capture data properly with ALiVE and ensure mission persistence, pla
 
 Setting Up A Dedicated Server
 -----------------------------------------
-Unless you are a MANW Jury member, you will need to register your server on ALiVE War Room. The War Room (group pages) have further details on setting up your dedicated server along with a configuration file for you to download.
+Unless you are a MANW Jury member, you will need to register your server on ALiVE War Room. The War Room (Group/Server settings) have further details on setting up your dedicated server along with a configuration file for you to download.
 
 
 NOTE: MANW jury members may register their own server if they wish. Please replace the alive.cfg file if you do (with the alive.cfg file provided during server registration).
@@ -238,10 +238,10 @@ Step 3     Download the @ALiVEServer addon (MANW jury members already have the @
 NOTE: Prior to extracting the addon from the 7zip archive, make sure that the archive isn't blocked. Right-Click > Properties > Unblock.
 
 
-Step 4     Download and save the alive.cfg file to C:\Users\USERNAME\AppData\Local\ALiVE or your Arma 3 root directory. If using AppData, you may need to create the directory yourself, if it's not there.
+Step 4     Download and save the alive.cfg file to C:\Users\USERNAME\AppData\Local\ALiVE OR your Arma 3 root directory. If using AppData, you may need to create the directory yourself, if it's not there. Do not use your root arma 3 directory AND the AppData\Local\ALiVE directory.
 
 
-NOTE: MANW Jury members already have their alive.cfg file included in the @ALiVEServer folder. Please copy this to your Arma 3 root directory.
+NOTE: MANW Jury members already have their alive.cfg file included in the ALiVE download (it should be in your Arma 3 root directory when you extract the download).
 
 
 Step 5     Important: Your ALiVE mission needs the ALiVE Database module (available in the Arma 3 Editor) placed for this feature to work!
@@ -256,7 +256,7 @@ Troubleshooting Your Dedicated Server
 ----------------------------------------------------
 Step 1     Download and install BareTail (log monitor)  
    
-Step 2     Launch Arma3server.exe with the @ALiVE and @ALiveServer in the mod line on your dedicated server. Ensure the ALiVEServer addon has been downloaded into the Arma root folder     
+Step 2     Launch Arma3server.exe with the @ALiVE and @ALiveServer in the mod line on your dedicated server. Ensure the ALiVEServer addon has been downloaded into the Arma root folder.
 
 
 Step 3     Launch your arma3.exe as normal (with @ALiVE but no need for @ALiVEServer on your client)     
@@ -265,14 +265,17 @@ Step 3     Launch your arma3.exe as normal (with @ALiVE but no need for @ALiVESe
 Step 4     Run any MP mission (with the Database Module placed) on your dedicated server and connect with your client, go into the game     
 
 
-Step 5     (on your dedicated server)  In baretail open users/username/appdata/local/ALiVE/AliveServer.log and alive.log    
- 
-Step 6      (on your dedicated server) In baretail open Arma3Server RPT usually users/username/appdata/local/Arma3/    
- 
-Step 7     Check for the log CONNECTED TO DATABASE OK     
+Step 5     (on your dedicated server)  In baretail open users/username/appdata/local/Arma 3/AliveServer.log
 
 
-Step 8     Go to alivemod.com War Room, under Recent Operations or Live Data Feed you should see a message stating your mission was launched.
+Step 6     (on your dedicated server) In baretail open the alive.log file in your Arma 3 root directory (it may be in the users/username/appdata/local/ALiVE folder if you set that up).
+ 
+Step 7      (on your dedicated server) In baretail open Arma3Server RPT usually users/username/appdata/local/Arma3/    
+ 
+Step 8     Check for the arma3server.rpt for CONNECTED TO DATABASE OK     
+
+
+Step 9     Go to alivemod.com War Room, under Live Data Feed you should see a message stating your mission was launched. If not, check Your Group page.
 
 
 -------
