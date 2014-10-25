@@ -6,6 +6,7 @@ class Mission
 		"alive_main",
 		"alive_sys_profile",
 		"alive_sys_viewdistance",
+		"alive_sys_weather",
 		"alive_sys_gc",
 		"alive_sys_crewinfo",
 		"alive_sup_multispawn",
@@ -20,6 +21,8 @@ class Mission
 		"A3_Structures_F_Civ_Camping",
 		"A3_Structures_F_Civ_Accessories",
 		"A3_Soft_F_Offroad_01",
+		"alive_sup_combatsupport",
+		"alive_sup_transport",
 		"alive_sup_cas",
 		"alive_sys_data",
 		"a3_characters_f",
@@ -861,8 +864,8 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={7557.207,132.67673,18346.791};
-					azimut=-601.88757;
+					position[]={7543.0542,134.41393,18342.652};
+					azimut=-601.888;
 					special="NONE";
 					id=9;
 					side="WEST";
@@ -1534,7 +1537,7 @@ class Mission
 					special="NONE";
 					id=17;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_exp_F";
 					player="PLAYER COMMANDER";
 					leader=1;
 					skill=0.60000002;
@@ -1551,11 +1554,11 @@ class Mission
 				class Item0
 				{
 					position[]={7543.9121,133.16269,18369.627};
-					azimut=-718.59259;
+					azimut=-718.59302;
 					special="NONE";
 					id=18;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_exp_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1572,11 +1575,11 @@ class Mission
 				class Item0
 				{
 					position[]={7495.8696,137.83363,18324.18};
-					azimut=-886.36371;
+					azimut=-886.36401;
 					special="NONE";
 					id=19;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_AR_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1593,11 +1596,11 @@ class Mission
 				class Item0
 				{
 					position[]={7523.8188,138.45038,18318.219};
-					azimut=-898.0119;
+					azimut=-898.01202;
 					special="NONE";
 					id=20;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_exp_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1614,11 +1617,11 @@ class Mission
 				class Item0
 				{
 					position[]={7487.394,137.72879,18326.287};
-					azimut=-1220.3134;
+					azimut=-1220.3101;
 					special="NONE";
 					id=21;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_engineer_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1635,11 +1638,11 @@ class Mission
 				class Item0
 				{
 					position[]={7552.1553,132.72563,18361.535};
-					azimut=-1111.396;
+					azimut=-1111.4;
 					special="NONE";
 					id=22;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_LAT_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1656,11 +1659,11 @@ class Mission
 				class Item0
 				{
 					position[]={7546.0117,133.06659,18365.766};
-					azimut=-885.60712;
+					azimut=-885.60699;
 					special="NONE";
 					id=23;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_engineer_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1681,7 +1684,7 @@ class Mission
 					special="NONE";
 					id=24;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_medic_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1702,7 +1705,7 @@ class Mission
 					special="NONE";
 					id=25;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1723,7 +1726,7 @@ class Mission
 					special="NONE";
 					id=26;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1740,11 +1743,11 @@ class Mission
 				class Item0
 				{
 					position[]={7484.0332,137.46762,18335.1};
-					azimut=-824.90192;
+					azimut=-824.90198;
 					special="NONE";
 					id=27;
 					side="WEST";
-					vehicle="B_G_Soldier_M_F";
+					vehicle="B_G_Soldier_GL_F";
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
@@ -1766,7 +1769,7 @@ class Mission
 						items=18;
 						class Item0
 						{
-							value="0";
+							value="1";
 							parentCls="ALiVE_sys_aiskill";
 							typeName="debug";
 						};
@@ -2054,15 +2057,15 @@ class Mission
 						};
 						class Item2
 						{
-							value="";
-							parentCls="ALiVE_MIL_C2ISTAR";
-							typeName="TASKING";
-						};
-						class Item3
-						{
 							value="false";
 							parentCls="ALiVE_MIL_C2ISTAR";
 							typeName="persistent";
+						};
+						class Item3
+						{
+							value="";
+							parentCls="ALiVE_MIL_C2ISTAR";
+							typeName="TASKING";
 						};
 						class Item4
 						{
