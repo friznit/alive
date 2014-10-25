@@ -24,6 +24,7 @@ Table of Contents
 - Feedback Tracker
 - Gameplay
 - How It Works
+- Editor Modules
 - License
 - Development Team and Credits
 - Special Thanks
@@ -164,7 +165,7 @@ Next, we'll set up a base for BLUFOR. The BLUFOR AI need a base to start from so
 6. Ensure you have enabled persistence on each module if using the database
 7. Add some Empty Vehicles in your base and sync them to the Virtual AI System, so that they are not virtualized
 8. Add some additional playable units as needed and some supplies.
-9. Optionally, give your side some tasks and task management. Place a Player Command/Control (C2ISTAR) module and add a Laser Designator to your player - “this additem ‘LaserDesignator’” - in the init box of the player.
+9. Optionally, give your side some tasks and task management. Place a Player Command/Control (C2ISTAR) module and add a Laser Designator to your player - “ this additem ‘LaserDesignator’ ” - in the init box of the player.
 10. Optionally, add some combat support. Place a Player Combat Support Module, a Player Combat Support (Transport) module (in the base) and a Player Combat Support (CAS) module (in the base). Sync the Transport and CAS modules to the Player Combat Support Module.
 
 
@@ -175,7 +176,7 @@ Now add some OPFOR occupying the rest of the map
 2. Place a Mil Placement (Civ Obj) module and select desired options. Once again, type the name of the BLUFOR base marker into the Blacklist box (BLUFOR_1)
 3. Place an AI Military Commander module, set it to OPFOR and select Occupy mode
 4. Sync the OPFOR Mil Placement modules to your OPFOR AI Military Commander module
-5. Place a CQB module, set the OPFOR faction and sync it to the Mil Placement (CIv Obj) module
+5. Place a CQB module, set the OPFOR faction and sync it to the Mil Placement (Civ Obj) module
 
 
 Start the Invasion
@@ -211,10 +212,10 @@ In order to capture data properly with ALiVE and ensure mission persistence, pla
 
 Setting Up A Dedicated Server
 -----------------------------------------
-Unless you are a MANW Jury member, you will need to register your server on ALiVE War Room. The War Room (Group/Server settings) have further details on setting up your dedicated server along with a configuration file for you to download.
+Unless you are a MANW Jury member, you will need to register your server on ALiVE War Room. The War Room (Group/Server settings) has further details on setting up your dedicated server along with a configuration file for you to download.
 
 
-NOTE: MANW jury members may register their own server if they wish. Please replace the alive.cfg file if you do (with the alive.cfg file provided during server registration).
+NOTE: MANW jury members may register their own server if they wish. Please replace the alive.cfg file provided if you do (with the alive.cfg file provided during server registration). If you are a MANW Jury member who already has a dedicated server setup for ALiVE, do not use the provided alive.cfg file and you do not need to follow the instructions below.
 
 
 Follow the usual BIS guidance on setting up a dedicated server. In addition to get ALiVE working with your server you will need to:
@@ -249,7 +250,7 @@ Step 5     Important: Your ALiVE mission needs the ALiVE Database module (availa
 
 Step 6     Run your ALiVE MP mission on your dedicated server and connect with your client   
   
-Step 7     Go to alivemod.com War Room, under Recent Operations or Live Data Feed on the home page and you should see a message stating your mission was launched.
+Step 7     Go to alivemod.com War Room, under Live Data Feed on the home page and you should see a message stating your mission was launched.
 
 
 Troubleshooting Your Dedicated Server
@@ -307,6 +308,8 @@ Mission makers may wish to experiment by synchronizing different modules to each
 How It Works
 -------------------
 ALiVE is complex but not complicated. Each module is standalone but they can be synchronised to each other to create different scenarios. The modules work independently but will use data derived from another module if it is synchronised. This layered approach provides a high degree of flexibility and allows you to build custom scenarios quickly.
+
+
 Everything starts with the Placement modules. These modules fulfill two important functions: they identify a list of military and civilian objectives or areas of importance across the map and secondly, they place the AI groups. There are several module parameters for customising the type of objectives and also the shape and size of the AI forces. Refer to the Military and Civilian Placement Module pages for further details on these.
 
 
@@ -322,6 +325,99 @@ Using different combinations of modules it is possible to quickly create a huge 
 
 
 see our Wiki for more information http://alivemod.com/wiki
+
+
+--------------------
+Editor Modules
+--------------------
+
+
+ALiVE Required
+- enables the addon on both client and server and is required for core systems
+
+
+ALiVE Database
+- enables player statistics, AAR and persistent missions (to ALiVE War Room)
+
+
+ALiVE Player Options
+- allows a mission maker to specify View Distance settings, Player Tags, Crew Info and Player Persistence settings (for reconnect and server restart)
+
+
+ALiVE Tour
+- will walk you through the ALiVE systems and technology and demonstrate the modules in action for your mission
+
+
+ALiVE Virtual AI System
+- provides a caching system for AI but continues to simulate them as they conduct their movements and combat across the map
+
+
+Ambient Dynamic Weather
+- provides a set of different weather environments and syncs these in MP play. Aimed mainly at SP games until MP weather is improved by BIS.
+
+
+Civilian Placement
+- specifies where the civilian population are placed across the map
+
+
+Civilian Population
+- specifies who the civilian population are and their posture towards military forces.
+
+
+Military AI Commander
+- controls a faction across the map and ensures forces are being directed to capture objectives based on its settings.
+
+
+Military AI Skill
+- allows custom skill settings for factions
+
+
+Military Close Quarters Battle
+- provides an appropriate ambient threat in towns, villages and buildings for urban or building clearance operations. 
+
+
+Military Logistics
+- allows AI commanders to request and receive resupply via air, land or sea. Requests are fulfilled by in game convoys or airlifts, which can be interdicted by opposition forces.
+
+
+Military Placement (Military Objectives)
+- determines AI force placement for military type buildings and areas on the map or within a specific TAOR.
+
+
+Military Placement (Civilian Objectives)
+- determines AI force placement for civilian type buildings and areas on the map or within a specific TAOR.
+
+
+Player Combat Logistics
+- allows players to request resupply via air, land or sea. Requests are fulfilled by in game convoys or airlifts, which can be interdicted by enemy forces.
+
+
+Player Combat Support
+- allows players to call in CAS, Artillery or Transport, requires other Player Combat Support modules for assets
+
+
+Player Combat Support (CAS)
+- allows mission makers to place CAS assets that can be called by Player Combat Support
+
+
+Player Combat Support (Transport)
+- allows mission makers to place Transport assets that can be called by Player Combat Support
+
+
+Player Combat Support (Artillery)
+- allows mission makers to place Artillery assets that can be called by Player Combat Support
+
+
+Player Command and Control (C2ISTAR)
+- allows players to send tasks to player groups or receive tasks from AI commanders. Also allows players to submit reports such as SITREP and PATROLREP in game and to the War Room.
+
+
+Player Logistics (Disable)
+- disables the ability of players to load, unload, tow, untow and assets in game (for FOB building or basic logistics handling)
+
+
+Player Multispawn
+- allows a mission maker to establish respawn points based on squad, a building, vehicle or even helicopter re-insertion.
 
 
 ----------
@@ -355,11 +451,11 @@ Development Team and Credits
 
 Special Thanks
 ---------------------
-* ScottW for allowing us to include Arma2Net within our addon. Arma2Net.dll provides critical functionality to support our web and data features.
+* ScottW (Scott_NZ) for allowing us to include Arma2Net within our addon. Arma2Net.dll provides critical functionality to support our web and data features.
 * Neokika for Support Radio which formed the basis for ALiVE Combat Support.
 * CBA & ACE teams for setting the standard in development frameworks and the invaluable functions provided by CBA.
 * dev.withsix.com for providing a free and accessible development platform.
-* VOLCBAT, VRC, Praetorians, DET7, Kelly’s Heroes and many others for your dedication to hours of testing.
+* VOLCBAT, VRC, Praetorians, DET7, Kelly’s Heroes, TDNL and many others for your dedication to hours of testing.
 
 
 -----------------------------------------------------
