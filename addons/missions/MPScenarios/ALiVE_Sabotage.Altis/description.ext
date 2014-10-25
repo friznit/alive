@@ -13,7 +13,7 @@ onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Sabotage;
 loadScreen = "x\alive\addons\ui\logo_alive.paa";
-
+overviewPicture = "x\alive\addons\missions\logo_alive.paa";
 aiKills = 0;
 briefing = 1;
 debriefing = 1;
