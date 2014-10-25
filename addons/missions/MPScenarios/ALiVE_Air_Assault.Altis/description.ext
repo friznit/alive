@@ -12,7 +12,8 @@ onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Airport Assault;
 loadScreen = "x\alive\addons\missions\logo_alive.paa";
-
+overviewPicture = "x\alive\addons\missions\logo_alive.paa";
+overviewText = "Steal the prototype MI-48 from the airbase at Salakano and bring it to your Command base in the north! Try to survive!";
 aiKills = 0;
 briefing = 1;
 debriefing = 1;

@@ -12,6 +12,8 @@ onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Getting Started;
 loadScreen = "x\alive\addons\missions\logo_alive.paa";
+overviewPicture = "x\alive\addons\missions\logo_alive.paa";
+overviewText = "This is the basic quick start mission featured in the ALiVE documentation and Wiki (alivemod.com)";
 
 aiKills = 0;
 briefing = 1;

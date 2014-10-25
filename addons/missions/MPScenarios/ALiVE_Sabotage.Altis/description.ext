@@ -12,7 +12,8 @@ onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = ALiVE | Sabotage;
 loadScreen = "x\alive\addons\missions\logo_alive.paa";
-
+overviewPicture = "x\alive\addons\missions\logo_alive.paa";
+overviewText = "Lead an insurgency on Altis, use sabotage and subterfuge to capture weapons and establish safe houses across the island.";
 aiKills = 0;
 briefing = 1;
 debriefing = 1;
