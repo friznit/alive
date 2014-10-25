@@ -22,8 +22,8 @@ if (hasInterface) then {
 
     ["ALiVE | Divide and Rule - Running ClientInit..."] call ALiVE_fnc_Dump;
 
-    player createDiaryRecord ["Diary", ["Dismantle the device",
-    	"Stratis is occupied by CSAT forces, your pathfinding unit supported by CAS and Air assets need to drive back the occupying force!"
+    player createDiaryRecord ["Diary", ["Drive back occupying forces!",
+    	"Stratis is occupied by CSAT forces, your pathfinding unit, supported by CAS and Air assets, need to drive back the occupying force!"
     ]];
 
     //Intro

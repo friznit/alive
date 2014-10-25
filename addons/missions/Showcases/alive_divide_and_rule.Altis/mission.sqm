@@ -85,7 +85,6 @@ class Mission
 	randomSeed=13462500;
 	class Intel
 	{
-		briefingName="ALiVE | Divide and Rule v1.70 (ZEUS)";
 		resistanceWest=0;
 		resistanceEast=1;
 		startWeather=0.29999998;
