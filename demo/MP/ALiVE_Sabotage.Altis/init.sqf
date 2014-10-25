@@ -44,7 +44,7 @@ if (hasInterface) then {
 		_start = time;
 	
 		waituntil {(player getvariable ["alive_sys_player_playerloaded",false]) || ((time - _start) > 20)};
-		playmusic "sabotage";
+		playmusic "boom";
 		sleep 10;
 		
 		_object = player;

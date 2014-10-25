@@ -20,7 +20,7 @@ SABOTAGE_fnc_canSee = {
             
 			_dir = ([_target, _unit] call BIS_fnc_dirTo) - (getDir _target);
             
-			!(lineIntersects [eyePos _unit, eyePos _target , _unit, _target]) && {_dir < 60 || {_dir > 300}};
+			(_dir < 60 || {_dir > 300}) && {!(lineIntersects [eyePos _unit, eyePos _target , _unit, _target])};
 };
 
 SABOTAGE_fnc_masquerade = {
