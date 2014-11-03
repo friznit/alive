@@ -29,12 +29,15 @@ ASSERT_DEFINED("ALIVE_fnc_profileSystem","Main function missing");
 
 _moduleID = [_logic, true] call ALIVE_fnc_dumpModuleInit;
 
+// Ensure initialisation is only done once per machine
+if !(isnil QMOD(SYS_PROFILE)) exitwith {[_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit};
+
 if(isServer) then {
 
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
-
+	
 	MOD(SYS_PROFILE) = _logic;
-
+	
 	_debug = call compile (_logic getVariable ["debug","false"]);
 	_persistent = call compile (_logic getVariable ["persistent","false"]);
 	_syncMode = _logic getVariable ["syncronised","ADD"];	
