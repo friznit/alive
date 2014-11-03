@@ -43,8 +43,9 @@ ARJay
 #define DEFAULT_SIZE_FILTER "160"
 #define DEFAULT_PRIORITY_FILTER "0"
 #define DEFAULT_TYPE QUOTE(RANDOM)
+#define DEFAULT_WITH_PLACEMENT true
 #define DEFAULT_FACTION QUOTE(OPF_F)
-#define DEFAULT_CLUSTER_TYPE QUOTE(ALL)
+#define DEFAULT_CLUSTER_TYPE QUOTE(All)
 #define DEFAULT_NO_TEXT ""
 
 private ["_logic","_operation","_args","_result"];
@@ -182,17 +183,23 @@ switch(_operation) do {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY_FILTER] call ALIVE_fnc_OOsimpleOperation;
 	};
 	case "withPlacement": {
-		if (typeName _args == "BOOL") then {
-			_logic setVariable ["withPlacement", _args];
-		} else {
-			_args = _logic getVariable ["withPlacement", false];
-		};
-		if (typeName _args == "STRING") then {
-			if(_args == "true") then {_args = true;} else {_args = false;};
-			_logic setVariable ["withPlacement", _args];
-		};
-		ASSERT_TRUE(typeName _args == "BOOL",str _args);
+        if (isnil "_args") then {
+            _args = _logic getVariable ["withPlacement", DEFAULT_WITH_PLACEMENT];
+        } else {
+            if (typeName _args == "BOOL") then {
+				_args = _args;
+			} else {
+				if (typeName _args == "STRING") then {
+					_args = call compile _args;
+                } else {
+                    _args = DEFAULT_WITH_PLACEMENT;
+                };
+			};
+        };
 
+		ASSERT_TRUE(typeName _args == "BOOL",str _args);
+        _logic setVariable ["withPlacement", _args];
+        
 		_result = _args;
 	};
 	// Return the objectives as an array of clusters
@@ -268,7 +275,7 @@ switch(_operation) do {
 						
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
-			
+            
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALIVE CP - Startup"] call ALIVE_fnc_dump;

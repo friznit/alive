@@ -49,7 +49,7 @@ ARJay
 #define DEFAULT_OBJECTIVES_VEHICLE []
 #define DEFAULT_SIZE_FILTER "0"
 #define DEFAULT_PRIORITY_FILTER "0"
-#define DEFAULT_AMBIENT_VEHICLE_AMOUNT "1"
+#define DEFAULT_AMBIENT_VEHICLE_AMOUNT "0.2"
 #define DEFAULT_HQ_BUILDING objNull
 #define DEFAULT_HQ_CLUSTER []
 #define DEFAULT_NO_TEXT ""
@@ -231,17 +231,23 @@ switch(_operation) do {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY_FILTER] call ALIVE_fnc_OOsimpleOperation;
 	};
 	case "withPlacement": {
-		if (typeName _args == "BOOL") then {
-			_logic setVariable ["withPlacement", _args];
-		} else {
-			_args = _logic getVariable ["withPlacement", false];
-		};
-		if (typeName _args == "STRING") then {
-			if(_args == "true") then {_args = true;} else {_args = false;};
-			_logic setVariable ["withPlacement", _args];
-		};
-		ASSERT_TRUE(typeName _args == "BOOL",str _args);
+        if (isnil "_args") then {
+            _args = _logic getVariable ["withPlacement", DEFAULT_WITH_PLACEMENT];
+        } else {
+            if (typeName _args == "BOOL") then {
+				_args = _args;
+			} else {
+				if (typeName _args == "STRING") then {
+					_args = call compile _args;
+                } else {
+                    _args = DEFAULT_WITH_PLACEMENT;
+                };
+			};
+        };
 
+		ASSERT_TRUE(typeName _args == "BOOL",str _args);
+        _logic setVariable ["withPlacement", _args];
+        
 		_result = _args;
 	};
 	// Return the objectives as an array of clusters
