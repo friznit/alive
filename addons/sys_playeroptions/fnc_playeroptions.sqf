@@ -138,7 +138,7 @@ switch (_operation) do {
                 {
                     _value = _logic getVariable (_logicVariables select _x);
                     TRACE_2("Logic Variable ",(_logicVariables select _x), _value);
-                    _moduleLogic setVariable [(_logicVariables select _x), _value];
+                    _moduleLogic setVariable [(_logicVariables select _x), _logic getVariable (_logicVariables select _x)];
                 } foreach _vars;
 
                 // Init
