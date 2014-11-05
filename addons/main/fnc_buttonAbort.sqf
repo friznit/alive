@@ -70,7 +70,7 @@ _savePlayer = {
 
 // FUNCTION THAT HANDLES PLAYERS EXITING
 _exitPlayer = {
-	private ["_name","_uid","_id"];
+		private ["_name","_uid","_id"];
 	_id = _this select 0;
 	_name = name (_this select 0);
 	_uid = getPlayerUID (_this select 0);
@@ -135,18 +135,15 @@ _saveServer = {
     _admin = [_adminUID] call ALIVE_fnc_getPlayerByUID;
     ["ADMIN: %1",_admin] call ALIVE_fnc_dump;
 
-    _owner = owner _admin;
-    ["ADMIN OWNER: %1",_owner] call ALIVE_fnc_dump;
-
     if!(isNil "_admin") then {
-        [["open"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+        [["open"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
     };
 
     sleep 2;
 
     if!(isNil "_admin") then {
-        [["setTitle","ALiVE Persistence - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
-        [["updateList","ALiVE Persistence - Saving Data - Please Wait"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+        [["setTitle","ALiVE Persistence - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+        [["updateList","ALiVE Persistence - Saving Data - Please Wait"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
     };
 
     //[["ALiVE_LOADINGSCREEN"],"BIS_fnc_startLoadingScreen",true,false] call BIS_fnc_MP;
@@ -154,12 +151,30 @@ _saveServer = {
 
 	if !(isNil QMOD(sys_player)) then {
 	    ["ALiVE Abort - Server Player OPD"] call ALIVE_fnc_dump;
+		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
+	};
+
+	if (["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
+
+	    private ["_result","_messages"];
 
         if!(isNil "_admin") then {
-            [["updateList","ALiVE Player System - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+	        [["updateList","ALiVE Profile System - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
-		[_id, "__SERVER__", _uid] call ALIVE_fnc_player_onPlayerDisconnected;
+	    ["ALiVE Abort - Server Save Profiles"] call ALIVE_fnc_dump;
+
+		_result = [] call ALiVE_fnc_profilesSaveData;
+
+        if(!(isNil "_admin") && !(isNil "_result")) then {
+            _messages = _result select 1;
+            if(count _messages > 0) then {
+                reverse _messages;
+                {
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
+                } forEach _messages;
+            };
+        };
 	};
 
 	if (["ALiVE_mil_OPCOM"] call ALiVE_fnc_isModuleAvailable) then {
@@ -167,7 +182,7 @@ _saveServer = {
 	    private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-	        [["updateList","ALiVE OPCOM - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+	        [["updateList","ALiVE OPCOM - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
 	    ["ALiVE Abort - Server Save OPCOM State"] call ALIVE_fnc_dump;
@@ -182,7 +197,7 @@ _saveServer = {
                 if(count _messages > 0) then {
                     reverse _messages;
                     {
-                        [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                        [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                     } forEach _messages;
                 };
 
@@ -196,7 +211,7 @@ _saveServer = {
 	    private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-            [["updateList","ALiVE CQB - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+            [["updateList","ALiVE CQB - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
 	    ["ALiVE Abort - Server Save OPCOM State"] call ALIVE_fnc_dump;
@@ -208,7 +223,7 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
@@ -220,7 +235,7 @@ _saveServer = {
         private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-            [["updateList","ALiVE Player Logistics - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+            [["updateList","ALiVE Player Logistics - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
 	    ["ALiVE Abort - Server Save Logistics State"] call ALIVE_fnc_dump;
@@ -232,20 +247,19 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
 
 	};
 
-
 	if (["ALiVE_sys_marker"] call ALiVE_fnc_isModuleAvailable) then {
 
 	    private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-	        [["updateList","ALiVE Markers - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+	        [["updateList","ALiVE Markers - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
 	    ["ALiVE Abort - Server Save Markers State"] call ALIVE_fnc_dump;
@@ -257,7 +271,7 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
@@ -268,7 +282,7 @@ _saveServer = {
 	    private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-	        [["updateList","ALiVE SPOTREP - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+	        [["updateList","ALiVE SPOTREP - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
 	    ["ALiVE Abort - Server Save SPOTREP State"] call ALIVE_fnc_dump;
@@ -280,7 +294,7 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
@@ -291,7 +305,7 @@ _saveServer = {
 	    private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-	        [["updateList","ALiVE SITREP - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+	        [["updateList","ALiVE SITREP - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
 	    ["ALiVE Abort - Server Save SITREP State"] call ALIVE_fnc_dump;
@@ -303,7 +317,7 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
@@ -314,7 +328,7 @@ _saveServer = {
 	    private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-	        [["updateList","ALiVE PATROLREP - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+	        [["updateList","ALiVE PATROLREP - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
 	    ["ALiVE Abort - Server Save PATROLREP State"] call ALIVE_fnc_dump;
@@ -326,7 +340,7 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
@@ -337,7 +351,7 @@ _saveServer = {
 	    private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-	        [["updateList","ALiVE Military Logistics - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+	        [["updateList","ALiVE Military Logistics - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
         ["ALiVE Abort - Server Save ML State"] call ALIVE_fnc_dump;
@@ -349,7 +363,7 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
@@ -360,7 +374,7 @@ _saveServer = {
         private ["_results","_result","_messages"];
 
         if!(isNil "_admin") then {
-            [["updateList","ALiVE C2ISTAR - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+            [["updateList","ALiVE C2ISTAR - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
         ["ALiVE Abort - Server Save Task State"] call ALIVE_fnc_dump;
@@ -372,28 +386,7 @@ _saveServer = {
             if(count _messages > 0) then {
                 reverse _messages;
                 {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
-                } forEach _messages;
-            };
-        };
-    };
-
-    if (["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
-
-        private ["_result","_messages"];
-
-        [["updateList","ALiVE Profile System - Saving Data"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
-
-        ["ALiVE Abort - Server Save Profiles"] call ALIVE_fnc_dump;
-
-        _result = [] call ALiVE_fnc_profilesSaveData;
-
-        if(!(isNil "_admin") && !(isNil "_result")) then {
-            _messages = _result select 1;
-            if(count _messages > 0) then {
-                reverse _messages;
-                {
-                    [["updateList",_x],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+                    [["updateList",_x],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
                 } forEach _messages;
             };
         };
@@ -406,10 +399,10 @@ _saveServer = {
     ["--------------------------------------------------------------"] call ALIVE_fnc_dump;
 
     if!(isNull _admin) then {
-        [["close"],"ALIVE_fnc_mainTablet",_owner,false,false] spawn BIS_fnc_MP;
+        [["close"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
     };
 
-    ["serversaved","BIS_fnc_endMission",_owner,false,false] spawn BIS_fnc_MP;
+    ["serversaved","BIS_fnc_endMission",_admin,false,false] spawn BIS_fnc_MP;
 };
 
 // Function run on server
@@ -420,9 +413,8 @@ if (_mode == "SAVESERVERYO" && isDedicated) exitWith {
     	_saveServer = _this select 0;
     	_exitServer = _this select 1;
     	_adminUID = _this select 2;
-    	WaitUntil {MOD(player_count) == 1};
+    	WaitUntil {sleep 1; (count ([] call BIS_fnc_ListPlayers)) == 1};
 		[_adminUID] call _saveServer;
-        ["ALiVE SERVER SAVE - Server Saved, exiting..."] call ALIVE_fnc_dump;
 		[_adminUID] call _exitServer;
 		"serversaved" call BIS_fnc_endMission;
 	};
@@ -442,7 +434,6 @@ if (_mode == "SERVERABORTYO" && isDedicated) exitwith {
 
 };
 
-
 // Function run on client
 if ((_mode == "SAVE" || _mode == "REMSAVE") && !isDedicated) then {
     // Save player data
@@ -456,50 +447,44 @@ if (_mode == "ABORT" && !isDedicated) then {
 	[player] call _exitPlayer;
 };
 
-// Check client for admin (in UI now due to bug in 1.32)
+// Check client for admin
+if (call ALiVE_fnc_isServerAdmin) then {
 
+	if (_mode == "SERVERSAVE") then {
 
-if (_mode == "SERVERSAVE") then {
+	    ["ALiVE Abort - Abort / Save by Admin"] call ALIVE_fnc_dump;
 
-    player setVariable ["isAdmin",true];
+	    ["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
 
-    ["ALiVE Abort - Abort / Save by Admin"] call ALIVE_fnc_dump;
+		// Save all players
+		[["REMSAVE"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
 
-    ["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
+		["ALiVE Abort - Trigger Server abort call"] call ALIVE_fnc_dump;
 
-	// Save all players
-	[["REMSAVE"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
+		// Save server data
+		//[] call _saveServer;
+        [["SAVESERVERYO",getPlayerUID player],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
+		//["server",QMOD(main),[["SAVESERVERYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
 
-	["ALiVE Abort - Trigger Server save call"] call ALIVE_fnc_dump;
+	};
+	if (_mode == "SERVERABORT") then {
 
-	// Save server data
-	//[] call _saveServer;
-    [["SAVESERVERYO",getPlayerUID player],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
-	//["server",QMOD(main),[["SAVESERVERYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
+	    ["ALiVE Abort - Abort by Admin"] call ALIVE_fnc_dump;
 
+		["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
+
+		// abort all players
+		[["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
+
+		["ALiVE Abort - Trigger Server abort call"] call ALIVE_fnc_dump;
+
+		// exit server
+        [["SERVERABORTYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
+		//["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
+	};
 };
-if (_mode == "SERVERABORT") then {
-
-    player setVariable ["isAdmin",true];
-
-    ["ALiVE Abort - Abort by Admin"] call ALIVE_fnc_dump;
-
-	["ALiVE Abort - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
-
-	// abort all players
-	[["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
-
-	["ALiVE Abort - Trigger Server abort call"] call ALIVE_fnc_dump;
-
-	// exit server
-    [["SERVERABORTYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
-	//["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
-};
-
 
 switch (_mode) do {
-
-
 	case "SAVE": {
 	    ["ALiVE Abort - [%1] Ending mission",_mode] call ALIVE_fnc_dump;
 	    "saved" call BIS_fnc_endMission;
@@ -509,19 +494,19 @@ switch (_mode) do {
 	    "abort" call BIS_fnc_endMission;
     };
 	case "REMSAVE" : {
-	    if !(player getVariable ["isAdmin",false]) then {
+	    if !(call ALiVE_fnc_isServerAdmin) then {
 	        ["ALiVE Abort - [%1] !(Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			"saved" call BIS_fnc_endMission;
 		};
 	};
 	case "SERVERSAVE": {
-		if (player getVariable ["isAdmin",false]) then {
+		if (call ALiVE_fnc_isServerAdmin) then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			//"serversaved" call BIS_fnc_endMission;
 		};
 	};
 	case "SERVERABORT": {
-		if (player getVariable ["isAdmin",false]) then {
+		if (call ALiVE_fnc_isServerAdmin) then {
 		    ["ALiVE Abort - [%1] (Admin) Ending mission",_mode] call ALIVE_fnc_dump;
 			"serverabort" call BIS_fnc_endMission;
 		};
