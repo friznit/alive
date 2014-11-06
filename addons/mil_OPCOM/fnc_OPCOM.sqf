@@ -83,6 +83,19 @@ switch(_operation) do {
                 [_logic,"start"] call MAINCLASS;
 			};
 		};
+        case "create": {
+            	private ["_logic"];
+                
+                _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+
+                TRACE_1("Creating class on all localities",true);
+
+                // initialise module game logic on all localities
+                _logic setVariable ["super", SUPERCLASS];
+                _logic setVariable ["class", MAINCLASS];
+
+                _result = _logic;
+        };
 		case "start": {                
                 /*
                 MODEL - no visual just reference data
@@ -992,7 +1005,7 @@ switch(_operation) do {
         
         case "createhashobject": {                
                 if (isServer) then {
-                        _result = [nil, "create"] call ALIVE_fnc_OPCOM;
+                        _result = [] call ALIVE_fnc_hashCreate;
 						[_result,"super"] call ALIVE_fnc_hashRem;
 						[_result,"class"] call ALIVE_fnc_hashRem;
                 };
@@ -1779,6 +1792,8 @@ switch(_operation) do {
             _sea = [];
             _mech = [];
             _arty = [];
+            
+            if (isnil "_profileIDs" || {count _profileIDs == 0}) exitwith {_result = [_inf,_mot,_mech,_arm,_air,_sea,_arty,_AAA]};
 
             {
                 private ["_profile","_assignments","_type","_objectType","_vehicleClass","_busy"];
@@ -1971,12 +1986,29 @@ switch(_operation) do {
 
                 if !(isnil "_DATA_TMP") then {_result = _DATA_TMP} else {_result = nil};
 		};
-       
-        case "destroy": {                
-                [_logic, "debug", false] call MAINCLASS;
-                if (isServer) then {
-					[_logic, "destroy"] call SUPERCLASS;
-                };                
+        case "destroy": {
+            
+            	switch (typeName _logic) do {
+                	case ("OBJECT") : {_logic = _logic getVariable "handler"};
+                    case ("ARRAY") : {};     
+                };
+            
+                _OPCOM_FSM = [_logic,"opcom_fsm",-1] call ALiVE_fnc_HashGet;
+                _TACOM_FSM = [_logic,"tacom_fsm",-1] call ALiVE_fnc_HashGet;
+                _module = [_logic, "module",objNull] call ALiVE_fnc_HashGet;
+                
+                _TACOM_FSM setFSMvariable ["_exitFSM",true];
+                _OPCOM_FSM setFSMvariable ["_exitFSM",true];
+
+                missionNameSpace setVariable ["OPCOM_instances",(missionNameSpace getvariable ["OPCOM_instances",[]]) - [_logic]];
+                
+                _module setVariable ["super", nil];
+				_module setVariable ["class", nil];
+                
+                _logic = nil;
+                
+                deletegroup (group _module);
+                deleteVehicle _module;
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {

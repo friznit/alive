@@ -1,6 +1,6 @@
 #include <\x\alive\addons\mil_OPCOM\script_component.hpp>
 
-#define TESTS ["saveOPCOMobjectives"];
+#define TESTS ["OPCOM"];
 
 SCRIPT(test);
 
