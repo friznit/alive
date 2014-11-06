@@ -72,7 +72,48 @@ switch(_operation) do {
             _err = format["%1 does not support %2 operation", _logic, _operation];
             ERROR_WITH_TITLE(str _logic,_err);
         };
+        case "create": {
+                if (isServer) then {
+                    // Ensure only one module is used
+                    if !(isNil QMOD(CQB)) then {
+                        _logic = MOD(CQB);
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_PLAYERTAGS_ERROR1");
+                    } else {
+                        _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+                        MOD(CQB) = _logic;
+                    };
+
+                    //Push to clients
+                    PublicVariable QMOD(CQB);
+                };
+
+                TRACE_1("Waiting for object to be ready",true);
+
+                waituntil {!isnil QMOD(CQB)};
+                
+                _logic = MOD(CQB);
+
+                TRACE_1("Creating class on all localities",true);
+
+                // initialise module game logic on all localities
+                _logic setVariable ["super", SUPERCLASS];
+                _logic setVariable ["class", MAINCLASS];
+
+                _args = _logic;
+        };
         case "init": {
+            
+			if (isServer) then {
+	            //if server, and no CQB master logic present yet, then initialise CQB master game logic on server and inform all clients
+	            if (isnil QMOD(CQB)) then {
+	                MOD(CQB) = _logic;
+					MOD(CQB) setVariable ["super", SUPERCLASS];
+					MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
+	                publicVariable QMOD(CQB);
+	            };
+            };
+            
+            waituntil {!isnil QMOD(CQB)};
 
             //Only one init per instance is allowed
             if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE MIL CQB - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
@@ -150,17 +191,8 @@ switch(_operation) do {
             */
 
 			if (isServer) then {
-
-                //if server, and no CQB master logic present yet, then initialise CQB master game logic on server and inform all clients
-                if (isnil QMOD(CQB)) then {
-                    MOD(CQB) = (createGroup sideLogic) createUnit ["ALiVE_mil_cqb", [0,0], [], 0, "NONE"];
-					MOD(CQB) setVariable ["super", SUPERCLASS];
-					MOD(CQB) setVariable ["class", ALIVE_fnc_CQB];
-                    MOD(CQB) setVariable ["startupComplete", false,true];
-
-                    publicVariable QMOD(CQB);
-                };
-
+				MOD(CQB) setVariable ["startupComplete", false,true];
+                
 				//Set instance on main module
 				MOD(CQB) setVariable ["instances",(MOD(CQB) getVariable ["instances",[]]) + [_logic],true];
 
@@ -471,12 +503,34 @@ switch(_operation) do {
         case "destroy": {
                 if (isServer) then {
                         // if server
+                        
+                        [_logic,"active",false] call ALiVE_fnc_CQB;
+                        [_logic,"debug",false] call ALiVE_fnc_CQB;
+                        
+                        sleep 2;
+                        
                         _logic setVariable ["super", nil];
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
-                        // and publicVariable to clients
-                        MOD(CQB) = _logic;
-                        publicVariable QMOD(CQB);
+                        
+                        MOD(CQB) setVariable ["instances",(MOD(CQB) getVariable ["instances",[]]) - [_logic],true];
+                        
+                        deletegroup (group _logic);
+                        deletevehicle _logic;
+                        
+                        if (count (MOD(CQB) getVariable ["instances",[]]) == 0) then {
+                            
+                            _logic = MOD(CQB);
+                            
+	                        _logic setVariable ["super", nil];
+	                        _logic setVariable ["class", nil];
+	                        _logic setVariable ["init", nil];
+	                        deletegroup (group _logic);
+	                        deletevehicle _logic;      
+                            
+                            MOD(CQB) = nil;
+                        	publicVariable QMOD(CQB);
+                        };
                 };
 
                 if(!isDedicated && !isHC) then {
@@ -750,6 +804,7 @@ switch(_operation) do {
 				ALIVE_sectorGrid = [nil, "create"] call ALIVE_fnc_sectorGrid;
 				[ALIVE_sectorGrid, "init"] call ALIVE_fnc_sectorGrid;
 				[ALIVE_sectorGrid, "createGrid"] call ALIVE_fnc_sectorGrid;
+                [ALIVE_sectorGrid] call ALIVE_fnc_gridImportStaticMapAnalysis;
             };
 
             //Exclude houses in formerly cleared areas from input list and flag the rest with sectorID on server for persistence
@@ -1082,7 +1137,7 @@ switch(_operation) do {
                         _locality = _logic getVariable ["locality", "client"];
                         _useDominantFaction = _logic getvariable ["CQB_UseDominantFaction",false];
 
-                        if (!(MOD(CQB) getVariable ["pause", false])) then {
+                        if (!isnil QMOD(CQB) && {!(MOD(CQB) getVariable ["pause", false])}) then {
 							{
 								// if conditions are right, spawn a group and place them
 								_house = _x;
