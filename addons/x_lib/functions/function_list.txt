@@ -149,6 +149,7 @@ logging
 
 	ALiVE_fnc_convertLogLevel
 	ALiVE_fnc_dump
+	ALiVE_fnc_dumpClipboard
 	ALiVE_fnc_dumpH
 	ALiVE_fnc_dumpLogo
 	ALiVE_fnc_dumpModuleInit

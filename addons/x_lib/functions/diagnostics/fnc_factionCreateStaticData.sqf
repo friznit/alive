@@ -26,10 +26,11 @@ for "_i" from 0 to count _factions -1 do {
         _configName = configName _faction;
         _side = getNumber(_faction >> "side");
         if((_side < 3) && !(_configName == "Default") && !(_configName == "None") && !(_configName == "OPF_G_F") && !(_configName == "BLU_G_F") && !(_configName == "IND_G_F") && !(_configName == "IND_F") && !(_configName == "OPF_F") && !(_configName == "BLU_F")) then {
-            [configName (_factions select _i)] call ALIVE_fnc_factionCreateStaticData;
+            [configName (_factions select _i), false] call ALIVE_fnc_factionCreateStaticData;
         };
     };
-}
+};
+[true] call ALIVE_fnc_dumpClipboard;
 (end)
 
 See Also:
@@ -38,7 +39,10 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_cfgFindFaction","_faction"];
+private ["_dump","_cfgFindFaction","_faction"];
+
+_faction = _this select 0;
+_dump = if(count _this > 1) then {_this select 1} else {true};
 
 _cfgFindFaction = {
     private ["_cfg","_faction","_detailed","_item","_text","_result","_findRecurse","_className"];
@@ -85,13 +89,11 @@ _cfgFindFaction = {
 
 
 
-_faction = _this select 0;
-
-[""] call ALIVE_fnc_dump;
-[""] call ALIVE_fnc_dump;
-["// %1",_faction] call ALIVE_fnc_dump;
-[""] call ALIVE_fnc_dump;
-[""] call ALIVE_fnc_dump;
+[""] call ALIVE_fnc_dumpClipboard;
+[""] call ALIVE_fnc_dumpClipboard;
+["// %1",_faction] call ALIVE_fnc_dumpClipboard;
+[""] call ALIVE_fnc_dumpClipboard;
+[""] call ALIVE_fnc_dumpClipboard;
 
 
 
@@ -171,7 +173,7 @@ if(_factionToGroupMappingOK) then {
 
             _arrayContent = format['%1%2"%3"',_arrayContent,_delimit,_categoryName];
 
-            ['cat: %1 cat: %2',_categoryName,_aliveCategory] call ALIVE_fnc_dump;
+            ['cat: %1 cat: %2',_categoryName,_aliveCategory] call ALIVE_fnc_dumpClipboard;
 
             if!(isNil "_aliveCategory") then {
 
@@ -188,41 +190,52 @@ if(_factionToGroupMappingOK) then {
                     };
                 };
 
-                [_factionCategoryGroups,_aliveCategory,_groups] call ALIVE_fnc_hashSet;
+
+                if(_aliveCategory in (_factionCategoryGroups select 1)) then {
+
+                    _existingGroups = [_factionCategoryGroups,_aliveCategory] call ALIVE_fnc_hashGet;
+
+                    _groups = _groups + _existingGroups;
+
+                    [_factionCategoryGroups,_aliveCategory,_groups] call ALIVE_fnc_hashSet;
+                }else{
+                    [_factionCategoryGroups,_aliveCategory,_groups] call ALIVE_fnc_hashSet;
+                }
 
             };
         };
     };
 
-    [''] call ALIVE_fnc_dump;
+    [''] call ALIVE_fnc_dumpClipboard;
 
-    ['ALIVE_RHSResupplyGroupOptions_%1 = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
-    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_AIRDROP", ["Armored","Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dump;
-    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_HELI_INSERT", ["Armored","Mechanized","Motorized","Motorized_MTP","SpecOps","Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dump;
-    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_STANDARD", ["Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dump;
+    ['ALIVE_RHSResupplyGroupOptions_%1 = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_AIRDROP", ["Armored","Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dumpClipboard;
+    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_HELI_INSERT", ["Armored","Mechanized","Motorized","Motorized_MTP","SpecOps","Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dumpClipboard;
+    ['[ALIVE_RHSResupplyGroupOptions_%1, "PR_STANDARD", ["Support"%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent] call ALIVE_fnc_dumpClipboard;
 
-    ['[ALIVE_factionDefaultResupplyGroupOptions, "%1", ALIVE_RHSResupplyGroupOptions_%1] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
+    ['[ALIVE_factionDefaultResupplyGroupOptions, "%1", ALIVE_RHSResupplyGroupOptions_%1] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
 };
 
-[''] call ALIVE_fnc_dump;
-[''] call ALIVE_fnc_dump;
+
+[''] call ALIVE_fnc_dumpClipboard;
+[''] call ALIVE_fnc_dumpClipboard;
 
 
 private ["_groupCategory","_categoryGroups","_arrayContent","_groupClass","_configName","_delimit"];
 
-['%1_mappings = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
-[''] call ALIVE_fnc_dump;
-['%1_factionCustomGroups = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
-[''] call ALIVE_fnc_dump;
-['[%1_mappings, "Side", "%2"] call ALIVE_fnc_hashSet;',_faction,_sideToText] call ALIVE_fnc_dump;
-['[%1_mappings, "GroupSideName", "%2"] call ALIVE_fnc_hashSet;',_faction,_sideToText] call ALIVE_fnc_dump;
-['[%1_mappings, "FactionName", "%1"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
-['[%1_mappings, "GroupFactionName", "%1"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
-[''] call ALIVE_fnc_dump;
-['%1_typeMappings = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dump;
-[''] call ALIVE_fnc_dump;
-['[%1_mappings, "GroupFactionTypes", %1_typeMappings] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
-[''] call ALIVE_fnc_dump;
+['%1_mappings = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dumpClipboard;
+[''] call ALIVE_fnc_dumpClipboard;
+['%1_factionCustomGroups = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dumpClipboard;
+[''] call ALIVE_fnc_dumpClipboard;
+['[%1_mappings, "Side", "%2"] call ALIVE_fnc_hashSet;',_faction,_sideToText] call ALIVE_fnc_dumpClipboard;
+['[%1_mappings, "GroupSideName", "%2"] call ALIVE_fnc_hashSet;',_faction,_sideToText] call ALIVE_fnc_dumpClipboard;
+['[%1_mappings, "FactionName", "%1"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+['[%1_mappings, "GroupFactionName", "%1"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+[''] call ALIVE_fnc_dumpClipboard;
+['%1_typeMappings = [] call ALIVE_fnc_hashCreate;',_faction] call ALIVE_fnc_dumpClipboard;
+[''] call ALIVE_fnc_dumpClipboard;
+['[%1_mappings, "GroupFactionTypes", %1_typeMappings] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+[''] call ALIVE_fnc_dumpClipboard;
 {
 
     _groupCategory = _x;
@@ -244,14 +257,14 @@ private ["_groupCategory","_categoryGroups","_arrayContent","_groupClass","_conf
 
     } forEach _categoryGroups;
 
-    ['[%1_factionCustomGroups, "%2", [%3]] call ALIVE_fnc_hashSet;',_faction,_groupCategory,_arrayContent] call ALIVE_fnc_dump;
+    ['[%1_factionCustomGroups, "%2", [%3]] call ALIVE_fnc_hashSet;',_faction,_groupCategory,_arrayContent] call ALIVE_fnc_dumpClipboard;
 
 } forEach (_factionCategoryGroups select 1);
 
-[''] call ALIVE_fnc_dump;
-['[%1_mappings, "Groups", %1_factionCustomGroups] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
-[''] call ALIVE_fnc_dump;
-['[ALIVE_factionCustomMappings, "%1", %1_mappings] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dump;
+[''] call ALIVE_fnc_dumpClipboard;
+['[%1_mappings, "Groups", %1_factionCustomGroups] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+[''] call ALIVE_fnc_dumpClipboard;
+['[ALIVE_factionCustomMappings, "%1", %1_mappings] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
 
 
 
@@ -301,8 +314,8 @@ private ["_vehicleType","_vehicleClasses","_array","_vehicleClass","_configName"
 
     _vehicleClasses = [_factionVehicles,_vehicleType] call ALIVE_fnc_hashGet;
 
-    [" "] call ALIVE_fnc_dump;
-    ["// %1",_vehicleType] call ALIVE_fnc_dump;
+    [" "] call ALIVE_fnc_dumpClipboard;
+    ["// %1",_vehicleType] call ALIVE_fnc_dumpClipboard;
 
     _arrayContent = "";
     _delimit = "";
@@ -328,9 +341,14 @@ private ["_vehicleType","_vehicleClasses","_array","_vehicleClass","_configName"
     _transport = format['[ALIVE_factionDefaultTransport, "%1", [%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent];
     _air = format['[ALIVE_factionDefaultAirTransport, "%1", [%2]] call ALIVE_fnc_hashSet;',_faction,_arrayContent];
 
-    [_supports] call ALIVE_fnc_dump;
-    [_supplies] call ALIVE_fnc_dump;
-    [_transport] call ALIVE_fnc_dump;
-    [_air] call ALIVE_fnc_dump;
+    [_supports] call ALIVE_fnc_dumpClipboard;
+    [_supplies] call ALIVE_fnc_dumpClipboard;
+    [_transport] call ALIVE_fnc_dumpClipboard;
+    [_air] call ALIVE_fnc_dumpClipboard;
 
 } forEach (_factionVehicles select 1);
+
+
+if(_dump) then {
+    [true] call ALIVE_fnc_dumpClipboard;
+};

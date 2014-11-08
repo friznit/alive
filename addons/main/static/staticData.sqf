@@ -4064,8 +4064,8 @@ rhs_faction_usarmy_wd_typeMappings = [] call ALIVE_fnc_hashCreate;
 [rhs_faction_usarmy_wd_mappings, "GroupFactionTypes", rhs_faction_usarmy_wd_typeMappings] call ALIVE_fnc_hashSet;
 
 [rhs_faction_usarmy_wd_factionCustomGroups, "Infantry", ["rhs_group_nato_usarmy_wd_infantry_squad","rhs_group_nato_usarmy_wd_infantry_weaponsquad","rhs_group_nato_usarmy_wd_infantry_squad_sniper","rhs_group_nato_usarmy_wd_infantry_team","rhs_group_nato_usarmy_wd_infantry_team_MG","rhs_group_nato_usarmy_wd_infantry_team_AA","rhs_group_nato_usarmy_wd_infantry_team_support","rhs_group_nato_usarmy_wd_infantry_team_heavy_AT"]] call ALIVE_fnc_hashSet;
-[rhs_faction_usarmy_wd_factionCustomGroups, "Mechanized", ["rhs_group_nato_usarmy_wd_bradleyA3_squad","rhs_group_nato_usarmy_wd_bradleyA3_squad_2mg","rhs_group_nato_usarmy_wd_bradleyA3_squad_sniper","rhs_group_nato_usarmy_wd_bradleyA3_squad_mg_sniper","rhs_group_nato_usarmy_d_bradleyA3_aa"]] call ALIVE_fnc_hashSet;
-[rhs_faction_usarmy_wd_factionCustomGroups, "Armored", ["RHS_M1A2SEP_wd_Platoon","RHS_M1A2SEP_wd_Platoon_AA","RHS_M1A2SEP_wd_Section","RHS_M1A2SEP_wd_TUSK_Platoon","RHS_M1A2SEP_wd_TUSK_Platoon_AA","RHS_M1A2SEP_wd_TUSK_Section"]] call ALIVE_fnc_hashSet;
+[rhs_faction_usarmy_wd_factionCustomGroups, "Mechanized", ["rhs_group_nato_usarmy_wd_bradleyA3_squad","rhs_group_nato_usarmy_wd_bradleyA3_squad_2mg","rhs_group_nato_usarmy_wd_bradleyA3_squad_sniper","rhs_group_nato_usarmy_wd_bradleyA3_squad_mg_sniper","rhs_group_nato_usarmy_d_bradleyA3_aa","rhs_group_nato_usarmy_wd_bradley_squad","rhs_group_nato_usarmy_wd_bradley_squad_2mg","rhs_group_nato_usarmy_wd_bradley_squad_sniper","rhs_group_nato_usarmy_wd_bradley_squad_mg_sniper","rhs_group_nato_usarmy_d_bradley_aa","rhs_group_nato_usarmy_wd_M113_squad","rhs_group_nato_usarmy_wd_M113_squad_2mg","rhs_group_nato_usarmy_wd_M113_squad_sniper","rhs_group_nato_usarmy_wd_M113_squad_mg_sniper"]] call ALIVE_fnc_hashSet;
+[rhs_faction_usarmy_wd_factionCustomGroups, "Armored", ["RHS_M1A2SEP_wd_Platoon","RHS_M1A2SEP_wd_Platoon_AA","RHS_M1A2SEP_wd_Section","RHS_M1A2SEP_wd_TUSK_Platoon","RHS_M1A2SEP_wd_TUSK_Platoon_AA","RHS_M1A2SEP_wd_TUSK_Section","RHS_M1A1AIM_wd_Platoon","RHS_M1A1AIM_wd_Platoon_AA","RHS_M1A1AIM_wd_Section","RHS_M1A1AIM_wd_TUSK_Platoon","RHS_M1A1AIM_wd_TUSK_Platoon_AA","RHS_M1A1AIM_wd_TUSK_Section"]] call ALIVE_fnc_hashSet;
 [rhs_faction_usarmy_wd_factionCustomGroups, "Artillery", ["RHS_M109_wd_Platoon","RHS_M109_wd_Section"]] call ALIVE_fnc_hashSet;
 
 [rhs_faction_usarmy_wd_mappings, "Groups", rhs_faction_usarmy_wd_factionCustomGroups] call ALIVE_fnc_hashSet;
@@ -4137,8 +4137,8 @@ rhs_faction_usarmy_d_typeMappings = [] call ALIVE_fnc_hashCreate;
 [rhs_faction_usarmy_d_mappings, "GroupFactionTypes", rhs_faction_usarmy_d_typeMappings] call ALIVE_fnc_hashSet;
 
 [rhs_faction_usarmy_d_factionCustomGroups, "Infantry", ["rhs_group_nato_usarmy_d_infantry_squad","rhs_group_nato_usarmy_d_infantry_weaponsquad","rhs_group_nato_usarmy_d_infantry_squad_sniper","rhs_group_nato_usarmy_d_infantry_team","rhs_group_nato_usarmy_d_infantry_team_MG","rhs_group_nato_usarmy_d_infantry_team_AA","rhs_group_nato_usarmy_d_infantry_team_AT","rhs_group_nato_usarmy_d_infantry_team_support"]] call ALIVE_fnc_hashSet;
-[rhs_faction_usarmy_d_factionCustomGroups, "Mechanized", ["rhs_group_nato_usarmy_d_bradleyA3_squad","rhs_group_nato_usarmy_d_bradleyA3_squad_2mg","rhs_group_nato_usarmy_d_bradleyA3_squad_sniper","rhs_group_nato_usarmy_d_bradleyA3_squad_mg_sniper","rhs_group_nato_usarmy_d_bradleyA3_aa"]] call ALIVE_fnc_hashSet;
-[rhs_faction_usarmy_d_factionCustomGroups, "Armored", ["RHS_M1A2SEP_Platoon","RHS_M1A2SEP_Platoon_AA","RHS_M1A2SEP_Section","RHS_M1A2SEP_TUSK_Platoon","RHS_M1A2SEP_TUSK_Platoon_AA","RHS_M1A2SEP_TUSK_Section"]] call ALIVE_fnc_hashSet;
+[rhs_faction_usarmy_d_factionCustomGroups, "Mechanized", ["rhs_group_nato_usarmy_d_bradleyA3_squad","rhs_group_nato_usarmy_d_bradleyA3_squad_2mg","rhs_group_nato_usarmy_d_bradleyA3_squad_sniper","rhs_group_nato_usarmy_d_bradleyA3_squad_mg_sniper","rhs_group_nato_usarmy_d_bradleyA3_aa","rhs_group_nato_usarmy_d_bradley_squad","rhs_group_nato_usarmy_d_bradley_squad_2mg","rhs_group_nato_usarmy_d_bradley_squad_sniper","rhs_group_nato_usarmy_d_bradley_squad_mg_sniper","rhs_group_nato_usarmy_d_bradley_aa","rhs_group_nato_usarmy_d_M113_squad","rhs_group_nato_usarmy_d_M113_squad_2mg","rhs_group_nato_usarmy_d_M113_squad_sniper","rhs_group_nato_usarmy_d_M113_squad_mg_sniper"]] call ALIVE_fnc_hashSet;
+[rhs_faction_usarmy_d_factionCustomGroups, "Armored", ["RHS_M1A2SEP_Platoon","RHS_M1A2SEP_Platoon_AA","RHS_M1A2SEP_Section","RHS_M1A2SEP_TUSK_Platoon","RHS_M1A2SEP_TUSK_Platoon_AA","RHS_M1A2SEP_TUSK_Section","RHS_M1A1AIM_Platoon","RHS_M1A1AIM_Platoon_AA","RHS_M1A1AIM_Section","RHS_M1A1AIM_TUSK_Platoon","RHS_M1A1AIM_TUSK_Platoon_AA","RHS_M1A1AIM_TUSK_Section"]] call ALIVE_fnc_hashSet;
 [rhs_faction_usarmy_d_factionCustomGroups, "Artillery", ["RHS_M109_Platoon","RHS_M109_Section"]] call ALIVE_fnc_hashSet;
 
 [rhs_faction_usarmy_d_mappings, "Groups", rhs_faction_usarmy_d_factionCustomGroups] call ALIVE_fnc_hashSet;
@@ -4156,10 +4156,10 @@ rhs_faction_usarmy_d_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultAirTransport, "rhs_faction_usarmy_d", ["rhsusf_m113d_usarmy"]] call ALIVE_fnc_hashSet;
 
 // rhs_vehclass_ifv
-[ALIVE_factionDefaultSupports, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3_BUSKI","RHS_M2A3","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3_BUSKI","RHS_M2A3","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultTransport, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3_BUSKI","RHS_M2A3","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultAirTransport, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3_BUSKI","RHS_M2A3","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupports, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3","RHS_M2A3_BUSKI","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3","RHS_M2A3_BUSKI","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3","RHS_M2A3_BUSKI","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "rhs_faction_usarmy_d", ["RHS_M2A2","RHS_M2A2_BUSKI","RHS_M2A3","RHS_M2A3_BUSKI","RHS_M2A3_BUSKIII"]] call ALIVE_fnc_hashSet;
 
 // rhs_vehclass_aa
 [ALIVE_factionDefaultSupports, "rhs_faction_usarmy_d", ["RHS_M6"]] call ALIVE_fnc_hashSet;
@@ -4193,8 +4193,9 @@ rhs_faction_usarmy_d_typeMappings = [] call ALIVE_fnc_hashCreate;
 */
 
 
-// rhs_faction_usmc_wd
 /*
+
+// rhs_faction_usmc_wd
 
 
 rhs_faction_usmc_wd_mappings = [] call ALIVE_fnc_hashCreate;
@@ -4223,6 +4224,7 @@ rhs_faction_usmc_wd_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 
 // rhs_faction_usmc_d
+
 
 rhs_faction_usmc_d_mappings = [] call ALIVE_fnc_hashCreate;
 
@@ -4255,7 +4257,6 @@ rhs_faction_usmc_d_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultAirTransport, "rhs_faction_usmc_d", ["rhsusf_m1a1hc_d"]] call ALIVE_fnc_hashSet;
 
 
-
 // rhs_faction_usaf
 
 
@@ -4284,8 +4285,8 @@ rhs_faction_usaf_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultAirTransport, "rhs_faction_usaf", ["RHS_A10"]] call ALIVE_fnc_hashSet;
 
 
-
 // rhs_faction_usn
+
 
 rhs_faction_usn_mappings = [] call ALIVE_fnc_hashCreate;
 
@@ -4325,10 +4326,10 @@ rhs_faction_msv_typeMappings = [] call ALIVE_fnc_hashCreate;
 [rhs_faction_msv_mappings, "GroupFactionTypes", rhs_faction_msv_typeMappings] call ALIVE_fnc_hashSet;
 
 [rhs_faction_msv_factionCustomGroups, "Infantry", ["rhs_group_rus_msv_infantry_chq","rhs_group_rus_msv_infantry_squad","rhs_group_rus_msv_infantry_squad_2mg","rhs_group_rus_msv_infantry_squad_sniper","rhs_group_rus_msv_infantry_squad_mg_sniper","rhs_group_rus_msv_infantry_section_mg","rhs_group_rus_msv_infantry_section_marksman","rhs_group_rus_msv_infantry_section_AT","rhs_group_rus_msv_infantry_section_AA","rhs_group_rus_msv_infantry_fireteam","rhs_group_rus_msv_infantry_MANEUVER"]] call ALIVE_fnc_hashSet;
-[rhs_faction_msv_factionCustomGroups, "Motorized", ["rhs_group_rus_msv_gaz66_chq","rhs_group_rus_msv_gaz66_squad","rhs_group_rus_msv_gaz66_squad_2mg","rhs_group_rus_msv_gaz66_squad_sniper","rhs_group_rus_msv_gaz66_squad_mg_sniper","rhs_group_rus_msv_gaz66_squad_aa"]] call ALIVE_fnc_hashSet;
-[rhs_faction_msv_factionCustomGroups, "Mechanized", ["rhs_group_rus_MSV_BMP3_chq","rhs_group_rus_MSV_BMP3_squad","rhs_group_rus_MSV_BMP3_squad_2mg","rhs_group_rus_MSV_BMP3_squad_sniper","rhs_group_rus_MSV_BMP3_squad_mg_sniper","rhs_group_rus_MSV_BMP3_squad_aa"]] call ALIVE_fnc_hashSet;
-[rhs_faction_msv_factionCustomGroups, "Artillery", ["RHS_SPGPlatoon_msv_bm21","RHS_SPGSection_msv_bm21"]] call ALIVE_fnc_hashSet;
-[rhs_faction_msv_factionCustomGroups, "Armored", ["RHS_T80Platoon","RHS_T80Platoon_AA","RHS_T80Section","RHS_T80BPlatoon","RHS_T80BPlatoon_AA","RHS_T80BSection","RHS_T80BVPlatoon","RHS_T80BVPlatoon_AA","RHS_T80BVSection","RHS_T80APlatoon","RHS_T80APlatoon_AA","RHS_T80ASection","RHS_T80UPlatoon","RHS_T80UPlatoon_AA","RHS_T80USection"]] call ALIVE_fnc_hashSet;
+[rhs_faction_msv_factionCustomGroups, "Motorized", ["rhs_group_rus_msv_gaz66_chq","rhs_group_rus_msv_gaz66_squad","rhs_group_rus_msv_gaz66_squad_2mg","rhs_group_rus_msv_gaz66_squad_sniper","rhs_group_rus_msv_gaz66_squad_mg_sniper","rhs_group_rus_msv_gaz66_squad_aa","rhs_group_rus_msv_Ural_chq","rhs_group_rus_msv_Ural_squad","rhs_group_rus_msv_Ural_squad_2mg","rhs_group_rus_msv_Ural_squad_sniper","rhs_group_rus_msv_Ural_squad_mg_sniper","rhs_group_rus_msv_Ural_squad_aa"]] call ALIVE_fnc_hashSet;
+[rhs_faction_msv_factionCustomGroups, "Mechanized", ["rhs_group_rus_MSV_BMP3_chq","rhs_group_rus_MSV_BMP3_squad","rhs_group_rus_MSV_BMP3_squad_2mg","rhs_group_rus_MSV_BMP3_squad_sniper","rhs_group_rus_MSV_BMP3_squad_mg_sniper","rhs_group_rus_MSV_BMP3_squad_aa","rhs_group_rus_msv_bmp2_chq","rhs_group_rus_msv_bmp2_squad","rhs_group_rus_msv_bmp2_squad_2mg","rhs_group_rus_msv_bmp2_squad_sniper","rhs_group_rus_msv_bmp2_squad_mg_sniper","rhs_group_rus_msv_bmp2_squad_aa","rhs_group_rus_msv_bmp1_chq","rhs_group_rus_msv_bmp1_squad","rhs_group_rus_msv_bmp1_squad_2mg","rhs_group_rus_msv_bmp1_squad_sniper","rhs_group_rus_msv_bmp1_squad_mg_sniper","rhs_group_rus_msv_bmp1_squad_aa","rhs_group_rus_msv_BTR80a_chq","rhs_group_rus_msv_BTR80a_squad","rhs_group_rus_msv_BTR80a_squad_2mg","rhs_group_rus_msv_BTR80a_squad_sniper","rhs_group_rus_msv_BTR80a_squad_mg_sniper","rhs_group_rus_msv_BTR80a_squad_aa","rhs_group_rus_msv_BTR80_chq","rhs_group_rus_msv_BTR80_squad","rhs_group_rus_msv_BTR80_squad_2mg","rhs_group_rus_msv_BTR80_squad_sniper","rhs_group_rus_msv_BTR80_squad_mg_sniper","rhs_group_rus_msv_BTR80_squad_aa","rhs_group_rus_msv_btr70_chq","rhs_group_rus_msv_btr70_squad","rhs_group_rus_msv_btr70_squad_2mg","rhs_group_rus_msv_btr70_squad_sniper","rhs_group_rus_msv_btr70_squad_mg_sniper","rhs_group_rus_msv_btr70_squad_aa"]] call ALIVE_fnc_hashSet;
+[rhs_faction_msv_factionCustomGroups, "Artillery", ["RHS_SPGPlatoon_msv_bm21","RHS_SPGSection_msv_bm21","RHS_SPGPlatoon_tv_2s3","RHS_SPGSection_tv_2s3"]] call ALIVE_fnc_hashSet;
+[rhs_faction_msv_factionCustomGroups, "Armored", ["RHS_T80Platoon","RHS_T80Platoon_AA","RHS_T80Section","RHS_T80BPlatoon","RHS_T80BPlatoon_AA","RHS_T80BSection","RHS_T80BVPlatoon","RHS_T80BVPlatoon_AA","RHS_T80BVSection","RHS_T80APlatoon","RHS_T80APlatoon_AA","RHS_T80ASection","RHS_T80UPlatoon","RHS_T80UPlatoon_AA","RHS_T80USection","RHS_T72BAPlatoon","RHS_T72BAPlatoon_AA","RHS_T72BASection","RHS_T72BBPlatoon","RHS_T72BBPlatoon_AA","RHS_T72BBSection","RHS_T72BCPlatoon","RHS_T72BCPlatoon_AA","RHS_T72BCSection"]] call ALIVE_fnc_hashSet;
 
 [rhs_faction_msv_mappings, "Groups", rhs_faction_msv_factionCustomGroups] call ALIVE_fnc_hashSet;
 
@@ -4382,11 +4383,11 @@ rhs_faction_vdv_typeMappings = [] call ALIVE_fnc_hashCreate;
 [rhs_faction_vdv_mappings, "GroupFactionTypes", rhs_faction_vdv_typeMappings] call ALIVE_fnc_hashSet;
 
 [rhs_faction_vdv_factionCustomGroups, "Infantry", ["rhs_group_rus_vdv_infantry_chq","rhs_group_rus_vdv_infantry_squad","rhs_group_rus_vdv_infantry_squad_2mg","rhs_group_rus_vdv_infantry_squad_sniper","rhs_group_rus_vdv_infantry_squad_mg_sniper","rhs_group_rus_vdv_infantry_section_mg","rhs_group_rus_vdv_infantry_section_marksman","rhs_group_rus_vdv_infantry_section_AT","rhs_group_rus_vdv_infantry_section_AA","rhs_group_rus_vdv_infantry_fireteam","rhs_group_rus_vdv_infantry_MANEUVER"]] call ALIVE_fnc_hashSet;
-[rhs_faction_vdv_factionCustomGroups, "Motorized", ["rhs_group_rus_vdv_gaz66_chq","rhs_group_rus_vdv_gaz66_squad","rhs_group_rus_vdv_gaz66_squad_2mg","rhs_group_rus_vdv_gaz66_squad_sniper","rhs_group_rus_vdv_gaz66_squad_mg_sniper","rhs_group_rus_vdv_gaz66_squad_aa"]] call ALIVE_fnc_hashSet;
-[rhs_faction_vdv_factionCustomGroups, "Mechanized", ["rhs_group_rus_vdv_bmd4ma_chq","rhs_group_rus_vdv_bmd4ma_squad","rhs_group_rus_vdv_bmd4ma_squad_2mg","rhs_group_rus_vdv_bmd4ma_squad_sniper","rhs_group_rus_vdv_bmd4ma_squad_mg_sniper","rhs_group_rus_vdv_bmd4ma_squad_aa"]] call ALIVE_fnc_hashSet;
-[rhs_faction_vdv_factionCustomGroups, "Airborne", ["rhs_group_rus_vdv_mi24_chq","rhs_group_rus_vdv_mi24_squad","rhs_group_rus_vdv_mi24_squad_2mg","rhs_group_rus_vdv_mi24_squad_sniper","rhs_group_rus_vdv_mi24_squad_mg_sniper"]] call ALIVE_fnc_hashSet;
-[rhs_faction_vdv_factionCustomGroups, "Artillery", ["RHS_SPGPlatoon_vdv_bm21","RHS_SPGSection_vdv_bm21"]] call ALIVE_fnc_hashSet;
-[rhs_faction_vdv_factionCustomGroups, "Armored", ["RHS_T80Platoon","RHS_T80Platoon_AA","RHS_T80Section","RHS_T80BPlatoon","RHS_T80BPlatoon_AA","RHS_T80BSection","RHS_T80BVPlatoon","RHS_T80BVPlatoon_AA","RHS_T80BVSection","RHS_T80APlatoon","RHS_T80APlatoon_AA","RHS_T80ASection","RHS_T80UPlatoon","RHS_T80UPlatoon_AA","RHS_T80USection"]] call ALIVE_fnc_hashSet;
+[rhs_faction_vdv_factionCustomGroups, "Motorized", ["rhs_group_rus_vdv_gaz66_chq","rhs_group_rus_vdv_gaz66_squad","rhs_group_rus_vdv_gaz66_squad_2mg","rhs_group_rus_vdv_gaz66_squad_sniper","rhs_group_rus_vdv_gaz66_squad_mg_sniper","rhs_group_rus_vdv_gaz66_squad_aa","rhs_group_rus_vdv_Ural_chq","rhs_group_rus_vdv_Ural_squad","rhs_group_rus_vdv_Ural_squad_2mg","rhs_group_rus_vdv_Ural_squad_sniper","rhs_group_rus_vdv_Ural_squad_mg_sniper","rhs_group_rus_vdv_Ural_squad_aa"]] call ALIVE_fnc_hashSet;
+[rhs_faction_vdv_factionCustomGroups, "Mechanized", ["rhs_group_rus_vdv_bmd4ma_chq","rhs_group_rus_vdv_bmd4ma_squad","rhs_group_rus_vdv_bmd4ma_squad_2mg","rhs_group_rus_vdv_bmd4ma_squad_sniper","rhs_group_rus_vdv_bmd4ma_squad_mg_sniper","rhs_group_rus_vdv_bmd4ma_squad_aa","rhs_group_rus_vdv_bmd4m_chq","rhs_group_rus_vdv_bmd4m_squad","rhs_group_rus_vdv_bmd4m_squad_2mg","rhs_group_rus_vdv_bmd4m_squad_sniper","rhs_group_rus_vdv_bmd4m_squad_mg_sniper","rhs_group_rus_vdv_bmd4m_squad_aa","rhs_group_rus_vdv_bmd4_chq","rhs_group_rus_vdv_bmd4_squad","rhs_group_rus_vdv_bmd4_squad_2mg","rhs_group_rus_vdv_bmd4_squad_sniper","rhs_group_rus_vdv_bmd4_squad_mg_sniper","rhs_group_rus_vdv_bmd4_squad_aa","rhs_group_rus_vdv_bmd2_chq","rhs_group_rus_vdv_bmd2_squad","rhs_group_rus_vdv_bmd2_squad_2mg","rhs_group_rus_vdv_bmd2_squad_sniper","rhs_group_rus_vdv_bmd2_squad_mg_sniper","rhs_group_rus_vdv_bmd2_squad_aa","rhs_group_rus_vdv_bmd1_chq","rhs_group_rus_vdv_bmd1_squad","rhs_group_rus_vdv_bmd1_squad_2mg","rhs_group_rus_vdv_bmd1_squad_sniper","rhs_group_rus_vdv_bmd1_squad_mg_sniper","rhs_group_rus_vdv_bmd1_squad_aa","rhs_group_rus_vdv_bmp2_chq","rhs_group_rus_vdv_bmp2_squad","rhs_group_rus_vdv_bmp2_squad_2mg","rhs_group_rus_vdv_bmp2_squad_sniper","rhs_group_rus_vdv_bmp2_squad_mg_sniper","rhs_group_rus_vdv_bmp2_squad_aa","rhs_group_rus_vdv_bmp1_chq","rhs_group_rus_vdv_bmp1_squad","rhs_group_rus_vdv_bmp1_squad_2mg","rhs_group_rus_vdv_bmp1_squad_sniper","rhs_group_rus_vdv_bmp1_squad_mg_sniper","rhs_group_rus_vdv_bmp1_squad_aa","rhs_group_rus_vdv_BTR80a_chq","rhs_group_rus_vdv_BTR80a_squad","rhs_group_rus_vdv_BTR80a_squad_2mg","rhs_group_rus_vdv_BTR80a_squad_sniper","rhs_group_rus_vdv_BTR80a_squad_mg_sniper","rhs_group_rus_vdv_BTR80a_squad_aa","rhs_group_rus_vdv_BTR80_chq","rhs_group_rus_vdv_BTR80_squad","rhs_group_rus_vdv_BTR80_squad_2mg","rhs_group_rus_vdv_BTR80_squad_sniper","rhs_group_rus_vdv_BTR80_squad_mg_sniper","rhs_group_rus_vdv_BTR80_squad_aa","rhs_group_rus_vdv_btr70_chq","rhs_group_rus_vdv_btr70_squad","rhs_group_rus_vdv_btr70_squad_2mg","rhs_group_rus_vdv_btr70_squad_sniper","rhs_group_rus_vdv_btr70_squad_mg_sniper","rhs_group_rus_vdv_btr70_squad_aa","rhs_group_rus_vdv_btr60_chq","rhs_group_rus_vdv_btr60_squad","rhs_group_rus_vdv_btr60_squad_2mg","rhs_group_rus_vdv_btr60_squad_sniper","rhs_group_rus_vdv_btr60_squad_mg_sniper","rhs_group_rus_vdv_btr60_squad_aa"]] call ALIVE_fnc_hashSet;
+[rhs_faction_vdv_factionCustomGroups, "Airborne", ["rhs_group_rus_vdv_mi24_chq","rhs_group_rus_vdv_mi24_squad","rhs_group_rus_vdv_mi24_squad_2mg","rhs_group_rus_vdv_mi24_squad_sniper","rhs_group_rus_vdv_mi24_squad_mg_sniper","rhs_group_rus_vdv_mi8_chq","rhs_group_rus_vdv_mi8_squad","rhs_group_rus_vdv_mi8_squad_2mg","rhs_group_rus_vdv_mi8_squad_sniper","rhs_group_rus_vdv_mi8_squad_mg_sniper"]] call ALIVE_fnc_hashSet;
+[rhs_faction_vdv_factionCustomGroups, "Artillery", ["RHS_SPGPlatoon_vdv_bm21","RHS_SPGSection_vdv_bm21","RHS_SPGPlatoon_tv_2s3","RHS_SPGSection_tv_2s3"]] call ALIVE_fnc_hashSet;
+[rhs_faction_vdv_factionCustomGroups, "Armored", ["RHS_T80Platoon","RHS_T80Platoon_AA","RHS_T80Section","RHS_T80BPlatoon","RHS_T80BPlatoon_AA","RHS_T80BSection","RHS_T80BVPlatoon","RHS_T80BVPlatoon_AA","RHS_T80BVSection","RHS_T80APlatoon","RHS_T80APlatoon_AA","RHS_T80ASection","RHS_T80UPlatoon","RHS_T80UPlatoon_AA","RHS_T80USection","RHS_T72BAPlatoon","RHS_T72BAPlatoon_AA","RHS_T72BASection","RHS_T72BBPlatoon","RHS_T72BBPlatoon_AA","RHS_T72BBSection","RHS_T72BCPlatoon","RHS_T72BCPlatoon_AA","RHS_T72BCSection"]] call ALIVE_fnc_hashSet;
 
 [rhs_faction_vdv_mappings, "Groups", rhs_faction_vdv_factionCustomGroups] call ALIVE_fnc_hashSet;
 
@@ -4397,7 +4398,6 @@ rhs_faction_vdv_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultAirTransport, "rhs_faction_vdv", ["RHS_Mi8mt_vv","RHS_Mi24P_vvsc","RHS_Mi24V_vvsc","RHS_Mi8mt_vvsc","RHS_Mi8MTV3_vvsc","RHS_Mi8AMT_vvsc","RHS_Mi8AMTSh_vvsc","rhs_ka60_c"]] call ALIVE_fnc_hashSet;
 
 /*
-
 // rhs_vehclass_car
 [ALIVE_factionDefaultSupports, "rhs_faction_vdv", ["rhs_tigr_vdv","rhs_uaz_vdv","rhs_uaz_open_vdv"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "rhs_faction_vdv", ["rhs_tigr_vdv","rhs_uaz_vdv","rhs_uaz_open_vdv"]] call ALIVE_fnc_hashSet;
@@ -4438,7 +4438,6 @@ rhs_faction_vdv_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 // rhs_faction_vmf
 /*
-
 rhs_faction_vmf_mappings = [] call ALIVE_fnc_hashCreate;
 
 rhs_faction_vmf_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
@@ -4486,7 +4485,6 @@ rhs_faction_vmf_typeMappings = [] call ALIVE_fnc_hashCreate;
 // rhs_faction_vv
 
 /*
-
 rhs_faction_vv_mappings = [] call ALIVE_fnc_hashCreate;
 
 rhs_faction_vv_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
@@ -4534,7 +4532,6 @@ rhs_faction_vv_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionDefaultSupplies, "rhs_faction_vv", ["rhs_btr70_vv","rhs_btr80_vv","rhs_btr80a_vv","rhs_btr60_vv"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultTransport, "rhs_faction_vv", ["rhs_btr70_vv","rhs_btr80_vv","rhs_btr80a_vv","rhs_btr60_vv"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultAirTransport, "rhs_faction_vv", ["rhs_btr70_vv","rhs_btr80_vv","rhs_btr80a_vv","rhs_btr60_vv"]] call ALIVE_fnc_hashSet;
-
 */
 
 
@@ -4554,7 +4551,7 @@ rhs_faction_tv_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 [rhs_faction_tv_mappings, "GroupFactionTypes", rhs_faction_tv_typeMappings] call ALIVE_fnc_hashSet;
 
-[rhs_faction_tv_factionCustomGroups, "Armored", ["RHS_T80Platoon","RHS_T80Platoon_AA","RHS_T80Section","RHS_T80BPlatoon","RHS_T80BPlatoon_AA","RHS_T80BSection","RHS_T80BVPlatoon","RHS_T80BVPlatoon_AA","RHS_T80BVSection","RHS_T80APlatoon","RHS_T80APlatoon_AA","RHS_T80ASection","RHS_T80UPlatoon","RHS_T80UPlatoon_AA","RHS_T80USection"]] call ALIVE_fnc_hashSet;
+[rhs_faction_tv_factionCustomGroups, "Armored", ["RHS_T80Platoon","RHS_T80Platoon_AA","RHS_T80Section","RHS_T80BPlatoon","RHS_T80BPlatoon_AA","RHS_T80BSection","RHS_T80BVPlatoon","RHS_T80BVPlatoon_AA","RHS_T80BVSection","RHS_T80APlatoon","RHS_T80APlatoon_AA","RHS_T80ASection","RHS_T80UPlatoon","RHS_T80UPlatoon_AA","RHS_T80USection","RHS_T72BAPlatoon","RHS_T72BAPlatoon_AA","RHS_T72BASection","RHS_T72BBPlatoon","RHS_T72BBPlatoon_AA","RHS_T72BBSection","RHS_T72BCPlatoon","RHS_T72BCPlatoon_AA","RHS_T72BCSection"]] call ALIVE_fnc_hashSet;
 [rhs_faction_tv_factionCustomGroups, "Artillery", ["RHS_SPGPlatoon_tv_2s3","RHS_SPGSection_tv_2s3"]] call ALIVE_fnc_hashSet;
 
 [rhs_faction_tv_mappings, "Groups", rhs_faction_tv_factionCustomGroups] call ALIVE_fnc_hashSet;

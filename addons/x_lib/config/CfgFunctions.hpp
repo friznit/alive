@@ -762,6 +762,13 @@ class dump
 	recompile = RECOMPILE;
 };
 
+class dumpClipboard
+{
+	file = "\x\alive\addons\x_lib\functions\logging\fnc_dumpClipboard.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class dumpH
 {
 	file = "\x\alive\addons\x_lib\functions\logging\fnc_dumpH.sqf";
