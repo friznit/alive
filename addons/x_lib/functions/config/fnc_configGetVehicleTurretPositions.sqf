@@ -27,13 +27,11 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_type","_ignoreGunner","_ignoreCommander","_hasPersonTurrets","_result","_findRecurse","_class"];
+private ["_type","_ignoreGunner","_ignoreCommander","_result","_findRecurse","_class"];
 
 _type = _this select 0;
 _ignoreGunner = if(count _this > 1) then {_this select 1} else {false};
 _ignoreCommander = if(count _this > 2) then {_this select 2} else {false};
-
-_hasPersonTurrets = false;
 
 _result = [];
 
@@ -63,8 +61,6 @@ _findRecurse = {
 				_ignore = true;
 			};
 
-			_hasPersonTurrets = true;
-			
 			//["class: %1 ignore: %2 gunner: %3 observer: %4 person: %5",_class,_ignore,getNumber(_class >> "primaryGunner"),getNumber(_class >> "primaryObserver"),getNumber(_class >> "isPersonTurret")] call ALIVE_fnc_dump;
 			
 			if!(_ignore) then {
@@ -84,17 +80,15 @@ _class = (configFile >> "CfgVehicles" >> _type >> "turrets");
 
 [_class, []] call _findRecurse;
 
+/*
 // seriously?
 if(_type == "B_Heli_Light_01_F") then {
-    if!(_hasPersonTurrets) then {
-        _result = [];
-    };
+    _result = [];
 };
 
 if(_type == "B_Heli_Light_01_armed_F") then {
-   if!(_hasPersonTurrets) then {
-       _result = [];
-   };
+   _result = [];
 };
+*/
 
 _result;

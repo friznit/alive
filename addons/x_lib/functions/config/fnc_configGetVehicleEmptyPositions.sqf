@@ -16,7 +16,7 @@ Array of empty positions [driver, gunner, commander, turretsEmpty, cargo]
 Examples:
 (begin example)
 // get empty positions array
-_result = ["B_Truck_01_transport_F"] call ALIVE_fnc_vehicleGetEmptyPositions;
+_result = ["B_Truck_01_transport_F"] call ALIVE_fnc_configGetVehicleEmptyPositions;
 // returns [1,0,0,0,17]
 (end)
 
@@ -26,9 +26,10 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_vehicle","_positions","_class","_turretEmptyCount","_findRecurse","_turrets"];
+private ["_vehicle","_ignorePlayerTurrets","_positions","_class","_turretEmptyCount","_findRecurse","_turrets"];
 	
-_vehicle = [_this, 0, "", [""]] call BIS_fnc_param;
+_vehicle = _this select 0;
+_ignorePlayerTurrets = if(count _this > 1) then {_this select 1} else {false};
 
 _positions = [0,0,0,0,0];
 _class = (configFile >> "CfgVehicles" >> _vehicle);
@@ -39,7 +40,7 @@ _positions set [0, getNumber(_class >> "hasDriver")];
 _turretEmptyCount = 0;
 
 _findRecurse = {
-	private ["_root","_turret","_path","_currentPath","_hasGunner","_primaryGunner","_primaryObserver"];
+	private ["_root","_turret","_path","_currentPath","_hasGunner","_primaryGunner","_primaryObserver","_isPersonTurret"];
 	
 	_root = (_this select 0);
 	_path = +(_this select 1);
@@ -53,6 +54,7 @@ _findRecurse = {
 			
 			_primaryGunner = false;
 			_primaryObserver = false;
+			_isPersonTurret = false;
 
 			if(getNumber(_turret >> "primaryGunner") == 1) then {
 				_primaryGunner = true;
@@ -64,10 +66,20 @@ _findRecurse = {
 				_positions set [2, 1];
 			};
 
-			if(!(_primaryGunner) && !(_primaryObserver)) then {
-				_turretEmptyCount = _turretEmptyCount +1;
+			if(getNumber(_turret >> "isPersonTurret") == 1) then {
+			    _isPersonTurret = true;
 			};
-			
+
+			if(!(_primaryGunner) && !(_primaryObserver)) then {
+			    if(_ignorePlayerTurrets) then {
+                    if!(_isPersonTurret) then {
+				        _turretEmptyCount = _turretEmptyCount +1;
+                    };
+                }else{
+                    _turretEmptyCount = _turretEmptyCount +1;
+                };
+			};
+
 			//["PG: %1 PO: %2", _primaryGunner,_primaryObserver] call ALIVE_fnc_dump;
 			
 			_turret = _turret >> "turrets";

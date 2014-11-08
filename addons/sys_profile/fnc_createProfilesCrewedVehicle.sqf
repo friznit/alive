@@ -21,6 +21,10 @@ Examples:
 (begin example)
 // create profiles for vehicle class
 _result = ["B_Heli_Light_01_F","WEST","BLU_F","CAPTAIN",getPosATL player] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+_result = ["O_Heli_Transport_04_bench_F","EAST","OPF_F","CAPTAIN",getPosATL player] call ALIVE_fnc_createProfilesCrewedVehicle;
+
+
 (end)
 
 See Also:
@@ -111,7 +115,7 @@ _groupProfiles set [count _groupProfiles, _profileVehicle];
 // create crew members for the vehicle
 
 _crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
-_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
+_vehiclePositions = [_vehicleClass,true] call ALIVE_fnc_configGetVehicleEmptyPositions;
 _countCrewPositions = 0;
 
 // count all non cargo positions

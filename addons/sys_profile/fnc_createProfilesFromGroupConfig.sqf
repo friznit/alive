@@ -182,7 +182,7 @@ if(count _config > 0) then {
 		// create crew members for the vehicle
 		
 		_crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
-		_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
+		_vehiclePositions = [_vehicleClass,true] call ALIVE_fnc_configGetVehicleEmptyPositions;
 		_countCrewPositions = 0;
 		
 		//["VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;
