@@ -43,6 +43,7 @@ private ["_logic"];
 _logic = (createGroup sideLogic) createUnit ["ALiVE_sys_profile", [0,0], [], 0, "NONE"];
 _logic setVariable ["debug","true"];
 _logic setVariable ["spawnRadius","1500"];
+_profiles = _logic;
 waituntil {!isnil "ALIVE_profileSystemInit" && {ALIVE_profileSystemInit}};
 
 //Military Placement
@@ -51,7 +52,6 @@ _logic = (createGroup sideLogic) createUnit ["ALiVE_mil_placement", [2000,2000],
 _logic setVariable ["faction","BLU_F"];
 _logic setVariable ["debug","true"];
 _MP = _logic;
-//[_logic] spawn ALiVE_fnc_MPInit;
 waituntil {_logic getVariable ["startupComplete", false]};
 
 STAT("Creating class");
@@ -61,14 +61,26 @@ _logic setvariable ["faction1","BLU_F"];
 _logic setvariable ["debug","true"];
 _logic synchronizeObjectsAdd [_MP];
 _err = "Creation of class failed";
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+ASSERT_TRUE(typeof _logic == QUOTE(ADDON), _err);
 
 sleep 10;
 
 STAT("Destroying class");
+_instances = count OPCOM_instances;
 _result = [_logic, "destroy"] call MAINCLASS;
 _err = "Destruction of class failed";
-ASSERT_TRUE(isnil QUOTE(ADDON), _err);
+ASSERT_TRUE(_instances - (count OPCOM_instances) == 1, _err);
+
+
+STAT("Cleaning up Profiles");
+_result = [_profiles, "destroy"] call ALIVE_fnc_profileSystem;
+_err = "Destruction of class failed";
+//ASSERT_TRUE(isnull _profiles, _err);
+
+STAT("Cleaning up MP");
+_result = [_MP, "destroy"] call ALiVE_fnc_MP;
+_err = "Destruction of class failed";
+//ASSERT_TRUE(isnull _MP, _err);
 
 TIMEREND
 

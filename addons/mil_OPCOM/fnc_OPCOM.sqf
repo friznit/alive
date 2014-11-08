@@ -2005,10 +2005,10 @@ switch(_operation) do {
                 _module setVariable ["super", nil];
 				_module setVariable ["class", nil];
                 
-                _logic = nil;
-                
-                deletegroup (group _module);
                 deleteVehicle _module;
+                deletegroup (group _module);
+
+                _logic = nil;
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {
