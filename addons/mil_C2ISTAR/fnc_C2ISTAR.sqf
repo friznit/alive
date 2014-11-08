@@ -997,32 +997,36 @@ switch(_operation) do {
 
                 case "TASK_ADD_MAP_CLICK": {
 
-                    private ["_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
+                    private ["_button","_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
 
+                    _button = _args select 0 select 1;
                     _posX = _args select 0 select 2;
                     _posY = _args select 0 select 3;
 
-                    _markers = [_logic,"taskMarker"] call MAINCLASS;
+                    if(_button == 0) then {
 
-                    if(count _markers > 0) then {
-                        deleteMarkerLocal (_markers select 0);
+                        _markers = [_logic,"taskMarker"] call MAINCLASS;
+
+                        if(count _markers > 0) then {
+                            deleteMarkerLocal (_markers select 0);
+                        };
+
+                        _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
+
+                        _position = _map ctrlMapScreenToWorld [_posX, _posY];
+
+                        ctrlMapAnimClear _map;
+                        _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
+                        ctrlMapAnimCommit _map;
+
+                        _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
+                        _marker setMarkerAlphaLocal 1;
+                        _marker setMarkerTextLocal "Destination";
+                        _marker setMarkerTypeLocal "hd_Objective";
+
+                        [_logic,"taskMarker",[_marker]] call MAINCLASS;
+                        [_logic,"taskDestination",_position] call MAINCLASS;
                     };
-
-                    _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
-
-                    _position = _map ctrlMapScreenToWorld [_posX, _posY];
-
-                    ctrlMapAnimClear _map;
-                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
-                    ctrlMapAnimCommit _map;
-
-                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
-                    _marker setMarkerAlphaLocal 1;
-                    _marker setMarkerTextLocal "Destination";
-                    _marker setMarkerTypeLocal "hd_Objective";
-
-                    [_logic,"taskMarker",[_marker]] call MAINCLASS;
-                    [_logic,"taskDestination",_position] call MAINCLASS;
 
                 };
 
@@ -1677,32 +1681,37 @@ switch(_operation) do {
 
                 case "TASK_GENERATE_MAP_CLICK": {
 
-                    private ["_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
+                    private ["_button","_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
 
+                    _button = _args select 0 select 1;
                     _posX = _args select 0 select 2;
                     _posY = _args select 0 select 3;
 
-                    _markers = [_logic,"taskMarker"] call MAINCLASS;
+                    if(_button == 0) then {
 
-                    if(count _markers > 0) then {
-                        deleteMarkerLocal (_markers select 0);
+                        _markers = [_logic,"taskMarker"] call MAINCLASS;
+
+                        if(count _markers > 0) then {
+                            deleteMarkerLocal (_markers select 0);
+                        };
+
+                        _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
+
+                        _position = _map ctrlMapScreenToWorld [_posX, _posY];
+
+                        ctrlMapAnimClear _map;
+                        _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
+                        ctrlMapAnimCommit _map;
+
+                        _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
+                        _marker setMarkerAlphaLocal 1;
+                        _marker setMarkerTextLocal "Area of Operation";
+                        _marker setMarkerTypeLocal "hd_Objective";
+
+                        [_logic,"taskMarker",[_marker]] call MAINCLASS;
+                        [_logic,"taskDestination",_position] call MAINCLASS;
+
                     };
-
-                    _map = C2_getControl(C2Tablet_CTRL_MainDisplay,C2Tablet_CTRL_TaskAddMap);
-
-                    _position = _map ctrlMapScreenToWorld [_posX, _posY];
-
-                    ctrlMapAnimClear _map;
-                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
-                    ctrlMapAnimCommit _map;
-
-                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
-                    _marker setMarkerAlphaLocal 1;
-                    _marker setMarkerTextLocal "Area of Operation";
-                    _marker setMarkerTypeLocal "hd_Objective";
-
-                    [_logic,"taskMarker",[_marker]] call MAINCLASS;
-                    [_logic,"taskDestination",_position] call MAINCLASS;
 
                 };
 

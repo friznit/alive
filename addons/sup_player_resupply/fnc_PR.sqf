@@ -2179,45 +2179,50 @@ switch(_operation) do {
                     // markers, create a marker with
                     // details of the delivery type
 
-                    private ["_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
+                    private ["_button","_posX","_posY","_map","_position","_markers","_marker","_markerLabel","_selectedDeliveryValue"];
 
+                    _button = _args select 0 select 1;
                     _posX = _args select 0 select 2;
                     _posY = _args select 0 select 3;
 
-                    _markers = [_logic,"marker"] call MAINCLASS;
-                    _selectedDeliveryValue = [_logic,"selectedDeliveryListValue"] call MAINCLASS;
+                    if(_button == 0) then {
 
-                    if(count _markers > 0) then {
-                        deleteMarkerLocal (_markers select 0);
+                        _markers = [_logic,"marker"] call MAINCLASS;
+                        _selectedDeliveryValue = [_logic,"selectedDeliveryListValue"] call MAINCLASS;
+
+                        if(count _markers > 0) then {
+                            deleteMarkerLocal (_markers select 0);
+                        };
+
+                        _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
+
+                        _position = _map ctrlMapScreenToWorld [_posX, _posY];
+
+                        ctrlMapAnimClear _map;
+                        _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
+                        ctrlMapAnimCommit _map;
+
+                        switch(_selectedDeliveryValue) do {
+                            case "PR_AIRDROP": {
+                                _markerLabel = "Air Drop";
+                            };
+                            case "PR_HELI_INSERT": {
+                                _markerLabel = "Heli Insert";
+                            };
+                            case "PR_STANDARD": {
+                                _markerLabel = "Convoy";
+                            };
+                        };
+
+                        _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
+                        _marker setMarkerAlphaLocal 1;
+                        _marker setMarkerTextLocal _markerLabel;
+                        _marker setMarkerTypeLocal "hd_End";
+
+                        [_logic,"marker",[_marker]] call MAINCLASS;
+                        [_logic,"destination",_position] call MAINCLASS;
+
                     };
-
-                    _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
-
-                    _position = _map ctrlMapScreenToWorld [_posX, _posY];
-
-                    ctrlMapAnimClear _map;
-                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
-                    ctrlMapAnimCommit _map;
-
-                    switch(_selectedDeliveryValue) do {
-                        case "PR_AIRDROP": {
-                            _markerLabel = "Air Drop";
-                        };
-                        case "PR_HELI_INSERT": {
-                            _markerLabel = "Heli Insert";
-                        };
-                        case "PR_STANDARD": {
-                            _markerLabel = "Convoy";
-                        };
-                    };
-
-                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
-                    _marker setMarkerAlphaLocal 1;
-                    _marker setMarkerTextLocal _markerLabel;
-                    _marker setMarkerTypeLocal "hd_End";
-
-                    [_logic,"marker",[_marker]] call MAINCLASS;
-                    [_logic,"destination",_position] call MAINCLASS;
 
                 };
 
