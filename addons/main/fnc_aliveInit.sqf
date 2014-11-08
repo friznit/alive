@@ -112,7 +112,6 @@ _GC setVariable ["ALiVE_GC_THRESHHOLD", _logic getVariable ["ALiVE_GC_THRESHHOLD
 _GC setVariable ["ALiVE_GC_INDIVIDUALTYPES", _logic getVariable ["ALiVE_GC_INDIVIDUALTYPES", DEFAULT_GC_INDIVIDUALTYPES]];
 [_GC, "init"] spawn ALiVE_fnc_GC;
 
-
 //---------------------------------------------------------------------------------------------------------//
 
 // Only on Server
@@ -137,7 +136,8 @@ if (isServer) then {
 	        QMOD(mil_placement),
 	        QMOD(civ_placement),
 	        QMOD(mil_placement_custom),
-            QMOD(mil_cqb)
+            QMOD(mil_cqb),
+            QMOD(mil_OPCOM)
         ] call ALiVE_fnc_isModuleInitialised;
 	};
     //This is the last module init to be run, therefore indicates that init of the defined modules above has passed on server
