@@ -32,6 +32,37 @@ switch (true) do
 		_min = 500;
 		_max = 18000;
 	};
+
+	// RHS SUPPORT
+
+    case (_this in
+    [
+        "rhs_2s3_tv"
+    ]) :
+    {
+        _min = 1200;
+        _max = 15000;
+    };
+
+
+    case (_this in
+    [
+        "RHS_BM21_MSV_01","RHS_BM21_VDV_01","RHS_BM21_VMF_01","RHS_BM21_VV_01"
+    ]) :
+    {
+        _min = 1000;
+        _max = 3500;
+    };
+
+
+    case (_this in
+    [
+        "rhsusf_m109_usarmy","rhsusf_m109d_usarmy"
+    ]) :
+    {
+        _min = 1000;
+        _max = 25000;
+    };
 	
 	case DEFAULT {};
 };

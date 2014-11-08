@@ -26,6 +26,34 @@ _result = switch (true) do
 		["ROCKETS"]
 	};
 
+	// RHS SUPPORT
+
+	case (_this in
+    [
+        "rhs_2s3_tv"
+    ]) :
+    {
+        ["HE", "LASER", "SMOKE", "ILLUM"]
+    };
+
+
+    case (_this in
+    [
+        "RHS_BM21_MSV_01","RHS_BM21_VDV_01","RHS_BM21_VMF_01","RHS_BM21_VV_01"
+    ]) :
+    {
+        ["ROCKETS"]
+    };
+
+
+    case (_this in
+    [
+        "rhsusf_m109_usarmy","rhsusf_m109d_usarmy"
+    ]) :
+    {
+        ["HE", "SADARM", "MINE", "CLUSTER", "SMOKE", "LASER", "AT MINE"]
+    };
+
 	case DEFAULT { [] };
 };
 
