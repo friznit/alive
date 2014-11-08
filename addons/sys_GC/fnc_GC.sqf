@@ -56,29 +56,31 @@ switch(_operation) do {
             if (isServer) then {
 
 	            // Ensure only one module is used
-	            if !(isNil QUOTE(ADDON)) then {
-                	_logic = ADDON;
+	            if !(isNil QMOD(SYS_GC)) then {
+                	_logic = MOD(SYS_GC);
                     ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_GC_ERROR1");
 	            } else {
-	        		_logic = (createGroup sideLogic) createUnit ["ALiVE_SYS_GC", [0,0], [], 0, "NONE"];
-                    ADDON = _logic;
+	        		_logic = (createGroup sideLogic) createUnit [QMOD(SYS_GC), [0,0], [], 0, "NONE"];
+                    MOD(SYS_GC) = _logic;
                 };
 
                 //Push to clients
-	            PublicVariable QUOTE(ADDON);
+	            PublicVariable QMOD(SYS_GC);
             };
+            
+            diag_log (typeof MOD(SYS_GC));
 
             TRACE_1("Waiting for object to be ready",true);
 
-            waituntil {!isnil QUOTE(ADDON)};
+            waituntil {!isnil QMOD(SYS_GC)};
 
             TRACE_1("Creating class on all localities",true);
 
 			// initialise module game logic on all localities
-			ADDON setVariable ["super", QUOTE(SUPERCLASS)];
-			ADDON setVariable ["class", QUOTE(MAINCLASS)];
+			MOD(SYS_GC) setVariable ["super", QUOTE(SUPERCLASS)];
+			MOD(SYS_GC) setVariable ["class", QUOTE(MAINCLASS)];
 
-            _result = ADDON;
+            _result = MOD(SYS_GC);
         };
         // Main process
 		case "init": {
@@ -110,16 +112,30 @@ switch(_operation) do {
                     ALiVE_GC = _logic;
                     //transmit to clients
                     Publicvariable "ALiVE_GC";
+                    
+                    //Delay for ALiVE require init to be able to set variables
+                    sleep 2;
 
 					//Retrieve module-object variables
                     _logic setvariable ["ALiVE_GC_INDIVIDUALTYPES",([_logic,"convert",(_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]])] call ALiVE_fnc_GC),true];
                     _debug = call compile (_logic getvariable ["debug","false"]);
+                    _interval = call compile (_logic getvariable ["ALiVE_GC_INTERVAL","300"]);
                     _logic setvariable ["debug",_debug,true];
 					_logic setVariable ["auto", true];
 
                     /*
                 	CONTROLLER  - coordination
                 	*/
+                    
+                    if (_interval < 1) exitwith {
+						// DEBUG -------------------------------------------------------------------------------------
+							if(_debug) then {
+								["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+								["ALiVE Garbage Collector turned off..."] call ALIVE_fnc_dumpR;
+							};
+						// DEBUG -------------------------------------------------------------------------------------
+                    };
+                    
 					// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -139,6 +155,28 @@ switch(_operation) do {
                 VIEW - purely visual
                 */
         };
+        case "destroy": {
+            
+        	MOD(SYS_GC) = _logic;
+            
+            //Delete class
+            if (isServer) then {
+
+                _logic setVariable ["super", nil];
+                _logic setVariable ["class", nil];
+                _logic setVariable ["init", nil];
+                
+                _fsm = _logic getVariable "ALiVE_GC_FSM";
+                _fsm setFSMVariable ["_exitFSM", true];
+
+                MOD(SYS_GC) = nil;
+                
+                // and publicVariable to clients
+                publicVariable QMOD(SYS_GC);
+                
+                deleteVehicle _logic;
+            };
+        };        
 
         case "convert": {
 	    	if !(isNil "_args") then {
