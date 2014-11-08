@@ -51,7 +51,7 @@ switch (true) do
     ]) :
     {
         _min = 1000;
-        _max = 3500;
+        _max = 20500;
     };
 
 
