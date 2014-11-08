@@ -5,7 +5,7 @@ class CfgVehicles {
         {
         	scope = 1;
 		displayName = "$STR_ALIVE_LOGISTICS";
-		//function = "";
+		function = "ALIVE_fnc_logisticsInit";
 		functionPriority = 45;
 		isGlobal = 2;
 		icon = "x\alive\addons\sys_logistics\icon_sys_logistics.paa";

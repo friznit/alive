@@ -804,41 +804,46 @@ switch (_operation) do {
         };
 
         case "destroy": {
-            [[_logic, "destroyGlobal",_args],"ALIVE_fnc_logistics",true, false] call BIS_fnc_MP;
+            [[_logic, "destroyGlobal"],"ALIVE_fnc_logistics",true, false] call BIS_fnc_MP;
         };
 
         case "destroyGlobal": {
+            
+        	MOD(SYS_LOGISTICS) = _logic;
+			
+            //Remove Actions on clients
+            if (hasInterface) then {
+                	{[_logic,"removeAction",[player,_x]] call ALiVE_fnc_logistics} foreach ["carryObject","dropObject","stowObjects","unloadObjects","towObject","untowObject","liftObject","releaseObject"];
 
-                [_logic, "debug", false] call MAINCLASS;
+                    // remove main menu
+                    [
+                            "player",
+                            [SELF_INTERACTION_KEY],
+                            -9500,
+                            [
+                                    "call ALIVE_fnc_logisticsMenuDef",
+                                    "main"
+                            ]
+                    ] call ALiVE_fnc_flexiMenu_Remove;
+            };
+            
+            //delay
+            sleep 5;
+            
+            //Delete class
+            if (isServer) then {
 
-                if (isServer) then {
-                		// if server
-                        MOD(SYS_LOGISTICS) = _logic;
+                    _logic setVariable ["super", nil];
+                    _logic setVariable ["class", nil];
+                    _logic setVariable ["init", nil];
 
-                        MOD(SYS_LOGISTICS) setVariable ["super", nil];
-                        MOD(SYS_LOGISTICS) setVariable ["class", nil];
-                        MOD(SYS_LOGISTICS) setVariable ["init", nil];
-
-                        // and publicVariable to clients
-
-                        publicVariable QMOD(SYS_LOGISTICS);
-                        [_logic, "destroy"] call SUPERCLASS;
-                };
-
-                if (hasInterface) then {
-                    	{[MOD(SYS_LOGISTICS),"removeAction",[player,_x]] call ALiVE_fnc_logistics} foreach ["carryObject","dropObject","stowObjects","unloadObjects","towObject","untowObject","liftObject","releaseObject"];
-
-                        // remove main menu
-                        [
-                                "player",
-                                [SELF_INTERACTION_KEY],
-                                -9500,
-                                [
-                                        "call ALIVE_fnc_logisticsMenuDef",
-                                        "main"
-                                ]
-                        ] call ALiVE_fnc_flexiMenu_Remove;
-                };
+                    MOD(SYS_LOGISTICS) = nil;
+                    
+                    // and publicVariable to clients
+                    publicVariable QMOD(SYS_LOGISTICS);
+                    
+                    deleteVehicle _logic;
+            };
         };
 
         case "state" : {
