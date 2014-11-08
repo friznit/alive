@@ -46,6 +46,13 @@ if(isServer) then {
 	_spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
+    
+    //Ensure Event Log is loaded
+    if (isnil "ALIVE_eventLog") then {
+	    ALIVE_eventLog = [nil, "create"] call ALIVE_fnc_eventLog;
+	    [ALIVE_eventLog, "init"] call ALIVE_fnc_eventLog;
+	    [ALIVE_eventLog, "debug", false] call ALIVE_fnc_eventLog;
+    };
 
 	ALIVE_profileSystem = [nil, "create"] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "init"] call ALIVE_fnc_profileSystem;
