@@ -43,7 +43,7 @@ rem %exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
 
 rem %exe% "%arma%\@everon2013\addons\everon2014.pbo" > %target%\objects.everon2014.sqf
 
-%exe% "%arma%\@Bornholm\Addons\Bornholm.pbo" > %target%\objects.bornholm.sqf
+rem %exe% "%arma%\@Bornholm\Addons\Bornholm.pbo" > %target%\objects.bornholm.sqf
 
 rem %exe% "%arma%\@sfp_islands\addons\sfp_sturko.pbo" > %target%\objects.sturko.sqf
 rem %exe% "%arma%\@sfp_islands\addons\sfp_wamako.pbo" > %target%\objects.wamako.sqf
@@ -78,11 +78,11 @@ rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_eden.pbo" > %target%\objects.eden.sqf
 rem %exe% "%arma%\@a2co\@CWR2\Addons\cwr2_noe.pbo" > %target%\objects.noe.sqf
 
 rem ----------------------------- Iron Front ----------------------------------
-rem %exe% "%arma%\@a2co\@IF\addons\baranow_wrp.pbo" > %target%\objects.baranow.sqf
-rem %exe% "%arma%\@a2co\@IF\addons\ivachev_wrp.pbo" > %target%\objects.ivachev.sqf
-rem %exe% "%arma%\@a2co\@IF\addons\panovo_wrp.pbo" > %target%\objects.panovo.sqf
-rem %exe% "%arma%\@a2co\@IF\addons\staszow_wrp.pbo" > %target%\objects.staszow.sqf
-rem %exe% "%arma%\@a2co\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.france.sqf
+rem %exe% "%arma%\@IF\addons\baranow_wrp.pbo" > %target%\objects.baranow.sqf
+rem %exe% "%arma%\@IF\addons\ivachev_wrp.pbo" > %target%\objects.ivachev.sqf
+rem %exe% "%arma%\@IF\addons\panovo_wrp.pbo" > %target%\objects.panovo.sqf
+rem %exe% "%arma%\@IF\addons\staszow_wrp.pbo" > %target%\objects.staszow.sqf
+%exe% "%arma%\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.colleville.sqf
 
 rem ----------------------------- User ------------------------------------
 

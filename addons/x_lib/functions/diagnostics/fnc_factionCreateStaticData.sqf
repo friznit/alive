@@ -202,6 +202,23 @@ if(_factionToGroupMappingOK) then {
                     [_factionCategoryGroups,_aliveCategory,_groups] call ALIVE_fnc_hashSet;
                 }
 
+            }else{
+
+                _groups = [];
+
+                for "_o" from 0 to count _class -1 do {
+
+                    _group = _class select _o;
+
+                    if (isClass _group) then {
+                        _groupName = configName _group;
+
+                        _groups set [count _groups, _groupName];
+                    };
+                };
+
+                [_factionCategoryGroups,_categoryName,_groups] call ALIVE_fnc_hashSet;
+
             };
         };
     };

@@ -654,10 +654,10 @@ switch(_operation) do {
 
                         [_logic, "HQBuilding", _hqBuilding] call MAINCLASS;
                     }else{
-                        ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dumpR;
+                        ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dump;
                     }
                 }else{
-                    ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dumpR;
+                    ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dump;
                 };
 			};
 

@@ -795,6 +795,7 @@ ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 [ALIVE_mapBounds, "tavi", 26000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Woodland_ACR", 8000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Imrali", 11000] call ALIVE_fnc_hashSet;
+[ALIVE_mapBounds, "Colleville", 6000] call ALIVE_fnc_hashSet;
 
 
 /*
@@ -952,7 +953,13 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
         "barrier_p1",
         "ZalChata",
         "lib_Mil_Barracks_L",
-        "dum01"
+        "dum01",
+        "lib_m3",
+        "lib_m2",
+        "fort_bagfence_round",
+        "lib_bunker_mg",
+        "lib_bunker_gun_l",
+        "lib_bunker_gun_r"
     ];
 
     ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
@@ -962,7 +969,13 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
         "barrier_p1",
         "ZalChata",
         "lib_Mil_Barracks_L",
-        "dum01"
+        "dum01",
+        "lib_m3",
+        "lib_m2",
+        "fort_bagfence_round",
+        "lib_bunker_mg",
+        "lib_bunker_gun_l",
+        "lib_bunker_gun_r"
     ];
 
     ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
@@ -978,7 +991,13 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
         "barrier_p1",
         "ZalChata",
         "lib_Mil_Barracks_L",
-        "dum01"
+        "dum01",
+        "lib_m3",
+        "lib_m2",
+        "fort_bagfence_round",
+        "lib_bunker_mg",
+        "lib_bunker_gun_l",
+        "lib_bunker_gun_r"
     ];
 
     ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
@@ -997,7 +1016,13 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
         "lib_apteka",
         "lib_city_shop",
         "lib_kirpich",
-        "lib_banya"
+        "lib_banya",
+        "lib_dlc1_corner_house",
+        "lib_dlc1_apteka",
+        "lib_dlc1_city_house",
+        "lib_dlc1_kirpich",
+        "lib_french_stone_house",
+        "lib_dlc1_house_1floor_pol"
     ];
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
@@ -4714,280 +4739,510 @@ rhs_faction_rva_typeMappings = [] call ALIVE_fnc_hashCreate;
 // IRON FRONT
 // ---------------------------------------------------------------------------------------------------------------------
 
-LIB_LUFTWAFFE_mappings = [] call ALIVE_fnc_hashCreate;
-[LIB_LUFTWAFFE_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_mappings, "FactionName", "LIB_LUFTWAFFE"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_mappings, "GroupFactionName", "LIB_LUFTWAFFE"] call ALIVE_fnc_hashSet;
 
-LIB_LUFTWAFFE_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_LUFTWAFFE_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_LUFTWAFFE_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[LIB_LUFTWAFFE_mappings, "GroupFactionTypes", LIB_LUFTWAFFE_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "LIB_LUFTWAFFE", LIB_LUFTWAFFE_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupports, "LIB_LUFTWAFFE", ["LIB_StuG_III_G","LIB_kfz1","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","Lib_sdkfz251","LIB_SdKfz_7","LIB_SdKfz_7_AA","LIB_SdKfz_7_AA","LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_B","LIB_PzKpfwVI_E","LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_LUFTWAFFE", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
-
-
-LIB_PANZERWAFFE_mappings = [] call ALIVE_fnc_hashCreate;
-[LIB_PANZERWAFFE_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_mappings, "FactionName", "LIB_PANZERWAFFE"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_mappings, "GroupFactionName", "LIB_PANZERWAFFE"] call ALIVE_fnc_hashSet;
-
-LIB_PANZERWAFFE_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_PANZERWAFFE_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_PANZERWAFFE_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[LIB_PANZERWAFFE_mappings, "GroupFactionTypes", LIB_PANZERWAFFE_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "LIB_PANZERWAFFE", LIB_PANZERWAFFE_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupports, "LIB_PANZERWAFFE", ["LIB_StuG_III_G","LIB_kfz1","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","Lib_sdkfz251","LIB_SdKfz_7","LIB_SdKfz_7_AA","LIB_SdKfz_7_AA","LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_B","LIB_PzKpfwVI_E","LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_PANZERWAFFE", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
-
-
-LIB_WEHRMACHT_mappings = [] call ALIVE_fnc_hashCreate;
-[LIB_WEHRMACHT_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_mappings, "FactionName", "LIB_WEHRMACHT"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_mappings, "GroupFactionName", "LIB_WEHRMACHT"] call ALIVE_fnc_hashSet;
-
-LIB_WEHRMACHT_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_WEHRMACHT_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_WEHRMACHT_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[LIB_WEHRMACHT_mappings, "GroupFactionTypes", LIB_WEHRMACHT_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "LIB_WEHRMACHT", LIB_WEHRMACHT_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupports, "LIB_WEHRMACHT", ["LIB_StuG_III_G","LIB_kfz1","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","Lib_sdkfz251","LIB_SdKfz_7","LIB_SdKfz_7_AA","LIB_SdKfz_7_AA","LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_B","LIB_PzKpfwVI_E","LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_WEHRMACHT", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
-
-
-LNRD_Luft_mappings = [] call ALIVE_fnc_hashCreate;
-[LNRD_Luft_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_mappings, "FactionName", "LNRD_Luft"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_mappings, "GroupFactionName", "LNRD_Luft"] call ALIVE_fnc_hashSet;
-
-LNRD_Luft_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LNRD_Luft_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_typeMappings, "Infantry", "LNRD_Luft_Infantry"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LNRD_Luft_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[LNRD_Luft_mappings, "GroupFactionTypes", LNRD_Luft_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "LNRD_Luft", LNRD_Luft_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupports, "LNRD_Luft", ["LIB_StuG_III_G","LIB_kfz1","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","Lib_sdkfz251","LIB_SdKfz_7","LIB_SdKfz_7_AA","LIB_SdKfz_7_AA","LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_B","LIB_PzKpfwVI_E","LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LNRD_Luft", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
-
-
-SG_STURM_mappings = [] call ALIVE_fnc_hashCreate;
-[SG_STURM_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
-[SG_STURM_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
-[SG_STURM_mappings, "FactionName", "SG_STURM"] call ALIVE_fnc_hashSet;
-[SG_STURM_mappings, "GroupFactionName", "SG_STURM"] call ALIVE_fnc_hashSet;
-
-SG_STURM_typeMappings = [] call ALIVE_fnc_hashCreate;
-[SG_STURM_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[SG_STURM_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[SG_STURM_typeMappings, "Infantry", "SG_Infantry"] call ALIVE_fnc_hashSet;
-[SG_STURM_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[SG_STURM_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[SG_STURM_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[SG_STURM_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[SG_STURM_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[SG_STURM_mappings, "GroupFactionTypes", SG_STURM_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "SG_STURM", SG_STURM_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupports, "SG_STURM", ["LIB_kfz1","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","Lib_sdkfz251","LIB_SdKfz_7","LIB_SdKfz_7_AA","LIB_SdKfz_7_AA","LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_B","LIB_PzKpfwVI_E","LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "SG_STURM", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
-
+// LIB_RKKA
 
 LIB_RKKA_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_RKKA_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
 [LIB_RKKA_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
 [LIB_RKKA_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
 [LIB_RKKA_mappings, "FactionName", "LIB_RKKA"] call ALIVE_fnc_hashSet;
 [LIB_RKKA_mappings, "GroupFactionName", "LIB_RKKA"] call ALIVE_fnc_hashSet;
 
 LIB_RKKA_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_RKKA_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_RKKA_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_RKKA_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_RKKA_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_RKKA_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_RKKA_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_RKKA_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_RKKA_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
 
 [LIB_RKKA_mappings, "GroupFactionTypes", LIB_RKKA_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_RKKA_factionCustomGroups, "Infantry", ["LIB_SOV_infantry_squad","LIB_SOV_smg_squad","LIB_SOV_AT_squad","LIB_SOV_scout_squad"]] call ALIVE_fnc_hashSet;
+[LIB_RKKA_factionCustomGroups, "Motorized", ["LIB_SOV_motorized_infantry_squad","LIB_SOV_scout_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_RKKA_factionCustomGroups, "Mechanized", ["LIB_SOV_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_RKKA_factionCustomGroups, "Armored", ["LIB_SOV_JS2_43_Platoon","LIB_SOV_T34_76_Platoon","LIB_SOV_T34_85_Platoon","LIB_SOV_SU85_Platoon","LIB_SOV_M4A2_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_RKKA_factionCustomGroups, "Air", ["LIB_SOV_P39_Group","LIB_SOV_Pe2_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_RKKA_mappings, "Groups", LIB_RKKA_factionCustomGroups] call ALIVE_fnc_hashSet;
+
 [ALIVE_factionCustomMappings, "LIB_RKKA", LIB_RKKA_mappings] call ALIVE_fnc_hashSet;
 
-[ALIVE_factionDefaultSupports, "LIB_RKKA", ["lib_us6_bm13","LIB_SOV_M3_Halftrack","LIB_Scout_m3","Lib_SdKfz251_captured","lib_us6_tent","lib_us6_open","Lib_Willys_MB","lib_zis5v","LIB_JS2_43","LIB_M4A2_SOV","LIB_SU85","LIB_t34_76","LIB_t34_85"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_RKKA", ["LIB_BasicAmmunitionBox_SU","LIB_Mine_Ammo_Box_Su","LIB_WeaponsBox_Big_SU","LIB_Lone_Big_Box","LIB_BasicWeaponsBox_SU","LIB_AmmoCrate_Mortar_SU"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupports, "LIB_RKKA", ["lib_maxim_m30_base","lib_maxim_m30_trench","lib_us6_ammo","lib_zis5v_med","lib_zis6_parm","lib_zis5v_fuel","SearchLight_SU","LIB_BM37","LIB_61k","LIB_Zis3","lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_RKKA", ["LIB_BasicAmmunitionBox_SU","LIB_Mine_Ammo_Box_Su","LIB_WeaponsBox_Big_SU","LIB_Lone_Big_Box","LIB_BasicWeaponsBox_SU","LIB_AmmoCrate_Mortar_SU","LIB_AmmoCrate_Arty_SU"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_RKKA", ["lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+
+/*
+// lib_static_weapons
+[ALIVE_factionDefaultSupports, "LIB_RKKA", ["lib_maxim_m30_base","lib_maxim_m30_trench"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_RKKA", ["lib_maxim_m30_base","lib_maxim_m30_trench"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_RKKA", ["lib_maxim_m30_base","lib_maxim_m30_trench"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_RKKA", ["lib_maxim_m30_base","lib_maxim_m30_trench"]] call ALIVE_fnc_hashSet;
+
+// Support
+[ALIVE_factionDefaultSupports, "LIB_RKKA", ["lib_us6_ammo","lib_zis5v_med","lib_zis6_parm","lib_zis5v_fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_RKKA", ["lib_us6_ammo","lib_zis5v_med","lib_zis6_parm","lib_zis5v_fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_RKKA", ["lib_us6_ammo","lib_zis5v_med","lib_zis6_parm","lib_zis5v_fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_RKKA", ["lib_us6_ammo","lib_zis5v_med","lib_zis6_parm","lib_zis5v_fuel"]] call ALIVE_fnc_hashSet;
+
+// Car
+[ALIVE_factionDefaultSupports, "LIB_RKKA", ["lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_RKKA", ["lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_RKKA", ["lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_RKKA", ["lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+
+// Static
+[ALIVE_factionDefaultSupports, "LIB_RKKA", ["SearchLight_SU","LIB_BM37","LIB_61k","LIB_Zis3"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_RKKA", ["SearchLight_SU","LIB_BM37","LIB_61k","LIB_Zis3"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_RKKA", ["SearchLight_SU","LIB_BM37","LIB_61k","LIB_Zis3"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_RKKA", ["SearchLight_SU","LIB_BM37","LIB_61k","LIB_Zis3"]] call ALIVE_fnc_hashSet;
+
+// Ammo
+[ALIVE_factionDefaultSupports, "LIB_RKKA", ["LIB_Mine_Ammo_Box_Su"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_RKKA", ["LIB_Mine_Ammo_Box_Su"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_RKKA", ["LIB_Mine_Ammo_Box_Su"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_RKKA", ["LIB_Mine_Ammo_Box_Su"]] call ALIVE_fnc_hashSet;
+*/
 
 
-LIB_USSR_AIRFORCE_mappings = [] call ALIVE_fnc_hashCreate;
-[LIB_USSR_AIRFORCE_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_mappings, "FactionName", "LIB_USSR_AIRFORCE"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_mappings, "GroupFactionName", "LIB_USSR_AIRFORCE"] call ALIVE_fnc_hashSet;
-
-LIB_USSR_AIRFORCE_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_USSR_AIRFORCE_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_USSR_AIRFORCE_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[LIB_USSR_AIRFORCE_mappings, "GroupFactionTypes", LIB_USSR_AIRFORCE_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "LIB_USSR_AIRFORCE", LIB_USSR_AIRFORCE_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupports, "LIB_USSR_AIRFORCE", ["lib_us6_bm13","LIB_SOV_M3_Halftrack","LIB_Scout_m3","Lib_SdKfz251_captured","lib_us6_tent","lib_us6_open","Lib_Willys_MB","lib_zis5v","LIB_JS2_43","LIB_M4A2_SOV","LIB_SU85","LIB_t34_76","LIB_t34_85"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_USSR_AIRFORCE", ["LIB_BasicAmmunitionBox_SU","LIB_Mine_Ammo_Box_Su","LIB_WeaponsBox_Big_SU","LIB_Lone_Big_Box","LIB_BasicWeaponsBox_SU","LIB_AmmoCrate_Mortar_SU"]] call ALIVE_fnc_hashSet;
-
+// LIB_USSR_TANK_TROOPS
 
 LIB_USSR_TANK_TROOPS_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_USSR_TANK_TROOPS_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
 [LIB_USSR_TANK_TROOPS_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
 [LIB_USSR_TANK_TROOPS_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
 [LIB_USSR_TANK_TROOPS_mappings, "FactionName", "LIB_USSR_TANK_TROOPS"] call ALIVE_fnc_hashSet;
 [LIB_USSR_TANK_TROOPS_mappings, "GroupFactionName", "LIB_USSR_TANK_TROOPS"] call ALIVE_fnc_hashSet;
 
 LIB_USSR_TANK_TROOPS_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_USSR_TANK_TROOPS_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_USSR_TANK_TROOPS_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_USSR_TANK_TROOPS_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_TANK_TROOPS_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_TANK_TROOPS_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_TANK_TROOPS_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_USSR_TANK_TROOPS_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_USSR_TANK_TROOPS_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
 
 [LIB_USSR_TANK_TROOPS_mappings, "GroupFactionTypes", LIB_USSR_TANK_TROOPS_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_USSR_TANK_TROOPS_factionCustomGroups, "Infantry", ["LIB_SOV_infantry_squad","LIB_SOV_smg_squad","LIB_SOV_AT_squad","LIB_SOV_scout_squad"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_TANK_TROOPS_factionCustomGroups, "Motorized", ["LIB_SOV_motorized_infantry_squad","LIB_SOV_scout_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_TANK_TROOPS_factionCustomGroups, "Mechanized", ["LIB_SOV_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_TANK_TROOPS_factionCustomGroups, "Armored", ["LIB_SOV_JS2_43_Platoon","LIB_SOV_T34_76_Platoon","LIB_SOV_T34_85_Platoon","LIB_SOV_SU85_Platoon","LIB_SOV_M4A2_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_TANK_TROOPS_factionCustomGroups, "Air", ["LIB_SOV_P39_Group","LIB_SOV_Pe2_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_USSR_TANK_TROOPS_mappings, "Groups", LIB_USSR_TANK_TROOPS_factionCustomGroups] call ALIVE_fnc_hashSet;
+
 [ALIVE_factionCustomMappings, "LIB_USSR_TANK_TROOPS", LIB_USSR_TANK_TROOPS_mappings] call ALIVE_fnc_hashSet;
 
-[ALIVE_factionDefaultSupports, "LIB_USSR_TANK_TROOPS", ["lib_us6_bm13","LIB_SOV_M3_Halftrack","LIB_Scout_m3","Lib_SdKfz251_captured","lib_us6_tent","lib_us6_open","Lib_Willys_MB","lib_zis5v","LIB_JS2_43","LIB_M4A2_SOV","LIB_SU85","LIB_t34_76","LIB_t34_85"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_USSR_TANK_TROOPS", ["LIB_BasicAmmunitionBox_SU","LIB_Mine_Ammo_Box_Su","LIB_WeaponsBox_Big_SU","LIB_Lone_Big_Box","LIB_BasicWeaponsBox_SU","LIB_AmmoCrate_Mortar_SU"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupports, "LIB_USSR_TANK_TROOPS", ["lib_maxim_m30_base","lib_maxim_m30_trench","lib_us6_ammo","lib_zis5v_med","lib_zis6_parm","lib_zis5v_fuel","SearchLight_SU","LIB_BM37","LIB_61k","LIB_Zis3","lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_USSR_TANK_TROOPS", ["LIB_BasicAmmunitionBox_SU","LIB_Mine_Ammo_Box_Su","LIB_WeaponsBox_Big_SU","LIB_Lone_Big_Box","LIB_BasicWeaponsBox_SU","LIB_AmmoCrate_Mortar_SU","LIB_AmmoCrate_Arty_SU"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_USSR_TANK_TROOPS", ["lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
 
+/*
+// LIB_Heavy_Tanks
+[ALIVE_factionDefaultSupports, "LIB_USSR_TANK_TROOPS", ["LIB_JS2_43"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_USSR_TANK_TROOPS", ["LIB_JS2_43"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_USSR_TANK_TROOPS", ["LIB_JS2_43"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_USSR_TANK_TROOPS", ["LIB_JS2_43"]] call ALIVE_fnc_hashSet;
+
+// LIB_Medium_Tanks
+[ALIVE_factionDefaultSupports, "LIB_USSR_TANK_TROOPS", ["LIB_t34_76","LIB_t34_85","LIB_SU85","LIB_M4A2_SOV"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_USSR_TANK_TROOPS", ["LIB_t34_76","LIB_t34_85","LIB_SU85","LIB_M4A2_SOV"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_USSR_TANK_TROOPS", ["LIB_t34_76","LIB_t34_85","LIB_SU85","LIB_M4A2_SOV"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_USSR_TANK_TROOPS", ["LIB_t34_76","LIB_t34_85","LIB_SU85","LIB_M4A2_SOV"]] call ALIVE_fnc_hashSet;
+*/
+
+
+// LIB_USSR_AIRFORCE
+
+LIB_USSR_AIRFORCE_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_USSR_AIRFORCE_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[LIB_USSR_AIRFORCE_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
+[LIB_USSR_AIRFORCE_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
+[LIB_USSR_AIRFORCE_mappings, "FactionName", "LIB_USSR_AIRFORCE"] call ALIVE_fnc_hashSet;
+[LIB_USSR_AIRFORCE_mappings, "GroupFactionName", "LIB_USSR_AIRFORCE"] call ALIVE_fnc_hashSet;
+
+LIB_USSR_AIRFORCE_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[LIB_USSR_AIRFORCE_mappings, "GroupFactionTypes", LIB_USSR_AIRFORCE_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_USSR_AIRFORCE_factionCustomGroups, "Infantry", ["LIB_SOV_infantry_squad","LIB_SOV_smg_squad","LIB_SOV_AT_squad","LIB_SOV_scout_squad"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_AIRFORCE_factionCustomGroups, "Motorized", ["LIB_SOV_motorized_infantry_squad","LIB_SOV_scout_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_AIRFORCE_factionCustomGroups, "Mechanized", ["LIB_SOV_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_AIRFORCE_factionCustomGroups, "Armored", ["LIB_SOV_JS2_43_Platoon","LIB_SOV_T34_76_Platoon","LIB_SOV_T34_85_Platoon","LIB_SOV_SU85_Platoon","LIB_SOV_M4A2_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_USSR_AIRFORCE_factionCustomGroups, "Air", ["LIB_SOV_P39_Group","LIB_SOV_Pe2_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_USSR_AIRFORCE_mappings, "Groups", LIB_USSR_AIRFORCE_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "LIB_USSR_AIRFORCE", LIB_USSR_AIRFORCE_mappings] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultSupports, "LIB_USSR_AIRFORCE", ["lib_maxim_m30_base","lib_maxim_m30_trench","lib_us6_ammo","lib_zis5v_med","lib_zis6_parm","lib_zis5v_fuel","SearchLight_SU","LIB_BM37","LIB_61k","LIB_Zis3","lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_USSR_AIRFORCE", ["LIB_BasicAmmunitionBox_SU","LIB_Mine_Ammo_Box_Su","LIB_WeaponsBox_Big_SU","LIB_Lone_Big_Box","LIB_BasicWeaponsBox_SU","LIB_AmmoCrate_Mortar_SU","LIB_AmmoCrate_Arty_SU"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_USSR_AIRFORCE", ["lib_us6_open","lib_us6_tent","lib_us6_bm13","Lib_Willys_MB","LIB_Scout_m3","lib_zis5v","Lib_SdKfz251_captured","LIB_SOV_M3_Halftrack"]] call ALIVE_fnc_hashSet;
+
+/*
+// Air
+[ALIVE_factionDefaultSupports, "LIB_USSR_AIRFORCE", ["LIB_P39","LIB_Pe2"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_USSR_AIRFORCE", ["LIB_P39","LIB_Pe2"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_USSR_AIRFORCE", ["LIB_P39","LIB_Pe2"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_USSR_AIRFORCE", ["LIB_P39","LIB_Pe2"]] call ALIVE_fnc_hashSet;
+*/
+
+
+
+
+// LNRD_Luft
+
+LNRD_Luft_mappings = [] call ALIVE_fnc_hashCreate;
+
+LNRD_Luft_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[LNRD_Luft_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[LNRD_Luft_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[LNRD_Luft_mappings, "FactionName", "LNRD_Luft"] call ALIVE_fnc_hashSet;
+[LNRD_Luft_mappings, "GroupFactionName", "LNRD_Luft"] call ALIVE_fnc_hashSet;
+
+LNRD_Luft_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[LNRD_Luft_mappings, "GroupFactionTypes", LNRD_Luft_typeMappings] call ALIVE_fnc_hashSet;
+
+[LNRD_Luft_factionCustomGroups, "Infantry", ["LIB_GER_infantry_squad","LIB_GER_AT_squad","LIB_GER_scout_squad","SG_GER_infantry_squad","SG_GER_AT_squad","LNRD_Luft_AT_squad","LNRD_Luft_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LNRD_Luft_factionCustomGroups, "Motorized", ["LIB_GER_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LNRD_Luft_factionCustomGroups, "Mechanized", ["LIB_GER_mechanized_infantry_squad","LIB_GER_scout_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LNRD_Luft_factionCustomGroups, "Armored", ["LIB_GER_PzKpfwIV_H_Platoon","LIB_GER_PzKpfwV_Platoon","LIB_GER_StuG_III_G_Platoon","LIB_GER_PzKpfwVI_B_Platoon","LIB_GER_PzKpfwVI_E_Platoon"]] call ALIVE_fnc_hashSet;
+[LNRD_Luft_factionCustomGroups, "Air", ["LIB_GER_fw190f8_Group","LIB_GER_Ju87_Group"]] call ALIVE_fnc_hashSet;
+
+[LNRD_Luft_mappings, "Groups", LNRD_Luft_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "LNRD_Luft", LNRD_Luft_mappings] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultSupports, "LNRD_Luft", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low","LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA","SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40","LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LNRD_Luft", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LNRD_Luft", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+
+
+// SG_STURM
+
+SG_STURM_mappings = [] call ALIVE_fnc_hashCreate;
+
+SG_STURM_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[SG_STURM_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[SG_STURM_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[SG_STURM_mappings, "FactionName", "SG_STURM"] call ALIVE_fnc_hashSet;
+[SG_STURM_mappings, "GroupFactionName", "SG_STURM"] call ALIVE_fnc_hashSet;
+
+SG_STURM_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[SG_STURM_mappings, "GroupFactionTypes", SG_STURM_typeMappings] call ALIVE_fnc_hashSet;
+
+[SG_STURM_factionCustomGroups, "Infantry", ["LIB_GER_infantry_squad","LIB_GER_AT_squad","LIB_GER_scout_squad","SG_GER_infantry_squad","SG_GER_AT_squad","LNRD_Luft_AT_squad","LNRD_Luft_infantry_squad"]] call ALIVE_fnc_hashSet;
+[SG_STURM_factionCustomGroups, "Motorized", ["LIB_GER_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[SG_STURM_factionCustomGroups, "Mechanized", ["LIB_GER_mechanized_infantry_squad","LIB_GER_scout_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[SG_STURM_factionCustomGroups, "Armored", ["LIB_GER_PzKpfwIV_H_Platoon","LIB_GER_PzKpfwV_Platoon","LIB_GER_StuG_III_G_Platoon","LIB_GER_PzKpfwVI_B_Platoon","LIB_GER_PzKpfwVI_E_Platoon"]] call ALIVE_fnc_hashSet;
+[SG_STURM_factionCustomGroups, "Air", ["LIB_GER_fw190f8_Group","LIB_GER_Ju87_Group"]] call ALIVE_fnc_hashSet;
+
+[SG_STURM_mappings, "Groups", SG_STURM_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "SG_STURM", SG_STURM_mappings] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultSupports, "SG_STURM", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low","LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA","SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40","LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "SG_STURM", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "SG_STURM", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+
+
+// LIB_WEHRMACHT
+
+LIB_WEHRMACHT_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_WEHRMACHT_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[LIB_WEHRMACHT_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[LIB_WEHRMACHT_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[LIB_WEHRMACHT_mappings, "FactionName", "LIB_WEHRMACHT"] call ALIVE_fnc_hashSet;
+[LIB_WEHRMACHT_mappings, "GroupFactionName", "LIB_WEHRMACHT"] call ALIVE_fnc_hashSet;
+
+LIB_WEHRMACHT_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[LIB_WEHRMACHT_mappings, "GroupFactionTypes", LIB_WEHRMACHT_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_WEHRMACHT_factionCustomGroups, "Infantry", ["LIB_GER_infantry_squad","LIB_GER_AT_squad","LIB_GER_scout_squad","SG_GER_infantry_squad","SG_GER_AT_squad","LNRD_Luft_AT_squad","LNRD_Luft_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_WEHRMACHT_factionCustomGroups, "Motorized", ["LIB_GER_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_WEHRMACHT_factionCustomGroups, "Mechanized", ["LIB_GER_mechanized_infantry_squad","LIB_GER_scout_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_WEHRMACHT_factionCustomGroups, "Armored", ["LIB_GER_PzKpfwIV_H_Platoon","LIB_GER_PzKpfwV_Platoon","LIB_GER_StuG_III_G_Platoon","LIB_GER_PzKpfwVI_B_Platoon","LIB_GER_PzKpfwVI_E_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_WEHRMACHT_factionCustomGroups, "Air", ["LIB_GER_fw190f8_Group","LIB_GER_Ju87_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_WEHRMACHT_mappings, "Groups", LIB_WEHRMACHT_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "LIB_WEHRMACHT", LIB_WEHRMACHT_mappings] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultSupports, "LIB_WEHRMACHT", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low","LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA","SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40","LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_WEHRMACHT", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_WEHRMACHT", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+
+/*
+// lib_static_weapons
+[ALIVE_factionDefaultSupports, "LIB_WEHRMACHT", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_WEHRMACHT", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_WEHRMACHT", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_WEHRMACHT", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low"]] call ALIVE_fnc_hashSet;
+
+// Car
+[ALIVE_factionDefaultSupports, "LIB_WEHRMACHT", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_WEHRMACHT", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_WEHRMACHT", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_WEHRMACHT", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+
+// Static
+[ALIVE_factionDefaultSupports, "LIB_WEHRMACHT", ["SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_WEHRMACHT", ["SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_WEHRMACHT", ["SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_WEHRMACHT", ["SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40"]] call ALIVE_fnc_hashSet;
+
+// Support
+[ALIVE_factionDefaultSupports, "LIB_WEHRMACHT", ["LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_WEHRMACHT", ["LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_WEHRMACHT", ["LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_WEHRMACHT", ["LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+
+// Ammo
+[ALIVE_factionDefaultSupports, "LIB_WEHRMACHT", ["LIB_Mine_Ammo_Box_Ger"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_WEHRMACHT", ["LIB_Mine_Ammo_Box_Ger"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_WEHRMACHT", ["LIB_Mine_Ammo_Box_Ger"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_WEHRMACHT", ["LIB_Mine_Ammo_Box_Ger"]] call ALIVE_fnc_hashSet;
+*/
+
+
+// LIB_PANZERWAFFE
+
+LIB_PANZERWAFFE_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_PANZERWAFFE_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[LIB_PANZERWAFFE_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[LIB_PANZERWAFFE_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[LIB_PANZERWAFFE_mappings, "FactionName", "LIB_PANZERWAFFE"] call ALIVE_fnc_hashSet;
+[LIB_PANZERWAFFE_mappings, "GroupFactionName", "LIB_PANZERWAFFE"] call ALIVE_fnc_hashSet;
+
+LIB_PANZERWAFFE_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[LIB_PANZERWAFFE_mappings, "GroupFactionTypes", LIB_PANZERWAFFE_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_PANZERWAFFE_factionCustomGroups, "Infantry", ["LIB_GER_infantry_squad","LIB_GER_AT_squad","LIB_GER_scout_squad","SG_GER_infantry_squad","SG_GER_AT_squad","LNRD_Luft_AT_squad","LNRD_Luft_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_PANZERWAFFE_factionCustomGroups, "Motorized", ["LIB_GER_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_PANZERWAFFE_factionCustomGroups, "Mechanized", ["LIB_GER_mechanized_infantry_squad","LIB_GER_scout_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_PANZERWAFFE_factionCustomGroups, "Armored", ["LIB_GER_PzKpfwIV_H_Platoon","LIB_GER_PzKpfwV_Platoon","LIB_GER_StuG_III_G_Platoon","LIB_GER_PzKpfwVI_B_Platoon","LIB_GER_PzKpfwVI_E_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_PANZERWAFFE_factionCustomGroups, "Air", ["LIB_GER_fw190f8_Group","LIB_GER_Ju87_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_PANZERWAFFE_mappings, "Groups", LIB_PANZERWAFFE_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "LIB_PANZERWAFFE", LIB_PANZERWAFFE_mappings] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultSupports, "LIB_PANZERWAFFE", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low","LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA","SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40","LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_PANZERWAFFE", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_PANZERWAFFE", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+
+/*
+// LIB_Medium_Tanks
+[ALIVE_factionDefaultSupports, "LIB_PANZERWAFFE", ["LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_PANZERWAFFE", ["LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_PANZERWAFFE", ["LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_PANZERWAFFE", ["LIB_PzKpfwIV_H","LIB_PzKpfwV","LIB_StuG_III_G","LIB_StuG_III_G_WS"]] call ALIVE_fnc_hashSet;
+
+// LIB_Heavy_Tanks
+[ALIVE_factionDefaultSupports, "LIB_PANZERWAFFE", ["LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_E"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_PANZERWAFFE", ["LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_E"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_PANZERWAFFE", ["LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_E"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_PANZERWAFFE", ["LIB_PzKpfwVI_B","LIB_PzKpfwVI_B_camo","LIB_PzKpfwVI_E"]] call ALIVE_fnc_hashSet;
+*/
+
+
+// LIB_LUFTWAFFE
+
+LIB_LUFTWAFFE_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_LUFTWAFFE_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[LIB_LUFTWAFFE_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[LIB_LUFTWAFFE_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[LIB_LUFTWAFFE_mappings, "FactionName", "LIB_LUFTWAFFE"] call ALIVE_fnc_hashSet;
+[LIB_LUFTWAFFE_mappings, "GroupFactionName", "LIB_LUFTWAFFE"] call ALIVE_fnc_hashSet;
+
+LIB_LUFTWAFFE_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[LIB_LUFTWAFFE_mappings, "GroupFactionTypes", LIB_LUFTWAFFE_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_LUFTWAFFE_factionCustomGroups, "Infantry", ["LIB_GER_infantry_squad","LIB_GER_AT_squad","LIB_GER_scout_squad"]] call ALIVE_fnc_hashSet;
+[LIB_LUFTWAFFE_factionCustomGroups, "Motorized", ["LIB_GER_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_LUFTWAFFE_factionCustomGroups, "Mechanized", ["LIB_GER_mechanized_infantry_squad","LIB_GER_scout_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_LUFTWAFFE_factionCustomGroups, "Armored", ["LIB_GER_PzKpfwIV_H_Platoon","LIB_GER_PzKpfwV_Platoon","LIB_GER_StuG_III_G_Platoon","LIB_GER_PzKpfwVI_B_Platoon","LIB_GER_PzKpfwVI_E_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_LUFTWAFFE_factionCustomGroups, "Air", ["LIB_GER_fw190f8_Group","LIB_GER_Ju87_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_LUFTWAFFE_mappings, "Groups", LIB_LUFTWAFFE_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "LIB_LUFTWAFFE", LIB_LUFTWAFFE_mappings] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultSupports, "LIB_LUFTWAFFE", ["LIB_MG42_Lafette","LIB_MG42_Lafette_trench","LIB_MG42_Lafette_low","LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA","SearchLight_GER","LIB_GrWr34","LIB_FlaK_38","LIB_Flakvierling_38","LIB_Pak40","LIB_opelblitz_fuel","LIB_opelblitz_ambulance","LIB_opelblitz_parm","lib_opelblitz_ammo"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_LUFTWAFFE", ["LIB_WeaponsBox_Big_GER","LIB_Mine_Ammo_Box_Ger","LIB_BasicAmmunitionBox_GER","LIB_BasicWeaponsBox_GER","lib_4Rnd_RPzB","LIB_AmmoCrate_Arty_GER","LIB_AmmoCrate_Mortar_GER"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_LUFTWAFFE", ["LIB_kfz1","Lib_sdkfz251","LIB_opelblitz_open_y_camo","LIB_opelblitz_tent_y_camo","LIB_SdKfz_7","LIB_SdKfz_7_AA"]] call ALIVE_fnc_hashSet;
+
+/*
+// Air
+[ALIVE_factionDefaultSupports, "LIB_LUFTWAFFE", ["LIB_FW190F8","LIB_Ju87"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_LUFTWAFFE", ["LIB_FW190F8","LIB_Ju87"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_LUFTWAFFE", ["LIB_FW190F8","LIB_Ju87"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_LUFTWAFFE", ["LIB_FW190F8","LIB_Ju87"]] call ALIVE_fnc_hashSet;
+*/
+
+
+
+// LIB_GUER
 
 LIB_GUER_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_GUER_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
 [LIB_GUER_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
-[LIB_GUER_mappings, "GroupSideName", "Guerrila"] call ALIVE_fnc_hashSet;
+[LIB_GUER_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
 [LIB_GUER_mappings, "FactionName", "LIB_GUER"] call ALIVE_fnc_hashSet;
 [LIB_GUER_mappings, "GroupFactionName", "LIB_GUER"] call ALIVE_fnc_hashSet;
 
 LIB_GUER_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_GUER_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_GUER_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_GUER_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_GUER_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_GUER_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_GUER_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_GUER_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_GUER_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
 
 [LIB_GUER_mappings, "GroupFactionTypes", LIB_GUER_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_GUER_mappings, "Infantry", ["Lib_GUER_infantry_squad"]] call ALIVE_fnc_hashSet;
+
+[LIB_GUER_mappings, "Groups", LIB_GUER_factionCustomGroups] call ALIVE_fnc_hashSet;
+
 [ALIVE_factionCustomMappings, "LIB_GUER", LIB_GUER_mappings] call ALIVE_fnc_hashSet;
 
-[ALIVE_factionDefaultSupports, "LIB_US_TANK_TROOPS", ["LIB_US_GMC_Tent","LIB_US_GMC_Open","LIB_US_Scout_m3","LIB_US_M3_Halftrack","LIB_US_Willys_MB","LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_US_TANK_TROOPS", ["LIB_BasicAmmunitionBox_US","LIB_BasicWeaponsBox_US","LIB_Mine_AmmoBox_US"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupports, "LIB_GUER", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent","LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_GUER", ["LIB_BasicAmmunitionBox_US","LIB_BasicWeaponsBox_US","LIB_Mine_AmmoBox_US"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_GUER", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
 
 
-LIB_US_AIRFORCE_mappings = [] call ALIVE_fnc_hashCreate;
-[LIB_US_AIRFORCE_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_mappings, "GroupSideName", "Guerrila"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_mappings, "FactionName", "LIB_US_AIRFORCE"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_mappings, "GroupFactionName", "LIB_US_AIRFORCE"] call ALIVE_fnc_hashSet;
-
-LIB_US_AIRFORCE_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_US_AIRFORCE_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_US_AIRFORCE_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
-
-[LIB_US_AIRFORCE_mappings, "GroupFactionTypes", LIB_US_AIRFORCE_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "LIB_US_AIRFORCE", LIB_US_AIRFORCE_mappings] call ALIVE_fnc_hashSet;
-
-[ALIVE_factionDefaultSupports, "LIB_US_AIRFORCE", ["LIB_US_GMC_Tent","LIB_US_GMC_Open","LIB_US_Scout_m3","LIB_US_M3_Halftrack","LIB_US_Willys_MB","LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
-[ALIVE_factionDefaultSupplies, "LIB_US_AIRFORCE", ["LIB_BasicAmmunitionBox_US","LIB_BasicWeaponsBox_US","LIB_Mine_AmmoBox_US"]] call ALIVE_fnc_hashSet;
-
+// LIB_US_ARMY
 
 LIB_US_ARMY_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_US_ARMY_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
 [LIB_US_ARMY_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_mappings, "GroupSideName", "Guerrila"] call ALIVE_fnc_hashSet;
+[LIB_US_ARMY_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
 [LIB_US_ARMY_mappings, "FactionName", "LIB_US_ARMY"] call ALIVE_fnc_hashSet;
 [LIB_US_ARMY_mappings, "GroupFactionName", "LIB_US_ARMY"] call ALIVE_fnc_hashSet;
 
 LIB_US_ARMY_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_US_ARMY_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_US_ARMY_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
 
 [LIB_US_ARMY_mappings, "GroupFactionTypes", LIB_US_ARMY_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_US_ARMY_factionCustomGroups, "Infantry", ["LIB_US_AT_squad","LIB_US_infantry_squad","LIB_US_scout_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_ARMY_factionCustomGroups, "Motorized", ["LIB_US_motorized_infantry_squad","LIB_US_scout_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_ARMY_factionCustomGroups, "Mechanized", ["LIB_US_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_ARMY_factionCustomGroups, "Armored", ["LIB_M4A3_75_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_US_ARMY_factionCustomGroups, "Air", ["LIB_US_P47_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_US_ARMY_mappings, "Groups", LIB_US_ARMY_factionCustomGroups] call ALIVE_fnc_hashSet;
+
 [ALIVE_factionCustomMappings, "LIB_US_ARMY", LIB_US_ARMY_mappings] call ALIVE_fnc_hashSet;
 
-[ALIVE_factionDefaultSupports, "LIB_US_ARMY", ["LIB_US_GMC_Tent","LIB_US_GMC_Open","LIB_US_Scout_m3","LIB_US_M3_Halftrack","LIB_US_Willys_MB","LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupports, "LIB_US_ARMY", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent","LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "LIB_US_ARMY", ["LIB_BasicAmmunitionBox_US","LIB_BasicWeaponsBox_US","LIB_Mine_AmmoBox_US"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_ARMY", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
 
+
+/*
+// Car
+[ALIVE_factionDefaultSupports, "LIB_US_ARMY", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_US_ARMY", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_ARMY", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_US_ARMY", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
+
+// Support
+[ALIVE_factionDefaultSupports, "LIB_US_ARMY", ["LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_US_ARMY", ["LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_ARMY", ["LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_US_ARMY", ["LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
+
+// Ship
+[ALIVE_factionDefaultSupports, "LIB_US_ARMY", ["LIB_LCVP"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_US_ARMY", ["LIB_LCVP"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_ARMY", ["LIB_LCVP"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_US_ARMY", ["LIB_LCVP"]] call ALIVE_fnc_hashSet;
+*/
+
+
+// LIB_US_TANK_TROOPS
 
 LIB_US_TANK_TROOPS_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_US_TANK_TROOPS_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
 [LIB_US_TANK_TROOPS_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_mappings, "GroupSideName", "Guerrila"] call ALIVE_fnc_hashSet;
+[LIB_US_TANK_TROOPS_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
 [LIB_US_TANK_TROOPS_mappings, "FactionName", "LIB_US_TANK_TROOPS"] call ALIVE_fnc_hashSet;
 [LIB_US_TANK_TROOPS_mappings, "GroupFactionName", "LIB_US_TANK_TROOPS"] call ALIVE_fnc_hashSet;
 
 LIB_US_TANK_TROOPS_typeMappings = [] call ALIVE_fnc_hashCreate;
-[LIB_US_TANK_TROOPS_typeMappings, "Air", "LIB_Air"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_typeMappings, "Armored", "LIB_Medium_Tanks"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_typeMappings, "Infantry", "Lib_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_typeMappings, "Mechanized", "LIB_Mechanized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_typeMappings, "Motorized", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_typeMappings, "Motorized_MTP", "LIB_Motorized_Infantry"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[LIB_US_TANK_TROOPS_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
 
 [LIB_US_TANK_TROOPS_mappings, "GroupFactionTypes", LIB_US_TANK_TROOPS_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_US_TANK_TROOPS_factionCustomGroups, "Infantry", ["LIB_US_AT_squad","LIB_US_infantry_squad","LIB_US_scout_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_TANK_TROOPS_factionCustomGroups, "Motorized", ["LIB_US_motorized_infantry_squad","LIB_US_scout_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_TANK_TROOPS_factionCustomGroups, "Mechanized", ["LIB_US_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_TANK_TROOPS_factionCustomGroups, "Armored", ["LIB_M4A3_75_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_US_TANK_TROOPS_factionCustomGroups, "Air", ["LIB_US_P47_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_US_TANK_TROOPS_mappings, "Groups", LIB_US_TANK_TROOPS_factionCustomGroups] call ALIVE_fnc_hashSet;
+
 [ALIVE_factionCustomMappings, "LIB_US_TANK_TROOPS", LIB_US_TANK_TROOPS_mappings] call ALIVE_fnc_hashSet;
 
-[ALIVE_factionDefaultSupports, "LIB_US_TANK_TROOPS", ["LIB_US_GMC_Tent","LIB_US_GMC_Open","LIB_US_Scout_m3","LIB_US_M3_Halftrack","LIB_US_Willys_MB","LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupports, "LIB_US_TANK_TROOPS", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent","LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
 [ALIVE_factionDefaultSupplies, "LIB_US_TANK_TROOPS", ["LIB_BasicAmmunitionBox_US","LIB_BasicWeaponsBox_US","LIB_Mine_AmmoBox_US"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_TANK_TROOPS", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
+
+/*
+// LIB_Medium_Tanks
+[ALIVE_factionDefaultSupports, "LIB_US_TANK_TROOPS", ["LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_US_TANK_TROOPS", ["LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_TANK_TROOPS", ["LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_US_TANK_TROOPS", ["LIB_M4A3_75","LIB_M4A3_75_Tubes"]] call ALIVE_fnc_hashSet;
+*/
+
+
+// LIB_US_AIRFORCE
+
+LIB_US_AIRFORCE_mappings = [] call ALIVE_fnc_hashCreate;
+
+LIB_US_AIRFORCE_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[LIB_US_AIRFORCE_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[LIB_US_AIRFORCE_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[LIB_US_AIRFORCE_mappings, "FactionName", "LIB_US_AIRFORCE"] call ALIVE_fnc_hashSet;
+[LIB_US_AIRFORCE_mappings, "GroupFactionName", "LIB_US_AIRFORCE"] call ALIVE_fnc_hashSet;
+
+LIB_US_AIRFORCE_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[LIB_US_AIRFORCE_mappings, "GroupFactionTypes", LIB_US_AIRFORCE_typeMappings] call ALIVE_fnc_hashSet;
+
+[LIB_US_AIRFORCE_factionCustomGroups, "Infantry", ["LIB_US_AT_squad","LIB_US_infantry_squad","LIB_US_scout_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_AIRFORCE_factionCustomGroups, "Motorized", ["LIB_US_motorized_infantry_squad","LIB_US_scout_motorized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_AIRFORCE_factionCustomGroups, "Mechanized", ["LIB_US_mechanized_infantry_squad"]] call ALIVE_fnc_hashSet;
+[LIB_US_AIRFORCE_factionCustomGroups, "Armored", ["LIB_M4A3_75_Platoon"]] call ALIVE_fnc_hashSet;
+[LIB_US_AIRFORCE_factionCustomGroups, "Air", ["LIB_US_P47_Group"]] call ALIVE_fnc_hashSet;
+
+[LIB_US_AIRFORCE_mappings, "Groups", LIB_US_AIRFORCE_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "LIB_US_AIRFORCE", LIB_US_AIRFORCE_mappings] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionDefaultSupports, "LIB_US_AIRFORCE", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent","LIB_US_GMC_Ammo","LIB_US_GMC_Ambulance","LIB_US_GMC_Parm","LIB_US_GMC_Fuel"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_US_AIRFORCE", ["LIB_BasicAmmunitionBox_US","LIB_BasicWeaponsBox_US","LIB_Mine_AmmoBox_US"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_AIRFORCE", ["LIB_US_Willys_MB","LIB_US_M3_Halftrack","LIB_US_Scout_m3","LIB_US_GMC_Open","LIB_US_GMC_Tent"]] call ALIVE_fnc_hashSet;
+
+/*
+// Air
+[ALIVE_factionDefaultSupports, "LIB_US_AIRFORCE", ["LIB_P47"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultSupplies, "LIB_US_AIRFORCE", ["LIB_P47"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultTransport, "LIB_US_AIRFORCE", ["LIB_P47"]] call ALIVE_fnc_hashSet;
+[ALIVE_factionDefaultAirTransport, "LIB_US_AIRFORCE", ["LIB_P47"]] call ALIVE_fnc_hashSet;
+*/
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 ALiVE_STATIC_DATA_LOADED = true;
