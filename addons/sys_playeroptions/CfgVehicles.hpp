@@ -348,13 +348,13 @@ class CfgVehicles {
                                         class none
                                         {
                                                 name = "None";
-                                                value = 0;
-                                                default = 1;
+                                                value = "None";
                                         };
                                         class modern
                                         {
                                                 name = "Modern";
                                                 value = "modern";
+                                                default = 1;
                                         };
                                         class current
                                         {
