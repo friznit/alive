@@ -67,8 +67,6 @@ switch(_operation) do {
                 //Push to clients
 	            PublicVariable QMOD(SYS_GC);
             };
-            
-            diag_log (typeof MOD(SYS_GC));
 
             TRACE_1("Waiting for object to be ready",true);
 
@@ -118,8 +116,19 @@ switch(_operation) do {
 
 					//Retrieve module-object variables
                     _logic setvariable ["ALiVE_GC_INDIVIDUALTYPES",([_logic,"convert",(_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]])] call ALiVE_fnc_GC),true];
-                    _debug = call compile (_logic getvariable ["debug","false"]);
-                    _interval = call compile (_logic getvariable ["ALiVE_GC_INTERVAL","300"]);
+                    _debug = _logic getvariable ["debug","false"];
+                    _interval = _logic getvariable ["ALiVE_GC_INTERVAL","300"];
+                    
+                    switch (typeName _debug) do {
+                        case ("STRING") : {_debug = call compile _debug};
+                        case ("BOOL") : {};
+                    };
+                    
+                    switch (typeName _interval) do {
+                        case ("STRING") : {_interval = call compile _interval};
+                        case ("BOOL") : {};
+                    };
+                    
                     _logic setvariable ["debug",_debug,true];
 					_logic setVariable ["auto", true];
 
@@ -169,12 +178,15 @@ switch(_operation) do {
                 _fsm = _logic getVariable "ALiVE_GC_FSM";
                 _fsm setFSMVariable ["_exitFSM", true];
 
-                MOD(SYS_GC) = nil;
+                ALiVE_SYS_GC = nil;
+                ALiVE_GC = nil;
                 
                 // and publicVariable to clients
-                publicVariable QMOD(SYS_GC);
+                publicVariable "ALiVE_SYS_GC";
+                publicVariable "ALiVE_GC";
                 
                 deleteVehicle _logic;
+                deleteGroup (group _logic);
             };
         };        
 
@@ -362,13 +374,6 @@ switch(_operation) do {
                     ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				};
 			// DEBUG -------------------------------------------------------------------------------------
-        };
-
-        case "destroy": {
-                [_logic, "debug", false] call MAINCLASS;
-                if (isServer) then {
-					[_logic, "destroy"] call SUPERCLASS;
-                };
         };
         case "debug": {
                 if(typeName _args != "BOOL") then {

@@ -71,7 +71,6 @@ switch(_operation) do {
         case "destroy": {
 				
 			if (isServer) then {
-			
 					// clear plots
 					[_logic, "clear"] call MAINCLASS;
 											
@@ -79,7 +78,7 @@ switch(_operation) do {
 					[_logic,"super"] call ALIVE_fnc_hashRem;
 					[_logic,"class"] call ALIVE_fnc_hashRem;
 					
-					[_logic, "destroy"] call SUPERCLASS;					
+					[_logic, "destroy"] call SUPERCLASS;
 			};
                 
         };
@@ -214,7 +213,7 @@ switch(_operation) do {
 
 					_jobsToCancel = [];
 
-					if!([_logic, "pause"] call MAINCLASS) then {
+					if !([_logic, "pause"] call ALiVE_fnc_HashGet) then {
 
                         {
                             _job = _x;
@@ -285,7 +284,8 @@ switch(_operation) do {
 						[_logic, "cancelAnalysisJob", _x] call MAINCLASS;
 					} forEach _jobsToCancel;
 
-					false
+					//Exit if Logic has been destroyed
+					isnil "_logic" || {count (_logic select 1) == 0};
 				};
 			};
 		};

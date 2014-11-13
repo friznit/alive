@@ -154,6 +154,9 @@ switch(_operation) do {
                         _logic setVariable ["super", nil];
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
+                        
+                        [_logic,"destroy"] call SUPERCLASS;
+                        
                         // and publicVariable to clients
                         ADDON = _logic;
                         publicVariable QUOTE(ADDON);

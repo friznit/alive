@@ -828,7 +828,7 @@ switch (_operation) do {
             };
             
             //delay
-            sleep 5;
+            sleep 1;
             
             //Delete class
             if (isServer) then {
@@ -836,13 +836,8 @@ switch (_operation) do {
                     _logic setVariable ["super", nil];
                     _logic setVariable ["class", nil];
                     _logic setVariable ["init", nil];
-
-                    MOD(SYS_LOGISTICS) = nil;
                     
-                    // and publicVariable to clients
-                    publicVariable QMOD(SYS_LOGISTICS);
-                    
-                    deleteVehicle _logic;
+                    [_logic,"destroy"] call SUPERCLASS;
             };
         };
 

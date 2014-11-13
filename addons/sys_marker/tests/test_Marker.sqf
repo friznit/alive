@@ -1,13 +1,13 @@
 // ----------------------------------------------------------------------------
-#include <\x\alive\addons\mil_cqb\script_component.hpp>
-SCRIPT(test_CQB);
+#include <\x\alive\addons\sys_marker\script_component.hpp>
+SCRIPT(test_Marker);
 // ----------------------------------------------------------------------------
 
-if !(isnil QGVAR(TEST_CQB)) exitwith {};
+if !(isnil QGVAR(TEST_Marker)) exitwith {};
 
-GVAR(TEST_CQB) = true; 
+GVAR(TEST_Marker) = true; 
 
-#define MAINCLASS ALiVE_fnc_CQB
+#define MAINCLASS ALiVE_fnc_Marker
 
 // ----------------------------------------------------------------------------
 
@@ -32,23 +32,29 @@ diag_log format["Timer End %1",_timeEnd];
 
 //========================================
 
-LOG("Testing CQB");
+LOG("Testing ALiVE markers");
 
 TIMERSTART
 
-STAT("Creating CQB instance");
-_logic = [nil,"create"] call ALiVE_fnc_CQB;
-_err = "Creation of class failed";
-ASSERT_TRUE(typeName _logic == "OBJECT", _err);
+STAT("Creating marker system instance...");
+
+//Marker
+private ["_logic"];
+_logic = [nil,"create"] call MAINCLASS;
+_logic setvariable ["debug","true"];
+_err = "Creation of marker instance failed";
+if !(_cond) then {STAT(_err)};
+ASSERT_TRUE(typeof _logic == QUOTE(ADDON), _err);
 
 STAT("Sleeping before destroy");
-sleep 10;
+sleep 5;
 
-STAT("Destroying CQB instance");
+STAT("Destroying marker system instance");
 _result = [_logic, "destroy"] call MAINCLASS;
-_err = "Destruction of class failed";
-ASSERT_TRUE(isnil QMOD(CQB), _err);
+_err = "Destruction of marker system instance failed";
+if !(true) then {STAT(_err)};
+ASSERT_TRUE(true, _err);
 
 TIMEREND
 
-GVAR(TEST_CQB) = nil;
+GVAR(TEST_MARKER) = nil;

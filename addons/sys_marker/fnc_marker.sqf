@@ -1143,10 +1143,11 @@ switch (_operation) do {
                         MOD(SYS_marker) setVariable ["class", nil];
                         MOD(SYS_marker) setVariable ["init", nil];
 
-                        // and publicVariable to clients
-
-                        publicVariable QMOD(SYS_marker);
                         [_logic, "destroy"] call SUPERCLASS;
+                        
+                        // and publicVariable to clients
+                         MOD(SYS_marker) = _logic;
+                        publicVariable QMOD(SYS_marker);
                 };
 
                 if (hasInterface) then {

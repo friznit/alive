@@ -48,6 +48,9 @@
 //	#define DEBUG_ENABLED_SYS_patrolrep
 //	#define DEBUG_ENABLED_X_LIB
 
+// Set automated tests
+// #define AUTOMATED_TESTS QUOTE(MAIN),QUOTE(SYS_LOGISTICS),QUOTE(SYS_GC),QUOTE(MIL_CQB),QUOTE(MIL_OPCOM)
+
 #define MOD(var1) GVARMAIN(var1)
 #define QMOD(var1) QUOTE(GVARMAIN(var1))
 #define RECOMPILE 1

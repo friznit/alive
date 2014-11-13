@@ -174,9 +174,11 @@ switch(_operation) do {
                         _logic setVariable ["super", nil];
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
-                        // and publicVariable to clients
+                        
+                        [_logic,"destroy"] call SUPERCLASS;
+                        
                         ADDON = _logic;
-                        publicVariable QADDON;
+                        publicVariable QUOTE(ADDON);
                 };
 
                 if(!isDedicated && !isHC) then {

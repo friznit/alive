@@ -82,7 +82,7 @@ switch(_operation) do {
                 
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
-                        // if server			
+                        // if server
 						[_logic,"super"] call ALIVE_fnc_hashRem;
 						[_logic,"class"] call ALIVE_fnc_hashRem;
                         
@@ -297,7 +297,7 @@ switch(_operation) do {
 				// start the manager loop
 				waituntil {
 
-				    if!([_logic, "pause"] call MAINCLASS) then {
+				    if !([_logic, "pause"] call ALiVE_fnc_HashGet) then {
 					
                         // for each of the internal commands
                         {
@@ -346,8 +346,9 @@ switch(_operation) do {
                     };
 					
 					sleep 5;
-		
-					false 
+                    
+					//Exit if _logic has been destroyed
+					isnil "_logic" || {count (_logic select 1) == 0}
 				};				
 			};
 			
