@@ -221,7 +221,6 @@ switch(_operation) do {
 
                 [_logic, "debug", false] call MAINCLASS;
                 if (isServer) then {
-					[_logic, "destroy"] call SUPERCLASS;
 
 					_profileSimulatorFSM = [_logic, "simulator_FSM"] call ALiVE_fnc_HashGet;
 					_profileSimulatorFSM setFSMVariable ["_destroy",true];
@@ -238,6 +237,25 @@ switch(_operation) do {
                     _profileSpawnerFSMCiv = [_logic, "spawner_FSMCiv"] call ALiVE_fnc_HashGet;
                     _profileSpawnerFSMCiv setFSMVariable ["_destroy",true];
 
+                    [ALIVE_commandRouter, "pause", true] call ALIVE_fnc_commandRouter;
+                    [ALIVE_liveAnalysis, "pause", true] call ALIVE_fnc_liveAnalysis;
+
+                    [ALIVE_commandRouter,"destroy"] call ALiVE_fnc_CommandRouter;
+                    [ALIVE_arrayBlockHandler,"destroy"] call ALIVE_fnc_arrayBlockHandler;
+                    [ALIVE_battlefieldAnalysis,"destroy"] call ALIVE_fnc_battlefieldAnalysis;
+                    [ALIVE_liveAnalysis,"destroy"] call ALIVE_fnc_liveAnalysis;
+                    [ALIVE_sectorPlotter,"destroy"] call ALIVE_fnc_plotSectors;
+                    [ALIVE_sectorGrid,"destroy"] call ALIVE_fnc_sectorGrid;
+                    [ALIVE_profileHandler,"destroy"] call ALIVE_fnc_profileHandler;
+
+                    ALIVE_profileSystemInit = nil; PublicVariable "ALIVE_profileSystemInit";
+                    
+                    _module = [_logic,"handler",objNull] call ALiVE_fnc_HashGet;
+                    _module setVariable ["handler",nil];
+					
+                    MOD(SYS_PROFILE) = nil; PublicVariable QMOD(SYS_PROFILE);
+                   
+                    [_logic, "destroy"] call SUPERCLASS;
                 };
         };
         case "pause": {
