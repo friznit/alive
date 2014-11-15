@@ -104,9 +104,9 @@ if(count _config > 0) then {
 			// seperate vehicles and units in the group
 			//if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Armored")||(_vehicleType == "Ship")||(_vehicleType == "Air")||(_vehicleType == "LIB_Medium_Tanks")||(_vehicleType == "LIB_Heavy_Tanks")) then {
 			if!(_vehicle isKindOf "Man") then {
-				_groupVehicles set [count _groupVehicles, [_vehicle,_rank]];			
+				_groupVehicles pushback [_vehicle,_rank];			
 			} else {
-				_groupUnits set [count _groupUnits, [_vehicle,_rank]];
+				_groupUnits pushback [_vehicle,_rank];
 			};		
 		};
 	};
@@ -134,7 +134,7 @@ if(count _config > 0) then {
 		[_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
 	};
 
-	_groupProfiles set [count _groupProfiles, _profileEntity];
+	_groupProfiles pushback _profileEntity;
 	[ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
 
@@ -176,7 +176,7 @@ if(count _config > 0) then {
 			[_profileVehicle, "despawnPosition", _vehiclePosition] call ALIVE_fnc_profileVehicle;
 		};
 		
-		_groupProfiles set [count _groupProfiles, _profileVehicle];	
+		_groupProfiles pushback _profileVehicle;	
 		[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 		
 		// create crew members for the vehicle

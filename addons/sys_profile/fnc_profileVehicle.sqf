@@ -183,7 +183,7 @@ _createMarkers = {
 				_m setMarkerColor _debugColor;
 				_m setMarkerAlpha _debugAlpha;
 				
-				_markers set [count _markers, _m];
+				_markers pushback _m;
 
 				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
         };
@@ -297,7 +297,7 @@ switch(_operation) do {
 				if(typeName _args == "ARRAY") then {
 				
 						if(count _args == 2) then  {
-							_args set [count _args, 0];
+							_args pushback 0;
 						};
 
 						if!(((_args select 0) + (_args select 1)) == 0) then {
@@ -732,7 +732,7 @@ switch(_operation) do {
 					_m setMarkerColor _color;
 					_m setMarkerAlpha _alpha;
 					
-					_markers set [count _markers, _m];
+					_markers pushback _m;
 
 					[_logic,"markers",_markers] call ALIVE_fnc_hashSet;
 				};

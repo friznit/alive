@@ -408,11 +408,11 @@ switch(_operation) do {
 
 						// store reference to main profile on by type hash
 						_profilesType = [_profilesByType, _profileType] call ALIVE_fnc_hashGet;
-						_profilesType set [count _profilesType, _profileID];
+						_profilesType pushback _profileID;
 
 						// store reference to main profile on by catagorised type hash
 						_profilesCatagorisedType = [_profilesCatagorisedTypes, _profileType] call ALIVE_fnc_hashGet;
-						_profilesCatagorisedType set [count _profilesCatagorisedType, _profileID];
+						_profilesCatagorisedType pushback _profileID;
 
 
 						// DEBUG -------------------------------------------------------------------------------------
@@ -435,7 +435,7 @@ switch(_operation) do {
 
 							// store reference to main profile on by side hash
 							_profilesSide = [_profilesBySide, _profileSide] call ALIVE_fnc_hashGet;
-							_profilesSide set [count _profilesSide, _profileID];
+							_profilesSide pushback _profileID;
 
                             // store profile on side hash
                             _profilesSideFull = [_profilesBySideFull, _profileSide] call ALIVE_fnc_hashGet;
@@ -472,33 +472,33 @@ switch(_operation) do {
                                 [_profilesByFactionByVehicleType, _profileFaction, _profilesFactionVehicleType] call ALIVE_fnc_hashSet;
 							};
 
-							_profilesFaction set [count _profilesFaction, _profileID];
+							_profilesFaction pushback _profileID;
 
                             _profileFactionType = [_profilesFactionType, _profileType] call ALIVE_fnc_hashGet;
-                            _profileFactionType set [count _profileFactionType, _profileID];
+                            _profileFactionType pushback _profileID;
 
 							// store active state on active or inactive array
 							_profileActive = [_profile, "active"] call ALIVE_fnc_hashGet;
 
 							if(_profileActive) then {
-								_profilesActive set [count _profilesActive, _profileID];
+								_profilesActive pushback _profileID;
 
 								// store profile on side hash
                                 _profilesActiveSide = [_profilesActiveBySide, _profileSide] call ALIVE_fnc_hashGet;
                                 [_profilesActiveSide, _profileID, _profile] call ALIVE_fnc_hashSet;
 
 								if(_profileType == "entity") then {
-                                    _entityProfilesActive set [count _entityProfilesActive, _profileID];
+                                    _entityProfilesActive pushback _profileID;
 								};
 							}else{
-								_profilesInActive set [count _profilesInActive, _profileID];
+								_profilesInActive pushback _profileID;
 
 								// store profile on side hash
                                 _profilesInActiveSide = [_profilesInActiveBySide, _profileSide] call ALIVE_fnc_hashGet;
                                 [_profilesInActiveSide, _profileID, _profile] call ALIVE_fnc_hashSet;
 
 								if(_profileType == "entity") then {
-                                    _entityProfilesInActive set [count _entityProfilesInActive, _profileID];
+                                    _entityProfilesInActive pushback _profileID;
                                 };
 							};
 
@@ -517,19 +517,19 @@ switch(_operation) do {
 										[_profilesByCompany, _profileCompany, _profleByCompanyArray] call ALIVE_fnc_hashSet;
 									} else {
 										_profleByCompanyArray = [_profilesByCompany, _profileCompany] call ALIVE_fnc_hashGet;
-										_profleByCompanyArray set [count _profleByCompanyArray, _profileID];
+										_profleByCompanyArray pushback _profileID;
 									};
 								};
 							}else{
 								// vehicle type
 								_profilesVehicleType = [_profilesByVehicleType,_profileVehicleType] call ALIVE_fnc_hashGet;
-								_profilesVehicleType set [count _profilesVehicleType, _profileID];
+								_profilesVehicleType pushback _profileID;
 
 								_profileFactionVehicleType = [_profilesFactionVehicleType,_profileVehicleType] call ALIVE_fnc_hashGet;
-                                _profileFactionVehicleType set [count _profileFactionVehicleType, _profileID];
+                                _profileFactionVehicleType pushback _profileID;
 
 								_profilesCatagorisedVehicleType = [_profilesCatagorisedVehicleTypes, _profileVehicleType] call ALIVE_fnc_hashGet;
-								_profilesCatagorisedVehicleType set [count _profilesCatagorisedVehicleType, _profileID];
+								_profilesCatagorisedVehicleType pushback _profileID;
 							};
 						};
                 };
@@ -718,7 +718,7 @@ switch(_operation) do {
 					_profilesInActive = _profilesInActive - [_profileID];
 				};
 
-				_profilesActive set [count _profilesActive, _profileID];
+				_profilesActive pushback _profileID;
 
 				_profilesInActive = [_logic, "profilesInActive",_profilesInActive] call ALIVE_fnc_hashSet;
 				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
@@ -752,7 +752,7 @@ switch(_operation) do {
 					_profilesActive = _profilesActive - [_profileID];
 				};
 
-				_profilesInActive set [count _profilesInActive, _profileID];
+				_profilesInActive pushback _profileID;
 
 				_profilesInActive = [_logic, "profilesInActive",_profilesInActive] call ALIVE_fnc_hashSet;
 				_profilesActive = [_logic, "profilesActive", _profilesActive] call ALIVE_fnc_hashSet;
@@ -811,7 +811,7 @@ switch(_operation) do {
                     _entityProfilesInActive = _entityProfilesInActive - [_profileID];
                 };
 
-                _entityProfilesActive set [count _entityProfilesActive, _profileID];
+                _entityProfilesActive pushback _profileID;
 
                 _entityProfilesInActive = [_logic, "entitiesInActive",_entityProfilesInActive] call ALIVE_fnc_hashSet;
                 _entityProfilesActive = [_logic, "entitiesActive", _entityProfilesActive] call ALIVE_fnc_hashSet;
@@ -827,7 +827,7 @@ switch(_operation) do {
                     _entityProfilesActive = _entityProfilesActive - [_profileID];
                 };
 
-                _entityProfilesInActive set [count _entityProfilesInActive, _profileID];
+                _entityProfilesInActive pushback _profileID;
 
                 _entityProfilesInActive = [_logic, "entitiesInActive",_entityProfilesInActive] call ALIVE_fnc_hashSet;
                 _entityProfilesActive = [_logic, "entitiesActive", _entityProfilesActive] call ALIVE_fnc_hashSet;
@@ -849,7 +849,7 @@ switch(_operation) do {
                     _position = _profile select 2 select 2;
                     _side = _profile select 2 select 3;
 
-                    _result set [count _result, [_position,_side]];
+                    _result pushback [_position,_side];
                 } forEach _entities;
         };
 		case "setPosition": {
@@ -1119,7 +1119,7 @@ switch(_operation) do {
 
             _message = format["ALiVE Profile System - Preparing to save %1 profiles..",count(_exportProfiles select 1)];
             _messages = _result select 1;
-            _messages set [count _messages,_message];
+            _messages pushback _message;
 
             _async = false; // Wait for response from server
             _missionName = [missionName, "%20", "-"] call CBA_fnc_replace;
@@ -1131,7 +1131,7 @@ switch(_operation) do {
 
             _message = format["ALiVE Profile System - Save Result: %1",_saveResult];
             _messages = _result select 1;
-            _messages set [count _messages,_message];
+            _messages pushback _message;
 
             if(ALiVE_SYS_DATA_DEBUG_ON) then {
                 ["ALiVE SYS PROFILE - SAVE PROFILE DATA RESULT: %1",_saveResult] call ALIVE_fnc_dump;
@@ -1248,15 +1248,15 @@ switch(_operation) do {
                                 if(typeName _x == "STRING") then {
                                     _rankMap = [_ranksMap, _x] call ALIVE_fnc_hashGet;
                                     if(typeName _rankMap == "SCALAR") then {
-                                        _exportRanks set [count _exportRanks, _rankMap];
+                                        _exportRanks pushback _rankMap;
                                     }else{
-                                        _exportRanks set [count _exportRanks, 0];
+                                        _exportRanks pushback 0;
                                     };
                                 }else{
-                                     _exportRanks set [count _exportRanks, 0];
+                                     _exportRanks pushback 0;
                                  };
                             }else{
-                                _exportRanks set [count _exportRanks, 0];
+                                _exportRanks pushback 0;
                             };
                         } forEach _ranks;
 
@@ -1268,7 +1268,7 @@ switch(_operation) do {
                         {
                             if!(isNil "_x") then {
                                 if(typeName _x == "STRING") then {
-                                    _exportClasses set [count _exportClasses, _x];
+                                    _exportClasses pushback _x;
                                 };
                             };
                         } forEach _classes;
@@ -1443,7 +1443,7 @@ switch(_operation) do {
                         _importRanks = [];
 
                         {
-                            _importRanks set [count _importRanks, [_ranksMap, _x] call ALIVE_fnc_hashGet];
+                            _importRanks pushback ([_ranksMap, _x] call ALIVE_fnc_hashGet);
                         } forEach _ranks;
 
                         [_profileEntity, "ranks", _importRanks] call ALIVE_fnc_hashSet;
@@ -1458,7 +1458,7 @@ switch(_operation) do {
                         _damages = [];
                         {
                             if !(isnil "_x") then {
-                                _damages set [count _damages, 0];
+                                _damages pushback 0;
                             };
                         } forEach _unitClasses;
 

@@ -208,10 +208,10 @@ class FSM
        "			_position = _profile select 2 select 2;" \n
        "" \n
        "			if ([_position, _spawnDistance] call ALiVE_fnc_anyPlayersInRangeExcludeAir > 0) then {" \n
-       "				_toSpawn set [count _toSpawn, _profile];" \n
+       "				_toSpawn pushback _profile;" \n
        "			}else{" \n
        "				if ([_position, _spawnDistance] call ALiVE_fnc_anyAutonomousInRange > 0) then {" \n
-       "					 _toSpawn set [count _toSpawn, _profile];" \n
+       "					 _toSpawn pushback _profile;" \n
        "				};" \n
        "			};" \n
        "		};" \n

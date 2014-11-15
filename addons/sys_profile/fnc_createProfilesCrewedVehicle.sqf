@@ -72,7 +72,7 @@ if!(_spawnGoodPosition) then {
 	[_profileEntity, "despawnPosition", _position] call ALIVE_fnc_profileEntity;
 };
 
-_groupProfiles set [count _groupProfiles, _profileEntity];
+_groupProfiles pushback _profileEntity;
 [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
 private ["_vehicleKind","_vehicleID","_vehicleClass","_crew","_profileVehicle","_vehiclePositions","_countCrewPositions"];
@@ -109,7 +109,7 @@ if(_engineOn) then {
     [_profileVehicle, "engineOn", true] call ALIVE_fnc_profileVehicle;
 };
 
-_groupProfiles set [count _groupProfiles, _profileVehicle];	
+_groupProfiles pushback _profileVehicle;	
 [ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 
 // create crew members for the vehicle

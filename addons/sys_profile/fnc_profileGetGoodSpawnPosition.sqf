@@ -97,7 +97,7 @@ switch(_type) do {
 							//_vehicleClass = _vehicleProfile select 2 select 11; //[_profile,"vehicleClass"] call ALIVE_fnc_hashGet;
 							_vehicleObjectType = _vehicleProfile select 2 select 6; //[_profile,"objectType"] call ALIVE_fnc_hashGet;
 							
-							_vehicles set [count _vehicles, _vehicleProfile];
+							_vehicles pushback _vehicleProfile;
 							
 							if(_vehicleObjectType == "Car" || _vehicleObjectType == "Truck" || _vehicleObjectType == "Armored" || _vehicleObjectType == "Tank") then {
 								_inCar = true;

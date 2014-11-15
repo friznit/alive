@@ -76,10 +76,10 @@ if(_debug) then {
 			if((typeOf _x) in _unitBlackist) then {
 				_unitBlacklisted = true;
 			};
-			_unitClasses set [count _unitClasses, typeOf _x];
-			_positions set [count _positions, getPosATL _x];
-			_ranks set [count _ranks, rank _x];
-			_damages set [count _damages, getDammage _x];
+			_unitClasses pushback (typeOf _x);
+			_positions pushback (getPosATL _x);
+			_ranks pushback (rank _x);
+			_damages pushback (getDammage _x);
 		} foreach (_units);
 
 		if (!(vehicle _leader == _leader)) then {

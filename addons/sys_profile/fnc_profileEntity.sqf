@@ -220,7 +220,7 @@ _createMarkers = {
 
                 _m setMarkerText format["%1",_label select ((count _label) - 1),_waypointCount];
 
-                _markers set [count _markers, _m];
+                _markers pushback _m;
 
                 [_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
 
@@ -238,7 +238,7 @@ _createMarkers = {
 
                 _m setMarkerText format["e%1",_label select ((count _label) - 1)];
 
-				_markers set [count _markers, _m];
+				_markers pushback _m;
 
 				[_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
         };
@@ -365,7 +365,7 @@ switch(_operation) do {
 				if(typeName _args == "ARRAY") then {
 						
 						if(count _args == 2) then  {
-							_args set [count _args, 0];
+							_args pushback 0;
 						};
 
 						if!(((_args select 0) + (_args select 1)) == 0) then {
@@ -522,7 +522,7 @@ switch(_operation) do {
 
 				if(typeName _args == "ARRAY") then {
 						_waypoints = _logic select 2 select 16; //[_logic,"waypoints"] call ALIVE_fnc_hashGet;
-						_waypoints set [count _waypoints, _args];
+						_waypoints pushback _args;
 						
 						if(([_args,"type"] call ALIVE_fnc_hashGet) == 'CYCLE') then {
 							[_logic,"isCycling",true] call ALIVE_fnc_hashSet;
@@ -585,7 +585,7 @@ switch(_operation) do {
                     if (!(isnil "_type") && {_type == "entity"}) then {
 
                         _activeCommands = _logic select 2 select 26; //[_logic,"commands"] call ALIVE_fnc_hashGet;
-                        _activeCommands set [count _activeCommands, _args];
+                        _activeCommands pushback _args;
                     };
                 };
 		};
@@ -611,7 +611,7 @@ switch(_operation) do {
                 if (!(isnil "_type") && {_type == "entity"}) then {
 					if(typeName _args == "ARRAY") then {
 							_inactiveCommands = _logic select 2 select 27; //[_logic,"commands"] call ALIVE_fnc_hashGet;
-							_inactiveCommands set [count _inactiveCommands, _args];
+							_inactiveCommands pushback _args;
 	                };
                 };
 		};
@@ -741,7 +741,7 @@ switch(_operation) do {
                                     [_unit] joinSilent _newGroup;
                                 };
 
-                                _removeIndexes set [count _removeIndexes, (_forEachIndex - 1)];
+                                _removeIndexes pushback (_forEachIndex - 1);
 
                             };
                         } forEach _unitClasses;
@@ -1206,7 +1206,7 @@ switch(_operation) do {
 						_m setMarkerColor _color;
 						_m setMarkerAlpha _alpha;
 						
-						_markers set [count _markers, _m];
+						_markers pushback _m;
 
 						[_logic,"markers",_markers] call ALIVE_fnc_hashSet;
 					};

@@ -53,9 +53,9 @@ _ranks = [];
 _damages = [];
 
 {
-    _positions set [count _positions, _position];
-    _ranks set [count _ranks, _unitRanks call BIS_fnc_selectRandom];
-    _damages set [count _damages, 0];
+    _positions pushback _position;
+    _ranks pushback (_unitRanks call BIS_fnc_selectRandom);
+    _damages pushback 0;
 } foreach _entityClasses;
 
 _profileEntity = [nil, "create"] call ALIVE_fnc_profileEntity;

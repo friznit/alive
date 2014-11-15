@@ -123,7 +123,7 @@ _engaged = [0,0,0];
                     
 					if (isnil "_isAir" && {!isnil "_collect"}) then {
 					   
-						_clash set [count _clash,[_profileID,_currentPosition,_side,_vehiclesInCommandOf]];
+						_clash pushback [_profileID,_currentPosition,_side,_vehiclesInCommandOf];
 						
 						switch (_side) do {
 							case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
@@ -162,7 +162,7 @@ _engaged = [0,0,0];
 						if(_distance <= (_moveDistance * 2)) then {
 
 							if(_isCycling) then {
-								_waypointsCompleted set [count _waypointsCompleted,_activeWaypoint];
+								_waypointsCompleted pushback _activeWaypoint;
 							};
 							
 							_waypoints set [0,objNull];
@@ -396,7 +396,7 @@ _toBekilled = [];
     // Enemy sides near, chance of death by weighting
     if ((({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0) && (_killFactor > _surviveFactor)) then {
         _clash set [_foreachIndex,["",[0,0,0],""]];
-        _toBekilled set [count _toBekilled,_profileID];
+        _toBekilled pushback _profileID;
     };
 } foreach _clash;
 

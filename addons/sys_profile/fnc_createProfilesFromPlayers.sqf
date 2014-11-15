@@ -105,10 +105,10 @@ if!(isNil "_registeredProfile") then {
 
                 {
                     _unit = _x;
-                    _unitClasses set [count _unitClasses, typeOf _x];
-                    _positions set [count _positions, getPosATL _x];
-                    _ranks set [count _ranks, rank _x];
-                    _damages set [count _damages, getDammage _x];
+                    _unitClasses pushback (typeOf _x);
+                    _positions pushback (getPosATL _x);
+                    _ranks pushback (rank _x);
+                    _damages pushback (getDammage _x);
 
                     _unitCount = _unitCount + 1;
 
@@ -191,10 +191,10 @@ if!(isNil "_registeredProfile") then {
 
                 {
                     _unit = _x;
-                    _unitClasses set [count _unitClasses, typeOf _x];
-                    _positions set [count _positions, getPosATL _x];
-                    _ranks set [count _ranks, rank _x];
-                    _damages set [count _damages, getDammage _x];
+                    _unitClasses pushback (typeOf _x);
+                    _positions pushback (getPosATL _x);
+                    _ranks pushback (rank _x);
+                    _damages pushback (getDammage _x);
 
                     _unitCount = _unitCount + 1;
 
@@ -267,11 +267,11 @@ if!(isNil "_registeredProfile") then {
                     if(_leader getVariable ["profileID",""] == "") then {
 
                         {
-                            _unit = _x;
-                            _unitClasses set [count _unitClasses, typeOf _x];
-                            _positions set [count _positions, getPosATL _x];
-                            _ranks set [count _ranks, rank _x];
-                            _damages set [count _damages, getDammage _x];
+		                    _unit = _x;
+		                    _unitClasses pushback (typeOf _x);
+		                    _positions pushback (getPosATL _x);
+		                    _ranks pushback (rank _x);
+		                    _damages pushback (getDammage _x);
 
                             // set profile id on the unit
                             _unit setVariable ["profileID", _profileID];
@@ -375,10 +375,10 @@ if!(isNil "_registeredProfile") then {
 
                 {
                     _unit = _x;
-                    _unitClasses set [count _unitClasses, typeOf _x];
-                    _positions set [count _positions, getPosATL _x];
-                    _ranks set [count _ranks, rank _x];
-                    _damages set [count _damages, getDammage _x];
+                    _unitClasses pushback (typeOf _x);
+                    _positions pushback (getPosATL _x);
+                    _ranks pushback (rank _x);
+                    _damages pushback (getDammage _x);
 
                     // set profile id on the unit
                     _unit setVariable ["profileID", _profileID];
@@ -434,10 +434,10 @@ if!(isNil "_registeredProfile") then {
 
                 {
                     _unit = _x;
-                    _unitClasses set [count _unitClasses, typeOf _x];
-                    _positions set [count _positions, getPosATL _x];
-                    _ranks set [count _ranks, rank _x];
-                    _damages set [count _damages, getDammage _x];
+                    _unitClasses pushback (typeOf _x);
+                    _positions pushback (getPosATL _x);
+                    _ranks pushback (rank _x);
+                    _damages pushback (getDammage _x);
 
                     // set profile id on the unit
                     _unit setVariable ["profileID", _profileID];
@@ -554,10 +554,10 @@ if!(isNil "_registeredProfile") then {
 
                 {
                     _unit = _x;
-                    _unitClasses set [count _unitClasses, typeOf _x];
-                    _positions set [count _positions, getPosATL _x];
-                    _ranks set [count _ranks, rank _x];
-                    _damages set [count _damages, getDammage _x];
+                    _unitClasses pushback (typeOf _x);
+                    _positions pushback (getPosATL _x);
+                    _ranks pushback (rank _x);
+                    _damages pushback (getDammage _x);
 
                     // set profile id on the unit
                     _unit setVariable ["profileID", _profileID];
@@ -613,10 +613,10 @@ if!(isNil "_registeredProfile") then {
 
                 {
                     _unit = _x;
-                    _unitClasses set [count _unitClasses, typeOf _x];
-                    _positions set [count _positions, getPosATL _x];
-                    _ranks set [count _ranks, rank _x];
-                    _damages set [count _damages, getDammage _x];
+                    _unitClasses pushback (typeOf _x);
+                    _positions pushback (getPosATL _x);
+                    _ranks pushback (rank _x);
+                    _damages pushback (getDammage _x);
 
                     // set profile id on the unit
                     _unit setVariable ["profileID", _profileID];

@@ -57,7 +57,7 @@ _vehicleBlacklist = ["O_UAV_02_F","O_UAV_02_CAS_F","O_UAV_01_F","O_UGV_01_F","O_
 			_group  = group _object;
 
 			if!(_group in _createModeGroups) then {
-			    _createModeGroups set [count _createModeGroups, _group];
+			    _createModeGroups pushback _group;
             };
 
 			if(_createMode == "IGNORE") then {
@@ -73,14 +73,14 @@ _vehicleBlacklist = ["O_UAV_02_F","O_UAV_02_CAS_F","O_UAV_01_F","O_UGV_01_F","O_
                             _vehicle setVariable ["ALIVE_profileIgnore", true];
                         };
 
-						_createModeVehicles set [count _createModeVehicles, _vehicle];
+						_createModeVehicles pushback _vehicle;
 					};
 				};
 			} forEach units _group;
 		}
 	}else{
 		if!(side _object == sideLogic) then {
-			_createModeVehicles set [count _createModeVehicles, _object];
+			_createModeVehicles pushback _object;
 
 			if(_createMode == "IGNORE") then {
                 _object setVariable ["ALIVE_profileIgnore", true];
@@ -127,10 +127,10 @@ if(_debug) then {
 			if((typeOf _x) in _unitBlackist) then {
 				_unitBlacklisted = true;
 			};
-			_unitClasses set [count _unitClasses, typeOf _x];
-			_positions set [count _positions, getPosATL _x];
-			_ranks set [count _ranks, rank _x];
-			_damages set [count _damages, getDammage _x];
+			_unitClasses pushback (typeOf _x);
+			_positions pushback (getPosATL _x);
+			_ranks pushback (rank _x);
+			_damages pushback (getDammage _x);
 		} foreach (_units);
 
 		if (!(vehicle _leader == _leader)) then {

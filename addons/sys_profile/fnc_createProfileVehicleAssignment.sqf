@@ -99,7 +99,7 @@ if(count(_unitIndexes) > 0) then {
 			if(_unitCount == _assignedCount && _assignedCount > 0) then {
 				breakTo "main";
 			};			
-			_assignment set [count _assignment, _unitIndexes select _assignedCount];			
+			_assignment pushback (_unitIndexes select _assignedCount);			
 			_assignedCount = _assignedCount + 1;			
 		};
 	};
