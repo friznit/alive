@@ -4,7 +4,7 @@ class CfgVehicles {
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_GC";
-                function = "ALIVE_fnc_GCInit";
+                function = "ALIVE_fnc_emptyInit";
                 author = MODULE_AUTHOR;
 				functionPriority = 46;
                 isGlobal = 2;
