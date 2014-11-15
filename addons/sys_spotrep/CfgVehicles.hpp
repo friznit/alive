@@ -5,7 +5,7 @@ class CfgVehicles {
         {
         		scope = 1;
 				displayName = "$STR_ALIVE_spotrep";
-				//function = "";
+				function = "ALIVE_fnc_emptyInit";
 				functionPriority = 43;
 				isGlobal = 2;
 				icon = "x\alive\addons\sys_spotrep\icon_sys_spotrep.paa";

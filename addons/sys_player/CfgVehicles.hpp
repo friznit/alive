@@ -4,7 +4,7 @@ class CfgVehicles {
         {
 				scope = 1;
 				displayName = "$STR_ALIVE_player";
-//				function = "ALIVE_fnc_playerInit";
+				function = "ALIVE_fnc_emptyInit";
 				functionPriority = 202;
 				isGlobal = 2;
 				icon = "x\alive\addons\sys_player\icon_sys_player.paa";

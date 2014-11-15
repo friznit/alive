@@ -4,7 +4,7 @@ class CfgVehicles {
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_PLAYERTAGS";
-   //             function = "ALIVE_fnc_playertagsInit";
+				function = "ALIVE_fnc_emptyInit";
                 functionPriority = 204;
                 isGlobal = 1;
                 isPersistent = 1;
