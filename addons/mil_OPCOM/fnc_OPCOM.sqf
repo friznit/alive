@@ -965,15 +965,18 @@ switch(_operation) do {
 					// if a new value was provided set groups list
 					ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
                     
+                    waituntil {[_logic,"startupComplete",false] call ALiVE_fnc_HashGet && {([_logic,"OPCOM_FSM",-1] call ALiVE_fnc_HashGet) > -1} && {!isNil {([_logic,"OPCOM_FSM",-1] call ALiVE_fnc_HashGet) getFSMVariable "_pause"}}};
+                                        
                     private ["_state"];
+                    
                     _state = [_logic,"pause",objNull,false] call ALIVE_fnc_OOsimpleOperation;
                     if (_state && _args) exitwith {};
                     
                     //Set value
                     _args = [_logic,"pause",_args,false] call ALIVE_fnc_OOsimpleOperation;
                     
-                    _OPCOM_FSM = [_logic,"opcom_fsm",-1] call ALiVE_fnc_HashGet;
-                    _TACOM_FSM = [_logic,"tacom_fsm",-1] call ALiVE_fnc_HashGet;
+                    _OPCOM_FSM = [_logic,"OPCOM_FSM",-1] call ALiVE_fnc_HashGet;
+                    _TACOM_FSM = [_logic,"TACOM_FSM",-1] call ALiVE_fnc_HashGet;
                     
                     _TACOM_FSM setFSMvariable ["_pause",_args];
                     _OPCOM_FSM setFSMvariable ["_pause",_args];
@@ -1993,8 +1996,8 @@ switch(_operation) do {
                     case ("ARRAY") : {};     
                 };
             
-                _OPCOM_FSM = [_logic,"opcom_fsm",-1] call ALiVE_fnc_HashGet;
-                _TACOM_FSM = [_logic,"tacom_fsm",-1] call ALiVE_fnc_HashGet;
+                _OPCOM_FSM = [_logic,"OPCOM_FSM",-1] call ALiVE_fnc_HashGet;
+                _TACOM_FSM = [_logic,"TACOM_FSM",-1] call ALiVE_fnc_HashGet;
                 _module = [_logic, "module",objNull] call ALiVE_fnc_HashGet;
                 
                 _TACOM_FSM setFSMvariable ["_exitFSM",true];
