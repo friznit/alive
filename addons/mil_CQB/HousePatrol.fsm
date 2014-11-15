@@ -288,7 +288,7 @@ class FSM
        "			} else {" \n
        "				_pos = _bldgpos select 0;" \n
        "				_bldgpos = _bldgpos - [_pos];" \n
-       "				_bldgpos set [count _bldgpos,_pos];" \n
+       "				_bldgpos pushback _pos;" \n
        "			};" \n
        "" \n
        "			_timeout = time;" \n

@@ -79,7 +79,7 @@ _nonstrathouses = [];
 			} forEach _houses;
 			
 			if (_collect) then {
-				_houses set [count _houses, _obj];
+				_houses pushback _obj;
 			};
 		};
     };

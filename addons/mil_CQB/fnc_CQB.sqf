@@ -235,7 +235,7 @@ switch(_operation) do {
 					};
 
 					{
-						_collection set [(count _collection), [([_x,"center"] call ALiVE_fnc_HashGet), ([_x,"size"] call ALiVE_fnc_HashGet)]];
+						_collection pushback [([_x,"center"] call ALiVE_fnc_HashGet), ([_x,"size"] call ALiVE_fnc_HashGet)];
 					} foreach _objectives;
 
 					["ALiVE CQB Houses loaded from objectives!"] call ALiVE_fnc_Dump;
@@ -250,11 +250,11 @@ switch(_operation) do {
 							{ // forEach
 								private ["_size"];
 								_size = size _x;
-								_collection set [(count _collection), [(getPos _x), ((_size select 0) max (_size select 1))]];
+								_collection pushback [(getPos _x), ((_size select 0) max (_size select 1))];
 							} foreach _objectives;
 						};
 						case ("all") : {
-							_collection set [count _collection, [_center, _radius]];
+							_collection pushback [_center, _radius];
 						};
 						default {};
 					};
@@ -482,7 +482,7 @@ switch(_operation) do {
                     if (count _avgArr == 5) then {_avgArr set [0,0]; _avgArr = _avgArr - [0]};
 
                     //Add current FPS
-                    _avgArr set [count _avgArr,diag_fps];
+                    _avgArr pushback diag_fps;
 
                     //Calculate average
                     _avg = 0; {_avg = _avg + _x} foreach _avgArr; _avg = _avg / (count _avgArr);
@@ -681,7 +681,7 @@ switch(_operation) do {
 	                    //Set data Identifyer
 	                    _house setVariable ["_rev",([_x,"_rev"] call ALiVE_fnc_HashGet), true];
 
-	                    _data set [count _data, _house];
+	                    _data pushback _house;
 	                };
 				} forEach (([_args, "houses"] call ALiVE_fnc_hashGet) select 2);
 
@@ -815,7 +815,7 @@ switch(_operation) do {
             	_sectorID = [([ALIVE_sectorGrid, "positionToSector", getposATL _x] call ALIVE_fnc_sectorGrid), "id"] call ALiVE_fnc_HashGet;
 
                 if !(_sectorID in _cleared) then {
-					_houses set [(count _houses), _x];
+					_houses pushback _x;
                     _x setVariable ["sectorID", _sectorID];
                 };
             } forEach _args;
