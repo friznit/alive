@@ -1002,7 +1002,10 @@ switch(_operation) do {
 				_side = _logic select 2 select 3; //[_logic, "side"] call MAINCLASS;
 				_activeCommands = _logic select 2 select 26; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
-				
+
+                //Don't despawn player profiles
+                if ([_logic, "isPlayer",false] call ALIVE_fnc_HashGet) exitwith {};
+                
 				_unitCount = 0;
 
 				// not already inactive
