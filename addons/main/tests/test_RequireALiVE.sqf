@@ -101,7 +101,7 @@ ALiVE_SYS_MARKER = nil;
 
 STAT("Destroying Event log");
 [ALIVE_eventLog, "destroy"] call ALIVE_fnc_eventLog;
-ALIVE_eventLog = nil
+ALIVE_eventLog = nil;
 
 STAT("Destroying Require ALiVE instances");
 ALiVE_Require setVariable ["init", nil];
