@@ -169,19 +169,7 @@ switch(_operation) do {
 
         };
         case "destroy": {
-                if (isServer) then {
-                        // if server
-                        _logic setVariable ["super", nil];
-                        _logic setVariable ["class", nil];
-                        _logic setVariable ["init", nil];
-                        
-                        [_logic,"destroy"] call SUPERCLASS;
-                        
-                        ADDON = _logic;
-                        publicVariable QUOTE(ADDON);
-                };
-
-                if(!isDedicated && !isHC) then {
+                if (hasInterface) then {
                         // remove main menu
                         [
                                 "player",
@@ -192,6 +180,18 @@ switch(_operation) do {
                                         "main"
                                 ]
                         ] call ALIVE_fnc_flexiMenu_Remove;
+                };
+                
+                if (isServer) then {
+                        // if server
+                        _logic setVariable ["super", nil];
+                        _logic setVariable ["class", nil];
+                        _logic setVariable ["init", nil];
+                        
+                        [_logic,"destroy"] call SUPERCLASS;
+                        
+                        ADDON = _logic;
+                        publicVariable QUOTE(ADDON);
                 };
         };
         default {
