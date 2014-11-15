@@ -85,7 +85,7 @@ _expanded = [];
 	    //["--- OBJ: %1 SEARCH: %2",_x,_p3dname] call ALIVE_fnc_dump;
 		if([_p3dname, _x] call CBA_fnc_find != -1) then {
 		    //["FOUND OBJECT: %1 WITH: %2",_x,_p3dname] call ALIVE_fnc_dump;
-			_expanded set [count _expanded, _p3dname];
+			_expanded pushback _p3dname;
 		};
 	} forEach _types;
 } forEach (_object_hash select 1);
@@ -110,7 +110,7 @@ _obj_array = [];
 	_id = _x select 0;
 	_pos = _x select 1;
 	//["SET OBJECT: %1",_id] call ALIVE_fnc_dump;
-	_obj_array set [count _obj_array, _pos nearestObject _id];
+	_obj_array pushback (_pos nearestObject _id);
 } forEach _data_array;
 ASSERT_DEFINED("_obj_array",_err);
 ASSERT_TRUE(typeName _obj_array == "ARRAY", "_obj_array invalid");

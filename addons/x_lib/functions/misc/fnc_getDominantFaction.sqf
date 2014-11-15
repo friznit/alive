@@ -37,13 +37,13 @@ if !(isnil "ALIVE_profileHandler") then {
 _facs = [];
 {
     if (((_x select 2 select 5) == "entity") && {!(_x select 2 select 1)} && {!(_x select 2 select 30)} && {(_x select 2 select 2) distance _pos < _radius}) then {
-        _facs set [count _facs,(_x select 2 select 29)];
+        _facs pushback (_x select 2 select 29);
     };
 } foreach (_profiles select 2);
 
 {
     if ((_pos distance (getposATL (leader _x)) < _radius) && {{isPlayer _x} count (units _x) < 1}) then {
-        _facs set [count _facs,faction(leader _x)];
+        _facs pushback (faction(leader _x));
     };
 } foreach allgroups;
 
@@ -56,7 +56,7 @@ _result = [];
     _cnt = {_fac == _x} count _facs;
     
     if (_cnt > 0) then {
-    	_result set [count _result,[_fac,_cnt]];
+    	_result pushback [_fac,_cnt];
     	_facs = _facs - [_fac];
     };
 } foreach _facs;

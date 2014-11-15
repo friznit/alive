@@ -96,7 +96,7 @@ JSON_fnc_parse = {
 						_done = true;
 					} else {
 						if (_char != ASCII_QUOTES) then {
-							_tmpKey set [count _tmpKey, _char];
+							_tmpKey pushback _char;
 						};
 					};
 					_pos = _pos + 1;
@@ -147,7 +147,7 @@ JSON_fnc_parse = {
 							if (isNil "_value") then {
 								_tmpArr = [];
 							} else {
-								_tmpArr set [count _tmpArr, _value];
+								_tmpArr pushback _value;
 							};
 							 TRACE_1("Finishing array", _tmpArr);
 							_result = [_tmpArr,_pos];
@@ -169,7 +169,7 @@ JSON_fnc_parse = {
 								};
 								case JSON_TYPE_ARRAY: {
 									 TRACE_2("setting array", _tmpArr, _value);
-									_tmpArr set [count _tmpArr, _value];
+									_tmpArr pushback _value;
 									_tmpVal = [];
 									_value = "";
 								};
@@ -184,7 +184,7 @@ JSON_fnc_parse = {
 						case default {
 							// must be a String Value
 							if (_char != ASCII_QUOTES) then {
-								_tmpVal set [count _tmpVal, _char];
+								_tmpVal pushback _char;
 								_value = toString _tmpVal;
 								if (_value == "any") then {_value = "nil";};
 							};

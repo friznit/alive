@@ -37,19 +37,19 @@ _found = false;
 _enemySides = [];
 
 if(_side getFriend east < 0.6) then {
-    _enemySides set [count _enemySides,east];
+    _enemySides pushback east;
 };
 
 if(_side getFriend west < 0.6) then {
-    _enemySides set [count _enemySides,west];
+    _enemySides pushback west;
 };
 
 if(_side getFriend resistance < 0.6) then {
-    _enemySides set [count _enemySides,resistance];
+    _enemySides pushback resistance;
 };
 
 if(_side getFriend civilian < 0.6) then {
-    _enemySides set [count _enemySides,civilian];
+    _enemySides pushback civilian;
 };
 
 ["ENEMY SIDES: %1",_enemySides] call ALIVE_fnc_dump;

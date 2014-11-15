@@ -35,7 +35,7 @@ _hitPoints = _type call ALIVE_fnc_configGetVehicleHitPoints;
 
 {
 	_hitDamage = _vehicle getHitPointDamage _x;
-	_result set [count _result, [_x,_hitDamage]];
+	_result pushback [_x,_hitDamage];
 } forEach _hitPoints;
 
 _result

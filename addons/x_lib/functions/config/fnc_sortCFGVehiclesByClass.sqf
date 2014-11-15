@@ -59,7 +59,7 @@ for "_i" from 0 to ((count _configPath) - 1) do
                 [_sortedVehicles,_vehicleClass,[_configName]] call ALIVE_fnc_hashSet;
             }else{
                 _subSorted = [_sortedVehicles,_vehicleClass] call ALIVE_fnc_hashGet;
-                _subSorted set [count _subSorted,_configName];
+                _subSorted pushback _configName;
                 [_sortedVehicles,_vehicleClass,_subSorted] call ALIVE_fnc_hashSet;
             };
 

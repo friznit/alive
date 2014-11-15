@@ -59,7 +59,7 @@ switch (typeName _this) do
 				_output set [(_forEachIndex + _offset), _x];
 			} forEach toArray(_this);
 			
-			_output set [(count _output), 22];
+			_output pushback 22;
 			toString(_output) // Return
 		}
 		else

@@ -48,7 +48,7 @@ _sideUnits = [] call ALIVE_fnc_hashCreate;
 	};
 	
 	_sideUnitsArray = [_sideUnits, format["%1",_side]] call ALIVE_fnc_hashGet;
-	_sideUnitsArray set [count _sideUnitsArray, _x];
+	_sideUnitsArray pushback _x;
 	
 } forEach _units;
 

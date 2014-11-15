@@ -107,7 +107,7 @@ switch(_operation) do {
 				
 				_block = [];
 				for "_i" from _currentPointer to (_limit)-1 do {
-					_block set [count _block, _sourceArray select _i];
+					_block pushback (_sourceArray select _i);
 				};
 				
 				_result = _block;

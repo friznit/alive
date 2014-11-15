@@ -23,7 +23,7 @@ if (_index >= 0) then
 	// Note: 48 = Digit Zero; 49 = Digit One;
 	while {(count _logLevel) < _index} do
 	{
-		_logLevel set [(count _logLevel), 48];
+		_logLevel pushback 48;
 	};
 	
 	_logLevel set [_index, (if (_this select 1) then {49} else {48})];

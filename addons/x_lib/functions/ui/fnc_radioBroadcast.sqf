@@ -82,7 +82,7 @@ if(_fromUnit || _toUnit) then {
     {
     	if !(_forEachIndex in [0,1]) then
     	{
-    		_fromCallSign set [count _fromCallSign, _x];
+    		_fromCallSign pushback _x;
     	};
     } forEach _groupArray;
 

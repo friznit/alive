@@ -100,7 +100,7 @@ if(count _units > 1) then
 			_unit = _units call BIS_fnc_arrayPop;
 			_unit assignAsGunner _vehicle;
 			if(_orderIn) then { [_unit] orderGetIn true; };
-			_gunners set [count _gunners, _unit];
+			_gunners pushback _unit;
 		};			
 	};
 	_assignments set [1, _gunners];
@@ -119,7 +119,7 @@ if(count _units > 1) then
 				    _unit = _units call BIS_fnc_arrayPop;
                     _unit assignAsTurret [_vehicle, _turretPath];
                     if(_orderIn) then { [_unit] orderGetIn true; };
-                    _turrets set [count _turrets, _unit];
+                    _turrets pushback _unit;
 				};
 			};			
 		};
@@ -130,7 +130,7 @@ if(count _units > 1) then
 	{
 		_x assignAsCargo _vehicle;			
 		if(_orderIn) then { [_x] orderGetIn true; };	
-		_cargos set [count _cargos, _x];
+		_cargos pushback _x;
 	} forEach _units;		
 	_assignments set [3, _cargos];
 }

@@ -33,7 +33,7 @@ _result = [];
 	if(alive _x) then {
 		_group = group _x;
 		if!(_group in _result) then {
-			_result set [count _result, _group];
+			_result pushback _group;
 		};
 	};
 } forEach (crew _vehicle);

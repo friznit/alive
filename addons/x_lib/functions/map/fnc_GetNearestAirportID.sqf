@@ -8,7 +8,7 @@ _Airports = [[_Primary,0]];
 
 for "_i" from 0 to ((count _Secondary)-1) do {
 	_ILS = getArray(((configFile >> "cfgWorlds" >> WorldName >> "SecondaryAirports") select _i) >> "ilsPosition");
-	_Airports set [count _Airports,[_ILS,_i+1]];
+	_Airports pushback [_ILS,_i+1];
 };
 
 _Airports = [_Airports,[],{_pos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;

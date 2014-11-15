@@ -46,7 +46,7 @@ _unittypes = [];
 if(count _types > 0) then {
     for "_i" from 1 to _count do {
         while {_unittype = _types call BIS_fnc_selectRandom; (_unittype in _blacklist)} do {true};
-        _unittypes set [count _unittypes, _unittype];
+        _unittypes pushback _unittype;
     };
 };
 

@@ -106,7 +106,7 @@ _cfgFindFaction = {
 
     	if!(isNil "_currentFaction") then {
     	    if(_currentFaction == _faction) then {
-    	        _result set [count _result, _root];
+    	        _result pushback _root;
     	    };
     	};
 
@@ -398,7 +398,7 @@ for "_i" from 0 to count _config -1 do {
             if(_currentFaction == _faction) then {
                 if(_configName isKindOf "Man") then {
                     if([_class >> "scope"] call _cfgValue == 2) then {
-                        _factionMen set [count _factionMen, _class];
+                        _factionMen pushback _class;
                     };
                 }else{
                     if([_class >> "scope"] call _cfgValue == 2) then {
@@ -409,7 +409,7 @@ for "_i" from 0 to count _config -1 do {
                         };
 
                         _factionVehicleTypes = [_factionVehicles,_vehicleType] call ALIVE_fnc_hashGet;
-                        _factionVehicleTypes set [count _factionVehicleTypes, _class];
+                        _factionVehicleTypes pushback _class;
 
                         [_factionVehicles,_vehicleType,_factionVehicleTypes] call ALIVE_fnc_hashSet;
                     };

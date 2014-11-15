@@ -55,16 +55,16 @@ for "_y" from 1 to count(configFile >> "CfgVehicles") - 1 do {
 									if (!isnil "_type") then {
 										if (_cx isKindOf _type) then {
 	                                        if (_noWeapons) then {
-	                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+	                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs pushback _cx};
 	                                        } else {
-                                                _allvehs set [count _allvehs, _cx];
+                                                _allvehs pushback _cx;
                                             };
 										};
 									} else {
 										if (_noWeapons) then {
-                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs pushback _cx};
                                         } else {
-                                            _allvehs set [count _allvehs, _cx];
+                                            _allvehs pushback _cx;
                                         };
 									};
 								};
@@ -74,16 +74,16 @@ for "_y" from 1 to count(configFile >> "CfgVehicles") - 1 do {
 									if (!isnil "_type") then {
 										if (_cx isKindOf _type) then {
 	                                        if (_noWeapons) then {
-	                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+	                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs pushback _cx};
 	                                        } else {
-                                                _allvehs set [count _allvehs, _cx];
+                                                _allvehs pushback _cx;
                                             };
 										};
 									} else {
 										if (_noWeapons) then {
-                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs set [count _allvehs, _cx]};
+                    						if ([_cx] call ALiVE_fnc_isArmed) then {_allvehs pushback _cx};
                                         } else {
-                                            _allvehs set [count _allvehs, _cx];
+                                            _allvehs pushback _cx;
                                         };
 									};
 								};

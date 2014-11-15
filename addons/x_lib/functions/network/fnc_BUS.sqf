@@ -125,7 +125,7 @@ if (isnil "ALiVE_BUSEH") then {
 		//Delete archived- and finished-queue after 100/40 entries to increase performance
 		if ((count BUS_finished >= (BUFFER * 2)) || {(count BUS_archived >= ARCHIVELIMIT)}) then {
 			for "_i" from 0 to BUFFER do {
-				BUS_archived set [count BUS_archived,BUS_finished select _i];
+				BUS_archived pushback (BUS_finished select _i);
 				BUS_finished set [_i,"X"];
 				
 				if (count BUS_archived >= ARCHIVELIMIT) then {
@@ -184,7 +184,7 @@ if (isnil "ALiVE_fnc_BUS_RetVal") then {
         
 		while {_retV = nil;_retV = ((BUS_finished select _idxv) select 1) select 2; (isnil "_retV") && {(time - _timeOut) < 5}} do {};
 		
-		BUS_archived set [count BUS_archived,BUS_finished select _idxv];
+		BUS_archived pushback (BUS_finished select _idxv);
 		BUS_finished set [_idxv,"X"];
 		BUS_finished = BUS_finished - ["X"];
 		

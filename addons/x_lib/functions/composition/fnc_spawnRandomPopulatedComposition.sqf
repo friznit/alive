@@ -56,14 +56,14 @@ _groups = [];
 for "_i" from 0 to _countArmored -1 do {
     _group = ["Armored",_faction] call ALIVE_fnc_configGetRandomGroup;
     if!(_group == "FALSE") then {
-        _groups set [count _groups, _group];
+        _groups pushback _group;
     };
 };
 
 for "_i" from 0 to _countMechanized -1 do {
     _group = ["Mechanized",_faction] call ALIVE_fnc_configGetRandomGroup;
     if!(_group == "FALSE") then {
-        _groups set [count _groups, _group];
+        _groups pushback _group;
     }
 };
 
@@ -74,7 +74,7 @@ if(_countMotorized > 0) then {
     for "_i" from 0 to _countMotorized -1 do {
         _group = ["Motorized",_faction] call ALIVE_fnc_configGetRandomGroup;
         if!(_group == "FALSE") then {
-            _motorizedGroups set [count _motorizedGroups, _group];
+            _motorizedGroups pushback _group;
         };
     };
 
@@ -82,7 +82,7 @@ if(_countMotorized > 0) then {
         for "_i" from 0 to _countMotorized -1 do {
             _group = ["Motorized_MTP",_faction] call ALIVE_fnc_configGetRandomGroup;
             if!(_group == "FALSE") then {
-                _motorizedGroups set [count _motorizedGroups, _group];
+                _motorizedGroups pushback _group;
             };
         };
     };
@@ -94,7 +94,7 @@ _infantryGroups = [];
 for "_i" from 0 to _countInfantry -1 do {
     _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
     if!(_group == "FALSE") then {
-        _infantryGroups set [count _infantryGroups, _group];
+        _infantryGroups pushback _group;
     }
 };
 
@@ -103,7 +103,7 @@ _groups = _groups + _infantryGroups;
 for "_i" from 0 to _countSpecOps -1 do {
     _group = ["SpecOps",_faction] call ALIVE_fnc_configGetRandomGroup;
     if!(_group == "FALSE") then {
-        _groups set [count _groups, _group];
+        _groups pushback _group;
     };
 };
 

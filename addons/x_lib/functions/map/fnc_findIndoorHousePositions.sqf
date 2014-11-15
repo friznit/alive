@@ -38,7 +38,7 @@ _nearbldgs = nearestObjects [_pos, ["House"], _radius];
         _tmpPositions = [_house] call ALIVE_fnc_getBuildingPositions;
         {
                 if((_x select 2) < (((boundingBox _house) select 1) select 2) - 0.5) then {
-                        _positions set [count _positions, _x];
+                        _positions pushback _x;
                 };
         } forEach _tmppositions;
 } forEach _nearbldgs;

@@ -36,7 +36,7 @@ _sides = [];
     private ["_side"];
     
     _side = (typeOf _x) call ALiVE_fnc_classSide;
-    if !(_side in _sides) then {_sides set [count _sides,_side]};
+    if !(_side in _sides) then {_sides pushback _side};
 } foreach _objects;
 
 _sides;

@@ -53,7 +53,7 @@ if (_headless) then {
     while {isnull player} do {};
 	
 	if (!(isnull player) && {!(player in headlessClients)}) then {
-		headlessClients set [count headlessClients, player];
+		headlessClients pushback player;
 		publicVariable "headlessClients";
 	};
 };

@@ -40,8 +40,8 @@ _players = call BIS_fnc_listPlayers;
 	    _playerSide = (faction _x) call ALiVE_fnc_FactionSide;
 	    _playerSideNumber = [_playerSide] call ALIVE_fnc_sideObjectToNumber;
 	    if(_sideNumber == _playerSideNumber) then {
-	        _options set [count _options,format["%1 - %2",name _x, group _x]];
-	        _values set [count _values,getPlayerUID _x];
+	        _options pushback (format["%1 - %2",name _x, group _x]);
+	        _values pushback (getPlayerUID _x);
 	    };
     };
 } foreach _players;

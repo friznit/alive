@@ -45,8 +45,8 @@ for "_i" from 0 to count _factionConfig -1 do {
             _classSideText = [_classSideText] call ALIVE_fnc_sideTextToLong;
 	        _factionClass = configName _class;
             _factionName = getText(_class >> "displayName");
-            _options set [count _options, format["%1 - %2",_factionName,_classSideText]];
-            _values set [count _values, _factionClass];
+            _options pushback (format["%1 - %2",_factionName,_classSideText]);
+            _values pushback _factionClass;
 	    };
 
 	};

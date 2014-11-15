@@ -36,7 +36,7 @@ _positions = [];
 _pos = _house buildingPos _buildingPos + 1;
 while {str _pos != "[0,0,0]"} do {
 	_buildingPos = _buildingPos + 1;
-	_positions set [count _positions, _pos];
+	_positions pushback _pos;
 	_pos = _house buildingPos _buildingPos + 1;
 };
 

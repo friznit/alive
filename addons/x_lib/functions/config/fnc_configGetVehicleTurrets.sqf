@@ -45,7 +45,7 @@ _findRecurse = {
 			_currentPath = _path + [_i];
 			
 			{
-				_result set [count _result, [_x, _x call ALIVE_fnc_configGetWeaponMagazines, _currentPath, str _class]];
+				_result pushback [_x, _x call ALIVE_fnc_configGetWeaponMagazines, _currentPath, str _class];
 			} foreach getArray (_class >> "weapons");
 			
 			_class = _class >> "turrets";

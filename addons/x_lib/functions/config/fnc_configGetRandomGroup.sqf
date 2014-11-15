@@ -111,7 +111,7 @@ if!(_customGroup) then {
             };
 
             if(_countUnits > 0) then {
-                _groups set [count _groups, _class];
+                _groups pushback _class;
             };
         };
     };

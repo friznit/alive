@@ -47,7 +47,7 @@ _InRange = [];
         {(vehicle _x isKindOf "Plane") && {(_x distance _position < _jetSpawnDistance)}} ||
         {(vehicle _x isKindOf "Helicopter") && {(_x distance _position < _helicopterSpawnDistance)}}
     ) then {
-        _inRange set [count _inRange,_x];
+        _inRange pushback _x;
     };
 } forEach _players;
 

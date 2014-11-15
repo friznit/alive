@@ -40,7 +40,7 @@ for "_i" from 0 to (count _hitPoints)-1 do
 	if(isClass _hitPoint) then
 	{
 		_hitName = configName _hitPoint;
-		_result set [count _result, _hitName];
+		_result pushback _hitName;
 	};
 };
 

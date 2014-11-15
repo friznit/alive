@@ -76,7 +76,7 @@ _fnc_processColumn = {
 	// Process terrain in bounds (y)
 	for "_y" from (_bbY select 0) to (_bbY select 1) step (_this select 4) do
 	{
-		_column set [(count _column), [getTerrainHeightASL[_x,_y], _decPrecision] call ALiVE_fnc_roundDecimal];
+		_column pushback ([getTerrainHeightASL[_x,_y], _decPrecision] call ALiVE_fnc_roundDecimal);
 	};
 	
 	// Report thread statistics

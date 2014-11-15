@@ -37,7 +37,7 @@ _aliveUnits = [];
 
 {
 	if(alive _x) then {
-		_aliveUnits set [count _aliveUnits, _x];
+		_aliveUnits pushback _x;
 	};
 	
 } forEach _units;

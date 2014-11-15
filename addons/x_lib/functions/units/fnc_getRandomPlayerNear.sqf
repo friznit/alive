@@ -37,7 +37,7 @@ _players = [] call BIS_fnc_listPlayers;
 
 {
     if(_position distance position _x < _distance) then {
-        _near set [count _near, _x];
+        _near pushback _x;
     }
 } forEach _players;
 

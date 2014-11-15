@@ -58,7 +58,7 @@ if(count _road > 1) then
     	_series = _this select 1;
 
     	if!(_road in _series) then {
-    	    _series set [count _series,_road];
+    	    _series pushback _road;
     	};
 
     	if(count _series == _positionCount || _iterationCount == _positionCount) then {
@@ -78,7 +78,7 @@ if(count _road > 1) then
 
 _positions = [];
 {
-    _positions set [count _positions, position _x];
+    _positions pushback (position _x);
 } forEach _series;
 
 if(_debug) then {

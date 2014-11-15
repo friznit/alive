@@ -42,7 +42,7 @@ ASSERT_TRUE(typeName _radius == "SCALAR",_err);
 _enterable = [];
 {
 	if([_x] call ALIVE_fnc_isHouseEnterable) then{
-		_enterable set [count _enterable, _x];
+		_enterable pushback _x;
 	};
 } forEach (_position nearObjects ["House", _radius]);
 _err = "enterable array not valid";

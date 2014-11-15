@@ -35,7 +35,7 @@ while {str(_building buildingPos _count) != "[0,0,0]"} do {
 _positions = [];
 
 for "_i" from 0 to (_count-1) do {
-	_positions set [count _positions, _building buildingPos _i];
+	_positions pushback (_building buildingPos _i);
 };
 
 buildingPositions = _positions;

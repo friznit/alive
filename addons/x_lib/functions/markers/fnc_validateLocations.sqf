@@ -45,7 +45,7 @@ _result = _obj_array;
 				private["_in"];
 				_in =[_marker, _x] call BIS_fnc_inTrigger;
 				if((!_insideOnly || _in) && !(!_insideOnly && _in)) then {
-					_result set [count _result, _x];
+					_result pushback _x;
 				};
 			} forEach _obj_array;
 		};

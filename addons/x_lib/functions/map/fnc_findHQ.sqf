@@ -42,7 +42,7 @@ DEFAULT_PARAM(2,_dist,2500);
 _result = [];
 {
         if(_x distance _pos <= _dist) then {
-                _result set [count _result, _x];
+                _result pushback _x;
         };
 } forEach _obj_array;
 

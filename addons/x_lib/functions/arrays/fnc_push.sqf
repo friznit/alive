@@ -17,6 +17,6 @@
 private ["_arr"];
 _arr = _this select 0;
 
-_arr set [(count _arr), (_this select 1)];
+_arr pushback (_this select 1);
 
 _arr

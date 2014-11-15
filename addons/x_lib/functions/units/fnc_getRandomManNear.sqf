@@ -36,7 +36,7 @@ _result = [];
 
 {
     if(_position distance position _x < _distance) then {
-        _near set [count _near, _x];
+        _near pushback _x;
     }
 } forEach (_position nearObjects ["CAManBase",_distance]);
 

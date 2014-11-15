@@ -64,7 +64,7 @@ _findRecurse = {
 			//["class: %1 ignore: %2 gunner: %3 observer: %4 person: %5",_class,_ignore,getNumber(_class >> "primaryGunner"),getNumber(_class >> "primaryObserver"),getNumber(_class >> "isPersonTurret")] call ALIVE_fnc_dump;
 			
 			if!(_ignore) then {
-				_result set [count _result, _currentPath];
+				_result pushback _currentPath;
 			};			
 			
 			_class = _class >> "turrets";

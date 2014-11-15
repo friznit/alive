@@ -37,7 +37,7 @@ _result = [];
 		_vehicle = (vehicle _x);
 		
 		if!(_vehicle in _result) then {
-			_result set [count _result, _vehicle];
+			_result pushback _vehicle;
 		};	
 	};
 } forEach _units;

@@ -40,7 +40,7 @@ if(surfaceIsWater [_position select 0,_position select 1]) then
 
     _position = _bestPositions select 0;
     _position = _position select 0;
-    _position set [count _position, 0];
+    _position pushback 0;
 };
 
 _position

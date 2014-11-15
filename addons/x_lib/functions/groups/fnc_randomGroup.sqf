@@ -70,7 +70,7 @@ if(typeName _fac == "ANY" || typeName _fac == "SIDE") then {
         {
                 _fx = getNumber(configFile >> "CfgFactionClasses" >> _x >> "side");
                 if (_fx == _sidex) then {
-                        _facs set [count _facs, _x];
+                        _facs pushback _x;
                 };
         } forEach GVAR(ALLFACTIONS);
         _fac = nil;
@@ -103,7 +103,7 @@ if(!isNil "_facs") then {
                         _grpx = count(configFile >> "CfgGroups" >> _s >> _x >> _type);
                         for "_y" from 1 to _grpx - 1 do {
                                 if (!(_x in _facx)) then { 
-                                        _facx set [count _facx, _x];
+                                        _facx pushback _x;
                                 };
                         };
                 } forEach _facs;
@@ -152,7 +152,7 @@ if !(count _facs == 0) then {
 			private "_cx";
 			_cx = configName ((configFile >> "CfgGroups" >> _s >> _fac >> _type) select _y);
 			if ( {(_cx == _x)} count _nonConfigs == 0 ) then {	
-				_grps set [count _grps, (configFile >> "CfgGroups" >> _s >> _fac >> _type) select _y];			
+				_grps pushback ((configFile >> "CfgGroups" >> _s >> _fac >> _type) select _y);			
 			};	
 	};
 	//hint str _grps;
