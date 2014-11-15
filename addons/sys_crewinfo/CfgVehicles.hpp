@@ -4,7 +4,7 @@ class CfgVehicles {
         {
                 scope = 1;
                 displayName = "$STR_ALIVE_CREWINFO";
-  //              function = "ALIVE_fnc_crewinfoInit";
+                function = "ALIVE_fnc_emptyInit";
                 author = MODULE_AUTHOR;
                 functionPriority = 203;
                 isGlobal = 1;
