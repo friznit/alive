@@ -1531,3 +1531,10 @@ class vehicleSetDamage
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+
+class emptyInit
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_emptyInit.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
