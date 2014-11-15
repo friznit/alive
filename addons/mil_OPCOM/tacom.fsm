@@ -794,7 +794,7 @@ class FSM
       init = /*%FSM<STATEINIT""">*/"_TACOM_status = ""collect data to queue"";" \n
        "_timestamp = time;" \n
        "" \n
-       "_TACOM_QUEUE set [count _TACOM_QUEUE,_TACOM_DATA];" \n
+       "_TACOM_QUEUE pushback _TACOM_DATA;" \n
        "_TACOM_DATA = nil;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -904,7 +904,7 @@ class FSM
        "	for ""_i"" from 0 to ((_size - (count _section)) - 1) do {" \n
        "		if (_i > ((count _sectionAssist) - 1)) exitwith {};" \n
        "" \n
-       "		_section set [count _section,_sectionAssist select _i];" \n
+       "		_section pushback (_sectionAssist select _i);" \n
        "	};" \n
        "	[_objective,""section"",_section] call AliVE_fnc_HashSet;" \n
        "};" \n

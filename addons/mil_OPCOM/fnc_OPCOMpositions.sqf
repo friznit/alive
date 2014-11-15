@@ -51,7 +51,7 @@ _result = [];
     
     if (_OPCOM_state == _state) then {
         _pos = [_objective,"center"] call ALiVE_fnc_HashGet;
-        _result set [count _result,_pos];
+        _result pushback _pos;
     };
 } foreach _objectives;
 

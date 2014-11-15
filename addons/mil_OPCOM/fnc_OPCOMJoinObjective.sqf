@@ -52,6 +52,6 @@ switch (_state) do {
 	case ("defending") : {_color = "COLORBLUE"};
 };
 
-_objectives = []; {_objectives set [count _objectives,_x]} foreach ([_logic,"nearestObjectives",[_position,_state]] call ALiVE_fnc_OPCOM);
+_objectives = []; {_objectives pushback _x} foreach ([_logic,"nearestObjectives",[_position,_state]] call ALiVE_fnc_OPCOM);
 
 [_logic,"joinObjectiveClient",[_unit,_objectives,_color]] call ALiVE_fnc_OPCOM;

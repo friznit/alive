@@ -41,7 +41,7 @@ if(ALiVE_SYS_DATA_DEBUG_ON) then {
 
 	{
         if ([_x,"persistent",false] call ALIVE_fnc_HashGet) then {
-			_result set [count _result,[([_x,"loadData"] call ALIVE_fnc_OPCOM)]];
+			_result pushback [([_x,"loadData"] call ALIVE_fnc_OPCOM)];
         };
 	} foreach OPCOM_INSTANCES;
 
