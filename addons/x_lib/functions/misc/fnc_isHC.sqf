@@ -31,30 +31,20 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_x","_headless"];
-isHC = false;
+isHC = !isDedicated && {!hasInterface};
 
-if(isNil "headlessClients" && isServer) then {
+if (isNil "headlessClients" && isServer) then {
 	headlessClients = [];
 	publicVariable "headlessClients";
 };
 
-while {isNil "headlessClients"} do {};
-
-_headless = (!(isDedicated) && {!(hasInterface)});
-if (_headless) then {
-    //Set isHC in PreInit
-	isHC = true;
-    
-	// Random delay
-	for [{_x=1},{_x<=random 10000},{_x=_x+1}] do {};
-    
-    //Check for player object in PostInit call and add to headleassClients arry
-    while {isnull player} do {};
-	
-	if (!(isnull player) && {!(player in headlessClients)}) then {
-		headlessClients pushback player;
+if (isHC) then {
+    [] spawn {
+        waituntil {!isnil "headlessClients" && {!isNull player}};
+        
+        headlessClients pushback player;
 		publicVariable "headlessClients";
-	};
+    };
 };
+
 isHC;
