@@ -41,6 +41,7 @@ ARJay
 #define DEFAULT_NO_TEXT "0"
 #define DEFAULT_COMPOSITION false
 #define DEFAULT_OBJECTIVES []
+#define DEFAULT_READINESS_LEVEL "1"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -127,6 +128,9 @@ switch(_operation) do {
 	};
 	case "priority": {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY] call ALIVE_fnc_OOsimpleOperation;
+	};
+	case "readinessLevel": {
+		_result = [_logic,_operation,_args,DEFAULT_READINESS_LEVEL] call ALIVE_fnc_OOsimpleOperation;
 	};
 	case "composition": {
         if (typeName _args == "BOOL") then {
@@ -418,7 +422,8 @@ switch(_operation) do {
 			_totalCount = 0;
 
 			if(_groupCount > 0) then {
-
+				
+                //Guards
 			    if(count _infantryGroups > 0) then {
                     _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
                     _guards = [_guardGroup, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
@@ -430,12 +435,28 @@ switch(_operation) do {
                         };
                     } foreach _guards;
                 };
+                
+                //Main troops
+                private ["_profiles","_command","_position","_garrisonPos"];
+                
+                _command = "ALIVE_fnc_ambientMovement";
+	            _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
+	            _readiness = (1 - _readiness) * _groupCount;
+                            
+                if (_totalCount < _readiness ) then {
+                    _command = "ALIVE_fnc_garrison"; 
+                    _garrisonPos = [position _logic, 50] call CBA_fnc_RandPos;
+                };
 			
                 for "_i" from 0 to _groupCount -1 do {
 
                     _group = _groups select _i;
-
-                    _position = [position _logic, (random(500)), random(360)] call BIS_fnc_relPos;
+                    
+                    if (isnil "_garrisonPos") then {
+                        _position = [position _logic, random(500), random(360)] call BIS_fnc_relPos;
+                    } else {
+                        _position = [_garrisonPos, 50] call CBA_fnc_RandPos;
+                    };
 
                     if!(surfaceIsWater _position) then {
 
@@ -443,7 +464,7 @@ switch(_operation) do {
 						
 						{
 							if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-								[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;
+								[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;
 							};
 						} foreach _profiles;
 						

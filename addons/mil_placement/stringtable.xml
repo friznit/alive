@@ -62,6 +62,12 @@
 <Key ID="STR_ALIVE_MP_PRIORITY_FILTER_HIGH">
 	<English>Only high priority objectives</English>
 </Key>
+<Key ID="STR_ALIVE_MP_READINESS_LEVEL">
+	<English>Readiness:</English>
+</Key>
+<Key ID="STR_ALIVE_MP_READINESS_LEVEL_COMMENT">
+	<English>The amount of troops that will be on duty and patrolling</English>
+</Key>
 <Key ID="STR_ALIVE_MP_PLACEMENT">
 	<English>Place units:</English>
 </Key>

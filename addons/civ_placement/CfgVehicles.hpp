@@ -258,6 +258,35 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class readinessLevel
+                        {
+                                displayName = "$STR_ALIVE_CP_READINESS_LEVEL";
+                                description = "$STR_ALIVE_CP_READINESS_LEVEL_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "100%";
+                                                value = "1";
+                                                default = 1;
+                                        };
+                                        class HIGH
+                                        {
+                                                name = "75%";
+                                                value = "0.75";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "50%";
+                                                value = "0.5";
+                                        };
+										class LOW
+                                        {
+                                                name = "25%";
+                                                value = "0.25";
+                                        };
+                                };
+                        };
                         class customInfantryCount
                         {
                                 displayName = "$STR_ALIVE_CP_CUSTOM_INFANTRY_COUNT";

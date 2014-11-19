@@ -53,6 +53,7 @@ ARJay
 #define DEFAULT_HQ_BUILDING objNull
 #define DEFAULT_HQ_CLUSTER []
 #define DEFAULT_NO_TEXT ""
+#define DEFAULT_READINESS_LEVEL "1"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -229,6 +230,10 @@ switch(_operation) do {
 	// Return the Priority filter
 	case "priorityFilter": {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY_FILTER] call ALIVE_fnc_OOsimpleOperation;
+	};
+    // Return the Readiness Level
+	case "readinessLevel": {
+		_result = [_logic,_operation,_args,DEFAULT_READINESS_LEVEL] call ALIVE_fnc_OOsimpleOperation;
 	};
 	case "withPlacement": {
         if (isnil "_args") then {
@@ -1145,13 +1150,16 @@ switch(_operation) do {
 			_totalCount = 0;
 
 			if(_groupCount > 0) then {
+                _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
+                _readiness = (1 - _readiness) * _groupCount;
 			
                 {
                     private ["_guardGroup","_guards","_center","_size","_profiles"];
 
                     _center = [_x, "center"] call ALIVE_fnc_hashGet;
                     _size = [_x, "size"] call ALIVE_fnc_hashGet;
-
+ 
+					//Default guards (place always)
                     if(count _infantryGroups > 0) then {
                         _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
                         _guards = [_guardGroup, _center, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
@@ -1164,13 +1172,28 @@ switch(_operation) do {
                         } foreach _guards;
                     };
 
+                    //Add profiles
                     if(_totalCount < _groupCount) then {
-
+                        private ["_command","_position","_garrisonPos"];
+                       
+                        _command = "ALIVE_fnc_ambientMovement";
+                        
+                        if (_totalCount < _readiness ) then {
+                            _command = "ALIVE_fnc_garrison"; 
+                            _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
+                        };
+                        
+						//If there are several profiles per cluster place several profiles
                         if(_groupPerCluster > 0) then {
 
                             for "_i" from 0 to _groupPerCluster -1 do {
                                 _group = _groups select _totalCount;
-                                _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
+                                
+                                if (isnil "_garrisonPos") then {
+                                    _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
+                                } else {
+                                    _position = [_garrisonPos, 50] call CBA_fnc_RandPos;
+                                };
 
                                 if!(surfaceIsWater _position) then {
                                     _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
@@ -1178,7 +1201,7 @@ switch(_operation) do {
                                     //ARJay, here we could place the default "Chill around campfire situation" instead of the static garrisson if you like to
                                     {
                                         if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                                            [_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;
+                                            [_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;
                                         };
                                     } foreach _profiles;
 
@@ -1186,18 +1209,24 @@ switch(_operation) do {
                                     _totalCount = _totalCount + 1;
                                 };
                             };
-
+                            
+						//If there is only one to be placed, then place only one
                         }else{
                             _group = _groups select _totalCount;
-                            _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
-
+                            
+                            if (isnil "_garrisonPos") then {
+                                _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+                            } else {
+                                _position = [_garrisonPos, 50] call CBA_fnc_RandPos;
+                            };
+                            
                             if!(surfaceIsWater _position) then {
                                 _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 
                                 //ARJay, here we could place the default "Chill around campfire situation" instead of the static garrisson if you like to
                                 {
                                     if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                                        [_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;
+                                        [_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;
                                     };
                                 } foreach _profiles;
 

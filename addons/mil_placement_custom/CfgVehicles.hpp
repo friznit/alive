@@ -79,6 +79,35 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CMP_CUSTOM_SPECOPS_COUNT_COMMENT";
                                 defaultValue = "0";
                         };
+                        class readinessLevel
+                        {
+                                displayName = "$STR_ALIVE_CMP_READINESS_LEVEL";
+                                description = "$STR_ALIVE_CMP_READINESS_LEVEL_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "100%";
+                                                value = "1";
+                                                default = 1;
+                                        };
+                                        class HIGH
+                                        {
+                                                name = "75%";
+                                                value = "0.75";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "50%";
+                                                value = "0.5";
+                                        };
+										class LOW
+                                        {
+                                                name = "25%";
+                                                value = "0.25";
+                                        };
+                                };
+                        };
                         class composition
                         {
                                 displayName = "$STR_ALIVE_CMP_COMPOSITION";

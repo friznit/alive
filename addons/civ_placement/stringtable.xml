@@ -197,4 +197,10 @@
 <Key ID="STR_ALIVE_CP_USAGE">
 	<English>Define the settings on the module, place optional TAOR / Blacklist markers! This module has to be synced to an OPCOM module, if you want to use OPCOM!</English>
 </Key>
+<Key ID="STR_ALIVE_CP_READINESS_LEVEL">
+	<English>Readiness:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_READINESS_LEVEL_COMMENT">
+	<English>The amount of troops that will be on duty and patrolling</English>
+</Key>
 </Container></Package></Project>

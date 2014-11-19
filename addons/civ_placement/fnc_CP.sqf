@@ -47,6 +47,7 @@ ARJay
 #define DEFAULT_FACTION QUOTE(OPF_F)
 #define DEFAULT_CLUSTER_TYPE QUOTE(All)
 #define DEFAULT_NO_TEXT ""
+#define DEFAULT_READINESS_LEVEL "1"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -182,6 +183,11 @@ switch(_operation) do {
 	case "priorityFilter": {
 		_result = [_logic,_operation,_args,DEFAULT_PRIORITY_FILTER] call ALIVE_fnc_OOsimpleOperation;
 	};
+    // Return the Readiness Level
+	case "readinessLevel": {
+		_result = [_logic,_operation,_args,DEFAULT_READINESS_LEVEL] call ALIVE_fnc_OOsimpleOperation;
+	};
+    
 	case "withPlacement": {
         if (isnil "_args") then {
             _args = _logic getVariable ["withPlacement", DEFAULT_WITH_PLACEMENT];
@@ -813,6 +819,8 @@ switch(_operation) do {
 			_groupPerCluster = floor(_groupCount / _clusterCount);		
 			_totalCount = 0;
 
+            _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
+            _readiness = (1 - _readiness) * _groupCount;
 
 			{
                 private ["_guardGroup","_guards","_center","_size"];
@@ -832,21 +840,32 @@ switch(_operation) do {
                     } foreach _guards;
                 };
 
-                private ["_profiles"];
-
 				if(_totalCount < _groupCount) then {
-				
+                    private ["_profiles","_command","_position","_garrisonPos"];
+                                           
+                    _command = "ALIVE_fnc_ambientMovement";
+                    
+                    if (_totalCount < _readiness ) then {
+                        _command = "ALIVE_fnc_garrison"; 
+                        _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
+                    };
+
 					if(_groupPerCluster > 0) then {
 					
 						for "_i" from 0 to _groupPerCluster -1 do {
-							_group = _groups select _totalCount;														
-							_position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
+							_group = _groups select _totalCount;			
+                            											
+                            if (isnil "_garrisonPos") then {
+                                _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
+                            } else {
+                                _position = [_garrisonPos, 50] call CBA_fnc_RandPos;
+                            };
 
 							if!(surfaceIsWater _position) then {
 							    _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
                                 {
                                     if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                        				[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;    
+                        				[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;    
                                     };
                                 } foreach _profiles;
                                 
@@ -857,13 +876,18 @@ switch(_operation) do {
 						
 					}else{
 						_group = _groups select _totalCount;														
-						_position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+
+                        if (isnil "_garrisonPos") then {
+                            _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
+                        } else {
+                            _position = [_garrisonPos, 50] call CBA_fnc_RandPos;
+                        };
 
 						if!(surfaceIsWater _position) then {
                             _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
                             {
                                 if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                    				[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",300]] call ALIVE_fnc_profileEntity;    
+                    				[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;    
                                 };
                             } foreach _profiles;
 
