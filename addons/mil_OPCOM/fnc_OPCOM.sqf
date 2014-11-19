@@ -696,6 +696,8 @@ switch(_operation) do {
 				_profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
 
 				[_profile, "clearWaypoints"] call ALIVE_fnc_profileEntity;
+				[_profile, "clearActiveCommands"] call ALIVE_fnc_profileEntity;
+                
 				_profileWaypoint = [_pos, 15] call ALIVE_fnc_createProfileWaypoint;
 
 				_var = ["_TACOM_DATA",["completed",[_ProfileID,_objectiveID,_orders]]];
