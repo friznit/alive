@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project name="Arma3">
+<Package name="ALiVE">
+<Container name="STR_DN">
+<Key ID="STR_ALIVE_IED">
+	<English>Military IED Threat</English>
+</Key>
+<Key ID="STR_ALIVE_IED_COMMENT">
+	<English>Ambient IEDs, VB-IEDs and Suicide Bombers</English>
+</Key>
+<Key ID="STR_ALIVE_IED_DEBUG">
+	<English>Enable debug:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_DEBUG_COMMENT">
+	<English>Enables debug</English>
+</Key>
+<Key ID="STR_ALIVE_IED_Roadblocks">
+	<English>Roadblocks:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_Roadblocks_COMMENT">
+	<English>Define the probability of roadblocks within the AO</English>
+</Key>
+<Key ID="STR_ALIVE_IED_IED_Threat">
+	<English>IED Threat:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_IED_Threat_COMMENT">
+	<English>Define the level of IED Threat within the AO</English>
+</Key>
+<Key ID="STR_ALIVE_IED_VB_IED_Threat">
+	<English>Vehicle Borne IED Threat:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_VB_IED_Threat_COMMENT">
+	<English>Define the probability of VB-IED threat within the AO</English>
+</Key>
+<Key ID="STR_ALIVE_IED_Bomber_Threat">
+	<English>Suicide Bomber Threat:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_Bomber_Threat_COMMENT">
+	<English>Define the probability of suicide bomber threat within the AO</English>
+</Key>
+<Key ID="STR_ALIVE_IED_Locs_IED">
+	<English>IED/Bomber Locations:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_Locs_IED_COMMENT">
+	<English>Choose where IED, VB-IED or Suicide bombers may exist</English>
+</Key>
+<Key ID="STR_ALIVE_IED_ERROR1">
+	<English>Only one IED module can be used</English>
+</Key>
+<Key ID="STR_ALIVE_IED_DEBUG_ENABLE">
+    <English>Activate IED Debug</English>
+</Key>
+<Key ID="STR_ALIVE_IED_DEBUG_DISABLE">
+    <English>Deactivate IED Debug</English>
+</Key>
+</Container></Package></Project>

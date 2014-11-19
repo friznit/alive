@@ -1,0 +1,7 @@
+///////<HEADER>///////
+prefix=x\alive\addons\mil_ied
+Mikero=DePbo.dll
+version=1
+Pbo Type is: Arma Addon
+Sha: '9BBA59010E5D57D6C42C722E701E577D11903F80'
+//////</HEADER>//////
