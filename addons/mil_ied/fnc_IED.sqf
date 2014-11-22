@@ -57,12 +57,17 @@ nil
 #define DEFAULT_IED_THREAT 60
 #define DEFAULT_VB_IED_THREAT 8
 #define DEFAULT_LOCS_IED 0
+#define DEFAULT_TAOR []
+#define DEFAULT_BLACKLIST []
 
-private ["_logic","_operation","_args"];
+private ["_logic","_operation","_args","_result"];
 
-PARAMS_1(_logic);
-DEFAULT_PARAM(1,_operation,"");
-DEFAULT_PARAM(2,_args,[]);
+TRACE_1("IED - input",_this);
+
+_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_operation = [_this, 1, "", [""]] call BIS_fnc_param;
+_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+_result = true;
 
 switch(_operation) do {
         default {
@@ -85,7 +90,7 @@ switch(_operation) do {
 
                 if (isServer) then {
                         // and publicVariable to clients
-                        private ["_debug","_mapInfo","_center","_radius"];
+                        private ["_debug","_mapInfo","_center","_radius","_taor","_blacklist"];
                         MOD(mil_ied) = _logic;
 
                         // if server, initialise module game logic
@@ -93,15 +98,35 @@ switch(_operation) do {
                         MOD(mil_ied) setVariable ["class", MAINCLASS];
                         MOD(mil_ied) setVariable ["init", true, true];
 
-        		publicVariable QMOD(mil_ied);
+                        [MOD(mil_ied), "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
+                        [MOD(mil_ied), "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call MAINCLASS;
 
-        		_debug = MOD(mil_ied) getVariable ["debug", false];
+                        publicVariable QMOD(mil_ied);
+
+        		        _debug = MOD(mil_ied) getVariable ["debug", false];
 
                         _mapInfo = [] call ALIVE_fnc_getMapInfo;
                         _center = _mapInfo select 0;
                         _radius = _mapInfo select 2;
 
                         _locations = nearestLocations [_center, ["NameCityCapital","NameCity","NameVillage","Strategic"],_radius];
+
+                        _taor = [MOD(mil_ied), "taor"] call MAINCLASS;
+                        _blacklist = [MOD(mil_ied), "blacklist"] call MAINCLASS;
+
+                        // check markers for existance
+                        private ["_marker","_counter"];
+
+                        if(count _blacklist > 0) then {
+                            _locations = [_blacklist, _locations, false] call ALiVE_fnc_validateLocations;
+                        };
+
+                        if(count _taor > 0) then {
+                            _locations = [_taor, _locations, true] call ALiVE_fnc_validateLocations;
+
+                        };
+
+
 
         		// Set up Bombers and IEDs at each location (except any player starting location)
         		{
@@ -110,7 +135,7 @@ switch(_operation) do {
         			//Get the location object
         			_pos = position _x;
         			_twn = (nearestLocations [_pos, ["NameCityCapital","NameCity","NameVillage","Strategic"],200]) select 0;
-                                _size = (size _twn) select 0;
+                    _size = (size _twn) select 0;
 
         			if (_size < 250) then {_size = 250;};
         			if (_debug) then {
@@ -169,7 +194,10 @@ switch(_operation) do {
         		} foreach _locations;
 
                 } else {
-                        // any client side logic
+                    [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
+                    [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
+                    {_x setMarkerAlpha 0} foreach (_logic getVariable ["taor", DEFAULT_TAOR]);
+                    {_x setMarkerAlpha 0} foreach (_logic getVariable ["blacklist", DEFAULT_TAOR]);
                 };
 
 		TRACE_2("After module init",MOD(mil_ied),MOD(mil_ied) getVariable "init");
@@ -215,6 +243,35 @@ switch(_operation) do {
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_IEDmenuDef)
                 */
+                _result = MOD(mil_ied);
+        };
+        // Return TAOR marker
+        case "taor": {
+                if(typeName _args == "STRING") then {
+                        _args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, ","] call CBA_fnc_split;
+                        if(count _args > 0) then {
+                                _logic setVariable [_operation, _args];
+                        };
+                };
+                if(typeName _args == "ARRAY") then {
+                        _logic setVariable [_operation, _args];
+                };
+                _result = _logic getVariable [_operation, DEFAULT_TAOR];
+        };
+        // Return the Blacklist marker
+        case "blacklist": {
+                if(typeName _args == "STRING") then {
+                        _args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, ","] call CBA_fnc_split;
+                        if(count _args > 0) then {
+                                _logic setVariable [_operation, _args];
+                        };
+                };
+                if(typeName _args == "ARRAY") then {
+                        _logic setVariable [_operation, _args];
+                };
+                _result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
         };
         case "destroy": {
                 if (isServer) then {
@@ -241,3 +298,5 @@ switch(_operation) do {
                 };
         };
 };
+TRACE_1("IED - output",_result);
+_result;

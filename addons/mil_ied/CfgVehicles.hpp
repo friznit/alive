@@ -33,6 +33,18 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class taor
+                        {
+                                displayName = "$STR_ALIVE_IED_TAOR";
+                                description = "$STR_ALIVE_IED_TAOR_COMMENT";
+                                defaultValue = "";
+                        };
+                        class blacklist
+                        {
+                                displayName = "$STR_ALIVE_IED_BLACKLIST";
+                                description = "$STR_ALIVE_IED_BLACKLIST_COMMENT";
+                                defaultValue = "";
+                        };
                         class IED_Threat
                         {
                                 displayName = "$STR_ALIVE_ied_IED_Threat";
