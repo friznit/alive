@@ -14,6 +14,12 @@
 <Key ID="STR_ALIVE_MP_DEBUG_COMMENT">
 	<English>Enables MP Module Debug</English>
 </Key>
+<Key ID="STR_ALIVE_MP_RANDOMCAMPS">
+	<English>Random Camps:</English>
+</Key>
+<Key ID="STR_ALIVE_MP_STR_ALIVE_MP_RANDOMCAMPS_COMMENT">
+	<English>Level of random camps</English>
+</Key>
 <Key ID="STR_ALIVE_MP_TAOR">
 	<English>TAOR Marker:</English>
 </Key>

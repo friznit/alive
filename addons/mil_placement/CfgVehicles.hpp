@@ -208,6 +208,35 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class randomcamps
+                        {
+                                displayName = "$STR_ALIVE_MP_RANDOMCAMPS";
+                                description = "$STR_ALIVE_MP_RANDOMCAMPS_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "None";
+                                                value = "0";
+                                                default = 1;
+                                        };
+                                        class LOW
+                                        {
+                                                name = "Low";
+                                                value = "2500";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "Medium";
+                                                value = "1500";
+                                        };
+										class HIGH
+                                        {
+                                                name = "High";
+                                                value = "1000";
+                                        };
+                                };
+                        };
                         class readinessLevel
                         {
                                 displayName = "$STR_ALIVE_MP_READINESS_LEVEL";

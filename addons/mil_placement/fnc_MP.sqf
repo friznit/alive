@@ -44,6 +44,7 @@ ARJay
 #define DEFAULT_WITH_PLACEMENT true
 #define DEFAULT_OBJECTIVES []
 #define DEFAULT_OBJECTIVES_HQ []
+#define DEFAULT_OBJECTIVES_LAND [] 
 #define DEFAULT_OBJECTIVES_AIR []
 #define DEFAULT_OBJECTIVES_HELI []
 #define DEFAULT_OBJECTIVES_VEHICLE []
@@ -54,6 +55,7 @@ ARJay
 #define DEFAULT_HQ_CLUSTER []
 #define DEFAULT_NO_TEXT ""
 #define DEFAULT_READINESS_LEVEL "1"
+#define DEFAULT_RANDOMCAMPS "0"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -235,6 +237,10 @@ switch(_operation) do {
 	case "readinessLevel": {
 		_result = [_logic,_operation,_args,DEFAULT_READINESS_LEVEL] call ALIVE_fnc_OOsimpleOperation;
 	};
+    // Return the random camps
+	case "randomCamps": {
+		_result = [_logic,_operation,_args,DEFAULT_RANDOMCAMPS] call ALIVE_fnc_OOsimpleOperation;
+	};
 	case "withPlacement": {
         if (isnil "_args") then {
             _args = _logic getVariable ["withPlacement", DEFAULT_WITH_PLACEMENT];
@@ -257,6 +263,10 @@ switch(_operation) do {
 	};
 	// Return the objectives as an array of clusters
 	case "objectives": {
+		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES] call ALIVE_fnc_OOsimpleOperation;
+	};
+    // Return the land objectives as an array of clusters
+	case "objectivesLand": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES] call ALIVE_fnc_OOsimpleOperation;
 	};
 	// Return the HQ objectives as an array of clusters
@@ -381,6 +391,7 @@ switch(_operation) do {
                 _blacklist = [_logic, "blacklist"] call MAINCLASS;
                 _sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
                 _priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
+                _randomCampsMil = parseNumber([_logic, "randomCamps"] call MAINCLASS);
 
                 // check markers for existance
                 private ["_marker","_counter"];
@@ -409,7 +420,67 @@ switch(_operation) do {
                     } forEach _blacklist;
                 };
 
+                private ["_HQClusters","_landClusters","_airClusters","_heliClusters","_vehicleClusters"];
+                
                 _clusters = ALIVE_clustersMil select 2;
+                
+                _HQClusters = DEFAULT_OBJECTIVES_HQ;
+                _airClusters = DEFAULT_OBJECTIVES_AIR;
+                _heliClusters = DEFAULT_OBJECTIVES_HELI;  
+				_landClusters = DEFAULT_OBJECTIVES_LAND;
+                
+                if (_randomCampsMil > 0) then {
+ 	                if (isnil "ALIVE_clustersMilLand") then {
+	                    ALIVE_clustersMilLand = "loading";
+	                    
+	                    _data = [] call ALiVE_fnc_HashCreate;
+	                    _clustersX = +_clusters;
+	                    
+		                _sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
+		                {
+		                    private ["_sector","_sectorData","_flatEmpty","_id","_cluster"];
+		                    
+		                    _sector = _x;
+		                    _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+		                    
+							_flatEmpty = [_sectorData,"flatEmpty"] call ALIVE_fnc_hashGet;
+		                    
+		                    if (count _flatEmpty > 0) then {
+		                        private ["_pos"];
+		                        
+		                        _pos = _flatEmpty select 0;
+		                        
+		                        if ({([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet) distance _pos < _randomCampsMil} count _clustersX > 0) exitwith {};  
+		
+		                         _pos = [_pos,500] call ALiVE_fnc_findFlatArea;
+		                         _id = format["c_%1",str(floor(_pos select 0)) + str(floor(_pos select 0))];
+		                         
+		                        _cluster = [nil, "create"] call ALIVE_fnc_cluster;
+								[_cluster,"nodes",nearestObjects [_pos,["static"],50]] call ALIVE_fnc_hashSet;
+								[_cluster,"clusterID",_id] call ALIVE_fnc_hashSet;
+								[_cluster,"center",_pos] call ALIVE_fnc_hashSet;
+								[_cluster,"size",100] call ALIVE_fnc_hashSet;
+								[_cluster,"type","MIL"] call ALIVE_fnc_hashSet;
+								[_cluster,"priority",100] call ALIVE_fnc_hashSet;
+		                        
+	                            [_data,_id,_cluster] call ALiVE_fnc_HashSet;
+	                            _clustersX pushback _cluster;
+		                         
+		                        //_cluster call ALiVE_fnc_InspectHash;
+		                    };
+	                        
+	                        ALIVE_clustersMilLand = _data;
+	                        
+		                } foreach _sectors;
+	                } else {
+	                    waituntil {typeName ALIVE_clustersMilLand == "ARRAY"};
+	                };
+	                
+	                _landClusters = ALIVE_clustersMilLand select 2;
+	                _landClusters = [_landClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+	                _landClusters = [_landClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+                };
+
                 _clusters = [_clusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
                 // cull clusters outside of TAOR marker if defined
                 _clusters = [_clusters, _taor] call ALIVE_fnc_clustersInsideMarker;
@@ -419,20 +490,15 @@ switch(_operation) do {
                 // switch on debug for all clusters if debug on
                 {
                     [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
-                } forEach _clusters;
+                } forEach (_clusters + _landClusters);
                 //*/
+
                 // store the clusters on the logic
-                [_logic, "objectives", _clusters] call MAINCLASS;
-
-
-                private ["_HQClusters","_airClusters","_heliClusters","_vehicleClusters"];
-
-                //waituntil {!(isnil "ALIVE_clustersMilHQ") && {!(isnil "ALIVE_clustersMilAir")} && {!(isnil "ALIVE_clustersMilHeli")}};
-
-                _HQClusters = DEFAULT_OBJECTIVES_HQ;
-                _airClusters = DEFAULT_OBJECTIVES_AIR;
-                _heliClusters = DEFAULT_OBJECTIVES_HELI;
-
+                [_logic, "objectives", _clusters + _landclusters] call MAINCLASS;
+                
+                
+                
+                //Move on to special objectives
                 if !(isnil "ALIVE_clustersMilHQ") then {
                     _HQClusters = ALIVE_clustersMilHQ select 2;
                     _HQClusters = [_HQClusters,_sizeFilter,_priorityFilter] call ALIVE_fnc_copyClusters;
@@ -469,6 +535,7 @@ switch(_operation) do {
                     */
                 };
 
+				[_logic, "objectivesLand", _landClusters] call MAINCLASS;
                 [_logic, "objectivesHQ", _HQClusters] call MAINCLASS;
                 [_logic, "objectivesAir", _airClusters] call MAINCLASS;
                 [_logic, "objectivesHeli", _heliClusters] call MAINCLASS;
@@ -477,6 +544,7 @@ switch(_operation) do {
                 if(_debug) then {
                     ["ALIVE MP - Startup completed"] call ALIVE_fnc_dump;
                     ["ALIVE MP - Count clusters %1",count _clusters] call ALIVE_fnc_dump;
+                    ["ALIVE MP - Count land clusters %1",count _landClusters] call ALIVE_fnc_dump;
                     ["ALIVE MP - Count air clusters %1",count _airClusters] call ALIVE_fnc_dump;
                     ["ALIVE MP - Count heli clusters %1",count _heliClusters] call ALIVE_fnc_dump;
                     [] call ALIVE_fnc_timer;
@@ -537,6 +605,7 @@ switch(_operation) do {
             //waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
 			
 			_clusters = [_logic, "objectives"] call MAINCLASS;
+            _LandClusters = [_logic, "objectivesLand"] call MAINCLASS;
 			_HQClusters = [_logic, "objectivesHQ"] call MAINCLASS;
 			_airClusters = [_logic, "objectivesAir"] call MAINCLASS;
 			_heliClusters = [_logic, "objectivesHeli"] call MAINCLASS;
@@ -665,7 +734,24 @@ switch(_operation) do {
                     ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dump;
                 };
 			};
-
+            
+            if (count _landClusters > 0) then {
+				{
+	                _pos = [_x,"center"] call ALiVE_fnc_HashGet;
+	                
+		            _compositions = [ALIVE_compositions,"camps"] call ALIVE_fnc_hashGet;
+					_composition = _compositions call BIS_fnc_selectRandom;
+					
+					_composition = [_composition] call ALIVE_fnc_findComposition;
+					
+					if(count _composition > 0) then {
+					    [_composition, _pos, random 360] call ALIVE_fnc_spawnComposition;
+					};
+                    
+                    [_x,"nodes",nearestObjects [_pos,["static"],50]] call ALIVE_fnc_hashSet;
+                    
+                } foreach _landClusters;
+            };
 			
 			// Spawn supplies in objectives
 			
