@@ -83,8 +83,8 @@ link36[] = {24,25};
 link37[] = {25,26};
 link38[] = {26,10};
 link39[] = {27,28};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-667.123535,293.650696,180.016602,-594.569092,934,753,1};
-window[] = {0,-1,-1,-1,-1,972,88,1711,88,1,951};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,81,6316128,1,-308.844391,-64.628494,-108.831558,-305.720825,934,753,1};
+window[] = {0,-1,-1,-1,-1,906,22,1645,22,1,951};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -139,11 +139,17 @@ class FSM
        "_sea = [_OPCOM_HANDLER,""sea"",[]] call ALiVE_fnc_HashGet;" \n
        "_profiles = _inf + _mot + _mech + _armored + _artillery + _AAA + _air + _sea;" \n
        "" \n
+       "" \n
        "//Reset ambient movement on all controlled profiles" \n
        "{" \n
        "	_profile = [ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler;" \n
-       "	if !(isnil ""_profile"") then {[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",200]] call ALIVE_fnc_profileEntity};" \n
+       "	_vehiclesInCommandOf = [_profile,""vehiclesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "	if (count _vehiclesInCommandOf > 0) then {" \n
+       "		if !(isnil ""_profile"") then {[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",1000]] call ALIVE_fnc_profileEntity};" \n
+       "	};" \n
        "} foreach _profiles;" \n
+       "" \n
        "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
