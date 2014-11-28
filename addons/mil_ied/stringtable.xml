@@ -14,6 +14,18 @@
 <Key ID="STR_ALIVE_IED_DEBUG_COMMENT">
 	<English>Enables debug</English>
 </Key>
+<Key ID="STR_ALIVE_IED_TAOR">
+	<English>TAOR Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_TAOR_COMMENT">
+	<English>Tactical Area Operation Responsibility Marker</English>
+</Key>
+<Key ID="STR_ALIVE_IED_BLACKLIST">
+	<English>Blacklist Marker:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_BLACKLIST_COMMENT">
+	<English>Exclusion Marker</English>
+</Key>
 <Key ID="STR_ALIVE_IED_Roadblocks">
 	<English>Roadblocks:</English>
 </Key>

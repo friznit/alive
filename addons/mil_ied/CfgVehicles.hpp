@@ -80,7 +80,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class Bomber_Threat
+/*                      class Bomber_Threat
                         {
                                 displayName = "$STR_ALIVE_ied_Bomber_Threat";
                                 description = "$STR_ALIVE_ied_Bomber_Threat_COMMENT";
@@ -149,7 +149,7 @@ class CfgVehicles {
                                                 value = 30;
                                         };
                                 };
-                        };
+                        }; */
                         class Locs_IED
                         {
                                 displayName = "$STR_ALIVE_ied_Locs_IED";
@@ -175,7 +175,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                       class Roadblocks
+ /*                      class Roadblocks
                         {
                                 displayName = "$STR_ALIVE_ied_roadblocks";
                                 description = "$STR_ALIVE_ied_roadblocks_COMMENT";
@@ -209,7 +209,7 @@ class CfgVehicles {
                                                 value = 90;
                                         };
                                 };
-                        };
+                        }; */
                 };
 
         };
