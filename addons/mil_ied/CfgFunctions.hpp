@@ -66,6 +66,16 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_ied\fnc_createIED.sqf";
                                                                 recompile = 1;
                         };
+                        class addActionIED {
+                                description = "Add an action to an IED";
+                                file = "\x\alive\addons\mil_ied\fnc_addActionIED.sqf";
+                                                                recompile = 1;
+                        };
+                        class removeActionIED {
+                                description = "Remove an action from an IED";
+                                file = "\x\alive\addons\mil_ied\fnc_removeActionIED.sqf";
+                                                                recompile = 1;
+                        };
                 };
         };
 };
