@@ -12,7 +12,7 @@ _threat = ADDON getvariable ["VB_IED_Threat", DEFAULT_VB_IED_THREAT];
 _side = ADDON getvariable ["VB_IED_Side", DEFAULT_VBIED_SIDE];
 _vehicle = (_this select 0) select 0;
 
-_fate = random 1;
+_fate = random 100;
 
 if (_fate > _threat || str(side _vehicle) != _side) exitWith {};
 
