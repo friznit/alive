@@ -41,13 +41,13 @@ _result = _obj_array;
 		} else {
 			_marker setMarkerAlpha 0;
 			if !(_foreachIndex > 0 && _insideOnly) then {_result = []};
-			diag_log str(_marker);
+//			diag_log str(_marker);
 			{
 				private["_in"];
 				_in =[_marker, _x] call BIS_fnc_inTrigger;
 				if((!_insideOnly || _in) && !(!_insideOnly && _in)) then {
 					_result pushback _x;
-					diag_log str(_result);
+//					diag_log str(_result);
 				};
 			} forEach _obj_array;
 		};
