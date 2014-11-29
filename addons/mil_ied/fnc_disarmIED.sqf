@@ -2,7 +2,7 @@
 #include <\x\alive\addons\mil_IED\script_component.hpp>
 SCRIPT(disarmIED);
 
-private ["_debug","_IED","_caller","_wire","_success","_selectedWire"];
+private ["_debug","_IED","_caller","_wire","_success","_selectedWire","_id"];
 
 if (isDedicated) exitWith {diag_log "disarmIED running on server!";};
 
@@ -10,6 +10,7 @@ _debug = MOD(mil_ied) getVariable ["debug", false];
 
 _IED = _this select 0;
 _caller = _this select 1;
+_id = _this select 2;
 
 //Display timer for IED disarm
 hint "Disarming IED…";
@@ -72,9 +73,9 @@ if ((random 1) > 0.85) then {
 } else {
 	// Tell unit that IED is disarmed
 
-	_IED removeAction (_this select 2);
+	_IED removeAction _id;
 
-	[[_IED, (_this select 2)],"ALiVE_fnc_removeActionIED", true, true, true] call BIS_fnc_MP;
+	[[_IED, _id],"ALiVE_fnc_removeActionIED", true, true, true] call BIS_fnc_MP;
 
 	_trgr = (position _IED) nearObjects ["EmptyDetector", 3];
 	{

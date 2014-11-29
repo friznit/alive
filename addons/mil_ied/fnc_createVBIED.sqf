@@ -1,24 +1,33 @@
+#define DEFAULT_VB_IED_THREAT 5
+#define DEFAULT_VBIED_SIDE "CIV"
 #include <\x\alive\addons\mil_IED\script_component.hpp>
 SCRIPT(createVBIED);
 
+private ["_IEDskins","_IED","_trg","_vehicle","_debug","_threat","_side"];
 
-private ["_IEDskins","_IED","_trg","_vehicle","_debug"];
-_debug = MOD(mil_ied) getVariable ["debug", false];
-_vehicle = _this select 0;
-_radio = _this select 1;
+if (isNil QUOTE(ADDON)) exitWith {};
+
+_debug = ADDON getVariable ["debug", false];
+_threat = ADDON getvariable ["VB_IED_Threat", DEFAULT_VB_IED_THREAT];
+_side = ADDON getvariable ["VB_IED_Side", DEFAULT_VBIED_SIDE];
+_vehicle = (_this select 0) select 0;
+
+_fate = random 1;
+
+if (_fate > _threat || str(side _vehicle) != _side) exitWith {};
 
 // create IED object and attach to vehicle
 //_IEDskins = ["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC"];
 
-_IEDskins = ["IEDUrbanSmall_Remote_Ammo","IEDLandSmall_Remote_Ammo"];
-
-_IED = createVehicle [_IEDskins select (floor (random (count _IEDskins))),getposATL _vehicle, [], 0, "CAN_COLLIDE"];
-_IED attachTo [_vehicle,[0,0,-0.5]];
+_IED = createVehicle ["ALIVE_DemoCharge_Remote_Ammo",getposATL _vehicle, [], 0, "CAN_COLLIDE"];
+_IED attachTo [_vehicle, [0,-2,-1.08]];
+_IED setDir 270;
+_IED setVectorUp [0,0,-1];
 
 if (_debug) then {
 	private ["_vbiedm","_t"];
 	_t = format["vbied_r%1", floor (random 1000)];
-	_vbiedm = [_t, getposATL _vehicle, "Icon", [0.5,0.5], "TYPE:", "Warning", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
+	_vbiedm = [_t, getposATL _vehicle, "Icon", [0.5,0.5], "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
 	[_vbiedm,_vehicle] spawn {
 		_vbiedm = _this select 0;
 		_vehicle = _this select 1;
@@ -31,8 +40,28 @@ if (_debug) then {
 };
 
 // Set up trigger to detonate IED
-_booby = [_IED, typeOf _vehicle, "Sh_125_HE"] call ALIVE_fnc_armIED;
-waitUntil {sleep 1; scriptDone _booby};
+_booby = [_IED, typeOf _vehicle] call ALIVE_fnc_armIED;
+
+// Add damage handler
+_ehID = _IED addeventhandler ["HandleDamage",{
+	private "_trgr";
+//	diag_log str(_this);
+
+	if (MOD(mil_IED) getVariable "debug") then {
+		diag_log format ["ALIVE-%1 IED: %2 explodes due to damage by %3", time, (_this select 0), (_this select 3)];
+		[(_this select 0) getvariable "Marker"] call cba_fnc_deleteEntity;
+	};
+
+	"M_Mo_120mm_AT" createVehicle getposATL (_this select 0);
+
+	_trgr = (position (_this select 0)) nearObjects ["EmptyDetector", 3];
+	{
+		deleteVehicle _x;
+	} foreach _trgr;
+
+	deletevehicle (_this select 0);
+}];
+
 if (_debug) then {
 	diag_log format ["ALIVE-%1 IED: Creating VB-IED for %2 at %3", time, typeof _vehicle, getposATL _vehicle];
 };

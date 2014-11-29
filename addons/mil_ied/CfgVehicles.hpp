@@ -114,7 +114,7 @@ class CfgVehicles {
                                                 value = 50;
                                         };
                                 };
-                        };
+                        }; */
                         class VB_IED_Threat
                         {
                                 displayName = "$STR_ALIVE_ied_VB_IED_Threat";
@@ -141,15 +141,45 @@ class CfgVehicles {
                                         class High
                                         {
                                                 name = "High";
-                                                value = 15;
+                                                value = 30;
                                         };
                                         class Extreme
                                         {
                                                 name = "Exteme";
-                                                value = 30;
+                                                value = 60;
                                         };
                                 };
-                        }; */
+                        };
+                        class VB_IED_Side
+                        {
+                                displayName = "$STR_ALIVE_ied_VB_IED_Side";
+                                description = "$STR_ALIVE_ied_VB_IED_Side_COMMENT";
+                                typeName = "STRING";
+                                class Values
+                                {
+                                        class Civ
+                                        {
+                                                name = "CIV";
+                                                value = "CIV";
+                                                default = 1;
+                                        };
+                                        class East
+                                        {
+                                                name = "EAST";
+                                                value = "EAST";
+                                        };
+                                        class West
+                                        {
+                                                name = "WEST";
+                                                value = "WEST";
+                                        };
+                                        class Ind
+                                        {
+                                                name = "IND";
+                                                value = "GUER";
+                                        };
+                                };
+                        };
                         class Locs_IED
                         {
                                 displayName = "$STR_ALIVE_ied_Locs_IED";

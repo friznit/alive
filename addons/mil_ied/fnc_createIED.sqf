@@ -86,8 +86,8 @@ for "_j" from 1 to _numIEDs do {
 	_IEDpos set [2, -0.1];
 
 	_IED = createVehicle [_IEDskins call BIS_fnc_selectRandom,_IEDpos, [], 0, ""];
-	// Choose IED or Fake IED
-	if (random 1 < 0.80) then {
+	// Choose IED or Dud IED
+	if (random 1 < 0.93) then {
 		[_IED, typeOf _IED] call ALIVE_fnc_armIED;
 
 		// Add damage handler
