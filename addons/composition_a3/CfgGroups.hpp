@@ -806,6 +806,17 @@ class CfgGroups
             class Object5 {side=8;vehicle="RoadCone_F";rank="";position[]={-8.16504,2.34229,-0.00143003};dir=333.999;};
             class Object6 {side=8;vehicle="ArrowDesk_R_F";rank="";position[]={-8.38037,2.17969,0.0334253};dir=244;};
             };
+            class smallCheckpoint2
+            {
+            name = "$STR_ALIVE_COMPOSITION_smallCheckpoint2";
+            class Object1 {side=8;vehicle="Land_BarGate_F";rank="";position[]={0.550781,1.12939,-0.00431585};dir=0;};
+            class Object2 {side=8;vehicle="RoadCone_F";rank="";position[]={2.69897,2.05322,-0.00143099};dir=34.9964;};
+            class Object3 {side=8;vehicle="ArrowDesk_L_F";rank="";position[]={2.95435,1.93262,0.0334249};dir=126;};
+            class Object4 {side=8;vehicle="Land_BagBunker_Small_F";rank="";position[]={6.46484,1.56006,-0.00431585};dir=179;};
+            class Object5 {side=8;vehicle="RoadCone_F";rank="";position[]={-8.16504,2.34229,-0.00143003};dir=333.999;};
+            class Object6 {side=8;vehicle="ArrowDesk_R_F";rank="";position[]={-8.38037,2.17969,0.0334253};dir=244;};
+            class Object7 {side=8;vehicle="I_HMG_01_high_F";rank="";position[]={6.46484,0.76006,-0.00431585};dir=0;};
+            };
             class smallRoadblock1
             {
             name = "$STR_ALIVE_COMPOSITION_smallRoadblock1";
@@ -814,6 +825,16 @@ class CfgGroups
             class Object3 {side=8;vehicle="Land_Tyres_F";rank="";position[]={1.52026,1.49121,0.00228167};dir=0;};
             class Object4 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={-4.32715,1.63574,-0.00561666};dir=177;};
             class Object5 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={4.55103,1.80176,-0.00561666};dir=177;};
+            };
+            class smallRoadblock2
+            {
+            name = "$STR_ALIVE_COMPOSITION_smallRoadblock1";
+            class Object1 {side=8;vehicle="Land_Tyres_F";rank="";position[]={0.259521,1.61768,0.00228167};dir=0;};
+            class Object2 {side=8;vehicle="Land_Tyres_F";rank="";position[]={-1.56226,1.40186,0.00228167};dir=0;};
+            class Object3 {side=8;vehicle="Land_Tyres_F";rank="";position[]={1.52026,1.49121,0.00228167};dir=0;};
+            class Object4 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={-4.32715,1.63574,-0.00561666};dir=177;};
+            class Object5 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={4.55103,1.80176,-0.00561666};dir=177;};
+            class Object6 {side=8;vehicle="I_HMG_01_high_F";rank="";position[]={4.55103,1.00176,-0.00561666};dir=0;};
             };
             class mediumCheckpoint1
             {
@@ -829,7 +850,24 @@ class CfgGroups
             class Object9 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={9.09009,4.71973,-0.00431824};dir=81;};
             class Object10 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-10.447,4.60303,-0.00431824};dir=81;};
             class Object11 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-9.31958,-7.37061,-0.00431824};dir=269;};
+            class Object12 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-8.60449,8.079,-0.00431824};dir=0;};
+            };
+            class mediumCheckpoint2
+            {
+            name = "$STR_ALIVE_COMPOSITION_mediumCheckpoint2";
+            class Object1 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={3.14722,-1.20215,-0.00531578};dir=90;};
+            class Object2 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={-2.82202,2.78174,-0.00531578};dir=90;};
+            class Object3 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={3.1333,-4.1875,-0.00531578};dir=90;};
+            class Object4 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={-2.85034,5.74707,-0.00531578};dir=90;};
+            class Object5 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={3.13184,-6.47656,-0.00531578};dir=90;};
+            class Object6 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={8.12598,-4.31836,-0.00431824};dir=132;};
+            class Object7 {side=8;vehicle="Land_BagBunker_Small_F";rank="";position[]={5.17432,7.96484,-0.00431585};dir=182;};
+            class Object8 {side=8;vehicle="Land_BagBunker_Small_F";rank="";position[]={-5.79004,-8.25,-0.00431585};dir=359;};
+            class Object9 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={9.09009,4.71973,-0.00431824};dir=81;};
+            class Object10 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-10.447,4.60303,-0.00431824};dir=81;};
+            class Object11 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-9.31958,-7.37061,-0.00431824};dir=269;};
             class Object12 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-8.60449,8.479,-0.00431824};dir=0;};
+            class Object13 {side=8;vehicle="I_HMG_01_high_F";rank="";position[]={5.17432,7.96484,-0.00431585};dir=182;};
             };
             class largeGarbageCamp1
             {

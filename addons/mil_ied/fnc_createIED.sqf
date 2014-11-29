@@ -93,7 +93,7 @@ for "_j" from 1 to _numIEDs do {
 		// Add damage handler
 		_ehID = _IED addeventhandler ["HandleDamage",{
 			private "_trgr";
-			diag_log str(_this);
+//			diag_log str(_this);
 
 			if (MOD(mil_IED) getVariable "debug") then {
 				diag_log format ["ALIVE-%1 IED: %2 explodes due to damage by %3", time, (_this select 0), (_this select 3)];

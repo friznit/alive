@@ -55,6 +55,7 @@ nil
 #define MAINCLASS ALIVE_fnc_ied
 #define DEFAULT_BOMBER_THREAT 15
 #define DEFAULT_IED_THREAT 60
+#define DEFAULT_ROADBLOCKS 20
 #define DEFAULT_VB_IED_THREAT 8
 #define DEFAULT_LOCS_IED 0
 #define DEFAULT_TAOR []
@@ -128,70 +129,92 @@ switch(_operation) do {
 
 
 
-        		// Set up Bombers and IEDs at each location (except any player starting location)
-        		{
-        			private ["_fate","_pos","_trg","_twn"];
+            		// Set up Bombers and IEDs at each location (except any player starting location)
+            		{
+            			private ["_fate","_pos","_trg","_twn","_numRB"];
 
-        			//Get the location object
-        			_pos = position _x;
-        			_twn = (nearestLocations [_pos, ["NameCityCapital","NameCity","NameVillage","Strategic"],200]) select 0;
-                    _size = (size _twn) select 0;
+            			//Get the location object
+            			_pos = position _x;
+            			_twn = (nearestLocations [_pos, ["NameCityCapital","NameCity","NameVillage","Strategic"],200]) select 0;
+                        _size = (size _twn) select 0;
 
-        			if (_size < 250) then {_size = 250;};
-        			if (_debug) then {
-        				diag_log format ["town is %1 at %2. %3m in size and type %4", text _twn, position _twn, _size, type _twn];
-        			};
+                        _numRB = (_logic getvariable ["Roadblocks", DEFAULT_ROADBLOCKS]) / 10;
 
-        			// Place triggers if not within distance of players
-        			if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0) then {
+            			if (_size < 250) then {_size = 250;};
+            			if (_debug) then {
+            				diag_log format ["town is %1 at %2. %3m in size and type %4", text _twn, position _twn, _size, type _twn];
+            			};
 
-        				//Roll the dice
-            				_fate = random 100;
+            			// Place triggers if not within distance of players
+            			if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0) then {
 
-        				if (_fate < _logic getvariable ["Bomber_Threat", DEFAULT_BOMBER_THREAT]) then {
-        					// Place Suicide Bomber trigger
+            				//Roll the dice
+            				_fate = 1;
+    /*
+            				if (_fate < _logic getvariable ["Bomber_Threat", DEFAULT_BOMBER_THREAT]) then {
+            					// Place Suicide Bomber trigger
 
-        					_trg = createTrigger["EmptyDetector",getpos _twn];
+            					_trg = createTrigger["EmptyDetector",getpos _twn];
 
-        					_trg setTriggerArea[(_size+250),(_size+250),0,false];
+            					_trg setTriggerArea[(_size+250),(_size+250),0,false];
 
-        					_trg setTriggerActivation["WEST","PRESENT",true];
-        					_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger, thisList, %1] call ALIVE_fnc_createBomber",_size], ""];
+            					_trg setTriggerActivation["WEST","PRESENT",true];
+            					_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger, thisList, %1] call ALIVE_fnc_createBomber",_size], ""];
 
-        					 if (_debug) then {
-        						_t = format["suic_t%1", random 1000];
+            					 if (_debug) then {
+            						_t = format["suic_t%1", random 1000];
 
-        						diag_log format ["ALIVE-%1 Suicide Bomber Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-        						[_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorOrange", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
+            						diag_log format ["ALIVE-%1 Suicide Bomber Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
+            						[_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorOrange", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
 
-        					};
-        				};
+            					};
+            				};
+    */
+                            // IEDS
+            				if (_fate < _logic getvariable ["IED_Threat", DEFAULT_IED_THREAT]) then {
+            					// Place IED trigger
+            					_trg = createTrigger["EmptyDetector",getpos _twn];
 
-        				if (_fate < _logic getvariable ["IED_Threat", DEFAULT_IED_THREAT]) then {
-        					// Place IED trigger
-        					_trg = createTrigger["EmptyDetector",getpos _twn];
+            					_trg setTriggerArea[(_size+250), (_size+250),0,false];
 
-        					_trg setTriggerArea[(_size+250), (_size+250),0,false];
+            					if (_logic getvariable ["Locs_IED", DEFAULT_LOCS_IED] == 1) then {
+            						_trg setTriggerActivation["ANY","PRESENT",false]; // true = repeated
 
-        					if (_logic getvariable ["Locs_IED", DEFAULT_LOCS_IED] == 1) then {
-        						_trg setTriggerActivation["ANY","PRESENT",false]; // true = repeated
+            						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
+            					} else {
+            						_trg setTriggerActivation["WEST","PRESENT",false]; // true = repeated
+            						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
+            					};
 
-        						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
-        					} else {
-        						_trg setTriggerActivation["WEST","PRESENT",false]; // true = repeated
-        						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
-        					};
+            					if (_debug) then {
+            						_t = format["ied_t%1", random 1000];
 
-        					if (_debug) then {
-        						_t = format["ied_t%1", random 1000];
+            						diag_log format ["ALIVE-%1 IED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
+            						[_t, getpos _twn, "Ellipse", [_size+249,_size+249], "TEXT:", text _twn, "COLOR:", "ColorYellow", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
 
-        						diag_log format ["ALIVE-%1 IED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-        						[_t, getpos _twn, "Ellipse", [_size+245,_size+245], "TEXT:", text _twn, "COLOR:", "ColorYellow", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
+            					};
+            				};
 
-        					};
-        				};
-        			};
-        		} foreach _locations;
+                            // ROADBLOCKS
+                            if (_fate < _logic getvariable ["Roadblocks", DEFAULT_ROADBLOCKS]) then {
+                                // Place Roadblock trigger
+                                _trg = createTrigger["EmptyDetector",getpos _twn];
+
+                                _trg setTriggerArea[(_size+1000), (_size+1000),0,false];
+
+                                _trg setTriggerActivation["WEST","PRESENT",false]; // true = repeated
+                                _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1, %2] call ALIVE_fnc_createRoadblock",(_size+150), _numRB], ""];
+
+                                if (_debug) then {
+                                    _t = format["rb_t%1", random 1000];
+
+                                    diag_log format ["ALIVE-%1 Roadblock Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
+                                    [_t, getpos _twn, "Ellipse", [_size+1000,_size+1000], "TEXT:", text _twn, "COLOR:", "ColorRed", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
+
+                                };
+                            };
+            			};
+            		} foreach _locations;
 
                 } else {
                     [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;

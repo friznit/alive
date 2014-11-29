@@ -175,7 +175,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
- /*                      class Roadblocks
+                       class Roadblocks
                         {
                                 displayName = "$STR_ALIVE_ied_roadblocks";
                                 description = "$STR_ALIVE_ied_roadblocks_COMMENT";
@@ -209,7 +209,7 @@ class CfgVehicles {
                                                 value = 90;
                                         };
                                 };
-                        }; */
+                        };
                 };
 
         };
