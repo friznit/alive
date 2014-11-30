@@ -2,7 +2,7 @@
 #include <\x\alive\addons\mil_IED\script_component.hpp>
 SCRIPT(disarmIED);
 
-private ["_debug","_IED","_caller","_wire","_success","_selectedWire","_id"];
+private ["_debug","_IED","_caller","_wire","_success","_selectedWire","_id","_IEDCharge"];
 
 if (isDedicated) exitWith {diag_log "disarmIED running on server!";};
 
@@ -84,7 +84,10 @@ if ((random 1) > 0.85) then {
 		deleteVehicle _x;
 	} foreach _trgr;
 
-	_IED removeEventHandler ["handleDamage", _IED getVariable "ehID"];
+	_IEDCharge = _IED getVariable ["charge", nil];
+	if !(isNil "_IEDCharge") then {
+		_IEDCharge removeEventHandler ["handleDamage", _IED getVariable "ehID"];
+	};
 
  	hint "IED is disarmed";
 };

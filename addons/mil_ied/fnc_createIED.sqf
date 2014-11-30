@@ -86,29 +86,37 @@ for "_j" from 1 to _numIEDs do {
 	_IEDpos set [2, -0.1];
 
 	_IED = createVehicle [_IEDskins call BIS_fnc_selectRandom,_IEDpos, [], 0, ""];
+
 	// Choose IED or Dud IED
 	if (random 1 < 0.93) then {
 		[_IED, typeOf _IED] call ALIVE_fnc_armIED;
 
+		// Attach something that can take a hit to the IED and add a damage handler
+		_IEDCharge = createVehicle ["ALIVE_DemoCharge_Remote_Ammo",getposATL _IED, [], 0, "CAN_COLLIDE"];
+		_IEDCharge attachTo [_IED, [0,0,0]];
+
 		// Add damage handler
-		_ehID = _IED addeventhandler ["HandleDamage",{
+		_ehID = _IEDCharge addeventhandler ["HandleDamage",{
 			private "_trgr";
 //			diag_log str(_this);
 
 			if (MOD(mil_IED) getVariable "debug") then {
-				diag_log format ["ALIVE-%1 IED: %2 explodes due to damage by %3", time, (_this select 0), (_this select 3)];
+				diag_log format ["ALIVE-%1 IED: %2 explodes due to damage by %3", time, attachedTo (_this select 0), (_this select 3)];
 				[(_this select 0) getvariable "Marker"] call cba_fnc_deleteEntity;
 			};
 
 			"M_Mo_120mm_AT" createVehicle getposATL (_this select 0);
+
+			deletevehicle (_this select 0);
+			deleteVehicle (attachedTo (_this select 0));
 
 			_trgr = (position (_this select 0)) nearObjects ["EmptyDetector", 3];
 			{
 				deleteVehicle _x;
 			} foreach _trgr;
 
-			deletevehicle (_this select 0);
 		}];
 		_IED setVariable ["ehID",_ehID, true];
+		_IED setvariable ["charge", _IEDCharge, true];
 	};
 };
