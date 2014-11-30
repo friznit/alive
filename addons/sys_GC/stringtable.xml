@@ -24,7 +24,7 @@
 	<English>Garbage Collector Interval:</English>
 </Key>
 <Key ID="STR_ALIVE_GC_INTERVAL_COMMENT">
-	<English>Interval in which to clean killed objects</English>
+	<English>Interval in which to clean killed objects! Use 0 to turn off GC completely!</English>
 </Key>
 <Key ID="STR_ALIVE_GC_THRESHHOLD">
 	<English>Garbage Collector Limiter:</English>
