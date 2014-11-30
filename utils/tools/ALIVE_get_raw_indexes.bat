@@ -44,6 +44,7 @@ rem %exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
 rem %exe% "%arma%\@everon2013\addons\everon2014.pbo" > %target%\objects.everon2014.sqf
 
 rem %exe% "%arma%\@Bornholm\Addons\Bornholm.pbo" > %target%\objects.bornholm.sqf
+%exe% "%arma%\@panthera_a3\addons\panthera3.pbo" > %target%\objects.panthera3.sqf
 
 rem %exe% "%arma%\@sfp_islands\addons\sfp_sturko.pbo" > %target%\objects.sturko.sqf
 rem %exe% "%arma%\@sfp_islands\addons\sfp_wamako.pbo" > %target%\objects.wamako.sqf
@@ -82,7 +83,7 @@ rem %exe% "%arma%\@IF\addons\baranow_wrp.pbo" > %target%\objects.baranow.sqf
 rem %exe% "%arma%\@IF\addons\ivachev_wrp.pbo" > %target%\objects.ivachev.sqf
 rem %exe% "%arma%\@IF\addons\panovo_wrp.pbo" > %target%\objects.panovo.sqf
 rem %exe% "%arma%\@IF\addons\staszow_wrp.pbo" > %target%\objects.staszow.sqf
-%exe% "%arma%\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.colleville.sqf
+rem %exe% "%arma%\@LIB_DLC_1\addons\france_wrp.pbo" > %target%\objects.colleville.sqf
 
 rem ----------------------------- User ------------------------------------
 
