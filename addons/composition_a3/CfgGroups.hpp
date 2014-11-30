@@ -116,10 +116,9 @@ class CfgGroups
             class Object31 {side=8;vehicle="Land_CampingChair_V1_F";rank="";position[]={-5.91846,6.06494,0.00168562};dir=94.6712;};
             class Object32 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={-6.9043,6.43213,-0.00143862};dir=269.479;};
             class Object33 {side=8;vehicle="O_static_AA_F";rank="";position[]={-0.806152,12.5625,-0.0716357};dir=90.7492;};
-            class Object34 {side=8;vehicle="O_static_AA_F";rank="";position[]={-1.62402,12.5581,-0.0716};dir=270.969;};
-            class Object35 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={0.500488,12.6392,-0.00143862};dir=271.472;};
-            class Object36 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={-2.92432,12.4849,-0.00143862};dir=91.5256;};
-            class Object37 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={-1.18311,14.0371,-0.00143862};dir=1.33448;};
+            class Object34 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={0.500488,12.6392,-0.00143862};dir=271.472;};
+            class Object35 {side=8;vehicle="Land_BagFence_Round_F";rank="";position[]={-2.92432,12.4849,-0.00143862};dir=91.5256;};
+            class Object36 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={-1.18311,14.0371,-0.00143862};dir=1.33448;};
             };
             class mediumMilitaryCamp1
             {
