@@ -209,6 +209,8 @@ for "_j" from 1 to (count _roadpoints) do {
 	_vehicle setDir _direction;
 	_vehicle setposATL (getposATL _vehicle);
 
+	_vehicle setVariable [QUOTE(ADDON(VBIED)), false, true];
+
 	// Spawn group and get them to defend
 	[_vehicle, _roadpos, _fac] spawn {
 		private["_roadpos","_fac","_vehicle","_side","_blockers"];

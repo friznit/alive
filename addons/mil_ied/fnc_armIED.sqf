@@ -28,9 +28,12 @@ if (_debug) then {
 };
 
 // Add Action to IED for disarmm
-//_IED addAction ["<t color='#ff0000'>Disarm IED</t>",ALiVE_fnc_disarmIED, "", 6, false, true,"", "_target distance _this < 3"];
 
-[_IED,"ALiVE_fnc_addActionIED", true, true, true] call BIS_fnc_MP;
+if !(isDedicated) then {
+	_IED addAction ["<t color='#ff0000'>Disarm IED</t>",ALiVE_fnc_disarmIED, "", 6, false, true,"", "_target distance _this < 3"];
+} else {
+	[_IED,"ALiVE_fnc_addActionIED", true, true, true] call BIS_fnc_MP;
+};
 
 
 // Create Detonation Trigger

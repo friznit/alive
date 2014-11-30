@@ -73,9 +73,11 @@ if ((random 1) > 0.85) then {
 } else {
 	// Tell unit that IED is disarmed
 
-	_IED removeAction _id;
-
-	[[_IED, _id],"ALiVE_fnc_removeActionIED", true, true, true] call BIS_fnc_MP;
+	if !(isDedicated) then {
+		_IED removeAction _id;
+	} else {
+		[[_IED, _id],"ALiVE_fnc_removeActionIED", true, true, true] call BIS_fnc_MP;
+	};
 
 	_trgr = (position _IED) nearObjects ["EmptyDetector", 3];
 	{

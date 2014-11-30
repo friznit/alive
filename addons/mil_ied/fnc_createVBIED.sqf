@@ -1,3 +1,5 @@
+#define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_ied
 #define DEFAULT_VB_IED_THREAT 5
 #define DEFAULT_VBIED_SIDE "CIV"
 #include <\x\alive\addons\mil_IED\script_component.hpp>
@@ -14,7 +16,38 @@ _vehicle = (_this select 0) select 0;
 
 _fate = random 100;
 
-if (_fate > _threat || str(side _vehicle) != _side) exitWith {};
+if (_debug) then {
+	diag_log format ["Threat: %1, Side: %2, VBIED: %3", _threat, _side, (_vehicle getvariable [QUOTE(ADDON(VBIED)), true])];
+};
+
+if (_fate > _threat || str(side _vehicle) != _side || !(_vehicle getvariable [QUOTE(ADDON(VBIED)), true]) ) exitWith {};
+
+// Make sure vehicle is not in blacklist
+
+_taor = [MOD(mil_ied), "taor"] call MAINCLASS;
+_blacklist = [MOD(mil_ied), "blacklist"] call MAINCLASS;
+
+// check markers for existance
+private ["_marker","_counter","_black","_t"];
+
+_black = false;
+_t = true;
+
+if(count _blacklist > 0) then {
+	{
+		_black = [_vehicle, _x] call ALiVE_fnc_inArea;
+	} foreach _blacklist;
+};
+
+if (_black) exitWith {};
+
+if(count _taor > 0) then {
+	{
+		_t = [_vehicle, _x] call ALiVE_fnc_inArea;
+	} foreach _taor;
+};
+
+if !(_t) exitWith {};
 
 // create IED object and attach to vehicle
 //_IEDskins = ["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC"];

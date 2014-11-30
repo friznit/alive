@@ -149,7 +149,7 @@ switch(_operation) do {
             			if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0) then {
 
             				//Roll the dice
-            				_fate = 100;
+            				_fate = random 100;
     /*
             				if (_fate < _logic getvariable ["Bomber_Threat", DEFAULT_BOMBER_THREAT]) then {
             					// Place Suicide Bomber trigger
@@ -171,7 +171,7 @@ switch(_operation) do {
             				};
     */
                             // IEDS
-            				if (_fate < _logic getvariable ["IED_Threat", DEFAULT_IED_THREAT]) then {
+            				if (_fate < ((_logic getvariable ["IED_Threat", DEFAULT_IED_THREAT]) / 3)) then {
             					// Place IED trigger
             					_trg = createTrigger["EmptyDetector",getpos _twn];
 
