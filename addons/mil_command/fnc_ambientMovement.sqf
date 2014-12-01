@@ -24,7 +24,7 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_args","_debug","_waypoints","_id","_unit","_profile","_vehiclesInCommandOf","_vehiclesInCargoOf","_obj",
+private ["_args","_debug","_waypoints","_unit","_profile","_vehiclesInCommandOf","_vehiclesInCargoOf","_obj",
 "_leader","_pos","_radius","_positions","_assignments","_profileWaypoint","_savepos","_type","_speed","_formation",
 "_behaviour","_type","_objs","_parkedAir","_locations","_vehicleProfile","_vehicleObjectType"];
 
@@ -34,7 +34,6 @@ _radius = _this select 1;
 _debug = true;
 
 _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
-_id = [_profile,"profileID"] call ALiVE_fnc_HashGet;
 _waypoints = [_profile,"waypoints",[]] call ALiVE_fnc_HashGet;
 _vehiclesInCommandOf = [_profile,"vehiclesInCommandOf",[]] call ALIVE_fnc_HashGet;
 
