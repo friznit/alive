@@ -4152,6 +4152,386 @@ SUD_RU_typeMappings = [] call ALIVE_fnc_hashCreate;
 // ---------------------------------------------------------------------------------------------------------------------
 
 
+
+// CUP
+// ---------------------------------------------------------------------------------------------------------------------
+
+// CUP_B_USMC
+
+CUP_B_USMC_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_USMC_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_mappings, "FactionName", "CUP_B_USMC"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_mappings, "GroupFactionName", "CUP_USMC"] call ALIVE_fnc_hashSet;
+
+CUP_B_USMC_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_USMC_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_B_USMC_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_B_USMC_mappings, "GroupFactionTypes", CUP_B_USMC_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_B_USMC", CUP_B_USMC_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_B_US_Army
+
+CUP_B_US_Army_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_US_Army_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_mappings, "FactionName", "CUP_B_US_Army"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_mappings, "GroupFactionName", "CUP_BIS_US"] call ALIVE_fnc_hashSet;
+
+CUP_B_US_Army_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_US_Army_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_B_US_Army_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_B_US_Army_mappings, "GroupFactionTypes", CUP_B_US_Army_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_B_US_Army", CUP_B_US_Army_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_B_CDF
+
+CUP_B_CDF_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_CDF_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_mappings, "FactionName", "CUP_B_CDF"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_mappings, "GroupFactionName", "CUP_CDF"] call ALIVE_fnc_hashSet;
+
+CUP_B_CDF_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_CDF_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_B_CDF_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_B_CDF_mappings, "GroupFactionTypes", CUP_B_CDF_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_B_CDF", CUP_B_CDF_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_O_RU
+
+CUP_O_RU_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_RU_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_mappings, "FactionName", "CUP_O_RU"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_mappings, "GroupFactionName", "CUP_RU"] call ALIVE_fnc_hashSet;
+
+CUP_O_RU_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_RU_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_O_RU_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_O_RU_mappings, "GroupFactionTypes", CUP_O_RU_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_O_RU", CUP_O_RU_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_O_ChDKZ
+
+CUP_O_ChDKZ_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_ChDKZ_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_mappings, "FactionName", "CUP_O_ChDKZ"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_mappings, "GroupFactionName", "CUP_INS"] call ALIVE_fnc_hashSet;
+
+CUP_O_ChDKZ_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_ChDKZ_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_O_ChDKZ_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_O_ChDKZ_mappings, "GroupFactionTypes", CUP_O_ChDKZ_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_O_ChDKZ", CUP_O_ChDKZ_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_I_NAPA
+
+CUP_I_NAPA_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_NAPA_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_mappings, "FactionName", "CUP_I_NAPA"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_mappings, "GroupFactionName", "CUP_GUE"] call ALIVE_fnc_hashSet;
+
+CUP_I_NAPA_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_NAPA_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_I_NAPA_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_I_NAPA_mappings, "GroupFactionTypes", CUP_I_NAPA_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_I_NAPA", CUP_I_NAPA_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_O_TK
+
+CUP_O_TK_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_TK_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_mappings, "FactionName", "CUP_O_TK"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_mappings, "GroupFactionName", "CUP_BIS_TK"] call ALIVE_fnc_hashSet;
+
+CUP_O_TK_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_TK_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_O_TK_mappings, "GroupFactionTypes", CUP_O_TK_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_O_TK", CUP_O_TK_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_O_TK_MILITIA
+
+CUP_O_TK_MILITIA_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_TK_MILITIA_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_mappings, "FactionName", "CUP_O_TK_MILITIA"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_mappings, "GroupFactionName", "CUP_BIS_TK_INS"] call ALIVE_fnc_hashSet;
+
+CUP_O_TK_MILITIA_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_TK_MILITIA_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_O_TK_MILITIA_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_O_TK_MILITIA_mappings, "GroupFactionTypes", CUP_O_TK_MILITIA_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_O_TK_MILITIA", CUP_O_TK_MILITIA_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_B_US
+
+CUP_B_US_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_US_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_US_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_US_mappings, "FactionName", "CUP_B_US"] call ALIVE_fnc_hashSet;
+[CUP_B_US_mappings, "GroupFactionName", "CUP_BIS_US"] call ALIVE_fnc_hashSet;
+
+CUP_B_US_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_US_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_B_US_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_B_US_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_B_US_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_B_US_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_B_US_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_B_US_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_B_US_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_B_US_mappings, "GroupFactionTypes", CUP_B_US_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_B_US", CUP_B_US_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_B_CZ
+
+CUP_B_CZ_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_CZ_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_mappings, "FactionName", "CUP_B_CZ"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_mappings, "GroupFactionName", "CUP_BIS_CZ"] call ALIVE_fnc_hashSet;
+
+CUP_B_CZ_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_CZ_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_B_CZ_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_B_CZ_mappings, "GroupFactionTypes", CUP_B_CZ_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_B_CZ", CUP_B_CZ_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_B_GER
+
+CUP_B_GER_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_GER_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_mappings, "FactionName", "CUP_B_GER"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_mappings, "GroupFactionName", "CUP_BIS_GER"] call ALIVE_fnc_hashSet;
+
+CUP_B_GER_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_GER_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_B_GER_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_B_GER_mappings, "GroupFactionTypes", CUP_B_GER_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_B_GER", CUP_B_GER_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_I_TK_GUE
+
+CUP_I_TK_GUE_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_TK_GUE_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_mappings, "FactionName", "CUP_I_TK_GUE"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_mappings, "GroupFactionName", "CUP_BIS_TK_GUE"] call ALIVE_fnc_hashSet;
+
+CUP_I_TK_GUE_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_TK_GUE_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_I_TK_GUE_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_I_TK_GUE_mappings, "GroupFactionTypes", CUP_I_TK_GUE_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_I_TK_GUE", CUP_I_TK_GUE_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_I_UN
+
+CUP_I_UN_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_UN_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_mappings, "FactionName", "CUP_I_UN"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_mappings, "GroupFactionName", "CUP_I_UN"] call ALIVE_fnc_hashSet;
+
+CUP_I_UN_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_UN_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_I_UN_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_I_UN_mappings, "GroupFactionTypes", CUP_I_UN_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_I_UN", CUP_I_UN_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_I_SLA
+/*
+CUP_I_SLA_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_SLA_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_mappings, "FactionName", "CUP_I_SLA"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_mappings, "GroupFactionName", "CUP_I_SLA"] call ALIVE_fnc_hashSet;
+
+CUP_I_SLA_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_SLA_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_I_SLA_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_I_SLA_mappings, "GroupFactionTypes", CUP_I_SLA_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_I_SLA", CUP_I_SLA_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_I_RACS
+
+CUP_I_RACS_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_RACS_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_mappings, "FactionName", "CUP_I_RACS"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_mappings, "GroupFactionName", "CUP_I_RACS"] call ALIVE_fnc_hashSet;
+
+CUP_I_RACS_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_RACS_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_I_RACS_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_I_RACS_mappings, "GroupFactionTypes", CUP_I_RACS_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_I_RACS", CUP_I_RACS_mappings] call ALIVE_fnc_hashSet;
+*/
+
+
+// CUP_B_GB
+
+CUP_B_GB_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_GB_mappings, "Side", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_mappings, "GroupSideName", "WEST"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_mappings, "FactionName", "CUP_B_GB"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_mappings, "GroupFactionName", "CUP_BIS_BAF_MTP"] call ALIVE_fnc_hashSet;
+
+CUP_B_GB_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_B_GB_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_B_GB_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_B_GB_mappings, "GroupFactionTypes", CUP_B_GB_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_B_GB", CUP_B_GB_mappings] call ALIVE_fnc_hashSet;
+
+
+// CUP_I_PMC_ION
+
+CUP_I_PMC_ION_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_PMC_ION_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_mappings, "FactionName", "CUP_I_PMC_ION"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_mappings, "GroupFactionName", "CUP_PMC_BAF"] call ALIVE_fnc_hashSet;
+
+CUP_I_PMC_ION_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_I_PMC_ION_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_I_PMC_ION_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+
+[CUP_I_PMC_ION_mappings, "GroupFactionTypes", CUP_I_PMC_ION_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_I_PMC_ION", CUP_I_PMC_ION_mappings] call ALIVE_fnc_hashSet;
+
+
+
 // RHS
 // ---------------------------------------------------------------------------------------------------------------------
 

@@ -26,7 +26,7 @@ for "_i" from 0 to count _factions -1 do {
         _configName = configName _faction;
         _side = getNumber(_faction >> "side");
         if((_side < 3) && !(_configName == "Default") && !(_configName == "None") && !(_configName == "OPF_G_F") && !(_configName == "BLU_G_F") && !(_configName == "IND_G_F") && !(_configName == "IND_F") && !(_configName == "OPF_F") && !(_configName == "BLU_F")) then {
-            [configName (_factions select _i), false] call ALIVE_fnc_factionCreateStaticData;
+            [configName (_factions select _i), false, false] call ALIVE_fnc_factionCreateStaticData;
         };
     };
 };
@@ -39,10 +39,11 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_dump","_cfgFindFaction","_faction"];
+private ["_dump","_cfgFindFaction","_faction","_customGroups"];
 
 _faction = _this select 0;
-_dump = if(count _this > 1) then {_this select 1} else {true};
+_customGroups = if(count _this > 1) then {_this select 1} else {true};
+_dump = if(count _this > 2) then {_this select 2} else {true};
 
 _cfgFindFaction = {
     private ["_cfg","_faction","_detailed","_item","_text","_result","_findRecurse","_className"];
@@ -277,6 +278,17 @@ private ["_groupCategory","_categoryGroups","_arrayContent","_groupClass","_conf
     ['[%1_factionCustomGroups, "%2", [%3]] call ALIVE_fnc_hashSet;',_faction,_groupCategory,_arrayContent] call ALIVE_fnc_dumpClipboard;
 
 } forEach (_factionCategoryGroups select 1);
+
+if(count(_factionCategoryGroups select 1) == 0) then {
+    ['%1_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['%1_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['%1_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['%1_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['%1_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['%1_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['%1_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+    ['%1_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
+};
 
 [''] call ALIVE_fnc_dumpClipboard;
 ['[%1_mappings, "Groups", %1_factionCustomGroups] call ALIVE_fnc_hashSet;',_faction] call ALIVE_fnc_dumpClipboard;
