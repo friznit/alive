@@ -259,7 +259,7 @@ switch(_operation) do {
     case "spawnRadius": {
         if(typeName _args == "SCALAR") then {
                 [_logic,"spawnRadius",_args] call ALIVE_fnc_hashSet;
-                ALIVE_spawnRadius = _args;
+                ALIVE_spawnRadiusCiv = _args;
         };
         _result = [_logic,"spawnRadius"] call ALIVE_fnc_hashGet;
     };
@@ -276,7 +276,7 @@ switch(_operation) do {
     case "spawnTypeJetRadius": {
         if(typeName _args == "SCALAR") then {
                 [_logic,"spawnTypeJetRadius",_args] call ALIVE_fnc_hashSet;
-                ALIVE_spawnRadius = _args;
+                ALIVE_spawnRadiusCivJet = _args;
         };
         _result = [_logic,"spawnTypeJetRadius"] call ALIVE_fnc_hashGet;
     };
@@ -293,7 +293,7 @@ switch(_operation) do {
     case "spawnTypeHeliRadius": {
         if(typeName _args == "SCALAR") then {
                 [_logic,"spawnTypeHeliRadius",_args] call ALIVE_fnc_hashSet;
-                ALIVE_spawnRadius = _args;
+                ALIVE_spawnRadiusCivHeli = _args;
         };
         _result = [_logic,"spawnTypeHeliRadius"] call ALIVE_fnc_hashGet;
     };
