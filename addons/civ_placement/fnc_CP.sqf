@@ -48,6 +48,7 @@ ARJay
 #define DEFAULT_CLUSTER_TYPE QUOTE(All)
 #define DEFAULT_NO_TEXT ""
 #define DEFAULT_READINESS_LEVEL "1"
+#define DEFAULT_RB "10"
 
 private ["_logic","_operation","_args","_result"];
 
@@ -243,6 +244,9 @@ switch(_operation) do {
 	// Return the SETTLEMENT objectives as an array of clusters
 	case "objectivesSettlement": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES_SETTLEMENT] call ALIVE_fnc_OOsimpleOperation;
+	};
+    case "roadBlocks": {
+		_result = [_logic,_operation,_args,DEFAULT_RB] call ALIVE_fnc_OOsimpleOperation;
 	};
 	// Main process
 	case "init": {
@@ -615,9 +619,10 @@ switch(_operation) do {
                 _customSpecOpsCount = parseNumber _customSpecOpsCount;
             };
 			
-			_size = parseNumber([_logic, "size"] call MAINCLASS);
 			_type = [_logic, "type"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
+            _size = parseNumber([_logic, "size"] call MAINCLASS);
+            _roadBlocks = parsenumber([_logic, "roadBlocks"] call MAINCLASS);
 			
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
@@ -895,7 +900,34 @@ switch(_operation) do {
                             _totalCount = _totalCount + 1;
                         };
 					};
-				};					
+				};
+                
+                if (!isnil "ALIVE_fnc_createRoadblock" && {random 100 < _roadBlocks}) then {
+
+                        _trg = createTrigger ["EmptyDetector",_center];
+                        _trg setTriggerArea [ALIVE_spawnRadius,ALIVE_spawnRadius,0,false];
+                        _trg setTriggerActivation ["ANY","PRESENT",false]; // true = repeated
+                        _trg setTriggerStatements ["this && {[getposATL thisTrigger,ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir}", format ["null = [getpos thisTrigger,%1, %2] call ALIVE_fnc_createRoadblock",(_size+150), 1], ""];
+
+                        if (_debug) then {
+                            
+                            [
+				                format["ALiVE_CP_RB_%1", str(floor(_center select 0)) + str(floor(_center select 1))],
+				                _center,
+				                "Ellipse",
+				                [ALIVE_spawnRadius,ALIVE_spawnRadius],
+				                "ColorRed",
+				                mapgridposition _center,
+				                "",
+				                "Border",
+				                0,
+				                1
+				            ] call ALIVE_fnc_createMarker;
+                            
+                            ["ALIVE CP Roadblock trigger created at %1", mapgridposition _center] call ALiVE_fnc_DumpR;
+                        };
+                    };
+                			
 			} forEach _clusters;
 
 		

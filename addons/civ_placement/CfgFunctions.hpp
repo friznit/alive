@@ -16,6 +16,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\civ_placement\fnc_civClusterGeneration.sqf";
                                 recompile = RECOMPILE;
                         };
+                        class createRoadblock {
+                                description = "Create a road block";
+                                file = "\x\alive\addons\civ_placement\fnc_createRoadblock.sqf";
+                                recompile = 1;
+                        };
                 };
         };
 };

@@ -203,4 +203,10 @@
 <Key ID="STR_ALIVE_CP_READINESS_LEVEL_COMMENT">
 	<English>The amount of troops that will be on duty and patrolling</English>
 </Key>
+<Key ID="STR_ALIVE_CP_ROADBLOCKS">
+	<English>Roadblocks:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_ROADBLOCKS_COMMENT">
+	<English>The chance of roadblocks being created at the objectives</English>
+</Key>
 </Container></Package></Project>

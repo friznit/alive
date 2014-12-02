@@ -287,6 +287,45 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                       	class roadblocks
+                        {
+                                displayName = "$STR_ALIVE_CP_ROADBLOCKS";
+                                description = "$STR_ALIVE_CP_ROADBLOCKS_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "None";
+                                                value = "0";
+                                                default = 1;
+                                        };
+                                        class All
+                                        {
+                                                name = "All";
+                                                value = "100";
+                                        };
+                                        class EXTREME
+                                        {
+                                                name = "Extreme";
+                                                value = "75";
+                                        };
+                                        class HIGH
+                                        {
+                                                name = "High";
+                                                value = "50";
+                                        };
+										class MEDIUM
+                                        {
+                                                name = "Medium";
+                                                value = "35";
+                                        };
+										class LOW
+                                        {
+                                                name = "low";
+                                                value = "15";
+                                        };
+                                };
+                        };
                         class customInfantryCount
                         {
                                 displayName = "$STR_ALIVE_CP_CUSTOM_INFANTRY_COUNT";
