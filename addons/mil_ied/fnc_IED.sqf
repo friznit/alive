@@ -55,7 +55,6 @@ nil
 #define MAINCLASS ALIVE_fnc_ied
 #define DEFAULT_BOMBER_THREAT 15
 #define DEFAULT_IED_THREAT 60
-#define DEFAULT_ROADBLOCKS 20
 #define DEFAULT_VB_IED_THREAT 5
 #define DEFAULT_LOCS_IED 0
 #define DEFAULT_TAOR []
@@ -131,14 +130,12 @@ switch(_operation) do {
 
             		// Set up Bombers and IEDs at each location (except any player starting location)
             		{
-            			private ["_fate","_pos","_trg","_twn","_numRB"];
+            			private ["_fate","_pos","_trg","_twn"];
 
             			//Get the location object
             			_pos = position _x;
             			_twn = (nearestLocations [_pos, ["NameCityCapital","NameCity","NameVillage","Strategic"],200]) select 0;
                         _size = (size _twn) select 0;
-
-                        _numRB = (_logic getvariable ["Roadblocks", DEFAULT_ROADBLOCKS]) / 10;
 
             			if (_size < 250) then {_size = 250;};
             			if (_debug) then {
@@ -194,25 +191,6 @@ switch(_operation) do {
 
             					};
             				};
-
-                            // ROADBLOCKS
-                            if (_fate < _logic getvariable ["Roadblocks", DEFAULT_ROADBLOCKS]) then {
-                                // Place Roadblock trigger
-                                _trg = createTrigger["EmptyDetector",getpos _twn];
-
-                                _trg setTriggerArea[(_size+1000), (_size+1000),0,false];
-
-                                _trg setTriggerActivation["WEST","PRESENT",false]; // true = repeated
-                                _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1, %2] call ALIVE_fnc_createRoadblock",(_size+150), _numRB], ""];
-
-                                if (_debug) then {
-                                    _t = format["rb_t%1", random 1000];
-
-                                    diag_log format ["ALIVE-%1 Roadblock Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-                                    [_t, getpos _twn, "Ellipse", [_size+1000,_size+1000], "TEXT:", text _twn, "COLOR:", "ColorRed", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
-
-                                };
-                            };
             			};
             		} foreach _locations;
 

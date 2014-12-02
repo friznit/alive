@@ -205,43 +205,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                       class Roadblocks
-                        {
-                                displayName = "$STR_ALIVE_ied_roadblocks";
-                                description = "$STR_ALIVE_ied_roadblocks_COMMENT";
-                                typeName = "NUMBER";
-                                class Values
-                                {
-                                        class None
-                                        {
-                                                name = "None";
-                                                value = 0;
-                                                default = 1;
-                                        };
-                                        class Low
-                                        {
-                                                name = "Low";
-                                                value = 10;
-                                        };
-                                        class Med
-                                        {
-                                                name = "Medium";
-                                                value = 30;
-                                        };
-                                        class High
-                                        {
-                                                name = "High";
-                                                value = 70;
-                                        };
-                                        class Extreme
-                                        {
-                                                name = "Exteme";
-                                                value = 90;
-                                        };
-                                };
-                        };
                 };
-
         };
 
         class ThingX;

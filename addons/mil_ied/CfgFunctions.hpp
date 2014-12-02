@@ -76,11 +76,6 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_ied\fnc_removeActionIED.sqf";
                                                                 recompile = 1;
                         };
-                        class createRoadblock {
-                                description = "Create a road block";
-                                file = "\x\alive\addons\mil_ied\fnc_createRoadblock.sqf";
-                                                                recompile = 1;
-                        };
                 };
         };
 };
