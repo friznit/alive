@@ -5,4 +5,5 @@
 #include <CfgFunctions.hpp>
 #include <eventhandlers.hpp>
 #include <dialog.hpp>
+#include <CfgHints.hpp>
 

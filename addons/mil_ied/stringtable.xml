@@ -71,4 +71,7 @@
 <Key ID="STR_ALIVE_IED_DEBUG_DISABLE">
     <English>Deactivate IED Debug</English>
 </Key>
+<Key ID="STR_ALIVE_IED_USAGE">
+	<English>IEDs are often triggered by proximity. Players who are Explosive Specialists or carry a Mine Detector can often get close enough to disarm, anyone else is taking an extreme risk.</English>
+</Key>
 </Container></Package></Project>

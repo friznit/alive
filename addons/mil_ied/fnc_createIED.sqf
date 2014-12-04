@@ -106,8 +106,6 @@ for "_j" from 1 to _numIEDs do {
 			private "_trgr";
 //			diag_log str(_this);
 
-
-
 			if (isPlayer (_this select 3)) then { // GO BOOOOOOOOOOM!
 
 				if (MOD(mil_IED) getVariable "debug") then {

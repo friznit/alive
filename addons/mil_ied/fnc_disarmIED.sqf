@@ -12,6 +12,8 @@ _IED = _this select 0;
 _caller = _this select 1;
 _id = _this select 2;
 
+_IEDCharge = _IED getVariable ["charge", nil];
+
 //Display timer for IED disarm
 hint "Disarming IED…";
 // timer graphic hint?
@@ -57,6 +59,7 @@ if ((random 1) > 0.85) then {
 			deleteVehicle _x;
 		} foreach _trgr;
 
+		deleteVehicle _IEDCharge;
 		deleteVehicle _IED;
 	} else {
 
@@ -66,6 +69,10 @@ if ((random 1) > 0.85) then {
 		{
 			deleteVehicle _x;
 		} foreach _trgr;
+
+		if !(isNil "_IEDCharge") then {
+			_IEDCharge removeEventHandler ["handleDamage", _IED getVariable "ehID"];
+		};
 
 		hint "You guessed correct! IED is disarmed";
 	};
@@ -84,7 +91,7 @@ if ((random 1) > 0.85) then {
 		deleteVehicle _x;
 	} foreach _trgr;
 
-	_IEDCharge = _IED getVariable ["charge", nil];
+
 	if !(isNil "_IEDCharge") then {
 		_IEDCharge removeEventHandler ["handleDamage", _IED getVariable "ehID"];
 	};
