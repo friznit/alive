@@ -12,7 +12,7 @@ if (isnil "ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_
  * CQB houses
  */
 
-ALiVE_MIL_CQB_STRATEGICHOUSES = ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES + 
+ALiVE_MIL_CQB_STRATEGICHOUSES = ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES +
 [
 	//A3
 	"Land_Cargo_Patrol_V1_F",
@@ -64,7 +64,7 @@ ALiVE_MIL_CQB_STRATEGICHOUSES = ALiVE_MIL_CQB_CUSTOM_STRATEGICHOUSES +
  * CQB unit blacklist
  */
 
-ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST + 
+ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST +
 [
 	//A3
 	"B_Helipilot_F",
@@ -101,7 +101,7 @@ ALiVE_MIL_CQB_UNITBLACKLIST = ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST +
     "B_Protagonist_VR_F",
     "O_Protagonist_VR_F",
     "I_Protagonist_VR_F",
-    
+
     "C_Driver_1_black_F",
 	"C_Driver_1_blue_F",
 	"C_Driver_1_F",
@@ -191,7 +191,7 @@ ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +
  * Mil placement group blacklist
  */
 
-ALiVE_PLACEMENT_GROUPBLACKLIST = ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST + 
+ALiVE_PLACEMENT_GROUPBLACKLIST = ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST +
 [
 	"HAF_AttackTeam_UAV",
 	"HAF_ReconTeam_UAV",
@@ -471,6 +471,8 @@ ALIVE_garrisonPositions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_garrisonPositions, "Land_u_Barracks_V2_F", [36,37,35,34,32,33,40,44]] call ALIVE_fnc_hashSet;
 [ALIVE_garrisonPositions, "Land_i_Barracks_V1_F", [36,37,35,34,32,33,40,44]] call ALIVE_fnc_hashSet;
 [ALIVE_garrisonPositions, "Land_i_Barracks_V2_F", [36,37,35,34,32,33,40,44]] call ALIVE_fnc_hashSet;
+[ALIVE_garrisonPositions, "Land_BagBunker_Small_F", [2,3]] call ALIVE_fnc_hashSet;
+[ALIVE_garrisonPositions, "Land_BagFence_Round_F", [1]] call ALIVE_fnc_hashSet;
 
 /*
  * Compositions
