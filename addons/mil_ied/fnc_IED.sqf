@@ -146,7 +146,7 @@ switch(_operation) do {
             			if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0) then {
 
             				//Roll the dice
-            				_fate = random 100;
+            				_fate = random 33;
     /*
             				if (_fate < _logic getvariable ["Bomber_Threat", DEFAULT_BOMBER_THREAT]) then {
             					// Place Suicide Bomber trigger
