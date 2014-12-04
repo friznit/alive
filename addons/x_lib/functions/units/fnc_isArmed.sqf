@@ -43,7 +43,7 @@ if (_object isKindOf "CAManBase") then {
 } else {
     if (_object isKindOf "AllVehicles") then {
         // Checks if magazines are set for the main turrets, tbc: AH9 Pawnee seems to be misconfiged (no magazines)
-        _isArmed = count (getArray(configfile >> "CfgVehicles" >> _object >> "Turrets" >> "MainTurret" >> "Magazines")) > 0;
+        _isArmed = count (getArray(configfile >> "CfgVehicles" >> _object >> "Turrets" >> "MainTurret" >> "Magazines")) > 0 || count (getArray(configfile >> "CfgVehicles" >> _object >> "Turrets" >> "M2_Turret" >> "Magazines")) > 0;
     };
 };
 
