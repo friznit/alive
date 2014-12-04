@@ -27,7 +27,7 @@ Author:
 ARJay, Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_group","_position","_radius","_moveInstantly","_units","_file","_leader","_units"];
+private ["_group","_position","_radius","_moveInstantly","_units","_file","_leader","_units","_armedCars"];
 
 _group = _this select 0;
 _position = _this select 1;
@@ -55,6 +55,14 @@ if(!_moveInstantly) then {
 private ["_staticWeapons","_weapon","_positionCount","_unit"];
 
 _staticWeapons = nearestObjects [_position, ["StaticWeapon"], _radius];
+
+// Find any cars that are armed
+_armedCars = nearestObjects [_position, ["Car"], _radius];
+{
+    if !([_x] call ALiVE_fnc_isArmed) then {_armedCars = _armedCars - [_x]};
+} foreach _armedCars;
+
+_staticWeapons = _staticWeapons + _armedCars;
 
 if(count _staticWeapons > 0) then
 {
