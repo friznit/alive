@@ -109,7 +109,6 @@ for "_j" from 1 to (count _roadpoints) do {
 	_vehicle = createVehicle [_vehtype, [position _roadpos, 10,20,2,0,5,0] call BIS_fnc_findsafepos, [], 20, "NONE"];
 	_vehicle setDir _direction;
 	_vehicle setposATL (getposATL _vehicle);
-	_vehicle setVariable [QUOTE(ADDON(VBIED)), false, true];
 
 	// Spawn static virtual group if Profile System is loaded and get them to defend
     if !(isnil "ALiVE_ProfileHandler") then {

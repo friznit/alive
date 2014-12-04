@@ -902,7 +902,7 @@ switch(_operation) do {
 					};
 				};
 
-                if (!isnil "ALIVE_fnc_createRoadblock" && {random 100 < _roadBlocks}) then {
+                if (!isnil "ALIVE_fnc_createRoadblock" && {random 50 < _roadBlocks}) then {
 
                         _trg = createTrigger ["EmptyDetector",_center];
                         _trg setTriggerArea [ALIVE_spawnRadius,ALIVE_spawnRadius,0,false];
