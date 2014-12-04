@@ -17,10 +17,10 @@ _vehicle = (_this select 0) select 0;
 _fate = random 100;
 
 if (_debug) then {
-	diag_log format ["Threat: %1, Side: %2, VBIED: %3", _threat, _side, (_vehicle getvariable [QUOTE(ADDON(VBIED)), true])];
+	diag_log format ["Threat: %1, Fate: %4, Side: %2, VBIED: %3", _threat, _side, (_vehicle getvariable [QUOTE(ADDON(VBIED)), true]), _fate];
 };
 
-if (_fate > _threat || str(side _vehicle) != _side || !(_vehicle getvariable [QUOTE(ADDON(VBIED)), true]) ) exitWith {};
+if (_fate > _threat || str(side _vehicle) != _side || !(_vehicle getvariable [QUOTE(ADDON(VBIED)), true]) || (_vehicle isKindOf "Quadbike_01_base_F") ) exitWith {};
 
 // Make sure vehicle is not in blacklist
 
