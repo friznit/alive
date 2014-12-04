@@ -29,11 +29,17 @@ if (_debug) then {
 	diag_log format ["ALIVE-%1 IED: Found %2 spots for IEDs",time, count _posloc];
 };
 
+if (_numIEDs > (count _posloc)) then {
+	_numIEDs = (count _posloc) - 1;
+};
+
 for "_j" from 1 to _numIEDs do {
 	private ["_IEDpos","_pos","_cen","_near"];
 	// Select Position for IED and remove position used
+
 	_index = round (random ((count _posloc) -1));
 	_pos = _posloc select _index;
+
 	_posloc set [_index, -1];
 	_posloc = _posloc - [-1];
 	// Find safe location - if no safe pos find random position within 6m
@@ -100,20 +106,25 @@ for "_j" from 1 to _numIEDs do {
 			private "_trgr";
 //			diag_log str(_this);
 
-			if (MOD(mil_IED) getVariable "debug") then {
-				diag_log format ["ALIVE-%1 IED: %2 explodes due to damage by %3", time, attachedTo (_this select 0), (_this select 3)];
-				[(_this select 0) getvariable "Marker"] call cba_fnc_deleteEntity;
+
+
+			if (isPlayer (_this select 3)) then { // GO BOOOOOOOOOOM!
+
+				if (MOD(mil_IED) getVariable "debug") then {
+					diag_log format ["ALIVE-%1 IED: %2 explodes due to damage by %3", time, attachedTo (_this select 0), (_this select 3)];
+					[(attachedTo (_this select 0)) getvariable "Marker"] call cba_fnc_deleteEntity;
+				};
+
+				"M_Mo_120mm_AT" createVehicle getposATL (_this select 0);
+
+				deletevehicle (_this select 0);
+				deleteVehicle (attachedTo (_this select 0));
+
+				_trgr = (position (_this select 0)) nearObjects ["EmptyDetector", 3];
+				{
+					deleteVehicle _x;
+				} foreach _trgr;
 			};
-
-			"M_Mo_120mm_AT" createVehicle getposATL (_this select 0);
-
-			deletevehicle (_this select 0);
-			deleteVehicle (attachedTo (_this select 0));
-
-			_trgr = (position (_this select 0)) nearObjects ["EmptyDetector", 3];
-			{
-				deleteVehicle _x;
-			} foreach _trgr;
 
 		}];
 		_IED setVariable ["ehID",_ehID, true];

@@ -212,7 +212,7 @@ switch(_operation) do {
                 VIEW - purely visual
                 - initialise menu
                 - frequent check to modify menu and display status (ALIVE_fnc_IEDmenuDef)
-                */
+
 
 		TRACE_2("Adding menu",isDedicated,isHC);
 
@@ -239,7 +239,7 @@ switch(_operation) do {
                                 ]
                         ] call ALIVE_fnc_flexiMenu_Add;
                 };
-
+                */
                 /*
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_IEDmenuDef)

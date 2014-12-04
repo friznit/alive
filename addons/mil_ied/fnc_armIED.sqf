@@ -39,7 +39,7 @@ if !(isDedicated) then {
 // Create Detonation Trigger
 _trg = createTrigger["EmptyDetector", getposATL _IED];
 _trg setTriggerArea[_proximity,_proximity,0,false];
-_trg setTriggerActivation["WEST","PRESENT",false];
+_trg setTriggerActivation["ANY","PRESENT",false];
 _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL  vehicle _x) select 2 < 8) && !('MineDetector' in (items _x)) && (getText (configFile >> 'cfgVehicles' >> typeof _x >> 'displayName') != 'Explosive Specialist') && ([vehicleVarName _x,'EOD'] call CBA_fnc_find == -1)} count ([] call BIS_fnc_listPlayers) > 0)", format["_bomb = nearestObject [getposATL (thisTrigger), '%1']; deletevehicle (_bomb getvariable 'Detect_Trigger'); deletevehicle (_bomb getvariable 'Det_Trigger'); boom = '%2' createVehicle getposATL _bomb; deletevehicle _bomb;",_type,_shell], ""];
 
 _IED setvariable ["Trigger", _trg];
@@ -52,7 +52,7 @@ if !(typeof _IED == _type) then {
 // Create Detection Trigger - if Engineer or person with Minedetector gets near IED
 _trg = createTrigger["EmptyDetector", getposATL _IED];
 _trg setTriggerArea[_proximity+5,_proximity+5,0,false];
-_trg setTriggerActivation["WEST","PRESENT",true];
+_trg setTriggerActivation["ANY","PRESENT",true];
 _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL  vehicle _x) select 2 < 8) && (('MineDetector' in (items _x)) || (getText (configFile >> 'cfgVehicles' >> typeof _x >> 'displayName') == 'Explosive Specialist') || ([vehicleVarName _x,'EOD'] call CBA_fnc_find != -1))} count ([] call BIS_fnc_listPlayers) > 0)", format["_bomb = nearestObject [getposATL (thisTrigger), '%1']; [_bomb, %2, thislist] call ALiVE_fnc_detectIED", _type, _proximity], ""];
 
 _IED setvariable ["Detect_Trigger", _trg];
@@ -65,7 +65,7 @@ if !(typeof _IED == _type) then {
 // Create Disarm Detonation Trigger - if Engineer or person with Minedetector step on IED
 _trg = createTrigger["EmptyDetector", getposATL _IED];
 _trg setTriggerArea[1,1,0,false];
-_trg setTriggerActivation["WEST","PRESENT",false];
+_trg setTriggerActivation["ANY","PRESENT",false];
 _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL  vehicle _x) select 2 < 8)} count ([] call BIS_fnc_listPlayers) > 0)", format["_bomb = nearestObject [getposATL (thisTrigger), '%1']; deletevehicle (_bomb getvariable 'Detect_Trigger'); deletevehicle (_bomb getvariable 'Trigger'); boom = '%2' createVehicle getposATL _bomb; deletevehicle _bomb;",_type,_shell], ""];
 
 _IED setvariable ["Det_Trigger", _trg];
