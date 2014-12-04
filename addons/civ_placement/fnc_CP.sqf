@@ -5,7 +5,7 @@ SCRIPT(CP);
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_CP
 Description:
-Civitary objectives 
+Civitary objectives
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -69,10 +69,10 @@ switch(_operation) do {
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];
-			
+
 			[_logic, "destroy"] call SUPERCLASS;
 		};
-		
+
 	};
 	case "debug": {
 		if (typeName _args == "BOOL") then {
@@ -87,11 +87,11 @@ switch(_operation) do {
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
 		_result = _args;
-	};        
+	};
 	case "state": {
 		private["_state","_data","_nodes","_simple_operations"];
 		_simple_operations = ["targets", "size","type","faction"];
-		
+
 		if(typeName _args != "ARRAY") then {
 			_state = [] call CBA_fnc_hashCreate;
 			// Save state
@@ -105,13 +105,13 @@ switch(_operation) do {
 			_result = _state;
 		} else {
 			ASSERT_TRUE([_args] call ALIVE_fnc_isHash,str _args);
-			
+
 			// Restore state
 			{
 				[_logic, _x, [_args, _x] call ALIVE_fnc_hashGet] call MAINCLASS;
 			} forEach _simple_operations;
-		};		
-	};        
+		};
+	};
 	// Determine size of enemy force - valid values are: BN, CY and PL
 	case "size": {
 		_result = [_logic,_operation,_args,DEFAULT_SIZE] call ALIVE_fnc_OOsimpleOperation;
@@ -153,7 +153,7 @@ switch(_operation) do {
 				_logic setVariable [_operation, _args];
 			};
 		};
-		if(typeName _args == "ARRAY") then {		
+		if(typeName _args == "ARRAY") then {
 			_logic setVariable [_operation, _args];
 		};
 		_result = _logic getVariable [_operation, DEFAULT_TAOR];
@@ -167,10 +167,10 @@ switch(_operation) do {
 				_logic setVariable [_operation, _args];
 			};
 		};
-		if(typeName _args == "ARRAY") then {		
+		if(typeName _args == "ARRAY") then {
 			_logic setVariable [_operation, _args];
 		};
-		_result = _logic getVariable [_operation, DEFAULT_BLACKLIST];		
+		_result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
 	};
 	// Determine type of clusters to use
     case "clusterType": {
@@ -188,7 +188,7 @@ switch(_operation) do {
 	case "readinessLevel": {
 		_result = [_logic,_operation,_args,DEFAULT_READINESS_LEVEL] call ALIVE_fnc_OOsimpleOperation;
 	};
-    
+
 	case "withPlacement": {
         if (isnil "_args") then {
             _args = _logic getVariable ["withPlacement", DEFAULT_WITH_PLACEMENT];
@@ -206,7 +206,7 @@ switch(_operation) do {
 
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
         _logic setVariable ["withPlacement", _args];
-        
+
 		_result = _args;
 	};
 	// Return the objectives as an array of clusters
@@ -251,7 +251,7 @@ switch(_operation) do {
 	// Main process
 	case "init": {
         if (isServer) then {
-						
+
 			// if server, initialise module game logic
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
@@ -266,26 +266,26 @@ switch(_operation) do {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
                 _logic setVariable ["startupComplete", true];
             };
-            
+
             waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
-            
+
             [_logic,"start"] call MAINCLASS;
         } else {
             [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
             [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
             {_x setMarkerAlpha 0} foreach (_logic getVariable ["taor", DEFAULT_TAOR]);
-            {_x setMarkerAlpha 0} foreach (_logic getVariable ["blacklist", DEFAULT_TAOR]);            
+            {_x setMarkerAlpha 0} foreach (_logic getVariable ["blacklist", DEFAULT_TAOR]);
         };
 	};
     case "start": {
         if (isServer) then {
-		
+
 			private ["_debug","_clusterType","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_faction","_error"];
-						
+
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
-            
+
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALIVE CP - Startup"] call ALIVE_fnc_dump;
@@ -325,7 +325,7 @@ switch(_operation) do {
                     [_message] call ALIVE_fnc_dump;
                     //_error = true;
                 };
-                
+
                 /*
                 if (!(isnil "_message") && {isnil QGVAR(CLUSTERWARNING_DISPLAYED)}) then {
                     GVAR(CLUSTERWARNING_DISPLAYED) = true;
@@ -555,28 +555,28 @@ switch(_operation) do {
         };
 	};
 	// Placement
-	case "placement": {		
+	case "placement": {
         if (isServer) then {
 
 			private ["_debug","_clusters","_cluster","_size","_type",
 			"_faction","_ambientVehicleAmount","_placeHelis","_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass",
 			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes","_airClasses","_node",
 			"_customInfantryCount","_customMotorisedCount","_customMechanisedCount","_customArmourCount","_customSpecOpsCount","_file"];
-            
-		
-			_debug = [_logic, "debug"] call MAINCLASS;		
-			
+
+
+			_debug = [_logic, "debug"] call MAINCLASS;
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALIVE CP - Placement"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
-			// DEBUG -------------------------------------------------------------------------------------			
-			
-		
+			// DEBUG -------------------------------------------------------------------------------------
+
+
             //waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
-			
+
 			_clusters = [_logic, "objectives"] call MAINCLASS;
 
 			_customInfantryCount = [_logic, "customInfantryCount"] call MAINCLASS;
@@ -618,38 +618,38 @@ switch(_operation) do {
             }else{
                 _customSpecOpsCount = parseNumber _customSpecOpsCount;
             };
-			
+
 			_type = [_logic, "type"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
             _size = parseNumber([_logic, "size"] call MAINCLASS);
             _roadBlocks = parsenumber([_logic, "roadBlocks"] call MAINCLASS);
-			
+
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
 			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
 			_countProfiles = 0;
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE CP [%1] - Size: %2 Type: %3 SideNum: %4 Side: %5 Faction: %6",_faction,_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;
 			};
-			// DEBUG -------------------------------------------------------------------------------------			
-			
-			
+			// DEBUG -------------------------------------------------------------------------------------
+
+
 			// Load static data
-			
+
 			if(isNil "ALiVE_STATIC_DATA_LOADED") then {
 				_file = "\x\alive\addons\main\static\staticData.sqf";
 				call compile preprocessFileLineNumbers _file;
 			};
 
 			// Spawn the main force
-			
+
 			private ["_countArmored","_countMechanized","_countMotorized","_countInfantry",
 			"_countAir","_countSpecOps","_groups","_motorizedGroups","_infantryGroups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
 			"_groupCount","_clusterCount"];
-			
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE CP [%1] - Size: %2",_faction,_size] call ALIVE_fnc_dump;
@@ -663,8 +663,8 @@ switch(_operation) do {
 			_countInfantry = 0;
 			_countAir = 0;
 			_countSpecOps = 0;
-			
-			// Force Composition			
+
+			// Force Composition
 			switch(_type) do {
                 case "Armored": {
                     _countArmored = floor((_size / 20) * 0.5);
@@ -735,8 +735,8 @@ switch(_operation) do {
             if!(_customSpecOpsCount == 666) then {
                 _countSpecOps = _customSpecOpsCount;
             };
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE CP [%1] - Main force creation ",_faction] call ALIVE_fnc_dump;
@@ -748,18 +748,18 @@ switch(_operation) do {
 				["Count Spec Ops: %1",_countSpecOps] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			
+
+
 			// Assign groups
 			_groups = [];
-			
+
 			for "_i" from 0 to _countArmored -1 do {
 				_group = ["Armored",_faction] call ALIVE_fnc_configGetRandomGroup;
 				if!(_group == "FALSE") then {
 					_groups set [count _groups, _group];
 				};
 			};
-			
+
 			for "_i" from 0 to _countMechanized -1 do {
 				_group = ["Mechanized",_faction] call ALIVE_fnc_configGetRandomGroup;
 				if!(_group == "FALSE") then {
@@ -789,7 +789,7 @@ switch(_operation) do {
 
                 _groups = _groups + _motorizedGroups;
             };
-			
+
 			_infantryGroups = [];
             for "_i" from 0 to _countInfantry -1 do {
                 _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
@@ -799,7 +799,7 @@ switch(_operation) do {
             };
 
             _groups = _groups + _infantryGroups;
-			
+
 			for "_i" from 0 to _countAir -1 do {
 				_group = ["Air",_faction] call ALIVE_fnc_configGetRandomGroup;
 				if!(_group == "FALSE") then {
@@ -813,7 +813,7 @@ switch(_operation) do {
                     _groups set [count _groups, _group];
                 };
             };
-			
+
 			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 			_infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
@@ -821,7 +821,7 @@ switch(_operation) do {
 			// Position and create groups
 			_groupCount = count _groups;
 			_clusterCount = count _clusters;
-			_groupPerCluster = floor(_groupCount / _clusterCount);		
+			_groupPerCluster = floor(_groupCount / _clusterCount);
 			_totalCount = 0;
 
             _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
@@ -829,7 +829,7 @@ switch(_operation) do {
 
 			{
                 private ["_guardGroup","_guards","_center","_size"];
-                		
+
 				_center = [_x, "center"] call ALIVE_fnc_hashGet;
 				_size = [_x, "size"] call ALIVE_fnc_hashGet;
 
@@ -847,19 +847,19 @@ switch(_operation) do {
 
 				if(_totalCount < _groupCount) then {
                     private ["_profiles","_command","_position","_garrisonPos"];
-                                           
+
                     _command = "ALIVE_fnc_ambientMovement";
-                    
+
                     if (_totalCount < _readiness ) then {
-                        _command = "ALIVE_fnc_garrison"; 
+                        _command = "ALIVE_fnc_garrison";
                         _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
                     };
 
 					if(_groupPerCluster > 0) then {
-					
+
 						for "_i" from 0 to _groupPerCluster -1 do {
-							_group = _groups select _totalCount;			
-                            											
+							_group = _groups select _totalCount;
+
                             if (isnil "_garrisonPos") then {
                                 _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
                             } else {
@@ -870,17 +870,17 @@ switch(_operation) do {
 							    _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
                                 {
                                     if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                        				[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;    
+                        				[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;
                                     };
                                 } foreach _profiles;
-                                
+
                                 _countProfiles = _countProfiles + count _profiles;
                                 _totalCount = _totalCount + 1;
 							};
 						};
-						
+
 					}else{
-						_group = _groups select _totalCount;														
+						_group = _groups select _totalCount;
 
                         if (isnil "_garrisonPos") then {
                             _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
@@ -892,7 +892,7 @@ switch(_operation) do {
                             _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
                             {
                                 if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                    				[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;    
+                    				[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;
                                 };
                             } foreach _profiles;
 
@@ -901,16 +901,16 @@ switch(_operation) do {
                         };
 					};
 				};
-                
+
                 if (!isnil "ALIVE_fnc_createRoadblock" && {random 100 < _roadBlocks}) then {
 
                         _trg = createTrigger ["EmptyDetector",_center];
                         _trg setTriggerArea [ALIVE_spawnRadius,ALIVE_spawnRadius,0,false];
                         _trg setTriggerActivation ["ANY","PRESENT",false]; // true = repeated
-                        _trg setTriggerStatements ["this && {[getposATL thisTrigger,ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir}", format ["null = [getpos thisTrigger,%1, %2] call ALIVE_fnc_createRoadblock",(_size+150), 1], ""];
+                        _trg setTriggerStatements ["this && {[getposATL thisTrigger,ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir}", format ["null = [getpos thisTrigger,%1, %2] call ALIVE_fnc_createRoadblock",(_size+150), ceil(_roadblocks / 10)], ""];
 
                         if (_debug) then {
-                            
+
                             [
 				                format["ALiVE_CP_RB_%1", str(floor(_center select 0)) + str(floor(_center select 1))],
 				                _center,
@@ -923,14 +923,14 @@ switch(_operation) do {
 				                0,
 				                1
 				            ] call ALIVE_fnc_createMarker;
-                            
+
                             ["ALIVE CP Roadblock trigger created at %1", mapgridposition _center] call ALiVE_fnc_DumpR;
                         };
                     };
-                			
+
 			} forEach _clusters;
 
-		
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE CP - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
