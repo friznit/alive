@@ -97,6 +97,7 @@ Available Missions are:
 * SP - ALiVE Tour - A guide to ALiVE
 * SP - ALiVE Quick Start - The example mission from our Wiki/Readme
 * SP - ALiVE Divide and Rule - Find the nuclear device before it gets into the wrong hands
+* SP - ALiVE Hurt Locker - Secure IED littered Stratis and eliminate the local militia
 
 
 Simply access these missions via the Arma 3 Main Menu > Play > Showcases.
@@ -105,6 +106,7 @@ Simply access these missions via the Arma 3 Main Menu > Play > Showcases.
 * MP - COOP 09 - Quick Start (Stratis) - The example mission from our Wiki/Readme, a simple whole map mission.
 * MP - COOP 07 - Air Assault (Altis) - Steal an experimental helicopter while fighting across Altis
 * MP - COOP 12 - Sabotage (Altis) - An example of what can be done with ALiVE, an insurgency game mode with sabotage and subterfuge.
+* MP - COOP 10 - Hurt Locker (Stratis) - Secure IED littered Stratis and eliminate the local militia
 
 
 Access these MP missions from your dedicated server mission selection screen.
@@ -375,6 +377,8 @@ Military AI Skill
 Military Close Quarters Battle
 - provides an appropriate ambient threat in towns, villages and buildings for urban or building clearance operations. 
 
+Military IED Threat
+- provides an ambient IED and VB-IED threat in towns, villages and roads.
 
 Military Logistics
 - allows AI commanders to request and receive resupply via air, land or sea. Requests are fulfilled by in game convoys or airlifts, which can be interdicted by opposition forces.

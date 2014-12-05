@@ -57,8 +57,7 @@ Changelog
 [Compositions] Removed duplicate static AA Launcher (Hazey)
 [DEMO] Cleaned up demo folder
 [INDEXES] Full index of Panthera3 by IceBreakr https://dev.withsix.com/issues/75739
-[INDEXES] new bornholm indexes in top folder (zip)
-[indexes] possible fix for index
+[indexes] Fix for Bornholm index
 [iron front] Indexed omaha beach, tweaked config mappings, assigned logistics transport vehicles
 [Main] Added Panthera3 Entry to staticData.
 [main] Static data prep for CUP factions mappings
