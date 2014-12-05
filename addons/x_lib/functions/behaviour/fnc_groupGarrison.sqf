@@ -117,47 +117,51 @@ if(count _buildings > 0) then {
 
         _buildingPositions = [ALIVE_garrisonPositions,_class] call ALIVE_fnc_hashGet;
 
-        {
-            if (_foreachIndex > ((count _units)-1)) exitwith {};
+        if!(isNil "_buildingPositions") then {
 
-            if(count _units > 0) then {
+            {
+                if (_foreachIndex > ((count _units)-1)) exitwith {};
 
-                _unit = _units select 0;
+                if(count _units > 0) then {
 
-                if(!isNil "_unit") then {
+                    _unit = _units select 0;
 
-                    if(_moveInstantly) then {
-                        _unit setposATL (_building buildingpos _x);
-                        _unit setdir (([_unit,_building] call BIS_fnc_DirTo)-180);
-                        _unit setUnitPos "UP";
-                        _unit disableAI "MOVE";
-                        sleep 0.03;
-                    }else{
-                        _position = (_building buildingpos _x);
+                    if(!isNil "_unit") then {
 
-                        [_unit,_position] spawn {
+                        if(_moveInstantly) then {
+                            _unit setposATL (_building buildingpos _x);
+                            _unit setdir (([_unit,_building] call BIS_fnc_DirTo)-180);
+                            _unit setUnitPos "UP";
+                            _unit disableAI "MOVE";
+                            sleep 0.03;
+                        }else{
+                            _position = (_building buildingpos _x);
 
-                            private ["_unit","_position"];
+                            [_unit,_position] spawn {
 
-                            _unit = _this select 0;
-                            _position = _this select 1;
+                                private ["_unit","_position"];
 
-                            _unit doMove _position;
+                                _unit = _this select 0;
+                                _position = _this select 1;
 
-                            waitUntil {sleep 0.5; unitReady _unit };
+                                _unit doMove _position;
 
-                            doStop _unit;
+                                waitUntil {sleep 0.5; unitReady _unit };
+
+                                doStop _unit;
+
+                            };
 
                         };
 
+                        _units = _units - [_unit];
+
                     };
-
-                    _units = _units - [_unit];
-
                 };
-            };
 
-        } foreach _buildingPositions;
+            } foreach _buildingPositions;
+
+        };
 
 
     } forEach _buildings;
