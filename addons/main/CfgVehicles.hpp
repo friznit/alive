@@ -47,7 +47,7 @@ class CfgVehicles {
                             {
                                     name = "Yes";
                                     value = true;
-                                    default = true;
+                                    default = false;
                             };
                             class No
                             {
