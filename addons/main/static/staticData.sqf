@@ -797,6 +797,7 @@ ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 [ALIVE_mapBounds, "tavi", 26000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Woodland_ACR", 8000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Imrali", 11000] call ALIVE_fnc_hashSet;
+[ALIVE_mapBounds, "wake", 11000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Colleville", 6000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Panthera3", 10000] call ALIVE_fnc_hashSet;
 
@@ -833,7 +834,7 @@ ALIVE_civilianConstructionBuildingTypes = [];
 ALIVE_civilianSettlementBuildingTypes = [];
 
 // Altis Stratis
-if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic" || _worldName == "sfp_wamako" || _worldName == "Imrali") then {
+if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic" || _worldName == "sfp_wamako" || _worldName == "Imrali" || _worldName == "wake") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
     	"hangar"
