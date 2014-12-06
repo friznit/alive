@@ -5,10 +5,10 @@
 
 [B][U]Compatibility & Enhance[/U][/B]
 This release is a minor update release to ensure continued compatibility with Arma 3 Stable updates, popular mods (CUP, RHS, etc) and to start to introduce insurgency like features. 
-This release includes support for the very popular Bornholm map and IceBreakr's Panthera for A3. 
-We have add an IED module to provide ambient IED and VB-IED as well as adding Roadblocks to Civilian Placement module to allow missions makers to offer insurgency like missions. 
+This release includes support for the very popular Bornholm 1.2 map and IceBreakr's Panthera for A3. 
+We have add an IED module to provide ambient IED and VB-IED as well as adding Roadblocks to Civilian Placement module and strategic camps Military Placement to allow missions makers to offer insurgency like missions. 
 This is the first step towards a fully integrated insurgency system which ultimately will allow OPCOM commanders to execute insurgent style tactics and strategy. 
-Of course as usual you'll find a bunch of bug fixes and improvements too along with a new ALIVEServer plugin!
+Of course as usual you'll find a bunch of bug fixes and improvements too along with a new ALIVEServer plugin! We were also working hard on code optimisation, using newly introduced (and quicker) array commands like pushback!
 [IMG]http://alivemod.com/img/tour2.jpg[/IMG]
 Please note, in case you have an issue loading a mission done with a previous version of ALiVE, update the modules in that mission.
 We have left old modules hidden in the background to give you time to transition over but please update your missions as soon as possible.
@@ -39,6 +39,7 @@ For direct support and feedback from the ALiVE dev team, join us on Skype or sig
 [*] Compatibility for RHS (improvements)
 [*] IED Module added to provide ambient IED and VB-IED threat
 [*] Roadblocks added to Civilian Placement module
+[*] Camps added to Military Placement module
 [*] Updated @ALiVEServer plugin for improved performance and reliability
 [*] Major fix for Server Exit and Save based on BIS changes in 1.32 and subsequently reverted in 1.34
 [*] Improved support and compatibility for Iron Front
