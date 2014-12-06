@@ -108,13 +108,13 @@ class CfgVehicles {
                                         class Yes
                                         {
                                                 name = "$STR_ALIVE_MP_PLACEMENT_YES";
-                                                value = true;
-                                                default = true;
+                                                value = "true";
+                                                default = 1;
                                         };
                                         class No
                                         {
                                                 name = "$STR_ALIVE_MP_PLACEMENT_NO";
-                                                value = false;
+                                                value = "false";
                                         };
                                 };
                         };

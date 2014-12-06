@@ -189,26 +189,20 @@ switch(_operation) do {
 		_result = [_logic,_operation,_args,DEFAULT_READINESS_LEVEL] call ALIVE_fnc_OOsimpleOperation;
 	};
 
-	case "withPlacement": {
-        if (isnil "_args") then {
-            _args = _logic getVariable ["withPlacement", DEFAULT_WITH_PLACEMENT];
-        } else {
-            if (typeName _args == "BOOL") then {
-				_args = _args;
-			} else {
-				if (typeName _args == "STRING") then {
-					_args = call compile _args;
-                } else {
-                    _args = DEFAULT_WITH_PLACEMENT;
-                };
-			};
+    // Return placement setting
+    case "withPlacement": {
+        if (isnil "_args" || {isnull _args}) then {
+            _args = _logic getvariable ["withPlacement",DEFAULT_WITH_PLACEMENT];
         };
+        
+        if (isnil "_args") exitwith {_result = DEFAULT_WITH_PLACEMENT};
 
-		ASSERT_TRUE(typeName _args == "BOOL",str _args);
-        _logic setVariable ["withPlacement", _args];
+        if (typename _args == "STRING") then {_args = call compile _args};
+        if (typename _args == "BOOL") then {_args = _args};
 
-		_result = _args;
+        _result = [_logic,_operation,_args,DEFAULT_WITH_PLACEMENT] call ALIVE_fnc_OOsimpleOperation;
 	};
+    
 	// Return the objectives as an array of clusters
 	case "objectives": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES] call ALIVE_fnc_OOsimpleOperation;
