@@ -53,7 +53,7 @@ if !(_t) exitWith {};
 //_IEDskins = ["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC"];
 
 _IED = createVehicle ["ALIVE_DemoCharge_Remote_Ammo",getposATL _vehicle, [], 0, "CAN_COLLIDE"];
-_IED attachTo [_vehicle, [0,-2,-1.08]];
+_IED attachTo [_vehicle, [0,-1,-1.08]];
 _IED setDir 270;
 _IED setVectorUp [0,0,-1];
 
@@ -94,6 +94,9 @@ _ehID = _IED addeventhandler ["HandleDamage",{
 
 	deletevehicle (_this select 0);
 }];
+
+_IED setVariable ["ehID",_ehID, true];
+_IED setvariable ["charge", _IED, true];
 
 if (_debug) then {
 	diag_log format ["ALIVE-%1 IED: Creating VB-IED for %2 at %3", time, typeof _vehicle, getposATL _vehicle];
