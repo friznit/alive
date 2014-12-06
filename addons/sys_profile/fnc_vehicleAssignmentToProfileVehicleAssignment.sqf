@@ -27,7 +27,7 @@ ARJay
 ---------------------------------------------------------------------------- */
 
 private ["_vehicle","_group","_units","_unitIndex","_assignments","_inVehicle","_assignedRole","_assignedRoleName","_cargo","_turret",
-"_assignedTurret","_turretConfig","_turretIsGunner","_turretIsCommander","_isTurret","_gunner","_commander"];
+"_assignedTurret","_turretConfig","_turretIsGunner","_turretIsCommander","_turretIsPerson","_isTurret","_gunner","_commander"];
 
 _vehicle = _this select 0;
 _group = _this select 1;
@@ -50,7 +50,7 @@ _assignments = [[],[],[],[],[]];
         if !(isnil "_assignedRoleName") then {
 
             _assignedRoleName = toLower(_assignedRoleName);
-	
+
 			switch(_assignedRoleName) do {
 				case "driver":{
 					_assignments set [0, [_unitIndex]];
@@ -65,6 +65,7 @@ _assignments = [[],[],[],[],[]];
 					_turretConfig = [_vehicle, _assignedTurret] call CBA_fnc_getTurret;
 					_turretIsGunner = getNumber(_turretConfig >> "primaryGunner");
 					_turretIsCommander = getNumber(_turretConfig >> "primaryObserver");
+					_turretIsPerson = getNumber(_turretConfig >> "isPersonTurret");
 					_isTurret = true;				
 					
 					if(_turretIsGunner == 1) then {
@@ -80,17 +81,22 @@ _assignments = [[],[],[],[],[]];
 						_assignments set [2, _commander];
 						_isTurret = false;
 					};
+
+					if(_turretIsPerson == 1) then {
+					    _isTurret = false;
+					};
 					
 					if(_isTurret) then {
 						_turret = _assignments select 3;
 						_turret set [count _turret,_unitIndex];
 						_assignments set [3, _turret];
 					};
-	
+
 					/*
 					["ASS TUR: %1",_assignedTurret] call ALIVE_fnc_dump;
 					["ASS TUR GUN: %1",_turretIsGunner] call ALIVE_fnc_dump;
 					["ASS TUR COMMAND: %1",_turretIsCommander] call ALIVE_fnc_dump;
+					["ASS TUR PERSON: %1",_turretIsPerson] call ALIVE_fnc_dump;
 					["ASS TUR TUR: %1",_isTurret] call ALIVE_fnc_dump;
 					*/
 				};

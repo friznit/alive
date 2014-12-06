@@ -40,7 +40,7 @@ _positions set [0, getNumber(_class >> "hasDriver")];
 _turretEmptyCount = 0;
 
 _findRecurse = {
-	private ["_root","_turret","_path","_currentPath","_hasGunner","_primaryGunner","_primaryObserver","_isPersonTurret"];
+	private ["_root","_turret","_path","_currentPath","_hasGunner","_primaryGunner","_primaryObserver","_copilot","_isPersonTurret"];
 	
 	_root = (_this select 0);
 	_path = +(_this select 1);
@@ -54,6 +54,7 @@ _findRecurse = {
 			
 			_primaryGunner = false;
 			_primaryObserver = false;
+			_copilot = false;
 			_isPersonTurret = false;
 
 			if(getNumber(_turret >> "primaryGunner") == 1) then {
@@ -66,11 +67,18 @@ _findRecurse = {
 				_positions set [2, 1];
 			};
 
+			if(getNumber(_turret >> "isCopilot") == 1) then {
+			    if(_vehicle == "B_Heli_Light_01_F") then {
+			        _copilot = true;
+			        _turretEmptyCount = _turretEmptyCount +1;
+                };
+			};
+
 			if(getNumber(_turret >> "isPersonTurret") == 1) then {
 			    _isPersonTurret = true;
 			};
 
-			if(!(_primaryGunner) && !(_primaryObserver)) then {
+			if(!(_primaryGunner) && !(_primaryObserver) && !(_copilot)) then {
 			    if(_ignorePlayerTurrets) then {
                     if!(_isPersonTurret) then {
 				        _turretEmptyCount = _turretEmptyCount +1;

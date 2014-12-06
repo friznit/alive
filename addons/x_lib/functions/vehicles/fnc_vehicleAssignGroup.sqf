@@ -108,13 +108,14 @@ if(count _units > 1) then
 	// assign turrets
 	if((_positionCount select 3) > 0) then {
 	
-		_vehicleTurrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+		_vehicleTurrets = [typeOf _vehicle, true, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
 
-		for "_i" from 1 to (_positionCount select 3) do
+		for "_i" from 0 to (_positionCount select 3) do
 		{
 			if(count _units > 0) then
-			{				
+			{
 				_turretPath = _vehicleTurrets select _i;
+
 				if!(isNil "_turretPath") then {
 				    _unit = _units call BIS_fnc_arrayPop;
                     _unit assignAsTurret [_vehicle, _turretPath];

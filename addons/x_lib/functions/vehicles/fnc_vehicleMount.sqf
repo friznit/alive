@@ -57,7 +57,7 @@ _turret = _assignments select 3;
 
 if(count _turret > 0) then {
 	// get turrets for this class ignoring gunner and commander turrets
-	_turrets = [typeOf _vehicle, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+	_turrets = [typeOf _vehicle, true, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
 
 	for "_i" from 0 to (count _turret)-1 do {
 		_unit = _turret select _i;
