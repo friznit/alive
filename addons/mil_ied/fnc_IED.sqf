@@ -179,7 +179,7 @@ switch(_operation) do {
 
             						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
             					} else {
-            						_trg setTriggerActivation["WEST","PRESENT",false]; // true = repeated
+            						_trg setTriggerActivation["ANY","PRESENT",false]; // true = repeated
             						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
             					};
 

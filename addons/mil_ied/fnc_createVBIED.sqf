@@ -24,8 +24,8 @@ if (_fate > _threat || str(side _vehicle) != _side || (_vehicle isKindOf "Quadbi
 
 // Make sure vehicle is not in blacklist
 
-_taor = [MOD(mil_ied), "taor"] call MAINCLASS;
-_blacklist = [MOD(mil_ied), "blacklist"] call MAINCLASS;
+_taor = [ADDON, "taor"] call MAINCLASS;
+_blacklist = [ADDON, "blacklist"] call MAINCLASS;
 
 // check markers for existance
 private ["_marker","_counter","_black","_t"];
