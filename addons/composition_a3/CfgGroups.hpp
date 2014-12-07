@@ -851,23 +851,6 @@ class CfgGroups
             class Object11 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-9.31958,-7.37061,-0.00431824};dir=269;};
             class Object12 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-8.60449,8.079,-0.00431824};dir=0;};
             };
-            class mediumCheckpoint2
-            {
-            name = "$STR_ALIVE_COMPOSITION_mediumCheckpoint2";
-            class Object1 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={3.14722,-1.20215,-0.00531578};dir=90;};
-            class Object2 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={-2.82202,2.78174,-0.00531578};dir=90;};
-            class Object3 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={3.1333,-4.1875,-0.00531578};dir=90;};
-            class Object4 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={-2.85034,5.74707,-0.00531578};dir=90;};
-            class Object5 {side=8;vehicle="Land_BagFence_Long_F";rank="";position[]={3.13184,-6.47656,-0.00531578};dir=90;};
-            class Object6 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={8.12598,-4.31836,-0.00431824};dir=132;};
-            class Object7 {side=8;vehicle="Land_BagBunker_Small_F";rank="";position[]={5.17432,7.96484,-0.00431585};dir=182;};
-            class Object8 {side=8;vehicle="Land_BagBunker_Small_F";rank="";position[]={-5.79004,-8.25,-0.00431585};dir=359;};
-            class Object9 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={9.09009,4.71973,-0.00431824};dir=81;};
-            class Object10 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-10.447,4.60303,-0.00431824};dir=81;};
-            class Object11 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-9.31958,-7.37061,-0.00431824};dir=269;};
-            class Object12 {side=8;vehicle="Land_Razorwire_F";rank="";position[]={-8.60449,8.479,-0.00431824};dir=0;};
-            class Object13 {side=8;vehicle="I_HMG_01_high_F";rank="";position[]={5.17432,7.96484,-0.00431585};dir=182;};
-            };
             class largeGarbageCamp1
             {
             name = "$STR_ALIVE_COMPOSITION_largeGarbageCamp1";
