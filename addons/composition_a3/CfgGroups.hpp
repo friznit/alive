@@ -857,7 +857,7 @@ class CfgGroups
             };
             class smallRoadblock2
             {
-            name = "$STR_ALIVE_COMPOSITION_smallRoadblock1";
+            name = "$STR_ALIVE_COMPOSITION_smallRoadblock2";
             class Object1 {side=8;vehicle="Land_Tyres_F";rank="";position[]={0.259521,1.61768,0.00228167};dir=0;};
             class Object2 {side=8;vehicle="Land_Tyres_F";rank="";position[]={-1.56226,1.40186,0.00228167};dir=0;};
             class Object3 {side=8;vehicle="Land_Tyres_F";rank="";position[]={1.52026,1.49121,0.00228167};dir=0;};
