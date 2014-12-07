@@ -99,7 +99,7 @@ for "_j" from 1 to (count _roadpoints) do {
 		[format["roadblock_%1", _id], _roadpos, "Icon", [1,1], "TYPE:", "mil_dot", "TEXT:", "RoadBlock",  "GLOBAL"] call CBA_fnc_createMarker;
 	};
 
-	_checkpointComp = ["smallCheckpoint1", "smallCheckpoint2", "mediumCheckpoint1", "mediumCheckpoint2", "smallroadblock1" , "smallroadblock2"];
+	_checkpointComp = ["smallCheckpoint1", "smallCheckpoint2", "smallroadblock1" , "smallroadblock2"];
 
 	_checkpoint = [_checkpointComp call BIS_fnc_selectRandom] call ALiVE_fnc_findComposition;
 	[_checkpoint,_roadpos,_direction] spawn {[_this select 0, position (_this select 1), _this select 2] call ALiVE_fnc_spawnComposition};
