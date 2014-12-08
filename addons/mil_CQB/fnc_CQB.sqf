@@ -1153,7 +1153,7 @@ switch(_operation) do {
 	                                            _hosts = [false];
 	                                        };
 	                                    	case ("HC") : {
-	                                            _hosts = headlessClients;
+	                                            if (count headlessClients > 0) then {_hosts = headlessClients} else {_hosts = [false]};
 	                                        };
                                             case ("client") : {
                                                 //Sort near players by FPS
