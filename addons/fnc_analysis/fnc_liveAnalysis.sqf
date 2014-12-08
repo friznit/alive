@@ -213,7 +213,7 @@ switch(_operation) do {
 
 					_jobsToCancel = [];
 
-					if !([_logic, "pause"] call ALiVE_fnc_HashGet) then {
+					if !([_logic, "pause",false] call ALiVE_fnc_HashGet) then {
 
                         {
                             _job = _x;
