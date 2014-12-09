@@ -77,9 +77,8 @@ switch(_operation) do {
 				_logic setVariable ["super", SUPERCLASS];
 				_logic setVariable ["class", MAINCLASS];
 				_logic setVariable ["moduleType", "ALIVE_OPCOM"];
-				_logic setVariable ["startupComplete", false];
+				
 				TRACE_1("After module init",_logic);
-
                 [_logic,"start"] call MAINCLASS;
 			};
 		};
@@ -103,6 +102,9 @@ switch(_operation) do {
                 - center
                 - size
                 */
+                
+                //startup
+                _logic setVariable ["startupComplete", false];
                 
                 if (isServer) then {
 
@@ -262,7 +264,13 @@ switch(_operation) do {
                         
                         ["ALiVE OPCOM created %1 new objectives!",count _objectives] call ALiVE_fnc_Dump;
                     };
-					
+
+
+                    ///////////
+                    //Validate
+                    ///////////
+                    
+                    					
                     //Check if there are any objectives
                     _errorMessage = "There are %1 objectives for this OPCOM instance! %2";
                     _error1 = count _objectives; _error2 = "Please assign Military or Civilian Placement Objectives!"; //defaults
@@ -276,11 +284,6 @@ switch(_operation) do {
                     if ((count _objectives) > 80) then {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
-                    
-                	//Perform initial cluster occupation and troops analysis as MP modules are finished
-                	_clusterOccupationAnalysis = [_handler,_side,_sidesEnemy,_sidesFriendly] call {[_this select 0,"analyzeclusteroccupation",[_this select 3,_this select 2]] call ALiVE_fnc_OPCOM};
-					_forcesInit = [_handler,"scantroops"] call ALiVE_fnc_OPCOM;
-                	["ALiVE OPCOM %1 Initial analysis done...",_side] call ALiVE_fnc_Dump; 
                     
                     //Check if there are any profiles available
                     _errorMessage = "There are no profiles for this OPCOM instance! %2";
@@ -334,12 +337,19 @@ switch(_operation) do {
                     	["OPCOM %1 starts with %2 profiles and %3 objectives!",_side,_profiles_count,count _objectives] call ALIVE_fnc_dumpR;
                 	};
 
+
                     ///////////
                     //Startup
                     ///////////
 
+                                        
+                    //Perform initial cluster occupation and troops analysis as MP modules are finished
+                	_clusterOccupationAnalysis = [_handler,_side,_sidesEnemy,_sidesFriendly] call {[_this select 0,"analyzeclusteroccupation",[_this select 3,_this select 2]] call ALiVE_fnc_OPCOM};
+					_forcesInit = [_handler,"scantroops"] call ALiVE_fnc_OPCOM;
+                	["ALiVE OPCOM %1 Initial analysis done...",_side] call ALiVE_fnc_Dump; 
+
                     //done this way to easily switch between spawn and call for testing purposes
-                    ["OPCOM and TACOM starting..."] call ALiVE_fnc_Dump;
+                    ["OPCOM and TACOM %1 starting...",_side] call ALiVE_fnc_Dump; 
                     _OPCOM = [_handler] call {
                         _handler = _this select 0;
                         
@@ -353,7 +363,7 @@ switch(_operation) do {
                     [_handler,"startupComplete",true] call ALiVE_fnc_HashSet;
                 };
                 
-            	// set module as startup complete
+            	//startup complete
 				_logic setVariable ["startupComplete", true];
                 
                 /*
