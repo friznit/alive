@@ -349,11 +349,12 @@ switch(_operation) do {
 						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
                         [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
                     };
-                    
-					// set module as startup complete
-					_logic setVariable ["startupComplete", true];
+
                     [_handler,"startupComplete",true] call ALiVE_fnc_HashSet;
                 };
+                
+            	// set module as startup complete
+				_logic setVariable ["startupComplete", true];
                 
                 /*
                 VIEW - purely visual
