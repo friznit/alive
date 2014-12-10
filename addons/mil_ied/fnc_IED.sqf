@@ -349,11 +349,11 @@ switch(_operation) do {
                 if(typeName _args == "OBJECT") then {
                     private ["_IED","_ID","_town","_hash"];
                     _IED = _args;
-                    _ID = _IED getvariable "ID";
+                    _ID = _IED getvariable ["ID", nil];
+                    if (isNil "_ID") exitWith {_result = false;};
                     _town = _IED getvariable "town";
                     _hash = [GVAR(STORE), "IEDs"] call ALiVE_fnc_hashGet;
                     _hash = [_hash, _town] call ALIVE_fnc_hashGet;
-                    diag_log format ["%3, %1, %2", _town, _ID, _IED];
                     _result = [_hash, _ID] call ALiVE_fnc_hashRem;
                 };
         };
