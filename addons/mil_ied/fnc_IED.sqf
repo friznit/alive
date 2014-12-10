@@ -73,6 +73,35 @@ switch(_operation) do {
         default {
                 _result = [_logic, _operation, _args] call SUPERCLASS;
         };
+        case "create": {
+                if (isServer) then {
+                    // Ensure only one module is used
+                    if !(isNil QUOTE(ADDON)) then {
+                        _logic = ADDON;
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_IED_ERROR1");
+                    } else {
+                        _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
+                        ADDON = _logic;
+                    };
+
+                    //Push to clients
+                    PublicVariable QUOTE(ADDON);
+                };
+
+                TRACE_1("Waiting for object to be ready",true);
+
+                waituntil {!isnil QUOTE(ADDON)};
+
+                _logic = ADDON;
+
+                TRACE_1("Creating class on all localities",true);
+
+                // initialise module game logic on all localities
+                _logic setVariable ["super", SUPERCLASS];
+                _logic setVariable ["class", MAINCLASS];
+
+                _args = _logic;
+        };
         case "init": {
                 /*
                 MODEL - no visual just reference data
@@ -84,115 +113,70 @@ switch(_operation) do {
                 */
 
                 // Ensure only one module is used
-                if (isServer && !(isNil QMOD(mil_ied))) exitWith {
+                if (isServer && !(isNil QUOTE(ADDON))) exitWith {
                         ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_ied_ERROR1");
                 };
 
                 if (isServer) then {
-                        // and publicVariable to clients
-                        private ["_debug","_mapInfo","_center","_radius","_taor","_blacklist"];
-                        MOD(mil_ied) = _logic;
+                    // and publicVariable to clients
+                    private ["_debug","_mapInfo","_center","_radius","_taor","_blacklist"];
 
-                        // if server, initialise module game logic
-                        MOD(mil_ied) setVariable ["super", SUPERCLASS];
-                        MOD(mil_ied) setVariable ["class", MAINCLASS];
-                        MOD(mil_ied) setVariable ["init", true, true];
+                    _errorMessage = "Please include the Requires ALiVE module! %1 %2";
+                    _error1 = ""; _error2 = ""; //defaults
+                    if(
+                        !(["ALiVE_require"] call ALiVE_fnc_isModuleavailable)
+                       ) exitwith {
+                        [_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
+                    };
 
-                        [MOD(mil_ied), "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
-                        [MOD(mil_ied), "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call MAINCLASS;
+                    ADDON = _logic;
 
-                        publicVariable QMOD(mil_ied);
+                    // if server, initialise module game logic
+                    ADDON setVariable ["super", SUPERCLASS];
+                    ADDON setVariable ["class", MAINCLASS];
+                    ADDON setVariable ["init", true, true];
 
-        		        _debug = MOD(mil_ied) getVariable ["debug", false];
+                    [ADDON, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
+                    [ADDON, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call MAINCLASS;
 
-                        _mapInfo = [] call ALIVE_fnc_getMapInfo;
-                        _center = _mapInfo select 0;
-                        _radius = _mapInfo select 2;
+                    publicVariable QUOTE(ADDON);
 
-                        _locations = nearestLocations [_center, ["NameCityCapital","NameCity","NameVillage","Strategic"],_radius];
+                    _debug = [_logic, "debug"] call MAINCLASS;
 
-                        _taor = [MOD(mil_ied), "taor"] call MAINCLASS;
-                        _blacklist = [MOD(mil_ied), "blacklist"] call MAINCLASS;
-
-                        // check markers for existance
-                        private ["_marker","_counter"];
-
-                        if(count _blacklist > 0) then {
-                            _locations = [_blacklist, _locations, false] call ALiVE_fnc_validateLocations;
+                    // Create store initially on server
+                    GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
+                    GVAR(Loaded) = false;
+                    // Reset states with provided data;
+                    if (_logic getvariable ["Persistence",false]) then {
+                        if (isDedicated && {[QMOD(SYS_DATA)] call ALiVE_fnc_isModuleAvailable}) then {
+                            waituntil {!isnil QMOD(SYS_DATA) && {MOD(SYS_DATA) getvariable ["startupComplete",false]}};
                         };
 
-                        if(count _taor > 0) then {
-                            _locations = [_taor, _locations, true] call ALiVE_fnc_validateLocations;
+                        _state = [_logic, "load"] call MAINCLASS;
 
+                        if !(typeName _state == "BOOL") then {
+                            GVAR(STORE) = _state;
+                            GVAR(Loaded) = true;
+                            // DEBUG -------------------------------------------------------------------------------------
+                            if(_debug) then { ["ALIVE IED - IEDs have been loaded from Database"] call ALIVE_fnc_dump; };
+                            // DEBUG -------------------------------------------------------------------------------------
+                        } else {
+                            LOG("No data loaded...");
+                            [GVAR(STORE), "IEDs", [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashSet;
                         };
 
+                    } else {
+                        [GVAR(STORE), "IEDs", [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashSet;
+                    };
 
+                    GVAR(STORE) call ALIVE_fnc_inspectHash;
 
-            		// Set up Bombers and IEDs at each location (except any player starting location)
-            		{
-            			private ["_fate","_pos","_trg","_twn"];
+                    [_logic,"state",GVAR(STORE)] call MAINCLASS;
 
-            			//Get the location object
-            			_pos = position _x;
-            			_twn = (nearestLocations [_pos, ["NameCityCapital","NameCity","NameVillage","Strategic"],200]) select 0;
-                        _size = (size _twn) select 0;
+                    //Push to clients
+                    PublicVariable QGVAR(STORE);
 
-            			if (_size < 250) then {_size = 250;};
-            			if (_debug) then {
-            				diag_log format ["town is %1 at %2. %3m in size and type %4", text _twn, position _twn, _size, type _twn];
-            			};
-
-            			// Place triggers if not within distance of players
-            			if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0) then {
-
-            				//Roll the dice
-            				_fate = random 33;
-    /*
-            				if (_fate < _logic getvariable ["Bomber_Threat", DEFAULT_BOMBER_THREAT]) then {
-            					// Place Suicide Bomber trigger
-
-            					_trg = createTrigger["EmptyDetector",getpos _twn];
-
-            					_trg setTriggerArea[(_size+250),(_size+250),0,false];
-
-            					_trg setTriggerActivation["WEST","PRESENT",true];
-            					_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger, thisList, %1] call ALIVE_fnc_createBomber",_size], ""];
-
-            					 if (_debug) then {
-            						_t = format["suic_t%1", random 1000];
-
-            						diag_log format ["ALIVE-%1 Suicide Bomber Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-            						[_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorOrange", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
-
-            					};
-            				};
-    */
-                            // IEDS
-            				if (_fate < ((_logic getvariable ["IED_Threat", DEFAULT_IED_THREAT]) / 3)) then {
-            					// Place IED trigger
-            					_trg = createTrigger["EmptyDetector",getpos _twn];
-
-            					_trg setTriggerArea[(_size+250), (_size+250),0,false];
-
-            					if (_logic getvariable ["Locs_IED", DEFAULT_LOCS_IED] == 1) then {
-            						_trg setTriggerActivation["ANY","PRESENT",false]; // true = repeated
-
-            						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
-            					} else {
-            						_trg setTriggerActivation["ANY","PRESENT",false]; // true = repeated
-            						_trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1] call ALIVE_fnc_createIED",_size], ""];
-            					};
-
-            					if (_debug) then {
-            						_t = format["ied_t%1", random 1000];
-
-            						diag_log format ["ALIVE-%1 IED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-            						[_t, getpos _twn, "Ellipse", [_size+249,_size+249], "TEXT:", text _twn, "COLOR:", "ColorYellow", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
-
-            					};
-            				};
-            			};
-            		} foreach _locations;
+                    [_logic,"start"] call MAINCLASS;
 
                 } else {
                     [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
@@ -201,52 +185,178 @@ switch(_operation) do {
                     {_x setMarkerAlpha 0} foreach (_logic getVariable ["blacklist", DEFAULT_TAOR]);
                 };
 
-		TRACE_2("After module init",MOD(mil_ied),MOD(mil_ied) getVariable "init");
+		      TRACE_2("After module init",ADDON,ADDON getVariable "init");
 
                 // and wait for game logic to initialise
                 // TODO merge into lazy evaluation
-                waitUntil {!isNil QMOD(mil_ied)};
-                waitUntil {MOD(mil_ied) getVariable ["init", false]};
+                waitUntil {!isNil QUOTE(ADDON)};
+                waitUntil {ADDON getVariable ["init", false]};
 
                 /*
                 VIEW - purely visual
                 - initialise menu
                 - frequent check to modify menu and display status (ALIVE_fnc_IEDmenuDef)
-
-
-		TRACE_2("Adding menu",isDedicated,isHC);
-
-                if(!isDedicated && !isHC) then {
-                        // Initialise interaction key if undefined
-                        if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
-
-                        // if ACE spectator enabled, seto to allow exit
-                        if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
-
-                        // Initialise default map click command if undefined
-                        ISNILS(DEFAULT_MAPCLICK,"");
-
-			TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
-
-                        // initialise main menu
-                        [
-                                "player",
-                                [SELF_INTERACTION_KEY],
-                                -9500,
-                                [
-                                        "call ALIVE_fnc_iedMenuDef",
-                                        "main"
-                                ]
-                        ] call ALIVE_fnc_flexiMenu_Add;
-                };
                 */
+
                 /*
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_IEDmenuDef)
                 */
-                _result = MOD(mil_ied);
+                _result = ADDON;
+        };
+        case "start": {
+            if (isServer) then {
+
+                private ["_debug","_locations","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
+                "_sizeFilter","_priorityFilter","_blacklistClusters","_center","_faction","_error"];
+
+                _debug = [_logic, "debug"] call MAINCLASS;
+
+                if(_debug) then {
+                    ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                    ["ALIVE IED - Startup"] call ALIVE_fnc_dump;
+                    [true] call ALIVE_fnc_timer;
+                };
+
+                _debug = [ADDON, "debug"] call MAINCLASS;
+                _taor = [ADDON, "taor"] call MAINCLASS;
+                _blacklist = [ADDON, "blacklist"] call MAINCLASS;
+
+                if !(GVAR(Loaded)) then {
+                    // Initialise Locations
+                    _mapInfo = [] call ALIVE_fnc_getMapInfo;
+                    _center = _mapInfo select 0;
+                    _radius = _mapInfo select 2;
+
+                    _locations = nearestLocations [_center, ["NameCityCapital","NameCity","NameVillage","Strategic"],_radius];
+
+                    // check markers for existance
+                    private ["_marker","_counter"];
+                    if(count _blacklist > 0) then {
+                        _locations = [_blacklist, _locations, false] call ALiVE_fnc_validateLocations;
+                    };
+
+                    if(count _taor > 0) then {
+                        _locations = [_taor, _locations, true] call ALiVE_fnc_validateLocations;
+
+                    };
+
+                } else {
+                    _locations = [GVAR(STORE), "locations",[]] call ALiVE_fnc_hashGet;
+
+                };
+
+                // Set up Bombers and IED triggers at each location (except any player starting location)
+                {
+                    private ["_fate","_pos","_trg","_twn"];
+
+                    //Get the location object
+                    _pos = position _x;
+                    _twn = (nearestLocations [_pos, ["NameCityCapital","NameCity","NameVillage","Strategic"],200]) select 0;
+                    _size = (size _twn) select 0;
+                    if (_size < 250) then {_size = 250;};
+
+                    if (_debug) then {
+                        diag_log format ["town is %1 at %2. %3m in size and type %4", text _twn, position _twn, _size, type _twn];
+                    };
+
+                    // Place triggers if not within distance of players
+                    if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0 || GVAR(Loaded)) then {
+
+                        //Roll the dice
+                        if (GVAR(Loaded)) then {
+                            _fate = 0;
+                        } else {
+                            _fate = random 33;
+                        };
+
+                        if (_fate < _logic getvariable ["Bomber_Threat", DEFAULT_BOMBER_THREAT]) then {
+
+                            // Place Suicide Bomber trigger
+
+                            _trg = createTrigger["EmptyDetector",getpos _twn];
+
+                            _trg setTriggerArea[(_size+250),(_size+250),0,false];
+
+                            _trg setTriggerActivation["ANY","PRESENT",true];
+                            _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", "", ""];
+
+                             if (_debug) then {
+                                _t = format["suic_t%1", random 1000];
+
+                                diag_log format ["ALIVE-%1 Suicide Bomber Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
+                                [_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorOrange", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
+
+                            };
+
+                            if !(GVAR(Loaded)) then {
+                                private "_locs";
+                                // Set location in store
+                                _locs = [GVAR(STORE), "locations", []] call ALiVE_fnc_hashGet;
+                                _locs pushback _x;
+                                [GVAR(STORE), "locations", _locs] call ALiVE_fnc_hashSet;
+                            };
+                        };
+
+                        // IEDS
+                        if (_fate < ((_logic getvariable ["IED_Threat", DEFAULT_IED_THREAT]) / 3)) then {
+                            // Place IED trigger
+                            _trg = createTrigger["EmptyDetector",getpos _twn];
+
+                            _trg setTriggerArea[(_size+250), (_size+250),0,false];
+
+                            if (_logic getvariable ["Locs_IED", DEFAULT_LOCS_IED] == 1) then {
+                                _trg setTriggerActivation["ANY","PRESENT",true]; // true = repeated
+                                _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1,'%2'] call ALIVE_fnc_createIED",_size, text _twn], format ["null = [getpos thisTrigger,'%1'] call ALIVE_fnc_removeIED", text _twn]];
+                            } else {
+                                _trg setTriggerActivation["ANY","PRESENT",true]; // true = repeated
+                                _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1,'%2'] call ALIVE_fnc_createIED",_size, text _twn], format ["null = [getpos thisTrigger,'%1'] call ALIVE_fnc_removeIED",text _twn]];
+                            };
+
+                            if (_debug) then {
+                                _t = format["ied_t%1", random 1000];
+
+                                diag_log format ["ALIVE-%1 IED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
+                                [_t, getpos _twn, "Ellipse", [_size+249,_size+249], "TEXT:", text _twn, "COLOR:", "ColorYellow", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
+
+                            };
+
+                            if !(GVAR(Loaded)) then {
+                                private "_locs";
+                                // Set location in store
+                                _locs = [GVAR(STORE), "locations", []] call ALiVE_fnc_hashGet;
+                                _locs pushback _x;
+                                [GVAR(STORE), "locations", _locs] call ALiVE_fnc_hashSet;
+                            };
+                        };
+                    };
+                } foreach _locations;
+
+                // DEBUG -------------------------------------------------------------------------------------
+                if(_debug) then {
+                    ["ALIVE IED - Startup completed"] call ALIVE_fnc_dump;
+                    ["ALIVE IED - Count IED Locations %1", count ([GVAR(STORE), "locations"] call ALiVE_fnc_hashGet)] call ALIVE_fnc_dump;
+                    [] call ALIVE_fnc_timer;
+                };
+                // DEBUG -------------------------------------------------------------------------------------
+
+                // set module as started
+                _logic setVariable ["startupComplete", true];
+            };
         };
         // Return TAOR marker
+        case "removeIED": {
+                if(typeName _args == "OBJECT") then {
+                    private ["_IED","_ID","_town","_hash"];
+                    _IED = _args;
+                    _ID = _IED getvariable "ID";
+                    _town = _IED getvariable "town";
+                    _hash = [GVAR(STORE), "IEDs"] call ALiVE_fnc_hashGet;
+                    _hash = [_hash, _town] call ALIVE_fnc_hashGet;
+                    diag_log format ["%3, %1, %2", _town, _ID, _IED];
+                    _result = [_hash, _ID] call ALiVE_fnc_hashRem;
+                };
+        };
         case "taor": {
                 if(typeName _args == "STRING") then {
                         _args = [_args, " ", ""] call CBA_fnc_replace;
@@ -260,7 +370,6 @@ switch(_operation) do {
                 };
                 _result = _logic getVariable [_operation, DEFAULT_TAOR];
         };
-        // Return the Blacklist marker
         case "blacklist": {
                 if(typeName _args == "STRING") then {
                         _args = [_args, " ", ""] call CBA_fnc_replace;
@@ -274,6 +383,23 @@ switch(_operation) do {
                 };
                 _result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
         };
+        case "debug": {
+            if (typeName _args == "BOOL") then {
+                _logic setVariable ["debug", _args];
+            } else {
+                _args = _logic getVariable ["debug", false];
+            };
+            if (typeName _args == "STRING") then {
+                    if(_args == "true") then {_args = true;} else {_args = false;};
+                    _logic setVariable ["debug", _args];
+            };
+            ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+            _result = _args;
+        };
+        case "locations": {
+            _result = [_logic,_operation,_args,[]] call ALIVE_fnc_OOsimpleOperation;
+        };
         case "destroy": {
                 if (isServer) then {
                         // if server
@@ -281,21 +407,11 @@ switch(_operation) do {
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
-                        MOD(mil_ied) = _logic;
-                        publicVariable QMOD(mil_ied);
+                        ADDON = _logic;
+                        publicVariable QADDON;
                 };
 
                 if(!isDedicated && !isHC) then {
-                        // remove main menu
-                        [
-                                "player",
-                                [SELF_INTERACTION_KEY],
-                                -9500,
-                                [
-                                        "call ALIVE_fnc_iedMenuDef",
-                                        "main"
-                                ]
-                        ] call CBA_fnc_flexiMenu_Remove;
                 };
         };
 };

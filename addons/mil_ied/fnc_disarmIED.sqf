@@ -59,6 +59,12 @@ if ((random 1) > 0.85) then {
 			deleteVehicle _x;
 		} foreach _trgr;
 
+		[[ADDON, "removeIED", _IED] ,"ALiVE_fnc_IED", false, false, true] call BIS_fnc_MP;
+
+		if (_debug) then {
+			[_IED getvariable "Marker"] call cba_fnc_deleteEntity;
+		};
+
 		deleteVehicle _IEDCharge;
 		deleteVehicle _IED;
 	} else {
@@ -72,6 +78,12 @@ if ((random 1) > 0.85) then {
 
 		if !(isNil "_IEDCharge") then {
 			_IEDCharge removeEventHandler ["handleDamage", _IED getVariable "ehID"];
+		};
+
+		[[ADDON, "removeIED", _IED] ,"ALiVE_fnc_IED", false, false, true] call BIS_fnc_MP;
+
+		if (_debug) then {
+			[_IED getvariable "Marker"] call cba_fnc_deleteEntity;
 		};
 
 		hint "You guessed correct! IED is disarmed";
@@ -91,10 +103,15 @@ if ((random 1) > 0.85) then {
 		deleteVehicle _x;
 	} foreach _trgr;
 
+	if (_debug) then {
+		[_IED getvariable "Marker"] call cba_fnc_deleteEntity;
+	};
 
 	if !(isNil "_IEDCharge") then {
 		_IEDCharge removeEventHandler ["handleDamage", _IED getVariable "ehID"];
 	};
+
+	[[ADDON, "removeIED", _IED] ,"ALiVE_fnc_IED", false, false, true] call BIS_fnc_MP;
 
  	hint "IED is disarmed";
 };
