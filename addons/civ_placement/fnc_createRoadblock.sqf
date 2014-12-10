@@ -57,33 +57,32 @@ _roads = _pos nearRoads (_radius + 20);
 	};
 } foreach _roads;
 
-{
-	if (_debug) then {
-		private "_id";
-		_id = floor (random 1000);
-		[format["road_%1", _id], _x, "Icon", [1,1], "TYPE:", "mil_dot", "TEXT:", "",  "GLOBAL"] call CBA_fnc_createMarker;
-	};
-} foreach _roads;
+if (count _roads == 0) exitWith {diag_log "no roads found for roadblock"};
+
+if (_num > count _roads) then {_num = count _roads};
 
 _roadpoints = [];
 
 for "_i" from 1 to _num do {
 	private "_roadsel";
-	_roadsel = _roads call BIS_fnc_selectRandom;
-	_roads = _roads - [_roadsel];
-	while {({_roadsel distance _x < 30} count _roadpoints) != 0 && count _roads > 0} do {
+	while {
 		_roadsel = _roads call BIS_fnc_selectRandom;
+		(count _roads > 1 && ({_roadsel distance _x < 60} count _roadpoints) != 0)
+	} do {
 		_roads = _roads - [_roadsel];
 	};
 
-	if (count _roads > 0) then {
-		_roadpoints pushback _roadsel;
-	};
+	_roadpoints pushback _roadsel;
+
 };
 
 for "_j" from 1 to (count _roadpoints) do {
 
 	_roadpos = _roadpoints select (_j - 1);
+
+	if ({_roadpos distance _x < 60} count ALIVE_Roadblocks > 0) exitWith {diag_log "RB to close to another"};
+
+    ALIVE_Roadblocks pushBack _roadpos;
 
 	_roadConnectedTo = roadsConnectedTo _roadpos;
 	_connectedRoad = _roadConnectedTo select 0;
@@ -141,5 +140,6 @@ for "_j" from 1 to (count _roadpoints) do {
 			[_blockers, getpos _roadpos, 100, true] call ALiVE_fnc_groupGarrison;
 		};
     };
+
 };
 

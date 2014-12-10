@@ -194,7 +194,7 @@ switch(_operation) do {
         if (isnil "_args" || {isnull _args}) then {
             _args = _logic getvariable ["withPlacement",DEFAULT_WITH_PLACEMENT];
         };
-        
+
         if (isnil "_args") exitwith {_result = DEFAULT_WITH_PLACEMENT};
 
         if (typename _args == "STRING") then {_args = call compile _args};
@@ -202,7 +202,7 @@ switch(_operation) do {
 
         _result = [_logic,_operation,_args,DEFAULT_WITH_PLACEMENT] call ALIVE_fnc_OOsimpleOperation;
 	};
-    
+
 	// Return the objectives as an array of clusters
 	case "objectives": {
 		_result = [_logic,_operation,_args,DEFAULT_OBJECTIVES] call ALIVE_fnc_OOsimpleOperation;
@@ -821,6 +821,8 @@ switch(_operation) do {
             _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
             _readiness = (1 - _readiness) * _groupCount;
 
+			ALIVE_Roadblock_Locations = [];
+
 			{
                 private ["_guardGroup","_guards","_center","_size"];
 
@@ -896,33 +898,52 @@ switch(_operation) do {
 					};
 				};
 
-                if (!isnil "ALIVE_fnc_createRoadblock" && {random 50 < _roadBlocks}) then {
+                if (!isnil "ALIVE_fnc_createRoadblock" && {random 60 < _roadBlocks}) then {
 
-                        _trg = createTrigger ["EmptyDetector",_center];
-                        _trg setTriggerArea [ALIVE_spawnRadius,ALIVE_spawnRadius,0,false];
-                        _trg setTriggerActivation ["ANY","PRESENT",false]; // true = repeated
-                        _trg setTriggerStatements ["this && {[getposATL thisTrigger,ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir}", format ["null = [getpos thisTrigger,%1, %2] call ALIVE_fnc_createRoadblock",(_size+150), ceil(_roadblocks / 10)], ""];
+            		private ["_rb"];
 
-                        if (_debug) then {
+            		_rb = [];
+            		_rb pushback _center;
+            		_rb pushback _size;
 
-                            [
-				                format["ALiVE_CP_RB_%1", str(floor(_center select 0)) + str(floor(_center select 1))],
-				                _center,
-				                "Ellipse",
-				                [ALIVE_spawnRadius,ALIVE_spawnRadius],
-				                "ColorRed",
-				                mapgridposition _center,
-				                "",
-				                "Border",
-				                0,
-				                1
-				            ] call ALIVE_fnc_createMarker;
+            		ALIVE_Roadblock_Locations pushback _rb;
 
-                            ["ALIVE CP Roadblock trigger created at %1", mapgridposition _center] call ALiVE_fnc_DumpR;
-                        };
-                    };
+                };
 
 			} forEach _clusters;
+
+			ALIVE_Roadblocks = [];
+			// Start Roadblock spawn checker
+			[_logic] spawn {
+				while {count ALIVE_Roadblock_Locations > 0} do {
+					private ["_timer"];
+					_timer = time;
+					{
+						private ["_position","_size","_roadblocks","_spawn"];
+						_logic = _this select 0;
+						_position  = _x select 0;
+						_size = _x select 1;
+						_roadBlocks = parsenumber([_logic, "roadBlocks"] call MAINCLASS);
+						_spawn = false;
+						if ([_position, ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {
+						    _spawn = true;
+						}else{
+				            if ([_position, ALIVE_spawnRadiusJet] call ALiVE_fnc_anyAutonomousInRange > 0) then {
+				                _spawn = true;
+				            };
+						};
+
+						if (_spawn) then {
+							[_position, _size+150, ceil (_roadblocks / 10)] call ALiVE_fnc_createRoadblock;
+							ALIVE_Roadblock_Locations set [_foreachIndex, -1];
+							ALIVE_Roadblock_Locations = ALIVE_Roadblock_Locations - [-1];
+						};
+
+					} foreach ALIVE_Roadblock_Locations;
+					diag_log format ["RB timer: %1 secs", time - _timer];
+					sleep 1;
+				};
+			};
 
 
 			// DEBUG -------------------------------------------------------------------------------------
