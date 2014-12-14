@@ -35,10 +35,12 @@ to do: Current issue if road ahead bends.
 
 private ["_grp","_pos","_roadpos","_vehicle","_vehtype","_blockers","_roads","_fac","_debug","_roadConnectedTo", "_connectedRoad","_direction","_checkpoint","_checkpointComp","_roadpoints","_num"];
 
-_debug = [[MOD(mil_ied) getVariable ["debug", false]], 0, false, [true]] call BIS_fnc_param;
 _pos = [_this, 0, [0,0,0], [[]]] call BIS_fnc_param;
 _radius = [_this, 1, 100, [-1]] call BIS_fnc_param;
 _num = [_this, 2, 1, [-1]] call BIS_fnc_param;
+_debug = [_this, 3, false, [true]] call BIS_fnc_param;
+
+if (isnil QGVAR(ROADBLOCKS)) then {GVAR(ROADBLOCKS) = []};
 
 if (_num > 5) then {_num = 5};
 
@@ -57,7 +59,7 @@ _roads = _pos nearRoads (_radius + 20);
 	};
 } foreach _roads;
 
-if (count _roads == 0) exitWith {diag_log "no roads found for roadblock"};
+if (count _roads == 0) exitWith {["ALiVE No roads found for roadblock! Cannot create..."] call ALiVE_fnc_Dump};
 
 if (_num > count _roads) then {_num = count _roads};
 
@@ -80,22 +82,27 @@ for "_j" from 1 to (count _roadpoints) do {
 
 	_roadpos = _roadpoints select (_j - 1);
 
-	if ({_roadpos distance _x < 60} count ALIVE_Roadblocks > 0) exitWith {diag_log "RB to close to another"};
-
-    ALIVE_Roadblocks pushBack _roadpos;
+	if ({_roadpos distance _x < 60} count GVAR(ROADBLOCKS) > 0) exitWith {["ALiVE Roadblock to close to another! Not created..."] call ALiVE_fnc_Dump};
 
 	_roadConnectedTo = roadsConnectedTo _roadpos;
+    
+    if (count _roadConnectedTo == 0) exitWith {["ALiVE Selected road for roadblock is a dead end! Not created..."] call ALiVE_fnc_Dump};
+    
+    GVAR(ROADBLOCKS) pushBack _roadpos;
+    
 	_connectedRoad = _roadConnectedTo select 0;
 	_direction = [_roadpos, _connectedRoad] call BIS_fnc_DirTo;
 
-	if (_direction < 181) then {_direction = _direction + 180;} else {_direction = _direction - 180;};
-
+	if (_direction < 181) then {_direction = _direction + 180} else {_direction = _direction - 180;};
 
 	if (_debug) then {
-		private "_id";
-		_id = floor (random 1000);
-		diag_log format["Position of Road Block is %1, dir %2", getpos _roadpos, _direction];
-		[format["roadblock_%1", _id], _roadpos, "Icon", [1,1], "TYPE:", "mil_dot", "TEXT:", "RoadBlock",  "GLOBAL"] call CBA_fnc_createMarker;
+		private ["_id"];
+        
+		_id = str(floor((getpos _roadpos) select 0)) + str(floor((getpos _roadpos) select 1));
+        
+		["ALiVE Position of Road Block is %1, dir %2", getpos _roadpos, _direction] call ALiVE_fnc_Dump;
+		
+        [format["roadblock_%1", _id], _roadpos, "Icon", [1,1], "TYPE:", "mil_dot", "TEXT:", "RoadBlock",  "GLOBAL"] call CBA_fnc_createMarker;
 	};
 
 	_checkpointComp = ["smallCheckpoint1", "smallCheckpoint2", "smallCheckpoint3", "mediumCheckpoint2", "smallroadblock1" , "smallroadblock2"];
