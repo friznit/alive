@@ -914,26 +914,28 @@ switch(_operation) do {
 
 			// Start Roadblock spawn checker
 			[_logic] spawn {
-                
+
                 private ["_logic","_roadBlocks","_debug"];
-                
+
                 _logic = _this select 0;
-                
+
                 _roadBlocks = parsenumber([_logic, "roadBlocks"] call MAINCLASS);
                 _debug = [_logic, "debug"] call MAINCLASS;
-                
+
+                waituntil {sleep 0.3; !(isNil "ALiVE_fnc_AllCurators")};
+
 				while {count GVAR(ROADBLOCK_LOCATIONS) > 0} do {
 					private ["_timer"];
-                    
+
 					_timer = time;
 					{
 						private ["_position","_size","_spawn"];
-						
+
 						_position  = _x select 0;
 						_size = _x select 1;
-                        
+
 						_spawn = false;
-                        
+
 						if ([_position, ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {
 						    _spawn = true;
 						} else {
@@ -944,13 +946,13 @@ switch(_operation) do {
 
 						if (_spawn) then {
 							[_position, _size + 150, ceil(_roadblocks / 30), _debug] call ALiVE_fnc_createRoadblock;
-                            
+
 							GVAR(ROADBLOCK_LOCATIONS) set [_foreachIndex, -1];
 							GVAR(ROADBLOCK_LOCATIONS) = GVAR(ROADBLOCK_LOCATIONS) - [-1];
 						};
 					} foreach GVAR(ROADBLOCK_LOCATIONS);
                     if (_debug) then {["ALiVE Roadblock iteration time: %1 secs for %2 entries...", time - _timer, count GVAR(ROADBLOCK_LOCATIONS)] call ALiVE_fnc_Dump};
-                    
+
 					sleep 1;
 				};
 			};
