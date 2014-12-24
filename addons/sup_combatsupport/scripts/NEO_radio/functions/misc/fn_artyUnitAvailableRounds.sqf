@@ -20,6 +20,14 @@ _result = switch (true) do
 
 	case (_this in
 	[
+		"BUS_MotInf_MortTeam", "BUS_Support_Mort"
+	]) :
+	{
+		["HE", "ILLUM", "SMOKE"]
+	};
+
+	case (_this in
+	[
 		"B_MBT_01_mlrs_F"
 	]) :
 	{

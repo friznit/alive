@@ -58,7 +58,7 @@ switch(_operation) do {
                 };
 
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP COMBATSUPPORT - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP COMBATSUPPORT - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
             	//Start init
             	_logic setVariable ["initGlobal", false];
@@ -400,6 +400,10 @@ switch(_operation) do {
 
                             _side = getNumber(configfile >> "CfgVehicles" >> _class >> "side");
 
+                            if (_class == "BUS_MotInf_MortTeam" || _class == "BUS_Support_Mort") then {
+                                _side = 1;
+                            };
+
                             switch (_side) do {
                                 case 0 : {_side = EAST};
                                 case 1 : {_side = WEST};
@@ -409,7 +413,7 @@ switch(_operation) do {
 
 							_roundsUnit = _class call NEO_fnc_artyUnitAvailableRounds;
 							_roundsAvailable = [];
-							_canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","BUS_MotInf_MortTeam"]) then { true } else { false };
+							_canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","BUS_MotInf_MortTeam","BUS_Support_Mort","B_Mortar_01_F","O_Mortar_01_F","I_Mortar_01_F"]) then { true } else { false };
 							_units = [];
                             _vehDir = 0;
 
@@ -419,11 +423,11 @@ switch(_operation) do {
 
                             if (count _veh > 0) then {_veh = _veh select 0; _grp = group _veh} else {_veh = nil; _grp = createGroup _side};
 
-                            if (_side == WEST && _class == "BUS_MotInf_MortTeam") then {
+                            if (_class == "BUS_MotInf_MortTeam" || _class == "BUS_Support_Mort") then {
                                 // Spawn a mortar team :)
 
-                                _vehPos = [_pos, 30, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
-                                _grp = [_vehPos, side _grp, (configFile >> "cfgGroups" >> "WEST" >> "BLU_F" >> "Motorized" >> "BUS_MotInf_MortTeam"),[],[],[],[],[],_vehDir] call BIS_fnc_spawnGroup;
+                                //_vehPos = [_pos, 30, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
+                                _grp = [_pos, WEST, (configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Motorized" >> _class),[],[],[],[],[],0] call BIS_fnc_spawnGroup;
                                 {
                                     _units set [count _units, _x];
                                     _x setVariable ["ALIVE_CombatSupport", true];
@@ -435,7 +439,7 @@ switch(_operation) do {
                                 if (isnil "_veh") then {
 	                                for "_i" from 1 to _unitCount do
 	                                {
-	                                    private ["_veh"];
+	                                    private ["_veh","_sptarr"];
 	                                    _vehPos = [_pos, 15, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
 
 	                                    _veh = createVehicle [_class, _vehPos, [], 0, "CAN_COLLIDE"];
@@ -448,6 +452,20 @@ switch(_operation) do {
 	                            		_veh setVariable ["ALIVE_CombatSupport", true];
 
 	        							[_veh, _grp] call BIS_fnc_spawnCrew;
+
+                                        if (_i == 1) then {leader _grp setRank "CAPTAIN"};
+
+                                        // Add leader and assistant if a mortar weapon, in order to use BIS pack and unpack functions
+                                        if (_class in ["O_Mortar_01_F", "B_Mortar_01_F","I_Mortar_01_F"]) then {
+                                            _tl = format ["%1_soldier_TL_F",_class select [0,1]];
+                                            _sl = format ["%1_soldier_F",_class select [0,1]];
+                                            _newgrp = [_vehPos, _side, [_tl, _sl],[],[],[],[],[],_vehDir] call BIS_fnc_spawnGroup;
+                                            (units _newgrp) joinSilent _grp;
+                                            _sptarr = _grp getVariable ["supportWeaponArray",[]];
+                                            _sptarr pushback _veh;
+                                            _grp setvariable ["supportWeaponArray", _sptarr];
+                                        };
+
                                         _units set [count _units, _veh];
 	                                };
                                 } else {

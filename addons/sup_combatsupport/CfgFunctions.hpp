@@ -26,6 +26,16 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sup_combatsupport\fnc_combatSupportMenuDef.sqf";
                 				recompile = RECOMPILE;
                         };
+                        class packMortar {
+                                description = "Enables a group to pack a mortar";
+                                file = "\x\alive\addons\sup_combatsupport\fnc_packMortar.sqf";
+                                recompile = RECOMPILE;
+                        };
+                        class unpackMortar {
+                                description = "Enables a group to unpack a mortar";
+                                file = "\x\alive\addons\sup_combatsupport\fnc_unpackMortar.sqf";
+                                recompile = RECOMPILE;
+                        };
                 };
         };
 };
