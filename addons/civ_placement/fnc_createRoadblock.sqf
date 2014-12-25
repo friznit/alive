@@ -85,11 +85,11 @@ for "_j" from 1 to (count _roadpoints) do {
 	if ({_roadpos distance _x < 60} count GVAR(ROADBLOCKS) > 0) exitWith {["ALiVE Roadblock to close to another! Not created..."] call ALiVE_fnc_Dump};
 
 	_roadConnectedTo = roadsConnectedTo _roadpos;
-    
+
     if (count _roadConnectedTo == 0) exitWith {["ALiVE Selected road for roadblock is a dead end! Not created..."] call ALiVE_fnc_Dump};
-    
+
     GVAR(ROADBLOCKS) pushBack _roadpos;
-    
+
 	_connectedRoad = _roadConnectedTo select 0;
 	_direction = [_roadpos, _connectedRoad] call BIS_fnc_DirTo;
 
@@ -97,11 +97,11 @@ for "_j" from 1 to (count _roadpoints) do {
 
 	if (_debug) then {
 		private ["_id"];
-        
+
 		_id = str(floor((getpos _roadpos) select 0)) + str(floor((getpos _roadpos) select 1));
-        
+
 		["ALiVE Position of Road Block is %1, dir %2", getpos _roadpos, _direction] call ALiVE_fnc_Dump;
-		
+
         [format["roadblock_%1", _id], _roadpos, "Icon", [1,1], "TYPE:", "mil_dot", "TEXT:", "RoadBlock",  "GLOBAL"] call CBA_fnc_createMarker;
 	};
 
@@ -112,7 +112,7 @@ for "_j" from 1 to (count _roadpoints) do {
 
 	// Place a vehicle
 	_vehtype = ([1, _fac, "Car"] call ALiVE_fnc_findVehicleType) call BIS_fnc_selectRandom;
-	_vehicle = createVehicle [_vehtype, [position _roadpos, 10,20,2,0,5,0] call BIS_fnc_findsafepos, [], 20, "NONE"];
+	_vehicle = createVehicle [_vehtype, [position _roadpos, 10,30,2,0,5,0] call BIS_fnc_findsafepos, [], 0, "NONE"];
 	_vehicle setDir _direction;
 	_vehicle setposATL (getposATL _vehicle);
 
