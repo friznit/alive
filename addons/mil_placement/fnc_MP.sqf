@@ -5,7 +5,7 @@ SCRIPT(MP);
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_MP
 Description:
-Military objectives 
+Military objectives
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -44,7 +44,7 @@ ARJay
 #define DEFAULT_WITH_PLACEMENT true
 #define DEFAULT_OBJECTIVES []
 #define DEFAULT_OBJECTIVES_HQ []
-#define DEFAULT_OBJECTIVES_LAND [] 
+#define DEFAULT_OBJECTIVES_LAND []
 #define DEFAULT_OBJECTIVES_AIR []
 #define DEFAULT_OBJECTIVES_HELI []
 #define DEFAULT_OBJECTIVES_VEHICLE []
@@ -76,10 +76,10 @@ switch(_operation) do {
 			// if server
 			_logic setVariable ["super", nil];
 			_logic setVariable ["class", nil];
-			
+
 			[_logic, "destroy"] call SUPERCLASS;
 		};
-		
+
 	};
 	case "debug": {
 		if (typeName _args == "BOOL") then {
@@ -94,11 +94,11 @@ switch(_operation) do {
 		ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
 		_result = _args;
-	};        
+	};
 	case "state": {
 		private["_state","_data","_nodes","_simple_operations"];
 		_simple_operations = ["targets", "size","type","faction"];
-		
+
 		if(typeName _args != "ARRAY") then {
 			_state = [] call CBA_fnc_hashCreate;
 			// Save state
@@ -112,12 +112,12 @@ switch(_operation) do {
 			_result = _state;
 		} else {
 			ASSERT_TRUE([_args] call ALIVE_fnc_isHash,str _args);
-			
+
 			// Restore state
 			{
 				[_logic, _x, [_args, _x] call ALIVE_fnc_hashGet] call MAINCLASS;
 			} forEach _simple_operations;
-		};		
+		};
 	};
 	// Determine size of enemy force - valid values are: BN, CY and PL
 	case "size": {
@@ -206,7 +206,7 @@ switch(_operation) do {
 				_logic setVariable [_operation, _args];
 			};
 		};
-		if(typeName _args == "ARRAY") then {		
+		if(typeName _args == "ARRAY") then {
 			_logic setVariable [_operation, _args];
 		};
 		_result = _logic getVariable [_operation, DEFAULT_TAOR];
@@ -220,10 +220,10 @@ switch(_operation) do {
 				_logic setVariable [_operation, _args];
 			};
 		};
-		if(typeName _args == "ARRAY") then {		
+		if(typeName _args == "ARRAY") then {
 			_logic setVariable [_operation, _args];
 		};
-		_result = _logic getVariable [_operation, DEFAULT_BLACKLIST];		
+		_result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
 	};
 	// Return the Size filter
 	case "sizeFilter": {
@@ -241,13 +241,13 @@ switch(_operation) do {
 	case "randomCamps": {
 		_result = [_logic,_operation,_args,DEFAULT_RANDOMCAMPS] call ALIVE_fnc_OOsimpleOperation;
 	};
-    
+
     // Return placement setting
     case "withPlacement": {
         if (isnil "_args" || {isnull _args}) then {
             _args = _logic getvariable ["withPlacement",DEFAULT_WITH_PLACEMENT];
         };
-        
+
         if (isnil "_args") exitwith {_result = DEFAULT_WITH_PLACEMENT};
 
         if (typename _args == "STRING") then {_args = call compile _args};
@@ -305,11 +305,11 @@ switch(_operation) do {
                 ["Profile System module not placed! Exiting..."] call ALiVE_fnc_DumpR;
                 _logic setVariable ["startupComplete", true];
             };
-            
+
             waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
-            
+
             [_logic,"start"] call MAINCLASS;
-            
+
         } else {
             [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
             [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
@@ -319,10 +319,10 @@ switch(_operation) do {
 	};
 	case "start": {
         if (isServer) then {
-		
+
 			private ["_debug","_placement","_worldName","_file","_clusters","_cluster","_taor","_taorClusters","_blacklist",
 			"_sizeFilter","_priorityFilter","_blacklistClusters","_center","_error","_faction"];
-			
+
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
 
@@ -333,7 +333,7 @@ switch(_operation) do {
 				[true] call ALIVE_fnc_timer;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
+
             if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
                 _worldName = toLower(worldName);
                 _file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
@@ -371,7 +371,7 @@ switch(_operation) do {
                     [_message] call ALIVE_fnc_dump;
                     //_error = true;
                 };
-                
+
                 /*
                 if (!(isnil "_message") && {isnil QGVAR(CLUSTERWARNING_DISPLAYED)}) then {
                     GVAR(CLUSTERWARNING_DISPLAYED) = true;
@@ -416,40 +416,40 @@ switch(_operation) do {
                 };
 
                 private ["_HQClusters","_landClusters","_airClusters","_heliClusters","_vehicleClusters"];
-                
+
                 _clusters = ALIVE_clustersMil select 2;
-                
+
                 _HQClusters = DEFAULT_OBJECTIVES_HQ;
                 _airClusters = DEFAULT_OBJECTIVES_AIR;
-                _heliClusters = DEFAULT_OBJECTIVES_HELI;  
+                _heliClusters = DEFAULT_OBJECTIVES_HELI;
 				_landClusters = DEFAULT_OBJECTIVES_LAND;
-                
+
                 if (_randomCampsMil > 0) then {
  	                if (isnil "ALIVE_clustersMilLand") then {
 	                    ALIVE_clustersMilLand = "loading";
-	                    
+
 	                    _data = [] call ALiVE_fnc_HashCreate;
 	                    _clustersX = +_clusters;
-	                    
+
 		                _sectors = [ALIVE_sectorGrid, "sectors"] call ALIVE_fnc_sectorGrid;
 		                {
 		                    private ["_sector","_sectorData","_flatEmpty","_id","_cluster"];
-		                    
+
 		                    _sector = _x;
 		                    _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
-		                    
+
 							_flatEmpty = [_sectorData,"flatEmpty"] call ALIVE_fnc_hashGet;
-		                    
+
 		                    if (count _flatEmpty > 0) then {
 		                        private ["_pos"];
-		                        
+
 		                        _pos = _flatEmpty select 0;
-		                        
-		                        if ({([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet) distance _pos < _randomCampsMil} count _clustersX > 0) exitwith {};  
-		
+
+		                        if ({([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet) distance _pos < _randomCampsMil} count _clustersX > 0) exitwith {};
+
 		                         _pos = [_pos,500] call ALiVE_fnc_findFlatArea;
 		                         _id = format["c_%1",str(floor(_pos select 0)) + str(floor(_pos select 0))];
-		                         
+
 		                        _cluster = [nil, "create"] call ALIVE_fnc_cluster;
 								[_cluster,"nodes",nearestObjects [_pos,["static"],50]] call ALIVE_fnc_hashSet;
 								[_cluster,"clusterID",_id] call ALIVE_fnc_hashSet;
@@ -457,20 +457,20 @@ switch(_operation) do {
 								[_cluster,"size",100] call ALIVE_fnc_hashSet;
 								[_cluster,"type","MIL"] call ALIVE_fnc_hashSet;
 								[_cluster,"priority",100] call ALIVE_fnc_hashSet;
-		                        
+
 	                            [_data,_id,_cluster] call ALiVE_fnc_HashSet;
 	                            _clustersX pushback _cluster;
-		                         
+
 		                        //_cluster call ALiVE_fnc_InspectHash;
 		                    };
-	                        
+
 	                        ALIVE_clustersMilLand = _data;
-	                        
+
 		                } foreach _sectors;
 	                } else {
 	                    waituntil {typeName ALIVE_clustersMilLand == "ARRAY"};
 	                };
-	                
+
 	                _landClusters = ALIVE_clustersMilLand select 2;
 	                _landClusters = [_landClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
 	                _landClusters = [_landClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
@@ -490,9 +490,9 @@ switch(_operation) do {
 
                 // store the clusters on the logic
                 [_logic, "objectives", _clusters + _landclusters] call MAINCLASS;
-                
-                
-                
+
+
+
                 //Move on to special objectives
                 if !(isnil "ALIVE_clustersMilHQ") then {
                     _HQClusters = ALIVE_clustersMilHQ select 2;
@@ -577,28 +577,28 @@ switch(_operation) do {
 	// Placement
 	case "placement": {
         if (isServer) then {
-		
+
 			private ["_debug","_clusters","_cluster","_HQClusters","_airClusters","_heliClusters","_vehicleClusters",
 			"_countHQClusters","_countAirClusters","_countHeliClusters","_size","_type","_faction","_ambientVehicleAmount",
 			"_placeHelis","_placeSupplies","_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass",
 			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes",
 			"_airClasses","_node","_buildings","_customInfantryCount","_customMotorisedCount","_customMechanisedCount",
 			"_customArmourCount","_customSpecOpsCount","_countVehicleClusters","_createHQ","_file"];
-            
-		
+
+
 			_debug = [_logic, "debug"] call MAINCLASS;
-			
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 				["ALIVE MP - Placement"] call ALIVE_fnc_dump;
 				[true] call ALIVE_fnc_timer;
 			};
-			// DEBUG -------------------------------------------------------------------------------------			
-			
-		
+			// DEBUG -------------------------------------------------------------------------------------
+
+
             //waituntil {sleep 5; (!(isnil {([_logic, "objectives"] call MAINCLASS)}) && {count ([_logic, "objectives"] call MAINCLASS) > 0})};
-			
+
 			_clusters = [_logic, "objectives"] call MAINCLASS;
             _LandClusters = [_logic, "objectivesLand"] call MAINCLASS;
 			_HQClusters = [_logic, "objectivesHQ"] call MAINCLASS;
@@ -649,8 +649,8 @@ switch(_operation) do {
 			_countHQClusters = count _HQClusters;
 			_countAirClusters = count _airClusters;
 			_countHeliClusters = count _heliClusters;
-			_countVehicleClusters = count _vehicleClusters;			
-			
+			_countVehicleClusters = count _vehicleClusters;
+
 			_size = parseNumber([_logic, "size"] call MAINCLASS);
 			_type = [_logic, "type"] call MAINCLASS;
 			_faction = [_logic, "faction"] call MAINCLASS;
@@ -658,23 +658,23 @@ switch(_operation) do {
 			_createHQ = [_logic, "createHQ"] call MAINCLASS;
 			_placeHelis = [_logic, "placeHelis"] call MAINCLASS;
 			_placeSupplies = [_logic, "placeSupplies"] call MAINCLASS;
-			
+
 			_factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
 			_factionSideNumber = getNumber(_factionConfig >> "side");
 			_side = _factionSideNumber call ALIVE_fnc_sideNumberToText;
 			_countProfiles = 0;
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Size: %2 Type: %3 SideNum: %4 Side: %5 Faction: %6",_faction,_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;
 				["ALIVE MP [%1] - Ambient Vehicles: %2 Create HQ: %3 Place Helis: %4 Place Supplies: %5",_faction,_ambientVehicleAmount,_createHQ,_placeHelis,_placeSupplies] call ALIVE_fnc_dump;
 			};
-			// DEBUG -------------------------------------------------------------------------------------			
-			
-			
+			// DEBUG -------------------------------------------------------------------------------------
+
+
 			// Load static data
-			
+
 			if(isNil "ALiVE_STATIC_DATA_LOADED") then {
 				_file = "\x\alive\addons\main\static\staticData.sqf";
 				call compile preprocessFileLineNumbers _file;
@@ -729,30 +729,30 @@ switch(_operation) do {
                     ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dump;
                 };
 			};
-            
+
             if (count _landClusters > 0) then {
 				{
 	                _pos = [_x,"center"] call ALiVE_fnc_HashGet;
-	                
+
 		            _compositions = [ALIVE_compositions,"camps"] call ALIVE_fnc_hashGet;
 					_composition = _compositions call BIS_fnc_selectRandom;
-					
+
 					_composition = [_composition] call ALIVE_fnc_findComposition;
-					
+
 					if(count _composition > 0) then {
 					    [_composition, _pos, random 360] call ALIVE_fnc_spawnComposition;
 					};
-                    
+
                     [_x,"nodes",nearestObjects [_pos,["static"],50]] call ALIVE_fnc_hashSet;
-                    
+
                 } foreach _landClusters;
             };
-			
+
 			// Spawn supplies in objectives
-			
+
 			private ["_countSupplies","_supplyClasses","_box"];
 			_countSupplies = 0;
-			
+
 			if(_placeSupplies) then {
 
 			    // attempt to get supplies by faction
@@ -766,17 +766,17 @@ switch(_operation) do {
 				};
 
 				_supplyClasses = _supplyClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
-				
+
 				if(count _supplyClasses > 0) then {
 					{
 						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
-						
+
 						_buildings = [_nodes, ALIVE_militarySupplyBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 
 						//["BUILDINGS: %1",_buildings] call ALIVE_fnc_dump;
 
 						//[_x, "debug", true] call ALIVE_fnc_cluster;
-						{													
+						{
 							_position = position _x;
 							_direction = direction _x;
 							_vehicleClass = _supplyClasses call BIS_fnc_selectRandom;
@@ -784,11 +784,11 @@ switch(_operation) do {
 								_box = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
 								_countSupplies = _countSupplies + 1;
 							};
-						} forEach _buildings;				
+						} forEach _buildings;
 					} forEach _clusters;
-				};			
+				};
 			};
-			
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Supplies placed: %2",_faction,_countSupplies] call ALIVE_fnc_dump;
@@ -806,20 +806,20 @@ switch(_operation) do {
                 _logic setVariable ["startupComplete", true];
 
 			};
-			
-			
-						
+
+
+
 			// Spawn helicopters on pads
-			
+
 			private ["_countCrewedHelis","_countUncrewedHelis"];
 			_countCrewedHelis = 0;
 			_countUncrewedHelis = 0;
-			
+
 			if(_placeHelis) then {
-							
+
 				_heliClasses = [0,_faction,"Helicopter"] call ALiVE_fnc_findVehicleType;
 				_heliClasses = _heliClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
-				
+
 				if(count _heliClasses > 0) then {
 					{
 						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
@@ -837,49 +837,49 @@ switch(_operation) do {
 								_countProfiles = _countProfiles + 2;
 								_countCrewedHelis = _countCrewedHelis + 1;
 							};
-							
-						} forEach _nodes;				
+
+						} forEach _nodes;
 					} forEach _heliClusters;
-				};			
+				};
 			};
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Heli units placed: crewed:%2 uncrewed:%3",_faction,_countCrewedHelis,_countUncrewedHelis] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			
+
+
 			// Spawn air units in hangars
-			
+
 			private ["_countCrewedAir","_countUncrewedAir"];
 			_countCrewedAir = 0;
             _countUncrewedAir = 0;
-			
+
 			if(_placeHelis) then {
-			
+
 				_airClasses = [0,_faction,"Plane"] call ALiVE_fnc_findVehicleType;
 				_airClasses = _airClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 
 				if(count _airClasses == 0) then {
 				    _airClasses = _airClasses + _heliClasses;
 				};
-				
+
 				if(count _airClasses > 0) then {
-				
+
 					{
 						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
-						
-						_buildings = [_nodes, ALIVE_airBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
-						
-						//[_x, "debug", true] call ALIVE_fnc_cluster;
-						{													
-							_position = position _x;
 
-							_direction = if(random 1 < 0.7) then {direction _x} else {direction _x - 180};
+						_buildings = [_nodes, ALIVE_airBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
+
+						//[_x, "debug", true] call ALIVE_fnc_cluster;
+						{
+							private "_pavement";
+							_position = position _x;
+							_direction = direction _x;
 							_vehicleClass = _airClasses call BIS_fnc_selectRandom;
-							if(random 1 > 0.8) then {
+							if(random 1 > 0.66) then {
                                 [_vehicleClass,_side,_faction,_position,_direction,false,_faction] call ALIVE_fnc_createProfileVehicle;
                                 _countProfiles = _countProfiles + 1;
                                 _countUncrewedAir =_countUncrewedAir + 1;
@@ -892,33 +892,33 @@ switch(_operation) do {
                                 _countCrewedAir = _countCrewedAir + 1;
                             };
                             */
-						} forEach _buildings;				
+						} forEach _buildings;
 					} forEach _airClusters;
 				};
 			};
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Air units placed: crewed:%2 uncrewed:%3",_faction,_countCrewedAir,_countUncrewedAir] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-					
-			
-			// Spawn ambient vehicles	
-			
+
+
+			// Spawn ambient vehicles
+
 			private ["_countLandUnits","_carClasses","_armorClasses","_landClasses","_supportCount","_supportMax","_supportClasses","_types",
 			"_countBuildings","_parkingChance","_usedPositions","_building","_parkingPosition","_positionOK","_supportPlacement"];
-			
+
 			_countLandUnits = 0;
 
 			if(_ambientVehicleAmount > 0) then {
-			
+
 				_carClasses = [0,_faction,"Car"] call ALiVE_fnc_findVehicleType;
 				_armorClasses = [0,_faction,"Tank"] call ALiVE_fnc_findVehicleType;
 				_landClasses = _carClasses + _armorClasses;
-				_landClasses = _landClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;				
-				
+				_landClasses = _landClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
+
 				_supportClasses = [ALIVE_factionDefaultSupports,_faction,[]] call ALIVE_fnc_hashGet;
 
 				//["SUPPORT CLASSES: %1",_supportClasses] call ALIVE_fnc_dump;
@@ -937,14 +937,14 @@ switch(_operation) do {
                 //["LAND CLASSES: %1",_landClasses] call ALIVE_fnc_dump;
 
 				if(count _landClasses > 0) then {
-							
-					{					
+
+					{
 
 						_supportCount = 0;
 						_supportMax = 0;
-				
-						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;	
-						
+
+						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+
 						_buildings = [_nodes, ALIVE_militaryParkingBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 
                         //["BUILDINGS: %1",_buildings] call ALIVE_fnc_dump;
@@ -954,32 +954,32 @@ switch(_operation) do {
 
 						//["COUNT BUILDINGS: %1",_countBuildings] call ALIVE_fnc_dump;
 						//["CHANCE: %1",_parkingChance] call ALIVE_fnc_dump;
-						
+
 						if(_countBuildings > 50) then {
 							_supportMax = 5;
 							_parkingChance = 0.1 * _ambientVehicleAmount;
 						};
-						
+
 						if(_countBuildings > 40 && _countBuildings < 50) then {
 							_supportMax = 5;
 							_parkingChance = 0.2 * _ambientVehicleAmount;
 						};
-						
+
 						if(_countBuildings > 30 && _countBuildings < 41) then {
 							_supportMax = 5;
 							_parkingChance = 0.3 * _ambientVehicleAmount;
 						};
-						
+
 						if(_countBuildings > 20 && _countBuildings < 31) then {
 							_supportMax = 3;
 							_parkingChance = 0.4 * _ambientVehicleAmount;
 						};
-						
+
 						if(_countBuildings > 10 && _countBuildings < 21) then {
 							_supportMax = 2;
 							_parkingChance = 0.6 * _ambientVehicleAmount;
 						};
-						
+
 						if(_countBuildings > 0 && _countBuildings < 11) then {
 							_supportMax = 1;
 							_parkingChance = 0.7 * _ambientVehicleAmount;
@@ -994,7 +994,7 @@ switch(_operation) do {
 							if(random 1 < _parkingChance) then {
 
 								_building = _x;
-								
+
 								_supportPlacement = false;
 								if(_supportCount <= _supportMax) then {
 									_supportPlacement = true;
@@ -1008,7 +1008,7 @@ switch(_operation) do {
 
 								_parkingPosition = [_vehicleClass,_building] call ALIVE_fnc_getParkingPosition;
 								_positionOK = true;
-								
+
 								{
 									_position = _x select 0;
 									if((_parkingPosition select 0) distance _position < 10) then {
@@ -1022,51 +1022,51 @@ switch(_operation) do {
 									[_vehicleClass,_side,_faction,_parkingPosition select 0,_parkingPosition select 1,false,_faction] call ALIVE_fnc_createProfileVehicle;
 
 									_countLandUnits = _countLandUnits + 1;
-								
+
 									_usedPositions set [count _usedPositions, _parkingPosition];
-									
+
 									if(_supportPlacement) then {
 										_supportCount = _supportCount + 1;
 									};
-								};								
+								};
 							};
-							
+
 						} forEach _buildings;
-						
+
 					} forEach _clusters;
-				};					
+				};
 			};
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Ambient land units placed: %2",_faction,_countLandUnits] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			
+
+
 			// Spawn the main force
-			
+
 			private ["_countArmored","_countMechanized","_countMotorized","_countInfantry",
 			"_countAir","_countSpecOps","_groups","_motorizedGroups","_infantryGroups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
 			"_groupCount","_clusterCount"];
-			
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Size: %2",_faction,_size] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
+
 			_countArmored = 0;
 			_countMechanized = 0;
 			_countMotorized = 0;
 			_countInfantry = 0;
 			_countAir = 0;
 			_countSpecOps = 0;
-			
-			// Force Composition			
+
+			// Force Composition
 			switch(_type) do {
-				case "Armored": {					
+				case "Armored": {
 					_countArmored = floor((_size / 20) * 0.5);
 					_countMechanized = floor((_size / 12) * random(0.2));
 					_countMotorized = floor((_size / 12) * random(0.2));
@@ -1135,8 +1135,8 @@ switch(_operation) do {
             if!(_customSpecOpsCount == 666) then {
 			    _countSpecOps = _customSpecOpsCount;
             };
-			
-			
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Main force creation ",_faction] call ALIVE_fnc_dump;
@@ -1148,25 +1148,25 @@ switch(_operation) do {
 				["Count Spec Ops: %1",_countSpecOps] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			
+
+
 			// Assign groups
 			_groups = [];
-			
+
 			for "_i" from 0 to _countArmored -1 do {
 				_group = ["Armored",_faction] call ALIVE_fnc_configGetRandomGroup;
 				if!(_group == "FALSE") then {
 					_groups set [count _groups, _group];
 				};
 			};
-			
+
 			for "_i" from 0 to _countMechanized -1 do {
 				_group = ["Mechanized",_faction] call ALIVE_fnc_configGetRandomGroup;
 				if!(_group == "FALSE") then {
 					_groups set [count _groups, _group];
 				}
 			};
-			
+
 			if(_countMotorized > 0) then {
 
                 _motorizedGroups = [];
@@ -1197,7 +1197,7 @@ switch(_operation) do {
 					_infantryGroups set [count _infantryGroups, _group];
 				}
 			};
-			
+
 			for "_i" from 0 to _countSpecOps -1 do {
                 _group = ["SpecOps",_faction] call ALIVE_fnc_configGetRandomGroup;
                 if!(_group == "FALSE") then {
@@ -1206,14 +1206,14 @@ switch(_operation) do {
             };
 
 			_groups = _groups + _infantryGroups;
-			
+
 			for "_i" from 0 to _countAir -1 do {
 				_group = ["Air",_faction] call ALIVE_fnc_configGetRandomGroup;
 				if!(_group == "FALSE") then {
 					_groups set [count _groups, _group];
 				};
-			};			
-			
+			};
+
 			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
             _infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
@@ -1223,23 +1223,23 @@ switch(_operation) do {
             };
             // DEBUG -------------------------------------------------------------------------------------
 
-			
+
 			// Position and create groups
 			_groupCount = count _groups;
 			_clusterCount = count _clusters;
-			_groupPerCluster = floor(_groupCount / _clusterCount);		
+			_groupPerCluster = floor(_groupCount / _clusterCount);
 			_totalCount = 0;
 
 			if(_groupCount > 0) then {
                 _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
                 _readiness = (1 - _readiness) * _groupCount;
-			
+
                 {
                     private ["_guardGroup","_guards","_center","_size","_profiles"];
 
                     _center = [_x, "center"] call ALIVE_fnc_hashGet;
                     _size = [_x, "size"] call ALIVE_fnc_hashGet;
- 
+
 					//Default guards (place always)
                     if(count _infantryGroups > 0) then {
                         _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
@@ -1256,20 +1256,20 @@ switch(_operation) do {
                     //Add profiles
                     if(_totalCount < _groupCount) then {
                         private ["_command","_position","_garrisonPos"];
-                       
+
                         _command = "ALIVE_fnc_ambientMovement";
-                        
+
                         if (_totalCount < _readiness ) then {
-                            _command = "ALIVE_fnc_garrison"; 
+                            _command = "ALIVE_fnc_garrison";
                             _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
                         };
-                        
+
 						//If there are several profiles per cluster place several profiles
                         if(_groupPerCluster > 0) then {
 
                             for "_i" from 0 to _groupPerCluster -1 do {
                                 _group = _groups select _totalCount;
-                                
+
                                 if (isnil "_garrisonPos") then {
                                     _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
                                 } else {
@@ -1290,17 +1290,17 @@ switch(_operation) do {
                                     _totalCount = _totalCount + 1;
                                 };
                             };
-                            
+
 						//If there is only one to be placed, then place only one
                         }else{
                             _group = _groups select _totalCount;
-                            
+
                             if (isnil "_garrisonPos") then {
                                 _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
                             } else {
                                 _position = [_garrisonPos, 50] call CBA_fnc_RandPos;
                             };
-                            
+
                             if!(surfaceIsWater _position) then {
                                 _profiles = [_group, _position, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 
@@ -1320,7 +1320,7 @@ switch(_operation) do {
             }else{
                 ["ALIVE MP - Warning no usable groups found to use the faction used may be faulty."] call ALIVE_fnc_dumpR;
             };
-            
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP - Total profiles created: %1",_countProfiles] call ALIVE_fnc_dump;
