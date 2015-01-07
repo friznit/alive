@@ -9,7 +9,7 @@
 		0: STRING - mode
 			"screenshots" - create items one by one and take their screenshot. Works only on "Render" terrain.
 			"screenshotsTest" - create items one by one without taking screen (to verify everything is ok)
-
+		1: STRING - CfgPatches Prefix i.e. CUP
 		1: ARRAY of STRINGs - list of CfgPatches classes. Only weapons belonging to these addons will be used
 
 	Returns:
@@ -17,8 +17,9 @@
 */
 
 _mode = [_this,0,"Weapon",[""]] call bis_fnc_param;
-_patches = [_this,1,[],[[]]] call bis_fnc_param;
-_types = [_this,2,[],[[]]] call bis_fnc_param;
+_patchprefix = [_this,1,"",[""]] call bis_fnc_param;
+_patches = [_this,2,[],[[]]] call bis_fnc_param;
+_types = [_this,3,[],[[]]] call bis_fnc_param;
 
 player enablesimulation false;
 player hideobject true;
@@ -32,11 +33,24 @@ if (_screenshots) then {_mode = "Weapon";};
 _mode = tolower _mode;
 _patchWeapons = [];
 _allPatches = true;
-if (count _patches > 0) then {
+if (_patchprefix != "") then {
+	private "_num";
+	_num = count _patchprefix;
 	_allPatches = false;
+	_patches = "true" configClasses (configfile >> "cfgpatches");
+	diag_log str(_patches);
 	{
-		_patchWeapons = _patchWeapons + getarray (configfile >> "cfgpatches" >> _x >> "weapons");
+		if (((configName _x) select [0, _num]) == _patchprefix) then {
+			_patchWeapons = _patchWeapons + getarray (configfile >> "cfgpatches" >> configName _x >> "weapons");
+		};
 	} foreach _patches;
+} else {
+	if (count _patches > 0) then {
+		_allPatches = false;
+		{
+			_patchWeapons = _patchWeapons + getarray (configfile >> "cfgpatches" >> _x >> "weapons");
+		} foreach _patches;
+	};
 };
 
 _types = +_types;
@@ -94,7 +108,7 @@ if (_screenshots) then {
 		//&&
 		//(_model != "")
 	) then {
-		if (_screenshots && _model != "") then {
+		if (_screenshots) then {
 			_holder = switch _itemType do {
 				case "NVGoggles";
 				case "Headgears": {
@@ -234,7 +248,7 @@ if (_screenshots) then {
 			setShadowDistance -1;
 		};
 	} else {
-		_class call bis_fnc_log;
+		//_class call bis_fnc_log;
 	};
 
 	progressloadingscreen (_foreachindex / _cfgWeaponsCount);
