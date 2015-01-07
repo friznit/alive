@@ -1538,3 +1538,24 @@ class emptyInit
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+
+class exportCfgWeapons
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgWeapons.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class exportCfgVehicles
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgVehicles.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class exportCfgVehicleWeapons
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgVehicleWeapons.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
