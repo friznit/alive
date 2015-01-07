@@ -20,13 +20,28 @@
 
 _mode = [_this,0,"config",[""]] call bis_fnc_param;
 _sides = [_this,1,[0,1,2,3],[[]]] call bis_fnc_param;
-_patches = [_this,2,[],[[]]] call bis_fnc_param;
-_allVehicles = [_this,3,true,[true]] call bis_fnc_param;
+_patchprefix = [_this,2,"",[""]] call bis_fnc_param;
+_patches = [_this,3,[],[[]]] call bis_fnc_param;
+_allVehicles = [_this,4,true,[true]] call bis_fnc_param;
 
-_patches = +_patches;
-{
-	_patches set [_foreachindex,tolower _x];
-} foreach _patches;
+if (_patchprefix != "") then {
+	private "_num";
+	_num = count _patchprefix;
+	_patches = "true" configClasses (configfile >> "cfgpatches");
+	{
+		if (((configName _x) select [0, _num]) == _patchprefix) then {
+			_patches set [_foreachindex,tolower (configName _x)];
+		};
+	} foreach _patches;
+} else {
+	if (count _patches > 0) then {
+		_patches = +_patches;
+		{
+			_patches set [_foreachindex,tolower _x];
+		} foreach _patches;
+	};
+};
+
 _allPatches = count _patches == 0;
 
 _sides = +_sides;

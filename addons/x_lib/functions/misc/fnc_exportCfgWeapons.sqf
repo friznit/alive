@@ -38,7 +38,6 @@ if (_patchprefix != "") then {
 	_num = count _patchprefix;
 	_allPatches = false;
 	_patches = "true" configClasses (configfile >> "cfgpatches");
-	diag_log str(_patches);
 	{
 		if (((configName _x) select [0, _num]) == _patchprefix) then {
 			_patchWeapons = _patchWeapons + getarray (configfile >> "cfgpatches" >> configName _x >> "weapons");
