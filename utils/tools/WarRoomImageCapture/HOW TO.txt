@@ -1,0 +1,17 @@
+HOW TO
+
+0. Create a folder called exportCfg in your Arma 3 directory
+1. Copy render.pbo to your @ALiVE/addons folder
+2. Copy scr_cap.dll to your @ALiVE folder
+3. Copy the ALIVE%20War%20Room%20Image%20Capture.render folder to your missions folder
+4. Launch Arma 3 with your mod enabled
+5. Open Editor, select Render map
+6. Open the ALiVE War Room Image Capture mission
+7. Open each of the triggers and change the prefix parameter to match your mod i.e. change CUP to VCB or A3 or whatever
+8. Preview mission
+9. Change your video settings so display is set to Fullscreen Window mode (NOT fullscreen).
+10. Press 0 then 0 again to bring up radio menu
+11. Select 1 - Weapons (Test) to do a dry run
+12. Select 2 - Weapons to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
+13. Select 3 - Vehicles (Test) to do a dry run of vehicles
+14. 11. Select 2 - Vehicles to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
