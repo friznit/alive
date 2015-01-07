@@ -77,7 +77,7 @@ class Mission
 			interruptable=1;
 			age="UNKNOWN";
 			text="Weapons";
-			expActiv="null = [] spawn { [""screenshots"",[""STKR_BritMTP"",""STKR_L129A1""]] call ALiVE_fnc_exportCfgWeapons; }";
+			expActiv="null = [] spawn { [""screenshots"",""CUP""] call ALiVE_fnc_exportCfgWeapons; }";
 			class Effects
 			{
 			};
@@ -103,7 +103,7 @@ class Mission
 			interruptable=1;
 			age="UNKNOWN";
 			text="Vehicles";
-			expActiv="null = [] spawn { [""screenshots"",[0,1,2,3],[""STKR_BritMTP"",""STKR_L129A1""]] call ALiVE_fnc_exportCfgVehicles; }";
+			expActiv="null = [] spawn { [""screenshots"",[0,1,2,3],""CUP""] call ALiVE_fnc_exportCfgVehicles; }";
 			class Effects
 			{
 			};

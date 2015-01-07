@@ -131,7 +131,7 @@ switch tolower _mode do {
 					_cam campreparetarget (_object modeltoworld [0,0,_targetZ]);
 					_cam camcommitprepared 0;
 
-					if (_capture && _model != "") then {
+					if (_capture) then {
 						sleep 1;
 
 						"scr_cap" callExtension format["exportCfg\%1_CfgVehicles_%2.png",_product,_class];
