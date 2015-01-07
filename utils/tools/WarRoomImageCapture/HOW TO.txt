@@ -14,4 +14,4 @@ HOW TO
 11. Select 1 - Weapons (Test) to do a dry run
 12. Select 2 - Weapons to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
 13. Select 3 - Vehicles (Test) to do a dry run of vehicles
-14. 11. Select 2 - Vehicles to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
+14. Select 4 - Vehicles to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
