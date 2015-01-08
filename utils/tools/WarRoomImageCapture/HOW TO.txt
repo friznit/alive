@@ -9,9 +9,11 @@ HOW TO
 6. Open the ALiVE War Room Image Capture mission
 7. Open each of the triggers and change the prefix parameter to match your mod i.e. change CUP to VCB or A3 or whatever
 8. Preview mission
-9. Change your video settings so display is set to Fullscreen Window mode (NOT fullscreen).
-10. Press 0 then 0 again to bring up radio menu
-11. Select 1 - Weapons (Test) to do a dry run
-12. Select 2 - Weapons to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
-13. Select 3 - Vehicles (Test) to do a dry run of vehicles
-14. Select 4 - Vehicles to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
+9. Change your video settings, ensure quality is set to Ultra, set visibility to 500, ensure display is set to Fullscreen Window mode (NOT fullscreen) and increase brightness to 1.5.
+10. Change your AA & PP settings, turn off bloom, turn off depth of field, increase sharpen to 200.
+11. Press 0 then 0 again to bring up radio menu
+12. Select 1 - Weapons (Test) to do a dry run
+13. Select 2 - Weapons to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
+14. Select 3 - Vehicles (Test) to do a dry run of vehicles
+15. Select  - Vehicles to get screenshots (placed in exportCfg) - maintain window focus on Arma 3 while the screenshots run
+16. Upload the images in exportCfg to the ALiVE War Room > Mod Upload facility under your Group Profile page
