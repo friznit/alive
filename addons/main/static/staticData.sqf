@@ -1341,6 +1341,147 @@ if(_worldName == "panthera3") then {
 
 };
 
+// Isla Duala A3
+if(_worldName == "isladuala3") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "barrack",
+        "mil_house",
+		"fort_",
+		"mil_",
+        "mil_controltower",
+        "mil_guardhouse",
+		"misc_deerstand",
+        "deerstand"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower",
+        "mil_guardhouse"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "barrack",
+		"barracks",
+		"tent_",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+        "ss_hangar",
+		"airport",
+        "hangar_2",
+        "hangar",
+        "runway_beton",
+        "runway_end",
+		"runway_",
+        "runway_main",
+        "runway_secondary"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "deerstand",
+        "vez",
+        "army_hut",
+		"tents",
+		"fort_",
+        "barrack",
+		"mil_",
+        "mil_house",
+        "mil_controltower",
+        "mil_guardhouse",
+		"misc_deerstand",
+        "deerstand"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "a_office01"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+        "pec_",
+        "powerstation",
+        "trafostanica"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+        "illuminanttower",
+        "vysilac_fm",
+        "telek",
+		"telek1",
+        "tvtower"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "crane",
+        "lighthouse",
+		"nav_",
+        "nav_pier",
+        "pier_",
+        "pier"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+        "fuelstation",
+        "expedice",
+        "indpipe",
+        "komin",
+        "ind_tankbig"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+        "wip",
+		"ind_",
+		"a_cranecon",
+		"a_buildingwip",
+        "sawmillpen",
+        "workshop"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "generalstore",
+		"shed_",
+		"chapels",
+        "house",
+		"plot_",
+		"households",
+		"housea",
+		"housec",
+		"housek",
+		"housev",
+        "domek",
+		"slums",
+		"a_castle_",
+        "dum_",
+        "hut0"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+	
+	];
+
+};
+
 // Fallujah
 if(_worldName == "fallujah") then {
 
