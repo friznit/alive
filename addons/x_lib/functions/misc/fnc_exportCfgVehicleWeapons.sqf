@@ -1,249 +1,204 @@
 /*
-	Author: Karel Moricky update by Tup for ALiVE War Room purposes
+	Author: Karel Moricky and edited by TUP for War Room
 
 	Description:
-	Export list of weapons for Community Wiki
+	Export list of objects for Community Wiki
 	http://community.bistudio.com/wiki/Category:Arma_3:_Assets
 
 	Parameter(s):
 		0: STRING - mode
-			"screenshots" - create items one by one and take their screenshot. Works only on "Render" terrain.
-			"screenshotsTest" - create items one by one without taking screen (to verify everything is ok)
+			"screenshots" - create objects one by one and take their screenshot. Works only on "Render" terrain.
+			"screenshotsTest" - create objects one by one without taking screen (to verify everything is ok)
 
-		1: ARRAY of STRINGs - list of CfgPatches classes. Only weapons belonging to these addons will be used doesn't work, ToDo)
+		1: ARRAY of SIDEs 0 list of sides. Only objects of these sides will be used
+		2: ARRAY of STRINGs - list of CfgPatches classes. Only objects belonging to these addons will be used
+		3: BOOL - true to use only AI units (soldiers, vehicles), false to use empty ones
 
 	Returns:
 	BOOL
 */
 
-startloadingscreen [""];
+_mode = [_this,0,"config",[""]] call bis_fnc_param;
+_sides = [_this,1,[0,1,2,3],[[]]] call bis_fnc_param;
+_patchprefix = [_this,2,"",[""]] call bis_fnc_param;
+_patches = [_this,3,[],[[]]] call bis_fnc_param;
+_allVehicles = [_this,4,true,[true]] call bis_fnc_param;
 
-_mode = [_this,0,"Weapon",[""]] call bis_fnc_param;
-_patches = [_this,1,[],[[]]] call bis_fnc_param;
-_types = [_this,2,[],[[]]] call bis_fnc_param;
+if (_patchprefix != "") then {
+	private ["_num","_listpatches"];
+	_num = count _patchprefix;
+	_patches = "tolower(((configName _x) select [0, _num])) == tolower(_patchprefix)" configClasses (configfile >> "cfgpatches");
+	{
+		_patches set [_foreachindex,tolower (configName _x)];
+	} foreach _patches;
+} else {
+	if (count _patches > 0) then {
+		_patches = +_patches;
+		{
+			_patches set [_foreachindex,tolower _x];
+		} foreach _patches;
+	};
+};
+
+_allPatches = count _patches == 0;
+
+
+
+_sides = +_sides;
+{
+	if (typename _x == typename sideunknown) then {_sides set [_foreachindex,_x call bis_fnc_sideid];};
+} foreach _sides;
+if (count _sides == 0) then {_sides = [0,1,2,3,4];};
 
 player enablesimulation false;
 player hideobject true;
 
-_mode = tolower _mode;
-_screenshots = _mode in ["screenshots","screenshotstest"];
-if (_screenshots && !(worldname in ["Render","RenderGreen","RenderBlue"])) exitwith {"Use 'Render White' for capturing screenshots." call bis_fnc_errorMsg;};
-_capture = _mode == "screenshots";
-if (_screenshots) then {_mode = "Weapon";};
 
-_mode = tolower _mode;
-_patchWeapons = [];
-_allPatches = true;
-if (count _patches > 0) then {
-	_allPatches = false;
-	{
-		_patchWeapons = _patchWeapons + getarray (configfile >> "cfgpatches" >> _x >> "weapons");
-	} foreach _patches;
-};
+_funcGetTurretsWeapons = {
+     private ["_result", "_getAnyMagazines", "_findRecurse", "_class"];
+     _result = [];
+     _getAnyMagazines = {
+         private ["_weapon", "_mags"];
+         _weapon = configFile >> "CfgWeapons" >> _this;
+         _mags = [];
+         {
+             _mags = _mags + getArray (
+                 (if (_x == "this") then { _weapon } else { _weapon >> _x }) >> "magazines"
+             )
+         } foreach getArray (_weapon >> "muzzles");
+         _mags
+     };
+     _findRecurse = {
+         private ["_root", "_class", "_path", "_currentPath"];
+         _root = (_this select 0);
+         _path = +(_this select 1);
+         for "_i" from 0 to count _root -1 do {
+             _class = _root select _i;
+             if (isClass _class) then {
+                 _currentPath = _path + [_i];
+                 {
+                     _result set [count _result, [_x, _x call _getAnyMagazines, _currentPath, str _class]];
+                 } foreach getArray (_class >> "weapons");
+                 _class = _class >> "turrets";
+                 if (isClass _class) then {
+                     [_class, _currentPath] call _findRecurse;
+                 };
+             };
+         };
+     };
+     _class = (
+         configFile >> "CfgVehicles" >> (
+             switch (typeName _this) do {
+                 case "STRING" : {_this};
+                 case "OBJECT" : {typeOf _this};
+                 default {nil}
+             }
+         ) >> "turrets"
+     );
+     [_class, []] call _findRecurse;
+     _result;
+ };
 
-_types = +_types;
-{
-	_types set [_foreachindex,tolower _x];
-} foreach _types;
-_allTypes = count _types == 0;
+switch tolower _mode do {
+	case "screenshots";
+	case "screenshotstest": {
 
-_br = tostring [13,10];
-_product = productversion select 0;
-_productShort = productversion select 1;
-_text = "";
-_cam = objnull;
-_holder = objnull;
+		if !(worldname in ["Render","RenderGreen","RenderBlue"]) exitwith {"Use 'Render White' for capturing screenshots." call bis_fnc_errorMsg;};
 
-_alt = 100;
-_pos = [3540,100,_alt];
-_player = player;
-_weaponObjects = [];
+		_alt = 100;
+		_pos = [3540,100,_alt];
+		_object = objnull;
+		_cfgAll = configfile >> "cfgvehicles" >> "all";
+		_restrictedModels = ["","\A3\Weapons_f\dummyweapon.p3d","\A3\Weapons_f\laserTgt.p3d"];
+		_blacklist = [
+			"WeaponHolder",
+			"LaserTarget",
+			"Bag_Base",
+			"Man",
+			"Animal",
+			"House"
+		];
+		_capture = _mode == "screenshots";
+		_product = productversion select 1;
 
-_cfgWeapons = (configfile >> "cfgweapons") call bis_fnc_returnchildren;
-_cfgWeaponsCount = count _cfgWeapons;
+		_cfgVehicles = (configfile >> "cfgvehicles") call bis_fnc_returnchildren;
 
-if (_screenshots) then {
-	endloadingscreen;
+		_cam = "camera" camcreate _pos;
+		_cam cameraeffect ["internal","back"];
+		_cam campreparefocus [-1,-1];
+		_cam camcommitprepared 0;
+		showcinemaborder false;
+		setaperture 25;
+		setdate [2035,5,28,10,0];
+		0 setfog 0.2;
 
-	_cam = "camera" camcreate _pos;
-	_cam cameraeffect ["internal","back"];
-	_cam campreparefocus [-1,-1];
-	_cam camcommitprepared 0;
-	showcinemaborder false;
-	setaperture 25;
-	setdate [2035,5,28,10,0];
-	0 setfog 0.2;
-};
-{
-	_cfg = _x;
-	_class = configname _cfg;
-	_scope = getnumber (_cfg >> "scope");
-	_model = gettext (_cfg >> "model");
-	_weaponAddons = [];
-	_itemTypeArray = _class call bis_fnc_itemType;
-	_itemCategory = _itemTypeArray select 0;
-	_itemType = _itemTypeArray select 1;
-	_isAllVehicles = _class iskindof "allvehicles";
+		_n = 0;
+		{
+			_class = configname _x;
+			_scope = getnumber (_x >> "scope");
+			_side = getnumber (_x >> "side");
+			_unitAddons = unitaddons _class;
+			_isAllVehicles = _class iskindof "allvehicles";
 
-	if (
-		(_itemCategory == _mode || _screenshots)
-		&&
-		(_allPatches || {_class == _x} count _patchWeapons > 0)
-		&&
-		(_allTypes || (tolower _itemType) in _types)
-		&&
-		_scope > 0
-		//&&
-		//(_model != "")
-	) then {
-		if (_screenshots) then {
-			_holder = switch _itemType do {
-				case "NVGoggles";
-				case "Headgears": {
-					_holder = createvehicle ["groundweaponholder",_pos,[],0,"none"];
-					_holder setpos _pos;
-					_holder addweaponcargo [_class,1];
-					_holder setvectordirandup [[0,0,1],[0,-1,0]];
+			if (
+				((_allVehicles && _isAllVehicles) || (!_allVehicles && !_isAllVehicles))
+				&&
+				_side in _sides
+				&&
+				(_allPatches || {(tolower _x) in _patches} count _unitAddons > 0 || (_patchprefix != "" && [tolower(_class), tolower(_patchprefix)] call CBA_fnc_find != -1))
+				&&
+				_scope > 0
+			) then {
+				_model = gettext (_x >> "model");
+				if (!(_model in _restrictedModels) && inheritsfrom _x != _cfgAll && {_class iskindof _x} count _blacklist == 0) then {
+					_object = createvehicle [_class,_pos,[],0,"none"];
+					if (_class iskindof "allvehicles") then {_object setdir 90;} else {_object setdir 270;};
+					//_object setdir 90;
+					_object setpos _pos;
+					_object switchmove "amovpercmstpsnonwnondnon";
+					_object enablesimulation false;
 
-					_campos = [_pos,1.75,60] call bis_fnc_relpos;
-					_campos set [2,_alt + 1.3];
-					_cam campreparepos _campos;
-					_cam campreparefov 0.4;
-					_cam campreparetarget [(_pos select 0),(_pos select 1) + 0.5,_alt + 1.3];
-					_cam camcommitprepared 0;
-					_holder
-				};
-				case "Vestx": {
-					_holder = createvehicle ["groundweaponholder",_pos,[],0,"none"];
-					_holder setpos _pos;
-					_holder addweaponcargo [_class,1];
-					_holder setvectordirandup [[0.00173726,0.000167279,0.999998],[-0.995395,-0.0958456,0.00177588]];//[[0,0,1],[-1,0,0]];
-
-					_campos = [_pos,2,90] call bis_fnc_relpos;
-					_campos set [2,_alt + 1];
-					_cam campreparepos _campos;
-					_cam campreparefov 0.7;
-					_cam campreparetarget [(_pos select 0),(_pos select 1)-0.3,_alt + 0.6];
-					_cam camcommitprepared 0;
-					_holder
-				};
-				case "Headgear";
-				case "Vest";
-				case "Uniform": {
-					_holder = createagent [typeof player,_pos,[],0,"none"];
-					removeallweapons _holder;
-					removeallitems _holder;
-					removeuniform _holder;
-					removevest _holder;
-					removeheadgear _holder;
-					removegoggles _holder;
-					_items = assigneditems _holder;
-					{_holder unassignitem _x} foreach _items;
-					_holder switchcamera "internal";
-					_holder setpos _pos;
-					_holder setdir 90;
-					_holder setface "kerry";
-					_holder switchmove "amovpercmstpsnonwnondnon";
-					_offset = switch _itemType do {
-						case "Headgear": {
-							_holder addheadgear _class;
-							_cam campreparefov 0.125;
-							setShadowDistance 0;
-							 0.8125
-						};
-						case "Vest": {
-							_holder addvest _class;
-							_cam campreparefov 0.3;
-							 0.3
-						};
-						case "Uniform": {
-							_holder adduniform _class;
-							_cam campreparefov 0.6;
-							 0
-						};
+					_size = (sizeof _class) max 0.1;
+					_targetZ = 0;
+					if (_class iskindof "allvehicles") then {
+						_size = _size * 0.5;
 					};
-					_holder enablesimulation false;
+					if (_class iskindof "staticweapon") then {
+						_targetZ = -_size * 0.25;
+					};
+					_campos = [_pos,_size * 1.5,135] call bis_fnc_relpos;
+					_campos set [2,_alt + _size * 0.5];
 
-					_campos = [_pos,2.5,90] call bis_fnc_relpos;
-					_campos set [2,_alt + 1];
 					_cam campreparepos _campos;
-					_cam campreparetarget [(_pos select 0),(_pos select 1),_alt + 0.85 + _offset];
+					_cam campreparetarget (_object modeltoworld [0,0,_targetZ]);
 					_cam camcommitprepared 0;
-					_holder
-				};
-				case "AccessoryMuzzle";
-				case "AccessoryPointer";
-				case "AccessorySights": {
-						_holder = createvehicle ["groundweaponholder",_pos,[],0,"none"];
-						_holder setpos _pos;
-						_holder addweaponcargo [_class,1];
-						_holder setvectordirandup [[0,0,1],[1,0,0]];
 
-						_fov = if (_itemType == "AccessoryMuzzle") then {0.3} else {0.2};
-						_campos = [_pos,0.5,90] call bis_fnc_relpos;
-						_campos set [2,_alt + 0.5];
-						_cam campreparepos _campos;
-						_cam campreparefov _fov;
-						_cam campreparetarget [(_pos select 0),(_pos select 1),_alt + 0.57];
-						_cam camcommitprepared 0;
-						_holder
-				};
-				default {
-					if (_itemCategory == "Item") then {
-						_holder = createvehicle ["groundweaponholder",_pos,[],0,"none"];
-						_holder setpos [(_pos select 0),(_pos select 1)+0.55,_alt+0.15];
-						_holder addweaponcargo [_class,1];
-						_holder setvectordirandup [[0.707107,0,0.707107],[0.408248,0.816497,-0.408248]];
-
-						_campos = [_pos,0.5*2,90] call bis_fnc_relpos;
-						_campos set [2,_alt + 0.5];
-						_cam campreparepos _campos;
-						_cam campreparefov 0.4;
-						_cam campreparetarget [(_pos select 0),(_pos select 1),_alt + 1];
-						_cam camcommitprepared 0;
-						_holder
+					private "_vehicleWeapons";
+					_vehicleWeapons = _class call _funcGetTurretsWeapons;
+					[_class,_vehicleWeapons] call bis_fnc_log;
+					if (_capture) then {
+						sleep 1;
+						{
+							"scr_cap" callExtension format["exportCfg\%1_CfgWeapons_%2.png",_product,_x select 0];
+						} foreach _vehicleWeapons;
+						sleep 0.01;
 					} else {
-
-						_holder = createvehicle ["groundweaponholder",_pos,[],0,"none"];
-						_holder setpos _pos;
-						_holder addweaponcargo [_class,1];
-						_holder setvectordirandup [[0,0,1],[1,0,0]];
-
-						_fov = if (_itemType == "Handgun") then {0.3} else {0.7};
-						_campos = [_pos,0.5,90] call bis_fnc_relpos;
-						_campos set [2,_alt + 0.5];
-						_cam campreparepos _campos;
-						_cam campreparefov _fov;
-						_cam campreparetarget [(_pos select 0),(_pos select 1),_alt + 0.57];
-						_cam camcommitprepared 0;
-						_holder
+						sleep 0.1;
 					};
+					_n = _n + 1;
+					_object setpos [10,10,10];
+					deletevehicle _object;
+
+					[_class,_size] call bis_fnc_log;
 				};
 			};
-			if (_capture) then {
-				sleep 1;
+		} foreach _cfgVehicles;
+		_n call bis_fnc_log;
 
-					"scr_cap" callExtension format["exportCfg\%1_CfgWeapons_%2.png",_productShort,_class];
-
-				sleep 0.01;
-			} else {
-				_class call bis_fnc_log;
-				sleep 0.1;
-			};
-			selectplayer _player;
-			_holder setpos [10,10,10];
-			deletevehicle _holder;
-			setShadowDistance -1;
-		};
+		_cam cameraeffect ["terminate","back"];
+		camdestroy _cam;
+		setaperture -1;
 	};
-
-	progressloadingscreen (_foreachindex / _cfgWeaponsCount);
-} foreach _cfgWeapons;
-
-if (_screenshots) then {
-	_cam cameraeffect ["terminate","back"];
-	camdestroy _cam;
-	setaperture -1;
 };
 
 player enablesimulation true;
