@@ -39,6 +39,8 @@ nil
 
 private "_marker";
 
+deleteMarkerLocal (_this select 0);
+
 _marker = createMarkerLocal [(_this select 0), (_this select 1)];
 _marker setMarkerShapeLocal (_this select 2);
 _marker setMarkerSizeLocal (_this select 3);
