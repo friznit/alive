@@ -185,6 +185,11 @@ switch(_operation) do {
 								[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
 								[_handler, "sectionsamount_defend", 5] call ALiVE_fnc_HashSet;
 						};
+                        case ("asymmetric") : {
+								[_handler, "sectionsamount_attack", 1] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_reserve", 1] call ALiVE_fnc_HashSet;
+								[_handler, "sectionsamount_defend", 1] call ALiVE_fnc_HashSet;
+						};
 					};
 
 					/*
@@ -259,6 +264,9 @@ switch(_operation) do {
 							};
 							case ("invasion") : {
 								_objectives = [_handler,"objectives",[_handler,"createobjectives",[_objectives,"distance"]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;
+							};
+                            case ("asymmetric") : {
+								_objectives = [_handler,"objectives",[_handler,"createobjectives",[_objectives,"asymmetric"]] call ALiVE_fnc_OPCOM] call ALiVE_fnc_OPCOM;
 							};
 						};
                         
@@ -349,27 +357,46 @@ switch(_operation) do {
                 	["ALiVE OPCOM %1 Initial analysis done...",_side] call ALiVE_fnc_Dump; 
 
                     //done this way to easily switch between spawn and call for testing purposes
-                    ["OPCOM and TACOM %1 starting...",_side] call ALiVE_fnc_Dump; 
-                    _OPCOM = [_handler] call {
-                        _handler = _this select 0;
-                        
-						_OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
-						_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
-                        
-						[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
-                        [_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
-                    };
-
+                    ["OPCOM and TACOM %1 starting...",_side] call ALiVE_fnc_Dump;
+                    
+                    switch _type do {
+                        case ("occupation") : {
+	                        _OPCOM = [_handler] call {
+	                        	_handler = _this select 0;
+	                        
+								_OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+								_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
+	                        
+								[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
+	                        	[_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
+                    		};
+                        };
+                        case ("invasion") : {
+	                        _OPCOM = [_handler] call {
+	                        	_handler = _this select 0;
+	                        
+								_OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\opcom.fsm";
+								_TACOM = [_handler] execFSM "\x\alive\addons\mil_opcom\tacom.fsm";
+	                        
+								[_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
+	                        	[_handler, "TACOM_FSM",_TACOM] call ALiVE_fnc_HashSet;
+                    		};
+                        };
+                        case ("asymmetric") : {
+		                    _OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\insurgency.fsm";
+		                    [_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
+						};
+					};
+                    
+                    //startup complete
+					_logic setVariable ["startupComplete", true,true];
                     [_handler,"startupComplete",true] call ALiVE_fnc_HashSet;
                 };
                 
-            	//startup complete
-				_logic setVariable ["startupComplete", true];
                 
                 /*
                 VIEW - purely visual
                 */
-                
         };
         
         case "cleanupduplicatesections": {
@@ -442,7 +469,7 @@ switch(_operation) do {
             };
 
             _st = 2000;
-            waituntil
+            while 
             {
             
             	_nearProfiles = [_pos, _st, [([_logic,"side","EAST"] call ALiVE_fnc_HashGet),"entity"]] call ALIVE_fnc_getNearProfiles;
@@ -454,8 +481,9 @@ switch(_operation) do {
 	                if (_pi in _troops) then {_troopsUnsorted pushBack _pi};
 	            } foreach _nearProfiles;
                 
+	            ((count _troopsUnsorted <= _size) && {_st < 15000});
+            } do {
                 _st = _st + 2000;
-	            ((count _troopsUnsorted >= _size) || {_st > 15000});
             };
             
             //Sort by distance
@@ -840,6 +868,17 @@ switch(_operation) do {
                             
                             //by size and height
                             case ("strategic") : {_objectives = [_objectives,[_logic],{_height = (ATLtoASL [(_x select 2 select 1) select 0,(_x select 2 select 1) select 1,0]) select 2; ((_x select 2 select 2) + (_x select 2 select 4) + (_height/2)) - ((([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10)},"DESCEND"] call BIS_fnc_sortBy};
+                            case ("asymmetric") : {
+                                
+                                _objectivesCiv = +_objectives;
+                                _objectivesMil = +_objectives;
+                                
+                                _objectivesFilteredCiv = [_objectivesCiv,[_logic],{([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND",{(_x select 2 select 3) == "CIV"}] call BIS_fnc_sortBy;
+                                _objectivesFilteredMil = [_objectivesMil,[_logic],{([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND",{(_x select 2 select 3) == "MIL"}] call BIS_fnc_sortBy;
+
+                                _objectives = _objectivesFilteredCiv + _objectivesFilteredMil;
+                            };
+                            
                             case ("size") : {};
                             default {};
                 };
@@ -1747,6 +1786,13 @@ switch(_operation) do {
 						[_targetsAttackedEnemy,"defend"]
 					];
                 };
+                case ("asymmetric") : {
+					_prios = [
+						[_targetsTaken,"reserve"],
+						[_targetsTakenEnemy,"attack"],
+						[_targetsAttackedEnemy,"defend"]
+					];
+                };
 			};
             
 			{
@@ -1794,6 +1840,7 @@ switch(_operation) do {
             private ["_inf","_mot","_mech","_arm","_air","_sea","_profileIDs","_artilleryClasses","_AAA","_AAAClasses"];
             
             _factions = [_logic,"factions"] call ALiVE_fnc_HashGet;
+            _duration = time;
             
             _profileIDs = [];
             {
@@ -1890,6 +1937,8 @@ switch(_operation) do {
             if (isnil {[_logic,"startForceStrength"] call ALiVE_fnc_HashGet}) then {[_logic,"startForceStrength",+_count] call ALiVE_fnc_HashSet};
             _currentForceStrength = [_logic,"currentForceStrength",_count] call ALiVE_fnc_HashSet;
 
+			_duration = time - _duration;
+            ["Scantroops time taken: %1 sec.",_duration] call ALiVE_fnc_DumpH;
             _result = [_inf,_mot,_mech,_arm,_air,_sea,_arty,_AAA];
         };
 

@@ -63,12 +63,17 @@ class CfgVehicles {
                                         {
                                                 name = "Invasion";
                                                 value = "invasion";
-                                                default = "invasion";
+                                                default = 1;
                                         };
                                         class occupation
                                         {
                                                 name = "Occupation";
                                                 value = "occupation";
+                                        };
+                                        class asymmetric
+                                        {
+                                                name = "Asymmetric";
+                                                value = "asymmetric";
                                         };
                                 };
                         };
