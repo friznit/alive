@@ -65,6 +65,12 @@
 			<Key ID="STR_ALIVE_Data_disablePerf_COMMENT">
 				<English>Disable the performance monitoring module</English>
 			</Key>
+			<Key ID="STR_ALIVE_Data_disablePerfMon">
+				<English>Disable OS PerfMon:</English>
+			</Key>
+			<Key ID="STR_ALIVE_Data_disablePerfMon_COMMENT">
+				<English>Disable OS Performance Statistics such as %CPU, Threads, Memory Usage etc</English>
+			</Key>			
 		</Container>
 	</Package>
 </Project>

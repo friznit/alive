@@ -31,7 +31,7 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-                                                default = true;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -45,7 +45,7 @@ class CfgVehicles {
                                         {
                                                 name = "CouchDB";
                                                 value = "CouchDB";
-                                                default = true;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -111,6 +111,25 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_data_disablePerf";
                                 description = "$STR_ALIVE_data_disablePerf_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = 1;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class disablePerfMon
+                        {
+                                displayName = "$STR_ALIVE_data_disablePerfMon";
+                                description = "$STR_ALIVE_data_disablePerfMon_COMMENT";
                                 class Values
                                 {
                                         class Yes

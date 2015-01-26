@@ -25,6 +25,6 @@ Peer Reviewed:
 ---------------------------------------------------------------------------- */
 private ["_response"];
 
-_response = ["StartALiVE"] call ALIVE_fnc_sendToPlugIn;
+_response = [format["StartALiVE ['%1']",_this select 0]] call ALIVE_fnc_sendToPlugIn;
 
 _response;

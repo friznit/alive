@@ -71,7 +71,7 @@ if (isDedicated) then {
 	GVAR(databaseName) = "arma3live";
 	GVAR(source) = MOD(sys_data) getVariable ["source","CouchDB"];
 
-	_initmsg = [] call ALIVE_fnc_startALiVEPlugIn;
+	_initmsg = [_logic getVariable ["disablePerfMon","true"]] call ALIVE_fnc_startALiVEPlugIn;
 
 	["ALIVE_SYS_DATA START PLUGIN: %1", _initmsg] call ALIVE_fnc_dump;
 

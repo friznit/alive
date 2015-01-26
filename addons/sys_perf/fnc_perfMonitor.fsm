@@ -16,8 +16,8 @@ link4[] = {2,5};
 link5[] = {3,0};
 link6[] = {5,4};
 link7[] = {6,4};
-globals[] = {25.000000,1,0,0,0,640,480,1,20,6316128,1,-275.000000,250.000000,-140.000000,-735.000000,861,951,1};
-window[] = {2,-1,-1,-32000,-32000,866,100,1122,100,3,879};
+globals[] = {25.000000,1,0,0,0,640,480,1,20,6316128,1,-244.048615,219.048615,-189.308716,-700.813293,861,951,1};
+window[] = {2,-1,-1,-32000,-32000,841,75,1097,75,3,879};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -108,8 +108,6 @@ class FSM
        "};" \n
        "" \n
        "diag_log (""perfMonitor.fsm started"");" \n
-       "// options for ASM" \n
-       "_options = [];" \n
        "_abort = false;" \n
        "" \n
        "// count Objects or not" \n
@@ -142,7 +140,7 @@ class FSM
           priority = 1.000000;
           to="finit";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"(!isnil (""ASMRunning"") || !(isDedicated))"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(!isnil (""PerfMonRunning"") || !(isDedicated))"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"diag_log format[ ""perfMonitor.fsm already started or is client machine - IsDedicated:%1"", isDedicated] ;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -154,7 +152,7 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"(isnil (""ASMRunning"") && isDedicated)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"" \n
-           "ASMRunning = true;" \n
+           "PerfMonRunning = true;" \n
            "" \n
            "active = true;" \n
            "" \n
@@ -187,7 +185,7 @@ class FSM
   initState="init";
   finalStates[] =
   {
-    "finit",
+    "finit"
   };
 };
 /*%FSM</COMPILE>*/
