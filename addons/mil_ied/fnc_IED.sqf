@@ -56,6 +56,7 @@ nil
 #define DEFAULT_BOMBER_THREAT 15
 #define DEFAULT_IED_THREAT 60
 #define DEFAULT_VB_IED_THREAT 5
+#define DEFAULT_VB_IED_SIDE "CIV"
 #define DEFAULT_LOCS_IED 0
 #define DEFAULT_TAOR []
 #define DEFAULT_BLACKLIST []
@@ -221,6 +222,7 @@ switch(_operation) do {
                 _debug = [ADDON, "debug"] call MAINCLASS;
                 _taor = [ADDON, "taor"] call MAINCLASS;
                 _blacklist = [ADDON, "blacklist"] call MAINCLASS;
+                _side = ADDON getvariable ["VB_IED_Side", DEFAULT_VB_IED_SIDE];
 
                 if !(GVAR(Loaded)) then {
                     // Initialise Locations
@@ -262,6 +264,26 @@ switch(_operation) do {
 
                     // Place triggers if not within distance of players
                     if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0 || GVAR(Loaded)) then {
+                        private ["_sidelist","_sideNum","_factions","_factionClasses"];
+
+                        // Get faction from side
+                        _factions = [];
+                        _sidelist = ["EAST","WEST","IND","CIV"];
+                        _blacklist = ["Virtual_F","Interactive_F"];
+                        _sideNum = _sidelist find _side;
+                        _factionClasses = (configfile >> "CfgFactionClasses");
+                        for "_i" from 1 to (count _factionClasses - 1) do {
+                            private "_element";
+                            _element = _factionClasses select _i;
+                            if (isclass _element) then {
+                                if (getnumber(_element >> "side") == _sideNum && (_blacklist find (configName _element)) == -1) then {
+                                    _factions pushback configName _element;
+                                };
+                            };
+                        };
+
+                        _faction = _factions call bis_fnc_selectRandom;
+
 
                         //Roll the dice
                         if (GVAR(Loaded)) then {
@@ -279,7 +301,7 @@ switch(_operation) do {
                             _trg setTriggerArea[(_size+250),(_size+250),0,false];
 
                             _trg setTriggerActivation["ANY","PRESENT",true];
-                            _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", "", ""];
+                            _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [[getpos thisTrigger,%1,'%2'],thisList] call ALIVE_fnc_createBomber", _size, _faction], ""];
 
                              if (_debug) then {
                                 _t = format["suic_t%1", random 1000];

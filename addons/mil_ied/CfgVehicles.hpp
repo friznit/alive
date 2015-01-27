@@ -80,7 +80,7 @@ class CfgVehicles {
                                         };
                                 };
                         };
-/*                      class Bomber_Threat
+                      class Bomber_Threat
                         {
                                 displayName = "$STR_ALIVE_ied_Bomber_Threat";
                                 description = "$STR_ALIVE_ied_Bomber_Threat_COMMENT";
@@ -114,7 +114,7 @@ class CfgVehicles {
                                                 value = 50;
                                         };
                                 };
-                        }; */
+                        };
                         class VB_IED_Threat
                         {
                                 displayName = "$STR_ALIVE_ied_VB_IED_Threat";

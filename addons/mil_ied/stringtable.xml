@@ -45,10 +45,10 @@
 	<English>Define the probability of VB-IED threat within the AO</English>
 </Key>
 <Key ID="STR_ALIVE_IED_VB_IED_Side">
-	<English>Vehicle Borne IED Side:</English>
+	<English>Bomber/Vehicle IED Side:</English>
 </Key>
 <Key ID="STR_ALIVE_IED_VB_IED_Side_COMMENT">
-	<English>Define which sides vehicles will carry IEDs</English>
+	<English>Define which sides bombers/vehicles will carry IEDs</English>
 </Key>
 <Key ID="STR_ALIVE_IED_Bomber_Threat">
 	<English>Suicide Bomber Threat:</English>
