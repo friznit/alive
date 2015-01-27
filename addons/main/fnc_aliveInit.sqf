@@ -94,14 +94,20 @@ TRACE_1("Launching Base ALiVE Systems",true);
 [] spawn ALiVE_fnc_newsFeedInit;
 
 // Admin Actions
-[] spawn ALiVE_fnc_adminActionsInit;
+if !(_logic getVariable ["ALIVE_DISABLEADMINACTIONS", false]) then {
+    [] spawn ALiVE_fnc_adminActionsInit;
+};
 
 // Advanced Markers
-[] spawn ALIVE_fnc_spotrepInit;
-[] spawn ALiVE_fnc_markerInit;
+if !(_logic getVariable ["ALIVE_DISABLEMARKERS", false]) then {
+    [] spawn ALIVE_fnc_spotrepInit;
+    [] spawn ALiVE_fnc_markerInit;
+};
 
 // Player Logistics
-[] spawn ALiVE_fnc_logisticsInit;
+if !(_logic getVariable ["ALIVE_DISABLEPLAYERLOG", false]) then {
+    [] spawn ALiVE_fnc_logisticsInit;
+};
 
 // Garbage Collector
 private "_GC";

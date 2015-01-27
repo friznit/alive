@@ -95,6 +95,66 @@ class CfgVehicles {
 	                        };
 	                };
 	        };
+	        class ALiVE_DISABLEMARKERS
+	        {
+	                displayName = "$STR_ALIVE_DISABLEMARKERS";
+	                description = "$STR_ALIVE_DISABLEMARKERS_COMMENT";
+					typeName = "BOOL";
+	                class Values
+	                {
+	                        class Yes
+	                        {
+	                                name = "Yes";
+	                                value = 1;
+	                        };
+	                        class No
+	                        {
+	                                name = "No";
+	                                value = 0;
+	                                default = 1;
+	                        };
+	                };
+	        };
+	        class ALiVE_DISABLEADMINACTIONS
+	        {
+	                displayName = "$STR_ALIVE_DISABLEADMINACTIONS";
+	                description = "$STR_ALIVE_DISABLEADMINACTIONS_COMMENT";
+					typeName = "BOOL";
+	                class Values
+	                {
+	                        class Yes
+	                        {
+	                                name = "Yes";
+	                                value = 1;
+	                        };
+	                        class No
+	                        {
+	                                name = "No";
+	                                value = 0;
+	                                default = 1;
+	                        };
+	                };
+	        };
+	        class ALiVE_DISABLEPLAYERLOG
+	        {
+	                displayName = "$STR_ALIVE_DISABLEPLAYERLOG";
+	                description = "$STR_ALIVE_DISABLEPLAYERLOG_COMMENT";
+					typeName = "BOOL";
+	                class Values
+	                {
+	                        class Yes
+	                        {
+	                                name = "Yes";
+	                                value = 1;
+	                        };
+	                        class No
+	                        {
+	                                name = "No";
+	                                value = 0;
+	                                default = 1;
+	                        };
+	                };
+	        };
 			class ALiVE_GC_INTERVAL
             {
                     displayName = "$STR_ALIVE_GC_INTERVAL";

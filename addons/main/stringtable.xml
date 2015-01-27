@@ -37,4 +37,22 @@
 <Key ID="STR_ALIVE_DISABLESAVE_COMMENT">
 	<Original>SP saving can lead due to out of memory crashes! Enable on own risks!</Original>
 </Key>
+<Key ID="STR_ALIVE_DISABLEMARKERS">
+	<Original>Disable Adv. Markers:</Original>
+</Key>
+<Key ID="STR_ALIVE_DISABLEMARKERS_COMMENT">
+	<Original>Disable persistent Advanced Markers.</Original>
+</Key>
+<Key ID="STR_ALIVE_DISABLEADMINACTIONS">
+	<Original>Disable Admin Actions:</Original>
+</Key>
+<Key ID="STR_ALIVE_DISABLEADMINACTIONS_COMMENT">
+	<Original>Disable the ALiVE Admin Action functions.</Original>
+</Key>
+<Key ID="STR_ALIVE_DISABLEPLAYERLOG">
+	<Original>Disable Player Logistics:</Original>
+</Key>
+<Key ID="STR_ALIVE_DISABLEPLAYERLOG_COMMENT">
+	<Original>Disable player logistics, such as pickup and move crates, objects etc.</Original>
+</Key>
 </Container></Package></Project>
