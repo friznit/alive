@@ -56,7 +56,6 @@ class CfgMusic
 };
 
 class RscStandardDisplay;
-class RscHTML;
 class RscPicture;
 class RscDisplayMain: RscStandardDisplay
 {
@@ -71,6 +70,6 @@ class RscDisplayMain: RscStandardDisplay
 			y = "0.2 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			w = "10.24 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "10.24 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";			
-		};
+		};		
 	};
 };
