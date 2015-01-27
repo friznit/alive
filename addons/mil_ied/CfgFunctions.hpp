@@ -16,7 +16,7 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_ied\fnc_iedMenuDef.sqf";
 								recompile = RECOMPILE;
                         };
-                        class AmbientBomber {
+                        class createBomber {
                                 description = "Create an ambient suicide bomber";
                                 file = "\x\alive\addons\mil_ied\fnc_createBomber.sqf";
 								recompile = RECOMPILE;
@@ -24,11 +24,6 @@ class cfgFunctions {
                         class RemoveBomber {
                                 description = "Remove a suicide bomber";
                                 file = "\x\alive\addons\mil_ied\fnc_removeBomber.sqf";
-								recompile = RECOMPILE;
-                        };
-                        class AmbientIED {
-                                description = "Create an IED";
-                                file = "\x\alive\addons\mil_ied\fnc_createIED.sqf";
 								recompile = RECOMPILE;
                         };
                         class RemoveIED {
