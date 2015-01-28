@@ -145,6 +145,12 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class customPerfMonCode
+                        {
+                                displayName = "$STR_ALIVE_data_customPerfMonCode";
+                                description = "$STR_ALIVE_data_customPerfMonCode_COMMENT";
+                                defaultValue = "[['entities',470],['vehicles',590],['agents',670],['allDead',850],['objects',930],['triggers',1200]]";
+                        };
                 };
         };
 };

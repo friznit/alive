@@ -3,10 +3,10 @@
 	<Package name="ALiVE">
 		<Container name="STR_DN">
 			<Key ID="STR_ALIVE_Data">
-				<English>ALiVE Database</English>
+				<English>ALiVE Data</English>
 			</Key>
 			<Key ID="STR_ALIVE_Data_COMMENT">
-				<English>Database module for persistence</English>
+				<English>Data module for perf monitoring, stats and persistence</English>
 			</Key>
 			<Key ID="STR_ALIVE_Data_DEBUG">
 				<English>Enable Debug:</English>
@@ -42,7 +42,7 @@
 				<English>Only one Data module can be used</English>
 			</Key>
 			<Key ID="STR_ALIVE_Data_SAVEDATETIME">
-				<English>Save Date/Time:</English>
+				<English>Save Mission Time:</English>
 			</Key>
 			<Key ID="STR_ALIVE_Data_SAVEDATETIME_COMMENT">
 				<English>Enable/disable saving date and time of the mission</English>
@@ -70,7 +70,13 @@
 			</Key>
 			<Key ID="STR_ALIVE_Data_disablePerfMon_COMMENT">
 				<English>Disable OS Performance Statistics such as %CPU, Threads, Memory Usage etc</English>
-			</Key>			
+			</Key>	
+			<Key ID="STR_ALIVE_Data_customPerfMonCode">
+				<English>Custom Perf Monitors:</English>
+			</Key>
+			<Key ID="STR_ALIVE_Data_customPerfMonCode_COMMENT">
+				<English>Customize objects counted and intervals. Ensure interval values are in ascending order. 'triggers' will count allMissionObjects "EmptyDetector", 'entities' will count entities "All", 'objects' will count allMissionObjects "All". Any thing else will be count YOURPARAM i.e. count allDead.</English>
+			</Key>						
 		</Container>
 	</Package>
 </Project>

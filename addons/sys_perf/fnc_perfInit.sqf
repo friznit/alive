@@ -119,8 +119,13 @@ if (isDedicated && GVAR(ENABLED)) then {
 
 	TRACE_1("UPDATE PERF",_data);
 
+	// Get custom perf code
+	private "_customCode";
+	_customCode = _logic getVariable ["customPerfMonCode","[]"];
+	_customCode = call compile _customCode;
+
 	// Start FSM now
-	GVAR(fsmHandle) = [] execFSM "\x\alive\addons\sys_perf\fnc_perfMonitor.fsm";
+	GVAR(fsmHandle) = [_customCode] execFSM "\x\alive\addons\sys_perf\fnc_perfMonitor.fsm";
 
 	TRACE_1("PerfMonitor Launched",_handle);
 
