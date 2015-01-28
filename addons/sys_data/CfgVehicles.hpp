@@ -149,7 +149,7 @@ class CfgVehicles {
                         {
                                 displayName = "$STR_ALIVE_data_customPerfMonCode";
                                 description = "$STR_ALIVE_data_customPerfMonCode_COMMENT";
-                                defaultValue = "[['entities',470],['vehicles',590],['agents',670],['allDead',850],['objects',930],['triggers',1200]]";
+                                defaultValue = "[['entities',150],['vehicles',300],['agents',450],['allDead',600],['objects',750],['triggers',900]]";
                         };
                 };
         };
