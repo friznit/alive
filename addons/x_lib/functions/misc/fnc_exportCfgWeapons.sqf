@@ -20,6 +20,7 @@ _mode = [_this,0,"Weapon",[""]] call bis_fnc_param;
 _patchprefix = [_this,1,"",[""]] call bis_fnc_param;
 _patches = [_this,2,[],[[]]] call bis_fnc_param;
 _types = [_this,3,[],[[]]] call bis_fnc_param;
+_noCfgPatches = [_this,4,false,[false]] call bis_fnc_param;
 
 player enablesimulation false;
 player hideobject true;
@@ -39,7 +40,7 @@ if (_patchprefix != "") then {
 	_allPatches = false;
 	_patches = "true" configClasses (configfile >> "cfgpatches");
 	{
-		if (((configName _x) select [0, _num]) == _patchprefix) then {
+		if (tolower((configName _x) select [0, _num]) == tolower(_patchprefix)) then {
 			_patchWeapons = _patchWeapons + getarray (configfile >> "cfgpatches" >> configName _x >> "weapons");
 		};
 	} foreach _patches;
@@ -73,9 +74,17 @@ _weaponObjects = [];
 _cfgWeapons = (configfile >> "cfgweapons") call bis_fnc_returnchildren;
 _cfgWeaponsCount = count _cfgWeapons;
 
+// Handle mods that don't include weapons in CfgPatches...
+if (_patchprefix != "" && (_noCfgPatches || count _patchWeapons == 0)) then {
+	_patchWeapons = [];
+	{
+		if ([tolower(configName _x), tolower(_patchprefix)] call CBA_fnc_find != -1) then {
+			_patchWeapons set [count _patchWeapons, configName _x];
+		};
+	} foreach _cfgWeapons;
+};
+
 if (_screenshots) then {
-
-
 	_cam = "camera" camcreate _pos;
 	_cam cameraeffect ["internal","back"];
 	_cam campreparefocus [-1,-1];
@@ -86,6 +95,7 @@ if (_screenshots) then {
 	0 setfog 0.2;
 };
 {
+
 	_cfg = _x;
 	_class = configname _cfg;
 	_scope = getnumber (_cfg >> "scope");
@@ -199,6 +209,50 @@ if (_screenshots) then {
 						_cam camcommitprepared 0;
 						_holder
 				};
+				case "UnknownWeapon": {
+					// Get grenades
+					if (_class == "Throw") then {
+						private "_muzzles";
+						_muzzles = getarray (configfile >> "cfgWeapons" >> _class >> "muzzles");
+						{
+							private ["_grenades","_muzzle"];
+							_muzzle = _x;
+							_muzzle call bis_fnc_log;
+							_grenades = getarray (configfile >> "cfgWeapons" >> _class >> _x >> "magazines");
+							_grenades call bis_fnc_log;
+							{
+								_x call bis_fnc_log;
+								private ["_holder","_campos"];
+								_holder = createvehicle ["groundweaponholder",_pos,[],0,"none"];
+								_holder setpos [(_pos select 0),(_pos select 1)+0.55,_alt+0.15];
+								_holder addmagazinecargo [_x,1];
+								_holder setvectordirandup [[0.707107,0,0.707107],[0.408248,0.816497,-0.408248]];
+
+								_campos = [_pos,0.5*2,90] call bis_fnc_relpos;
+								_campos set [2,_alt + 0.5];
+								_cam campreparepos _campos;
+								_cam campreparefov 0.2;
+								_cam campreparetarget [(_pos select 0),(_pos select 1),_alt + 1];
+								_cam camcommitprepared 0;
+								if (_capture) then {
+									sleep 1;
+
+										"scr_cap" callExtension format["exportCfg\%1_CfgWeapons_%2.png",_productShort,_muzzle];
+
+									sleep 0.01;
+								} else {
+									_x call bis_fnc_log;
+									sleep 0.1;
+								};
+								selectplayer _player;
+								_holder setpos [10,10,10];
+								deletevehicle _holder;
+								setShadowDistance -1;
+							} foreach _grenades;
+						} foreach _muzzles;
+					};
+				};
+
 				default {
 					if (_itemCategory == "Item") then {
 						_holder = createvehicle ["groundweaponholder",_pos,[],0,"none"];
@@ -231,7 +285,7 @@ if (_screenshots) then {
 					};
 				};
 			};
-			if (_capture && _model != "") then {
+			if (_capture && _itemType != "UnknownWeapon") then {
 				sleep 1;
 
 					"scr_cap" callExtension format["exportCfg\%1_CfgWeapons_%2.png",_productShort,_class];
@@ -242,8 +296,10 @@ if (_screenshots) then {
 				sleep 0.1;
 			};
 			selectplayer _player;
-			_holder setpos [10,10,10];
-			deletevehicle _holder;
+			if (_itemType != "UnknownWeapon") then {
+				_holder setpos [10,10,10];
+				deletevehicle _holder;
+			};
 			setShadowDistance -1;
 		};
 	} else {

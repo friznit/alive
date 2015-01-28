@@ -22,16 +22,16 @@ _mode = [_this,0,"config",[""]] call bis_fnc_param;
 _sides = [_this,1,[0,1,2,3],[[]]] call bis_fnc_param;
 _patchprefix = [_this,2,"",[""]] call bis_fnc_param;
 _patches = [_this,3,[],[[]]] call bis_fnc_param;
-_allVehicles = [_this,4,true,[true]] call bis_fnc_param;
+_types = [_this,4,[],[[]]] call bis_fnc_param;
+_allVehicles = [_this,5,true,[true]] call bis_fnc_param;
+
 
 if (_patchprefix != "") then {
-	private "_num";
+	private ["_num","_listpatches"];
 	_num = count _patchprefix;
-	_patches = "true" configClasses (configfile >> "cfgpatches");
+	_patches = "((configName _x) select [0, _num]) == _patchprefix" configClasses (configfile >> "cfgpatches");
 	{
-		if (((configName _x) select [0, _num]) == _patchprefix) then {
-			_patches set [_foreachindex,tolower (configName _x)];
-		};
+		_patches set [_foreachindex,tolower (configName _x)];
 	} foreach _patches;
 } else {
 	if (count _patches > 0) then {
@@ -44,11 +44,19 @@ if (_patchprefix != "") then {
 
 _allPatches = count _patches == 0;
 
+
+
 _sides = +_sides;
 {
 	if (typename _x == typename sideunknown) then {_sides set [_foreachindex,_x call bis_fnc_sideid];};
 } foreach _sides;
 if (count _sides == 0) then {_sides = [0,1,2,3,4];};
+
+_types = +_types;
+{
+	_types set [_foreachindex,tolower _x];
+} foreach _types;
+_allTypes = count _types == 0;
 
 player enablesimulation false;
 player hideobject true;
@@ -67,7 +75,8 @@ switch tolower _mode do {
 		_blacklist = [
 			"WeaponHolder",
 			"LaserTarget",
-			"Bag_Base"
+			"Bag_Base",
+			"Strategic"
 		];
 		_capture = _mode == "screenshots";
 		_product = productversion select 1;
@@ -96,13 +105,15 @@ switch tolower _mode do {
 				&&
 				_side in _sides
 				&&
-				(_allPatches || {(tolower _x) in _patches} count _unitAddons > 0)
+				(_allPatches || {(tolower _x) in _patches} count _unitAddons > 0 || (_patchprefix != "" && [_class, _patchprefix] call CBA_fnc_find != -1))
 				&&
 				_scope > 0
+				&&
+				(_allTypes || {_class iskindof _x} count _types > 0)
 			) then {
 				_model = gettext (_x >> "model");
 				if (!(_model in _restrictedModels) && inheritsfrom _x != _cfgAll && {_class iskindof _x} count _blacklist == 0) then {
-					_object = createvehicle [_class,_pos,[],0,"none"];
+					_object = createvehicle [_class,[0,0,0],[],0,"none"];
 					if (_class iskindof "allvehicles") then {_object setdir 90;} else {_object setdir 270;};
 					//_object setdir 90;
 					_object setpos _pos;
@@ -115,8 +126,16 @@ switch tolower _mode do {
 						_size = _size * 0.5;
 					};
 					if (_class iskindof "man" && !(_class iskindof "animal")) then {
+						private "_moves";
 						_size = _size * 0.5;
 						_targetZ = _size * 0.5;
+						_moves = ["amovpercmstpsnonwnondnon","AidlPercMstpSrasWrflDnon_Salute","AidlPercMstpSrasWrflDnon_AI","Acts_A_M01_briefing","AmovPercMstpSlowWrflDnon","AmovPercMstpSlowWrflDnon_Salute","AmovPercMstpSnonWnonDnon_Ease","AmovPercMstpSnonWnonDnon_Salute","AmovPknlMstpSlowWrflDnon","AmovPknlMstpSnonWnonDnon","AadjPknlMstpSrasWrflDleft","Acts_A_M03_briefing"];
+						if (primaryWeapon _object != "") then {
+							_object switchmove (_moves select (ceil(random (count _moves))-1));
+						} else {
+							_object switchmove "amovpercmstpsnonwnondnon";
+						};
+
 					};
 					if (_class iskindof "staticweapon") then {
 						_targetZ = -_size * 0.25;
