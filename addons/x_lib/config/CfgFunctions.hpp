@@ -573,6 +573,13 @@ class cursorTargetInfo
 	recompile = RECOMPILE;
 };
 
+class canSee
+{
+	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_canSee.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class debugBuildingPositions
 {
 	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_debugBuildingPositions.sqf";
