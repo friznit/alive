@@ -103,6 +103,8 @@ switch(_operation) do {
                 - size
                 */
                 
+                private ["_handler","_objectives"];
+                
                 //startup
                 _logic setVariable ["startupComplete", false];
                 
@@ -211,7 +213,6 @@ switch(_operation) do {
                     waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
                     
                     //Load Data from DB
-                    private ["_objectives"];
                     
                     if ([_handler,"persistent",false] call ALIVE_fnc_HashGet) then {
                     	_objectives = [_handler,"loadObjectivesDB"] call ALiVE_fnc_OPCOM;
@@ -294,8 +295,8 @@ switch(_operation) do {
                     };
                     
                     //Check if there are any profiles available
-                    _errorMessage = "There are no profiles for this OPCOM instance! %2";
-                    _error1 = ""; _error2 = "Please assign troops to this OPCOM!"; //defaults
+                    _errorMessage = "There are are no groups for OPCOM faction(s) %1! Please check if you chose the correct faction, and that the faction has groups defined in the ArmA 3 default categories infantry, motorized, mechanized, armored, air, sea!";
+                    _error1 = _factions; _error2 = ""; //defaults
                     _profiles_count = 0;
 					{
 						_profiles_count_tmp = ([ALIVE_profileHandler, "getProfilesByFaction",_x] call ALIVE_fnc_profileHandler); 
@@ -340,7 +341,7 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
-                    //Mega, lets summarize...
+                    //Still there, mega, lets summarize...
                     if (_debug) then {
                     	["OPCOM %1 starts with %2 profiles and %3 objectives!",_side,_profiles_count,count _objectives] call ALIVE_fnc_dumpR;
                 	};
@@ -384,13 +385,18 @@ switch(_operation) do {
                         };
                         case ("asymmetric") : {
 		                    _OPCOM = [_handler] execFSM "\x\alive\addons\mil_opcom\insurgency.fsm";
-		                    [_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
+		                    
+                            [_handler, "OPCOM_FSM",_OPCOM] call ALiVE_fnc_HashSet;
 						};
 					};
-                    
-                    //startup complete
-					_logic setVariable ["startupComplete", true,true];
+                };
+                
+                
+                //Set startup complete and end loading screen if init has passed or an error occurred
+                if (isServer) then {
+					_logic setVariable ["startupComplete",true,true];
                     [_handler,"startupComplete",true] call ALiVE_fnc_HashSet;
+                    
                 };
                 
                 
@@ -1938,7 +1944,7 @@ switch(_operation) do {
             _currentForceStrength = [_logic,"currentForceStrength",_count] call ALiVE_fnc_HashSet;
 
 			_duration = time - _duration;
-            ["Scantroops time taken: %1 sec.",_duration] call ALiVE_fnc_DumpH;
+            //["Scantroops time taken: %1 sec.",_duration] call ALiVE_fnc_DumpH;
             _result = [_inf,_mot,_mech,_arm,_air,_sea,_arty,_AAA];
         };
 
