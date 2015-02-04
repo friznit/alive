@@ -22,10 +22,18 @@ class CfgMissions
 		{
 			directory = "x\alive\addons\intro\scenes\Intro.Stratis";
 		};
+		class ALiVE_Intro_Stratis_1
+		{
+			directory = "x\alive\addons\intro\scenes\Intro_1.Stratis";
+		};
 		class ALiVE_Intro_Altis
 		{
 			directory = "x\alive\addons\intro\scenes\Intro.Altis";
-		};		
+		};
+		class ALiVE_Intro_Altis_1
+		{
+			directory = "x\alive\addons\intro\scenes\Intro_1.Altis";
+		};	
 	};
 };
 
@@ -35,11 +43,11 @@ class CfgWorlds
 {
 	class Stratis: CAWorld
 	{ 
-			cutscenes[] = {"ALiVE_Intro_Stratis"};
+			cutscenes[] = {"ALiVE_Intro_Stratis","ALiVE_Intro_Stratis_1"};
 	};
 	class Altis: CAWorld
 	{ 
-			cutscenes[] = {"ALiVE_Intro_Altis"};
+			cutscenes[] = {"ALiVE_Intro_Altis","ALiVE_Intro_Altis_1"};
 	};	
 };
 
