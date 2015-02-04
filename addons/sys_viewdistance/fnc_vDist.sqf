@@ -52,7 +52,7 @@ switch(_operation) do {
                     // Ensure only one module is used
                     if !(isNil QUOTE(ADDON)) then {
                         _logic = ADDON;
-                        ERROR_WITH_TITLE(str _logic, localize "STR_ADDON_ERROR1");
+                        ERROR_WITH_TITLE(str _logic, localize "STR_ALIVE_VDIST_ERROR1");
                     } else {
                         _logic = (createGroup sideLogic) createUnit [QUOTE(ADDON), [0,0], [], 0, "NONE"];
                         ADDON = _logic;
