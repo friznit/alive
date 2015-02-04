@@ -91,10 +91,10 @@ switch(_operation) do {
                 /*
                 MODEL - no visual just reference data
                 */
-                if (_logic getVariable ["playertags_style_setting","Modern"] == "None") exitWith {["ALiVE SYS PLAYERTAGS - Feature turned off! Exiting..."] call ALiVE_fnc_DumpR};
+                if (_logic getVariable ["playertags_style_setting","Modern"] == "None") exitWith {["ALiVE SYS PLAYERTAGS - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
 
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYERTAGS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYERTAGS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
             	//Start init
             	_logic setVariable ["initGlobal", false];
