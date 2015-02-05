@@ -293,13 +293,17 @@ switch(_operation) do {
                                 _grp = group (driver _veh);
                             };
 
-                            if (_type == "B_Heli_Light_01_F") then {
-                                    for "_i" from 1 to 5 step 1 do
-                                        {
-                                        [_veh turretUnit [_i]] join grpNull;
-                                        deleteVehicle (_veh turretUnit [_i]);
-                                    };
 
+                            _ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+
+                            if(count _ffvTurrets > 0) then
+                            {
+                                for "_i" from 0 to (count _ffvTurrets)-1 do
+                                    {
+                                          _turretPath = _ffvTurrets call BIS_fnc_arrayPop;
+                                         [_veh turretUnit _turretPath] join grpNull;
+                                         deleteVehicle (_veh turretUnit _turretPath);
+                                    };
                             };
 
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
@@ -370,6 +374,18 @@ switch(_operation) do {
                                 _veh = _veh select 0;
                                 _grp = group (driver _veh);
                             };
+                                _ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+
+                           if(count _ffvTurrets > 0) then
+                            {
+                                for "_i" from 0 to (count _ffvTurrets)-1 do
+                                    {
+                                          _turretPath = _ffvTurrets call BIS_fnc_arrayPop;
+                                         [_veh turretUnit _turretPath] join grpNull;
+                                         deleteVehicle (_veh turretUnit _turretPath);
+                                    };
+                            };
+
 
                             _veh lockDriver true;
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
