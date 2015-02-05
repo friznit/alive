@@ -109,7 +109,7 @@ switch (_operation) do {
             if (["AliVE_SYS_LOGISTICSDISABLE"] call ALiVE_fnc_isModuleAvailable) then {waituntil {!isnil {_logic getvariable "DEBUG"}}};
 
             // Exit if disabled
-            if (_logic getvariable ["DISABLELOG",false]) exitwith {["ALiVE SYS LOGISTICS DISABLED! Exiting..."] call ALiVE_fnc_DumpR};
+            if (_logic getvariable ["DISABLELOG",false]) exitwith {["ALiVE SYS LOGISTICS DISABLED! Exiting..."] call ALiVE_fnc_Dump};
 
             TRACE_1("Creating data store",true);
 
