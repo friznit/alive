@@ -295,7 +295,10 @@ switch(_operation) do {
 
 
                             _ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                                            _gunnerTurrets = [_type,false,true,true,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                _ffvTurrets = _ffvTurrets - _gunnerTurrets;
 
+diag_log format["%1", _ffvTurrets];
                             if(count _ffvTurrets > 0) then
                             {
                                 for "_i" from 0 to (count _ffvTurrets)-1 do
@@ -375,6 +378,8 @@ switch(_operation) do {
                                 _grp = group (driver _veh);
                             };
                                 _ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                _gunnerTurrets = [_type,false,true,true,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                _ffvTurrets = _ffvTurrets - _gunnerTurrets;
 
                            if(count _ffvTurrets > 0) then
                             {
