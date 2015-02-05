@@ -293,6 +293,15 @@ switch(_operation) do {
                                 _grp = group (driver _veh);
                             };
 
+                            if (_type == "B_Heli_Light_01_F") then {
+                                    for "_i" from 1 to 5 step 1 do
+                                        {
+                                        [_veh turretUnit [_i]] join grpNull;
+                                        deleteVehicle (_veh turretUnit [_i]);
+                                    };
+
+                            };
+
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
