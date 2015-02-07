@@ -62,6 +62,7 @@ _engaged = [0,0,0];
 		_vehicleCargo = false;
         _isAir = nil;
         _collect = nil;
+        _collected = false;
 					
 		// if entity is commanding a vehicle/s
 		if(count _vehiclesInCommandOf > 0) then {
@@ -75,7 +76,31 @@ _engaged = [0,0,0];
 		if(count _vehiclesInCargoOf > 0) then {	
 			_vehicleCargo = true;
 		};
-		
+        
+        // Collect fighting units
+        {
+            if (
+            	!(isnil "_x") &&
+				{((_x select 2 select 2) distance _currentPosition < 200)} &&
+				{(_x select 2 select 5) == "entity"} &&
+                {!((_x select 2 select 3) in ["CIV",_side])} &&
+				{!((_side == "CIV"))}
+            ) exitwith {_collect = true};
+         } foreach (_profiles select 2);
+        
+		if (isnil "_isAir" && {!isnil "_collect"}) then {
+		   
+			_clash pushback [_profileID,_currentPosition,_side,_vehiclesInCommandOf];
+			
+			switch (_side) do {
+				case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
+				case ("EAST") : {_engaged set [1,(_engaged select 1) + (count _positions)]};
+				case ("GUER") : {_engaged set [2,(_engaged select 2) + (count _positions)]};
+			};
+            
+            _collected = true;
+		};
+             
 		// entity has waypoints assigned and entity is not in cargo of a vehicle
 		if(count _waypoints > 0 && !(_vehicleCargo) && !(_isPlayer)) then {
 						
@@ -107,30 +132,8 @@ _engaged = [0,0,0];
 				};
 				// DEBUG -------------------------------------------------------------------------------------
 				
-				if (!(isnil "_currentPosition") && {count _currentPosition > 0} && {!(isnil "_destination")} && {count _destination > 0}) then {
-
-					// if other profiles of enemy sides are near collect to clashing groups and do not simulate them
-                    {
-                        if !(isnil "_x") then {
-	                        if (
-								((_x select 2 select 2) distance _currentPosition < 200) &&
-								{(_x select 2 select 5) == "entity"} &&
-								{!((_x select 2 select 3) == _side)} && 
-								{!((_side == "CIV"))}
-	                        ) exitwith {_collect = true};
-                         };
-                     } foreach (_profiles select 2);
-                    
-					if (isnil "_isAir" && {!isnil "_collect"}) then {
-					   
-						_clash pushback [_profileID,_currentPosition,_side,_vehiclesInCommandOf];
-						
-						switch (_side) do {
-							case ("WEST") : {_engaged set [0,(_engaged select 0) + (count _positions)]};
-							case ("EAST") : {_engaged set [1,(_engaged select 1) + (count _positions)]};
-							case ("GUER") : {_engaged set [2,(_engaged select 2) + (count _positions)]};
-						};
-					} else {
+				if (!_collected && {!(isnil "_currentPosition")} && {count _currentPosition > 0} && {!(isnil "_destination")} && {count _destination > 0}) then {
+                        
 						//else simulate them
 						//Match 2D since some profiles dont have a _pos select 2 defined
 						_currentPosition set [2,0];
@@ -205,7 +208,6 @@ _engaged = [0,0,0];
                         
                         // Execute statements at the end, needs review of any variables in hashes
                         if (_executeStatements) then {if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)}};
-					};
 				} else {
 					diag_log format ["Profile-Simulator corrupted profile detected %3: _currentPosition %1 _destination %2",_currentPosition,_destination,_entityProfile];
 				};
@@ -390,11 +392,13 @@ _toBekilled = [];
     } else {
 		_surviveFactor = random 1;
     };
-    
-    //["Killfactor %1 | Survive %2",_killFactor,_surviveFactor] call ALiVE_fnc_dumpR;
+
+    _enemiesNear = (({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0);
+	
+    //["Profile %1 | K: %2 | S: %3 | E: %4",_profileID,_killFactor,_surviveFactor,_enemiesNear] call ALiVE_fnc_DumpH;
 
     // Enemy sides near, chance of death by weighting
-    if ((({_sideInternal = _x select 2; if (_sideInternal == "GUER") then {_sideInternal = "INDEPENDENT"}; ((_x select 1) distance _currentPosition < 200) && {((call compile _side) getfriend (call compile _sideInternal)) < 0.6}} count _clash) > 0) && (_killFactor > _surviveFactor)) then {
+    if ((_killFactor > _surviveFactor) && {_enemiesNear}) then {
         _clash set [_foreachIndex,["",[0,0,0],""]];
         _toBekilled pushback _profileID;
     };
