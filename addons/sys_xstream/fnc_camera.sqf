@@ -3,17 +3,19 @@
 SCRIPT(camera);
 
 
-private ["_relpos","_cam","_fov","_subChoice","_loopHandle","_logic"];
+private ["_relpos","_cam","_cameraTarget","_fov","_sceneChoice","_subChoice","_loopHandle","_logic"];
 
 _logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 
 // Setup params from logic
+
+
+
 TargetFired = [];
-subjects = [];
-infantry = [];
+subjects = [player];
+infantry = [player];
+_cameraTarget = player;
 
-
-// Spawn process to continually capture camera targets
 _loopHandle = [] spawn {
 
     	// Set Side to show
@@ -24,7 +26,7 @@ _loopHandle = [] spawn {
     while {GVAR(cameraStarted)} do {
 
 		// Get List of vehicle subjects from Mission
-		{ if ((side _x in _sideMask) && (_x != player) && !(_x iskindOf "ReammoBox_F")) then
+		{ if ((side _x in _sideMask) && (_x != player)) then
 			{
 				private ["_nn","_fh"];
 			 	subjects = subjects + [_x];
@@ -50,7 +52,7 @@ _loopHandle = [] spawn {
 		} foreach allUnits;
 		diag_log format["Subjects: %1", subjects];
 		diag_log format["Infantry: %1", infantry];
-		sleep 15;
+		sleep 30;
 		subjects = [];
 		infantry = [];
 	};
@@ -72,33 +74,73 @@ _loopHandle = [] spawn {
 "dynamicBlur" ppEffectEnable false;
 
 enableRadio false;
-showCinemaBorder false;
-cameraEffectEnableHUD false;
-showHUD false;
 
 // Introductory Scenes =======================================================
 
 titleCut ["", "BLACK FADED", 0];
 
+// Close up of subject
+_cam = "camera" camCreate (position _cameraTarget);
+_cam cameraEffect ["INTERNAL", "BACK"];
+showCinemaBorder true;
+cameraEffectEnableHUD false;
+showHUD false;
+
+waituntil {(preloadcamera (position _cameraTarget))};
+setacctime 0;
+
+setacctime 1;
+
+_cam attachTo [_cameraTarget,[2,15,1]];
+_cam camPrepareTarget _cameraTarget;
+_cam camPrepareFOV 0.6;
+_cam camCommitPrepared 0;
+waituntil {camcommitted _cam};
+
+// Author details
+titleCut ["", "BLACK IN", 4];
+
 sleep 5;
 
-_cam = [player] call ALiVE_fnc_addCamera;
+//Close up of subject
+if (count subjects > 0) then {
+	_cameraTarget = (subjects select (floor(random count subjects)));
+};
+
+waituntil {(preloadcamera (position _cameraTarget)) || time > 5};
+_cam attachTo [_cameraTarget,[-2,15,-1]];
+_cam camPrepareTarget _cameraTarget;
+_cam camPrepareFOV 0.6;
+_cam camCommitPrepared 0;
+waituntil {camcommitted _cam};
+
+// Map Details
+titleCut ["", "BLACK IN", 4];
+
+sleep 5;
+
+_cam cameraEffect ["terminate","back"];
+camDestroy _cam;
+
+titleCut ["", "BLACK FADED", 0];
+
+//  End Introductory Scenes =======================================================
 
 // Loop through series of scenes
 while { ((count subjects + count infantry) > 0) && GVAR(cameraStarted)} do {
 
-	private ["_timely","_shotTime","_duration","_sceneType","_speed","_cameraShots","_cameraTarget"];
+	private ["_timely","_shotTime"];
+	//Choose a subject
 
 	diag_log format["TargetFired count:%1 - %2", count TargetFired, TargetFired];
-	_duration = 2.5;
-	_timely = 6;
-	_shotTime = 0;
-	_cameraTarget = objNull;
 
-	//Choose a subject - check to see if someone fired a shot else choose a random subject
+	_timely = 0;
+	_shotTime = 0;
+	_cameraTarget = vehicles select 0;
+
 	if (count TargetFired < 1) then {
 		_subChoice = (random 1);
-		if (count subjects > 0 && _subChoice > 0.4) then {
+		if (_subChoice > 0.3) then {
 			_cameraTarget = (subjects select (floor(random count subjects)));
 		} else {
 			_cameraTarget = (infantry select (floor(random count infantry)));
@@ -106,19 +148,15 @@ while { ((count subjects + count infantry) > 0) && GVAR(cameraStarted)} do {
 	} else {
 		private ["_i"];
 		_i = 0;
-		while {(_i <= (count TargetFired - 1) )} do {
+		_timely = 6;
+		while {(_timely > 5 || _i < (count TargetFired - 1) )} do {
 			_cameraTarget = (TargetFired select _i) select 0;
 			_shotTime = (TargetFired select _i) select 1;
 			TargetFired set [_i,-1];
 			TargetFired = TargetFired - [-1];
 			_timely = time - _shotTime;
-			if (_timely < 6 && alive _cameraTarget) exitWith {};
 			_i = _i + 1;
 		};
-	};
-
-	if (isNull _cameraTarget) then {
-		_cameraTarget = (infantry select (floor(random count infantry)));
 	};
 
 	// If the subject is a Man and he is in a vehicle, make the vehicle the subject
@@ -126,143 +164,111 @@ while { ((count subjects + count infantry) > 0) && GVAR(cameraStarted)} do {
 		_cameraTarget = vehicle _cameraTarget;
 	};
 
-	// Get target speed
-	_speed = speed _cameraTarget;
-
-	_sceneType = "None";
-
 	// Make sure the subject is not dead or fatally wounded
-	if (((alive _cameraTarget) && ((damage _cameraTarget) < 0.4) && _speed > 0) || ((_timely > 0) && (_timely < 6)) ) then {
+	if (((alive _cameraTarget) || ((damage _cameraTarget) < 0.4)) && ((speed _cameraTarget > 0) || ((_timely > 0) && (_timely < 5))) ) then {
 
 		// Destroy last camera
-		[_cam] call ALiVE_fnc_removeCamera;
+		_cam cameraEffect ["terminate","back"];
+		camDestroy _cam;
 
 		// Create new camera
-		_cam = [_cameraTarget] call ALiVE_fnc_addCamera;
+		_cam = "camera" camCreate (position _cameraTarget);
+		showCinemaBorder true;
+		cameraEffectEnableHUD false;
+		showHUD false;
 
-		// set a Field of View
-		_fov = 0.6;
+		// Randomly set a Field of View
+		_fov = 0.2+(random 0.5);
+
+		// Randomly pick a number (0-5 Flyby, 6-7 First Person, 8-10 Follow, 11 Pan)
+		_sceneChoice = (round(random 15));
+
+		diag_log format["sys_xstream target:%1, sc:%2, scene:%3, speed:%4",_cameraTarget, _subChoice, _sceneChoice, speed _cameraTarget];
 
 		// Set up scene and Fade into the shot
 		_cam camPrepareTarget _cameraTarget;
 		_cam camPrepareFOV _fov;
-		titleCut ["", "BLACK IN", 1.5];
+		titleCut ["", "BLACK IN", 2];
 
-		enableCamShake false;
-
-		// If target has fired within the last 6 seconds, go to behind/over shoulder vehicle/unit shot
-		if (_timely < 6) exitWith {
+		// Over the Shoulder shot looking at target
+		if (_timely > 0 || _sceneChoice > 10) then {
 			// Check to see if it is a Man, if so get closer
-			if (_timely < 1.5) then {
-				[_cam, _cameraTarget, 3] call ALiVE_fnc_firedShot; // bullet cam
+			if (_cameraTarget iskindof "MAN") then {
+				x = (2-(round(random 4))) * cos(random 90);
+				y = 0.3 + (random 2);
+				z = (eyePos _cameraTarget) select 2;
 			} else {
-				[_cam, _cameraTarget, 3] call ALiVE_fnc_firedShot;
+				_fov = _fov + 0.3;
+				x = (5-(round(random 10))) * cos(random 90);
+				y = (sizeOf (typeOf _cameraTarget)) + (random 10);
+				z = 3;
 			};
-			_sceneType = "FiredShot";
+
+			_relpos = [x , y, z];
+			_cam attachTo [_cameraTarget,_relpos];
+			_cam camSetTarget (assignedTarget _cameraTarget);
+			_cam camSetFOV _fov;
+			_cam cameraEffect ["INTERNAL", "BACK"];
+			_cam camCommit 0;
+			sleep 5;
+			_sceneChoice = 12;
 		};
 
-		// If not fired, then get shot selection based on target type
-		switch (true) do {
-			case (_cameraTarget isKindOf "LandVehicle") : {
-				if (_speed > 5) then {
-					_cameraShots = ["chaseShot","chaseAngleShot","chaseSideShot","chaseWheelShot","flyByShot","zoomShot","panShot","followShot"];
-				} else {
-					_cameraShots = ["zoomShot","rotateShot"];
-				};
+
+		// Fly By
+		if (_sceneChoice < 6) then {
+			if (_cameraTarget iskindof "MAN") then {
+				x = 10-(round(random 20));
+				y = 10-(round(random 20));
+				z = 1+(round(random 2));
+			} else {
+				x = (round(random 120));
+				y = (round(random 120));
+				z = 10+(round(random 120));
 			};
-			case (_cameraTarget isKindOf "Air") : {
-				if (_speed > 50) then {
-					_cameraShots = ["chaseShot","cockpitShot","firstpersonShot","flyByShot","zoomShot","panShot","followShot"];
-				} else {
-					_cameraShots = ["zoomShot","rotateShot"];
-				};
-			};
-			case (_cameraTarget isKindOf "Man") : {
-				if (_speed > 2) then {
-					_cameraShots = ["chaseShot","chaseAngleShot","chaseSideShot","followShot","firstpersonShot"];
-				} else {
-					_cameraShots = ["rotateShot","faceShot","followShot","firstpersonShot"];
-				};
-			};
-			default {
-				if (_speed > 5) then {
-					_cameraShots = ["chaseShot","chaseAngleShot","chaseSideShot","chaseWheelShot","flyByShot","zoomShot","panShot","followShot"];
-				} else {
-					_cameraShots = ["zoomShot","rotateShot"];
-				};
-			};
+			_relpos = [x * cos(random 180), y * sin(random 180), z];
+			_cam camPrepareRelPos _relpos;
+			_cam camSetTarget _cameraTarget;
+			_cam camSetRelPos _relpos;
+			_cam camSetFOV _fov;
+			_cam cameraEffect ["INTERNAL", "BACK"];
+			_cam camCommit 0;
+			sleep 5;
 		};
 
-		_sceneType = (_cameraShots select (floor(random count _cameraShots)));
+		// Follow
+		if ((_sceneChoice >5) && (_sceneChoice < 11)) then {
+			// Check to see if it is a Man, if so get closer
+			if (_cameraTarget iskindof "MAN") then {
+				x = (2-(round(random 4))) * cos(random 180);
+				y = (2+(round(random 8)));
+				z = (1.5+(round(random 0.5)));
+			} else {
+				_fov = _fov + 0.3;
+				x = (5-(round(random 10))) * cos(random 180);
+				y = (12+(round(random 8)));
+				z = (5-(round(random 10))) * sin(random 180);
+			};
 
-		switch (_sceneType) do {
-			case "chaseShot";
-			case "chaseAngleShot";
-			case "chaseWheelShot";
-			case "chaseSideShot" : { [_cam, _cameraTarget, _duration] call compile format ["ALiVE_fnc_%1",_sceneType]; };
-			case "panShot" : {
-				_cam attachTo [_cameraTarget,[50-(random 100), 50-(random 100), 2]];
-				[_cam, _cameraTarget, assignedTarget _cameraTarget, _duration] call ALiVE_fnc_panShot;
-			};
-			case "zoomShot" : {
-				_cam attachTo [_cameraTarget,[50-(random 100), 50-(random 100), 20]];
-				[_cam, _cameraTarget, _duration] call ALiVE_fnc_zoomShot;
-			};
-			case "flyByShot" : {
-				private ["_x","_y","_z"];
-				if (_cameraTarget iskindof "MAN") then {
-					_x = 10-(round(random 20));
-					_y = 10-(round(random 20));
-					_z = 1+(round(random 10));
-				} else {
-					_x = 60-(round(random 120));
-					_y = 60-(round(random 120));
-					_z = 10+(round(random 20));
-				};
-				_relpos = [_x, _y, _z];
-				_cam camSetTarget _cameraTarget;
-				_cam camPrepareRelPos _relpos;
-				_cam camSetRelPos _relpos;
-				_cam camSetFOV _fov;
-				_cam cameraEffect ["INTERNAL", "BACK"];
-				_cam camCommit 0;
-				sleep _duration;
-			};
-			case "followShot" : {
-				private ["_x","_y","_z"];
-				// Check to see if it is a Man, if so get closer
-				if (_cameraTarget iskindof "MAN") then {
-					_x = (2-(round(random 4)));
-					_y = (1+(round(random 3)));
-					_z = ((eyepos _cameraTarget) select 2) - ((getposASL _cameraTarget) select 2);
-				} else {
-					_fov = _fov + 0.3;
-					_x = (5-(round(random 10)));
-					_y = (12+(round(random 8)));
-					_z = (1+(round(random 10)));
-				};
-				_relpos = [_x, _y, _z];
-				_cam attachTo [_cameraTarget,_relpos];
-				_cam camSetTarget _cameraTarget;
-				_cam camSetFOV _fov;
-				_cam cameraEffect ["INTERNAL", "BACK"];
-				_cam camCommit 0;
-				sleep _duration;
-			};
-			case "firstPersonShot" : {
-				_cam camPreparePos (position _cameraTarget);
-				_cam cameraEffect ["terminate","back"];
-				camDestroy _cam;
-				_cameraTarget switchCamera "INTERNAL";
-				sleep _duration;
-			};
-			default {
-				[_cam, _cameraTarget, _duration] call ALiVE_fnc_firedShot;
-			};
+			_relpos = [x , y, z];
+			_cam attachTo [_cameraTarget,_relpos];
+			_cam camSetTarget _cameraTarget;
+			_cam camSetFOV _fov;
+			_cam cameraEffect ["INTERNAL", "BACK"];
+			_cam camCommit 0;
+			sleep 5;
 		};
 
-	 	diag_log format["sys_xstream target:%1, scene:%2, speed:%3",typeOf _cameraTarget, _sceneType, _speed];
 		/*
+		// First Person
+		if ((_sceneChoice > 8) && (_sceneChoice < 11)) then {
+			_cam camPrepareRelPos (position _cameraTarget);
+			_cam cameraEffect ["terminate","back"];
+			camDestroy _cam;
+			_cameraTarget switchCamera "INTERNAL";
+			sleep 5;
+		};
+
 		// Pan
 		if (_sceneChoice > 10) then {
 			// If the target is a person, get closer
@@ -312,9 +318,14 @@ while { ((count subjects + count infantry) > 0) && GVAR(cameraStarted)} do {
 			deleteVehicle _newTarget;
 			deleteGroup _groupTarget;
 		};
+
+		// Satellite
+
+		// Cameraman
+
+		//
 		*/
 	};
-
 };
 
 //exit

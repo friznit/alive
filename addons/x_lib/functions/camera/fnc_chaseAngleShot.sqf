@@ -42,14 +42,16 @@ if(_hideTarget) then
 _startTime = time;
 _currentTime = _startTime;
 
-_dummy = "Sign_Sphere100cm_F" createVehicle [0,0,0];
-_dummy attachTo [_target, [10, 10, 0]];
+CHASE_camera = _camera;
+CHASE_target = _target;
 
-_camera attachTo [_target, [-10,-10,2]];
-_camera camSetTarget _dummy;
-_camera cameraEffect ["INTERNAL", "BACK"];
-_camera camCommit 0;
+_eventID = addMissionEventHandler ["Draw3D", {
+    CHASE_camera camSetTarget CHASE_target;
+    CHASE_camera camSetRelPos [-10,-10,2];
+    CHASE_camera camCommit 0;
+
+}];
 
 waitUntil { sleep 1; _currentTime = time; ((_currentTime - _startTime) >= _duration)};
 
-deleteVehicle _dummy;
+removeMissionEventHandler ["Draw3D",_eventID];

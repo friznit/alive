@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_camera", "_target", "_hideTarget", "_duration", "_startTime", "_currentTime", "_eventID", "_x", "_dummy"];
+private ["_camera", "_target", "_hideTarget", "_duration", "_startTime", "_currentTime", "_eventID"];
 
 _camera = _this select 0;
 _target = _this select 1;
@@ -42,21 +42,16 @@ if(_hideTarget) then
 _startTime = time;
 _currentTime = _startTime;
 
-_dummy = "Sign_Sphere100cm_F" createVehicle [0,0,0];
+CHASE_camera = _camera;
+CHASE_target = _target;
 
-If (random 1 > 0.5) then {
-	_x = -10;
-	_dummy attachTo [_target, [10, 3, 0]];
-} else {
-	_x = 10;
-	_dummy attachTo [_target, [-10, 3, 0]];
-};
+_eventID = addMissionEventHandler ["Draw3D", {
+    CHASE_camera camSetTarget CHASE_target;
+    CHASE_camera camSetRelPos [-10,0,2];
+    CHASE_camera camCommit 0;
 
-_camera attachTo [_target, [_x,0,0.5]];
-_camera camSetTarget _dummy;
-_camera cameraEffect ["INTERNAL", "BACK"];
-_camera camCommit 0;
+}];
 
 waitUntil { sleep 1; _currentTime = time; ((_currentTime - _startTime) >= _duration)};
 
-deleteVehicle _dummy;
+removeMissionEventHandler ["Draw3D",_eventID];

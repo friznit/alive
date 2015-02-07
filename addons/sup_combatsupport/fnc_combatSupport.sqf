@@ -299,7 +299,7 @@ switch(_operation) do {
                             _ffvTurrets = _ffvTurrets - _gunnerTurrets;
 
 							diag_log format["%1", _ffvTurrets];
-
+							
                             if(count _ffvTurrets > 0) then
                             {
                                 for "_i" from 0 to (count _ffvTurrets)-1 do
@@ -421,26 +421,18 @@ switch(_operation) do {
                         // ARTY
 
                         {
-                            private ["_pos", "_class", "_callsign", "_unitCount", "_rounds", "_code", "_roundsUnit", "_roundsAvailable", "_canMove", "_units", "_grp", "_vehDir","_tempclass","_side"];
-                            _pos = _x select 0; _pos set [2, 0];
-                            _class = _x select 1;
-                            _callsign = toUpper (_x select 2);
-                            _unitCount = round (_x select 3); if (_unitCount > 4) then { _unitCount = 4 }; if (_unitCount < 1) then { _unitCount = 1 };
-                            _rounds = _x select 4;
-                            _code = _x select 5;
+							private ["_pos", "_class", "_callsign", "_unitCount", "_rounds", "_code", "_roundsUnit", "_roundsAvailable", "_canMove", "_units", "_grp", "_vehDir"];
+							_pos = _x select 0; _pos set [2, 0];
+							_class = _x select 1;
+							_callsign = toUpper (_x select 2);
+							_unitCount = round (_x select 3); if (_unitCount > 4) then { _unitCount = 4 }; if (_unitCount < 1) then { _unitCount = 1 };
+							_rounds = _x select 4;
+							_code = _x select 5;
 
-                            if (_class in ["BUS_Support_Mort","BUS_MotInf_MortTeam","OIA_MotInf_MortTeam","OI_support_Mort","HAF_MotInf_MortTeam","HAF_Support_Mort"]) then {
-                                private "_letter";
-                                _letter = _class select [0,1];
-                                switch (_letter) do {
-                                    case "O" : {_tempclass = "O_Mortar_01_F"};
-                                    case "B" : {_tempclass = "B_Mortar_01_F"};
-                                    case "H" : {_tempclass = "I_Mortar_01_F"};
-                                    default {_tempclass = "B_Mortar_01_F"};
-                                };
-                                _side = getNumber(configfile >> "CfgVehicles" >> _tempclass >> "side");
-                            } else {
-                                _side = getNumber(configfile >> "CfgVehicles" >> _class >> "side");
+                            _side = getNumber(configfile >> "CfgVehicles" >> _class >> "side");
+
+                            if (_class == "BUS_MotInf_MortTeam" || _class == "BUS_Support_Mort") then {
+                                _side = 1;
                             };
 
                             switch (_side) do {
@@ -450,10 +442,10 @@ switch(_operation) do {
                                 default {_side = EAST};
                             };
 
-                            _roundsUnit = _class call NEO_fnc_artyUnitAvailableRounds;
-                            _roundsAvailable = [];
-                            _canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","O_Mortar_01_F", "B_Mortar_01_F","I_Mortar_01_F","BUS_Support_Mort","BUS_MotInf_MortTeam","OIA_MotInf_MortTeam","OI_support_Mort","HAF_MotInf_MortTeam","HAF_Support_Mort"]) then { true } else { false };
-                            _units = [];
+							_roundsUnit = _class call NEO_fnc_artyUnitAvailableRounds;
+							_roundsAvailable = [];
+							_canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","BUS_MotInf_MortTeam","BUS_Support_Mort","B_Mortar_01_F","O_Mortar_01_F","I_Mortar_01_F"]) then { true } else { false };
+							_units = [];
                             _vehDir = 0;
 
                             private ["_veh","_grp"];
@@ -462,89 +454,86 @@ switch(_operation) do {
 
                             if (count _veh > 0) then {_veh = _veh select 0; _grp = group _veh} else {_veh = nil; _grp = createGroup _side};
 
-                            if (isnil "_veh") then {
-                                private ["_vehPos","_i"];
-                                for "_i" from 1 to _unitCount do
-                                {
-                                    private ["_veh","_sptarr"];
-                                    _vehPos = [_pos, 15, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
+                            if (_class == "BUS_MotInf_MortTeam" || _class == "BUS_Support_Mort") then {
+                                // Spawn a mortar team :)
 
-                                    if (isNil "_tempclass") then {
-                                        _veh = createVehicle [_class, _vehPos, [], 0, "CAN_COLLIDE"];
-                                    } else {
-                                        _veh = createVehicle [_tempclass, _vehPos, [], 0, "CAN_COLLIDE"];
-                                    };
-                                    _veh setDir _vehDir;
-                                    _veh setPosATL _vehPos;
+                                //_vehPos = [_pos, 30, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
+                                _grp = [_pos, WEST, (configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Motorized" >> _class),[],[],[],[],[],0] call BIS_fnc_spawnGroup;
+                                {
+                                    _units set [count _units, _x];
+                                    _x setVariable ["ALIVE_CombatSupport", true];
+                                } foreach units _grp;
+
+                            } else {
+                                private ["_vehPos","_i"];
+
+                                if (isnil "_veh") then {
+	                                for "_i" from 1 to _unitCount do
+	                                {
+	                                    private ["_veh","_sptarr"];
+	                                    _vehPos = [_pos, 15, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
+
+	                                    _veh = createVehicle [_class, _vehPos, [], 0, "CAN_COLLIDE"];
+	                                    _veh setDir _vehDir;
+	        							_veh setPosATL _vehPos;
+                                        _veh lock true;
+                                        _vehDir = _vehDir + 90;
+
+                                        // set ownership flag for other modules
+	                            		_veh setVariable ["ALIVE_CombatSupport", true];
+
+	        							[_veh, _grp] call BIS_fnc_spawnCrew;
+
+                                        if (_i == 1) then {leader _grp setRank "CAPTAIN"};
+
+                                        // Add leader and assistant if a mortar weapon, in order to use BIS pack and unpack functions
+                                        if (_class in ["O_Mortar_01_F", "B_Mortar_01_F","I_Mortar_01_F"]) then {
+                                            _tl = format ["%1_soldier_TL_F",_class select [0,1]];
+                                            _sl = format ["%1_soldier_F",_class select [0,1]];
+                                            _newgrp = [_vehPos, _side, [_tl, _sl],[],[],[],[],[],_vehDir] call BIS_fnc_spawnGroup;
+                                            (units _newgrp) joinSilent _grp;
+                                            _sptarr = _grp getVariable ["supportWeaponArray",[]];
+                                            _sptarr pushback _veh;
+                                            _grp setvariable ["supportWeaponArray", _sptarr];
+                                        };
+
+                                        _units set [count _units, _veh];
+	                                };
+                                } else {
+                                    _units set [count _units, _veh];
                                     _veh lock true;
-                                    _vehDir = _vehDir + 90;
 
                                     // set ownership flag for other modules
-                                    _veh setVariable ["ALIVE_CombatSupport", true];
-
-                                    [_veh, _grp] call BIS_fnc_spawnCrew;
-
-                                    if (_i == 1) then {leader _grp setRank "CAPTAIN"};
-
-                                    // Add leader and assistant if a mortar weapon, in order to use BIS pack and unpack functions
-                                    if (_class in ["O_Mortar_01_F", "B_Mortar_01_F","I_Mortar_01_F","BUS_Support_Mort","BUS_MotInf_MortTeam","OIA_MotInf_MortTeam","OI_support_Mort","HAF_MotInf_MortTeam","HAF_Support_Mort"]) then {
-                                        private ["_tl","_sl","_newgrp","_cars"];
-                                        _tl = format ["%1_soldier_TL_F",_class select [0,1]];
-                                        _sl = format ["%1_soldier_F",_class select [0,1]];
-                                        _newgrp = [_vehPos, _side, [_tl, _sl],[],[],[],[],[],_vehDir] call BIS_fnc_spawnGroup;
-                                        (units _newgrp) joinSilent _grp;
-
-                                        _sptarr = _grp getVariable ["supportWeaponArray",[]];
-                                        _sptarr pushback _veh;
-                                        _grp setvariable ["supportWeaponArray", _sptarr];
-                                    };
-
-                                    _units set [count _units, _veh];
+	                            	_veh setVariable ["ALIVE_CombatSupport", true];
                                 };
-                                if (_class in ["BUS_MotInf_MortTeam","OIA_MotInf_MortTeam","HAF_MotInf_MortTeam"]) then {
-                                    _cars = [2, faction (leader _grp),"Car"] call ALiVE_fnc_findVehicleType;
-                                    if (count _cars > 0) then {
-                                        for "_i" from 1 to ceil((count (units _grp))/4) do {
-                                            private "_car";
-                                            _car = createVehicle [_cars select 0, [position (leader _grp),1,100,1,0,4,0] call bis_fnc_findSafePos, [], 0, "NONE"];
-                                            _grp addVehicle _car;
-                                        };
-                                    };
-                                };
-                            } else {
-                                _units set [count _units, _veh];
-                                _veh lock true;
-
-                                // set ownership flag for other modules
-                                _veh setVariable ["ALIVE_CombatSupport", true];
                             };
 
-                            { _x setVariable ["NEO_radioArtyModule", [leader _grp, _callsign], true] } forEach _units;
+							{ _x setVariable ["NEO_radioArtyModule", [leader _grp, _callsign], true] } forEach _units;
 
                             [_grp,0] setWaypointPosition [_pos,0];
-                            [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
+							[[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 
-                            //[_veh, _grp, _units, units _grp] spawn _code;
+							//[_veh, _grp, _units, units _grp] spawn _code;
 
-                            //Validate rounds
-                            {
-                                if ((_x select 0) in _roundsUnit) then
-                                {
-                                    _roundsAvailable set [count _roundsAvailable, _x];
-                                };
-                            } forEach _rounds;
+							//Validate rounds
+							{
+								if ((_x select 0) in _roundsUnit) then
+								{
+									_roundsAvailable set [count _roundsAvailable, _x];
+								};
+							} forEach _rounds;
 
-                            leader _grp setVariable ["NEO_radioArtyBatteryRounds", _roundsAvailable, true];
+							leader _grp setVariable ["NEO_radioArtyBatteryRounds", _roundsAvailable, true];
 
-                            //FSM
-                            [_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _class, leader _grp] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
+							//FSM
+							[_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _class, leader _grp] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
 
-                            _a = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", _side];
-                            _a set [count _a, [leader _grp, _grp, _callsign, _units, _roundsAvailable]];
+							_a = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", _side];
+							_a set [count _a, [leader _grp, _grp, _callsign, _units, _roundsAvailable]];
 
-                            NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _side], _a, true];
+							NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _side], _a, true];
 
-                        } forEach SUP_ARTYARRAYS;
+						} forEach SUP_ARTYARRAYS;
 
 
 
