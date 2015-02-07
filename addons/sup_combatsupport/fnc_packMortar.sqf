@@ -116,5 +116,7 @@ _gunner action ["Disassemble",_weapon];
 	_assistant setVariable ["supportWeaponAsst", _weapon];
 	_weapon setVariable ["packed",true];
 
+	// Update mortar count
+
 //	diag_log format ["%1 packed up!",_weapon];
 };
