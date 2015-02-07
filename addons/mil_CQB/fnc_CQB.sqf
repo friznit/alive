@@ -210,8 +210,8 @@ switch(_operation) do {
 				_strategicTypes = GVAR(STRATEGICHOUSES);
 				_UnitsBlackList = GVAR(UNITBLACKLIST);
 
-				//Get all enterable houses of strategic types below across the whole map (rest will be regular)
-				//_spawnhouses = call ALiVE_fnc_getAllEnterableHouses;
+				
+				//Create Collection
 
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 1
 
@@ -266,11 +266,8 @@ switch(_operation) do {
 
 				private ["_houses","_total","_result","_debugColor"];
 
-                _houses = [];
-            	{
-					//_houses = _houses + (nearestObjects [(_x select 0), (_strategicTypes + ["house"]), (_x select 1)]);
-					_houses = _houses + ([_x select 0, _x select 1] call ALiVE_fnc_getEnterableHouses);
-                } foreach _collection;
+				//Get all enterable houses
+                _houses = []; {_houses = _houses + ([_x select 0, _x select 1] call ALiVE_fnc_getEnterableHouses)} foreach _collection;
 
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 3
 
@@ -364,7 +361,7 @@ switch(_operation) do {
 			TRACE_2("Waiting for CQB PV",isDedicated,isHC);
 
 			//Client
-			if(!isDedicated && !isHC) then {
+			if(hasInterface) then {
 
 				//As stated in the trace above the client needs to wait for the CQB module to be ready
 			    waituntil {_logic getVariable ["init",false]};
@@ -380,9 +377,44 @@ switch(_operation) do {
 				{_x setMarkerAlpha 0} foreach (_logic getVariable ["blacklist", DEFAULT_BLACKLIST]);
 			    [_logic, "whitelist", _logic getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
 				{_x setMarkerAlpha 0} foreach (_logic getVariable ["whitelist", DEFAULT_WHITELIST]);
+                
+                //Monitor buildings
+                [MOD(CQB),"buildingMonitor",true] call ALiVE_fnc_CQB;
 			};
 
 			TRACE_TIME(QUOTE(COMPONENT),[]); // 8
+        };
+        
+        case "buildingMonitor": {
+            ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
+            
+            private ["_grid"];
+            
+            if (_args) then {
+	            
+                _grid = _logic getvariable "grid";
+                
+	            if (isnil "_grid") then {
+	                _grid = [getposATL _logic,30000] call ALiVE_fnc_createBuildingGrid;
+	                _logic setvariable ["grid",_grid];
+	                
+	                _grid spawn {
+	                    
+	                    waituntil {
+	                        sleep 30;
+	                        _this call ALiVE_fnc_updateBuildingGrid;
+	                        
+	                    	isnil {MOD(CQB) getvariable "grid"};
+	                 	};
+	                 };
+	            };
+            } else {
+                _grid = _logic getvariable ["grid",[]];
+                
+                {deleteMarkerLocal _x} foreach _grid;
+                
+                _logic setvariable ["grid",nil];
+            };
         };
 
         case "pause": {

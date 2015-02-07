@@ -951,6 +951,13 @@ class getSeriesRoadPositions
 	recompile = RECOMPILE;
 };
 
+class gridPos
+{
+	file = "\x\alive\addons\x_lib\functions\map\fnc_gridPos.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class isHouseEnterable
 {
 	file = "\x\alive\addons\x_lib\functions\map\fnc_isHouseEnterable.sqf";
@@ -968,6 +975,20 @@ class processTerrain
 class createLineMarker
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLineMarker.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class createBuildingGrid
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createBuildingGrid.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class updateBuildingGrid
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_updateBuildingGrid.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

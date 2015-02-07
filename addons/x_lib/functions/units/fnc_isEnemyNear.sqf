@@ -54,7 +54,7 @@ if(_side getFriend civilian < 0.6) then {
 
 ["ENEMY SIDES: %1",_enemySides] call ALIVE_fnc_dump;
 
-_entities = _position nearEntities ["Man", _radius];
+_entities = _position nearEntities ["CAManBase", _radius];
 
 if(count _entities > 0) then {
     {
