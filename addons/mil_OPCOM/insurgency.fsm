@@ -11,7 +11,7 @@ item6[] = {"DEFEND",4,218,-806.225098,-252.264771,-716.225098,-202.264740,2.0000
 item7[] = {"TERRORIZE",4,218,-650.359680,-253.024353,-560.359680,-203.024323,3.000000,"TERRORIZE"};
 item8[] = {"RESERVE",4,218,-512.215454,-253.515350,-422.215546,-203.515259,4.000000,"RESERVE"};
 item9[] = {"_",4,218,-719.706787,-456.359070,-629.706787,-406.359070,0.000000,""};
-item10[] = {"SELECT_ORDERS",2,250,-724.372742,-364.088989,-634.372742,-314.088837,0.000000,"SELECT" \n "ORDERS"};
+item10[] = {"SELECT_ORDERS",2,4346,-724.372742,-364.088989,-634.372742,-314.088837,0.000000,"SELECT" \n "ORDERS"};
 item11[] = {"ACTIONS___ASSAULT",2,250,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
 item12[] = {"ACTIONS___CQB_GA",2,250,-806.544922,-175.131653,-706.482239,-34.567657,0.000000,"ACTIONS:" \n "" \n "CQB" \n "GARRISON"};
 item13[] = {"ACTIONS___IEDS_SUICIDERS",2,250,-647.961060,-177.760864,-545.662231,-33.842651,0.000000,"ACTIONS:" \n "" \n "IEDS" \n "SUICIDERS" \n "SABOTAGE"};
@@ -24,7 +24,7 @@ item19[] = {"MOVE_SECTION",2,250,-717.385681,263.132507,-627.385681,313.132507,0
 item20[] = {"SECTION_READY",4,218,-712.326294,347.456238,-622.326294,397.456238,1.000000,"SECTION" \n "READY"};
 item21[] = {"EXECUTE_ACTIONS",2,250,-710.423462,428.417236,-620.423462,478.417236,0.000000,"EXECUTE" \n "ACTIONS"};
 item22[] = {"ACTIONS_FULFILLE",4,218,-707.183411,501.318176,-617.183411,551.318115,1.000000,"ACTIONS" \n "FULFILLED"};
-item23[] = {"DETERMINE_SUCCES",2,4346,-710.597168,592.804504,-620.597168,642.804504,0.000000,"DETERMINE" \n "SUCCESS"};
+item23[] = {"DETERMINE_SUCCES",2,250,-710.597168,592.804504,-620.597168,642.804504,0.000000,"DETERMINE" \n "SUCCESS"};
 item24[] = {"SUCCESS",4,218,-1420.703369,594.125183,-1330.703369,644.125183,1.000000,"SUCCESS"};
 item25[] = {"FAIL",4,218,45.247391,594.838806,135.247589,644.838501,0.000000,"FAIL"};
 item26[] = {"",7,210,-1047.392578,-149.660080,-1039.392578,-141.660049,0.000000,""};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1323.800903,-469.866577,970.653625,125.421806,785,777,1};
-window[] = {0,-1,-1,-1,-1,996,88,1626,88,1,802};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1590.713745,-202.958145,421.412659,-707.682678,955,777,1};
+window[] = {0,-1,-1,-1,-1,971,78,1616,63,1,972};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -180,6 +180,134 @@ class FSM
        "	};" \n
        "};" \n
        "" \n
+       "ALiVE_fnc_addCQBpositions = {" \n
+       "	private [""_pos"",""_radius"",""_types"",""_instances"",""_houses""];" \n
+       "" \n
+       "	if (isnil ""ALiVE_CQB"") exitwith {};" \n
+       "	" \n
+       "	_pos = _this select 0;" \n
+       "	_radius = _this select 1;" \n
+       "	_type = _this select 2;" \n
+       "" \n
+       "	_types = [""regular"",""strategic""];" \n
+       "	" \n
+       "	_instances = ALiVE_CQB getvariable [""instances"",[]];" \n
+       "	" \n
+       "	if (count _instances > 0) then {" \n
+       "	        " \n
+       "	    {" \n
+       "	        _instance = _x;" \n
+       "	        _filtered = [];" \n
+       "	        " \n
+       "	        _instanceType = _x getvariable [""instancetype"",""regular""];" \n
+       "	        _houses = _instance getvariable [""houses"",[]];" \n
+       "	        _housesPending = _instance getvariable [""houses_pending"",[]];" \n
+       "	        _houses = _houses - _housesPending;" \n
+       "            _housesPending = _housesPending - _houses;" \n
+       "            _housesTotal = _housesPending + _houses;" \n
+       "" \n
+       "            [_instance,""debug"",false] call ALiVE_fnc_CQB;" \n
+       "	" \n
+       "	        {" \n
+       "	            if (_instanceType in _types && {_pos distance _x < _radius}) then {" \n
+       "	                _filtered pushback _x;" \n
+       "	            };" \n
+       "	        } foreach _housesPending;" \n
+       "	        " \n
+       "	        _instance setvariable [""houses"",_houses + _filtered];" \n
+       "	        _instance setvariable [""houses_pending"",_housesPending - _filtered];" \n
+       "" \n
+       "            [_instance,""debug"",true] call ALiVE_fnc_CQB;" \n
+       "	    } foreach _instances;" \n
+       "	};" \n
+       "};" \n
+       "" \n
+       "ALiVE_fnc_removeCQBpositions = {" \n
+       "	private [""_pos"",""_radius"",""_types"",""_instances"",""_houses""];" \n
+       "" \n
+       "	if (isnil ""ALiVE_CQB"") exitwith {};" \n
+       "	" \n
+       "	_pos = _this select 0;" \n
+       "	_radius = _this select 1;" \n
+       "	_type = _this select 2;" \n
+       "" \n
+       "	_types = [""regular"",""strategic""];" \n
+       "	" \n
+       "	_instances = ALiVE_CQB getvariable [""instances"",[]];" \n
+       "	" \n
+       "	if (count _instances > 0) then {" \n
+       "	        " \n
+       "	    {" \n
+       "	        _instance = _x;" \n
+       "	        _filtered = [];" \n
+       "	        " \n
+       "	        _instanceType = _x getvariable [""instancetype"",""regular""];" \n
+       "	        _houses = _instance getvariable [""houses"",[]];" \n
+       "	        _housesPending = _instance getvariable [""houses_pending"",[]];" \n
+       "	        _houses = _houses - _housesPending;" \n
+       "            _housesPending = _housesPending - _houses;" \n
+       "            _housesTotal = _housesPending + _houses;" \n
+       "	        " \n
+       "	        [_instance,""active"",false] call ALiVE_fnc_CQB;" \n
+       "            [_instance,""debug"",false] call ALiVE_fnc_CQB;" \n
+       "            " \n
+       "            sleep 5;" \n
+       "	" \n
+       "	        {" \n
+       "	            if (_instanceType in _types && {_pos distance _x < _radius}) then {" \n
+       "	                _filtered pushback _x;" \n
+       "	            };" \n
+       "	        } foreach _houses;" \n
+       "	        " \n
+       "	        _instance setvariable [""houses"",_houses - _filtered];" \n
+       "	        _instance setvariable [""houses_pending"",_housesPending + _filtered];" \n
+       "            " \n
+       "            [_instance,""active"",true] call ALiVE_fnc_CQB;" \n
+       "            [_instance,""debug"",true] call ALiVE_fnc_CQB;" \n
+       "	    } foreach _instances;" \n
+       "	};" \n
+       "};" \n
+       "" \n
+       "ALiVE_fnc_resetCQB = {" \n
+       "	private [""_pos"",""_radius"",""_types"",""_instances"",""_houses""];" \n
+       "" \n
+       "	if (isnil ""ALiVE_CQB"") exitwith {};" \n
+       "	" \n
+       "	_pos = _this select 0;" \n
+       "" \n
+       "	_types = [""regular"",""strategic""];" \n
+       "	" \n
+       "	_instances = ALiVE_CQB getvariable [""instances"",[]];" \n
+       "	" \n
+       "	if (count _instances > 0) then {" \n
+       "	        " \n
+       "	    {" \n
+       "	        _instance = _x;" \n
+       "	        _filtered = [];" \n
+       "	        " \n
+       "	        _instanceType = _x getvariable [""instancetype"",""regular""];" \n
+       "	        _houses = _instance getvariable [""houses"",[]];" \n
+       "	        _housesPending = _instance getvariable [""houses_pending"",[]];" \n
+       "	      _houses = _houses - _housesPending;" \n
+       "            _housesPending = _housesPending - _houses;" \n
+       "            _housesTotal = _housesPending + _houses;" \n
+       "	        " \n
+       "	        [_instance,""active"",false] call ALiVE_fnc_CQB;" \n
+       "            [_instance,""debug"",false] call ALiVE_fnc_CQB;" \n
+       "            " \n
+       "            sleep 5;" \n
+       "	        " \n
+       "	        _instance setvariable [""houses"",[]];" \n
+       "	        _instance setvariable [""houses_pending"",_housesTotal];" \n
+       "            " \n
+       "            [_instance,""active"",true] call ALiVE_fnc_CQB;" \n
+       "            [_instance,""debug"",true] call ALiVE_fnc_CQB;" \n
+       "	    } foreach _instances;" \n
+       "	};" \n
+       "};" \n
+       "" \n
+       "[] spawn ALiVE_fnc_resetCQB;" \n
+       "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
        "	{_x call ALIVE_fnc_InspectHash} foreach _objectives;" \n
@@ -277,9 +405,6 @@ class FSM
        "    } forEach _settlementClusters;" \n
        "};" \n
        "" \n
-       "diag_log _clusterHostility;" \n
-       "diag_log _clusterCasualties;" \n
-       "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
        "	_color = ""ColorRed""; if (_hostility < 0) then {_color = ""ColorGreen""};" \n
@@ -314,8 +439,9 @@ class FSM
        "" \n
        "if (isnil ""_orders"") then {" \n
        "" \n
-       "	if (_hostility > 0) then {_orders = ""terrorize""};" \n
-       "	if (_hostility <= -100) then {_orders = ""reserve""};" \n
+       "	if (_hostility >= 5) then {_orders = ""terrorize""};" \n
+       "	if (_hostility >= 0 && {_hostility < 5}) then {_orders = ""attack""};" \n
+       "	if (_hostility < 0) then {_orders = ""reserve""};" \n
        "" \n
        "	if !(isnil ""_orders"") then {[_objective,""orders"",_orders] call ALiVE_fnc_HashSet};" \n
        "};" \n
@@ -373,7 +499,7 @@ class FSM
           to="ACTIONS___ASSAULT";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"_orders == ""attack"";"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -383,7 +509,108 @@ class FSM
     class ACTIONS___ASSAULT
     {
       name = "ACTIONS___ASSAULT";
-      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type"",""_types""];" \n
+       "" \n
+       "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
+       "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "// Analyse" \n
+       "// Determine best action type" \n
+       "" \n
+       "// Mock action types" \n
+       "//_type =  [""sabotage"",""ied"",""suicide""] call BIS_fnc_SelectRandom;" \n
+       "_type =  [""assault""] call BIS_fnc_SelectRandom;" \n
+       "" \n
+       "if (isnil ""_actions"")  then {" \n
+       "	private" \n
+       "		[" \n
+       "			""_pos"",""_switch"",""_paramsActions"",""_codeActions"",""_paramsConditionSuccess"",""_codeConditionSuccess""," \n
+       "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize""" \n
+       "		];" \n
+       "	" \n
+       "	if (_type in _actionsDefined) then {_type = ""idle""};" \n
+       "" \n
+       "	_behaviour = ""COMBAT"";" \n
+       "	_speed = ""NORMAL"";" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",300];" \n
+       "	_types = [""infantry"",""motorized"",""mechanized"",""armored""];" \n
+       "	_groupsize = 3;" \n
+       "" \n
+       "	switch (_type) do {" \n
+       "		case (""assault"") : {" \n
+       "" \n
+       "			_pos = _center;" \n
+       "			_switch = false;" \n
+       "" \n
+       "			_behaviour = ""SAFE"";" \n
+       "			_speed = ""LIMITED"";" \n
+       "" \n
+       "			_paramsActions = [time,_pos,_id,_size,_sidesEnemy];" \n
+       "			_codeActions = {" \n
+       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_sides""];" \n
+       "" \n
+       "				_timeTaken = _this select 0;" \n
+       "				_pos = _this select 1;" \n
+       "				_id = _this select 2;" \n
+       "				_size = _this select 3;" \n
+       "				_sides = _this select 4;" \n
+       "				_allSides = [""EAST"",""WEST"",""GUER""];" \n
+       "" \n
+       "				waituntil {" \n
+       "					// [""Waiting to assault""] call ALiVE_fnc_DumpH;" \n
+       "					time - _timeTaken > 120;" \n
+       "				};" \n
+       "" \n
+       "				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;" \n
+       "				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;" \n
+       "			};" \n
+       "" \n
+       "			_paramsConditionSuccess = [time];" \n
+       "			_codeConditionSuccess = {time - (_this select 0) > 120};" \n
+       "" \n
+       "			_paramsConditionFail = [time];" \n
+       "			_codeConditionFail = {time - (_this select 0) < 120};" \n
+       "" \n
+       "			_actionsDefined = _actionsDefined + [_type];" \n
+       "		};" \n
+       "" \n
+       "		default {" \n
+       "			_pos = _center;" \n
+       "			_switch = false;" \n
+       "" \n
+       "			_paramsActions = [];" \n
+       "			_codeActions = {};" \n
+       "" \n
+       "			_paramsConditionSuccess = [];" \n
+       "			_codeConditionSuccess = {true};" \n
+       "" \n
+       "			_paramsConditionFail = [];" \n
+       "			_codeConditionFail = {false};" \n
+       "		};" \n
+       "	};" \n
+       "" \n
+       "	// Store data" \n
+       "	_actions = " \n
+       "		[" \n
+       "			_type," \n
+       "			_pos," \n
+       "			_switch,													// Switch to civilian side" \n
+       "			[_paramsActions,_codeActions],							// Actions to exectue - will be spawned" \n
+       "			[_paramsConditionSuccess,_codeConditionSuccess],	// Success condition" \n
+       "			[_paramsConditionFail,_codeConditionFail],				// Fail condition" \n
+       "			[_behaviour,_speed,_command,_types,_groupsize]		// Behaviour and speed, TACOM command and types" \n
+       "		];" \n
+       "" \n
+       "	[_objective,""actions"",_actions] call ALiVE_fnc_HashSet;" \n
+       "	[_objective,""actionsDefined"",_actionsDefined] call ALiVE_fnc_HashSet;" \n
+       "" \n
+       "" \n
+       "	// debug ---------------------------------------" \n
+       "	if(_debug) then {" \n
+       "		[format[""%1_actions"",_id,_type],_pos,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
+       "	};" \n
+       "	// debug ---------------------------------------" \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -425,7 +652,7 @@ class FSM
     class ACTIONS___IEDS_SUICIDERS
     {
       name = "ACTIONS___IEDS_SUICIDERS";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type"",""_types""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
@@ -434,13 +661,14 @@ class FSM
        "// Determine best action type" \n
        "" \n
        "// Mock action types" \n
-       "_type =  [""sabotage"",""ied""] call BIS_fnc_SelectRandom;" \n
+       "_type =  [""sabotage"",""ied"",""suicide""] call BIS_fnc_SelectRandom;" \n
+       "//_type =  [""ied""] call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
        "		[" \n
        "			""_pos"",""_switch"",""_paramsActions"",""_codeActions"",""_paramsConditionSuccess"",""_codeConditionSuccess""," \n
-       "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command""" \n
+       "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize""" \n
        "		];" \n
        "	" \n
        "	if (_type in _actionsDefined) then {_type = ""idle""};" \n
@@ -448,6 +676,8 @@ class FSM
        "	_behaviour = ""AWARE"";" \n
        "	_speed = ""NORMAL"";" \n
        "	_command = [""ALIVE_fnc_insurgents"",[_sidesEnemy]];" \n
+       "	_types = [""infantry""];" \n
+       "	_groupsize = 1;" \n
        "" \n
        "	switch (_type) do {" \n
        "		case (""ied"") : {" \n
@@ -474,7 +704,61 @@ class FSM
        "					time - _timeTaken > 120;" \n
        "				};" \n
        "" \n
-       "				[_pos,_size, _id, ceil(_size/100)] call ALiVE_fnc_createIED;" \n
+       "				_trg = createTrigger [""EmptyDetector"",_pos];" \n
+       "				_trg setTriggerArea [_size + 250, _size + 250,0,false];" \n
+       "				_trg setTriggerActivation [""ANY"",""PRESENT"",true];" \n
+       "				_trg setTriggerStatements [" \n
+       "					""this && {(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0""," \n
+       "   					 format[""null = [getpos thisTrigger,%1,%2,%3] call ALIVE_fnc_createIED"",_size,str(_id),ceil(_size/100)]," \n
+       "   					 format[""null = [getpos thisTrigger,%1] call ALIVE_fnc_removeIED"",str(_id)]" \n
+       "				];" \n
+       "" \n
+       "				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;" \n
+       "				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;" \n
+       "			};" \n
+       "" \n
+       "			_paramsConditionSuccess = [time];" \n
+       "			_codeConditionSuccess = {time - (_this select 0) > 120};" \n
+       "" \n
+       "			_paramsConditionFail = [time];" \n
+       "			_codeConditionFail = {time - (_this select 0) < 120};" \n
+       "" \n
+       "			_actionsDefined = _actionsDefined + [_type];" \n
+       "		};" \n
+       "" \n
+       "		case (""suicide"") : {" \n
+       "" \n
+       "			_pos = _center;" \n
+       "			_switch = true;" \n
+       "" \n
+       "			_behaviour = ""SAFE"";" \n
+       "			_speed = ""LIMITED"";" \n
+       "" \n
+       "			_paramsActions = [time,_pos,_id,_size,_sidesEnemy];" \n
+       "			_codeActions = {" \n
+       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_sides""];" \n
+       "" \n
+       "				_timeTaken = _this select 0;" \n
+       "				_pos = _this select 1;" \n
+       "				_id = _this select 2;" \n
+       "				_size = _this select 3;" \n
+       "				_sides = _this select 4;" \n
+       "				_allSides = [""EAST"",""WEST"",""GUER""];" \n
+       "" \n
+       "				waituntil {" \n
+       "					// [""Waiting to create suicide bomber""] call ALiVE_fnc_DumpH;" \n
+       "					time - _timeTaken > 120;" \n
+       "				};" \n
+       "" \n
+       "				_trg = createTrigger [""EmptyDetector"",_pos];" \n
+       "				_trg setTriggerArea [_size + 250, _size + 250,0,false];" \n
+       "				_trg setTriggerActivation [""ANY"",""PRESENT"",true];" \n
+       "				_trg setTriggerStatements [" \n
+       "					""this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)""," \n
+       "					format [""null = [[getpos thisTrigger,%1,'%2'],thisList] call ALIVE_fnc_createBomber"", _size, ""CIV_F""]," \n
+       "				 	""""" \n
+       "				];" \n
+       "" \n
        "				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;" \n
        "				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;" \n
        "			};" \n
@@ -565,11 +849,18 @@ class FSM
        "			[_paramsActions,_codeActions],							// Actions to exectue - will be spawned" \n
        "			[_paramsConditionSuccess,_codeConditionSuccess],	// Success condition" \n
        "			[_paramsConditionFail,_codeConditionFail],				// Fail condition" \n
-       "			[_behaviour,_speed,_command]							// Behaviour and speed and TACOM command" \n
+       "			[_behaviour,_speed,_command,_types,_groupsize]		// Behaviour and speed, TACOM command and types" \n
        "		];" \n
        "" \n
        "	[_objective,""actions"",_actions] call ALiVE_fnc_HashSet;" \n
        "	[_objective,""actionsDefined"",_actionsDefined] call ALiVE_fnc_HashSet;" \n
+       "" \n
+       "" \n
+       "	// debug ---------------------------------------" \n
+       "	if(_debug) then {" \n
+       "		[format[""%1_actions"",_id,_type],_pos,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
+       "	};" \n
+       "	// debug ---------------------------------------" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -591,7 +882,7 @@ class FSM
     class ACTIONS___RECRUIT
     {
       name = "ACTIONS___RECRUIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type"",""_types""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
@@ -607,7 +898,7 @@ class FSM
        "	private" \n
        "		[" \n
        "			""_pos"",""_switch"",""_paramsActions"",""_codeActions"",""_paramsConditionSuccess"",""_codeConditionSuccess""," \n
-       "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command""" \n
+       "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize""" \n
        "		];" \n
        "	" \n
        "	if (_type in _actionsDefined) then {_type = ""idle""};" \n
@@ -615,6 +906,8 @@ class FSM
        "	_behaviour = ""AWARE"";" \n
        "	_speed = ""NORMAL"";" \n
        "	_command = [""ALIVE_fnc_ambientMovement"",300];" \n
+       "	_types = [""infantry"",""motorized"",""mechanized"",""armored""];" \n
+       "	_groupsize = -1;" \n
        "" \n
        "	switch (_type) do {" \n
        "		case (""roadblocks"") : {" \n
@@ -637,6 +930,8 @@ class FSM
        "					// [""Waiting to create roadblocks""] call ALiVE_fnc_DumpH;" \n
        "					time - _timeTaken > 120;" \n
        "				};" \n
+       "" \n
+       "				[_pos,_size,""regular""] spawn ALiVE_fnc_addCQBpositions;" \n
        "" \n
        "				[_pos, _size, ceil(_size/200), true] call ALiVE_fnc_createRoadblock;" \n
        "				[_pos, _sides, 20] call ALiVE_fnc_updateSectorHostility;" \n
@@ -714,10 +1009,12 @@ class FSM
        "					};" \n
        "                        } foreach _guards;" \n
        "" \n
+       "				[_pos,_size,""regular""] spawn ALiVE_fnc_addCQBpositions;" \n
+       "" \n
        "				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;" \n
        "				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;" \n
        "" \n
-       "            		[format[""%1_Cache"",_id],_pos,""ICON"", [1,1],""ColorRed"",""Cache"", ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
+       "            		//[format[""%1_Cache"",_id],_pos,""ICON"", [1,1],""ColorRed"",""Cache"", ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
        "			};" \n
        "" \n
        "			_paramsConditionSuccess = [time];" \n
@@ -789,7 +1086,7 @@ class FSM
        "					_sides = _this select 5;" \n
        "					_allSides = [""EAST"",""WEST"",""GUER""];" \n
        "" \n
-       "					[format[""%1_HQ"",_id],getposATL _targetBuilding,""ICON"", [1,1],""ColorRed"",""Recruitment HQ"", ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
+       "					//[format[""%1_HQ"",_id],getposATL _targetBuilding,""ICON"", [1,1],""ColorRed"",""Recruitment HQ"", ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
        "" \n
        "					for ""_i"" from 1 to 5 do {" \n
        "						if !(alive _targetBuilding) exitwith {" \n
@@ -800,6 +1097,8 @@ class FSM
        "						" \n
        "						_group = [""Infantry"",_faction] call ALIVE_fnc_configGetRandomGroup;" \n
        "						_recruits = [_group, [_pos,_size] call CBA_fnc_RandPos, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;" \n
+       "" \n
+       "						[_pos,_size,""regular""] spawn ALiVE_fnc_addCQBpositions;" \n
        "" \n
        "						[_pos,_sides, 10] call ALiVE_fnc_updateSectorHostility;" \n
        "						[_pos,_allSides - _sides, -10] call ALiVE_fnc_updateSectorHostility;	" \n
@@ -842,11 +1141,17 @@ class FSM
        "			[_paramsActions,_codeActions],							// Actions to exectue - will be spawned" \n
        "			[_paramsConditionSuccess,_codeConditionSuccess],	// Success condition" \n
        "			[_paramsConditionFail,_codeConditionFail],				// Fail condition" \n
-       "			[_behaviour,_speed,_command]							// Behaviour and speed and command" \n
+       "			[_behaviour,_speed,_command,_types,_groupsize]		// Behaviour, speed, command and types" \n
        "		];" \n
        "" \n
        "	[_objective,""actions"",_actions] call ALiVE_fnc_HashSet;" \n
        "	[_objective,""actionsDefined"",_actionsDefined] call ALiVE_fnc_HashSet;" \n
+       "" \n
+       "	// debug ---------------------------------------" \n
+       "	if(_debug) then {" \n
+       "		[format[""%1_actions"",_id],_pos,""ICON"", [1,1],""ColorGreen"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
+       "	};" \n
+       "	// debug ---------------------------------------" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -868,9 +1173,15 @@ class FSM
     class SELECT_SECTION
     {
       name = "SELECT_SECTION";
-      init = /*%FSM<STATEINIT""">*/"private [""_section"",""_dead""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_section"",""_dead"",""_types""];" \n
        "" \n
        "_section = [_objective,""section"",[]] call ALiVE_fnc_HashGet;" \n
+       "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
+       "_types = _actions select 6 select 3;" \n
+       "_groupsize = _actions select 6 select 4;" \n
+       "" \n
+       "// Reset groupsize if given" \n
+       "if (_groupsize > 0) then {_sizeSection = _groupsize};" \n
        "" \n
        "// Determine dead profiles in section" \n
        "_dead = []; {private [""_profile""]; _profile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler; if (isnil ""_profile"") then {_dead pushback _x}} foreach _section;" \n
@@ -884,7 +1195,7 @@ class FSM
        "" \n
        "	private [""_nearProfiles""];" \n
        "" \n
-       "	_nearProfiles = [_OPCOM_HANDLER,_center,_factions,_sizeSection - (count _section),[""infantry"",""motorized"",""mechanized"",""armored""]] call _fnc_selectSection;" \n
+       "	_nearProfiles = [_OPCOM_HANDLER,_center,_factions,_sizeSection - (count _section),_types] call _fnc_selectSection;" \n
        "	_section = _section + _nearProfiles;" \n
        "" \n
        "	if ((count _section) >= _sizeSection) then {" \n
@@ -1094,8 +1405,6 @@ class FSM
        "" \n
        "_paramsActions = _actions select 3 select 0;" \n
        "_codeActions = _actions select 3 select 1;" \n
-       "" \n
-       "[""_paramsActions %1 _codeActions %2"",_paramsActions,_codeActions] call ALiVE_fnc_DumpR;" \n
        "" \n
        "if (isnil ""_code"") then {" \n
        "	_code = _paramsActions spawn _codeActions;" \n

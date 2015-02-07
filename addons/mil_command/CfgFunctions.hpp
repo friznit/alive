@@ -41,6 +41,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\mil_command\fnc_managedGarrison.sqf";
                 recompile = RECOMPILE;
             };
+			class insurgents {
+                description = "Basic insurgents behaviour";
+                file = "\x\alive\addons\mil_command\fnc_insurgents.sqf";
+                recompile = RECOMPILE;
+            };            
 		};
 	};
 };
