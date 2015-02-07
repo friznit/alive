@@ -52,4 +52,4 @@ _camera camCommitPrepared 0;
 _camera camPrepareFOV 0.100;
 _camera camCommitPrepared _duration;
 sleep _duration;
-_camera camPrepareFOV 0.6;
+_camera camPrepareFOV ALIVE_cameraPOV;

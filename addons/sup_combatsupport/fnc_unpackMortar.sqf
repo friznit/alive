@@ -26,9 +26,6 @@ _weapon = 		[_this, 3, grpNull] call bis_fnc_param;
 _units = 		(units _group);
 
 {
-	if (vehicle _x != _x) then {
-		doGetOut _x;
-	};
 	if (_x getVariable ["supportWeaponGunner",objNull] == _weapon) then {
 		_gunner = _x;
 	};
@@ -36,11 +33,6 @@ _units = 		(units _group);
 		_assistant = _x;
 	};
 } foreach _units;
-
-if (isNil "_gunner" || isNil "_assistant") exitWith {
-	diag_log "Someone from the mortar team died";
-	// reduce mortar count
-};
 
 [_gunner, _assistant, _targetPos, _weapon, _group] spawn {
 

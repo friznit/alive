@@ -1,6 +1,6 @@
 @echo off
 rem set exe=echo
-set exe=MakePBO.exe -A -BD -L -Z default -U
+set exe=MakePBO.exe -A -BD -L -Z default
 set source=P:\x\alive\addons
 
 set exeuncommpressed=MakePBO.exe -A -BD -L
