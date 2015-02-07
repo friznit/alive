@@ -75,7 +75,7 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1590.713745,-202.958145,421.412659,-707.682678,955,777,1};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1590.713745,-202.958145,473.725952,-655.369385,955,777,1};
 window[] = {0,-1,-1,-1,-1,971,78,1616,63,1,972};
 *//*%FSM</HEAD>*/
 class FSM
@@ -439,8 +439,8 @@ class FSM
        "" \n
        "if (isnil ""_orders"") then {" \n
        "" \n
-       "	if (_hostility >= 5) then {_orders = ""terrorize""};" \n
-       "	if (_hostility >= 0 && {_hostility < 5}) then {_orders = ""attack""};" \n
+       "	if (_hostility >= 3) then {_orders = ""terrorize""};" \n
+       "	if (_hostility >= 0 && {_hostility < 3}) then {_orders = ""attack""};" \n
        "	if (_hostility < 0) then {_orders = ""reserve""};" \n
        "" \n
        "	if !(isnil ""_orders"") then {[_objective,""orders"",_orders] call ALiVE_fnc_HashSet};" \n
@@ -488,7 +488,7 @@ class FSM
           priority = 2.000000;
           to="ACTIONS___CQB_GA";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
