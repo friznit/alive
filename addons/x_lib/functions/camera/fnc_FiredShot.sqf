@@ -1,11 +1,11 @@
 #include <\x\alive\addons\x_lib\script_component.hpp>
-SCRIPT(chaseAngleShot);
+SCRIPT(FiredShot);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_chaseAngleShot
+Function: ALIVE_fnc_FiredShot
 
 Description:
-Chase angle shot
+Behind vehicle that fired looking at target shot
 
 Parameters:
 Object - camera
@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_camera", "_target", "_hideTarget", "_duration", "_startTime", "_currentTime", "_eventID"];
+private ["_camera", "_target", "_hideTarget", "_duration", "_startTime", "_currentTime", "_eventID","_fov"];
 
 _camera = _this select 0;
 _target = _this select 1;
@@ -42,14 +42,24 @@ if(_hideTarget) then
 _startTime = time;
 _currentTime = _startTime;
 
-_dummy = "Sign_Sphere100cm_F" createVehicle [0,0,0];
-_dummy attachTo [_target, [10, 10, 0]];
+if (_target iskindof "MAN") then {
+	x = (0.5-(round(random 1)));
+	y = -1;
+	z = ((eyepos _target) select 2) - ((getposASL _target) select 2);
+	_fov = 0.6;
+} else {
+	x = (3-(round(random 6)));
+	y = -9 + random -10;
+	z = 1 + random 3;
+	_fov = 0.9;
+};
 
-_camera attachTo [_target, [-10,-10,2]];
-_camera camSetTarget _dummy;
-_camera cameraEffect ["INTERNAL", "BACK"];
-_camera camCommit 0;
+_relpos = [x , y, z];
+_cam attachTo [_target,_relpos];
+_cam camSetTarget (assignedTarget _target);
+_cam camSetFOV _fov;
+_cam cameraEffect ["INTERNAL", "BACK"];
+_cam camCommit 0;
 
 waitUntil { sleep 1; _currentTime = time; ((_currentTime - _startTime) >= _duration)};
 
-deleteVehicle _dummy;

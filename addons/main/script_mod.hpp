@@ -47,6 +47,7 @@
 //	#define DEBUG_ENABLED_SYS_sitrep
 //	#define DEBUG_ENABLED_SYS_patrolrep
 //	#define DEBUG_ENABLED_X_LIB
+//	#define DEBUG_ENABLED_mil_ied
 
 // Set automated tests
 // #define AUTOMATED_TESTS QUOTE(MAIN),QUOTE(SYS_LOGISTICS),QUOTE(SYS_GC),QUOTE(MIL_CQB),QUOTE(MIL_OPCOM)

@@ -1,6 +1,6 @@
 class CfgVehicles {
-  /*      class ModuleAliveSystemBase;
-        class sys_data : ModuleAliveSystemBase
+  /*      class ModuleAliveBase;
+        class sys_data : ModuleAliveBase
         {
                 class Arguments
                 {
@@ -17,6 +17,6 @@ class CfgVehicles {
                                 };
                         };
                 };
-                
+
         };*/
 };

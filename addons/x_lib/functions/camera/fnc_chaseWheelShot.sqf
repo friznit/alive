@@ -52,6 +52,7 @@ CHASE_width = (abs ((_p2 select 0) - (_p1 select 0))) / 2;
 
 _eventID = addMissionEventHandler ["Draw3D", {
     CHASE_camera attachTo [CHASE_target, [-CHASE_width,0,-1.2]];
+	_camera camSetTarget (assignedTarget CHASE_target);
     _camera camCommitPrepared 0;
 }];
 

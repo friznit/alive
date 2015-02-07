@@ -161,8 +161,8 @@ link78[] = {61,64};
 link79[] = {62,63};
 link80[] = {63,48};
 link81[] = {64,49};
-globals[] = {0.000000,0,0,0,0,640,480,1,81,6316128,1,-816.682556,816.682007,1445.880005,317.973602,1089,752,1};
-window[] = {0,-1,-1,-32000,-32000,989,1999,3765,92,1,1107};
+globals[] = {0.000000,0,0,0,0,640,480,1,81,6316128,1,-622.801697,622.799866,1841.866943,852.253662,1197,951,1};
+window[] = {2,-1,-1,-1,-1,962,-1812,-46,65,3,1215};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -1139,7 +1139,7 @@ class FSM
           priority = 0.000000;
           to="__16";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"count (_grp getVariable [""supportWeaponArray"",[]]) == 3"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"count (_grp getVariable [""supportWeaponArray"",[]]) == _grp getVariable [""supportWeaponCount"",3]"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"diag_log ""Mortar team have unpacked mortars and are ready"";" \n
            "_units = _grp getVariable [""supportWeaponArray"",[]];"/*%FSM</ACTION""">*/;
         };
@@ -1231,7 +1231,7 @@ class FSM
           priority = 0.000000;
           to="main_loop";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"count (_grp getVariable [""supportWeaponArray"",[]]) == 3"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"count (_grp getVariable [""supportWeaponArray"",[]]) == _grp getVariable [""supportWeaponCount"",3]"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"diag_log ""Mortar team have unpacked mortars and are ready"";" \n
            "_units = _grp getVariable [""supportWeaponArray"",[]];"/*%FSM</ACTION""">*/;
         };
