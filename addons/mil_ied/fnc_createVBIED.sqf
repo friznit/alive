@@ -14,10 +14,12 @@ _threat = ADDON getvariable ["VB_IED_Threat", DEFAULT_VB_IED_THREAT];
 _side = ADDON getvariable ["VB_IED_Side", DEFAULT_VBIED_SIDE];
 _vehicle = _this select 0;
 
+if (_vehicle getVariable [QUOTE(ADDON(VBIED)),false]) exitWith {};
+
 _fate = random 100;
 
 if (_debug) then {
-	diag_log format ["Threat: %1, Fate: %4, Side: %2, VBIED: %3", _threat, _side, (_vehicle getvariable [QUOTE(ADDON(VBIED)), true]), _fate];
+	diag_log format ["Threat: %1, Fate: %4, Side: %2, VBIED: %3", _threat, _side, (_vehicle getvariable [QUOTE(ADDON(VBIED)), false]), _fate];
 };
 
 if (_fate > _threat || str(side _vehicle) != _side || (_vehicle isKindOf "Quadbike_01_base_F") ) exitWith {};
@@ -101,3 +103,5 @@ _IED setvariable ["charge", _IED, true];
 if (_debug) then {
 	diag_log format ["ALIVE-%1 IED: Creating VB-IED for %2 at %3", time, typeof _vehicle, getposATL _vehicle];
 };
+
+_vehicle setVariable [QUOTE(ADDON(VBIED)),true];
