@@ -36,6 +36,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_ied\fnc_placeIED.sqf";
 								recompile = RECOMPILE;
                         };
+                        class placeVBIED {
+                                description = "Find a suitable location for an IED";
+                                file = "\x\alive\addons\mil_ied\fnc_placeVBIED.sqf";
+                                                                recompile = RECOMPILE;
+                        };
                         class armIED {
                                 description = "Arm an IED";
                                 file = "\x\alive\addons\mil_ied\fnc_armIED.sqf";

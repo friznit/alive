@@ -292,6 +292,7 @@ switch(_operation) do {
                             _fate = random 33;
                         };
 
+                        // Bombers
                         if (_fate < _logic getvariable ["Bomber_Threat", DEFAULT_BOMBER_THREAT]) then {
 
                             // Place Suicide Bomber trigger
@@ -308,6 +309,35 @@ switch(_operation) do {
 
                                 diag_log format ["ALIVE-%1 Suicide Bomber Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
                                 [_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorOrange", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
+
+                            };
+
+                            if !(GVAR(Loaded)) then {
+                                private "_locs";
+                                // Set location in store
+                                _locs = [GVAR(STORE), "locations", []] call ALiVE_fnc_hashGet;
+                                _locs pushback _x;
+                                [GVAR(STORE), "locations", _locs] call ALiVE_fnc_hashSet;
+                            };
+                        };
+
+                        // VBIEDs
+                        if (_fate < _logic getvariable ["VB_IED_Threat", DEFAULT_VB_IED_THREAT]) then {
+
+                            // Place VBIED
+
+                            _trg = createTrigger["EmptyDetector",getpos _twn];
+
+                            _trg setTriggerArea[(_size+250),(_size+250),0,false];
+
+                            _trg setTriggerActivation["ANY","PRESENT",true];
+                            _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1,'%2'] call ALIVE_fnc_placeVBIED",_size, text _twn], ""];
+
+                             if (_debug) then {
+                                _t = format["vbied_t%1", random 1000];
+
+                                diag_log format ["ALIVE-%1 VBIED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
+                                [_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorGreen", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
 
                             };
 

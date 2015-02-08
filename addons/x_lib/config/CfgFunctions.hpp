@@ -1587,3 +1587,10 @@ class exportCfgVehicleWeapons
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+
+class getSideFactions
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_getSideFactions.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};

@@ -131,22 +131,22 @@ class CfgVehicles {
                                         class Low
                                         {
                                                 name = "Low";
-                                                value = 5;
+                                                value = 10;
                                         };
                                         class Med
                                         {
                                                 name = "Medium";
-                                                value = 10;
+                                                value = 20;
                                         };
                                         class High
                                         {
                                                 name = "High";
-                                                value = 30;
+                                                value = 50;
                                         };
                                         class Extreme
                                         {
                                                 name = "Exteme";
-                                                value = 60;
+                                                value = 70;
                                         };
                                 };
                         };
