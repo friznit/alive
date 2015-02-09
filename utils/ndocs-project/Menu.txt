@@ -1,4 +1,4 @@
-Format: 1.51
+Format: 1.52
 
 
 # You can add a title and sub-title to your menu like this:
@@ -52,9 +52,9 @@ Group: ALiVE  {
 
    Group: Project  {
 
-      Link: Wiki  (http://dev-heaven.net/projects/alive/wiki)
+      Link: Wiki  (http://alivemod.com/wiki/index.php/Main_Page)
       Link: Issues  (http://dev-heaven.net/projects/alive/issues)
-      Link: Download  (http://dev-heaven.net/projects/alive/files)
+      Link: Download  (http://alivemod.com/#Download)
       }  # Group: Project
 
    Group: Functions  {
@@ -73,6 +73,7 @@ Group: ALiVE  {
          File: ALIVE_fnc_unPauseModule  (main/fnc_unPauseModule.sqf)
          File: ALIVE_fnc_versioning  (main/fnc_versioning.sqf)
          File: ALIVE_fnc_ZEUSinit  (main/fnc_ZEUSinit.sqf)
+         File: mainTablet  (main/fnc_mainTablet.sqf)
          }  # Group: Main
 
       Group: Amb_civ_command  {
@@ -116,18 +117,12 @@ Group: ALiVE  {
          File: MAINCLASS  (amb_civ_population/fnc_clusterHandler.sqf)
          }  # Group: Amb_civ_population
 
-      Group: Composition_a3  {
-
-         File: ALIVE_fnc_exportComposition  (composition_a3/fnc_exportComposition.sqf)
-         File: ALIVE_fnc_findComposition  (composition_a3/fnc_findComposition.sqf)
-         File: ALIVE_fnc_spawnComposition  (composition_a3/fnc_spawnComposition.sqf)
-         }  # Group: Composition_a3
-
       Group: Sup_player_resupply  {
 
          File: ALIVE_fnc_PR  (sup_player_resupply/fnc_PR.sqf)
          File: ALIVE_fnc_PRInit  (sup_player_resupply/fnc_PRInit.sqf)
          File: ALIVE_fnc_PRMenuDef  (sup_player_resupply/fnc_PRMenuDef.sqf)
+         File: ALIVE_fnc_PRTabletEventToClient  (sup_player_resupply/fnc_PRTabletEventToClient.sqf)
          File: ALIVE_fnc_PRTabletOnAction  (sup_player_resupply/fnc_PRTabletOnAction.sqf)
          File: ALIVE_fnc_PRTabletOnLoad  (sup_player_resupply/fnc_PRTabletOnLoad.sqf)
          File: ALIVE_fnc_PRTabletOnUnLoad  (sup_player_resupply/fnc_PRTabletOnUnLoad.sqf)
@@ -177,26 +172,16 @@ Group: ALiVE  {
          File: ALIVE_fnc_combatSupport  (sup_combatsupport/fnc_combatSupport.sqf)
          File: ALIVE_fnc_combatSupportInit  (sup_combatsupport/fnc_combatSupportInit.sqf)
          File: ALIVE_fnc_combatSupportMenuDef  (sup_combatsupport/fnc_combatSupportMenuDef.sqf)
+         File: fn_packStaticWeapon.sqf  (sup_combatsupport/fnc_packMortar.sqf)
+         File: fn_unpackStaticWeapon.sqf  (sup_combatsupport/fnc_unpackMortar.sqf)
          }  # Group: Sup_combatsupport
 
       Group: Sup_multispawn  {
 
+         File: ALiVE_fnc_establishingShotCustom  (sup_multispawn/fnc_establishingShotCustom.sqf)
          File: ALIVE_fnc_multispawn  (sup_multispawn/fnc_multispawn.sqf)
          File: ALIVE_fnc_multispawnInit  (sup_multispawn/fnc_multispawnInit.sqf)
          File: ALIVE_fnc_multispawnMenuDef  (sup_multispawn/fnc_multispawnMenuDef.sqf)
-
-         Group: Functions  {
-
-            File: ALIVE_fnc_multispawnAddAction  (sup_multispawn/functions/fnc_multispawnAddAction.sqf)
-            File: ALIVE_fnc_multispawnConvert  (sup_multispawn/functions/fnc_multispawnConvert.sqf)
-            File: ALIVE_fnc_multispawnDeploy  (sup_multispawn/functions/fnc_multispawnDeploy.sqf)
-            File: ALIVE_fnc_multispawnMHQType  (sup_multispawn/functions/fnc_multispawnMHQType.sqf)
-            File: ALIVE_fnc_multispawnPlayerSetSpawn  (sup_multispawn/functions/fnc_multispawnPlayerSetSpawn.sqf)
-            File: ALIVE_fnc_multispawnRelocatePlayer  (sup_multispawn/functions/fnc_multispawnRelocatePlayer.sqf)
-            File: ALIVE_fnc_multispawnSyncState  (sup_multispawn/functions/fnc_multispawnSyncState.sqf)
-            File: ALIVE_fnc_multispawnUndeploy  (sup_multispawn/functions/fnc_multispawnUndeploy.sqf)
-            }  # Group: Functions
-
          }  # Group: Sup_multispawn
 
       Group: Sys_data  {
@@ -208,6 +193,7 @@ Group: ALiVE  {
          File: ALIVE_fnc_getServerTime  (sys_data/fnc_getServerTime.sqf)
          File: ALIVE_fnc_sendToPlugIn  (sys_data/fnc_sendToPlugIn.sqf)
          File: ALIVE_fnc_sendToPlugInAsync  (sys_data/fnc_sendToPlugInAsync.sqf)
+         File: ALIVE_fnc_startALiVEPlugIn  (sys_data/fnc_startALiVEPlugIn.sqf)
          }  # Group: Sys_data
 
       Group: Sys_data_couchdb  {
@@ -216,6 +202,7 @@ Group: ALiVE  {
          File: ALIVE_fnc_bulkReadData  (sys_data_couchdb/fnc_bulkReadData.sqf)
          File: ALIVE_fnc_bulkSaveData_couchdb  (sys_data_couchdb/fnc_bulkSaveData.sqf)
          File: ALIVE_fnc_bulkWriteData_couchdb  (sys_data_couchdb/fnc_bulkWriteData.sqf)
+         File: ALIVE_fnc_deleteData  (sys_data_couchdb/fnc_deleteData.sqf)
          File: ALIVE_fnc_loadData_couchdb  (sys_data_couchdb/fnc_loadData.sqf)
          File: ALIVE_fnc_readData  (sys_data_couchdb/fnc_readData.sqf)
          File: ALIVE_fnc_restoreData  (sys_data_couchdb/fnc_restoreData.sqf)
@@ -232,6 +219,7 @@ Group: ALiVE  {
          File: ALIVE_fnc_adminActionsMenuDef  (sys_adminactions/fnc_adminActionsMenuDef.sqf)
          File: ALIVE_fnc_adminActionsTeleportUnits  (sys_adminactions/fnc_adminActionsTeleportUnits.sqf)
          File: ALIVE_fnc_adminCreateProfiles  (sys_adminactions/fnc_adminCreateProfiles.sqf)
+         File: ALIVE_fnc_adminGhost  (sys_adminactions/fnc_adminGhost.sqf)
          File: ALIVE_fnc_agentSystemDebug  (sys_adminactions/fnc_agentSystemDebug.sqf)
          File: ALIVE_fnc_markUnits  (sys_adminactions/fnc_markUnits.sqf)
          File: ALIVE_fnc_profileSystemDebug  (sys_adminactions/fnc_profileSystemDebug.sqf)
@@ -314,7 +302,10 @@ Group: ALiVE  {
       Group: Mil_logistics  {
 
          File: ALIVE_fnc_ML  (mil_logistics/fnc_ML.sqf)
+         File: ALIVE_fnc_MLGlobalRegistry  (mil_logistics/fnc_MLGlobalRegistry.sqf)
          File: ALIVE_fnc_MLInit  (mil_logistics/fnc_MLInit.sqf)
+         File: ALIVE_fnc_MLLoadData  (mil_logistics/fnc_MLLoadData.sqf)
+         File: ALIVE_fnc_MLSaveData  (mil_logistics/fnc_MLSaveData.sqf)
          }  # Group: Mil_logistics
 
       Group: Fnc_analysis  {
@@ -356,10 +347,16 @@ Group: ALiVE  {
          File: MAINCLASS  (fnc_analysis/fnc_sectorGrid.sqf)
          File: MAINCLASS  (fnc_analysis/fnc_sector.sqf)
          File: MAINCLASS  (fnc_analysis/fnc_liveAnalysis.sqf)
+         File: MAINCLASS  (fnc_analysis/fnc_battlefieldAnalysis.sqf)
+         File: MAINCLASS  (fnc_analysis/fnc_militaryIntel.sqf)
          }  # Group: Fnc_analysis
 
       Group: Mil_command  {
 
+         File: ALIVE_fnc_ambientMovement  (mil_command/fnc_ambientMovement.sqf)
+         File: ALIVE_fnc_garrison  (mil_command/fnc_garrison.sqf)
+         File: ALIVE_fnc_insurgents  (mil_command/fnc_insurgents.sqf)
+         File: ALIVE_fnc_managedGarrison  (mil_command/fnc_managedGarrison.sqf)
          File: ALIVE_fnc_testCommand  (mil_command/fnc_testCommand.sqf)
          File: ALIVE_fnc_testCommand  (mil_command/fnc_buildingPatrol.sqf)
          File: ALIVE_fnc_testManagedCommand  (mil_command/fnc_testManagedCommand.sqf)
@@ -393,6 +390,8 @@ Group: ALiVE  {
          File: ALIVE_fnc_OPCOM  (mil_OPCOM/fnc_OPCOM.sqf)
          File: ALIVE_fnc_OPCOM  (mil_OPCOM/fnc_OPCOMpositions.sqf)
          File: ALIVE_fnc_OPCOMInit  (mil_OPCOM/fnc_OPCOMInit.sqf)
+         File: ALIVE_fnc_OPCOMjoinNearestGroup  (mil_OPCOM/fnc_OPCOMjoinNearestGroup.sqf)
+         File: ALIVE_fnc_OPCOMjoinObjective  (mil_OPCOM/fnc_OPCOMJoinObjective.sqf)
          File: ALIVE_fnc_OPCOMLoadData  (mil_OPCOM/fnc_OPCOMLoadData.sqf)
          File: ALIVE_fnc_OPCOMSaveData  (mil_OPCOM/fnc_OPCOMSaveData.sqf)
          }  # Group: Mil_OPCOM
@@ -414,12 +413,14 @@ Group: ALiVE  {
          File: ALIVE_fnc_civClusterGeneration  (civ_placement/fnc_civClusterGeneration.sqf)
          File: ALIVE_fnc_COInit  (civ_placement/fnc_CPInit.sqf)
          File: ALIVE_fnc_CP  (civ_placement/fnc_CP.sqf)
+         File: fnc_createRoadBlock.sqf v1.0  (civ_placement/fnc_createRoadblock.sqf)
          }  # Group: Civ_placement
 
       Group: UI  {
 
          File: Columns UI  (ui/c_ui.hpp)
          File: Columns UI  (ui/c_ui_.hpp)
+         File: displayMenu  (ui/menu/fnc_displayMenu.sqf)
          }  # Group: UI
 
       Group: Sys_perf  {
@@ -452,6 +453,7 @@ Group: ALiVE  {
 
       Group: Sys_profile  {
 
+         File: ALIVE_fnc_createProfileEntity  (sys_profile/fnc_createProfileEntity.sqf)
          File: ALIVE_fnc_createProfilesCrewedVehicle  (sys_profile/fnc_createProfilesCrewedVehicle.sqf)
          File: ALIVE_fnc_createProfilesFromGroupConfig  (sys_profile/fnc_createProfilesFromGroupConfig.sqf)
          File: ALIVE_fnc_createProfilesFromPlayers  (sys_profile/fnc_createProfilesFromPlayers.sqf)
@@ -530,7 +532,6 @@ Group: ALiVE  {
 
             File: ALIVE_fnc_BUS  (x_lib/functions/network/fnc_BUS.sqf)
             File: ALIVE_fnc_clientSwitchMove  (x_lib/functions/anim/fnc_clientSwitchMove.sqf)
-            File: ALIVE_fnc_event  (x_lib/functions/events/fnc_event.sqf)
             File: ALiVE_fnc_isFilePath  (x_lib/functions/filesystem/fnc_isFilePath.sqf)
             File: ALIVE_fnc_switchMove  (x_lib/functions/anim/fnc_switchMove.sqf)
 
@@ -563,11 +564,17 @@ Group: ALiVE  {
                File: ALIVE_fnc_configGetVehicleTurrets  (x_lib/functions/config/fnc_configGetVehicleTurrets.sqf)
                File: ALIVE_fnc_configGetWeaponMagazines  (x_lib/functions/config/fnc_configGetWeaponMagazines.sqf)
                File: ALiVE_fnc_getConfigValue  (x_lib/functions/config/fnc_getConfigValue.sqf)
+               File: ALiVE_fnc_getFactionsDataSource  (x_lib/functions/config/fnc_getFactionsDataSource.sqf)
+               File: ALIVE_fnc_sortCFGGroupsByFaction  (x_lib/functions/config/fnc_sortCFGGroupsByFaction.sqf)
+               File: ALIVE_fnc_sortCFGGroupsBySide  (x_lib/functions/config/fnc_sortCFGGroupsBySide.sqf)
+               File: ALIVE_fnc_sortCFGVehiclesByClass  (x_lib/functions/config/fnc_sortCFGVehiclesByClass.sqf)
+               File: ALIVE_fnc_sortCFGVehiclesByFactionClass  (x_lib/functions/config/fnc_sortCFGVehiclesByFactionClass.sqf)
                }  # Group: Config
 
             Group: Conversions  {
 
                File: ALIVE_fnc_sideNumberToText  (x_lib/functions/conversions/fnc_sideNumberToText.sqf)
+               File: ALIVE_fnc_sideObjectToNumber  (x_lib/functions/conversions/fnc_sideObjectToNumber.sqf)
                File: ALIVE_fnc_sideTextToLong  (x_lib/functions/conversions/fnc_sideTextToLong.sqf)
                File: ALIVE_fnc_sideTextToNumber  (x_lib/functions/conversions/fnc_sideTextToNumber.sqf)
                File: ALIVE_fnc_sideTextToObject  (x_lib/functions/conversions/fnc_sideTextToObject.sqf)
@@ -580,11 +587,13 @@ Group: ALiVE  {
             Group: Data  {
 
                File: ALiVE_fnc_encodeJSON  (x_lib/functions/data/fnc_encodeJSON.sqf)
+               File: ALiVE_fnc_hashAddWarRoomData  (x_lib/functions/data/fnc_hashAddWarRoomData.sqf)
                File: ALiVE_fnc_hashCopy  (x_lib/functions/data/fnc_hashCopy.sqf)
                File: ALiVE_fnc_hashCreate  (x_lib/functions/data/fnc_hashCreate.sqf)
                File: ALiVE_fnc_hashGet  (x_lib/functions/data/fnc_hashGet.sqf)
                File: ALiVE_fnc_hashRem  (x_lib/functions/data/fnc_hashRem.sqf)
                File: ALiVE_fnc_hashSet  (x_lib/functions/data/fnc_hashSet.sqf)
+               File: ALiVE_fnc_isHash  (x_lib/functions/data/fnc_isHash.sqf)
                File: ALiVE_fnc_JSON  (x_lib/functions/data/fnc_JSON.sqf)
                File: ALIVE_fnc_parseJSON  (x_lib/functions/data/fnc_parseJSON.sqf)
                File: ALiVE_fnc_unorderedMap  (x_lib/functions/data/fnc_unorderedMap.sqf)
@@ -592,10 +601,14 @@ Group: ALiVE  {
 
             Group: Diagnostics  {
 
+               File: ALIVE_fnc_canSee  (x_lib/functions/diagnostics/fnc_canSee.sqf)
+               File: ALIVE_fnc_checkConfigCompatibility  (x_lib/functions/diagnostics/fnc_checkConfigCompatibility.sqf)
                File: ALIVE_fnc_cursorTargetInfo  (x_lib/functions/diagnostics/fnc_cursorTargetInfo.sqf)
                File: ALIVE_fnc_debugBuildingPositions  (x_lib/functions/diagnostics/fnc_debugBuildingPositions.sqf)
                File: ALIVE_fnc_debugHandler  (x_lib/functions/diagnostics/fnc_debugHandler.sqf)
                File: ALiVE_fnc_estimateMemoryUsage  (x_lib/functions/diagnostics/fnc_estimateMemoryUsage.sqf)
+               File: ALIVE_fnc_factionCreateStaticData  (x_lib/functions/diagnostics/fnc_factionCreateStaticData.sqf)
+               File: ALIVE_fnc_inspectArray  (x_lib/functions/diagnostics/fnc_inspectArray.sqf)
                File: ALIVE_fnc_inspectClasses  (x_lib/functions/diagnostics/fnc_inspectClasses.sqf)
                File: ALIVE_fnc_inspectConfig  (x_lib/functions/diagnostics/fnc_inspectConfig.sqf)
                File: ALIVE_fnc_inspectConfigItem  (x_lib/functions/diagnostics/fnc_inspectConfigItem.sqf)
@@ -608,6 +621,13 @@ Group: ALiVE  {
                File: ALIVE_fnc_spawnDebugMarker  (x_lib/functions/diagnostics/fnc_spawnDebugMarker.sqf)
                File: ALIVE_fnc_timer  (x_lib/functions/diagnostics/fnc_timer.sqf)
                }  # Group: Diagnostics
+
+            Group: Events  {
+
+               File: ALIVE_fnc_addEventToServer  (x_lib/functions/events/fnc_addEventToServer.sqf)
+               File: ALIVE_fnc_event  (x_lib/functions/events/fnc_event.sqf)
+               File: MAINCLASS  (x_lib/functions/events/fnc_eventLog.sqf)
+               }  # Group: Events
 
             Group: Groups  {
 
@@ -622,6 +642,7 @@ Group: ALiVE  {
 
                File: ALiVE_fnc_convertLogLevel  (x_lib/functions/logging/fnc_convertLogLevel.sqf)
                File: ALIVE_fnc_dump  (x_lib/functions/logging/fnc_dump.sqf)
+               File: ALIVE_fnc_dumpClipboard  (x_lib/functions/logging/fnc_dumpClipboard.sqf)
                File: ALIVE_fnc_dumpH  (x_lib/functions/logging/fnc_dumpH.sqf)
                File: ALIVE_fnc_dumpLogo  (x_lib/functions/logging/fnc_dumpLogo.sqf)
                File: ALIVE_fnc_dumpModuleInit  (x_lib/functions/logging/fnc_dumpModuleInit.sqf)
@@ -632,8 +653,6 @@ Group: ALiVE  {
                File: ALiVE_fnc_logger  (x_lib/functions/logging/fnc_logger.sqf)
                File: ALiVE_fnc_setLogLevel  (x_lib/functions/logging/fnc_setLogLevel.sqf)
                }  # Group: Logging
-
-            File: MAINCLASS  (x_lib/functions/events/fnc_eventLog.sqf)
 
             Group: Map  {
 
@@ -651,16 +670,22 @@ Group: ALiVE  {
                File: ALIVE_fnc_getMaxBuildingPositions  (x_lib/functions/map/fnc_getMaxBuildingPositions.sqf)
                File: ALIVE_fnc_getObjectsByType  (x_lib/functions/map/fnc_getObjectsByType.sqf)
                File: ALIVE_fnc_getRandomPositionLand  (x_lib/functions/map/fnc_getRandomPositionLand.sqf)
+               File: ALIVE_fnc_getSeriesRoadPositions  (x_lib/functions/map/fnc_getSeriesRoadPositions.sqf)
+               File: ALIVE_fnc_gridPos  (x_lib/functions/map/fnc_gridPos.sqf)
                File: ALIVE_fnc_isHouseEnterable  (x_lib/functions/map/fnc_isHouseEnterable.sqf)
                File: ALiVE_fnc_processTerrain  (x_lib/functions/map/fnc_processTerrain.sqf)
                }  # Group: Map
 
             Group: Markers  {
 
+               File: ALIVE_fnc_createBuildingGrid  (x_lib/functions/markers/fnc_createBuildingGrid.sqf)
+               File: ALIVE_fnc_createLineMarker  (x_lib/functions/markers/fnc_createLineMarker.sqf)
                File: ALIVE_fnc_createLink  (x_lib/functions/markers/fnc_createLink.sqf)
+               File: ALIVE_fnc_createMarker  (x_lib/functions/markers/fnc_createMarker.sqf)
                File: ALIVE_fnc_deleteLink  (x_lib/functions/markers/fnc_deleteLink.sqf)
                File: ALiVE_fnc_inArea  (x_lib/functions/markers/fnc_inArea.sqf)
                File: ALIVE_fnc_markerExists  (x_lib/functions/markers/fnc_MarkerExists.sqf)
+               File: ALIVE_fnc_updateBuildingGrid  (x_lib/functions/markers/fnc_updateBuildingGrid.sqf)
                File: ALIVE_fnc_validateLocations  (x_lib/functions/markers/fnc_validateLocations.sqf)
                }  # Group: Markers
 
@@ -676,14 +701,20 @@ Group: ALiVE  {
 
             Group: Misc  {
 
+               File: ALiVE_fnc_allSides  (x_lib/functions/misc/fnc_allSides.sqf)
+               File: ALiVE_fnc_classSide  (x_lib/functions/misc/fnc_classSide.sqf)
+               File: ALiVE_fnc_compileReadableDate  (x_lib/functions/misc/fnc_compileReadableDate.sqf)
+               File: ALIVE_fnc_emptyInit  (x_lib/functions/misc/fnc_emptyInit.sqf)
                File: ALiVE_fnc_factionSide  (x_lib/functions/misc/fnc_factionSide.sqf)
                File: ALiVE_fnc_getDominantFaction  (x_lib/functions/misc/fnc_getDominantFaction.sqf)
                File: ALIVE_fnc_getEnvironment  (x_lib/functions/misc/fnc_getEnvironment.sqf)
                File: ALiVE_fnc_getPos  (x_lib/functions/misc/fnc_getPos.sqf)
+               File: ALiVE_fnc_getSideFactions  (x_lib/functions/misc/fnc_getSideFactions.sqf)
                File: ALiVE_fnc_isAbleToHost  (x_lib/functions/misc/fnc_isAbleToHost.sqf)
                File: ALIVE_fnc_isHC  (x_lib/functions/misc/fnc_isHC.sqf)
                File: ALIVE_fnc_isServerAdmin  (x_lib/functions/misc/fnc_isServerAdmin.sqf)
                File: ALiVE_fnc_param  (x_lib/functions/misc/fnc_param.sqf)
+               File: ALIVE_fnc_pointAt  (x_lib/functions/misc/fnc_pointAt.sqf)
                File: ALiVE_fnc_wait  (x_lib/functions/misc/fnc_wait.sqf)
                }  # Group: Misc
 
@@ -696,8 +727,10 @@ Group: ALiVE  {
 
             Group: Strings  {
 
+               File: ALiVE_fnc_dateToDTG  (x_lib/functions/strings/fnc_dateToDTG.sqf)
                File: ALiVE_fnc_formatDate  (x_lib/functions/strings/fnc_formatDate.sqf)
                File: ALiVE_fnc_formatNumber  (x_lib/functions/strings/fnc_formatNumber.sqf)
+               File: ALiVE_fnc_realTimeToDTG  (x_lib/functions/strings/fnc_realTimeToDTG.sqf)
                File: ALiVE_fnc_selBinStr  (x_lib/functions/strings/fnc_selBinStr.sqf)
                File: ALiVE_fnc_timeToRead  (x_lib/functions/strings/fnc_timeToRead.sqf)
                }  # Group: Strings
@@ -707,6 +740,8 @@ Group: ALiVE  {
                File: ALIVE_fnc_dumpMP  (x_lib/functions/ui/fnc_hintS.sqf)
                File: ALIVE_fnc_dumpMP  (x_lib/functions/ui/fnc_sideC.sqf)
                File: ALiVE_fnc_hint  (x_lib/functions/ui/fnc_hint.sqf)
+               File: ALIVE_fnc_radioBroadcast  (x_lib/functions/ui/fnc_radioBroadcast.sqf)
+               File: ALIVE_fnc_radioBroadcastToSide  (x_lib/functions/ui/fnc_radioBroadcastToSide.sqf)
                File: ALIVE_fnc_sendHint  (x_lib/functions/ui/fnc_sendHint.sqf)
                }  # Group: Ui
 
@@ -716,11 +751,18 @@ Group: ALiVE  {
                File: ALiVE_fnc_anyPlayersInRange  (x_lib/functions/units/fnc_anyPlayersInRange.sqf)
                File: ALiVE_fnc_anyPlayersInRangeExcludeAir  (x_lib/functions/units/fnc_anyPlayersInRangeExcludeAir.sqf)
                File: ALiVE_fnc_anyPlayersInRangeIncludeAir  (x_lib/functions/units/fnc_anyPlayersInRangeIncludeAir.sqf)
+               File: ALiVE_fnc_anyPlayersInRangeIncludeAir  (x_lib/functions/units/fnc_PlayersInRangeIncludeAir.sqf)
                File: ALiVE_fnc_chooseRandomUnits  (x_lib/functions/units/fnc_chooseRandomUnits.sqf)
                File: ALIVE_fnc_getNearUnits  (x_lib/functions/units/fnc_getNearUnits.sqf)
+               File: ALiVE_fnc_getPlayerByUID  (x_lib/functions/units/fnc_getPlayerByUID.sqf)
+               File: ALiVE_fnc_getPlayerByUIDOnConnect  (x_lib/functions/units/fnc_getPlayerByUIDOnConnect.sqf)
+               File: ALiVE_fnc_getPlayersDataSource  (x_lib/functions/units/fnc_getPlayersDataSource.sqf)
+               File: ALiVE_fnc_getPlayersInGroupDataSource  (x_lib/functions/units/fnc_getPlayersInGroupDataSource.sqf)
                File: ALIVE_fnc_getRandomManNear  (x_lib/functions/units/fnc_getRandomManNear.sqf)
                File: ALIVE_fnc_getRandomManOrPlayerNear  (x_lib/functions/units/fnc_getRandomManOrPlayerNear.sqf)
                File: ALIVE_fnc_getRandomPlayerNear  (x_lib/functions/units/fnc_getRandomPlayerNear.sqf)
+               File: ALIVE_fnc_isArmed  (x_lib/functions/units/fnc_isArmed.sqf)
+               File: ALIVE_fnc_isEnemyNear  (x_lib/functions/units/fnc_isEnemyNear.sqf)
                File: ALIVE_fnc_unitArrayFilterDead  (x_lib/functions/units/fnc_unitArrayFilterDead.sqf)
                File: ALIVE_fnc_unitArrayGetVehiclesWithin  (x_lib/functions/units/fnc_unitArrayGetVehiclesWithin.sqf)
                File: ALIVE_fnc_unitArraySortByRank  (x_lib/functions/units/fnc_unitArraySortByRank.sqf)
@@ -731,6 +773,8 @@ Group: ALiVE  {
 
                File: ALiVE_fnc_anyAutonomousInRange  (x_lib/functions/vehicles/fnc_anyAutonomousInRange.sqf)
                File: ALiVE_fnc_findVehicleType  (x_lib/functions/vehicles/fnc_findVehicleType.sqf)
+               File: ALIVE_fnc_isAA  (x_lib/functions/vehicles/fnc_isAA.sqf)
+               File: ALIVE_fnc_isArtillery  (x_lib/functions/vehicles/fnc_isArtillery.sqf)
                File: ALIVE_fnc_vehicleAssignGroup  (x_lib/functions/vehicles/fnc_vehicleAssignGroup.sqf)
                File: ALIVE_fnc_vehicleCountEmptyPositions  (x_lib/functions/vehicles/fnc_vehicleCountEmptyPositions.sqf)
                File: ALIVE_fnc_vehicleDismount  (x_lib/functions/vehicles/fnc_vehicleDismount.sqf)
@@ -771,13 +815,112 @@ File: ALIVE_fnc_CMP  (mil_placement_custom/fnc_CMP.sqf)
 File: ALIVE_fnc_CMPInit  (mil_placement_custom/fnc_CMPInit.sqf)
 File: ALIVE_fnc_convoy  (mil_convoy/fnc_convoy.sqf)
 File: ALIVE_fnc_CQB  (sup_artillery/fnc_ARTILLERY.sqf)
-File: ALIVE_fnc_PT  (sys_playertasks/fnc_PT.sqf)
-File: ALIVE_fnc_PTInit  (sys_playertasks/fnc_PTInit.sqf)
+File: ALIVE_fnc_playeroptions  (sys_playeroptions/fnc_playeroptions.sqf)
+File: ALIVE_fnc_templateInit  (sys_playeroptions/fnc_playeroptionsInit.sqf)
+File: ALIVE_fnc_tour  (sys_tour/fnc_tour.sqf)
+File: ALIVE_fnc_tourInit  (sys_tour/fnc_tourInit.sqf)
 File: ALIVE_fnc_TransportInit  (mil_convoy/fnc_convoyInit.sqf)
-File: ALIVE_fnc_VA  (sys_virtualarsenal/fnc_VA.sqf)
-File: ALIVE_fnc_VAInit  (sys_virtualarsenal/fnc_VAInit.sqf)
-File: General Function Initialization  (x_lib/preinit.sqf)
-File: Logging Macros  (x_lib/script_macros.hpp)
+
+Group: Mil_C2ISTAR  {
+
+   File: ALIVE_fnc_C2ISTAR  (mil_C2ISTAR/fnc_C2ISTAR.sqf)
+   File: ALIVE_fnc_C2ISTARInit  (mil_C2ISTAR/fnc_C2ISTARInit.sqf)
+   File: ALIVE_fnc_C2MenuDef  (mil_C2ISTAR/fnc_C2MenuDef.sqf)
+   File: ALIVE_fnc_C2OnPlayerConnected  (mil_C2ISTAR/fnc_C2OnPlayerConnected.sqf)
+   File: ALIVE_fnc_C2TabletEventToClient  (mil_C2ISTAR/fnc_C2TabletEventToClient.sqf)
+   File: ALIVE_fnc_C2TabletOnAction  (mil_C2ISTAR/fnc_C2TabletOnAction.sqf)
+   File: ALIVE_fnc_C2TabletOnLoad  (mil_C2ISTAR/fnc_C2TabletOnLoad.sqf)
+   File: ALIVE_fnc_C2TabletOnUnLoad  (mil_C2ISTAR/fnc_C2TabletOnUnLoad.sqf)
+   File: ALIVE_fnc_taskHandlerEventToClient  (mil_C2ISTAR/fnc_taskHandlerEventToClient.sqf)
+   File: ALIVE_fnc_taskHandlerLoadData  (mil_C2ISTAR/fnc_taskHandlerLoadData.sqf)
+   File: ALIVE_fnc_taskHandlerSaveData  (mil_C2ISTAR/fnc_taskHandlerSaveData.sqf)
+   File: MAINCLASS  (mil_C2ISTAR/fnc_taskHandler.sqf)
+   File: MAINCLASS  (mil_C2ISTAR/fnc_taskHandlerClient.sqf)
+
+   Group: Tasks  {
+
+      File: ALIVE_fnc_taskAssassination  (mil_C2ISTAR/tasks/fnc_taskAssassination.sqf)
+      File: ALIVE_fnc_taskCivAssault  (mil_C2ISTAR/tasks/fnc_taskCivAssault.sqf)
+      File: ALIVE_fnc_taskDestroyInfantry  (mil_C2ISTAR/tasks/fnc_taskDestroyInfantry.sqf)
+      File: ALIVE_fnc_taskDestroyInfantry  (mil_C2ISTAR/tasks/fnc_taskSabotageBuilding.sqf)
+      File: ALIVE_fnc_taskDestroyVehicles  (mil_C2ISTAR/tasks/fnc_taskDestroyVehicles.sqf)
+      File: ALIVE_fnc_taskMilAssault  (mil_C2ISTAR/tasks/fnc_taskMilAssault.sqf)
+      File: ALIVE_fnc_taskMilDefence  (mil_C2ISTAR/tasks/fnc_taskMilDefence.sqf)
+      File: ALIVE_fnc_taskTransportInsertion  (mil_C2ISTAR/tasks/fnc_taskTransportInsertion.sqf)
+      }  # Group: Tasks
+
+   Group: Utils  {
+
+      File: ALIVE_fnc_taskCreateBombardment  (mil_C2ISTAR/utils/fnc_taskCreateBombardment.sqf)
+      File: ALIVE_fnc_taskCreateExplosiveProjectile  (mil_C2ISTAR/utils/fnc_taskCreateExplosiveProjectile.sqf)
+      File: ALIVE_fnc_taskCreateMarker  (mil_C2ISTAR/utils/fnc_taskCreateMarker.sqf)
+      File: ALIVE_fnc_taskCreateMarkersForPlayers  (mil_C2ISTAR/utils/fnc_taskCreateMarkersForPlayers.sqf)
+      File: ALIVE_fnc_taskCreateRadioBroadcastForPlayers  (mil_C2ISTAR/utils/fnc_taskCreateRadioBroadcastForPlayers.sqf)
+      File: ALIVE_fnc_taskCreateRandomMilLogisticsEvent  (mil_C2ISTAR/utils/fnc_taskCreateRandomMilLogisticsEvent.sqf)
+      File: ALIVE_fnc_taskCreateReward  (mil_C2ISTAR/utils/fnc_taskCreateReward.sqf)
+      File: ALIVE_fnc_taskCreateVehicleExtractionForUnits  (mil_C2ISTAR/utils/fnc_taskCreateVehicleExtractionForUnits.sqf)
+      File: ALIVE_fnc_taskCreateVehicleInsertionForUnits  (mil_C2ISTAR/utils/fnc_taskCreateVehicleInsertionForUnits.sqf)
+      File: ALIVE_fnc_taskDeleteMarkers  (mil_C2ISTAR/utils/fnc_taskDeleteMarkers.sqf)
+      File: ALIVE_fnc_taskDeleteMarkersForPlayers  (mil_C2ISTAR/utils/fnc_taskDeleteMarkersForPlayers.sqf)
+      File: ALIVE_fnc_taskDoVehiclesHaveRoomForGroup  (mil_C2ISTAR/utils/fnc_taskDoVehiclesHaveRoomForGroup.sqf)
+      File: ALIVE_fnc_taskGetClosestPlayerDistanceToDestination  (mil_C2ISTAR/utils/fnc_taskGetClosestPlayerDistanceToDestination.sqf)
+      File: ALIVE_fnc_taskGetNearestLocationName  (mil_C2ISTAR/utils/fnc_taskGetNearestLocationName.sqf)
+      File: ALIVE_fnc_taskGetNearPlayerVehicles  (mil_C2ISTAR/utils/fnc_taskGetNearPlayerVehicles.sqf)
+      File: ALIVE_fnc_taskGetRandomSideEntityFromSector  (mil_C2ISTAR/utils/fnc_taskGetRandomSideEntityFromSector.sqf)
+      File: ALIVE_fnc_taskGetRandomSideVehicleFromSector  (mil_C2ISTAR/utils/fnc_taskGetRandomSideVehicleFromSector.sqf)
+      File: ALIVE_fnc_taskGetSectorPosition  (mil_C2ISTAR/utils/fnc_taskGetSectorPosition.sqf)
+      File: ALIVE_fnc_taskGetSideCluster  (mil_C2ISTAR/utils/fnc_taskGetSideCluster.sqf)
+      File: ALIVE_fnc_taskGetSideSectorCompositionPosition  (mil_C2ISTAR/utils/fnc_taskGetSideSectorCompositionPosition.sqf)
+      File: ALIVE_fnc_taskGetSideSectorEntities  (mil_C2ISTAR/utils/fnc_taskGetSideSectorEntities.sqf)
+      File: ALIVE_fnc_taskGetSideSectorVehicles  (mil_C2ISTAR/utils/fnc_taskGetSideSectorVehicles.sqf)
+      File: ALIVE_fnc_taskGetStateOfEntityProfiles  (mil_C2ISTAR/utils/fnc_taskGetStateOfEntityProfiles.sqf)
+      File: ALIVE_fnc_taskGetStateOfVehicleProfiles  (mil_C2ISTAR/utils/fnc_taskGetStateOfObjects.sqf)
+      File: ALIVE_fnc_taskGetStateOfVehicleProfiles  (mil_C2ISTAR/utils/fnc_taskGetStateOfVehicleProfiles.sqf)
+      File: ALIVE_fnc_taskGetVehicleWithMaxRoom  (mil_C2ISTAR/utils/fnc_taskGetVehicleWithMaxRoom.sqf)
+      File: ALIVE_fnc_taskHavePlayersReachedDestination  (mil_C2ISTAR/utils/fnc_taskHavePlayersReachedDestination.sqf)
+      File: ALIVE_fnc_taskHaveUnitsLoadedInVehicle  (mil_C2ISTAR/utils/fnc_taskHaveUnitsLoadedInVehicle.sqf)
+      File: ALIVE_fnc_taskHaveUnitsUnloadedFromVehicle  (mil_C2ISTAR/utils/fnc_taskHaveUnitsUnloadedFromVehicle.sqf)
+      File: ALIVE_fnc_taskIsAreaClearOfEnemies  (mil_C2ISTAR/utils/fnc_taskIsAreaClearOfEnemies.sqf)
+      File: ALIVE_fnc_taskSpawnOnTopOf  (mil_C2ISTAR/utils/fnc_taskSpawnOnTopOf.sqf)
+      }  # Group: Utils
+
+   }  # Group: Mil_C2ISTAR
+
+Group: Mil_ied  {
+
+   File: ALIVE_fnc_IED  (mil_ied/fnc_IED.sqf)
+   File: ALIVE_fnc_iedInit  (mil_ied/fnc_IEDInit.sqf)
+   File: ALIVE_fnc_IEDMenuDef  (mil_ied/fnc_IEDMenuDef.sqf)
+   }  # Group: Mil_ied
+
+Group: Mil_insurgency  {
+
+   File: ALIVE_fnc_insurgency  (mil_insurgency/fnc_insurgency.sqf)
+   File: ALIVE_fnc_insurgencyParams  (mil_insurgency/fnc_insurgencyParams.sqf)
+   File: ALIVE_fnc_templateInit  (mil_insurgency/fnc_insurgencyInit.sqf)
+   }  # Group: Mil_insurgency
+
+Group: Sup_combatsupport2  {
+
+   File: ALIVE_fnc_combatsupport2  (sup_combatsupport2/fnc_combatsupport2.sqf)
+   File: ALIVE_fnc_combatsupport2Init  (sup_combatsupport2/fnc_combatsupport2Init.sqf)
+   File: ALIVE_fnc_combatSupportMenuDef  (sup_combatsupport2/fnc_combatSupportMenuDef.sqf)
+   }  # Group: Sup_combatsupport2
+
+Group: Sys_marker  {
+
+   File: ALIVE_fnc_marker  (sys_marker/fnc_marker.sqf)
+   File: ALIVE_fnc_markerButtonAction  (sys_marker/fnc_markerButtonAction.sqf)
+   File: ALIVE_fnc_markerCheckedChanged  (sys_marker/fnc_markerCheckedChanged.sqf)
+   File: ALIVE_fnc_markerDeleteData  (sys_marker/fnc_markerDeleteData.sqf)
+   File: ALIVE_fnc_markerInit  (sys_marker/fnc_markerInit.sqf)
+   File: ALIVE_fnc_markerLoadData  (sys_marker/fnc_markerLoadData.sqf)
+   File: ALIVE_fnc_markerOnLoad  (sys_marker/fnc_markerLBSelChanged.sqf)
+   File: ALIVE_fnc_markerOnLoad  (sys_marker/fnc_markerOnLoad.sqf)
+   File: ALIVE_fnc_markerOnPlayerConnected  (sys_marker/fnc_markerOnPlayerConnected.sqf)
+   File: ALIVE_fnc_markerParams  (sys_marker/fnc_markerParams.sqf)
+   File: ALIVE_fnc_markerSaveData  (sys_marker/fnc_markerSaveData.sqf)
+   }  # Group: Sys_marker
 
 Group: Sys_moduletemplate  {
 
@@ -785,4 +928,97 @@ Group: Sys_moduletemplate  {
    File: ALIVE_fnc_moduletemplateParams  (sys_moduletemplate/fnc_moduleTemplateParams.sqf)
    File: ALIVE_fnc_templateInit  (sys_moduletemplate/fnc_moduletemplateInit.sqf)
    }  # Group: Sys_moduletemplate
+
+Group: Sys_patrolrep  {
+
+   File: ALIVE_fnc_patrolrep  (sys_patrolrep/fnc_patrolrep.sqf)
+   File: ALIVE_fnc_patrolrepButtonAction  (sys_patrolrep/fnc_patrolrepButtonAction.sqf)
+   File: ALIVE_fnc_patrolrepCreateDiaryRecord  (sys_patrolrep/fnc_patrolrepCreateDiaryRecord.sqf)
+   File: ALIVE_fnc_patrolrepDeleteData  (sys_patrolrep/fnc_patrolrepDeleteData.sqf)
+   File: ALIVE_fnc_patrolrepInit  (sys_patrolrep/fnc_patrolrepInit.sqf)
+   File: ALIVE_fnc_patrolrepLoadData  (sys_patrolrep/fnc_patrolrepLoadData.sqf)
+   File: ALIVE_fnc_patrolrepOnLoad  (sys_patrolrep/fnc_patrolrepOnLoad.sqf)
+   File: ALIVE_fnc_patrolrepOnPlayerConnected  (sys_patrolrep/fnc_patrolrepOnPlayerConnected.sqf)
+   File: ALIVE_fnc_patrolrepParams  (sys_patrolrep/fnc_patrolrepParams.sqf)
+   File: ALIVE_fnc_patrolrepSaveData  (sys_patrolrep/fnc_patrolrepSaveData.sqf)
+   }  # Group: Sys_patrolrep
+
+Group: Sys_quickstart  {
+
+   File: ALIVE_fnc_aliveAutoInit  (sys_quickstart/fnc_quickstartInit2.sqf)
+   File: ALIVE_fnc_quickstart  (sys_quickstart/fnc_quickstart.sqf)
+   File: ALIVE_fnc_templateInit  (sys_quickstart/fnc_quickstartInit.sqf)
+   }  # Group: Sys_quickstart
+
+Group: Sys_sitrep  {
+
+   File: ALIVE_fnc_sitrep  (sys_sitrep/fnc_sitrep.sqf)
+   File: ALIVE_fnc_sitrepButtonAction  (sys_sitrep/fnc_sitrepButtonAction.sqf)
+   File: ALIVE_fnc_sitrepCreateDiaryRecord  (sys_sitrep/fnc_sitrepCreateDiaryRecord.sqf)
+   File: ALIVE_fnc_sitrepDeleteData  (sys_sitrep/fnc_sitrepDeleteData.sqf)
+   File: ALIVE_fnc_sitrepInit  (sys_sitrep/fnc_sitrepInit.sqf)
+   File: ALIVE_fnc_sitrepLoadData  (sys_sitrep/fnc_sitrepLoadData.sqf)
+   File: ALIVE_fnc_sitrepOnLoad  (sys_sitrep/fnc_sitrepOnLoad.sqf)
+   File: ALIVE_fnc_sitrepOnPlayerConnected  (sys_sitrep/fnc_sitrepOnPlayerConnected.sqf)
+   File: ALIVE_fnc_sitrepParams  (sys_sitrep/fnc_sitrepParams.sqf)
+   File: ALIVE_fnc_sitrepSaveData  (sys_sitrep/fnc_sitrepSaveData.sqf)
+   }  # Group: Sys_sitrep
+
+Group: Sys_spotrep  {
+
+   File: ALIVE_fnc_spotrep  (sys_spotrep/fnc_spotrep.sqf)
+   File: ALIVE_fnc_spotrepCreateDiaryRecord  (sys_spotrep/fnc_spotrepCreateDiaryRecord.sqf)
+   File: ALIVE_fnc_spotrepDeleteData  (sys_spotrep/fnc_spotrepDeleteData.sqf)
+   File: ALIVE_fnc_spotrepInit  (sys_spotrep/fnc_spotrepInit.sqf)
+   File: ALIVE_fnc_spotrepLoadData  (sys_spotrep/fnc_spotrepLoadData.sqf)
+   File: ALIVE_fnc_spotrepOnPlayerConnected  (sys_spotrep/fnc_spotrepOnPlayerConnected.sqf)
+   File: ALIVE_fnc_spotrepParams  (sys_spotrep/fnc_spotrepParams.sqf)
+   File: ALIVE_fnc_spotrepSaveData  (sys_spotrep/fnc_spotrepSaveData.sqf)
+   }  # Group: Sys_spotrep
+
+Group: X_lib  {
+
+   Group: Functions  {
+
+      File: ALIVE_fnc_groupGarrison  (x_lib/functions/behaviour/fnc_groupGarrison.sqf)
+
+      Group: Camera  {
+
+         File: ALIVE_fnc_addCamera  (x_lib/functions/camera/fnc_addCamera.sqf)
+         File: ALIVE_fnc_chaseAngleShot  (x_lib/functions/camera/fnc_chaseAngleShot.sqf)
+         File: ALIVE_fnc_chaseShot  (x_lib/functions/camera/fnc_chaseShot.sqf)
+         File: ALIVE_fnc_chaseSideShot  (x_lib/functions/camera/fnc_chaseSideShot.sqf)
+         File: ALIVE_fnc_chaseWheelShot  (x_lib/functions/camera/fnc_chaseWheelShot.sqf)
+         File: ALIVE_fnc_createLiveFeedCamera  (x_lib/functions/camera/fnc_createLiveFeedCamera.sqf)
+         File: ALIVE_fnc_createLiveFeedEffect  (x_lib/functions/camera/fnc_createLiveFeedEffect.sqf)
+         File: ALIVE_fnc_flyInShot  (x_lib/functions/camera/fnc_flyInShot.sqf)
+         File: ALIVE_fnc_lowerCamera  (x_lib/functions/camera/fnc_lowerCamera.sqf)
+         File: ALIVE_fnc_moveCamera  (x_lib/functions/camera/fnc_moveCamera.sqf)
+         File: ALIVE_fnc_noTargetShot  (x_lib/functions/camera/fnc_noTargetShot.sqf)
+         File: ALIVE_fnc_panShot  (x_lib/functions/camera/fnc_panShot.sqf)
+         File: ALIVE_fnc_raiseCamera  (x_lib/functions/camera/fnc_raiseCamera.sqf)
+         File: ALIVE_fnc_removeCamera  (x_lib/functions/camera/fnc_removeCamera.sqf)
+         File: ALIVE_fnc_removeLiveFeedCamera  (x_lib/functions/camera/fnc_removeLiveFeedCamera.sqf)
+         File: ALIVE_fnc_revertCamera  (x_lib/functions/camera/fnc_revertCamera.sqf)
+         File: ALIVE_fnc_setCameraAngle  (x_lib/functions/camera/fnc_setCameraAngle.sqf)
+         File: ALIVE_fnc_startCinematic  (x_lib/functions/camera/fnc_startCinematic.sqf)
+         File: ALIVE_fnc_staticShot  (x_lib/functions/camera/fnc_staticShot.sqf)
+         File: ALIVE_fnc_stopCinematic  (x_lib/functions/camera/fnc_stopCinematic.sqf)
+         File: ALIVE_fnc_switchCamera  (x_lib/functions/camera/fnc_switchCamera.sqf)
+         File: ALIVE_fnc_zoomShot  (x_lib/functions/camera/fnc_zoomShot.sqf)
+         }  # Group: Camera
+
+      Group: Composition  {
+
+         File: ALIVE_fnc_exportComposition  (x_lib/functions/composition/fnc_exportComposition.sqf)
+         File: ALIVE_fnc_findComposition  (x_lib/functions/composition/fnc_findComposition.sqf)
+         File: ALIVE_fnc_spawnComposition  (x_lib/functions/composition/fnc_spawnComposition.sqf)
+         File: ALIVE_fnc_spawnRandomPopulatedComposition  (x_lib/functions/composition/fnc_spawnRandomPopulatedComposition.sqf)
+         }  # Group: Composition
+
+      }  # Group: Functions
+
+   File: General Function Initialization  (x_lib/preinit.sqf)
+   File: Logging Macros  (x_lib/script_macros.hpp)
+   }  # Group: X_lib
 

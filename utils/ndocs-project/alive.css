@@ -1,3 +1,46 @@
+.IPageTitle {
+	font-size: 20pt; font-weight: bold;
+	color: #999999; background-color: #333;
+	padding: 10px 15px 10px 15px;
+	border-width: 0 0 3px 0; border-color: #000000; border-style: solid;
+	margin: -15px -15px 0 -15px }
+
+.IndexPage #Index {
+	border-width: 0 0 1px 1px;
+	border-style: solid;
+	border-color: #000000;
+	font-size: 9pt;
+	margin-left: 40ex;
+}
+
+.ContentPage #Menu, .IndexPage #Menu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 40ex;
+	overflow: hidden;
+}
+
+.ContentPage #Content {
+	border-width: 0 0 1px 1px;
+	border-style: solid;
+	border-color: #000000;
+	background-color: #FFFFFF;
+	font-size: 9pt;
+	margin-left: 40ex;
+}
+
+#MainTopic .CTitle {
+font-size: 20pt;
+color: #999999;
+background-color: #333;
+padding: 10px 15px 10px 15px;
+border-width: 0 0 3px 0;
+border-color: #333;
+margin-left: 0;
+margin-right: 0;
+}
+
 pre {
 	margin: 0;
 	background: #33EE33;
