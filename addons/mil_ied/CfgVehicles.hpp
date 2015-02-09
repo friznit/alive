@@ -75,7 +75,7 @@ class CfgVehicles {
                                         };
                                         class Extreme
                                         {
-                                                name = "Exteme";
+                                                name = "Extreme";
                                                 value = 350;
                                         };
                                 };
@@ -110,7 +110,7 @@ class CfgVehicles {
                                         };
                                         class Extreme
                                         {
-                                                name = "Exteme";
+                                                name = "Extreme";
                                                 value = 50;
                                         };
                                 };
@@ -145,7 +145,7 @@ class CfgVehicles {
                                         };
                                         class Extreme
                                         {
-                                                name = "Exteme";
+                                                name = "Extreme";
                                                 value = 70;
                                         };
                                 };
