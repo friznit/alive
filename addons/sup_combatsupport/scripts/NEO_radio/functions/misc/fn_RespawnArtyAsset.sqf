@@ -12,7 +12,7 @@ _battery = _this select 7;
 _respawn = _this select 8;
 
 _unitCount = count _units; if (_unitCount > 4) then { _unitCount = 4 }; if (_unitCount < 1) then { _unitCount = 1 };
-_canMove = if (_type in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","BUS_MotInf_MortTeam"]) then { true } else { false };
+_canMove = if (_type in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","O_Mortar_01_F", "B_Mortar_01_F","I_Mortar_01_F","BUS_Support_Mort","BUS_MotInf_MortTeam","OIA_MotInf_MortTeam","OI_support_Mort","HAF_MotInf_MortTeam","HAF_Support_Mort"]) then { true } else { false };
 _rounds = _availableRounds;
 _roundsUnit = _type call NEO_fnc_artyUnitAvailableRounds;
 _roundsAvailable = [];
@@ -33,7 +33,7 @@ switch ((getNumber(configfile >> "CfgVehicles" >> _type >> "side"))) do {
 
 //Exit if limit is reached
 if (ARTY_RESPAWN_LIMIT == 0) exitwith {
-    _replen = format ["All units! We are out of arty assets"]; 	
+    _replen = format ["All units! We are out of arty assets"];
 	[[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
 };
 
@@ -50,7 +50,7 @@ _toDelete = [];
         {
             if (count _units > 0) then {
                 _toDelete set [count _toDelete,_x];
-                
+
                 _sideArray set [_foreachIndex, -1];
 				_sideArray = _sideArray - [-1];
             };
@@ -122,5 +122,5 @@ _a set [count _a, [leader _grp, _grp, _callsign, _units, _roundsAvailable]];
 
 NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _side], _a, true];
 
-_replen = format["All units this is %1! We are back on station and are ready for tasking", _callsign] ; 	
+_replen = format["All units this is %1! We are back on station and are ready for tasking", _callsign] ;
 [[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;

@@ -61,7 +61,7 @@ if(_missionRoundCount == 1) then {
 		} else {
 			_pos = _targetPos;
 		};
-		_x DOArtilleryFire [_pos, _ordnance, _missionRoundCount/3];
+		_x DOArtilleryFire [_pos, _ordnance, _missionRoundCount/((group _battery) getVariable ["supportWeaponCount",3])];
 		sleep _rateOfFire;
 	} foreach _units;
 };

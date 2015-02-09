@@ -40,11 +40,13 @@ _units = 		(units _group);
 if (isNil "_gunner" || isNil "_assistant") exitWith {
 	diag_log "Someone from the mortar team died";
 	// reduce mortar count
+    _sptCount = _grp getVariable ["supportWeaponCount",3];
+    _grp setVariable ["supportWeaponCount", _sptCount - 1];
 };
 
 [_gunner, _assistant, _targetPos, _weapon, _group] spawn {
 
-	private ["_gunner","_assistant","_pos","_tPos","_wait","_dirTo","_sptarr","_weapont", "_weapon","_grp","_timein","_timer"];
+	private ["_gunner","_assistant","_pos","_tPos","_wait","_dirTo","_sptarr","_weapont", "_weapon","_grp","_timein","_timer","_sptCount"];
 
 	_gunner = _this select 0;
 	_assistant = _this select 1;
