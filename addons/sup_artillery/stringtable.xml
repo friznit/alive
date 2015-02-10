@@ -21,7 +21,7 @@
 	<English>Arty\Mortar Type</English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_TYPE_DESC">
-	<English>Type of Arty or Mortar i.e B_Mortar_01_F</English>
+	<English>Type of Arty or Mortar e.g. BUS_MotInf_MortTeam</English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_HE">
 	<English>Number of HE Rounds </English>
