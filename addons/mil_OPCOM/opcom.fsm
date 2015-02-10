@@ -973,7 +973,7 @@ class FSM
        "_diff = [];" \n
        "" \n
        "" \n
-       "if (_startForcesStrength > 0) then {" \n
+       "if (count _startForcesStrength > 0) then {" \n
        "for ""_i"" from 0 to ((count _startForcesStrength)-1) do {" \n
        "	_startCount = _startCount + (_startForcesStrength select _i);" \n
        "	_currentCount = _currentCount + (_currentForceStrength select _i);" \n
