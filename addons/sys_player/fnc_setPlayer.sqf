@@ -104,7 +104,7 @@ if ([_gearHash] call ALIVE_fnc_isHash) then {
 	[_gearHash, _addGear] call CBA_fnc_hashEachPair;
 } else {
 	["No gear found for %1", _player] call ALivE_fnc_dump;
-	_playerHash call ALIVE_fnc_inspectHash;
+//	_playerHash call ALIVE_fnc_inspectHash;
 };
 
 
