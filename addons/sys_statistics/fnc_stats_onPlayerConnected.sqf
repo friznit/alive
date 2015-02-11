@@ -58,23 +58,26 @@ if (GVAR(ENABLED) && isDedicated) then {
 
 			_data = ((([nil,"decode", _stats] call ALIVE_fnc_JSON) select 1) select 0) select 3;
 
-			_tmp = [] call CBA_fnc_hashCreate;
-			for "_i" from 0 to ((count _data) - 1) step 2 do {
-				private ["_key","_value"];
-				_key = _data select _i;
-				_value = _data select (_i + 1);
-				[_tmp, _key, _value] call CBA_fnc_hashSet;
+			if (!isNil "_data") then {
+
+				_tmp = [] call CBA_fnc_hashCreate;
+				for "_i" from 0 to ((count _data) - 1) step 2 do {
+					private ["_key","_value"];
+					_key = _data select _i;
+					_value = _data select (_i + 1);
+					[_tmp, _key, _value] call CBA_fnc_hashSet;
+				};
+				_data = _tmp;
+
+				[_data, "Server Group", [_profile, "ServerGroup","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+				[_data, "Username", [_profile, "username","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+
+				// Send Data
+				STATS_PLAYER_PROFILE = _data;
+				_owner publicVariableClient "STATS_PLAYER_PROFILE";
+
+				TRACE_3("SENDING PROFILE DATA TO CLIENT", _owner, _data, _unit);
 			};
-			_data = _tmp;
-
-			[_data, "Server Group", [_profile, "ServerGroup","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-			[_data, "Username", [_profile, "username","Unknown"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-
-			// Send Data
-			STATS_PLAYER_PROFILE = _data;
-			_owner publicVariableClient "STATS_PLAYER_PROFILE";
-
-			TRACE_3("SENDING PROFILE DATA TO CLIENT", _owner, _data, _unit);
 
 			// Set player startTime
 			[GVAR(PlayerStartTime), getPlayerUID _unit, diag_tickTime] call ALIVE_fnc_hashSet;
