@@ -50,6 +50,12 @@
 <Key ID="STR_ALIVE_CQB_TYPE_COMMENT">
 	<English>Chooses the type of buildings in which CQB will be present</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_BUILDINGGRID">
+	<English>Building Grid:</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_BUILDINGGRID_COMMENT">
+	<English>Chooses the type of building grid markers to be displayed (f.e. diagonal)</English>
+</Key>
 <Key ID="STR_ALIVE_CQB_SPAWN">
 	<English>Probability:</English>
 </Key>

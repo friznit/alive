@@ -243,6 +243,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class CQB_BuildingGrid
+                        {
+                                displayName = "$STR_ALIVE_CQB_BUILDINGGRID";
+                                description = "$STR_ALIVE_CQB_BUILDINGGRID_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "None";
+                                                value = "false";
+                                                default = 1;
+                                        };
+                                        class No
+                                        {
+                                                name = "Diagonal";
+                                                value = "true";
+                                        };
+                                };
+                        };
                         class CQB_spawndistance
                         {
                                 displayName = "$STR_ALIVE_CQB_SPAWNDISTANCE";

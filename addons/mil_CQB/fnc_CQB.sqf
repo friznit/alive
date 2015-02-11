@@ -143,6 +143,10 @@ switch(_operation) do {
 			if (typename (_CQB_density) == "STRING") then {_CQB_density = call compile _CQB_density};
 			_logic setVariable ["CQB_DENSITY", _CQB_density];
 
+			_buildingGrid = _logic getvariable ["CQB_BuildingGrid","false"];
+			if (typename (_buildingGrid) == "STRING") then {_buildingGrid = call compile _buildingGrid};
+			_logic setVariable ["CQB_BuildingGrid", _buildingGrid];
+
 			_spawn = _logic getvariable ["CQB_spawndistance","1000"];
 			if (typename (_spawn) == "STRING") then {_spawn = call compile _spawn};
 			_logic setVariable ["spawnDistance", _spawn];
@@ -330,6 +334,9 @@ switch(_operation) do {
 
 			    [_logic, "GarbageCollecting", true] call ALiVE_fnc_CQB;
 				[_logic, "active", true] call ALiVE_fnc_CQB;
+                
+                // enable/disable Buildinggrid on main CQB instance
+                [MOD(CQB), "buildingMonitor", _buildingGrid] call ALiVE_fnc_CQB;
 
 				//Indicate startup is done on server for that instance
 				_logic setVariable ["init",true,true];
@@ -377,9 +384,6 @@ switch(_operation) do {
 				{_x setMarkerAlpha 0} foreach (_logic getVariable ["blacklist", DEFAULT_BLACKLIST]);
 			    [_logic, "whitelist", _logic getVariable ["whitelist", DEFAULT_WHITELIST]] call ALiVE_fnc_CQB;
 				{_x setMarkerAlpha 0} foreach (_logic getVariable ["whitelist", DEFAULT_WHITELIST]);
-                
-                //Monitor buildings
-                [MOD(CQB),"buildingMonitor",true] call ALiVE_fnc_CQB;
 			};
 
 			TRACE_TIME(QUOTE(COMPONENT),[]); // 8
@@ -397,7 +401,7 @@ switch(_operation) do {
 	            if (isnil "_grid") then {
 	                _grid = [getposATL _logic,30000] call ALiVE_fnc_createBuildingGrid;
 	                _logic setvariable ["grid",_grid];
-	                
+                    
 	                _grid spawn {
 	                    
 	                    waituntil {
@@ -411,7 +415,7 @@ switch(_operation) do {
             } else {
                 _grid = _logic getvariable ["grid",[]];
                 
-                {deleteMarkerLocal _x} foreach _grid;
+                {deleteMarker _x} foreach _grid;
                 
                 _logic setvariable ["grid",nil];
             };
