@@ -45,9 +45,9 @@ _players = [] call BIS_fnc_listPlayers;
         {
             if (_markerID == _x) exitwith {
 	        	if (_nearEnemy) then {
-					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORRED","","EMPTY","FDiagonal",0,0.5] call ALIVE_fnc_createMarker;
+					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORRED","","EMPTY","FDiagonal",0,0.5] call ALIVE_fnc_createMarkerGlobal;
 	        	} else {
-					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORGREEN","","EMPTY","FDiagonal",0,0.5] call ALIVE_fnc_createMarker;
+					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORGREEN","","EMPTY","FDiagonal",0,0.5] call ALIVE_fnc_createMarkerGlobal;
 	            };
             };
         } foreach _grid;

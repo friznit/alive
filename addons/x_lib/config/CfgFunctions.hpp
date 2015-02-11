@@ -1007,6 +1007,13 @@ class createMarker
 	recompile = RECOMPILE;
 };
 
+class createMarkerGlobal
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createMarkerGlobal.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class deleteLink
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_deleteLink.sqf";
