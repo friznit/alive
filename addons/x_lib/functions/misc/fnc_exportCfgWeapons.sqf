@@ -10,7 +10,9 @@
 			"screenshots" - create items one by one and take their screenshot. Works only on "Render" terrain.
 			"screenshotsTest" - create items one by one without taking screen (to verify everything is ok)
 		1: STRING - CfgPatches Prefix i.e. CUP
-		1: ARRAY of STRINGs - list of CfgPatches classes. Only weapons belonging to these addons will be used
+		2: ARRAY of STRINGs - list of CfgPatches classes. Only weapons belonging to these addons will be used
+		3: ARRAY of STRINGS - list of types of weapons to include
+		4: BOOL - true if mod does not have CfgPatches entry or is incomplete entry
 
 	Returns:
 	BOOL

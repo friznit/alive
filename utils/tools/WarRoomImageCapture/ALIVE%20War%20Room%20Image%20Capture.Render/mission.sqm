@@ -16,14 +16,14 @@ class Mission
 	randomSeed=11290611;
 	class Intel
 	{
-		timeOfChanges=1800.0002;
+		briefingName="ALiVE War Room Image Capture";
 		startWeather=0;
-		startWind=0.1;
-		startWaves=0.1;
+		startWind=0.099999994;
+		startWaves=0.099999994;
 		forecastWeather=0;
-		forecastWind=0.1;
-		forecastWaves=0.1;
-		forecastLightnings=0.1;
+		forecastWind=0.099999994;
+		forecastWaves=0.099999994;
+		forecastLightnings=0.099999994;
 		year=2009;
 		day=28;
 		hour=12;
@@ -55,7 +55,7 @@ class Mission
 	};
 	class Sensors
 	{
-		items=4;
+		items=6;
 		class Item0
 		{
 			position[]={1765.7395,20,1824.9515};
@@ -64,7 +64,7 @@ class Mission
 			interruptable=1;
 			age="UNKNOWN";
 			text="Weapons (Test)";
-			expActiv="null = [] spawn { [""screenshotstest"",""CUP""] call ALIVE_fnc_exportCfgWeapons; }";
+			expActiv="null = [] spawn { [""screenshotstest"",""A3"",[],[]] call ALIVE_fnc_exportCfgWeapons; }";
 			class Effects
 			{
 			};
@@ -77,20 +77,20 @@ class Mission
 			interruptable=1;
 			age="UNKNOWN";
 			text="Weapons";
-			expActiv="null = [] spawn { [""screenshots"",""CUP""] call ALiVE_fnc_exportCfgWeapons; }";
+			expActiv="null = [] spawn { [""screenshots"",""A3"",[],[]] call ALIVE_fnc_exportCfgWeapons; }";
 			class Effects
 			{
 			};
 		};
 		class Item2
 		{
-			position[]={1768.676,20,1771.1428};
-			activationBy="CHARLIE";
+			position[]={1759.866,20,1794.6229};
+			activationBy="ECHO";
 			repeating=1;
 			interruptable=1;
 			age="UNKNOWN";
-			text="Vehicles (Test)";
-			expActiv="null = [] spawn { [""screenshotstest"",[0,1,2,3],""CUP""] call ALiVE_fnc_exportCfgVehicles; }";
+			text="Vehicle Weapons (Test)";
+			expActiv="null = [] spawn { [""screenshotstest"",[0,1,2,3],""A3""] call ALiVE_fnc_exportCfgVehicleWeapons; }";
 			class Effects
 			{
 			};
@@ -103,7 +103,33 @@ class Mission
 			interruptable=1;
 			age="UNKNOWN";
 			text="Vehicles";
-			expActiv="null = [] spawn { [""screenshots"",[0,1,2,3],""CUP""] call ALiVE_fnc_exportCfgVehicles; }";
+			expActiv="null = [] spawn { [""screenshots"",[0,1,2,3],""A3""] call ALiVE_fnc_exportCfgVehicles; }";
+			class Effects
+			{
+			};
+		};
+		class Item4
+		{
+			position[]={1768.676,20,1771.1428};
+			activationBy="CHARLIE";
+			repeating=1;
+			interruptable=1;
+			age="UNKNOWN";
+			text="Vehicles (Test)";
+			expActiv="null = [] spawn { [""screenshotstest"",[0,1,2,3],""A3""] call ALiVE_fnc_exportCfgVehicles; }";
+			class Effects
+			{
+			};
+		};
+		class Item5
+		{
+			position[]={1840.6232,20,1794.1338};
+			activationBy="FOXTROT";
+			repeating=1;
+			interruptable=1;
+			age="UNKNOWN";
+			text="Vehicle Weapons";
+			expActiv="null = [] spawn { [""screenshots"",[0,1,2,3],""A3""] call ALiVE_fnc_exportCfgVehicleWeapons; }";
 			class Effects
 			{
 			};

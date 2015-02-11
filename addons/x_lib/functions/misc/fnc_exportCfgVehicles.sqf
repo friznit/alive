@@ -12,7 +12,8 @@
 
 		1: ARRAY of SIDEs 0 list of sides. Only objects of these sides will be used
 		2: ARRAY of STRINGs - list of CfgPatches classes. Only objects belonging to these addons will be used
-		3: BOOL - true to use only AI units (soldiers, vehicles), false to use empty ones
+		3: ARRAY of STRINGS - list of types to include
+		4: BOOL - true to use only AI units (soldiers, vehicles), false to use empty ones
 
 	Returns:
 	BOOL
