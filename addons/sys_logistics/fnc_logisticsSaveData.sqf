@@ -31,6 +31,8 @@ private ["_result","_data","_async","_missionName","_message","_messages","_save
 
 if !(isDedicated && {!(isNil "ALIVE_sys_data")} && {!(ALIVE_sys_data_DISABLED)}) exitwith {false};
 
+if (MOD(SYS_LOGISTICS) getvariable ["DISABLEPERSISTENCE", false] || MOD(SYS_LOGISTICS) getvariable ["DISABLELOG",false]) exitWith {false};
+
 if(ALiVE_SYS_DATA_DEBUG_ON) then {
     [true, "ALiVE SYS LOGISTICS - Saving Data", "logisticsper"] call ALIVE_fnc_timer;
 };
