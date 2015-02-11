@@ -445,10 +445,12 @@ Development Team and Credits
 * ARJay
 * Friznit
 * Gunny
+* Hazey
 * Raptor
 * Jman
 * Cameroon
 * Naught
+* Sacha L
 * Rye
 * WobblyHeadedBob
 
