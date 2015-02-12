@@ -268,7 +268,7 @@ switch(_operation) do {
                             _code = _x select 5;
                             _height = _x select 6;
 
-                            diag_log format["CODE: %1", _code];
+
 
 							_transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
                             _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
@@ -304,7 +304,7 @@ switch(_operation) do {
                             _gunnerTurrets = [_type,false,true,true,true] call ALIVE_fnc_configGetVehicleTurretPositions;
                             _ffvTurrets = _ffvTurrets - _gunnerTurrets;
 
-							diag_log format["%1", _ffvTurrets];
+
 
                             if(count _ffvTurrets > 0) then
                             {
@@ -319,7 +319,7 @@ switch(_operation) do {
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
-                            diag_log format["VEH: %1",_veh];
+
 
 
 
