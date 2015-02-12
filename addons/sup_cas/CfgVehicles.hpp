@@ -31,6 +31,12 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CAS_HEIGHT_DESC";
                                 defaultValue=0;
                                 };
+                        class cas_code
+                                {
+                                displayName = "$STR_ALIVE_CAS_CODE";
+                                description = "$STR_ALIVE_CAS_CODE_DESC";
+                                defaultValue="";
+                                };
                         };
                 };
         };

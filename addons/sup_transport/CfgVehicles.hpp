@@ -30,6 +30,12 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_TRANSPORT_HEIGHT_DESC";
                                 defaultValue=0;
                                 };
+                        class transport_code
+                                {
+                                displayName = "$STR_ALIVE_TRANSPORT_CODE";
+                                description = "$STR_ALIVE_TRANSPORT_CODE_DESC";
+                                defaultValue="";
+                                };
                         };
                 };
 

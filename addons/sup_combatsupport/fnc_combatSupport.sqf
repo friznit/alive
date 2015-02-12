@@ -103,7 +103,7 @@ switch(_operation) do {
 
                                         _callsign = _entry getvariable ["CS_CALLSIGN",groupID (group _entry)];
 	                                    _height = _entry getvariable ["CS_HEIGHT",0];
-	                                    _code = compile(_entry getvariable ["CS_CODE",""]);
+	                                    _code = compile (_logic getvariable ["Init",""]);
 
 	                                    _position = getposATL _entry;
 	                                    _id = [_position] call ALiVE_fnc_getNearestAirportID;
@@ -119,7 +119,7 @@ switch(_operation) do {
 
                                         _callsign = _entry getvariable ["CS_CALLSIGN",groupID (group _entry)];
 	                                    _height = _entry getvariable ["CS_HEIGHT",0];
-	                                    _code = compile(_entry getvariable ["CS_CODE",""]);
+	                                    _code = compile(_logic getvariable ["Init",""]);
 
 	                                    _position = getposATL _entry;
 	                                    _id = [_position] call ALiVE_fnc_getNearestAirportID;
@@ -170,9 +170,11 @@ switch(_operation) do {
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
                                     _id = [_position] call ALiVE_fnc_getNearestAirportID;
                                     _height = parsenumber(_heightset);
-                                    _code =  ((synchronizedObjects _logic) select _i) getvariable ["cas_code",""];
-                                    _compiledcode = compile _code;
-                                    _casArray = [_position,_direction, _type, _callsign, _id,_compiledcode,_height];
+                                    _code = ((synchronizedObjects _logic) select _i) getvariable ["cas_code",""];
+                                    _code = [_code,"this","_this select 0"] call CBA_fnc_replace;
+                                    _compilecode = compile(_code);
+
+                                    _casArray = [_position,_direction, _type, _callsign, _id,_compilecode,_height];
                                     _casArrays set [count _casArrays,_casArray];
                                 };
                                 case ("ALiVE_SUP_TRANSPORT") : {
@@ -184,10 +186,12 @@ switch(_operation) do {
                                     _heightset = ((synchronizedObjects _logic) select _i) getvariable ["transport_height","0"];
                                     _height = parsenumber(_heightset);
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
-                                    _code =  ((synchronizedObjects _logic) select _i) getvariable ["transport_code",""];
-                                    _compiledcode = compile _code;
+                                    _code = ((synchronizedObjects _logic) select _i) getvariable ["transport_code",""];
+                                    _code = [_code,"this","_this select 0"] call CBA_fnc_replace;
+                                    _compilecode = compile(_code);
 
-                                    _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_compiledcode,_height];
+
+                                    _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_compilecode,_height];
                                     _transportArrays set [count _transportArrays,_transportArray];
                                 };
                                 case ("ALiVE_sup_artillery") : {
@@ -264,6 +268,8 @@ switch(_operation) do {
                             _code = _x select 5;
                             _height = _x select 6;
 
+                            diag_log format["CODE: %1", _code];
+
 							_transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
                             _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
                             _side = getNumber(configfile >> "CfgVehicles" >> _type >> "side");
@@ -275,7 +281,7 @@ switch(_operation) do {
                                 default {_side = EAST};
                             };
 
-                            private ["_veh","_grp"];
+                            private ["_veh","_grp","_initScript"];
 
                             _veh = nearestObjects [_pos, [_type], 5];
 
@@ -313,8 +319,21 @@ switch(_operation) do {
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
-                            //Execute passed code;
-                            [_veh] spawn _code;
+                            diag_log format["VEH: %1",_veh];
+
+
+
+                            _codeScript = if (typeName _code == typeName []) then
+                            {
+                                ([_veh]+(_code select 1)) spawn (_code select 0);
+                            }
+                            else
+                            {
+                             [_veh] spawn _code;
+
+                            };
+
+
 
                             //Set Group ID
                             [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
@@ -323,7 +342,7 @@ switch(_operation) do {
                             _veh setVariable ["ALIVE_CombatSupport", true];
                             _veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 
-                            [_veh, _grp, _callsign, _pos, _dir, _height, _type, CS_RESPAWN] execFSM _transportfsm;
+                            [_veh, _grp, _callsign, _pos, _dir, _height, _type, CS_RESPAWN,_code] execFSM _transportfsm;
 
                             _t = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", _side];
                             _t set [count _t, [_veh, _grp, _callsign]];
@@ -397,8 +416,17 @@ switch(_operation) do {
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
-                            //Spawn passed code
-                            [_veh] spawn _code;
+
+                            _codeScript = if (typeName _code == typeName []) then
+                            {
+                                ([_veh]+(_code select 1)) spawn (_code select 0);
+                            }
+                            else
+                            {
+                             [_veh] spawn _code;
+
+                            };
+
 
 							// Set Group ID
                             [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
@@ -407,7 +435,7 @@ switch(_operation) do {
                             _veh setVariable ["ALIVE_CombatSupport", true];
 
                             //FSM
-                            [_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, CS_RESPAWN] execFSM _casfsm;
+                            [_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, CS_RESPAWN, _code] execFSM _casfsm;
 
                             _c = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", _side];
                             _c set [count _c, [_veh, _grp, _callsign]];

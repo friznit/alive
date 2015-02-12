@@ -10,7 +10,7 @@ _type = _this select 6;
 _respawn = _this select 7;
 
 //define defaults
-_code = {};
+_code = _this select 8;
 _tasks = ["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"];
 _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
 _sides = [WEST,EAST,RESISTANCE,CIVILIAN];
@@ -25,7 +25,7 @@ switch ((getNumber(configfile >> "CfgVehicles" >> _type >> "side"))) do {
 
 //Exit if limit is reached
 if (TRANS_RESPAWN_LIMIT == 0) exitwith {
-    _replen = format ["All units! We are out of transport assets"]; 	
+    _replen = format ["All units! We are out of transport assets"];
 	[[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
 };
 
@@ -73,10 +73,33 @@ _veh setVelocity [0,0,-1];
 _veh lockDriver true;
 {_veh lockturret [[_x], true]} forEach [0,1,2];
 
+_ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                _gunnerTurrets = [_type,false,true,true,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                _ffvTurrets = _ffvTurrets - _gunnerTurrets;
+
+                           if(count _ffvTurrets > 0) then
+                            {
+                                for "_i" from 0 to (count _ffvTurrets)-1 do
+                                    {
+                                          _turretPath = _ffvTurrets call BIS_fnc_arrayPop;
+                                         [_veh turretUnit _turretPath] join grpNull;
+                                         deleteVehicle (_veh turretUnit _turretPath);
+                                    };
+                            };
+
 _hdl = [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 waituntil {scriptdone _hdl};
-sleep 1;
 
+sleep 1;
+  _codeScript = if (typeName _code == typeName []) then
+                            {
+                                ([_veh]+(_code select 1)) spawn (_code select 0);
+                            }
+                            else
+                            {
+                             [_veh] spawn _code;
+
+                            };
 //Set variables and run FSM and optionally passed code
 _veh setVariable ["ALIVE_CombatSupport", true];
 _veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
@@ -85,7 +108,7 @@ _veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 {
 	if (_side getfriend _x >= 0.6) then {
 		private ["_array"];
-        
+
 		_array = NEO_radioLogic getVariable format["NEO_radioTrasportArray_%1", _x];
         _array set [count _array,[_veh, _grp, _callsign]];
 
@@ -95,8 +118,8 @@ _veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
 
 //Start FSM
 _transportfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\transport.fsm";
-[_veh, _grp, _callsign, _pos, _dir,_height,_type, _respawn] execFSM _transportfsm;
-[_veh] spawn _code;
+[_veh, _grp, _callsign, _pos, _dir,_height,_type, _respawn,_code] execFSM _transportfsm;
 
-_replen = format["All units this is %1! We are back on station and are ready for tasking", _callsign] ; 	
+
+_replen = format["All units this is %1! We are back on station and are ready for tasking", _callsign] ;
 [[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;

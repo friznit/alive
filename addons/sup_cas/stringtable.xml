@@ -26,6 +26,11 @@
 <Key ID="STR_ALIVE_CAS_HEIGHT_DESC">
 	<English>Sets Assets Spawn Height ASL, for use with Nimitz Addon</English>
 </Key>
-
+<Key ID="STR_ALIVE_CAS_CODE">
+	<English>Code</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_CODE_DESC">
+	<English>Code that will be ran on this unit</English>
+</Key>
 
 </Container></Package></Project>

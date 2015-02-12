@@ -1,5 +1,5 @@
 private ["_veh","_grp","_callsign","_pos", "_dir", "_type", "_airport", "_code","_height","_side","_respawn","_sides"];
-								
+
 _veh = _this select 0;
 _grp = _this select 1;
 _callsign = _this select 2;
@@ -11,7 +11,7 @@ _airport = _this select 7;
 _respawn = _this select 8;
 
 //define defaults
-_code = {};
+_code = _this select 9;
 _tasks = ["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"];
 _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
 _sides = [WEST,EAST,RESISTANCE,CIVILIAN];
@@ -26,7 +26,7 @@ switch ((getNumber(configfile >> "CfgVehicles" >> _type >> "side"))) do {
 
 //Exit if limit is reached
 if (CAS_RESPAWN_LIMIT == 0) exitwith {
-    _replen = format ["All units! We are out of CAS assets"]; 	
+    _replen = format ["All units! We are out of CAS assets"];
 	[[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
 };
 
@@ -80,20 +80,43 @@ if (getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
 _veh lockDriver true;
 {_veh lockturret [[_x], true]} forEach [0,1,2];
 
+_ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                _gunnerTurrets = [_type,false,true,true,true] call ALIVE_fnc_configGetVehicleTurretPositions;
+                                _ffvTurrets = _ffvTurrets - _gunnerTurrets;
+
+                           if(count _ffvTurrets > 0) then
+                            {
+                                for "_i" from 0 to (count _ffvTurrets)-1 do
+                                    {
+                                          _turretPath = _ffvTurrets call BIS_fnc_arrayPop;
+                                         [_veh turretUnit _turretPath] join grpNull;
+                                         deleteVehicle (_veh turretUnit _turretPath);
+                                    };
+                            };
+
+
 _hdl = [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 waituntil {scriptdone _hdl};
 sleep 1;
+  _codeScript = if (typeName _code == typeName []) then
+                            {
+                                ([_veh]+(_code select 1)) spawn (_code select 0);
+                            }
+                            else
+                            {
+                             [_veh] spawn _code;
 
+                            };
 //FSM
 _casfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
-[_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, CS_RESPAWN] execFSM _casfsm;
+[_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, _respawn, _code] execFSM _casfsm;
 [_veh] spawn _code;
 
 //Register to all friendly side-lists
 {
 	if (_side getfriend _x >= 0.6) then {
 		private ["_array"];
-        
+
 		_array = NEO_radioLogic getVariable format["NEO_radioCasArray_%1", _x];
         _array set [count _array,[_veh, _grp, _callsign]];
 
@@ -101,5 +124,5 @@ _casfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
 	};
 } foreach _sides;
 
-_replen = format ["All Units this is %1, We are back on Station and are ready for tasking", _callsign] ; 	
+_replen = format ["All Units this is %1, We are back on Station and are ready for tasking", _callsign] ;
 [[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
