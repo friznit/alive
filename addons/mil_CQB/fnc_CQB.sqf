@@ -90,7 +90,7 @@ switch(_operation) do {
                 TRACE_1("Waiting for object to be ready",true);
 
                 waituntil {!isnil QMOD(CQB)};
-                
+
                 _logic = MOD(CQB);
 
                 TRACE_1("Creating class on all localities",true);
@@ -102,7 +102,7 @@ switch(_operation) do {
                 _args = _logic;
         };
         case "init": {
-            
+
 			if (isServer) then {
 	            //if server, and no CQB master logic present yet, then initialise CQB master game logic on server and inform all clients
 	            if (isnil QMOD(CQB)) then {
@@ -112,11 +112,11 @@ switch(_operation) do {
 	                publicVariable QMOD(CQB);
 	            };
             };
-            
+
             waituntil {!isnil QMOD(CQB)};
 
             //Only one init per instance is allowed
-            if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE MIL CQB - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE MIL CQB - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
             //Start init
             _logic setVariable ["initGlobal", false];
@@ -143,10 +143,6 @@ switch(_operation) do {
 			if (typename (_CQB_density) == "STRING") then {_CQB_density = call compile _CQB_density};
 			_logic setVariable ["CQB_DENSITY", _CQB_density];
 
-			_buildingGrid = _logic getvariable ["CQB_BuildingGrid","false"];
-			if (typename (_buildingGrid) == "STRING") then {_buildingGrid = call compile _buildingGrid};
-			_logic setVariable ["CQB_BuildingGrid", _buildingGrid];
-
 			_spawn = _logic getvariable ["CQB_spawndistance","1000"];
 			if (typename (_spawn) == "STRING") then {_spawn = call compile _spawn};
 			_logic setVariable ["spawnDistance", _spawn];
@@ -168,6 +164,9 @@ switch(_operation) do {
 
 			_locality = _logic getvariable ["CQB_locality_setting","client"];
 			_logic setVariable ["locality", _locality];
+
+			_buildingGrid = _logic getvariable ["CQB_BuildingGrid","None"];
+			_logic setVariable ["CQB_BuildingGrid", _buildingGrid];
 
 			_factions = _logic getvariable ["CQB_FACTIONS","OPF_F"];
 			_factions = [_logic,"factions",_factions] call ALiVE_fnc_CQB;
@@ -196,7 +195,7 @@ switch(_operation) do {
 
 			if (isServer) then {
 				MOD(CQB) setVariable ["startupComplete", false,true];
-                
+
 				//Set instance on main module
 				MOD(CQB) setVariable ["instances",(MOD(CQB) getVariable ["instances",[]]) + [_logic],true];
 
@@ -214,7 +213,7 @@ switch(_operation) do {
 				_strategicTypes = GVAR(STRATEGICHOUSES);
 				_UnitsBlackList = GVAR(UNITBLACKLIST);
 
-				
+
 				//Create Collection
 
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 1
@@ -334,9 +333,13 @@ switch(_operation) do {
 
 			    [_logic, "GarbageCollecting", true] call ALiVE_fnc_CQB;
 				[_logic, "active", true] call ALiVE_fnc_CQB;
-                
-                // enable/disable Buildinggrid on main CQB instance
-                [MOD(CQB), "buildingMonitor", _buildingGrid] call ALiVE_fnc_CQB;
+
+				// enable/disable buildingGrid on main CQB instance
+				if (_buildingGrid == "None") then {
+					[MOD(CQB), "buildingMonitor", false] call ALiVE_fnc_CQB;
+				} else {
+					[MOD(CQB), "buildingMonitor", true] call ALiVE_fnc_CQB;
+				};
 
 				//Indicate startup is done on server for that instance
 				_logic setVariable ["init",true,true];
@@ -388,35 +391,35 @@ switch(_operation) do {
 
 			TRACE_TIME(QUOTE(COMPONENT),[]); // 8
         };
-        
+
         case "buildingMonitor": {
             ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
-            
+
             private ["_grid"];
-            
+
             if (_args) then {
-	            
+
                 _grid = _logic getvariable "grid";
-                
+
 	            if (isnil "_grid") then {
-	                _grid = [getposATL _logic,30000] call ALiVE_fnc_createBuildingGrid;
+	                _grid = [getposATL _logic, 30000, _buildingGrid] call ALiVE_fnc_createBuildingGrid;
 	                _logic setvariable ["grid",_grid];
-                    
+
 	                _grid spawn {
-	                    
+
 	                    waituntil {
 	                        sleep 30;
 	                        _this call ALiVE_fnc_updateBuildingGrid;
-	                        
+
 	                    	isnil {MOD(CQB) getvariable "grid"};
 	                 	};
 	                 };
 	            };
             } else {
                 _grid = _logic getvariable ["grid",[]];
-                
+
                 {deleteMarker _x} foreach _grid;
-                
+
                 _logic setvariable ["grid",nil];
             };
         };
@@ -539,31 +542,31 @@ switch(_operation) do {
         case "destroy": {
                 if (isServer) then {
                         // if server
-                        
+
                         [_logic,"active",false] call ALiVE_fnc_CQB;
                         [_logic,"debug",false] call ALiVE_fnc_CQB;
-                        
+
                         sleep 2;
-                        
+
                         _logic setVariable ["super", nil];
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
-                        
+
                         MOD(CQB) setVariable ["instances",(MOD(CQB) getVariable ["instances",[]]) - [_logic],true];
-                        
+
                         deletegroup (group _logic);
                         deletevehicle _logic;
-                        
+
                         if (count (MOD(CQB) getVariable ["instances",[]]) == 0) then {
-                            
+
                             _logic = MOD(CQB);
-                            
+
 	                        _logic setVariable ["super", nil];
 	                        _logic setVariable ["class", nil];
 	                        _logic setVariable ["init", nil];
 	                        deletegroup (group _logic);
-	                        deletevehicle _logic;      
-                            
+	                        deletevehicle _logic;
+
                             MOD(CQB) = nil;
                         	publicVariable QMOD(CQB);
                         };

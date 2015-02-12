@@ -249,17 +249,42 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_BUILDINGGRID_COMMENT";
                                 class Values
                                 {
-                                        class Yes
+                                        class None
                                         {
                                                 name = "None";
-                                                value = "false";
+                                                value = "None";
                                                 default = 1;
                                         };
-                                        class No
+                                        class Solid
                                         {
-                                                name = "Diagonal";
-                                                value = "true";
+                                                name = "Solid";
+                                                value = "Solid";
                                         };
+										class Horizontal
+										{
+												name = "Horizontal";
+												value = "Horizontal";
+										};
+										class Vertical
+										{
+												name = "Vertical";
+												value = "Vertical";
+										};
+										class FDiagonal
+										{
+												name = "F-Diagonal";
+												value = "FDiagonal";
+										};
+										class BDiagonal
+										{
+												name = "B-Diagonal";
+												value = "BDiagonal";
+										};
+										class Cross
+										{
+												name = "Cross";
+												value = "Cross";
+										};
                                 };
                         };
                         class CQB_spawndistance

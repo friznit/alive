@@ -31,12 +31,13 @@ private ["_players","_grid"];
 
 _grid = _this;
 _players = [] call BIS_fnc_listPlayers;
+_fill = if (count _this > 2) then {_this select 2} else {"Solid"};
 
 {
     private ["_pos","_gridPos","_markerID","_side"];
-    
+
     _pos = getposATL _x;
-    
+
     If ((_pos select 2) < 2) then {
     	_gridPos = _pos call ALiVE_fnc_GridPos;
         _markerID = format["ALiVE_BuildGrid_%1%2",_gridpos select 0,_gridPos select 1];
@@ -45,9 +46,9 @@ _players = [] call BIS_fnc_listPlayers;
         {
             if (_markerID == _x) exitwith {
 	        	if (_nearEnemy) then {
-					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORRED","","EMPTY","FDiagonal",0,0.5] call ALIVE_fnc_createMarkerGlobal;
+					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORRED","","EMPTY", _fill,0,0.5] call ALIVE_fnc_createMarkerGlobal;
 	        	} else {
-					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORGREEN","","EMPTY","FDiagonal",0,0.5] call ALIVE_fnc_createMarkerGlobal;
+					[_markerID,_gridPos,"RECTANGLE",[50,50],"COLORGREEN","","EMPTY", _fill,0,0.5] call ALIVE_fnc_createMarkerGlobal;
 	            };
             };
         } foreach _grid;
