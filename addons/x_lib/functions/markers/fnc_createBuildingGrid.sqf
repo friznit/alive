@@ -31,12 +31,12 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_pos","_radius","_houses","_grid"];
+private ["_pos","_radius","_houses","_grid","_fill"];
 
 _pos = _this select 0;
 _radius = _this select 1;
-_grid = [];
 _fill = if (count _this > 2) then {_this select 2} else {"Solid"};
+_grid = [];
 
 _houses = [_pos,_radius] call ALiVE_fnc_getEnterableHouses;
 

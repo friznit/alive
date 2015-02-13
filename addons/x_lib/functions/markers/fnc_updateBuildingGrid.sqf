@@ -27,11 +27,12 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_players","_grid"];
+private ["_players","_grid","_fill"];
 
-_grid = _this;
+_grid = _this select 0;
+_fill = if (count _this > 1) then {_this select 1} else {"Solid"};
+
 _players = [] call BIS_fnc_listPlayers;
-_fill = if (count _this > 2) then {_this select 2} else {"Solid"};
 
 {
     private ["_pos","_gridPos","_markerID","_side"];

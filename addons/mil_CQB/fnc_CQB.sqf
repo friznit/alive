@@ -395,21 +395,22 @@ switch(_operation) do {
         case "buildingMonitor": {
             ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
 
-            private ["_grid"];
+            private ["_grid","_markerType"];
 
             if (_args) then {
-
+                
                 _grid = _logic getvariable "grid";
+                _markerType = MOD(CQB) getvariable ["CQB_BuildingGrid","Solid"];
 
 	            if (isnil "_grid") then {
-	                _grid = [getposATL _logic, 30000, _buildingGrid] call ALiVE_fnc_createBuildingGrid;
+	                _grid = [getposATL _logic, 30000, _markerType] call ALiVE_fnc_createBuildingGrid;
 	                _logic setvariable ["grid",_grid];
 
-	                _grid spawn {
+	                [_grid,_markerType] spawn {
 
 	                    waituntil {
 	                        sleep 30;
-	                        _this call ALiVE_fnc_updateBuildingGrid;
+	                        [_this select 0,_this select 1] call ALiVE_fnc_updateBuildingGrid;
 
 	                    	isnil {MOD(CQB) getvariable "grid"};
 	                 	};
