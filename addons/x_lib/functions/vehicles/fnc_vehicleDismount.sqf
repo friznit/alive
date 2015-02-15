@@ -36,6 +36,12 @@ _assignments = _this select 0;
 _vehicle = _this select 1;
 _gunnersDismount = if(count _this > 2) then {_this select 2} else {true};
 
+/*
+["VEHICLE DISMOUNT : %1",_vehicle] call ALIVE_fnc_dump;
+["VEHICLE DISMOUNT ASSIGNMENTS %1",_vehicle] call ALIVE_fnc_dump;
+_assignments call ALIVE_fnc_inspectArray;
+*/
+
 // driver
 _driver = _assignments select 0;	
 {
@@ -63,9 +69,19 @@ _commander = _assignments select 2;
 // turrets
 _turret = _assignments select 3;
 
+/*
+["VEHICLE DISMOUNT ASSIGNED TURRETS %1",_vehicle] call ALIVE_fnc_dump;
+_turret call ALIVE_fnc_inspectArray;
+*/
+
 if(count _turret > 0) then {
 	// get turrets for this class ignoring gunner and commander turrets
 	_turrets = [typeOf _vehicle, true, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+
+	/*
+	["VEHICLE DISMOUNT TURRET POSITIONS %1",_vehicle] call ALIVE_fnc_dump;
+	_turrets call ALIVE_fnc_inspectArray;
+	*/
 	
 	for "_i" from 0 to (count _turret)-1 do {
 		_unit = _turret select _i;
@@ -80,3 +96,27 @@ _cargo = _assignments select 4;
 	unassignVehicle _x;
 	[_x] orderGetIn false;
 } forEach _cargo;
+
+// player turrets
+_turret = _assignments select 5;
+
+/*
+["VEHICLE DISMOUNT ASSIGNED PLAYER TURRETS %1",_vehicle] call ALIVE_fnc_dump;
+_turret call ALIVE_fnc_inspectArray;
+*/
+
+if(count _turret > 0) then {
+	// get turrets for this class ignoring gunner and commander turrets
+	_turrets = [typeOf _vehicle, true, true, false, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+
+	/*
+	["VEHICLE DISMOUNT PLAYER TURRET POSITIONS %1",_vehicle] call ALIVE_fnc_dump;
+	_turrets call ALIVE_fnc_inspectArray;
+	*/
+
+	for "_i" from 0 to (count _turret)-1 do {
+		_unit = _turret select _i;
+		unassignVehicle _unit;
+		[_unit] orderGetIn false;
+	};
+};

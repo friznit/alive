@@ -41,10 +41,10 @@ STAT("Create OPCOM reinforcement event");
 _position = [getPos player, 20, 180] call BIS_fnc_relPos;
 
 _faction = "BLU_F";
-_side = "west";
+_side = "WEST";
 
 _forceMakeup = [
-    5, // infantry
+    1, // infantry
     0, // motorised
     0, // mechanised
     0, // armour

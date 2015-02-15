@@ -26,18 +26,18 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_vehicle","_ignorePlayerTurrets","_positions","_class","_turretEmptyCount","_findRecurse","_turrets"];
+private ["_vehicle","_positions","_class","_turretEmptyCount","_playerTurretEmptyCount","_findRecurse","_turrets"];
 	
 _vehicle = _this select 0;
-_ignorePlayerTurrets = if(count _this > 1) then {_this select 1} else {false};
 
-_positions = [0,0,0,0,0];
+_positions = [0,0,0,0,0,0];
 _class = (configFile >> "CfgVehicles" >> _vehicle);
 
 _positions set [0, getNumber(_class >> "hasDriver")];
 
 // get turrets for this class ignoring gunner and commander turrets
 _turretEmptyCount = 0;
+_playerTurretEmptyCount = 0;
 
 _findRecurse = {
 	private ["_root","_turret","_path","_currentPath","_hasGunner","_primaryGunner","_primaryObserver","_copilot","_isPersonTurret"];
@@ -79,12 +79,10 @@ _findRecurse = {
 			};
 
 			if(!(_primaryGunner) && !(_primaryObserver) && !(_copilot)) then {
-			    if(_ignorePlayerTurrets) then {
-                    if!(_isPersonTurret) then {
-				        _turretEmptyCount = _turretEmptyCount +1;
-                    };
+				if!(_isPersonTurret) then {
+					_turretEmptyCount = _turretEmptyCount +1;
                 }else{
-                    _turretEmptyCount = _turretEmptyCount +1;
+                	_playerTurretEmptyCount = _playerTurretEmptyCount +1;
                 };
 			};
 
@@ -106,5 +104,11 @@ _turrets = (configFile >> "CfgVehicles" >> _vehicle >> "turrets");
 
 _positions set [3, _turretEmptyCount];
 _positions set [4, getNumber(_class >> "transportSoldier")];
+_positions set [5, _playerTurretEmptyCount];
+
+/*
+["GET EMPTY POSITIONS: %1 %2",_vehicle,_positions] call ALIVE_fnc_dump;
+_positions call ALIVE_fnc_inspectArray;
+*/
 
 _positions;

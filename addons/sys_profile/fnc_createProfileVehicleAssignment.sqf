@@ -80,7 +80,7 @@ if(count(_unitIndexes) > 0) then {
 	["empty position data:%1",_emptyPositionData] call ALIVE_fnc_dump;
 	*/
 
-	_assignments = [_vehicleID,_entityID,[[],[],[],[],[]]];
+	_assignments = [_vehicleID,_entityID,[[],[],[],[],[],[]]];
 	_assignedCount = 0;
 
 	scopeName "main";

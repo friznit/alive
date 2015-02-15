@@ -33,7 +33,9 @@ _position = _this select 1;
 {
 	_entity = _x select 1;
 	_entityProfile = [ALIVE_profileHandler, "getProfile", _entity] call ALIVE_fnc_profileHandler;
-    
+
+	//["ENTITY %1 setAllPositions: %2",_entityProfile select 2 select 4,_position] call ALIVE_fnc_dump;
+
     if !(isnil "_entityProfile") then {
 		[_entityProfile,"position",_position] call ALIVE_fnc_profileEntity;
 		[_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;

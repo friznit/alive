@@ -35,7 +35,7 @@ _group = _this select 1;
 _units = units _group;
 _unitIndex = 0;
 
-_assignments = [[],[],[],[],[]];
+_assignments = [[],[],[],[],[],[]];
 
 {
 	_inVehicle = (vehicle _x);
@@ -84,6 +84,9 @@ _assignments = [[],[],[],[],[]];
 
 					if(_turretIsPerson == 1) then {
 					    _isTurret = false;
+					    _turret = _assignments select 5;
+						_turret set [count _turret,_unitIndex];
+						_assignments set [5, _turret];
 					};
 					
 					if(_isTurret) then {

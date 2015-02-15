@@ -41,8 +41,9 @@ STAT("Create OPCOM reinforcement event");
 _position = [getPos player, 20, 180] call BIS_fnc_relPos;
 
 _faction = "BLU_F";
-_side = "west";
+_side = "WEST";
 
+/*
 _forceMakeup = [
     floor(random(5)), // infantry
     floor(random(5)), // motorised
@@ -51,6 +52,7 @@ _forceMakeup = [
     floor(random(2)), // plane
     floor(random(2))  // heli
 ];
+*/
 
 /*
 _forceMakeup = [
@@ -73,6 +75,15 @@ _forceMakeup = [
     2  // heli
 ];
 */
+
+_forceMakeup = [
+    5, // infantry
+    0, // motorised
+    0, // mechanised
+    0, // armour
+    0, // plane
+    0  // heli
+];
 
 _event = ['LOGCOM_REQUEST', [_position,_faction,_side,_forceMakeup,"STANDARD"],"OPCOM"] call ALIVE_fnc_event;
 _eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;

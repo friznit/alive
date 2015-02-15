@@ -191,6 +191,8 @@ _engaged = [0,0,0];
 	                                // turn engineOn virtually
 	                            	// move all entities within the vehicle
 									// set the vehicle position and merge all assigned entities positions
+
+									//["PROFILE SIM SIMMED ENTITY %1 IN COMMAND OF %2 SET VEHICLE POS: %3",_entityProfile select 2 select 4,_vehicleProfile select 2 select 4,_newPosition] call ALIVE_fnc_dump;
                                     
 									[_vehicleProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 									[_vehicleProfile,"engineOn",true] call ALIVE_fnc_profileVehicle;
@@ -200,6 +202,9 @@ _engaged = [0,0,0];
 								};
 							} forEach _vehiclesInCommandOf;										
 						}else{
+
+							//["PROFILE SIM SIMMED ENTITY %1 NOT IN COMMAND SET ENTITY POS: %2",_entityProfile select 2 select 4,_newPosition] call ALIVE_fnc_dump;
+
 							// set the entity position and merge all unit positions to group position
 							[_entityProfile,"hasSimulated",true] call ALIVE_fnc_hashSet;
 							[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
@@ -209,7 +214,7 @@ _engaged = [0,0,0];
                         // Execute statements at the end, needs review of any variables in hashes
                         if (_executeStatements) then {if ((typeName _statements == "ARRAY") && {call compile (_statements select 0)}) then {call compile (_statements select 1)}};
 				} else {
-					diag_log format ["Profile-Simulator corrupted profile detected %3: _currentPosition %1 _destination %2",_currentPosition,_destination,_entityProfile];
+					//["Profile-Simulator corrupted profile detected %1: _currentPosition %2 _destination %3 _collected: %4",_profileID,_currentPosition,_destination,_collected] call ALIVE_fnc_dump;
 				};
 						
 			// entity is spawned, update positions
@@ -237,6 +242,8 @@ _engaged = [0,0,0];
 							
 							{
 								_vehicleProfile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
+
+								//["PROFILE SIM SPAWNED ENTITY %1 IN COMMAND OF %2 SET VEHICLE POS: %3",_entityProfile select 2 select 4,_vehicleProfile select 2 select 4,_newPosition] call ALIVE_fnc_dump;
 								
 								if !(isnil "_vehicleProfile") then {				
 									[_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
@@ -246,6 +253,8 @@ _engaged = [0,0,0];
 						} else {
 							//_leader = _entityProfile select 2 select 10; //_leader = [_profile,"leader"] call ALIVE_fnc_hashGet;
 							_newPosition = getPosATL _leader;
+
+							//["PROFILE SIM SPAWNED ENTITY %1 NOT IN COMMAND SET ENTITY POS: %2",_entityProfile select 2 select 4,_newPosition] call ALIVE_fnc_dump;
 						
 							// set the entity position and merge all unit positions to group position
 							[_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
@@ -253,7 +262,7 @@ _engaged = [0,0,0];
 						};			
 					};
 				} else {
-					diag_log format ["Profile-Simulator corrupted profile detected %3: _newPosition %1 _position %2",_newPosition,_position,_entityProfile];
+					["Profile-Simulator corrupted spawned profile detected %1: _newPosition %2 _position %3",_profileID,_newPosition,_position] call ALIVE_fnc_dump;
 				};
 			};
 		} else {
@@ -291,6 +300,8 @@ _engaged = [0,0,0];
                                 {
                                     _vehicleProfile = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
 
+                                    //["PROFILE SIM SPAWNED NO WAYPOINTS ENTITY %1 IN COMMAND OF %2 SET VEHICLE POS: %3",_entityProfile select 2 select 4,_vehicleProfile select 2 select 4,_newPosition] call ALIVE_fnc_dump;
+
                                     if !(isnil "_vehicleProfile") then {
                                         [_vehicleProfile,"position",_newPosition] call ALIVE_fnc_profileVehicle;
                                         [_vehicleProfile,"mergePositions"] call ALIVE_fnc_profileVehicle;
@@ -304,13 +315,15 @@ _engaged = [0,0,0];
 
                                 _newPosition = getPosATL _leader;
 
+                                //["PROFILE SIM SPAWNED NO WAYPOINTS ENTITY %1 NOT IN COMMAND SET ENTITY POS: %2",_entityProfile select 2 select 4,_newPosition] call ALIVE_fnc_dump;
+
                                 // set the entity position and merge all unit positions to group position
                                 [_entityProfile,"position",_newPosition] call ALIVE_fnc_profileEntity;
                                 [_entityProfile,"mergePositions"] call ALIVE_fnc_profileEntity;
                             };
                         };
                     } else {
-                        diag_log format ["Profile-Simulator corrupted profile detected %3: _newPosition %1 _position %2",_newPosition,_position,_entityProfile];
+                    	["Profile-Simulator corrupted profile detected %1: _newPosition %2 _position %3",_profileID,_newPosition,_position] call ALIVE_fnc_dump;
                     };
                 };
 		    };

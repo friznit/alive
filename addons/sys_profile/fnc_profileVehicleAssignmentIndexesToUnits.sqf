@@ -33,7 +33,7 @@ _units = _this select 1;
 //["indexes:%1",_indexes] call ALIVE_fnc_dump;
 //["units:%1",_units] call ALIVE_fnc_dump;
 
-_assignments = [[],[],[],[],[]];
+_assignments = [[],[],[],[],[],[]];
 
 for "_i" from 0 to (count _indexes)-1 do {
 	_assignment = _assignments select _i;
