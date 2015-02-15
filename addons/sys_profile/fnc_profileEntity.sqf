@@ -375,6 +375,8 @@ switch(_operation) do {
                                 [_logic,"debug",true] call MAINCLASS;
                             };
 
+                            //["ENTITY %1 position: %2",_logic select 2 select 4,_args] call ALIVE_fnc_dump;
+
                             // store position on handler position index
                             _profileID = [_logic,"profileID"] call ALIVE_fnc_hashGet;
                             [ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
@@ -636,6 +638,8 @@ switch(_operation) do {
 				_unitCount = [_logic,"unitCount"] call MAINCLASS;
 				_positions = _logic select 2 select 18; //[_logic,"positions"] call ALIVE_fnc_hashGet;
 
+				//["ENTITY %1 mergePosition: %2",_logic select 2 select 4,_position] call ALIVE_fnc_dump;
+
 				for "_i" from 0 to _unitCount-1 do
 				{
 						_positions set [_i, _position];
@@ -813,7 +817,8 @@ switch(_operation) do {
             if(typeName _args == "ARRAY") then {
 
                 [_logic,"position",_args] call ALIVE_fnc_hashSet;
-                [_logic,"mergePositions"] call ALIVE_fnc_hashSet;
+
+                //["ENTITY %1 setPosition: %2",_logic select 2 select 4,_args] call ALIVE_fnc_dump;
 
                 _active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
 
@@ -865,6 +870,8 @@ switch(_operation) do {
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
 					_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
 					//[] call ALIVE_fnc_timer;
+
+					//["SPAWN ENTITY [%1] pos: %2 command: %3 cargo: %4",_profileID,_position,_vehiclesInCommandOf,_vehiclesInCargoOf] call ALIVE_fnc_dump;
 
                     _paraDrop = false;
                     if((_position select 2) > 300) then {

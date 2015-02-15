@@ -31,7 +31,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_group","_vehicle","_orderIn","_positionCount","_units","_assignments","_leader","_gunners","_vehicleTurrets","_turrets","_cargos","_unit","_turretPath"];
+private ["_group","_vehicle","_orderIn","_positionCount","_units","_assignments","_leader","_gunners","_vehicleTurrets","_turrets","_cargos","_unit","_turretPath","_playerTurrets"];
 	
 _group = _this select 0;
 _vehicle = _this select 1;
@@ -39,10 +39,11 @@ _orderIn = if(count _this > 2) then {_this select 2} else {true};
 
 _positionCount = [_vehicle] call ALIVE_fnc_vehicleGetEmptyPositions;
 _units = units _group;
-_assignments = [[],[],[],[],[]];
+_assignments = [[],[],[],[],[],[]];
 _gunners = [];
 _turrets = [];
 _cargos = [];
+_playerTurrets = [];
 
 if(count _units > 1) then
 {
@@ -133,7 +134,29 @@ if(count _units > 1) then
 		if(_orderIn) then { [_x] orderGetIn true; };	
 		_cargos pushback _x;
 	} forEach _units;		
-	_assignments set [3, _cargos];
+	_assignments set [4, _cargos];
+
+	// assign player turrets
+	if((_positionCount select 5) > 0) then {
+
+		_vehicleTurrets = [typeOf _vehicle, true, true, false, true, true] call ALIVE_fnc_configGetVehicleTurretPositions;
+
+		for "_i" from 0 to (_positionCount select 3) do
+		{
+			if(count _units > 0) then
+			{
+				_turretPath = _vehicleTurrets select _i;
+
+				if!(isNil "_turretPath") then {
+					_unit = _units call BIS_fnc_arrayPop;
+					_unit assignAsTurret [_vehicle, _turretPath];
+					if(_orderIn) then { [_unit] orderGetIn true; };
+					_turrets pushback _unit;
+				};
+			};
+		};
+		_assignments set [5, _turrets];
+	};
 }
 else
 {
@@ -142,5 +165,10 @@ else
 	if(_orderIn) then { [_unit] orderGetIn true; };	
 	_assignments set [0, [_unit]];
 };
+
+/*
+["VEHICLE ASSIGN GROUP: %1 %2 %3",_group,_vehicle,_assignments] call ALIVE_fnc_dump;
+_assignments call ALIVE_fnc_inspectArray;
+*/
 
 _assignments

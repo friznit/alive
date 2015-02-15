@@ -115,11 +115,11 @@ _groupProfiles pushback _profileVehicle;
 // create crew members for the vehicle
 
 _crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
-_vehiclePositions = [_vehicleClass,true] call ALIVE_fnc_configGetVehicleEmptyPositions;
+_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
 _countCrewPositions = 0;
 
 // count all non cargo positions
-for "_i" from 0 to count _vehiclePositions -2 do {
+for "_i" from 0 to count _vehiclePositions -3 do {
 	_countCrewPositions = _countCrewPositions + (_vehiclePositions select _i);
 };
 

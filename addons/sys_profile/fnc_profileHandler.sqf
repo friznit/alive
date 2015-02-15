@@ -1395,6 +1395,13 @@ switch(_operation) do {
                         {
                             _key = _x;
                             _value = _vehicleAssignmentValues select _forEachIndex;
+                            _assignments = _value select 2;
+
+                            if(count _assignments < 6) then {
+								_assignments pushBack [];
+								_value set [2,_assignments];
+                            };
+
                             [_rebuiltHash, _key, _value] call ALIVE_fnc_hashSet;
                         } forEach _vehicleAssignmentKeys;
 

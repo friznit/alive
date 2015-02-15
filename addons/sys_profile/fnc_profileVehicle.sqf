@@ -308,6 +308,8 @@ switch(_operation) do {
                                 [_logic,"debug",true] call MAINCLASS;
                             };
 
+                            //["VEHICLE %1 position: %2",_logic select 2 select 4,_args] call ALIVE_fnc_dump;
+
                             // store position on handler position index
                             _profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;
                             [ALIVE_profileHandler, "setPosition", [_profileID, _args]] call ALIVE_fnc_profileHandler;
@@ -420,6 +422,8 @@ switch(_operation) do {
 				_profileID = _logic select 2 select 4; //[_logic,"profileID"] call ALIVE_fnc_hashGet;	
 				_position = _logic select 2 select 2; //[_logic,"position"] call ALIVE_fnc_hashGet;	
 				_assignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
+
+				//["VEHICLE %1 mergePosition: %2",_logic select 2 select 4,_position] call ALIVE_fnc_dump;
 				
 				if(count (_assignments select 1) > 0) then {
 					[_assignments,_position] call ALIVE_fnc_profileVehicleAssignmentsSetAllPositions;
@@ -455,6 +459,9 @@ switch(_operation) do {
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
 					_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
 					//[] call ALIVE_fnc_timer;
+
+
+					//["SPAWN VEHICLE [%1] pos: %2",_profileID,_position] call ALIVE_fnc_dump;
 
 					// spawn the unit
 					if (_vehicleType == "Helicopter" || {_vehicleType == "Plane"}) then {
