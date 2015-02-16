@@ -255,7 +255,9 @@ switch(_operation) do {
 	                                [_obj,"clusterID",""] call ALiVE_fnc_hashSet;
 	                                
 	                                _objectives = _objectives + [_obj];
-	                            };
+	                            } else {
+                                    if (typeof _mod == "ALiVE_mil_cqb") then {[_handler, "CQB",([_handler, "CQB",[]] call ALiVE_fnc_HashGet) + [_mod]] call ALiVE_fnc_HashSet};
+                                };
                             };
 						};
                         

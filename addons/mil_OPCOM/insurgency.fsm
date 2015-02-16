@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1153.849854,58.033813,538.928528,-557.268982,710,777,1};
-window[] = {0,-1,-1,-1,-1,930,22,1711,22,1,727};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1175.546387,-117.246094,472.069794,-483.383026,632,777,1};
+window[] = {0,-1,-1,-1,-1,952,44,1733,44,1,649};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -89,7 +89,7 @@ class FSM
       name = "INIT";
       init = /*%FSM<STATEINIT""">*/"private" \n
        "	[" \n
-       "		""_OPCOM_status"",""_busy"",""_pause"",""_exitFSM"",""_OPCOM_HANDLER"",""_OBJECTIVES"",""_OPCOM_FSM"",""_debug"",""_side""," \n
+       "		""_OPCOM_status"",""_busy"",""_pause"",""_exitFSM"",""_OPCOM_HANDLER"",""_OBJECTIVES"",""_OPCOM_FSM"",""_CQB"",""_debug"",""_side""," \n
        "		""_factions"",""_sidesEnemy"",""_sidesFriendly"",""_controltype"", ""_simultanObjectives"",""_reinforcementRatio"",""_iteration"",""_lock""," \n
        "		""_createMarker"",""_classes"",""_agentClusterData""" \n
        "	];" \n
@@ -99,6 +99,7 @@ class FSM
        "_OPCOM_HANDLER = _this select 0;" \n
        "_OBJECTIVES = [_OPCOM_HANDLER,""objectives"",[]] call ALiVE_fnc_HashGet;" \n
        "_OPCOM_FSM =  [_OPCOM_HANDLER,""OPCOM_FSM""] call ALiVE_fnc_HashGet;" \n
+       "_CQB = [_OPCOM_HANDLER,""CQB"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "_debug = [_OPCOM_HANDLER,""debug"",false] call ALiVE_fnc_HashGet;" \n
        "_side = [_OPCOM_HANDLER,""side"",""EAST""] call ALiVE_fnc_HashGet;" \n
@@ -132,9 +133,7 @@ class FSM
        "	_types = _this select 4;" \n
        "" \n
        "	_section = []; {_section = _section + ([_handler,_x,[]] call ALiVE_fnc_HashGet)} foreach _types;" \n
-       "    " \n
-       "    //_section = []; {_section = _section + ([ALiVE_ProfileHandler,""getProfilesByFaction"",_x] call ALiVE_fnc_ProfileHandler)} foreach _factions;" \n
-       "    " \n
+       "" \n
        "	_section = [" \n
        "    		_section," \n
        "       	 [_pos],{" \n
@@ -155,160 +154,7 @@ class FSM
        "    _section" \n
        "};" \n
        "" \n
-       "ALiVE_fnc_updateSectorHostility = {" \n
-       "    " \n
-       "    _pos = _this select 0;" \n
-       "    _sides = _this select 1;" \n
-       "    _value = _this select 2;" \n
-       "" \n
-       "	_sector = [ALIVE_sectorGrid, ""positionToSector"", _pos] call ALIVE_fnc_sectorGrid;" \n
-       "	_sectorData = [_sector, ""data""] call ALIVE_fnc_hashGet;" \n
-       "	" \n
-       "	if (""clustersCiv"" in (_sectorData select 1)) then {" \n
-       "	    _civClusters = [_sectorData,""clustersCiv""] call ALIVE_fnc_hashGet;" \n
-       "	    _settlementClusters = [_civClusters,""settlement""] call ALIVE_fnc_hashGet;" \n
-       "	" \n
-       "	    {" \n
-       "	        _clusterID = _x select 1;" \n
-       "	        _cluster = [ALIVE_clusterHandler, ""getCluster"", _clusterID] call ALIVE_fnc_clusterHandler;" \n
-       "	" \n
-       "	        if !(isNil ""_cluster"") then {" \n
-       "	            _clusterHostility = [_cluster, ""hostility""] call ALIVE_fnc_hashGet;" \n
-       "        " \n
-       "                {[_clusterHostility,_x,([_clusterHostility,_x,0] call ALIVE_fnc_hashGet) + _value] call ALIVE_fnc_hashSet} foreach _sides;" \n
-       "                [_cluster, ""hostility"",_clusterHostility] call ALIVE_fnc_hashSet;" \n
-       "	        };" \n
-       "	    } forEach _settlementClusters;" \n
-       "	};" \n
-       "};" \n
-       "" \n
-       "ALiVE_fnc_addCQBpositions = {" \n
-       "	private [""_pos"",""_radius"",""_types"",""_instances"",""_houses""];" \n
-       "" \n
-       "	if (isnil ""ALiVE_CQB"") exitwith {};" \n
-       "	" \n
-       "	_pos = _this select 0;" \n
-       "	_radius = _this select 1;" \n
-       "	_type = _this select 2;" \n
-       "" \n
-       "	_types = [""regular"",""strategic""];" \n
-       "	" \n
-       "	_instances = ALiVE_CQB getvariable [""instances"",[]];" \n
-       "	" \n
-       "	if (count _instances > 0) then {" \n
-       "	" \n
-       "	    {" \n
-       "	        _instance = _x;" \n
-       "	        _filtered = [];" \n
-       "	" \n
-       "	        _instanceType = _x getvariable [""instancetype"",""regular""];" \n
-       "	        _houses = _instance getvariable [""houses"",[]];" \n
-       "	        _housesPending = _instance getvariable [""houses_pending"",[]];" \n
-       "	        _houses = _houses - _housesPending;" \n
-       "            _housesPending = _housesPending - _houses;" \n
-       "            _housesTotal = _housesPending + _houses;" \n
-       "" \n
-       "            [_instance,""debug"",false] call ALiVE_fnc_CQB;" \n
-       "	" \n
-       "	        {" \n
-       "	            if (_instanceType in _types && {_pos distance _x < _radius}) then {" \n
-       "	                _filtered pushback _x;" \n
-       "	            };" \n
-       "	        } foreach _housesPending;" \n
-       "	" \n
-       "	        _instance setvariable [""houses"",_houses + _filtered];" \n
-       "	        _instance setvariable [""houses_pending"",_housesPending - _filtered];" \n
-       "" \n
-       "            [_instance,""debug"",true] call ALiVE_fnc_CQB;" \n
-       "	    } foreach _instances;" \n
-       "	};" \n
-       "};" \n
-       "" \n
-       "ALiVE_fnc_removeCQBpositions = {" \n
-       "	private [""_pos"",""_radius"",""_types"",""_instances"",""_houses""];" \n
-       "" \n
-       "	if (isnil ""ALiVE_CQB"") exitwith {};" \n
-       "	" \n
-       "	_pos = _this select 0;" \n
-       "	_radius = _this select 1;" \n
-       "	_type = _this select 2;" \n
-       "" \n
-       "	_types = [""regular"",""strategic""];" \n
-       "	" \n
-       "	_instances = ALiVE_CQB getvariable [""instances"",[]];" \n
-       "	" \n
-       "	if (count _instances > 0) then {" \n
-       "	" \n
-       "	    {" \n
-       "	        _instance = _x;" \n
-       "	        _filtered = [];" \n
-       "	" \n
-       "	        _instanceType = _x getvariable [""instancetype"",""regular""];" \n
-       "	        _houses = _instance getvariable [""houses"",[]];" \n
-       "	        _housesPending = _instance getvariable [""houses_pending"",[]];" \n
-       "	        _houses = _houses - _housesPending;" \n
-       "            _housesPending = _housesPending - _houses;" \n
-       "            _housesTotal = _housesPending + _houses;" \n
-       "	" \n
-       "	        [_instance,""active"",false] call ALiVE_fnc_CQB;" \n
-       "            [_instance,""debug"",false] call ALiVE_fnc_CQB;" \n
-       "    " \n
-       "            sleep 5;" \n
-       "	" \n
-       "	        {" \n
-       "	            if (_instanceType in _types && {_pos distance _x < _radius}) then {" \n
-       "	                _filtered pushback _x;" \n
-       "	            };" \n
-       "	        } foreach _houses;" \n
-       "	" \n
-       "	        _instance setvariable [""houses"",_houses - _filtered];" \n
-       "	        _instance setvariable [""houses_pending"",_housesPending + _filtered];" \n
-       "    " \n
-       "            [_instance,""active"",true] call ALiVE_fnc_CQB;" \n
-       "            [_instance,""debug"",true] call ALiVE_fnc_CQB;" \n
-       "	    } foreach _instances;" \n
-       "	};" \n
-       "};" \n
-       "" \n
-       "ALiVE_fnc_resetCQB = {" \n
-       "	private [""_pos"",""_radius"",""_types"",""_instances"",""_houses""];" \n
-       "" \n
-       "	if (isnil ""ALiVE_CQB"") exitwith {};" \n
-       "	" \n
-       "	_pos = _this select 0;" \n
-       "" \n
-       "	_types = [""regular"",""strategic""];" \n
-       "	" \n
-       "	_instances = ALiVE_CQB getvariable [""instances"",[]];" \n
-       "	" \n
-       "	if (count _instances > 0) then {" \n
-       "	" \n
-       "	    {" \n
-       "	        _instance = _x;" \n
-       "	        _filtered = [];" \n
-       "	" \n
-       "	        _instanceType = _x getvariable [""instancetype"",""regular""];" \n
-       "	        _houses = _instance getvariable [""houses"",[]];" \n
-       "	        _housesPending = _instance getvariable [""houses_pending"",[]];" \n
-       "	      _houses = _houses - _housesPending;" \n
-       "            _housesPending = _housesPending - _houses;" \n
-       "            _housesTotal = _housesPending + _houses;" \n
-       "	" \n
-       "	        [_instance,""active"",false] call ALiVE_fnc_CQB;" \n
-       "            [_instance,""debug"",false] call ALiVE_fnc_CQB;" \n
-       "    " \n
-       "            sleep 5;" \n
-       "	" \n
-       "	        _instance setvariable [""houses"",[]];" \n
-       "	        _instance setvariable [""houses_pending"",_housesTotal];" \n
-       "    " \n
-       "            [_instance,""active"",true] call ALiVE_fnc_CQB;" \n
-       "            [_instance,""debug"",true] call ALiVE_fnc_CQB;" \n
-       "	    } foreach _instances;" \n
-       "	};" \n
-       "};" \n
-       "" \n
-       "[] spawn ALiVE_fnc_resetCQB;" \n
+       "[_CQB] spawn ALiVE_fnc_resetCQB;" \n
        "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
@@ -759,7 +605,7 @@ class FSM
        "// Determine best action type" \n
        "" \n
        "if (!alive ([_objective,""factory"",objNull] call ALiVE_fnc_HashGet)) then {" \n
-       "	_type =  ""establishFactory"";" \n
+       "	_type =  ""factory"";" \n
        "} else {" \n
        "	_type =  [""sabotage"",""ied"",""suicide""] call BIS_fnc_SelectRandom;" \n
        "};" \n
@@ -785,7 +631,7 @@ class FSM
        "" \n
        "	switch (_type) do {" \n
        "" \n
-       "		case (""establishFactory"") : {" \n
+       "		case (""factory"") : {" \n
        "" \n
        "			_pos = _center;" \n
        "			_switch = false;" \n
@@ -795,7 +641,7 @@ class FSM
        "" \n
        "			if (!alive _building) then {" \n
        "				_buildings = [_center, _size] call ALiVE_fnc_getEnterableHouses;" \n
-       "				if (count _buildings == 0) then {_building = objNull; [""There is no suitable building for an explosive factory!""] call ALiVE_fnc_Dump} else {" \n
+       "				if (count _buildings == 0) then {_building = objNull; [""There is no suitable building for an IED factory!""] call ALiVE_fnc_Dump} else {" \n
        "					_buildings = [_buildings,[_pos],{_Input0 distance _x},""DESCEND""] call BIS_fnc_sortBy;" \n
        "" \n
        "					if (count _buildings > 5) then {_buildings resize 5; _building = _buildings call BIS_fnc_selectRandom} else {_building = _buildings select 0};" \n
@@ -843,7 +689,7 @@ class FSM
        "						};" \n
        "					} foreach _guards;" \n
        "" \n
-       "					[format[""Explosive_Factory_%1"",getposATL _factory],getposATL _factory,""ICON"", [1,1],""ColorRed"",""Explosives factory"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "					[format[""Explosive_Factory_%1"",getposATL _factory],getposATL _factory,""ICON"", [1,1],""ColorRed"",""IED factory"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "				};" \n
        "" \n
        "				// Add TACOM IED command on all selected agents" \n
@@ -1057,7 +903,7 @@ class FSM
        "				waituntil {time - _timeTaken > 120};" \n
        "" \n
        "				// Display target" \n
-       "				if (alive _target) then {[format[""Sabotage_%1"",getposATL _target],getposATL _target,""ICON"", [1,1],""ColorRed"",""Sabotage"", ""hd_destroy"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
+       "				if (alive _target) then {[format[""Sabotage_%1"",getposATL _target],getposATL _target,""ICON"", [1,1],""ColorRed"",""Sabotage"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
        "" \n
        "				// Add TACOM IED command on all selected agents" \n
        "				{" \n
@@ -1152,7 +998,7 @@ class FSM
        "// Determine best action type" \n
        "" \n
        "// Mock action types" \n
-       "_type =  [""recruit"",""caches"",""roadblocks""] call BIS_fnc_SelectRandom;" \n
+       "_type =  [""recruit"",""depot"",""roadblocks""] call BIS_fnc_SelectRandom;" \n
        "//_type =  [""recruit"",""caches""] call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
@@ -1178,9 +1024,9 @@ class FSM
        "			_faction = _factions call BIS_fnc_SelectRandom;" \n
        "			_building = objNull;" \n
        "" \n
-       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents];" \n
+       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents,_CQB];" \n
        "			_codeActions = {" \n
-       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_building""];" \n
+       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_building"",""_CQB""];" \n
        "" \n
        "				_timeTaken = _this select 0;" \n
        "				_pos = _this select 1;" \n
@@ -1190,6 +1036,7 @@ class FSM
        "				_building = _this select 5;" \n
        "				_sides = _this select 6;" \n
        "				_agents = _this select 7;" \n
+       "				_CQB = _this select 8;" \n
        "				_allSides = [""EAST"",""WEST"",""GUER""];" \n
        "" \n
        "				// Timeout" \n
@@ -1208,7 +1055,7 @@ class FSM
        "				} foreach _agents;" \n
        "" \n
        "				// Spawn CQB" \n
-       "				[_pos,_size,""regular""] spawn ALiVE_fnc_addCQBpositions;" \n
+       "				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;" \n
        "" \n
        "				[_pos, _size, ceil(_size/200), true] call ALiVE_fnc_createRoadblock;" \n
        "				[_pos, _sides, 20] call ALiVE_fnc_updateSectorHostility;" \n
@@ -1224,7 +1071,7 @@ class FSM
        "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
-       "		case (""caches"") : {" \n
+       "		case (""depot"") : {" \n
        "" \n
        "			_pos = _center;" \n
        "			_switch = false;" \n
@@ -1244,9 +1091,9 @@ class FSM
        "			//Override destination if there is a munitions dump" \n
        "			if (alive _building) then {_pos = getposATL _building};" \n
        "" \n
-       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents];" \n
+       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents,_CQB];" \n
        "			_codeActions = {" \n
-       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_building""];" \n
+       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_depot"",""_CQB""];" \n
        "" \n
        "				_timeTaken = _this select 0;" \n
        "				_pos = _this select 1;" \n
@@ -1256,6 +1103,7 @@ class FSM
        "				_depot = _this select 5;" \n
        "				_sides = _this select 6;" \n
        "				_agents = _this select 7;" \n
+       "				_CQB = _this select 8;" \n
        "				_allSides = [""EAST"",""WEST"",""GUER""];" \n
        "" \n
        "				// Timeout" \n
@@ -1265,7 +1113,7 @@ class FSM
        "				_box = ""Box_East_Wps_F"" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01];" \n
        "" \n
        "				// Show box" \n
-       "				if (alive _box) then {[format[""Cache_%1"",getposATL _box],getposATL _box,""ICON"", [1,1],""ColorRed"",""Cache"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
+       "				if (alive _box) then {[format[""Cache_%1"",getposATL _box],getposATL _box,""ICON"", [1,1],""ColorRed"",""Weapons depot"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
        "" \n
        "				// Create Guards" \n
        "				_group = [""Infantry"",_faction] call ALIVE_fnc_configGetRandomGroup;" \n
@@ -1278,7 +1126,7 @@ class FSM
        "                        } foreach _guards;" \n
        "" \n
        "				// Spawn CQB" \n
-       "				[_pos,_size,""regular""] spawn ALiVE_fnc_addCQBpositions;" \n
+       "				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;" \n
        "" \n
        "				// Add TACOM IED command on all selected agents" \n
        "				{" \n
@@ -1324,9 +1172,9 @@ class FSM
        "			//Override destination if there is a munitions dump" \n
        "			if (alive _building) then {_pos = getposATL _building};" \n
        "" \n
-       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents];" \n
+       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents,_CQB];" \n
        "			_codeActions = {" \n
-       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_building""];" \n
+       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_HQ"",""_CQB""];" \n
        "" \n
        "				_timeTaken = _this select 0;" \n
        "				_pos = _this select 1;" \n
@@ -1336,6 +1184,8 @@ class FSM
        "				_HQ = _this select 5;" \n
        "				_sides = _this select 6;" \n
        "				_agents = _this select 7;" \n
+       "				_CQB = _this select 8;" \n
+       "				_allSides = [""EAST"",""WEST"",""GUER""];" \n
        "" \n
        "				// Timeout" \n
        "				waituntil {time - _timeTaken > 120};" \n
@@ -1352,19 +1202,25 @@ class FSM
        "				    };" \n
        "				} foreach _agents;" \n
        "" \n
-       "				_group = [""Infantry"",_faction] call ALIVE_fnc_configGetRandomGroup;" \n
-       "				_guards = [_group, getposATL _HQ, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;" \n
-       "" \n
-       "                        {" \n
-       "					if (([_x,""type""] call ALiVE_fnc_HashGet) == ""entity"") then {" \n
-       "						[_x, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",30]] call ALIVE_fnc_profileEntity;" \n
-       "						[_x,""busy"",true] call ALiVE_fnc_HashSet;" \n
-       "					};" \n
-       "                        } foreach _guards;" \n
-       "" \n
        "				// Show HQ" \n
-       "				if (alive _HQ) then {[format[""HQ_%1"",getposATL _HQ],getposATL _HQ,""ICON"", [1,1],""ColorRed"",""Recruitment HQ"", ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
+       "				if (alive _HQ) then {" \n
+       "					[format[""HQ_%1"",getposATL _HQ],getposATL _HQ,""ICON"", [1,1],""ColorRed"",""Recruitment HQ"", ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "" \n
+       "					_group = [""Infantry"",_faction] call ALIVE_fnc_configGetRandomGroup;" \n
+       "					_guards = [_group, getposATL _HQ, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;" \n
+       "" \n
+       "                        	{" \n
+       "						if (([_x,""type""] call ALiVE_fnc_HashGet) == ""entity"") then {" \n
+       "							[_x, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",30]] call ALIVE_fnc_profileEntity;" \n
+       "							[_x,""busy"",true] call ALiVE_fnc_HashSet;" \n
+       "						};" \n
+       "                       		} foreach _guards;" \n
+       "				};" \n
        "				" \n
+       "				// Add CQB" \n
+       "				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;" \n
+       "" \n
+       "				// Recruit 5 times" \n
        "				[_pos,_size,_id,_faction,_HQ,_sides] spawn {" \n
        "					private [""_pos"",""_size"",""_id"",""_faction"",""_targetBuilding"",""_sides""];" \n
        "					" \n
@@ -1385,8 +1241,6 @@ class FSM
        "						" \n
        "						_group = [""Infantry"",_faction] call ALIVE_fnc_configGetRandomGroup;" \n
        "						_recruits = [_group, [_pos,_size] call CBA_fnc_RandPos, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;" \n
-       "" \n
-       "						[_pos,_size,""regular""] spawn ALiVE_fnc_addCQBpositions;" \n
        "" \n
        "						[_pos,_sides, 10] call ALiVE_fnc_updateSectorHostility;" \n
        "						[_pos,_allSides - _sides, -10] call ALiVE_fnc_updateSectorHostility;	" \n
