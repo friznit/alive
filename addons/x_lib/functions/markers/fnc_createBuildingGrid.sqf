@@ -47,7 +47,7 @@ _houses = [_pos,_radius] call ALiVE_fnc_getEnterableHouses;
     _markerID = format["ALiVE_BuildGrid_%1%2",_gridpos select 0,_gridPos select 1];
 
     if !(_markerID in _grid) then {
-        [_markerID,_gridPos,"RECTANGLE", [50,50],"COLORRED","", "EMPTY", _fill,0,0.5 ] call ALIVE_fnc_createMarkerGlobal;
+        [_markerID,_gridPos,"RECTANGLE", [50,50], "COLORRED", "", "EMPTY", _fill, 0, 0.5] call ALIVE_fnc_createMarkerGlobal;
         _grid pushBack _markerID;
     };
 } foreach _houses;

@@ -39,7 +39,7 @@ _players = [] call BIS_fnc_listPlayers;
 
     _pos = getposATL _x;
 
-    If ((_pos select 2) < 2) then {
+    If ((_pos select 2) < 2 && {_x == vehicle _x})  then {
     	_gridPos = _pos call ALiVE_fnc_GridPos;
         _markerID = format["ALiVE_BuildGrid_%1%2",_gridpos select 0,_gridPos select 1];
         _nearEnemy = [_gridPos, str(side _x), 75] call ALiVE_fnc_isEnemyNear;
