@@ -26,6 +26,21 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_cqb\fnc_CQBLoadData.sqf";
 								recompile = RECOMPILE;
                         };
+                        class addCQBPositions {
+                                description = "Enables CQB positions within the given radius of a position";
+                                file = "\x\alive\addons\mil_cqb\fnc_addCQBPositions.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class removeCQBPositions{
+                                description = "Disables CQB positions within the given radius of a position";
+                                file = "\x\alive\addons\mil_cqb\fnc_removeCQBPositions.sqf";
+								recompile = RECOMPILE;
+                        };
+                        class resetCQB {
+                                description = "Resets CQB to run in the background without houses";
+                                file = "\x\alive\addons\mil_cqb\fnc_resetCQB.sqf";
+								recompile = RECOMPILE;
+                        };
                 };
         };
 };

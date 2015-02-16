@@ -218,7 +218,10 @@ switch(_operation) do {
 
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 1
 
-				private ["_collection"];
+				private ["_collection","_center", "_radius"];
+                
+				_center = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+				_radius = (((_center select 0) max (_center select 1)) * sqrt(2))*2;        
 				_collection = [];
 
 				if (count synchronizedObjects _logic > 0) then {
@@ -235,6 +238,8 @@ switch(_operation) do {
 							_obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
 			                _objectives = _objectives + _obj;
 			            };
+                        
+                        if (typeof _mod == "ALiVE_mil_OPCOM") then {_collection = [[_center, _radius]]};
 					};
 
 					{
@@ -243,7 +248,6 @@ switch(_operation) do {
 
 					["ALiVE CQB Houses loaded from objectives!"] call ALiVE_fnc_Dump;
 				} else {
-					private ["_center", "_radius"];
 					_center = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 					_radius = (((_center select 0) max (_center select 1)) * sqrt(2))*2;
 
