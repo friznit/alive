@@ -2,8 +2,8 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"wait",2,250,-75.000000,-350.000000,25.000000,-300.000000,0.000000,"wait"};
-item1[] = {"monitor",4,4314,50.000000,-350.000000,150.000000,-300.000000,0.000000,"monitor"};
-item2[] = {"init",0,250,-75.000000,-500.000000,25.000000,-450.000000,0.000000,"init"};
+item1[] = {"monitor",4,218,50.000000,-350.000000,150.000000,-300.000000,0.000000,"monitor"};
+item2[] = {"init",0,4346,-75.000000,-500.000000,25.000000,-450.000000,0.000000,"init"};
 item3[] = {"first",4,218,-75.000000,-425.000000,25.000000,-375.000000,0.000000,"first"};
 item4[] = {"finit",1,250,-75.000000,-650.000000,25.000000,-600.000000,0.000000,"finit"};
 item5[] = {"already",4,218,-75.000000,-575.000000,25.000000,-525.000000,1.000000,"already"};
@@ -20,7 +20,7 @@ link7[] = {5,4};
 link8[] = {6,4};
 link9[] = {7,0};
 globals[] = {25.000000,1,0,0,0,640,480,1,21,6316128,1,-287.098389,262.098328,-141.108917,-748.418335,860,951,1};
-window[] = {2,-1,-1,-32000,-32000,872,451,1473,106,3,878};
+window[] = {2,-1,-1,-32000,-32000,1016,250,1272,250,3,878};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -162,6 +162,7 @@ class FSM
        "// get custom code" \n
        "_customCode = _this select 0;" \n
        "_customCount = 0;" \n
+       "_customNext = 0;" \n
        "" \n
        "// variable for counting the number of condition evaluations" \n
        "_c = 0;" \n
@@ -176,7 +177,10 @@ class FSM
        "_INTERVAL = 180;" \n
        "" \n
        "_Next = diag_TickTime;" \n
-       "_customNext = diag_TickTime + ((_customCode select _customCount) select 1);" \n
+       "" \n
+       "if (count _customCode > 0) then {" \n
+       "	_customNext = diag_TickTime + ((_customCode select _customCount) select 1);" \n
+       "};" \n
        "" \n
        "_units =[];" \n
        "" \n
