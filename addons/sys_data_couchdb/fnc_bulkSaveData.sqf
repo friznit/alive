@@ -48,16 +48,15 @@ _response = [_logic, "bulkWrite", [_module, _data, _async, _missionKey] ] call A
 
 TRACE_1("", _response);
 
-_result = _response;
-
-
 // Create/Overwrite Index ==========================
 
 // Create new Index
 _indexArray = [];
 
 _createIndex = {
-	_indexArray set [count _indexArray, _key];
+	If (_key != "") then {
+		_indexArray set [count _indexArray, _key];
+	};
 };
 [_data, _createIndex] call CBA_fnc_hashEachPair;
 
@@ -158,7 +157,7 @@ if ( ([str(_newIndexDoc)] call CBA_fnc_strLen) > DATA_INBOUND_LIMIT ) then {
     };
 
 	// Write new index
-	[_logic, "write", [_module, _newIndexDoc, _async, _missionKey]] call ALIVE_fnc_Data;
+	_result = [_logic, "write", [_module, _newIndexDoc, _async, _missionKey]] call ALIVE_fnc_Data;
 };
 //=============================================
 
