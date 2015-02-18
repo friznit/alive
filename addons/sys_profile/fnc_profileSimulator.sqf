@@ -68,8 +68,19 @@ _engaged = [0,0,0];
 		if(count _vehiclesInCommandOf > 0) then {
 			_vehicleCommander = true;
 			
-            // check if air unit
-            {if (([[ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler,"vehicleClass",""] call ALiVE_fnc_HashGet) isKindOf "Air") then {_isAir = true}} foreach _vehiclesInCommandOf;
+            // check if moving air unit
+            {
+                private ["_entry"];
+                
+                _entry = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
+                
+                if (
+                	[_entry,"engineOn",false] call ALiVE_fnc_HashGet && 
+            		{([_entry,"vehicleClass",""] call ALiVE_fnc_HashGet) isKindOf "Air"}
+                    ) then {
+                        _isAir = true
+                };
+            } foreach _vehiclesInCommandOf;
 		};
         	
 		// if entity is cargo of vehicle/s

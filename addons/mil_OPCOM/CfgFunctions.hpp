@@ -36,6 +36,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_opcom\fnc_OPCOMJoinObjective.sqf";
 								recompile = RECOMPILE;
                         };
+                        class updateSectorHostility {
+                                description = "Updates the current sector of position with given value";
+                                file = "\x\alive\addons\mil_opcom\fnc_updateSectorHostility.sqf";
+								recompile = RECOMPILE;
+                        };
                 };
         };
 };
