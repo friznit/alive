@@ -303,7 +303,9 @@ switch(_operation) do {
         };
     };
     case "addActiveCommand": {
-        private ["_activeCommands","_type"];
+        private ["_activeCommands","_type","_debug"];
+
+        _debug = _logic select 2 select 0;
 
         if(typeName _args == "ARRAY") then {
 
