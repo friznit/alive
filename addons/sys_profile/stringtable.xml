@@ -62,6 +62,12 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_HELI_RADIUS_COMMENT">
     <English>The radius around player in helicopters to spawn AI. Set to 0 to disable spawning while in helicopters</English>
 </Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPEED_MODIFIER">
+    <English>Profile Speed Modifier:</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_SPEED_MODIFIER_COMMENT">
+    <English>Alters how fast virtual AI can move across the map. 25% means 25% of a unit's normal speed.</English>
+</Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
 	<English>Only one Virtual AI System module can be used</English>
 </Key>

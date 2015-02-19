@@ -92,6 +92,41 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT";
                                 defaultvalue = "50";
                         };
+                        class speedModifier
+                        {
+                                displayName = "$STR_ALIVE_PROFILE_SYSTEM_SPEED_MODIFIER";
+                                description = "$STR_ALIVE_PROFILE_SYSTEM_SPEED_MODIFIER_COMMENT";
+                                typeName = "NUMBER";
+                                class Values
+                                {
+                                        class None
+                                        {
+                                                name = "None";
+                                                value = 1;
+                                                default = 1;
+                                        };
+                                        class Low
+                                        {
+                                                name = "25%";
+                                                value = 0.25;
+                                        };
+                                        class Med
+                                        {
+                                                name = "50%";
+                                                value = 0.5;
+                                        };
+                                        class High
+                                        {
+                                                name = "75%";
+                                                value = 0.75;
+                                        };
+                                        class Extreme
+                                        {
+                                                name = "125%";
+                                                value = 1.25;
+                                        };
+                                };
+                        };
                 };
 
         };

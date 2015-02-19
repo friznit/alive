@@ -67,6 +67,7 @@ switch(_operation) do {
 						[_logic,"activeLimiter",30] call ALIVE_fnc_hashSet;
 						[_logic,"spawnCycleTime",1] call ALIVE_fnc_hashSet;
 						[_logic,"despawnCycleTime",1] call ALIVE_fnc_hashSet;
+                        [_logic,"speedModifier",1] call ALIVE_fnc_hashSet;
 
                 };
         };
@@ -249,12 +250,12 @@ switch(_operation) do {
                     [ALIVE_profileHandler,"destroy"] call ALIVE_fnc_profileHandler;
 
                     ALIVE_profileSystemInit = nil; PublicVariable "ALIVE_profileSystemInit";
-                    
+
                     _module = [_logic,"handler",objNull] call ALiVE_fnc_HashGet;
                     _module setVariable ["handler",nil];
-					
+
                     MOD(SYS_PROFILE) = nil; PublicVariable QMOD(SYS_PROFILE);
-                   
+
                     [_logic, "destroy"] call SUPERCLASS;
                 };
         };
@@ -400,6 +401,12 @@ switch(_operation) do {
 						[_logic,"syncedUnits",_args] call ALIVE_fnc_hashSet;
                 };
 				_result = [_logic,"syncedUnits"] call ALIVE_fnc_hashGet;
+        };
+        case "speedModifier": {
+                if(typeName _args == "SCALAR") then {
+                        [_logic,"speedModifier",_args] call ALIVE_fnc_hashSet;
+                };
+                _result = [_logic,"speedModifier"] call ALIVE_fnc_hashGet;
         };
 		case "state": {
 				private["_state"];

@@ -35,18 +35,19 @@ if !(isnil QMOD(SYS_PROFILE)) exitwith {[_logic, false, _moduleID] call ALIVE_fn
 if(isServer) then {
 
 	//waituntil {sleep 1; ["PS WAITING"] call ALIVE_fnc_dump; time > 0};
-	
+
 	MOD(SYS_PROFILE) = _logic;
-	
+
 	_debug = call compile (_logic getVariable ["debug","false"]);
 	_persistent = call compile (_logic getVariable ["persistent","false"]);
-	_syncMode = _logic getVariable ["syncronised","ADD"];	
+	_syncMode = _logic getVariable ["syncronised","ADD"];
 	_syncedUnits = synchronizedObjects _logic;
 	_spawnRadius = parseNumber (_logic getVariable ["spawnRadius","1500"]);
 	_spawnTypeHeliRadius = parseNumber (_logic getVariable ["spawnTypeHeliRadius","1500"]);
 	_spawnTypeJetRadius = parseNumber (_logic getVariable ["spawnTypeJetRadius","0"]);
 	_activeLimiter = parseNumber (_logic getVariable ["activeLimiter","30"]);
-    
+	_speedModifier = _logic getVariable ["speedModifier",1];
+
     //Ensure Event Log is loaded
     if (isnil "ALIVE_eventLog") then {
 	    ALIVE_eventLog = [nil, "create"] call ALIVE_fnc_eventLog;
@@ -64,6 +65,7 @@ if(isServer) then {
 	[ALIVE_profileSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_profileSystem;
 	[ALIVE_profileSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_profileSystem;
+	[ALIVE_profileSystem, "speedModifier", _speedModifier] call ALIVE_fnc_profileSystem;
 
 	_logic setVariable ["handler",ALIVE_profileSystem];
     [ALIVE_profileSystem,"handler",_logic] call ALiVE_fnc_HashSet;
@@ -74,9 +76,9 @@ if(isServer) then {
 };
 
 if(hasInterface) then {
-    
+
     waituntil {!isnil QMOD(PROFILE)};
-    
+
     player addEventHandler ["killed",
     {
         []spawn {
