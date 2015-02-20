@@ -1,0 +1,92 @@
+[CENTER][IMG]http://i.imgur.com/vVXJf6u.png[/IMG]
+
+[SIZE=4][B][U]INSURGENCY | ALiVE[/U][/B][/SIZE]
+[B][URL="http://alivemod.com/"]Built using ALiVE MOD[/URL]
+
+[SIZE=2][U]Mission for upcoming release 0.9.5[/U][/SIZE][/B]
+
+[IMG]http://i.imgur.com/ErZ4oCT.png[/IMG]
+[B][U]Gather[/U][/B]
+Kill Enemy units to have a random change for intel drop or find randomly generated intel generating items inside enemy buildings.
+
+[IMG]http://i.imgur.com/itINDyx.png[/IMG]
+[B][U]Deny[/U][/B]
+Insurgents are using call to prayer's to hide sensative guerilla movements. Seek out and destroy enemy call to prayer loudspeakers.
+
+[IMG]http://i.imgur.com/z92P6mb.png[/IMG]
+[B][U]Find[/U][/B]
+Finding intel items from eithers kills or inside houses generate markers on the map that give clues to cache positions.
+
+[IMG]http://i.imgur.com/renldiW.png[/IMG]
+[B][U]Destroy[/U][/B]
+After finding enough intel to narrow down the cache locaiton. Destroy the enemy supplies!
+
+[B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+
+[/CENTER]
+
+[B][U]What is Insurgency | ALiVE[/U][/B]
+Insurgency | ALiVE is a throwback to the old Arma 2 Insurgency by Fireball+Pogoman. Players must search houses or kill enemy units to find randomly generated INTEL items which mark enemy cache locations. 
+Destroy X amount of cache locations to win!
+
+[B][U]So many different version of Insurgency why another?[/U][/B]
+This mission was actually originally created around DEC-2013/JAN-2014 and was built as a template and released on the alivemod.com website.
+After many months of leaving the project to collect dust I saw a few version of it floating around the forums playable but not pretty.
+I have since then decided to finish the framework and release it back into the community for others to alter and use for their own personal groups.
+
+[B][U]So it was created with a purpose?[/U][/B]
+Yes!!!! Back in 2013-2014 I really wanted to show the power of ALiVE as it was just getting its first release. ALiVE is so much more than just an AI Commander as some would say.
+We have a very extensive functions library for mission creators to hook into. This mission is a great example of the things that can be done using ALiVE!
+
+[B][U]How To Play.[/U][/B]
+Search and clear the indicated red grids. (When Enabled VIA CQB module) When a grid is cleared it will turn green. 
+Be sure to search the houses for randomly generated INTEL items.
+Picking up INTEL items will create a marker in the general area of a cache location.
+Find and destroy the cache.
+
+[B][U]Support Forum[/U][/B]
+For direct support and feedback from the developer, please shoot me a message on Skype or sign up to the forum on our website: [URL="http://www.whiskeycompany.net/forum"]http://www.whiskeycompany.net/forum/[/URL]
+
+[B][U]Mission Release Highlights[/U][/B]
+[LIST]
+[*] Intel drops of killed enemy units.
+[*] Intel can be found in houses.
+[*] Compatible for almost all islands and mods.
+[*] IED Module provides ambient IED and VB-IED threat + Suicide bombers in 0.9.5
+[*] Random Roadblocks
+[*] Random Camps
+[*] ALiVE Persistent
+[*] Enemy call to prayer
+[*] Blank mission template for individuals or groups to use.
+[*] Lots of bug fixes and performance improvements
+[/LIST]
+
+[B][U]Community Disclaimer[/U][/B]
+This mission is still in BETA and is subject to frequent change.
+
+You are permitted to edit, tweak or change the mission however please read and agree to the following below.
+-- TERM.A - You must NOT re-release the mission to the BIF forums or any other distrubition platform.
+-- TERM.A.CTN - You may alter or change the mission for personal or group use.
+-- TERM.A.CTN - User must state somewhere clearly that it was built using Insurgency | ALiVE Framework.
+-- TERM.A.CTN - ALL headers in files must REMAIN UN-EDITED. However you may add a line Edits By: (author) if you do minor changes.
+
+
+(THIS IS SO I CAN GET BUG REPORTS AND FIXES - Nothing more, Nothing less!)
+
+I built this to enjoy.
+
+
+[B][U]Work In Progress[/U][/B]
+TONS OF GOODIES!!!! :)
+
+[B][U]Whiskey Company 24/7 Dedicated ALiVE | Insurgency[/U][/B]
+Required Mods: CBA, ALiVE, ACRE2, AGM, AiA.
+Allowed Mods: blastcore, jsrs, STMODS, and a few others.
+
+(SERVER INFO GOES HERE)
+
+
+[B][U]Thanks To[/U][/B]
+All my fellow developers of ALiVE MOD. - You guys rock!
+Raven group - For countless hours of testing
