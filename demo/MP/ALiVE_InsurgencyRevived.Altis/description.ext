@@ -57,7 +57,7 @@ respawnTemplates[] = {"MenuPosition"};
 
 //--- Intro Sounds/ Others
 class CfgSounds {
-	sounds[] = {news,muezzin};
+	sounds[] = {news,prayer};
 
 	class news {
 		name = "news";
@@ -70,16 +70,6 @@ class CfgSounds {
 		sound[] = {"media\sounds\prayer.ogg", db+1, 1};
 		titles[] = {};
 	};
-};
-
-class CfgMusic {
-	sounds[] = {boom};
-
-	class Boom {
-		name = "boom";
-		sound[] = {"media\sounds\boom.ogg", db+0, 1.0};
-		titles[] = {};
-    };
 };
 
 //--- Custom Intel Event Handlers
@@ -191,7 +181,7 @@ class Params {
 
 	class INS_MHQ {
 		//--- paramsArray[11]
-		title = "Insurgency MHQ";
+		title = "Insurgency MHQ - WIP";
 		values[] = {1,0};
 		texts[] = {"Enabled","Disabled"};
 		default = 1;

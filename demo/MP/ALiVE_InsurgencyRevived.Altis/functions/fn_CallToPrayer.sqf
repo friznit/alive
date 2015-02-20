@@ -20,10 +20,6 @@ Description:
 
 	Add's a insurgent loudspeaker with muslim prayer during call to prayer times.
 
-TODO:
-
-	Add comment lines so people can get a better understand of how and why it works.
-
 ______________________________________________________*/
 
 if(isServer || isDedicated) then  {
@@ -31,15 +27,19 @@ if(isServer || isDedicated) then  {
 
 	_towns = call INS_fnc_urbanAreas;
 	_daytime = daytime;
+
+	//--- Start array for loudspeakers to be added to.
 	INS_createdLoudSpeakers = [];
 
 	{
 		_cityPos = _x select 1;
 
+		//--- Find all positions in current city as defined in common_defines.
 		_list = nearestobjects [_cityPos, INS_CTPLOCATIONS, 600];
 
 		if (count _list > 0) then {
 
+			//--- DEBUG - NO COMMENTS FOR DEBUG!
 			if(ins_debug) then {
 
 				{
@@ -94,23 +94,30 @@ if(isServer || isDedicated) then  {
 
 				{
 					private ["_dir","_prePolePosition","_brokenPole","_loudSpeaker"];
+
+					//--- Get Random player direction
 					_dir = random 359;
 
+					//--- Create loudspeaker around the defined object as per common_defines.
 					_loudSpeaker = createVehicle ["Land_Loudspeakers_F",[ (getPos _x select 0)-15*sin(_dir),(getPos _x select 1)-15*cos(_dir)], [], 0, "CAN_COLLIDE"];
 
+					//--- Add event handler similar to cache to only allow Satchel or Demo Charges.
 					_loudSpeaker addEventHandler ["handledamage", {
 						if ((_this select 4) in ["SatchelCharge_Remote_Ammo","DemoCharge_Remote_Ammo","SatchelCharge_Remote_Ammo_Scripted","DemoCharge_Remote_Ammo_Scripted"]) then {
 
+							//--- Broken pole to give the effect of destroying the loudspeaker. Only way to stop the sound!
 							_prePolePosition = getPosATL (_this select 0);
 							_brokenPole = createVehicle ["Land_PowerPoleWooden_small_F", _prePolePosition, [], 0, "CAN_COLLIDE"];
 							deleteVehicle (_this select 0);
 
 						} else {
 
+							//--- Don't kill it if its not the right damage type.
 							(_this select 0) setdamage 0;
 						}
 					}];
 
+					//--- Add loudspeaker to above array.
 					INS_createdLoudSpeakers set [count INS_createdLoudSpeakers, _loudSpeaker];
 
 				} forEach _list;

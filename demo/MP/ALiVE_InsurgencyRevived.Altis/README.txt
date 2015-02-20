@@ -45,7 +45,7 @@ Mission License
 *This mission is released under Creative Commons Licence Attribution-NonCommercial CC BY-NC-ND*
 
 You are permitted to edit, tweak or change the mission however please read and agree to the following below.
--- TERM.A - You must NOT re-release the mission to the BIF forums or any other distrubition platform.
+-- TERM.A - You must NOT re-release the mission to the BIS forums or any other distribution platform.
 -- TERM.A.CTN - User must state somewhere clearly that it was built using Insurgency | ALiVE Framework.
 -- TERM.A.CTN - ALL headers in files must REMAIN UN-EDITED. However you may add a line Edits By: (author) if you do minor changes.
 -- TERM.A.CTN - You may alter or change the mission for personal or group use.

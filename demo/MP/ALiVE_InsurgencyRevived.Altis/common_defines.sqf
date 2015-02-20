@@ -39,9 +39,12 @@ ______________________________________________________*/
 	INS_west_score = 0;
 	publicVariable "INS_west_score";
 
+	//--- Start CACHE as a null object to avoid any init issues.
+	CACHE = objNull;
+
 	//--- Define intel types
 	INS_INTELDROPPED = ["Land_HandyCam_F","Land_SatellitePhone_F","Land_Suitcase_F","Land_Ground_sheet_folded_OPFOR_F"];
-	INS_INTELSPAWNED = ["Box_East_Support_F","Land_Laptop_unfolded_F","Land_MapBoard_F","Land_Sleeping_bag_folded_F","Land_Sleeping_bag_blue_F"];
+	INS_INTELSPAWNED = ["Box_East_Support_F","Land_Laptop_unfolded_F","Land_Sleeping_bag_folded_F","Land_Sleeping_bag_blue_F"];
 	INS_CTPLOCATIONS = ["Land_Church_01_V1_F"];
 
 	//--- MHQ Defines

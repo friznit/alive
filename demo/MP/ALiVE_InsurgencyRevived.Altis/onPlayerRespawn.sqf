@@ -20,8 +20,10 @@ Description:
 
 	Runs things on players that respawn! Duh!.
 ______________________________________________________*/
+private ["_unitType"];
 
 _unitType = typeOf (vehicle player);
+
 if (paramsArray select 4 == 1) then {
 	if ((_unitType in INS_AUTORIFLE) || (_unitType in INS_ENGINEERS)) then {
 

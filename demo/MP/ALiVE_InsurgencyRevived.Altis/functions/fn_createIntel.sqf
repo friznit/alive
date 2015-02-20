@@ -20,20 +20,15 @@ Description:
 
 	Function to create intel markers around cache when found.
 
-TODO:
-
-	Add comment lines so people can get a better understand of how and why it works.
-
 ______________________________________________________*/
 
 private ["_i","_sign","_sign2","_radius","_cache","_pos","_mkr","_range","_intelRadius"];
 
-_cache = cache;
-_intelRadius = 1000;
-
+_cache = CACHE;
+_intelRadius = 800;
 _i = 0;
 
-while{ (getMarkerPos format["%1intel%2", _cache, _i] select 0) != 0} do {
+while { (getMarkerPos format["%1intel%2", _cache, _i] select 0) != 0} do {
 	_i = _i + 1;
 };
 

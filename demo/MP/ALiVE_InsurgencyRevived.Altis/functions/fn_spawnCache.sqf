@@ -53,7 +53,7 @@ if (ins_debug) then {
 
 //--- Cache Created Debug
 if (ins_debug) then {
-    ["Insurgency | ALiVE - Buffering Cache - 10 second timeout"] call ALiVE_fnc_DumpR;
+    ["Insurgency | ALiVE - Buffering Cache - 30 second timeout"] call ALiVE_fnc_DumpR;
 };
 
 //--- Initial buffer - and respawn buffer time.
@@ -127,7 +127,7 @@ if (ins_debug) then {
 _targetLocation = _bldgpos call BIS_fnc_selectRandom;
 
 //--- Create the cache at the random building position.
-cache = createVehicle ["Box_FIA_Wps_F", _targetLocation, [], 0, "None"];
+CACHE = createVehicle ["Box_FIA_Wps_F", _targetLocation, [], 0, "None"];
 
 //--- Cache Created Debug
 if (ins_debug) then {
@@ -135,12 +135,12 @@ if (ins_debug) then {
 };
 
 //--- Empty the cache so no items can be found in it.
-clearMagazineCargoGlobal cache;
-clearWeaponCargoGlobal cache;
+clearMagazineCargoGlobal CACHE;
+clearWeaponCargoGlobal CACHE;
 
 //--- Add event handlers to the cache
 //--- Handle damage for only Satchel and Demo charge.
-cache addEventHandler ["handledamage", {
+CACHE addEventHandler ["handledamage", {
 	if ((_this select 4) in ["SatchelCharge_Remote_Ammo","DemoCharge_Remote_Ammo"]) then {
 
 		(_this select 0) setdamage 1;
@@ -157,12 +157,12 @@ cache addEventHandler ["handledamage", {
 //--- End of event handlers
 
 //--- Disable simulation of the cache.
-cache enableSimulation false;
+CACHE enableSimulation false;
 
 //--- Move the Cache to the above select position
 //--- TODO: Verify we even need this.
-cache setPos _targetLocation;
-publicVariable "cache";
+CACHE setPos _targetLocation;
+publicVariable "CACHE";
 
 sleep 1;
 
@@ -203,7 +203,7 @@ if (INS_west_score == (paramsArray select 6)) then {
 if (ins_debug) then {
 
     //--- Debug to see where box spawned is if not multi-player
-    _mkr = createMarker [format ["box%1",random 1000],getposATL cache];
+    _mkr = createMarker [format ["box%1",random 1000],getposATL CACHE];
     _mkr setMarkerShape "ICON";
 	_mkr setMarkerText format["Cache Location"];
     _mkr setMarkerType "mil_dot";

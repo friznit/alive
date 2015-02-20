@@ -17,7 +17,7 @@ Specials Thanks:
 
 Last modified:
 
-	1/17/2015
+	2/19/2015
 
 Description:
 
@@ -33,11 +33,11 @@ if (hasInterface) then {
     //Intro
     [] spawn {
 
-		playMusic "Boom";
+		playMusic "ALiVE_Intro";
 
 		waitUntil {!isNull player};
 
-	    titleText ["TESTER VERSION - DO NOT DISTRIBUTE!", "BLACK IN",9999];
+	    titleText ["For group/unit and personal use only!", "BLACK IN",9999];
 		0 fadesound 0;
 
 		private ["_cam","_camx","_camy","_camz","_object","_name"];

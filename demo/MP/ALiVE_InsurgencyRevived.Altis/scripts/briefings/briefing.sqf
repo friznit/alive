@@ -50,5 +50,22 @@ PogoMan - Old Insurgency idea<br/>
 Fireball - Old Insurgency idea<br/>
 "]];
 
+player createDiaryRecord ["insPage", ["Advanced Roles",
+"<br/><t size=2 align=left>Medic - Deploy Mash</t><br/>
+===========<br/><br/>
+- Allows you to deploy a new respawn point for your side.<br/><br/>
+- Only one respawn point per medic can be deployed at a time.<br/><br/>
+- Must be within 5 meteres to un-deploy.<br/><br/>
+- When the medic dies, so does the respawn point! - Protect the medic! -<br/><br/>
+
+<br/><t size=2 align=left>Engineer/MG - Deploy Sandbag</t><br/>
+===========<br/><br/>
+- Allows you to spawn a small sandbag for protection 2 meters in front of you.<br/><br/>
+- Only one sandbag per engineer/mg can be deployed at a time.<br/><br/>
+- Must be within 5 meteres to un-deploy.<br/><br/>
+<br/><br/><br/>
+
+These are still WIP.
+"]];
 
 
