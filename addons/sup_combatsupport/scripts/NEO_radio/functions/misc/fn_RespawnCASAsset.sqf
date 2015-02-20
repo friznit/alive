@@ -77,6 +77,8 @@ if (getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
 	[_veh, _grp] call BIS_fnc_spawnCrew;
 };
 
+
+
 _veh lockDriver true;
 {_veh lockturret [[_x], true]} forEach [0,1,2];
 
@@ -98,19 +100,25 @@ _ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurret
 _hdl = [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 waituntil {scriptdone _hdl};
 sleep 1;
-  _codeScript = if (typeName _code == typeName []) then
-                            {
-                                ([_veh]+(_code select 1)) spawn (_code select 0);
-                            }
-                            else
-                            {
-                             [_veh] spawn _code;
 
+ _codeArray = [_code, ";"] Call CBA_fnc_split;
+     {
+        If(_x != "") then {
+           [_veh, _x] spawn {
+                           private ["_veh", "_spawn"];
+                           _veh = _this select 0;
+                           _spawn = compile(_this select 1);
+                           [_veh] spawn _spawn;
                             };
+                           };
+
+
+                            } forEach _codeArray;
+
 //FSM
 _casfsm = "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\cas.fsm";
 [_veh, _grp, _callsign, _pos, _airport, _dir, _height, _type, _respawn, _code] execFSM _casfsm;
-[_veh] spawn _code;
+
 
 //Register to all friendly side-lists
 {

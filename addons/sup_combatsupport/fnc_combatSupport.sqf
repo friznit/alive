@@ -172,9 +172,8 @@ switch(_operation) do {
                                     _height = parsenumber(_heightset);
                                     _code = ((synchronizedObjects _logic) select _i) getvariable ["cas_code",""];
                                     _code = [_code,"this","_this select 0"] call CBA_fnc_replace;
-                                    _compilecode = compile(_code);
 
-                                    _casArray = [_position,_direction, _type, _callsign, _id,_compilecode,_height];
+                                    _casArray = [_position,_direction, _type, _callsign, _id,_code,_height];
                                     _casArrays set [count _casArrays,_casArray];
                                 };
                                 case ("ALiVE_SUP_TRANSPORT") : {
@@ -188,10 +187,10 @@ switch(_operation) do {
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
                                     _code = ((synchronizedObjects _logic) select _i) getvariable ["transport_code",""];
                                     _code = [_code,"this","_this select 0"] call CBA_fnc_replace;
-                                    _compilecode = compile(_code);
 
 
-                                    _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_compilecode,_height];
+
+                                    _transportArray = [_position,_direction,_type, _callsign,["Pickup", "Land", "land (Eng off)", "Move", "Circle","Insertion"],_code,_height];
                                     _transportArrays set [count _transportArrays,_transportArray];
                                 };
                                 case ("ALiVE_sup_artillery") : {
@@ -265,8 +264,8 @@ switch(_operation) do {
                             _type = _x select 2;
                             _callsign = toUpper (_x select 3);
                             _tasks = _x select 4;
-                            _code = _x select 5;
-                            _height = _x select 6;
+                            _code =  _x select 5;
+                             _height = _x select 6;
 
 
 
@@ -281,7 +280,7 @@ switch(_operation) do {
                                 default {_side = EAST};
                             };
 
-                            private ["_veh","_grp","_initScript"];
+                            private ["_veh","_grp"];
 
                             _veh = nearestObjects [_pos, [_type], 5];
 
@@ -319,19 +318,20 @@ switch(_operation) do {
                             {_veh lockturret [[_x], true]} forEach [0,1,2];
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
-
-
-
-
-                            _codeScript = if (typeName _code == typeName []) then
+                              _codeArray = [_code, ";"] Call CBA_fnc_split;
                             {
-                                ([_veh]+(_code select 1)) spawn (_code select 0);
-                            }
-                            else
-                            {
-                             [_veh] spawn _code;
+                                   If(_x != "") then {
+                                                    [_veh, _x] spawn {
+                                                                        private ["_veh", "_spawn"];
+                                                                        _veh = _this select 0;
+                                                                        _spawn = compile(_this select 1);
+                                                                         [_veh] spawn _spawn;
+                                                                      };
+                                                        };
 
-                            };
+
+                            } forEach _codeArray;
+
 
 
 
@@ -417,16 +417,19 @@ switch(_operation) do {
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
 
-                            _codeScript = if (typeName _code == typeName []) then
+                            _codeArray = [_code, ";"] Call CBA_fnc_split;
                             {
-                                ([_veh]+(_code select 1)) spawn (_code select 0);
-                            }
-                            else
-                            {
-                             [_veh] spawn _code;
+                                   If(_x != "") then {
+                                                    [_veh, _x] spawn {
+                                                                        private ["_veh", "_spawn"];
+                                                                        _veh = _this select 0;
+                                                                        _spawn = compile(_this select 1);
+                                                                         [_veh] spawn _spawn;
+                                                                      };
+                                                        };
 
-                            };
 
+                            } forEach _codeArray;
 
 							// Set Group ID
                             [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;

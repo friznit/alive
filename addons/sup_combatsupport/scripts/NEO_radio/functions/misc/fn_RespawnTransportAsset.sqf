@@ -91,15 +91,21 @@ _hdl = [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn
 waituntil {scriptdone _hdl};
 
 sleep 1;
-  _codeScript = if (typeName _code == typeName []) then
-                            {
-                                ([_veh]+(_code select 1)) spawn (_code select 0);
-                            }
-                            else
-                            {
-                             [_veh] spawn _code;
 
+ _codeArray = [_code, ";"] Call CBA_fnc_split;
+     {
+        If(_x != "") then {
+           [_veh, _x] spawn {
+                           private ["_veh", "_spawn"];
+                           _veh = _this select 0;
+                           _spawn = compile(_this select 1);
+                           [_veh] spawn _spawn;
                             };
+                           };
+
+
+                            } forEach _codeArray;
+
 //Set variables and run FSM and optionally passed code
 _veh setVariable ["ALIVE_CombatSupport", true];
 _veh setVariable ["NEO_transportAvailableTasks", _tasks, true];
