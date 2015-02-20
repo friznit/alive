@@ -46,9 +46,9 @@ Mission License
 
 You are permitted to edit, tweak or change the mission however please read and agree to the following below.
 -- TERM.A - You must NOT re-release the mission to the BIS forums or any other distribution platform.
+-- TERM.A.CTN - You may alter or change the mission for ONLY personal or group/unit use.
 -- TERM.A.CTN - User must state somewhere clearly that it was built using Insurgency | ALiVE Framework.
 -- TERM.A.CTN - ALL headers in files must REMAIN UN-EDITED. However you may add a line Edits By: (author) if you do minor changes.
--- TERM.A.CTN - You may alter or change the mission for personal or group use.
 
 
 This mission is meant for ARMA 3 game platform by Bohemia Interactive only. 

@@ -21,8 +21,8 @@ Under the following conditions:
       the work).
 
    - Noncommercial — You may not use this work for commercial purposes.
-
-
+   
+   - No Derivative Works — You may not alter, transform, or build upon this work.
 
 With the understanding that:
 
@@ -42,12 +42,10 @@ With the understanding that:
 
 Known exceptions to this license and copyright are:
 
-THE MISSION AUTHOR IS ALLOWING THE NoDerivatives TO BY BYPASSED AS LONG AS THE FOLLOWING IS AGREED AND FOLLOWED.
-
 You are permitted to edit, tweak or change the mission however please read and agree to the following below.
 
 -- TERM.A - You must NOT re-release the mission to the BIS forums or any other distribution platform.
--- TERM.A.CTN - You may alter or change the mission for personal or group use.
+-- TERM.A.CTN - You may alter or change the mission for ONLY personal or group/unit use.
 -- TERM.A.CTN - User must state somewhere clearly that it was built using Insurgency | ALiVE Framework.
 -- TERM.A.CTN - ALL headers in files must REMAIN UN-EDITED. However you may add a line Edits By: (author) if you do minor changes.
 
