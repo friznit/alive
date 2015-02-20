@@ -94,7 +94,7 @@ class Mission
 	randomSeed=4009219;
 	class Intel
 	{
-		briefingName="Insurgency | ALiVE - Revived RC 0.55.5";
+		briefingName="Insurgency | ALiVE - Revived RC 0.55.6";
 		overviewText="Alive Dev Team | Mission by Hazey";
 		resistanceWest=0;
 		resistanceEast=1;
@@ -193,11 +193,11 @@ class Mission
 				class Item0
 				{
 					position[]={23163.484,3.1900001,19006.299};
-					azimut=88.459045;
+					azimut=88.459;
 					special="NONE";
 					id=2;
 					side="WEST";
-					vehicle="B_medic_F";
+					vehicle="B_Soldier_SL_F";
 					player="PLAYER COMMANDER";
 					leader=1;
 					rank="SERGEANT";
@@ -2297,14 +2297,14 @@ class Mission
 		class Item3
 		{
 			position[]={23110.723,3.1900001,19037.773};
-			azimut=-87.911438;
+			azimut=-87.9114;
 			special="NONE";
 			id=46;
 			side="EMPTY";
 			vehicle="Land_BarGate_F";
 			skill=0.60000002;
 			text="gate01";
-			init="this animate [""Bargate"", 0]; this allowDamage false; this enablesimulation false;";
+			init="this animate [""Bargate"", 0]; this allowDamage false; this enableSimulationGlobal false;";
 		};
 		class Item4
 		{
@@ -2547,14 +2547,14 @@ class Mission
 		class Item28
 		{
 			position[]={23154.18,3.1900001,19060.043};
-			azimut=-357.65744;
+			azimut=-357.65701;
 			special="NONE";
 			id=71;
 			side="EMPTY";
 			vehicle="Land_BarGate_F";
 			skill=0.60000002;
 			text="gate04";
-			init="this animate [""Bargate"", 0]; this allowDamage false; this enablesimulation false;";
+			init="this animate [""Bargate"", 0]; this allowDamage false; this enableSimulationGlobal false;";
 		};
 		class Item29
 		{

@@ -157,7 +157,7 @@ CACHE addEventHandler ["handledamage", {
 //--- End of event handlers
 
 //--- Disable simulation of the cache.
-CACHE enableSimulation false;
+CACHE enableSimulationGlobal false;
 
 //--- Move the Cache to the above select position
 //--- TODO: Verify we even need this.
@@ -167,7 +167,7 @@ publicVariable "CACHE";
 sleep 1;
 
 if (ins_debug) then {
-    ["Insurgency | ALiVE - Check to see if cache has alread spawned near."] call ALiVE_fnc_DumpR;
+    ["Insurgency | ALiVE - Check to see if cache has already spawned near."] call ALiVE_fnc_DumpR;
 };
 
 //--- Check to see if cache has already spawned near that location.
@@ -192,7 +192,7 @@ if (ins_debug) then {
 
 //--- Create the invisible helipad for the above.
 _helipad = createVehicle ["Land_HelipadEmpty_F", _targetLocation, [], 0, "None"];
-_helipad enableSimulation false;
+_helipad enableSimulationGlobal false;
 
 //--- Make final check to end mission if cache score complete.
 if (INS_west_score == (paramsArray select 6)) then {
