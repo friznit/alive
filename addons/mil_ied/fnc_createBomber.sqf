@@ -75,6 +75,7 @@ _victim = units (group _victim) call BIS_fnc_selectRandom;
 	if ((_bomber distance _victim < 8) && (alive _bomber)) then {
 		_bomber addRating -2001;
 		_bomber playMoveNow "AmovPercMstpSsurWnonDnon";
+		[_bomber, "Alive_Allah", 50] call CBA_fnc_globalSay3d;
 		sleep 5;
 		_bomber disableAI "ANIM";
 		_bomber disableAI "MOVE";
