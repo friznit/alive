@@ -14,7 +14,7 @@ Author:
 
 Last modified:
 
-	2/7/2015
+	2/20/2015
 
 Description:
 
@@ -48,10 +48,12 @@ enableDebugConsole = 1;
 
 //--- Respawn
 respawn = BASE;
-respawnDelay = 20;
+respawnDelay = 15;
 respawnDialog = true;
 disabledAI = true;
 respawnTemplates[] = {"MenuPosition"};
+respawnButton = true;
+respawnOnStart = false;
 
 //--- General Includes
 
