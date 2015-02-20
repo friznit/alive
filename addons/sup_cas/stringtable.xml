@@ -6,7 +6,10 @@
 	<English>Player Combat Support (CAS)</English>
 </Key>
 <Key ID="STR_ALIVE_CAS_COMMENT">
-	<English>XXXX</English>
+	<English>CAS Module for ALiVE Combat Support</English>
+</Key>
+<Key ID="STR_ALIVE_CAS_USAGE">
+	<English>Place Module and set the settings accordingly! Sync to a Combat Support Module!</English>
 </Key>
 <Key ID="STR_ALIVE_CAS_CALLSIGN">
 	<English>Callsign</English>

@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_COMBATSUPPORT";
                 function = "ALIVE_fnc_CombatSupportInit";
                 author = MODULE_AUTHOR;
-	               functionPriority = 160;
+	            functionPriority = 160;
                 isGlobal = 2;
                 icon = "x\alive\addons\sup_combatsupport\icon_sup_combatsupport.paa";
                 picture = "x\alive\addons\sup_combatsupport\icon_sup_combatsupport.paa";
@@ -73,9 +73,9 @@ class CfgVehicles {
 				{
 					//description = "$STR_ALIVE_CS_COMMENT"; // Short description, will be formatted as structured text
 					description[] = {
-							"$STR_ALIVE_CS_COMMENT",
-							"",
-							"$STR_ALIVE_CS_USAGE"
+						"$STR_ALIVE_CS_COMMENT",
+						"",
+						"$STR_ALIVE_CS_USAGE"
 					};
 					sync[] = {"ALiVE_SUP_TRANSPORT","ALiVE_SUP_CAS","ALiVE_SUP_ARTILLERY"}; // Array of synced entities (can contain base classes)
 
@@ -103,18 +103,18 @@ class CfgVehicles {
 						optional = 1; // Synced entity is optional
 						duplicate = 1; // Multiple entities of this type can be synced
 					};
-                                        class ALiVE_SUP_ARTILLERY
-                                        {
-                                                description[] = { // Multi-line descriptions are supported
-                                                        "$STR_ALIVE_ARTILLERY_COMMENT",
-                                                        "",
-                                                        "$STR_ALIVE_ARTILLERY_USAGE"
-                                                };
-                                                position = 1; // Position is taken into effect
-                                                direction = 1; // Direction is taken into effect
-                                                optional = 1; // Synced entity is optional
-                                                duplicate = 1; // Multiple entities of this type can be synced
-                                        };
+                    class ALiVE_SUP_ARTILLERY
+                    {
+						description[] = { // Multi-line descriptions are supported
+							"$STR_ALIVE_ARTILLERY_COMMENT",
+							"",
+							"$STR_ALIVE_ARTILLERY_USAGE"
+						};
+						position = 1; // Position is taken into effect
+						direction = 1; // Direction is taken into effect
+						optional = 1; // Synced entity is optional
+						duplicate = 1; // Multiple entities of this type can be synced
+                    };
 				};
         };
 };

@@ -6,10 +6,10 @@
 	<English>Player Combat Support (Artillery)</English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_COMMENT">
-	<English>XXXX</English>
+	<English>Artillery Module for ALiVE Combat Support</English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_USAGE">
-	<English>XXXX</English>
+	<English>Place Module and set the settings accordingly! Sync to a Combat Support Module!</English>
 </Key>
 <Key ID="STR_ALIVE_ARTILLERY_CALLSIGN">
 	<English>Callsign</English>

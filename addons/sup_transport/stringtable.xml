@@ -8,6 +8,9 @@
 <Key ID="STR_ALIVE_TRANSPORT_COMMENT">
 	<English>Transport Module for ALiVE Combat Support</English>
 </Key>
+<Key ID="STR_ALIVE_TRANSPORT_USAGE">
+	<English>Place Module and set the settings accordingly! Sync to a Combat Support Module!</English>
+</Key>
 <Key ID="STR_ALIVE_TRANSPORT_CALLSIGN">
 	<English>Callsign</English>
 </Key>
