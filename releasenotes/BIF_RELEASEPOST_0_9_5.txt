@@ -6,7 +6,7 @@
 [B][U]Fixes & Enhancements[/U][/B]
 This is a further incremental update to prepare the ground for 1.0 release and fix several outstanding issues and features.  Some of the more high profile issues have been fixed, such as Combat Support helicopters now turn their lights off when on task, FFV positions are no longer filled with AI, mobile mortar teams are now supported and the Military Intel Section is back in business providing valuable information on the battlefield situation.  We have added support for a number of new maps as well.  A lot of changes have been made in the background to prepare for the ALiVE Asymmetric Warfare Environment, which will simulate a complex Insurgency and Counter-Insurgency scenario.  We'll post more detail on this in due course.
 
-Bundled with this release is Hazey's awesome update to Insurgency ALiVE the based upon the ever-popular ArmA2 Insurgency, which really shows off the power and flexibility of ALiVE.  There are more details posted in his mission release thread.
+Bundled with this release is Hazey's awesome update to Insurgency ALiVE based upon the ever-popular ArmA2 Insurgency, which really shows off the power and flexibility of ALiVE.  There are more details posted in his mission release thread.
 
 Please note that as with all update, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
 
