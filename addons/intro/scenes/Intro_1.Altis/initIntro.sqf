@@ -33,14 +33,6 @@ switch true do {
 				_cam CameraEffect ["Internal","Back"];
 				_cam CamCommit 0;
 
-				//--- Setup AAN News Macre. Still works! Neat!
-				_header1 = parsetext "<t size='2.0'>Iran Annexes Altis</t><br />President Taylor Deploys AAF Counter Forces";
-				_line1 = parsetext "- Breaking News - Iran forces annex island of Altis - Breaking News - AAF Forces Deployed in Altis - Breaking News - AAF President Taylor calls on NATO";
-
-				nul = [_header1,_line1] spawn BIS_fnc_AAN;
-
-				//--- End
-
 				sleep 24;
 
 				//--- Camera number 2 - UAV Fly By.
@@ -51,14 +43,6 @@ switch true do {
 				_cam CamSetTarget _object2;
 				_cam CameraEffect ["Internal","Back"];
 				_cam CamCommit 0;
-
-				//--- Setup AAN News Macre. Still works! Neat!
-				_header2 = parsetext "<t size='2.0'>Breaking News!</t><br />FIA Guerilla Forces become desperate for foothold.";
-				_line2 = parsetext "- Militant pull out of Lebanese border town with captives - China Police investigate U.S citizen near border of North Korea";
-
-				nul = [_header2,_line2] spawn BIS_fnc_AAN;
-
-				//--- End
 
 				sleep 20;
 
@@ -75,9 +59,6 @@ switch true do {
 				//--- Terminate Cam
 				_cam CameraEffect ["Terminate","Back"];
 				CamDestroy _cam;
-
-				//--- Terminate AAN News Feed - Okay so the above might work, but the only way to disable it is to kill it with fire.
-				(uinamespace getvariable "BIS_AAN") closedisplay 1;
 
 				//--- Setup UAV Camera (Orbit!)
 
