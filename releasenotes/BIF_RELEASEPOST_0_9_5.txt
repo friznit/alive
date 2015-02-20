@@ -10,7 +10,7 @@ Bundled with this release is Hazey's awesome update to Insurgency ALiVE based up
 
 Please note that as with all update, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
 
-[CENTER][IMG]http://alivemod.com/img/tour.jpg[/IMG][/CENTER]
+[CENTER][img]http://i.imgur.com/JmOgOq3.png[/img][/CENTER]
 
 [B][U]War Room[/U][/B]
 Most of on going War Room work is focussed on stability and robustness of the system as it sees more and more use every day.  Many thanks to all those providing feedback and troubleshooting issues with the data feeds.  You will soon see a significantly more enhanced Server Performance suite built into the War Room with some very powerful analytic tools for server admins.  Even if you're not running persistent missions, we strongly encourage you do use the ALiVE Database module to record server stats so we can build benchmarks and provide everyone and BIS with invaluable performance data.
@@ -21,7 +21,9 @@ We have also added a new 'mission' that automates high quality image capture of 
 
 [B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B]
 Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
-Also available from PlayWithSix and ArmAholic.[/CENTER]
+Also available from PlayWithSix and ArmAholic.
+
+Note that this build requires the latest ALiVEPlugIn.dll[/CENTER]
 
 [B][U]Manual[/U][/B]
 Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  It's slowly getting prettier but all the info you need should be there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
@@ -44,7 +46,68 @@ For direct support and feedback from the ALiVE dev team, join us on Skype or sig
 
 Changelog
 [SPOILER]
-Insert change log
+- Build 0.9.5 
+- Note. This Build requires the latest ALiVEPlugIn.dll 
+
+[ALL] Updated version to 0.9.5.1502201
+[DEMO_MP] Final cleanup of Insurgency Demo. Ready for Release. mission version 0.55.6
+[index] Isleduala re-index for update 3.21
+[CS]Added ability to run code on CS trans and CAS units inc setvariables
+[MISC] Fixed missing STR and module descriptions in combat support modules.
+[mil_ied] ALiVE now with 100% more akbar! (added akbar to suicide bomber).
+[mil_opcom] Fixed zero divisor error with OPCOM analysis (fsm). http://dev.withsix.com/issues/75912
+[DEMO_MP] - Added first release candidate of Insurgency | ALiVE mission.
+[MIL OPCOM] Disabled asymetric option for this release! Further Insurgeny WIP (all ins controlled civs build campfires atm :))
+[sys_profile] Added option in Virtual AI module to choose a speed modifier (25%>125%) for simulated AI. http://dev.withsix.com/issues/75395
+[ALiVEServer] Updated plugin to support enhanced performance monitoring
+[sys_perf] Fixed issue where lack of custom monitor parameters caused RPT spam
+[sys_data] Fixed issue where an error was returned during a successful save
+[SYS PROFILE] Fix for non moving air units were blocking virtual combat
+[MIL OPCOM] Extracted temp function, enabled syncing of CQB module, some more WIP work
+[X LIB] Made building grid not clear if player is in a vehicle
+[sys_profile] big changes to handling of vehicle assignments to fix some FFV bugs.
+[]MIL CQB | X LIB] Fix for Builiding-Grid (optional markerbrush change)
+[CS]Allow Code to be ran on CAs and transport units
+[MIL_CQB] Added ability to change buildingGrid markerBrush type via module params.
+[sys_statistics] Fixed issue where stats system throws an error if users war room profile does not exist
+[tools] Updated Image Capture War Room mission and documentation
+[sys_logistics] Fixed issue where despite being disabled logistics still attempts to save
+[MIL CQB] Implemented building grid option (tbd: Add markerbrush optione like "solid" etc.)! NOTE: to reliably enable the buildinggrid, turn it on on all CQB instances or they would potentially override each other
+[X LIB] Added ALiVE_fnc_CreateMarkerGlobal that uses createMarker instead of createmarkerlocal (intended for global use of markers on server)
+[Demos] Finished making sure demos were 0.9.5 ready.
+[Log]Fix forcepool 0 error http://dev.withsix.com/issues/75912
+[Combat Support] Fixed spelling errors and tooltip for mobile mortar teams
+[sys_player] Stop hash inspection
+[mil_IED] Fixed spelling error in "Extreme"
+[Combat Support] Fixed issue where CS arty scripts error if a unit dies (mortar teams)
+[mil ied] Prevent a vehicle having double IEDs attached
+[mil ied] Rewrote VBIED to only attach IEDs to vehicles within certain locations (and not when vehicles were spawned)
+[MIL OPCOM] Adjusted Assault condition, fixed scripterror until defend is done
+[MIL OPCOM | MIL COMMAND] Further INS WIP (incl. CQB and Assault)
+[SYS PROFILE] Fix for virtual units without waypoints were not fighting but stuck
+[X LIB | MIL CQB] Implemented building grid functions, fixed isEnemyNear to not include snakes
+[Combat Support] Updated mortar arty so that vehicles are provided to mortar support teams
+[SYS_LOGI] Fixed issue with debug message displaying even while debug is set to false.
+[CS]Fixed FFV issue with CS and Hummingbird
+[SYS_VDIST] Fixed reported localization error.
+[Demos] Updated Sabotage Mission for 0.9.5 compatibility. https://dev.withsix.com/issues/76001
+Fixed http://dev.withsix.com/issues/74932 no chnage in behaviours
+[SYS_PLAYERTAGS] Fixed issue with Feature Turned off being reported even with debug off.
+[Intro] Added additional intro scenes.
+[MIL OPCOM] Fix for hanging on loading screen!
+[X_LIB] Added ALiVE_fnc_canSee (checks if a player/unit can see another object/unit
+[ALIVEServer] Updated plugin to handle string that may not be JSON compliant
+[ALiVEServer] Updated plugin to avoid whitespace in monitoring string values
+[sys_data] Updated default values for custom perf monitor.
+[Mod Image Export] Updated functions to cater for mods that don't correctly list all items in CfgPatches, added support for grenades.
+[sys_data] NEW! Updated Perf Monitor (similar to ASM) with custom counts and improved process/OS stats
+[ALiVE Required] Added options to disable Adv Markers, Admin Actions and Player Logistics
+[mil_ied] Added ambient suicide bombers to IED module
+[mil_IED] Added suicide bombers
+[Intro] Added Johari graphic to main menu
+[Intro] Added Johari's This Is War metal cover of the Arma 3 theme tune to the main menu intro.
+[ALiVEServer] Added ASM-like functionality. New version of NewtonSoft.JSON, new version of ALiVEPlugIn.dll, sys_data updated. please upgrade entire @ALiVEServer. Replace Data module in missions.
+[XLIB] Make ALiVE_fnc_CreateMarker remove an existing marker of the same name before creating it, in order to be able to update a marker with one call
 [/SPOILER]
 
 [B][U]Disclaimer[/U][/B]
