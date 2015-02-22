@@ -52,7 +52,7 @@ if(_side getFriend civilian < 0.6) then {
     _enemySides pushback civilian;
 };
 
-["ENEMY SIDES: %1",_enemySides] call ALIVE_fnc_dump;
+//["ENEMY SIDES: %1",_enemySides] call ALIVE_fnc_dump;
 
 _entities = _position nearEntities ["CAManBase", _radius];
 
