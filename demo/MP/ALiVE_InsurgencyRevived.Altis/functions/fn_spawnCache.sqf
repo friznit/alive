@@ -31,13 +31,18 @@ README BEFORE EDITING:
 
 	Right now, if you feel that the cache is REALLY STUCK or missing... Have your admin use the following code.
 
-	_pos getPos player; cache setPos _pos;
+	[] spawn INS_fnc_spawnCache;
+
+	If you want to kill the cache and get the point.
+
+	[] spawn INS_fnc_cacheKilled;
 
 	Simple... Effective... Move along...
 
 ______________________________________________________*/
 
-private ["_mkr","_bldgpos","_targetLocation","_cacheHouses","_cities","_cacheTown","_cityPos","_cityRadA","_cityRadB","_cacheHouse","_cachePosition","_helipad","_findHelipad","_findBases","_players"];
+private ["_mkr","_bldgpos","_targetLocation","_cacheHouses","_cities","_cacheTown","_cityPos","_cityRadA",
+"_cityRadB","_cacheHouse","_cachePosition","_helipad","_findHelipad","_findBases","_players","_findPlayers"];
 
 //--- Delete Marker Array
 if (count INS_marker_array > 0) then {
@@ -51,13 +56,21 @@ if (ins_debug) then {
 	publicVariable "INS_cache_marker_array";
 };
 
+//--- Delete Cache if still alive at this point!
+if (!isNull CACHE) then {
+	if (ins_debug) then {
+		["Insurgency | ALiVE - Cache currently spawned. Removing old cache."] call ALiVE_fnc_DumpR;
+	};
+	deleteVehicle cache;
+};
+
 //--- Cache Created Debug
 if (ins_debug) then {
-    ["Insurgency | ALiVE - Buffering Cache - 30 second timeout"] call ALiVE_fnc_DumpR;
+    ["Insurgency | ALiVE - Buffering Cache - 15 second timeout"] call ALiVE_fnc_DumpR;
 };
 
 //--- Initial buffer - and respawn buffer time.
-sleep 30;
+sleep 15;
 
 if (ins_debug) then {
     ["Insurgency | ALiVE - Calling Players"] call ALiVE_fnc_DumpR;
@@ -101,12 +114,33 @@ _cacheHouses = [_cityPos, _cityRadA] call ALIVE_fnc_getEnterableHouses;
 
 sleep 1;
 
+if (isNil "_cacheHouses") exitWith {
+
+	if (ins_debug) then {
+        ["Insurgency | ALiVE - Cache Array does not exist."] call ALiVE_fnc_DumpR;
+    };
+
+	[] spawn INS_fnc_spawnCache;
+};
+
+if (count _cacheHouses == 0) exitWith {
+	if (ins_debug) then {
+        ["Insurgency | ALiVE - Cache Array is empty. No houses found... Trying Again."] call ALiVE_fnc_DumpR;
+    };
+
+	[] spawn INS_fnc_spawnCache;
+};
+
 if (ins_debug) then {
-    ["Insurgency | ALiVE - Selecting Random House"] call ALiVE_fnc_DumpR;
+    ["Insurgency | ALiVE - Selecting Random House from list: %1", _cacheHouses] call ALiVE_fnc_DumpR;
 };
 
 //--- Select random house from the generated list.
 _cacheHouse = _cacheHouses call BIS_fnc_selectRandom;
+
+if (ins_debug) then {
+    ["Insurgency | ALiVE - House found: %1", _cacheHouse] call ALiVE_fnc_DumpR;
+};
 
 sleep 1;
 
@@ -141,13 +175,11 @@ clearWeaponCargoGlobal CACHE;
 //--- Add event handlers to the cache
 //--- Handle damage for only Satchel and Demo charge.
 CACHE addEventHandler ["handledamage", {
-	if ((_this select 4) in ["SatchelCharge_Remote_Ammo","DemoCharge_Remote_Ammo"]) then {
+	if ((_this select 4) in ["SatchelCharge_Remote_Ammo","DemoCharge_Remote_Ammo","SatchelCharge_Remote_Ammo_Scripted","DemoCharge_Remote_Ammo_Scripted"]) then {
 
 		(_this select 0) setdamage 1;
 		//--- Event handler to call explosion effect and score.
 		(_this select 0) spawn INS_fnc_cacheKilled;
-		//--- Event handler to recall script when cache is destroyed.
-		(_this select 0) spawn INS_fnc_spawnCache;
 
 	} else {
 
@@ -172,16 +204,17 @@ if (ins_debug) then {
 
 //--- Check to see if cache has already spawned near that location.
 //--- TODO: Pass cache into array and check distance of new cache to the array of old caches.
-_findHelipad = count nearestObjects [_targetLocation, ["Land_HelipadEmpty_F"], 1800];
+_findHelipad = count nearestObjects [_targetLocation, ["Land_HelipadEmpty_F"], 1200];
 _findBases = count nearestObjects [_targetLocation, ["Flag_US_F"], 800];
+_findPlayers = count nearestObjects [_targetLocation, ["_players"], 800];
 
-if ((_findHelipad > 0)|| (_findBases > 0)) then {
+if ((_findHelipad > 0) || (_findBases > 0) || (_findPlayers > 0)) exitWith {
 
 	if (ins_debug) then {
         ["Insurgency | ALiVE - Cache trying to spawn in a bad location. Trying Again."] call ALiVE_fnc_DumpR;
     };
 
-	true spawn INS_fncache;
+	[] spawn INS_fnc_spawnCache;
 };
 
 sleep 1;
@@ -214,5 +247,5 @@ if (ins_debug) then {
 };
 
 if (ins_debug) then {
-    ["Insurgency | ALiVE - Cache Function Create end"] call ALiVE_fnc_DumpR;
+    ["Insurgency | ALiVE - Cache Function Create End"] call ALiVE_fnc_DumpR;
 };

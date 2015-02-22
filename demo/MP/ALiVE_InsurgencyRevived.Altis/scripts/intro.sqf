@@ -37,7 +37,7 @@ if (hasInterface) then {
 
 		waitUntil {!isNull player};
 
-	    titleText ["For group/unit and personal use only!", "BLACK IN",9999];
+	    titleText ["Hazey from the ALiVE Dev Team presents..", "BLACK IN",9999];
 		0 fadesound 0;
 
 		private ["_cam","_camx","_camy","_camz","_object","_name"];
@@ -59,7 +59,7 @@ if (hasInterface) then {
 
 		_cam camsetpos [_camx -0 ,_camy + 0,_camz+3];
 
-		titleText ["A L i V E   |   I N S U R G E N C Y", "BLACK IN",10];
+		titleText ["I N S U R G E N C Y   |   A L i V E", "BLACK IN",10];
 		10 fadesound 0.9;
 		_cam CamCommit 20;
 		sleep 5;

@@ -94,7 +94,7 @@ class Mission
 	randomSeed=4009219;
 	class Intel
 	{
-		briefingName="Insurgency | ALiVE - Revived RC 0.55.6";
+		briefingName="Insurgency | ALiVE - Revived RC 0.55.7";
 		overviewText="Alive Dev Team | Mission by Hazey";
 		resistanceWest=0;
 		resistanceEast=1;
@@ -1991,7 +1991,7 @@ class Mission
 						};
 						class Item3
 						{
-							value="0";
+							value="100";
 							parentCls="ALiVE_mil_placement";
 							typeName="sizeFilter";
 						};

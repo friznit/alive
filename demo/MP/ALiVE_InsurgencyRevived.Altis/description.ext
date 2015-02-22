@@ -49,11 +49,11 @@ enableDebugConsole = 1;
 //--- Respawn
 respawn = BASE;
 respawnDelay = 15;
-respawnDialog = true;
-disabledAI = true;
+respawnDialog = 1;
+disabledAI = 1;
 respawnTemplates[] = {"MenuPosition"};
-respawnButton = true;
-respawnOnStart = false;
+respawnButton = 0;
+respawnOnStart = 0;
 
 //--- General Includes
 

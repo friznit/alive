@@ -43,3 +43,7 @@ while { _x <= 22 } do {
 
 //--- Call the global cache killed text.
 [nil,"INS_fnc_cacheKilledText", nil, false] spawn BIS_fnc_MP;
+
+sleep 4;
+
+[] spawn INS_fnc_spawnCache;
