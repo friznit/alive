@@ -559,6 +559,13 @@ class unorderedMap
 	recompile = RECOMPILE;
 };
 
+class canSee
+{
+	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_canSee.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class checkConfigCompatibility
 {
 	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_checkConfigCompatibility.sqf";
@@ -569,13 +576,6 @@ class checkConfigCompatibility
 class cursorTargetInfo
 {
 	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_cursorTargetInfo.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class canSee
-{
-	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_canSee.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -972,13 +972,6 @@ class processTerrain
 	recompile = RECOMPILE;
 };
 
-class createLineMarker
-{
-	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLineMarker.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
 class createBuildingGrid
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_createBuildingGrid.sqf";
@@ -986,9 +979,9 @@ class createBuildingGrid
 	recompile = RECOMPILE;
 };
 
-class updateBuildingGrid
+class createLineMarker
 {
-	file = "\x\alive\addons\x_lib\functions\markers\fnc_updateBuildingGrid.sqf";
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLineMarker.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1031,6 +1024,13 @@ class inArea
 class MarkerExists
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_MarkerExists.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class updateBuildingGrid
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_updateBuildingGrid.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1105,6 +1105,34 @@ class compileReadableDate
 	recompile = RECOMPILE;
 };
 
+class emptyInit
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_emptyInit.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class exportCfgVehicles
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgVehicles.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class exportCfgVehicleWeapons
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgVehicleWeapons.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class exportCfgWeapons
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgWeapons.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class factionSide
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_factionSide.sqf";
@@ -1129,6 +1157,13 @@ class getEnvironment
 class getPos
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_getPos.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getSideFactions
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_getSideFactions.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1378,6 +1413,27 @@ class getRandomPlayerNear
 	recompile = RECOMPILE;
 };
 
+class getSideManNear
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getSideManNear.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getSideManOrPlayerNear
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getSideManOrPlayerNear.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getSidePlayerNear
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getSidePlayerNear.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class isArmed
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_isArmed.sqf";
@@ -1563,41 +1619,6 @@ class vehicleSetAmmo
 class vehicleSetDamage
 {
 	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_vehicleSetDamage.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class emptyInit
-{
-	file = "\x\alive\addons\x_lib\functions\misc\fnc_emptyInit.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class exportCfgWeapons
-{
-	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgWeapons.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class exportCfgVehicles
-{
-	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgVehicles.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class exportCfgVehicleWeapons
-{
-	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportCfgVehicleWeapons.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class getSideFactions
-{
-	file = "\x\alive\addons\x_lib\functions\misc\fnc_getSideFactions.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

@@ -1,11 +1,11 @@
 #include <\x\alive\addons\amb_civ_command\script_component.hpp>
-SCRIPT(cc_suicide);
+SCRIPT(cc_suicideTarget);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_cc_suicide
+Function: ALIVE_fnc_cc_suicideTarget
 
 Description:
-Suicide Bomber command for civilians
+Targeted Suicide Bomber command for civilians
 
 Parameters:
 Profile - profile
@@ -16,7 +16,7 @@ Returns:
 Examples:
 (begin example)
 //
-_result = [_agent, []] call ALIVE_fnc_cc_suicide;
+_result = [_agent, [_targetSide]] call ALIVE_fnc_cc_suicideTarget;
 (end)
 
 See Also:
@@ -50,7 +50,7 @@ if(_debug) then {
 switch (_state) do {
     case "init":{
 
-        private ["_agentClusterID","_agentCluster","_target","_homePosition","_positions","_position"];
+        private ["_agentClusterID","_agentCluster","_target","_homePosition","_positions","_position","_targetSide"];
 
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
@@ -63,7 +63,9 @@ switch (_state) do {
         _agentClusterID = _agentData select 2 select 9;
         _agentCluster = [ALIVE_clusterHandler,"getCluster",_agentClusterID] call ALIVE_fnc_clusterHandler;
 
-        _target = [_agentCluster,getPosASL _agent, 50] call ALIVE_fnc_getAgentEnemyNear;
+        _targetSide = _args select 0;
+
+        _target = [getPosASL _agent, 600, _targetSide] call ALIVE_fnc_getSideManOrPlayerNear;
 
         if(count _target > 0) then {
 
@@ -211,10 +213,12 @@ switch (_state) do {
 
         _nextStateArgs = _args;
 
-        if(!(isNil "_target") || !(alive _target)) then {
-            terminate _handle;
-            _nextState = "done";
-            [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+        if!(isNil "_target") then {
+            if!(alive _target) then {
+                terminate _handle;
+                _nextState = "done";
+                [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
+            };
         };
 
         if(scriptDone _handle) then {

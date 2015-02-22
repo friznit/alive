@@ -81,6 +81,16 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_command\fnc_cc_joinGathering.sqf";
                 recompile = RECOMPILE;
             };
+            class cc_suicideTarget {
+                description = "Targeted Suicide command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_suicideTarget.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_rogueTarget {
+                description = "Targeted Rogue command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_rogueTarget.sqf";
+                recompile = RECOMPILE;
+            };
 		};
 	};
 };

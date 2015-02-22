@@ -310,6 +310,11 @@ switch(_operation) do {
                         _activeCommand = _activeCommand select 1;
                         _commandType = _activeCommand select 1;
 
+                        /*
+                        ["ALiVE Command Router - Active Command: %1",_commandType] call ALIVE_fnc_dump;
+                        _activeCommand call ALIVE_fnc_inspectArray;
+                        */
+
                         // if we are a managed command
                         if(_commandType == "managed") then {
                             _commandName = _activeCommand select 0;
@@ -327,10 +332,24 @@ switch(_operation) do {
                                 _nextState = _activeCommand select 3;
                                 _nextStateArgs = _activeCommand select 4;
 
+                                /*
+                                ["ALiVE Command Router - Next State: %1",_nextState] call ALIVE_fnc_dump;
+                                ["ALiVE Command Router - Next State Args: %1",_nextStateArgs] call ALIVE_fnc_dump;
+                                */
+
                                 // if the managed command has not completed
                                 if!(_nextState == "complete") then {
+
+                                    //["ALiVE Command Router - Managed command not completed: %1",_commandName] call ALIVE_fnc_dump;
+
                                     [_agent, _commandState, _commandName, _nextStateArgs, _nextState, _debug] call (call compile _commandName);
                                 }else{
+
+                                    /*
+                                    ["ALiVE Command Router - Managed command completed: %1",_commandName] call ALIVE_fnc_dump;
+                                    ["ALiVE Command Router - Selecting a new command"] call ALIVE_fnc_dump;
+                                    */
+
                                     [_logic,"deactivate",_agent] call MAINCLASS;
 
                                     // pick a new command to activate

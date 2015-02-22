@@ -108,6 +108,7 @@ data
 
 diagnostics
 
+	ALiVE_fnc_canSee
 	ALiVE_fnc_checkConfigCompatibility
 	ALiVE_fnc_cursorTargetInfo
 	ALiVE_fnc_debugBuildingPositions
@@ -178,17 +179,21 @@ map
 	ALiVE_fnc_getObjectsByType
 	ALiVE_fnc_getRandomPositionLand
 	ALiVE_fnc_getSeriesRoadPositions
+	ALiVE_fnc_gridPos
 	ALiVE_fnc_isHouseEnterable
 	ALiVE_fnc_processTerrain
 
 markers
 
+	ALiVE_fnc_createBuildingGrid
 	ALiVE_fnc_createLineMarker
 	ALiVE_fnc_createLink
 	ALiVE_fnc_createMarker
+	ALiVE_fnc_createMarkerGlobal
 	ALiVE_fnc_deleteLink
 	ALiVE_fnc_inArea
 	ALiVE_fnc_MarkerExists
+	ALiVE_fnc_updateBuildingGrid
 	ALiVE_fnc_validateLocations
 
 math
@@ -205,10 +210,15 @@ misc
 	ALiVE_fnc_allSides
 	ALiVE_fnc_classSide
 	ALiVE_fnc_compileReadableDate
+	ALiVE_fnc_emptyInit
+	ALiVE_fnc_exportCfgVehicles
+	ALiVE_fnc_exportCfgVehicleWeapons
+	ALiVE_fnc_exportCfgWeapons
 	ALiVE_fnc_factionSide
 	ALiVE_fnc_getDominantFaction
 	ALiVE_fnc_getEnvironment
 	ALiVE_fnc_getPos
+	ALiVE_fnc_getSideFactions
 	ALiVE_fnc_isAbleToHost
 	ALiVE_fnc_isHC
 	ALiVE_fnc_isServerAdmin
@@ -259,6 +269,9 @@ units
 	ALiVE_fnc_getRandomManNear
 	ALiVE_fnc_getRandomManOrPlayerNear
 	ALiVE_fnc_getRandomPlayerNear
+	ALiVE_fnc_getSideManNear
+	ALiVE_fnc_getSideManOrPlayerNear
+	ALiVE_fnc_getSidePlayerNear
 	ALiVE_fnc_isArmed
 	ALiVE_fnc_isEnemyNear
 	ALiVE_fnc_PlayersInRangeIncludeAir
