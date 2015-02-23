@@ -1,32 +1,34 @@
 [CENTER][URL="http://alivemod.com/"][IMG]http://alivemod.com/img/alive_logo_bif.jpg[/IMG][/URL]
 [B][URL="http://alivemod.com/"]alivemod.com[/URL]
 [SIZE=4]The next generation dynamic persistent campaign for ArmA3
-[U]Release 0.9.4[/U][/SIZE][/B][/CENTER]
+Release 0.9.45[/SIZE][/B][/CENTER]
 
 [B][U]Fixes & Enhancements[/U][/B]
-This is a further incremental update to prepare the ground for 1.0 release and fix several outstanding issues and features.  Some of the more high profile issues have been fixed, such as Combat Support helicopters now turn their lights off when on task, FFV positions are no longer filled with AI, mobile mortar teams are now supported and the Military Intel Section is back in business providing valuable information on the battlefield situation.  We have added support for a number of new maps as well.  A lot of changes have been made in the background to prepare for the ALiVE Asymmetric Warfare Environment, which will simulate a complex Insurgency and Counter-Insurgency scenario.  We'll post more detail on this in due course.
+This is a further incremental update to prepare the ground for 1.0 release and fix several outstanding issues and features.  Some of the more high profile issues have been fixed, such as Combat Support helicopters now turn their lights off when on task, FFV positions are no longer filled with AI, mobile mortar teams are now supported and the Military Intel Section is back in business providing valuable information on the battlefield situation.  Linux server admins should note that everything is now in lower case, although a working connection to the War Room database is still awaiting help from a friendly C++ dev.  Any volunteers gladly welcomed!  Meanwhile, a lot of changes have been made in the background to prepare for the much anticipated ALiVE Asymmetric Warfare Environment, which will simulate a complex Insurgency and Counter-Insurgency scenario.  Unfortunately this is not yet ready for general release and we'll post more details in due course.
 
-Bundled with this release is Hazey's awesome update to Insurgency ALiVE based upon the ever-popular ArmA2 Insurgency, which really shows off the power and flexibility of ALiVE.  There are more details posted in his mission release thread.
+However, bundled with this release is Hazey's awesome ALiVE Insurgency Revived based upon the same concept as the ever-popular ArmA2 mission, which really shows off the power and flexibility of ALiVE.  Check out the MP missions folder in the download.  There will be more details posted in his mission release thread.
 
-Please note that as with all update, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+[CENTER]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
 
-[CENTER][img]http://i.imgur.com/JmOgOq3.png[/img][/CENTER]
-
-[B][U]War Room[/U][/B]
-Most of on going War Room work is focussed on stability and robustness of the system as it sees more and more use every day.  Many thanks to all those providing feedback and troubleshooting issues with the data feeds.  You will soon see a significantly more enhanced Server Performance suite built into the War Room with some very powerful analytic tools for server admins.  Even if you're not running persistent missions, we strongly encourage you do use the ALiVE Database module to record server stats so we can build benchmarks and provide everyone and BIS with invaluable performance data.
-
-We have also added a new 'mission' that automates high quality image capture of any addons you have loaded so they can be uploaded to the War Room.  Instructions are included in the demo folder.  If you have missing images on your War Room profile, run this up and let us know so we can upload them for you.
-
-[CENTER][url=http://alivemod.com/#ALiVEWarRoom]Join Up Now![/url]
-
-[B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B]
+[SIZE=4][B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B][/SIZE]
 Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
 Also available from PlayWithSix and ArmAholic.
 
-Note that this build requires the latest ALiVEPlugIn.dll[/CENTER]
+Note that this build requires the latest ALiVEPlugIn.dll for @ALiVEServer.  A separate download link to match Linux server versions is also available.
+
+
+[img]http://i.imgur.com/rxTGcmM.jpg[/img][/CENTER]
+
+
+[B][U]War Room[/U][/B]
+Most of the ongoing War Room work is focussed on stability and robustness of the system as it sees more and more use every day.  Many thanks to all those providing feedback and troubleshooting issues with the data feeds.  You will soon see a significantly more enhanced Server Performance suite built into the War Room with some very powerful analytical tools for server admins.  Even if you're not running persistent missions, we strongly encourage you do use the ALiVE Database module to record server stats so we can build a benchmark and provide everyone and BIS with invaluable performance data.
+
+We have added a new 'mission' that automates high quality image capture of any addons you have loaded so they can be uploaded to the War Room.  Instructions are included in the demo folder.  If you have missing images on your War Room profile, run this up and let us know so we can upload them for you.
+
+[CENTER][SIZE=4][B][url=http://alivemod.com/#ALiVEWarRoom]Join Up Now![/url][/B][/SIZE][/CENTER]
 
 [B][U]Manual[/U][/B]
-Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  It's slowly getting prettier but all the info you need should be there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  All the info you need should is there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
 
 [B][U]Support Forum[/U][/B]
 For direct support and feedback from the ALiVE dev team, join us on Skype or sign up to the forum on our website: [URL="http://alivemod.com/forum/"]http://alivemod.com/forum/[/URL]
@@ -47,18 +49,19 @@ For direct support and feedback from the ALiVE dev team, join us on Skype or sig
 Changelog
 [SPOILER]
 - Build 0.9.5 
-- Note. This Build requires the latest ALiVEPlugIn.dll 
+- Note. This Build requires the latest ALiVEPlugIn.dll (@ALiVEServer)
 
 [ALL] Updated version to 0.9.5.1502201
 [DEMO_MP] Final cleanup of Insurgency Demo. Ready for Release. mission version 0.55.6
+[linux] changed folder/pbo names to lowercase
 [index] Isleduala re-index for update 3.21
 [CS]Added ability to run code on CS trans and CAS units inc setvariables
 [MISC] Fixed missing STR and module descriptions in combat support modules.
 [mil_ied] ALiVE now with 100% more akbar! (added akbar to suicide bomber).
-[mil_opcom] Fixed zero divisor error with OPCOM analysis (fsm). http://dev.withsix.com/issues/75912
+[mil_opcom] Fixed zero divisor error with OPCOM analysis (fsm). [url]http://dev.withsix.com/issues/75912[/url]
 [DEMO_MP] - Added first release candidate of Insurgency | ALiVE mission.
 [MIL OPCOM] Disabled asymetric option for this release! Further Insurgeny WIP (all ins controlled civs build campfires atm :))
-[sys_profile] Added option in Virtual AI module to choose a speed modifier (25%>125%) for simulated AI. http://dev.withsix.com/issues/75395
+[sys_profile] Added option in Virtual AI module to choose a speed modifier (25%>125%) for simulated AI. [url]http://dev.withsix.com/issues/75395[/url]
 [ALiVEServer] Updated plugin to support enhanced performance monitoring
 [sys_perf] Fixed issue where lack of custom monitor parameters caused RPT spam
 [sys_data] Fixed issue where an error was returned during a successful save
@@ -75,7 +78,7 @@ Changelog
 [MIL CQB] Implemented building grid option (tbd: Add markerbrush optione like "solid" etc.)! NOTE: to reliably enable the buildinggrid, turn it on on all CQB instances or they would potentially override each other
 [X LIB] Added ALiVE_fnc_CreateMarkerGlobal that uses createMarker instead of createmarkerlocal (intended for global use of markers on server)
 [Demos] Finished making sure demos were 0.9.5 ready.
-[Log]Fix forcepool 0 error http://dev.withsix.com/issues/75912
+[Log]Fix forcepool 0 error [url]http://dev.withsix.com/issues/75912[/url]
 [Combat Support] Fixed spelling errors and tooltip for mobile mortar teams
 [sys_player] Stop hash inspection
 [mil_IED] Fixed spelling error in "Extreme"
@@ -90,8 +93,8 @@ Changelog
 [SYS_LOGI] Fixed issue with debug message displaying even while debug is set to false.
 [CS]Fixed FFV issue with CS and Hummingbird
 [SYS_VDIST] Fixed reported localization error.
-[Demos] Updated Sabotage Mission for 0.9.5 compatibility. https://dev.withsix.com/issues/76001
-Fixed http://dev.withsix.com/issues/74932 no chnage in behaviours
+[Demos] Updated Sabotage Mission for 0.9.5 compatibility. [url]https://dev.withsix.com/issues/76001[/url]
+Fixed [url]http://dev.withsix.com/issues/74932[/url] no chnage in behaviours
 [SYS_PLAYERTAGS] Fixed issue with Feature Turned off being reported even with debug off.
 [Intro] Added additional intro scenes.
 [MIL OPCOM] Fix for hanging on loading screen!
@@ -114,7 +117,7 @@ Fixed http://dev.withsix.com/issues/74932 no chnage in behaviours
 ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
 
 [B][U]Work In Progress[/U][/B]
-We are hard at work on the Asymmetric Warfare Environment, popularly known as the Insurgency Module although it's technically not a single module but a whole new game mode. We have a working system already but there is a way to go before it achieves our final vision.  Our main theme at the moment is to ensure ALiVE is a intuitive and robust as we can make it for general release of 1.0  We'll be taking a long hard look at the outstanding feature request list and make some decisions about what we can realistically achieve for what will be the official gold version.  We will of course continue working on future enhancements after that!
+We are hard at work on the Asymmetric Warfare Environment, popularly known as the Insurgency Module although it's technically not a single module but a whole new game mode. We have a working system already but there is a way to go before it achieves our final vision.  Our main theme at the moment is to ensure ALiVE is a intuitive and robust as we can make it for general release of 1.0  We'll be taking a long hard look at the outstanding feature request list and make some decisions about what we can realistically achieve for what will be the official gold version, but we're determined that Asymmetric Warfare will be in there!  We will of course continue working on future enhancements after that.
 
 [B][U]Thanks To[/U][/B]
 Special thanks to everyone here for supporting us with donations to the War Room.  Database hosting isn't free and the overwhelming popularity of ALiVE means we are using rather more data than we originally anticipated.  If you want to contribute to keep the War Room ALiVE (see what I did there) then please find the Donate button at ALiVEmod.com!
