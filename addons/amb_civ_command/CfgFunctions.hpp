@@ -91,6 +91,17 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_command\fnc_cc_rogueTarget.sqf";
                 recompile = RECOMPILE;
             };
+            class cc_getWeapons {
+                description = "Get weapons from depot command";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_getWeapons.sqf";
+                recompile = RECOMPILE;
+            };
+            class cc_sabotage {
+                description = "Sabotage a building";
+                file = "\x\alive\addons\amb_civ_command\fnc_cc_sabotage.sqf";
+                recompile = RECOMPILE;
+            };              
+                        
 		};
 	};
 };

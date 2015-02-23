@@ -63,7 +63,14 @@ switch (_state) do {
         _agentClusterID = _agentData select 2 select 9;
         _agentCluster = [ALIVE_clusterHandler,"getCluster",_agentClusterID] call ALIVE_fnc_clusterHandler;
 
-        _targetSide = _args select 0;
+        _targetSide = (_args select 0) call BIS_fnc_SelectRandom;
+
+        //Thank you, BIS...
+        if (_targetSide in ["GUER","INDEP"]) then {_targetSide = RESISTANCE} else {
+            if (_targetSide in ["CIV","CIVILIAN"]) then {_targetSide = CIVILIAN} else {
+                _targetSide = call compile _targetSide;
+            };
+        };
 
         _target = [getPosASL _agent, 600, _targetSide] call ALIVE_fnc_getSideManOrPlayerNear;
 
