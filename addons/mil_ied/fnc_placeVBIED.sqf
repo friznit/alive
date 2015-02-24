@@ -13,8 +13,6 @@ _veh = nearestObjects [_location, ["Car"], _radius];
 
 _num = ADDON getvariable ["VB_IED_Threat", 7];
 
-diag_log format ["cunt %1, %2", _num, _veh];
-
 if (count _veh > 0) then {
 
 	if (_num > (count _veh)) then {_num = (count _veh) - 1};

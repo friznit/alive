@@ -7,6 +7,7 @@ private ["_location","_debug","_victim","_size","_faction","_bomber"];
 if !(isServer) exitWith {diag_log "Suicide Bomber Not running on server!";};
 
 _victim = objNull;
+
 if (typeName (_this select 0) == "ARRAY") then {
 	_location = (_this select 0) select 0;
 	_size = (_this select 0) select 1;
@@ -14,6 +15,7 @@ if (typeName (_this select 0) == "ARRAY") then {
 } else {
 	_bomber = _this select 0;
 };
+
 _victim = (_this select 1) select 0;
 
 _debug = MOD(mil_ied) getVariable ["debug", false];
@@ -30,8 +32,14 @@ if (isNil "_bomber") then {
 	if (isNil "_class") then {
 		_class = ([[_faction], 1, [], true] call ALiVE_fnc_chooseRandomUnits) select 0;
 	};
+	if (isNil "_class") exitWith {};
 	_bomber = _grp createUnit [_class, _pos, [], _size, "NONE"];
 };
+
+if (isNil "_bomber") exitWith {};
+
+if (surfaceIsWater _pos) exitWith {	deletevehicle _bomber;};
+
 
 // Add explosive
 _bomber addweapon "ItemRadio";
@@ -56,6 +64,8 @@ if (_debug) then {
 // Select victim
 _victim = units (group _victim) call BIS_fnc_selectRandom;
 
+if (isNil "_victim") exitWith {	deletevehicle _bomber;};
+
 [_victim,_bomber,_debug, _marker] spawn {
 
 	private["_victim","_bomber","_debug","_marker","_shell"];
@@ -69,7 +79,15 @@ _victim = units (group _victim) call BIS_fnc_selectRandom;
 
 	// Have bomber go after victim for up to 10 minutes
 	_time = time + 600;
-	waitUntil {_bomber doMove getposATL _victim; sleep 2; (_bomber distance _victim < 8) || (time > _time) || !(alive _bomber)};
+	waitUntil {
+		if (!isNil "_victim") then {
+			_bomber doMove getposATL _victim;
+		};
+		sleep 2;
+		!(alive _victim) || (isNil "_victim") || (_bomber distance _victim < 8) || (time > _time) || !(alive _bomber)
+	};
+
+	if (!(alive _victim) || isNil "_victim") exitWith {	deletevehicle _bomber;};
 
 	// Blow up bomber
 	if ((_bomber distance _victim < 8) && (alive _bomber)) then {
