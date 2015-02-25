@@ -39,8 +39,10 @@ ______________________________________________________*/
 	INS_west_score = 0;
 	publicVariable "INS_west_score";
 
-	//--- Start CACHE as a null object to avoid any init issues.
-	CACHE = objNull;
+	if (isServer || isDedicated) then {
+		//--- Start CACHE as a null object to avoid any init issues.
+		CACHE = objNull;
+	};
 
 	//--- Define intel types
 	INS_INTELDROPPED = ["Land_HandyCam_F","Land_SatellitePhone_F","Land_Suitcase_F","Land_Ground_sheet_folded_OPFOR_F"];

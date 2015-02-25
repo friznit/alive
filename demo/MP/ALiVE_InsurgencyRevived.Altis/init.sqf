@@ -37,11 +37,6 @@ ______________________________________________________*/
 //--- Disable Saving
 enableSaving [false, false];
 
-//--- Player Markers
-if (paramsArray select 1 == 1) then {
-	_null = [] execVM "scripts\player_markers.sqf";
-};
-
 //--- Civilian Call to Prayer
 if (paramsArray select 2 == 1) then {
 	_null = [] spawn INS_fnc_CallToPrayer;
@@ -51,13 +46,6 @@ if (paramsArray select 2 == 1) then {
 if (paramsArray select 7 == 1) then {
 	if (isServer || isDedicated) then {
 		_null = [] spawn INS_fnc_SpawnIntel;
-	};
-};
-
-//--- Grid Markers
-if (paramsArray select 9 == 1) then {
-	if (isServer) then {
-		//--- TODO
 	};
 };
 
