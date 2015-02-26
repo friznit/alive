@@ -1,24 +1,24 @@
 #include <\x\alive\addons\x_lib\script_component.hpp>
-SCRIPT(updateBuildingGrid);
+SCRIPT(updateTraceGrid);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_updateBuildingGrid
+Function: ALIVE_fnc_updateTraceGrid
 Description:
 Updates hostility state of given grid-sectors
 
 Parameters:
-array - grid (created with ALIVE_fnc_createBuildingGrid)
+array - grid (created with ALIVE_fnc_createTraceGrid)
 
 Returns:
 array - grid
 
 Examples:
 (begin example)
-	_grid call ALIVE_fnc_updateBuildingGrid;
+	_grid call ALIVE_fnc_updateTraceGrid;
 (end)
 
 See Also:
-- <ALIVE_fnc_createBuildingGrid>
+- <ALIVE_fnc_createTraceGrid>
 
 Author:
 Highhead
@@ -41,7 +41,7 @@ _players = [] call BIS_fnc_listPlayers;
 
     If ((_pos select 2) < 2 && {_x == vehicle _x})  then {
     	_gridPos = _pos call ALiVE_fnc_GridPos;
-        _markerID = format["ALiVE_BuildGrid_%1%2",_gridpos select 0,_gridPos select 1];
+        _markerID = format["ALiVE_TraceGrid_%1%2",_gridpos select 0,_gridPos select 1];
         _nearEnemy = [_gridPos, str(side _x), 75] call ALiVE_fnc_isEnemyNear;
 
         {

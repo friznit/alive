@@ -972,9 +972,9 @@ class processTerrain
 	recompile = RECOMPILE;
 };
 
-class createBuildingGrid
+class createTraceGrid
 {
-	file = "\x\alive\addons\x_lib\functions\markers\fnc_createBuildingGrid.sqf";
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createTraceGrid.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1028,9 +1028,9 @@ class MarkerExists
 	recompile = RECOMPILE;
 };
 
-class updateBuildingGrid
+class updateTraceGrid
 {
-	file = "\x\alive\addons\x_lib\functions\markers\fnc_updateBuildingGrid.sqf";
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_updateTraceGrid.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

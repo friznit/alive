@@ -243,10 +243,10 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class CQB_BuildingGrid
+                        class CQB_TraceGrid
                         {
-                                displayName = "$STR_ALIVE_CQB_BUILDINGGRID";
-                                description = "$STR_ALIVE_CQB_BUILDINGGRID_COMMENT";
+                                displayName = "$STR_ALIVE_CQB_TRACE";
+                                description = "$STR_ALIVE_CQB_TRACE_COMMENT";
                                 class Values
                                 {
                                         class None

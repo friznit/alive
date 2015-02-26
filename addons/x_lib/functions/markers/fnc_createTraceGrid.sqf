@@ -1,8 +1,8 @@
 #include <\x\alive\addons\x_lib\script_component.hpp>
-SCRIPT(createBuildingGrid);
+SCRIPT(createTraceGrid);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_createBuildingGrid
+Function: ALIVE_fnc_createTraceGrid
 Description:
 Marks all grid-sectors with buildings within the given radius of a position
 
@@ -18,11 +18,11 @@ Examples:
             [
 				getpos player,
                 500
-            ] call ALIVE_fnc_createBuildingGrid;
+            ] call ALIVE_fnc_createTraceGrid;
 (end)
 
 See Also:
-- <ALIVE_fnc_updateBuildingGrid>
+- <ALIVE_fnc_updateTraceGrid>
 
 Author:
 Highhead
@@ -44,7 +44,7 @@ _houses = [_pos,_radius] call ALiVE_fnc_getEnterableHouses;
     private ["_gridPos","_markerID"];
 
     _gridPos = (getposATL _x) call ALiVE_fnc_GridPos;
-    _markerID = format["ALiVE_BuildGrid_%1%2",_gridpos select 0,_gridPos select 1];
+    _markerID = format["ALiVE_TraceGrid_%1%2",_gridpos select 0,_gridPos select 1];
 
     if !(_markerID in _grid) then {
         [_markerID,_gridPos,"RECTANGLE", [50,50], "COLORRED", "", "EMPTY", _fill, 0, 0.5] call ALIVE_fnc_createMarkerGlobal;
