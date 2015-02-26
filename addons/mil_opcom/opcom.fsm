@@ -96,7 +96,7 @@ link43[] = {32,28};
 link44[] = {33,34};
 link45[] = {34,25};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,87,6316128,1,-1242.446899,-80.755722,288.061646,-834.670410,984,951,1};
-window[] = {2,-1,-1,-1,-1,1049,100,1880,100,3,1002};
+window[] = {2,-1,-1,-1,-1,999,50,1830,50,3,1002};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -982,7 +982,7 @@ class FSM
        "  };" \n
        "" \n
        "  if ( _currentCount != 0 && _startCount != 0 && [""ALiVE_MIL_LOGISTICS""] call ALiVE_fnc_isModuleAvailable) then {" \n
-       "      [""Diff 1 %1 _start %2 _curr %3 CC %4 SC %5 RR %6 DIV %7"",_diff,_startForcesStrength,_currentForceStrength,_currentCount, _startCount, _reinforcementRatio, (_currentCount / _startCount) ] call ALiVE_fnc_DumpR;" \n
+       "      // [""Diff 1 %1 _start %2 _curr %3 CC %4 SC %5 RR %6 DIV %7"",_diff,_startForcesStrength,_currentForceStrength,_currentCount, _startCount, _reinforcementRatio, (_currentCount / _startCount) ] call ALiVE_fnc_DumpR;" \n
        "      if ( (_currentCount / _startCount) < _reinforcementRatio) then {_reinforce = +_diff};" \n
        "  };" \n
        "};"/*%FSM</STATEINIT""">*/;
