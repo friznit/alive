@@ -104,20 +104,17 @@
 <Key ID="STR_ALIVE_CQB_DENSITY_COMMENT">
 	<English>Density of additional CQB placements</English>
 </Key>
-</Key>
 <Key ID="STR_ALIVE_CQB_SPAWNDISTANCE">
 	<English>Spawn Ground:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWNDISTANCE_COMMENT">
 	<English>Spawn distance for grunts! Note that spawn distance for strategic placements is factor 1.4 of this value</English>
 </Key>
-</Key>
 <Key ID="STR_ALIVE_CQB_SPAWNDISTANCEHELI">
 	<English>Spawn Heli:</English>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWNDISTANCEHELI_COMMENT">
 	<English>Spawn distance for helicopters (0 is no spawning)! Note that spawn distance for strategic placements is factor 1.4 of this value</English>
-</Key>
 </Key>
 <Key ID="STR_ALIVE_CQB_SPAWNDISTANCEJET">
 	<English>Spawn Jet:</English>
