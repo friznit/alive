@@ -1,12 +1,12 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
-	'isladuala3'
+	#'isladuala3'
     #'anim_helvantis_v2'
     #'wake'
     #'panthera3'
     #'colleville'
-    #'bornholm'
+    'bornholm'
     #'imrali'
     #'sara',
     #'sara_dbe1',

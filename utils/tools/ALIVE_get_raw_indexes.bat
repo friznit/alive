@@ -43,10 +43,10 @@ rem %exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
 
 rem %exe% "%arma%\@everon2013\addons\everon2014.pbo" > %target%\objects.everon2014.sqf
 
-rem %exe% "%arma%\@Bornholm\Addons\Bornholm.pbo" > %target%\objects.bornholm.sqf
+%exe% "%arma%\@Bornholm\Addons\Bornholm.pbo" > %target%\objects.bornholm.sqf
 rem %exe% "%arma%\@panthera_a3\addons\panthera3.pbo" > %target%\objects.panthera3.sqf
 
-%exe% "%arma%\@wake\addons\wake.pbo" > %target%\objects.wake.sqf
+rem %exe% "%arma%\@wake\addons\wake.pbo" > %target%\objects.wake.sqf
 
 rem %exe% "%arma%\@sfp_islands\addons\sfp_sturko.pbo" > %target%\objects.sturko.sqf
 rem %exe% "%arma%\@sfp_islands\addons\sfp_wamako.pbo" > %target%\objects.wamako.sqf
