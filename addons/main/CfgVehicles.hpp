@@ -135,26 +135,6 @@ class CfgVehicles {
 	                        };
 	                };
 	        };
-	        class ALiVE_DISABLEPLAYERLOG
-	        {
-	                displayName = "$STR_ALIVE_DISABLEPLAYERLOG";
-	                description = "$STR_ALIVE_DISABLEPLAYERLOG_COMMENT";
-					typeName = "BOOL";
-	                class Values
-	                {
-	                        class Yes
-	                        {
-	                                name = "Yes";
-	                                value = 1;
-	                        };
-	                        class No
-	                        {
-	                                name = "No";
-	                                value = 0;
-	                                default = 1;
-	                        };
-	                };
-	        };
 			class ALiVE_GC_INTERVAL
             {
                     displayName = "$STR_ALIVE_GC_INTERVAL";
