@@ -1,12 +1,13 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
-	#'isladuala3'
+    'smd_sahrani_a3'
+    #'isladuala3'
     #'anim_helvantis_v2'
     #'wake'
     #'panthera3'
     #'colleville'
-    'bornholm'
+    #'bornholm'
     #'imrali'
     #'sara',
     #'sara_dbe1',
@@ -64,7 +65,7 @@ $index_names = (
     #'zargabad'
     )
 
-$black_list = ('rocks_f','plants_f','signs_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg','vegetation','shrub','palm','calvaries','rowboat','salix2s','humilis','boulder','fraxinus','sambucas','sambucus','fagus','drevo','acer2','craet','corylus','sign','picea1s','pinus','torzo','picea','fallentree','pmugo','wheat','sorbus','quercus','betula','quercus','populus')
+$black_list = ('barel','garbage','tree','smd_roads','rocks_f','plants_f','signs_f','rocks_e','plants_e','rocks2','plants2','\\pond\\','cwr2_plants','cwr2_rocks','mb_veg','plants','rocks','palm','ibr_plants','brg_africa','ns_plants','a2_veg','vegetation','shrub','palm','calvaries','rowboat','salix2s','humilis','boulder','fraxinus','sambucas','sambucus','fagus','drevo','acer2','craet','corylus','sign','picea1s','pinus','torzo','picea','fallentree','pmugo','wheat','sorbus','quercus','betula','quercus','populus')
 
 foreach ($index_name in $index_names){
     
