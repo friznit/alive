@@ -12,7 +12,7 @@ Array - position center of search
 Scalar - radius of search
 
 Returns:
-Boolean
+Array of profiles
 
 Examples:
 (begin example)

@@ -32,8 +32,6 @@ nil
 
 private ["_tmp","_result"];
 
-TRACE_1("findObjectIDString - input",_this);
-
 // 388c2080# 88544: helipadsquare_f.p3d
 _tmp = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
 
@@ -54,5 +52,4 @@ if(count _result > 1) then {
 
 //["r: %1",str _result] call ALIVE_fnc_dump;
 
-TRACE_1("findObjectIDString - output",_result);
 _result;

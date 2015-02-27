@@ -171,10 +171,12 @@ switch(_operation) do {
 			// nodes
 			_data = [];
 			{
-				_data set [count _data, [
-					_x call ALIVE_fnc_findObjectIDString,
-					position _x
-				]];
+				if!(isNil "_x") then {
+					_data set [count _data, [
+						_x call ALIVE_fnc_findObjectIDString,
+						position _x
+					]];
+				};
 			} forEach ([_logic, "nodes",[]] call ALIVE_fnc_hashGet);
 			
 			_result = [_state, "nodes", _data] call ALIVE_fnc_hashSet;

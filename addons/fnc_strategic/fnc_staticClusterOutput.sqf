@@ -45,7 +45,9 @@ _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_arrayName];
 		
 		_result = _result + '_nodes = [];';
 		{
-			_result = _result + format['_nodes set [count _nodes, %1];',_x];
+			if!(isNil "_x") then {
+				_result = _result + format['_nodes set [count _nodes, %1];',_x];
+			};
 		} forEach _nodes;
 		_result = _result + '[_cluster,"nodes",_nodes] call ALIVE_fnc_hashSet;';
 		_result = _result + '[_cluster, "state", _cluster] call ALIVE_fnc_cluster;';		
