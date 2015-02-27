@@ -12,6 +12,9 @@
 <Key ID="STR_ALIVE_COMPOSITION_largeMedicalHQ1">
     <English>Medical HQ 1 [Large]</English>
 </Key>
+<Key ID="STR_ALIVE_COMPOSITION_fieldHQ1">
+    <English>Field HQ [Large]</English>
+</Key>
 <Key ID="STR_ALIVE_COMPOSITION_camps">
     <English>Camps</English>
 </Key>

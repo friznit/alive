@@ -28,6 +28,41 @@ class CfgGroups
             class Object1 {side=8;vehicle="Land_Research_HQ_F";rank="";position[]={0.328613,5.15771,-0.00431585};dir=0;};
             class Object2 {side=8;vehicle="Land_Medevac_house_V1_F";rank="";position[]={-1.6499,-5.74756,-0.00431585};dir=0;};
             };
+			class fieldHQ1
+			{
+			name = "$STR_ALIVE_COMPOSITION_fieldHQ1";
+			class Object1 {side=8;vehicle="Land_CampingTable_small_F";rank="";position[]={-0.0881348,-1.09229,-0.00143623};dir=0.00831058;};
+			class Object2 {side=8;vehicle="MapBoard_altis_F";rank="";position[]={2.25696,-3.05859,-0.0036602};dir=142.217;};
+			class Object3 {side=8;vehicle="Land_CampingChair_V2_F";rank="";position[]={-3.42029,2.37012,-0.00141716};dir=85.8621;};
+			class Object4 {side=8;vehicle="Land_MapBoard_F";rank="";position[]={-5.01343,0.584961,-0.00365734};dir=264.341;};
+			class Object5 {side=8;vehicle="Land_Metal_rack_F";rank="";position[]={-0.250977,5.23389,-0.00140381};dir=0.000386421;};
+			class Object6 {side=8;vehicle="Land_CampingTable_F";rank="";position[]={-4.62073,2.87646,-0.00143862};dir=91.8098;};
+			class Object7 {side=8;vehicle="Land_CampingChair_V1_folded_F";rank="";position[]={-2.46704,-5.82275,-0.00143862};dir=90.8516;};
+			class Object8 {side=8;vehicle="CamoNet_BLUFOR_big_Curator_F";rank="";position[]={-0.596436,6.27979,-0.00143862};dir=357.029;};
+			class Object9 {side=8;vehicle="Land_CampingChair_V2_F";rank="";position[]={4.64575,5.03662,-0.00141764};dir=32.9095;};
+			class Object10 {side=8;vehicle="Land_GasCanister_F";rank="";position[]={-2.69324,-6.94824,-0.00143766};dir=359.837;};
+			class Object11 {side=8;vehicle="Land_Sleeping_bag_F";rank="";position[]={2.88306,-6.74414,-0.00143862};dir=271.424;};
+			class Object12 {side=8;vehicle="Land_CampingChair_V1_F";rank="";position[]={-2.51221,-7.46582,0.00168657};dir=89.437;};
+			class Object13 {side=8;vehicle="Land_GasCooker_F";rank="";position[]={-3.79431,-7.70801,-0.00143385};dir=359.731;};
+			class Object14 {side=8;vehicle="O_G_Offroad_01_F";rank="";position[]={0.214111,-8.90723,-0.00201225};dir=179.111;};
+			class Object15 {side=8;vehicle="CamoNet_BLUFOR_big_Curator_F";rank="";position[]={0.213135,-8.90723,-0.00143862};dir=176.618;};
+			class Object16 {side=8;vehicle="Land_CampingChair_V1_F";rank="";position[]={-3.00317,-8.7124,0.00168467};dir=137.607;};
+			class Object17 {side=8;vehicle="Land_Sleeping_bag_F";rank="";position[]={2.92297,-8.69434,-0.00143862};dir=271.424;};
+			class Object18 {side=8;vehicle="O_G_Offroad_01_F";rank="";position[]={-3.10059,8.8999,-0.00200987};dir=0.247734;};
+			class Object19 {side=8;vehicle="Land_CampingChair_V1_F";rank="";position[]={-5.10608,-7.99854,0.00168514};dir=249.681;};
+			class Object21 {side=8;vehicle="O_G_Offroad_01_F";rank="";position[]={2.59778,9.61328,-0.00201321};dir=359.988;};
+			class Object22 {side=8;vehicle="Land_CampingChair_V1_folded_F";rank="";position[]={-10.1835,0.489258,-0.00143862};dir=113.336;};
+			class Object23 {side=8;vehicle="Land_GasTank_01_khaki_F";rank="";position[]={-1.37708,-10.1934,-0.00141239};dir=357.421;};
+			class Object24 {side=8;vehicle="Land_Sleeping_bag_brown_folded_F";rank="";position[]={2.25757,-10.1743,-0.00271463};dir=270.713;};
+			class Object26 {side=8;vehicle="Land_Ground_sheet_khaki_F";rank="";position[]={3.45398,-10.1538,-0.00143862};dir=271.424;};
+			class Object27 {side=8;vehicle="Land_CampingChair_V1_folded_F";rank="";position[]={-10.9899,0.645508,-0.00143862};dir=276.686;};
+			class Object28 {side=8;vehicle="CamoNet_BLUFOR_Curator_F";rank="";position[]={-11.1555,-2.25928,0.164614};dir=265.57;};
+			class Object30 {side=8;vehicle="Land_CanisterFuel_F";rank="";position[]={-3.7749,10.8408,-0.00138426};dir=357.217;};
+			class Object31 {side=8;vehicle="CamoNet_BLUFOR_open_Curator_F";rank="";position[]={11.9337,-1.53564,-0.00118494};dir=359.999;};
+			class Object32 {side=8;vehicle="Land_ExtensionCord_F";rank="";position[]={-1.93787,12.0679,-0.00143099};dir=0.0383947;};
+			class Object33 {side=8;vehicle="Land_Portable_generator_F";rank="";position[]={-1.89551,13.0864,-0.0022254};dir=359.898;};
+			class Object34 {side=8;vehicle="Land_Noticeboard_F";rank="";position[]={18.6487,-5.57666,-0.00135851};dir=273.345;};
+			};
             };
 
             class camps
