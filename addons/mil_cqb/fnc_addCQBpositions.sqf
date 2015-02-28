@@ -41,6 +41,7 @@ if (count _instances > 0) then {
         _instanceType = _x getvariable ["instancetype","regular"];
         _houses = _instance getvariable ["houses",[]];
         _housesPending = _instance getvariable ["houses_pending",[]];
+        _debug = [_instance,"debug"] call ALiVE_fnc_CQB;
         _houses = _houses - _housesPending;
         _housesPending = _housesPending - _houses;
         _housesTotal = _housesPending + _houses;
@@ -56,7 +57,7 @@ if (count _instances > 0) then {
         _instance setvariable ["houses",_houses + _filtered];
         _instance setvariable ["houses_pending",_housesPending - _filtered];
 
-        [_instance,"debug",true] call ALiVE_fnc_CQB;
+        [_instance,"debug",_debug] call ALiVE_fnc_CQB;
     } foreach _instances;
 };
 

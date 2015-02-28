@@ -59,6 +59,8 @@ switch (_state) do {
         // DEBUG -------------------------------------------------------------------------------------
 
         _agent setVariable ["ALIVE_agentBusy", true, false];
+        _agent setVariable ["ALIVE_Insurgent", true, false];
+        _agent addMagazines ["DemoCharge_Remote_Mag", 2];
 
         _agentClusterID = _agentData select 2 select 9;
         _agentCluster = [ALIVE_clusterHandler,"getCluster",_agentClusterID] call ALIVE_fnc_clusterHandler;
