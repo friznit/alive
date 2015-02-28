@@ -315,7 +315,7 @@ switch(_operation) do {
                                     };
                             };
 
-                            {_veh lockturret [[_x], true]} forEach [0,1,2];
+                             _veh lockDriver true;
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
                               _codeArray = [_code, ";"] Call CBA_fnc_split;
@@ -412,8 +412,7 @@ switch(_operation) do {
                             };
 
 
-                            _veh lockDriver true;
-                            {_veh lockturret [[_x], true]} forEach [0,1,2];
+                             _veh lockDriver true;
                             [_grp,0] setWaypointPosition [(getPos _veh),0];
 
 

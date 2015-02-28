@@ -80,7 +80,6 @@ if (getNumber(configFile >> "CfgVehicles" >> _type >> "isUav")==1) then {
 
 
 _veh lockDriver true;
-{_veh lockturret [[_x], true]} forEach [0,1,2];
 
 _ffvTurrets = [_type,true,true,false,true] call ALIVE_fnc_configGetVehicleTurretPositions;
                                 _gunnerTurrets = [_type,false,true,true,true] call ALIVE_fnc_configGetVehicleTurretPositions;
