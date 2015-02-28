@@ -500,7 +500,7 @@ switch(_operation) do {
     };
     case "handleEvent": {
 
-        private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_factionFound","_moduleFactions","_forcePool","_type","_eventID",
+        private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_eventSide","_factionFound","_moduleFactions","_forcePool","_type","_eventID",
         "_eventData","_eventType","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",
         "_eventForcePlane","_eventForceHeli","_forceMakeupTotal","_allowInfantry","_allowMechanised","_allowMotorised",
         "_allowArmour","_allowHeli","_allowPlane","_playerID","_requestID","_logEvent","_initComplete"];
@@ -531,7 +531,8 @@ switch(_operation) do {
             _side = [_logic, "side"] call MAINCLASS;
             _factions = [_logic, "factions"] call MAINCLASS;
 
-            _eventFaction = ([_event, "data"] call ALIVE_fnc_hashGet) select 1;
+            _eventFaction = _eventData select 1;
+            _eventSide = _eventData select 2;
 
             // check if the faction in the event is handled
             // by this module
@@ -543,6 +544,87 @@ switch(_operation) do {
                     _factionFound = true;
                 };
             } forEach _factions;
+
+            // check if any other mil logistics modules can handle this event
+
+            if(_eventType == "PR_STANDARD" || _eventType == "PR_AIRDROP" || _eventType == "PR_HELI_INSERT") then {
+
+                // faction not handled by this mil logistics module
+                if!(_factionFound) then {
+
+                    private ["_sideOPCOMModules","_factionOPCOMModules","_checkModule","_moduleType","_handler","_OPCOMSide","_OPCOMFactions","_OPCOMHasLogistics","_mod"];
+
+                    _sideOPCOMModules = [];
+                    _factionOPCOMModules = [];
+
+                    // loop through OPCOM modules with mil logistics synced and find andy matching the events side and faction
+                    {
+
+                        _checkModule = _x;
+                        _moduleType = _x getVariable "moduleType";
+
+                        if!(isNil "_moduleType") then {
+
+                            if(_moduleType == "ALIVE_OPCOM") then {
+
+                                _handler = _checkModule getVariable "handler";
+                                _OPCOMSide = [_handler,"side"] call ALIVE_fnc_hashGet;
+                                _OPCOMFactions = [_handler,"factions"] call ALIVE_fnc_hashGet;
+                                _OPCOMHasLogistics = false;
+
+                                for "_i" from 0 to ((count synchronizedObjects _checkModule)-1) do {
+
+                                    _mod = (synchronizedObjects _checkModule) select _i;
+
+                                    if ((typeof _mod) == "ALiVE_mil_logistics") then {
+                                        _OPCOMHasLogistics = true;
+                                    };
+                                };
+
+                                if(_OPCOMHasLogistics) then {
+
+                                    if(_OPCOMSide == _eventSide) then {
+                                        _sideOPCOMModules pushback _checkModule;
+                                    };
+
+                                    {
+                                        if(_x == _eventFaction) then {
+                                            _factionOPCOMModules pushback _checkModule;
+                                        };
+
+                                    } forEach _OPCOMFactions;
+
+                                };
+                            };
+                        };
+                    } forEach (entities "Module_F");
+
+                    // if no mil logistics handles this faction, and there is more than one mil
+                    // logistics for this side return an error
+                    if(((count _factionOPCOMModules == 0) && (count _sideOPCOMModules > 1)) || ((count _factionOPCOMModules == 0) && (count _sideOPCOMModules == 0))) then {
+                        _eventForceMakeup = _eventData select 3;
+                        _playerID = _eventData select 5;
+                        _requestID = _eventForceMakeup select 0;
+                        // respond to player request
+                        _logEvent = ['LOGCOM_RESPONSE', [_requestID,_playerID],"Logistics","DENIED_FACTION_HANDLER_NOT_FOUND"] call ALIVE_fnc_event;
+                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+                    };
+
+                    // if no mil logistics handles this faction, and there is one mil
+                    // logistics for this side and this module handles that side
+                    if((count _factionOPCOMModules == 0) && (count _sideOPCOMModules == 1) && (_side == _eventSide)) then {
+
+                        _factionFound = true;
+
+                        _eventData set [1,_factions select 0 select 1 select 0];
+                        [_event, "data", _eventData] call ALIVE_fnc_hashSet;
+                        _eventFaction = _factions select 0 select 1 select 0;
+                    };
+
+                };
+            };
+
+            if!(_factionFound) exitWith {};
 
 
             if(_factionFound) then {

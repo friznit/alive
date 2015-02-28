@@ -899,6 +899,33 @@ switch(_operation) do {
                     [_logic,"state","RESET"] call MAINCLASS;
 
                 };
+                case "DENIED_FACTION_HANDLER_NOT_FOUND":{
+
+                    // LOGCOM has denied the request because no mil logistics modules for this faction have been found
+
+                    _radioMessage = "Your request for support has been deined. No military logistics supply chain found for your players faction.";
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
+
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
+
+                };
             };
 
         };

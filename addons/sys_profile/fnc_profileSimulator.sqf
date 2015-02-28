@@ -73,13 +73,15 @@ _engaged = [0,0,0];
                 private ["_entry"];
                 
                 _entry = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler;
-                
-                if (
-                	[_entry,"engineOn",false] call ALiVE_fnc_HashGet && 
-            		{([_entry,"vehicleClass",""] call ALiVE_fnc_HashGet) isKindOf "Air"}
-                    ) then {
-                        _isAir = true
-                };
+
+                if!(isNil "_entry") then {
+					if (
+						[_entry,"engineOn",false] call ALiVE_fnc_HashGet &&
+						{([_entry,"vehicleClass",""] call ALiVE_fnc_HashGet) isKindOf "Air"}
+						) then {
+							_isAir = true
+					};
+				};
             } foreach _vehiclesInCommandOf;
 		};
         	
