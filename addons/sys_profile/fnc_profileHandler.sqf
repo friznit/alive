@@ -543,6 +543,8 @@ switch(_operation) do {
 				"_profilesCatagorisedType","_profilesCatagorisedVehicleType","_profilePositions","_profilesBySideFull","_profilesSideFull","_profilesActiveSide","_profilesInActiveSide",
 				"_playerEntities","_profileIsPlayer","_profilesFactionType","_profilesFactionVehicleType","_profileFactionType","_vehicle","_units","_profileCompany","_profilesFactionVehicleType"];
 
+				if(typeName _args == "STRING") then {_args = [_logic,"getProfile",_args] call MAINCLASS};
+
 				if(typeName _args == "ARRAY") then {
 						_profile = _args;
 
