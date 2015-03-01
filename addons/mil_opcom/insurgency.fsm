@@ -15,12 +15,12 @@ item10[] = {"SELECT_ORDERS",2,250,-724.372742,-364.088989,-634.372742,-314.08883
 item11[] = {"ACTIONS___ASSAULT",2,250,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
 item12[] = {"ACTIONS___CQB_GA",2,250,-806.544922,-175.131653,-706.482239,-34.567657,0.000000,"ACTIONS:" \n "" \n "CQB" \n "GARRISON"};
 item13[] = {"ACTIONS___IEDS_SUICIDERS",2,250,-647.961060,-177.760864,-545.662231,-33.842651,0.000000,"ACTIONS:" \n "" \n "IEDS" \n "SUICIDERS" \n "SABOTAGE"};
-item14[] = {"ACTIONS___RECRUIT",2,4346,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
+item14[] = {"ACTIONS___RECRUIT",2,250,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
 item15[] = {"ORDERS_SELECTED",4,218,-719.547424,-21.761780,-629.547424,28.238159,0.000000,"ORDERS" \n "SELECTED"};
 item16[] = {"SECTION_MOVING",4,218,-978.297668,263.344055,-888.298279,313.343994,0.000000,"SECTION" \n "MOVING"};
 item17[] = {"SELECT_SECTION",2,250,-719.992188,73.293480,-629.992554,123.293404,0.000000,"SELECT" \n "SECTION"};
 item18[] = {"SECTION_SELECTED",4,218,-721.556396,167.032288,-631.556519,217.032288,1.000000,"SECTION" \n "SELECTED"};
-item19[] = {"MOVE_SECTION",2,250,-717.385681,263.132507,-627.385681,313.132507,0.000000,"MOVE" \n "SECTION"};
+item19[] = {"MOVE_SECTION",2,250,-721.849487,265.364441,-631.849487,315.364441,0.000000,"MOVE" \n "SECTION"};
 item20[] = {"SECTION_READY",4,218,-712.326294,347.456238,-622.326294,397.456238,1.000000,"SECTION" \n "READY"};
 item21[] = {"EXECUTE_ACTIONS",2,250,-710.423462,428.417236,-620.423462,478.417236,0.000000,"EXECUTE" \n "ACTIONS"};
 item22[] = {"ACTIONS_FULFILLE",4,218,-707.183411,501.318176,-617.183411,551.318115,1.000000,"ACTIONS" \n "FULFILLED"};
@@ -29,7 +29,7 @@ item24[] = {"SUCCESS",4,218,-1420.703369,594.125183,-1330.703369,644.125183,1.00
 item25[] = {"FAIL",4,218,45.247391,594.838806,135.247589,644.838501,0.000000,"FAIL"};
 item26[] = {"",7,210,-1047.392578,-149.660080,-1039.392578,-141.660049,0.000000,""};
 item27[] = {"NO_GROUPS",4,218,-978.413635,72.215881,-888.414001,122.215843,0.000000,"NO" \n "GROUPS"};
-item28[] = {"RESET",2,250,-858.935120,-677.046692,-768.935242,-627.046387,0.000000,"RESET"};
+item28[] = {"RESET",2,4346,-858.935120,-677.046692,-768.935242,-627.046387,0.000000,"RESET"};
 item29[] = {"DELAY",4,218,-721.785156,-677.785828,-631.785156,-627.785828,0.000000,"DELAY"};
 item30[] = {"RESET_1",2,250,-557.855774,-676.293335,-467.856445,-626.293030,0.000000,"RESET"};
 item31[] = {"ACTIONS_EXECUTIN",4,218,-969.264343,432.824890,-879.264343,482.824890,0.000000,"ACTIONS" \n "EXECUTING"};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1281.325317,-159.137253,563.415771,-639.260254,725,777,1};
-window[] = {0,-1,-1,-32000,-32000,952,44,1614,44,1,742};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1251.062256,-189.401459,224.047058,-913.760437,725,777,1};
+window[] = {0,-1,-1,-1,-1,1040,132,1702,132,1,742};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -91,7 +91,7 @@ class FSM
        "	[" \n
        "		""_OPCOM_status"",""_busy"",""_pause"",""_exitFSM"",""_OPCOM_HANDLER"",""_OBJECTIVES"",""_OPCOM_FSM"",""_CQB"",""_debug"",""_side""," \n
        "		""_factions"",""_sidesEnemy"",""_sidesFriendly"",""_controltype"", ""_simultanObjectives"",""_reinforcementRatio"",""_iteration"",""_lock""," \n
-       "		""_createMarker"",""_classes"",""_agentClusterData""" \n
+       "		""_createMarker"",""_classes"",""_agentClusterData"",""_civFactions""" \n
        "	];" \n
        "" \n
        "_OPCOM_status = ""PreInit"";" \n
@@ -121,7 +121,22 @@ class FSM
        "_exitFSM = false;" \n
        "_time = 0;" \n
        "_troopsBusy = [];" \n
+       "_simultan = [];" \n
+       "_civFactions = [];" \n
        "" \n
+       "// Get civilian factions of existing groups" \n
+       "{if ((side leader _x) == CIVILIAN) then {_civFactions = (_civFactions - [faction leader _x]) + [faction leader _x]}} foreach allgroups;" \n
+       "" \n
+       "// Get civilian factions from Amb Civs" \n
+       "If (!isnil ""ALiVE_Agenthandler"") then {" \n
+       "	_agents = [ALiVE_Agenthandler,""agents"",["""",[],[],""""]] call ALiVE_fnc_HashGet;" \n
+       "	if (count (_agents select 2) > 0) exitwith {_civFactions = _civFactions + [[(_agents select 2 select 0),""faction"",""CIV_F""] call ALiVE_fnc_HashGet]};" \n
+       "};" \n
+       "" \n
+       "// Reset CQB" \n
+       "[_CQB] spawn ALiVE_fnc_resetCQB;" \n
+       "" \n
+       "// Helper" \n
        "_fnc_selectSection = {" \n
        "    " \n
        "    private [""_handler"",""_pos"",""_factions"",""_count"",""_section"",""_types""];" \n
@@ -153,8 +168,6 @@ class FSM
        "    if (count _section > _count) then {_section resize _count};" \n
        "    _section" \n
        "};" \n
-       "" \n
-       "[_CQB] spawn ALiVE_fnc_resetCQB;" \n
        "" \n
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
@@ -319,8 +332,8 @@ class FSM
        "		if (alive _factory) then {[format[""IED_Factory_%1"",getposATL _factory],getposATL _factory,""ICON"", [1,1],""ColorRed"",""IED factory"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
        "		if (alive _ambush) then {[format[""Ambush_%1"",getposATL _ambush],getposATL _ambush,""ICON"", [1,1],""ColorRed"",""Ambush"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
        "		if (alive _sabotage) then {[format[""Sabotage_%1"",getposATL _sabotage],getposATL _sabotage,""ICON"", [1,1],""ColorRed"",""Sabotage"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
-       "		if (alive _ied) then {[format[""IED_%1"",getposATL _ied],getposATL _ied,""ICON"", [1,1],""ColorRed"",""Ambush"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
-       "		if (alive _suicide) then {[format[""Suicide_%1"",getposATL _suicide],getposATL _suicide,""ICON"", [1,1],""ColorRed"",""Sabotage"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
+       "		if (alive _ied) then {[format[""IED_%1"",getposATL _ied],getposATL _ied,""ICON"", [1,1],""ColorRed"",""IED"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
+       "		if (alive _suicide) then {[format[""Suicide_%1"",getposATL _suicide],getposATL _suicide,""ICON"", [1,1],""ColorRed"",""Suicidebomber"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
        "	};" \n
        "};" \n
        "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
@@ -657,8 +670,10 @@ class FSM
        "	_type =  ""factory"";" \n
        "} else {" \n
        "	_type =  [""sabotage"",""ied"",""suicide""] call BIS_fnc_SelectRandom;" \n
-       "	//_type =  [""sabotage""] call BIS_fnc_SelectRandom;" \n
+       "	" \n
        "};" \n
+       "" \n
+       "_type =  [""suicide""] call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
@@ -826,9 +841,9 @@ class FSM
        "			//Override destination if there is a munitions dump" \n
        "			if (alive _building) then {_pos = getposATL _building};" \n
        "" \n
-       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents];" \n
+       "			_paramsActions = [time,_pos,_id,_size,_faction,_building,_sidesEnemy,_agents,_civFactions];" \n
        "			_codeActions = {" \n
-       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_building"",""_objective""];" \n
+       "				private [""_timeTaken"",""_pos"",""_id"",""_size"",""_faction"",""_sides"",""_agents"",""_building"",""_objective"",""_civFactions""];" \n
        "" \n
        "				_timeTaken = _this select 0;" \n
        "				_pos = _this select 1;" \n
@@ -838,6 +853,7 @@ class FSM
        "				_factory = _this select 5;" \n
        "				_sides = _this select 6;" \n
        "				_agents = _this select 7;" \n
+       "				_civFactions = _this select 8;" \n
        "				_allSides = [""EAST"",""WEST"",""GUER""];" \n
        "				_objective = [[],""getobjectivebyid"",_id] call ALiVE_fnc_OPCOM;" \n
        "" \n
@@ -850,7 +866,7 @@ class FSM
        "				_trg setTriggerActivation [""ANY"",""PRESENT"",true];" \n
        "				_trg setTriggerStatements [" \n
        "					""this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)""," \n
-       "					format [""null = [[getpos thisTrigger,%1,'%2'],thisList] call ALIVE_fnc_createBomber"", _size, ""CIV_F""]," \n
+       "					format [""null = [[getpos thisTrigger,%1,'%2'],thisList] call ALIVE_fnc_createBomber"", _size, _civFactions call BIS_fnc_SelectRandom]," \n
        "				 	""""" \n
        "				];" \n
        "				[_objective,""suicide"",_trg] call ALiVE_fnc_HashSet;" \n
@@ -1325,40 +1341,32 @@ class FSM
        "// Remove dead profiles from system" \n
        "if (count _dead > 0) then {_section = _section - _dead; _troopsBusy = _troopsBusy - _dead; _OPCOM_FSM setFSMvariable [_var,(_OPCOM_FSM getFSMvariable _var) - _dead]; [_objective,""section"",_section] call ALiVE_fnc_HashSet};" \n
        "" \n
-       "// Not locked" \n
-       "if (count _section < _sizeSection && {isnil ""_lock""}) then {" \n
-       "	// Collect section" \n
-       "" \n
+       "// Collect section" \n
+       "if (count _section < ceil(_sizeSection/3)) then {" \n
        "	private [""_nearProfiles""];" \n
        "" \n
+       "	// Dont assign troops on more than 3 objectives at once" \n
+       "	if (count _section <= 0 && {count _simultan >= 3}) exitwith {};" \n
+       "" \n
        "	_nearProfiles = [_OPCOM_HANDLER,_center,_factions,_sizeSection - (count _section),_types] call _fnc_selectSection;" \n
-       "" \n
-       "	diag_log _section;" \n
-       "	diag_log _nearProfiles;" \n
-       "" \n
        "	_section = _section + _nearProfiles;" \n
        "" \n
-       "	if ((count _section) >= _sizeSection) then {" \n
+       "	// Add section" \n
+       "	if ((count _section) >= ceil(_sizeSection/3)) then {" \n
        "		[_objective,""section"",_section] call ALiVE_fnc_HashSet;" \n
        "" \n
        "		_troopsBusy = _troopsBusy + _section;" \n
+       "		_simultan = (_simultan - [_id]) + [_id];" \n
+       "" \n
+       "	// Remove section" \n
        "	} else {" \n
-       "		_busyCount = (count _troopsBusy) - (_sizeSection - (count _section)); if (_busyCount <= 0) then {_busyCount = 0};" \n
-       "		_lock = [_iteration - 1, _busyCount];" \n
+       "		{[[ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler,""busy"",false] call ALiVE_fnc_HashSet} foreach _section;" \n
        "" \n
-       "		[""Locked on objective index %1 and troop count %2!"",_lock select 0,_lock select 1] call ALiVE_fnc_DumpR;" \n
-       "	};" \n
+       "		_troopsBusy = _troopsBusy - _section; _section = [];" \n
+       "		_simultan = _simultan - [_id];" \n
        "" \n
-       "// Locked" \n
-       "} else {" \n
-       "	// Reset section" \n
-       "	if (count _section > 0 && {count _section < ceil(_sizeSection/3)}) then {" \n
-       "	" \n
-       "			{private [""_profile""]; _profile = [ALIVE_profileHandler, ""getProfile"", _x] call ALIVE_fnc_profileHandler; [_profile,""busy"",false] call ALiVE_fnc_HashSet} foreach _section;" \n
-       "			_troopsBusy = _troopsBusy - _section;" \n
-       "" \n
-       "			_section = []; _OPCOM_FSM setFSMvariable [_var,[]];" \n
-       "			[_objective,""section""] call ALiVE_fnc_HashRem;" \n
+       "		_OPCOM_FSM setFSMvariable [_var,[]];" \n
+       "		[_objective,""section""] call ALiVE_fnc_HashRem;" \n
        "	};" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -1371,7 +1379,7 @@ class FSM
           to="MOVE_SECTION";
           precondition = /*%FSM<CONDPRECONDITION""">*/"private [""_ready""];" \n
            "" \n
-           "_ready = (count _section) >= _sizeSection;"/*%FSM</CONDPRECONDITION""">*/;
+           "_ready = (count _section) >= ceil(_sizeSection/3);"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_ready"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
@@ -1450,7 +1458,7 @@ class FSM
        "		[_profile, ""setActiveCommand"", [_command,""spawn"",_commandParams]] call ALIVE_fnc_profileEntity;" \n
        "" \n
        "		if (_switch) then {" \n
-       "			private [""_storage"",""_profileSide"",""_unitClasses"",""_positions"",""_damages"",""_ranks"",""_faction""];" \n
+       "			private [""_storage"",""_profileSide"",""_unitClasses"",""_positions"",""_damages"",""_ranks"",""_faction"",""_class"",""_civFaction""];" \n
        "" \n
        "			_storage = [_objective,""storage"",[]] call ALiVE_fnc_HashGet;" \n
        "			" \n
@@ -1462,13 +1470,15 @@ class FSM
        "				_damages = [_profile,""damages""] call ALiVE_fnc_HashGet;" \n
        "				_ranks = [_profile,""ranks""] call ALiVE_fnc_HashGet;" \n
        "				_faction = [_profile,""faction""] call ALiVE_fnc_HashGet;" \n
+       "				_civFaction = _civFactions call BIS_fnc_SelectRandom;" \n
+       "				_class = [[_civFaction],1,[],false] call ALiVE_fnc_chooseRandomUnits;" \n
        "" \n
        "				_storage pushback [_profileID,_profileSide,_unitClasses,_positions,_damages,_ranks,_faction];" \n
        "				[_objective,""storage"",_storage ] call ALiVE_fnc_HashSet;" \n
        "" \n
        "				[_profile,""side"",""CIV""] call ALiVE_fnc_HashSet;" \n
-       "				[_profile,""faction"",""CIV_F""] call ALiVE_fnc_HashSet;" \n
-       "				[_profile,""unitClasses"",[_classes call BIS_fnc_SelectRandom]] call ALiVE_fnc_HashSet;" \n
+       "				[_profile,""faction"",_civFaction] call ALiVE_fnc_HashSet;" \n
+       "				[_profile,""unitClasses"",_class] call ALiVE_fnc_HashSet;" \n
        "				[_profile,""positions"",[_positions select 0]] call ALiVE_fnc_HashSet;" \n
        "				[_profile,""damages"",[_damages select 0]] call ALiVE_fnc_HashSet;" \n
        "				[_profile,""ranks"",[_ranks select 0]] call ALiVE_fnc_HashSet;" \n
@@ -1679,6 +1689,7 @@ class FSM
        "} foreach _section;" \n
        "" \n
        "_troopsBusy = _troopsBusy - (_section - _guards);" \n
+       "_simultan = _simultan - [_id];" \n
        "" \n
        "_OPCOM_FSM setFSMvariable [_var,nil];" \n
        "" \n
@@ -1731,7 +1742,7 @@ class FSM
       name = "RESET";
       init = /*%FSM<STATEINIT""">*/"// Remove lock" \n
        "//[""T: %1 L: %2"",count _troopsBusy,(_lock select 1)] call ALiVE_fnc_DumpR;" \n
-       "if (!isnil ""_lock"" && {count _troopsBusy <= (_lock select 1)}) then {_iteration = _lock select 0; _lock = nil};"/*%FSM</STATEINIT""">*/;
+       "//if (!isnil ""_lock"" && {count _troopsBusy <= (_lock select 1)}) then {_iteration = _lock select 0; _lock = nil};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
