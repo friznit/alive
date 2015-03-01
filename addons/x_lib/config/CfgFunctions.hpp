@@ -573,6 +573,13 @@ class checkConfigCompatibility
 	recompile = RECOMPILE;
 };
 
+class checkStaticDataMapping
+{
+	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_checkStaticDataMapping.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class cursorTargetInfo
 {
 	file = "\x\alive\addons\x_lib\functions\diagnostics\fnc_cursorTargetInfo.sqf";
@@ -972,13 +979,6 @@ class processTerrain
 	recompile = RECOMPILE;
 };
 
-class createTraceGrid
-{
-	file = "\x\alive\addons\x_lib\functions\markers\fnc_createTraceGrid.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
 class createLineMarker
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_createLineMarker.sqf";
@@ -1003,6 +1003,13 @@ class createMarker
 class createMarkerGlobal
 {
 	file = "\x\alive\addons\x_lib\functions\markers\fnc_createMarkerGlobal.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class createTraceGrid
+{
+	file = "\x\alive\addons\x_lib\functions\markers\fnc_createTraceGrid.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

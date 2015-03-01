@@ -31,9 +31,11 @@ private ["_assignments","_vehicle","_driver","_gunners","_commander","_cargo","_
 _assignments = _this select 0;
 _vehicle = _this select 1;
 
+/*
 ["VEHICLE MOUNT : %1",_vehicle] call ALIVE_fnc_dump;
 ["VEHICLE MOUNT ASSIGNMENTS %1",_vehicle] call ALIVE_fnc_dump;
 _assignments call ALIVE_fnc_inspectArray;
+*/
 
 // driver
 _driver = _assignments select 0;	

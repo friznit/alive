@@ -110,6 +110,7 @@ diagnostics
 
 	ALiVE_fnc_canSee
 	ALiVE_fnc_checkConfigCompatibility
+	ALiVE_fnc_checkStaticDataMapping
 	ALiVE_fnc_cursorTargetInfo
 	ALiVE_fnc_debugBuildingPositions
 	ALiVE_fnc_debugHandler
@@ -185,15 +186,15 @@ map
 
 markers
 
-	ALiVE_fnc_createBuildingGrid
 	ALiVE_fnc_createLineMarker
 	ALiVE_fnc_createLink
 	ALiVE_fnc_createMarker
 	ALiVE_fnc_createMarkerGlobal
+	ALiVE_fnc_createTraceGrid
 	ALiVE_fnc_deleteLink
 	ALiVE_fnc_inArea
 	ALiVE_fnc_MarkerExists
-	ALiVE_fnc_updateBuildingGrid
+	ALiVE_fnc_updateTraceGrid
 	ALiVE_fnc_validateLocations
 
 math
