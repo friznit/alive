@@ -107,6 +107,8 @@ switch (_state) do {
 
                 _agent = _this select 0;
                 _position = _this select 1;
+                
+                sleep 60 + (random 120);
 
                 waituntil {
                     _agent moveTo _position;

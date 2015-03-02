@@ -45,7 +45,12 @@ class cfgFunctions {
                 description = "Basic insurgents behaviour";
                 file = "\x\alive\addons\mil_command\fnc_insurgents.sqf";
                 recompile = RECOMPILE;
-            };            
+            };
+			class ambush {
+                description = "Ambush behaviour";
+                file = "\x\alive\addons\mil_command\fnc_ambush.sqf";
+                recompile = RECOMPILE;
+            };                          
 		};
 	};
 };
