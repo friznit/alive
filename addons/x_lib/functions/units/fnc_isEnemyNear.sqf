@@ -61,7 +61,7 @@ if(count _entities > 0) then {
         _entitySide = side _x;
         if(_entitySide in _enemySides) exitWith {
             _found = true;
-            ["FOUND ENEMY: %1",_entitySide] call ALIVE_fnc_dump;
+            //["FOUND ENEMY: %1",_entitySide] call ALIVE_fnc_dump;
         };
     } forEach _entities;
 };
