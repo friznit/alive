@@ -12,9 +12,9 @@ item7[] = {"TERRORIZE",4,218,-650.359680,-253.024353,-560.359680,-203.024323,3.0
 item8[] = {"RESERVE",4,218,-512.215454,-253.515350,-422.215546,-203.515259,4.000000,"RESERVE"};
 item9[] = {"_",4,218,-719.706787,-456.359070,-629.706787,-406.359070,0.000000,""};
 item10[] = {"SELECT_ORDERS",2,250,-724.372742,-364.088989,-634.372742,-314.088837,0.000000,"SELECT" \n "ORDERS"};
-item11[] = {"ACTIONS___ASSAULT",2,250,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
+item11[] = {"ACTIONS___ASSAULT",2,4346,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
 item12[] = {"ACTIONS___CQB_GA",2,250,-806.544922,-175.131653,-706.482239,-34.567657,0.000000,"ACTIONS:" \n "" \n "CQB" \n "GARRISON"};
-item13[] = {"ACTIONS___IEDS_SUICIDERS",2,4346,-647.961060,-177.760864,-545.662231,-33.842651,0.000000,"ACTIONS:" \n "" \n "IEDS" \n "SUICIDERS" \n "SABOTAGE"};
+item13[] = {"ACTIONS___IEDS_SUICIDERS",2,250,-647.961060,-177.760864,-545.662231,-33.842651,0.000000,"ACTIONS:" \n "" \n "IEDS" \n "SUICIDERS" \n "SABOTAGE"};
 item14[] = {"ACTIONS___RECRUIT",2,250,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
 item15[] = {"ORDERS_SELECTED",4,218,-719.547424,-21.761780,-629.547424,28.238159,0.000000,"ORDERS" \n "SELECTED"};
 item16[] = {"SECTION_MOVING",4,218,-978.297668,263.344055,-888.298279,313.343994,0.000000,"SECTION" \n "MOVING"};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1251.062256,-189.401459,587.208252,-550.599243,725,777,1};
-window[] = {0,-1,-1,-1,-1,996,88,1658,88,1,742};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1119.543457,-251.204803,403.627747,-526.991760,725,777,1};
+window[] = {0,-1,-1,-1,-1,930,22,1592,22,1,742};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -172,7 +172,8 @@ class FSM
        "// debug ---------------------------------------" \n
        "if(_debug) then {" \n
        "	{_x call ALIVE_fnc_InspectHash} foreach _objectives;" \n
-       "	[ ""OPCOM INIT COMPLETE ""] call ALIVE_fnc_dumpR;" \n
+       "	[""OPCOM INIT COMPLETE""] call ALIVE_fnc_dumpR;" \n
+       "	//[""FSM state: %1"",""INIT""] call ALIVE_fnc_dumpR;" \n
        "};" \n
        "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -185,7 +186,7 @@ class FSM
           to="INIT_INFO";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"time > 120"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"//[""FSM state: %1"",""INIT CONDITION""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -195,7 +196,7 @@ class FSM
     class INIT_INFO
     {
       name = "INIT_INFO";
-      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"//[""FSM state: %1"",""INIT INFO""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -214,7 +215,9 @@ class FSM
            "    	_agentClusterData = [ALIVE_agentHandler,""agentsByCluster"",["""",[],[],""""]] call ALiVE_fnc_hashGet;" \n
            "    };"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;" \n
+           "" \n
+           "//[""FSM state: %1"",""ITERATION DELAY""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -335,6 +338,8 @@ class FSM
        "		if (alive _ied) then {[format[""IED_%1"",getposATL _ied],getposATL _ied,""ICON"", [1,1],""ColorRed"",""IED"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
        "		if (alive _suicide) then {[format[""Suicide_%1"",getposATL _suicide],getposATL _suicide,""ICON"", [1,1],""ColorRed"",""Suicidebomber"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal};" \n
        "	};" \n
+       "" \n
+       "	//[""FSM state: %1 of %2"",""OBJECTIVE ANALYSIS"",_id] call ALIVE_fnc_dumpR;" \n
        "};" \n
        "// debug ---------------------------------------"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -347,7 +352,9 @@ class FSM
           to="SELECT_ORDERS";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!isnil ""_objective"""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_iteration = _iteration + 1;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"_iteration = _iteration + 1;" \n
+           "" \n
+           "//[""FSM state: %1"",""OBJECTIVE UPCOUNT""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -370,6 +377,8 @@ class FSM
        "	if !(isnil ""_orders"") then {[_objective,""orders"",_orders] call ALiVE_fnc_HashSet};" \n
        "};" \n
        "" \n
+       "//[""FSM state: %1"",""SELECT ORDERS""] call ALIVE_fnc_dumpR;" \n
+       "" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -383,7 +392,9 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"isnil ""_orders"""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	//[""No orders given for objective %1!"",_id] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""ORDERS NIL""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "RESERVE">*/
@@ -393,7 +404,9 @@ class FSM
           to="ACTIONS___RECRUIT";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_orders == ""reserve"";"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"//[""Orders %1 given objective %2"",_orders,_id] call ALiVE_fnc_DumpR;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"//[""Orders %1 given objective %2"",_orders,_id] call ALiVE_fnc_DumpR;" \n
+           "" \n
+           "//[""FSM state: %1"",""ORDERS RESERVE""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "TERRORIZE">*/
@@ -403,7 +416,9 @@ class FSM
           to="ACTIONS___IEDS_SUICIDERS";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_orders == ""terrorize"";"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"//[""Orders %1 given objective %2"",_orders,_id] call ALiVE_fnc_DumpR;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"//[""Orders %1 given objective %2"",_orders,_id] call ALiVE_fnc_DumpR;" \n
+           "" \n
+           "//[""FSM state: %1"",""ORDERS TERRORIZE""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "DEFEND">*/
@@ -413,7 +428,7 @@ class FSM
           to="ACTIONS___CQB_GA";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"//[""FSM state: %1"",""ORDERS DEFEND""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "ATTACK">*/
@@ -423,7 +438,7 @@ class FSM
           to="ACTIONS___ASSAULT";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_orders == ""attack"";"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_orders == ""attack"";"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"//[""FSM state: %1"",""ORDERS ATTACK""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -529,10 +544,7 @@ class FSM
        "			};" \n
        "" \n
        "			//Override destination if there is an ambush position" \n
-       "			if (alive _road) then {_pos = getposATL _road};" \n
-       "" \n
-       "			//Create debug marker" \n
-       "			//if (alive _road) then {if (_debug) then {[format[""Ambush_%1"",getposATL _road],getposATL _road,""ICON"", [1,1],""ColorRed"",""Ambush"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal}};" \n
+       "			if (alive _road) then {_pos = getposATL _road; _command = [""ALIVE_fnc_ambush"",[_pos]]};" \n
        "" \n
        "			_paramsActions = [time,_center,_id,_size,_faction,_road,_sidesEnemy,_agents];" \n
        "			_codeActions = {" \n
@@ -614,7 +626,10 @@ class FSM
        "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "	};" \n
        "	// debug ---------------------------------------" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "};" \n
+       "" \n
+       "" \n
+       "//[""FSM state: %1"",""ACTIONS ATTACK""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -635,7 +650,7 @@ class FSM
     class ACTIONS___CQB_GA
     {
       name = "ACTIONS___CQB_GA";
-      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"//[""FSM state: %1"",""ACTIONS DEFEND""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -736,7 +751,7 @@ class FSM
        "					_pos = ([_pos,20] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;" \n
        "" \n
        "					// Create Box" \n
-       "					_box = ""Box_East_Wps_F"" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01];" \n
+       "					_box = ""Box_East_AmmoOrd_F"" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01];" \n
        "" \n
        "					// Create virtual guards" \n
        "					{[_x,""addHouse"",_factory] call ALiVE_fnc_CQB} foreach _CQB;" \n
@@ -1001,7 +1016,10 @@ class FSM
        "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "	};" \n
        "	// debug ---------------------------------------" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "};" \n
+       "" \n
+       "" \n
+       "//[""FSM state: %1"",""ACTIONS TERRORIZE""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1084,13 +1102,15 @@ class FSM
        "				{" \n
        "					private [""_agent""];" \n
        "				    _agent = [ALiVE_AgentHandler,""getAgent"",_x] call ALiVE_fnc_AgentHandler;" \n
-       "					if !(isnil ""_agent"") then {[_agent, ""setActiveCommand"", [""ALiVE_fnc_cc_suicide"", ""managed"", [30,90]]] call ALIVE_fnc_civilianAgent};" \n
+       "					if !(isnil ""_agent"") exitwith {[_agent, ""setActiveCommand"", [""ALIVE_fnc_cc_rogueTarget"", ""managed"", [_sides]]] call ALIVE_fnc_civilianAgent};" \n
        "				} foreach _agents;" \n
        "" \n
        "				// Spawn CQB" \n
        "				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;" \n
-       "" \n
+       "				" \n
+       "				// Spawn roadblock" \n
        "				[_pos, _size, ceil(_size/200), true] call ALiVE_fnc_createRoadblock;" \n
+       "" \n
        "				[_pos, _sides, 20] call ALiVE_fnc_updateSectorHostility;" \n
        "				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;" \n
        "			};" \n
@@ -1144,7 +1164,7 @@ class FSM
        "				// Establish Depot" \n
        "				if (alive _depot) then {" \n
        "					// Create Box" \n
-       "					_box = ""Box_East_Wps_F"" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01];" \n
+       "					_box = ""Box_East_AmmoOrd_F"" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01]; _box setdir getdir _depot;" \n
        "" \n
        "					// Create virtual guards" \n
        "					{[_x,""addHouse"",_depot] call ALiVE_fnc_CQB} foreach _CQB;" \n
@@ -1301,7 +1321,9 @@ class FSM
        "		//[format[""%1_actions"",_id],_center,""ICON"", [1,1],""ColorGreen"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "	};" \n
        "	// debug ---------------------------------------" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "};" \n
+       "" \n
+       "//[""FSM state: %1"",""ACTIONS RESERVE""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1344,7 +1366,7 @@ class FSM
        "	private [""_nearProfiles""];" \n
        "" \n
        "	// Dont assign troops on more than 3 objectives at once" \n
-       "	if (count _section <= 0 && {count _simultan >= 3}) exitwith {};" \n
+       "	if (count _section <= 0 && {count _simultan >= 3}) exitwith {_simultan = _simultan - [_id]};" \n
        "" \n
        "	_nearProfiles = [_OPCOM_HANDLER,_center,_factions,_sizeSection - (count _section),_types] call _fnc_selectSection;" \n
        "	_section = _section + _nearProfiles;" \n
@@ -1366,7 +1388,10 @@ class FSM
        "		_OPCOM_FSM setFSMvariable [_var,[]];" \n
        "		[_objective,""section""] call ALiVE_fnc_HashRem;" \n
        "	};" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "};" \n
+       "" \n
+       "" \n
+       "//[""FSM state: %1"",""SELECT SECTION""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1379,7 +1404,7 @@ class FSM
            "" \n
            "_ready = (count _section) >= ceil(_sizeSection/3);"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_ready"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"//[""FSM state: %1"",""SECTION SELECTED""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "NO_GROUPS">*/
@@ -1391,7 +1416,9 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"!_ready"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	//[""Not enough groups available at %1 (index %2!)! %3 needed (%4 more)"",_id,_iteration - 1,_sizeSection,_sizeSection - count _section] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""NOT ENOUGH GROUPS""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -1499,7 +1526,9 @@ class FSM
        "			};" \n
        "		};" \n
        "	};" \n
-       "} foreach _section;"/*%FSM</STATEINIT""">*/;
+       "} foreach _section;" \n
+       "" \n
+       "//[""FSM state: %1"",""MOVE SECTION""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1525,7 +1554,9 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_ready"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	[""Section %1 moved to %2 objective %3 successfully! %4 pending!"",_section,_orders,_id,_pending] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""SECTION READY""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "SECTION_MOVING">*/
@@ -1537,7 +1568,9 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"!_ready"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	[""Section %1 moving to %2 objective %3! %4 pending!"",_section,_orders,_id,_pending] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""SECTION IS MOVING""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -1562,7 +1595,11 @@ class FSM
        "if (isnil ""_code"") then {" \n
        "	_code = _paramsActions spawn _codeActions;" \n
        "	[_objective,""code"",_code] call ALiVE_fnc_HashSet;" \n
-       "};"/*%FSM</STATEINIT""">*/;
+       "};" \n
+       "" \n
+       "//[""FSM state: %1"",""EXECUTE ACTIONS""] call ALIVE_fnc_dumpR;" \n
+       "" \n
+       ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1577,7 +1614,9 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_ready"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	[""Section %1 executed code %2 succesfully!"",_section,str(_code)] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""ACTIONS EXECUTED""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "ACTIONS_EXECUTIN">*/
@@ -1589,7 +1628,9 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"!_ready"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	[""Section %1 executing code %2"",_section,str(_code)] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""SECTION IS EXECUTING CODE""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -1697,7 +1738,9 @@ class FSM
        "[_objective,""orders""] call ALiVE_fnc_HashRem;" \n
        "[_objective,""section""] call ALiVE_fnc_HashRem;" \n
        "" \n
-       "if (count _guards > 0) then {[_objective,""guards"",([_objective,""guards"",[]] call ALiVE_fnc_HashGet) + _guards] call ALiVE_fnc_HashSet};"/*%FSM</STATEINIT""">*/;
+       "if (count _guards > 0) then {[_objective,""guards"",([_objective,""guards"",[]] call ALiVE_fnc_HashGet) + _guards] call ALiVE_fnc_HashSet};" \n
+       "" \n
+       "//[""FSM state: %1"",""DETERMINE SUCCESS""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1712,7 +1755,9 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_finalization"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	[""Operation of section %1 was a success!"",_section] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""OPERATION SUCCESS""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "FAIL">*/
@@ -1728,7 +1773,9 @@ class FSM
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
            "	[""Operation of section %1 was a failure!"",_section] call ALiVE_fnc_DumpR;" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "//[""FSM state: %1"",""OPERATION FAIL""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -1740,7 +1787,9 @@ class FSM
       name = "RESET";
       init = /*%FSM<STATEINIT""">*/"// Remove lock" \n
        "//[""T: %1 L: %2"",count _troopsBusy,(_lock select 1)] call ALiVE_fnc_DumpR;" \n
-       "//if (!isnil ""_lock"" && {count _troopsBusy <= (_lock select 1)}) then {_iteration = _lock select 0; _lock = nil};"/*%FSM</STATEINIT""">*/;
+       "//if (!isnil ""_lock"" && {count _troopsBusy <= (_lock select 1)}) then {_iteration = _lock select 0; _lock = nil};" \n
+       "" \n
+       "//[""FSM state: %1"",""RESET""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1759,7 +1808,9 @@ class FSM
            "    	_agentClusterData = [ALIVE_agentHandler,""agentsByCluster"",["""",[],[],""""]] call ALiVE_fnc_hashGet;" \n
            "    };"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;" \n
+           "" \n
+           "//[""FSM state: %1"",""ITERATION DELAY""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -1769,7 +1820,7 @@ class FSM
     class RESET_1
     {
       name = "RESET_1";
-      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"//[""FSM state: %1"",""RESET""] call ALIVE_fnc_dumpR;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -1788,7 +1839,9 @@ class FSM
            "    	_agentClusterData = [ALIVE_agentHandler,""agentsByCluster"",["""",[],[],""""]] call ALiVE_fnc_hashGet;" \n
            "    };"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle};"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;" \n
+           "" \n
+           "//[""FSM state: %1"",""ITERATION DELAY""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
