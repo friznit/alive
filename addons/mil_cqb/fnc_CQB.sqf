@@ -414,7 +414,7 @@ switch(_operation) do {
 	                [_grid,_markerType] spawn {
 
 	                    waituntil {
-	                        sleep 20;
+	                        sleep 30;
 	                        [_this select 0,_this select 1] call ALiVE_fnc_updateTraceGrid;
 
 	                    	isnil {MOD(CQB) getvariable "grid"};
