@@ -8,10 +8,10 @@ class CfgSounds
 		sound[] = {"x\alive\addons\mil_ied\audio\alive_akbar.ogg", 4, 1, 30};   
 		titles[] = {};
 	};
-	class Alive_scream
+	class Alive_Beep
 	{
-		name = "Alive_Scream";
-		sound[] = {"x\alive\addons\mil_ied\audio\scream.ogg", 4, 1, 30};
+		name = "Alive_Beep";
+		sound[] = {"x\alive\addons\mil_ied\audio\suicideTimer.ogg", 4, 1, 30};
 		titles[] = {};
 	};
 

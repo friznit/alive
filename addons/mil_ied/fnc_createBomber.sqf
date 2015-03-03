@@ -92,8 +92,8 @@ if (isNil "_victim") exitWith {	deletevehicle _bomber;};
 	// Blow up bomber
 	if ((_bomber distance _victim < 8) && (alive _bomber)) then {
 		_bomber addRating -2001;
+		[_bomber, "Alive_Beep", 50] call CBA_fnc_globalSay3d;
 		_bomber playMoveNow "AmovPercMstpSsurWnonDnon";
-		[_bomber, "Alive_Scream", 50] call CBA_fnc_globalSay3d;
 		sleep 5;
 		_bomber disableAI "ANIM";
 		_bomber disableAI "MOVE";
