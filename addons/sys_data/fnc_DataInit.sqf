@@ -120,8 +120,8 @@ if (isDedicated) then {
 	if ([_config, "PerfData","false"] call ALIVE_fnc_hashGet != "none") then {
 		if ([_config, "PerfData","false"] call ALIVE_fnc_hashGet == "true") then {
 			["CONNECTED TO DATABASE AND PERFDATA HAS BEEN TURNED ON"] call ALIVE_fnc_logger;
-			MOD(sys_data) setvariable ["disablePerf", "false"];
-			ALIVE_sys_perf_ENABLED = true;
+//			MOD(sys_data) setvariable ["disablePerf", "false"];
+//			ALIVE_sys_perf_ENABLED = true;
 		} else {
 			["CONNECTED TO DATABASE, BUT PERFDATA HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
 			MOD(sys_data) setvariable ["disablePerf", "true"];
