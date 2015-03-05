@@ -21,13 +21,13 @@
     <English>Enables external Database persistence for Virtual AI</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_PLOT_SECTORS">
-	<English>Sector Coloring:</English>
+	<English>Sector Colouring:</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_PLOT_SECTORS_COMMENT">
-	<English>Enables sector coloring according to units presence</English>
+	<English>Enables sector colouring according to units presence</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SYNC">
-	<English>Syncronisation Options:</English>
+	<English>Synchronisation Options:</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SYNC_COMMENT">
 	<English>Modify synced units behaviour</English>
@@ -36,7 +36,7 @@
 	<English>Only virtualize synced units</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SYNC_IGNORE">
-	<English>Virtualize all editor units except synced units</English>
+	<English>Virtualize all editor placed units except synced units</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_RADIUS">
 	<English>Spawn Radius:</English>
@@ -48,7 +48,7 @@
     <English>Active Limiter:</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ACTIVE_LIMITER_COMMENT">
-    <English>Sets the max number of virtualized AI to spawn at any one time</English>
+    <English>Sets the max number of virtualized AI *groups* to spawn at any one time</English>
 </Key>
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_SPAWN_JET_RADIUS">
     <English>Spawn planes radius:</English>
