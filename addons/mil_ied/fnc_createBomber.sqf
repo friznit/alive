@@ -23,12 +23,13 @@ _debug = MOD(mil_ied) getVariable ["debug", false];
 if(isnil "_debug") then {_debug = false};
 
 // Create suicide bomber
-private ["_grp","_side","_pos","_time","_marker","_class"];
+private ["_grp","_side","_pos","_time","_marker","_class","_btype"];
 if (isNil "_bomber") then {
 	_pos = [_location, 0, _size - 10, 3, 0, 0, 0] call BIS_fnc_findSafePos;
 	_side = _faction call ALiVE_fnc_factionSide;
 	_grp = createGroup _side;
-	if (MOD(mil_ied) getVariable ["Bomber_Type", ""] == "") then {
+	_btype = MOD(mil_ied) getVariable ["Bomber_Type", ""];
+	if ( isNil "_btype" || _btype == "") then {
 		_class = ([[_faction], 1, [], false] call ALiVE_fnc_chooseRandomUnits) select 0;
 		if (isNil "_class") then {
 			_class = ([[_faction], 1, [], true] call ALiVE_fnc_chooseRandomUnits) select 0;
