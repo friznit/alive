@@ -115,6 +115,12 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class Bomber_Type
+                        {
+                                displayName = "$STR_ALIVE_IED_Bomber_Type";
+                                description = "$STR_ALIVE_IED_BOMBER_TYPE_COMMENT";
+                                defaultValue = "";
+                        };
                         class VB_IED_Threat
                         {
                                 displayName = "$STR_ALIVE_ied_VB_IED_Threat";

@@ -56,6 +56,12 @@
 <Key ID="STR_ALIVE_IED_Bomber_Threat_COMMENT">
 	<English>Define the probability of suicide bomber threat within the AO</English>
 </Key>
+<Key ID="STR_ALIVE_IED_Bomber_Type">
+	<English>(Optional) Bomber Classes:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_Bomber_Type_COMMENT">
+	<English>Optionally specify a list of bomber classes here i.e. ["C_Nikos","C_Nikos_aged"]</English>
+</Key>
 <Key ID="STR_ALIVE_IED_Locs_IED">
 	<English>IED/Bomber Locations:</English>
 </Key>

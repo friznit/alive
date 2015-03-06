@@ -23,16 +23,20 @@ _debug = MOD(mil_ied) getVariable ["debug", false];
 if(isnil "_debug") then {_debug = false};
 
 // Create suicide bomber
-private ["_grp","_side","_pos","_time","_marker"];
+private ["_grp","_side","_pos","_time","_marker","_class"];
 if (isNil "_bomber") then {
+	_pos = [_location, 0, _size - 10, 3, 0, 0, 0] call BIS_fnc_findSafePos;
 	_side = _faction call ALiVE_fnc_factionSide;
 	_grp = createGroup _side;
-	_pos = [_location, 0, _size - 10, 3, 0, 0, 0] call BIS_fnc_findSafePos;
-	_class = ([[_faction], 1, [], false] call ALiVE_fnc_chooseRandomUnits) select 0;
-	if (isNil "_class") then {
-		_class = ([[_faction], 1, [], true] call ALiVE_fnc_chooseRandomUnits) select 0;
+	if (MOD(mil_ied) getVariable ["Bomber_Type", ""] == "") then {
+		_class = ([[_faction], 1, [], false] call ALiVE_fnc_chooseRandomUnits) select 0;
+		if (isNil "_class") then {
+			_class = ([[_faction], 1, [], true] call ALiVE_fnc_chooseRandomUnits) select 0;
+		};
+	} else {
+		_class = (call compile (MOD(mil_ied) getVariable "Bomber_Type")) call BIS_fnc_selectRandom;
 	};
-	if (isNil "_class") exitWith {};
+	if (isNil "_class") exitWith {diag_log "No bomber class defined."};
 	_bomber = _grp createUnit [_class, _pos, [], _size, "NONE"];
 };
 
@@ -44,9 +48,13 @@ if (surfaceIsWater _pos) exitWith {	deletevehicle _bomber;};
 // Add explosive
 _bomber addweapon "ItemRadio";
 
+// Select victim
+_victim = units (group _victim) call BIS_fnc_selectRandom;
+if (isNil "_victim") exitWith {	deletevehicle _bomber;};
+
 // Add debug marker
 if (_debug) then {
-	diag_log format ["ALIVE-%1 Suicide Bomber: created at %2", time, _pos];
+	diag_log format ["ALIVE-%1 Suicide Bomber: created at %2 going after %3", time, _pos, name _victim];
 	_marker = [format ["suic_%1", random 1000], _pos, "Icon", [1,1], "TEXT:", "Suicide", "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
 	[_marker,_bomber] spawn {
 		_marker = _this select 0;
@@ -61,10 +69,9 @@ if (_debug) then {
 	_marker = "";
 };
 
-// Select victim
-_victim = units (group _victim) call BIS_fnc_selectRandom;
 
-if (isNil "_victim") exitWith {	deletevehicle _bomber;};
+
+
 
 [_victim,_bomber,_debug, _marker] spawn {
 
