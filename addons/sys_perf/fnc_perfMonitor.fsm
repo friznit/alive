@@ -2,13 +2,13 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"wait",2,250,-75.000000,-350.000000,25.000000,-300.000000,0.000000,"wait"};
-item1[] = {"monitor",4,218,50.000000,-350.000000,150.000000,-300.000000,0.000000,"monitor"};
+item1[] = {"monitor",4,4314,50.000000,-350.000000,150.000000,-300.000000,0.000000,"monitor"};
 item2[] = {"init",0,250,-75.000000,-500.000000,25.000000,-450.000000,0.000000,"init"};
 item3[] = {"first",4,218,-75.000000,-425.000000,25.000000,-375.000000,0.000000,"first"};
 item4[] = {"finit",1,250,-75.000000,-650.000000,25.000000,-600.000000,0.000000,"finit"};
 item5[] = {"already",4,218,-75.000000,-575.000000,25.000000,-525.000000,1.000000,"already"};
 item6[] = {"abort",4,218,100.000000,-500.000000,200.000000,-450.000000,5.000000,"abort"};
-item7[] = {"custom__monitor",4,4314,-75.000000,-275.000000,25.000000,-225.000000,0.000000,"custom " \n "monitor"};
+item7[] = {"custom__monitor",4,218,-75.000000,-275.000000,25.000000,-225.000000,0.000000,"custom " \n "monitor"};
 link0[] = {0,1};
 link1[] = {0,6};
 link2[] = {0,7};
@@ -19,8 +19,8 @@ link6[] = {3,0};
 link7[] = {5,4};
 link8[] = {6,4};
 link9[] = {7,0};
-globals[] = {25.000000,1,0,0,0,640,480,1,21,6316128,1,-287.098389,262.098328,-141.108917,-748.418335,860,951,1};
-window[] = {2,-1,-1,-32000,-32000,841,75,1097,75,3,878};
+globals[] = {25.000000,1,0,0,0,640,480,1,21,6316128,1,-259.638550,234.638489,-190.527527,-596.800171,1157,951,1};
+window[] = {2,-1,-1,-32000,-32000,796,33,1055,30,3,1175};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -101,15 +101,15 @@ class FSM
           to="wait";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"(diag_tickTime >= _Next) "/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"// FPS & CPS" \n
-           "_data = [ [""Type"",""Data""],[""FPS"",round (diag_fps*1000)] , [""FPSMIN"", round (diag_fpsmin*1000)],  [""CPS"",round((_c/_INTERVAL)*1000)] ];" \n
-           "" \n
-           "// Units" \n
+          action=/*%FSM<ACTION""">*/"// Units" \n
            "_units = allUnits;" \n
            "" \n
            "_Players = {(alive _x)&&(isPlayer _x)} count _units;" \n
            "" \n
            "if (_Players > 0) then {" \n
+           "	// FPS & CPS" \n
+           "	_data = [ [""Type"",""Data""],[""FPS"",round (diag_fps*1000)] , [""FPSMIN"", round (diag_fpsmin*1000)],  [""CPS"",round((_c/_INTERVAL)*1000)] ];" \n
+           "" \n
            "	_locAIs = {(alive _x)&&(local _x)} count _units;" \n
            "	_remAIs = ({alive _x} count _units) - _Players - _locAIs;" \n
            "	_data = _data + [ [""PLAYERS"", _Players],[""LOCAI"",_locAIs] , [""REMAI"",_remAIs ]];" \n
