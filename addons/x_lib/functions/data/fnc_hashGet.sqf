@@ -30,6 +30,7 @@ Author:
 ARJay
 Wolffy
 ---------------------------------------------------------------------------- */
+
 private ["_hash","_key","_default","_result"];
 
 _hash = _this select 0;

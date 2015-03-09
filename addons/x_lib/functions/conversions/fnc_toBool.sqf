@@ -1,17 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_toBool
-	Author(s): Naught
-	Description:
-		Evaluates an expression to a boolean value.
-	Parameters:
-		0 - Expression [any]
-	Returns:
-		Conversion [bool]
-	Notes:
-		1. Not safe for user input.
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_toBool
+
+Description:
+	Evaluates an expression to a boolean value.
+	
+Parameters:
+	0 - Expression [any]
+
+Returns:
+	Conversion [bool]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Notes:
+	1. Not safe for user input.
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_eval"];
 _eval = _this select 0;

@@ -1,17 +1,32 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_createActor
-	Author(s): Naught
-	Description:
-		Creates an actor unit with the specified message handler.
-	Parameters:
-		0 - Message Handler Code [code]
-		1 - Actor unit [object] (optional)
-		2 - Actor group [group] (optional)
-	Returns:
-		Actor [object]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_createActor
+
+Description:
+	Creates an actor unit with the specified message handler.
+
+Parameters:
+	0 - Message Handler Code [code]
+	1 - Actor unit [object] (optional)
+	2 - Actor group [group] (optional)
+
+Returns:
+	Actor [object]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+	- <ALIVE_fnc_allActors>
+	- <ALIVE_fnc_sendActorMessage>
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_actor", "_group"];
 _actor = [_this, 1, ["OBJECT"], objNull] call ALiVE_fnc_param;

@@ -1,31 +1,45 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_processTerrain
-	Author(s): Naught
-	Description:
-		Generates a height map based on a rectangular section of terrain.
-	Parameters:
-		0 - Bounding box [array] (optional)
-		1 - Meter precision [number] (optional)
-		2 - Enable multi-processing [bool] (optional)
-		3 - Output decimal places [number] (optional)
-	Returns:
-		Terrain Map [array]
-			0 - Bounding box [array]
-			1 - Meter precision [number]
-			2 - Height map [array]
-	Notes:
-		1. Bounding box is in rectangular format [X1, Y1, X2, Y2], as shown below.
-					+---------------+ (X2, Y2)
-					|				|
-					|				|
-					|				|
-		   (X1, Y1)	+---------------+
-		2. Function is O(n^2), so spawn it if you need to.
-		3. Multiprocessing utilizes a more efficient method for processing large data sets in a round-robin scheduled environment.
-		   This will increase performance when processing terrain data in very small precisions or very large areas.
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_processTerrain
+
+Description:
+	Generates a height map based on a rectangular section of terrain.
+	
+Parameters:
+	0 - Bounding box [array] (optional)
+	1 - Meter precision [number] (optional)
+	2 - Enable multi-processing [bool] (optional)
+	3 - Output decimal places [number] (optional)
+
+Returns:
+	Terrain Map [array]
+		0 - Bounding box [array]
+		1 - Meter precision [number]
+		2 - Height map [array]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Notes:
+	1. Bounding box is in rectangular format [X1, Y1, X2, Y2], as shown below.
+				+---------------+ (X2, Y2)
+				|				|
+				|				|
+				|				|
+	   (X1, Y1)	+---------------+
+	2. Function is O(n^2), so spawn it if you need to.
+	3. Multiprocessing utilizes a more efficient method for processing large data sets in a round-robin scheduled environment.
+	This will increase performance when processing terrain data in very small precisions or very large areas.
+		   
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 // Initialize benchmark code
 #ifdef BENCHMARK

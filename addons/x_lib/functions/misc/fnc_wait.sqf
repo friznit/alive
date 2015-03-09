@@ -1,16 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_wait
-	Author(s): Naught
-	Parameters:
-		0 - Wait condition [code:string]
-		1 - Max wait duration in seconds [number] (optional)
-		2 - Trace component [string] (optional)
-		3 - Condition parameters [any] (optional)
-	Returns:
-		Value [bool]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_wait
+
+Description:
+	Advanced version of sleep
+	
+Parameters:
+	0 - Wait condition [code:string]
+	1 - Max wait duration in seconds [number] (optional)
+	2 - Trace component [string] (optional)
+	3 - Condition parameters [any] (optional)
+
+Returns:
+	Value [bool]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_condCode", "_maxDuration", "_traceComp", "_params", "_startTime", "_endTime", "_val"];
 _condCode = if (typeName(_this select 0) == "CODE") then {_this select 0} else {compile(_this select 0)};

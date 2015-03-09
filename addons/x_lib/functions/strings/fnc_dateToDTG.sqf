@@ -14,6 +14,35 @@ SCRIPT(dateToDTG);
 		1. Date is in format [year, month, day, hour, minute].
 		2. Format is DTG atm
 */
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_dateToDTG
+
+Description:
+	Formats a passed date to specification
+	
+Parameters:
+	0 - Date [array]
+	1 - Format [string]
+
+Returns:
+	Formatted date [string]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Notes:
+	1. Date is in format [year, month, day, hour, minute].
+	2. Format is DTG atm
+
+Author:
+	Tupolov
+---------------------------------------------------------------------------- */
+
 private ["_in", "_format", "_min", "_hour", "_sec", "_msec","_year","_month","_day"];
 
 _in = _this select 0;

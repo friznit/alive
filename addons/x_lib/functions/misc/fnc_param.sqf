@@ -1,18 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_param
-	Author(s): Naught
-	Description:
-		Selects a parameter from a parameter list.
-	Parameters:
-		0 - Parameter list [array]
-		1 - Parameter selection index [number]
-		2 - Type list [array] (optional)
-		3 - Default value [any] (optional)
-	Returns:
-		Parameter [any]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_param
+
+Description:
+	Selects a parameter from a parameter list.
+	
+Parameters:
+	0 - Parameter list [array]
+	1 - Parameter selection index [number]
+	2 - Type list [array] (optional)
+	3 - Default value [any] (optional)
+
+Returns:
+	Parameter [any]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_list", "_index", "_typeList"];
 _list = _this select 0;

@@ -23,6 +23,7 @@ See Also:
 Author:
 Tupolov
 ---------------------------------------------------------------------------- */
+
 private ["_gametime","_realTime","_groupID","_operation","_currenttime","_minutes","_hours","_hash"];
 
 _hash = _this select 0;

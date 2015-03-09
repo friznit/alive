@@ -1,16 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_sendActorMessage
-	Author(s): Naught
-	Description:
-		Sends a message a given actor, which is then executed on the actor's machine.
-	Parameters:
-		0 - Actor [object]
-		1 - Message [any]
-	Returns:
-		Nothing [nil]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_sendActorMessage
+
+Description:
+	Sends a message a given actor, which is then executed on the actor's machine.
+
+Parameters:
+	0 - Actor [object]
+	1 - Message [any]
+
+Returns:
+	Nothing [nil]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+	- <ALIVE_fnc_allActors>
+	- <ALIVE_fnc_createActor>
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_actor"];
 _actor = _this select 0;

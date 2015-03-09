@@ -1,20 +1,33 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_log
-	Author(s): Naught
-	Description:
-		Logs a value to the diagnostics logs.
-	Parameters:
-		0 - Log level [string]
-		1 - Component [string]
-		2 - Message [string]
-		3 - Message parameters [array] (optional)
-		4 - File path [string] (optional)
-		5 - Line number [number] (optional)
-	Returns:
-		Nothing
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_log
+
+Description:
+	Logs a value to the diagnostics logs.
+	
+Parameters:
+	0 - Log level [string]
+	1 - Component [string]
+	2 - Message [string]
+	3 - Message parameters [array] (optional)
+	4 - File path [string] (optional)
+	5 - Line number [number] (optional)
+
+Returns:
+	Nothing
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 if ([ALiVE_log_level,([toLower(_this select 0)] call ALiVE_fnc_convertLogLevel)] call ALiVE_fnc_selBinStr) then
 {

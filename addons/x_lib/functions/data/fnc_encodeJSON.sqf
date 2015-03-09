@@ -1,15 +1,28 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_encodeJSON
-	Author(s): Naught
-	Description:
-		Encodes any SQF value to a JSON string.
-	Parameters:
-		SQF data [any]
-	Returns:
-		JSON [string]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_encodeJSON
+
+Description:
+	Encodes any SQF value to a JSON string.
+	
+Parameters:
+	SQF data [any]
+
+Returns:
+	JSON [string]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 if (isNil "_this") exitWith {"undefined"}; // Return
 

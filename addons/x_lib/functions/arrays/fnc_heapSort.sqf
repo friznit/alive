@@ -1,18 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_heapSort
-	Author(s): Naught
-	Description:
-		Sorts an array using the heap-sort algorithm.
-	Parameters:
-		0 - Array [array]
-		1 - Comparative function [code]
-	Returns:
-		Sorted array copy [array]
-	Notes:
-		1. This function is untested.
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_heapSort
+
+Description:
+	Sorts an array using the heap-sort algorithm.
+	
+Parameters:
+	0 - Array [array]
+	1 - Comparative function [code]
+
+Returns:
+	Sorted array copy [array]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+	- <ALiVE_fnc_insertSort>
+	- <ALiVE_fnc_shellSort>
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_fnc_swap", "_fnc_siftDown"];
 _fnc_swap = {

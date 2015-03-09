@@ -25,6 +25,7 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
+
 private ["_target","_whitelist","_blacklist","_hash","_key","_value","_copy","_hashCopy","_arrayCopy"];
 
 _target = _this select 0;

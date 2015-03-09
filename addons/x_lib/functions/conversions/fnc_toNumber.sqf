@@ -1,17 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_toNumber
-	Author(s): Naught
-	Description:
-		Extracts a number value from an expression.
-	Parameters:
-		0 - Expression [anything]
-	Returns:
-		Value [number]
-	Notes:
-		1. Not safe for user input.
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_toNumber
+
+Description:
+	Extracts a number value from an expression.
+	
+Parameters:
+	0 - Expression [anything]
+
+Returns:
+	Value [number]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Notes:
+	1. Not safe for user input.
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_val"];
 _val = _this select 0;

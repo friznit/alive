@@ -1,57 +1,71 @@
 
-/*
-	Function: ALiVE_fnc_unorderedMap
-	Author: Naught
-	
-	Description:
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_unorderedMap
+
+Description:
 	An object for manipulating an unordered map.
 	
-	Parameter(s):
-		0: ANY - object data reference
-		1: STRING - member function name
-		2: ANY - member function arguments
-	
-	Member(s):
-		"new" - creates a new, empty unordered map
-			Argument(s): NONE
-			Returns: ARRAY - unordered map data
+Parameters:
+	0: ANY - object data reference
+	1: STRING - member function name
+	2: ANY - member function arguments
+
+Member(s):
+	"new" - creates a new, empty unordered map
+		Argument(s): NONE
+		Returns: ARRAY - unordered map data
 		
-		"delete" - clears an unordered map
-			Argument(s): NONE
-			Returns: ARRAY - unordered map data
+	"delete" - clears an unordered map
+		Argument(s): NONE
+		Returns: ARRAY - unordered map data
 		
-		"at" - accesses a value at a specific key
-			Argument(s):
-				0: STRING - key
-				1 (Optional): ANY - default value
-			Returns: ANY - value
+	"at" - accesses a value at a specific key
+		Argument(s):
+			0: STRING - key
+			1 (Optional): ANY - default value
+		Returns: ANY - value
 		
-		"find" - returns the index of a specific key
-			Argument(s): STRING - key
-			Returns: NUMBER - key index
+	"find" - returns the index of a specific key
+		Argument(s): STRING - key
+		Returns: NUMBER - key index
 		
-		"size" - returns the number of map values
-			Argument(s): NONE
-			Returns: NUMBER - map size
+	"size" - returns the number of map values
+		Argument(s): NONE
+		Returns: NUMBER - map size
 		
-		"count" - returns the number of occurences of a key
-			Argument(s): STRING - key
-			Returns: NUMBER - occurence count
+	"count" - returns the number of occurences of a key
+		Argument(s): STRING - key
+		Returns: NUMBER - occurence count
 		
-		"in" - checks if a key is in the map
-			Argument(s): STRING - key
-			Returns: BOOL - key found
+	"in" - checks if a key is in the map
+		Argument(s): STRING - key
+		Returns: BOOL - key found
 		
-		"insert" - inserts a key/value pair in the map (overwrites)
-			Argument(s):
-				0: STRING - key
-				1: ANY - value
-			Returns: NUMBER - key index
+	"insert" - inserts a key/value pair in the map (overwrites)
+		Argument(s):
+			0: STRING - key
+			1: ANY - value
+		Returns: NUMBER - key index
 		
-		"erase" - erases a key/value pair from the map
-			Argument(s): STRING - key
-			Returns: BOOL - erase success
-*/
+	"erase" - erases a key/value pair from the map
+		Argument(s): STRING - key
+		Returns: BOOL - erase success	
+
+Returns:
+	See Members
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+	- <>
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_data", "_func", "_args"];
 _data = _this select 0;

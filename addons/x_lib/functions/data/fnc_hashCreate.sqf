@@ -22,6 +22,7 @@ See Also:
 Author:
 ARJay
 ---------------------------------------------------------------------------- */
+
 private ["_result"];
 
 _result = _this call CBA_fnc_hashCreate;

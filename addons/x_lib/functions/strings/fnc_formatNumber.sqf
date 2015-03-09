@@ -1,17 +1,30 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_formatNumber
-	Author(s): Naught
-	Description:
-		Adds zero-based padding to numbers, or shortens them to specification.
-	Parameters:
-		0 - Number [number:string]
-		1 - Integer Width [number] (optional)
-		2 - Decimal Width [number] (optional)
-	Returns:
-		Formatted number [string]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_formatNumber
+
+Description:
+	Adds zero-based padding to numbers, or shortens them to specification.
+	
+Parameters:
+	0 - Number [number:string]
+	1 - Integer Width [number] (optional)
+	2 - Decimal Width [number] (optional)
+
+Returns:
+	Formatted number [string]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_number", "_intWidth", "_decWidth"];
 _number = _this select 0;

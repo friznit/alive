@@ -1,22 +1,33 @@
-/*
-	Author: Karel Moricky update by Tup for ALiVE War Room purposes
+/* ----------------------------------------------------------------------------
+Function: 
 
-	Description:
+Description:
 	Export list of weapons for Community Wiki
 	http://community.bistudio.com/wiki/Category:Arma_3:_Assets
+	
+Parameters:
+	0: STRING - mode
+		"screenshots" - create items one by one and take their screenshot. Works only on "Render" terrain.
+		"screenshotsTest" - create items one by one without taking screen (to verify everything is ok)
+	1: STRING - CfgPatches Prefix i.e. CUP
+	2: ARRAY of STRINGs - list of CfgPatches classes. Only weapons belonging to these addons will be used
+	3: ARRAY of STRINGS - list of types of weapons to include
+	4: BOOL - true if mod does not have CfgPatches entry or is incomplete entry
 
-	Parameter(s):
-		0: STRING - mode
-			"screenshots" - create items one by one and take their screenshot. Works only on "Render" terrain.
-			"screenshotsTest" - create items one by one without taking screen (to verify everything is ok)
-		1: STRING - CfgPatches Prefix i.e. CUP
-		2: ARRAY of STRINGs - list of CfgPatches classes. Only weapons belonging to these addons will be used
-		3: ARRAY of STRINGS - list of types of weapons to include
-		4: BOOL - true if mod does not have CfgPatches entry or is incomplete entry
-
-	Returns:
+Returns:
 	BOOL
-*/
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Karel Moricky update by Tup for ALiVE War Room purposes
+---------------------------------------------------------------------------- */
 
 _mode = [_this,0,"Weapon",[""]] call bis_fnc_param;
 _patchprefix = [_this,1,"",[""]] call bis_fnc_param;

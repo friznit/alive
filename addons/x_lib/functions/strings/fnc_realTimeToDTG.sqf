@@ -1,17 +1,32 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 SCRIPT(realTimeToDTG);
-/*
-	Function: ALiVE_fnc_realTimeToDTG
-	Author(s): Tupolov
-	Description:
-		Formats a real time (from server) to a DTG specification
-	Parameters:
-		None
-	Returns:
-		Formatted date [string]
-	Notes:
-		1. Format is DTG atm
-*/
+
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_realTimeToDTG
+
+Description:
+	Formats a real time (from server) to a DTG specification
+	
+Parameters:
+	None
+
+Returns:
+	Formatted date [string]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Notes:
+	1. Format is DTG atm
+	
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_result","_year","_month","_day","_hour","_min","_datet"];
 

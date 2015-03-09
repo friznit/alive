@@ -1,16 +1,29 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_inArea
-	Author(s): Olsen
-	Description:
-		Checks to see if a vehicle is within a marker area.
-	Parameters:
-		0 - Unit/Vehicle [object]
-		1 - Marker [string]
-	Returns:
-		Object in area [bool]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_inArea
+
+Description:
+	Checks to see if a vehicle is within a marker area.
+	
+Parameters:
+	0 - Unit/Vehicle [object]
+	1 - Marker [string]
+
+Returns:
+	Object in area [bool]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Olsen
+---------------------------------------------------------------------------- */
 
 private["_object", "_marker", "_pos", "_xSize", "_ySize", "_radius", "_result", "_x", "_y", "_temp"];
 _object = _this select 0;

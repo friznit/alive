@@ -1,23 +1,34 @@
-/*
-	Author: Karel Moricky and edited by TUP for War Room
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_exportCfgVehicles
 
-	Description:
+Description:
 	Export list of objects for Community Wiki
 	http://community.bistudio.com/wiki/Category:Arma_3:_Assets
+	
+Parameters:
+	0: STRING - mode
+		"screenshots" - create objects one by one and take their screenshot. Works only on "Render" terrain.
+		"screenshotsTest" - create objects one by one without taking screen (to verify everything is ok)
 
-	Parameter(s):
-		0: STRING - mode
-			"screenshots" - create objects one by one and take their screenshot. Works only on "Render" terrain.
-			"screenshotsTest" - create objects one by one without taking screen (to verify everything is ok)
+	1: ARRAY of SIDEs 0 list of sides. Only objects of these sides will be used
+	2: ARRAY of STRINGs - list of CfgPatches classes. Only objects belonging to these addons will be used
+	3: ARRAY of STRINGS - list of types to include
+	4: BOOL - true to use only AI units (soldiers, vehicles), false to use empty ones
 
-		1: ARRAY of SIDEs 0 list of sides. Only objects of these sides will be used
-		2: ARRAY of STRINGs - list of CfgPatches classes. Only objects belonging to these addons will be used
-		3: ARRAY of STRINGS - list of types to include
-		4: BOOL - true to use only AI units (soldiers, vehicles), false to use empty ones
-
-	Returns:
+Returns:
 	BOOL
-*/
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Karel Moricky and edited by TUP for War Room
+---------------------------------------------------------------------------- */
 
 _mode = [_this,0,"config",[""]] call bis_fnc_param;
 _sides = [_this,1,[0,1,2,3],[[]]] call bis_fnc_param;

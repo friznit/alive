@@ -1,24 +1,38 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_formatDate
-	Author(s): Naught
-	Description:
-		Formats a passed date to specification
-	Parameters:
-		0 - Date [array]
-		1 - Format [string]
-	Returns:
-		Formatted date [string]
-	Notes:
-		1. Date is in format [year, month, day, hour, minute].
-		2. Format parameters are as follows:
-			%1 = Year
-			%2 = Month
-			%3 = Day
-			%4 = Hour
-			%5 = Minute
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_formatDate
+
+Description:
+	Formats a passed date to specification
+	
+Parameters:
+	0 - Date [array]
+	1 - Format [string]
+
+Returns:
+	Formatted date [string]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Notes:
+	1. Date is in format [year, month, day, hour, minute].
+	2. Format parameters are as follows:
+	%1 = Year
+	%2 = Month
+	%3 = Day
+	%4 = Hour
+	%5 = Minute
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_date", "_month"];
 _date = _this select 0;

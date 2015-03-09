@@ -1,28 +1,42 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_shellSort
-	Author(s): rübe
-	Description:
-		A generic shell sort implementation.
-		The original list does NOT get altered.
-	Parameters:
-		0 - Array [array]
-		1 - Comparative function [string:code]
-	Returns:
-		Sorted array copy [array]
-	Notes:
-		1. Shellsort is not sensitive to the initial ordering of the
-		given list. Hard to compare to other sorting methods but
-		shellsort is often the method of choice for many sorting
-		applications:
-			- Acceptable runtime even for moderately large lists,
-			(Sedgewick says up to "five thousand elements")
-			- Yet very easy algorithm.
-		2. To simply invert the sort order, pass {_this * -1} as
-		second parameter (for numbers).
-		3. Default sorting order is ASCENDING.
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_shellSort
+
+Description:
+	A generic shell sort implementation.
+	The original list does NOT get altered.
+	
+Parameters:
+	0 - Array [array]
+	1 - Comparative function [string:code]
+
+Returns:
+	Sorted array copy [array]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Notes:
+	1. Shellsort is not sensitive to the initial ordering of the
+	given list. Hard to compare to other sorting methods but
+	shellsort is often the method of choice for many sorting
+	applications:
+	- Acceptable runtime even for moderately large lists,
+	(Sedgewick says up to "five thousand elements")
+	- Yet very easy algorithm.
+	2. To simply invert the sort order, pass {_this * -1} as
+	second parameter (for numbers).
+	3. Default sorting order is ASCENDING.
+	
+Author:
+	rübe
+---------------------------------------------------------------------------- */
 
 private ["_list", "_selectSortValue", "_n", "_cols", "_j", "_k", "_h", "_t", "_i"];
 _list = +(_this select 0);

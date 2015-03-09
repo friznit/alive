@@ -1,15 +1,28 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_toString
-	Author(s): Naught
-	Description:
-		Converts a value to a string.
-	Parameters:
-		0 - Value [any]
-	Returns:
-		String conversion [string]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_toString
+
+Description:
+	Converts a value to a string.
+	
+Parameters:
+	0 - Value [any]
+
+Returns:
+	String conversion [string]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_val"];
 _val = _this select 0;

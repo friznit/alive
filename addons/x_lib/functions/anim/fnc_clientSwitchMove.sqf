@@ -8,7 +8,6 @@ Description:
 Call switchMove on client
 
 Parameters:
-
 Object - target object to perform switchMove on
 String - move to switch to
 

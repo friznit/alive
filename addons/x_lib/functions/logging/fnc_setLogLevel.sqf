@@ -1,16 +1,29 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_setLogLevel
-	Author(s): Naught
-	Description:
-		Toggles a log level on the local machine.
-	Parameters:
-		0 - Log level [string]
-		1 - Logging Toggle [bool]
-	Returns:
-		Nothing
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_setLogLevel
+
+Description:
+	Toggles a log level on the local machine.
+	
+Parameters:
+	0 - Log level [string]
+	1 - Logging Toggle [bool]
+
+Returns:
+	Nothing
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_index"];
 _index = [toLower(_this select 0)] call ALiVE_fnc_convertLogLevel;

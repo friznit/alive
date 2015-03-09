@@ -1,20 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_insert
-	Author(s): Naught
-	Description:
-		Inserts a value into the array at a specified index.
-	Parameters:
-		0 - Array [array]
-		1 - Insert index [number]
-		2 - Insert value [any]
-	Returns:
-		Array copy [array]
-	Notes:
-		1. This is slower than ALiVE_fnc_push.
-		2. The lower the index, the higher the recursion.
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_insert
+
+Description:
+	Inserts a value into the array at a specified index.
+	
+Parameters:
+	0 - Array [array]
+	1 - Insert index [number]
+	2 - Insert value [any]
+
+Returns:
+	Array copy [array]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+	- <ALiVE_fnc_push>
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_arr", "_idx", "_arrCount"];
 _arr = _this select 0;

@@ -1,30 +1,43 @@
 
-/*
-	Function: ALiVE_fnc_JSON
-	Author: Naught
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_JSON
 
-	Description:
+Description:
 	An object for reading and writing JSON-formatted strings.
+	
+Parameters:
+	0: ANY - object data reference
+	1: STRING - member function name
+	2: ANY - member function arguments
+	
+Member(s):
+	"encode" - encodes a JSON string from SQF data
+		Argument(s): ANY - SQF data value
+		Returns: STRING - JSON encoded string
+		Note(s): Must use the "ALiVE_fnc_unorderedMap" object for JSON objects.
 
-	Parameter(s):
-		0: ANY - object data reference
-		1: STRING - member function name
-		2: ANY - member function arguments
+	"decode" - decodes a JSON string to SQF data
+		Argument(s): STRING - JSON encoded string
+		Returns: ARRAY - SQF-based JSON DOM tree
 
-	Member(s):
-		"encode" - encodes a JSON string from SQF data
-			Argument(s): ANY - SQF data value
-			Returns: STRING - JSON encoded string
-			Note(s): Must use the "ALiVE_fnc_unorderedMap" object for JSON objects.
+	"get" - retrieves a SQF data value from a decoded JSON object
+		Argument(s): ARRAY - JSON DOM path
+		Returns: ANY - SQF data value
+		
+Returns:
+	See Members
 
-		"decode" - decodes a JSON string to SQF data
-			Argument(s): STRING - JSON encoded string
-			Returns: ARRAY - SQF-based JSON DOM tree
+Attributes:
+	N/A
 
-		"get" - retrieves a SQF data value from a decoded JSON object
-			Argument(s): ARRAY - JSON DOM path
-			Returns: ANY - SQF data value
-*/
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_data", "_func", "_args"];
 _data = _this select 0;

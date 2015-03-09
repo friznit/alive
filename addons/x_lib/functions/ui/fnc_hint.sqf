@@ -1,18 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_hint
-	Author(s): Naught
-	Description:
-		Hints a message to the player without overwriting other hints.
-	Parameters:
-		0 - Hint text [string]
-		1 - Text format parameters [array] (optional)
-		2 - Hint silent [bool] (optional)
-		3 - Hint display duration seconds [number] (optional)
-	Returns:
-		Nothing [nil]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_hint
+
+Description:
+	Hints a message to the player without overwriting other hints.
+	
+Parameters:
+	0 - Hint text [string]
+	1 - Text format parameters [array] (optional)
+	2 - Hint silent [bool] (optional)
+	3 - Hint display duration seconds [number] (optional)
+
+Returns:
+	Nothing [nil]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 if (hasInterface) then // Don't do anything on non-GUI machines
 {

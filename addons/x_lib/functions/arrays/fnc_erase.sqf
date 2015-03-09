@@ -1,18 +1,31 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_erase
-	Author(s): Naught
-	Description:
-		Erases a value from an array (preserves order).
-	Parameters:
-		0 - Array [array]
-		1 - Index to erase [number]
-	Returns:
-		Array copy [array]
-	Notes:
-		1. This is slower than ALiVE_fnc_uErase.
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_erase
+
+Description:
+	Erases a value from an array (preserves order).
+	
+Parameters:
+	0 - Array [array]
+	1 - Index to erase [number]
+
+Returns:
+	Array copy [array]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+	- <ALiVE_fnc_uErase>
+	- <ALiVE_fnc_oErase>
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_arr", "_arrCount"];
 _arr = _this select 0;

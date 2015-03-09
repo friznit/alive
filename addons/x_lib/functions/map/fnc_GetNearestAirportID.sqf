@@ -1,3 +1,27 @@
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_GetNearestAirportID
+
+Description:
+	Creates an array of nearestAirportIDs
+	
+Parameters:
+	None.
+
+Returns:
+	Array - List of Nearest Aiport IDs.
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	?
+---------------------------------------------------------------------------- */
+
 private ["_Airports","_pos","_i","_Primary","_Secondary","_ILS"];
 
 _pos = _this select 0;

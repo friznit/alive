@@ -1,15 +1,28 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_decToBinArr
-	Author(s): Naught
-	Description:
-		Converts a decimal number to a binary array.
-	Parameters:
-		0 - Decimal number [number]
-	Returns:
-		Binary array [array]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_decToBinArr
+
+Description:
+	Converts a decimal number to a binary array.
+	
+Parameters:
+	0 - Decimal number [number]
+
+Returns:
+	Binary array [array]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_decimal", "_return"];
 _decimal	= _this select 0;

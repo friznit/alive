@@ -1,16 +1,29 @@
 #include "\x\alive\addons\x_lib\script_component.hpp"
 
-/*
-	Function: ALiVE_fnc_decHasBin
-	Author(s): Naught
-	Description:
-		Returns whether a decimal number contains a specific
-		binary number (power of 2).
-	Parameters:
-		0 - Decimal number [number]
-	Returns:
-		Decimal has binary number [bool]
-*/
+/* ----------------------------------------------------------------------------
+Function: ALiVE_fnc_decHasBin
+
+Description:
+	Returns whether a decimal number contains a specific
+	binary number (power of 2).
+	
+Parameters:
+	0 - Decimal number [number]
+
+Returns:
+	Decimal has binary number [bool]
+
+Attributes:
+	N/A
+
+Examples:
+	N/A
+
+See Also:
+
+Author:
+	Naught
+---------------------------------------------------------------------------- */
 
 private ["_decimal", "_binary", "_return"];
 _decimal	= _this select 0;
