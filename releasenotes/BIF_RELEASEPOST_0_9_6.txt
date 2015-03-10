@@ -1,0 +1,63 @@
+[CENTER][URL="http://alivemod.com/"][IMG]http://alivemod.com/img/alive_logo_bif.jpg[/IMG][/URL]
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+[SIZE=4]The next generation dynamic persistent mission addon for ArmA3
+Release 0.9.6[/SIZE][/B][/CENTER]
+
+[B][U]Fixes & Enhancements[/U][/B]
+This is a minor patch to provide compatibility with Arma 3 1.40 as well as some bug fixes and tweaks. Sahrani A3 has been indexed, FFV issues with combat support resolved, fixes to the IED module and a fix for Bornholm compatibility. We have also resolved some AI Commander issues, added a new FieldHQ composition and included a new TRACE intelligence tool for CQB. We have also improved our @AliveServer package with better and more efficient server monitoring. We also added the ability to set Suicide Bomber classes in the IED Threat module parameters. Finally we have configured mappings for new RHS factions: rhs_faction_usmc_wd, rhs_faction_usmc_d and updated mappings for other RHS factions. 
+
+Performance monitoring is now turned on by default if using the ALiVE Data module. You can check out your server performance via the War Room. Server performance messages are also written to the Server RPT.
+
+[CENTER]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[SIZE=4][B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B][/SIZE]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix and ArmAholic.
+
+Note that this build requires the new @ALiVEServer package. 
+
+[img]http://i.imgur.com/rxTGcmM.jpg[/img][/CENTER]
+
+[B][U]War Room[/U][/B]
+Most of the ongoing War Room work is focussed on stability and robustness of the system as it sees more and more use every day.  Many thanks to all those providing feedback and troubleshooting issues with the data feeds.  You will soon see a significantly more enhanced Server Performance suite built into the War Room with some very powerful analytical tools for server admins.  Even if you're not running persistent missions, we strongly encourage you do use the ALiVE Data module to record server stats so we can build a benchmark and provide everyone and BIS with invaluable performance data.
+
+We have added a new 'mission' that automates high quality image capture of any addons you have loaded so they can be uploaded to the War Room.  Instructions are included in the demo folder.  If you have missing images on your War Room profile, run this up and let us know so we can upload them for you.
+
+[CENTER][SIZE=4][B][url=http://alivemod.com/#ALiVEWarRoom]Join Up Now![/url][/B][/SIZE][/CENTER]
+
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  All the info you need should is there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
+
+[B][U]Support Forum[/U][/B]
+For direct support and feedback from the ALiVE dev team, join us on Skype or sign up to the forum on our website: [URL="http://alivemod.com/forum/"]http://alivemod.com/forum/[/URL]
+
+[B][U]Release Highlights[/U][/B]
+[LIST]
+[*] New Maps: indexed Sahrani A3, Bornholm
+[*] Factions: Improved support for RHS
+[*] Combat Support: fixed FFV
+[*] IED Threat: bug fixes
+[*] IED Threat: module param to set Suicide Bomber class(es)
+[*] ALiVE Required: added option to disable persistent markers
+[*] ALiVE Data: performance monitoring on by default
+[*] Military AI Commander: bug fixes
+[*] ALiVE Server: Updated plugin and DLLs, please use!
+[*] Composition: New Field HQ composition by Friznit
+[*] Bug fixes and tweaks to several modules
+[/LIST]
+
+[B][U]Want to join our team?[/U][/B]
+We are still recruiting people that are interested in being part of a close knit dev team. We welcome anyone who fancies a go at SQF scripting, Javascript/PHP development (for War Room) and C++/C# development for our ALiVE extension. ALiVE is an opportunity to build your experience of any of these technologies in a fun mod development environment.
+
+[B][U]Disclaimer[/U][/B]
+ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+
+[B][U]Work In Progress[/U][/B]
+We are hard at work on the Asymmetric Warfare Environment, popularly known as the Insurgency Module although it's technically not a single module but a whole new game mode. We have a working system already but there is a way to go before it achieves our final vision.  Our main theme at the moment is to ensure ALiVE is a intuitive and robust as we can make it for general release of 1.0  We'll be taking a long hard look at the outstanding feature request list and make some decisions about what we can realistically achieve for what will be the official gold version, but we're determined that Asymmetric Warfare will be in there!  We will of course continue working on future enhancements after that.
+
+[B][U]ALiVE has transformed my Arma 3 experience, how can I thank you?[/U][/B]
+Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here http://www.alivemod.com/#Donate 
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort. 
+
+Have fun!
