@@ -1,4 +1,39 @@
 class CfgVehicles {
+        class Item_Base_F;
+        class Item_ItemALiVEPhoneOld: Item_Base_F
+        {
+            scope = 2;
+            scopeCurator = 2;
+            displayName = "Mobile Phone (Old)";
+            author = "ALiVE Mod Team";
+            vehicleClass = "Items";
+            class TransportItems
+            {
+                class ItemALiVEPhoneOld
+                {
+                    name = "ItemALiVEPhoneOld";
+                    count = 1;
+                };
+            };
+        };
+
+        class Vest_Base_F;
+        class Vest_V_ALiVE_Suicide_Belt: Vest_Base_F
+        {
+            scope = 2;
+            scopeCurator = 2;
+            displayName = "Suicide Belt";
+            author = "ALiVE Mod Team";
+            vehicleClass = "ItemsVests";
+            class TransportItems
+            {
+                class V_ALiVE_Suicide_Belt
+                {
+                    name = "V_ALiVE_Suicide_Belt";
+                    count = 1;
+                };
+            };
+        };
         class ModuleAliveBase;
         class ADDON : ModuleAliveBase
         {
