@@ -25,7 +25,7 @@ nil
 
 private ["_sector","_sectorData"];
 
-if (isnil QMOD(SECTORGRID)) exitwith {};
+if (isnil QMOD(SECTORGRID) || {isnil QMOD(CLUSTERHANDLER)} || {isnil QMOD(SECTORGRID)}) exitwith {};
 
 PARAMS_3(_pos,_sides,_value);
 

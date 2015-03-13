@@ -105,11 +105,11 @@ class CfgVehicles {
                                                 name = "Occupation";
                                                 value = "occupation";
                                         };
-/*                                        class asymmetric
+					class asymmetric
                                         {
                                                 name = "Asymmetric";
                                                 value = "asymmetric";
-                                        };*/
+                                        };
                                 };
                         };
                         class reinforcements
