@@ -60,7 +60,10 @@ switch (_state) do {
 
         _agent setVariable ["ALIVE_agentBusy", true, false];
         _agent setVariable ["ALIVE_Insurgent", true, false];
+        _agent addVest "V_ALiVE_Suicide_Vest";
         _agent addMagazines ["DemoCharge_Remote_Mag", 2];
+        
+        _agent addAction ["Search", {_agent = _this select 3; _agent action ["Gear", _agent]}, _agent];
 
         _agentClusterID = _agentData select 2 select 9;
         _agentCluster = [ALIVE_clusterHandler,"getCluster",_agentClusterID] call ALIVE_fnc_clusterHandler;
@@ -70,6 +73,10 @@ switch (_state) do {
         //_target = [getPosASL _agent, 600, _targetSide] call ALIVE_fnc_getSideManOrPlayerNear;
 
         if !(isnil "_position") then {
+            
+            _agent setBehaviour "CARELESS";
+            _agent setSpeedMode "LIMITED";
+            
             _agent doMove _position;
             
             _position = ([_position,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_selectRandom;
