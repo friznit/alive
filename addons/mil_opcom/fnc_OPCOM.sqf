@@ -1109,6 +1109,32 @@ switch(_operation) do {
                 _result = _args;
             };
 		};
+        
+        case "convertObject": {
+            private ["_object"];
+            
+	    	if !(isNil "_args") then {
+				if (typeName _args == "ARRAY") then {
+                    
+                    _object = objNull;
+                    
+                    if (count _args == 2) then {
+                        _object = (_args select 0) nearestObject (_args select 1);
+                        
+                    	if (isnil "_object" || {!alive _object}) then {
+                        	_objects = (_args select 0) nearEntities [_args select 1,1];
+                            
+                        	if (count _objects > 0) then {_object = _objects select 0};
+                    	};
+                    };
+                } else {
+					if(typeName _args == "OBJECT") then {
+                    	if (alive _args) then {_object = [[getposATL _args select 0,getposATL _args select 1],typeOf _args]} else {_object = []};
+					};
+                };
+                _result = _object;
+            };
+		};        
 
         case "saveData": {
             private ["_objectives","_exportObjectives","_objective","_objectiveID","_exportObjective","_objectivesGlobal","_save","_messages","_message","_saveResult"];

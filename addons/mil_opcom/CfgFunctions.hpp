@@ -41,6 +41,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_opcom\fnc_updateSectorHostility.sqf";
 								recompile = RECOMPILE;
                         };
+                        class INS_helpers {
+                                description = "Loads the parent function for the Insurgency helper functions";
+                                file = "\x\alive\addons\mil_opcom\fnc_INS_helpers.sqf";
+								recompile = RECOMPILE;
+                        };
                 };
         };
 };
