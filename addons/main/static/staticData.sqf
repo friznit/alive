@@ -184,7 +184,12 @@ ALiVE_PLACEMENT_VEHICLEBLACKLIST = ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST +
 	"C_Kart_01_F_Base",
 	"C_Kart_01_Fuel_F",
 	"C_Kart_01_Red_F",
-	"C_Kart_01_Vrana_F"
+	"C_Kart_01_Vrana_F",
+	"C_Kart_01_black_F",
+	"C_Kart_01_white_F",
+	"C_Kart_01_orange_F",
+	"C_Kart_01_yellow_F",
+	"C_Kart_01_green_F"
 ];
 
 /*
@@ -1476,7 +1481,7 @@ if(_worldName == "isladuala3") then {
     ];
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
-	
+
 	];
 
 };
@@ -1953,7 +1958,7 @@ if(_worldName == "smd_sahrani_a3") then {
     ];
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
-	
+
 	];
 };
 
