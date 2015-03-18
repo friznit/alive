@@ -667,7 +667,7 @@ switch(_operation) do {
 			// Spawn ambient vehicles
 
 			private ["_countLandUnits","_carClasses","_armorClasses","_landClasses","_supportCount","_supportMax","_supportClasses","_types",
-			"_countBuildings","_parkingChance","_usedPositions","_building","_parkingPosition","_positionOK","_supportPlacement"];
+			"_countBuildings","_parkingChance","_usedPositions","_building","_parkingPosition","_positionOK","_supportPlacement","_vehicleClass"];
 
 			_countLandUnits = 0;
 
@@ -740,7 +740,7 @@ switch(_operation) do {
 
 						if(_countBuildings > 0 && _countBuildings < 11) then {
 							_supportMax = 1;
-							_parkingChance = 0.7 * _ambientVehicleAmount;
+							_parkingChance = 0.8 * _ambientVehicleAmount;
 						};
 
 						//["SUPPORT MAX: %1",_supportMax] call ALIVE_fnc_dump;
