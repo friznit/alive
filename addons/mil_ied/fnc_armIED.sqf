@@ -19,11 +19,16 @@ if (count _this > 2) then {
 _proximity = 2 + floor(random 10);
 
 if (_debug) then {
-	private "_iedm";
+	private ["_iedm","_text"];
 	diag_log format ["ALIVE-%1 IED: arming IED at %2 of %3 as %4 with proximity of %5",time, getposATL _IED,_type,_shell,_proximity];
 	//Mark IED position
 	_t = format["ied_r%1", floor (random 1000)];
-	_iedm = [_t, position _IED, "Icon", [1,1], "TEXT:", "IED", "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
+	if !(typeof _IED == _type) then {
+		_text = "VBIED";
+	} else {
+		_text = "IED";
+	};
+	_iedm = [_t, position _IED, "Icon", [1,1], "TEXT:", _text, "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
 	_IED setvariable ["Marker", _iedm];
 };
 
