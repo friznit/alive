@@ -24,6 +24,7 @@ if(isnil "_debug") then {_debug = false};
 
 // Create suicide bomber
 private ["_grp","_side","_pos","_time","_marker","_class","_btype"];
+
 if (isNil "_bomber") then {
 	_pos = [_location, 0, _size - 10, 3, 0, 0, 0] call BIS_fnc_findSafePos;
 	_side = _faction call ALiVE_fnc_factionSide;
@@ -39,12 +40,12 @@ if (isNil "_bomber") then {
 	};
 	if (isNil "_class") exitWith {diag_log "No bomber class defined."};
 	_bomber = _grp createUnit [_class, _pos, [], _size, "NONE"];
+
+	// ["SURFACE %1, %2", surfaceIsWater (position _bomber), (position _bomber)] call ALiVE_fnc_dump;
+	if (surfaceIsWater (position _bomber)) exitWith { deleteVehicle _bomber; diag_log "Bomber pos was in water, aborting";};
 };
 
 if (isNil "_bomber") exitWith {};
-
-if (surfaceIsWater _pos) exitWith {	deletevehicle _bomber;};
-
 
 // Add explosive
 _bomber addweapon "ItemRadio";
