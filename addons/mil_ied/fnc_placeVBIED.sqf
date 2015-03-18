@@ -35,6 +35,7 @@ if (count _veh > 0) then {
 	// Create random vehicles
 	_factions = ADDON getvariable ["VB_IED_Side", "CIV"] call ALiVE_fnc_getSideFactions;
 	_carClasses = [0,_factions,"Car"] call ALiVE_fnc_findVehicleType;
+	_carClasses = _carClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 	_roads = _location nearRoads _radius;
 
 	_num = _num / 10;
