@@ -173,6 +173,11 @@ class CfgVehicles {
                                         name = "$STR_ALIVE_COMPOSITION_mediumMGCamp3";
                                         value = "mediumMGCamp3";
                                         };
+                                        class mediumAirstation1
+                                        {
+                                        name = "$STR_ALIVE_COMPOSITION_mediumAirstation1";
+                                        value = "mediumAirstation1";
+                                        };
                                         class communicationCamp1
                                         {
                                         name = "$STR_ALIVE_COMPOSITION_communicationCamp1";
@@ -311,6 +316,91 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_CMP_COMPOSITION_BIS_F";
                                                 value = "OutpostF";
+                                        };
+                                };
+                        };
+                        class createHQ
+                        {
+                                displayName = "$STR_ALIVE_MP_CREATE_HQ";
+                                description = "$STR_ALIVE_MP_CREATE_HQ_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                         class placeHelis
+                        {
+                                displayName = "$STR_ALIVE_MP_PLACE_HELI";
+                                description = "$STR_ALIVE_MP_PLACE_HELI_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class placeSupplies
+                        {
+                                displayName = "$STR_ALIVE_MP_PLACE_SUPPLIES";
+                                description = "$STR_ALIVE_MP_PLACE_SUPPLIES_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = true;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
+                        class ambientVehicleAmount
+                        {
+                                displayName = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT";
+                                description = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_NONE";
+                                                value = "0";
+                                        };
+                                        class LOW
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_LOW";
+                                                value = "0.2";
+                                        };
+                                        class MEDIUM
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_MEDIUM";
+                                                value = "0.6";
+                                        };
+                                        class HIGH
+                                        {
+                                                name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_HIGH";
+                                                value = "1";
                                         };
                                 };
                         };
