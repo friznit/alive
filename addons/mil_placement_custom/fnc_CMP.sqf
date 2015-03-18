@@ -593,8 +593,8 @@ switch(_operation) do {
 				_supplyClasses = _supplyClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 
 				if(count _supplyClasses > 0) then {
-					{
-						_nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+
+						_nodes = [_cluster, "nodes"] call ALIVE_fnc_hashGet;
 
 						_buildings = [_nodes, ALIVE_militarySupplyBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 
@@ -605,12 +605,12 @@ switch(_operation) do {
 							_position = position _x;
 							_direction = direction _x;
 							_vehicleClass = _supplyClasses call BIS_fnc_selectRandom;
-							if(random 1 > 0.6) then {
+							if(random 1 > 0.3) then {
 								_box = createVehicle [_vehicleClass, _position, [], 0, "NONE"];
 								_countSupplies = _countSupplies + 1;
 							};
 						} forEach _buildings;
-					} forEach _clusters;
+
 				};
 			};
 
