@@ -103,6 +103,9 @@ if (isDedicated && GVAR(ENABLED)) then {
 				ERROR("SYS STATISTICS FAILED TO WRITE TO DATABASE");
 			};
 			TRACE_2("UPDATE EVENTS",_data,_result);
+			if (ALiVE_SYS_DATA_DEBUG_ON) then {
+				["STATS DATA RESULT: %1", _result] call ALiVE_fnc_dump;
+			};
 			_result;
 
 
