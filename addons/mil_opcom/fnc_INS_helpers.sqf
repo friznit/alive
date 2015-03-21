@@ -49,14 +49,10 @@ ALiVE_fnc_INS_assault = {
 				_id = _this select 2;
 				_size = _this select 3;
 				_faction = _this select 4;
-				_factory = _this select 5;
-				_sides = _this select 6;
-				_agents = _this select 7;
+				_sides = _this select 5;
+				_agents = _this select 6;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
-
-				// Convert to data that can be persistet
-				_factory = [[],"convertObject",_factory] call ALiVE_fnc_OPCOM;
 
 				// Timeout
 				waituntil {time - _timeTaken > 120};
@@ -175,8 +171,8 @@ ALiVE_fnc_INS_factory = {
 					// Get indoor position of factory
 					_pos = ([getposATL _factory,20] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
 
-					// Create Box
-					_box = "Box_East_AmmoOrd_F" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01];
+					// Create factory
+                    _factory call ALiVE_fnc_INS_spawnIEDfactory;
 
 					// Create virtual guards
 					{[_x,"addHouse",_factory] call ALiVE_fnc_CQB} foreach _CQB;
@@ -418,7 +414,7 @@ ALiVE_fnc_INS_depot = {
 				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 };
 
-ALiVE_fnc_INS_recruit ={
+ALiVE_fnc_INS_recruit = {
 				private ["_timeTaken","_pos","_id","_size","_faction","_sides","_agents","_HQ","_CQB","_objective"];
 
 				_timeTaken = _this select 0;
@@ -444,10 +440,14 @@ ALiVE_fnc_INS_recruit ={
 
 				// Establish HQ
 				if (alive _HQ) then {
+                    
+                    // Create HQ
+                    _HQ call ALiVE_fnc_INS_spawnHQ;
+                    
 					// Create virtual guards
 					{[_x,"addHouse",_HQ] call ALiVE_fnc_CQB} foreach _CQB;
 					
-					// Set depot
+					// Set HQ
 					[_objective,"HQ",[[],"convertObject",_HQ] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
 				};
 
@@ -485,4 +485,59 @@ ALiVE_fnc_INS_recruit ={
 						sleep (900 + random 600);
 					};
 				};
+};
+
+ALiVE_fnc_INS_idle = {true};
+
+ALiVE_fnc_createRandomFurniture = {
+    
+	_building = _this;
+    
+    _furniture = ["Land_TableDesk_F","Land_WoodenTable_small_F","Land_RattanTable_01_F"];
+    
+    _furniture = _furniture call BIS_fnc_SelectRandom;
+	_pos = ([getpos _building,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
+	
+	_furniture = createVehicle [_furniture, _pos, [], 0, "CAN_COLLIDE"];
+	_furniture setdir getdir _building;
+	
+	_furniture;
+};
+
+ALiVE_fnc_getRelativeTop = {
+
+	_object = _this;
+
+	_bbr = boundingBoxReal _object;
+	_p1 = _bbr select 0; _p2 = _bbr select 1;
+	_height = abs((_p2 select 2)-(_p1 select 2));
+    _height/2;
+};
+
+ALiVE_fnc_INS_spawnIEDfactory = {
+
+	_building = _this;
+
+	for "_i" from 1 to (ceil (([_building] call ALIVE_fnc_getMaxBuildingPositions)/3)) do {
+	    _furniture = _building call ALiVE_fnc_createRandomFurniture;
+	    
+		_bomb = createVehicle [["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"] call BIS_fnc_SelectRandom, getposATL _furniture, [], 0, "CAN_COLLIDE"];
+		_bomb attachTo [_furniture, [0,0,_furniture call ALiVE_fnc_getRelativeTop]];
+	};
+};
+
+ALiVE_fnc_INS_spawnHQ = {
+
+	_building = _this;
+    
+    _maxPos = [_building] call ALIVE_fnc_getMaxBuildingPositions;
+
+	for "_i" from 1 to (ceil (_maxPos/3)) do {
+	    _furniture = _building call ALiVE_fnc_createRandomFurniture;
+	    
+		_bomb = createVehicle [["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"] call BIS_fnc_SelectRandom, getposATL _furniture, [], 0, "CAN_COLLIDE"];
+		_bomb attachTo [_furniture, [0,0,_furniture call ALiVE_fnc_getRelativeTop]];
+        
+        _object = createVehicle [["Fridge_01_open_F","Land_MapBoard_F","Land_WaterCooler_01_new_F"] call BIS_fnc_SelectRandom, _building buildingpos (floor(random _maxPos)), [], 0, "CAN_COLLIDE"];
+	};
 };
