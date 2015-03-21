@@ -27,7 +27,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_config","_position","_azi","_objects","_positions","_azis","_item","_object","_relPos","_itemPos"];
+private ["_config","_position","_azi","_objects","_positions","_azis","_item","_object","_relPos","_itemPos","_isFurniture"];
 
 _config = _this select 0;
 _position = _this select 1;
@@ -57,6 +57,10 @@ _multiplyMatrixFunc =
 _objects = [];
 _positions = [];
 _azis = [];
+
+if (str(_config) find "Furniture" != -1) then {
+    _isFurniture = true;
+};
 
 for "_i" from 0 to ((count _config) - 1) do
 {
@@ -95,6 +99,10 @@ for "_i" from 0 to ((count _objects) - 1) do
     //Create the object and make sure it's in the correct location
     private ["_newObj"];
     _newObj = _object createVehicle _newPos;
+    if (_isFurniture) then {
+        _newObj enableSimulation false;
+        _newPos = [_newPos select 0, _newPos select 1, (_newPos select 2) + (_position select 2)];
+    };
     _newObj setDir (_azi + _azimuth);
     _newObj setPos _newPos;
 

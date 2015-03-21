@@ -147,6 +147,8 @@
 <Key ID="STR_ALIVE_COMPOSITION_largeGarbageCamp1">
     <English>Garbage Camp 1 [Large]</English>
 </Key>
-
+<Key ID="STR_ALIVE_COMPOSITION_IEDFactory1">
+    <English>IED Factory 1 [Small]</English>
+</Key>
 
 </Container></Package></Project>
