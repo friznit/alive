@@ -1167,7 +1167,7 @@ switch(_operation) do {
 		if (_args) then {
 
 			// spawn loop
-			_logic spawn {
+			_process = _logic spawn {
 				private ["_logic","_units","_grp","_positions","_house","_debug","_spawn","_spawnHeli","_spawnJet","_maxgrps","_leader","_despawnGroup","_host","_players","_hosts","_faction","_useDominantFaction","_inRange","_locality","_pause"];
 				_logic = _this;
 
@@ -1296,7 +1296,11 @@ switch(_operation) do {
 					{
 						[_logic, "delGroup", _x] call ALiVE_fnc_CQB;
 					} forEach (_logic getVariable ["groups",[]]);
+                    
+                    _logic setvariable ["process",nil];
 				}; // end spawn loop
+                
+                _logic setvariable ["process",_process];
 			}; // end if active
 		};
 	};

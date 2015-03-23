@@ -48,8 +48,8 @@ if (count _instances > 0) then {
 
         [_instance,"active",false] call ALiVE_fnc_CQB;
         [_instance,"debug",false] call ALiVE_fnc_CQB;
-
-        sleep 5;
+		
+        waituntil {_script = _instance getvariable "process"; isnil "_script" || {scriptDone _script} || {time <= 0}};
 
         _instance setvariable ["houses",[]];
         _instance setvariable ["houses_pending",_housesTotal];
