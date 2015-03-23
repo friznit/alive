@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, insurgency">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"INIT_INFO",2,250,-720.879761,-873.838257,-630.879761,-823.838257,0.000000,"INIT INFO"};
 item3[] = {"",7,210,-52.802883,324.913116,-44.802883,332.913116,0.000000,""};
@@ -15,7 +15,7 @@ item10[] = {"SELECT_ORDERS",2,250,-724.372742,-364.088989,-634.372742,-314.08883
 item11[] = {"ACTIONS___ASSAULT",2,250,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
 item12[] = {"ACTIONS___RETREAT",2,250,-806.544922,-175.131653,-706.482239,-34.567657,0.000000,"ACTIONS:" \n "" \n "RETREAT" \n "SURRENDER"};
 item13[] = {"ACTIONS___IEDS_SUICIDERS",2,250,-647.961060,-177.760864,-545.662231,-33.842651,0.000000,"ACTIONS:" \n "" \n "IEDS" \n "SUICIDERS" \n "SABOTAGE"};
-item14[] = {"ACTIONS___RECRUIT",2,4346,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
+item14[] = {"ACTIONS___RECRUIT",2,250,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
 item15[] = {"ORDERS_SELECTED",4,218,-719.547424,-21.761780,-629.547424,28.238159,0.000000,"ORDERS" \n "SELECTED"};
 item16[] = {"SECTION_MOVING",4,218,-978.297668,263.344055,-888.298279,313.343994,0.000000,"SECTION" \n "MOVING"};
 item17[] = {"SELECT_SECTION",2,250,-719.992188,73.293480,-629.992554,123.293404,0.000000,"SELECT" \n "SECTION"};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1522.423950,151.671600,982.994629,-684.662231,780,777,1};
-window[] = {0,-1,-1,-1,-1,952,44,1596,44,1,797};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1497.562988,126.810242,622.676453,-995.449280,780,777,1};
+window[] = {0,-1,-1,-1,-1,1106,198,1750,198,1,797};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -122,7 +122,7 @@ class FSM
        "_civFactions = [];" \n
        "" \n
        "// Reset CQB" \n
-       "[_CQB] spawn ALiVE_fnc_resetCQB;" \n
+       "//[_CQB] spawn ALiVE_fnc_resetCQB;" \n
        "" \n
        "// Get civilian factions of existing groups" \n
        "{if ((side leader _x) == CIVILIAN) then {_civFactions = (_civFactions - [faction leader _x]) + [faction leader _x]}} foreach allgroups;" \n

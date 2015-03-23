@@ -201,6 +201,9 @@ switch(_operation) do {
                                 
                                 //initialise INS helpers
                     			call ALiVE_fnc_INS_helpers;
+                                
+                                //reset CQB
+                                [[_handler, "CQB",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_resetCQB;
 						};
 					};
 
@@ -219,7 +222,7 @@ switch(_operation) do {
 						[_errorMessage,_error1,_error2] call ALIVE_fnc_dumpR;
                     };
                     
-                    //Wait for virtual profiles ready
+                    //Wait for virtual profiles ready, output debug for tracing mission makers errors (like forgetting Virtual AI System module)
                     waituntil {["ALiVE OPCOM Waiting for Virtual AI System..."] call ALiVE_fnc_Dump; !(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
                     
                     //Wait for sector grid to be ready
@@ -965,6 +968,9 @@ switch(_operation) do {
                 _center = [_objective,"center"] call AliVE_fnc_HashGet;
                 _size = [_objective,"size"] call AliVE_fnc_HashGet;
                 
+                //Convert CQB modules
+                _CQB = +_CQB; {_CQB set [_foreachIndex,[[],"convertObject",_x] call ALiVE_fnc_OPCOM]} foreach _CQB;
+                
 				// Get sector data
 				_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
 				_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
@@ -996,11 +1002,11 @@ switch(_operation) do {
                 _ied = [_logic,"convertObject",[_objective,"ied",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
                 _suicide = [_logic,"convertObject",[_objective,"suicide",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
                 
-                if (alive _factory) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,_factory,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_factory};
-                if (alive _HQ) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,_HQ,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_recruit};
-                if (alive _depot) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,_depot,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_depot};
-                if (alive _ied) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,_ied,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ied};
-                if (alive _ambush) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,_ambush,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ambush};
+                if (alive _factory) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"factory",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_factory};
+                if (alive _HQ) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"HQ",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_recruit};
+                if (alive _depot) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"depot",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_depot};
+                if (alive _ied) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"ied",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ied};
+                if (alive _ambush) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"ambush",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ambush};
                 
                 if (alive _sabotage) then {
                     private ["_buildings","_target"];
@@ -1027,7 +1033,7 @@ switch(_operation) do {
 						if (count _buildings > 0) then {_target = _buildings select 0; _target = [[],"convertObject",_target] call ALiVE_fnc_OPCOM} else {_target = [[],"convertObject",objNull] call ALiVE_fnc_OPCOM};
 					};                    
                     
-                    [time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,_sabotage,_target,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_sabotage;
+                    [time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"sabotage",[]] call ALiVE_fnc_HashGet,_target,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_sabotage;
                 };
                 
                 if (alive _suicide) then {
@@ -1042,7 +1048,7 @@ switch(_operation) do {
 						if (count (_agents select 2) > 0) exitwith {_civFactions = _civFactions + [[(_agents select 2 select 0),"faction","CIV_F"] call ALiVE_fnc_HashGet]};
 					};
                     
-                    [time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,_suicide,_sidesEnemy,_agents,_civFactions] spawn ALiVE_fnc_INS_suicide;
+                    [time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"suicide",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,_civFactions] spawn ALiVE_fnc_INS_suicide;
                 };
                 
                 //Set default data
