@@ -1147,6 +1147,13 @@ class factionSide
 	recompile = RECOMPILE;
 };
 
+class addActionGlobal
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_addActionGlobal.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class getDominantFaction
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_getDominantFaction.sqf";
