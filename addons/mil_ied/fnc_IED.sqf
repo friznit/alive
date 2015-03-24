@@ -224,6 +224,23 @@ switch(_operation) do {
                 _blacklist = [ADDON, "blacklist"] call MAINCLASS;
                 _side = ADDON getvariable ["VB_IED_Side", DEFAULT_VB_IED_SIDE];
 
+				if (count synchronizedObjects ADDON > 0) then {
+					for "_i" from 0 to ((count synchronizedObjects ADDON) - 1) do {
+
+			        	_mod = (synchronizedObjects ADDON) select _i;
+                       
+                        if (typeof _mod == "ALiVE_mil_OPCOM") then {
+                            
+                            ADDON setvariable ["IED_Threat", 0];
+                            ADDON setvariable ["Bomber_Threat", 0];
+                            ADDON setvariable ["VB_IED_Threat", 0];
+                            ADDON setvariable ["VB_IED_Side", "CIV"];
+
+                            ["ALiVE MIL IED reset for usage with OPCOM Insurgency!"] call ALiVE_fnc_Dump;
+                        };
+					};
+				};
+
                 if !(GVAR(Loaded)) then {
                     // Initialise Locations
                     _mapInfo = [] call ALIVE_fnc_getMapInfo;

@@ -218,16 +218,14 @@ switch(_operation) do {
 
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 1
 
-				private ["_collection","_center", "_radius"];
+				private ["_collection","_center", "_radius","_objectives"];
                 
 				_center = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 				_radius = (((_center select 0) max (_center select 1)) * sqrt(2))*2;        
 				_collection = [];
+                _objectives = [];
 
 				if (count synchronizedObjects _logic > 0) then {
-					private ["_objectives"];
-					_objectives = [];
-
 					for "_i" from 0 to ((count synchronizedObjects _logic) - 1) do {
 
 			        	_mod = (synchronizedObjects _logic) select _i;
@@ -237,16 +235,29 @@ switch(_operation) do {
 
 							_obj = [_mod,"objectives",objNull,[]] call ALIVE_fnc_OOsimpleOperation;
 			                _objectives = _objectives + _obj;
+                            
+                            {_collection pushback [([_x,"center"] call ALiVE_fnc_HashGet), ([_x,"size"] call ALiVE_fnc_HashGet)]} foreach _objectives;
+                            
+                            ["ALiVE CQB Houses loaded from MIL/CIV Placement module!"] call ALiVE_fnc_Dump;
 			            };
                         
-                        if (typeof _mod == "ALiVE_mil_OPCOM") then {_collection = [[_center, _radius]]};
+                        if (typeof _mod == "ALiVE_mil_OPCOM") then {
+                            _collection = [[_center, _radius]];
+                            
+		                    _faction1 = _mod getvariable ["faction1","OPF_F"];
+		                    _faction2 = _mod getvariable ["faction2","NONE"];
+		                    _faction3 = _mod getvariable ["faction3","NONE"];
+		                    _faction4 = _mod getvariable ["faction4","NONE"];
+		                    _factions = [_mod, "convert", _mod getvariable ["factions",[]]] call ALiVE_fnc_OPCOM;
+                            
+		                    if ((count _factions) == 0) then {{if (!(_x == "NONE") && {!(_x in _factions)}) then {_factions pushBack _x}} foreach [_faction1,_faction2,_faction3,_faction4]};                            
+                            
+                            _factions = [_logic,"factions",_factions] call ALiVE_fnc_CQB;
+                            _logic setVariable ["CQB_UseDominantFaction", false];
+                            
+                            ["ALiVE CQB Houses prepared for use with OPCOM Insurgency!"] call ALiVE_fnc_Dump;
+                        };
 					};
-
-					{
-						_collection pushback [([_x,"center"] call ALiVE_fnc_HashGet), ([_x,"size"] call ALiVE_fnc_HashGet)];
-					} foreach _objectives;
-
-					["ALiVE CQB Houses loaded from objectives!"] call ALiVE_fnc_Dump;
 				} else {
 					_center = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 					_radius = (((_center select 0) max (_center select 1)) * sqrt(2))*2;
