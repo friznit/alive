@@ -555,3 +555,15 @@ ALiVE_fnc_INS_spawnHQ = {
         _object = createVehicle [["Fridge_01_open_F","Land_MapBoard_F","Land_WaterCooler_01_new_F"] call BIS_fnc_SelectRandom, _building buildingpos (floor(random _maxPos)), [], 0, "CAN_COLLIDE"];
 	};
 };
+
+ALiVE_fnc_INS_compileList = {
+    		private ["_list"];
+                   
+            _list = str(_this);
+	        _list = [_list, "[", ""] call CBA_fnc_replace;
+	        _list = [_list, "]", ""] call CBA_fnc_replace;
+            _list = [_list, "'", ""] call CBA_fnc_replace;
+            _list = [_list, """", ""] call CBA_fnc_replace;
+            _list = [_list, ",", ", "] call CBA_fnc_replace;
+            _list;
+};
