@@ -375,6 +375,9 @@ ALiVE_fnc_INS_depot = {
 				_CQB = _this select 8;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
+                
+                // Store center position
+                _center = _pos;
 
 				// Convert to data that can be persistet
 				_depot = [[],"convertObject",_depot] call ALiVE_fnc_OPCOM;
@@ -388,10 +391,10 @@ ALiVE_fnc_INS_depot = {
 				// Establish Depot
 				if (alive _depot) then {
 					// Get indoor position of factory
-					_housePos = ([getposATL _depot,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
+					_pos = ([getposATL _depot,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
 
 					// Create Box
-					_box = "Box_East_AmmoOrd_F" createVehicle _housePos; _housePos set [2,1]; _box setposATL _housePos; _box setvelocity [0,0,-0.01]; _box setdir getdir _depot;
+					_box = "Box_East_AmmoOrd_F" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01]; _box setdir getdir _depot;
 
 					// Create virtual guards
 					{[_x,"addHouse",_depot] call ALiVE_fnc_CQB} foreach _CQB;
@@ -400,15 +403,18 @@ ALiVE_fnc_INS_depot = {
 					[_objective,"depot",[[],"convertObject",_depot] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
 				};
 
-				// Spawn CQB
-				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;
-
 				// Add TACOM get weapons command on all selected agents
 				{
 					private ["_agent"];
 				    _agent = [ALiVE_AgentHandler,"getAgent",_x] call ALiVE_fnc_AgentHandler;
 					if (!isnil "_agent" && {_foreachIndex < 3}) then {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_getWeapons", "managed", [_pos]]] call ALIVE_fnc_civilianAgent};
 				} foreach _agents;
+                
+                // Restore center position
+                _pos = _center;                
+
+				// Spawn CQB
+				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;
 
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
@@ -429,6 +435,9 @@ ALiVE_fnc_INS_recruit = {
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
+                // Store center position
+                _center = _pos;
+
 				// Convert to data that can be persistet
 				_HQ = [[],"convertObject",_HQ] call ALiVE_fnc_OPCOM;
 
@@ -440,9 +449,11 @@ ALiVE_fnc_INS_recruit = {
 
 				// Establish HQ
 				if (alive _HQ) then {
-                    
                     // Create HQ
                     _HQ call ALiVE_fnc_INS_spawnHQ;
+                    
+                    // Get indoor Housepos
+                    _pos = ([getposATL _HQ,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
                     
 					// Create virtual guards
 					{[_x,"addHouse",_HQ] call ALiVE_fnc_CQB} foreach _CQB;
@@ -457,6 +468,9 @@ ALiVE_fnc_INS_recruit = {
 				    _agent = [ALiVE_AgentHandler,"getAgent",_x] call ALiVE_fnc_AgentHandler;
 					if (!isnil "_agent" && {_foreachIndex < 3}) then {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_getWeapons", "managed", [_pos]]] call ALIVE_fnc_civilianAgent};
 				} foreach _agents;
+
+                // Restore center position
+                _pos = _center;
 
 				// Add CQB
 				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;
