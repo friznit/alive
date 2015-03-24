@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, insurgency">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"INIT_INFO",2,250,-720.879761,-873.838257,-630.879761,-823.838257,0.000000,"INIT INFO"};
 item3[] = {"",7,210,-52.802883,324.913116,-44.802883,332.913116,0.000000,""};
@@ -24,7 +24,7 @@ item19[] = {"MOVE_SECTION",2,250,-721.849487,265.364441,-631.849487,315.364441,0
 item20[] = {"SECTION_READY",4,218,-723.792175,348.889465,-633.792175,398.889465,1.000000,"SECTION" \n "READY"};
 item21[] = {"EXECUTE_ACTIONS",2,250,-721.889343,429.850464,-631.889343,479.850464,0.000000,"EXECUTE" \n "ACTIONS"};
 item22[] = {"ACTIONS_FULFILLE",4,218,-718.649292,502.751404,-628.649292,552.751343,1.000000,"ACTIONS" \n "FULFILLED"};
-item23[] = {"DETERMINE_SUCCES",2,250,-717.763367,591.371216,-627.763367,641.371216,0.000000,"DETERMINE" \n "SUCCESS"};
+item23[] = {"DETERMINE_SUCCES",2,4346,-717.763367,591.371216,-627.763367,641.371216,0.000000,"DETERMINE" \n "SUCCESS"};
 item24[] = {"SUCCESS",4,218,-1420.703369,594.125183,-1330.703369,644.125183,1.000000,"SUCCESS"};
 item25[] = {"FAIL",4,218,45.247391,594.838806,135.247589,644.838501,0.000000,"FAIL"};
 item26[] = {"",7,210,-1047.392578,-149.660080,-1039.392578,-141.660049,0.000000,""};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1497.562988,126.810242,622.676453,-995.449280,780,777,1};
-window[] = {0,-1,-1,-1,-1,1106,198,1750,198,1,797};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1518.088379,147.335022,1417.745117,-241.272903,780,777,1};
+window[] = {0,-1,-1,-1,-1,1018,110,1662,110,1,797};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -231,7 +231,7 @@ class FSM
       name = "ANALYZE_OBJECTIV";
       init = /*%FSM<STATEINIT""">*/"private [" \n
        "	""_objective"",""_center"",""_id"",""_size"",""_sizeSection"",""_sector"",""_sectorData"",""_entitiesBySide"",""_clusterHostility"",""_clusterCasualties"",""_hostility"",""_color"",""_var""," \n
-       "	""_agents"",""_guards"",""_factory"",""_HQ"",""_depot"",""_section"",""_actions"",""_actionsDefined"",""_guardsCopy"",""_ied"",""_suicide""" \n
+       "	""_agents"",""_guards"",""_factory"",""_HQ"",""_depot"",""_section"",""_actions"",""_actionsFulfilled"",""_guardsCopy"",""_ied"",""_suicide""" \n
        "];" \n
        "" \n
        "_objective = _objectives select _iteration;" \n
@@ -244,7 +244,7 @@ class FSM
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
        "_section =  [_objective,""section"",[]] call ALiVE_fnc_HashGet;" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
-       "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
+       "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "_factory = [_OPCOM_HANDLER,""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;" \n
        "_HQ = [_OPCOM_HANDLER,""convertObject"",[_objective,""HQ"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;" \n
@@ -331,7 +331,7 @@ class FSM
        "	if (isnil ""_guards"") then {_guardsCopy = []} else {_guardsCopy = _guards};" \n
        "" \n
        "	if (count (_section + _guardsCopy) > 0) then {" \n
-       "		[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "		[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str([_actions select 0] + _actionsFulfilled), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "		" \n
        "		if (alive _HQ) then {[format[""hq_%1"",_id],getposATL _HQ,""ICON"", [1,1],""ColorRed"",""Recruitment HQ"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""hq_%1"",_id]};" \n
        "		if (alive _depot) then {[format[""depot_%1"",_id],getposATL _depot,""ICON"", [1,1],""ColorRed"",""Weapons depot"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""depot_%1"",_id]};" \n
@@ -452,21 +452,21 @@ class FSM
     class ACTIONS___ASSAULT
     {
       name = "ACTIONS___ASSAULT";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
-       "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
+       "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
-       "// Define state for later usage" \n
-       "_state = ""attacking"";" \n
-       "" \n
        "// Analyse" \n
        "// Determine best action type" \n
        "" \n
-       "// Mock action types" \n
+       "// Define state for later usage" \n
+       "_state = ""attacking"";" \n
+       "" \n
+       "// Action types" \n
        "_type =  [""assault"",""ambush""] call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
@@ -476,7 +476,7 @@ class FSM
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_road"",""_building"",""_buildings"",""_target"",""_factory"",""_guard""" \n
        "		];" \n
        "	" \n
-       "	if (_type in _actionsDefined) then {_type = ""idle""};" \n
+       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
@@ -500,8 +500,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		case (""ambush"") : {" \n
@@ -533,8 +531,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		default {" \n
@@ -565,12 +561,10 @@ class FSM
        "		];" \n
        "" \n
        "	[_objective,""actions"",_actions] call ALiVE_fnc_HashSet;" \n
-       "	[_objective,""actionsDefined"",_actionsDefined] call ALiVE_fnc_HashSet;" \n
-       "" \n
        "" \n
        "	// debug ---------------------------------------" \n
        "	if(_debug) then {" \n
-       "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsFulfilled), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "	};" \n
        "	// debug ---------------------------------------" \n
        "};" \n
@@ -597,10 +591,10 @@ class FSM
     class ACTIONS___RETREAT
     {
       name = "ACTIONS___RETREAT";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
-       "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
+       "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -611,7 +605,7 @@ class FSM
        "// Define state for later usage" \n
        "_state = ""defending"";" \n
        "" \n
-       "// Mock action types" \n
+       "// Action types" \n
        "_type =  [""retreat""] call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
@@ -621,7 +615,7 @@ class FSM
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_road"",""_building"",""_buildings"",""_target"",""_factory"",""_guard""" \n
        "		];" \n
        "	" \n
-       "	if (_type in _actionsDefined) then {_type = ""idle""};" \n
+       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
@@ -649,9 +643,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [];" \n
        "			_codeConditionFail = ""false"";" \n
-       "" \n
-       "			// Perform always" \n
-       "			//_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		default {" \n
@@ -682,12 +673,10 @@ class FSM
        "		];" \n
        "" \n
        "	[_objective,""actions"",_actions] call ALiVE_fnc_HashSet;" \n
-       "	[_objective,""actionsDefined"",_actionsDefined] call ALiVE_fnc_HashSet;" \n
-       "" \n
        "" \n
        "	// debug ---------------------------------------" \n
        "	if(_debug) then {" \n
-       "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsFulfilled), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "	};" \n
        "	// debug ---------------------------------------" \n
        "};" \n
@@ -714,24 +703,24 @@ class FSM
     class ACTIONS___IEDS_SUICIDERS
     {
       name = "ACTIONS___IEDS_SUICIDERS";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
-       "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
+       "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
+       "// Analyse" \n
+       "// Determine best action type" \n
+       "" \n
        "// Define state for later usage" \n
        "_state = ""terrorizing"";" \n
        "" \n
-       "// Analyse" \n
-       "// Determine best action type" \n
        "if (!alive ([[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM)) then {" \n
        "	_type =  ""factory"";" \n
        "} else {" \n
        "	_type =  [""sabotage"",""ied"",""suicide""] call BIS_fnc_SelectRandom;" \n
-       "	" \n
        "};" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
@@ -741,7 +730,7 @@ class FSM
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_building"",""_buildings"",""_target"",""_factory"",""_guard""" \n
        "		];" \n
        "	" \n
-       "	if (_type in _actionsDefined) then {_type = ""idle""};" \n
+       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""STEALTH"";" \n
        "	_speed = ""NORMAL"";" \n
@@ -783,8 +772,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		case (""ied"") : {" \n
@@ -809,8 +796,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		case (""suicide"") : {" \n
@@ -835,8 +820,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		case (""sabotage"") : {" \n
@@ -886,8 +869,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [];" \n
        "			_codeConditionFail = ""false"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		default {" \n
@@ -918,12 +899,10 @@ class FSM
        "		];" \n
        "" \n
        "	[_objective,""actions"",_actions] call ALiVE_fnc_HashSet;" \n
-       "	[_objective,""actionsDefined"",_actionsDefined] call ALiVE_fnc_HashSet;" \n
-       "" \n
        "" \n
        "	// debug ---------------------------------------" \n
        "	if(_debug) then {" \n
-       "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "		//[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + str(_actionsFulfilled), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "	};" \n
        "	// debug ---------------------------------------" \n
        "};" \n
@@ -950,22 +929,22 @@ class FSM
     class ACTIONS___RECRUIT
     {
       name = "ACTIONS___RECRUIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsDefined"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
-       "_actionsDefined = [_objective,""actionsDefined"",[]] call ALiVE_fnc_HashGet;" \n
+       "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
+       "// Analyse" \n
+       "// Determine best action type" \n
+       "" \n
        "// Define state for later usage" \n
        "_state = ""reserving"";" \n
        "" \n
-       "// Analyse" \n
-       "// Determine best action type" \n
-       "if (count _agents >= 2 && {!(""recruit"" in _actionsDefined)}) then {_type = ""recruit""} else {" \n
+       "if (count _agents >= 2 && {!(""recruit"" in _actionsFulfilled)}) then {_type = ""recruit""} else {" \n
        "	_type =  [""depot"",""roadblocks""] call BIS_fnc_SelectRandom;" \n
-       "	//_type =  [""roadblocks""] call BIS_fnc_SelectRandom;" \n
        "};" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
@@ -975,7 +954,7 @@ class FSM
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_building"",""_HQ"",""_munitionsDump"",""_guard""" \n
        "		];" \n
        "	" \n
-       "	if (_type in _actionsDefined) then {_type = ""idle""};" \n
+       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""AWARE"";" \n
        "	_speed = ""NORMAL"";" \n
@@ -1006,8 +985,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		case (""depot"") : {" \n
@@ -1039,8 +1016,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		case (""recruit"") : {" \n
@@ -1071,8 +1046,6 @@ class FSM
        "" \n
        "			_paramsConditionFail = [time];" \n
        "			_codeConditionFail = ""time - (_this select 0) < 120"";" \n
-       "" \n
-       "			_actionsDefined = _actionsDefined + [_type];" \n
        "		};" \n
        "" \n
        "		default {" \n
@@ -1103,11 +1076,10 @@ class FSM
        "		];" \n
        "" \n
        "	[_objective,""actions"",_actions] call ALiVE_fnc_HashSet;" \n
-       "	[_objective,""actionsDefined"",_actionsDefined] call ALiVE_fnc_HashSet;" \n
        "" \n
        "	// debug ---------------------------------------" \n
        "	if(_debug) then {" \n
-       "		//[format[""%1_actions"",_id],_center,""ICON"", [1,1],""ColorGreen"",""     "" + str(_actionsDefined), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "		//[format[""%1_actions"",_id],_center,""ICON"", [1,1],""ColorGreen"",""     "" + str(_actionsFulfilled), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "	};" \n
        "	// debug ---------------------------------------" \n
        "};" \n
@@ -1434,8 +1406,9 @@ class FSM
     class DETERMINE_SUCCES
     {
       name = "DETERMINE_SUCCES";
-      init = /*%FSM<STATEINIT""">*/"private [""_switch"",""_paramsConditionSuccess"",""_codeConditionSuccess"",""_paramsConditionFail"",""_codeConditionFail"",""_storage"",""_guard"",""_guards""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_switch"",""_paramsConditionSuccess"",""_codeConditionSuccess"",""_paramsConditionFail"",""_codeConditionFail"",""_storage"",""_guard"",""_guards"",""_type""];" \n
        "" \n
+       "_type = _actions select 0;" \n
        "_switch = _actions select 2;" \n
        "_guard = _actions select 6 select 5;" \n
        "_paramsConditionSuccess = _actions select 4 select 0;" \n
@@ -1525,6 +1498,7 @@ class FSM
        "if (count _guards > 0) then {[_objective,""guards"",([_objective,""guards"",[]] call ALiVE_fnc_HashGet) + _guards] call ALiVE_fnc_HashSet};" \n
        "" \n
        "// Update" \n
+       "[_objective,""actionsFulfilled"",(([_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet) - [_type]) + [_type]] call ALiVE_fnc_HashSet;" \n
        "_troopsBusy = _troopsBusy - (_section - _guards);" \n
        "_simultan = _simultan - [_id];" \n
        "" \n

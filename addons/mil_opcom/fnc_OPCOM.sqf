@@ -1513,7 +1513,7 @@ switch(_operation) do {
                             			"objectiveID","center","size","type","priority","opcom_state","clusterID","opcomID",
                             			"opcom_orders","danger","sectionAssist","section","tacom_state",
                                         "factory","HQ","ambush","depot","sabotage","ied","suicide",
-                                        "actionsDefined",
+                                        "actionsFulfilled",
                                         "_rev"
                             		];
                             
@@ -1555,7 +1555,9 @@ switch(_operation) do {
                             
                             if !(isnil "_oID") then {
 					            switch ([_logic,"controltype","invasion"] call ALiVE_fnc_HashGet) do {
-					                case ("asymmetric") : {[_logic,"initObjective",_oID] call ALiVE_fnc_OPCOM};
+					                case ("asymmetric") : {
+                                        [_logic,"initObjective",_oID] call ALiVE_fnc_OPCOM;
+                                    };
 	                                
 	                                default {
                                         [_logic,"resetObjective",_oID] call ALiVE_fnc_OPCOM;
