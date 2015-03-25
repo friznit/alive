@@ -49,9 +49,9 @@ if (_type == "entity") then {
     _group = _profile select 2 select 13;
     _units = +(units _group);
 
-	waituntil {sleep 2; {alive _x && _x distance _destination < 20} count _units > 0 || count _units == 0};
+	waituntil {sleep 2; {alive _x && _x distance _destination < 50} count _units > 0 || count _units == 0};
 
-	_roads = _destination nearRoads 20;
+	_roads = _destination nearRoads 50;
     
     if (count _roads > 0) then {
         {
@@ -59,7 +59,7 @@ if (_type == "entity") then {
             
             _agent domove (getposATL (_roads call BIS_fnc_SelectRandom));
             
-            sleep 10;
+            sleep 5;
                    
 			_agent playActionNow "PutDown";
 			_bomb = "DemoCharge_Remote_Ammo_Scripted" createVehicle (getposATL _agent);
@@ -67,13 +67,23 @@ if (_type == "entity") then {
             
 			_bombs pushBack _bomb;
         } foreach _units;
-        
-        _group move ([_destination,100] call CBA_fnc_Randpos);
-        _group setbehaviour "STEALTH";
-        _group setcombatmode "RED";
-        
-        {_x dowatch _destination} foreach _units;
-        
+
+        _newPosition = [
+			_destination, 
+			100, 
+			250,
+			1, 
+			0, 
+			100,
+			0, 
+			[], 
+			[_destination]
+		] call BIS_fnc_findSafePos;
+                        
+        _group move _newPosition;
+        _group setbehaviour "AWARE";
+		_group setSpeedmode "NORMAL";
+       
         [_bombs,_destination] spawn {
             _time = time; waituntil {sleep 2; {_x distance (_this select 1) < 20} count vehicles > 0 || {time - _time > 1800}};
             

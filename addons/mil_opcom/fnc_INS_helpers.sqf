@@ -92,8 +92,20 @@ ALiVE_fnc_INS_ambush = {
 				{
 					private ["_agent"];
 				    _agent = [ALiVE_AgentHandler,"getAgent",_x] call ALiVE_fnc_AgentHandler;
-					if !(isnil "_agent") exitwith {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_suicideTarget", "managed", [_sides]]] call ALIVE_fnc_civilianAgent};
+					if !(isnil "_agent") exitwith {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_rogueTarget", "managed", [_sides]]] call ALIVE_fnc_civilianAgent};
 				} foreach _agents;
+
+				// Place ambient IED trigger
+				if (!isnil "ALiVE_mil_IED") then {
+					_trg = createTrigger ["EmptyDetector",getposATL _roadObject];
+					_trg setTriggerArea [_size + 250, _size + 250,0,false];
+					_trg setTriggerActivation ["ANY","PRESENT",true];
+					_trg setTriggerStatements [
+						"this && {(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0",
+   						 format["null = [getpos thisTrigger,%1,%2,%3] call ALIVE_fnc_createIED",100,str(_id),ceil(random 2)],
+   						 format["null = [getpos thisTrigger,%1] call ALIVE_fnc_removeIED",str(_id)]
+					];
+				};
 
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
