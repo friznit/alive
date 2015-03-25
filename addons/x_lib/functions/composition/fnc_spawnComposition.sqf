@@ -57,6 +57,7 @@ _multiplyMatrixFunc =
 _objects = [];
 _positions = [];
 _azis = [];
+_isFurniture = false;
 
 if (str(_config) find "Furniture" != -1) then {
     _isFurniture = true;
