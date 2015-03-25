@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1493.356079,122.602112,1019.454895,-590.288330,780,777,1};
-window[] = {0,-1,-1,-1,-1,941,102,1654,33,1,797};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1469.358398,98.604202,661.358582,-900.573425,780,777,1};
+window[] = {0,-1,-1,-1,-1,981,225,1777,73,1,797};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -325,21 +325,27 @@ class FSM
        "if(_debug) then {" \n
        "	_color = ""ColorRed""; if (_hostility < 0) then {_color = ""ColorGreen""};" \n
        "" \n
-       "	[format[""%1_Hostility"",_id],_center,""ICON"", [1,1],_color,str(_hostility), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
-       "	[_id,_center,""RECTANGLE"", [_size,_size],_color,"""", ""EMPTY"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarker;" \n
+       "	// Update regular OPCOM objective debug marker" \n
+       "	[_id,_center,""RECTANGLE"", [_size,_size],_color,"""", ""EMPTY"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
        "" \n
+       "	// Always show hostility value" \n
+       "	[format[""%1_Hostility"",_id],_center,""ICON"", [1,1],_color,str(_hostility), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
+       "" \n
+       "	// Always show installations" \n
+       "	if (alive _HQ) then {[format[""hq_%1"",_id],getposATL _HQ,""ICON"", [1,1],""ColorRed"",""Recruitment HQ"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""hq_%1"",_id]};" \n
+       "	if (alive _depot) then {[format[""depot_%1"",_id],getposATL _depot,""ICON"", [1,1],""ColorRed"",""Weapons depot"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""depot_%1"",_id]};" \n
+       "	if (alive _factory) then {[format[""factory_%1"",_id],getposATL _factory,""ICON"", [1,1],""ColorRed"",""IED factory"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""factory_%1"",_id]};" \n
+       "	if (alive _ambush) then {[format[""ambush_%1"",_id],getposATL _ambush,""ICON"", [1,1],""ColorRed"",""Ambush"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""ambush_%1"",_id]};" \n
+       "	if (alive _sabotage) then {[format[""sabotage_%1"",_id],getposATL _sabotage,""ICON"", [1,1],""ColorRed"",""Sabotage"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""sabotage_%1"",_id]};" \n
+       "	if (alive _ied) then {[format[""ied_%1"",_id],getposATL _ied,""ICON"", [1,1],""ColorRed"",""IED"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""ied_%1"",_id]};" \n
+       "	if (alive _suicide) then {[format[""suicide_%1"",_id],getposATL _suicide,""ICON"", [1,1],""ColorRed"",""Suicidebomber"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""suicide_%1"",_id]};" \n
+       "	" \n
+       "	// Check for guards" \n
        "	if (isnil ""_guards"") then {_guardsCopy = []} else {_guardsCopy = _guards};" \n
        "" \n
+       "	// Only show orders on assigned or guarded objectives" \n
        "	if (count (_section + _guardsCopy) > 0) then {" \n
        "		[format[""%1_actions"",_id,_type],_center,""ICON"", [1,1],""ColorRed"",""     "" + (([_actions select 0] + _actionsFulfilled) call ALiVE_fnc_INS_compileList), ""mil_dot"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;" \n
-       "		" \n
-       "		if (alive _HQ) then {[format[""hq_%1"",_id],getposATL _HQ,""ICON"", [1,1],""ColorRed"",""Recruitment HQ"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""hq_%1"",_id]};" \n
-       "		if (alive _depot) then {[format[""depot_%1"",_id],getposATL _depot,""ICON"", [1,1],""ColorRed"",""Weapons depot"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""depot_%1"",_id]};" \n
-       "		if (alive _factory) then {[format[""factory_%1"",_id],getposATL _factory,""ICON"", [1,1],""ColorRed"",""IED factory"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""factory_%1"",_id]};" \n
-       "		if (alive _ambush) then {[format[""ambush_%1"",_id],getposATL _ambush,""ICON"", [1,1],""ColorRed"",""Ambush"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""ambush_%1"",_id]};" \n
-       "		if (alive _sabotage) then {[format[""sabotage_%1"",_id],getposATL _sabotage,""ICON"", [1,1],""ColorRed"",""Sabotage"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""sabotage_%1"",_id]};" \n
-       "		if (alive _ied) then {[format[""ied_%1"",_id],getposATL _ied,""ICON"", [1,1],""ColorRed"",""IED"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""ied_%1"",_id]};" \n
-       "		if (alive _suicide) then {[format[""suicide_%1"",_id],getposATL _suicide,""ICON"", [1,1],""ColorRed"",""Suicidebomber"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""suicide_%1"",_id]};" \n
        "	};" \n
        "" \n
        "	//[""FSM state: %1 of %2"",""OBJECTIVE ANALYSIS"",_id] call ALIVE_fnc_dumpR;" \n

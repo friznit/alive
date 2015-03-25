@@ -1502,30 +1502,37 @@ switch(_operation) do {
                             };
 	                    } foreach (_result select 2);
 
+						private ["_keys"];
+
+                        _keys = [
+                        			"objectiveID","center","size","type","priority","opcom_state","clusterID","opcomID",
+                        			"opcom_orders","danger","sectionAssist","section","tacom_state",
+                                    "factory","HQ","ambush","depot","sabotage","ied","suicide",
+                                    "actionsFulfilled",
+                                    "_rev"
+                        		];
+
+						// Rebuild objectives in correct index-order
                         {
-                            private ["_keys","_values","_entry"];
+                            private ["_entry","_target"];
                             
                             //["ALiVE LOAD OPCOM DATA CLEANING HASH %1/%2!",_foreachIndex,(count _objectives)] call ALiVE_fnc_Dump;
                             
                             _entry = _x;
-                            _values = [];
-                            _keys = [
-                            			"objectiveID","center","size","type","priority","opcom_state","clusterID","opcomID",
-                            			"opcom_orders","danger","sectionAssist","section","tacom_state",
-                                        "factory","HQ","ambush","depot","sabotage","ied","suicide",
-                                        "actionsFulfilled",
-                                        "_rev"
-                            		];
+                                                       
+                            _target = [nil, "createhashobject"] call ALIVE_fnc_OPCOM;
                             
                             {
                                 _data = [_entry,_x] call ALiVE_fnc_HashGet;
                                 
-                                if (_x in _keys && {!isnil "_data"}) then {
-                                    [_entry,_x,_data] call ALiVE_fnc_HashSet;
+                                if !(isnil "_data") then {
+                                    [_target,_x,_data] call ALiVE_fnc_HashSet;
                                 } else {
-                                    [_entry,_x] call ALiVE_fnc_HashRem;
+                                    [_target,_x] call ALiVE_fnc_HashRem;
                                 };
                             } foreach _keys;
+                            
+                            _objectives set [_foreachIndex,_target];
                         } foreach _objectives;
 
 	                    [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
