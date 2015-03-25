@@ -394,8 +394,8 @@ switch(_operation) do {
                 //Report FPS
                 [_logic, "reportFPS", true] call ALiVE_fnc_CQB;
 
-                //Activate Debug
-			    [_logic, "debug", _debug] call ALiVE_fnc_CQB;
+                //Activate Debug only serverside
+			    //[_logic, "debug", _debug] call ALiVE_fnc_CQB;
 
 			    //Delete markers
 			    [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call ALiVE_fnc_CQB;
