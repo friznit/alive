@@ -1001,10 +1001,12 @@ switch(_operation) do {
                 _sabotage = [_logic,"convertObject",[_objective,"sabotage",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
                 _ied = [_logic,"convertObject",[_objective,"ied",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
                 _suicide = [_logic,"convertObject",[_objective,"suicide",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_roadblocks = [_logic,"convertObject",[_objective,"roadblocks",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
                 
                 if (alive _factory) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"factory",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_factory};
                 if (alive _HQ) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"HQ",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_recruit};
                 if (alive _depot) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"depot",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_depot};
+                if (alive _roadblocks) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"roadblocks",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_roadblocks};
                 if (alive _ied) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"ied",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ied};
                 if (alive _ambush) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"ambush",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ambush};
                 
@@ -1507,7 +1509,7 @@ switch(_operation) do {
                         _keys = [
                         			"objectiveID","center","size","type","priority","opcom_state","clusterID","opcomID",
                         			"opcom_orders","danger","sectionAssist","section","tacom_state",
-                                    "factory","HQ","ambush","depot","sabotage","ied","suicide",
+                                    "factory","HQ","ambush","depot","sabotage","ied","suicide","roadblocks",
                                     "actionsFulfilled",
                                     "_rev"
                         		];

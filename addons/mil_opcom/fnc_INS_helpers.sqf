@@ -328,15 +328,12 @@ ALiVE_fnc_INS_roadblocks = {
 				_id = _this select 2;
 				_size = _this select 3;
 				_faction = _this select 4;
-				_building = _this select 5;
+				_handle = _this select 5;
 				_sides = _this select 6;
 				_agents = _this select 7;
 				_CQB = _this select 8;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
-
-				// Convert to data that can be persistet
-				_building = [[],"convertObject",_building] call ALiVE_fnc_OPCOM;
 
 				// Timeout
 				waituntil {time - _timeTaken > 120};
@@ -355,7 +352,8 @@ ALiVE_fnc_INS_roadblocks = {
 				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;
 				
 				// Spawn roadblock
-				[_pos, _size, ceil(_size/200), true] call ALiVE_fnc_createRoadblock;
+                [_pos, _size, ceil(_size/200), true] call ALiVE_fnc_createRoadblock;
+				[_objective,"roadblocks",[[],"convertObject",_pos nearestObject ""] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
 
 				[_pos, _sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
