@@ -86,6 +86,16 @@ class cfgFunctions {
                 file = "\x\alive\addons\amb_civ_population\fnc_getAgentData.sqf";
                 recompile = RECOMPILE;
             };
+            class addCivilianActions {
+                description = "addCivilianActions";
+                file = "\x\alive\addons\amb_civ_population\fnc_addCivilianActions.sqf";
+                recompile = RECOMPILE;
+            };
+            class selectRoleAction {
+                description = "addCivilianActions";
+                file = "\x\alive\addons\amb_civ_population\fnc_selectRoleAction.sqf";
+                recompile = RECOMPILE;
+            };                           
 		};
 	};
 };

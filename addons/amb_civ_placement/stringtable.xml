@@ -113,4 +113,30 @@
 <Key ID="STR_ALIVE_AMBCP_USAGE">
 	<English>Define the settings on the module, place optional TAOR / Blacklist markers!</English>
 </Key>
+<Key ID="STR_ALIVE_AMBCP_AMBIENT_CIVILIAN_ROLES">
+    <English>Civilian roles:</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_AMBIENT_CIVILIAN_ROLES_COMMENT">
+    <English>Selects the possible civilian roles like major, priest, townelder etc.</English>
+</Key>
+
+<Key ID="STR_ALIVE_AMBCP_AMBIENT_CIVILIAN_ROLES_NONE">
+    <English>None</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_AMBIENT_CIVILIAN_ROLES_WEST">
+    <English>Western</English>
+</Key>
+<Key ID="STR_ALIVE_AMBCP_AMBIENT_CIVILIAN_ROLES_EAST">
+    <English>Eastern</English>
+</Key>
+
+
+
+
+
+
+
+
+
+
 </Container></Package></Project>

@@ -4,3 +4,4 @@
 #include <CfgVehicles.hpp>
 #include <CfgFunctions.hpp>
 #include <CfgSounds.hpp>
+#include <eventhandlers.hpp>

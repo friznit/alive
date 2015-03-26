@@ -139,6 +139,29 @@ class CfgVehicles {
                                       };
                               };
                         };
+                        class ambientCivilianRoles
+                        {
+                                displayName = "$STR_ALIVE_CIV_POP_CIVILIAN_ROLES";
+                                description = "$STR_ALIVE_CIV_POP_CIVILIAN_ROLES_COMMENT";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "$STR_ALIVE_CIV_POP_CIVILIAN_ROLES_NONE";
+                                                value = [];
+                                        };
+                                        class WESTERN
+                                        {
+                                                name = "$STR_ALIVE_CIV_POP_CIVILIAN_ROLES_WEST";
+                                                value = ["major","priest","politician"];
+                                        };
+                                        class EASTERN
+                                        {
+                                                name = "$STR_ALIVE_CIV_POP_CIVILIAN_ROLES_EAST";
+                                                value = ["townelder","muezzin","politician"];
+                                        };
+                                };
+                        };
                 };
 
         };

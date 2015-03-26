@@ -90,7 +90,7 @@ switch(_operation) do {
                 ["ALIVE CivilianPopulationSystem - Startup"] call ALIVE_fnc_dump;
             };
             // DEBUG -------------------------------------------------------------------------------------
-
+            
             // create the cluster handler
             ALIVE_clusterHandler = [nil, "create"] call ALIVE_fnc_clusterHandler;
             [ALIVE_clusterHandler, "init"] call ALIVE_fnc_clusterHandler;
@@ -302,6 +302,12 @@ switch(_operation) do {
                 [_logic,"activeLimiter",_args] call ALIVE_fnc_hashSet;
         };
         _result = [_logic,"activeLimiter"] call ALIVE_fnc_hashGet;
+    };
+    case "ambientCivilianRoles": {
+        if(typeName _args == "ARRAY") then {
+                [_logic,"ambientCivilianRoles",_args] call ALIVE_fnc_hashSet;
+        };
+        _result = [_logic,"ambientCivilianRoles"] call ALIVE_fnc_hashGet;
     };
     case "state": {
         private["_state"];

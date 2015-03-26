@@ -316,14 +316,14 @@ switch(_operation) do {
             };
             // DEBUG -------------------------------------------------------------------------------------
 
-            _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+            _activeCommands = [_logic,"activeCommands",[]] call ALIVE_fnc_hashGet;
             _activeCommands set [count _activeCommands, _args];
         };
     };
     case "clearActiveCommands": {
         private ["_activeCommands","_type"];
 
-        _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+        _activeCommands = [_logic,"activeCommands",[]] call ALIVE_fnc_hashGet; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
 
         if(count _activeCommands > 0) then {
             [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
@@ -341,6 +341,12 @@ switch(_operation) do {
         _side = _logic select 2 select 8; //[_logic,"side"] call ALIVE_fnc_hashGet;
         _homePosition = _logic select 2 select 10; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
         _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
+        
+        _townelder = [_logic,"townelder",false] call ALiVE_fnc_HashGet;
+        _major = [_logic,"major",false] call ALiVE_fnc_HashGet;
+        _priest = [_logic,"priest",false] call ALiVE_fnc_HashGet;
+        _muezzin = [_logic,"muezzin",false] call ALiVE_fnc_HashGet;
+		_politician = [_logic,"politician",false] call ALiVE_fnc_HashGet;
 
         _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
 
@@ -355,6 +361,13 @@ switch(_operation) do {
 
             // set agent id on the unit
             _unit setVariable ["agentID", _agentID];
+            
+            // set specials on the unit (public if true);
+            _unit setVariable ["townElder", _townelder,_townelder];
+            _unit setVariable ["major", _major,_major];
+            _unit setVariable ["muezzin", _muezzin,_muezzin];
+            _unit setVariable ["priest", _priest,_priest];
+            _unit setVariable ["politician", _politician,_politician];
 
             // killed event handler
             _eventID = _unit addEventHandler["Killed", ALIVE_fnc_agentKilledEventHandler];

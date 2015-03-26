@@ -241,7 +241,7 @@ switch(_operation) do {
 				[true] call ALIVE_fnc_timer;
 			};
             
-           waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
+			waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
 			waituntil {!(isnil "ALIVE_clusterHandler")};
 
 			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
@@ -554,7 +554,7 @@ switch(_operation) do {
 
 			private ["_debug","_clusters","_cluster","_clustersSettlement","_clustersHQ","_clustersPower","_clustersComms","_clustersMarine",
 			"_clustersRail","_clustersFuel","_clustersConstruction","_ambientVehicleAmount","_ambientVehicleFaction","_vehicleClass",
-			"_faction","_placementMultiplier","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings",
+			"_faction","_placementMultiplier","_ambientCivilianRoles","_factionConfig","_factionSideNumber","_side","_sideObject","_nodes","_node","_buildings",
 			"_env","_file"];
 
 			_debug = [_logic, "debug"] call MAINCLASS;		
@@ -772,6 +772,7 @@ switch(_operation) do {
                 {
                     _clusterID = [_x, "clusterID"] call ALIVE_fnc_hashGet;
                     _nodes = [_x, "nodes"] call ALIVE_fnc_hashGet;
+                    _ambientCivilianRoles = [ALIVE_civilianPopulationSystem, "ambientCivilianRoles",[]] call ALiVE_fnc_HashGet;
 
                     //["NODES: %1",_nodes] call ALIVE_fnc_dump;
 
@@ -827,6 +828,13 @@ switch(_operation) do {
                             [_agent, "faction", _faction] call ALIVE_fnc_civilianAgent;
                             [_agent, "homeCluster", _clusterID] call ALIVE_fnc_civilianAgent;
                             [_agent, "homePosition", _buildingPosition] call ALIVE_fnc_civilianAgent;
+
+                            if (count _ambientCivilianRoles > 0 && {random 1 > 0.5}) then {
+	                            _role = _ambientCivilianRoles call BIS_fnc_SelectRandom;
+	                            _roles = _ambientCivilianRoles - [_role];
+	                            
+	                            [_agent, _role, true] call ALIVE_fnc_HashSet;                                
+                            };
 
                             [_agent] call ALIVE_fnc_selectCivilianCommand;
 

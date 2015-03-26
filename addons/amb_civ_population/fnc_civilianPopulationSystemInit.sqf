@@ -20,7 +20,7 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_logic","_debug","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_hostilityWest","_hostilityEast","_hostilityIndep","_moduleID"];
+private ["_logic","_debug","_spawnRadius","_spawnTypeJetRadius","_spawnTypeHeliRadius","_activeLimiter","_hostilityWest","_hostilityEast","_hostilityIndep","_moduleID","_ambientCivilianRoles"];
 
 PARAMS_1(_logic);
 
@@ -41,7 +41,8 @@ if(isServer) then {
 	_hostilityWest = parseNumber (_logic getVariable ["hostilityWest","0"]);
 	_hostilityEast = parseNumber (_logic getVariable ["hostilityEast","0"]);
 	_hostilityIndep = parseNumber (_logic getVariable ["hostilityIndep","0"]);
-    
+    _ambientCivilianRoles = call compile (_logic getVariable ["ambientCivilianRoles","[]"]);
+   
 	ALIVE_civilianHostility = [] call ALIVE_fnc_hashCreate;
 	[ALIVE_civilianHostility, "WEST", _hostilityWest] call ALIVE_fnc_hashSet;
 	[ALIVE_civilianHostility, "EAST", _hostilityEast] call ALIVE_fnc_hashSet;
@@ -54,6 +55,9 @@ if(isServer) then {
 	[ALIVE_civilianPopulationSystem, "spawnTypeJetRadius", _spawnTypeJetRadius] call ALIVE_fnc_civilianPopulationSystem;
 	[ALIVE_civilianPopulationSystem, "spawnTypeHeliRadius", _spawnTypeHeliRadius] call ALIVE_fnc_civilianPopulationSystem;
 	[ALIVE_civilianPopulationSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_civilianPopulationSystem;
+    [ALIVE_civilianPopulationSystem, "ambientCivilianRoles", _ambientCivilianRoles] call ALIVE_fnc_civilianPopulationSystem;
+
+	if (count _ambientCivilianRoles == 0) then {GVAR(ROLES_DISABLED) = true; PublicVariable QGVAR(ROLES_DISABLED)};
 
 	_logic setVariable ["handler",ALIVE_civilianPopulationSystem];
     

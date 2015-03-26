@@ -95,4 +95,20 @@
 <Key ID="STR_ALIVE_CIV_POP_ERROR1">
 	<English>Only one Civilian Population System module can be used</English>
 </Key>
+<Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES">
+    <English>Civilian roles:</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES_COMMENT">
+    <English>Selects the possible civilian roles like major, priest, townelder etc.</English>
+</Key>
+
+<Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES_NONE">
+    <English>None</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES_WEST">
+    <English>Western</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES_EAST">
+    <English>Eastern</English>
+</Key>
 </Container></Package></Project>
