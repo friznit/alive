@@ -63,6 +63,7 @@ class CfgMusic
 	};
 };
 
+/*
 class RscStandardDisplay;
 class RscPicture;
 class RscDisplayMain: RscStandardDisplay
@@ -81,3 +82,4 @@ class RscDisplayMain: RscStandardDisplay
 		};		
 	};
 };
+*.
