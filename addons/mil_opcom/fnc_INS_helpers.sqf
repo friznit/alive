@@ -180,8 +180,10 @@ ALiVE_fnc_INS_factory = {
 
 				// Establish factory
 				if (alive _factory) then {
-					// Get indoor position of factory
-					_pos = ([getposATL _factory,20] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
+				    // Get indoor Housepos
+				    _pos = getposATL _factory;
+				    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
+				    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
 
 					// Create factory
                     _factory call ALiVE_fnc_INS_spawnIEDfactory;
@@ -400,8 +402,10 @@ ALiVE_fnc_INS_depot = {
 
 				// Establish Depot
 				if (alive _depot) then {
-					// Get indoor position of factory
-					_pos = ([getposATL _depot,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
+				    // Get indoor Housepos
+				    _pos = getposATL _depot;
+				    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
+				    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
 
 					// Create Box
 					_box = "Box_East_AmmoOrd_F" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01]; _box setdir getdir _depot;
@@ -462,8 +466,10 @@ ALiVE_fnc_INS_recruit = {
                     // Create HQ
                     _HQ call ALiVE_fnc_INS_spawnHQ;
                     
-                    // Get indoor Housepos
-                    _pos = ([getposATL _HQ,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
+				    // Get indoor Housepos
+				    _pos = getposATL _HQ;
+				    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
+				    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
                     
 					// Create virtual guards
 					{[_x,"addHouse",_HQ] call ALiVE_fnc_CQB} foreach _CQB;
@@ -515,12 +521,19 @@ ALiVE_fnc_INS_idle = {true};
 
 ALiVE_fnc_createRandomFurniture = {
     
-	_building = _this;
+    private ["_pos","_furniture"];
+    
+    if !(alive _this) exitwith {objNull};
+    
+    _building = _this;
     
     _furniture = ["Land_TableDesk_F","Land_WoodenTable_small_F","Land_RattanTable_01_F"];
-    
     _furniture = _furniture call BIS_fnc_SelectRandom;
-	_pos = ([getpos _building,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_SelectRandom;
+    
+    // Get indoor Housepos
+    _pos = getposATL _building;
+    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
+    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
 	
 	_furniture = createVehicle [_furniture, _pos, [], 0, "CAN_COLLIDE"];
 	_furniture setdir getdir _building;
@@ -539,6 +552,8 @@ ALiVE_fnc_getRelativeTop = {
 };
 
 ALiVE_fnc_INS_spawnIEDfactory = {
+    
+    if !(alive _this) exitwith {};
 
 	_building = _this;
 
@@ -551,6 +566,8 @@ ALiVE_fnc_INS_spawnIEDfactory = {
 };
 
 ALiVE_fnc_INS_spawnHQ = {
+    
+    if !(alive _this) exitwith {};
 
 	_building = _this;
     
