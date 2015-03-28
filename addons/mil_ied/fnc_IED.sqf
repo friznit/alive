@@ -228,9 +228,9 @@ switch(_operation) do {
 					for "_i" from 0 to ((count synchronizedObjects ADDON) - 1) do {
 
 			        	_mod = (synchronizedObjects ADDON) select _i;
-                       
+
                         if (typeof _mod == "ALiVE_mil_OPCOM") then {
-                            
+
                             ADDON setvariable ["IED_Threat", 0];
                             ADDON setvariable ["Bomber_Threat", 0];
                             ADDON setvariable ["VB_IED_Threat", 0];
@@ -347,7 +347,7 @@ switch(_operation) do {
 
                             _trg setTriggerArea[(_size+250),(_size+250),0,false];
 
-                            _trg setTriggerActivation["ANY","PRESENT",true];
+                            _trg setTriggerActivation["ANY","PRESENT",false];
                             _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1,'%2'] call ALIVE_fnc_placeVBIED",_size, text _twn], ""];
 
                              if (_debug) then {
