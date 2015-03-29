@@ -79,9 +79,10 @@ class RscDisplayLoadMission: RscStandardDisplay
 	};
 };
 
+
 class RscBackgroundLogo: RscPictureKeepAspect
 {
-	text = "\x\alive\addons\UI\logo_alive.paa";
+//	text = "\x\alive\addons\UI\logo_alive.paa";
 	align = "top";
 	background = 1;
 	x = "safezoneX + safezoneW - (9 * 			(		((safezoneW / safezoneH) min 1.2) / 32))";
@@ -90,15 +91,20 @@ class RscBackgroundLogo: RscPictureKeepAspect
 	h = "(8 * 			(		(		((safezoneW / safezoneH) min 1.2) / 1.2) / 20))";
 };
 
+
 class RscDisplayMain: RscStandardDisplay
 {
 	class controls
 	{
-		class GameLogo: RscPicture
+		class ALiVEGameLogo: RscPicture
 		{
 			idc = 1202;
 			text = "\x\alive\addons\UI\logo_alive_white.paa";
 			tooltip = "$STR_ALIVE_UI_TOOLTIP_LOGO_ABOUT";
+			x = "75 * 			(			((safezoneW / safezoneH) min 1.2) / 40) + 			(safezoneX)";
+			y = "31.38 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			w = "3 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";			
+			h = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";	
 		};
 	};
 };

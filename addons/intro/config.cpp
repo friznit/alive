@@ -10,7 +10,7 @@ class CfgPatches
 		requiredAddons[] = {"ALIVE_main"};
 		versionDesc = "ALiVE";
 		VERSION_CONFIG;
-		author[] = {"Tupolov"};
+		author[] = {"Music by Johari"};
 		authorUrl = "http://dev-heaven.net/projects/alive";
 	};
 };
@@ -63,7 +63,7 @@ class CfgMusic
 	};
 };
 
-/*
+
 class RscStandardDisplay;
 class RscPicture;
 class RscDisplayMain: RscStandardDisplay
@@ -73,13 +73,12 @@ class RscDisplayMain: RscStandardDisplay
 		class JohariLogo: RscPicture
 		{			
 			idc = 1299;
-			text = "\x\alive\addons\intro\data\johari.paa";	
+			text = "\x\alive\addons\intro\data\johari_small.paa";	
 			tooltip = "$STR_ALIVE_UI_TOOLTIP_JOHARI_ABOUT";
-			x = "0 * 			(			((safezoneW / safezoneH) min 1.2) / 40) + 			(safezoneX)";
-			y = "0.2 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			w = "10.24 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
-			h = "10.24 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";			
+			x = "78.4 * 			(			((safezoneW / safezoneH) min 1.2) / 40) + 			(safezoneX)";
+			y = "31.6 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			w = "1.28 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			h = "1.28 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";			
 		};		
 	};
 };
-*.

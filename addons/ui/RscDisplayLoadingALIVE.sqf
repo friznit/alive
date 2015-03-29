@@ -18,7 +18,7 @@ switch _mode do {
 		{
 			_ctrlLoadingStartLogo = _display displayctrl IDC_LOADINGSTART_LOGO;
 
-			if((productVersion select 1) == "Arma3AlphaLite") then
+/*			if((productVersion select 1) == "Arma3AlphaLite") then
 			{
 				_ctrlLoadingStartLogo ctrlSetText "\x\alive\addons\Main\logo_alive.paa";
 			}
@@ -26,6 +26,7 @@ switch _mode do {
 			{
 				_ctrlLoadingStartLogo ctrlSetText "\x\alive\addons\Main\logo_alive.paa";
 			};
+*/
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
