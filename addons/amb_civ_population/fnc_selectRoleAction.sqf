@@ -35,16 +35,16 @@ _reduceHostility = if (count _this > 2) then {_this select 2} else {random 1 < 0
 // prepare on all locs
 if (_reduceHostility) then {
 	_title = "<t size='1.5' color='#68a7b7'  shadow='1'>COMMUNICATION</t><br/>";
-    _text = format["%1<t>By cleverly argumenting you manage to decrease hostility towards your forces in this sector!</t>",_title];
+    _text = format["%1<t>After some careful negotiation you manage to reduce tension towards your forces in this sector.</t>",_title];
 	
 	["openSideSmall",0.3] call ALIVE_fnc_displayMenu;
 	["setSideSmallText",_text] spawn ALIVE_fnc_displayMenu;
 } else {
 	_title = "<t size='1.5' color='#68a7b7'  shadow='1'>COMMUNICATION</t><br/>";
-    _text1 = format["%1<t>You try to approach the person carefully, but there is no reaction at all!</t>",_title];
-    _text2 = format["%1<t>You get the slight feeling the the person you are talking to doesnt understand any word!</t>",_title];
-    _text3 = format["%1<t>The person doesn't want to talk to you!</t>",_title];
-    _text4 = format["%1<t>The person wants to be left alone!</t>",_title];
+    _text1 = format["%1<t>Your attempts to negotiate with this person fall upon deaf ears as he shows no interest.</t>",_title];
+    _text2 = format["%1<t>You have a sneaking suspicion that the person you are talking to doesn't understand a word you are saying.</t>",_title];
+    _text3 = format["%1<t>This person clearly is not interested in talking to the likes of you!</t>",_title];
+    _text4 = format["%1<t>The person just wants to be left alone!</t>",_title];
     
     _text = [_text1,_text2,_text3,_text4] call BIS_fnc_SelectRandom;
 	
