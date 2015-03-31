@@ -103,7 +103,7 @@ switch(_operation) do {
 
                                         _callsign = _entry getvariable ["CS_CALLSIGN",groupID (group _entry)];
 	                                    _height = _entry getvariable ["CS_HEIGHT",0];
-	                                    _code = compile (_logic getvariable ["Init",""]);
+	                                    _code = "";
 
 	                                    _position = getposATL _entry;
 	                                    _id = [_position] call ALiVE_fnc_getNearestAirportID;
@@ -119,7 +119,7 @@ switch(_operation) do {
 
                                         _callsign = _entry getvariable ["CS_CALLSIGN",groupID (group _entry)];
 	                                    _height = _entry getvariable ["CS_HEIGHT",0];
-	                                    _code = compile(_logic getvariable ["Init",""]);
+	                                    _code = "";
 
 	                                    _position = getposATL _entry;
 	                                    _id = [_position] call ALiVE_fnc_getNearestAirportID;
