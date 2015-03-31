@@ -195,7 +195,7 @@
 	<English>Faction of the units to be placed (BLU_F, OPF_F, IND_F, BLU_G_F)</English>
 </Key>
 <Key ID="STR_ALIVE_CP_USAGE">
-	<English>Define the settings on the module, place optional TAOR / Blacklist markers! This module has to be synced to an OPCOM module, if you want to use OPCOM!</English>
+	<English>Define the settings on the module, place optional TAOR / Blacklist markers! This module has to be synced to an Military AI Commander module, if you want to use an AI Commander to control that faction.</English>
 </Key>
 <Key ID="STR_ALIVE_CP_READINESS_LEVEL">
 	<English>Readiness:</English>

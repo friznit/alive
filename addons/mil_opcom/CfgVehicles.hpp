@@ -126,7 +126,7 @@ class CfgVehicles {
                                         };
                                         class Blocked
                                         {
-                                                name = "Blocked";
+                                                name = "Packets";
                                                 value = "0.75";
                                         };
                                         class Seldom

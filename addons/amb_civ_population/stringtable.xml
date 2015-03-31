@@ -42,7 +42,7 @@
     <English>BLUFOR Hostility</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST_COMMENT">
-    <English>How hostile are civilians intially to BLUFOR side</English>
+    <English>How hostile are civilians initially to BLUFOR side</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_HOSTILITY_WEST_LOW">
     <English>Low</English>
@@ -60,7 +60,7 @@
     <English>OPFOR Hostility</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST_COMMENT">
-    <English>How hostile are civilians intially to OPFOR side</English>
+    <English>How hostile are civilians initially to OPFOR side</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_HOSTILITY_EAST_LOW">
     <English>Low</English>
@@ -75,10 +75,10 @@
     <English>Extreme</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP">
-    <English>Independant Hostility</English>
+    <English>Independent Hostility</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP_COMMENT">
-    <English>How hostile are civilians intially to Independant side</English>
+    <English>How hostile are civilians initially to Independent side</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_HOSTILITY_INDEP_LOW">
     <English>Low</English>
@@ -99,7 +99,7 @@
     <English>Civilian roles:</English>
 </Key>
 <Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES_COMMENT">
-    <English>Selects the possible civilian roles like major, priest, townelder etc.</English>
+    <English>Adds civilian roles of either Eastern (muezzins, town elders) or Western type (priests, politicians)</English>
 </Key>
 
 <Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES_NONE">

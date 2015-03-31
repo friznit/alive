@@ -108,6 +108,6 @@
     <English>Allow planes reinforcements</English>
 </Key>
 <Key ID="STR_ALIVE_ML_USAGE">
-    <English>Place a Military Logistics module to reinforce and resupply factions under control of the synced OPCOM module.</English>
+    <English>Place a Military Logistics module to reinforce and resupply factions under control of the synced Military AI Commander module.</English>
 </Key>
 </Container></Package></Project>
