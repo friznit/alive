@@ -366,7 +366,7 @@ ALiVE_fnc_INS_roadblocks = {
 				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;
 				
 				// Spawn roadblock
-                [_pos, _size, ceil(_size/200), true] call ALiVE_fnc_createRoadblock;
+                [_pos, _size, ceil(_size/200), false] call ALiVE_fnc_createRoadblock;
 				[_objective,"roadblocks",[[],"convertObject",_pos nearestObject ""] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
 
 				[_pos, _sides, 20] call ALiVE_fnc_updateSectorHostility;
