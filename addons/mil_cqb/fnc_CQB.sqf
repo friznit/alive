@@ -418,7 +418,7 @@ switch(_operation) do {
                 _grid = _logic getvariable "grid";
                 _markerType = MOD(CQB) getvariable ["CQB_TraceGrid","Solid"];
 
-	            if (isnil "_grid") then {
+	            if (isnil "_grid" && {!(_markerType == "None")}) then {
 	                _grid = [getposATL _logic, 30000, _markerType] call ALiVE_fnc_createTraceGrid;
 	                _logic setvariable ["grid",_grid];
 
@@ -1277,7 +1277,7 @@ switch(_operation) do {
                                                 [[_logic, "spawnGroup", [_house,_faction]],"ALiVE_fnc_CQB",_host,false] call BIS_fnc_MP;
 
 	                                            //["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
-	                                            sleep 0.1;
+	                                            sleep 0.2;
 		                                    } else {
 		                                        //["CQB ERROR: Nil object on host %1",_host] call ALiVE_fnc_DumpR;
 		                                    };
