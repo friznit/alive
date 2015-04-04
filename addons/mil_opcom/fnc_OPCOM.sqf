@@ -226,7 +226,7 @@ switch(_operation) do {
                     waituntil {["ALiVE OPCOM Waiting for Virtual AI System..."] call ALiVE_fnc_Dump; !(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
                     
                     //Wait for sector grid to be ready
-                    waituntil {["ALiVE OPCOM Waiting for Sector Grid System..."] call ALiVE_fnc_Dump; count (([([ALIVE_sectorGrid, "positionToSector", [1,1,0]] call ALIVE_fnc_sectorGrid),"data"] call ALIVE_fnc_hashGet) select 1) > 0};
+                    //waituntil {["ALiVE OPCOM Waiting for Sector Grid System..."] call ALiVE_fnc_Dump; count (([([ALIVE_sectorGrid, "positionToSector", [1,1,0]] call ALIVE_fnc_sectorGrid),"data"] call ALIVE_fnc_hashGet) select 1) > 0};
 
                     //Load Data from DB
                     if ([_handler,"persistent",false] call ALIVE_fnc_HashGet) then {
