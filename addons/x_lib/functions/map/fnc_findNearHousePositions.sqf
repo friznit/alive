@@ -38,7 +38,9 @@ PARAMS_2(_pos,_radius);
 DEFAULT_PARAM(2,_type,"House");
 
 _positions = [];
-_nearbldgs = nearestObjects [_pos, [_type], _radius];
+//_nearbldgs = nearestObjects [_pos, [_type], _radius];
+_nearbldgs = _pos nearObjects [_type, _radius];
+
 {
 	_positions = _positions + ([_x] call ALIVE_fnc_getBuildingPositions);
 } forEach _nearbldgs;
