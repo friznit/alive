@@ -1201,7 +1201,7 @@ switch(_operation) do {
 
 	case "active": {
 	if(isNil "_args") exitWith {
-		_logic getVariable ["active", false];
+		_args = _logic getVariable ["active", false];
 	};
 
 	ASSERT_TRUE(typeName _args == "BOOL",str _args);
@@ -1341,18 +1341,30 @@ switch(_operation) do {
                         };
 
                         !([_logic,"active"] call ALiVE_fnc_CQB);
-					}; // end over-arching spawning loop
+					}; // end over-arching loop
 
 					// clean up groups if deactivated
 					{
 						[_logic, "delGroup", _x] call ALiVE_fnc_CQB;
 					} forEach (_logic getVariable ["groups",[]]);
                     
+                    //Clean up process entry
                     _logic setvariable ["process",nil];
-				}; // end spawn loop
+                    
+				}; // end spawned process
                 
+                // Set process
                 _logic setvariable ["process",_process];
-			}; // end if active
+			} else {
+                private ["_handle"];
+                
+                // Switch off process
+                _handle = _logic getvariable "process";
+                
+                if !(isnil "_handle") then {
+                    terminate _handle; _logic setvariable ["process",nil];
+                };
+            }; // end
 		};
 	};
 };
