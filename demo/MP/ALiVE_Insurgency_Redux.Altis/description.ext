@@ -35,6 +35,7 @@ onLoadMission = "Welcome to Insurgency | ALiVE. Seek and destroy the hidden weap
 onLoadIntroTime = true;
 onLoadMissionTime = true;
 onLoadName = Insurgency | ALiVE;
+overviewPicture = "x\alive\addons\missions\logo_alive.paa";
 loadScreen = "media\logo_INS.paa";
 
 //--- General Settings
@@ -51,9 +52,9 @@ respawn = BASE;
 respawnDelay = 15;
 respawnDialog = 1;
 disabledAI = 1;
-//respawnTemplates[] = {"MenuPosition"};
 respawnButton = 0;
 respawnOnStart = 0;
+//respawnTemplates[] = {"MenuPosition"};
 
 //--- General Includes
 
