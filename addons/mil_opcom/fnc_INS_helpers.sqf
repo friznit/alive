@@ -519,28 +519,6 @@ ALiVE_fnc_INS_recruit = {
 
 ALiVE_fnc_INS_idle = {true};
 
-ALiVE_fnc_createRandomFurniture = {
-    
-    private ["_pos","_furniture"];
-    
-    if !(alive _this) exitwith {objNull};
-    
-    _building = _this;
-    
-    _furniture = ["Land_TableDesk_F","Land_WoodenTable_small_F","Land_RattanTable_01_F"];
-    _furniture = _furniture call BIS_fnc_SelectRandom;
-    
-    // Get indoor Housepos
-    _pos = getposATL _building;
-    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
-    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
-	
-	_furniture = createVehicle [_furniture, _pos, [], 0, "CAN_COLLIDE"];
-	_furniture setdir getdir _building;
-	
-	_furniture;
-};
-
 ALiVE_fnc_getRelativeTop = {
 
 	_object = _this;
@@ -551,36 +529,91 @@ ALiVE_fnc_getRelativeTop = {
     _height/2;
 };
 
+ALiVE_fnc_spawnFurniture = {
+    
+    private ["_pos","_furniture","_bomb","_created"];
+
+    _building = _this select 0;
+    _ieds = _this select 1;
+    _add = _this select 2;
+    
+    if !(alive _building) exitwith {[]};
+    
+    _furnitures = ["Land_WoodenTable_small_F","Land_RattanTable_01_F"];
+    _bombs = ["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"];
+    _objects = ["Fridge_01_open_F","Land_MapBoard_F","Land_WaterCooler_01_new_F"];
+    _created = [];
+    
+    _pos = getposATL _building;
+    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
+    
+    if (count _positions == 0) exitwith {[]};
+    
+    {
+        private ["_pos"];
+        
+        _pos = _x;
+        
+        if ({(_pos select 2) - (_x select 2) < 0.5} count _positions > 1) then {
+            if (random 1 < 0.3) then {
+				_furniture = createVehicle [_furnitures call BIS_fnc_SelectRandom, _pos, [], 0, "CAN_COLLIDE"];
+				_furniture setdir getdir _building;
+	            
+	            _created pushback _furniture;
+	            
+	            if (_ieds) then {
+	                _bomb = createVehicle [_bombs call BIS_fnc_SelectRandom, getposATL _furniture, [], 0, "CAN_COLLIDE"];
+	                _bomb attachTo [_furniture, [0,0,_furniture call ALiVE_fnc_getRelativeTop]];
+	                
+	                _created pushback _bomb;
+	            };
+            } else {
+                if (_add && {random 1 < 0.5}) then {
+                    _object = createVehicle [_objects call BIS_fnc_SelectRandom, _pos, [], 0, "CAN_COLLIDE"];
+                    _object setdir ([_building,_object] call BIS_fnc_DirTo);
+                    
+                    _created pushback _object;
+                };
+            };
+        };
+    } foreach _positions;
+    
+	_created
+};
+
+ALiVE_fnc_createRandomFurniture = {
+    
+    private ["_pos","_furniture"];
+    
+    if !(alive _this) exitwith {objNull};
+    
+    _building = _this;
+    
+    _furniture = ["Land_TableDesk_F","Land_WoodenTable_small_F","Land_RattanTable_01_F"];
+    _furniture = _furniture call BIS_fnc_SelectRandom;
+
+    _pos = getposATL _building;
+    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
+    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
+	
+	_furniture = createVehicle [_furniture, _pos, [], 0, "CAN_COLLIDE"];
+	_furniture setdir getdir _building;
+	
+	_furniture;
+};
+
 ALiVE_fnc_INS_spawnIEDfactory = {
     
     if !(alive _this) exitwith {};
 
-	_building = _this;
-
-	for "_i" from 1 to (ceil (([_building] call ALIVE_fnc_getMaxBuildingPositions)/3)) do {
-	    _furniture = _building call ALiVE_fnc_createRandomFurniture;
-	    
-		_bomb = createVehicle [["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"] call BIS_fnc_SelectRandom, getposATL _furniture, [], 0, "CAN_COLLIDE"];
-		_bomb attachTo [_furniture, [0,0,_furniture call ALiVE_fnc_getRelativeTop]];
-	};
+	[_this,true,false] call ALiVE_fnc_spawnFurniture;
 };
 
 ALiVE_fnc_INS_spawnHQ = {
     
     if !(alive _this) exitwith {};
 
-	_building = _this;
-    
-    _maxPos = [_building] call ALIVE_fnc_getMaxBuildingPositions;
-
-	for "_i" from 1 to (ceil (_maxPos/3)) do {
-	    _furniture = _building call ALiVE_fnc_createRandomFurniture;
-	    
-		_bomb = createVehicle [["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"] call BIS_fnc_SelectRandom, getposATL _furniture, [], 0, "CAN_COLLIDE"];
-		_bomb attachTo [_furniture, [0,0,_furniture call ALiVE_fnc_getRelativeTop]];
-        
-        _object = createVehicle [["Fridge_01_open_F","Land_MapBoard_F","Land_WaterCooler_01_new_F"] call BIS_fnc_SelectRandom, _building buildingpos (floor(random _maxPos)), [], 0, "CAN_COLLIDE"];
-	};
+	[_this,true,true] call ALiVE_fnc_spawnFurniture;
 };
 
 ALiVE_fnc_INS_compileList = {
