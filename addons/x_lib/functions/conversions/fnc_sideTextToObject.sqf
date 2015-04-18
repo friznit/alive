@@ -42,6 +42,15 @@ switch(_side) do {
 	case "CIV": {
 		_result = civilian;
 	};
+    case "ENEMY": {
+        _result = east;
+    };
+    case "UNKNOWN": {
+        _result = civilian;
+    };
+    default {
+        _result = civilian;
+    };
 };
 
 _result

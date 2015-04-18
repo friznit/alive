@@ -35,4 +35,5 @@ switch (_side) do
 	case WEST: {1};
 	case RESISTANCE: {2};
 	case CIVILIAN: {3};
+    default {3};
 };

@@ -42,6 +42,9 @@ switch(_side) do {
 	case "CIV": {
 		_result = "Civilian";
 	};
+    default {
+        _result = "Civilian";
+    };
 };
 
 _result
