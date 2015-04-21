@@ -34,7 +34,7 @@ _role = "townelder";
 _text = format["Talk to %1",_role];
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object,_caller] call ALiVE_fnc_SelectRoleAction};
-_condition = format["_target getvariable [%1,false]",str(_role)];
+_condition = "alive _target" + "&&" + format["_target getvariable [%1,false]",str(_role)];
 
 _id = _object addAction [
 	_text,
@@ -51,7 +51,7 @@ _role = "major";
 _text = format["Talk to %1",_role];
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object,_caller] call ALiVE_fnc_SelectRoleAction};
-_condition = format["_target getvariable [%1,false]",str(_role)];
+_condition = "alive _target" + "&&" + format["_target getvariable [%1,false]",str(_role)];
 
 _id = _object addAction [
 	_text,
@@ -68,7 +68,7 @@ _role = "priest";
 _text = format["Talk to %1",_role];
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object,_caller] call ALiVE_fnc_SelectRoleAction};
-_condition = format["_target getvariable [%1,false]",str(_role)];
+_condition = "alive _target" + "&&" + format["_target getvariable [%1,false]",str(_role)];
 
 _id = _object addAction [
 	_text,
@@ -85,7 +85,7 @@ _role = "muezzin";
 _text = format["Talk to %1",_role];
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object,_caller] call ALiVE_fnc_SelectRoleAction};
-_condition = format["_target getvariable [%1,false]",str(_role)];
+_condition = "alive _target" + "&&" + format["_target getvariable [%1,false]",str(_role)];
 
 _id = _object addAction [
 	_text,
@@ -102,7 +102,7 @@ _role = "politician";
 _text = format["Talk to %1",_role];
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object,_caller] call ALiVE_fnc_SelectRoleAction};
-_condition = format["_target getvariable [%1,false]",str(_role)];
+_condition = "alive _target" + "&&" + format["_target getvariable [%1,false]",str(_role)];
 
 _id = _object addAction [
 	_text,
@@ -118,7 +118,7 @@ _id = _object addAction [
 _text = "Arrest";
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object] joinsilent (group _caller); _object setvariable ['detained',true,true]};
-_condition = "!(_target getvariable ['detained',false])";
+_condition = "alive _target" + "&&" + "!(_target getvariable ['detained',false])";
 
 _id = _object addAction [
 	_text,
@@ -134,7 +134,7 @@ _id = _object addAction [
 _text = "Release";
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object] joinsilent grpNull; _object setvariable ['detained',false,true]};
-_condition = "_target getvariable ['detained',false]";
+_condition = "alive _target" + "&&" + "_target getvariable ['detained',false]";
 
 _id = _object addAction [
 	_text,
@@ -150,7 +150,7 @@ _id = _object addAction [
 _text = "Search";
 _params = [];
 _code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; _caller action ["Gear", _object]};
-_condition = "true";
+_condition = "alive _target";
 
 _id = _object addAction [
 	_text,
