@@ -198,6 +198,16 @@ if (_menuName == "adminActions") then {
                     1,
                     true
                 ],
+                
+                [localize "STR_ALIVE_ADMINACTIONS_OPCOM_TOGGLEINSTALLATIONS",
+                    {  call ALIVE_fnc_OPCOMToggleInstallations; },
+                    "",
+                    localize "STR_ALIVE_ADMINACTIONS_OPCOM_TOGGLEINSTALLATIONS_COMMENT",
+                    "",
+                    -1,
+                    1,
+                    !isnil "ALiVE_mil_OPCOM"
+                ],
 
 				[localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_ENABLE",
                     { ALiVE_amb_civ_population setVariable ["debug","true",true]; [] call ALIVE_fnc_agentSystemDebug; },

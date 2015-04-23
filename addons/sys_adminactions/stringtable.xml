@@ -109,4 +109,10 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_USAGE">
     <English>Place an admin actions module to give the server admin or single player admin functions like teleport, ghost and run scripts.</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_OPCOM_TOGGLEINSTALLATIONS">
+	<English>Toggle OPCOM installations</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_OPCOM_TOGGLEINSTALLATIONS_COMMENT">
+    <English>Displays markers at installations</English>
+</Key>
 </Container></Package></Project>
