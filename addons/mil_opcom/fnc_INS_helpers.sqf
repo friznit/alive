@@ -402,19 +402,13 @@ ALiVE_fnc_INS_depot = {
 
 				// Establish Depot
 				if (alive _depot) then {
-				    // Get indoor Housepos
-				    _pos = getposATL _depot;
-				    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
-				    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
-
-					// Create Box
-					_box = "Box_East_AmmoOrd_F" createVehicle _pos; _pos set [2,1]; _box setposATL _pos; _box setvelocity [0,0,-0.01]; _box setdir getdir _depot;
-
+                    _depot call ALiVE_fnc_INS_spawnDepot;
+                    
 					// Create virtual guards
 					{[_x,"addHouse",_depot] call ALiVE_fnc_CQB} foreach _CQB;
 
 					// Set depot
-					[_objective,"depot",[[],"convertObject",_depot] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
+					[_objective,"depot",[[],"convertObject",_depot] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;                    
 				};
 
 				// Add TACOM get weapons command on all selected agents
@@ -531,17 +525,19 @@ ALiVE_fnc_getRelativeTop = {
 
 ALiVE_fnc_spawnFurniture = {
     
-    private ["_pos","_furniture","_bomb","_created"];
+    private ["_pos","_furniture","_bomb","_box","_created"];
 
     _building = _this select 0;
     _ieds = _this select 1;
     _add = _this select 2;
+    _ammo = _this select 3;
     
     if !(alive _building) exitwith {[]};
     
     _furnitures = ["Land_WoodenTable_small_F","Land_RattanTable_01_F"];
     _bombs = ["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"];
     _objects = ["Fridge_01_open_F","Land_MapBoard_F","Land_WaterCooler_01_new_F"];
+    _boxes = ["Box_East_AmmoOrd_F"];
     _created = [];
     
     _pos = getposATL _building;
@@ -573,6 +569,13 @@ ALiVE_fnc_spawnFurniture = {
                     _object setdir ([_building,_object] call BIS_fnc_DirTo);
                     
                     _created pushback _object;
+                } else {
+                	if (_ammo && {random 1 < 0.5}) then {
+	                    _box = createVehicle [_boxes call BIS_fnc_SelectRandom, _pos, [], 0, "CAN_COLLIDE"];
+	                    _box setdir ([_building,_box] call BIS_fnc_DirTo);
+	                    
+	                    _created pushback _box;                        
+                    };
                 };
             };
         };
@@ -606,14 +609,21 @@ ALiVE_fnc_INS_spawnIEDfactory = {
     
     if !(alive _this) exitwith {};
 
-	[_this,true,false] call ALiVE_fnc_spawnFurniture;
+	[_this,true,false,false] call ALiVE_fnc_spawnFurniture;
 };
 
 ALiVE_fnc_INS_spawnHQ = {
     
     if !(alive _this) exitwith {};
 
-	[_this,true,true] call ALiVE_fnc_spawnFurniture;
+	[_this,true,true,false] call ALiVE_fnc_spawnFurniture;
+};
+
+ALiVE_fnc_INS_spawnDepot = {
+    
+    if !(alive _this) exitwith {};
+
+	[_this,true,false,true] call ALiVE_fnc_spawnFurniture;
 };
 
 ALiVE_fnc_INS_compileList = {

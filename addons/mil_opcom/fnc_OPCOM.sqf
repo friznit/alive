@@ -71,17 +71,6 @@ if !(_operation in _blackOps) then {
 
 switch(_operation) do {
         // Main process
-		case "init": {
-			if (isServer) then {
-				// if server, initialise module game logic
-				_logic setVariable ["super", SUPERCLASS];
-				_logic setVariable ["class", MAINCLASS];
-				_logic setVariable ["moduleType", "ALIVE_OPCOM"];
-				
-				TRACE_1("After module init",_logic);
-                [_logic,"start"] call MAINCLASS;
-			};
-		};
         case "create": {
             	private ["_logic"];
                 
@@ -92,9 +81,33 @@ switch(_operation) do {
                 // initialise module game logic on all localities
                 _logic setVariable ["super", SUPERCLASS];
                 _logic setVariable ["class", MAINCLASS];
-
+                
                 _result = _logic;
         };
+		case "init": {
+			if (isServer) then {
+				// if server, initialise module game logic
+				_logic setVariable ["super", SUPERCLASS];
+				_logic setVariable ["class", MAINCLASS];
+				_logic setVariable ["moduleType", "ALIVE_OPCOM"];
+                
+                if (isnil QUOTE(ADDON)) then {
+                    ADDON = _logic;
+                    
+                    PublicVariable QUOTE(ADDON);
+                };
+			};
+            
+			TRACE_1("After module init",_logic);
+           
+			waituntil {!isnil QUOTE(ADDON)};
+            
+            TRACE_1("Starting process",_logic);
+            
+            if (isServer) then {
+				[_logic,"start"] call MAINCLASS;
+            };
+		};
 		case "start": {                
                 /*
                 MODEL - no visual just reference data
@@ -405,7 +418,6 @@ switch(_operation) do {
 						};
 					};
                 };
-                
                 
                 //Set startup complete and end loading screen if init has passed or an error occurred
                 if (isServer) then {

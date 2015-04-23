@@ -5,14 +5,14 @@ item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.00000
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"INIT_INFO",2,250,-720.879761,-873.838257,-630.879761,-823.838257,0.000000,"INIT INFO"};
 item3[] = {"",7,210,-52.802883,324.913116,-44.802883,332.913116,0.000000,""};
-item4[] = {"ANALYZE_OBJECTIV",2,250,-720.879822,-549.151001,-630.879822,-499.151001,0.000000,"ANALYZE" \n "OBJECTIVE"};
+item4[] = {"ANALYZE_OBJECTIV",2,4346,-720.879822,-549.151001,-630.879822,-499.151001,0.000000,"ANALYZE" \n "OBJECTIVE"};
 item5[] = {"ATTACK",4,218,-928.976746,-250.825409,-838.976746,-200.825378,1.000000,"ATTACK"};
 item6[] = {"DEFEND",4,218,-806.225098,-252.264771,-716.225098,-202.264740,2.000000,"DEFEND"};
 item7[] = {"TERRORIZE",4,218,-650.359680,-253.024353,-560.359680,-203.024323,3.000000,"TERRORIZE"};
 item8[] = {"RESERVE",4,218,-512.215454,-253.515350,-422.215546,-203.515259,4.000000,"RESERVE"};
 item9[] = {"_",4,218,-719.706787,-456.359070,-629.706787,-406.359070,0.000000,""};
 item10[] = {"SELECT_ORDERS",2,250,-724.372742,-364.088989,-634.372742,-314.088837,0.000000,"SELECT" \n "ORDERS"};
-item11[] = {"ACTIONS___ASSAULT",2,4346,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
+item11[] = {"ACTIONS___ASSAULT",2,250,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
 item12[] = {"ACTIONS___RETREAT",2,250,-806.544922,-175.131653,-706.482239,-34.567657,0.000000,"ACTIONS:" \n "" \n "RETREAT" \n "SURRENDER"};
 item13[] = {"ACTIONS___IEDS_SUICIDERS",2,250,-647.961060,-177.760864,-545.662231,-33.842651,0.000000,"ACTIONS:" \n "" \n "IEDS" \n "SUICIDERS" \n "SABOTAGE"};
 item14[] = {"ACTIONS___RECRUIT",2,250,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1587.502563,216.748138,936.822571,-860.488831,780,777,1};
-window[] = {0,-1,-1,-1,-1,1018,110,1662,110,1,797};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1744.527954,373.773285,879.909790,-1230.244263,779,777,1};
+window[] = {0,-1,-1,-1,-1,1040,132,1684,132,1,796};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -338,9 +338,9 @@ class FSM
        "	if (alive _factory) then {[format[""factory_%1"",_id],getposATL _factory,""ICON"", [1,1],""ColorRed"",""IED factory"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""factory_%1"",_id]};" \n
        "	if (alive _ambush) then {[format[""ambush_%1"",_id],getposATL _ambush,""ICON"", [1,1],""ColorRed"",""Ambush"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""ambush_%1"",_id]};" \n
        "	if (alive _sabotage) then {[format[""sabotage_%1"",_id],getposATL _sabotage,""ICON"", [1,1],""ColorRed"",""Sabotage"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""sabotage_%1"",_id]};" \n
-       "	if (alive _ied) then {[format[""ied_%1"",_id],getposATL _ied,""ICON"", [1,1],""ColorRed"",""IED"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""ied_%1"",_id]};" \n
-       "	if (alive _suicide) then {[format[""suicide_%1"",_id],getposATL _suicide,""ICON"", [1,1],""ColorRed"",""Suicidebomber"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""suicide_%1"",_id]};" \n
-       "	if (alive _roadblocks) then {[format[""roadblocks_%1"",_id],getposATL _roadblocks,""ICON"", [1,1],""ColorRed"",""Roadblocks"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""roadblocks_%1"",_id]};" \n
+       "	if (alive _ied) then {[format[""ied_%1"",_id],getposATL _ied,""ELLIPSE"", [_size,_size],""ColorRed"",""IED"", ""hd_ambush"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""ied_%1"",_id]};" \n
+       "	if (alive _suicide) then {[format[""suicide_%1"",_id],getposATL _suicide,""ELLIPSE"", [_size,_size],""ColorRed"",""Suicidebomber"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""suicide_%1"",_id]};" \n
+       "	if (alive _roadblocks) then {[format[""roadblocks_%1"",_id],getposATL _roadblocks,""ELLIPSE"", [_size,_size],""ColorRed"",""Roadblocks"", ""n_installation"", ""FDiagonal"",0,0.5 ] call ALIVE_fnc_createMarkerGlobal} else {deleteMarker format[""roadblocks_%1"",_id]};" \n
        "	" \n
        "	// Check for guards" \n
        "	if (isnil ""_guards"") then {_guardsCopy = []} else {_guardsCopy = _guards};" \n
@@ -460,10 +460,14 @@ class FSM
     class ACTIONS___ASSAULT
     {
       name = "ACTIONS___ASSAULT";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_possibleTypes"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
+       "_possibleTypes = [""assault"",""ambush""];" \n
+       "" \n
+       "// Attack always if needed" \n
+       "//_possibleTypes = _possibleTypes - _actionsFulfilled;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -475,7 +479,7 @@ class FSM
        "_state = ""attacking"";" \n
        "" \n
        "// Action types" \n
-       "_type =  [""assault"",""ambush""] call BIS_fnc_SelectRandom;" \n
+       "_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
@@ -600,10 +604,14 @@ class FSM
     class ACTIONS___RETREAT
     {
       name = "ACTIONS___RETREAT";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_possibleTypes"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
+       "_possibleTypes = [""retreat""];" \n
+       "" \n
+       "// Retreat always if needed" \n
+       "//_possibleTypes = _possibleTypes - _actionsFulfilled;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -615,7 +623,7 @@ class FSM
        "_state = ""defending"";" \n
        "" \n
        "// Action types" \n
-       "_type =  [""retreat""] call BIS_fnc_SelectRandom;" \n
+       "_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
@@ -712,10 +720,14 @@ class FSM
     class ACTIONS___IEDS_SUICIDERS
     {
       name = "ACTIONS___IEDS_SUICIDERS";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_possibleTypes"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
+       "_possibleTypes = [""sabotage"",""ied"",""suicide""];" \n
+       "" \n
+       "// Always select different style of terror" \n
+       "_possibleTypes = _possibleTypes - _actionsFulfilled; if (count _possibleTypes == 0) then {_possibleTypes = [""sabotage""]};" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -726,10 +738,10 @@ class FSM
        "// Define state for later usage" \n
        "_state = ""terrorizing"";" \n
        "" \n
-       "if (!alive ([[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM)) then {" \n
+       "if (!alive ([[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM) && {_size >= 200}) then {" \n
        "	_type =  ""factory"";" \n
        "} else {" \n
-       "	_type =  [""sabotage"",""ied"",""suicide""] call BIS_fnc_SelectRandom;" \n
+       "	_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
        "};" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
@@ -739,7 +751,7 @@ class FSM
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_building"",""_buildings"",""_target"",""_factory"",""_guard""" \n
        "		];" \n
        "	" \n
-       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
+       "	//if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""STEALTH"";" \n
        "	_speed = ""NORMAL"";" \n
@@ -792,7 +804,7 @@ class FSM
        "			_building = [[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;" \n
        "" \n
        "			//Override destination if there is an explosive factory" \n
-       "			if (alive _building) then {_pos = getposATL _building};" \n
+       "			if (alive _building) then {_pos = getposATL _building} else {_pos = [_pos, 200, 300, 1, 0, 100, 0, [], [_pos]] call BIS_fnc_findSafePos};" \n
        "" \n
        "			//Convert" \n
        "			_building = [[],""convertObject"",_building] call ALiVE_fnc_OPCOM;" \n
@@ -816,7 +828,7 @@ class FSM
        "			_building = [[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;" \n
        "" \n
        "			//Override destination if there is a munitions dump" \n
-       "			if (alive _building) then {_pos = getposATL _building};" \n
+       "			if (alive _building) then {_pos = getposATL _building} else {_pos = [_pos, 200, 300, 1, 0, 100, 0, [], [_pos]] call BIS_fnc_findSafePos};" \n
        "" \n
        "			//Convert" \n
        "			_building = [[],""convertObject"",_building] call ALiVE_fnc_OPCOM;" \n
@@ -843,7 +855,7 @@ class FSM
        "			_building = [[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;" \n
        "" \n
        "			//Override destination if there is an explosive factory" \n
-       "			if (alive _building) then {_pos = getposATL _building};" \n
+       "			if (alive _building) then {_pos = getposATL _building} else {_pos = [_pos, 200, 300, 1, 0, 100, 0, [], [_pos]] call BIS_fnc_findSafePos};" \n
        "" \n
        "			//Selecting tallest enterable building as target..." \n
        "			if (isnil ""_buildings"" || {count _buildings > 0}) then {" \n
@@ -938,10 +950,14 @@ class FSM
     class ACTIONS___RECRUIT
     {
       name = "ACTIONS___RECRUIT";
-      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_type"",""_types"",""_agents"",""_state""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_actions"",""_actionsFulfilled"",""_possibleTypes"",""_type"",""_types"",""_agents"",""_state""];" \n
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
+       "_possibleTypes = [""depot"",""roadblocks""];" \n
+       "" \n
+       "// Always select different style of occupation" \n
+       "_possibleTypes = _possibleTypes - _actionsFulfilled; if (count _possibleTypes == 0) then {_possibleTypes = [""depot""]};" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -953,7 +969,7 @@ class FSM
        "_state = ""reserving"";" \n
        "" \n
        "if (count _agents >= 2 && {!(""recruit"" in _actionsFulfilled)}) then {_type = ""recruit""} else {" \n
-       "	_type =  [""depot"",""roadblocks""] call BIS_fnc_SelectRandom;" \n
+       "	_type = _possibleTypes call BIS_fnc_SelectRandom;" \n
        "};" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
@@ -964,7 +980,7 @@ class FSM
        "			""_HQ"",""_munitionsDump"",""_guard"",""_handle""" \n
        "		];" \n
        "	" \n
-       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
+       "	//if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""AWARE"";" \n
        "	_speed = ""NORMAL"";" \n
