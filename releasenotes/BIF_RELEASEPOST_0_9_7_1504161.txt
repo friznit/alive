@@ -1,0 +1,79 @@
+[CENTER][URL="http://alivemod.com/"][IMG]http://alivemod.com/img/alive_logo_bif.jpg[/IMG][/URL]
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+[SIZE=4]The next generation dynamic persistent mission addon for ArmA3
+Release 0.9.7.1 for ArmA3 1.42[/SIZE][/B][/CENTER]
+
+[B][U]Incremental Hotfix for ArmA3 Patch 1.42[/U][/B]
+This is a hotfix to update the version in line with ArmA3 Patch 1.42 released on Thursday 16th April.  We're snuck a couple of fixes in since CBA just got an update too.  Details in the change log.
+
+[CENTER]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[SIZE=4][B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B][/SIZE]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix and ArmAholic.
+
+[CENTER][SIZE=4][B][url=http://alivemod.com/#ALiVEWarRoom]Sign Up to the ALiVE War Room![/url][/B][/SIZE][/CENTER]
+
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  All the info you need should is there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
+
+A full description of ALiVE Asymmetric Warfare including a setup guide and hints for Security Forces is available on the [url=http://alivemod.com/wiki/index.php/Insurgency]ALiVE Wiki Here[/url]
+
+[B][U]Support Forum[/U][/B]
+For direct support and feedback from the ALiVE dev team, join us on Skype or sign up to the forum on our website: [URL="http://alivemod.com/forum/"]http://alivemod.com/forum/[/URL]
+
+[B][U]Changelog[/U][/B]
+[SPOILER]
+- Build 0.9.7
+[MIL OPCOM] fixed the freezing in debug after about 45 mins (need to check CBA_fnc_replace in unscheduled)! Improved placement of furniture! Improved ambush!
+
+From Previous 0.9.7 release for the sake of completeness:
+
+[Various] Tweaks to labels and tooltips to correct spelling and make them more intuitive
+[AMB Civs] Tweaked text to be clearer.
+[CS] Fix to synced vehicles in CS
+[UI] UI updates to tone down ALiVE splash and logos after community feedback.
+[Intro] Removed Johari advert
+[mil_ied] VBIED locations trigger once.
+[MIL OPCOM] Small fix for factory, depot and HQ if the chosen building has to few buildingpositions
+[AMB Civs] Implemented Role system including actions! Set param to eastern/western to get the appropriate roles like town elder, major, muezzin, priest, politician etc.! You will get actions on the civis accordingly! Use "none" (default) if you want to keep running as is.
+[MIL COMMAND | MIL OPCOM] Insurgents now place explosives on ambushes properly
+[MIL OPCOM] Also roadblocks will be restored after load from DB
+[MIL CQB] Disabled clientside debug after switch to global debug
+[X LIB] Fixed issue where fnc_spawnComposition failed if isFurniture wasnt defined
+[MIL OPCOM] Fixed invasion and occupation was not starting correctly after persistent data was loaded
+[MIL OPCOM] Improved visual appearance of current and accomplished INS orders
+[MIL CQB] Improved operation debug to take into account disabled CQB positions
+[MIL OPCOM] Improved method of determining already fulfilled actions (esp. for persitence)
+[MIL CQB | MIL IED] Enabled Reading from synced OPCOM module
+[MIL OPCOM] Fixed some small issues with sending units to appropriate positions
+[X LIB] Added ALiVE_fnc_addActionGlobal that can be used for BIS_fnc_MP
+[AMB CIV Commands] Changed way of issuing "search" action to be JIP compatible!
+[MIL OPCOM] Reviewed way of resetting CQB. Changed reset CQB during init of OPCOM, and before persistent data is loaded, in order to activate formerly stored CQB areas after loading from DB!
+[MIL CQB] Improved way of ending and resetting CQB process
+[MIL OPCOM] Added persistence for INS
+[compositions] Added IED Factory and ability to spawn furniture
+[sys_stats] Added debug code to catch OperationStart issue
+[mil_IED] Fixed VBIED's being spawned as Karts :(
+[main] Added karts to vehicle blacklist
+[mil_ied] Fixed issue where suicide bomber was spawned in water. http://dev.withsix.com/issues/76079
+[mil_ied] Fixed issue where VBIED markers were stated as IED.
+[mil_placement_custom] Fixed undefined vehicleClass error
+[mil_placement_custom] Added module settings for placing supplies, air units, ambient vehicles and HQ. Updated composition selection to include air station. http://dev.withsix.com/issues/76103
+[MIL OPCOM] Ins persistence basics (objects/buildings/module references are stored as [_type,_pos], moved code to helper functions
+[mil_opcom] Added mobile phone item for insurgency purposes. Added a groundholder model for the suicide vest.
+[mil_opcom] Added Suicide Vest (V_ALiVE_Suicide_Vest) so that bombers have something to carry explosives in (under their clothes). Cannot wear other vests on top though.
+[/SPOILER]
+
+[B][U]Want to join our team?[/U][/B]
+We are still recruiting people that are interested in being part of a close knit dev team. We welcome anyone who fancies a go at SQF scripting, Javascript/PHP development (for War Room) and C++/C# development for our ALiVE extension. ALiVE is an opportunity to build your experience of any of these technologies in a fun mod development environment.
+
+[B][U]Disclaimer[/U][/B]
+ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+
+[B][U]ALiVE has transformed my Arma 3 experience, how can I thank you?[/U][/B]
+Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here http://www.alivemod.com/#Donate 
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort. 
+
+Have fun!
