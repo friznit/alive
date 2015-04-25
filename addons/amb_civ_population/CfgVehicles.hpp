@@ -97,17 +97,17 @@ class CfgVehicles {
                                       class MEDIUM
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_EAST_MEDIUM";
-                                              value = "1";
+                                              value = "20";
                                       };
                                       class HIGH
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_EAST_HIGH";
-                                              value = "2";
+                                              value = "50";
                                       };
                                       class EXTREME
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_EAST_EXTREME";
-                                              value = "3";
+                                              value = "100";
                                       };
                               };
                         };
@@ -125,17 +125,17 @@ class CfgVehicles {
                                       class MEDIUM
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_MEDIUM";
-                                              value = "1";
+                                              value = "20";
                                       };
                                       class HIGH
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_HIGH";
-                                              value = "2";
+                                              value = "50";
                                       };
                                       class EXTREME
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_EXTREME";
-                                              value = "3";
+                                              value = "80";
                                       };
                               };
                         };

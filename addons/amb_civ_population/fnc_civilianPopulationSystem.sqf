@@ -190,7 +190,7 @@ switch(_operation) do {
                             // update the hostility level
                             if(_killerSide in (_clusterHostility select 1)) then {
                                 _killerClusterHostility = [_clusterHostility, _killerSide] call ALIVE_fnc_hashGet;
-                                _killerClusterHostility = _killerClusterHostility + 1;
+                                _killerClusterHostility = _killerClusterHostility + 10;
                                 [_clusterHostility,_killerSide,_killerClusterHostility] call ALIVE_fnc_hashSet;
                                 [_cluster,"hostility",_clusterHostility] call ALIVE_fnc_hashSet;
                             };
