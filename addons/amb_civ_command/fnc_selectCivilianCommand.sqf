@@ -88,7 +88,7 @@ if(count (ALIVE_civCommands select 1) > 0) then {
     _agent setVariable ["posture", _clusterHostilityLevel];
 
 	//_clusterHostilityLevel = 3;
-	["CLUSTER HOSTILITY: %1",_clusterHostilityLevel] call ALIVE_fnc_dumpR;
+	//["CLUSTER HOSTILITY: %1",_clusterHostilityLevel] call ALIVE_fnc_dumpR;
 
 	if(_clusterHostilityLevel < 10) then {
 	    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
