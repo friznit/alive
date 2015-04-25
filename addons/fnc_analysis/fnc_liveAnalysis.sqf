@@ -439,8 +439,20 @@ switch(_operation) do {
 				_priority = [_objective,"priority"] call ALIVE_fnc_hashGet;
 				_type = [_objective,"type"] call ALIVE_fnc_hashGet;
 				_state = [_objective,"tacom_state"] call ALIVE_fnc_hashGet;
-				_section = [_objective,"section"] call ALIVE_fnc_hashGet;
 				_objectiveID = [_objective,"objectiveID"] call ALIVE_fnc_hashGet;
+                _section = [_objective,"section",[]] call ALIVE_fnc_hashGet;
+                
+                // Installations
+                _factory = [[],"convertObject",[_objective,"factory",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_HQ = [[],"convertObject",[_objective,"HQ",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_ambush = [[],"convertObject",[_objective,"ambush",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_depot = [[],"convertObject",[_objective,"depot",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_sabotage = [[],"convertObject",[_objective,"sabotage",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_ied = [[],"convertObject",[_objective,"ied",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_suicide = [[],"convertObject",[_objective,"suicide",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+				_roadblocks = [[],"convertObject",[_objective,"roadblocks",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
+                
+                _installations = [_factory,_HQ,_ambush,_depot,_sabotage,_ied,_suicide,_roadblocks];
 				
 				private ["_profiles","_markers","_profileID","_profile","_alpha","_marker","_color","_dir","_position","_icon","_text","_m"];
 				
@@ -540,6 +552,10 @@ switch(_operation) do {
 							_icon = "mil_warning";
 							_text = " captured";
 						};
+                        case "terrorize":{
+                            _icon = "mil_marker";
+                            _text = " terrorize";
+                        };
 					};
 					
 					// create type marker
@@ -550,9 +566,17 @@ switch(_operation) do {
 					_m setMarkerColor _color;
 					_m setMarkerAlpha _alpha;
                     _m setMarkerText _text;
-					
-					_markers = _markers + [_m];
-					
+                    
+                    _markers = _markers + [_m];
+                    
+                    // Show installations
+                    {
+                        if (alive _x) then {
+                            _m = [format[MTEMPLATE,format["%1%2_inst", _objectiveID,_foreachIndex]],getposATL _x,"ICON", [1,1],"ColorRed","Installation", "n_installation", "FDiagonal",0,0.5 ] call ALIVE_fnc_createMarkerGlobal;
+                        	_markers append [_m];
+                        };
+                    } foreach _installations;
+
 					_jobArgs set [count _jobArgs, [_markers, _profiles]];
 					
 				// on subsequent runs lower marker alpha	

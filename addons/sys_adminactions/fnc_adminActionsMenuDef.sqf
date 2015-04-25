@@ -200,7 +200,7 @@ if (_menuName == "adminActions") then {
                 ],
                 
                 [localize "STR_ALIVE_ADMINACTIONS_OPCOM_TOGGLEINSTALLATIONS",
-                    {  call ALIVE_fnc_OPCOMToggleInstallations; },
+                    { [] call ALIVE_fnc_OPCOMToggleInstallations; },
                     "",
                     localize "STR_ALIVE_ADMINACTIONS_OPCOM_TOGGLEINSTALLATIONS_COMMENT",
                     "",
