@@ -26,7 +26,7 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-if !(isServer) exitWith {[[],"ALIVE_fnc_OPCOMToggleInstallations", false, false] call BIS_fnc_MP};
+if !(isServer) exitWith {[_this,"ALIVE_fnc_OPCOMToggleInstallations", false, false] call BIS_fnc_MP};
 
 private ["_enabled","_OPCOM_HANDLER","_objectives","_size","_id","_radius","_pos"];
 
