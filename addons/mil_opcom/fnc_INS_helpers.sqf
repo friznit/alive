@@ -42,7 +42,7 @@ nil
 ---------------------------------------------------------------------------- */
 
 ALiVE_fnc_INS_assault = {
-				private ["_timeTaken","_pos","_id","_size","_faction","_sides","_agents","_building","_objective"];
+				private ["_timeTaken","_pos","_id","_size","_faction","_sides","_agents","_building","_objective","_event","_eventID"];
 
 				_timeTaken = _this select 0;
 				_pos = _this select 1;
@@ -51,6 +51,7 @@ ALiVE_fnc_INS_assault = {
 				_faction = _this select 4;
 				_sides = _this select 5;
 				_agents = _this select 6;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -63,13 +64,16 @@ ALiVE_fnc_INS_assault = {
 				    _agent = [ALiVE_AgentHandler,"getAgent",_x] call ALiVE_fnc_AgentHandler;
 					if !(isnil "_agent") exitwith {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_suicideTarget", "managed", [_sides]]] call ALIVE_fnc_civilianAgent};
 				} foreach _agents;
+                
+                _event = ['OPCOM_CAPTURE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 };
 
 ALiVE_fnc_INS_ambush = {
-				private ["_timeTaken","_pos","_id","_size","_faction","_sides","_agents","_road","_roadObject","_objective"];
+				private ["_timeTaken","_pos","_id","_size","_faction","_sides","_agents","_road","_roadObject","_objective","_event","_eventID"];
 
 				_timeTaken = _this select 0;
 				_pos = _this select 1;
@@ -79,6 +83,7 @@ ALiVE_fnc_INS_ambush = {
 				_road = _this select 5;
 				_sides = _this select 6;
 				_agents = _this select 7;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -107,6 +112,9 @@ ALiVE_fnc_INS_ambush = {
 					];
 				};
 
+                _event = ['OPCOM_RECON',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 
@@ -118,7 +126,7 @@ ALiVE_fnc_INS_ambush = {
 };
 
 ALiVE_fnc_INS_retreat = {
-				private ["_timeTaken","_pos","_id","_size","_faction","_sides","_agents","_objective"];
+				private ["_timeTaken","_pos","_id","_size","_faction","_sides","_agents","_objective","_event","_eventID"];
 
 				_timeTaken = _this select 0;
 				_pos = _this select 1;
@@ -127,6 +135,7 @@ ALiVE_fnc_INS_retreat = {
 				_faction = _this select 4;
 				_sides = _this select 5;
 				_agents = _this select 6;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -149,10 +158,13 @@ ALiVE_fnc_INS_retreat = {
 
 					[_objective,_x] call ALiVE_fnc_HashRem;
 				} foreach ["factory","hq","ambush","depot","sabotage","ied","suicide"];
+                
+                _event = ['OPCOM_DEFEND',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 };
 
 ALiVE_fnc_INS_factory = {
-				private ["_timeTaken","_pos","_center","_id","_size","_faction","_sides","_agents","_building","_objective","_CQB"];
+				private ["_timeTaken","_pos","_center","_id","_size","_faction","_sides","_agents","_building","_objective","_CQB","_event","_eventID"];
 
 				_timeTaken = _this select 0;
 				_pos = _this select 1;
@@ -163,6 +175,7 @@ ALiVE_fnc_INS_factory = {
 				_sides = _this select 6;
 				_agents = _this select 7;
 				_CQB = _this select 8;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -205,6 +218,9 @@ ALiVE_fnc_INS_factory = {
 				// Reset to center position
 				_pos = _center;
 
+                _event = ['OPCOM_TERRORIZE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 };
@@ -220,6 +236,7 @@ ALiVE_fnc_INS_ied = {
 				_factory = _this select 5;
 				_sides = _this select 6;
 				_agents = _this select 7;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -248,6 +265,9 @@ ALiVE_fnc_INS_ied = {
 				    _agent = [ALiVE_AgentHandler,"getAgent",_x] call ALiVE_fnc_AgentHandler;
 					if !(isnil "_agent") exitwith {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_rogueTarget", "managed", [_sides]]] call ALIVE_fnc_civilianAgent};
 				} foreach _agents;
+                
+                _event = ['OPCOM_TERRORIZE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
@@ -265,6 +285,7 @@ ALiVE_fnc_INS_suicide = {
 				_sides = _this select 6;
 				_agents = _this select 7;
 				_civFactions = _this select 8;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -294,6 +315,9 @@ ALiVE_fnc_INS_suicide = {
 					if !(isnil "_agent") exitwith {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_suicideTarget", "managed", [_sides]]] call ALIVE_fnc_civilianAgent};
 				} foreach _agents;
 
+                _event = ['OPCOM_TERRORIZE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 };
@@ -310,6 +334,7 @@ ALiVE_fnc_INS_sabotage = {
 				_target = _this select 6;
 				_sides = _this select 7;
 				_agents = _this select 8;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -330,6 +355,9 @@ ALiVE_fnc_INS_sabotage = {
 					if !(isnil "_agent") exitwith {[_agent, "setActiveCommand", ["ALIVE_fnc_cc_sabotage", "managed", [getposATL _target]]] call ALIVE_fnc_civilianAgent};
 				} foreach _agents;
 
+                _event = ['OPCOM_TERRORIZE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 };
@@ -346,6 +374,7 @@ ALiVE_fnc_INS_roadblocks = {
 				_sides = _this select 6;
 				_agents = _this select 7;
 				_CQB = _this select 8;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -369,6 +398,9 @@ ALiVE_fnc_INS_roadblocks = {
                 [_pos, _size, ceil(_size/200), false] call ALiVE_fnc_createRoadblock;
 				[_objective,"roadblocks",[[],"convertObject",_pos nearestObject ""] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
 
+                _event = ['OPCOM_RESERVE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 				[_pos, _sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 };
@@ -385,6 +417,7 @@ ALiVE_fnc_INS_depot = {
 				_sides = _this select 6;
 				_agents = _this select 7;
 				_CQB = _this select 8;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
                 
@@ -424,6 +457,9 @@ ALiVE_fnc_INS_depot = {
 				// Spawn CQB
 				[_pos,_size,_CQB] spawn ALiVE_fnc_addCQBpositions;
 
+                _event = ['OPCOM_RESERVE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos,_allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
 };
@@ -440,6 +476,7 @@ ALiVE_fnc_INS_recruit = {
 				_sides = _this select 6;
 				_agents = _this select 7;
 				_CQB = _this select 8;
+                _side = _faction call ALiVE_fnc_factionSide;
 				_allSides = ["EAST","WEST","GUER"];
 				_objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
 
@@ -509,6 +546,9 @@ ALiVE_fnc_INS_recruit = {
 						sleep (900 + random 600);
 					};
 				};
+
+                _event = ['OPCOM_RESERVE',[_side,_objective],"OPCOM"] call ALIVE_fnc_event;
+				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;                
 };
 
 ALiVE_fnc_INS_idle = {true};
