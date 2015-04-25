@@ -125,7 +125,7 @@ switch(_operation) do {
                 // initialise main menu
                 [
                         "player",
-                        [SELF_INTERACTION_KEY],
+                        [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                         -9500,
                         [
                                 "call ALIVE_fnc_newsFeedMenuDef",
@@ -154,9 +154,9 @@ switch(_operation) do {
                         _logic setVariable ["super", nil];
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
-                        
+
                         [_logic,"destroy"] call SUPERCLASS;
-                        
+
                         // and publicVariable to clients
                         ADDON = _logic;
                         publicVariable QUOTE(ADDON);
@@ -166,7 +166,7 @@ switch(_operation) do {
                         // remove main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_newsFeedMenuDef",

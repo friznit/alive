@@ -292,7 +292,7 @@ switch(_operation) do {
 	case "init": {
 
         //Only one init per instance is allowed
-    	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP RESUPPLY - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+    	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP RESUPPLY - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
     	//Start init
     	_logic setVariable ["initGlobal", false];
@@ -508,7 +508,7 @@ switch(_operation) do {
             // Initialise main menu
             [
                     "player",
-                    [SELF_INTERACTION_KEY],
+                    [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                     -9500,
                     [
                             "call ALIVE_fnc_PRMenuDef",
@@ -822,7 +822,7 @@ switch(_operation) do {
 
                     // LOGCOM has no insertion point to deliver from
 
-                    _radioMessage = "Your request for support has been deined. No insertion point is available";
+                    _radioMessage = "Your request for support has been denied. No insertion point is available";
 
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 

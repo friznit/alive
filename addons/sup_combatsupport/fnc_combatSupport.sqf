@@ -682,7 +682,7 @@ switch(_operation) do {
                     // initialise main menu
 				    [
 				            "player",
-				            [SELF_INTERACTION_KEY],
+				            [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
 				            -9500,
 				            [
 				                    "call ALIVE_fnc_CombatSupportMenuDef",

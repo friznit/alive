@@ -100,7 +100,7 @@ switch(_operation) do {
                 };
 
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP MULTISPAWN - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SUP MULTISPAWN - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
             	//Start init
             	_logic setVariable ["initGlobal", false];
@@ -228,10 +228,10 @@ switch(_operation) do {
 
 					// Apply Params
                     switch (GVAR(MULTISPAWN_TYPE)) do {
-                        
+
                         //Nothing
                         case ("none") : {};
-                        
+
                         //Initialise a local "killed"-EH
                         case ("forwardspawn") : {
                         	//Not compatible with revive
@@ -244,17 +244,17 @@ switch(_operation) do {
 							player addEventHandler ["KILLED",{
                                 if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
                             }];
-                            
+
                             player addEventHandler ["RESPAWN", {
                                 [] spawn {
                                     waituntil {!isnull player};
-                                    
+
                                     if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
 
                                     sleep 3;
                                 	titleText ["", "PLAIN"];
-                                };                              
-                                
+                                };
+
 
                                 [] spawn ALiVE_fnc_ForwardSpawn;
                             }];
@@ -268,10 +268,10 @@ switch(_operation) do {
 
                             player addEventHandler ["KILLED", {
                                 if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
-                                    
+
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 3};
-                                    
+
                                     titleText ["Respawning...", "BLACK OUT", 2];
                                 };
                             }];
@@ -279,7 +279,7 @@ switch(_operation) do {
                             player addEventHandler ["RESPAWN", {
                                 [] spawn {
                                     waituntil {!isnull player};
-                                    
+
                                     if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
 
                                     [[ALiVE_SUP_MULTISPAWN,"collect",player], "ALiVE_fnc_MultiSpawn", false, false] call BIS_fnc_MP;
@@ -309,10 +309,10 @@ switch(_operation) do {
 
 							player addEventHandler ["KILLED", {
 								if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
-                                    
+
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 3};
-                                    
+
                                     titleText ["Respawning...", "BLACK OUT", 2];
                                 };
                             }];
@@ -320,12 +320,12 @@ switch(_operation) do {
                             player addEventHandler ["RESPAWN", {
                                 [] spawn {
                                     waituntil {!isnull player};
-                                    
+
                                     if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
-                            
+
 	                                if !(isnil {call compile (format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player])}) then {
 		                                _v = call compile format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player];
-	
+
 		                                if !(alive _v) exitwith {["ALiVE_SUP_MULTISPAWN - No ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1 available... Exiting!",faction player] call ALiVE_fnc_Dump};
 		                                if ([_v] call ALIVE_fnc_vehicleCountEmptyPositions > 0) then {player moveInCargo _v} else {player setposATL [(getposATL _v), 10] call CBA_fnc_RandPos};
 	                                };
@@ -352,7 +352,7 @@ switch(_operation) do {
 
 							player addEventHandler ["KILLED", {
                                 if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
-                                    
+
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 4};
 
@@ -363,14 +363,14 @@ switch(_operation) do {
                             player addEventHandler ["RESPAWN", {
                                 [] spawn {
                                     waituntil {!isnull player};
-                                    
+
                                     if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
-                            
+
 	                                _b = nearestObject [getmarkerpos format["ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1",faction player], "Building"];
-	
+
 	                                if (!isNil "_b" && {alive _b}) then {
 		                                _p = [_b] call ALIVE_fnc_getMaxBuildingPositions;
-	
+
 		                                if (_p > 0) then {player setpos (_b buildingpos (ceil random _p))} else {player setposATL [(getposATL _b), 20] call CBA_fnc_RandPos};
 	                                } else {
 	                                    ["ALiVE_SUP_MULTISPAWN - No ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1 available... Exiting!",faction player] call ALiVE_fnc_Dump;
@@ -624,15 +624,15 @@ switch(_operation) do {
 				    _vehicle = vehicle this;
 				    _data = +(_vehicle getvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',[objNull,[],grpNull]]);
 				    _factionData = [ALiVE_SUP_MULTISPAWN_STORE,faction this] call ALiVE_fnc_HashGet;
-				
+
 				    _vehicle setvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',nil];
 				    [_factionData,'ALiVE_sup_multispawn_INSERTION_TRANSPORT'] call ALiVE_fnc_HashRem;
-				
+
 					{deleteVehicle _x} foreach (_data select 1);
 				    deleteGroup (_data select 2);
 				    deleteVehicle (_data select 0);
 				"];
-                
+
                 _group setCurrentWaypoint _wp;
         	};
 
@@ -683,7 +683,7 @@ switch(_operation) do {
                         // remove main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_multispawnMenuDef",

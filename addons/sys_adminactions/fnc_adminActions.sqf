@@ -99,7 +99,7 @@ switch(_operation) do {
                 //["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
                //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS ADMINACTIONS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS ADMINACTIONS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
                 //Start init
                 _logic setVariable ["initGlobal", false];
@@ -149,7 +149,7 @@ switch(_operation) do {
                         // initialise main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_adminActionsMenuDef",
@@ -173,7 +173,7 @@ switch(_operation) do {
                         // remove main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_adminActionsMenuDef",
@@ -181,15 +181,15 @@ switch(_operation) do {
                                 ]
                         ] call ALIVE_fnc_flexiMenu_Remove;
                 };
-                
+
                 if (isServer) then {
                         // if server
                         _logic setVariable ["super", nil];
                         _logic setVariable ["class", nil];
                         _logic setVariable ["init", nil];
-                        
+
                         [_logic,"destroy"] call SUPERCLASS;
-                        
+
                         ADDON = _logic;
                         publicVariable QUOTE(ADDON);
                 };

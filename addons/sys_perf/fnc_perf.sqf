@@ -62,7 +62,7 @@ switch(_operation) do {
                 };
 
                 //Only one init per instance is allowed
-            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PERF - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+            	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PERF - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
             	//Start init
             	_logic setVariable ["initGlobal", false];
@@ -111,7 +111,7 @@ switch(_operation) do {
                         // initialise main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_perfMenuDef",
@@ -140,7 +140,7 @@ switch(_operation) do {
                         // remove main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_perfMenuDef",

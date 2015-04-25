@@ -355,7 +355,7 @@ switch(_operation) do {
 	case "init": {
 
         //Only one init per instance is allowed
-    	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE MIL C2ISTAR - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+    	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE MIL C2ISTAR - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
     	//Start init
         _logic setVariable ["initGlobal", false];
@@ -613,14 +613,12 @@ switch(_operation) do {
 
 
             // Initialise interaction key if undefined
-            if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
-
             TRACE_2("Menu pre-req",SELF_INTERACTION_KEY,ALIVE_fnc_logisticsMenuDef);
 
             // Initialise main menu
             [
                     "player",
-                    [SELF_INTERACTION_KEY],
+                    [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                     -9500,
                     [
                             "call ALIVE_fnc_C2MenuDef",

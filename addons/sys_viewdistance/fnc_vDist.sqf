@@ -74,13 +74,13 @@ switch(_operation) do {
                 _result = ADDON;
         };
         case "init": {
-            
+
                 /*
                 MODEL - no visual just reference data
                 - server side object only
                                 - enabled/disabled
                 */
-                
+
 				//Create or assign existing Logic
                 _logic = [_logic,"create"] call ALiVE_fnc_vDist;
 
@@ -150,7 +150,7 @@ switch(_operation) do {
                         // initialise main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_vdistMenuDef",
@@ -158,10 +158,10 @@ switch(_operation) do {
                                 ]
                         ] call ALIVE_fnc_flexiMenu_Add;
                 };
-                
+
                 //End init
             	_logic setVariable ["initGlobal", true];
-                
+
                 _result = ADDON;
         };
         case "destroy": {
@@ -179,7 +179,7 @@ switch(_operation) do {
                         // remove main menu
                         [
                                 "player",
-                                [SELF_INTERACTION_KEY],
+                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                                 -9500,
                                 [
                                         "call ALIVE_fnc_vdistMenuDef",

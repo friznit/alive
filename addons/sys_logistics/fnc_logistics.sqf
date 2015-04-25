@@ -89,7 +89,7 @@ switch (_operation) do {
             private ["_exit"];
 
             //Only one init per instance is allowed
-        	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS LOGISTICS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump}; 
+        	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS LOGISTICS - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
         	//Start init
         	_logic setVariable ["initGlobal", false];
@@ -214,7 +214,7 @@ switch (_operation) do {
                 // Initialise main menu
                 [
                         "player",
-                        [SELF_INTERACTION_KEY],
+                        [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                         -9500,
                         [
                                 "call ALIVE_fnc_logisticsMenuDef",
@@ -808,9 +808,9 @@ switch (_operation) do {
         };
 
         case "destroyGlobal": {
-            
+
         	MOD(SYS_LOGISTICS) = _logic;
-			
+
             //Remove Actions on clients
             if (hasInterface) then {
                 	{[_logic,"removeAction",[player,_x]] call ALiVE_fnc_logistics} foreach ["carryObject","dropObject","stowObjects","unloadObjects","towObject","untowObject","liftObject","releaseObject"];
@@ -818,7 +818,7 @@ switch (_operation) do {
                     // remove main menu
                     [
                             "player",
-                            [SELF_INTERACTION_KEY],
+                            [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
                             -9500,
                             [
                                     "call ALIVE_fnc_logisticsMenuDef",
@@ -826,17 +826,17 @@ switch (_operation) do {
                             ]
                     ] call ALiVE_fnc_flexiMenu_Remove;
             };
-            
+
             //delay
             sleep 1;
-            
+
             //Delete class
             if (isServer) then {
 
                     _logic setVariable ["super", nil];
                     _logic setVariable ["class", nil];
                     _logic setVariable ["init", nil];
-                    
+
                     [_logic,"destroy"] call SUPERCLASS;
             };
         };
