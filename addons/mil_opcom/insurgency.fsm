@@ -24,7 +24,7 @@ item19[] = {"MOVE_SECTION",2,250,-721.849487,265.364441,-631.849487,315.364441,0
 item20[] = {"SECTION_READY",4,218,-723.792175,348.889465,-633.792175,398.889465,1.000000,"SECTION" \n "READY"};
 item21[] = {"EXECUTE_ACTIONS",2,250,-721.889343,429.850464,-631.889343,479.850464,0.000000,"EXECUTE" \n "ACTIONS"};
 item22[] = {"ACTIONS_FULFILLE",4,218,-718.649292,502.751404,-628.649292,552.751343,1.000000,"ACTIONS" \n "FULFILLED"};
-item23[] = {"DETERMINE_SUCCES",2,4346,-717.763367,591.371216,-627.763367,641.371216,0.000000,"DETERMINE" \n "SUCCESS"};
+item23[] = {"DETERMINE_SUCCES",2,250,-717.763367,591.371216,-627.763367,641.371216,0.000000,"DETERMINE" \n "SUCCESS"};
 item24[] = {"SUCCESS",4,218,-1420.703369,594.125183,-1330.703369,644.125183,1.000000,"SUCCESS"};
 item25[] = {"FAIL",4,218,45.247391,594.838806,135.247589,644.838501,0.000000,"FAIL"};
 item26[] = {"",7,210,-1047.392578,-149.660080,-1039.392578,-141.660049,0.000000,""};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1744.527954,373.773285,1520.064697,-592.798035,779,777,1};
-window[] = {0,-1,-1,-1,-1,1018,110,1662,110,1,796};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1526.216797,155.462158,736.139343,-941.222107,779,777,1};
+window[] = {0,-1,-1,-1,-1,930,22,1574,22,1,796};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -382,8 +382,8 @@ class FSM
        "if (_orders == ""none"") then {" \n
        "" \n
        "	if (_hostility >= 100) then {_orders = ""defend""};" \n
-       "	if (_hostility >= 30 && {_hostility < 100}) then {_orders = ""terrorize""};" \n
-       "	if (_hostility >= -50 && {_hostility < 30}) then {_orders = ""attack""};" \n
+       "	if (_hostility >= 20 && {_hostility < 100}) then {_orders = ""terrorize""};" \n
+       "	if (_hostility >= -50 && {_hostility < 20}) then {_orders = ""attack""};" \n
        "	if (_hostility < -50) then {_orders = ""reserve""};" \n
        "" \n
        "	if !(isnil ""_orders"") then {[_objective,""opcom_orders"",_orders] call ALiVE_fnc_HashSet};" \n
@@ -727,7 +727,7 @@ class FSM
        "_possibleTypes = [""sabotage"",""ied"",""suicide""];" \n
        "" \n
        "// Always select different style of terror" \n
-       "_possibleTypes = _possibleTypes - _actionsFulfilled; if (count _possibleTypes == 0) then {_possibleTypes = [""sabotage""]};" \n
+       "_possibleTypes = _possibleTypes - _actionsFulfilled;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -739,10 +739,16 @@ class FSM
        "_state = ""terrorizing"";" \n
        "" \n
        "if (!alive ([[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM) && {_size >= 200}) then {" \n
-       "	_type =  ""factory"";" \n
+       "	_possibleTypes =  [""factory""];" \n
        "} else {" \n
-       "	_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
+       "	if (count _agents == 0) then {" \n
+       "		_possibleTypes = _possibleTypes - [""sabotage""];" \n
+       "	};" \n
        "};" \n
+       "" \n
+       "if (count _possibleTypes == 0) then {_possibleTypes = [""suicide""]};" \n
+       "" \n
+       "_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
