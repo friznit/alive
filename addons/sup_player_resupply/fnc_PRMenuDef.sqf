@@ -60,13 +60,13 @@ if (typeName _params == typeName []) then {
 /*
         ["Menu Caption", "flexiMenu resource dialog", "optional icon folder", menuStayOpenUponSelect],
         [
-            ["caption", 
-                "action", 
-                "icon", 
-                "tooltip", 
-                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]}, 
+            ["caption",
+                "action",
+                "icon",
+                "tooltip",
+                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]},
                 -1 (shortcut DIK code),
-                {0|1/"0"|"1"/false|true} (enabled), 
+                {0|1/"0"|"1"/false|true} (enabled),
                 {-1|0|1/"-1"|"0"|"1"/false|true} (visible)
             ],
              ...
@@ -81,7 +81,7 @@ _menus =
 				"",
 				localize "STR_ALIVE_PR_COMMENT",
                  "",
-                 -1, 1, _result
+                 -1,(!isNil "ALIVE_MLGlobalRegistry"), _result
 			]
 		]
 	]
