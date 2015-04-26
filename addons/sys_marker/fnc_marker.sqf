@@ -217,6 +217,16 @@ switch (_operation) do {
             if (hasInterface) then {
                 // Start any client-side processes that are needed
 
+                ["ALiVE","mapDotMarker", "Map - Place dot icon quick marker", {}, {}, [52,[false,true,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapObjMarker", "Map - Place objective icon quick marker", {}, {}, [45,[false,true,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapUnkMarker", "Map - Place unknown icon quick marker", {}, {}, [53,[true,true,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapCycleDraw", "Map - Cycle drawing mode", {}, {}, [26,[false,false,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapEndDraw", "Map - End drawing", {}, {}, [207,[false,false,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapIncLine", "Map - Draw - Increase line width / box angle", {}, {}, [200,[false,false,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapDecLine", "Map - Draw - Decrease line width / box angle", {}, {}, [208,[false,false,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapChgColor", "Map - Draw - Change colour", {}, {}, [203,[false,false,false]]] call CBA_fnc_addKeybind;
+                ["ALiVE","mapChgFill", "Map - Draw - Change Fill", {}, {}, [205,[false,false,false]]] call CBA_fnc_addKeybind;
+
                  waituntil {!isnil QGVAR(STORE)};
 
                 if (SLX_XEH_MACHINE select 1) then { // If JIP then also restore when STORE is rebroadcast
@@ -322,7 +332,8 @@ switch (_operation) do {
             _result = MOD(SYS_marker);
         };
 
-         case "mouseButton": { // Runs locally on client
+         case "mouseButton":
+         { // Runs locally on client
 
             private ["_player","_shift","_alt","_ctr","_ok","_control","_xPos","_yPos","_toggle"];
             _player = player;
@@ -507,7 +518,7 @@ switch (_operation) do {
             _angle = [_logic, "angle"] call ALIVE_fnc_marker;
 
 			switch _key do {
-				case 52: { 			// Press . to place a dot icon
+				case (((["ALiVE", "mapDotMarker"] call cba_fnc_getKeybind) select 5) select 0): { 			// Press . to place a dot icon
                     private ["_color","_markersHash","_markerName"];
                     if (_ctr) then {
                         _color = [_logic, "color"] call ALIVE_fnc_marker;
@@ -528,7 +539,7 @@ switch (_operation) do {
                         _result = true;
                     };
 				};
-				case 45: { 			// Press x to place objective marker
+				case (((["ALiVE", "mapObjMarker"] call cba_fnc_getKeybind) select 5) select 0): { 			// Press x to place objective marker
                     private ["_color","_markersHash","_markerName"];
                     if (_ctr) then {
                         _color = [_logic, "color"] call ALIVE_fnc_marker;
@@ -549,7 +560,7 @@ switch (_operation) do {
                         _result = true;
                     };
 				};
-                case 53: {          // Press ? to place unknown marker
+                case (((["ALiVE", "mapUnkMarker"] call cba_fnc_getKeybind) select 5) select 0): {          // Press ? to place unknown marker
                     private ["_color","_markersHash","_markerName"];
                     if (_shift && _ctr) then {
                         _color = [_logic, "color"] call ALIVE_fnc_marker;
@@ -570,7 +581,7 @@ switch (_operation) do {
                         _result = true;
                     };
                 };
-				case 26:{ 			// Press [ to cycle drawing mode
+				case (((["ALiVE", "mapCycleDraw"] call cba_fnc_getKeybind) select 5) select 0):{ 			// Press [ to cycle drawing mode
                     if (_toggle == ELLIPSE_DRAW) then {
                         private ["_title","_control"];
                     	[_logic, "drawToggle", NO_DRAW] call ALIVE_fnc_marker;
@@ -613,7 +624,7 @@ switch (_operation) do {
                     };
                     _result = true;
 				};
-				case 207:{ 			// Press END to stop drawing
+				case (((["ALiVE", "mapEndDraw"] call cba_fnc_getKeybind) select 5) select 0):{ 			// Press END to stop drawing
                     private ["_title","_control"];
                     [_logic, "drawToggle", NO_DRAW] call ALIVE_fnc_marker;
 					[_logic, "drawing", false] call ALIVE_fnc_marker;
@@ -623,7 +634,7 @@ switch (_operation) do {
                     _control ctrlSetText _title;
                     _result = true;
 				};
-				case 200:{ 			// Press up arrow to increase width
+				case (((["ALiVE", "mapIncLine"] call cba_fnc_getKeybind) select 5) select 0):{ 			// Press up arrow to increase width
                     if (_toggle == RECTANGLE_DRAW || _toggle == ELLIPSE_DRAW) then {
                         if (_angle == 360) then {
                            [_logic, "angle", 0] call ALIVE_fnc_marker;
@@ -639,7 +650,7 @@ switch (_operation) do {
                     };
                     _result = true;
 				};
-				case 208:{ 			// Press down arrow to decrease width
+				case (((["ALiVE", "mapDecLine"] call cba_fnc_getKeybind) select 5) select 0):{ 			// Press down arrow to decrease width
                     if (_toggle == RECTANGLE_DRAW || _toggle == ELLIPSE_DRAW) then {
                         if (_angle == 0) then {
                            [_logic, "angle", 360] call ALIVE_fnc_marker;
@@ -655,7 +666,7 @@ switch (_operation) do {
                     };
                     _result = true;
 				};
-				case 203:{ 			// Press left arrow to change color
+				case (((["ALiVE", "mapChgColor"] call cba_fnc_getKeybind) select 5) select 0):{ 			// Press left arrow to change color
                     private "_colorRGBA";
                     if (GVAR(colorChoice) == count GVAR(colorList)) then {
                         GVAR(colorChoice) = 0;
@@ -672,7 +683,7 @@ switch (_operation) do {
 
                     _result = true;
 				};
-				case 205:{ 			// Press right arrow to fill
+				case (((["ALiVE", "mapChgFill"] call cba_fnc_getKeybind) select 5) select 0):{ 			// Press right arrow to fill
                     private ["_color","_colorClass"];
                     if ([_logic, "fill"] call ALIVE_fnc_marker == "") then {
                          _colorClass = [_logic,"color"] call ALiVE_fnc_marker;
@@ -1144,7 +1155,7 @@ switch (_operation) do {
                         MOD(SYS_marker) setVariable ["init", nil];
 
                         [_logic, "destroy"] call SUPERCLASS;
-                        
+
                         // and publicVariable to clients
                          MOD(SYS_marker) = _logic;
                         publicVariable QMOD(SYS_marker);
