@@ -81,7 +81,7 @@ _menus =
 				"",
 				localize "STR_ALIVE_PR_COMMENT",
                  "",
-                 -1,(!isNil "ALIVE_MLGlobalRegistry"), _result
+                 -1,(!isNil "ALIVE_MIL_LOG_PLACED"), _result
 			]
 		]
 	]

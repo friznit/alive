@@ -5,7 +5,7 @@ SCRIPT(ML);
 /* ----------------------------------------------------------------------------
 Function: ALIVE_fnc_ML
 Description:
-Military objectives 
+Military objectives
 
 Parameters:
 Nil or Object - If Nil, return a new instance. If Object, reference an existing instance.
@@ -358,19 +358,26 @@ switch(_operation) do {
                 [ALIVE_MLGlobalRegistry, "debug", _debug] call ALIVE_fnc_MLGlobalRegistry;
             };
 
+            // Let PR know ML is placed
+            ALIVE_MIL_LOG_PLACED = true;
+
 			TRACE_1("After module init",_logic);
 
             [_logic,"start"] call MAINCLASS;
+        } else {
+            // Client
+            // Let it know that ML is place
+            ALIVE_MIL_LOG_PLACED = true;
         };
 	};
 	case "start": {
         if (isServer) then {
-		
+
 			private ["_debug","_modules","_module","_worldName","_file","_moduleObject"];
-			
-			_debug = [_logic, "debug"] call MAINCLASS;			
-			
-			
+
+			_debug = [_logic, "debug"] call MAINCLASS;
+
+
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -381,7 +388,7 @@ switch(_operation) do {
 
 			// check modules are available
             if !(["ALiVE_sys_profile","ALiVE_mil_opcom"] call ALiVE_fnc_isModuleAvailable) exitwith {
-                ["Profile module or OPCOM module not placed! Exiting..."] call ALiVE_fnc_DumpR;
+                ["Military Logistics reports that Virtual AI module or OPCOM module not placed! Exiting..."] call ALiVE_fnc_DumpR;
             };
 			waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
 
@@ -405,10 +412,10 @@ switch(_operation) do {
 
             // get all synced modules
             _modules = [];
-					
+
 			for "_i" from 0 to ((count synchronizedObjects _logic)-1) do {
 				_moduleObject = (synchronizedObjects _logic) select _i;
-               
+
                 waituntil {_module = _moduleObject getVariable "handler"; !(isnil "_module")};
                 _module = _moduleObject getVariable "handler";
 				_modules set [count _modules, _module];
@@ -421,10 +428,10 @@ switch(_operation) do {
 				["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-			
-			
+
+
 			_logic setVariable ["startupComplete", true];
-			
+
 			if(count _modules > 0) then {
 
 			    // start listening for logcom events
@@ -434,17 +441,17 @@ switch(_operation) do {
 				[_logic, "initialAnalysis", _modules] call MAINCLASS;
 			}else{
 				["ALIVE ML - Warning no OPCOM modules synced to Military Logistics module, nothing to do.."] call ALIVE_fnc_dumpR;
-			};					
+			};
         };
 	};
 	case "initialAnalysis": {
         if (isServer) then {
-		
+
 			private ["_debug","_modules","_module","_modulesFactions","_moduleSide","_moduleFactions","_modulesObjectives","_moduleFactionBreakdowns",
 			"_faction","_factionBreakdown","_objectives"];
 
 			_modules = _args;
-			
+
 			_debug = [_logic, "debug"] call MAINCLASS;
 			_modulesFactions = [];
 			_modulesObjectives = [];
@@ -490,7 +497,7 @@ switch(_operation) do {
 
             // trigger main processing loop
             [_logic, "monitor"] call MAINCLASS;
-		};		
+		};
 	};
 	case "listen": {
         private["_listenerID"];
