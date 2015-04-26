@@ -157,7 +157,7 @@ for "_j" from 1 to _numIEDs do {
 					[_IED getvariable "Marker"] call cba_fnc_deleteEntity;
 				};
 
-				"M_Mo_120mm_AT" createVehicle getposATL (_this select 0);
+				"M_Mo_120mm_AT" createVehicle [(getpos (_this select 0)) select 0, (getpos (_this select 0)) select 1,0];
 
 				deletevehicle (_this select 0);
 				deleteVehicle _IED;
