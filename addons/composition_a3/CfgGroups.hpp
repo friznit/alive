@@ -826,7 +826,7 @@ class CfgGroups
 
                   class Furniture
                   {
-                        name = "$STR_ALIVE_COMPOSITION_Furniture";
+                        name = "$STR_ALIVE_COMPOSITION_IEDFactory1";
                         class IEDFactory1
                         {
                               name = "$STR_ALIVE_COMPOSITION_IEDFactory1";
@@ -870,9 +870,9 @@ class CfgGroups
                               class Object37    {side = 8; vehicle = "Land_Ammobox_rounds_F"; rank = ""; position[] = {0.821777,2.26758,0}; dir = -116.94;};
                               class Object38    {side = 8; vehicle = "Land_ButaneTorch_F"; rank = ""; position[] = {-0.251953,0.234131,0.816997}; dir = 183.355;};
                               class Object39    {side = 8; vehicle = "Land_Notepad_F"; rank = ""; position[] = {0.639648,2.70557,0.816997}; dir = -116.898;};
-                              class Object40    {side = 8; vehicle = "DemoCharge_Remote_Ammo_Scripted"; rank = ""; position[] = {1.05859,-0.489258,0}; dir = -116.959;};
-                              class Object41    {side = 8; vehicle = "DemoCharge_Remote_Ammo_Scripted"; rank = ""; position[] = {1.70361,2.63184,0.816997}; dir = -116.959;};
-                              class Object42    {side = 8; vehicle = "DemoCharge_Remote_Ammo_Scripted"; rank = ""; position[] = {-0.446289,0.822021,0.816997}; dir = -116.959;};
+                              //class Object40    {side = 8; vehicle = "DemoCharge_Remote_Ammo_Scripted"; rank = ""; position[] = {1.05859,-0.489258,0}; dir = -116.959;};
+                              //class Object41    {side = 8; vehicle = "DemoCharge_Remote_Ammo_Scripted"; rank = ""; position[] = {1.70361,2.63184,0.816997}; dir = -116.959;};
+                              //class Object42    {side = 8; vehicle = "DemoCharge_Remote_Ammo_Scripted"; rank = ""; position[] = {-0.446289,0.822021,0.816997}; dir = -116.959;};
                         };
                   };
 
