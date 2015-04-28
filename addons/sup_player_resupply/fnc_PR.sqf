@@ -795,7 +795,7 @@ switch(_operation) do {
 
                     // LOGCOM has denied the request due to insufficient forces
 
-                    _radioMessage = "Your request for support has been deined. Insufficient resources available";
+                    _radioMessage = "Your request for support has been denied. Insufficient resources available";
 
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
@@ -849,7 +849,7 @@ switch(_operation) do {
 
                     // LOGCOM has denied the request because the force pool did not result in any profiles created
 
-                    _radioMessage = "Your request for support has been deined. The forces requested are not available";
+                    _radioMessage = "Your request for support has been denied. The forces requested are not available";
 
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
@@ -876,7 +876,7 @@ switch(_operation) do {
 
                     // LOGCOM has denied the request because the force pool did not result in any profiles created
 
-                    _radioMessage = "Your request for support has been deined. LOGCOM is still setting up.";
+                    _radioMessage = "Your request for support has been denied. LOGCOM is still setting up.";
 
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
@@ -903,7 +903,7 @@ switch(_operation) do {
 
                     // LOGCOM has denied the request because no mil logistics modules for this faction have been found
 
-                    _radioMessage = "Your request for support has been deined. No military logistics supply chain found for your players faction.";
+                    _radioMessage = "Your request for support has been denied. No military logistics supply chain found for your players faction.";
 
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
