@@ -246,6 +246,10 @@ if (isDedicated) then {
 
 				TRACE_3("ASYNC WRITE LOOP", _cmd, _response, count GVAR(ASYNC_QUEUE));
 
+				if(ALiVE_SYS_DATA_DEBUG_ON) then {
+                	["ALiVE SYS_DATA - ASYNC WRITE LOOP: %1 : %2", _cmd, _response] call ALIVE_fnc_dump;
+            	};
+
 				sleep 0.3;
 
 			} foreach GVAR(ASYNC_QUEUE);
