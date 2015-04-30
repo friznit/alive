@@ -199,7 +199,7 @@ ALiVE_fnc_INS_factory = {
 				    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
 
 					// Create factory
-                    _factory call ALiVE_fnc_INS_spawnIEDfactory;
+                    [_factory,_id] call ALiVE_fnc_INS_spawnIEDfactory;
 
 					// Create virtual guards
 					{[_x,"addHouse",_factory] call ALiVE_fnc_CQB} foreach _CQB;
@@ -435,7 +435,7 @@ ALiVE_fnc_INS_depot = {
 
 				// Establish Depot
 				if (alive _depot) then {
-                    _depot call ALiVE_fnc_INS_spawnDepot;
+                    [_depot,_id] call ALiVE_fnc_INS_spawnDepot;
                     
 					// Create virtual guards
 					{[_x,"addHouse",_depot] call ALiVE_fnc_CQB} foreach _CQB;
@@ -495,7 +495,7 @@ ALiVE_fnc_INS_recruit = {
 				// Establish HQ
 				if (alive _HQ) then {
                     // Create HQ
-                    _HQ call ALiVE_fnc_INS_spawnHQ;
+                    [_HQ,_id] call ALiVE_fnc_INS_spawnHQ;
                     
 				    // Get indoor Housepos
 				    _pos = getposATL _HQ;
@@ -551,16 +551,12 @@ ALiVE_fnc_INS_recruit = {
 				_eventID = [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;                
 };
 
-ALiVE_fnc_INS_idle = {true};
-
-ALiVE_fnc_getRelativeTop = {
-
-	_object = _this;
-
-	_bbr = boundingBoxReal _object;
-	_p1 = _bbr select 0; _p2 = _bbr select 1;
-	_height = abs((_p2 select 2)-(_p1 select 2));
-    _height/2;
+ALiVE_fnc_INS_idle = {
+    private ["_time"];
+    
+    _time = time;
+    
+    waituntil {time - _time > _this};
 };
 
 ALiVE_fnc_spawnFurniture = {
@@ -572,9 +568,9 @@ ALiVE_fnc_spawnFurniture = {
     _add = _this select 2;
     _ammo = _this select 3;
     
-    if !(alive _building) exitwith {[]};
+    if (!(alive _building) || {_building getvariable [QGVAR(furnitured),false]}) exitwith {[]};
     
-    _furnitures = ["Land_WoodenTable_small_F","Land_RattanTable_01_F"];
+    _furnitures = ["Land_RattanTable_01_F"];
     _bombs = ["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"];
     _objects = ["Fridge_01_open_F","Land_MapBoard_F","Land_WaterCooler_01_new_F"];
     _boxes = ["Box_East_AmmoOrd_F"];
@@ -584,6 +580,8 @@ ALiVE_fnc_spawnFurniture = {
     _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
     
     if (count _positions == 0) exitwith {[]};
+    
+    _building setvariable [QGVAR(furnitured),true];
     
     {
         private ["_pos"];
@@ -624,46 +622,80 @@ ALiVE_fnc_spawnFurniture = {
 	_created
 };
 
-ALiVE_fnc_createRandomFurniture = {
-    
-    private ["_pos","_furniture"];
-    
-    if !(alive _this) exitwith {objNull};
-    
-    _building = _this;
-    
-    _furniture = ["Land_TableDesk_F","Land_WoodenTable_small_F","Land_RattanTable_01_F"];
-    _furniture = _furniture call BIS_fnc_SelectRandom;
-
-    _pos = getposATL _building;
-    _positions = [_pos,15] call ALIVE_fnc_findIndoorHousePositions;
-    _pos = if (count _positions > 0) then {_positions call BIS_fnc_SelectRandom} else {_pos};
-	
-	_furniture = createVehicle [_furniture, _pos, [], 0, "CAN_COLLIDE"];
-	_furniture setdir getdir _building;
-	
-	_furniture;
-};
-
 ALiVE_fnc_INS_spawnIEDfactory = {
+    private ["_building","_id"];
     
-    if !(alive _this) exitwith {};
+    _building = _this select 0;
+    _id = _this select 1;
+    
+    if !(alive _building) exitwith {};
+    
+    _building setvariable [QGVAR(factory),_id];
+    _building addEventHandler["killed", ALIVE_fnc_INS_buildingKilledEH];  
 
-	[_this,true,false,false] call ALiVE_fnc_spawnFurniture;
+	[_building,true,false,false] call ALiVE_fnc_spawnFurniture;
 };
 
 ALiVE_fnc_INS_spawnHQ = {
+    private ["_building","_id"];
     
-    if !(alive _this) exitwith {};
+    _building = _this select 0;
+    _id = _this select 1;
+    
+    if !(alive _building) exitwith {};
+    
+    _building setvariable [QGVAR(HQ),_id];
+    _building addEventHandler["killed", ALIVE_fnc_INS_buildingKilledEH];  
 
-	[_this,true,true,false] call ALiVE_fnc_spawnFurniture;
+	[_building,true,true,false] call ALiVE_fnc_spawnFurniture;
 };
 
 ALiVE_fnc_INS_spawnDepot = {
+    private ["_building","_id"];
     
-    if !(alive _this) exitwith {};
+    _building = _this select 0;
+    _id = _this select 1;
+    
+    if !(alive _building) exitwith {};
+    
+    _building setvariable [QGVAR(depot),_id];
+    _building addEventHandler["killed", ALIVE_fnc_INS_buildingKilledEH];  
 
-	[_this,true,false,true] call ALiVE_fnc_spawnFurniture;
+	[_building,true,false,true] call ALiVE_fnc_spawnFurniture;
+};
+
+ALiVE_fnc_getRelativeTop = {
+
+	_object = _this;
+
+	_bbr = boundingBoxReal _object;
+	_p1 = _bbr select 0; _p2 = _bbr select 1;
+	_height = abs((_p2 select 2)-(_p1 select 2));
+    _height/2;
+};
+
+ALIVE_fnc_INS_buildingKilledEH = {
+    
+    private ["_building","_killer","_id"];
+    
+    _building = _this select 0;
+	_killer = _this select 1;
+    
+    _factory = _building getvariable QGVAR(factory);
+    _depot = _building getvariable QGVAR(depot);
+    _HQ = _building getvariable QGVAR(HQ);
+    
+	if !(isnil "_factory") then {_id = _factory};
+    if !(isnil "_depot") then {_id = _depot};
+    if !(isnil "_HQ") then {_id = _HQ};
+
+    if (isnil "_id") exitwith {};
+    
+    _objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
+            
+    if !(isnil "_factory") then {[_objective,"factory"] call ALiVE_fnc_HashRem; [_objective,"actionsFulfilled",([_objective,"actionsFulfilled",[]] call ALiVE_fnc_HashGet) - ["factory"]] call ALiVE_fnc_HashSet};
+    if !(isnil "_depot") then {[_objective,"depot"] call ALiVE_fnc_HashRem; [_objective,"actionsFulfilled",([_objective,"actionsFulfilled",[]] call ALiVE_fnc_HashGet) - ["depot"]] call ALiVE_fnc_HashSet};
+    if !(isnil "_HQ") then {[_objective,"HQ"] call ALiVE_fnc_HashRem; [_objective,"actionsFulfilled",([_objective,"actionsFulfilled",[]] call ALiVE_fnc_HashGet) - ["recruit"]] call ALiVE_fnc_HashSet};
 };
 
 ALiVE_fnc_INS_compileList = {

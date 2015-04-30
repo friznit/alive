@@ -15,7 +15,7 @@ item10[] = {"SELECT_ORDERS",2,250,-724.372742,-364.088989,-634.372742,-314.08883
 item11[] = {"ACTIONS___ASSAULT",2,250,-928.195251,-172.044922,-828.132568,-31.480927,0.000000,"ACTIONS:" \n "" \n "ASSAULT" \n "AMBUSH"};
 item12[] = {"ACTIONS___RETREAT",2,250,-806.544922,-175.131653,-706.482239,-34.567657,0.000000,"ACTIONS:" \n "" \n "RETREAT" \n "SURRENDER"};
 item13[] = {"ACTIONS___IEDS_SUICIDERS",2,250,-647.961060,-177.760864,-545.662231,-33.842651,0.000000,"ACTIONS:" \n "" \n "IEDS" \n "SUICIDERS" \n "SABOTAGE"};
-item14[] = {"ACTIONS___RECRUIT",2,250,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
+item14[] = {"ACTIONS___RECRUIT",2,4346,-514.779175,-179.211487,-416.952698,-34.175232,0.000000,"ACTIONS:" \n "" \n "RECRUIT" \n "CACHES" \n "ROADBLOCKS"};
 item15[] = {"ORDERS_SELECTED",4,218,-719.547424,-21.761780,-629.547424,28.238159,0.000000,"ORDERS" \n "SELECTED"};
 item16[] = {"SECTION_MOVING",4,218,-978.297668,263.344055,-888.298279,313.343994,0.000000,"SECTION" \n "MOVING"};
 item17[] = {"SELECT_SECTION",2,250,-719.992188,73.293480,-629.992554,123.293404,0.000000,"SELECT" \n "SECTION"};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1526.216797,155.462158,736.139343,-941.222107,779,777,1};
-window[] = {0,-1,-1,-1,-1,930,22,1574,22,1,796};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1591.894775,221.139832,1124.674316,-1381.738159,672,929,1};
+window[] = {2,-1,-1,-1,-1,1106,198,1750,198,3,689};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -464,10 +464,11 @@ class FSM
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
-       "_possibleTypes = [""assault"",""ambush""];" \n
+       "_allActions = [""assault"",""ambush""];" \n
+       "_state = ""attacking"";" \n
        "" \n
        "// Attack always if needed" \n
-       "//_possibleTypes = _possibleTypes - _actionsFulfilled;" \n
+       "_unusedActions = _allActions;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -475,11 +476,10 @@ class FSM
        "// Analyse" \n
        "// Determine best action type" \n
        "" \n
-       "// Define state for later usage" \n
-       "_state = ""attacking"";" \n
-       "" \n
        "// Action types" \n
-       "_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
+       "_type = if (count _unusedActions > 0) then {_unusedActions call BIS_fnc_SelectRandom} else {""idle""};" \n
+       "" \n
+       "" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
@@ -487,8 +487,6 @@ class FSM
        "			""_pos"",""_switch"",""_paramsActions"",""_codeActions"",""_paramsConditionSuccess"",""_codeConditionSuccess""," \n
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_road"",""_building"",""_buildings"",""_target"",""_factory"",""_guard""" \n
        "		];" \n
-       "	" \n
-       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
@@ -550,7 +548,7 @@ class FSM
        "			_pos = _center;" \n
        "			_switch = false;" \n
        "" \n
-       "			_paramsActions = [];" \n
+       "			_paramsActions = 120;" \n
        "			_codeActions = ""ALiVE_fnc_INS_idle"";" \n
        "" \n
        "			_paramsConditionSuccess = [];" \n
@@ -608,10 +606,11 @@ class FSM
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
-       "_possibleTypes = [""retreat""];" \n
+       "_allActions = [""retreat""];" \n
+       "_state = ""defending"";" \n
        "" \n
        "// Retreat always if needed" \n
-       "//_possibleTypes = _possibleTypes - _actionsFulfilled;" \n
+       "_unusedActions = _allActions;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -619,11 +618,10 @@ class FSM
        "// Analyse" \n
        "// Determine best action type" \n
        "" \n
-       "// Define state for later usage" \n
-       "_state = ""defending"";" \n
-       "" \n
        "// Action types" \n
-       "_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
+       "_type = if (count _unusedActions > 0) then {_unusedActions call BIS_fnc_SelectRandom} else {""idle""};" \n
+       "" \n
+       "" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
@@ -631,8 +629,6 @@ class FSM
        "			""_pos"",""_switch"",""_paramsActions"",""_codeActions"",""_paramsConditionSuccess"",""_codeConditionSuccess""," \n
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_road"",""_building"",""_buildings"",""_target"",""_factory"",""_guard""" \n
        "		];" \n
-       "	" \n
-       "	if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
@@ -666,7 +662,7 @@ class FSM
        "			_pos = _center;" \n
        "			_switch = false;" \n
        "" \n
-       "			_paramsActions = [];" \n
+       "			_paramsActions = 120;" \n
        "			_codeActions = ""ALiVE_fnc_INS_idle"";" \n
        "" \n
        "			_paramsConditionSuccess = [];" \n
@@ -724,10 +720,11 @@ class FSM
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
-       "_possibleTypes = [""sabotage"",""ied"",""suicide""];" \n
+       "_allActions = [""sabotage"",""ied"",""suicide""];" \n
+       "_state = ""terrorizing"";" \n
        "" \n
        "// Always select different style of terror" \n
-       "_possibleTypes = _possibleTypes - _actionsFulfilled;" \n
+       "_unusedActions = _allActions - _actionsFulfilled;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
@@ -735,20 +732,14 @@ class FSM
        "// Analyse" \n
        "// Determine best action type" \n
        "" \n
-       "// Define state for later usage" \n
-       "_state = ""terrorizing"";" \n
+       "if (count _agents == 0) then {_unusedActions = _unusedActions - [""sabotage""]};" \n
        "" \n
-       "if (!alive ([[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM) && {_size >= 200}) then {" \n
-       "	_possibleTypes =  [""factory""];" \n
-       "} else {" \n
-       "	if (count _agents == 0) then {" \n
-       "		_possibleTypes = _possibleTypes - [""sabotage""];" \n
-       "	};" \n
-       "};" \n
+       "_type = if (count _unusedActions > 0) then {_unusedActions call BIS_fnc_SelectRandom} else {""idle""};" \n
        "" \n
-       "if (count _possibleTypes == 0) then {_possibleTypes = [""suicide""]};" \n
+       "// Overwrite type with factory if fitting" \n
+       "if (!alive ([[],""convertObject"",[_objective,""factory"",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM) && {_size >= 200}) then {_type = ""factory""};" \n
        "" \n
-       "_type =  _possibleTypes call BIS_fnc_SelectRandom;" \n
+       "" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
@@ -756,8 +747,6 @@ class FSM
        "			""_pos"",""_switch"",""_paramsActions"",""_codeActions"",""_paramsConditionSuccess"",""_codeConditionSuccess""," \n
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_building"",""_buildings"",""_target"",""_factory"",""_guard""" \n
        "		];" \n
-       "	" \n
-       "	//if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""STEALTH"";" \n
        "	_speed = ""NORMAL"";" \n
@@ -902,7 +891,7 @@ class FSM
        "			_pos = _center;" \n
        "			_switch = false;" \n
        "" \n
-       "			_paramsActions = [];" \n
+       "			_paramsActions = 120;" \n
        "			_codeActions = ""ALiVE_fnc_INS_idle"";" \n
        "" \n
        "			_paramsConditionSuccess = [];" \n
@@ -960,23 +949,23 @@ class FSM
        "" \n
        "_actions = [_objective,""actions""] call ALiVE_fnc_HashGet;" \n
        "_actionsFulfilled = [_objective,""actionsFulfilled"",[]] call ALiVE_fnc_HashGet;" \n
-       "_possibleTypes = [""depot"",""roadblocks""];" \n
+       "_allActions = [""depot"",""roadblocks""];" \n
+       "_state = ""reserving"";" \n
        "" \n
        "// Always select different style of occupation" \n
-       "_possibleTypes = _possibleTypes - _actionsFulfilled; if (count _possibleTypes == 0) then {_possibleTypes = [""depot""]};" \n
+       "_unusedActions = _allActions - _actionsFulfilled;" \n
        "" \n
        "// Get civilian agents" \n
        "_agents = [_objective,""agents"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "// Analyse" \n
        "// Determine best action type" \n
+       "_type = if (count _unusedActions > 0) then {_unusedActions call BIS_fnc_SelectRandom} else {""idle""};" \n
        "" \n
-       "// Define state for later usage" \n
-       "_state = ""reserving"";" \n
+       "// Overwrite type with Recruitment HQ if fitting" \n
+       "if (count _agents >= 2 && {!(""recruit"" in _actionsFulfilled)}) then {_type = ""recruit""};" \n
        "" \n
-       "if (count _agents >= 2 && {!(""recruit"" in _actionsFulfilled)}) then {_type = ""recruit""} else {" \n
-       "	_type = _possibleTypes call BIS_fnc_SelectRandom;" \n
-       "};" \n
+       "" \n
        "" \n
        "if (isnil ""_actions"")  then {" \n
        "	private" \n
@@ -985,8 +974,6 @@ class FSM
        "			""_paramsConditionFail"",""_codeConditionFail"",""_behaviour"",""_speed"",""_command"",""_groupsize"",""_building""," \n
        "			""_HQ"",""_munitionsDump"",""_guard"",""_handle""" \n
        "		];" \n
-       "	" \n
-       "	//if (_type in _actionsFulfilled) then {_type = ""idle""};" \n
        "" \n
        "	_behaviour = ""AWARE"";" \n
        "	_speed = ""NORMAL"";" \n
@@ -1085,8 +1072,9 @@ class FSM
        "		default {" \n
        "			_pos = _center;" \n
        "			_switch = false;" \n
+       "			_groupsize = 1;" \n
        "" \n
-       "			_paramsActions = [];" \n
+       "			_paramsActions = 120;" \n
        "			_codeActions = ""ALiVE_fnc_INS_idle"";" \n
        "" \n
        "			_paramsConditionSuccess = [];" \n
