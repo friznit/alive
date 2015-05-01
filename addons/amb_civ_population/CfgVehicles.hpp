@@ -69,17 +69,17 @@ class CfgVehicles {
                                         class MEDIUM
                                         {
                                                 name = "$STR_ALIVE_CIV_POP_HOSTILITY_WEST_MEDIUM";
-                                                value = "1";
+                                                value = "30";
                                         };
                                         class HIGH
                                         {
                                                 name = "$STR_ALIVE_CIV_POP_HOSTILITY_WEST_HIGH";
-                                                value = "2";
+                                                value = "60";
                                         };
                                         class EXTREME
                                         {
                                                 name = "$STR_ALIVE_CIV_POP_HOSTILITY_WEST_EXTREME";
-                                                value = "3";
+                                                value = "130";
                                         };
                                 };
                         };
@@ -97,17 +97,17 @@ class CfgVehicles {
                                       class MEDIUM
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_EAST_MEDIUM";
-                                              value = "20";
+                                              value = "30";
                                       };
                                       class HIGH
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_EAST_HIGH";
-                                              value = "50";
+                                              value = "60";
                                       };
                                       class EXTREME
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_EAST_EXTREME";
-                                              value = "100";
+                                              value = "130";
                                       };
                               };
                         };
@@ -125,17 +125,17 @@ class CfgVehicles {
                                       class MEDIUM
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_MEDIUM";
-                                              value = "20";
+                                              value = "30";
                                       };
                                       class HIGH
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_HIGH";
-                                              value = "50";
+                                              value = "60";
                                       };
                                       class EXTREME
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_EXTREME";
-                                              value = "80";
+                                              value = "130";
                                       };
                               };
                         };

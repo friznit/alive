@@ -32,6 +32,13 @@ _probabilityFull = 0.05;
 
 _posture = _agent getVariable ["posture", 0];
 
+if(_posture < 10) then {_probabilityNormal = 0.1; _probabilityFull = 0.05};
+if(_posture >= 10 && {_posture < 40}) then {_probabilityNormal = 0.2; _probabilityFull = 0.1};
+if(_posture >= 40 && {_posture < 70}) then {_probabilityNormal = 0.3; _probabilityFull = 0.1};
+if(_posture >= 70 && {_posture < 100}) then {_probabilityNormal = 0.4; _probabilityFull = 0.2};
+if(_posture >= 100) then {_probabilityNormal = 0.4; _probabilityFull = 0.2};
+
+/*
 switch(_posture) do {
     case 4: {
         _probabilityNormal = 0.4;
@@ -50,6 +57,7 @@ switch(_posture) do {
         _probabilityFull = 0.05;
     };
 };
+*/
 
 _diceRoll = random 1;
 

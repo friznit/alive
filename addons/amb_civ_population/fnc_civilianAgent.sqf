@@ -113,22 +113,13 @@ _createMarkers = {
             _debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
         };
     };
-
-    switch(_agentPosture) do {
-        case 3:{
-            _debugColor = "ColorRed";
-        };
-        case 2:{
-            _debugColor = "ColorOrange";
-        };
-        case 1:{
-            _debugColor = "ColorYellow";
-        };
-        case 0:{
-            _debugColor = "ColorGreen";
-        };
-    };
-
+	
+    if(_agentPosture < 10) then {_debugColor = "ColorGreen"};
+	if(_agentPosture >= 10 && {_agentPosture < 40}) then {_debugColor = "ColorGreen"};
+    if(_agentPosture >= 40 && {_agentPosture < 70}) then {_debugColor = "ColorYellow"};
+    if(_agentPosture >= 70 && {_agentPosture < 100}) then {_debugColor = "ColorOrange"};
+    if(_agentPosture >= 100) then {_debugColor = "ColorRed"};
+    
     _debugIcon = "n_unknown";
 
     _debugAlpha = 0.5;
@@ -297,8 +288,11 @@ switch(_operation) do {
             _active = _logic select 2 select 1; //[_profile, "active"] call ALIVE_fnc_hashGet;
 
             if(_active) then {
-                _activeCommands = _logic select 2 select 11; //[_logic,"activeCommands"] call ALIVE_fnc_hashGet;
-                [ALIVE_civCommandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_civCommandRouter;
+                _activeCommands = [_logic,"activeCommands",[]] call ALIVE_fnc_hashGet;
+                
+                if (count _activeCommands > 0) then {
+               		[ALIVE_civCommandRouter, "activate", [_logic, _activeCommands]] call ALIVE_fnc_civCommandRouter;
+                };
             };
         };
     };
@@ -317,7 +311,9 @@ switch(_operation) do {
             // DEBUG -------------------------------------------------------------------------------------
 
             _activeCommands = [_logic,"activeCommands",[]] call ALIVE_fnc_hashGet;
-            _activeCommands set [count _activeCommands, _args];
+            _activeCommands pushback _args;
+            
+            [_logic,"activeCommands",_activeCommands] call ALIVE_fnc_hashSet;
         };
     };
     case "clearActiveCommands": {
@@ -486,20 +482,11 @@ switch(_operation) do {
             };
         };
 
-        switch(_agentPosture) do {
-            case 3:{
-                _debugColor = "ColorRed";
-            };
-            case 2:{
-                _debugColor = "ColorOrange";
-            };
-            case 1:{
-                _debugColor = "ColorYellow";
-            };
-            case 0:{
-                _debugColor = "ColorGreen";
-            };
-        };
+	    if(_agentPosture < 10) then {_debugColor = "ColorGreen"};
+		if(_agentPosture >= 10 && {_agentPosture < 40}) then {_debugColor = "ColorGreen"};
+	    if(_agentPosture >= 40 && {_agentPosture < 70}) then {_debugColor = "ColorYellow"};
+	    if(_agentPosture >= 70 && {_agentPosture < 100}) then {_debugColor = "ColorOrange"};
+	    if(_agentPosture >= 100) then {_debugColor = "ColorRed"};
 
         _icon = "n_unknown";
 
