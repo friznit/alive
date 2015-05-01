@@ -679,10 +679,11 @@ ALiVE_fnc_getRelativeTop = {
 
 ALIVE_fnc_INS_buildingKilledEH = {
     
-    private ["_building","_killer","_id"];
+    private ["_building","_killer","_id","_opcom","_pos"];
     
     _building = _this select 0;
 	_killer = _this select 1;
+    _pos = getposATL _building;
     
     _factory = _building getvariable QGVAR(factory);
     _depot = _building getvariable QGVAR(depot);
@@ -695,10 +696,22 @@ ALIVE_fnc_INS_buildingKilledEH = {
     if (isnil "_id") exitwith {};
     
     _objective = [[],"getobjectivebyid",_id] call ALiVE_fnc_OPCOM;
-            
+    _opcomID = [_objective,"opcomID",""] call ALiVE_fnc_HashGet;
+    _pos = [_objective,"center",_pos] call ALiVE_fnc_HashGet;
+    
     if !(isnil "_factory") then {[_objective,"factory"] call ALiVE_fnc_HashRem; [_objective,"actionsFulfilled",([_objective,"actionsFulfilled",[]] call ALiVE_fnc_HashGet) - ["factory"]] call ALiVE_fnc_HashSet};
     if !(isnil "_depot") then {[_objective,"depot"] call ALiVE_fnc_HashRem; [_objective,"actionsFulfilled",([_objective,"actionsFulfilled",[]] call ALiVE_fnc_HashGet) - ["depot"]] call ALiVE_fnc_HashSet};
     if !(isnil "_HQ") then {[_objective,"HQ"] call ALiVE_fnc_HashRem; [_objective,"actionsFulfilled",([_objective,"actionsFulfilled",[]] call ALiVE_fnc_HashGet) - ["recruit"]] call ALiVE_fnc_HashSet};
+    
+    {if (([_x,"opcomID"," "] call ALiVE_fnc_HashGet) == _opcomID) then {_opcom = _x}} foreach OPCOM_instances;
+    
+    if !(isnil "_opcom") then {
+	    _enemy = [_opcom,"sidesenemy",[]] call ALiVE_fnc_HashGet;
+	    _friendly = [_opcom,"sidesfriendly",[]] call ALiVE_fnc_HashGet;
+	    
+	    [_pos,_friendly, 50] call ALiVE_fnc_updateSectorHostility;
+        [_pos,_enemy, -50] call ALiVE_fnc_updateSectorHostility;
+    };
 };
 
 ALiVE_fnc_INS_compileList = {
