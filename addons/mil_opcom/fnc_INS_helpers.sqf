@@ -360,6 +360,9 @@ ALiVE_fnc_INS_sabotage = {
 
 				[_pos,_sides, 20] call ALiVE_fnc_updateSectorHostility;
 				[_pos, _allSides - _sides, -20] call ALiVE_fnc_updateSectorHostility;
+                
+				// Wait 15 minutes for Sabotage to happen
+				_timeTaken = time; waituntil {time - _timeTaken > 900};                
 };
 
 ALiVE_fnc_INS_roadblocks = {
