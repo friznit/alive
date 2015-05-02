@@ -1039,6 +1039,83 @@ if(_worldName == "Baranow" || _worldName == "Staszow" || _worldName == "ivachev"
 
 };
 
+// Kunduz
+if(_worldName == "Kunduz") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+    	"rampart",
+		"tunnel_small_",
+		"tunnel_large_"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianPopulationBuildingTypes + [
+		"jbad_house_",
+		"jbad_house2_",
+		"jbad_house3",
+		"jbad_house5",
+		"jbad_house6",
+		"jbad_house7",
+		"jbad_house8",
+		"jbad_a_mosque_",
+		"jbad_a_minaret",
+		"jbad_market_",
+		"qualat"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+		"jbad_house2_",
+		"jbad_a_mosque_"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+    	"powercable_submarine_"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+    	"pier_"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianPopulationBuildingTypes + [
+    ];
+
+};
+
 // Bornholm
 if(_worldName == "Bornholm") then {
 
