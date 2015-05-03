@@ -840,7 +840,7 @@ ALIVE_civilianConstructionBuildingTypes = [];
 ALIVE_civilianSettlementBuildingTypes = [];
 
 // Altis Stratis
-if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic" || _worldName == "sfp_wamako" || _worldName == "Imrali" || _worldName == "wake") then {
+if(_worldName == "Altis" || _worldName == "Stratis" || _worldName == "Koplic" || _worldName == "sfp_wamako" || _worldName == "Imrali" || _worldName == "wake" || _worldName == "gorgona") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
     	"hangar"
