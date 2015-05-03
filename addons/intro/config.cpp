@@ -75,8 +75,8 @@ class RscDisplayMain: RscStandardDisplay
 			idc = 1299;
 			text = "\x\alive\addons\intro\data\johari_small.paa";	
 			tooltip = "$STR_ALIVE_UI_TOOLTIP_JOHARI_ABOUT";
-			x = "78.4 * 			(			((safezoneW / safezoneH) min 1.2) / 40) + 			(safezoneX)";
-			y = "31.6 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			x = "safezoneX + safezoneW - 2 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+			y = "21 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) + 			(safezoneY + safezoneH - 			(			((safezoneW / safezoneH) min 1.2) / 1.2))";
 			w = "1.28 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h = "1.28 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";			
 		};		
