@@ -358,16 +358,9 @@ switch(_operation) do {
                 [ALIVE_MLGlobalRegistry, "debug", _debug] call ALIVE_fnc_MLGlobalRegistry;
             };
 
-            // Let PR know ML is placed
-            ALIVE_MIL_LOG_PLACED = true;
-
 			TRACE_1("After module init",_logic);
 
             [_logic,"start"] call MAINCLASS;
-        } else {
-            // Client
-            // Let it know that ML is place
-            ALIVE_MIL_LOG_PLACED = true;
         };
 	};
 	case "start": {
@@ -441,6 +434,7 @@ switch(_operation) do {
 				[_logic, "initialAnalysis", _modules] call MAINCLASS;
 			}else{
 				["ALIVE ML - Warning no OPCOM modules synced to Military Logistics module, nothing to do.."] call ALIVE_fnc_dumpR;
+
 			};
         };
 	};
@@ -461,6 +455,10 @@ switch(_operation) do {
 			{
 				_module = _x;
 				_moduleSide = [_module,"side"] call ALiVE_fnc_HashGet;
+
+                // Register side with clients
+                MOD(Require) setVariable [format["ALIVE_MIL_LOG_AVAIL_%1", _moduleSide], true, true];
+
 				_moduleFactions = [_module,"factions"] call ALiVE_fnc_HashGet;
 
                 // store side
@@ -564,7 +562,7 @@ switch(_operation) do {
                     _sideOPCOMModules = [];
                     _factionOPCOMModules = [];
 
-                    // loop through OPCOM modules with mil logistics synced and find andy matching the events side and faction
+                    // loop through OPCOM modules with mil logistics synced and find any matching the events side and faction
                     {
 
                         _checkModule = _x;

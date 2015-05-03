@@ -81,7 +81,7 @@ _menus =
 				"",
 				localize "STR_ALIVE_PR_COMMENT",
                  "",
-                 -1,(!isNil "ALIVE_MIL_LOG_PLACED"), _result
+                 -1,(MOD(Require) getVariable [format["ALIVE_MIL_LOG_AVAIL_%1", (side player)], false]), _result
 			]
 		]
 	]
