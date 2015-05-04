@@ -69,6 +69,9 @@ if(count _sideSectors > 0) then {
         // refine position with more analysis data
 
         _sectorData = [_targetSector,"data"] call ALIVE_fnc_hashGet;
+        
+        if (isnil "_sectorData") exitwith {_taskLocation};
+        
         _bestPlaces = [_sectorData,"bestPlaces"] call ALIVE_fnc_hashGet;
         _flatEmpty = [_sectorData,"flatEmpty"] call ALIVE_fnc_hashGet;
 

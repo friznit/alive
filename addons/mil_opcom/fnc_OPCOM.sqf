@@ -985,8 +985,8 @@ switch(_operation) do {
                 
 				// Get sector data
 				_sector = [ALIVE_sectorGrid, "positionToSector", _center] call ALIVE_fnc_sectorGrid;
-				_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
-				_entitiesBySide = [_sectorData, "entitiesBySide",["",[],[],""]] call ALIVE_fnc_hashGet;
+				_sectorData = [_sector,"data",["",[],[],nil]] call ALIVE_fnc_hashGet;
+				_entitiesBySide = [_sectorData, "entitiesBySide",["",[],[],nil]] call ALIVE_fnc_hashGet;
                 _agents = [];
 				
 				// Get amb civilian clusterdata
@@ -996,12 +996,12 @@ switch(_operation) do {
 				
 					_civClusters = [_sectorData,"clustersCiv"] call ALIVE_fnc_hashGet;
 					_settlementClusters = [_civClusters,"settlement",[]] call ALIVE_fnc_hashGet;
-                    _agentClusterData = [ALIVE_agentHandler,"agentsByCluster",["",[],[],""]] call ALiVE_fnc_hashGet;
+                    _agentClusterData = [ALIVE_agentHandler,"agentsByCluster",["",[],[],nil]] call ALiVE_fnc_hashGet;
 				
 					if (count _settlementClusters <= 0) exitwith {};
 
 					_settlementClusters = [_settlementClusters,[_center],{_Input0 distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
-					_agents =  ([_agentClusterData,_settlementClusters select 0 select 1,["",[],[],""]] call ALiVE_fnc_HashGet) select 1;
+					_agents =  ([_agentClusterData,_settlementClusters select 0 select 1,["",[],[],nil]] call ALiVE_fnc_HashGet) select 1;
 				
 					[_objective,"agents",_agents] call ALiVE_fnc_HashSet;
 				};
@@ -1058,7 +1058,7 @@ switch(_operation) do {
 					
 					// Get civilian factions from Amb Civs
 					If (!isnil "ALiVE_Agenthandler") then {
-						_agents = [ALiVE_Agenthandler,"agents",["",[],[],""]] call ALiVE_fnc_HashGet;
+						_agents = [ALiVE_Agenthandler,"agents",["",[],[],nil]] call ALiVE_fnc_HashGet;
 						if (count (_agents select 2) > 0) exitwith {_civFactions = _civFactions + [[(_agents select 2 select 0),"faction","CIV_F"] call ALiVE_fnc_HashGet]};
 					};
                     
@@ -2152,7 +2152,7 @@ switch(_operation) do {
 	                        
 	                    case ("entity") : {
 	                            
-	                        _assignments = ([_profile,"vehicleAssignments",["",[],[],""]] call ALIVE_fnc_hashGet) select 1;
+	                        _assignments = ([_profile,"vehicleAssignments",["",[],[],nil]] call ALIVE_fnc_hashGet) select 1;
 	
 	                        if (((count _assignments) == 0) && {!([_profile,"isPlayer",false] call ALIVE_fnc_hashGet)}) then {
 	                            _inf pushback _x;

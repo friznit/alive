@@ -157,8 +157,11 @@ switch(_operation) do {
             _sectorIDs = [];
 
             {
+                private ["_sectorID"];
+                
                 _sectorID = [_x, "id"] call ALIVE_fnc_sector;
-                _sectorIDs set [count _sectorIDs, _sectorID];
+                
+                if !(isnil "_sectorID") then {_sectorIDs set [count _sectorIDs, _sectorID]};
             } forEach _sectors;
 
             [_cluster, "sectors", _sectorIDs] call ALIVE_fnc_hashSet;

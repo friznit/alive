@@ -755,7 +755,7 @@ switch(_operation) do {
             _logic setvariable ["_rev",[_args,"_rev"] call ALiVE_fnc_hashGet,true];
 
 			//Restore houselist and groups if a houselist is provided
-            if (count (([_args, "houses",["",[],[],""]] call ALiVE_fnc_hashGet) select 1) > 0) then {
+            if (count (([_args, "houses",["",[],[],nil]] call ALiVE_fnc_hashGet) select 1) > 0) then {
 
                 //Reset groups and markers
 				{[_logic, "delGroup", _x] call ALiVE_fnc_CQB} forEach (_logic getVariable ["groups",[]]);
@@ -908,9 +908,10 @@ switch(_operation) do {
 			_cleared = MOD(CQB) getvariable ["cleared",[]];
             { // forEach
                 private ["_sectorID"];
+
             	_sectorID = [([ALIVE_sectorGrid, "positionToSector", getposATL _x] call ALIVE_fnc_sectorGrid), "id"] call ALiVE_fnc_HashGet;
 
-                if !(_sectorID in _cleared) then {
+                if (!isnil "_sectorID" && {!(_sectorID in _cleared)}) then {
 					_houses pushback _x;
                     _x setVariable ["sectorID", _sectorID];
                 };

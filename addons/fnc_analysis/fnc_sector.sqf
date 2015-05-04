@@ -302,4 +302,5 @@ switch(_operation) do {
         };
 };
 TRACE_1("sector - output",_result);
-_result;
+
+if (isnil "_result") then {nil} else {_result};

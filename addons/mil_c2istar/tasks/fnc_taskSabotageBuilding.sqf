@@ -47,7 +47,7 @@ switch (_taskState) do {
         _taskCurrent = _taskData select 9;
         _taskApplyType = _taskData select 10;
         
-        _tasksCurrent = ([ALiVE_TaskHandler,"tasks",["",[],[],""]] call ALiVE_fnc_HashGet) select 2;
+        _tasksCurrent = ([ALiVE_TaskHandler,"tasks",["",[],[],nil]] call ALiVE_fnc_HashGet) select 2;
         
         /*//Inputs
         ["%1 | %2 | %3 | %4 | %5 | %6 | %7 | %8 | %9 | %10 | %11",

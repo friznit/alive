@@ -46,7 +46,7 @@ _getClosestLandFromSectors = {
 
         {
             _sector = _x;
-            _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+            _sectorData = [_sector, "data",["",[],[],nil]] call ALIVE_fnc_hashGet;
 
             _sectorData call ALIVE_fnc_inspectHash;
 
@@ -75,6 +75,9 @@ ASSERT_TRUE(typeName _position == "ARRAY",_err);
 
 _sector = [ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
 _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+
+if (isnil "_sectorData") exitwith {_position};
+
 _sectorTerrain = [_sectorData, "terrain"] call ALIVE_fnc_hashGet;
 
 // the positions sector is terrain shore

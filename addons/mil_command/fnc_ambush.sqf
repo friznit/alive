@@ -26,7 +26,7 @@ Highhead
 
 private ["_type","_unit","_profile","_profileID","_pos","_radius","_assignments","_group","_sidesEnemy"];
 
-_profile = [_this, 0, ["",[],[],""], [[]]] call BIS_fnc_param;
+_profile = [_this, 0, ["",[],[],nil], [[]]] call BIS_fnc_param;
 _params = [_this, 1, [], [[]]] call BIS_fnc_param;
 _destination = [_params, 0, [0,0,0], [[]]] call BIS_fnc_param;
 
@@ -34,7 +34,7 @@ if (isnil "_profile") exitwith {};
 
 _profileID = [_profile,"profileID"] call ALiVE_fnc_HashGet;
 _type = [_profile,"type",""] call ALiVE_fnc_HashGet;
-_assignments = [_profile,"vehicleAssignments",["",[],[],""]] call ALIVE_fnc_HashGet;
+_assignments = [_profile,"vehicleAssignments",["",[],[],nil]] call ALIVE_fnc_HashGet;
 _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
 _bombs = [];
 

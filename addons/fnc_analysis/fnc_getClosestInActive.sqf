@@ -38,7 +38,7 @@ ASSERT_TRUE(typeName _position == "ARRAY",_err);
 //ASSERT_TRUE(typeName _radius == "SCALAR",_err);
 
 _sector = [ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
-_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+_sectorData = [_sector, "data",["",[],[],nil]] call ALIVE_fnc_hashGet;
 
 if("active" in (_sectorData select 1)) then {
     _active = [_sectorData, "active"] call ALIVE_fnc_hashGet;

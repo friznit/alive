@@ -38,7 +38,7 @@ if !(isServer) exitwith {
     
     if (tolower(typeOf _mod) in _modules) then {
         
-    	_handler = _mod getvariable ["handler",["",[],[],""]];
+    	_handler = _mod getvariable ["handler",["",[],[],nil]];
         _mainclass = _mod getvariable ["class",([_handler,"class"] call ALiVE_fnc_HashGet)];
         
         if (typeName _mainClass == "STRING") then {_mainclass = compile _mainclass};

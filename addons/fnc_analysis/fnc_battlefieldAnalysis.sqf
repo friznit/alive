@@ -200,6 +200,8 @@ switch(_operation) do {
         _eventSectorID = [_eventSector,"id"] call ALIVE_fnc_hashGet;
 
         _sectorData = [_eventSector,"data"] call ALIVE_fnc_hashGet;
+        
+        if (isnil "_sectorData") exitwith {};
 
         if!("casualties" in (_sectorData select 1)) then {
             _casualties = [] call ALIVE_fnc_hashCreate;
@@ -251,6 +253,8 @@ switch(_operation) do {
         _eventSectorID = [_eventSector,"id"] call ALIVE_fnc_hashGet;
 
         _sectorData = [_eventSector,"data"] call ALIVE_fnc_hashGet;
+        
+        if (isnil "_sectorData") exitwith {};
 
         if!("casualties" in (_sectorData select 1)) then {
             _casualties = [] call ALIVE_fnc_hashCreate;
@@ -368,6 +372,8 @@ switch(_operation) do {
         _eventSectorID = [_eventSector,"id"] call ALIVE_fnc_hashGet;
 
         _sectorData = [_eventSector,"data"] call ALIVE_fnc_hashGet;
+        
+        if (isnil "_sectorData") exitwith {};
 
         if!("activeClusters" in (_sectorData select 1)) then {
             [_sectorData,"activeClusters",[] call ALIVE_fnc_hashCreate] call ALIVE_fnc_hashSet;
@@ -432,14 +438,17 @@ switch(_operation) do {
 
         {
             _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
-            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
-
-            {
-                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
-                if(_owner == _side) then {
-                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
-                };
-            } forEach (_clusters select 2);
+            
+            if !(isnil "_sectorData") then {
+	            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
+	
+	            {
+	                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
+	                if(_owner == _side) then {
+	                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
+	                };
+	            } forEach (_clusters select 2);
+            };
         } forEach (_activeSectors select 2);
 
         _result = _clustersOwnedBySide;
@@ -455,15 +464,19 @@ switch(_operation) do {
 
         {
             _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
-            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
-
-            {
-                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
-                _clusterType = [_x,"type"] call ALIVE_fnc_hashGet;
-                if(_owner == _side && _type == _clusterType) then {
-                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
-                };
-            } forEach (_clusters select 2);
+            
+            if !(isnil "_sectorData") then {
+	            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
+	
+	            {
+	                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
+	                _clusterType = [_x,"type"] call ALIVE_fnc_hashGet;
+	                if(_owner == _side && _type == _clusterType) then {
+	                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
+	                };
+	            } forEach (_clusters select 2);
+            
+            };
         } forEach (_activeSectors select 2);
 
         _result = _clustersOwnedBySide;
@@ -480,8 +493,8 @@ switch(_operation) do {
 
         {
             _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
-
-            if("entitiesBySide" in (_sectorData select 1)) then {
+            
+            if (!isnil "_sectorData" && {"entitiesBySide" in (_sectorData select 1)}) then {
                 _entities = [_sectorData,"entitiesBySide"] call ALIVE_fnc_hashGet;
                 _sideEntities = [_entities,_side] call ALIVE_fnc_hashGet;
                 if(count _sideEntities > 0) then {
@@ -505,7 +518,7 @@ switch(_operation) do {
         {
             _sectorData = [_x,"data"] call ALIVE_fnc_hashGet;
 
-            if("vehiclesBySide" in (_sectorData select 1)) then {
+            if (!isnil "_sectorData" && {"vehiclesBySide" in (_sectorData select 1)}) then {
                 _vehicles = [_sectorData,"vehiclesBySide"] call ALIVE_fnc_hashGet;
                 _sideVehicles = [_vehicles,_side] call ALIVE_fnc_hashGet;
                 if(count _sideVehicles > 0) then {

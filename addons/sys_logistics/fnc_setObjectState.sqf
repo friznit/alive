@@ -28,7 +28,7 @@ if (isnil "_this") exitwith {};
 private ["_object","_state","_id","_data"];
 
 _object = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_state = [_this, 1, ["",[],[],""], [[]]] call BIS_fnc_param;
+_state = [_this, 1, ["",[],[],nil], [[]]] call BIS_fnc_param;
 
 _id = [MOD(SYS_LOGISTICS),"id",_object] call ALiVE_fnc_logistics;
 [GVAR(STORE),_id,_state] call ALiVE_fnc_HashSet;

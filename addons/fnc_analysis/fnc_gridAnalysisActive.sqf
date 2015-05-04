@@ -65,20 +65,21 @@ _players = [] call BIS_fnc_listPlayers;
 	_position = getPosATL _player;
 
 	_sector = [_grid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
-    _sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
+    _sectorData = [_sector,"data",["",[],[],nil]] call ALIVE_fnc_hashGet;
+    //_sectorData = _sector select 2 select 0; //[_sector, "data"] call ALIVE_fnc_sector;
 
-    _active = [];
-    if("active" in (_sectorData select 1)) then {
-        _active = [_sectorData, "active"] call ALIVE_fnc_hashGet;
-    };
-
-    _active set [count _active, [_player,_position]];
-
-    // store the result of the analysis on the sector instance
-    [_sector, "data", ["active",_active]] call ALIVE_fnc_sector;
-
-    if!(_sector in _updatedSectors) then {
-        _updatedSectors set [count _updatedSectors, _sector];
+	if (count (_sectorData select 1) > 0) then {
+        
+		_active = [_sectorData, "active",[]] call ALIVE_fnc_hashGet;
+	
+	    _active set [count _active, [_player,_position]];
+	
+	    // store the result of the analysis on the sector instance
+	    [_sector, "data", ["active",_active]] call ALIVE_fnc_sector;
+	
+	    if!(_sector in _updatedSectors) then {
+	        _updatedSectors set [count _updatedSectors, _sector];
+	    };
     };
 } forEach _players;
 

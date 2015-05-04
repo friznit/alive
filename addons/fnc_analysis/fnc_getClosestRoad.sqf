@@ -39,6 +39,9 @@ ASSERT_TRUE(typeName _position == "ARRAY",_err);
 
 _sector = [ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
 _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+
+if (isnil "_sectorData") exitwith {_position};
+
 _sectorRoads = [_sectorData, "roads"] call ALIVE_fnc_hashGet;
 _roads = [_sectorRoads, "road"] call ALIVE_fnc_hashGet;
 

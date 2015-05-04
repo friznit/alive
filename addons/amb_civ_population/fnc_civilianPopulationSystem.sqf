@@ -169,7 +169,7 @@ switch(_operation) do {
             _sectors = _sectors + [_sector];
 
             {
-                _sectorData = [_x, "data"] call ALIVE_fnc_sector;
+                _sectorData = [_x, "data",["",[],[],nil]] call ALIVE_fnc_HashGet;
                 if("clustersCiv" in (_sectorData select 1)) then {
                     _civClusters = [_sectorData,"clustersCiv"] call ALIVE_fnc_hashGet;
                     _settlementClusters = [_civClusters,"settlement"] call ALIVE_fnc_hashGet;

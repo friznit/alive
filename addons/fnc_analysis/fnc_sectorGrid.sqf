@@ -338,7 +338,7 @@ switch(_operation) do {
 				
 				_grid = [_logic,"grid"] call ALIVE_fnc_hashGet;
 				
-				_result = [];
+				_result = ["",[],[],nil];
 				
 				if((count _grid > 0 && count _grid > _columnIndex && _columnIndex >= 0)) then {
 					_column = _grid select _columnIndex;
@@ -373,56 +373,56 @@ switch(_operation) do {
 				//bl
 				_index = [(_indexX - 1),(_indexY - 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
 				
 				//ml
 				_index = [(_indexX - 1),(_indexY)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
 				
 				//tl
 				_index = [(_indexX - 1),(_indexY + 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
 				
 				//tm
 				_index = [(_indexX),(_indexY + 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
 				
 				//tr
 				_index = [(_indexX + 1),(_indexY + 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
 				
 				//mr
 				_index = [(_indexX + 1),(_indexY)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
 				
 				//br
 				_index = [(_indexX + 1),(_indexY - 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
 				
 				//bm
 				_index = [(_indexX),(_indexY - 1)];
 				_sector = [_logic, "gridIndexToSector", _index] call MAINCLASS;
-				if(count _sector > 0) then {
+				if(count (_sector select 1) > 0) then {
 				    _result set [count _result, _sector];
                 };
         };

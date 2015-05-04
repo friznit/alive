@@ -41,6 +41,9 @@ ASSERT_TRUE(typeName _position == "ARRAY",_err);
 
 _sector = [ALIVE_sectorGrid, "positionToSector", _position] call ALIVE_fnc_sectorGrid;
 _sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+
+if (isnil "_sectorData") exitwith {_position};
+
 _sectorTerrain = [_sectorData, "terrain"] call ALIVE_fnc_hashGet;
 
 // the positions sector is terrain shore
@@ -71,6 +74,9 @@ if(_sectorTerrain == "LAND") then {
 		_sectors = [_sectors,_position] call ALIVE_fnc_sectorSortDistance;
 		_sector = _sectors select 0;
 		_sectorData = [_sector, "data"] call ALIVE_fnc_hashGet;
+        
+        if (isnil "_sectorData") exitwith {_position};
+        
 		_sectorTerrainSamples = [_sectorData, "terrainSamples"] call ALIVE_fnc_hashGet;
 		_samples = [_sectorTerrainSamples, "sea"] call ALIVE_fnc_hashGet;
 		

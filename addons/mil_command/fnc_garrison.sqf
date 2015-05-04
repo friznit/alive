@@ -26,12 +26,12 @@ Highhead
 
 private ["_type","_unit","_profile","_pos","_radius","_assignments","_group"];
 
-_profile = [_this, 0, ["",[],[],""], [[]]] call BIS_fnc_param;
+_profile = [_this, 0, ["",[],[],nil], [[]]] call BIS_fnc_param;
 _radius = [_this, 1, 200, [-1]] call BIS_fnc_param;
 
 _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
 _type = [_profile,"type",""] call ALiVE_fnc_HashGet;
-_assignments = [_profile,"vehicleAssignments",["",[],[],""]] call ALIVE_fnc_HashGet;
+_assignments = [_profile,"vehicleAssignments",["",[],[],nil]] call ALIVE_fnc_HashGet;
 
 if (isnil "_pos") exitwith {};
 
