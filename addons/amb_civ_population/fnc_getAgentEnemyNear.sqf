@@ -41,18 +41,21 @@ _clusterHostility = [_cluster, "hostility"] call ALIVE_fnc_hashGet;
 _hostilitySettingsEAST = [_clusterHostility, "EAST"] call ALIVE_fnc_hashGet;
 _hostilitySettingsWEST = [_clusterHostility, "WEST"] call ALIVE_fnc_hashGet;
 _hostilitySettingsINDEP = [_clusterHostility, "INDEP"] call ALIVE_fnc_hashGet;
+_hostilitySettingsGUER = [_clusterHostility, "GUER"] call ALIVE_fnc_hashGet;
 
-_hostilitySides = ["EAST","WEST","INDEP"];
-_hostilityNumbers = [_hostilitySettingsEAST, _hostilitySettingsWEST, _hostilitySettingsINDEP];
+_hostilitySides = ["EAST","WEST","INDEP","GUER"];
+_hostilityNumbers = [_hostilitySettingsEAST, _hostilitySettingsWEST, _hostilitySettingsINDEP,_hostilitySettingsGUER];
 
 _nearUnits = [] call ALIVE_fnc_hashCreate;
 [_nearUnits, "EAST", []] call ALIVE_fnc_hashSet;
 [_nearUnits, "WEST", []] call ALIVE_fnc_hashSet;
 [_nearUnits, "INDEP", []] call ALIVE_fnc_hashSet;
+[_nearUnits, "GUER", []] call ALIVE_fnc_hashSet;
 
 _nearEAST = [_nearUnits, "EAST"] call ALIVE_fnc_hashGet;
 _nearWEST = [_nearUnits, "WEST"] call ALIVE_fnc_hashGet;
 _nearINDEP = [_nearUnits, "INDEP"] call ALIVE_fnc_hashGet;
+_nearGUER = [_nearUnits, "GUER"] call ALIVE_fnc_hashGet;
 
 {
     if(_position distance position _x < _distance) then {
@@ -66,6 +69,7 @@ _nearINDEP = [_nearUnits, "INDEP"] call ALIVE_fnc_hashGet;
                 };
                 case resistance:{
                     _nearINDEP set [count _nearINDEP, _x];
+                    _nearGUER set [count _nearGUER, _x];
                 };
             };
         };
@@ -87,6 +91,7 @@ _players = [] call BIS_fnc_listPlayers;
                 };
                 case resistance:{
                     _nearINDEP set [count _nearINDEP, _x];
+                    _nearGUER set [count _nearGUER, _x];
                 };
             };
         };
@@ -96,6 +101,7 @@ _players = [] call BIS_fnc_listPlayers;
 _nearEAST = [_nearUnits, "EAST"] call ALIVE_fnc_hashGet;
 _nearWEST = [_nearUnits, "WEST"] call ALIVE_fnc_hashGet;
 _nearINDEP = [_nearUnits, "INDEP"] call ALIVE_fnc_hashGet;
+_nearGUER = [_nearUnits, "GUER"] call ALIVE_fnc_hashGet;
 
 /*
 ["HOST EAST %1",_hostilitySettingsEAST] call ALIVE_fnc_dump;

@@ -47,6 +47,7 @@ if(isServer) then {
 	[ALIVE_civilianHostility, "WEST", _hostilityWest] call ALIVE_fnc_hashSet;
 	[ALIVE_civilianHostility, "EAST", _hostilityEast] call ALIVE_fnc_hashSet;
 	[ALIVE_civilianHostility, "INDEP", _hostilityIndep] call ALIVE_fnc_hashSet;
+    [ALIVE_civilianHostility, "GUER", _hostilityIndep] call ALIVE_fnc_hashSet;
 
 	ALIVE_civilianPopulationSystem = [nil, "create"] call ALIVE_fnc_civilianPopulationSystem;
 	[ALIVE_civilianPopulationSystem, "init"] call ALIVE_fnc_civilianPopulationSystem;

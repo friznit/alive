@@ -146,6 +146,7 @@ switch(_operation) do {
             [_localHostility,"EAST",_eastHostility] call ALIVE_fnc_hashSet;
             [_localHostility,"WEST",_westHostility] call ALIVE_fnc_hashSet;
             [_localHostility,"INDEP",_indepHostility] call ALIVE_fnc_hashSet;
+            [_localHostility,"GUER",_indepHostility] call ALIVE_fnc_hashSet;
 
             [_cluster, "hostility", _localHostility] call ALIVE_fnc_hashSet;
 
