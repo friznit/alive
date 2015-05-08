@@ -1248,7 +1248,8 @@ switch(_operation) do {
                         {
                             if(!isNil "_x") then {
                                 if(typeName _x == "STRING") then {
-                                    _rankMap = [_ranksMap, _x] call ALIVE_fnc_hashGet;
+                                    _rankMap = [_ranksMap, toUpper(_x),"PRIVATE"] call ALIVE_fnc_hashGet;
+                                    
                                     if(typeName _rankMap == "SCALAR") then {
                                         _exportRanks pushback _rankMap;
                                     }else{
