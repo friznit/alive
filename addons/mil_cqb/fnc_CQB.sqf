@@ -1136,23 +1136,46 @@ switch(_operation) do {
 
             _house = _args select 0;
             _faction = _args select 1;
+            _factions = (_logic getvariable ["factions",["OPF_F"]]);
 
             _debug = _logic getVariable ["debug",false];
+            
+            if (isnil QGVAR(ALLCLASSES) || {count GVAR(ALLCLASSES) == 0}) then {
+                
+                _all = [];
+                {
+                    _types = [0, _x,"Man",true] call ALiVE_fnc_findVehicleType;
+                    _all append _types;
+                } foreach _factions;
+                _all = _all - (_logic getVariable ["UnitsBlackList",[]]);
 
-            private ["_side"];
+            	GVAR(ALLCLASSES) = _all;
+			};
+            
+            private ["_side","_units"];
 
 			// Action: spawn AI
 			// this just flags the house as beginning spawning
 			// and will be over-written in addHouse
 
 			_units = _house getVariable ["unittypes", []];
-            _houseFaction = _house getVariable ["faction", (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom];
+            _houseFaction = _house getVariable ["faction", _factions call BIS_fnc_SelectRandom];
 
 			// Check: if no units already defined
 			if ((count _units == 0) || {!(_houseFaction == _faction)}) then {
 				// Action: identify AI unit types
-				_units = [[_faction], ceil(random(_logic getVariable ["amount",2])), _logic getVariable ["UnitsBlackList",[]], true] call ALiVE_fnc_chooseRandomUnits;
-				_house setVariable ["unittypes", _units, true];
+                private ["_amount"];
+                
+                _amount = ceil(random(_logic getVariable ["amount",2]));
+                
+                _units = [];
+                
+                for "_i" from 1 to _amount do {
+                    _unit = GVAR(ALLCLASSES) call BIS_fnc_SelectRandom;
+                    _units pushBack _unit;
+                };
+                
+                _house setVariable ["unittypes", _units, true];
                 _house setVariable ["faction", _faction, true];
 			};
 
@@ -1275,7 +1298,7 @@ switch(_operation) do {
                                                 // Naught, ALiVE_fnc_BUS seems to be broken since movement into x_lib (Server to client calls fail)! Please check on dedicated server, switched to BIS_fnc_MP for now!
 	                                            //[_host,"CQB",[[_logic, "spawnGroup", [_house,_faction]],{call ALiVE_fnc_CQB}]] call ALiVE_fnc_BUS;
                                                 /////////////////////////////////////////////////////////////
-                                                [[_logic, "spawnGroup", [_house,_faction]],"ALiVE_fnc_CQB",_host,false] call BIS_fnc_MP;
+                                                [[_logic, "spawnGroup", [_house,_faction]],"ALiVE_fnc_CQB",_host,false,true] call BIS_fnc_MP;
 
 	                                            //["CQB Population: Group creation triggered on client %1 for house %2 and dominantfaction %3...",_host,_house,_faction] call ALiVE_fnc_Dump;
 	                                            sleep 0.2;
