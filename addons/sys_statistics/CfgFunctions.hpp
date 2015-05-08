@@ -47,6 +47,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_statistics\fnc_addHandleHeal.sqf";
 								recompile = RECOMPILE;
                         };
+                        class checkIsDiving {
+                                description = "Monitors whether or not the unit is on a combat dive";
+                                file = "\x\alive\addons\sys_statistics\fnc_checkIsDiving.sqf";
+								recompile = RECOMPILE;
+                        };
 				};
         };
 };
