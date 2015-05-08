@@ -125,7 +125,7 @@ switch (_state) do {
 
             //arm
             _faction = _agentData select 2 select 7;
-            _weapons = [ALIVE_civilianWeapons, _faction] call ALIVE_fnc_hashGet;
+            _weapons = [ALIVE_civilianWeapons, _faction,[["hgun_Pistol_heavy_01_F","11Rnd_45ACP_Mag"],["hgun_PDW2000_F","30Rnd_9x21_Mag"],["SMG_02_ARCO_pointg_F","30Rnd_9x21_Mag"],["arifle_TRG21_F","30Rnd_556x45_Stanag"]]] call ALIVE_fnc_hashGet;
 
             if(count _weapons == 0) then {
                 _weapons = [ALIVE_civilianWeapons, "CIV"] call ALIVE_fnc_hashGet;
