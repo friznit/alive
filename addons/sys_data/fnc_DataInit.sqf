@@ -232,6 +232,7 @@ if (isDedicated) then {
 	publicVariable QGVAR(ASYNC_QUEUE);
 
 	[] spawn {
+		["ALiVE SYS_DATA - ASYNC WRITE LOOP STARTING"] call ALIVE_fnc_dump;
 		while {true} do {
 			TRACE_1("ASYNC QUEUE COUNT", count GVAR(ASYNC_QUEUE));
 			{
