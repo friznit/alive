@@ -144,6 +144,7 @@ switch(_operation) do {
             };
 
             //["%1 - Initialisation Completed...",ADDON] call ALiVE_fnc_Dump;
+            _logic setVariable ["bis_fnc_initModules_activate",true];
 
             _result = ADDON;
         };

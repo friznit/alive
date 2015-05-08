@@ -182,6 +182,9 @@ switch(_operation) do {
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_playertagsMenuDef)
                 */
+
+                _logic setVariable ["bis_fnc_initModules_activate",true];
+
                 _result = ADDON;
         };
 

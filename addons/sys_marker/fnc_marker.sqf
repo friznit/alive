@@ -269,7 +269,7 @@ switch (_operation) do {
                     "ColorOPFOR"
                 ];
 
-                if !(SLX_XEH_MACHINE select 1) then { // Don't run if JIP as no briefing screen appears
+                if !(SLX_XEH_MACHINE select 1 || SLX_XEH_MACHINE select 6) then { // Don't run if JIP as no briefing screen appears
                     [] spawn {
                         // Install handlers on briefing screen
                         private ["_display","_control"];
@@ -328,7 +328,7 @@ switch (_operation) do {
             };
 
             //["%1 - Initialisation Completed...",MOD(SYS_marker)] call ALiVE_fnc_Dump;
-
+            _logic setVariable ["bis_fnc_initModules_activate",true];
             _result = MOD(SYS_marker);
         };
 

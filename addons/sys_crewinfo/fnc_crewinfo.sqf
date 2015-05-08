@@ -121,6 +121,7 @@ switch(_operation) do {
                 - initialise
                 */
 
+                _logic setVariable ["bis_fnc_initModules_activate",true];
 
                 if(!isDedicated && !isHC) then {
                 	    CREWINFO_DEBUG = call compile (_logic getvariable ["debug","false"]);
@@ -142,6 +143,7 @@ switch(_operation) do {
 
    										[] call ALIVE_fnc_crewinfoClient;
                 };
+
                 _result = ADDON;
 
         };

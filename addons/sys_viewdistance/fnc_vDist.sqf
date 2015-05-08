@@ -162,6 +162,8 @@ switch(_operation) do {
                 //End init
             	_logic setVariable ["initGlobal", true];
 
+                _logic setVariable ["bis_fnc_initModules_activate",true];
+
                 _result = ADDON;
         };
         case "destroy": {

@@ -166,6 +166,7 @@ if (isServer) then {
 };
 
 //["%1 - Initialisation Completed...",MOD(require)] call ALiVE_fnc_Dump;
+_logic setVariable ["bis_fnc_initModules_activate",true];
 
 [_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
 

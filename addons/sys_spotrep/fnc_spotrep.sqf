@@ -210,7 +210,7 @@ switch (_operation) do {
             };
 
             //["%1 - Initialisation Completed...",MOD(SYS_spotrep)] call ALiVE_fnc_Dump;
-
+            _logic setVariable ["bis_fnc_initModules_activate",true];
             _result = MOD(SYS_spotrep);
         };
 

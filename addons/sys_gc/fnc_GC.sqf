@@ -96,6 +96,7 @@ switch(_operation) do {
                 [_logic,"start"] call MAINCLASS;
 
 			};
+            _logic setVariable ["bis_fnc_initModules_activate",true];
 		};
 		case "start": {
                 /*
@@ -110,7 +111,7 @@ switch(_operation) do {
                     ALiVE_GC = _logic;
                     //transmit to clients
                     Publicvariable "ALiVE_GC";
-                    
+
                     //Delay for ALiVE require init to be able to set variables
                     sleep 2;
 
@@ -118,24 +119,24 @@ switch(_operation) do {
                     _logic setvariable ["ALiVE_GC_INDIVIDUALTYPES",([_logic,"convert",(_logic getvariable ["ALiVE_GC_INDIVIDUALTYPES",[]])] call ALiVE_fnc_GC),true];
                     _debug = _logic getvariable ["debug","false"];
                     _interval = _logic getvariable ["ALiVE_GC_INTERVAL","300"];
-                    
+
                     switch (typeName _debug) do {
                         case ("STRING") : {_debug = call compile _debug};
                         case ("BOOL") : {};
                     };
-                    
+
                     switch (typeName _interval) do {
                         case ("STRING") : {_interval = call compile _interval};
                         case ("BOOL") : {};
                     };
-                    
+
                     _logic setvariable ["debug",_debug,true];
 					_logic setVariable ["auto", true];
 
                     /*
                 	CONTROLLER  - coordination
                 	*/
-                    
+
                     if (_interval < 1) exitwith {
 						// DEBUG -------------------------------------------------------------------------------------
 							if(_debug) then {
@@ -144,7 +145,7 @@ switch(_operation) do {
 							};
 						// DEBUG -------------------------------------------------------------------------------------
                     };
-                    
+
 					// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
@@ -165,30 +166,30 @@ switch(_operation) do {
                 */
         };
         case "destroy": {
-            
+
         	MOD(SYS_GC) = _logic;
-            
+
             //Delete class
             if (isServer) then {
 
                 _logic setVariable ["super", nil];
                 _logic setVariable ["class", nil];
                 _logic setVariable ["init", nil];
-                
+
                 _fsm = _logic getVariable "ALiVE_GC_FSM";
                 _fsm setFSMVariable ["_exitFSM", true];
 
                 ALiVE_SYS_GC = nil;
                 ALiVE_GC = nil;
-                
+
                 // and publicVariable to clients
                 publicVariable "ALiVE_SYS_GC";
                 publicVariable "ALiVE_GC";
-                
+
                 deleteVehicle _logic;
                 deleteGroup (group _logic);
             };
-        };        
+        };
 
         case "convert": {
 	    	if !(isNil "_args") then {

@@ -124,6 +124,7 @@ switch(_operation) do {
                 CONTROLLER  - coordination
                 - frequent check if player is server admin (ALIVE_fnc_statisticsmenuDef)
                 */
+                _logic setVariable ["bis_fnc_initModules_activate",true];
         };
         case "destroy": {
                 if (isServer) then {
