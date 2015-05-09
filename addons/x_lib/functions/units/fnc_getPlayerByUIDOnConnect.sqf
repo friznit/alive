@@ -20,7 +20,7 @@ _player = ["234234"] call ALiVE_fnc_getPlayerByUIDOnConnect
 
 Author:
 ARJay
- 
+
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
@@ -30,6 +30,9 @@ private ["_playerUID","_unit"];
 _playerUID = _this select 0;
 
 _unit = objNull;
+
+
+if (_playerUID == "") exitWith {diag_log "Null playerUID sent to getPlayerByUIDOnConnect";_unit;};
 
 waitUntil {
     sleep 0.3;
