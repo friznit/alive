@@ -95,7 +95,7 @@ switch(_operation) do {
         };
         case "init": {
 
-                if (_logic getVariable ["enablePlayerPersistence","true"] == "false") exitWith {["ALiVE SYS PLAYER - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
+                if (_logic getVariable ["enablePlayerPersistence","true"] == "false") exitWith {_logic setVariable ["bis_fnc_initModules_activate",true]; ["ALiVE SYS PLAYER - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
 
                 //Only one init per instance is allowed
             	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYER - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
@@ -145,7 +145,7 @@ switch(_operation) do {
                     // Push to clients
                     publicVariable QMOD(sys_player);
 
- TRACE_4("SYS_PLAYER2", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
+                    TRACE_4("SYS_PLAYER2", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
 
                     //Wait for data to init?
                    // WaitUntil{sleep 0.3; !isNil "ALIVE_sys_data"};
@@ -204,7 +204,7 @@ switch(_operation) do {
                    // [QGVAR(OPD), "OnPlayerDisconnected","ALIVE_fnc_player_OnPlayerDisconnected"] call BIS_fnc_addStackedEventHandler;
 
 
-                } else {
+            } else {
                     if (!isServer && !isHC && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED})) then {
                         // any client side logic for model
                         TRACE_2("Adding player event handlers",isServer,isHC);
@@ -235,143 +235,143 @@ switch(_operation) do {
                             }];
                         };
                     };
-                };
+            };
 
 
-                /*
-                VIEW - purely visual
-                - initialise menu
-                - frequent check to modify menu and display status (ALIVE_fnc_playermenuDef)
-                */
+            /*
+            VIEW - purely visual
+            - initialise menu
+            - frequent check to modify menu and display status (ALIVE_fnc_playermenuDef)
+            */
 
-                TRACE_2("Adding menu",isDedicated,isHC);
+            TRACE_2("Adding menu",isDedicated,isHC);
 
-                if(!isServer && !isHC) then {
-                        // Initialise interaction key if undefined
-                        if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+            if(!isServer && !isHC) then {
+                    // Initialise interaction key if undefined
+                    if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
-                        // if ACE spectator enabled, seto to allow exit
-                        if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
+                    // if ACE spectator enabled, seto to allow exit
+                    if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
 
-                        TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
+                    TRACE_3("Menu pre-req",SELF_INTERACTION_KEY,ace_fnc_startSpectator,DEFAULT_MAPCLICK);
 
-                        // initialise main menu
-                        [
-                                "player",
-                                [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
-                                -9500,
-                                [
-                                        "call ALIVE_fnc_playerMenuDef",
-                                        "main"
-                                ]
-                        ] call ALiVE_fnc_flexiMenu_Add;
-                };
+                    // initialise main menu
+                    [
+                            "player",
+                            [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
+                            -9500,
+                            [
+                                    "call ALIVE_fnc_playerMenuDef",
+                                    "main"
+                            ]
+                    ] call ALiVE_fnc_flexiMenu_Add;
+            };
 
-                /*
-                CONTROLLER  - coordination
-                - frequent check if player is server admin (ALIVE_fnc_playermenuDef)
-                - Tell the server that the player is connected
-                - Spawn process to regularly save player data to an in memory store
-                - Spawn process to regularly save to DB based on auto save time
-                - setup event handler to load data on server start (OPC)
-                - setup event handler to save data on server exit (OPD)
-                - setup event handler to get player data on player connected (OPC)
-                - setup event handler to set player data on player disconnected (OPD)
-                - setup any event handlers needed on clientside
-                */
+            /*
+            CONTROLLER  - coordination
+            - frequent check if player is server admin (ALIVE_fnc_playermenuDef)
+            - Tell the server that the player is connected
+            - Spawn process to regularly save player data to an in memory store
+            - Spawn process to regularly save to DB based on auto save time
+            - setup event handler to load data on server start (OPC)
+            - setup event handler to save data on server exit (OPD)
+            - setup event handler to get player data on player connected (OPC)
+            - setup event handler to set player data on player disconnected (OPD)
+            - setup any event handlers needed on clientside
+            */
 
-                TRACE_2("Setting player guid on logic",isDedicated,isHC);
-                // For players waituntil the player is valid then let server know.
-                if(!isServer && !isHC) then {
-                    [] spawn {
-                        private ["_puid"];
-                        TRACE_1("SYS_PLAYER GETTING READY",player);
+            TRACE_2("Setting player guid on logic",isDedicated,isHC);
+            // For players waituntil the player is valid then let server know.
+            if(!isServer && !isHC) then {
+                [] spawn {
+                    private ["_puid"];
+                    TRACE_1("SYS_PLAYER GETTING READY",player);
 
-                        waitUntil { !(isNull player) };
-                        sleep 0.2;
+                    waitUntil { !(isNull player) };
+                    sleep 0.2;
 
-                        waitUntil {!isNil QMOD(sys_player)};
-                        sleep 0.2;
+                    waitUntil {!isNil QMOD(sys_player)};
+                    sleep 0.2;
 
-                        _puid = getplayerUID player;
-                        TRACE_1("SYS_PLAYER GUID SET", _puid);
+                    _puid = getplayerUID player;
+                    TRACE_1("SYS_PLAYER GUID SET", _puid);
 
-                        MOD(sys_player) setVariable [_puid, true, true];
+                    MOD(sys_player) setVariable [_puid, true, true];
 
-                        // Save initial start state on client if reset is allowed
-                        sleep 20;
-                        if (MOD(sys_player) getVariable ["allowReset", DEFAULT_RESET]) then {
-                            // Save data on the client
-                            private ["_playerHash","_gearHash"];
+                    // Save initial start state on client if reset is allowed
+                    sleep 20;
+                    if (MOD(sys_player) getVariable ["allowReset", DEFAULT_RESET]) then {
+                        // Save data on the client
+                        private ["_playerHash","_gearHash"];
 
-                            // Save gear on the client and server
-                            _gearHash = [MOD(sys_player), "setGear", [player]] call MAINCLASS;
-                            [[MOD(sys_player), "updateGear", [player, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
-                            //[0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [player, _gearHash] ] call CBA_fnc_globalExecute;
-                            //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+                        // Save gear on the client and server
+                        _gearHash = [MOD(sys_player), "setGear", [player]] call MAINCLASS;
+                        [[MOD(sys_player), "updateGear", [player, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+                        //[0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [player, _gearHash] ] call CBA_fnc_globalExecute;
+                        //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
 
-                            _playerHash = [MOD(sys_player), [player]] call ALIVE_fnc_setPlayer;
-                            // Store playerhash on client
-                            player setVariable [QGVAR(player_data), _playerHash];
-                            GVAR(resetAvailable) = true;
-                        };
+                        _playerHash = [MOD(sys_player), [player]] call ALIVE_fnc_setPlayer;
+                        // Store playerhash on client
+                        player setVariable [QGVAR(player_data), _playerHash];
+                        GVAR(resetAvailable) = true;
                     };
-                } else {
-                    TRACE_2("NO SYS_PLAYER or ISDEDICATED/HC", isDedicated, isNil QMOD(sys_player));
                 };
+            } else {
+                TRACE_2("NO SYS_PLAYER or ISDEDICATED/HC", isDedicated, isNil QMOD(sys_player));
+            };
 
-                // Set up any spawn processes for checks
-                if (isDedicated) then {
+            // Set up any spawn processes for checks
+            if (isDedicated) then {
 
-            	   [] spawn {
-            		private ["_lastSaveTime"];
-            		_lastSaveTime = dateToNumber date;
-            		MOD(sys_player) setVariable ["lastDBSaveTime",_lastSaveTime, true];
+        	   [] spawn {
+        		private ["_lastSaveTime"];
+        		_lastSaveTime = dateToNumber date;
+        		MOD(sys_player) setVariable ["lastDBSaveTime",_lastSaveTime, true];
 
-                    // Regularly store the player state to a server store and/or DB
-            		while {!isNil QMOD(sys_player)} do {
-                        private ["_check","_autoSaveTime","_lastDBSaveTime"];
-            			// Every 5 minutes store player data in memory
-            			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
-                			{
-                				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
-                			} foreach playableUnits;
-                			_lastSaveTime = dateToNumber date;
-            			};
+                // Regularly store the player state to a server store and/or DB
+        		while {!isNil QMOD(sys_player)} do {
+                    private ["_check","_autoSaveTime","_lastDBSaveTime"];
+        			// Every 5 minutes store player data in memory
+        			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
+            			{
+            				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
+            			} foreach playableUnits;
+            			_lastSaveTime = dateToNumber date;
+        			};
 
-            			// If auto save interval is defined and ext db is enabled, then save to external db
-            			_check = MOD(sys_player) getvariable ["storeToDB", DEFAULT_storeToDB];
-            			_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
-                        _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
-                        TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
+        			// If auto save interval is defined and ext db is enabled, then save to external db
+        			_check = MOD(sys_player) getvariable ["storeToDB", DEFAULT_storeToDB];
+        			_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
+                    _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
+                    TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
 
-            			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) ) then {
-            				// Save player data to external db
-                            TRACE_3("Saving players to DB", dateToNumber date, (_lastDBSaveTime + _autoSaveTime), _check);
-            				[MOD(sys_player), "savePlayers", [false]] call MAINCLASS;
-                            MOD(sys_player) setVariable ["lastDBSaveTime",dateToNumber date, true];
-            			};
+        			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) ) then {
+        				// Save player data to external db
+                        TRACE_3("Saving players to DB", dateToNumber date, (_lastDBSaveTime + _autoSaveTime), _check);
+        				[MOD(sys_player), "savePlayers", [false]] call MAINCLASS;
+                        MOD(sys_player) setVariable ["lastDBSaveTime",dateToNumber date, true];
+        			};
 
-            			sleep DEFAULT_INTERVAL;
+        			sleep DEFAULT_INTERVAL;
 
-            		};
+        		};
 
-                     TRACE_4("SYS_PLAYER3", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
+                 TRACE_4("SYS_PLAYER3", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
 
-            	   };
-                };
+        	   };
+            };
 
-                // Eventhandlers for OPC/OPD are called from main
+            // Eventhandlers for other stuff here
 
-                // Eventhandlers for other stuff here
-
-                // Setup player eventhandler to handle get player calls
-                if(!isServer && !isHC) then {
-                    ["getPlayer", {[MOD(sys_player),(_this select 1)] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
-                };
+            // Setup player eventhandler to handle get player calls
+            if(!isServer && !isHC) then {
+                ["getPlayer", {[MOD(sys_player),(_this select 1)] call ALIVE_fnc_getPlayer;} ] call CBA_fnc_addLocalEventHandler;
+            };
 
             //TRACE_4("SYS_PLAYER", _logic getvariable "allowReset", _logic getvariable "allowDiffClass",_logic getvariable "allowManualSave",_logic getvariable "storeToDB" );
             TRACE_4("SYS_PLAYER4", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
+
+            _logic setVariable ["bis_fnc_initModules_activate",true];
 
             TRACE_1("After module init",_logic);
             //"Player Persistence - Initialisation Completed" call ALiVE_fnc_logger;
