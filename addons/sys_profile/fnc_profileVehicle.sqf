@@ -469,15 +469,17 @@ switch(_operation) do {
 					        _special = "FLY";
                             if ((_position select 2) < 50) then {_position set [2,50]};
 					    }else{
-					        _special = "NONE";
+					        _special = "CAN_COLLIDE";
 					        _position set [2,0];
 					    };
 					} else {
-						_special = "NONE";
+						
 						if ((_position select 2) > 300) then {
 						    _paraDrop = true;
+                            _special = "NONE";
 						}else{
 						    _position set [2,0];
+                            _special = "CAN_COLLIDE";
 						};
 					};
 
