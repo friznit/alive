@@ -36,6 +36,10 @@ DEFAULT_PARAM(1,_fac,nil);
 DEFAULT_PARAM(2,_type,nil);
 DEFAULT_PARAM(3,_noWeapons,false);
 
+_searchBag = format["ALiVE_X_LIB_SEARCHBAG_%1_%2_%3",_fac,_type,_noWeapons];
+
+if !(isnil {call compile _searchBag}) exitwith {call compile _searchBag};
+
 _nonConfigs = ["StaticWeapon","CruiseMissile1","CruiseMissile2","Chukar_EP1","Chukar","Chukar_AllwaysEnemy_EP1"];
 _nonSims = ["parachute","house"];
 
@@ -95,5 +99,7 @@ for "_y" from 1 to count(configFile >> "CfgVehicles") - 1 do {
 		};
 	};
 };
+
+call compile (format["%1 = %2",_searchbag,_allvehs]);
 
 _allvehs;
