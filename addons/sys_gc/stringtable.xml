@@ -18,7 +18,7 @@
 	<English>Garbage Collector Exclude:</English>
 </Key>
 <Key ID="STR_ALIVE_GC_INDIVIDUALTYPES_COMMENT">
-	<English>Exclude object classes from collection eg: ["Box_NATO_Wps_F","Box_NATO_AmmoOrd_F"]</English>
+	<English>Include certain non-unit or non-vehicle objects in collection eg: ["Box_NATO_Wps_F","Box_NATO_AmmoOrd_F"]</English>
 </Key>
 <Key ID="STR_ALIVE_GC_INTERVAL">
 	<English>Garbage Collector Interval:</English>

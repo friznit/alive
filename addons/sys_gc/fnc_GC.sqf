@@ -247,7 +247,7 @@ switch(_operation) do {
 			if ((count _individual) > 0) then {
 			    _amo = (allmissionObjects ""); _amo = +_amo;
 				{
-					if (((typeof _x) in _individual) && {((damage _x) == 1)} && {!(_x in _queue)}) then {
+					if (((typeof _x) in _individual) && {!(_x in _queue)}) then {
                         [_logic,"trashIt",_x] call ALiVE_fnc_GC;
                         sleep 0.03;
 					};
