@@ -1,11 +1,11 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, insurgency">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"INIT_INFO",2,250,-720.879761,-873.838257,-630.879761,-823.838257,0.000000,"INIT INFO"};
 item3[] = {"",7,210,-52.802883,324.913116,-44.802883,332.913116,0.000000,""};
-item4[] = {"ANALYZE_OBJECTIV",2,4346,-720.879822,-549.151001,-630.879822,-499.151001,0.000000,"ANALYZE" \n "OBJECTIVE"};
+item4[] = {"ANALYZE_OBJECTIV",2,250,-720.879822,-549.151001,-630.879822,-499.151001,0.000000,"ANALYZE" \n "OBJECTIVE"};
 item5[] = {"ATTACK",4,218,-928.976746,-250.825409,-838.976746,-200.825378,1.000000,"ATTACK"};
 item6[] = {"DEFEND",4,218,-806.225098,-252.264771,-716.225098,-202.264740,2.000000,"DEFEND"};
 item7[] = {"TERRORIZE",4,218,-650.359680,-253.024353,-560.359680,-203.024323,3.000000,"TERRORIZE"};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1591.894775,221.139832,1124.674316,-1381.738159,672,929,1};
-window[] = {2,-1,-1,-1,-1,952,44,1596,44,3,689};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1430.685059,59.929459,1017.266724,-1147.606934,535,777,1};
+window[] = {0,-1,-1,-1,-1,1010,271,1823,102,1,552};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -121,6 +121,24 @@ class FSM
        "_simultan = [];" \n
        "_civFactions = [];" \n
        "" \n
+       "// Get all controlled profiles initially and pass ambient movement command in case there is no command given" \n
+       "_all = []; {_all append ([_OPCOM_HANDLER,_x,[]] call ALiVE_fnc_HashGet)} foreach [""infantry"",""motorized"",""mechanized"",""armored"",""artillery"",""AAA"",""air"",""sea""];" \n
+       "{" \n
+       "	private [""_profile"",""_range""];" \n
+       "" \n
+       "	_profile = [ALiVE_profileHandler,""getProfile"",_x] call ALiVE_fnc_profileHandler;" \n
+       "" \n
+       "	if !(isnil ""_profile"") then {" \n
+       "		_commands = [_profile,""activeCommands"",[]] call ALiVE_fnc_HashGet;" \n
+       "" \n
+       "		if (count _commands == 0) then {" \n
+       "			_vehiclesInCommandOf = [_profile,""vehiclesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
+       "			_range = if (count _vehiclesInCommandOf > 0) then {1000} else {300};" \n
+       "			[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",_range]] call ALIVE_fnc_profileEntity;" \n
+       "		};" \n
+       "	};" \n
+       "} foreach _all;" \n
+       "" \n
        "// Reset CQB" \n
        "//[_CQB] spawn ALiVE_fnc_resetCQB;" \n
        "" \n
@@ -137,7 +155,6 @@ class FSM
        "_agentClusterData = if (!isnil ""ALIVE_agentHandler"") then {[ALIVE_agentHandler,""agentsByCluster"",["""",[],[],""""]] call ALiVE_fnc_hashGet} else {["""",[],[],""""]};" \n
        "" \n
        "_fnc_selectSection = {" \n
-       "    " \n
        "    private [""_handler"",""_pos"",""_factions"",""_count"",""_section"",""_types""];" \n
        "    " \n
        "	_handler = _this select 0;" \n
