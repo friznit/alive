@@ -50,6 +50,9 @@ if(!_moveInstantly) then {
     _group lockWP true;
 };
 
+// stop leader
+doStop _leader;
+
 // find and garrison any static weapons
 
 private ["_staticWeapons","_weapon","_positionCount","_unit"];
