@@ -29,7 +29,15 @@ private ["_args","_debug","_waypoints","_unit","_profile","_vehiclesInCommandOf"
 "_behaviour","_type","_objs","_parkedAir","_locations","_vehicleProfile","_vehicleObjectType"];
 
 _profile = _this select 0;
-_radius = _this select 1;
+_params = _this select 1;
+
+if (typename _params == "SCALAR") then {
+    _radius = _params;
+    _behaviour = "SAFE";
+} else {
+    _radius = _params select 0;
+    _behaviour = _params select 1;
+};
 
 _debug = true;
 
@@ -82,7 +90,6 @@ if ((count _waypoints == 0) && {isnil "_parkedAir"}) then {
     _type = "MOVE";
     _speed = "LIMITED";
     _formation = "COLUMN";
-    _behaviour = "SAFE";
     
 	for "_i" from 0 to 4 do {
         if (count _locations > 0) then {
@@ -98,11 +105,15 @@ if ((count _waypoints == 0) && {isnil "_parkedAir"}) then {
         if (_i == 4) then {_pos = _startPos; _type = "CYCLE"};
 
 		//Prepare Waypoint Data
+        /*
         _profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
         [_profileWaypoint,"type",_type] call ALIVE_fnc_hashSet;
         [_profileWaypoint,"speed",_speed] call ALIVE_fnc_hashSet;
         [_profileWaypoint,"formation",_formation] call ALIVE_fnc_hashSet;
         [_profileWaypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
+        */
+        
+        _profileWaypoint = [_pos, 20, _type, _speed, 50, [], _formation, "NO CHANGE", _behaviour] call ALIVE_fnc_createProfileWaypoint;
         [_profileWaypoint,"statements",["true","_disableSimulation = true;"]] call ALIVE_fnc_hashSet;
 
 		//Add Waypoint

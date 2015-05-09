@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1430.685059,59.929459,1017.266724,-1147.606934,535,777,1};
-window[] = {0,-1,-1,-1,-1,1010,271,1823,102,1,552};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1412.069702,41.313549,990.230103,-1120.571289,535,777,1};
+window[] = {0,-1,-1,-1,-1,1084,176,1728,176,1,552};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -131,11 +131,7 @@ class FSM
        "	if !(isnil ""_profile"") then {" \n
        "		_commands = [_profile,""activeCommands"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
-       "		if (count _commands == 0) then {" \n
-       "			_vehiclesInCommandOf = [_profile,""vehiclesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
-       "			_range = if (count _vehiclesInCommandOf > 0) then {1000} else {300};" \n
-       "			[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",_range]] call ALIVE_fnc_profileEntity;" \n
-       "		};" \n
+       "		if ({(_x select 0) == ""ALIVE_fnc_garrison""} count _commands == 0) then {[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",[300,""STEALTH""]]] call ALIVE_fnc_profileEntity};" \n
        "	};" \n
        "} foreach _all;" \n
        "" \n
@@ -177,7 +173,7 @@ class FSM
        "		{" \n
        "        		_pf = [ALiVE_ProfileHandler,""getProfile"",_x] call ALiVE_fnc_ProfileHandler;" \n
        "" \n
-       "       		!isnil ""_pf"" && {!([_pf,""busy"",false] call ALiVE_fnc_HashGet)} && {([_pf,""type"",false] call ALiVE_fnc_HashGet) == ""entity""};" \n
+       "       		!isnil ""_pf"" && {!([_pf,""busy"",false] call ALiVE_fnc_HashGet)} && {([_pf,""type"",""""] call ALiVE_fnc_HashGet) == ""entity""};" \n
        "   		 }" \n
        "    ] call BIS_fnc_sortBy;" \n
        "    " \n
@@ -507,7 +503,7 @@ class FSM
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
-       "	_command = [""ALIVE_fnc_ambientMovement"",300];" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour]];" \n
        "	_types = [""infantry"",""motorized"",""mechanized"",""armored""];" \n
        "	_guard = 0;" \n
        "	_groupsize = 3;" \n
@@ -649,7 +645,7 @@ class FSM
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
-       "	_command = [""ALIVE_fnc_ambientMovement"",300];" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour]];" \n
        "	_types = [""infantry"",""motorized"",""mechanized"",""armored""];" \n
        "	_guard = 0;" \n
        "	_groupsize = -1;" \n
@@ -767,7 +763,7 @@ class FSM
        "" \n
        "	_behaviour = ""STEALTH"";" \n
        "	_speed = ""NORMAL"";" \n
-       "	_command = [""ALIVE_fnc_ambientMovement"",300];" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour]];" \n
        "	_types = [""infantry""];" \n
        "	_guard = 0;" \n
        "	_groupsize = 1;" \n

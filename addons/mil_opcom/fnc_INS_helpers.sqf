@@ -268,7 +268,11 @@ ALiVE_fnc_INS_ied = {
    						 format["null = [getpos thisTrigger,%1,%2,%3] call ALIVE_fnc_createIED",_size,str(_id),ceil(_size/100)],
    						 format["null = [getpos thisTrigger,%1] call ALIVE_fnc_removeIED",str(_id)]
 					];
-					[_objective,"ied",[[],"convertObject",_trg] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
+                    
+                    _placeholders = ((nearestobjects [_pos,["Static"],150]) + (_pos nearRoads 150));
+                    if (!isnil "_placeholders" && {count _placeholders > 0}) then {_trg = _placeholders select 0};
+                    
+                    [_objective,"ied",[[],"convertObject",_trg] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
 				};
 
 				// Add TACOM rogue command on all selected agents
@@ -320,7 +324,11 @@ ALiVE_fnc_INS_suicide = {
 						format ["null = [[getpos thisTrigger,%1,'%2'],thisList] call ALIVE_fnc_createBomber", _size, _civFactions call BIS_fnc_SelectRandom],
 				 		""
 					];
-					[_objective,"suicide",[[],"convertObject",_trg] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
+                    
+                    _placeholders = ((nearestobjects [_pos,["Static"],150]) + (_pos nearRoads 150));
+                    if (!isnil "_placeholders" && {count _placeholders > 0}) then {_trg = _placeholders select 0};
+                    
+                    [_objective,"suicide",[[],"convertObject",_trg] call ALiVE_fnc_OPCOM] call ALiVE_fnc_HashSet;
 				};
 
 				// Add TACOM suicide command on one ambient civilian agents
