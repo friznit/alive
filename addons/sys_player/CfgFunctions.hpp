@@ -25,7 +25,7 @@ class cfgFunctions {
                                 description = "Sets player data to the store";
                                 file = "\x\alive\addons\sys_player\fnc_setPlayer.sqf";
                                 recompile = RECOMPILE;
-                        };                                
+                        };
                         class getGear {
                                 description = "Gets loadout data from a store and applies it to the player object";
                                 file = "\x\alive\addons\sys_player\fnc_getGear.sqf";
@@ -45,7 +45,12 @@ class cfgFunctions {
                                         description = "The module onPlayerConnected handler";
                                         file = "\x\alive\addons\sys_player\fnc_player_onPlayerConnected.sqf";
                                         recompile = RECOMPILE;
-                        };                                                                        
+                        };
+                        class autoStorePlayer {
+                                        description = "Checks to see if the player data should be saved to server or DB";
+                                        file = "\x\alive\addons\sys_player\fnc_autoStorePlayer.sqf";
+                                        recompile = RECOMPILE;
+                        };
                 };
         };
 };

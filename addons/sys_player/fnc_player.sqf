@@ -320,45 +320,11 @@ switch(_operation) do {
                 TRACE_2("NO SYS_PLAYER or ISDEDICATED/HC", isDedicated, isNil QMOD(sys_player));
             };
 
-            // Set up any spawn processes for checks
+            // Set up any checks - autoStorePlayer
             if (isDedicated) then {
 
-        	   [] spawn {
-        		private ["_lastSaveTime"];
-        		_lastSaveTime = dateToNumber date;
-        		MOD(sys_player) setVariable ["lastDBSaveTime",_lastSaveTime, true];
+                [ALiVE_fnc_autoStorePlayer, DEFAULT_INTERVAL, [DEFAULT_INTERVAL]] call CBA_fnc_addPerFrameHandler;
 
-                // Regularly store the player state to a server store and/or DB
-        		while {!isNil QMOD(sys_player)} do {
-                    private ["_check","_autoSaveTime","_lastDBSaveTime"];
-        			// Every 5 minutes store player data in memory
-        			if (time >= (_lastSaveTime + DEFAULT_INTERVAL)) then {
-            			{
-            				[MOD(sys_player), "setPlayer", [_x]] call MAINCLASS;
-            			} foreach playableUnits;
-            			_lastSaveTime = dateToNumber date;
-        			};
-
-        			// If auto save interval is defined and ext db is enabled, then save to external db
-        			_check = MOD(sys_player) getvariable ["storeToDB", DEFAULT_storeToDB];
-        			_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
-                    _lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
-                    TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
-
-        			if ( _autoSaveTime > 0 && _check && ((dateToNumber date) >= (_lastDBSaveTime + _autoSaveTime)) && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) ) then {
-        				// Save player data to external db
-                        TRACE_3("Saving players to DB", dateToNumber date, (_lastDBSaveTime + _autoSaveTime), _check);
-        				[MOD(sys_player), "savePlayers", [false]] call MAINCLASS;
-                        MOD(sys_player) setVariable ["lastDBSaveTime",dateToNumber date, true];
-        			};
-
-        			sleep DEFAULT_INTERVAL;
-
-        		};
-
-                 TRACE_4("SYS_PLAYER3", typename (MOD(sys_player) getvariable "allowReset"), MOD(sys_player) getvariable "allowDiffClass",MOD(sys_player) getvariable "allowManualSave",MOD(sys_player) getvariable "storeToDB" );
-
-        	   };
             };
 
             // Eventhandlers for other stuff here
