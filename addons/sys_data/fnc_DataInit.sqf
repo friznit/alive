@@ -231,10 +231,14 @@ if (isDedicated) then {
 	GVAR(ASYNC_QUEUE) = [];
 	publicVariable QGVAR(ASYNC_QUEUE);
 
+	// Need to optimise this with PFH
 	[] spawn {
 		["ALiVE SYS_DATA - ASYNC WRITE LOOP STARTING"] call ALIVE_fnc_dump;
 		while {true} do {
 			TRACE_1("ASYNC QUEUE COUNT", count GVAR(ASYNC_QUEUE));
+//			{
+//				["ALiVE SYS_DATA - ASYNC QUEUE %2: %1", _x, _forEachIndex] call ALIVE_fnc_dump;
+//			} foreach GVAR(ASYNC_QUEUE);
 			{
 				private ["_cmd","_response"];
 				_cmd = _x;
@@ -243,7 +247,7 @@ if (isDedicated) then {
 
 				waitUntil {sleep 0.3; _response = ["SendJSONAsync []"] call ALIVE_fnc_sendToPlugIn; ([_response] call CBA_fnc_strLen) > 0};
 
-				REM(GVAR(ASYNC_QUEUE),_cmd);
+				GVAR(ASYNC_QUEUE) deleteAt _forEachIndex;
 
 				TRACE_3("ASYNC WRITE LOOP", _cmd, _response, count GVAR(ASYNC_QUEUE));
 
