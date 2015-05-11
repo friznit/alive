@@ -1,0 +1,106 @@
+[CENTER][URL="http://alivemod.com/"][IMG]http://alivemod.com/img/alive_logo_bif.jpg[/IMG][/URL]
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+[SIZE=4]The next generation dynamic persistent mission addon for ArmA3
+Release 0.9.8[/SIZE][/B][/CENTER]
+
+[B][U]Optimisation[/U][/B]
+The main focus of this release is performance and loading optimisation.  We have been polishing up some of the older modules and exercising the new commands introduced by ArmA3 1.44 and the latest CBA.  Also in this release is the second iteration of Asymmetric Warfare Environment, which includes a lot of bug fixes and tweaks - many thanks to everyone for providing feedback and please keep it coming!  There's been a bit of a hiatus with map indexing because we've been working on a new process that should hopefully simplify and reduce the effort required.  Our newest team member, Cry3rn, has been hard at work reviewing the scripts and while there is no standalone tool for indexing, if all goes well with the current work it is something we hope to be able to provide in the future.
+
+[CENTER]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[SIZE=4][B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B][/SIZE]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix and ArmAholic.
+
+Note for server admins that this build requires the new @ALiVEServer package. 
+
+[img]http://i.imgur.com/TAxvn8j.jpg[/img][/CENTER]
+
+[CENTER][SIZE=4][B][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/B][/SIZE][/CENTER]
+
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  All the info you need should is there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
+
+[B][U]Support Forum[/U][/B]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [URL="http://alivemod.com/forum/"]http://alivemod.com/forum/[/URL]
+
+[B][U]Release Highlights[/U][/B]
+[LIST]
+[*] Optimization enhancements to module loading and AI spawning
+[*] Improvements and fixes to Asymmetric Warfare Environment
+[*] Added support for Kunduz and Gorgona
+[*] Several small enhancements to improve the user experience
+[*] Dead people no longer answer back
+[/LIST]
+
+[B][U]Changelog[/U][/B]
+[SPOILER]
+- Build 0.9.8
+[functions] Updated ALiVE_fnc_getPositionDistancePlayers to ensure it does not return positions on water.
+[sys_player] Moved the player data auto save loop to a CBA per Frame Handler to avoid the spawn and waitUntil.
+[sys_stats] Fixed null player start message being sent to DB
+[sys_data] Optimized array operation, fixed init race condition.
+[sys_player] Optimised module init
+[MIL OPCOM | MIL COMMAND]  Fixed Suicide and IED positions were not restored after loading from DB! Armed Insurgents now move in stealth if on a patrol in hostile area!
+[SYS GC] Corrected wrong info text and change in a way its deleting all individually passed classes
+[MIL CQB] Don't choose roofs as preferred building position if CQB is synced to an asymmetric OPCOM, Stay low yo!
+[SYS PROFILE | AMB CIVs] Create vehicles with can_collide to minimize explosions in case no suitable location was found
+[X LIB] Ensured that guarding groups don't wander off during garrison, leaving installations unguarded under some circumstances!
+[MIL OPCOM] Passed ambient patrols to insurgents in case no command was given to enhance immersion
+[X LIB] Implemented searchbag into ALiVE_fnc_FindVehicleType, impproving performance of the function by 160 times
+[main] Optimized player object checking when player connects to dedicated server
+[sys_statistics] Optimized performance of combat dive checking and fixed dive time accuracy
+[ALL] Optimized module initialization by terminating bis_fnc_initModule on auto initialized modules
+[MIL CQB] Found culprit that improves performance when units are spawned by approx. five times
+[AMB CIV COMMANDS] Missed to also add default value for ALiVE_civilianWeapons in rogueTarget
+[MIL OPCOM] Ensured that only civilians and not civilian vehicles were ordered to conduct a sabotage, rogue, etc. mission
+[SYS PROFILE] Fixed bug in persistence with 3rd party mods, that didn't follow the BIS defaults for ranks https://community.bistudio.com/wiki/rank (_ranksMap error)!
+[AMB CIVS] Several fixes and workarounds for getting and setting hostility with independent insurgents, fixes compatibility issues with 3rd party mods like Leights OPFOR package. Allows for asymmetric warfare with f.e. afghan civilians and insurgent groups that are on side independend, fixes scripterrors if there are no civilian weapons defined for the used civilian faction.
+[sys_data] Added additional debug to catch async write issue
+[sys player] Fixed error with CBA menu
+[VARIOUS] Added default values and sanity checks for missing sector data in fnc_analysis and their calling modules in order to minimize errors on 3rd party maps! Affects many modules!
+[UI] Fixed main menu issue with icons disappearing off screen
+[sup_player_resupply] Interaction menu only available if there is a mil logistics module placed for the player's side
+[Main] Full index of Gorgona
+[Main] Full index of Kunduz
+[MIL OPCOM] Update objectives sector hostility properly if an insurgents installation is destroyed
+[MIL OPCOM] Asym sabotage action runs at least 15 minutes before switching to another one! Removed over engineered part to balance between the different terrorize actions!
+[AMB CIVS] Fixed error in setActiveCommand when agent was active! Increased civilian traffic! Tweaked hostility values to fit Asym warfare better!
+[MIL OPCOM] Fixed overpopulating installations, ensured a building is not furnitured twice! Improved way of handling installations if they are destroyed by a player
+[Composition A3] Fixed demoCharge_remote_ammo config error in ZEUS (tbd, find fitting IEDs to be placed at the composition, that doesnt throw errors). Fixed missing string that wasnt existing in stringtable.xml
+[sup PR] Fixed typos for "denied" messages
+[sys data] Added debug for OperationStart issue
+[sup combat support] Fixed typo on radio confirmation
+[combat logistics support] Add proper check to see if Mil Log has been placed
+[mil ied] Fix to stop IED ammunition from rocketing into the distance
+[sys marker] Added new CBA keybinds to map controls
+[MIL OPCOM] Lowered hostility thresholds and improved way of setting actions, to allow more IED and Suicide areas
+[AMB CIVS] Tweaked clusterhostility levels to be in sync with Insurgency
+[MIL OPCOM] Fixed OPCOMToggleInstallations was not recognising input on dedicated
+[AMB CIVS] Added rare chance of getting HUMINT
+[SYS ADMINACTIONS, MIL INT, FNC ANALYSIS] Updated Mil Int and fnc analysis for Insurgency cases
+[MIL OPCOM] Added Insurgency to event system (C2ISTAR, Military Intelligence), OPCOM ToggleInstallations markers will now fade
+[ALL] Added initial CBA compatibility for new CBA keybind implementation. Changing interaction key still requires a reboot, but can now be configured via Configure Controls > Configure Addons UI
+[SYS ADMINACTIONS] Added Admin actions debug toggle for showing OPCOM installations
+[MIL OPCOM] Tweaked Asym to allow more IED & suicide bomber locations especially on small objectives, IED factories will be created at larger objectives (> 200m in size), added depot composition instead of placing a single box, Insurgent cells wont directly approach the objective center anymore if no building was found in the periphers. Made sure that roadblocks and IEDs were created but only once per objective until cleared. Created "Show Installations" admin debug output function
+[SYS_DATA] Disabling OS performance monitoring by default to avoid issues with shared game servers
+[AMB CIV POP] You cannot talk to dead people anymore (lol)
+[X LIB] Added missing default values to fix script errors if players were side "ENEMY" after shooting friendly units
+
+[/SPOILER]
+
+[B][U]Want to join our team?[/U][/B]
+We are still recruiting people that are interested in being part of a close knit dev team. We welcome anyone who fancies a go at SQF scripting, Javascript/PHP development (for War Room) and C++/C# development for our ALiVE extension. ALiVE is an opportunity to build your experience of any of these technologies in a fun mod development environment.
+
+[B][U]Disclaimer[/U][/B]
+ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+
+[B][U]Work In Progress[/U][/B]
+We're now on the final few sprints in the run up to the official 1.0 release.  The continuing focus is to ensure ALiVE is a intuitive and robust as we can make it.  There are a lot of features we would like to enhance but it's abundantly clear we won't achieve all of them in the time frame we've set ourselves.  We still have a lot to do and many more ideas besides, so the 1.0 release will certainly not be the last.
+
+[B][U]ALiVE has transformed my Arma 3 experience, how can I thank you?[/U][/B]
+Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here http://www.alivemod.com/#Donate 
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort. 
+
+Have fun!
