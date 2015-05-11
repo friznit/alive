@@ -31,7 +31,7 @@ ARJay
 
 private ["_position","_distance","_countToFind","_onlyLand","_result","_err","_sectors","_sector",
 "_center","_playersInRange","_countFound","_found"];
-	
+
 _position = _this select 0;
 _distance = _this select 1;
 _countToFind = if(count _this > 2) then {_this select 2} else {1};
@@ -61,9 +61,24 @@ _found = [];
 
         _position = _center;
 
-        _found set [count _found, _position];
+        // Check if position is water (in case of shore sector)
+        if (_onlyLand && surfaceIsWater _position) then {
 
-        _countFound = _countFound + 1;
+            // Go find nearest land
+            _pos = [_position, _distance/2] call ALiVE_fnc_getClosestLand;
+
+            if (_pos distance _position > 5) then {
+                _found set [count _found, _pos];
+
+                _countFound = _countFound + 1;
+            };
+
+        } else {
+
+            _found set [count _found, _position];
+
+            _countFound = _countFound + 1;
+        };
 
         if(_countFound == _countToFind) then {
 
