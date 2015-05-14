@@ -1053,6 +1053,8 @@ switch(_operation) do {
                 if (alive _suicide) then {
                     private ["_civFactions"];
                     
+                    _civFactions = [];
+                    
                     // Get civilian factions of existing groups
 					{if ((side leader _x) == CIVILIAN) then {_civFactions = (_civFactions - [faction leader _x]) + [faction leader _x]}} foreach allgroups;
 					
