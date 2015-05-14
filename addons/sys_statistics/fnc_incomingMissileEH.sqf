@@ -24,7 +24,7 @@ if (GVAR(ENABLED)) then {
 	_source = _this select 2;
 
 	if (isServer) then {
-		diag_log _this;
+		// diag_log _this;
 
 		if ((isPlayer _target) || (isPlayer _source) || (isPlayer (gunner _target))  || (isPlayer (gunner _source)) ) then {
 
