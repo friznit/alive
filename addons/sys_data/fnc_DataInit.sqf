@@ -272,7 +272,7 @@ if (isDedicated) then {
 
 	TRACE_2("SYS_DATA AAR VAR", MOD(sys_data) getVariable "disableAAR", ALIVE_sys_AAR_ENABLED);
 	// Start the AAR monitoring module
-	if (MOD(sys_data) getvariable ["disableAAR", "true"] == "false") then { //  && ALIVE_sys_AAR_ENABLED
+	if (MOD(sys_data) getvariable ["disableAAR", "true"] == "false" && ALIVE_sys_AAR_ENABLED) then {
 
 		[] spawn {
 			// Thread running on server to report state/pos of every playable unit and group every 60 seconds
