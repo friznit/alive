@@ -44,9 +44,10 @@ onPlayerDisconnected {
 };
 
 
-onPlayerConnected {
+ALiVE_fnc_onPlayerConnected = {
 
 	TRACE_1("OPC DATA",_this);
+//    ["OPC DATA",_this] call ALiVE_fnc_dump;
 
 	if !(isNil QMOD(sys_statistics)) then {
 		// Stats module onPlayerConnected call
@@ -93,3 +94,4 @@ onPlayerConnected {
     };
 };
 
+[QGVAR(OPC),"onPlayerConnected","ALiVE_fnc_OnPlayerConnected"] call BIS_fnc_addStackedEventHandler;
