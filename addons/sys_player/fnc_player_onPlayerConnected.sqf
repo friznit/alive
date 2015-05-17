@@ -64,6 +64,9 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 		_unit = [_uid] call ALIVE_fnc_getPlayerByUIDOnConnect;
 		_owner = owner _unit;
 
+		["ALiVE SYS_PLAYER - PLAYER UNIT FOUND IN PLAYABLEUNITS (%1)",_unit] call ALIVE_fnc_dump;
+
+
 /*		// If player connecting then get player data from memory and update player object
 		{
 			private ["_playerGUID","_tmp"];

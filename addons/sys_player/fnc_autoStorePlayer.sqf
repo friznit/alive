@@ -27,13 +27,13 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_check","_autoSaveTime","_lastDBSaveTime","_params","_delay"];
+private ["_check","_autoSaveTime","_lastDBSaveTime","_params","_delay","_lastSaveTime"];
 
 _params = _this select 0;
 _delay = _params select 0;
-_lastSaveTime = diag_tickTime;
 
-MOD(sys_player) setVariable ["lastDBSaveTime",_lastSaveTime, true];
+// Get the time of the last save to server memory
+_lastSaveTime = MOD(sys_player) getVariable ["lastSaveTime",0];
 
 // Regularly store the player state to a server store and/or DB
 // By default Every 5 minutes store player data in memory
@@ -41,7 +41,7 @@ if (diag_tickTime >= (_lastSaveTime + _delay)) then {
 	{
 		[MOD(sys_player), "setPlayer", [_x]] call ALiVE_fnc_player;
 	} foreach playableUnits;
-	_lastSaveTime = diag_tickTime;
+    MOD(sys_player) setVariable ["lastSaveTime",diag_tickTime, true];
 };
 
 // If auto save interval is defined and ext db is enabled, then save to external db
