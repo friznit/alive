@@ -119,6 +119,8 @@ switch (_state) do {
 
                 waituntil {sleep 10; _agent distance _position < 5 || {!(alive _agent)}};
                 
+                if (!alive _agent) exitwith {};
+                
                 _positions = [_position,20] call ALIVE_fnc_findIndoorHousePositions;
                 
                 sleep 5;

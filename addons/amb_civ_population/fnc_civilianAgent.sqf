@@ -86,7 +86,7 @@ _deleteMarkers = {
 };
 
 _createMarkers = {
-    private ["_logic","_markers","_m","_position","_agentID","_debugColor","_debugIcon","_debugAlpha","_agentSide","_vehicleType","_agentActive","_agentPosture"];
+    private ["_logic","_markers","_m","_position","_agentID","_debugColor","_insurgentCommands","_text","_debugIcon","_debugAlpha","_agentSide","_vehicleType","_agentActive","_agentPosture"];
     _logic = _this;
     _markers = [];
 
@@ -95,7 +95,13 @@ _createMarkers = {
     _agentSide = [_logic,"side"] call ALIVE_fnc_hashGet;
     _agentActive = [_logic,"active"] call ALIVE_fnc_hashGet;
     _agentPosture = [_logic,"posture",0] call ALIVE_fnc_hashGet;
+    _activeCommands = [_logic,"activeCommands",[]] call ALIVE_fnc_hashGet;
+    _debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+    _insurgentCommands = ["alive_fnc_cc_suicide","alive_fnc_cc_suicidetarget","alive_fnc_cc_rogue","alive_fnc_cc_roguetarget","alive_fnc_cc_sabotage","alive_fnc_cc_getweapons"];
+	
+    _insurgentCommandActive = ({toLower(_x select 0) in _insurgentCommands} count _activeCommands > 0);
 
+	/*
     switch(_agentSide) do {
         case "EAST":{
             _debugColor = "ColorRed";
@@ -113,12 +119,15 @@ _createMarkers = {
             _debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
         };
     };
+    */
 	
     if(_agentPosture < 10) then {_debugColor = "ColorGreen"};
 	if(_agentPosture >= 10 && {_agentPosture < 40}) then {_debugColor = "ColorGreen"};
     if(_agentPosture >= 40 && {_agentPosture < 70}) then {_debugColor = "ColorYellow"};
     if(_agentPosture >= 70 && {_agentPosture < 100}) then {_debugColor = "ColorOrange"};
     if(_agentPosture >= 100) then {_debugColor = "ColorRed"};
+    
+    _text = if (_insurgentCommandActive) then {_debugColor = "ColorWhite"; _activeCommands select 0 select 0} else {""};
     
     _debugIcon = "n_unknown";
 
@@ -134,6 +143,7 @@ _createMarkers = {
         _m setMarkerType _debugIcon;
         _m setMarkerColor _debugColor;
         _m setMarkerAlpha _debugAlpha;
+		_m setMarkerText _text;
 
         _markers set [count _markers, _m];
 
@@ -350,7 +360,7 @@ switch(_operation) do {
         if!(_active) then {
 
             _group = createGroup _sideObject;
-            _unit = _group createUnit [_agentClass, _homePosition, [], 0, "NONE"];
+            _unit = _group createUnit [_agentClass, _homePosition, [], 0, "CAN_COLLIDE"];
             
             //set low skill to save performance
             _unit setSkill 0.1;
@@ -452,7 +462,7 @@ switch(_operation) do {
     };
     case "createMarker": {
 
-        private ["_markers","_m","_position","_agentID","_color","_icon","_alpha","_side","_active","_agentPosture"];
+        private ["_markers","_m","_position","_agentID","_debugColor","_icon","_text","_alpha","_side","_active","_agentPosture","_activeCommands"];
 
         _alpha = [_args, 0, 0.5, [1]] call BIS_fnc_param;
 
@@ -463,30 +473,39 @@ switch(_operation) do {
         _side = [_logic,"side"] call ALIVE_fnc_hashGet;
         _active = [_logic,"active"] call ALIVE_fnc_hashGet;
         _agentPosture = [_logic,"posture",0] call ALIVE_fnc_hashGet;
+        _activeCommands = [_logic,"activeCommands",[]] call ALIVE_fnc_hashGet;
+	    _debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+	    _insurgentCommands = ["alive_fnc_cc_suicide","alive_fnc_cc_suicidetarget","alive_fnc_cc_rogue","alive_fnc_cc_roguetarget","alive_fnc_cc_sabotage","alive_fnc_cc_getweapons"];
+		
+	    _insurgentCommandActive = ({toLower(_x select 0) in _insurgentCommands} count _activeCommands > 0);
 
+		/*
         switch(_side) do {
             case "EAST":{
-                _color = "ColorRed";
+                _debugColor = "ColorRed";
             };
             case "WEST":{
-                _color = "ColorBlue";
+                _debugColor = "ColorBlue";
             };
             case "CIV":{
-                _color = "ColorYellow";
+                _debugColor = "ColorYellow";
             };
             case "GUER":{
-                _color = "ColorGreen";
+                _debugColor = "ColorGreen";
             };
             default {
-                _color = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
+                _debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
             };
         };
+        */
 
 	    if(_agentPosture < 10) then {_debugColor = "ColorGreen"};
 		if(_agentPosture >= 10 && {_agentPosture < 40}) then {_debugColor = "ColorGreen"};
 	    if(_agentPosture >= 40 && {_agentPosture < 70}) then {_debugColor = "ColorYellow"};
 	    if(_agentPosture >= 70 && {_agentPosture < 100}) then {_debugColor = "ColorOrange"};
 	    if(_agentPosture >= 100) then {_debugColor = "ColorRed"};
+        
+        _text = if (_insurgentCommandActive) then {_debugColor = "ColorWhite"; _activeCommands select 0 select 0} else {""};
 
         _icon = "n_unknown";
 
@@ -495,8 +514,9 @@ switch(_operation) do {
             _m setMarkerShape "ICON";
             _m setMarkerSize [0.4, 0.4];
             _m setMarkerType _icon;
-            _m setMarkerColor _color;
+            _m setMarkerColor _debugColor;
             _m setMarkerAlpha _alpha;
+            _m setMarkerText _text;
 
             _markers set [count _markers, _m];
 

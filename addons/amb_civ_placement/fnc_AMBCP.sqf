@@ -817,7 +817,8 @@ switch(_operation) do {
                             _unitClass = _civClasses call BIS_fnc_selectRandom;
                             _agentID = format["agent_%1",[ALIVE_agentHandler, "getNextInsertID"] call ALIVE_fnc_agentHandler];
 
-                            _buildingPosition = getPos _building;
+                            _buildingPositions = [getPosATL _building,15] call ALIVE_fnc_findIndoorHousePositions;
+                            _buildingPosition = if (count _buildingPositions > 0) then {_buildingPositions call BIS_fnc_SelectRandom} else {getPosATL _building};
 
                             _agent = [nil, "create"] call ALIVE_fnc_civilianAgent;
                             [_agent, "init"] call ALIVE_fnc_civilianAgent;
