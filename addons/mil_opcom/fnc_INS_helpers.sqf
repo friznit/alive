@@ -318,7 +318,7 @@ ALiVE_fnc_INS_suicide = {
 				if (!isnil "ALiVE_mil_IED") then {
 					_trg = createTrigger ["EmptyDetector",_pos];
 					_trg setTriggerArea [_size + 250, _size + 250,0,false];
-					_trg setTriggerActivation ["ANY","PRESENT",true];
+					_trg setTriggerActivation ["ANY","PRESENT",false];
 					_trg setTriggerStatements [
 						"this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)",
 						format ["null = [[getpos thisTrigger,%1,'%2'],thisList] call ALIVE_fnc_createBomber", _size, _civFactions call BIS_fnc_SelectRandom],
