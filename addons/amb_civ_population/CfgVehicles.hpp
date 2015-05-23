@@ -125,20 +125,17 @@ class CfgVehicles {
                                       class MEDIUM
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_MEDIUM";
-                                              // Quick Fix! Do GUER and INDEP and RESISTANCE proper! Thanks BIS!
-                                              value = "60";
+                                              value = "30";
                                       };
                                       class HIGH
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_HIGH";
-                                              // Quick Fix! Do GUER and INDEP and RESISTANCE proper! Thanks BIS!
-                                              value = "120";
+                                              value = "60";
                                       };
                                       class EXTREME
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_EXTREME";
-                                              // Quick Fix! Do GUER and INDEP and RESISTANCE proper! Thanks BIS!
-                                              value = "260";
+                                              value = "130";
                                       };
                               };
                         };

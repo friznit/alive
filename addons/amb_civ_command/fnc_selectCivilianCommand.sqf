@@ -53,7 +53,7 @@ if(isNil "ALIVE_civCommands") then {
     [ALIVE_civCommands, "journey", ["ALIVE_fnc_cc_journey", "managed", [0.2,0.5,0.2], []]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "housework", ["ALIVE_fnc_cc_housework", "managed", [0.25,0.5,0.2], []]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "sleep", ["ALIVE_fnc_cc_sleep", "managed", [0,0.1,0.9], [300,1000]]] call ALIVE_fnc_hashSet;
-    [ALIVE_civCommands, "campfire", ["ALIVE_fnc_cc_campfire", "managed", [0,0.25,0.2], [60,300]]] call ALIVE_fnc_hashSet;
+    [ALIVE_civCommands, "campfire", ["ALIVE_fnc_cc_campfire", "managed", [0,0.25,0.3], [60,300]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.2,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
     [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
@@ -91,18 +91,18 @@ if(count (ALIVE_civCommands select 1) > 0) then {
 	//["CLUSTER HOSTILITY: %1",_clusterHostilityLevel] call ALIVE_fnc_dumpR;
 
 	if(_clusterHostilityLevel < 10) then {
-	    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.2,0.15,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+	    [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.05,0.05,0.05], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.05,0.05,0.05], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.1,0.05,0.1], [30,90]]] call ALIVE_fnc_hashSet;
         _dayCommand = "randomMovement";
         _idleCommand = "idle";
         ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
 	};
 
 	if(_clusterHostilityLevel >= 10 && {_clusterHostilityLevel < 40}) then {
-        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.1,0.1,0.1], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.2,0.2,0.2], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
         _dayCommand = "randomMovement";
         _idleCommand = "idle";
         ALIVE_availableCivCommands = ["journey","housework","campfire","observe","suicide","rogue","startMeeting","startGathering"];
@@ -110,28 +110,28 @@ if(count (ALIVE_civCommands select 1) > 0) then {
 
     if(_clusterHostilityLevel >= 40 && {_clusterHostilityLevel < 70}) then {
         [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.3,0.3,0.3], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.4,0.4,0.4], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
         _dayCommand = "randomMovement";
         _idleCommand = "idle";
         ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue","startGathering"];
     };
 
     if(_clusterHostilityLevel >= 70 && {_clusterHostilityLevel < 100}) then {
-        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.9,0.9,0.9], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.4,0.4,0.4], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
         _dayCommand = "randomMovement";
-        _idleCommand = "rogue";
+        _idleCommand = "idle";
         ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue"];
     };
 
     if(_clusterHostilityLevel >= 100) then {
         [ALIVE_civCommands, "suicide", ["ALIVE_fnc_cc_suicide", "managed", [0.5,0.5,0.5], [30,90]]] call ALIVE_fnc_hashSet;
-        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.9,0.9,0.9], [30,90]]] call ALIVE_fnc_hashSet;
+        [ALIVE_civCommands, "rogue", ["ALIVE_fnc_cc_rogue", "managed", [0.7,0.7,0.7], [30,90]]] call ALIVE_fnc_hashSet;
         [ALIVE_civCommands, "observe", ["ALIVE_fnc_cc_observe", "managed", [0.8,0.8,0.8], [30,90]]] call ALIVE_fnc_hashSet;
-        _dayCommand = "rogue";
-        _idleCommand = "suicide";
+        _dayCommand = "randomMovement";
+        _idleCommand = "idle";
         ALIVE_availableCivCommands = ["journey","housework","sleep","observe","suicide","rogue"];
     };
 

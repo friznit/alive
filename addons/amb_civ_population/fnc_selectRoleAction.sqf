@@ -72,7 +72,7 @@ if (_reduceHostility) then {
     if (_politician) then {_value = 15};
     
     [_pos,[str(side _caller)], _value * -1] call ALiVE_fnc_updateSectorHostility;
-    [_pos,["EAST","WEST","GUER","INDEP"] - [str(side _caller)], _value] call ALiVE_fnc_updateSectorHostility;
+    [_pos,["EAST","WEST","GUER"] - [str(side _caller)], _value] call ALiVE_fnc_updateSectorHostility;
 };
 
 true;

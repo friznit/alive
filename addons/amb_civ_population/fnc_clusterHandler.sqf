@@ -139,13 +139,12 @@ switch(_operation) do {
             // get the global hostility levels
             _eastHostility = [ALIVE_civilianHostility,"EAST"] call ALIVE_fnc_hashGet;
             _westHostility = [ALIVE_civilianHostility,"WEST"] call ALIVE_fnc_hashGet;
-            _indepHostility = [ALIVE_civilianHostility,"INDEP"] call ALIVE_fnc_hashGet;
+            _indepHostility = [ALIVE_civilianHostility,"GUER"] call ALIVE_fnc_hashGet;
 
             // set the local hostility levels
             _localHostility = [] call ALIVE_fnc_hashCreate;
             [_localHostility,"EAST",_eastHostility] call ALIVE_fnc_hashSet;
             [_localHostility,"WEST",_westHostility] call ALIVE_fnc_hashSet;
-            [_localHostility,"INDEP",_indepHostility] call ALIVE_fnc_hashSet;
             [_localHostility,"GUER",_indepHostility] call ALIVE_fnc_hashSet;
 
             [_cluster, "hostility", _localHostility] call ALIVE_fnc_hashSet;

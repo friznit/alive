@@ -101,26 +101,6 @@ _createMarkers = {
 	
     _insurgentCommandActive = ({toLower(_x select 0) in _insurgentCommands} count _activeCommands > 0);
 
-	/*
-    switch(_agentSide) do {
-        case "EAST":{
-            _debugColor = "ColorRed";
-        };
-        case "WEST":{
-            _debugColor = "ColorBlue";
-        };
-        case "CIV":{
-            _debugColor = "ColorYellow";
-        };
-        case "GUER":{
-            _debugColor = "ColorGreen";
-        };
-        default {
-            _debugColor = [_logic,"debugColor","ColorGreen"] call ALIVE_fnc_hashGet;
-        };
-    };
-    */
-	
     if(_agentPosture < 10) then {_debugColor = "ColorGreen"};
 	if(_agentPosture >= 10 && {_agentPosture < 40}) then {_debugColor = "ColorGreen"};
     if(_agentPosture >= 40 && {_agentPosture < 70}) then {_debugColor = "ColorYellow"};
@@ -137,7 +117,7 @@ _createMarkers = {
     };
 
     if(count _position > 0) then {
-        _m = createMarker [format[MTEMPLATE, _agentID], _position];
+        _m = createMarker [format[MTEMPLATE, format["%1_debug",_agentID]], _position];
         _m setMarkerShape "ICON";
         _m setMarkerSize [0.4, 0.4];
         _m setMarkerType _debugIcon;
@@ -145,7 +125,7 @@ _createMarkers = {
         _m setMarkerAlpha _debugAlpha;
 		_m setMarkerText _text;
 
-        _markers set [count _markers, _m];
+        _markers pushback _m;
 
         [_logic,"debugMarkers",_markers] call ALIVE_fnc_hashSet;
     };
@@ -458,6 +438,14 @@ switch(_operation) do {
         };
     };
     case "handleDeath": {
+        
+        _marker = format[MTEMPLATE, format["%1_debug",[_logic,"agentID",""] call ALiVE_fnc_HashGet]];
+        
+        deletemarker _marker;
+        
+        [_logic,"markers",([_logic,"markers",[]] call ALIVE_fnc_hashGet) - [_marker]] call ALIVE_fnc_hashSet;
+        [_logic,"debugMarkers",([_logic,"debugMarkers",[]] call ALIVE_fnc_hashGet) - [_marker]] call ALIVE_fnc_hashSet;
+
         [ALIVE_civCommandRouter, "deactivate", _logic] call ALIVE_fnc_civCommandRouter;
     };
     case "createMarker": {
@@ -518,7 +506,7 @@ switch(_operation) do {
             _m setMarkerAlpha _alpha;
             _m setMarkerText _text;
 
-            _markers set [count _markers, _m];
+            _markers pushback _m;
 
             [_logic,"markers",_markers] call ALIVE_fnc_hashSet;
         };
