@@ -300,7 +300,7 @@ switch(_operation) do {
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 4
 
 				//set default values on main CQB instance
-                [MOD(CQB), "houses", (MOD(CQB) getvariable ["houses",[]]) + _result] call ALiVE_fnc_CQB;
+                [MOD(CQB), "allHouses", (MOD(CQB) getvariable ["allHouses",[]]) + _result] call ALiVE_fnc_CQB;
                 [MOD(CQB), "factions", (MOD(CQB) getvariable ["factions",[]]) + _factions] call ALiVE_fnc_CQB;
 
 				TRACE_TIME(QUOTE(COMPONENT),[]); // 5
@@ -594,7 +594,7 @@ switch(_operation) do {
                 };
         };
 
-        case "debug": {
+	case "debug": {
             
 		if(isNil "_args") then {
 			_args = _logic getVariable ["debug", false];
@@ -624,7 +624,7 @@ switch(_operation) do {
 	            
 		        if (isNil {_x getVariable "group"}) then {_type = "mil_dot"} else {_type = "Waypoint"};
 		        
-		        [format[MTEMPLATE, _x], getposATL _x,"ICON", [1,1],_color,_prefix,_type,"FDiagonal",0,1] call ALIVE_fnc_createMarkerGlobal;
+		        [format[MTEMPLATE, _x], getposATL _x,"ICON", [0.5,0.5],_color,_prefix,_type,"FDiagonal",0,1] call ALIVE_fnc_createMarkerGlobal;
 	        } forEach _houses;
 	        
 	        {
@@ -632,51 +632,12 @@ switch(_operation) do {
 	            
 		        if (isNil {_x getVariable "group"}) then {_type = "mil_dot"} else {_type = "Waypoint"};
 		        
-		        [format[MTEMPLATE, _x], getposATL _x,"ICON", [1,1],_color,_prefix,_type,"FDiagonal",0,0.2] call ALIVE_fnc_createMarkerGlobal;
+		        [format[MTEMPLATE, _x], getposATL _x,"ICON", [0.5,0.5],_color,_prefix,_type,"FDiagonal",0,0.2] call ALIVE_fnc_createMarkerGlobal;
 	        } forEach _housesPending;
         } else {
 			{deleteMarker format[MTEMPLATE, _x]} foreach _housesTotal;
         };
 
-		/*
-		{
-			deleteMarkerLocal format[MTEMPLATE, _x];
-		} forEach (_logic getVariable ["houses", []]);
-
-		if(_args) then {
-			// mark all strategic and non-strategic houses
-			{
-				private ["_m"];
-				_m = format[MTEMPLATE, _x];
-				if(str getMarkerPos _m == "[0,0,0]") then {
-					createmarkerLocal [_m, getPosATL _x];
-					_m setMarkerShapeLocal "Icon";
-					_m setMarkerSizeLocal [1,1];
-					if (isNil {_x getVariable "group"}) then {
-						_m setMarkerTypeLocal "mil_dot";
-					} else{
-						// mark active houses
-						_m setMarkerTypeLocal "Waypoint";
-					};
-					_m setMarkerColorLocal (_logic getVariable ["debugColor","ColorGreen"]);
-					_m setMarkerTextLocal (_logic getVariable ["debugPrefix","CQB"]);
-				};
-			} forEach (_logic getVariable ["houses", []]);
-
-			private["_activecount","_remaincount","_cqbai"];
-            
-			_remaincount = count (_logic getVariable ["houses", []]);
-			_activecount = count (_logic getVariable ["groups", []]);
-			_cqbai = 0;
-			{
-				if (local leader _x) then {
-					_cqbai = _cqbai + count units _x;
-				};
-			} forEach (_logic getVariable ["groups",[]]);
-			//["CQB Population: %1 remaing positions | %2 active positions | %3 local CQB AI...", _remaincount, _activecount, _cqbai] call ALiVE_fnc_Dump;
-		};
-        */
-        
 		_args;
 	};
 
