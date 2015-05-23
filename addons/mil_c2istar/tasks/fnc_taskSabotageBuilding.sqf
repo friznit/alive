@@ -36,21 +36,22 @@ switch (_taskState) do {
 	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
 	    "_taskApplyType","_taskEnemySide","_targetSector","_targetEntity","_taskPlayers","_targetBuilding"];
 
-        _taskID = _task select 0;
-        _requestPlayerID = _task select 1;
-        _taskSide = _task select 2;
-        _taskFaction = _task select 3;
-        _taskLocationType = _task select 5;
-        _taskLocation = _task select 6;
-        _taskPlayers = _task select 7;
-        _taskEnemyFaction = _task select 8;
-        _taskCurrent = _taskData select 9;
-        _taskApplyType = _taskData select 10;
+        _taskID = [_task, 0, "", [""]] call BIS_fnc_param;
+        _requestPlayerID = [_task, 1, "", [""]] call BIS_fnc_param;
+        _taskSide = [_task, 2, "", [""]] call BIS_fnc_param;
+        _taskFaction = [_task, 3, "", [""]] call BIS_fnc_param;
+        _taskLocationType = [_task, 5, "", [""]] call BIS_fnc_param;
+        _taskLocation = [_task, 6, [], [[]]] call BIS_fnc_param;
+        _taskPlayers = [_task, 7, [], [[]]] call BIS_fnc_param;
+        _taskEnemyFaction = [_task, 8, "", [""]] call BIS_fnc_param;
+        _taskCurrent = [_taskData, 9, "", [""]] call BIS_fnc_param;
+        _taskApplyType = [_taskData, 10, "", [""]] call BIS_fnc_param;
         
         _tasksCurrent = ([ALiVE_TaskHandler,"tasks",["",[],[],nil]] call ALiVE_fnc_HashGet) select 2;
         
-        /*//Inputs
-        ["%1 | %2 | %3 | %4 | %5 | %6 | %7 | %8 | %9 | %10 | %11",
+        /*
+        //Inputs
+        ["%1 | %2 | %3 | %4 | %5 | %6 | %7 | %8 | %9 | %10",
 	        _taskID,
 			_requestPlayerID,
 			_taskSide,
@@ -62,7 +63,16 @@ switch (_taskState) do {
 			_taskCurrent,
 			_taskApplyType
         ] call ALiVE_fnc_Dump;
-		*/
+        */
+        
+        if (_taskID == "") exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _taskID!"] call ALiVE_fnc_Dump};
+        if (_requestPlayerID == "") exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _requestPlayerID!"] call ALiVE_fnc_Dump};
+        if (_taskFaction == "") exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _taskFaction!"] call ALiVE_fnc_Dump};
+        if (_taskLocationType == "") exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _taskLocationType!"] call ALiVE_fnc_Dump};
+        if (count _taskLocation == 0) exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _taskLocation!"] call ALiVE_fnc_Dump};
+        if (count _taskPlayers == 0) exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _taskPlayers!"] call ALiVE_fnc_Dump};
+        if (_taskEnemyFaction == "") exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _taskEnemyFaction!"] call ALiVE_fnc_Dump};
+        if (_taskApplyType == "") exitwith {["C2ISTAR - Task SabotageBuilding - Wrong input for _taskApplyType!"] call ALiVE_fnc_Dump};
         
         _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideObjectToNumber;
@@ -120,12 +130,18 @@ switch (_taskState) do {
 	                ["C2ISTAR - Task SabotageBuilding - OPCOM index %2 selected as objective at position %1 of ",_position,_index] call ALiVE_fnc_Dump;
 	            } else {
                     ["C2ISTAR - Task SabotageBuilding - Currently there are no OPCOM positions to select the target from available!"] call ALiVE_fnc_Dump;
+                    
+                    _taskLocation = position ((nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["NameVillage","NameCity","NameCityCapital","NameLocal","CityCenter","Airport"], 30000]) call BIS_fnc_SelectRandom);
                 };
 	        };
         };
 
         //["Calling NearestObjects..."] call ALiVE_fnc_DumpR;
+        
+        if (isnil "_taskLocation") exitwith {["C2ISTAR - Task SabotageBuilding - No location selected!"] call ALiVE_fnc_Dump};
+        
         _targetBuildings = nearestObjects [_taskLocation,["House_F"],500];
+        
         if (count _targetBuildings == 0) exitwith {["C2ISTAR - Task SabotageBuilding - There are no strategically relevant buildings to attack at the target area!"] call ALiVE_fnc_Dump};
 
 		//["Sorting buildings by height..."] call ALiVE_fnc_DumpR;
@@ -215,18 +231,6 @@ switch (_taskState) do {
         private["_nearestTown","_dialog","_formatDescription","_formatChat","_formatMessage","_formatMessageText"];
 
         _nearestTown = [_targetPosition] call ALIVE_fnc_taskGetNearestLocationName;
-
-        _dialog = [_dialogOption,"Destroy"] call ALIVE_fnc_hashGet;
-        _formatChat = [_dialog,"chat_start"] call ALIVE_fnc_hashGet;
-        _formatMessage = _formatChat select 0;
-        _formatMessageText = _formatMessage select 1;
-        _formatMessageText = format[_formatMessageText,_nearestTown];
-        _formatMessage set [1,_formatMessageText];
-        _formatChat set [0,_formatMessage];
-        [_dialog,"chat_start",_formatChat] call ALIVE_fnc_hashGet;
-
-
-
 
         // create the tasks
         private["_state","_tasks","_taskIDs","_dialog","_taskTitle","_taskDescription","_newTask","_newTaskID","_taskParams","_taskSource"];
