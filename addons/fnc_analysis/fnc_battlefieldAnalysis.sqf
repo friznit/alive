@@ -99,7 +99,8 @@ switch(_operation) do {
             "OPCOM_RECON",
             "OPCOM_CAPTURE",
             "OPCOM_DEFEND",
-            "OPCOM_RESERVE"
+            "OPCOM_RESERVE",
+            "OPCOM_TERRORIZE"
         ]]] call ALIVE_fnc_eventLog;
 
         [_logic,"listenerID",_listenerID] call ALIVE_fnc_hashSet;
@@ -354,6 +355,22 @@ switch(_operation) do {
         [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type,_size,_priority]]] call MAINCLASS;
 
     };
+    case "OPCOM_TERRORIZE": {
+        private["_eventID","_eventData","_side","_position","_size","_type","_priority","_clusterID"];
+
+        _eventID = _args select 0;
+        _eventData = _args select 1;
+
+        _side = _eventData select 0;
+        _position = _eventData select 1 select 2 select 1;
+        _size = _eventData select 1 select 2 select 2;
+        _type = _eventData select 1 select 2 select 3;
+        _priority = _eventData select 1 select 2 select 4;
+        _clusterID = _eventData select 1 select 2 select 6;
+
+        [_logic,"storeClusterEventToSector",[_clusterID,[_operation,floor(time),_position,_side,_type,_size,_priority]]] call MAINCLASS;
+
+    };
     case "storeClusterEventToSector": {
         private["_clusterID","_eventData","_type","_position","_side","_clusterType","_size","_priority","_eventSector","_eventSectorID",
         "_sectorData","_activeClusters","_activeCluster","_activeSectors"];
@@ -408,6 +425,10 @@ switch(_operation) do {
             };
             case "OPCOM_RESERVE": {
                 _activeCluster = [_activeCluster,"lastEvent","reserve"] call ALIVE_fnc_hashSet;
+                _activeCluster = [_activeCluster,"owner",_side] call ALIVE_fnc_hashSet;
+            };
+            case "OPCOM_TERRORIZE": {
+                _activeCluster = [_activeCluster,"lastEvent","terrorize"] call ALIVE_fnc_hashSet;
                 _activeCluster = [_activeCluster,"owner",_side] call ALIVE_fnc_hashSet;
             };
         };

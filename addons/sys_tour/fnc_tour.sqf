@@ -4447,6 +4447,49 @@ switch(_operation) do {
         ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
 
     };
+    case "OPCOM_TERRORIZE": {
+        private["_eventID","_eventData","_side","_position","_size","_type","_priority","_clusterID","_nearestTown","_title","_text"];
+
+        _eventID = _args select 0;
+        _eventData = _args select 1;
+
+        _side = _eventData select 0;
+        _position = _eventData select 1 select 2 select 1;
+        _size = _eventData select 1 select 2 select 2;
+        _type = _eventData select 1 select 2 select 3;
+        _priority = _eventData select 1 select 2 select 4;
+        _clusterID = _eventData select 1 select 2 select 6;
+
+        _nearestTown = [_position] call ALIVE_fnc_taskGetNearestLocationName;
+
+        switch(_type) do {
+            case "MIL":{
+                _type = "military";
+            };
+            case "CIV":{
+                _type = "civilian";
+            };
+        };
+
+        switch(_side) do {
+            case "EAST":{
+                _side = "OPFOR";
+            };
+            case "WEST":{
+                _side = "BLUFOR";
+            };
+            case "GUER":{
+                _side = "INDEP";
+            };
+        };
+
+        _title = "<t size='1.5' color='#68a7b7'  shadow='1'>OPCOM EVENT</t><br/>";
+        _text = format["%1<t>%2 OPCOM has terrorized a %3 objective near %4</t>",_title,_side,_type,_nearestTown];
+
+        ["openSideSmall",0.3] call ALIVE_fnc_displayMenu;
+        ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
+
+    };
 };
 
 TRACE_1("TOUR - output",_result);

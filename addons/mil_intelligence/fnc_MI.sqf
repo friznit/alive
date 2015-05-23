@@ -143,7 +143,7 @@ switch(_operation) do {
     case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGISTICS_INSERTION","LOGISTICS_DESTINATION","PROFILE_KILLED","AGENT_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGISTICS_INSERTION","LOGISTICS_DESTINATION","PROFILE_KILLED","AGENT_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE","OPCOM_TERRORIZE"]]] call ALIVE_fnc_eventLog;
         _logic setVariable ["listenerID", _listenerID];
     };
     case "handleEvent": {

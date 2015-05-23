@@ -204,7 +204,7 @@ switch(_operation) do {
     case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGISTICS_INSERTION","LOGISTICS_DESTINATION","PROFILE_KILLED","AGENT_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGISTICS_INSERTION","LOGISTICS_DESTINATION","PROFILE_KILLED","AGENT_KILLED","OPCOM_RECON","OPCOM_CAPTURE","OPCOM_DEFEND","OPCOM_RESERVE","OPCOM_TERRORIZE"]]] call ALIVE_fnc_eventLog;
         [_logic,"listenerID",_listenerID] call ALIVE_fnc_hashSet;
     };
     case "handleEvent": {
@@ -244,6 +244,9 @@ switch(_operation) do {
                     };
                     case 'OPCOM_RESERVE': {
                         [_logic,"notifyReserveIntelligenceItem",_event] call MAINCLASS;
+                    };
+                    case 'OPCOM_TERRORIZE': {
+                        [_logic,"notifyTerrorizeIntelligenceItem",_event] call MAINCLASS;
                     };
                 };
 
@@ -325,6 +328,17 @@ switch(_operation) do {
         [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "intelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
     };
     case "notifyReserveIntelligenceItem": {
+        private["_event","_id","_data","_from"];
+
+        _event = _args;
+        _id = [_event, "id"] call ALIVE_fnc_hashGet;
+        _data = [_event, "data"] call ALIVE_fnc_hashGet;
+        _from = [_event, "from"] call ALIVE_fnc_hashGet;
+
+        [ALIVE_liveAnalysis, "registerAnalysisJob", [25, 5, "intelligenceItem", _id, [_data]]] call ALIVE_fnc_liveAnalysis;
+    };
+    
+    case "notifyTerrorizeIntelligenceItem": {
         private["_event","_id","_data","_from"];
 
         _event = _args;
