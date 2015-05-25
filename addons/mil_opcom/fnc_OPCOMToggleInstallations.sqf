@@ -26,7 +26,11 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
+// Execute on server if function was called on a client
 if !(isServer) exitWith {[_this,"ALIVE_fnc_OPCOMToggleInstallations", false, false] call BIS_fnc_MP};
+
+// Exit if OPCOMs are unavailable
+if (isnil "OPCOM_instances" || {count OPCOM_instances == 0}) exitwith {};
 
 private ["_enabled","_OPCOM_HANDLER","_objectives","_size","_id","_radius","_pos"];
 
