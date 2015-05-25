@@ -1140,6 +1140,13 @@ class exportCfgWeapons
 	recompile = RECOMPILE;
 };
 
+class exportMapWarRoom
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_exportMapWarRoom.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class factionSide
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_factionSide.sqf";
