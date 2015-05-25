@@ -1100,19 +1100,7 @@ switch(_operation) do {
             _factions = (_logic getvariable ["factions",["OPF_F"]]);
 
             _debug = _logic getVariable ["debug",false];
-            
-            if (isnil QGVAR(ALLCLASSES) || {count GVAR(ALLCLASSES) == 0}) then {
-                
-                _all = [];
-                {
-                    _types = [0, _x,"Man",true] call ALiVE_fnc_findVehicleType;
-                    _all append _types;
-                } foreach _factions;
-                _all = _all - (_logic getVariable ["UnitsBlackList",[]]);
-
-            	GVAR(ALLCLASSES) = _all;
-			};
-            
+           
             private ["_side","_units"];
 
 			// Action: spawn AI
@@ -1129,12 +1117,7 @@ switch(_operation) do {
                 
                 _amount = ceil(random(_logic getVariable ["amount",2]));
                 
-                _units = [];
-                
-                for "_i" from 1 to _amount do {
-                    _unit = GVAR(ALLCLASSES) call BIS_fnc_SelectRandom;
-                    _units pushBack _unit;
-                };
+                _units = [[_faction],_amount,[],true] call ALiVE_fnc_chooseRandomUnits;
                 
                 _house setVariable ["unittypes", _units, true];
                 _house setVariable ["faction", _faction, true];
@@ -1251,6 +1234,7 @@ switch(_operation) do {
 
 	                                            if (_useDominantFaction) then {
 	                                            	_faction = [getposATL _house, 250] call ALiVE_fnc_getDominantFaction;
+                                                    
 	                                            	if (isnil "_faction") then {_faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom};
 	                                            } else {
 	                                                _faction = (_logic getvariable ["factions",["OPF_F"]]) call BIS_fnc_SelectRandom;
