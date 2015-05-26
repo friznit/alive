@@ -11,6 +11,11 @@ class CfgFunctions {
 				file = "\x\alive\addons\sys_aiskill\fnc_AISkillInit.sqf";
 				recompile = RECOMPILE;
 			};
+			class AIskillSetter {
+				description = "The init EH function";
+				file = "\x\alive\addons\sys_aiskill\fnc_AISkillSetter.sqf";
+				recompile = RECOMPILE;
+			};
 		};
 	};
 };
