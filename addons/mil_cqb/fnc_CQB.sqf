@@ -841,6 +841,18 @@ switch(_operation) do {
 		_args;
 	};
 
+	case "allHouses": {
+		if !(isNil "_args") then {
+			// if no new distance was provided return spawn distance setting
+            
+            ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
+            
+			_logic setVariable ["allHouses", _args];
+		};
+        
+        _args = _logic getVariable ["allHouses", []];
+    };
+
 	case "houses": {
 		private ["_houses", "_debug"];
 		_houses = [];
