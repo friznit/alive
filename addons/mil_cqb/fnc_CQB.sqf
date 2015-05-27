@@ -843,7 +843,7 @@ switch(_operation) do {
 
 	case "allHouses": {
 		if !(isNil "_args") then {
-			// if no new distance was provided return spawn distance setting
+			// if new dataset was provided store it
             
             ASSERT_TRUE(typeName _args == "ARRAY",str typeName _args);
             
