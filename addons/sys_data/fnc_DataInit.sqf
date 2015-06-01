@@ -337,6 +337,7 @@ if (isDedicated) then {
 							[_playerHash, "AAR_pos", getpos _unit] call ALIVE_fnc_hashSet;
 							[_playerHash, "AAR_weapon", primaryWeapon _unit] call ALIVE_fnc_hashSet;
 							[_playerHash, "AAR_dir", ceil(getdir _unit)] call ALIVE_fnc_hashSet;
+							[_playerHash, "AAR_config", typeof _unit] call ALIVE_fnc_hashSet;
 							[_playerHash, "AAR_class", getText (configFile >> "cfgVehicles" >> (typeof _unit) >> "displayName")] call ALIVE_fnc_hashSet;
 							[_playerHash, "AAR_damage", damage _unit] call ALIVE_fnc_hashSet;
 							[_playerHash, "AAR_side", side (group _unit)] call ALIVE_fnc_hashSet;
