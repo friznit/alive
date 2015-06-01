@@ -44,6 +44,10 @@ _ret = [_this select 0, _this select 1, _this select 2] spawn {
 
 	_result = "ALiVEClient" callExtension format["SendMap~C:\%1.emf,%2,%3", worldName, _user, _pwd];
 
+	hint _result;
+
+	if (_result == "FILE DOES NOT EXIST") exitWith {_result = "File does not exist";};
+
 	waitUntil {
 		sleep 1;
 		_result = "ALiVEClient" callExtension "getUploadProgress~0";
@@ -52,7 +56,7 @@ _ret = [_this select 0, _this select 1, _this select 2] spawn {
 			diag_log _result;
 		};
 
-		_result == "FINISHED" || _result == "FILE DOES NOT EXIST" || _result == "UNKNOWN FUNCTION" || _result == "INCOMPLETE";
+		_result == "FINISHED" ||  _result == "INCOMPLETE" || _result == "UNKNOWN";
 	};
 
 	_result
