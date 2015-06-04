@@ -586,7 +586,7 @@ _taskData = [] call ALIVE_fnc_hashCreate;
 [_taskData,"title","Hold the objective"] call ALIVE_fnc_hashSet;
 [_taskData,"description","Hold position and defeat the incoming enemy attack."] call ALIVE_fnc_hashSet;
 [_taskData,"chat_start",[["PLAYERS","My callsign established in defence at objective location, Over"],["HQ","Hold the objective"]]] call ALIVE_fnc_hashSet;
-[_taskData,"chat_success",[["PLAYERS","Enemy forces have been defeated in detail, objective is secure, Ove"],["HQ","Roger, send SITREP and standby for further tasking, Out."]]] call ALIVE_fnc_hashSet;
+[_taskData,"chat_success",[["PLAYERS","Enemy forces have been defeated in detail, objective is secure, Over"],["HQ","Roger, send SITREP and standby for further tasking, Out."]]] call ALIVE_fnc_hashSet;
 [_taskData,"chat_missile_strike",[["HQ","Critical information: suspected missile strike inbound your location, take cover, Over"],["PLAYERS","Roger, Out"]]] call ALIVE_fnc_hashSet;
 [_taskData,"reward",["forcePool",20]] call ALIVE_fnc_hashSet;
 [_tasksData,"DefenceWave",_taskData] call ALIVE_fnc_hashSet;
