@@ -33,11 +33,12 @@ _params = _this select 0;
 _delay = _params select 0;
 
 // Get the time of the last save to server memory
-_lastSaveTime = MOD(sys_player) getVariable ["lastSaveTime",0];
+_lastSaveTime = MOD(sys_player) getVariable ["lastSaveTime",diag_tickTime];
 
 // Regularly store the player state to a server store and/or DB
 // By default Every 5 minutes store player data in memory
 if (diag_tickTime >= (_lastSaveTime + _delay)) then {
+	TRACE_3("Saving player state to server", diag_tickTime, _lastSaveTime,  _delay);
 	{
 		[MOD(sys_player), "setPlayer", [_x]] call ALiVE_fnc_player;
 	} foreach playableUnits;
@@ -46,8 +47,8 @@ if (diag_tickTime >= (_lastSaveTime + _delay)) then {
 
 // If auto save interval is defined and ext db is enabled, then save to external db
 _check = MOD(sys_player) getvariable ["storeToDB", false];
-_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",0];
-_lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",0];
+_autoSaveTime = MOD(sys_player) getVariable ["autoSaveTime",diag_tickTime];
+_lastDBSaveTime = MOD(sys_player) getVariable ["lastDBSaveTime",diag_tickTime];
 TRACE_3("Checking auto save", _check, _autoSaveTime,  _lastDBSaveTime);
 
 if ( _autoSaveTime > 0 && _check && (diag_tickTime >= (_lastDBSaveTime + _autoSaveTime)) && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED}) ) then {
