@@ -200,6 +200,16 @@ switch(_operation) do {
         if (isServer) then {
 						
 			// if server, initialise module game logic
+            
+            TRACE_1("Module init",_logic);
+            
+            // First placed module will be chosen as master
+            if (isnil QUOTE(ADDON)) then {
+            	ADDON = _logic;
+            
+            	PublicVariable QUOTE(ADDON);
+            };
+            
 			_logic setVariable ["super", SUPERCLASS];
 			_logic setVariable ["class", MAINCLASS];
 			_logic setVariable ["moduleType", "ALIVE_AMBCP"];
@@ -221,6 +231,9 @@ switch(_operation) do {
 
             [_logic,"start"] call MAINCLASS;
         } else {
+            
+            waituntil {!isnil QUOTE(ADDON)};
+            
             [_logic, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
             [_logic, "blacklist", _logic getVariable ["blacklist", DEFAULT_TAOR]] call MAINCLASS;
             {_x setMarkerAlpha 0} foreach (_logic getVariable ["taor", DEFAULT_TAOR]);

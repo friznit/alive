@@ -283,24 +283,31 @@ switch(_operation) do {
                     if ({(getpos _x distance _pos) < _size} count ([] call BIS_fnc_listPlayers) == 0 || GVAR(Loaded)) then {
                         private ["_sidelist","_sideNum","_factions","_factionClasses"];
 
-                        // Get faction from side
-                        _factions = [];
-                        _sidelist = ["EAST","WEST","IND","CIV"];
-                        _blacklist = ["Virtual_F","Interactive_F"];
-                        _sideNum = _sidelist find _side;
-                        _factionClasses = (configfile >> "CfgFactionClasses");
-                        for "_i" from 1 to (count _factionClasses - 1) do {
-                            private "_element";
-                            _element = _factionClasses select _i;
-                            if (isclass _element) then {
-                                if (getnumber(_element >> "side") == _sideNum && (_blacklist find (configName _element)) == -1) then {
-                                    _factions pushback configName _element;
-                                };
-                            };
+						// If ALiVE Ambient civilians are available get the faction from there
+			            if (["ALiVE_amb_civ_placement"] call ALiVE_fnc_isModuleAvailable) then {
+                            
+                            waituntil {!isnil QMOD(amb_civ_placement)};
+                            
+                        	_factions = [ALiVE_amb_civ_placement getvariable ["faction","CIV_F"]];
+			            } else {
+	                        // Else get faction from side
+	                        _factions = [];
+	                        _sidelist = ["EAST","WEST","IND","CIV"];
+	                        _blacklist = ["Virtual_F","Interactive_F"];
+	                        _sideNum = _sidelist find _side;
+	                        _factionClasses = (configfile >> "CfgFactionClasses");
+	                        for "_i" from 1 to (count _factionClasses - 1) do {
+	                            private "_element";
+	                            _element = _factionClasses select _i;
+	                            if (isclass _element) then {
+	                                if (getnumber(_element >> "side") == _sideNum && (_blacklist find (configName _element)) == -1) then {
+	                                    _factions pushback configName _element;
+	                                };
+	                            };
+	                        };
                         };
 
                         _faction = _factions call bis_fnc_selectRandom;
-
 
                         //Roll the dice
                         if (GVAR(Loaded)) then {
