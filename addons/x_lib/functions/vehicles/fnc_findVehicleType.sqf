@@ -25,7 +25,7 @@ Author:
 Wolffy.au
 ---------------------------------------------------------------------------- */
 
-private ["_fac","_allvehs","_vehx","_fx","_cx","_cargoslots","_type","_noWeapons","_nonconfigs","_nonsims","_err"];
+private ["_id","_fac","_allvehs","_vehx","_fx","_cx","_cargoslots","_type","_noWeapons","_nonconfigs","_nonsims","_err"];
 
 PARAMS_1(_cargoslots);
 _err = "cargo slots not valid";
@@ -36,7 +36,15 @@ DEFAULT_PARAM(1,_fac,nil);
 DEFAULT_PARAM(2,_type,nil);
 DEFAULT_PARAM(3,_noWeapons,false);
 
-_searchBag = format["ALiVE_X_LIB_SEARCHBAG_%1_%2_%3",_fac,_type,_noWeapons];
+_id = _fac;
+
+if (typeName _fac == "ARRAY") then {
+    _id = str(_fac);
+    _id = [_list, "[", ""] call CBA_fnc_replace;
+    _id = [_list, "]", ""] call CBA_fnc_replace;
+};
+
+_searchBag = format["ALiVE_X_LIB_SEARCHBAG_%1_%2_%3",_id,_type,_noWeapons];
 
 if !(isnil {call compile _searchBag}) exitwith {call compile _searchBag};
 
