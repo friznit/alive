@@ -36,8 +36,6 @@ waituntil {!isnil QUOTE(ADDON) && {ADDON getVariable ["startupComplete", false]}
 _factionSkills = [ADDON, "factionSkills"] call ALiVE_fnc_AISkill;
 _debug = [ADDON, "debug"] call ALiVE_fnc_AISkill;
 
-diag_log _factionSkills;
-
 _faction = faction _unit;
 _side = side _unit;
 
