@@ -193,7 +193,7 @@ if (isDedicated) then {
         ["ALiVE SYS_DATA - MISSION: %1 %2 %3",_logic, MOD(sys_data), MOD(sys_data) getVariable "saveDateTime"] call ALIVE_fnc_dump;
     };
 
-	// Handle basic mission persistence - date/time
+	// Handle basic mission persistence - date/time and custom variables
 	GVAR(mission_data) = [] call CBA_fnc_hashCreate;
 	if (GVAR(dictionaryLoaded) && (MOD(sys_data) getVariable ["saveDateTime","true"] == "true")) then {
 		private ["_missionName","_response"];

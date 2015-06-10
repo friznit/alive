@@ -41,6 +41,16 @@ class cfgFunctions {
 					file = "\x\alive\addons\sys_data\fnc_getGroupID.sqf";
 					recompile = RECOMPILE;
 				};
+				class getData {
+					description = "Gets custom data";
+					file = "\x\alive\addons\sys_data\fnc_getData.sqf";
+					recompile = RECOMPILE;
+				};
+				class setData {
+					description = "Sets custom data";
+					file = "\x\alive\addons\sys_data\fnc_setData.sqf";
+					recompile = RECOMPILE;
+				};
 				class startALiVEPLugIn {
 					description = "Starts the ALiVE Plugin for arma2net";
 					file = "\x\alive\addons\sys_data\fnc_startALiVEPlugIn.sqf";
