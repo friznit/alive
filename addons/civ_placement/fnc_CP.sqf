@@ -930,27 +930,31 @@ switch(_operation) do {
 					_timer = time;
 					{
 						private ["_position","_size","_spawn"];
-
-						_position  = _x select 0;
-						_size = _x select 1;
-
-						_spawn = false;
-
-						if ([_position, ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {
-						    _spawn = true;
-						} else {
-				            if ([_position, ALIVE_spawnRadiusJet] call ALiVE_fnc_anyAutonomousInRange > 0) then {
-				                _spawn = true;
-				            };
-						};
-
-						if (_spawn) then {
-							[_position, _size + 150, ceil(_roadblocks / 30), _debug] call ALiVE_fnc_createRoadblock;
-
-							GVAR(ROADBLOCK_LOCATIONS) set [_foreachIndex, -1];
-							GVAR(ROADBLOCK_LOCATIONS) = GVAR(ROADBLOCK_LOCATIONS) - [-1];
-						};
+                        
+                        if (typeName _x == "ARRAY") then {
+							_position  = _x select 0;
+							_size = _x select 1;
+	
+							_spawn = false;
+	
+							if ([_position, ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {
+							    _spawn = true;
+							} else {
+					            if ([_position, ALIVE_spawnRadiusJet] call ALiVE_fnc_anyAutonomousInRange > 0) then {
+					                _spawn = true;
+					            };
+							};
+	
+							if (_spawn) then {
+								[_position, _size + 150, ceil(_roadblocks / 30), _debug] call ALiVE_fnc_createRoadblock;
+	
+								GVAR(ROADBLOCK_LOCATIONS) set [_foreachIndex, -1];
+							};
+                    	};
 					} foreach GVAR(ROADBLOCK_LOCATIONS);
+                    
+                    GVAR(ROADBLOCK_LOCATIONS) = GVAR(ROADBLOCK_LOCATIONS) - [-1];
+                    
                     if (_debug) then {["ALiVE Roadblock iteration time: %1 secs for %2 entries...", time - _timer, count GVAR(ROADBLOCK_LOCATIONS)] call ALiVE_fnc_Dump};
 
 					sleep 1;
