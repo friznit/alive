@@ -49,6 +49,14 @@ class CfgMissions
 	};
 	class MPMissions
 	{
+		class MP_COOP_Divide_And_Rule
+		{
+			briefingName = "ALiVE | Divide and Rule (COOP 7)";
+			directory = "x\alive\addons\missions\showcases\alive_divide_and_rule.altis";
+            overviewPicture = "x\alive\addons\missions\logo_alive.paa";
+			overviewText = "INTEL has been received about a nuclear device being built by a scientist named Ahelef Mahmoud in an hideout in Zaros! Locate Mahmoud, disable the bomb, and return home safely!";
+			author = "ALiVE Mod Team";               		
+		};				
 		class MP_COOP_Getting_Started
 		{
 			briefingName = "ALiVE | Quick Start (COOP 9)";
@@ -80,7 +88,7 @@ class CfgMissions
             overviewPicture = "x\alive\addons\missions\logo_alive.paa";
             overviewText = "Lead an insurgency on Altis, use sabotage and subterfuge to capture weapons and establish safe houses across the island.";
 			author = "ALiVE Mod Team";   
-		};		
+		};			
 	};
 };
 

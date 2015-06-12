@@ -3,7 +3,7 @@
 #endif
 
 //Starting Init
-["ALiVE | Divide and Rule - Executing init.sqf..."] call ALiVE_fnc_Dump;
+["ALiVE | Getting Started - Executing init.sqf..."] call ALiVE_fnc_Dump;
 
 /////////////////////
 // Init server
@@ -22,8 +22,8 @@ if (hasInterface) then {
 
     ["ALiVE | Divide and Rule - Running ClientInit..."] call ALiVE_fnc_Dump;
 
-    player createDiaryRecord ["Diary", ["Dismantle the device",
-    	"INTEL has been received about a nuclear device beeing build in an hideout in Zaros, centre of terrorist activities on Lemnos! The contact is said to be a scientist named Ahelef Mahmoud, very likely to be located near the device! Objective is to question Mahmoud, disable the bomb, and return home safely!"
+    player createDiaryRecord ["Diary", ["Drive back occupying forces!",
+    	"Stratis is occupied by CSAT forces, your pathfinding unit, supported by CAS and Air assets, need to drive back the occupying force!"
     ]];
 
     //Intro
@@ -50,7 +50,7 @@ if (hasInterface) then {
 
 		_cam camsetpos [_camx -15 ,_camy + 15,_camz+3];
 
-		titleText ["A L i V E   |   D I V I D E  A N D  R U L E", "BLACK IN",10];
+		titleText ["A L i V E   |   G E T T I N G  S T A R T E D", "BLACK IN",10];
 		10 fadesound 0.9;
 		_cam CamCommit 20;
 		sleep 5;
@@ -61,24 +61,24 @@ if (hasInterface) then {
 
 		sleep 1;
 
-		_title = "<t size='1.5' color='#68a7b7' shadow='1'>DIVIDE AND RULE</t><br/>";
-        _text = format["%1<t>INTEL has been received about a nuclear device beeing build in an hideout in Zaros, centre of terrorist activities on Lemnos!</t>",_title];
+		_title = "<t size='1.5' color='#68a7b7' shadow='1'>GETTING STARTED</t><br/>";
+        _text = format["%1<t>A simple mission that follows the quick start guide for ALiVE usage.</t>",_title];
 
         ["openSideSmall",0.4] call ALIVE_fnc_displayMenu;
         ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
 
         sleep 15;
 
-        _title = "<t size='1.5' color='#68a7b7' shadow='1'>DIVIDE AND RULE</t><br/>";
-        _text = format["%1<t>The contact is said to be a scientist named Ahelef Mahmoud, very likely to be located near the device!</t>",_title];
+        _title = "<t size='1.5' color='#68a7b7' shadow='1'>GETTING STARTED</t><br/>";
+        _text = format["%1<t>Combat support CAS and Transport is available, grab an ALiVE tablet item from a support supply box to access combat support and C2ISTAR assets.</t>",_title];
 
         ["openSideSmall",0.4] call ALIVE_fnc_displayMenu;
         ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
 
         sleep 15;
 
-        _title = "<t size='1.5' color='#68a7b7' shadow='1'>DIVIDE AND RULE</t><br/>";
-        _text = format["%1<t>Objective is to question Mahmoud, disable the bomb, and return home safely!</t>",_title];
+        _title = "<t size='1.5' color='#68a7b7' shadow='1'>GETTING STARTED</t><br/>";
+        _text = format["%1<t>Stratis is completely in the hands of CSAT forces, try to survive!</t>",_title];
 
         ["openSideSmall",0.4] call ALIVE_fnc_displayMenu;
         ["setSideSmallText",_text] call ALIVE_fnc_displayMenu;
