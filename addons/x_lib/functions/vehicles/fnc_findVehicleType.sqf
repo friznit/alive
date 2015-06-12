@@ -40,8 +40,11 @@ _id = _fac;
 
 if (typeName _fac == "ARRAY") then {
     _id = str(_fac);
-    _id = [_list, "[", ""] call CBA_fnc_replace;
-    _id = [_list, "]", ""] call CBA_fnc_replace;
+    _id = [_id, "[", ""] call CBA_fnc_replace;
+    _id = [_id, "]", ""] call CBA_fnc_replace;
+    _id = [_id, "'", ""] call CBA_fnc_replace;
+    _id = [_id, """", ""] call CBA_fnc_replace;
+    _id = [_id, ",", ", "] call CBA_fnc_replace;
 };
 
 _searchBag = format["ALiVE_X_LIB_SEARCHBAG_%1_%2_%3",_id,_type,_noWeapons];
