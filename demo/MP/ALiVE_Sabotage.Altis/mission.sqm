@@ -433,7 +433,7 @@ class Mission
 					position[]={14841.476,0.90812665,15552.971};
 					class args
 					{
-						items=9;
+						items=8;
 						class Item0
 						{
 							value="false";
@@ -466,23 +466,17 @@ class Mission
 						};
 						class Item5
 						{
-							value="0";
-							parentCls="ALiVE_require";
-							typeName="ALiVE_DISABLEPLAYERLOG";
-						};
-						class Item6
-						{
 							value="300";
 							parentCls="ALiVE_require";
 							typeName="ALiVE_GC_INTERVAL";
 						};
-						class Item7
+						class Item6
 						{
 							value="100";
 							parentCls="ALiVE_require";
 							typeName="ALiVE_GC_THRESHHOLD";
 						};
-						class Item8
+						class Item7
 						{
 							value="";
 							parentCls="ALiVE_require";
@@ -636,10 +630,10 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={14840.117,0.37750596,15452.509};
+					position[]={14840.117,0.10899778,15452.509};
 					class args
 					{
-						items=7;
+						items=8;
 						class Item0
 						{
 							value="false";
@@ -682,6 +676,12 @@ class Mission
 							parentCls="ALiVE_sys_profile";
 							typeName="activeLimiter";
 						};
+						class Item7
+						{
+							value="1";
+							parentCls="ALiVE_sys_profile";
+							typeName="speedModifier";
+						};
 					};
 					id=16;
 					side="LOGIC";
@@ -703,7 +703,7 @@ class Mission
 					position[]={15049.087,-28.688326,15551.612};
 					class args
 					{
-						items=15;
+						items=16;
 						class Item0
 						{
 							value="false";
@@ -760,35 +760,41 @@ class Mission
 						};
 						class Item9
 						{
-							value="800";
+							value="None";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistance";
+							typeName="CQB_TraceGrid";
 						};
 						class Item10
 						{
-							value="0";
+							value="800";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceHeli";
+							typeName="CQB_spawndistance";
 						};
 						class Item11
 						{
 							value="0";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceJet";
+							typeName="CQB_spawndistanceHeli";
 						};
 						class Item12
+						{
+							value="0";
+							parentCls="ALiVE_mil_cqb";
+							typeName="CQB_spawndistanceJet";
+						};
+						class Item13
 						{
 							value="IND_F";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS";
 						};
-						class Item13
+						class Item14
 						{
 							value="";
 							parentCls="ALiVE_mil_cqb";
 							typeName="whitelist";
 						};
-						class Item14
+						class Item15
 						{
 							value="BL_1";
 							parentCls="ALiVE_mil_cqb";
@@ -812,10 +818,10 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={15149.5,-0.59214562,15552.971};
+					position[]={15149.5,-0.17097098,15552.971};
 					class args
 					{
-						items=15;
+						items=16;
 						class Item0
 						{
 							value="false";
@@ -872,35 +878,41 @@ class Mission
 						};
 						class Item9
 						{
-							value="800";
+							value="None";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistance";
+							typeName="CQB_TraceGrid";
 						};
 						class Item10
 						{
-							value="0";
+							value="800";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceHeli";
+							typeName="CQB_spawndistance";
 						};
 						class Item11
 						{
 							value="0";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceJet";
+							typeName="CQB_spawndistanceHeli";
 						};
 						class Item12
+						{
+							value="0";
+							parentCls="ALiVE_mil_cqb";
+							typeName="CQB_spawndistanceJet";
+						};
+						class Item13
 						{
 							value="IND_F";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS";
 						};
-						class Item13
+						class Item14
 						{
 							value="";
 							parentCls="ALiVE_mil_cqb";
 							typeName="whitelist";
 						};
-						class Item14
+						class Item15
 						{
 							value="BL_1";
 							parentCls="ALiVE_mil_cqb";
@@ -1003,7 +1015,7 @@ class Mission
 					position[]={15049.087,-38.85173,15443.009};
 					class args
 					{
-						items=8;
+						items=9;
 						class Item0
 						{
 							value="false";
@@ -1048,9 +1060,15 @@ class Mission
 						};
 						class Item7
 						{
-							value="3";
+							value="0";
 							parentCls="ALiVE_amb_civ_population";
 							typeName="hostilityIndep";
+						};
+						class Item8
+						{
+							value="[]";
+							parentCls="ALiVE_amb_civ_population";
+							typeName="ambientCivilianRoles";
 						};
 					};
 					id=20;

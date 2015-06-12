@@ -117,7 +117,7 @@ class Mission
 					position[]={15218.541,0.12907462,14547.094};
 					class args
 					{
-						items=6;
+						items=8;
 						class Item0
 						{
 							value="false";
@@ -138,17 +138,29 @@ class Mission
 						};
 						class Item3
 						{
+							value="0";
+							parentCls="ALiVE_require";
+							typeName="ALiVE_DISABLEMARKERS";
+						};
+						class Item4
+						{
+							value="0";
+							parentCls="ALiVE_require";
+							typeName="ALiVE_DISABLEADMINACTIONS";
+						};
+						class Item5
+						{
 							value="300";
 							parentCls="ALiVE_require";
 							typeName="ALiVE_GC_INTERVAL";
 						};
-						class Item4
+						class Item6
 						{
 							value="100";
 							parentCls="ALiVE_require";
 							typeName="ALiVE_GC_THRESHHOLD";
 						};
-						class Item5
+						class Item7
 						{
 							value="";
 							parentCls="ALiVE_require";
@@ -175,7 +187,7 @@ class Mission
 					position[]={15068.678,0.19111013,14410.048};
 					class args
 					{
-						items=7;
+						items=8;
 						class Item0
 						{
 							value="false";
@@ -218,6 +230,12 @@ class Mission
 							parentCls="ALiVE_sys_profile";
 							typeName="activeLimiter";
 						};
+						class Item7
+						{
+							value="1";
+							parentCls="ALiVE_sys_profile";
+							typeName="speedModifier";
+						};
 					};
 					id=1;
 					side="LOGIC";
@@ -242,7 +260,7 @@ class Mission
 					azimut=-0.314183;
 					class args
 					{
-						items=18;
+						items=20;
 						class Item0
 						{
 							value="false";
@@ -293,59 +311,71 @@ class Mission
 						};
 						class Item8
 						{
-							value="";
+							value="0";
 							parentCls="ALiVE_mil_placement";
-							typeName="customInfantryCount";
+							typeName="randomcamps";
 						};
 						class Item9
 						{
-							value="";
+							value="1";
 							parentCls="ALiVE_mil_placement";
-							typeName="customMotorisedCount";
+							typeName="readinessLevel";
 						};
 						class Item10
 						{
 							value="";
 							parentCls="ALiVE_mil_placement";
-							typeName="customMechanisedCount";
+							typeName="customInfantryCount";
 						};
 						class Item11
 						{
 							value="";
 							parentCls="ALiVE_mil_placement";
-							typeName="customArmourCount";
+							typeName="customMotorisedCount";
 						};
 						class Item12
 						{
 							value="";
 							parentCls="ALiVE_mil_placement";
-							typeName="customSpecOpsCount";
+							typeName="customMechanisedCount";
 						};
 						class Item13
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customArmourCount";
+						};
+						class Item14
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customSpecOpsCount";
+						};
+						class Item15
 						{
 							value="BLU_F";
 							parentCls="ALiVE_mil_placement";
 							typeName="faction";
 						};
-						class Item14
+						class Item16
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="createHQ";
 						};
-						class Item15
+						class Item17
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="placeHelis";
 						};
-						class Item16
+						class Item18
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="placeSupplies";
 						};
-						class Item17
+						class Item19
 						{
 							value="0";
 							parentCls="ALiVE_mil_placement";
@@ -374,7 +404,7 @@ class Mission
 					position[]={16857.377,6.0372901,12044.622};
 					class args
 					{
-						items=18;
+						items=20;
 						class Item0
 						{
 							value="false";
@@ -425,59 +455,71 @@ class Mission
 						};
 						class Item8
 						{
-							value="";
+							value="0";
 							parentCls="ALiVE_mil_placement";
-							typeName="customInfantryCount";
+							typeName="randomcamps";
 						};
 						class Item9
 						{
-							value="";
+							value="1";
 							parentCls="ALiVE_mil_placement";
-							typeName="customMotorisedCount";
+							typeName="readinessLevel";
 						};
 						class Item10
 						{
 							value="";
 							parentCls="ALiVE_mil_placement";
-							typeName="customMechanisedCount";
+							typeName="customInfantryCount";
 						};
 						class Item11
 						{
 							value="";
 							parentCls="ALiVE_mil_placement";
-							typeName="customArmourCount";
+							typeName="customMotorisedCount";
 						};
 						class Item12
 						{
 							value="";
 							parentCls="ALiVE_mil_placement";
-							typeName="customSpecOpsCount";
+							typeName="customMechanisedCount";
 						};
 						class Item13
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customArmourCount";
+						};
+						class Item14
+						{
+							value="";
+							parentCls="ALiVE_mil_placement";
+							typeName="customSpecOpsCount";
+						};
+						class Item15
 						{
 							value="OPF_F";
 							parentCls="ALiVE_mil_placement";
 							typeName="faction";
 						};
-						class Item14
+						class Item16
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="createHQ";
 						};
-						class Item15
+						class Item17
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="placeHelis";
 						};
-						class Item16
+						class Item18
 						{
 							value="true";
 							parentCls="ALiVE_mil_placement";
 							typeName="placeSupplies";
 						};
-						class Item17
+						class Item19
 						{
 							value="0";
 							parentCls="ALiVE_mil_placement";
@@ -507,7 +549,7 @@ class Mission
 					azimut=-0.314183;
 					class args
 					{
-						items=10;
+						items=9;
 						class Item0
 						{
 							value="false";
@@ -528,41 +570,35 @@ class Mission
 						};
 						class Item3
 						{
-							value="false";
-							parentCls="ALiVE_mil_OPCOM";
-							typeName="";
-						};
-						class Item4
-						{
 							value="0.9";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="reinforcements";
 						};
-						class Item5
+						class Item4
 						{
 							value="BLU_F";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction1";
 						};
-						class Item6
+						class Item5
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction2";
 						};
-						class Item7
+						class Item6
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction3";
 						};
-						class Item8
+						class Item7
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction4";
 						};
-						class Item9
+						class Item8
 						{
 							value="";
 							parentCls="ALiVE_mil_OPCOM";
@@ -591,7 +627,7 @@ class Mission
 					position[]={21031.676,23.232546,7266.6563};
 					class args
 					{
-						items=10;
+						items=9;
 						class Item0
 						{
 							value="false";
@@ -612,41 +648,35 @@ class Mission
 						};
 						class Item3
 						{
-							value="true";
-							parentCls="ALiVE_mil_OPCOM";
-							typeName="";
-						};
-						class Item4
-						{
 							value="0.9";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="reinforcements";
 						};
-						class Item5
+						class Item4
 						{
 							value="OPF_F";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction1";
 						};
-						class Item6
+						class Item5
 						{
 							value="OPF_G_F";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction2";
 						};
-						class Item7
+						class Item6
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction3";
 						};
-						class Item8
+						class Item7
 						{
 							value="NONE";
 							parentCls="ALiVE_mil_OPCOM";
 							typeName="faction4";
 						};
-						class Item9
+						class Item8
 						{
 							value="";
 							parentCls="ALiVE_mil_OPCOM";
@@ -826,7 +856,7 @@ class Mission
 					position[]={15509.166,0.093901694,14405.396};
 					class args
 					{
-						items=15;
+						items=16;
 						class Item0
 						{
 							value="false";
@@ -883,35 +913,41 @@ class Mission
 						};
 						class Item9
 						{
-							value="700";
+							value="None";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistance";
+							typeName="CQB_TraceGrid";
 						};
 						class Item10
 						{
-							value="0";
+							value="700";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceHeli";
+							typeName="CQB_spawndistance";
 						};
 						class Item11
 						{
 							value="0";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceJet";
+							typeName="CQB_spawndistanceHeli";
 						};
 						class Item12
+						{
+							value="0";
+							parentCls="ALiVE_mil_cqb";
+							typeName="CQB_spawndistanceJet";
+						};
+						class Item13
 						{
 							value="OPF_G_F";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS";
 						};
-						class Item13
+						class Item14
 						{
 							value="";
 							parentCls="ALiVE_mil_cqb";
 							typeName="whitelist";
 						};
-						class Item14
+						class Item15
 						{
 							value="BASE";
 							parentCls="ALiVE_mil_cqb";
@@ -938,7 +974,7 @@ class Mission
 					position[]={15663.233,0.057528235,14410.624};
 					class args
 					{
-						items=15;
+						items=16;
 						class Item0
 						{
 							value="false";
@@ -995,35 +1031,41 @@ class Mission
 						};
 						class Item9
 						{
-							value="700";
+							value="None";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistance";
+							typeName="CQB_TraceGrid";
 						};
 						class Item10
 						{
-							value="0";
+							value="700";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceHeli";
+							typeName="CQB_spawndistance";
 						};
 						class Item11
 						{
 							value="0";
 							parentCls="ALiVE_mil_cqb";
-							typeName="CQB_spawndistanceJet";
+							typeName="CQB_spawndistanceHeli";
 						};
 						class Item12
+						{
+							value="0";
+							parentCls="ALiVE_mil_cqb";
+							typeName="CQB_spawndistanceJet";
+						};
+						class Item13
 						{
 							value="OPF_F";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_FACTIONS";
 						};
-						class Item13
+						class Item14
 						{
 							value="RED";
 							parentCls="ALiVE_mil_cqb";
 							typeName="whitelist";
 						};
-						class Item14
+						class Item15
 						{
 							value="BASE";
 							parentCls="ALiVE_mil_cqb";
@@ -1145,7 +1187,7 @@ class Mission
 					position[]={15219.504,0.2097542,14402.483};
 					class args
 					{
-						items=8;
+						items=9;
 						class Item0
 						{
 							value="false";
@@ -1193,6 +1235,12 @@ class Mission
 							value="0";
 							parentCls="ALiVE_amb_civ_population";
 							typeName="hostilityIndep";
+						};
+						class Item8
+						{
+							value="[]";
+							parentCls="ALiVE_amb_civ_population";
+							typeName="ambientCivilianRoles";
 						};
 					};
 					id=24;
@@ -1292,7 +1340,7 @@ class Mission
 					position[]={15520.598,-0.11834811,14546.269};
 					class args
 					{
-						items=6;
+						items=8;
 						class Item0
 						{
 							value="false";
@@ -1328,6 +1376,18 @@ class Mission
 							value="true";
 							parentCls="ALiVE_sys_data";
 							typeName="disablePerf";
+						};
+						class Item6
+						{
+							value="true";
+							parentCls="ALiVE_sys_data";
+							typeName="disablePerfMon";
+						};
+						class Item7
+						{
+							value="[['entities',150],['vehicles',300],['agents',450],['allDead',600],['objects',750],['triggers',900]]";
+							parentCls="ALiVE_sys_data";
+							typeName="customPerfMonCode";
 						};
 					};
 					id=26;
@@ -1423,7 +1483,7 @@ class Mission
 					position[]={14069.63,10.6935,12964.219};
 					class args
 					{
-						items=3;
+						items=4;
 						class Item0
 						{
 							value="RODEO TWO";
@@ -1441,6 +1501,12 @@ class Mission
 							value="0";
 							parentCls="ALiVE_SUP_TRANSPORT";
 							typeName="transport_height";
+						};
+						class Item3
+						{
+							value="";
+							parentCls="ALiVE_SUP_TRANSPORT";
+							typeName="transport_code";
 						};
 					};
 					id=29;
@@ -1465,7 +1531,7 @@ class Mission
 					position[]={14106.787,11.000656,12960.785};
 					class args
 					{
-						items=3;
+						items=4;
 						class Item0
 						{
 							value="EAGLE ONE";
@@ -1483,6 +1549,12 @@ class Mission
 							value="0";
 							parentCls="ALiVE_sup_cas";
 							typeName="cas_height";
+						};
+						class Item3
+						{
+							value="";
+							parentCls="ALiVE_sup_cas";
+							typeName="cas_code";
 						};
 					};
 					id=30;
@@ -1695,12 +1767,36 @@ class Mission
 					position[]={15672.31,0.11887676,14174.014};
 					class args
 					{
-						items=1;
+						items=5;
 						class Item0
 						{
 							value="LaserDesignator";
 							parentCls="ALiVE_SUP_PLAYER_RESUPPLY";
 							typeName="pr_item";
+						};
+						class Item1
+						{
+							value="SIDE";
+							parentCls="ALiVE_SUP_PLAYER_RESUPPLY";
+							typeName="pr_restrictionType";
+						};
+						class Item2
+						{
+							value="true";
+							parentCls="ALiVE_SUP_PLAYER_RESUPPLY";
+							typeName="pr_restrictionDeliveryAirDrop";
+						};
+						class Item3
+						{
+							value="true";
+							parentCls="ALiVE_SUP_PLAYER_RESUPPLY";
+							typeName="pr_restrictionDeliveryInsert";
+						};
+						class Item4
+						{
+							value="true";
+							parentCls="ALiVE_SUP_PLAYER_RESUPPLY";
+							typeName="pr_restrictionDeliveryConvoy";
 						};
 					};
 					id=34;
@@ -1812,7 +1908,7 @@ class Mission
 					azimut=-40.1492;
 					class args
 					{
-						items=10;
+						items=15;
 						class Item0
 						{
 							value="false";
@@ -1869,9 +1965,39 @@ class Mission
 						};
 						class Item9
 						{
+							value="1";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="readinessLevel";
+						};
+						class Item10
+						{
 							value="mediumAACamp1";
 							parentCls="ALiVE_mil_placement_custom";
 							typeName="composition";
+						};
+						class Item11
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="createHQ";
+						};
+						class Item12
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="placeHelis";
+						};
+						class Item13
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="placeSupplies";
+						};
+						class Item14
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="ambientVehicleAmount";
 						};
 					};
 					id=38;
@@ -1897,7 +2023,7 @@ class Mission
 					azimut=-0.314183;
 					class args
 					{
-						items=15;
+						items=17;
 						class Item0
 						{
 							value="false";
@@ -1954,35 +2080,47 @@ class Mission
 						};
 						class Item9
 						{
-							value="";
+							value="1";
 							parentCls="ALiVE_civ_placement";
-							typeName="customInfantryCount";
+							typeName="readinessLevel";
 						};
 						class Item10
 						{
-							value="";
+							value="0";
 							parentCls="ALiVE_civ_placement";
-							typeName="customMotorisedCount";
+							typeName="roadblocks";
 						};
 						class Item11
 						{
 							value="";
 							parentCls="ALiVE_civ_placement";
-							typeName="customMechanisedCount";
+							typeName="customInfantryCount";
 						};
 						class Item12
 						{
 							value="";
 							parentCls="ALiVE_civ_placement";
-							typeName="customArmourCount";
+							typeName="customMotorisedCount";
 						};
 						class Item13
 						{
 							value="";
 							parentCls="ALiVE_civ_placement";
-							typeName="customSpecOpsCount";
+							typeName="customMechanisedCount";
 						};
 						class Item14
+						{
+							value="";
+							parentCls="ALiVE_civ_placement";
+							typeName="customArmourCount";
+						};
+						class Item15
+						{
+							value="";
+							parentCls="ALiVE_civ_placement";
+							typeName="customSpecOpsCount";
+						};
+						class Item16
 						{
 							value="OPF_G_F";
 							parentCls="ALiVE_civ_placement";
@@ -2236,10 +2374,10 @@ class Mission
 				class Item0
 				{
 					position[]={16769.182,9.8301735,13631.852};
-					azimut=-145.7052;
+					azimut=-145.705;
 					class args
 					{
-						items=10;
+						items=15;
 						class Item0
 						{
 							value="false";
@@ -2296,9 +2434,39 @@ class Mission
 						};
 						class Item9
 						{
+							value="1";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="readinessLevel";
+						};
+						class Item10
+						{
 							value="hugeMilitaryOutpost1";
 							parentCls="ALiVE_mil_placement_custom";
 							typeName="composition";
+						};
+						class Item11
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="createHQ";
+						};
+						class Item12
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="placeHelis";
+						};
+						class Item13
+						{
+							value="true";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="placeSupplies";
+						};
+						class Item14
+						{
+							value="0";
+							parentCls="ALiVE_mil_placement_custom";
+							typeName="ambientVehicleAmount";
 						};
 					};
 					id=45;
@@ -2798,7 +2966,7 @@ class Mission
 						};
 						class Item21
 						{
-							value="0";
+							value="None";
 							parentCls="ALiVE_SYS_playeroptions";
 							typeName="playertags_style_setting";
 						};

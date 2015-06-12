@@ -958,7 +958,7 @@ class Mission
 						};
 						class Item7
 						{
-							value="0.75";
+							value="1";
 							parentCls="ALiVE_sys_profile";
 							typeName="speedModifier";
 						};
@@ -1068,13 +1068,13 @@ class Mission
 						};
 						class Item1
 						{
-							value="600";
+							value="800";
 							parentCls="ALiVE_amb_civ_population";
 							typeName="spawnRadius";
 						};
 						class Item2
 						{
-							value="600";
+							value="800";
 							parentCls="ALiVE_amb_civ_population";
 							typeName="spawnTypeHeliRadius";
 						};
@@ -1086,13 +1086,13 @@ class Mission
 						};
 						class Item4
 						{
-							value="25";
+							value="50";
 							parentCls="ALiVE_amb_civ_population";
 							typeName="activeLimiter";
 						};
 						class Item5
 						{
-							value="2";
+							value="0";
 							parentCls="ALiVE_amb_civ_population";
 							typeName="hostilityWest";
 						};

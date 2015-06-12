@@ -1091,7 +1091,7 @@ class Mission
 						};
 						class Item5
 						{
-							value="2";
+							value="0";
 							parentCls="ALiVE_amb_civ_population";
 							typeName="hostilityWest";
 						};
@@ -1335,7 +1335,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={3353.2483,39.374268,6748.0161};
+					position[]={3354.4412,45.17841,6733.7017};
 					class args
 					{
 						items=9;
@@ -1473,7 +1473,7 @@ class Mission
 						};
 						class Item9
 						{
-							value="Solid";
+							value="FDiagonal";
 							parentCls="ALiVE_mil_cqb";
 							typeName="CQB_TraceGrid";
 						};
