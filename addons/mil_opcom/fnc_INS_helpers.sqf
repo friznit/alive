@@ -606,7 +606,7 @@ ALiVE_fnc_spawnFurniture = {
     if (!(alive _building) || {_building getvariable [QGVAR(furnitured),false]}) exitwith {[]};
     
     _furnitures = ["Land_RattanTable_01_F"];
-    _bombs = ["DemoCharge_Remote_Ammo_Scripted","IEDLandBig_Remote_Ammo","IEDLandSmall_Remote_Ammo","IEDUrbanBig_Remote_Ammo","IEDUrbanSmall_Remote_Ammo"];
+    _bombs = ["ALIVE_IEDUrbanSmall_Remote_Ammo","ALIVE_IEDLandSmall_Remote_Ammo","ALIVE_IEDLandBig_Remote_Ammo"];
     _objects = ["Fridge_01_open_F","Land_MapBoard_F","Land_WaterCooler_01_new_F"];
     _boxes = ["Box_East_AmmoOrd_F"];
     _created = [];
@@ -632,8 +632,31 @@ ALiVE_fnc_spawnFurniture = {
 	            
 	            if (_ieds) then {
 	                _bomb = createVehicle [_bombs call BIS_fnc_SelectRandom, getposATL _furniture, [], 0, "CAN_COLLIDE"];
+                    _charge = createVehicle ["ALIVE_DemoCharge_Remote_Ammo",getposATL _bomb, [], 0, "CAN_COLLIDE"];
+                    
 	                _bomb attachTo [_furniture, [0,0,_furniture call ALiVE_fnc_getRelativeTop]];
-	                
+					_charge attachTo [_bomb, [0,0,0]];
+
+					// Add damage handler
+					_ehID = _charge addeventhandler ["HandleDamage",{
+						private ["_trgr","_IED"];
+			
+						if (isPlayer (_this select 3)) then {
+							_bomb = attachedTo (_this select 0);
+                            _ehID = _bomb getVariable "ehID";
+			
+							"M_Mo_120mm_AT" createVehicle [(getpos (_this select 0)) select 0, (getpos (_this select 0)) select 1,0];
+			
+            				_bomb removeEventhandler ["HandleDamage",_ehID];
+            
+							deletevehicle (_this select 0);
+							deleteVehicle _bomb;
+						};
+					}];
+                    
+					_bomb setVariable ["ehID",_ehID, true];
+					_bomb setvariable ["charge", _charge, true];                    
+
 	                _created pushback _bomb;
 	            };
             } else {
