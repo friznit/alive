@@ -91,6 +91,7 @@ switch (_taskState) do {
 				{
 				    _OPCOM = _x;
 					_OPCOM_factions = [_OPCOM,"factions",""] call ALiVE_fnc_HashGet;
+                    _OPCOM_side = [_OPCOM,"side",""] call ALiVE_fnc_HashGet;
 	                
 	                //["Looking up correct OPCOM %1 for faction %2",_OPCOM_factions,_taskEnemyFaction] call ALiVE_fnc_DumpR;
 					if ({_x == _taskEnemyFaction} count _OPCOM_factions > 0) then {
@@ -114,8 +115,17 @@ switch (_taskState) do {
 				} foreach OPCOM_instances;
 	            
 	            if (count _objectives > 0) then {
-	            	_objectives = [_objectives,[getposATL _player],{_Input0 distance ([_x,"center"] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
-	                _totalIndexes = (count _objectives)-1;
+	            	_objectives = [_objectives,[getposATL _player],{_Input0 distance ([_x,"center"] call ALiVE_fnc_HashGet)},"ASCEND",{
+                        
+                        _id = [_x,"opcomID",""] call ALiVE_fnc_HashGet;
+                        _pos = [_x,"center"] call ALiVE_fnc_HashGet;
+                        _opcom = [objNull,"getOPCOMbyid",_id] call ALiVE_fnc_OPCOM;
+                        _side = [_opcom,"side",""] call ALiVE_fnc_HashGet;
+                        
+                        !([_pos,_side,500,true] call ALiVE_fnc_isEnemyNear);
+                    }] call BIS_fnc_sortBy;
+	                
+                    _totalIndexes = (count _objectives)-1;
 	                _index = 0;
                     
                     if (count _objectives > 1) then {
