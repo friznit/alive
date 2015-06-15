@@ -84,6 +84,7 @@ switch(_operation) do {
                 
                 _result = _logic;
         };
+        
 		case "init": {
 			if (isServer) then {
 				// if server, initialise module game logic
@@ -108,6 +109,7 @@ switch(_operation) do {
 				[_logic,"start"] call MAINCLASS;
             };
 		};
+        
 		case "start": {                
                 /*
                 MODEL - no visual just reference data
@@ -872,6 +874,19 @@ switch(_operation) do {
             };
             
             _result = true;
+        };
+        
+        case "getOPCOMbyid": {
+            ASSERT_TRUE(typeName _args == "STRING",str _args);
+            
+            {
+                private ["_id"];
+                
+                _id = [_x,"opcomID",""] call ALiVE_fnc_HashGet;
+                
+                if (_id == _args) exitwith {_result = _x};
+                
+            } foreach OPCOM_instances;
         };
 
         case "getobjectivebyid": {
